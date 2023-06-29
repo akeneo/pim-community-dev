@@ -51,9 +51,10 @@ class UniqueAxesCombinationSet
     {
         $familyVariantCode = $entity->getFamilyVariant()->getCode();
         $parentCode = $entity->getParent()->getCode();
+        $loweredAxisValueCombination = \mb_strtolower($axisValueCombination);
 
-        if (isset($this->uniqueAxesCombination[$familyVariantCode][$parentCode][$axisValueCombination])) {
-            $cachedIdentifier = $this->uniqueAxesCombination[$familyVariantCode][$parentCode][$axisValueCombination];
+        if (isset($this->uniqueAxesCombination[$familyVariantCode][$parentCode][$loweredAxisValueCombination])) {
+            $cachedIdentifier = $this->uniqueAxesCombination[$familyVariantCode][$parentCode][$loweredAxisValueCombination];
             if ($cachedIdentifier !== $entity->getIdentifier()) {
                 if ($entity instanceof ProductInterface) {
                     throw new AlreadyExistingAxisValueCombinationException(
@@ -85,8 +86,8 @@ class UniqueAxesCombinationSet
             $this->uniqueAxesCombination[$familyVariantCode][$parentCode] = [];
         }
 
-        if (!isset($this->uniqueAxesCombination[$familyVariantCode][$parentCode][$axisValueCombination])) {
-            $this->uniqueAxesCombination[$familyVariantCode][$parentCode][$axisValueCombination] = $entity->getIdentifier();
+        if (!isset($this->uniqueAxesCombination[$familyVariantCode][$parentCode][$loweredAxisValueCombination])) {
+            $this->uniqueAxesCombination[$familyVariantCode][$parentCode][$loweredAxisValueCombination] = \mb_strtolower($entity->getIdentifier());
         }
     }
 }
