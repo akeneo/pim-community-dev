@@ -40,6 +40,9 @@ export const AttributeList = ({attributes, selectedAttribute, templateId, onAttr
   };
 
   const handleReorder = (indices: number[]) => {
+    if (mutation.isLoading){
+      return;
+    }
     const uuids = indices.map(i => attributes[i]?.uuid);
     mutation.mutate(
       {templateUuid: templateId, uuids: uuids},
@@ -71,7 +74,7 @@ export const AttributeList = ({attributes, selectedAttribute, templateId, onAttr
         )}
       </SectionTitle>
       <ScrollablePanel>
-        <Table isDragAndDroppable={!mutation.isLoading} onReorder={handleReorder}>
+        <Table isDragAndDroppable={true} onReorder={handleReorder}>
           <Table.Header sticky={0}>
             <Table.HeaderCell>{translate('akeneo.category.template_list.columns.header')}</Table.HeaderCell>
             <Table.HeaderCell>{translate('akeneo.category.template_list.columns.code')}</Table.HeaderCell>
