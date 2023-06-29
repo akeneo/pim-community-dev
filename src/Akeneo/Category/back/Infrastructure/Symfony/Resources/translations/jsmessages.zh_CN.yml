@@ -1,6 +1,9 @@
 pim_title:
   pim_category_template_edit: 编辑类别模板
 akeneo.category:
+  unknown_error:
+    title: 抱歉，发生未知错误。
+    message: 请重新加载页面并重试。
   tree_list:
     column:
       category_templates: 类别模板
@@ -19,11 +22,11 @@ akeneo.category:
     delete: 删除树
   template:
     learn_more: 了解更多类别模板相关信息
-    create: 激活模板
     edit: 编辑模板
-    notification_success: 模板已成功激活
-    notification_error: 无法激活模板
     not_found: 没有为此类别的激活模板
+    properties:
+      general_properties: 常规属性
+      label_translations_in_ui_locales: 用户界面语言的标签翻译
     attribute:
       description_title: 描述设置 
       type:
@@ -41,6 +44,8 @@ akeneo.category:
           rich_text: 富文本编辑器
         translations:
           title: 标签翻译
+        error_message: 此页上存在无效的值。
+        unsaved_changes: 您有未保存的更改，确定要离开吗？
     add_attribute:
       no_attribute_title: 创建您的第一个属性
       no_attribute_instructions: 将文本、文本区域或图像属性添加到此模板，可定义您想要关联到类别的内容。
@@ -80,6 +85,19 @@ akeneo.category:
         title: '{{ attribute }} 属性已成功删除'
     deactivate:
       deactivate_template: 删除模板
+      confirmation_modal:
+        title: 删除类别模板
+        message: 确定要删除名为 {{ template }} 的类别模板吗？
+        helper: 删除此模板将永久删除关联类别的属性和值。
+        deactivate: 删除
+      notification_success:
+        title: '{{ template }} 模板已删除'
+        message: '{{ template }} 已删除。关联类别的内容已被删除。'
+    auto-save:
+      saved: 已保存
+      saving: 正在保存
+      editing: 正在编辑
+      errors: 发生错误，未保存
   template_list:
     columns:
       header: 标签

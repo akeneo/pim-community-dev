@@ -464,6 +464,8 @@ pim_system:
     button:
       label: 重置实例
       confirm: 重置并退出登录
+    error_notification: 重置实例时发生错误，请联系您的系统管理员。
+    jobs_running: 目前无法重置实例，因为有些进程仍在队列中或正在运行。
   sandbox:
     helper:
       text: 这是沙盒环境；您的更改不会影响生产。
