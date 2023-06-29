@@ -20,9 +20,11 @@ use Symfony\Component\Validator\Context\ExecutionContext;
  */
 class IdentifierAttributeCreationLimitValidatorSpec extends ObjectBehavior
 {
+    private int $creationLimit = 10;
+
     public function let(AttributeRepositoryInterface $repository, ExecutionContext $context): void
     {
-        $this->beConstructedWith($repository);
+        $this->beConstructedWith($repository, $this->creationLimit);
         $this->initialize($context);
     }
 
@@ -45,17 +47,18 @@ class IdentifierAttributeCreationLimitValidatorSpec extends ObjectBehavior
         ExecutionContext $context,
         IdentifierGeneratorRepository $repository
     ): void {
+
         $repository
             ->findBy(Argument::any())
             ->shouldBeCalledOnce()
-            ->willReturn([1, 2]);
+            ->willReturn(array_fill(0, 10, 'identifier'));
 
         $context->buildViolation(
             'pim_catalog.constraint.identifier_attribute_limit_reached',
-            ['{{limit}}' => 2]
+            ['{{limit}}' => $this->creationLimit]
         )->shouldBeCalled();
 
-        $this->validate('identifier', new IdentifierAttributeCreationLimit(['limit' => 2]));
+        $this->validate('identifier', new IdentifierAttributeCreationLimit());
     }
 
     public function it_should_be_valid_when_identifier_attribute_is_under_limit(
@@ -65,10 +68,10 @@ class IdentifierAttributeCreationLimitValidatorSpec extends ObjectBehavior
         $repository
             ->findBy(Argument::any())
             ->shouldBeCalledOnce()
-            ->willReturn([1]);
+            ->willReturn(array_fill(0, 9, 'identifier'));
 
         $context->buildViolation((string)Argument::any())->shouldNotBeCalled();
 
-        $this->validate('identifier', new IdentifierAttributeCreationLimit(['limit' => 2]));
+        $this->validate('identifier', new IdentifierAttributeCreationLimit());
     }
 }

@@ -12,7 +12,7 @@ use PHPUnit\Framework\Assert;
 
 class CheckAttributeIsNotMainIdentifierOnDeletionSubscriberIntegration extends TestCase
 {
-    public function test_it_throws_an_exception_on_remove_when_the_attribute_is_an_identifier(): void
+    public function test_it_throws_an_exception_on_remove_when_the_attribute_is_the_main_identifier(): void
     {
         $attributeIdentifier = $this->get('pim_catalog.repository.attribute')->getIdentifier();
 
@@ -33,6 +33,9 @@ class CheckAttributeIsNotMainIdentifierOnDeletionSubscriberIntegration extends T
         Assert::assertEquals(false, $attribute->isMainIdentifier());
 
         $this->get('pim_catalog.remover.attribute')->remove($attribute);
+
+        $attributeRemoved = $this->get('pim_catalog.repository.attribute')->findOneByIdentifier('ean');
+        $this->assertNull($attributeRemoved);
     }
 
     protected function getConfiguration(): Configuration
