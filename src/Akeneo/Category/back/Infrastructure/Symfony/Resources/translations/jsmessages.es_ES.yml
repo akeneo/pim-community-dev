@@ -1,6 +1,9 @@
 pim_title:
   pim_category_template_edit: Editar plantilla de categoría
 akeneo.category:
+  unknown_error:
+    title: Lo sentimos, ha habido un error.
+    message: Recargue la página e inténtelo de nuevo.
   tree_list:
     column:
       category_templates: Plantillas de categoría
@@ -19,11 +22,11 @@ akeneo.category:
     delete: Eliminar árbol
   template:
     learn_more: Más información sobre las plantillas de categorías
-    create: Activar plantilla
     edit: Editar plantilla
-    notification_success: Plantilla activada correctamente
-    notification_error: No se pudo activar la plantilla
     not_found: No hay ninguna plantilla activa para esta categoría
+    properties:
+      general_properties: Propiedades generales
+      label_translations_in_ui_locales: Traducciones de etiquetas en la configuración regional de la IU
     attribute:
       description_title: Ajustes de descripción
       type:
@@ -41,6 +44,7 @@ akeneo.category:
           rich_text: Editor de texto enriquecido
         translations:
           title: Traducciones de etiquetas
+        unsaved_changes: Tiene cambios sin guardar, ¿seguro que desea salir?
     add_attribute:
       no_attribute_title: Cree su primer atributo
       no_attribute_instructions: Defina el contenido que desea asociar a sus categorías añadiendo atributos de Texto, Área de texto o Imagen a esta plantilla.
@@ -80,6 +84,14 @@ akeneo.category:
         title: 'El atributo {{ attribute }} se ha eliminado correctamente'
     deactivate:
       deactivate_template: Eliminar plantilla
+      confirmation_modal:
+        title: Eliminar plantilla de categoría
+        message: '¿Seguro que desea eliminar la plantilla de categoría denominada {{ template }}?'
+        helper: La eliminación de esta plantilla eliminará permanentemente los atributos y valores de las categorías asociadas.
+        deactivate: Eliminar
+      notification_success:
+        title: 'Plantilla {{ template }} eliminada'
+        message: '{{ template }} ha sido eliminada. Se ha eliminado el contenido de las categorías asociadas.'
   template_list:
     columns:
       header: Etiqueta

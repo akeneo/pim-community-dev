@@ -18,10 +18,7 @@ akeneo.category:
     delete: Strukturbaum löschen
   template:
     learn_more: Erfahren Sie mehr über Kategorievorlage
-    create: Vorlage aktivieren
     edit: Vorlage bearbeiten
-    notification_success: Vorlage erfolgreich aktiviert
-    notification_error: Vorlage konnte nicht aktiviert werden
     not_found: Es gibt keine aktives Template für diese Kategorie
     attribute:
       description_title: Beschreibungseinstellungen

@@ -45,6 +45,7 @@ services:
             - '@feature_flags'
             - '@logger'
             - '@akeneo_batch.query.update_job_execution_status'
+            - '@akeneo_batch.job.job_registry'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -55,6 +56,12 @@ services:
             - { name: kernel.event_subscriber }
 
     Akeneo\Tool\Bundle\BatchBundle\EventListener\RecoverImportFileOnResumeSubscriber:
+        arguments:
+            - '@pim_connector.job.file_backuper'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Tool\Bundle\BatchBundle\EventListener\CleanImportFileAfterJobExecutionSubscriber:
         arguments:
             - '@pim_connector.job.file_backuper'
         tags:

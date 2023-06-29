@@ -19,10 +19,7 @@ akeneo.category:
     delete: Esborra l'arbre
   template:
     learn_more: Més informació sobre les plantilles de categories
-    create: Activa la plantilla
     edit: Editar plantilla
-    notification_success: La plantilla s'ha activat correctament
-    notification_error: No s'ha pogut activar la plantilla
     not_found: No hi ha cap plantilla activa per a aquesta categoria
     attribute:
       description_title: Descripció Configuració

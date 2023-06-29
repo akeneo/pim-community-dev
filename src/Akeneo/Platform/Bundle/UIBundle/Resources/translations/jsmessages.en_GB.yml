@@ -420,6 +420,15 @@ pim_system:
     enabled: SSO enabled
     disabled: SSO disabled
     title: SAML-based Single Sign-On
+  reset_pim:
+    modal:
+      summary:
+        users:
+          name: Users
+        roles:
+          name: Roles
+      confirm:
+        name: Confirm
 pim_datagrid:
   mass_action:
     default:

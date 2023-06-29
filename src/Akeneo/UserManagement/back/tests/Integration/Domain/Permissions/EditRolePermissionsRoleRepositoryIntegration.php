@@ -2,7 +2,6 @@
 
 namespace Akeneo\Test\UserManagement\Integration\Domain\Permissions;
 
-use Akeneo\Connectivity\Connection\Infrastructure\Service\User\DeleteUserRole;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\ConnectorBundle\Doctrine\UnitOfWorkAndRepositoriesClearer;

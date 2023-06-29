@@ -25,7 +25,7 @@ use Symfony\Component\Filesystem\Filesystem;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  */
-class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface, VisibleJobInterface
+class Job implements JobInterface, StoppableJobInterface, PausableJobInterface, JobWithStepsInterface, VisibleJobInterface
 {
     protected string $name;
     protected EventDispatcherInterface $eventDispatcher;
@@ -33,6 +33,7 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
     protected array $steps;
     protected bool $isStoppable;
     protected bool $isVisible;
+    protected bool $isPausable;
     protected Filesystem $filesystem;
 
     public function __construct(
@@ -41,7 +42,8 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
         JobRepositoryInterface $jobRepository,
         array $steps = [],
         bool $isStoppable = false,
-        bool $isVisible = true
+        bool $isVisible = true,
+        bool $isPausable = false
     ) {
         $this->name = $name;
         $this->eventDispatcher = $eventDispatcher;
@@ -49,6 +51,7 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
         $this->steps = $steps;
         $this->isStoppable = $isStoppable;
         $this->isVisible = $isVisible;
+        $this->isPausable = $isPausable;
         $this->filesystem = new Filesystem();
     }
 
@@ -119,8 +122,11 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
 
             $this->dispatchJobExecutionEvent(EventInterface::BEFORE_JOB_EXECUTION, $jobExecution);
 
-            if ($jobExecution->getStatus()->getValue() !== BatchStatus::STOPPING) {
+            if ($jobExecution->getStatus()->isStarting()) {
                 $jobExecution->setStartTime(new \DateTime());
+            }
+
+            if ($jobExecution->getStatus()->getValue() !== BatchStatus::STOPPING) {
                 $this->updateStatus($jobExecution, BatchStatus::STARTED);
                 $this->jobRepository->updateJobExecution($jobExecution);
 
@@ -147,7 +153,9 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
 
             $this->dispatchJobExecutionEvent(EventInterface::AFTER_JOB_EXECUTION, $jobExecution);
 
-            $jobExecution->setEndTime(new \DateTime());
+            if (!$jobExecution->getStatus()->isPaused()) {
+                $jobExecution->setEndTime(new \DateTime());
+            }
             $this->jobRepository->updateJobExecution($jobExecution);
         } catch (JobInterruptedException $e) {
             $jobExecution->setExitStatus($this->getDefaultExitStatusForFailure($e));
@@ -183,6 +191,11 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
     public function isVisible(): bool
     {
         return $this->isVisible;
+    }
+
+    public function isPausable(): bool
+    {
+        return $this->isPausable;
     }
 
     /**
@@ -246,6 +259,7 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
 
         if ($stepExecution === null) {
             $stepExecution = $jobExecution->createStepExecution($step->getName());
+            $stepExecution->setStartTime(new \DateTime());
         }
 
         try {

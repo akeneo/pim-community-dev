@@ -1,10 +1,9 @@
-import {useTranslate} from '@akeneo-pim-community/shared';
 import {useState} from 'react';
 import styled from 'styled-components';
 import {Attribute} from '../../../models';
+import {InitializeTemplateChoice} from './InitializeTemplateChoice';
 import {AttributeList} from './AttributeList';
 import {AttributeSettings} from './AttributeSettings';
-import {NoTemplateAttribute} from '../NoTemplateAttribute';
 
 interface Props {
   attributes: Attribute[];
@@ -12,22 +11,13 @@ interface Props {
 }
 
 export const EditTemplateAttributesForm = ({attributes, templateId}: Props) => {
-  const translate = useTranslate();
-
   const [selectedAttributeUuid, setSelectedAttributeUuid] = useState<string | null>(null);
   const handleAttributeSelection = (attribute: Attribute) => {
     setSelectedAttributeUuid(attribute.uuid);
   };
 
   if (attributes.length === 0) {
-    return (
-      <NoTemplateAttribute
-        templateId={templateId}
-        title={translate('akeneo.category.template.add_attribute.no_attribute_title')}
-        instructions={translate('akeneo.category.template.add_attribute.no_attribute_instructions')}
-        createButton={true}
-      />
-    );
+    return <InitializeTemplateChoice templateId={templateId} />;
   }
 
   const selectedAttribute = attributes.find(attribute => attribute.uuid === selectedAttributeUuid) || attributes[0];
