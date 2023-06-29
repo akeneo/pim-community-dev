@@ -16,7 +16,7 @@ use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use Akeneo\UserManagement\Domain\Permissions\EditRolePermissionsUserRepository;
+use Akeneo\UserManagement\Domain\Permissions\EditRolePermissionsUserQuery;
 use Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepositoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -38,7 +38,7 @@ class UserProcessor extends Processor
         private readonly DatagridViewRepositoryInterface $gridViewRepository,
         private readonly FileStorerInterface $fileStorer,
         private readonly JobRepositoryInterface $jobRepository,
-        private readonly EditRolePermissionsUserRepository $editRolePermissionsUserRepository,
+        private readonly EditRolePermissionsUserQuery $editRolePermissionsUserQuery,
         private readonly array $ignoredFields,
     ) {
         parent::__construct($repository, $factory, $updater, $validator, $objectDetacher);
@@ -83,7 +83,7 @@ class UserProcessor extends Processor
         $user = $this->findOrCreateObject($itemIdentifier);
 
         if (isset($item['roles']) && $user->getId()) {
-            if ($this->editRolePermissionsUserRepository->isLastRoleWithEditRolePermissionsRoleForUser($item['roles'], (int) $user->getId())) {
+            if ($this->editRolePermissionsUserQuery->isLastRoleWithEditRolePermissionsRoleForUser($item['roles'], (int) $user->getId())) {
                 $this->skipItemWithMessage($item, 'pim_user.user.fields_errors.roles.last_user_with_edit_role_permissions');
             }
         }
