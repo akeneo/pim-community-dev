@@ -10,6 +10,7 @@ use Akeneo\UserManagement\Domain\Permissions\Query\EditRolePermissionsRoleQuery;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
+use Oro\Bundle\SecurityBundle\Acl\Extension\ActionAclExtension;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclPrivilegeRepository;
 use Oro\Bundle\SecurityBundle\Model\AclPrivilege;
@@ -46,6 +47,7 @@ class AclRoleHandler
         private readonly RequestStack $requestStack,
         private readonly EditRolePermissionsRoleQuery $editRolePermissionsRoleQuery,
         private readonly TranslatorInterface $translator,
+        private readonly ActionAclExtension $aclExtension,
     ) {
     }
 
@@ -122,7 +124,7 @@ class AclRoleHandler
                 //  ]
                 return array_filter(
                     $formPrivilege->getPermissions()->toArray(),
-                    fn ($permission) => $permission->getName() === 'EXECUTE' && $permission->getAccessLevel() === AccessLevel::SYSTEM_LEVEL
+                    fn ($permission) => $permission->getName() === $this->aclExtension->getDefaultPermission() && $permission->getAccessLevel() === AccessLevel::SYSTEM_LEVEL
                 );
             };
 
