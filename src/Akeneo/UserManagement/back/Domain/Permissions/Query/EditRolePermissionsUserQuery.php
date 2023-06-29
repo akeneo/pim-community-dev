@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\UserManagement\Domain\Permissions;
+namespace Akeneo\UserManagement\Domain\Permissions\Query;
 
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleRepository;
 use Akeneo\UserManagement\Component\Model\UserInterface;

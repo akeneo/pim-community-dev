@@ -14,7 +14,7 @@ use Akeneo\UserManagement\Application\Command\UpdateUserCommand\UpdateUserComman
 use Akeneo\UserManagement\Application\Exception\UserNotFoundException;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\UserManagement\Domain\PasswordCheckerInterface;
-use Akeneo\UserManagement\Domain\Permissions\EditRolePermissionsUserQuery;
+use Akeneo\UserManagement\Domain\Permissions\Query\EditRolePermissionsUserQuery;
 use Akeneo\UserManagement\ServiceApi\ViolationsException;
 use Doctrine\Persistence\ObjectRepository;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
@@ -49,16 +49,16 @@ final class UserController
         private readonly NormalizerInterface $normalizer,
         private readonly ObjectRepository $repository,
         private readonly ObjectUpdaterInterface $updater,
-        private readonly ValidatorInterface           $validator,
-        private readonly SaverInterface               $saver,
-        private readonly NormalizerInterface          $constraintViolationNormalizer,
-        private readonly SimpleFactoryInterface       $factory,
-        private readonly RemoverInterface             $remover,
-        private readonly NumberFactory                $numberFactory,
-        private readonly TranslatorInterface          $translator,
-        private readonly SecurityFacade               $securityFacade,
-        private readonly PasswordCheckerInterface     $passwordChecker,
-        private readonly UpdateUserCommandHandler     $updateUserCommandHandler,
+        private readonly ValidatorInterface $validator,
+        private readonly SaverInterface $saver,
+        private readonly NormalizerInterface $constraintViolationNormalizer,
+        private readonly SimpleFactoryInterface $factory,
+        private readonly RemoverInterface $remover,
+        private readonly NumberFactory $numberFactory,
+        private readonly TranslatorInterface $translator,
+        private readonly SecurityFacade $securityFacade,
+        private readonly PasswordCheckerInterface $passwordChecker,
+        private readonly UpdateUserCommandHandler $updateUserCommandHandler,
         private readonly EditRolePermissionsUserQuery $editRolePermissionsUserQuery,
     ) {
     }

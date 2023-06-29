@@ -6,7 +6,7 @@ use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\UserManagement\Bundle\Form\Handler\AclRoleHandler;
 use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Repository\RoleRepositoryInterface;
-use Akeneo\UserManagement\Domain\Permissions\EditRolePermissionsRoleQuery;
+use Akeneo\UserManagement\Domain\Permissions\Query\EditRolePermissionsRoleQuery;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclSidManager;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
