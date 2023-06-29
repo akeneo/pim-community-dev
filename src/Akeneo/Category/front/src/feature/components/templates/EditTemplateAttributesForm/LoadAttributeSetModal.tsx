@@ -45,9 +45,9 @@ export const LoadAttributeSetModal = ({templateId, onClose, onSuccess}: Props) =
         {translate('akeneo.category.template.load_attribute_set.section_title')}
       </Modal.SectionTitle>
       <Modal.Title>{translate('akeneo.category.template.load_attribute_set.title')}</Modal.Title>
-      {translate('akeneo.category.template.load_attribute_set.description')}
-      <br />
-      <br />
+      <SpacedDescription>
+        {translate('akeneo.category.template.load_attribute_set.description')}
+      </SpacedDescription>
       {translate('akeneo.category.template.load_attribute_set.content_description')}
       <List>
         <ListItem>{translate('akeneo.category.template.load_attribute_set.content.description_attributes')}</ListItem>
@@ -55,7 +55,6 @@ export const LoadAttributeSetModal = ({templateId, onClose, onSuccess}: Props) =
         <ListItem>{translate('akeneo.category.template.load_attribute_set.content.image_attributes')}</ListItem>
         <ListItem>{translate('akeneo.category.template.load_attribute_set.content.seo_attributes')}</ListItem>
       </List>
-      <br />
       {translate('akeneo.category.template.load_attribute_set.confirmation_message')}
       <Modal.BottomButtons>
         <Button level="tertiary" onClick={handleClose} disabled={mutation.isLoading}>
@@ -70,10 +69,14 @@ export const LoadAttributeSetModal = ({templateId, onClose, onSuccess}: Props) =
 };
 
 const List = styled.ul`
-  padding: 0;
   margin-left: 1.5rem;
+  padding-bottom: 10px;
 `;
 
 const ListItem = styled.li`
   list-style: disc;
+`;
+
+const SpacedDescription = styled.div`
+  padding-bottom: 10px;
 `;
