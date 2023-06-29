@@ -80,3 +80,44 @@ Feature: Import attributes
     And there should be the following attributes:
       | type                     | code         | label-en_US     | label-de_DE      | label-fr_FR    | group     | unique | useable_as_grid_filter | localizable | scopable | localizable | scopable | available_locales | sort_order |
       | pim_catalog_simpleselect | manufacturer | My awesome code | Meine große Code | Mon super code | marketing | 0      | 1                      | 0           | 0        | 0           | 0        | en_US,fr_FR       | 3          |
+
+  Scenario: Successfully import identifier attributes in CSV
+    Given the "footwear" catalog configuration
+    And the following CSV file to import:
+      """
+      type;code;label-en_US;group;unique;useable_as_grid_filter;localizable;scopable;allowed_extensions;metric_family;default_metric_unit;sort_order;decimals_allowed;negative_allowed;default_value
+      pim_catalog_identifier;identifier1;Identifier1;info;1;1;0;0;;;;1;;;
+      pim_catalog_identifier;identifier2;Identifier2;info;1;1;0;0;;;;1;;;
+      pim_catalog_identifier;identifier3;Identifier3;info;1;1;0;0;;;;1;;;
+      """
+    When the attributes are imported via the job csv_footwear_attribute_import
+    Then there should be the following attributes:
+      | type                         | code         | label-en_US  | group     | unique | useable_as_grid_filter | localizable | scopable | allowed_extensions | metric_family | default_metric_unit | sort_order | default_value |
+      | pim_catalog_identifier       | identifier1  | Identifier1  | info      | 1      | 1                      | 0           | 0        |                    |               |                     | 1          |               |
+      | pim_catalog_identifier       | identifier2  | Identifier2  | info      | 1      | 1                      | 0           | 0        |                    |               |                     | 1          |               |
+      | pim_catalog_identifier       | identifier3  | Identifier3  | info      | 1      | 1                      | 0           | 0        |                    |               |                     | 1          |               |
+
+  @javascript
+  Scenario: Can't create identifier attributes more than limit via CSV import
+    Given the "footwear" catalog configuration
+    And the following CSV file to import:
+      """
+      type;code;label-en_US;group;unique;useable_as_grid_filter;localizable;scopable;allowed_extensions;metric_family;default_metric_unit;sort_order;decimals_allowed;negative_allowed;default_value
+      pim_catalog_identifier;identifier1;Identifier1;info;1;1;0;0;;;;1;;;
+      pim_catalog_identifier;identifier2;Identifier2;info;1;1;0;0;;;;1;;;
+      pim_catalog_identifier;identifier3;Identifier3;info;1;1;0;0;;;;1;;;
+      pim_catalog_identifier;identifier4;Identifier4;info;1;1;0;0;;;;1;;;
+      pim_catalog_identifier;identifier5;Identifier5;info;1;1;0;0;;;;1;;;
+      pim_catalog_identifier;identifier6;Identifier6;info;1;1;0;0;;;;1;;;
+      pim_catalog_identifier;identifier7;Identifier7;info;1;1;0;0;;;;1;;;
+      pim_catalog_identifier;identifier8;Identifier8;info;1;1;0;0;;;;1;;;
+      pim_catalog_identifier;identifier9;Identifier9;info;1;1;0;0;;;;1;;;
+      pim_catalog_identifier;identifier10;Identifier10;info;1;1;0;0;;;;1;;;
+      pim_catalog_identifier;identifier11;Identifier11;info;1;1;0;0;;;;1;;;
+      pim_catalog_identifier;identifier12;Identifier12;info;1;1;0;0;;;;1;;;
+      """
+    When I am on the "csv_footwear_attribute_import" import job page
+    And I launch the import job
+    And I wait for the "csv_footwear_attribute_import" job to finish
+    Then I should see the text "skipped 3"
+    Then I should see the text "Limit of \"10\" identifier attributes is reached"
