@@ -156,75 +156,16 @@ SQL;
             ];
         }
 
-        if ($this->newCompletenessTableExists()) {
-            $completenessByProductModelCode = $this->getCompletenessesFor($codes);
+        $completenessByProductModelCode = $this->getCompletenessesFor($codes);
 
-            foreach ($completenessByProductModelCode as $value) {
-                $code = $value['code'];
-                $completeness = \json_decode($value['completeness'], true);
+        foreach ($completenessByProductModelCode as $value) {
+            $code = $value['code'];
+            $completeness = \json_decode($value['completeness'], true);
 
-                $result[$code]['children_completeness']['total'] += 1;
+            $result[$code]['children_completeness']['total'] += 1;
 
-                if (0 === ($completeness[$channelCode][$localeCode]['missing'] ?? null)) {
-                    $result[$code]['children_completeness']['complete'] += 1;
-                }
-            }
-        } else {
-            $sql = <<<SQL
-            SELECT
-                pm.code,
-                COUNT(p_child.id) AS nb_children,
-                SUM(IF(completeness.missing_count = 0, 1, 0)) AS nb_children_complete
-            FROM
-                pim_catalog_product_model pm
-                LEFT JOIN pim_catalog_product_model pm_child
-                    ON pm_child.parent_id = pm.id
-                    AND pm_child.parent_id IS NOT NULL
-                LEFT JOIN pim_catalog_product p_child ON p_child.product_model_id = pm_child.id
-                LEFT JOIN pim_catalog_completeness completeness ON completeness.product_uuid = p_child.uuid
-                LEFT JOIN pim_catalog_channel channel ON channel.id = completeness.channel_id
-                LEFT JOIN pim_catalog_locale locale ON locale.id = completeness.locale_id
-            WHERE pm.code IN (:codes)
-                AND channel.code = :channel
-                AND locale.code = :locale
-            GROUP BY
-                pm.code
-            UNION
-            SELECT
-                pm.code,
-                COUNT(p_child.id) AS nb_children,
-                SUM(IF(completeness.missing_count = 0, 1, 0)) AS nb_children_complete
-            FROM
-                pim_catalog_product_model pm
-                LEFT JOIN pim_catalog_product p_child ON p_child.product_model_id = pm.id
-                LEFT JOIN pim_catalog_completeness completeness ON completeness.product_uuid = p_child.uuid
-                LEFT JOIN pim_catalog_channel channel ON channel.id = completeness.channel_id
-                LEFT JOIN pim_catalog_locale locale ON locale.id = completeness.locale_id
-            WHERE pm.code IN (:codes)
-                AND channel.code = :channel
-                AND locale.code = :locale
-            GROUP BY
-                pm.code
-SQL;
-            $rows = $this->connection->executeQuery(
-                $sql,
-                [
-                    'codes' => $codes,
-                    'channel' => $channelCode,
-                    'locale' => $localeCode,
-                ],
-                [
-                    'codes' => Connection::PARAM_STR_ARRAY,
-                    'channel' => \PDO::PARAM_STR,
-                    'locale' => \PDO::PARAM_STR,
-                ]
-            )->fetchAllAssociative();
-
-            foreach ($rows as $row) {
-                $result[$row['code']]['children_completeness'] = [
-                    'total'    => (int) $row['nb_children'],
-                    'complete' => (int) $row['nb_children_complete'],
-                ];
+            if (0 === ($completeness[$channelCode][$localeCode]['missing'] ?? null)) {
+                $result[$code]['children_completeness']['complete'] += 1;
             }
         }
 
@@ -260,18 +201,6 @@ SQL;
                 'codes' => Connection::PARAM_STR_ARRAY,
             ]
         );
-    }
-
-    private function newCompletenessTableExists(): bool
-    {
-        $TABLE_NAME = 'pim_catalog_product_completeness';
-
-        return $this->connection->executeQuery(
-            'SHOW TABLES LIKE :tableName',
-            [
-                'tableName' => $TABLE_NAME,
-            ]
-        )->rowCount() >= 1;
     }
 
     private function getFamilyLabels(array $codes, string $localeCode): array
