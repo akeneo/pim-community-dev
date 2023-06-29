@@ -624,6 +624,8 @@ services:
             -
                 - '@pim_enrich.step.add_to_group.mass_edit'
             - true
+            - true
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
 
@@ -672,6 +674,8 @@ services:
             -
                 - '@pim_enrich.step.remove_from_category.mass_edit'
             - true
+            - true
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
 
@@ -683,6 +687,8 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pim_enrich.step.add_association.mass_edit'
+            - true
+            - true
             - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
@@ -721,6 +727,8 @@ services:
             -
                 - '@pim_enrich.step.add_to_existing_product_model.mass_edit'
             - true
+            - true
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
 
@@ -732,6 +740,8 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pim_enrich.step.convert_to_simple_products.mass_edit'
+            - true
+            - true
             - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
@@ -755,6 +765,8 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - ['@pim_enrich.step.change_parent.mass_edit']
+            - true
+            - true
             - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }

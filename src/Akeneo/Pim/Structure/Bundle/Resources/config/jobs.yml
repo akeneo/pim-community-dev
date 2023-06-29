@@ -454,6 +454,8 @@ services:
                 - '@pim_connector.step.mass_edit_family.compute_data_related_to_family_products'
                 - '@pim_connector.step.mass_edit_family.index_family_products_and_product_models'
             - true
+            - true
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
 
