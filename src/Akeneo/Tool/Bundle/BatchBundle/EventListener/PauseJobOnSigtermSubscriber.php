@@ -53,6 +53,10 @@ class PauseJobOnSigtermSubscriber implements EventSubscriberInterface
                 'job_execution_id' => $jobExecution
             ]);
 
+            if (!$jobExecution->isRunning()) {
+                return;
+            }
+
             $this->updateJobExecutionStatus->updateByJobExecutionId($jobExecution->getId(), new BatchStatus(BatchStatus::PAUSING));
         });
     }
