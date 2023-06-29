@@ -57,8 +57,16 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Initiali
      */
     public function initialize(): void
     {
-        if (null === $this->flatRowBuffer) {
-            $this->flatRowBuffer = $this->bufferFactory->create();
+        $bufferFilePath = $this->state['buffer_file_path'] ?? null;
+
+        if ($bufferFilePath) {
+            $this->jobFileBackuper->recover($this->stepExecution->getJobExecution(), $bufferFilePath);
+        }
+
+        $this->flatRowBuffer = $this->bufferFactory->create($bufferFilePath);
+
+        if (array_key_exists('headers', $this->state)) {
+            $this->flatRowBuffer->addToHeaders($this->state['headers']);
         }
     }
 
@@ -112,12 +120,16 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Initiali
 
     public function getState(): array
     {
+        if (null === $this->flatRowBuffer) {
+            return [];
+        }
+
         $filePath = $this->flatRowBuffer->getFilePath();
         $this->jobFileBackuper->backup($this->stepExecution->getJobExecution(), $filePath);
 
         return [
-            'current_buffer_file_path' => $filePath,
-            'written_files' => array_map(static fn (WrittenFileInfo $fileInfo) => $fileInfo->normalize(), $this->getWrittenFiles()),
+            'buffer_file_path' => $filePath,
+            'headers' => $this->flatRowBuffer->getHeaders(),
         ];
     }
 
