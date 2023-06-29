@@ -1,10 +1,11 @@
 <?php
 
-namespace Akeneo\UserManagement\Domain\Permissions;
+namespace Akeneo\UserManagement\Domain\Permissions\Query;
 
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleRepository;
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleWithPermissionsRepository;
 use Akeneo\UserManagement\Component\Model\RoleInterface;
+use Akeneo\UserManagement\Domain\Permissions\MinimumEditRolePermission;
 
 class EditRolePermissionsRoleQuery
 {

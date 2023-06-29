@@ -5,11 +5,12 @@ namespace Akeneo\UserManagement\Bundle\Form\Handler;
 use Akeneo\UserManagement\Bundle\Form\Type\AclRoleType;
 use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use Akeneo\UserManagement\Domain\Permissions\EditRolePermissionsRoleQuery;
 use Akeneo\UserManagement\Domain\Permissions\MinimumEditRolePermission;
+use Akeneo\UserManagement\Domain\Permissions\Query\EditRolePermissionsRoleQuery;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
+use Oro\Bundle\SecurityBundle\Acl\Extension\ActionAclExtension;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclPrivilegeRepository;
 use Oro\Bundle\SecurityBundle\Model\AclPrivilege;
@@ -46,6 +47,7 @@ class AclRoleHandler
         private readonly RequestStack $requestStack,
         private readonly EditRolePermissionsRoleQuery $editRolePermissionsRoleQuery,
         private readonly TranslatorInterface $translator,
+        private readonly ActionAclExtension $aclExtension,
     ) {
     }
 
@@ -101,16 +103,16 @@ class AclRoleHandler
         }
 
         if ($this->editRolePermissionsRoleQuery->isLastRoleWithEditRolePermissions($role)) {
-            // This function extract the values from the form inputs by the user
+            // This function extracts the user inputs from the form
             $filterSelectedEditRolePrivilegesFn = function (AclPrivilege $formPrivilege) {
-                // Keep only the privileges with the identity/key for the minimum edit role permissions
+                // Check only the privileges with the identity/key for the minimum edit role permissions
                 if (false === in_array(
                     $formPrivilege->getIdentity()->getId(),
                     MinimumEditRolePermission::getAllValues()
                 )) {
                     return false;
                 }
-                // With the remaining privileges, we identify if it has been checked by getting the 'EXECUTE' with SYSTEM_LEVEL access (NONE_LEVEL if unchecked)
+                // With the remaining privileges, we identify if it has been selected by getting the 'EXECUTE' with SYSTEM_LEVEL access (NONE_LEVEL if not selected)
                 // for example :
                 //  [
                 //      'identity' => ['id' => 'action:oro_config_system'],
@@ -122,11 +124,12 @@ class AclRoleHandler
                 //  ]
                 return array_filter(
                     $formPrivilege->getPermissions()->toArray(),
-                    fn ($permission) => $permission->getName() === 'EXECUTE' && $permission->getAccessLevel() === AccessLevel::SYSTEM_LEVEL
+                    fn ($permission) => $permission->getName() === $this->aclExtension->getDefaultPermission() && $permission->getAccessLevel() === AccessLevel::SYSTEM_LEVEL
                 );
             };
 
             $editRoleActivePrivileges = array_filter($formPrivileges, $filterSelectedEditRolePrivilegesFn);
+            // If the user has not selected all edit role permission it triggers an error.
             if (count($editRoleActivePrivileges) < count(MinimumEditRolePermission::getAllValues())) {
                 $context
                     ->buildViolation($this->translator->trans('pim_user.controller.role.message.cannot_remove_last_edit_role_permission'))

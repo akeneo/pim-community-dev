@@ -10,8 +10,8 @@ use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleWithPermissionsRepository;
 use Akeneo\UserManagement\Component\Storage\Saver\RoleWithPermissionsSaver;
-use Akeneo\UserManagement\Domain\Permissions\EditRolePermissionsUserQuery;
 use Akeneo\UserManagement\Domain\Permissions\MinimumEditRolePermission;
+use Akeneo\UserManagement\Domain\Permissions\Query\EditRolePermissionsUserQuery;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
 
 class EditRolePermissionsUserQueryIntegration extends TestCase
