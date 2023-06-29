@@ -58,12 +58,7 @@ class StringFilter extends AbstractFilter
         return TextFilterType::class;
     }
 
-    /**
-     * @param mixed $data
-     *
-     * @return array|bool
-     */
-    protected function parseData($data)
+    protected function parseData(mixed $data): array | false
     {
         if (!is_array($data) || !array_key_exists('value', $data) || !array_key_exists('type', $data)) {
             return false;
@@ -79,10 +74,14 @@ class StringFilter extends AbstractFilter
             return false;
         }
 
-        $data['type'] = isset($data['type']) ? $data['type'] : null;
+        $data['type'] = $data['type'] ?? null;
+
+        $formattedValue = \in_array($this->getOperator($data['type']), [Operators::IS_LIKE, Operators::IS_NOT_LIKE]) ?
+            \addcslashes($data['value'], '_%') : $data['value'];
+
         $data['value'] = sprintf(
             $this->getFormatByComparisonType($data['type']),
-            \addcslashes($data['value'], '_%')
+            $formattedValue
         );
 
         return $data;
@@ -108,34 +107,17 @@ class StringFilter extends AbstractFilter
             FilterType::TYPE_IN_LIST          => Operators::IN_LIST,
         ];
 
-        return isset($operatorTypes[$type]) ? $operatorTypes[$type] : 'LIKE';
+        return $operatorTypes[$type] ?? 'LIKE';
     }
 
-    /**
-     * Return value format depending on comparison type
-     *
-     * @param $comparisonType
-     *
-     * @return string
-     */
-    protected function getFormatByComparisonType($comparisonType)
+    protected function getFormatByComparisonType(?int $comparisonType): string
     {
         // for other than listed comparison types - use default format
-        switch ($comparisonType) {
-            case TextFilterType::TYPE_STARTS_WITH:
-                $format = '%s%%';
-                break;
-            case TextFilterType::TYPE_ENDS_WITH:
-                $format = '%%%s';
-                break;
-            case TextFilterType::TYPE_CONTAINS:
-            case TextFilterType::TYPE_NOT_CONTAINS:
-                $format = '%%%s%%';
-                break;
-            default:
-                $format = '%s';
-        }
-
-        return $format;
+        return match ($comparisonType) {
+            TextFilterType::TYPE_STARTS_WITH => '%s%%',
+            TextFilterType::TYPE_ENDS_WITH => '%%%s',
+            TextFilterType::TYPE_CONTAINS, TextFilterType::TYPE_NOT_CONTAINS => '%%%s%%',
+            default => '%s',
+        };
     }
 }

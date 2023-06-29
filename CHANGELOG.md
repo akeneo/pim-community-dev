@@ -100,6 +100,7 @@
 - PIM-11018: Fix view on Connected App permissions if manage or not
 - PIM-11062: Fix category filter behavior in product grid
 - PIM-11071: Fix potential divided by zero in completeness calculation
+- PIM-11073: Fix search with underscore on attribute grid
 
 ## Improvements
 
