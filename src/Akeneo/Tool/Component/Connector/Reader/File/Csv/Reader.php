@@ -225,7 +225,7 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Initi
      * This method should always replace a rewind of the FileIterator has it would result
      * in a wrong position of the pointer when resuming a job.
      */
-    public function rewindToState(): void
+    private function rewindToState(): void
     {
         $jobParameters = $this->stepExecution->getJobParameters();
         $filePath = $jobParameters->get('storage')['file_path'];
