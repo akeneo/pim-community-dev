@@ -99,6 +99,7 @@
 - PIM-11066: PIM-11066: Fix Missing Values Adder for scopable + localizable + locale specific attributes
 - PIM-11018: Fix view on Connected App permissions if manage or not
 - PIM-11062: Fix category filter behavior in product grid
+- PIM-10676: [Business-Impact] Prevent users in the PIM to remove all 'system' permissions
 
 ## Improvements
 
