@@ -35,7 +35,7 @@ type CategoryTreesProps = {
     includeSubCategories: boolean
   ) => Promise<CategoryTreeModel>;
   childrenCallback: (value: any) => Promise<CategoryTreeModel[]>;
-  onTreeChange: (treeId: number, treeLabel: string) => void;
+  onTreeChange: (treeId: number, treeLabel: string, selectedCategoryId: number) => void;
   onCategoryClick: (
     selectedTreeId: number,
     selectedTreeRootId: number,
@@ -44,7 +44,7 @@ type CategoryTreesProps = {
   ) => void;
   initialIncludeSubCategories: boolean;
   onIncludeSubCategoriesChange: (value: boolean) => void;
-  initialSelectedTreeId: number;
+  initialSelectedNodeId: number;
   initCallback?: (treeLabel: string, categoryLabel?: string) => void;
 };
 
@@ -56,13 +56,13 @@ const CategoryTrees: React.FC<CategoryTreesProps> = ({
   onCategoryClick,
   initialIncludeSubCategories,
   onIncludeSubCategoriesChange,
-  initialSelectedTreeId,
+  initialSelectedNodeId,
   initCallback,
 }) => {
   const translate = useTranslate();
   const [trees, setTrees] = React.useState<CategoryTreeRoot[]>();
   const [includeSubCategories, setIncludeSubCategories] = React.useState<boolean>(initialIncludeSubCategories);
-  const [selectedTreeId, setSelectedTreeId] = React.useState<number>(initialSelectedTreeId);
+  const [selectedNodeId, setSelectedNodeId] = React.useState<number>(initialSelectedNodeId);
 
   // This will reload the tree when includeSubCategories change.
   const customInitTree = React.useMemo(
@@ -87,12 +87,15 @@ const CategoryTrees: React.FC<CategoryTreesProps> = ({
         return {...tree, selected: treeId === tree.id};
       })
     );
-    setSelectedTreeId(treeId);
-    onTreeChange(treeId, (trees.find(tree => tree.id === treeId) || trees[0]).label);
+    // Keep the selected filter if "All Products" (-2) or "Unclassified Products" (-1) were selected, select CategoryTree otherwise
+    setSelectedNodeId(previousSelectedNodeId => {
+      return previousSelectedNodeId > 0 ? treeId : previousSelectedNodeId;
+    });
+    onTreeChange(treeId, (trees.find(tree => tree.id === treeId) || trees[0]).label, selectedNodeId);
   };
 
   const handleClick = (category: {id: number; code: string; label: string}) => {
-    setSelectedTreeId(category.id);
+    setSelectedNodeId(category.id);
     const selectedTree = trees.find(tree => tree.selected) || trees[0];
     onCategoryClick(
       category.id,
@@ -120,12 +123,12 @@ const CategoryTrees: React.FC<CategoryTreesProps> = ({
       label={translate('jstree.all')}
       isLeaf={true}
       onClick={() => handleClick({id: -2, code: 'all_products', label: translate('jstree.all')})}
-      selected={selectedTreeId === -2}
+      selected={selectedNodeId === -2}
     />
   );
 
   const isCategorySelected: (category: CategoryValue, _: ParentCategoryTree) => boolean = category => {
-    return category.id === selectedTreeId;
+    return category.id === selectedNodeId;
   };
 
   return (

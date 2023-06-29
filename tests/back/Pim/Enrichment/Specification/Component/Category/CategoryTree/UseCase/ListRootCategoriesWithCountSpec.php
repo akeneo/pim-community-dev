@@ -36,4 +36,10 @@ class ListRootCategoriesWithCountSpec extends ObjectBehavior
     {
         $this->translationLocaleCode()->shouldReturn('en_US');
     }
+
+    function it_has_the_category_tree_id_of_the_category_tree_selected_as_filter_in_the_product_datagrid()
+    {
+        $this->beConstructedWith(1, true, 1, 'en_US', 42);
+        $this->categoryTreeIdSelectedAsFilter()->shouldReturn(42);
+    }
 }
