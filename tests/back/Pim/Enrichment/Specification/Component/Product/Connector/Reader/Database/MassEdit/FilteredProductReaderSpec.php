@@ -102,6 +102,7 @@ class FilteredProductReaderSpec extends ObjectBehavior
         );
         $cursor->current()->will(new ReturnPromise($products));
         $cursor->next()->shouldBeCalled();
+        $cursor->rewind()->shouldBeCalled();
 
         $stepExecution->incrementSummaryInfo('read')->shouldBeCalledTimes(3);
         $metricConverter->convert(Argument::any(), $channel)->shouldBeCalledTimes(3);
@@ -167,6 +168,7 @@ class FilteredProductReaderSpec extends ObjectBehavior
 
         $expectedTotalItems = 10;
         $cursor->count()->willReturn($expectedTotalItems);
+        $cursor->rewind()->shouldBeCalled();
 
         $this->initialize();
         $this->totalItems()->shouldReturn($expectedTotalItems);

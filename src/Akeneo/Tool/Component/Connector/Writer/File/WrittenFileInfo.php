@@ -61,13 +61,4 @@ final class WrittenFileInfo
     {
         return self::LOCAL_FILESYSTEM === $this->sourceStorage;
     }
-
-    public function normalize(): array
-    {
-        return [
-            'source_key' => $this->sourceKey,
-            'source_storage' => $this->sourceStorage,
-            'output_filepath' => $this->outputFilepath,
-        ];
-    }
 }

@@ -70,7 +70,7 @@ class WriterSpec extends ObjectBehavior
             ]
         ];
 
-        $bufferFactory->create()->willReturn($flatRowBuffer);
+        $bufferFactory->create(null)->willReturn($flatRowBuffer);
 
         $arrayConverter->convert([
             'code'   => 'promotion',
@@ -141,7 +141,7 @@ class WriterSpec extends ObjectBehavior
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobInstance->getLabel()->willReturn('job_label');
 
-        $bufferFactory->create()->willReturn($flatRowBuffer);
+        $bufferFactory->create(null)->willReturn($flatRowBuffer);
 
         $flatRowBuffer->rewind();
         $flatRowBuffer->valid()->willReturn(true, false);

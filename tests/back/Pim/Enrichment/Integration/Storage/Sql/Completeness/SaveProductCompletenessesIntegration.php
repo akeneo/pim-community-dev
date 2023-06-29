@@ -4,41 +4,17 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\Completeness;
 
-use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodes;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodesCollection;
+use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
 use Ramsey\Uuid\UuidInterface;
 
-/**
- * @author    Mathias METAYER <mathias.metayer@akeneo.com>
- * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- */
-class SaveProductCompletenessesIntegration extends TestCase
+final class SaveProductCompletenessesIntegration extends TestCase
 {
-    public function test_that_it_does_not_clear_existing_completenesses_and_missing_attributes_if_provided_completenesses_are_empty()
-    {
-        $productUuid = $this->createProduct('a_great_product');
-        Assert::assertCount(6, $this->getCompletenessesFromDB($productUuid));
-
-        $this->executeSave(new ProductCompletenessWithMissingAttributeCodesCollection($productUuid->toString(), []));
-        Assert::assertCount(6, $this->getCompletenessesFromDB($productUuid));
-    }
-
-    public function test_that_it_clears_non_existing_locales_channels()
-    {
-        $this->createChannel('my_channel', ['locales' => ['en_US', 'fr_FR']]);
-        $productUuid = $this->createProduct('a_great_product');
-        Assert::assertCount(8, $this->getCompletenessesFromDB($productUuid));
-
-        $this->removeChannel('my_channel');
-        $this->executeSave(new ProductCompletenessWithMissingAttributeCodesCollection($productUuid->toString(), []));
-        Assert::assertCount(6, $this->getCompletenessesFromDB($productUuid));
-    }
-
-    public function test_that_it_saves_completenesses_given_a_product_id()
+    public function test_that_it_saves_a_product_completenesses(): void
     {
         $productUuid = $this->createProduct('a_great_product');
         $collection = new ProductCompletenessWithMissingAttributeCodesCollection($productUuid->toString(), [
@@ -47,19 +23,21 @@ class SaveProductCompletenessesIntegration extends TestCase
         $this->executeSave($collection);
 
         $dbCompletenesses = $this->getCompletenessesFromDB($productUuid);
-        Assert::assertCount(6, $dbCompletenesses);
+        Assert::assertCount(1, $dbCompletenesses);
         Assert::assertEquals(
             [
-                'channel_code' => 'ecommerce',
-                'locale_code' => 'en_US',
-                'missing_count' => 0,
-                'required_count' => 5,
+                'ecommerce' => [
+                    'en_US' => [
+                        'missing' => 0,
+                        'required' => 5,
+                    ]
+                ]
             ],
-            $dbCompletenesses['ecommerce-en_US']
+            $dbCompletenesses,
         );
     }
 
-    public function test_that_it_saves_completenesses()
+    public function test_that_it_saves_completenesses(): void
     {
         $productUuid = $this->createProduct('a_great_product');
 
@@ -83,28 +61,27 @@ class SaveProductCompletenessesIntegration extends TestCase
         $this->executeSave($collection);
 
         $dbCompletenesses = $this->getCompletenessesFromDB($productUuid);
-        Assert::assertCount(6, $dbCompletenesses);
+        Assert::assertCount(2, $dbCompletenesses);
         Assert::assertEquals(
             [
-                'channel_code' => 'ecommerce',
-                'locale_code' => 'en_US',
-                'missing_count' => 1,
-                'required_count' => 5,
+                'ecommerce' => [
+                    'en_US' => [
+                        'missing' => 1,
+                        'required' => 5,
+                    ]
+                ],
+                'tablet' => [
+                    'fr_FR' => [
+                        'missing' => 6,
+                        'required' => 10,
+                    ]
+                ],
             ],
-            $dbCompletenesses['ecommerce-en_US']
-        );
-        Assert::assertEquals(
-            [
-                'channel_code' => 'tablet',
-                'locale_code' => 'fr_FR',
-                'missing_count' => 6,
-                'required_count' => 10,
-            ],
-            $dbCompletenesses['tablet-fr_FR']
+            $dbCompletenesses,
         );
     }
 
-    protected function getConfiguration()
+    protected function getConfiguration(): Configuration
     {
         return $this->catalog->useTechnicalCatalog();
     }
@@ -112,6 +89,11 @@ class SaveProductCompletenessesIntegration extends TestCase
     private function executeSave(ProductCompletenessWithMissingAttributeCodesCollection $completenesses): void
     {
         $this->get('akeneo.pim.enrichment.product.query.save_product_completenesses')->save($completenesses);
+    }
+
+    private function connection(): Connection
+    {
+        return $this->get('database_connection');
     }
 
     private function createProduct(string $identifier): UuidInterface
@@ -125,49 +107,12 @@ class SaveProductCompletenessesIntegration extends TestCase
     private function getCompletenessesFromDB(UuidInterface $productUuid): array
     {
         $sql = <<<SQL
-SELECT channel.code as channel_code, locale.code as locale_code, completeness.missing_count, completeness.required_count
-FROM pim_catalog_completeness completeness
-    INNER JOIN pim_catalog_channel channel on channel.id = completeness.channel_id
-    INNER JOIN pim_catalog_locale locale on locale.id = completeness.locale_id
-WHERE completeness.product_uuid = :productUuid
+SELECT completeness
+FROM pim_catalog_product_completeness completeness
+WHERE product_uuid = :productUuid
 SQL;
-        $results = [];
-        $rows = $this->get('database_connection')->executeQuery($sql, ['productUuid' => $productUuid->getBytes()])->fetchAll();
-        foreach ($rows as $row) {
-            $key = sprintf('%s-%s', $row['channel_code'], $row['locale_code']);
-            $results[$key] = $row;
-        }
+        $result = $this->connection()->executeQuery($sql, ['productUuid' => $productUuid->getBytes()])->fetchOne();
 
-        return $results;
-    }
-
-    private function createChannel(string $code, array $data = []): ChannelInterface
-    {
-        $defaultData = [
-            'code' => $code,
-            'locales' => ['en_US'],
-            'currencies' => ['USD'],
-            'category_tree' => 'master',
-        ];
-        $data = array_merge($defaultData, $data);
-
-        $channel = $this->get('pim_catalog.repository.channel')->findOneByIdentifier($code);
-        if (null === $channel) {
-            $channel = $this->get('pim_catalog.factory.channel')->create();
-        }
-
-        $this->get('pim_catalog.updater.channel')->update($channel, $data);
-        $errors = $this->get('validator')->validate($channel);
-        Assert::assertCount(0, $errors);
-
-        $this->get('pim_catalog.saver.channel')->saveAll([$channel]);
-
-        return $channel;
-    }
-
-    private function removeChannel(string $code): void
-    {
-        $channel = $this->get('pim_catalog.repository.channel')->findOneByIdentifier($code);
-        $this->get('pim_catalog.remover.channel')->remove($channel);
+        return \json_decode($result, true);
     }
 }
