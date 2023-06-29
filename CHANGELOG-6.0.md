@@ -1,5 +1,7 @@
 # 6.0.x
 
+# 6.0.89 (2023-06-29)
+
 ## Improvements
 
 - Add interfaces
