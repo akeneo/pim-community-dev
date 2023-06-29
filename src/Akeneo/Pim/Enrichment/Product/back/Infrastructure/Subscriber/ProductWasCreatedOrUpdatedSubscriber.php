@@ -54,6 +54,7 @@ final class ProductWasCreatedOrUpdatedSubscriber implements EventSubscriberInter
 
         if (false === $unitary
             || !$product instanceof ProductInterface
+            || \get_class($product) === 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct'
             || $this->isProdLegacy()
             || null !== $product->getCreated()
         ) {
@@ -70,6 +71,7 @@ final class ProductWasCreatedOrUpdatedSubscriber implements EventSubscriberInter
 
         if (false === $unitary
             || !$product instanceof ProductInterface
+            || \get_class($product) === 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct'
             || $this->isProdLegacy()
         ) {
             return;
@@ -98,8 +100,10 @@ final class ProductWasCreatedOrUpdatedSubscriber implements EventSubscriberInter
     public function recordCreatedProducts(GenericEvent $event): void
     {
         $products = $event->getSubject();
-        if (empty($products)
-            || !reset($products) instanceof ProductInterface
+        if (!\is_array($products)
+            || [] === $products
+            || !\reset($products) instanceof ProductInterface
+            || \get_class(\reset($products)) === 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct'
             || $this->isProdLegacy()
         ) {
             return;
@@ -115,7 +119,12 @@ final class ProductWasCreatedOrUpdatedSubscriber implements EventSubscriberInter
     public function dispatchProductWereUpdatedMessage(GenericEvent $event): void
     {
         $products = $event->getSubject();
-        if (empty($products) || !reset($products) instanceof ProductInterface || $this->isProdLegacy()) {
+        if (!\is_array($products)
+            || [] === $products
+            || !\reset($products) instanceof ProductInterface
+            || \get_class(\reset($products)) === 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct'
+            || $this->isProdLegacy()
+        ) {
             return;
         }
 
