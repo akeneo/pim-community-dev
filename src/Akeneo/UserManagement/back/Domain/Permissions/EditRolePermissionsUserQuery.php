@@ -3,15 +3,13 @@
 namespace Akeneo\UserManagement\Domain\Permissions;
 
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleRepository;
-use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleWithPermissionsRepository;
-use Akeneo\UserManagement\Component\Model\RoleInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 
-class EditRolePermissionsUserRepository
+class EditRolePermissionsUserQuery
 {
     public function __construct(
         private RoleRepository $roleRepository,
-        private readonly EditRolePermissionsRoleRepository $editRolePermissionsRoleRepository,
+        private readonly EditRolePermissionsRoleQuery $editRolePermissionsRoleQuery,
     ) {
     }
 
@@ -20,7 +18,7 @@ class EditRolePermissionsUserRepository
      */
     public function getUsersWithEditRoleRoles(): array
     {
-        $minimumPermissionsRoles = $this->editRolePermissionsRoleRepository->getRolesWithMinimumEditRolePermissions();
+        $minimumPermissionsRoles = $this->editRolePermissionsRoleQuery->getRolesWithMinimumEditRolePermissions();
         $uiUserEnabledByRoles = $this->roleRepository->getUiUserEnabledByRoles($minimumPermissionsRoles);
         return $uiUserEnabledByRoles->getQuery()->execute();
     }
@@ -63,7 +61,7 @@ class EditRolePermissionsUserRepository
      */
     private function getRoleLeftWithEditRolePermissions(array $roles): array
     {
-        $editRoleRolesPermissions = $this->editRolePermissionsRoleRepository->getRolesWithMinimumEditRolePermissions();
+        $editRoleRolesPermissions = $this->editRolePermissionsRoleQuery->getRolesWithMinimumEditRolePermissions();
         $editRoleRolesNamePermissions = array_map(fn ($role) => $role->getRole(), $editRoleRolesPermissions);
         return array_filter($roles, (function ($role) use ($editRoleRolesNamePermissions) {
             return in_array($role, $editRoleRolesNamePermissions);

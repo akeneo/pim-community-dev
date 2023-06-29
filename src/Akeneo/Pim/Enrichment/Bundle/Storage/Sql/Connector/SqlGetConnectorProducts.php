@@ -269,9 +269,16 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
     private function getProductUuidsFromProductIdentifiers(array $productIdentifiers): array
     {
         $sql = <<<SQL
-SELECT BIN_TO_UUID(uuid) AS uuid
-FROM pim_catalog_product
-WHERE identifier IN (:identifiers)
+WITH main_identifier AS (
+    SELECT id
+    FROM pim_catalog_attribute
+    WHERE main_identifier = 1
+    LIMIT 1
+)
+SELECT BIN_TO_UUID(product_uuid) AS uuid
+FROM pim_catalog_product_unique_data
+WHERE raw_data IN (:identifiers)
+    AND attribute_id = (SELECT id FROM main_identifier) 
 SQL;
 
         return array_map(

@@ -26,7 +26,17 @@ final class GetProductIdentifierFromProductUuidQuery implements GetProductIdenti
     public function execute(ProductUuid $productUuid): ProductIdentifier
     {
         $sql = <<<SQL
-SELECT identifier FROM pim_catalog_product WHERE uuid=:product_uuid;
+WITH main_identifier AS (
+    SELECT id
+    FROM pim_catalog_attribute
+    WHERE main_identifier = 1
+    LIMIT 1
+)
+SELECT raw_data FROM pim_catalog_product p
+INNER JOIN pim_catalog_product_unique_data pcpud
+    ON pcpud.product_uuid = p.uuid
+    AND pcpud.attribute_id = (SELECT id FROM main_identifier)
+WHERE uuid=:product_uuid;
 SQL;
 
         $productIdentifier = $this->db->fetchOne(

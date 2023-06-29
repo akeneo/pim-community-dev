@@ -23,6 +23,7 @@ class PauseJobOnSigtermSubscriberIntegration extends TestCase
 {
     private const PAUSED_JOB_EXECUTION_ID = 1;
     private const STARTED_JOB_EXECUTION_ID = 2;
+    private const STARTED_UNPAUSABLE_JOB_EXECUTION_ID = 3;
 
     private FeatureFlags $featureFlags;
     private Connection $connection;
@@ -82,6 +83,17 @@ class PauseJobOnSigtermSubscriberIntegration extends TestCase
         $this->assertJobExecutionHasStatus($jobExecution, BatchStatus::PAUSED);
     }
 
+    public function test_it_does_not_update_status_when_job_is_not_pausable(): void
+    {
+        $this->featureFlags->enable('pause_jobs');
+        $jobExecution = $this->getJobExecution(self::STARTED_UNPAUSABLE_JOB_EXECUTION_ID);
+        $this->dispatchJobExecutionEvent($jobExecution);
+
+        posix_kill(posix_getpid(), SIGTERM);
+
+        $this->assertJobExecutionHasStatus($jobExecution, BatchStatus::STARTED);
+    }
+
     private function assertJobExecutionHasStatus(JobExecution $jobExecution, int $status): void
     {
         $sql = <<<SQL
@@ -118,7 +130,8 @@ SQL;
         $insertJobInstanceQuery = <<<SQL
             INSERT INTO akeneo_batch_job_instance (id, code, job_name, status, connector, raw_parameters, type)
             VALUES 
-            (1, 'a_job', '', 0, '', '', '')
+            (1, 'pausable_job', 'pausable_job', 0, '', '', ''),
+            (2, 'unpausable_job', 'unpausable_job', 0, '', '', '')
 SQL;
 
         $this->connection->executeQuery($insertJobInstanceQuery);
@@ -127,12 +140,14 @@ SQL;
             INSERT INTO akeneo_batch_job_execution (id, job_instance_id, status, raw_parameters) 
             VALUES 
             (:paused_job_execution_id, 1, :paused_status, '{}'), 
-            (:started_job_execution_id, 1, :started_status, '{}')
+            (:started_job_execution_id, 1, :started_status, '{}'),
+            (:started_unpausable_job_execution_id, 2, :started_status, '{}')
 SQL;
 
         $this->connection->executeQuery($insertJobExecutionQuery, [
             'paused_job_execution_id' => self::PAUSED_JOB_EXECUTION_ID,
             'started_job_execution_id' => self::STARTED_JOB_EXECUTION_ID,
+            'started_unpausable_job_execution_id' => self::STARTED_UNPAUSABLE_JOB_EXECUTION_ID,
             'paused_status' => BatchStatus::PAUSED,
             'started_status' => BatchStatus::STARTED,
         ]);

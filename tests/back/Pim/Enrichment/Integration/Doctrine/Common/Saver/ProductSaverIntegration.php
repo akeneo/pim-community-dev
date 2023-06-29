@@ -31,10 +31,11 @@ class ProductSaverIntegration extends TestCase
         $this->updateProduct($product, $standardValues);
         $this->saveProduct($product);
 
-        $jsonRawValues = $this->get('database_connection')->fetchOne(
-            <<<SQL
-            SELECT raw_values FROM pim_catalog_product WHERE identifier = 'just-a-variant-product-with-a-few-values'
-            SQL
+        $uuid = $this->getProductUuid('just-a-variant-product-with-a-few-values');
+        $jsonRawValues = $this->get('database_connection')->fetchOne(<<<SQL
+SELECT raw_values FROM pim_catalog_product WHERE uuid = :uuid
+SQL,
+            ['uuid' => $uuid->getBytes()]
         );
         $rawValues = json_decode($jsonRawValues, true);
         NormalizedProductCleaner::cleanOnlyValues($rawValues);

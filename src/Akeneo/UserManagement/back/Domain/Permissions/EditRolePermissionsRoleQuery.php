@@ -6,7 +6,7 @@ use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleRepository;
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleWithPermissionsRepository;
 use Akeneo\UserManagement\Component\Model\RoleInterface;
 
-class EditRolePermissionsRoleRepository
+class EditRolePermissionsRoleQuery
 {
     public function __construct(
         private RoleWithPermissionsRepository $roleWithPermissionsRepository,
@@ -37,5 +37,11 @@ class EditRolePermissionsRoleRepository
         }
 
         return $minimumPermissionsRoles;
+    }
+
+    public function isLastRoleWithEditRolePermissions(string $role)
+    {
+        $minimumEditRoleRoles = $this->getRolesWithMinimumEditRolePermissions();
+        return (count($minimumEditRoleRoles) <= 1 && in_array($role, $minimumEditRoleRoles));
     }
 }

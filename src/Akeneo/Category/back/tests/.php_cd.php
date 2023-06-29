@@ -29,8 +29,6 @@ $rules = [
         'Akeneo\Category\ServiceApi\ExternalApiCategory',
 
         // Outside /!\
-        'Akeneo\Category\Infrastructure\Builder\TemplateBuilder',
-        'Akeneo\Category\Infrastructure\Builder\TemplateBuilder',
         'Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface',
         'Akeneo\Category\Infrastructure\Converter\InternalApi\InternalApiToStd',
         'Akeneo\Category\Infrastructure\Exception\ArrayConversionException',
@@ -42,6 +40,7 @@ $rules = [
         'Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface',
         'Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface',
         'Oro\Bundle\SecurityBundle\SecurityFacade',
+        'Akeneo\Category\Infrastructure\Validation\TemplateCodeShouldBeUnique',
 
         // Vendors
         'Symfony\Component\HttpFoundation\File\UploadedFile',
@@ -143,7 +142,6 @@ $rules = [
         'Imagine\Exception',
         'League\Flysystem',
         'Psr\Log',
-        'Ramsey\Uuid',
         'Twig',
         'Webmozart\Assert',
         // Vendors Bundle /!\

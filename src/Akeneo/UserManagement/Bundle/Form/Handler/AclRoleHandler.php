@@ -5,7 +5,7 @@ namespace Akeneo\UserManagement\Bundle\Form\Handler;
 use Akeneo\UserManagement\Bundle\Form\Type\AclRoleType;
 use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use Akeneo\UserManagement\Domain\Permissions\EditRolePermissionsRoleRepository;
+use Akeneo\UserManagement\Domain\Permissions\EditRolePermissionsRoleQuery;
 use Akeneo\UserManagement\Domain\Permissions\MinimumEditRolePermission;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Persistence\ObjectManager;
@@ -44,7 +44,7 @@ class AclRoleHandler
         private readonly FormFactory $formFactory,
         private array $privilegeConfig,
         private readonly RequestStack $requestStack,
-        private readonly EditRolePermissionsRoleRepository $editRolePermissionsRoleRepository,
+        private readonly EditRolePermissionsRoleQuery $editRolePermissionsRoleQuery,
         private readonly TranslatorInterface $translator,
     ) {
     }
@@ -84,28 +84,55 @@ class AclRoleHandler
             $role,
             [
                 'privilegeConfigOption' => $this->privilegeConfig,
-                'constraints' => new Callback(function ($role, ExecutionContextInterface $context) {
-                    /** @var array<AclPrivilege> $formPrivileges */
-                    $formPrivileges = [];
-                    foreach ($this->privilegeConfig as $fieldName => $config) {
-                        $privileges = $this->form->get($fieldName)->getData();
-                        $formPrivileges = array_merge($formPrivileges, $privileges);
-                    }
-
-                    $minimumEditRoleRoles = $this->editRolePermissionsRoleRepository->getRolesWithMinimumEditRolePermissions();
-                    if (count($minimumEditRoleRoles) <= 1 && in_array($role, $minimumEditRoleRoles)) {
-                        $editRoleActivePrivileges = array_filter($formPrivileges, fn ($privilege) => in_array($privilege->getIdentity()->getId(), MinimumEditRolePermission::getAllValues()) && array_filter($privilege->getPermissions()->toArray(), fn ($permission) => $permission->getName() === 'EXECUTE' && $permission->getAccessLevel() === AccessLevel::SYSTEM_LEVEL));
-                        if (count($editRoleActivePrivileges) < count(MinimumEditRolePermission::getAllValues())) {
-                            $context
-                                ->buildViolation($this->translator->trans('pim_user.controller.role.message.cannot_remove_last_edit_role_permission'))
-                                ->addViolation();
-                        }
-                    }
-                })
+                'constraints' => new Callback([$this, 'validateEditRolePermissions']),
             ]
         );
 
         return $this->form;
+    }
+
+    public function validateEditRolePermissions(Role $role, ExecutionContextInterface $context): void
+    {
+        /** @var array<AclPrivilege> $formPrivileges */
+        $formPrivileges = [];
+        foreach ($this->privilegeConfig as $fieldName => $config) {
+            $privileges = $this->form->get($fieldName)->getData();
+            $formPrivileges = array_merge($formPrivileges, $privileges);
+        }
+
+        if ($this->editRolePermissionsRoleQuery->isLastRoleWithEditRolePermissions($role)) {
+            // This function extract the values from the form inputs by the user
+            $filterSelectedEditRolePrivilegesFn = function (AclPrivilege $formPrivilege) {
+                // Keep only the privileges with the identity/key for the minimum edit role permissions
+                if (false === in_array(
+                    $formPrivilege->getIdentity()->getId(),
+                    MinimumEditRolePermission::getAllValues()
+                )) {
+                    return false;
+                }
+                // With the remaining privileges, we identify if it has been checked by getting the 'EXECUTE' with SYSTEM_LEVEL access (NONE_LEVEL if unchecked)
+                // for example :
+                //  [
+                //      'identity' => ['id' => 'action:oro_config_system'],
+                //      'permissions' => ['elements' => ['EXECUTE' => [
+                //                  'name' => 'EXECUTE',
+                //                  'accessLevel' => 5,
+                //              ],
+                //      ]],
+                //  ]
+                return array_filter(
+                    $formPrivilege->getPermissions()->toArray(),
+                    fn ($permission) => $permission->getName() === 'EXECUTE' && $permission->getAccessLevel() === AccessLevel::SYSTEM_LEVEL
+                );
+            };
+
+            $editRoleActivePrivileges = array_filter($formPrivileges, $filterSelectedEditRolePrivilegesFn);
+            if (count($editRoleActivePrivileges) < count(MinimumEditRolePermission::getAllValues())) {
+                $context
+                    ->buildViolation($this->translator->trans('pim_user.controller.role.message.cannot_remove_last_edit_role_permission'))
+                    ->addViolation();
+            }
+        }
     }
 
     /**
@@ -139,7 +166,7 @@ class AclRoleHandler
     public function reinitializeData(Role $role)
     {
         $errors = $this->form?->getErrors();
-        if($this->form->isSubmitted() && $errors) {
+        if ($this->form->isSubmitted() && $errors) {
             $this->createForm($role);
             $this->setRolePrivileges($role);
             foreach ($errors as $error) {

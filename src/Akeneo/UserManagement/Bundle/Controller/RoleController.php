@@ -6,8 +6,7 @@ use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\UserManagement\Bundle\Form\Handler\AclRoleHandler;
 use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Repository\RoleRepositoryInterface;
-use Akeneo\UserManagement\Domain\Permissions\EditRolePermissionsRoleRepository;
-use Akeneo\UserManagement\Domain\Permissions\EditRolePermissionsUserRepository;
+use Akeneo\UserManagement\Domain\Permissions\EditRolePermissionsRoleQuery;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclSidManager;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,7 +25,7 @@ class RoleController extends AbstractController
         private readonly AclSidManager $aclSidManager,
         private readonly AclRoleHandler $aclRoleHandler,
         private readonly TranslatorInterface $translator,
-        private readonly EditRolePermissionsRoleRepository $editRolePermissionsRoleRepository,
+        private readonly EditRolePermissionsRoleQuery $editRolePermissionsRoleQuery,
     ) {
     }
 
@@ -68,8 +67,7 @@ class RoleController extends AbstractController
             throw $this->createNotFoundException(sprintf('Role with id %d could not be found.', $id));
         }
 
-        $minimumEditRoleRoles = $this->editRolePermissionsRoleRepository->getRolesWithMinimumEditRolePermissions();
-        if (count($minimumEditRoleRoles) <= 1 && in_array($role, $minimumEditRoleRoles)) {
+        if ($this->editRolePermissionsRoleQuery->isLastRoleWithEditRolePermissions($role)) {
             return new JsonResponse([
                 'message' => $this->translator->trans('pim_user.controller.role.message.cannot_delete_last_edit_role_permission')
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
