@@ -5,7 +5,7 @@ namespace Akeneo\UserManagement\Bundle\Form\Handler;
 use Akeneo\UserManagement\Bundle\Form\Type\AclRoleType;
 use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use Akeneo\UserManagement\Domain\Permissions\EditRolePermissionsRoleRepository;
+use Akeneo\UserManagement\Domain\Permissions\EditRolePermissionsRoleQuery;
 use Akeneo\UserManagement\Domain\Permissions\MinimumEditRolePermission;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Persistence\ObjectManager;
@@ -44,7 +44,7 @@ class AclRoleHandler
         private readonly FormFactory $formFactory,
         private array $privilegeConfig,
         private readonly RequestStack $requestStack,
-        private readonly EditRolePermissionsRoleRepository $editRolePermissionsRoleRepository,
+        private readonly EditRolePermissionsRoleQuery $editRolePermissionsRoleQuery,
         private readonly TranslatorInterface $translator,
     ) {
     }
@@ -100,7 +100,7 @@ class AclRoleHandler
             $formPrivileges = array_merge($formPrivileges, $privileges);
         }
 
-        if ($this->editRolePermissionsRoleRepository->isLastRoleWithEditRolePermissions($role)) {
+        if ($this->editRolePermissionsRoleQuery->isLastRoleWithEditRolePermissions($role)) {
             // This function extract the values from the form inputs by the user
             $filterSelectedEditRolePrivilegesFn = function (AclPrivilege $formPrivilege) {
                 // Keep only the privileges with the identity/key for the minimum edit role permissions

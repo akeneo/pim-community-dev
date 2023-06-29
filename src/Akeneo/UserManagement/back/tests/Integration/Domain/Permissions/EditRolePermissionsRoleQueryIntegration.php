@@ -9,7 +9,7 @@ use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleWithPermissionsRepository;
 use Akeneo\UserManagement\Component\Storage\Saver\RoleWithPermissionsSaver;
-use Akeneo\UserManagement\Domain\Permissions\EditRolePermissionsRoleRepository;
+use Akeneo\UserManagement\Domain\Permissions\EditRolePermissionsRoleQuery;
 use Akeneo\UserManagement\Domain\Permissions\MinimumEditRolePermission;
 use Doctrine\DBAL\Connection;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
@@ -17,9 +17,9 @@ use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 
-class EditRolePermissionsRoleRepositoryIntegration extends TestCase
+class EditRolePermissionsRoleQueryIntegration extends TestCase
 {
-    private EditRolePermissionsRoleRepository $editRolePermissionsRoleRepository;
+    private EditRolePermissionsRoleQuery $editRolePermissionsRoleQuery;
     private RoleWithPermissionsRepository $roleWithPermissionsRepository;
     private AccessDecisionManagerInterface $decisionManager;
     private SimpleFactoryInterface $roleFactory;
@@ -32,7 +32,7 @@ class EditRolePermissionsRoleRepositoryIntegration extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->editRolePermissionsRoleRepository = $this->get(EditRolePermissionsRoleRepository::class);
+        $this->editRolePermissionsRoleQuery = $this->get(EditRolePermissionsRoleQuery::class);
         $this->roleWithPermissionsRepository = $this->get('pim_user.repository.role_with_permissions');
         $this->decisionManager = $this->get('security.access.decision_manager');
         $this->roleFactory = $this->get('pim_user.factory.role');
@@ -46,7 +46,7 @@ class EditRolePermissionsRoleRepositoryIntegration extends TestCase
 
     public function testItGetRolesWithEditRolePermissions(): void
     {
-        $editRoleRoles = $this->editRolePermissionsRoleRepository->getRolesWithMinimumEditRolePermissions();
+        $editRoleRoles = $this->editRolePermissionsRoleQuery->getRolesWithMinimumEditRolePermissions();
         foreach ($editRoleRoles as $editRole) {
             $this->assertRoleAclsAreGranted($editRole->getRole(), [
                 'pim_user_role_edit' => true,
@@ -62,7 +62,7 @@ class EditRolePermissionsRoleRepositoryIntegration extends TestCase
         $this->deleteRole('ROLE_ADMINISTRATOR');
         $this->deleteRole('ROLE_CATALOG_MANAGER');
         $this->deleteRole('ROLE_USER');
-        $this->assertTrue($this->editRolePermissionsRoleRepository->isLastRoleWithEditRolePermissions('ROLE_WITH_EDIT_ROLE'));
+        $this->assertTrue($this->editRolePermissionsRoleQuery->isLastRoleWithEditRolePermissions('ROLE_WITH_EDIT_ROLE'));
     }
 
     private function assertRoleAclsAreGranted(string $role, array $acls): void

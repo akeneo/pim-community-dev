@@ -5,10 +5,8 @@ namespace Akeneo\UserManagement\Domain\Permissions;
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleRepository;
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleWithPermissionsRepository;
 use Akeneo\UserManagement\Component\Model\RoleInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 
-class EditRolePermissionsRoleRepository
+class EditRolePermissionsRoleQuery
 {
     public function __construct(
         private RoleWithPermissionsRepository $roleWithPermissionsRepository,

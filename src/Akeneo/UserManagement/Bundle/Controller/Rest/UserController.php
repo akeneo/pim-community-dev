@@ -14,7 +14,7 @@ use Akeneo\UserManagement\Application\Command\UpdateUserCommand\UpdateUserComman
 use Akeneo\UserManagement\Application\Exception\UserNotFoundException;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\UserManagement\Domain\PasswordCheckerInterface;
-use Akeneo\UserManagement\Domain\Permissions\EditRolePermissionsUserRepository;
+use Akeneo\UserManagement\Domain\Permissions\EditRolePermissionsUserQuery;
 use Akeneo\UserManagement\ServiceApi\ViolationsException;
 use Doctrine\Persistence\ObjectRepository;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
@@ -49,17 +49,17 @@ final class UserController
         private readonly NormalizerInterface $normalizer,
         private readonly ObjectRepository $repository,
         private readonly ObjectUpdaterInterface $updater,
-        private readonly ValidatorInterface       $validator,
-        private readonly SaverInterface           $saver,
-        private readonly NormalizerInterface      $constraintViolationNormalizer,
-        private readonly SimpleFactoryInterface   $factory,
-        private readonly RemoverInterface         $remover,
-        private readonly NumberFactory            $numberFactory,
-        private readonly TranslatorInterface      $translator,
-        private readonly SecurityFacade           $securityFacade,
-        private readonly PasswordCheckerInterface $passwordChecker,
-        private readonly UpdateUserCommandHandler $updateUserCommandHandler,
-        private readonly EditRolePermissionsUserRepository $editRolePermissionsUserRepository,
+        private readonly ValidatorInterface           $validator,
+        private readonly SaverInterface               $saver,
+        private readonly NormalizerInterface          $constraintViolationNormalizer,
+        private readonly SimpleFactoryInterface       $factory,
+        private readonly RemoverInterface             $remover,
+        private readonly NumberFactory                $numberFactory,
+        private readonly TranslatorInterface          $translator,
+        private readonly SecurityFacade               $securityFacade,
+        private readonly PasswordCheckerInterface     $passwordChecker,
+        private readonly UpdateUserCommandHandler     $updateUserCommandHandler,
+        private readonly EditRolePermissionsUserQuery $editRolePermissionsUserQuery,
     ) {
     }
 
@@ -129,7 +129,7 @@ final class UserController
         }
 
         if (isset($data['roles'])) {
-            if ($this->editRolePermissionsUserRepository->isLastRoleWithEditRolePermissionsRoleForUser($data['roles'], $identifier)) {
+            if ($this->editRolePermissionsUserQuery->isLastRoleWithEditRolePermissionsRoleForUser($data['roles'], $identifier)) {
                 $violation = new ConstraintViolation(
                     message: $this->translator->trans('pim_user.user.fields_errors.roles.last_user_with_edit_role_permissions'),
                     messageTemplate: null,
@@ -289,7 +289,7 @@ final class UserController
             return new Response(null, Response::HTTP_FORBIDDEN);
         }
 
-        if ($this->editRolePermissionsUserRepository->isLastUserWithEditRolePermissionsRole($user->getRoles(), $identifier)) {
+        if ($this->editRolePermissionsUserQuery->isLastUserWithEditRolePermissionsRole($user->getRoles(), $identifier)) {
             return new JsonResponse(['message' => $this->translator->trans('pim_user.user.fields_errors.roles.last_user_with_edit_role_permissions')], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
