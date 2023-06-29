@@ -103,16 +103,16 @@ class AclRoleHandler
         }
 
         if ($this->editRolePermissionsRoleQuery->isLastRoleWithEditRolePermissions($role)) {
-            // This function extract the values from the form inputs by the user
+            // This function extracts the user inputs from the form
             $filterSelectedEditRolePrivilegesFn = function (AclPrivilege $formPrivilege) {
-                // Keep only the privileges with the identity/key for the minimum edit role permissions
+                // Check only the privileges with the identity/key for the minimum edit role permissions
                 if (false === in_array(
                     $formPrivilege->getIdentity()->getId(),
                     MinimumEditRolePermission::getAllValues()
                 )) {
                     return false;
                 }
-                // With the remaining privileges, we identify if it has been checked by getting the 'EXECUTE' with SYSTEM_LEVEL access (NONE_LEVEL if unchecked)
+                // With the remaining privileges, we identify if it has been selected by getting the 'EXECUTE' with SYSTEM_LEVEL access (NONE_LEVEL if not selected)
                 // for example :
                 //  [
                 //      'identity' => ['id' => 'action:oro_config_system'],
@@ -129,6 +129,7 @@ class AclRoleHandler
             };
 
             $editRoleActivePrivileges = array_filter($formPrivileges, $filterSelectedEditRolePrivilegesFn);
+            // If the user has not selected all edit role permission it triggers an error.
             if (count($editRoleActivePrivileges) < count(MinimumEditRolePermission::getAllValues())) {
                 $context
                     ->buildViolation($this->translator->trans('pim_user.controller.role.message.cannot_remove_last_edit_role_permission'))

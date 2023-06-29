@@ -95,7 +95,7 @@ pim_user:
             message:
                 saved: "Role saved"
                 cannot_delete_last_edit_role_permission: You cannot delete edit role permissions on the last role.
-                cannot_remove_last_edit_role_permission : You cannot remove edit role permissions on the last role.
+                cannot_remove_last_edit_role_permission: You cannot remove edit role permissions on the last role.
         user:
             message:
                 saved: "User saved"
