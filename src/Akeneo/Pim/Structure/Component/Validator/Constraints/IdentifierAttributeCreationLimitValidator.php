@@ -29,6 +29,9 @@ final class IdentifierAttributeCreationLimitValidator extends ConstraintValidato
         if (!$value instanceof AttributeInterface) {
             return;
         }
+        if (null !== $value->getId()) {
+            return;
+        }
 
         if ($this->creationLimit <= \count($this->repository->findBy(['type' => AttributeTypes::IDENTIFIER]))) {
             $this->context
