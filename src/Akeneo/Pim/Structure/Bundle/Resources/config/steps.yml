@@ -9,7 +9,7 @@ services:
             - '@pim_connector.reader.file.csv_attribute'
             - '@pim_connector.processor.denormalization.attribute'
             - '@pim_connector.writer.database.attribute'
-            - 100
+            - 1 # DO NOT CHANGE : required for creation validation limit
             - '@akeneo_batch.job.job_stopper'
 
     pim_connector.step.csv_attribute.export:
@@ -33,7 +33,7 @@ services:
             - '@pim_connector.reader.file.xlsx_attribute'
             - '@pim_connector.processor.denormalization.attribute'
             - '@pim_connector.writer.database.attribute'
-            - 100
+            - 1 # DO NOT CHANGE : required for creation validation limit
             - '@akeneo_batch.job.job_stopper'
 
     pim_connector.step.xlsx_attribute.export:
