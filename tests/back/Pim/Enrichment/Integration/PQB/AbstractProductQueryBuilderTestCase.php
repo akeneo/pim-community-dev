@@ -127,7 +127,7 @@ abstract class AbstractProductQueryBuilderTestCase extends TestCase
         $pqb = $this->get('pim_catalog.query.product_query_builder_factory_for_reading_purpose')->create();
 
         foreach ($filters as $filter) {
-            $context = isset($filter[3]) ? $filter[3] : [];
+            $context = $filter[3] ?? [];
             $pqb->addFilter($filter[0], $filter[1], $filter[2], $context);
         }
 
@@ -145,7 +145,7 @@ abstract class AbstractProductQueryBuilderTestCase extends TestCase
         $pqb = $this->get('pim_catalog.query.product_query_builder_factory_for_reading_purpose')->create($options);
 
         foreach ($sorters as $sorter) {
-            $context = isset($sorter[2]) ? $sorter[2] : [];
+            $context = $sorter[2] ?? [];
             $pqb->addSorter($sorter[0], $sorter[1], $context);
         }
 

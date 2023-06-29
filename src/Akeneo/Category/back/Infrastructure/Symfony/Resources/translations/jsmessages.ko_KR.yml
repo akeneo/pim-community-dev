@@ -19,10 +19,7 @@ akeneo.category:
     delete: 트리 삭제
   template:
     learn_more: 카테고리 템플릿에 대해 자세히 알아보십시오.
-    create: 템플릿 활성화
     edit: 템플릿 편집
-    notification_success: 템플릿이 활성화되었습니다.
-    notification_error: 템플릿을 활성화할 수 없습니다.
     not_found: 이 카테고리에 대한 활성 템플릿이 없습니다.
     attribute:
       description_title: 설명 설정

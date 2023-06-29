@@ -40,6 +40,7 @@ final class UploadedFileValidator extends ConstraintValidator
         $originalMimeType = $uploadedFile->getClientMimeType();
 
         if (!array_key_exists($originalExtension, $allowedTypes)) {
+            // Unsupported extension.
             $this->context->buildViolation($constraint->unsupportedExtensionMessage)
                 ->setParameter('{{ extension }}', $originalExtension)
                 ->setParameter('{{ extensions }}', implode(', ', array_keys($allowedTypes)))
@@ -49,32 +50,30 @@ final class UploadedFileValidator extends ConstraintValidator
         }
 
         if (!in_array($originalMimeType, $allowedMimeTypes, true)) {
-            $this->context->buildViolation($constraint->unsupportedMimeTypeMessage)
-                ->setParameter('{{ mimeType }}', $originalMimeType)
-                ->setParameter('{{ mimeTypes }}', implode(', ', $allowedMimeTypes))
+            // Unsupported mimeType.
+            $this->context->buildViolation($constraint->fileIsCorruptedMessage)
                 ->addViolation()
             ;
             return;
         }
 
         if ($guessedExtension !== $originalExtension) {
-            $this->context->buildViolation($constraint->invalidExtensionMessage)
-                ->setParameter('{{ originalExtension }}', $originalExtension)
+            // Extension doesn't match file's content.
+            $this->context->buildViolation($constraint->fileIsCorruptedMessage)
                 ->addViolation()
             ;
         }
 
         if ($guessedMimeType !== $originalMimeType) {
-            $this->context->buildViolation($constraint->invalidMimeTypeMessage)
-                ->setParameter('{{ originalMimeType }}', $originalMimeType)
+            // MimeType doesn't match file's content.
+            $this->context->buildViolation($constraint->fileIsCorruptedMessage)
                 ->addViolation()
             ;
         }
 
         if (!in_array($originalMimeType, $allowedTypes[$originalExtension], true)) {
-            $this->context->buildViolation($constraint->mimeTypeDoesNotMatchExtensionMessage)
-                ->setParameter('{{ originalMimeType }}', $originalMimeType)
-                ->setParameter('{{ originalExtension }}', $originalExtension)
+            // MimeType doesn't match extension.
+            $this->context->buildViolation($constraint->fileIsCorruptedMessage)
                 ->addViolation()
             ;
         }

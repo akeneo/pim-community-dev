@@ -5,7 +5,6 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database;
 
 use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
-use Akeneo\Tool\Component\Batch\Item\PausableWriterInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
@@ -17,7 +16,7 @@ use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductModelWriter implements ItemWriterInterface, StepExecutionAwareInterface, PausableWriterInterface
+class ProductModelWriter implements ItemWriterInterface, StepExecutionAwareInterface
 {
     /** @var VersionManager */
     protected $versionManager;
@@ -62,10 +61,5 @@ class ProductModelWriter implements ItemWriterInterface, StepExecutionAwareInter
     public function setStepExecution(StepExecution $stepExecution)
     {
         $this->stepExecution = $stepExecution;
-    }
-
-    public function getState(): array
-    {
-        return [];
     }
 }

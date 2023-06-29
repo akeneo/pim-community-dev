@@ -98,6 +98,7 @@ class ProductReaderSpec extends ObjectBehavior
             'date_format'       => 'YYYY-mm-dd',
         ])->willReturn($absolutePath);
 
+        $this->initialize();
         $this->read()->shouldReturn($absolutePath);
     }
 }

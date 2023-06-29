@@ -7,9 +7,9 @@ declare(strict_types=1);
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Akeneo\Tool\Component\Batch\Item;
+namespace Akeneo\Tool\Component\Batch\Job;
 
-interface PausableWriterInterface
+interface PausableJobInterface
 {
-    public function getState(): array;
+    public function isPausable(): bool;
 }

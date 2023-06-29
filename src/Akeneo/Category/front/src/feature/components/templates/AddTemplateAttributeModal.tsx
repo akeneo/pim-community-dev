@@ -41,9 +41,10 @@ type FormError = {label?: string[]; code?: string[]};
 type Props = {
   templateId: string;
   onClose: () => void;
+  onSuccess?: () => void;
 };
 
-export const AddTemplateAttributeModal = ({templateId, onClose}: Props) => {
+export const AddTemplateAttributeModal = ({templateId, onClose, onSuccess}: Props) => {
   const defaultCatalogLocale = userContext.get('catalog_default_locale');
   const mutation = useCreateAttribute();
   const notify = useNotify();
@@ -94,7 +95,7 @@ export const AddTemplateAttributeModal = ({templateId, onClose}: Props) => {
         onSuccess: async () => {
           await queryClient.invalidateQueries(['get-template', templateId]);
           notify(NotificationLevel.SUCCESS, translate('akeneo.category.template.add_attribute.success.notification'));
-          onClose();
+          onSuccess && onSuccess();
         },
       }
     );
