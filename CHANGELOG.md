@@ -102,6 +102,7 @@
 - PIM-11075: Fix import attribute option with numeric code
 - PIM-11062: Fix category filter behavior in product grid
 - PIM-11071: Fix potential divided by zero in completeness calculation
+- PIM-11073: Fix search with underscore on attribute grid
 
 ## Improvements
 
