@@ -46,7 +46,7 @@ UPDATE pim_catalog_attribute
 SET
     main_identifier = IF(main_identifier, 0, 1),
     updated = NOW()
-WHERE code IN (:formerMainIdentifier, :newMainIdentifier)
+WHERE code IN (:formerMainIdentifierCode, :newMainIdentifierCode)
 SQL;
 
         $this->connection->executeQuery($sql, [
