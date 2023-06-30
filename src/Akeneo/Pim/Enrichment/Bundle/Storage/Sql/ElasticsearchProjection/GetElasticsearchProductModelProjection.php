@@ -37,12 +37,7 @@ class GetElasticsearchProductModelProjection implements GetElasticsearchProductM
     public function fromProductModelCodes(array $productModelCodes): iterable
     {
         $valuesAndProperties = $this->getValuesAndPropertiesFromProductModelCodes($productModelCodes);
-
-        if ($this->newCompletenessTableExists()) {
-            $completeFilters = $this->getCompletenesses($productModelCodes);
-        } else {
-            $completeFilters = $this->getCompleteFilterFromProductModelCodes($productModelCodes);
-        }
+        $completeFilters = $this->getCompletenesses($productModelCodes);
 
         $attributes = $this->getAttributesFromProductModelCodes($productModelCodes);
 
@@ -204,84 +199,6 @@ SQL;
     }
 
     /**
-     * The 'all_complete' field means every product is complete, i.e. has a missing_count at 0. In other words,
-     * the sum of the missing attributes is 0.
-     * The 'all_incomplete' field means every product is incomplete, i.e. there is no product with a missing_count
-     * at 0. In other words, the minimal value of the missing attributes should not be 0.
-     */
-    private function getCompleteFilterFromProductModelCodes(array $productModelCodes): array
-    {
-        $query = <<<SQL
-WITH product_model_completeness_by_channel_id_and_locale_id AS (
-    SELECT
-        product_model.code AS product_model_code,
-        completeness.locale_id,
-        completeness.channel_id,
-        SUM(completeness.missing_count) = 0 AS all_complete,
-        MIN(completeness.missing_count) <> 0 AS all_incomplete
-    FROM pim_catalog_product_model product_model
-    INNER JOIN pim_catalog_product product ON product.product_model_id = product_model.id
-    INNER JOIN pim_catalog_completeness completeness ON product.uuid = completeness.product_uuid
-    WHERE product_model.code IN (:productModelCodes)
-    GROUP BY product_model_code, completeness.locale_id, completeness.channel_id
-UNION ALL
-    SELECT
-        root_product_model.code AS product_model_code,
-        completeness.locale_id,
-        completeness.channel_id,
-        SUM(completeness.missing_count) = 0 AS allcomplete,
-        MIN(completeness.missing_count) <> 0 AS allincomplete
-    FROM pim_catalog_product_model product_model
-    INNER JOIN pim_catalog_product_model root_product_model ON product_model.parent_id = root_product_model.id
-    INNER JOIN pim_catalog_product product ON product.product_model_id = product_model.id
-    INNER JOIN pim_catalog_completeness completeness ON product.uuid = completeness.product_uuid
-    WHERE root_product_model.code IN (:productModelCodes)
-    GROUP BY product_model_code, completeness.locale_id, completeness.channel_id
-), 
-product_model_completeness_by_channel AS (
-    SELECT
-         product_model_code,
-         channel.code AS channel_code,
-         JSON_OBJECTAGG(locale.code, all_complete) AS all_complete,
-         JSON_OBJECTAGG(locale.code, all_incomplete) AS all_incomplete
-    FROM product_model_completeness_by_channel_id_and_locale_id product_model_completeness
-    JOIN pim_catalog_channel channel ON channel.id = product_model_completeness.channel_id
-    JOIN pim_catalog_locale locale ON locale.id = product_model_completeness.locale_id
-    GROUP BY product_model_code, channel_code
-)
-SELECT
-    product_model_code,
-    JSON_OBJECTAGG(channel_code, all_complete) AS all_complete,
-    JSON_OBJECTAGG(channel_code, all_incomplete) AS all_incomplete
-FROM product_model_completeness_by_channel
-GROUP BY product_model_code
-SQL;
-
-        $rows = $this->connection->fetchAllAssociative(
-            $query,
-            ['productModelCodes' => $productModelCodes],
-            ['productModelCodes' => Connection::PARAM_STR_ARRAY]
-        );
-
-        $results = array_fill_keys(
-            $productModelCodes,
-            [
-                'all_complete' => [],
-                'all_incomplete' => [],
-            ]
-        );
-
-        foreach ($rows as $row) {
-            $results[$row['product_model_code']] = [
-                'all_complete' => json_decode($row['all_complete'], true),
-                'all_incomplete' => json_decode($row['all_incomplete'], true),
-            ];
-        }
-
-        return $results;
-    }
-
-    /**
      * Ancestor attribute codes:
      * - root product model = no parent = no ancestor attribute codes
      * - sub product model = with parent = common attributes as ancestor attribute codes
@@ -413,18 +330,6 @@ SQL;
         }
 
         return $rowsIndexedByProductModelCode;
-    }
-
-    private function newCompletenessTableExists(): bool
-    {
-        $TABLE_NAME = 'pim_catalog_product_completeness';
-
-        return $this->connection->executeQuery(
-            'SHOW TABLES LIKE :tableName',
-            [
-                'tableName' => $TABLE_NAME,
-            ]
-        )->rowCount() >= 1;
     }
 
     private function getCompletenesses(array $productModelCodes)

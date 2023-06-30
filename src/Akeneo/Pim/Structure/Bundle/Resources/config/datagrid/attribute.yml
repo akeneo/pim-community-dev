@@ -73,7 +73,7 @@ datagrid:
                     data_name: a.code
                 label:
                     type: attribute_search
-                    label: code_or_label
+                    label: pim_datagrid.filters.code_or_label.label
                     data_name: code_or_label
                 type:
                     type:      choice

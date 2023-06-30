@@ -15,6 +15,7 @@
 - PIM-10784: Fix API error 500 when filtering for identifier with null value
 - PIM-10785: Fix case-insensitive patch product model
 - PIM-10808: Fix Error message on the family modification when an attribute is as required=0
+- PIM-11072: Fix missing translation key
 - PIM-10802: Fix wysiwyg-field add link event
 - PIM-10796: Fix system-information endpoint with wrong answers
 - PIM-10806: Allow to delete product's attributes with type 'identifier' and ensure grey cross is displayed
@@ -96,9 +97,12 @@
 - PIM-11039: Fix export with duplicated labels
 - PIM-10869: Image upload fields now only accept images
 - PIM-11063: Fix validation of generated identifiers
-- PIM-11066: PIM-11066: Fix Missing Values Adder for scopable + localizable + locale specific attributes
+- PIM-11066: Fix Missing Values Adder for scopable + localizable + locale specific attributes
 - PIM-11018: Fix view on Connected App permissions if manage or not
+- PIM-11075: Fix import attribute option with numeric code
 - PIM-11062: Fix category filter behavior in product grid
+- PIM-11071: Fix potential divided by zero in completeness calculation
+- PIM-11073: Fix search with underscore on attribute grid
 - PIM-10676: [Business-Impact] Prevent users in the PIM to remove all 'system' permissions
 
 ## Improvements

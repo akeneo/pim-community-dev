@@ -58,7 +58,7 @@ class XlsxUserWriterSpec extends ObjectBehavior
         $jobParameters->has('linesPerFile')->willReturn(true);
         $jobParameters->get('linesPerFile')->willReturn(10000);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $bufferFactory->create()->willReturn($flatRowBuffer);
+        $bufferFactory->create(null)->willReturn($flatRowBuffer);
         $this->initialize();
 
         $this->setStepExecution($stepExecution);

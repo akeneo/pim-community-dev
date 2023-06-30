@@ -59,7 +59,7 @@ class ProductWriterSpec extends ObjectBehavior
         $this->filesystem = new Filesystem();
         $this->filesystem->mkdir($this->directory);
 
-        $bufferFactory->create()->willReturn($flatRowBuffer);
+        $bufferFactory->create(null)->willReturn($flatRowBuffer);
 
         $this->beConstructedWith(
             $arrayConverter,
@@ -106,7 +106,8 @@ class ProductWriterSpec extends ObjectBehavior
         StepExecution $stepExecution,
         JobExecution $jobExecution,
         FileInfoInterface $fileInfo,
-        FilesystemOperator $catalogFilesystem
+        FilesystemOperator $catalogFilesystem,
+        BufferFactory $bufferFactory
     ) {
         $jobParameters = new JobParameters(
             [

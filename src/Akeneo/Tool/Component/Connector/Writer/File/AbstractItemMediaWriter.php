@@ -88,13 +88,21 @@ abstract class AbstractItemMediaWriter implements
      */
     public function initialize(): void
     {
-        if (null === $this->flatRowBuffer) {
-            $this->flatRowBuffer = $this->bufferFactory->create();
+        $bufferFilePath = $this->state['buffer_file_path'] ?? null;
+
+        if ($bufferFilePath) {
+            $this->jobFileBackuper->recover($this->stepExecution->getJobExecution(), $bufferFilePath);
         }
+
+        $this->flatRowBuffer = $this->bufferFactory->create($bufferFilePath);
 
         $exportDirectory = dirname($this->getPath());
         if (!is_dir($exportDirectory)) {
             $this->localFs->mkdir($exportDirectory);
+        }
+
+        if (array_key_exists('headers', $this->state)) {
+            $this->flatRowBuffer->addToHeaders($this->state['headers']);
         }
     }
 
@@ -398,12 +406,16 @@ abstract class AbstractItemMediaWriter implements
 
     public function getState(): array
     {
+        if (null === $this->flatRowBuffer) {
+            return [];
+        }
+
         $filePath = $this->flatRowBuffer->getFilePath();
         $this->jobFileBackuper->backup($this->stepExecution->getJobExecution(), $filePath);
 
         return [
-            'current_buffer_file_path' => $filePath,
-            'written_files' => array_map(static fn (WrittenFileInfo $fileInfo) => $fileInfo->normalize(), $this->writtenFiles),
+            'buffer_file_path' => $filePath,
+            'headers' => $this->flatRowBuffer->getHeaders(),
         ];
     }
 

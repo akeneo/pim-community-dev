@@ -49,16 +49,13 @@ INSERT INTO `pim_catalog_association_product` (association_id, product_uuid) VAL
 
 
 --
--- Dumping data for table `pim_catalog_completeness`
+-- Dumping data for table `pim_catalog_product_completeness`
 --
 
-/*!40000 ALTER TABLE `pim_catalog_completeness` DISABLE KEYS */;
-INSERT INTO `pim_catalog_completeness` (`id`, `locale_id`, `channel_id`, `product_uuid`, `missing_count`, `required_count`) VALUES
-(773,21058,209,UUID_TO_BIN('0e0304dc-d7f7-4dc4-89bb-a388e1fa2bcd'),0,19),
-(774,21039,210,UUID_TO_BIN('0e0304dc-d7f7-4dc4-89bb-a388e1fa2bcd'),2,19),
-(775,21058,210,UUID_TO_BIN('0e0304dc-d7f7-4dc4-89bb-a388e1fa2bcd'),0,19),
-(776,21090,210,UUID_TO_BIN('0e0304dc-d7f7-4dc4-89bb-a388e1fa2bcd'),0,19);
-/*!40000 ALTER TABLE `pim_catalog_completeness` ENABLE KEYS */;
+/*!40000 ALTER TABLE `pim_catalog_product_completeness` DISABLE KEYS */;
+INSERT INTO `pim_catalog_product_completeness` (`product_uuid`, `completeness`) VALUES
+(UUID_TO_BIN('0e0304dc-d7f7-4dc4-89bb-a388e1fa2bcd'), '{\"ecommerce\": {\"en_US\": {\"required\": 19, \"missing\": 0}}, \"tablet\": {\"de_DE\": {\"required\": 19, \"missing\": 2}, \"en_US\": {\"required\": 19, \"missing\": 0}, \"fr_FR\": {\"required\": 19, \"missing\": 0}}}');
+/*!40000 ALTER TABLE `pim_catalog_product_completeness` ENABLE KEYS */;
 
 
 --

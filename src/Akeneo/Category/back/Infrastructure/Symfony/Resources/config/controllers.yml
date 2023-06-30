@@ -151,3 +151,9 @@ services:
             - '@oro_security.security_facade'
             - '@Akeneo\Category\Domain\Query\GetTemplate'
             - '@logger'
+
+    Akeneo\Category\Infrastructure\Controller\InternalApi\ReorderTemplateAttributesController:
+        public: true
+        arguments:
+            - '@oro_security.security_facade'
+            - '@category.command.message_bus'
