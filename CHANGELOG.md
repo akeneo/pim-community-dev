@@ -98,6 +98,7 @@
 - PIM-11063: Fix validation of generated identifiers
 - PIM-11066: Fix Missing Values Adder for scopable + localizable + locale specific attributes
 - PIM-11018: Fix view on Connected App permissions if manage or not
+- PIM-11075: Fix import attribute option with numeric code
 - PIM-11062: Fix category filter behavior in product grid
 - PIM-11071: Fix potential divided by zero in completeness calculation
 
