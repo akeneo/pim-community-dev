@@ -218,6 +218,11 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Initi
 
     public function initialize(): void
     {
+        $jobParameters = $this->stepExecution->getJobParameters();
+        $filePath = $jobParameters->get('storage')['file_path'];
+
+        $this->fileIterator = $this->createFileIterator($jobParameters, $filePath);
+
         $this->rewindToState();
     }
 
@@ -227,13 +232,8 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Initi
      */
     private function rewindToState(): void
     {
-        $jobParameters = $this->stepExecution->getJobParameters();
-        $filePath = $jobParameters->get('storage')['file_path'];
-
-        $this->fileIterator = $this->createFileIterator($jobParameters, $filePath);
-        $this->fileIterator->rewind();
-
         if (!array_key_exists('position', $this->state)) {
+            $this->fileIterator->rewind();
             return;
         }
 
