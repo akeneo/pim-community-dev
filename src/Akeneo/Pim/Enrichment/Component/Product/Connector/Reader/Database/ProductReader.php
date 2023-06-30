@@ -46,7 +46,15 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
 
         $this->products = $this->getProductsCursor($filters, $channel);
         $this->products->rewind();
-        $this->firstRead = true;
+
+        if (!array_key_exists('position', $this->state)) {
+            return;
+        }
+
+        while ($this->products->valid() && ($this->products->key() < $this->state['position'] || is_null($this->state['position']))) {
+            $this->products->next();
+        }
+        $this->firstRead = false;
     }
 
     /**
@@ -160,9 +168,7 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
 
     public function getState(): array
     {
-        return [
-            'last_position_read' => $this->products?->key(),
-        ];
+        return null !== $this->products ? ['position' =>  $this->products->key()]: [];
     }
 
     public function setState(array $state): void

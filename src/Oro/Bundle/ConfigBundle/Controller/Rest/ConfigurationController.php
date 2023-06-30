@@ -50,8 +50,6 @@ class ConfigurationController
     /**
      * Get the current configuration
      *
-     * @AclAncestor("oro_config_system")
-     *
      * @return JsonResponse
      */
     public function getAction()

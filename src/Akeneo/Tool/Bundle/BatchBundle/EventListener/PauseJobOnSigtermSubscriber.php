@@ -42,17 +42,18 @@ class PauseJobOnSigtermSubscriber implements EventSubscriberInterface
 
     public function onBeforeJobExecution(JobExecutionEvent $event): void
     {
-        if (!$this->featureFlags->isEnabled('pause_jobs')) {
+        $jobExecution = $event->getJobExecution();
+
+        if (!$this->featureFlags->isEnabled('pause_jobs') || !$this->isJobExecutionPausable($jobExecution)) {
             return;
         }
 
-        pcntl_signal(\SIGTERM, function () use ($event) {
-            $jobExecution = $event->getJobExecution();
+        pcntl_signal(\SIGTERM, function () use ($jobExecution) {
             $this->logger->notice('Received SIGTERM signal in PauseJobOnSigtermSubscriber and pausing the job.', [
-                'job_execution_id' => $jobExecution->getId()
+                'job_execution_id' => $jobExecution
             ]);
 
-            if (!$jobExecution->isRunning() || !$this->isJobExecutionPausable($jobExecution)) {
+            if (!$jobExecution->isRunning()) {
                 return;
             }
 

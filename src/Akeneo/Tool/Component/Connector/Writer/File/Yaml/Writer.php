@@ -3,6 +3,7 @@
 namespace Akeneo\Tool\Component\Connector\Writer\File\Yaml;
 
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
+use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Job\RuntimeErrorException;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
@@ -18,7 +19,7 @@ use Symfony\Component\Yaml\Yaml;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Writer extends AbstractFileWriter implements ItemWriterInterface, FlushableInterface
+class Writer extends AbstractFileWriter implements ItemWriterInterface, FlushableInterface, InitializableInterface
 {
     const INLINE_ARRAY_LEVEL = 8;
     const INDENT_SPACES = 4;
@@ -48,6 +49,19 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Flushabl
         $this->arrayConverter = $arrayConverter;
         $this->header = $header;
         $this->isFirstWriting = true;
+    }
+
+    public function initialize()
+    {
+        $filePath = $this->state['file_path'] ?? null;
+
+        if ($filePath === null) {
+            return;
+        }
+
+        $this->jobFileBackuper->recover($this->stepExecution->getJobExecution(), $filePath);
+
+        $this->isFirstWriting = false;
     }
 
     /**
@@ -153,7 +167,7 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Flushabl
         $this->jobFileBackuper->backup($this->stepExecution->getJobExecution(), $filePath);
 
         return [
-            'current_file_path' => $filePath,
+            'file_path' => $filePath,
         ];
     }
     public function setState(array $state): void
