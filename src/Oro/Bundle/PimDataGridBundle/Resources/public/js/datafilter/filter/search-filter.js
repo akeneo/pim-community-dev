@@ -37,7 +37,7 @@ define([
     render: function () {
       this.$el.html(
         this.template({
-          label: __('pim_datagrid.search', {label: this.label}),
+          label: __('pim_datagrid.search', {label: __(this.label).toLowerCase()}),
         })
       );
 
