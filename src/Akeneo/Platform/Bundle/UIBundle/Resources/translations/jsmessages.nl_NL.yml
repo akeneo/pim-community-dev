@@ -464,6 +464,8 @@ pim_system:
     button:
       label: Exemplaar resetten
       confirm: Resetten en uitloggen
+    error_notification: Er is een fout opgetreden tijdens het resetten van het exemplaar. Neem contact op met de systeembeheerder.
+    jobs_running: U kunt uw exemplaar momenteel niet opnieuw instellen, omdat sommige processen nog in de wachtrij staan of worden uitgevoerd.
   sandbox:
     helper:
       text: Dit is een sandbox-omgeving; uw wijzigingen hebben geen invloed op uw productie.
