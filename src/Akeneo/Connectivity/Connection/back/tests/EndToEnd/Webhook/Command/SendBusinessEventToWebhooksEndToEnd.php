@@ -28,8 +28,8 @@ class SendBusinessEventToWebhooksEndToEnd extends CommandTestCase
     {
         $eventsApiRequestCountLoader = $this->get('akeneo_connectivity.connection.fixtures.events_api_request_count_loader');
         $eventsApiRequestCountLoader->createEventsApiRequestCount(
-            new \DateTimeImmutable('3599 seconds ago', new \DateTimeZone('UTC')), // 1 hour minus one second
-            4500
+            new \DateTimeImmutable('1800 seconds ago', new \DateTimeZone('UTC')), // 30 minutes ago
+            4500 // the webhook_requests_limit is 4000
         );
         $denormalizedBulkEvent = $this->getDenormalizedBulkEvent();
 
@@ -41,6 +41,25 @@ class SendBusinessEventToWebhooksEndToEnd extends CommandTestCase
 
         $this->assertEquals(Command::SUCCESS, $commandCode);
         $this->assertWebhookLimitWarningLogIsFound();
+    }
+
+    public function test_it_does_not_limits_webhooks_sent(): void
+    {
+        $eventsApiRequestCountLoader = $this->get('akeneo_connectivity.connection.fixtures.events_api_request_count_loader');
+        $eventsApiRequestCountLoader->createEventsApiRequestCount(
+            new \DateTimeImmutable('1800 seconds ago', new \DateTimeZone('UTC')), // 30 minutes ago
+            1000  // the webhook_requests_limit is 4000
+        );
+        $denormalizedBulkEvent = $this->getDenormalizedBulkEvent();
+
+        /** @var Command $command */
+        $command = $this->application->find('akeneo:connectivity:send-business-event');
+        $commandTester = new CommandTester($command);
+
+        $commandCode = $commandTester->execute(['message' => \json_encode($denormalizedBulkEvent, JSON_THROW_ON_ERROR)]);
+
+        $this->assertEquals(Command::SUCCESS, $commandCode);
+        $this->assertWebhookLimitWarningLogIsNotFound();
     }
 
     private function getDenormalizedBulkEvent(): array
@@ -82,6 +101,24 @@ class SendBusinessEventToWebhooksEndToEnd extends CommandTestCase
         $rows = $client->search($query);
 
         $foundMessage = $rows['hits']['hits'][0]['_source']['message'] ?? null;
-        self::assertEquals('The maximum number of events sent per hour has been reached.', $foundMessage);
+        self::assertEquals('The maximum number of events sent per hour has been reached.', $foundMessage, json_encode($rows));
+    }
+
+    private function assertWebhookLimitWarningLogIsNotFound(): void
+    {
+        /** @var Client $client */
+        $client = $this->get('akeneo_connectivity.client.events_api_debug');
+
+        $query = [
+            'query' => ['bool' => ['must' => [
+                ['terms' => ['level' => [EventsApiDebugLogLevels::WARNING]]],
+                ['match' => ['message' => 'The maximum number of events sent per hour has been reached.']],
+            ]]],
+        ];
+
+        $rows = $client->search($query);
+
+        $foundMessage = $rows['hits']['hits'][0]['_source']['message'] ?? null;
+        self::assertEquals(null, $foundMessage, json_encode($rows));
     }
 }
