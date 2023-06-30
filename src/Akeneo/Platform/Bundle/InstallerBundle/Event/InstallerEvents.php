@@ -58,4 +58,9 @@ final class InstallerEvents
      * This event is dispatched after when all fixtures are loaded.
      */
     const POST_LOAD_FIXTURES = 'pim_installer.post_load_fixtures';
+
+    /**
+     * This event is dispatched after the instance has been reset.
+     */
+    const POST_INSTANCE_RESET = 'pim_installer.post_reset';
 }
