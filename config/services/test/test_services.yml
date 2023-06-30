@@ -225,7 +225,17 @@ services:
         - '%env(GOOGLE_CLOUD_PROJECT)%'
         - '%env(PUBSUB_TOPIC_PRODUCT_MODELS_WERE_UPSERT)%'
         - '%env(PUBSUB_SUBSCRIPTION_DQI_PRODUCT_MODEL_SCORE_COMPUTE)%'
-  
+    
+    akeneo_integration_tests.pub_sub_queue_status.dqi_family_evaluate:
+        class: AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubQueueStatus
+        arguments:
+            - '@Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory'
+            - '%env(GOOGLE_CLOUD_PROJECT)%'
+            - '%env(PUBSUB_TOPIC_FAMILY_WAS_UPSERT)%'
+            - '%env(PUBSUB_SUBSCRIPTION_DQI_FAMILY_EVALUATE)%'
+        tags:
+            - { name: 'akeneo.pim.tests.pub_sub_queue_status.job' }    
+    
     akeneo_integration_tests.launcher.job_execution_observer:
         class: '%akeneo_integration_tests.launcher.job_execution_observer.class%'
         arguments:

@@ -263,3 +263,11 @@ services:
     Akeneo\Pim\Structure\Component\Normalizer\AttributesWereCreatedOrUpdatedNormalizer:
         tags:
             - { name: akeneo_messenger.message.normalizer }
+
+    Akeneo\Pim\Structure\Component\Normalizer\Event\FamilyWasCreatedNormalizer:
+        tags:
+            - { name: akeneo_messenger.message.normalizer }
+
+    Akeneo\Pim\Structure\Component\Normalizer\Event\FamilyWasUpdatedNormalizer:
+        tags:
+            - { name: akeneo_messenger.message.normalizer }
