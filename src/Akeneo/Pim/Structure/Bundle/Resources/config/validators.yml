@@ -137,3 +137,7 @@ services:
             - '%identifier_attribute_creation_limit%'
         tags:
             - { name: validator.constraint_validator }
+
+    Akeneo\Pim\Structure\Bundle\Application\SwitchMainIdentifier\SwitchMainIdentifierValidator:
+        arguments:
+            - '@pim_catalog.repository.attribute'

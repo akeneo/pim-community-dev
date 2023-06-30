@@ -65,6 +65,7 @@ class SwitchMainIdentifierIntegration extends TestCase
             'code' => $code,
             'type' => AttributeTypes::IDENTIFIER,
             'group' => AttributeGroupInterface::DEFAULT_CODE,
+            'useable_as_grid_filter' => true,
         ], true);
         $this->getAttributeSaver()->save($attribute);
     }
@@ -133,7 +134,8 @@ SQL;
 
         $this->getConnection()->executeQuery(
             $sql,
-            ['attributeCodes' => $attributeCodes]
+            ['attributeCodes' => $attributeCodes],
+            ['attributeCodes' => Connection::PARAM_STR_ARRAY],
         );
     }
 
