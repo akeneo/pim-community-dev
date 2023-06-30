@@ -24,3 +24,13 @@ akeneo_job_get_job_user_action:
   path: /rest/process-tracker/job-user
   defaults: { _controller: akeneo.job.controller.get_job_user_action }
   methods: [GET]
+
+akeneo_job_pause_job_execution_action:
+  path: /rest/job-execution/pause/{id}
+  defaults: { _controller: akeneo.job.controller.pause_job_execution_action }
+  methods: [POST]
+
+akeneo_job_resume_job_execution_action:
+  path: /rest/job-execution/resume/{id}
+  defaults: { _controller: akeneo.job.controller.resume_job_execution_action }
+  methods: [POST]

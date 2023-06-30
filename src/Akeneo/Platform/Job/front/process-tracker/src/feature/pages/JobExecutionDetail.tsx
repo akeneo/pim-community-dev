@@ -22,7 +22,14 @@ import {
   MoreIcon,
   useBooleanState,
 } from 'akeneo-design-system';
-import {Progress, SummaryTable, ShowProfile, StopJobAction, JobExecutionStatus} from '../components';
+import {
+  Progress,
+  SummaryTable,
+  ShowProfile,
+  StopJobAction,
+  JobExecutionStatus,
+  PauseResumeJobAction
+} from '../components';
 import {getDownloadLinks, JobExecution} from '../models';
 import {useJobExecution} from '../hooks/useJobExecution';
 
@@ -118,6 +125,9 @@ const JobExecutionDetail = ({jobExecutionId}: JobExecutionDetailProps) => {
     );
   }
 
+  const jobStatus = jobExecution?.tracking.status ?? 'UNKNOWN';
+  const canPauseResume = ['IN_PROGRESS', 'PAUSED'].includes(jobStatus);
+
   return (
     <Container>
       <PageHeader showPlaceholder={null === jobExecution}>
@@ -179,6 +189,13 @@ const JobExecutionDetail = ({jobExecutionId}: JobExecutionDetailProps) => {
               jobLabel={jobExecution.jobInstance.label}
               isStoppable={jobExecution.isStoppable}
               onStop={handleStop}
+            />
+          )}
+          {canPauseResume && (
+            <PauseResumeJobAction
+              id={jobExecutionId}
+              status={jobStatus}
+              onPauseResume={reloadJobExecution}
             />
           )}
           {jobExecution &&

@@ -22,3 +22,15 @@ services:
             - '@security.helper'
             - '@oro_security.security_facade'
             - '@Akeneo\Platform\Job\Application\SearchJobUser\SearchJobUserHandler'
+
+    akeneo.job.controller.pause_job_execution_action:
+        class: Akeneo\Platform\Job\Infrastructure\Controller\PauseJobExecutionAction
+        public: true
+        arguments:
+            - '@akeneo_batch.query.update_job_execution_status'
+
+    akeneo.job.controller.resume_job_execution_action:
+        class: Akeneo\Platform\Job\Infrastructure\Controller\ResumeJobExecutionAction
+        public: true
+        arguments:
+            - '@akeneo_batch_queue.queue.job_execution_queue'
