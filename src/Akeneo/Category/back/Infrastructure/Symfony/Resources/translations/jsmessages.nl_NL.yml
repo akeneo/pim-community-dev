@@ -1,6 +1,9 @@
 pim_title:
   pim_category_template_edit: Bewerk categorie sjabloon
 akeneo.category:
+  unknown_error:
+    title: Sorry, er is een onbekende fout opgetreden.
+    message: Ververs de pagina en probeer het opnieuw.
   tree_list:
     column:
       category_templates: Categoriesjablonen
@@ -21,6 +24,9 @@ akeneo.category:
     learn_more: Meer informatie over het categoriesjabloon
     edit: Sjabloon bewerken
     not_found: Er is geen actieve sjabloon voor deze categorie
+    properties:
+      general_properties: Algemene eigenschappen
+      label_translations_in_ui_locales: Labelvertalingen in de talen van de gebruikersinterface
     attribute:
       description_title: Instellingen van beschrijving
       type:
@@ -38,6 +44,8 @@ akeneo.category:
           rich_text: Editor voor opgemaakte tekst
         translations:
           title: Labelvertalingen
+        error_message: Er staan ongeldige waarden op de pagina.
+        unsaved_changes: Er zijn niet opgeslagen wijzigingen. Wilt u de pagina toch verlaten?
     add_attribute:
       no_attribute_title: Uw eerste attribuut aanmaken
       no_attribute_instructions: Definieer de inhoud die u wilt koppelen aan uw categorieën door attributen voor tekst, tekstgebied of afbeelding toe te voegen aan dit sjabloon.
@@ -77,6 +85,19 @@ akeneo.category:
         title: 'Attribuut {{ attribute }} is verwijderd'
     deactivate:
       deactivate_template: Sjabloon verwijderen
+      confirmation_modal:
+        title: Categoriesjabloon verwijderen
+        message: Weet u zeker dat u het categoriesjabloon {{ template }} wilt verwijderen?
+        helper: Als u dit sjabloon verwijdert, worden de kenmerken en waardes van de geassocieerde categorieën permanent verwijderd.
+        deactivate: Verwijderen
+      notification_success:
+        title: 'Sjabloon {{ template }} verwijderd'
+        message: '{{ template }} is verwijderd. De inhoud van de geassocieerde categorieën is verwijderd.'
+    auto-save:
+      saved: Opgeslagen
+      saving: Opslaan
+      editing: Bewerken
+      errors: Fouten niet opgeslagen
   template_list:
     columns:
       header: Label

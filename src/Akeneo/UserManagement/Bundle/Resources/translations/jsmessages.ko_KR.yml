@@ -82,6 +82,8 @@ pim_user_management:
         default_published_product_grid_view: 기본 게시 제품 그리드 보기 #EE Only
         proposals_to_review_notification: 검토할 새 제안이 있는 경우 #EE Only
         proposals_state_notifications: 제안이 수락 또는 거부되는 경우 #EE Only
+        not_fully_supported_locale: '선택한 UI 로케일 [{{ code }}]은(는) 현재 완전히 지원되지 않습니다. 누락되거나 불완전한 텍스트 번역이 발생할 수 있습니다. 로케일 커버리지 개선에 도움을 주시기 바랍니다:'
+        link_to_crowdin_label: Crowdin에 참여하십시오.
       meta:
         created: 생성됨
         updated: 업데이트됨

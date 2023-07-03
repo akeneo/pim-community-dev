@@ -269,6 +269,7 @@ akeneo_connectivity.connection:
           not_blank: De redirect_uri is vereist.
           must_be_url: De redirect_uri is geen geldige url.
         scope:
+          must_be_a_string: De lijst met toepassingsgebieden moet een string zijn, gescheiden door spaties.
           too_long: De lijst voor bereik mag niet meer dan 1000 tekens bevatten.
     custom_apps:
       creation_limit_reached: U heeft de limiet bereikt van 20 aangepaste apps.
