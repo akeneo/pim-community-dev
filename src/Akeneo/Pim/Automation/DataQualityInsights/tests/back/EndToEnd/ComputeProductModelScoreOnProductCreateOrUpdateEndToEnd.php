@@ -36,7 +36,7 @@ final class ComputeProductModelScoreOnProductCreateOrUpdateEndToEnd extends Mess
             ],
         ]);
 
-        $this->productModelScoreComputeOnUpsertQueueStatus = $this->get('akeneo_integration_tests.pub_sub_queue_status.dqi_product_model_score_compute_on_upsert');
+        $this->productModelScoreComputeOnUpsertQueueStatus = $this->get('akeneo_integration_tests.pub_sub_queue_status.dqi_product_model_score_compute');
 
         // Be sure the subscription is created before any tests
         $subscription = $this->productModelScoreComputeOnUpsertQueueStatus->getSubscription();
@@ -60,17 +60,17 @@ final class ComputeProductModelScoreOnProductCreateOrUpdateEndToEnd extends Mess
         $productModelId = new ProductModelId($productModel->getId());
 
         self::assertFalse($this->isProductModelScoreComputed($productModelId));
-        $this->launchConsumer('dqi_product_model_score_compute_consumer');
+        $this->launchConsumer('dqi_product_model_score_compute');
         self::assertTrue($this->isProductModelScoreComputed($productModelId));
     }
 
-    public function test_it_computes_product_score_after_update(): void
+    public function test_it_computes_product_model_score_after_update(): void
     {
         $code = 'product-model-1';
         $productModel = $this->createProductModel($code, 'shoes_color');
         $productModelId = new ProductModelId($productModel->getId());
 
-        $this->launchConsumer('dqi_product_model_score_compute_consumer');
+        $this->launchConsumer('dqi_product_model_score_compute');
         $this->productModelScoreComputeOnUpsertQueueStatus->flushJobQueue();
 
         $this->updateProductModel($productModel, [
@@ -78,11 +78,11 @@ final class ComputeProductModelScoreOnProductCreateOrUpdateEndToEnd extends Mess
         ]);
 
         $this->simulateOldProductModelScoreCompute();
-        $this->launchConsumer('dqi_product_model_score_compute_consumer');
+        $this->launchConsumer('dqi_product_model_score_compute');
         self::assertTrue($this->isProductModelScoreComputed($productModelId));
     }
 
-    public function test_it_computes_product_score_after_bulk_save(): void
+    public function test_it_computes_product_model_score_after_bulk_save(): void
     {
         $codes = [
           'product-model-1',
@@ -96,7 +96,7 @@ final class ComputeProductModelScoreOnProductCreateOrUpdateEndToEnd extends Mess
             self::assertFalse($this->isProductModelScoreComputed($productModelId));
         }
 
-        $this->launchConsumer('dqi_product_model_score_compute_consumer');
+        $this->launchConsumer('dqi_product_model_score_compute');
 
         foreach ($productModels as $productModel) {
             $productModelId = new ProductModelId($productModel->getId());

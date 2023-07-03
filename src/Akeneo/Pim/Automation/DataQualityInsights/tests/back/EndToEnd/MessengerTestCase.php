@@ -28,7 +28,7 @@ abstract class MessengerTestCase extends DataQualityInsightsTestCase
         $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
 
         $this->productMessageBus = $this->get('pim_enrich.product.message_bus');
-        $this->productScoreComputeOnUpsertQueueStatus = $this->get('akeneo_integration_tests.pub_sub_queue_status.dqi_product_score_compute_on_upsert');
+        $this->productScoreComputeOnUpsertQueueStatus = $this->get('akeneo_integration_tests.pub_sub_queue_status.product_was_created_or_updated');
 
         // Be sure the subscription is created before any tests
         $subscription = $this->productScoreComputeOnUpsertQueueStatus->getSubscription();
