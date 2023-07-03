@@ -469,6 +469,8 @@ services:
               - '@pim_connector.step.move_child_attributes'
               - '@pim_connector.step.delete_attribute_groups'
             - true
+            - true
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: 'attribute_group_mass_delete' }
 
@@ -480,5 +482,8 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pim_connector.step.delete_attributes'
+            - true
+            - true
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: 'attribute_mass_delete' }

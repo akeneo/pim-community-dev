@@ -600,6 +600,8 @@ services:
             -
                 - '@pim_enrich.step.update_product_value.mass_edit'
             - true
+            - true
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
 
@@ -611,6 +613,8 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pim_enrich.step.add_product_value.mass_edit'
+            - true
+            - true
             - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
@@ -638,6 +642,8 @@ services:
             -
                 - '@pim_enrich.step.remove_product_value.mass_edit'
             - true
+            - true
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
 
@@ -650,6 +656,8 @@ services:
             -
                 - '@pim_enrich.step.move_to_category.mass_edit'
             - true
+            - true
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
 
@@ -661,6 +669,8 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pim_enrich.step.add_to_category.mass_edit'
+            - true
+            - true
             - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
@@ -703,6 +713,8 @@ services:
                 - '@pim_enrich.step.edit_common_attributes.mass_edit'
                 - '@pim_enrich.step.clean'
             - true
+            - true
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
 
@@ -714,6 +726,8 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pim_enrich.step.add_attribute_value.mass_edit'
+            - true
+            - true
             - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
@@ -754,6 +768,8 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pim_enrich.step.delete_products_and_product_models.mass_edit'
+            - true
+            - true
             - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
