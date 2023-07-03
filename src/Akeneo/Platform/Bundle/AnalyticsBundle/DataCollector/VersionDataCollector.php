@@ -67,7 +67,12 @@ class VersionDataCollector implements DataCollectorInterface
             $resetData = $this->installStatusManager->getPimResetData();
 
             if (null !== $resetData) {
-                $collectedData = [...$collectedData, ...$resetData];
+                $resetEvents = $resetData['reset_events'];
+                $collectedData = [
+                    ...$collectedData,
+                    'reset_event_count' => count($resetEvents),
+                    'last_reset_time' => end($resetEvents)['time'],
+                ];
             }
         }
 

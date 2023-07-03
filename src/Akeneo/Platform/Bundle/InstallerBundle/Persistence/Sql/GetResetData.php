@@ -29,8 +29,6 @@ final class GetResetData
             return null;
         }
 
-        $decoded = \json_decode($values, true);
-
-        return $decoded;
+        return \json_decode($values, true);
     }
 }

@@ -5,32 +5,30 @@ declare(strict_types=1);
 namespace AkeneoTest\Platform\Integration\Installer\Persistence\Sql;
 
 use Akeneo\Platform\Bundle\InstallerBundle\Persistence\Sql\GetResetData;
-use Akeneo\Platform\Bundle\InstallerBundle\Persistence\Sql\InstallData;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
-/**
- * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
- * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- */
 class GetResetDataIntegration extends TestCase
 {
-    public function test_it_returns_if_not_reset(): void
+    public function test_it_returns_null_if_not_reset(): void
     {
         $resetData = $this->getQuery()->__invoke();
 
         $this->assertNull($resetData);
     }
 
-    public function test_it_gets_install_datetime(): void
+    public function test_it_returns_reset_data(): void
     {
-        $intallDataQuery = $this->get(InstallData::class);
-        $intallDataQuery->withDatetime(new \DateTimeImmutable('2022-12-13'));
+        $this->resetInstanceTwice();
 
-        $installDatetime = $this->getQuery()->__invoke();
+        $resetData = $this->getQuery()->__invoke();
 
-        $this->assertInstanceOf(\DateTime::class, $installDatetime);
-        $this->assertSame('2022-12-13 00:00:00', $installDatetime->format('Y-m-d H:i:s'));
+        $this->assertSame([
+            'reset_events' => [
+                ['time' => '2023-06-27T12:17:11+00:00'],
+                ['time' => '2023-06-28T12:17:11+00:00'],
+            ],
+        ], $resetData);
     }
 
     /**
@@ -44,5 +42,18 @@ class GetResetDataIntegration extends TestCase
     private function getQuery(): GetResetData
     {
         return $this->get(GetResetData::class);
+    }
+
+    private function resetInstanceTwice(): void {
+        /** @var Connection $connection */
+        $connection = $this->get('database_connection');
+
+        $connection->executeQuery(
+<<<SQL
+    INSERT INTO `pim_configuration` (`code`, `values`)
+    VALUES
+        ('reset_data', '{\"reset_events\": [{\"time\": \"2023-06-27T12:17:11+00:00\"}, {\"time\": \"2023-06-28T12:17:11+00:00\"}]}');
+SQL
+        );
     }
 }

@@ -28,3 +28,8 @@ services:
     Akeneo\Platform\Bundle\InstallerBundle\Persistence\Sql\GetResetData:
         arguments:
             - '@database_connection'
+
+    Akeneo\Platform\Bundle\InstallerBundle\Persistence\Sql\SaveResetEvent:
+        arguments:
+            - '@database_connection'
+            - '@Akeneo\Platform\Bundle\InstallerBundle\Persistence\Sql\GetResetData'
