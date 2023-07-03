@@ -521,6 +521,8 @@ pim_datagrid:
             label: Identifier
         uuid:
             label: Uuid
+        code_or_label:
+            label: Code or label
     search: Search by {{ label }}
 
 batch_jobs:

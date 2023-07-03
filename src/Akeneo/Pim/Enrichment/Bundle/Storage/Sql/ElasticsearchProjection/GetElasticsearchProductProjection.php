@@ -406,6 +406,9 @@ SQL;
             $completenessesByUuid = [];
             foreach ($completenesses as $channelCode => $completenessByLocale) {
                 foreach ($completenessByLocale as $localeCode => $value) {
+                    if (0 === $value['required']) {
+                        continue;
+                    }
                     $ratio = (int) floor(100 * ($value['required'] - $value['missing']) / $value['required']);
                     $completenessesByUuid[$channelCode][$localeCode] = $ratio;
                 }

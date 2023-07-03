@@ -78,14 +78,16 @@ class FilteredProductReader implements
 
         $filters = $this->getConfiguredFilters();
         $this->products = $this->getProductsCursor($filters, $channel);
+        $this->products->rewind();
 
         if (!array_key_exists('position', $this->state)) {
             return;
         }
 
-        while ($this->products->key() < $this->state['position']) {
+        while ($this->products->valid() && ($this->products->key() < $this->state['position'] || is_null($this->state['position']))) {
             $this->products->next();
         }
+        $this->firstRead = false;
     }
 
     /**
@@ -217,9 +219,7 @@ class FilteredProductReader implements
 
     public function getState(): array
     {
-        return [
-            'position' => $this->products?->key(),
-        ];
+        return null !== $this->products ? ['position' =>  $this->products->key()] : [];
     }
 
     public function setState(array $state): void

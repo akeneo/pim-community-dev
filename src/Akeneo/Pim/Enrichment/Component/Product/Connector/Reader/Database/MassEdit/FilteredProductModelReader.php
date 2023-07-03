@@ -79,12 +79,14 @@ class FilteredProductModelReader implements
         $this->productsAndProductModels = $this->getProductModelsCursor($filters, $channel);
 
         if (!array_key_exists('position', $this->state)) {
+            $this->productsAndProductModels->rewind();
             return;
         }
 
-        while ($this->productsAndProductModels->key() < $this->state['position']) {
+        while ($this->productsAndProductModels->valid() && ($this->productsAndProductModels->key() < $this->state['position'] || is_null($this->state['position']))) {
             $this->productsAndProductModels->next();
         }
+        $this->firstRead = false;
     }
 
     /**
@@ -92,7 +94,6 @@ class FilteredProductModelReader implements
      */
     public function read(): ?ProductModelInterface
     {
-        $productModel = null;
         $productModel = $this->getNextProductModel();
 
         if (null !== $productModel) {
@@ -214,9 +215,7 @@ class FilteredProductModelReader implements
 
     public function getState(): array
     {
-        return [
-            'position' => $this->productsAndProductModels?->key(),
-        ];
+        return null !== $this->productsAndProductModels ? ['position' => $this->productsAndProductModels->key()] : [];
     }
 
     public function setState(array $state): void

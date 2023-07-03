@@ -210,9 +210,7 @@ class ProductAndProductModelReader implements
 
     public function getState(): array
     {
-        return [
-            'position' => $this->productsAndProductModels?->key(),
-        ];
+        return null !== $this->productsAndProductModels ? ['position' =>  $this->productsAndProductModels->key()]: [];
     }
 
     public function setState(array $state): void

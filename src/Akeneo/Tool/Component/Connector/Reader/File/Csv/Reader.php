@@ -60,7 +60,7 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Initi
     public function totalItems(): int
     {
         $totalItems = max(iterator_count($this->fileIterator) - 1, 0);
-        $this->fileIterator->rewind();
+        $this->rewindToState();
 
         return $totalItems;
     }
@@ -70,10 +70,6 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Initi
      */
     public function read()
     {
-        if (null === $this->fileIterator) {
-            $this->initialize();
-        }
-
         $this->fileIterator->next();
 
         if ($this->fileIterator->valid() && null !== $this->stepExecution) {
@@ -226,9 +222,18 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Initi
         $filePath = $jobParameters->get('storage')['file_path'];
 
         $this->fileIterator = $this->createFileIterator($jobParameters, $filePath);
-        $this->fileIterator->rewind();
 
+        $this->rewindToState();
+    }
+
+    /**
+     * This method should always replace a rewind of the FileIterator has it would result
+     * in a wrong position of the pointer when resuming a job.
+     */
+    private function rewindToState(): void
+    {
         if (!array_key_exists('position', $this->state)) {
+            $this->fileIterator->rewind();
             return;
         }
 

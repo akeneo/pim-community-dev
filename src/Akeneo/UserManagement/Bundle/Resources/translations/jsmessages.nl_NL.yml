@@ -82,6 +82,8 @@ pim_user_management:
         default_published_product_grid_view: Standaard gepubliceerde product rasterweergave #EE Only
         proposals_to_review_notification: Wanneer nieuw voorstel tot nakijken #EE Only
         proposals_state_notifications: Wanneer voorstel is goedgekeurd of geweigerd #EE Only
+        not_fully_supported_locale: 'De geselecteerde taal van de UI [{{ code }}] wordt momenteel niet volledig ondersteund. Daardoor kunnen vertalingen ontbreken of onvolledig zijn. Help met het verbeteren van de lokale dekking:'
+        link_to_crowdin_label: bijdragen aan Crowdin.
       meta:
         created: Aangemaakt
         updated: Bijgewerkt

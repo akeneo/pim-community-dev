@@ -148,6 +148,13 @@ abstract class Attribute
         return $this->additionalProperties;
     }
 
+    public function setOrder(AttributeOrder $order): Attribute
+    {
+        $this->order = $order;
+
+        return $this;
+    }
+
     /**
      * @param array{
      *      uuid: string,
@@ -181,7 +188,7 @@ abstract class Attribute
                 json_decode($result['additional_properties'], true, 512, JSON_THROW_ON_ERROR),
             ) : null;
 
-        return Attribute::fromType($type, $id, $code, $order, $isRequired, $isScopable, $isLocalizable, $labelCollection, $templateUuid, $additionalProperties);
+        return self::fromType($type, $id, $code, $order, $isRequired, $isScopable, $isLocalizable, $labelCollection, $templateUuid, $additionalProperties);
     }
 
     /**
