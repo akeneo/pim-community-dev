@@ -992,3 +992,8 @@ jobs:
         alias: clean_category_attribute_and_enriched_values
         label: Clean Category Template's attribute and Enriched Values
         type: clean_category_attribute_and_enriched_values
+    purge_filesystems:
+        connector: internal
+        alias: purge_filesystems
+        label: Purge filesystems
+        type: pim_reset
