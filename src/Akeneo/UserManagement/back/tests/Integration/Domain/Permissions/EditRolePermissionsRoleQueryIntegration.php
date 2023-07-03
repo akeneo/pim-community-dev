@@ -59,9 +59,7 @@ class EditRolePermissionsRoleQueryIntegration extends TestCase
     public function testItIsLastRoleWithEditRolePermissions(): void
     {
         $this->createRoleWithAcls('ROLE_WITH_EDIT_ROLE', MinimumEditRolePermission::getAllValues());
-        $this->deleteRole('ROLE_ADMINISTRATOR');
-        $this->deleteRole('ROLE_CATALOG_MANAGER');
-        $this->deleteRole('ROLE_USER');
+        $this->deleteAllOtherRoles(['ROLE_WITH_EDIT_ROLE']);
         $this->assertTrue($this->editRolePermissionsRoleQuery->isLastRoleWithEditRolePermissions('ROLE_WITH_EDIT_ROLE'));
     }
 
@@ -100,12 +98,15 @@ class EditRolePermissionsRoleQueryIntegration extends TestCase
         $this->cacheClearer->clear();
     }
 
-    private function deleteRole(string $role)
+    /**
+     * @param array<string> $roles
+     */
+    private function deleteAllOtherRoles(array $roles)
     {
         $this->connection->executeQuery(
-            'DELETE FROM oro_access_role WHERE role = :role',
-            ['role' => $role],
-            ['role' => \PDO::PARAM_STR]
+            'DELETE FROM oro_access_role WHERE role NOT IN (:roles)',
+            ['roles' => $roles],
+            ['roles' => Connection::PARAM_STR_ARRAY]
         );
     }
     protected function getConfiguration(): Configuration
