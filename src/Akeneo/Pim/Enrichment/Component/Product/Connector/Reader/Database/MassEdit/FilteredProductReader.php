@@ -78,6 +78,14 @@ class FilteredProductReader implements
 
         $filters = $this->getConfiguredFilters();
         $this->products = $this->getProductsCursor($filters, $channel);
+
+        if (!array_key_exists('position', $this->state)) {
+            return;
+        }
+
+        while ($this->products->key() < $this->state['position']) {
+            $this->products->next();
+        }
     }
 
     /**
@@ -210,7 +218,7 @@ class FilteredProductReader implements
     public function getState(): array
     {
         return [
-            'last_position_read' => $this->products?->key(),
+            'position' => $this->products?->key(),
         ];
     }
 

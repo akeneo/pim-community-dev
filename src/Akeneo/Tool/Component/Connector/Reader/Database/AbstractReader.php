@@ -57,6 +57,14 @@ abstract class AbstractReader implements ItemReaderInterface, InitializableInter
     public function initialize()
     {
         $this->isExecuted = false;
+
+        if (!array_key_exists('position', $this->state)) {
+            return;
+        }
+
+        while ($this->results->key() < $this->state['position']) {
+            $this->results->next();
+        }
     }
 
     public function totalItems(): int
@@ -83,7 +91,7 @@ abstract class AbstractReader implements ItemReaderInterface, InitializableInter
     public function getState(): array
     {
         return [
-            'last_position_read' => $this->results?->key(),
+            'position' => $this->results?->key(),
         ];
     }
 
