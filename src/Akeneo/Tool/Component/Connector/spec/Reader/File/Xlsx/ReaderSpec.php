@@ -40,7 +40,7 @@ class ReaderSpec extends ObjectBehavior
         $jobParameters->get('storage')->willReturn(['type' => 'local', 'file_path' => $filePath]);
         $fileIterator->valid()->willReturn(true, true, true, false);
         $fileIterator->current()->willReturn(null);
-        $fileIterator->rewind()->shouldBeCalledTimes(2);
+        $fileIterator->rewind()->shouldBeCalledTimes(3);
         $fileIterator->next()->shouldBeCalled();
         $fileIteratorFactory->create($filePath, [])->willReturn($fileIterator);
 
@@ -137,7 +137,7 @@ class ReaderSpec extends ObjectBehavior
         $fileIteratorFactory->create($this->initFilePath(), [])->willReturn($fileIterator);
 
         $fileIterator->getHeaders()->willReturn(['sku', 'name', 'description', 'short_description']);
-        $fileIterator->rewind()->shouldNotBeCalled();
+        $fileIterator->rewind()->shouldBeCalled();
         $fileIterator->next()->shouldBeCalled();
         $fileIterator->valid()->willReturn(true);
 
@@ -204,7 +204,7 @@ class ReaderSpec extends ObjectBehavior
         $fileIteratorFactory->create($this->initFilePath(), [])->willReturn($fileIterator);
 
         $fileIterator->getHeaders()->willReturn(['sku', 'name']);
-        $fileIterator->rewind()->shouldNotBeCalled();
+        $fileIterator->rewind()->shouldBeCalled();
         $fileIterator->next()->shouldBeCalled();
         $fileIterator->valid()->willReturn(true);
 
