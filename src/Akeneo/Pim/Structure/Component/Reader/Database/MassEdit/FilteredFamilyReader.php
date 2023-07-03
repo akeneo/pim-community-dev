@@ -91,7 +91,7 @@ class FilteredFamilyReader implements ItemReaderInterface, StepExecutionAwareInt
             return;
         }
 
-        while ($this->families->key() < $this->state['position']) {
+        while ($this->families->valid() && ($this->families->key() < $this->state['position'] || is_null($this->state['position']))) {
             $this->families->next();
         }
     }
