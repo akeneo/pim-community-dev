@@ -40,8 +40,7 @@ class XlsxUserReaderSpec extends ObjectBehavior
         $jobParams->get('storage')->willReturn(['type' => 'local', 'file_path' => '/tmp/batch_dir/users.zip']);
         $fileIterator->getDirectoryPath()->willReturn('/tmp/batch_dir/users');
         $fileIteratorFactory->create('/tmp/batch_dir/users.zip', [])->willReturn($fileIterator);
-
-        $fileIterator->rewind()->shouldNotBeCalled();
+        $fileIterator->rewind()->shouldBeCalled();
         $fileIterator->next()->shouldBeCalled();
         $fileIterator->valid()->shouldBeCalled()->willReturn(true);
         $stepExecution->incrementSummaryInfo('item_position')->shouldBeCalled();
