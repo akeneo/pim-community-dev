@@ -1,6 +1,9 @@
 pim_title:
   pim_category_template_edit: Edytuj szablon kategorii
 akeneo.category:
+  unknown_error:
+    title: Przepraszamy, wystąpił nieznany błąd.
+    message: Proszę odświeżyć stronę i spróbować ponownie.
   tree_list:
     column:
       category_templates: Szablony kategorii
@@ -21,6 +24,9 @@ akeneo.category:
     learn_more: Dowiedz się więcej o szablonie kategorii
     edit: Edytuj szablon
     not_found: Nie ma aktywnego szablonu dla tej kategorii.
+    properties:
+      general_properties: Właściwości ogólne
+      label_translations_in_ui_locales: Tłumaczenia etykiet w wersjach językowych UI
     attribute:
       description_title: Ustawienia opisu
       type:
@@ -38,6 +44,8 @@ akeneo.category:
           rich_text: Edytor tekstu sformatowanego
         translations:
           title: Tłumaczenia etykiet
+        error_message: Na stronie występują nieprawidłowe wartości.
+        unsaved_changes: Masz niezapisane zmiany, czy na pewno chcesz wyjść?
     add_attribute:
       no_attribute_title: Utwórz swój pierwszy atrybut
       no_attribute_instructions: Zdefiniuj zawartość, którą chcesz powiązać z kategoriami, dodając do tego szablonu atrybuty tekstu, obszaru tekstowego lub obrazu.
@@ -77,6 +85,19 @@ akeneo.category:
         title: 'Atrybut {{ attribute }} usunięty pomyślnie'
     deactivate:
       deactivate_template: Usuń szablon
+      confirmation_modal:
+        title: Usuń szablon kategorii
+        message: Czy na pewno chcesz usunąć szablon kategorii o nazwie {{ template }}?
+        helper: Usunięcie tego szablonu spowoduje trwałe usunięcie atrybutów i wartości powiązanych kategorii.
+        deactivate: Usuń
+      notification_success:
+        title: 'Usunięto szablon {{ template }}'
+        message: 'Szablon {{ template }} został usunięty. Zawartość powiązanych kategorii została usunięta.'
+    auto-save:
+      saved: Zapisano
+      saving: Zapisywanie
+      editing: Edytowanie
+      errors: Wystąpiły błędy – nie zapisano
   template_list:
     columns:
       header: Etykieta

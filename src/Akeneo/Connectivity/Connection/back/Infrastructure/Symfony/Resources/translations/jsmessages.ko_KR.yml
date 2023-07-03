@@ -269,6 +269,7 @@ akeneo_connectivity.connection:
           not_blank: redirect_uri가 필요합니다.
           must_be_url: redirect_uri는 유효한 URL이 아닙니다.
         scope:
+          must_be_a_string: 범위 목록은 공백으로 구분된 문자열이어야 합니다.
           too_long: 범위 목록은 1,000자 이하여야 합니다.
     custom_apps:
       creation_limit_reached: 사용자 지정 앱 20개 제한에 도달했습니다.
