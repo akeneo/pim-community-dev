@@ -9,6 +9,11 @@ akeneo.category:
         text_too_long: La valeur ne doit pas dépasser {{ limit }} caractères
         textarea_too_long: La valeur ne doit pas dépasser {{ limit }} caractères
         richtext_too_long: La valeur ne doit pas dépasser {{ limit }} caractères
+    template:
+      code:
+        not_blank: Cette valeur ne devrait pas être vide.
+        unique: 'Le code du template : {{ templateCode }} existe déjà.'
+        wrong_format: Ce champ ne peut contenir que des lettres, des chiffres et des tirets bas.
     attribute:
       limit:
         title: Vous ne pouvez pas ajouter plus de 50 attributs
