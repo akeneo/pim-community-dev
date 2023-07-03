@@ -2,16 +2,16 @@
 
 namespace Akeneo\UserManagement\Domain\Permissions\Query;
 
-use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleRepository;
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleWithPermissionsRepository;
 use Akeneo\UserManagement\Component\Model\RoleInterface;
+use Akeneo\UserManagement\Component\Repository\RoleRepositoryInterface;
 use Akeneo\UserManagement\Domain\Permissions\MinimumEditRolePermission;
 
 class EditRolePermissionsRoleQuery
 {
     public function __construct(
         private RoleWithPermissionsRepository $roleWithPermissionsRepository,
-        private RoleRepository $roleRepository,
+        private RoleRepositoryInterface $roleRepository,
     ) {
     }
 
