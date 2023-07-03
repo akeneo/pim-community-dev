@@ -239,8 +239,14 @@ class PreventDuplicateVariantAssociation extends TestCase
     private function getDirectProductModelAssociations(string $ownerCode, string $associationTypeCode): array
     {
         $sql = <<<SQL
+            WITH main_identifier AS (
+                SELECT id
+                FROM pim_catalog_attribute
+                WHERE main_identifier = 1
+                LIMIT 1
+            )
             SELECT 
-                JSON_ARRAYAGG(associated_product.identifier) AS associated_product_identifiers,
+                JSON_ARRAYAGG(pcpud.raw_data) AS associated_product_identifiers,
                 JSON_ARRAYAGG(associated_pm.code) AS associated_product_model_codes,
                 JSON_ARRAYAGG(associated_group.code) AS associated_group_codes
             FROM pim_catalog_product_model owner
@@ -248,6 +254,9 @@ class PreventDuplicateVariantAssociation extends TestCase
                 INNER JOIN pim_catalog_association_type type ON type.id = asso.association_type_id
                 LEFT JOIN pim_catalog_association_product_model_to_product asso_products ON asso_products.association_id = asso.id
                 LEFT JOIN pim_catalog_product associated_product ON asso_products.product_uuid = associated_product.uuid
+                LEFT JOIN pim_catalog_product_unique_data pcpud
+                    ON pcpud.product_uuid = associated_product.uuid
+                    AND pcpud.attribute_id = (SELECT id FROM main_identifier)
                 LEFT JOIN pim_catalog_association_product_model_to_product_model asso_pms ON asso_pms.association_id = asso.id
                 LEFT JOIN pim_catalog_product_model associated_pm ON associated_pm.id = asso_pms.product_model_id
                 LEFT JOIN pim_catalog_association_product_model_to_group asso_groups ON asso.id = asso_groups.association_id

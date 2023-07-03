@@ -28,7 +28,6 @@ final class MarketplaceUrlGenerator implements MarketplaceUrlGeneratorInterface
     public function generateUrl(string $username): string
     {
         $profile = $this->getUserProfileQuery->execute($username);
-        $edition = '';
         $queryToBuild = [
             'utm_medium' => 'pim',
             'utm_content' => 'marketplace_button',
@@ -40,18 +39,16 @@ final class MarketplaceUrlGenerator implements MarketplaceUrlGeneratorInterface
 
         switch ($this->versionProvider->getEdition()) {
             case 'Serenity':
-                $edition = '/discover/serenity';
                 $queryToBuild['utm_campaign'] = 'connect_serenity';
                 break;
 
             case 'GE':
-                $edition = '/discover/growth-edition';
                 $queryToBuild['utm_campaign'] = 'connect_ge';
                 break;
         }
 
         $query = \http_build_query($queryToBuild);
 
-        return $this->marketplaceUrl . $edition . self::START_QUERY . $query;
+        return $this->marketplaceUrl . self::START_QUERY . $query;
     }
 }
