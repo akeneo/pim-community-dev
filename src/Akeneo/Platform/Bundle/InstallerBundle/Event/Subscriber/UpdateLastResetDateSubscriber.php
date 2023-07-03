@@ -10,13 +10,13 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Bundle\InstallerBundle\Event\Subscriber;
 
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
-use Akeneo\Platform\Bundle\InstallerBundle\Persistence\Sql\InstallData;
+use Akeneo\Platform\Bundle\InstallerBundle\Persistence\Sql\SaveResetEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class UpdateLastResetDateSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private readonly InstallData $installData,
+        private readonly SaveResetEvent $saveResetEvent,
     ) {
     }
 
@@ -32,6 +32,6 @@ class UpdateLastResetDateSubscriber implements EventSubscriberInterface
 
     public function onInstanceReset(): void
     {
-        $this->installData->withDatetime(new \DateTimeImmutable('now'));
+        $this->saveResetEvent->withDatetime(new \DateTimeImmutable('now'));
     }
 }

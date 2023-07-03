@@ -14,6 +14,6 @@ services:
 
   Akeneo\Platform\Bundle\InstallerBundle\Event\Subscriber\UpdateLastResetDateSubscriber:
     arguments:
-      - '@Akeneo\Platform\Bundle\InstallerBundle\Persistence\Sql\InstallData'
+      - '@Akeneo\Platform\Bundle\InstallerBundle\Persistence\Sql\SaveResetEvent'
     tags:
       - { name: 'kernel.event_subscriber' }
