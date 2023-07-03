@@ -60,7 +60,7 @@ final class ComputeProductModelScoreOnProductCreateOrUpdateEndToEnd extends Mess
         $productModelId = new ProductModelId($productModel->getId());
 
         self::assertFalse($this->isProductModelScoreComputed($productModelId));
-        $this->launchConsumer('dqi_product_model_score_compute_on_upsert_consumer');
+        $this->launchConsumer('dqi_product_model_score_compute_consumer');
         self::assertTrue($this->isProductModelScoreComputed($productModelId));
     }
 
@@ -70,7 +70,7 @@ final class ComputeProductModelScoreOnProductCreateOrUpdateEndToEnd extends Mess
         $productModel = $this->createProductModel($code, 'shoes_color');
         $productModelId = new ProductModelId($productModel->getId());
 
-        $this->launchConsumer('dqi_product_model_score_compute_on_upsert_consumer');
+        $this->launchConsumer('dqi_product_model_score_compute_consumer');
         $this->productModelScoreComputeOnUpsertQueueStatus->flushJobQueue();
 
         $this->updateProductModel($productModel, [
@@ -78,7 +78,7 @@ final class ComputeProductModelScoreOnProductCreateOrUpdateEndToEnd extends Mess
         ]);
 
         $this->simulateOldProductModelScoreCompute();
-        $this->launchConsumer('dqi_product_model_score_compute_on_upsert_consumer');
+        $this->launchConsumer('dqi_product_model_score_compute_consumer');
         self::assertTrue($this->isProductModelScoreComputed($productModelId));
     }
 
@@ -96,7 +96,7 @@ final class ComputeProductModelScoreOnProductCreateOrUpdateEndToEnd extends Mess
             self::assertFalse($this->isProductModelScoreComputed($productModelId));
         }
 
-        $this->launchConsumer('dqi_product_model_score_compute_on_upsert_consumer');
+        $this->launchConsumer('dqi_product_model_score_compute_consumer');
 
         foreach ($productModels as $productModel) {
             $productModelId = new ProductModelId($productModel->getId());
