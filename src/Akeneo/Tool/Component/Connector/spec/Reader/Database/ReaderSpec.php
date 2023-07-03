@@ -31,6 +31,7 @@ class ReaderSpec extends ObjectBehavior
         $this->setStepExecution($stepExecution);
         $stepExecution->incrementSummaryInfo('read')->shouldBeCalledTimes(1);
 
+        $this->initialize();
         $this->read()->shouldReturn($product);
         $this->read()->shouldReturn(null);
     }

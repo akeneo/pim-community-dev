@@ -59,7 +59,7 @@ class CsvUserWriterSpec extends ObjectBehavior
         $jobParameters->get('enclosure')->willReturn('"');
         $jobParameters->has('linesPerFile')->willReturn(false);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $bufferFactory->create()->willReturn($flatRowBuffer);
+        $bufferFactory->create(null)->willReturn($flatRowBuffer);
         $this->initialize();
 
         $this->setStepExecution($stepExecution);

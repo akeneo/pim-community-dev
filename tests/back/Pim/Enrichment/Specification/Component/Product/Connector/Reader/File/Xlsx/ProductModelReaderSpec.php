@@ -96,6 +96,7 @@ class ProductModelReaderSpec extends ObjectBehavior
         ];
 
         $fileIterator->getHeaders()->willReturn(['sku', 'name', 'view', 'manual-fr_FR']);
+        $fileIterator->rewind()->shouldBeCalled();
         $fileIterator->next()->shouldBeCalled();
         $fileIterator->current()->willReturn($item);
         $fileIterator->valid()->willReturn(true);
@@ -106,6 +107,7 @@ class ProductModelReaderSpec extends ObjectBehavior
         $arrayConverter->convert($item, $converterOptions)->willReturn($convertedItem);
         $mediaPathTransformer->transform($convertedItem['values'], $filePath)->shouldBeCalled();
 
+        $this->initialize();
         $this->read();
     }
 }
