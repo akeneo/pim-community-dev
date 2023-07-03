@@ -31,7 +31,7 @@ use Webmozart\Assert\Assert;
  * - fetch all the products of this family,
  * - batch save these products.
  *
- * This way, on family, import the family's product completeness will be computed
+ * This way, on family import, the family's product completeness will be computed
  * and all family's attributes will be indexed.
  *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
@@ -41,37 +41,19 @@ use Webmozart\Assert\Assert;
 class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, InitializableInterface, TrackableTaskletInterface
 {
     private ?StepExecution $stepExecution = null;
-    private IdentifiableObjectRepositoryInterface $familyRepository;
-    private ProductQueryBuilderFactoryInterface $productQueryBuilderFactory;
-    private ItemReaderInterface $familyReader;
-    private KeepOnlyValuesForVariation $keepOnlyValuesForVariation;
-    private ValidatorInterface $validator;
-    private BulkSaverInterface $productSaver;
-    private JobRepositoryInterface $jobRepository;
-    private EntityManagerClearerInterface $cacheClearer;
-    private int $batchSize;
 
     public function __construct(
-        IdentifiableObjectRepositoryInterface $familyRepository,
-        ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
-        ItemReaderInterface $familyReader,
-        BulkSaverInterface $productSaver,
-        EntityManagerClearerInterface $cacheClearer,
-        JobRepositoryInterface $jobRepository,
-        KeepOnlyValuesForVariation $keepOnlyValuesForVariation,
-        ValidatorInterface $validator,
+        private IdentifiableObjectRepositoryInterface $familyRepository,
+        private ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
+        private ItemReaderInterface $familyReader,
+        private BulkSaverInterface $productSaver,
+        private EntityManagerClearerInterface $cacheClearer,
+        private JobRepositoryInterface $jobRepository,
+        private KeepOnlyValuesForVariation $keepOnlyValuesForVariation,
+        private ValidatorInterface $validator,
         private ProductRepositoryInterface $productRepository,
-        int $batchSize
+        private int $batchSize
     ) {
-        $this->familyRepository = $familyRepository;
-        $this->productQueryBuilderFactory = $productQueryBuilderFactory;
-        $this->familyReader = $familyReader;
-        $this->productSaver = $productSaver;
-        $this->jobRepository = $jobRepository;
-        $this->cacheClearer = $cacheClearer;
-        $this->keepOnlyValuesForVariation = $keepOnlyValuesForVariation;
-        $this->validator = $validator;
-        $this->batchSize = $batchSize;
     }
 
     /**
@@ -90,7 +72,7 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
     /**
      * {@inheritdoc}
      */
-    public function execute()
+    public function execute(): void
     {
         $this->initialize();
         $familyCodes = $this->extractFamilyCodes();
@@ -145,7 +127,7 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
     /**
      * {@inheritdoc}
      */
-    public function initialize()
+    public function initialize(): void
     {
         $this->cacheClearer->clear();
 

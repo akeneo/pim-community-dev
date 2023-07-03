@@ -213,7 +213,7 @@ services:
             - '@akeneo_batch.job_repository'
             - '@pim_catalog.entity_with_family_variant.keep_only_values_for_variation'
             - '@validator'
-            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.product_without_permission'
             - '%pim_job_product_batch_size%'
 
     pim_connector.tasklet.mass_edit_family.compute_completeness_of_family_products:
@@ -263,7 +263,7 @@ services:
             - '@akeneo_batch.job_repository'
             - '@pim_catalog.entity_with_family_variant.keep_only_values_for_variation'
             - '@validator'
-            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.product_without_permission'
             - '%pim_job_product_batch_size%'
 
     pim_connector.tasklet.csv_attribute_group_import.ensure_attribute_group_order:
