@@ -215,8 +215,8 @@ services:
         arguments:
             - '@Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory'
             - '%env(GOOGLE_CLOUD_PROJECT)%'
-            - '%env(PUBSUB_TOPIC_PRODUCTS_WERE_UPSERT_QUEUE)%'
-            - '%env(PUBSUB_SUBSCRIPTION_DQI_PRODUCT_SCORE_COMPUTE_ON_UPSERT)%'
+            - '%env(PUBSUB_TOPIC_PRODUCTS_WERE_UPSERT)%'
+            - '%env(PUBSUB_SUBSCRIPTION_DQI_PRODUCT_SCORE_COMPUTE)%'
 
     akeneo_integration_tests.launcher.job_execution_observer:
         class: '%akeneo_integration_tests.launcher.job_execution_observer.class%'

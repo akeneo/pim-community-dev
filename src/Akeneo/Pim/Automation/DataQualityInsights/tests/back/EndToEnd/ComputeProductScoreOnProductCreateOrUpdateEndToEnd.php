@@ -14,7 +14,7 @@ use Ramsey\Uuid\Uuid;
  */
 final class ComputeProductScoreOnProductCreateOrUpdateEndToEnd extends MessengerTestCase
 {
-    private const CONSUMER_NAME = 'dqi_product_score_compute_on_upsert_consumer';
+    private const CONSUMER_NAME = 'dqi_product_score_compute';
 
     public function test_it_computes_product_score_after_creation(): void
     {
