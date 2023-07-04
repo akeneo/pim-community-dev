@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace AkeneoTest\UserManagement\Integration\Bundle\Import;
 
-use Akeneo\Connectivity\Connection\Infrastructure\Service\User\DeleteUserRole;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlCreateJobInstance;
@@ -252,10 +251,7 @@ CSV;
     {
         $this->createRoleWithAcls('ROLE_WITH_EDIT_ROLE', MinimumEditRolePermission::getAllValues());
         $this->createRoleWithAcls('ROLE_WITHOUT_EDIT_ROLE', ['action:oro_config_system']);
-
-        $this->deleteUserRole('ROLE_ADMINISTRATOR');
-        $this->deleteUserRole('ROLE_CATALOG_MANAGER');
-        $this->deleteUserRole('ROLE_USER');
+        $this->deleteAllOtherRoles(['ROLE_WITH_EDIT_ROLE', 'ROLE_WITHOUT_EDIT_ROLE']);
 
         $csvContent = <<<CSV
         role;label;permissions
@@ -322,12 +318,15 @@ SQL,
         Assert::assertMatchesRegularExpression($pattern, $warnings[0]['reason']);
     }
 
-    private function deleteUserRole(string $role) {
+    /**
+     * @param array<string> $roles
+     */
+    private function deleteAllOtherRoles(array $roles)
+    {
         $this->connection->executeQuery(
-        <<<SQL
-            DELETE FROM oro_access_role WHERE role = :role;
-            SQL,
-            ['role' => $role]
+            'DELETE FROM oro_access_role WHERE role NOT IN (:roles)',
+            ['roles' => $roles],
+            ['roles' => Connection::PARAM_STR_ARRAY]
         );
     }
 
