@@ -39,7 +39,7 @@ final class UpsertProductHandler
         private ValidatorInterface $productValidator,
         private EventDispatcherInterface $eventDispatcher,
         private UserIntentApplierRegistry $applierRegistry,
-        private TokenStorageInterface $tokenStorage
+        private TokenStorageInterface $tokenStorage,
     ) {
     }
 
@@ -72,6 +72,10 @@ final class UpsertProductHandler
         $violations = $this->productValidator->validate($product);
         if (0 < $violations->count()) {
             throw new LegacyViolationsException($violations);
+        }
+
+        if ($command->dryRun()) {
+            return;
         }
 
         $isUpdate = $product->isDirty();

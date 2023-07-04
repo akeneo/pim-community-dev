@@ -21,7 +21,15 @@ akeneo.category:
     delete: Supprimer l'arbre
   template:
     learn_more: En savoir plus sur le template de catégorie
+    create: Créer un template
+    create_confirmation_modal:
+      title: Créer un nouveau template de catégorie
+      helper: Créez un template de catégorie pour définir des attributs et activer l'enrichissement sur toutes les catégories de l'arbre.
+      category_tree: Arbre de catégories
+      link: En savoir plus sur les templates de catégories.
     edit: Modifier le template
+    notification_success: Le template de catégorie créé avec succès
+    notification_error: Le template de catégorie n'a pas pu être créé
     not_found: Il n'y a pas de template actif pour cette catégorie.
     properties:
       general_properties: Propriétés générales
@@ -97,6 +105,28 @@ akeneo.category:
       saving: Enregistrement en cours
       editing: Modification en cours
       errors: Erreurs non enregistrées
+    initialize:
+      title: Ajouter des attributs de catégorie
+      message: Définissez le contenu de vos catégories en ajoutant des attributs de type Texte, Zone de Texte ou Image.
+      choice_message: Commencez par créer un premier attribut en fonction de vos besoins, ou chargez un ensemble de 13 attributs suggérés.
+      button:
+        load: Charger un ensemble d'attributs
+        create: Créer un premier attribut
+    load_attribute_set:
+      section_title: Charger un ensemble d'attributs
+      title: Charger un ensemble d'attributs suggérés
+      description: Commencez facilement la configuration des catégories enrichies en chargeant un ensemble d'attributs suggérés.
+      content_description: 'Cet ensemble contient 13 attributs :'
+      content:
+        description_attributes: 2 attributs de type Zone de texte pour les descriptions de catégories longues et courtes
+        url_attributes: 1 attribut de type Texte pour les informations d'URL
+        image_attributes: 3 attributs de type Image et 3 attributs de type Texte pour l'image et ses informations de texte alternatif
+        seo_attributes: 2 attributs de type Texte et 2 attributs de type Zone de texte pour les informations SEO
+      confirmation_message: Êtes-vous sûr de vouloir charger cet ensemble d'attributs ?
+      button:
+        load: Charger un ensemble d'attributs
+      notification:
+        success: Attributs créés avec succès
   template_list:
     columns:
       header: Libellé
