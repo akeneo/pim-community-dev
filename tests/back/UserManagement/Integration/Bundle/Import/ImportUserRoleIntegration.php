@@ -6,9 +6,16 @@ namespace AkeneoTest\UserManagement\Integration\Bundle\Import;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlCreateJobInstance;
+use Akeneo\Tool\Bundle\ConnectorBundle\Doctrine\UnitOfWorkAndRepositoriesClearer;
 use Akeneo\Tool\Component\Connector\Writer\File\SpoutWriterFactory;
+use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleWithPermissionsRepository;
 use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Repository\RoleRepositoryInterface;
+use Akeneo\UserManagement\Component\Storage\Saver\RoleWithPermissionsSaver;
+use Akeneo\UserManagement\Domain\Permissions\MinimumEditRolePermission;
+use Doctrine\DBAL\Connection;
 use OpenSpout\Common\Entity\Row;
 use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
@@ -27,6 +34,12 @@ final class ImportUserRoleIntegration extends TestCase
     private JobLauncher $jobLauncher;
     private RoleRepositoryInterface $roleRepository;
     private AclManager $aclManager;
+    private RoleWithPermissionsRepository $roleWithPermissionsRepository;
+    private UnitOfWorkAndRepositoriesClearer $cacheClearer;
+    private SimpleFactoryInterface $roleFactory;
+    private SaverInterface $roleSaver;
+    private RoleWithPermissionsSaver $roleWithPermissionsSaver;
+    private Connection $connection;
 
     /**
      * {@inheritdoc}
@@ -38,6 +51,12 @@ final class ImportUserRoleIntegration extends TestCase
         $this->jobLauncher = $this->get('akeneo_integration_tests.launcher.job_launcher');
         $this->roleRepository = $this->get('pim_user.repository.role');
         $this->aclManager = $this->get('oro_security.acl.manager');
+        $this->roleWithPermissionsRepository = $this->get('pim_user.repository.role_with_permissions');
+        $this->cacheClearer = $this->get('pim_connector.doctrine.cache_clearer');
+        $this->roleFactory = $this->get('pim_user.factory.role');
+        $this->roleSaver = $this->get('pim_user.saver.role');
+        $this->roleWithPermissionsSaver = $this->get('pim_user.saver.role_with_permissions');
+        $this->connection = $this->get('database_connection');
 
         $this->get(SqlCreateJobInstance::class)->createJobInstance([
             'code' => static::CSV_IMPORT_JOB_CODE,
@@ -227,6 +246,24 @@ CSV;
         );
     }
 
+    /** @test */
+    public function test_it_cannot_remove_last_edit_role_role(): void
+    {
+        $this->createRoleWithAcls('ROLE_WITH_EDIT_ROLE', MinimumEditRolePermission::getAllValues());
+        $this->createRoleWithAcls('ROLE_WITHOUT_EDIT_ROLE', ['action:oro_config_system']);
+        $this->deleteAllOtherRoles(['ROLE_WITH_EDIT_ROLE', 'ROLE_WITHOUT_EDIT_ROLE']);
+
+        $csvContent = <<<CSV
+        role;label;permissions
+        ROLE_WITH_EDIT_ROLE;"Role with edit role";ROLE_WITHOUT_EDIT_ROLE
+        CSV;
+        $this->jobLauncher->launchImport(static::CSV_IMPORT_JOB_CODE, $csvContent);
+        $this->assertWarning(
+            '/pim_user.controller.role.message.cannot_remove_last_edit_role_permission/',
+            self::CSV_IMPORT_JOB_CODE
+        );
+    }
+
     private function assertRoleHasPermission(Role $role, string $permission): void
     {
         self::assertTrue($this->roleHasPermission($role, $permission), sprintf(
@@ -267,7 +304,7 @@ CSV;
 
     private function assertWarning(string $pattern, string $jobCode): void
     {
-        $warnings = $this->get('database_connection')->executeQuery(
+        $warnings = $this->connection->executeQuery(
             <<<SQL
 SELECT reason FROM akeneo_batch_warning warning
 INNER JOIN akeneo_batch_step_execution abse ON warning.step_execution_id = abse.id
@@ -279,6 +316,41 @@ SQL,
         )->fetchAll();
         Assert::assertCount(1, $warnings);
         Assert::assertMatchesRegularExpression($pattern, $warnings[0]['reason']);
+    }
+
+    /**
+     * @param array<string> $roles
+     */
+    private function deleteAllOtherRoles(array $roles)
+    {
+        $this->connection->executeQuery(
+            'DELETE FROM oro_access_role WHERE role NOT IN (:roles)',
+            ['roles' => $roles],
+            ['roles' => Connection::PARAM_STR_ARRAY]
+        );
+    }
+
+    private function createRoleWithAcls(string $roleCode, array $acls): void
+    {
+        $role = $this->roleFactory->create();
+        $role->setRole($roleCode);
+        $role->setLabel($roleCode);
+        $this->roleSaver->save($role);
+
+        $roleWithPermissions = $this->roleWithPermissionsRepository->findOneByIdentifier($roleCode);
+        assert(null !== $roleWithPermissions);
+
+        $permissions = $roleWithPermissions->permissions();
+        foreach ($acls as $acl) {
+            $permissions[$acl] = true;
+        }
+        $roleWithPermissions->setPermissions($permissions);
+
+        $this->roleWithPermissionsSaver->saveAll([$roleWithPermissions]);
+
+        $this->aclManager->flush();
+        $this->aclManager->clearCache();
+        $this->cacheClearer->clear();
     }
 
     /**
