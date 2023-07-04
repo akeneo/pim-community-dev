@@ -1,6 +1,9 @@
 pim_title:
   pim_category_template_edit: Edita la plantilla de categoria
 akeneo.category:
+  unknown_error:
+    title: S'ha produït un error desconggut.
+    message: Si us plau, actualitzeu la pàgina i torneu a provar.
   tree_list:
     column:
       category_templates: Plantilles de categoria
@@ -19,8 +22,19 @@ akeneo.category:
     delete: Esborra l'arbre
   template:
     learn_more: Més informació sobre les plantilles de categories
+    create: Crear plantilla
+    create_confirmation_modal:
+      title: Crea una nova plantilla de categoria
+      helper: Creeu una plantilla de categoria per definir atributs i activeu l'enriquiment a totes les categories d'aquest arbre.
+      category_tree: Arbre de categories
+      link: Més informació sobre les plantilles de categories
     edit: Editar plantilla
+    notification_success: La plantilla de categoria s'ha creat correctament
+    notification_error: No s'ha pogut crear la plantilla de categoria
     not_found: No hi ha cap plantilla activa per a aquesta categoria
+    properties:
+      general_properties: Propietats generals
+      label_translations_in_ui_locales: Traduccions d'etiquetes regionals de la IU
     attribute:
       description_title: Descripció Configuració
       type:
@@ -39,6 +53,7 @@ akeneo.category:
         translations:
           title: Traduccions d'etiquetes
         error_message: Hi ha valors no vàlids a la pàgina.
+        unsaved_changes: Té canvis no desats. Segur que voleu sortir?
     add_attribute:
       no_attribute_title: Crea el teu primer atribut
       no_attribute_instructions: Definiu el contingut que voleu associar a les vostres categories afegint atributs de text, àrea de text o imatge a aquesta plantilla.
@@ -78,11 +93,41 @@ akeneo.category:
         title: 'L''atribut {{ attribute }} s''ha eliminat correctament'
     deactivate:
       deactivate_template: Esborrar plantilla
+      confirmation_modal:
+        title: Suprimeix la plantilla de categoria
+        message: Esteu segur que voleu suprimir la plantilla de categoria anomenada {{ template }}?
+        helper: Si suprimiu aquesta plantilla, se suprimiran permanentment els atributs i els valors de les categories associades.
+        deactivate: Eliminar
+      notification_success:
+        title: 'Plantilla {{ template }} eliminada'
+        message: '{{ template }} s''ha eliminat. S''ha suprimit el contingut de les categories associades.'
     auto-save:
       saved: Desat
       saving: Desant
       editing: Editant
       errors: Errors no desats
+    initialize:
+      title: Afegeix atributs de categoria
+      message: Definiu el contingut de les vostres categories afegint atributs de text, àrea de text o imatge.
+      choice_message: Comenceu creant un primer atribut segons les vostres necessitats o carregueu un conjunt de 13 atributs suggerits.
+      button:
+        load: Carregueu un conjunt d'atributs
+        create: Crea el teu primer atribut
+    load_attribute_set:
+      section_title: Carrega el conjunt d'atributs
+      title: Carregueu un conjunt d'atributs suggerits
+      description: Inicieu fàcilment la configuració de categories enriquides carregant un conjunt d'atributs suggerits.
+      content_description: 'Aquest conjunt conté 13 atributs:'
+      content:
+        description_attributes: 2 Atributs de l'àrea de text per a descripcions de categories llargues i curtes
+        url_attributes: 1 Atribut de text per a la informació de l'URL
+        image_attributes: 3 imatges i 3 atributs de text per a la imatge i la seva informació de text alternatiu
+        seo_attributes: 2 atributs de text i 2 d'àrea de text per a la informació de SEO
+      confirmation_message: Esteu segur que voleu carregar aquest conjunt d'atributs?
+      button:
+        load: Carrega el conjunt d'atributs
+      notification:
+        success: Els atributs s'han creat correctament
   template_list:
     columns:
       header: Etiqueta
