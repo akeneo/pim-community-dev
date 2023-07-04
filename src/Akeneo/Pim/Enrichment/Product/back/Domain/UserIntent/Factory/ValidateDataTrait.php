@@ -32,6 +32,10 @@ trait ValidateDataTrait
 
     protected function validateValueStructure(string $attributeCode, mixed $value): void
     {
+        if (!is_array($value)) {
+            throw InvalidPropertyTypeException::validArrayStructureExpected($attributeCode, 'one of the values is not an array', static::class, [$value]);
+        }
+
         if (!array_key_exists('locale', $value)) {
             throw InvalidPropertyTypeException::arrayKeyExpected($attributeCode, 'locale', static::class, $value);
         }

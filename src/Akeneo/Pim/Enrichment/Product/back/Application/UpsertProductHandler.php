@@ -132,7 +132,7 @@ final class UpsertProductHandler
                         ),
                     ]);
 
-                    throw new ViolationsException($violations);
+                    throw new ViolationsException($violations, $e);
                 }
             } else {
                 throw new \InvalidArgumentException(\sprintf('The "%s" intent cannot be handled.', get_class($userIntent)));

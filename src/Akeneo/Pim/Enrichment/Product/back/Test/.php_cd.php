@@ -32,10 +32,12 @@ $rules = [
         'Akeneo\Pim\Structure\Component\AttributeTypes',
         'Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException',
         'Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException',
+        'Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException',
         'Ramsey\Uuid\UuidInterface',
 
         // API
         'Akeneo\Pim\Enrichment\Product\API\Query\ProductUuidCursorInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidAttributeValueTypeException',
     ])->in('Akeneo\Pim\Enrichment\Product\Domain'),
 
     $builder->only([

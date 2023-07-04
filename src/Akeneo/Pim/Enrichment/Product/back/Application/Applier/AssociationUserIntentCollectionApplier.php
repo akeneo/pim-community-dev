@@ -72,9 +72,12 @@ final class AssociationUserIntentCollectionApplier implements UserIntentApplier
             $normalizedAssociations[$associationUserIntent->associationType()][$entityType] = $values;
         }
 
-        if ([] === $normalizedAssociations) {
-            return;
-        }
+        // [legacy] all the associations are saved in the database (even empty),
+        // in the future, it would be better to add the missing associations in the normalization,
+
+        // if ([] === $normalizedAssociations) {
+        //   return;
+        // }
 
         $this->productUpdater->update($product, ['associations' => $normalizedAssociations]);
     }

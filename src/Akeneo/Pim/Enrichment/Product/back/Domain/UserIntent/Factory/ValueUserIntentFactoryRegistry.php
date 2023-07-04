@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory;
 
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetAttributeTypes;
+use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use Webmozart\Assert\Assert;
 
 /**
@@ -48,7 +49,9 @@ class ValueUserIntentFactoryRegistry implements UserIntentFactory
         $valueUserIntents = [];
         foreach ($data as $attributeCode => $values) {
             $attributeType = $attributeTypesByCode[\strtolower((string) $attributeCode)] ?? null;
-            Assert::notNull($attributeType, \sprintf('Could not find the %s attribute', $attributeCode));
+            if (null === $attributeType) {
+                throw UnknownPropertyException::unknownProperty($attributeCode);
+            }
             $factory = $this->valueUserIntentFactoriesByAttributeType[$attributeType] ?? null;
             if (null === $factory) {
                 throw new \InvalidArgumentException(\sprintf('There is no value factory linked to the attribute type %s', $attributeType));

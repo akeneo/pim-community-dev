@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Enrichment\Product\Domain\UserIntent;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\UserIntentFactory;
+use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use Webmozart\Assert\Assert;
 
 /**
@@ -47,7 +48,7 @@ class UserIntentFactoryRegistry
             return [];
         }
         if (null === $factory) {
-            throw new \InvalidArgumentException(\sprintf('Cannot create userIntent from %s fieldName', $fieldName));
+            throw UnknownPropertyException::unknownProperty($fieldName);
         }
 
         return $factory->create($fieldName, $data);

@@ -11,6 +11,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\SetGroups;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetImageValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
@@ -23,6 +24,13 @@ class PartialUpdateProductWithUuidEndToEnd extends AbstractProductTestCase
 {
     use AssertEventCountTrait;
 
+    const PRODUCT_FAMILY_UUID = '23344edd-7785-49c9-b3d0-f3573d814430';
+    const PRODUCT_GROUPS_UUID = '1b6a4e6d-271c-489b-aae4-4e080759791d';
+    const PRODUCT_CATEGORIES_UUID = '61e2f6df-e687-4140-9f6e-3d9dce0a367e';
+    const PRODUCT_ASSOCIATIONS_UUID = '1fd06e3c-d5c2-43a5-8b6c-4a5b68c8993e';
+    const PRODUCT_LOCALIZABLE_UUID = '5fa15886-7f37-4f39-a377-5998d1e50f64';
+    const PRODUCT_COMPLETE_UUID = '452efe93-0197-4949-8c6e-b86b30480b61';
+
     /**
      * {@inheritdoc}
      */
@@ -30,29 +38,35 @@ class PartialUpdateProductWithUuidEndToEnd extends AbstractProductTestCase
     {
         parent::setUp();
 
-        $this->createProduct('product_family', [
+        $this->createProductWithUuid(self::PRODUCT_FAMILY_UUID, [
+            new SetIdentifierValue('sku', 'product_family'),
             new SetFamily('familyA2')
         ]);
 
-        $this->createProduct('product_groups', [
+        $this->createProductWithUuid(self::PRODUCT_GROUPS_UUID, [
+            new SetIdentifierValue('sku', 'product_groups'),
             new SetGroups(['groupA'])
         ]);
 
-        $this->createProduct('product_categories', [
+        $this->createProductWithUuid(self::PRODUCT_CATEGORIES_UUID, [
+            new SetIdentifierValue('sku', 'product_categories'),
             new SetCategories(['master'])
         ]);
 
-        $this->createProduct('product_associations', [
+        $this->createProductWithUuid(self::PRODUCT_ASSOCIATIONS_UUID, [
+            new SetIdentifierValue('sku', 'product_associations'),
             new AssociateProducts('X_SELL', ['product_categories']),
             new AssociateGroups('X_SELL', ['groupA'])
         ]);
 
-        $this->createProduct('localizable', [
+        $this->createProductWithUuid(self::PRODUCT_LOCALIZABLE_UUID, [
+            new SetIdentifierValue('sku', 'localizable'),
             new SetImageValue('a_localizable_image', null, 'en_US', $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))),
             new SetImageValue('a_localizable_image', null, 'fr_FR', $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))),
         ]);
 
-        $this->createProduct('complete', [
+        $this->createProductWithUuid(self::PRODUCT_COMPLETE_UUID, [
+            new SetIdentifierValue('sku', 'complete'),
             new SetFamily('familyA2'),
             new SetGroups(['groupA']),
             new SetCategories(['master']),
@@ -175,7 +189,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuid('product_family')->toString()
+            self::PRODUCT_FAMILY_UUID
         ), [], [], [], $data);
 
         $response = $client->getResponse();
@@ -189,8 +203,7 @@ JSON;
     public function skipTestUpdateProductWithSameUuid()
     {
         $client = $this->createAuthenticatedClient();
-        $uuid = $this->getProductUuid('product_family');
-        $uuidString = $uuid->toString();
+        $uuidString = self::PRODUCT_FAMILY_UUID;
 
         $data =
             <<<JSON
@@ -199,7 +212,7 @@ JSON;
     }
 JSON;
 
-        $client->request('PATCH', sprintf('api/rest/v1/products-uuid/%s', $uuid->toString()), [], [], [], $data);
+        $client->request('PATCH', sprintf('api/rest/v1/products-uuid/%s', $uuidString), [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertSame('', $response->getContent());
@@ -221,7 +234,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuid('product_family')->toString()
+            self::PRODUCT_FAMILY_UUID
         ), [], [], [], $data);
 
         $expectedContent = [
@@ -229,7 +242,7 @@ JSON;
             'message' => sprintf(
                 'The uuid "%s" provided in the request body must match the uuid "%s" provided in the url.',
                 $newUuid->toString(),
-                $this->getProductUuid('product_family')->toString()
+                self::PRODUCT_FAMILY_UUID
             ),
         ];
 
@@ -299,7 +312,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuid('product_family')->toString()
+            self::PRODUCT_FAMILY_UUID
         ), [], [], [], $data);
 
         $response = $client->getResponse();
@@ -333,7 +346,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuid('complete')->toString()
+            self::PRODUCT_COMPLETE_UUID
         ), [], [], [], $data);
 
         $response = $client->getResponse();
@@ -354,7 +367,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuid('product_family')->toString()
+            self::PRODUCT_FAMILY_UUID
         ), [], [], [], $data);
 
         $expectedProduct = [
@@ -396,7 +409,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuid('product_family')->toString()
+            self::PRODUCT_FAMILY_UUID
         ), [], [], [], $data);
 
         $expectedProduct = [
@@ -437,7 +450,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuid('product_groups')->toString()
+            self::PRODUCT_GROUPS_UUID
         ), [], [], [], $data);
 
         $expectedProduct = [
@@ -480,7 +493,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuid('product_groups')->toString()
+            self::PRODUCT_GROUPS_UUID
         ), [], [], [], $data);
 
         $expectedProduct = [
@@ -524,7 +537,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuid('product_categories')->toString()
+            self::PRODUCT_CATEGORIES_UUID
         ), [], [], [], $data);
 
         $expectedProduct = [
@@ -561,6 +574,7 @@ JSON;
         $data =
             <<<JSON
     {
+        "parent": null,
         "categories": [],
         "values": {"sku": [{"locale": null, "scope": null, "data": "product_categories" }]}
     }
@@ -568,7 +582,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuid('product_categories')->toString()
+            self::PRODUCT_CATEGORIES_UUID
         ), [], [], [], $data);
 
         $expectedProduct = [
@@ -611,8 +625,8 @@ JSON;
 
         $client = $this->createAuthenticatedClient();
 
-        $uuidProductCategories = $this->getProductUuid('product_categories')->toString();
-        $uuidProductFamily = $this->getProductUuid('product_family')->toString();
+        $uuidProductCategories = self::PRODUCT_CATEGORIES_UUID;
+        $uuidProductFamily = self::PRODUCT_FAMILY_UUID;
 
         $data = <<<JSON
 {
@@ -631,7 +645,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuid('product_associations')->toString()
+            self::PRODUCT_ASSOCIATIONS_UUID
         ), [], [], [], $data);
 
         $expectedProduct = [
@@ -653,8 +667,8 @@ JSON;
                 'PACK' => [
                     'groups' => ['groupA'],
                     'product_uuids' => [
-                        $this->getProductUuid('product_family')->toString(),
-                        $this->getProductUuid('product_categories')->toString(),
+                        $uuidProductFamily,
+                        $uuidProductCategories,
                     ],
                     'product_models' => [],
                 ],
@@ -670,7 +684,7 @@ JSON;
                 ],
                 'X_SELL' => [
                     'groups' => ['groupA'],
-                    'product_uuids' => [$this->getProductUuid('product_categories')->toString()],
+                    'product_uuids' => [$uuidProductCategories],
                     'product_models' => [],
                 ],
             ],
@@ -704,7 +718,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuid('product_associations')->toString()
+            self::PRODUCT_ASSOCIATIONS_UUID
         ), [], [], [], $data);
 
         $expectedProduct = [
@@ -726,7 +740,7 @@ JSON;
                 'PACK'         => ['groups'   => [], 'product_uuids' => [], 'product_models' => []],
                 'SUBSTITUTION' => ['groups'   => [], 'product_uuids' => [], 'product_models' => []],
                 'UPSELL'       => ['groups'   => [], 'product_uuids' => [], 'product_models' => []],
-                'X_SELL'       => ['groups'   => [], 'product_uuids' => [$this->getProductUuid('product_categories')->toString()], 'product_models' => []],
+                'X_SELL'       => ['groups'   => [], 'product_uuids' => [self::PRODUCT_CATEGORIES_UUID], 'product_models' => []],
             ],
             'quantified_associations' => [],
         ];
@@ -761,7 +775,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuid('product_associations')->toString()
+            self::PRODUCT_ASSOCIATIONS_UUID
         ), [], [], [], $data);
 
         $expectedProduct = [
@@ -819,7 +833,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuid('product_associations')->toString()
+            self::PRODUCT_ASSOCIATIONS_UUID
         ), [], [], [], $data);
 
         $expectedContent = [
@@ -852,7 +866,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuid('product_categories')->toString()
+            self::PRODUCT_CATEGORIES_UUID
         ), [], [], [], $data);
 
         $expectedProduct = [
@@ -904,7 +918,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuid('localizable')->toString()
+            self::PRODUCT_LOCALIZABLE_UUID
         ), [], [], [], $data);
 
         $expectedProduct = [
@@ -961,7 +975,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuid('localizable')->toString()
+            self::PRODUCT_LOCALIZABLE_UUID
         ), [], [], [], $data);
 
         $expectedProduct = [
@@ -1014,7 +1028,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuid('localizable')->toString()
+            self::PRODUCT_LOCALIZABLE_UUID
         ), [], [], [], $data);
 
         $expectedProduct = [
@@ -1136,7 +1150,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuid('complete')->toString()
+            self::PRODUCT_COMPLETE_UUID
         ), [], [], [], $data);
 
         $expectedProduct = [
@@ -1218,7 +1232,7 @@ JSON;
                 'PACK'         => ['groups'   => [], 'product_uuids' => [], 'product_models' => []],
                 'SUBSTITUTION' => ['groups'   => [], 'product_uuids' => [], 'product_models' => []],
                 'UPSELL'       => ['groups'   => [], 'product_uuids' => [], 'product_models' => []],
-                'X_SELL'       => ['groups'   => ['groupA'], 'product_uuids' => [$this->getProductUuid('product_categories')->toString()], 'product_models' => []],
+                'X_SELL'       => ['groups'   => ['groupA'], 'product_uuids' => [self::PRODUCT_CATEGORIES_UUID], 'product_models' => []],
             ],
             'quantified_associations' => [],
         ];
@@ -1266,7 +1280,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuid('product_categories')->toString()
+            self::PRODUCT_CATEGORIES_UUID
         ), [], [], [], $data);
 
         $response = $client->getResponse();
@@ -1302,7 +1316,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuid('product_categories')->toString()
+            self::PRODUCT_CATEGORIES_UUID
         ), [], [], [], $data);
 
         $response = $client->getResponse();
@@ -1319,6 +1333,41 @@ JSON;
         $this->assertSame('', $response->getContent());
     }
 
+    public function testCreateProductWithConstraintViolations()
+    {
+        $client = $this->createAuthenticatedClient();
+        $uuid = Uuid::uuid4();
+
+        $data =
+            <<<JSON
+    {
+        "family": "familyA",
+        "values": {
+            "sku": [{"locale": null, "scope": null, "data": " nji,çsnqj; "}]
+        }
+    }
+JSON;
+        $client->request('PATCH', sprintf(
+            'api/rest/v1/products-uuid/%s',
+            $uuid->toString()
+        ), [], [], [], $data);
+
+        $expectedContent = [
+            'code'    => 422,
+            'message' => 'Validation failed.',
+            'errors'  => [
+                [
+                    'property' =>  'identifier',
+                    'message' => 'This field should not contain any comma or semicolon or leading/trailing space'
+                ],
+            ],
+        ];
+
+        $response = $client->getResponse();
+        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+    }
+
     public function testResponseWhenAPropertyIsNotExpected()
     {
         $client = $this->createAuthenticatedClient();
@@ -1332,7 +1381,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuid('product_categories')->toString()
+            self::PRODUCT_CATEGORIES_UUID
         ), [], [], [], $data);
 
         $expectedContent = [
@@ -1358,7 +1407,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuid('product_categories')->toString()
+            self::PRODUCT_CATEGORIES_UUID
         ), [], [], [], $data);
 
         $expectedContent = [
@@ -1379,7 +1428,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuid('product_categories')->toString()
+            self::PRODUCT_CATEGORIES_UUID
         ), [], [], [], $data);
 
         $expectedContent = [
@@ -1406,7 +1455,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuid('product_categories')->toString()
+            self::PRODUCT_CATEGORIES_UUID
         ), [], [], [], $data);
 
         $expectedContent = [
@@ -1448,7 +1497,7 @@ JSON;
 
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuid('product_family')->toString()
+            self::PRODUCT_FAMILY_UUID
         ), [], [], [], $data);
 
         $expectedContent = [
@@ -1479,12 +1528,12 @@ JSON;
 JSON;
         $client->request('PATCH', sprintf(
             'api/rest/v1/products-uuid/%s',
-            $this->getProductUuid('product_family')->toString()
+            self::PRODUCT_FAMILY_UUID
         ), [], [], [], $data);
 
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Property "family" expects a scalar as data, "array" given. Check the expected format on the API documentation.',
+            'message' => 'Property "family" expects a string as data, "array" given. Check the expected format on the API documentation.',
             '_links'  => [
                 'documentation' => [
                     'href' => "http://api.akeneo.com/api-reference.html#patch_products_uuid__uuid_"

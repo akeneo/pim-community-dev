@@ -6,6 +6,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Product\Domain\UserIntent;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\UserIntentFactory;
+use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -35,7 +36,7 @@ class UserIntentFactoryRegistrySpec extends ObjectBehavior
 
     function it_throws_an_exception_if_fieldname_is_not_supported()
     {
-        $this->shouldThrow(\InvalidArgumentException::class)
+        $this->shouldThrow(UnknownPropertyException::class)
             ->during('fromStandardFormatField', ['unknown', 'data']);
     }
 

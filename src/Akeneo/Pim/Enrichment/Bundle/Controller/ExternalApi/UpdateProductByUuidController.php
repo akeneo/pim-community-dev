@@ -9,7 +9,6 @@ use Akeneo\Pim\Enrichment\Bundle\Event\TechnicalErrorEvent;
 use Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
-use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\RemoveParentInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Event\ProductDomainErrorEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidArgumentException as ProductInvalidArgumentException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\TwoWayAssociationWithTheSameProductException;
@@ -17,14 +16,18 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\FindProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\ExternalApi\PayloadFormat;
+use Akeneo\Pim\Enrichment\Product\API\Command\Exception\LegacyViolationsException;
+use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Query\GetUserIntentsFromStandardFormat;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
 use Akeneo\Tool\Bundle\ApiBundle\Checker\DuplicateValueChecker;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;
 use Akeneo\Tool\Component\Api\Exception\DocumentedHttpException;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
-use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -33,6 +36,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\HandledStamp;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -48,15 +53,14 @@ class UpdateProductByUuidController
         private UrlGeneratorInterface $router,
         private FilterInterface $emptyValuesFilter,
         private EventDispatcherInterface $eventDispatcher,
-        private DuplicateValueChecker $duplicateValueChecker,
         private SecurityFacade $security,
-        private ValidatorInterface $validator,
-        private ObjectUpdaterInterface $updater,
         private ProductBuilderInterface $productBuilder,
-        private SaverInterface $saver,
+        private ValidatorInterface $validator,
         private AttributeFilterInterface $productAttributeFilter,
-        private ValidatorInterface $productValidator,
-        private RemoveParentInterface $removeParent,
+        private DuplicateValueChecker $duplicateValueChecker,
+        protected UserContext $userContext,
+        private MessageBusInterface $commandMessageBus,
+        private MessageBusInterface $queryMessageBus,
     ) {
     }
 
@@ -88,11 +92,14 @@ class UpdateProductByUuidController
         }
 
         $product = $this->findProduct->withUuid($uuid);
-
         $isUpdate = true;
         if (null === $product) {
             $isUpdate = false;
             $product = $this->productBuilder->createProduct(uuid: $uuid);
+        }
+
+        if (isset($data['parent']) || $product->isVariant()) {
+            $data = $this->productAttributeFilter->filter($data);
         }
 
         $this->validateUuidConsistency($uuid, $data);
@@ -104,37 +111,25 @@ class UpdateProductByUuidController
 
         $data = $this->formatAssociatedProductUuids($data);
 
-        $this->updateProduct($product, $data);
-        $this->validateProduct($product);
-        $this->saver->save($product);
-
-        return $this->getResponse($product->getUuid(), $isUpdate ? Response::HTTP_NO_CONTENT : Response::HTTP_CREATED);
-    }
-
-    private function getDecodedContent($content): array
-    {
-        // TODO: CPM-718
-        $decodedContent = json_decode($content, true);
-
-        if (null === $decodedContent) {
-            throw new BadRequestHttpException('Invalid json message received');
-        }
-
-        return $decodedContent;
-    }
-
-    private function updateProduct(ProductInterface $product, array $data): void
-    {
         try {
-            if ($this->needUpdateFromVariantToSimple($product, $data)) {
-                $this->removeParent->from($product);
-            }
+            $envelope = $this->queryMessageBus->dispatch(new GetUserIntentsFromStandardFormat($data));
+            $handledStamp = $envelope->last(HandledStamp::class);
+            $userIntents = $handledStamp->getResult();
 
-            if (isset($data['parent']) || $product->isVariant()) {
-                $data = $this->productAttributeFilter->filter($data);
+            $userId = $this->userContext->getUser()?->getId();
+            $command = UpsertProductCommand::createWithUuid(
+                $userId,
+                ProductUuid::fromUuid($product->getUuid()),
+                $userIntents,
+            );
+            $this->commandMessageBus->dispatch($command);
+        } catch (ViolationsException | LegacyViolationsException $exception) {
+            if ($exception->getPrevious() instanceof PropertyException) {
+                $this->eventDispatcher->dispatch(new TechnicalErrorEvent($exception->getPrevious()));
+                $this->throwDocumentedHttpException($exception->getPrevious()->getMessage());
             }
-
-            $this->updater->update($product, $data);
+            $this->eventDispatcher->dispatch(new ProductValidationErrorEvent($exception->violations(), $product));
+            throw new ViolationHttpException($exception->violations());
         } catch (PropertyException $exception) {
             $this->eventDispatcher->dispatch(new TechnicalErrorEvent($exception));
             $this->throwDocumentedHttpException($exception->getMessage());
@@ -157,7 +152,22 @@ class UpdateProductByUuidController
 
             throw $exception;
         }
+
+        return $this->getResponse($product->getUuid(), $isUpdate ? Response::HTTP_NO_CONTENT : Response::HTTP_CREATED);
     }
+
+    private function getDecodedContent($content): array
+    {
+        // TODO: CPM-718
+        $decodedContent = json_decode($content, true);
+
+        if (null === $decodedContent) {
+            throw new BadRequestHttpException('Invalid json message received');
+        }
+
+        return $decodedContent;
+    }
+
 
     private function filterEmptyValues(ProductInterface $product, array $data): array
     {
@@ -249,28 +259,15 @@ class UpdateProductByUuidController
             }
         }
 
-        return $data;
-    }
-
-    private function validateProduct(ProductInterface $product): void
-    {
-        $violations = $this->productValidator->validate($product, null, ['Default', 'api']);
-        if (0 !== $violations->count()) {
-            $this->eventDispatcher->dispatch(new ProductValidationErrorEvent($violations, $product));
-
-            throw new ViolationHttpException($violations);
+        if (isset($data['quantified_associations'])) {
+            foreach ($data['quantified_associations'] as $associationCode => $associations) {
+                if (isset($associations['products'])) {
+                    $data['quantified_as²sociations'][$associationCode]['product_uuids'] = $associations['products'];
+                    unset($data['quantified_associations'][$associationCode]['products']);
+                }
+            }
         }
-    }
 
-    /**
-     * It is a conversion from variant product to simple product if
-     * - the product already exists
-     * - it is a variant product
-     * - and 'parent' is explicitly null
-     */
-    protected function needUpdateFromVariantToSimple(ProductInterface $product, array $data): bool
-    {
-        return null !== $product->getCreated() && $product->isVariant() &&
-            array_key_exists('parent', $data) && null === $data['parent'];
+        return $data;
     }
 }

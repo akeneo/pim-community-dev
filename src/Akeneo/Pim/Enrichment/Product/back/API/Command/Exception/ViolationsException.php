@@ -13,12 +13,16 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
  */
 final class ViolationsException extends \LogicException
 {
-    public function __construct(private ConstraintViolationListInterface $constraintViolationList)
-    {
+    public function __construct(
+        private ConstraintViolationListInterface $constraintViolationList,
+        ?\Throwable $previous = null,
+    ) {
         parent::__construct(
             $this->constraintViolationList instanceof ConstraintViolationList
                 ? (string) $this->constraintViolationList
-                : 'Some violation(s) are raised'
+                : 'Some violation(s) are raised',
+            422,
+            $previous,
         );
     }
 
