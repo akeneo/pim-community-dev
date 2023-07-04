@@ -23,6 +23,9 @@ workflows:
             - test_database:
                   requires:
                       - build_dev
+            - test_job_declaration:
+                  requires:
+                      - build_dev
             - test_back_static_and_acceptance:
                   requires:
                       - build_dev
@@ -92,5 +95,6 @@ workflows:
                       - test_back_data_migrations
                       - test_onboarder_bundle
                       - test_database
+                      - test_job_declaration
                       - test_back_behat_legacy_ce
 
