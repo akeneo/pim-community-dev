@@ -101,7 +101,7 @@ class SendBusinessEventToWebhooksEndToEnd extends CommandTestCase
         $rows = $client->search($query);
 
         $foundMessage = $rows['hits']['hits'][0]['_source']['message'] ?? null;
-        self::assertEquals('The maximum number of events sent per hour has been reached.', $foundMessage, json_encode($rows));
+        self::assertEquals('The maximum number of events sent per hour has been reached.', $foundMessage, \json_encode($rows));
     }
 
     private function assertWebhookLimitWarningLogIsNotFound(): void
@@ -119,6 +119,6 @@ class SendBusinessEventToWebhooksEndToEnd extends CommandTestCase
         $rows = $client->search($query);
 
         $foundMessage = $rows['hits']['hits'][0]['_source']['message'] ?? null;
-        self::assertEquals(null, $foundMessage, json_encode($rows));
+        self::assertEquals(null, $foundMessage, \json_encode($rows));
     }
 }
