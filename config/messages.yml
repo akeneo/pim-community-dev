@@ -16,7 +16,7 @@ queues:
               service_handler: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Messenger\ProductsWereCreatedOrUpdatedHandler
     
     product_models_were_created_or_updated_queue:
-      env_var: PUBSUB_TOPIC_PRODUCT_MODELS_WERE_UPSERT_QUEUE
+      env_var: PUBSUB_TOPIC_PRODUCT_MODELS_WERE_UPSERT
       message_class: Akeneo\Pim\Enrichment\Component\Product\Event\ProductModelsWereCreatedOrUpdated
       consumers:
         - name: dqi_product_model_score_compute_consumer
