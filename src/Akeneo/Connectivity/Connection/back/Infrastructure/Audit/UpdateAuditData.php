@@ -8,7 +8,6 @@ use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataSourcePro
 use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataSourceProductEventCountHandler;
 use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\PurgeAuditProductQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
-use Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalSelectHourlyIntervalsToRefreshQuery;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -20,7 +19,6 @@ final class UpdateAuditData
 {
     public function __construct(
         private UpdateDataSourceProductEventCountHandler $updateDataSourceProductEventCountHandler,
-        private DbalSelectHourlyIntervalsToRefreshQuery $selectHourlyIntervalsToRefreshQuery,
         private PurgeAuditProductQueryInterface $purgeQuery,
         private LoggerInterface $logger,
     ) {
@@ -30,50 +28,24 @@ final class UpdateAuditData
     {
         $this->logger->info('Start audit data purge');
 
-        $this->purgeOlderThanXDays(10);
+        $defaultStartDatetime = $this->getDefaultStartDatetime(10);
 
-        // Create a Command for the previous hour.
-        $previousHourlyInterval = HourlyInterval::createFromDateTime(
-            new \DateTimeImmutable('now -1 hour', new \DateTimeZone('UTC'))
-        );
-        $this->updateProductEventCount($previousHourlyInterval);
+        $this->purgeEventsOlderThan($defaultStartDatetime);
 
-        // Create a Command for the previous hour.
-        $previousHourlyInterval = HourlyInterval::createFromDateTime(
-            new \DateTimeImmutable('now -1 hour', new \DateTimeZone('UTC'))
-        );
-        $this->updateProductEventCount($previousHourlyInterval);
-
-        // Create a Command for the current hour.
-        $currentHourlyInterval = HourlyInterval::createFromDateTime(
+        $hourlyIntervals = $this->getHourlyIntervals(
+            $defaultStartDatetime,
             new \DateTimeImmutable('now', new \DateTimeZone('UTC'))
         );
-        $this->updateProductEventCount($currentHourlyInterval);
 
-        /*
-         * Create a Command for each hour retrieved from events that are not yet complete.
-         * I.e., the last update happened before the end of the event and need to be updated again.
-         */
-        $hourlyIntervalsToRefresh = $this->selectHourlyIntervalsToRefreshQuery->execute();
-        foreach ($hourlyIntervalsToRefresh as $hourlyInterval) {
-            // Ignore the current and previous hour; already added.
-            if ($currentHourlyInterval->equals($hourlyInterval)
-                || $previousHourlyInterval->equals($hourlyInterval)
-            ) {
-                continue;
-            }
-
+        foreach ($hourlyIntervals as $hourlyInterval) {
             $this->updateProductEventCount($hourlyInterval);
         }
 
         $this->logger->info('End audit data purge');
     }
 
-    private function purgeOlderThanXDays(int $days): void
+    private function purgeEventsOlderThan(\DateTimeImmutable $before): void
     {
-        $before = new \DateTimeImmutable("now - $days days", new \DateTimeZone('UTC'));
-        $before = $before->setTime((int) $before->format('H'), 0, 0);
-
         $this->purgeQuery->execute($before);
     }
 
@@ -82,5 +54,36 @@ final class UpdateAuditData
         $this->updateDataSourceProductEventCountHandler->handle(
             new UpdateDataSourceProductEventCountCommand($hourlyInterval)
         );
+    }
+
+    private function getDefaultStartDatetime(int $days): \DateTimeImmutable
+    {
+        $before = new \DateTimeImmutable("now - $days days", new \DateTimeZone('UTC'));
+        return $before->setTime((int) $before->format('H'), 0, 0);
+    }
+
+    /**
+     * Returns an array of HourlyInterval instances representing hourly intervals between the start and end dates.
+     *
+     * @param \DateTimeInterface $startDateTime
+     * @param \DateTimeInterface $endDateTime
+     *
+     * @return HourlyInterval[]
+     */
+    private function getHourlyIntervals(\DateTimeInterface $startDateTime, \DateTimeInterface $endDateTime): array
+    {
+        if ($startDateTime > $endDateTime) {
+            throw new \InvalidArgumentException("Start date must be before end date.");
+        }
+
+        $hourlyIntervals = [];
+        $currentDateTime = $startDateTime;
+
+        while ($currentDateTime <= $endDateTime) {
+            $hourlyIntervals[] = HourlyInterval::createFromDateTime($currentDateTime);
+            $currentDateTime = $currentDateTime->add(new \DateInterval('PT1H'));
+        }
+
+        return $hourlyIntervals;
     }
 }
