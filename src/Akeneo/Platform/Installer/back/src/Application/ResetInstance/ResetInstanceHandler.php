@@ -59,7 +59,7 @@ class ResetInstanceHandler
         $this->launchPurgeFilesystemsJob();
     }
 
-    private function launchPurgeFilesystemsJob()
+    private function launchPurgeFilesystemsJob(): void
     {
         $purgeFilesystemsJobInstance = $this->jobInstanceRepository->findOneByIdentifier('purge_filesystems');
         $user = $this->tokenStorage->getToken()->getUser();
