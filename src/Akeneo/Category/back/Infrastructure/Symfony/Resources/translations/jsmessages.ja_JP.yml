@@ -1,6 +1,9 @@
 pim_title:
   pim_category_template_edit: カテゴリテンプレートを編集
 akeneo.category:
+  unknown_error:
+    title: 申し訳ありません、不明なエラーが発生しました。
+    message: ページをリロードして再試行してください。
   tree_list:
     column:
       category_templates: カテゴリテンプレート
@@ -21,6 +24,9 @@ akeneo.category:
     learn_more: カテゴリテンプレートの詳細
     edit: テンプレートを編集
     not_found: このカテゴリのアクティブなテンプレートはありません。
+    properties:
+      general_properties: プロパティ全般
+      label_translations_in_ui_locales: UIロケールのラベル翻訳
     attribute:
       description_title: 説明の設定
       type:
@@ -38,6 +44,8 @@ akeneo.category:
           rich_text: リッチテキストエディタ
         translations:
           title: ラベルの翻訳
+        error_message: ページに無効な値があります。
+        unsaved_changes: 保存していない変更内容があります。このページから移動しますか？
     add_attribute:
       no_attribute_title: 最初の属性を作成する
       no_attribute_instructions: このテンプレートにテキスト、テキストエリア、または画像の属性を追加して、カテゴリに関連付けるコンテンツを定義します。
@@ -77,6 +85,19 @@ akeneo.category:
         title: '{{ attribute }} 属性が削除されました'
     deactivate:
       deactivate_template: テンプレートを削除
+      confirmation_modal:
+        title: カテゴリテンプレートを削除
+        message: '{{ template }}と言う名前のカテゴリテンプレートを本当に削除しますか？'
+        helper: このテンプレートを削除すると、関連するカテゴリの属性と値が永久に削除されます。
+        deactivate: 削除
+      notification_success:
+        title: '{{ template }}テンプレートが削除されました'
+        message: '{{ template }}が削除されました。関連するカテゴリのコンテンツが削除されました。'
+    auto-save:
+      saved: 保存しました
+      saving: 保存中
+      editing: 編集中
+      errors: エラーは保存されません
   template_list:
     columns:
       header: ラベル

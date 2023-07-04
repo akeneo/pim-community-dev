@@ -75,7 +75,7 @@ pim_enrich.entity.attribute_option:
     delete:
       fail: Błąd podczas usuwania ustawienia atrybutu
   page_title:
-    index: "{count, plural, =0 {# opcji} one {# opcja} few {# opcje} many {# opcji} other {# opcji}}"
+    index: "{0} opcji|one: {{ count }} opcji|few: {{ count }} opcje|many: {{ count }} opcji|other: {{ count }} opcji"
   module:
     edit:
       cancel_title: Anuluj zmiany
