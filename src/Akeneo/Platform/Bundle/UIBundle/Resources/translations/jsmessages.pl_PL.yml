@@ -464,7 +464,8 @@ pim_system:
     button:
       label: Zresetuj instancję
       confirm: Zresetuj i wyloguj
-    error_notification: Podczas resetu PIM wystąpił błąd, skontaktuj się z administratorem systemu.
+    error_notification: Podczas resetu instancji wystąpił błąd, skontaktuj się z administratorem systemu.
+    jobs_running: W tej chwili nie możesz zresetować swojej instancji, ponieważ niektóre procesy nadal oczekują w kolejce lub są uruchomione.
   sandbox:
     helper:
       text: To środowisko piaskownicy; zmiany nie wpłyną na Twoje środowisko produkcyjne.

@@ -19,10 +19,7 @@ akeneo.category:
     delete: ツリーを削除
   template:
     learn_more: カテゴリテンプレートの詳細
-    create: テンプレートを有効化
     edit: テンプレートを編集
-    notification_success: テンプレートが正常に有効化されました
-    notification_error: テンプレートを有効化できませんでした
     not_found: このカテゴリのアクティブなテンプレートはありません。
     attribute:
       description_title: 説明の設定
@@ -79,15 +76,7 @@ akeneo.category:
       notification_success:
         title: '{{ attribute }} 属性が削除されました'
     deactivate:
-      deactivate_template: テンプレートを無効化
-      confirmation_modal:
-        title: カテゴリテンプレートを無効化
-        message: '{{ template }}と言う名前のカテゴリテンプレートを本当に無効化しますか？'
-        helper: このテンプレートを無効化すると、関連するカテゴリの属性と値が永久に削除されます。
-        deactivate: 無効にする
-      notification_success:
-        title: '{{ template }}テンプレートが無効になりました'
-        message: '{{ template }}が無効になりました。関連するカテゴリのコンテンツが削除されました。'
+      deactivate_template: テンプレートを削除
   template_list:
     columns:
       header: ラベル
@@ -100,7 +89,6 @@ akeneo.category:
     content:
       enrich_attribute_values: カテゴリツリーのレベルをテキスト、テキストエリア、および画像の属性で充実化
       customizable_templates: カスタマイズ可能なテンプレートで求めている商品エクスペリエンスを提供
-      edit_attributes: '近日公開: それらのカテゴリ属性の設定を更新'
     survey_link_label: あなたのご意見をお聞かせください
     learn_more_link_label: 充実されたカテゴリについて詳しく知る
   other_actions: その他の操作

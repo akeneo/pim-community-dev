@@ -16,7 +16,11 @@ pim_menu:
     connection_webhook_event_logs: Tapahtumalokit
     data_flows: Tietovirrat
     connect_connection_settings: API-yhteyksien asetukset
+    marketplace: Sovelluskauppa
+    connected_apps: Yhdistetyt sovellukset
 pim_title:
+  akeneo_connectivity_connection_connect_marketplace: Sovelluskauppa
+  akeneo_connectivity_connection_connect_marketplace_profile: Sovelluskauppa
   akeneo_connectivity_connection_connect_apps_activate: Yhdistä
   akeneo_connectivity_connection_connect_apps_authorize: Yhdistä
   akeneo_connectivity_connection_connect_apps_authenticate: Yhdistä
@@ -31,6 +35,7 @@ pim_title:
   akeneo_connectivity_connection_webhook_regenerate_secret: Tapahtumatilaus
   akeneo_connectivity_connection_webhook_event_logs: Tapahtumalokit
   akeneo_connectivity_connection_settings_redirect: Yhteydet
+  akeneo_connectivity_connection_connect_connected_apps: Yhdistetyt sovellukset
   akeneo_connectivity_connection_connect_connected_apps_edit: Sovellusasetukset
   akeneo_connectivity_connection_connect_marketplace_test_app_create: Luo testisovellus
   akeneo_connectivity_connection_connect_marketplace_test_app_delete: Poista testisovellus

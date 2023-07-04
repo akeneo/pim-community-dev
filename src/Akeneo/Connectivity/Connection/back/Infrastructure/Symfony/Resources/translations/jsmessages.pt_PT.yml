@@ -1,0 +1,6 @@
+akeneo_connectivity.connection:
+  connect:
+    marketplace:
+      test_apps:
+        errors:
+          page_not_found: Página não encontrada

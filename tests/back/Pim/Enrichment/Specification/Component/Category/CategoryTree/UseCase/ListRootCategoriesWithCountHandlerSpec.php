@@ -34,12 +34,17 @@ class ListRootCategoriesWithCountHandlerSpec extends ObjectBehavior
     }
 
     function it_handles_root_categories_with_count_including_sub_categories(
+        $userContext,
         $categoryRepository,
         $listIncludingSubCategories,
-        CategoryInterface $categoryToFilterWith
+        CategoryInterface $categoryToFilterWith,
+        CategoryInterface $categoryTreeToFilterWith,
     ) {
+        $userContext->getAccessibleUserTree()->willReturn($categoryTreeToFilterWith);
+        $categoryTreeToFilterWith->getId()->willReturn(1);
         $categoryRepository->find(2)->willReturn($categoryToFilterWith);
         $categoryToFilterWith->getRoot()->willReturn(1);
+        $categoryRepository->find(1)->willReturn($categoryTreeToFilterWith);
 
         $listIncludingSubCategories->list('en_US', 1, 1, null)->willReturn([
             new RootCategory(1, 'code', 'label', 10, true)
@@ -52,12 +57,17 @@ class ListRootCategoriesWithCountHandlerSpec extends ObjectBehavior
     }
 
     function it_handles_root_categories_with_count_not_including_sub_categories(
+        $userContext,
         $categoryRepository,
         $listNotIncludingSubCategories,
-        CategoryInterface $categoryToFilterWith
+        CategoryInterface $categoryToFilterWith,
+        CategoryInterface $categoryTreeToFilterWith
     ) {
+        $userContext->getAccessibleUserTree()->willReturn($categoryTreeToFilterWith);
+        $categoryTreeToFilterWith->getId()->willReturn(1);
         $categoryRepository->find(2)->willReturn($categoryToFilterWith);
         $categoryToFilterWith->getRoot()->willReturn(1);
+        $categoryRepository->find(1)->willReturn($categoryTreeToFilterWith);
 
         $listNotIncludingSubCategories->list('en_US', 1, 1, null)->willReturn([
             new RootCategory(1, 'code', 'label', 10, true)
@@ -71,10 +81,14 @@ class ListRootCategoriesWithCountHandlerSpec extends ObjectBehavior
 
     function it_handles_root_categories_by_selecting_user_product_category_tree_when_no_category_selected_as_filter(
         $userContext,
+        $categoryRepository,
         $listNotIncludingSubCategories,
         CategoryInterface $treeToExpand
     ) {
         $userContext->getAccessibleUserTree()->willReturn($treeToExpand);
+        $treeToExpand->getId()->willReturn(1);
+        $categoryRepository->find(-1)->willReturn(null);
+        $categoryRepository->find(1)->willReturn($treeToExpand);
         $treeToExpand->getRoot()->willReturn(1);
 
         $listNotIncludingSubCategories->list('en_US', 1, 1, null)->willReturn([
@@ -93,5 +107,35 @@ class ListRootCategoriesWithCountHandlerSpec extends ObjectBehavior
 
         $query = new ListRootCategoriesWithCount(-1, false, 1, 'en_US');
         $this->handle($query)->shouldBeLike([]);
+    }
+
+    function it_handles_categories_when_selected_tree_id_is_given_and_selected_filter_is_all_products(
+        $userContext,
+        $categoryRepository,
+        $listNotIncludingSubCategories,
+        CategoryInterface $categoryTreeToFilterWith,
+        CategoryInterface $userDefautlCategoryTree,
+    ) {
+        $userContext->getAccessibleUserTree()->willReturn($userDefautlCategoryTree);
+        $userDefautlCategoryTree->getId()->willReturn(7);
+        $categoryRepository->find(-2)->willReturn(null);
+        $categoryRepository->find(42)->willReturn($categoryTreeToFilterWith);
+        $categoryTreeToFilterWith->getRoot()->willReturn(42);
+        $categoryTreeToFilterWith->getId()->willReturn(42);
+
+        $listNotIncludingSubCategories->list('en_US', 1, 42, null)->willReturn([
+            new RootCategory(42, 'code_42', 'label_42', 5, true)
+        ]);
+
+        $query = new ListRootCategoriesWithCount(
+            -2,
+            false,
+            1,
+            'en_US',
+            42
+        );
+        $this->handle($query)->shouldBeLike([
+            new RootCategory(42, 'code_42', 'label_42', 5, true)
+        ]);
     }
 }

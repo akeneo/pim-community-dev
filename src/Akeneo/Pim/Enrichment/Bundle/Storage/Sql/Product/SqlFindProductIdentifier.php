@@ -22,7 +22,13 @@ final class SqlFindProductIdentifier implements FindIdentifier
     public function fromUuid(string $uuid): null|string
     {
         $identifier = $this->connection->executeQuery(
-            'SELECT identifier FROM pim_catalog_product WHERE uuid = :uuid',
+            <<<SQL
+SELECT raw_data AS identifier
+FROM pim_catalog_product_unique_data pcpud
+INNER JOIN pim_catalog_attribute a ON pcpud.attribute_id = a.id 
+WHERE product_uuid = :uuid
+AND main_identifier = 1
+SQL,
             ['uuid' => Uuid::fromString($uuid)->getBytes()]
         )->fetchOne();
 
@@ -47,7 +53,20 @@ final class SqlFindProductIdentifier implements FindIdentifier
         }, $uuids);
 
         $stmt = $this->connection->executeQuery(
-            'SELECT BIN_TO_UUID(uuid) AS uuid, identifier FROM pim_catalog_product WHERE uuid IN (:uuids)',
+            <<<SQL
+WITH main_identifier AS (
+    SELECT id
+    FROM pim_catalog_attribute
+    WHERE main_identifier = 1
+    LIMIT 1
+)
+SELECT BIN_TO_UUID(uuid) AS uuid, raw_data AS identifier 
+FROM pim_catalog_product
+LEFT JOIN pim_catalog_product_unique_data pcpud
+    ON pcpud.product_uuid = pim_catalog_product.uuid
+    AND pcpud.attribute_id = (SELECT id FROM main_identifier)
+WHERE uuid IN (:uuids)
+SQL,
             ['uuids' => $uuidsAsBytes],
             ['uuids' => Connection::PARAM_STR_ARRAY]
         );

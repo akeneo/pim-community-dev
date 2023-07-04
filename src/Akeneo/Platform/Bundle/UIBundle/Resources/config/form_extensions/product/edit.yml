@@ -383,6 +383,7 @@ attribute_fields:
     akeneo-switch-field:           pim/boolean-field
     akeneo-datepicker-field:       pim/date-field
     akeneo-media-uploader-field:   pim/media-field
+    akeneo-image-uploader-field:   pim/image-field
     akeneo-metric-field:           pim/metric-field
     akeneo-multi-select-field:     pim/multi-select-field
     akeneo-number-field:           pim/number-field

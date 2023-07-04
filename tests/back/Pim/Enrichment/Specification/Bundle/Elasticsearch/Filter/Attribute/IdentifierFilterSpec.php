@@ -196,6 +196,10 @@ class IdentifierFilterSpec extends ObjectBehavior
             ]
         )->shouldBeCalled();
 
+        $sqb->addFilter(
+            ["exists" => ["field" => "values.sku-identifier.<all_channels>.<all_locales>"]]
+        )->shouldBeCalled();
+
         $this->setQueryBuilder($sqb);
         $this->addAttributeFilter($sku, Operators::NOT_IN_LIST, ['sku-001'], null, null, []);
     }

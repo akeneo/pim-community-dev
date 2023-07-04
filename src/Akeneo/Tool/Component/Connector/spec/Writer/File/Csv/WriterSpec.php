@@ -2,19 +2,19 @@
 
 namespace spec\Akeneo\Tool\Component\Connector\Writer\File\Csv;
 
-use Akeneo\Tool\Component\Connector\Writer\File\Csv\Writer;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Buffer\BufferFactory;
-use Akeneo\Tool\Component\Connector\Writer\File\ExportedFileBackuper;
-use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
-use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Akeneo\Tool\Component\Connector\Job\JobFileBackuper;
+use Akeneo\Tool\Component\Connector\Writer\File\Csv\Writer;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBuffer;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher;
+use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
+use PhpSpec\ObjectBehavior;
 
 class WriterSpec extends ObjectBehavior
 {
@@ -27,9 +27,9 @@ class WriterSpec extends ObjectBehavior
         ArrayConverterInterface $arrayConverter,
         BufferFactory $bufferFactory,
         FlatItemBufferFlusher $flusher,
-        ExportedFileBackuper $exportedFileBackuper,
+        JobFileBackuper $jobFileBackuper,
     ) {
-        $this->beConstructedWith($arrayConverter, $bufferFactory, $flusher, $exportedFileBackuper);
+        $this->beConstructedWith($arrayConverter, $bufferFactory, $flusher, $jobFileBackuper);
     }
 
     function it_is_a_writer()
@@ -70,7 +70,7 @@ class WriterSpec extends ObjectBehavior
             ]
         ];
 
-        $bufferFactory->create()->willReturn($flatRowBuffer);
+        $bufferFactory->create(null)->willReturn($flatRowBuffer);
 
         $arrayConverter->convert([
             'code'   => 'promotion',
@@ -141,7 +141,7 @@ class WriterSpec extends ObjectBehavior
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobInstance->getLabel()->willReturn('job_label');
 
-        $bufferFactory->create()->willReturn($flatRowBuffer);
+        $bufferFactory->create(null)->willReturn($flatRowBuffer);
 
         $flatRowBuffer->rewind();
         $flatRowBuffer->valid()->willReturn(true, false);

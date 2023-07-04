@@ -57,6 +57,8 @@ akeneo_job_process_tracker:
     all: All
     yes: Yes
     no: No
+  max_page_without_filter_helper:
+    - In order to show you the most relevant results, please refine your search.
   tracking:
     completed: "Time spent: {{ duration }}"
     in_progress: "Estimated time left for current step: {{ duration }}"

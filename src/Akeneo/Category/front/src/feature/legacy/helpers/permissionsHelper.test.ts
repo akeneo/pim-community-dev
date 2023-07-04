@@ -1,4 +1,4 @@
-import {EditCategoryForm} from 'feature/models';
+import {EditCategoryForm} from '../models';
 import {computeNewEditPermissions, computeNewOwnPermissions, computeNewViewPermissions} from './permissionsHelper';
 
 describe('permissionsHelper', () => {

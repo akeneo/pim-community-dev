@@ -464,7 +464,6 @@ pim_system:
     button:
       label: インスタンスをリセット
       confirm: リセットしてログアウト
-    error_notification: PIM のリセット中にエラーが発生しました。システム管理者にお問い合わせください。
   sandbox:
     helper:
       text: これはサンドボックス環境です。変更による本番環境への影響はありません。

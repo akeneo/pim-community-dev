@@ -8,7 +8,7 @@ use Akeneo\Category\Application\Command\AddAttributeCommand;
 use Akeneo\Category\Application\Command\AddAttributeCommandHandler;
 use Akeneo\Category\Application\Query\GetAttribute;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateAttributeSaver;
-use Akeneo\Category\Domain\Exceptions\ViolationsException;
+use Akeneo\Category\Domain\Exception\ViolationsException;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use PhpSpec\ObjectBehavior;

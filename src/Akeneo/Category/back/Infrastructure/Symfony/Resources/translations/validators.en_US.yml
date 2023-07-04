@@ -10,6 +10,11 @@ akeneo.category:
                 text_too_long: The value cannot be longer than {{ limit }} characters
                 textarea_too_long: The value cannot be longer than {{ limit }} characters
                 richtext_too_long: The value cannot be longer than {{ limit }} characters
+        template:
+            code:
+                not_blank: This value should not be blank.
+                unique: 'Template code: {{ templateCode }} already exists.'
+                wrong_format: This field can only contain letters, numbers and underscores.
         attribute:
             limit:
                 title: You cannot add more than 50 attributes

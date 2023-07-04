@@ -84,11 +84,14 @@ class ProductGridCategoryTreeController
         $user = $this->userContext->getUser();
         $translationLocale = $this->userContext->getCurrentLocale();
 
+        $selectedCategoryTreeId = $request->query->getInt('select_tree_id');
+
         $query = new ListRootCategoriesWithCount(
             $request->query->getInt('select_node_id', -1),
             $request->query->getBoolean('include_sub', false),
             $user->getId(),
-            $translationLocale->getCode()
+            $translationLocale->getCode(),
+            $selectedCategoryTreeId > 0 ? $selectedCategoryTreeId : null,
         );
         $rootCategories = $this->listRootCategoriesWithCount->handle($query);
         $normalizedData = $this->rootCategoryNormalizer->normalizeList($rootCategories);

@@ -25,6 +25,10 @@ class UpdateCategoryTemplateAttributesOrderSql implements UpdateCategoryTemplate
      */
     public function fromAttributeCollection(AttributeCollection $attributeList): void
     {
+        if ($attributeList->count() === 0) {
+            return;
+        }
+
         $queries = \implode(
             ';',
             \array_fill(

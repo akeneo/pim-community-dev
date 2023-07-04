@@ -1,6 +1,9 @@
 pim_title:
   pim_category_template_edit: Edytuj szablon kategorii
 akeneo.category:
+  unknown_error:
+    title: Przepraszamy, wystąpił nieznany błąd.
+    message: Proszę odświeżyć stronę i spróbować ponownie.
   tree_list:
     column:
       category_templates: Szablony kategorii
@@ -19,11 +22,11 @@ akeneo.category:
     delete: Usuń drzewo
   template:
     learn_more: Dowiedz się więcej o szablonie kategorii
-    create: Aktywuj szablon
     edit: Edytuj szablon
-    notification_success: Szablon został aktywowany.
-    notification_error: Nie można aktywować szablonu.
     not_found: Nie ma aktywnego szablonu dla tej kategorii.
+    properties:
+      general_properties: Właściwości ogólne
+      label_translations_in_ui_locales: Tłumaczenia etykiet w wersjach językowych UI
     attribute:
       description_title: Ustawienia opisu
       type:
@@ -41,6 +44,8 @@ akeneo.category:
           rich_text: Edytor tekstu sformatowanego
         translations:
           title: Tłumaczenia etykiet
+        error_message: Na stronie występują nieprawidłowe wartości.
+        unsaved_changes: Masz niezapisane zmiany, czy na pewno chcesz wyjść?
     add_attribute:
       no_attribute_title: Utwórz swój pierwszy atrybut
       no_attribute_instructions: Zdefiniuj zawartość, którą chcesz powiązać z kategoriami, dodając do tego szablonu atrybuty tekstu, obszaru tekstowego lub obrazu.
@@ -79,15 +84,20 @@ akeneo.category:
       notification_success:
         title: 'Atrybut {{ attribute }} usunięty pomyślnie'
     deactivate:
-      deactivate_template: Dezaktywuj szablon
+      deactivate_template: Usuń szablon
       confirmation_modal:
-        title: Dezaktywuj szablon kategorii
-        message: Czy na pewno chcesz dezaktywować szablon kategorii o nazwie {{ template }}?
-        helper: Dezaktywacja tego szablonu spowoduje trwałe usunięcie atrybutów i wartości powiązanych kategorii.
-        deactivate: Dezaktywuj
+        title: Usuń szablon kategorii
+        message: Czy na pewno chcesz usunąć szablon kategorii o nazwie {{ template }}?
+        helper: Usunięcie tego szablonu spowoduje trwałe usunięcie atrybutów i wartości powiązanych kategorii.
+        deactivate: Usuń
       notification_success:
-        title: 'Zdezaktywowano szablon {{ template }}'
-        message: 'Szablon {{ template }} został zdezaktywowany. Zawartość powiązanych kategorii została usunięta.'
+        title: 'Usunięto szablon {{ template }}'
+        message: 'Szablon {{ template }} został usunięty. Zawartość powiązanych kategorii została usunięta.'
+    auto-save:
+      saved: Zapisano
+      saving: Zapisywanie
+      editing: Edytowanie
+      errors: Wystąpiły błędy – nie zapisano
   template_list:
     columns:
       header: Etykieta
@@ -100,7 +110,6 @@ akeneo.category:
     content:
       enrich_attribute_values: Wzbogać dowolny poziom drzewa kategorii atrybutami tekstu, obszaru tekstowego i obrazu
       customizable_templates: Zapewnij klientom najlepsze odbiór produktu dzięki konfigurowalnym szablonom
-      edit_attributes: 'Już wkrótce: aktualizuj ustawienia dowolnego z tych atrybutów kategorii'
     survey_link_label: Podziel się z nami Twoją opinią
     learn_more_link_label: Dowiedz się więcej o wzbogaconych kategoriach
   other_actions: Inne działania

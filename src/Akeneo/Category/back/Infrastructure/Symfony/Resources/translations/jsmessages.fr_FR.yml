@@ -1,22 +1,39 @@
 pim_title:
   pim_category_template_edit: Modifier un template de catégorie
 akeneo.category:
+  unknown_error:
+    title: Désolé, une erreur imprévue s’est produite.
+    message: Merci de rafraîchir la page et de réessayer.
   tree_list:
     column:
       category_templates: Templates de catégorie
   attributes: Attributs
   edition_form:
+    error:
+      unhandled_attribute_type: Impossible de trouver le constructeur de champ d'attribut pour le type d'attribut "{{ type }}"
     template:
       title: Modèle
+      no_attribute_title: Il n'y a aucun attribut dans ce modèle
+      no_attribute_instructions: Le template associé à cette catégorie est vide, vous pouvez ajouter des attributs à ce template à partir de l'arborescence des catégories.
     unsaved_changes: Vous perdrez les modifications apportées à la catégorie si vous quittez la page.
   tree:
     create: Créer un arbre
     delete: Supprimer l'arbre
   template:
-    create: Activer le template
-    notification_success: "Le template a été activé avec succès.\n"
-    notification_error: Le template n’a pas pu être activé
+    learn_more: En savoir plus sur le template de catégorie
+    create: Créer un template
+    create_confirmation_modal:
+      title: Créer un nouveau template de catégorie
+      helper: Créez un template de catégorie pour définir des attributs et activer l'enrichissement sur toutes les catégories de l'arbre.
+      category_tree: Arbre de catégories
+      link: En savoir plus sur les templates de catégories.
+    edit: Modifier le template
+    notification_success: Le template de catégorie créé avec succès
+    notification_error: Le template de catégorie n'a pas pu être créé
     not_found: Il n'y a pas de template actif pour cette catégorie.
+    properties:
+      general_properties: Propriétés générales
+      label_translations_in_ui_locales: Traductions des libellés dans la locale de l'interface
     attribute:
       description_title: Paramètres de la description
       type:
@@ -24,8 +41,23 @@ akeneo.category:
         textarea: Zone de texte
         richtext: Éditeur de texte enrichi
         image: Image
+      delete_button: Supprimer l'attribut
+      settings:
+        title: Paramètres
+        options:
+          title: Options
+          value_per_channel: Valeur par canal
+          value_per_locale: Valeur par locale
+          rich_text: Éditeur de texte enrichi
+        translations:
+          title: Traduction des libellés
+        error_message: Il y a des valeurs non valides sur la page.
+        unsaved_changes: Vous avez des modifications non enregistrées, êtes-vous sûr de vouloir quitter ?
     add_attribute:
+      no_attribute_title: Créez votre premier attribut
+      no_attribute_instructions: Définissez le contenu que vous souhaitez associer à vos catégories en ajoutant des attributs de type Texte, Zone de Texte ou Image à ce template.
       add_button: Ajouter un attribut
+      create_button: Créer un attribut
       confirmation_modal:
         section_title: Ajouter un attribut
         title: Créer un nouvel attribut de catégorie
@@ -50,16 +82,51 @@ akeneo.category:
         limit_reached:
           title: Vous ne pouvez pas ajouter plus de 50 attributs
           message: Les templates de catégories sont limités à 50 attributs par modèle.
-    deactivate:
-      deactivate_template: Désactiver le template
+    delete_attribute:
+      delete: Supprimer l'attribut de catégorie
       confirmation_modal:
-        title: Désactiver le template de catégorie
-        message: Êtes-vous sûr de vouloir désactiver le template de catégorie nommé {{ template }}?
-        helper: La désactivation de ce template supprimera définitivement les attributs et valeurs des catégories associées.
-        deactivate: Désactiver
+        title: Supprimer cet attribut de catégorie
+        message: Êtes-vous sûr de vouloir supprimer l'attribut de catégorie nommé {{ attribute }}?
+        helper: La suppression de cet attribut supprimera définitivement l'attribut et les valeurs des catégories associées.
       notification_success:
-        title: 'Template {{ template }} désactivé'
-        message: '{{ template }} a été désactivé. Le contenu des catégories associées a été supprimé.'
+        title: 'Attribut {{ attribute }} supprimé avec succès'
+    deactivate:
+      deactivate_template: Supprimer le modèle
+      confirmation_modal:
+        title: Supprimer le template de catégorie
+        message: Êtes-vous sûr de vouloir supprimer le template de catégorie nommé {{ template }}?
+        helper: La suppression de ce template supprimera définitivement les attributs et valeurs des catégories associées.
+        deactivate: Supprimer
+      notification_success:
+        title: 'Template {{ template }} supprimé'
+        message: '{{ template }} a été supprimé. Le contenu des catégories associées a été supprimé.'
+    auto-save:
+      saved: Enregistré
+      saving: Enregistrement en cours
+      editing: Modification en cours
+      errors: Erreurs non enregistrées
+    initialize:
+      title: Ajouter des attributs de catégorie
+      message: Définissez le contenu de vos catégories en ajoutant des attributs de type Texte, Zone de Texte ou Image.
+      choice_message: Commencez par créer un premier attribut en fonction de vos besoins, ou chargez un ensemble de 13 attributs suggérés.
+      button:
+        load: Charger un ensemble d'attributs
+        create: Créer un premier attribut
+    load_attribute_set:
+      section_title: Charger un ensemble d'attributs
+      title: Charger un ensemble d'attributs suggérés
+      description: Commencez facilement la configuration des catégories enrichies en chargeant un ensemble d'attributs suggérés.
+      content_description: 'Cet ensemble contient 13 attributs :'
+      content:
+        description_attributes: 2 attributs de type Zone de texte pour les descriptions de catégories longues et courtes
+        url_attributes: 1 attribut de type Texte pour les informations d'URL
+        image_attributes: 3 attributs de type Image et 3 attributs de type Texte pour l'image et ses informations de texte alternatif
+        seo_attributes: 2 attributs de type Texte et 2 attributs de type Zone de texte pour les informations SEO
+      confirmation_message: Êtes-vous sûr de vouloir charger cet ensemble d'attributs ?
+      button:
+        load: Charger un ensemble d'attributs
+      notification:
+        success: Attributs créés avec succès
   template_list:
     columns:
       header: Libellé
@@ -68,6 +135,10 @@ akeneo.category:
   tag:
     new: Nouveau
   discover_enriched_categories_information:
+    title: Découvrez les catégories enrichies
+    content:
+      enrich_attribute_values: Enrichissez n'importe quel niveau de vos arborescences de catégories avec des attributs de type Texte, de Zone de texte et Image
+      customizable_templates: Offrez l'expérience produit que vous souhaitez grâce à des templates personnalisables
     survey_link_label: Dites-nous ce que vous pensez
     learn_more_link_label: En savoir plus sur les Catégories Enrichies
   other_actions: Autres actions

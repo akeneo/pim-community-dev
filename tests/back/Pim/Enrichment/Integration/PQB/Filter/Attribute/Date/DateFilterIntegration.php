@@ -125,8 +125,8 @@ class DateFilterIntegration extends AbstractProductQueryBuilderTestCase
 
     public function testRelativeDates()
     {
-        $productsToRemove = $this->get('pim_catalog.repository.product')->findBy(
-            ['identifier' => ['product_one', 'product_two', 'empty_product']]
+        $productsToRemove = $this->get('pim_catalog.repository.product')->getItemsFromIdentifiers(
+            ['product_one', 'product_two', 'empty_product']
         );
         $this->get('pim_catalog.remover.product')->removeAll($productsToRemove);
 

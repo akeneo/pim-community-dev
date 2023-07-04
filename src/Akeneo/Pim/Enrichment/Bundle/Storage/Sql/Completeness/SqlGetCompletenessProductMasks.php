@@ -62,7 +62,6 @@ filtered_product AS (
 )
 SELECT
     BIN_TO_UUID(product.uuid) AS uuid,
-    product.identifier AS identifier,
     family.code AS familyCode,
     JSON_MERGE(
            COALESCE(pm1.raw_values, '{}'),

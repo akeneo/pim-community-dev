@@ -26,10 +26,19 @@ class GetUuidMappingQuery implements GetUuidMappingQueryInterface
         }
 
         $query = <<<SQL
-            SELECT BIN_TO_UUID(uuid) as uuid, id, identifier
-            FROM pim_catalog_product
-            WHERE identifier IN (:product_identifiers) OR uuid IN (:product_uuids)
-        SQL;
+WITH main_identifier AS (
+    SELECT id
+    FROM pim_catalog_attribute
+    WHERE main_identifier = 1
+    LIMIT 1
+)
+SELECT BIN_TO_UUID(uuid) as uuid, pim_catalog_product.id, raw_data AS identifier
+FROM pim_catalog_product
+LEFT JOIN pim_catalog_product_unique_data pcpud 
+    ON pcpud.product_uuid = pim_catalog_product.uuid 
+    AND pcpud.attribute_id = (SELECT id FROM main_identifier)
+WHERE raw_data IN (:product_identifiers) OR uuid IN (:product_uuids)
+SQL;
 
         $productUuidsAsBytes = \array_map(static fn (UuidInterface $uuid): string => $uuid->getBytes(), $productUuids);
 
@@ -49,10 +58,19 @@ class GetUuidMappingQuery implements GetUuidMappingQueryInterface
         }
 
         $query = <<<SQL
-            SELECT BIN_TO_UUID(uuid) as uuid, id, identifier
-            FROM pim_catalog_product
-            WHERE id IN (:product_ids) OR uuid IN (:product_uuids)
-        SQL;
+WITH main_identifier AS (
+    SELECT id
+    FROM pim_catalog_attribute
+    WHERE main_identifier = 1
+    LIMIT 1
+)
+SELECT BIN_TO_UUID(uuid) as uuid, pim_catalog_product.id, pcpud.raw_data AS identifier
+FROM pim_catalog_product
+LEFT JOIN pim_catalog_product_unique_data pcpud
+    ON pcpud.product_uuid = pim_catalog_product.uuid
+    AND pcpud.attribute_id = (SELECT id FROM main_identifier)
+WHERE pim_catalog_product.id IN (:product_ids) OR uuid IN (:product_uuids)
+SQL;
 
         $productUuidsAsBytes = \array_map(static fn (UuidInterface $uuid): string => $uuid->getBytes(), $productUuids);
 

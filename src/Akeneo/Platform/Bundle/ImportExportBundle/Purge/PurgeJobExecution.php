@@ -7,6 +7,7 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Purge;
 use Akeneo\Platform\Bundle\ImportExportBundle\Persistence\Filesystem\DeleteOrphanJobExecutionDirectories;
 use Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\DeleteJobExecution;
 use Akeneo\Tool\Bundle\BatchBundle\Storage\DeleteJobExecutionLogs;
+use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 
 /**
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
@@ -28,28 +29,28 @@ final class PurgeJobExecution
         $this->deleteJobExecutionLogs = $deleteJobExecutionLogs;
     }
 
-    public function olderThanDays(int $days): int
+    public function olderThanDays(int $days, array $jobInstanceCodes, ?BatchStatus $status): int
     {
-        $this->deleteJobExecutionLogs->olderThanDays($days);
-        $numberOfDeletedJobExecutions = $this->deleteJobExecution->olderThanDays($days);
+        $this->deleteJobExecutionLogs->olderThanDays($days, $jobInstanceCodes, $status);
+        $numberOfDeletedJobExecutions = $this->deleteJobExecution->olderThanDays($days, $jobInstanceCodes, $status);
         $this->deleteOrphansJobExecutionDirectories->execute();
 
         return $numberOfDeletedJobExecutions;
     }
 
-    public function olderThanHours(int $hours): int
+    public function olderThanHours(int $hours, array $jobInstanceCodes, ?BatchStatus $status): int
     {
-        $this->deleteJobExecutionLogs->olderThanHours($hours);
-        $numberOfDeletedJobExecutions = $this->deleteJobExecution->olderThanHours($hours);
+        $this->deleteJobExecutionLogs->olderThanHours($hours, $jobInstanceCodes, $status);
+        $numberOfDeletedJobExecutions = $this->deleteJobExecution->olderThanHours($hours, $jobInstanceCodes, $status);
         $this->deleteOrphansJobExecutionDirectories->execute();
 
         return $numberOfDeletedJobExecutions;
     }
 
-    public function all(): int
+    public function all(array $jobInstanceCodes, ?BatchStatus $status): int
     {
-        $this->deleteJobExecutionLogs->all();
-        $numberOfDeletedJobExecutions = $this->deleteJobExecution->all();
+        $this->deleteJobExecutionLogs->all($jobInstanceCodes, $status);
+        $numberOfDeletedJobExecutions = $this->deleteJobExecution->all($jobInstanceCodes, $status);
         $this->deleteOrphansJobExecutionDirectories->execute();
 
         return $numberOfDeletedJobExecutions;
