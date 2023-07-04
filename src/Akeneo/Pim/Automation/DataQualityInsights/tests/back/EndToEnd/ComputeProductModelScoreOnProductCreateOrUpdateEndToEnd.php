@@ -36,7 +36,7 @@ final class ComputeProductModelScoreOnProductCreateOrUpdateEndToEnd extends Mess
             ],
         ]);
 
-        $this->productModelScoreComputeOnUpsertQueueStatus = $this->get('akeneo_integration_tests.pub_sub_queue_status.dqi_product_model_score_compute');
+        $this->productModelScoreComputeOnUpsertQueueStatus = $this->get('akeneo_integration_tests.pub_sub_queue_status.dqi_product_model_score_compute_on_upsert');
 
         // Be sure the subscription is created before any tests
         $subscription = $this->productModelScoreComputeOnUpsertQueueStatus->getSubscription();

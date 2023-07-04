@@ -218,7 +218,7 @@ services:
             - '%env(PUBSUB_TOPIC_PRODUCTS_WERE_UPSERT)%'
             - '%env(PUBSUB_SUBSCRIPTION_DQI_PRODUCT_SCORE_COMPUTE)%'
 
-    akeneo_integration_tests.pub_sub_queue_status.dqi_product_model_score_compute:
+    akeneo_integration_tests.pub_sub_queue_status.dqi_product_model_score_compute_on_upsert:
       class: AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubQueueStatus
       arguments:
         - '@Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory'
