@@ -28,6 +28,7 @@ services:
       - '@pim_datagrid.repository.datagrid_view'
       - '@akeneo_file_storage.file_storage.file.file_storer'
       - '@akeneo_batch.job_repository'
+      - '@Akeneo\UserManagement\Domain\Permissions\Query\EditRolePermissionsUserQuery'
       -
         - 'date_account_created'
         - 'date_account_last_updated'
@@ -41,3 +42,4 @@ services:
       - '@pim_user.factory.role_with_permissions'
       - '@pim_user.updater.role_with_permissions'
       - '@validator'
+      - '@Akeneo\UserManagement\Domain\Permissions\Query\EditRolePermissionsRoleQuery'

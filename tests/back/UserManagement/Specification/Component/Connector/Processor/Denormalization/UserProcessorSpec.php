@@ -17,6 +17,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Component\Connector\Processor\Denormalization\UserProcessor;
 use Akeneo\UserManagement\Component\Model\UserInterface;
+use Akeneo\UserManagement\Domain\Permissions\Query\EditRolePermissionsUserQuery;
 use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
 use Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepositoryInterface;
 use PhpSpec\ObjectBehavior;
@@ -28,14 +29,15 @@ class UserProcessorSpec extends ObjectBehavior
 {
     function let(
         IdentifiableObjectRepositoryInterface $repository,
-        SimpleFactoryInterface $factory,
-        ObjectUpdaterInterface $updater,
-        ValidatorInterface $validator,
-        ObjectDetacherInterface $objectDetacher,
-        DatagridViewRepositoryInterface $gridViewRepository,
-        FileStorerInterface $fileStorer,
-        StepExecution $stepExecution,
-        JobRepositoryInterface $jobRepository,
+        SimpleFactoryInterface                $factory,
+        ObjectUpdaterInterface                $updater,
+        ValidatorInterface                    $validator,
+        ObjectDetacherInterface               $objectDetacher,
+        DatagridViewRepositoryInterface       $gridViewRepository,
+        FileStorerInterface                   $fileStorer,
+        StepExecution                         $stepExecution,
+        JobRepositoryInterface                $jobRepository,
+        EditRolePermissionsUserQuery          $editRolePermissionsUserQuery,
     ) {
         $this->beConstructedWith(
             $repository,
@@ -46,6 +48,7 @@ class UserProcessorSpec extends ObjectBehavior
             $gridViewRepository,
             $fileStorer,
             $jobRepository,
+            $editRolePermissionsUserQuery,
             ['ignoredField1', 'ignoredField2'],
         );
         $stepExecution->getExecutionContext()->willReturn(new ExecutionContext());
@@ -151,7 +154,7 @@ class UserProcessorSpec extends ObjectBehavior
         ValidatorInterface $validator,
         DatagridViewRepositoryInterface $gridViewRepository,
         UserInterface $julia,
-        DatagridView $productGridView
+        DatagridView $productGridView,
     ) {
         $repository->getIdentifierProperties()->willReturn(['username']);
         $julia->getId()->willReturn(44);
@@ -209,5 +212,27 @@ class UserProcessorSpec extends ObjectBehavior
                 ],
             ]
         )->shouldReturn($julia);
+    }
+
+    function it_adds_warning_when_removing_edit_role_permissions_for_last_user(
+        IdentifiableObjectRepositoryInterface $repository,
+        UserInterface $julia,
+        StepExecution $stepExecution,
+        EditRolePermissionsUserQuery $editRolePermissionsUserQuery,
+    ) {
+        $repository->getIdentifierProperties()->willReturn(['username']);
+        $julia->getId()->willReturn(44);
+        $repository->findOneByIdentifier('julia')->willReturn($julia);
+
+        $itemBase = [
+            'username' => 'julia',
+            'first_name' => 'julia',
+            'last_name' => 'Julia',
+            'roles' => ['ROLE_ADMIN'],
+        ];
+        $editRolePermissionsUserQuery->isLastRoleWithEditRolePermissionsRoleForUser($itemBase['roles'], 44)->willReturn(true);
+        $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
+        $stepExecution->getSummaryInfo('item_position')->shouldBeCalled()->willReturn(42);
+        $this->shouldThrow(InvalidItemException::class)->during('process', [$itemBase]);
     }
 }

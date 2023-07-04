@@ -21,7 +21,6 @@ use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 
 class UserControllerEndToEnd extends ControllerEndToEndTestCase
 {
@@ -33,7 +32,6 @@ class UserControllerEndToEnd extends ControllerEndToEndTestCase
     private readonly SimpleFactoryInterface $roleFactory;
     private readonly SaverInterface $roleSaver;
     private readonly RoleWithPermissionsSaver $roleWithPermissionsSaver;
-    private readonly AccessDecisionManagerInterface $decisionManager;
     private readonly DeleteUserHandlerInterface $deleteUserHandler;
     private readonly UpdateUserCommandHandler $updateUserCommandHandler;
     private readonly UserProvider $userProvider;
@@ -49,7 +47,6 @@ class UserControllerEndToEnd extends ControllerEndToEndTestCase
         $this->roleFactory = $this->get('pim_user.factory.role');
         $this->roleSaver = $this->get('pim_user.saver.role');
         $this->roleWithPermissionsSaver = $this->get('pim_user.saver.role_with_permissions');
-        $this->decisionManager = $this->get('security.access.decision_manager');
         $this->deleteUserHandler = $this->get(DeleteUserHandlerInterface::class);
         $this->updateUserCommandHandler = $this->get(UpdateUserCommandHandler::class);
         $this->userProvider = $this->get('pim_user.provider.user');
