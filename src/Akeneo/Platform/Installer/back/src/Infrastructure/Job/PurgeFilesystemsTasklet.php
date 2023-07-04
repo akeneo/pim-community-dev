@@ -43,6 +43,10 @@ final class PurgeFilesystemsTasklet implements TaskletInterface
         $currentState = $this->stepExecution->getCurrentState();
 
         foreach ($this->filesystems as $key => $filesystem) {
+            if ('localFilesystem' === $key) {
+                continue;
+            }
+
             if ($this->jobStopper->isPausing($this->stepExecution)) {
                 $this->jobStopper->pause($this->stepExecution, $currentState);
                 break;

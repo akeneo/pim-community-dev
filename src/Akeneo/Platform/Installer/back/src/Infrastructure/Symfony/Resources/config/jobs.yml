@@ -15,10 +15,7 @@ services:
   Akeneo\Platform\Installer\Infrastructure\Job\PurgeFilesystemsTasklet:
     arguments:
       - '@Akeneo\Platform\Installer\Infrastructure\FilesystemPurger\FilesystemPurger'
-      - - '@oneup_flysystem.catalog_storage_filesystem'
-        - '@oneup_flysystem.archivist_filesystem'
-        - '@oneup_flysystem.jobs_storage_filesystem'
-        - '@oneup_flysystem.category_storage_filesystem'
+      - !tagged_iterator { tag: 'oneup_flysystem.filesystem', index_by: 'mount' }
       - '@akeneo_batch.job.job_stopper'
 
   akeneo.installer.step.purge_filesystems:
