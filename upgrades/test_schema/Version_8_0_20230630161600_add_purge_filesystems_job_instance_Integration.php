@@ -58,7 +58,7 @@ final class Version_8_0_20230630161600_add_purge_filesystems_job_instance_Integr
         );
     }
 
-    private function jobInstanceId(string $jobCode): ?int
+    private function jobInstanceId(string $jobCode): ?string
     {
         $sql = 'SELECT id FROM akeneo_batch_job_instance WHERE code = :job_code';
 
