@@ -48,6 +48,4 @@ services:
     tags:
       - { name: doctrine.dbal.schema_filter, connection: default }
 
-  Akeneo\Platform\Installer\Infrastructure\FilesystemsPurger\FilesystemsPurger:
-    arguments:
-      - !tagged_iterator 'oneup_flysystem.filesystem'
+  Akeneo\Platform\Installer\Infrastructure\FilesystemPurger\FilesystemPurger: ~

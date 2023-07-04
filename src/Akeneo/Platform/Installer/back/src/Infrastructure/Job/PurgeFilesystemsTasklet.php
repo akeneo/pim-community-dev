@@ -10,15 +10,22 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Installer\Infrastructure\Job;
 
 use Akeneo\Platform\Installer\Domain\Service\FilesystemPurgerInterface;
+use Akeneo\Tool\Component\Batch\Job\JobStopper;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
+use League\Flysystem\FilesystemOperator;
 
 final class PurgeFilesystemsTasklet implements TaskletInterface
 {
     private ?StepExecution $stepExecution = null;
 
+    /**
+     * @param iterable<FilesystemOperator> $filesystems
+     */
     public function __construct(
         private readonly FilesystemPurgerInterface $filesystemPurger,
+        private readonly iterable $filesystems,
+        private readonly JobStopper $jobStopper,
     ) {
     }
 
@@ -33,6 +40,18 @@ final class PurgeFilesystemsTasklet implements TaskletInterface
             throw new \InvalidArgumentException(sprintf('In order to execute "%s" you need to set a step execution.', PurgeFilesystemsTasklet::class));
         }
 
-        $this->filesystemPurger->execute();
+        $currentState = $this->stepExecution->getCurrentState();
+
+        foreach ($this->filesystems as $key => $filesystem) {
+            if ($this->jobStopper->isPausing($this->stepExecution)) {
+                $this->jobStopper->pause($this->stepExecution, $currentState);
+                break;
+            }
+
+            if (!in_array($key, $currentState)) {
+                $this->filesystemPurger->execute($filesystem);
+                $currentState[] = $key;
+            }
+        }
     }
 }

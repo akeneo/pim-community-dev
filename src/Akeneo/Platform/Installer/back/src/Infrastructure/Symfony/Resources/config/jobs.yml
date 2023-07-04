@@ -14,7 +14,12 @@ services:
 
   Akeneo\Platform\Installer\Infrastructure\Job\PurgeFilesystemsTasklet:
     arguments:
-      - '@Akeneo\Platform\Installer\Infrastructure\FilesystemsPurger\FilesystemsPurger'
+      - '@Akeneo\Platform\Installer\Infrastructure\FilesystemPurger\FilesystemPurger'
+      - - '@oneup_flysystem.catalog_storage_filesystem'
+        - '@oneup_flysystem.archivist_filesystem'
+        - '@oneup_flysystem.jobs_storage_filesystem'
+        - '@oneup_flysystem.category_storage_filesystem'
+      - '@akeneo_batch.job.job_stopper'
 
   akeneo.installer.step.purge_filesystems:
     class: 'Akeneo\Tool\Component\Connector\Step\TaskletStep'
