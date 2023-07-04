@@ -1459,6 +1459,32 @@ final class UpsertProductIntegration extends TestCase
         Assert::assertEquals($productCount + 1, $this->productRepository->countAll());
     }
 
+    /** @test */
+    public function it_validates_a_product_with_dry_run(): void
+    {
+        $this->expectException(ViolationsException::class);
+        $this->expectExceptionMessage('The unknown_family family does not exist in your PIM.');
+
+        $this->messageBus->dispatch(UpsertProductCommand::createWithIdentifierDryRun(
+            userId: $this->getUserId('admin'),
+            productIdentifier: ProductIdentifier::fromIdentifier('my_product'),
+            userIntents: [new SetFamily('unknown_family')]
+        ));
+    }
+
+    /** @test */
+    public function it_validates_a_product_without_save_with_dry_run(): void
+    {
+        $this->messageBus->dispatch(UpsertProductCommand::createWithIdentifierDryRun(
+            userId: $this->getUserId('admin'),
+            productIdentifier: ProductIdentifier::fromIdentifier('my_validated_product'),
+            userIntents: [new SetFamily('familyA')]
+        ));
+
+        $unknownProduct = $this->productRepository->findOneByIdentifier('my_validated_product');
+        Assert::assertNull($unknownProduct);
+    }
+
     private function getUserId(string $username): int
     {
         $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
