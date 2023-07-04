@@ -1,8 +1,7 @@
-import React, {Ref, ReactNode, isValidElement, HTMLAttributes, forwardRef, Children, cloneElement} from 'react';
+import React, {Children, cloneElement, forwardRef, HTMLAttributes, isValidElement, ReactNode, Ref} from 'react';
 import styled from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {Override} from '../../shared';
-import {CheckIcon} from '../../icons';
 
 type StepState = 'done' | 'inprogress' | 'todo';
 
@@ -12,17 +11,32 @@ const StepCircle = styled.div<{state: StepState} & AkeneoThemedProps>`
   align-items: center;
   height: 32px;
   width: 32px;
-  color: ${getColor('white')};
-  background-color: ${({state}) =>
-    state === 'todo' ? getColor('white') : state === 'inprogress' ? getColor('green', 100) : getColor('green', 100)};
+  font-size: ${getFontSize('big')};
+  color: ${({state}) => {
+    if (state === 'done') return getColor('white');
+    if (state === 'inprogress') return getColor('green', 100);
+    return getColor('grey', 120);
+  }};
+  background-color: ${({state}) => {
+    return state === 'done' ? getColor('green', 100) : getColor('white');
+  }};
   border-radius: 50%;
-  border: 1px solid ${({state}) => (state !== 'todo' ? 'transparent' : getColor('grey', 80))};
+  border: 1px solid
+    ${({state}) => {
+      if (state === 'done') return 'transparent';
+      if (state === 'inprogress') return getColor('green', 100);
+      return getColor('grey', 80);
+    }};
 `;
 
-const StepLabel = styled.div`
+const StepLabel = styled.div<{state: StepState} & AkeneoThemedProps>`
   font-size: ${getFontSize('small')};
   font-weight: normal;
-  color: ${getColor('grey', 120)};
+  color: ${({state}) => {
+    if (state === 'inprogress') return getColor('green', 100);
+    if (state === 'done') return getColor('grey', 140);
+    return getColor('grey', 120);
+  }};
   text-transform: uppercase;
 `;
 
@@ -80,11 +94,15 @@ type StepProps = Override<
      * The label of the step.
      */
     children?: ReactNode;
+    /**
+     *@private
+     */
+    index?: number;
   }
 >;
 
 const Step = forwardRef<HTMLLIElement, StepProps>(
-  ({state, children, disabled, onClick, ...rest}: StepProps, forwardedRef: Ref<HTMLLIElement>) => {
+  ({state, children, disabled, onClick, index, ...rest}: StepProps, forwardedRef: Ref<HTMLLIElement>) => {
     if (undefined === state) {
       throw new Error('ProgressIndicator.Step cannot be used outside a ProgressIndicator component');
     }
@@ -100,9 +118,9 @@ const Step = forwardRef<HTMLLIElement, StepProps>(
         {...rest}
       >
         <StepCircle aria-hidden state={state}>
-          {'done' === state && <CheckIcon size={24} />}
+          {<span>{(index || 0) + 1}</span>}
         </StepCircle>
-        <StepLabel>{children}</StepLabel>
+        <StepLabel state={state}>{children}</StepLabel>
       </StepContainer>
     );
   }
@@ -134,6 +152,7 @@ const ProgressIndicator = ({children, ...rest}: ProgressIndicatorProps) => {
     return undefined === child.props.state
       ? cloneElement(child, {
           state: index > currentStepIndex ? 'todo' : index < currentStepIndex ? 'done' : 'inprogress',
+          index,
         })
       : child;
   });
