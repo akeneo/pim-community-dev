@@ -42,3 +42,21 @@ test('ProgressIndicator supports ...rest props', () => {
 
   expect(screen.getByTestId('my_value')).toBeInTheDocument();
 });
+
+test('ProgressIndicator displays numbers of steps', () => {
+  render(
+    <ProgressIndicator withNumber>
+      <ProgressIndicator.Step>First step</ProgressIndicator.Step>
+      <ProgressIndicator.Step current>Second step</ProgressIndicator.Step>
+      <ProgressIndicator.Step>Third step</ProgressIndicator.Step>
+    </ProgressIndicator>
+  );
+
+  expect(screen.getByText('First step')).toBeInTheDocument();
+  expect(screen.getByText('1')).toBeInTheDocument();
+  expect(screen.getByText('Second step')).toBeInTheDocument();
+  expect(screen.getByText('2')).toBeInTheDocument();
+  expect(screen.getByText('Third step')).toBeInTheDocument();
+  expect(screen.getByText('3')).toBeInTheDocument();
+  expect(screen.getByText('Second step').parentElement).toHaveAttribute('aria-current', 'step');
+});

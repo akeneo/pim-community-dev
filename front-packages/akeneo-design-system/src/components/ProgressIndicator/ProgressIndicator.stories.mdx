@@ -14,7 +14,11 @@ import {useProgress} from '../../hooks';
       name: '<ProgressIndicator current>',
       description: 'Define the current step of the progress',
     },
+    withNumber: 'boolean'
   }}
+  args={{
+      withNumber: false
+    }}
 />
 
 # Progress indicator
@@ -54,7 +58,7 @@ return (
       },
     }}
   >
-    {args => {
+    {({withNumber}) => {
       const steps = ['choose', 'edit', 'confirm'];
       const [isCurrent, next, previous] = useProgress(steps);
       return (
@@ -67,14 +71,12 @@ return (
               Next
             </Button>
           </div>
-          <ProgressIndicator>
-            {steps.map(step => {
-              return (
-                <ProgressIndicator.Step key={step} current={isCurrent(step)}>
-                  {step}
-                </ProgressIndicator.Step>
-              );
-            })}
+          <ProgressIndicator withNumber={withNumber}>
+            {steps.map(step => (
+               <ProgressIndicator.Step key={step} current={isCurrent(step)}>
+                 {step}
+               </ProgressIndicator.Step>
+             ))}
           </ProgressIndicator>
         </>
       );
@@ -89,6 +91,18 @@ return (
 <Canvas>
   <Story name="States">
     <ProgressIndicator>
+      <ProgressIndicator.Step>Before current step</ProgressIndicator.Step>
+      <ProgressIndicator.Step current={true}>Current step</ProgressIndicator.Step>
+      <ProgressIndicator.Step>After current step</ProgressIndicator.Step>
+    </ProgressIndicator>
+  </Story>
+</Canvas>
+
+## With number
+
+<Canvas>
+  <Story name="With Number">
+    <ProgressIndicator withNumber={true}>
       <ProgressIndicator.Step>Before current step</ProgressIndicator.Step>
       <ProgressIndicator.Step current={true}>Current step</ProgressIndicator.Step>
       <ProgressIndicator.Step>After current step</ProgressIndicator.Step>
