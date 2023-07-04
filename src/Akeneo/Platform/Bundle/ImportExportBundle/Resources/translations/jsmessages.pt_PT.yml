@@ -4,19 +4,129 @@ job_execution:
     hide_item: Esconder Item
 pim_connector:
   export:
-    categories:
-      selector:
-        modal:
-          cancel: Cancelar
-          confirm: Confirmar
-        edit: Editar
     locales:
       validation:
         not_blank: Uma linguagem deve ser selecionada, por favor, escolha uma para exportar.
-page_title:
+pim_import_export:
+  entity:
+    job_instance:
+      flash:
+        update:
+          fail: O perfil de trabalho não pode ser atualizado.
+        delete:
+          success: A instância do trabalho foi removida com sucesso
+    import_profile:
+      uppercase_label: Perfil de importação
+    export_profile:
+      flash:
+        create:
+          success: O perfil de exportação foi criado com sucesso
+      module:
+        create:
+          button: Criar perfil de exportação
+  form:
+    job_execution:
+      refreshBtn.title: Atualizar
+      button:
+        show_profile.title: Ver perfil
+        download_log.title: Transferir log
+      summary:
+        fetching: A recolher dados sobre a execução da tarefa...
+        warning: Aviso
+        header.step: Passo
+        header.summary: Resumo
+        header.start: Início
+        header.end: Fim
+    job_instance:
+      fail:
+        launch: Falha ao executar o perfil de trabalho. Certifique-se de que está correto e de que você tem o direito de executá-lo.
+        save: Falha ao salvar o perfil de trabalho. Certifique-se de ter o direito de editá-lo.
+      button:
+        export.title: Exportar agora
+        import.launch: Importar agora
+        import.upload: Enviar e importar agora
+      meta:
+        job: Tarefa
+        connector: Conector
+      tab:
+        content:
+          title: Conteúdo
+        properties:
+          decimal_separator:
+            title: Separador decimal
+            help: Determinar o separador decimal
+          date_format:
+            title: Formato de data
+            help: Determinar o formato dos campos de data
+          file_path:
+            title: Caminho do ficheiro
+            help: Onde escrever o ficheiro gerado no sistema de ficheiros
+          delimiter:
+            title: Delimitador
+            help: Um carácter usado para definir o delimitador de campo
+          enclosure:
+            title: Invólucro
+            help: Um caractere usado para definir o invólucro do campo
+          with_header:
+            title: Com o cabeçalho
+            help: Imprimir ou não o nome da coluna
+          lines_per_file:
+            title: Número de linhas por ficheiro
+            help: Definir o número limite de linhas por ficheiro
+          upload_allowed:
+            title: Permitir o upload do ficheiro
+            help: Deve ou não permitir o upload to ficheiro diretamente
+          categories_column:
+            title: Coluna das categorias
+            help: Nome da coluna das categorias
+          escape:
+            title: Escape
+            help: Um caractere usado para definir o campo de escape
+          family_column:
+            title: Coluna da família
+            help: Nome da coluna da família
+          groups_column:
+            title: Coluna dos groupos
+            help: Nome da coluna dos grupos
+          enabled:
+            title: Ativar o produto
+            help: Ativar ou não o produto importado
+          enabled_comparison:
+            title: Comparar valores
+            help: Permitir a comparação entre os valores originais e importados. Pode acelerar a importação se os valores importados forem muito semelhantes aos valores originais
+          real_time_versioning:
+            title: Atulização do histórico a tempo real
+            help: Signifca que a história do produto é atualizada automaticmente, pode ser desligado para melhorar a performance
+      file_path: Caminho do ficheiro
+      storage_form:
+        file_path:
+          label: Caminho do ficheiro
+confirmation:
+  remove:
+    import_profile: Tem certeza que deseja eliminar este perfil de importação?
+    export_profile: Tem certeza que deseja eliminar este perfil de exportação?
+    job_instance: Tem certeza de que deseja excluir este exemplo de trabalho?
+pim_enrich:
+  entity:
+    import_profile:
+      module:
+        delete:
+          confirm: Tem certeza que deseja eliminar este perfil de importação?
+      flash:
+        delete:
+          success: Perfil de importação removido com sucesso
+    export_profile:
+      module:
+        delete:
+          confirm: Tem certeza que deseja eliminar este perfil de exportação?
+      flash:
+        delete:
+          success: Perfil de exportação removido com sucesso
+pim_title:
   pim_importexport_export_profile_index: Gestão de perfis de exportação
   pim_importexport_export_execution_index: Histórico de exportações realizadas
   pim_importexport_export_execution_show: Execução de exportações | Detalhes
   pim_importexport_import_profile_index: Gestão de perfis de importação
   pim_importexport_import_execution_index: Histórico importações realizadas
   pim_importexport_import_execution_show: Execução de importações | Detalhes
+

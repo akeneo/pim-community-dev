@@ -33,6 +33,15 @@ services:
     tags:
       - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Application\Command\CleanCategoryTemplateAndEnrichedValues\CleanCategoryTemplateAndEnrichedValuesCommand' }
 
+  Akeneo\Category\Application\Command\LoadAttributeSet\LoadAttributeSetCommandHandler:
+    arguments:
+      - '@Akeneo\Category\Domain\Query\GetTemplate'
+      - '@Akeneo\Category\Application\Query\GetAttribute'
+      - '@Akeneo\Category\Domain\AttributeSetFactory'
+      - '@Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateAttributeSaver'
+    tags:
+      - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Application\Command\LoadAttributeSet\LoadAttributeSetCommand' }
+
   Akeneo\Category\Application\Command\AddAttributeCommandHandler:
     arguments:
       - '@validator'
@@ -55,6 +64,22 @@ services:
       - '@Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateAttributeSaver'
     tags:
       - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Application\Command\UpdateAttributeCommand\UpdateAttributeCommand' }
+
+  Akeneo\Category\Application\Command\ReorderTemplateAttributesCommand\ReorderTemplateAttributesCommandHandler:
+    arguments:
+      - '@Akeneo\Category\Domain\Query\GetTemplate'
+      - '@Akeneo\Category\Application\Query\GetAttribute'
+      - '@Akeneo\Category\Domain\Query\UpdateCategoryTemplateAttributesOrder'
+    tags:
+      - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Application\Command\ReorderTemplateAttributesCommand\ReorderTemplateAttributesCommand' }
+
+  Akeneo\Category\Application\Command\UpdateTemplateCommand\UpdateTemplateCommandHandler:
+    arguments:
+      - '@validator'
+      - '@Akeneo\Category\Domain\Query\GetTemplate'
+      - '@Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateSaver'
+    tags:
+      - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Application\Command\UpdateTemplateCommand\UpdateTemplateCommand' }
 
   Akeneo\Category\Application\Handler\StoreUploadedFile:
     arguments:
@@ -84,3 +109,14 @@ services:
       - '@Akeneo\Category\Domain\Query\DeleteCategoryTreeTemplateByTemplateUuid'
     tags:
       - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Application\Command\DeleteCategoryCommand\DeleteCategoryCommand' }
+
+  Akeneo\Category\Application\Command\CreateTemplate\CreateTemplateCommandHandler:
+    arguments:
+      - '@validator'
+      - '@Akeneo\Category\Domain\Query\GetCategoryInterface'
+      - '@Akeneo\Category\Application\Query\GetCategoryTemplateByCategoryTree'
+      - '@Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateSaver'
+      - '@Akeneo\Category\Application\Storage\Save\Saver\CategoryTreeTemplateSaver'
+      - '@Akeneo\Category\Application\Query\GetCategoryTreeByCategoryTemplate'
+    tags:
+      - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Application\Command\CreateTemplate\CreateTemplateCommand' }

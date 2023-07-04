@@ -2,11 +2,6 @@ parameters:
     pim_catalog.remover.base.class:                  Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\Common\Remover\BaseRemover
 
 services:
-    pim_catalog.completeness.remover:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\CompletenessRemover'
-        arguments:
-            - '@database_connection'
-
     pim_catalog.remover.group_type:
         class: '%pim_catalog.remover.base.class%'
         arguments:

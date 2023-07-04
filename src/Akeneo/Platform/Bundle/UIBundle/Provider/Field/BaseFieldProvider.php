@@ -19,7 +19,7 @@ class BaseFieldProvider implements FieldProviderInterface
         AttributeTypes::BOOLEAN              => 'akeneo-switch-field',
         AttributeTypes::DATE                 => 'akeneo-datepicker-field',
         AttributeTypes::FILE                 => 'akeneo-media-uploader-field',
-        AttributeTypes::IMAGE                => 'akeneo-media-uploader-field',
+        AttributeTypes::IMAGE                => 'akeneo-image-uploader-field',
         AttributeTypes::METRIC               => 'akeneo-metric-field',
         AttributeTypes::OPTION_MULTI_SELECT  => 'akeneo-multi-select-field',
         AttributeTypes::NUMBER               => 'akeneo-number-field',

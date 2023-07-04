@@ -35,6 +35,7 @@ services:
             - '@event_dispatcher'
             - '@Akeneo\Platform\Bundle\InstallerBundle\Persistence\Sql\InstallData'
             - '@logger'
+            - '@Akeneo\Platform\Bundle\InstallerBundle\Persistence\Sql\GetInstallDatetime'
         tags:
             - { name: console.command }
             - { name: 'akeneo.command.authenticated_as_admin_user' }

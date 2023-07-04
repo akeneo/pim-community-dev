@@ -71,6 +71,28 @@ CSV;
     }
 
     /** @test */
+    public function it_imports_users_with_ignored_columns_in_csv(): void
+    {
+        $csvContent = <<<CSV
+        username;first_name;last_name;email;user_default_locale;timezone;date_account_created;date_account_last_updated;last_logged_in;login_count
+        admin;John;Doe;admin@example.com;fr_FR;Europe/Paris;2023-06-14T08:54:12+00:00;2023-06-14T08:56:34+00:00;2023-06-14T08:56:34+00:00;1
+        new_user;James;Smith;new_user@example.com;en_US;;2023-06-14T08:54:12+00:00;2023-06-14T08:56:34+00:00;2023-06-14T08:56:34+00:00;1
+        CSV;
+        $this->jobLauncher->launchImport(self::CSV_IMPORT_JOB_CODE, $csvContent);
+
+        $admin = $this->userRepository->findOneByIdentifier('admin');
+        Assert::assertSame('fr_FR', $admin->getUiLocale()->getCode());
+        Assert::assertSame('Europe/Paris', $admin->getTimezone());
+
+        $newUser = $this->userRepository->findOneByIdentifier('new_user');
+        Assert::assertSame('James', $newUser->getFirstName());;
+        Assert::assertSame('Smith', $newUser->getLastName());;
+        Assert::assertSame('new_user@example.com', $newUser->getEmail());;
+        Assert::assertSame('en_US', $newUser->getUiLocale()->getCode());
+        Assert::assertSame('UTC', $newUser->getTimezone());
+    }
+
+    /** @test */
     public function it_imports_user_groups_in_xlsx(): void
     {
         $temporaryFile = tempnam(sys_get_temp_dir(), 'test_user_import');

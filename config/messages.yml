@@ -3,6 +3,6 @@ queues:
         env_var: PUBSUB_TOPIC_LAUNCH_PRODUCT_EVALUATIONS_QUEUE
         message_class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Messenger\LaunchProductAndProductModelEvaluationsMessage
         consumers:
-            - name: dqi_launch_product_evaluations_consumer
-              env_var: PUBSUB_SUBSCRIPTION_DQI_LAUNCH_PRODUCT_EVALUATIONS_CONSUMER
+            - name: dqi_launch_product_evaluations
+              env_var: PUBSUB_SUBSCRIPTION_DQI_LAUNCH_PRODUCT_EVALUATIONS
               service_handler: 'Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Messenger\LaunchProductAndProductModelEvaluationsHandler'

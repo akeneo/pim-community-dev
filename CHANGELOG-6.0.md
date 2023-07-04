@@ -1,5 +1,19 @@
 # 6.0.x
 
+# 6.0.88 (2023-06-28)
+
+# 6.0.87 (2023-06-14)
+
+# 6.0.86 (2023-05-29)
+
+# 6.0.85 (2023-05-23)
+
+## Bug fixes
+
+- PIM-10997: Update error message when trying to delete role with linked users or connections
+
+# 6.0.84 (2023-05-16)
+
 # 6.0.83 (2023-05-15)
 
 ## Bug fixes
@@ -518,6 +532,7 @@
 - PIM-10217: Fix cannot quick export product model when id is not present in grid context
 - PIM-10212: Prevent spaces in locale codes
 - PIM-10218: Remove previous scope filter before moving the new one
+- PIM-11008: [Backport PIM-10960] Fix no violation raised when importing variant with already existing siblings
 
 ## New features
 

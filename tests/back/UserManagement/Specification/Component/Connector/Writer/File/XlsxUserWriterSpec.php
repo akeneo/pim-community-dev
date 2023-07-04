@@ -10,8 +10,8 @@ use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Buffer\BufferFactory;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Akeneo\Tool\Component\Connector\Job\JobFileBackuper;
 use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
-use Akeneo\Tool\Component\Connector\Writer\File\ExportedFileBackuper;
 use Akeneo\Tool\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBuffer;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher;
@@ -32,7 +32,7 @@ class XlsxUserWriterSpec extends ObjectBehavior
         FileInfoRepositoryInterface $fileInfoRepository,
         FilesystemProvider $filesystemProvider,
         FileExporterPathGeneratorInterface $fileExporterPathGenerator,
-        ExportedFileBackuper $exportedFileBackuper,
+        JobFileBackuper $jobFileBackuper,
         FlatItemBuffer $flatRowBuffer,
         StepExecution $stepExecution,
         ExecutionContext $executionContext,
@@ -46,7 +46,7 @@ class XlsxUserWriterSpec extends ObjectBehavior
             $fileInfoRepository,
             $filesystemProvider,
             $fileExporterPathGenerator,
-            $exportedFileBackuper,
+            $jobFileBackuper,
         );
 
         $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->willReturn('/tmp/akeneo_batch1234/');
@@ -58,7 +58,7 @@ class XlsxUserWriterSpec extends ObjectBehavior
         $jobParameters->has('linesPerFile')->willReturn(true);
         $jobParameters->get('linesPerFile')->willReturn(10000);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $bufferFactory->create()->willReturn($flatRowBuffer);
+        $bufferFactory->create(null)->willReturn($flatRowBuffer);
         $this->initialize();
 
         $this->setStepExecution($stepExecution);

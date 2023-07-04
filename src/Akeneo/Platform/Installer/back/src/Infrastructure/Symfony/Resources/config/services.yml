@@ -21,22 +21,29 @@ services:
     arguments:
       - '@database_connection'
     tags:
-      - {name: akeneo.installer.user_configuration_resetter}
+      - { name: akeneo.installer.user_configuration_resetter }
 
   Akeneo\Platform\Installer\Infrastructure\UserConfigurationResetter\UserCatalogChannelResetter:
     arguments:
       - '@database_connection'
     tags:
-      - {name: akeneo.installer.user_configuration_resetter}
+      - { name: akeneo.installer.user_configuration_resetter }
 
   Akeneo\Platform\Installer\Infrastructure\UserConfigurationResetter\UserDefaultCategoryTreeResetter:
     arguments:
       - '@database_connection'
     tags:
-      - {name: akeneo.installer.user_configuration_resetter}
+      - { name: akeneo.installer.user_configuration_resetter }
 
   Akeneo\Platform\Installer\Infrastructure\UserConfigurationResetter\UserUiLocaleResetter:
     arguments:
       - '@database_connection'
     tags:
-      - {name: akeneo.installer.user_configuration_resetter}
+      - { name: akeneo.installer.user_configuration_resetter }
+
+  akeneo.installer.doctrine.pim_schema_asset_filter:
+    class: Akeneo\Platform\Installer\Infrastructure\Doctrine\PimSchemaAssetFilter
+    arguments:
+      - '/^(?!pim_configuration).*$/'
+    tags:
+      - { name: doctrine.dbal.schema_filter, connection: default }

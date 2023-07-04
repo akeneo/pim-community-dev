@@ -1,9 +1,4 @@
 services:
-  Akeneo\Category\Infrastructure\Builder\TemplateBuilder:
-    class: Akeneo\Category\Infrastructure\Builder\TemplateBuilder
-    arguments:
-      - '@Akeneo\Category\Domain\Query\GetCategoryInterface'
-
   Akeneo\Category\Infrastructure\Builder\CategoryVersionBuilder:
     arguments:
       - '@Akeneo\Category\Domain\Query\GetCategoryInterface'

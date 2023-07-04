@@ -309,6 +309,8 @@ services:
                 - '@pim_connector.step.charset_validator'
                 - '@pim_connector.step.csv_group.import'
             - true
+            - true
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.import_type%' }
 
@@ -321,6 +323,8 @@ services:
             -
                 - '@pim_connector.step.csv_group.export'
                 - '@akeneo.job_automation.connector.step.upload'
+            - true
+            - true
             - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.export_type%' }
@@ -336,6 +340,8 @@ services:
                 - '@pim_connector.step.charset_validator'
                 - '@pim_connector.step.csv_product.import'
                 - '@pim_connector.step.csv_product.import_associations'
+            - true
+            - true
             - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.import_type%' }
@@ -353,6 +359,8 @@ services:
                 - '@pim_connector.step.csv_sub_product_model.import'
                 - '@pim_connector.step.csv_product_model.import_associations'
             - true
+            - true
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.import_type%' }
 
@@ -366,6 +374,8 @@ services:
                 - '@pim_connector.step.csv_product.export'
                 - '@akeneo.job_automation.connector.step.upload'
             - true
+            - true
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.export_type%' }
 
@@ -378,6 +388,8 @@ services:
             -
                 - '@pim_connector.step.csv_product_model.export'
                 - '@akeneo.job_automation.connector.step.upload'
+            - true
+            - true
             - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.export_type%' }
@@ -393,6 +405,8 @@ services:
                 - '@pim_connector.step.charset_validator'
                 - '@pim_connector.step.xlsx_product.import'
                 - '@pim_connector.step.xlsx_product.import_associations'
+            - true
+            - true
             - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.import_type%' }
@@ -410,6 +424,8 @@ services:
                 - '@pim_connector.step.xlsx_sub_product_model.import'
                 - '@pim_connector.step.xlsx_product_model.import_associations'
             - true
+            - true
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.import_type%' }
 
@@ -423,6 +439,8 @@ services:
                 - '@pim_connector.step.xlsx_product.export'
                 - '@akeneo.job_automation.connector.step.upload'
             - true
+            - true
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.export_type%' }
 
@@ -435,6 +453,8 @@ services:
             -
                 - '@pim_connector.step.xlsx_product_model.export'
                 - '@akeneo.job_automation.connector.step.upload'
+            - true
+            - true
             - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.export_type%' }
@@ -450,6 +470,8 @@ services:
                 - '@pim_connector.step.charset_validator'
                 - '@pim_connector.step.csv_category.import'
             - true
+            - true
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.import_type%' }
 
@@ -462,6 +484,8 @@ services:
             -
                 - '@pim_connector.step.csv_category.export'
                 - '@akeneo.job_automation.connector.step.upload'
+            - true
+            - true
             - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.export_type%' }
@@ -477,6 +501,8 @@ services:
                 - '@pim_connector.step.charset_validator'
                 - '@pim_connector.step.xlsx_category.import'
             - true
+            - true
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.import_type%' }
 
@@ -489,6 +515,8 @@ services:
             -
                 - '@pim_connector.step.xlsx_category.export'
                 - '@akeneo.job_automation.connector.step.upload'
+            - true
+            - true
             - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.export_type%' }
@@ -504,6 +532,8 @@ services:
                 - '@pim_connector.step.charset_validator'
                 - '@pim_connector.step.xlsx_group.import'
             - true
+            - true
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.import_type%' }
 
@@ -516,6 +546,8 @@ services:
             -
                 - '@pim_connector.step.xlsx_group.export'
                 - '@akeneo.job_automation.connector.step.upload'
+            - true
+            - true
             - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.export_type%' }
@@ -531,6 +563,8 @@ services:
                 - '@pim_enrich.step.csv_product.quick_export'
                 - '@pim_enrich.step.csv_product_model.quick_export'
             - true
+            - true
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_enrich.job.quick_export_type%' }
 
@@ -543,6 +577,8 @@ services:
             -
                 - '@pim_enrich.step.csv_product.quick_export'
                 - '@pim_enrich.step.csv_product_model.quick_export'
+            - true
+            - true
             - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_enrich.job.quick_export_type%' }
@@ -558,6 +594,8 @@ services:
                 - '@pim_enrich.step.xlsx_product.quick_export'
                 - '@pim_enrich.step.xlsx_product_model.quick_export'
             - true
+            - true
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_enrich.job.quick_export_type%' }
 
@@ -570,6 +608,8 @@ services:
             -
                 - '@pim_enrich.step.xlsx_product.quick_export'
                 - '@pim_enrich.step.xlsx_product_model.quick_export'
+            - true
+            - true
             - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_enrich.job.quick_export_type%' }

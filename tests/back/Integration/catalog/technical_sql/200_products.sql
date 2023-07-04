@@ -49,16 +49,13 @@ INSERT INTO `pim_catalog_association_product` (association_id, product_uuid) VAL
 
 
 --
--- Dumping data for table `pim_catalog_completeness`
+-- Dumping data for table `pim_catalog_product_completeness`
 --
 
-/*!40000 ALTER TABLE `pim_catalog_completeness` DISABLE KEYS */;
-INSERT INTO `pim_catalog_completeness` (`id`, `locale_id`, `channel_id`, `product_uuid`, `missing_count`, `required_count`) VALUES
-(773,21058,209,UUID_TO_BIN('0e0304dc-d7f7-4dc4-89bb-a388e1fa2bcd'),0,19),
-(774,21039,210,UUID_TO_BIN('0e0304dc-d7f7-4dc4-89bb-a388e1fa2bcd'),2,19),
-(775,21058,210,UUID_TO_BIN('0e0304dc-d7f7-4dc4-89bb-a388e1fa2bcd'),0,19),
-(776,21090,210,UUID_TO_BIN('0e0304dc-d7f7-4dc4-89bb-a388e1fa2bcd'),0,19);
-/*!40000 ALTER TABLE `pim_catalog_completeness` ENABLE KEYS */;
+/*!40000 ALTER TABLE `pim_catalog_product_completeness` DISABLE KEYS */;
+INSERT INTO `pim_catalog_product_completeness` (`product_uuid`, `completeness`) VALUES
+(UUID_TO_BIN('0e0304dc-d7f7-4dc4-89bb-a388e1fa2bcd'), '{\"ecommerce\": {\"en_US\": {\"required\": 19, \"missing\": 0}}, \"tablet\": {\"de_DE\": {\"required\": 19, \"missing\": 2}, \"en_US\": {\"required\": 19, \"missing\": 0}, \"fr_FR\": {\"required\": 19, \"missing\": 0}}}');
+/*!40000 ALTER TABLE `pim_catalog_product_completeness` ENABLE KEYS */;
 
 
 --
@@ -94,8 +91,18 @@ INSERT INTO `pim_catalog_product` (`id`, `uuid`, `identifier`, `family_id`, `fam
 (51, UUID_TO_BIN('e7a019bc-bffe-4d0d-8c23-c91aebefc4a1'),   'product_invalid_file', NULL,  NULL, NULL, 1,  '2016-06-14 11:12:50',  '2016-06-14 11:12:50',  '{\"sku\": {\"<all_channels>\": {\"<all_locales>\": \"product_invalid_file\"}},\"a_file\": {\"<all_channels>\": {\"<all_locales>\": \"file/path/that/does/not/exists/intentionnaly.png\"}}}', null),
 (52, UUID_TO_BIN('2980931c-1d89-4db0-be6e-4fd593ade7b7'),   'product_invalid_simple_reference_data', NULL,  NULL, NULL, 1,  '2016-06-14 11:12:50',  '2016-06-14 11:12:50',  '{\"sku\": {\"<all_channels>\": {\"<all_locales>\": \"product_invalid_simple_reference_data\"}},\"a_ref_data_simple_select\": {\"<all_channels>\": {\"<all_locales>\": \"invalid_reference_data_value\"}}}', null),
 (53, UUID_TO_BIN('6d9fd54f-95fa-46d6-9482-cea257e46bfc'),   'product_invalid_multi_reference_data', NULL,  NULL, NULL, 1,  '2016-06-14 11:12:50',  '2016-06-14 11:12:50',  '{\"sku\": {\"<all_channels>\": {\"<all_locales>\": \"product_invalid_multi_reference_data\"}},\"a_ref_data_multi_select\": {\"<all_channels>\": {\"<all_locales>\": [\"fabricA\", \"invalid_reference_data_value\"]}}}', null);
-
 /*!40000 ALTER TABLE `pim_catalog_product` ENABLE KEYS */;
+
+/*!40000 ALTER TABLE `pim_catalog_product_unique_data` DISABLE KEYS */;
+INSERT INTO `pim_catalog_product_unique_data` (`product_uuid`, `attribute_id`, `raw_data`) VALUES
+(UUID_TO_BIN('bb2cd2b4-05c1-4b02-b97d-e5ef7b4312af'), (SELECT id FROM pim_catalog_attribute WHERE code='sku'), 'bar'),
+(UUID_TO_BIN('b110e90c-c1c5-476b-9717-1a87fad21405'), (SELECT id FROM pim_catalog_attribute WHERE code='sku'), 'baz'),
+(UUID_TO_BIN('0e0304dc-d7f7-4dc4-89bb-a388e1fa2bcd'), (SELECT id FROM pim_catalog_attribute WHERE code='sku'), 'foo'),
+(UUID_TO_BIN('114c9108-444d-408a-ab43-195068166d2c'), (SELECT id FROM pim_catalog_attribute WHERE code='sku'), 'qux'),
+(UUID_TO_BIN('e7a019bc-bffe-4d0d-8c23-c91aebefc4a1'), (SELECT id FROM pim_catalog_attribute WHERE code='sku'), 'product_invalid_file'),
+(UUID_TO_BIN('2980931c-1d89-4db0-be6e-4fd593ade7b7'), (SELECT id FROM pim_catalog_attribute WHERE code='sku'), 'product_invalid_simple_reference_data'),
+(UUID_TO_BIN('6d9fd54f-95fa-46d6-9482-cea257e46bfc'), (SELECT id FROM pim_catalog_attribute WHERE code='sku'), 'product_invalid_multi_reference_data');
+/*!40000 ALTER TABLE `pim_catalog_product_unique_data` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `pim_catalog_category_product_model` DISABLE KEYS */;
 INSERT INTO `pim_catalog_category_product_model` (product_model_id, category_id) VALUES (150,896),(151,899),(151,897);

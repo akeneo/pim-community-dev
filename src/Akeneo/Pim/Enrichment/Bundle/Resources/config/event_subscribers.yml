@@ -181,13 +181,6 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    pim_catalog.event_subscriber.product.on_delete.clear_completeness_subscriber:
-        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\OnDelete\DeleteCompletenessSubscriber'
-        arguments:
-            - '@pim_catalog.completeness.remover'
-        tags:
-            - { name: kernel.event_subscriber }
-
     pim_catalog.event_subscriber.product.on_save.api_aggregator_event_subscriber:
         class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\OnSave\ApiAggregatorForProductPostSaveEventSubscriber'
         arguments:
@@ -278,7 +271,3 @@ services:
           - '@akeneo_elasticsearch.client.product_and_product_model'
         tags:
             - { name: kernel.event_subscriber }
-
-    Akeneo\Pim\Enrichment\Bundle\Doctrine\DBAL\EventListener\SkipMultiValuedIndexDuringIntrospectionListener:
-        tags:
-            - { name: doctrine.event_listener, event: 'onSchemaIndexDefinition' }

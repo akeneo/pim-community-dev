@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Job;
 
 use Akeneo\Pim\Structure\Component\AttributeGroup\Query\FindAttributeGroupOrdersEqualOrSuperiorTo;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
+use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
@@ -78,6 +79,10 @@ class EnsureConsistentAttributeGroupOrderTasklet implements TaskletInterface, Tr
      */
     public function execute()
     {
+        if ($this->attributeGroupReader instanceof InitializableInterface) {
+            $this->attributeGroupReader->initialize();
+        }
+
         if ($this->attributeGroupReader instanceof TrackableItemReaderInterface) {
             $this->stepExecution->setTotalItems($this->attributeGroupReader->totalItems());
         }

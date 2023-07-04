@@ -9,12 +9,13 @@ use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
-use Akeneo\Tool\Component\Batch\Item\PausableWriterInterface;
+use Akeneo\Tool\Component\Batch\Item\StatefulInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Buffer\BufferFactory;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Akeneo\Tool\Component\Connector\Job\JobFileBackuper;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -30,7 +31,7 @@ abstract class AbstractItemMediaWriter implements
     FlushableInterface,
     StepExecutionAwareInterface,
     ArchivableWriterInterface,
-    PausableWriterInterface
+    StatefulInterface
 {
     protected const DEFAULT_FILE_PATH = 'file_path';
 
@@ -53,6 +54,7 @@ abstract class AbstractItemMediaWriter implements
     /** @var WrittenFileInfo[] */
     protected array $writtenFiles = [];
     protected string $datetimeFormat = 'Y-m-d_H-i-s';
+    protected array $state = [];
 
     public function __construct(
         ArrayConverterInterface $arrayConverter,
@@ -64,7 +66,7 @@ abstract class AbstractItemMediaWriter implements
         FileInfoRepositoryInterface $fileInfoRepository,
         FilesystemProvider $filesystemProvider,
         array $mediaAttributeTypes,
-        private readonly ExportedFileBackuper $exportedFileBackuper,
+        private readonly JobFileBackuper $jobFileBackuper,
         string $jobParamFilePath = self::DEFAULT_FILE_PATH
     ) {
         $this->arrayConverter = $arrayConverter;
@@ -86,13 +88,21 @@ abstract class AbstractItemMediaWriter implements
      */
     public function initialize(): void
     {
-        if (null === $this->flatRowBuffer) {
-            $this->flatRowBuffer = $this->bufferFactory->create();
+        $bufferFilePath = $this->state['buffer_file_path'] ?? null;
+
+        if ($bufferFilePath) {
+            $this->jobFileBackuper->recover($this->stepExecution->getJobExecution(), $bufferFilePath);
         }
+
+        $this->flatRowBuffer = $this->bufferFactory->create($bufferFilePath);
 
         $exportDirectory = dirname($this->getPath());
         if (!is_dir($exportDirectory)) {
             $this->localFs->mkdir($exportDirectory);
+        }
+
+        if (array_key_exists('headers', $this->state)) {
+            $this->flatRowBuffer->addToHeaders($this->state['headers']);
         }
     }
 
@@ -396,12 +406,21 @@ abstract class AbstractItemMediaWriter implements
 
     public function getState(): array
     {
+        if (null === $this->flatRowBuffer) {
+            return [];
+        }
+
+        $filePath = $this->flatRowBuffer->getFilePath();
+        $this->jobFileBackuper->backup($this->stepExecution->getJobExecution(), $filePath);
+
         return [
-            'current_buffer_file_path' => $this->exportedFileBackuper->backup(
-                $this->stepExecution->getJobExecution(),
-                $this->flatRowBuffer->getFilePath(),
-            ),
-            'written_files' => array_map(static fn (WrittenFileInfo $fileInfo) => $fileInfo->normalize(), $this->writtenFiles),
+            'buffer_file_path' => $filePath,
+            'headers' => $this->flatRowBuffer->getHeaders(),
         ];
+    }
+
+    public function setState(array $state): void
+    {
+        $this->state = $state;
     }
 }

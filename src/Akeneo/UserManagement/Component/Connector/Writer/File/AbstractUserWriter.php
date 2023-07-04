@@ -10,8 +10,8 @@ use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Buffer\BufferFactory;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Akeneo\Tool\Component\Connector\Job\JobFileBackuper;
 use Akeneo\Tool\Component\Connector\Writer\File\AbstractFileWriter;
-use Akeneo\Tool\Component\Connector\Writer\File\ExportedFileBackuper;
 use Akeneo\Tool\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBuffer;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher;
@@ -36,6 +36,7 @@ abstract class AbstractUserWriter extends AbstractFileWriter implements
     private FileInfoRepositoryInterface $fileInfoRepository;
     private FilesystemProvider $filesystemProvider;
     private FileExporterPathGeneratorInterface $pathGenerator;
+    private array $state = [];
 
     public function __construct(
         ArrayConverterInterface $arrayConverter,
@@ -44,7 +45,7 @@ abstract class AbstractUserWriter extends AbstractFileWriter implements
         FileInfoRepositoryInterface $fileInfoRepository,
         FilesystemProvider $filesystemProvider,
         FileExporterPathGeneratorInterface $pathGenerator,
-        private readonly ExportedFileBackuper $exportedFileBackuper,
+        private readonly JobFileBackuper $jobFileBackuper,
     ) {
         $this->arrayConverter = $arrayConverter;
         $this->bufferFactory = $bufferFactory;
@@ -61,8 +62,15 @@ abstract class AbstractUserWriter extends AbstractFileWriter implements
      */
     final public function initialize(): void
     {
-        if (null === $this->flatRowBuffer) {
-            $this->flatRowBuffer = $this->bufferFactory->create();
+        $bufferFilePath = $this->state['buffer_file_path'] ?? null;
+
+        if ($bufferFilePath) {
+            $this->jobFileBackuper->recover($this->stepExecution->getJobExecution(), $bufferFilePath);
+        }
+
+        $this->flatRowBuffer = $this->bufferFactory->create($bufferFilePath);
+        if (array_key_exists('headers', $this->state)) {
+            $this->flatRowBuffer->addToHeaders($this->state['headers']);
         }
     }
 
@@ -152,11 +160,21 @@ abstract class AbstractUserWriter extends AbstractFileWriter implements
 
     public function getState(): array
     {
+        if (null === $this->flatRowBuffer) {
+            return [];
+        }
+
+        $filePath = $this->flatRowBuffer->getFilePath();
+        $this->jobFileBackuper->backup($this->stepExecution->getJobExecution(), $filePath);
+
         return [
-            'current_buffer_file_path' => $this->exportedFileBackuper->backup(
-                $this->stepExecution->getJobExecution(),
-                $this->flatRowBuffer->getFilePath(),
-            ),
+            'buffer_file_path' => $filePath,
+            'headers' => $this->flatRowBuffer->getHeaders(),
         ];
+    }
+
+    public function setState(array $state): void
+    {
+        $this->state = $state;
     }
 }

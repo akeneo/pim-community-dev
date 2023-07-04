@@ -1,7 +1,7 @@
 import {renderHookWithProviders} from '@akeneo-pim-community/shared';
-import {Category} from 'feature/models';
+import {Category} from '../models';
 import {act} from 'react-test-renderer';
-import {aListOfCategories} from 'tests/provideCategoryHelper';
+import {aListOfCategories} from '../../tests/provideCategoryHelper';
 import {useCategoryTreeList} from './useCategoryTreeList';
 
 describe('useCategoryTreeList', () => {
