@@ -214,7 +214,7 @@ class UserProcessorSpec extends ObjectBehavior
         )->shouldReturn($julia);
     }
 
-    function it_add_warning_when_remove_edit_role_permissions_to_last_user(
+    function it_adds_warning_when_removing_edit_role_permissions_for_last_user(
         IdentifiableObjectRepositoryInterface $repository,
         UserInterface $julia,
         StepExecution $stepExecution,

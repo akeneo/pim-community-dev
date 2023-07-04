@@ -26,8 +26,8 @@ final class ImportUserIntegration extends TestCase
     private const CSV_IMPORT_JOB_CODE = 'csv_user_import';
     private const XLSX_IMPORT_JOB_CODE = 'xlsx_user_import';
 
-    private JobLauncher $jobLauncher;
-    private UserRepositoryInterface $userRepository;
+    private readonly JobLauncher $jobLauncher;
+    private readonly UserRepositoryInterface $userRepository;
     private readonly UserLoader $userLoader;
     private readonly RoleWithPermissionsRepository $roleWithPermissionsRepository;
     private readonly AclManager $aclManager;
@@ -35,7 +35,7 @@ final class ImportUserIntegration extends TestCase
     private readonly SimpleFactoryInterface $roleFactory;
     private readonly SaverInterface $roleSaver;
     private readonly RoleWithPermissionsSaver $roleWithPermissionsSaver;
-    private Connection $connection;
+    private readonly Connection $connection;
 
     /**
      * {@inheritdoc}

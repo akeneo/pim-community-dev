@@ -117,7 +117,7 @@ class RoleWithPermissionsProcessorSpec extends ObjectBehavior
         $this->shouldThrow(InvalidItemFromViolationsException::class)->during('process', [$item]);
     }
 
-    function it_add_warning_when_remove_last_edit_role_permissions(
+    function it_adds_warning_when_removing_last_edit_role_permissions(
         IdentifiableObjectRepositoryInterface $repository,
         SimpleFactoryInterface $roleWithPermissionsFactory,
         StepExecution $stepExecution,
