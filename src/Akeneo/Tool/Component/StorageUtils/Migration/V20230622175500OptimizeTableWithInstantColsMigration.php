@@ -41,10 +41,6 @@ class V20230622175500OptimizeTableWithInstantColsMigration implements ZddMigrati
     public function migrate(): void
     {
         foreach (self::TABLES_THAT_CAN_HAVE_INSTANT_COLS as $tableName) {
-            if (!$this->tableHaveInstantCol($tableName)) {
-                continue;
-            }
-
             $this->optimizeTable($tableName);
         }
     }
@@ -57,25 +53,6 @@ class V20230622175500OptimizeTableWithInstantColsMigration implements ZddMigrati
     public function getName(): string
     {
         return 'OptimizeTableWithInstantCols';
-    }
-
-    private function tableHaveInstantCol(string $tableName): bool
-    {
-        $schema = $this->connection->getDatabase();
-        $sql = <<<SQL
-            SELECT EXISTS(
-                SELECT * 
-                FROM information_schema.innodb_tables 
-                WHERE INSTANT_COLS > 0
-                AND NAME = :innodb_table_name
-            );
-        SQL;
-
-        $result = $this->connection->fetchOne($sql, [
-            'innodb_table_name' => sprintf('%s/%s', $schema, $tableName)
-        ]);
-
-        return $result === 'YES';
     }
 
     private function optimizeTable(string $tableName)
