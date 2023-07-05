@@ -63,17 +63,15 @@ class VersionDataCollector implements DataCollectorInterface
 
     private function appendResetData(array $collectedData): array
     {
-        if ($this->featureFlags->isEnabled('reset_pim')) {
-            $resetData = $this->installStatusManager->getPimResetData();
+        if (!$this->featureFlags->isEnabled('reset_pim')) {
+            return $collectedData;
+        }
 
-            if (null !== $resetData) {
-                $resetEvents = $resetData['reset_events'];
-                $collectedData = [
-                    ...$collectedData,
-                    'reset_event_count' => count($resetEvents),
-                    'last_reset_time' => end($resetEvents)['time'],
-                ];
-            }
+        $resetEvents = $this->installStatusManager->getPimResetEvents();
+        $collectedData['reset_event_count'] = count($resetEvents);
+
+        if (!empty($resetEvents)) {
+            $collectedData['last_reset_time'] = end($resetEvents)['time']->format('c');
         }
 
         return $collectedData;

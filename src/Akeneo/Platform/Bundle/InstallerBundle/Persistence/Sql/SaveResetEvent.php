@@ -14,34 +14,26 @@ final class SaveResetEvent
 {
     public function __construct(
         private readonly Connection $connection,
-        private readonly GetResetData $getResetData,
+        private readonly GetResetEvents $getResetEvents,
     ) {
     }
 
     public function withDatetime(\DateTimeImmutable $dateTime): void
     {
-        $previousEvents = $this->getPreviousResetEvents();
+        $previousEvents = ($this->getResetEvents)();
+        $newResetEvents = [...$previousEvents, ['time' => $dateTime]];
 
-        $newResetData = [
-            'reset_events' => [
-                ...$previousEvents,
-                ['time' => $dateTime->format('c')],
-            ],
-        ];
+        $normalizedEvents = array_map(
+            static fn (array $resetEvent) => ['time' => $resetEvent['time']->format('c')],
+            $newResetEvents,
+        );
 
         $this->connection->executeStatement(
             <<<SQL
 REPLACE INTO `pim_configuration` (`code`, `values`)
-VALUES ('reset_data', :reset_data);
+VALUES ('reset_events', :reset_events);
 SQL,
-            ['reset_data' => \json_encode($newResetData)],
+            ['reset_events' => \json_encode($normalizedEvents)],
         );
-    }
-
-    private function getPreviousResetEvents(): array
-    {
-        $resetData = $this->getResetData->__invoke();
-
-        return null === $resetData ? [] : $resetData['reset_events'];
     }
 }

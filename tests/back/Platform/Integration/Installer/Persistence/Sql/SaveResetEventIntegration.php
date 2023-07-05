@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Platform\Integration\Installer\Persistence\Sql;
 
-use Akeneo\Platform\Bundle\InstallerBundle\Persistence\Sql\GetResetData;
+use Akeneo\Platform\Bundle\InstallerBundle\Persistence\Sql\GetResetEvents;
 use Akeneo\Platform\Bundle\InstallerBundle\Persistence\Sql\SaveResetEvent;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -13,20 +13,18 @@ class SaveResetEventIntegration extends TestCase
 {
     public function test_it_saves_reset_event_for_the_first_time(): void
     {
-        $resetData = $this->getResetData();
+        $resetEvents = $this->getResetEvents();
         
-        $this->assertNull($resetData);
+        $this->assertEmpty($resetEvents);
         
         $dateTime = new \DateTimeImmutable();
         $this->getQuery()->withDatetime($dateTime);
 
-        $resetData = $this->getResetData();
+        $resetEvents = $this->getResetEvents();
 
-        $this->assertSame([
-            'reset_events' => [
-                ['time' => $dateTime->format('c')],
-            ],
-        ], $resetData);
+        $this->assertEqualsCanonicalizing([
+            ['time' => new \DateTimeImmutable($dateTime->format('c'))],
+        ], $resetEvents);
     }
 
     public function test_it_preserves_previous_events(): void
@@ -37,14 +35,12 @@ class SaveResetEventIntegration extends TestCase
         $dateTimeLater = new \DateTimeImmutable();
         $this->getQuery()->withDatetime($dateTimeLater);
 
-        $resetData = $this->getResetData();
+        $resetEvents = $this->getResetEvents();
 
-        $this->assertSame([
-            'reset_events' => [
-                ['time' => $dateTime->format('c')],
-                ['time' => $dateTimeLater->format('c')],
-            ],
-        ], $resetData);
+        $this->assertEqualsCanonicalizing([
+            ['time' => new \DateTimeImmutable($dateTime->format('c'))],
+            ['time' => new \DateTimeImmutable($dateTimeLater->format('c'))],
+        ], $resetEvents);
     }
 
     /**
@@ -60,8 +56,8 @@ class SaveResetEventIntegration extends TestCase
         return $this->get(SaveResetEvent::class);
     }
 
-    private function getResetData(): ?array
+    private function getResetEvents(): ?array
     {
-        return $this->get(GetResetData::class)->__invoke();
+        return ($this->get(GetResetEvents::class))();
     }
 }

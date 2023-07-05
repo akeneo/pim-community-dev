@@ -34,7 +34,7 @@ class ResetInstanceAction
         }
 
         $this->resetInstanceHandler->handle(new ResetInstanceCommand());
-        $this->eventDispatcher->dispatch(new InstallerEvent(), InstallerEvents::POST_INSTANCE_RESET);
+        $this->eventDispatcher->dispatch(new InstallerEvent(), InstallerEvents::POST_RESET_INSTANCE);
 
         return new JsonResponse();
     }

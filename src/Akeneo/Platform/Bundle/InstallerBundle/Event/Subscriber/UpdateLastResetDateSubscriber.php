@@ -26,7 +26,7 @@ class UpdateLastResetDateSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            InstallerEvents::POST_INSTANCE_RESET => 'onInstanceReset',
+            InstallerEvents::POST_RESET_INSTANCE => 'onInstanceReset',
         ];
     }
 

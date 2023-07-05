@@ -62,5 +62,5 @@ final class InstallerEvents
     /**
      * This event is dispatched after the instance has been reset.
      */
-    const POST_INSTANCE_RESET = 'pim_installer.post_reset';
+    const POST_RESET_INSTANCE = 'pim_installer.post_reset_instance';
 }

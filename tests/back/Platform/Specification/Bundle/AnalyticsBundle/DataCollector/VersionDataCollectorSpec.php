@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Specification\Akeneo\Platform\Bundle\AnalyticsBundle\DataCollector;
 
 use Akeneo\Platform\Bundle\AnalyticsBundle\DataCollector\VersionDataCollector;
@@ -43,7 +45,7 @@ class VersionDataCollectorSpec extends ObjectBehavior
         $versionProvider->getEdition()->willReturn('CE');
         $requestStack->getCurrentRequest()->willReturn($request);
         $installStatusManager->getPimInstallDateTime()->willReturn(new \DateTime('2015-09-16T10:10:32+02:00'));
-        $installStatusManager->getPimResetData()->willReturn(['reset_events' => [['time' => '2015-09-17T10:10:32+02:00']]]);
+        $installStatusManager->getPimResetEvents()->willReturn([['time' => new \DateTimeImmutable('2015-09-17T10:10:32+02:00')]]);
         $request->server = $serverBag;
         $serverBag->get('SERVER_SOFTWARE')->willReturn('Apache/2.4.12 (Debian)');
 
