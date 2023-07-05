@@ -1,5 +1,7 @@
 # 6.0.x
 
+- PIM-11070: Increase the oro_access_role label column to VARCHAR(255)
+
 # 6.0.89 (2023-06-29)
 
 ## Improvements
