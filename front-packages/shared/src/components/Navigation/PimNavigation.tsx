@@ -54,9 +54,11 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode,
 
   useEffect(() => {
     fetch(router.generate('pim_analytics_data_collect')).then(response => {
-      response.json().then(data => {
-        setPimVersion(data);
-      });
+      if (response.ok) {
+        response.json().then(data => {
+          setPimVersion(data);
+        });
+      }
     });
   }, []);
 
