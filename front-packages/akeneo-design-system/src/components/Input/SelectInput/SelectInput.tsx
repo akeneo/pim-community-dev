@@ -365,7 +365,7 @@ const SelectInput = ({
           placeholder={placeholder}
           isPlaceholderVisible={null === value}
           onChange={handleSearch}
-          onClick={event => {
+          onClick={(event: any) => {
             openOverlay();
             event.preventDefault();
           }}

@@ -53,7 +53,7 @@ const HeaderCellContentContainer = styled.span`
   }
 `;
 
-const TableHeaderCell = React.forwardRef<HTMLTableHeaderCellElement, TableHeaderCellProps>(
+const TableHeaderCell: React.FC<TableHeaderCellProps> = React.forwardRef<HTMLTableHeaderCellElement, TableHeaderCellProps>(
   (
     {isSortable = false, onDirectionChange, sortDirection, children, ...rest}: TableHeaderCellProps,
     forwardedRef: Ref<HTMLTableHeaderCellElement>

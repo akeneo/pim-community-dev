@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "composite": true,
     "allowJs": false,
     "allowSyntheticDefaultImports": true,
     "declaration": true,
@@ -7,8 +8,8 @@
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
     "jsx": "react",
-    "lib": ["es6", "dom", "es2020"],
-    "module": "commonjs",
+    "lib": ["es6", "dom"],
+    "module": "ESNext",
     "moduleResolution": "node",
     "noImplicitAny": true,
     "noImplicitReturns": true,
@@ -24,9 +25,12 @@
     "strictNullChecks": true,
     "strictPropertyInitialization": true,
     "removeComments": true,
-    "target": "es5",
+    "target": "ESNext",
     "baseUrl": "./src",
     "types": [
+      "puppeteer",
+      "jest-environment-puppeteer",
+      "expect-puppeteer",
       "node",
       "jest",
       "@testing-library/jest-dom"
@@ -34,5 +38,11 @@
     "incremental": true
   },
   "include": ["src"],
-  "exclude": ["src/**/*.unit.ts", "src/**/*.unit.tsx", "**/__mocks__/*"]
+  "exclude": [
+    "src/storybook/*",
+    "src/**/*.unit.ts",
+    "src/**/*.unit.tsx",
+    "src/**/*.visual.tsx",
+    "**/__mocks__/*"
+  ]
 }

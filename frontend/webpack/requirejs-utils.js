@@ -70,7 +70,7 @@ const utils = {
      * @return {Object}               An object requirejs containing module config and aliases
      */
     getModulePaths(baseDir, sourceDir) {
-        const pathSourceFile = require(path.join(baseDir, 'public/js/require-paths.js'));
+        const pathSourceFile = require(path.join(baseDir, 'public/js/require-paths.cjs'));
         const { config, paths } = utils.getRequireConfig(pathSourceFile, baseDir);
         const aliases = Object.assign(getFrontModules(process.cwd(), './public/bundles')(), paths, {
           'require-polyfill': path.resolve(sourceDir, './frontend/webpack/require-polyfill.js'),

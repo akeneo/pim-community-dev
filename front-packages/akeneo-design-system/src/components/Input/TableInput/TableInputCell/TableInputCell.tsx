@@ -10,7 +10,7 @@ const TableInputTd = styled.td<{highlighted: boolean; inError: boolean} & Akeneo
 
 type TableInputCellProps = React.TdHTMLAttributes<HTMLTableCellElement>;
 
-const TableInputCell = React.forwardRef<HTMLTableCellElement, TableInputCellProps>(
+const TableInputCell: React.FC<TableInputCellProps> = React.forwardRef<HTMLTableCellElement, TableInputCellProps>(
   ({children, ...rest}: TableInputCellProps, forwardedRef: Ref<HTMLTableCellElement>) => {
     return (
       <TableInputTd ref={forwardedRef} {...rest}>

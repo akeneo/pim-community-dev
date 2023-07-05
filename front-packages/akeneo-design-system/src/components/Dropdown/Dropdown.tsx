@@ -44,7 +44,7 @@ const Dropdown = ({children, ...rest}: DropdownProps) => {
   const decoratedChildren = Children.map(children, child => {
     if (!isValidElement(child) || child.type !== Overlay) return child;
 
-    return cloneElement(child, {
+    return cloneElement(child as any, {
       parentRef: ref,
     });
   });

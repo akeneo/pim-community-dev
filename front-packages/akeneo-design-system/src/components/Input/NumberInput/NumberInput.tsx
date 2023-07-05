@@ -122,7 +122,7 @@ type NumberInputProps = Override<
 /**
  * Number input allows the user to enter content and data when the expected user input is only numbers.
  */
-const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
+const NumberInput: React.FC<NumberInputProps> = React.forwardRef<HTMLInputElement, NumberInputProps>(
   ({invalid, onChange, readOnly, step, value, onSubmit, ...rest}: NumberInputProps, forwardedRef) => {
     const internalRef = useRef<HTMLInputElement | null>(null);
     forwardedRef = forwardedRef ?? internalRef;

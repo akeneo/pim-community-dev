@@ -8,7 +8,7 @@ type TableInputBodyProps = {
   children?: ReactNode;
 };
 
-const TableInputBody = React.forwardRef<HTMLTableSectionElement, TableInputBodyProps>(
+const TableInputBody: React.FC<TableInputBodyProps> = React.forwardRef<HTMLTableSectionElement, TableInputBodyProps>(
   ({children, ...rest}: TableInputBodyProps, forwardedRef: Ref<HTMLTableSectionElement>) => {
     const [draggedElementIndex, onDragStart, onDragEnd] = useDragElementIndex();
     const {isDragAndDroppable, onReorder} = useContext(TableInputContext);

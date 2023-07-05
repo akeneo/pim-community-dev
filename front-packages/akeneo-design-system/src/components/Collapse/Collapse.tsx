@@ -75,7 +75,7 @@ type CollapseProps = {
 /**
  * The collapse is used to organise groups of elements and possibly hide them.
  */
-const Collapse = React.forwardRef<HTMLDivElement, CollapseProps>(
+const Collapse: React.FC<CollapseProps> = React.forwardRef<HTMLDivElement, CollapseProps>(
   (
     {label, collapseButtonLabel, isOpen, onCollapse, children, ...rest}: CollapseProps,
     forwardedRef: Ref<HTMLDivElement>

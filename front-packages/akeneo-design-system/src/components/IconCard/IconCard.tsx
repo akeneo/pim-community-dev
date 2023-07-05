@@ -112,7 +112,7 @@ type IconCardProps = Override<
   }
 >;
 
-const IconCard = React.forwardRef<HTMLDivElement, IconCardProps>(
+const IconCard: React.FC<IconCardProps> = React.forwardRef<HTMLDivElement, IconCardProps>(
   ({icon, label, content, onClick, disabled = false, ...rest}: IconCardProps, forwardedRef: Ref<HTMLDivElement>) => {
     const validIcon = isValidElement<IconProps>(icon) && React.cloneElement(icon, {size: 30});
 

@@ -157,7 +157,7 @@ const ProgressBar = forwardRef<HTMLDivElement, ProgressBarProps>(
     const labelId = useId('label_');
     const progressBarId = useId('progress_');
 
-    const progressBarProps = {};
+    let progressBarProps: any = {};
 
     if (percent !== 'indeterminate' && isNaN(percent)) {
       percent = 'indeterminate';

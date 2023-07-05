@@ -130,7 +130,7 @@ const SubNavigationPanel: SubNavigationPanelCompoundType = React.forwardRef<HTML
     let collapsedContent: ReactNode | null = null;
     React.Children.forEach(children, child => {
       if (React.isValidElement(child) && child.type === Collapsed) {
-        collapsedContent = React.cloneElement(child, {isOpen: !isOpen});
+        collapsedContent = React.cloneElement(child as any, {isOpen: !isOpen});
         return;
       }
       contentChildren.push(child);

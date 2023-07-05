@@ -161,7 +161,7 @@ type BooleanInputProps = Override<
 /**
  * The BooleanInput is used to quickly switch between two possible states.
  */
-const BooleanInput = React.forwardRef<HTMLDivElement, BooleanInputProps>(
+const BooleanInput: React.FC<BooleanInputProps> = React.forwardRef<HTMLDivElement, BooleanInputProps>(
   (
     {
       value,
@@ -179,7 +179,7 @@ const BooleanInput = React.forwardRef<HTMLDivElement, BooleanInputProps>(
     forwardedRef: Ref<HTMLDivElement>
   ) => {
     const handleChange = useCallback(
-      value => {
+      (value: any) => {
         if (!onChange) {
           return;
         }

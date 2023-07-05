@@ -124,7 +124,7 @@ type ProgressIndicatorProps = Override<
 const ProgressIndicator = ({children, ...rest}: ProgressIndicatorProps) => {
   const currentStepIndex = Children.toArray(children).reduce((result, child, index) => {
     return isValidElement<StepProps>(child) && child.type === Step && child.props.current === true ? index : result;
-  }, 0);
+  }, 0) as number;
 
   const decoratedChildren = Children.map(children, (child, index) => {
     if (!(isValidElement<StepProps>(child) && child.type === Step)) {

@@ -165,7 +165,7 @@ const Tile: FC<TileProps> = ({icon, selected = false, size = 'small', inline = f
  * format.
  * It is a visual component made up of an icon and a label.
  */
-const Tiles = React.forwardRef<HTMLDivElement, TilesProps>(
+const Tiles: React.FC<TilesProps> = React.forwardRef<HTMLDivElement, TilesProps>(
   ({size = 'small', inline = false, children, ...rest}: TilesProps, forwardedRef: Ref<HTMLDivElement>) => {
     return (
       <TilesContainer size={size} inline={inline} ref={forwardedRef} {...rest}>

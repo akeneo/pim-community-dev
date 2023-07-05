@@ -8,7 +8,7 @@ import React, {
   DragEvent,
   MouseEvent,
 } from 'react';
-import styled, {css} from 'styled-components';
+import styled, {AnyStyledComponent, css} from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../../theme';
 import {Checkbox} from '../../../components';
 import {Override} from '../../../shared';
@@ -99,7 +99,7 @@ const CheckboxContainer = styled.td<{isVisible: boolean}>`
   }
 `;
 
-const HandleCell = styled(TableCell)`
+const HandleCell = styled(TableCell as AnyStyledComponent)`
   cursor: grab;
   width: 20px;
 
@@ -229,7 +229,7 @@ const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
           >
             <Checkbox
               checked={!!isSelected}
-              onChange={(_value, e) => {
+              onChange={(_value: any, e: any) => {
                 handleCheckboxChange(e);
               }}
             />

@@ -83,7 +83,7 @@ type FieldProps = {
 /**
  * The Field component is used to display information around an Input component.
  */
-const Field = React.forwardRef<HTMLDivElement, FieldProps>(
+const Field: React.FC<FieldProps> = React.forwardRef<HTMLDivElement, FieldProps>(
   (
     {
       label,

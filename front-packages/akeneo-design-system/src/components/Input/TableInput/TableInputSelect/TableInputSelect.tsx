@@ -61,6 +61,7 @@ type TableInputSelectProps = {
   bottomHelper?: ReactElement;
   withSearch?: boolean;
   onOpenChange?: (isOpen: boolean) => void;
+  children?: React.ReactNode;
 };
 
 const TableInputSelect: React.FC<TableInputSelectProps> = ({

@@ -44,7 +44,7 @@ type BadgeProps = Override<
 /**
  * Badges are used for items that must be: tagged, categorized, organized by keywords, or to highlight information.
  */
-const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
+const Badge: React.FC<BadgeProps> = React.forwardRef<HTMLSpanElement, BadgeProps>(
   ({level = 'primary', children, ...rest}: BadgeProps, forwardedRef: Ref<HTMLSpanElement>) => {
     return (
       <BadgeContainer level={level} ref={forwardedRef} {...rest}>

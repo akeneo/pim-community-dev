@@ -117,7 +117,7 @@ const Container = styled.div<AkeneoThemedProps>`
   }
 `;
 
-const Block = React.forwardRef<HTMLButtonElement, BlockProps>(
+const Block: React.FC<BlockProps> = React.forwardRef<HTMLButtonElement, BlockProps>(
   (
     {
       title,

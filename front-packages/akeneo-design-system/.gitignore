@@ -4,4 +4,4 @@ __diff_output__
 /storybook-static
 /stories.json
 /public/*standard-correctly-1-snap.png
-tsconfig.build.tsbuildinfo
+*.tsbuildinfo

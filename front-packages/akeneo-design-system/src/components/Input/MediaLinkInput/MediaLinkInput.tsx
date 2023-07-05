@@ -107,7 +107,7 @@ type MediaLinkInputProps = Override<
 /**
  * Media Link input allows the user to enter content when the expected user input is a link.
  */
-const MediaLinkInput = React.forwardRef<HTMLInputElement, MediaLinkInputProps>(
+const MediaLinkInput: React.FC<MediaLinkInputProps> = React.forwardRef<HTMLInputElement, MediaLinkInputProps>(
   (
     {
       onChange,

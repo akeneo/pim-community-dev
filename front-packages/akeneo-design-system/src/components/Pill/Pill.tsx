@@ -20,7 +20,7 @@ type PillProps = {
   level?: PillLevel;
 };
 
-const Pill = React.forwardRef<HTMLDivElement, PillProps>(
+const Pill: React.FC<PillProps> = React.forwardRef<HTMLDivElement, PillProps>(
   ({level = 'warning', ...rest}: PillProps, forwardedRef: Ref<HTMLDivElement>) => {
     return <PillContainer role={'danger' === level ? 'alert' : undefined} level={level} ref={forwardedRef} {...rest} />;
   }

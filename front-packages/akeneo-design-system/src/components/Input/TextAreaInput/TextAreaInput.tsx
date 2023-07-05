@@ -139,7 +139,7 @@ type TextAreaInputProps = Override<
 /**
  * The TextAreaInput component allows the user to enter large text content and can also display a Rich Text Editor.
  */
-const TextAreaInput = React.forwardRef<HTMLInputElement, TextAreaInputProps>(
+const TextAreaInput: React.FC<TextAreaInputProps> = React.forwardRef<HTMLInputElement, TextAreaInputProps>(
   (
     {
       value,

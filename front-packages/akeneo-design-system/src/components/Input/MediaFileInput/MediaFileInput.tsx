@@ -159,7 +159,7 @@ type MediaFileInputProps = Override<
 /**
  * Media File input allows the user to enter content when the expected user input is a file.
  */
-const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
+const MediaFileInput: React.FC<MediaFileInputProps> = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
   (
     {
       onChange,

@@ -10,7 +10,7 @@ const glob = require('glob')
 const RewriteImageURLs = require('./less-rewrite-urls')
 
 // The file that contains the paths of all required bundles of the PIM
-const BUNDLE_REQUIRE_PATH = resolve(rootDir, './public/js/require-paths')
+const BUNDLE_REQUIRE_PATH = resolve(rootDir, './public/js/require-paths.cjs')
 
 // The file path for each bundle that imports all the .less files
 const BUNDLE_LESS_INDEX_PATH = 'Resources/public/less/index.less'
@@ -18,7 +18,7 @@ const BUNDLE_LESS_INDEX_PATH = 'Resources/public/less/index.less'
 // The final output path for all the CSS of the PIM
 const OUTPUT_CSS_PATH = 'public/css/pim.css'
 
-if (!existsSync(`${BUNDLE_REQUIRE_PATH}.js`)) {
+if (!existsSync(`${BUNDLE_REQUIRE_PATH}`)) {
     console.log(`${BUNDLE_REQUIRE_PATH} does not exist - Run "bin/console pim:installer:dump-require-paths" and try again.`.red)
     process.exit(1)
 }

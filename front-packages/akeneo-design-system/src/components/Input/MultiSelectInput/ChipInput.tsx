@@ -102,7 +102,7 @@ type ChipInputProps = {
   onFocus?: () => void;
 };
 
-const ChipInput = React.forwardRef<HTMLInputElement, ChipInputProps>(
+const ChipInput: React.FC<ChipInputProps> = React.forwardRef<HTMLInputElement, ChipInputProps>(
   (
     {
       id,

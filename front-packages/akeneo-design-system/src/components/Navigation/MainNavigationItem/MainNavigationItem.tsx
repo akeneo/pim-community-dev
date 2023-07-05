@@ -97,7 +97,7 @@ type MainNavigationItemProps = Override<
   }
 >;
 
-const MainNavigationItem = React.forwardRef<HTMLAnchorElement, MainNavigationItemProps>(
+const MainNavigationItem: React.FC<MainNavigationItemProps> = React.forwardRef<HTMLAnchorElement, MainNavigationItemProps>(
   ({children, href, icon, active = false, disabled = false, onClick, ...rest}, forwardedRef) => {
     const handleClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
       if (disabled) {
@@ -113,7 +113,7 @@ const MainNavigationItem = React.forwardRef<HTMLAnchorElement, MainNavigationIte
     const taglessChildren = React.Children.map(children, child => {
       if (React.isValidElement(child) && child.type === Tag) {
         if (null === tag) {
-          tag = child;
+          tag = child as any;
 
           return null;
         }

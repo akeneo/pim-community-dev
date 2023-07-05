@@ -1,6 +1,6 @@
 require('colors')
 const { existsSync } = require('fs')
-const BUNDLE_REQUIRE_PATH = './public/js/require-paths.js'
+const BUNDLE_REQUIRE_PATH = './public/js/require-paths.cjs'
 const ROUTES_PATH = './public/js/fos_js_routes.json'
 
 console.log('Checking PIM frontend requirements'.blue)

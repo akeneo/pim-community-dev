@@ -54,7 +54,7 @@ type ItemCollectionProps = Override<
   }
 >;
 
-const ItemCollection = React.forwardRef<HTMLDivElement, ItemCollectionProps>(
+const ItemCollection: React.FC<ItemCollectionProps> = React.forwardRef<HTMLDivElement, ItemCollectionProps>(
   ({children, onNextPage, noResultTitle, noResultIllustration, ...rest}: ItemCollectionProps, forwardedRef) => {
     const firstItemRef = useRef<HTMLDivElement>(null);
     const lastItemRef = useRef<HTMLDivElement>(null);
@@ -77,7 +77,7 @@ const ItemCollection = React.forwardRef<HTMLDivElement, ItemCollectionProps>(
 
     const decoratedChildren = Children.map(children, (child, index) => {
       if (isValidElement(child)) {
-        return cloneElement(child, {
+        return cloneElement(child as any, {
           ref: 0 === index ? firstItemRef : index === childrenCount - 1 ? lastItemRef : undefined,
           onKeyDown: handleKeyDown,
         });

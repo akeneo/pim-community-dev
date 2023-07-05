@@ -43,7 +43,7 @@ type TableCellProps = Override<
   }
 >;
 
-const TableCell = React.forwardRef<HTMLTableCellElement, TableCellProps>(
+const TableCell: any: React.FC<TableCellProps> = React.forwardRef<HTMLTableCellElement, TableCellProps>(
   ({children, rowTitle = false, ...rest}: TableCellProps, forwardedRef: Ref<HTMLTableCellElement>) => {
     return (
       <TableCellContainer ref={forwardedRef} rowTitle={rowTitle} {...rest}>
@@ -51,7 +51,7 @@ const TableCell = React.forwardRef<HTMLTableCellElement, TableCellProps>(
           {React.Children.map(children, child => {
             if (!React.isValidElement(child) || child.type !== Image) return child;
 
-            return React.cloneElement(child, {
+            return React.cloneElement(child as typeof Image, {
               width: 44,
               height: 44,
             });

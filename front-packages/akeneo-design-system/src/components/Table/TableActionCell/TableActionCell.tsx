@@ -27,7 +27,7 @@ type ActionCellProps = Override<
   }
 >;
 
-const TableActionCell = React.forwardRef<HTMLTableCellElement, ActionCellProps>(
+const TableActionCell: React.FC<ActionCellProps> = React.forwardRef<HTMLTableCellElement, ActionCellProps>(
   ({children, ...rest}: ActionCellProps, forwardedRef: Ref<HTMLTableCellElement>) => {
     const decoratedChildren = React.Children.map(children, child => {
       if (React.isValidElement<ButtonProps>(child) && (child.type === Button || child.type === IconButton)) {

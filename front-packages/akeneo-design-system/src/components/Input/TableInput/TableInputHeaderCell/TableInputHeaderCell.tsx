@@ -18,7 +18,7 @@ const TableInputTh = styled.th`
 
 export type TableInputHeaderCellProps = React.TdHTMLAttributes<HTMLTableCellElement>;
 
-const TableInputHeaderCell = React.forwardRef<HTMLTableHeaderCellElement, TableInputHeaderCellProps>(
+const TableInputHeaderCell: React.FC<TableInputHeaderCellProps> = React.forwardRef<HTMLTableHeaderCellElement, TableInputHeaderCellProps>(
   ({children, ...rest}: TableInputHeaderCellProps, forwardedRef: Ref<HTMLTableHeaderCellElement>) => {
     return (
       <TableInputTh ref={forwardedRef} {...rest}>

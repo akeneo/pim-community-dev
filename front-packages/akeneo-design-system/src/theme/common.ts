@@ -1,5 +1,6 @@
 import styled, {css, keyframes} from 'styled-components';
-import {Color, FontFamily, FontSize, getColor, getFontSize, Palette} from './theme';
+import {getColor, getFontSize} from './theme';
+import type {Color, FontFamily, FontSize, Palette} from './theme';
 
 const CommonStyle = css`
   input,

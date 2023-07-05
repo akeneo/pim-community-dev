@@ -19,7 +19,7 @@ const Title = styled.span`
   text-overflow: ellipsis;
 `;
 
-type SurtitleProps = {label: string};
+type SurtitleProps = {label: string, children?: React.ReactNode};
 
 const Surtitle: React.FC<SurtitleProps> = ({label, children, ...rest}) => (
   <SurtitleContainer {...rest}>

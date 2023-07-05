@@ -157,7 +157,7 @@ type HelperProps = {
 };
 
 /** Helper informs the user about the features of the section. */
-const Helper = React.forwardRef<HTMLDivElement, HelperProps>(
+const Helper: React.FC<HelperProps> = React.forwardRef<HTMLDivElement, HelperProps>(
   ({level = 'info', inline = false, icon, children, ...rest}: HelperProps, forwardedRef: Ref<HTMLDivElement>) => {
     return (
       <Container ref={forwardedRef} level={level} inline={inline} {...rest}>

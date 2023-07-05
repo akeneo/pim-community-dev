@@ -1,4 +1,4 @@
-import {Theme} from '../theme';
+import type {Theme} from '../theme';
 import {color, fontSize, palette, fontFamily} from '../common';
 
 const connectorTheme: Theme = {

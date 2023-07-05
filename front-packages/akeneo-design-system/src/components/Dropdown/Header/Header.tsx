@@ -27,7 +27,7 @@ type HeaderProps = Override<
   }
 >;
 
-const Header = React.forwardRef<HTMLDivElement, HeaderProps>(
+const Header: React.FC<HeaderProps> = React.forwardRef<HTMLDivElement, HeaderProps>(
   ({children}: HeaderProps, forwardedRef: Ref<HTMLDivElement>): React.ReactElement => {
     return <HeaderContainer ref={forwardedRef}>{children}</HeaderContainer>;
   }

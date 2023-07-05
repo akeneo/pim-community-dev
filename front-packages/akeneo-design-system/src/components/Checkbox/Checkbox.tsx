@@ -119,7 +119,7 @@ type CheckboxProps = Override<
 /**
  * The checkboxes are applied when users can select all, several, or none of the options from a given list.
  */
-const Checkbox = React.forwardRef<HTMLDivElement, CheckboxProps>(
+const Checkbox: React.FC<CheckboxProps> = React.forwardRef<HTMLDivElement, CheckboxProps>(
   (
     {
       checked = false,
