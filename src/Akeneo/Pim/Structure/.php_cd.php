@@ -10,6 +10,7 @@ $builder = new RuleBuilder();
 
 $rules = [
     $builder->only([
+        'Traversable',
         'Doctrine',
         'Symfony',
         'Webmozart\Assert\Assert',
@@ -54,6 +55,8 @@ $rules = [
 
         // I don't think we should add install subscriber in platform instead of structure (discussed with Arnaud L.)
         'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
+
+        'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
     ])->in('Akeneo\Pim\Structure\Bundle'),
     $builder->only([
         'Symfony\Component',
@@ -115,7 +118,10 @@ $rules = [
         'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags',
 
         'Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\DashboardScoresProjectionRepositoryInterface',
-        'Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\DashboardScoresProjectionRepository'
+        'Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\DashboardScoresProjectionRepository',
+
+        'Akeneo\Pim\Structure\Bundle\Event\AttributesOptionWereCreatedOrUpdated'
+
     ])->in('Akeneo\Pim\Structure\Component'),
 ];
 

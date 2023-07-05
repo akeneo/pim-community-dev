@@ -259,3 +259,8 @@ services:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer'
         arguments:
             - '@pim_enrich.normalizer.file'
+  
+  
+    Akeneo\Pim\Structure\Component\Normalizer\AttributesOptionWereCreatedOrUpdatedNormalizer:
+        tags:
+            - { name: akeneo_messenger.message.normalizer }

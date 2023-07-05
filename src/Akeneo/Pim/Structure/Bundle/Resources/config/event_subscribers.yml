@@ -120,3 +120,13 @@ services:
             - '@database_connection'
         tags:
             - { name: kernel.event_subscriber }
+    
+    Akeneo\Pim\Structure\Bundle\EventSubscriber\AttributeOptionWasCreatedOrUpdatedSubscriber:
+      arguments:
+        - '@akeneo.feature_flag.service.only_serenity_feature'
+        - '@messenger.bus.default'
+        - '@logger'
+        - '%env(default::string:APP_TENANT_ID)%'
+        - '%env(APP_ENV)%'
+      tags:
+        - { name: kernel.event_subscriber }
