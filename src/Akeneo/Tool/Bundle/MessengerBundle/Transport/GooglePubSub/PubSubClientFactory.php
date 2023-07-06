@@ -15,7 +15,7 @@ use Google\Cloud\PubSub\PubSubClient;
  */
 class PubSubClientFactory
 {
-    private array $baseConfig = [];
+    private array $baseConfig = ['transport' => 'rest'];
 
     public function __construct(string $keyFilePath = null, CacheItemPoolInterface $authCache = null)
     {
