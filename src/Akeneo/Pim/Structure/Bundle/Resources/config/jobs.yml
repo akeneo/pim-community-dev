@@ -481,6 +481,8 @@ services:
                 - '@pim_connector.step.mass_edit_family.compute_data_related_to_family_products'
                 - '@pim_connector.step.mass_edit_family.index_family_products_and_product_models'
             - true
+            - true
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
 
@@ -494,6 +496,8 @@ services:
               - '@pim_connector.step.move_child_attributes'
               - '@pim_connector.step.delete_attribute_groups'
             - true
+            - true
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: 'attribute_group_mass_delete' }
 
@@ -505,5 +509,8 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pim_connector.step.delete_attributes'
+            - false
+            - true
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: 'attribute_mass_delete' }
