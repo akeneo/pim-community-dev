@@ -46,7 +46,7 @@ class ProductModelsWereCreatedOrUpdatedMessageIntegration extends EnrichmentProd
     {
         self::assertCount(0, $this->pubSubQueueStatus->getMessagesInQueue());
         $code = 'product-model';
-        $this->createProductModel($code, 'shoes_color');
+        $productModel = $this->createProductModel($code, 'shoes_color');
 
         $messages = $this->pubSubQueueStatus->getMessagesInQueue();
         self::assertCount(1, $messages);
@@ -59,6 +59,25 @@ class ProductModelsWereCreatedOrUpdatedMessageIntegration extends EnrichmentProd
         self::assertInstanceOf(ProductModelsWereCreatedOrUpdated::class, $productModelsWereCreatedOrUpdated);
         self::assertCount(1, $productModelsWereCreatedOrUpdated->events);
         self::assertInstanceOf(ProductModelWasCreated::class, current($productModelsWereCreatedOrUpdated->events));
+
+        $this->pubSubQueueStatus->flushJobQueue();
+        self::assertCount(0, $this->pubSubQueueStatus->getMessagesInQueue());
+
+        $this->updateProductModel($productModel, [
+            'code' => 'product-model-1b',
+        ]);
+
+        /** @var Message $message */
+        $messages = $this->pubSubQueueStatus->getMessagesInQueue();
+        $message = current($messages);
+        $productModelsWereCreatedOrUpdated = $this->get(ProductModelsWereCreatedOrUpdatedNormalizer::class)->denormalize(
+            \json_decode($message->data(), true, 512, JSON_THROW_ON_ERROR),
+            ProductModelsWereCreatedOrUpdated::class
+        );
+
+        self::assertInstanceOf(ProductModelsWereCreatedOrUpdated::class, $productModelsWereCreatedOrUpdated);
+        self::assertCount(1, $productModelsWereCreatedOrUpdated->events);
+        self::assertInstanceOf(ProductModelWasUpdated::class, current($productModelsWereCreatedOrUpdated->events));
     }
 
     public function test_it_dispatches_message_when_product_models_are_created_or_updated(): void
