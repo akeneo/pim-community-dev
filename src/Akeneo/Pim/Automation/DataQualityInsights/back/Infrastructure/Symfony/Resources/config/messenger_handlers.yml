@@ -11,6 +11,13 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetOutdatedProductModelIdsByDateAndCriteriaQueryInterface'
             - '@logger'
 
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Messenger\EvaluateAfterAttributeGroupActivateHandler:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductIdsImpactedByAttributeGroupActivationQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductModelIdsImpactedByAttributeGroupActivationQuery'
+            - '@messenger.bus.default'
+            - 50
+
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Messenger\LaunchProductAndProductModelEvaluationsMessageNormalizer:
         tags:
             - { name: akeneo_messenger.message.normalizer }

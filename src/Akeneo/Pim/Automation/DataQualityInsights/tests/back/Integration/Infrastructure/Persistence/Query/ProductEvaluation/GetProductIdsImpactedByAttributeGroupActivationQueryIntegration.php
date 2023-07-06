@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastructure\Persistence\Query\ProductEvaluation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeGroupCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductIdsImpactedByAttributeGroupActivationQuery;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
@@ -48,6 +49,34 @@ final class GetProductIdsImpactedByAttributeGroupActivationQueryIntegration exte
         $this->assertEqualsCanonicalizing($expectedProductUuids, array_merge_recursive(...$productUuids));
     }
 
+    public function test_it_retrieves_impacted_products_for_a_given_attribute_group(): void
+    {
+        $updatedSince = new \DateTimeImmutable('2020-10-05 14:35:42');
+
+        $this->createAttributeGroupActivation('other', false, $updatedSince->modify('-1 day'));
+        $this->createAttributeGroupWithAttributes('not_recently_activated', ['name', 'description'], true, $updatedSince->modify('-1 second'));
+        $this->createAttributeGroupWithAttributes('recently_activated', ['ean'], true, $updatedSince->modify('+1 minute'));
+        $this->createAttributeGroupWithAttributes('recently_deactivated', ['weight', 'length'], false, $updatedSince->modify('+1 second'));
+
+        $impactedProductUuids = [];
+        $impactedProductUuids[] = $this->givenAProductInFamilyWithAttributes(['ean']);
+        $impactedProductUuids[] = $this->givenAProductInFamilyWithAttributes(['weight']);
+        $impactedProductUuids[] = $this->givenAProductInFamilyWithAttributes(['name', 'weight']);
+        $impactedProductUuids[] = $this->givenAProductInFamilyWithAttributes(['ean', 'description']);
+
+        $this->givenAProductInFamilyWithAttributes(['name']);
+        $this->givenAProductInFamilyWithAttributes(['description']);
+        $this->givenAProductInFamilyWithAttributes(['name', 'description']);
+
+        $productUuids = \array_merge(
+            \iterator_to_array($this->get(GetProductIdsImpactedByAttributeGroupActivationQuery::class)->forAttributeGroup(new AttributeGroupCode('recently_activated'), 2)),
+            \iterator_to_array($this->get(GetProductIdsImpactedByAttributeGroupActivationQuery::class)->forAttributeGroup(new AttributeGroupCode('recently_deactivated'), 2)),
+        );
+        $productUuids = array_map(fn (ProductUuidCollection $collection) => $collection->toArray(), $productUuids);
+
+        $this->assertEqualsCanonicalizing($impactedProductUuids, array_merge_recursive(...$productUuids));
+    }
+
     private function createAttributeGroupWithAttributes(string $code, array $attributes, bool $activated, \DateTimeImmutable $activationUpdatedAt): int
     {
         foreach ($attributes as $attributeCode) {
@@ -59,5 +88,20 @@ final class GetProductIdsImpactedByAttributeGroupActivationQueryIntegration exte
         $this->createAttributeGroupActivation($code, $activated, $activationUpdatedAt);
 
         return $attributeGroup->getId();
+    }
+
+
+
+    /**
+     * @param string[] $attributeCodes
+     */
+    private function givenAProductInFamilyWithAttributes(array $attributeCodes): string
+    {
+        $identifier = 'id_' . uniqid();
+        $familyCode = 'family_' . uniqid();
+        $this->createFamily($familyCode, ['attributes' => $attributeCodes]);
+        $product = $this->createProduct($identifier, ['family' => $familyCode]);
+
+        return $product->getUuid()->toString();
     }
 }

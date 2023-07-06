@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeGroupCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 
 /**
@@ -16,4 +17,10 @@ interface GetEntityIdsImpactedByAttributeGroupActivationQueryInterface
      * @return \Iterator<int, ProductEntityIdCollection>
      */
     public function updatedSince(\DateTimeImmutable $updatedSince, int $bulkSize): \Iterator;
+
+    /**
+     * @return \Iterator<int, ProductEntityIdCollection>
+     */
+    public function forAttributeGroup(AttributeGroupCode $attributeGroupCode, int $bulkSize): \Iterator;
+
 }

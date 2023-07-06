@@ -6,3 +6,11 @@ queues:
             - name: dqi_launch_product_evaluations
               env_var: PUBSUB_SUBSCRIPTION_DQI_LAUNCH_PRODUCT_EVALUATIONS
               service_handler: 'Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Messenger\LaunchProductAndProductModelEvaluationsHandler'
+
+    dqi_attribute_group_activate_queue:
+        env_var: PUBSUB_TOPIC_DQI_ATTRIBUTE_GROUP_ACTIVATE
+        message_class: Akeneo\Pim\Automation\DataQualityInsights\Domain\Event\AttributeGroupActivationHasChanged
+        consumers:
+            - name: dqi_evaluate_after_attribute_group_activate
+              env_var: PUBSUB_SUBSCRIPTION_DQI_ATTRIBUTE_GROUP_ACTIVATE
+              service_handler: 'Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Messenger\EvaluateAfterAttributeGroupActivateHandler'
