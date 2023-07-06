@@ -27,10 +27,10 @@ final class UploadedFileValidatorSpec extends ObjectBehavior
         File\UploadedFile $file,
         ExecutionContextInterface $context
     ) {
-        $file->beConstructedWith([__FILE__, 'akeneo.png', 'image/png', null, true]);
+        $file->beConstructedWith([__FILE__, 'akeneo.PNG', 'image/png', null, true]);
 
         $file->guessExtension()->willReturn('png');
-        $file->getClientOriginalExtension()->willReturn('png');
+        $file->getClientOriginalExtension()->willReturn('PNG');
         $file->getMimeType()->willReturn('image/png');
         $file->getClientMimeType()->willReturn('image/png');
 

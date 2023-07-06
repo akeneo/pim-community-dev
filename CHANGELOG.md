@@ -107,6 +107,7 @@
 - PIM-11035: Modify the command to fit with UCS
 - PIM-11011: Fix versioning on common attribute values update using no real time imports
 - PIM-10676: [Business-Impact] Prevent users in the PIM to remove all 'system' permissions
+- PIM-11095: Make image extension check case insensitive
 
 ## Improvements
 

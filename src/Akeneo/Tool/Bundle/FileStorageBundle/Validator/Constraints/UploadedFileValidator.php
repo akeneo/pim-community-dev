@@ -16,7 +16,7 @@ final class UploadedFileValidator extends ConstraintValidator
      * @param File\UploadedFile $uploadedFile
      * @param UploadedFile $constraint
      */
-    public function validate($uploadedFile, Constraint $constraint)
+    public function validate($uploadedFile, Constraint $constraint): void
     {
         if (!$constraint instanceof UploadedFile) {
             throw new UnexpectedTypeException($constraint, UploadedFile::class);
@@ -33,11 +33,11 @@ final class UploadedFileValidator extends ConstraintValidator
         $allowedTypes = $constraint->types;
         $allowedMimeTypes = array_merge(...array_values($allowedTypes));
 
-        $guessedExtension = $uploadedFile->guessExtension();
-        $originalExtension = $uploadedFile->getClientOriginalExtension();
+        $guessedExtension = strtolower($uploadedFile->guessExtension() ?? '');
+        $originalExtension = strtolower($uploadedFile->getClientOriginalExtension());
 
-        $guessedMimeType = $uploadedFile->getMimeType();
-        $originalMimeType = $uploadedFile->getClientMimeType();
+        $guessedMimeType = strtolower($uploadedFile->getMimeType() ?? '');
+        $originalMimeType = strtolower($uploadedFile->getClientMimeType());
 
         if (!array_key_exists($originalExtension, $allowedTypes)) {
             // Unsupported extension.
