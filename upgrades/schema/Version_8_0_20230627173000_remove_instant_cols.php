@@ -19,7 +19,7 @@ final class Version_8_0_20230627173000_remove_instant_cols extends AbstractMigra
     public function up(Schema $schema): void
     {
         $this->disableMigrationWarning();
-        if ($this->isSassVersion()){
+        if ($this->isSaaSVersion()){
             return;
         }
 
@@ -41,7 +41,7 @@ final class Version_8_0_20230627173000_remove_instant_cols extends AbstractMigra
         return $this->container->get('Akeneo\Tool\Component\StorageUtils\Migration\V20230622175500OptimizeTableWithInstantColsMigration');
     }
 
-    private function isSassVersion(): bool
+    private function isSaaSVersion(): bool
     {
         /** @var VersionProviderInterface $versionProvider */
         $versionProvider = $this->container->get('pim_catalog.version_provider');

@@ -18,14 +18,14 @@ use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
 
 /**
- * This test exist in order to enforce the fact that we cannot create new columns on some table until we didn't do an OPTIMIZE TABLE on those table.
+ * This test exists in order to prevent new columns creation on large tables until we perform an `OPTIMIZE TABLE` on those tables.
  *
  * Link to the incident related:
  *     - https://www.notion.so/akeneo/2023-06-01-MySQL-crash-loop-6796c8a1656c49daaa986aa53274bc71
  *     - https://akeneo.slack.com/archives/C05A8TT1UCW/p1686739172807109
  *
- * Actually making an OPTIMIZE table on those table create a MySQL error on some large instances due to the fact that it require a lot of space to do it.
- * When UCS migration will be finished we didn't need to do it anymore as it made a MySQL dump and restore because the table will be rebuilt
+ * Currently, performing an `OPTIMIZE TABLE` on those tables create a MySQL error on instances with a lot of data due to the fact that it requires a lot of available space.
+ * When UCS migration will be over, we won't need to do it anymore because the UCS migration actually rebuilds the table and dump previous data into it.
  */
 class TableWithOldInstantColsCannotHaveNewColumnUntilUcsMigrationTest extends TestCase
 {
