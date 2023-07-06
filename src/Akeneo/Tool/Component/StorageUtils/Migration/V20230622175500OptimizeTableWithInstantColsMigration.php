@@ -36,19 +36,28 @@ class V20230622175500OptimizeTableWithInstantColsMigration implements ZddMigrati
 
     public function migrate(): void
     {
-        foreach (self::TABLES_THAT_HAVE_INSTANT_COLS as $tableName) {
-            $this->optimizeTable($tableName);
-        }
+        $this->optimizeTables(self::TABLES_THAT_HAVE_INSTANT_COLS);
     }
 
     public function migrateNotZdd(): void
     {
-        $this->migrate();
+        $this->optimizeTables(array_merge(self::TABLES_THAT_HAVE_INSTANT_COLS, [
+            'akeneo_asset_manager_asset',
+            'pim_catalog_product_model',
+            'pim_data_quality_insights_product_model_score',
+        ]));
     }
 
     public function getName(): string
     {
         return 'OptimizeTableWithInstantCols';
+    }
+
+    private function optimizeTables(array $tableNames)
+    {
+        foreach ($tableNames as $tableName) {
+            $this->optimizeTable($tableName);
+        }
     }
 
     private function optimizeTable(string $tableName)
