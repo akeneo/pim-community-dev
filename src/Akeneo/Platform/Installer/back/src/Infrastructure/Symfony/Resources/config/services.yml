@@ -47,3 +47,11 @@ services:
       - '/^(?!pim_configuration).*$/'
     tags:
       - { name: doctrine.dbal.schema_filter, connection: default }
+
+  Akeneo\Platform\Installer\Infrastructure\FilesystemsPurger\FilesystemPurger: ~
+
+  Akeneo\Platform\Installer\Infrastructure\FilesystemsPurger\FilesystemsPurger:
+    arguments:
+      - '@akeneo_batch_queue.launcher.queue_job_launcher'
+      - '@akeneo_batch.job.job_instance_repository'
+      - '@security.token_storage'

@@ -10,3 +10,6 @@ services:
 
   Akeneo\Platform\Installer\Infrastructure\UserConfigurationResetter\UserConfigurationResetter:
     class: Akeneo\Platform\Installer\Test\Acceptance\FakeServices\FakeUserConfigurationResetter
+
+  Akeneo\Platform\Installer\Infrastructure\FilesystemsPurger\FilesystemsPurger:
+    class: Akeneo\Platform\Installer\Test\Acceptance\FakeServices\FakeFilesystemsPurger

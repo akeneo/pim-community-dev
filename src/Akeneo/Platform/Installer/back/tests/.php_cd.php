@@ -28,8 +28,10 @@ $rules = [
 
             'Akeneo\Platform\Bundle\InstallerBundle\Event',
             'Akeneo\Platform\Job\ServiceApi',
+            'Akeneo\Tool',
             'Doctrine\DBAL\Connection',
             'Doctrine\DBAL\Schema\AbstractAsset',
+            'League\Flysystem\FilesystemOperator',
             'Symfony\Component',
             'Webmozart\Assert\Assert',
             'Oro\Bundle\SecurityBundle\SecurityFacade',

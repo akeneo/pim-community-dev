@@ -1,0 +1,35 @@
+services:
+  akeneo.installer.job.purge_filesystems:
+    class: 'Akeneo\Tool\Component\Batch\Job\Job'
+    arguments:
+      - 'purge_filesystems'
+      - '@event_dispatcher'
+      - '@akeneo_batch.job_repository'
+      - - '@akeneo.installer.step.purge_filesystems'
+      - false
+      - false
+      - true
+    tags:
+      - { name: akeneo_batch.job, connector: 'internal', type: 'pim_reset' }
+
+  Akeneo\Platform\Installer\Infrastructure\Job\PurgeFilesystemsTasklet:
+    arguments:
+      - '@Akeneo\Platform\Installer\Infrastructure\FilesystemsPurger\FilesystemPurger'
+      - !tagged_iterator { tag: 'oneup_flysystem.filesystem', index_by: 'mount' }
+      - '@akeneo_batch.job.job_stopper'
+
+  akeneo.installer.step.purge_filesystems:
+    class: 'Akeneo\Tool\Component\Connector\Step\TaskletStep'
+    arguments:
+      - 'purge_filesystems'
+      - '@event_dispatcher'
+      - '@akeneo_batch.job_repository'
+      - '@Akeneo\Platform\Installer\Infrastructure\Job\PurgeFilesystemsTasklet'
+
+  akeneo.installer.job.purge_filesystems.default_values_provider.purge_filesystems:
+    class: 'Akeneo\Tool\Component\Batch\Job\JobParameters\EmptyConstraintAndDefaultValuesProvider'
+    arguments:
+      - 'purge_filesystems'
+    tags:
+      - { name: akeneo_batch.job.job_parameters.default_values_provider }
+      - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
