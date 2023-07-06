@@ -171,7 +171,6 @@ JSON;
 
     public function testOffsetPaginationListProductsWithChannelLocalesAndAttributesParams()
     {
-        $standardizedProducts = $this->getStandardizedProducts();
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/products?scope=tablet&locales=fr_FR&attributes=a_scopable_price,a_metric,a_localized_and_scopable_text_area&pagination_type=page');
@@ -197,7 +196,7 @@ JSON;
                 "groups"        : [],
                 "categories"    : ["categoryB"],
                 "enabled"       : true,
-                "values"        : [],
+                "values"        : {},
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
                 "associations"  : {
@@ -245,7 +244,7 @@ JSON;
                 "categories": ["master"],
                 "groups": [],
                 "parent": "prod_mod_optA",
-                "values": { },
+                "values": {},
                 "created": "2019-06-10T12:37:47+02:00",
                 "updated": "2019-06-10T12:37:47+02:00",
                 "associations": {
@@ -375,6 +374,13 @@ JSON;
                             "locale" : null,
                             "scope"  : null,
                             "data"   : "Text"
+                        }
+                    ],
+                    "sku": [
+                        {
+                            "locale" : null,
+                            "scope"  : null,
+                            "data"   : "simple"
                         }
                     ]
                 },
@@ -528,13 +534,10 @@ JSON;
             ])
         );
 
-        $values = '{
-            "a_text": [{
-                "locale": null,
-                "scope": null,
-                "data": "Text"
-            }]
-        }';
+        $values = [
+            'a_text' => [['locale' => null, 'scope' => null, 'data' => 'Text']]
+        ];
+
         $qualityScores = '[
             {"scope": "tablet", "locale": "de_DE", "data": "E"},
             {"scope": "tablet", "locale": "en_US", "data": "E"},
@@ -547,21 +550,21 @@ JSON;
             self::PRODUCT_UUIDS['simple_with_family_and_values'],
             'simple_with_family_and_values',
             '"familyA"',
-            $values,
+            \json_encode($values + ['sku' => [['locale' => null, 'scope' => null, 'data' => 'simple_with_family_and_values']]]),
             $qualityScores
         );
         $standardizedProducts['simple_with_no_family'] = $this->getStandardizedProductsForQualityScore(
             self::PRODUCT_UUIDS['simple_with_no_family'],
             'simple_with_no_family',
             'null',
-            $values,
+            \json_encode($values + ['sku' => [['locale' => null, 'scope' => null, 'data' => 'simple_with_no_family']]]),
             '[]'
         );
         $standardizedProducts['simple_with_no_values'] = $this->getStandardizedProductsForQualityScore(
             self::PRODUCT_UUIDS['simple_with_no_values'],
             'simple_with_no_values',
             '"familyA"',
-            '{}',
+            \json_encode(['sku' => [['locale' => null, 'scope' => null, 'data' => 'simple_with_no_values']]]),
             $qualityScores
         );
 
@@ -610,13 +613,10 @@ JSON;
         ]);
         $this->getEsIndex()->refreshIndex();
 
-        $values = '{
-            "a_text": [{
-                "locale": null,
-                "scope": null,
-                "data": "Text"
-            }]
-        }';
+        $values = [
+            'a_text' => [['locale' => null, 'scope' => null, 'data' => 'Text']]
+        ];
+
         $completenessesFamVal = '[
             {"scope":"ecommerce","locale":"en_US","data":10},
             {"scope":"ecommerce_china","locale":"en_US","data":100},
@@ -637,21 +637,21 @@ JSON;
             self::PRODUCT_UUIDS['simple_with_family_and_values'],
             'simple_with_family_and_values',
             '"familyA"',
-            $values,
+            \json_encode($values + ['sku' => [['locale' => null, 'scope' => null, 'data' => 'simple_with_family_and_values']]]),
             $completenessesFamVal
         );
         $standardizedProducts['simple_with_no_family'] = $this->getStandardizedProductsForCompletenesses(
             self::PRODUCT_UUIDS['simple_with_no_family'],
             'simple_with_no_family',
             'null',
-            $values,
+            \json_encode($values + ['sku' => [['locale' => null, 'scope' => null, 'data' => 'simple_with_no_family']]]),
             '[]'
         );
         $standardizedProducts['simple_with_no_values'] = $this->getStandardizedProductsForCompletenesses(
             self::PRODUCT_UUIDS['simple_with_no_values'],
             'simple_with_no_values',
             '"familyA"',
-            '{}',
+            \json_encode(['sku' => [['locale' => null, 'scope' => null, 'data' => 'simple_with_no_values']]]),
             $completenessesNoVal
         );
 
@@ -903,7 +903,7 @@ JSON;
                 "groups": [],
                 "categories": [],
                 "enabled": true,
-                "values": {},
+                "values": {"sku":  [{"locale": null, "scope":  null, "data": "MY_OTHER_UPPERCASE_IDENTIFIER"}]},
                 "created": "2017-03-11T10:39:38+01:00",
                 "updated": "2017-03-11T10:39:38+01:00",
                 "associations": {
@@ -1156,6 +1156,11 @@ JSON;
             "locale": null,
             "scope": null,
             "data": "Text"
+        }],
+        "sku": [{
+            "locale": null,
+            "scope": null,
+            "data": "simple"
         }]
     },
     "created": "2017-03-11T10:39:38+01:00",
@@ -1212,6 +1217,11 @@ JSON;
                     "href": "http://localhost/api/rest/v1/media-files/5/d/c/a/5dcac0871503e513d5be25807794a09ad9080341_akeneo.jpg/download"
                 }
             }
+        }],
+        "sku": [{
+            "locale": null,
+            "scope": null,
+            "data": "localizable"
         }]
     },
     "created": "2017-03-11T10:39:38+01:00",
@@ -1261,6 +1271,11 @@ JSON;
                 "amount": "11.50",
                 "currency": "USD"
             }]
+        }],
+        "sku": [{
+            "locale": null,
+            "scope": null,
+            "data": "scopable"
         }]
     },
     "created": "2017-03-11T10:39:38+01:00",
@@ -1310,6 +1325,11 @@ JSON;
             "locale": "zh_CN",
             "scope": "ecommerce_china",
             "data": "hum..."
+        }],
+        "sku": [{
+            "locale": null,
+            "scope": null,
+            "data": "localizable_and_scopable"
         }]
     },
     "created": "2017-03-11T10:39:38+01:00",
@@ -1338,7 +1358,13 @@ JSON;
    "groups": [],
    "categories": ["master_china"],
    "enabled": true,
-   "values": {},
+   "values": {
+        "sku": [{
+            "locale": null,
+            "scope": null,
+            "data": "product_china"
+        }]
+   },
    "created": "2017-03-11T10:39:38+01:00",
    "updated": "2017-03-11T10:39:38+01:00",
    "associations": {
@@ -1370,6 +1396,11 @@ JSON;
             "locale": null,
             "scope": null,
             "data": true
+        }],
+        "sku": [{
+            "locale": null,
+            "scope": null,
+            "data": "product_without_category"
         }]
     },
     "created": "2017-03-11T10:39:38+01:00",
@@ -1417,7 +1448,8 @@ JSON;
         "a_price": [{ "locale": null, "scope": null, "data": [{ "amount": "50.00", "currency": "EUR" }] }],
         "a_yes_no": [{ "locale": null, "scope": null, "data": true }],
         "a_number_float": [{ "locale": null, "scope": null, "data": "12.5000" }],
-        "a_localized_and_scopable_text_area": [{ "locale": "en_US", "scope": "ecommerce", "data": "my pink tshirt" }]
+        "a_localized_and_scopable_text_area": [{ "locale": "en_US", "scope": "ecommerce", "data": "my pink tshirt" }],
+        "sku": [{ "locale": null, "scope": null, "data": "product_with_parent" }]
     },
     "created": "2019-06-10T12:37:47+02:00",
     "updated": "2019-06-10T12:37:47+02:00",
@@ -1450,7 +1482,8 @@ JSON;
         "a_price": [{ "locale": null, "scope": null, "data": [{ "amount": "50.00", "currency": "EUR" }] }],
         "a_yes_no": [{ "locale": null, "scope": null, "data": true }],
         "a_number_float": [{ "locale": null, "scope": null, "data": "12.5000" }],
-        "a_localized_and_scopable_text_area": [{ "locale": "en_US", "scope": "ecommerce", "data": "my pink tshirt" }]
+        "a_localized_and_scopable_text_area": [{ "locale": "en_US", "scope": "ecommerce", "data": "my pink tshirt" }],
+        "sku": [{ "locale": null, "scope": null, "data": "product_with_parent" }]
     },
     "created": "2019-06-10T12:37:47+02:00",
     "updated": "2019-06-10T12:37:47+02:00",
