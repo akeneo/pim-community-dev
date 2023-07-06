@@ -110,6 +110,7 @@
         "openspout/openspout": "^4.9.0",
         "opis/json-schema": "^2.3",
         "phpseclib/phpseclib": "^3.0",
+        "psr/cache": "^1.0.0",
         "psr/event-dispatcher": "^1.0.0",
         "ramsey/uuid": "4.7.1",
         "ramsey/uuid-doctrine": "^1.8",
