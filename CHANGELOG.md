@@ -34,6 +34,7 @@
 - PIM-10829: Fix case-sensitive locale on translatable business objects
 - PIM-10840: Fix attribute update date on attribute options change above 10000 options
 - PIM-10793: Add a command to delete expired tokens
+- PIM-11090: Add missing translations for Process Tracker
 - PIM-10840: Fix attribute update date on attribute options change above 10000 options
 - PIM-10868: Fix checkboxes on category trees
 - PIM-10832: Fix compute completeness job after removing an attribute from a family
