@@ -91,9 +91,10 @@ class FilteredProductAndProductModelReader implements
             return;
         }
 
-        while ($this->productsAndProductModels->valid() && ($this->productsAndProductModels->key() < $this->state['position'] || is_null($this->state['position']))) {
+        while ($this->productsAndProductModels->valid() && ($this->productsAndProductModels->key() <= $this->state['position'] || is_null($this->state['position']))) {
             $this->productsAndProductModels->next();
         }
+        $this->firstRead = false;
     }
 
     /**
