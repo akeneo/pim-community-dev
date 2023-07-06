@@ -28,8 +28,12 @@ final class PublishPausedJobsToQueue
             $jobExecutionMessage = PausedJobExecutionMessage::createJobExecutionMessage($jobExecutionId, []);
             try {
                 $this->jobExecutionQueue->publish($jobExecutionMessage);
-            } catch(\Exception) {
-                $this->logger->error('An error occurred trying to publish paused job execution', ['job_execution_id' => $jobExecutionId]);
+            } catch (\Exception $exception) {
+                $this->logger->error('An error occurred trying to publish paused job execution', [
+                    'job_execution_id' => $jobExecutionId,
+                    'error_message' => $exception->getMessage(),
+                    'trace' => $exception->getTraceAsString(),
+                ]);
             }
         }
     }
