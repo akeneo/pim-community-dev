@@ -22,7 +22,7 @@ class PubSubClientFactory
         if (!empty($keyFilePath)) {
             $this->baseConfig['keyFilePath'] = $keyFilePath;
         }
-        if (!is_null($authCache)) {
+        if ($authCache !== null) {
             $this->baseConfig['authCache'] = $authCache;
         }
     }
