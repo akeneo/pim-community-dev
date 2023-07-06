@@ -7,14 +7,14 @@ declare(strict_types=1);
  * @license https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
-namespace Akeneo\Platform\Installer\Infrastructure\FilesystemPurger;
+namespace Akeneo\Platform\Installer\Infrastructure\FilesystemsPurger;
 
 use Akeneo\Platform\Installer\Domain\Service\FilesystemPurgerInterface;
 use League\Flysystem\FilesystemOperator;
 
 class FilesystemPurger implements FilesystemPurgerInterface
 {
-    public function execute(FilesystemOperator $filesystem): void
+    public function purge(FilesystemOperator $filesystem): void
     {
         $filesystem->deleteDirectory('./');
     }

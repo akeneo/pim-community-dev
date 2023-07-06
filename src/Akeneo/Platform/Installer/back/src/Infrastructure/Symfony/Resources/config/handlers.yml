@@ -5,6 +5,3 @@ services:
       - '@Akeneo\Platform\Installer\Infrastructure\DatabasePurger\DbalPurger'
       - '@Akeneo\Platform\Installer\Infrastructure\FixtureInstaller\MinimalFixtureInstaller'
       - '@Akeneo\Platform\Installer\Infrastructure\UserConfigurationResetter\UserConfigurationResetter'
-      - '@akeneo_batch_queue.launcher.queue_job_launcher'
-      - '@akeneo_batch.job.job_instance_repository'
-      - '@security.token_storage'

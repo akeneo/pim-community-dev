@@ -17,6 +17,8 @@ use League\Flysystem\FilesystemOperator;
 
 final class PurgeFilesystemsTasklet implements TaskletInterface
 {
+    private const SKIPPED_FILESYSTEMS = ['localFilesystem'];
+
     private ?StepExecution $stepExecution = null;
 
     /**
@@ -40,22 +42,24 @@ final class PurgeFilesystemsTasklet implements TaskletInterface
             throw new \InvalidArgumentException(sprintf('In order to execute "%s" you need to set a step execution.', PurgeFilesystemsTasklet::class));
         }
 
-        $currentState = $this->stepExecution->getCurrentState();
+        $purgedFilesystems = $this->stepExecution->getCurrentState();
+        $filesystemsToPurge = array_filter(
+            $this->filesystems,
+            fn ($key) => !in_array($key, $purgedFilesystems), ARRAY_FILTER_USE_KEY
+        );
 
-        foreach ($this->filesystems as $key => $filesystem) {
-            if ('localFilesystem' === $key) {
+        foreach ($filesystemsToPurge as $filesystemName => $filesystem) {
+            if (in_array($filesystemName, self::SKIPPED_FILESYSTEMS)) {
                 continue;
             }
 
             if ($this->jobStopper->isPausing($this->stepExecution)) {
-                $this->jobStopper->pause($this->stepExecution, $currentState);
+                $this->jobStopper->pause($this->stepExecution, $purgedFilesystems);
                 break;
             }
 
-            if (!in_array($key, $currentState)) {
-                $this->filesystemPurger->execute($filesystem);
-                $currentState[] = $key;
-            }
+            $this->filesystemPurger->purge($filesystem);
+            $purgedFilesystems[] = $filesystemName;
         }
     }
 }

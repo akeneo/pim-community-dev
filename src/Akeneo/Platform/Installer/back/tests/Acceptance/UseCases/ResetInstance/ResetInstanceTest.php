@@ -48,7 +48,7 @@ class ResetInstanceTest extends KernelTestCase
         ]);
 
         $this->assertTrue(
-            $this->getFixtureInstaller()->isInstalledWithoutUsersUserGroupsAndUserRoles()
+            $this->getFixtureInstaller()->isInstalledWithoutUsersUserGroupsAndUserRoles(),
         );
     }
 

@@ -14,7 +14,7 @@ services:
 
   Akeneo\Platform\Installer\Infrastructure\Job\PurgeFilesystemsTasklet:
     arguments:
-      - '@Akeneo\Platform\Installer\Infrastructure\FilesystemPurger\FilesystemPurger'
+      - '@Akeneo\Platform\Installer\Infrastructure\FilesystemsPurger\FilesystemPurger'
       - !tagged_iterator { tag: 'oneup_flysystem.filesystem', index_by: 'mount' }
       - '@akeneo_batch.job.job_stopper'
 

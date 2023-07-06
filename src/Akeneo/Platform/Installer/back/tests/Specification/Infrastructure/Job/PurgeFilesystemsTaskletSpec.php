@@ -16,12 +16,12 @@ class PurgeFilesystemsTaskletSpec extends ObjectBehavior
 {
     public function let(
         FilesystemPurgerInterface $filesystemPurger,
-        FilesystemOperator $filesystemOperator1,
-        FilesystemOperator $filesystemOperator2,
+        FilesystemOperator $filesystem1,
+        FilesystemOperator $filesystem2,
         StepExecution $stepExecution,
         JobStopper $jobStopper,
     ) {
-        $this->beConstructedWith($filesystemPurger, [$filesystemOperator1, $filesystemOperator2], $jobStopper);
+        $this->beConstructedWith($filesystemPurger, [$filesystem1, $filesystem2], $jobStopper);
 
         $this->setStepExecution($stepExecution);
     }
@@ -34,48 +34,49 @@ class PurgeFilesystemsTaskletSpec extends ObjectBehavior
 
     public function it_purge_filesystems(
         FilesystemPurgerInterface $filesystemPurger,
-        FilesystemOperator $filesystemOperator1,
-        FilesystemOperator $filesystemOperator2,
+        FilesystemOperator $filesystem1,
+        FilesystemOperator $filesystem2,
         StepExecution $stepExecution,
         JobStopper $jobStopper,
     ): void {
         $stepExecution->getCurrentState()->willReturn([]);
         $jobStopper->isPausing($stepExecution)->willReturn(false);
 
-        $filesystemPurger->execute($filesystemOperator1)->shouldBeCalled();
-        $filesystemPurger->execute($filesystemOperator2)->shouldBeCalled();
+        $filesystemPurger->purge($filesystem1)->shouldBeCalled();
+        $filesystemPurger->purge($filesystem2)->shouldBeCalled();
+
         $this->execute();
     }
 
     public function it_can_be_paused(
         FilesystemPurgerInterface $filesystemPurger,
-        FilesystemOperator $filesystemOperator1,
-        FilesystemOperator $filesystemOperator2,
+        FilesystemOperator $filesystem1,
+        FilesystemOperator $filesystem2,
         StepExecution $stepExecution,
         JobStopper $jobStopper,
     ): void {
         $stepExecution->getCurrentState()->willReturn([]);
         $jobStopper->isPausing($stepExecution)->shouldBeCalledTimes(2)->willReturn(false, true);
 
-        $filesystemPurger->execute($filesystemOperator1)->shouldBeCalled();
+        $filesystemPurger->purge($filesystem1)->shouldBeCalled();
         $jobStopper->pause($stepExecution, ['0',])->shouldBeCalled();
-        $filesystemPurger->execute($filesystemOperator2)->shouldNotBeCalled();
+        $filesystemPurger->purge($filesystem2)->shouldNotBeCalled();
 
         $this->execute();
     }
 
-    public function it_executes_remaining_rules_after_paused_job(
+    public function it_executes_remaining_filesystems_after_paused_job(
         FilesystemPurgerInterface $filesystemPurger,
-        FilesystemOperator $filesystemOperator1,
-        FilesystemOperator $filesystemOperator2,
+        FilesystemOperator $filesystem1,
+        FilesystemOperator $filesystem2,
         StepExecution $stepExecution,
         JobStopper $jobStopper,
     ): void {
         $stepExecution->getCurrentState()->willReturn(['0',]);
         $jobStopper->isPausing($stepExecution)->willReturn(false);
 
-        $filesystemPurger->execute($filesystemOperator1)->shouldNotBeCalled();
-        $filesystemPurger->execute($filesystemOperator2)->shouldBeCalled();
+        $filesystemPurger->purge($filesystem1)->shouldNotBeCalled();
+        $filesystemPurger->purge($filesystem2)->shouldBeCalled();
 
         $this->execute();
     }

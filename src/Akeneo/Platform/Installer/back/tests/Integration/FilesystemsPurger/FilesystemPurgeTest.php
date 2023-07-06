@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Platform\Installer\Test\Integration\FilesystemPurger;
+namespace Akeneo\Platform\Installer\Test\Integration\FilesystemsPurger;
 
 use Akeneo\Platform\Installer\Domain\Service\FilesystemPurgerInterface;
 use Akeneo\Test\Integration\Configuration;
@@ -16,7 +16,7 @@ use Webmozart\Assert\Assert;
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class FilesystemPurgerTest extends TestCase
+class FilesystemPurgeTest extends TestCase
 {
     /**
      * @test
@@ -28,7 +28,7 @@ class FilesystemPurgerTest extends TestCase
         $filesystem->write('test/file_test.txt', 'file content');
 
         $this->assertFilesystemNotEmpty($filesystem);
-        $this->getPurger()->execute($filesystem);
+        $this->getPurger()->purge($filesystem);
         $this->assertFilesystemEmpty($filesystem);
     }
 
@@ -44,7 +44,7 @@ class FilesystemPurgerTest extends TestCase
 
     private function getPurger(): FilesystemPurgerInterface
     {
-        return $this->get('Akeneo\Platform\Installer\Infrastructure\FilesystemPurger\FilesystemPurger');
+        return $this->get('Akeneo\Platform\Installer\Infrastructure\FilesystemsPurger\FilesystemPurger');
     }
 
     private function assertFilesystemEmpty(FilesystemOperator $filesystem): void
