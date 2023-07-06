@@ -259,3 +259,4 @@ services:
         arguments:
             - '@Akeneo\Pim\Structure\Bundle\Application\SwitchMainIdentifier\SwitchMainIdentifierHandler'
             - '@Akeneo\Pim\Structure\Bundle\Application\SwitchMainIdentifier\SwitchMainIdentifierValidator'
+            - '@oro_security.security_facade'
