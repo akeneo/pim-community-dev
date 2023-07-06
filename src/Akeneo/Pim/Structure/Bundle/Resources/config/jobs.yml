@@ -509,7 +509,7 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pim_connector.step.delete_attributes'
-            - true
+            - false
             - true
             - true
         tags:
