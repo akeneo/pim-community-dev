@@ -148,7 +148,7 @@ test('it show both warning when the limit of custom app created is reached and t
         screen.findByText('akeneo_connectivity.connection.connect.custom_apps.creation_limit_reached', {exact: false})
     );
 
-    screen.findByText('akeneo_connectivity.connection.connection.constraint.connections_number_limit_reached', {
+    await screen.findByText('akeneo_connectivity.connection.connection.constraint.connections_number_limit_reached', {
         exact: false,
     });
 });

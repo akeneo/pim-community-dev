@@ -7,7 +7,7 @@ describe('TabValidationErrors', () => {
     const errors = [{path: 'path[0].string', message: 'error on item'}];
     render(<TabValidationErrors errors={errors} />);
 
-    !expect(screen.findByRole('list'));
+    !expect(screen.getByRole('list'));
     expect(screen.getByText('error on item')).toBeInTheDocument();
   });
   it('should display list of errors', () => {
