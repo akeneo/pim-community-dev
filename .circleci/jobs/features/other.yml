@@ -390,9 +390,11 @@ jobs:
             name: Change owner on project dir in order to archive the project into the workspace
             command: sudo chown -R 1000:1000 ../project
         - run:
-            name: Load php pim image
+            name: Start containers
             command: |
               docker load -i php-pim-image.tar
+              APP_ENV=test C='fpm mysql elasticsearch' make up
+              docker/wait_docker_up.sh
         - run:
             name: Test job declaration
             command: PIM_CONTEXT=test make test-job-declaration
