@@ -16,6 +16,7 @@ final class AppDeveloperModeFeature implements FeatureFlag
 {
     private const PRODUCT_REFERENCE_CODES = [
         'serenity_dev',
+        'serenity_sandbox',
         'growth_edition_dev',
     ];
 
