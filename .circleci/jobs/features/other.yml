@@ -393,7 +393,7 @@ jobs:
             name: Start containers
             command: |
               docker load -i php-pim-image.tar
-              APP_ENV=test C='fpm mysql elasticsearch' make up
+              APP_ENV=test C='mysql elasticsearch' make up
               docker/wait_docker_up.sh
         - run:
             name: Test job declaration
