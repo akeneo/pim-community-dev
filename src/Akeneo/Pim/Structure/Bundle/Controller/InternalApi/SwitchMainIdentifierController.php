@@ -5,11 +5,13 @@ namespace Akeneo\Pim\Structure\Bundle\Controller\InternalApi;
 use Akeneo\Pim\Structure\Bundle\Application\SwitchMainIdentifier\SwitchMainIdentifierCommand;
 use Akeneo\Pim\Structure\Bundle\Application\SwitchMainIdentifier\SwitchMainIdentifierHandler;
 use Akeneo\Pim\Structure\Bundle\Application\SwitchMainIdentifier\SwitchMainIdentifierValidator;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Webmozart\Assert\Assert;
 
 /**
@@ -21,6 +23,7 @@ class SwitchMainIdentifierController
     public function __construct(
         private readonly SwitchMainIdentifierHandler $switchMainIdentifierHandler,
         private readonly SwitchMainIdentifierValidator $switchMainIdentifierValidator,
+        private readonly SecurityFacade $security,
     ) {
     }
 
@@ -28,6 +31,10 @@ class SwitchMainIdentifierController
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
+        }
+
+        if (!$this->security->isGranted('pim_enrich_attribute_edit')) {
+            throw new AccessDeniedException();
         }
 
         try {
