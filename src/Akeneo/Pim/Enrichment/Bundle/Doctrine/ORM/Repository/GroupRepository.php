@@ -71,7 +71,7 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
         $groupLabelExpr = 'COALESCE(translation.label, g.code)';
         $typeLabelExpr = 'COALESCE(typeTrans.label, type.code)';
 
-        $isCheckecExpr =
+        $isCheckedExpr =
             'CASE WHEN (g.id IN (:associatedIds) OR g.id IN (:data_in)) AND g.id NOT IN (:data_not_in) ' .
             'THEN true ELSE false END';
 
@@ -81,7 +81,7 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
             ->addSelect(sprintf('%s AS groupLabel', $groupLabelExpr))
             ->addSelect(sprintf('%s AS typeLabel', $typeLabelExpr))
             ->addSelect('translation.label')
-            ->addSelect($isCheckecExpr.' AS is_checked')
+            ->addSelect($isCheckedExpr.' AS is_checked')
             ->addSelect($isAssociatedExpr.' AS is_associated');
 
         $qb
