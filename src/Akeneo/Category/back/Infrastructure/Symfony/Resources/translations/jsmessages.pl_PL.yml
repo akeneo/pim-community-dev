@@ -97,7 +97,7 @@ akeneo.category:
       saved: Zapisano
       saving: Zapisywanie
       editing: Edytowanie
-      errors: Wystąpiły błędy – nie zapisano
+      errors: Błędy nie zostały zapisane.
   template_list:
     columns:
       header: Etykieta

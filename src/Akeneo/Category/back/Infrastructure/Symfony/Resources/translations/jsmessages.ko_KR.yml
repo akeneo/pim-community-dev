@@ -97,7 +97,7 @@ akeneo.category:
       saved: 저장됨
       saving: 저장 중
       editing: 편집 중
-      errors: 오류가 발생하여 저장되지 않았습니다.
+      errors: 오류가 저장되지 않았습니다.
   template_list:
     columns:
       header: 레이블
