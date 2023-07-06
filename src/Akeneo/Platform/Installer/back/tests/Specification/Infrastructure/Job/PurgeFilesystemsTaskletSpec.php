@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\Installer\Infrastructure\Job;
 
-use Akeneo\Platform\Installer\Domain\Service\FilesystemPurgerInterface;
+use Akeneo\Platform\Installer\Infrastructure\FilesystemsPurger\FilesystemPurger;
 use Akeneo\Platform\Installer\Infrastructure\Job\PurgeFilesystemsTasklet;
 use Akeneo\Tool\Component\Batch\Job\JobStopper;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -15,7 +15,7 @@ use PhpSpec\ObjectBehavior;
 class PurgeFilesystemsTaskletSpec extends ObjectBehavior
 {
     public function let(
-        FilesystemPurgerInterface $filesystemPurger,
+        FilesystemPurger $filesystemPurger,
         FilesystemOperator $filesystem1,
         FilesystemOperator $filesystem2,
         StepExecution $stepExecution,
@@ -33,7 +33,7 @@ class PurgeFilesystemsTaskletSpec extends ObjectBehavior
     }
 
     public function it_purge_filesystems(
-        FilesystemPurgerInterface $filesystemPurger,
+        FilesystemPurger $filesystemPurger,
         FilesystemOperator $filesystem1,
         FilesystemOperator $filesystem2,
         StepExecution $stepExecution,
@@ -49,7 +49,7 @@ class PurgeFilesystemsTaskletSpec extends ObjectBehavior
     }
 
     public function it_can_be_paused(
-        FilesystemPurgerInterface $filesystemPurger,
+        FilesystemPurger $filesystemPurger,
         FilesystemOperator $filesystem1,
         FilesystemOperator $filesystem2,
         StepExecution $stepExecution,
@@ -66,7 +66,7 @@ class PurgeFilesystemsTaskletSpec extends ObjectBehavior
     }
 
     public function it_executes_remaining_filesystems_after_paused_job(
-        FilesystemPurgerInterface $filesystemPurger,
+        FilesystemPurger $filesystemPurger,
         FilesystemOperator $filesystem1,
         FilesystemOperator $filesystem2,
         StepExecution $stepExecution,

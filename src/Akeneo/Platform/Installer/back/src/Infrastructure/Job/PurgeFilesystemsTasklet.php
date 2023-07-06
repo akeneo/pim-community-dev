@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Installer\Infrastructure\Job;
 
-use Akeneo\Platform\Installer\Domain\Service\FilesystemPurgerInterface;
+use Akeneo\Platform\Installer\Infrastructure\FilesystemsPurger\FilesystemPurger;
 use Akeneo\Tool\Component\Batch\Job\JobStopper;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
@@ -25,7 +25,7 @@ final class PurgeFilesystemsTasklet implements TaskletInterface
      * @param iterable<FilesystemOperator> $filesystems
      */
     public function __construct(
-        private readonly FilesystemPurgerInterface $filesystemPurger,
+        private readonly FilesystemPurger $filesystemPurger,
         private readonly iterable $filesystems,
         private readonly JobStopper $jobStopper,
     ) {

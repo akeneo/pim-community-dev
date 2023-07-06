@@ -9,10 +9,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Installer\Infrastructure\FilesystemsPurger;
 
-use Akeneo\Platform\Installer\Domain\Service\FilesystemPurgerInterface;
 use League\Flysystem\FilesystemOperator;
 
-class FilesystemPurger implements FilesystemPurgerInterface
+class FilesystemPurger
 {
     public function purge(FilesystemOperator $filesystem): void
     {

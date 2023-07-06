@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Installer\Test\Integration\FilesystemsPurger;
 
-use Akeneo\Platform\Installer\Domain\Service\FilesystemPurgerInterface;
+use Akeneo\Platform\Installer\Infrastructure\FilesystemsPurger\FilesystemPurger;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use League\Flysystem\Filesystem;
@@ -42,7 +42,7 @@ class FilesystemPurgeTest extends TestCase
         return new Filesystem(new InMemoryFilesystemAdapter());
     }
 
-    private function getPurger(): FilesystemPurgerInterface
+    private function getPurger(): FilesystemPurger
     {
         return $this->get('Akeneo\Platform\Installer\Infrastructure\FilesystemsPurger\FilesystemPurger');
     }
