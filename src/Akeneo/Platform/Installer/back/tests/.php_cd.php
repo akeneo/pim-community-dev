@@ -25,6 +25,8 @@ $rules = [
         [
             'Akeneo\Platform\Installer\Application',
             'Akeneo\Platform\Installer\Domain',
+
+            'Akeneo\Platform\Bundle\InstallerBundle\Event',
             'Akeneo\Platform\Job\ServiceApi',
             'Doctrine\DBAL\Connection',
             'Doctrine\DBAL\Schema\AbstractAsset',

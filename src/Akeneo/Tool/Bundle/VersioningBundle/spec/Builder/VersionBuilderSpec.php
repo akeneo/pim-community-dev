@@ -68,18 +68,18 @@ class VersionBuilderSpec extends ObjectBehavior
         $this->buildPendingVersion($pending);
     }
 
-    function it_compare_versions(Version $pending, Version $previousPending)
+    function it_compares_versions(Version $pending, Version $previousVersion)
     {
-        $previousPending->getVersion()->willReturn(1);
-        $previousPending->getSnapshot()->willReturn(['test' => '00112233']);
+        $previousVersion->getVersion()->willReturn(1);
+        $previousVersion->getSnapshot()->willReturn(['test' => 'old_data', 'description' => "old description"]);
 
         $pending->setVersion(2)->willReturn($pending);
-        $pending->setSnapshot(['test' => '0112233'])->willReturn($pending);
-        $pending->getChangeset()->willReturn(['test' => '0112233']);
+        $pending->setSnapshot(['test' => 'old_data', "name" => "pending name", "description" => "old description"])->willReturn($pending);
+        $pending->getChangeset()->willReturn(['test' => 'pending_data', "name" => "pending name"]);
 
-        $pending->setChangeset(['test' => ['old' => '00112233', 'new' => '0112233']])->willReturn($pending);
+        $pending->setChangeset(["name" => ["old" => "", "new" => "pending name"]])->willReturn($pending);
 
-        $this->buildPendingVersion($pending, $previousPending);
+        $this->buildPendingVersion($pending, $previousVersion);
     }
 
     /**

@@ -34,25 +34,29 @@ class Help extends BaseView {
   }
 
   private getUrl(): Promise<string> {
-    return DataCollector.collect(this.analyticsUrl).then((data: any) => {
-      const {pim_version, pim_edition} = data;
+    return DataCollector.collect(this.analyticsUrl)
+      .then((data: any) => {
+        const {pim_version, pim_edition} = data;
 
-      let version = `v${pim_version.split('.')[0]}`;
-      let campaign = `${pim_edition}${pim_version}`;
+        let version = `v${pim_version.split('.')[0]}`;
+        let campaign = `${pim_edition}${pim_version}`;
 
-      // CE master, serenity
-      if (pim_version.split('.').length === 1) {
-        version = 'serenity';
-        campaign = 'serenity';
-      }
+        // CE master, serenity
+        if (pim_version.split('.').length === 1) {
+          version = 'serenity';
+          campaign = 'serenity';
+        }
 
-      const url = new URL(`https://help.akeneo.com/pim/${version}/index.html`);
-      url.searchParams.append('utm_source', 'akeneo-app');
-      url.searchParams.append('utm_medium', 'interrogation-icon');
-      url.searchParams.append('utm_campaign', campaign);
+        const url = new URL(`https://help.akeneo.com/pim/${version}/index.html`);
+        url.searchParams.append('utm_source', 'akeneo-app');
+        url.searchParams.append('utm_medium', 'interrogation-icon');
+        url.searchParams.append('utm_campaign', campaign);
 
-      return url.href;
-    });
+        return url.href;
+      })
+      .catch(function () {
+        return 'https://help.akeneo.com';
+      });
   }
 }
 

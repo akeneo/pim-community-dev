@@ -6,6 +6,7 @@ use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\UserManagement\Bundle\Form\Handler\AclRoleHandler;
 use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Repository\RoleRepositoryInterface;
+use Akeneo\UserManagement\Domain\Permissions\Query\EditRolePermissionsRoleQuery;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclSidManager;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,6 +14,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RoleController extends AbstractController
@@ -23,6 +25,7 @@ class RoleController extends AbstractController
         private readonly AclSidManager $aclSidManager,
         private readonly AclRoleHandler $aclRoleHandler,
         private readonly TranslatorInterface $translator,
+        private readonly EditRolePermissionsRoleQuery $editRolePermissionsRoleQuery,
     ) {
     }
 
@@ -48,6 +51,9 @@ class RoleController extends AbstractController
      * Delete role
      *
      * @AclAncestor("pim_user_role_remove")
+     *
+     * @throws UnprocessableEntityHttpException
+     *
      */
     public function delete(Request $request, $id): Response
     {
@@ -59,6 +65,12 @@ class RoleController extends AbstractController
 
         if (null === $role) {
             throw $this->createNotFoundException(sprintf('Role with id %d could not be found.', $id));
+        }
+
+        if ($this->editRolePermissionsRoleQuery->isLastRoleWithEditRolePermissions($role)) {
+            return new JsonResponse([
+                'message' => $this->translator->trans('pim_user.controller.role.message.cannot_delete_last_edit_role_permission')
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         try {
@@ -83,10 +95,11 @@ class RoleController extends AbstractController
                 'success',
                 $this->translator->trans('pim_user.controller.role.message.saved')
             );
-
             return new JsonResponse(
                 ['route' => 'pim_user_role_update', 'params' => ['id' => $role->getId()]]
             );
+        } else {
+            $this->aclRoleHandler->reinitializeData($role);
         }
 
         return $this->render('@PimUser/Role/update.html.twig', [

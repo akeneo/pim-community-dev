@@ -2,12 +2,15 @@
 
 namespace Akeneo\UserManagement\Bundle\Form\Handler;
 
-use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\UserManagement\Bundle\Form\Type\AclRoleType;
 use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Model\UserInterface;
+use Akeneo\UserManagement\Domain\Permissions\MinimumEditRolePermission;
+use Akeneo\UserManagement\Domain\Permissions\Query\EditRolePermissionsRoleQuery;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Persistence\ObjectManager;
+use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
+use Oro\Bundle\SecurityBundle\Acl\Extension\ActionAclExtension;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclPrivilegeRepository;
 use Oro\Bundle\SecurityBundle\Model\AclPrivilege;
@@ -16,6 +19,9 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Validator\Constraints\Callback;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Overriden AclRoleHandler to remove deactivated locales from the acl role form
@@ -26,12 +32,6 @@ use Symfony\Component\HttpFoundation\RequestStack;
  */
 class AclRoleHandler
 {
-    /** @var RequestStack */
-    protected $requestStack;
-
-    /** @var FormFactory */
-    protected $formFactory;
-
     /** @var FormInterface */
     protected $form;
 
@@ -41,19 +41,14 @@ class AclRoleHandler
     /** @var AclManager */
     protected $aclManager;
 
-    /** @var array */
-    protected $privilegeConfig;
-
-    /**
-     * @param FormFactory  $formFactory
-     * @param array        $privilegeConfig
-     * @param RequestStack $requestStack
-     */
-    public function __construct(FormFactory $formFactory, array $privilegeConfig, RequestStack $requestStack)
-    {
-        $this->formFactory = $formFactory;
-        $this->privilegeConfig = $privilegeConfig;
-        $this->requestStack = $requestStack;
+    public function __construct(
+        private readonly FormFactory $formFactory,
+        private array $privilegeConfig,
+        private readonly RequestStack $requestStack,
+        private readonly EditRolePermissionsRoleQuery $editRolePermissionsRoleQuery,
+        private readonly TranslatorInterface $translator,
+        private readonly ActionAclExtension $aclExtension,
+    ) {
     }
 
     /**
@@ -89,10 +84,58 @@ class AclRoleHandler
         $this->form = $this->formFactory->create(
             AclRoleType::class,
             $role,
-            ['privilegeConfigOption' => $this->privilegeConfig]
+            [
+                'privilegeConfigOption' => $this->privilegeConfig,
+                'constraints' => new Callback([$this, 'validateEditRolePermissions']),
+            ]
         );
 
         return $this->form;
+    }
+
+    public function validateEditRolePermissions(Role $role, ExecutionContextInterface $context): void
+    {
+        /** @var array<AclPrivilege> $formPrivileges */
+        $formPrivileges = [];
+        foreach ($this->privilegeConfig as $fieldName => $config) {
+            $privileges = $this->form->get($fieldName)->getData();
+            $formPrivileges = array_merge($formPrivileges, $privileges);
+        }
+
+        if ($this->editRolePermissionsRoleQuery->isLastRoleWithEditRolePermissions($role)) {
+            // This function extracts the user inputs from the form
+            $filterSelectedEditRolePrivilegesFn = function (AclPrivilege $formPrivilege) {
+                // Check only the privileges with the identity/key for the minimum edit role permissions
+                if (false === in_array(
+                    $formPrivilege->getIdentity()->getId(),
+                    MinimumEditRolePermission::getAllValues()
+                )) {
+                    return false;
+                }
+                // With the remaining privileges, we identify if it has been selected by getting the 'EXECUTE' with SYSTEM_LEVEL access (NONE_LEVEL if not selected)
+                // for example :
+                //  [
+                //      'identity' => ['id' => 'action:oro_config_system'],
+                //      'permissions' => ['elements' => ['EXECUTE' => [
+                //                  'name' => 'EXECUTE',
+                //                  'accessLevel' => 5,
+                //              ],
+                //      ]],
+                //  ]
+                return array_filter(
+                    $formPrivilege->getPermissions()->toArray(),
+                    fn ($permission) => $permission->getName() === $this->aclExtension->getDefaultPermission() && $permission->getAccessLevel() === AccessLevel::SYSTEM_LEVEL
+                );
+            };
+
+            $editRoleActivePrivileges = array_filter($formPrivileges, $filterSelectedEditRolePrivilegesFn);
+            // If the user has not selected all edit role permission it triggers an error.
+            if (count($editRoleActivePrivileges) < count(MinimumEditRolePermission::getAllValues())) {
+                $context
+                    ->buildViolation($this->translator->trans('pim_user.controller.role.message.cannot_remove_last_edit_role_permission'))
+                    ->addViolation();
+            }
+        }
     }
 
     /**
@@ -121,6 +164,18 @@ class AclRoleHandler
         }
 
         return false;
+    }
+
+    public function reinitializeData(Role $role)
+    {
+        $errors = $this->form?->getErrors();
+        if ($this->form->isSubmitted() && $errors) {
+            $this->createForm($role);
+            $this->setRolePrivileges($role);
+            foreach ($errors as $error) {
+                $this->form->addError($error);
+            }
+        }
     }
 
     /**
