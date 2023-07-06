@@ -43,13 +43,11 @@ final class PurgeFilesystemsTasklet implements TaskletInterface
         }
 
         $purgedFilesystems = $this->stepExecution->getCurrentState();
-        $filesystemsToPurge = array_filter(
-            $this->filesystems,
-            fn ($key) => !in_array($key, $purgedFilesystems), ARRAY_FILTER_USE_KEY
-        );
 
-        foreach ($filesystemsToPurge as $filesystemName => $filesystem) {
-            if (in_array($filesystemName, self::SKIPPED_FILESYSTEMS)) {
+        foreach ($this->filesystems as $filesystemName => $filesystem) {
+            if (in_array($filesystemName, $purgedFilesystems)
+                || in_array($filesystemName, self::SKIPPED_FILESYSTEMS)
+            ) {
                 continue;
             }
 
