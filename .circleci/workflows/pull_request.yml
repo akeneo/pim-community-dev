@@ -92,6 +92,7 @@ workflows:
                       - build_dev_ce
             - test_back_static_and_acceptance:
                   name: test_back_static_and_acceptance_ce
+                  edition: 'ce'
                   requires:
                       - build_dev_ce
             - test_front_static_acceptance_and_integration:
