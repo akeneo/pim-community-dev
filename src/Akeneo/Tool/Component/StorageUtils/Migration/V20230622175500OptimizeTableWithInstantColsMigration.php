@@ -54,11 +54,9 @@ class V20230622175500OptimizeTableWithInstantColsMigration implements ZddMigrati
     private function optimizeTable(string $tableName)
     {
         $sql = <<<SQL
-            OPTIMIZE TABLE :table_name;
+            OPTIMIZE TABLE $tableName;
         SQL;
 
-        $this->connection->executeStatement($sql, [
-            'table_name' => $tableName
-        ]);
+        $this->connection->executeStatement($sql);
     }
 }
