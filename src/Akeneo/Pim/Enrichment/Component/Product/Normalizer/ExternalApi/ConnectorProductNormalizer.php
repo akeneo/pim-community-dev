@@ -41,7 +41,6 @@ final class ConnectorProductNormalizer
     public function normalizeConnectorProduct(ConnectorProduct $connectorProduct): array
     {
         $values = $this->valuesNormalizer->normalize($connectorProduct->values());
-        $values = $this->removeIdentifierValue($values);
         $qualityScores = $connectorProduct->qualityScores();
         $completenesses = $connectorProduct->completenesses();
         $associations = $this->normalizeAssociations($connectorProduct->associations());
@@ -105,14 +104,6 @@ final class ConnectorProductNormalizer
         }
 
         return $completenesses;
-    }
-
-    private function removeIdentifierValue(array $values): array
-    {
-        $identifierCode = $this->attributeRepository->getIdentifierCode();
-        unset($values[$identifierCode]);
-
-        return $values;
     }
 
     /**
