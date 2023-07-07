@@ -38,6 +38,8 @@ const StepLabel = styled.div<{state: StepState} & AkeneoThemedProps>`
     return getColor('grey', 120);
   }};
   text-transform: uppercase;
+  padding-top: 10px;
+  line-height: initial;
 `;
 
 const StepContainer = styled.li<StepProps & AkeneoThemedProps>`
