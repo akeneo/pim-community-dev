@@ -60,4 +60,5 @@ pim_analytics:
     data_destination.untracked: Número de conexiones de destino de la API sin seguimiento
     other.tracked: Número de otras conexiones de la API con seguimiento
     other.untracked: Número de otras conexiones de la API sin seguimiento
-
+    reset_event_count: Número de restablecimiento de instancia
+    last_reset_time: Hora del último restablecimiento

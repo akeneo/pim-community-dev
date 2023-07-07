@@ -60,4 +60,3 @@ pim_analytics:
     data_destination.untracked: Nombre de connexions de type "destination" non monitorées
     other.tracked: Nombre de connexions de type "autre" monitorées
     other.untracked: Nombre de connexions de type "autre" non monitorées
-

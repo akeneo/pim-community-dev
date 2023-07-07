@@ -60,4 +60,3 @@ pim_analytics:
     data_destination.untracked: Nombre de connexions de destí de l'API no rastrejades
     other.tracked: Nombre d'altres connexions de l'API rastrejades
     other.untracked: Nombre d'altres connexions de l'API no rastrejades
-

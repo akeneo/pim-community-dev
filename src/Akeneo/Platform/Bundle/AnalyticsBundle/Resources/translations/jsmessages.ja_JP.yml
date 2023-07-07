@@ -60,4 +60,3 @@ pim_analytics:
     data_destination.untracked: 追跡なしの API 接続先の数
     other.tracked: 追跡中の API のその他の接続の数
     other.untracked: 追跡なしの API のその他の接続の数
-
