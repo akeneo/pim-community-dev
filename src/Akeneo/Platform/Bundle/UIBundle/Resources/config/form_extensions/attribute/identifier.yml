@@ -4,6 +4,39 @@ extensions:
         config:
             template: pim/template/common/drop-zone
 
+    pim-attribute-create-form-properties-common-unique:
+        module: pim/attribute-edit-form/properties/unique
+        parent: pim-attribute-create-form-properties-common
+        targetZone: content
+        position: 120
+        config:
+            fieldName: unique
+            label: pim_enrich.entity.attribute.property.unique
+            readOnly: true
+            defaultValue: true
+
+    pim-attribute-create-form-properties-common-scopable:
+        module: pim/attribute-edit-form/properties/scopable
+        parent: pim-attribute-create-form-properties-common
+        targetZone: content
+        position: 130
+        config:
+            fieldName: scopable
+            label: pim_enrich.entity.attribute.property.scopable
+            readOnly: true
+            defaultValue: false
+
+    pim-attribute-create-form-properties-common-localizable:
+        module: pim/attribute-edit-form/properties/localizable
+        parent: pim-attribute-create-form-properties-common
+        targetZone: content
+        position: 140
+        config:
+            fieldName: localizable
+            label: pim_enrich.entity.attribute.property.localizable
+            readOnly: true
+            defaultValue: false
+
     pim-attribute-identifier-form-type-specific-params:
         module: pim/common/simple-view
         parent: pim-attribute-form-identifier
