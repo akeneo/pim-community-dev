@@ -22,7 +22,7 @@ type TitleProps = Override<
   }
 >;
 
-const Title: React.FC<TitleProps> = React.forwardRef<HTMLDivElement, TitleProps>(
+const Title: React.FC<TitleProps & {ref?: React.Ref<HTMLDivElement>}> = React.forwardRef<HTMLDivElement, TitleProps>(
   ({children}: TitleProps, forwardedRef: Ref<HTMLDivElement>): React.ReactElement => {
     return <TitleContainer ref={forwardedRef}>{children}</TitleContainer>;
   }

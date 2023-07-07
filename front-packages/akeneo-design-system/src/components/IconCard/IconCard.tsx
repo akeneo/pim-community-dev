@@ -1,7 +1,7 @@
 import React, {HTMLAttributes, isValidElement, ReactElement, Ref} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
-import {IconProps} from '../../icons';
+import type {IconProps} from '../../icons/IconProps';
 import {Override} from '../../shared';
 
 const Container = styled.div<{disabled: boolean; onClick: () => void} & AkeneoThemedProps>`
@@ -112,7 +112,7 @@ type IconCardProps = Override<
   }
 >;
 
-const IconCard: React.FC<IconCardProps> = React.forwardRef<HTMLDivElement, IconCardProps>(
+const IconCard: React.FC<IconCardProps & {ref?: React.Ref<HTMLDivElement>}> = React.forwardRef<HTMLDivElement, IconCardProps>(
   ({icon, label, content, onClick, disabled = false, ...rest}: IconCardProps, forwardedRef: Ref<HTMLDivElement>) => {
     const validIcon = isValidElement<IconProps>(icon) && React.cloneElement(icon, {size: 30});
 

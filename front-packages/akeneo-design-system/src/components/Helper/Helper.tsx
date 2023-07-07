@@ -1,6 +1,9 @@
 import React, {ReactElement, ReactNode, Ref} from 'react';
 import styled, {css} from 'styled-components';
-import {CheckRoundIcon, DangerIcon, IconProps, InfoRoundIcon} from '../../icons';
+import {CheckRoundIcon} from '../../icons/CheckRoundIcon';
+import {DangerIcon} from '../../icons/DangerIcon';
+import type {IconProps} from '../../icons/IconProps';
+import {InfoRoundIcon} from '../../icons/InfoRoundIcon';
 import {AkeneoThemedProps, getColor} from '../../theme';
 
 const getBackgroundColor = (level: Level) => {
@@ -157,7 +160,7 @@ type HelperProps = {
 };
 
 /** Helper informs the user about the features of the section. */
-const Helper: React.FC<HelperProps> = React.forwardRef<HTMLDivElement, HelperProps>(
+const Helper: React.FC<HelperProps & {ref?: React.Ref<HTMLDivElement>}> = React.forwardRef<HTMLDivElement, HelperProps>(
   ({level = 'info', inline = false, icon, children, ...rest}: HelperProps, forwardedRef: Ref<HTMLDivElement>) => {
     return (
       <Container ref={forwardedRef} level={level} inline={inline} {...rest}>

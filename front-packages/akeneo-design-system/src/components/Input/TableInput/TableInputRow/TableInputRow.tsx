@@ -1,9 +1,9 @@
 import styled, {css} from 'styled-components';
-import React, {forwardRef, HTMLAttributes, ReactNode, Ref, useContext, DragEvent} from 'react';
+import React, {HTMLAttributes, ReactNode, Ref, useContext, DragEvent} from 'react';
 import {AkeneoThemedProps, getColor} from '../../../../theme';
 import {Override} from '../../../../shared';
 import {TableInputContext} from '../TableInputContext';
-import {RowIcon} from '../../../../icons';
+import {RowIcon} from '../../../../icons/RowIcon';
 import {TableInputCell} from '../TableInputCell/TableInputCell';
 import {PlaceholderPosition, usePlaceholderPosition} from '../../../../hooks/usePlaceholderPosition';
 
@@ -156,7 +156,7 @@ export type TableInputRowProps = Override<
   }
 >;
 
-const TableInputRow = forwardRef<HTMLTableRowElement, TableInputRowProps>(
+const TableInputRow: React.FC<TableInputRowProps & {ref?: React.Ref<HTMLTableRowElement>}> = React.forwardRef<HTMLTableRowElement, TableInputRowProps>(
   (
     {children, rowIndex = 0, draggable, highlighted = false, onDragStart, onDragEnd, ...rest}: TableInputRowProps,
     forwardedRef: Ref<HTMLTableRowElement>

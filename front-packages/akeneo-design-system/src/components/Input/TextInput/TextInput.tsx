@@ -1,7 +1,7 @@
-import React, {ChangeEvent, forwardRef, InputHTMLAttributes, Ref, useCallback, useRef} from 'react';
+import React, {ChangeEvent, InputHTMLAttributes, Ref, useCallback, useRef} from 'react';
 import styled, {css} from 'styled-components';
 import {InputProps} from '../common/InputProps';
-import {LockIcon} from '../../../icons';
+import {LockIcon} from '../../../icons/LockIcon';
 import {Key, Override} from '../../../shared';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../../theme';
 import {useShortcut} from '../../../hooks';
@@ -97,7 +97,7 @@ type TextInputProps = Override<
 /**
  * The TextInput component allows the user to enter content and data when the expected input is a single line of text.
  */
-const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
+const TextInput: React.FC<TextInputProps & {ref?: React.Ref<HTMLInputElement>}> = React.forwardRef<HTMLInputElement, TextInputProps>(
   (
     {invalid, onChange, readOnly, characterLeftLabel, onSubmit, ...rest}: TextInputProps,
     forwardedRef: Ref<HTMLInputElement>

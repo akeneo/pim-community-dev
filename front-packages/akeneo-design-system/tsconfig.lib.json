@@ -24,7 +24,7 @@
     "strictFunctionTypes": true,
     "strictNullChecks": true,
     "strictPropertyInitialization": true,
-    "removeComments": true,
+    "removeComments": false,
     "target": "ESNext",
     "baseUrl": "./src",
     "types": [

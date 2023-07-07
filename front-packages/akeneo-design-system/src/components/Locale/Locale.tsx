@@ -1,4 +1,4 @@
-import React, {forwardRef, Ref} from 'react';
+import React, {Ref} from 'react';
 import styled from 'styled-components';
 import {getEmoji} from '../../shared';
 import {getFontFamily, getFontSize} from '../../theme';
@@ -30,7 +30,7 @@ type LocaleProps = {
 /**
  * Component to display a locale (country and language).
  */
-const Locale = forwardRef<HTMLSpanElement, LocaleProps>(
+const Locale: React.FC<LocaleProps & {ref?: React.Ref<HTMLSpanElement>}> = React.forwardRef<HTMLSpanElement, LocaleProps>(
   ({code, languageLabel, ...rest}: LocaleProps, forwardedRef: Ref<HTMLSpanElement>) => {
     const {0: languageCode, length, [length - 1]: countryCode} = code.split('_');
 

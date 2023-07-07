@@ -68,7 +68,7 @@ type ImageProps = Override<
 /**
  * Image allow to embed an image in a page.
  */
-const Image: any: React.FC<ImageProps> = React.forwardRef<HTMLImageElement, ImageProps>(
+const Image: React.FC<ImageProps & {ref?: React.Ref<HTMLImageElement>}> = React.forwardRef<HTMLImageElement, ImageProps>(
   ({fit = 'cover', isStacked = false, src, ...rest}: ImageProps, forwardedRef: Ref<HTMLImageElement>) => {
     return (
       <ImageContainer

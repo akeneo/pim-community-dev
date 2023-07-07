@@ -25,7 +25,7 @@ type TableInputHeaderProps = {
   children?: ReactNode;
 };
 
-const TableInputHeader: React.FC<TableInputHeaderProps> = React.forwardRef<HTMLTableSectionElement, TableInputHeaderProps>(
+const TableInputHeader: React.FC<TableInputHeaderProps & {ref?: React.Ref<HTMLTableSectionElement>}> = React.forwardRef<HTMLTableSectionElement, TableInputHeaderProps>(
   ({children, ...rest}: TableInputHeaderProps, forwardedRef: Ref<HTMLTableSectionElement>) => {
     const {isDragAndDroppable} = useContext(TableInputContext);
 

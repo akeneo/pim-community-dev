@@ -5,7 +5,7 @@ import {Image} from '../../../components/Image/Image';
 import {Checkbox} from '../../../components/Checkbox/Checkbox';
 import {Link} from '../../../components/Link/Link';
 import {Key, Override} from '../../../shared';
-import {LockIcon} from '../../../icons';
+import {LockIcon} from '../../../icons/LockIcon';
 import {Surtitle} from '../Surtitle/Surtitle';
 
 const ItemLabel = styled.span`
@@ -99,7 +99,7 @@ type ItemProps = Override<
   }
 >;
 
-const Item: React.FC<ItemProps> = React.forwardRef<HTMLDivElement, ItemProps>(
+const Item: React.FC<ItemProps & {ref?: React.Ref<HTMLDivElement>}> = React.forwardRef<HTMLDivElement, ItemProps>(
   (
     {children, onKeyDown, disabled = false, isActive = false, onClick, title, ...rest}: ItemProps,
     forwardedRef: Ref<HTMLDivElement>

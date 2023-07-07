@@ -40,7 +40,7 @@ type TableHeaderProps = {
   children?: ReactNode;
 };
 
-const TableHeader: React.FC<TableHeaderProps> = React.forwardRef<HTMLTableSectionElement, TableHeaderProps>(
+const TableHeader: React.FC<TableHeaderProps & {ref?: React.Ref<HTMLTableSectionElement>}> = React.forwardRef<HTMLTableSectionElement, TableHeaderProps>(
   ({children, sticky, ...rest}: TableHeaderProps, forwardedRef: Ref<HTMLTableSectionElement>) => {
     const {isSelectable, isDragAndDroppable, hasWarningRows} = React.useContext(TableContext);
 

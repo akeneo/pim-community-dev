@@ -2,7 +2,8 @@ import React, {ReactNode, Ref, useEffect, useRef, useState} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {Override} from '../../shared';
-import {ArrowDownIcon, ArrowUpIcon} from '../../icons';
+import {ArrowDownIcon} from '../../icons/ArrowDownIcon';
+import {ArrowUpIcon} from '../../icons/ArrowUpIcon';
 import {IconButton} from '../IconButton/IconButton';
 
 type BlockProps = Override<
@@ -117,7 +118,7 @@ const Container = styled.div<AkeneoThemedProps>`
   }
 `;
 
-const Block: React.FC<BlockProps> = React.forwardRef<HTMLButtonElement, BlockProps>(
+const Block: React.FC<BlockProps & {ref?: React.Ref<HTMLButtonElement>}> = React.forwardRef<HTMLButtonElement, BlockProps>(
   (
     {
       title,

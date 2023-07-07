@@ -3,7 +3,7 @@ import {createPortal} from 'react-dom';
 import styled from 'styled-components';
 import {AkeneoThemedProps, CommonStyle, getColor, getFontSize} from '../../theme';
 import {IconButton} from '../IconButton/IconButton';
-import {CloseIcon} from '../../icons';
+import {CloseIcon} from '../../icons/CloseIcon';
 import {IllustrationProps} from '../../illustrations/IllustrationProps';
 import {useShortcut} from '../../hooks';
 import {Key, Override} from '../../shared';

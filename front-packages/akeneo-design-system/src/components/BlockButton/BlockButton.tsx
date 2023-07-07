@@ -2,7 +2,6 @@ import React, {
   ButtonHTMLAttributes,
   Children,
   cloneElement,
-  forwardRef,
   isValidElement,
   ReactElement,
   ReactNode,
@@ -12,7 +11,7 @@ import React, {
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {Override} from '../../shared';
-import {IconProps} from '../../icons';
+import type {IconProps} from '../../icons/IconProps';
 
 type BlockButtonProps = Override<
   ButtonHTMLAttributes<HTMLButtonElement>,
@@ -110,7 +109,7 @@ const ActionsContainer = styled.div`
   align-items: center;
 `;
 
-const BlockButton = forwardRef<HTMLButtonElement, BlockButtonProps>(
+const BlockButton: React.FC<BlockButtonProps & {ref?: React.Ref<HTMLButtonElement>}> = React.forwardRef<HTMLButtonElement, BlockButtonProps>(
   (
     {icon, disabled = false, ariaDescribedBy, ariaLabel, ariaLabelledBy, children, onClick, ...rest}: BlockButtonProps,
     forwardedRef: Ref<HTMLButtonElement>

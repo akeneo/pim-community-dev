@@ -1,7 +1,7 @@
 import React, {isValidElement, ReactElement, ReactNode} from 'react';
 import styled from 'styled-components';
 import {getColor, getFontSize} from '../../theme';
-import {IconProps} from '../../icons';
+import type {IconProps} from '../../icons/IconProps';
 
 type FigureProps = {
   label?: string;

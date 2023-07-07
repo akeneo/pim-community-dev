@@ -1,7 +1,7 @@
 import React, {ChangeEvent, Ref, useCallback} from 'react';
 import styled, {css} from 'styled-components';
 import {InputProps} from '../common/InputProps';
-import {LockIcon} from '../../../icons';
+import {LockIcon} from '../../../icons/LockIcon';
 import {Override} from '../../../shared';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../../theme';
 import {RichTextEditor, EditorProps} from './RichTextEditor';
@@ -139,7 +139,7 @@ type TextAreaInputProps = Override<
 /**
  * The TextAreaInput component allows the user to enter large text content and can also display a Rich Text Editor.
  */
-const TextAreaInput: React.FC<TextAreaInputProps> = React.forwardRef<HTMLInputElement, TextAreaInputProps>(
+const TextAreaInput: React.FC<TextAreaInputProps & {ref?: React.Ref<HTMLInputElement>}> = React.forwardRef<HTMLInputElement, TextAreaInputProps>(
   (
     {
       value,

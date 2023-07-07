@@ -4,7 +4,7 @@ import {Link, Image, Button} from '../../components';
 import {render, screen, fireEvent} from '../../storybook/test-util';
 import {Checkbox} from '../Checkbox/Checkbox';
 import {Surtitle} from './Surtitle/Surtitle';
-import {GroupsIllustration} from '../../illustrations';
+import {GroupsIllustration} from '../../illustrations/GroupsIllustration';
 
 test('it renders its children properly', () => {
   render(

@@ -2,7 +2,12 @@ import React, {SyntheticEvent, isValidElement, ReactElement, ReactNode, PropsWit
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, CommonStyle, getColor} from '../../theme';
 import {Checkbox, CheckboxChecked} from '../Checkbox/Checkbox';
-import {ArrowRightIcon, FolderIcon, FolderPlainIcon, FoldersIcon, FoldersPlainIcon, LoaderIcon} from '../../icons';
+import {ArrowRightIcon} from '../../icons/ArrowRightIcon';
+import {FolderIcon} from '../../icons/FolderIcon';
+import {FolderPlainIcon} from '../../icons/FolderPlainIcon';
+import {FoldersIcon} from '../../icons/FoldersIcon';
+import {FoldersPlainIcon} from '../../icons/FoldersPlainIcon';
+import {LoaderIcon} from '../../icons/LoaderIcon';
 
 const folderIconCss = css`
   vertical-align: middle;

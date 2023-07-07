@@ -15,7 +15,7 @@ import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {Dropdown} from '../Dropdown/Dropdown';
 import {IconButton} from '../IconButton/IconButton';
-import {MoreIcon} from '../../icons';
+import {MoreIcon} from '../../icons/MoreIcon';
 import {useBooleanState} from '../../hooks';
 import {Key, Override} from '../../shared';
 

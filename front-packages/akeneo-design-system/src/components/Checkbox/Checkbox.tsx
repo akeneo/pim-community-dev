@@ -1,7 +1,8 @@
 import React, {ReactNode, Ref, SyntheticEvent} from 'react';
 import styled, {css, keyframes} from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
-import {CheckIcon, CheckPartialIcon} from '../../icons';
+import {CheckIcon} from '../../icons/CheckIcon';
+import {CheckPartialIcon} from '../../icons/CheckPartialIcon';
 import {useId, useShortcut} from '../../hooks';
 import {Key, Override} from '../../shared';
 
@@ -119,7 +120,7 @@ type CheckboxProps = Override<
 /**
  * The checkboxes are applied when users can select all, several, or none of the options from a given list.
  */
-const Checkbox: React.FC<CheckboxProps> = React.forwardRef<HTMLDivElement, CheckboxProps>(
+const Checkbox: React.FC<CheckboxProps & {ref?: React.Ref<HTMLDivElement>}> = React.forwardRef<HTMLDivElement, CheckboxProps>(
   (
     {
       checked = false,

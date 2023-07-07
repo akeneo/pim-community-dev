@@ -1,7 +1,8 @@
 import React, {ChangeEvent, FC, KeyboardEvent, useCallback, useRef, useState} from 'react';
 import styled from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontFamily} from '../../../theme';
-import {CloseIcon, LockIcon} from '../../../icons';
+import {CloseIcon} from '../../../icons/CloseIcon';
+import {LockIcon} from '../../../icons/LockIcon';
 import {arrayUnique, Key, Override} from '../../../shared';
 import {InputProps} from '../common';
 

@@ -1,9 +1,14 @@
-import React, {Ref, ReactElement, ReactNode} from 'react';
+import React, {ReactElement, ReactNode, Ref} from 'react';
 import styled from 'styled-components';
-import {Helper, HelperProps, InputProps, Locale, LocaleProps, Pill} from '../../components';
+import type {HelperProps} from '../Helper/Helper';
+import {Helper} from '../Helper/Helper';
+import type {LocaleProps} from '../Locale/Locale';
+import {Locale} from '../Locale/Locale';
+import type {InputProps} from '../Input/common/InputProps';
+import {Pill} from '../Pill/Pill';
 import {useId} from '../../hooks';
 
-const FieldContainer = styled.div<{fullWidth: boolean}>`
+const FieldContainer = styled.div<{ fullWidth: boolean }>`
   display: flex;
   flex-direction: column;
   max-width: ${({fullWidth}) => (fullWidth ? '100%' : '460px')};
@@ -83,7 +88,7 @@ type FieldProps = {
 /**
  * The Field component is used to display information around an Input component.
  */
-const Field: React.FC<FieldProps> = React.forwardRef<HTMLDivElement, FieldProps>(
+const Field: React.FC<FieldProps & { ref?: React.Ref<HTMLDivElement> }> = React.forwardRef<HTMLDivElement, FieldProps>(
   (
     {
       label,
@@ -96,7 +101,7 @@ const Field: React.FC<FieldProps> = React.forwardRef<HTMLDivElement, FieldProps>
       actions,
       ...rest
     }: FieldProps,
-    forwardedRef: Ref<HTMLDivElement>
+    forwardedRef: Ref<HTMLDivElement>,
   ) => {
     const inputId = useId('input_');
     const labelId = useId('label_');
@@ -116,7 +121,7 @@ const Field: React.FC<FieldProps> = React.forwardRef<HTMLDivElement, FieldProps>
     return (
       <FieldContainer ref={forwardedRef} fullWidth={fullWidth ?? false} {...rest}>
         <LabelContainer>
-          {incomplete && <Pill level="warning" />}
+          {incomplete && <Pill level="warning"/>}
           <Label htmlFor={inputId} id={labelId}>
             {label}
             {requiredLabel && (
@@ -126,13 +131,13 @@ const Field: React.FC<FieldProps> = React.forwardRef<HTMLDivElement, FieldProps>
             )}
           </Label>
           {channel && <Channel>{channel}</Channel>}
-          {locale && ('string' === typeof locale ? <Locale code={locale} /> : locale)}
+          {locale && ('string' === typeof locale ? <Locale code={locale}/> : locale)}
           {actions}
         </LabelContainer>
         {decoratedChildren}
       </FieldContainer>
     );
-  }
+  },
 );
 
 export {Field};

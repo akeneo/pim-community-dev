@@ -2,7 +2,7 @@ import React, {HTMLAttributes, ReactNode, useRef, useEffect, RefObject, useState
 import {createPortal} from 'react-dom';
 import styled from 'styled-components';
 import {Override} from '../../shared';
-import {HelpPlainIcon} from '../../icons';
+import {HelpPlainIcon} from '../../icons/HelpPlainIcon';
 import {AkeneoThemedProps, CommonStyle, getColor, getFontSize} from '../../theme';
 import {useBooleanState} from '../../hooks';
 

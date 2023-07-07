@@ -1,7 +1,7 @@
 import React, {ChangeEvent, HTMLAttributes, ReactNode, RefObject} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../theme';
-import {SearchIcon} from '../../icons';
+import {SearchIcon} from '../../icons/SearchIcon';
 import {Override} from '../../shared';
 
 const Container = styled.div<{sticky?: number} & AkeneoThemedProps>`

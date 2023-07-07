@@ -1,7 +1,8 @@
 import React, {ReactElement, ReactNode} from 'react';
 import {Dropdown} from '../../../Dropdown/Dropdown';
 import {useBooleanState} from '../../../../hooks';
-import {ArrowDownIcon, CloseIcon} from '../../../../icons';
+import {ArrowDownIcon} from '../../../../icons/ArrowDownIcon';
+import {CloseIcon} from '../../../../icons/CloseIcon';
 import {Search} from '../../../Search/Search';
 import styled from 'styled-components';
 import {IconButton} from '../../../IconButton/IconButton';

@@ -1,6 +1,7 @@
-import React, {Ref, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import styled from 'styled-components';
-import {CloseIcon, LockIcon} from '../../../icons';
+import {CloseIcon} from '../../../icons/CloseIcon';
+import {LockIcon} from '../../../icons/LockIcon';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../../theme';
 import {IconButton} from '../../IconButton/IconButton';
 import {useBooleanState, useShortcut, useTheme} from '../../../hooks';
@@ -102,7 +103,7 @@ type ChipInputProps = {
   onFocus?: () => void;
 };
 
-const ChipInput: React.FC<ChipInputProps> = React.forwardRef<HTMLInputElement, ChipInputProps>(
+const ChipInput: React.FC<ChipInputProps & {ref?: React.Ref<HTMLInputElement>}> = React.forwardRef<HTMLInputElement, ChipInputProps>(
   (
     {
       id,
@@ -117,7 +118,7 @@ const ChipInput: React.FC<ChipInputProps> = React.forwardRef<HTMLInputElement, C
       onSearchChange,
       onFocus,
     }: ChipInputProps,
-    forwardedRef: Ref<HTMLInputElement>
+    forwardedRef: React.Ref<HTMLInputElement>
   ) => {
     const theme = useTheme();
     const [isLastSelected, selectLast, unselectLast] = useBooleanState();

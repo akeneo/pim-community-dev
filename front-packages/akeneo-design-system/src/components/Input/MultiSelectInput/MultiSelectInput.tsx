@@ -2,10 +2,10 @@ import React, {isValidElement, ReactElement, useRef, useState} from 'react';
 import styled from 'styled-components';
 import {arrayUnique, Key, Override} from '../../../shared';
 import {InputProps, Overlay} from '../common';
-import {IconButton} from '../../../components';
+import {IconButton} from '../../IconButton/IconButton';
 import {useBooleanState, useShortcut, VerticalPosition} from '../../../hooks';
 import {AkeneoThemedProps, getColor} from '../../../theme';
-import {ArrowDownIcon} from '../../../icons';
+import {ArrowDownIcon} from '../../../icons/ArrowDownIcon';
 import {ChipInput, ChipValue} from './ChipInput';
 import {usePagination} from '../../../hooks/usePagination';
 

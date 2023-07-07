@@ -1,7 +1,7 @@
 import React from 'react';
 import {render, screen} from 'storybook/test-util';
 import {Placeholder} from './Placeholder';
-import {UsersIllustration} from '../../illustrations';
+import {UsersIllustration} from '../../illustrations/UsersIllustration';
 
 test('it renders its children properly', () => {
   render(

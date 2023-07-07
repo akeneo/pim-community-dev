@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {IconProps} from '../../../icons';
+import type {IconProps} from '../../../icons/IconProps';
 import {Override} from '../../../shared';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../../theme';
 import {Tag} from '../../Tags/Tags';
@@ -97,7 +97,7 @@ type MainNavigationItemProps = Override<
   }
 >;
 
-const MainNavigationItem: React.FC<MainNavigationItemProps> = React.forwardRef<HTMLAnchorElement, MainNavigationItemProps>(
+const MainNavigationItem: React.FC<MainNavigationItemProps & {ref?: React.Ref<HTMLAnchorElement>}> = React.forwardRef<HTMLAnchorElement, MainNavigationItemProps>(
   ({children, href, icon, active = false, disabled = false, onClick, ...rest}, forwardedRef) => {
     const handleClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
       if (disabled) {

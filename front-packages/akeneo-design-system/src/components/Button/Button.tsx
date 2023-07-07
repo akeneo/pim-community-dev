@@ -3,7 +3,6 @@ import React, {
   ButtonHTMLAttributes,
   Children,
   cloneElement,
-  forwardRef,
   isValidElement,
   ReactNode,
   Ref,
@@ -12,7 +11,7 @@ import React, {
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor, getColorForLevel, getFontSize, Level} from '../../theme';
 import {Override} from '../../shared';
-import {IconProps} from '../../icons';
+import type {IconProps} from '../../icons/IconProps';
 
 type ButtonSize = 'small' | 'default';
 
@@ -157,7 +156,7 @@ const Container = styled.button<
  * Buttons express what action will occur when the users clicks.
  * Buttons are used to initialize an action, either in the background or foreground of an experience.
  */
-const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+const Button: React.FC<ButtonProps & {ref?: React.Ref<HTMLButtonElement>}> = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
       level = 'primary',

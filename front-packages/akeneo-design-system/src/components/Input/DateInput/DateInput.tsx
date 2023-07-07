@@ -1,8 +1,9 @@
-import React, {ChangeEvent, forwardRef, InputHTMLAttributes, Ref, useCallback, useRef} from 'react';
+import React, {ChangeEvent, InputHTMLAttributes, Ref, useCallback, useRef} from 'react';
 import styled, {css} from 'styled-components';
 import {InputProps} from '../common';
 import {Key, Override} from '../../../shared';
-import {LockIcon, DateIcon} from '../../../icons';
+import {LockIcon} from '../../../icons/LockIcon';
+import {DateIcon} from '../../../icons/DateIcon';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../../theme';
 import {useShortcut} from '../../../hooks';
 
@@ -106,7 +107,7 @@ type DateInputProps = Override<
     onSubmit?: () => void;
   }
 >;
-const DateInput = forwardRef<HTMLInputElement, DateInputProps>(
+const DateInput: React.FC<DateInputProps & {ref?: React.Ref<HTMLInputElement>}> = React.forwardRef<HTMLInputElement, DateInputProps>(
   ({invalid, onChange, value, readOnly, onSubmit, ...rest}: DateInputProps, forwardedRef: Ref<HTMLInputElement>) => {
     const internalRef = useRef<HTMLInputElement | null>(null);
     forwardedRef = forwardedRef ?? internalRef;

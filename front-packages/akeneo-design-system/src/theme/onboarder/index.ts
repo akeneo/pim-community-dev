@@ -1,7 +1,7 @@
 import type {Theme} from '../theme';
 import {color, fontSize, palette, fontFamily} from '../common';
 
-const onboarderTheme: Theme = {
+const onboarderTheme: Theme = /* @__PURE__ */ {
   name: 'Onboarder',
   color: {
     ...color,

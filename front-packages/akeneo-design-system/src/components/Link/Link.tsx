@@ -64,7 +64,7 @@ type LinkProps = {
 } & React.AnchorHTMLAttributes<HTMLAnchorElement>;
 
 /** Link redirect user to another page */
-const Link: React.FC<LinkProps> = React.forwardRef<HTMLAnchorElement, LinkProps>(
+const Link: React.FC<LinkProps & {ref?: React.Ref<HTMLAnchorElement>}> = React.forwardRef<HTMLAnchorElement, LinkProps>(
   (
     {disabled = false, decorated = true, target = '_self', href, children, onClick, ...rest}: LinkProps,
     forwardedRef: Ref<HTMLAnchorElement>

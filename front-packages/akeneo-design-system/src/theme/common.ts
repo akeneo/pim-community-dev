@@ -44,7 +44,7 @@ const placeholderStyle = css`
   }
 `;
 
-const color: Color = {
+const color: Color = /* @__PURE__ */ {
   blue10: '#f5f9fc',
   blue20: '#dee9f4',
   blue40: '#bdd3e9',
@@ -101,7 +101,7 @@ const color: Color = {
   white: '#ffffff',
 };
 
-const fontSize: FontSize = {
+const fontSize: FontSize = /* @__PURE__ */ {
   big: '15px',
   bigger: '17px',
   default: '13px',
@@ -109,7 +109,7 @@ const fontSize: FontSize = {
   title: '28px',
 };
 
-const palette: Palette = {
+const palette: Palette = /* @__PURE__ */ {
   primary: 'green',
   secondary: 'blue',
   tertiary: 'grey',
@@ -117,7 +117,7 @@ const palette: Palette = {
   danger: 'red',
 };
 
-const fontFamily: FontFamily = {
+const fontFamily: FontFamily = /* @__PURE__ */ {
   default: 'Lato, "Helvetica Neue", Helvetica, Arial, sans-serif',
   monospace: 'Courier, "MS Courier New", Prestige, "Everson Mono"',
 };

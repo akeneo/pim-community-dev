@@ -50,7 +50,7 @@ type InformationProps = {
 };
 
 /** Information informs the user about the page's features */
-const Information: React.FC<InformationProps> = React.forwardRef<HTMLDivElement, InformationProps>(
+const Information: React.FC<InformationProps & {ref?: React.Ref<HTMLDivElement>}> = React.forwardRef<HTMLDivElement, InformationProps>(
   ({illustration, title, children, ...rest}: InformationProps, forwardedRef: Ref<HTMLDivElement>) => {
     const resizedIllustration =
       isValidElement<IllustrationProps>(illustration) && React.cloneElement(illustration, {size: 80});

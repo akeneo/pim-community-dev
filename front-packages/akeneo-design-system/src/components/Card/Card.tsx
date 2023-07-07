@@ -1,6 +1,9 @@
-import React, {isValidElement, ReactElement, ReactNode, MouseEvent, forwardRef, Ref} from 'react';
+import React, {isValidElement, ReactElement, ReactNode, MouseEvent, Ref} from 'react';
 import styled, {css} from 'styled-components';
-import {Checkbox, Link, LinkProps, Image} from '../../components';
+import {Checkbox} from '../Checkbox/Checkbox';
+import {Link} from '../Link/Link';
+import type {LinkProps} from '../Link/Link';
+import {Image} from '../Image/Image';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {Override} from '../../shared';
 
@@ -194,7 +197,7 @@ type CardProps = Override<
  * Cards are used to have a good visual representation of the items to display.
  * Cards can be used in a grid or in a collection.
  */
-const CardComponent = forwardRef<HTMLButtonElement, CardProps>(
+const CardComponent: React.FC<CardProps & {ref?: React.Ref<HTMLButtonElement>}> = React.forwardRef<HTMLButtonElement, CardProps>(
   (
     {
       src,

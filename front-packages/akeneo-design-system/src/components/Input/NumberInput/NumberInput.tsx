@@ -1,7 +1,9 @@
 import React, {ChangeEvent, useCallback, useRef} from 'react';
 import styled, {css} from 'styled-components';
 import {InputProps} from '../common/InputProps';
-import {ArrowDownIcon, ArrowUpIcon, LockIcon} from '../../../icons';
+import {ArrowDownIcon} from '../../../icons/ArrowDownIcon';
+import {ArrowUpIcon} from '../../../icons/ArrowUpIcon';
+import {LockIcon} from '../../../icons/LockIcon';
 import {Key, Override} from '../../../shared';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../../theme';
 import {useShortcut} from '../../../hooks';
@@ -122,7 +124,7 @@ type NumberInputProps = Override<
 /**
  * Number input allows the user to enter content and data when the expected user input is only numbers.
  */
-const NumberInput: React.FC<NumberInputProps> = React.forwardRef<HTMLInputElement, NumberInputProps>(
+const NumberInput: React.FC<NumberInputProps & {ref?: React.Ref<HTMLInputElement>}> = React.forwardRef<HTMLInputElement, NumberInputProps>(
   ({invalid, onChange, readOnly, step, value, onSubmit, ...rest}: NumberInputProps, forwardedRef) => {
     const internalRef = useRef<HTMLInputElement | null>(null);
     forwardedRef = forwardedRef ?? internalRef;

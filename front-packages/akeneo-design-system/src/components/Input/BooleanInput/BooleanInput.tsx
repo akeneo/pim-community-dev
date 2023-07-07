@@ -1,7 +1,9 @@
 import React, {ReactNode, Ref, useCallback} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, CommonStyle, getColor} from '../../../theme';
-import {DangerIcon, EraseIcon, LockIcon} from '../../../icons';
+import {DangerIcon} from '../../../icons/DangerIcon';
+import {EraseIcon} from '../../../icons/EraseIcon';
+import {LockIcon} from '../../../icons/LockIcon';
 import {InputProps} from '../common';
 import {Override} from '../../../shared';
 
@@ -161,7 +163,7 @@ type BooleanInputProps = Override<
 /**
  * The BooleanInput is used to quickly switch between two possible states.
  */
-const BooleanInput: React.FC<BooleanInputProps> = React.forwardRef<HTMLDivElement, BooleanInputProps>(
+const BooleanInput: React.FC<BooleanInputProps & {ref?: React.Ref<HTMLDivElement>}> = React.forwardRef<HTMLDivElement, BooleanInputProps>(
   (
     {
       value,

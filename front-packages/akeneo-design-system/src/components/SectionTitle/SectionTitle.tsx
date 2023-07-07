@@ -1,7 +1,11 @@
 import React, {Children, cloneElement, HTMLAttributes, isValidElement, ReactNode} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
-import {Button, ButtonProps, IconButton, IconButtonProps} from '../../components';
+// import {, , , IconButtonProps} from '../../components';
+import {Button} from '../Button/Button';
+import type {ButtonProps} from '../Button/Button';
+import {IconButton} from '../IconButton/IconButton';
+import type {IconButtonProps} from '../IconButton/IconButton';
 import {Override} from '../../shared';
 
 const SectionTitleContainer = styled.div<{sticky?: number} & AkeneoThemedProps>`

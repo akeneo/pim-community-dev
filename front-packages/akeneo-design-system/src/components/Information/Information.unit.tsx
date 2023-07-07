@@ -1,7 +1,7 @@
 import React from 'react';
 import {render} from '../../storybook/test-util';
 import {HighlightTitle, Information} from './Information';
-import {UsersIllustration} from '../../illustrations';
+import {UsersIllustration} from '../../illustrations/UsersIllustration';
 
 describe('A helper', () => {
   it('it renders an information helper', () => {

@@ -1,6 +1,7 @@
 import React, {ForwardRefExoticComponent, PropsWithoutRef, ReactNode, RefAttributes} from 'react';
 import styled, {css} from 'styled-components';
-import {PanelCloseIcon, PanelOpenIcon} from '../../../icons';
+import {PanelCloseIcon} from '../../../icons/PanelCloseIcon';
+import {PanelOpenIcon} from '../../../icons/PanelOpenIcon';
 import {AkeneoThemedProps, getColor} from '../../../theme';
 
 const collapsableStyles = css<{isOpen: boolean} & AkeneoThemedProps>`

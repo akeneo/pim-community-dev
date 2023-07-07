@@ -3,11 +3,12 @@ import styled, {css} from 'styled-components';
 import {Key, Override} from '../../../shared';
 import {InputProps} from '../common/InputProps';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../../theme';
-import {ImportIllustration} from '../../../illustrations';
+import {ImportIllustration} from '../../../illustrations/ImportIllustration';
 import {IconButton, IconButtonProps} from '../../IconButton/IconButton';
 import {Image} from '../../Image/Image';
 import {ProgressBar} from '../../ProgressBar/ProgressBar';
-import {CloseIcon, LockIcon} from '../../../icons';
+import {CloseIcon} from '../../../icons/CloseIcon';
+import {LockIcon} from '../../../icons/LockIcon';
 import {useBooleanState, useShortcut} from '../../../hooks';
 import {FileInfo} from './FileInfo';
 import DefaultPictureIllustration from '../../../../static/illustrations/DefaultPicture.svg';
@@ -159,7 +160,7 @@ type MediaFileInputProps = Override<
 /**
  * Media File input allows the user to enter content when the expected user input is a file.
  */
-const MediaFileInput: React.FC<MediaFileInputProps> = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
+const MediaFileInput: React.FC<MediaFileInputProps & {ref?: React.Ref<HTMLInputElement>}> = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
   (
     {
       onChange,

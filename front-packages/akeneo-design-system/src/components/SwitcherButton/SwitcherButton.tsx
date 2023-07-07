@@ -1,6 +1,7 @@
-import React, {Ref, ReactNode, HTMLAttributes, forwardRef} from 'react';
+import React, {Ref, ReactNode, HTMLAttributes} from 'react';
 import styled, {css} from 'styled-components';
-import {ArrowDownIcon, CloseIcon} from '../../icons';
+import {ArrowDownIcon} from '../../icons/ArrowDownIcon';
+import {CloseIcon} from '../../icons/CloseIcon';
 import {AkeneoThemedProps, CommonStyle, getColor, getFontSize} from '../../theme';
 import {Override} from '../../shared';
 import {useId} from '../../hooks';
@@ -101,7 +102,7 @@ type SwitcherButtonProps = Override<
 /**
  * Switchers are used to switch the filter on the context or the content of a page or a table.
  */
-const SwitcherButton = forwardRef<HTMLDivElement, SwitcherButtonProps>(
+const SwitcherButton: React.FC<SwitcherButtonProps & {ref?: React.Ref<HTMLDivElement>}> = React.forwardRef<HTMLDivElement, SwitcherButtonProps>(
   (
     {label, children, onClick, deletable = false, onDelete, inline = true, ...rest}: SwitcherButtonProps,
     forwardedRef: Ref<HTMLDivElement>

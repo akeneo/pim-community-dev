@@ -1,7 +1,8 @@
-import React, {ChangeEvent, forwardRef, InputHTMLAttributes, Ref, useCallback} from 'react';
+import React, {ChangeEvent, InputHTMLAttributes, Ref, useCallback} from 'react';
 import styled, {css} from 'styled-components';
 import {InputProps} from '../common/InputProps';
-import {DangerIcon, LockIcon} from '../../../icons';
+import {DangerIcon} from '../../../icons/DangerIcon';
+import {LockIcon} from '../../../icons/LockIcon';
 import {Override} from '../../../shared';
 import {AkeneoThemedProps, getColor} from '../../../theme';
 import {isValidColor, convertColorToLongHexColor} from './Color';
@@ -103,7 +104,7 @@ type ColorInputProps = Override<
 /**
  * The ColorInput component allows the user to enter a color in hexadecimal format.
  */
-const ColorInput = forwardRef<HTMLInputElement, ColorInputProps>(
+const ColorInput: React.FC<ColorInputProps & {ref?: React.Ref<HTMLInputElement>}> = React.forwardRef<HTMLInputElement, ColorInputProps>(
   ({invalid, onChange, value, readOnly, ...rest}: ColorInputProps, forwardedRef: Ref<HTMLInputElement>) => {
     const handleChange = useCallback(
       (event: ChangeEvent<HTMLInputElement>) => {

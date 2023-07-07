@@ -1,7 +1,8 @@
 import React, {ReactNode, Ref} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../../theme';
-import {ArrowDownIcon, ArrowUpIcon} from '../../../icons';
+import {ArrowDownIcon} from '../../../icons/ArrowDownIcon';
+import {ArrowUpIcon} from '../../../icons/ArrowUpIcon';
 
 type TableSortDirection = 'descending' | 'ascending' | 'none';
 
@@ -53,7 +54,7 @@ const HeaderCellContentContainer = styled.span`
   }
 `;
 
-const TableHeaderCell: React.FC<TableHeaderCellProps> = React.forwardRef<HTMLTableHeaderCellElement, TableHeaderCellProps>(
+const TableHeaderCell: React.FC<TableHeaderCellProps & {ref?: React.Ref<HTMLTableHeaderCellElement>}> = React.forwardRef<HTMLTableHeaderCellElement, TableHeaderCellProps>(
   (
     {isSortable = false, onDirectionChange, sortDirection, children, ...rest}: TableHeaderCellProps,
     forwardedRef: Ref<HTMLTableHeaderCellElement>

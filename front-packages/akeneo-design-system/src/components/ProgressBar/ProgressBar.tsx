@@ -1,4 +1,4 @@
-import React, {forwardRef, HTMLAttributes, Ref} from 'react';
+import React, {HTMLAttributes, Ref} from 'react';
 import styled, {css, keyframes} from 'styled-components';
 import {AkeneoThemedProps, getColor, getColorForLevel, getFontSize, Level} from '../../theme';
 import {useId} from '../../hooks';
@@ -149,7 +149,7 @@ type ProgressBarProps = {
 /**
  * Progress bar to provide users with feedback on what is going on.
  */
-const ProgressBar = forwardRef<HTMLDivElement, ProgressBarProps>(
+const ProgressBar: React.FC<ProgressBarProps & {ref?: React.Ref<HTMLDivElement>}> = React.forwardRef<HTMLDivElement, ProgressBarProps>(
   (
     {level, percent, title, progressLabel, light = false, size = 'small', ...rest}: ProgressBarProps,
     forwardedRef: Ref<HTMLDivElement>

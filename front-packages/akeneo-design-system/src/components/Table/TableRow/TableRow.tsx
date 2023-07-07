@@ -3,18 +3,18 @@ import React, {
   Ref,
   SyntheticEvent,
   HTMLAttributes,
-  forwardRef,
   useContext,
   DragEvent,
   MouseEvent,
 } from 'react';
 import styled, {AnyStyledComponent, css} from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../../theme';
-import {Checkbox} from '../../../components';
+import {Checkbox} from '../../../components/Checkbox/Checkbox';
 import {Override} from '../../../shared';
 import {TableContext} from '../TableContext';
 import {TableCell} from '../TableCell/TableCell';
-import {RowIcon, DangerIcon} from '../../../icons';
+import {RowIcon} from '../../../icons/RowIcon';
+import {DangerIcon} from '../../../icons/DangerIcon';
 import {PlaceholderPosition, usePlaceholderPosition} from '../../../hooks/usePlaceholderPosition';
 
 type Level = 'warning';
@@ -161,7 +161,7 @@ type TableRowProps = Override<
   }
 >;
 
-const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
+const TableRow: React.FC<TableRowProps & {ref?: React.Ref<HTMLTableRowElement>}> = React.forwardRef<HTMLTableRowElement, TableRowProps>(
   (
     {
       rowIndex = 0,

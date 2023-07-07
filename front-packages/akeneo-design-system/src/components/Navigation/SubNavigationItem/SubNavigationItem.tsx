@@ -60,7 +60,7 @@ type Props = Override<
   }
 >;
 
-const SubNavigationItem: React.FC<Props> = React.forwardRef<HTMLAnchorElement, Props>(
+const SubNavigationItem: React.FC<Props & {ref?: React.Ref<HTMLAnchorElement>}> = React.forwardRef<HTMLAnchorElement, Props>(
   ({children, href, disabled, active, onClick, ...rest}, forwardedRef: React.Ref<HTMLAnchorElement>) => {
     const handleClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
       if (disabled) {

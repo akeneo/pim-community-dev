@@ -1,8 +1,8 @@
 import React, {Ref, ReactNode, isValidElement, FC, useCallback, KeyboardEvent} from 'react';
 import styled, {css} from 'styled-components';
-import {IconProps} from '../../icons';
+import type {IconProps} from '../../icons/IconProps';
 import {AkeneoThemedProps, getColor} from '../../theme';
-import {Key, Override} from '../../';
+import {Key, Override} from '../../shared';
 
 type Size = 'small' | 'big';
 
@@ -165,7 +165,7 @@ const Tile: FC<TileProps> = ({icon, selected = false, size = 'small', inline = f
  * format.
  * It is a visual component made up of an icon and a label.
  */
-const Tiles: React.FC<TilesProps> = React.forwardRef<HTMLDivElement, TilesProps>(
+const Tiles: React.FC<TilesProps & {ref?: React.Ref<HTMLDivElement>}> = React.forwardRef<HTMLDivElement, TilesProps>(
   ({size = 'small', inline = false, children, ...rest}: TilesProps, forwardedRef: Ref<HTMLDivElement>) => {
     return (
       <TilesContainer size={size} inline={inline} ref={forwardedRef} {...rest}>

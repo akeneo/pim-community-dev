@@ -1,7 +1,8 @@
 import React, {ReactNode, Ref} from 'react';
-import {Override} from '../../shared';
+import type {Override} from '../../shared/override';
 import styled, {css} from 'styled-components';
-import {AkeneoThemedProps, getColor, getColorForLevel, getFontSize, Level} from '../../theme';
+import type {AkeneoThemedProps, Level} from '../../theme/theme';
+import {getColor, getColorForLevel, getFontSize} from '../../theme/theme';
 
 const BadgeContainer = styled.span<BadgeProps & AkeneoThemedProps>`
   display: inline-flex;
@@ -44,7 +45,7 @@ type BadgeProps = Override<
 /**
  * Badges are used for items that must be: tagged, categorized, organized by keywords, or to highlight information.
  */
-const Badge: React.FC<BadgeProps> = React.forwardRef<HTMLSpanElement, BadgeProps>(
+const Badge: React.FC<BadgeProps & {ref?: React.Ref<HTMLSpanElement>}> = React.forwardRef<HTMLSpanElement, BadgeProps>(
   ({level = 'primary', children, ...rest}: BadgeProps, forwardedRef: Ref<HTMLSpanElement>) => {
     return (
       <BadgeContainer level={level} ref={forwardedRef} {...rest}>

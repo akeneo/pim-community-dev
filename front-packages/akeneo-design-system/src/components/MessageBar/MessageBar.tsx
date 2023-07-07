@@ -1,7 +1,11 @@
 import React, {ReactNode, ReactElement, useEffect, useState, useCallback, useRef} from 'react';
 import styled, {keyframes} from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
-import {CheckIcon, CloseIcon, DangerIcon, IconProps, InfoIcon} from '../../icons';
+import {CheckIcon} from '../../icons/CheckIcon';
+import {CloseIcon} from '../../icons/CloseIcon';
+import {DangerIcon} from '../../icons/DangerIcon';
+import {InfoIcon} from '../../icons/InfoIcon';
+import type {IconProps} from '../../icons/IconProps';
 import {useAutoFocus} from '../../hooks';
 
 type MessageBarLevel = 'info' | 'success' | 'warning' | 'error';

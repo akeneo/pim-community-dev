@@ -1,8 +1,9 @@
 import React, {Ref, ReactNode, useRef, useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {getColor, getFontSize} from '../../theme';
-import {IconButton} from '../../components';
-import {CheckPartialIcon, PlusIcon} from '../../icons';
+import {IconButton} from '../IconButton/IconButton';
+import {CheckPartialIcon} from '../../icons/CheckPartialIcon';
+import {PlusIcon} from '../../icons/PlusIcon';
 
 const ANIMATION_DURATION = 100;
 
@@ -75,7 +76,7 @@ type CollapseProps = {
 /**
  * The collapse is used to organise groups of elements and possibly hide them.
  */
-const Collapse: React.FC<CollapseProps> = React.forwardRef<HTMLDivElement, CollapseProps>(
+const Collapse: React.FC<CollapseProps & {ref?: React.Ref<HTMLDivElement>}> = React.forwardRef<HTMLDivElement, CollapseProps>(
   (
     {label, collapseButtonLabel, isOpen, onCollapse, children, ...rest}: CollapseProps,
     forwardedRef: Ref<HTMLDivElement>

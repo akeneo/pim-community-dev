@@ -1,6 +1,6 @@
 import React, {Ref, ReactElement} from 'react';
 import styled, {css} from 'styled-components';
-import {IconProps} from '../../icons';
+import type {IconProps} from '../../icons/IconProps';
 import {Button, ButtonProps, ButtonSize} from '../../components/Button/Button';
 import {Override} from '../../shared';
 
@@ -51,7 +51,7 @@ type IconButtonProps = Override<
 /**
  * The IconButton component is useful to have a clickable icon.
  */
-const IconButton: React.FC<IconButtonProps> = React.forwardRef<HTMLButtonElement, IconButtonProps>(
+const IconButton: React.FC<IconButtonProps & {ref?: React.Ref<HTMLButtonElement>}> = React.forwardRef<HTMLButtonElement, IconButtonProps>(
   ({icon, size = 'default', ghost, ...rest}: IconButtonProps, forwardedRef: Ref<HTMLButtonElement>) => {
     return (
       <IconButtonContainer

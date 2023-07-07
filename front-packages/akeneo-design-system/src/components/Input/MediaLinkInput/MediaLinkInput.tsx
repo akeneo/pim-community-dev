@@ -3,10 +3,10 @@ import styled, {css} from 'styled-components';
 import {Key, Override} from '../../../shared';
 import {InputProps} from '../common/InputProps';
 import {AkeneoThemedProps, getColor} from '../../../theme';
-import {DefaultPictureIllustration} from '../../../illustrations';
+import {DefaultPictureIllustration} from '../../../illustrations/DefaultPictureIllustration';
 import {IconButton, IconButtonProps} from '../../IconButton/IconButton';
 import {Image} from '../../Image/Image';
-import {LockIcon} from '../../../icons';
+import {LockIcon} from '../../../icons/LockIcon';
 import {useShortcut} from '../../../hooks';
 import DefaultPicture from '../../../../static/illustrations/DefaultPicture.svg';
 
@@ -107,7 +107,7 @@ type MediaLinkInputProps = Override<
 /**
  * Media Link input allows the user to enter content when the expected user input is a link.
  */
-const MediaLinkInput: React.FC<MediaLinkInputProps> = React.forwardRef<HTMLInputElement, MediaLinkInputProps>(
+const MediaLinkInput: React.FC<MediaLinkInputProps & {ref?: React.Ref<HTMLInputElement>}> = React.forwardRef<HTMLInputElement, MediaLinkInputProps>(
   (
     {
       onChange,

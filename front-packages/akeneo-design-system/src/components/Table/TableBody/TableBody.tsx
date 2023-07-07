@@ -13,7 +13,7 @@ type TableBodyProps = {
   children?: TableBodyChild;
 };
 
-const TableBody: React.FC<TableBodyProps> = React.forwardRef<HTMLTableSectionElement, TableBodyProps>(
+const TableBody: React.FC<TableBodyProps & {ref?: React.Ref<HTMLTableSectionElement>}> = React.forwardRef<HTMLTableSectionElement, TableBodyProps>(
   ({children, ...rest}: TableBodyProps, forwardedRef: Ref<HTMLTableSectionElement>) => {
     const [draggedElementIndex, onDragStart, onDragEnd] = useDragElementIndex();
     const {isDragAndDroppable, onReorder} = useContext(TableContext);

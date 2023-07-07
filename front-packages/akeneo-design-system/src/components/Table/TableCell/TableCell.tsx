@@ -1,7 +1,7 @@
 import React, {ReactNode, Ref} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../../theme';
-import {Image} from '../../../components';
+import {Image} from '../../Image/Image';
 import {Override} from '../../../shared';
 
 const TableCellContainer = styled.td<{rowTitle: boolean} & AkeneoThemedProps>`
@@ -43,7 +43,7 @@ type TableCellProps = Override<
   }
 >;
 
-const TableCell: any: React.FC<TableCellProps> = React.forwardRef<HTMLTableCellElement, TableCellProps>(
+const TableCell: React.FC<TableCellProps & {ref?: React.Ref<HTMLTableCellElement>}> = React.forwardRef<HTMLTableCellElement, TableCellProps>(
   ({children, rowTitle = false, ...rest}: TableCellProps, forwardedRef: Ref<HTMLTableCellElement>) => {
     return (
       <TableCellContainer ref={forwardedRef} rowTitle={rowTitle} {...rest}>
@@ -51,7 +51,7 @@ const TableCell: any: React.FC<TableCellProps> = React.forwardRef<HTMLTableCellE
           {React.Children.map(children, child => {
             if (!React.isValidElement(child) || child.type !== Image) return child;
 
-            return React.cloneElement(child as typeof Image, {
+            return React.cloneElement(child as any, {
               width: 44,
               height: 44,
             });

@@ -15,7 +15,8 @@ import {IconButton} from '../../../components/IconButton/IconButton';
 import {TextInput} from '../../../components/Input/TextInput/TextInput';
 import {useBooleanState, useShortcut, VerticalPosition} from '../../../hooks';
 import {AkeneoThemedProps, getColor} from '../../../theme';
-import {ArrowDownIcon, CloseIcon} from '../../../icons';
+import {ArrowDownIcon} from '../../../icons/ArrowDownIcon';
+import {CloseIcon} from '../../../icons/CloseIcon';
 import {usePagination} from '../../../hooks/usePagination';
 
 const SelectInputContainer = styled.div<{value: string | null; readOnly: boolean} & AkeneoThemedProps>`

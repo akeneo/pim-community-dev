@@ -1,8 +1,8 @@
-import React, {Ref, ReactNode, isValidElement, HTMLAttributes, forwardRef, Children, cloneElement} from 'react';
+import React, {Ref, ReactNode, isValidElement, HTMLAttributes, Children, cloneElement} from 'react';
 import styled from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {Override} from '../../shared';
-import {CheckIcon} from '../../icons';
+import {CheckIcon} from '../../icons/CheckIcon';
 
 type StepState = 'done' | 'inprogress' | 'todo';
 
@@ -83,7 +83,7 @@ type StepProps = Override<
   }
 >;
 
-const Step = forwardRef<HTMLLIElement, StepProps>(
+const Step: React.FC<StepProps & {ref?: React.Ref<HTMLLIElement>}> = React.forwardRef<HTMLLIElement, StepProps>(
   ({state, children, disabled, onClick, ...rest}: StepProps, forwardedRef: Ref<HTMLLIElement>) => {
     if (undefined === state) {
       throw new Error('ProgressIndicator.Step cannot be used outside a ProgressIndicator component');
