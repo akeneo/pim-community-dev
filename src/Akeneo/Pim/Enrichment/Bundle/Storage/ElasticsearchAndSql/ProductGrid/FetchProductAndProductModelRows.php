@@ -11,7 +11,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Rows;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\FetchProductModelRowsFromCodesInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\FetchProductRowsFromIdentifiersInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\FetchProductRowsFromUuidsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ResultAwareInterface;
 
 /**
@@ -21,7 +21,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\ResultAwareInterface;
 final class FetchProductAndProductModelRows implements Query\FetchProductAndProductModelRows
 {
     public function __construct(
-        private FetchProductRowsFromIdentifiersInterface $fetchProductRowsFromUuids,
+        private FetchProductRowsFromUuidsInterface $fetchProductRowsFromUuids,
         private FetchProductModelRowsFromCodesInterface $fetchProductModelRowsFromCodes,
         private Query\AddAdditionalProductPropertiesRegistry $addAdditionalProductPropertiesRegistry,
         private Query\AddAdditionalProductModelPropertiesRegistry $addAdditionalProductModelPropertiesRegistry,
