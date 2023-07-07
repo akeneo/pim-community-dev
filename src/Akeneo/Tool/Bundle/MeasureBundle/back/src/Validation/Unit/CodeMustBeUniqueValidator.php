@@ -40,7 +40,7 @@ class CodeMustBeUniqueValidator extends ConstraintValidator
         }
     }
 
-    private function measurementFamilyAlreadyHasUnitWithCode(string $measurementFamilyCode, string $code)
+    private function measurementFamilyAlreadyHasUnitWithCode(string $measurementFamilyCode, string $code): bool
     {
         $measurementFamily = $this->measurementFamilyRepository->getByCode(MeasurementFamilyCode::fromString($measurementFamilyCode));
 

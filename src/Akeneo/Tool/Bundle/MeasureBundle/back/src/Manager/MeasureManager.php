@@ -47,7 +47,7 @@ class MeasureManager
      *
      * @return bool
      */
-    public function unitSymbolExistsInFamily($unitSymbol, $family)
+    public function unitSymbolExistsInFamily($unitSymbol, $family): bool
     {
         return in_array($unitSymbol, $this->getUnitSymbolsForFamily($family));
     }
@@ -60,7 +60,7 @@ class MeasureManager
      *
      * @return bool
      */
-    public function unitCodeExistsInFamily($unitCode, $family)
+    public function unitCodeExistsInFamily($unitCode, $family): bool
     {
         return in_array($unitCode, $this->getUnitCodesForFamily($family));
     }

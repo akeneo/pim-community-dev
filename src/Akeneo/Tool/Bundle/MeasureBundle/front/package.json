@@ -22,8 +22,8 @@
     "prettier": "^2.2.1"
   },
   "dependencies": {
-    "@akeneo-pim-community/shared": "link:../shared",
-    "akeneo-design-system": "link:../akeneo-design-system",
+    "@akeneo-pim-community/shared": "link:../../../../../shared",
+    "akeneo-design-system": "link:../../../../../akeneo-design-system",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
@@ -31,13 +31,16 @@
     "web-vitals": "^0.2.4"
   },
   "proxy": "http://localhost:8080",
+  "config": {
+    "front_packages_path": "../../../../../front-packages"
+  },
   "scripts": {
     "app:start": "yarn route:build && yarn packages:build && react-scripts --openssl-legacy-provider start",
     "test:unit:run": "react-scripts --openssl-legacy-provider test --watchAll=false --coverage --coverageDirectory=coverage --maxWorkers=3",
     "test:unit:watch": "react-scripts --openssl-legacy-provider test --maxWorkers=3",
     "lib:build": "tsc -p ./tsconfig.build.json",
     "route:build": "cp ../../public/js/fos_js_routes.json ./src/routes.json",
-    "packages:build": "yarn --cwd=../akeneo-design-system lib:build && yarn workspace @akeneo-pim-community/shared lib:build",
+    "packages:build": "yarn --cwd=$npm_package_config_front_packages_path/akeneo-design-system lib:build && yarn workspace @akeneo-pim-community/shared lib:build",
     "lint:fix": "prettier --config .prettierrc.json --parser typescript --write \"./src/**/*.{ts,tsx}\"",
     "lint:check": "prettier --config .prettierrc.json --parser typescript --check \"./src/**/*.{ts,tsx}\""
   },

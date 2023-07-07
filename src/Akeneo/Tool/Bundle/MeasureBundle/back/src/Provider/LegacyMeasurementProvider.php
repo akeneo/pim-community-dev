@@ -29,7 +29,7 @@ class LegacyMeasurementProvider
 
     public function getMeasurementFamilies(): array
     {
-        if (empty($this->legacyMeasurementFamily)) {
+        if ($this->legacyMeasurementFamily === []) {
             $this->legacyMeasurementFamily = $this->loadLegacyMeasurementFamilies();
         }
 

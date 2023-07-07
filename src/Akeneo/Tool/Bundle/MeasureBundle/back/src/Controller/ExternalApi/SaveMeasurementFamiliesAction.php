@@ -73,7 +73,7 @@ class SaveMeasurementFamiliesAction
         $normalizedMeasurementFamilies = $this->getNormalizedMeasurementFamiliesFromRequest($request);
         $structureErrors = $this->measurementFamilyListValidator->validate($normalizedMeasurementFamilies);
 
-        if (!empty($structureErrors)) {
+        if ($structureErrors !== []) {
             return new JsonResponse([
                 'code' => Response::HTTP_BAD_REQUEST,
                 'message' => 'The list of measurement families has an invalid format.',
@@ -86,7 +86,7 @@ class SaveMeasurementFamiliesAction
         foreach ($normalizedMeasurementFamilies as $normalizedMeasurementFamily) {
             $structureErrors = $this->measurementFamilyCommonStructureValidator->validate($normalizedMeasurementFamily);
 
-            if (!empty($structureErrors)) {
+            if ($structureErrors !== []) {
                 $responses[] = [
                     'code' => $normalizedMeasurementFamily['code'] ?? '',
                     'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY,
@@ -136,7 +136,7 @@ class SaveMeasurementFamiliesAction
     private function createMeasurementFamily(array $normalizedMeasurementFamily): array
     {
         $structureErrors = $this->measurementFamilyStructureValidator->validate($normalizedMeasurementFamily);
-        if (!empty($structureErrors)) {
+        if ($structureErrors !== []) {
             return [
                 'code' => $normalizedMeasurementFamily['code'] ?? '',
                 'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY,
@@ -183,7 +183,7 @@ class SaveMeasurementFamiliesAction
         );
 
         $structureErrors = $this->measurementFamilyStructureValidator->validate($normalizedMeasurementFamily);
-        if (!empty($structureErrors)) {
+        if ($structureErrors !== []) {
             return [
                 'code' => $normalizedMeasurementFamily['code'] ?? '',
                 'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY,
