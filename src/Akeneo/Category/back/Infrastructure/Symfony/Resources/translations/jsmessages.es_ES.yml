@@ -22,7 +22,11 @@ akeneo.category:
     delete: Eliminar árbol
   template:
     learn_more: Más información sobre las plantillas de categorías
+    create_confirmation_modal:
+      link: Más información sobre las plantillas de categorías
     edit: Editar plantilla
+    notification_success: Plantilla de categoría creada con éxito
+    notification_error: No se ha podido crear la plantilla de categoría
     not_found: No hay ninguna plantilla activa para esta categoría
     properties:
       general_properties: Propiedades generales
@@ -92,6 +96,28 @@ akeneo.category:
       notification_success:
         title: 'Plantilla {{ template }} eliminada'
         message: '{{ template }} ha sido eliminada. Se ha eliminado el contenido de las categorías asociadas.'
+    initialize:
+      title: Añadir atributos de categoría
+      message: Defina el contenido de sus categorías añadiendo atributos de Texto, Área de texto o Imagen.
+      choice_message: Empiece creando un primer atributo según sus necesidades, o cargue un conjunto de 13 atributos sugeridos.
+      button:
+        load: Cargar un conjunto de atributos
+        create: Crear el primer atributo
+    load_attribute_set:
+      section_title: Cargar conjunto de atributos
+      title: Cargar un conjunto de atributos sugeridos
+      description: Inicie fácilmente la configuración de categorías enriquecidas cargando un conjunto de atributos sugeridos.
+      content_description: 'Este conjunto contiene 13 atributos:'
+      content:
+        description_attributes: 2 Atributos del área de texto para las descripciones largas y cortas de las categorías
+        url_attributes: 1 Atributo de texto para la información de la URL
+        image_attributes: 3 imágenes y 3 atributos de texto para la imagen y su información alt-text
+        seo_attributes: 2 atributos de texto y 2 atributos de área de texto para información SEO
+      confirmation_message: '¿Seguro que desea cargar este conjunto de atributos?'
+      button:
+        load: Cargar conjunto de atributos
+      notification:
+        success: Atributos creados con éxito
   template_list:
     columns:
       header: Etiqueta

@@ -60,4 +60,3 @@ pim_analytics:
     data_destination.untracked: Liczba nieśledzonych połączeń docelowych API
     other.tracked: Liczba innych śledzonych połączeń API
     other.untracked: Liczba innych nieśledzonych połączeń API
-
