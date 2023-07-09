@@ -508,6 +508,8 @@ pim_datagrid:
       label: 标识符
     uuid:
       label: Uuid
+    code_or_label:
+      label: 代码或标签
   search: 按 {{ label }} 搜索
 batch_jobs:
   add_association:

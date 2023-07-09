@@ -48,6 +48,7 @@ akeneo_job_process_tracker:
     compute_completeness_of_products_family: 计算产品品类的完成度
     clean_removed_attribute_job: 清理已删除的属性值
     execute_rules: 执行规则
+    scheduled_job: 计划的作业
   user_filter:
     label: 用户
     all: 所有
