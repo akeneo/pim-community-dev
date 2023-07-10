@@ -16,7 +16,7 @@ Akeneo\UserManagement\Component\Model\Role:
             lenght: 30
         label:
             type: string
-            lenght: 30
+            length: 255
         type:
             type: string
             nullable: false
