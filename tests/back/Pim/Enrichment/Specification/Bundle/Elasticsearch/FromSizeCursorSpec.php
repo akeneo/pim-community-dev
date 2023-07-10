@@ -28,7 +28,7 @@ class FromSizeCursorSpec extends ObjectBehavior
         $esClient->search([
             'from' => 0,
             'size' => 2,
-            'sort' => ['_id' => 'asc'],
+            'sort' => ['id' => 'asc'],
             'track_total_hits' => true,
         ])
             ->willReturn([
