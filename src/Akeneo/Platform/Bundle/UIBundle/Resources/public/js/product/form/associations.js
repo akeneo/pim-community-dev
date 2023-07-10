@@ -452,7 +452,11 @@ define([
         this.$('.association-grid-container').addClass('hide');
         this.$('#product-quantified-associations').removeClass('hide');
       } else {
-        this.$('.association-grid-container').removeClass('hide');
+        if (this.getCurrentAssociationTarget() === 'products') {
+          this.$('.association-product-grid').removeClass('hide');
+        } else {
+          this.$('.association-group-grid').removeClass('hide');
+        }
         this.$('#product-quantified-associations').addClass('hide');
       }
 
