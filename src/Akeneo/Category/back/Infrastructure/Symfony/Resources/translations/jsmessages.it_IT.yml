@@ -22,7 +22,15 @@ akeneo.category:
     delete: Elimina struttura
   template:
     learn_more: Scopri di più sui modelli di categoria
+    create: Crea modello
+    create_confirmation_modal:
+      title: Crea un nuovo modello di categoria
+      helper: Crea un modello di categoria per definire attributi e attivare l'arricchimento su tutte le categorie di questo albero.
+      category_tree: Albero delle categorie
+      link: Scopri di più sui modelli di categoria.
     edit: Modifica modello
+    notification_success: Modello di categoria creato correttamente
+    notification_error: Non è stato possibile creare il modello di categoria
     not_found: Per questa categoria non c'è un modello attivo
     properties:
       general_properties: Proprietà generali
@@ -98,6 +106,28 @@ akeneo.category:
       saving: Salvataggio
       editing: Modifica
       errors: Errori non salvati
+    initialize:
+      title: Aggiungi attributi alla categoria
+      message: Definisci il contenuto delle categorie aggiungendo attributi Testo, Area di testo o Immagine.
+      choice_message: Inizia a creare gli attributi in base alle tue esigenze oppure carica un insieme di 13 attributi suggeriti.
+      button:
+        load: Carica un insieme di attributi
+        create: Crea il primo attributo
+    load_attribute_set:
+      section_title: Carica un insieme di attributi
+      title: Carica un insieme di attributi suggeriti
+      description: Inizia con facilità la configurazione delle categorie arricchite caricando un insieme di attributi suggeriti.
+      content_description: 'Questo insieme contiene 13 attributi:'
+      content:
+        description_attributes: 2 attributi Area di testo per le descrizioni lunghe e brevi della categoria
+        url_attributes: 1 attributo Testo per l'URL
+        image_attributes: 3 attributi Immagine e 3 Testo, per le immagini e per i rispettivi testi alternativi
+        seo_attributes: 2 attributi Testo e 2 Area di testo per le informazioni SEO
+      confirmation_message: Confermi di voler caricare questo insieme di attributi?
+      button:
+        load: Carica l'insieme di attributi
+      notification:
+        success: Attributi caricati correttamente
   template_list:
     columns:
       header: Etichetta

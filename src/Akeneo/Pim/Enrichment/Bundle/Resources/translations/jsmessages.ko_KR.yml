@@ -508,6 +508,8 @@ pim_datagrid:
       label: 식별자
     uuid:
       label: Uuid
+    code_or_label:
+      label: 코드 또는 레이블
   search: '{{ label }}(으)로 검색'
 batch_jobs:
   add_association:
