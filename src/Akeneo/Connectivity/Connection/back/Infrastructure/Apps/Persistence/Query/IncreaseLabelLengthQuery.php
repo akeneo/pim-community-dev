@@ -23,7 +23,7 @@ final class IncreaseLabelLengthQuery
     {
         $databaseNameSql = 'SELECT database()';
         $databaseName = $this->connection->executeQuery($databaseNameSql)->fetchOne();
-        if (!is_string($databaseName)) {
+        if (!\is_string($databaseName)) {
             return;
         }
 
