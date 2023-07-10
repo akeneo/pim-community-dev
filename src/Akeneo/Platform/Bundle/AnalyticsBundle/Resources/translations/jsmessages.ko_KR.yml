@@ -60,3 +60,5 @@ pim_analytics:
     data_destination.untracked: 추적되지 않은 API 대상 연결의 수
     other.tracked: 추적된 API 기타 연결의 수
     other.untracked: 추적되지 않은 API 기타 연결의 수
+    reset_event_count: 재설정된 인스턴스 수
+    last_reset_time: 마지막 재설정 시간

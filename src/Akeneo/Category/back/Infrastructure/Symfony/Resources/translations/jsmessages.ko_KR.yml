@@ -22,7 +22,15 @@ akeneo.category:
     delete: 트리 삭제
   template:
     learn_more: 카테고리 템플릿에 대해 자세히 알아보십시오.
+    create: 템플릿 만들기
+    create_confirmation_modal:
+      title: 새 카테고리 템플릿 만들기
+      helper: 카테고리 템플릿을 만들어 특성을 정의하고 이 트리의 모든 카테고리에 대한 보강을 활성화하십시오.
+      category_tree: 카테고리 트리
+      link: 카테고리 템플릿에 대해 자세히 알아보십시오
     edit: 템플릿 편집
+    notification_success: 카테고리 템플릿이 생성되었습니다
+    notification_error: 카테고리 템플릿을 생성할 수 없습니다
     not_found: 이 카테고리에 대한 활성 템플릿이 없습니다.
     properties:
       general_properties: 일반 속성
@@ -98,6 +106,28 @@ akeneo.category:
       saving: 저장 중
       editing: 편집 중
       errors: 오류가 저장되지 않았습니다.
+    initialize:
+      title: 카테고리 특성 추가
+      message: 텍스트, 텍스트 영역 또는 이미지 특성을 추가하여 카테고리의 콘텐츠를 정의하십시오.
+      choice_message: 필요에 따라 첫 번째 특성을 생성하여 시작하거나 13개의 제안된 특성 세트를 로드하십시오.
+      button:
+        load: 특성 세트 로드
+        create: 1번째 특성 만들기
+    load_attribute_set:
+      section_title: 특성 세트 로드
+      title: 제안된 특성 세트 로드
+      description: 제안된 특성 세트를 로드하여 보강된 카테고리 구성을 쉽게 시작하십시오.
+      content_description: '이 세트에는 13개의 특성이 포함되어 있습니다:'
+      content:
+        description_attributes: 길고 짧은 카테고리 설명에 대한 2개의 텍스트 영역 특성
+        url_attributes: URL 정보에 대한 1개의 텍스트 특성
+        image_attributes: 이미지 및 해당 대체 텍스트 정보에 대한 3개의 이미지 및 3개의 텍스트 특성
+        seo_attributes: SEO 정보에 대한 2개의 텍스트 및 2개의 텍스트 영역 특성
+      confirmation_message: 이 특성 세트를 로드하시겠습니까?
+      button:
+        load: 특성 세트 로드
+      notification:
+        success: 특성 생성됨
   template_list:
     columns:
       header: 레이블
