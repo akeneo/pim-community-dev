@@ -31,7 +31,7 @@ class MeasurementFamilyCommonStructureValidator
 
         $errorFormatter = new ErrorFormatter();
 
-        $customFormatter = fn(ValidationError $error) => [
+        $customFormatter = fn (ValidationError $error) => [
             'property' => $errorFormatter->formatErrorKey($error),
             'message' => $errorFormatter->formatErrorMessage($error),
         ];
