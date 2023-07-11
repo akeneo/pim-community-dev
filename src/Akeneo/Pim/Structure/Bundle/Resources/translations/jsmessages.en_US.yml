@@ -232,7 +232,27 @@ pim_enrich.entity.attribute:
         edit:
             common: General parameters
             type_specific: Type specific parameters
-            attribute_setup: Attribute setup
+            attribute_setup:
+                section_title: Attribute setup
+                warning: Actions taken here could greatly impact your products.
+                type: This attribute type is
+                type_helper: An attribute’s type cannot be modified as this would result in the deletion of all its product values.
+                unique_attribute_title: This attribute has a
+                unique_attribute_title_highlight: unique value per product
+                non_unique_attribute_title: This attribute can have the
+                non_unique_attribute_title_highlight: same value for several attributes
+                unique_helper: This cannot be modified.
+                scopable_attribute_title: This attribute is
+                scopable_attribute_title_highlight: scopable
+                non_scopable_attribute_title: This attribute is
+                non_scopable_attribute_title_highlight: not scopable
+                scopable_helper: Value per channel determines if an attribute is scopable (different values for different channels) or not (one value for all channels).
+                localizable_attribute_title: This attribute is
+                localizable_attribute_title_highlight: localizable
+                non_localizable_attribute_title: This attribute is
+                non_localizable_attribute_title_highlight: not localizable
+                localizable_helper: Value per locale determines if an attribute is localizable (different values for different locales) or not (one value for all locales).
+                learn_more: Learn more
             validation: Validation parameters
             select_locale: Select your locale
         delete:

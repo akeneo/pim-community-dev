@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {getColor, getFontSize, Helper, IconButton, Link, List, LockIcon} from 'akeneo-design-system';
+import {getColor, getFontSize, Helper, IconButton, Link, List, LockIcon, SectionTitle} from 'akeneo-design-system';
 import {Attribute} from '../models/Attribute';
 import styled from 'styled-components';
 import {useTranslate} from '@akeneo-pim-community/shared';
@@ -10,7 +10,7 @@ const ListCellInner = styled.div`
   align-items: baseline;
   line-height: 22px;
   color: ${getColor('grey', 120)};
-  
+
   header {
     font-size: ${getFontSize('big')};
     display: block;
@@ -25,26 +25,32 @@ const ListCellInner = styled.div`
 
 type AttributeSetupAppProps = {
   attribute: Attribute;
-}
+};
 
 const AttributeSetupApp: FC<AttributeSetupAppProps> = ({attribute}) => {
   const translate = useTranslate();
-  const urlScopable = 'http://todo';
-  const urlLocalizable = 'http://todo';
+  const urlScopable =
+    'https://help.akeneo.com/en_US/serenity-your-first-steps-with-akeneo/serenity-what-is-an-attribute#the-value-per-channel-property';
+  const urlLocalizable =
+    'https://help.akeneo.com/serenity-your-first-steps-with-akeneo/serenity-what-is-an-attribute#the-value-per-locale-property';
 
   return (
     <>
-      <Helper level="error">
-        Actions taken here could greatly impact your products.
-      </Helper>
+      <SectionTitle>
+        <SectionTitle.Title>
+          {translate('pim_enrich.entity.attribute.module.edit.attribute_setup.section_title')}
+        </SectionTitle.Title>
+      </SectionTitle>
+      <Helper level="error">{translate('pim_enrich.entity.attribute.module.edit.attribute_setup.warning')}</Helper>
       <List>
         <List.Row>
-          <List.Cell width='auto'>
+          <List.Cell width="auto">
             <ListCellInner>
               <header>
-                This attribute type is <em>{translate(`pim_enrich.entity.attribute.property.type.${attribute.type}`)}</em>
+                {translate('pim_enrich.entity.attribute.module.edit.attribute_setup.type')}
+                <em>{translate(`pim_enrich.entity.attribute.property.type.${attribute.type}`)}</em>
               </header>
-              An attribute’s type cannot be modified as this would result in the deletion of all its product values.
+              {translate('pim_enrich.entity.attribute.module.edit.attribute_setup.type_helper')}
             </ListCellInner>
           </List.Cell>
           <List.RemoveCell>
@@ -53,16 +59,30 @@ const AttributeSetupApp: FC<AttributeSetupAppProps> = ({attribute}) => {
         </List.Row>
 
         <List.Row>
-          <List.Cell width='auto'>
+          <List.Cell width="auto">
             <ListCellInner>
               <header>
-                {attribute.unique ? <>
-                    This attribute has a <em>unique value</em>.
-                  </> :
-                  <>This attribute don't have <em>unique value</em>.</>
-                }
+                {attribute.unique ? (
+                  <>
+                    {translate('pim_enrich.entity.attribute.module.edit.attribute_setup.unique_attribute_title')}
+                    <em>
+                      {translate(
+                        'pim_enrich.entity.attribute.module.edit.attribute_setup.unique_attribute_title_highlight'
+                      )}
+                    </em>
+                  </>
+                ) : (
+                  <>
+                    {translate('pim_enrich.entity.attribute.module.edit.attribute_setup.non_unique_attribute_title')}
+                    <em>
+                      {translate(
+                        'pim_enrich.entity.attribute.module.edit.attribute_setup.non_unique_attribute_title_highlight'
+                      )}
+                    </em>
+                  </>
+                )}
               </header>
-              The value of this attribute must be unique. This cannot be modified. // TODO Have opposite
+              {translate('pim_enrich.entity.attribute.module.edit.attribute_setup.unique_helper')}
             </ListCellInner>
           </List.Cell>
           <List.RemoveCell>
@@ -71,19 +91,33 @@ const AttributeSetupApp: FC<AttributeSetupAppProps> = ({attribute}) => {
         </List.Row>
 
         <List.Row>
-          <List.Cell width='auto'>
+          <List.Cell width="auto">
             <ListCellInner>
               <header>
-                {attribute.scopable ? <>
-                    This attribute is <em>scopable</em>.
-                  </> :
-                  <>This attribute is not <em>scopable</em>.</>
-                }
+                {attribute.scopable ? (
+                  <>
+                    {translate('pim_enrich.entity.attribute.module.edit.attribute_setup.scopable_attribute_title')}
+                    <em>
+                      {translate(
+                        'pim_enrich.entity.attribute.module.edit.attribute_setup.scopable_attribute_title_highlight'
+                      )}
+                    </em>
+                  </>
+                ) : (
+                  <>
+                    {translate('pim_enrich.entity.attribute.module.edit.attribute_setup.non_scopable_attribute_title')}
+                    <em>
+                      {translate(
+                        'pim_enrich.entity.attribute.module.edit.attribute_setup.non_scopable_attribute_title_highlight'
+                      )}
+                    </em>
+                  </>
+                )}
               </header>
-              Value per channel determines if an attribute is scopable (different values for different channels) or not (one value for all channels).<br/>
-              A scopable attribute cannot be changed to not scopable.
-              {' '}
-              <Link href={urlScopable} target='_blank'>Learn more</Link>
+              {translate('pim_enrich.entity.attribute.module.edit.attribute_setup.scopable_helper')}
+              <Link href={urlScopable} target="_blank">
+                {translate('pim_enrich.entity.attribute.module.edit.attribute_setup.learn_more')}
+              </Link>
             </ListCellInner>
           </List.Cell>
           <List.RemoveCell>
@@ -92,19 +126,35 @@ const AttributeSetupApp: FC<AttributeSetupAppProps> = ({attribute}) => {
         </List.Row>
 
         <List.Row>
-          <List.Cell width='auto'>
+          <List.Cell width="auto">
             <ListCellInner>
               <header>
-                {attribute.localizable ? <>
-                    This attribute is <em>localizable</em>.
-                  </> :
-                  <>This attribute is not <em>localizable</em>.</>
-                }
+                {attribute.localizable ? (
+                  <>
+                    {translate('pim_enrich.entity.attribute.module.edit.attribute_setup.localizable_attribute_title')}
+                    <em>
+                      {translate(
+                        'pim_enrich.entity.attribute.module.edit.attribute_setup.localizable_attribute_title_highlight'
+                      )}
+                    </em>
+                  </>
+                ) : (
+                  <>
+                    {translate(
+                      'pim_enrich.entity.attribute.module.edit.attribute_setup.non_localizable_attribute_title'
+                    )}
+                    <em>
+                      {translate(
+                        'pim_enrich.entity.attribute.module.edit.attribute_setup.non_localizable_attribute_title_highlight'
+                      )}
+                    </em>
+                  </>
+                )}
               </header>
-              Value per locale determines if an attribute is localizable (different values for different locales) or not (one value for all locales).<br/>
-              A localizable attribute cannot be changed to not localizable.
-              {' '}
-              <Link href={urlLocalizable} target='_blank'>Learn more</Link>
+              {translate('pim_enrich.entity.attribute.module.edit.attribute_setup.localizable_helper')}
+              <Link href={urlLocalizable} target="_blank">
+                {translate('pim_enrich.entity.attribute.module.edit.attribute_setup.learn_more')}
+              </Link>
             </ListCellInner>
           </List.Cell>
           <List.RemoveCell>
