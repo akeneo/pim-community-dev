@@ -441,7 +441,6 @@ class SqlGetConnectorProductsIntegration extends TestCase
         $this->assertEquals($expectedProduct, $this->getQuery()->fromProductUuid(Uuid::fromString($productData['uuid']), $this->adminUserId));
     }
 
-
     /**
      * @group ce
      */
