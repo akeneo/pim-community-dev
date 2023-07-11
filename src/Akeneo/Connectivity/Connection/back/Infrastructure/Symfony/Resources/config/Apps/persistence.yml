@@ -103,3 +103,8 @@ services:
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetConnectedAppRoleIdentifierQuery:
         arguments:
             - '@database_connection'
+
+    # Pull-up master: do not declare this service
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\IncreaseLabelLengthQuery:
+        arguments:
+            - '@database_connection'
