@@ -32,18 +32,19 @@ lint-back:
 	APP_ENV=dev $(DOCKER_COMPOSE) run -e APP_DEBUG=1 --rm php bin/console cache:warmup
 	$(DOCKER_COMPOSE) run --rm php php -d memory_limit=1G vendor/bin/phpstan analyse src/Akeneo/Pim --level 2
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
-	$(MAKE) migration-lint-back
-	$(MAKE) connectivity-connection-lint-back
+	$(MAKE) category-lint-back
+	$(MAKE) channel-lint-back
 	$(MAKE) communication-channel-lint-back
+	$(MAKE) connectivity-connection-lint-back
 	$(MAKE) data-quality-insights-lint-back
 	$(MAKE) data-quality-insights-phpstan
-	$(MAKE) import-export-lint-back
-	$(MAKE) job-lint-back
 	$(MAKE) enrichment-product-lint-back
-	$(MAKE) channel-lint-back
-	$(MAKE) category-lint-back
 	$(MAKE) identifier-generator-lint-back
+	$(MAKE) import-export-lint-back
 	$(MAKE) installer-lint-back
+	$(MAKE) job-lint-back
+	$(MAKE) measurement-lint-back
+	$(MAKE) migration-lint-back
 	# Cache was created with debug enabled, removing it allows a faster one to be created for upcoming tests
 	$(DOCKER_COMPOSE) run --rm php rm -rf var/cache/dev
 

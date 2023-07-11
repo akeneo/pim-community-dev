@@ -27,7 +27,8 @@
             "Akeneo\\Category\\": "src/Akeneo/Category/back",
             "Akeneo\\UserManagement\\": "src/Akeneo/UserManagement/back",
             "Akeneo\\Pim\\Automation\\IdentifierGenerator\\": "components/identifier-generator/back/src",
-            "Akeneo\\Platform\\Installer\\": "src/Akeneo/Platform/Installer/back/src"
+            "Akeneo\\Platform\\Installer\\": "src/Akeneo/Platform/Installer/back/src",
+            "Akeneo\\Tool\\Bundle\\MeasureBundle\\": "src/Akeneo/Tool/Bundle/MeasureBundle/back/src"
         }
     },
     "autoload-dev": {
@@ -53,7 +54,8 @@
             "Akeneo\\Test\\Category\\": "src/Akeneo/Category/back/tests",
             "Akeneo\\Test\\UserManagement\\": "src/Akeneo/UserManagement/back/tests",
             "Akeneo\\Test\\Pim\\Automation\\IdentifierGenerator\\": "components/identifier-generator/back/tests",
-            "Akeneo\\Platform\\Installer\\Test\\": "src/Akeneo/Platform/Installer/back/tests"
+            "Akeneo\\Platform\\Installer\\Test\\": "src/Akeneo/Platform/Installer/back/tests",
+            "Akeneo\\Tool\\Bundle\\MeasureBundle\\tests\\": "src/Akeneo/Tool/Bundle/MeasureBundle/back/tests"
         }
     },
     "require": {

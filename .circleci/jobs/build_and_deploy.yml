@@ -216,7 +216,7 @@ jobs:
                   # Adding date allows to invalidate the cache each new day, adding front package path avoid conflict between CE build and EE build
                   command: |
                       find << parameters.path_to_front_packages >>/akeneo-design-system -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/akeneo-design-system.hash
-                      find << parameters.path_to_front_packages >>/measurement -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/measurement.hash
+                      find << parameters.path_to_front_packages >>/../src/Akeneo/Tool/Bundle/MeasureBundle/front -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/measurement.hash
                       find << parameters.path_to_front_packages >>/shared -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/shared.hash
                       find << parameters.path_to_front_packages >>/../src/Akeneo/Platform/Job/front/process-tracker -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/process-tracker.hash
                       find << parameters.path_to_front_packages >>/../src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/catalog-volume-monitoring.hash

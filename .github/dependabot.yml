@@ -25,14 +25,6 @@ updates:
       - dependency-type: "production"
     open-pull-requests-limit: 0
 
-  - package-ecosystem: "npm"
-    directory: "/front-packages/measurement"
-    schedule:
-      interval: "daily"
-    allow:
-      - dependency-type: "production"
-    open-pull-requests-limit: 0
-
   - package-ecosystem: "composer"
     directory: "/"
     schedule:

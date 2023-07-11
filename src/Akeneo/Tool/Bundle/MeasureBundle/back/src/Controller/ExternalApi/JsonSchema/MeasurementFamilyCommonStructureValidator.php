@@ -10,18 +10,18 @@ use Opis\JsonSchema\Helper;
 use Opis\JsonSchema\Validator;
 
 /**
- * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MeasurementFamilyListValidator
+class MeasurementFamilyCommonStructureValidator
 {
-    public function validate(array $normalizedMeasurementFamilies): array
+    public function validate(array $normalizedMeasurementFamily): array
     {
         $validator = new Validator();
         $validator->setMaxErrors(50);
 
         $result = $validator->validate(
-            Helper::toJSON($normalizedMeasurementFamilies),
+            Helper::toJSON($normalizedMeasurementFamily),
             Helper::toJSON($this->getJsonSchema()),
         );
 
@@ -31,12 +31,10 @@ class MeasurementFamilyListValidator
 
         $errorFormatter = new ErrorFormatter();
 
-        $customFormatter = function (ValidationError $error) use ($errorFormatter) {
-            return [
-                'property' => $errorFormatter->formatErrorKey($error),
-                'message' => $errorFormatter->formatErrorMessage($error),
-            ];
-        };
+        $customFormatter = fn (ValidationError $error) => [
+            'property' => $errorFormatter->formatErrorKey($error),
+            'message' => $errorFormatter->formatErrorMessage($error),
+        ];
 
         return $errorFormatter->formatFlat($result->error(), $customFormatter);
     }
@@ -44,10 +42,14 @@ class MeasurementFamilyListValidator
     private function getJsonSchema(): array
     {
         return [
-            'type' => 'array',
-            'items' => [
-                'type' => 'object',
+            'type' => 'object',
+            'properties' => [
+                'code' => ['type' => 'string'],
             ],
+            'required' => [
+                'code',
+            ],
+            'additionalProperties' => true,
         ];
     }
 }

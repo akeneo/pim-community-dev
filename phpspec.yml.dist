@@ -213,8 +213,9 @@ suites:
     MeasureBundle:
         namespace: Akeneo\Tool\Bundle\MeasureBundle
         psr4_prefix: Akeneo\Tool\Bundle\MeasureBundle
-        spec_path: src/Akeneo/Tool/Bundle/MeasureBundle
-        src_path: src/Akeneo/Tool/Bundle/MeasureBundle
+        spec_path: src/Akeneo/Tool/Bundle/MeasureBundle/back/tests
+        src_path: src/Akeneo/Tool/Bundle/MeasureBundle/back
+        spec_prefix: spec
     MessengerBundle:
         namespace: Akeneo\Tool\Bundle\MessengerBundle
         psr4_prefix: Akeneo\Tool\Bundle\MessengerBundle

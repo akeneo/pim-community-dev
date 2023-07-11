@@ -38,7 +38,7 @@ class MeasurementFamilyRepository implements MeasurementFamilyRepositoryInterfac
 
     public function all(): array
     {
-        if (empty($this->allMeasurementFamiliesCache)) {
+        if ($this->allMeasurementFamiliesCache === []) {
             $this->allMeasurementFamiliesCache = $this->loadMeasurementFamiliesIndexByCodes();
         }
 

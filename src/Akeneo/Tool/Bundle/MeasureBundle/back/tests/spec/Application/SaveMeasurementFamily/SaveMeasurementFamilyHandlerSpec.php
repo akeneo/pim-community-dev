@@ -86,7 +86,7 @@ class SaveMeasurementFamilyHandlerSpec extends ObjectBehavior
         );
 
         $measurementFamilyRepository->save(
-            Argument::that(function ($area) use ($expectedArea) {
+            Argument::that(function ($area) use ($expectedArea): bool {
                 Assert::eq($expectedArea, $area);
                 return true;
             })
