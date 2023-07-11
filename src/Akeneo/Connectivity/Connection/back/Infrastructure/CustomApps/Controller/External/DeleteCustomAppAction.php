@@ -9,7 +9,6 @@ use Akeneo\Connectivity\Connection\Application\Apps\Command\DeleteAppHandler;
 use Akeneo\Connectivity\Connection\Application\CustomApps\Command\DeleteCustomAppCommand;
 use Akeneo\Connectivity\Connection\Application\CustomApps\Command\DeleteCustomAppHandler;
 use Akeneo\Connectivity\Connection\Domain\CustomApps\Persistence\GetCustomAppQueryInterface;
-use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,7 +24,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 final class DeleteCustomAppAction
 {
     public function __construct(
-        private readonly FeatureFlag $developerModeFeatureFlag,
         private readonly SecurityFacade $security,
         private readonly DeleteCustomAppHandler $deleteCustomAppHandler,
         private readonly GetCustomAppQueryInterface $getCustomAppQuery,
@@ -35,10 +33,6 @@ final class DeleteCustomAppAction
 
     public function __invoke(string $clientId): JsonResponse
     {
-        if (!$this->developerModeFeatureFlag->isEnabled()) {
-            throw new NotFoundHttpException();
-        }
-
         if (!$this->security->isGranted('akeneo_connectivity_connection_manage_test_apps')) {
             throw new AccessDeniedHttpException();
         }
