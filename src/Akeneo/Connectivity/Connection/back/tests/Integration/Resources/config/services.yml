@@ -9,5 +9,3 @@ services:
         class: Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeFeatureFlag
     akeneo_connectivity.connection.marketplace_fake_apps.feature:
         class: Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeFeatureFlag
-    akeneo_connectivity.connection.app_developer_mode.feature:
-        class: Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeFeatureFlag

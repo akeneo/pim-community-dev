@@ -8,7 +8,6 @@ use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
 use Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Persistence\GetCustomAppQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAppQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApiInterface;
-use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -70,7 +69,7 @@ class GetAppQuerySpec extends ObjectBehavior
         );
     }
 
-    public function it_returns_a_known_marketplace_app_even_when_developer_mode_is_enabled(
+    public function it_returns_a_known_marketplace_app_even_when_custom_app_is_not_found(
         WebMarketplaceApiInterface $webMarketplaceApi,
         GetCustomAppQuery $getCustomAppQuery,
     ): void {
@@ -118,7 +117,7 @@ class GetAppQuerySpec extends ObjectBehavior
         $this->execute('100eedac-ff5c-497b-899d-e2d64b6c59f9')->shouldReturn(null);
     }
 
-    public function it_returns_a_known_custom_app_if_developer_mode_is_enabled(
+    public function it_returns_a_known_custom_app(
         GetCustomAppQuery $getCustomAppQuery,
     ): void {
         $getCustomAppQuery->execute('100eedac-ff5c-497b-899d-e2d64b6c59f9')->willReturn([
