@@ -12,7 +12,7 @@ class AttributeSetup extends BaseView {
     ReactDOM.render(
       <DependenciesProvider>
         <ThemeProvider theme={pimTheme}>
-          <AttributeSetupApp attribute={attribute}/>
+          <AttributeSetupApp attribute={attribute} />
         </ThemeProvider>
       </DependenciesProvider>,
       this.el

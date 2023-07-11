@@ -148,20 +148,9 @@ extensions:
             mode: edit
 
     pim-attribute-edit-form-setup:
-        module: pim/common/simple-view
+        module: pim/attribute-edit-form/setup
         parent: pim-attribute-edit-form-properties-tab
         targetZone: self
-        position: 150
-        config:
-            template: pim/template/form/tab/section
-            templateParams:
-                sectionTitle: pim_enrich.entity.attribute.module.edit.attribute_setup
-                dropZone: content
-
-    pim-attribute-edit-form-setup-inner:
-        module: pim/attribute-edit-form/setup
-        parent: pim-attribute-edit-form-setup
-        targetZone: afterTitle
 
     pim-attribute-edit-form-choices:
         module: pim/attribute-edit-form/tab/choices
