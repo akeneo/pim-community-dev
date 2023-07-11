@@ -61,6 +61,7 @@ $rules = [
             'Akeneo\Tool\Component\Batch\Event\StepExecutionEvent',
             'Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface',
             'Akeneo\Tool\Component\Batch\Model\Warning',
+            'Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface',
             'Akeneo\Tool\Component\StorageUtils\StorageEvents',
 
             'Symfony\Component\Config\FileLocator',

@@ -19,7 +19,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\IdentifierValue;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -52,7 +52,7 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly MatchIdentifierGeneratorHandler $matchIdentifierGeneratorHandler,
         private readonly LoggerInterface $logger,
-        private readonly AttributeRepositoryInterface $attributeRepository,
+        private readonly IdentifiableObjectRepositoryInterface $attributeRepository,
     ) {
     }
 
