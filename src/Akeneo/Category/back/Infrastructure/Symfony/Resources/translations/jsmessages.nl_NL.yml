@@ -22,7 +22,15 @@ akeneo.category:
     delete: Boomstructuur verwijderen
   template:
     learn_more: Meer informatie over het categoriesjabloon
+    create: Sjabloon maken
+    create_confirmation_modal:
+      title: Nieuw categoriesjabloon maken
+      helper: Maak een categoriesjabloon om attributen te definiëren en verrijking in alle categorieën van deze boom te activeren.
+      category_tree: Categorieboom
+      link: Meer informatie over categoriesjablonen
     edit: Sjabloon bewerken
+    notification_success: Het categoriesjabloon is gemaakt
+    notification_error: Het categoriesjabloon kon niet gemaakt worden
     not_found: Er is geen actieve sjabloon voor deze categorie
     properties:
       general_properties: Algemene eigenschappen
@@ -98,6 +106,28 @@ akeneo.category:
       saving: Opslaan
       editing: Bewerken
       errors: Fouten niet opgeslagen
+    initialize:
+      title: Categorie-attributen toevoegen
+      message: Definieer de inhoud van uw categorieën door attributen voor tekst, tekstgebied of afbeeldingen toe te voegen.
+      choice_message: Begin met het maken van een eerste attribuut op basis van wat u nodig heeft, of laad een reeks van 13 voorgestelde attributen.
+      button:
+        load: Een reeks attributen laden
+        create: Eerste attribuut maken
+    load_attribute_set:
+      section_title: Reeks attributen laden
+      title: Een reeks voorgestelde attributen laden
+      description: Start eenvoudig de configuratie van verrijkte categorieën door een reeks voorgestelde attributen te laden.
+      content_description: 'Deze reeks bevat 13 attributen:'
+      content:
+        description_attributes: 2 tekstgebiedattributen voor lange en korte categoriebeschrijvingen
+        url_attributes: 1 tekstattribuut voor de URL-gegevens
+        image_attributes: 3 afbeeldings- en 3 tekstattributen voor de gegevens van afbeeldingen en alt-tekst
+        seo_attributes: 2 tekst- en 2 tekstgebiedattributen voor SEO-gegevens
+      confirmation_message: Weet u zeker dat u deze reeks attributen wilt laden?
+      button:
+        load: Reeks attributen laden
+      notification:
+        success: De attributen zijn gemaakt
   template_list:
     columns:
       header: Label

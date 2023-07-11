@@ -48,6 +48,7 @@ akeneo_job_process_tracker:
     compute_completeness_of_products_family: Volledigheid van de productenfamilie berekenen
     clean_removed_attribute_job: Verwijderde attribuutwaarden opruimen
     execute_rules: Regels uitvoeren
+    scheduled_job: Geplande taak
   user_filter:
     label: Gebruiker
     all: Alle
