@@ -55,10 +55,10 @@ type Version<T> = {
   resource_id: string;
   snapshot: T;
   changeset: {
-    [key: string]: {old: any, new: any};
-  },
-  context: null,
-  version: number,
+    [key: string]: {old: any; new: any};
+  };
+  context: null;
+  version: number;
   logged_at: string;
   pending: boolean;
 };
@@ -102,12 +102,12 @@ export type Attribute = {
   filter_types: AttributeFilterTypes;
   is_locale_specific: boolean;
   is_main_identifier: boolean;
-  is_read_only: undefined|boolean;
+  is_read_only: undefined | boolean;
   meta: {
     id: number;
     structure_version: number;
     model_type: 'attribute';
-    created: Version<Attribute>,
-    updated: Version<Attribute>,
-  }
+    created: Version<Attribute>;
+    updated: Version<Attribute>;
+  };
 };
