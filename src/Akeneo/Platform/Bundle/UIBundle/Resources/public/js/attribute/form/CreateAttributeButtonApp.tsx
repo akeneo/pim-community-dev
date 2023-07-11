@@ -2,12 +2,14 @@ import React from 'react';
 import SelectAttributeType from './SelectAttributeType';
 import {Button, useBooleanState} from 'akeneo-design-system';
 import {Modal} from 'akeneo-design-system';
+import {CreateAttributeProgressIndicator} from './CreateAttributeProgressIndicator';
 
 export type CreateAttributeButtonStepProps = {
   onClose: () => void;
   onStepConfirm: (data: AttributeData) => void;
   initialData?: AttributeData;
   onBack?: () => void;
+  children?: React.ReactNode;
 };
 
 export type CreateAttributeButtonAppProps = {
@@ -37,7 +39,7 @@ const CreateAttributeButtonApp: React.FC<CreateAttributeButtonAppProps> = ({
   const [attributeData, setAttributeData] = React.useState<AttributeData>(initialData);
   const [currentStepIndex, setCurrentStepIndex] = React.useState<number>(-1);
 
-  let stepsForAttributeType = steps['default'];
+  let stepsForAttributeType = steps.default;
   if (attributeData.attribute_type) {
     if (attributeData.attribute_type in steps) {
       stepsForAttributeType = steps[attributeData.attribute_type];
@@ -73,10 +75,16 @@ const CreateAttributeButtonApp: React.FC<CreateAttributeButtonAppProps> = ({
         <>
           <Modal closeTitle={''} onClose={() => {}} />
           {currentStepIndex === -1 && (
-            <SelectAttributeType onClose={handleClose} iconsMap={iconsMap} onStepConfirm={handleStepConfirm} />
+            <SelectAttributeType onClose={handleClose} iconsMap={iconsMap} onStepConfirm={handleStepConfirm}>
+              <CreateAttributeProgressIndicator
+                currentStepIndex={currentStepIndex}
+                selectedType={attributeData?.attribute_type}
+              />
+            </SelectAttributeType>
           )}
           {stepsForAttributeType.map((step, stepIndex) => {
             const Component = step.view;
+
             return (
               stepIndex === currentStepIndex && (
                 <Component
