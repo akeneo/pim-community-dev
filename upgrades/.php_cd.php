@@ -25,6 +25,7 @@ $rules = [
             'Symfony\Component\DependencyInjection\ContainerAwareTrait',
             // ZDD migrations
             'Akeneo\Pim\Enrichment\Bundle\Command\ZddMigrations',
+            'Akeneo\Tool\Component\StorageUtils\Migration\V20230622175500OptimizeTableWithInstantColsMigration',
 
             // Dangerous dependencies, migrations shouldn't rely on services
             'Akeneo\Connectivity\Connection\Domain\Apps\DTO\AsymmetricKeys',

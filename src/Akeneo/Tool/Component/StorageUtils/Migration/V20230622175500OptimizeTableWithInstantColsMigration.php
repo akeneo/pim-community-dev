@@ -66,6 +66,6 @@ class V20230622175500OptimizeTableWithInstantColsMigration implements ZddMigrati
             OPTIMIZE TABLE $tableName;
         SQL;
 
-        $this->connection->executeStatement($sql);
+        $this->connection->executeQuery($sql);
     }
 }
