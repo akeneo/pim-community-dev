@@ -223,6 +223,9 @@ pim_enrich.entity.attribute:
             invalid: The code is invalid
             not_available: This code is not available
             is_duplicate: This code is already used
+        identifier_limit_reached_title: Maximum of 10 identifiers reached.
+        identifier_limit_reached: You cannot create another identifier because you have already attained the maximum of 10.
+        identifier_limit_reached_url: → Learn more in the help center
     module:
         add_attribute:
             no_available_attributes: There are no more attributes to add

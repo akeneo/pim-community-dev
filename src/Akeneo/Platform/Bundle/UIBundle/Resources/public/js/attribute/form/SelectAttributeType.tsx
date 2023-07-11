@@ -1,9 +1,11 @@
 import React from 'react';
-import {AddAttributeIcon, IconProps, Modal, Tile, Tiles} from 'akeneo-design-system';
+import {AddAttributeIcon, IconProps, Link, Modal, Tile, Tiles, Tooltip} from 'akeneo-design-system';
 import {useFeatureFlags, useRouter, useTranslate} from '@akeneo-pim-community/shared';
 import * as icons from 'akeneo-design-system/lib/icons';
 import styled from 'styled-components';
 import {CreateAttributeButtonStepProps} from './CreateAttributeButtonApp';
+import {useGetIdentifierAttributesCount} from "./hooks/useGetIdentifierAttributesCount";
+import {TooltipHeader} from "./styles";
 
 const ModalContent = styled.div`
   margin-top: 30px;
@@ -27,6 +29,8 @@ const SelectAttributeType: React.FC<SelectAttributeTypeModalProps> = ({iconsMap,
   const translate = useTranslate();
   const Router = useRouter();
   const featureFlags = useFeatureFlags();
+  const {count: identifierAttributesCount} = useGetIdentifierAttributesCount();
+  console.log({identifierAttributesCount});
 
   const [attributeTypes, setAttributeTypes] = React.useState<AttributeType[] | undefined>();
   const castIcons = icons as {[component: string]: React.FC<IconProps>};
@@ -63,13 +67,28 @@ const SelectAttributeType: React.FC<SelectAttributeTypeModalProps> = ({iconsMap,
           {(attributeTypes || []).map(attributeType => {
             const component = iconsMap[attributeType] || 'AddAttributeIcon';
             const Icon = castIcons[component] || AddAttributeIcon;
+            const isIdentifierLimitReached = attributeType === 'pim_catalog_identifier' && identifierAttributesCount >= 10;
             return (
               <Tile
                 onClick={() => onStepConfirm({attribute_type: attributeType})}
                 key={attributeType}
                 icon={<Icon />}
                 title={translate(`pim_enrich.entity.attribute.property.type.${attributeType}`)}
+                aria-disabled={isIdentifierLimitReached}
               >
+                {isIdentifierLimitReached && (
+                    <Tooltip direction='top'>
+                      <>
+                        <TooltipHeader>{translate('pim_enrich.entity.attribute.property.identifier_limit_reached_title')}</TooltipHeader>
+                        <p>{translate('pim_enrich.entity.attribute.property.identifier_limit_reached')}</p>
+                        <Link
+                            href="https://help.akeneo.com/serenity-build-your-catalog/33-serenity-manage-your-product-identifiers"
+                        >
+                          {translate('pim_enrich.entity.attribute.property.identifier_limit_reached_url')}
+                        </Link>
+                      </>
+                  </Tooltip>
+                )}
                 {translate(`pim_enrich.entity.attribute.property.type.${attributeType}`)}
               </Tile>
             );
