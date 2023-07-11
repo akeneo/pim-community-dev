@@ -232,6 +232,7 @@ pim_enrich.entity.attribute:
         edit:
             common: General parameters
             type_specific: Type specific parameters
+            attribute_setup: Attribute setup
             validation: Validation parameters
             select_locale: Select your locale
         delete:
