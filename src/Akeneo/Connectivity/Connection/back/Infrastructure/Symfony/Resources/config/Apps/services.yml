@@ -31,8 +31,6 @@ services:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry'
             - '@pim_user.factory.role'
             - '@pim_user.saver.role_with_permissions'
-            # Pull-up master: do not inject
-            -  '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\IncreaseLabelLengthQuery'
         public: true
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\AsymmetricKeysGenerator:
