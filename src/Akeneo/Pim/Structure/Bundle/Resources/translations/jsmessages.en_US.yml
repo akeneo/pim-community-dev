@@ -223,6 +223,11 @@ pim_enrich.entity.attribute:
             invalid: The code is invalid
             not_available: This code is not available
             is_duplicate: This code is already used
+        identifiers_limit: You can create a maximum of 10 identifiers. Learn more about multiple identifiers in the
+        identifiers_limit_link: help center.
+        unique_value_helper: Should the value of this attribute be unique? You will not be able to change this setting later.
+        scopable_helper: Should the value of this attribute be unique for each channel (scopable)?
+        localizable_helper: Should the value of this attribute be unique for each locale (localizable)?
     module:
         add_attribute:
             no_available_attributes: There are no more attributes to add

@@ -17,13 +17,14 @@ type AttributeType = string;
 
 type SelectAttributeTypeModalProps = CreateAttributeButtonStepProps & {
   iconsMap: {[attributeType: string]: string};
+  children?: React.ReactNode;
 };
 
 //TODO RAC-1225: Remove this function
 const isReferenceDataAttributeType = (attributeType: AttributeType): boolean =>
   ['pim_reference_data_simpleselect', 'pim_reference_data_multiselect'].includes(attributeType);
 
-const SelectAttributeType: React.FC<SelectAttributeTypeModalProps> = ({iconsMap, onStepConfirm, onClose}) => {
+const SelectAttributeType: React.FC<SelectAttributeTypeModalProps> = ({iconsMap, onStepConfirm, onClose, children}) => {
   const translate = useTranslate();
   const Router = useRouter();
   const featureFlags = useFeatureFlags();
@@ -76,6 +77,7 @@ const SelectAttributeType: React.FC<SelectAttributeTypeModalProps> = ({iconsMap,
           })}
         </Tiles>
       </ModalContent>
+      {children}
     </Modal>
   );
 };
