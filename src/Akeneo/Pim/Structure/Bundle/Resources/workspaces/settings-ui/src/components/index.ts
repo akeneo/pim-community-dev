@@ -6,3 +6,4 @@ export * from './shared';
 export * from './AttributeGroupSecondaryActions';
 export * from './DeleteAttributeGroupModal';
 export * from './SettingsIndex';
+export * from './CreateAttributeProgressIndicator';
