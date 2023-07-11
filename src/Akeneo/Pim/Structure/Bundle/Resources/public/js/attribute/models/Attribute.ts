@@ -64,8 +64,8 @@ type Version<T> = {
 };
 
 /**
- * This type contains all the information given by the backend. Several of these properties are annotated as "null"
- * because they are not used for now. Don't hesitate to update this file once you need this property.
+ * This type contains all the information given by the backend. Several of these properties have dummy type because
+ * they are not used for now. Don't hesitate to update this file once you need this property.
  */
 export type Attribute = {
   scopable: boolean;
