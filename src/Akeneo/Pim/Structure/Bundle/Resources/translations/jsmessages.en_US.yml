@@ -228,6 +228,9 @@ pim_enrich.entity.attribute:
         unique_value_helper: Should the value of this attribute be unique? You will not be able to change this setting later.
         scopable_helper: Should the value of this attribute be unique for each channel (scopable)?
         localizable_helper: Should the value of this attribute be unique for each locale (localizable)?
+        attribute_creation_type: Attribute type
+        attribute_creation_template: Template
+        attribute_creation_settings: Attribute settings
     module:
         add_attribute:
             no_available_attributes: There are no more attributes to add
