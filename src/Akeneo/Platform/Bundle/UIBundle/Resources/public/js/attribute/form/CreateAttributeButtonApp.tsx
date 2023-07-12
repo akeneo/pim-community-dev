@@ -27,80 +27,81 @@ export type AttributeData = {
 } & {[key: string]: any};
 
 const CreateAttributeButtonApp: React.FC<CreateAttributeButtonAppProps> = ({
-    buttonTitle,
-    steps,
-    iconsMap,
-    isModalOpen = false,
-    onClick,
-    initialData = {},
+  buttonTitle,
+  steps,
+  iconsMap,
+  isModalOpen = false,
+  onClick,
+  initialData = {},
 }) => {
-    const [isOpen, open, close] = useBooleanState(isModalOpen);
-    const [attributeData, setAttributeData] = React.useState<AttributeData>(initialData);
-    const [currentStepIndex, setCurrentStepIndex] = React.useState<number>(-1);
-    let stepsForAttributeType = steps.default;
-    if (attributeData.attribute_type) {
-        if (attributeData.attribute_type in steps) {
-            stepsForAttributeType = steps[attributeData.attribute_type];
-        }
+  const [isOpen, open, close] = useBooleanState(isModalOpen);
+  const [attributeData, setAttributeData] = React.useState<AttributeData>(initialData);
+  const [currentStepIndex, setCurrentStepIndex] = React.useState<number>(-1);
+  let stepsForAttributeType = steps.default;
+  if (attributeData.attribute_type) {
+    if (attributeData.attribute_type in steps) {
+      stepsForAttributeType = steps[attributeData.attribute_type];
+    }
+  }
+
+  const handleStepConfirm = (data: AttributeData) => {
+    const newData = {...attributeData, ...data};
+    setAttributeData(newData);
+    if (currentStepIndex + 1 === Object.keys(stepsForAttributeType).length) {
+      close();
+      onClick(newData);
+
+      return;
     }
 
-    const handleStepConfirm = (data: AttributeData) => {
-        const newData = {...attributeData, ...data};
-        setAttributeData(newData);
-        if (currentStepIndex + 1 === Object.keys(stepsForAttributeType).length) {
-            close();
-            onClick(newData);
+    setCurrentStepIndex(currentStepIndex + 1);
+  };
 
-            return;
-        }
+  const handleClose = () => {
+    setCurrentStepIndex(-1);
+    setAttributeData(initialData);
+    close();
+  };
 
-        setCurrentStepIndex(currentStepIndex + 1);
-    };
+  const handleBack = () => {
+    setCurrentStepIndex(currentStepIndex - 1);
+  };
 
-    const handleClose = () => {
-        setCurrentStepIndex(-1);
-        setAttributeData(initialData);
-        close();
-    };
-
-    const handleBack = () => {
-        setCurrentStepIndex(currentStepIndex - 1);
-    };
-
-    return (
+  return (
+    <>
+      {isOpen && (
         <>
-            {isOpen && (
-                <>
-                    <Modal closeTitle={''} onClose={() => {}} />
-                    {currentStepIndex === -1 && (
-                        <SelectAttributeType onClose={handleClose} iconsMap={iconsMap} onStepConfirm={handleStepConfirm}>
-                            <CreateAttributeProgressIndicator steps={steps} currentStepIndex={currentStepIndex} />
-                        </SelectAttributeType>
-                    )}
-                    {stepsForAttributeType.map((step, stepIndex) => {
-                        const Component = step.view;
+          <Modal closeTitle={''} onClose={() => {}} />
+          {currentStepIndex === -1 && (
+            <SelectAttributeType onClose={handleClose} iconsMap={iconsMap} onStepConfirm={handleStepConfirm}>
+              <CreateAttributeProgressIndicator currentStepIndex={currentStepIndex} />
+            </SelectAttributeType>
+          )}
+          {stepsForAttributeType.map((step, stepIndex) => {
+            const Component = step.view;
+            const stepsName = stepsForAttributeType.map(step => step.view.name);
 
-                        return (
-                            stepIndex === currentStepIndex && (
-                                <Component
-                                    key={stepIndex}
-                                    onClose={handleClose}
-                                    onBack={handleBack}
-                                    onStepConfirm={handleStepConfirm}
-                                    initialData={attributeData}
-                                >
-                                    <CreateAttributeProgressIndicator steps={steps} currentStepIndex={currentStepIndex} />
-                                </Component>
-                            )
-                        );
-                    })}
-                </>
-            )}
-            <Button id="attribute-create-button" onClick={open}>
-                {buttonTitle}
-            </Button>
+            return (
+              stepIndex === currentStepIndex && (
+                <Component
+                  key={stepIndex}
+                  onClose={handleClose}
+                  onBack={handleBack}
+                  onStepConfirm={handleStepConfirm}
+                  initialData={attributeData}
+                >
+                  <CreateAttributeProgressIndicator stepsName={stepsName} currentStepIndex={currentStepIndex} />
+                </Component>
+              )
+            );
+          })}
         </>
-    );
+      )}
+      <Button id="attribute-create-button" onClick={open}>
+        {buttonTitle}
+      </Button>
+    </>
+  );
 };
 
 export {CreateAttributeButtonApp};
