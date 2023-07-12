@@ -7,7 +7,6 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controller\Ex
 use Akeneo\Connectivity\Connection\Application\CustomApps\Command\CreateCustomAppCommand;
 use Akeneo\Connectivity\Connection\Application\CustomApps\Command\CreateCustomAppCommandHandler;
 use Akeneo\Connectivity\Connection\Domain\CustomApps\Persistence\GetCustomAppSecretQueryInterface;
-use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Ramsey\Uuid\Uuid;
@@ -16,7 +15,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -30,7 +28,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 final class CreateCustomAppAction
 {
     public function __construct(
-        private readonly FeatureFlag $developerModeFeatureFlag,
         private readonly SecurityFacade $security,
         private readonly ValidatorInterface $validator,
         private readonly TranslatorInterface $translator,
@@ -42,10 +39,6 @@ final class CreateCustomAppAction
 
     public function __invoke(Request $request): JsonResponse
     {
-        if (!$this->developerModeFeatureFlag->isEnabled()) {
-            throw new NotFoundHttpException();
-        }
-
         if (!$this->security->isGranted('akeneo_connectivity_connection_manage_test_apps')) {
             throw new AccessDeniedHttpException();
         }

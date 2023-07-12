@@ -6,7 +6,6 @@ namespace Akeneo\Connectivity\Connection\Tests\EndToEnd\CustomApps\Controller\Ex
 
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\CustomAppLoader;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Security\AclLoader;
-use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeFeatureFlag;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Doctrine\DBAL\Connection;
@@ -21,7 +20,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class GetCustomAppsActionEndToEnd extends ApiTestCase
 {
-    private ?FakeFeatureFlag $developerModeFeatureFlag;
     private ?Connection $connection;
     private ?AclLoader $aclLoader;
     private ?CustomAppLoader $customAppLoader;
@@ -35,7 +33,6 @@ class GetCustomAppsActionEndToEnd extends ApiTestCase
     {
         parent::setUp();
 
-        $this->developerModeFeatureFlag = $this->get('akeneo_connectivity.connection.app_developer_mode.feature');
         $this->connection = $this->get('database_connection');
         $this->aclLoader = $this->get(AclLoader::class);
         $this->customAppLoader = $this->get(CustomAppLoader::class);
@@ -43,8 +40,6 @@ class GetCustomAppsActionEndToEnd extends ApiTestCase
 
     public function test_it_lists_custom_apps(): void
     {
-        $this->developerModeFeatureFlag->enable();
-
         $connection = $this->createConnection();
         $client = $this->createAuthenticatedClient(
             [],

@@ -8,7 +8,6 @@ use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
 use Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Persistence\IsCustomAppsNumberLimitReachedQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Service\GetCustomAppsNumberLimit;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\CustomAppLoader;
-use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\FilePersistedFeatureFlags;
 use Akeneo\Test\Integration\Configuration;
 use PHPUnit\Framework\Assert;
 
@@ -20,7 +19,6 @@ class IsCustomAppsNumberLimitReachedQueryIntegration extends WebTestCase
 {
     private IsCustomAppsNumberLimitReachedQuery $customAppsNumberLimitReachedQuery;
     private GetCustomAppsNumberLimit $getCustomAppsNumberLimit;
-    private ?FilePersistedFeatureFlags $featureFlags;
     private ?CustomAppLoader $customAppLoader;
 
     protected function getConfiguration(): Configuration
@@ -33,7 +31,6 @@ class IsCustomAppsNumberLimitReachedQueryIntegration extends WebTestCase
         parent::setUp();
 
         $this->customAppsNumberLimitReachedQuery = $this->get(IsCustomAppsNumberLimitReachedQuery::class);
-        $this->featureFlags = $this->get('feature_flags');
         $this->customAppLoader = $this->get(CustomAppLoader::class);
 
         $this->getCustomAppsNumberLimit = $this->get(GetCustomAppsNumberLimit::class);
@@ -46,7 +43,6 @@ class IsCustomAppsNumberLimitReachedQueryIntegration extends WebTestCase
 
         Assert::assertFalse($result);
 
-        $this->featureFlags->enable('app_developer_mode');
         $user = $this->authenticateAsAdmin();
         $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_test_apps');
         $this->customAppLoader->create('111eedac-ff5c-497b-899d-e2d64b6c59f9', $user->getId());
@@ -66,7 +62,6 @@ class IsCustomAppsNumberLimitReachedQueryIntegration extends WebTestCase
 
         Assert::assertFalse($result);
 
-        $this->featureFlags->enable('app_developer_mode');
         $user = $this->authenticateAsAdmin();
         $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_test_apps');
         $this->customAppLoader->create('111eedac-ff5c-497b-899d-e2d64b6c59f9', $user->getId());

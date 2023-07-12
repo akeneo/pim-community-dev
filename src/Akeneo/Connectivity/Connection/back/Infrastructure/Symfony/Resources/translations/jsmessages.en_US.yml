@@ -1,4 +1,3 @@
-
 pim_menu:
     tab:
         connect: Connect
@@ -134,7 +133,7 @@ akeneo_connectivity.connection:
                     pending: This app is not connected to your PIM. Opening the app should fix the connection issue. If it persists, please contact the App support.
                     credentials:
                         title: Credentials
-                        client_id : Client id
+                        client_id: Client id
                         client_secret: Client secret
                         regenerate_button: Regenerate
                         regenerate_secret:
@@ -323,7 +322,6 @@ akeneo_connectivity.connection:
     connections: Connections
     secondary_actions:
         title: Other actions
-    developer_mode: Developer mode
     connection:
         code: Code
         label: Label
@@ -488,8 +486,8 @@ akeneo_connectivity.connection:
                     title: Error count per day
             widget:
                 title: Business errors per data source
-                over_the_last_seven_days : Over the last 7 days
-                business_errors : business errors
+                over_the_last_seven_days: Over the last 7 days
+                business_errors: business errors
         no_connection:
             title:
                 default: Want to see some fancy charts about your connections?
@@ -559,7 +557,7 @@ akeneo_connectivity.connection:
                     all: All
                     none: None
                 date_range_filter:
-                    label:  Date time
+                    label: Date time
                     reset: Reset
                     from: From
                     to: To
@@ -610,7 +608,7 @@ akeneo_connectivity.connection:
     runtime_error:
         error_message: Oh snap! An error occurred...
         reload_helper: Please reload the page and try again.
-        reload_button:  Reload
+        reload_button: Reload
 
 pim_permissions:
     widget:

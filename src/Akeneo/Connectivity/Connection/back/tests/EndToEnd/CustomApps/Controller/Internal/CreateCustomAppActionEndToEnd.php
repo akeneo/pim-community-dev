@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Tests\EndToEnd\CustomApps\Controller\Internal;
 
 use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
-use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\FilePersistedFeatureFlags;
 use Akeneo\Test\Integration\Configuration;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,12 +17,9 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class CreateCustomAppActionEndToEnd extends WebTestCase
 {
-    private FilePersistedFeatureFlags $featureFlags;
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->featureFlags = $this->get('feature_flags');
     }
 
     protected function getConfiguration(): Configuration
@@ -33,7 +29,6 @@ class CreateCustomAppActionEndToEnd extends WebTestCase
 
     public function test_it_creates_custom_app(): void
     {
-        $this->featureFlags->enable('app_developer_mode');
         $this->authenticateAsAdmin();
         $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_test_apps');
 
