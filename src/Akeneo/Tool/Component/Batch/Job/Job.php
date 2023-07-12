@@ -151,7 +151,6 @@ class Job implements JobInterface, StoppableJobInterface, PausableJobInterface, 
                 $this->jobRepository->updateJobExecution($jobExecution);
             }
 
-
             $this->dispatchJobExecutionEvent(EventInterface::AFTER_JOB_EXECUTION, $jobExecution);
 
             if (!$jobExecution->getStatus()->isPaused()) {
@@ -237,9 +236,9 @@ class Job implements JobInterface, StoppableJobInterface, PausableJobInterface, 
             return;
         }
 
-            // Update the job status to be the same as the last step
+        // Update the job status to be the same as the last step
         if ($stepExecution !== null) {
-//            $this->dispatchJobExecutionEvent(EventInterface::BEFORE_JOB_STATUS_UPGRADE, $jobExecution);
+            $this->dispatchJobExecutionEvent(EventInterface::BEFORE_JOB_STATUS_UPGRADE, $jobExecution);
 
             $jobExecution->upgradeStatus($stepExecution->getStatus()->getValue());
             $jobExecution->setExitStatus($stepExecution->getExitStatus());
@@ -281,7 +280,7 @@ class Job implements JobInterface, StoppableJobInterface, PausableJobInterface, 
         }
 
         if (BatchStatus::STOPPED === $stepExecution->getStatus()->getValue()) {
-//            $this->dispatchJobExecutionEvent(EventInterface::BEFORE_JOB_STATUS_UPGRADE, $jobExecution);
+            $this->dispatchJobExecutionEvent(EventInterface::BEFORE_JOB_STATUS_UPGRADE, $jobExecution);
 
             $jobExecution->setStatus($stepExecution->getStatus());
             $jobExecution->setExitStatus($stepExecution->getExitStatus());

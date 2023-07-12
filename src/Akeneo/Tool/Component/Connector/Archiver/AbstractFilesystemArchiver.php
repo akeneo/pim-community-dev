@@ -60,7 +60,12 @@ abstract class AbstractFilesystemArchiver implements ArchiverInterface
      *
      * @return string
      */
-    public function getRelativeArchivePath(JobExecution $jobExecution): string
+    protected function getRelativeArchivePath(JobExecution $jobExecution): string
+    {
+        return $this->getArchiveDirectoryPath($jobExecution) . DIRECTORY_SEPARATOR . '%filename%';
+    }
+
+    public function getArchiveDirectoryPath(JobExecution $jobExecution): string
     {
         $jobInstance = $jobExecution->getJobInstance();
 
@@ -68,8 +73,7 @@ abstract class AbstractFilesystemArchiver implements ArchiverInterface
             $jobInstance->getType() . DIRECTORY_SEPARATOR .
             $jobInstance->getJobName() . DIRECTORY_SEPARATOR .
             $jobExecution->getId() . DIRECTORY_SEPARATOR .
-            $this->getName() . DIRECTORY_SEPARATOR .
-            '%filename%';
+            $this->getName();
     }
 
     private function supportJobExecution(JobExecution $jobExecution): bool
@@ -79,6 +83,7 @@ abstract class AbstractFilesystemArchiver implements ArchiverInterface
                 return true;
             }
         }
+
         return false;
     }
 }

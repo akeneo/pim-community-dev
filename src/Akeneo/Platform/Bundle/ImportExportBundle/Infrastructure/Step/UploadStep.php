@@ -28,8 +28,6 @@ final class UploadStep extends AbstractStep
 {
     private const STORAGE_KEY = 'storage';
 
-    private array $jobParameters = [];
-
     public function __construct(
         $name,
         EventDispatcherInterface $eventDispatcher,
@@ -48,19 +46,19 @@ final class UploadStep extends AbstractStep
             throw new \LogicException('Upload step should not be used for non export job.');
         }
 
-        $this->jobParameters = $jobExecution->getRawParameters();
-        if (!array_key_exists(self::STORAGE_KEY, $this->jobParameters)) {
+        $jobParameters = $jobExecution->getRawParameters();
+        if (!array_key_exists(self::STORAGE_KEY, $jobParameters)) {
             throw new \LogicException('malformed job parameters, missing storage configuration');
         }
 
-        if (NoneStorage::TYPE === $this->jobParameters[self::STORAGE_KEY]['type']) {
+        if (NoneStorage::TYPE === $jobParameters[self::STORAGE_KEY]['type']) {
             return;
         }
 
         $this->eventDispatcher->addSubscriber(new UpdateJobExecutionStorageSummarySubscriber());
         $command = new TransferFilesToStorageCommand(
             $this->extractFileToTransfer($jobExecution),
-            $this->jobParameters[self::STORAGE_KEY],
+            $jobParameters[self::STORAGE_KEY],
         );
 
         $this->transferFilesToStorageHandler->handle($command);
@@ -68,29 +66,21 @@ final class UploadStep extends AbstractStep
 
     private function extractFileToTransfer(JobExecution $jobExecution): array
     {
-        $filePath = strtr(
-            $this->fileWriterArchiver->getRelativeArchivePath($jobExecution),
-            [
-                '%filename%' => '',
-            ]
-        );
+        $archiveDirectoryPath = $this->fileWriterArchiver->getArchiveDirectoryPath($jobExecution);
+        $destinationDirname = dirname($this->getDestinationPath($jobExecution));
 
-        $dirname = str_replace(sys_get_temp_dir(), '', dirname($this->getPath($jobExecution)));
-
-        return array_map(function ($item) use ($dirname, $filePath) {
-            return new FileToTransfer(
-                $item,
-                'archivist',
-                $dirname . DIRECTORY_SEPARATOR . str_replace($filePath, '', $item),
-                false
-            );
-        }, iterator_to_array($this->fileWriterArchiver->getArchives($jobExecution, true)));
+        return array_map(static fn(string $filePath) => new FileToTransfer(
+            $filePath,
+            'archivist',
+            $destinationDirname . substr($filePath, strlen($archiveDirectoryPath)),
+            false
+        ), iterator_to_array($this->fileWriterArchiver->getArchives($jobExecution, true)));
     }
 
-    public function getPath(JobExecution $jobExecution): string
+    private function getDestinationPath(JobExecution $jobExecution): string
     {
         $parameters = $jobExecution->getJobParameters();
-        $storage = $parameters->get('storage');
-        return sprintf('%s%s%s', sys_get_temp_dir(), DIRECTORY_SEPARATOR, $storage['file_path']);
+
+        return $parameters->get('storage')['file_path'];
     }
 }
