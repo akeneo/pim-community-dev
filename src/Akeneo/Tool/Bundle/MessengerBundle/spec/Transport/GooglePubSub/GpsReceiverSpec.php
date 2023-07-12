@@ -87,6 +87,16 @@ class GpsReceiverSpec extends ObjectBehavior
         $this->ack($envelope);
     }
 
+    public function it_modifies_ack_deadline(Subscription $subscription): void
+    {
+        $gpsMessage = new Message(['data' => 'My message!']);
+        $envelope = new Envelope((object)['message' => 'My message!'], [new NativeMessageStamp($gpsMessage)]);
+
+        $subscription->modifyAckDeadline($gpsMessage, 600)->shouldBeCalled();
+
+        $this->modifyAckDeadline($envelope);
+    }
+
     public function it_rejects_a_message(Subscription $subscription): void
     {
         $gpsMessage = new Message(

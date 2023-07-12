@@ -53,6 +53,19 @@ final class GpsTransport implements TransportInterface, SetupableTransportInterf
         $this->receiver->ack($envelope);
     }
 
+    public function modifyAckDeadline(Envelope $envelope): void
+    {
+        if (null === $this->receiver) {
+            throw new \LogicException('Subscription is not configured.');
+        }
+
+        if (!$this->receiver instanceof GpsReceiver) {
+            throw new \LogicException('Cannot modify ack deadline.');
+        }
+
+        $this->receiver->modifyAckDeadline($envelope);
+    }
+
     public function reject(Envelope $envelope): void
     {
         if (null === $this->receiver) {

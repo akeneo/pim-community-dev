@@ -44,6 +44,9 @@ final class MessengerConfigBuilderIntegration extends KernelTestCase
                     'auto_setup' => false,
                 ],
                 'serializer' => 'akeneo_messenger.envelope.serializer',
+                'retry_strategy' => [
+                    'max_retries' => 1,
+                ],
             ],
             $this->getTransportConfig($config, 'consumer1')
         );
@@ -72,6 +75,9 @@ final class MessengerConfigBuilderIntegration extends KernelTestCase
                     'auto_setup' => true,
                 ],
                 'serializer' => 'akeneo_messenger.envelope.serializer',
+                'retry_strategy' => [
+                    'max_retries' => 1,
+                ],
             ],
             $this->getTransportConfig($config, 'test_queue1')
         );
@@ -85,6 +91,9 @@ final class MessengerConfigBuilderIntegration extends KernelTestCase
                     'subscription_name' => '%env(default::string:PUBSUB_SUBSCRIPTION_TEST_CONSUMER_1)%',
                 ],
                 'serializer' => 'akeneo_messenger.envelope.serializer',
+                'retry_strategy' => [
+                    'max_retries' => 1,
+                ],
             ],
             $this->getTransportConfig($config, 'consumer1')
         );
@@ -103,7 +112,12 @@ final class MessengerConfigBuilderIntegration extends KernelTestCase
         Assert::assertContains('consumer2', $transportNames);
         Assert::assertContains('consumer3', $transportNames);
         Assert::assertEqualsCanonicalizing(
-            ['dsn' => 'sync://'],
+            [
+                'dsn' => 'sync://',
+                'retry_strategy' => [
+                    'max_retries' => 1,
+                ],
+            ],
             $this->getTransportConfig($config, 'consumer1')
         );
 
@@ -121,7 +135,12 @@ final class MessengerConfigBuilderIntegration extends KernelTestCase
         Assert::assertContains('consumer2', $transportNames);
         Assert::assertContains('consumer3', $transportNames);
         Assert::assertEqualsCanonicalizing(
-            ['dsn' => 'in-memory://'],
+            [
+                'dsn' => 'in-memory://',
+                'retry_strategy' => [
+                    'max_retries' => 1,
+                ],
+            ],
             $this->getTransportConfig($config, 'consumer1')
         );
 

@@ -139,3 +139,9 @@ services:
             - '@messenger.receiver_locator'
         tags:
             - { name: kernel.event_subscriber }
+
+    Akeneo\Tool\Bundle\BatchQueueBundle\EventListener\AddReceiverStampEventListener:
+        arguments:
+            - '@messenger.receiver_locator'
+        tags:
+            - { name: kernel.event_subscriber }

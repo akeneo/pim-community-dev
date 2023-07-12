@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MessengerBundle\Process;
 
+use Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\GpsTransport;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\Transport\Receiver\ReceiverInterface;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -16,6 +19,8 @@ class RunMessageProcess
 {
     private const RUNNING_PROCESS_CHECK_INTERVAL_MICROSECONDS = 1000;
     private const LONG_RUNNING_PROCESS_THRESHOLD_IN_SECONDS = 300;
+    private const PROCESS_TIME_LIMIT_IN_SECONDS = 3600; // 60 min
+    private const MODIFY_ACK_DEADLINE_FREQUENCY_IN_SECONDS = 480; // 8 min
 
     public function __construct(
         private readonly SerializerInterface $serializer,
@@ -23,8 +28,14 @@ class RunMessageProcess
     ) {
     }
 
-    public function __invoke(object $message, string $consumerName, ?string $tenantId, ?string $correlationId): void
-    {
+    public function __invoke(
+        Envelope $envelope,
+        string $consumerName,
+        ReceiverInterface $receiver,
+        ?string $tenantId,
+        ?string $correlationId
+    ): void {
+        $message = $envelope->getMessage();
         $context = [
             'tenant_id' => $tenantId,
             'correlation_id' => $correlationId,
@@ -53,20 +64,27 @@ class RunMessageProcess
                 $correlationId,
             ], null, $env);
 
-            $this->runProcess($process, $context);
+            $exitCode = $this->runProcess($process, $envelope, $receiver, $context);
         } catch (\Throwable $t) {
             $this->logger->error(sprintf('An error occurred: %s', $t->getMessage()), [
                 ...$context,
                 'trace' => $t->getTraceAsString(),
             ]);
+
+            throw $t;
+        }
+
+        if (0 !== $exitCode) {
+            throw new \RuntimeException(\sprintf('An error occurred, exit code: %d', $exitCode));
         }
     }
 
-    private function runProcess(Process $process, array $context): void
+    private function runProcess(Process $process, Envelope $envelope, ReceiverInterface $receiver, array $context): ?int
     {
         $this->logger->debug(sprintf('Command line: "%s"', $process->getCommandLine()));
 
         $startTime = time();
+        $modifyAckDeadlineTime = $startTime;
         $warningLogIsSent = false;
         $process->start();
         while ($process->isRunning()) {
@@ -77,15 +95,44 @@ class RunMessageProcess
                 ]);
                 $warningLogIsSent = true;
             }
+
+            // PubSub has a limit to ack the message, otherwise it's available again for another consumer.
+            // We can modify the ack deadline to indicate we need more time.
+            // See https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/modifyAckDeadline
+            if (self::MODIFY_ACK_DEADLINE_FREQUENCY_IN_SECONDS <= time() - $modifyAckDeadlineTime
+                && $receiver instanceof GpsTransport
+            ) {
+                $receiver->modifyAckDeadline($envelope);
+                $modifyAckDeadlineTime = time();
+            }
+
+            if (self::PROCESS_TIME_LIMIT_IN_SECONDS <= time() - $startTime) {
+                $process->stop();
+
+                throw new \RuntimeException('Process time limit exceeded');
+            }
+
             usleep(self::RUNNING_PROCESS_CHECK_INTERVAL_MICROSECONDS);
         }
 
-        $this->logger->debug('Command akeneo:process-message executed', [
-            ...$context,
-            'execution_time_in_sec' => time() - $startTime,
-            'process_exit_code' => $process->getExitCode(),
-            'process_output' => $process->getOutput(),
-            'process_error_output' => $process->getErrorOutput(),
-        ]);
+        if (0 !== $process->getExitCode()) {
+            $this->logger->error('Process has no success error code', [
+                ...$context,
+                'execution_time_in_sec' => time() - $startTime,
+                'process_exit_code' => $process->getExitCode(),
+                'process_output' => $process->getOutput(),
+                'process_error_output' => $process->getErrorOutput(),
+            ]);
+        } else {
+            $this->logger->info('Command akeneo:process-message executed', [
+                ...$context,
+                'execution_time_in_sec' => time() - $startTime,
+                'process_exit_code' => $process->getExitCode(),
+                'process_output' => $process->getOutput(),
+                'process_error_output' => $process->getErrorOutput(),
+            ]);
+        }
+
+        return $process->getExitCode();
     }
 }

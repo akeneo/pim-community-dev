@@ -6,6 +6,8 @@ namespace Akeneo\Tool\Bundle\MessengerBundle\tests\integration;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\Tool\Bundle\MessengerBundle\Config\MessengerConfigBuilder;
+use Akeneo\Tool\Bundle\MessengerBundle\tests\config\FailingHandler;
 use Akeneo\Tool\Bundle\MessengerBundle\tests\config\Handler1ForMessage1;
 use Akeneo\Tool\Bundle\MessengerBundle\tests\config\Handler1ForMessage2;
 use Akeneo\Tool\Bundle\MessengerBundle\tests\config\Handler2ForMessage1;
@@ -42,6 +44,7 @@ final class EventQueuesAndConsumersIntegration extends TestCase
             'consumer1' => $this->get('akeneo_integration_tests.pub_sub_queue_status.consumer1'),
             'consumer2' => $this->get('akeneo_integration_tests.pub_sub_queue_status.consumer2'),
             'consumer3' => $this->get('akeneo_integration_tests.pub_sub_queue_status.consumer3'),
+            'failing_consumer' => $this->get('akeneo_integration_tests.pub_sub_queue_status.failing_consumer'),
         ];
 
         foreach ($this->pubSubQueueStatuses as $pubSubQueueStatus) {
@@ -113,6 +116,29 @@ final class EventQueuesAndConsumersIntegration extends TestCase
         Assert::assertTrue($this->handlerObserver->messageIsHandledByHandler($message1, Handler1ForMessage1::class));
         Assert::assertFalse($this->handlerObserver->messageIsHandledByHandler($message1, Handler2ForMessage1::class));
         Assert::assertFalse($this->handlerObserver->messageIsHandledByHandler($message1, Handler1ForMessage2::class));
+    }
+
+    public function test_it_retries_to_consume_messages(): void
+    {
+        \putenv('APP_TENANT_ID=akeneo-pim-test');
+
+        $message2 = new Message2(10);
+        $this->bus->dispatch($message2);
+
+        for ($retry = 0; $retry <= MessengerConfigBuilder::MAX_RETRIES_DEFAULT; $retry++) {
+            $messages = $this->pubSubQueueStatuses['failing_consumer']->getMessagesInQueue();
+            self::assertCount(1, $messages, \sprintf('Retry %d: not having the right number of messages', $retry));
+
+            $this->launchConsumer('failing_consumer');
+            Assert::assertSame(
+                $retry + 1,
+                $this->handlerObserver->getHandlerNumberOfExecution(FailingHandler::class),
+                \sprintf('Retry %d: observer was not called the right number of times.', $retry)
+            );
+        }
+
+        Assert::assertFalse($this->pubSubQueueStatuses['failing_consumer']->hasMessageInQueue());
+
     }
 
     private function launchConsumer(string $consumerName): void

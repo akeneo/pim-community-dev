@@ -16,3 +16,6 @@ queues:
             - name: consumer3
               service_handler: 'Akeneo\Tool\Bundle\MessengerBundle\tests\config\Handler1ForMessage2'
               env_var: PUBSUB_SUBSCRIPTION_TEST_CONSUMER_3
+            - name: failing_consumer
+              service_handler: 'Akeneo\Tool\Bundle\MessengerBundle\tests\config\FailingHandler'
+              env_var: PUBSUB_SUBSCRIPTION_TEST_CONSUMER_4
