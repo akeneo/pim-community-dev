@@ -64,7 +64,8 @@ const AttributeSetupApp: FC<AttributeSetupAppProps> = ({attribute, originalMainI
     'https://help.akeneo.com/en_US/serenity-your-first-steps-with-akeneo/serenity-what-is-an-attribute#the-value-per-channel-property';
   const urlLocalizable =
     'https://help.akeneo.com/serenity-your-first-steps-with-akeneo/serenity-what-is-an-attribute#the-value-per-locale-property';
-  const urlMainIdentifier = 'http://todo.com';
+  const urlMainIdentifier =
+    'https://help.akeneo.com/serenity-build-your-catalog/33-serenity-manage-your-product-identifiers';
   const [mainIdentifierAttribute, setMainIdentifierAttribute] = useState<Attribute>(originalMainIdentifierAttribute);
   const isIdentifier = attribute.type === 'pim_catalog_identifier';
   const isMainIdentifier = isIdentifier && mainIdentifierAttribute.code === attribute.code;
@@ -73,6 +74,7 @@ const AttributeSetupApp: FC<AttributeSetupAppProps> = ({attribute, originalMainI
   const attributeLabel = getLabel(attribute.labels, catalogLocale, attribute.code);
   const [isOpen, open, close] = useBooleanState();
   const isOnboarderEnabled = featureFlags.isEnabled('onboarder');
+  const isNotSaved = !('meta' in attribute); // A non saved attribute don't have meta from backend
 
   const setAsMainIdentifierUrl = router.generate('pim_enrich_attribute_rest_switch_main_identifier', {
     attributeCode: attribute.code,
@@ -172,7 +174,7 @@ const AttributeSetupApp: FC<AttributeSetupAppProps> = ({attribute, originalMainI
               </List.RowHelpers>
             )}
             <List.RemoveCell>
-              {isMainIdentifier || isOnboarderEnabled ? (
+              {isMainIdentifier || isOnboarderEnabled || isNotSaved ? (
                 <IconButton ghost="borderless" level="tertiary" icon={<LockIcon />} title="" />
               ) : (
                 <>
@@ -206,6 +208,11 @@ const AttributeSetupApp: FC<AttributeSetupAppProps> = ({attribute, originalMainI
                             attributeLabel: attributeLabel,
                           }
                         )}
+                        <Link href={urlMainIdentifier} target="_blank">
+                          {translate(
+                            'pim_enrich.entity.attribute.module.edit.attribute_setup.set_as_main_identifier.learn_more'
+                          )}
+                        </Link>
                       </Helper>
                       {translate(
                         'pim_enrich.entity.attribute.module.edit.attribute_setup.set_as_main_identifier.warning',
