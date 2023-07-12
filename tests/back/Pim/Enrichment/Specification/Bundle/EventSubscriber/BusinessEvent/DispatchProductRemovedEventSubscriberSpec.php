@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchBufferedP
 use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchProductRemovedEventSubscriber;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
+use Akeneo\Pim\Enrichment\Component\Product\Value\IdentifierValue;
 use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
@@ -59,7 +60,7 @@ class DispatchProductRemovedEventSubscriberSpec extends ObjectBehavior
         $this->beConstructedWith($security, $messageBus, 10, new NullLogger(), new NullLogger());
 
         $product = new Product();
-        $product->setIdentifier('blue_jean');
+        $product->addValue(IdentifierValue::value('sku', true, 'blue_jean'));
 
         $this->createAndDispatchPimEvents(new GenericEvent($product, ['unitary' => true]));
 
@@ -94,9 +95,9 @@ class DispatchProductRemovedEventSubscriberSpec extends ObjectBehavior
         $this->beConstructedWith($security, $messageBus, 10, new NullLogger(), new NullLogger());
 
         $product1 = new Product();
-        $product1->setIdentifier('product_identifier_1');
+        $product1->addValue(IdentifierValue::value('sku', true, 'product_identifier_1'));
         $product2 = new Product();
-        $product2->setIdentifier('product_identifier_2');
+        $product2->addValue(IdentifierValue::value('sku', true, 'product_identifier_2'));
 
         $this->createAndDispatchPimEvents(new GenericEvent($product1, ['unitary' => false]));
         $this->createAndDispatchPimEvents(new GenericEvent($product2, ['unitary' => false]));
@@ -153,7 +154,7 @@ class DispatchProductRemovedEventSubscriberSpec extends ObjectBehavior
         $this->beConstructedWith($security, $messageBus, 10, new NullLogger(), new NullLogger());
 
         $product = new Product();
-        $product->setIdentifier('product_identifier');
+        $product->addValue(IdentifierValue::value('sku', true, 'product_identifier'));
 
         $security->getUser()->willReturn(null);
 
@@ -181,7 +182,7 @@ class DispatchProductRemovedEventSubscriberSpec extends ObjectBehavior
         $security->getUser()->willReturn($user);
 
         $product = new Product();
-        $product->setIdentifier('product_identifier');
+        $product->addValue(IdentifierValue::value('sku', true, 'product_identifier'));
 
         $this->createAndDispatchPimEvents(new GenericEvent(
             $product,

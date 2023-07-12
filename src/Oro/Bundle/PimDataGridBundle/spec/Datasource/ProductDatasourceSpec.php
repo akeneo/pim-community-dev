@@ -68,6 +68,11 @@ class ProductDatasourceSpec extends ObjectBehavior
                     'id' => 3,
                     'code' => 'attribute_3'
                 ],
+                'sku' => [
+                    'id' => 4,
+                    'code' => 'sku',
+                    'mainIdentifier' => true,
+                ]
             ],
             'locale_code' => 'fr_FR',
             'scope_code' => 'ecommerce',
@@ -116,8 +121,9 @@ class ProductDatasourceSpec extends ObjectBehavior
             'document_type'    => null,
         ]);
 
+        // CPM-1082: mainIdentifier attribute should be kept for display purposes in the grid
         $subscriber
-            ->configure(FilterEntityWithValuesSubscriberConfiguration::filterEntityValues(['attribute_1', 'attribute_2']))
+            ->configure(FilterEntityWithValuesSubscriberConfiguration::filterEntityValues(['attribute_1', 'attribute_2', 'sku']))
             ->shouldBeCalled();
 
         $results = $this->getResults();

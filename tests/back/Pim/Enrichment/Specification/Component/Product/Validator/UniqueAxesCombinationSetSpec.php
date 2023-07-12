@@ -173,9 +173,9 @@ class UniqueAxesCombinationSetSpec extends ObjectBehavior
         $productModel->setFamilyVariant($familyVariant);
 
         $variantProduct = new Product();
-        $variantProduct->setIdentifier('4f8db754-4eff-4b67-bdba-6eac4d17f622');
         $variantProduct->setParent($productModel);
         $variantProduct->setFamilyVariant($familyVariant);
+        $variantProduct->addValue(IdentifierValue::value('sku', true, '4f8db754-4eff-4b67-bdba-6eac4d17f622'));
 
         $duplicateProduct = new Product('4f8db754-4eff-4b67-bdba-6eac4d17f622');
         $duplicateProduct->setParent($productModel);

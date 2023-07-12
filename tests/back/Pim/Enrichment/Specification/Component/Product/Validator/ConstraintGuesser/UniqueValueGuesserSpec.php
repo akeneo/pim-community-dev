@@ -23,11 +23,11 @@ class UniqueValueGuesserSpec extends ObjectBehavior
 
     public function it_enforces_attribute_type(AttributeInterface $attribute)
     {
-        foreach ($this->dataProviderForSupportedAttributes() as $attributeTypeTest) {
-            $attributeType = $attributeTypeTest[0];
+        foreach ($this->dataProviderForSupportedAttributes() as $attributeType => $attributeTypeTest) {
+            $attributeBackendType = $attributeTypeTest[0];
             $expectedResult = $attributeTypeTest[1];
-            $attribute->getBackendType()
-                ->willReturn($attributeType);
+            $attribute->getBackendType()->willReturn($attributeBackendType);
+            $attribute->getType()->willReturn('pim_catalog_' . $attributeType);
             $this->supportAttribute($attribute)->shouldReturn($expectedResult);
         }
     }
@@ -86,6 +86,7 @@ class UniqueValueGuesserSpec extends ObjectBehavior
             'price'      => [AttributeTypes::BACKEND_TYPE_PRICE, false],
             'textarea'   => [AttributeTypes::BACKEND_TYPE_TEXTAREA, false],
             'text'       => [AttributeTypes::BACKEND_TYPE_TEXT, true],
+            'identifier' => [AttributeTypes::BACKEND_TYPE_TEXT, false],
         ];
     }
 }

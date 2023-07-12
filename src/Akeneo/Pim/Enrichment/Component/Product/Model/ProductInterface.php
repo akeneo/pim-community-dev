@@ -37,6 +37,7 @@ interface ProductInterface extends
 
     /**
      * @param string|null $identifierValue
+     * @deprecated Will be removed use addValue instead.
      *
      * @return self
      */

@@ -22,6 +22,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\AssociationFieldSette
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\FieldSetterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\SetterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\TwoWayAssociationUpdaterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Value\IdentifierValue;
 use Akeneo\Pim\Structure\Component\Model\AssociationType;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface;
@@ -159,9 +160,9 @@ class AssociationFieldSetterSpec extends ObjectBehavior
 
         $product->getAssociations()->willReturn(new ArrayCollection([$xsellAssociation->getWrappedObject()]));
 
-        $assocProductOne = (new Product())->setIdentifier('assocProductOne');
-        $assocProductTwo = (new Product())->setIdentifier('assocProductTwo');
-        $assocProductThree = (new Product())->setIdentifier('assocProductThree');
+        $assocProductOne = (new Product())->addValue(IdentifierValue::value('sku', true, 'assocProductOne'));
+        $assocProductTwo = (new Product())->addValue(IdentifierValue::value('sku', true, 'assocProductTwo'));
+        $assocProductThree = (new Product())->addValue(IdentifierValue::value('sku', true, 'assocProductThree'));
         $assocProductModelOne = new ProductModel();
         $assocProductModelOne->setCode('assocProductModelOne');
         $assocProductModelTwo = new ProductModel();
@@ -232,9 +233,9 @@ class AssociationFieldSetterSpec extends ObjectBehavior
 
         $product->getAssociations()->willReturn(new ArrayCollection([$xsellAssociation->getWrappedObject()]));
 
-        $assocProductOne = (new Product())->setIdentifier('assocProductOne');
-        $assocProductTwo = (new Product())->setIdentifier('assocProductTwo');
-        $assocProductThree = (new Product())->setIdentifier('assocProductThree');
+        $assocProductOne = (new Product())->addValue(IdentifierValue::value('sku', true, 'assocProductOne'));
+        $assocProductTwo = (new Product())->addValue(IdentifierValue::value('sku', true, 'assocProductTwo'));
+        $assocProductThree = (new Product())->addValue(IdentifierValue::value('sku', true, 'assocProductThree'));
 
         $productRepository->find($assocProductOne->getUuid()->toString())->willReturn($assocProductOne);
         $productRepository->find($assocProductTwo->getUuid()->toString())->willReturn($assocProductTwo);
@@ -279,7 +280,7 @@ class AssociationFieldSetterSpec extends ObjectBehavior
         $product = new Product();
         $product->addAssociation($compatibilityAssociation);
 
-        $productAssociated = (new Product())->setIdentifier('productAssociated');
+        $productAssociated = (new Product())->addValue(IdentifierValue::value('sku', true, 'productAssociated'));
 
         $productModelAssociated = new ProductModel();
         $productModelAssociated->setCode('productModelAssociated');
@@ -318,7 +319,7 @@ class AssociationFieldSetterSpec extends ObjectBehavior
         $compatibilityAssociationType->setCode('COMPATIBILITY');
         $associationTypeRepository->findOneByIdentifier('COMPATIBILITY')->willReturn($compatibilityAssociationType);
 
-        $productAssociated = (new Product())->setIdentifier('productAssociated');
+        $productAssociated = (new Product())->addValue(IdentifierValue::value('sku', true, 'productAssociated'));
 
         $productModelAssociated = new ProductModel();
         $productModelAssociated->setCode('productModelAssociated');
@@ -365,7 +366,7 @@ class AssociationFieldSetterSpec extends ObjectBehavior
         $compatibilityAssociationType->setCode('COMPATIBILITY');
         $associationTypeRepository->findOneByIdentifier('COMPATIBILITY')->willReturn($compatibilityAssociationType);
 
-        $productAssociated = (new Product())->setIdentifier('productAssociated');
+        $productAssociated = (new Product())->addValue(IdentifierValue::value('sku', true, 'productAssociated'));
 
         $productModelAssociated = new ProductModel();
         $productModelAssociated->setCode('productModelAssociated');

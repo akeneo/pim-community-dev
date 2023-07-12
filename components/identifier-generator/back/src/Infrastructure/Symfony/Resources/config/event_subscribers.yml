@@ -14,6 +14,7 @@ services:
       - '@event_dispatcher'
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Match\MatchIdentifierGeneratorHandler'
       - '@monolog.logger'
+      - '@pim_catalog.repository.cached_attribute'
     tags:
       - { name: kernel.event_subscriber }
 

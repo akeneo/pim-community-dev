@@ -51,9 +51,8 @@ class LengthGuesser implements ConstraintGuesserInterface
         if ($maxCharacters = $attribute->getMaxCharacters()) {
             $characterLimit = min($maxCharacters, $characterLimit);
         }
-        $code = AttributeTypes::IDENTIFIER !== $attribute->getType() ? $attribute->getCode() : 'identifier';
 
-        $constraints[] = new Length(['max' => $characterLimit, 'attributeCode' => $code]);
+        $constraints[] = new Length(['max' => $characterLimit, 'attributeCode' => $attribute->getCode()]);
 
         return $constraints;
     }
