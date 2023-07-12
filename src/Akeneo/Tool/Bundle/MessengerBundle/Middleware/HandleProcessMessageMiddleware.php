@@ -8,6 +8,7 @@ use Akeneo\Tool\Bundle\MessengerBundle\Process\RunMessageProcess;
 use Akeneo\Tool\Bundle\MessengerBundle\Stamp\CorrelationIdStamp;
 use Akeneo\Tool\Bundle\MessengerBundle\Stamp\ReceiverStamp;
 use Akeneo\Tool\Bundle\MessengerBundle\Stamp\TenantIdStamp;
+use Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\GpsTransport;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
@@ -15,6 +16,7 @@ use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
 use Symfony\Component\Messenger\Middleware\StackInterface;
 use Symfony\Component\Messenger\Stamp\ReceivedStamp;
 use Symfony\Component\Messenger\Stamp\RedeliveryStamp;
+use Symfony\Component\Messenger\Transport\Receiver\ReceiverInterface;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
@@ -57,16 +59,25 @@ final class HandleProcessMessageMiddleware implements MiddlewareInterface
 
         try {
             ($this->runMessageProcess)(
-                $envelope,
+                $envelope->getMessage(),
                 $receivedStamp->getTransportName(),
-                $receiverStamp->receiver,
                 $tenantId,
-                $correlationId
+                $correlationId,
+                function () use ($envelope, $receiverStamp) {
+                    $this->modifyAckDeadline($receiverStamp->receiver, $envelope);
+                }
             );
         } catch (\Throwable $e) {
             throw new HandlerFailedException($envelope, [$e]);
         }
 
         return $stack->next()->handle($envelope, $stack);
+    }
+
+    private function modifyAckDeadline(ReceiverInterface $receiver, Envelope $envelope): void
+    {
+        if ($receiver instanceof GpsTransport) {
+            $receiver->modifyAckDeadline($envelope);
+        }
     }
 }

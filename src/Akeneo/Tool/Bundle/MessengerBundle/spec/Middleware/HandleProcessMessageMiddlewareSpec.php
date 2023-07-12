@@ -50,7 +50,7 @@ final class HandleProcessMessageMiddlewareSpec extends ObjectBehavior
             new CorrelationIdStamp('123456'),
         ]);
 
-        $runUcsMessageProcess->__invoke($envelope, 'consumer1', $receiver, 'pim-test', '123456')->shouldBeCalledOnce();
+        $runUcsMessageProcess->__invoke($message, 'consumer1', 'pim-test', '123456', Argument::type('callable'))->shouldBeCalledOnce();
         $stack->next()->willReturn($stackMiddleware);
         $stackMiddleware->handle($envelope, $stack)->willReturn($envelope);
 
@@ -69,7 +69,7 @@ final class HandleProcessMessageMiddlewareSpec extends ObjectBehavior
             new ReceiverStamp($receiver),
         ]);
 
-        $runUcsMessageProcess->__invoke($envelope, 'consumer1', $receiver, null, null)->shouldBeCalledOnce();
+        $runUcsMessageProcess->__invoke($message, 'consumer1', null, null, Argument::type('callable'))->shouldBeCalledOnce();
         $stack->next()->willReturn($stackMiddleware);
         $stackMiddleware->handle($envelope, $stack)->willReturn($envelope);
 
@@ -85,7 +85,7 @@ final class HandleProcessMessageMiddlewareSpec extends ObjectBehavior
             new CorrelationIdStamp('123456'),
         ]);
 
-        $runUcsMessageProcess->__invoke(Argument::cetera())->shouldNotBeCalled();
+        $runUcsMessageProcess->__invoke(Argument::any())->shouldNotBeCalled();
         $stack->next()->shouldNotBeCalled();
 
         $this->shouldThrow(\LogicException::class)->during('handle', [$envelope, $stack]);

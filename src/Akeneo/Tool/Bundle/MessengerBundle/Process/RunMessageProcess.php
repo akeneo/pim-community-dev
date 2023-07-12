@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MessengerBundle\Process;
 
-use Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\GpsTransport;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Messenger\Envelope;
-use Symfony\Component\Messenger\Transport\Receiver\ReceiverInterface;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -29,13 +26,12 @@ class RunMessageProcess
     }
 
     public function __invoke(
-        Envelope $envelope,
+        object $message,
         string $consumerName,
-        ReceiverInterface $receiver,
         ?string $tenantId,
-        ?string $correlationId
+        ?string $correlationId,
+        callable $modifyAckDeadlineFn
     ): void {
-        $message = $envelope->getMessage();
         $context = [
             'tenant_id' => $tenantId,
             'correlation_id' => $correlationId,
@@ -64,7 +60,7 @@ class RunMessageProcess
                 $correlationId,
             ], null, $env);
 
-            $exitCode = $this->runProcess($process, $envelope, $receiver, $context);
+            $exitCode = $this->runProcess($process, $modifyAckDeadlineFn, $context);
         } catch (\Throwable $t) {
             $this->logger->error(sprintf('An error occurred: %s', $t->getMessage()), [
                 ...$context,
@@ -79,7 +75,7 @@ class RunMessageProcess
         }
     }
 
-    private function runProcess(Process $process, Envelope $envelope, ReceiverInterface $receiver, array $context): ?int
+    private function runProcess(Process $process, callable $modifyAckDeadlineFn, array $context): ?int
     {
         $this->logger->debug(sprintf('Command line: "%s"', $process->getCommandLine()));
 
@@ -99,10 +95,8 @@ class RunMessageProcess
             // PubSub has a limit to ack the message, otherwise it's available again for another consumer.
             // We can modify the ack deadline to indicate we need more time.
             // See https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/modifyAckDeadline
-            if (self::MODIFY_ACK_DEADLINE_FREQUENCY_IN_SECONDS <= time() - $modifyAckDeadlineTime
-                && $receiver instanceof GpsTransport
-            ) {
-                $receiver->modifyAckDeadline($envelope);
+            if (self::MODIFY_ACK_DEADLINE_FREQUENCY_IN_SECONDS <= time() - $modifyAckDeadlineTime) {
+                $modifyAckDeadlineFn();
                 $modifyAckDeadlineTime = time();
             }
 
