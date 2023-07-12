@@ -11,31 +11,29 @@ const ProgressIndicatorModalCreation = styled(ProgressIndicator)`
 
 type Props = {
   currentStepIndex: number;
-  selectedType?: string;
+  steps?: any;
 };
 
-const CreateAttributeProgressIndicator: React.FC<Props> = ({currentStepIndex, selectedType}) => {
+const CreateAttributeProgressIndicator: React.FC<Props> = ({currentStepIndex, steps}) => {
   const translate = useTranslate();
-  const isSettingsStep = selectedType === 'pim_catalog_table' ? currentStepIndex === 2 : currentStepIndex === 1;
-  const steps = useMemo(() => {
-    const commonSteps = [
-      {current: currentStepIndex === -1, label: 'pim_enrich.entity.attribute.property.attribute_creation_type'},
-      {current: isSettingsStep, label: 'pim_enrich.entity.attribute.property.attribute_creation_settings'},
-    ];
 
-    if (selectedType === 'pim_catalog_table')
-      commonSteps.splice(1, 0, {
-        current: currentStepIndex === 1,
-        label: 'pim_enrich.entity.attribute.property.attribute_creation_template',
-      });
-
-    return commonSteps;
-  }, [selectedType, currentStepIndex]);
+  const stepsIndicator = useMemo(
+    () => [
+      'pim_enrich.entity.attribute.property.attribute_creation_type',
+      ...Object.keys(steps).map(stepKey => {
+        switch (stepKey) {
+          default:
+            return 'pim_enrich.entity.attribute.property.attribute_creation_settings';
+        }
+      }),
+    ],
+    [steps]
+  );
 
   return (
     <ProgressIndicatorModalCreation>
-      {steps.map(({label, current}) => (
-        <ProgressIndicator.Step current={current} key={label}>
+      {stepsIndicator?.map((label, index) => (
+        <ProgressIndicator.Step current={currentStepIndex + 1 === index} key={label}>
           {translate(label)}
         </ProgressIndicator.Step>
       ))}
