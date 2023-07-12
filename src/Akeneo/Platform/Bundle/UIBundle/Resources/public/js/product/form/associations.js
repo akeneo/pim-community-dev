@@ -116,7 +116,12 @@ define([
           getParamValue: function (associationType) {
             const associationsMeta = this.getFormData().meta.associations;
 
-            return associationsMeta[associationType] ? associationsMeta[associationType].groupIds : [];
+            const associations = associationsMeta[associationType] ? associationsMeta[associationType].groupIds : [];
+            if (associations.length === 0) {
+              return ['emptyAssociations'];
+            }
+
+            return associations;
           }.bind(this),
           getModelIdentifier: function (model) {
             return model.get('code');
@@ -561,20 +566,21 @@ define([
         collection.processFiltersParams(urlParams, filters, gridName + '[_filter]');
       }
 
-      $.get(Routing.generate('pim_datagrid_load', urlParams)).then(function ({metadata, data}) {
-        this.$('#grid-' + gridName).data({metadata, data: JSON.parse(data) });
+      $.get(Routing.generate('pim_datagrid_load', urlParams)).then(
+        function (response) {
+          this.$('#grid-' + gridName).data({metadata: response.metadata, data: JSON.parse(response.data)});
 
-        const gridModules = metadata.requireJSModules;
-        gridModules.push('pim/datagrid/state-listener');
-        gridModules.push('oro/datafilter-builder');
-        gridModules.push('oro/datagrid/pagination-input');
+          let gridModules = response.metadata.requireJSModules;
+          gridModules.push('pim/datagrid/state-listener');
+          gridModules.push('oro/datafilter-builder');
+          gridModules.push('oro/datagrid/pagination-input');
 
-        const resolvedModules = [];
-        _.each(gridModules, function (module) {
-          resolvedModules.push(requireContext(module));
-        });
+          let resolvedModules = [];
+          _.each(gridModules, function (module) {
+            resolvedModules.push(requireContext(module));
+          });
 
-        datagridBuilder(resolvedModules);
+          datagridBuilder(resolvedModules);
         }.bind(this)
       );
     },
