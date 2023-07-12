@@ -23,17 +23,17 @@ final class IdentifierAttributeCreationLimitValidator extends ConstraintValidato
     ) {
     }
 
-    public function validate($value, Constraint $constraint): void
+    public function validate($attribute, Constraint $constraint): void
     {
         Assert::isInstanceOf($constraint, IdentifierAttributeCreationLimit::class);
-        if (!$value instanceof AttributeInterface) {
+        if (!$attribute instanceof AttributeInterface) {
             return;
         }
-        if (null !== $value->getId()) {
+        if (null !== $attribute->getId() || AttributeTypes::IDENTIFIER !== $attribute->getType()) {
             return;
         }
 
-        if ($this->creationLimit <= \count($this->repository->findBy(['type' => AttributeTypes::IDENTIFIER]))) {
+        if ($this->creationLimit <= \count($this->repository->getAttributeCodesByType(AttributeTypes::IDENTIFIER))) {
             $this->context
                 ->buildViolation($constraint->message, ['{{limit}}' => $this->creationLimit])
                 ->addViolation();
