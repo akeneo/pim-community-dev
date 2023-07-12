@@ -141,3 +141,4 @@ services:
     Akeneo\Pim\Structure\Bundle\Application\SwitchMainIdentifier\SwitchMainIdentifierValidator:
         arguments:
             - '@pim_catalog.repository.attribute'
+            - '@feature_flags'
