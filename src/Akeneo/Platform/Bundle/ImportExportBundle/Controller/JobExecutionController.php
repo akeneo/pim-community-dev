@@ -4,7 +4,7 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Controller;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Event\JobExecutionEvents;
 use Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi\JobExecutionRepository;
-use Akeneo\Tool\Bundle\ConnectorBundle\EventListener\JobExecutionArchivist;
+use Akeneo\Tool\Bundle\ConnectorBundle\EventListener\StepExecutionArchivist;
 use Akeneo\Tool\Component\Connector\LogKey;
 use Akeneo\Tool\Component\FileStorage\StreamedFileResponse;
 use League\Flysystem\FilesystemReader;
@@ -26,13 +26,13 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class JobExecutionController
 {
     protected EventDispatcherInterface $eventDispatcher;
-    protected JobExecutionArchivist $archivist;
+    protected StepExecutionArchivist $archivist;
     protected JobExecutionRepository $jobExecutionRepo;
     private FilesystemReader $logFileSystem;
 
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
-        JobExecutionArchivist $archivist,
+        StepExecutionArchivist $archivist,
         JobExecutionRepository $jobExecutionRepo,
         FilesystemReader $logFileSystem
     ) {

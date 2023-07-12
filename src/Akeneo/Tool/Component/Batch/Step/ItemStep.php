@@ -92,7 +92,9 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
             $stepExecution->setTotalItems($this->getCountFromTrackableItemReader());
         }
 
+//        $this->batchSize = 1;
         while (true) {
+//            usleep(250000);
             try {
                 $readItem = $this->reader->read();
                 if (null === $readItem) {

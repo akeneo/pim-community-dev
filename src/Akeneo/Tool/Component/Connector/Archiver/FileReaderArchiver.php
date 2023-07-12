@@ -5,6 +5,7 @@ namespace Akeneo\Tool\Component\Connector\Archiver;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\ItemStep;
 use Akeneo\Tool\Component\Connector\Reader\File\FileReaderInterface;
 use League\Flysystem\FilesystemOperator;
@@ -29,8 +30,9 @@ class FileReaderArchiver extends AbstractFilesystemArchiver
     /**
      * {@inheritdoc}
      */
-    public function archive(JobExecution $jobExecution): void
+    public function archive(StepExecution $stepExecution): void
     {
+        $jobExecution = $stepExecution->getJobExecution();
         $job = $this->jobRegistry->get($jobExecution->getJobInstance()->getJobName());
         foreach ($job->getSteps() as $step) {
             if (!$step instanceof ItemStep) {
@@ -72,8 +74,9 @@ class FileReaderArchiver extends AbstractFilesystemArchiver
     /**
      * {@inheritdoc}
      */
-    public function supports(JobExecution $jobExecution): bool
+    public function supports(StepExecution $stepExecution): bool
     {
+        $jobExecution = $stepExecution->getJobExecution();
         $job = $this->jobRegistry->get($jobExecution->getJobInstance()->getJobName());
         foreach ($job->getSteps() as $step) {
             if ($step instanceof ItemStep && $this->isReaderUsable($step->getReader())) {

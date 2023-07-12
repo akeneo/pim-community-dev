@@ -12,19 +12,16 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Step;
 use Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage\FileToTransfer;
 use Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage\TransferFilesToStorageCommand;
 use Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage\TransferFilesToStorageHandler;
-use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\LocalStorage;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\NoneStorage;
 use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\EventSubscriber\UpdateJobExecutionStorageSummarySubscriber;
-use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
-use Akeneo\Tool\Component\Batch\Job\JobWithStepsInterface;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\AbstractStep;
-use Akeneo\Tool\Component\Batch\Step\ItemStep;
-use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
-use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
+use Akeneo\Tool\Component\Connector\Archiver\FileWriterArchiver;
+use League\Flysystem\FilesystemOperator;
+use League\Flysystem\StorageAttributes;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class UploadStep extends AbstractStep
@@ -37,8 +34,8 @@ final class UploadStep extends AbstractStep
         $name,
         EventDispatcherInterface $eventDispatcher,
         JobRepositoryInterface $jobRepository,
-        private JobRegistry $jobRegistry,
         private TransferFilesToStorageHandler $transferFilesToStorageHandler,
+        private FileWriterArchiver $fileWriterArchiver,
     ) {
         parent::__construct($name, $eventDispatcher, $jobRepository);
     }
@@ -71,39 +68,29 @@ final class UploadStep extends AbstractStep
 
     private function extractFileToTransfer(JobExecution $jobExecution): array
     {
-        $writtenFiles = [];
-        $job = $this->jobRegistry->get($jobExecution->getJobInstance()->getJobName());
+        $filePath = strtr(
+            $this->fileWriterArchiver->getRelativeArchivePath($jobExecution),
+            [
+                '%filename%' => '',
+            ]
+        );
 
-        if ($job instanceof JobWithStepsInterface) {
-            foreach ($job->getSteps() as $step) {
-                if (!$step instanceof ItemStep) {
-                    continue;
-                }
+        $dirname = str_replace(sys_get_temp_dir(), '', dirname($this->getPath($jobExecution)));
 
-                $writer = $step->getWriter();
-                if (!$writer instanceof ArchivableWriterInterface) {
-                    continue;
-                }
-
-                $writtenFiles = array_merge($writtenFiles, $this->extractFileToTransferFromWriter($writer));
-            }
-        }
-
-        return $writtenFiles;
+        return array_map(function ($item) use ($dirname, $filePath) {
+            return new FileToTransfer(
+                $item,
+                'archivist',
+                $dirname . DIRECTORY_SEPARATOR . str_replace($filePath, '', $item),
+                false
+            );
+        }, iterator_to_array($this->fileWriterArchiver->getArchives($jobExecution, true)));
     }
 
-    private function extractFileToTransferFromWriter(ArchivableWriterInterface $writer): array
+    public function getPath(JobExecution $jobExecution): string
     {
-        $dirname = str_replace(sys_get_temp_dir(), '', dirname($writer->getPath()));
-
-        return array_map(
-            fn (WrittenFileInfo $writtenFile) => new FileToTransfer(
-                $writtenFile->sourceKey(),
-                $writtenFile->sourceStorage(),
-                (LocalStorage::TYPE === $this->jobParameters[self::STORAGE_KEY]['type']) ? $writtenFile->outputFilepath() : sprintf('%s/%s', $dirname, $writtenFile->outputFilepath()),
-                $writtenFile->isLocalFile()
-            ),
-            $writer->getWrittenFiles()
-        );
+        $parameters = $jobExecution->getJobParameters();
+        $storage = $parameters->get('storage');
+        return sprintf('%s%s%s', sys_get_temp_dir(), DIRECTORY_SEPARATOR, $storage['file_path']);
     }
 }

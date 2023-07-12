@@ -5,6 +5,7 @@ namespace Akeneo\Tool\Component\Connector\Archiver;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\ItemStep;
 use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
@@ -41,13 +42,14 @@ class FileWriterArchiver extends AbstractFilesystemArchiver
     /**
      * Archive files used by job execution (input / output)
      *
-     * @param JobExecution $jobExecution
+     * @param StepExecution $stepExecution
      */
-    public function archive(JobExecution $jobExecution): void
+    public function archive(StepExecution $stepExecution): void
     {
+        $jobExecution = $stepExecution->getJobExecution();
         $job = $this->jobRegistry->get($jobExecution->getJobInstance()->getJobName());
         foreach ($job->getSteps() as $step) {
-            if (!$step instanceof ItemStep) {
+            if (!$step instanceof ItemStep || $step->getName() !== $stepExecution->getStepName()) {
                 continue;
             }
             $writer = $step->getWriter();
@@ -69,8 +71,9 @@ class FileWriterArchiver extends AbstractFilesystemArchiver
     /**
      * {@inheritdoc}
      */
-    public function supports(JobExecution $jobExecution): bool
+    public function supports(StepExecution $stepExecution): bool
     {
+        $jobExecution = $stepExecution->getJobExecution();
         $job = $this->jobRegistry->get($jobExecution->getJobInstance()->getJobName());
         foreach ($job->getSteps() as $step) {
             if ($step instanceof ItemStep && $this->isUsableWriter($step->getWriter())) {
