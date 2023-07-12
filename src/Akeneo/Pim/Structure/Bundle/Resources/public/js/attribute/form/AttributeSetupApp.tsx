@@ -10,7 +10,7 @@ import {
   List,
   LockIcon,
   SectionTitle,
-  useBooleanState
+  useBooleanState,
 } from 'akeneo-design-system';
 import {Attribute} from '../models/Attribute';
 import styled from 'styled-components';
@@ -18,10 +18,11 @@ import {
   DoubleCheckDeleteModal,
   getLabel,
   NotificationLevel,
+  useFeatureFlags,
   useNotify,
   useRouter,
   useTranslate,
-  useUserContext
+  useUserContext,
 } from '@akeneo-pim-community/shared';
 
 const ListWithBottomMargin = styled(List)`
@@ -57,12 +58,13 @@ const AttributeSetupApp: FC<AttributeSetupAppProps> = ({attribute, originalMainI
   const userContext = useUserContext();
   const router = useRouter();
   const notify = useNotify();
+  const featureFlags = useFeatureFlags();
   const catalogLocale = userContext.get('catalogLocale');
   const urlScopable =
     'https://help.akeneo.com/en_US/serenity-your-first-steps-with-akeneo/serenity-what-is-an-attribute#the-value-per-channel-property';
   const urlLocalizable =
     'https://help.akeneo.com/serenity-your-first-steps-with-akeneo/serenity-what-is-an-attribute#the-value-per-locale-property';
-  const urlMainIdentifier = 'http://todo.com'
+  const urlMainIdentifier = 'http://todo.com';
   const [mainIdentifierAttribute, setMainIdentifierAttribute] = useState<Attribute>(originalMainIdentifierAttribute);
   const isIdentifier = attribute.type === 'pim_catalog_identifier';
   const isMainIdentifier = isIdentifier && mainIdentifierAttribute.code === attribute.code;
@@ -70,8 +72,11 @@ const AttributeSetupApp: FC<AttributeSetupAppProps> = ({attribute, originalMainI
   const mainIdentifierLabel = getLabel(mainIdentifierAttribute.labels, catalogLocale, mainIdentifierCode);
   const attributeLabel = getLabel(attribute.labels, catalogLocale, attribute.code);
   const [isOpen, open, close] = useBooleanState();
+  const isOnboarderEnabled = featureFlags.isEnabled('onboarder') || true;
 
-  const setAsMainIdentifierUrl = router.generate('pim_enrich_attribute_rest_switch_main_identifier', {attributeCode: attribute.code});
+  const setAsMainIdentifierUrl = router.generate('pim_enrich_attribute_rest_switch_main_identifier', {
+    attributeCode: attribute.code,
+  });
 
   const setAsMainIdentifier = async () => {
     const response = await fetch(setAsMainIdentifierUrl, {
@@ -82,13 +87,19 @@ const AttributeSetupApp: FC<AttributeSetupAppProps> = ({attribute, originalMainI
       ],
     });
     if (response.ok) {
-      notify(NotificationLevel.SUCCESS, translate('pim_enrich.entity.attribute.module.edit.attribute_setup.set_as_main_identifier.flash.success'));
+      notify(
+        NotificationLevel.SUCCESS,
+        translate('pim_enrich.entity.attribute.module.edit.attribute_setup.set_as_main_identifier.flash.success')
+      );
       setMainIdentifierAttribute(attribute);
     } else {
-      notify(NotificationLevel.ERROR, translate('pim_enrich.entity.attribute.module.edit.attribute_setup.set_as_main_identifier.flash.fail'));
+      notify(
+        NotificationLevel.ERROR,
+        translate('pim_enrich.entity.attribute.module.edit.attribute_setup.set_as_main_identifier.flash.fail')
+      );
     }
     close();
-  }
+  };
 
   return (
     <>
@@ -114,72 +125,98 @@ const AttributeSetupApp: FC<AttributeSetupAppProps> = ({attribute, originalMainI
           </List.RemoveCell>
         </List.Row>
 
-        {isIdentifier &&
-        <List.Row>
-          <List.Cell width="auto">
-            <ListCellInner>
-              <header>
-                {isMainIdentifier ? (
-                  <>
-                    {translate('pim_enrich.entity.attribute.module.edit.attribute_setup.main_identifier_title')}{' '}
-                    <em>
-                      {translate(
-                        'pim_enrich.entity.attribute.module.edit.attribute_setup.main_identifier_title_highlight'
+        {isIdentifier && (
+          <List.Row>
+            <List.Cell width="auto">
+              <ListCellInner>
+                <header>
+                  {isMainIdentifier ? (
+                    <>
+                      {translate('pim_enrich.entity.attribute.module.edit.attribute_setup.main_identifier_title')}{' '}
+                      <em>
+                        {translate(
+                          'pim_enrich.entity.attribute.module.edit.attribute_setup.main_identifier_title_highlight'
+                        )}
+                      </em>
+                    </>
+                  ) : (
+                    <>
+                      {translate('pim_enrich.entity.attribute.module.edit.attribute_setup.non_main_identifier_title')}{' '}
+                      <em>
+                        {translate(
+                          'pim_enrich.entity.attribute.module.edit.attribute_setup.non_main_identifier_title_highlight'
+                        )}
+                      </em>
+                    </>
+                  )}
+                </header>
+                {translate('pim_enrich.entity.attribute.module.edit.attribute_setup.main_identifier_helper', {
+                  maxIdentifiersCount: 10,
+                  mainIdentifierLabel: mainIdentifierLabel,
+                })}{' '}
+                <Link href={urlMainIdentifier} target="_blank">
+                  {translate('pim_enrich.entity.attribute.module.edit.attribute_setup.learn_more')}
+                </Link>
+              </ListCellInner>
+            </List.Cell>
+            {!isMainIdentifier && isOnboarderEnabled && (
+              <List.RowHelpers>
+                <Helper level="error">
+                  {translate(
+                    'pim_enrich.entity.attribute.module.edit.attribute_setup.set_as_main_identifier.onboarder_warning'
+                  )}
+                </Helper>
+              </List.RowHelpers>
+            )}
+            <List.RemoveCell>
+              {isMainIdentifier && !isOnboarderEnabled ? (
+                <IconButton ghost="borderless" level="tertiary" icon={<LockIcon />} title="" />
+              ) : (
+                <>
+                  <Button level="danger" ghost onClick={open}>
+                    {translate('pim_enrich.entity.attribute.module.edit.attribute_setup.set_as_main_identifier.button')}
+                  </Button>
+                  {isOpen && (
+                    <DoubleCheckDeleteModal
+                      title={translate('pim_enrich.entity.attribute.plural_label')}
+                      doubleCheckInputLabel={translate(
+                        'pim_enrich.entity.attribute.module.edit.attribute_setup.set_as_main_identifier.confirm',
+                        {
+                          attributeCode: attribute.code,
+                        }
                       )}
-                    </em>
-                  </>
-                ) : (
-                  <>
-                    {translate('pim_enrich.entity.attribute.module.edit.attribute_setup.non_main_identifier_title')}{' '}
-                    <em>
-                      {translate(
-                        'pim_enrich.entity.attribute.module.edit.attribute_setup.non_main_identifier_title_highlight'
+                      textToCheck={attribute.code}
+                      onCancel={close}
+                      onConfirm={setAsMainIdentifier}
+                      confirmDeletionTitle={translate(
+                        'pim_enrich.entity.attribute.module.edit.attribute_setup.set_as_main_identifier.confirm_title'
                       )}
-                    </em>
-                  </>
-                )}
-              </header>
-              {translate('pim_enrich.entity.attribute.module.edit.attribute_setup.main_identifier_helper', {
-                maxIdentifiersCount: 10,
-                mainIdentifierLabel: mainIdentifierLabel,
-              })}{' '}
-              <Link href={urlMainIdentifier} target="_blank">
-                {translate('pim_enrich.entity.attribute.module.edit.attribute_setup.learn_more')}
-              </Link>
-            </ListCellInner>
-          </List.Cell>
-          <List.RemoveCell>
-            {!isMainIdentifier &&
-              <>
-                <Button level='danger' ghost onClick={open}>{translate('pim_enrich.entity.attribute.module.edit.attribute_setup.set_as_main_identifier.button')}</Button>
-                {isOpen &&
-                <DoubleCheckDeleteModal
-                  title={translate('pim_enrich.entity.attribute.plural_label')}
-                  doubleCheckInputLabel={translate('pim_enrich.entity.attribute.module.edit.attribute_setup.set_as_main_identifier.confirm', {
-                    attributeCode: attribute.code
-                  })}
-                  textToCheck={attribute.code}
-                  onCancel={close}
-                  onConfirm={setAsMainIdentifier}
-                  confirmDeletionTitle={translate('pim_enrich.entity.attribute.module.edit.attribute_setup.set_as_main_identifier.confirm_title')}
-                  confirmButtonLabel={translate('pim_enrich.entity.attribute.module.edit.attribute_setup.set_as_main_identifier.button')}
-                  illustration={<AttributesIllustration/>}
-                >
-                  <Helper level='error'>
-                    {translate('pim_enrich.entity.attribute.module.edit.attribute_setup.set_as_main_identifier.are_you_sure', {
-                      attributeLabel: attributeLabel
-                    })}
-                  </Helper>
-                  {translate('pim_enrich.entity.attribute.module.edit.attribute_setup.set_as_main_identifier.warning', {
-                    attributeLabel: mainIdentifierLabel
-                  })}
-                </DoubleCheckDeleteModal>
-                }
-            </>
-            }
-          </List.RemoveCell>
-        </List.Row>
-        }
+                      confirmButtonLabel={translate(
+                        'pim_enrich.entity.attribute.module.edit.attribute_setup.set_as_main_identifier.button'
+                      )}
+                      illustration={<AttributesIllustration />}
+                    >
+                      <Helper level="error">
+                        {translate(
+                          'pim_enrich.entity.attribute.module.edit.attribute_setup.set_as_main_identifier.are_you_sure',
+                          {
+                            attributeLabel: attributeLabel,
+                          }
+                        )}
+                      </Helper>
+                      {translate(
+                        'pim_enrich.entity.attribute.module.edit.attribute_setup.set_as_main_identifier.warning',
+                        {
+                          attributeLabel: mainIdentifierLabel,
+                        }
+                      )}
+                    </DoubleCheckDeleteModal>
+                  )}
+                </>
+              )}
+            </List.RemoveCell>
+          </List.Row>
+        )}
 
         <List.Row>
           <List.Cell width="auto">
