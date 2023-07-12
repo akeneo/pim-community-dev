@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Structure\Component\Validator\Constraints;
 
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Validator\Constraints\IdentifierAttributeCreationLimit;
@@ -12,8 +12,9 @@ use Akeneo\Pim\Structure\Component\Validator\Constraints\IdentifierAttributeCrea
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Component\Validator\Context\ExecutionContext;
+use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
@@ -21,11 +22,9 @@ use Symfony\Component\Validator\Context\ExecutionContext;
  */
 class IdentifierAttributeCreationLimitValidatorSpec extends ObjectBehavior
 {
-    private int $creationLimit = 10;
-
     public function let(AttributeRepositoryInterface $repository, ExecutionContext $context): void
     {
-        $this->beConstructedWith($repository, $this->creationLimit);
+        $this->beConstructedWith($repository, 5);
         $this->initialize($context);
     }
 
@@ -36,7 +35,7 @@ class IdentifierAttributeCreationLimitValidatorSpec extends ObjectBehavior
 
     public function it_is_a_constraint_validator(): void
     {
-        $this->shouldHaveType(ConstraintValidator::class);
+        $this->shouldImplement(ConstraintValidatorInterface::class);
     }
 
     public function it_can_only_validate_the_right_constraint(): void
@@ -44,59 +43,66 @@ class IdentifierAttributeCreationLimitValidatorSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->during('validate', ['code', new NotBlank()]);
     }
 
-    public function it_can_only_validate_attribute_value(
-        IdentifierGeneratorRepository $repository
-    ): void {
-        $repository
-            ->findBy(Argument::any())
-            ->shouldNotBeCalled();
+    public function it_can_only_validate_an_attribute(AttributeRepositoryInterface $repository): void
+    {
+        $repository->getAttributeCodesByType(Argument::any())->shouldNotBeCalled();
 
         $this->validate(new \stdClass(), new IdentifierAttributeCreationLimit());
     }
 
     public function it_can_only_validate_new_attribute_value(
-        IdentifierGeneratorRepository $repository,
+        AttributeRepositoryInterface $repository,
         AttributeInterface $attribute
     ): void {
-        $attribute
-            ->getId()
-            ->shouldBeCalled()
-            ->willReturn(1);
-        $repository
-            ->findBy(Argument::any())
-            ->shouldNotBeCalled();
+        $attribute->getId()->willReturn(1);
+
+        $repository->getAttributeCodesByType(Argument::any())->shouldNotBeCalled();
 
         $this->validate($attribute, new IdentifierAttributeCreationLimit());
     }
 
-    public function it_should_build_violation_when_identifier_attribute_limit_is_reached(
-        ExecutionContext $context,
-        IdentifierGeneratorRepository $repository,
+    public function it_only_validates_identifier_attributes(
+        AttributeRepositoryInterface $repository,
         AttributeInterface $attribute
     ): void {
+        $attribute->getId()->willReturn(null);
+        $attribute->getType()->willReturn(AttributeTypes::BOOLEAN);
 
-        $repository
-            ->findBy(Argument::any())
+        $repository->getAttributeCodesByType(Argument::any())->shouldNotBeCalled();
+        $this->validate($attribute, new IdentifierAttributeCreationLimit());
+    }
+
+    public function it_should_build_a_violation_when_identifier_attribute_limit_is_reached(
+        ExecutionContext $context,
+        AttributeRepositoryInterface $repository,
+        ConstraintViolationBuilderInterface $violationBuilder,
+        AttributeInterface $attribute,
+    ): void {
+        $attribute->getId()->willReturn(null);
+        $attribute->getType()->willReturn(AttributeTypes::IDENTIFIER);
+
+        $repository->getAttributeCodesByType(AttributeTypes::IDENTIFIER)
             ->shouldBeCalledOnce()
-            ->willReturn(array_fill(0, 10, 'identifier'));
+            ->willReturn(['id_1', 'id_2', 'id_3', 'id_4', 'id_5']);
 
-        $context->buildViolation(
-            'pim_catalog.constraint.identifier_attribute_limit_reached',
-            ['{{limit}}' => $this->creationLimit]
-        )->shouldBeCalled();
+        $context->buildViolation('pim_catalog.constraint.identifier_attribute_limit_reached', ['{{limit}}' => 5])
+            ->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate($attribute, new IdentifierAttributeCreationLimit());
     }
 
     public function it_should_be_valid_when_identifier_attribute_is_under_limit(
         ExecutionContext $context,
-        IdentifierGeneratorRepository $repository,
+        AttributeRepositoryInterface $repository,
         AttributeInterface $attribute
     ): void {
-        $repository
-            ->findBy(Argument::any())
+        $attribute->getId()->willReturn(null);
+        $attribute->getType()->willReturn(AttributeTypes::IDENTIFIER);
+
+        $repository->getAttributeCodesByType(AttributeTypes::IDENTIFIER)
             ->shouldBeCalledOnce()
-            ->willReturn(array_fill(0, 9, 'identifier'));
+            ->willReturn(['id_1', 'id_2']);
 
         $context->buildViolation((string)Argument::any())->shouldNotBeCalled();
 
