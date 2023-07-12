@@ -121,13 +121,6 @@ services:
         tags:
             - { name: doctrine.event_subscriber }
 
-    pim_catalog.event_subscriber.init_completeness_db_schema:
-        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Db\InitCompletenessDbSchemaSubscriber'
-        arguments:
-            - '@database_connection'
-        tags:
-            - { name: 'kernel.event_subscriber' }
-
     pim_catalog.event_subscriber.init_product_completeness_db_schema:
         class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Db\InitProductCompletenessDbSchemaSubscriber'
         arguments:
