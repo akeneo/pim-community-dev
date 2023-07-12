@@ -80,6 +80,7 @@ final class EventQueuesAndConsumersIntegration extends TestCase
         Assert::assertFalse($this->handlerObserver->messageIsHandledByHandler($message1, Handler2ForMessage1::class));
         Assert::assertFalse($this->handlerObserver->messageIsHandledByHandler($message1, Handler1ForMessage2::class));
 
+        $this->handlerObserver->reset();
         $this->launchConsumer('consumer2');
         Assert::assertSame(1, $this->handlerObserver->getTotalNumberOfExecution());
         Assert::assertSame(1, $this->handlerObserver->getHandlerNumberOfExecution(Handler2ForMessage1::class));
@@ -88,6 +89,7 @@ final class EventQueuesAndConsumersIntegration extends TestCase
         Assert::assertFalse($this->pubSubQueueStatuses['consumer3']->hasMessageInQueue());
         Assert::assertTrue($this->handlerObserver->messageIsHandledByHandler($message1, Handler2ForMessage1::class));
 
+        $this->handlerObserver->reset();
         $message2 = new Message2(10);
         $this->bus->dispatch($message2);
         $this->launchConsumer('consumer3');

@@ -52,7 +52,7 @@ final class MessengerConfigBuilderIntegration extends KernelTestCase
         );
 
         Assert::assertEqualsCanonicalizing(['consumer1', 'consumer2'], $this->getRoutingForMessage($config, Message1::class));
-        Assert::assertEqualsCanonicalizing(['consumer3'], $this->getRoutingForMessage($config, Message2::class));
+        Assert::assertEqualsCanonicalizing(['consumer3', 'failing_consumer'], $this->getRoutingForMessage($config, Message2::class));
     }
 
     public function test_it_returns_a_messenger_configuration_for_pubsub_transport(): void
@@ -122,7 +122,7 @@ final class MessengerConfigBuilderIntegration extends KernelTestCase
         );
 
         Assert::assertEqualsCanonicalizing(['consumer1', 'consumer2'], $this->getRoutingForMessage($config, Message1::class));
-        Assert::assertEqualsCanonicalizing(['consumer3'], $this->getRoutingForMessage($config, Message2::class));
+        Assert::assertEqualsCanonicalizing(['consumer3', 'failing_consumer'], $this->getRoutingForMessage($config, Message2::class));
     }
 
     public function test_it_returns_a_messenger_configuration_for_in_memory_transport(): void
@@ -145,7 +145,7 @@ final class MessengerConfigBuilderIntegration extends KernelTestCase
         );
 
         Assert::assertEqualsCanonicalizing(['consumer1', 'consumer2'], $this->getRoutingForMessage($config, Message1::class));
-        Assert::assertEqualsCanonicalizing(['consumer3'], $this->getRoutingForMessage($config, Message2::class));
+        Assert::assertEqualsCanonicalizing(['consumer3', 'failing_consumer'], $this->getRoutingForMessage($config, Message2::class));
     }
 
     /**
