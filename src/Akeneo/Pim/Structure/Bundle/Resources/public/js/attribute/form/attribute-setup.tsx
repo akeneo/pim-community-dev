@@ -12,11 +12,13 @@ class AttributeSetup extends BaseView {
   mainIdentifierAttribute: Attribute;
 
   configure(): JQueryPromise<any> {
-    return FetcherRegistry.getFetcher('attribute').getIdentifierAttribute().then((mainIdentifierAttribute: Attribute) => {
-      this.mainIdentifierAttribute = mainIdentifierAttribute;
+    return FetcherRegistry.getFetcher('attribute')
+      .getIdentifierAttribute()
+      .then((mainIdentifierAttribute: Attribute) => {
+        this.mainIdentifierAttribute = mainIdentifierAttribute;
 
-      return super.configure();
-    });
+        return super.configure();
+      });
   }
 
   render(): any {
