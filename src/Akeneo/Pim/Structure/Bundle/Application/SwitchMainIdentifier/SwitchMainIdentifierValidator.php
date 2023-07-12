@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Structure\Bundle\Application\SwitchMainIdentifier;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Webmozart\Assert\Assert;
 
 /**
@@ -17,12 +18,14 @@ final class SwitchMainIdentifierValidator
 
     public function __construct(
         private readonly AttributeRepositoryInterface $attributeRepository,
+        private readonly FeatureFlags $featureFlags,
     ) {
     }
 
     public function validate(
         SwitchMainIdentifierCommand $command
     ): void {
+        $this->validateOnboarderIsDisabled();
         $this->loadNewMainIdentifier($command->getNewMainIdentifierCode());
         $this->validateAttributeExists();
         $this->validateAttributeIsAnIdentifier();
@@ -65,5 +68,18 @@ final class SwitchMainIdentifierValidator
         string $attributeCode
     ): void {
         $this->newMainIdentifier = $this->attributeRepository->findOneByIdentifier($attributeCode);
+    }
+
+    private function validateOnboarderIsDisabled(): void
+    {
+        $enabled = false;
+        try {
+            $enabled = $this->featureFlags->isEnabled('onboarder');
+        } catch (\InvalidArgumentException) {
+        }
+
+        if ($enabled) {
+            throw new \InvalidArgumentException('You cannot set another identifier attribute as the main identifier because this feature is not compatible with Akeneo Onboarder.');
+        }
     }
 }
