@@ -265,6 +265,7 @@ pim_enrich.entity.attribute:
                     confirm_title: Setting as main identifier will impact all products
                     are_you_sure: Are you sure you want to set the {{ attributeLabel }} attribute as the main identifier? Learn more in the help center.
                     warning: "{{ attributeLabel }} is currently set as the main identifier. This change will impact all products."
+                    onboarder_warning: You cannot set another identifier attribute as the main identifier because this feature is not compatible with Akeneo Onboarder.
                     flash:
                         success: Main identifier has successfully been updated.
                         fail: An error occurred during main identifier update.
