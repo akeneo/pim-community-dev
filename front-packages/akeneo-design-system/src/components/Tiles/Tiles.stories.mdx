@@ -17,9 +17,9 @@ import { Tooltip } from '../Tooltip/Tooltip';
   title="Components/Tiles"
   component={Tiles}
   argTypes={{
-    size: {control: {type: 'select'}, options: ['small', 'big']},
+    size: {control: {type: 'select'}, options: ['small', 'big']}, disabled: {control: {type: 'boolean'}},
   }}
-  args={{size: 'small'}}
+  args={{size: 'small', disabled: false}}
 />
 
 # Tiles
@@ -61,7 +61,7 @@ The component is displayed in a configurable responsive grid (width and gap). Ti
         <Tile icon={<AttributeTextIcon/>} selected={isCurrent('Text')} onClick={() => {switchTo('Text')}}>
           Text
         </Tile>
-        <Tile icon={<AttributeNumberIcon/>} selected={isCurrent('Number')} onClick={() => {switchTo('Number')}}>
+        <Tile icon={<AttributeNumberIcon/>} selected={isCurrent('Number')} onClick={() => {switchTo('Number')}} disabled>
           Number
         </Tile>
       </Tiles>;

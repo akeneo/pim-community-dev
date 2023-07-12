@@ -21,7 +21,7 @@ const TilesContainer = styled.div<{size: Size} & AkeneoThemedProps>`
 `;
 
 const TileContainer = styled.div<
-  {selected: boolean; size: Size; inline: boolean; onClick?: () => void} & AkeneoThemedProps
+  {selected: boolean; size: Size; inline: boolean; onClick?: () => void; disabled: boolean} & AkeneoThemedProps
 >`
   margin: 1px;
   ${({size, inline}) => {
@@ -41,8 +41,9 @@ const TileContainer = styled.div<
     `;
   }}
   transition: border-color 0.2s, color 0.2s, background 0.2s;
-  ${({onClick}) =>
+  ${({onClick, disabled}) =>
     onClick !== undefined &&
+    !disabled &&
     css`
       cursor: pointer;
     `}
@@ -57,13 +58,23 @@ const TileContainer = styled.div<
       : css`
           border: 1px solid ${getColor('grey', 80)};
         `}
-  &:hover {
-    border: 2px solid ${getColor('blue', 100)};
-    color: ${getColor('blue', 100)};
-    margin: 0;
-    background: ${getColor('blue', 10)};
-  }
+  ${({disabled}) =>
+    !disabled &&
+    css`
+      &:hover {
+        border: 2px solid ${getColor('blue', 100)};
+        color: ${getColor('blue', 100)};
+        margin: 0;
+        background: ${getColor('blue', 10)};
+      }
+    `}
   box-sizing: border-box;
+  ${({disabled}) =>
+    disabled &&
+    css`
+      color: ${getColor('grey', 80)};
+      cursor: not-allowed;
+    `}
 `;
 
 const IconContainer = styled.div<{size: Size} & AkeneoThemedProps>`
@@ -128,10 +139,20 @@ type TileProps = Override<
   ) & {
     selected?: boolean;
     onClick?: () => void;
+    disabled?: boolean;
   }
 >;
 
-const Tile: FC<TileProps> = ({icon, selected = false, size = 'small', inline = false, onClick, children, ...rest}) => {
+const Tile: FC<TileProps> = ({
+  icon,
+  selected = false,
+  size = 'small',
+  inline = false,
+  onClick,
+  children,
+  disabled = false,
+  ...rest
+}) => {
   const handleKeyDown = useCallback(
     (event: KeyboardEvent<HTMLDivElement>) => {
       if (null !== event.currentTarget && event.key === Key.Enter) {
@@ -142,14 +163,21 @@ const Tile: FC<TileProps> = ({icon, selected = false, size = 'small', inline = f
     [onClick]
   );
 
+  const handleClick = () => {
+    if (disabled) return;
+    onClick?.();
+  };
+
   return (
     <TileContainer
       selected={selected}
       size={size}
       inline={inline}
-      onClick={onClick}
+      onClick={handleClick}
       onKeyDown={handleKeyDown}
       tabIndex={'0'}
+      aria-disabled={disabled}
+      disabled={disabled}
       {...rest}
     >
       {!inline && icon && (
