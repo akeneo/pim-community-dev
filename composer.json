@@ -178,7 +178,8 @@
         "squizlabs/php_codesniffer": "3.*",
         "symfony/debug-bundle": "^5.4.0",
         "symfony/web-profiler-bundle": "^5.4.0",
-        "vimeo/psalm": "^5.1.0"
+        "vimeo/psalm": "^5.1.0",
+        "zircote/swagger-php": "^4.7"
     },
     "conflict": {
         "symfony/symfony": "*"

@@ -1,0 +1,91 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Official Akeneo PIM REST API Serenity",
+        "description": "The Akeneo REST API brought to you!\\n\\nFind out how this Postman collection works by visiting https://api.akeneo.com",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "{protocol}://{sandboxName}",
+            "description": "Your Sandbox",
+            "variables": {
+                "protocol": {
+                    "enum": [
+                        "http",
+                        "https"
+                    ],
+                    "default": "https"
+                },
+                "sandboxName": {
+                    "default": "your-sandbox.demo.cloud.akeneo.com"
+                }
+            }
+        }
+    ],
+    "paths": {
+        "/api/rest/v1/products": {
+            "get": {
+                "operationId": "5a1718c589f1d110031649a86e76bb90"
+            }
+        }
+    },
+    "components": {
+        "responses": {
+            "401": {
+                "description": "Authentication required",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "description": "An error response object",
+                            "properties": {
+                                "code": {
+                                    "description": "The HTTP status code",
+                                    "type": "integer",
+                                    "example": 401
+                                },
+                                "message": {
+                                    "description": "A message explaining the error",
+                                    "type": "string",
+                                    "example": "Authentication is required"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "x-details": "Can be caused by a missing or expired token"
+            }
+        },
+        "securitySchemes": {
+            "oAuthSample": {
+                "type": "http",
+                "scheme": "bearer"
+            },
+            "bearerAuth": {
+                "type": "apiKey",
+                "description": "TODO: un lien externe pour calculer cette merde ?",
+                "name": "Authorization",
+                "in": "header"
+            },
+            "basicAuth": {
+                "type": "http",
+                "description": "Use `clientid` / `secret` as the test credentials",
+                "name": "clientid",
+                "in": "header",
+                "scheme": "basic"
+            }
+        }
+    },
+    "x-readme": {
+        "samples-languages": [
+            "curl",
+            "php",
+            "javascript",
+            "node",
+            "python",
+            "java",
+            "csharp"
+        ]
+    }
+}

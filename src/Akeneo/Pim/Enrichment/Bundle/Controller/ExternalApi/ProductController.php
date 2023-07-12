@@ -50,6 +50,7 @@ use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Elasticsearch\Common\Exceptions\BadRequest400Exception;
 use Elasticsearch\Common\Exceptions\ServerErrorResponseException;
+use OpenApi\Attributes as OA;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
@@ -126,6 +127,10 @@ class ProductController
      * @throws ServerErrorResponseException
      * @throws UnprocessableEntityHttpException
      */
+    #[OA\Get(
+        path: '/api/rest/v1/products',
+
+    )]
     public function listAction(Request $request): JsonResponse
     {
         $this->denyAccessUnlessAclIsGranted('pim_api_product_list');
