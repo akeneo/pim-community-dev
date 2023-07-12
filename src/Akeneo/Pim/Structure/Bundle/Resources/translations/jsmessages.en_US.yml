@@ -243,6 +243,11 @@ pim_enrich.entity.attribute:
                 non_unique_attribute_title_highlight: not unique
                 unique_helper: The attribute’s value is different for each product. This cannot be modified.
                 non_unique_helper: The same value can be used for this attribute across several products. This cannot be modified.
+                main_identifier_title: This attribute is
+                main_identifier_title_highlight: the main identifier
+                non_main_identifier_title: This attribute is
+                non_main_identifier_title_highlight: not the main identifier
+                main_identifier_helper: You may have a up to {{ maxIdentifiersCount }} identifiers for your products with one being set as the main identifier. The default main identifier is {{ mainIdentifierLabel }}.
                 scopable_attribute_title: This attribute is
                 scopable_attribute_title_highlight: scopable
                 non_scopable_attribute_title: This attribute is
@@ -254,6 +259,15 @@ pim_enrich.entity.attribute:
                 non_localizable_attribute_title_highlight: not localizable
                 localizable_helper: Value per locale determines if an attribute is localizable (different values for different locales) or not (one value for all locales).
                 learn_more: Learn more
+                set_as_main_identifier:
+                    button: Set as main identifier
+                    confirm: Please type "{{ attributeCode }}"
+                    confirm_title: Setting as main identifier will impact all products
+                    are_you_sure: Are you sure you want to set the {{ attributeLabel }} attribute as the main identifier? Learn more in the help center.
+                    warning: "{{ attributeLabel }} is currently set as the main identifier. This change will impact all products."
+                    flash:
+                        success: Main identifier has successfully been updated.
+                        fail: An error occurred during main identifier update.
             validation: Validation parameters
             select_locale: Select your locale
         delete:
