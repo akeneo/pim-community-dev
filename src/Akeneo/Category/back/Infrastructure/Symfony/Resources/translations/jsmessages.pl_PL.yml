@@ -22,7 +22,15 @@ akeneo.category:
     delete: Usuń drzewo
   template:
     learn_more: Dowiedz się więcej o szablonie kategorii
+    create: Utwórz szablon
+    create_confirmation_modal:
+      title: Utwórz nowy szablon kategorii
+      helper: Utwórz szablon kategorii, aby zdefiniować atrybuty i aktywować wzbogacanie wszystkich kategorii tego drzewa.
+      category_tree: Drzewo kategorii
+      link: Dowiedz się więcej o szablonach kategorii
     edit: Edytuj szablon
+    notification_success: Utworzono szablon kategorii
+    notification_error: Nie udało się utworzyć szablonu kategorii.
     not_found: Nie ma aktywnego szablonu dla tej kategorii.
     properties:
       general_properties: Właściwości ogólne
@@ -98,6 +106,28 @@ akeneo.category:
       saving: Zapisywanie
       editing: Edytowanie
       errors: Błędy nie zostały zapisane.
+    initialize:
+      title: Dodaj atrybuty kategorii
+      message: Zdefiniuj zawartość kategorii, dodając atrybuty tekstu, obszaru tekstowego lub obrazu.
+      choice_message: Zacznij od utworzenia pierwszego atrybutu dopasowanego do Twoich potrzeb lub załaduj zestaw 13 sugerowanych atrybutów.
+      button:
+        load: Załaduj zestaw atrybutów
+        create: Utwórz pierwszy atrybut
+    load_attribute_set:
+      section_title: Załaduj zestaw atrybutów
+      title: Załaduj zestaw sugerowanych atrybutów
+      description: Łatwo zacznij konfigurację wzbogaconych kategorii poprzez załadowanie zestawu sugerowanych atrybutów.
+      content_description: 'Ten zestaw zawiera 13 atrybutów:'
+      content:
+        description_attributes: 2 atrybuty obszaru tekstowego do długiego i krótkiego opisu kategorii
+        url_attributes: 1 atrybut tekstowy z informacją o adresie URL
+        image_attributes: 3 atrybuty obrazu i 3 atrybuty tekstowe do podania alternatywnych informacji o obrazie
+        seo_attributes: 2 atrybuty tekstowe i 2 atrybuty obszaru tekstowego na dane SEO
+      confirmation_message: Czy na pewno chcesz załadować ten zestaw atrybutów?
+      button:
+        load: Załaduj zestaw atrybutów
+      notification:
+        success: Utworzono atrybuty
   template_list:
     columns:
       header: Etykieta

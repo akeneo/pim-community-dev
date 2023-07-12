@@ -22,7 +22,15 @@ akeneo.category:
     delete: ツリーを削除
   template:
     learn_more: カテゴリテンプレートの詳細
+    create: テンプレートを作成
+    create_confirmation_modal:
+      title: カテゴリテンプレートの新規作成
+      helper: このツリーのすべてのカテゴリに属性を定義して充実を有効化するカテゴリテンプレートを作成します。
+      category_tree: カテゴリツリー
+      link: カテゴリテンプレートの詳細
     edit: テンプレートを編集
+    notification_success: カテゴリテンプレートを正常に作成しました
+    notification_error: カテゴリテンプレートを作成できませんでした
     not_found: このカテゴリのアクティブなテンプレートはありません。
     properties:
       general_properties: プロパティ全般
@@ -98,6 +106,28 @@ akeneo.category:
       saving: 保存中
       editing: 編集中
       errors: エラーは保存されません
+    initialize:
+      title: カテゴリ属性の追加
+      message: テキスト、テキストエリア、または画像の属性を追加して、カテゴリのコンテンツを定義します。
+      choice_message: ニーズに合わせて最初の属性を作成するか、推奨される13個の属性セットをロードします。
+      button:
+        load: 属性のセットをロード
+        create: 最初の属性を作成
+    load_attribute_set:
+      section_title: 属性のセットのロード
+      title: 推奨される属性セットのロード
+      description: 推奨される属性セットをロードすると、充実化されたカテゴリの構成を簡単に開始できます。
+      content_description: 'このセットには13個の属性が含まれています:'
+      content:
+        description_attributes: カテゴリの長い説明と短い説明に使用する2つのテキストエリア属性
+        url_attributes: URL情報に使用する1つのテキスト属性
+        image_attributes: 画像と代替テキスト情報に使用する3つの画像属性と3つのテキスト属性
+        seo_attributes: SEO情報に使用する2つのテキスト属性と2つのテキストエリア属性
+      confirmation_message: この属性セットをロードしますか？
+      button:
+        load: 属性のセットをロード
+      notification:
+        success: 属性を正常に作成しました
   template_list:
     columns:
       header: ラベル
