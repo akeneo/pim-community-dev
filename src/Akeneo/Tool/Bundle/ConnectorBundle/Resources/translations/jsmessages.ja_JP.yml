@@ -24,6 +24,7 @@ batch_jobs:
       clean_product_model: 商品モデルを消去中
       clean_product: 商品を消去中
       remove_attribute_codes_from_blacklist: ブラックリストからコードを削除中
+    check_job_unique: ジョブが一意であることをチェック
   csv_product_export:
     label: 商品をCSV形式でエクスポート
     export.label: 商品エクスポート

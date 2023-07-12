@@ -48,6 +48,8 @@ pim_user:
         not_match: パスワードが一致しません
       current_password:
         wrong: パスワードが間違っています
+      roles:
+        last_user_with_edit_role_permissions: このユーザーは編集権限許可を持つ最後のユーザーです。
     tabs:
       general:
         title: 全般
@@ -92,6 +94,8 @@ pim_user:
     role:
       message:
         saved: "権限を保存しました"
+        cannot_delete_last_edit_role_permission: 最後の権限の編集権限許可を削除できません。
+        cannot_remove_last_edit_role_permission: 最後の権限の編集権限許可を削除できません。
     user:
       message:
         saved: "ユーザーを保存しました"
