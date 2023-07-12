@@ -5,7 +5,7 @@ import {CreateAttributeProgressIndicator} from '@akeneo-pim-community/settings-u
 
 const CreateAttributeCodeAndLabel: React.FC<CreateAttributeButtonStepProps> = props => {
   const currentIndex = props?.initialData?.attribute_type === 'pim_catalog_table' ? 2 : 1;
-  console.log('coucou');
+
   return (
     <CreateAttributeModal {...props}>
       <CreateAttributeProgressIndicator

@@ -1,4 +1,4 @@
-import React, {FunctionComponentElement, useState} from 'react';
+import React, {FunctionComponentElement, useMemo, useState} from 'react';
 import {useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {useAttributeCodeInput} from '../hooks/attributes/useAttributeCodeInput';
 import {
@@ -61,6 +61,10 @@ const CreateAttributeModal: React.FC<CreateAttributeModalProps> = ({
   const [isScopable, setIsScopable] = useState(false);
   const [isLocalizable, setIsLocalizable] = useState(false);
 
+  const isUniqueValueReadOnly = useMemo(() => {
+    return !['pim_catalog_number', 'pim_catalog_text'].includes(initialData?.attribute_type || '');
+  }, [initialData]);
+
   const labelRef: React.RefObject<HTMLInputElement> = React.createRef();
 
   const handleConfirm = () => {
@@ -74,6 +78,14 @@ const CreateAttributeModal: React.FC<CreateAttributeModalProps> = ({
 
   const handleBack = () => {
     onBack?.();
+  };
+
+  const handleUniqueValueChange = (value: boolean) => {
+    if (value) {
+      setIsLocalizable(false);
+      setIsScopable(false);
+    }
+    setIsUniqueValue(value);
   };
 
   return (
@@ -114,11 +126,7 @@ const CreateAttributeModal: React.FC<CreateAttributeModalProps> = ({
           React.cloneElement<CreateAttributeModalExtraFieldProps>(field.component, {key: i})
         )}
         <CheckBoxesContainer>
-          <Checkbox
-            readOnly={initialData?.attribute_type === 'pim_catalog_identifier'}
-            checked={isUniqueValue}
-            onChange={setIsUniqueValue}
-          >
+          <Checkbox readOnly={isUniqueValueReadOnly} checked={isUniqueValue} onChange={handleUniqueValueChange}>
             {translate('pim_enrich.entity.attribute.property.unique')}
           </Checkbox>
           <Tooltip direction="top">
@@ -127,7 +135,7 @@ const CreateAttributeModal: React.FC<CreateAttributeModalProps> = ({
           </Tooltip>
         </CheckBoxesContainer>
         <CheckBoxesContainer>
-          <Checkbox checked={isScopable} onChange={setIsScopable}>
+          <Checkbox readOnly={isUniqueValue} checked={isScopable} onChange={setIsScopable}>
             {translate('pim_enrich.entity.attribute.property.scopable')}
           </Checkbox>
           <Tooltip direction="top">
@@ -136,7 +144,7 @@ const CreateAttributeModal: React.FC<CreateAttributeModalProps> = ({
           </Tooltip>
         </CheckBoxesContainer>
         <CheckBoxesContainer>
-          <Checkbox checked={isLocalizable} onChange={setIsLocalizable}>
+          <Checkbox readOnly={isUniqueValue} checked={isLocalizable} onChange={setIsLocalizable}>
             {translate('pim_enrich.entity.attribute.property.localizable')}
           </Checkbox>
           <Tooltip direction="top">
