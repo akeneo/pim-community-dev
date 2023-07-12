@@ -72,7 +72,7 @@ const AttributeSetupApp: FC<AttributeSetupAppProps> = ({attribute, originalMainI
   const mainIdentifierLabel = getLabel(mainIdentifierAttribute.labels, catalogLocale, mainIdentifierCode);
   const attributeLabel = getLabel(attribute.labels, catalogLocale, attribute.code);
   const [isOpen, open, close] = useBooleanState();
-  const isOnboarderEnabled = featureFlags.isEnabled('onboarder') || true;
+  const isOnboarderEnabled = featureFlags.isEnabled('onboarder');
 
   const setAsMainIdentifierUrl = router.generate('pim_enrich_attribute_rest_switch_main_identifier', {
     attributeCode: attribute.code,
@@ -93,10 +93,13 @@ const AttributeSetupApp: FC<AttributeSetupAppProps> = ({attribute, originalMainI
       );
       setMainIdentifierAttribute(attribute);
     } else {
-      notify(
-        NotificationLevel.ERROR,
-        translate('pim_enrich.entity.attribute.module.edit.attribute_setup.set_as_main_identifier.flash.fail')
-      );
+      response.json().then(errorMessage => {
+        notify(
+          NotificationLevel.ERROR,
+          `${translate('pim_enrich.entity.attribute.module.edit.attribute_setup.set_as_main_identifier.flash.fail')}
+          ${errorMessage}`
+        );
+      });
     }
     close();
   };
@@ -169,7 +172,7 @@ const AttributeSetupApp: FC<AttributeSetupAppProps> = ({attribute, originalMainI
               </List.RowHelpers>
             )}
             <List.RemoveCell>
-              {isMainIdentifier && !isOnboarderEnabled ? (
+              {isMainIdentifier || isOnboarderEnabled ? (
                 <IconButton ghost="borderless" level="tertiary" icon={<LockIcon />} title="" />
               ) : (
                 <>
