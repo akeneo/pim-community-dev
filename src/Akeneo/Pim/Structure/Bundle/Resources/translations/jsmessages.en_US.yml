@@ -226,8 +226,8 @@ pim_enrich.entity.attribute:
         identifiers_limit: You can create a maximum of 10 identifiers. Learn more about multiple identifiers in the
         identifiers_limit_link: help center.
         unique_value_helper: Should the value of this attribute be unique? You will not be able to change this setting later.
-        scopable_helper: Should the value of this attribute be unique for each channel (scopable)?
-        localizable_helper: Should the value of this attribute be unique for each locale (localizable)?
+        scopable_helper: Should the value of this attribute differ by channel (scopable)?
+        localizable_helper: Should the value of this attribute differ by locale (localizable)?
         attribute_creation_type: Attribute type
         attribute_creation_template: Template
         attribute_creation_settings: Attribute settings
