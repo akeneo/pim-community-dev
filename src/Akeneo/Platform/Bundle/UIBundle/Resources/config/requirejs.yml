@@ -853,11 +853,7 @@ config:
     pim/attribute-edit-form/properties/default-metric-unit: pimui/js/attribute/form/properties/default-metric-unit
     pim/attribute-edit-form/properties/group:               pimui/js/attribute/form/properties/group
     pim/attribute-edit-form/properties/is-locale-specific:  pimui/js/attribute/form/properties/is-locale-specific
-    pim/attribute-edit-form/properties/localizable:         pimui/js/attribute/form/properties/localizable
     pim/attribute-edit-form/properties/metric-family:       pimui/js/attribute/form/properties/metric-family
-    pim/attribute-edit-form/properties/scopable:            pimui/js/attribute/form/properties/scopable
-    pim/attribute-edit-form/properties/type:                pimui/js/attribute/form/properties/type
-    pim/attribute-edit-form/properties/unique:              pimui/js/attribute/form/properties/unique
     pim/attribute-edit-form/properties/validation-regexp:   pimui/js/attribute/form/properties/validation-regexp
     pim/attribute-edit-form/properties/guidelines:          pimui/js/attribute/form/properties/guidelines.tsx
     pim/attribute-edit-form/type-specific-form:             pimui/js/attribute/form/type-specific-form
