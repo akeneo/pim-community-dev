@@ -9,12 +9,11 @@ const ListCellInner = styled.div`
   flex-direction: column;
   align-items: baseline;
   line-height: 22px;
-  color: ${getColor('grey', 120)};
+  color: ${getColor('grey', 140)};
 
   header {
     font-size: ${getFontSize('big')};
     display: block;
-    font-weight: 600;
 
     em {
       font-style: initial;
