@@ -5,7 +5,9 @@ namespace spec\Akeneo\Tool\Bundle\ConnectorBundle\EventListener;
 use Akeneo\Tool\Bundle\ConnectorBundle\EventListener\StepExecutionArchivist;
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
+use Akeneo\Tool\Component\Batch\Event\StepExecutionEvent;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Archiver\ArchiverInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -26,7 +28,7 @@ class StepExecutionArchivistSpec extends ObjectBehavior
     {
         $this->getSubscribedEvents()->shouldReturn(
             [
-                EventInterface::BEFORE_JOB_STATUS_UPGRADE => 'beforeStatusUpgrade'
+                EventInterface::STEP_EXECUTION_COMPLETED => 'onStepExecutionCompleted'
             ]
         );
     }
@@ -109,8 +111,8 @@ class StepExecutionArchivistSpec extends ObjectBehavior
     }
 
     function it_register_an_event_and_verify_if_job_is_supported(
-        JobExecutionEvent $event,
-        JobExecution $jobExecution,
+        StepExecutionEvent $event,
+        StepExecution $stepExecution,
         ArchiverInterface $archiver1,
         ArchiverInterface $archiver2
     ) {
@@ -120,15 +122,15 @@ class StepExecutionArchivistSpec extends ObjectBehavior
         $this->registerArchiver($archiver1);
         $this->registerArchiver($archiver2);
 
-        $event->getJobExecution()->willReturn($jobExecution);
+        $event->getStepExecution()->willReturn($stepExecution);
 
-        $archiver1->supports($jobExecution)->willReturn(true);
-        $archiver2->supports($jobExecution)->willReturn(false);
+        $archiver1->supports($stepExecution)->willReturn(true);
+        $archiver2->supports($stepExecution)->willReturn(false);
 
-        $archiver1->archive($jobExecution)->shouldBeCalled();
-        $archiver2->archive($jobExecution)->shouldNotBeCalled();
+        $archiver1->archive($stepExecution)->shouldBeCalled();
+        $archiver2->archive($stepExecution)->shouldNotBeCalled();
 
-        $this->beforeStatusUpgrade($event);
+        $this->onStepExecutionCompleted($event);
     }
 
     function it_tells_if_there_are_at_least_two_archives_for_a_job_execution(

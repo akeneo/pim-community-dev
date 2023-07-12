@@ -27,7 +27,7 @@ class StepExecutionArchivist implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            EventInterface::STEP_EXECUTION_COMPLETED => 'beforeStatusUpgrade',
+            EventInterface::STEP_EXECUTION_COMPLETED => 'onStepExecutionCompleted',
         ];
     }
 
@@ -55,10 +55,8 @@ class StepExecutionArchivist implements EventSubscriberInterface
 
     /**
      * Delegate archiving to the registered archivers
-     *
-     * @param JobExecutionEvent $event
      */
-    public function beforeStatusUpgrade(StepExecutionEvent $event): void
+    public function onStepExecutionCompleted(StepExecutionEvent $event): void
     {
         foreach ($this->archivers as $archiver) {
             if ($archiver->supports($event->getStepExecution())) {
