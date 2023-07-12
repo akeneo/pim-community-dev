@@ -38,7 +38,6 @@ const CreateAttributeButtonApp: React.FC<CreateAttributeButtonAppProps> = ({
   const [isOpen, open, close] = useBooleanState(isModalOpen);
   const [attributeData, setAttributeData] = React.useState<AttributeData>(initialData);
   const [currentStepIndex, setCurrentStepIndex] = React.useState<number>(-1);
-  console.log('CreateAttributeButtonApp');
   let stepsForAttributeType = steps.default;
   if (attributeData.attribute_type) {
     if (attributeData.attribute_type in steps) {
