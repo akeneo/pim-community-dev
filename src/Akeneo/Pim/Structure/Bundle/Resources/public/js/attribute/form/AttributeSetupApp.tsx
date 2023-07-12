@@ -47,7 +47,7 @@ const AttributeSetupApp: FC<AttributeSetupAppProps> = ({attribute}) => {
           <List.Cell width="auto">
             <ListCellInner>
               <header>
-                {translate('pim_enrich.entity.attribute.module.edit.attribute_setup.type')}
+                {translate('pim_enrich.entity.attribute.module.edit.attribute_setup.type')}{' '}
                 <em>{translate(`pim_enrich.entity.attribute.property.type.${attribute.type}`)}</em>
               </header>
               {translate('pim_enrich.entity.attribute.module.edit.attribute_setup.type_helper')}
@@ -64,7 +64,7 @@ const AttributeSetupApp: FC<AttributeSetupAppProps> = ({attribute}) => {
               <header>
                 {attribute.unique ? (
                   <>
-                    {translate('pim_enrich.entity.attribute.module.edit.attribute_setup.unique_attribute_title')}
+                    {translate('pim_enrich.entity.attribute.module.edit.attribute_setup.unique_attribute_title')}{' '}
                     <em>
                       {translate(
                         'pim_enrich.entity.attribute.module.edit.attribute_setup.unique_attribute_title_highlight'
@@ -73,7 +73,7 @@ const AttributeSetupApp: FC<AttributeSetupAppProps> = ({attribute}) => {
                   </>
                 ) : (
                   <>
-                    {translate('pim_enrich.entity.attribute.module.edit.attribute_setup.non_unique_attribute_title')}
+                    {translate('pim_enrich.entity.attribute.module.edit.attribute_setup.non_unique_attribute_title')}{' '}
                     <em>
                       {translate(
                         'pim_enrich.entity.attribute.module.edit.attribute_setup.non_unique_attribute_title_highlight'
@@ -96,7 +96,7 @@ const AttributeSetupApp: FC<AttributeSetupAppProps> = ({attribute}) => {
               <header>
                 {attribute.scopable ? (
                   <>
-                    {translate('pim_enrich.entity.attribute.module.edit.attribute_setup.scopable_attribute_title')}
+                    {translate('pim_enrich.entity.attribute.module.edit.attribute_setup.scopable_attribute_title')}{' '}
                     <em>
                       {translate(
                         'pim_enrich.entity.attribute.module.edit.attribute_setup.scopable_attribute_title_highlight'
@@ -105,7 +105,7 @@ const AttributeSetupApp: FC<AttributeSetupAppProps> = ({attribute}) => {
                   </>
                 ) : (
                   <>
-                    {translate('pim_enrich.entity.attribute.module.edit.attribute_setup.non_scopable_attribute_title')}
+                    {translate('pim_enrich.entity.attribute.module.edit.attribute_setup.non_scopable_attribute_title')}{' '}
                     <em>
                       {translate(
                         'pim_enrich.entity.attribute.module.edit.attribute_setup.non_scopable_attribute_title_highlight'
@@ -114,7 +114,7 @@ const AttributeSetupApp: FC<AttributeSetupAppProps> = ({attribute}) => {
                   </>
                 )}
               </header>
-              {translate('pim_enrich.entity.attribute.module.edit.attribute_setup.scopable_helper')}
+              {translate('pim_enrich.entity.attribute.module.edit.attribute_setup.scopable_helper')}{' '}
               <Link href={urlScopable} target="_blank">
                 {translate('pim_enrich.entity.attribute.module.edit.attribute_setup.learn_more')}
               </Link>
@@ -131,7 +131,7 @@ const AttributeSetupApp: FC<AttributeSetupAppProps> = ({attribute}) => {
               <header>
                 {attribute.localizable ? (
                   <>
-                    {translate('pim_enrich.entity.attribute.module.edit.attribute_setup.localizable_attribute_title')}
+                    {translate('pim_enrich.entity.attribute.module.edit.attribute_setup.localizable_attribute_title')}{' '}
                     <em>
                       {translate(
                         'pim_enrich.entity.attribute.module.edit.attribute_setup.localizable_attribute_title_highlight'
@@ -142,7 +142,7 @@ const AttributeSetupApp: FC<AttributeSetupAppProps> = ({attribute}) => {
                   <>
                     {translate(
                       'pim_enrich.entity.attribute.module.edit.attribute_setup.non_localizable_attribute_title'
-                    )}
+                    )}{' '}
                     <em>
                       {translate(
                         'pim_enrich.entity.attribute.module.edit.attribute_setup.non_localizable_attribute_title_highlight'
@@ -151,7 +151,7 @@ const AttributeSetupApp: FC<AttributeSetupAppProps> = ({attribute}) => {
                   </>
                 )}
               </header>
-              {translate('pim_enrich.entity.attribute.module.edit.attribute_setup.localizable_helper')}
+              {translate('pim_enrich.entity.attribute.module.edit.attribute_setup.localizable_helper')}{' '}
               <Link href={urlLocalizable} target="_blank">
                 {translate('pim_enrich.entity.attribute.module.edit.attribute_setup.learn_more')}
               </Link>
