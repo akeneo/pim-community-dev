@@ -22,7 +22,7 @@ abstract class AbstractFilesystemArchiver implements ArchiverInterface
      */
     public function getArchives(JobExecution $jobExecution, bool $deep = false): iterable
     {
-        if (!$this->supportJobExecution($jobExecution)) {
+        if (!$this->supportsJobExecution($jobExecution)) {
             return [];
         }
 
@@ -76,7 +76,7 @@ abstract class AbstractFilesystemArchiver implements ArchiverInterface
             $this->getName();
     }
 
-    private function supportJobExecution(JobExecution $jobExecution): bool
+    private function supportsJobExecution(JobExecution $jobExecution): bool
     {
         foreach ($jobExecution->getStepExecutions() as $stepExecution) {
             if ($this->supports($stepExecution)) {

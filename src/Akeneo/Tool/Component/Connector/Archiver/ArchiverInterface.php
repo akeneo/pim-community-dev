@@ -17,9 +17,7 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 interface ArchiverInterface
 {
     /**
-     * Archive a job execution
-     *
-     * @param StepExecution $stepExecution
+     * Archive a step execution
      */
     public function archive(StepExecution $stepExecution): void;
 
