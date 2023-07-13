@@ -237,11 +237,12 @@ pim_enrich.entity.attribute:
                 warning: Actions taken here could greatly impact your products.
                 type: This attribute type is
                 type_helper: An attribute’s type cannot be modified as this would result in the deletion of all its product values.
-                unique_attribute_title: This attribute has a
-                unique_attribute_title_highlight: unique value per product
-                non_unique_attribute_title: This attribute can have the
-                non_unique_attribute_title_highlight: same value for several attributes
-                unique_helper: This cannot be modified.
+                unique_attribute_title: The value of this attribute is
+                unique_attribute_title_highlight: unique
+                non_unique_attribute_title: The value of this attribute is
+                non_unique_attribute_title_highlight: not unique
+                unique_helper: The attribute’s value is different for each product. This cannot be modified.
+                non_unique_helper: The same value can be used for this attribute across several products. This cannot be modified.
                 scopable_attribute_title: This attribute is
                 scopable_attribute_title_highlight: scopable
                 non_scopable_attribute_title: This attribute is
