@@ -81,7 +81,10 @@ const AttributeSetupApp: FC<AttributeSetupAppProps> = ({attribute}) => {
                   </>
                 )}
               </header>
-              {translate('pim_enrich.entity.attribute.module.edit.attribute_setup.unique_helper')}
+              {attribute.unique ?
+                translate('pim_enrich.entity.attribute.module.edit.attribute_setup.unique_helper') :
+                translate('pim_enrich.entity.attribute.module.edit.attribute_setup.non_unique_helper')
+              }
             </ListCellInner>
           </List.Cell>
           <List.RemoveCell>
