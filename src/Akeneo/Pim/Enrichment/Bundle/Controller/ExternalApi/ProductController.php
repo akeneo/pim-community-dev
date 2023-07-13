@@ -129,7 +129,85 @@ class ProductController
      */
     #[OA\Get(
         path: '/api/rest/v1/products',
-
+        operationId: 'get_products',
+        description: 'This endpoint allows you to get a list of products. Products are paginated and they can be filtered. In the Enterprise Edition, since the 2.0, permissions based on your user groups are applied to the set of products you request.',
+        summary: 'Get list of products',
+        security: [
+            ['bearerToken' => []],
+        ],
+        tags: ['Product [identifier]'],
+        parameters: [
+            new OA\Parameter(
+                name: 'search',
+                description: 'Filter products, for more details see the <a href=\"/documentation/filter.html\">Filters</a> section',
+                in: 'query',
+                required: false,
+                schema: new OA\Schema(
+                    type: 'string'
+                )
+            ),
+            new OA\Parameter(
+                name: 'scope',
+                description: 'Filter product values to return scopable attributes for the given channel as well as the non localizable/non scopable attributes, for more details see the <a href=\"/documentation/filter.html#via-channel\">Filter product values via channel</a> section',
+                in: 'query',
+                required: false,
+                schema: new OA\Schema(
+                    type: 'string',
+                    example: 'e-commerce'
+                )
+            ),
+            new OA\Parameter(
+                name: 'locales',
+                description: 'Filter product values to return localizable attributes for the given locales as well as the non localizable/non scopable attributes, for more details see the <a href=\"/documentation/filter.html#via-locale\">Filter product values via locale</a> section',
+                in: 'query',
+                required: false,
+                schema: new OA\Schema(
+                    type: 'string'
+                )
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: '200',
+                description: 'Return products paginated',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(
+                            property: '_links',
+                            ref: '#/components/schemas/_links',
+                        ),
+                        new OA\Property(
+                            property: 'current_page',
+                            description: 'Current page number',
+                            type: 'integer',
+                            example: 1
+                        ),
+                        new OA\Property(
+                            property: '_embedded',
+                            type: 'array',
+                            items: new OA\Items(ref: '#/components/schemas/Product'),
+                        )
+                    ],
+                    type: 'object',
+                )
+            ),
+            new OA\Response(
+                ref: '#/components/responses/401',
+                response: '401'
+            ),
+            new OA\Response(
+                ref: '#/components/responses/403',
+                response: '403'
+            ),
+            new OA\Response(
+                ref: '#/components/responses/406',
+                response: '406'
+            ),
+            new OA\Response(
+                ref: '#/components/responses/422',
+                response: '422'
+            ),
+        ]
     )]
     public function listAction(Request $request): JsonResponse
     {
