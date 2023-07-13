@@ -111,7 +111,7 @@ class IdentifierFilterSpec extends ObjectBehavior
     function it_adds_a_field_filter_with_operator_equals(SearchQueryBuilder $sqb)
     {
         $sqb->addFilter(
-            ["bool" => ["should" => [["bool" => ["filter" => [["term" => ["document_type" => "Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface"]], ["term" => ["values.sku-text.<all_channels>.<all_locales>" => "sku\-001"]]]]], ["bool" => ["filter" => [["term" => ["document_type" => "Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface"]], ["term" => ["identifier" => "sku\-001"]]]]]], "minimum_should_match" => 1]]
+            ["bool" => ["should" => [["bool" => ["filter" => [["term" => ["document_type" => "Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface"]], ["term" => ["values.sku-text.<all_channels>.<all_locales>" => "sku-001"]]]]], ["bool" => ["filter" => [["term" => ["document_type" => "Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface"]], ["term" => ["identifier" => "sku-001"]]]]]], "minimum_should_match" => 1]]
         )->shouldBeCalled();
 
         $this->setQueryBuilder($sqb);
@@ -121,7 +121,7 @@ class IdentifierFilterSpec extends ObjectBehavior
     function it_adds_a_field_filter_with_operator_not_equal(SearchQueryBuilder $sqb)
     {
         $sqb->addMustNot(
-            ["bool" => ["should" => [["bool" => ["filter" => [["term" => ["document_type" => "Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface"]], ["query_string" => ["default_field" => "values.sku-text.<all_channels>.<all_locales>", "query" => "sku\-001"]]]]], ["bool" => ["filter" => [["term" => ["document_type" => "Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface"]], ["query_string" => ["default_field" => "identifier", "query" => "sku\-001"]]]]]], "minimum_should_match" => 1]]
+            ["bool" => ["should" => [["bool" => ["filter" => [["term" => ["document_type" => "Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface"]], ["query_string" => ["default_field" => "values.sku-text.<all_channels>.<all_locales>", "query" => "sku-001"]]]]], ["bool" => ["filter" => [["term" => ["document_type" => "Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface"]], ["query_string" => ["default_field" => "identifier", "query" => "sku-001"]]]]]], "minimum_should_match" => 1]]
         )->shouldBeCalled();
 
         $sqb->addFilter(
