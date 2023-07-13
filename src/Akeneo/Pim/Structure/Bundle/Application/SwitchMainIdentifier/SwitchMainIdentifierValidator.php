@@ -19,6 +19,7 @@ final class SwitchMainIdentifierValidator
     public function __construct(
         private readonly AttributeRepositoryInterface $attributeRepository,
         private readonly FeatureFlags $featureFlags,
+        private readonly PublishedProductExists $publishedProductExists,
     ) {
     }
 
@@ -26,6 +27,7 @@ final class SwitchMainIdentifierValidator
         SwitchMainIdentifierCommand $command
     ): void {
         $this->validateOnboarderIsDisabled();
+        $this->validateNoPublishedProducts();
         $this->loadNewMainIdentifier($command->getNewMainIdentifierCode());
         $this->validateAttributeExists();
         $this->validateAttributeIsAnIdentifier();
@@ -80,6 +82,13 @@ final class SwitchMainIdentifierValidator
 
         if ($enabled) {
             throw new \InvalidArgumentException('You cannot set another identifier attribute as the main identifier because this feature is not compatible with Akeneo Onboarder.');
+        }
+    }
+
+    private function validateNoPublishedProducts(): void
+    {
+        if (($this->publishedProductExists)()) {
+            throw new \InvalidArgumentException('If you would like to change your main identifier, please make sure you unpublish your products first and then change your main identifier.');
         }
     }
 }
