@@ -60,9 +60,15 @@ The component is displayed in a configurable responsive grid (width and gap). Ti
         </Tile>
         <Tile icon={<AttributeTextIcon/>} selected={isCurrent('Text')} onClick={() => {switchTo('Text')}}>
           Text
+          <Tooltip>
+            This is a text
+          </Tooltip>
         </Tile>
         <Tile icon={<AttributeNumberIcon/>} selected={isCurrent('Number')} onClick={() => {switchTo('Number')}} disabled>
           Number
+          <Tooltip>
+            This is a disabled number
+          </Tooltip>
         </Tile>
       </Tiles>;
     }}
