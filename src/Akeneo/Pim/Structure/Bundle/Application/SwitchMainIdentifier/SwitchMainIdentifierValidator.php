@@ -23,6 +23,10 @@ final class SwitchMainIdentifierValidator
     ) {
     }
 
+    /**
+     * @throws CanNotSwitchMainIndentifierWithPublishedProductException
+     * @throws CanNotSwitchMainIdentifierException
+     */
     public function validate(
         SwitchMainIdentifierCommand $command
     ): void {
@@ -37,7 +41,7 @@ final class SwitchMainIdentifierValidator
     private function validateAttributeExists(): void
     {
         if (null === $this->newMainIdentifier) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new CanNotSwitchMainIdentifierException(sprintf(
                 '%s attribute does not exist',
                 $this->newMainIdentifier
             ));
@@ -48,7 +52,7 @@ final class SwitchMainIdentifierValidator
     {
         Assert::isInstanceOf($this->newMainIdentifier, Attribute::class);
         if ($this->newMainIdentifier->getType() !== AttributeTypes::IDENTIFIER) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new CanNotSwitchMainIdentifierException(sprintf(
                 '%s attribute is not an identifier',
                 $this->newMainIdentifier
             ));
@@ -59,7 +63,7 @@ final class SwitchMainIdentifierValidator
     {
         Assert::isInstanceOf($this->newMainIdentifier, Attribute::class);
         if ($this->newMainIdentifier->isMainIdentifier()) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new CanNotSwitchMainIdentifierException(sprintf(
                 '%s attribute is already the main identifier',
                 $this->newMainIdentifier
             ));
@@ -81,14 +85,14 @@ final class SwitchMainIdentifierValidator
         }
 
         if ($enabled) {
-            throw new \InvalidArgumentException('You cannot set another identifier attribute as the main identifier because this feature is not compatible with Akeneo Onboarder.');
+            throw new CanNotSwitchMainIdentifierException('You cannot set another identifier attribute as the main identifier because this feature is not compatible with Akeneo Onboarder.');
         }
     }
 
     private function validateNoPublishedProducts(): void
     {
         if (($this->publishedProductExists)()) {
-            throw new \InvalidArgumentException('If you would like to change your main identifier, please make sure you unpublish your products first and then change your main identifier.');
+            throw new CanNotSwitchMainIndentifierWithPublishedProductException();
         }
     }
 }
