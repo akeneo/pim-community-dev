@@ -7,12 +7,6 @@ services:
     arguments:
       - '%kernel.project_dir%'
 
-  akeneo.installer.reset_pim.feature:
-    class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag
-    arguments:
-      - '%env(bool:FLAG_RESET_PIM_ENABLED)%'
-    public: true
-
   Akeneo\Platform\Installer\Infrastructure\UserConfigurationResetter\UserConfigurationResetter:
     arguments:
       - !tagged_iterator 'akeneo.installer.user_configuration_resetter'
