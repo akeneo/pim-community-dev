@@ -232,8 +232,8 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Initi
      */
     private function rewindToState(): void
     {
+        $this->fileIterator->rewind();
         if (!array_key_exists('position', $this->state)) {
-            $this->fileIterator->rewind();
             return;
         }
 
