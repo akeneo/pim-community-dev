@@ -6,6 +6,7 @@ import {ThemeProvider} from 'styled-components';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {AttributeSetupApp} from './AttributeSetupApp';
 import {Attribute} from '../models/Attribute';
+
 const FetcherRegistry = require('pim/fetcher-registry');
 
 class AttributeSetup extends BaseView {
@@ -23,10 +24,18 @@ class AttributeSetup extends BaseView {
 
   render(): any {
     const attribute = this.getFormData();
+    const handleMainIdentifierChange = () => {
+      FetcherRegistry.getFetcher('attribute').clear();
+    };
+
     ReactDOM.render(
       <DependenciesProvider>
         <ThemeProvider theme={pimTheme}>
-          <AttributeSetupApp attribute={attribute} originalMainIdentifierAttribute={this.mainIdentifierAttribute} />
+          <AttributeSetupApp
+            attribute={attribute}
+            originalMainIdentifierAttribute={this.mainIdentifierAttribute}
+            onMainIdentifierChange={handleMainIdentifierChange}
+          />
         </ThemeProvider>
       </DependenciesProvider>,
       this.el
