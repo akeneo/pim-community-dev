@@ -320,7 +320,6 @@ akeneo_connectivity.connection:
   connections: Connessioni
   secondary_actions:
     title: Altre azioni
-  developer_mode: Modalità sviluppatore
   connection:
     code: Codice
     label: Etichetta

@@ -318,7 +318,6 @@ akeneo_connectivity.connection:
   connections: Verbindungen
   secondary_actions:
     title: Weitere Aktionen
-  developer_mode: Entwicklermodus
   connection:
     code: Code
     label: Bezeichnung
