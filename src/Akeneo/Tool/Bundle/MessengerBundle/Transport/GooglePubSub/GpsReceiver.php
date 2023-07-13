@@ -20,6 +20,8 @@ use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
  */
 final class GpsReceiver implements ReceiverInterface
 {
+    private const ACKNOWLEDGE_DEADLINE_IN_SECONDS = 600;
+
     private SerializerInterface $serializer;
     private Subscription $subscription;
 
@@ -61,6 +63,18 @@ final class GpsReceiver implements ReceiverInterface
     {
         try {
             $this->subscription->acknowledge($this->getNativeMessage($envelope));
+        } catch (GoogleException $e) {
+            throw new TransportException($e->getMessage(), 0, $e);
+        }
+    }
+
+    public function modifyAckDeadline(Envelope $envelope): void
+    {
+        try {
+            $this->subscription->modifyAckDeadline(
+                $this->getNativeMessage($envelope),
+                self::ACKNOWLEDGE_DEADLINE_IN_SECONDS
+            );
         } catch (GoogleException $e) {
             throw new TransportException($e->getMessage(), 0, $e);
         }

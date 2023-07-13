@@ -33,6 +33,7 @@ final class MessengerConfigBuilder
 {
     private const CONFIG_FILEPATH = 'config/messages.yml';
     private const CONFIG_FILEPATH_FOR_ENV = 'config/messages_%s.yml';
+    public const MAX_RETRIES_DEFAULT = 1;
 
     private const SERIALIZER = 'akeneo_messenger.envelope.serializer';
 
@@ -132,6 +133,9 @@ final class MessengerConfigBuilder
                 'auto_setup' => false,
             ],
             'serializer' => self::SERIALIZER,
+            'retry_strategy' => [
+                'max_retries' => self::MAX_RETRIES_DEFAULT,
+            ],
         ];
     }
 
@@ -148,6 +152,9 @@ final class MessengerConfigBuilder
                 'auto_setup' => \in_array($this->env, ['dev', 'test', 'test_fake']),
             ],
             'serializer' => self::SERIALIZER,
+            'retry_strategy' => [
+                'max_retries' => self::MAX_RETRIES_DEFAULT,
+            ],
         ];
     }
 
@@ -169,6 +176,9 @@ final class MessengerConfigBuilder
     {
         return [
             'dsn' => 'in-memory://',
+            'retry_strategy' => [
+                'max_retries' => self::MAX_RETRIES_DEFAULT,
+            ],
         ];
     }
 
@@ -179,6 +189,9 @@ final class MessengerConfigBuilder
     {
         return [
             'dsn' => 'sync://',
+            'retry_strategy' => [
+                'max_retries' => self::MAX_RETRIES_DEFAULT,
+            ],
         ];
     }
 }

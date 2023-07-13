@@ -231,12 +231,14 @@ services:
             - '@akeneo.pim.automation.data_quality_insights.evaluate_products_pending_criteria'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateProductScores'
             - '@event_dispatcher'
+            - '@logger'
 
     Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProductModels:
         arguments:
             - '@akeneo.pim.automation.data_quality_insights.evaluate_product_models_pending_criteria'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateProductModelScores'
             - '@event_dispatcher'
+            - '@logger'
 
     Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateOutdatedProduct:
         arguments:

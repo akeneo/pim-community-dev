@@ -8,6 +8,7 @@ use Akeneo\Tool\Bundle\MessengerBundle\Serialization\JsonSerializer;
 use Akeneo\Tool\Bundle\MessengerBundle\Stamp\TenantIdStamp;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\Stamp\RedeliveryStamp;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -84,6 +85,29 @@ class JsonSerializerSpec extends ObjectBehavior
                 'headers' => [
                     'class' => \stdClass::class,
                     'tenant_id' => 'my_tenant_id_value',
+                ],
+            ]);
+    }
+
+    public function it_encodes_an_envelope_with_retry($normalizer): void
+    {
+        $message = new \stdClass();
+        $envelope = new Envelope($message, [
+            new RedeliveryStamp(5),
+        ]);
+
+        $normalizer->supportsNormalization($message, 'json', [])
+            ->willReturn(true);
+
+        $normalizer->normalize($message, 'json', [])
+            ->willReturn(['some_property' => 'Some value!']);
+
+        $this->encode($envelope)
+            ->shouldReturn([
+                'body' => '{"some_property":"Some value!"}',
+                'headers' => [
+                    'class' => \stdClass::class,
+                    'retry_count' => 5,
                 ],
             ]);
     }

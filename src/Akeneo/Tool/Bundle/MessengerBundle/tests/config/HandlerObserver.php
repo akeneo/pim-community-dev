@@ -25,6 +25,7 @@ final class HandlerObserver
 
     public function handlerWasExecuted(string $class, object $message): void
     {
+        $this->loadFromDb();
         $this->executedHandlers[] = [
             'class' => $class,
             'message' => $message->normalize(),
