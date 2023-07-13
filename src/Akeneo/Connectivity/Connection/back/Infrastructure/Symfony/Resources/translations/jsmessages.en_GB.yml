@@ -250,7 +250,6 @@ akeneo_connectivity.connection:
   connections: Connections
   secondary_actions:
     title: Other actions
-  developer_mode: Developer mode
   connection:
     code: Code
     label: Label

@@ -60,3 +60,5 @@ pim_analytics:
     data_destination.untracked: Nombre de connexions de type "destination" non monitorées
     other.tracked: Nombre de connexions de type "autre" monitorées
     other.untracked: Nombre de connexions de type "autre" non monitorées
+    reset_event_count: Nombre de réinitialisations de cette instance
+    last_reset_time: Date de la dernière réinitialisation de cette instance

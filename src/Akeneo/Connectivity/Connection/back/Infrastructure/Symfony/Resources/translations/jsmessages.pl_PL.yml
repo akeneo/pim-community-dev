@@ -320,7 +320,6 @@ akeneo_connectivity.connection:
   connections: Połączenia
   secondary_actions:
     title: Inne działania
-  developer_mode: Tryb deweloperski
   connection:
     code: Kod
     label: Nazwa
