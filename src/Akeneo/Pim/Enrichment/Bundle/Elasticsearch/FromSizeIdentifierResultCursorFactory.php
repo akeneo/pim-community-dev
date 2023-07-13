@@ -29,7 +29,7 @@ class FromSizeIdentifierResultCursorFactory implements CursorFactoryInterface
     public function createCursor($esQuery, array $options = [])
     {
         $options = $this->resolveOptions($options);
-        $sort = ['_id' => 'asc'];
+        $sort = ['id' => 'asc'];
 
         $esQuery['track_total_hits'] = true;
         $esQuery['_source'] = array_merge($esQuery['_source'], ['document_type']);
