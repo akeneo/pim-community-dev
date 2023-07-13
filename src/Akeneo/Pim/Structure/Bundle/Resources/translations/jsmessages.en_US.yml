@@ -270,6 +270,8 @@ pim_enrich.entity.attribute:
                     flash:
                         success: Main identifier has successfully been updated.
                         fail: An error occurred during main identifier update.
+                        fail_published_product: If you would like to change your main identifier, please make sure you unpublish your products first and then change your main identifier.
+                        fail_published_product_link: Go to your published products
             validation: Validation parameters
             select_locale: Select your locale
         delete:
