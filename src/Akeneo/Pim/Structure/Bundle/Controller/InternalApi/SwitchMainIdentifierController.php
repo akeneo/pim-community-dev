@@ -2,6 +2,8 @@
 
 namespace Akeneo\Pim\Structure\Bundle\Controller\InternalApi;
 
+use Akeneo\Pim\Structure\Bundle\Application\SwitchMainIdentifier\CanNotSwitchMainIdentifierException;
+use Akeneo\Pim\Structure\Bundle\Application\SwitchMainIdentifier\CanNotSwitchMainIndentifierWithPublishedProductException;
 use Akeneo\Pim\Structure\Bundle\Application\SwitchMainIdentifier\SwitchMainIdentifierCommand;
 use Akeneo\Pim\Structure\Bundle\Application\SwitchMainIdentifier\SwitchMainIdentifierHandler;
 use Akeneo\Pim\Structure\Bundle\Application\SwitchMainIdentifier\SwitchMainIdentifierValidator;
@@ -46,8 +48,15 @@ class SwitchMainIdentifierController
         $command = SwitchMainIdentifierCommand::fromIdentifierCode($attributeCode);
         try {
             $this->switchMainIdentifierValidator->validate($command);
-        } catch (\InvalidArgumentException $e) {
-            return new JsonResponse($e->getMessage(), 400);
+        } catch (CanNotSwitchMainIndentifierWithPublishedProductException) {
+            /**
+             * This exception is caught by the front to have better display
+             * @see src/Akeneo/Pim/Structure/Bundle/Resources/public/js/attribute/form/AttributeSetupApp.tsx
+             */
+            return new JsonResponse(['exception' => 'published_product'], 400);
+        } catch (CanNotSwitchMainIdentifierException $e) {
+            // The end user should not have access to this controller from front, no need of translated message
+            return new JsonResponse(['exception' => $e->getMessage()], 400);
         }
         ($this->switchMainIdentifierHandler)($command);
 

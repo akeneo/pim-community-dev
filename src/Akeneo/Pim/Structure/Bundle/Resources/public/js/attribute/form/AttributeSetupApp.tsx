@@ -53,6 +53,10 @@ type AttributeSetupAppProps = {
   originalMainIdentifierAttribute: Attribute;
 };
 
+type ErrorMessage = {
+  exception: 'published_product' | string;
+}
+
 const AttributeSetupApp: FC<AttributeSetupAppProps> = ({attribute, originalMainIdentifierAttribute}) => {
   const translate = useTranslate();
   const userContext = useUserContext();
@@ -80,6 +84,10 @@ const AttributeSetupApp: FC<AttributeSetupAppProps> = ({attribute, originalMainI
     attributeCode: attribute.code,
   });
 
+  const redirectToPublishedProducts = () => {
+    router.redirectToRoute('pimee_workflow_published_product_index');
+  }
+
   const setAsMainIdentifier = async () => {
     const response = await fetch(setAsMainIdentifierUrl, {
       method: 'POST',
@@ -95,12 +103,22 @@ const AttributeSetupApp: FC<AttributeSetupAppProps> = ({attribute, originalMainI
       );
       setMainIdentifierAttribute(attribute);
     } else {
-      response.json().then(errorMessage => {
-        notify(
-          NotificationLevel.ERROR,
-          `${translate('pim_enrich.entity.attribute.module.edit.attribute_setup.set_as_main_identifier.flash.fail')}
-          ${errorMessage}`
-        );
+      response.json().then((errorMessage: ErrorMessage) => {
+        if (errorMessage.exception === 'published_product') {
+          notify(
+            NotificationLevel.ERROR,
+            translate('pim_enrich.entity.attribute.module.edit.attribute_setup.set_as_main_identifier.flash.fail_published_product'),
+            <Link onClick={redirectToPublishedProducts}>
+              {translate('pim_enrich.entity.attribute.module.edit.attribute_setup.set_as_main_identifier.flash.fail_published_product_link')}
+            </Link>
+          );
+        } else {
+          notify(
+            NotificationLevel.ERROR,
+            `${translate('pim_enrich.entity.attribute.module.edit.attribute_setup.set_as_main_identifier.flash.fail')}
+            ${errorMessage.exception}`
+          );
+        }
       });
     }
     close();
