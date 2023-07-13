@@ -142,3 +142,7 @@ services:
         arguments:
             - '@pim_catalog.repository.attribute'
             - '@feature_flags'
+            - '@Akeneo\Pim\Structure\Bundle\Application\SwitchMainIdentifier\PublishedProductExists'
+
+    Akeneo\Pim\Structure\Bundle\Application\SwitchMainIdentifier\PublishedProductExists:
+        class: Akeneo\Pim\Structure\Bundle\Application\SwitchMainIdentifier\CommunityPublishedProductExists
