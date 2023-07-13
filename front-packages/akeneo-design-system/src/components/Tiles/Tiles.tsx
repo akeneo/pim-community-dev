@@ -1,8 +1,9 @@
-import React, {Ref, ReactNode, isValidElement, FC, useCallback, KeyboardEvent} from 'react';
+import React, {Children, FC, isValidElement, KeyboardEvent, ReactNode, Ref, useCallback} from 'react';
 import styled, {css} from 'styled-components';
 import {IconProps} from '../../icons';
 import {AkeneoThemedProps, getColor} from '../../theme';
 import {Key, Override} from '../../';
+import {Tooltip} from '../../components';
 
 type Size = 'small' | 'big';
 
@@ -23,6 +24,7 @@ const TilesContainer = styled.div<{size: Size} & AkeneoThemedProps>`
 const TileContainer = styled.div<
   {selected: boolean; size: Size; inline: boolean; onClick?: () => void; disabled: boolean} & AkeneoThemedProps
 >`
+  position: relative;
   margin: 1px;
   ${({size, inline}) => {
     if (!inline) {
@@ -72,12 +74,18 @@ const TileContainer = styled.div<
   ${({disabled}) =>
     disabled &&
     css`
-      color: ${getColor('grey', 80)};
+      color: ${getColor('grey', 120)};
       cursor: not-allowed;
+      background-color: ${getColor('grey', 20)};
     `}
+
+  div[role=tooltip] {
+    position: absolute;
+    right: 5px;
+  }
 `;
 
-const IconContainer = styled.div<{size: Size} & AkeneoThemedProps>`
+const IconContainer = styled.div<{size: Size; disabled: boolean} & AkeneoThemedProps>`
   box-sizing: content-box;
   ${({size}) =>
     size === 'small'
@@ -89,6 +97,11 @@ const IconContainer = styled.div<{size: Size} & AkeneoThemedProps>`
           padding: 40px 0 0 0;
           height: 100px;
         `}
+  ${({disabled}) =>
+    disabled &&
+    css`
+      color: ${getColor('grey', 100)};
+    `}}
 `;
 const LabelContainer = styled.div`
   margin: 10px;
@@ -168,6 +181,20 @@ const Tile: FC<TileProps> = ({
     onClick?.();
   };
 
+  const tooltipChildren = Children.map(children, child => {
+    if (isValidElement(child) && child.type === Tooltip) {
+      return child;
+    }
+    return undefined;
+  })?.filter(e => !!e);
+
+  const childrenWithoutTooltips = Children.map(children, child => {
+    if (isValidElement(child) && child.type === Tooltip) {
+      return undefined;
+    }
+    return child;
+  })?.filter(e => !!e);
+
   return (
     <TileContainer
       selected={selected}
@@ -180,10 +207,17 @@ const Tile: FC<TileProps> = ({
       disabled={disabled}
       {...rest}
     >
+      {tooltipChildren && <>{tooltipChildren}</>}
       {!inline && icon && (
-        <IconContainer size={size}>{React.cloneElement(icon, {size: size === 'small' ? 54 : 100})}</IconContainer>
+        <IconContainer size={size} disabled={disabled}>
+          {React.cloneElement(icon, {size: size === 'small' ? 54 : 100})}
+        </IconContainer>
       )}
-      {inline ? <InlineContainer>{children}</InlineContainer> : <LabelContainer>{children}</LabelContainer>}
+      {inline ? (
+        <InlineContainer>{childrenWithoutTooltips}</InlineContainer>
+      ) : (
+        <LabelContainer>{childrenWithoutTooltips}</LabelContainer>
+      )}
     </TileContainer>
   );
 };
