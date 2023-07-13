@@ -27,10 +27,13 @@ class EvaluateProducts
     public function __invoke(ProductUuidCollection $productUuidCollection): void
     {
         $startTime = time();
+        $this->logger->debug('Start product evaluate criteria...');
         $this->evaluatePendingProductCriteria->evaluateAllCriteria($productUuidCollection);
         $afterEvaluationTime = time();
+        $this->logger->debug('Start product consolidate...');
         $this->consolidateProductScores->consolidate($productUuidCollection);
         $afterConsolidationTime = time();
+        $this->logger->debug('Start product dispatch...');
         $this->eventDispatcher->dispatch(new ProductsEvaluated($productUuidCollection));
         $afterDispatchTime = time();
 
