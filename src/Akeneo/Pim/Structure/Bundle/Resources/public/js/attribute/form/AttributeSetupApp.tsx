@@ -51,13 +51,14 @@ const ListCellInner = styled.div`
 type AttributeSetupAppProps = {
   attribute: Attribute;
   originalMainIdentifierAttribute: Attribute;
+  onMainIdentifierChange: () => void;
 };
 
 type ErrorMessage = {
   exception: 'published_product' | string;
 }
 
-const AttributeSetupApp: FC<AttributeSetupAppProps> = ({attribute, originalMainIdentifierAttribute}) => {
+const AttributeSetupApp: FC<AttributeSetupAppProps> = ({attribute, originalMainIdentifierAttribute, onMainIdentifierChange}) => {
   const translate = useTranslate();
   const userContext = useUserContext();
   const router = useRouter();
@@ -102,6 +103,7 @@ const AttributeSetupApp: FC<AttributeSetupAppProps> = ({attribute, originalMainI
         translate('pim_enrich.entity.attribute.module.edit.attribute_setup.set_as_main_identifier.flash.success')
       );
       setMainIdentifierAttribute(attribute);
+      onMainIdentifierChange();
     } else {
       response.json().then((errorMessage: ErrorMessage) => {
         if (errorMessage.exception === 'published_product') {
