@@ -1,5 +1,7 @@
 # 6.0.x
 
+# 6.0.91 (2023-07-13)
+
 ## Bug fixes
 
 - [Backport CPM-653] PIM-11083: Do not sort on _id in ES cursors
