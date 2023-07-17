@@ -322,7 +322,7 @@ pim_enrich.entity.job_execution:
             upload: Drop your {{ type }} file here, or click to browse disk
         download:
             archive: Download generated archive
-            output: Download generated files
+            output: "]-Inf, 1]Download generated file||]1, Inf[Download generated files"
             input: Download read files
             invalid_xlsx: Download invalid data
             invalid_csv: Download invalid data
