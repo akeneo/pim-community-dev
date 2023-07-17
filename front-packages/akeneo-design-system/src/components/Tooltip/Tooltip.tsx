@@ -79,7 +79,7 @@ const computePosition = (
   }
 };
 
-type TooltipProps = Override<
+export type TooltipProps = Override<
   HTMLAttributes<HTMLDivElement>,
   {
     /**
@@ -104,7 +104,7 @@ type TooltipProps = Override<
   }
 >;
 
-const Tooltip = ({direction = 'top', iconSize = 24, width = 200, children, ...rest}: TooltipProps) => {
+const Tooltip: React.FC<TooltipProps> = ({direction = 'top', iconSize = 24, width = 200, children, ...rest}) => {
   const [isVisible, showTooltip, hideTooltip] = useBooleanState(false);
   const portalNode = document.createElement('div');
   portalNode.setAttribute('id', 'tooltip-root');
