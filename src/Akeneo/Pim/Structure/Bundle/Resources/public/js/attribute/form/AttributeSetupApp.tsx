@@ -56,9 +56,13 @@ type AttributeSetupAppProps = {
 
 type ErrorMessage = {
   exception: 'published_product' | string;
-}
+};
 
-const AttributeSetupApp: FC<AttributeSetupAppProps> = ({attribute, originalMainIdentifierAttribute, onMainIdentifierChange}) => {
+const AttributeSetupApp: FC<AttributeSetupAppProps> = ({
+  attribute,
+  originalMainIdentifierAttribute,
+  onMainIdentifierChange,
+}) => {
   const translate = useTranslate();
   const userContext = useUserContext();
   const router = useRouter();
@@ -87,7 +91,7 @@ const AttributeSetupApp: FC<AttributeSetupAppProps> = ({attribute, originalMainI
 
   const redirectToPublishedProducts = () => {
     router.redirectToRoute('pimee_workflow_published_product_index');
-  }
+  };
 
   const setAsMainIdentifier = async () => {
     const response = await fetch(setAsMainIdentifierUrl, {
@@ -109,9 +113,13 @@ const AttributeSetupApp: FC<AttributeSetupAppProps> = ({attribute, originalMainI
         if (errorMessage.exception === 'published_product') {
           notify(
             NotificationLevel.ERROR,
-            translate('pim_enrich.entity.attribute.module.edit.attribute_setup.set_as_main_identifier.flash.fail_published_product'),
+            translate(
+              'pim_enrich.entity.attribute.module.edit.attribute_setup.set_as_main_identifier.flash.fail_published_product'
+            ),
             <Link onClick={redirectToPublishedProducts}>
-              {translate('pim_enrich.entity.attribute.module.edit.attribute_setup.set_as_main_identifier.flash.fail_published_product_link')}
+              {translate(
+                'pim_enrich.entity.attribute.module.edit.attribute_setup.set_as_main_identifier.flash.fail_published_product_link'
+              )}
             </Link>
           );
         } else {
@@ -227,7 +235,7 @@ const AttributeSetupApp: FC<AttributeSetupAppProps> = ({attribute, originalMainI
                           {
                             attributeLabel: attributeLabel,
                           }
-                        )}
+                        )}{' '}
                         <Link href={urlMainIdentifier} target="_blank">
                           {translate(
                             'pim_enrich.entity.attribute.module.edit.attribute_setup.set_as_main_identifier.learn_more'

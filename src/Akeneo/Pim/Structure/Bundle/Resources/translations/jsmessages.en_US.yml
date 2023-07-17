@@ -247,7 +247,7 @@ pim_enrich.entity.attribute:
                 main_identifier_title_highlight: the main identifier
                 non_main_identifier_title: This attribute is
                 non_main_identifier_title_highlight: not the main identifier
-                main_identifier_helper: You may have a up to {{ maxIdentifiersCount }} identifiers for your products with one being set as the main identifier. The default main identifier is {{ mainIdentifierLabel }}.
+                main_identifier_helper: You may have up to {{ maxIdentifiersCount }} identifiers for your products with one being set as the main identifier. The current main identifier is {{ mainIdentifierLabel }}.
                 scopable_attribute_title: This attribute is
                 scopable_attribute_title_highlight: scopable
                 non_scopable_attribute_title: This attribute is
