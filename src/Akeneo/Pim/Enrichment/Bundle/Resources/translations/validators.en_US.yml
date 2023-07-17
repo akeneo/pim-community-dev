@@ -1,4 +1,3 @@
-An identifier attribute already exists.:                                                  An identifier attribute already exists.
 Attribute code may contain only letters, numbers and underscore:                          Attribute code may contain only letters, numbers and underscore
 Attribute code may contain only letters (at least one), numbers and underscores:          Attribute code may contain only letters (at least one), numbers and underscores
 Attribute code may not contain line-feed characters:                                      Attribute code may not contain line-feed characters
@@ -17,6 +16,7 @@ This value should not be a decimal.:                                            
 The %attribute% attribute requires a non-decimal value, and %value% is not a valid value.: The %attribute% attribute requires a non-decimal value, and %value% is not a valid value.
 'The file extension is not allowed (allowed extensions: %extensions%).':                  'The file extension is not allowed (allowed extensions: %extensions%).'
 The {{ attribute_code }} attribute can not have the same value more than once. The {{ value }} value is already set on another product.: The {{ attribute_code }} attribute can not have the same value more than once. The {{ value }} value is already set on another product.
+
 The same identifier is already set on another product:                                    The same identifier is already set on another product
 regex.comma_or_semicolon_or_surrounding_space.message:                                    This field should not contain any comma or semicolon or leading/trailing space
 regex.line_break.message:                                                                 This field should not contain any line break
@@ -88,6 +88,7 @@ pim_catalog:
         blacklisted_attribute_code: Code temporarily blocked until the ongoing cleanup job is complete.
         blacklisted_attribute_code_with_link: "Code temporarily blocked until the ongoing cleanup job is complete. To find out more, please check the <a href='{{ link }}' target='_blank'>job detail</a>."
         duplicate_options: '{1} The following option was used multiple times: "{{ duplicate_options }}". Please check your option list again.|]1, +Inf] The following options were used multiple times: "{{ duplicate_options }}". Please check your option list again.'
+        unique_identifier_value: 'The {{ value }} value is already set on another product for the {{ attribute_code }} identifier attribute.'
         0: An unexpected error occurred.
         100: Non-expected value
         101: This field expects a boolean value.
