@@ -320,7 +320,6 @@ akeneo_connectivity.connection:
   connections: 연결
   secondary_actions:
     title: 기타 작업
-  developer_mode: 개발자 모드
   connection:
     code: 코드
     label: 레이블

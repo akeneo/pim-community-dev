@@ -1,0 +1,12 @@
+pim_measurements:
+  validation:
+    common:
+      code:
+        pattern: 'Ce champ ne peut contenir que des lettres, des chiffres et des tirets bas.'
+        limit_reached: 'Vous ne pouvez pas créer la famille de mesure "%measurement_family_code%" car vous avez atteint la limite de %limit% familles de mesure'
+    measurement_family:
+      standard_unit_code:
+        is_required: 'L''unité standard est requise.'
+        should_be_in_the_list_of_units: 'Le code d''unité standard "%standard_unit_code%" n''existe pas dans la liste des unités de la famille de mesure "%measurement_family_code%".'
+        cannot_be_changed: 'Le code d''unité standard de la famille de mesure "%measurement_family_code%" ne peut pas être modifié'
+      should_contain_max_elements: 'Vous avez atteint la limite de %limit% familles de mesure.'

@@ -320,7 +320,6 @@ akeneo_connectivity.connection:
   connections: 连接
   secondary_actions:
     title: 其他操作
-  developer_mode: 开发者模式
   connection:
     code: 代码
     label: 标签

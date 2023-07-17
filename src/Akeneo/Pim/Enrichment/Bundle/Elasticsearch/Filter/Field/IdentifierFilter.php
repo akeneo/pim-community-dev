@@ -14,7 +14,7 @@ use Akeneo\Tool\Component\Elasticsearch\QueryString;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
 /**
- * Identifier filter for an Elasticsearch query
+ * Identifier filter for an Elasticsearch query.
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -22,7 +22,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
  */
 class IdentifierFilter extends AbstractFieldFilter implements FieldFilterInterface
 {
-    const IDENTIFIER_KEY = 'identifier';
+    public const IDENTIFIER_KEY = 'identifier';
 
     /**
      * @param array<string> $supportedFields
@@ -56,7 +56,7 @@ class IdentifierFilter extends AbstractFieldFilter implements FieldFilterInterfa
     }
 
     /**
-     * Checks the identifier is a string or an array depending on the operator
+     * Checks the identifier is a string or an array depending on the operator.
      *
      * @throws InvalidPropertyTypeException
      */
@@ -70,7 +70,7 @@ class IdentifierFilter extends AbstractFieldFilter implements FieldFilterInterfa
     }
 
     /**
-     * Apply the filtering conditions to the search query builder
+     * Apply the filtering conditions to the search query builder.
      */
     protected function applyFilter(string $field, string $operator, mixed $value): void
     {
@@ -89,7 +89,7 @@ class IdentifierFilter extends AbstractFieldFilter implements FieldFilterInterfa
             case Operators::STARTS_WITH:
                 $this->searchQueryBuilder->addFilter(
                     $this->buildIdentifierSearchFilter(
-                        QueryString::escapeValue($value) . '*',
+                        QueryString::escapeValue($value).'*',
                         $productDocumentType,
                         $productIdentifierField,
                         $productModelDocumentType,
@@ -102,7 +102,7 @@ class IdentifierFilter extends AbstractFieldFilter implements FieldFilterInterfa
             case Operators::CONTAINS:
                 $this->searchQueryBuilder->addFilter(
                     $this->buildIdentifierSearchFilter(
-                        '*' . QueryString::escapeValue($value) . '*',
+                        '*'.QueryString::escapeValue($value).'*',
                         $productDocumentType,
                         $productIdentifierField,
                         $productModelDocumentType,
@@ -114,7 +114,7 @@ class IdentifierFilter extends AbstractFieldFilter implements FieldFilterInterfa
 
             case Operators::DOES_NOT_CONTAIN:
                 $this->searchQueryBuilder->addMustNot($this->buildIdentifierSearchFilter(
-                    '*' . QueryString::escapeValue($value) . '*',
+                    '*'.QueryString::escapeValue($value).'*',
                     $productDocumentType,
                     $productIdentifierField,
                     $productModelDocumentType,
@@ -131,7 +131,7 @@ class IdentifierFilter extends AbstractFieldFilter implements FieldFilterInterfa
             case Operators::EQUALS:
                 $this->searchQueryBuilder->addFilter(
                     $this->buildIdentifierTermFilter(
-                        QueryString::escapeValue($value),
+                        $value,
                         $productDocumentType,
                         $productIdentifierField,
                         $productModelDocumentType,
@@ -143,7 +143,7 @@ class IdentifierFilter extends AbstractFieldFilter implements FieldFilterInterfa
             case Operators::NOT_EQUAL:
                 $this->searchQueryBuilder->addMustNot(
                     $this->buildIdentifierSearchFilter(
-                        QueryString::escapeValue($value),
+                        $value,
                         $productDocumentType,
                         $productIdentifierField,
                         $productModelDocumentType,
@@ -225,7 +225,7 @@ class IdentifierFilter extends AbstractFieldFilter implements FieldFilterInterfa
                     [
                         'query_string' => [
                             'default_field' => $productIdentifierField,
-                            'query'         => $searchString,
+                            'query' => $searchString,
                         ],
                     ],
                 ],
@@ -243,7 +243,7 @@ class IdentifierFilter extends AbstractFieldFilter implements FieldFilterInterfa
                     [
                         'query_string' => [
                             'default_field' => $productModelIdentifierField,
-                            'query'         => $searchString,
+                            'query' => $searchString,
                         ],
                     ],
                 ],
@@ -271,13 +271,13 @@ class IdentifierFilter extends AbstractFieldFilter implements FieldFilterInterfa
                     [
                         'term' => [
                             'document_type' => $productDocumentType,
-                        ]
+                        ],
                     ],
                     [
                         'terms' => [
                             $productIdentifierField => $value,
-                        ]
-                    ]
+                        ],
+                    ],
                 ],
             ],
         ];
@@ -320,13 +320,13 @@ class IdentifierFilter extends AbstractFieldFilter implements FieldFilterInterfa
                     [
                         'term' => [
                             'document_type' => $productDocumentType,
-                        ]
+                        ],
                     ],
                     [
                         'term' => [
                             $productIdentifierField => $value,
-                        ]
-                    ]
+                        ],
+                    ],
                 ],
             ],
         ];
@@ -375,7 +375,7 @@ class IdentifierFilter extends AbstractFieldFilter implements FieldFilterInterfa
                                 ],
                                 [
                                     'exists' => ['field' => $productIdentifierField],
-                                ]
+                                ],
                             ],
                         ],
                     ],
@@ -389,7 +389,7 @@ class IdentifierFilter extends AbstractFieldFilter implements FieldFilterInterfa
                                 ],
                                 [
                                     'exists' => ['field' => $productModelIdentifierField],
-                                ]
+                                ],
                             ],
                         ],
                     ],
