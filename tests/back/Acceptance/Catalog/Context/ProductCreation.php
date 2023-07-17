@@ -10,6 +10,7 @@ use Akeneo\Test\Common\EntityWithValue\Builder;
 use Akeneo\Test\Common\Structure\Attribute;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Behat\Behat\Context\Context;
+use Behat\Gherkin\Node\TableNode;
 
 /**
  * Use this context to create products
@@ -48,6 +49,28 @@ final class ProductCreation implements Context
     {
         $product = $this->productBuilder->withIdentifier($identifier)->build();
         $this->productRepository->save($product);
+    }
+
+    /**
+     * @Given a product with the following values:
+     */
+    public function aProductWithValues(TableNode $table): void
+    {
+        $this->productBuilder->init();
+        foreach ($table as $row) {
+            if (isset($row['json_data']) && '' !== $row['json_data']) {
+                $data = \json_decode($row['json_data'], true);
+            } else {
+                $data = $row['data'];
+                if (preg_match('/,/', $data)) {
+                    $data = explode(',', $row['data']);
+                }
+            }
+
+            $this->productBuilder->withValue($row['attribute'], $data, $row['locale'] ?? '', $row['scope'] ?? '');
+        }
+
+        $this->productRepository->save($this->productBuilder->build());
     }
 
     /**
