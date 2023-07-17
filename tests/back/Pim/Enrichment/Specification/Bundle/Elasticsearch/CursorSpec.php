@@ -38,24 +38,14 @@ class CursorSpec extends ObjectBehavior
 
     function it_is_countable(
         Client $esClient,
-        ProductRepositoryInterface $productRepository,
-        ProductModelRepositoryInterface $productModelRepository,
     ) {
         $this->shouldImplement(\Countable::class);
         $simpleUuid = Uuid::uuid4();
-        $simpleProduct = new Product($simpleUuid);
         $variantUuid = Uuid::uuid4();
         $variantProduct = new Product($variantUuid);
         $variantProduct->setIdentifier('a-variant-product');
 
-        $productRepository->getItemsFromUuids([$variantUuid->toString(), $simpleUuid->toString()])->shouldBeCalled()->willReturn(
-            [$simpleProduct, $variantProduct]
-        );
-        $productModelRepository->getItemsFromIdentifiers([])->shouldBeCalled()->willReturn([]);
-
         $esClient->search([
-            'size' => 2,
-            'sort' => ['id' => 'asc'],
             'track_total_hits' => true,
         ])->shouldBeCalled()->willReturn([
             'hits' => [
@@ -115,7 +105,6 @@ class CursorSpec extends ObjectBehavior
         $esClient->search([
             'size' => 2,
             'sort' => ['id' => 'asc'],
-            'track_total_hits' => true,
         ])->shouldBeCalled()->willReturn([
             'hits' => [
                 'total' => ['value' => 4, 'relation' => 'eq'],
@@ -143,7 +132,6 @@ class CursorSpec extends ObjectBehavior
             'size' => 2,
             'sort' => ['id' => 'asc'],
             'search_after' => ['#a-sub-product-model'],
-            'track_total_hits' => true,
         ])->shouldBeCalled()->willReturn([
             'hits' => [
                 'total' => ['value' => 4, 'relation' => 'eq'],
@@ -172,7 +160,6 @@ class CursorSpec extends ObjectBehavior
                 'size' => 2,
                 'sort' => ['id' => 'asc'],
                 'search_after' => ['#a-root-product-model'],
-                'track_total_hits' => true,
             ]
         )->shouldBeCalled()->willReturn([
             'hits' => [
@@ -224,7 +211,6 @@ class CursorSpec extends ObjectBehavior
             [
                 'size' => 2,
                 'sort' => ['id' => 'asc'],
-                'track_total_hits' => true,
             ]
         )->shouldBeCalled()->willReturn([
             'hits' => [
@@ -246,7 +232,6 @@ class CursorSpec extends ObjectBehavior
                 'size' => 1,
                 'sort' => ['id' => 'asc'],
                 'search_after' => ['#product_' . $nonExistingUuid->toString()],
-                'track_total_hits' => true,
             ]
         )->shouldBeCalled()->willReturn([
             'hits' => [
@@ -264,7 +249,6 @@ class CursorSpec extends ObjectBehavior
                 'size' => 2,
                 'sort' => ['id' => 'asc'],
                 'search_after' => ['#product_model_55'],
-                'track_total_hits' => true,
             ]
         )->shouldBeCalled()->willReturn([
             'hits' => [
@@ -286,7 +270,6 @@ class CursorSpec extends ObjectBehavior
                 'size' => 2,
                 'sort' => ['id' => 'asc'],
                 'search_after' => ['#product_' . $simpleUuid->toString()],
-                'track_total_hits' => true,
             ]
         )->shouldBeCalled()->willReturn([
             'hits' => [
