@@ -1,8 +1,9 @@
-import React, {Ref, ReactNode, isValidElement, FC, useCallback, KeyboardEvent} from 'react';
+import React, {Children, FC, isValidElement, KeyboardEvent, ReactNode, Ref, useCallback} from 'react';
 import styled, {css} from 'styled-components';
 import {IconProps} from '../../icons';
 import {AkeneoThemedProps, getColor} from '../../theme';
 import {Key, Override} from '../../';
+import {Tooltip} from '../../components';
 
 type Size = 'small' | 'big';
 
@@ -21,8 +22,9 @@ const TilesContainer = styled.div<{size: Size} & AkeneoThemedProps>`
 `;
 
 const TileContainer = styled.div<
-  {selected: boolean; size: Size; inline: boolean; onClick?: () => void} & AkeneoThemedProps
+  {selected: boolean; size: Size; inline: boolean; onClick?: () => void; disabled: boolean} & AkeneoThemedProps
 >`
+  position: relative;
   margin: 1px;
   ${({size, inline}) => {
     if (!inline) {
@@ -41,8 +43,9 @@ const TileContainer = styled.div<
     `;
   }}
   transition: border-color 0.2s, color 0.2s, background 0.2s;
-  ${({onClick}) =>
+  ${({onClick, disabled}) =>
     onClick !== undefined &&
+    !disabled &&
     css`
       cursor: pointer;
     `}
@@ -57,16 +60,32 @@ const TileContainer = styled.div<
       : css`
           border: 1px solid ${getColor('grey', 80)};
         `}
-  &:hover {
-    border: 2px solid ${getColor('blue', 100)};
-    color: ${getColor('blue', 100)};
-    margin: 0;
-    background: ${getColor('blue', 10)};
-  }
+  ${({disabled}) =>
+    !disabled &&
+    css`
+      &:hover {
+        border: 2px solid ${getColor('blue', 100)};
+        color: ${getColor('blue', 100)};
+        margin: 0;
+        background: ${getColor('blue', 10)};
+      }
+    `}
   box-sizing: border-box;
+  ${({disabled}) =>
+    disabled &&
+    css`
+      color: ${getColor('grey', 120)};
+      cursor: not-allowed;
+      background-color: ${getColor('grey', 20)};
+    `}
+
+  div[role=tooltip] {
+    position: absolute;
+    right: 5px;
+  }
 `;
 
-const IconContainer = styled.div<{size: Size} & AkeneoThemedProps>`
+const IconContainer = styled.div<{size: Size; disabled: boolean} & AkeneoThemedProps>`
   box-sizing: content-box;
   ${({size}) =>
     size === 'small'
@@ -78,6 +97,11 @@ const IconContainer = styled.div<{size: Size} & AkeneoThemedProps>`
           padding: 40px 0 0 0;
           height: 100px;
         `}
+  ${({disabled}) =>
+    disabled &&
+    css`
+      color: ${getColor('grey', 100)};
+    `}}
 `;
 const LabelContainer = styled.div`
   margin: 10px;
@@ -128,10 +152,20 @@ type TileProps = Override<
   ) & {
     selected?: boolean;
     onClick?: () => void;
+    disabled?: boolean;
   }
 >;
 
-const Tile: FC<TileProps> = ({icon, selected = false, size = 'small', inline = false, onClick, children, ...rest}) => {
+const Tile: FC<TileProps> = ({
+  icon,
+  selected = false,
+  size = 'small',
+  inline = false,
+  onClick,
+  children,
+  disabled = false,
+  ...rest
+}) => {
   const handleKeyDown = useCallback(
     (event: KeyboardEvent<HTMLDivElement>) => {
       if (null !== event.currentTarget && event.key === Key.Enter) {
@@ -142,20 +176,48 @@ const Tile: FC<TileProps> = ({icon, selected = false, size = 'small', inline = f
     [onClick]
   );
 
+  const handleClick = () => {
+    if (disabled) return;
+    onClick?.();
+  };
+
+  const tooltipChildren = Children.map(children, child => {
+    if (isValidElement(child) && child.type === Tooltip) {
+      return child;
+    }
+    return undefined;
+  })?.filter(e => !!e);
+
+  const childrenWithoutTooltips = Children.map(children, child => {
+    if (isValidElement(child) && child.type === Tooltip) {
+      return undefined;
+    }
+    return child;
+  })?.filter(e => !!e);
+
   return (
     <TileContainer
       selected={selected}
       size={size}
       inline={inline}
-      onClick={onClick}
+      onClick={handleClick}
       onKeyDown={handleKeyDown}
       tabIndex={'0'}
+      aria-disabled={disabled}
+      disabled={disabled}
       {...rest}
     >
+      {tooltipChildren && <>{tooltipChildren}</>}
       {!inline && icon && (
-        <IconContainer size={size}>{React.cloneElement(icon, {size: size === 'small' ? 54 : 100})}</IconContainer>
+        <IconContainer size={size} disabled={disabled}>
+          {React.cloneElement(icon, {size: size === 'small' ? 54 : 100})}
+        </IconContainer>
       )}
-      {inline ? <InlineContainer>{children}</InlineContainer> : <LabelContainer>{children}</LabelContainer>}
+      {inline ? (
+        <InlineContainer>{childrenWithoutTooltips}</InlineContainer>
+      ) : (
+        <LabelContainer>{childrenWithoutTooltips}</LabelContainer>
+      )}
     </TileContainer>
   );
 };
