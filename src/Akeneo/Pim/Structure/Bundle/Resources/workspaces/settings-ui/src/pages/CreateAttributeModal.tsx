@@ -71,7 +71,14 @@ const CreateAttributeModal: React.FC<CreateAttributeModalProps> = ({
     const extraFieldsData = extraFields.reduce((old, extraField: CreateAttributeModalExtraField) => {
       return {...old, ...extraField.data};
     }, {} as {[key: string]: any});
-    onStepConfirm({code, label, isUniqueValue, isScopable, isLocalizable, ...extraFieldsData});
+    onStepConfirm({
+      code,
+      label,
+      unique: isUniqueValue,
+      scopable: isScopable,
+      localizable: isLocalizable,
+      ...extraFieldsData,
+    });
   };
 
   useAutoFocus(labelRef);
@@ -101,9 +108,9 @@ const CreateAttributeModal: React.FC<CreateAttributeModalProps> = ({
       <Modal.Title>{translate('pim_common.create')}</Modal.Title>
       {initialData?.attribute_type === 'pim_catalog_identifier' && (
         <Helper level="info">
-          {translate('pim_enrich_attribute_form.identifiers_limit')}
+          {translate('pim_enrich.entity.attribute.property.identifiers_limit') + ' '}
           <Link href="https://help.akeneo.com/serenity-build-your-catalog/33-serenity-manage-your-product-identifiers">
-            {translate('pim_enrich_attribute_form.identifiers_limit_link')}
+            {translate('pim_enrich.entity.attribute.property.identifiers_limit_link')}
           </Link>
         </Helper>
       )}
@@ -129,7 +136,7 @@ const CreateAttributeModal: React.FC<CreateAttributeModalProps> = ({
           <Checkbox readOnly={isUniqueValueReadOnly} checked={isUniqueValue} onChange={handleUniqueValueChange}>
             {translate('pim_enrich.entity.attribute.property.unique')}
           </Checkbox>
-          <Tooltip direction="top">
+          <Tooltip direction="right" iconSize={16} width={300}>
             <b>{translate('pim_enrich.entity.attribute.property.unique')}</b>
             <p>{translate('pim_enrich.entity.attribute.property.unique_value_helper')}</p>
           </Tooltip>
@@ -138,7 +145,7 @@ const CreateAttributeModal: React.FC<CreateAttributeModalProps> = ({
           <Checkbox readOnly={isUniqueValue} checked={isScopable} onChange={setIsScopable}>
             {translate('pim_enrich.entity.attribute.property.scopable')}
           </Checkbox>
-          <Tooltip direction="top">
+          <Tooltip direction="right" iconSize={16} width={300}>
             <b>{translate('pim_enrich.entity.attribute.property.scopable')}</b>
             <p>{translate('pim_enrich.entity.attribute.property.scopable_helper')}</p>
           </Tooltip>
@@ -147,7 +154,7 @@ const CreateAttributeModal: React.FC<CreateAttributeModalProps> = ({
           <Checkbox readOnly={isUniqueValue} checked={isLocalizable} onChange={setIsLocalizable}>
             {translate('pim_enrich.entity.attribute.property.localizable')}
           </Checkbox>
-          <Tooltip direction="top">
+          <Tooltip direction="right" iconSize={16} width={300}>
             <b>{translate('pim_enrich.entity.attribute.property.localizable')}</b>
             <p>{translate('pim_enrich.entity.attribute.property.localizable_helper')}</p>
           </Tooltip>

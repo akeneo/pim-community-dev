@@ -1,25 +1,25 @@
 import React, {useMemo} from 'react';
 import styled from 'styled-components';
-import {getColor, ProgressIndicator} from 'akeneo-design-system';
+import {AkeneoThemedProps, getColor, ProgressIndicator} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
-
-const ProgressIndicatorModalCreation = styled(ProgressIndicator)`
-  width: 45%;
-  position: absolute;
-  bottom: 50px;
-`;
 
 type Props = {
   currentStepIndex: number;
   stepsName?: string[];
 };
 
-const Footer = styled.div`
+const Footer = styled.div<AkeneoThemedProps & {width: number}>`
   background-color: ${getColor('white')};
   position: fixed;
-  width: 45%;
+  width: ${({width}) => `${width}px`};
   bottom: 30px;
-  left: 40%;
+  left: calc(100vh - ${({width}) => `${width / 2}px`});
+
+  :first-child {
+    width: ${({width}) => `${width}px`};
+    position: absolute;
+    bottom: 50px;
+  }
 `;
 
 const CreateAttributeProgressIndicator: React.FC<Props> = ({currentStepIndex, stepsName}) => {
@@ -48,15 +48,17 @@ const CreateAttributeProgressIndicator: React.FC<Props> = ({currentStepIndex, st
       : [];
   }, [currentStepIndex, stepsName]);
 
+  const width = useMemo(() => 175 * (stepsIndicator.length || 1), [stepsIndicator]);
+
   return (
-    <Footer>
-      <ProgressIndicatorModalCreation>
+    <Footer width={width}>
+      <ProgressIndicator>
         {stepsIndicator?.map((label, index) => (
           <ProgressIndicator.Step current={currentStepIndex + 1 === index} key={label}>
             {translate(label)}
           </ProgressIndicator.Step>
         ))}
-      </ProgressIndicatorModalCreation>
+      </ProgressIndicator>
     </Footer>
   );
 };
