@@ -29,6 +29,7 @@ class PubSubClientFactory
         return new PubSubClient(array_merge([
             'keyFilePath' => $this->keyFilePath,
             'transport' => 'rest',
+            'requestTimeout' => 30,
         ], $config));
     }
 }
