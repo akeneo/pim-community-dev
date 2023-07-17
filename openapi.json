@@ -58,7 +58,8 @@
                         "description": "Filter product values to return localizable attributes for the given locales as well as the non localizable/non scopable attributes, for more details see the <a href=\\\"/documentation/filter.html#via-locale\\\">Filter product values via locale</a> section",
                         "required": false,
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "en_US,fr_FR"
                         }
                     }
                 ],
@@ -78,10 +79,7 @@
                                             "example": 1
                                         },
                                         "_embedded": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/components/schemas/Product"
-                                            }
+                                            "$ref": "#/components/schemas/_embedded"
                                         }
                                     },
                                     "type": "object"
@@ -141,7 +139,7 @@
                         },
                         "type": "object"
                     },
-                    "new": {
+                    "next": {
                         "properties": {
                             "href": {
                                 "description": "URI of the next page of resources",
@@ -153,13 +151,28 @@
                 },
                 "type": "object"
             },
+            "_embedded": {
+                "properties": {
+                    "items": {
+                        "description": "The list of resources",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Product"
+                        }
+                    }
+                },
+                "type": "object"
+            },
             "Product": {
                 "properties": {
                     "Name": {
                         "type": "string"
                     }
                 },
-                "type": "object"
+                "type": "object",
+                "example": {
+                    "Name": "My product"
+                }
             }
         },
         "responses": {

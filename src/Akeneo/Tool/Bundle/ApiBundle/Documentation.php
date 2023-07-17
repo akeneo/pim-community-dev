@@ -85,7 +85,7 @@ use OpenApi\Attributes as OA;
                     type: 'object',
                 ),
                 new OA\Property(
-                    property: 'new',
+                    property: 'next',
                     properties: [
                         new OA\Property(
                             property: 'href',
@@ -97,6 +97,20 @@ use OpenApi\Attributes as OA;
                 ),
             ],
             type: 'object'
+        ),
+        new OA\Schema(
+            schema: '_embedded',
+            properties: [
+                new OA\Property(
+                    property: 'items',
+                    description: 'The list of resources',
+                    type: 'array',
+                    items: new OA\Items(
+                        ref: '#/components/schemas/Product'
+                    )
+                )
+            ],
+            type: 'object',
         ),
     ],
     responses: [

@@ -162,7 +162,8 @@ class ProductController
                 in: 'query',
                 required: false,
                 schema: new OA\Schema(
-                    type: 'string'
+                    type: 'string',
+                    example: 'en_US,fr_FR'
                 )
             ),
         ],
@@ -184,8 +185,7 @@ class ProductController
                         ),
                         new OA\Property(
                             property: '_embedded',
-                            type: 'array',
-                            items: new OA\Items(ref: '#/components/schemas/Product'),
+                            ref: '#/components/schemas/_embedded'
                         )
                     ],
                     type: 'object',

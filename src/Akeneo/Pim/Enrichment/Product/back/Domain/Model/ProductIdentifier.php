@@ -20,6 +20,9 @@ use Webmozart\Assert\Assert;
         )
     ],
     type: 'object',
+    example: [
+        'Name' => 'My product'
+    ]
 )]
 final class ProductIdentifier
 {
