@@ -1,6 +1,7 @@
-import React, {ReactNode, useRef} from 'react';
+import React, {ReactNode, useRef, ReactElement} from 'react';
 import {Button, DeleteIllustration, Modal, useAutoFocus} from 'akeneo-design-system';
 import {useTranslate} from '../hooks';
+import {IllustrationProps} from 'akeneo-design-system/lib/illustrations/IllustrationProps';
 
 type DeleteModalProps = {
   title: string;
@@ -11,6 +12,7 @@ type DeleteModalProps = {
   canConfirmDelete?: boolean;
   onConfirm: () => void;
   onCancel: () => void;
+  illustration?: ReactElement<IllustrationProps>;
 };
 
 const DeleteModal = ({
@@ -22,13 +24,14 @@ const DeleteModal = ({
   canConfirmDelete = true,
   onConfirm,
   onCancel,
+  illustration,
 }: DeleteModalProps) => {
   const translate = useTranslate();
   const cancelRef = useRef(null);
   useAutoFocus(cancelRef);
 
   return (
-    <Modal closeTitle={translate('pim_common.close')} onClose={onCancel} illustration={<DeleteIllustration />}>
+    <Modal closeTitle={translate('pim_common.close')} onClose={onCancel} illustration={illustration ?? <DeleteIllustration />}>
       <Modal.SectionTitle color="brand">{title}</Modal.SectionTitle>
       <Modal.Title>{confirmDeletionTitle ?? translate('pim_common.confirm_deletion')}</Modal.Title>
       {children}
