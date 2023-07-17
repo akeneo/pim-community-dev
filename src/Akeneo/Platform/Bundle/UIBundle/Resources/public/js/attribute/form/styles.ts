@@ -6,4 +6,11 @@ const TooltipHeader = styled.span`
   font-weight: 700;
 `;
 
-export {TooltipHeader};
+const TooltipContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  line-height: 15px;
+`;
+
+export {TooltipHeader, TooltipContent};
