@@ -40,18 +40,9 @@ class FromSizeCursorSpec extends ObjectBehavior
 
     function it_is_countable(
         Client $esClient,
-        ProductRepositoryInterface $productRepository,
-        ProductModelRepositoryInterface $productModelRepository,
     ) {
         $this->shouldImplement(\Countable::class);
-        $productRepository->getItemsFromUuids([])
-            ->shouldBeCalledOnce()->willReturn([]);
-        $productModelRepository->getItemsFromIdentifiers(['a-root-product-model', 'a-sub-product-model'])
-            ->shouldBeCalledOnce()->willReturn([]);
         $esClient->search([
-            'from' => 0,
-            'size' => 20,
-            'sort' => ['id' => 'asc'],
             'track_total_hits' => true,
         ])->shouldBeCalledOnce()->willReturn([
             'hits' => [
@@ -97,7 +88,6 @@ class FromSizeCursorSpec extends ObjectBehavior
                 'size' => 20,
                 'sort' => ['id' => 'asc'],
                 'from' => 0,
-                'track_total_hits' => true,
             ]
         )->shouldBeCalled()->willReturn([
             'hits' => [
@@ -132,7 +122,6 @@ class FromSizeCursorSpec extends ObjectBehavior
                 'size' => 16,
                 'sort' => ['id' => 'asc'],
                 'from' => 4,
-                'track_total_hits' => true,
             ]
         )->shouldBeCalled()->willReturn([
             'hits' => [
