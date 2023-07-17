@@ -4,16 +4,21 @@ import {Attribute} from '../models/Attribute';
 import styled from 'styled-components';
 import {useTranslate} from '@akeneo-pim-community/shared';
 
+const ListWithBottomMargin = styled(List)`
+  margin-bottom: 20px;
+`;
+
 const ListCellInner = styled.div`
   padding-left: 10px;
   flex-direction: column;
   align-items: baseline;
   line-height: 22px;
-  color: ${getColor('grey', 140)};
+  color: ${getColor('grey', 120)};
 
   header {
     font-size: ${getFontSize('big')};
     display: block;
+    color: ${getColor('grey', 140)};
 
     em {
       font-style: initial;
@@ -41,7 +46,7 @@ const AttributeSetupApp: FC<AttributeSetupAppProps> = ({attribute}) => {
         </SectionTitle.Title>
       </SectionTitle>
       <Helper level="error">{translate('pim_enrich.entity.attribute.module.edit.attribute_setup.warning')}</Helper>
-      <List>
+      <ListWithBottomMargin>
         <List.Row>
           <List.Cell width="auto">
             <ListCellInner>
@@ -162,7 +167,7 @@ const AttributeSetupApp: FC<AttributeSetupAppProps> = ({attribute}) => {
             <IconButton ghost="borderless" level="tertiary" icon={<LockIcon />} title="" />
           </List.RemoveCell>
         </List.Row>
-      </List>
+      </ListWithBottomMargin>
     </>
   );
 };
