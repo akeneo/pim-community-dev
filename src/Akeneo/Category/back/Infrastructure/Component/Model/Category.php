@@ -124,7 +124,8 @@ class Category extends BaseCategory implements CategoryInterface
      */
     public function setLocale($locale)
     {
-        $this->locale = $locale ? $this->reformatLocale($locale) : null;
+        $this->locale = $locale ? $this->reformatLocale($locale) : $locale;
+
         return $this;
     }
 
