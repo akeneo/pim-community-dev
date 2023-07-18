@@ -4,18 +4,19 @@ namespace Akeneo\Tool\Bundle\ConnectorBundle\EventListener;
 
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
+use Akeneo\Tool\Component\Batch\Event\StepExecutionEvent;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Connector\Archiver\ArchiverInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Job execution archivist
+ * Step execution archivist
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class JobExecutionArchivist implements EventSubscriberInterface
+class StepExecutionArchivist implements EventSubscriberInterface
 {
     /** @var ArchiverInterface[] */
     protected array $archivers = [];
@@ -26,7 +27,7 @@ class JobExecutionArchivist implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            EventInterface::BEFORE_JOB_STATUS_UPGRADE => 'beforeStatusUpgrade',
+            EventInterface::STEP_EXECUTION_COMPLETED => 'onStepExecutionCompleted',
         ];
     }
 
@@ -54,16 +55,12 @@ class JobExecutionArchivist implements EventSubscriberInterface
 
     /**
      * Delegate archiving to the registered archivers
-     *
-     * @param JobExecutionEvent $event
      */
-    public function beforeStatusUpgrade(JobExecutionEvent $event): void
+    public function onStepExecutionCompleted(StepExecutionEvent $event): void
     {
-        $jobExecution = $event->getJobExecution();
-
         foreach ($this->archivers as $archiver) {
-            if ($archiver->supports($jobExecution)) {
-                $archiver->archive($jobExecution);
+            if ($archiver->supports($event->getStepExecution())) {
+                $archiver->archive($event->getStepExecution());
             }
         }
     }
