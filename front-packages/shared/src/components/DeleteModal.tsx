@@ -31,7 +31,11 @@ const DeleteModal = ({
   useAutoFocus(cancelRef);
 
   return (
-    <Modal closeTitle={translate('pim_common.close')} onClose={onCancel} illustration={illustration ?? <DeleteIllustration />}>
+    <Modal
+      closeTitle={translate('pim_common.close')}
+      onClose={onCancel}
+      illustration={illustration ?? <DeleteIllustration />}
+    >
       <Modal.SectionTitle color="brand">{title}</Modal.SectionTitle>
       <Modal.Title>{confirmDeletionTitle ?? translate('pim_common.confirm_deletion')}</Modal.Title>
       {children}
