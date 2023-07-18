@@ -43,6 +43,20 @@ CSV;
     }
 
     /** @test */
+    public function test_it_ignores_the_is_main_identifier_column_if_present(): void
+    {
+        $content = <<<CSV
+type;code;label-en_US;group;unique;useable_as_grid_filter;localizable;scopable;allowed_extensions;metric_family;default_metric_unit;sort_order;decimals_allowed;negative_allowed;default_value;is_main_identifier
+pim_catalog_identifier;identifier1;Identifier1;other;1;1;0;0;;;;1;;;;1
+CSV;
+        $this->getJobLauncher()->launchImport(static::CSV_IMPORT_JOB_CODE, $content);
+        $warnings = $this->getWarnings();
+
+        Assert::assertCount(0, $warnings);
+        Assert::assertFalse($this->getAttributeByCode('identifier1')->isMainIdentifier());
+    }
+
+    /** @test */
     public function test_it_renders_errors_when_adding_too_many_identifier_attributes(): void
     {
         $content = <<<CSV
@@ -64,7 +78,7 @@ CSV;
         $warnings = $this->getWarnings();
 
         Assert::assertCount(3, $warnings);
-        $warning = 'Limit of "10" identifier attributes is reached: Identifier10
+        $warning = 'Limit of "10" identifier attributes is reached. The following identifier has not been created : Identifier10
 ';
         Assert::assertEquals($warning, $warnings[0]['reason']);
     }

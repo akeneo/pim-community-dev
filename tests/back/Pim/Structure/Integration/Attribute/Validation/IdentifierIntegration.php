@@ -459,6 +459,6 @@ class IdentifierIntegration extends AbstractAttributeTestCase
 
         $violations = $this->validateAttribute($attributeOverLimit);
         $this->assertCount(1, $violations);
-        $this->assertSame('Limit of "10" identifier attributes is reached', $violations->get(0)->getMessage());
+        $this->assertSame('Limit of "10" identifier attributes is reached. The following identifier has not been created ', $violations->get(0)->getMessage());
     }
 }

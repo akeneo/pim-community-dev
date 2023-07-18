@@ -121,7 +121,7 @@ pim_catalog:
         boolean:
             boolean_value_is_required: The {{ attribute_code }} attribute requires a boolean value (true or false) as data, a {{ given_type }} was detected.
             boolean_value_is_required_in_import: The {{ attribute_code }} attribute requires a boolean value (1 or 0) as data, a {{ given_type }} was detected.
-        identifier_attribute_limit_reached: 'Limit of "{{limit}}" identifier attributes is reached'
+        identifier_attribute_limit_reached: 'Limit of "{{limit}}" identifier attributes is reached. The following identifier has not been created '
 mass_edit:
     edit_common_attributes:
         invalid_values: There are errors in the attributes form
