@@ -22,9 +22,9 @@ import {
   useNotify,
   useRouter,
   useTranslate,
+  useTranslateWithComponents,
   useUserContext,
 } from '@akeneo-pim-community/shared';
-import {useTranslateWithComponents} from './useTranslateWithComponents';
 
 const ListWithBottomMargin = styled(List)`
   margin-bottom: 20px;
