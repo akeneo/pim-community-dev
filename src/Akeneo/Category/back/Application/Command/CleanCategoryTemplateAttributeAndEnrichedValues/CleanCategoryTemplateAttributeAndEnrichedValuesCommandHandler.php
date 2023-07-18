@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Category\Application\Command\CleanCategoryTemplateAttributeAndEnrichedValues;
 
 use Akeneo\Category\Application\Enrichment\CategoryAttributeValuesCleaner;
-use Akeneo\Category\Application\Query\GetAttribute;
 use Akeneo\Category\Application\Query\GetDeactivatedAttribute;
 use Akeneo\Category\Domain\Query\DeleteTemplateAttribute;
 use Akeneo\Category\Domain\Query\GetEnrichedValuesByTemplateUuid;
@@ -22,9 +21,9 @@ class CleanCategoryTemplateAttributeAndEnrichedValuesCommandHandler
 
     public function __construct(
         private readonly GetEnrichedValuesByTemplateUuid $getEnrichedValuesByTemplateUuid,
-        private readonly CategoryAttributeValuesCleaner  $categoryDataCleaner,
-        private readonly GetDeactivatedAttribute         $getDeactivatedCategoryTemplateAttributes,
-        private readonly DeleteTemplateAttribute         $deleteTemplateAttribute,
+        private readonly CategoryAttributeValuesCleaner $categoryDataCleaner,
+        private readonly GetDeactivatedAttribute $getDeactivatedCategoryTemplateAttributes,
+        private readonly DeleteTemplateAttribute $deleteTemplateAttribute,
     ) {
     }
 

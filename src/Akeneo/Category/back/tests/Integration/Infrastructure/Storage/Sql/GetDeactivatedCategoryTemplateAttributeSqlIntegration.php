@@ -4,13 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\back\tests\Integration\Infrastructure\Storage\Sql;
 
-use Akeneo\Category\Application\Query\GetAttribute;
 use Akeneo\Category\Application\Query\GetDeactivatedAttribute;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
-use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
-use function Akeneo\Test\Category\Integration\Infrastructure\Storage\Sql\count;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
