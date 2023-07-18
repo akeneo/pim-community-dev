@@ -1,8 +1,8 @@
 import React, {ReactElement} from 'react';
-import {useTranslate} from '@akeneo-pim-community/shared';
+import {useTranslate} from './useTranslate';
 
 type ComponentFunction = (innerText: string) => ReactElement<any, any>;
-type ComponentsOrStrings = (string | ReactElement<any, any>)[];
+type ComponentsOrStrings = (string | number | ReactElement<any, any>)[];
 
 const splitPreviousElements: (
   previousElements: ComponentsOrStrings,
@@ -17,13 +17,15 @@ const splitPreviousElements: (
     } else {
       // The regexp matches text like "my left text <em>my middle text</em> my right text"
       const regex = new RegExp(`(?<left>.*)<${key}>(?<middle>.*)<\/${key}>(?<right>.*)`);
-      const matches = element.match(regex);
+      const matches = String(element).match(regex);
       if (matches?.groups) {
         const left = matches.groups.left;
         const right = matches.groups.right;
         const middle = matches.groups.middle;
 
-        result.push(left, React.cloneElement(value(middle), {key}), right);
+        if (left !== '') result.push(left);
+        result.push(React.cloneElement(value(middle), {key}));
+        if (right !== '') result.push(right);
       } else {
         result.push(element);
       }
