@@ -7,10 +7,12 @@ namespace Akeneo\Category\back\tests\Integration\Application\Command\CleanCatego
 use Akeneo\Category\Application\Command\CleanCategoryTemplateAttributeAndEnrichedValues\CleanCategoryTemplateAttributeAndEnrichedValuesCommand;
 use Akeneo\Category\Application\Command\CleanCategoryTemplateAttributeAndEnrichedValues\CleanCategoryTemplateAttributeAndEnrichedValuesCommandHandler;
 use Akeneo\Category\Application\Query\GetAttribute;
+use Akeneo\Category\Application\Query\GetDeactivatedAttribute;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Domain\ValueObject\Attribute\Value\AbstractValue;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
@@ -18,33 +20,47 @@ use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
  */
 class CleanCategoryTemplateAttributeAndEnrichedValuesCommandHandlerIntegration extends CategoryTestCase
 {
+    private GetCategoryInterface $getCategory;
+    private GetDeactivatedAttribute $getDeactivatedAttribute;
+    private GetAttribute $getAttribute;
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->getCategory = $this->get(GetCategoryInterface::class);
+        $this->getDeactivatedAttribute = $this->get(GetDeactivatedAttribute::class);
+        $this->getAttribute = $this->get(GetAttribute::class);
+    }
+
     public function testItCleansValueCollectionOnTemplateAttributeDeactivation(): void
     {
-        $templateUuid = '6344aa2a-2be9-4093-b644-259ca7aee50c';
+        $templateUuid = TemplateUuid::fromString('6344aa2a-2be9-4093-b644-259ca7aee50c');
         $categorySocks = $this->useTemplateFunctionalCatalog(
-            $templateUuid,
+            $templateUuid->getValue(),
             'socks',
         );
 
         $this->updateCategoryValues((string) $categorySocks->getCode());
 
-        $getCategory = $this->get(GetCategoryInterface::class);
-        $category = $getCategory->byCode('socks');
+        $category = $this->getCategory->byCode('socks');
         $this->assertCount(3, $category->getAttributes()->getValues());
+        $givenAttributes = $this->givenAttributes($templateUuid);
+        $longDescriptionAttribute = $givenAttributes->getAttributeByCode('long_description');
+        $this->deactivateAttribute($longDescriptionAttribute->getUuid()->getValue());
 
-        $attributes = $this->get(GetAttribute::class)->byTemplateUuid(TemplateUuid::fromString($templateUuid));
+        $attributes = $this->getDeactivatedAttribute->byTemplateUuid($templateUuid);
         $deletedAttributesUuid = [];
-        foreach (range(0, 2) as $index) {
-            $attributeUuid = $attributes->getAttributes()[$index]->getUuid();
+        foreach ($attributes->getAttributes() as $attribute) {
+            $attributeUuid = $attribute->getUuid();
             $deletedAttributesUuid[] = $attributeUuid;
-            $command = new CleanCategoryTemplateAttributeAndEnrichedValuesCommand($templateUuid, (string) $attributeUuid);
+            $command = new CleanCategoryTemplateAttributeAndEnrichedValuesCommand($templateUuid->getValue(), (string) $attributeUuid);
             $commandHandler = $this->get(CleanCategoryTemplateAttributeAndEnrichedValuesCommandHandler::class);
             ($commandHandler)($command);
         }
 
-        $category = $getCategory->byCode('socks');
-        $this->assertCount(1, $category->getAttributes()->getValues());
-        $attributesDeletedInDatabase = $this->get(GetAttribute::class)->byUuids($deletedAttributesUuid);
+        $category = $this->getCategory->byCode('socks');
+        $this->assertCount(2, $category->getAttributes()->getValues());
+        $attributesDeletedInDatabase = $this->getAttribute->byUuids($deletedAttributesUuid);
         $this->assertCount(0, $attributesDeletedInDatabase);
     }
 
@@ -85,6 +101,17 @@ class CleanCategoryTemplateAttributeAndEnrichedValuesCommandHandlerIntegration e
                 ],
             ], JSON_THROW_ON_ERROR),
             'code' => $code,
+        ]);
+    }
+
+    protected function deactivateAttribute(string $uuid): void
+    {
+        $query = <<<SQL
+            UPDATE pim_catalog_category_attribute SET is_deactivated = 1 WHERE uuid = :uuid;
+        SQL;
+
+        $this->get('database_connection')->executeQuery($query, [
+            'uuid' => Uuid::fromString($uuid)->getBytes(),
         ]);
     }
 }

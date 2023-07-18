@@ -6,6 +6,7 @@ namespace Akeneo\Category\Application\Query;
 
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
+use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -13,6 +14,8 @@ use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
  */
 interface GetDeactivatedAttribute
 {
+    public function byTemplateUuid(TemplateUuid $uuid): AttributeCollection;
+
     /**
      * @param AttributeUuid[] $attributeUuids
      */
