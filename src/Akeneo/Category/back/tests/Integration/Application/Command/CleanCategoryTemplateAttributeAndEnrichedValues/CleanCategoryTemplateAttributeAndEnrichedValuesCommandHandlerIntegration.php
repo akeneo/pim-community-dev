@@ -12,6 +12,7 @@ use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Domain\ValueObject\Attribute\Value\AbstractValue;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
+use Doctrine\DBAL\Connection;
 use Ramsey\Uuid\Uuid;
 
 /**
@@ -23,6 +24,7 @@ class CleanCategoryTemplateAttributeAndEnrichedValuesCommandHandlerIntegration e
     private GetCategoryInterface $getCategory;
     private GetDeactivatedAttribute $getDeactivatedAttribute;
     private GetAttribute $getAttribute;
+    private Connection $connection;
     protected function setUp(): void
     {
         parent::setUp();
@@ -30,6 +32,7 @@ class CleanCategoryTemplateAttributeAndEnrichedValuesCommandHandlerIntegration e
         $this->getCategory = $this->get(GetCategoryInterface::class);
         $this->getDeactivatedAttribute = $this->get(GetDeactivatedAttribute::class);
         $this->getAttribute = $this->get(GetAttribute::class);
+        $this->connection = $this->get('database_connection');
     }
 
     public function testItCleansValueCollectionOnTemplateAttributeDeactivation(): void
@@ -70,7 +73,7 @@ class CleanCategoryTemplateAttributeAndEnrichedValuesCommandHandlerIntegration e
             UPDATE pim_catalog_category SET value_collection = :value_collection WHERE code = :code;
             SQL;
 
-        $this->get('database_connection')->executeQuery($query, [
+        $this->connection->executeQuery($query, [
             'value_collection' => json_encode([
                 'long_description' . AbstractValue::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950' . AbstractValue::SEPARATOR . $channel . AbstractValue::SEPARATOR . 'en_US' => [
                     'data' => 'All the shoes you need!',
@@ -110,7 +113,7 @@ class CleanCategoryTemplateAttributeAndEnrichedValuesCommandHandlerIntegration e
             UPDATE pim_catalog_category_attribute SET is_deactivated = 1 WHERE uuid = :uuid;
         SQL;
 
-        $this->get('database_connection')->executeQuery($query, [
+        $this->connection->executeQuery($query, [
             'uuid' => Uuid::fromString($uuid)->getBytes(),
         ]);
     }
