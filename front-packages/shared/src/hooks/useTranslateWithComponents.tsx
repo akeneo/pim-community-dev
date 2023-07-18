@@ -24,7 +24,7 @@ const replaceComponentPlaceholder = (
         const middle = matches.groups.middle;
 
         if (left !== '') result.push(left);
-        const component = componentFunction(middle)
+        const component = componentFunction(middle);
         if (isValidElement(component)) {
           result.push(React.cloneElement(component, {key: componentName}));
         }
