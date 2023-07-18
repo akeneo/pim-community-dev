@@ -111,6 +111,7 @@
 - PIM-11095: Make image extension check case insensitive
 - PIM-11099: Fix regression on filtering products and product models on Identifier containing a dash character
 - PIM-11103: Fix deletion of enriched category attribute when deleting attribute
+- PIM-11101: Prevent user to save bad locale code format (upper/lower : aa_AA)
 
 ## Improvements
 
