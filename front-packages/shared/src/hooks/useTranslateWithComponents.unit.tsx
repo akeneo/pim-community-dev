@@ -1,4 +1,4 @@
-import React, {ReactElement} from 'react';
+import React, {ReactNode} from 'react';
 import {renderHookWithProviders} from '../tests/utils';
 import {useTranslateWithComponents} from './useTranslateWithComponents';
 
@@ -30,14 +30,14 @@ test('it returns the Translate', () => {
 test('it translates simple sentence', () => {
   const {result} = renderHookWithProviders(() => useTranslateWithComponents());
   const translate = result.current;
-  const current: ReactElement<any, any> = translate('text.simple', {});
-  expect(current.props.children).toEqual(['Simple text']);
+  const current: ReactNode = translate('text.simple', {});
+  expect(current).toEqual(<>{['Simple text']}</>);
 });
 
 test('it translates sentence with Component', () => {
   const {result} = renderHookWithProviders(() => useTranslateWithComponents());
   const translate = result.current;
-  const current: ReactElement<any, any> = translate('text.with.link', {
+  const current: ReactNode = translate('text.with.link', {
     link: (innerText) => <a>{innerText}</a>
   });
 
@@ -50,7 +50,7 @@ test('it translates sentence with Component', () => {
 test('it translates sentence with Component and placeholder', () => {
   const {result} = renderHookWithProviders(() => useTranslateWithComponents());
   const translate = result.current;
-  const current: ReactElement<any, any> = translate('text.with.placeholder', {
+  const current: ReactNode = translate('text.with.placeholder', {
     link: (innerText) => <a>{innerText}</a>,
     b: (innerText) => <b>{innerText}</b>,
   }, {
@@ -69,7 +69,7 @@ test('it translates sentence with Component and placeholder', () => {
 test('it translates sentence with Component and placeholder', () => {
   const {result} = renderHookWithProviders(() => useTranslateWithComponents());
   const translate = result.current;
-  const current: ReactElement<any, any> = translate('text.with.unknown_component', {
+  const current: ReactNode = translate('text.with.unknown_component', {
     link: (innerText) => <a>{innerText}</a>,
   });
 
