@@ -149,16 +149,10 @@ const AttributeSetupApp: FC<AttributeSetupAppProps> = ({
           <List.Cell width="auto">
             <ListCellInner>
               <header>
-                {translateWithComponents(
-                  'pim_enrich.entity.attribute.module.edit.attribute_setup.type',
-                  {
-                    attributeType: translate(`pim_enrich.entity.attribute.property.type.${attribute.type}`),
-                  },
-                  undefined,
-                  {
-                    em: (innerText: string) => <em>{innerText}</em>,
-                  }
-                )}
+                {translateWithComponents('pim_enrich.entity.attribute.module.edit.attribute_setup.type', {
+                  attributeType: translate(`pim_enrich.entity.attribute.property.type.${attribute.type}`),
+                  em: (innerText: string) => <em>{innerText}</em>,
+                })}
               </header>
               {translate('pim_enrich.entity.attribute.module.edit.attribute_setup.type_helper')}
             </ListCellInner>
@@ -176,16 +170,12 @@ const AttributeSetupApp: FC<AttributeSetupAppProps> = ({
                   {isMainIdentifier
                     ? translateWithComponents(
                         'pim_enrich.entity.attribute.module.edit.attribute_setup.main_identifier_title',
-                        {},
-                        undefined,
                         {
                           em: innerText => <em>{innerText}</em>,
                         }
                       )
                     : translateWithComponents(
                         'pim_enrich.entity.attribute.module.edit.attribute_setup.non_main_identifier_title',
-                        {},
-                        undefined,
                         {
                           em: innerText => <em>{innerText}</em>,
                         }
@@ -196,9 +186,6 @@ const AttributeSetupApp: FC<AttributeSetupAppProps> = ({
                   {
                     maxIdentifiersCount: 10,
                     mainIdentifierLabel: mainIdentifierLabel,
-                  },
-                  undefined,
-                  {
                     link: innerText => (
                       <Link href={urlMainIdentifier} target="_blank">
                         {innerText}
@@ -250,9 +237,6 @@ const AttributeSetupApp: FC<AttributeSetupAppProps> = ({
                           'pim_enrich.entity.attribute.module.edit.attribute_setup.set_as_main_identifier.are_you_sure',
                           {
                             attributeLabel: attributeLabel,
-                          },
-                          undefined,
-                          {
                             link: innerText => (
                               <Link href={urlMainIdentifier} target="_blank">
                                 {innerText}
@@ -282,16 +266,12 @@ const AttributeSetupApp: FC<AttributeSetupAppProps> = ({
                 {attribute.unique
                   ? translateWithComponents(
                       'pim_enrich.entity.attribute.module.edit.attribute_setup.unique_attribute_title',
-                      {},
-                      undefined,
                       {
                         em: innerText => <em>{innerText}</em>,
                       }
                     )
                   : translateWithComponents(
                       'pim_enrich.entity.attribute.module.edit.attribute_setup.non_unique_attribute_title',
-                      {},
-                      undefined,
                       {
                         em: innerText => <em>{innerText}</em>,
                       }
@@ -314,33 +294,24 @@ const AttributeSetupApp: FC<AttributeSetupAppProps> = ({
                 {attribute.scopable
                   ? translateWithComponents(
                       'pim_enrich.entity.attribute.module.edit.attribute_setup.scopable_attribute_title',
-                      {},
-                      undefined,
                       {
                         em: innerText => <em>{innerText}</em>,
                       }
                     )
                   : translateWithComponents(
                       'pim_enrich.entity.attribute.module.edit.attribute_setup.non_scopable_attribute_title',
-                      {},
-                      undefined,
                       {
                         em: innerText => <em>{innerText}</em>,
                       }
                     )}
               </header>
-              {translateWithComponents(
-                'pim_enrich.entity.attribute.module.edit.attribute_setup.scopable_helper',
-                {},
-                undefined,
-                {
-                  link: innerText => (
-                    <Link href={urlScopable} target="_blank">
-                      {innerText}
-                    </Link>
-                  ),
-                }
-              )}
+              {translateWithComponents('pim_enrich.entity.attribute.module.edit.attribute_setup.scopable_helper', {
+                link: innerText => (
+                  <Link href={urlScopable} target="_blank">
+                    {innerText}
+                  </Link>
+                ),
+              })}
             </ListCellInner>
           </List.Cell>
           <List.RemoveCell>
@@ -355,33 +326,24 @@ const AttributeSetupApp: FC<AttributeSetupAppProps> = ({
                 {attribute.localizable
                   ? translateWithComponents(
                       'pim_enrich.entity.attribute.module.edit.attribute_setup.localizable_attribute_title',
-                      {},
-                      undefined,
                       {
                         em: innerText => <em>{innerText}</em>,
                       }
                     )
                   : translateWithComponents(
                       'pim_enrich.entity.attribute.module.edit.attribute_setup.non_localizable_attribute_title',
-                      {},
-                      undefined,
                       {
                         em: innerText => <em>{innerText}</em>,
                       }
                     )}
               </header>
-              {translateWithComponents(
-                'pim_enrich.entity.attribute.module.edit.attribute_setup.localizable_helper',
-                {},
-                undefined,
-                {
-                  link: innerText => (
-                    <Link href={urlLocalizable} target="_blank">
-                      {innerText}
-                    </Link>
-                  ),
-                }
-              )}
+              {translateWithComponents('pim_enrich.entity.attribute.module.edit.attribute_setup.localizable_helper', {
+                link: innerText => (
+                  <Link href={urlLocalizable} target="_blank">
+                    {innerText}
+                  </Link>
+                ),
+              })}
             </ListCellInner>
           </List.Cell>
           <List.RemoveCell>
