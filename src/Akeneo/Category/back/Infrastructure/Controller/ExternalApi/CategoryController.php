@@ -12,6 +12,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use OpenApi\Attributes as OA;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -100,6 +101,49 @@ class CategoryController
      *
      * @throws HttpException
      */
+    #[OA\Patch(
+        path: "/api/rest/v1/categories",
+        operationId: "patch_categories",
+        description: "This endpoint allows you to update several categories at once.",
+        summary: "Update/create several categories.",
+        requestBody: new OA\RequestBody(
+            description: "Contains several lines, each line is a category in JSON standard format",
+            required: true,
+            content: new OA\JsonContent(
+                ref: "#/components/schemas/Category_partial_update_list_request_body"
+            )
+        ),
+        tags: ["Category"],
+        responses: [
+            new OA\Response(
+                response: '200',
+                description: 'OK',
+                content: new OA\JsonContent(
+                    ref: "#/components/schemas/Category_partial_update_list_response_body"
+                ),
+                x: [
+                    'details' => 'Returns a plain text response whose lines are JSON containing the status of each update or creation.',
+                    'no-entity' => true,
+                ],
+            ),
+            new OA\Response(
+                ref: '#/components/responses/401',
+                response: '401'
+            ),
+            new OA\Response(
+                ref: '#/components/responses/403',
+                response: '403'
+            ),
+            new OA\Response(
+                ref: '#/components/responses/413',
+                response: '413'
+            ),
+            new OA\Response(
+                ref: '#/components/responses/415',
+                response: '415'
+            ),
+        ]
+    )]
     public function partialUpdateListAction(Request $request)
     {
         $this->checkAclRights();
