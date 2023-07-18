@@ -53,7 +53,7 @@ abstract class AbstractInvalidItemWriter extends AbstractFilesystemArchiver
      *
      * Re-parse the imported file and write into a new one the invalid lines.
      */
-    public function archive(JobExecution $jobExecution): void
+    public function archive(StepExecution $stepExecution): void
     {
         if (empty($this->collector->getInvalidItems())) {
             return;
@@ -66,6 +66,7 @@ abstract class AbstractInvalidItemWriter extends AbstractFilesystemArchiver
             }
         }
 
+        $jobExecution = $stepExecution->getJobExecution();
         $readJobParameters = $jobExecution->getJobParameters();
         $currentItemPosition = 0;
         $itemsToWrite = [];
@@ -121,8 +122,9 @@ abstract class AbstractInvalidItemWriter extends AbstractFilesystemArchiver
     /**
      * {@inheritdoc}
      */
-    public function supports(JobExecution $jobExecution): bool
+    public function supports(StepExecution $stepExecution): bool
     {
+        $jobExecution = $stepExecution->getJobExecution();
         if ($jobExecution->getJobParameters()->has('invalid_items_file_format')) {
             return $this->invalidItemFileFormat === $jobExecution->getJobParameters()->get('invalid_items_file_format');
         }

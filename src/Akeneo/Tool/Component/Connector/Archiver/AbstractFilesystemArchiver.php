@@ -22,7 +22,7 @@ abstract class AbstractFilesystemArchiver implements ArchiverInterface
      */
     public function getArchives(JobExecution $jobExecution, bool $deep = false): iterable
     {
-        if (!$this->supports($jobExecution)) {
+        if (!$this->supportsJobExecution($jobExecution)) {
             return [];
         }
 
@@ -62,13 +62,28 @@ abstract class AbstractFilesystemArchiver implements ArchiverInterface
      */
     protected function getRelativeArchivePath(JobExecution $jobExecution): string
     {
+        return $this->getArchiveDirectoryPath($jobExecution) . DIRECTORY_SEPARATOR . '%filename%';
+    }
+
+    public function getArchiveDirectoryPath(JobExecution $jobExecution): string
+    {
         $jobInstance = $jobExecution->getJobInstance();
 
         return
             $jobInstance->getType() . DIRECTORY_SEPARATOR .
             $jobInstance->getJobName() . DIRECTORY_SEPARATOR .
             $jobExecution->getId() . DIRECTORY_SEPARATOR .
-            $this->getName() . DIRECTORY_SEPARATOR .
-            '%filename%';
+            $this->getName();
+    }
+
+    private function supportsJobExecution(JobExecution $jobExecution): bool
+    {
+        foreach ($jobExecution->getStepExecutions() as $stepExecution) {
+            if ($this->supports($stepExecution)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

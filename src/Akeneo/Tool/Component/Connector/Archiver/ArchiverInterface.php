@@ -3,6 +3,7 @@
 namespace Akeneo\Tool\Component\Connector\Archiver;
 
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
 
 /**
  * Define an archiver
@@ -16,20 +17,18 @@ use Akeneo\Tool\Component\Batch\Model\JobExecution;
 interface ArchiverInterface
 {
     /**
-     * Archive a job execution
-     *
-     * @param JobExecution $jobExecution
+     * Archive a step execution
      */
-    public function archive(JobExecution $jobExecution): void;
+    public function archive(StepExecution $stepExecution): void;
 
     /**
      * Check if the job execution is supported
      *
-     * @param JobExecution $jobExecution
+     * @param StepExecution $stepExecution
      *
      * @return bool
      */
-    public function supports(JobExecution $jobExecution): bool;
+    public function supports(StepExecution $stepExecution): bool;
 
     /**
      * Get the archives of a job execution
