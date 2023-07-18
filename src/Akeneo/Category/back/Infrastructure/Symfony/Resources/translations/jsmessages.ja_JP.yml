@@ -105,7 +105,7 @@ akeneo.category:
       saved: 保存しました
       saving: 保存中
       editing: 編集中
-      errors: エラーは保存されません
+      errors: エラーは保存されませんでした
     initialize:
       title: カテゴリ属性の追加
       message: テキスト、テキストエリア、または画像の属性を追加して、カテゴリのコンテンツを定義します。
