@@ -110,6 +110,7 @@
 - PIM-10676: [Business-Impact] Prevent users in the PIM to remove all 'system' permissions
 - PIM-11095: Make image extension check case insensitive
 - PIM-11099: Fix regression on filtering products and product models on Identifier containing a dash character
+- PIM-11101: Prevent user to save bad locale code format (upper/lower : aa_AA)
 
 ## Improvements
 
