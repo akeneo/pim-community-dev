@@ -8,7 +8,7 @@ const splitPreviousElements: (
   previousElements: ComponentsOrStrings,
   componentName: string,
   componentFunction: ComponentFunction
-) => ComponentsOrStrings = (previousElements, key, value) => {
+) => ComponentsOrStrings = (previousElements, componentName, value) => {
   const result: ComponentsOrStrings = [];
 
   previousElements.forEach(element => {
@@ -16,7 +16,7 @@ const splitPreviousElements: (
       result.push(element);
     } else {
       // The regexp matches text like "my left text <em>my middle text</em> my right text"
-      const regex = new RegExp(`(?<left>.*)<${key}>(?<middle>.*)<\/${key}>(?<right>.*)`);
+      const regex = new RegExp(`(?<left>.*)<${componentName}>(?<middle>.*)<\/${componentName}>(?<right>.*)`);
       const matches = String(element).match(regex);
       if (matches?.groups) {
         const left = matches.groups.left;
@@ -24,7 +24,7 @@ const splitPreviousElements: (
         const middle = matches.groups.middle;
 
         if (left !== '') result.push(left);
-        result.push(React.cloneElement(value(middle), {key}));
+        result.push(React.cloneElement(value(middle), {componentName}));
         if (right !== '') result.push(right);
       } else {
         result.push(element);
@@ -35,39 +35,15 @@ const splitPreviousElements: (
   return result;
 };
 
-function splitComponents(placeholders: {[p: string]: string | number | ComponentFunction}) {
-  type OriginalPlaceholders = {[name: string]: string | number};
-  type ComponentPlaceholders = {[componentName: string]: ComponentFunction};
-
-  return Object.keys(placeholders).reduce<{
-    basePlaceholders: OriginalPlaceholders;
-    componentPlaceholders: ComponentPlaceholders;
-  }>(
-    (previous, name) => {
-      const basePlaceholders = previous.basePlaceholders;
-      const componentPlaceholders = previous.componentPlaceholders;
-      if (typeof placeholders[name] === 'string' || typeof placeholders[name] === 'number') {
-        basePlaceholders[name] = placeholders[name] as string | number;
-      } else {
-        componentPlaceholders[name] = placeholders[name] as ComponentFunction;
-      }
-
-      return {basePlaceholders: basePlaceholders, componentPlaceholders};
-    },
-    {basePlaceholders: {}, componentPlaceholders: {}}
-  );
-}
-
 const useTranslateWithComponents = () => {
   const baseTranslate = useTranslate();
   const translateWithComponents: (
     id: string,
-    placeholders?: {[name: string]: string | number | ComponentFunction},
+    componentPlaceholders: {[componentName: string]: ComponentFunction},
+    placeholders?: {[name: string]: string | number},
     count?: number
-  ) => ReactElement<any, any> = (id, placeholders, count) => {
-    const {basePlaceholders, componentPlaceholders} = splitComponents(placeholders || {});
-
-    const basicTranslation = baseTranslate(id, basePlaceholders, count);
+  ) => ReactElement<any, any> = (id, componentPlaceholders, placeholders, count) => {
+    const basicTranslation = baseTranslate(id, placeholders, count);
 
     let elements: ComponentsOrStrings = [basicTranslation];
     Object.keys(componentPlaceholders).forEach(componentName => {

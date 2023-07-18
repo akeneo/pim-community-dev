@@ -30,7 +30,7 @@ test('it returns the Translate', () => {
 test('it translates simple sentence', () => {
   const {result} = renderHookWithProviders(() => useTranslateWithComponents());
   const translate = result.current;
-  const current: ReactElement<any, any> = translate('text.simple');
+  const current: ReactElement<any, any> = translate('text.simple', {});
   expect(current.props.children).toEqual(['Simple text']);
 });
 
@@ -53,6 +53,7 @@ test('it translates sentence with Component and placeholder', () => {
   const current: ReactElement<any, any> = translate('text.with.placeholder', {
     link: (innerText) => <a>{innerText}</a>,
     b: (innerText) => <b>{innerText}</b>,
+  }, {
     read_more: 'read more'
   });
 

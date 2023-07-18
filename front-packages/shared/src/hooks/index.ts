@@ -16,6 +16,7 @@ export * from './useSetPageTitle';
 export * from './useStorageState';
 export * from './useSystemConfiguration';
 export * from './useTranslate';
+export * from './useTranslateWithComponents';
 export * from './useUploader';
 export * from './useUserContext';
 export * from './useViewBuilder';
