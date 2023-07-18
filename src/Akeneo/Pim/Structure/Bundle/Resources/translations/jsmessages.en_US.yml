@@ -235,36 +235,26 @@ pim_enrich.entity.attribute:
             attribute_setup:
                 section_title: Attribute setup
                 warning: Actions taken here could greatly impact your products.
-                type: This attribute type is
+                type: This attribute type is <em>{{ attributeType }}</em>
                 type_helper: An attribute’s type cannot be modified as this would result in the deletion of all its product values.
-                unique_attribute_title: The value of this attribute is
-                unique_attribute_title_highlight: unique
-                non_unique_attribute_title: The value of this attribute is
-                non_unique_attribute_title_highlight: not unique
+                unique_attribute_title: The value of this attribute is <em>unique</em>
+                non_unique_attribute_title: The value of this attribute is <em>not unique</em>
                 unique_helper: The attribute’s value is different for each product. This cannot be modified.
                 non_unique_helper: The same value can be used for this attribute across several products. This cannot be modified.
-                main_identifier_title: This attribute is
-                main_identifier_title_highlight: the main identifier
-                non_main_identifier_title: This attribute is
-                non_main_identifier_title_highlight: not the main identifier
-                main_identifier_helper: You may have up to {{ maxIdentifiersCount }} identifiers for your products with one being set as the main identifier. The current main identifier is {{ mainIdentifierLabel }}.
-                scopable_attribute_title: This attribute is
-                scopable_attribute_title_highlight: scopable
-                non_scopable_attribute_title: This attribute is
-                non_scopable_attribute_title_highlight: not scopable
-                scopable_helper: Value per channel determines if an attribute is scopable (different values for different channels) or not (one value for all channels).
-                localizable_attribute_title: This attribute is
-                localizable_attribute_title_highlight: localizable
-                non_localizable_attribute_title: This attribute is
-                non_localizable_attribute_title_highlight: not localizable
-                localizable_helper: Value per locale determines if an attribute is localizable (different values for different locales) or not (one value for all locales).
-                learn_more: Learn more
+                main_identifier_title: This attribute is <em>the main identifier</em>
+                non_main_identifier_title: This attribute is <em>not the main identifier</em>
+                main_identifier_helper: You may have up to {{ maxIdentifiersCount }} identifiers for your products with one being set as the main identifier. The current main identifier is {{ mainIdentifierLabel }}. <link>Learn more</link>
+                scopable_attribute_title: This attribute is <em>scopable</em>
+                non_scopable_attribute_title: This attribute is <em>not scopable</em>
+                scopable_helper: Value per channel determines if an attribute is scopable (different values for different channels) or not (one value for all channels). <link>Learn more</link>
+                localizable_attribute_title: This attribute is <em>localizable</em>
+                non_localizable_attribute_title: This attribute is <em>not localizable</em>
+                localizable_helper: Value per locale determines if an attribute is localizable (different values for different locales) or not (one value for all locales). <link>Lear more</link>
                 set_as_main_identifier:
                     button: Set as main identifier
                     confirm: Please type "{{ attributeCode }}"
                     confirm_title: Setting as main identifier will impact all products
-                    are_you_sure: Are you sure you want to set the {{ attributeLabel }} attribute as the main identifier?
-                    learn_more: Learn more in the help center.
+                    are_you_sure: Are you sure you want to set the {{ attributeLabel }} attribute as the main identifier? <link>Learn more in the help center.</link>
                     warning: "{{ attributeLabel }} is currently set as the main identifier. This change will impact all products."
                     onboarder_warning: You cannot set another identifier attribute as the main identifier because this feature is not compatible with Akeneo Onboarder.
                     flash:
