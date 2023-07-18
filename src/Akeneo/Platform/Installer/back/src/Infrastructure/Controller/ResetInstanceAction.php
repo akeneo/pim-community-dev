@@ -33,6 +33,7 @@ class ResetInstanceAction
             throw new AccessDeniedException();
         }
 
+        $this->eventDispatcher->dispatch(new InstallerEvent(), InstallerEvents::PRE_RESET_INSTANCE);
         $this->resetInstanceHandler->handle(new ResetInstanceCommand());
         $this->eventDispatcher->dispatch(new InstallerEvent(), InstallerEvents::POST_RESET_INSTANCE);
 

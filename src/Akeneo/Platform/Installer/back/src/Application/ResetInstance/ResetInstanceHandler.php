@@ -15,7 +15,7 @@ use Akeneo\Platform\Installer\Domain\Service\FilesystemsPurgerInterface;
 use Akeneo\Platform\Installer\Domain\Service\FixtureInstallerInterface;
 use Akeneo\Platform\Installer\Domain\Service\UserConfigurationResetterInterface;
 
-class ResetInstanceHandler
+final class ResetInstanceHandler
 {
     private const TABLES_TO_KEEP = [
         'acl_classes',
