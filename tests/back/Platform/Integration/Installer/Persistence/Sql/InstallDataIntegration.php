@@ -2,7 +2,7 @@
 
 namespace AkeneoTest\Platform\Integration\Installer\Persistence\Sql;
 
-use Akeneo\Platform\Bundle\InstallerBundle\Persistence\Sql\InstallData;
+use Akeneo\Platform\Installer\Infrastructure\Persistence\Sql\InstallData;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;

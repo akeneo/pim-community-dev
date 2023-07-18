@@ -3,7 +3,7 @@
 namespace Specification\Akeneo\Platform\Bundle\InstallerBundle\FixtureLoader;
 
 use Akeneo\Platform\Bundle\DashboardBundle\PimDashboardBundle;
-use Akeneo\Platform\Bundle\InstallerBundle\PimInstallerBundle;
+use Akeneo\Platform\Installer\PimInstallerBundle;
 use PhpSpec\ObjectBehavior;
 
 class FixturePathProviderSpec extends ObjectBehavior

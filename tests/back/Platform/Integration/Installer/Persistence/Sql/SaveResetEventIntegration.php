@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Platform\Integration\Installer\Persistence\Sql;
 
-use Akeneo\Platform\Bundle\InstallerBundle\Persistence\Sql\GetResetEvents;
-use Akeneo\Platform\Bundle\InstallerBundle\Persistence\Sql\SaveResetEvent;
+use Akeneo\Platform\Installer\Infrastructure\Persistence\Sql\GetResetEvents;
+use Akeneo\Platform\Installer\Infrastructure\Persistence\Sql\SaveResetEvent;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 

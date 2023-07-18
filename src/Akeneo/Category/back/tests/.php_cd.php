@@ -106,9 +106,9 @@ $rules = [
         'Symfony\Component\OptionsResolver\OptionsResolver',
         // Infrastructure Bundles /!\
         'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
-        'Akeneo\Platform\Bundle\InstallerBundle\Command\ZddMigration',
-        'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent',
-        'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
+        'Akeneo\Platform\Installer\Infrastructure\Command\ZddMigration',
+        'Akeneo\Platform\Installer\Infrastructure\Event\InstallerEvent',
+        'Akeneo\Platform\Installer\Infrastructure\Event\InstallerEvents',
         'Akeneo\Tool\Bundle\ApiBundle\Documentation',
         'Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse',
         'Oro\Bundle\SecurityBundle\SecurityFacade',

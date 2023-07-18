@@ -2,9 +2,9 @@
 
 namespace Specification\Akeneo\Platform\Bundle\InstallerBundle\FixtureLoader;
 
+use Akeneo\Platform\Installer\Infrastructure\FixtureLoader\FixturePathProvider;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Platform\Bundle\InstallerBundle\FixtureLoader\FixturePathProvider;
 
 class JobInstancesConfiguratorSpec extends ObjectBehavior
 {

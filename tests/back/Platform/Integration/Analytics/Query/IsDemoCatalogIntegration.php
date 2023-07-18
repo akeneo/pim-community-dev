@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AkeneoTest\Platform\Integration\Analytics\Query;
 
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
-use Akeneo\Platform\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader;
+use Akeneo\Platform\Installer\Infrastructure\FixtureLoader\FixtureJobLoader;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Tool\Component\Analytics\IsDemoCatalogQuery;
