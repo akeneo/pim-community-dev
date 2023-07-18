@@ -6,7 +6,7 @@
     "scripts": {
         "eslint": "eslint --config .eslintrc.json --quiet {src,tests}/**/*.{ts,tsx}",
         "prettier": "prettier --config .prettierrc.json {src,tests}/**/*.{ts,tsx}",
-        "jest": "jest --config tests/jest.config.js"
+        "test:unit:run": "react-scripts --openssl-legacy-provider test --watchAll=false --coverage --coverageDirectory=coverage --maxWorkers=3"
     },
     "private": true
 }

@@ -35,7 +35,8 @@ const Recommendation: FC<Props> = ({children, type, follow}) => {
         {children || (
           <>
             <span>
-              {translate('akeneo_data_quality_insights.product_evaluation.messages.not_applicable.message')}&nbsp;
+              {translate('akeneo_data_quality_insights.product_evaluation.messages.not_applicable.message')}
+              &nbsp;
             </span>
             <Link
               href={

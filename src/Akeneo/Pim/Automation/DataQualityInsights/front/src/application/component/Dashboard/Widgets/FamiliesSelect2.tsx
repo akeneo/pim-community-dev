@@ -50,7 +50,9 @@ export const FamiliesSelect2 = ({onChange, catalogLocale}: Props) => {
               ? family2.labels[catalogLocale]
               : '[' + family2.code + ']';
 
-            return family1Label.localeCompare(family2Label, catalogLocale.replace('_', '-'), {sensitivity: 'base'});
+            return family1Label.localeCompare(family2Label, catalogLocale.replace('_', '-'), {
+              sensitivity: 'base',
+            });
           });
 
           Object.values(sortedFamilies).forEach((family: any) => {
