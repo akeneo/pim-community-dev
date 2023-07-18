@@ -5,5 +5,6 @@ services:
             - '@logger'
             - '%env(default::string:APP_TENANT_ID)%'
             - '%env(APP_ENV)%'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsUcsEventFeature'
         tags:
             - { name: kernel.event_subscriber }

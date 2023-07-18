@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Product\API\Event\ProductsWereCreatedOrUpdated;
 use Akeneo\Pim\Enrichment\Product\API\Event\ProductWasCreated;
 use Akeneo\Pim\Enrichment\Product\API\Event\ProductWasUpdated;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -32,7 +33,8 @@ final class ProductWasCreatedOrUpdatedSubscriber implements EventSubscriberInter
         private readonly LoggerInterface $logger,
         private readonly ?string $tenantId,
         private readonly string $env,
-        private readonly int $batchSize = 100,
+        private readonly FeatureFlag $featureFlag,
+        private readonly int $batchSize = 100
     ) {
         Assert::greaterThanEq($this->batchSize, 1);
     }
@@ -57,6 +59,7 @@ final class ProductWasCreatedOrUpdatedSubscriber implements EventSubscriberInter
             || \get_class($product) === 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct'
             || $this->isProdLegacy()
             || null !== $product->getCreated()
+            || !$this->featureFlag->isEnabled()
         ) {
             return;
         }
@@ -73,6 +76,7 @@ final class ProductWasCreatedOrUpdatedSubscriber implements EventSubscriberInter
             || !$product instanceof ProductInterface
             || \get_class($product) === 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct'
             || $this->isProdLegacy()
+            || !$this->featureFlag->isEnabled()
         ) {
             return;
         }
@@ -105,6 +109,7 @@ final class ProductWasCreatedOrUpdatedSubscriber implements EventSubscriberInter
             || !\reset($products) instanceof ProductInterface
             || \get_class(\reset($products)) === 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct'
             || $this->isProdLegacy()
+            || !$this->featureFlag->isEnabled()
         ) {
             return;
         }
@@ -124,6 +129,7 @@ final class ProductWasCreatedOrUpdatedSubscriber implements EventSubscriberInter
             || !\reset($products) instanceof ProductInterface
             || \get_class(\reset($products)) === 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct'
             || $this->isProdLegacy()
+            || !$this->featureFlag->isEnabled()
         ) {
             return;
         }
