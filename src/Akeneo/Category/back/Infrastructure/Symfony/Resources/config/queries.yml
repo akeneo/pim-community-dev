@@ -38,6 +38,10 @@ services:
     arguments:
       - '@database_connection'
 
+  Akeneo\Category\Application\Query\GetDeactivatedAttribute:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\GetDeactivatedCategoryTemplateAttributeSql
+    arguments:
+      - '@database_connection'
   Akeneo\Category\Application\Query\GetCategoryTemplateByCategoryTree:
     class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoryTemplateByCategoryTreeSql
     arguments:
