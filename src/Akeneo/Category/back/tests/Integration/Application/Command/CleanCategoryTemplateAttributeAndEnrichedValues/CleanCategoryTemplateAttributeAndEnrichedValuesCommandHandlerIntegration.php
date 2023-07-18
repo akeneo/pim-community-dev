@@ -9,10 +9,13 @@ use Akeneo\Category\Application\Command\CleanCategoryTemplateAttributeAndEnriche
 use Akeneo\Category\Application\Query\GetAttribute;
 use Akeneo\Category\Application\Query\GetDeactivatedAttribute;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
+use Akeneo\Category\Domain\Model\Attribute\Attribute;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
 use Akeneo\Category\Domain\ValueObject\Attribute\Value\AbstractValue;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Driver\Exception;
 use Ramsey\Uuid\Uuid;
 
 /**
@@ -22,7 +25,6 @@ use Ramsey\Uuid\Uuid;
 class CleanCategoryTemplateAttributeAndEnrichedValuesCommandHandlerIntegration extends CategoryTestCase
 {
     private GetCategoryInterface $getCategory;
-    private GetDeactivatedAttribute $getDeactivatedAttribute;
     private GetAttribute $getAttribute;
     private Connection $connection;
     protected function setUp(): void
@@ -30,7 +32,6 @@ class CleanCategoryTemplateAttributeAndEnrichedValuesCommandHandlerIntegration e
         parent::setUp();
 
         $this->getCategory = $this->get(GetCategoryInterface::class);
-        $this->getDeactivatedAttribute = $this->get(GetDeactivatedAttribute::class);
         $this->getAttribute = $this->get(GetAttribute::class);
         $this->connection = $this->get('database_connection');
     }
@@ -51,7 +52,7 @@ class CleanCategoryTemplateAttributeAndEnrichedValuesCommandHandlerIntegration e
         $longDescriptionAttribute = $givenAttributes->getAttributeByCode('long_description');
         $this->deactivateAttribute($longDescriptionAttribute->getUuid()->getValue());
 
-        $attributes = $this->getDeactivatedAttribute->byTemplateUuid($templateUuid);
+        $attributes = $this->getDeactivatedAttributeByTemplateUuid($templateUuid);
         $deletedAttributesUuid = [];
         foreach ($attributes->getAttributes() as $attribute) {
             $attributeUuid = $attribute->getUuid();
@@ -107,14 +108,43 @@ class CleanCategoryTemplateAttributeAndEnrichedValuesCommandHandlerIntegration e
         ]);
     }
 
-    protected function deactivateAttribute(string $uuid): void
+    /**
+     * @throws Exception
+     * @throws \JsonException
+     * @throws \Doctrine\DBAL\Exception
+     */
+    public function getDeactivatedAttributeByTemplateUuid(TemplateUuid $uuid): AttributeCollection
     {
-        $query = <<<SQL
-            UPDATE pim_catalog_category_attribute SET is_deactivated = 1 WHERE uuid = :uuid;
+        $query = <<< SQL
+            SELECT 
+                BIN_TO_UUID(uuid) as uuid,
+                code, 
+                BIN_TO_UUID(category_template_uuid) as category_template_uuid,
+                labels, 
+                attribute_type, 
+                attribute_order, 
+                is_required, 
+                is_scopable, 
+                is_localizable, 
+                additional_properties
+            FROM pim_catalog_category_attribute
+            WHERE category_template_uuid = :template_uuid
+            AND is_deactivated = 1
+            ORDER BY attribute_order;
         SQL;
 
-        $this->connection->executeQuery($query, [
-            'uuid' => Uuid::fromString($uuid)->getBytes(),
-        ]);
+        $results = $this->connection->executeQuery(
+            $query,
+            [
+                'template_uuid' => $uuid->toBytes(),
+            ],
+            [
+                'template_uuid' => \PDO::PARAM_STR,
+            ],
+        )->fetchAllAssociative();
+
+        return AttributeCollection::fromArray(array_map(static function ($results) {
+            return Attribute::fromDatabase($results);
+        }, $results));
     }
 }
