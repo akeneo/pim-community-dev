@@ -87,6 +87,10 @@ const AttributeSetupApp: FC<AttributeSetupAppProps> = ({
   const isOnboarderEnabled = featureFlags.isEnabled('onboarder');
   const isNotSaved = !('meta' in attribute); // A non saved attribute don't have meta from backend
 
+  const emPlaceholder = {
+    em: (innerText: string) => <em>{innerText}</em>,
+  };
+
   const setAsMainIdentifierUrl = router.generate('pim_enrich_attribute_rest_switch_main_identifier', {
     attributeCode: attribute.code,
   });
@@ -150,8 +154,8 @@ const AttributeSetupApp: FC<AttributeSetupAppProps> = ({
             <ListCellInner>
               <header>
                 {translateWithComponents('pim_enrich.entity.attribute.module.edit.attribute_setup.type', {
+                  ...emPlaceholder,
                   attributeType: translate(`pim_enrich.entity.attribute.property.type.${attribute.type}`),
-                  em: (innerText: string) => <em>{innerText}</em>,
                 })}
               </header>
               {translate('pim_enrich.entity.attribute.module.edit.attribute_setup.type_helper')}
@@ -170,15 +174,11 @@ const AttributeSetupApp: FC<AttributeSetupAppProps> = ({
                   {isMainIdentifier
                     ? translateWithComponents(
                         'pim_enrich.entity.attribute.module.edit.attribute_setup.main_identifier_title',
-                        {
-                          em: innerText => <em>{innerText}</em>,
-                        }
+                        emPlaceholder
                       )
                     : translateWithComponents(
                         'pim_enrich.entity.attribute.module.edit.attribute_setup.non_main_identifier_title',
-                        {
-                          em: innerText => <em>{innerText}</em>,
-                        }
+                        emPlaceholder
                       )}
                 </header>
                 {translateWithComponents(
@@ -266,15 +266,11 @@ const AttributeSetupApp: FC<AttributeSetupAppProps> = ({
                 {attribute.unique
                   ? translateWithComponents(
                       'pim_enrich.entity.attribute.module.edit.attribute_setup.unique_attribute_title',
-                      {
-                        em: innerText => <em>{innerText}</em>,
-                      }
+                      emPlaceholder
                     )
                   : translateWithComponents(
                       'pim_enrich.entity.attribute.module.edit.attribute_setup.non_unique_attribute_title',
-                      {
-                        em: innerText => <em>{innerText}</em>,
-                      }
+                      emPlaceholder
                     )}
               </header>
               {attribute.unique
@@ -294,15 +290,11 @@ const AttributeSetupApp: FC<AttributeSetupAppProps> = ({
                 {attribute.scopable
                   ? translateWithComponents(
                       'pim_enrich.entity.attribute.module.edit.attribute_setup.scopable_attribute_title',
-                      {
-                        em: innerText => <em>{innerText}</em>,
-                      }
+                      emPlaceholder
                     )
                   : translateWithComponents(
                       'pim_enrich.entity.attribute.module.edit.attribute_setup.non_scopable_attribute_title',
-                      {
-                        em: innerText => <em>{innerText}</em>,
-                      }
+                      emPlaceholder
                     )}
               </header>
               {translateWithComponents('pim_enrich.entity.attribute.module.edit.attribute_setup.scopable_helper', {
@@ -326,15 +318,11 @@ const AttributeSetupApp: FC<AttributeSetupAppProps> = ({
                 {attribute.localizable
                   ? translateWithComponents(
                       'pim_enrich.entity.attribute.module.edit.attribute_setup.localizable_attribute_title',
-                      {
-                        em: innerText => <em>{innerText}</em>,
-                      }
+                      emPlaceholder
                     )
                   : translateWithComponents(
                       'pim_enrich.entity.attribute.module.edit.attribute_setup.non_localizable_attribute_title',
-                      {
-                        em: innerText => <em>{innerText}</em>,
-                      }
+                      emPlaceholder
                     )}
               </header>
               {translateWithComponents('pim_enrich.entity.attribute.module.edit.attribute_setup.localizable_helper', {

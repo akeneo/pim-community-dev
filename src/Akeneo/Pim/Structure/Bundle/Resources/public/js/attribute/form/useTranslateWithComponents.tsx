@@ -12,7 +12,7 @@ const splitPreviousElements: (
   const result: ComponentsOrStrings = [];
 
   previousElements.forEach(element => {
-    if (typeof element !== 'string') {
+    if (typeof element !== 'string' && typeof element !== 'number') {
       result.push(element);
     } else {
       // The regexp matches text like "my left text <em>my middle text</em> my right text"
@@ -33,10 +33,10 @@ const splitPreviousElements: (
   return result;
 };
 
-type OriginalPlaceholders = {[name: string]: string | number};
-type ComponentPlaceholders = {[componentName: string]: ComponentFunction};
-
 function splitComponents(placeholders: {[p: string]: string | number | ComponentFunction}) {
+  type OriginalPlaceholders = {[name: string]: string | number};
+  type ComponentPlaceholders = {[componentName: string]: ComponentFunction};
+
   return Object.keys(placeholders).reduce<{
     basePlaceholders: OriginalPlaceholders;
     componentPlaceholders: ComponentPlaceholders;
