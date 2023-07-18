@@ -6,6 +6,10 @@ PHP_EXEC ?= $(DOCKER_COMPOSE) exec -u www-data httpd php
 
 .DEFAULT_GOAL := help
 
+.PHONY: generate-doc
+generate-doc:
+	$(PHP_RUN) vendor/bin/openapi src/Akeneo -o openapi.json -e src/Akeneo/Platform/Bundle/UIBundle/Twig/Node
+
 .PHONY: help
 help:
 	@echo ""
