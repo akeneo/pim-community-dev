@@ -27,7 +27,7 @@ class UpdateMaintenanceMode implements UpdateMaintenanceModeInterface
             ON DUPLICATE KEY UPDATE `values`= :values
         SQL;
 
-        $this->connection->executeQuery($query, [
+        $this->connection->executeStatement($query, [
             'code' => 'maintenance_mode',
             'values' => ['enabled' => $enabled],
         ], [
