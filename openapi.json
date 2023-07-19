@@ -87,6 +87,14 @@
                         "required": false,
                         "schema": {
                             "type": "string"
+                        },
+                        "examples": {
+                            "test": {
+                                "summary": "This filter will return all the products with a sku containing the value \"AKN\".",
+                                "description": "test description",
+                                "value": "{\"sku\":[{\"operator\":\"CONTAINS\",\"value\":\"AKN\"}]}",
+                                "externalValue": "http://akeneo.com"
+                            }
                         }
                     },
                     {
@@ -205,7 +213,85 @@
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/Product"
-                        }
+                        },
+                        "example": [
+                            {
+                                "_links": {
+                                    "self": {
+                                        "href": "http://host/api/rest/v1/products/akeneo_tshirt"
+                                    }
+                                },
+                                "identifier": "akeneo_tshirt",
+                                "family": "tshirts",
+                                "parent": null,
+                                "groups": [],
+                                "categories": [],
+                                "enabled": true,
+                                "values": {
+                                    "name": [
+                                        {
+                                            "locale": null,
+                                            "scope": null,
+                                            "data": "Akeno T-Shirt"
+                                        }
+                                    ],
+                                    "description": [
+                                        {
+                                            "locale": "en_US",
+                                            "scope": null,
+                                            "data": "A really nice t-shirt"
+                                        }
+                                    ],
+                                    "price": [
+                                        {
+                                            "locale": null,
+                                            "scope": "ecommerce",
+                                            "data": {
+                                                "amount": 10,
+                                                "currency": "EUR"
+                                            }
+                                        }
+                                    ]
+                                },
+                                "created": "2017-03-06T13:23:23+01:00",
+                                "updated": "2017-03-06T13:23:23+01:00",
+                                "associations": [],
+                                "quantified_associations": [],
+                                "metadata": {
+                                    "id": 1,
+                                    "form": "pim-product-edit-form"
+                                }
+                            },
+                            {
+                                "_links": {
+                                    "self": {
+                                        "href": "http://host/api/rest/v1/products/akeneo_pant"
+                                    }
+                                },
+                                "identifier": "akeneo_pant",
+                                "family": "tshirts",
+                                "parent": null,
+                                "groups": [],
+                                "categories": [],
+                                "enabled": true,
+                                "values": {
+                                    "name": [
+                                        {
+                                            "locale": null,
+                                            "scope": null,
+                                            "data": "Akeno Pant"
+                                        }
+                                    ],
+                                    "description": [
+                                        {
+                                            "locale": "en_US",
+                                            "scope": null,
+                                            "data": "A really nice pant"
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
                     }
                 },
                 "type": "object"
@@ -314,14 +400,89 @@
             },
             "Product": {
                 "properties": {
-                    "Name": {
+                    "identifier": {
+                        "type": "string"
+                    },
+                    "family": {
+                        "type": "string"
+                    },
+                    "enabled": {
+                        "type": "boolean"
+                    },
+                    "categories": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "values": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/components/schemas/ProductValue"
+                            }
+                        }
+                    },
+                    "associations": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/components/schemas/ProductAssociation"
+                            }
+                        }
+                    },
+                    "created": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "ProductValue": {
+                "properties": {
+                    "locale": {
+                        "type": "string"
+                    },
+                    "scope": {
+                        "type": "string"
+                    },
+                    "data": {
                         "type": "string"
                     }
                 },
-                "type": "object",
-                "example": {
-                    "Name": "My product"
-                }
+                "type": "object"
+            },
+            "ProductAssociation": {
+                "properties": {
+                    "association_type": {
+                        "type": "string"
+                    },
+                    "products": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "product_models": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "groups": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "type": "object"
             }
         },
         "responses": {

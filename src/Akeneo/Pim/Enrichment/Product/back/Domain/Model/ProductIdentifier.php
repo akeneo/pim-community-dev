@@ -11,18 +11,97 @@ use Webmozart\Assert\Assert;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+// generate schema for product
 #[OA\Schema(
     schema: 'Product',
     properties: [
         new OA\Property(
-            property: 'Name',
-            type: 'string'
-        )
+            property: 'identifier',
+            type: 'string',
+        ),
+        new OA\Property(
+            property: 'family',
+            type: 'string',
+        ),
+        new OA\Property(
+            property: 'enabled',
+            type: 'boolean',
+        ),
+        new OA\Property(
+            property: 'categories',
+            type: 'array',
+            items: new OA\Items(type: 'string'),
+        ),
+        new OA\Property(
+            property: 'values',
+            type: 'object',
+            additionalProperties: new OA\AdditionalProperties(
+                type: 'array',
+                items: new OA\Items(ref: '#/components/schemas/ProductValue'),
+            ),
+        ),
+        new OA\Property(
+            property: 'associations',
+            type: 'object',
+            additionalProperties: new OA\AdditionalProperties(
+                type: 'array',
+                items: new OA\Items(ref: '#/components/schemas/ProductAssociation'),
+            ),
+        ),
+        new OA\Property(
+            property: 'created',
+            type: 'string',
+            format: 'date-time',
+        ),
+        new OA\Property(
+            property: 'updated',
+            type: 'string',
+            format: 'date-time',
+        ),
     ],
-    type: 'object',
-    example: [
-        'Name' => 'My product'
-    ]
+)]
+// generate schema for product value
+#[OA\Schema(
+    schema: 'ProductValue',
+    properties: [
+        new OA\Property(
+            property: 'locale',
+            type: 'string',
+        ),
+        new OA\Property(
+            property: 'scope',
+            type: 'string',
+        ),
+        new OA\Property(
+            property: 'data',
+            type: 'string',
+        ),
+    ],
+)]
+// generate schema for product association
+#[OA\Schema(
+    schema: 'ProductAssociation',
+    properties: [
+        new OA\Property(
+            property: 'association_type',
+            type: 'string',
+        ),
+        new OA\Property(
+            property: 'products',
+            type: 'array',
+            items: new OA\Items(type: 'string'),
+        ),
+        new OA\Property(
+            property: 'product_models',
+            type: 'array',
+            items: new OA\Items(type: 'string'),
+        ),
+        new OA\Property(
+            property: 'groups',
+            type: 'array',
+            items: new OA\Items(type: 'string'),
+        ),
+    ],
 )]
 final class ProductIdentifier
 {

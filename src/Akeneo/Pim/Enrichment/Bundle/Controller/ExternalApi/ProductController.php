@@ -144,7 +144,16 @@ class ProductController
                 required: false,
                 schema: new OA\Schema(
                     type: 'string'
-                )
+                ),
+                examples: [
+                    'search' => new OA\Examples(
+                        example: 'test',
+                        summary: 'This filter will return all the products with a sku containing the value "AKN".',
+                        description: 'test description',
+                        value: '{"sku":[{"operator":"CONTAINS","value":"AKN"}]}',
+                        externalValue: 'http://akeneo.com',
+                    ),
+                ]
             ),
             new OA\Parameter(
                 name: 'scope',
