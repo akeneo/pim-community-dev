@@ -347,18 +347,16 @@
                     }
                 },
                 "type": "object",
-                "example": [
-                    {
-                        "code": "winter_collection",
-                        "parent": null,
-                        "updated": "2021-05-22T12:48:00+02:00",
-                        "position": 1,
-                        "labels": {
-                            "en_US": "Winter collection",
-                            "fr_FR": "Collection hiver"
-                        }
+                "example": {
+                    "code": "winter_collection",
+                    "parent": null,
+                    "updated": "2021-05-22T12:48:00+02:00",
+                    "position": 1,
+                    "labels": {
+                        "en_US": "Winter collection",
+                        "fr_FR": "Collection hiver"
                     }
-                ]
+                }
             },
             "Category_partial_update_list_response_body": {
                 "properties": {
@@ -416,22 +414,20 @@
                         }
                     },
                     "values": {
-                        "type": "object",
-                        "additionalProperties": {
-                            "type": "array",
-                            "items": {
+                        "properties": {
+                            "": {
                                 "$ref": "#/components/schemas/ProductValue"
                             }
-                        }
+                        },
+                        "type": "object"
                     },
                     "associations": {
-                        "type": "object",
-                        "additionalProperties": {
-                            "type": "array",
-                            "items": {
+                        "properties": {
+                            "": {
                                 "$ref": "#/components/schemas/ProductAssociation"
                             }
-                        }
+                        },
+                        "type": "object"
                     },
                     "created": {
                         "type": "string",

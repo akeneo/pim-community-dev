@@ -247,17 +247,16 @@ use OpenApi\Attributes as OA;
                 ),
             ],
             type: 'object',
-            example: [
+            example:
                 [
-                    "code"=> "winter_collection",
-                    "parent"=> null,
-                    "updated"=> "2021-05-22T12:48:00+02:00",
-                    "position"=> 1,
-                    "labels"=> [
-                        "en_US"=> "Winter collection",
-                        "fr_FR"=> "Collection hiver"
-                        ]
-                ],
+                "code"=> "winter_collection",
+                "parent"=> null,
+                "updated"=> "2021-05-22T12:48:00+02:00",
+                "position"=> 1,
+                "labels"=> [
+                    "en_US"=> "Winter collection",
+                    "fr_FR"=> "Collection hiver"
+                    ]
             ],
         ),
         new OA\Schema(

@@ -34,19 +34,23 @@ use Webmozart\Assert\Assert;
         ),
         new OA\Property(
             property: 'values',
+            properties: [
+                new OA\Property(
+                    ref: '#/components/schemas/ProductValue',
+                    type: 'object',
+                ),
+                ],
             type: 'object',
-            additionalProperties: new OA\AdditionalProperties(
-                type: 'array',
-                items: new OA\Items(ref: '#/components/schemas/ProductValue'),
-            ),
         ),
         new OA\Property(
             property: 'associations',
-            type: 'object',
-            additionalProperties: new OA\AdditionalProperties(
-                type: 'array',
-                items: new OA\Items(ref: '#/components/schemas/ProductAssociation'),
+            properties: [
+                new OA\Property(
+                    ref: '#/components/schemas/ProductAssociation',
+                    type: 'object',
             ),
+                ],
+            type: 'object',
         ),
         new OA\Property(
             property: 'created',
