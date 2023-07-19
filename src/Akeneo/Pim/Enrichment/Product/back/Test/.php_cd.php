@@ -79,6 +79,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Query',
         'Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator',
         'Akeneo\Tool\Component\Api\Exception\InvalidQueryException',
+        'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
         'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags',
         'Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category\GetGrantedCategoryCodes',
         'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
