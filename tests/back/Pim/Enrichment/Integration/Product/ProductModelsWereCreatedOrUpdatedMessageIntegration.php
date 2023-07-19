@@ -2,11 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- */
-
 namespace AkeneoTest\Pim\Enrichment\Integration\Product;
 
 use Akeneo\PerformanceAnalytics\Domain\Message;
@@ -15,6 +10,10 @@ use Akeneo\Pim\Enrichment\Component\Product\Event\ProductModelsWereCreatedOrUpda
 use Akeneo\Pim\Enrichment\Component\Product\Event\ProductModelWasCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Event\ProductModelWasUpdated;
 
+/*
+ * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class ProductModelsWereCreatedOrUpdatedMessageIntegration extends EnrichmentProductModelTestCase
 {
     protected function setUp(): void
@@ -131,6 +130,4 @@ class ProductModelsWereCreatedOrUpdatedMessageIntegration extends EnrichmentProd
         $productModelWasUpdatedList = \array_filter($productModelsWereCreatedOrUpdated->events, fn ($object) => $object instanceof ProductModelWasUpdated);
         self::assertCount(1, $productModelWasUpdatedList);
     }
-
-
 }

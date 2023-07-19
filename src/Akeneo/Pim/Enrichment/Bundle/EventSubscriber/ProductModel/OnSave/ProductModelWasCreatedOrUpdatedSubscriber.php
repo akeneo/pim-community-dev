@@ -2,23 +2,23 @@
 
 declare(strict_types=1);
 
-/*
- * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- */
-
 namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ProductModel\OnSave;
 
 use Akeneo\Pim\Enrichment\Component\Product\Event\ProductModelsWereCreatedOrUpdated;
 use Akeneo\Pim\Enrichment\Component\Product\Event\ProductModelWasCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Event\ProductModelWasUpdated;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Messenger\MessageBusInterface;
 
+/*
+ * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class ProductModelWasCreatedOrUpdatedSubscriber implements EventSubscriberInterface
 {
     /**
@@ -31,6 +31,7 @@ class ProductModelWasCreatedOrUpdatedSubscriber implements EventSubscriberInterf
         private readonly LoggerInterface $logger,
         private readonly ?string $tenantId,
         private readonly string $env,
+        private readonly FeatureFlag $featureFlag,
         private readonly int $batchSize = 100,
     ) {
     }
@@ -53,6 +54,7 @@ class ProductModelWasCreatedOrUpdatedSubscriber implements EventSubscriberInterf
         if (false === $unitary
             || !$productModel instanceof ProductModelInterface
             || $this->isProdLegacy()
+            || !$this->featureFlag->isEnabled()
         ) {
             return;
         }
@@ -68,6 +70,7 @@ class ProductModelWasCreatedOrUpdatedSubscriber implements EventSubscriberInterf
         if (empty($productModels)
             || !reset($productModels) instanceof ProductModelInterface
             || $this->isProdLegacy()
+            || !$this->featureFlag->isEnabled()
         ) {
             return;
         }
@@ -87,6 +90,7 @@ class ProductModelWasCreatedOrUpdatedSubscriber implements EventSubscriberInterf
         if (false === $unitary
             || !$productModel instanceof ProductModelInterface
             || $this->isProdLegacy()
+            || !$this->featureFlag->isEnabled()
         ) {
             return;
         }
@@ -113,6 +117,7 @@ class ProductModelWasCreatedOrUpdatedSubscriber implements EventSubscriberInterf
         if (empty($productModels)
             || !reset($productModels) instanceof ProductModelInterface
             || $this->isProdLegacy()
+            || !$this->featureFlag->isEnabled()
         ) {
             return;
         }
