@@ -16,7 +16,7 @@ services:
     arguments:
       - ''
 
-  Akeneo\Platform\Installer\Infrastructure\Controller\IsMaintenanceModeEnabled:
+  Akeneo\Platform\Installer\Infrastructure\Controller\IsMaintenanceModeEnabledAction:
     public: true
     arguments:
-      - '@Akeneo\Platform\Job\ServiceApi\JobExecution\FindQueuedAndRunningJobExecutionInterface'
+      - '@Akeneo\Platform\Installer\Application\IsMaintenanceModeEnabled\IsMaintenanceModeEnabledHandler'

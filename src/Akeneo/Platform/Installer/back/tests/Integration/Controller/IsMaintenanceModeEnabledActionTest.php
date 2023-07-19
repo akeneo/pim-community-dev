@@ -33,8 +33,8 @@ class IsMaintenanceModeEnabledActionTest extends ControllerIntegrationTestCase
         $this->webClientHelper->callApiRoute($this->client, self::ROUTE);
 
         $response = $this->client->getResponse();
-        Assert::assertSame($response->getStatusCode(), Response::HTTP_OK);
-        // TODO : assert enabled = true
+        Assert::assertSame(Response::HTTP_OK, $response->getStatusCode());
+        Assert::assertSame('true', $response->getContent());
     }
 
     private function given_maintenance_mode_is_enabled(): void
