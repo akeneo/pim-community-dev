@@ -1,11 +1,9 @@
 import ReactDOM from 'react-dom';
 import React from 'react';
-import {QualityScore} from '@akeneo-pim-community/data-quality-insights/src/application/component/QualityScore';
+import {QualityScoreValue, QualityScore, QualityScorePending} from '@akeneo-pim-community/data-quality-insights';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
-import {QualityScorePending} from '@akeneo-pim-community/data-quality-insights/src/application/component/QualityScorePending';
-import {QualityScoreValue} from '@akeneo-pim-community/data-quality-insights/src/domain';
 
 const StringCell = require('oro/datagrid/string-cell');
 

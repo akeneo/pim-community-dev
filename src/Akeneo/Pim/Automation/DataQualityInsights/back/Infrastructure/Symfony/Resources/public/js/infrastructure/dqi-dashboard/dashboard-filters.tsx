@@ -3,7 +3,7 @@ import {
   CategoryFilter,
   FamilyFilter,
 } from '@akeneo-pim-community/data-quality-insights/src/application/component/Dashboard/Filters';
-import {DashboardContextProvider} from '@akeneo-pim-community/data-quality-insights/src/application/context/DashboardContext';
+import {DashboardContextProvider} from '@akeneo-pim-community/data-quality-insights';
 import {useSecurity} from '@akeneo-pim-community/shared';
 
 const BaseDashboard = require('akeneo/data-quality-insights/view/dqi-dashboard/base-dashboard');

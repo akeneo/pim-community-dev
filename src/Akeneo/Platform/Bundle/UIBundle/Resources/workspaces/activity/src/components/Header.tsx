@@ -3,7 +3,7 @@ import {Breadcrumb} from 'akeneo-design-system';
 import {PageHeader, useTranslate, useUserContext, PimView} from '@akeneo-pim-community/shared';
 import {generateRandomNumber} from '../helpers';
 
-const MediaUrlGenerator = require('pim/media-url-generator');
+const MediaUrlGenerator = require('pimui/js/generator/media-url-generator');
 
 const Header = () => {
   const translate = useTranslate();

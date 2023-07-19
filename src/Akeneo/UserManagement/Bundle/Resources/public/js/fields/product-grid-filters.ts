@@ -1,8 +1,8 @@
 import $ from 'jquery';
 import * as i18n from 'pimui/js/i18n';
 import * as _ from 'underscore';
-import NormalizedAttribute from 'pim/model/attribute';
-import NormalizedAttributeGroup from 'pim/model/attribute-group';
+import NormalizedAttribute from 'pimui/js/model/attribute';
+import NormalizedAttributeGroup from 'pimui/js/model/attribute-group';
 
 const __ = require('oro/translator');
 const BaseMultiSelectAsync = require('pim/form/common/fields/multi-select-async');
