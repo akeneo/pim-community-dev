@@ -63,10 +63,6 @@ define([
     },
 
     isReadOnly: async function (identifier) {
-      if (identifier?.is_read_only) {
-        return new Promise(resolve => resolve(true));
-      }
-
       //If we are in CE, the permission registry does not exists so the button is visible
       if (undefined === FetcherRegistry.getFetcher('permission')?.options?.urls) {
         return new Promise(resolve => resolve(false));

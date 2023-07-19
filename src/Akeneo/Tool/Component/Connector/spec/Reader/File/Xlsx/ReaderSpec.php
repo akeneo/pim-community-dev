@@ -40,10 +40,11 @@ class ReaderSpec extends ObjectBehavior
         $jobParameters->get('storage')->willReturn(['type' => 'local', 'file_path' => $filePath]);
         $fileIterator->valid()->willReturn(true, true, true, false);
         $fileIterator->current()->willReturn(null);
-        $fileIterator->rewind()->shouldBeCalled();
+        $fileIterator->rewind()->shouldBeCalledTimes(3);
         $fileIterator->next()->shouldBeCalled();
         $fileIteratorFactory->create($filePath, [])->willReturn($fileIterator);
 
+        $this->initialize();
         /** Expect 2 items, even there is 3 lines because the first one (the header) is ignored */
         $this->totalItems()->shouldReturn(2);
     }
@@ -70,6 +71,7 @@ class ReaderSpec extends ObjectBehavior
 
         $stepExecution->incrementSummaryInfo('item_position')->shouldBeCalled();
 
+        $this->initialize();
         $this->read()->shouldReturn($consolidatedData);
     }
 
@@ -94,6 +96,7 @@ class ReaderSpec extends ObjectBehavior
         );
         $stepExecution->incrementSummaryInfo("skip")->shouldBeCalled();
 
+        $this->initialize();
         $this->shouldThrow(InvalidItemFromViolationsException::class)->during('read');
     }
 
@@ -116,6 +119,7 @@ class ReaderSpec extends ObjectBehavior
             new BusinessArrayConversionException('message', 'messageKey', [])
         );
 
+        $this->initialize();
         $this->shouldThrow(InvalidItemException::class)->during('read');
     }
 
@@ -153,6 +157,7 @@ class ReaderSpec extends ObjectBehavior
 
         $stepExecution->incrementSummaryInfo('item_position')->shouldBeCalled();
 
+        $this->initialize();
         $this->read()->shouldReturn($consolidatedData);
     }
 

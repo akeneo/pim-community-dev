@@ -222,3 +222,14 @@ services:
         class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\Family\Sql\SqlGetFamilies
         arguments:
             - '@database_connection'
+
+    akeneo.pim.structure.query.sql_get_main_identifier_attribute_code:
+        class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Sql\SqlGetMainIdentifierAttributeCode
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\GetMainIdentifierAttributeCode:
+        class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Cache\CachedGetMainIdentifierAttributeCode
+        arguments:
+            - '@akeneo.pim.structure.query.sql_get_main_identifier_attribute_code'
+        tags: [ 'akeneo.pim.cached_query' ]

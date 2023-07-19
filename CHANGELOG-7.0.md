@@ -1,5 +1,23 @@
 # 7.0.x
 
+# 7.0.22 (2023-07-11)
+
+# 7.0.21 (2023-07-11)
+
+# 7.0.20 (2023-06-29)
+
+# 7.0.19 (2023-06-27)
+
+## New features
+
+- GRF-872 [Backport GRF-669]: Add 4 field columns (properties) to the user export job profile
+
+# 7.0.18 (2023-06-22)
+
+## Bug fixes
+
+- PIM-11047: Be able to customize local storage root without breaking import/export
+
 # 7.0.17 (2023-05-24)
 
 # 7.0.16 (2023-05-24)

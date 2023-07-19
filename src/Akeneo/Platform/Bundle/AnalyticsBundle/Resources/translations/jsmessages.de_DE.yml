@@ -60,4 +60,3 @@ pim_analytics:
     data_destination.untracked: Anzahl der nicht verfolgten API-Zielverbindungen
     other.tracked: Anzahl der anderen verfolgten API-Verbindungen
     other.untracked: Anzahl der anderen nicht verfolgten API-Verbindungen 
-

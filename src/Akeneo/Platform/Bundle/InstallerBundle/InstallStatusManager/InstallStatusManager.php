@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Bundle\InstallerBundle\InstallStatusManager;
 
 use Akeneo\Platform\Bundle\InstallerBundle\Persistence\Sql\GetInstallDatetime;
+use Akeneo\Platform\Bundle\InstallerBundle\Persistence\Sql\GetResetEvents;
 use Doctrine\DBAL\Exception\TableNotFoundException;
 
 /**
@@ -17,13 +18,15 @@ use Doctrine\DBAL\Exception\TableNotFoundException;
  */
 class InstallStatusManager
 {
-    public function __construct(protected GetInstallDatetime $installDatetimeQuery)
-    {
+    public function __construct(
+        private readonly GetInstallDatetime $installDatetimeQuery,
+        private readonly GetResetEvents $getResetEvents,
+    ) {
     }
 
     /**
      * Returns null if the PIM not installed or returns the timestamp of creation of the 'pim_user' table.
-     * Definition of PIM not installled:
+     * Definition of PIM not installed:
      * - no 'install_data' value in pim_configuration table
      * - no pim_configuration table at all (happens at first install)
      */
@@ -38,9 +41,17 @@ class InstallStatusManager
         return $installDatetime;
     }
 
-    /**
-     * @return bool Return a boolean about installation state of the PIM
-     */
+    public function getPimResetEvents(): array
+    {
+        try {
+            $resetEvents = ($this->getResetEvents)();
+        } catch (TableNotFoundException $e) {
+            return [];
+        }
+
+        return $resetEvents;
+    }
+
     public function isPimInstalled(): bool
     {
         return null !== $this->getPimInstallDateTime();

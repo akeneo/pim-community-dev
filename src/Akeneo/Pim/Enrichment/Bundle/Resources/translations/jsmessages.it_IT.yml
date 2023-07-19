@@ -508,6 +508,8 @@ pim_datagrid:
       label: Identificatore
     uuid:
       label: Uuid
+    code_or_label:
+      label: Codice o etichetta
   search: Cerca per {{ label }}
 batch_jobs:
   add_association:

@@ -6,6 +6,7 @@ services:
         class: '%pim_installer.install_status_manager.class%'
         arguments:
             - '@Akeneo\Platform\Bundle\InstallerBundle\Persistence\Sql\GetInstallDatetime'
+            - '@Akeneo\Platform\Bundle\InstallerBundle\Persistence\Sql\GetResetEvents'
 
     pim_installer.processor.denormalization.user:
         class: '%pim_connector.processor.denormalization.class%'
@@ -23,3 +24,12 @@ services:
     Akeneo\Platform\Bundle\InstallerBundle\Persistence\Sql\GetInstallDatetime:
         arguments:
             - '@database_connection'
+
+    Akeneo\Platform\Bundle\InstallerBundle\Persistence\Sql\GetResetEvents:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Platform\Bundle\InstallerBundle\Persistence\Sql\SaveResetEvent:
+        arguments:
+            - '@database_connection'
+            - '@Akeneo\Platform\Bundle\InstallerBundle\Persistence\Sql\GetResetEvents'

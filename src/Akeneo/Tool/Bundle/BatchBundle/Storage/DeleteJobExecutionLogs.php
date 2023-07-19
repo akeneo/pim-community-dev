@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Bundle\BatchBundle\Storage;
 
 use Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\GetJobExecutionIds;
+use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Doctrine\DBAL\FetchMode;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -21,25 +22,25 @@ final class DeleteJobExecutionLogs
     ) {
     }
 
-    public function olderThanDays(int $days): void
+    public function olderThanDays(int $days, array $jobInstanceCodes, ?BatchStatus $jobExecutionStatus): void
     {
-        $statement = $this->getJobExecutionIds->olderThanDays($days);
+        $statement = $this->getJobExecutionIds->olderThanDays($days, $jobInstanceCodes, $jobExecutionStatus);
         while ($id = $statement->fetchOne()) {
             $this->filesystem->remove($this->getJobExecutionLogDirectory($id));
         }
     }
 
-    public function olderThanHours(int $hours): void
+    public function olderThanHours(int $hours, array $jobInstanceCodes, ?BatchStatus $jobExecutionStatus): void
     {
-        $statement = $this->getJobExecutionIds->olderThanHours($hours);
+        $statement = $this->getJobExecutionIds->olderThanHours($hours, $jobInstanceCodes, $jobExecutionStatus);
         while ($id = $statement->fetchOne()) {
             $this->filesystem->remove($this->getJobExecutionLogDirectory($id));
         }
     }
 
-    public function all(): void
+    public function all(array $jobInstanceCodes, ?BatchStatus $jobExecutionStatus): void
     {
-        $statement = $this->getJobExecutionIds->all();
+        $statement = $this->getJobExecutionIds->all($jobInstanceCodes, $jobExecutionStatus);
         while ($id = $statement->fetchOne()) {
             $this->filesystem->remove($this->getJobExecutionLogDirectory($id));
         }

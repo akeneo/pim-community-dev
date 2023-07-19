@@ -7,6 +7,7 @@ use Akeneo\Tool\Component\Batch\Job\Job;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\ItemStep;
 use Akeneo\Tool\Component\Batch\Step\StepInterface;
 use Akeneo\Tool\Component\Connector\Archiver\ArchiverInterface;
@@ -28,8 +29,13 @@ class FileWriterArchiverSpec extends ObjectBehavior
         FilesystemOperator $filesystem,
         JobRegistry $jobRegistry,
         FilesystemProvider $filesystemProvider,
+        JobExecution $jobExecution,
+        JobInstance $jobInstance,
+        StepExecution $stepExecution,
         LoggerInterface $logger
     ) {
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $jobExecution->getJobInstance()->willReturn($jobInstance);
         $this->beConstructedWith($filesystem, $jobRegistry, $filesystemProvider, $logger);
     }
 
@@ -47,6 +53,7 @@ class FileWriterArchiverSpec extends ObjectBehavior
     function it_does_not_support_jobs_without_item_step(
         JobRegistry $jobRegistry,
         JobExecution $jobExecution,
+        StepExecution $stepExecution,
         JobInstance $jobInstance,
         Job $job,
         StepInterface $step
@@ -56,12 +63,13 @@ class FileWriterArchiverSpec extends ObjectBehavior
         $jobRegistry->get('my_job_name')->willReturn($job);
         $job->getSteps()->willReturn([$step]);
 
-        $this->supports($jobExecution)->shouldReturn(false);
+        $this->supports($stepExecution)->shouldReturn(false);
     }
 
     function it_does_not_support_jobs_without_archivable_file_writer(
         JobRegistry $jobRegistry,
         JobExecution $jobExecution,
+        StepExecution $stepExecution,
         JobInstance $jobInstance,
         Job $job,
         ItemStep $itemStep,
@@ -74,7 +82,7 @@ class FileWriterArchiverSpec extends ObjectBehavior
         $itemStep->getWriter()->willReturn($itemWriter);
         $job->getSteps()->willReturn([$itemStep]);
 
-        $this->supports($jobExecution)->shouldReturn(false);
+        $this->supports($stepExecution)->shouldReturn(false);
     }
 
     function it_stores_written_files(
@@ -83,6 +91,7 @@ class FileWriterArchiverSpec extends ObjectBehavior
         FilesystemProvider $filesystemProvider,
         FilesystemOperator $catalogFilesystem,
         JobExecution $jobExecution,
+        StepExecution $stepExecution,
         JobInstance $jobInstance,
         Job $job,
         ItemStep $itemStep
@@ -96,6 +105,7 @@ class FileWriterArchiverSpec extends ObjectBehavior
         $jobInstance->getType()->willReturn('export');
         $jobExecution->getId()->willReturn(42);
         $jobExecution->getJobInstance()->willReturn($jobInstance);
+        $stepExecution->getStepName()->willReturn('export');
         $jobRegistry->get('my_job_name')->willReturn($job);
 
         $writer = new class implements ItemWriterInterface, ArchivableWriterInterface {
@@ -119,9 +129,10 @@ class FileWriterArchiverSpec extends ObjectBehavior
             public function write($items): void {}
         };
 
+        $itemStep->getName()->willReturn('export');
         $itemStep->getWriter()->willReturn($writer);
         $job->getSteps()->willReturn([$itemStep]);
-        $this->supports($jobExecution)->shouldReturn(true);
+        $this->supports($stepExecution)->shouldReturn(true);
 
         $filesystemProvider->getFilesystem('catalogStorage')->shouldBeCalled()->willReturn($catalogFilesystem);
         $remoteStream = \tmpfile();
@@ -133,7 +144,7 @@ class FileWriterArchiverSpec extends ObjectBehavior
         )->shouldBeCalled();
         $filesystem->writeStream('export/my_job_name/42/output/export.csv', Argument::type('resource'))->shouldBeCalled();
 
-        $this->archive($jobExecution);
+        $this->archive($stepExecution);
         if (\is_resource($remoteStream)) {
             \fclose($remoteStream);
         }
@@ -146,6 +157,7 @@ class FileWriterArchiverSpec extends ObjectBehavior
         FilesystemProvider $filesystemProvider,
         FilesystemOperator $catalogFilesystem,
         JobExecution $jobExecution,
+        StepExecution $stepExecution,
         JobInstance $jobInstance,
         Job $job,
         ItemStep $itemStep,
@@ -155,6 +167,7 @@ class FileWriterArchiverSpec extends ObjectBehavior
         $jobInstance->getType()->willReturn('export');
         $jobExecution->getId()->willReturn(42);
         $jobExecution->getJobInstance()->willReturn($jobInstance);
+        $stepExecution->getStepName()->willReturn('export');
         $jobRegistry->get('my_job_name')->willReturn($job);
 
         $writer = new class implements ItemWriterInterface, ArchivableWriterInterface {
@@ -180,8 +193,9 @@ class FileWriterArchiverSpec extends ObjectBehavior
         };
 
         $itemStep->getWriter()->willReturn($writer);
+        $itemStep->getName()->willReturn('export');
         $job->getSteps()->willReturn([$itemStep]);
-        $this->supports($jobExecution)->shouldReturn(true);
+        $this->supports($stepExecution)->shouldReturn(true);
 
         $filesystemProvider->getFilesystem('catalogStorage')->shouldBeCalled()->willReturn($catalogFilesystem);
         $remoteStream = \tmpfile();
@@ -203,13 +217,14 @@ class FileWriterArchiverSpec extends ObjectBehavior
             Argument::type('array')
         )->shouldBeCalled();
 
-        $this->archive($jobExecution);
+        $this->archive($stepExecution);
     }
 
     function it_gets_the_archives_for_a_job_execution(
         FilesystemOperator $filesystem,
         JobRegistry $jobRegistry,
         JobExecution $jobExecution,
+        StepExecution $stepExecution,
         JobInstance $jobInstance,
         Job $job,
         ItemStep $itemStep
@@ -218,6 +233,7 @@ class FileWriterArchiverSpec extends ObjectBehavior
         $jobInstance->getType()->willReturn('export');
         $jobExecution->getId()->willReturn(42);
         $jobExecution->getJobInstance()->willReturn($jobInstance);
+        $stepExecution->getStepName()->willReturn('export');
         $jobRegistry->get('my_job_name')->willReturn($job);
 
         $writer = new class implements ItemWriterInterface, ArchivableWriterInterface {
@@ -236,8 +252,10 @@ class FileWriterArchiverSpec extends ObjectBehavior
             }
         };
         $itemStep->getWriter()->willReturn($writer);
+        $itemStep->getName()->willReturn('export');
         $job->getSteps()->willReturn([$itemStep]);
-        $this->supports($jobExecution)->shouldReturn(true);
+        $jobExecution->getStepExecutions()->willReturn([$stepExecution]);
+        $this->supports($stepExecution)->shouldReturn(true);
 
         $filesystem->listContents('export/my_job_name/42/output', false)->shouldBeCalled()->willReturn(
             new DirectoryListing(
@@ -256,5 +274,16 @@ class FileWriterArchiverSpec extends ObjectBehavior
             'files/sku1/image.jpg' => 'export/my_job_name/42/output/files/sku1/image.jpg',
             'files/sku2/media.png' => 'export/my_job_name/42/output/files/sku2/media.png',
         ]);
+    }
+
+    function it_return_the_archivist_directory_from_job_execution(
+        JobExecution $jobExecution,
+        JobInstance $jobInstance
+    ) {
+        $jobInstance->getJobName()->willReturn('csv_product_export');
+        $jobInstance->getType()->willReturn('export');
+        $jobExecution->getId()->willReturn(12);
+
+        $this->getArchiveDirectoryPath($jobExecution)->shouldReturn('export/csv_product_export/12/output');
     }
 }

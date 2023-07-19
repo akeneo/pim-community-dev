@@ -96,3 +96,30 @@ test('It displays different url according to pim version', async () => {
   fireEvent.mouseLeave(screen.getByText('pim_menu.tab.help.title'));
   expect(screen.getByText('pim_menu.tab.help.help_center')).not.toBeVisible();
 });
+
+test('It displays simple url if pim version is not retrieved', async () => {
+  // @ts-ignore
+  global.fetch = () =>
+    Promise.resolve({
+      ok: false,
+      status: 500,
+    });
+
+  renderWithProviders(
+    <PimNavigation
+      entries={aMainNavigation()}
+      activeEntryCode="entry10"
+      activeSubEntryCode="subentry2"
+      freeTrialEnabled={true}
+    />
+  );
+
+  expect(screen.getByText('pim_menu.tab.help.title')).toBeInTheDocument();
+  fireEvent.mouseOver(screen.getByText('pim_menu.tab.help.title'));
+
+  const helpCenterUrl = screen.getByText('pim_menu.tab.help.help_center');
+
+  await waitFor(() => !!helpCenterUrl);
+  expect(screen.getByText('pim_menu.tab.help.help_center')).toBeVisible();
+  expect(helpCenterUrl).toHaveAttribute('href', 'https://help.akeneo.com');
+});

@@ -27,6 +27,7 @@ $rules = [
 
         // TIP-944: UserManager used in component
         'Akeneo\UserManagement\Bundle\Manager\UserManager',
+        'Akeneo\UserManagement\Domain\Permissions',
 
         // TODO: This dependency should be removed, Bundle dependency
         'Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager',

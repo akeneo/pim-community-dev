@@ -39,16 +39,15 @@ services:
             - '@Akeneo\Connectivity\Connection\Application\CustomApps\Command\RegenerateCustomAppSecretHandler'
             -
     Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controller\Internal\IsCustomAppsNumberLimitReachedAction:
-          public: true
-          arguments:
-              - '@Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Persistence\IsCustomAppsNumberLimitReachedQuery'
+        public: true
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Persistence\IsCustomAppsNumberLimitReachedQuery'
 
 
     # EXTERNAL
     Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controller\External\CreateCustomAppAction:
         public: true
         arguments:
-            - '@akeneo_connectivity.connection.app_developer_mode.feature'
             - '@oro_security.security_facade'
             - '@validator'
             - '@translator'
@@ -59,7 +58,6 @@ services:
     Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controller\External\DeleteCustomAppAction:
         public: true
         arguments:
-            - '@akeneo_connectivity.connection.app_developer_mode.feature'
             - '@oro_security.security_facade'
             - '@Akeneo\Connectivity\Connection\Application\CustomApps\Command\DeleteCustomAppHandler'
             - '@Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Persistence\GetCustomAppQuery'
@@ -68,6 +66,5 @@ services:
     Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controller\External\GetCustomAppsAction:
         public: true
         arguments:
-            - '@akeneo_connectivity.connection.app_developer_mode.feature'
             - '@security.token_storage'
             - '@Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Persistence\GetCustomAppsQuery'

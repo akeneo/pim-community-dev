@@ -11,6 +11,7 @@ namespace Akeneo\Platform\Installer\Application\ResetInstance;
 
 use Akeneo\Platform\Installer\Domain\Query\FindTablesInterface;
 use Akeneo\Platform\Installer\Domain\Service\DatabasePurgerInterface;
+use Akeneo\Platform\Installer\Domain\Service\FilesystemsPurgerInterface;
 use Akeneo\Platform\Installer\Domain\Service\FixtureInstallerInterface;
 use Akeneo\Platform\Installer\Domain\Service\UserConfigurationResetterInterface;
 
@@ -36,6 +37,7 @@ class ResetInstanceHandler
         private readonly DatabasePurgerInterface $databasePurger,
         private readonly FixtureInstallerInterface $fixtureInstaller,
         private readonly UserConfigurationResetterInterface $userConfigurationResetter,
+        private readonly FilesystemsPurgerInterface $filesystemsPurger,
     ) {
     }
 
@@ -50,5 +52,6 @@ class ResetInstanceHandler
         $this->databasePurger->purge(array_values($tablesToPurge));
         $this->fixtureInstaller->installWithoutUsersUserGroupsAndUserRoles();
         $this->userConfigurationResetter->execute();
+        $this->filesystemsPurger->execute();
     }
 }

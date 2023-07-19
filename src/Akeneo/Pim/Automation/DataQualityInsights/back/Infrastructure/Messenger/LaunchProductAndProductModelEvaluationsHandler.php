@@ -34,6 +34,7 @@ final class LaunchProductAndProductModelEvaluationsHandler
 
     public function __invoke(LaunchProductAndProductModelEvaluationsMessage $message): void
     {
+        $startTime = time();
         if (!$message->productUuids->isEmpty()) {
             $this->evaluateProducts($message);
         }
@@ -41,6 +42,12 @@ final class LaunchProductAndProductModelEvaluationsHandler
         if (!$message->productModelIds->isEmpty()) {
             $this->evaluateProductModels($message);
         }
+
+        $this->logger->notice('DQI message is handled', [
+            'duration_time_in_secs' => time() - $startTime,
+            'count_products' => $message->productUuids->count(),
+            'count_product_models' => $message->productModelIds->count(),
+        ]);
     }
 
     private function evaluateProducts(LaunchProductAndProductModelEvaluationsMessage $message): void
@@ -52,6 +59,7 @@ final class LaunchProductAndProductModelEvaluationsHandler
             return;
         }
 
+        $this->logger->debug(sprintf('DQI - Evaluation of %d products start', $productUuidsToEvaluate->count()));
         $criteriaToEvaluate = empty($message->criteriaToEvaluate)
             ? $this->productCriteriaRegistry->getAllCriterionCodes()
             : \array_map(fn (string $criterionCode) => new CriterionCode($criterionCode), $message->criteriaToEvaluate);
@@ -71,6 +79,7 @@ final class LaunchProductAndProductModelEvaluationsHandler
             return;
         }
 
+        $this->logger->debug(sprintf('DQI - Evaluation of %d product-models start', $productModelIdsToEvaluate->count()));
         $criteriaToEvaluate = empty($message->criteriaToEvaluate)
             ? $this->productModelCriteriaRegistry->getAllCriterionCodes()
             : \array_map(fn (string $criterionCode) => new CriterionCode($criterionCode), $message->criteriaToEvaluate);

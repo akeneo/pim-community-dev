@@ -48,6 +48,8 @@ pim_user:
         not_match: Las contraseñas no coinciden
       current_password:
         wrong: Contraseña incorrecta
+      roles:
+        last_user_with_edit_role_permissions: Este usuario es el último con permisos de función de edición.
     tabs:
       general:
         title: General
@@ -92,6 +94,8 @@ pim_user:
     role:
       message:
         saved: "Rol guardado"
+        cannot_delete_last_edit_role_permission: No puede eliminar los permisos de edición dela última función.
+        cannot_remove_last_edit_role_permission: No puede eliminar los permisos de edición de la última función.
     user:
       message:
         saved: "Usuario guardado"

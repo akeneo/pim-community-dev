@@ -6,7 +6,6 @@ akeneo_feature_flag:
         marketplace_activate: 'akeneo_connectivity.connection.marketplace_activate.feature'
         connect_app_with_permissions: 'akeneo_connectivity.connection.connect_app_with_permissions.feature'
         communication_channel: 'akeneo_communication_channel.feature'
-        app_developer_mode: 'akeneo_connectivity.connection.app_developer_mode.feature'
         reference_data: 'akeneo.feature_flag.service.only_flexibility_on_premise_feature'
         job_automation_local_storage: 'akeneo.feature_flag.service.only_flexibility_on_premise_feature'
         enriched_category: 'akeneo.category.enriched.feature'

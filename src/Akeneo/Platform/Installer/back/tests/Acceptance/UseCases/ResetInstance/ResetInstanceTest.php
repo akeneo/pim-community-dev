@@ -47,7 +47,9 @@ class ResetInstanceTest extends KernelTestCase
             'oro_user_access_role',
         ]);
 
-        $this->getFixtureInstaller()->isInstalledWithoutUsersUserGroupsAndUserRoles();
+        $this->assertTrue(
+            $this->getFixtureInstaller()->isInstalledWithoutUsersUserGroupsAndUserRoles(),
+        );
     }
 
     private function assertTablesHaveBeenPurged(array $tableNames): void
@@ -55,7 +57,7 @@ class ResetInstanceTest extends KernelTestCase
         $this->getDatabasePurger()->assertTablesHaveBeenPurged($tableNames);
     }
 
-    private function assertTablesHaveNotBeenPurged(array $tableNames)
+    private function assertTablesHaveNotBeenPurged(array $tableNames): void
     {
         $this->getDatabasePurger()->assertTablesHaveNotBeenPurged($tableNames);
     }

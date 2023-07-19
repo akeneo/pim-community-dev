@@ -1,6 +1,9 @@
 pim_title:
   pim_category_template_edit: Edytuj szablon kategorii
 akeneo.category:
+  unknown_error:
+    title: Przepraszamy, wystąpił nieznany błąd.
+    message: Proszę odświeżyć stronę i spróbować ponownie.
   tree_list:
     column:
       category_templates: Szablony kategorii
@@ -19,11 +22,19 @@ akeneo.category:
     delete: Usuń drzewo
   template:
     learn_more: Dowiedz się więcej o szablonie kategorii
-    create: Aktywuj szablon
+    create: Utwórz szablon
+    create_confirmation_modal:
+      title: Utwórz nowy szablon kategorii
+      helper: Utwórz szablon kategorii, aby zdefiniować atrybuty i aktywować wzbogacanie wszystkich kategorii tego drzewa.
+      category_tree: Drzewo kategorii
+      link: Dowiedz się więcej o szablonach kategorii
     edit: Edytuj szablon
-    notification_success: Szablon został aktywowany.
-    notification_error: Nie można aktywować szablonu.
+    notification_success: Utworzono szablon kategorii
+    notification_error: Nie udało się utworzyć szablonu kategorii.
     not_found: Nie ma aktywnego szablonu dla tej kategorii.
+    properties:
+      general_properties: Właściwości ogólne
+      label_translations_in_ui_locales: Tłumaczenia etykiet w wersjach językowych UI
     attribute:
       description_title: Ustawienia opisu
       type:
@@ -41,6 +52,8 @@ akeneo.category:
           rich_text: Edytor tekstu sformatowanego
         translations:
           title: Tłumaczenia etykiet
+        error_message: Na stronie występują nieprawidłowe wartości.
+        unsaved_changes: Masz niezapisane zmiany, czy na pewno chcesz wyjść?
     add_attribute:
       no_attribute_title: Utwórz swój pierwszy atrybut
       no_attribute_instructions: Zdefiniuj zawartość, którą chcesz powiązać z kategoriami, dodając do tego szablonu atrybuty tekstu, obszaru tekstowego lub obrazu.
@@ -79,15 +92,42 @@ akeneo.category:
       notification_success:
         title: 'Atrybut {{ attribute }} usunięty pomyślnie'
     deactivate:
-      deactivate_template: Dezaktywuj szablon
+      deactivate_template: Usuń szablon
       confirmation_modal:
-        title: Dezaktywuj szablon kategorii
-        message: Czy na pewno chcesz dezaktywować szablon kategorii o nazwie {{ template }}?
-        helper: Dezaktywacja tego szablonu spowoduje trwałe usunięcie atrybutów i wartości powiązanych kategorii.
-        deactivate: Dezaktywuj
+        title: Usuń szablon kategorii
+        message: Czy na pewno chcesz usunąć szablon kategorii o nazwie {{ template }}?
+        helper: Usunięcie tego szablonu spowoduje trwałe usunięcie atrybutów i wartości powiązanych kategorii.
+        deactivate: Usuń
       notification_success:
-        title: 'Zdezaktywowano szablon {{ template }}'
-        message: 'Szablon {{ template }} został zdezaktywowany. Zawartość powiązanych kategorii została usunięta.'
+        title: 'Usunięto szablon {{ template }}'
+        message: 'Szablon {{ template }} został usunięty. Zawartość powiązanych kategorii została usunięta.'
+    auto-save:
+      saved: Zapisano
+      saving: Zapisywanie
+      editing: Edytowanie
+      errors: Błędy nie zostały zapisane.
+    initialize:
+      title: Dodaj atrybuty kategorii
+      message: Zdefiniuj zawartość kategorii, dodając atrybuty tekstu, obszaru tekstowego lub obrazu.
+      choice_message: Zacznij od utworzenia pierwszego atrybutu dopasowanego do Twoich potrzeb lub załaduj zestaw 13 sugerowanych atrybutów.
+      button:
+        load: Załaduj zestaw atrybutów
+        create: Utwórz pierwszy atrybut
+    load_attribute_set:
+      section_title: Załaduj zestaw atrybutów
+      title: Załaduj zestaw sugerowanych atrybutów
+      description: Łatwo zacznij konfigurację wzbogaconych kategorii poprzez załadowanie zestawu sugerowanych atrybutów.
+      content_description: 'Ten zestaw zawiera 13 atrybutów:'
+      content:
+        description_attributes: 2 atrybuty obszaru tekstowego do długiego i krótkiego opisu kategorii
+        url_attributes: 1 atrybut tekstowy z informacją o adresie URL
+        image_attributes: 3 atrybuty obrazu i 3 atrybuty tekstowe do podania alternatywnych informacji o obrazie
+        seo_attributes: 2 atrybuty tekstowe i 2 atrybuty obszaru tekstowego na dane SEO
+      confirmation_message: Czy na pewno chcesz załadować ten zestaw atrybutów?
+      button:
+        load: Załaduj zestaw atrybutów
+      notification:
+        success: Utworzono atrybuty
   template_list:
     columns:
       header: Etykieta
@@ -100,7 +140,6 @@ akeneo.category:
     content:
       enrich_attribute_values: Wzbogać dowolny poziom drzewa kategorii atrybutami tekstu, obszaru tekstowego i obrazu
       customizable_templates: Zapewnij klientom najlepsze odbiór produktu dzięki konfigurowalnym szablonom
-      edit_attributes: 'Już wkrótce: aktualizuj ustawienia dowolnego z tych atrybutów kategorii'
     survey_link_label: Podziel się z nami Twoją opinią
     learn_more_link_label: Dowiedz się więcej o wzbogaconych kategoriach
   other_actions: Inne działania

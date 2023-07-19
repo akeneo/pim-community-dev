@@ -10,7 +10,6 @@ use Akeneo\Connectivity\Connection\Application\CustomApps\Command\DeleteCustomAp
 use Akeneo\Connectivity\Connection\Application\CustomApps\Command\DeleteCustomAppHandler;
 use Akeneo\Connectivity\Connection\Domain\CustomApps\Persistence\GetCustomAppQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controller\External\DeleteCustomAppAction;
-use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -26,14 +25,12 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class DeleteCustomAppActionSpec extends ObjectBehavior
 {
     public function let(
-        FeatureFlag $developerModeFeatureFlag,
         SecurityFacade $security,
         DeleteCustomAppHandler $deleteCustomAppHandler,
         GetCustomAppQueryInterface $getCustomAppQuery,
         DeleteAppHandler $deleteAppHandler,
     ): void {
         $this->beConstructedWith(
-            $developerModeFeatureFlag,
             $security,
             $deleteCustomAppHandler,
             $getCustomAppQuery,
@@ -46,21 +43,9 @@ class DeleteCustomAppActionSpec extends ObjectBehavior
         $this->shouldHaveType(DeleteCustomAppAction::class);
     }
 
-    public function it_throws_a_not_found_exception_when_developer_mode_feature_flag_is_disabled(
-        FeatureFlag $developerModeFeatureFlag,
-    ): void {
-        $developerModeFeatureFlag->isEnabled()->willReturn(false);
-
-        $this
-            ->shouldThrow(new NotFoundHttpException())
-            ->during('__invoke', ['test_client_id']);
-    }
-
     public function it_throws_an_access_denied_exception_when_connection_cannot_manage_custom_apps(
-        FeatureFlag $developerModeFeatureFlag,
         SecurityFacade $security,
     ): void {
-        $developerModeFeatureFlag->isEnabled()->willReturn(true);
         $security->isGranted('akeneo_connectivity_connection_manage_test_apps')->willReturn(false);
 
         $this
@@ -69,11 +54,9 @@ class DeleteCustomAppActionSpec extends ObjectBehavior
     }
 
     public function it_throws_a_not_found_exception_when_client_id_do_not_belong_to_a_custom_app(
-        FeatureFlag $developerModeFeatureFlag,
         SecurityFacade $security,
         GetCustomAppQueryInterface $getCustomAppQuery,
     ): void {
-        $developerModeFeatureFlag->isEnabled()->willReturn(true);
         $security->isGranted('akeneo_connectivity_connection_manage_test_apps')->willReturn(true);
 
         $getCustomAppQuery->execute('test_client_id')->willReturn(null);
@@ -84,13 +67,11 @@ class DeleteCustomAppActionSpec extends ObjectBehavior
     }
 
     public function it_deletes_custom_app(
-        FeatureFlag $developerModeFeatureFlag,
         SecurityFacade $security,
         GetCustomAppQueryInterface $getCustomAppQuery,
         DeleteCustomAppHandler $deleteCustomAppHandler,
         DeleteAppHandler $deleteAppHandler,
     ): void {
-        $developerModeFeatureFlag->isEnabled()->willReturn(true);
         $security->isGranted('akeneo_connectivity_connection_manage_test_apps')->willReturn(true);
 
         $getCustomAppQuery->execute('test_client_id')->willReturn([
@@ -112,13 +93,11 @@ class DeleteCustomAppActionSpec extends ObjectBehavior
     }
 
     public function it_deletes_custom_app_and_underlying_connected_app(
-        FeatureFlag $developerModeFeatureFlag,
         SecurityFacade $security,
         GetCustomAppQueryInterface $getCustomAppQuery,
         DeleteCustomAppHandler $deleteCustomAppHandler,
         DeleteAppHandler $deleteAppHandler,
     ): void {
-        $developerModeFeatureFlag->isEnabled()->willReturn(true);
         $security->isGranted('akeneo_connectivity_connection_manage_test_apps')->willReturn(true);
 
         $getCustomAppQuery->execute('test_client_id')->willReturn([

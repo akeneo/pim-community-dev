@@ -6,6 +6,8 @@ use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterf
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\EntityWithQuantifiedAssociationTrait;
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Value\IdentifierValue;
+use Akeneo\Pim\Enrichment\Component\Product\Value\IdentifierValueInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
@@ -244,7 +246,12 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getIdentifier()
     {
-        return $this->identifier;
+        /** @var IdentifierValueInterface | null $identifierValue */
+        $identifierValue = $this->values->filter(
+            static fn (ValueInterface $value): bool => $value instanceof IdentifierValueInterface && $value->isMainIdentifier()
+        )->first() ?: null;
+
+        return $identifierValue?->getData();
     }
 
     /**
@@ -323,9 +330,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getLabel($locale = null, $scope = null)
     {
-        // TODO CPM: Return the uuid as a fallback when the identifier is null
         $identifier = (string) $this->getIdentifier();
-        $uuid = $this->uuid->toString();
 
         if (null === $this->family) {
             return $identifier;

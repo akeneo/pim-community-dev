@@ -14,7 +14,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInte
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
-use Akeneo\Tool\Component\Batch\Item\PausableReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\StatefulInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
@@ -32,7 +32,7 @@ class FilteredProductAndProductModelReader implements
     InitializableInterface,
     StepExecutionAwareInterface,
     TrackableItemReaderInterface,
-    PausableReaderInterface
+    StatefulInterface
 {
     /** @var ProductQueryBuilderFactoryInterface */
     private $pqbFactory;
@@ -54,6 +54,8 @@ class FilteredProductAndProductModelReader implements
 
     /** @var bool */
     private $firstRead = true;
+
+    private array $state = [];
 
     /**
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
@@ -84,6 +86,15 @@ class FilteredProductAndProductModelReader implements
 
         $filters = $this->getConfiguredFilters();
         $this->productsAndProductModels = $this->getProductsCursor($filters, $channel);
+
+        if (!array_key_exists('position', $this->state)) {
+            return;
+        }
+
+        while ($this->productsAndProductModels->valid() && ($this->productsAndProductModels->key() <= $this->state['position'] || is_null($this->state['position']))) {
+            $this->productsAndProductModels->next();
+        }
+        $this->firstRead = false;
     }
 
     /**
@@ -243,8 +254,11 @@ class FilteredProductAndProductModelReader implements
 
     public function getState(): array
     {
-        return [
-            'last_position_read' => $this->productsAndProductModels?->key(),
-        ];
+        return null !== $this->productsAndProductModels ? ['position' =>  $this->productsAndProductModels->key()] : [];
+    }
+
+    public function setState(array $state): void
+    {
+        $this->state = $state;
     }
 }

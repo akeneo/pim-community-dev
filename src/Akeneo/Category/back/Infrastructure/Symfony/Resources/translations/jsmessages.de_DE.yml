@@ -18,10 +18,7 @@ akeneo.category:
     delete: Strukturbaum löschen
   template:
     learn_more: Erfahren Sie mehr über Kategorievorlage
-    create: Vorlage aktivieren
     edit: Vorlage bearbeiten
-    notification_success: Vorlage erfolgreich aktiviert
-    notification_error: Vorlage konnte nicht aktiviert werden
     not_found: Es gibt keine aktives Template für diese Kategorie
     attribute:
       description_title: Beschreibungseinstellungen
@@ -78,15 +75,7 @@ akeneo.category:
       notification_success:
         title: '{{ attribute }} -Attribut erfolgreich gelöscht'
     deactivate:
-      deactivate_template: Template deaktivieren
-      confirmation_modal:
-        title: Kategorievorlage deaktivieren
-        message: Sind Sie sicher, dass Sie die Kategorievorlage {{ template }} deaktivieren möchten?
-        helper: Das Deaktivieren dieser Vorlage löscht dauerhaft die Attribute und Werte der zugehörigen Kategorien.
-        deactivate: Deaktivieren
-      notification_success:
-        title: '{{ template }} Template deaktiviert'
-        message: '{{ template }} wurde deaktiviert. Der Inhalt der zugehörigen Kategorien wurde gelöscht.'
+      deactivate_template: Vorlage löschen
   template_list:
     columns:
       header: Bezeichnung
@@ -98,7 +87,6 @@ akeneo.category:
     title: Entdecke angereicherte Kategorien
     content:
       enrich_attribute_values: Reichern Sie alle Ebenen Ihrer Kategoriebäume mit Text-Bereichen und Bild-Attributen an.
-      edit_attributes: 'Demnächst verfügbar: Aktualisieren der Einstellungen dieser Kategorieattribute'
     survey_link_label: Sagen Sie uns, was Sie denken
     learn_more_link_label: Erfahren Sie mehr über angereicherte Kategorien
   other_actions: Weitere Aktionen

@@ -31,12 +31,13 @@ class Cursor extends AbstractCursor implements CursorInterface, ResultAwareInter
         Client $esClient,
         ProductRepositoryInterface $productRepository,
         ProductModelRepositoryInterface $productModelRepository,
-        private array $esQuery,
+        array $esQuery,
         private int $pageSize
     ) {
         $this->esClient = $esClient;
         $this->productRepository = $productRepository;
         $this->productModelRepository = $productModelRepository;
+        $this->esQuery = $esQuery;
     }
 
     /**
@@ -82,7 +83,6 @@ class Cursor extends AbstractCursor implements CursorInterface, ResultAwareInter
         }
 
         $esQuery['sort'] = $sort;
-        $esQuery['track_total_hits'] = true;
 
         if (!empty($this->searchAfter)) {
             $esQuery['search_after'] = $this->searchAfter;
@@ -90,7 +90,6 @@ class Cursor extends AbstractCursor implements CursorInterface, ResultAwareInter
 
         $response = $this->esClient->search($esQuery);
         $this->result = new ElasticsearchResult($response);
-        $this->count = $response['hits']['total']['value'];
 
         foreach ($response['hits']['hits'] as $hit) {
             $identifiers->add($hit['_source']['identifier'], $hit['_source']['document_type'], $hit['_source']['id']);

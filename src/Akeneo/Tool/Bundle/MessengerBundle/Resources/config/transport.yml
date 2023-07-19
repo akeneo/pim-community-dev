@@ -26,3 +26,4 @@ services:
     Akeneo\Tool\Bundle\MessengerBundle\Middleware\HandleProcessMessageMiddleware:
         arguments:
             - '@Akeneo\Tool\Bundle\MessengerBundle\Process\RunMessageProcess'
+            - '@logger'

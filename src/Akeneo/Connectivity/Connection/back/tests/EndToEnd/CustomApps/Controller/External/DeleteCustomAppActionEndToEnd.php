@@ -6,7 +6,6 @@ namespace Akeneo\Connectivity\Connection\Tests\EndToEnd\CustomApps\Controller\Ex
 
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\CustomAppLoader;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Security\AclLoader;
-use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeFeatureFlag;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Doctrine\DBAL\Connection;
@@ -20,7 +19,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class DeleteCustomAppActionEndToEnd extends ApiTestCase
 {
-    private ?FakeFeatureFlag $developerModeFeatureFlag;
     private ?Connection $connection;
     private ?AclLoader $aclLoader;
     private ?CustomAppLoader $customAppLoader;
@@ -34,7 +32,6 @@ class DeleteCustomAppActionEndToEnd extends ApiTestCase
     {
         parent::setUp();
 
-        $this->developerModeFeatureFlag = $this->get('akeneo_connectivity.connection.app_developer_mode.feature');
         $this->connection = $this->get('database_connection');
         $this->aclLoader = $this->get(AclLoader::class);
         $this->customAppLoader = $this->get(CustomAppLoader::class);
@@ -44,7 +41,6 @@ class DeleteCustomAppActionEndToEnd extends ApiTestCase
     {
         $clientId = 'test_client_id';
 
-        $this->developerModeFeatureFlag->enable();
         $this->aclLoader->addAclToRoles('akeneo_connectivity_connection_manage_test_apps', ['ROLE_ADMINISTRATOR']);
 
         $connection = $this->createConnection();

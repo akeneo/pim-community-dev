@@ -139,14 +139,49 @@ class UpdateAuditDataCommandEndToEnd extends CommandTestCase
         Assert::assertEquals(0, $this->getAuditCount($destinationConnection->code(), EventTypes::PRODUCT_UPDATED));
     }
 
+    public function test_audit_data_creation_and_updates_for_10_days(): void
+    {
+        $connection = $this->createConnection('magento', 'Magento', FlowType::DATA_SOURCE, true);
+
+        Assert::assertEquals(0, $this->getAuditCount($connection->code(), EventTypes::PRODUCT_CREATED));
+        Assert::assertEquals(0, $this->getAuditCount($connection->code(), EventTypes::PRODUCT_UPDATED));
+
+        $product1 = $this->createProduct('product1', ['enabled' => false]);
+        $product2 = $this->createProduct('product2', ['enabled' => false]);
+
+        $elevenDaysAgo = new \DateTimeImmutable('11 days ago', new \DateTimeZone('UTC'));
+        $this->setVersioningAuthorAndDate($connection->username(), $product1, $elevenDaysAgo);
+        $this->setVersioningAuthorAndDate($connection->username(), $product2, $elevenDaysAgo);
+        Assert::assertEquals(0, $this->getAuditCount($connection->code(), EventTypes::PRODUCT_CREATED));
+        Assert::assertEquals(0, $this->getAuditCount($connection->code(), EventTypes::PRODUCT_UPDATED));
+
+        $tenDaysAgo = new \DateTimeImmutable('10 days ago', new \DateTimeZone('UTC'));
+        $this->setVersioningAuthorAndDate($connection->username(), $product1, $tenDaysAgo);
+        $this->setVersioningAuthorAndDate($connection->username(), $product2, $tenDaysAgo);
+        $commandTester = new CommandTester($this->command);
+        $commandTester->execute([]);
+        Assert::assertEquals(2, $this->getAuditCount($connection->code(), EventTypes::PRODUCT_CREATED));
+        Assert::assertEquals(0, $this->getAuditCount($connection->code(), EventTypes::PRODUCT_UPDATED));
+
+        $now = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
+        $product1 = $this->updateProduct($product1, ['enabled' => true]);
+        $product2 = $this->updateProduct($product2, ['enabled' => true]);
+        $this->setVersioningAuthorAndDate($connection->username(), $product1, $now);
+        $this->setVersioningAuthorAndDate($connection->username(), $product2, $now);
+        $commandTester = new CommandTester($this->command);
+        $commandTester->execute([]);
+        Assert::assertEquals(2, $this->getAuditCount($connection->code(), EventTypes::PRODUCT_CREATED));
+        Assert::assertEquals(2, $this->getAuditCount($connection->code(), EventTypes::PRODUCT_UPDATED));
+    }
+
     private function getAuditCount(string $connectionCode, string $eventType): int
     {
         $sqlQuery = <<<SQL
-SELECT event_count
-FROM akeneo_connectivity_connection_audit_product
-WHERE connection_code = :connection_code
-AND event_type = :event_type
-SQL;
+            SELECT event_count
+            FROM akeneo_connectivity_connection_audit_product
+            WHERE connection_code = :connection_code
+            AND event_type = :event_type
+        SQL;
 
         $sqlParams = [
             'connection_code' => $connectionCode,

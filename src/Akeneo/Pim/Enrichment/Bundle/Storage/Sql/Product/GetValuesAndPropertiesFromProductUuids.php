@@ -30,7 +30,13 @@ final class GetValuesAndPropertiesFromProductUuids
     public function fetchByProductUuids(array $productUuids): array
     {
         $query = <<<SQL
-WITH groupCodes AS (
+WITH main_identifier AS (
+    SELECT id
+    FROM pim_catalog_attribute
+    WHERE main_identifier = 1
+    LIMIT 1
+),
+groupCodes AS (
     SELECT p.uuid AS puuid, JSON_ARRAYAGG(g.code) AS group_codes
     FROM pim_catalog_product p
     LEFT JOIN pim_catalog_group_product pg ON p.uuid = pg.product_uuid
@@ -40,7 +46,7 @@ WITH groupCodes AS (
 )
 SELECT
     BIN_TO_UUID(p.uuid) AS uuid,
-    p.identifier,
+    raw_data AS identifier,
     p.is_enabled,
     pm1.code AS product_model_code,
     p.created,
@@ -53,8 +59,11 @@ LEFT JOIN pim_catalog_family f ON p.family_id = f.id
 LEFT JOIN pim_catalog_product_model pm1 ON p.product_model_id = pm1.id
 LEFT JOIN pim_catalog_product_model pm2 ON pm1.parent_id = pm2.id
 INNER JOIN groupCodes gc ON p.uuid = gc.puuid
+LEFT JOIN pim_catalog_product_unique_data pcpud
+    ON pcpud.product_uuid = p.uuid
+    AND pcpud.attribute_id = (SELECT id FROM main_identifier)
 WHERE p.uuid IN (?)
-GROUP BY p.uuid, p.identifier
+GROUP BY p.uuid, raw_data
 SQL;
 
         $uuidsAsBytes = array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $productUuids);

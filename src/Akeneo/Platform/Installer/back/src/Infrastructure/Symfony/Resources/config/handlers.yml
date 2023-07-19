@@ -5,3 +5,4 @@ services:
       - '@Akeneo\Platform\Installer\Infrastructure\DatabasePurger\DbalPurger'
       - '@Akeneo\Platform\Installer\Infrastructure\FixtureInstaller\MinimalFixtureInstaller'
       - '@Akeneo\Platform\Installer\Infrastructure\UserConfigurationResetter\UserConfigurationResetter'
+      - '@Akeneo\Platform\Installer\Infrastructure\FilesystemsPurger\FilesystemsPurger'

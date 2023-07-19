@@ -12,11 +12,29 @@ pim_category_template_rest_create:
         _feature: enriched_category
     methods: [POST]
 
+pim_category_template_rest_update:
+    path: /rest/{templateUuid}
+    defaults:
+        _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\UpdateTemplateController
+    methods: [PATCH]
+
+pim_category_template_rest_reorder_attributes:
+    path: /rest/{templateUuid}/reorder
+    defaults:
+        _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\ReorderTemplateAttributesController
+    methods: [POST]
+
 pim_enriched_category_rest_deactivate_template:
     path: /rest/{templateUuid}
     defaults:
         _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\DeactivateTemplateController
     methods: [DELETE]
+
+pim_category_template_rest_load_attribute_set:
+    path: /rest/{templateUuid}/load_attribute_set
+    defaults:
+        _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\LoadAttributeSetController
+    methods: [POST]
 
 pim_category_template_rest_add_attribute:
     path: /rest/{templateUuid}/attribute
@@ -36,3 +54,10 @@ pim_category_template_rest_delete_attribute:
     defaults:
         _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\DeactivateAttributeController
     methods: [DELETE]
+
+pim_category_template_track_usage_of_load_predefined_attributes:
+    path: /rest/{templateUuid}/track_usage_of_load_predefined_attributes
+    defaults:
+        _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\TrackUsageOfLoadPredefinedAttributesController
+        _feature: category_template_customization
+    methods: [POST]

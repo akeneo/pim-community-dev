@@ -14,6 +14,7 @@ use Akeneo\UserManagement\Application\Command\UpdateUserCommand\UpdateUserComman
 use Akeneo\UserManagement\Application\Exception\UserNotFoundException;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\UserManagement\Domain\PasswordCheckerInterface;
+use Akeneo\UserManagement\Domain\Permissions\Query\EditRolePermissionsUserQuery;
 use Akeneo\UserManagement\ServiceApi\ViolationsException;
 use Doctrine\Persistence\ObjectRepository;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
@@ -25,8 +26,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -56,6 +59,7 @@ final class UserController
         private readonly SecurityFacade $securityFacade,
         private readonly PasswordCheckerInterface $passwordChecker,
         private readonly UpdateUserCommandHandler $updateUserCommandHandler,
+        private readonly EditRolePermissionsUserQuery $editRolePermissionsUserQuery,
     ) {
     }
 
@@ -105,6 +109,7 @@ final class UserController
      * @param int     $identifier
      *
      * @return Response
+     * @throws UnprocessableEntityHttpException
      *
      * @AclAncestor("pim_user_user_edit")
      */
@@ -121,6 +126,24 @@ final class UserController
         }
         if (!$this->securityFacade->isGranted('pim_user_group_edit')) {
             unset($data['groups']);
+        }
+
+        if (isset($data['roles'])) {
+            if ($this->editRolePermissionsUserQuery->isLastRoleWithEditRolePermissionsRoleForUser($data['roles'], $identifier)) {
+                $violation = new ConstraintViolation(
+                    message: $this->translator->trans('pim_user.user.fields_errors.roles.last_user_with_edit_role_permissions'),
+                    messageTemplate: null,
+                    parameters: [],
+                    root: null,
+                    propertyPath: 'roles',
+                    invalidValue: null,
+                );
+                $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
+                    $violation,
+                    'internal_api',
+                );
+                return new JsonResponse($normalizedViolations, Response::HTTP_UNPROCESSABLE_ENTITY);
+            }
         }
 
         return $this->updateUser($identifier, $data);
@@ -264,6 +287,10 @@ final class UserController
         $currentUser = null !== $token ? $token->getUser() : null;
         if ($currentUser !== null && $user->getId() === $currentUser->getId()) {
             return new Response(null, Response::HTTP_FORBIDDEN);
+        }
+
+        if ($this->editRolePermissionsUserQuery->isLastUserWithEditRolePermissionsRole($user->getRoles(), $identifier)) {
+            return new JsonResponse(['message' => $this->translator->trans('pim_user.user.fields_errors.roles.last_user_with_edit_role_permissions')], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         try {

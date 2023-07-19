@@ -25,8 +25,8 @@ class GetInstallDatetimeIntegration extends TestCase
 
     public function test_it_gets_install_datetime(): void
     {
-        $intallDataQuery = $this->get(InstallData::class);
-        $intallDataQuery->withDatetime(new \DateTimeImmutable('2022-12-13'));
+        $installDataQuery = $this->get(InstallData::class);
+        $installDataQuery->withDatetime(new \DateTimeImmutable('2022-12-13'));
 
         $installDatetime = $this->getQuery()->__invoke();
 

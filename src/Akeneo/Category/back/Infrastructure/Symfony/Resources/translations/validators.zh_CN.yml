@@ -10,6 +10,11 @@ akeneo.category:
         text_too_long: 此值不能超过 {{ limit }} 个字符
         textarea_too_long: 此值不能超过 {{ limit }} 个字符
         richtext_too_long: 此值不能超过 {{ limit }} 个字符
+    template:
+      code:
+        not_blank: 该值不应为空。
+        unique: '模板代码：{{ templateCode }} 已存在。'
+        wrong_format: 此字段只能包含字母、数字和下划线。
     attribute:
       limit:
         title: 您不能添加超过 50 个属性

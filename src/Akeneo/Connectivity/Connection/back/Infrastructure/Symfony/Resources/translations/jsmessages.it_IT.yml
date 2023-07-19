@@ -269,6 +269,7 @@ akeneo_connectivity.connection:
           not_blank: Redirect_uri obbligatorio.
           must_be_url: Il redirect_uri non è un url valido.
         scope:
+          must_be_a_string: L'elenco degli ambiti deve essere una stringa con spazi di separazione.
           too_long: L'elenco ambiti non deve contenere più di 1000 caratteri.
     custom_apps:
       creation_limit_reached: Hai raggiunto il limite di 20 app personalizzate.
@@ -319,7 +320,6 @@ akeneo_connectivity.connection:
   connections: Connessioni
   secondary_actions:
     title: Altre azioni
-  developer_mode: Modalità sviluppatore
   connection:
     code: Codice
     label: Etichetta

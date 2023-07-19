@@ -6,8 +6,8 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluatio
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateProductScores;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Event\ProductsEvaluated;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -19,14 +19,28 @@ class EvaluateProducts
     public function __construct(
         private EvaluatePendingCriteria  $evaluatePendingProductCriteria,
         private ConsolidateProductScores $consolidateProductScores,
-        private EventDispatcherInterface $eventDispatcher
+        private EventDispatcherInterface $eventDispatcher,
+        private LoggerInterface $logger
     ) {
     }
 
     public function __invoke(ProductUuidCollection $productUuidCollection): void
     {
+        $startTime = time();
+        $this->logger->debug('Start product evaluate criteria...');
         $this->evaluatePendingProductCriteria->evaluateAllCriteria($productUuidCollection);
+        $afterEvaluationTime = time();
+        $this->logger->debug('Start product consolidate...');
         $this->consolidateProductScores->consolidate($productUuidCollection);
+        $afterConsolidationTime = time();
+        $this->logger->debug('Start product dispatch...');
         $this->eventDispatcher->dispatch(new ProductsEvaluated($productUuidCollection));
+        $afterDispatchTime = time();
+
+        $this->logger->info('Finish evaluation products', [
+            'evaluation_time_in_sec' => $afterEvaluationTime - $startTime,
+            'consolidation_time_in_sec' => $afterConsolidationTime - $afterEvaluationTime,
+            'dispatch_time_in_sec' => $afterDispatchTime - $afterConsolidationTime,
+        ]);
     }
 }

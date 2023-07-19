@@ -44,12 +44,15 @@ final class MessengerConfigBuilderIntegration extends KernelTestCase
                     'auto_setup' => false,
                 ],
                 'serializer' => 'akeneo_messenger.envelope.serializer',
+                'retry_strategy' => [
+                    'max_retries' => 1,
+                ],
             ],
             $this->getTransportConfig($config, 'consumer1')
         );
 
         Assert::assertEqualsCanonicalizing(['consumer1', 'consumer2'], $this->getRoutingForMessage($config, Message1::class));
-        Assert::assertEqualsCanonicalizing(['consumer3'], $this->getRoutingForMessage($config, Message2::class));
+        Assert::assertEqualsCanonicalizing(['consumer3', 'failing_consumer'], $this->getRoutingForMessage($config, Message2::class));
     }
 
     public function test_it_returns_a_messenger_configuration_for_pubsub_transport(): void
@@ -72,6 +75,9 @@ final class MessengerConfigBuilderIntegration extends KernelTestCase
                     'auto_setup' => true,
                 ],
                 'serializer' => 'akeneo_messenger.envelope.serializer',
+                'retry_strategy' => [
+                    'max_retries' => 1,
+                ],
             ],
             $this->getTransportConfig($config, 'test_queue1')
         );
@@ -85,6 +91,9 @@ final class MessengerConfigBuilderIntegration extends KernelTestCase
                     'subscription_name' => '%env(default::string:PUBSUB_SUBSCRIPTION_TEST_CONSUMER_1)%',
                 ],
                 'serializer' => 'akeneo_messenger.envelope.serializer',
+                'retry_strategy' => [
+                    'max_retries' => 1,
+                ],
             ],
             $this->getTransportConfig($config, 'consumer1')
         );
@@ -103,12 +112,17 @@ final class MessengerConfigBuilderIntegration extends KernelTestCase
         Assert::assertContains('consumer2', $transportNames);
         Assert::assertContains('consumer3', $transportNames);
         Assert::assertEqualsCanonicalizing(
-            ['dsn' => 'sync://'],
+            [
+                'dsn' => 'sync://',
+                'retry_strategy' => [
+                    'max_retries' => 1,
+                ],
+            ],
             $this->getTransportConfig($config, 'consumer1')
         );
 
         Assert::assertEqualsCanonicalizing(['consumer1', 'consumer2'], $this->getRoutingForMessage($config, Message1::class));
-        Assert::assertEqualsCanonicalizing(['consumer3'], $this->getRoutingForMessage($config, Message2::class));
+        Assert::assertEqualsCanonicalizing(['consumer3', 'failing_consumer'], $this->getRoutingForMessage($config, Message2::class));
     }
 
     public function test_it_returns_a_messenger_configuration_for_in_memory_transport(): void
@@ -121,12 +135,17 @@ final class MessengerConfigBuilderIntegration extends KernelTestCase
         Assert::assertContains('consumer2', $transportNames);
         Assert::assertContains('consumer3', $transportNames);
         Assert::assertEqualsCanonicalizing(
-            ['dsn' => 'in-memory://'],
+            [
+                'dsn' => 'in-memory://',
+                'retry_strategy' => [
+                    'max_retries' => 1,
+                ],
+            ],
             $this->getTransportConfig($config, 'consumer1')
         );
 
         Assert::assertEqualsCanonicalizing(['consumer1', 'consumer2'], $this->getRoutingForMessage($config, Message1::class));
-        Assert::assertEqualsCanonicalizing(['consumer3'], $this->getRoutingForMessage($config, Message2::class));
+        Assert::assertEqualsCanonicalizing(['consumer3', 'failing_consumer'], $this->getRoutingForMessage($config, Message2::class));
     }
 
     /**

@@ -269,6 +269,7 @@ akeneo_connectivity.connection:
           not_blank: redirect_uri 为必填项。
           must_be_url: redirect_uri 不是有效的 URL。
         scope:
+          must_be_a_string: 范围列表必须为空格分隔的字符串。
           too_long: 该范围列表包含的字符不得超过 1000 个。
     custom_apps:
       creation_limit_reached: 您已达到上限，最多只能有 20 个自定义应用。
@@ -319,7 +320,6 @@ akeneo_connectivity.connection:
   connections: 连接
   secondary_actions:
     title: 其他操作
-  developer_mode: 开发者模式
   connection:
     code: 代码
     label: 标签

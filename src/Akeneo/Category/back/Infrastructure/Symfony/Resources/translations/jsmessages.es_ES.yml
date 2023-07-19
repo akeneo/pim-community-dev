@@ -1,6 +1,9 @@
 pim_title:
   pim_category_template_edit: Editar plantilla de categoría
 akeneo.category:
+  unknown_error:
+    title: Lo sentimos, ha habido un error.
+    message: Recargue la página e inténtelo de nuevo.
   tree_list:
     column:
       category_templates: Plantillas de categoría
@@ -19,11 +22,15 @@ akeneo.category:
     delete: Eliminar árbol
   template:
     learn_more: Más información sobre las plantillas de categorías
-    create: Activar plantilla
+    create_confirmation_modal:
+      link: Más información sobre las plantillas de categorías
     edit: Editar plantilla
-    notification_success: Plantilla activada correctamente
-    notification_error: No se pudo activar la plantilla
+    notification_success: Plantilla de categoría creada con éxito
+    notification_error: No se ha podido crear la plantilla de categoría
     not_found: No hay ninguna plantilla activa para esta categoría
+    properties:
+      general_properties: Propiedades generales
+      label_translations_in_ui_locales: Traducciones de etiquetas en la configuración regional de la IU
     attribute:
       description_title: Ajustes de descripción
       type:
@@ -41,6 +48,7 @@ akeneo.category:
           rich_text: Editor de texto enriquecido
         translations:
           title: Traducciones de etiquetas
+        unsaved_changes: Tiene cambios sin guardar, ¿seguro que desea salir?
     add_attribute:
       no_attribute_title: Cree su primer atributo
       no_attribute_instructions: Defina el contenido que desea asociar a sus categorías añadiendo atributos de Texto, Área de texto o Imagen a esta plantilla.
@@ -79,15 +87,37 @@ akeneo.category:
       notification_success:
         title: 'El atributo {{ attribute }} se ha eliminado correctamente'
     deactivate:
-      deactivate_template: Desactivar plantilla
+      deactivate_template: Eliminar plantilla
       confirmation_modal:
-        title: Desactivar plantilla de categoría
-        message: '¿Seguro que desea desactivar la plantilla de categoría denominada {{ template }}?'
-        helper: La desactivación de esta plantilla eliminará permanentemente los atributos y valores de las categorías asociadas.
-        deactivate: Desactivar
+        title: Eliminar plantilla de categoría
+        message: '¿Seguro que desea eliminar la plantilla de categoría denominada {{ template }}?'
+        helper: La eliminación de esta plantilla eliminará permanentemente los atributos y valores de las categorías asociadas.
+        deactivate: Eliminar
       notification_success:
-        title: 'Plantilla {{ template }} desactivada'
-        message: '{{ template }} ha sido desactivada. Se ha eliminado el contenido de las categorías asociadas.'
+        title: 'Plantilla {{ template }} eliminada'
+        message: '{{ template }} ha sido eliminada. Se ha eliminado el contenido de las categorías asociadas.'
+    initialize:
+      title: Añadir atributos de categoría
+      message: Defina el contenido de sus categorías añadiendo atributos de Texto, Área de texto o Imagen.
+      choice_message: Empiece creando un primer atributo según sus necesidades, o cargue un conjunto de 13 atributos sugeridos.
+      button:
+        load: Cargar un conjunto de atributos
+        create: Crear el primer atributo
+    load_attribute_set:
+      section_title: Cargar conjunto de atributos
+      title: Cargar un conjunto de atributos sugeridos
+      description: Inicie fácilmente la configuración de categorías enriquecidas cargando un conjunto de atributos sugeridos.
+      content_description: 'Este conjunto contiene 13 atributos:'
+      content:
+        description_attributes: 2 Atributos del área de texto para las descripciones largas y cortas de las categorías
+        url_attributes: 1 Atributo de texto para la información de la URL
+        image_attributes: 3 imágenes y 3 atributos de texto para la imagen y su información alt-text
+        seo_attributes: 2 atributos de texto y 2 atributos de área de texto para información SEO
+      confirmation_message: '¿Seguro que desea cargar este conjunto de atributos?'
+      button:
+        load: Cargar conjunto de atributos
+      notification:
+        success: Atributos creados con éxito
   template_list:
     columns:
       header: Etiqueta
@@ -100,7 +130,6 @@ akeneo.category:
     content:
       enrich_attribute_values: Enriquezca cualquier nivel de sus Árboles de categoría con atributos de Texto, Área de texto e Imagen
       customizable_templates: Ofrezca la experiencia de producto que desee gracias a las plantillas personalizables
-      edit_attributes: 'Próximamente: actualice la configuración de cualquiera de esos atributos de categoría'
     survey_link_label: Díganos lo que piensa
     learn_more_link_label: Más información sobre las categorías enriquecidas
   other_actions: Otras acciones

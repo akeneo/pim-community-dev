@@ -4,7 +4,7 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Controller\InternalApi;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi\JobExecutionRepository;
 use Akeneo\Tool\Bundle\BatchQueueBundle\Manager\JobExecutionManager;
-use Akeneo\Tool\Bundle\ConnectorBundle\EventListener\JobExecutionArchivist;
+use Akeneo\Tool\Bundle\ConnectorBundle\EventListener\StepExecutionArchivist;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Connector\LogKey;
 use League\Flysystem\FilesystemReader;
@@ -23,7 +23,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class JobExecutionController
 {
     protected TranslatorInterface $translator;
-    protected JobExecutionArchivist $archivist;
+    protected StepExecutionArchivist $archivist;
     protected JobExecutionManager $jobExecutionManager;
     protected JobExecutionRepository $jobExecutionRepo;
     private NormalizerInterface $normalizer;
@@ -33,7 +33,7 @@ class JobExecutionController
 
     public function __construct(
         TranslatorInterface $translator,
-        JobExecutionArchivist $archivist,
+        StepExecutionArchivist $archivist,
         JobExecutionManager $jobExecutionManager,
         JobExecutionRepository $jobExecutionRepo,
         NormalizerInterface $normalizer,
@@ -67,12 +67,15 @@ class JobExecutionController
 
         $context = ['limit_warnings' => 100];
 
+        $archives = $this->archives($jobExecution);
+        $generateZipArchive = $this->archivist->hasAtLeastTwoArchives($jobExecution);
+
         $jobResponse = $this->normalizer->normalize($jobExecution, 'internal_api', $context);
 
         $jobResponse['meta'] = [
             'logExists' => !empty($jobExecution->getLogFile()) && $this->logFilesystem->fileExists(new LogKey($jobExecution)),
-            'archives' => $this->archives($jobExecution),
-            'generateZipArchive' => $this->archivist->hasAtLeastTwoArchives($jobExecution),
+            'archives' => $archives,
+            'generateZipArchive' => $generateZipArchive,
             'id' => $identifier,
         ];
 

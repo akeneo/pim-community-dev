@@ -124,7 +124,7 @@ class Category extends BaseCategory implements CategoryInterface
      */
     public function setLocale($locale)
     {
-        $this->locale = $locale;
+        $this->locale = $locale ? $this->reformatLocale($locale) : $locale;
 
         return $this;
     }
@@ -234,5 +234,12 @@ class Category extends BaseCategory implements CategoryInterface
     public function getReference()
     {
         return $this->code;
+    }
+
+    private function reformatLocale(string $locale): string
+    {
+        $parts = explode('_', $locale);
+
+        return implode('_', [strtolower($parts[0]), strtoupper($parts[1])]);
     }
 }

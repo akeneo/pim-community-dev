@@ -24,6 +24,7 @@ batch_jobs:
       clean_product_model: 제품 모델 정리
       clean_product: 제품 정리
       remove_attribute_codes_from_blacklist: 블랙리스트에서 코드 제거
+    check_job_unique: 작업이 고유한지 확인하십시오
   csv_product_export:
     label: CSV로 제품 내보내기
     export.label: 제품 내보내기

@@ -53,7 +53,7 @@ class StringFilterSpec extends ObjectBehavior
         $this->apply($ds, ['type' => 'empty', 'value' => ''])->shouldReturn(true);
     }
 
-    function it_escapes_special_characters(
+    function it_escapes_special_characters_with_like_operator(
         FilterDatasourceAdapterInterface $ds,
         ExpressionBuilderInterface $builder)
     {
@@ -68,5 +68,22 @@ class StringFilterSpec extends ObjectBehavior
         $ds->setParameter('code1877008211', '%fabric\_%')->shouldBeCalled();
 
         $this->apply($ds, ['type' => 1, 'value' => 'fabric_'])->shouldReturn(true);
+    }
+
+    function it_does_not_escape_special_characters_with_equal_operator(
+        FilterDatasourceAdapterInterface $ds,
+        ExpressionBuilderInterface $builder)
+    {
+        $this->init('code', ['data_name' => 'a.code']);
+        $ds->generateParameterName('code')->willReturn('code1877008211');
+        $comparisonExpr = new Expr\Comparison('a.code', '=', ':code1877008211');
+
+        $builder->comparison('a.code', '=', 'code1877008211', true)->willReturn($comparisonExpr);
+        $ds->expr()->willReturn($builder);
+
+        $ds->addRestriction($comparisonExpr, 'AND', false)->shouldBeCalled();
+        $ds->setParameter('code1877008211', 'fabric_')->shouldBeCalled();
+
+        $this->apply($ds, ['type' => 3, 'value' => 'fabric_'])->shouldReturn(true);
     }
 }

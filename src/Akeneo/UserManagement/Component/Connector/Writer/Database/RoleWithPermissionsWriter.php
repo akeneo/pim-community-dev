@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Akeneo\UserManagement\Component\Connector\Writer\Database;
 
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
-use Akeneo\Tool\Component\Batch\Item\PausableWriterInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
@@ -16,7 +15,7 @@ use Webmozart\Assert\Assert;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-final class RoleWithPermissionsWriter implements ItemWriterInterface, StepExecutionAwareInterface, PausableWriterInterface
+final class RoleWithPermissionsWriter implements ItemWriterInterface, StepExecutionAwareInterface
 {
     private BulkSaverInterface $roleWithPermissionsSaver;
     private ?StepExecution $stepExecution = null;
@@ -57,10 +56,5 @@ final class RoleWithPermissionsWriter implements ItemWriterInterface, StepExecut
                 $this->stepExecution->incrementSummaryInfo('create');
             }
         }
-    }
-
-    public function getState(): array
-    {
-        return [];
     }
 }

@@ -10,6 +10,11 @@ akeneo.category:
         text_too_long: De waarde mag niet langer zijn dan {{ limit }} tekens
         textarea_too_long: De waarde mag niet langer zijn dan {{ limit }} tekens
         richtext_too_long: De waarde mag niet langer zijn dan {{ limit }} tekens
+    template:
+      code:
+        not_blank: Deze waarde mag niet leeg zijn.
+        unique: 'Sjablooncode: {{ templateCode }} bestaat al.'
+        wrong_format: Dit veld mag alleen letters, cijfers en een laag streepje bevatten.
     attribute:
       limit:
         title: U kunt niet meer dan 50 attributen toevoegen.

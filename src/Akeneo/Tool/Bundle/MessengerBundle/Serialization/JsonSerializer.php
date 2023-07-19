@@ -6,6 +6,7 @@ use Akeneo\Tool\Bundle\MessengerBundle\Stamp\CorrelationIdStamp;
 use Akeneo\Tool\Bundle\MessengerBundle\Stamp\TenantIdStamp;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Exception\MessageDecodingFailedException;
+use Symfony\Component\Messenger\Stamp\RedeliveryStamp;
 use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Serializer;
@@ -70,6 +71,7 @@ class JsonSerializer implements SerializerInterface
 
         $tenantId = $encodedEnvelope['headers']['tenant_id'] ?? null;
         $correlationId = $encodedEnvelope['headers']['correlation_id'] ?? null;
+        $retryCount = $encodedEnvelope['headers']['retry_count'] ?? null;
 
         $stamps = [];
         if (null !== $tenantId) {
@@ -77,6 +79,9 @@ class JsonSerializer implements SerializerInterface
         }
         if (null !== $correlationId) {
             $stamps[] = new CorrelationIdStamp($correlationId);
+        }
+        if (null !== $retryCount) {
+            $stamps[] = new RedeliveryStamp($retryCount);
         }
 
         return new Envelope($message, $stamps);
@@ -100,6 +105,12 @@ class JsonSerializer implements SerializerInterface
         $correlationIdStamp = $envelope->last(CorrelationIdStamp::class);
         if (null !== $correlationIdStamp) {
             $headers['correlation_id'] = $correlationIdStamp->correlationId();
+        }
+
+        /** @var RedeliveryStamp|null $redeliveryStamp */
+        $redeliveryStamp = $envelope->last(RedeliveryStamp::class);
+        if (null !== $redeliveryStamp) {
+            $headers['retry_count'] = $redeliveryStamp->getRetryCount();
         }
 
         return [

@@ -16,10 +16,8 @@ namespace Akeneo\Test\UserManagement\Integration\Infrastructure;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\UserLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\UserManagement\Application\Command\UpdateUserCommand\UpdateUserCommandHandler;
 use Akeneo\UserManagement\Domain\PasswordCheckerInterface;
 use PHPUnit\Framework\Assert;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 final class PasswordCheckerIntegration extends TestCase
 {

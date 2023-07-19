@@ -48,6 +48,7 @@ akeneo_job_process_tracker:
     compute_completeness_of_products_family: 제품 패밀리 완성도 계산
     clean_removed_attribute_job: 제거된 특성 값 정리 중
     execute_rules: 규칙 실행
+    scheduled_job: 예약된 작업
   user_filter:
     label: 사용자
     all: 모두
