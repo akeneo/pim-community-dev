@@ -59,5 +59,4 @@ pim_category_template_track_usage_of_load_predefined_attributes:
     path: /rest/{templateUuid}/track_usage_of_load_predefined_attributes
     defaults:
         _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\TrackUsageOfLoadPredefinedAttributesController
-        _feature: category_template_customization
     methods: [POST]
