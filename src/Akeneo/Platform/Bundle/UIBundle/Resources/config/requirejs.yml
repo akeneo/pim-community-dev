@@ -802,7 +802,7 @@ config:
 
     # Mass edit
     pim/mass-edit-form/form:                                             pimui/js/mass-edit/form/form
-    pim/mass-edit-form/choose:                                           pimui/js/mass-edit/form/choose
+    pim/mass-edit-form/choose:                                           pimui/js/mass-edit/form/choose.tsx
     pim/mass-edit-form/product/operation:                                pimui/js/mass-edit/form/product/operation
     pim/mass-edit-form/product/associate:                                pimui/js/mass-edit/form/product/associate
     pim/mass-edit-form/product/change-status:                            pimui/js/mass-edit/form/product/change-status
