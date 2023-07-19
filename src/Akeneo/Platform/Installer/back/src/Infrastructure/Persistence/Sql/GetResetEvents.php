@@ -17,6 +17,11 @@ final class GetResetEvents
     ) {
     }
 
+    /**
+     * @return array<mixed>
+     * @throws \Doctrine\DBAL\Driver\Exception
+     * @throws \Doctrine\DBAL\Exception
+     */
     public function __invoke(): array
     {
         $sql = <<< SQL

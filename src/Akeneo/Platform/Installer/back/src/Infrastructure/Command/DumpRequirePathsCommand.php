@@ -22,9 +22,13 @@ class DumpRequirePathsCommand extends Command
     /** @var string */
     private $rootDir;
 
-    /** @var array */
+    /** @var array<mixed> */
     private $bundles;
 
+    /**
+     * @param string $rootDir
+     * @param array<mixed> $bundles
+     */
     public function __construct(
         string $rootDir,
         array $bundles
@@ -38,7 +42,7 @@ class DumpRequirePathsCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('Dump the paths for all the requirejs.yml files for each bundle');
     }
@@ -65,9 +69,9 @@ class DumpRequirePathsCommand extends Command
     /**
      * Collect an array of requirejs.yml paths for each bundle
      * @param string $rootDir
-     * @return array
+     * @return array<string>
      */
-    protected function collectConfigPaths(string $rootDir)
+    protected function collectConfigPaths(string $rootDir): array
     {
         $paths = array();
         $rootDir = realpath($rootDir . '/../') . '/';

@@ -31,10 +31,12 @@ class JobInstancesConfigurator
     /**
      * The standard method to configure job instances with files provided in an install fixtures set
      *
+     * @param string $catalogPath
+     * @param array<JobInstance> $jobInstances
      * @throws \Exception
      * @return JobInstance[]
      */
-    public function configureJobInstancesWithInstallerData(string $catalogPath, array $jobInstances)
+    public function configureJobInstancesWithInstallerData(string $catalogPath, array $jobInstances): array
     {
         $installerDataPath = $this->pathProvider->getFixturesPath($catalogPath);
         if (!is_dir($installerDataPath)) {
@@ -68,7 +70,7 @@ class JobInstancesConfigurator
      * with an Enterprise Edition file
      *
      * @param JobInstance[] $jobInstances
-     * @param array $replacePaths
+     * @param array<mixed> $replacePaths
      * @throws \Exception
      * @return JobInstance[]
      */

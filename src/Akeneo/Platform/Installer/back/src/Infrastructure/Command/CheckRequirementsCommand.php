@@ -55,6 +55,12 @@ class CheckRequirementsCommand extends Command
         }
     }
 
+    /**
+     * @param array<mixed> $collection
+     * @param string $header
+     * @param OutputInterface $output
+     * @return void
+     */
     protected function renderTable(array $collection, string $header, OutputInterface $output): void
     {
         $table = new Table($output);

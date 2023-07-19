@@ -14,6 +14,11 @@ class InstallerEvent extends GenericEvent
 {
     protected ?CommandExecutor $commandExecutor;
 
+    /**
+     * @param CommandExecutor|null $commandExecutor
+     * @param string|null $subject
+     * @param array<mixed> $arguments
+     */
     public function __construct(
         ?CommandExecutor $commandExecutor = null,
         ?string $subject = null,

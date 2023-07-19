@@ -32,12 +32,18 @@ class AssetsCommand extends Command
     /** @var EventDispatcherInterface */
     private $eventDispatcher;
 
-    /** @var array */
+    /** @var array<string> */
     private $defaultLocales;
 
     /** @var string */
     private $rootDir;
 
+    /**
+     * @param Filesystem $filesystem
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param array<string> $localeCodes
+     * @param string $rootDir
+     */
     public function __construct(
         Filesystem $filesystem,
         EventDispatcherInterface $eventDispatcher,
@@ -55,7 +61,7 @@ class AssetsCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Install assets for Akeneo PIM')
@@ -66,7 +72,7 @@ class AssetsCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->commandExecutor = new CommandExecutor(
             $input,
@@ -134,7 +140,7 @@ class AssetsCommand extends Command
      *
      * @param string[] $directories
      */
-    protected function cleanDirectories($directories)
+    protected function cleanDirectories($directories): void
     {
         foreach ($directories as $directory) {
             if ($this->filesystem->exists($directory)) {

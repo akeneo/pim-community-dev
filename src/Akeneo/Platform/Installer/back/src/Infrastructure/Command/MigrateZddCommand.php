@@ -20,9 +20,15 @@ final class MigrateZddCommand extends Command
 {
     protected static $defaultName = 'pim:zdd-migration:migrate';
 
-    /** @var ZddMigration[] */
+    /** @var array<mixed> ZddMigration */
     private array $zddMigrations;
 
+    /**
+     * @param Connection $connection
+     * @param LoggerInterface $logger
+     * @param \Traversable<mixed> $zddMigrations
+     * @throws \ReflectionException
+     */
     public function __construct(
         private Connection $connection,
         private LoggerInterface $logger,
@@ -39,7 +45,7 @@ final class MigrateZddCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('Execute ZDD Migrations');
     }
