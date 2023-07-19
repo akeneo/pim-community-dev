@@ -1,4 +1,4 @@
-import React, {ReactElement, FC, useState} from 'react';
+import React, {FC, ReactElement, useState} from 'react';
 import styled from 'styled-components';
 import {
   AddAttributeIcon,
@@ -10,15 +10,17 @@ import {
   FolderInIcon,
   FolderMovedIcon,
   FolderOutIcon,
+  getColor,
   GroupsIcon,
+  Link,
   ProductModelIcon,
   PublishIcon,
   Tile,
   Tiles,
+  Tooltip,
 } from 'akeneo-design-system';
-import {
-  IconProps
-} from "akeneo-design-system/lib/icons/IconProps";
+import {IconProps} from "akeneo-design-system/lib/icons/IconProps";
+import {useTranslate} from '@akeneo-pim-community/shared';
 
 type OperationCode = string;
 
@@ -32,7 +34,17 @@ const CustomTiles = styled(Tiles)`
   width: 730px;
 `;
 
+const InnerToolTip = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  b, a {
+    color: ${getColor('blue', 120)};
+  }
+`
+
 const ChooseApp: FC<TilesWithReactProps> = ({operations, selectedOperationCode, onChange}) => {
+  const translate = useTranslate();
   const [currentOperationCode, setCurrentOperationCode] = useState<OperationCode | undefined>(selectedOperationCode);
 
   const handleChange = (code: OperationCode) => {
@@ -72,6 +84,26 @@ const ChooseApp: FC<TilesWithReactProps> = ({operations, selectedOperationCode, 
         selected={currentOperationCode === operation.code}
       >
         {operation.label}
+        {operation.code === 'publish' &&
+        <Tooltip width={352}>
+          <InnerToolTip>
+            <div>
+              <b>{translate('pimee_enrich.mass_edit.product.operation.publish.deprecation.title')}</b>
+            </div>
+            <div>
+              {translate('pimee_enrich.mass_edit.product.operation.publish.deprecation.text')}
+            </div>
+            <div>
+              <Link
+                href={'https://help.akeneo.com/en_US/serenity-take-the-power-over-your-products/important-update-deprecation-of-the-published-products-feature-from-akeneo-pim'}
+                target='_blank'
+              >
+                {translate('pimee_enrich.mass_edit.product.operation.publish.deprecation.learn_more')}
+              </Link>
+            </div>
+          </InnerToolTip>
+        </Tooltip>
+        }
       </Tile>
     ))}
   </CustomTiles>
