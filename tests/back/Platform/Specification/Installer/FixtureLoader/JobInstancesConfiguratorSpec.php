@@ -1,6 +1,6 @@
 <?php
 
-namespace Specification\Akeneo\Platform\Bundle\InstallerBundle\FixtureLoader;
+namespace Specification\Akeneo\Platform\Installer\FixtureLoader;
 
 use Akeneo\Platform\Installer\Infrastructure\FixtureLoader\FixturePathProvider;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;

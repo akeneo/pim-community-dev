@@ -10,7 +10,7 @@ in order to detect dysfunctions in the handling of parallel API write calls
 
 2. Load the Icecat catalog
 
-`$ APP_ENV=test O="--catalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev" make database`
+`$ APP_ENV=test O="--catalog src/Akeneo/Platform/Installer/back/src/Infrastructure/Symfony/Resources/fixtures/icecat_demo_dev" make database`
 
 3. Create an API connection
 

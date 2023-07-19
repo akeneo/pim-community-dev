@@ -3,7 +3,6 @@
 namespace Akeneo\Platform\Installer\Infrastructure\FixtureLoader;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\LocalStorage;
-use Akeneo\Platform\Bundle\InstallerBundle\FixtureLoader\YamlReader;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
@@ -126,7 +125,7 @@ class JobInstancesBuilder
     }
 
     /**
-     * @return YamlReader
+     * @return Reader
      */
     protected function getYamlReader()
     {

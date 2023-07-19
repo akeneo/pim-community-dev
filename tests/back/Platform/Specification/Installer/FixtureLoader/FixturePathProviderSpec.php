@@ -1,9 +1,9 @@
 <?php
 
-namespace Specification\Akeneo\Platform\Bundle\InstallerBundle\FixtureLoader;
+namespace Specification\Akeneo\Platform\Installer\FixtureLoader;
 
 use Akeneo\Platform\Bundle\DashboardBundle\PimDashboardBundle;
-use Akeneo\Platform\Installer\PimInstallerBundle;
+use Akeneo\Platform\Installer\Infrastructure\Symfony\AkeneoInstallerBundle;
 use PhpSpec\ObjectBehavior;
 
 class FixturePathProviderSpec extends ObjectBehavior
@@ -12,21 +12,21 @@ class FixturePathProviderSpec extends ObjectBehavior
     {
         $bundles = [
             'PimDashboardBundle' => PimDashboardBundle::class,
-            'PimInstallerBundle' => PimInstallerBundle::class
+            'AkeneoInstallerBundle' => AkeneoInstallerBundle::class
         ];
         $this->beConstructedWith($bundles);
-        $reflection = new \ReflectionClass(PimInstallerBundle::class);
+        $reflection = new \ReflectionClass(AkeneoInstallerBundle::class);
         $expected = dirname($reflection->getFilename()) . '/Resources/fixtures/minimal/';
-        $this->getFixturesPath('PimInstallerBundle:minimal')->shouldReturn($expected);
+        $this->getFixturesPath('AkeneoInstallerBundle:minimal')->shouldReturn($expected);
     }
 
     function it_provides_a_full_path_when_no_short_definition_is_provided()
     {
         $bundles = [
             'PimDashboardBundle' => PimDashboardBundle::class,
-            'PimInstallerBundle' => PimInstallerBundle::class
+            'AkeneoInstallerBundle' => AkeneoInstallerBundle::class
         ];
-        $reflection = new \ReflectionClass(PimInstallerBundle::class);
+        $reflection = new \ReflectionClass(AkeneoInstallerBundle::class);
         $installerData = dirname($reflection->getFileName());
         $this->beConstructedWith($bundles);
         $this->getFixturesPath($installerData)->shouldReturn($installerData.DIRECTORY_SEPARATOR);
@@ -36,7 +36,7 @@ class FixturePathProviderSpec extends ObjectBehavior
     {
         $bundles = [
             'PimDashboardBundle' => PimDashboardBundle::class,
-            'PimInstallerBundle' => 'Akeneo\Platform\Bundle\InstallerBundle\PimYoloBundle'
+            'AkeneoInstallerBundle' => 'Akeneo\Platform\Installer\PimYoloBundle'
         ];
         $this->beConstructedWith($bundles);
         $this->shouldThrow('\RuntimeException')->during('getFixturesPath', ['/tmp/FakeProject/YoloBundle']);

@@ -3,7 +3,7 @@ parameters:
     pim_installer.fixture_loader.job_instances_builder.class:      Akeneo\Platform\Installer\Infrastructure\FixtureLoader\JobInstancesBuilder
     pim_installer.fixture_loader.job_instances_configurator.class: Akeneo\Platform\Installer\Infrastructure\FixtureLoader\JobInstancesConfigurator
     pim_installer.fixture_loader.job_loader.class:                 Akeneo\Platform\Installer\Infrastructure\FixtureLoader\FixtureJobLoader
-    pim_installer.fixture_loader.job_loader.config_file:           'PimInstallerBundle/Resources/config/fixtures_jobs.yml'
+    pim_installer.fixture_loader.job_loader.config_file:           'AkeneoInstallerBundle/Resources/config/fixtures_jobs.yml'
 
 services:
     pim_installer.fixture_loader.path_provider:

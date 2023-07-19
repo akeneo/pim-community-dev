@@ -44,7 +44,7 @@ $rules = [
             'Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator',
 
             //Bundle installation
-            'Akeneo\Platform\Bundle\InstallerBundle\Event',
+            'Akeneo\Platform\Installer\Infrastructure\Event',
             'Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository',
             'Akeneo\UserManagement\Component\Model\UserInterface',
 

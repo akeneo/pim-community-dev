@@ -82,7 +82,7 @@ class DatabaseCommand extends Command
                 null,
                 InputOption::VALUE_OPTIONAL,
                 'Directory of the fixtures to install',
-                'src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal'
+                'src/Akeneo/Platform/Installer/back/src/Infrastructure/Symfony/Resources/fixtures/minimal'
             )
         ;
     }
