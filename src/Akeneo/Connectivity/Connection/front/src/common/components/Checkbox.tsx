@@ -7,7 +7,7 @@ type Props = PropsWithChildren<InputProps>;
 
 const Checkbox = forwardRef(({children, ...props}: Props, ref: Ref<HTMLInputElement>) => (
     <label>
-        <InputCheckbox {...props} ref={ref} type='checkbox' />
+        <InputCheckbox {...(props as any)} ref={ref} type='checkbox' />
         &nbsp;
         <CheckboxLabel disabled={props.disabled}>{children}</CheckboxLabel>
     </label>
