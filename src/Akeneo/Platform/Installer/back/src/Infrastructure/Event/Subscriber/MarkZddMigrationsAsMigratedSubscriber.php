@@ -24,12 +24,11 @@ class MarkZddMigrationsAsMigratedSubscriber implements EventSubscriberInterface
     private array $zddMigrations;
 
     /**
-     * @param Connection $connection
      * @param iterable<mixed> $zddMigrations
      */
     public function __construct(
         private Connection $connection,
-        iterable $zddMigrations
+        iterable $zddMigrations,
     ) {
         Assert::allIsInstanceOf($zddMigrations, ZddMigration::class);
         $zddMigrations = $zddMigrations instanceof \Traversable ? \iterator_to_array($zddMigrations) : $zddMigrations;
@@ -41,7 +40,7 @@ class MarkZddMigrationsAsMigratedSubscriber implements EventSubscriberInterface
         return [
             InstallerEvents::POST_DB_CREATE => [
                 ['markMigrations', 0],
-            ]
+            ],
         ];
     }
 

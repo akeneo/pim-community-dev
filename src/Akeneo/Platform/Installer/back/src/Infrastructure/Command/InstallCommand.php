@@ -12,7 +12,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Installer command to add PIM custom rules
+ * Installer command to add PIM custom rules.
  *
  * @author    Nicolas <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -43,7 +43,7 @@ class InstallCommand extends Command
                 'doNotDropDatabase',
                 null,
                 InputOption::VALUE_NONE,
-                'Try to use an existing database if it already exists. Beware, the database data will still be deleted'
+                'Try to use an existing database if it already exists. Beware, the database data will still be deleted',
             );
     }
 
@@ -55,7 +55,7 @@ class InstallCommand extends Command
         $this->commandExecutor = new CommandExecutor(
             $input,
             $output,
-            $this->getApplication()
+            $this->getApplication(),
         );
     }
 
@@ -92,10 +92,9 @@ class InstallCommand extends Command
     }
 
     /**
-     * Step where configuration is checked
+     * Step where configuration is checked.
      *
      * @throws \RuntimeException
-     *
      */
     protected function checkStep(): self
     {
@@ -105,10 +104,12 @@ class InstallCommand extends Command
     }
 
     /**
-     * Step where the database is built, the fixtures loaded and some command scripts launched
+     * Step where the database is built, the fixtures loaded and some command scripts launched.
      *
      * @param array<mixed> $arguments
+     *
      * @return $this
+     *
      * @throws \Exception
      */
     protected function databaseStep(array $arguments = []): self
@@ -119,7 +120,7 @@ class InstallCommand extends Command
     }
 
     /**
-     * Load only assets
+     * Load only assets.
      */
     protected function assetsStep(InputInterface $input): self
     {

@@ -24,7 +24,7 @@ use Symfony\Component\Process\Process;
  * - creates database
  * - updates schema
  * - loads fixtures
- * - launches other command for database calculations (completeness calculation)
+ * - launches other command for database calculations (completeness calculation).
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -61,28 +61,28 @@ class DatabaseCommand extends Command
                 null,
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
                 'Determines fixtures to not load',
-                []
+                [],
             )
             ->addOption(
                 'withoutIndexes',
                 null,
                 InputOption::VALUE_OPTIONAL,
                 'Should the command setup the elastic search indexes',
-                false
+                false,
             )
             ->addOption(
                 'withoutFixtures',
                 null,
                 InputOption::VALUE_OPTIONAL,
                 'Should the command install any fixtures',
-                false
+                false,
             )
             ->addOption(
                 'catalog',
                 null,
                 InputOption::VALUE_OPTIONAL,
                 'Directory of the fixtures to install',
-                'src/Akeneo/Platform/Installer/back/src/Infrastructure/Symfony/Resources/fixtures/minimal'
+                'src/Akeneo/Platform/Installer/back/src/Infrastructure/Symfony/Resources/fixtures/minimal',
             )
         ;
     }
@@ -95,7 +95,7 @@ class DatabaseCommand extends Command
         $this->commandExecutor = new CommandExecutor(
             $input,
             $output,
-            $this->getApplication()
+            $this->getApplication(),
         );
     }
 
@@ -110,7 +110,7 @@ class DatabaseCommand extends Command
             $this->commandExecutor
                 ->runCommand(
                     'doctrine:schema:update',
-                    ['--force' => true, '--no-interaction' => true, '--complete' => true]
+                    ['--force' => true, '--no-interaction' => true, '--complete' => true],
                 );
         } catch (\Exception $e) {
             $this->logger->critical('Trying to install PIM on an existing database is impossible.');
@@ -130,7 +130,7 @@ class DatabaseCommand extends Command
             new InstallerEvent($this->commandExecutor, null, [
                 'catalog' => $input->getOption('catalog'),
             ]),
-            InstallerEvents::POST_DB_CREATE
+            InstallerEvents::POST_DB_CREATE,
         );
 
         $this->setLatestKnownMigration($input);
@@ -140,7 +140,7 @@ class DatabaseCommand extends Command
                 new InstallerEvent($this->commandExecutor, null, [
                     'catalog' => $input->getOption('catalog'),
                 ]),
-                InstallerEvents::PRE_LOAD_FIXTURES
+                InstallerEvents::PRE_LOAD_FIXTURES,
             );
 
             $this->loadFixturesStep($input, $output);
@@ -149,7 +149,7 @@ class DatabaseCommand extends Command
                 new InstallerEvent($this->commandExecutor, null, [
                     'catalog' => $input->getOption('catalog'),
                 ]),
-                InstallerEvents::POST_LOAD_FIXTURES
+                InstallerEvents::POST_LOAD_FIXTURES,
             );
         }
 
@@ -199,11 +199,11 @@ class DatabaseCommand extends Command
                 new InstallerEvent($this->commandExecutor, $jobInstance->getCode(), [
                     'catalog' => $catalog,
                 ]),
-                InstallerEvents::PRE_LOAD_FIXTURE
+                InstallerEvents::PRE_LOAD_FIXTURE,
             );
 
             $this->logger->info(
-                sprintf('Please wait, the "%s" are processing...', $jobInstance->getCode())
+                sprintf('Please wait, the "%s" are processing...', $jobInstance->getCode()),
             );
             $this->commandExecutor->runCommand('akeneo:batch:job', $params);
             $this->eventDispatcher->dispatch(
@@ -211,7 +211,7 @@ class DatabaseCommand extends Command
                     'job_name' => $jobInstance->getJobName(),
                     'catalog' => $catalog,
                 ]),
-                InstallerEvents::POST_LOAD_FIXTURE
+                InstallerEvents::POST_LOAD_FIXTURE,
             );
         }
 
@@ -229,7 +229,7 @@ class DatabaseCommand extends Command
 
         $this->commandExecutor->runCommand(
             'doctrine:migrations:version',
-            ['version' => $latestMigration, '--add' => true, '--all' => true, '-q' => true]
+            ['version' => $latestMigration, '--add' => true, '--all' => true, '-q' => true],
         );
     }
 
@@ -244,17 +244,15 @@ class DatabaseCommand extends Command
             $params[] = $input->getOption('env');
         }
 
-        if ($input->hasOption('verbose') && $input->getOption('verbose') === true) {
+        if ($input->hasOption('verbose') && true === $input->getOption('verbose')) {
             $params[] = '--verbose';
         }
 
         $latestMigrationProcess = new Process($params);
         $latestMigrationProcess->run();
 
-        if ($latestMigrationProcess->getExitCode() !== 0) {
-            throw new \RuntimeException(
-                "Impossible to get the latest migration {$latestMigrationProcess->getErrorOutput()}"
-            );
+        if (0 !== $latestMigrationProcess->getExitCode()) {
+            throw new \RuntimeException("Impossible to get the latest migration {$latestMigrationProcess->getErrorOutput()}");
         }
 
         return $latestMigrationProcess->getOutput();

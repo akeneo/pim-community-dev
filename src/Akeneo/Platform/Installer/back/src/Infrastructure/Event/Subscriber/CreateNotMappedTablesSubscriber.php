@@ -15,7 +15,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class CreateNotMappedTablesSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private Connection $connection
+        private Connection $connection,
     ) {
     }
 
@@ -24,7 +24,7 @@ class CreateNotMappedTablesSubscriber implements EventSubscriberInterface
         return [
             InstallerEvents::POST_DB_CREATE => [
                 ['createNotMappedTables', 200],
-            ]
+            ],
         ];
     }
 

@@ -9,7 +9,7 @@ use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 
 /**
  * Load in database the job instances that can be used to install the PIM, once install, these job instance can be
- * removed
+ * removed.
  *
  * @author    Julien Janvier <julien.janvier@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -18,7 +18,7 @@ use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 class FixtureJobLoader
 {
     /** @staticvar */
-    const JOB_TYPE = 'fixtures';
+    public const JOB_TYPE = 'fixtures';
 
     /** @var JobInstancesBuilder */
     private $jobInstancesBuilder;
@@ -40,7 +40,7 @@ class FixtureJobLoader
         JobInstancesConfigurator $jobInstancesConfigurator,
         BulkSaverInterface $jobInstanceSaver,
         BulkRemoverInterface $jobInstanceRemover,
-        JobInstanceRepository $jobInstanceRepository
+        JobInstanceRepository $jobInstanceRepository,
     ) {
         $this->jobInstancesBuilder = $jobInstancesBuilder;
         $this->jobInstancesConfigurator = $jobInstancesConfigurator;
@@ -50,7 +50,7 @@ class FixtureJobLoader
     }
 
     /**
-     * Load the fixture jobs in database
+     * Load the fixture jobs in database.
      *
      * @param array<string> $replacePaths
      *
@@ -64,7 +64,7 @@ class FixtureJobLoader
     }
 
     /**
-     * Deletes all the fixtures job
+     * Deletes all the fixtures job.
      */
     public function deleteJobInstances(): void
     {
@@ -73,7 +73,7 @@ class FixtureJobLoader
     }
 
     /**
-     * Get the list of stored jobs
+     * Get the list of stored jobs.
      *
      * @return JobInstance[]
      */
@@ -85,10 +85,11 @@ class FixtureJobLoader
     }
 
     /**
-     * @param string $catalogPath
      * @param JobInstance[] $jobInstances
      * @param array<string> $replacePaths
+     *
      * @return JobInstance[]
+     *
      * @throws \Exception
      */
     protected function configureJobInstances(string $catalogPath, array $jobInstances, array $replacePaths): array
@@ -98,7 +99,7 @@ class FixtureJobLoader
         } else {
             return $this->jobInstancesConfigurator->configureJobInstancesWithReplacementPaths(
                 $jobInstances,
-                $replacePaths
+                $replacePaths,
             );
         }
     }
