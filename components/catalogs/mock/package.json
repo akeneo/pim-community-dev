@@ -4,8 +4,6 @@
   "license": "OSL-3.0",
   "private": true,
   "main": "lib/exports.js",
-  "dependencies": {},
-  "peerDependencies": {},
   "scripts": {
     "lib:build": "tsc -p tsconfig.build.json"
   },

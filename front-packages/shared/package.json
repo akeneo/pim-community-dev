@@ -14,10 +14,11 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "@types/jest": "^26.0.22",
-    "jest": "^26.0.22"
+    "jest": "^26.0.22",
+    "typescript": "^4.0.3"
   },
   "peerDependencies": {
-    "akeneo-design-system": "link:../akeneo-design-system"
+    "akeneo-design-system": "*"
   },
   "private": true
 }

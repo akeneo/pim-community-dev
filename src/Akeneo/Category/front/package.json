@@ -15,8 +15,8 @@
         "react-router-dom": "^5.2.0"
     },
     "devDependencies": {
-        "typescript": "^4.0.3",
-        "react-scripts": "4.0.1"
+        "react-scripts": "4.0.1",
+        "typescript": "^4.0.3"
     },
     "peerDependencies": {
         "babel-loader": "8.1.0",

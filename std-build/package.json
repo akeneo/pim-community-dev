@@ -3,16 +3,12 @@
   "description": "Akeneo PIM Community Standard Edition",
   "homepage": "http://www.akeneo.com",
   "private": true,
-  "config": {
-    "source": "vendor/akeneo/pim-community-dev",
-    "styles": "vendor/akeneo/pim-community-dev/frontend/build/compile-less.js"
-  },
   "scripts": {
-    "requirements": "node $npm_package_config_source/frontend/build/check-requirements.js",
-    "webpack": "yarn requirements && yarn generate-models && NODE_PATH=node_modules webpack --config $npm_package_config_source/webpack.config.js --env=prod",
-    "webpack-dev": "yarn requirements && yarn generate-models && NODE_PATH=node_modules webpack --config $npm_package_config_source/webpack.config.js",
-    "less": "node $npm_package_config_styles",
-    "update-extensions": "node $npm_package_config_source/frontend/build/update-extensions.js",
+    "requirements": "node vendor/akeneo/pim-community-dev/frontend/build/check-requirements.js",
+    "webpack": "yarn requirements && yarn generate-models && NODE_PATH=node_modules webpack --config vendor/akeneo/pim-community-dev/webpack.config.js --env=prod",
+    "webpack-dev": "yarn requirements && yarn generate-models && NODE_PATH=node_modules webpack --config vendor/akeneo/pim-community-dev/webpack.config.js",
+    "less": "node vendor/akeneo/pim-community-dev/frontend/build/compile-less.js",
+    "update-extensions": "node vendor/akeneo/pim-community-dev/frontend/build/update-extensions.js",
     "generate-models": "yarn workspace @akeneo-pim-community/communication-channel generate-models",
     "packages:build": "yarn workspace pim-community-dev packages:build"
   },

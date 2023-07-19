@@ -3,16 +3,12 @@
   "version": "7.0.0",
   "description": "Akeneo PIM Application",
   "homepage": "https://www.akeneo.com/",
-  "config": {
-    "source": ".",
-    "styles": "frontend/build/compile-less.js"
-  },
   "scripts": {
-    "requirements": "node $npm_package_config_source/frontend/build/check-requirements.js",
-    "webpack": "yarn requirements && yarn generate-models && NODE_PATH=node_modules webpack --config $npm_package_config_source/webpack.config.js --env=prod",
-    "webpack-dev": "yarn requirements && yarn generate-models && NODE_PATH=node_modules webpack --config $npm_package_config_source/webpack.config.js",
+    "requirements": "node ./frontend/build/check-requirements.js",
+    "webpack": "yarn requirements && yarn generate-models && NODE_PATH=node_modules webpack --config ./webpack.config.js --env=prod",
+    "webpack-dev": "yarn requirements && yarn generate-models && NODE_PATH=node_modules webpack --config ./webpack.config.js",
     "webpack-dev-strict": "NODE_OPTIONS=--max_old_space_size=4096 STRICT=1 yarn webpack-dev",
-    "webpack-watch": "yarn requirements && yarn generate-models && NODE_PATH=node_modules webpack --progress --config $npm_package_config_source/webpack.config.js --watch",
+    "webpack-watch": "yarn requirements && yarn generate-models && NODE_PATH=node_modules webpack --progress --config ./webpack.config.js --watch",
     "prettier:run": "prettier --config .prettierrc.json --parser typescript --write \"./src/**/*.{js,ts,tsx}\"",
     "prettier:check": "prettier --config .prettierrc.json --parser typescript --check \"./src/**/*.{js,ts,tsx}\" && yarn packages:lint:check",
     "before-commit": "yarn prettier && yarn lint && yarn test",
@@ -24,10 +20,10 @@
     "integration": "jest --no-cache --config ./tests/front/integration/jest/integration.jest.js",
     "acceptance": "cucumber-js --tags @acceptance-front -r ./frontend/test/acceptance/run-steps.js -r ./tests/front/acceptance/cucumber",
     "acceptance-html-report": "yarn acceptance ./tests/features/ -f json:public/test_dist/acceptance-js.json && node frontend/test/acceptance/generate-html-report.js",
-    "less": "node $npm_package_config_styles",
-    "update-extensions": "node $npm_package_config_source/frontend/build/update-extensions.js",
+    "less": "node frontend/build/compile-less.js",
+    "update-extensions": "node ./frontend/build/update-extensions.js",
     "generate-models": "yarn workspace @akeneo-pim-community/communication-channel generate-models",
-    "dsm:build": "yarn --cwd=front-packages/akeneo-design-system install --frozen-lockfile && yarn --cwd=front-packages/akeneo-design-system lib:build",
+    "dsm:build": "cd front-packages/akeneo-design-system && yarn install --immutable && yarn lib:build",
     "shared:lint:check": "yarn workspace @akeneo-pim-community/shared lint:check",
     "shared:build": "yarn workspace @akeneo-pim-community/shared lib:build",
     "measurement:lint:check": "yarn workspace @akeneo-pim-community/measurement lint:check",
@@ -190,5 +186,9 @@
     "src/Akeneo/Tool/Bundle/MeasureBundle/front",
     "src/Akeneo/UserManagement/Bundle/Resources/workspaces/user-ui",
     "src/Oro/Bundle/ConfigBundle/front"
-  ]
+  ],
+  "packageManager": "yarn@3.6.1",
+  "resolutions": {
+    "akeneo-design-system": "portal:front-packages/akeneo-design-system"
+  }
 }

@@ -19,7 +19,8 @@ RUN sh -c 'wget -q -O - https://deb.nodesource.com/gpgkey/nodesource.gpg.key | A
     apt-get update && \
     apt-get install -y nodejs yarn \
     && apt-get clean && apt-get -y -q autoremove --purge \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+    && yarn set version berry
 
 
 # Install latest chrome dev package and fonts to support major charsets (Chinese, Japanese, Arabic, Hebrew, Thai and a few others).

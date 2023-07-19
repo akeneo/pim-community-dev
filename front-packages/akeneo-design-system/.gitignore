@@ -5,3 +5,9 @@ __diff_output__
 /stories.json
 /public/*standard-correctly-1-snap.png
 tsconfig.build.tsbuildinfo
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions

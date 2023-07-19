@@ -36,8 +36,12 @@ coverage/*
 cypress/videos
 cypress/screenshots
 .nvmrc
-.yarnrc
-.yarn/
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
 
 # The "lib/" folder must be ignored here to not be taken into account when the DSM is extracted to its own repository.
 # See ".github/actions/extract/entrypoint.sh"
