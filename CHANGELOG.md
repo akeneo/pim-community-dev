@@ -112,6 +112,7 @@
 - PIM-11099: Fix regression on filtering products and product models on Identifier containing a dash character
 - PIM-11103: Fix deletion of enriched category attribute when deleting attribute
 - PIM-11101: Prevent user to save bad locale code format (upper/lower : aa_AA)
+- PIM-11087: Make image upload security rules more lenient
 
 ## Improvements
 
