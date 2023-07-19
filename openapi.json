@@ -83,7 +83,7 @@
                     {
                         "name": "search",
                         "in": "query",
-                        "description": "Filter products, for more details see the <a href=\\\"/documentation/filter.html\\\">Filters</a> section",
+                        "description": "Filter products, for more details see the <a href=\"https://api.akeneo.com/documentation/filter.html\">Filters</a> section",
                         "required": false,
                         "schema": {
                             "type": "string"
@@ -100,7 +100,7 @@
                     {
                         "name": "scope",
                         "in": "query",
-                        "description": "Filter product values to return scopable attributes for the given channel as well as the non localizable/non scopable attributes, for more details see the <a href=\\\"/documentation/filter.html#via-channel\\\">Filter product values via channel</a> section",
+                        "description": "Filter product values to return scopable attributes for the given channel as well as the non localizable/non scopable attributes, for more details see the <a href=\"https://api.akeneo.com/documentation/filter.html#via-channel\">Filter product values via channel</a> section",
                         "required": false,
                         "schema": {
                             "type": "string",
@@ -110,7 +110,7 @@
                     {
                         "name": "locales",
                         "in": "query",
-                        "description": "Filter product values to return localizable attributes for the given locales as well as the non localizable/non scopable attributes, for more details see the <a href=\\\"/documentation/filter.html#via-locale\\\">Filter product values via locale</a> section",
+                        "description": "Filter product values to return localizable attributes for the given locales as well as the non localizable/non scopable attributes, for more details see the <a href=\"https://api.akeneo.com/documentation/filter.html#via-locale\">Filter product values via locale</a> section",
                         "required": false,
                         "schema": {
                             "type": "string",

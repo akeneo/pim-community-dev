@@ -139,7 +139,7 @@ class ProductController
         parameters: [
             new OA\Parameter(
                 name: 'search',
-                description: 'Filter products, for more details see the <a href=\"/documentation/filter.html\">Filters</a> section',
+                description: 'Filter products, for more details see the <a href="https://api.akeneo.com/documentation/filter.html">Filters</a> section',
                 in: 'query',
                 required: false,
                 schema: new OA\Schema(
@@ -157,7 +157,7 @@ class ProductController
             ),
             new OA\Parameter(
                 name: 'scope',
-                description: 'Filter product values to return scopable attributes for the given channel as well as the non localizable/non scopable attributes, for more details see the <a href=\"/documentation/filter.html#via-channel\">Filter product values via channel</a> section',
+                description: 'Filter product values to return scopable attributes for the given channel as well as the non localizable/non scopable attributes, for more details see the <a href="https://api.akeneo.com/documentation/filter.html#via-channel">Filter product values via channel</a> section',
                 in: 'query',
                 required: false,
                 schema: new OA\Schema(
@@ -167,7 +167,7 @@ class ProductController
             ),
             new OA\Parameter(
                 name: 'locales',
-                description: 'Filter product values to return localizable attributes for the given locales as well as the non localizable/non scopable attributes, for more details see the <a href=\"/documentation/filter.html#via-locale\">Filter product values via locale</a> section',
+                description: 'Filter product values to return localizable attributes for the given locales as well as the non localizable/non scopable attributes, for more details see the <a href="https://api.akeneo.com/documentation/filter.html#via-locale">Filter product values via locale</a> section',
                 in: 'query',
                 required: false,
                 schema: new OA\Schema(
