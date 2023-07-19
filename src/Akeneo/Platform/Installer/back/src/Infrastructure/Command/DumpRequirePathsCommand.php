@@ -17,25 +17,16 @@ class DumpRequirePathsCommand extends Command
 {
     protected static $defaultName = 'pim:installer:dump-require-paths';
 
-    public const MAIN_CONFIG_FILE_NAME = 'js/require-paths.js';
-
-    /** @var string */
-    private $rootDir;
-
-    /** @var array<mixed> */
-    private $bundles;
+    final public const MAIN_CONFIG_FILE_NAME = 'js/require-paths.js';
 
     /**
      * @param array<mixed> $bundles
      */
     public function __construct(
-        string $rootDir,
-        array $bundles,
+        private readonly string $rootDir,
+        private readonly array $bundles,
     ) {
         parent::__construct();
-
-        $this->rootDir = $rootDir;
-        $this->bundles = $bundles;
     }
 
     /**

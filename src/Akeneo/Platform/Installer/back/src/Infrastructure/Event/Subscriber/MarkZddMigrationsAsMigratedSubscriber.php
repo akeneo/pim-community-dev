@@ -21,13 +21,13 @@ use Webmozart\Assert\Assert;
 class MarkZddMigrationsAsMigratedSubscriber implements EventSubscriberInterface
 {
     /** @var ZddMigration[] */
-    private array $zddMigrations;
+    private readonly array $zddMigrations;
 
     /**
      * @param iterable<mixed> $zddMigrations
      */
     public function __construct(
-        private Connection $connection,
+        private readonly Connection $connection,
         iterable $zddMigrations,
     ) {
         Assert::allIsInstanceOf($zddMigrations, ZddMigration::class);
@@ -54,7 +54,7 @@ class MarkZddMigrationsAsMigratedSubscriber implements EventSubscriberInterface
         SQL, [
                 'code' => $this->getZddMigrationCode($zddMigration),
                 'status' => 'finished',
-                'values' => \json_encode((object) []),
+                'values' => \json_encode((object) [], JSON_THROW_ON_ERROR),
             ]);
         }
     }

@@ -12,18 +12,14 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class InstallerEvent extends GenericEvent
 {
-    protected ?CommandExecutor $commandExecutor;
-
     /**
      * @param array<mixed> $arguments
      */
     public function __construct(
-        ?CommandExecutor $commandExecutor = null,
+        protected ?\Akeneo\Tool\Component\Console\CommandExecutor $commandExecutor = null,
         ?string $subject = null,
         array $arguments = [],
     ) {
-        $this->commandExecutor = $commandExecutor;
-
         parent::__construct($subject, $arguments);
     }
 

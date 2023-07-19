@@ -27,7 +27,7 @@ final class InstallData
 
         $this->connection->executeStatement(
             $sql,
-            ['install_data', \json_encode($installData)],
+            ['install_data', \json_encode($installData, JSON_THROW_ON_ERROR)],
         );
     }
 }

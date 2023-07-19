@@ -35,7 +35,7 @@ class DatabaseCommand extends Command
     protected static $defaultName = 'pim:installer:db';
     protected static $defaultDescription = 'Prepare database and load fixtures';
 
-    protected ?CommandExecutor $commandExecutor;
+    protected ?CommandExecutor $commandExecutor = null;
 
     public function __construct(
         private readonly EntityManagerInterface $entityManager,

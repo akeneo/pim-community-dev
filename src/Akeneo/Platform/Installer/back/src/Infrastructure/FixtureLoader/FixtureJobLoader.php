@@ -18,35 +18,10 @@ use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 class FixtureJobLoader
 {
     /** @staticvar */
-    public const JOB_TYPE = 'fixtures';
+    final public const JOB_TYPE = 'fixtures';
 
-    /** @var JobInstancesBuilder */
-    private $jobInstancesBuilder;
-
-    /** @var JobInstancesConfigurator */
-    private $jobInstancesConfigurator;
-
-    /** @var BulkSaverInterface */
-    private $jobInstanceSaver;
-
-    /** @var BulkRemoverInterface */
-    private $jobInstanceRemover;
-
-    /** @var JobInstanceRepository */
-    private $jobInstanceRepository;
-
-    public function __construct(
-        JobInstancesBuilder $jobInstancesBuilder,
-        JobInstancesConfigurator $jobInstancesConfigurator,
-        BulkSaverInterface $jobInstanceSaver,
-        BulkRemoverInterface $jobInstanceRemover,
-        JobInstanceRepository $jobInstanceRepository,
-    ) {
-        $this->jobInstancesBuilder = $jobInstancesBuilder;
-        $this->jobInstancesConfigurator = $jobInstancesConfigurator;
-        $this->jobInstanceSaver = $jobInstanceSaver;
-        $this->jobInstanceRemover = $jobInstanceRemover;
-        $this->jobInstanceRepository = $jobInstanceRepository;
+    public function __construct(private readonly JobInstancesBuilder $jobInstancesBuilder, private readonly JobInstancesConfigurator $jobInstancesConfigurator, private readonly BulkSaverInterface $jobInstanceSaver, private readonly BulkRemoverInterface $jobInstanceRemover, private readonly JobInstanceRepository $jobInstanceRepository)
+    {
     }
 
     /**
@@ -79,9 +54,7 @@ class FixtureJobLoader
      */
     public function getLoadedJobInstances(): array
     {
-        $jobs = $this->jobInstanceRepository->findBy(['type' => self::JOB_TYPE]);
-
-        return $jobs;
+        return $this->jobInstanceRepository->findBy(['type' => self::JOB_TYPE]);
     }
 
     /**
@@ -94,7 +67,7 @@ class FixtureJobLoader
      */
     protected function configureJobInstances(string $catalogPath, array $jobInstances, array $replacePaths): array
     {
-        if (0 === count($replacePaths)) {
+        if ([] === $replacePaths) {
             return $this->jobInstancesConfigurator->configureJobInstancesWithInstallerData($catalogPath, $jobInstances);
         } else {
             return $this->jobInstancesConfigurator->configureJobInstancesWithReplacementPaths(
