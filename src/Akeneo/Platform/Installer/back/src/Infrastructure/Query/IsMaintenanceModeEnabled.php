@@ -31,6 +31,6 @@ SQL;
             return false;
         }
 
-        return json_decode($result, true)['enabled'];
+        return json_decode((string) $result, true, 512, JSON_THROW_ON_ERROR)['enabled'];
     }
 }

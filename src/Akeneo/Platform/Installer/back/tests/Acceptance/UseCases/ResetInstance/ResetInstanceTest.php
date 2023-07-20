@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Installer\Test\Acceptance\UseCases\ResetInstance;
 
-use Akeneo\Platform\Installer\Application\ResetInstance\ResetInstanceCommand;
 use Akeneo\Platform\Installer\Application\ResetInstance\EnableMaintenanceMode;
+use Akeneo\Platform\Installer\Application\ResetInstance\ResetInstanceCommand;
 use Akeneo\Platform\Installer\Test\Acceptance\FakeServices\FakeDatabasePurger;
 use Akeneo\Platform\Installer\Test\Acceptance\FakeServices\FakeFixturesInstaller;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;

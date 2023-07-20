@@ -34,7 +34,7 @@ class UpdateMaintenanceModeTest extends TestCase
     {
         $this->getConnection()->executeQuery(
             'DELETE FROM pim_configuration WHERE code = :code',
-            ['code' => 'maintenance_mode']
+            ['code' => 'maintenance_mode'],
         );
     }
 
@@ -42,7 +42,7 @@ class UpdateMaintenanceModeTest extends TestCase
     {
         $result = $this->getConnection()->executeQuery(
             'SELECT `values` FROM pim_configuration WHERE code = :code',
-            ['code' => 'maintenance_mode']
+            ['code' => 'maintenance_mode'],
         );
         $this->assertEquals(true, $result->fetchOne());
     }

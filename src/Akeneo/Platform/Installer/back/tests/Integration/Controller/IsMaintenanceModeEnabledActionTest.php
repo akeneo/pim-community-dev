@@ -49,7 +49,7 @@ SQL;
             $insertJobExecution,
             [
                 'code' => 'maintenance_mode',
-                'values' => ['enabled' => true]
+                'values' => ['enabled' => true],
             ],
             [
                 'code' => Types::STRING,
