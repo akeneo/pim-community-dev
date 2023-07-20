@@ -55,7 +55,7 @@ use OpenApi\Attributes as OA;
     type: 'object'
 )]
 #[OA\Schema(
-    schema: '_embedded',
+    schema: '_embedded_product',
     properties: [
         new OA\Property(
             property: 'items',
@@ -140,6 +140,41 @@ use OpenApi\Attributes as OA;
                             ],
                         ],
                     ],
+                ],
+            ],
+        )
+    ],
+    type: 'object',
+)]
+#[OA\Schema(
+    schema: '_embedded_locale',
+    properties: [
+        new OA\Property(
+            property: 'items',
+            description: 'The list of resources',
+            type: 'array',
+            items: new OA\Items(
+                ref: '#/components/schemas/Locale'
+            ),
+            example: [
+                [
+                    '_links' => [
+                        'self' => [
+                            'href' => 'https://demo.akeneo.com/api/rest/v1/locales/en_US"',
+                        ],
+                    ],
+                    'code' => 'en_US',
+                    'enabled' => 'true',
+                ],
+                [
+                    '_links' => [
+                        'self' => [
+                            'href' => 'https://demo.akeneo.com/api/rest/v1/locales/fr_FR',
+                        ],
+                    ],
+                    'code' => 'fr_FR',
+                    'enabled' => 'false',
+
                 ],
             ],
         )

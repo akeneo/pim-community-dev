@@ -68,7 +68,12 @@
                     "415": {
                         "$ref": "#/components/responses/415"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerToken": []
+                    }
+                ]
             }
         },
         "/api/rest/v1/products": {
@@ -134,7 +139,7 @@
                                             "example": 1
                                         },
                                         "_embedded": {
-                                            "$ref": "#/components/schemas/_embedded"
+                                            "$ref": "#/components/schemas/_embedded_product"
                                         }
                                     },
                                     "type": "object"
@@ -390,7 +395,7 @@
                 },
                 "type": "object"
             },
-            "_embedded": {
+            "_embedded_product": {
                 "properties": {
                     "items": {
                         "description": "The list of resources",
@@ -474,6 +479,38 @@
                                         }
                                     ]
                                 }
+                            }
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "_embedded_locale": {
+                "properties": {
+                    "items": {
+                        "description": "The list of resources",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Locale"
+                        },
+                        "example": [
+                            {
+                                "_links": {
+                                    "self": {
+                                        "href": "https://demo.akeneo.com/api/rest/v1/locales/en_US\""
+                                    }
+                                },
+                                "code": "en_US",
+                                "enabled": "true"
+                            },
+                            {
+                                "_links": {
+                                    "self": {
+                                        "href": "https://demo.akeneo.com/api/rest/v1/locales/fr_FR"
+                                    }
+                                },
+                                "code": "fr_FR",
+                                "enabled": "false"
                             }
                         ]
                     }

@@ -106,6 +106,9 @@ class CategoryController
         operationId: "patch_categories",
         description: "This endpoint allows you to update several categories at once.",
         summary: "Update/create several categories.",
+        security: [
+            ['bearerToken' => []],
+        ],
         requestBody: new OA\RequestBody(
             description: "Contains several lines, each line is a category in JSON standard format",
             required: true,

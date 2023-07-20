@@ -194,7 +194,7 @@ class ProductController
                         ),
                         new OA\Property(
                             property: '_embedded',
-                            ref: '#/components/schemas/_embedded'
+                            ref: '#/components/schemas/_embedded_product'
                         )
                     ],
                     type: 'object',
