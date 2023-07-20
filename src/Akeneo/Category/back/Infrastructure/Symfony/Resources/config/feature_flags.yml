@@ -9,12 +9,6 @@ services:
       - '%env(bool:FLAG_ENRICHED_CATEGORY_ENABLED)%'
     public: true
 
-  akeneo.category.template.customization:
-    class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag
-    arguments:
-      - '%env(bool:FLAG_ENRICHED_CATEGORY_TEMPLATE_CUSTOMIZATION_ENABLED)%'
-    public: true
-
   akeneo.category.update.template.attribute:
     class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag
     arguments:

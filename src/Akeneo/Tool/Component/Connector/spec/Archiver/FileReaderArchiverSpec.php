@@ -8,6 +8,7 @@ use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\AbstractStep;
 use Akeneo\Tool\Component\Batch\Step\ItemStep;
 use Akeneo\Tool\Component\Connector\Archiver\FileReaderArchiver;
@@ -20,8 +21,12 @@ class FileReaderArchiverSpec extends ObjectBehavior
 {
     function let(
         FilesystemOperator $filesystem,
-        JobRegistry $jobRegistry
+        JobRegistry $jobRegistry,
+        StepExecution $stepExecution,
+        JobExecution $jobExecution,
     ) {
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+
         $this->beConstructedWith($filesystem, $jobRegistry);
     }
 
@@ -34,6 +39,7 @@ class FileReaderArchiverSpec extends ObjectBehavior
         FilesystemOperator $filesystem,
         JobRegistry $jobRegistry,
         CsvReader $reader,
+        StepExecution $stepExecution,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
         Job $job,
@@ -64,7 +70,7 @@ class FileReaderArchiverSpec extends ObjectBehavior
             Argument::any()
         )->shouldBeCalled();
 
-        $this->archive($jobExecution);
+        $this->archive($stepExecution);
 
         unlink($pathname);
     }
@@ -73,6 +79,7 @@ class FileReaderArchiverSpec extends ObjectBehavior
         FilesystemOperator $filesystem,
         JobRegistry $jobRegistry,
         ItemReaderInterface $reader,
+        StepExecution $stepExecution,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
         Job $job,
@@ -88,7 +95,7 @@ class FileReaderArchiverSpec extends ObjectBehavior
 
         $filesystem->writeStream(Argument::any())->shouldNotBeCalled();
 
-        $this->archive($jobExecution);
+        $this->archive($stepExecution);
     }
 
     function it_returns_the_name_of_the_archiver()
@@ -99,6 +106,7 @@ class FileReaderArchiverSpec extends ObjectBehavior
     function it_doesnt_create_a_file_if_step_is_not_an_item_step(
         FilesystemOperator $filesystem,
         JobRegistry $jobRegistry,
+        StepExecution $stepExecution,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
         Job $job,
@@ -113,12 +121,13 @@ class FileReaderArchiverSpec extends ObjectBehavior
 
         $filesystem->writeStream(Argument::any())->shouldNotBeCalled();
 
-        $this->archive($jobExecution);
+        $this->archive($stepExecution);
     }
 
     function it_returns_true_for_the_supported_job(
         JobRegistry $jobRegistry,
         CsvReader $reader,
+        StepExecution $stepExecution,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
         Job $job,
@@ -132,12 +141,13 @@ class FileReaderArchiverSpec extends ObjectBehavior
         $job->getSteps()->willReturn([$step]);
         $step->getReader()->willReturn($reader);
 
-        $this->supports($jobExecution)->shouldReturn(true);
+        $this->supports($stepExecution)->shouldReturn(true);
     }
 
     function it_returns_false_for_the_unsupported_job(
         JobRegistry $jobRegistry,
         ItemReaderInterface $reader,
+        StepExecution $stepExecution,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
         Job $job,
@@ -151,6 +161,6 @@ class FileReaderArchiverSpec extends ObjectBehavior
         $job->getSteps()->willReturn([$step]);
         $step->getReader()->willReturn($reader);
 
-        $this->supports($jobExecution)->shouldReturn(false);
+        $this->supports($stepExecution)->shouldReturn(false);
     }
 }

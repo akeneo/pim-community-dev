@@ -7,10 +7,16 @@ namespace Akeneo\Category\back\tests\Integration\Application\Command\CleanCatego
 use Akeneo\Category\Application\Command\CleanCategoryTemplateAttributeAndEnrichedValues\CleanCategoryTemplateAttributeAndEnrichedValuesCommand;
 use Akeneo\Category\Application\Command\CleanCategoryTemplateAttributeAndEnrichedValues\CleanCategoryTemplateAttributeAndEnrichedValuesCommandHandler;
 use Akeneo\Category\Application\Query\GetAttribute;
+use Akeneo\Category\Application\Query\GetDeactivatedAttribute;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
+use Akeneo\Category\Domain\Model\Attribute\Attribute;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
 use Akeneo\Category\Domain\ValueObject\Attribute\Value\AbstractValue;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Driver\Exception;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
@@ -18,33 +24,47 @@ use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
  */
 class CleanCategoryTemplateAttributeAndEnrichedValuesCommandHandlerIntegration extends CategoryTestCase
 {
+    private GetCategoryInterface $getCategory;
+    private GetAttribute $getAttribute;
+    private Connection $connection;
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->getCategory = $this->get(GetCategoryInterface::class);
+        $this->getAttribute = $this->get(GetAttribute::class);
+        $this->connection = $this->get('database_connection');
+    }
+
     public function testItCleansValueCollectionOnTemplateAttributeDeactivation(): void
     {
-        $templateUuid = '6344aa2a-2be9-4093-b644-259ca7aee50c';
+        $templateUuid = TemplateUuid::fromString('6344aa2a-2be9-4093-b644-259ca7aee50c');
         $categorySocks = $this->useTemplateFunctionalCatalog(
-            $templateUuid,
+            $templateUuid->getValue(),
             'socks',
         );
 
         $this->updateCategoryValues((string) $categorySocks->getCode());
 
-        $getCategory = $this->get(GetCategoryInterface::class);
-        $category = $getCategory->byCode('socks');
+        $category = $this->getCategory->byCode('socks');
         $this->assertCount(3, $category->getAttributes()->getValues());
+        $givenAttributes = $this->givenAttributes($templateUuid);
+        $longDescriptionAttribute = $givenAttributes->getAttributeByCode('long_description');
+        $this->deactivateAttribute($longDescriptionAttribute->getUuid()->getValue());
 
-        $attributes = $this->get(GetAttribute::class)->byTemplateUuid(TemplateUuid::fromString($templateUuid));
+        $attributes = $this->getDeactivatedAttributeByTemplateUuid($templateUuid);
         $deletedAttributesUuid = [];
-        foreach (range(0, 2) as $index) {
-            $attributeUuid = $attributes->getAttributes()[$index]->getUuid();
+        foreach ($attributes->getAttributes() as $attribute) {
+            $attributeUuid = $attribute->getUuid();
             $deletedAttributesUuid[] = $attributeUuid;
-            $command = new CleanCategoryTemplateAttributeAndEnrichedValuesCommand($templateUuid, (string) $attributeUuid);
+            $command = new CleanCategoryTemplateAttributeAndEnrichedValuesCommand($templateUuid->getValue(), (string) $attributeUuid);
             $commandHandler = $this->get(CleanCategoryTemplateAttributeAndEnrichedValuesCommandHandler::class);
             ($commandHandler)($command);
         }
 
-        $category = $getCategory->byCode('socks');
-        $this->assertCount(1, $category->getAttributes()->getValues());
-        $attributesDeletedInDatabase = $this->get(GetAttribute::class)->byUuids($deletedAttributesUuid);
+        $category = $this->getCategory->byCode('socks');
+        $this->assertCount(2, $category->getAttributes()->getValues());
+        $attributesDeletedInDatabase = $this->getAttribute->byUuids($deletedAttributesUuid);
         $this->assertCount(0, $attributesDeletedInDatabase);
     }
 
@@ -54,7 +74,7 @@ class CleanCategoryTemplateAttributeAndEnrichedValuesCommandHandlerIntegration e
             UPDATE pim_catalog_category SET value_collection = :value_collection WHERE code = :code;
             SQL;
 
-        $this->get('database_connection')->executeQuery($query, [
+        $this->connection->executeQuery($query, [
             'value_collection' => json_encode([
                 'long_description' . AbstractValue::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950' . AbstractValue::SEPARATOR . $channel . AbstractValue::SEPARATOR . 'en_US' => [
                     'data' => 'All the shoes you need!',
@@ -86,5 +106,45 @@ class CleanCategoryTemplateAttributeAndEnrichedValuesCommandHandlerIntegration e
             ], JSON_THROW_ON_ERROR),
             'code' => $code,
         ]);
+    }
+
+    /**
+     * @throws Exception
+     * @throws \JsonException
+     * @throws \Doctrine\DBAL\Exception
+     */
+    public function getDeactivatedAttributeByTemplateUuid(TemplateUuid $uuid): AttributeCollection
+    {
+        $query = <<< SQL
+            SELECT 
+                BIN_TO_UUID(uuid) as uuid,
+                code, 
+                BIN_TO_UUID(category_template_uuid) as category_template_uuid,
+                labels, 
+                attribute_type, 
+                attribute_order, 
+                is_required, 
+                is_scopable, 
+                is_localizable, 
+                additional_properties
+            FROM pim_catalog_category_attribute
+            WHERE category_template_uuid = :template_uuid
+            AND is_deactivated = 1
+            ORDER BY attribute_order;
+        SQL;
+
+        $results = $this->connection->executeQuery(
+            $query,
+            [
+                'template_uuid' => $uuid->toBytes(),
+            ],
+            [
+                'template_uuid' => \PDO::PARAM_STR,
+            ],
+        )->fetchAllAssociative();
+
+        return AttributeCollection::fromArray(array_map(static function ($results) {
+            return Attribute::fromDatabase($results);
+        }, $results));
     }
 }

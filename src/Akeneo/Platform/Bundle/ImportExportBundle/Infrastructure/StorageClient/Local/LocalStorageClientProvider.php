@@ -25,9 +25,7 @@ final class LocalStorageClientProvider implements StorageClientProviderInterface
             throw new \InvalidArgumentException('The provider only support LocalStorage');
         }
 
-        $dirname = dirname($storage->getFilePath());
-
-        return new FileSystemStorageClient(new Filesystem(new LocalFilesystemAdapter($dirname)));
+        return new FileSystemStorageClient(new Filesystem(new LocalFilesystemAdapter('/')));
     }
 
     public function supports(StorageInterface $storage): bool

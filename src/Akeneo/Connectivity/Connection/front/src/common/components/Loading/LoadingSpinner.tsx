@@ -9,7 +9,7 @@ export const LoadingSpinner = (props: SVGProps<SVGSVGElement>) => (
         viewBox='0 0 100 100'
         style={{background: 'none)'}}
         preserveAspectRatio='xMidYMid'
-        {...props}
+        {...(props as any)}
     >
         <g transform='rotate(90 50 50)'>
             <animateTransform

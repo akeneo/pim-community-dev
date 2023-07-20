@@ -14,5 +14,6 @@ services:
       - 'upload_files'
       - '@event_dispatcher'
       - '@akeneo_batch.job_repository'
-      - '@akeneo_batch.job.job_registry'
       - '@Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage\TransferFilesToStorageHandler'
+      - '@pim_connector.archiver.file_writer_archiver'
+

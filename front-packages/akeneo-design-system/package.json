@@ -22,8 +22,8 @@
   "author": "akeneo",
   "license": "OSL-3.0",
   "peerDependencies": {
-    "react": "^16.14.0",
-    "react-dom": "^16.9.12",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "styled-components": "^5.1.11"
   },
   "dependencies": {
@@ -51,8 +51,8 @@
     "@types/jest-environment-puppeteer": "^4.3.2",
     "@types/jest-image-snapshot": "^3.1.0",
     "@types/puppeteer": "^3.0.1",
-    "@types/react": "^16.14.0",
-    "@types/react-dom": "^16.9.12",
+    "@types/react": "^17.0.2",
+    "@types/react-dom": "^17.0.2",
     "@types/react-draft-wysiwyg": "^1.12.13",
     "@types/styled-components": "^5.1.1",
     "@types/testing-library__jest-dom": "^5.9.2",

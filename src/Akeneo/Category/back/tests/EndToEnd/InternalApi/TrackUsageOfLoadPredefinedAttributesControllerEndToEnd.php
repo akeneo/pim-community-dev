@@ -25,7 +25,6 @@ class TrackUsageOfLoadPredefinedAttributesControllerEndToEnd extends ControllerI
     protected function setUp(): void
     {
         parent::setUp();
-        $this->get('feature_flags')->enable('category_template_customization');
         $this->logAs('julia');
 
         $this->createTemplate();

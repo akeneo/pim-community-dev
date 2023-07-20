@@ -59,7 +59,6 @@ class ReorderTemplateAttributesControllerEndToEnd extends ControllerIntegrationT
         $this->categoryTreeTemplateSaver = $this->get(CategoryTreeTemplateSaver::class);
         $this->categoryTemplateAttributeSaver = $this->get(CategoryTemplateAttributeSaver::class);
 
-        $this->get('feature_flags')->enable('category_template_customization');
         $this->logAs('julia');
 
         $this->createTemplate();
