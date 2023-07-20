@@ -26,8 +26,9 @@ $rules = [
             'Akeneo\Platform\Installer\Application',
             'Akeneo\Platform\Installer\Domain',
 
-            'Akeneo\Platform\Installer\Infrastructure\Event',
+            'Akeneo\Platform\Installer\Infrastructure',
             'Akeneo\Platform\Job\ServiceApi',
+            'Akeneo\Platform\Requirements',
             'Akeneo\Tool',
             'Doctrine\DBAL\Connection',
             'Doctrine\DBAL\Schema\AbstractAsset',
@@ -35,6 +36,10 @@ $rules = [
             'Symfony\Component',
             'Webmozart\Assert\Assert',
             'Oro\Bundle\SecurityBundle\SecurityFacade',
+            'Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model',
+            'Doctrine\DBAL\Exception',
+            'Psr\Log\LoggerInterface',
+            'Doctrine\ORM\EntityManagerInterface',
         ],
     )->in('Akeneo\Platform\Installer\Infrastructure'),
 ];
