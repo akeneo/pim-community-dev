@@ -12,7 +12,7 @@ class LaunchJobInstanceCommand
 {
     public function __construct(
         public string $code,
-        public File $file,
+        public ?File $file = null,
     ) {
     }
 }
