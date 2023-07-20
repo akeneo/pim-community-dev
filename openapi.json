@@ -270,6 +270,17 @@
                     }
                 ]
             },
+            "Locale": {
+                "properties": {
+                    "code": {
+                        "type": "string"
+                    },
+                    "enabled": {
+                        "type": "boolean"
+                    }
+                },
+                "type": "object"
+            },
             "Product": {
                 "properties": {
                     "identifier": {
