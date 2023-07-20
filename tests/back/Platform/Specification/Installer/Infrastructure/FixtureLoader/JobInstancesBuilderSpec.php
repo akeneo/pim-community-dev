@@ -1,6 +1,6 @@
 <?php
 
-namespace Specification\Akeneo\Platform\Installer\FixtureLoader;
+namespace Specification\Akeneo\Platform\Installer\Infrastructure\FixtureLoader;
 
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use PhpSpec\ObjectBehavior;

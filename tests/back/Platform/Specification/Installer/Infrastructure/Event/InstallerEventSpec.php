@@ -1,6 +1,6 @@
 <?php
 
-namespace Specification\Akeneo\Platform\Installer\Event;
+namespace Specification\Akeneo\Platform\Installer\Infrastructure\Event;
 
 use Akeneo\Platform\Installer\Infrastructure\Event\InstallerEvent;
 use Akeneo\Tool\Component\Console\CommandExecutor;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Specification\Akeneo\Platform\Installer\FixtureLoader;
+namespace Specification\Akeneo\Platform\Installer\Infrastructure\FixtureLoader;
 
 use Akeneo\Platform\Bundle\DashboardBundle\PimDashboardBundle;
 use Akeneo\Platform\Installer\Infrastructure\Symfony\AkeneoInstallerBundle;
