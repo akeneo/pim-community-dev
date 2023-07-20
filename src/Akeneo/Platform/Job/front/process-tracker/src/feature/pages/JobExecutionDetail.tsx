@@ -99,7 +99,11 @@ const JobExecutionDetail = ({jobExecutionId}: JobExecutionDetailProps) => {
   const downloadArchiveLinkIsVisible = canDownloadArchive(security, jobExecution) && 0 < downloadArchiveLinks.length;
   const downloadZipArchive = jobExecution?.meta?.generateZipArchive ?? false;
 
-  const downloadArchiveTitle = translate('pim_enrich.entity.job_execution.module.download.output', {}, downloadArchiveLinks.length);
+  const downloadArchiveTitle = translate(
+    'pim_enrich.entity.job_execution.module.download.output',
+    {},
+    downloadArchiveLinks.length
+  );
   const showProfileIsVisible = jobTypeWithProfile.includes(jobExecution?.jobInstance.type || '');
 
   const dashboardHref = useRoute('pim_dashboard_index');
