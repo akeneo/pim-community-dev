@@ -49,6 +49,7 @@ class RunMessageProcess
             $env['APP_TENANT_ID'] = $tenantId;
         }
 
+        $startTime = time();
         try {
             $process = new Process([
                 'php',
@@ -69,6 +70,10 @@ class RunMessageProcess
 
             throw $t;
         }
+
+        $this->logger->notice('Message is handled', [
+            'duration_time_in_secs' => time() - $startTime,
+        ]);
 
         if (0 !== $exitCode) {
             throw new \RuntimeException(\sprintf('An error occurred, exit code: %d', $exitCode));
