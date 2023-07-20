@@ -16,7 +16,7 @@ class InstallerEvent extends GenericEvent
      * @param array<mixed> $arguments
      */
     public function __construct(
-        protected ?\Akeneo\Tool\Component\Console\CommandExecutor $commandExecutor = null,
+        protected ?CommandExecutor $commandExecutor = null,
         ?string $subject = null,
         array $arguments = [],
     ) {
