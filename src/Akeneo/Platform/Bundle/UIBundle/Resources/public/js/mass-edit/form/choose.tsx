@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
-import BaseView from "../../view/base";
+import BaseView from '../../view/base';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
-import {ChooseApp} from "./ChooseApp";
+import {ChooseApp} from './ChooseApp';
 
 const __ = require('oro/translator');
 const analytics = require('pim/analytics');
@@ -14,10 +14,10 @@ const analytics = require('pim/analytics');
  * @see src/Akeneo/Platform/Bundle/UIBundle/Resources/public/js/mass-edit/form/form.js
  */
 type MassEditForm = BaseView & {
-  getOperations: () => {code: string, label: string, icon: string}[];
+  getOperations: () => {code: string; label: string; icon: string}[];
   getCurrentOperation: () => string | undefined;
   setCurrentOperation: (code: string) => void;
-}
+};
 
 class Choose extends BaseView {
   private config: any;
@@ -35,11 +35,7 @@ class Choose extends BaseView {
     ReactDOM.render(
       <DependenciesProvider>
         <ThemeProvider theme={pimTheme}>
-          <ChooseApp
-            operations={operations}
-            selectedOperationCode={currentOperationCode}
-            onChange={update}
-          />
+          <ChooseApp operations={operations} selectedOperationCode={currentOperationCode} onChange={update} />
         </ThemeProvider>
       </DependenciesProvider>,
       this.el
@@ -101,6 +97,6 @@ class Choose extends BaseView {
   protected getIllustrationClass() {
     return '';
   }
-};
+}
 
 export = Choose;
