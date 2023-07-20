@@ -274,6 +274,7 @@ services:
     pim_catalog.query.elasticsearch.filter.label_or_identifier:
         class: '%pim_catalog.query.elasticsearch.filter.label_or_identifier.class%'
         arguments:
+            - '@akeneo.pim.structure.query.get_attributes'
             - [ 'label_or_identifier' ]
             - [ 'CONTAINS' ]
             - [ 'product_' ]
