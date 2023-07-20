@@ -8,7 +8,7 @@ PHP_EXEC ?= $(DOCKER_COMPOSE) exec -u www-data httpd php
 
 .PHONY: generate-doc
 generate-doc:
-	$(PHP_RUN) vendor/bin/openapi src/Akeneo -o openapi.json -e src/Akeneo/Platform/Bundle/UIBundle/Twig/Node
+	$(PHP_RUN) vendor/bin/openapi src/Akeneo/Pim/Enrichment/Bundle/Controller/ExternalApi/ProductController.php src/Akeneo/Category/back/Infrastructure/Controller/ExternalApi/CategoryController.php src/Akeneo/Pim/Enrichment/Product/back/Domain/Model/ProductIdentifier.php src/Akeneo/Tool/Bundle/ApiBundle/Documentation.php src/Akeneo/Tool/Bundle/ApiBundle/Models src/Akeneo/Channel/back/Infrastructure/Controller/ExternalApi -o openapi.json
 
 .PHONY: help
 help:
