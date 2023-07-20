@@ -14,7 +14,7 @@ use OpenApi\Attributes as OA;
 #[OA\Info(
     version: '1.0.0',
     description: 'The Akeneo REST API brought to you!\n\nFind out how this Postman collection works by visiting https://api.akeneo.com',
-    title: 'Official Akeneo PIM REST API Serenity',
+    title: 'Workshop Doc as you code - First proposition',
 )]
 #[OA\OpenApi(
     x: [
