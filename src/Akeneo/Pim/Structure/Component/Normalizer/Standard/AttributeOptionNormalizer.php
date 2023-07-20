@@ -65,7 +65,7 @@ class AttributeOptionNormalizer implements NormalizerInterface, CacheableSupport
         foreach ($attributeOption->getOptionValues() as $translation) {
             if (empty($locales) || in_array($translation->getLocale(), $locales)) {
                 $locale = $this->localeRepository->findOneByIdentifier($translation->getLocale());
-                if (null === $locale || !$locale->isActivated()) {
+                if (null === $locale || !$locale->isActivated() || null === $translation->getValue()) {
                     continue;
                 }
 

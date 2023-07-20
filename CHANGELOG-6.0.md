@@ -1,5 +1,7 @@
 # 6.0.x
 
+- [Backport PIM-10844] PIM-11106 : Filter empty attribute option labels
+
 # 6.0.94 (2023-07-31)
 
 # 6.0.93 (2023-07-24)
