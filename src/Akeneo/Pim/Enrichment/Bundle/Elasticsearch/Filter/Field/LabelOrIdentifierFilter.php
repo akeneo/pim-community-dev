@@ -5,6 +5,9 @@ namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterHelper;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 
 /**
  * Label or identifier filter for an Elasticsearch query
@@ -17,6 +20,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 class LabelOrIdentifierFilter extends AbstractFieldFilter
 {
     public function __construct(
+        private readonly GetAttributes $getAttributes,
         array $supportedFields = [],
         array $supportedOperators = [],
         private readonly array $idPrefixes = [],
@@ -41,6 +45,24 @@ class LabelOrIdentifierFilter extends AbstractFieldFilter
         }
 
         $this->checkValue($operator, $value);
+
+        $identifierAttributeFields = \array_map(
+            static fn (AttributeInterface $attributeFromList): string =>
+                \sprintf(
+                    'values.%s-%s.<all_channels>.<all_locales>',
+                    $attributeFromList->getCode(),
+                    AttributeTypes::BACKEND_TYPE_TEXT
+                ),
+            $this->getAttributes->forType(AttributeTypes::IDENTIFIER)
+        );
+
+        foreach ($identifierAttributeFields as $identifierAttributeField) {
+            $clauses[] = [
+                'wildcard' => [
+                    $identifierAttributeField => sprintf('*%s*', $this->escapeValue($value)),
+                ]
+            ];
+        }
 
         $clauses[] = [
             'wildcard' => [
