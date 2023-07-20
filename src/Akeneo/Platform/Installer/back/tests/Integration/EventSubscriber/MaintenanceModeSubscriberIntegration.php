@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Installer\Test\Integration\EventSubscriber;
 
-use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Akeneo\Test\Integration\Configuration;
@@ -32,6 +31,7 @@ class MaintenanceModeSubscriberIntegration extends TestCase
     public function test_it_enables_maintenance_mode_before_resseting(): void
     {
         $this->disableMaintenanceMode();
+        $this->assertMaintenanceModeIsDisabled();
         $this->eventDispatcher->dispatch(new InstallerEvent(), InstallerEvents::PRE_RESET_INSTANCE);
         $this->assertMaintenanceModeIsEnabled();
     }
@@ -39,6 +39,7 @@ class MaintenanceModeSubscriberIntegration extends TestCase
     public function test_it_disables_maintenance_mode_after_resseting(): void
     {
         $this->enableMaintenanceMode();
+        $this->assertMaintenanceModeIsEnabled();
         $this->eventDispatcher->dispatch(new InstallerEvent(), InstallerEvents::POST_RESET_INSTANCE);
         $this->assertMaintenanceModeIsDisabled();
     }

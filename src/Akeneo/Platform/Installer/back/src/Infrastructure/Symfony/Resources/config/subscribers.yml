@@ -1,8 +1,6 @@
 services:
   Akeneo\Platform\Installer\Infrastructure\EventSubscriber\MaintenanceModeSubscriber:
     arguments:
-#      - '@akeneo.feature_flag.service.only_growth_and_serenity_sandbox_feature'
-      - '@Akeneo\Platform\Installer\Application\IsMaintenanceModeEnabled\IsMaintenanceModeEnabledHandler'
       - '@Akeneo\Platform\Installer\Application\UpdateMaintenanceMode\UpdateMaintenanceModeHandler'
     tags:
       - { name: 'kernel.event_subscriber' }
