@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Installer\Test\Acceptance\UseCases\ResetInstance;
 
-use Akeneo\Platform\Installer\Application\ResetInstance\EnableMaintenanceMode;
 use Akeneo\Platform\Installer\Application\ResetInstance\ResetInstanceCommand;
+use Akeneo\Platform\Installer\Application\ResetInstance\ResetInstanceHandler;
 use Akeneo\Platform\Installer\Test\Acceptance\FakeServices\FakeDatabasePurger;
 use Akeneo\Platform\Installer\Test\Acceptance\FakeServices\FakeFixturesInstaller;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -72,8 +72,8 @@ class ResetInstanceTest extends KernelTestCase
         return self::getContainer()->get('Akeneo\Platform\Installer\Infrastructure\FixtureInstaller\MinimalFixtureInstaller');
     }
 
-    private function getHandler(): EnableMaintenanceMode
+    private function getHandler(): ResetInstanceHandler
     {
-        return self::getContainer()->get('EnableMaintenanceMode');
+        return self::getContainer()->get('Akeneo\Platform\Installer\Application\ResetInstance\ResetInstanceHandler');
     }
 }
