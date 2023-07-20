@@ -43,7 +43,7 @@ final class LaunchProductAndProductModelEvaluationsHandler
             $this->evaluateProductModels($message);
         }
 
-        $this->logger->notice('DQI message is handled', [
+        $this->logger->notice('LaunchProductAndProductModelEvaluationsMessage is handled', [
             'duration_time_in_secs' => time() - $startTime,
             'count_products' => $message->productUuids->count(),
             'count_product_models' => $message->productModelIds->count(),
