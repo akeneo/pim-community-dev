@@ -27,5 +27,5 @@ export const Helper = ({children, illustrationUrl = defaultIllustrationUrl}: Pro
 };
 
 export const HelperLink = (props: DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>) => (
-    <a {...props} className='AknDescriptionHeader-link' />
+    <a {...(props as any)} className='AknDescriptionHeader-link' />
 );

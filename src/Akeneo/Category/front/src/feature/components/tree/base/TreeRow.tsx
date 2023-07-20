@@ -112,7 +112,7 @@ const ArrowButton = styled.button`
   }
 `;
 
-const TreeArrowIcon = styled(ArrowRightIcon)<{$isFolderOpen: boolean} & AkeneoThemedProps>`
+const TreeArrowIcon: any = styled(ArrowRightIcon)<{$isFolderOpen: boolean} & AkeneoThemedProps>`
   transform: rotate(${({$isFolderOpen}) => ($isFolderOpen ? '90' : '0')}deg);
   transition: transform 0.2s ease-out;
   vertical-align: middle;

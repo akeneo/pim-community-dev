@@ -326,13 +326,13 @@ JSON;
 
         $data =
             <<<JSON
-    {
-        "code": "test_unknown_locale",
-        "labels": {
-            "foo": "label"
-         }
-    }
-JSON;
+            {
+                "code": "test_unknown_locale",
+                "labels": {
+                    "zz_ZZ": "label"
+                 }
+            }
+        JSON;
 
         $expectedContent = [
             'code' => 422,
@@ -340,7 +340,7 @@ JSON;
             'errors' => [
                 [
                     'property' => 'labels',
-                    'message' => 'The locale "foo" does not exist.',
+                    'message' => 'The locale "zz_ZZ" does not exist.',
                 ],
             ],
         ];

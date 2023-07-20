@@ -14,7 +14,7 @@ export const ToggleButton = forwardRef((props: InputProps, ref: Ref<HTMLInputEle
                 <input
                     type='checkbox'
                     ref={ref}
-                    {...props}
+                    {...(props as any)}
                     id={props.id || props.name}
                     onChange={event => setChecked(event.target.checked)}
                 />
