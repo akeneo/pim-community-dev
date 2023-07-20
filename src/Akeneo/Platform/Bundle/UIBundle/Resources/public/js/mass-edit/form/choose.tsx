@@ -9,6 +9,16 @@ import {ChooseApp} from "./ChooseApp";
 const __ = require('oro/translator');
 const analytics = require('pim/analytics');
 
+/**
+ * MassEditForm is always a mass edit form backbone component
+ * @see src/Akeneo/Platform/Bundle/UIBundle/Resources/public/js/mass-edit/form/form.js
+ */
+type MassEditForm = BaseView & {
+  getOperations: () => {code: string, label: string, icon: string}[];
+  getCurrentOperation: () => string | undefined;
+  setCurrentOperation: (code: string) => void;
+}
+
 class Choose extends BaseView {
   private config: any;
 
@@ -18,8 +28,8 @@ class Choose extends BaseView {
   }
 
   public render() {
-    const operations = this.getParent().getOperations();
-    const currentOperationCode = this.getParent().getCurrentOperation();
+    const operations = (this.getParent() as MassEditForm).getOperations();
+    const currentOperationCode = (this.getParent() as MassEditForm).getCurrentOperation();
     const update = this.updateOperation.bind(this);
 
     ReactDOM.render(
@@ -45,7 +55,7 @@ class Choose extends BaseView {
   }
 
   private updateOperation(code: string) {
-    this.getParent().setCurrentOperation(code);
+    (this.getParent() as MassEditForm).setCurrentOperation(code);
 
     analytics.appcuesTrack('grid:mass-edit:item-chosen', {
       code: code,
