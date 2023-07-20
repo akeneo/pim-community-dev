@@ -8,7 +8,9 @@ import {
   useNotify,
   useTranslate,
   useRoute,
+  useTranslateWithComponents,
 } from '@akeneo-pim-community/shared';
+const FetcherRegistry = require('pim/fetcher-registry');
 
 const SpacedHelper = styled(Helper)`
   margin: 10px 0 20px;
@@ -18,6 +20,17 @@ const Highlight = styled.span`
   color: ${getColor('brand', 100)};
   font-weight: bold;
 `;
+
+const useMainIdentifierCode = () => {
+  const [mainIdentifierCode, setMainIdentifierCode] = useState<string | undefined>(undefined);
+  useEffect(() => {
+    FetcherRegistry.getFetcher('attribute')
+      .getIdentifierAttribute()
+      .then((mainIdentifierAttribute: {code: string}) => setMainIdentifierCode(mainIdentifierAttribute.code));
+  });
+
+  return mainIdentifierCode;
+};
 
 const useImpactedItemCount = (attributeCode: string) => {
   const [productCount, setProductCount] = useState<number>(0);
@@ -50,12 +63,15 @@ type DeleteModalProps = {
 
 const DeleteModal = ({onCancel, onSuccess, attributeCode}: DeleteModalProps) => {
   const translate = useTranslate();
+  const translateWithComponents = useTranslateWithComponents();
   const notify = useNotify();
   const removeRoute = useRoute('pim_enrich_attribute_rest_remove', {code: attributeCode});
   const [productCount, productModelCount] = useImpactedItemCount(attributeCode);
+  const mainIdentifierCode = useMainIdentifierCode();
   const [attributeCodeConfirm, setAttributeCodeConfirm] = useState<string>('');
   const [isLoading, setLoading] = useState<boolean>(false);
   const isValid = attributeCodeConfirm === attributeCode;
+  const isMainIdentifier = mainIdentifierCode === attributeCode;
 
   const handleConfirm = async () => {
     if (!isValid || isLoading) return;
@@ -110,28 +126,45 @@ const DeleteModal = ({onCancel, onSuccess, attributeCode}: DeleteModalProps) => 
       onCancel={onCancel}
       canConfirmDelete={isValid}
     >
-      {translate('pim_enrich.entity.attribute.module.delete.confirm')}
-      {(0 < productCount || 0 < productModelCount) && (
-        <p>
-          {translate('pim_enrich.entity.attribute.module.delete.attribute_removal')}{' '}
-          <Highlight>{impactedItemsText}</Highlight>{' '}
-          {translate('pim_enrich.entity.attribute.module.delete.used', {}, productCount + productModelCount)}
-        </p>
+      {isMainIdentifier ? (
+        <Helper level="error">
+          {translateWithComponents('pim_enrich.entity.attribute.module.delete.cannot_delete', {
+            link: innerText => (
+              <Link
+                href="https://help.akeneo.com/en_US/serenity-build-your-catalog/33-serenity-manage-your-product-identifiers"
+                target="_blank"
+              >
+                {innerText}
+              </Link>
+            ),
+          })}
+        </Helper>
+      ) : (
+        <>
+          {translate('pim_enrich.entity.attribute.module.delete.confirm')}
+          {(0 < productCount || 0 < productModelCount) && (
+            <p>
+              {translate('pim_enrich.entity.attribute.module.delete.attribute_removal')}{' '}
+              <Highlight>{impactedItemsText}</Highlight>{' '}
+              {translate('pim_enrich.entity.attribute.module.delete.used', {}, productCount + productModelCount)}
+            </p>
+          )}
+          <SpacedHelper>
+            {translate('pim_enrich.entity.attribute.module.delete.helper.content')}{' '}
+            <Link href="https://help.akeneo.com/pim/serenity/articles/manage-your-attributes.html#delete-an-attribute-and-keep-the-related-data">
+              {translate('pim_enrich.entity.attribute.module.delete.helper.link')}
+            </Link>
+          </SpacedHelper>
+          <Field label={translate('pim_enrich.entity.attribute.module.delete.type', {attributeCode})}>
+            <TextInput
+              readOnly={isLoading}
+              value={attributeCodeConfirm}
+              onChange={setAttributeCodeConfirm}
+              onSubmit={handleConfirm}
+            />
+          </Field>
+        </>
       )}
-      <SpacedHelper>
-        {translate('pim_enrich.entity.attribute.module.delete.helper.content')}{' '}
-        <Link href="https://help.akeneo.com/pim/serenity/articles/manage-your-attributes.html#delete-an-attribute-and-keep-the-related-data">
-          {translate('pim_enrich.entity.attribute.module.delete.helper.link')}
-        </Link>
-      </SpacedHelper>
-      <Field label={translate('pim_enrich.entity.attribute.module.delete.type', {attributeCode})}>
-        <TextInput
-          readOnly={isLoading}
-          value={attributeCodeConfirm}
-          onChange={setAttributeCodeConfirm}
-          onSubmit={handleConfirm}
-        />
-      </Field>
     </BaseDeleteModal>
   );
 };

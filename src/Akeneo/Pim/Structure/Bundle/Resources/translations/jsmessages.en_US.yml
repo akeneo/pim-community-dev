@@ -288,6 +288,7 @@ pim_enrich.entity.attribute:
             confirm_from_family: Are you sure you want to delete this attribute from the family?
             confirm_from_group: Are you sure you want to remove the attribute {{ attribute }} from this attribute group?
             confirm_from_product: Are you sure you want to delete this attribute from the product?
+            cannot_delete: The main identifier cannot be deleted. To delete this attribute, you must first set another identifier attribute as the main identifier. <link>Learn more in the help center.</link>
         mass_delete:
             modal:
                 title: Attributes
