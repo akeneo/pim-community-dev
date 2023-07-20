@@ -22,7 +22,7 @@ final class IsMaintenanceModeEnabledAction
     ) {
     }
 
-    public function __invoke(Request $request): JsonResponse
+    public function __invoke(Request $request): RedirectResponse|JsonResponse
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
