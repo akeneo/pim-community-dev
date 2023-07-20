@@ -84,6 +84,7 @@ const ChooseApp: FC<TilesWithReactProps> = ({operations, selectedOperationCode, 
           icon={getIcon(operation.icon)}
           onClick={() => handleChange(operation.code)}
           selected={currentOperationCode === operation.code}
+          className="operation"
         >
           {operation.label}
           {operation.code === 'publish' && (
