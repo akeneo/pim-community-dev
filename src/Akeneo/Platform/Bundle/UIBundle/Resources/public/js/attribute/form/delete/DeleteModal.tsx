@@ -2,15 +2,15 @@ import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import {Field, getColor, Helper, Link, TextInput} from 'akeneo-design-system';
 import {
-  useIsMounted,
   DeleteModal as BaseDeleteModal,
   NotificationLevel,
+  useIsMounted,
   useNotify,
-  useTranslate,
   useRoute,
+  useTranslate,
   useTranslateWithComponents,
 } from '@akeneo-pim-community/shared';
-const FetcherRegistry = require('pim/fetcher-registry');
+import {useMainIdentifierCode} from '../hooks';
 
 const SpacedHelper = styled(Helper)`
   margin: 10px 0 20px;
@@ -20,17 +20,6 @@ const Highlight = styled.span`
   color: ${getColor('brand', 100)};
   font-weight: bold;
 `;
-
-const useMainIdentifierCode = () => {
-  const [mainIdentifierCode, setMainIdentifierCode] = useState<string | undefined>(undefined);
-  useEffect(() => {
-    FetcherRegistry.getFetcher('attribute')
-      .getIdentifierAttribute()
-      .then((mainIdentifierAttribute: {code: string}) => setMainIdentifierCode(mainIdentifierAttribute.code));
-  });
-
-  return mainIdentifierCode;
-};
 
 const useImpactedItemCount = (attributeCode: string) => {
   const [productCount, setProductCount] = useState<number>(0);
@@ -129,7 +118,7 @@ const DeleteModal = ({onCancel, onSuccess, attributeCode}: DeleteModalProps) => 
       {isMainIdentifier ? (
         <Helper level="error">
           {translateWithComponents('pim_enrich.entity.attribute.module.delete.cannot_delete', {
-            link: innerText => (
+            link: /* istanbul ignore next */ innerText => (
               <Link
                 href="https://help.akeneo.com/en_US/serenity-build-your-catalog/33-serenity-manage-your-product-identifiers"
                 target="_blank"
