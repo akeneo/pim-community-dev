@@ -101,19 +101,6 @@ const Page: FC = () => {
             </Field>
             <Field>
               <Checkbox
-                checked={configuration.features.category_template_customization}
-                onClick={() =>
-                  changeFeature(
-                    'category_template_customization',
-                    !configuration.features.category_template_customization
-                  )
-                }
-              >
-                Enriched Categories: Customize Template
-              </Checkbox>
-            </Field>
-            <Field>
-              <Checkbox
                 checked={configuration.features.category_update_template_attribute}
                 onClick={() =>
                   changeFeature(

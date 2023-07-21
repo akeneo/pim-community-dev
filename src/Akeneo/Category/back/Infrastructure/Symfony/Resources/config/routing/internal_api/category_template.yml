@@ -40,7 +40,6 @@ pim_category_template_rest_add_attribute:
     path: /rest/{templateUuid}/attribute
     defaults:
         _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\AddAttributeController
-        _feature: category_template_customization
     methods: [POST]
 
 pim_category_template_rest_update_attribute:
@@ -54,12 +53,10 @@ pim_category_template_rest_delete_attribute:
     path: /rest/{templateUuid}/attribute/{attributeUuid}
     defaults:
         _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\DeactivateAttributeController
-        _feature: category_template_customization
     methods: [DELETE]
 
 pim_category_template_track_usage_of_load_predefined_attributes:
     path: /rest/{templateUuid}/track_usage_of_load_predefined_attributes
     defaults:
         _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\TrackUsageOfLoadPredefinedAttributesController
-        _feature: category_template_customization
     methods: [POST]

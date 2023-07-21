@@ -24,14 +24,14 @@ class LaunchJobInstanceHandler implements LaunchJobInstanceHandlerInterface
         $code = $launchJobInstanceCommand->code;
         $file = $launchJobInstanceCommand->file;
 
-        $filePath = $this->jobFileStorer->store($code, $file->getFileName(), $file->getResource());
-        $jobConfig = [
-            'storage' => [
+        $jobConfig = ['is_user_authenticated' => true];
+        if (null !== $file) {
+            $filePath = $this->jobFileStorer->store($code, $file->getFileName(), $file->getResource());
+            $jobConfig['storage'] = [
                 'type' => ManualUploadStorage::TYPE,
                 'file_path' => $filePath,
-            ],
-            'is_user_authenticated' => true,
-        ];
+            ];
+        }
 
         $username = $this->tokenStorage->getToken()?->getUser()?->getUserIdentifier();
 

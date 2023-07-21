@@ -1,4 +1,4 @@
-import {useFeatureFlags, useTranslate, userContext} from '@akeneo-pim-community/shared';
+import {useTranslate, userContext} from '@akeneo-pim-community/shared';
 import {Button, Pill, SectionTitle, Table, useBooleanState} from 'akeneo-design-system';
 import {useMemo} from 'react';
 import styled from 'styled-components';
@@ -27,7 +27,6 @@ type Props = {
 export const AttributeList = ({attributes, selectedAttribute, templateId, onAttributeSelection}: Props) => {
   const translate = useTranslate();
   const catalogLocale = userContext.get('catalogLocale');
-  const featureFlags = useFeatureFlags();
   const attributeFormHasErrors = useAttributeFormHasErrors();
   const mutation = useReorderAttributes();
   const queryClient = useQueryClient();
@@ -67,11 +66,9 @@ export const AttributeList = ({attributes, selectedAttribute, templateId, onAttr
     <AttributeListContainer>
       <SectionTitle sticky={0}>
         <SectionTitle.Title>{translate('akeneo.category.attributes')}</SectionTitle.Title>
-        {featureFlags.isEnabled('category_template_customization') && (
           <AddAttributeButton ghost size="small" level="tertiary" onClick={openAddTemplateAttributeModal}>
             {translate('akeneo.category.template.add_attribute.add_button')}
           </AddAttributeButton>
-        )}
       </SectionTitle>
       <ScrollablePanel>
         <Table isDragAndDroppable={true} onReorder={handleReorder}>
