@@ -71,9 +71,9 @@ class RunMessageProcess
             throw $t;
         }
 
-        $this->logger->info('Message is handled', [
+        $this->logger->info('Message is handled', \array_merge($context, [
             'duration_time_in_secs' => time() - $startTime,
-        ]);
+        ]));
 
         if (0 !== $exitCode) {
             throw new \RuntimeException(\sprintf('An error occurred, exit code: %d', $exitCode));
