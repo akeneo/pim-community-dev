@@ -99,11 +99,6 @@ const JobExecutionDetail = ({jobExecutionId}: JobExecutionDetailProps) => {
   const downloadArchiveLinkIsVisible = canDownloadArchive(security, jobExecution) && 0 < downloadArchiveLinks.length;
   const downloadZipArchive = jobExecution?.meta?.generateZipArchive ?? false;
 
-  const downloadArchiveTitle = translate(
-    'pim_enrich.entity.job_execution.module.download.output',
-    {},
-    downloadArchiveLinks.length
-  );
   const showProfileIsVisible = jobTypeWithProfile.includes(jobExecution?.jobInstance.type || '');
 
   const dashboardHref = useRoute('pim_dashboard_index');
@@ -196,17 +191,27 @@ const JobExecutionDetail = ({jobExecutionId}: JobExecutionDetailProps) => {
                   key: downloadArchiveLinks[0].key,
                 })}
               >
-                {translate(downloadArchiveLinks[0].label, {}, downloadArchiveLinks.length)}
+                {translate(downloadArchiveLinks[0].label)}
               </Button>
             ) : (
               <Dropdown>
                 <Button level="secondary" data-toggle="dropdown" onClick={openDownloadDropdown}>
-                  {downloadArchiveTitle}
+                  {translate(
+                    'pim_enrich.entity.job_execution.module.download.dropdown_title',
+                    {},
+                    downloadArchiveLinks.length
+                  )}
                 </Button>
                 {downloadDropdownIsOpen && (
                   <Dropdown.Overlay onClose={closeDownloadDropdown}>
                     <Dropdown.Header>
-                      <Dropdown.Title>{downloadArchiveTitle}</Dropdown.Title>
+                      <Dropdown.Title>
+                        {translate(
+                          'pim_enrich.entity.job_execution.module.download.dropdown_title',
+                          {},
+                          downloadArchiveLinks.length
+                        )}
+                      </Dropdown.Title>
                     </Dropdown.Header>
                     <Dropdown.ItemCollection>
                       {downloadArchiveLinks.map((link, index) => (
@@ -218,7 +223,7 @@ const JobExecutionDetail = ({jobExecutionId}: JobExecutionDetailProps) => {
                               key: link.key,
                             })}
                           >
-                            {translate(link.label, {}, downloadArchiveLinks.length)}
+                            {translate(link.label)}
                           </Link>
                         </Dropdown.Item>
                       ))}
