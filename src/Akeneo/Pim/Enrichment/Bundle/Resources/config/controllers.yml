@@ -382,6 +382,7 @@ services:
             - '@pim_enrich.guesser.file_type'
             - '@pim_enrich.provider.default_image'
             - ['catalogStorage', 'categoryStorage']
+            - '%supported_image_types%'
 
     pim_enrich.controller.product_model:
         public: true

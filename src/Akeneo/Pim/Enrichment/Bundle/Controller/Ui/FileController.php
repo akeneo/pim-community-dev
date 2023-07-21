@@ -6,10 +6,14 @@ use Akeneo\Pim\Enrichment\Bundle\File\DefaultImageProviderInterface;
 use Akeneo\Pim\Enrichment\Bundle\File\FileTypeGuesserInterface;
 use Akeneo\Pim\Enrichment\Bundle\File\FileTypes;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\StreamedFileResponse;
+use League\MimeTypeDetection\FinfoMimeTypeDetector;
 use Liip\ImagineBundle\Controller\ImagineController;
 use Liip\ImagineBundle\Exception\LogicException;
+use Liip\ImagineBundle\Imagine\Cache\Helper\PathHelper;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,27 +31,15 @@ class FileController
     const DEFAULT_IMAGE_KEY = '__default_image__';
     const SVG_MIME_TYPES = ['image/svg', 'image/svg+xml'];
 
-    protected ImagineController $imagineController;
-    protected FilesystemProvider $filesystemProvider;
-    protected FileInfoRepositoryInterface $fileInfoRepository;
-    protected FileTypeGuesserInterface $fileTypeGuesser;
-    protected DefaultImageProviderInterface $defaultImageProvider;
-    protected array $filesystemAliases;
-
     public function __construct(
-        ImagineController $imagineController,
-        FilesystemProvider $filesystemProvider,
-        FileInfoRepositoryInterface $fileInfoRepository,
-        FileTypeGuesserInterface $fileTypeGuesser,
-        DefaultImageProviderInterface $defaultImageProvider,
-        array $filesystemAliases
+        protected ImagineController $imagineController,
+        protected FilesystemProvider $filesystemProvider,
+        protected FileInfoRepositoryInterface $fileInfoRepository,
+        protected FileTypeGuesserInterface $fileTypeGuesser,
+        protected DefaultImageProviderInterface $defaultImageProvider,
+        protected array $filesystemAliases,
+        protected array $supportedImageTypes,
     ) {
-        $this->imagineController = $imagineController;
-        $this->filesystemProvider = $filesystemProvider;
-        $this->fileInfoRepository = $fileInfoRepository;
-        $this->fileTypeGuesser = $fileTypeGuesser;
-        $this->defaultImageProvider = $defaultImageProvider;
-        $this->filesystemAliases = $filesystemAliases;
     }
 
     public function showAction(Request $request, string $filename, ?string $filter = null): Response
@@ -108,6 +100,15 @@ class FileController
      */
     public function cacheAction(Request $request, $path, $filter)
     {
+        $filename = urldecode($path);
+
+        /** @var FileInfoInterface $fileInfo */
+        $fileInfo = $this->fileInfoRepository->findOneByIdentifier($filename);
+
+        if (null === $fileInfo || !$this->isValidImage($fileInfo, $path)) {
+            return $this->renderDefaultImage(FileTypes::IMAGE, $filter);
+        }
+
         return $this->imagineController->filterAction($request, $path, $filter);
     }
 
@@ -188,5 +189,39 @@ class FileController
         }
 
         return $mimeType;
+    }
+
+    protected function isValidImage(FileInfoInterface $fileInfo, string $path): bool
+    {
+        $supportedMimeTypes = \array_merge(...\array_values($this->supportedImageTypes));
+
+        $guessedExtension = strtolower($fileInfo->getExtension() ?? '');
+        $originalExtension = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+
+        $guessedMimeType = strtolower($fileInfo->getMimeType() ?? '');
+        $detector = new FinfoMimeTypeDetector();
+        $originalMimeType = strtolower($detector->detectMimeTypeFromPath($path));
+
+        if (!array_key_exists($originalExtension, $this->supportedImageTypes)) {
+            return false;
+        }
+
+        if (!in_array($originalMimeType, $supportedMimeTypes, true)) {
+            return false;
+        }
+
+        if ($guessedExtension !== $originalExtension) {
+            return false;
+        }
+
+        if ($guessedMimeType !== $originalMimeType) {
+            return false;
+        }
+
+        if (!in_array($originalMimeType, $this->supportedImageTypes[$originalExtension], true)) {
+            return false;
+        }
+
+        return true;
     }
 }

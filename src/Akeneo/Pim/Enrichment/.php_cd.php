@@ -122,6 +122,9 @@ $rules = [
         // PIM-10259: Add support for Arabic characters in PDF export
         'ArPHP\I18N\Arabic',
 
+        // PIM-11078: Add checks on file before generating a thumbnail
+        'League\MimeTypeDetection\FinfoMimeTypeDetector',
+
         'Akeneo\Pim\Enrichment\Product\Domain\Model\ViolationCode',
         'Akeneo\Platform\Bundle\FrameworkBundle\Service\ResilientDeadlockConnection',
 

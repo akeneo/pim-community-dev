@@ -26,7 +26,7 @@ class FileStorerSpec extends ObjectBehavior
         $fileInfo->getKey()->willReturn('a/b/c/image.png');
         $fileInfo->getMimeType()->willReturn('image/png');
         $factory->createFromRawFile(Argument::type(\SplFileInfo::class), Argument::type('string'))
-                ->willReturn($fileInfo);
+            ->willReturn($fileInfo);
         $filesystemProvider->getFilesystem(Argument::type('string'))->willReturn($filesystem);
         $this->beConstructedWith($filesystemProvider, $saver, $factory);
     }
