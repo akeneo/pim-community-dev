@@ -12,12 +12,9 @@ use Ramsey\Uuid\UuidInterface;
  */
 class ProductWasUpdated
 {
-    public function __construct(private UuidInterface $productUuid)
-    {
-    }
-
-    public function productUuid(): UuidInterface
-    {
-        return $this->productUuid;
+    public function __construct(
+        public readonly UuidInterface $productUuid,
+        public readonly \DateTimeImmutable $updatedAt
+    ) {
     }
 }

@@ -13,3 +13,7 @@ services:
         arguments:
             - '@akeneo.feature_flag.service.only_enterprise_edition_feature'
             - '@feature_flags'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsUcsEventFeature:
+        arguments:
+            - '%env(default::FLAG_DATA_QUALITY_INSIGHTS_UCS_EVENT_ENABLED)%'

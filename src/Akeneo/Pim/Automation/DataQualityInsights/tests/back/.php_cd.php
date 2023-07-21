@@ -39,6 +39,7 @@ $rules = [
             'Akeneo\Pim\Automation\DataQualityInsights\Application',
 
             //Akeneo external bounded contexts :
+            'Akeneo\Pim\Enrichment\Product\API\Event',
 
             //Enrichment computing
             'Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator',

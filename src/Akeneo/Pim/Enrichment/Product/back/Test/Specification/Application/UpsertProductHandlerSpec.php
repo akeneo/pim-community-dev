@@ -20,6 +20,7 @@ use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier;
 use Akeneo\Pim\Enrichment\Product\Application\Applier\UserIntentApplier;
 use Akeneo\Pim\Enrichment\Product\Application\Applier\UserIntentApplierRegistry;
 use Akeneo\Pim\Enrichment\Product\Application\UpsertProductHandler;
+use Akeneo\Pim\Enrichment\Product\Domain\Clock;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -43,7 +44,8 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         ValidatorInterface $productValidator,
         EventDispatcherInterface $eventDispatcher,
         UserIntentApplierRegistry $applierRegistry,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        Clock $clock
     ) {
         $this->beConstructedWith(
             $validator,
@@ -53,8 +55,10 @@ class UpsertProductHandlerSpec extends ObjectBehavior
             $productValidator,
             $eventDispatcher,
             $applierRegistry,
-            $tokenStorage
+            $tokenStorage,
+            $clock
         );
+        $clock->now()->willReturn(\DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2022-02-12 10:05:24'));
     }
 
     function it_is_intializable()
@@ -85,7 +89,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         $productBuilder->createProduct('identifier1')->shouldBeCalledOnce()->willReturn($product);
         $productValidator->validate($product)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
         $productSaver->save($product)->shouldBeCalledOnce();
-        $event = new ProductWasCreated($product->getUuid());
+        $event = new ProductWasCreated($product->getUuid(), \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2022-02-12 10:05:24'));
         $eventDispatcher->dispatch($event)->shouldBeCalledOnce()->willReturn($event);
 
         $this->__invoke($command);
@@ -106,6 +110,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         $product = new Product();
         $product->setIdentifier('identifier1');
         $product->setCreated(\DateTime::createFromFormat('Y-m-d H:i:s', '2022-02-12 10:05:24'));
+        $product->setUpdated(\DateTime::createFromFormat('Y-m-d H:i:s', '2022-02-12 10:05:24'));
 
         $validator->validate($command)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
         $tokenStorage->getToken()->willReturn($token);
@@ -115,7 +120,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         $productBuilder->createProduct('identifier1')->shouldNotBeCalled();
         $productValidator->validate($product)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
         $productSaver->save($product)->shouldBeCalledOnce();
-        $event = new ProductWasUpdated($product->getUuid());
+        $event = new ProductWasUpdated($product->getUuid(), \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2022-02-12 10:05:24'));
         $eventDispatcher->dispatch($event)->shouldBeCalledOnce()->willReturn($event);
 
         $this->__invoke($command);
@@ -252,6 +257,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         $command = UpsertProductCommand::createWithIdentifier(1, ProductIdentifier::fromIdentifier('identifier1'), userIntents: [$userIntent, $setTextUserIntent]);
         $product = new Product();
         $product->setCreated(\DateTime::createFromFormat('Y-m-d H:i:s', '2022-02-12 10:05:24'));
+        $product->setUpdated(\DateTime::createFromFormat('Y-m-d H:i:s', '2022-02-12 10:05:24'));
         $product->setIdentifier('identifier1');
 
         $validator->validate($command)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
@@ -267,7 +273,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
 
         $productValidator->validate($product)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
         $productSaver->save($product)->shouldBeCalledOnce();
-        $event = new ProductWasUpdated($product->getUuid());
+        $event = new ProductWasUpdated($product->getUuid(), \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2022-02-12 10:05:24'));
         $eventDispatcher->dispatch($event)->shouldBeCalledOnce()->willReturn($event);
 
         $this->__invoke($command);
