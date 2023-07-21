@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import React, {useState} from 'react';
 import {useRouter} from '@akeneo-pim-community/shared';
 
