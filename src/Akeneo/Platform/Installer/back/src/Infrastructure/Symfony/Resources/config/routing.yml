@@ -13,7 +13,7 @@ akeneo_installer_check_reset_instance:
   methods: [ GET ]
 
 akeneo_installer_is_maintenance_mode_enabled:
-  path: /rest/is-maintenance-mode_enabled
+  path: /rest/is-maintenance-mode-enabled
   defaults:
     _controller: Akeneo\Platform\Installer\Infrastructure\Controller\IsMaintenanceModeEnabledAction
     _feature: reset_pim
