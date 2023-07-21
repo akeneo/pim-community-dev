@@ -99,7 +99,6 @@ const JobExecutionDetail = ({jobExecutionId}: JobExecutionDetailProps) => {
   const downloadArchiveLinkIsVisible = canDownloadArchive(security, jobExecution) && 0 < downloadArchiveLinks.length;
   const downloadZipArchive = jobExecution?.meta?.generateZipArchive ?? false;
 
-  const downloadArchiveTitle = translate('pim_enrich.entity.job_execution.module.download.output');
   const showProfileIsVisible = jobTypeWithProfile.includes(jobExecution?.jobInstance.type || '');
 
   const dashboardHref = useRoute('pim_dashboard_index');
@@ -197,12 +196,22 @@ const JobExecutionDetail = ({jobExecutionId}: JobExecutionDetailProps) => {
             ) : (
               <Dropdown>
                 <Button level="secondary" data-toggle="dropdown" onClick={openDownloadDropdown}>
-                  {downloadArchiveTitle}
+                  {translate(
+                    'pim_enrich.entity.job_execution.module.download.dropdown_title',
+                    {},
+                    downloadArchiveLinks.length
+                  )}
                 </Button>
                 {downloadDropdownIsOpen && (
                   <Dropdown.Overlay onClose={closeDownloadDropdown}>
                     <Dropdown.Header>
-                      <Dropdown.Title>{downloadArchiveTitle}</Dropdown.Title>
+                      <Dropdown.Title>
+                        {translate(
+                          'pim_enrich.entity.job_execution.module.download.dropdown_title',
+                          {},
+                          downloadArchiveLinks.length
+                        )}
+                      </Dropdown.Title>
                     </Dropdown.Header>
                     <Dropdown.ItemCollection>
                       {downloadArchiveLinks.map((link, index) => (

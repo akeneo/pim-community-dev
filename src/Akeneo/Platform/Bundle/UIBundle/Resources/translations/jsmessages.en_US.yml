@@ -321,9 +321,10 @@ pim_enrich.entity.job_execution:
         create:
             upload: Drop your {{ type }} file here, or click to browse disk
         download:
+            dropdown_title: "]-Inf, 1]Download generated files|]1, Inf[Download generated files"
             archive: Download generated archive
-            output: Download generated files
-            input: Download read files
+            output: Download generated file
+            input: Download read file
             invalid_xlsx: Download invalid data
             invalid_csv: Download invalid data
 
