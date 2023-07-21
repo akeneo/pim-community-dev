@@ -79,7 +79,7 @@ final class AttributesWereCreatedOrUpdated implements \IteratorAggregate
             $date = $attributeWasCreatedOrUpdated instanceof AttributeWasCreated
                 ? $attributeWasCreatedOrUpdated->createdAt
                 : $attributeWasCreatedOrUpdated->updatedAt
-                ;
+            ;
             if (null === $minDate || $minDate > $date) {
                 $minDate = $date;
             }

@@ -26,7 +26,7 @@ final class DispatchAttributesWereCreatedOrUpdatedSubscriberSpec extends ObjectB
 {
     function let(FeatureFlag $featureFlag, MessageBusInterface $messageBus, ClockInterface $clock, LoggerInterface $logger)
     {
-        $this->beConstructedWith($featureFlag, $messageBus, $clock, $logger, 'tenant', 'prod');
+        $this->beConstructedWith($featureFlag, $featureFlag, $messageBus, $clock, $logger, 'tenant', 'prod');
         $featureFlag->isEnabled()->willReturn(true);
 
         $createdAttribute = new Attribute();

@@ -93,7 +93,7 @@ class DataQualityInsightsTestCase extends TestCase
     {
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product afterward
         $command = UpsertProductCommand::createWithIdentifier(
-            $this->getAdminUserId(),
+            $this->getUserId('admin'),
             ProductIdentifier::fromIdentifier($identifier),
             $userIntents
         );
@@ -110,7 +110,7 @@ class DataQualityInsightsTestCase extends TestCase
                     'value' => $identifier,
                 ],
             ],
-        ], $this->getAdminUserId()));
+        ], $this->getUserId('admin')));
 
         $handledStamp = $envelope->last(HandledStamp::class);
         Assert::notNull($handledStamp, 'The query bus does not return any result when searching product uuid');
@@ -582,13 +582,5 @@ SQL
         }
 
         return $mainMessage.$errorMessage;
-    }
-
-    private function getAdminUserId(): int
-    {
-        $user = $this->get('pim_user.repository.user')->findOneByIdentifier('admin');
-        self::assertNotNull($user);
-
-        return $user->getId();
     }
 }
