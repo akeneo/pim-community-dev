@@ -6,7 +6,10 @@ namespace Akeneo\Test\Pim\Automation\DataQualityInsights\EndToEnd;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
@@ -19,7 +22,7 @@ final class ComputeProductScoreOnProductCreateOrUpdateEndToEnd extends Messenger
     public function test_it_computes_product_score_after_creation(): void
     {
         $uuid1 = Uuid::uuid4();
-        $this->createOrUpdateProduct($uuid1);
+        $this->upsertProduct($uuid1);
 
         self::assertFalse($this->isProductScoreComputed(ProductUuid::fromString($uuid1->toString())));
         $this->launchConsumer(self::CONSUMER_NAME);
@@ -29,13 +32,13 @@ final class ComputeProductScoreOnProductCreateOrUpdateEndToEnd extends Messenger
     public function test_it_computes_product_score_after_update(): void
     {
         $uuid1 = Uuid::uuid4();
-        $this->createOrUpdateProduct($uuid1);
+        $this->upsertProduct($uuid1);
 
         $this->productScoreComputeOnUpsertQueueStatus->flushJobQueue();
         $this->simulateOldProductScoreCompute();
         self::assertFalse($this->isProductScoreComputed(ProductUuid::fromString($uuid1->toString())));
 
-        $this->createOrUpdateProduct($uuid1);
+        $this->upsertProduct($uuid1);
         $this->launchConsumer(self::CONSUMER_NAME);
 
         self::assertTrue($this->isProductScoreComputed(ProductUuid::fromString($uuid1->toString())));
@@ -44,7 +47,7 @@ final class ComputeProductScoreOnProductCreateOrUpdateEndToEnd extends Messenger
     public function test_it_computes_product_score_after_bulk_save(): void
     {
         $uuid1 = Uuid::uuid4();
-        $this->createOrUpdateProduct($uuid1);
+        $this->upsertProduct($uuid1);
 
         $this->productScoreComputeOnUpsertQueueStatus->flushJobQueue();
         $this->simulateOldProductScoreCompute();
@@ -67,5 +70,15 @@ final class ComputeProductScoreOnProductCreateOrUpdateEndToEnd extends Messenger
 
         self::assertTrue($this->isProductScoreComputed(ProductUuid::fromString($uuid1->toString())));
         self::assertTrue($this->isProductScoreComputed(ProductUuid::fromString($uuid2->toString())));
+    }
+
+    protected function upsertProduct(UuidInterface $uuid): void
+    {
+        $command = UpsertProductCommand::createWithUuid(
+            $this->getUserId('admin'),
+            \Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid::fromUuid($uuid),
+            [new SetIdentifierValue('sku', (Uuid::uuid4())->toString())]
+        );
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
     }
 }

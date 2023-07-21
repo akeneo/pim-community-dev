@@ -8,6 +8,8 @@ use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\AttributeGroupActivation;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeGroupCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\AttributeGroupActivationRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
@@ -371,6 +373,55 @@ SQL
             <<<SQL
 TRUNCATE TABLE pim_data_quality_insights_product_model_score;
 SQL
+        );
+    }
+
+    protected function isProductScoreComputed(
+        ProductUuid $productUuid,
+        \DateTimeImmutable $evaluatedAt = new \DateTimeImmutable('now')
+    ): bool {
+        return (bool) $this->get('database_connection')->executeQuery(
+            <<<SQL
+                SELECT product_uuid
+                FROM pim_data_quality_insights_product_score
+                WHERE product_uuid = :product_uuid AND evaluated_at = :evaluated_at
+            SQL,
+            ['product_uuid' => $productUuid->toBytes(), 'evaluated_at' => $evaluatedAt->format('Y-m-d')]
+        )->fetchOne();
+    }
+
+    protected function isProductModelScoreComputed(
+        ProductModelId $productModelId,
+        \DateTimeImmutable $evaluatedAt = new \DateTimeImmutable('now')
+    ): bool {
+        return (bool) $this->get('database_connection')->executeQuery(
+            <<<SQL
+                SELECT product_model_id
+                FROM pim_data_quality_insights_product_model_score
+                WHERE product_model_id = :product_model_id AND evaluated_at = :evaluated_at
+            SQL,
+            ['product_model_id' => $productModelId->toInt(), 'evaluated_at' => $evaluatedAt->format('Y-m-d')]
+        )->fetchOne();
+    }
+
+    protected function getUserId(string $username): int
+    {
+        $query = <<<SQL
+            SELECT id FROM oro_user WHERE username = :username
+        SQL;
+        $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
+        $id = $stmt->fetchOne();
+        if (null === $id) {
+            throw new \InvalidArgumentException(\sprintf('No user exists with username "%s"', $username));
+        }
+
+        return \intval($id);
+    }
+
+    protected function simulateOldProductScoreCompute(): void
+    {
+        $this->get('database_connection')->executeQuery(
+            'UPDATE pim_data_quality_insights_product_score SET evaluated_at = "1980-01-01"'
         );
     }
 

@@ -23,6 +23,8 @@ final class ProductsWereCreatedOrUpdatedMessageIntegration extends EnrichmentPro
 
     protected function setUp(): void
     {
+        \putenv('FLAG_DATA_QUALITY_INSIGHTS_UCS_EVENT_ENABLED=1');
+
         parent::setUp();
 
         $this->pubSubQueueStatus = $this->get('akeneo_integration_tests.pub_sub_queue_status.dqi_product_score_compute_on_upsert');
