@@ -14,3 +14,11 @@ queues:
             - name: dqi_product_score_compute
               env_var: PUBSUB_SUBSCRIPTION_DQI_PRODUCT_SCORE_COMPUTE
               service_handler: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Messenger\ProductsWereCreatedOrUpdatedHandler
+    
+    product_models_were_created_or_updated_queue:
+      env_var: PUBSUB_TOPIC_PRODUCT_MODELS_WERE_UPSERT
+      message_class: Akeneo\Pim\Enrichment\Component\Product\Event\ProductModelsWereCreatedOrUpdated
+      consumers:
+        - name: dqi_product_model_score_compute
+          env_var: PUBSUB_SUBSCRIPTION_DQI_PRODUCT_MODEL_SCORE_COMPUTE
+          service_handler: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Messenger\ProductModelsWereCreatedOrUpdatedHandler

@@ -19,3 +19,8 @@ services:
         arguments:
             - '@akeneo.pim.automation.data_quality_insights.create_products_criteria_evaluations'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts'
+    
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Messenger\ProductModelsWereCreatedOrUpdatedHandler:
+      arguments:
+        - '@akeneo.pim.automation.data_quality_insights.create_products_criteria_evaluations'
+        - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProductModels'

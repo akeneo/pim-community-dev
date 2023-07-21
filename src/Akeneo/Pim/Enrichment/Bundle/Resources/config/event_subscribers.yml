@@ -264,3 +264,13 @@ services:
           - '@akeneo_elasticsearch.client.product_and_product_model'
         tags:
             - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ProductModel\OnSave\ProductModelWasCreatedOrUpdatedSubscriber:
+      arguments:
+        - '@messenger.bus.default'
+        - '@logger'
+        - '%env(default::string:APP_TENANT_ID)%'
+        - '%env(APP_ENV)%'
+        - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsUcsEventFeature'
+      tags:
+        - { name: kernel.event_subscriber }

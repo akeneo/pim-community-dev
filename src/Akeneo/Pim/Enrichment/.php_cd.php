@@ -22,6 +22,7 @@ $rules = [
         'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent',
         'Akeneo\Platform\Job\Domain\Model\Status',
         'Akeneo\Platform\Bundle\InstallerBundle\Command\ZddMigration',
+        'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
         'Oro\Bundle\SecurityBundle\SecurityFacade',
         'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
         'Liip\ImagineBundle',
