@@ -91,7 +91,9 @@ class RunMessageProcess
         $startTime = time();
         $modifyAckDeadlineTime = $startTime;
         $warningLogIsSent = false;
-        $process->start();
+        $process->start(function ($type, $buffer): void {
+            \fwrite(Process::ERR === $type ? \STDERR : \STDOUT, $buffer);
+        });
         while ($process->isRunning()) {
             if (!$warningLogIsSent && self::LONG_RUNNING_PROCESS_THRESHOLD_IN_SECONDS <= time() - $startTime) {
                 $this->logger->warning('Message handler has a long running process', [
