@@ -81,7 +81,7 @@ class JsonSerializer implements SerializerInterface
             $stamps[] = new CorrelationIdStamp($correlationId);
         }
         if (null !== $retryCount) {
-            $stamps[] = new RedeliveryStamp($retryCount);
+            $stamps[] = new RedeliveryStamp((int) $retryCount);
         }
 
         return new Envelope($message, $stamps);
@@ -110,7 +110,7 @@ class JsonSerializer implements SerializerInterface
         /** @var RedeliveryStamp|null $redeliveryStamp */
         $redeliveryStamp = $envelope->last(RedeliveryStamp::class);
         if (null !== $redeliveryStamp) {
-            $headers['retry_count'] = $redeliveryStamp->getRetryCount();
+            $headers['retry_count'] = (string) $redeliveryStamp->getRetryCount();
         }
 
         return [

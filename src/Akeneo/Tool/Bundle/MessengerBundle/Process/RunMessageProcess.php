@@ -49,6 +49,7 @@ class RunMessageProcess
             $env['APP_TENANT_ID'] = $tenantId;
         }
 
+        $startTime = time();
         try {
             $process = new Process([
                 'php',
@@ -70,6 +71,10 @@ class RunMessageProcess
             throw $t;
         }
 
+        $this->logger->info('Message is handled', \array_merge($context, [
+            'duration_time_in_secs' => time() - $startTime,
+        ]));
+
         if (0 !== $exitCode) {
             throw new \RuntimeException(\sprintf('An error occurred, exit code: %d', $exitCode));
         }
@@ -82,7 +87,9 @@ class RunMessageProcess
         $startTime = time();
         $modifyAckDeadlineTime = $startTime;
         $warningLogIsSent = false;
-        $process->start();
+        $process->start(function ($type, $buffer): void {
+            \fwrite(Process::ERR === $type ? \STDERR : \STDOUT, $buffer);
+        });
         while ($process->isRunning()) {
             if (!$warningLogIsSent && self::LONG_RUNNING_PROCESS_THRESHOLD_IN_SECONDS <= time() - $startTime) {
                 $this->logger->warning('Message handler has a long running process', [
