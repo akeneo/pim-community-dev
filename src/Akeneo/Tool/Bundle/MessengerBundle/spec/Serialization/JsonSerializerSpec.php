@@ -107,7 +107,7 @@ class JsonSerializerSpec extends ObjectBehavior
                 'body' => '{"some_property":"Some value!"}',
                 'headers' => [
                     'class' => \stdClass::class,
-                    'retry_count' => 5,
+                    'retry_count' => '5',
                 ],
             ]);
     }
