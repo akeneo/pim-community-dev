@@ -2,3 +2,11 @@ services:
   Akeneo\Platform\Installer\Infrastructure\Query\FindTables:
     arguments:
       - '@database_connection'
+
+  Akeneo\Platform\Installer\Infrastructure\Query\UpdateMaintenanceMode:
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Platform\Installer\Infrastructure\Query\IsMaintenanceModeEnabled:
+    arguments:
+      - '@database_connection'

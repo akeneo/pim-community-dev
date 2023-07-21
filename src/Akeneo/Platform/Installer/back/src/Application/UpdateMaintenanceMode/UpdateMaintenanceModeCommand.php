@@ -7,11 +7,12 @@ declare(strict_types=1);
  * @license https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
-namespace Akeneo\Platform\Installer\Application\ResetInstance;
+namespace Akeneo\Platform\Installer\Application\UpdateMaintenanceMode;
 
-final class ResetInstanceCommand
+final class UpdateMaintenanceModeCommand
 {
-    public function __construct()
-    {
+    public function __construct(
+        public readonly bool $isEnabled,
+    ) {
     }
 }

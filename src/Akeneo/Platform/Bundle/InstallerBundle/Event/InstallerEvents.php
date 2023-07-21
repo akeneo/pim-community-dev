@@ -60,6 +60,11 @@ final class InstallerEvents
     const POST_LOAD_FIXTURES = 'pim_installer.post_load_fixtures';
 
     /**
+     * This event is dispatched before the instance has been reset.
+     */
+    const PRE_RESET_INSTANCE = 'pim_installer.pre_reset_instance';
+
+    /**
      * This event is dispatched after the instance has been reset.
      */
     const POST_RESET_INSTANCE = 'pim_installer.post_reset_instance';

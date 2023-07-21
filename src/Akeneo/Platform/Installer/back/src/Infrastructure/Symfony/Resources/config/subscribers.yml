@@ -1,0 +1,6 @@
+services:
+  Akeneo\Platform\Installer\Infrastructure\EventSubscriber\MaintenanceModeSubscriber:
+    arguments:
+      - '@Akeneo\Platform\Installer\Application\UpdateMaintenanceMode\UpdateMaintenanceModeHandler'
+    tags:
+      - { name: 'kernel.event_subscriber' }

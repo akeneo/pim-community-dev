@@ -6,3 +6,11 @@ services:
       - '@Akeneo\Platform\Installer\Infrastructure\FixtureInstaller\MinimalFixtureInstaller'
       - '@Akeneo\Platform\Installer\Infrastructure\UserConfigurationResetter\UserConfigurationResetter'
       - '@Akeneo\Platform\Installer\Infrastructure\FilesystemsPurger\FilesystemsPurger'
+
+  Akeneo\Platform\Installer\Application\UpdateMaintenanceMode\UpdateMaintenanceModeHandler:
+    arguments:
+      - '@Akeneo\Platform\Installer\Infrastructure\Query\UpdateMaintenanceMode'
+
+  Akeneo\Platform\Installer\Application\IsMaintenanceModeEnabled\IsMaintenanceModeEnabledHandler:
+    arguments:
+      - '@Akeneo\Platform\Installer\Infrastructure\Query\IsMaintenanceModeEnabled'

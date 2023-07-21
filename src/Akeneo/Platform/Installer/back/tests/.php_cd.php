@@ -31,6 +31,7 @@ $rules = [
             'Akeneo\Tool',
             'Doctrine\DBAL\Connection',
             'Doctrine\DBAL\Schema\AbstractAsset',
+            'Doctrine\DBAL\Types\Types',
             'League\Flysystem\FilesystemOperator',
             'Symfony\Component',
             'Webmozart\Assert\Assert',

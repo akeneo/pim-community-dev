@@ -7,11 +7,9 @@ declare(strict_types=1);
  * @license https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
-namespace Akeneo\Platform\Installer\Application\ResetInstance;
+namespace Akeneo\Platform\Installer\Domain\Query;
 
-final class ResetInstanceCommand
+interface UpdateMaintenanceModeInterface
 {
-    public function __construct()
-    {
-    }
+    public function execute(bool $enabled): void;
 }
