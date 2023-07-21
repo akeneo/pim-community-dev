@@ -76,6 +76,97 @@
                 ]
             }
         },
+        "/api/rest/v1/locales": {
+            "get": {
+                "tags": [
+                    "Locale"
+                ],
+                "summary": "Get a list of locales",
+                "description": "This endpoint allows you to get a list of locales. Locales are paginated and sorted by code.",
+                "operationId": "get_locales",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Filter locales. For now, only the `enabled` filter is available.",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "{\"enabled\":[{\"operator\":\"=\",\"value\":true}]}"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Maximum number of items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 10
+                        }
+                    },
+                    {
+                        "name": "with_count",
+                        "in": "query",
+                        "description": "Whether or not to count the total of items",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean",
+                            "example": false
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Return locales paginated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "_links": {
+                                            "$ref": "#/components/schemas/_links"
+                                        },
+                                        "current_page": {
+                                            "description": "Current page number",
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "_embedded": {
+                                            "$ref": "#/components/schemas/_embedded_locale"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/401"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/403"
+                    },
+                    "406": {
+                        "$ref": "#/components/responses/406"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerToken": []
+                    }
+                ]
+            }
+        },
         "/api/rest/v1/products": {
             "get": {
                 "tags": [
