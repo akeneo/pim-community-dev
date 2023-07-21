@@ -465,6 +465,13 @@ SQL
         );
     }
 
+    protected function simulateOldProductModelScoreCompute(): void
+    {
+        $this->get('database_connection')->executeQuery(
+            'UPDATE pim_data_quality_insights_product_model_score SET evaluated_at = "1980-01-01"'
+        );
+    }
+
     private function formatValidationErrorMessage(string $mainMessage, ConstraintViolationListInterface $errors): string
     {
         $errorMessage = '';
