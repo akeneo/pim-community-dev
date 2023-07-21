@@ -71,10 +71,6 @@ class RunMessageProcess
             throw $t;
         }
 
-        // @TODO: remove useless level
-        $this->logger->notice('Message is handled', [
-            'duration_time_in_secs' => time() - $startTime,
-        ]);
         $this->logger->info('Message is handled', [
             'duration_time_in_secs' => time() - $startTime,
         ]);

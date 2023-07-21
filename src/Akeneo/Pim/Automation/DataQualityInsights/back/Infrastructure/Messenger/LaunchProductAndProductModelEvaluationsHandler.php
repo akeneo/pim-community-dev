@@ -43,18 +43,7 @@ final class LaunchProductAndProductModelEvaluationsHandler
             $this->evaluateProductModels($message);
         }
 
-        // @TODO: remove useless level
         $this->logger->notice('LaunchProductAndProductModelEvaluationsMessage is handled', [
-            'duration_time_in_secs' => time() - $startTime,
-            'count_products' => $message->productUuids->count(),
-            'count_product_models' => $message->productModelIds->count(),
-        ]);
-        $this->logger->info('LaunchProductAndProductModelEvaluationsMessage is handled', [
-            'duration_time_in_secs' => time() - $startTime,
-            'count_products' => $message->productUuids->count(),
-            'count_product_models' => $message->productModelIds->count(),
-        ]);
-        $this->logger->warning('LaunchProductAndProductModelEvaluationsMessage is handled', [
             'duration_time_in_secs' => time() - $startTime,
             'count_products' => $message->productUuids->count(),
             'count_product_models' => $message->productModelIds->count(),
