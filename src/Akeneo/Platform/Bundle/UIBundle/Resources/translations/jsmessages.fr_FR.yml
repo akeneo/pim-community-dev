@@ -305,8 +305,6 @@ pim_enrich.entity.job_execution:
       upload: Déposez votre fichier {{ type }} ici, ou cliquez ici pour le chercher sur votre disque
     download:
       archive: Télécharger l'archive générée
-      output: Télécharger les fichiers générés
-      input: Télécharger les fichiers lus
       invalid_xlsx: Télécharger les données invalides
       invalid_csv: Télécharger les données invalides
 pim_title:

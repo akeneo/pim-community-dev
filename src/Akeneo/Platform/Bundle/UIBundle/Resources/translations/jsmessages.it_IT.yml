@@ -305,8 +305,6 @@ pim_enrich.entity.job_execution:
       upload: Rilascia i tuoi file {{ type }} qui, o clicca per selezionare dal disco
     download:
       archive: Scarica archivio generato
-      output: Scarica file generati
-      input: Scarica file letti
       invalid_xlsx: Scarica dati non validi
       invalid_csv: Scarica dati non validi
 pim_title:

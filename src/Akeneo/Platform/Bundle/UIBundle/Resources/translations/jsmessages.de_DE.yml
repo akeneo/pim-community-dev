@@ -305,8 +305,6 @@ pim_enrich.entity.job_execution:
       upload: Upload {{ type }}-Datei per Drag & Drop oder hier klicken
     download:
       archive: Generiertes Archiv herunterladen
-      output: Generierte Datei herunterladen
-      input: Eingelesene Datei herunterladen
       invalid_xlsx: Ungültige Daten herunterladen
       invalid_csv: Ungültige Daten herunterladen
 pim_title:

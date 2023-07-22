@@ -305,8 +305,6 @@ pim_enrich.entity.job_execution:
       upload: '{{ type }} ファイルをここにドロップするか、ディスクを参照するをクリックしてください'
     download:
       archive: 生成されたアーカイブをダウンロード
-      output: 生成されたファイルをダウンロード
-      input: 読み取りファイルをダウンロード
       invalid_xlsx: 無効なデータをダウンロード
       invalid_csv: 無効なデータをダウンロード
 pim_title:
