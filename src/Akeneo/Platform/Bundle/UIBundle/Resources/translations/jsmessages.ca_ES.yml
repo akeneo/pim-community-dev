@@ -305,8 +305,6 @@ pim_enrich.entity.job_execution:
       upload: Deixeu anar el fitxer {{ type }} aquí, o clic per buscar en el disc
     download:
       archive: Descarregar arxiu generat
-      output: Descarregar arxiu generat
-      input: Descarregar arxius llegits
       invalid_xlsx: Descarregar dades no vàlides
       invalid_csv: Descarregar dades no vàlides
 pim_title:

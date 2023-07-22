@@ -305,8 +305,6 @@ pim_enrich.entity.job_execution:
       upload: Versleep jouw {{ type }} bestand naar hier, of klik om bestand te zoeken
     download:
       archive: Download gegenereerd archief
-      output: Download gegenereerde bestanden
-      input: Download leesbestanden
       invalid_xlsx: Download ongeldige data
       invalid_csv: Download ongeldige data
 pim_title:

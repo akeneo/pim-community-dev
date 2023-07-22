@@ -305,8 +305,6 @@ pim_enrich.entity.job_execution:
       upload: 将您的 {{ type }} 文件拖到此处，或点击浏览磁盘
     download:
       archive: 下载已生成的存档文件
-      output: 下载已生成的文件
-      input: 下载已读文件
       invalid_xlsx: 下载无效数据
       invalid_csv: 下载无效数据
 pim_title:
