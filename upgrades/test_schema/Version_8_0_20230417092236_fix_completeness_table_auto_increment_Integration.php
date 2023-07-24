@@ -54,6 +54,15 @@ final class Version_8_0_20230417092236_fix_completeness_table_auto_increment_Int
         }
     }
 
+    public function test_it_does_nothing_if_the_table_does_not_exist(): void
+    {
+        if($this->tableExists('pim_catalog_completeness')) {
+            $this->dropTable();
+        }
+
+        $this->reExecuteMigration(self::MIGRATION_NAME);
+    }
+
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
