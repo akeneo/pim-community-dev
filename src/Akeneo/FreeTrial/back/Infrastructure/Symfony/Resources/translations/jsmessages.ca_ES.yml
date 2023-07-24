@@ -1,0 +1,47 @@
+free_trial:
+  invite_users:
+    title: "]-Inf, 1]{{ count }} usuari convidat|]1, Inf[{{ count }} usuaris convidats"
+    breadcrumb: Convidar usuaris
+    invite_button: Convidar usuaris
+    invite_helper:
+      message1: Convida els teus companys o socis a descobrir Akeneo PIM.
+      message2: Els enviarem un correu electrònic amb un enllaç perquè s'uneixin al vostre descobriment de la prova gratuïta.
+    invite_input_label: Si us plau, compartiu el correu electrònic del vostre company o companya.
+    users_list:
+      headers:
+        invited_user: Invitació enviada a
+        status: Estat
+      empty_list_message: Encara no n'heu difós.
+    invite_messages:
+      success:
+        title: Invitacions enviades a usuaris nous
+        description: Estan a punt de rebre un correu electrònic amb un enllaç per unir-se a la prova gratuïta d'Akeneo PIM.
+      error:
+        invitation_failed:
+          title: No s'ha pogut enviar la invitació
+          description: Hi ha hagut un error tècnic. Siusplau torna-ho a provar.
+        invalid_email:
+          title: No s'ha pogut enviar la invitació
+          description: Assegureu-vos que el correu electrònic existeixi i estigui escrit correctament.
+        invitation_already_sent:
+          title: La invitació ja s'ha enviat
+          description: Ja s'han enviat invitacions amb un enllaç per unir-se a la prova gratuïta d'Akeneo PIM a alguns usuaris. Fes-los saber!
+        unauthorized_email:
+          title: No s'ha pogut enviar la invitació
+          description: Assegureu-vos que el correu electrònic sigui un correu electrònic empresarial
+  menu:
+    assets: Recursos
+    entities: Entitats
+    proposals: Propostes
+    sso: SAML-basat en l'inici de sessió únic
+    rules: Regles
+    feature_ee_only: Aquesta funció només és per a Enterprise Edition
+  dqi:
+    dashboard:
+      helper: Akeneo PIM Enterprise Edition ofereix potents capacitats addicionals a la funció de Data Quality Insights existent. Teniu accés a funcions de correcció ortogràfica ampliades, una cobertura lingüística més àmplia i indicadors clau addicionals per ajudar-vos a oferir experiències de producte impecables allà on veneu.
+  activity:
+    dashboard:
+      projects: Projectes
+      helper: Els projectes de l'Akeneo PIM Enterprise Edition us ajuden a organitzar i fer un seguiment del treball entre grups de col·laboradors implicats en l'enriquiment de les dades del producte. Generen tasques i les assignen a l'usuari adequat, la qual cosa permet que tothom tingui el seu paper en la creació d'experiències de producte atractives. Creeu projectes per estructurar els fluxos de treball d'enriquiment i supervisar l'estat del projecte. Simplifican la comunicació entre els membres de l'equip que treballen en l'enriquiment del producte.
+pim_title:
+  akeneo_invite_user: Convidar usuaris

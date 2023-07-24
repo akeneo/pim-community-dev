@@ -1,4 +1,34 @@
 free_trial:
+  invite_users:
+    title: "]-Inf, 1]{{ count }} uitgenodigde gebruikers|]1, Inf[{{ count }} uitgenodigde gebruikers"
+    breadcrumb: Gebruikers uitnodigen 
+    invite_button: Gebruikers uitnodigen 
+    invite_helper:
+      message1: Nodig uw collega's of partners uit om Akeneo PIM te bekijken.
+      message2: We sturen ze een e-mail met een link om deel te nemen aan uw gratis proefperiode.
+    invite_input_label: Geef het e-mailadres van uw collega of partner.
+    users_list:
+      headers:
+        invited_user: Uitnodiging verstuurd naar
+        status: Status
+      empty_list_message: U heeft nog niemand over Akeneo PIM verteld.
+    invite_messages:
+      success:
+        title: Verzonden uitnodigingen naar nieuwe gebruikers
+        description: Ze ontvangen binnenkort een e-mail met een link om deel te nemen aan uw gratis proefperiode van Akeneo PIM.
+      error:
+        invitation_failed:
+          title: Uitnodiging kan niet worden verstuurd
+          description: Er is een technische fout opgetreden. Probeer het opnieuw.
+        invalid_email:
+          title: Uitnodiging kan niet worden verstuurd
+          description: Controleer dat het e-mailadres bestaat en correct gespeld is.
+        invitation_already_sent:
+          title: De uitnodiging is al verstuurd.
+          description: Er zijn al uitnodigingen met een link om deel te nemen aan de gratis proefperiode van Akeneo PIM verstuurd naar enkele gebruikers. Laat ze weten dat ze een uitnodiging hebben!
+        unauthorized_email:
+          title: Uitnodiging kan niet worden verstuurd
+          description: Zorg ervoor dat het e-mailadres een zakelijk e-mailadres is
   menu:
     assets: Assets
     entities: Entiteiten
@@ -8,8 +38,10 @@ free_trial:
     feature_ee_only: Deze functie is alleen voor de Enterprise Edition
   dqi:
     dashboard:
-      helper: De Akeneo PIM Enterprise Edition biedt aanvullende krachtige mogelijkheden voor de bestaande functie Inzichten in datakwaliteit. U hebt toegang tot uitgebreide mogelijkheden voor spellingscontrole, een bredere dekking van talen en aanvullende belangrijke indicatoren waarmee u een perfecte productervaring kunt leveren ongeacht waar u verkoopt.
+      helper: De Akeneo PIM Enterprise Edition biedt aanvullende krachtige mogelijkheden voor de bestaande functie Inzichten in datakwaliteit. U hebt toegang tot uitgebreide mogelijkheden voor spellingscontrole, een bredere dekking van talen en aanvullende belangrijke indicatoren waarmee u een vlekkeloze productervaring kunt leveren ongeacht waar u verkoopt.
   activity:
     dashboard:
       projects: Projecten
       helper: Projecten in Akeneo PIM Enterprise Edition helpen u bij het organiseren en bijhouden van de werkzaamheden in alle groepen van medewerkers die betrokken zijn bij het verrijken van productgegevens. In de projecten worden taken gegenereerd en toegewezen aan de juiste gebruiker, zodat iedereen kan bijdragen aan het opbouwen van aantrekkelijke productervaringen. Maak een project aan om de workflow voor de verrijking te structureren en de projectstatus te bewaken. Het vereenvoudigt de communicatie tussen de teamleden die aan de productverrijking werken.
+pim_title:
+  akeneo_invite_user: Gebruikers uitnodigen 

@@ -1,15 +1,47 @@
 free_trial:
+  invite_users:
+    title: "]-Inf, 1]{{ count }} utilisateur invité|]1, Inf[{{ count }} utilisateurs invités"
+    breadcrumb: Inviter des utilisateurs
+    invite_button: Inviter des utilisateurs
+    invite_helper:
+      message1: Invitez vos collègues ou partenaires à découvrir Akeneo PIM.
+      message2: Nous leur enverrons un e-mail avec un lien pour qu'ils vous rejoignent dans la découverte de la version d'essai gratuite.
+    invite_input_label: Veuillez partager l'e-mail de votre collègue ou partenaire.
+    users_list:
+      headers:
+        invited_user: Invitation envoyée à
+        status: État
+      empty_list_message: Vous n'avez pas encore répandu le mot.
+    invite_messages:
+      success:
+        title: Invitations envoyées aux nouveaux utilisateurs
+        description: Ils sont sur le point de recevoir un e-mail avec un lien pour rejoindre votre essai gratuit d'Akeneo PIM.
+      error:
+        invitation_failed:
+          title: L'invitation n'a pas pu être envoyée.
+          description: Une erreur technique est survenue. Veuillez réessayer.
+        invalid_email:
+          title: L'invitation n'a pas pu être envoyée
+          description: Veuillez vous assurer que l'email existe et est correctement orthographié.
+        invitation_already_sent:
+          title: Invitation déjà envoyée
+          description: Des invitations avec un lien pour rejoindre l'essai gratuit d'Akeneo PIM ont déjà été envoyées à certains utilisateurs. Faites-leur savoir !
+        unauthorized_email:
+          title: L'invitation n'a pas pu être envoyée
+          description: Veuillez vous assurer que l'e-mail est un e-mail professionnel
   menu:
     assets: Ressources
     entities: Entités
     proposals: Propositions
-    sso: Authentification unique basée sur SAML
+    sso: Authentification unique SAML
     rules: Règles
-    feature_ee_only: Cette fonctionnalité est uniquement disponible sur l'Enterprise Edition
+    feature_ee_only: Cette fonctionnalité est uniquement disponible sur l'édition Entreprise
   dqi:
     dashboard:
-      helper: Akeneo PIM Enterprise Edition offre des capacités supplémentaires à la fonctionnalité Data Quality Insights existante, comme la vérification orthographique étendue, une couverture linguistique plus large et des indicateurs clés additionnels pour vous aider à offrir des expériences produits irréprochables quel que soit le canal où vous vendez.
+      helper: L'édition Enterprise d'Akeneo PIM offre de puissantes fonctionnalités supplémentaires à la fonction de Data Quality Insights existante. Vous avez accès à des capacités étendues de vérification orthographique, à une couverture linguistique plus étendue et à des indicateurs clés supplémentaires pour vous aider à livrer des expériences produits irréprochables où que vous vendiez.
   activity:
     dashboard:
       projects: Projets
-      helper: Travailler au quotidien avec les Projets d'Akeneo PIM Enterprise Edition vous aide à organiser et à suivre le travail des équipes impliquées dans l'enrichissement des données produits. Ils génèrent des tâches et les attribuent au(x) bon(s) utilisateur(s), permettant à chacun de jouer son rôle dans la création d'expériences produits convaincantes. Créez des projets pour structurer les workflows d'enrichissement et vous assurer de l'avancement des projets. Les projets simplifient la communication entre les membres des équipes contributrices à l'enrichissement des produits.
+      helper: Les projets de l'édition Enterprise d'Akeneo PIM vous aident à organiser et à suivre le travail entre les groupes de contributeurs impliqués dans l'enrichissement des données du produit. Ils génèrent des tâches et les attribuent au bon utilisateur, permettant à chacun de jouer son rôle dans la construction d’expériences produits convaincantes. Créez des projets pour structurer les flux de travail d’enrichissement et surveiller le statut du projet. Ils simplifient la communication entre les membres de l’équipe travaillant sur l’enrichissement des produits.
+pim_title:
+  akeneo_invite_user: Inviter des utilisateurs

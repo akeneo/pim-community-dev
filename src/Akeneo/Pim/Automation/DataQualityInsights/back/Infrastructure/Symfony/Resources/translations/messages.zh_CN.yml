@@ -1,15 +1,13 @@
 akeneo_data_quality_insights:
   axis:
-    enrichment: 丰富度
-  acl:
-    activation_attribute_group:
-      edit: 编辑数据质量洞察激活
-  acl_group:
-    dqi: 数据质量洞察
+    consistency: 一致性
+  attribute_grid:
+    quality_column_label: 质量
+    to_improve_locale: 要在 {{ locale }} 进行改进
   product_grid:
     filter_label:
-      quality_score: 质量评分
-      enrichment_quality: 丰富度质量
-      images_quality: 产品图像
-Enrichment: 丰富度
-Quality Score: 质量评分
+      spelling_quality: 拼写质量
+  dictionary:
+    title: 字典
+Consistency: 一致性
+akeneo_data_quality_insights_dictionary: 字典

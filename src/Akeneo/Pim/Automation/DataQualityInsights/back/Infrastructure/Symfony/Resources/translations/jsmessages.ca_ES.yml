@@ -1,162 +1,119 @@
 akeneo_data_quality_insights:
-  title: Informació de la qualitat de dades
-  dqi_dashboard:
-    menu: Informació de la qualitat de dades
-    helper:
-      title: Introduint la Qualitat de dades a Akeneo
-      description: Amb el panell de qualitat de dades, pot mesurar la qualitat de les dades del seu catàleg. També pot enfocar-se a una categoria o família.
-      help_center: Consulta el teu Centre d'Ajuda per més informació.
-    no_data_title: Ho sentim, encara no tenim suficient informació de dades per mostrar la vista general de la qualitat de dades.
-    no_data_subtitle: Si us plau, torni més tard.
-    time_period:
-      label: Període de temps
-      daily: Diàriament
-      weekly: Setmanalment
-      monthly: Mensualment
-    legend:
-      excellent: Excel·lent
-      good: Bé
-      average: Mitjana
-      below_average: Per sota de la mitjana
-      to_improve: A millorar
-    average_grade: Mitjana de classificació
-    category_modal_filter:
-      subtitle: Filtrar en una categoria
-      message: Escull la categoria per explorar al panell de control
-    widgets:
-      family_modal:
-        subtitle: Afegeix famílies
-        message: Escull les families per afegir al panell de control
-        max_families_msg: Perdona, no pots afegir més de {{ count }} families per seguir en el panell de control
-      category_modal:
-        subtitle: Afegeix categories
-        message: Escull les categories per afegir al panell de control
-        max_categories_msg: Perdona, no pots afegir més de {{ count }} categories per seguir en el panell de control
-      add_families: Afegeix famílies
-      add_categories: Afegeix categories
-      title: Títol
-      score: Puntuació
-      no_family_helper_msg: Selecciona les families per les que vols medir la qualitat de les dades
-      no_category_helper_msg: Selecciona les categories per les que vols medir la qualitat de les dades
-      see_in_grid: Veure a la quadrícula
-    time_axis:
-      day: dia
-    key_indicators:
-      title: Indicadors clau
-      products: '{1}1 producte|]1, 200[{{ count }} productes|[200, Inf[més de {{ count }} productes'
-      product_models: '{1}1 model de producte|]1, 200[{{ count }} models de producte|[200, Inf[més de {{ count }} models de producte'
-      entities_to_work_on: 'Tens <improvable_products_count_link/> per treballar.'
-      entities_to_work_on_2_kinds: 'Tens <improvable_products_count_link/> i <improvable_product_models_count_link/> per treballar.'
-      list:
-        has_image:
-          title: Productes sense una imatge
-          no_data: Sembla que els vostres atributs d'imatge estan buits, hauríeu de penjar imatges per a aquest indicador clau per ressaltar la qualitat dels vostres productes.
-          messages:
-            first_step:
-              message1: Sense imatges, els seus productes no es veuran com es mereixen.
-              message2: Una primera impressió fa un llarg camí, mima els teus actius, els teus clients ho notaran.
-              message3: Segons la nostra experiència, les imatges realment marquen la diferència. És possible que hàgiu de dedicar més temps als actius.
-            second_step:
-              message1: Només heu de treballar una mica més en les imatges del vostre producte i ja estaràs a punt.
-              message2: Una imatge val més que mil paraules, treballa-hi ara, estalvia temps després!
-              message3: És possible que hàgiu de dedicar una mica de temps a les imatges, els vostres productes es veuran molt millor.
-            third_step:
-              message1: Molt bé, només falten un parell d'imatges.
-              message2: Es veu bé, queda molt poc.
-              message3: Afegeix uns retocs finals i ho tindrem tot preparat.
-            perfect_score_step:
-              message1: Ben fet! Ja està a punt!
-              message2: Impressionant! Tots els productes són brillants i bonics!
-              message3: Això és perfecte.
-        good_enrichment:
-          title: Productes amb una bona relació d'enriquiment
-          no_data: Els vostres productes semblen buits, heu d'afegir atributs per a aquest indicador clau per destacar la qualitat dels vostres productes.
-          messages:
-            first_step:
-              message1: Una manera de millorar aquesta ràtio és assegurar-se de definir acuradament els atributs més rellevants. <a href="{{ link }}" target="_blank">Fes una ullada al nostre centre d'ajuda</a>.
-              message2: El teu PIM encara és massa misteriós per a tu? <a href="{{ link }}" target="_blank">Aprèn a treure'n el màxim profit</a>.
-              message3: Els nostres equips van desenvolupar el PIM, dóna-li a la vida!
-              message4: La informació detallada del producte marca una diferència real per als vostres clients. Pots ser un canviador de jocs!
-            second_step:
-              message1: Intentem apuntar una mica més amunt! Els teus clients estaran agraïts.
-              message2: Estàs a mig camí! Espera i els teus productes s'enriquiran molt bé.
-              message3: El diable està en els detalls, fins i tot en la vostra indústria!
-              message4: Necessites una mà per polir l'enriquiment del teu producte? Obteniu informació sobre com seleccionar acuradament els atributs més rellevants <a href="{{ link }}" target="_blank">aquí</a>.
-            third_step:
-              message1: Fins aquí tot va bé, ara podeu anar una mica més enllà!
-              message2: Aquesta és una proporció molt bona, però no es veuria bé al 100%?
-              message3: Alguns dels vostres productes encara necessiten una mica d'ajuda per completar-los! Gairebé ho tens!
-              message4: Només unes quantes Is a punt i Ts per creuar i serà perfecte.
-            perfect_score_step:
-              message1: Els vostres productes es vendran ells mateixos! Bona feina.
-              message2: Quina aventura, pots estar orgullós de la teva feina.
-              message3: Sou un veritable mestre en mantenir el vostre catàleg actualitzat.
-              message4: Enhorabona, està perfecte!
-      no_data: Ho sentim, encara no tenim prou dades per mostrar els indicadors clau.
-      no_data_subtitle: Si us plau, torni més tard.
-    score_distribution:
-      title: Distribució de la puntuació de qualitat
-    quality_score_evolution:
-      title: Evolució del nivell de qualitat
-      current_score: és el nivell de qualitat del vostre catàleg actual per a aquest canal.
-      current_month_label: Aquest mes
-      no_catalog_score: No hem pogut calcular el teu nivell de qualitat actual.
   product_evaluation:
     criteria:
-      completeness_of_required_attributes:
-        recommendation: Atributs requerits amb valors que falten
-      completeness_of_non_required_attributes:
-        recommendation: Atributs no requerits amb valors que falten
-      enrichment_image:
-        recommendation: Falta la imatge
+      consistency_textarea_uppercase_words:
+        recommendation: Atributs amb problemes amb majúscules
+      consistency_textarea_lowercase_words:
+        recommendation: Atributs amb problemes amb minúscules
+      consistency_spelling:
+        recommendation: Atributs amb problemes d'ortografia
+      consistency_attribute_spelling:
+        recommendation: Atribuir etiquetes amb faltes d'ortografia
+      consistency_attribute_option_spelling:
+        recommendation: Opcions d'atribut amb errors tipogràfics
     axis:
-      enrichment:
-        title: Enriquiment
-        attributes_link: Mostrar tots els atributs que falten
-        success: Les dades del vostre producte estan totalment enriquides. Felicitats!
+      consistency:
+        title: Consistència
+        attributes_link: Mostrar tots els atributs millorables
+        success: Les dades del vostre producte són totalment coherents. Felicitats!
     messages:
-      error:
-        axis_error: A causa d'un error, la nota no s'ha pogut calcular completament. Torna-ho a provar més tard.
-        criterion_error: No s'ha pogut calcular la nota.
-      success:
-        criterion: Tot va bé.
-      grading_in_progress: Classificació en curs.
-      axis_grading_in_progress: Qualificació en curs. Si us plau, torneu més tard.
-      too_many_attributes: Teniu {{ count }} atributs per millorar.
-      no_attribute_groups:
-        title: Ho sentim, no hem pogut calcular el vostre nivell de qualitat.
-        subtitle: "No es pot calcular la puntuació de qualitat: cap dels grups d'atributs d'aquest producte està activat."
-        help_center_link: Descobriu com les estadístiques de qualitat de les dades us poden ajudar a millorar la qualitat de les vostres dades al nostre centre d'ajuda.
-      add_image_attribute_recommendation: Una imatge val més que mil paraules. Hauríeu d'afegir un atribut d'imatge per millorar la qualitat de les dades d'aquest producte.
-      fill_image_attribute_recommendation: Segons la nostra experiència, les imatges realment marquen la diferència. Heu d'afegir almenys una imatge per millorar la qualitat de les dades d'aquest producte.
-      not_applicable:
-        message: Aquest criteri no és aplicable al vostre context.
-        help_center_link: Descobriu per què al nostre Centre d'ajuda.
+      add_image_attribute_recommendation: Una imatge val més que mil paraules. Hauríeu d'afegir una col·lecció de recursos o un atribut d'imatge per millorar la qualitat de les dades d'aquest producte.
   product_edit_form:
     attribute_filter:
-      all_missing_attributes: Tots els atributs que falten
-    back_to_products: Tornar als productes
-  attribute_group:
-    helper_dqi_info: El càlcul de la puntuació de qualitat només tindrà en compte els atributs que pertanyen als grups d'atributs activats a la qualitat de les dades.
-    helper_dqi_link: Més informació en el centre d'ajuda.
-    activation: Habilitat
-    dqi_status: Estat de Data Quality Insights
-    activated: Habilitat
-    disabled: Deshabilitat
-    used_groups_helper: "Els grups d'atributs següents es tenen en compte en el càlcul de Data Quality Insights:"
-    all_groups_evaluated: Tots els grups d'atributs d'aquest producte es tenen en compte per al càlcul de la puntuació de qualitat. Per obtenir el nivell de qualitat més rellevant, <a href="{{ link }}" target="_blank">obteniu informació sobre com desactivar els grups d'atributs al nostre centre d'ajuda.</a>
+      all_improvable_attributes: Tots els atributs millorables
+    spellcheck_popover:
+      title: Correccions
+      original_text_title: Original
+      suggestions_title: Propostes
+      ignore_all_suggestions_button_label: Ignora
+  attribute_grid:
+    quality:
+      to_improve: A millorar
+      good: Bé
+      in_progress: Processant
+      n_a: N/A
+  attribute_edit_form:
+    quality_summary: Si milloreu aquest atribut, millorareu la qualitat general dels productes {{ count }}.
+  spellcheck:
+    popover:
+      default_aria_label: Suggeriments ortogràfics
+      aria_label: "Suggeriments ortogràfics per a: {{ mistake }}"
+  dqi_dashboard:
+    key_indicators:
+      attributes: '{1}1 atribut|]1, 200[{{ count }} atributs|[200, Inf[més de {{ count }} atributs'
+      attributes_to_work_on: 'Tens <improvable_attributes_count_link/> per treballar.'
+      list:
+        has_image:
+          no_data: Les col·leccions d'actius i els atributs d'imatge semblen buits, hauríeu de penjar imatges d'aquest indicador clau per destacar la qualitat dels vostres productes.
+        attributes_perfect_spelling:
+          title: Atributs etiquetats correctament
+          no_data: Les vostres etiquetes d'atributs i opcions semblen buides, hauríeu d'enriquir-les perquè aquest indicador clau destaqui la qualitat dels vostres atributs.
+          messages:
+            first_step:
+              message1: Estàs passant un moment difícil amb les etiquetes d'atributs i opcions? Què tal tornar als conceptes bàsics <a href="{{ link }}" target="_blank">aquí</a>?
+              message2: Necessites ajuda amb els teus atributs i opcions d'atributs? Fes una ullada <a href="{{ link }}" target="_blank">aquí</a>!
+            second_step:
+              message1: Fes un cop d'ull a les teves etiquetes d'atributs i opcions. Els vostres productes es veuran encara millor després.
+              message2: Sembla que us heu perdut en algun lloc pel camí! Algunes de les teves etiquetes encara necessiten treballar.
+            third_step:
+              message1: Estàs molt a prop! Només uns quants tocs finals i ja estaràs a punt.
+              message2: Alguns dels vostres atributs i etiquetes encara necessiten una mica de treball, però esteu pel bon camí.
+            perfect_score_step:
+              message1: El teu catàleg està més preparat que mai! Has fet una gran feina!
+              message2: Gran treball en les etiquetes d'atributs i opcions!
+        values_perfect_spelling:
+          title: Productes amb una ortografia perfecta en valors de producte de text
+          no_data: Les vostres àrees de text semblen buides, hauríeu d'enriquir-les per aquest indicador clau per destacar la qualitat dels vostres productes.
+          messages:
+            first_step:
+              message1: Els vostres productes mereixen ser descrits correctament. Comproveu l'ortografia!
+              message2: Sou el millor defensor dels vostres productes, feu una ullada a l'ortografia.
+              message3: Les descripcions dels vostres productes són la imatge de la vostra empresa, eliminem aquestes errades! Les primeres impressions importen.
+              message4: Com més errors tinguis, pitjor impressió donaràs. Presteu més atenció a la vostra ortografia.
+            second_step:
+              message1: Ja tens grans productes, ara només necessites una bona ortografia!
+              message2: Un error d'ortografia pot allunyar un client, sigueu minuciosos!
+              message3: Alguns productes necessiten una mica d'ajuda per ser perfectes. Vigila amb els errors!
+            third_step:
+              message1: Una bona ortografia marca la diferència, no esteu tan lluny!
+              message2: Gairebé allà, esteu tan a prop de l'ortografia perfecta!
+              message3: Ets un parell de faltes d'ortografia lluny dels valors perfectes del producte.
+              message4: Només una mica més d'esforç per arribar a una descripció del producte impecable!
+            perfect_score_step:
+              message1: Ortografia perfecta a tot el vostre catàleg. Ben fet!
+              message2: "Això és impressionant: els teus productes estan impecables!"
+              message3: Has fet un treball increïble eliminant el 100% de les faltes d'ortografia. Felicitats!
   product_grid:
     filter_label:
-      quality_score: Puntuació de qualitat
-      enrichment_quality: Qualitat d'enriquiment
-      images_quality: Imatge del producte
-    filter_value:
-      good: Bé
-      to_improve: A millorar
-      "yes": "Sí"
-      "no": "No"
-  quality_score:
-    pending: En procés
-    title: "Puntuació de qualitat:"
-pim_title:
-  akeneo_data_quality_insights_dashboard: Informació de la qualitat de dades
+      spelling_quality: Qualitat ortogràfica
+  dictionary:
+    helper:
+      content: El diccionari us permet registrar paraules que seran ignorades per Data Quality Insights.
+      link_label: Més informació en el centre d'ajuda.
+    words: Paraules
+    searchPlaceholder: Cerca una paraula
+    add_words: Afegeix paraules aquí
+    no_search_results:
+      title: No s'han trobat resultats per a la teva cerca
+      subtitle: Provi amb nous criteris de cerca.
+    no_data:
+      title: Encara no hi ha paraules
+      subtitle: Afegiu el primer a dalt, feu clic a "Afegeix" o premeu Enter.
+pimee_enrich.entity.locale:
+  grid:
+    columns:
+      dictionary_words_count:
+        title: Nombre de paraules
+        label: "]-Inf, 1]{{ count }} paraula|]1, Inf[{{ count }} paraules"
+        not_available: No disponible
+    add_words: Afegir paraules
+    items_selected: "{1}1 element seleccionat|[2, Inf[{{ count }} elements seleccionats"
+    modal:
+      title: Afegeix paraules a {{ count }} localitzacions
+      subtitle: Escriu les teves paraules a continuació. S'afegiran a totes les configuracions regionals seleccionades.
+      locales_added_notification:
+        title: Paraules afegides a {{ count }} localitzacions
+        content: Les paraules noves s'han afegit als diccionaris de les localitzacions seleccionades.
+      no_supported_locales:
+        title: Data Quality Insights no pot revisar l'ortografia de les configuracions regionals seleccionades.
+        content: Per conèixer la llista de configuracions regionals compatibles, consulteu el nostre <a href="{{ link }}" target="_blank">Centre d'ajuda</a>

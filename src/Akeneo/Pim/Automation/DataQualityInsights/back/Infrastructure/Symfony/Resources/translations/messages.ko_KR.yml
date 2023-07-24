@@ -1,15 +1,13 @@
 akeneo_data_quality_insights:
   axis:
-    enrichment: 보강
-  acl:
-    activation_attribute_group:
-      edit: 데이터 품질 인사이트 활성화
-  acl_group:
-    dqi: 데이터 품질 인사이트
+    consistency: 일관성
+  attribute_grid:
+    quality_column_label: 품질
+    to_improve_locale: '{{ locale }} 개선 사항'
   product_grid:
     filter_label:
-      quality_score: 품질 점수
-      enrichment_quality: 보강 품질
-      images_quality: 제품 이미지
-Enrichment: 보강
-Quality Score: 품질 점수
+      spelling_quality: 철자 품질
+  dictionary:
+    title: 사전
+Consistency: 일관성
+akeneo_data_quality_insights_dictionary: 사전

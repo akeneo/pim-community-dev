@@ -1,15 +1,13 @@
 akeneo_data_quality_insights:
   axis:
-    enrichment: 充実
-  acl:
-    activation_attribute_group:
-      edit: データ品質インサイトの有効化を編集
-  acl_group:
-    dqi: データ品質インサイト
+    consistency: 一貫性
+  attribute_grid:
+    quality_column_label: 品質
+    to_improve_locale: '{{ locale }} の改善'
   product_grid:
     filter_label:
-      quality_score: 品質スコア
-      enrichment_quality: 充実性
-      images_quality: 商品の画像
-Enrichment: 充実
-Quality Score: 品質スコア
+      spelling_quality: スペルの品質
+  dictionary:
+    title: 辞書
+Consistency: 一貫性
+akeneo_data_quality_insights_dictionary: 辞書
