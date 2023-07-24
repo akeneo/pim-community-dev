@@ -8,4 +8,5 @@
     "incremental": true
   },
   "exclude": ["src/**/*.test.ts", "src/**/*.test.tsx", "**/__mocks__/*"],
+  "baseUrl": "./src"
 }

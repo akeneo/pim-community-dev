@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import * as i18n from 'pimui/js/i18n';
 import * as _ from 'underscore';
-import NormalizedAttribute from 'pim/model/attribute';
+import {Attribute} from '@akeneo-pim-community/structure';
 import NormalizedAttributeGroup from 'pim/model/attribute-group';
 
 const __ = require('oro/translator');
@@ -48,7 +48,7 @@ class ProductGridFilters extends BaseMultiSelectAsync {
     return parent;
   }
 
-  protected convertBackendItem(item: NormalizedAttribute): Object {
+  protected convertBackendItem(item: Attribute): Object {
     const locale = UserContext.get('system' === item.group ? 'uiLocale' : 'catalogLocale');
     return {
       id: item.code,
@@ -71,14 +71,14 @@ class ProductGridFilters extends BaseMultiSelectAsync {
         data: {identifiers: strValues, options: {limit: 100}},
         type: this.choiceVerb,
       }).then(response => {
-        let selecteds: NormalizedAttribute[] = <NormalizedAttribute[]>Object.values(response).filter(
-          (item: NormalizedAttribute) => {
+        let selecteds: Attribute[] = <Attribute[]>Object.values(response).filter(
+          (item: Attribute) => {
             return values.indexOf(item.code) > -1;
           }
         );
 
         callback(
-          selecteds.map((selected: NormalizedAttribute) => {
+          selecteds.map((selected: Attribute) => {
             return this.convertBackendItem(selected);
           })
         );

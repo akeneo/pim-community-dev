@@ -1,10 +1,10 @@
 {
   "name": "@akeneo-pim-community/structure",
   "version": "0.1.0",
-  "private": true,
   "config": {
-    "front_packages_path": "../../../../../front-packages"
+    "front_packages_path": "../../../../../../front-packages"
   },
+  "main": "lib/index.js",
   "peerDependencies": {
     "babel-loader": "8.1.0",
     "eslint": "^7.11.0",
@@ -13,6 +13,7 @@
     "styled-components": "^5.1.1"
   },
   "dependencies": {
+    "@akeneo-pim-community/shared": "link:../../../../../../front-packages/shared",
     "typescript": "^4.0.3"
   },
   "devDependencies": {

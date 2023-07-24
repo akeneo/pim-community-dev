@@ -1,22 +1,12 @@
-import {LabelCollection} from '@akeneo-pim-community/shared';
-
-type AttributeCode = string;
+import {ATTRIBUTE_TYPE as BASE_ATTRIBUTE_TYPE, Attribute, AttributeCode} from '@akeneo-pim-community/structure';
 
 export enum ATTRIBUTE_TYPE {
-  TEXT = 'pim_catalog_text',
-  SIMPLE_SELECT = 'pim_catalog_simpleselect',
-  MULTI_SELECT = 'pim_catalog_multiselect',
+  TEXT = BASE_ATTRIBUTE_TYPE.TEXT,
+  SIMPLE_SELECT = BASE_ATTRIBUTE_TYPE.OPTION_SIMPLE_SELECT,
+  MULTI_SELECT = BASE_ATTRIBUTE_TYPE.OPTION_MULTI_SELECT,
+  REF_ENTITY = BASE_ATTRIBUTE_TYPE.REFERENCE_ENTITY_SIMPLE_SELECT,
 }
 
 type AttributeType = ATTRIBUTE_TYPE;
-
-type Attribute = {
-  code: AttributeCode;
-  labels: LabelCollection;
-  localizable: boolean;
-  scopable: boolean;
-  type: string;
-  reference_data_name?: string;
-};
 
 export type {Attribute, AttributeType, AttributeCode};

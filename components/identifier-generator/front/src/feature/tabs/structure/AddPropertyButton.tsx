@@ -1,6 +1,14 @@
 import React, {useMemo, useState} from 'react';
 import {Button, Dropdown, GroupsIllustration, Search, useBooleanState, useDebounce} from 'akeneo-design-system';
-import {Property, PROPERTY_NAMES, RefEntityProperty, SimpleSelectProperty, Structure} from '../../models';
+import {
+  ATTRIBUTE_TYPE,
+  AttributeType,
+  Property,
+  PROPERTY_NAMES,
+  RefEntityProperty,
+  SimpleSelectProperty,
+  Structure
+} from '../../models';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {useGetPropertyItems} from '../../hooks';
 
@@ -14,7 +22,7 @@ type FlatItemsGroup = {
   text: string;
   isSection: boolean;
   isVisible?: boolean;
-  type?: string;
+  type?: AttributeType;
 };
 
 const AddPropertyButton: React.FC<AddPropertyButtonProps> = ({onAddProperty, structure}) => {
@@ -41,7 +49,7 @@ const AddPropertyButton: React.FC<AddPropertyButtonProps> = ({onAddProperty, str
     setSearchValue('');
   };
 
-  const addProperty = (id: string, type?: string) => {
+  const addProperty = (id: string, type?: AttributeType) => {
     if (id === PROPERTY_NAMES.FREE_TEXT) {
       handleAddProperty({type: PROPERTY_NAMES.FREE_TEXT, string: ''});
     } else if (id === PROPERTY_NAMES.AUTO_NUMBER) {
@@ -53,7 +61,7 @@ const AddPropertyButton: React.FC<AddPropertyButtonProps> = ({onAddProperty, str
           type: null,
         },
       });
-    } else if (type === 'pim_catalog_simpleselect') {
+    } else if (type === ATTRIBUTE_TYPE.SIMPLE_SELECT) {
       handleAddProperty({
         type: PROPERTY_NAMES.SIMPLE_SELECT,
         attributeCode: id,
@@ -61,7 +69,7 @@ const AddPropertyButton: React.FC<AddPropertyButtonProps> = ({onAddProperty, str
           type: null,
         },
       } as SimpleSelectProperty);
-    } else if (type === 'akeneo_reference_entity') {
+    } else if (type === ATTRIBUTE_TYPE.REF_ENTITY) {
       handleAddProperty({
         type: PROPERTY_NAMES.REF_ENTITY,
         attributeCode: id,
