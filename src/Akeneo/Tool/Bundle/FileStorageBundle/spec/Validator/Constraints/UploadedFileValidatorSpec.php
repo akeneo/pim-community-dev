@@ -26,7 +26,7 @@ final class UploadedFileValidatorSpec extends ObjectBehavior
     public function it_validates_a_correct_file(
         File\UploadedFile $file,
         ExecutionContextInterface $context
-    ) {
+    ): void {
         $file->beConstructedWith([__FILE__, 'akeneo.PNG', 'image/png', null, true]);
 
         $file->guessExtension()->willReturn('png');
