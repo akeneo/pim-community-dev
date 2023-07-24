@@ -9,6 +9,7 @@ use Akeneo\Platform\Bundle\UIBundle\Provider\Filter\FilterProviderInterface;
 use Akeneo\Tool\Component\Localization\Localizer\LocalizerInterface;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Attribute normalizer
@@ -63,6 +64,7 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
      */
     public function normalize($attribute, $format = null, array $context = [])
     {
+        Assert::isInstanceOf($attribute, AttributeInterface::class);
         $dateMin = null === $attribute->getDateMin() ? null : $attribute->getDateMin()->format('Y-m-d');
         $dateMax = null === $attribute->getDateMax() ? null : $attribute->getDateMax()->format('Y-m-d');
 
@@ -75,6 +77,7 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
                 'is_locale_specific' => $attribute->isLocaleSpecific(),
                 'date_min'           => $dateMin,
                 'date_max'           => $dateMax,
+                'is_main_identifier' => $attribute->isMainIdentifier(),
             ]
         );
 

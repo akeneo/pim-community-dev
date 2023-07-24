@@ -91,7 +91,7 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    Akeneo\Pim\Structure\Bundle\EventSubscriber\CheckAttributeIsNotIdentifierOnDeletionSubscriber:
+    Akeneo\Pim\Structure\Bundle\EventSubscriber\CheckAttributeIsNotMainIdentifierOnDeletionSubscriber:
         tags:
             - { name: kernel.event_subscriber }
 

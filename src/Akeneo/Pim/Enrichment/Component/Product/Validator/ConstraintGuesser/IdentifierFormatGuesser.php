@@ -19,7 +19,7 @@ class IdentifierFormatGuesser implements ConstraintGuesserInterface
     /**
      * {@inheritdoc}
      */
-    public function supportAttribute(AttributeInterface $attribute)
+    public function supportAttribute(AttributeInterface $attribute): bool
     {
         return $attribute->getType() === AttributeTypes::IDENTIFIER;
     }
@@ -27,7 +27,7 @@ class IdentifierFormatGuesser implements ConstraintGuesserInterface
     /**
      * {@inheritdoc}
      */
-    public function guessConstraints(AttributeInterface $attribute)
+    public function guessConstraints(AttributeInterface $attribute): array
     {
         return [
             new Regex([

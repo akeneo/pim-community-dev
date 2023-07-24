@@ -76,6 +76,7 @@ config:
         oro/datagrid/select-cell:               pimdatagrid/js/datagrid/cell/select-cell
         oro/datagrid/select-row-cell:           pimdatagrid/js/datagrid/cell/select-row-cell
         oro/datagrid/string-cell:               pimdatagrid/js/datagrid/cell/string-cell
+        oro/datagrid/attribute-type-cell:       pimdatagrid/js/datagrid/cell/attribute-type-cell
         oro/datagrid/completeness-cell:         pimdatagrid/js/datagrid/cell/completeness-cell
         oro/datagrid/expand-history-cell:       pimdatagrid/js/datagrid/cell/expand-history-cell
         oro/datagrid/enabled-cell:              pimdatagrid/js/datagrid/cell/enabled-cell

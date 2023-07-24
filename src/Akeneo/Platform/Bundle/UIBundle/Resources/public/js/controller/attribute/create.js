@@ -28,6 +28,9 @@ define([
       const code = this.getQueryParam(location.href, 'code');
       const type = this.getQueryParam(location.href, 'attribute_type');
       const label = this.getQueryParam(location.href, 'label');
+      const localizable = this.getQueryParam(location.href, 'localizable');
+      const scopable = this.getQueryParam(location.href, 'scopable');
+      const unique = this.getQueryParam(location.href, 'unique');
       const labels = {};
       if (label) {
         labels[UserContext.get('catalogLocale')] = label;
@@ -44,6 +47,18 @@ define([
             form.setLabels(labels);
           }
 
+          if (localizable) {
+            form.setLocalizable(localizable);
+          }
+
+          if (scopable) {
+            form.setScopable(scopable);
+          }
+
+          if (unique) {
+            form.setUnique(unique);
+          }
+
           return form.configure().then(() => {
             return form;
           });
@@ -53,7 +68,7 @@ define([
             form.trigger('pim_enrich:form:can-leave', event);
           });
 
-          form.setData(this.getNewAttribute(type, code, labels));
+          form.setData(this.getNewAttribute(type, code, labels, localizable, scopable, unique));
 
           form.setElement(this.$el).render();
 
@@ -80,11 +95,14 @@ define([
      *
      * @return {Object}
      */
-    getNewAttribute: function (type, code, labels) {
+    getNewAttribute: function (type, code, labels, localizable, scopable, unique) {
       return {
         code: code ?? '',
         labels: labels,
         type: type,
+        localizable: localizable === 'true',
+        scopable: scopable === 'true',
+        unique: unique === 'true',
         available_locales: [],
       };
     },

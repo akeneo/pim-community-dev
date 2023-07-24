@@ -32,6 +32,11 @@ services:
     pim_catalog.repository.product:
         class: 'Akeneo\Test\Acceptance\Product\InMemoryProductRepository'
 
+    pim_catalog.repository.product_unique_data:
+        class: 'AkeneoTest\Acceptance\Product\InMemoryProductUniqueDataRepository'
+        arguments:
+            - '@pim_catalog.repository.product'
+
     pim_catalog.repository.product_model:
         class: 'Akeneo\Test\Acceptance\ProductModel\InMemoryProductModelRepository'
 

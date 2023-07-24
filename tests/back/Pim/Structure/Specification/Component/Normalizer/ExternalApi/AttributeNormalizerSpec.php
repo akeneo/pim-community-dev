@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Structure\Component\Normalizer\ExternalApi;
 
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Normalizer\ExternalApi\AttributeNormalizer;
 use PhpSpec\ObjectBehavior;
@@ -9,18 +10,18 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class AttributeNormalizerSpec extends ObjectBehavior
 {
-    function let(NormalizerInterface $stdNormalizer, NormalizerInterface $translationNormalizer)
+    public function let(NormalizerInterface $stdNormalizer, NormalizerInterface $translationNormalizer): void
     {
         $this->beConstructedWith($stdNormalizer);
         $this->beConstructedWith($stdNormalizer, $translationNormalizer);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(AttributeNormalizer::class);
     }
 
-    function it_supports_an_attribute(AttributeInterface $attribute)
+    public function it_supports_an_attribute(AttributeInterface $attribute): void
     {
         $this->supportsNormalization(new \stdClass(), 'whatever')->shouldReturn(false);
         $this->supportsNormalization(new \stdClass(), 'external_api')->shouldReturn(false);
@@ -28,9 +29,12 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization($attribute, 'external_api')->shouldReturn(true);
     }
 
-    function it_normalizes_an_attribute(NormalizerInterface $stdNormalizer, AttributeInterface $attribute)
-    {
+    public function it_normalizes_an_attribute(
+        NormalizerInterface $stdNormalizer,
+        AttributeInterface $attribute
+    ): void {
         $attribute->getGroup()->willReturn(null);
+        $attribute->getType()->willReturn(null);
 
         $data = [
             'code' => 'my_attribute',
@@ -41,13 +45,14 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $this->normalize($attribute, 'external_api', [])->shouldBeLike(array_merge($data, ['group_labels' => null]));
     }
 
-    function it_normalizes_an_attribute_with_its_group_labels(
+    public function it_normalizes_an_attribute_with_its_group_labels(
         NormalizerInterface $stdNormalizer,
         NormalizerInterface $translationNormalizer,
         AttributeInterface $attribute,
         AttributeInterface $group
-    ) {
+    ): void {
         $attribute->getGroup()->willReturn($group);
+        $attribute->getType()->willReturn(null);
 
         $data = [
             'code' => 'my_attribute',
@@ -64,13 +69,14 @@ class AttributeNormalizerSpec extends ObjectBehavior
             ->shouldBeLike(array_merge($data, ['group_labels' => ['en_US' => 'attribute group A']]));
     }
 
-    function it_normalizes_an_attribute_with_empty_labels(
+    public function it_normalizes_an_attribute_with_empty_labels(
         NormalizerInterface $stdNormalizer,
         NormalizerInterface $translationNormalizer,
         AttributeInterface $attribute,
         AttributeInterface $group
-    ) {
+    ): void {
         $attribute->getGroup()->willReturn($group);
+        $attribute->getType()->willReturn(null);
 
         $data = ['code' => 'my_attribute', 'labels' => [], 'group' => 'attributeGroupA'];
         $stdNormalizer->normalize($attribute, 'standard', [])->willReturn($data);
@@ -85,5 +91,23 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'group_labels' => (object)[],
             ]
         );
+    }
+
+    public function it_normalizes_identifier_attribute(
+        NormalizerInterface $stdNormalizer,
+        AttributeInterface $attribute
+    ): void {
+        $attribute->getGroup()->willReturn(null);
+        $attribute->getType()->willReturn(AttributeTypes::IDENTIFIER);
+        $attribute->isMainIdentifier()->shouldBeCalled()->willReturn(true);
+
+        $data = [
+            'code' => 'my_identifier_attribute',
+            'labels' => ['en_US' => 'english_label'],
+        ];
+        $stdNormalizer->normalize($attribute, 'standard', [])->shouldBeCalled()->willReturn($data);
+
+        $dataNormalizedexpected = array_merge($data, ['group_labels' => null, 'is_main_identifier' => true]);
+        $this->normalize($attribute, 'external_api', [])->shouldBeLike($dataNormalizedexpected);
     }
 }

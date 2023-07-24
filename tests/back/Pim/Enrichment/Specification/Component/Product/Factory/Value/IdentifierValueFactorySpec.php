@@ -18,17 +18,17 @@ use PhpSpec\ObjectBehavior;
  */
 final class IdentifierValueFactorySpec extends ObjectBehavior
 {
-    public function it_is_a_read_value_factory()
+    public function it_is_a_read_value_factory(): void
     {
         $this->shouldBeAnInstanceOf(ValueFactory::class);
     }
 
-    public function it_supports_identifier_attribute_type()
+    public function it_supports_identifier_attribute_type(): void
     {
         $this->supportedAttributeType()->shouldReturn(AttributeTypes::IDENTIFIER);
     }
 
-    public function it_does_not_support_null()
+    public function it_does_not_support_null(): void
     {
         $this->shouldThrow(InvalidPropertyTypeException::class)->during('createByCheckingData', [
             $this->getAttribute(true, true),
@@ -38,7 +38,7 @@ final class IdentifierValueFactorySpec extends ObjectBehavior
         ]);
     }
 
-    public function it_cannot_create_a_localizable_and_scopable_value()
+    public function it_cannot_create_a_localizable_and_scopable_value(): void
     {
         $attribute = $this->getAttribute(true, true);
 
@@ -48,7 +48,7 @@ final class IdentifierValueFactorySpec extends ObjectBehavior
         );
     }
 
-    public function it_cannot_create_a_localizable_value()
+    public function it_cannot_create_a_localizable_value(): void
     {
         $attribute = $this->getAttribute(true, false);
 
@@ -58,7 +58,7 @@ final class IdentifierValueFactorySpec extends ObjectBehavior
         );
     }
 
-    public function it_creates_a_scopable_value()
+    public function it_cannot_create_a_scopable_value(): void
     {
         $attribute = $this->getAttribute(false, true);
 
@@ -68,7 +68,7 @@ final class IdentifierValueFactorySpec extends ObjectBehavior
         );
     }
 
-    public function it_cannot_create_a_value_with_a_non_string_value()
+    public function it_cannot_create_a_value_with_a_non_string_value(): void
     {
         $attribute = $this->getAttribute(false, false);
 
@@ -78,7 +78,7 @@ final class IdentifierValueFactorySpec extends ObjectBehavior
         );
     }
 
-    public function it_cannot_create_a_value_with_an_empty_string_value()
+    public function it_cannot_create_a_value_with_an_empty_string_value(): void
     {
         $attribute = $this->getAttribute(false, false);
 
@@ -88,7 +88,7 @@ final class IdentifierValueFactorySpec extends ObjectBehavior
         );
     }
 
-    public function it_throws_an_exception_if_it_is_not_a_string()
+    public function it_throws_an_exception_if_it_is_not_a_string(): void
     {
         $this->shouldThrow(InvalidPropertyTypeException::class)->during('createByCheckingData', [
             $this->getAttribute(true, true),
@@ -98,19 +98,38 @@ final class IdentifierValueFactorySpec extends ObjectBehavior
         ]);
     }
 
-    public function it_can_create_a_value_with_a_string()
+    public function it_creates_a_value_for_the_main_identifier_attribute(): void
     {
-        # TODO: CPM-1068, Create case where attribute is main identifier and where it's not
         $attribute = $this->getAttribute(false, false);
+        $value = $this->createByCheckingData($attribute, null, null, 'my_identifier');
 
+        $value->shouldBeLike(IdentifierValue::value('an_attribute', true, 'my_identifier'));
+    }
+
+    public function it_creates_a_value_for_another_identifier_attribute(): void
+    {
+        $attribute = $this->getAttribute(false, false, false);
         $value = $this->createByCheckingData($attribute, null, null, 'my_identifier');
 
         $value->shouldBeLike(IdentifierValue::value('an_attribute', false, 'my_identifier'));
-
     }
 
-    private function getAttribute(bool $isLocalizable, bool $isScopable): Attribute
+    private function getAttribute(bool $isLocalizable, bool $isScopable, bool $isMainIdentifier = true): Attribute
     {
-        return new Attribute('an_attribute', AttributeTypes::IDENTIFIER, [], $isLocalizable, $isScopable, null, null, false, 'text', []);
+        return new Attribute(
+            'an_attribute',
+            AttributeTypes::IDENTIFIER,
+            [],
+            $isLocalizable,
+            $isScopable,
+            null,
+            null,
+            false,
+            'text',
+            [],
+            null,
+            [],
+            $isMainIdentifier
+        );
     }
 }

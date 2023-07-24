@@ -103,3 +103,5 @@ pim_datagrid:
     credientials:
       client_id: Client ID
       secret: Secret
+    attribute-type:
+      main: Main

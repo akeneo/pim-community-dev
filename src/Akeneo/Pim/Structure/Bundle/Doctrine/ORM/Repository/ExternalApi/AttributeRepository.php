@@ -123,6 +123,12 @@ class AttributeRepository extends EntityRepository implements AttributeRepositor
                     case '>':
                         $qb->andWhere($qb->expr()->gt($field, $parameter));
                         break;
+                    case '=':
+                        if ('is_main_identifier' !== $property) {
+                            throw new \InvalidArgumentException('Invalid operator for search query.');
+                        }
+                        $qb->andWhere($qb->expr()->eq('r.mainIdentifier', $parameter));
+                        break;
                     default:
                         throw new \InvalidArgumentException('Invalid operator for search query.');
                 }
@@ -183,6 +189,20 @@ class AttributeRepository extends EntityRepository implements AttributeRepositor
                     ],
                 ])
             ),
+            'is_main_identifier' => new Assert\All([
+                new Assert\Collection([
+                    'operator' => new Assert\IdenticalTo([
+                        'value' => '=',
+                        'message' => 'In order to search on attribute is_main_identifier you must use "=" operator, {{ value }} given.',
+                    ]),
+                    'value' => [
+                        new Assert\Type([
+                            'type' => 'bool',
+                            'message' => 'The "is_main_identifier" filter requires a boolean value, and the submitted value is not.',
+                        ]),
+                    ],
+                ]),
+            ]),
         ];
         $availableSearchFilters = array_keys($constraints);
 

@@ -120,6 +120,9 @@ class ListProductWithCompletenessEndToEnd extends AbstractProductTestCase
 		            ],
 		            "a_number_float": [
 		                {"locale": null, "scope": null, "data": "12.0500"}
+		            ],
+		            "sku": [
+		                {"locale": null, "scope": null, "data": "product_complete"}
 		            ]
 		        },
 		        "created": "2017-03-17T16:11:46+01:00",
@@ -186,7 +189,10 @@ class ListProductWithCompletenessEndToEnd extends AbstractProductTestCase
                                 }
                             }
                         }
-                    ]
+                    ],
+		            "sku": [
+		                {"locale": null, "scope": null, "data": "product_complete_en_locale"}
+		            ]
 		        },
                 "created": "2017-03-17T16:11:46+01:00",
                 "updated": "2017-03-17T16:11:46+01:00",

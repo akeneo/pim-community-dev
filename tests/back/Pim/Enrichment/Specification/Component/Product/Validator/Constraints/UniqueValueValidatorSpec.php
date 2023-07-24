@@ -2,16 +2,15 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints;
 
-use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductUniqueDataRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\UniqueValue;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\UniqueValuesSet;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\Form\Form;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
@@ -23,40 +22,36 @@ class UniqueValueValidatorSpec extends ObjectBehavior
     function let(
         ProductUniqueDataRepositoryInterface $uniqueDataRepository,
         UniqueValuesSet $uniqueValuesSet,
+        IdentifiableObjectRepositoryInterface $attributeRepository,
         ExecutionContextInterface $context,
-        Form $form,
         ProductInterface $product,
         ValueInterface $value,
-        IdentifiableObjectRepositoryInterface $attributeRepository
-    ) {
-        $this->beConstructedWith($uniqueDataRepository, $uniqueValuesSet, $attributeRepository);
-
+    ): void {
         $product->getValue('unique_attribute')->willReturn($value);
-
-        $form->getData()->willReturn($product);
-
         $context->getPropertyPath()->willReturn(self::PROPERTY_PATH);
-        $context->getRoot()->willReturn($form);
+        $context->getRoot()->willReturn($product);
+
+        $this->beConstructedWith($uniqueDataRepository, $uniqueValuesSet, $attributeRepository);
 
         $this->initialize($context);
     }
 
-    function it_is_a_validator()
+    function it_is_a_validator(): void
     {
         $this->shouldImplement(ConstraintValidatorInterface::class);
     }
 
     function it_builds_a_violation_if_the_value_is_already_in_database_for_another_product(
+        ProductUniqueDataRepositoryInterface $uniqueDataRepository,
+        UniqueValuesSet $uniqueValuesSet,
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        ExecutionContextInterface $context,
+        ProductInterface $product,
         ValueInterface $value,
         UniqueValue $constraint,
         AttributeInterface $releaseDate,
-        ProductInterface $product,
         ConstraintViolationBuilderInterface $constraintViolationBuilder,
-        UniqueValuesSet $uniqueValuesSet,
-        $context,
-        $uniqueDataRepository,
-        $attributeRepository
-    ) {
+    ):void {
         $context->getRoot()->willReturn($product);
         $releaseDate->isUnique()->willReturn(true);
         $releaseDate->getCode()->willReturn('release_date');
@@ -76,15 +71,16 @@ class UniqueValueValidatorSpec extends ObjectBehavior
     }
 
     function it_builds_a_violation_if_the_value_has_already_been_validated_in_a_bulk(
+        ProductUniqueDataRepositoryInterface $uniqueDataRepository,
+        UniqueValuesSet $uniqueValuesSet,
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        ExecutionContextInterface $context,
+        ProductInterface $product,
         ValueInterface $value,
         UniqueValue $constraint,
         AttributeInterface $releaseDate,
-        ProductInterface $product,
         ConstraintViolationBuilderInterface $constraintViolationBuilder,
-        $context,
-        $uniqueValuesSet,
-        $attributeRepository
-    ) {
+    ): void {
         $context->getRoot()->willReturn($product);
         $releaseDate->isUnique()->willReturn(true);
         $releaseDate->getCode()->willReturn('release_date');
@@ -93,6 +89,7 @@ class UniqueValueValidatorSpec extends ObjectBehavior
         $value->getAttributeCode()->willReturn('release_date');
         $value->__toString()->willReturn('2015-16-03');
 
+        $uniqueDataRepository->uniqueDataExistsInAnotherProduct($value, $product)->willReturn(false);
         $uniqueValuesSet->addValue($value, $product)->willReturn(false);
 
         $context->buildViolation(Argument::cetera())->willReturn($constraintViolationBuilder);
@@ -103,11 +100,14 @@ class UniqueValueValidatorSpec extends ObjectBehavior
     }
 
     function it_skips_empty_objects(
+        ProductUniqueDataRepositoryInterface $uniqueDataRepository,
+        UniqueValuesSet $uniqueValuesSet,
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        ExecutionContextInterface $context,
+        ProductInterface $product,
+        ValueInterface $value,
         UniqueValue $constraint,
-        $context,
-        $uniqueDataRepository,
-        $uniqueValuesSet
-    ) {
+    ): void {
         $uniqueValuesSet->addValue(Argument::any())->shouldNotBeCalled();
         $uniqueDataRepository->uniqueDataExistsInAnotherProduct(Argument::cetera())->shouldNotBeCalled();
 
@@ -117,29 +117,28 @@ class UniqueValueValidatorSpec extends ObjectBehavior
     }
 
     function it_skips_non_values_objects(
-        \StdClass $object,
+        ProductUniqueDataRepositoryInterface $uniqueDataRepository,
+        UniqueValuesSet $uniqueValuesSet,
+        ExecutionContextInterface $context,
         UniqueValue $constraint,
-        $context,
-        $uniqueDataRepository,
-        $uniqueValuesSet
-    ) {
+    ): void {
         $uniqueValuesSet->addValue(Argument::any())->shouldNotBeCalled();
         $uniqueDataRepository->uniqueDataExistsInAnotherProduct(Argument::cetera())->shouldNotBeCalled();
 
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
-        $this->validate($object, $constraint);
+        $this->validate(new \stdClass(), $constraint);
     }
 
     function it_skips_non_unique_values(
+        ProductUniqueDataRepositoryInterface $uniqueDataRepository,
+        UniqueValuesSet $uniqueValuesSet,
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        ExecutionContextInterface $context,
         ValueInterface $value,
         UniqueValue $constraint,
         AttributeInterface $releaseDate,
-        $context,
-        $uniqueDataRepository,
-        $uniqueValuesSet,
-        $attributeRepository
-    ) {
+    ): void {
         $releaseDate->isUnique()->willReturn(false);
 
         $value->getAttributeCode()->willReturn('release_date');
@@ -154,15 +153,15 @@ class UniqueValueValidatorSpec extends ObjectBehavior
     }
 
     function it_does_not_add_a_violation_for_valid_values(
+        ProductUniqueDataRepositoryInterface $uniqueDataRepository,
+        UniqueValuesSet $uniqueValuesSet,
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        ExecutionContextInterface $context,
+        ProductInterface $product,
         ValueInterface $value,
         UniqueValue $constraint,
         AttributeInterface $releaseDate,
-        ProductInterface $product,
-        $context,
-        $uniqueDataRepository,
-        $uniqueValuesSet,
-        $attributeRepository
-    ) {
+    ): void {
         $context->getRoot()->willReturn($product);
         $releaseDate->isUnique()->willReturn(true);
         $releaseDate->getCode()->willReturn('release_date');

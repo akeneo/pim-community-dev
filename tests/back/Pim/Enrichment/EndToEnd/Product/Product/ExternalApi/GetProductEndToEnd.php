@@ -58,6 +58,7 @@ class GetProductEndToEnd extends AbstractProductTestCase
                         ],
                     ],
                 ],
+                'sku' => [['locale' => null, 'scope' => null, 'data' => 'product']],
             ],
             'created' => '2016-06-14T13:12:50+02:00',
             'updated' => '2016-06-14T13:12:50+02:00',
@@ -119,6 +120,7 @@ class GetProductEndToEnd extends AbstractProductTestCase
                         ],
                     ],
                 ],
+                'sku' => [['locale' => null, 'scope' => null, 'data' => 'product']],
             ],
             'created' => '2016-06-14T13:12:50+02:00',
             'updated' => '2016-06-14T13:12:50+02:00',
@@ -180,6 +182,7 @@ class GetProductEndToEnd extends AbstractProductTestCase
                         ],
                     ],
                 ],
+                'sku' => [['locale' => null, 'scope' => null, 'data' => 'product']],
             ],
             'created' => '2016-06-14T13:12:50+02:00',
             'updated' => '2016-06-14T13:12:50+02:00',
@@ -227,6 +230,7 @@ class GetProductEndToEnd extends AbstractProductTestCase
                 'a_date' => [
                     ['data' => '2016-06-28T00:00:00+02:00', 'locale' => null, 'scope' => null]
                 ],
+                'sku' => [['locale' => null, 'scope' => null, 'data' => 'product']],
             ],
             'created' => '2016-06-14T13:12:50+02:00',
             'updated' => '2016-06-14T13:12:50+02:00',
@@ -280,7 +284,7 @@ class GetProductEndToEnd extends AbstractProductTestCase
             'groups' => [],
             'categories' => [],
             'enabled' => true,
-            'values' => [],
+            'values' => ['sku' => [['locale' => null, 'scope' => null, 'data' => 'product']]],
             'created' => '2016-06-14T13:12:50+02:00',
             'updated' => '2016-06-14T13:12:50+02:00',
             'associations' => [
@@ -333,6 +337,7 @@ class GetProductEndToEnd extends AbstractProductTestCase
                         'scope' => null,
                     ],
                 ],
+                'sku' => [['locale' => null, 'scope' => null, 'data' => 'product']],
             ],
             'created' => '2016-06-14T13:12:50+02:00',
             'updated' => '2016-06-14T13:12:50+02:00',

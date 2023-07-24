@@ -75,6 +75,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $fieldProvider->getField($price)->willReturn('akeneo-text-field');
         $filterProvider->getFilters($price)->willReturn(['product-export-builder' => 'akeneo-attribute-string-filter']);
         $price->isLocaleSpecific()->willReturn(false);
+        $price->isMainIdentifier()->willReturn(false);
         $price->getId()->willReturn(12);
 
         $this->normalize($price, 'internal_api', [])->shouldReturn(
@@ -111,6 +112,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'field_type'             => 'akeneo-text-field',
                 'filter_types'           => ['product-export-builder' => 'akeneo-attribute-string-filter'],
                 'is_locale_specific'     => false,
+                'is_main_identifier'     => false,
                 'meta'                   => ['id' => 12],
             ]
         );
@@ -163,6 +165,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $fieldProvider->getField($price)->willReturn('akeneo-text-field');
         $filterProvider->getFilters($price)->willReturn(['product-export-builder' => 'akeneo-attribute-string-filter']);
         $price->isLocaleSpecific()->willReturn(false);
+        $price->isMainIdentifier()->willReturn(false);
         $numberLocalizer->localize('20.5', ['locale' => 'fr_FR'])->willReturn('20,5');
         $numberLocalizer->localize('4000.8', ['locale' => 'fr_FR'])->willReturn('4000,8');
         $price->getId()->willReturn(12);
@@ -201,6 +204,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'field_type'             => 'akeneo-text-field',
                 'filter_types'           => ['product-export-builder' => 'akeneo-attribute-string-filter'],
                 'is_locale_specific'     => false,
+                'is_main_identifier'     => false,
                 'meta'                   => ['id' => 12],
             ]
         );

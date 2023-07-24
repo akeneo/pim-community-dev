@@ -38,14 +38,14 @@ define([
      */
     getTemplateOptions() {
       const isProductModel = this.isProductModel();
-      const label = this.model.get('label');
-      const canRemoveAssociation = this.canRemoveAssociation();
       const id = this.model.id.replace(/product-model-|product-/g, '');
+      const label = this.model.get('label') || `[${id}]`;
+      const canRemoveAssociation = this.canRemoveAssociation();
 
       return {
         useLayerStyle: isProductModel,
         label,
-        identifier: this.model.get('identifier'),
+        identifier: this.model.get('identifier') ?? `[${id}]`,
         imagePath: this.getThumbnailImagePath(),
         canRemoveAssociation,
         redirectUrl: router.generate(

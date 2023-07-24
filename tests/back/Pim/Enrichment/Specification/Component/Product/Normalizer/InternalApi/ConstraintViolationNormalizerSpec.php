@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 
-use Akeneo\Pim\Structure\Component\Validator\Constraints\SingleIdentifierAttribute;
+use Akeneo\Pim\Structure\Component\Validator\Constraints\ValidDateRange;
 use Akeneo\Pim\Structure\Component\Validator\Constraints\ValidMetric;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Validator\ConstraintViolation;
@@ -29,45 +29,45 @@ class ConstraintViolationNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_violation_with_explicit_path(ConstraintViolation $violation) {
         $violation->getPropertyPath()->willReturn(null);
-        $violation->getMessage()->willReturn('An identifier attribute already exists.');
-        $constraint = new SingleIdentifierAttribute();
-        $constraint->payload['standardPropertyPath'] = 'type';
+        $violation->getMessage()->willReturn('The max date must be greater than the min date.');
+        $constraint = new ValidDateRange();
+        $constraint->payload['standardPropertyPath'] = 'dateMin';
         $violation->getConstraint()->willReturn($constraint);
 
         $this->normalize($violation, 'internal_api')->shouldReturn([
-            'message' => 'An identifier attribute already exists.',
+            'message' => 'The max date must be greater than the min date.',
             'global'  => true,
         ]);
     }
 
     function it_normalizes_global_violation(ConstraintViolation $violation) {
         $violation->getPropertyPath()->willReturn(null);
-        $violation->getMessage()->willReturn('An identifier attribute already exists.');
-        $constraint = new SingleIdentifierAttribute();
+        $violation->getMessage()->willReturn('The max date must be greater than the min date.');
+        $constraint = new ValidDateRange();
         $violation->getConstraint()->willReturn($constraint);
 
         $this->normalize($violation, 'internal_api')->shouldReturn([
-            'message' => 'An identifier attribute already exists.',
+            'message' => 'The max date must be greater than the min date.',
             'global'  => true,
         ]);
     }
 
     public function it_normalizes_violation_without_translating(
         ConstraintViolation $violation,
-        SingleIdentifierAttribute $constraint
+        ValidDateRange $constraint
     ) {
         $violation->getPropertyPath()->willReturn('foo');
-        $violation->getMessage()->willReturn('An identifier attribute already exists.');
-        $violation->getMessageTemplate()->willReturn('identifier_attribute_already_exists');
+        $violation->getMessage()->willReturn('The max date must be greater than the min date.');
+        $violation->getMessageTemplate()->willReturn('attribute_date_must_be_greater');
         $violation->getParameters()->willReturn([]);
         $violation->getInvalidValue()->willReturn('');
         $violation->getConstraint()->willReturn($constraint);
         $violation->getPlural()->willReturn(null);
 
         $this->normalize($violation, 'internal_api', ['translate' => false])->shouldReturn([
-            'messageTemplate' => 'identifier_attribute_already_exists',
+            'messageTemplate' => 'attribute_date_must_be_greater',
             'parameters' => [],
-            'message' => 'An identifier attribute already exists.',
+            'message' => 'The max date must be greater than the min date.',
             'propertyPath' => 'foo',
             'invalidValue' => '',
             'plural' => null

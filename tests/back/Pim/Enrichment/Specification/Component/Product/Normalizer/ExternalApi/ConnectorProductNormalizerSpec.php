@@ -173,7 +173,7 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
                 'groups' => ['group_code_1', 'group_code_2'],
                 'parent' => 'parent_product_model_code',
                 'values' => [
-                    # Identifier value is removed from values
+                    'sku' => [['normalizedIdentifier1']],
                     'another_attribute' => [['normalizedValue1']],
                 ],
                 'associations' => [
@@ -224,7 +224,7 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
                 'groups' => [],
                 'parent' => null,
                 'values' => [
-                    # Identifier value is removed from values
+                    'sku' => [['normalizedIdentifier2']],
                     'another_attribute' => [['normalizedValue2']],
                 ],
                 'associations' => (object) [],
@@ -242,7 +242,7 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
                 'groups' => [],
                 'parent' => null,
                 'values' => [
-                    # Identifier value is removed from values
+                    'sku' => [['normalizedIdentifier3']],
                     'another_attribute' => [['normalizedValue3']],
                 ],
                 'associations' => (object) [],
@@ -312,6 +312,7 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
             'groups' => ['group_code_1', 'group_code_2'],
             'parent' => 'parent_product_model_code',
             'values' => [
+                'sku' => [['normalizedIdentifier']],
                 'another_attribute' => [['normalizedValue']],
             ],
             'associations' => [

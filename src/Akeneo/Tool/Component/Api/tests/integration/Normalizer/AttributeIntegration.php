@@ -2,7 +2,9 @@
 
 namespace Akeneo\Tool\Component\Api\tests\integration\Normalizer;
 
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use PHPUnit\Framework\Assert;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
@@ -46,6 +48,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'guidelines'             => ['en_US' => 'this is the sku'],
             'auto_option_sorting'    => null,
             'default_value'          => null,
+            'is_main_identifier'     => true,
         ];
 
         $this->assert('sku', $expected);
@@ -1006,18 +1009,22 @@ class AttributeIntegration extends AbstractNormalizerTestCase
         $this->assert('a_regexp', $expected);
     }
 
-    /**
-     * @param string $identifier
-     * @param array  $expected
-     */
-    private function assert($identifier, array $expected)
+    private function assert(string $identifier, array $expected): void
     {
-        $repository = $this->get('pim_catalog.repository.attribute');
-        $serializer = $this->get('pim_external_api_serializer');
-
-        $result = $serializer->normalize($repository->findOneByIdentifier($identifier), 'external_api');
+        $attribute = $this->getAttributeRepository()->findOneByIdentifier($identifier);
+        $result = $this->getApiSerializer()->normalize($attribute, 'external_api');
 
         $this->assertEquals($expected, $result);
+    }
+
+    private function getAttributeRepository(): AttributeRepositoryInterface
+    {
+        return $this->get('pim_catalog.repository.attribute');
+    }
+
+    private function getApiSerializer(): SerializerInterface
+    {
+        return $this->get('pim_external_api_serializer');
     }
 }
 

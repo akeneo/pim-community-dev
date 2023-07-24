@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class GetAttributeEndToEnd extends ApiTestCase
 {
-    public function testGetAnAttribute()
+    public function testGetSkuAttribute()
     {
         $client = $this->createAuthenticatedClient();
 
@@ -50,7 +50,57 @@ class GetAttributeEndToEnd extends ApiTestCase
     "labels": {},
     "auto_option_sorting": null,
     "default_value": null,
-    "guidelines": {"en_US": "this is the sku"}
+    "guidelines": {"en_US": "this is the sku"},
+    "is_main_identifier": true
+}
+JSON;
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($standardAttribute, $response->getContent());
+    }
+
+    public function testGetBooleanAttribute()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $client->request('GET', 'api/rest/v1/attributes/a_yes_no');
+
+        $standardAttribute = <<<JSON
+{
+    "code": "a_yes_no",
+    "type": "pim_catalog_boolean",
+    "group": "attributeGroupA",
+    "group_labels": {
+        "en_US": "Attribute group A",
+        "fr_FR": "Groupe d'attribut A"
+    },
+    "unique": false,
+    "useable_as_grid_filter": false,
+    "allowed_extensions": [],
+    "metric_family": null,
+    "default_metric_unit": null,
+    "reference_data_name": null,
+    "available_locales": [],
+    "max_characters": null,
+    "validation_rule": null,
+    "validation_regexp": null,
+    "wysiwyg_enabled": null,
+    "number_min": null,
+    "number_max": null,
+    "decimals_allowed": null,
+    "negative_allowed": null,
+    "date_min": null,
+    "date_max": null,
+    "max_file_size": null,
+    "minimum_input_length": null,
+    "sort_order": 8,
+    "localizable": false,
+    "scopable": false,
+    "labels": {},
+    "auto_option_sorting": null,
+    "default_value": null,
+    "guidelines": {}
 }
 JSON;
 

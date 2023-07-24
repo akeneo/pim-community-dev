@@ -16,8 +16,9 @@ define(['jquery', 'underscore', 'pim/base-fetcher', 'routing'], function ($, _, 
 
         return this.fetchByTypes([this.options.identifier_type]).then(
           function (attributes) {
-            if (attributes.length > 0) {
-              this.identifierPromise.resolve(attributes[0]).promise();
+            const mainIdentifier = attributes.find(attribute => attribute.is_main_identifier);
+            if (typeof mainIdentifier !== 'undefined') {
+              this.identifierPromise.resolve(mainIdentifier).promise();
 
               return this.identifierPromise;
             }

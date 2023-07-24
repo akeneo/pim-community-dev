@@ -316,6 +316,41 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
     }
 
+    public function testAttributeSearchByMainIdentifier()
+    {
+        $client = $this->createAuthenticatedClient();
+        $search = '{"is_main_identifier":[{"operator":"=","value":true}]}';
+        $searchEncoded = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($search);
+
+        $client->request('GET', 'api/rest/v1/attributes?limit=5&page=1&with_count=true&search=' . $search);
+
+        $standardizedAttributes = $this->getStandardizedAttributes();
+
+        $expected = <<<JSON
+{
+	"_links": {
+		"self": {
+			"href": "http://localhost/api/rest/v1/attributes?page=1&limit=5&with_count=true&search={$searchEncoded}"
+		},
+		"first": {
+			"href": "http://localhost/api/rest/v1/attributes?page=1&limit=5&with_count=true&search={$searchEncoded}"
+		}
+	},
+	"current_page": 1,
+	"items_count": 1,
+    "_embedded" : {
+        "items" : [
+            {$standardizedAttributes['sku']}
+        ]
+    }
+}
+JSON;
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
+    }
+
     public function testOutOfRangeListAttributes()
     {
         $client = $this->createAuthenticatedClient();
@@ -388,6 +423,47 @@ JSON;
      */
     protected function getStandardizedAttributes()
     {
+        $standardizedAttributes['sku'] = <<<JSON
+{
+    "_links": {
+        "self": {
+            "href": "http://localhost/api/rest/v1/attributes/sku"
+        }
+    },
+    "code": "sku",
+    "type": "pim_catalog_identifier",
+    "group": "attributeGroupA",
+    "unique": true,
+    "useable_as_grid_filter": true,
+    "allowed_extensions": [],
+    "metric_family": null,
+    "default_metric_unit": null,
+    "reference_data_name": null,
+    "available_locales": [],
+    "max_characters": null,
+    "validation_rule": null,
+    "validation_regexp": null,
+    "wysiwyg_enabled": null,
+    "number_min": null,
+    "number_max": null,
+    "decimals_allowed": null,
+    "negative_allowed": null,
+    "date_min": null,
+    "date_max": null,
+    "max_file_size": null,
+    "minimum_input_length": null,
+    "sort_order": 0,
+    "localizable": false,
+    "scopable": false,
+    "labels": {},
+    "guidelines": {"en_US": "this is the sku"},
+    "auto_option_sorting": null,
+    "default_value": null,
+    "group_labels"           : {"en_US": "Attribute group A","fr_FR": "Groupe d'attribut A"},
+    "is_main_identifier": true
+}
+JSON;
+
         $standardizedAttributes['a_date'] = <<<JSON
 {
     "_links": {

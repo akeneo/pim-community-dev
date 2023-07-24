@@ -54,5 +54,14 @@ define(['pim/form/common/edit-form'], function (BaseEditForm) {
     setLabels: function (labels) {
       this.labels = labels;
     },
+    setLocalizable: function (localizable) {
+      this.localizable = localizable === 'true';
+    },
+    setScopable: function (scopable) {
+      this.scopable = scopable === 'true';
+    },
+    setUnique: function (unique) {
+      this.unique = unique === 'true';
+    },
   });
 });

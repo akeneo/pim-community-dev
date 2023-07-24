@@ -280,7 +280,7 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
     {
         return [
             'resource' => [
-                'uuid' => $product->getUuid(),
+                'uuid' => $product->getUuid()->toString(),
                 'identifier' => $product->getIdentifier(),
                 'enabled' => true,
                 'family' => $product->getFamily()->getCode(),
@@ -291,6 +291,13 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
                     'another_text_attribute' => [
                         [
                             'data' => 'text attribute',
+                            'locale' => null,
+                            'scope' => null,
+                        ],
+                    ],
+                    'sku' => [
+                        [
+                            'data' => $product->getIdentifier(),
                             'locale' => null,
                             'scope' => null,
                         ],
