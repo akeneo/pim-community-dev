@@ -1,0 +1,32 @@
+{
+  "name": "@akeneo-pim-community/structure",
+  "version": "0.1.0",
+  "private": true,
+  "config": {
+    "front_packages_path": "../../../../../front-packages"
+  },
+  "peerDependencies": {
+    "babel-loader": "8.1.0",
+    "eslint": "^7.11.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "styled-components": "^5.1.1"
+  },
+  "dependencies": {
+    "typescript": "^4.0.3"
+  },
+  "devDependencies": {
+    "@types/react": "^17.0.2",
+    "@types/react-dom": "^17.0.2"
+  },
+  "scripts": {
+    "lib:build": "tsc -p ./tsconfig.build.json"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "jest": {}
+}

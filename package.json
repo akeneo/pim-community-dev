@@ -47,7 +47,8 @@
     "packages:unit": "yarn workspace @akeneo-pim-community/shared test:unit:run && yarn workspace @akeneo-pim-community/measurement test:unit:run && yarn workspace @akeneo-pim-community/process-tracker test:unit:run && yarn workspace @akeneo-pim-community/import-export test:unit:run && yarn workspace @akeneo-pim-community/catalog-volume-monitoring test:unit:run && yarn workspace @akeneo-pim-community/category test:unit:run && yarn workspace @akeneo-pim-community/identifier-generator test:unit:run",
     "packages:lint:check": "yarn shared:lint:check && yarn measurement:lint:check && yarn process-tracker:lint:check && yarn import-export:lint:check && yarn catalog-volume-monitoring:lint:check && yarn config:lint:check && yarn workspace @akeneo-pim-community/identifier-generator lint:check",
     "identifier-generator:build": "yarn workspace @akeneo-pim-community/identifier-generator lib:build",
-    "packages:build": "yarn dsm:build && yarn shared:build && yarn measurement:build && yarn catalog-volume-monitoring:build && yarn category:build && yarn config:build && yarn process-tracker:build && yarn import-export:build && yarn catalogs:build && yarn identifier-generator:build",
+    "structure:build": "yarn workspace @akeneo-pim-community/structure lib:build",
+    "packages:build": "yarn dsm:build && yarn shared:build && yarn measurement:build && yarn catalog-volume-monitoring:build && yarn category:build && yarn config:build && yarn process-tracker:build && yarn import-export:build && yarn catalogs:build && yarn identifier-generator:build && yarn structure:build",
     "test:e2e:open": "cypress open",
     "test:e2e:run": "cypress run"
   },
@@ -178,6 +179,7 @@
     "src/Akeneo/Connectivity/Connection/workspaces/permission-form",
     "src/Akeneo/Pim/Automation/DataQualityInsights/front",
     "src/Akeneo/Pim/Enrichment/Bundle/Resources/workspaces/enrichment",
+    "src/Akeneo/Pim/Structure/front",
     "src/Akeneo/Pim/Structure/Bundle/Resources/workspaces/settings-ui",
     "src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front",
     "src/Akeneo/Platform/Bundle/CommunicationChannelBundle/front",
