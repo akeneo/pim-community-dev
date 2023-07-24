@@ -235,7 +235,7 @@ SQL;
             if (null !== $labelValue && null !== $labelValue->getData()) {
                 $result[$row['uuid']]['label'] = $labelValue->getData();
             } else {
-                $result[$row['uuid']]['label'] = sprintf('[%s]', $row['identifier'] ?? $row['uuid']);
+                $result[$row['uuid']]['label'] = $row['identifier'] ?? sprintf('[%s]', $row['uuid']);
             }
         }
 
