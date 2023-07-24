@@ -136,6 +136,7 @@ services:
     Akeneo\Pim\Structure\Bundle\EventSubscriber\DispatchFamilyWasCreatedOrUpdatedSubscriber:
         arguments:
             - '@akeneo.feature_flag.service.only_serenity_feature'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsUcsEventFeature'
             - '@messenger.bus.default'
             - '@pim_catalog.structure.clock'
             - '@logger'

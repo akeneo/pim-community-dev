@@ -26,6 +26,7 @@ final class DispatchFamilyWasCreatedOrUpdatedSubscriber implements EventSubscrib
 
     public function __construct(
         private readonly FeatureFlag $serenityFeatureFlag,
+        private readonly FeatureFlag $dqiUcsEventFeatureFlag,
         private readonly MessageBusInterface $messageBus,
         private readonly ClockInterface $clock,
         private readonly LoggerInterface $logger,
@@ -145,6 +146,7 @@ final class DispatchFamilyWasCreatedOrUpdatedSubscriber implements EventSubscrib
         $subject = $event->getSubject();
 
         return !$this->serenityFeatureFlag->isEnabled()
+            || !$this->dqiUcsEventFeatureFlag->isEnabled()
             || $this->isProdLegacy()
             || !$subject instanceof FamilyInterface
             || !$event->hasArgument('unitary')
@@ -157,6 +159,7 @@ final class DispatchFamilyWasCreatedOrUpdatedSubscriber implements EventSubscrib
         $subjects = $event->getSubject();
 
         return !$this->serenityFeatureFlag->isEnabled()
+            || !$this->dqiUcsEventFeatureFlag->isEnabled()
             || $this->isProdLegacy()
             || !\is_array($subjects)
             || [] === $subjects

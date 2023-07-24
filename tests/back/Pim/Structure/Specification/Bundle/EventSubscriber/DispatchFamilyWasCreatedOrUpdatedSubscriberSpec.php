@@ -29,7 +29,7 @@ final class DispatchFamilyWasCreatedOrUpdatedSubscriberSpec extends ObjectBehavi
         ClockInterface $clock,
         LoggerInterface $logger,
     ) {
-        $this->beConstructedWith($featureFlag, $messageBus, $clock, $logger, 'tenant', 'prod');
+        $this->beConstructedWith($featureFlag, $featureFlag, $messageBus, $clock, $logger, 'tenant', 'prod');
         $featureFlag->isEnabled()->willReturn(true);
 
         $createdFamily = new Family();

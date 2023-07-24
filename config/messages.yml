@@ -28,3 +28,9 @@ queues:
 #        env_var: PUBSUB_TOPIC_ATTRIBUTES_WERE_UPSERT
 #        message_class: Akeneo\Pim\Structure\Component\Event\AttributesWereCreatedOrUpdated
 #        consumers:
+
+# To uncomment and complete when a consumer will be needed in CE (for now the unique consumer is EE only)
+#    families_were_upsert_queue:
+#        env_var: PUBSUB_TOPIC_FAMILY_WAS_UPSERT
+#        message_class: Akeneo\Pim\Structure\Component\Event\FamilyWasCreatedOrUpdated
+#        consumers:
