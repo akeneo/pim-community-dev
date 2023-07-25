@@ -1,34 +1,4 @@
 free_trial:
-  invite_users:
-    title: "]-Inf, 1]{{ count }}명의 초대받은 사용자|]1, Inf[{{ count }}명의 초대받은 사용자"
-    breadcrumb: 사용자 초대
-    invite_button: 사용자 초대
-    invite_helper:
-      message1: 동료와 파트너를 초대하여 Akeneo PIM을 소개해주십시오.
-      message2: 초대한 분들께 무료 평가판을 함께 사용해 볼 수 있는 링크를 이메일로 전송해드립니다.
-    invite_input_label: 동료나 파트너의 이메일을 공유해주십시오.
-    users_list:
-      headers:
-        invited_user: '초대장 전송됨:'
-        status: 상태
-      empty_list_message: 아직 소개하지 않았습니다.
-    invite_messages:
-      success:
-        title: 새로운 사용자에게 초대장 전송됨
-        description: Akeneo PIM 무료 평가판을 이용할 수 있는 링크가 포함된 이메일이 곧 전송됩니다.
-      error:
-        invitation_failed:
-          title: 초대장을 전송할 수 없음
-          description: 기술적 오류가 발생했습니다. 다시 시도하십시오.
-        invalid_email:
-          title: 초대장을 전송할 수 없음
-          description: 해당 이메일이 존재하고 철자가 올바른지 확인하십시오.
-        invitation_already_sent:
-          title: 이미 초대장 전송됨
-          description: Akeneo PIM 무료 평가판을 이용할 수 있는 링크가 포함된 초대장이 일부 사용자에게 이미 전송되었습니다. 이러한 사실을 사용자들에게 알려주시기 바랍니다.
-        unauthorized_email:
-          title: 초대장을 전송할 수 없음
-          description: 이메일이 직장 이메일인지 확인하십시오.
   menu:
     assets: 애셋
     entities: 엔터티
@@ -38,10 +8,8 @@ free_trial:
     feature_ee_only: 이 기능은 Enterprise Edition 전용입니다
   dqi:
     dashboard:
-      helper: Akeneo PIM Enterprise Edition은 기존의 데이터 품질 인사이트 기능에 대한 강력한 추가 기능을 제공합니다. 확장된 철자 검사 기능, 더욱 폭넓은 언어 지원, 추가적인 주요 지표를 이용하여, 판매 위치가 어디든 관계없이 완벽한 제품 경험을 제공할 수 있습니다.
+      helper: Akeneo PIM Enterprise Edition은 기존의 데이터 품질 인사이트 기능에 강력한 추가 기능을 제공합니다. 사용자는 확장된 철자 검사, 폭넓은 언어 지원, 추가 주요 지표를 이용하여, 판매 위치가 어디든 관계없이 완벽한 제품 경험을 제공할 수 있습니다.
   activity:
     dashboard:
       projects: 프로젝트
-      helper: Akeneo PIM Enterprise Edition의 프로젝트를 이용하면 제품 데이터 보강에 관여하는 기여자 그룹 간의 작업을 정리하고 추적할 수 있습니다. 프로젝트에서 작업이 생성되고 적절한 사용자에게 할당되므로 모든 작업자가 매력적인 제품 경험을 구축하는 데 자신의 역할을 다할 수 있습니다. 프로젝트를 생성하여 보강 워크플로를 구성하고 프로젝트 상태를 모니터링할 수 있습니다. 제품 보강 작업을 하는 팀원 간의 의사소통이 간소화됩니다.
-pim_title:
-  akeneo_invite_user: 사용자 초대
+      helper: Akeneo PIM Enterprise Edition에서 프로젝트를 이용하면 제품 데이터 보강과 관련된 기여자 그룹 간의 작업을 정리하고 추적할 수 있습니다. 프로젝트에서 작업이 생성되고 적절한 사용자에게 할당되므로 모든 작업자가 매력적인 제품 경험을 구축하는 데 자신의 역할을 다할 수 있습니다. 프로젝트를 생성하여 보강 워크플로를 구성하고 프로젝트 상태를 모니터링하십시오. 제품 보강 작업을 하는 팀원 간의 의사소통이 간소화됩니다.

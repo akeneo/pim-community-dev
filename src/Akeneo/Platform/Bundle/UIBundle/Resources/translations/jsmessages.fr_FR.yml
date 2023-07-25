@@ -1,17 +1,468 @@
-user:
-  email_notifications: Être notifié/e de l'expiration des ressources
-pimee_enrich.entity.product:
-  duplicate:
-    title: Dupliquer le produit {{ product_identifier }}
-    button: Dupliquer
-    flash:
-      success: Le produit {{ product_identifier }} a été dupliqué avec succès.
-      success_with_attribute_codes: Le produit {{ product_identifier }} a été dupliqué avec succès. Vous devez enrichir le {{ unique_attribute_codes }} avec des valeurs uniques
-pim_dashboard:
-  widget:
-    teamwork_assistant:
-      title: Projets
-      helper: Pour en savoir plus sur les projets et comment vous pouvez améliorer votre complétude, <a href="{{ link }}" target="_blank">consultez notre help center</a>.
-      no_project:
-        title: Les projets peuvent vous aider à suivre l'évolution de votre sélection de produits.
-        subtitle: Créez votre premier projet.
+#ORO messages
+"Yes, I Agree": "Oui, je suis d'accord"
+"Yes, do it": "Oui, j'en suis sûr(e)"
+"Ok, got it.": "OK, compris."
+"Edit": "Modifier"
+"Unexpected error occurred. Please contact system administrator.": "Une erreur s'est produite. Contactez l'administrateur système."
+"Yes, revoke": "Oui, révoquer"
+"Revoke Confirmation": "Confirmation de révocation"
+Prev: Préc
+Today: Aujourd'hui
+Wk: Semaine
+AM: AM
+A: A
+PM: PM
+P: P
+"Choose Time": "Choisir l'heure"
+Time: Temps
+Hour: Heure
+Minute: Minute
+Second: Seconde
+Millisecond: Milliseconde
+Microsecond: Microseconde
+"Time Zone": "Fuseau horaire"
+duration:
+  days: "{0}0 jours|{1}1 jour|]1, Inf[{{ count }} jours"
+  hours: "{0}0 heures|{1}1 heure|]1, Inf[{{ count }} heures"
+  minutes: "{0}0 minutes|{1}1 minute|]1, Inf[{{ count }} minutes"
+  seconds: "{0}0 secondes|{1}1 seconde|]1, Inf[{{ count }} secondes"
+#PIM messages
+Localized value: Valeur localisée
+Columns: Colonnes
+Datagrid Configuration: Configuration du tableau
+#Filters
+Action: Action
+Unit: Unité
+Currency: Devise
+jstree:
+  all: Tous les produits
+  unclassified: Produits non classifiés
+  product:
+    all: Tous les produits
+    unclassified: Produits non classifiés
+  no_tree: Pas d'arborescence disponible
+  include_sub: Inc. les sous-catégories
+#Datetimepicker
+datetimepicker:
+  days:
+    Sunday: Dimanche
+    Monday: Lundi
+    Tuesday: Mardi
+    Wednesday: Mercredi
+    Thursday: Jeudi
+    Friday: Vendredi
+    Saturday: Samedi
+  daysShort:
+    Sun: Dim
+    Mon: Lun
+    Tue: Mar
+    Wed: Mer
+    Thu: Jeu
+    Fri: Ven
+    Sat: Sam
+  daysMin:
+    Su: Di
+    Mo: Lu
+    Tu: Ma
+    We: Me
+    Th: Je
+    Fr: Ve
+    Sa: Sa
+  months:
+    January: Janvier
+    February: Février
+    March: Mars
+    April: Avril
+    May: Mai
+    June: Juin
+    July: Juillet
+    August: Août
+    September: Septembre
+    October: Octobre
+    November: Novembre
+    December: Décembre
+  monthsShort:
+    Jan: Janv.
+    Feb: Févr.
+    Mar: Mars
+    Apr: Avr.
+    May: Mai
+    Jun: Juin
+    Jul: Juil.
+    Aug: Août
+    Sep: Sept.
+    Oct: Oct.
+    Nov: Nov.
+    Dec: Déc.
+#ORO
+oro_config:
+  form:
+    config:
+      title: Configuration système
+      tab:
+        system:
+          title: Système
+      save_ok: Configuration enregistrée avec succès
+      save_error: Désolé, impossible d'enregistrer la configuration ({{ reason }})
+      group:
+        localization:
+          title: Paramètres de la page de connexion
+          fields:
+            system_locale:
+              label: Langue
+        notification:
+          title: Notifications de nouvelle version
+          helper: Lorsque cette option est activée, vous recevez une notification quand une nouvelle version est disponible pour vous.
+          fields:
+            enabler:
+              label: Activé
+        environment:
+          title: Paramètres de l'environnement
+          fields:
+            sandbox_banner:
+              label: Afficher la bannière d'alerte d'environnement bac à sable
+        loading_message:
+          title: Messages de chargement personnalisés
+          helper: Divertissez vos utilisateurs avec des messages personnalisés pour le chargement des écrans.
+          placeholder: Veuillez écrire votre propre message à afficher sur votre écran de chargement
+          fields:
+            enabler:
+              label: Activer les messages au chargement
+            messages:
+              label: Ajouter vos propres messages de chargement
+pim_ui:
+  flash:
+    unsaved_changes: 'Vous avez des modifications non enregistrées, êtes-vous sûr de vouloir quitter ?'
+"Sorry, page was not loaded correctly": "Désolé, la page n'a pas été chargée correctement"
+"Your local changes will be lost. Are you sure you want to refresh the page?": "Vos modifications courantes seront perdues. Êtes-vous certain(e) de vouloir actualiser la page ?"
+"navigation.message.content.outdated": "Le contenu de la page {{ title }} est dépassé, veuillez <a href='#' data-action='page-refresh'>actualiser la page</a>"
+"Content of pinned page is outdated": "Le contenu de la page épinglée est dépassé"
+#Global structure of translation files
+#pim_bundle_name:
+#entity:
+#entity_name:
+#label: entity
+#uppercase_label: Entity
+#plural_label: Entities
+#flash:
+#update:
+#fail: Update failed
+#success: Entity Successfully updated
+#delete:
+#fail: Cannot delete this entity
+#success: Entity successfully removed
+#create:
+#fail: Can not create this entity
+#success: Entity successfully created
+#page_title:
+#index: "]-Inf, 1]1 entity|]1, Inf[{{ count }} entities"
+#property:
+#field_name: Field name
+#complex_field:
+#label: Field name
+#choose: Choose a field name
+#module:
+#module_name:
+#key: message
+pim_common:
+  actions: Actions
+  add: Ajouter
+  add_attributes: Ajouter des attributs
+  after: Après
+  all: Tous
+  and: et
+  apply: Appliquer
+  before: Avant
+  by: par
+  cancel: Annuler
+  characters_left: ']-Inf, 1]{{ count }} caractère restant|]1, +Inf[{{ count }} caractères restants'
+  clear_value: Effacer la valeur
+  close: Fermer
+  code: Code
+  completeness: Complétude
+  confirm: Confirmation
+  confirm_deletion: Supprimer l'élément
+  confirm_revocation: Confirmer la révocation
+  create: Créer
+  created: Créé
+  delete: Supprimer
+  done: Fermer
+  duplicate: Dupliquer
+  edit: Modifier
+  entity_updated: Des modifications n'ont pas encore été sauvegardées.
+  export: Export
+  from: De
+  general_properties: Propriétés générales
+  history: Historique
+  identifier: Identifiant
+  image: Image
+  label: Libellé
+  label_translations: Traduction des libellés
+  Label or identifier: libellé ou identifiant
+  code_or_label: code ou libellé
+  less_than: Moins de
+  loading: Chargement en cours...
+  media_upload: Glissez et déposez un fichier pour le télécharger ou cliquez ici
+  media_uploading: Envoi en cours…
+  media_upload_error: Une erreur est survenue lors du chargement
+  more_actions: Autres actions
+  more_than: Plus de
+  next: Suivant
+  "no": "Non"
+  none: Aucune
+  not_available: N/A
+  now: Maintenant
+  ok: OK
+  open: Ouvrir
+  no_result: Aucun résultat
+  no_search_result: Désolé, il n’y a aucun résultat pour votre recherche.
+  other_actions: Autres actions
+  permissions: Autorisations
+  previous: Précédent
+  properties: Propriétés
+  quality_score: Score de qualité
+  remove: Supprimer
+  required_label: (obligatoire)
+  result_count: "{0}0 résultats|{1}1 résultat|]1, Inf[{{ itemsCount }} résultats"
+  save: Enregistrer
+  search: Rechercher
+  select2:
+    search: Rechercher...
+    no_match: Aucune correspondance trouvée
+    load_more: Chargement de plus de résultats...
+  selected: "{0}0 élément sélectionné|{1}1 élément sélectionné|]1, Inf[{{ itemsCount }} éléments sélectionnés"
+  status: État
+  to: jusqu'au
+  type: Type
+  update: Mettre à jour
+  updated: Mis à jour
+  "yes": "Oui"
+  operator: Opérateur
+  operators:
+    "=": Est égal à
+    "!=": N'est pas égal à
+    ">=": Supérieur ou égal à
+    ">": Supérieur à
+    "<=": Inférieur ou égal à
+    "<": Inférieur à
+    EMPTY: Est vide
+    NOT EMPTY: N'est pas vide
+    CONTAINS: Contient
+    DOES NOT CONTAIN: Ne contient pas
+    STARTS WITH: Commence par
+    ENDS WITH: Finit par
+    IN: Dans la liste
+    "NOT IN": Pas dans la liste
+  read_more: En savoir plus
+  channel: Canal
+  locale: Locale
+  categories: Catégories
+  family_variant: Variante de famille
+  enabled: Activé
+  family: Famille
+  parent: Parent
+  groups: Groupes
+  products: Produits
+  product_uuids: Produits
+  product_models: Modèles de produits
+  more: Plus
+  public_view: Vue publique
+  view: Afficher
+error:
+  exception: Oups! Une erreur {{ status_code }} s'est produite...
+  forbidden: Désolé, vous n'êtes pas autorisé(e) à accéder à cette page
+alert:
+  attribute_option:
+    error_occurred_during_submission: Une erreur s'est produite lors de l'envoi du formulaire sur le serveur
+    save_before_edit_other: Veuillez enregistrer vos modifications sur les autres lignes avant de modifier celle-ci
+  session_storage:
+    not_available: Votre navigateur Internet ne semble pas être compatible avec sessionStorage. Contactez votre administrateur
+pim_enrich.entity.fallback:
+  flash:
+    generic_error: Une erreur est survenue
+    update:
+      fail: Échec de la mise à jour
+      fail_session_expired: Votre session utilisateur a expiré. Veuillez vous reconnecter.
+      success: Mise à jour effectuée avec succès
+    delete:
+      fail: Impossible de supprimer cet élément
+      success: Élément supprimé avec succès
+  module:
+    delete:
+      title: Supprimer l'élément {{ itemName }}
+      alternative_title: Confirmer la suppression
+      item: Êtes-vous sûr(e) de vouloir supprimer cet élément ?
+      item_placeholder: Êtes-vous sûr(e) de vouloir supprimer ce(tte) {{ itemName }} ? Il est impossible d'annuler cette action.
+    edit:
+      leave: Êtes-vous sûr(e) de vouloir quitter cette page ?
+      discard_changes: Vous perdrez les modifications effectuées sur {{ entity }} si vous quittez la page.
+      discard_changes_title: Êtes-vous sûr(e) ?
+pim_enrich.entity.job_execution:
+  page_title:
+    index: "]-Inf, 1]{{ count }} tâche|]1, Inf[{{ count }} tâches"
+  module:
+    create:
+      upload: Déposez votre fichier {{ type }} ici, ou cliquez ici pour le chercher sur votre disque
+    download:
+      archive: Télécharger l'archive générée
+      invalid_xlsx: Télécharger les données invalides
+      invalid_csv: Télécharger les données invalides
+pim_title:
+  oro_default: Tableau de bord
+  pim_enrich_attributegroup_index: Groupes d'attributs
+  pim_enrich_attributegroup_create: Groupe d'attributs | Créer
+  pim_enrich_attributegroup_edit: Groupe d'attributs {{ group.label }} | Édition
+  pim_enrich_catalog_volume_index: Volumétrie du catalogue
+  pim_enrich_categorytree_index: Arborescences des catégories
+  pim_enrich_categorytree_create: Arborescences | Créer
+  pim_enrich_categorytree_edit: Catégorie {{ category.label }} | Édition
+  pim_enrich_categorytree_create_tree: Arborescences | Créer
+  pim_enrich_categorytree_tree: Arbre de catégories {{ category.label }} | Édition
+  pim_enrich_attribute_index: Attributs
+  pim_enrich_attribute_create: Attributs | Créer
+  pim_enrich_attribute_edit: Attribut {{ attribute.label }} | Édition
+  pim_enrich_product_index: Produits
+  pim_enrich_product_edit: Produit {{ product.label }} | Édition
+  pim_enrich_product_model_edit: Modèle de produit {{ product.label }} | Édition
+  pim_enrich_family_index: Familles
+  pim_enrich_family_edit: Famille {{ family.label }} | Édition
+  pim_enrich_channel_index: Canaux
+  pim_enrich_channel_create: Canaux | Créer
+  pim_enrich_channel_edit: Canal {{ channel.label }} | Édition
+  pim_enrich_currency_index: Devises
+  pim_enrich_locale_index: Locales
+  pim_enrich_group_index: Groupes
+  pim_enrich_group_edit: Groupe {{ group.label }} | Édition
+  pim_enrich_associationtype_index: Types d'association
+  pim_enrich_associationtype_edit: Type d'association {{ association type.label }} | Édition
+  pim_enrich_grouptype_index: Types de groupes
+  pim_enrich_grouptype_edit: Type de groupe {{ group type.label }} | Édition
+  pim_enrich_mass_edit_action_choose: Édition de masse | Choisir
+  pim_enrich_mass_edit_action_configure: Édition de masse | Configurer
+  pim_enrich_mass_edit_action_perform: Edition en masse | Effectuer
+  pim_enrich_job_tracker_index: Traqueur de processus
+  pim_enrich_job_tracker_show: Traqueur de processus | Voir la tâche
+  pim_enrich_mass_edit_action: Edition en masse
+  pim_analytics_system_info_index: Informations système
+  pim_settings_index: Paramètres
+  pim_system_index: Système
+pim_menu:
+  tag.new: Nouveau
+  tab:
+    activity: Activité
+    imports: Imports
+    exports: Exports
+    settings: Paramètres
+    system: Système
+    help:
+      title: Aide
+      helper: Centre d'aide Akeneo
+      new: NOUVEAU
+  item:
+    association_type: Types d'association
+    attribute_group: Groupes d'attributs
+    channel: Canaux
+    currency: Devises
+    dashboard: Tableau de bord des activités
+    family: Familles
+    group: Groupes
+    group_type: Types de groupes
+    product_model: Modèles de produits
+    export_history: Historique des exports
+    export_profile: Profils d'export
+    import_history: Historique des imports
+    import_profile: Profils d'import
+    configuration: Configuration
+    user_management: Gestion des utilisateurs
+    user: Utilisateurs
+    user_group: Groupes d'utilisateurs
+    user_role: Rôles
+    info: Informations système
+    job_tracker: Traqueur de processus
+    catalog_volume: Volumétrie du catalogue
+  navigation:
+    activity: Centre d'activité
+    system: Navigation système
+    user: Navigation utilisateurs
+    settings:
+      product: Paramètres produit
+      catalog: Paramètres du catalogue
+      collapsed_label: Navigation paramètres
+      automation: Automatisation
+    product: Navigation produit
+    product_infos: Infos produit
+  user:
+    logout: Déconnexion
+    user_account: Mon compte
+pim_notification:
+  types:
+    import: Import
+    export: Export
+    quick_export: Export rapide
+    mass_edit: Edition en masse
+pim_settings:
+  settings_menu: Menu des paramètres
+  catalog_settings: Paramètres du catalogue
+  product_settings: Paramètres produit
+  automation_settings: Automatisation
+  count:
+    category_trees: '{0}Vous avez 0 arbres |{1}Vous avez 1 arbre |]1, Inf[Vous avez {{ count }} arbres '
+    categories: '{0}et 0 catégories|{1}et 1 catégorie|]1, Inf[et {{ count }} catégories'
+    channels: '{0}Vous avez 0 canal|{1}Vous avez 1 canal|]1, Inf[Vous avez {{ count }} canaux'
+    locales: '{0}Vous avez 0 locale activée|{1}Vous avez 1 locale activée|]1, Inf[Vous avez {{ count }} locales activées'
+    currencies: '{0}Vous avez 0 devise activée|{1}Vous avez 1 devise activée|]1, Inf[Vous avez {{ count }} devises activées'
+    attribute_groups: '{0}Vous avez 0 groupe d''attributs|{1}Vous avez 1 groupe d''attributs|]1, Inf[Vous avez {{ count }} groupes d''attributs'
+    attributes: '{0}Vous avez 0 attribut|{1}Vous avez 1 attribut|]1, Inf[Vous avez {{ count }} attributs'
+    families: '{0}Vous avez 0 famille|{1}Vous avez 1 famille|]1, Inf[Vous avez {{ count }} familles'
+    measurements: '{0}Vous avez 0 mesure|{1}Vous avez 1 mesure|]1, Inf[Vous avez {{ count }} mesures'
+    association_types: '{0}Vous avez 0 type d''association |{1}Vous avez 1 type d''association|]1, Inf[Vous avez {{ count }} types d''association'
+    group_types: '{0}Vous avez 0 type de groupe|{1}Vous avez 1 type de groupe|]1, Inf[Vous avez {{ count }} types de groupe'
+    groups: '{0}Vous avez 0 groupe|{1}Vous avez 1 groupe|]1, Inf[Vous avez {{ count }} groupes'
+    rules: '{0}Vous avez 0 règle activée|{1}Vous avez 1 règle activée|]1, Inf[Vous avez {{ count }} règles activées'
+    identifier_generators: '{0}Vous avez 0 générateur d''identifiants|{1}Vous avez 1 générateur d''identifiants|]1, Inf[Vous avez {{ count }} générateurs d''identifiants'
+pim_system:
+  system_menu: Menu système
+  system_navigation: Navigation système
+  users_management_navigation: Navigation utilisateurs
+  count:
+    product_values: '{0}Vous n''avez aucune valeur produit |{1}Vous avez 1 valeur produit|]1, Inf[Vous avez {{ count }} valeurs produit'
+    users: '{0}Vous avez 0 utilisateurs|{1}Vous avez 1 utilisateur|]1, Inf[Vous avez {{ count }} utilisateurs'
+    user_groups: '{0}Vous avez 0 groupes d''utilisateurs |{1}Vous avez 1 groupe d''utilisateur|]1, Inf[Vous avez {{ count }} groupes d''utilisateurs'
+    roles: '{0}vous avez 0 rôles|{1}Vous avez 1 rôle|]1, Inf[Vous avez {{ count }} rôles'
+  sso:
+    enabled: SSO activé
+    disabled: SSO désactivé
+    title: Authentification unique SAML
+  reset_pim:
+    modal:
+      summary:
+        name: Résumé
+        title: 'Attention : la réinitialisation de votre instance est irréversible'
+        text: 'Cela mènera à la suppression de TOUS les éléments, À L''EXCEPTION de ceux ci-dessous :'
+        users:
+          name: Utilisateurs
+          tooltip: Les utilisateurs sont des comptes que vous autorisez à accéder à votre PIM.
+        user_groups:
+          name: Groupes d’utilisateurs
+          tooltip: Les groupes d'utilisateurs définissent les équipes qui effectueront diverses actions dans votre PIM.
+        roles:
+          name: Rôles
+          tooltip: Les rôles définissent les accès et permettent les actions que les utilisateurs et les groupes d'utilisateurs peuvent entreprendre dans votre PIM.
+      confirm:
+        name: Confirmation
+        title: Confirmez la réinitialisation de votre instance
+        helper:
+          emphasis: Il n'est pas possible de revenir en arrière une fois que vous avez réinitialisé votre PIM.
+          text: En cliquant sur le bouton de réinitialisation, vous serez déconnecté de votre session actuelle et serez amené(e) à la page de connexion.
+      confirmation_phrase: Veuillez retaper le texte suivant "{{ confirmation_word }}"
+      confirmation_word: réinitialiser
+    button:
+      label: Réinitialiser cet environnement
+      confirm: Réinitialiser et se déconnecter
+  sandbox:
+    helper:
+      text: 'Cet environnement est un bac à sable : les changements que vous y ferez n''affecteront pas votre environnement de production.'
+pim_datagrid:
+  mass_action:
+    default:
+      select_action: Sélectionner une action

@@ -1,17 +1,473 @@
-user:
-  email_notifications: E-mailnotificaties
-pimee_enrich.entity.product:
-  duplicate:
-    title: Dupliceer het product {{ product_identifier }}
-    button: Dupliceren
-    flash:
-      success: Het product {{ product_identifier }} is met succes gedupliceerd.
-      success_with_attribute_codes: Het product {{ product_identifier }} is met succes gedupliceerd. U moet de {{ unique_attribute_codes }} verrijken met unieke waarden
-pim_dashboard:
-  widget:
-    teamwork_assistant:
-      title: Projecten
-      helper: <a href="{{ link }}" target="_blank">Bezoek ons helpcentrum</a> voor meer informatie over projecten en hoe u uw volledigheid kunt verbeteren.
-      no_project:
-        title: Projecten kunnen u helpen de voortgang van de verrijking van een selectie producten bij te houden.
-        subtitle: Maak uw eerste project aan.
+#ORO messages
+"Yes, I Agree": "Ja, ik ga akkoord"
+"Yes, do it": "Ja, doen"
+"Ok, got it.": "Okee, begrepen."
+"Edit": "Wijzig"
+"Unexpected error occurred. Please contact system administrator.": "Onverwachte fout opgetreden. Neem contact op met de systeembeheerder."
+"Yes, revoke": "Ja, intrekken"
+"Revoke Confirmation": "Bevestiging intrekken"
+Prev: Vorige
+Today: Vandaag
+Wk: Wk
+AM: AM
+A: A
+PM: PM
+P: P
+"Choose Time": "Kies een tijd"
+Time: Tijd
+Hour: Uur
+Minute: Minuut
+Second: Seconde
+Millisecond: Milliseconde
+Microsecond: Microseconde
+"Time Zone": "Tijdzone"
+duration:
+  days: "{0}0 dagen|{1}1 dagen|]1, Inf[{{ count }} dagen"
+  hours: "{0}0 uur|{1}1 uur|]1, Inf[{{ count }} uren"
+  minutes: "{0}0 minuten|{1}1 minuut|]1, Inf[{{ count }} minuten"
+  seconds: "{0}0 seconden|{1}1 seconde|]1, Inf[{{ count }} seconden"
+#PIM messages
+Localized value: Gelokaliseerde waarde
+Columns: Kolommen
+Datagrid Configuration: Datagrid configuratie
+#Filters
+Action: Actie
+Unit: Eenheid
+Currency: Valuta
+jstree:
+  all: Alle producten
+  unclassified: Niet-geclassificeerde producten
+  product:
+    all: Alle producten
+    unclassified: Niet-geclassificeerde producten
+  no_tree: Geen structuur beschikbaar
+  include_sub: Inclusief subcategorieën
+#Datetimepicker
+datetimepicker:
+  days:
+    Sunday: zondag
+    Monday: maandag
+    Tuesday: dinsdag
+    Wednesday: woensdag
+    Thursday: donderdag
+    Friday: vrijdag
+    Saturday: zaterdag
+  daysShort:
+    Sun: zo
+    Mon: ma
+    Tue: di
+    Wed: woe
+    Thu: do
+    Fri: vrij
+    Sat: zat
+  daysMin:
+    Su: zo
+    Mo: ma
+    Tu: di
+    We: wo
+    Th: do
+    Fr: vr
+    Sa: za
+  months:
+    January: januari
+    February: februari
+    March: maart
+    April: april
+    May: mei
+    June: juni
+    July: juli
+    August: augustus
+    September: september
+    October: oktober
+    November: november
+    December: december
+  monthsShort:
+    Jan: jan
+    Feb: feb
+    Mar: mar
+    Apr: apr
+    May: mei
+    Jun: jun
+    Jul: jul
+    Aug: aug
+    Sep: sep
+    Oct: okt
+    Nov: nov
+    Dec: dec
+#ORO
+oro_config:
+  form:
+    config:
+      title: Systeemconfiguratie
+      tab:
+        system:
+          title: Systeem
+      save_ok: De configuratie is opgeslagen
+      save_error: Kan de configuratie niet opslaan ({{ reason }})
+      group:
+        localization:
+          title: Instelling van aanmeldpagina
+          fields:
+            system_locale:
+              label: Taal
+        notification:
+          title: Meldingen over nieuwe versies
+          helper: Als u dit inschakelt, ontvangt u een melding wanneer er een nieuwe versie voor u beschikbaar is.
+          fields:
+            enabler:
+              label: Ingeschakeld
+        environment:
+          title: Omgevingsinstellingen
+          fields:
+            sandbox_banner:
+              label: Waarschuwingsbanner van sandbox weergeven
+        loading_message:
+          title: Aangepaste berichten tijdens laden
+          helper: Laat uw gebruikers tijdens het laden van een scherm aangepaste berichten zien.
+          placeholder: Schrijf uw eigen bericht dat wordt weergegeven op het laadscherm
+          fields:
+            enabler:
+              label: Schakel laadberichten in
+            messages:
+              label: Voeg eigen berichten toe die worden getoond tijdens het laden
+pim_ui:
+  flash:
+    unsaved_changes: 'Er zijn niet opgeslagen wijzigingen. Wilt u de pagina toch verlaten?'
+"Sorry, page was not loaded correctly": "Sorry, de pagina is niet correct geladen"
+"Your local changes will be lost. Are you sure you want to refresh the page?": "Uw lokale wijzigingen zullen verloren gaan. Weet u zeker dat u de pagina wilt vernieuwen?"
+"navigation.message.content.outdated": "De pagina-inhoud van {{ title }} is verouderd, graag <a href='#' data-action='page-refresh'>de pagina vernieuwen</a>"
+"Content of pinned page is outdated": "Inhoud van vaste pagina is verouderd"
+#Global structure of translation files
+#pim_bundle_name:
+#entity:
+#entity_name:
+#label: entity
+#uppercase_label: Entity
+#plural_label: Entities
+#flash:
+#update:
+#fail: Update failed
+#success: Entity Successfully updated
+#delete:
+#fail: Cannot delete this entity
+#success: Entity successfully removed
+#create:
+#fail: Can not create this entity
+#success: Entity successfully created
+#page_title:
+#index: "]-Inf, 1]1 entity|]1, Inf[{{ count }} entities"
+#property:
+#field_name: Field name
+#complex_field:
+#label: Field name
+#choose: Choose a field name
+#module:
+#module_name:
+#key: message
+pim_common:
+  actions: Acties
+  add: Toevoegen
+  add_attributes: Attributen toevoegen
+  after: Na
+  all: Alle
+  and: en
+  apply: Pas toe
+  before: Voor
+  by: door
+  cancel: Annuleer
+  characters_left: ']-Inf, 1]{{ count }} teken over|]1, Inf[{{ count }} tekens over'
+  clear_value: Verwijder waarde
+  close: Sluiten
+  code: Code
+  completeness: Volledigheid
+  confirm: Bevestig
+  confirm_deletion: Verwijderen bevestigen
+  confirm_revocation: Bevestig de intrekking
+  create: Aanmaken
+  created: Aangemaakt
+  delete: Verwijderen
+  done: Gedaan
+  duplicate: Dupliceren
+  edit: Wijzig
+  entity_updated: Er zijn niet-opgeslagen wijzigingen.
+  export: Exporteer
+  from: Van
+  general_properties: Algemene eigenschappen
+  history: Geschiedenis
+  identifier: Id
+  image: Afbeelding
+  label: Label
+  label_translations: Labelvertalingen
+  Label or identifier: label of identifier
+  code_or_label: code of label
+  less_than: Minder dan
+  loading: Laden...
+  media_upload: Klik en sleep een bestand om te uploaden of klik hier
+  media_uploading: Bezig met uploaden…
+  media_upload_error: Er is een fout opgetreden tijdens het uploaden
+  more_actions: Meer acties
+  more_than: Meer dan
+  next: Volgende
+  "no": "Nee"
+  none: Geen
+  not_available: Niet beschikbaar
+  now: Nu
+  ok: OK
+  open: Openen
+  no_result: Geen resultaten gevonden
+  no_search_result: Uw zoekopdracht heeft helaas geen resultaten opgeleverd.
+  other_actions: Andere acties
+  permissions: Machtigingen
+  previous: Vorige
+  properties: Eigenschappen
+  quality_score: Kwaliteitsscore
+  remove: Verwijder
+  required_label: (vereist)
+  result_count: "{0}0 resultaten|{1}1 resultaat|]1, Inf[{{ itemsCount }} resultaten"
+  save: Opslaan
+  search: Zoeken
+  select2:
+    search: Zoeken...
+    no_match: Geen overeenkomsten gevonden
+    load_more: Meer resultaten laden...
+  selected: "{0}0 items geselecteerd|{1}1 item geselecteerd|]1, Inf[{{ itemsCount }} items geselecteerd"
+  status: Status
+  to: tot
+  type: Soort
+  update: Bijwerken
+  updated: Bijgewerkt
+  "yes": "Ja"
+  operator: Operator
+  operators:
+    "=": Is gelijk aan
+    "!=": Is niet gelijk aan
+    ">=": Groter dan of gelijk aan
+    ">": Groter dan
+    "<=": Kleiner dan of gelijk aan
+    "<": Kleiner dan
+    EMPTY: Is leeg
+    NOT EMPTY: Is niet leeg
+    CONTAINS: Bevat
+    DOES NOT CONTAIN: Bevat geen
+    STARTS WITH: Begint met
+    ENDS WITH: Eindigt met
+    IN: In lijst
+    "NOT IN": Niet in de lijst
+  read_more: Lees meer
+  channel: Kanaal
+  locale: Locale
+  categories: Categorieën
+  family_variant: Familievariatie
+  enabled: Ingeschakeld
+  family: Familie
+  parent: Bovenliggende
+  groups: Groepen
+  products: Producten
+  product_uuids: Producten
+  product_models: Productmodellen
+  more: Meer
+  public_view: Openbare weergave
+  view: Weergave
+error:
+  exception: Er is een {{ status_code }}-fout opgetreden
+  forbidden: U heeft geen toegang tot deze pagina
+alert:
+  attribute_option:
+    error_occurred_during_submission: Er is een fout op de server opgetreden bij het versturen van het formulier
+    save_before_edit_other: Registreer uw wijzigingen op de andere tijden voordat u deze rij wizigd
+  session_storage:
+    not_available: Jouw webbrowser lijkt niet compatibel te zijn met sessionStorage. Gelieve uw beheerder te contacteren
+pim_enrich.entity.fallback:
+  flash:
+    generic_error: Er is een fout opgetreden
+    update:
+      fail: Update niet geslaagd
+      fail_session_expired: Uw sessie is verlopen. U dient opnieuw in te loggen.
+      success: Update met succes voltooid
+    delete:
+      fail: Kan dit item niet verwijderen
+      success: Item succesvol verwijderd
+  module:
+    delete:
+      title: Verwijder deze {{ itemName }}
+      alternative_title: Verwijdering bevestigen
+      item: Weet u zeker dat u dit item wilt verwijderen?
+      item_placeholder: Weet u zeker dat u {{ itemName }} wilt verwijderen? Het is niet mogelijk om deze actie ongedaan te maken.
+    edit:
+      leave: Weet u zeker dat u deze pagina wilt verlaten?
+      discard_changes: Als u deze pagina verlaat worden veranderingen aan {{ entity }} niet opgeslagen.
+      discard_changes_title: Weet u het zeker?
+pim_enrich.entity.job_execution:
+  page_title:
+    index: "]-Inf, 1]{{ count }} woord|]1, Inf[{{ count }} woorden"
+  module:
+    create:
+      upload: Versleep jouw {{ type }} bestand naar hier, of klik om bestand te zoeken
+    download:
+      archive: Download gegenereerd archief
+      invalid_xlsx: Download ongeldige data
+      invalid_csv: Download ongeldige data
+pim_title:
+  oro_default: Dashboard
+  pim_enrich_attributegroup_index: Attribuutgroepen
+  pim_enrich_attributegroup_create: Attribuutgroepen | Aanmaken
+  pim_enrich_attributegroup_edit: Attribuutgroep {{ group.label }} | Bewerken
+  pim_enrich_catalog_volume_index: Catalogus volume monitoring
+  pim_enrich_categorytree_index: Categorie boomstructuren
+  pim_enrich_categorytree_create: Categoriestructuren|Aanmaken
+  pim_enrich_categorytree_edit: Categorie {{ category.label }} | Bewerken
+  pim_enrich_categorytree_create_tree: Categoriestructuren|Aanmaken
+  pim_enrich_categorytree_tree: Categorie boom {{ category.label }} | Bewerken
+  pim_enrich_attribute_index: Attributen
+  pim_enrich_attribute_create: Attributen | Aanmaken
+  pim_enrich_attribute_edit: Attribuut {{ attribute.label }} | Bewerken
+  pim_enrich_product_index: Producten
+  pim_enrich_product_edit: Product {{ product.label }} | Bewerken
+  pim_enrich_product_model_edit: Product model {{ product.label }} | Bewerken
+  pim_enrich_family_index: Families
+  pim_enrich_family_edit: Familie {{ family.label }} | Bewerken
+  pim_enrich_channel_index: Kanalen
+  pim_enrich_channel_create: Kanalen | Aanmaken
+  pim_enrich_channel_edit: Kanaal {{ channel.label }} | Bewerken
+  pim_enrich_currency_index: Valuta
+  pim_enrich_locale_index: Lokalisaties
+  pim_enrich_group_index: Groepen
+  pim_enrich_group_edit: Groep {{ group.label }} | Bewerken
+  pim_enrich_associationtype_index: Associatietypes
+  pim_enrich_associationtype_edit: Associatietype {{ association type.label }} | Bewerken
+  pim_enrich_grouptype_index: Groepstypen
+  pim_enrich_grouptype_edit: Groepstype {{ group type.label }} | Bewerken
+  pim_enrich_mass_edit_action_choose: Massa bewerken | Kies
+  pim_enrich_mass_edit_action_configure: Massa bewerken | Configureren
+  pim_enrich_mass_edit_action_perform: Massa bewerken | Uitvoeren
+  pim_enrich_job_tracker_index: Procesopvolger
+  pim_enrich_job_tracker_show: Procesopvolger | Toon taak
+  pim_enrich_mass_edit_action: Massa bewerken
+  pim_analytics_system_info_index: Systeeminformatie
+  pim_settings_index: Instellingen
+  pim_system_index: Systeem
+pim_menu:
+  tag.new: Nieuw
+  tab:
+    activity: Activiteit
+    imports: Importeren
+    exports: Exporteren
+    settings: Instellingen
+    system: Systeem
+    help:
+      title: Help
+      helper: Akeneo Help centrum
+      new: NIEUW
+      news: Wat is er nieuw?
+      help_center: Helpcentrum
+      akademy_training: Akademy-training
+  item:
+    association_type: Associatietypes
+    attribute_group: Attribuutgroepen
+    channel: Kanalen
+    currency: Valuta
+    dashboard: Activiteitendashboard
+    family: Families
+    group: Groepen
+    group_type: Groepstypen
+    product_model: Productmodellen
+    export_history: Exportgeschiedenis
+    export_profile: Exportprofielen
+    import_history: Importgeschiedenis
+    import_profile: Importprofielen
+    configuration: Configuratie
+    user_management: Gebruikersbeheer
+    user: Gebruikers
+    user_group: Gebruikersgroepen
+    user_role: Rollen
+    info: Systeeminformatie
+    job_tracker: Procesopvolger
+    catalog_volume: Catalogus volume monitoring
+  navigation:
+    activity: Activiteit navigatie
+    system: Systeem navigatie
+    user: Gebruikersbeheer navigatie
+    settings:
+      product: Productinstellingen
+      catalog: Catalogusinstellingen
+      collapsed_label: Instellingen navigatie
+      automation: Automatisering
+    product: Product navigatie
+    product_infos: Product informatie
+  user:
+    logout: Afmelden
+    user_account: Mijn Account
+pim_notification:
+  types:
+    import: Importeer
+    export: Exporteer
+    quick_export: Snelle export
+    mass_edit: Massa bewerken
+pim_settings:
+  settings_menu: Menu Instellingen
+  catalog_settings: Catalogusinstellingen
+  product_settings: Productinstellingen
+  automation_settings: Automatisering
+  count:
+    category_trees: '{0}U heeft 0 bomen |{1}U heeft 1 boom |]1, Inf[U heeft {{ count }} bomen '
+    categories: '{0}en 0 categorieën|{1}en 1 categorie|]1, Inf[en {{ count }} categorieën'
+    channels: '{0}U heeft 0 kanalen |{1}U heeft 1 kanaal |]1, Inf[U heeft {{ count }} kanalen'
+    locales: '{0}U heeft 0 ingeschakelde talen|{1}U heeft 1 ingeschakelde taal|]1, Inf[U heeft {{ count }} ingeschakelde talen'
+    currencies: '{0}U heeft 0 ingeschakelde valuta|{1}U heeft 1 ingeschakelde valuta|]1, Inf[U heeft {{ count }} ingeschakelde valuta'
+    attribute_groups: '{0}U heeft 0 attribuutgroepen|{1}U heeft 1 attribuutgroep|]1, Inf[U heeft {{ count }} attribuutgroepen'
+    attributes: '{0}U heeft 0 attributen|{1}U heeft 1 attribuut|]1, Inf[U heeft {{ count }} attributen'
+    families: '{0}U heeft 0 families |{1}U heeft 1 familie|]1, Inf[U heeft {{ count }} families'
+    measurements: '{0}U heeft 0 meetwaarden|{1}U heeft 1 meetwaarde|]1, Inf[U heeft {{ count }} meetwaarden'
+    association_types: '{0}U heeft 0 associatietypes|{1}U heeft 1 associatietype|]1, Inf[U heeft {{ count }} associatietypes'
+    group_types: '{0}U heeft 0 groepstypes|{1}U heeft 1 groepstype|]1, Inf[U heeft {{ count }} groepstypes'
+    groups: '{0}U heeft 0 groepen|{1}U heeft 1 groep|]1, Inf[U heeft {{ count }} groepen'
+    rules: '{0}U heeft 0 ingeschakelde regels|{1}U heeft 1 ingeschakelde regel|]1, Inf[U heeft {{ count }} ingeschakelde regels'
+    identifier_generators: '{0}Je hebt 0 identifier generator+{0}{1}Je hebt 1 identifier generator! ]1, Inf[Je hebt {{ count }} identifier generators'
+pim_system:
+  system_menu: Systeemmenu
+  system_navigation: Systeem navigatie
+  users_management_navigation: Gebruikersbeheer navigatie
+  count:
+    product_values: '{0}U heeft 0 productwaarden|{1}U heeft 1 productwaarde|]1, Inf[U heeft {{ count }} productwaarden'
+    users: '{0}U heeft 0 gebruikers|{1}U heeft 1 gebruiker|]1, Inf[U heeft {{ count }} gebruikers'
+    user_groups: '{0}U heeft 0 gebruikersgroepen|{1}U heeft 1 gebruikersgroep|]1, Inf[U heeft {{ count }} gebruikersgroepen'
+    roles: '{0}U heeft 0 rollen|{1}U heeft 1 rol|]1, Inf[U heeft {{ count }} rollen'
+  sso:
+    enabled: Eenmalige aanmelding ingeschakeld
+    disabled: Eenmalige aanmelding uitgeschakeld
+    title: Eenmalige aanmelding (SSO) op basis van SAML
+  reset_pim:
+    modal:
+      summary:
+        name: Overzicht
+        title: 'Waarschuwing: het resetten van uw PIM is onomkeerbaar'
+        text: 'Alle elementen worden dan verwijderd behalve de volgende:'
+        users:
+          name: Gebruikers
+          tooltip: Gebruikers zijn de personen die u toestaat om samen te werken binnen uw PIM.
+        user_groups:
+          name: Gebruikersgroepen
+          tooltip: Met gebruikersgroepen worden de teams gedefinieerd die verschillende acties binnen uw PIM uitvoeren.
+        roles:
+          name: Rollen
+          tooltip: Met rollen worden de toegang van gebruikers en gebruikersgroepen en de acties die ze kunnen uitvoeren binnen uw PIM gedefinieerd.
+      confirm:
+        name: Bevestig
+        title: Bevestig het resetten van uw PIM
+        helper:
+          emphasis: Na het resetten van uw PIM kunt u niet meer terug.
+          text: Als u op de resetknop klikt, wordt u afgemeld en gaat u terug naar de inlogpagina.
+      confirmation_phrase: Typ "{{ confirmation_word }}"
+      confirmation_word: resetten
+    button:
+      label: Exemplaar resetten
+      confirm: Resetten en uitloggen
+    error_notification: Er is een fout opgetreden tijdens het resetten van het exemplaar. Neem contact op met de systeembeheerder.
+    jobs_running: U kunt uw exemplaar momenteel niet opnieuw instellen, omdat sommige processen nog in de wachtrij staan of worden uitgevoerd.
+  sandbox:
+    helper:
+      text: Dit is een sandbox-omgeving; uw wijzigingen hebben geen invloed op uw productie.
+pim_datagrid:
+  mass_action:
+    default:
+      select_action: Actie selecteren

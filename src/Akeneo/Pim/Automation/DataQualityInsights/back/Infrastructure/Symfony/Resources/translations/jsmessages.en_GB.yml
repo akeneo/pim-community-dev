@@ -1,117 +1,158 @@
 akeneo_data_quality_insights:
-  product_evaluation:
-    criteria:
-      consistency_textarea_uppercase_words:
-        recommendation: Attributes with uppercases issues
-      consistency_textarea_lowercase_words:
-        recommendation: Attributes with lowercases issues
-      consistency_spelling:
-        recommendation: Attributes with spelling issues
-      consistency_attribute_spelling:
-        recommendation: Attribute labels with spelling mistakes
-      consistency_attribute_option_spelling:
-        recommendation: Attribute option(s) with typos
-    axis:
-      consistency:
-        title: Consistency
-        attributes_link: Display all improvable attributes
-        success: Your product data is fully consistent. Congratulations!
-    messages:
-      add_image_attribute_recommendation: An image is worth a thousand words. You should add an asset collection or an image attribute to improve the data quality of this product.
-  product_edit_form:
-    attribute_filter:
-      all_improvable_attributes: All improvable attributes
-    spellcheck_popover:
-      title: Corrections
-      original_text_title: Original
-      suggestions_title: Proposals
-      ignore_all_suggestions_button_label: Ignore
-  attribute_grid:
-    quality:
-      to_improve: To improve
-      good: Good
-      in_progress: Processing
-      n_a: N/A
-  attribute_edit_form:
-    quality_summary: By enhancing this attribute you will improve the overall quality of {{ count }} products.
-  spellcheck:
-    popover:
-      default_aria_label: Spelling suggestions
-      aria_label: "Spelling suggestions for: {{ mistake }}"
+  title: Data Quality Insights
   dqi_dashboard:
+    menu: Data Quality Insights
+    helper:
+      title: Introducing Data Quality in Akeneo
+      description: With the data quality dashboard, you are able to measure your catalogue data quality. You can also focus on a category or family.
+      help_center: Check our Help Centre for more information.
+    no_data_title: Sorry, we don't have enough data yet to show the data quality overview.
+    no_data_subtitle: Please come back later.
+    time_period:
+      label: Time Period
+      daily: Daily
+      weekly: Weekly
+      monthly: Monthly
+    legend:
+      excellent: Excellent
+      good: Good
+      average: Average
+      below_average: Below average
+      to_improve: To improve
+    average_grade: Average grade
+    category_modal_filter:
+      subtitle: Filter by category
+      message: Choose the category to explore on your dashboard
+    widgets:
+      family_modal:
+        subtitle: Add families
+        message: Choose the families to add on your dashboard
+        max_families_msg: Sorry, you cannot add more than {{ count }} families to track on your dashboard
+      category_modal:
+        subtitle: Add categories
+        message: Choose the categories to add on your dashboard
+        max_categories_msg: Sorry, you cannot add more than {{ count }} categories to track on your dashboard
+      add_families: Add families
+      add_categories: Add categories
+      title: Title
+      score: Score
+      no_family_helper_msg: Select the families for which you wish to measure data quality
+      no_category_helper_msg: Select the categories for which you wish to measure data quality
+      see_in_grid: See in grid
+    time_axis:
+      day: day
     key_indicators:
+      title: Key Indicators
       list:
         has_image:
-          no_data: Your asset collections and image attributes seem to be empty, you should upload images for this key indicator to highlight the quality of your products.
-        attributes_perfect_spelling:
-          title: Attributes properly labelled
-          no_data: Your attribute and option labels seem to be empty, you should enrich them for this key indicator to highlight the quality of your attributes.
+          title: Products with an image
+          no_data: Your image attributes seem to be empty, you should upload images for this key indicator to highlight the quality of your products.
           messages:
             first_step:
-              message1: You are having a hard time with attribute and option labels? How about going back to basics <a href="{{ link }}" target="_blank">here</a>?
-              message2: Do you need help with your attributes and attribute options? Take a look <a href="{{ link }}" target="_blank">here</a>!
+              message1: Without images, your products won't look as good as they deserve.
+              message2: A first impression goes a long way, pamper your assets, your customers will notice.
+              message3: In our experience, images really make a difference. You may need to dedicate more time to assets.
             second_step:
-              message1: Take a closer look at your attributes and options labels. Your products will look even better afterwards.
-              message2: It looks like you got lost somewhere along the way! Some of your labels still need work.
+              message1: Just a bit more work on your product images and you'll be ready to go.
+              message2: An image is worth a thousand words, work on it now, save time later!
+              message3: You may need to spend a little time on images, your products will look much better.
             third_step:
-              message1: You are so close! Just a few final touches and you'll be all set.
-              message2: Some of your attributes and labels still need a little work but you are on the right track.
+              message1: Pretty good, just a couple of images missing.
+              message2: This is nice, you are so close.
+              message3: Add the final touches and it will be all set.
             perfect_score_step:
-              message1: Your catalog is readier than ever! You did a great job!
-              message2: Great work on attribute and option labels!
-        values_perfect_spelling:
-          title: Products with perfect spelling in text product values
-          no_data: Your text areas seem to be empty, you should enrich them for this key indicator to highlight the quality of your products.
+              message1: Well done! You are ready to go!
+              message2: Amazing! Your products are all nice and shiny!
+              message3: This is perfect.
+        good_enrichment:
+          title: Products with a good enrichment ratio
+          no_data: Your products seem to be empty, you should add attributes for this key indicator to highlight the quality of your products.
           messages:
             first_step:
-              message1: Your products deserve to be described properly. Check out the spelling!
-              message2: You are your products best advocate, take a closer look at the spelling.
-              message3: Your product descriptions are the image of your company, let's get rid of those typos! First impressions matter.
-              message4: The more mistakes you have, the worst impression you give. Pay extra attention to your spelling.
+              message1: One way to improve this ratio is to make sure you carefully define the most relevant attributes. <a href="{{ link }}" target="_blank">Take a look at our help center</a>.
+              message2: Your PIM is still too mysterious to you? <a href="{{ link }}" target="_blank">Learn how to make the most of it</a>.
+              message3: Our teams developed the PIM, you make it alive!
+              message4: Detailed product information makes a real difference for your customers. You can be a game changer!
             second_step:
-              message1: You already have great products, now you just need great spelling!
-              message2: A spelling mistake might keep a customer away, be thorough!
-              message3: Some of your products need a little help to be perfect. Watch out for typos!
+              message1: Let's try and aim just a little higher! Your customers will be grateful.
+              message2: You're halfway there! Hang on and your products will be nicely enriched.
+              message3: The devil is in the details, even in your industry!
+              message4: Do you need a hand polishing your product enrichment? Learn how to carefully select the most relevant attributes <a href="{{ link }}" target="_blank">here</a>.
             third_step:
-              message1: Great spelling actually makes a difference, you're not that far!
-              message2: Almost there, you are so close to perfect spelling!
-              message3: You are a couple of spelling mistakes away from perfect product values.
-              message4: Just a little more efforts to reach a spotless product description!
+              message1: So far so good, now you can go a little further!
+              message2: This is a really good ratio, but wouldn't 100% look nice?
+              message3: Some of your products still need a little help to be complete! You're almost there!
+              message4: Just a few Is to dot and Ts to cross and it will be perfect.
             perfect_score_step:
-              message1: Perfect spelling all over your catalog. Well done!
-              message2: "That's impressive: your products are spotless!"
-              message3: You did an amazing work getting rid of 100% of the spelling mistakes. Congratulations!
+              message1: Your products are going to sell themselves! Great work.
+              message2: What an adventure, you can be proud of your work.
+              message3: You are a true master in keeping your catalog up to date.
+              message4: Congratulations, this is spotless!
+      no_data: Sorry, we don't have enough data yet to show the key indicators.
+      no_data_subtitle: Please come back later.
+    score_distribution:
+      title: Quality score distribution
+    quality_score_evolution:
+      title: Quality score evolution
+      current_score: is your current catalog quality score for this scope.
+      current_month_label: This month
+      no_catalog_score: We couldn’t calculate you current quality score.
+  product_evaluation:
+    criteria:
+      completeness_of_required_attributes:
+        recommendation: Required attributes with missing values
+      completeness_of_non_required_attributes:
+        recommendation: Non required attributes with missing values
+      enrichment_image:
+        recommendation: Missing image
+    axis:
+      enrichment:
+        title: Enrichment
+        attributes_link: Display all missing attributes
+        success: Your product data is fully enriched. Congratulations!
+    messages:
+      error:
+        axis_error: Due to an error, grade could not be fully calculated. Try again later.
+        criterion_error: Grade could not be calculated.
+      success:
+        criterion: Everything is good.
+      grading_in_progress: Grading in progress.
+      axis_grading_in_progress: Grading in progress. Please come back later.
+      too_many_attributes: You have {{ count }} attributes to improve.
+      no_attribute_groups:
+        title: Sorry, we were unable to calculate your Quality score.
+        subtitle: "The quality score cannot be calculated: none of the attribute groups of this product are activated."
+        help_center_link: Learn how data quality insights can help you improve your data quality in our help center.
+      add_image_attribute_recommendation: An image is worth a thousand words. You should add an image attribute to improve the data quality of this product.
+      fill_image_attribute_recommendation: In our experience, images really make a difference. You should add at least one image to improve the data quality of this product.
+      not_applicable:
+        message: This criteria is not applicable in your context.
+        help_center_link: Find out why in our Help Center.
+  product_edit_form:
+    attribute_filter:
+      all_missing_attributes: All missing attributes
+    back_to_products: Back to products
+  attribute_group:
+    helper_dqi_info: The quality score calculation will only take into account attributes belonging to attribute groups enabled on data quality.
+    helper_dqi_link: More info on our Help Center.
+    activation: Enabled
+    dqi_status: Data Quality Insights status
+    activated: Enabled
+    disabled: Disabled
+    used_groups_helper: "The following attributes groups are taken into account in the Data Quality Insights calculation:"
+    all_groups_evaluated: All the attribute groups of this product are taken into account for the calculation of the quality score. To get the most relevant quality score, <a href="{{ link }}" target="_blank">learn how to disable attribute groups in our Help Center.</a>
   product_grid:
     filter_label:
-      spelling_quality: Spelling quality
-  dictionary:
-    helper:
-      content: The dictionary allows you to register words that will be ignored by Data Quality Insights.
-      link_label: More info on our Help Center.
-    words: Words
-    searchPlaceholder: Search a word
-    add_words: Add words here
-    no_search_results:
-      title: No results for your search
-      subtitle: Try again with new search criteria.
-    no_data:
-      title: No words yet
-      subtitle: Add the first one above, click on "Add" or press Enter.
-pimee_enrich.entity.locale:
-  grid:
-    columns:
-      dictionary_words_count:
-        title: Number of words
-        label: "]-Inf, 1]{{ count }} word|]1, Inf[{{ count }} words"
-        not_available: Not available
-    add_words: Add words
-    items_selected: "{1}1 item selected|[2, Inf[{{ count }} items selected"
-    modal:
-      title: Add words to {{ count }} locales
-      subtitle: Type your words below. They will be added to all the selected locales.
-      locales_added_notification:
-        title: Words added to {{ count }} locales
-        content: The new words have been added to the dictionaries of selected locales.
-      no_supported_locales:
-        title: The selected locales cannot be spell-checked by Data Quality Insights.
-        content: To know the list of supported locales, please check our <a href="{{ link }}" target="_blank">Help Center</a>
+      quality_score: Quality score
+      enrichment_quality: Enrichment quality
+      images_quality: Product image
+    filter_value:
+      good: Good
+      to_improve: To improve
+      "yes": "Yes"
+      "no": "No"
+  quality_score:
+    pending: In progress
+    title: "Quality score:"
+pim_title:
+  akeneo_data_quality_insights_dashboard: Data Quality Insights

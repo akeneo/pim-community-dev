@@ -1,13 +1,15 @@
 akeneo_data_quality_insights:
   axis:
-    consistency: Konsistenz
-  attribute_grid:
-    quality_column_label: Qualität
-    to_improve_locale: Um in {{ locale }} zu verbessern
+    enrichment: Anreicherung
+  acl:
+    activation_attribute_group:
+      edit: Aktivierung von Datenqualitätseinsichten bearbeiten
+  acl_group:
+    dqi: Datenqualitätseinsichten
   product_grid:
     filter_label:
-      spelling_quality: Rechtschreibqualität
-  dictionary:
-    title: Wörterbuch
-Consistency: Konsistenz
-akeneo_data_quality_insights_dictionary: Wörterbuch
+      quality_score: Qualität
+      enrichment_quality: Qualität der Anreicherung
+      images_quality: Produktbild
+Enrichment: Anreicherung
+Quality Score: Qualität

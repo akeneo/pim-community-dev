@@ -1,34 +1,4 @@
 free_trial:
-  invite_users:
-    title: "]-Inf, 1]{{ count }} utente invitato|]1, Inf[{{ count }} utenti invitati"
-    breadcrumb: Invita utenti
-    invite_button: Invita utenti
-    invite_helper:
-      message1: Invita i tuoi colleghi o partner a scoprire Akeneo PIM.
-      message2: Invieremo loro un'e-mail con un link che gli permetterà di scoprire la prova gratuita assieme a te.
-    invite_input_label: Condividi l'e-mail del tuo collega o partner.
-    users_list:
-      headers:
-        invited_user: Invito inviato a
-        status: Stato
-      empty_list_message: Non hai ancora diffuso la voce.
-    invite_messages:
-      success:
-        title: Inviti inviati a nuovi utenti
-        description: Riceveranno a breve un'e-mail con un link di invito per partecipare alla tua prova gratuita di Akeneo PIM.
-      error:
-        invitation_failed:
-          title: Non è stato possibile inviare l'invito
-          description: Si è verificato un errore tecnico. Riprova.
-        invalid_email:
-          title: Non è stato possibile inviare l'invito
-          description: Controlla che l'e-mail esista e che sia digitata correttamente.
-        invitation_already_sent:
-          title: Invito già inviato
-          description: Gli inviti con il link per partecipare alla prova gratuita di Akeneo PIM sono già stati inviati ad alcuni utenti. Informali!
-        unauthorized_email:
-          title: Non è stato possibile inviare l'invito
-          description: Controlla che si tratti di un indirizzo e-mail di lavoro
   menu:
     assets: Asset
     entities: Entità
@@ -43,5 +13,3 @@ free_trial:
     dashboard:
       projects: Progetti
       helper: In Akeneo PIM Enterprise Edition, i progetti ti aiutano a organizzare e a monitorare il lavoro dei vari gruppi di contributori coinvolti nella raccolta di dati sui prodotti. I progetti generano compiti e li assegnano all'utente giusto, consentendo a ognuno di fare la propria parte nella realizzazione di avvincenti esperienze di prodotto. Usa i progetti per strutturare i flussi di lavoro e per monitorare lo stato di avanzamento. I progetti semplificano la comunicazione tra i membri dei gruppi di lavoro.
-pim_title:
-  akeneo_invite_user: Invita utenti

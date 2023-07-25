@@ -1,13 +1,15 @@
 akeneo_data_quality_insights:
   axis:
-    consistency: Spójność
-  attribute_grid:
-    quality_column_label: Jakość
-    to_improve_locale: 'Aby ulepszyć w wersji językowej: {{ locale }}'
+    enrichment: Wzbogacanie
+  acl:
+    activation_attribute_group:
+      edit: Edytuj aktywację Wglądu w jakość danych
+  acl_group:
+    dqi: Wgląd w jakość danych
   product_grid:
     filter_label:
-      spelling_quality: Jakość pisowni
-  dictionary:
-    title: Słownik
-Consistency: Spójność
-akeneo_data_quality_insights_dictionary: Słownik
+      quality_score: Wynik jakości
+      enrichment_quality: Jakość wzbogacania
+      images_quality: Obraz produktu
+Enrichment: Wzbogacanie
+Quality Score: Wynik jakości

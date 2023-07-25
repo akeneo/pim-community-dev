@@ -1,34 +1,4 @@
 free_trial:
-  invite_users:
-    title: "]-Inf, 1]{{ count }} usuario invitado|]1, Inf[{{ count }} usuarios invitados"
-    breadcrumb: Invitar usuarios
-    invite_button: Invitar usuarios
-    invite_helper:
-      message1: Invite a sus colegas o socios a descubrir Akeneo PIM.
-      message2: Les enviaremos un correo electrónico con un enlace para que se unan a usted en su descubrimiento de la Prueba gratuita.
-    invite_input_label: Comparta el correo electrónico de su colega o compañero.
-    users_list:
-      headers:
-        invited_user: Invitación enviada a
-        status: Estado
-      empty_list_message: Aún no ha corrido la voz.
-    invite_messages:
-      success:
-        title: Invitaciones enviadas a nuevos usuarios
-        description: Está a punto de recibir un correo electrónico con un enlace para unirse a su Prueba gratuita de Akeneo PIM.
-      error:
-        invitation_failed:
-          title: No se pudo enviar la invitación
-          description: Se ha producido un error técnico. Inténtelo de nuevo.
-        invalid_email:
-          title: No se pudo enviar la invitación
-          description: Asegúrese de que el correo electrónico existe y está correctamente escrito.
-        invitation_already_sent:
-          title: Ya se ha enviado la invitación
-          description: Ya se han enviado invitaciones con un enlace para unirse a la Prueba gratuita de Akeneo PIM a algunos usuarios. ¡Infórmeles al respecto!
-        unauthorized_email:
-          title: No se pudo enviar la invitación
-          description: Asegúrese de que se trata de un correo electrónico comercial
   menu:
     assets: Activos
     entities: Entidades
@@ -43,5 +13,3 @@ free_trial:
     dashboard:
       projects: Proyectos
       helper: Los proyectos en Akeneo PIM Enterprise Edition le ayudan a organizar y seguir el trabajo de los grupos de colaboradores que participan en el enriquecimiento de los datos del producto. Generan tareas y las asignan al usuario adecuado, lo que permite a todos desempeñar su papel en la creación de experiencias de producto atractivas. Crean proyectos para estructurar los flujos de trabajo de enriquecimiento y supervisar el estado del proyecto. Simplifican la comunicación entre los miembros del equipo que trabajan en el enriquecimiento del producto.
-pim_title:
-  akeneo_invite_user: Invitar usuarios

@@ -1,119 +1,162 @@
 akeneo_data_quality_insights:
-  product_evaluation:
-    criteria:
-      consistency_textarea_uppercase_words:
-        recommendation: Atributos con problemas en mayúsculas
-      consistency_textarea_lowercase_words:
-        recommendation: Atributos con incidencias en minúsculas
-      consistency_spelling:
-        recommendation: Atributos con problemas de ortografía
-      consistency_attribute_spelling:
-        recommendation: Etiquetas de atributo con errores de ortografía
-      consistency_attribute_option_spelling:
-        recommendation: Opción(es) de atributo con errores tipográficos
-    axis:
-      consistency:
-        title: Consistencia
-        attributes_link: Mostrar todos los atributos mejorables
-        success: Los datos de tu producto son totalmente coherentes. ¡Felicidades!
-    messages:
-      add_image_attribute_recommendation: Una imagen vale más que mil palabras. Debería añadir una colección de activos o un atributo de imagen para mejorar la calidad de los datos de este producto.
-  product_edit_form:
-    attribute_filter:
-      all_improvable_attributes: Todos los atributos mejorables
-    spellcheck_popover:
-      title: Correciones
-      original_text_title: Original
-      suggestions_title: Propuestas
-      ignore_all_suggestions_button_label: Ignorar
-  attribute_grid:
-    quality:
-      to_improve: Para mejorar
-      good: Bien
-      in_progress: Procesando
-      n_a: N/A
-  attribute_edit_form:
-    quality_summary: Al mejorar este atributo mejorarás la calidad total de {{ count }} productos.
-  spellcheck:
-    popover:
-      default_aria_label: Sugerencias ortográficas
-      aria_label: "Sugerencias ortográficas para: {{ mistake }}"
+  title: Información sobre la calidad de los datos
   dqi_dashboard:
+    menu: Información sobre la calidad de los datos
+    helper:
+      title: Presentación de la calidad de los datos en Akeneo
+      description: Con el panel de control de calidad de datos, puede medir la calidad de los datos de su catálogo. También puede centrarse en una categoría o familia.
+      help_center: Consulta nuestro Centro de Ayuda para obtener más información.
+    no_data_title: Lo sentimos, aún no tenemos suficientes datos para mostrar la visión general de la calidad de los datos.
+    no_data_subtitle: Por favor, regrese mas tarde.
+    time_period:
+      label: Período de tiempo
+      daily: Diario
+      weekly: Semanalmente
+      monthly: Mensualmente
+    legend:
+      excellent: Excelente
+      good: Bien
+      average: Promedio
+      below_average: Por debajo de la media
+      to_improve: Para mejorar
+    average_grade: Nota media
+    category_modal_filter:
+      subtitle: Filtrar en una categoría
+      message: Elige la categoría a explorar en tu panel de control
+    widgets:
+      family_modal:
+        subtitle: Añadir familias
+        message: Elige las familias a añadir en tu panel de control
+        max_families_msg: Lo sentimos, no puedes añadir más de {{ count }} familias para seguir en tu panel de control
+      category_modal:
+        subtitle: Añadir categorías
+        message: Elige las categorías a añadir en su panel de control
+        max_categories_msg: Lo sentimos, no puedes añadir más de {{ count }} categorías para seguir en tu panel de control
+      add_families: Añadir familias
+      add_categories: Añadir categorías
+      title: Título
+      score: Puntuación
+      no_family_helper_msg: Seleccione las familias para las que desea medir la calidad de los datos
+      no_category_helper_msg: Seleccione las categorías para las que desea medir la calidad de los datos
+      see_in_grid: Ver en cuadrícula
+    time_axis:
+      day: día
     key_indicators:
-      attributes: '{1}1 atributo|]1, 200[{{ count }} atributos|[200, Inf[más de {{ count }} atributos'
-      attributes_to_work_on: 'Tiene <improvable_attributes_count_link/> para trabajar.'
+      title: Indicadores clave
+      products: '{1}1 producto|]1, 200[{{ count }} productos|[200, Inf[más de {{ count }} productos'
+      product_models: '{1}1 modelo de producto|]1, 200[{{ count }} modelos de producto|[200, Inf[más de {{ count }} modelos de producto'
+      entities_to_work_on: 'Tienes <improvable_products_count_link/> para trabajar.'
+      entities_to_work_on_2_kinds: 'Tienes <improvable_products_count_link/> y <improvable_product_models_count_link/> para trabajar.'
       list:
         has_image:
-          no_data: Sus colecciones de activos y atributos de imagen parecen estar vacíos, debería subir imágenes para este indicador clave para destacar la calidad de sus productos.
-        attributes_perfect_spelling:
-          title: Atributos etiquetados correctamente
-          no_data: Sus etiquetas de atributos y opciones parecen estar vacías, debería enriquecerlas para este indicador clave para destacar la calidad de sus atributos.
+          title: Productos con una imagen
+          no_data: Sus atributos de imagen parecen estar vacíos, debería subir imágenes para este indicador clave para destacar la calidad de sus productos.
           messages:
             first_step:
-              message1: '¿Tiene problemas con las etiquetas de atributos y opciones? ¿Qué tal volver a lo básico <a href=«{{ link }}» target="_blank">aquí</a>?'
-              message2: '¿Necesita ayuda con sus atributos y opciones de atributos? ¡Eche un vistazo <a href=«{{ link }}» target="_blank">aquí</a>!'
+              message1: Sin imágenes, sus productos no tendrán el aspecto que merecen.
+              message2: La primera impresión tiene mucho valor, mime sus activos, sus clientes lo notarán.
+              message3: Según nuestra experiencia, las imágenes realmente marcan la diferencia. Es posible que tenga que dedicar más tiempo a los activos.
             second_step:
-              message1: Observe detenidamente las etiquetas de sus atributos y opciones. Sus productos tendrán un aspecto aún mejor después.
-              message2: Parece que se ha perdido en algún punto del camino. Algunas de sus etiquetas aún necesitan mejoras.
+              message1: Solo tiene que trabajar un poco más en las imágenes de sus productos y estará listo para empezar.
+              message2: Una imagen vale más que mil palabras, ¡trabaje en ella ahora, ahorre tiempo después!
+              message3: Puede que tenga que dedicar un poco de tiempo a las imágenes, sus productos tendrán un aspecto mucho mejor.
             third_step:
-              message1: '¡Está muy cerca! Solo unos pocos retoques finales y estará todo listo.'
-              message2: Algunos de sus atributos y etiquetas todavía necesitan un poco de trabajo, pero va por el buen camino.
+              message1: Está bastante bien, solo faltan un par de imágenes.
+              message2: Esto es bonito, estás muy cerca.
+              message3: Añada los toques finales y estará todo listo.
             perfect_score_step:
-              message1: '¡Su catálogo está más listo que nunca! ¡Ha hecho un gran trabajo!'
-              message2: '¡Gran trabajo en las etiquetas de atributos y opciones!'
-        values_perfect_spelling:
-          title: Productos con una ortografía perfecta en los valores de los productos de texto
-          no_data: Sus áreas de texto parecen estar vacías, debería enriquecerlas con este indicador clave para destacar la calidad de sus productos.
+              message1: '¡Bien hecho! ¡Ya está listo!'
+              message2: '¡Increíble! ¡Sus productos son todos bonitos y brillantes!'
+              message3: Esto es perfecto.
+        good_enrichment:
+          title: Productos con una buena relación de enriquecimiento
+          no_data: Sus productos parecen estar vacíos, debería añadir atributos para este indicador clave para destacar la calidad de sus productos.
           messages:
             first_step:
-              message1: Sus productos merecen estar descritos correctamente. ¡Compruebe la ortografía!
-              message2: Usted es el mejor defensor de sus productos, fíjese bien en la ortografía.
-              message3: Las descripciones de sus productos son la imagen de su empresa, ¡deshágase de esas erratas! La primera impresión es importante.
-              message4: Cuantos más errores tenga, peor impresión dará. Preste especial atención a su ortografía.
+              message1: Una forma de mejorar esta proporción es asegurarse de definir cuidadosamente los atributos más relevantes. <a href="{{ link }}" target="_blank">Eche un vistazo a nuestro centro de ayuda</a>.
+              message2: '¿Su PIM sigue siendo un misterio para usted? <a href=«{{ link }}» target="_blank">Aprenda a sacarle el máximo partido</a>.'
+              message3: Nuestros equipos desarrollaron el PIM, ¡usted lo hace vivir!
+              message4: La información detallada de los productos marca una verdadera diferencia para sus clientes. ¡Usted puede cambiar las reglas del juego!
             second_step:
-              message1: Ya tiene grandes productos, ¡ahora solo necesita una gran ortografía!
-              message2: Un error ortográfico puede alejar a un cliente, ¡sea minucioso!
-              message3: Algunos de sus productos necesitan un poco de ayuda para ser perfectos. ¡Cuidado con las erratas!
+              message1: '¡Intentemos apuntar un poco más alto! Sus clientes se lo agradecerán.'
+              message2: Ya está a mitad de camino. Continúe y sus productos se enriquecerán de forma notable.
+              message3: Los detalles son lo más importante, ¡incluso en su sector!
+              message4: '¿Necesita que le echen una mano para pulir el enriquecimiento de su producto? Aprenda a seleccionar cuidadosamente los atributos más relevantes <a href=«{{ link }}» target="_blank">aquí</a>.'
             third_step:
-              message1: Una buena ortografía realmente marca la diferencia, ¡no está tan lejos!
-              message2: Ya casi está, ¡está muy cerca de la ortografía perfecta!
-              message3: Está a un par de faltas de ortografía de los valores perfectos del producto.
-              message4: '¡Solo un poco más de esfuerzo para alcanzar una descripción de producto impecable!'
+              message1: Hasta aquí todo bien, ¡ahora puede ir un poco más allá!
+              message2: Es una proporción muy buena, pero ¿no quedaría bien un 100 %?
+              message3: '¡Algunos de sus productos todavía necesitan un poco de ayuda para estar completos! ¡Ya casi lo tiene!'
+              message4: Solo hay que poner algunos puntos sobre las íes y cruzar las t y estará perfecto.
             perfect_score_step:
-              message1: Una ortografía perfecta en todo su catálogo. ¡Bien hecho!
-              message2: "Es impresionante: ¡sus productos son impecables!"
-              message3: Ha hecho un trabajo increíble al eliminar el 100 % de las faltas de ortografía. ¡Enhorabuena!
+              message1: Sus productos se van a vender solos. Gran trabajo.
+              message2: Qué aventura, puede estar orgulloso de su trabajo.
+              message3: Es usted un verdadero maestro a la hora de mantener su catálogo al día.
+              message4: Enhorabuena, ¡está impecable!
+      no_data: Lo sentimos, aún no tenemos suficientes datos para mostrar los indicadores clave.
+      no_data_subtitle: Vuelva más tarde.
+    score_distribution:
+      title: Distribución de puntuación de calidad
+    quality_score_evolution:
+      title: Evolución de la puntuación de calidad
+      current_score: es su puntuación actual de calidad del catálogo para este ámbito.
+      current_month_label: Este mes
+      no_catalog_score: No hemos podido calcular su puntuación de calidad actual.
+  product_evaluation:
+    criteria:
+      completeness_of_required_attributes:
+        recommendation: Atributos requeridos con valores faltantes
+      completeness_of_non_required_attributes:
+        recommendation: Atributos no requeridos con valores faltantes
+      enrichment_image:
+        recommendation: Imagen no encontrada
+    axis:
+      enrichment:
+        title: Enriquecimiento
+        attributes_link: Mostrar todos los atributos que faltan
+        success: Los datos de tu producto están completamente enriquecidos. ¡Felicidades!
+    messages:
+      error:
+        axis_error: Debido a un error, la nota no se pudo calcular completamente. Inténtelo de nuevo más tarde.
+        criterion_error: No se ha podido calcular la categoría.
+      success:
+        criterion: Todo está bien.
+      grading_in_progress: Calificación en progreso.
+      axis_grading_in_progress: Calificación en progreso. Vuelva más tarde.
+      too_many_attributes: Tienes {{ count }} atributos para mejorar.
+      no_attribute_groups:
+        title: Lo sentimos, no hemos podido calcular su puntuación de calidad.
+        subtitle: "No se puede calcular la puntuación de calidad: ninguno de los grupos de atributos de este producto está activado."
+        help_center_link: Descubra cómo la información sobre la calidad de los datos puede ayudarle a mejorarla en nuestro centro de ayuda.
+      add_image_attribute_recommendation: Una imagen vale más que mil palabras. Debería añadir un atributo de imagen para mejorar la calidad de los datos de este producto.
+      fill_image_attribute_recommendation: Según nuestra experiencia, las imágenes realmente marcan la diferencia. Debería añadir al menos una imagen para mejorar la calidad de los datos de este producto.
+      not_applicable:
+        message: Este criterio no es aplicable en su contexto.
+        help_center_link: Descubra por qué en nuestro Centro de Ayuda.
+  product_edit_form:
+    attribute_filter:
+      all_missing_attributes: Todos los atributos que faltan
+    back_to_products: Volver a los productos
+  attribute_group:
+    helper_dqi_info: El cálculo de la puntuación de calidad solo tendrá en cuenta los atributos pertenecientes a los grupos de atributos habilitados en la calidad de los datos.
+    helper_dqi_link: Más información en nuestro centro de ayuda.
+    activation: Habilitado
+    dqi_status: Estado de la calidad de datos
+    activated: Habilitado
+    disabled: Deshabilitado
+    used_groups_helper: "Los siguientes grupos de atributos se tienen en cuenta en el cálculo de los Informes de Calidad de datos:"
+    all_groups_evaluated: Todos los grupos de atributos de este producto se tienen en cuenta para el cálculo de la puntuación de calidad. Para obtener la puntuación de calidad más relevante, <a href=«{{ link }}» target="_blank">aprenda a desactivar los grupos de atributos en nuestro centro de ayuda.</a>
   product_grid:
     filter_label:
-      spelling_quality: Calidad ortográfica
-  dictionary:
-    helper:
-      content: El diccionario le permite registrar palabras que serán ignoradas por la Información sobre la calidad de los datos.
-      link_label: Más información en nuestro centro de ayuda.
-    words: Palabras
-    searchPlaceholder: Buscar una palabra
-    add_words: Añadir palabras aquí
-    no_search_results:
-      title: Búsqueda sin resultados
-      subtitle: Pruebe con nuevos criterios de búsqueda.
-    no_data:
-      title: Aún no hay palabras
-      subtitle: Añada la primera arriba, haga clic en «Añadir» o presione Intro.
-pimee_enrich.entity.locale:
-  grid:
-    columns:
-      dictionary_words_count:
-        title: Número de palabras
-        label: "]-Inf, 1]{{ count }} palabra|]1, Inf[{{ count }} palabras"
-        not_available: No disponible 
-    add_words: Añadir palabras
-    items_selected: "{1}1 elemento seleccionado|[2, Inf[{{ count }} elementos seleccionados"
-    modal:
-      title: Añadir palabras a {{ count }} configuraciones regionales
-      subtitle: Escriba sus palabras a continuación. Se añadirán a todas las configuraciones regionales seleccionadas.
-      locales_added_notification:
-        title: Palabras añadidas a {{ count }} configuraciones regionales
-        content: Las nuevas palabras se han añadido a los diccionarios de las configuraciones regionales seleccionadas.
-      no_supported_locales:
-        title: Las configuraciones regionales seleccionadas no se pueden verificar por la Información sobre la calidad de los datos.
-        content: Para conocer la lista de configuraciones regionales admitidas, consulte nuestro <a href=«{{ link }}» target="_blank">Centro de ayuda</a>
+      quality_score: Puntuación de calidad
+      enrichment_quality: Calidad de enriquecimiento
+      images_quality: Imagen del producto
+    filter_value:
+      good: Buena
+      to_improve: Para mejorar
+      "yes": "Sí"
+      "no": "No"
+  quality_score:
+    pending: En progreso
+    title: "Puntuación de calidad:"
+pim_title:
+  akeneo_data_quality_insights_dashboard: Información sobre la calidad de los datos

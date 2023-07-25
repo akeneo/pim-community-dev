@@ -1,34 +1,4 @@
 free_trial:
-  invite_users:
-    title: "]-Inf, 1]{{ count }} 位受邀用户|]1, Inf[{{ count }} 位受邀用户"
-    breadcrumb: 邀请用户
-    invite_button: 邀请用户
-    invite_helper:
-      message1: 邀请您的同事或合作伙伴来探索 Akeneo PIM。
-      message2: 我们将向他们发送一封含有链接的电子邮件，邀请他们与您一起加入免费试用的探索。
-    invite_input_label: 请分享您同事或合作伙伴的电子邮件。
-    users_list:
-      headers:
-        invited_user: 邀请已发送给
-        status: 状态
-      empty_list_message: 您尚未传播该词。
-    invite_messages:
-      success:
-        title: 邀请已发送给新用户
-        description: 他们将收到一封含有链接的电子邮件，邀请他们与您一起进行 Akeneo PIM 免费试用。
-      error:
-        invitation_failed:
-          title: 邀请无法发送
-          description: 发生技术错误。请重试。
-        invalid_email:
-          title: 邀请无法发送
-          description: 请确保电子邮件存在并正确拼写。
-        invitation_already_sent:
-          title: 邀请已发送
-          description: 已向一些用户发送了含有链接的邀请，以请他们进行 Akeneo PIM 免费试用。请让他们悉知！
-        unauthorized_email:
-          title: 邀请无法发送
-          description: 请确保电子邮件是商业电子邮件
   menu:
     assets: 资产
     entities: 实体
@@ -43,5 +13,3 @@ free_trial:
     dashboard:
       projects: 项目
       helper: Akeneo PIM Enterprise Edition 中的项目帮助您组织并跟踪参与丰富产品数据的贡献者群组的工作。这些项目生成任务并分配给正确的用户，使每个人都能在构建出色的产品经验方面发挥自己的作用。创建项目以构建丰富的工作流程并监控项目状况。这些简化了处理产品丰富度的工作团队成员之间的沟通。
-pim_title:
-  akeneo_invite_user: 邀请用户

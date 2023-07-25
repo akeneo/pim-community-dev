@@ -1,119 +1,162 @@
 akeneo_data_quality_insights:
-  product_evaluation:
-    criteria:
-      consistency_textarea_uppercase_words:
-        recommendation: 有大写问题的属性
-      consistency_textarea_lowercase_words:
-        recommendation: 有小写问题的属性
-      consistency_spelling:
-        recommendation: 属性有拼写问题
-      consistency_attribute_spelling:
-        recommendation: 有拼写错误的属性标签
-      consistency_attribute_option_spelling:
-        recommendation: 有拼写错误的属性选项
-    axis:
-      consistency:
-        title: 一致性
-        attributes_link: 显示所有可改进的属性
-        success: 您的产品数据完全一致。恭喜！
-    messages:
-      add_image_attribute_recommendation: 图像要比文字更直观。您应该添加资产集合或图像属性来提高该产品的数据质量。
-  product_edit_form:
-    attribute_filter:
-      all_improvable_attributes: 所有可改进的属性
-    spellcheck_popover:
-      title: 更正
-      original_text_title: 原始值
-      suggestions_title: 提案
-      ignore_all_suggestions_button_label: 忽略
-  attribute_grid:
-    quality:
-      to_improve: 要改善
-      good: 良好
-      in_progress: 正在处理
-      n_a: N/A
-  attribute_edit_form:
-    quality_summary: 通过增强此属性，您将改进 {{ count }} 个产品的总体质量。
-  spellcheck:
-    popover:
-      default_aria_label: 拼写建议
-      aria_label: "拼写建议：{{ mistake }}"
+  title: 数据质量洞察
   dqi_dashboard:
+    menu: 数据质量洞察
+    helper:
+      title: Akeneo 数据质量简介
+      description: 借助数据质量仪表板，您可测量目录数据的质量。还可着重于某一类别或品类。
+      help_center: 查看我们的“帮助中心”获取更多信息。
+    no_data_title: 抱歉，我们仍没有足够的数据来显示数据质量概览。
+    no_data_subtitle: 请稍后再回来。
+    time_period:
+      label: 时间段
+      daily: 每天
+      weekly: 每周
+      monthly: 每月
+    legend:
+      excellent: 优秀的
+      good: 棒
+      average: 平均
+      below_average: 低于平均水平
+      to_improve: 要改善
+    average_grade: 平均等级
+    category_modal_filter:
+      subtitle: 按类别筛选
+      message: 选择要在您的仪表板上探索的类别
+    widgets:
+      family_modal:
+        subtitle: 添加品类
+        message: 选择要在您的仪表板上添加的品类
+        max_families_msg: 抱歉，在仪表板上进行跟踪操作时添加的品类数目不能超过 {{ count }} 个
+      category_modal:
+        subtitle: 添加类别
+        message: 选择要添加到仪表板上的类别
+        max_categories_msg: 抱歉，在仪表板上进行跟踪操作时添加的类别数目不能超过 {{ count }} 个
+      add_families: 添加品类
+      add_categories: 添加类别
+      title: 标题
+      score: 分数
+      no_family_helper_msg: 选择要测量数据质量的品类
+      no_category_helper_msg: 选择您希望测量数据质量的类别
+      see_in_grid: 在网格中查看
+    time_axis:
+      day: 天
     key_indicators:
-      attributes: '{1}1 个属性|]1, 200[{{ count }} 个属性|[200, Inf[超过 {{ count }} 个属性'
-      attributes_to_work_on: '您有 <improvable_attributes_count_link/> 个属性待处理。'
+      title: 关键指标
+      products: '{1}1 个产品|]1, 200[{{ count }} 个产品|[200, Inf[超过 {{ count }} 个产品'
+      product_models: '{1}1 个产品模型|]1, 200[{{ count }} 个产品模型|[200, Inf[超过 {{ count }} 个产品模型'
+      entities_to_work_on: '您有 <improvable_products_count_link/> 个产品待处理。'
+      entities_to_work_on_2_kinds: '您有 <improvable_products_count_link/> 个产品和 <improvable_product_models_count_link/> 个产品模型待处理。'
       list:
         has_image:
-          no_data: 您的资产集合和图像属性似乎是空的，您应该为这个关键指标上传图像以突出显示您产品的质量。
-        attributes_perfect_spelling:
-          title: 属性已正确标记
-          no_data: 您的属性和选项标签似乎是空的，您应该丰富这个关键指标，以突出您属性的质量。
+          title: 配有图像的产品
+          no_data: 您的图像属性似乎是空的，您应该为这个关键指标上传图像以突出显示您产品的质量。
           messages:
             first_step:
-              message1: 对丰富属性和选项标签有不解之处？在<a href="{{ link }}" target="_blank">此处</a>温习其基础知识吧！
-              message2: 需要属性和属性选项方面的帮助？请查看<a href="{{ link }}" target="_blank">此处</a>！
+              message1: 如果没有图像，您的产品显不出它们应有的本色。
+              message2: 第一印象需要精心打造。好好打理您的资产，您的客户会留意到的。
+              message3: 以我们的经验来看，图像确实会起到非一般的效果。您可能需要花更多的时间来打理您的资产。
             second_step:
-              message1: 请精心打理您的属性和选项标签。这样您的产品会越来越丰富。
-              message2: 工作尚未完成！您的部分标签仍需要工作。
+              message1: 再好好打理一下您的产品图像，然后一切就完美了。
+              message2: 图像要比文字更直观。现在就添加图像，为将来节省时间！
+              message3: 您可能需要花一点时间在图像上，这样会让您的产品看起来好很多。
             third_step:
-              message1: 胜利在望！只需最后一点儿工作， 您将大功告成。
-              message2: 您的某些属性和标签仍需要一些工作，但您已步入正轨。
+              message1: 很好，只是少几张图像。
+              message2: 非常棒，您马上要成功了。
+              message3: 最后再完善一下，一切就搞定了。
             perfect_score_step:
-              message1: 您的目录现在清晰明了无比！干得漂亮！
-              message2: 属性和选项标签处理得真不错！
-        values_perfect_spelling:
-          title: 文本产品值拼写完美的产品
-          no_data: 您的文本区域似乎是空的，您应该丰富该关键指标，以突出您产品的质量。
+              message1: 大功告成！一切就绪了！
+              message2: 真棒！您的产品现在很完美，很亮眼！
+              message3: 完美。
+        good_enrichment:
+          title: 丰富度很棒的产品
+          no_data: 您的产品似乎是空的，您应该为该关键指标添加属性，以突出您产品的质量。
           messages:
             first_step:
-              message1: 您的产品应得到正确描述。检查一下拼写吧！
-              message2: 您是您产品的最佳拥护者，请仔细检查拼写。
-              message3: 您的产品描述展现的是贵公司的形象，让我们杜绝那些错字吧！第一印象很重要。
-              message4: 错误越多，给人的印象越差。请特别留意拼写。
+              message1: 提高丰富度的一个方法就是确保您仔细定义了最相关的属性。<a href="{{ link }}" target="_blank">请查看我们的帮助中心</a>。
+              message2: 您对 PIM 仍感到迷惑？<a href="{{ link }}" target="_blank">请了解如何对其进行充分利用</a>。
+              message3: 我们的团队开发了 PIM，而您让它焕发活力！
+              message4: 详细的产品信息会为您的客户带来非凡的体验。您可以成为游戏改变者！
             second_step:
-              message1: 您的产品很出色，现在您需要配上出色的拼写！
-              message2: 拼写错误可能会导致客户流失，请慎重！
-              message3: 您的部分产品需要一点帮助才能做到完美。请留心拼写错误！
+              message1: 让我们尝试着再提高一些！您的客户会非常感激。
+              message2: 您已成功了一半！坚持，您的产品将得到极好的丰富。
+              message3: 细节决定成败，您的行业也不例外！
+              message4: 需要手动精心打理您的产品丰富度吗？在<a href="{{ link }}" target="_blank">此处</a>了解如何仔细选择最相关的属性。
             third_step:
-              message1: 出色的拼写会带来与众不同的效果，您已距此不远了！
-              message2: 大功即将告成，您离完美的拼写仅一步之遥！
-              message3: 要达到完美的产品值，还有几个错误需要处理。
-              message4: 只需再努力一点儿，就可以让您的产品描述完美无瑕了！
+              message1: 到目前一切还不错，现在您可以更进一步！
+              message2: 这个丰富度相当不错，但 100% 是不是更棒？
+              message3: 一些产品仍需要一点帮助才能完成！您已胜利在望了！
+              message4: 离完美只有咫尺之遥。
             perfect_score_step:
-              message1: 您的目录拼写完美。太棒了！
-              message2: "这给人留下深刻的印象：您的产品完美无缺！"
-              message3: 您消除了全部的拼写错误，简直棒极了。祝贺您！
+              message1: 您的产品非常抢眼！太棒了！
+              message2: 多么棒的工作！您可以尽情自豪了！
+              message3: 您是一位真正的大师，让自己的目录焕然一新！
+              message4: 祝贺您，完美！
+      no_data: 抱歉，我们仍没有足够的数据来显示这些关键指标。
+      no_data_subtitle: 请稍后再回来。
+    score_distribution:
+      title: 质量评分分布
+    quality_score_evolution:
+      title: 质量评分演变
+      current_score: 是您当前在此范围内的目录质量评分。
+      current_month_label: 本月
+      no_catalog_score: 我们无法计算您当前的质量评分。
+  product_evaluation:
+    criteria:
+      completeness_of_required_attributes:
+        recommendation: 必填属性缺少值
+      completeness_of_non_required_attributes:
+        recommendation: 非必填属性缺少值
+      enrichment_image:
+        recommendation: 缺少图像
+    axis:
+      enrichment:
+        title: 丰富度
+        attributes_link: 显示所有缺失的属性
+        success: 您的产品数据非常完整。恭喜！
+    messages:
+      error:
+        axis_error: 由于存在错误，无法完全计算评分。请稍后再试。
+        criterion_error: 无法计算评分。
+      success:
+        criterion: 一切都不错！
+      grading_in_progress: 正在评分。
+      axis_grading_in_progress: 正在评分。请稍后再试。
+      too_many_attributes: 您有 {{ count }} 个属性待改进。
+      no_attribute_groups:
+        title: 抱歉，我们无法计算您的质量评分。
+        subtitle: "无法计算质量评分：此产品的属性组没有激活。"
+        help_center_link: 请在我们的帮助中心了解数据质量洞察如何帮助您提高数据质量。
+      add_image_attribute_recommendation: 图像要比文字更直观。您应该添加图像属性来提高该产品的数据质量。
+      fill_image_attribute_recommendation: 以我们的经验来看，图像确实会起到非一般的效果。您应该添加至少一张图像来提高该产品的数据质量。
+      not_applicable:
+        message: 此标准不适用于您的上下文环境。
+        help_center_link: 在我们的帮助中心查找原因。
+  product_edit_form:
+    attribute_filter:
+      all_missing_attributes: 所有缺少内容的属性
+    back_to_products: 返回到产品
+  attribute_group:
+    helper_dqi_info: 质量评分计算将仅考虑属于在数据质量上启用的属性组的帐户属性。
+    helper_dqi_link: 有关更多信息，请访问我们的帮助中心。
+    activation: 已启用
+    dqi_status: 数据质量洞察状态
+    activated: 已启用
+    disabled: 已停用
+    used_groups_helper: "以下属性组在数据质量洞察计算中被考虑在内："
+    all_groups_evaluated: 计算质量评分时考虑了该产品的所有属性组。要获取最相关的质量评分，请<a href="{{ link }}" target="_blank">在我们的帮助中心了解如何禁用属性组。</a>
   product_grid:
     filter_label:
-      spelling_quality: 拼写质量
-  dictionary:
-    helper:
-      content: 字典允许您注册将被数据质量洞察忽略的文字。
-      link_label: 有关更多信息，请访问我们的帮助中心。
-    words: 词条
-    searchPlaceholder: 搜索词条
-    add_words: 在此处添加词条
-    no_search_results:
-      title: 搜索没有任何结果
-      subtitle: 请用新的搜索条件再进行搜索。
-    no_data:
-      title: 还没有词条
-      subtitle: 添加上面的第一个，点击"添加"或按 Enter。
-pimee_enrich.entity.locale:
-  grid:
-    columns:
-      dictionary_words_count:
-        title: 词条数量
-        label: "]-Inf, 1]{{ count }} 个词条|]1, Inf[{{ count }} 个词条"
-        not_available: 不可用
-    add_words: 添加词条
-    items_selected: "{1}1 个条目被选中|[2, Inf[{{ count }} 个条目被选中"
-    modal:
-      title: 添加词条到 {{ count }} 区域
-      subtitle: 在下面输入您的词条。它们将被添加到所有选定的区域中。
-      locales_added_notification:
-        title: 添加至 {{ count }} 区域的词条
-        content: 新的词条已添加到选定区域的字典中。
-      no_supported_locales:
-        title: 无法通过数据质量洞察对选定的区域进行拼写检查。
-        content: 要了解受支持区域的列表，请查阅我们的<a href="{{ link }}" target="_blank">帮助中心</a>
+      quality_score: 质量评分
+      enrichment_quality: 丰富质量
+      images_quality: 产品图像
+    filter_value:
+      good: 优
+      to_improve: 要改善
+      "yes": "是"
+      "no": "否　"
+  quality_score:
+    pending: 进行中
+    title: "质量评分："
+pim_title:
+  akeneo_data_quality_insights_dashboard: 数据质量洞察

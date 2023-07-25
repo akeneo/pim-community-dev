@@ -1,41 +1,11 @@
 free_trial:
-  invite_users:
-    title: "]-Inf, 1]{{ count }}人の招待ユーザー|]1, Inf[{{ count }}人の招待ユーザー"
-    breadcrumb: ユーザーを招待
-    invite_button: ユーザーを招待
-    invite_helper:
-      message1: 同僚やパートナーを招待して、Akeneo PIMを紹介しましょう。
-      message2: 無料トライアルを一緒に試すためのリンクをメールで送信します。
-    invite_input_label: 同僚またはパートナーのメールアドレスを入力してください。
-    users_list:
-      headers:
-        invited_user: '招待状の送信先:'
-        status: ステータス
-      empty_list_message: まだ紹介していません。
-    invite_messages:
-      success:
-        title: 新規ユーザーに送信された招待状
-        description: Akeneo PIM無料トライアルに参加するためのメールがまもなく届けられます。
-      error:
-        invitation_failed:
-          title: 招待状を送信できませんでした
-          description: 技術的なエラーが発生しました。もう一度お試しください。
-        invalid_email:
-          title: 招待状を送信できませんでした
-          description: メールアドレスが存在し、綴りが正しいことを確認してください。
-        invitation_already_sent:
-          title: 招待状は送信済みです
-          description: Akeneo PIM無料トライアルに参加するためのリンクが含まれた招待状が、一部のユーザーに送信済みです。送信した相手にそのことをお伝えください。
-        unauthorized_email:
-          title: 招待状を送信できませんでした
-          description: メールアドレスが勤務先のメールアドレスであることを確認してください
   menu:
     assets: アセット
     entities: エンティティ
     proposals: 提案
     sso: SAMLベースのシングルサインオン
     rules: ルール
-    feature_ee_only: この機能はEnterprise Edition限定です
+    feature_ee_only: この機能はEnterprise Editionでのみご利用いただけます
   dqi:
     dashboard:
       helper: Akeneo PIM Enterprise Editionは、既存のデータ品質インサイト機能にさらに強力な機能を提供します。拡張されたスペルチェック機能、幅広い言語対応、追加の主要指標にアクセスし、どこで販売しても完璧な商品体験を提供することができます。
@@ -43,5 +13,3 @@ free_trial:
     dashboard:
       projects: プロジェクト
       helper: Akeneo PIM Enterprise Editionのプロジェクトは、商品データの充実に関与する参加者グループ全体で作業を整理して追跡する上で役立ちます。タスクを生成して適切なユーザーに割り当てることで、誰もが魅力的な商品体験の構築に携わることができます。充実したワークフローを構成し、プロジェクトステータスをモニターするためにプロジェクトを作成します。プロジェクトは商品性向上に取り組むチームメンバー間のコミュニケーションを簡素化します。
-pim_title:
-  akeneo_invite_user: ユーザーを招待

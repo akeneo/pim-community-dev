@@ -1,39 +1,9 @@
 free_trial:
-  invite_users:
-    title: "]-Inf, 1]{{ count }} zaproszony użytkownik|]1, Inf[{{ count }} zaproszonych użytkowników"
-    breadcrumb: Zaproś użytkowników
-    invite_button: Zaproś użytkowników
-    invite_helper:
-      message1: Zaproś współpracowników lub partnerów do Akeneo PIM.
-      message2: Wyślemy im wiadomości e-mail z linkiem umożliwiającym dołączenie do Ciebie w ramach bezpłatnego okresu próbnego.
-    invite_input_label: Podaj adres e-mail współpracownika lub partnera.
-    users_list:
-      headers:
-        invited_user: 'Zaproszenie wysłane do:'
-        status: Status
-      empty_list_message: Jeszcze nie wysłano wiadomości.
-    invite_messages:
-      success:
-        title: Wysłano zaproszenia do nowych użytkowników
-        description: Każda z podanych osób otrzyma wiadomość e-mail z linkiem pozwalającym na dołączenie do Twojego bezpłatnego okresu próbnego Akeneo PIM.
-      error:
-        invitation_failed:
-          title: Zaproszenie nie mogło zostać wysłane
-          description: Wystąpił błąd techniczny. Spróbuj ponownie.
-        invalid_email:
-          title: Zaproszenie nie mogło zostać wysłane
-          description: Upewnij się, że ten adres e-mail istnieje i został zapisany prawidłowo.
-        invitation_already_sent:
-          title: Zaproszenie już zostało wysłane
-          description: Zaproszenia z linkiem do bezpłatnego okresu próbnego Akeneo PIM zostały już wysłane do niektórych użytkowników. Daj im znać!
-        unauthorized_email:
-          title: Zaproszenie nie mogło zostać wysłane
-          description: Upewnij się, że ten adres e-mail jest adresem służbowym.
   menu:
     assets: Zasoby
     entities: Obiekty
     proposals: Propozycje
-    sso: Logowanie jednokrotne oparte na protokole SAML
+    sso: Pojedyncze logowanie oparte na protokole SAML
     rules: Reguły
     feature_ee_only: Ta funkcja jest dostępna tylko w wersji Enterprise.
   dqi:
@@ -42,6 +12,4 @@ free_trial:
   activity:
     dashboard:
       projects: Projekty
-      helper: Projekty w oprogramowaniu Akeneo PIM w wersji Enterprise ułatwiają organizację i śledzenie pracy dzielonej między grupami współtwórców zaangażowanych we wzbogacanie danych produktów. Tworzą oni zadania i przypisują je właściwemu użytkownikowi, dzięki czemu każdy może odegrać swoją rolę w budowaniu atrakcyjnych doświadczeń związanych z produktami. Możesz przygotowywać projekty mające na celu ustrukturyzowanie procesów wzbogacania i monitorowanie statusu projektu. Uproszczają one komunikację między członkami zespołu pracującymi nad wzbogacaniem produktu.
-pim_title:
-  akeneo_invite_user: Zaproś użytkowników
+      helper: Projekty w oprogramowaniu Akeneo PIM w wersji Enterprise ułatwiają organizację i śledzenie pracy dzielonej między grupami współtwórców zaangażowanych we wzbogacanie danych produktów. Tworzą one zadania i przypisują je właściwemu użytkownikowi, dzięki czemu każdy może odegrać swoją rolę w budowaniu atrakcyjnych doświadczeń związanych z produktami. Możesz przygotowywać projekty mające na celu ustrukturyzowanie procesów wzbogacania i monitorowanie statusu projektu. Uproszczają one komunikację między członkami zespołu pracującymi nad wzbogacaniem produktu.
