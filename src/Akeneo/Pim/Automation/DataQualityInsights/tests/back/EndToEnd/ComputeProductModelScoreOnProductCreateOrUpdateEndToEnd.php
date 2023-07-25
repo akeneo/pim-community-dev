@@ -7,7 +7,7 @@ declare(strict_types=1);
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Akeneo\Pim\Automation\DataQualityInsights\tests\back\EndToEnd;
+namespace Akeneo\Test\Pim\Automation\DataQualityInsights\EndToEnd;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\EndToEnd\MessengerTestCase;
@@ -21,7 +21,7 @@ final class ComputeProductModelScoreOnProductCreateOrUpdateEndToEnd extends Mess
     public function setUp(): void
     {
         parent::setUp();
-        
+
         $this->createAttribute('name');
         $this->createSimpleSelectAttributeWithOptions('color', ['red', 'blue']);
         $this->createSimpleSelectAttributeWithOptions('size', ['38', '39', '40']);

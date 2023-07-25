@@ -52,6 +52,14 @@ services:
             - '%env(PUBSUB_TOPIC_TEST_QUEUE_2)%'
             - '%env(PUBSUB_SUBSCRIPTION_TEST_CONSUMER_4)%'
 
+    akeneo_integration_tests.pub_sub_queue_status.test_upsert_attributes_consumer:
+        class: AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubQueueStatus
+        arguments:
+            - '@Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory'
+            - '%env(GOOGLE_CLOUD_PROJECT)%'
+            - '%env(PUBSUB_TOPIC_ATTRIBUTES_WERE_UPSERT)%'
+            - '%env(PUBSUB_SUBSCRIPTION_DQI_ATTRIBUTE_EVALUATE)%'
+
     Akeneo\Tool\Bundle\MessengerBundle\tests\config\MessageNormalizer:
         tags:
               - { name: akeneo_messenger.message.normalizer }

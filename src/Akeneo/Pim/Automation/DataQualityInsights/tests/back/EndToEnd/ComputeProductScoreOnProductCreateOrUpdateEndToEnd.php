@@ -22,7 +22,7 @@ final class ComputeProductScoreOnProductCreateOrUpdateEndToEnd extends Messenger
     public function test_it_computes_product_score_after_creation(): void
     {
         $uuid1 = Uuid::uuid4();
-        $this->upsertProduct($uuid1);
+        $this->upsertProductWithUuid($uuid1);
 
         self::assertFalse($this->isProductScoreComputed(ProductUuid::fromString($uuid1->toString())));
         $this->launchConsumer(self::CONSUMER_NAME);
@@ -32,13 +32,13 @@ final class ComputeProductScoreOnProductCreateOrUpdateEndToEnd extends Messenger
     public function test_it_computes_product_score_after_update(): void
     {
         $uuid1 = Uuid::uuid4();
-        $this->upsertProduct($uuid1);
+        $this->upsertProductWithUuid($uuid1);
 
         $this->productScoreComputeOnUpsertQueueStatus->flushJobQueue();
         $this->simulateOldProductScoreCompute();
         self::assertFalse($this->isProductScoreComputed(ProductUuid::fromString($uuid1->toString())));
 
-        $this->upsertProduct($uuid1);
+        $this->upsertProductWithUuid($uuid1);
         $this->launchConsumer(self::CONSUMER_NAME);
 
         self::assertTrue($this->isProductScoreComputed(ProductUuid::fromString($uuid1->toString())));
@@ -47,7 +47,7 @@ final class ComputeProductScoreOnProductCreateOrUpdateEndToEnd extends Messenger
     public function test_it_computes_product_score_after_bulk_save(): void
     {
         $uuid1 = Uuid::uuid4();
-        $this->upsertProduct($uuid1);
+        $this->upsertProductWithUuid($uuid1);
 
         $this->productScoreComputeOnUpsertQueueStatus->flushJobQueue();
         $this->simulateOldProductScoreCompute();
@@ -72,7 +72,7 @@ final class ComputeProductScoreOnProductCreateOrUpdateEndToEnd extends Messenger
         self::assertTrue($this->isProductScoreComputed(ProductUuid::fromString($uuid2->toString())));
     }
 
-    protected function upsertProduct(UuidInterface $uuid): void
+    private function upsertProductWithUuid(UuidInterface $uuid): void
     {
         $command = UpsertProductCommand::createWithUuid(
             $this->getUserId('admin'),

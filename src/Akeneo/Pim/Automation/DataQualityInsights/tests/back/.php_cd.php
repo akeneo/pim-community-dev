@@ -61,6 +61,9 @@ $rules = [
             //Subscribers for attribute group updates
             'Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface',
 
+            // Attribute events
+            'Akeneo\Pim\Structure\Component\Model\Attribute',
+
             //Connector / (Tasklets, job parameters)
             'Akeneo\Tool\Component\Batch\Job\JobInterface',
             'Akeneo\Tool\Component\Batch\Job\JobParameters',
