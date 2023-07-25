@@ -2,6 +2,8 @@ import {LabelCollection, Locale} from '@akeneo-pim-community/shared';
 
 export type AttributeCode = string;
 
+export type AttributeId = number;
+
 export enum ATTRIBUTE_TYPE {
   BOOLEAN = 'pim_catalog_boolean',
   DATE = 'pim_catalog_date',
@@ -39,8 +41,8 @@ export type AttributeType =
   | ATTRIBUTE_TYPE.TEXT
   | ATTRIBUTE_TYPE.REFERENCE_DATA_MULTI_SELECT
   | ATTRIBUTE_TYPE.REFERENCE_DATA_SIMPLE_SELECT
-  | ATTRIBUTE_TYPE.REFERENCE_ENTITY_COLLECTION
   | ATTRIBUTE_TYPE.REFERENCE_ENTITY_SIMPLE_SELECT
+  | ATTRIBUTE_TYPE.REFERENCE_ENTITY_COLLECTION
   | ATTRIBUTE_TYPE.ASSET_COLLECTION
   | ATTRIBUTE_TYPE.LEGACY_ASSET_COLLECTION
   | ATTRIBUTE_TYPE.TABLE;
@@ -58,7 +60,8 @@ type AttributeFieldType =
   | 'akeneo-price-collection-field'
   | 'akeneo-simple-select-field'
   | 'akeneo-text-field'
-  | 'akeneo-textarea-field';
+  | 'akeneo-textarea-field'
+  | string;
 
 /**
  * This value contains the name of the module to load to filter this attribute type for each feature.
@@ -74,7 +77,7 @@ type AttributeFilterTypes = {
 type Version<T> = {
   id: number;
   author: string;
-  resource_id: string;
+  resource_id: AttributeId;
   snapshot: T;
   changeset: {
     [key: string]: {old: any; new: any};
@@ -100,7 +103,7 @@ export type Attribute = {
   allowed_extensions: string[];
   metric_family: null;
   default_metric_unit: null;
-  reference_data_name?: string;
+  reference_data_name?: string | null;
   available_locales: Locale[];
   max_characters: null;
   validation_rule: null;
@@ -126,10 +129,10 @@ export type Attribute = {
   is_main_identifier: boolean;
   is_read_only: undefined | boolean;
   meta: {
-    id: number;
-    structure_version: number;
-    model_type: 'attribute';
-    created: Version<Attribute>;
-    updated: Version<Attribute>;
+    id: AttributeId;
+    structure_version?: number;
+    model_type?: 'attribute';
+    created?: Version<Attribute>;
+    updated?: Version<Attribute>;
   };
 };

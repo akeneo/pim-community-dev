@@ -2,8 +2,18 @@
 # yarn lockfile v1
 
 
+"@akeneo-pim-community/shared@link:../front-packages/shared":
+  version "0.0.0"
+  uid ""
+
 "@akeneo-pim-community/shared@link:front-packages/shared":
   version "1.0.0"
+
+"@akeneo-pim-community/structure@link:src/Akeneo/Pim/Structure/front":
+  version "0.1.0"
+  dependencies:
+    "@akeneo-pim-community/shared" "link:../front-packages/shared"
+    typescript "^4.0.3"
 
 "@babel/code-frame@7.10.4":
   version "7.10.4"
