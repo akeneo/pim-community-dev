@@ -1,5 +1,15 @@
 # 6.0.x
 
+# 6.0.93 (2023-07-24)
+
+# 6.0.92 (2023-07-19)
+
+# 6.0.91 (2023-07-13)
+
+## Bug fixes
+
+- [Backport CPM-653] PIM-11083: Do not sort on _id in ES cursors
+
 # 6.0.90 (2023-07-06)
 
 - PIM-11070: Increase the oro_access_role label column to VARCHAR(255)
