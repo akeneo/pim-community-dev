@@ -14,7 +14,7 @@ const Container = styled.div<{sticky?: number} & AkeneoThemedProps>`
   box-sizing: border-box;
   gap: 10px;
 
-  :focus-within {
+  &:focus-within {
     border-bottom: 1px solid ${getColor('brand', 100)};
   }
 
