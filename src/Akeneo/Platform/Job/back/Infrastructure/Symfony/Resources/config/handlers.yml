@@ -33,3 +33,4 @@ services:
         public: true
         arguments:
             - '@Akeneo\Platform\Job\Application\DeleteJobInstance\DeleteJobInstanceInterface'
+            - '@akeneo.job.security_facade'

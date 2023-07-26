@@ -9,7 +9,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Job\Application\DeleteJobInstance;
 
+use Akeneo\Platform\Job\ServiceApi\JobInstance\DeleteJobInstance\CannotDeleteJobInstanceException;
+
 interface DeleteJobInstanceInterface
 {
+    /**
+     * @throws CannotDeleteJobInstanceException
+     */
     public function byCodes(array $codes): void;
 }

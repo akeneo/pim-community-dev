@@ -16,6 +16,7 @@ $rules = [
             'Akeneo\Platform\Job\Domain',
             'Akeneo\Platform\Job\ServiceApi',
             'Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceFactory',
+            'Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface',
             'Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\ManualUploadStorage',
             'Akeneo\Tool\Component\Batch\Exception\InvalidJobException',
             'Akeneo\Tool\Component\Batch\Job\JobInterface',
