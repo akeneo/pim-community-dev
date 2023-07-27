@@ -2,7 +2,6 @@ import {
   getLabel,
   PageHeader,
   PimView,
-  useFeatureFlags,
   useRouter,
   useSessionStorageState,
   useTranslate,
@@ -45,7 +44,6 @@ const TemplatePage: FC = () => {
   const router = useRouter();
   const translate = useTranslate();
   const userContext = useUserContext();
-  const featureFlag = useFeatureFlags();
 
   const [activeTab, setActiveTab] = useSessionStorageState<string>(Tabs.ATTRIBUTE, 'pim_category_template_activeTab');
   const [isCurrent, switchTo] = useTabBar(activeTab);
@@ -87,11 +85,9 @@ const TemplatePage: FC = () => {
             </Breadcrumb.Step>
           </Breadcrumb>
         </PageHeader.Breadcrumb>
-        {featureFlag.isEnabled('category_update_template_attribute') && (
-          <PageHeader.AutoSaveStatus>
-            <SaveStatusIndicator />
-          </PageHeader.AutoSaveStatus>
-        )}
+        <PageHeader.AutoSaveStatus>
+          <SaveStatusIndicator />
+        </PageHeader.AutoSaveStatus>
         <PageHeader.UserActions>
           <PimView
             viewName="pim-menu-user-navigation"
