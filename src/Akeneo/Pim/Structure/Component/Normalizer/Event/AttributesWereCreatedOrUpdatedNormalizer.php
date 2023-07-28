@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Structure\Component\Normalizer;
+namespace Akeneo\Pim\Structure\Component\Normalizer\Event;
 
 use Akeneo\Pim\Structure\Component\Event\AttributesWereCreatedOrUpdated;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;

@@ -6,7 +6,7 @@ namespace Akeneo\Test\Pim\Automation\DataQualityInsights\EndToEnd;
 
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
 use AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubQueueStatus;
-use Symfony\Component\Messenger\MessageBusInterface;
+use PHPUnit\Framework\Assert;
 use Symfony\Component\Process\Process;
 
 /**
@@ -17,32 +17,49 @@ abstract class MessengerTestCase extends DataQualityInsightsTestCase
 {
     private const MESSENGER_COMMAND_NAME = 'messenger:consume';
 
-    private MessageBusInterface $productMessageBus;
-    protected PubSubQueueStatus $productScoreComputeOnUpsertQueueStatus;
+    /** @var PubSubQueueStatus */
+    protected array $pubSubQueueStatuses;
 
     protected function setUp(): void
     {
-        \putenv('FLAG_DATA_QUALITY_INSIGHTS_UCS_EVENT_ENABLED=1');
-
         parent::setUp();
+
+        $this->flushQueues();
+
         $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
-
-        $this->productMessageBus = $this->get('pim_enrich.product.message_bus');
-        $this->productScoreComputeOnUpsertQueueStatus = $this->get('akeneo_integration_tests.pub_sub_queue_status.dqi_product_score_compute_on_upsert');
-
-        // Be sure the subscription is created before any tests
-        $subscription = $this->productScoreComputeOnUpsertQueueStatus->getSubscription();
-        if (!$subscription->exists()) {
-            $subscription->create();
-        }
-
-        $this->productScoreComputeOnUpsertQueueStatus->flushJobQueue();
     }
 
     protected function tearDown(): void
     {
         parent::tearDown();
-        $this->productScoreComputeOnUpsertQueueStatus->flushJobQueue();
+        $this->flushQueues();
+    }
+
+    private function flushQueues(): void
+    {
+        foreach ($this->pubSubQueueStatuses as $pubSubStatus) {
+            $subscription = $pubSubStatus->getSubscription();
+            try {
+                $subscription->reload();
+            } catch (\Exception) {
+            }
+            if (!$subscription->exists()) {
+                continue;
+            }
+
+            do {
+                $messages = $subscription->pull(['maxMessages' => 10, 'returnImmediately' => true]);
+                $count = count($messages);
+                if ($count > 0) {
+                    $subscription->acknowledgeBatch($messages);
+                }
+            } while (0 < $count);
+        }
+    }
+
+    protected function dispatchMessage(object $message): void
+    {
+        $this->get('messenger.bus.default')->dispatch($message);
     }
 
     protected function launchConsumer(string $consumerName, int $limit = 1): void
@@ -62,6 +79,6 @@ abstract class MessengerTestCase extends DataQualityInsightsTestCase
         $process->run();
         $process->wait();
 
-        self::assertSame(0, $process->getExitCode(), 'An error occurred: ' . $process->getErrorOutput());
+        Assert::assertSame(0, $process->getExitCode(), 'An error occurred: ' . $process->getErrorOutput());
     }
 }

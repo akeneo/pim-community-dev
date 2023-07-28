@@ -8,6 +8,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
+use AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubQueueStatus;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
@@ -18,6 +19,16 @@ use Ramsey\Uuid\UuidInterface;
 final class ComputeProductScoreOnProductCreateOrUpdateEndToEnd extends MessengerTestCase
 {
     private const CONSUMER_NAME = 'dqi_product_score_compute';
+
+    private PubSubQueueStatus $productScoreComputeOnUpsertQueueStatus;
+
+    protected function setUp(): void
+    {
+        $this->productScoreComputeOnUpsertQueueStatus = $this->get('akeneo_integration_tests.pub_sub_queue_status.dqi_product_score_compute_on_upsert');
+        $this->pubSubQueueStatuses = [$this->productScoreComputeOnUpsertQueueStatus];
+
+        parent::setUp();
+    }
 
     public function test_it_computes_product_score_after_creation(): void
     {

@@ -9,7 +9,7 @@ use Akeneo\Pim\Structure\Component\Event\AttributesWereCreatedOrUpdated;
 use Akeneo\Pim\Structure\Component\Event\AttributeWasCreated;
 use Akeneo\Pim\Structure\Component\Event\AttributeWasUpdated;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Structure\Component\Normalizer\AttributesWereCreatedOrUpdatedNormalizer;
+use Akeneo\Pim\Structure\Component\Normalizer\Event\AttributesWereCreatedOrUpdatedNormalizer;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubQueueStatus;

@@ -132,3 +132,15 @@ services:
             - '%env(APP_ENV)%'
         tags:
             - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Structure\Bundle\EventSubscriber\DispatchFamilyWasCreatedOrUpdatedSubscriber:
+        arguments:
+            - '@akeneo.feature_flag.service.only_serenity_feature'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsUcsEventFeature'
+            - '@messenger.bus.default'
+            - '@pim_catalog.structure.clock'
+            - '@logger'
+            - '%env(default::string:APP_TENANT_ID)%'
+            - '%env(APP_ENV)%'
+        tags:
+            - { name: kernel.event_subscriber }
