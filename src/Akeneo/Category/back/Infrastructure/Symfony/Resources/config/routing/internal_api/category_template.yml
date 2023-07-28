@@ -2,14 +2,12 @@ pim_category_template_rest_get_by_template_uuid:
     path: /rest/{templateUuid}
     defaults:
         _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\GetTemplateController:byTemplateUuid
-        _feature: enriched_category
     methods: [GET]
 
 pim_category_template_rest_create:
     path: /rest/{categoryTreeId}
     defaults:
         _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\CreateTemplateController
-        _feature: enriched_category
     methods: [POST]
 
 pim_category_template_rest_update:

@@ -91,14 +91,6 @@ const Page: FC = () => {
                 Permission
               </Checkbox>
             </Field>
-            <Field>
-              <Checkbox
-                checked={configuration.features.enriched_category}
-                onClick={() => changeFeature('enriched_category', !configuration.features.enriched_category)}
-              >
-                Enriched Categories
-              </Checkbox>
-            </Field>
           </Content>
         </Section>
 

@@ -7,7 +7,6 @@ Feature: List categories
   Background:
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
-    And feature flag "enriched_category" is activated
 
   @critical
   Scenario: Navigate to edit category page

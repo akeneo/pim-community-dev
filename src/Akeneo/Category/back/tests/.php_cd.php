@@ -105,7 +105,6 @@ $rules = [
         'Akeneo\Tool\Component',
         'Symfony\Component\OptionsResolver\OptionsResolver',
         // Infrastructure Bundles /!\
-        'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
         'Akeneo\Platform\Bundle\InstallerBundle\Command\ZddMigration',
         'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent',
         'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',

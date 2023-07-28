@@ -6,7 +6,6 @@ namespace Akeneo\Category\Infrastructure\EventSubscriber;
 
 use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Channel\Infrastructure\Component\Model\Locale;
-use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
@@ -18,7 +17,6 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 class CleanCategoryDataAfterChannelChangeSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private readonly FeatureFlag $enrichedCategoryFeature,
         private readonly JobInstanceRepository $jobInstanceRepository,
         private readonly JobLauncherInterface $jobLauncher,
         private readonly TokenStorageInterface $tokenStorage,
@@ -37,7 +35,7 @@ class CleanCategoryDataAfterChannelChangeSubscriber implements EventSubscriberIn
     {
         $channel = $event->getSubject();
 
-        if (!$channel instanceof ChannelInterface || !$this->enrichedCategoryFeature->isEnabled()) {
+        if (!$channel instanceof ChannelInterface) {
             return;
         }
 
@@ -56,7 +54,7 @@ class CleanCategoryDataAfterChannelChangeSubscriber implements EventSubscriberIn
     {
         $channel = $event->getSubject();
 
-        if (!$channel instanceof ChannelInterface || !$this->enrichedCategoryFeature->isEnabled()) {
+        if (!$channel instanceof ChannelInterface) {
             return;
         }
 

@@ -7,7 +7,6 @@ services:
 
     Akeneo\Category\Infrastructure\EventSubscriber\CleanCategoryDataAfterChannelChangeSubscriber:
         arguments:
-            - '@akeneo.category.enriched.feature'
             - '@akeneo_batch.job.job_instance_repository'
             - '@akeneo_batch.launcher.simple_job_launcher'
             - '@security.token_storage'

@@ -1,9 +1,3 @@
 parameters:
-  env(FLAG_ENRICHED_CATEGORY_ENABLED): 'false'
 
 services:
-  akeneo.category.enriched.feature:
-    class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag
-    arguments:
-      - '%env(bool:FLAG_ENRICHED_CATEGORY_ENABLED)%'
-    public: true
