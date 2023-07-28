@@ -58,3 +58,4 @@ export * from './UserRolesIllustration';
 export * from './UsersIllustration';
 export * from './UsingIllustration';
 export * from './ViewsIllustration';
+export * from './WarningIllustration';
