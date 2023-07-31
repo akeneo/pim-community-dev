@@ -200,7 +200,7 @@ pim_common:
   label_translations: Traduzioni etichetta
   Label or identifier: etichetta o identificatore
   code_or_label: Codice o etichetta
-  less_than: Meno di
+  less_than: Prima di
   loading: Caricamento in corso...
   media_upload: Trascina e rilascia qui un file per caricarlo o fai click qui
   media_uploading: Caricamento...
