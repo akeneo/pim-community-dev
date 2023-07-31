@@ -132,6 +132,7 @@ class SqlGetConnectorProductsWithOptions implements Query\GetConnectorProducts
                 JOIN pim_catalog_attribute_option ao ON  ao.attribute_id = a.id
                 JOIN pim_catalog_attribute_option_value aov ON aov.option_id = ao.id
                 WHERE (a.code, ao.code) IN (%s)
+                AND aov.value IS NOT NULL
                 GROUP BY attribute_code, ao.code
             ),
             aggregated_option_per_attribute AS (

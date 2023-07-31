@@ -13,6 +13,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPrice;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValueWithLinkedData;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValue;
@@ -607,6 +608,43 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
         $product = $query->fromProductIdentifier('apollon_B_false', (int)$userId);
 
         Assert::assertSame([], $product->associations());
+    }
+
+    public function test_it_filters_empty_option_labels(): void
+    {
+        // INSERT a NULL label translation for optionA
+        $this->get('database_connection')->executeStatement(<<<SQL
+            REPLACE INTO pim_catalog_attribute_option_value(option_id, locale_code, value)
+                SELECT opt.id, 'fr_FR', NULL FROM pim_catalog_attribute_option opt
+                INNER JOIN pim_catalog_attribute attr ON opt.attribute_id = attr.id
+                WHERE attr.code = :attrCode and opt.code = :optCode
+            SQL,
+            [
+                'attrCode' => 'a_simple_select',
+                'optCode' => 'optionA',
+            ]
+        );
+
+        $userId = $this
+            ->get('database_connection')
+            ->fetchColumn('SELECT id FROM oro_user WHERE username = "admin"', [], 0);
+
+        $result = $this->getQuery()->fromProductIdentifier('apollon_A_false', (int)$userId);
+
+        Assert::assertInstanceOf(ConnectorProduct::class, $result);
+        $simpleSelectValue = $result->values()->filter(
+            static fn (ValueInterface $value): bool => 'a_simple_select' === $value->getAttributeCode()
+        )->first();
+
+        Assert::assertInstanceOf(OptionValueWithLinkedData::class, $simpleSelectValue);;
+        Assert::assertSame(
+            [
+                'attribute' => 'a_simple_select',
+                'code' => 'optionA',
+                'labels' => ['en_US' => 'Option A'],
+            ],
+            $simpleSelectValue->getLinkedData()
+        );
     }
 
     /**

@@ -5,6 +5,7 @@ namespace Specification\Akeneo\Pim\Structure\Bundle\Form\Type;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeOption;
 use Akeneo\Pim\Structure\Bundle\Form\Type\AttributeOptionValueType;
+use Prophecy\Argument;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -36,12 +37,14 @@ class AttributeOptionTypeSpec extends ObjectBehavior
         $builder->add(
             'optionValues',
             CollectionType::class,
-            [
-                'entry_type'   => AttributeOptionValueType::class,
-                'allow_add'    => true,
-                'allow_delete' => true,
-                'by_reference' => false,
-            ]
+            Argument::that(
+                fn ($arg): bool => \is_array($arg) &&
+                    ($arg['entry_type'] ?? null === AttributeOptionValueType::class) &&
+                    ($arg['allow_add'] ?? null) === true &&
+                    ($arg['allow_delete'] ?? null) === true &&
+                    ($arg['by_reference'] ?? null) === false &&
+                    \is_callable($arg['delete_empty'] ?? null)
+            )
         )->shouldBeCalled();
 
         $builder->add('code', TextType::class, ['required' => true])->shouldBeCalled();
