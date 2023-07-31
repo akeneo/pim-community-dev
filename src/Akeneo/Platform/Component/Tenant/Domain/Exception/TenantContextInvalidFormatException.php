@@ -13,6 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Component\Tenant\Domain\Exception;
 
-class TenantContextInvalidFormatException  extends \UnexpectedValueException implements TenantContextExceptionInterface
+class TenantContextInvalidFormatException extends \UnexpectedValueException implements TenantContextExceptionInterface
 {
 }

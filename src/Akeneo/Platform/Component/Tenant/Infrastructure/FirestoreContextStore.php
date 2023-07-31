@@ -31,8 +31,7 @@ final class FirestoreContextStore implements ContextStoreInterface
     public function __construct(
         private readonly FirestoreClient $firestoreClient,
         private readonly string $collection,
-    )
-    {
+    ) {
         Assert::notEmpty($collection, 'The collection name must not be empty');
     }
 
