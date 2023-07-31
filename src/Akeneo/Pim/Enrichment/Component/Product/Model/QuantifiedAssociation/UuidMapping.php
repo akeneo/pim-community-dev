@@ -112,6 +112,11 @@ final class UuidMapping
         return isset($this->idsToIdentifiers[$id]);
     }
 
+    public function hasUuidFromId(int $id): bool
+    {
+        return \in_array($id, $this->uuidsToIds);
+    }
+
     public function getIdentifierFromId(int $id): ?string
     {
         return $this->idsToIdentifiers[$id] ?? null;
