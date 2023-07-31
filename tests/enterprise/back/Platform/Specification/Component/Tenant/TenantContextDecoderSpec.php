@@ -1,6 +1,6 @@
 <?php
 
-namespace AkeneoTestEnterprise\Platform\Specification\Component\Tenant;
+namespace Specification\Akeneo\Platform\Component\Tenant;
 
 use Akeneo\Platform\Component\Tenant\Domain\ContextValueDecrypter;
 use Akeneo\Platform\Component\Tenant\Domain\ContextValueDecrypterInterface;
