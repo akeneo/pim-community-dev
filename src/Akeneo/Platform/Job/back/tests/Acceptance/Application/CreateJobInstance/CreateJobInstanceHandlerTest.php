@@ -2,12 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Platform\Job\Test\Acceptance\Application;
+namespace Akeneo\Platform\Job\Test\Acceptance\Application\CreateJobInstance;
 
-use Akeneo\Platform\Job\Application\CreateJobInstanceHandler;
+use Akeneo\Platform\Job\Application\CreateJobInstance\CreateJobInstanceHandler;
+use Akeneo\Platform\Job\ServiceApi\JobInstance\CreateJobInstance\CannotCreateJobInstanceException;
 use Akeneo\Platform\Job\ServiceApi\JobInstance\CreateJobInstance\CreateJobInstanceCommand;
 use Akeneo\Platform\Job\Test\Acceptance\AcceptanceTestCase;
 use Akeneo\Platform\Job\Test\Acceptance\FakeServices\InMemoryJobInstanceSaver;
+use Akeneo\Platform\Job\Test\Acceptance\FakeServices\InMemorySecurityFacade;
 use Akeneo\Tool\Component\Batch\Exception\InvalidJobException;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 
@@ -15,18 +17,24 @@ class CreateJobInstanceHandlerTest extends AcceptanceTestCase
 {
     private CreateJobInstanceHandler $handler;
     private InMemoryJobInstanceSaver $saver;
+    private InMemorySecurityFacade $securityFacade;
 
     protected function setUp(): void
     {
+        parent::setUp();
+
         $this->handler = $this->get(CreateJobInstanceHandler::class);
         $this->saver = $this->get('akeneo_platform.saver.job_instance');
-        static::bootKernel(['debug' => false]);
+        $this->securityFacade = $this->get('akeneo.job.security_facade');
+
+        $this->securityFacade->setIsGranted('pim_importexport_export_profile_create', true);
+        $this->securityFacade->setIsGranted('pim_importexport_import_profile_create', true);
     }
 
     /**
      * @test
      */
-    public function it_creates_a_job_instance()
+    public function it_creates_a_job_instance(): void
     {
         $command = new CreateJobInstanceCommand(
             'export',
@@ -44,7 +52,7 @@ class CreateJobInstanceHandlerTest extends AcceptanceTestCase
     /**
      * @test
      */
-    public function it_throws_runtime_exception_when_job_name_does_not_exist()
+    public function it_throws_business_exception_when_job_name_does_not_exist(): void
     {
         $command = new CreateJobInstanceCommand(
             'export',
@@ -55,7 +63,52 @@ class CreateJobInstanceHandlerTest extends AcceptanceTestCase
             [],
         );
 
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(CannotCreateJobInstanceException::class);
+        $this->expectExceptionMessage('Job "foo" does not exist');
+
+        $this->handler->handle($command);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_business_exception_when_user_does_not_have_privilege_to_create_export(): void
+    {
+        $this->securityFacade->setIsGranted('pim_importexport_export_profile_create', false);
+
+        $command = new CreateJobInstanceCommand(
+            'export',
+            'test_job',
+            'test_job',
+            'Akeneo CSV Connector',
+            'csv_product_import',
+            [],
+        );
+
+        $this->expectException(CannotCreateJobInstanceException::class);
+        $this->expectExceptionMessage('Insufficient privilege');
+
+        $this->handler->handle($command);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_business_exception_when_user_does_not_have_privilege_to_create_import(): void
+    {
+        $this->securityFacade->setIsGranted('pim_importexport_import_profile_create', false);
+
+        $command = new CreateJobInstanceCommand(
+            'import',
+            'test_job',
+            'test_job',
+            'Akeneo CSV Connector',
+            'csv_product_import',
+            [],
+        );
+
+        $this->expectException(CannotCreateJobInstanceException::class);
+        $this->expectExceptionMessage('Insufficient privilege');
 
         $this->handler->handle($command);
     }
