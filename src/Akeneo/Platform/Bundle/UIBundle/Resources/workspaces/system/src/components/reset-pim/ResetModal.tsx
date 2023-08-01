@@ -33,7 +33,7 @@ type ResetModalProps = {
 const ResetModal = ({onConfirm, onCancel}: ResetModalProps) => {
   const translate = useTranslate();
   const notify = useNotify();
-  const loginRoute = useRoute('pim_user_security_login');
+  const maintenanceRoute = useRoute('akeneo_installer_maintenance_page');
   const [isCurrentStep, nextStep, previousStep] = useProgress(STEPS);
   const [confirmationWord, setConfirmationWord] = useState<string>('');
   const [isLoading, resetInstance] = useResetInstance();
@@ -46,9 +46,9 @@ const ResetModal = ({onConfirm, onCancel}: ResetModalProps) => {
 
     document.body.style.cursor = 'progress';
     try {
-      await resetInstance();
+      void resetInstance();
       onConfirm();
-      location.assign(loginRoute);
+      location.assign(maintenanceRoute);
     } catch (e) {
       notify(NotificationLevel.ERROR, translate('pim_system.reset_pim.error_notification'));
     }

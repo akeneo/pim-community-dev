@@ -1,3 +1,8 @@
 pim_installer:
   acl:
     reset: Reset PIM instance
+  maintenance:
+    title: Maintenance
+    body: |
+      Ziggy is currently performing a reset of your PIM.
+      This page will auto-refresh and lead you to the log-in screen once it is ready for you to come back. Thanks for your patience!

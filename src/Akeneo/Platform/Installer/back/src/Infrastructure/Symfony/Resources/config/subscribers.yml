@@ -1,6 +1,9 @@
 services:
   Akeneo\Platform\Installer\Infrastructure\EventSubscriber\MaintenanceModeSubscriber:
     arguments:
+      - '@akeneo.installer.reset_pim.feature'
+      - '@router'
+      - '@Akeneo\Platform\Installer\Application\IsMaintenanceModeEnabled\IsMaintenanceModeEnabledHandler'
       - '@Akeneo\Platform\Installer\Application\UpdateMaintenanceMode\UpdateMaintenanceModeHandler'
     tags:
       - { name: 'kernel.event_subscriber' }
