@@ -35,7 +35,7 @@ abstract class MessengerTestCase extends DataQualityInsightsTestCase
         $this->flushQueues();
     }
 
-    private function flushQueues(): void
+    protected function flushQueues(): void
     {
         foreach ($this->pubSubQueueStatuses as $pubSubStatus) {
             $subscription = $pubSubStatus->getSubscription();

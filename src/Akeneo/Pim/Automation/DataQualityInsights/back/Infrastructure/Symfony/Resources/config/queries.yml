@@ -185,6 +185,7 @@ services:
         arguments:
             - '@database_connection'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetFamilyIds'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductModelIdsImpactedByAttributeGroupActivationQuery:
         arguments:

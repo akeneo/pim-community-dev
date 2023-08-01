@@ -29,6 +29,7 @@ $rules = [
             //External dependencies
             'Psr\Log\LoggerInterface',
             'Symfony\Component\EventDispatcher\EventDispatcherInterface',
+            'Symfony\Component\Messenger\MessageBusInterface',
             'Webmozart\Assert\Assert',
         ]
     )->in('Akeneo\Pim\Automation\DataQualityInsights\Application'),
@@ -134,8 +135,10 @@ $rules = [
             'Symfony\Component\Security',
             'Symfony\Component\Serializer\Normalizer\NormalizerInterface',
             'Symfony\Component\Serializer\Normalizer\DenormalizerInterface',
+            'Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface',
             'Symfony\Component\Validator\Constraints',
             'Symfony\Component\Form\FormFactoryInterface',
+            'Symfony\Component\Messenger\MessageBusInterface',
             'Webmozart\Assert\Assert',
             'Ramsey\Uuid\Uuid',
             'Ramsey\Uuid\UuidInterface',

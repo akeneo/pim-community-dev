@@ -52,4 +52,23 @@ SQL;
 
         $this->dbConnection->executeQuery($query, ['attributeGroupCode' => $attributeGroupCode]);
     }
+
+    public function getForAttributeGroupCode(AttributeGroupCode $attributeGroupCode): ?AttributeGroupActivation
+    {
+        $query = <<<SQL
+SELECT attribute_group_code, activated
+FROM pim_data_quality_insights_attribute_group_activation
+WHERE attribute_group_code = :attribute_group_code
+SQL;
+
+        $row = $this->dbConnection
+            ->executeQuery($query, ['attribute_group_code' => (string) $attributeGroupCode])
+            ->fetchAssociative();
+
+        if (false === $row) {
+            return null;
+        }
+
+        return new AttributeGroupActivation($attributeGroupCode, (bool) $row['activated']);
+    }
 }
