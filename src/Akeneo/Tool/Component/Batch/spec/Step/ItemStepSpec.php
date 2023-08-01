@@ -5,6 +5,7 @@ namespace spec\Akeneo\Tool\Component\Batch\Step;
 use Akeneo\Tool\Bundle\BatchBundle\Job\DoctrineJobRepository;
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Item\FileInvalidItem;
+use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
@@ -83,6 +84,8 @@ class ItemStepSpec extends ObjectBehavior
         $jobStopper->isStopping($execution)->willReturn(false);
         $jobStopper->isPausing($execution)->willReturn(false);
 
+        $writer->flush()->shouldBeCalledOnce();
+
         $exitStatus = new ExitStatus(ExitStatus::COMPLETED, "");
         $execution->getExitStatus()->willReturn($exitStatus);
         $repository->updateStepExecution($execution)->shouldBeCalledTimes(5);
@@ -142,6 +145,8 @@ class ItemStepSpec extends ObjectBehavior
         $processor->process(null)->shouldNotBeCalled();
         $writer->write(['p4'])->shouldNotBeCalled();
 
+        $writer->flush()->shouldBeCalledOnce();
+
         $exitStatus = new ExitStatus(ExitStatus::COMPLETED, "");
         $execution->getExitStatus()->willReturn($exitStatus);
         $repository->updateStepExecution($execution)->shouldBeCalledTimes(5);
@@ -194,6 +199,8 @@ class ItemStepSpec extends ObjectBehavior
         $processor->process(null)->shouldNotBeCalled();
         $writer->write(['p4'])->shouldBeCalled();
 
+        $writer->flush()->shouldBeCalledOnce();
+
         $exitStatus = new ExitStatus(ExitStatus::COMPLETED, "");
         $execution->getExitStatus()->willReturn($exitStatus);
         $repository->updateStepExecution($execution)->shouldBeCalledTimes(5);
@@ -241,6 +248,8 @@ class ItemStepSpec extends ObjectBehavior
         // second batch
         $jobStopper->isStopping($execution)->willReturn(true);
         $jobStopper->stop($execution)->shouldBeCalled();
+
+        $writer->flush()->shouldBeCalledOnce();
 
         $exitStatus = new ExitStatus(ExitStatus::STOPPED, "");
         $execution->getExitStatus()->willReturn($exitStatus);
@@ -293,6 +302,8 @@ class ItemStepSpec extends ObjectBehavior
         $reader->getState()->willReturn(['position' => 1]);
         $writer->getState()->willReturn(['file_path' => '/tmp/file.xslx']);
         $jobStopper->pause($execution, ['reader' => ['position' => 1], 'writer' => ['file_path' => '/tmp/file.xslx']])->shouldBeCalled();
+
+        $writer->flush()->shouldNotBeCalled();
 
         $exitStatus = new ExitStatus(ExitStatus::COMPLETED, "");
         $execution->getExitStatus()->willReturn($exitStatus);
@@ -350,6 +361,8 @@ class ItemStepSpec extends ObjectBehavior
         $jobStopper->isStopping($execution)->willReturn(false);
         $jobStopper->isPausing($execution)->willReturn(false);
 
+        $writer->flush()->shouldBeCalledOnce();
+
         $exitStatus = new ExitStatus(ExitStatus::COMPLETED, "");
         $execution->getExitStatus()->willReturn($exitStatus);
         $repository->updateStepExecution($execution)->shouldBeCalledTimes(5);
@@ -399,6 +412,8 @@ class ItemStepSpec extends ObjectBehavior
         $reader->getState()->willReturn([]);
         $writer->getState()->willReturn([]);
 
+        $writer->flush()->shouldNotBeCalled();
+
         $exitStatus = new ExitStatus(ExitStatus::COMPLETED, "");
         $execution->getExitStatus()->willReturn($exitStatus);
         $repository->updateStepExecution($execution)->shouldBeCalledTimes(4);
@@ -413,6 +428,53 @@ class ItemStepSpec extends ObjectBehavior
 
         $this->execute($execution);
     }
+
+    function it_flushes_step_elements_when_job_is_pausing_and_every_items_are_processed(
+        StatefulReaderInterface $reader,
+        ItemProcessorInterface $processor,
+        PausableWriter $writer,
+        EventDispatcherInterface $dispatcher,
+        DoctrineJobRepository $repository,
+        StepExecution $execution,
+        JobStopper $jobStopper
+    ) {
+        $execution->getStatus()->willReturn(new BatchStatus(BatchStatus::STARTING));
+
+        $dispatcher->dispatch(Argument::any(), EventInterface::BEFORE_STEP_EXECUTION)->shouldBeCalled();
+        $execution->setStatus(Argument::any())->shouldBeCalled();
+
+        $execution->getCurrentState()->willReturn([]);
+        $reader->setState([])->shouldBeCalled();
+        $writer->setState([])->shouldBeCalled();
+
+        $jobStopper->isStopping($execution)->willReturn(false);
+        $jobStopper->isPausing($execution)->willReturn(false);
+
+        $reader->read()->willReturn('r1', 'r2', 'r3', null);
+        $processor->process('r1')->shouldBeCalled()->willReturn('p1');
+        $processor->process('r2')->shouldBeCalled()->willReturn('p2');
+        $processor->process('r3')->shouldBeCalled()->willReturn('p3');
+        $writer->write(['p1', 'p2', 'p3'])->shouldBeCalledOnce();
+
+        $dispatcher->dispatch(Argument::any(), EventInterface::ITEM_STEP_AFTER_BATCH)->shouldBeCalledOnce();
+        $execution->incrementProcessedItems(3)->shouldBeCalledOnce();
+
+        $writer->flush()->shouldBeCalledOnce();
+
+        $exitStatus = new ExitStatus(ExitStatus::COMPLETED, "");
+        $execution->getExitStatus()->willReturn($exitStatus);
+
+        $repository->updateStepExecution($execution)->shouldBeCalledTimes(4);
+        $execution->isTerminateOnly()->willReturn(false);
+
+        $execution->upgradeStatus(Argument::any())->shouldBeCalled();
+        $dispatcher->dispatch(Argument::any(), EventInterface::STEP_EXECUTION_SUCCEEDED)->shouldBeCalled();
+        $dispatcher->dispatch(Argument::any(), EventInterface::STEP_EXECUTION_COMPLETED)->shouldBeCalled();
+        $execution->setEndTime(Argument::any())->shouldBeCalled();
+        $execution->setExitStatus(Argument::any())->shouldBeCalled();
+
+        $this->execute($execution);
+    }
 }
 
 interface PausableReader extends StatefulInterface, ItemReaderInterface
@@ -420,7 +482,7 @@ interface PausableReader extends StatefulInterface, ItemReaderInterface
 
 }
 
-interface PausableWriter extends StatefulInterface, ItemWriterInterface
+interface PausableWriter extends StatefulInterface, ItemWriterInterface, FlushableInterface
 {
 
 }
