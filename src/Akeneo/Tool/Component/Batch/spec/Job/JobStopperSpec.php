@@ -8,19 +8,23 @@ use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Job\ExitStatus;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Query\GetJobExecutionStatusInterface;
 use PhpSpec\ObjectBehavior;
+use Psr\Log\LoggerInterface;
 
 class JobStopperSpec extends ObjectBehavior
 {
     function let(
         JobRepositoryInterface $jobRepository,
-        GetJobExecutionStatusInterface $getJobExecutionStatus
+        GetJobExecutionStatusInterface $getJobExecutionStatus,
+        LoggerInterface $logger
     ) {
         $this->beConstructedWith(
             $jobRepository,
-            $getJobExecutionStatus
+            $getJobExecutionStatus,
+            $logger,
         );
     }
 
@@ -74,8 +78,17 @@ class JobStopperSpec extends ObjectBehavior
         $this->isPausing($stepExecution)->shouldReturn(true);
     }
 
-    function it_pauses_a_job(StepExecution $stepExecution)
-    {
+    function it_pauses_a_job(
+        JobExecution $jobExecution,
+        StepExecution $stepExecution,
+        JobInstance $jobInstance,
+    ) {
+        $jobInstance->getCode()->willReturn('my_job');
+        $jobExecution->getId()->willReturn(99);
+        $jobExecution->getJobInstance()->willReturn($jobInstance);
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $stepExecution->getId()->willReturn(98);
+        $stepExecution->getStepName()->shouldBeCalled();
         $stepExecution->setStatus(new BatchStatus(BatchStatus::PAUSED))->shouldBeCalled();
         $stepExecution->getCurrentState()->willReturn(['file_path' => 'file.csv']);
         $stepExecution->setCurrentState(['file_path' => 'file.csv', 'position' => 1])->shouldBeCalled();
