@@ -49,3 +49,17 @@ services:
         tags:
             - { name: console.command }
             - { name: 'akeneo.command.authenticated_as_admin_user' }
+
+    Akeneo\Pim\Enrichment\Bundle\Command\RestoreSortedAssetCollectionDueToIncidentCommand:
+        arguments:
+            - '@pim_catalog.saver.product'
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.updater.product'
+            - '@pim_catalog.saver.product_model'
+            - '@pim_catalog.repository.product_model'
+            - '@pim_catalog.updater.product_model'
+            - '@pim_connector.doctrine.cache_clearer'
+            - '@database_connection'
+        tags:
+            - { name: console.command }
+            - { name: 'akeneo.command.authenticated_as_admin_user' }
