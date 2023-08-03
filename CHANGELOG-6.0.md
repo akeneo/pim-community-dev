@@ -1,5 +1,7 @@
 # 6.0.x
 
+- [Backport PIM-10868] PIM-11123: Fix checkboxes on category trees
+
 # 6.0.95 (2023-07-31)
 
 - [Backport PIM-10844] PIM-11106 : Filter empty attribute option labels
