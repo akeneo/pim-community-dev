@@ -1,5 +1,5 @@
 import {Theme} from '../theme';
-import {color, fontSize, palette, fontFamily} from '../common';
+import {color, fontSize, palette, fontFamily, colorAlternative} from '../common';
 
 const sharedCatalogsTheme: Theme = {
   name: 'Shared Catalogs',
@@ -13,6 +13,7 @@ const sharedCatalogsTheme: Theme = {
     brand120: '#c79032',
     brand140: '#956c25',
   },
+  colorAlternative,
   fontSize,
   palette,
   fontFamily,

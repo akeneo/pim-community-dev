@@ -5,11 +5,11 @@ import {render, screen} from '../../storybook/test-util';
 test('it renders its children properly', () => {
   render(
     <Tags>
-      <Tag color="red">Red Tag</Tag>
+      <Tag tint="dark_blue">Dark blue Tag</Tag>
     </Tags>
   );
 
-  expect(screen.getByText('Red Tag')).toBeInTheDocument();
+  expect(screen.getByText('Dark blue Tag')).toBeInTheDocument();
 });
 
 test('it fails when there are invalid children', () => {
