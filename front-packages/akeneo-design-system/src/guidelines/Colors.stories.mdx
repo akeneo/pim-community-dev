@@ -10,6 +10,7 @@ export const ColorContainer = styled(PreviewContainer)`
 `;
 
 export const colors = ['green', 'blue', 'yellow', 'red', 'grey', 'purple'];
+export const colorsAlternative = ['green', 'darkCyan', 'forestGreen', 'oliveGreen',  'blue', 'darkBlue', 'purple', 'darkPurple', 'hotPink', 'red', 'coralRed', 'yellow', 'orange', 'chocolate'];
 
 # Colors
 
@@ -66,5 +67,34 @@ Colors enhance the experience by providing visual clues and drawing attention to
         );
       })}
     </div>
+  </Story>
+</Canvas>
+
+<Canvas>
+  <Story name="Alternative">
+    <div>
+        <h1>Alternative colors</h1>
+          {colorsAlternative.map(colorName => {
+            return (
+              <div key={colorName}>
+                <Subtitle>{colorName}</Subtitle>
+                <PreviewGrid>
+                  {Object.keys(themes[0].colorAlternative)
+                    .filter(colorCode => 0 === colorCode.indexOf(colorName))
+                    .map(colorCode => {
+                      const color = themes[0].colorAlternative[colorCode];
+                      return (
+                        <PreviewCard key={colorCode}>
+                          <ColorContainer color={color} />
+                          <LabelContainer>{colorCode}</LabelContainer>
+                          <LabelContainer>{color}</LabelContainer>
+                        </PreviewCard>
+                      );
+                    })}
+                </PreviewGrid>
+              </div>
+            );
+          })}
+      </div>
   </Story>
 </Canvas>

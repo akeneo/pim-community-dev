@@ -65,6 +65,51 @@ type Color = {
   white: string;
 };
 
+type ColorAlternative = {
+  blue10: string;
+  blue100: string;
+  blue120: string;
+  chocolate10: string;
+  chocolate100: string;
+  chocolate120: string;
+  coralRed10: string;
+  coralRed100: string;
+  coralRed120: string;
+  darkBlue10: string;
+  darkBlue100: string;
+  darkBlue120: string;
+  darkCyan10: string;
+  darkCyan100: string;
+  darkCyan120: string;
+  darkPurple10: string;
+  darkPurple100: string;
+  darkPurple120: string;
+  forestGreen10: string;
+  forestGreen100: string;
+  forestGreen120: string;
+  green10: string;
+  green100: string;
+  green120: string;
+  hotPink10: string;
+  hotPink100: string;
+  hotPink120: string;
+  oliveGreen10: string;
+  oliveGreen100: string;
+  oliveGreen120: string;
+  orange10: string;
+  orange100: string;
+  orange120: string;
+  purple10: string;
+  purple100: string;
+  purple120: string;
+  red10: string;
+  red100: string;
+  red120: string;
+  yellow10: string;
+  yellow100: string;
+  yellow120: string;
+};
+
 type Palette = {
   primary: string;
   secondary: string;
@@ -78,6 +123,7 @@ type Theme = {
   palette: Palette;
   fontSize: FontSize;
   color: Color;
+  colorAlternative: ColorAlternative;
   fontFamily: FontFamily;
 };
 
@@ -98,6 +144,11 @@ const getColorForLevel =
   ({theme}: AkeneoThemedProps): string =>
     theme.color[`${theme.palette[level]}${gradient}`] as string;
 
+const getColorAlternative =
+  (color: string, gradient?: number): ((props: AkeneoThemedProps) => string) =>
+  ({theme}: AkeneoThemedProps): string =>
+    theme.colorAlternative[`${color}${gradient ?? ''}`] as string;
+
 const getFontSize =
   (fontSize: keyof FontSize): ((props: AkeneoThemedProps) => string) =>
   ({theme}: AkeneoThemedProps): string =>
@@ -109,5 +160,5 @@ const getFontFamily =
     theme.fontFamily[fontFamilyType];
 
 export type AkeneoThemedProps<P = Record<string, unknown>> = ThemedStyledProps<P, Theme>;
-export type {Theme, FontSize, FontFamily, Color, Level, Palette};
-export {getColor, getFontFamily, getColorForLevel, getFontSize};
+export type {Theme, FontSize, FontFamily, Color, ColorAlternative, Level, Palette};
+export {getColor, getFontFamily, getColorForLevel, getColorAlternative, getFontSize};

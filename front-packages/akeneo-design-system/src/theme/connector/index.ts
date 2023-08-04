@@ -1,5 +1,5 @@
 import {Theme} from '../theme';
-import {color, fontSize, palette, fontFamily} from '../common';
+import {color, fontSize, palette, fontFamily, colorAlternative} from '../common';
 
 const connectorTheme: Theme = {
   name: 'Connector',
@@ -13,6 +13,7 @@ const connectorTheme: Theme = {
     brand120: '#3b4494',
     brand140: '#272d62',
   },
+  colorAlternative,
   fontSize,
   palette,
   fontFamily,

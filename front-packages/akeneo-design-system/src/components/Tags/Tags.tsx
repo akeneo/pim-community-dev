@@ -1,6 +1,6 @@
 import React, {Ref, ReactNode, isValidElement} from 'react';
 import styled from 'styled-components';
-import {AkeneoThemedProps, getFontSize} from '../../theme';
+import {AkeneoThemedProps, getColorAlternative, getFontSize} from '../../theme';
 
 /**
  * The colors defined in this file are the alternative ones
@@ -8,42 +8,37 @@ import {AkeneoThemedProps, getFontSize} from '../../theme';
  * https://www.notion.so/akeneo/Alternative-colors-0f5283c1b02f4fd4a418f1e20f2efa99
  * Those colors will most likely only be used with the tags components
  */
-type Tint = 'green' | 'blue' | 'dark_blue' | 'purple' | 'dark_purple' | 'yellow' | 'red';
+type Tint =
+  | 'green'
+  | 'blue'
+  | 'dark_blue'
+  | 'purple'
+  | 'dark_purple'
+  | 'yellow'
+  | 'red'
+  | 'dark_cyan'
+  | 'forest_green'
+  | 'olive_green'
+  | 'hot_pink'
+  | 'coral_red'
+  | 'orange'
+  | 'chocolate';
+
+// Because tints are in snake_case, and colors code are in camelCase
+const convertTintToColorCode = (str: string) => {
+  return str.replace(/_([a-z])/g, function (g) {
+    return g[1].toUpperCase();
+  });
+};
+
 type TagProps = {
   tint: Tint;
 } & React.HTMLAttributes<HTMLLIElement>;
 const Tag = styled.li<TagProps & AkeneoThemedProps>`
   border: 1px solid;
-  border-color: ${({tint}) =>
-    ({
-      green: '#81cccc',
-      blue: '#4ca8e0',
-      dark_blue: '#5e63b6',
-      purple: '#9452ba',
-      dark_purple: '#52267d',
-      yellow: '#fcce76',
-      red: '#f74b64',
-    }[tint])};
-  color: ${({tint}) =>
-    ({
-      green: '#5da8a6',
-      blue: '#3278b7',
-      dark_blue: '#3b438c',
-      purple: '#763e9e',
-      dark_purple: '#36145e',
-      yellow: '#ca8411',
-      red: '#c92343',
-    }[tint])};
-  background-color: ${({tint}) =>
-    ({
-      green: '#f5fafa',
-      blue: '#f0f7fc',
-      dark_blue: '#efeff8',
-      purple: '#f3eef9',
-      dark_purple: '#eeeaf2',
-      yellow: '#fefbf2',
-      red: '#fdedf0',
-    }[tint])};
+  border-color: ${({tint}) => getColorAlternative(convertTintToColorCode(tint), 100)};
+  color: ${({tint}) => getColorAlternative(convertTintToColorCode(tint), 120)};
+  background-color: ${({tint}) => getColorAlternative(convertTintToColorCode(tint), 10)};
   height: 16px;
   line-height: 16px;
   padding: 0 6px;
