@@ -135,7 +135,14 @@ JSON;
                             "scope":"ecommerce",
                             "data":"my pink tshirt"
                         }
-                    ]
+                    ],
+		            "sku": [
+		                {
+		                    "locale": null,
+		                    "scope": null,
+		                    "data": "apollon_optionb_false"
+		                }
+		            ]
                 },
                 "created":"2018-01-11T14:49:20+01:00",
                 "updated":"2018-01-11T14:49:20+01:00",
@@ -227,7 +234,14 @@ JSON;
                             "scope":"ecommerce",
                             "data":"my pink tshirt"
                         }
-                    ]
+                    ],
+		            "sku": [
+		                {
+		                    "locale": null,
+		                    "scope": null,
+		                    "data": "apollon_optionb_true"
+		                }
+		            ]
                 },
                 "created":"2018-01-11T14:49:20+01:00",
                 "updated":"2018-01-11T14:49:20+01:00",

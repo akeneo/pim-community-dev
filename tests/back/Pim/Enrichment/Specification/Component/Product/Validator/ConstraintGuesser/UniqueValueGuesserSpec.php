@@ -28,46 +28,49 @@ class UniqueValueGuesserSpec extends ObjectBehavior
             $expectedResult = $attributeTypeTest[1];
             $attribute->getBackendType()->willReturn($attributeBackendType);
             $attribute->getType()->willReturn('pim_catalog_' . $attributeType);
+            $attribute->isMainIdentifier()->willReturn(false);
             $this->supportAttribute($attribute)->shouldReturn($expectedResult);
         }
     }
 
-    public function it_guesses_unique_value(AttributeInterface $attribute)
+    public function it_does_not_guess_constraints_for_the_main_identifier_attribute(AttributeInterface $attribute)
     {
-        $attribute->getBackendType()
-            ->willReturn(AttributeTypes::BACKEND_TYPE_TEXT);
+        $attribute->getBackendType()->willReturn(AttributeTypes::BACKEND_TYPE_TEXT);
         $attribute->isUnique()->willReturn(true);
-        $attribute->getType()->willReturn(AttributeTypes::METRIC);
-        $textConstraints = $this->guessConstraints($attribute);
+        $attribute->isMainIdentifier()->willReturn(true);
 
-        $textConstraints->shouldHaveCount(1);
-
-        $firstConstraint = $textConstraints[0];
-        $firstConstraint->shouldBeAnInstanceOf(UniqueValue::class);
+        $this->supportAttribute($attribute)->shouldReturn(false);
+        $this->guessConstraints($attribute)->shouldReturn([]);
     }
 
-    public function it_does_not_guess_unique_value(AttributeInterface $attribute)
+    public function it_guesses_constraints_for_unique_value(AttributeInterface $attribute)
     {
-        $attribute->getBackendType()
-            ->willReturn(AttributeTypes::BACKEND_TYPE_TEXT);
+        $attribute->getBackendType()->willReturn(AttributeTypes::BACKEND_TYPE_TEXT);
+        $attribute->isUnique()->willReturn(true);
+        $attribute->getType()->willReturn(AttributeTypes::TEXT);
+        $attribute->isMainIdentifier()->willReturn(false);
 
-        $attribute->isUnique()->willReturn(false);
-        $attribute->getType()->willReturn(AttributeTypes::METRIC);
-
-        $this->guessConstraints($attribute)
-            ->shouldReturn([]);
+        $this->guessConstraints($attribute)->shouldBeLike([new UniqueValue()]);
     }
 
-    public function it_does_not_guess_unique_value_if_it_is_an_identifier(AttributeInterface $attribute)
+    public function it_does_not_guess_constraints_for_non_unique_values(AttributeInterface $attribute)
     {
-        $attribute->getBackendType()
-            ->willReturn(AttributeTypes::BACKEND_TYPE_TEXT);
-
+        $attribute->getBackendType()->willReturn(AttributeTypes::BACKEND_TYPE_TEXT);
+        $attribute->getType()->willReturn(AttributeTypes::TEXT);
         $attribute->isUnique()->willReturn(false);
+
+        $this->guessConstraints($attribute)->shouldReturn([]);
+    }
+
+    public function it_changes_the_erro_message_for_identifier_attributes(AttributeInterface $attribute)
+    {
+        $attribute->isUnique()->willReturn(true);
         $attribute->getType()->willReturn(AttributeTypes::IDENTIFIER);
+        $attribute->isMainIdentifier()->willReturn(false);
 
-        $this->guessConstraints($attribute)
-            ->shouldReturn([]);
+        $this->guessConstraints($attribute)->shouldBeLike(
+            [new UniqueValue(['message' => 'pim_catalog.constraint.unique_identifier_value'])]
+        );
     }
 
     private function dataProviderForSupportedAttributes()
@@ -86,7 +89,6 @@ class UniqueValueGuesserSpec extends ObjectBehavior
             'price'      => [AttributeTypes::BACKEND_TYPE_PRICE, false],
             'textarea'   => [AttributeTypes::BACKEND_TYPE_TEXTAREA, false],
             'text'       => [AttributeTypes::BACKEND_TYPE_TEXT, true],
-            'identifier' => [AttributeTypes::BACKEND_TYPE_TEXT, false],
         ];
     }
 }

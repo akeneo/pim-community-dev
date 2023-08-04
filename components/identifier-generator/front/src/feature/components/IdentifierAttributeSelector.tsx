@@ -2,6 +2,7 @@ import React from 'react';
 import {Field, Helper, SelectInput} from 'akeneo-design-system';
 import {useIdentifierAttributes} from '../hooks/';
 import {useTranslate} from '@akeneo-pim-community/shared';
+import {AttributeCode} from '@akeneo-pim-community/structure';
 
 enum Status {
   FORBIDDEN,
@@ -9,10 +10,18 @@ enum Status {
   SUCCESS,
 }
 
-const IdentifierAttributeSelector: React.FC<{code: string}> = ({code}) => {
+type IdentifierAttributeSelector = {
+  code: AttributeCode;
+  onChange: (attributeCode: AttributeCode) => void;
+}
+
+const IdentifierAttributeSelector: React.FC<IdentifierAttributeSelector> = ({code, onChange}) => {
   const translate = useTranslate();
   const {data: attributes = [], error} = useIdentifierAttributes();
   const status = error?.message === 'Forbidden' ? Status.FORBIDDEN : error?.message ? Status.ERROR : Status.SUCCESS;
+  const handleChange = (attributeCode: AttributeCode) => {
+    onChange(attributeCode);
+  };
 
   return (
     <Field label={translate('pim_identifier_generator.create.form.select_identifier_attribute')}>
@@ -21,8 +30,9 @@ const IdentifierAttributeSelector: React.FC<{code: string}> = ({code}) => {
         data-testid="identifierAttribute"
         openLabel={translate('pim_common.open')}
         placeholder=""
-        readOnly={true}
         value={status === Status.SUCCESS ? code : null}
+        onChange={handleChange}
+        clearable={false}
       >
         {attributes?.map(attribute => (
           <SelectInput.Option key={attribute.code} title={attribute?.label} value={attribute.code}>

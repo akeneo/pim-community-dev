@@ -215,6 +215,9 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface, Saver
         if (!$attribute) {
             throw new \RuntimeException('The PIM has no identifier attribute');
         }
+        // it's kind of dirty but it saves from creating useless setter
+        $refl = new \ReflectionClass($attribute);
+        $refl->getProperty('mainIdentifier')->setValue($attribute, true);
 
         return $attribute;
     }

@@ -5,6 +5,8 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Integration\Configuration;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductAndProductModelQueryBuilderTestCase;
 use Ramsey\Uuid\Uuid;
@@ -93,5 +95,35 @@ class LabelOrIdentifierFilterIntegration extends AbstractProductAndProductModelQ
             ['label_or_identifier', Operators::CONTAINS, $uuid->toString()]
         ]);
         $this->assert($result, ['1111111234']);
+    }
+    
+    public function testSearchOnIdentifierValues(): void
+    {
+        $attribute = $this->get('pim_catalog.factory.attribute')->create();
+        $this->get('pim_catalog.updater.attribute')->update($attribute, [
+            'code' => 'my_identifier',
+            'type' => AttributeTypes::IDENTIFIER,
+            'group' => 'other',
+            'useable_as_grid_filter' => true,
+        ]);
+        $this->get('pim_catalog.saver.attribute')->save($attribute);
+
+        $this->createProduct('one', [
+            new SetFamily('accessories'),
+            new SetIdentifierValue('my_identifier', 'toto')
+        ]);
+        $this->createProduct('two', [
+            new SetFamily('accessories'),
+            new SetIdentifierValue('my_identifier', 'totu')
+        ]);
+        $this->createProduct('three', [
+            new SetFamily('accessories'),
+            new SetIdentifierValue('my_identifier', 'foo')
+        ]);
+
+        $result = $this->executeFilter([
+            ['label_or_identifier', Operators::CONTAINS, 'tot']
+        ]);
+        $this->assert($result, ['one', 'two']);
     }
 }

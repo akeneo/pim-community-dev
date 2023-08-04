@@ -112,18 +112,13 @@ final class UuidMapping
         return isset($this->idsToIdentifiers[$id]);
     }
 
-    public function hasUuidFromId(int $id): bool
-    {
-        return \in_array($id, $this->uuidsToIds);
-    }
-
     public function getIdentifierFromId(int $id): ?string
     {
         return $this->idsToIdentifiers[$id] ?? null;
     }
 
-    public function hasUuidFromUuid(string $uuid): bool
+    public function hasUuidFromId(int $id): bool
     {
-        return array_key_exists($uuid, $this->uuidsToIds);
+        return isset($this->idsToUuids[$id]);
     }
 }

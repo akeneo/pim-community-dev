@@ -95,6 +95,7 @@ extensions:
         module: pim/common/simple-view
         parent: pim-attribute-edit-form-properties-tab
         targetZone: self
+        position: 80
         config:
             template: pim/template/form/tab/sections
             templateParams:
@@ -122,16 +123,6 @@ extensions:
             required: true
             readOnly: true
 
-    pim-attribute-edit-form-properties-common-type:
-        module: pim/attribute-edit-form/properties/type
-        parent: pim-attribute-edit-form-properties-common
-        targetZone: content
-        position: 100
-        config:
-            fieldName: type
-            label: pim_common.type
-            readOnly: true
-
     pim-attribute-edit-form-properties-common-group:
         module: pim/attribute-edit-form/properties/group
         parent: pim-attribute-edit-form-properties-common
@@ -143,46 +134,22 @@ extensions:
             label: pim_enrich.entity.attribute.property.group.label
             required: true
 
-    pim-attribute-edit-form-properties-common-unique:
-        module: pim/attribute-edit-form/properties/unique
-        parent: pim-attribute-edit-form-properties-common
-        targetZone: content
-        position: 120
-        config:
-            fieldName: unique
-            label: pim_enrich.entity.attribute.property.unique
-            readOnly: true
-
-    pim-attribute-edit-form-properties-common-scopable:
-        module: pim/attribute-edit-form/properties/scopable
-        parent: pim-attribute-edit-form-properties-common
-        targetZone: content
-        position: 130
-        config:
-            fieldName: scopable
-            label: pim_enrich.entity.attribute.property.scopable
-            readOnly: true
-
-    pim-attribute-edit-form-properties-common-localizable:
-        module: pim/attribute-edit-form/properties/localizable
-        parent: pim-attribute-edit-form-properties-common
-        targetZone: content
-        position: 140
-        config:
-            fieldName: localizable
-            label: pim_enrich.entity.attribute.property.localizable
-            readOnly: true
+    pim-attribute-edit-form-setup:
+        module: pim/attribute-edit-form/setup
+        parent: pim-attribute-edit-form-properties-tab
+        targetZone: self
+        position: 90
 
     pim-attribute-edit-form-properties-guidelines:
         module: pim/attribute-edit-form/properties/guidelines
-        parent: pim-attribute-edit-form-properties
-        targetZone: secondColumn
+        parent: pim-attribute-edit-form-properties-tab
+        targetZone: self
         position: 100
 
     pim-attribute-edit-form-properties-type-specific:
         module: pim/attribute-edit-form/type-specific-form
-        parent: pim-attribute-edit-form-properties
-        targetZone: secondColumn
+        parent: pim-attribute-edit-form-properties-tab
+        targetZone: self
         position: 110
         config:
             mode: edit

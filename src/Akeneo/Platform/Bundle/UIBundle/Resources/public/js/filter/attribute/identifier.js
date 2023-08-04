@@ -8,7 +8,8 @@ define([
   'pim/fetcher-registry',
   'pim/user-context',
   'pim/template/filter/product/identifier',
-], function ($, _, __, BaseFilter, FetcherRegistry, UserContext, template) {
+  'pim/i18n',
+], function ($, _, __, BaseFilter, FetcherRegistry, UserContext, template, i18n) {
   return BaseFilter.extend({
     shortname: 'identifier',
     template: _.template(template),
@@ -39,13 +40,28 @@ define([
      * {@inheritdoc}
      */
     getTemplateContext: function () {
-      return BaseFilter.prototype.getTemplateContext.apply(this, arguments).then(
-        function (templateContext) {
-          return _.extend({}, templateContext, {
-            removable: false,
-          });
-        }.bind(this)
-      );
+      if (this.getCode() === 'identifier') {
+        // it means it's a product model
+        return $.when(BaseFilter.prototype.getTemplateContext.apply(this, arguments)).then(
+          function (templateContext) {
+            return _.extend({}, templateContext, {
+              removable: false,
+            });
+          }.bind(this)
+        );
+      } else {
+        return $.when(
+          BaseFilter.prototype.getTemplateContext.apply(this, arguments),
+          FetcherRegistry.getFetcher('attribute').fetch(this.getCode())
+        ).then(
+          function (templateContext, attribute) {
+            return _.extend({}, templateContext, {
+              label: i18n.getLabel(attribute.labels, UserContext.get('uiLocale'), attribute.code),
+              removable: false,
+            });
+          }.bind(this)
+        );
+      }
     },
 
     /**

@@ -6,9 +6,6 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * @group ce
- */
 class CreateAttributeEndToEnd extends ApiTestCase
 {
     public function testHttpHeadersInResponseWhenAnAttributeIsCreated()

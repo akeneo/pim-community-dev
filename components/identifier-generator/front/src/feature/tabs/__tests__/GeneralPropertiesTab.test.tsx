@@ -4,6 +4,7 @@ import {IdentifierGenerator, TEXT_TRANSFORMATION} from '../../models';
 import {GeneralPropertiesTab} from '../GeneralPropertiesTab';
 
 jest.mock('../../components/LabelTranslations');
+jest.mock('../../components/IdentifierAttributeSelector');
 
 describe('GeneralProperties', () => {
   it('should render the code input', () => {
@@ -76,6 +77,31 @@ describe('GeneralProperties', () => {
       labels: {},
       delimiter: null,
       text_transformation: 'uppercase',
+    });
+  });
+
+  it('should update target', () => {
+    const generator: IdentifierGenerator = {
+      code: 'initialCode',
+      target: 'sku',
+      structure: [],
+      conditions: [],
+      labels: {},
+      delimiter: null,
+      text_transformation: TEXT_TRANSFORMATION.NO,
+    };
+    const onGeneratorChange = jest.fn();
+    render(<GeneralPropertiesTab generator={generator} onGeneratorChange={onGeneratorChange} validationErrors={[]} />);
+    expect(screen.getByText('IdentifierAttributeSelectorMock')).toBeInTheDocument();
+    fireEvent.click(screen.getByText('Change target'));
+    expect(onGeneratorChange).toBeCalledWith({
+      code: 'initialCode',
+      target: 'ean',
+      structure: [],
+      conditions: [],
+      labels: {},
+      delimiter: null,
+      text_transformation: TEXT_TRANSFORMATION.NO,
     });
   });
 
