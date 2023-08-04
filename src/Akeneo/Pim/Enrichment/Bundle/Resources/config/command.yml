@@ -58,6 +58,7 @@ services:
             - '@pim_catalog.saver.product_model'
             - '@pim_catalog.repository.product_model'
             - '@pim_catalog.updater.product_model'
+            - '@pim_catalog.validator.product'
             - '@pim_connector.doctrine.cache_clearer'
             - '@database_connection'
         tags:

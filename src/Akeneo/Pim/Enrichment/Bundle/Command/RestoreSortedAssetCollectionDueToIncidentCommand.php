@@ -17,6 +17,7 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Fix issue on incident that occurred on 26-28 July 2023.
@@ -25,12 +26,12 @@ class RestoreSortedAssetCollectionDueToIncidentCommand extends Command
 {
     public const START_INCIDENT_DATE = '2023-07-26T13:40:00+00:00';
     public const END_INCIDENT_DATE = '2023-07-28T13:00:00+00:00'; // in reality 11:00 UTC, but there is a grace period
-    private const PRODUCT_TRACKING_TABLE_NAME = 'incident_product_asset_ordering_table';
-    private const PRODUCT_MODEL_TRACKING_TABLE_NAME = 'incident_product_model_asset_ordering_table';
+    public const PRODUCT_TRACKING_TABLE_NAME = 'incident_product_asset_ordering_table';
+    public const PRODUCT_MODEL_TRACKING_TABLE_NAME = 'incident_product_model_asset_ordering_table';
     private const BATCH_SIZE = 100;
 
     protected static $defaultName = 'pim:restore-sorted-assets-incident';
-    protected static $defaultDescription = 'Erase documents present in Elasticsearch but missing in MySQL';
+    protected static $defaultDescription = 'Restore asset collection sorted alphabetically due to an incident';
 
     public function __construct(
         private readonly BulkSaverInterface $productSaver,
@@ -39,6 +40,7 @@ class RestoreSortedAssetCollectionDueToIncidentCommand extends Command
         private readonly BulkSaverInterface $productModelSaver,
         private readonly ProductModelRepositoryInterface $productModelRepository,
         private readonly GrantedProductModelUpdater $productModelUpdater,
+        private readonly ValidatorInterface $validator,
         private readonly UnitOfWorkAndRepositoriesClearer $cacheClearer,
         private readonly Connection $connection
     ) {
@@ -59,9 +61,35 @@ class RestoreSortedAssetCollectionDueToIncidentCommand extends Command
     {
         $withDryRun = $input->getOption('dry-run');
 
+        $this->restoreAssets($withDryRun);
+
+        $numberProductVersions = $this->getNumberProductVersions();
+        if ($withDryRun) {
+            $output->writeln(sprintf('PIM-11120: "%d" products to restore. The detail is in the table "%s".', $numberProductVersions['affected'], self::PRODUCT_TRACKING_TABLE_NAME));
+        } else {
+            $numberProductVersions = $this->getNumberProductVersions();
+            $output->writeln(sprintf('PIM-11120: "%d/%d" products restored. The detail is in the table "%s".', $numberProductVersions['restored'], $numberProductVersions['affected'], self::PRODUCT_TRACKING_TABLE_NAME));
+        }
+
+
+        $numberProductModelVersions = $this->getNumberProductModelVersions();
+        if ($withDryRun) {
+            $output->writeln(sprintf('PIM-11120: "%d" product model to restore. The detail is in the table "%s".', $numberProductModelVersions['affected'], self::PRODUCT_MODEL_TRACKING_TABLE_NAME));
+        } else {
+            $output->writeln(sprintf('PIM-11120: "%d/%d" product models restored. The detail is in the table "%s".', $numberProductModelVersions['restored'], $numberProductModelVersions['affected'], self::PRODUCT_MODEL_TRACKING_TABLE_NAME));
+        }
+
+        return 0;
+    }
+
+    /**
+     * Public function to be called from ZDD migration.
+     */
+    public function restoreAssets(bool $withDryRun): void
+    {
         $attributesIndexedByFlatFormatKey = $this->findAssetAttributes();
         if (empty($attributesIndexedByFlatFormatKey)) {
-            return 0;
+            return;
         }
 
         $this->createProductTrackingTable();
@@ -77,26 +105,7 @@ class RestoreSortedAssetCollectionDueToIncidentCommand extends Command
         $productModelVersionsWithAssetSorted = $this->keepOnlyVersionsWithModifiedAndSortedAssets($productModelsWithVersions, $attributesIndexedByFlatFormatKey);
         $productModelVersionsWithAssetSortedAndNotModified = $this->keepOnlyProductModelVersionsWithUnmodifiedAssetsCollectionAfterIncident($productModelVersionsWithAssetSorted);
         $versionsTracked = $this->insertVersionIntoProductModelTrackingTable($productModelVersionsWithAssetSortedAndNotModified);
-        // TODO: restore product models
         $this->restoreProductModelAssetCollectionBeforeTheIncident($versionsTracked, $attributesIndexedByFlatFormatKey, $withDryRun);
-
-
-        $numberAffectedProducts = $this->getNumberAffectedProduct();
-        if ($withDryRun) {
-            $output->writeln(sprintf('PIM-11120: "%d" products to restore. The detail is in the table "%s".', $numberAffectedProducts, self::PRODUCT_TRACKING_TABLE_NAME));
-        } else {
-            $output->writeln(sprintf('PIM-11120: "%d" products restored. The detail is in the table "%s".', $numberAffectedProducts, self::PRODUCT_TRACKING_TABLE_NAME));
-        }
-
-
-        $numberAffectedProductModels = $this->getNumberAffectedProductModel();
-        if ($withDryRun) {
-            $output->writeln(sprintf('PIM-11120: "%d" product model to restore. The detail is in the table "%s".', $numberAffectedProductModels, self::PRODUCT_MODEL_TRACKING_TABLE_NAME));
-        } else {
-            $output->writeln(sprintf('PIM-11120: "%d" product models restored. The detail is in the table "%s".', $numberAffectedProductModels, self::PRODUCT_MODEL_TRACKING_TABLE_NAME));
-        }
-
-        return 0;
     }
 
     /**
@@ -344,6 +353,7 @@ class RestoreSortedAssetCollectionDueToIncidentCommand extends Command
         bool $withDryRun
     ): void {
         $productsToUpdate = [];
+        $versionIdsToRestore = [];
         foreach ($versionsWithAssetSortedAndNotModified as $version) {
             if ($withDryRun) {
                 continue;
@@ -360,17 +370,23 @@ class RestoreSortedAssetCollectionDueToIncidentCommand extends Command
 
             $product = $this->productRepository->findOneByUuid($version['uuid']);
             $this->productUpdater->update($product, ['values' => $values,]);
-            $productsToUpdate[] = $product;
+            if ($this->validator->validate($product)->count() === 0) {
+                $productsToUpdate[] = $product;
+                $versionIdsToRestore[] = $version['id'];
+            }
 
             if (count($productsToUpdate) % self::BATCH_SIZE === 0) {
                 $this->productSaver->saveAll($productsToUpdate);
                 $this->cacheClearer->clear();
+                $this->markVersionAsRestored($versionIdsToRestore, self::PRODUCT_TRACKING_TABLE_NAME);
+                $versionIdsToRestore = [];
             }
         }
 
         if (!empty($productsToUpdate)) {
             $this->productSaver->saveAll($productsToUpdate);
             $this->cacheClearer->clear();
+            $this->markVersionAsRestored($versionIdsToRestore, self::PRODUCT_TRACKING_TABLE_NAME);
         }
     }
 
@@ -380,6 +396,7 @@ class RestoreSortedAssetCollectionDueToIncidentCommand extends Command
         bool $withDryRun
     ): void {
         $productModelsToUpdate = [];
+        $versionIdsToRestore = [];
         foreach ($versionsWithAssetSortedAndNotModified as $version) {
             if ($withDryRun) {
                 continue;
@@ -396,17 +413,24 @@ class RestoreSortedAssetCollectionDueToIncidentCommand extends Command
 
             $productModel = $this->productModelRepository->find($version['product_model_id']);
             $this->productModelUpdater->update($productModel, ['values' => $values,]);
-            $productModelsToUpdate[] = $productModel;
+
+            if ($this->validator->validate($productModel)->count() === 0) {
+                $productModelsToUpdate[] = $productModel;
+                $versionIdsToRestore[] = $version['id'];
+            }
 
             if (count($productModelsToUpdate) % self::BATCH_SIZE === 0) {
                 $this->productModelSaver->saveAll($productModelsToUpdate);
                 $this->cacheClearer->clear();
+                $this->markVersionAsRestored($versionIdsToRestore, self::PRODUCT_MODEL_TRACKING_TABLE_NAME);
+                $versionIdsToRestore = [];
             }
         }
 
         if (!empty($productModelsToUpdate)) {
             $this->productModelSaver->saveAll($productModelsToUpdate);
             $this->cacheClearer->clear();
+            $this->markVersionAsRestored($versionIdsToRestore, self::PRODUCT_MODEL_TRACKING_TABLE_NAME);
         }
     }
 
@@ -420,7 +444,8 @@ class RestoreSortedAssetCollectionDueToIncidentCommand extends Command
                 version_id INT NOT NULL PRIMARY KEY,
                 product_uuid BINARY(16) NOT NULL,
                 logged_at datetime NOT NULL NOT NULL,
-                changeset json NOT NULL, 
+                changeset json NOT NULL,
+                is_restored tinyint(1) DEFAULT 0, 
                 KEY `product_uuid_idx` (`product_uuid`),
                 KEY `logged_at_idx` (`logged_at`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -439,7 +464,8 @@ class RestoreSortedAssetCollectionDueToIncidentCommand extends Command
                 version_id INT NOT NULL PRIMARY KEY,
                 product_model_id int NOT NULL,
                 logged_at datetime NOT NULL NOT NULL,
-                changeset json NOT NULL, 
+                changeset json NOT NULL,
+                is_restored tinyint(1) DEFAULT 0, 
                 KEY `product_model_id_idx` (`product_model_id`),
                 KEY `logged_at_idx` (`logged_at`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -506,17 +532,26 @@ class RestoreSortedAssetCollectionDueToIncidentCommand extends Command
         }
     }
 
-    private function getNumberAffectedProduct(): int
+    public function getNumberProductVersions(): array
     {
-        return (int) $this->connection->fetchOne(
-            'select count(*) from incident_product_asset_ordering_table'
+        return $this->connection->fetchAssociative(
+            'select count(*) as affected, sum(is_restored) as restored from incident_product_asset_ordering_table'
         );
     }
 
-    private function getNumberAffectedProductModel(): int
+    public function getNumberProductModelVersions(): array
     {
-        return (int) $this->connection->fetchOne(
-            'select count(*) from incident_product_model_asset_ordering_table'
+        return $this->connection->fetchAssociative(
+            'select count(*) as affected, sum(is_restored) as restored from incident_product_model_asset_ordering_table'
+        );
+    }
+
+    private function markVersionAsRestored(array $versionIdsToRestore, string $tableName)
+    {
+        $this->connection->executeQuery(
+            "UPDATE $tableName SET is_restored = 1 WHERE version_id IN (:version_ids)",
+            ['version_ids' =>  $versionIdsToRestore],
+            ['version_ids' => Connection::PARAM_INT_ARRAY]
         );
     }
 }

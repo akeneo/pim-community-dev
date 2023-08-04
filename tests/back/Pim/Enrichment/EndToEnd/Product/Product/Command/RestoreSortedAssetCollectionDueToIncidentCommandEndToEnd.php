@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Pim\Upgrade\Schema\Tests;
 
 use Akeneo\Pim\Enrichment\Bundle\Command\RestoreSortedAssetCollectionDueToIncidentCommand;
+use Akeneo\Pim\Enrichment\Bundle\Command\ZddMigrations\V20230804100000RestoreSortedAssetsDueToIncidentZddMigration;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProduct;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddAssetValue;
@@ -90,6 +91,17 @@ final class RestoreSortedAssetCollectionDueToIncidentCommandEndToEnd extends Tes
         $this->orderAssetCodesAlphabeticallyLikeTheBug('during_incident');
 
         $this->executeCommand();
+
+        $this->assertNumberLineInTrackingTable(1);
+        $this->assertAssetCodesOrder(['main_asset', 'additional_asset_01', 'additional_asset_02']);
+    }
+
+    public function test_it_restores_assets_order_with_a_product_created_during_incident_from_zdd_migration()
+    {
+        $this->createProductWithAssetCodes(['main_asset', 'additional_asset_01', 'additional_asset_02'], 'during_incident');
+        $this->orderAssetCodesAlphabeticallyLikeTheBug('during_incident');
+
+        $this->get(V20230804100000RestoreSortedAssetsDueToIncidentZddMigration::class)->migrate();
 
         $this->assertNumberLineInTrackingTable(1);
         $this->assertAssetCodesOrder(['main_asset', 'additional_asset_01', 'additional_asset_02']);
