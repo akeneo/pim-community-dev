@@ -49,7 +49,6 @@ akeneo_connectivity.connection:
         error_monitoring:
           not_auditable:
             description:
-              1: To track errors on this app,
               2: activate monitoring
               3: in the settings.
       delete:
