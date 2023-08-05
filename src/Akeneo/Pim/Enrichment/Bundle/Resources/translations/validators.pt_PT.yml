@@ -27,24 +27,18 @@ pim_catalog:
     family_variant_axes_immutable: 'O eixo variante não pode ser alterado para o nível "%level%"'
     product_identifier: Estes identificadores "%s" não existem.
     0: Um erro inesperado ocorreu.
-    100: Non-expected value
     101: É necessário um valor booleano para este campo.
     102: É necessário um valor de flutuação para este campo.
     103: Valores inteiros são necessários para este campo.
     104: Valores numéricos são necessários para este campo.
     105: Este campo espera um valor de seqüência de caracteres.
     106: É necessário um valor de matriz para este campo.
-    107: This field expects an array of arrays as value.
     200: Ocorreu um erro interno
     201: Ocorreu um erro interno
     202: Valores numéricos são necessários para este campo.
     203: Este campo espera um valor de seqüência de caracteres.
     204: Este campo espera um valor de seqüência de caracteres.
     205: Ocorreu um erro interno
-    300: This field expects a valid entity code.
-    301: This field expects a valid scope and locale.
-    302: This field expects a valid scope.
-    303: This field expects a valid association format.
     pim_immutable_product_model_validator: O mesmo código já foi atribuído a outro modelo de produto.
 mass_edit:
   edit_common_attributes:

@@ -65,7 +65,7 @@ pim_enrich.entity.locale:
   uppercase_label: Taal
   plural_label: Talen
   page_title:
-    index: "]-Inf, 1]{{ count }} ingeschakelde taal|]1, Inf[{{ count }} ingeschakelde talen"
+    index: "]-Inf, 1]{{ count }} ingeschakelde taal]1, Inf[{{ count }} ingeschakelde talen"
   helper: "Om een taal in of uit te schakelen, gaat u naar een van <a href={{ href }}>uw kanalen</a> om een taal toe te voegen of te verwijderen."
   grid:
     columns:
