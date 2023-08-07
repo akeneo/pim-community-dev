@@ -195,10 +195,6 @@ define([
           .search(searchOptions)
           .then(
             function (attributes) {
-              attributes = _.filter(attributes, function (attribute) {
-                return attribute.type !== 'pim_catalog_identifier';
-              });
-
               if (fetchId !== this.curentFetchId) {
                 return;
               }
