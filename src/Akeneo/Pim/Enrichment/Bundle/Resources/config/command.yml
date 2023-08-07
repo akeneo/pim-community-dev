@@ -61,6 +61,8 @@ services:
             - '@pim_catalog.validator.product'
             - '@pim_connector.doctrine.cache_clearer'
             - '@database_connection'
+            - '@monolog.logger'
+
         tags:
             - { name: console.command }
             - { name: 'akeneo.command.authenticated_as_admin_user' }

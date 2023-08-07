@@ -12,6 +12,7 @@ use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
+use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Console\Command\Command;
@@ -42,7 +43,8 @@ class RestoreSortedAssetCollectionDueToIncidentCommand extends Command
         private readonly GrantedProductModelUpdater $productModelUpdater,
         private readonly ValidatorInterface $validator,
         private readonly UnitOfWorkAndRepositoriesClearer $cacheClearer,
-        private readonly Connection $connection
+        private readonly Connection $connection,
+        private readonly LoggerInterface $logger
     ) {
         parent::__construct();
     }
@@ -87,20 +89,23 @@ class RestoreSortedAssetCollectionDueToIncidentCommand extends Command
      */
     public function restoreAssets(bool $withDryRun): void
     {
+        $this->logger->notice('Creating tracking tables');
+        $this->createProductTrackingTable();
+        $this->createProductModelTrackingTable();
+
         $attributesIndexedByFlatFormatKey = $this->findAssetAttributes();
         if (empty($attributesIndexedByFlatFormatKey)) {
+            $this->logger->notice('No asset in catalog, the migration will stop there.');
+
             return;
         }
 
-        $this->createProductTrackingTable();
         $productsWithVersions = $this->findProductVersionsDuringTheIncident();
         $productVersionsWithAssetSorted = $this->keepOnlyVersionsWithModifiedAndSortedAssets($productsWithVersions, $attributesIndexedByFlatFormatKey);
         $productVersionsWithAssetSortedAndNotModified = $this->keepOnlyProductVersionsWithUnmodifiedAssetsCollectionAfterIncident($productVersionsWithAssetSorted);
         $versionsTracked = $this->insertVersionIntoProductTrackingTable($productVersionsWithAssetSortedAndNotModified);
         $this->restoreProductAssetCollectionBeforeTheIncident($versionsTracked, $attributesIndexedByFlatFormatKey, $withDryRun);
 
-
-        $this->createProductModelTrackingTable();
         $productModelsWithVersions = $this->findProductModelVersionsDuringTheIncident();
         $productModelVersionsWithAssetSorted = $this->keepOnlyVersionsWithModifiedAndSortedAssets($productModelsWithVersions, $attributesIndexedByFlatFormatKey);
         $productModelVersionsWithAssetSortedAndNotModified = $this->keepOnlyProductModelVersionsWithUnmodifiedAssetsCollectionAfterIncident($productModelVersionsWithAssetSorted);
@@ -158,6 +163,7 @@ class RestoreSortedAssetCollectionDueToIncidentCommand extends Command
      */
     private function findProductVersionsDuringTheIncident(): \Generator
     {
+        $count = 0;
         $lastId = 0;
         $lastLoggedAt = \DateTimeImmutable::createFromFormat(\DateTimeInterface::ATOM, self::START_INCIDENT_DATE);
         $platform = $this->connection->getDatabasePlatform();
@@ -174,6 +180,9 @@ class RestoreSortedAssetCollectionDueToIncidentCommand extends Command
         SQL;
 
         while (true) {
+            $count = $count + self::BATCH_SIZE;
+            $this->logger->notice("Finding products, total at $count");
+
             $rows = $this->connection->fetchAllAssociative(
                 $sql,
                 [
@@ -217,6 +226,7 @@ class RestoreSortedAssetCollectionDueToIncidentCommand extends Command
      */
     private function findProductModelVersionsDuringTheIncident(): \Generator
     {
+        $count = 0;
         $lastId = 0;
         $lastLoggedAt = \DateTimeImmutable::createFromFormat(\DateTimeInterface::ATOM, self::START_INCIDENT_DATE);
         $platform = $this->connection->getDatabasePlatform();
@@ -233,6 +243,9 @@ class RestoreSortedAssetCollectionDueToIncidentCommand extends Command
         SQL;
 
         while (true) {
+            $count = $count + self::BATCH_SIZE;
+            $this->logger->notice("Finding product models, total at $count");
+
             $rows = $this->connection->fetchAllAssociative(
                 $sql,
                 [
@@ -352,6 +365,7 @@ class RestoreSortedAssetCollectionDueToIncidentCommand extends Command
         array $attributesIndexedByFlatFormatKey,
         bool $withDryRun
     ): void {
+        $totalCount = 0;
         $productsToUpdate = [];
         $versionIdsToRestore = [];
         foreach ($versionsWithAssetSortedAndNotModified as $version) {
@@ -376,17 +390,23 @@ class RestoreSortedAssetCollectionDueToIncidentCommand extends Command
             }
 
             if (count($productsToUpdate) % self::BATCH_SIZE === 0) {
+                $totalCount += count($productsToUpdate);
+
                 $this->productSaver->saveAll($productsToUpdate);
                 $this->cacheClearer->clear();
                 $this->markVersionAsRestored($versionIdsToRestore, self::PRODUCT_TRACKING_TABLE_NAME);
                 $versionIdsToRestore = [];
+                $this->logger->notice("Total count of products updated: $totalCount");
             }
         }
 
         if (!empty($productsToUpdate)) {
+            $totalCount += count($productsToUpdate);
+
             $this->productSaver->saveAll($productsToUpdate);
             $this->cacheClearer->clear();
             $this->markVersionAsRestored($versionIdsToRestore, self::PRODUCT_TRACKING_TABLE_NAME);
+            $this->logger->notice("Total count of products updated: $totalCount");
         }
     }
 
@@ -395,6 +415,7 @@ class RestoreSortedAssetCollectionDueToIncidentCommand extends Command
         array $attributesIndexedByFlatFormatKey,
         bool $withDryRun
     ): void {
+        $totalCount = 0;
         $productModelsToUpdate = [];
         $versionIdsToRestore = [];
         foreach ($versionsWithAssetSortedAndNotModified as $version) {
@@ -420,17 +441,21 @@ class RestoreSortedAssetCollectionDueToIncidentCommand extends Command
             }
 
             if (count($productModelsToUpdate) % self::BATCH_SIZE === 0) {
+                $totalCount += count($productModelsToUpdate);
                 $this->productModelSaver->saveAll($productModelsToUpdate);
                 $this->cacheClearer->clear();
                 $this->markVersionAsRestored($versionIdsToRestore, self::PRODUCT_MODEL_TRACKING_TABLE_NAME);
                 $versionIdsToRestore = [];
+                $this->logger->notice("Total count of product models updated: $totalCount");
             }
         }
 
         if (!empty($productModelsToUpdate)) {
+            $totalCount += count($productModelsToUpdate);
             $this->productModelSaver->saveAll($productModelsToUpdate);
             $this->cacheClearer->clear();
             $this->markVersionAsRestored($versionIdsToRestore, self::PRODUCT_MODEL_TRACKING_TABLE_NAME);
+            $this->logger->notice("Total count of product models updated: $totalCount");
         }
     }
 
