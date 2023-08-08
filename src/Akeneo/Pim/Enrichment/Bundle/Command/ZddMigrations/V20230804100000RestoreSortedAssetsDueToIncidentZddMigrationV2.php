@@ -17,7 +17,7 @@ use Psr\Log\LoggerInterface;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class V20230804100000RestoreSortedAssetsDueToIncidentZddMigration implements ZddMigration
+class V20230804100000RestoreSortedAssetsDueToIncidentZddMigrationV2 implements ZddMigration
 {
     public function __construct(
         private readonly LoggerInterface $logger,
@@ -41,8 +41,12 @@ class V20230804100000RestoreSortedAssetsDueToIncidentZddMigration implements Zdd
         // no incident, so not needed
     }
 
+    /**
+     * Renamed as V2 to force its execution, as incident interval date was not the good one.
+     * It means we missed some product or product models to restore during the execution of the V1 of the migration.
+     */
     public function getName(): string
     {
-        return 'RestoreSortedAssetsDueToIncident';
+        return 'RestoreSortedAssetsDueToIncidentV2';
     }
 }

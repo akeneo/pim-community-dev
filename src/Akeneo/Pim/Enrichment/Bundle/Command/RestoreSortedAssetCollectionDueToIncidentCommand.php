@@ -25,7 +25,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class RestoreSortedAssetCollectionDueToIncidentCommand extends Command
 {
-    public const START_INCIDENT_DATE = '2023-07-26T13:40:00+00:00';
+    public const START_INCIDENT_DATE = '2023-07-26T09:10:00+00:00';
     public const END_INCIDENT_DATE = '2023-07-28T13:00:00+00:00'; // in reality 11:00 UTC, but there is a grace period
     public const PRODUCT_TRACKING_TABLE_NAME = 'incident_product_asset_ordering_table';
     public const PRODUCT_MODEL_TRACKING_TABLE_NAME = 'incident_product_model_asset_ordering_table';
@@ -334,7 +334,8 @@ class RestoreSortedAssetCollectionDueToIncidentCommand extends Command
             SELECT changeset
             FROM pim_versioning_version
             WHERE id > :id
-            AND resource_uuid = :uuid
+                AND resource_uuid = :uuid
+                AND resource_name = "Akeneo\\\Pim\\\Enrichment\\\Component\\\Product\\\Model\\\Product"
             ORDER BY id ASC
         SQL;
 
@@ -350,7 +351,8 @@ class RestoreSortedAssetCollectionDueToIncidentCommand extends Command
             SELECT changeset
             FROM pim_versioning_version
             WHERE id > :id
-            AND resource_id = :resource_id
+                AND resource_id = :resource_id
+                AND resource_name = "Akeneo\\\Pim\\\Enrichment\\\Component\\\Product\\\Model\\\ProductModel"
             ORDER BY id ASC
         SQL;
 
@@ -366,8 +368,6 @@ class RestoreSortedAssetCollectionDueToIncidentCommand extends Command
         bool $withDryRun
     ): void {
         $totalCount = 0;
-        $productsToUpdate = [];
-        $versionIdsToRestore = [];
         foreach ($versionsWithAssetSortedAndNotModified as $version) {
             if ($withDryRun) {
                 continue;
@@ -383,29 +383,20 @@ class RestoreSortedAssetCollectionDueToIncidentCommand extends Command
             }
 
             $product = $this->productRepository->findOneByUuid($version['uuid']);
+            if ($product === null) {
+                continue;
+            }
             $this->productUpdater->update($product, ['values' => $values,]);
-            if ($this->validator->validate($product)->count() === 0) {
-                $productsToUpdate[] = $product;
-                $versionIdsToRestore[] = $version['id'];
+            if ($this->validator->validate($product)->count() !== 0) {
+                continue;
             }
 
-            if (count($productsToUpdate) % self::BATCH_SIZE === 0) {
-                $totalCount += count($productsToUpdate);
-
-                $this->productSaver->saveAll($productsToUpdate);
-                $this->cacheClearer->clear();
-                $this->markVersionAsRestored($versionIdsToRestore, self::PRODUCT_TRACKING_TABLE_NAME);
-                $versionIdsToRestore = [];
-                $this->logger->notice("Total count of products updated: $totalCount");
-            }
-        }
-
-        if (!empty($productsToUpdate)) {
-            $totalCount += count($productsToUpdate);
-
-            $this->productSaver->saveAll($productsToUpdate);
+            // some migrations failed due to our fantastic ORM and 2-way associations, let's save unitary
+            $this->productSaver->saveAll([$product]);
             $this->cacheClearer->clear();
-            $this->markVersionAsRestored($versionIdsToRestore, self::PRODUCT_TRACKING_TABLE_NAME);
+            $this->markVersionAsRestored([$version['id']], self::PRODUCT_TRACKING_TABLE_NAME);
+
+            $totalCount += 1;
             $this->logger->notice("Total count of products updated: $totalCount");
         }
     }
@@ -416,8 +407,6 @@ class RestoreSortedAssetCollectionDueToIncidentCommand extends Command
         bool $withDryRun
     ): void {
         $totalCount = 0;
-        $productModelsToUpdate = [];
-        $versionIdsToRestore = [];
         foreach ($versionsWithAssetSortedAndNotModified as $version) {
             if ($withDryRun) {
                 continue;
@@ -433,28 +422,18 @@ class RestoreSortedAssetCollectionDueToIncidentCommand extends Command
             }
 
             $productModel = $this->productModelRepository->find($version['product_model_id']);
+            if ($productModel === null) {
+                continue;
+            }
             $this->productModelUpdater->update($productModel, ['values' => $values,]);
 
-            if ($this->validator->validate($productModel)->count() === 0) {
-                $productModelsToUpdate[] = $productModel;
-                $versionIdsToRestore[] = $version['id'];
+            if ($this->validator->validate($productModel)->count() !== 0) {
+                continue;
             }
-
-            if (count($productModelsToUpdate) % self::BATCH_SIZE === 0) {
-                $totalCount += count($productModelsToUpdate);
-                $this->productModelSaver->saveAll($productModelsToUpdate);
-                $this->cacheClearer->clear();
-                $this->markVersionAsRestored($versionIdsToRestore, self::PRODUCT_MODEL_TRACKING_TABLE_NAME);
-                $versionIdsToRestore = [];
-                $this->logger->notice("Total count of product models updated: $totalCount");
-            }
-        }
-
-        if (!empty($productModelsToUpdate)) {
-            $totalCount += count($productModelsToUpdate);
-            $this->productModelSaver->saveAll($productModelsToUpdate);
+            $this->productModelSaver->saveAll([$productModel]);
             $this->cacheClearer->clear();
-            $this->markVersionAsRestored($versionIdsToRestore, self::PRODUCT_MODEL_TRACKING_TABLE_NAME);
+            $this->markVersionAsRestored([$version['id']], self::PRODUCT_MODEL_TRACKING_TABLE_NAME);
+            $totalCount += 1;
             $this->logger->notice("Total count of product models updated: $totalCount");
         }
     }
