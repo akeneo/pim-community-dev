@@ -1,7 +1,7 @@
 import React from 'react';
 import {Field} from './Field';
 import {render, screen} from '../../storybook/test-util';
-import {TextInput, Helper} from '../../components';
+import {TextInput, Helper, Block} from '../../components';
 
 test('it renders its children properly', () => {
   render(
@@ -33,6 +33,17 @@ test('it does not render something else than an Input or Helpers', () => {
   expect(screen.getByText('en')).toBeInTheDocument();
   expect(screen.getByText('(required)')).toBeInTheDocument();
   expect(screen.queryByText('Something else')).not.toBeInTheDocument();
+});
+
+test('it renders a Block', () => {
+  render(
+    <Field label="Nice field" locale="en_US" channel="ecommerce" requiredLabel={'(required)'}>
+      <Block data-testid="block" title="My block title" />
+    </Field>
+  );
+
+  expect(screen.getByTestId('block')).toBeInTheDocument();
+  expect(screen.getByText('My block title')).toBeInTheDocument();
 });
 
 test('Field supports forwardRef', () => {
