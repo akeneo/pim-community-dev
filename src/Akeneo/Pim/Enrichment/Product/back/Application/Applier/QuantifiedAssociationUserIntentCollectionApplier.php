@@ -69,6 +69,7 @@ final class QuantifiedAssociationUserIntentCollectionApplier implements UserInte
                         ?? $this->getProductQuantifiedLinks($product, $associationType);
 
                     $values = $this->applyProductQuantifiedUserIntent($formerAssociations, $quantifiedAssociationUserIntent, $userId);
+
                     if (\is_null($values)) {
                         break;
                     }
@@ -248,6 +249,13 @@ final class QuantifiedAssociationUserIntentCollectionApplier implements UserInte
         \usort($newAssociations, $sortFunction);
         \usort($formerAssociations, $sortFunction);
         if ($newAssociations === $formerAssociations) {
+            /**
+             * @TODO CPM-1208 There is an edge case here.
+             * - create a product with a ReplaceQuantifiedProducts and an invalid association type and nothing inside.
+             * - The former associations (as the product is new) are [].
+             * - There is no difference between the previous one ([]) and the new one ([]).
+             * - No error is raised, even if the user wrote a non existing association type.
+             */
             return null;
         }
 

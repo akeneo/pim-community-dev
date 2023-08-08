@@ -31,6 +31,11 @@ services:
 
     pim_catalog.repository.product:
         class: 'Akeneo\Test\Acceptance\Product\InMemoryProductRepository'
+        # TODO CPM-1207: here we use the in-memory repository as product saver, a better solution would be to either:
+        # - implement an in-memory product saver
+        # - or even better, inject a repository in the saver instead of the ORM (a "real" repository, with save method),
+        # in order to decouple from the persistence layer
+        decorates: pim_catalog.saver.product
 
     pim_catalog.repository.product_unique_data:
         class: 'AkeneoTest\Acceptance\Product\InMemoryProductUniqueDataRepository'

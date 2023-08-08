@@ -7,10 +7,10 @@ namespace Akeneo\Test\Acceptance\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
-use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Property\Uuid\Uuid;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
 use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Ramsey\Uuid\UuidInterface;
@@ -20,7 +20,8 @@ class InMemoryProductRepository implements
     IdentifiableObjectRepositoryInterface,
     SaverInterface,
     ProductRepositoryInterface,
-    CursorableRepositoryInterface
+    CursorableRepositoryInterface,
+    BulkSaverInterface
 {
     /** @var ArrayCollection */
     private $products;
@@ -62,6 +63,13 @@ class InMemoryProductRepository implements
         }
 
         $this->products->set($product->getUuid()->toString(), $product);
+    }
+
+    public function saveAll(array $products, array $options = [])
+    {
+        foreach ($products as $product) {
+            $this->save($product, $options);
+        }
     }
 
     public function find($uuid)

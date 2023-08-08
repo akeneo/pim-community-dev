@@ -12,10 +12,9 @@ use Webmozart\Assert\Assert;
  */
 final class QuantifiedEntity
 {
-    public function __construct(private string $entityIdentifier, private int $quantity)
+    public function __construct(private readonly string $entityIdentifier, private readonly int $quantity)
     {
         Assert::stringNotEmpty($this->entityIdentifier);
-        Assert::greaterThan($this->quantity, 0);
     }
 
     public function entityIdentifier(): string
