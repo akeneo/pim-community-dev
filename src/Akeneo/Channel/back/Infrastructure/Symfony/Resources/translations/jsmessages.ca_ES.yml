@@ -54,7 +54,7 @@ pim_enrich.entity.channel:
     category_tree: Arbre de categories
     do_not_convert: No convertir
     measurement: Configuració de mesures
-    label_conversion_units: Tria una unitat de conversió per cada atribut mètric que farem servir per la exportació del producte
+    label_conversion_units: Tria una unitat de conversió per cada atribut mètric qu
   module:
     create:
       button: Crear canal
@@ -65,8 +65,8 @@ pim_enrich.entity.locale:
   uppercase_label: Configuració Regional
   plural_label: Configuracions regionals
   page_title:
-    index: "]-Inf, 1]{{ count }} configuració regional habilitada|]1, Inf[{{ count }} configuracions regionals habilitades"
-  helper: "Per habilitar o deshabilitar un local, vagi a un dels <a href={{ href }}>seus canals</a> i afegeix o elimina un local."
+    index: "]-Inf, 1]{{ count }} configuració regional habilitada|]1"
+  helper: "Per habilitar o deshabilitar un local, vagi a un dels <"
   grid:
     columns:
       code: Locals activats

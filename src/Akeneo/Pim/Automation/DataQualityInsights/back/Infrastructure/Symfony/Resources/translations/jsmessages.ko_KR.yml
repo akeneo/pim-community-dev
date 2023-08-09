@@ -98,7 +98,7 @@ akeneo_data_quality_insights:
       title: 품질 점수 분포
     quality_score_evolution:
       title: 품질 점수 변화
-      current_score: '- 이 범위의 현재 카탈로그 품질 점수입니다.'
+      current_score: 이 범위의 현재 카탈로그 품질 점수입니다.
       current_month_label: 이번 달
       no_catalog_score: 현재 품질 점수를 계산할 수 없습니다.
   product_evaluation:

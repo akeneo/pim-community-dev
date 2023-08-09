@@ -1,0 +1,24 @@
+akeneo.category:
+  validation:
+    upsert:
+      category_code:
+        wrong_format: O código da categoria deve conter apenas letras, números e sublinados
+        line_feed: O código da categoria não pode conter caracteres com nova linha (LF)
+      duplicated_value_user_intents: O valor do atributo {{ attributeCode }} está sendo atualizado várias vezes
+      value_user_intents_on_deactivated_template: Não há nenhum modelo ativado vinculado aos atributos da categoria que você deseja editar
+      value:
+        text_too_long: O valor não pode ser maior que {{ limit }} caracteres
+        textarea_too_long: O valor não pode ser maior que {{ limit }} caracteres
+        richtext_too_long: O valor não pode ser maior que {{ limit }} caracteres
+    template:
+      code:
+        not_blank: Este valor não deve estar em branco.
+        unique: 'Código do modelo {{ templateCode }} já existe.'
+        wrong_format: Este campo só pode conter letras, números e sublinhados.
+    attribute:
+      limit:
+        title: Não é possível adicionar mais de 50 atributos
+        message: Os modelos de categoria são limitados a 50 atributos por modelo.
+      code:
+        wrong_format: O código do atributo pode conter apenas letras minúsculas, números e sublinhados.
+        unique_in_the_template: O código do atributo {{ attributeCode }} deve ser exclusivo no modelo

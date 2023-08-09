@@ -9,4 +9,24 @@ pim_measurements:
         is_required: 'L''unité standard est requise.'
         should_be_in_the_list_of_units: 'Le code d''unité standard "%standard_unit_code%" n''existe pas dans la liste des unités de la famille de mesure "%measurement_family_code%".'
         cannot_be_changed: 'Le code d''unité standard de la famille de mesure "%measurement_family_code%" ne peut pas être modifié'
+        operation_should_be_multiply_by_one: 'Le code d''unité standard de la famille de mesure "%measurement_family_code%" doit être une opération de type multiplication-par-1'
       should_contain_max_elements: 'Vous avez atteint la limite de %limit% familles de mesure.'
+      code:
+        must_be_unique: 'Ce code de famille de mesure existe déjà.'
+      convert:
+        value_should_be_a_number_in_a_string: 'La valeur de l''opération doit être un nombre valide'
+        should_contain_min_elements: 'Un minimum d''une opération de conversion par unité est obligatoire.'
+        should_contain_max_elements: 'Vous avez atteint la limite de %limit% opérations de conversion par unité.'
+      measurement_family_units_is_locked_for_updates: 'Un attribut produit est lié à cette famille de mesure. Vous ne pouvez modifier que les libellés traduits et le symbole d''une unité.'
+      measurement_family_unit_operations_locked_for_updates: 'Un attribut produit est lié à cette famille de mesure. Vous ne pouvez modifier que les libellés traduits et le symbole d''une unité.'
+      units:
+        should_contain_min_elements: 'Un minimum d''une opération de conversion par unité est obligatoire.'
+        should_contain_max_elements: 'Vous avez atteint la limite de %limit% opérations de conversion par unité.'
+        operation:
+          invalid_operator: 'L''opérateur {{ value }} n''est pas valide, veuillez utiliser {{ choices }} à la place.'
+        should_contain_at_least_one_unit: 'Il devrait y avoir au moins %limit% unité dans la famille de mesure.'
+        should_not_contain_duplicates: 'Nous avons trouvé des unités dupliquées dans la famille de mesure. La famille de mesure ne doit contenir que des unités uniques.'
+        must_be_indexed_by_code: 'L''index ne correspond pas au code de l''unité.'
+    unit:
+      code:
+        must_be_unique: 'Le code de cette unité existe déjà.'

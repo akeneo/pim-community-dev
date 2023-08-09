@@ -24,6 +24,7 @@ batch_jobs:
       clean_product_model: Bereinigung der Produktmodelle
       clean_product: Produkte werden bereinigt
       remove_attribute_codes_from_blacklist: Entferne Code von der Blacklist
+    check_job_unique: Prüfe ob Job eindeutig ist
   csv_product_export:
     label: Produkt-Export als CSV-Datei
     export.label: Produkt-Export

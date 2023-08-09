@@ -22,7 +22,11 @@ akeneo.category:
     delete: Eliminar árbol
   template:
     learn_more: Más información sobre las plantillas de categorías
+    create: Crear plantilla
     create_confirmation_modal:
+      title: Crear una nueva plantilla de categoría
+      helper: Crear plantilla de categoría para definir atributos y activar el enriquecimiento en todas las categorías de este árbol.
+      category_tree: Árbol de categorías
       link: Más información sobre las plantillas de categorías
     edit: Editar plantilla
     notification_success: Plantilla de categoría creada con éxito
@@ -48,6 +52,7 @@ akeneo.category:
           rich_text: Editor de texto enriquecido
         translations:
           title: Traducciones de etiquetas
+        error_message: Hay valores no válidos en la página.
         unsaved_changes: Tiene cambios sin guardar, ¿seguro que desea salir?
     add_attribute:
       no_attribute_title: Cree su primer atributo
@@ -96,6 +101,11 @@ akeneo.category:
       notification_success:
         title: 'Plantilla {{ template }} eliminada'
         message: '{{ template }} ha sido eliminada. Se ha eliminado el contenido de las categorías asociadas.'
+    auto-save:
+      saved: Guardado
+      saving: Guardando
+      editing: Editando
+      errors: Errores no guardados
     initialize:
       title: Añadir atributos de categoría
       message: Defina el contenido de sus categorías añadiendo atributos de Texto, Área de texto o Imagen.
@@ -110,7 +120,7 @@ akeneo.category:
       content_description: 'Este conjunto contiene 13 atributos:'
       content:
         description_attributes: 2 Atributos del área de texto para las descripciones largas y cortas de las categorías
-        url_attributes: 1 Atributo de texto para la información de la URL
+        url_attributes: 1 atributo de texto para la información de la URL
         image_attributes: 3 imágenes y 3 atributos de texto para la imagen y su información alt-text
         seo_attributes: 2 atributos de texto y 2 atributos de área de texto para información SEO
       confirmation_message: '¿Seguro que desea cargar este conjunto de atributos?'

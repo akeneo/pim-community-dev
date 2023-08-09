@@ -272,7 +272,7 @@ akeneo_connectivity.connection:
           must_be_a_string: 범위 목록은 공백으로 구분된 문자열이어야 합니다.
           too_long: 범위 목록은 1,000자 이하여야 합니다.
     custom_apps:
-      creation_limit_reached: 사용자 지정 앱 20개 제한에 도달했습니다.
+      creation_limit_reached: 사용자 지정 앱 20개 한도에 도달했습니다.
       create_button: 앱 만들기
       create_modal:
         subtitle: 사용자 지정 앱 만들기

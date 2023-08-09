@@ -9,7 +9,7 @@ akeneo_data_quality_insights:
   product_grid:
     filter_label:
       quality_score: Wynik jakości
-      enrichment_quality: Jakość wzbogacania
+      enrichment_quality: Jakość wzbogacenia
       images_quality: Obraz produktu
-Enrichment: Wzbogacanie
+Enrichment: Wzbogacenie
 Quality Score: Wynik jakości

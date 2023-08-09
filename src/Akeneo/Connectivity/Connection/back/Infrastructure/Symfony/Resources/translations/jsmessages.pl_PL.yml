@@ -616,7 +616,7 @@ pim_notification:
   types:
     connected_app_authorizations: Autoryzacje połączonych aplikacji
     disabled_catalog: Katalog aplikacji wyłączony
-    attribute_removed: Odnotowano wpływ na katalog aplikacji
+    attribute_removed: Wpłynięto na katalog aplikacji
   connected_app_authorizations:
     button_label: Otwórz aplikację
   disabled_catalog:
