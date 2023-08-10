@@ -12,6 +12,7 @@ import {Authorizations} from './steps/Authorizations';
 import {Permissions} from './steps/Permissions';
 import {PermissionsSummary} from './steps/PermissionsSummary';
 import {WizardModal} from './WizardModal';
+import {FullScreenLoader} from './FullscreenLoader';
 
 type Step = {
     name: 'authentication' | 'authorizations' | 'permissions' | 'summary';
@@ -33,7 +34,7 @@ export const AppWizardWithPermissions: FC<Props> = ({clientId}) => {
     const permissionFormRegistry = usePermissionFormRegistry();
     const [providers, setProviders] = useState<PermissionFormProvider<any>[]>([]);
     const [permissions, setPermissions] = useState<PermissionsByProviderKey>({});
-
+    const [processing, setProcessing] = useState(false);
     const confirmAuthorization = useConfirmAuthorization(clientId);
 
     useEffect(() => {
@@ -101,6 +102,8 @@ export const AppWizardWithPermissions: FC<Props> = ({clientId}) => {
         let userGroup;
         let redirectUrl;
 
+        setProcessing(true);
+
         try {
             ({userGroup, redirectUrl} = await confirmAuthorization());
         } catch (e) {
@@ -129,6 +132,10 @@ export const AppWizardWithPermissions: FC<Props> = ({clientId}) => {
 
     if (wizardData === null) {
         return null;
+    }
+
+    if (processing) {
+        return <FullScreenLoader />;
     }
 
     return (

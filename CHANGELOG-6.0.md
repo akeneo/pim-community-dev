@@ -1,5 +1,7 @@
 # 6.0.x
 
+- PIM-11133: Add a loader on confirmation step when connecting an App to prevent button spamming
+
 # 6.0.97 (2023-08-11)
 
 # 6.0.96 (2023-08-03)

@@ -177,7 +177,7 @@ const webpackConfig = {
       },
 
       {
-        test: /\.(svg)$/,
+        test: /\.(svg|gif)$/,
         loader: 'file-loader',
         options: {
           outputPath: 'assets'
