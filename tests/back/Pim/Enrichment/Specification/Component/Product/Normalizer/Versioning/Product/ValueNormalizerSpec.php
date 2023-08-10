@@ -85,7 +85,7 @@ class ValueNormalizerSpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier('simple')->willReturn($simpleAttribute);
         $simpleAttribute->isLocaleSpecific()->willReturn(false);
         $simpleAttribute->getBackendType()->willReturn('decimal');
-        $this->normalize($value, 'flat', $context)->shouldReturn(['simple' => '12.0000']);
+        $this->normalize($value, 'flat', $context)->shouldReturn(['simple' => '12']);
     }
 
     function it_normalizes_a_value_with_a_integer_data_with_decimals_not_allowed(
@@ -127,7 +127,7 @@ class ValueNormalizerSpec extends ObjectBehavior
         $simpleAttribute->isLocaleSpecific()->willReturn(false);
         $simpleAttribute->getBackendType()->willReturn('decimal');
         $simpleAttribute->isDecimalsAllowed()->willReturn(true);
-        $this->normalize($value, 'flat', [])->shouldReturn(['simple' => '12.2500']);
+        $this->normalize($value, 'flat', [])->shouldReturn(['simple' => '12.25']);
     }
 
     function it_normalizes_a_value_with_a_float_data_with_decimals_not_allowed(
@@ -148,6 +148,26 @@ class ValueNormalizerSpec extends ObjectBehavior
         $simpleAttribute->getBackendType()->willReturn('decimal');
         $simpleAttribute->isDecimalsAllowed()->willReturn(false);
         $this->normalize($value, 'flat', [])->shouldReturn(['simple' => '12']);
+    }
+
+    function it_normalizes_a_value_with_a_float_data_with_lots_of_decimals(
+        ValueInterface $value,
+        AttributeInterface $simpleAttribute,
+        $attributeRepository
+    ) {
+        $simpleAttribute->getType()->willReturn(AttributeTypes::NUMBER);
+        $simpleAttribute->isDecimalsAllowed()->willReturn(true);
+
+        $value->getData()->willReturn('12.77646');
+        $value->getAttributeCode()->willReturn('simple');
+        $value->isLocalizable()->willReturn(false);
+        $value->isScopable()->willReturn(false);
+
+        $attributeRepository->findOneByIdentifier('simple')->willReturn($simpleAttribute);
+        $simpleAttribute->isLocaleSpecific()->willReturn(false);
+        $simpleAttribute->getBackendType()->willReturn('decimal');
+        $simpleAttribute->isDecimalsAllowed()->willReturn(true);
+        $this->normalize($value, 'flat', [])->shouldReturn(['simple' => '12.77646']);
     }
 
     function it_normalizes_a_value_with_a_string_data(
