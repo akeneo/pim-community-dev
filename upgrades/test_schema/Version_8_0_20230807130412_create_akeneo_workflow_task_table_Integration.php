@@ -19,12 +19,12 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 use PHPUnit\Framework\Assert;
 
-class Version_8_0_20230711082557_create_workflow_table_Integration extends TestCase
+class Version_8_0_20230807130412_create_akeneo_workflow_task_table_Integration extends TestCase
 {
     use ExecuteMigrationTrait;
 
-    private const MIGRATION_LABEL = '_8_0_20230711082557_create_workflow_table';
-    private const TABLE_NAME = 'akeneo_workflow';
+    private const MIGRATION_LABEL = '_8_0_20230807130412_create_akeneo_workflow_task_table';
+    private const TABLE_NAME = 'akeneo_workflow_task';
 
     private Connection $connection;
 
@@ -33,7 +33,6 @@ class Version_8_0_20230711082557_create_workflow_table_Integration extends TestC
         parent::setUp();
         $this->connection = $this->get('database_connection');
     }
-
 
     protected function getConfiguration(): Configuration
     {
@@ -44,11 +43,10 @@ class Version_8_0_20230711082557_create_workflow_table_Integration extends TestC
      * @test
      * @throws Exception
      */
-    public function it_creates_the_akeneo_workflow_table_if_not_present(): void
+    public function it_creates_the_akeneo_workflow_task_table_if_not_present(): void
     {
-        $this->dropForeignKeyIfExists('FK_workflow_task_workflow_uuid', 'akeneo_workflow_task');
         Assert::assertTrue($this->tableExists());
-        $this->connection->executeStatement('DROP TABLE IF EXISTS akeneo_workflow');
+        $this->connection->executeStatement('DROP TABLE IF EXISTS akeneo_workflow_task');
         Assert::assertFalse($this->tableExists());
         $this->reExecuteMigration(self::MIGRATION_LABEL);
         Assert::assertTrue($this->tableExists());
@@ -58,32 +56,11 @@ class Version_8_0_20230711082557_create_workflow_table_Integration extends TestC
      * @test
      * @throws Exception
      */
-    public function it_does_not_fail_if_the_akeneo_workflow_table_is_already_created(): void
+    public function it_does_not_fail_if_the_akeneo_workflow_task_table_is_already_created(): void
     {
         Assert::assertTrue($this->tableExists());
         $this->reExecuteMigration(self::MIGRATION_LABEL);
         Assert::assertTrue($this->tableExists());
-    }
-
-    private function dropForeignKeyIfExists(string $foreignKeyName, string $tableName): void
-    {
-        Assert::assertTrue($this->tableExists());
-        if ($this->foreignKeyExists($foreignKeyName, $tableName)) {
-            $this->connection->executeQuery(
-                sprintf('ALTER TABLE %s DROP FOREIGN KEY %s', $tableName, $foreignKeyName)
-            );
-        }
-
-        Assert::assertEquals(false, $this->foreignKeyExists($foreignKeyName, $tableName));
-    }
-
-    private function foreignKeyExists(string $foreignKeyName, string $tableName): bool
-    {
-        $foreignKeys = $this->connection->getSchemaManager()->listTableForeignKeys($tableName);
-        $foreignKeyFound = array_filter($foreignKeys, function ($foreignKey) use ($foreignKeyName) {
-            return ($foreignKey->getName() === $foreignKeyName);
-        });
-        return count($foreignKeyFound) > 0;
     }
 
     /**

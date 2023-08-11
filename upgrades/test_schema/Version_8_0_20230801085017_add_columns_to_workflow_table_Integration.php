@@ -16,6 +16,7 @@ namespace Pim\Upgrade\Schema\Tests;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
+use PHPUnit\Framework\Assert;
 
 class Version_8_0_20230801085017_add_columns_to_workflow_table_Integration extends TestCase
 {
@@ -32,6 +33,12 @@ class Version_8_0_20230801085017_add_columns_to_workflow_table_Integration exten
 
     public function test_it_adds_the_workflow_table_columns(): void
     {
+        $this->dropColumnIfExists('translation');
+        $this->dropColumnIfExists('enabled');
+        $this->dropColumnIfExists('created');
+        $this->dropColumnIfExists('updated');
+        $this->dropColumnIfExists('deleted');
+
         $this->reExecuteMigration(self::MIGRATION_NAME);
 
         $schemaManager = $this->get('database_connection')->getSchemaManager();
@@ -44,6 +51,25 @@ class Version_8_0_20230801085017_add_columns_to_workflow_table_Integration exten
         $this->assertArrayHasKey('deleted', $tableColumns, 'The column `deleted` should have been added to table `akeneo_workflow`');
     }
 
+    private function dropColumnIfExists(string $columnName): void
+    {
+        $exists = $this->connection->executeQuery(
+                'SHOW COLUMNS FROM akeneo_workflow LIKE :columnName',
+                [
+                    'columnName' => $columnName,
+                ]
+            )->rowCount() >= 1;
+
+        if (!$exists) {
+            return;
+        }
+
+        $this->connection->executeQuery(
+            <<<SQL
+                ALTER TABLE akeneo_workflow DROP COLUMN $columnName;
+            SQL
+        );
+    }
 
     protected function getConfiguration(): Configuration
     {
