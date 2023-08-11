@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Migration;
 
-use Akeneo\Platform\Bundle\InstallerBundle\Command\ZddMigration;
+use Akeneo\Platform\Installer\Infrastructure\Command\ZddMigration;
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleWithPermissionsRepository;
 use Akeneo\UserManagement\Component\Storage\Saver\RoleWithPermissionsSaver;
 use Doctrine\DBAL\Connection;

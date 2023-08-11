@@ -6,7 +6,7 @@ namespace Specification\Akeneo\Platform\Bundle\AnalyticsBundle\DataCollector;
 
 use Akeneo\Platform\Bundle\AnalyticsBundle\DataCollector\VersionDataCollector;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
-use Akeneo\Platform\Bundle\InstallerBundle\InstallStatusManager\InstallStatusManager;
+use Akeneo\Platform\Installer\Infrastructure\InstallStatusManager\InstallStatusManager;
 use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
 use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
 use PhpSpec\ObjectBehavior;

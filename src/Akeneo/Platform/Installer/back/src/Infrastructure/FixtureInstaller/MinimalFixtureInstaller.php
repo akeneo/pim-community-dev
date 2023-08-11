@@ -27,7 +27,7 @@ class MinimalFixtureInstaller implements FixtureInstallerInterface
             sprintf('%s/bin/console', $this->projectDir),
             'pim:installer:db',
             '--catalog',
-            'src/AkeneoEnterprise/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal',
+            'src/AkeneoEnterprise/Platform/Installer/back/src/Infrastructure/Symfony/Resources/fixtures/minimal',
             '--fixtures-to-skip',
             'fixtures_user_csv',
             '--fixtures-to-skip',

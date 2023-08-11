@@ -8,9 +8,9 @@ use Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKe
 use Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysHandler;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductModelIndexerInterface;
-use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
-use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
-use Akeneo\Platform\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader;
+use Akeneo\Platform\Installer\Infrastructure\Event\InstallerEvent;
+use Akeneo\Platform\Installer\Infrastructure\Event\InstallerEvents;
+use Akeneo\Platform\Installer\Infrastructure\FixtureLoader\FixtureJobLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Helper\ExperimentalTransactionHelper;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
@@ -132,7 +132,7 @@ class FixturesLoader implements FixturesLoaderInterface
         $this->doctrineJobRepository->getJobManager()->getConnection()->close();
     }
 
-    public function load(Configuration $configuration): void
+    public function load(Configuration $configuration, ?string $directory = 'src/Akeneo/Platform/Installer/back/src/Infrastructure/Symfony/Resources/fixtures/minimal'): void
     {
         $this->deleteAllDocumentsInElasticsearch();
 
@@ -151,7 +151,7 @@ class FixturesLoader implements FixturesLoaderInterface
         } else {
             $this->experimentalTransactionHelper->abortTransactions();
             $this->databaseSchemaHandler->reset();
-            $this->loadData($configuration);
+            $this->loadData($configuration, $directory);
             $this->dumpDatabase($dumpFile);
             $this->purgeMessengerEvents();
         }
@@ -183,7 +183,7 @@ class FixturesLoader implements FixturesLoaderInterface
         }
     }
 
-    protected function loadData(Configuration $configuration): void
+    protected function loadData(Configuration $configuration, string $directory): void
     {
         $files = $this->getFilesToLoad($configuration->getCatalogDirectories());
         $filesByType = $this->getFilesToLoadByType($files);
@@ -191,7 +191,7 @@ class FixturesLoader implements FixturesLoaderInterface
         $this->generateAsymmetricKeysHandler->handle(new GenerateAsymmetricKeysCommand());
         $this->measurementInstaller->createMeasurementTableAndStandardMeasurementFamilies();
         $this->loadSqlFiles($filesByType['sql']);
-        $this->loadImportFiles($filesByType['import']);
+        $this->loadImportFiles($filesByType['import'], $directory);
         $this->loadReferenceData();
     }
 
@@ -229,7 +229,7 @@ class FixturesLoader implements FixturesLoaderInterface
      *
      * @throws \RuntimeException
      */
-    protected function loadImportFiles(array $files): void
+    protected function loadImportFiles(array $files, string $directory): void
     {
         // prepare replace paths to use catalog paths and not the minimal fixtures path, please note that we can
         // have several files per job in case of Enterprise Catalog, for instance,
@@ -249,7 +249,7 @@ class FixturesLoader implements FixturesLoaderInterface
         }
 
         // configure and load job instances in database
-        $this->fixtureJobLoader->loadJobInstances('src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal', $replacePaths);
+        $this->fixtureJobLoader->loadJobInstances($directory, $replacePaths);
 
         // install the catalog via the job instances
         $jobInstances = $this->fixtureJobLoader->getLoadedJobInstances();

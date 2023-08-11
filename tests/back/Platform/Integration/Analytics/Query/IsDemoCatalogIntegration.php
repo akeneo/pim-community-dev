@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AkeneoTest\Platform\Integration\Analytics\Query;
 
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
-use Akeneo\Platform\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader;
+use Akeneo\Platform\Installer\Infrastructure\FixtureLoader\FixtureJobLoader;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Tool\Component\Analytics\IsDemoCatalogQuery;
@@ -35,16 +35,17 @@ final class IsDemoCatalogIntegration extends TestCase
      *
      * If the email of the users changed in the Icecat fixtures, this test would probably be red.
      * In that case, please modify the query to guess if it's a demo catalog.
+     *
+     * @group ce
      */
-
     public function test_the_query_return_true_when_it_is_has_users_from_demo_catalog()
     {
         Assert::assertFalse($this->isDemoCatalogQuery->fetch());
 
         // test both CE and EE fixtures as the path is the same
         $this->featureFlags->enable('import_export_local_storage');
-        $this->fixtureJobLoader->loadJobInstances($this->getParameter('kernel.project_dir') . '/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal');
-        $fixturePath = $this->getParameter('kernel.project_dir') . '/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev/';
+        $this->fixtureJobLoader->loadJobInstances($this->getParameter('kernel.project_dir') . '/src/Akeneo/Platform/Installer/back/src/Infrastructure/Symfony/Resources/fixtures/minimal');
+        $fixturePath = $this->getParameter('kernel.project_dir') . 'src/Akeneo/Platform/Installer/back/src/Infrastructure/Symfony/Resources/fixtures/icecat_demo_dev/';
 
         $this->jobLauncher->launchImport('fixtures_channel_csv', file_get_contents($fixturePath . 'channels.csv'));
         $this->jobLauncher->launchImport('fixtures_user_csv', file_get_contents($fixturePath . 'users.csv'));

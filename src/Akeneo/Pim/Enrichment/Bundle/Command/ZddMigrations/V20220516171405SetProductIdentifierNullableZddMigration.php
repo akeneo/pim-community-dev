@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Command\ZddMigrations;
 
-use Akeneo\Platform\Bundle\InstallerBundle\Command\ZddMigration;
+use Akeneo\Platform\Installer\Infrastructure\Command\ZddMigration;
 use Doctrine\DBAL\Connection;
 
 /**

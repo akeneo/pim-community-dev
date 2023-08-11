@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\StructureVersion\EventListener;
 
-use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
+use Akeneo\Platform\Installer\Infrastructure\Event\InstallerEvents;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
