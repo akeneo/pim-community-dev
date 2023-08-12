@@ -77,3 +77,8 @@ pim_enrich.entity.currency:
   plural_label: Valutor
   page_title:
     index: "]-Inf, 1]{{ count }} valuta|]1, Inf[{{ count }} valutor"
+flash:
+  currency:
+    error:
+      linked_to_channel: You cannot disable a currency linked to a channel
+    updated: Currency successfully updated

@@ -1,6 +1,7 @@
 An identifier attribute already exists.: Tunnisteattribuutti on jo olemassa.
 Attribute code may contain only letters, numbers and underscore: Attribuutin koodi voi sisältää vain kirjaimia, numeroita ja alaviivoja
 Attribute code may contain only letters (at least one), numbers and underscores: Attribuutin koodi voi sisältää vain kirjaimia (ainakin yksi), numeroita ja alaviivoja
+Attribute code may not contain line-feed characters: Attribute code may not contain line-feed characters
 Attribute group code may contain only letters, numbers and underscores: Attribuuttiryhmän koodi voi sisältää vain kirjaimia, numeroita ja alaviivoja
 This attribute type can't be used as a grid filter: Tätä attribuuttityyppiä ei voi käyttää ruudukkosuodattimena
 This code is not available: Tämä koodi ei ole käytettävissä
@@ -42,19 +43,27 @@ product_model.family_variant.not_blank.message: Tuotemallin varianttiperhe ei vo
 pim_catalog:
   constraint:
     can_have_family_variant_empty_axis_value: 'Attribuutti "%attribute%" ei voi olla tyhjä, koska se on määritetty tämän entiteetin varianttiulottuvuudeksi'
+    product_model_with_same_axis_value_already_exists: 'Cannot set value "%values%" for the attribute axis "%attributes%" on product model "%validated_entity%", as the product model "%sibling_with_same_value%" already has this value'
+    variant_product_with_same_axis_value_already_exists: 'Cannot set value "%values%" for the attribute axis "%attributes%" on variant product "%validated_entity%", as the variant product "%sibling_with_same_value%" already has this value'
+    can_have_family_variant_unexpected_attribute: 'Cannot set the property "%attribute%" to this entity as it is not in the attribute set'
     cannot_have_product_model_as_parent: 'Tuotemallilla "%product_model%" ei voi olla tuotemalli "%parent_product_model%" ylätason tuotemallina'
     cannot_have_parent: 'Tuotemallilla "%product_model%" ei voi olla ylätason tuotemallia'
     attribute_does_not_belong_to_family: 'Attribuutti "%attribute%" ei kuulu perheeseen "%family%"'
     variant_product_invalid_family: 'Variantin perhe on oltava sama kuin ylätason tuotteella'
+    php_int_max_reached: 'The maximum number must be lower than %php_int_max%.'
     not_null_family: Perhe ei voi olla "null", koska tuote, jonka tunnus on "%sku%", on variantti.
     variant_product_has_parent: 'Variantilla "%variant_product%" on oltava ylätason tuote'
     invalid_variant_product_parent: 'Variantilla "%variant_product%" ei voi olla tuotemallia "%product_model%" ylätason tuotteena, (tähän tuotemalliin voi kuulua vain toisia tuotemalleja)'
     modified_variant_axis_value: 'Varianttiulottuvuutta "%variant_axis%" ei voi muokata arvolla "%provided_value%"'
+    family_variant_attributes_unique: Attributes must be unique, "%attributes%" are used several times in variant attributes sets
+    family_variant_axes_unique: Variant axes must be unique, "%attributes%" are used several times in variant attributes sets
     family_variant_axes_immutable: 'Varianttiulottuvuuksia ei voi muokata tasolla "%level%"'
     family_variant_axes_attribute_type_unique: Varianttiulottuvuus "%axis%" ei voi olla arvoltaan yksilöllinen tai tunniste
     family_variant_axes_attribute_type: Varianttiulottuvuuksien "%axis%" on oltava tyypiltään kyllä/ei, yksinkertainen valinta, yksinkertainen valinta (viitetiedot) tai mittayksikkö
     family_variant_axes_wrong_type: Variantin ulottuvuus ”%axis%” ei voi olla aluekohtainen, kanavakohtainen eikä kielikohtainen
+    family_variant_axes_number_of_axes: 'A variant attribute set cannot have more than %max_axes_number% axes'
     family_variant_no_axis: Vähintään yksi attribuutti on määritettävä varianttiulottuvuudeksi tasolla "%level%"
+    family_variant_axis_level: Attribute "%axis%" must be set as attribute in the same variant attribute set it was set as axis
     family_variant_has_family_attribute: 'Attribuuttia "%attribute%" ei voi lisätä varianttiperheeseen "%family_variant%", koska se ei ole perheen "%family%" attribuutti'
     family_variant_level_do_not_exist: Tasolla "%level%" ei ole määritetty varianttiattribuuttia
     family_variant_no_level: Vähintään yksi taso on määritettävä varianttiperheelle
