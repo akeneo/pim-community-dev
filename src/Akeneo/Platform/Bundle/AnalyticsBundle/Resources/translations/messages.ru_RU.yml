@@ -30,6 +30,7 @@ pim_analytics:
     avg_percentage_scopable_attributes_per_family: Средний процент видимых атрибутов на семейство (%)
     avg_percentage_localizable_attributes_per_family: Средний процент локализуемых атрибутов на семейство (%)
     avg_percentage_scopable_localizable_attributes_per_family: Средний процент локализуемых и видимых атрибутов на семейство (%)
+    avg_number_attributes_per_family: Average number of attributes per family
     nb_locales: Количество локалeй
     nb_families: Количество семейств
     nb_users: Количество пользователей
@@ -49,6 +50,7 @@ pim_analytics:
     mongodb_version: Версия MongoDB
     server_version: Версия сервера
     php_extensions: Расширения PHP
+    email_domains: Associated email domains
     api_connection: Подключения к API
     nb_media_files_in_products: Количество медиа файлов в товарах
     nb_media_images_in_products: Количество изображений в товарах

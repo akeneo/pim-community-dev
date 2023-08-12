@@ -8,6 +8,7 @@ pim_connector:
       selector:
         modal:
           title: Выбор категориий
+        label: "{0}All products|{1}One selected category|]1,Inf[{{ count }} selected categories"
         title: Выберите категории
     locales:
       validation:
@@ -27,6 +28,10 @@ pim_import_export:
       flash:
         create:
           success: Профиль импорта успешно создан
+        upload:
+          error: Unable to upload the file. Its size may exceed the configured maximum upload size on your PHP or HTTP server configuration
+      page_title:
+        index: "]-Inf, 1] {{ count }} import profile|]1, Inf [{{ count }} import profiles"
       module:
         create:
           button: Создать профиль импорта
@@ -35,6 +40,8 @@ pim_import_export:
       flash:
         create:
           success: Профиль экспорта успешно создан
+      page_title:
+        index: "]-Inf, 1] {{ count }} export profile|]1, Inf [{{ count }} export profiles"
       module:
         create:
           button: Создать профиль экспорта
@@ -82,6 +89,7 @@ pim_import_export:
           file_path:
             title: Путь к файлу
             help: Путь к сгенерированному файлу
+            help_import: The directory of the file to be used for the import
           delimiter:
             title: Разделитель
             help: Символ, используемый как разделитель полей
@@ -148,6 +156,7 @@ pim_import_export:
         import: Импорт
         export: Экспорт
         mass_edit: Массовое редактирование
+        mass_edit_rule: Rules Settings
         quick_export: Быстрый экспорт
         compute_family_variant_structure_changes: Расчет структурных изменений разновидностей семейства
         compute_completeness_of_products_family: Подсчитать полноту заполненности продуктов семейства

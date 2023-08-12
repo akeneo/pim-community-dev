@@ -274,6 +274,8 @@ pim_enrich.export.product:
     string:
       operators:
         ALL: 所有
+    price-collection:
+      operators:
     select:
       operators:
         IN: 在列表中

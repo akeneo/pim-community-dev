@@ -1,6 +1,7 @@
 An identifier attribute already exists.: Атрибут-идентификатор уже существует.
 Attribute code may contain only letters, numbers and underscore: Код атрибута может содержать только буквы, цифры и символ подчеркивания
 Attribute code may contain only letters (at least one), numbers and underscores: Код атрибута может содержать только буквы (минимум одну), цифры и символ подчеркивания
+Attribute code may not contain line-feed characters: Attribute code may not contain line-feed characters
 Attribute group code may contain only letters, numbers and underscores: Код группы атрибута может содержать только буквы, цифры и символы подчеркивания
 This attribute type can't be used as a grid filter: Этот тип атрибута не может использоваться как фильтр
 This code is not available: Этот код недоступен
