@@ -79,4 +79,6 @@ pim_enrich.entity.currency:
     index: "] -Inf, 1] {{ count }} valuutta|]1, Inf [{{ count }} valuuttaa"
 flash:
   currency:
+    error:
+      linked_to_channel: Et voi poistaa kanavaan liitettyä valuuttaa.
     updated: Valuutta päivitetty onnistuneesti
