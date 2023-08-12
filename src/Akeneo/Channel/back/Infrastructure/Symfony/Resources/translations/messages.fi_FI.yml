@@ -1,0 +1,10 @@
+pim_enrich:
+  #Locale
+  locale:
+    tab:
+      property.title: Ominaisuudet
+  channel:
+    flash:
+      delete:
+        error: Et voi poistaa kanavaa "%channelCode%", koska PIM vaatii vähintään yhden kanavan.
+        linked_to_export_profile: Et voi poistaa kanavaa, joka on linkitetty vientiprofiiliin

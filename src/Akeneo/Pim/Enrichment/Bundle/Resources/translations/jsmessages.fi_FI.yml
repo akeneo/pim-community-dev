@@ -21,9 +21,11 @@ pim_enrich.entity.product:
     update:
       success: Tuote päivitetty.
       fail: Tuotetta ei voitu päivittää.
+      fail_session_expired: The product can not be updated. Your user session has expired. Please log in again.
       fields_not_ready: "Tuotetta ei voida tallentaa. Seuraavat kentät eivät ole vielä valmiina: {{ fields }}"
       already_in_upload: Tiedosto on jo ladattu attribuutin lokaatiossa "{{ locale }}" ja laajuudessa "{{ scope }}"
       file_upload: Tiedoston lataamisessa tapahtui virhe
+      identifier_warning: Tuotteesi on tallennettu, mutta tunnistetta ei voitu luoda.
     delete:
       success: Tuote poistettiin.
       fail: Tuotetta ei voi poistaa.
@@ -41,6 +43,7 @@ pim_enrich.entity.product:
       title: Valitse toiminto
       choose_family: Valitse perhe
       choose_family_variant: Valitse varianttiperhe
+      helper: Tunniste on nyt valinnainen kenttä. <a class="AknMessageBox-link" href="{{ link }}" target="_blank">Lue lisää</a> tästä muutoksesta ja mahdollisista vaikutuksista tuotteisiisi.
     variant_navigation:
       common: Yleinen
     status:
@@ -49,6 +52,7 @@ pim_enrich.entity.product:
     download_pdf:
       label: PDF
     copy:
+      button_label: Vertaile
       label: Vertaa / Käännä
       select: Valitse
       all_visible: Kaikki näkyvillä olevat
@@ -69,6 +73,7 @@ pim_enrich.entity.product:
     meta:
       updated: Viimeisin päivitys
       groups: Ryhmät
+      uuid: UUID
     show_group:
       title: Ryhmä {{ group }}
       view_group: Näytä ryhmä
@@ -107,6 +112,7 @@ pim_enrich.entity.product:
       variant_products: Varianttituotteet
       quantified:
         quantity: Määrä
+        unlinked: Linkittämätön
       search:
         placeholder: Etsi nimellä tai tunnisteella
       no_data: Tuoteliitoksia ei ole.
@@ -218,6 +224,7 @@ pim_enrich.entity.category:
       columns:
         label: Nimi
         number_of_categories: Kategorioiden lukumäärä
+        actions: Toiminnot
         count_categories: ']-Inf, 1]{{ count }} kategoria|]1, Inf[{{ count }} kategoriaa'
     tree:
       not_found: Kategoriapuuta ei löytynyt.
@@ -313,6 +320,8 @@ pim_enrich.export.product:
     string:
       operators:
         ALL: Kaikki
+    price-collection:
+      operators:
     select:
       operators:
         IN: Luettelossa
@@ -331,6 +340,7 @@ pim_enrich.export.product:
     title: Yleiset asetukset
 pim_enrich.mass_edit.product:
   title: Tuotteiden massamuokkaus
+  confirm: "{0}You are about to update some products with the following information, the former values will be replaced. Please confirm.|{1}You are about to update a product with the following information, the former values will be replaced. Please confirm.|]1, Inf[You are about to update {{ itemsCount }} products with the following information, the former values will be replaced. Please confirm."
   step:
     select:
       label: Valitse tuotteet
@@ -356,6 +366,7 @@ pim_enrich.mass_edit.product:
     edit_common:
       label: Muokkaa attribuuttien arvoja
       label_count: "{0}Muokkaa<span class=\"AknFullPage-title--highlight\">tuotteiden attribuuttien arvoja</span>|{1}Muokkaa <span class=\"AknFullPage-title--highlight\">1 tuotteen attribuuttien arvoja</span>|]1, Inf[Muokkaa <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotteen attribuuttien arvoja</span>"
+      description: Only the attributes belonging to the families of the selected products will be edited with the following data for the {{ locale }} locale and the {{ scope }} channel. The former values will be replaced.
       no_update: Valitse ainakin yksi attribuutti muokattavaksi
     add_attribute_value:
       label: Lisää attribuutin arvoja
@@ -404,6 +415,7 @@ pim_enrich.mass_edit.product:
       label_count: "{0}Vaihda <span class=\"AknFullPage-title--highlight\">tuotteiden ylätason tuotemalli</span>|{1}Vaihda ylätason tuotemalli <span class=\"AknFullPage-title--highlight\">1 tuotteelle</span>|]1,Inf[Muuta <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotteen ylätason tuotemalli</span>"
       description: Ylätason tuotteeksi vaihdetaan valitsemasi tuotemalli niille varianteille ja alatason tuotemalleille, jotka ovat valittuna tuoteruudukossa.
 pim_datagrid:
+  no_entities: "No {{ entityHint }} found"
   no_entities.product: "Tuotteita ei löytynyt" #Custom translation for product grid
   no_results: "Pahoittelut, haullasi ei löytynyt {{ entityHint }}."
   no_results.product: "Valitettavasti haullasi ei löytynyt tuotteita." #Custom translation for product grid
@@ -431,6 +443,8 @@ pim_datagrid:
         all_attributes: Kaikki attribuutit
         with_codes: Koodien kanssa
         with_labels: Arvojen otsikoiden kanssa
+        without_uuid: Ilman UUID:tä
+        with_uuid: UUID:n kanssa
         without_media: Ilman mediaa
         with_media: Median kanssa
       flash:
@@ -486,6 +500,8 @@ pim_datagrid:
       label: Ylätaso
     identifier:
       label: Tunniste
+    uuid:
+      label: Uuid
   search: Etsi arvolla {{ label }}
 batch_jobs:
   add_association:
@@ -550,6 +566,7 @@ batch_jobs:
     perform.label: Tuotteen nopea vienti XLSX-muodossa
   default_steps:
     delete_products_and_product_models: Poista tuotteet ja tuotemallit
+    remove_completeness_for_channel_and_locale: Remove completeness for channel and locale
 error:
   removing:
     group: Ryhmää ei voitu poistaa

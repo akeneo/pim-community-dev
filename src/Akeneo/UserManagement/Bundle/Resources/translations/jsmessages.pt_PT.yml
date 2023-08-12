@@ -3,8 +3,15 @@ pim_title:
   pim_user_role_index: Funções
   pim_user_group_index: Grupos de utilizadores
   oro_config_configuration_system: Configuração
+  pim_user_edit: 'User {{ username }} | Edit'
+  pim_user_create: 'Users | Create'
+  pim_user_role_update: 'Role {{ role }} | Edit'
+  pim_user_role_create: 'Role | Create'
   pim_user_security_login: Início de sessão
+  pim_user_reset_reset: Password Reset
   pim_user_reset_request: Esqueci-me da Password
+  pim_user_group_create: 'Groups | Create'
+  pim_user_group_update: 'Group {{ group }} | Edit'
 confirmation:
   remove:
     user: Tem a certeza que deseja eliminar este utilizador?
@@ -12,34 +19,72 @@ confirmation:
 pim_enrich:
   entity:
     user:
+      flash:
+        delete:
+          fail: The user can not be deleted
+          success: The user has been deleted
       module:
         delete:
           confirm: Tem a certeza que deseja eliminar este utilizador?
 pim_user.profile:
+  caption: First, tell us what your main mission is, in order for us to help you with the most relevant content.
+  why_is_it_needed: Why do we need this information?
   save_button: Guardar e ir para a App Store
+  selector:
+    placeholder: Choose an option
+    not_found: No result found
+  product_manager: I manage product catalogs.
+  redactor: I enrich product data.
+  pim_integrator: I integrate Akeneo PIM into our IT ecosystem.
+  pim_administrator: I administrate Akeneo PIM.
+  asset_manager: I manage assets in the PIM.
+  translator: I translate product, asset, and/or reference entity data.
+  third_party_developer: I develop solutions connected with Akeneo PIM.
 pim_user_management:
   entity:
     user:
+      label: user
+      flash:
+        update:
+          success: User successfully updated.
+          fail: The user could not be updated.
+          fields_not_ready: "The user cannot be saved right now. The following fields are not ready: {{ fields }}"
+        create:
+          success: User successfully created.
+      page_title:
+        index: "]-Inf, 1] {{ count }} user|]1, Inf [{{ count }} users"
       properties:
         username: Nome do Utilizador
+        profile: What is your main mission?
         name_prefix: Prefixo do nome
         first_name: Primeiro nome
         middle_name: Nome do meio
         last_name: Último nome
         name_suffix: Sufixo do nome
+        phone: Phone
         avatar: Avatar
         email: Email
         catalog_locale: Linguagem do catálogo
         catalog_scope: Âmbito do catálogo
         default_tree: Árvore padrão
+        default_asset_tree: Default asset tree
         product_grid_filters: Filtros da grelha de produtos
         current_password: Senha atual
         new_password: Nova senha
         new_password_repeat: Nova senha (repetir)
         password: Senha
+        password_repeat: Password (repeat)
+        last_logged_in: Last logged in
+        login_count: Login count
         ui_locale: Linguagem do UI
         timezone: Fuso horário
         default_product_grid_view: Vista da grelha de produtos por defeito
+        default_published_product_grid_view: Default published product grid view #EE Only
+        proposals_to_review_notification: When new proposal to review #EE Only
+        proposals_state_notifications: When proposal is accepted or rejected #EE Only
+      meta:
+        created: Created
+        updated: Updated
       module:
         create:
           button: Criar utilizador
@@ -47,11 +92,14 @@ pim_user_management:
           confirm: Tem a certeza que deseja eliminar este utilizador?
         update:
           additional: Adicional
+          groups_and_roles: Groups and roles
           password: Senha
           interfaces: Interfaces
           notifications: Notificações #TODO EE Only
     role:
       plural_label: Funções
+      page_title:
+        index: "]-Inf, 1] {{ count }} role|]1, Inf [{{ count }} roles"
       module:
         create:
           button: Criar função
@@ -59,6 +107,18 @@ pim_user_management:
           confirm: Tem certeza que deseja eliminar esta função?
     group:
       plural_label: Grupos de utilizadores
+      page_title:
+        index: "]-Inf, 1] {{ count }} group|]1, Inf [{{ count }} groups"
       module:
         create:
           button: Criar grupo
+  form:
+    error:
+      required: This field is required.
+      should_not_contain_space: The username should not contain space character.
+      too_short_value: "This value is too short. It should have {{ count }} characters or more."
+    duplication:
+      title: 'Duplicate "{{ username }}" user'
+      notification:
+        success: The user is duplicated successfully
+        failure: User duplication failure

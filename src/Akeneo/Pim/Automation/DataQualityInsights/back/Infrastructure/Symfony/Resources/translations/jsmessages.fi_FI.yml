@@ -43,6 +43,10 @@ akeneo_data_quality_insights:
       day: päivä
     key_indicators:
       title: Avainmittarit
+      products: '{1}1 tuote|]1, 200[{{ count }} tuotetta|[200, Inf[yli {{ count }} tuotetta'
+      product_models: '{1}1 tuotemalli|]1, 200[{{ count }} tuotemallia|[200, Inf[yli {{ count }} tuotemallia'
+      entities_to_work_on: 'Sinulla on <improvable_attributes_count_link/> tuotetta parannettavana.'
+      entities_to_work_on_2_kinds: 'Sinulla on <improvable_products_count_link/> tuotetta ja <improvable_product_models_count_link/> tuotemallia työstettäväksi.'
       list:
         has_image:
           title: Tuotteet, joilla on kuva
@@ -151,5 +155,8 @@ akeneo_data_quality_insights:
       to_improve: Kehitettävä
       "yes": "Kyllä"
       "no": "Ei"
+  quality_score:
+    pending: Käynnissä
+    title: "Laatupisteytys"
 pim_title:
   akeneo_data_quality_insights_dashboard: Tuotetiedon laadun analytiikka

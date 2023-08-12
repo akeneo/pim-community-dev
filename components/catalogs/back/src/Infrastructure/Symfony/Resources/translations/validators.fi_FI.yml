@@ -1,0 +1,51 @@
+akeneo_catalogs:
+  validation:
+    max_number_of_catalogs_per_user_message: Voit luoda jopa 15 katalogia
+    product_selection:
+      criteria:
+        channel:
+          not_empty: 'Tämän kanavan on oltava tyhjä.'
+          empty: 'Tämä kanava ei saa olla tyhjä.'
+          unknown: 'Tämä kanava on poistettu käytöstä. Tarkista kanavan asetukset tai poista tämä kriteeri.'
+        locale:
+          not_empty: 'Tämän lokaalin on oltava tyhjä.'
+          empty: 'Tämä lokaali ei voi olla tyhjä.'
+          unknown: 'Tätä lokaalia ei ole olemassa.'
+          disabled: 'Tämä lokaali on poistettu käytöstä tässä kanavassa. Tarkista kanavan asetukset tai poista tämä kriteeri.'
+        value:
+          not_empty: 'Tämän arvon täytyy olla tyhjä.'
+          empty: 'Tämä arvon ei voi olla tyhjä.'
+        family:
+          unknown: 'Ainakin yhtä valittua perhettä ei ole olemassa.'
+        completeness:
+          value: 'Valmiusastearvon on oltava 0 - 100 prosenttia.'
+        attribute_option:
+          unknown: 'Ainakin yhtä valittua valintaa ei ole olemassa.'
+        category:
+          value: 'Seuraavia kategorioita ei ole enää olemassa: {{ codes }}. Ole hyvä ja poista ne kriteerin arvoista.'
+        date:
+          between_is_empty: 'Nämä arvot eivät saa olla tyhjiä.'
+        measurement:
+          unit:
+            not_exist: 'Kentän "{{ field }}" yksikköä ei ole olemassa.'
+            not_empty: 'Yksikkö ei saa olla tyhjä.'
+    product_value_filters:
+      channel:
+        unknown: 'Kanava "{{ channel_name }}" on poistettu käytöstä. Tarkista kanavan asetukset tai poista tämä suodatin.'
+      currencies:
+        unknown: 'Valuutta "{{ currency_name }}" on poistettu käytöstä. Tarkista valuuttojen asetukset tai poista tämä suodatin.'
+      locale:
+        unknown: 'Lokaali "{{ locale_name }}" on poistettu käytöstä. Tarkista lokaalin asetukset tai poista tämä suodatin.'
+    product_mapping:
+      source:
+        invalid: 'Tämä attribuutti on poistettu.'
+        unknown: 'Tuntematon lähdearvo'
+        channel:
+          not_empty: 'Tämän kanavan on oltava tyhjä.'
+          empty: 'Tämä kanava ei saa olla tyhjä.'
+          unknown: 'Tämä kanava on poistettu. Tarkista kanavan asetukset tai päivitä tämä arvo.'
+        locale:
+          not_empty: 'Tämän lokaalin on oltava tyhjä.'
+          empty: 'Tämä lokaali ei voi olla tyhjä.'
+          unknown: 'Tämä lokaali on poistettu käytöstä tai sitä ei ole enää olemassa. Tarkista kanavien ja lokaalien asetukset.'
+          disabled: 'Tämä lokaali on poistettu käytöstä. Tarkista kanavat ja lokaalien asetukset tai päivitä tämä arvo.'
