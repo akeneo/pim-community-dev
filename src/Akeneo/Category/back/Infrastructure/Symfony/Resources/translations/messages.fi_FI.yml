@@ -1,0 +1,14 @@
+pim_enrich:
+  acl:
+    category:
+      list: Listaa kategoriat
+      create: Luo kategoria
+      edit: Muokkaa kategoriaa
+      remove: Poista kategoria
+      move: Siirrä kategoriaa
+      children: Katso kategorian alikategorioita
+      products: Katso kategorian tuotteet
+      history: Katso kategorian historia
+      template: Hallitse kategorian tietomallia
+      edit_attributes: Muokkaa kategorian attribuutteja
+      order_trees: Järjestä kategoriat

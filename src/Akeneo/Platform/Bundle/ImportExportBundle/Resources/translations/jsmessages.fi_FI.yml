@@ -150,10 +150,82 @@ pim_import_export:
           file_locale:
             title: Tiedoston lokaali
             help: Määritä lokaali, jossa otsikot näytetään
+          with_uuid:
+            title: Tuotteen UUID kanssa
+            help: Vie tuotteen ja siihen liittyvien tuotteiden UUID:t
+          with_uuid_for_models:
+            title: Tuotteen UUID kanssa
+            help: Vie liittyvien tuotteiden UUID normaalin tunnisteen sijaan
       file_path: Tiedostopolku
       storage_form:
+        title: Tallennustila
+        connection:
+          label: Tyyppi
+          local: Paikallinen
+          sftp: SFTP
+          amazon_s3: Amazon S3
+          microsoft_azure: Microsoft Azure
+          google_cloud_storage: Google Cloud Storage
+          none: Tallennustilaa ei ole määritetty
         file_path:
           label: Tiedostopolku
+          placeholder: myfile.{{ file_extension }}
+        host:
+          label: Palvelin
+          placeholder: esimerkki.com
+        fingerprint:
+          label: Host fingerprint (vapaaehtoinen)
+          placeholder: "c1:91:5e:42:55:5c:74:65:b6:12:32:7e:1f:6d:80:3e"
+          helper: Vaadimme SHA-512 tai MD5 hashed checksum kanssa paksusuolen notaatio isäntä-sormenjälki.
+        port:
+          label: Portti
+          placeholder: 22
+        username:
+          label: Kirjaudu sisään
+          placeholder: Syötä kirjautumistiedot
+        password:
+          label: Salasana
+          placeholder: Anna salasana
+        public_key:
+          label: Julkinen avain
+        login_type:
+          label: Todennusmenetelmä
+          password: Kirjautumistiedot ja salasana
+          private_key: Yksityinen avain
+        region:
+          label: Alue
+          placeholder: Syötä alueesi
+        bucket:
+          label: Bucketin nimi
+          placeholder: Syötä alueesi nimi
+        key:
+          label: Avain
+          placeholder: Syötä avain
+        secret:
+          label: Salaisuus
+          placeholder: Anna salaisuutesi
+        connection_string:
+          label: Yhteysmerkkijono
+          placeholder: Syötä yhteysmerkkijono
+        container_name:
+          label: Kontin nimi
+          placeholder: Anna konttisi nimi
+        project_id:
+          label: Projekti ID
+          placeholder: Syötä projektisi ID
+        service_account:
+          label: Palvelutili
+          placeholder: Syötä palvelutilisi
+      validation:
+        storage:
+          unavailable_type: Tämä tallennustila ei ole käytettävissä, vain {{ available_types }} ovat käytettävissä.
+        file_path:
+          unsupported_extension: Tiedostopäätettä ei tueta
+        fingerprint:
+          invalid_encoding: Isäntäsormenjäljen tulee olla kelvollinen SHA-512 tai MD5 tarkistussumma (colon notation)
+      connection_checker:
+        label: Testaa yhteysasetukset
+        exception: Yhteyttä ei voida muodostaa, tarkista asetukset.
   batch_status:
     1: Valmis
     2: Alkaa

@@ -4,6 +4,7 @@ akeneo.category:
       category_code:
         wrong_format: Le code de la catégorie ne peut contenir que des lettres, des chiffres et/ou des tirets bas.
         line_feed: Le code de la catégorie ne doit pas contenir un caractère de saut de ligne.
+      duplicated_value_user_intents: La valeur de l'attribut {{ attributeCode }} est mise à jour plusieurs fois
       value:
         text_too_long: La valeur ne doit pas dépasser {{ limit }} caractères
         textarea_too_long: La valeur ne doit pas dépasser {{ limit }} caractères

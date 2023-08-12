@@ -320,6 +320,8 @@ pim_enrich.export.product:
     string:
       operators:
         ALL: 모두
+    price-collection:
+      operators:
     select:
       operators:
         IN: 목록에 있음
