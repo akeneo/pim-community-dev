@@ -48,6 +48,8 @@ pim_enrich.entity.channel:
     delete:
       success: Канал успешно удален
       fail: Не удается удалить этот канал
+  page_title:
+    index: "]-Inf, 1]{{ count }} channel|]1, Inf[{{ count }} channels"
   property:
     category_tree: Дерево категорий
     do_not_convert: Не преобразовывать
@@ -73,6 +75,8 @@ pim_enrich.entity.locale:
     no_search_result: К сожалению, для вашего поиска нет результатов.
 pim_enrich.entity.currency:
   plural_label: Валюты
+  page_title:
+    index: "]-Inf, 1]{{ count }} currency|]1, Inf[{{ count }} currencies"
 flash:
   currency:
     error:

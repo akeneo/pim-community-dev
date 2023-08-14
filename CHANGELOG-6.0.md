@@ -1,5 +1,7 @@
 # 6.0.x
 
+# 6.0.97 (2023-08-11)
+
 # 6.0.96 (2023-08-03)
 
 - [Backport PIM-10868] PIM-11123: Fix checkboxes on category trees
