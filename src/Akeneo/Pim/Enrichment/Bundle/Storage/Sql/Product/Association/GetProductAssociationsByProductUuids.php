@@ -26,7 +26,7 @@ final class GetProductAssociationsByProductUuids
     }
 
     /**
-     * It generates product associations with every association types, even if there is not product associated for this association type.
+     * It generates product associations with every association types, even if there is no product associated for this association type.
      * That's why it uses a CROSS JOIN when getting associations at product level.
      *
      * @return array ['uuidProductA' => ['assocType1' => [['uuid' => 'uuidAssociatedProduct', 'identifier' => 'associatedProduct' ]]]]
@@ -62,8 +62,8 @@ FROM (
                       product.uuid as product_uuid,
                       association_type.code as association_type_code,
                       CASE 
-                          WHEN pcpud.product_uuid IS NULL THEN NULL
-                          ELSE JSON_OBJECT('uuid', BIN_TO_UUID(pcpud.product_uuid), 'identifier', pcpud.raw_data)
+                          WHEN association_to_product.product_uuid IS NULL THEN NULL
+                          ELSE JSON_OBJECT('uuid', BIN_TO_UUID(association_to_product.product_uuid), 'identifier', pcpud.raw_data)
                       END as associated_product_object
                   FROM pim_catalog_product product
                        CROSS JOIN pim_catalog_association_type association_type
@@ -76,7 +76,7 @@ FROM (
                   SELECT
                       product.uuid as product_uuid,
                       association_type.code as association_type_code,
-                      JSON_OBJECT('uuid', BIN_TO_UUID(pcpud.product_uuid), 'identifier', pcpud.raw_data) AS associated_product_object
+                      JSON_OBJECT('uuid', BIN_TO_UUID(association_to_product.product_uuid), 'identifier', pcpud.raw_data) AS associated_product_object
                   FROM pim_catalog_product product
                        INNER JOIN pim_catalog_product_model product_model ON product_model.id = product.product_model_id
                        INNER JOIN pim_catalog_product_model_association product_model_association ON product_model_association.owner_id = product_model.id
@@ -89,7 +89,7 @@ FROM (
                   SELECT
                       product.uuid as product_uuid,
                       association_type.code as association_type_code,
-                      JSON_OBJECT('uuid', BIN_TO_UUID(pcpud.product_uuid), 'identifier', pcpud.raw_data) AS associated_product_object
+                      JSON_OBJECT('uuid', BIN_TO_UUID(association_to_product.product_uuid), 'identifier', pcpud.raw_data) AS associated_product_object
                   FROM pim_catalog_product product
                        INNER JOIN pim_catalog_product_model child_product_model ON child_product_model.id = product.product_model_id
                        INNER JOIN pim_catalog_product_model product_model ON product_model.id = child_product_model.parent_id

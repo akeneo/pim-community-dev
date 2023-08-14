@@ -18,6 +18,8 @@ use Webmozart\Assert\Assert;
  */
 class GetProductAssociationsByProductUuidsIntegration extends TestCase
 {
+    private $uuids = [];
+
     public function setUp(): void
     {
         parent::setUp();
@@ -44,51 +46,48 @@ class GetProductAssociationsByProductUuidsIntegration extends TestCase
             ]
         );
 
-        $entityBuilder->createProduct('productA', 'aFamily', []);
-        $entityBuilder->createProduct('productB', 'aFamily', []);
-        $entityBuilder->createProduct('productC', 'aFamily', $this->getAssociationsFormatted([], [], [], ['productA']));
-        $entityBuilder->createProduct('productD', 'aFamily', $this->getAssociationsFormatted(['productA', 'productB'], ['productC']));
-        $entityBuilder->createProduct('productE', 'aFamily', []);
-        $entityBuilder->createProduct('productF', 'aFamily', []);
-        $entityBuilder->createProduct('productG', 'aFamily', []);
-        $rootProductModel = $entityBuilder->createProductModel('root_product_model', 'familyVariantWithTwoLevels', null, $this->getAssociationsFormatted(['productF'], ['productA', 'productC']));
-        $subProductModel1 = $entityBuilder->createProductModel('sub_product_model_1', 'familyVariantWithTwoLevels', $rootProductModel, $this->getAssociationsFormatted(['productD'], [], ['productB']));
-        $entityBuilder->createVariantProduct('variant_product_1', 'aFamily', 'familyVariantWithTwoLevels', $subProductModel1, $this->getAssociationsFormatted(['productF'], ['productG'], [], ['productE']));
+        $this->uuids['noSku'] = $entityBuilder->createProduct(null, 'aFamily', [])->getUuid();
+        $this->uuids['productA'] = $entityBuilder->createProduct('productA', 'aFamily', [])->getUuid();
+        $this->uuids['productB'] = $entityBuilder->createProduct('productB', 'aFamily', [])->getUuid();
+        $this->uuids['productC'] = $entityBuilder->createProduct('productC', 'aFamily', $this->getAssociationsFormatted([], [], [], [$this->uuids['productA']->toString()]))->getUuid();
+        $this->uuids['productD'] = $entityBuilder->createProduct('productD', 'aFamily', $this->getAssociationsFormatted([$this->uuids['productA']->toString(), $this->uuids['productB']->toString()], [$this->uuids['productC']->toString()]))->getUuid();
+        $this->uuids['productE'] = $entityBuilder->createProduct('productE', 'aFamily', [])->getUuid();
+        $this->uuids['productF'] = $entityBuilder->createProduct('productF', 'aFamily', [])->getUuid();
+        $this->uuids['productG'] = $entityBuilder->createProduct('productG', 'aFamily', [])->getUuid();
+        $rootProductModel = $entityBuilder->createProductModel('root_product_model', 'familyVariantWithTwoLevels', null, $this->getAssociationsFormatted([$this->uuids['productF']->toString()], [$this->uuids['productA']->toString(), $this->uuids['productC']->toString()]));
+        $subProductModel1 = $entityBuilder->createProductModel('sub_product_model_1', 'familyVariantWithTwoLevels', $rootProductModel, $this->getAssociationsFormatted([$this->uuids['productD']->toString()], [], [$this->uuids['productB']->toString()]));
+        $this->uuids['variant1'] = $entityBuilder->createVariantProduct('variant_product_1', 'aFamily', 'familyVariantWithTwoLevels', $subProductModel1, $this->getAssociationsFormatted([$this->uuids['productF']->toString()], [$this->uuids['productG']->toString()], [], [$this->uuids['productE']->toString()]))->getUuid();
+        $this->uuids['variantNoSku'] = $entityBuilder->createVariantProduct(null, 'aFamily', 'familyVariantWithTwoLevels', $subProductModel1, $this->getAssociationsFormatted([$this->uuids['noSku']->toString()]))->getUuid();
 
         $this->givenAssociationTypes(['A_NEW_TYPE']);
     }
 
-    public function testWithAProductContainingNoAssociation()
+    public function testWithAProductContainingNoAssociation(): void
     {
-        $uuidProductE = $this->getProductUuid('productE');
-        $expected = [$uuidProductE->toString() => $this->getAssociationsFormattedAfterFetch()];
-        $actual = $this->getQuery()->fetchByProductUuids([$uuidProductE]);
+        $expected = [$this->uuids['productE']->toString() => $this->getAssociationsFormattedAfterFetch()];
+        $actual = $this->getQuery()->fetchByProductUuids([$this->uuids['productE']]);
 
         $this->assertEqualsCanonicalizing($expected, $actual);
     }
 
-    public function testOnASingleProduct()
+    public function testOnASingleProduct(): void
     {
-        $uuidProductD = $this->getProductUuid('productD');
         $expected = [
-            $uuidProductD->toString() => $this->getAssociationsFormattedAfterFetch(['productA', 'productB'], ['productC'])
+            $this->uuids['productD']->toString() => $this->getAssociationsFormattedAfterFetch([$this->uuids['productA'], $this->uuids['productB']], [$this->uuids['productC']])
         ];
-        $actual = $this->getQuery()->fetchByProductUuids([$uuidProductD]);
+        $actual = $this->getQuery()->fetchByProductUuids([$this->uuids['productD']]);
 
         $this->assertEqualsCanonicalizing($expected, $actual);
     }
 
-    public function testOnMultipleSimpleProduct()
+    public function testOnMultipleSimpleProduct(): void
     {
-        $uuidProductE = $this->getProductUuid('productE');
-        $uuidProductD = $this->getProductUuid('productD');
-        $uuidProductC = $this->getProductUuid('productC');
         $expected = [
-            $uuidProductE->toString() => $this->getAssociationsFormattedAfterFetch(),
-            $uuidProductD->toString() => $this->getAssociationsFormattedAfterFetch(['productA', 'productB'], ['productC']),
-            $uuidProductC->toString() => $this->getAssociationsFormattedAfterFetch([], [], [], ['productA']),
+            $this->uuids['productE']->toString() => $this->getAssociationsFormattedAfterFetch(),
+            $this->uuids['productD']->toString() => $this->getAssociationsFormattedAfterFetch([$this->uuids['productA'], $this->uuids['productB']], [$this->uuids['productC']]),
+            $this->uuids['productC']->toString() => $this->getAssociationsFormattedAfterFetch([], [], [], [$this->uuids['productA']]),
         ];
-        $actual = $this->getQuery()->fetchByProductUuids([$uuidProductE, $uuidProductC, $uuidProductD]);
+        $actual = $this->getQuery()->fetchByProductUuids([$this->uuids['productE'], $this->uuids['productC'], $this->uuids['productD']]);
 
         $this->assertEqualsCanonicalizing(\array_keys($actual), \array_keys($expected));
         foreach ($actual as $productUuid => $actualAssociations) {
@@ -97,21 +96,35 @@ class GetProductAssociationsByProductUuidsIntegration extends TestCase
         }
     }
 
-    public function testOnMultipleWithProductModels()
+    public function testOnMultipleWithProductModels(): void
     {
-        $uuidProductE = $this->getProductUuid('productE');
-        $uuidProductD = $this->getProductUuid('productD');
-        $uuidProductC = $this->getProductUuid('productC');
-        $uuidVariantProduct1 = $this->getProductUuid('variant_product_1');
         $expected = [
-            $uuidProductE->toString() => $this->getAssociationsFormattedAfterFetch(),
-            $uuidProductD->toString() => $this->getAssociationsFormattedAfterFetch(['productA', 'productB'], ['productC']),
-            $uuidProductC->toString() => $this->getAssociationsFormattedAfterFetch([], [], [], ['productA']),
-            $uuidVariantProduct1->toString() => $this->getAssociationsFormattedAfterFetch(['productF', 'productD'], ['productA', 'productC', 'productG'], ['productB'], ['productE']),
+            $this->uuids['productE']->toString() => $this->getAssociationsFormattedAfterFetch(),
+            $this->uuids['productD']->toString() => $this->getAssociationsFormattedAfterFetch([$this->uuids['productA'], $this->uuids['productB']], [$this->uuids['productC']]),
+            $this->uuids['productC']->toString() => $this->getAssociationsFormattedAfterFetch([], [], [], [$this->uuids['productA']]),
+            $this->uuids['variant1']->toString() => $this->getAssociationsFormattedAfterFetch([$this->uuids['productF'], $this->uuids['productD']], [$this->uuids['productA'], $this->uuids['productC'], $this->uuids['productG']], [$this->uuids['productB']], [$this->uuids['productE']]),
         ];
         ksort($expected);
-        $actual = $this->getQuery()->fetchByProductUuids([$uuidProductE, $uuidProductC, $uuidProductD, $uuidVariantProduct1]);
+        $actual = $this->getQuery()->fetchByProductUuids([$this->uuids['productE'], $this->uuids['productC'], $this->uuids['productD'], $this->uuids['variant1']]);
 
+        $this->assertEqualsCanonicalizing(\array_keys($actual), \array_keys($expected));
+        foreach ($actual as $productUuid => $actualAssociations) {
+            $expectedAssociations = $expected[$productUuid];
+            $this->assertEqualsCanonicalizing($actualAssociations, $expectedAssociations);
+        }
+    }
+
+    public function testOnAssociatedProductsWithoutIdentifier(): void
+    {
+        $expected = [
+            $this->uuids['variantNoSku']->toString() => $this->getAssociationsFormattedAfterFetch(
+                [$this->uuids['noSku'], $this->uuids['productD'], $this->uuids['productF']],
+                [$this->uuids['productA'], $this->uuids['productC']],
+                [$this->uuids['productB']]
+            ),
+        ];
+
+        $actual = $this->getQuery()->fetchByProductUuids([$this->uuids['variantNoSku']]);
         $this->assertEqualsCanonicalizing(\array_keys($actual), \array_keys($expected));
         foreach ($actual as $productUuid => $actualAssociations) {
             $expectedAssociations = $expected[$productUuid];
@@ -185,10 +198,10 @@ class GetProductAssociationsByProductUuidsIntegration extends TestCase
     private function getAssociationsFormatted(array $crossSell = [], array $pack = [], array $substitutions = [], array $upsell = [], array $aNewType = [])
     {
         return ['associations' => [
-            'X_SELL' => ['products' => $crossSell],
-            'PACK' => ['products' => $pack],
-            'SUBSTITUTION' => ['products' => $substitutions],
-            'UPSELL' => ['products' => $upsell],
+            'X_SELL' => ['product_uuids' => $crossSell],
+            'PACK' => ['product_uuids' => $pack],
+            'SUBSTITUTION' => ['product_uuids' => $substitutions],
+            'UPSELL' => ['product_uuids' => $upsell],
         ]];
     }
 
@@ -203,9 +216,12 @@ class GetProductAssociationsByProductUuidsIntegration extends TestCase
         ];
     }
 
-    private function formatAssociation($identifiers): array
+    /**
+     * @param UuidInterface[] $uuids
+     */
+    private function formatAssociation(array $uuids): array
     {
-        return array_map(fn (string $identifier): array => ['uuid' => $this->getProductUuid($identifier)->toString(), 'identifier' => $identifier], $identifiers);
+        return array_map(fn (UuidInterface $uuid): array => ['uuid' => $uuid->toString(), 'identifier' => $this->getProductIdentifier($uuid)], $uuids);
     }
 
     protected function getConfiguration()

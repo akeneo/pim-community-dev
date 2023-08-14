@@ -207,4 +207,24 @@ SQL,
 
         return $productUuid ? Uuid::fromString($productUuid) : null;
     }
+
+    protected function getProductIdentifier(UuidInterface $uuid): ?string
+    {
+        return $this->get('database_connection')->executeQuery(<<<SQL
+WITH main_identifier AS (
+    SELECT id
+    FROM pim_catalog_attribute
+    WHERE main_identifier = 1
+    LIMIT 1
+)
+SELECT raw_data AS identifier
+FROM pim_catalog_product
+LEFT JOIN pim_catalog_product_unique_data pcpud
+    ON pcpud.product_uuid = pim_catalog_product.uuid 
+    AND pcpud.attribute_id = (SELECT id FROM main_identifier)
+WHERE uuid = :uuid
+SQL,
+            ['uuid' => $uuid->getBytes()]
+        )->fetchOne();
+    }
 }

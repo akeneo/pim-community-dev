@@ -105,14 +105,14 @@ class EntityBuilder
     }
 
     /**
-     * @param string $identifier
+     * @param ?string $identifier
      * @param string $familyCode
      * @param array  $data
      *
      * @return ProductInterface
      */
     public function createProduct(
-        string $identifier,
+        ?string $identifier,
         string $familyCode,
         array $data
     ): ProductInterface {
@@ -177,7 +177,7 @@ class EntityBuilder
      *
      * Creates a variant product with identifier and product model parent
      *
-     * @param string                $identifier
+     * @param ?string                $identifier
      * @param string                $familyCode
      * @param string                $familyVariantCode
      * @param ProductModelInterface $parent
@@ -186,7 +186,7 @@ class EntityBuilder
      * @return ProductInterface
      */
     public function createVariantProduct(
-        string $identifier,
+        ?string $identifier,
         string $familyCode,
         string $familyVariantCode,
         ProductModelInterface $parent,
@@ -194,9 +194,11 @@ class EntityBuilder
     ): ProductInterface {
         $variantProduct = new Product();
 
-        $identifierAttribute = $this->attributeRepository->findOneByCode('sku');
+        $identifierAttribute = $this->attributeRepository->getMainIdentifier();
 
-        $this->entityWithValuesBuilder->addOrReplaceValue($variantProduct, $identifierAttribute, null, null, $identifier);
+        if (null !== $identifier) {
+            $this->entityWithValuesBuilder->addOrReplaceValue($variantProduct, $identifierAttribute, null, null, $identifier);
+        }
 
         $this->productUpdater->update(
             $variantProduct,
