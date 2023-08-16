@@ -47,6 +47,7 @@ class Version_8_0_20230711082557_create_workflow_table_Integration extends TestC
     public function it_creates_the_akeneo_workflow_table_if_not_present(): void
     {
         $this->dropForeignKeyIfExists('FK_workflow_task_workflow_uuid', 'akeneo_workflow_task');
+        $this->dropForeignKeyIfExists('FK_ENTITY_WORFLOW_workflow_uuid', 'akeneo_workflow_entity_workflow');
         Assert::assertTrue($this->tableExists());
         $this->connection->executeStatement('DROP TABLE IF EXISTS akeneo_workflow');
         Assert::assertFalse($this->tableExists());

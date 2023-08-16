@@ -19,12 +19,12 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 use PHPUnit\Framework\Assert;
 
-class Version_8_0_20230807130412_create_akeneo_workflow_task_table_Integration extends TestCase
+class Version_8_0_20230811162401_create_akeneo_workflow_entity_task_table_Integration extends TestCase
 {
     use ExecuteMigrationTrait;
 
-    private const MIGRATION_LABEL = '_8_0_20230807130412_create_akeneo_workflow_task_table';
-    private const TABLE_NAME = 'akeneo_workflow_task';
+    private const MIGRATION_LABEL = '_8_0_20230811162401_create_akeneo_workflow_entity_task_table';
+    private const TABLE_NAME = 'akeneo_workflow_entity_task';
 
     private Connection $connection;
 
@@ -46,7 +46,6 @@ class Version_8_0_20230807130412_create_akeneo_workflow_task_table_Integration e
     public function it_creates_the_akeneo_workflow_task_table_if_not_present(): void
     {
         Assert::assertTrue($this->tableExists());
-        $this->dropForeignKeyIfExists('FK_ENTITY_TASK_task_uuid', 'akeneo_workflow_entity_task');
         $this->connection->executeStatement('DROP TABLE IF EXISTS ' . self::TABLE_NAME);
         Assert::assertFalse($this->tableExists());
         $this->reExecuteMigration(self::MIGRATION_LABEL);
@@ -75,14 +74,5 @@ class Version_8_0_20230807130412_create_akeneo_workflow_task_table_Integration e
                     'tableName' => self::TABLE_NAME,
                 ]
             )->rowCount() >= 1;
-    }
-
-    private function dropForeignKeyIfExists(string $foreignKey, string $table): void
-    {
-        try {
-            $this->connection->executeQuery(sprintf('ALTER TABLE %s DROP FOREIGN KEY %s', $table, $foreignKey));
-        } catch (Exception $e) {
-            // ignore when the foreign key did not exist
-        }
     }
 }
