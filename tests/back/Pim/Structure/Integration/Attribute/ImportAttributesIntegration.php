@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace AkeneoTest\Pim\Structure\Integration\Attribute;
 
 use Akeneo\Pim\Structure\Component\Model\Attribute;
+use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlCreateJobInstance;
 use Doctrine\DBAL\Connection;
@@ -119,8 +120,8 @@ CSV;
         return $this->get('database_connection');
     }
 
-    protected function getConfiguration()
+    protected function getConfiguration(): Configuration
     {
-        $this->catalog->useMinimalCatalog();
+        return $this->catalog->useMinimalCatalog();
     }
 }
