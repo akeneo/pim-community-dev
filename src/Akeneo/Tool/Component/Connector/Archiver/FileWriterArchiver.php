@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Tool\Component\Connector\Archiver;
 
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
@@ -18,25 +20,18 @@ use Psr\Log\LoggerInterface;
  * Archive files written by job execution to provide them through a download button
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
- * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @copyright 2013 Akeneo SAS (https://www.akeneo.com)
+ * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class FileWriterArchiver extends AbstractFilesystemArchiver
 {
-    protected JobRegistry $jobRegistry;
-    private FilesystemProvider $filesystemProvider;
-    private LoggerInterface $logger;
-
     public function __construct(
-        FilesystemOperator $filesystem,
+        FilesystemOperator $archivistFilesystem,
         JobRegistry $jobRegistry,
-        FilesystemProvider $fsProvider,
-        LoggerInterface $logger
+        private readonly FilesystemProvider $filesystemProvider,
+        private readonly LoggerInterface $logger,
     ) {
-        $this->filesystem = $filesystem;
-        $this->jobRegistry = $jobRegistry;
-        $this->filesystemProvider = $fsProvider;
-        $this->logger = $logger;
+        parent::__construct($archivistFilesystem, $jobRegistry);
     }
 
     /**
@@ -46,17 +41,16 @@ class FileWriterArchiver extends AbstractFilesystemArchiver
      */
     public function archive(StepExecution $stepExecution): void
     {
-        $jobExecution = $stepExecution->getJobExecution();
-        $job = $this->jobRegistry->get($jobExecution->getJobInstance()->getJobName());
-        foreach ($job->getSteps() as $step) {
-            if (!$step instanceof ItemStep || $step->getName() !== $stepExecution->getStepName()) {
-                continue;
-            }
-            $writer = $step->getWriter();
+        $step = $this->getStep($stepExecution);
 
-            if ($this->isUsableWriter($writer)) {
-                $this->doArchive($jobExecution, $writer->getWrittenFiles());
-            }
+        if (!$step instanceof ItemStep) {
+            return;
+        }
+
+        $writer = $step->getWriter();
+
+        if ($this->isUsableWriter($writer)) {
+            $this->doArchive($stepExecution->getJobExecution(), $writer->getWrittenFiles());
         }
     }
 
@@ -73,15 +67,13 @@ class FileWriterArchiver extends AbstractFilesystemArchiver
      */
     public function supports(StepExecution $stepExecution): bool
     {
-        $jobExecution = $stepExecution->getJobExecution();
-        $job = $this->jobRegistry->get($jobExecution->getJobInstance()->getJobName());
-        foreach ($job->getSteps() as $step) {
-            if ($step instanceof ItemStep && $this->isUsableWriter($step->getWriter())) {
-                return true;
-            }
+        try {
+            $step = $this->getStep($stepExecution);
+        } catch (\Throwable) {
+            return false;
         }
 
-        return false;
+        return $step instanceof ItemStep && $this->isUsableWriter($step->getWriter());
     }
 
     /**
@@ -111,16 +103,12 @@ class FileWriterArchiver extends AbstractFilesystemArchiver
             );
 
             try {
-                if ($fileToArchive->isLocalFile()) {
-                    $stream = \fopen($fileToArchive->sourceKey(), 'r');
-                } else {
-                    $stream = $this->filesystemProvider->getFilesystem($fileToArchive->sourceStorage())->readStream(
-                        $fileToArchive->sourceKey()
-                    );
-                }
-                if ($stream) {
-                    $this->filesystem->writeStream($archivedFilePath, $stream);
-                }
+                $stream = $this->filesystemProvider->getFilesystem($fileToArchive->sourceStorage())->readStream(
+                    $fileToArchive->sourceKey(),
+                );
+
+                $this->archivistFilesystem->writeStream($archivedFilePath, $stream);
+
                 if (\is_resource($stream)) {
                     \fclose($stream);
                 }
