@@ -1,8 +1,3 @@
-pim_enrich_category_rest_list_selected_children:
-    path: /rest/{identifier}/selected-children
-    defaults: { _controller: pim_enrich.controller.rest.category:listSelectedChildrenAction }
-    methods: [POST]
-
 pim_enrich_category_rest_list:
     path: /rest
     defaults: { _controller: pim_enrich.controller.rest.category:listAction }
