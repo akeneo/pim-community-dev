@@ -34,6 +34,10 @@ class MinimalFixtureInstaller implements FixtureInstallerInterface
             'fixtures_user_role_csv',
             '--fixtures-to-skip',
             'fixtures_user_group_csv',
+            '--fixtures-to-skip',
+            'fixtures_attribute_group_access_csv',
+            '--fixtures-to-skip',
+            'fixtures_product_category_access_csv'
         ], $this->projectDir);
 
         $process->setTimeout(null);
