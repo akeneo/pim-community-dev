@@ -124,6 +124,7 @@ test('The wizard display a notification and redirects on success', async done =>
     });
 
     await waitFor(() => {
+        expect(screen.queryByText('akeneo_connectivity.connection.connect.apps.loader.message')).toBeInTheDocument();
         expect(notify).toHaveBeenCalledTimes(1);
     });
 

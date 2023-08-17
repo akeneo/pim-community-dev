@@ -8,6 +8,7 @@ import {useFetchAppWizardData} from '../../hooks/use-fetch-app-wizard-data';
 import {Authentication} from './steps/Authentication/Authentication';
 import {Authorizations} from './steps/Authorizations';
 import {WizardModal} from './WizardModal';
+import {FullScreenLoader} from './FullscreenLoader';
 
 type Step = {
     name: 'authentication' | 'authorizations';
@@ -26,6 +27,7 @@ export const AppWizard: FC<Props> = ({clientId}) => {
     const fetchWizardData = useFetchAppWizardData(clientId);
     const confirmAuthorization = useConfirmAuthorization(clientId);
     const [steps, setSteps] = useState<Step[]>([]);
+    const [processing, setProcessing] = useState(false);
 
     useEffect(() => {
         fetchWizardData().then(wizardData => {
@@ -58,6 +60,7 @@ export const AppWizard: FC<Props> = ({clientId}) => {
     }, [history]);
 
     const handleConfirm = useCallback(async () => {
+        setProcessing(true);
         try {
             const {redirectUrl} = await confirmAuthorization();
             notify(
@@ -75,6 +78,10 @@ export const AppWizard: FC<Props> = ({clientId}) => {
 
     if (wizardData === null) {
         return null;
+    }
+
+    if (processing) {
+        return <FullScreenLoader />;
     }
 
     return (

@@ -204,7 +204,10 @@ test('The wizard notifies of the error on app confirm ', async () => {
 
     await navigateToSummaryAndClickConfirm();
 
-    await waitFor(() => expect(notify).toHaveBeenCalledTimes(1));
+    await waitFor(() => {
+        expect(screen.queryByText('akeneo_connectivity.connection.connect.apps.loader.message')).toBeInTheDocument();
+        expect(notify).toHaveBeenCalledTimes(1);
+    });
 
     expect(notify).toBeCalledWith(
         NotificationLevel.ERROR,
@@ -266,6 +269,7 @@ test('The wizard saves app and permissions on confirm', async () => {
     await navigateToSummaryAndClickConfirm();
 
     await waitFor(() => {
+        expect(screen.queryByText('akeneo_connectivity.connection.connect.apps.loader.message')).toBeInTheDocument();
         expect(notify).toHaveBeenCalledTimes(1);
         expect(providerSave).toHaveBeenCalledTimes(2);
     });
@@ -359,6 +363,7 @@ test('The wizard saves app but have some failing permissions on confirm', async 
     await navigateToSummaryAndClickConfirm();
 
     await waitFor(() => {
+        expect(screen.queryByText('akeneo_connectivity.connection.connect.apps.loader.message')).toBeInTheDocument();
         expect(notify).toHaveBeenCalledTimes(3);
         expect(providerSave).toHaveBeenCalledTimes(4);
     });
