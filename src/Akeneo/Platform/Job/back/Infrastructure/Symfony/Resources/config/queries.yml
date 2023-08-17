@@ -19,6 +19,7 @@ services:
         class: Akeneo\Platform\Job\Infrastructure\Query\SqlFindJobInstance
         arguments:
             - '@database_connection'
+            - '@akeneo.tailored_export.security_facade'
 
     Akeneo\Platform\Job\Application\DeleteJobInstance\DeleteJobInstanceInterface:
         class: Akeneo\Platform\Job\Infrastructure\Query\DeleteJobInstance

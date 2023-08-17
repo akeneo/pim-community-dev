@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Job\Infrastructure\Query;
 
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Akeneo\Platform\Job\ServiceApi\JobInstance\FindJobInstanceInterface;
 use Akeneo\Platform\Job\ServiceApi\JobInstance\JobInstance;
 use Akeneo\Platform\Job\ServiceApi\JobInstance\JobInstanceQuery;
 use Akeneo\Platform\Job\ServiceApi\JobInstance\JobInstanceQueryPagination;
 use Doctrine\DBAL\Connection;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -18,11 +20,14 @@ class SqlFindJobInstance implements FindJobInstanceInterface
 {
     public function __construct(
         private Connection $connection,
+        private readonly SecurityFacadeInterface $securityFacade,
     ) {
     }
 
     public function fromQuery(JobInstanceQuery $query): array
     {
+        $this->checkIsGranted();
+
         $sql = $this->buildSqlQuery($query);
 
         return $this->fetchJobInstances($sql, $query);
@@ -37,7 +42,8 @@ class SqlFindJobInstance implements FindJobInstanceInterface
         $sql = <<<SQL
         SELECT
             job_instance.code,
-            job_instance.label
+            job_instance.label,
+            job_instance.raw_parameters
         FROM akeneo_batch_job_instance job_instance
         %s
         %s
@@ -94,7 +100,11 @@ SQL;
         )->fetchAllAssociative();
 
         return array_map(
-            static fn (array $jobInstance) => new JobInstance($jobInstance['code'], $jobInstance['label']),
+            static fn (array $jobInstance) => new JobInstance(
+                $jobInstance['code'],
+                $jobInstance['label'],
+                unserialize($jobInstance['raw_parameters']),
+            ),
             $results,
         );
     }
@@ -127,5 +137,12 @@ SQL;
             'query_parameters' => $queryParameters,
             'query_types' => $queryTypes,
         ];
+    }
+
+    private function checkIsGranted()
+    {
+        if (!$this->securityFacade->isGranted('pim_importexport_export_profile_show')) {
+            throw new AccessDeniedException();
+        }
     }
 }

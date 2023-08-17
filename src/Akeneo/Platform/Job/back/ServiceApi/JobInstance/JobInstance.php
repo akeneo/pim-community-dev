@@ -13,6 +13,7 @@ final class JobInstance
     public function __construct(
         private string $code,
         private ?string $label,
+        private array $parameters = [],
     ) {
     }
 
@@ -24,5 +25,10 @@ final class JobInstance
     public function getLabel(): ?string
     {
         return $this->label;
+    }
+
+    public function getParameters(): array
+    {
+        return $this->parameters;
     }
 }
