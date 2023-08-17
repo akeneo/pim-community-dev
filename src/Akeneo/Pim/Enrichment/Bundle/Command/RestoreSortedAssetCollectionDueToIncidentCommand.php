@@ -2,7 +2,6 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Command;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Akeneo\Pim\Permission\Bundle\Persistence\ORM\EntityWithValue\ProductRepository;
 use Akeneo\Pim\Permission\Component\Updater\GrantedProductModelUpdater;
@@ -290,7 +289,22 @@ class RestoreSortedAssetCollectionDueToIncidentCommand extends Command
                 $oldCodes = explode(',', $assetChange['old']);
                 $newCodes = explode(',', $assetChange['new']);
 
-                sort($oldCodes);
+                // alphabetically sort the old values to see if they match the new values (as MySQL will sort alphabetically
+                // 99.99% of the time). If the old values sorted alphabetically are exactly the same as the new values,
+                // it means this version was introduced by the PIM-11119 issue.
+                // However:
+                // - MySQL will order strings as follows: '_' < '3' < 'a|A' with the utf8mb4_unicode_ci collation
+                // - but in PHP, even when using case-insensitive comparison, the numeric characters will be ordered before
+                // the underscore character: '3' < '_' < 'a|A'
+                // => In order to circumvent this issue, we replace the underscore by a '$' in the sorting algorithm,
+                // as in PHP '$' < '3', and asset codes cannot contain this character.
+                \usort(
+                    $oldCodes,
+                    static fn (string $a, string $b): int => \strcasecmp(
+                        \str_replace('_', '$', $a),
+                        \str_replace('_', '$', $b)
+                    )
+                );
                 if ($newCodes !== $oldCodes) {
                     unset($version['changeset'][$key]);
                 }
@@ -375,11 +389,11 @@ class RestoreSortedAssetCollectionDueToIncidentCommand extends Command
             $values = [];
             foreach ($version['changeset'] as $key => $value) {
                 $oldCodes = explode(',', $value['old']);
-                $values[$attributesIndexedByFlatFormatKey[$key]['code']] = [[
+                $values[$attributesIndexedByFlatFormatKey[$key]['code']][] = [
                     'scope' => $attributesIndexedByFlatFormatKey[$key]['channel'],
                     'locale' => $attributesIndexedByFlatFormatKey[$key]['locale'],
                     'data' => $oldCodes,
-                ]];
+                ];
             }
 
             $product = $this->productRepository->findOneByUuid($version['uuid']);
@@ -392,7 +406,13 @@ class RestoreSortedAssetCollectionDueToIncidentCommand extends Command
             }
 
             // some migrations failed due to our fantastic ORM and 2-way associations, let's save unitary
-            $this->productSaver->saveAll([$product]);
+            try {
+                $this->productSaver->saveAll([$product]);
+            } catch (\Exception) {
+                // an exception might occur in the (unlikely) case the product is linked to a category which only has
+                // view permissions for every user group. In that case, we just skip the current product
+            }
+
             $this->cacheClearer->clear();
             $this->markVersionAsRestored([$version['id']], self::PRODUCT_TRACKING_TABLE_NAME);
 
@@ -414,11 +434,11 @@ class RestoreSortedAssetCollectionDueToIncidentCommand extends Command
             $values = [];
             foreach ($version['changeset'] as $key => $value) {
                 $oldCodes = explode(',', $value['old']);
-                $values[$attributesIndexedByFlatFormatKey[$key]['code']] = [[
+                $values[$attributesIndexedByFlatFormatKey[$key]['code']][] = [
                     'scope' => $attributesIndexedByFlatFormatKey[$key]['channel'],
                     'locale' => $attributesIndexedByFlatFormatKey[$key]['locale'],
                     'data' => $oldCodes,
-                ]];
+                ];
             }
 
             $productModel = $this->productModelRepository->find($version['product_model_id']);
@@ -430,7 +450,12 @@ class RestoreSortedAssetCollectionDueToIncidentCommand extends Command
             if ($this->validator->validate($productModel)->count() !== 0) {
                 continue;
             }
-            $this->productModelSaver->saveAll([$productModel]);
+            try {
+                $this->productModelSaver->saveAll([$productModel]);
+            } catch (\Exception) {
+                // as for products, do nothing
+            }
+
             $this->cacheClearer->clear();
             $this->markVersionAsRestored([$version['id']], self::PRODUCT_MODEL_TRACKING_TABLE_NAME);
             $totalCount += 1;

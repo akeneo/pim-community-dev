@@ -12,12 +12,12 @@ use Psr\Log\LoggerInterface;
  * Incident PIM-11120
  *
  * See \Akeneo\Pim\Enrichment\Bundle\Command\RestoreSortedAssetCollectionDueToIncidentCommand
- * The command is idempotent. Product and product models already fixed will not be fixed again if the migration is re-excuted for any reason.
+ * The command is idempotent. Product and product models already fixed will not be fixed again if the migration is re-executed for any reason.
  *
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class V20230804100000RestoreSortedAssetsDueToIncidentZddMigrationV2 implements ZddMigration
+class V20230804100000RestoreSortedAssetsDueToIncidentZddMigrationV3 implements ZddMigration
 {
     public function __construct(
         private readonly LoggerInterface $logger,
@@ -43,10 +43,11 @@ class V20230804100000RestoreSortedAssetsDueToIncidentZddMigrationV2 implements Z
 
     /**
      * Renamed as V2 to force its execution, as incident interval date was not the good one.
+     * Then renamed as V3, because some updated values were not detected in V2
      * It means we missed some product or product models to restore during the execution of the V1 of the migration.
      */
     public function getName(): string
     {
-        return 'RestoreSortedAssetsDueToIncidentV2';
+        return 'RestoreSortedAssetsDueToIncidentV3';
     }
 }

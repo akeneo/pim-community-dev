@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Pim\Upgrade\Schema\Tests;
 
 use Akeneo\Pim\Enrichment\Bundle\Command\RestoreSortedAssetCollectionDueToIncidentCommand;
-use Akeneo\Pim\Enrichment\Bundle\Command\ZddMigrations\V20230804100000RestoreSortedAssetsDueToIncidentZddMigrationV2;
+use Akeneo\Pim\Enrichment\Bundle\Command\ZddMigrations\V20230804100000RestoreSortedAssetsDueToIncidentZddMigrationV3;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProduct;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddAssetValue;
@@ -40,7 +40,9 @@ final class RestoreSortedAssetCollectionDueToIncidentCommandEndToEnd extends Tes
 
         $AM = self::getContainer()->get('akeneo_assetmanager.common.helper.fixtures_loader');
         $AM->assetFamily('brand')->load();
+
         $AM->asset('brand', 'main_asset')->load();
+        $AM->asset('brand', 'MAINASSETWITHOUTUNDERSCORE')->load();
         $AM->asset('brand', 'additional_asset_01')->load();
         $AM->asset('brand', 'additional_asset_02')->load();
         $AM->asset('brand', 'additional_asset_03')->load();
@@ -61,10 +63,10 @@ final class RestoreSortedAssetCollectionDueToIncidentCommandEndToEnd extends Tes
 
     public function test_it_loses_asset_order_without_the_migration_with_a_product_created_before_incident()
     {
-        $this->createProductWithAssetCodes(['main_asset', 'additional_asset_01', 'additional_asset_02'], 'before_incident');
+        $this->createProductWithAssetCodes(['MAINASSETWITHOUTUNDERSCORE', 'main_asset', 'additional_asset_01', 'additional_asset_02'], 'before_incident');
         $this->orderAssetCodesAlphabeticallyLikeTheBug('during_incident');
 
-        $this->assertAssetCodesOrder(['additional_asset_01', 'additional_asset_02', 'main_asset']);
+        $this->assertAssetCodesOrder(['additional_asset_01', 'additional_asset_02', 'main_asset', 'MAINASSETWITHOUTUNDERSCORE']);
     }
 
     public function test_it_loses_asset_order_without_the_migration_with_a_product_created_during_incident()
@@ -76,13 +78,13 @@ final class RestoreSortedAssetCollectionDueToIncidentCommandEndToEnd extends Tes
     }
     public function test_it_restores_assets_order_with_a_product_created_before_incident()
     {
-        $this->createProductWithAssetCodes(['main_asset', 'additional_asset_01', 'additional_asset_02'], 'before_incident');
+        $this->createProductWithAssetCodes(['MAINASSETWITHOUTUNDERSCORE', 'main_asset', 'additional_asset_01', 'additional_asset_02'], 'before_incident');
         $this->orderAssetCodesAlphabeticallyLikeTheBug('during_incident');
 
         $this->executeCommand();
 
         $this->assertNumberLineInTrackingTable(1);
-        $this->assertAssetCodesOrder(['main_asset', 'additional_asset_01', 'additional_asset_02']);
+        $this->assertAssetCodesOrder(['MAINASSETWITHOUTUNDERSCORE', 'main_asset', 'additional_asset_01', 'additional_asset_02']);
     }
 
     public function test_it_restores_assets_order_with_a_product_created_during_incident()
@@ -101,7 +103,7 @@ final class RestoreSortedAssetCollectionDueToIncidentCommandEndToEnd extends Tes
         $this->createProductWithAssetCodes(['main_asset', 'additional_asset_01', 'additional_asset_02'], 'during_incident');
         $this->orderAssetCodesAlphabeticallyLikeTheBug('during_incident');
 
-        $this->get(V20230804100000RestoreSortedAssetsDueToIncidentZddMigrationV2::class)->migrate();
+        $this->get(V20230804100000RestoreSortedAssetsDueToIncidentZddMigrationV3::class)->migrate();
 
         $this->assertNumberLineInTrackingTable(1);
         $this->assertAssetCodesOrder(['main_asset', 'additional_asset_01', 'additional_asset_02']);
@@ -191,11 +193,9 @@ final class RestoreSortedAssetCollectionDueToIncidentCommandEndToEnd extends Tes
 
     protected function createProductWithAssetCodes(array $codes, string $timing): void
     {
-
         $this->createOrUpdateProduct(Uuid::fromString('a999edd3-87aa-421f-baea-7685dec8db9f'), [
             new SetAssetValue(
                 attributeCode: 'brands',
-//                channelCode: 'ecommerce',
                 channelCode: null,
                 localeCode: 'en_US',
                 assetCodes: $codes,
@@ -208,7 +208,6 @@ final class RestoreSortedAssetCollectionDueToIncidentCommandEndToEnd extends Tes
         $this->createOrUpdateProduct(Uuid::fromString('a999edd3-87aa-421f-baea-7685dec8db9f'), [
             new AddAssetValue(
                 attributeCode: 'brands',
-//                channelCode: 'ecommerce',
                 channelCode: null,
                 localeCode: 'en_US',
                 assetCodes: [$code],
@@ -221,7 +220,6 @@ final class RestoreSortedAssetCollectionDueToIncidentCommandEndToEnd extends Tes
         $this->createOrUpdateProduct(Uuid::fromString('a999edd3-87aa-421f-baea-7685dec8db9f'), [
             new RemoveAssetValue(
                 attributeCode: 'brands',
-//                channelCode: 'ecommerce',
                 channelCode: null,
                 localeCode: 'en_US',
                 assetCodes: [$code],
@@ -234,7 +232,6 @@ final class RestoreSortedAssetCollectionDueToIncidentCommandEndToEnd extends Tes
         $this->createOrUpdateProduct(Uuid::fromString('a999edd3-87aa-421f-baea-7685dec8db9f'), [
             new SetAssetValue(
                 attributeCode: 'brands',
-//                channelCode: 'ecommerce',
                 channelCode: null,
                 localeCode: 'en_US',
                 assetCodes: $codes,
@@ -250,7 +247,6 @@ final class RestoreSortedAssetCollectionDueToIncidentCommandEndToEnd extends Tes
             $product->getValue(
                 attributeCode: 'brands',
                 localeCode: 'en_US',
-//                scopeCode: 'ecommerce',
                 scopeCode: null,
             )->getData());
     }
@@ -258,15 +254,30 @@ final class RestoreSortedAssetCollectionDueToIncidentCommandEndToEnd extends Tes
     protected function orderAssetCodesAlphabeticallyLikeTheBug(string $timing): void
     {
         $codes = $this->getPersistedAssetCodes();
-        sort($codes);
+        $orderedCodes = [];
+        /** @var Connection $connection */
+        $connection = $this->get('database_connection');
+        $codesByAssetFamily = $connection->fetchAllAssociative(
+            <<<SQL
+            SELECT asset_family_identifier as asset_family_identifier, JSON_ARRAYAGG(code) as asset_codes
+            FROM akeneo_asset_manager_asset
+            WHERE asset_family_identifier = 'brand'
+            AND code in (:codes)
+            GROUP BY asset_family_identifier;
+            SQL,
+            ['codes' => $codes],
+            ['codes' => Connection::PARAM_STR_ARRAY]
+        );
+        foreach ($codesByAssetFamily as $row) {
+            $orderedCodes[$row['asset_family_identifier']] = \json_decode($row['asset_codes'], true);
+        }
 
         $this->createOrUpdateProduct(Uuid::fromString('a999edd3-87aa-421f-baea-7685dec8db9f'), [
             new SetAssetValue(
                 attributeCode: 'brands',
-//                channelCode: 'ecommerce',
                 channelCode: null,
                 localeCode: 'en_US',
-                assetCodes: $codes,
+                assetCodes: $orderedCodes['brand'] ?? [],
             ),
         ], $timing);
     }
