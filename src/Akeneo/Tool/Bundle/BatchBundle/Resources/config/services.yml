@@ -222,6 +222,13 @@ services:
         tags:
           - { name: kernel.event_listener, event: console.command }
 
+    Akeneo\Tool\Bundle\BatchBundle\EventListener\RequeuePausedJobSubscriber:
+        arguments:
+            - '@akeneo_batch_queue.queue.job_execution_queue'
+            - '@logger'
+        tags:
+            - { name: kernel.event_subscriber }
+
     Akeneo\Tool\Bundle\BatchBundle\JobExecution\ExecuteJobExecutionHandlerInterface:
         class: Akeneo\Tool\Bundle\BatchBundle\JobExecution\ExecuteJobExecutionHandler
         arguments:
