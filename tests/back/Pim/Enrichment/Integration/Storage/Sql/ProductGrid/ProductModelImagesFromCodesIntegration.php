@@ -149,20 +149,6 @@ class ProductModelImagesFromCodesIntegration extends TestCase
         $this->get('pim_enrich.product.message_bus')->dispatch($command);
     }
 
-    protected function getUserId(string $username): int
-    {
-        $query = <<<SQL
-            SELECT id FROM oro_user WHERE username = :username
-        SQL;
-        $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
-        $id = $stmt->fetchOne();
-        if (null === $id) {
-            throw new \InvalidArgumentException(\sprintf('No user exists with username "%s"', $username));
-        }
-
-        return \intval($id);
-    }
-
     protected function setUp(): void
     {
         parent::setUp();

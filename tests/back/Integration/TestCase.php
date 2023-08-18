@@ -14,6 +14,7 @@ use Akeneo\UserManagement\Component\Model\UserInterface;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\HttpKernel\HttpKernelBrowser;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
@@ -226,5 +227,26 @@ WHERE uuid = :uuid
 SQL,
             ['uuid' => $uuid->getBytes()]
         )->fetchOne();
+    }
+
+    protected function getUserId(string $username): int
+    {
+        $query = <<<SQL
+            SELECT id FROM oro_user WHERE username = :username
+        SQL;
+        $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
+        $id = $stmt->fetchOne();
+        if (null === $id) {
+            throw new \InvalidArgumentException(\sprintf('No user exists with username "%s"', $username));
+        }
+
+        return \intval($id);
+    }
+
+    protected function loginAs(string $username, ?HttpKernelBrowser $client = null): int
+    {
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn($username, $client);
+
+        return $this->getUserId($username);
     }
 }

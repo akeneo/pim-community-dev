@@ -137,20 +137,6 @@ class CalculateCompletenessCommandIntegration extends TestCase
         $this->productUuids[$identifier] = $product->getUuid();
     }
 
-    protected function getUserId(string $username): int
-    {
-        $query = <<<SQL
-            SELECT id FROM oro_user WHERE username = :username
-        SQL;
-        $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
-        $id = $stmt->fetchOne();
-        if (null === $id) {
-            throw new \InvalidArgumentException(\sprintf('No user exists with username "%s"', $username));
-        }
-
-        return \intval($id);
-    }
-
     private function createProductModel(array $data): void
     {
         $productModel = $this->get('pim_catalog.factory.product_model')->create();

@@ -1485,14 +1485,6 @@ final class UpsertProductIntegration extends TestCase
         Assert::assertNull($unknownProduct);
     }
 
-    private function getUserId(string $username): int
-    {
-        $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
-        Assert::assertNotNull($user);
-
-        return $user->getId();
-    }
-
     private function loadAssetFixtures(): void
     {
         FeatureHelper::skipIntegrationTestWhenAssetFeatureIsNotActivated();
