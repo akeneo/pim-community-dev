@@ -3,6 +3,7 @@
 namespace Akeneo\Tool\Bundle\MessengerBundle\Serialization;
 
 use Akeneo\Tool\Bundle\MessengerBundle\Stamp\CorrelationIdStamp;
+use Akeneo\Tool\Bundle\MessengerBundle\Stamp\CustomHeaderStamp;
 use Akeneo\Tool\Bundle\MessengerBundle\Stamp\TenantIdStamp;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Exception\MessageDecodingFailedException;
@@ -90,9 +91,17 @@ class JsonSerializer implements SerializerInterface
     public function encode(Envelope $envelope): array
     {
         $body = $this->serializer->serialize($envelope->getMessage(), 'json');
-        $headers = [
-            'class' => $envelope->getMessage()::class,
-        ];
+
+        $headers = [];
+
+        foreach ($envelope->all() as $stamps) {
+            $stamp = end($stamps);
+            if ($stamp instanceof CustomHeaderStamp) {
+                $headers[$stamp->header()] = $stamp->value();
+            }
+        }
+
+        $headers['class'] = $envelope->getMessage()::class;
 
         /** @var TenantIdStamp|null $tenantIdStamp */
         $tenantIdStamp = $envelope->last(TenantIdStamp::class);
