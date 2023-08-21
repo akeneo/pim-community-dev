@@ -20,7 +20,6 @@ class UcsMiddleware implements MiddlewareInterface
 {
     public function __construct(
         private readonly ?string $pimTenantId,
-        private readonly LoggerInterface $logger,
     ) {
     }
 
@@ -29,13 +28,6 @@ class UcsMiddleware implements MiddlewareInterface
         // We always try to use the tenantid from the stamp, if there is any, in case of long-running process.
         // If there is none, we fallback on the tenantid coming from the env variables.
         $tenantId = $envelope->last(TenantIdStamp::class)?->pimTenantId() ?: $this->pimTenantId;
-
-        if (empty($tenantId)) {
-            $this->logger->warning(sprintf(
-                'A message of type "%s" is consumed without a tenant id available',
-                get_class($envelope->getMessage()),
-            ));
-        }
 
         if ($tenantId && null === $envelope->last(TenantIdStamp::class)) {
             $envelope = $envelope->with(new TenantIdStamp($tenantId));
