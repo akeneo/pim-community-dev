@@ -320,6 +320,8 @@ pim_enrich.export.product:
     string:
       operators:
         ALL: Alle
+    price-collection:
+      operators:
     select:
       operators:
         IN: In lijst

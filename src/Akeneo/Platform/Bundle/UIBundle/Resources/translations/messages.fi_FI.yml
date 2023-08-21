@@ -37,6 +37,7 @@ Most Viewed: Katsotuimmat
 "Yes": "Kyllä"
 "No": "Ei"
 required: (vaadittu)
+The element could not be deleted: The element could not be deleted
 pim_ui.system_config:
   form:
     loading_message_enabled.label: Salli latausviestit

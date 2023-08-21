@@ -4,6 +4,8 @@
 
 - PIM-11134 [Backport PIM-11062]: From Product grid, Category tree is switching if your are on "unclassified product"
 
+# 7.0.24 (2023-08-17)
+
 # 7.0.23 (2023-08-04)
 
 # 7.0.22 (2023-07-11)
