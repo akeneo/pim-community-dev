@@ -109,7 +109,10 @@ const CreateAttributeModal: React.FC<CreateAttributeModalProps> = ({
       {initialData?.attribute_type === 'pim_catalog_identifier' && (
         <Helper level="info">
           {translate('pim_enrich.entity.attribute.property.identifiers_limit') + ' '}
-          <Link href="https://help.akeneo.com/serenity-build-your-catalog/33-serenity-manage-your-product-identifiers">
+          <Link
+            href="https://help.akeneo.com/serenity-build-your-catalog/33-serenity-manage-your-product-identifiers"
+            target="_blank"
+          >
             {translate('pim_enrich.entity.attribute.property.identifiers_limit_link')}
           </Link>
         </Helper>
