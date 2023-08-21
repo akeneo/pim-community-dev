@@ -141,6 +141,7 @@ pim_enrich:
       create: Ein Attribut anlegen
       edit: Ein Attribut bearbeiten
       remove: Ein Attribut löschen
+      mass_delete: Mehrere Attribute löschen
       sort: Attribute innerhalb von Attributgruppen sortieren
       history: Attributhistorie ansehen
     group:
@@ -211,7 +212,7 @@ flash:
   entity:
     removed: Element wurde gelöscht
   attribute:
-    identifier_not_removable: Ein Attribut zur eindeutigen Identifizierung kann nicht entfernt werden
+    main_identifier_not_removable: Die Hauptidentifikator Attribute kann nicht entfernt werden
     used_as_conversion_unit: Dieses Attribut kann nicht entfernt werden, da es als Konvertierungseinheit im Kanal %channelCodes% verwendet wird.
     cant_remove_attributes_used_as_label: Attribute, die als Label in einer Familie verwendet werden, können nicht entfernt werden.
     cant_remove_attribute_used_as_axis: Dieses Attribut, das als Variantenachse in einer Variante der Produktfamilie verwendet wird, kann nicht entfernt werden
