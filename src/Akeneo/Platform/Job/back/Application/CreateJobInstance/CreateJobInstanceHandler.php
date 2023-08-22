@@ -52,6 +52,7 @@ final class CreateJobInstanceHandler implements CreateJobInstanceHandlerInterfac
         $jobInstance->setCode($command->code);
         $jobInstance->setLabel($command->label);
         $jobInstance->setRawParameters($command->rawParameters);
+        $jobInstance->setIsVisible($command->isVisible);
 
         $job = $this->getJob($jobInstance);
 

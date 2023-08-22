@@ -52,6 +52,47 @@ class CreateJobInstanceHandlerTest extends AcceptanceTestCase
     /**
      * @test
      */
+    public function a_job_instance_is_visible_by_default(): void
+    {
+        $command = new CreateJobInstanceCommand(
+            'export',
+            'visible_job',
+            'visible_job',
+            'Akeneo CSV Connector',
+            'csv_product_import',
+            [],
+        );
+        $this->handler->handle($command);
+
+        $job = $this->saver->get('visible_job');
+
+        $this->assertTrue($job->isVisible());
+    }
+
+    /**
+     * @test
+     */
+    public function a_job_instance_can_be_invisible(): void
+    {
+        $command = new CreateJobInstanceCommand(
+            'export',
+            'invisible_job',
+            'invisible_job',
+            'Akeneo CSV Connector',
+            'csv_product_import',
+            [],
+            false,
+        );
+        $this->handler->handle($command);
+
+        $job = $this->saver->get('invisible_job');
+
+        $this->assertFalse($job->isVisible());
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_business_exception_when_job_name_does_not_exist(): void
     {
         $command = new CreateJobInstanceCommand(
