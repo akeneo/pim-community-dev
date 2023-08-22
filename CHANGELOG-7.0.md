@@ -1,5 +1,7 @@
 # 7.0.x
 
+# 7.0.25 (2023-08-22)
+
 ## Bug fixes
 
 - PIM-11134 [Backport PIM-11062]: From Product grid, Category tree is switching if your are on "unclassified product"
