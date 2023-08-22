@@ -23,7 +23,7 @@ interface CatalogInterface
     /**
      * @return Configuration
      */
-    public function useTechnicalCatalog(): Configuration;
+    public function useTechnicalCatalog(array $featureFlags = []): Configuration;
 
     /**
      * @return Configuration
