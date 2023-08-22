@@ -156,6 +156,12 @@ final class UpsertProductHandler
         $user = $this->tokenStorage->getToken()?->getUser();
         Assert::implementsInterface($user, UserInterface::class);
 
+        // should be deleted once we don't rely on the token storage anymore
+        // user system is used for some tests or commands
+        if (-1 === $userId && $user->getUserIdentifier() === 'system') {
+            return;
+        }
+
         if ($userId !== $user->getId()) {
             throw new \LogicException('User id provided to the command is not the same as the connected user');
         }

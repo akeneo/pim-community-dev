@@ -1485,6 +1485,20 @@ final class UpsertProductIntegration extends TestCase
         Assert::assertNull($unknownProduct);
     }
 
+    /** @test */
+    public function it_creates_a_product_without_user_id(): void
+    {
+        $this->loginAs('system');
+
+        $this->messageBus->dispatch(UpsertProductCommand::createWithIdentifierSystemUser(
+            'my-product',
+            [new SetFamily('familyA')]
+        ));
+
+        $product = $this->productRepository->findOneByIdentifier('my-product');
+        Assert::assertNotNull($product);
+    }
+
     private function loadAssetFixtures(): void
     {
         FeatureHelper::skipIntegrationTestWhenAssetFeatureIsNotActivated();

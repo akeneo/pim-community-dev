@@ -483,10 +483,8 @@ JSON;
         $client->request('PATCH', 'api/rest/v1/attributes/sku', [], [], [], $data);
 
         $attribute = $this->get('pim_catalog.repository.attribute')->findOneByIdentifier('sku');
-        $normalizer = $this->get('pim_catalog.normalizer.standard.attribute');
 
         $response = $client->getResponse();
-        var_dump($response);
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         $this->assertSame(true, $attribute->isMainIdentifier());
         $this->assertSame(['en_US' => 'This is the main identifier SKU'], $attribute->getGuidelines());
