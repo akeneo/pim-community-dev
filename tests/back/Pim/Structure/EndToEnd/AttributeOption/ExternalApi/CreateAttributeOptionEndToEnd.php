@@ -2,7 +2,6 @@
 
 namespace AkeneoTest\Pim\Structure\EndToEnd\AttributeOption\ExternalApi;
 
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -91,6 +90,42 @@ JSON;
             'sort_order' => 30,
             'labels'     => [
                 'en_US' => 'Option E',
+            ],
+        ];
+        $normalizer = $this->get('pim_catalog.normalizer.standard.attribute_option');
+
+        $response = $client->getResponse();
+
+        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+        $this->assertSame($attributeOptionStandard, $normalizer->normalize($attributeOption));
+    }
+
+    public function testLocalesWithWrongCase()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+<<<JSON
+    {
+        "code":"optionL",
+        "attribute":"a_multi_select",
+        "sort_order":30,
+        "labels":{"en_uS":"Option L", "FR_fr":"L option"}
+    }
+JSON;
+
+        $client->request('POST', 'api/rest/v1/attributes/a_multi_select/options', [], [], [], $data);
+
+        $attributeOption = $this->get('pim_catalog.repository.attribute_option')
+            ->findOneByIdentifier('a_multi_select.optionL');
+
+        $attributeOptionStandard = [
+            'code'       => 'optionL',
+            'attribute'  => 'a_multi_select',
+            'sort_order' => 30,
+            'labels'     => [
+                'en_US' => 'Option L',
+                'fr_FR' => 'L option',
             ],
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.attribute_option');

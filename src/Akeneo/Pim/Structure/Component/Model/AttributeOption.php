@@ -151,7 +151,7 @@ class AttributeOption implements AttributeOptionInterface
         $locale = $this->locale;
         $values = $this->optionValues->filter(
             function ($value) use ($locale): bool {
-                return $value->getLocale() === $locale;
+                return \strtolower($value->getLocale()) === \strtolower($locale);
             }
         );
 
