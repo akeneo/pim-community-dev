@@ -4,5 +4,5 @@ pim_installer:
   maintenance:
     title: Maintenance
     body: |
-      Ziggy is currently performing a reset of your PIM.
+      Ziggy is currently performing some work on your PIM.
       This page will auto-refresh and lead you to the log-in screen once it is ready for you to come back. Thanks for your patience!
