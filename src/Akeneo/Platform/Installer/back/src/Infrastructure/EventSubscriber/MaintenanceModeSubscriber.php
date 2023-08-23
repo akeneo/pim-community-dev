@@ -10,10 +10,10 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Installer\Infrastructure\EventSubscriber;
 
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
-use Akeneo\Platform\Installer\Infrastructure\Event\InstallerEvents;
 use Akeneo\Platform\Installer\Application\IsMaintenanceModeEnabled\IsMaintenanceModeEnabledHandler;
 use Akeneo\Platform\Installer\Application\UpdateMaintenanceMode\UpdateMaintenanceModeCommand;
 use Akeneo\Platform\Installer\Application\UpdateMaintenanceMode\UpdateMaintenanceModeHandler;
+use Akeneo\Platform\Installer\Infrastructure\Event\InstallerEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -50,11 +50,16 @@ class MaintenanceModeSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if ($this->pimResetFeatureFlag->isEnabled()
-            && $this->isMaintenanceModeEnabledHandler->handle()
+        if (getenv('MAINTENANCE_MODE') === 'on'
+            || ($this->pimResetFeatureFlag->isEnabled() && $this->isMaintenanceModeEnabledHandler->handle())
         ) {
             if ($this->isApiRequest($event->getRequest())) {
-                $event->setResponse(new Response('Undergoing maintenance: this PIM instance is being reset.', Response::HTTP_SERVICE_UNAVAILABLE));
+                $event->setResponse(
+                    new Response(
+                        'Undergoing maintenance: this PIM instance is being reset.',
+                        Response::HTTP_SERVICE_UNAVAILABLE
+                    )
+                );
             } else {
                 $event->setResponse(new RedirectResponse($this->router->generate('akeneo_installer_maintenance_page')));
             }
