@@ -13,6 +13,10 @@ use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Test\Integration\Configuration;
@@ -62,34 +66,18 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
         );
         $this->historyContainer = $this->get(GuzzleJsonHistoryContainer::class);
 
-        $this->tshirtProduct = $this->productLoader->create(
-            'blue-t-shirt',
-            [
-                'family' => 'tshirt',
-                'enabled' => true,
-                'categories' => ['sea'],
-                'groups' => [],
-                'values' => [
-                    'another_text_attribute' => [
-                        ['data' => 'text attribute', 'locale' => null, 'scope' => null],
-                    ],
-                ],
-            ]
-        );
-        $this->pantProduct = $this->productLoader->create(
-            'red-pant',
-            [
-                'family' => 'pant',
-                'enabled' => true,
-                'categories' => ['fiesta'],
-                'groups' => [],
-                'values' => [
-                    'another_text_attribute' => [
-                        ['data' => 'text attribute', 'locale' => null, 'scope' => null],
-                    ],
-                ],
-            ]
-        );
+        $this->tshirtProduct = $this->productLoader->create('blue-t-shirt', [
+            new SetFamily('tshirt'),
+            new SetEnabled(true),
+            new SetCategories(['sea']),
+            new SetTextValue('another_text_attribute', null, null, 'text attribute')
+        ]);
+        $this->pantProduct = $this->productLoader->create('red-pant', [
+            new SetFamily('pant'),
+            new SetEnabled(true),
+            new SetCategories(['fiesta']),
+            new SetTextValue('another_text_attribute', null, null, 'text attribute')
+        ]);
 
         $connection = $this->loadConnection();
 

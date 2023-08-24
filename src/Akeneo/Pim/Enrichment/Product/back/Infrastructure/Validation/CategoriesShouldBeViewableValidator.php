@@ -36,6 +36,10 @@ final class CategoriesShouldBeViewableValidator extends ConstraintValidator
         $command = $this->context->getRoot();
         Assert::isInstanceOf($command, UpsertProductCommand::class);
 
+        if (-1 === (int) $command->userId()) {
+            return;
+        }
+
         $notViewableCategoryCodes = \array_diff(
             $categoryCodes,
             $this->getViewableCategories->forUserId($categoryCodes, $command->userId())

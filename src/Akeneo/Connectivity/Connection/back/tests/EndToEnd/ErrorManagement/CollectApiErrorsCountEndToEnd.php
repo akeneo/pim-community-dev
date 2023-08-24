@@ -7,29 +7,24 @@ namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\ErrorManagement;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\ErrorTypes;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\ProductLoader;
+use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Structure\AttributeLoader;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Structure\FamilyLoader;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\FetchMode;
 use Doctrine\DBAL\Types\Types;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
 class CollectApiErrorsCountEndToEnd extends ApiTestCase
 {
-    /** @var AttributeLoader */
-    private $attributeLoader;
-
-    /** @var FamilyLoader */
-    private $familyLoader;
-
-    /** @var ProductLoader */
-    private $productLoader;
-
-    /** @var Connection */
-    private $dbalConnection;
+    private AttributeLoader $attributeLoader;
+    private FamilyLoader $familyLoader;
+    private ProductLoader $productLoader;
+    private Connection $dbalConnection;
 
     protected function setUp(): void
     {
@@ -177,10 +172,8 @@ JSON;
             'attributes' => ['sku', 'name']
         ]);
         $this->productLoader->create('high-top_sneakers', [
-            'family' => 'shoes',
-            'values' => [
-                'name' => [['data' => 'High-Top Sneakers', 'locale' => null, 'scope' => null]]
-            ]
+            new SetFamily('shoes'),
+            new SetTextValue('name', null, null, 'High-Top Sneakers')
         ]);
 
         $connection = $this->createConnection('erp', 'ERP', FlowType::DATA_SOURCE, true);

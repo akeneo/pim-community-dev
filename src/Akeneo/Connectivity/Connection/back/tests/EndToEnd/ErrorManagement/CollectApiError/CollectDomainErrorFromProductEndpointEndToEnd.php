@@ -7,6 +7,7 @@ namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\Connection;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\ProductLoader;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Structure\FamilyLoader;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
@@ -88,7 +89,9 @@ class CollectDomainErrorFromProductEndpointEndToEnd extends ApiTestCase
     public function test_it_collects_a_domain_error_from_the_partial_update_endpoint(): void
     {
         $this->familyLoader->create(['code' => 'shoes', 'attributes' => ['sku']]);
-        $this->productLoader->create('high-top_sneakers', ['family' => 'shoes']);
+        $this->productLoader->create('high-top_sneakers', [
+            new SetFamily('shoes'),
+        ]);
 
         $connection = $this->createConnection('erp', 'ERP', FlowType::DATA_SOURCE, true);
 
@@ -131,7 +134,9 @@ class CollectDomainErrorFromProductEndpointEndToEnd extends ApiTestCase
     public function test_it_collects_a_domain_error_from_the_partial_update_list_endpoint(): void
     {
         $this->familyLoader->create(['code' => 'shoes', 'attributes' => ['sku']]);
-        $this->productLoader->create('high-top_sneakers', ['family' => 'shoes']);
+        $this->productLoader->create('high-top_sneakers', [
+            new SetFamily('shoes'),
+        ]);
 
         $connection = $this->createConnection('erp', 'ERP', FlowType::DATA_SOURCE, true);
 
