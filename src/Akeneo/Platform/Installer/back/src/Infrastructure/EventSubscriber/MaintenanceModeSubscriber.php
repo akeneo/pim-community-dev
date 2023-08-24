@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Installer\Infrastructure\EventSubscriber;
 
-use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Akeneo\Platform\Installer\Application\IsMaintenanceModeEnabled\IsMaintenanceModeEnabledHandler;
 use Akeneo\Platform\Installer\Application\UpdateMaintenanceMode\UpdateMaintenanceModeCommand;
 use Akeneo\Platform\Installer\Application\UpdateMaintenanceMode\UpdateMaintenanceModeHandler;
@@ -25,7 +24,6 @@ use Symfony\Component\Routing\RouterInterface;
 class MaintenanceModeSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private readonly FeatureFlag $pimResetFeatureFlag,
         private readonly RouterInterface $router,
         private readonly IsMaintenanceModeEnabledHandler $isMaintenanceModeEnabledHandler,
         private readonly UpdateMaintenanceModeHandler $updateMaintenanceModeHandler,
@@ -50,9 +48,7 @@ class MaintenanceModeSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if (getenv('MAINTENANCE_MODE') === 'on'
-            || ($this->pimResetFeatureFlag->isEnabled() && $this->isMaintenanceModeEnabledHandler->handle())
-        ) {
+        if ($this->isMaintenanceModeEnabledHandler->handle()) {
             if ($this->isApiRequest($event->getRequest())) {
                 $event->setResponse(
                     new Response(
