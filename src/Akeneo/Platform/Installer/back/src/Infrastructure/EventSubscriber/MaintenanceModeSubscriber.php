@@ -49,17 +49,24 @@ class MaintenanceModeSubscriber implements EventSubscriberInterface
         }
 
         if ($this->isMaintenanceModeEnabledHandler->handle()) {
-            if ($this->isApiRequest($event->getRequest())) {
-                $event->setResponse(
-                    new Response(
-                        'Undergoing maintenance: this PIM instance is being reset.',
-                        Response::HTTP_SERVICE_UNAVAILABLE
-                    )
-                );
-            } else {
-                $event->setResponse(new RedirectResponse($this->router->generate('akeneo_installer_maintenance_page')));
-            }
+            $this->setEventResponse($event);
         }
+    }
+
+    private function setEventResponse(RequestEvent $event): void
+    {
+        if ($this->isApiRequest($event->getRequest())) {
+            $event->setResponse(
+                new Response(
+                    'Undergoing maintenance.',
+                    Response::HTTP_SERVICE_UNAVAILABLE
+                )
+            );
+
+            return;
+        }
+
+        $event->setResponse(new RedirectResponse($this->router->generate('akeneo_installer_maintenance_page')));
     }
 
     public function enableMaintenanceMode(): void
