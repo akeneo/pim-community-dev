@@ -11,11 +11,8 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Job execution notifier
- *
- * @author    Gildas Quemener <gildas@akeneo.com>
- * @copyright 2013 Akeneo SAS (https://www.akeneo.com)
- * @license   https://opensource.org/licenses/MIT MIT
+ * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
+ * @license https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class RequeuePausedJobSubscriber implements EventSubscriberInterface
 {
@@ -31,11 +28,11 @@ class RequeuePausedJobSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            EventInterface::AFTER_JOB_EXECUTION => 'afterJobExecution',
+            EventInterface::AFTER_JOB_EXECUTION => 'requeueJob',
         ];
     }
 
-    public function afterJobExecution(JobExecutionEvent $jobExecutionEvent): void
+    public function requeueJob(JobExecutionEvent $jobExecutionEvent): void
     {
         $jobExecution = $jobExecutionEvent->getJobExecution();
         if (!$jobExecution->getStatus()->isPaused()) {
