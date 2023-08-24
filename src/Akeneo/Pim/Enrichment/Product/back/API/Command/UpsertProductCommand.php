@@ -115,6 +115,14 @@ final class UpsertProductCommand
         return self::create($userIntents, -1, ProductIdentifier::fromIdentifier($productIdentifier));
     }
 
+    /**
+     * @param UserIntent[] $userIntents
+     */
+    public static function createWithUuidSystemUser(ProductUuid $productUuid, array $userIntents): self
+    {
+        return self::create($userIntents, -1, $productUuid);
+    }
+
     public function userId(): int
     {
         return $this->userId;
