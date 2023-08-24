@@ -107,7 +107,7 @@
         "monolog/monolog": "^2.8.0",
         "ocramius/proxy-manager": "2.11.1",
         "oneup/flysystem-bundle": "^4.5.0",
-        "openspout/openspout": "^4.9.0",
+        "openspout/openspout": "4.15.1",
         "opis/json-schema": "^2.3",
         "phpseclib/phpseclib": "^3.0",
         "psr/event-dispatcher": "^1.0.0",

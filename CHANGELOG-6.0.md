@@ -1,5 +1,31 @@
 # 6.0.x
 
+# 6.0.98 (2023-08-17)
+
+- PIM-11133: Add a loader on confirmation step when connecting an App to prevent button spamming
+
+# 6.0.97 (2023-08-11)
+
+# 6.0.96 (2023-08-03)
+
+- [Backport PIM-10868] PIM-11123: Fix checkboxes on category trees
+
+# 6.0.95 (2023-07-31)
+
+- [Backport PIM-10844] PIM-11106 : Filter empty attribute option labels
+
+# 6.0.94 (2023-07-31)
+
+# 6.0.93 (2023-07-24)
+
+# 6.0.92 (2023-07-19)
+
+# 6.0.91 (2023-07-13)
+
+## Bug fixes
+
+- [Backport CPM-653] PIM-11083: Do not sort on _id in ES cursors
+
 # 6.0.90 (2023-07-06)
 
 - PIM-11070: Increase the oro_access_role label column to VARCHAR(255)

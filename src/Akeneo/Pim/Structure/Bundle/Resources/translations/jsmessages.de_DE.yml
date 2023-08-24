@@ -20,7 +20,7 @@ pim_enrich.entity.family:
     attribute_as_image: Attribut als Hauptbild in Verwendung
     empty_attribute_as_image: Nicht ausgewählt
   page_title:
-    index: "]-Inf, 1]{{ count }} Famile|]1, Inf[{{ count }} Familien"
+    index: "]-Inf, 1]{{ count }} Familie|]1, Inf[{{ count }} Familien"
   module:
     attributes:
       not_required_label: Nicht erforderlich

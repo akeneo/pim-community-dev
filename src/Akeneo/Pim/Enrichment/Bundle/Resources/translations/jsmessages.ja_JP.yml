@@ -326,6 +326,8 @@ pim_enrich.export.product:
     string:
       operators:
         ALL: すべて
+    price-collection:
+      operators:
     select:
       operators:
         IN: 一覧にある

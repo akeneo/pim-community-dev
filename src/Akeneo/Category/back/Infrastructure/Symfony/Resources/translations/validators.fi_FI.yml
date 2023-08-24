@@ -1,0 +1,11 @@
+akeneo.category:
+  validation:
+    upsert:
+      category_code:
+        wrong_format: Kategorian koodi voi sisältää vain kirjaimia, numeroita ja alaviivoja.
+        line_feed: Kategorian koodi ei saa sisältää rivinvaihtomerkkejä
+      duplicated_value_user_intents: Attribuutin {{ attributeCode }} arvoa päivitetään useita kertoja
+      value:
+        text_too_long: Arvo ei voi olla pidempi kuin {{ limit }} merkkiä
+        textarea_too_long: Arvo ei voi olla pidempi kuin {{ limit }} merkkiä
+        richtext_too_long: Arvo ei voi olla pidempi kuin {{ limit }} merkkiä

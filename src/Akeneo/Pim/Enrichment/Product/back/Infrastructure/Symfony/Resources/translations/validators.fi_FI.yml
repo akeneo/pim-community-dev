@@ -1,0 +1,21 @@
+pim_enrich.product:
+  validation:
+    upsert:
+      unknown_user: 'Käyttäjää "{{ user_id }}" ei ole olemassa'
+      category_no_access_to_products: Sinulle ei ole käyttöoikeuksia tuotteisiin yhdessäkään kategoriapuussa. Ota yhteyttä pääkäyttäjään
+      should_keep_one_owned_category: Sinun pitäisi pitää tuotteesi ainakin yhdessä kategoriassa, johon sinulla on käyttöoikeus
+      locale_no_access_to_products: Sinulla ei ole pääsyä tuotedataan millään aktivoidulla lokaalilla. Ole hyvä ja ota yhteyttä järjestelmänvalvojaasi
+      attribute_group_no_access_to_attributes: Sinulla ei ole pääsyä tämän tuotteen attribuuttiin {{ attributeCode }}. Ole hyvä ja ota yhteyttä järjestelmänvalvojaasi.
+      product_identifier_empty: Tuotteen tunniste vaatii ei-tyhjän merkkijonon
+      duplicated_user_intents: Attribuutin {{ attributeCode }} arvoa päivitetään useita kertoja
+      family_code_empty: Perheen koodi vaatii ei-tyhjän merkkijonon
+      category_does_not_exist: '{1}Kategoriaa {{ categoryCodes }} ei ole olemassa. ]1, +Inf[Kategorioita {{ categoryCodes }} ei ole olemassa'
+      set_value:
+        no_channel_code_provided_for_scopable_attribute: 'Attribuutti "{{ attributeCode }}" vaatii kanavan'
+        channel_code_provided_for_non_scopable_attribute: 'Attribuutti {{ attributeCode }} ei vaadi kanavaa. Kanava {{ channelCode }} havaittu'
+        no_locale_code_provided_for_localizable_attribute: 'Attribuutti "{{ attributeCode }}" vaatii lokaalin'
+        locale_code_provided_for_non_localizable_attribute: 'Attribuutti {{ attributeCode }} ei vaadi lokaalia. Lokaali {{ channelCode }} havaittu'
+        invalid_locale_code_for_locale_specific_attribute: 'Attribuutti {{ attributeCode }} vaatii yhden seuraavista lokaaleista: {{ availableLocales }}; "{{ localeCode }}"'
+        channel_does_not_exist: 'Kanavaa {{ channelCode }} ei ole olemassa'
+        locale_is_not_active: 'Lokaalia "{{ localeCode }} ei ole olemassa tai sitä ei ole aktivoitu'
+        locale_not_activated_for_channel: 'Lokaalia "{{ localeCode }}" ei ole aktivoitu kanavassa "{{ channelCode }}"'
