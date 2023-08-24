@@ -640,6 +640,7 @@ config:
     # Family
     pim/family-edit-form/delete:                                        pimui/js/family/form/delete
     pim/family-edit-form/save:                                          pimui/js/family/form/save
+    pim/family-edit-form/create-button:                                 pimui/js/family/form/create-button
     pim/family-edit-form/family-variant:                                pimui/js/family/form/family-variant
     pim/family-edit-form/properties/general/code:                       pimui/js/family/form/properties/general/code
     pim/family-edit-form/properties/general/attribute-as-label:         pimui/js/family/form/properties/general/attribute-as-label

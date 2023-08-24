@@ -79,12 +79,8 @@ extensions:
             alias: family-grid
 
     pim-family-index-create-button:
-        module: pim/form/common/index/create-button
+        module: pim/family-edit-form/create-button
         parent: pim-family-index
         targetZone: buttons
         position: 100
         aclResourceId: pim_enrich_family_create
-        config:
-           iconName:  plus
-           title:     pim_enrich.entity.family.module.create.button
-           modalForm: pim-family-create-modal

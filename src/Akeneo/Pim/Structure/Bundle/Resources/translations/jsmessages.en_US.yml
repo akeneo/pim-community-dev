@@ -27,6 +27,8 @@ pim_enrich.entity.family:
             required_label: Required
         create:
             button: Create family
+            from_scratch: Create from scratch
+            browse_templates: Browse family templates
         delete:
             confirm: Are you sure you want to delete this family?
 
