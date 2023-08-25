@@ -9,7 +9,12 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\HasUpToDateProductEvaluationQuery;
-use Akeneo\Test\Common\EntityWithValue\Builder\Product;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
 use Ramsey\Uuid\Uuid;
@@ -101,26 +106,31 @@ final class HasUpToDateProductEvaluationQueryIntegration extends TestCase
         $this->assertNull($this->query->forEntityIdCollection($productIdCollection));
     }
 
+    private function createOrUpdateProduct(string $identifier, array $userIntents = []): ProductInterface {
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product afterwards
+
+        $this->get('pim_enrich.product.message_bus')->dispatch(UpsertProductCommand::createWithIdentifierSystemUser(
+            $identifier,
+            $userIntents
+        ));
+
+        return $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
+    }
+
     private function createProduct(): ProductUuid
     {
-        $product = $this->getProductBuilder()
-            ->withIdentifier(strval(Uuid::uuid4()))
-            ->build();
-
-        $this->get('pim_catalog.saver.product')->save($product);
+        $product = $this->createOrUpdateProduct(strval(Uuid::uuid4()));
 
         return $this->get(ProductUuidFactory::class)->create((string)$product->getUuid());
     }
 
-    private function createVariantProduct(string $parentCode): ProductUuid
+    private function createVariantProduct(string $parentCode, array $userIntents = []): ProductUuid
     {
-        $product = $this->getProductBuilder()
-            ->withIdentifier(strval(Uuid::uuid4()))
-            ->withFamily('familyA')
-            ->build();
-
-        $this->get('pim_catalog.updater.product')->update($product, ['parent' => $parentCode]);
-        $this->get('pim_catalog.saver.product')->save($product);
+        $product = $this->createOrUpdateProduct(strval(Uuid::uuid4()), [
+            new SetFamily('familyA'),
+            new ChangeParent($parentCode),
+            ...$userIntents
+        ]);
 
         return $this->get(ProductUuidFactory::class)->create((string)$product->getUuid());
     }
@@ -146,7 +156,10 @@ final class HasUpToDateProductEvaluationQueryIntegration extends TestCase
     private function givenAProductVariantWithAnUpToDateEvaluation(\DateTimeImmutable $parentUpdatedAt): ProductUuid
     {
         $this->givenAProductModel('a_product_model', 'familyVariantA2', $parentUpdatedAt);
-        $productUuid = $this->createVariantProduct('a_product_model');
+        $productUuid = $this->createVariantProduct('a_product_model', [
+            new SetSimpleSelectValue('a_simple_select', null, null, 'optionA'),
+            new SetBooleanValue('a_yes_no', null, null, true),
+        ]);
         $this->updateProductAt($productUuid, $parentUpdatedAt->modify('-1 DAY'));
         $this->updateProductEvaluationsAt($productUuid, $parentUpdatedAt->modify('+1 SECOND'));
 
@@ -156,7 +169,10 @@ final class HasUpToDateProductEvaluationQueryIntegration extends TestCase
     private function givenAProductVariantWithAnOutdatedEvaluationComparedToItsParent(\DateTimeImmutable $parentUpdatedAt): ProductUuid
     {
         $this->givenAProductModel('a_product_model', 'familyVariantA2', $parentUpdatedAt);
-        $productUuid = $this->createVariantProduct('a_product_model');
+        $productUuid = $this->createVariantProduct('a_product_model', [
+            new SetSimpleSelectValue('a_simple_select', null, null, 'optionA'),
+            new SetBooleanValue('a_yes_no', null, null, true),
+        ]);
         $this->updateProductAt($productUuid, $parentUpdatedAt->modify('-1 DAY'));
         $this->updateProductEvaluationsAt($productUuid, $parentUpdatedAt->modify('-1 SECOND'));
 
@@ -168,7 +184,9 @@ final class HasUpToDateProductEvaluationQueryIntegration extends TestCase
         $this->givenAProductModel('a_product_model_with_two_variant_levels', 'familyVariantA1', $grandParentUpdatedAt);
         $this->givenASubProductModel('a_recently_updated_sub_product_model', 'familyVariantA1', 'a_product_model_with_two_variant_levels', $grandParentUpdatedAt->modify('-2 HOUR'));
 
-        $productUuid = $this->createVariantProduct('a_recently_updated_sub_product_model');
+        $productUuid = $this->createVariantProduct('a_recently_updated_sub_product_model', [
+            new SetBooleanValue('a_yes_no', null, null, true),
+        ]);
         $this->updateProductAt($productUuid, $grandParentUpdatedAt->modify('-1 HOUR'));
         $this->updateProductEvaluationsAt($productUuid, $grandParentUpdatedAt->modify('-1 SECOND'));
 
@@ -235,10 +253,5 @@ SQL;
             'evaluated_at' => $evaluatedAt->format(Clock::TIME_FORMAT),
             'product_uuid' => $productUuid->toBytes(),
         ]);
-    }
-
-    private function getProductBuilder(): Product
-    {
-        return $this->get('akeneo_integration_tests.catalog.product.builder');
     }
 }
