@@ -154,7 +154,7 @@ pim-dev:
 	$(MAKE) front-packages
 	$(MAKE) javascript-dev
 	docker/wait_docker_up.sh
-	APP_ENV=dev O="--catalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev" $(MAKE) database
+	APP_ENV=dev O="--catalog src/Akeneo/Platform/Installer/back/src/Infrastructure/Symfony/Resources/fixtures/icecat_demo_dev" $(MAKE) database
 
 .PHONY: pim-prod
 pim-prod:
