@@ -1,3 +1,8 @@
 pim_installer:
   acl:
-    reset: PIM-exemplaar resetten
+    reset: PIM-omgeving resetten
+  maintenance:
+    title: Onderhoud
+    body: |
+      Ziggy voert momenteel wat werk uit op je PIM.
+      Deze pagina zal automatisch vernieuwen en u naar het inlogscherm leiden zodra de werkzaamheden zijn afgerond. Bedankt voor uw geduld!
