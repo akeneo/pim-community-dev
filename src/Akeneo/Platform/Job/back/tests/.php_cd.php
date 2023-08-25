@@ -29,6 +29,9 @@ $rules = [
             'Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface',
             'Symfony\Component\Validator\Validator\ValidatorInterface',
             'Webmozart\Assert\Assert',
+            'Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi\JobExecutionRepository',
+            'Akeneo\Tool\Component\Batch\Model\JobExecution',
+            'Akeneo\Tool\Component\Connector\Archiver\FileWriterArchiver',
         ],
     )->in('Akeneo\Platform\Job\Application'),
     $builder->only(
@@ -45,6 +48,7 @@ $rules = [
             'Doctrine\DBAL\Connection',
             'Oro\Bundle\SecurityBundle\SecurityFacade',
             'Symfony\Component',
+            'Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface',
         ],
     )->in('Akeneo\Platform\Job\Infrastructure'),
 ];
