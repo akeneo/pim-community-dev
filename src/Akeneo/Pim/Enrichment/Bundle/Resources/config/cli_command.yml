@@ -123,11 +123,3 @@ services:
         tags:
             - { name: 'console.command' }
             - { name: 'akeneo.command.authenticated_as_admin_user' }
-
-    Akeneo\Pim\Enrichment\Bundle\Command\ZddMigrations\V20230804100000RestoreSortedAssetsDueToIncidentZddMigrationV3:
-        arguments:
-            - '@monolog.logger'
-            - '@Akeneo\Pim\Enrichment\Bundle\Command\RestoreSortedAssetCollectionDueToIncidentCommand'
-        tags:
-            - { name: 'akeneo.pim.zdd_migration' }
-        public: true
