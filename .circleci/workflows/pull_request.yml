@@ -13,114 +13,36 @@ workflows:
                       branches:
                           ignore:
                               - master
-            - checkout_ee:
+            - checkout_ce:
                   requires:
                       - ready_to_build?
             - build_dev:
-                  path_to_front_packages: vendor/akeneo/pim-community-dev/front-packages
-                  requires:
-                      - checkout_ee
-            - build_prod:
-                  requires:
-                      - checkout_ee
-            - test_deploy:
-                  requires:
-                      - build_prod
-            - deploy_pr_environment?:
-                  type: approval
-                  filters:
-                      branches:
-                          ignore:
-                              - master
-            - deploy_pr_environment:
-                  requires:
-                      - deploy_pr_environment?
-                      - build_prod
-            - delete_pr_environment?:
-                  type: approval
-                  filters:
-                      branches:
-                          ignore:
-                              - master
-                  requires:
-                      - deploy_pr_environment
-            - delete_pr_environment:
-                  requires:
-                      - delete_pr_environment?
-            - test_database:
-                  requires:
-                      - build_dev
-            - test_job_declaration:
-                  requires:
-                      - build_dev
-            - test_back_static_and_acceptance:
-                  requires:
-                      - build_dev
-            - test_front_static_acceptance_and_integration:
-                  requires:
-                      - build_dev
-            - test_back_phpunit:
-                  requires:
-                      - build_dev
-            - test_onboarder_bundle:
-                  requires:
-                      - build_dev
-            - test_back_data_migrations:
-                  requires:
-                      - test_back_static_and_acceptance
-                      - test_front_static_acceptance_and_integration
-                      - test_back_phpunit
-            - test_back_behat_legacy:
-                  requires:
-                      - test_back_static_and_acceptance
-                      - test_front_static_acceptance_and_integration
-                      - test_back_phpunit
-            - ready_to_build_only_ce?:
-                  type: approval
-                  filters:
-                      branches:
-                          ignore:
-                              - master
-            - checkout_ce:
-                  requires:
-                      - ready_to_build_only_ce?
-            - build_dev:
-                  name: build_dev_ce
                   is_ee_built: false
                   requires:
                       - checkout_ce
             - cypress_sanity_checks:
-                  name: cypress_sanity_checks_ce
                   requires:
-                      - build_dev_ce
+                      - build_dev
             - test_back_static_and_acceptance:
-                  name: test_back_static_and_acceptance_ce
                   requires:
-                      - build_dev_ce
+                      - build_dev
             - test_front_static_acceptance_and_integration:
-                  name: test_front_static_acceptance_and_integration_ce
                   requires:
-                      - build_dev_ce
+                      - build_dev
             - test_back_phpunit:
-                  name: test_back_phpunit_ce
                   requires:
-                      - build_dev_ce
+                      - build_dev
             - test_back_data_migrations:
-                  name: test_back_data_migrations_ce
                   requires:
-                      - test_back_phpunit_ce
+                      - build_dev
             - test_back_behat_legacy:
-                  name: test_back_behat_legacy_ce
                   requires:
-                      - test_back_static_and_acceptance_ce
-                      - test_front_static_acceptance_and_integration_ce
-                      - test_back_phpunit_ce
-
+                      - build_dev
             - pull_request_success:
                   requires:
+                      - cypress_sanity_checks
+                      - test_back_phpunit
+                      - test_back_static_and_acceptance
+                      - test_front_static_acceptance_and_integration
                       - test_back_behat_legacy
                       - test_back_data_migrations
-                      - test_onboarder_bundle
-                      - test_database
-                      - test_job_declaration
-                      - test_back_behat_legacy_ce
