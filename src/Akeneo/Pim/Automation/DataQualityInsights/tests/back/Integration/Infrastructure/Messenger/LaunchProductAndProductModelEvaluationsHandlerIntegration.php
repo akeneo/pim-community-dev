@@ -12,6 +12,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidColl
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Messenger\LaunchProductAndProductModelEvaluationsHandler;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Messenger\LaunchProductAndProductModelEvaluationsMessage;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
@@ -51,9 +52,9 @@ final class LaunchProductAndProductModelEvaluationsHandlerIntegration extends Da
 
     public function test_it_launches_product_and_product_model_evaluations(): void
     {
-        $productToEvaluate1 = $this->createProduct('product_to_evaluate_1', ['family' => 'shoes']);
-        $productToEvaluate2 = $this->createProduct('product_to_evaluate_2', ['family' => 'shoes']);
-        $whateverProduct = $this->createProduct('whatever_product', ['family' => 'shoes']);
+        $productToEvaluate1 = $this->createProduct('product_to_evaluate_1', [new SetFamily('shoes')]);
+        $productToEvaluate2 = $this->createProduct('product_to_evaluate_2', [new SetFamily('shoes')]);
+        $whateverProduct = $this->createProduct('whatever_product', [new SetFamily('shoes')]);
 
         $productToEvaluateUuid1 = ProductUuid::fromUuid($productToEvaluate1->getUuid());
         $productToEvaluateUuid2 = ProductUuid::fromUuid($productToEvaluate2->getUuid());
@@ -85,7 +86,7 @@ final class LaunchProductAndProductModelEvaluationsHandlerIntegration extends Da
 
     public function test_it_does_not_trigger_error_when_product_or_product_model_does_not_exist_anymore(): void
     {
-        $productToEvaluate1 = $this->createProduct('product_to_evaluate_1', ['family' => 'shoes']);
+        $productToEvaluate1 = $this->createProduct('product_to_evaluate_1', [new SetFamily('shoes')]);
 
         $productToEvaluateUuid = ProductUuid::fromUuid($productToEvaluate1->getUuid());
         $productThatNotExist = ProductUuid::fromUuid(Uuid::uuid4());

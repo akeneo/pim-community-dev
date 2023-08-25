@@ -56,7 +56,7 @@ final class ProductCriterionEvaluationRepositoryIntegration extends DataQualityI
                 new CriterionCode('completion'),
                 $productUuid,
                 CriterionEvaluationStatus::pending()
-        ));
+            ));
 
         $this->productCriterionEvaluationRepository->create($criteria);
 
@@ -64,13 +64,13 @@ final class ProductCriterionEvaluationRepositoryIntegration extends DataQualityI
         $this->assertCount(2, $evaluations);
 
         $this->assertEquals('completeness', $evaluations[0]['criterion_code']);
-        $this->assertEquals($product->getUuid(), Uuid::fromBytes($evaluations[0]['product_uuid']));
+        $this->assertEquals($product->getUuid()->toString(), Uuid::fromBytes($evaluations[0]['product_uuid'])->toString());
         $this->assertEquals(CriterionEvaluationStatus::PENDING, $evaluations[0]['status']);
         $this->assertNull($evaluations[0]['evaluated_at']);
         $this->assertNull($evaluations[0]['result']);
 
         $this->assertEquals('completion', $evaluations[1]['criterion_code']);
-        $this->assertEquals($product->getUuid(), Uuid::fromBytes($evaluations[1]['product_uuid']));
+        $this->assertEquals($product->getUuid()->toString(), Uuid::fromBytes($evaluations[1]['product_uuid'])->toString());
         $this->assertEquals(CriterionEvaluationStatus::PENDING, $evaluations[1]['status']);
         $this->assertNull($evaluations[1]['result']);
     }

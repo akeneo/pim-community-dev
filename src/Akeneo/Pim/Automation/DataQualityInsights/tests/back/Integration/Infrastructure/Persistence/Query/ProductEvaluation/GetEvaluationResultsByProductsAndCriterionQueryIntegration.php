@@ -10,6 +10,8 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CriterionEvaluationResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetEvaluationResultsByProductsAndCriterionQuery;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
 use Ramsey\Uuid\UuidInterface;
 
@@ -50,13 +52,9 @@ final class GetEvaluationResultsByProductsAndCriterionQueryIntegration extends D
     private function givenAnEvaluatedProduct(): UuidInterface
     {
         $productUuid = $this->createProduct('an_evaluated_product', [
-            'family' => 'a_family',
-            'values' => [
-                'name' => [
-                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'data' => 'Foo'],
-                    ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'data' => 'Bar'],
-                ],
-            ]
+            new SetFamily('a_family'),
+            new SetTextValue('name', 'ecommerce', 'en_US', 'Foo'),
+            new SetTextValue('name', 'ecommerce', 'fr_FR', 'Bar'),
         ])->getUuid();
 
         $productIdCollection = $this->get(ProductUuidFactory::class)->createCollection([(string)$productUuid]);
@@ -67,12 +65,12 @@ final class GetEvaluationResultsByProductsAndCriterionQueryIntegration extends D
 
     private function givenAProductWithPendingEvaluation(): UuidInterface
     {
-        return $this->createProduct('a_product_with_pending_evaluation', ['family' => 'a_family'])->getUuid();
+        return $this->createProduct('a_product_with_pending_evaluation', [new SetFamily('a_family')])->getUuid();
     }
 
     private function givenAProductWithoutAnyEvaluation(): UuidInterface
     {
-        $productUuid = $this->createProduct('a_product_without_evaluation', ['family' => 'a_family'])->getUuid();
+        $productUuid = $this->createProduct('a_product_without_evaluation', [new SetFamily('a_family')])->getUuid();
         $this->deleteProductCriterionEvaluations($productUuid);
 
         return $productUuid;

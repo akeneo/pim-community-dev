@@ -7,6 +7,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\Command\UpdateAttribut
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Command\UpdateAttributeGroupActivationHandler;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubQueueStatus;
 
 /**
@@ -31,6 +32,7 @@ final class EvaluateAfterAttributeGroupActivateEndToEnd extends MessengerTestCas
         parent::setUp();
 
         $this->updateAttributeGroupActivationHandler = $this->get(UpdateAttributeGroupActivationHandler::class);
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('system');
 
         $this->createAttribute('name');
         $this->createAttribute('width');
@@ -56,10 +58,10 @@ final class EvaluateAfterAttributeGroupActivateEndToEnd extends MessengerTestCas
 
     public function test_it_recompute_product_scores_impacted_by_attribute_group_activation(): void
     {
-        $product1Uuid = $this->createProduct('sku1', ['family' => 'impacted_family1'])->getUuid();
-        $product2Uuid = $this->createProduct('sku2', ['family' => 'impacted_family2'])->getUuid();
-        $product3Uuid = $this->createProduct('sku3', ['family' => 'not_impacted_family1'])->getUuid();
-        $product4Uuid = $this->createProduct('sku4', ['family' => 'not_impacted_family2'])->getUuid();
+        $product1Uuid = $this->createProduct('sku1', [new SetFamily('impacted_family1')])->getUuid();
+        $product2Uuid = $this->createProduct('sku2', [new SetFamily('impacted_family2')])->getUuid();
+        $product3Uuid = $this->createProduct('sku3', [new SetFamily('not_impacted_family1')])->getUuid();
+        $product4Uuid = $this->createProduct('sku4', [new SetFamily('not_impacted_family2')])->getUuid();
 
         $this->assertProductScoreIsNotComputed(ProductUuid::fromUuid($product1Uuid));
         $this->assertProductScoreIsNotComputed(ProductUuid::fromUuid($product2Uuid));

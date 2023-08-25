@@ -15,6 +15,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Query\GetProductUuidsQuery;
 use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
@@ -74,29 +76,17 @@ class DataQualityInsightsTestCase extends TestCase
         );
     }
 
-    protected function createProduct(string $identifier, array $data = []): ProductInterface
+    protected function createProduct(string $identifier, array $userIntents = []): ProductInterface
     {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
+        $this->upsertProduct($identifier, $userIntents);
 
-        if (!empty($data)) {
-            $this->get('pim_catalog.updater.product')->update($product, $data);
-            $errors = $this->get('pim_catalog.validator.product')->validate($product);
-            Assert::count($errors, 0, $this->formatValidationErrorMessage('Invalid product', $errors));
-        }
-
-        $this->get('pim_catalog.saver.product')->save($product);
-
-        return $product;
+        return $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
     }
 
     protected function upsertProduct(string $identifier, array $userIntents): void
     {
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product afterward
-        $command = UpsertProductCommand::createWithIdentifier(
-            $this->getUserId('admin'),
-            ProductIdentifier::fromIdentifier($identifier),
-            $userIntents
-        );
+        $command = UpsertProductCommand::createWithIdentifierSystemUser($identifier, $userIntents);
 
         $this->get('pim_enrich.product.message_bus')->dispatch($command);
     }
@@ -110,7 +100,7 @@ class DataQualityInsightsTestCase extends TestCase
                     'value' => $identifier,
                 ],
             ],
-        ], $this->getUserId('admin')));
+        ], -1));
 
         $handledStamp = $envelope->last(HandledStamp::class);
         Assert::notNull($handledStamp, 'The query bus does not return any result when searching product uuid');
@@ -120,24 +110,22 @@ class DataQualityInsightsTestCase extends TestCase
         return $uuids[0] ?? null;
     }
 
-    protected function createProductWithoutEvaluations(string $identifier, array $data = []): ProductInterface
+    protected function createProductWithoutEvaluations(string $identifier, array $userIntents = []): ProductInterface
     {
-        $product = $this->createProduct($identifier, $data);
+        $product = $this->createProduct($identifier, $userIntents);
         $this->deleteProductCriterionEvaluations($product->getUuid());
 
         return $product;
     }
 
-    protected function createMinimalProductVariant(string $identifier, string $parent, string $axisOption, array $data = []): ProductInterface
+    protected function createMinimalProductVariant(string $identifier, string $parent, string $axisOption, array $userIntents = []): ProductInterface
     {
         Assert::oneOf($axisOption, self::MINIMAL_VARIANT_OPTIONS, 'Unknown minimal variant option');
 
-        $data['parent'] = $parent;
-        $data['values'][self::MINIMAL_VARIANT_AXIS_CODE] = [
-            ['data' => $axisOption, 'scope' => null, 'locale' => null],
-        ];
+        $userIntents[] = new ChangeParent($parent);
+        $userIntents[] = new SetSimpleSelectValue(self::MINIMAL_VARIANT_AXIS_CODE, null, null, $axisOption);
 
-        return $this->createProduct($identifier, $data);
+        return $this->createProduct($identifier, $userIntents);
     }
 
     protected function createProductModel(string $code, string $familyVariant, array $data = []): ProductModelInterface

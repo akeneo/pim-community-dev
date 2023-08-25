@@ -8,6 +8,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeGroupCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductIdsImpactedByAttributeGroupActivationQuery;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
 
 /**
@@ -29,15 +30,15 @@ final class GetProductIdsImpactedByAttributeGroupActivationQueryIntegration exte
         $this->createFamily('impacted_family_A', ['attributes' => ['name', 'ean']]);
         $this->createFamily('impacted_family_B', ['attributes' => ['brand']]);
 
-        $expectedProducts[] = $this->createProduct('expected_product_A', ['family' => 'impacted_family_A']);
-        $expectedProducts[] = $this->createProduct('expected_product_B', ['family' => 'impacted_family_B']);
-        $expectedProducts[] = $this->createProduct('expected_product_C', ['family' => 'impacted_family_B']);
+        $expectedProducts[] = $this->createProduct('expected_product_A', [new SetFamily('impacted_family_A')]);
+        $expectedProducts[] = $this->createProduct('expected_product_B', [new SetFamily('impacted_family_B')]);
+        $expectedProducts[] = $this->createProduct('expected_product_C', [new SetFamily('impacted_family_B')]);
 
         $expectedProductUuids = array_map(function ($product) {
             return $this->get(ProductUuidFactory::class)->create((string) $product->getUuid());
         }, $expectedProducts);
 
-        $this->createProduct('not_impacted_product', ['family' => 'not_impacted_family']);
+        $this->createProduct('not_impacted_product', [new SetFamily('not_impacted_family')]);
 
         $productUuids = $this->get(GetProductIdsImpactedByAttributeGroupActivationQuery::class)->updatedSince($updatedSince, 2);
         $productUuids = iterator_to_array($productUuids);
@@ -100,7 +101,7 @@ final class GetProductIdsImpactedByAttributeGroupActivationQueryIntegration exte
         $identifier = 'id_' . uniqid();
         $familyCode = 'family_' . uniqid();
         $this->createFamily($familyCode, ['attributes' => $attributeCodes]);
-        $product = $this->createProduct($identifier, ['family' => $familyCode]);
+        $product = $this->createProduct($identifier, [new SetFamily($familyCode)]);
 
         return $product->getUuid()->toString();
     }

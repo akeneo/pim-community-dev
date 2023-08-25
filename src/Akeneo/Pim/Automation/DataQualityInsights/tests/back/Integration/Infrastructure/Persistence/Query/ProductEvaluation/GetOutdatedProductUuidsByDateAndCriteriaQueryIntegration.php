@@ -11,6 +11,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\Get
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
@@ -39,13 +40,13 @@ final class GetOutdatedProductUuidsByDateAndCriteriaQueryIntegration extends Dat
 
     public function test_it_returns_outdated_product_uuids_for_some_criteria(): void
     {
-        $outdatedProduct1 = $this->createProduct('outdated_product_1', ['family' => 'shoes']);
-        $outdatedProduct2 = $this->createProduct('outdated_product_2', ['family' => 'shoes']);
-        $productWithoutEvaluation = $this->createProduct('product_without_evaluation', ['family' => 'shoes']);
-        $productWithoutEvaluationDate = $this->createProduct('product_without_evaluation_date', ['family' => 'shoes']);
-        $upToDatedProduct1 = $this->createProduct('up_to_date_product_1', ['family' => 'shoes']);
-        $upToDatedProduct2 = $this->createProduct('up_to_date_product_2', ['family' => 'shoes']);
-        $whateverProduct = $this->createProduct('whatever_product', ['family' => 'shoes']);
+        $outdatedProduct1 = $this->createProduct('outdated_product_1', [new SetFamily('shoes')]);
+        $outdatedProduct2 = $this->createProduct('outdated_product_2', [new SetFamily('shoes')]);
+        $productWithoutEvaluation = $this->createProduct('product_without_evaluation', [new SetFamily('shoes')]);
+        $productWithoutEvaluationDate = $this->createProduct('product_without_evaluation_date', [new SetFamily('shoes')]);
+        $upToDatedProduct1 = $this->createProduct('up_to_date_product_1', [new SetFamily('shoes')]);
+        $upToDatedProduct2 = $this->createProduct('up_to_date_product_2', [new SetFamily('shoes')]);
+        $whateverProduct = $this->createProduct('whatever_product', [new SetFamily('shoes')]);
 
         $evaluationDate = $this->clock->fromString('2023-03-15 16:21:35');
         $criteria = [
@@ -93,9 +94,9 @@ final class GetOutdatedProductUuidsByDateAndCriteriaQueryIntegration extends Dat
 
     public function test_it_returns_outdated_product_uuids_for_any_criterion(): void
     {
-        $outdatedProduct1 = $this->createProduct('outdated_product_1', ['family' => 'shoes']);
-        $outdatedProduct2 = $this->createProduct('outdated_product_2', ['family' => 'shoes']);
-        $upToDatedProduct = $this->createProduct('up_to_date_product', ['family' => 'shoes']);
+        $outdatedProduct1 = $this->createProduct('outdated_product_1', [new SetFamily('shoes')]);
+        $outdatedProduct2 = $this->createProduct('outdated_product_2', [new SetFamily('shoes')]);
+        $upToDatedProduct = $this->createProduct('up_to_date_product', [new SetFamily('shoes')]);
 
         $evaluationDate = $this->clock->fromString('2023-03-15 16:21:35');
 
