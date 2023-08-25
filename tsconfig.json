@@ -24,5 +24,8 @@
   "include": [
     "public/bundles",
     "frontend/types.d.ts"
+  ],
+  "exclude": [
+    "**/*.unit.*"
   ]
 }
