@@ -362,8 +362,8 @@ pim_menu:
       title: Aide
       helper: Centre d'aide Akeneo
       new: NOUVEAU
-      news: Quoi de neuf ?
-      help_center: Centre d'assistance
+      news: Nouveautés
+      help_center: Centre d'aide
       akademy_training: Akademy training
   item:
     association_type: Types d'association
