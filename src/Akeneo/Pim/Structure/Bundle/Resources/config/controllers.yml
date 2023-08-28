@@ -125,6 +125,13 @@ services:
             - '@akeneo.pim.structure.query.attribute_is_an_family_variant_axis'
             - '@pim_catalog.repository.channel'
 
+    Akeneo\Pim\Structure\Bundle\Controller\InternalApi\GetMainIdentifierAttributeController:
+        public: true
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@pim_enrich.normalizer.attribute'
+            - '@pim_user.context.user'
+
     pim_enrich.controller.rest.attribute_group:
         public: true
         class: 'Akeneo\Pim\Structure\Bundle\Controller\InternalApi\AttributeGroupController'

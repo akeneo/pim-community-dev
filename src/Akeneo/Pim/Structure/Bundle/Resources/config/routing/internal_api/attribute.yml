@@ -17,7 +17,12 @@ pim_enrich_attribute_rest_get:
     path: /{identifier}
     defaults: { _controller: pim_enrich.controller.rest.attribute:getAction }
     requirements:
-        identifier: '[a-zA-Z0-9_]+'
+        identifier: '^(?!(main-identifier)$)[a-zA-Z0-9_]+$'
+    methods: [GET]
+
+pim_enrich_attribute_rest_main_identifier:
+    path: /main-identifier
+    defaults: { _controller: Akeneo\Pim\Structure\Bundle\Controller\InternalApi\GetMainIdentifierAttributeController }
     methods: [GET]
 
 pim_enrich_attribute_rest_post:

@@ -110,6 +110,7 @@ config:
             urls:
               list: pim_enrich_attribute_rest_index
               get: pim_enrich_attribute_rest_get
+              get_main_identifier: pim_enrich_attribute_rest_main_identifier
         attribute-type:
           module: pim/base-fetcher
           options:
