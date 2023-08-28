@@ -240,9 +240,9 @@ final class ConnectorProduct
     public function buildLinkedData(array $optionLabels): ConnectorProduct
     {
         $values = $this->values->map(function (ValueInterface $value) use ($optionLabels) {
+            $optionCodes = \array_keys($optionLabels[$value->getAttributeCode()] ?? []);
             if ($value instanceof OptionValue) {
-                $optionCodes = \array_keys($optionLabels[$value->getAttributeCode()] ?? []);
-                $index = \array_search(\strtolower($value->getData()), \array_map('strtolower', $optionCodes));
+                $index = \array_search(\strtolower($value->getData()), \array_map('strtolower', $optionCodes), true);
                 $optionCodeWithRightCase = false !== $index ? $optionCodes[$index] : $value->getData();
 
                 return new OptionValueWithLinkedData(
@@ -258,9 +258,8 @@ final class ConnectorProduct
                 );
             } elseif ($value instanceof OptionsValue) {
                 $linkedData = [];
-                $optionCodes = \array_keys($optionLabels[$value->getAttributeCode()] ?? []);
                 foreach ($value->getData() as $optionCode) {
-                    $index = \array_search(\strtolower($optionCode), \array_map('strtolower', $optionCodes));
+                    $index = \array_search(\strtolower($optionCode), \array_map('strtolower', $optionCodes), true);
                     $optionCodeWithRightCase = false !== $index ? $optionCodes[$index] : $optionCode;
 
                     $linkedData[$optionCode] = [
