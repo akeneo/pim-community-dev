@@ -15,6 +15,10 @@ namespace Akeneo\Tool\Bundle\MessengerBundle\Stamp;
 
 use Symfony\Component\Messenger\Stamp\StampInterface;
 
+/**
+ * Used to send headers in a message.
+ * Decoding received messages to a CustomHeaderStamp is not supported.
+ */
 interface CustomHeaderStamp extends StampInterface
 {
     public function header(): string;
