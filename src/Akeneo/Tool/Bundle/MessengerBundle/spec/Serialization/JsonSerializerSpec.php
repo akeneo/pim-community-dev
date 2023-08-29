@@ -136,6 +136,24 @@ class JsonSerializerSpec extends ObjectBehavior
             ]);
     }
 
+    public function it_throw_an_exception_when_the_same_custom_header_is_used_twice($normalizer): void
+    {
+        $message = new \stdClass();
+        $envelope = new Envelope($message, [
+            $this->buildCustomStamp(),
+            $this->buildCustomStamp(),
+        ]);
+
+        $normalizer->supportsNormalization($message, 'json', [])
+            ->willReturn(true);
+
+        $normalizer->normalize($message, 'json', [])
+            ->willReturn(['some_property' => 'Some value!']);
+
+        $this->shouldThrow(\LogicException::class)
+            ->during('encode', [$envelope]);
+    }
+
     private function buildCustomStamp(): CustomHeaderStamp
     {
         return new class implements CustomHeaderStamp {

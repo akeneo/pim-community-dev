@@ -96,7 +96,9 @@ class JsonSerializer implements SerializerInterface
 
         foreach ($envelope->all() as $stamps) {
             $stamp = end($stamps);
+
             if ($stamp instanceof CustomHeaderStamp) {
+                $this->ensureStampIsUsedOnlyOnce($stamps);
                 $headers[$stamp->header()] = $stamp->value();
             }
         }
@@ -126,5 +128,17 @@ class JsonSerializer implements SerializerInterface
             'body' => $body,
             'headers' => $headers,
         ];
+    }
+
+    private function ensureStampIsUsedOnlyOnce(array $stamps): void
+    {
+        if (count($stamps) > 1) {
+            throw new \LogicException(
+                sprintf(
+                    'Custom header stamp %s should have only one instance in the message.',
+                    get_class(end($stamps))
+                )
+            );
+        }
     }
 }
