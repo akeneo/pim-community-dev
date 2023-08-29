@@ -37,7 +37,7 @@ class ProductAndProductModelFlatTranslator implements FlatTranslatorInterface
         $flatItemsByColumnName = $this->translateValues($flatItemsByColumnName, $locale, $scope);
 
         if ($translateHeaders) {
-            $flatItemsByColumnName = $this->translateHeaders($flatItemsByColumnName, $locale);
+            $flatItemsByColumnName = $this->translateHeadersByColumnName($flatItemsByColumnName, $locale);
         }
 
         $flatItems = $this->undoGroupFlatItemsByColumnName($flatItemsByColumnName);
@@ -45,27 +45,42 @@ class ProductAndProductModelFlatTranslator implements FlatTranslatorInterface
         return $flatItems;
     }
 
-    private function translateHeaders(array $flatItemsByColumnName, string $locale): array
+    public function translateHeaders(array $columnCodes, string $locale): array
+    {
+        $this->headerRegistry->warmup($columnCodes, $locale);
+
+        $results = [];
+        foreach ($columnCodes as $columnCode) {
+            $results[] = $this->translateHeader($columnCode, $locale);
+        }
+
+        return $results;
+    }
+
+    private function translateHeadersByColumnName(array $flatItemsByColumnName, string $locale): array
     {
         $this->headerRegistry->warmup(array_keys($flatItemsByColumnName), $locale);
 
         $results = [];
         foreach ($flatItemsByColumnName as $columnCode => $flatItemValues) {
-            $translator = $this->headerRegistry->getTranslator($columnCode);
-            $columnLabelized = null !== $translator ? $translator->translate($columnCode, $locale) :
-                sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $columnCode);
-
-            $columnName = sprintf(
-                '%s%s%s',
-                $columnCode,
-                FlatTranslatorInterface::COLUMN_CODE_AND_TRANSLATION_SEPARATOR,
-                $columnLabelized
-            );
-
-            $results[$columnName] = $flatItemValues;
+            $results[$this->translateHeader($columnCode, $locale)] = $flatItemValues;
         }
 
         return $results;
+    }
+
+    private function translateHeader(string $columnCode, string $locale): string
+    {
+        $translator = $this->headerRegistry->getTranslator($columnCode);
+        $columnLabelized = null !== $translator ? $translator->translate($columnCode, $locale) :
+            sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $columnCode);
+
+        return sprintf(
+            '%s%s%s',
+            $columnCode,
+            FlatTranslatorInterface::COLUMN_CODE_AND_TRANSLATION_SEPARATOR,
+            $columnLabelized
+        );
     }
 
     public function translateValues(array $flatItemsByColumnName, string $locale, string $channel): array
