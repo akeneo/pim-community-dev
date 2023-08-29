@@ -126,6 +126,7 @@ $rules = [
         'Symfony\Component\HttpFoundation',
         'Symfony\Component\HttpKernel',
         'Symfony\Component\Lock',
+        'Symfony\Component\Messenger',
         'Symfony\Component\Mime',
         'Symfony\Component\PropertyAccess',
         'Symfony\Component\Routing',
@@ -149,7 +150,6 @@ $rules = [
 
     $builder->only([
         // Vendors
-        'Symfony\Component\Messenger',
         'Webmozart\Assert',
     ])->in('Akeneo\Category\Api'),
 

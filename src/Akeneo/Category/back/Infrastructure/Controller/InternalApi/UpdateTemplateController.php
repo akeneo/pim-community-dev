@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Controller\InternalApi;
 
-use Akeneo\Category\Api\Command\CommandMessageBus;
 use Akeneo\Category\Application\Command\UpdateTemplateCommand\UpdateTemplateCommand;
 use Akeneo\Category\Domain\Exception\ViolationsException;
+use Akeneo\Category\Infrastructure\Bus\CommandBus;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,7 +21,7 @@ class UpdateTemplateController
 {
     public function __construct(
         private readonly SecurityFacade $securityFacade,
-        private readonly CommandMessageBus $categoryCommandBus,
+        private readonly CommandBus $commandBus,
     ) {
     }
 
@@ -33,7 +33,7 @@ class UpdateTemplateController
 
         try {
             $command = new UpdateTemplateCommand($templateUuid, $request->request->all());
-            $this->categoryCommandBus->dispatch($command);
+            $this->commandBus->dispatch($command);
         } catch (ViolationsException $exception) {
             return new JsonResponse($exception->normalize(), Response::HTTP_BAD_REQUEST);
         }

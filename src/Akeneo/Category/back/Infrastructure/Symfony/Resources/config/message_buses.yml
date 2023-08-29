@@ -1,6 +1,0 @@
-services:
-  category.command.message_bus:
-    class: Akeneo\Category\Api\Command\CommandMessageBus
-    arguments:
-      - !tagged_iterator { tag: 'akeneo.category.command.handler', index_by: 'command' }
-

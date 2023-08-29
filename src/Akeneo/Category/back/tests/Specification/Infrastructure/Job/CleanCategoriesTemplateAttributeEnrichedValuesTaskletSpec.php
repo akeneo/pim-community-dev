@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Category\Infrastructure\Job;
 
-use Akeneo\Category\Api\Command\CommandMessageBus;
 use Akeneo\Category\Application\Command\CleanCategoryTemplateAttributeAndEnrichedValues\CleanCategoryTemplateAttributeAndEnrichedValuesCommand;
+use Akeneo\Category\Infrastructure\Bus\CommandBus;
 use Akeneo\Category\Infrastructure\Job\CleanCategoriesTemplateAttributeEnrichedValuesTasklet;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -19,7 +19,7 @@ use Symfony\Component\Messenger\Envelope;
  */
 class CleanCategoriesTemplateAttributeEnrichedValuesTaskletSpec extends ObjectBehavior
 {
-    function let(CommandMessageBus $commandBus): void
+    function let(CommandBus $commandBus): void
     {
         $this->beConstructedWith($commandBus);
     }
@@ -31,7 +31,7 @@ class CleanCategoriesTemplateAttributeEnrichedValuesTaskletSpec extends ObjectBe
     }
 
     function it_dispatches_a_command_message_to_clean_category_enriched_values_by_template_uuid(
-        CommandMessageBus $commandBus,
+        CommandBus $commandBus,
         StepExecution $stepExecution
     ): void {
         $templateUuid = '2115af0f-f0b0-435e-aa86-9880eaad677e';

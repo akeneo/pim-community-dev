@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Job;
 
-use Akeneo\Category\Api\Command\CommandMessageBus;
 use Akeneo\Category\Application\Command\CleanCategoryEnrichedValuesByChannelOrLocale\CleanCategoryEnrichedValuesByChannelOrLocaleCommand;
+use Akeneo\Category\Infrastructure\Bus\CommandBus;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 
@@ -18,7 +18,7 @@ class CleanCategoriesEnrichedValuesTasklet implements TaskletInterface
     private StepExecution $stepExecution;
 
     public function __construct(
-        private readonly CommandMessageBus $commandBus,
+        private readonly CommandBus $commandBus,
     ) {
     }
 
