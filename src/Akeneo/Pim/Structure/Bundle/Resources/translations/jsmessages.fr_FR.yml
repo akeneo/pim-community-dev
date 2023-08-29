@@ -27,6 +27,8 @@ pim_enrich.entity.family:
       required_label: Obligatoire
     create:
       button: Créer une famille
+      from_scratch: Créer à partir de zéro
+      browse_templates: Parcourir les modèles de famille
     delete:
       confirm: Êtes-vous sûr(e) de que vouloir supprimer cette famille ?
 pim_enrich.entity.family_variant:
@@ -221,7 +223,7 @@ pim_enrich.entity.attribute:
     identifier_limit_reached_title: Vous avez atteint la limite maximum de 10 identifiants.
     identifier_limit_reached: Vous ne pouvez pas créer un autre identifiant car vous avez déjà atteint la limite de 10.
     identifier_limit_reached_url: '→ En savoir plus sur le Help Center'
-    identifiers_limit: Vous pouvez créer un maximum de 10 identifiants. En savoir plus sur les identifiants multiples dans le
+    identifiers_limit: Vous pouvez créer un maximum de 10 identifiants. En savoir plus sur les identifiants additionnels dans le
     identifiers_limit_link: Help Center.
     unique_value_helper: La valeur de cet attribut doit-elle être unique ? Vous ne pourrez plus modifier ce paramètre plus tard.
     scopable_helper: La valeur de cet attribut doit-elle différer par canal (scopable) ?
@@ -242,14 +244,14 @@ pim_enrich.entity.attribute:
         section_title: Configuration de l'attribut
         warning: Les choix effectués ici pourraient impacter considérablement vos produits.
         type: Ce type d'attribut est <em>{{ attributeType }}</em>
-        type_helper: Le type d'un attribut ne peut pas être modifié car cela entraînerait la suppression de toutes les valeurs entrées pour cet attribut dans les produits concernés.
+        type_helper: Le type d'un attribut ne peut pas être modifié car cela entraînerait la suppression de toutes les valeurs renseignées pour cet attribut dans les produits concernés.
         unique_attribute_title: La valeur de cet attribut est <em>unique</em>
         non_unique_attribute_title: La valeur de cet attribut <em>n'est pas unique</em>
         unique_helper: La valeur de l'attribut est différente pour chaque produit. Vous ne pouvez plus modifier ce paramètre.
         non_unique_helper: La même valeur peut être utilisée pour cet attribut sur plusieurs produits. Vous ne pouvez plus modifier ce paramètre.
         main_identifier_title: Cet attribut est <em>l'identifiant principal</em>
         non_main_identifier_title: Cet attribut <em>n'est pas l'identifiant principal</em>
-        main_identifier_helper: Vous pouvez créer un maximum de {{ maxIdentifiersCount }} identifiants pour vos produits, et paramétrer l'un d'ente eux en tant qu'identifiant principal. L'identifiant principal actuel est {{ mainIdentifierLabel }}. <link>En savoir plus</link>
+        main_identifier_helper: Vous pouvez créer un maximum de {{ maxIdentifiersCount }} identifiants pour vos produits, et paramétrer l'un d'entre eux en tant qu'identifiant principal. L'identifiant principal actuel est {{ mainIdentifierLabel }}. <link>En savoir plus</link>
         scopable_attribute_title: Les valeurs de cet attribut <em>diffèrent par canal (scopable)</em>
         non_scopable_attribute_title: Les valeurs de cet attribut <em>ne diffèrent pas par canal (non scopable)</em>
         scopable_helper: La valeur par canal détermine si un attribut est scopable (valeurs différentes pour différents canaux) ou non (une même valeur pour tous les canaux). <link>En savoir plus</link>

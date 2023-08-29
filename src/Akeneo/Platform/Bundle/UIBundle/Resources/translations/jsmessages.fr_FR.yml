@@ -364,7 +364,7 @@ pim_menu:
       new: NOUVEAU
       news: Nouveautés
       help_center: Centre d'aide
-      akademy_training: Akademy training
+      akademy_training: Formation Akademy
   item:
     association_type: Types d'association
     attribute_group: Groupes d'attributs
