@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Category\Domain\Filesystem;
+namespace Akeneo\Category\Domain\ImageFile;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)

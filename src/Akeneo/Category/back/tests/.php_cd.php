@@ -35,15 +35,12 @@ $rules = [
         'Akeneo\Category\Infrastructure\Exception\ContentArrayConversionException',
         'Akeneo\Category\Infrastructure\Exception\StructureArrayConversionException',
         'Akeneo\Category\Infrastructure\Registry\FindCategoryAdditionalPropertiesRegistry',
-        'Akeneo\Tool\Component\FileStorage\File\FileStorer',
-        'Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface',
-        'Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface',
         'Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface',
         'Oro\Bundle\SecurityBundle\SecurityFacade',
         'Akeneo\Category\Infrastructure\Validation\TemplateCodeShouldBeUnique',
+        'Akeneo\Tool\Component\FileStorage\FilesystemProvider',
 
         // Vendors
-        'Symfony\Component\HttpFoundation\File\UploadedFile',
         'Symfony\Component\Validator',
         'Symfony\Component\HttpKernel',
         'Symfony\Component\EventDispatcher',

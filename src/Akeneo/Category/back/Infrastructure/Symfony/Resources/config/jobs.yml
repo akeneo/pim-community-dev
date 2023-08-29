@@ -2,7 +2,7 @@ parameters:
     pim_category.job_name.clean_categories_enriched_values: 'clean_categories_enriched_values'
     pim_category.job_name.clean_category_template_and_enriched_values: 'clean_category_template_and_enriched_values'
     pim_category.job_name.clean_category_attribute_and_enriched_values: 'clean_category_attribute_and_enriched_values'
-
+    pim_category.job_name.purge_orphan_category_image_files: 'purge_orphan_category_image_files'
 
 services:
     # Clean categories enriched values linked to removed channel
@@ -48,6 +48,23 @@ services:
         tags:
             - { name: akeneo_batch.job, connector: 'Cleaning categories template enriched values', type: '%pim_category.job_name.clean_category_attribute_and_enriched_values%' }
 
+    pim_catalog.job.purge_orphan_category_image_files:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_category.job_name.purge_orphan_category_image_files%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_catalog.step.clean_categories.purge_orphan_category_image_files'
+        bind:
+            $isStoppable: true
+            $isVisible: false
+            $isPausable: true
+        public: false
+        tags:
+            -   name: akeneo_batch.job
+                connector: 'internal'
+                type: 'scheduled_job'
 
     pim_catalog.step.clean_categories.clean_enriched_values:
         class: '%pim_connector.step.tasklet.class%'
@@ -73,6 +90,14 @@ services:
             - '@akeneo_batch.job_repository'
             - '@Akeneo\Category\Infrastructure\Job\CleanCategoriesTemplateAttributeEnrichedValuesTasklet'
 
+    pim_catalog.step.clean_categories.purge_orphan_category_image_files:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'purge_orphan_category_image_files'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@Akeneo\Category\Infrastructure\Job\PurgeOrphanCategoryImageFilesTasklet'
+
     Akeneo\Category\Infrastructure\Job\CleanCategoriesEnrichedValuesTasklet:
         arguments:
             - '@category.command.message_bus'
@@ -83,6 +108,11 @@ services:
 
     Akeneo\Category\Infrastructure\Job\CleanCategoriesTemplateAttributeEnrichedValuesTasklet:
         arguments:
+            - '@category.command.message_bus'
+
+    Akeneo\Category\Infrastructure\Job\PurgeOrphanCategoryImageFilesTasklet:
+        arguments:
+            - '@akeneo_batch.job.job_stopper'
             - '@category.command.message_bus'
 
     # job parameters
@@ -110,3 +140,17 @@ services:
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    akeneo.category.clean_categories.purge_orphan_category_image_files.default_values_provider.job_parameters:
+        class: Akeneo\Tool\Component\Batch\Job\JobParameters\EmptyDefaultValuesProvider
+        arguments:
+            - [ '%pim_category.job_name.purge_orphan_category_image_files%' ]
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    akeneo.category.clean_categories.purge_orphan_category_image_files.constraint_collection_provider.job_parameters:
+        class: Akeneo\Tool\Component\Batch\Job\JobParameters\EmptyConstraintCollectionProvider
+        arguments:
+            - [ '%pim_category.job_name.purge_orphan_category_image_files%' ]
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }

@@ -226,6 +226,11 @@ jobs:
         alias: clean_category_attribute_and_enriched_values
         label: Clean Category Template's attribute and Enriched Values
         type: clean_category_attribute_and_enriched_values
+    purge_orphan_category_image_files:
+        connector: internal
+        alias: purge_orphan_category_image_files
+        label: Purge orphan category image files
+        type: scheduled_job
     purge_filesystems:
         connector: internal
         alias: purge_filesystems

@@ -120,3 +120,11 @@ services:
       - '@Akeneo\Category\Application\Query\GetCategoryTreeByCategoryTemplate'
     tags:
       - { name: messenger.message_handler, bus: category.command.bus }
+
+  Akeneo\Category\Application\Command\PurgeOrphanCategoryImageFiles\PurgeOrphanCategoryImageFilesCommandHandler:
+    arguments:
+      - '@akeneo_file_storage.file_storage.filesystem_provider'
+      - '@Akeneo\Category\Domain\ImageFile\GetOrphanCategoryImageFilePaths'
+      - '@Akeneo\Category\Domain\ImageFile\DeleteCategoryImageFile'
+    tags:
+      - { name: messenger.message_handler, bus: category.command.bus }

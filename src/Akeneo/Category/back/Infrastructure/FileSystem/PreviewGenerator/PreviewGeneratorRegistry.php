@@ -19,6 +19,12 @@ class PreviewGeneratorRegistry implements PreviewGeneratorInterface
     public const THUMBNAIL_SMALL_TYPE = 'thumbnail_small';
     public const PREVIEW_TYPE = 'preview';
 
+    public const IMAGE_TYPES = [
+        self::THUMBNAIL_TYPE,
+        self::THUMBNAIL_SMALL_TYPE,
+        self::PREVIEW_TYPE,
+    ];
+
     public function register(PreviewGeneratorInterface $previewGenerator): void
     {
         $this->previewGenerators[] = $previewGenerator;
@@ -51,14 +57,12 @@ class PreviewGeneratorRegistry implements PreviewGeneratorInterface
         throw new \RuntimeException(sprintf('There was no generator found to get the preview of attribute "%s" with type "%s"', $attribute->getCode(), $type));
     }
 
-    public function remove(string $data, Attribute $attribute, string $type)
+    public function remove(string $data, string $type)
     {
         foreach ($this->previewGenerators as $previewGenerator) {
-            if ($previewGenerator->supports($data, $attribute, $type)) {
-                return $previewGenerator->remove($data, $attribute, $type);
-            }
+            return $previewGenerator->remove($data, $type);
         }
 
-        throw new \RuntimeException(sprintf('There was no generator found to remove the preview of attribute "%s" with type "%s"', $attribute->getCode(), $type));
+        throw new \RuntimeException(sprintf('There was no generator found to remove the preview of attribute "%s" with type "%s"', $data, $type));
     }
 }

@@ -10,3 +10,9 @@ services:
             - '@Akeneo\Category\Domain\Query\PurgeOrphanCategories'
         tags:
             - { name: console.command }
+
+    Akeneo\Category\Infrastructure\Cli\PurgeOrphanCategoryImageFiles:
+        arguments:
+            - '@category.command.message_bus'
+        tags:
+            - { name: console.command }

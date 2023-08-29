@@ -15,6 +15,7 @@ use Akeneo\Category\Application\Storage\Save\Query\UpsertCategoryTranslations;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateAttributeSaver;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateSaver;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTreeTemplateSaver;
+use Akeneo\Category\Domain\ImageFile\Storage;
 use Akeneo\Category\Domain\Model\Attribute\AttributeImage;
 use Akeneo\Category\Domain\Model\Attribute\AttributeRichText;
 use Akeneo\Category\Domain\Model\Attribute\AttributeText;
@@ -544,6 +545,37 @@ SQL;
         }
 
         return $uuids;
+    }
+
+    protected function insertFileStorage(string $fileKey, string $originalFileName): void
+    {
+        $sql = <<<SQL
+            INSERT INTO akeneo_file_storage_file_info (file_key, original_filename, mime_type, extension, storage)
+            VALUES (:file_key, :original_filename, :mime_type, :extension, :storage);
+        SQL;
+
+        $this->get('database_connection')->executeQuery($sql, [
+            'file_key' => $fileKey,
+            'original_filename' => $originalFileName,
+            'mime_type' => 'image/jpeg',
+            'extension' => 'jpg',
+            'storage' => Storage::CATEGORY_STORAGE_ALIAS,
+        ]);
+    }
+
+    protected function fileStorageExists(string $fileKey): bool
+    {
+        $sql = <<<SQL
+            SELECT file_key
+            FROM akeneo_file_storage_file_info
+            WHERE file_key = :file_key;
+        SQL;
+
+        $result = $this->get('database_connection')->executeQuery($sql, [
+            'file_key' => $fileKey,
+        ])->fetchOne();
+
+        return (bool) $result;
     }
 
     protected function getConfiguration()
