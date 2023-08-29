@@ -1518,4 +1518,17 @@ class ProductSpec extends ObjectBehavior
         $this->addAssociatedGroup($associatedGroup, 'X_SELL');
         $this->getAssociatedGroups('X_SELL')->shouldBeLike(new ArrayCollection());
     }
+
+    function it_updates_main_identifier(): void
+    {
+        $this->getIdentifier()->shouldReturn(null);
+        $this->setValues(new WriteValueCollection(
+            [
+                IdentifierValue::value('sku', true, 'shovel'),
+                ScalarValue::localizableValue('name', 'a name', 'fr_FR'),
+            ]
+        ));
+
+        $this->getIdentifier()->shouldReturn('shovel');
+    }
 }

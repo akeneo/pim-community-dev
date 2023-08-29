@@ -138,6 +138,9 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function addValue(ValueInterface $value)
     {
+        if ($value instanceof IdentifierValueInterface && $value->isMainIdentifier()) {
+            $this->identifier = $value->getData();
+        }
         if (true === $this->values->add($value)) {
             $this->dirty = true;
         }
@@ -150,6 +153,9 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function removeValue(ValueInterface $value)
     {
+        if ($value instanceof IdentifierValueInterface && $value->isMainIdentifier()) {
+            $this->identifier = null;
+        }
         if (true === $this->values->remove($value)) {
             $this->dirty = true;
         }
@@ -244,12 +250,16 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getIdentifier()
     {
-        /** @var IdentifierValueInterface | null $identifierValue */
-        $identifierValue = $this->values->filter(
-            static fn (ValueInterface $value): bool => $value instanceof IdentifierValueInterface && $value->isMainIdentifier()
-        )->first() ?: null;
+        if (null === $this->identifier) {
+            /** @var IdentifierValueInterface | null $identifierValue */
+            $identifierValue = $this->values->filter(
+                static fn (ValueInterface $value): bool => $value instanceof IdentifierValueInterface && $value->isMainIdentifier()
+            )->first() ?: null;
 
-        return $identifierValue?->getData();
+            $this->identifier = $identifierValue?->getData();
+        }
+
+        return $this->identifier;
     }
 
     /**
@@ -298,6 +308,11 @@ abstract class AbstractProduct implements ProductInterface
                     $this->dirty = true;
                     break;
                 }
+            }
+        }
+        foreach ($values as $value) {
+            if ($value instanceof IdentifierValueInterface && $value->isMainIdentifier()) {
+                $this->identifier = $value->getData();
             }
         }
         $this->values = $values;
