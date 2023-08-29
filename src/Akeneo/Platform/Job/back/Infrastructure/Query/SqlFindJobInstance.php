@@ -20,14 +20,11 @@ class SqlFindJobInstance implements FindJobInstanceInterface
 {
     public function __construct(
         private Connection $connection,
-        private readonly SecurityFacadeInterface $securityFacade,
     ) {
     }
 
     public function fromQuery(JobInstanceQuery $query): array
     {
-        $this->checkIsGranted();
-
         $sql = $this->buildSqlQuery($query);
 
         return $this->fetchJobInstances($sql, $query);
@@ -137,12 +134,5 @@ SQL;
             'query_parameters' => $queryParameters,
             'query_types' => $queryTypes,
         ];
-    }
-
-    private function checkIsGranted()
-    {
-        if (!$this->securityFacade->isGranted('pim_importexport_export_profile_show')) {
-            throw new AccessDeniedException();
-        }
     }
 }
