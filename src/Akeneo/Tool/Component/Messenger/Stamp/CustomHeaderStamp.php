@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Tool\Bundle\MessengerBundle\Stamp;
+namespace Akeneo\Tool\Component\Messenger\Stamp;
 
 use Symfony\Component\Messenger\Stamp\StampInterface;
 

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace spec\Akeneo\Tool\Bundle\MessengerBundle\Serialization;
 
 use Akeneo\Tool\Bundle\MessengerBundle\Serialization\JsonSerializer;
-use Akeneo\Tool\Bundle\MessengerBundle\Stamp\CustomHeaderStamp;
+use Akeneo\Tool\Component\Messenger\Stamp\CustomHeaderStamp;
 use Akeneo\Tool\Bundle\MessengerBundle\Stamp\TenantIdStamp;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Messenger\Envelope;

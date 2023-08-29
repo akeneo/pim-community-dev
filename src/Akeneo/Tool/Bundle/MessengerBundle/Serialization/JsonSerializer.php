@@ -3,8 +3,8 @@
 namespace Akeneo\Tool\Bundle\MessengerBundle\Serialization;
 
 use Akeneo\Tool\Bundle\MessengerBundle\Stamp\CorrelationIdStamp;
-use Akeneo\Tool\Bundle\MessengerBundle\Stamp\CustomHeaderStamp;
 use Akeneo\Tool\Bundle\MessengerBundle\Stamp\TenantIdStamp;
+use Akeneo\Tool\Component\Messenger\Stamp\CustomHeaderStamp;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Exception\MessageDecodingFailedException;
 use Symfony\Component\Messenger\Stamp\RedeliveryStamp;
