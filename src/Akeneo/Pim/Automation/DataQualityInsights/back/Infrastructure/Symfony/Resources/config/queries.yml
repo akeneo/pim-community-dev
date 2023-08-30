@@ -297,3 +297,8 @@ services:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetOutdatedProductModelIdsByDateAndCriteriaQuery
         arguments:
             - '@database_connection'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetFamilyIds:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\SqlGetFamilyIds
+        arguments:
+            - '@database_connection'
