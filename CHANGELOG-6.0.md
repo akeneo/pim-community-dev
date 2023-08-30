@@ -1,5 +1,7 @@
 # 6.0.x
 
+# 6.0.99 (2023-08-30)
+
 - PIM-11155: Fix scroll on datagrid columns manager when browser zoom is not 100%
 
 # 6.0.98 (2023-08-17)
