@@ -342,3 +342,11 @@ services:
             - '@doctrine'
             - '@akeneo_integration_tests.loader.database_schema_handler'
             - '%env(bool:EXPERIMENTAL_TEST_DATABASE)%'
+
+    akeneo_integration_tests.pub_sub_queue_status.dqi_attribute_group_activate_consumer:
+        class: AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubQueueStatus
+        arguments:
+            - '@Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory'
+            - '%env(GOOGLE_CLOUD_PROJECT)%'
+            - '%env(PUBSUB_TOPIC_DQI_ATTRIBUTE_GROUP_ACTIVATE)%'
+            - '%env(PUBSUB_SUBSCRIPTION_DQI_ATTRIBUTE_GROUP_ACTIVATE)%'
