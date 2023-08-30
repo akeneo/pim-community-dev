@@ -12,6 +12,9 @@ use Ramsey\Uuid\UuidInterface;
  */
 final class HandleProductDraftCommand
 {
+    /**
+     * @param array<mixed> $data
+     */
     public function __construct(
         private readonly UuidInterface $uuid,
         private readonly array $data
