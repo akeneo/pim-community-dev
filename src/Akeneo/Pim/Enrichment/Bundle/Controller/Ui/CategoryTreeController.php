@@ -2,11 +2,11 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\Ui;
 
-use Akeneo\Category\Api\Command\CommandMessageBus;
 use Akeneo\Category\Application\Command\DeleteCategoryCommand\DeleteCategoryCommand;
 use Akeneo\Category\Domain\Model\Classification\CategoryTree;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Domain\Query\GetCategoryTreesInterface;
+use Akeneo\Category\Infrastructure\Bus\CommandBus;
 use Akeneo\Category\Infrastructure\Component\CategoryItemsCounterInterface;
 use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
 use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
@@ -56,7 +56,7 @@ class CategoryTreeController extends AbstractController
         private CategoryFormViewNormalizerInterface $categoryFormViewNormalizer,
         private GetCategoryInterface $getCategory,
         private GetCategoryTreesInterface $getCategoryTrees,
-        private CommandMessageBus $categoryCommandBus,
+        private CommandBus $commandBus,
         array $rawConfiguration,
     ) {
         $resolver = new OptionsResolver();
@@ -317,7 +317,7 @@ class CategoryTreeController extends AbstractController
         }
 
         try {
-            $this->categoryCommandBus->dispatch(new DeleteCategoryCommand($id));
+            $this->commandBus->dispatch(new DeleteCategoryCommand($id));
         } catch (ConflictHttpException $exception) {
             return new JsonResponse(
                 [

@@ -1,39 +1,39 @@
 batch_jobs:
   csv_currency_export:
-    label: Eksport waluty do pliku CSV
+    label: Eksport waluty do CSV
     export.label: Eksport waluty
   csv_currency_import:
-    label: Import waluty z pliku CSV
+    label: Import waluty z CSV
     import.label: Import waluty
   xlsx_currency_export:
-    label: Eksport waluty do pliku XLSX
+    label: Eksport waluty do XLSX
     export.label: Eksport waluty
   xlsx_currency_import:
-    label: Import waluty z pliku XLSX
+    label: Import waluty z XLSX
     import.label: Import waluty
   csv_locale_export:
-    label: Eksport wersji językowej do pliku CSV
+    label: Eksport wersji językowej do CSV
     export.label: Eksport wersji językowej
   csv_locale_import:
-    label: Import wersji językowej z pliku CSV
+    label: Import wersji językowej z CSV
     import.label: Import wersji językowej
   xlsx_locale_export:
-    label: Eksport wersji językowej do pliku XLSX
+    label: Eksport wersji językowej do XLSX
     export.label: Eksport wersji językowej
   xlsx_locale_import:
-    label: Import wersji językowej z pliku XLSX
+    label: Import wersji językowej z XLSX
     import.label: Import wersji językowej
   csv_channel_export:
-    label: Eksport kanału do pliku CSV
+    label: Eksport kanału do CSV
     export.label: Eksport kanału
   csv_channel_import:
-    label: Import kanału z pliku CSV
+    label: Import kanału z CSV
     import.label: Import kanału
   xlsx_channel_export:
-    label: Eksport kanału do pliku XLSX
+    label: Eksport kanału do XLSX
     export.label: Eksport kanału
   xlsx_channel_import:
-    label: Import kanału z pliku XLSX
+    label: Import kanału z XLSX
     import.label: Import kanału
 pim_enrich.entity.channel:
   label: kanał
@@ -46,15 +46,15 @@ pim_enrich.entity.channel:
       success: Kanał utworzony pomyślnie.
       fail: Nie można utworzyć kanału.
     delete:
-      success: Kanał usunięty pomyślnie.
-      fail: Nie można usunąć tego kanału.
+      success: Kanał usunięty pomyślnie
+      fail: Nie można usunąć tego kanału
   page_title:
-    index: "one: 1 kanał|few: {{ count }} kanały|many: {{ count }} kanałów"
+    index: "one: 1 kanał|few: {{ count }} kanały|many: {{ count }"
   property:
     category_tree: Drzewo kategorii
     do_not_convert: Nie konwertuj
     measurement: Ustawienia pomiaru
-    label_conversion_units: Wybierz jednostkę konwersji dla każdego atrybutu pomiaru, który będzie używany podczas eksportu produktu.
+    label_conversion_units: Wybierz jednostkę konwersji dla każdego atrybutu pomiaru
   module:
     create:
       button: Utwórz kanał
@@ -65,8 +65,8 @@ pim_enrich.entity.locale:
   uppercase_label: Wersja językowa
   plural_label: Wersje językowe
   page_title:
-    index: "one: 1 włączona wersja językowa|few: {{ count }} włączone wersje językowe|many: {{ count }} włączonych wersji językowych"
-  helper: "Aby włączyć lub wyłączyć wersję językową, przejdź do jednego z <a href={{ href }}>kanałów</a> i dodaj lub usuń wersję językową."
+    index: "one: 1 włączona wersja językowa|few: {{ count }} włączon"
+  helper: "Aby włączyć lub wyłączyć wersję językową, przejdź do jedneg"
   grid:
     columns:
       code: Włączone wersje językowe
@@ -76,7 +76,7 @@ pim_enrich.entity.locale:
 pim_enrich.entity.currency:
   plural_label: Waluty
   page_title:
-    index: "one: 1 waluta|few: {{ count }} waluty|many: {{ count }} walut"
+    index: "one: 1 waluta|few: {{ count }} waluty|many: {{ count }"
 flash:
   currency:
     error:

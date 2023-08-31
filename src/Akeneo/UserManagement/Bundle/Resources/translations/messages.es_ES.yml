@@ -94,7 +94,7 @@ pim_user:
     role:
       message:
         saved: "Rol guardado"
-        cannot_delete_last_edit_role_permission: No puede eliminar los permisos de edición dela última función.
+        cannot_delete_last_edit_role_permission: No pueden eliminar los permisos de edición de la última función.
         cannot_remove_last_edit_role_permission: No puede eliminar los permisos de edición de la última función.
     user:
       message:

@@ -21,6 +21,7 @@ define([
   'pim/analytics',
   'react',
   'akeneo-design-system',
+  './HelperListProps',
 ], function (
   $,
   _,
@@ -35,7 +36,8 @@ define([
   AttributeSelector,
   analytics,
   React,
-  {Helper, Link}
+  {Helper, Link},
+  {HelperList}
 ) {
   return BaseForm.extend({
     className: 'AknFieldContainer attributes',
@@ -143,28 +145,40 @@ define([
       );
     },
 
+    getChildHelper: function (helper) {
+      return helper.link
+        ? [
+            __(helper.text),
+            ' ',
+            React.createElement(Link, {key: 'link', target: '_blank', href: helper.link.href}, __(helper.link.text)),
+          ]
+        : __(helper.text);
+    },
+
     renderModalHelper: function (nodeElement) {
       if (this.config.helper) {
-        const children = this.config.helper.link
-          ? [
-              __(this.config.helper.text),
-              ' ',
-              React.createElement(
-                Link,
-                {key: 'link', target: '_blank', href: this.config.helper.link.href},
-                __(this.config.helper.link.text)
-              ),
-            ]
-          : __(this.config.helper.text);
-
-        this.renderReact(
-          Helper,
-          {
-            style: {margin: '0 20px 20px'},
-            children,
-          },
-          nodeElement
-        );
+        if (Array.isArray(this.config.helper)) {
+          const elements = this.config.helper.map(helper => {
+            return this.getChildHelper(helper);
+          });
+          this.renderReact(
+            HelperList,
+            {
+              style: {margin: '0 20px 20px'},
+              elements,
+            },
+            nodeElement
+          );
+        } else {
+          this.renderReact(
+            Helper,
+            {
+              style: {margin: '0 20px 20px'},
+              children: this.getChildHelper(this.config.helper),
+            },
+            nodeElement
+          );
+        }
       }
     },
 

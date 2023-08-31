@@ -1461,8 +1461,8 @@ class WebUser extends PimContext
     {
         $element = null;
         if ($popin) {
-            $element = $this->spin(function () {
-                return $this->getCurrentPage()->find('css', '.modal, .ui-dialog');
+            $element = $this->spin(function () use ($element) {
+                return $this->getCurrentPage()->find('css', '.modal, .ui-dialog, [role="dialog"]');
             }, 'Modal not found.');
         }
 

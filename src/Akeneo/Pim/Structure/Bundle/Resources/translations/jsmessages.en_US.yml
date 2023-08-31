@@ -27,6 +27,8 @@ pim_enrich.entity.family:
             required_label: Required
         create:
             button: Create family
+            from_scratch: Create from scratch
+            browse_templates: Browse family templates
         delete:
             confirm: Are you sure you want to delete this family?
 
@@ -223,6 +225,17 @@ pim_enrich.entity.attribute:
             invalid: The code is invalid
             not_available: This code is not available
             is_duplicate: This code is already used
+        identifier_limit_reached_title: Maximum of 10 identifiers reached.
+        identifier_limit_reached: You cannot create another identifier because you have already attained the maximum of 10.
+        identifier_limit_reached_url: → Learn more in the help center
+        identifiers_limit: You can create a maximum of 10 identifiers. Learn more about multiple identifiers in the
+        identifiers_limit_link: help center.
+        unique_value_helper: Should the value of this attribute be unique? You will not be able to change this setting later.
+        scopable_helper: Should the value of this attribute differ by channel (scopable)?
+        localizable_helper: Should the value of this attribute differ by locale (localizable)?
+        attribute_creation_type: Attribute type
+        attribute_creation_template: Template
+        attribute_creation_settings: Attribute settings
     module:
         add_attribute:
             no_available_attributes: There are no more attributes to add
@@ -232,6 +245,36 @@ pim_enrich.entity.attribute:
         edit:
             common: General parameters
             type_specific: Type specific parameters
+            attribute_setup:
+                section_title: Attribute setup
+                warning: Actions taken here could greatly impact your products.
+                type: This attribute type is <em>{{ attributeType }}</em>
+                type_helper: An attribute’s type cannot be modified as this would result in the deletion of all its product values.
+                unique_attribute_title: The value of this attribute is <em>unique</em>
+                non_unique_attribute_title: The value of this attribute is <em>not unique</em>
+                unique_helper: The attribute’s value is different for each product. This cannot be modified.
+                non_unique_helper: The same value can be used for this attribute across several products. This cannot be modified.
+                main_identifier_title: This attribute is <em>the main identifier</em>
+                non_main_identifier_title: This attribute is <em>not the main identifier</em>
+                main_identifier_helper: You may have up to {{ maxIdentifiersCount }} identifiers for your products with one being set as the main identifier. The current main identifier is {{ mainIdentifierLabel }}. <link>Learn more</link>
+                scopable_attribute_title: This attribute is <em>scopable</em>
+                non_scopable_attribute_title: This attribute is <em>not scopable</em>
+                scopable_helper: Value per channel determines if an attribute is scopable (different values for different channels) or not (one value for all channels). <link>Learn more</link>
+                localizable_attribute_title: This attribute is <em>localizable</em>
+                non_localizable_attribute_title: This attribute is <em>not localizable</em>
+                localizable_helper: Value per locale determines if an attribute is localizable (different values for different locales) or not (one value for all locales). <link>Learn more</link>
+                set_as_main_identifier:
+                    button: Set as main identifier
+                    confirm: Please type "{{ attributeCode }}"
+                    confirm_title: Changing the main identifier will impact all products
+                    are_you_sure: Are you sure you want to set the {{ attributeLabel }} attribute as the main identifier? <link>Learn more in the help center.</link>
+                    warning: "{{ attributeLabel }} is currently set as the main identifier. This change will impact all products."
+                    onboarder_warning: You cannot set another identifier attribute as the main identifier because this feature is not compatible with Akeneo Onboarder.
+                    flash:
+                        success: Main identifier has successfully been updated.
+                        fail: An error occurred during main identifier update.
+                        fail_published_product: If you would like to change your main identifier, please make sure you unpublish your products first and then change your main identifier.
+                        fail_published_product_link: Go to your published products
             validation: Validation parameters
             select_locale: Select your locale
         delete:
@@ -247,6 +290,7 @@ pim_enrich.entity.attribute:
             confirm_from_family: Are you sure you want to delete this attribute from the family?
             confirm_from_group: Are you sure you want to remove the attribute {{ attribute }} from this attribute group?
             confirm_from_product: Are you sure you want to delete this attribute from the product?
+            cannot_delete: The main identifier cannot be deleted. To delete this attribute, you must first set another identifier attribute as the main identifier. <link>Learn more in the help center.</link>
         mass_delete:
             modal:
                 title: Attributes

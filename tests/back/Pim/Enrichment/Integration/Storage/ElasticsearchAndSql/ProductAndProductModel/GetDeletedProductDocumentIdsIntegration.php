@@ -43,7 +43,7 @@ final class GetDeletedProductDocumentIdsIntegration extends TestCase
         parent::setUp();
 
         $this->getAuthenticator()->logIn('admin');
-        $adminId = $this->getAdminId();
+        $adminId = $this->getUserId('admin');
 
         for ($i = 0; $i < 30; $i++) {
             $this->get('pim_enrich.product.message_bus')->dispatch(
@@ -85,14 +85,6 @@ final class GetDeletedProductDocumentIdsIntegration extends TestCase
         );
 
         return $randomUuids;
-    }
-
-    private function getAdminId(): int
-    {
-        return (int)$this->getConnection()->fetchOne(
-            'SELECT id FROM oro_user WHERE username = :username',
-            ['username' => 'admin'],
-        );
     }
 
     private function getConnection(): Connection

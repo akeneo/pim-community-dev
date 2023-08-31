@@ -203,7 +203,7 @@ class AttributeOptionUpdaterSpec extends ObjectBehavior
 
         $attributeOption->setCode($values['code'])->willReturn($attributeOption);
         $attributeOption->getCode()->willReturn($values['code']);
-        
+
         $this->update(
             $attributeOption,
             $values

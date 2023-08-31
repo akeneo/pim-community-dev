@@ -16,6 +16,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
+use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
 class PartialUpdateProductEndToEnd extends AbstractProductTestCase
@@ -1605,6 +1606,67 @@ JSON;
         $response = $client->getResponse();
 
         $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+    }
+
+    public function testUpdateIdentifierValues(): void
+    {
+        $this->createIdentifierAttribute('id_2');
+        $client = $this->createAuthenticatedClient();
+        $data = <<<JSON
+        {
+            "identifier": "product_family_updated",
+            "values": {
+                "id_2": [{"scope":  null, "locale":  null, "data":  "my_second_identifier"}]
+            }
+        }
+        JSON;
+
+        $client->request('PATCH', 'api/rest/v1/products/product_family', [], [], [], $data);
+
+        $expectedProduct = [
+            'identifier'    => 'product_family_updated',
+            'family'        => 'familyA2',
+            'parent'        => null,
+            'groups'        => [],
+            'categories'    => [],
+            'enabled'       => true,
+            'values'        => [
+                'sku' => [
+                    ['locale' => null, 'scope' => null, 'data' => 'product_family_updated'],
+                ],
+                'id_2' => [
+                    ['locale' => null, 'scope' => null, 'data' => 'my_second_identifier'],
+                ],
+            ],
+            'created'       => '2016-06-14T13:12:50+02:00',
+            'updated'       => '2016-06-14T13:12:50+02:00',
+            'associations'  => [],
+            'quantified_associations' => [],
+        ];
+
+        $response = $client->getResponse();
+
+        $this->assertSame('', $response->getContent());
+        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+        $this->assertSameProducts($expectedProduct, 'product_family_updated');
+        $this->assertEventCount(1, ProductUpdated::class);
+    }
+
+    private function createIdentifierAttribute(string $code): void
+    {
+        $attribute = $this->get('pim_catalog.factory.attribute')->createAttribute('pim_catalog_identifier');
+        $data = [
+            'code' => $code,
+            'scopable' => false,
+            'localizable' => false,
+            'group' => 'other',
+            'unique' => true,
+            'useable_as_grid_filter' => true,
+        ];
+        $this->get('pim_catalog.updater.attribute')->update($attribute, $data);
+        $violations = $this->get('validator')->validate($attribute);
+        Assert::assertCount(0, $violations, (string)$violations);
+        $this->get('pim_catalog.saver.attribute')->save($attribute);
     }
 
     /**

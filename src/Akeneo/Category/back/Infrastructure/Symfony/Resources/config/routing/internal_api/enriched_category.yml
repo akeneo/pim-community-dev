@@ -3,7 +3,6 @@ pim_enriched_category_rest_update:
   requirements: {'id': '\d+'}
   defaults:
     _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\UpdateCategoryController
-    _feature: enriched_category
   methods: [POST]
 
 pim_enriched_category_rest_get:
@@ -11,19 +10,16 @@ pim_enriched_category_rest_get:
   requirements: {'id': '\d+'}
   defaults:
     _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\GetCategoryController
-    _feature: enriched_category
   methods: [GET]
 
 pim_enriched_category_rest_file_upload:
   path: '/rest/file/upload'
   defaults:
     _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\UploadController
-    _feature: enriched_category
   methods: [POST]
 
 pim_enriched_category_rest_image_preview:
   path: '/rest/file/image_preview/{attributeCode}/{type}'
   defaults:
     _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\ImagePreviewController
-    _feature: enriched_category
   methods: [GET, POST]

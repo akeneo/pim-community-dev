@@ -212,6 +212,7 @@ pim_common:
     label: Label
     label_translations: Label translations
     Label or identifier: label or identifier
+    Label or main identifier: label or main identifier
     code_or_label: code or label
     less_than: Less than
     loading: Loading...

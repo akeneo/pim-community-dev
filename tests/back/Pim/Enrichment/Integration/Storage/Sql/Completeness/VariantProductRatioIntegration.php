@@ -128,20 +128,6 @@ class VariantProductRatioIntegration extends TestCase
         $this->get('pim_enrich.product.message_bus')->dispatch($command);
     }
 
-    private function getUserId(string $username): int
-    {
-        $id = $this->get('database_connection')->fetchOne(
-            'SELECT id FROM oro_user WHERE username = :username',
-            ['username' => $username]
-        );
-
-        if (false === $id) {
-            throw new \InvalidArgumentException(\sprintf('The %s user does not exist', $username));
-        }
-
-        return (int) $id;
-    }
-
     /**
      * {@inheritdoc}
      */

@@ -199,3 +199,54 @@ bin/console messenger:consume <consumer_name> --bus=pim_event.handle.bus
 ```
 
 - [How to add a queue?](docs/how-to-add-a-queue.md)
+
+## Passing metadata to a message
+
+Metadata can be passed in messages through Symfony Messenger's [Stamps](https://symfony.com/doc/current/components/messenger.html#concepts).  
+In default Symfony Messenger and MessengerBundle serialization, it is translated to [`headers`](https://github.com/akeneo/pim-enterprise-dev/blob/b24c0f6e907745ce4e061208f016e2a378720c1d/src/Akeneo/Tool/Bundle/MessengerBundle/Serialization/JsonSerializer.php#L90-L120).  
+In Google PubSub implementation, it translates to [`attributes`](https://cloud.google.com/pubsub/docs/reference/rest/v1/PubsubMessage)
+
+To add metadata to your message, you need to add your own Stamp class that implements [`CustomHeaderStamp`](https://github.com/akeneo/pim-enterprise-dev/blob/master/src/Akeneo/Tool/Bundle/MessengerBundle/Stamp/CustomHeaderStamp.php), then dispatch it in the message bus.  
+The stamp will automatically be serialized and transformed to header.
+
+### Example of PubSub usage
+
+Let's consider a custom stamp:
+
+```php
+class RegionStamp implements CustomHeaderStamp
+{
+    public function __construct(private readonly string $value)
+    {
+    }
+
+    public function header(): string
+    {
+        return 'region';
+    }
+
+    public function value(): string
+    {
+        return $this->value;
+    }
+}
+```
+
+```php
+$this->bus->dispatch(
+    $message,
+    [new RegionHeader('europe-west1')]
+);
+```
+
+The Google PubSub messages results in
+
+```javascript
+{
+  "data": {...},
+  "attributes": {
+    "region": "europe-west1"
+  },
+  ...
+}
+```

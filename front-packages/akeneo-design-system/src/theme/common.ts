@@ -1,5 +1,5 @@
 import styled, {css, keyframes} from 'styled-components';
-import {Color, FontFamily, FontSize, getColor, getFontSize, Palette} from './theme';
+import {Color, ColorAlternative, FontFamily, FontSize, getColor, getFontSize, Palette} from './theme';
 
 const CommonStyle = css`
   input,
@@ -100,6 +100,51 @@ const color: Color = {
   white: '#ffffff',
 };
 
+const colorAlternative: ColorAlternative = {
+  blue10: '#F0F7FC',
+  blue100: '#4CA8E0',
+  blue120: '#3278B7',
+  chocolate10: '#EEE9E5',
+  chocolate100: '#512500',
+  chocolate120: '#441F00',
+  coralRed10: '#FDF0EF',
+  coralRed100: '#ED6A5E',
+  coralRed120: '#B72215',
+  darkBlue10: '#EFEFF8',
+  darkBlue100: '#5e63b6',
+  darkBlue120: '#3B438C',
+  darkCyan10: '#E5F3F3',
+  darkCyan100: '#008B8B',
+  darkCyan120: '#007575',
+  darkPurple10: '#EEEAF2',
+  darkPurple100: '#52267D',
+  darkPurple120: '#36145E',
+  forestGreen10: '#EDF1EB',
+  forestGreen100: '#50723C',
+  forestGreen120: '#436032',
+  green10: '#F5FAFA',
+  green100: '#81CCCC',
+  green120: '#5DA8A6',
+  hotPink10: '#FFF0F7',
+  hotPink100: '#FF69B4',
+  hotPink120: '#CC0066',
+  oliveGreen10: '#F0F4E9',
+  oliveGreen100: '#6B8E23',
+  oliveGreen120: '#5A771D',
+  orange10: '#FFF3E5',
+  orange100: '#FF8600',
+  orange120: '#B25E00',
+  purple10: '#F3EEF9',
+  purple100: '#9452BA',
+  purple120: '#763E9E',
+  red10: '#FDEDF0',
+  red100: '#F74B64',
+  red120: '#C92343',
+  yellow10: '#FEFBF2',
+  yellow100: '#FCCE76',
+  yellow120: '#D69A38',
+};
+
 const fontSize: FontSize = {
   big: '15px',
   bigger: '17px',
@@ -129,4 +174,14 @@ const SkeletonPlaceholder = styled.div`
   ${placeholderStyle}
 `;
 
-export {color, fontFamily, fontSize, palette, CommonStyle, BrandedPath, SkeletonPlaceholder, placeholderStyle};
+export {
+  color,
+  colorAlternative,
+  fontFamily,
+  fontSize,
+  palette,
+  CommonStyle,
+  BrandedPath,
+  SkeletonPlaceholder,
+  placeholderStyle,
+};

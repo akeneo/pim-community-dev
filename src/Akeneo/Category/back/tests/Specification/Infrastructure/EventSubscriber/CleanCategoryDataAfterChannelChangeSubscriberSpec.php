@@ -21,14 +21,12 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class CleanCategoryDataAfterChannelChangeSubscriberSpec extends ObjectBehavior
 {
     function let(
-        FeatureFlag $enrichedCategoryFeature,
         JobInstanceRepository $jobInstanceRepository,
         JobLauncherInterface $jobLauncher,
         TokenStorageInterface $tokenStorage,
     )
     {
         $this->beConstructedWith(
-            $enrichedCategoryFeature,
             $jobInstanceRepository,
             $jobLauncher,
             $tokenStorage,
@@ -44,7 +42,6 @@ class CleanCategoryDataAfterChannelChangeSubscriberSpec extends ObjectBehavior
     function it_puts_in_queue_the_job_cleaning_category_after_channel_removal(
         GenericEvent $event,
         Channel $channel,
-        FeatureFlag $enrichedCategoryFeature,
         JobInstanceRepository $jobInstanceRepository,
         JobInstance $cleanCategoriesJobInstance,
         JobLauncherInterface $jobLauncher,
@@ -54,7 +51,6 @@ class CleanCategoryDataAfterChannelChangeSubscriberSpec extends ObjectBehavior
     )
     {
         $event->getSubject()->willReturn($channel);
-        $enrichedCategoryFeature->isEnabled()->willReturn(true);
         $channel->getCode()->willReturn('deleted_channel_code');
         $channel->getLocales()->willReturn(new ArrayCollection([]));
         $jobInstanceRepository->findOneByIdentifier('clean_categories_enriched_values')->willReturn($cleanCategoriesJobInstance);
@@ -76,7 +72,6 @@ class CleanCategoryDataAfterChannelChangeSubscriberSpec extends ObjectBehavior
     function it_puts_in_queue_the_job_cleaning_category_after_channel_update(
         GenericEvent $event,
         Channel $channel,
-        FeatureFlag $enrichedCategoryFeature,
         JobInstanceRepository $jobInstanceRepository,
         JobInstance $cleanCategoriesJobInstance,
         JobLauncherInterface $jobLauncher,
@@ -88,7 +83,6 @@ class CleanCategoryDataAfterChannelChangeSubscriberSpec extends ObjectBehavior
     )
     {
         $event->getSubject()->willReturn($channel);
-        $enrichedCategoryFeature->isEnabled()->willReturn(true);
         $channel->getCode()->willReturn('deleted_channel_code');
         $locale->getCode()->willReturn('en_US');
         $localesCollection->getValues()->willReturn([$locale]);
@@ -112,12 +106,10 @@ class CleanCategoryDataAfterChannelChangeSubscriberSpec extends ObjectBehavior
     function it_does_not_puts_in_queue_the_job_cleaning_category_if_subject_is_not_a_channel(
         GenericEvent $event,
         Category $eventSubject,
-        FeatureFlag $enrichedCategoryFeature,
         JobInstanceRepository $jobInstanceRepository,
     )
     {
         $event->getSubject()->willReturn($eventSubject);
-        $enrichedCategoryFeature->isEnabled()->willReturn(true);
 
         $jobInstanceRepository->findOneByIdentifier('clean_categories_enriched_values')->shouldNotBeCalled();
     }
@@ -125,12 +117,10 @@ class CleanCategoryDataAfterChannelChangeSubscriberSpec extends ObjectBehavior
     function it_does_not_puts_in_queue_the_job_cleaning_category_if_feature_flag_is_deactivated(
         GenericEvent $event,
         Channel $eventSubject,
-        FeatureFlag $enrichedCategoryFeature,
         JobInstanceRepository $jobInstanceRepository,
     )
     {
         $event->getSubject()->willReturn($eventSubject);
-        $enrichedCategoryFeature->isEnabled()->willReturn(false);
 
         $jobInstanceRepository->findOneByIdentifier('clean_categories_enriched_values')->shouldNotBeCalled();
     }

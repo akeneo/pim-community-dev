@@ -6,6 +6,8 @@ namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastruct
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
 
 /**
@@ -58,11 +60,9 @@ final class ComputeProductsEnrichmentStatusQueryIntegration extends DataQualityI
     private function givenProductSampleA(): array
     {
         $productUuid = $this->createProduct('sample_A', [
-            'family' => 'family_with_3_attributes',
-            'values' => [
-                'name' => [['scope' => null, 'locale' => null, 'data' => 'Sample A']],
-                'description' => [['scope' => 'mobile', 'locale' => null, 'data' => 'Sample A']],
-            ]
+            new SetFamily('family_with_3_attributes'),
+            new SetTextValue('name', null, null, 'Sample A'),
+            new SetTextValue('description', 'mobile', null, 'Sample A'),
         ])->getUuid()->toString();
 
         $productUuidCollection = $this->get(ProductUuidFactory::class)->createCollection([$productUuid]);
@@ -85,12 +85,10 @@ final class ComputeProductsEnrichmentStatusQueryIntegration extends DataQualityI
     private function givenProductSampleB(): array
     {
         $productUuid = $this->createProduct('sample_B', [
-            'family' => 'family_with_5_attributes',
-            'values' => [
-                'name' => [['scope' => null, 'locale' => null, 'data' => 'Sample A']],
-                'title' => [['scope' => null, 'locale' => null, 'data' => 'Sample A']],
-                'description' => [['scope' => 'ecommerce', 'locale' => null, 'data' => 'Sample A']],
-            ]
+            new SetFamily('family_with_5_attributes'),
+            new SetTextValue('name', null, null, 'Sample A'),
+            new SetTextValue('title', null, null, 'Sample A'),
+            new SetTextValue('description', 'ecommerce', null, 'Sample A'),
         ])->getUuid()->toString();
 
         $productIdCollection = $this->get(ProductUuidFactory::class)->createCollection([$productUuid]);
@@ -111,14 +109,14 @@ final class ComputeProductsEnrichmentStatusQueryIntegration extends DataQualityI
 
     private function givenNotInvolvedProduct(): void
     {
-        $this->createProduct('not_involved_product', ['family' => 'family_with_5_attributes']);
+        $this->createProduct('not_involved_product', [new SetFamily('family_with_5_attributes')]);
     }
 
     private function givenProductWithoutEvaluations(): array
     {
         $productWithoutEvaluationsUuid = $this->createProductWithoutEvaluations(
             'product_without_evaluations',
-            ['family' => 'family_with_5_attributes']
+            [new SetFamily('family_with_5_attributes')]
         )->getUuid()->toString();
 
         return [$productWithoutEvaluationsUuid => [
@@ -135,11 +133,9 @@ final class ComputeProductsEnrichmentStatusQueryIntegration extends DataQualityI
     private function givenProductWithoutEvaluationResults(): array
     {
         $product = $this->createProduct('product_without_results', [
-            'family' => 'family_with_3_attributes',
-            'values' => [
-                'name' => [['scope' => null, 'locale' => null, 'data' => 'Sample A']],
-                'description' => [['scope' => 'mobile', 'locale' => null, 'data' => 'Sample A']],
-            ]
+            new SetFamily('family_with_3_attributes'),
+            new SetTextValue('name', null, null, 'Sample A'),
+            new SetTextValue('description', 'mobile', null, 'Sample A'),
         ]);
 
         $this->get('database_connection')->executeQuery(<<<SQL

@@ -65,8 +65,8 @@ pim_enrich.entity.locale:
   uppercase_label: 区域
   plural_label: 区域
   page_title:
-    index: "]-Inf, 1]{{ count }} 个已启用区域|]1, Inf[{{ count }} 个已启用区域"
-  helper: "要启用或禁用某个区域，请转到您的其中一个<a href={{ href }}>渠道</a>，然后添加或移除区域。"
+    index: "]-Inf, 1]{{ count }} 个已启用区域|]1, Inf[{{ count }"
+  helper: "要启用或禁用某个区域，请转到您的其中一个<a href={{ href }}>渠道</"
   grid:
     columns:
       code: 已启用区域

@@ -55,7 +55,6 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
         $this->categoryTemplateAttributeSaver = $this->get(CategoryTemplateAttributeSaver::class);
         $this->getAttribute = $this->get(GetAttribute::class);
 
-        $this->get('feature_flags')->enable('category_update_template_attribute');
         $this->logAs('julia');
         $this->createTemplate();
     }

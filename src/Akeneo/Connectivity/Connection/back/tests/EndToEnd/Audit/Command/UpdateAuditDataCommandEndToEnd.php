@@ -8,12 +8,17 @@ use Akeneo\Connectivity\Connection\back\tests\EndToEnd\CommandTestCase;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\EventTypes;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Test\Integration\Configuration;
 use Doctrine\DBAL\Connection as DbalConnection;
 use Doctrine\DBAL\Types\Types;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 /**
  * @author Pierre Jolly <pierre.jolly@akeneo.com>
@@ -42,9 +47,9 @@ class UpdateAuditDataCommandEndToEnd extends CommandTestCase
         Assert::assertEquals(0, $this->getAuditCount($connection->code(), EventTypes::PRODUCT_CREATED));
         Assert::assertEquals(0, $this->getAuditCount($connection->code(), EventTypes::PRODUCT_UPDATED));
 
-        $product1 = $this->createProduct('product1', ['enabled' => false]);
-        $this->createProduct('product2', ['enabled' => false]);
-        $product3 = $this->createProduct('product3', ['enabled' => false]);
+        $this->createProduct('product1', [new SetEnabled(false)]);
+        $this->createProduct('product2', [new SetEnabled(false)]);
+        $this->createProduct('product3', [new SetEnabled(false)]);
         $this->setVersioningAuthorAndDate($connection->username());
 
         $commandTester = new CommandTester($this->command);
@@ -53,9 +58,9 @@ class UpdateAuditDataCommandEndToEnd extends CommandTestCase
         Assert::assertEquals(3, $this->getAuditCount($connection->code(), EventTypes::PRODUCT_CREATED));
         Assert::assertEquals(0, $this->getAuditCount($connection->code(), EventTypes::PRODUCT_UPDATED));
 
-        $this->updateProduct($product1, ['enabled' => true]);
-        $this->updateProduct($product1, ['enabled' => false]);
-        $this->updateProduct($product3, ['enabled' => true]);
+        $this->updateProduct('product1', [new SetEnabled(true)]);
+        $this->updateProduct('product1', [new SetEnabled(false)]);
+        $this->updateProduct('product3', [new SetEnabled(true)]);
         $this->setVersioningAuthorAndDate($connection->username());
 
         $commandTester = new CommandTester($this->command);
@@ -75,8 +80,8 @@ class UpdateAuditDataCommandEndToEnd extends CommandTestCase
         Assert::assertEquals(0, $this->getAuditCount($otherConnection->code(), EventTypes::PRODUCT_CREATED));
         Assert::assertEquals(0, $this->getAuditCount($otherConnection->code(), EventTypes::PRODUCT_UPDATED));
 
-        $product1 = $this->createProduct('product1', ['enabled' => false]);
-        $product2 = $this->createProduct('product2', ['enabled' => false]);
+        $product1 = $this->createProduct('product1', [new SetEnabled(false)]);
+        $product2 = $this->createProduct('product2', [new SetEnabled(false)]);
         $this->setVersioningAuthorAndDate($erpConnection->username(), $product1);
         $this->setVersioningAuthorAndDate($otherConnection->username(), $product2);
 
@@ -88,8 +93,8 @@ class UpdateAuditDataCommandEndToEnd extends CommandTestCase
         Assert::assertEquals(0, $this->getAuditCount($otherConnection->code(), EventTypes::PRODUCT_CREATED));
         Assert::assertEquals(0, $this->getAuditCount($otherConnection->code(), EventTypes::PRODUCT_UPDATED));
 
-        $this->updateProduct($product1, ['enabled' => true]);
-        $this->updateProduct($product2, ['enabled' => true]);
+        $this->updateProduct('product1', [new SetEnabled(true)]);
+        $this->updateProduct('product2', [new SetEnabled(true)]);
         $this->setVersioningAuthorAndDate($erpConnection->username(), $product1);
         $this->setVersioningAuthorAndDate($otherConnection->username(), $product2);
 
@@ -112,8 +117,8 @@ class UpdateAuditDataCommandEndToEnd extends CommandTestCase
         Assert::assertEquals(0, $this->getAuditCount($destinationConnection->code(), EventTypes::PRODUCT_CREATED));
         Assert::assertEquals(0, $this->getAuditCount($destinationConnection->code(), EventTypes::PRODUCT_UPDATED));
 
-        $product1 = $this->createProduct('product1', ['enabled' => false]);
-        $product2 = $this->createProduct('product2', ['enabled' => false]);
+        $product1 = $this->createProduct('product1', [new SetEnabled(false)]);
+        $product2 = $this->createProduct('product2', [new SetEnabled(false)]);
         $this->setVersioningAuthorAndDate($sourceConnection->username(), $product1);
         $this->setVersioningAuthorAndDate($destinationConnection->username(), $product2);
 
@@ -125,8 +130,8 @@ class UpdateAuditDataCommandEndToEnd extends CommandTestCase
         Assert::assertEquals(0, $this->getAuditCount($destinationConnection->code(), EventTypes::PRODUCT_CREATED));
         Assert::assertEquals(0, $this->getAuditCount($destinationConnection->code(), EventTypes::PRODUCT_UPDATED));
 
-        $this->updateProduct($product1, ['enabled' => true]);
-        $this->updateProduct($product2, ['enabled' => true]);
+        $this->updateProduct('product1', [new SetEnabled(true)]);
+        $this->updateProduct('product2', [new SetEnabled(true)]);
         $this->setVersioningAuthorAndDate($sourceConnection->username(), $product1);
         $this->setVersioningAuthorAndDate($destinationConnection->username(), $product2);
 
@@ -146,8 +151,8 @@ class UpdateAuditDataCommandEndToEnd extends CommandTestCase
         Assert::assertEquals(0, $this->getAuditCount($connection->code(), EventTypes::PRODUCT_CREATED));
         Assert::assertEquals(0, $this->getAuditCount($connection->code(), EventTypes::PRODUCT_UPDATED));
 
-        $product1 = $this->createProduct('product1', ['enabled' => false]);
-        $product2 = $this->createProduct('product2', ['enabled' => false]);
+        $product1 = $this->createProduct('product1', [new SetEnabled(false)]);
+        $product2 = $this->createProduct('product2', [new SetEnabled(false)]);
 
         $elevenDaysAgo = new \DateTimeImmutable('11 days ago', new \DateTimeZone('UTC'));
         $this->setVersioningAuthorAndDate($connection->username(), $product1, $elevenDaysAgo);
@@ -164,8 +169,8 @@ class UpdateAuditDataCommandEndToEnd extends CommandTestCase
         Assert::assertEquals(0, $this->getAuditCount($connection->code(), EventTypes::PRODUCT_UPDATED));
 
         $now = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
-        $product1 = $this->updateProduct($product1, ['enabled' => true]);
-        $product2 = $this->updateProduct($product2, ['enabled' => true]);
+        $product1 = $this->updateProduct('product1', [new SetEnabled(true)]);
+        $product2 = $this->updateProduct('product2', [new SetEnabled(true)]);
         $this->setVersioningAuthorAndDate($connection->username(), $product1, $now);
         $this->setVersioningAuthorAndDate($connection->username(), $product2, $now);
         $commandTester = new CommandTester($this->command);
@@ -227,24 +232,32 @@ SQL;
         );
     }
 
-    private function createProduct(string $identifier, array $data = []): ProductInterface
-    {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
-        $this->updateProduct($product, $data);
-
-        return $product;
-    }
-
-    private function updateProduct(ProductInterface $product, array $data = []): ProductInterface
-    {
-        $this->get('pim_catalog.updater.product')->update($product, $data);
-        $this->get('pim_catalog.saver.product')->save($product);
-
-        return $product;
-    }
-
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
+    }
+
+    private function createProduct(string $identifier, array $userIntents = []): ProductInterface
+    {
+        return $this->createOrUpdateProduct($identifier, $userIntents);
+    }
+
+    private function updateProduct(string $identifier, array $userIntents = []): ProductInterface
+    {
+        return $this->createOrUpdateProduct($identifier, $userIntents);
+    }
+
+    /**
+     * @param UserIntent[] $userIntents
+     */
+    private function createOrUpdateProduct(string $identifier, array $userIntents = []) : ProductInterface
+    {
+        $this->get('pim_enrich.product.message_bus')->dispatch(
+            UpsertProductCommand::createWithIdentifierSystemUser($identifier, $userIntents)
+        );
+
+        $this->get('pim_catalog.validator.unique_value_set')->reset();
+
+        return $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
     }
 }

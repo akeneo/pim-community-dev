@@ -13,6 +13,10 @@ use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Structure\FamilyLoader;
 use Akeneo\Connectivity\Connection\Tests\EndToEnd\GuzzleJsonHistoryContainer;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Test\Integration\Configuration;
@@ -45,7 +49,7 @@ class IncrementEventsApiRequestCountEndToEnd extends ApiTestCase
         $this->familyLoader = $this->get('akeneo_connectivity.connection.fixtures.structure.family');
         $this->attributeLoader = $this->get('akeneo_connectivity.connection.fixtures.structure.attribute');
         $this->dbalConnection = $this->get('database_connection');
-        $this->historyContainer = $this->get(\Akeneo\Connectivity\Connection\Tests\EndToEnd\GuzzleJsonHistoryContainer::class);
+        $this->historyContainer = $this->get(GuzzleJsonHistoryContainer::class);
 
         $this->referenceProduct = $this->loadReferenceProduct();
         $this->referenceAuthor = Author::fromNameAndType('julia', Author::TYPE_UI);
@@ -96,20 +100,12 @@ class IncrementEventsApiRequestCountEndToEnd extends ApiTestCase
         $this->attributeLoader->create(['code' => 'another_text_attribute', 'type' => 'pim_catalog_text']);
         $this->familyLoader->create(['code' => 'family', 'attributes' => ['boolean_attribute', 'text_attribute']]);
 
-        return $this->productLoader->create(
-            'product',
-            [
-                'family' => 'family',
-                'enabled' => true,
-                'categories' => ['category'],
-                'groups' => [],
-                'values' => [
-                    'another_text_attribute' => [
-                        ['data' => 'text attribute', 'locale' => null, 'scope' => null],
-                    ],
-                ],
-            ]
-        );
+        return $this->productLoader->create('product', [
+            new SetFamily('family'),
+            new SetEnabled(true),
+            new SetCategories(['category']),
+            new SetTextValue('another_text_attribute', null, null, 'text attribute')
+        ]);
     }
 
     private function getEventsApiRequestCount(): array

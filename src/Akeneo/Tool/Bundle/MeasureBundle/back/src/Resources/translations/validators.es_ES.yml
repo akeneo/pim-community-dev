@@ -1,0 +1,32 @@
+pim_measurements:
+  validation:
+    common:
+      code:
+        pattern: 'Este campo solo puede contener letras, números y guiones bajos.'
+        limit_reached: 'No puede crear la familia de medición "%measurement_family_code%" porque ha alcanzado el límite de %limit% familias de medición'
+    measurement_family:
+      standard_unit_code:
+        is_required: 'La unidad estándar es necesaria.'
+        should_be_in_the_list_of_units: 'El código estándar de unidad "%standard_unit_code%" no existe en la lista de unidades para la familia de medida "%measurement_family_code%".'
+        cannot_be_changed: 'El código de unidad estándar de la familia de medición "%measurement_family_code%" no se puede cambiar'
+        operation_should_be_multiply_by_one: 'El código de unidad estándar de la familia de medida "%measurement_family_code%" debe ser una operación multiplicada por 1'
+      should_contain_max_elements: 'Has alcanzado el límite de %limit% familias de medición.'
+      code:
+        must_be_unique: 'Este código de familia de medición ya existe.'
+      convert:
+        value_should_be_a_number_in_a_string: 'El valor de la operación debe ser un número válido'
+        should_contain_min_elements: 'Se requiere un mínimo de una operación de conversión por unidad.'
+        should_contain_max_elements: 'Ha alcanzado el límite de %limit% operaciones de conversión por unidad.'
+      measurement_family_units_is_locked_for_updates: 'Un atributo del producto está vinculado a esta familia de medidas. Solo puede editar las etiquetas traducidas y el símbolo de una unidad.'
+      measurement_family_unit_operations_locked_for_updates: 'Un atributo del producto está vinculado a esta familia de medidas. Solo puede editar las etiquetas traducidas y el símbolo de una unidad'
+      units:
+        should_contain_min_elements: 'Se requiere un mínimo de una operación de conversión por unidad.'
+        should_contain_max_elements: 'Ha alcanzado el límite de %limit% operaciones de conversión por unidad.'
+        operation:
+          invalid_operator: 'El operador {{ value }} no es válido, utilice {{ choices }} en su lugar.'
+        should_contain_at_least_one_unit: 'Debe haber al menos %limit% unidades en la familia de medición.'
+        should_not_contain_duplicates: 'Hemos encontrado algunas unidades duplicadas en la familia de medidas. La familia de medidas requiere unidades únicas.'
+        must_be_indexed_by_code: 'El índice no coincide con el código de la unidad.'
+    unit:
+      code:
+        must_be_unique: 'Este código de unidad ya existe.'

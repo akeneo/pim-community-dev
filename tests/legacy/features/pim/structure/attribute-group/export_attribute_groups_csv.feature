@@ -7,7 +7,7 @@ Feature: Export attribute groups
   Scenario: Successfully export attribute groups
     Given a "footwear" catalog configuration
     And the following job "csv_footwear_attribute_group_export" configuration:
-      | storage | {"type": "local", "file_path": " %tmp%/attribute_group_export/attribute_group_export.csv"} |
+      | storage | {"type": "local", "file_path": "%tmp%/attribute_group_export/attribute_group_export.csv"} |
     And I am logged in as "Julia"
     And I am on the "csv_footwear_attribute_group_export" export job page
     When I launch the export job

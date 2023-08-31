@@ -2,3 +2,7 @@ services:
   Akeneo\Pim\Structure\Bundle\Application\GetAttributesGroup\GetAttributeGroupsHandler:
     arguments:
       - '@Akeneo\Pim\Structure\Bundle\Infrastructure\Query\Sql\GetAttributeGroups'
+
+  Akeneo\Pim\Structure\Bundle\Application\SwitchMainIdentifier\SwitchMainIdentifierHandler:
+    arguments:
+      - '@database_connection'

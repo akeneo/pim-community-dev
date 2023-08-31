@@ -54,7 +54,7 @@ pim_enrich.entity.channel:
     category_tree: Arbre de catégories
     do_not_convert: Ne pas convertir
     measurement: Paramètres des mesures
-    label_conversion_units: Choisissez une unité de conversion pour chaque unité de mesure. Elle sera utilisée lors de l'export du produit
+    label_conversion_units: Choisissez une unité de conversion pour chaque unité d
   module:
     create:
       button: Créer un canal
@@ -65,8 +65,8 @@ pim_enrich.entity.locale:
   uppercase_label: Locale
   plural_label: Locales
   page_title:
-    index: "]-Inf, 1]{{ count }} locale activée|]1, Inf[{{ count }} locales activées"
-  helper: "Pour activer ou désactiver une locale, rendez-vous sur l'un de vos <a href={{ href }}>canaux</a> et ajoutez ou supprimez celle-ci."
+    index: "]-Inf, 1]{{ count }} locale activée|]1, Inf[{{ count }"
+  helper: "Pour activer ou désactiver une locale, rendez-vous sur l'u"
   grid:
     columns:
       code: Locales activées

@@ -36,7 +36,7 @@ akeneo.category:
       general_properties: 常规属性
       label_translations_in_ui_locales: 用户界面语言的标签翻译
     attribute:
-      description_title: 描述设置 
+      description_title: 描述设置
       type:
         text: 文本
         textarea: 文本区域
@@ -120,7 +120,7 @@ akeneo.category:
       content_description: '一组包含 13 个属性：'
       content:
         description_attributes: 2 个用于对类别进行长形式和短形式描述的文本区域属性
-        url_attributes: 1 个用于 URL 信息的文本属性
+        url_attributes: 1 个用于记录 URL 信息的文本属性
         image_attributes: 3 个用于图像的图像属性，以及 3 个用于替代文本信息的文本属性
         seo_attributes: 用于 SEO 信息的 2 个文本属性和 2 个文本区域属性
       confirmation_message: 确定要加载这组属性吗？

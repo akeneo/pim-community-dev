@@ -24,7 +24,7 @@ final class UserShouldExistValidator extends ConstraintValidator
     {
         Assert::isInstanceOf($constraint, UserShouldExist::class);
 
-        if (!\is_int($userId)) {
+        if (!\is_int($userId) || -1 === (int) $userId) {
             return;
         }
 

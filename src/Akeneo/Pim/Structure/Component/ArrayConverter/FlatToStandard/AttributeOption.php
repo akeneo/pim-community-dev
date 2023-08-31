@@ -2,7 +2,8 @@
 
 namespace Akeneo\Pim\Structure\Component\ArrayConverter\FlatToStandard;
 
-use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Channel\API\Query\FindLocales;
+use Akeneo\Channel\API\Query\Locale;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 use Akeneo\Tool\Component\Connector\Exception\StructureArrayConversionException;
@@ -16,22 +17,10 @@ use Akeneo\Tool\Component\Connector\Exception\StructureArrayConversionException;
  */
 class AttributeOption implements ArrayConverterInterface
 {
-    /** @var LocaleRepositoryInterface */
-    protected $localeRepository;
-
-    /** @var FieldsRequirementChecker */
-    protected $fieldChecker;
-
-    /**
-     * @param LocaleRepositoryInterface $localeRepository
-     * @param FieldsRequirementChecker  $fieldChecker
-     */
     public function __construct(
-        LocaleRepositoryInterface $localeRepository,
-        FieldsRequirementChecker $fieldChecker
+        protected FindLocales $findLocales,
+        protected FieldsRequirementChecker $fieldChecker
     ) {
-        $this->localeRepository = $localeRepository;
-        $this->fieldChecker = $fieldChecker;
     }
 
     /**
@@ -63,52 +52,49 @@ class AttributeOption implements ArrayConverterInterface
      */
     public function convert(array $item, array $options = [])
     {
-        $this->validate($item);
+        $this->fieldChecker->checkFieldsPresence($item, ['attribute', 'code']);
+        $this->fieldChecker->checkFieldsFilling($item, ['attribute', 'code']);
+
         $convertedItem = ['labels' => []];
         foreach ($item as $field => $data) {
-            $isLabel = false !== strpos($field, 'label-', 0);
-            if ($isLabel) {
-                $labelTokens = explode('-', $field);
-                $labelLocale = $labelTokens[1];
-                $convertedItem['labels'][$labelLocale] = $data;
+            if ('code' === $field || 'attribute' === $field) {
+                $convertedItem[$field] = (string) $data;
+            } elseif ('sort_order' === $field) {
+                $convertedItem[$field] = (int) $data;
+            } elseif (\preg_match('/^label-(?P<locale>[\w_]+)$/', $field, $matches)) {
+                $locale = $this->findLocales->find($matches['locale']);
+                if (null === $locale || !$locale->isActivated()) {
+                    $this->unexpectedFieldException($field);
+                }
+                $convertedItem['labels'][$locale->getCode()] = $data;
             } else {
-                $convertedItem[$field] = $data;
+                $this->unexpectedFieldException($field);
             }
-        }
-        if (isset($convertedItem['sort_order'])) {
-            $convertedItem['sort_order'] = (int) $convertedItem['sort_order'];
         }
 
         return $convertedItem;
     }
 
     /**
-     * @param array $item
-     *
      * @throws StructureArrayConversionException
      */
-    protected function validate(array $item)
+    protected function unexpectedFieldException(string $field): never
     {
-        $requiredFields = ['attribute', 'code'];
+        $authorizedFields = ['attribute', 'code', 'sort_order'];
+        $authorizedFields = \array_merge(
+            $authorizedFields,
+            \array_map(
+                static fn (Locale $locale): string => \sprintf('label-%s', $locale->getCode()),
+                $this->findLocales->findAllActivated()
+            )
+        );
 
-        $this->fieldChecker->checkFieldsPresence($item, $requiredFields);
-
-        $authorizedFields = array_merge($requiredFields, ['sort_order']);
-        $localeCodes = $this->localeRepository->getActivatedLocaleCodes();
-        foreach ($localeCodes as $code) {
-            $authorizedFields[] = 'label-' . $code;
-        }
-
-        foreach (array_keys($item) as $field) {
-            if (!in_array($field, $authorizedFields)) {
-                throw new StructureArrayConversionException(
-                    sprintf(
-                        'Field "%s" is provided, authorized fields are: "%s"',
-                        $field,
-                        implode(', ', $authorizedFields)
-                    )
-                );
-            }
-        }
+        throw new StructureArrayConversionException(
+            \sprintf(
+                'Field "%s" is provided, authorized fields are: "%s"',
+                $field,
+                \implode(', ', $authorizedFields)
+            )
+        );
     }
 }

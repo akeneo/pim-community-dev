@@ -120,20 +120,6 @@ final class GetAncestorProductModelCodesIntegration extends TestCase
         $this->get('pim_enrich.product.message_bus')->dispatch($command);
     }
 
-    protected function getUserId(string $username): int
-    {
-        $query = <<<SQL
-            SELECT id FROM oro_user WHERE username = :username
-        SQL;
-        $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
-        $id = $stmt->fetchOne();
-        if (null === $id) {
-            throw new \InvalidArgumentException(\sprintf('No user exists with username "%s"', $username));
-        }
-
-        return \intval($id);
-    }
-
     private function getAncestorProductModelCodes(): GetAncestorProductModelCodes
     {
         return $this->get('akeneo.pim.enrichment.product.query.get_ancestor_product_model_codes');

@@ -2,5 +2,4 @@ pim_enriched_category_rest_user_group_list:
   path: /rest/
   defaults:
     _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\UserGroupController
-    _feature: enriched_category
   methods: [GET]

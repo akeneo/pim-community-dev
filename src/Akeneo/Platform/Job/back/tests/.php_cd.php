@@ -16,6 +16,7 @@ $rules = [
             'Akeneo\Platform\Job\Domain',
             'Akeneo\Platform\Job\ServiceApi',
             'Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceFactory',
+            'Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface',
             'Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\ManualUploadStorage',
             'Akeneo\Tool\Component\Batch\Exception\InvalidJobException',
             'Akeneo\Tool\Component\Batch\Job\JobInterface',
@@ -28,6 +29,9 @@ $rules = [
             'Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface',
             'Symfony\Component\Validator\Validator\ValidatorInterface',
             'Webmozart\Assert\Assert',
+            'Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi\JobExecutionRepository',
+            'Akeneo\Tool\Component\Batch\Model\JobExecution',
+            'Akeneo\Tool\Component\Connector\Archiver\FileWriterArchiver',
         ],
     )->in('Akeneo\Platform\Job\Application'),
     $builder->only(
@@ -35,7 +39,7 @@ $rules = [
     )->in('Akeneo\Platform\Job\Domain'),
     $builder->only(
         [
-            'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
+            'Akeneo\Platform\Installer\Infrastructure\Event\InstallerEvents',
             'Akeneo\Platform\Job\Application',
             'Akeneo\Platform\Job\Domain',
             'Akeneo\Platform\Job\ServiceApi',
@@ -44,6 +48,7 @@ $rules = [
             'Doctrine\DBAL\Connection',
             'Oro\Bundle\SecurityBundle\SecurityFacade',
             'Symfony\Component',
+            'Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface',
         ],
     )->in('Akeneo\Platform\Job\Infrastructure'),
 ];

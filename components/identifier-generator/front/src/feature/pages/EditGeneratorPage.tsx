@@ -43,7 +43,8 @@ const EditGeneratorPage: React.FC<EditGeneratorProps> = ({initialGenerator}) => 
             NotificationLevel.SUCCESS,
             translate('pim_identifier_generator.flash.update.success', {code: generator.code})
           );
-          queryClient.invalidateQueries({queryKey: ['getIdentifierGenerator']});
+          queryClient.invalidateQueries('getIdentifierGenerator');
+          queryClient.invalidateQueries('getGeneratorList');
           identifierGeneratorContext.unsavedChanges.setHasUnsavedChanges(false);
         },
       });

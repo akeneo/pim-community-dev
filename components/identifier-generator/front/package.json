@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "@akeneo-pim-community/shared": "link:../../../front-packages/shared",
+    "@akeneo-pim-community/structure": "link:../../../src/Akeneo/Pim/Structure/front",
     "akeneo-design-system": "link:../../../front-packages/akeneo-design-system",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
@@ -45,7 +46,7 @@
     "translation:build:ee": "cp ../../../../../../public/js/translation/en_US.js ./src/translations.json",
     "route:build": "cp ../../../public/js/fos_js_routes.json ./src/routes.json",
     "route:build:ee": "cp ../../../../../../public/js/fos_js_routes.json ./src/routes.json",
-    "packages:build": "yarn --cwd=$npm_package_config_front_packages_path/akeneo-design-system lib:build && yarn workspace @akeneo-pim-community/shared lib:build",
+    "packages:build": "yarn --cwd=$npm_package_config_front_packages_path/akeneo-design-system lib:build && yarn workspace @akeneo-pim-community/shared lib:build && yarn workspace @akeneo-pim-community/structure lib:build",
     "eslint": "eslint --config .eslintrc.json src/**/*.{ts,tsx}",
     "lint:fix": "prettier --config .prettierrc.json --parser typescript --write \"./src/**/*.{ts,tsx}\" && eslint --config .eslintrc.json src/**/*.{ts,tsx} --fix",
     "lint:check": "prettier --config .prettierrc.json --parser typescript --check \"./src/**/*.{ts,tsx}\" && yarn eslint --config .eslintrc.json --ext .tsx,.ts ./src"

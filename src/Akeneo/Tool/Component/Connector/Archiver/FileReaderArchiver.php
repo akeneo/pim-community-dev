@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Tool\Component\Connector\Archiver;
 
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
-use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\ItemStep;
 use Akeneo\Tool\Component\Connector\Reader\File\FileReaderInterface;
@@ -14,17 +15,17 @@ use League\Flysystem\FilesystemOperator;
  * Archive files read by job execution to provide them through a download button
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @copyright 2013 Akeneo SAS (https://www.akeneo.com)
+ * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class FileReaderArchiver extends AbstractFilesystemArchiver
 {
-    protected JobRegistry $jobRegistry;
-
-    public function __construct(FilesystemOperator $filesystem, JobRegistry $jobRegistry)
-    {
-        $this->filesystem = $filesystem;
-        $this->jobRegistry = $jobRegistry;
+    public function __construct(
+        private readonly FilesystemOperator $localFilesystem,
+        FilesystemOperator $archivistFilesystem,
+        JobRegistry $jobRegistry,
+    ) {
+        parent::__construct($archivistFilesystem, $jobRegistry);
     }
 
     /**
@@ -32,32 +33,31 @@ class FileReaderArchiver extends AbstractFilesystemArchiver
      */
     public function archive(StepExecution $stepExecution): void
     {
-        $jobExecution = $stepExecution->getJobExecution();
-        $job = $this->jobRegistry->get($jobExecution->getJobInstance()->getJobName());
-        foreach ($job->getSteps() as $step) {
-            if (!$step instanceof ItemStep) {
-                continue;
-            }
-            $reader = $step->getReader();
+        $step = $this->getStep($stepExecution);
 
-            if ($this->isReaderUsable($reader)) {
-                $jobParameters = $jobExecution->getJobParameters();
-                $filePath = $jobParameters->get('storage')['file_path'];
+        if (!$step instanceof ItemStep) {
+            return;
+        }
 
-                $archivePath = strtr(
-                    $this->getRelativeArchivePath($jobExecution),
-                    [
-                        '%filename%' => basename($filePath),
-                    ]
-                );
+        $reader = $step->getReader();
 
-                if (is_readable($filePath)) {
-                    $fileResource = fopen($filePath, 'r');
-                    $this->filesystem->writeStream($archivePath, $fileResource);
+        if ($this->isReaderUsable($reader)) {
+            $jobParameters = $stepExecution->getJobExecution()->getJobParameters();
+            $filePath = $jobParameters->get('storage')['file_path'];
 
-                    if (is_resource($fileResource)) {
-                        fclose($fileResource);
-                    }
+            $archivePath = strtr(
+                $this->getRelativeArchivePath($stepExecution->getJobExecution()),
+                [
+                    '%filename%' => basename($filePath),
+                ]
+            );
+
+            if ($this->localFilesystem->fileExists($filePath)) {
+                $fileResource = $this->localFilesystem->readStream($filePath);
+                $this->archivistFilesystem->writeStream($archivePath, $fileResource);
+
+                if (is_resource($fileResource)) {
+                    fclose($fileResource);
                 }
             }
         }
@@ -76,15 +76,13 @@ class FileReaderArchiver extends AbstractFilesystemArchiver
      */
     public function supports(StepExecution $stepExecution): bool
     {
-        $jobExecution = $stepExecution->getJobExecution();
-        $job = $this->jobRegistry->get($jobExecution->getJobInstance()->getJobName());
-        foreach ($job->getSteps() as $step) {
-            if ($step instanceof ItemStep && $this->isReaderUsable($step->getReader())) {
-                return true;
-            }
+        try {
+            $step = $this->getStep($stepExecution);
+        } catch (\Throwable) {
+            return false;
         }
 
-        return false;
+        return $step instanceof ItemStep && $this->isReaderUsable($step->getReader());
     }
 
     /**

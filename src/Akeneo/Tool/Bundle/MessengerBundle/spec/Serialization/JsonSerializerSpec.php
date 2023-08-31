@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace spec\Akeneo\Tool\Bundle\MessengerBundle\Serialization;
 
 use Akeneo\Tool\Bundle\MessengerBundle\Serialization\JsonSerializer;
+use Akeneo\Tool\Component\Messenger\Stamp\CustomHeaderStamp;
 use Akeneo\Tool\Bundle\MessengerBundle\Stamp\TenantIdStamp;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Messenger\Envelope;
@@ -110,5 +111,61 @@ class JsonSerializerSpec extends ObjectBehavior
                     'retry_count' => '5',
                 ],
             ]);
+    }
+
+    public function it_encodes_an_envelope_with_custom_header($normalizer): void
+    {
+        $message = new \stdClass();
+        $envelope = new Envelope($message, [
+            $this->buildCustomStamp(),
+        ]);
+
+        $normalizer->supportsNormalization($message, 'json', [])
+            ->willReturn(true);
+
+        $normalizer->normalize($message, 'json', [])
+            ->willReturn(['some_property' => 'Some value!']);
+
+        $this->encode($envelope)
+            ->shouldReturn([
+                'body' => '{"some_property":"Some value!"}',
+                'headers' => [
+                    'customHeader' => 'customerHeaderValue',
+                    'class' => \stdClass::class,
+                ],
+            ]);
+    }
+
+    public function it_throw_an_exception_when_the_same_custom_header_is_used_twice($normalizer): void
+    {
+        $message = new \stdClass();
+        $envelope = new Envelope($message, [
+            $this->buildCustomStamp(),
+            $this->buildCustomStamp(),
+        ]);
+
+        $normalizer->supportsNormalization($message, 'json', [])
+            ->willReturn(true);
+
+        $normalizer->normalize($message, 'json', [])
+            ->willReturn(['some_property' => 'Some value!']);
+
+        $this->shouldThrow(\LogicException::class)
+            ->during('encode', [$envelope]);
+    }
+
+    private function buildCustomStamp(): CustomHeaderStamp
+    {
+        return new class implements CustomHeaderStamp {
+            public function header(): string
+            {
+                return 'customHeader';
+            }
+
+            public function value(): string
+            {
+                return 'customerHeaderValue';
+            }
+        };
     }
 }

@@ -12,9 +12,10 @@ akeneo.category:
     error:
       unhandled_attribute_type: Impossible de trouver le constructeur de champ d'attribut pour le type d'attribut "{{ type }}"
     template:
-      title: Modèle
+      title: Template
       no_attribute_title: Il n'y a aucun attribut dans ce modèle
       no_attribute_instructions: Le template associé à cette catégorie est vide, vous pouvez ajouter des attributs à ce template à partir de l'arborescence des catégories.
+      fetching_failed: Une erreur est survenue lors de la récupération du template
     unsaved_changes: Vous perdrez les modifications apportées à la catégorie si vous quittez la page.
   tree:
     create: Créer un arbre
@@ -91,7 +92,7 @@ akeneo.category:
       notification_success:
         title: 'Attribut {{ attribute }} supprimé avec succès'
     deactivate:
-      deactivate_template: Supprimer le modèle
+      deactivate_template: Supprimer le template
       confirmation_modal:
         title: Supprimer le template de catégorie
         message: Êtes-vous sûr de vouloir supprimer le template de catégorie nommé {{ template }}?

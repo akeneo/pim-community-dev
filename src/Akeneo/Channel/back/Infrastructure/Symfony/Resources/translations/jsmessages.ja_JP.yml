@@ -49,7 +49,7 @@ pim_enrich.entity.channel:
       success: チャンネルを正常に削除しました
       fail: このチャンネルを削除できません
   page_title:
-    index: "]-Inf, 1]{{ count }} 件のチャンネル|]1, Inf[{{ count }} 件のチャンネル"
+    index: "]-Inf, 1]{{ count }} 件のチャンネル|]1, Inf[{{ count }"
   property:
     category_tree: カテゴリツリー
     do_not_convert: 変換しない
@@ -65,8 +65,8 @@ pim_enrich.entity.locale:
   uppercase_label: ロケール
   plural_label: ロケール
   page_title:
-    index: "]-Inf, 1]{{ count }} 個の有効なロケール]1, Inf[{{ count }} 個の有効なロケール"
-  helper: "ロケールを有効化または無効化するには、いずれかの<a href={{ href }}>チャンネル</a>に移動し、ロケールを追加または削除してください。"
+    index: "]-Inf, 1]{{ count }} 個の有効なロケール]1, Inf[{{ count }"
+  helper: "ロケールを有効化または無効化するには、いずれかの<a href={{ hre"
   grid:
     columns:
       code: 有効なロケール

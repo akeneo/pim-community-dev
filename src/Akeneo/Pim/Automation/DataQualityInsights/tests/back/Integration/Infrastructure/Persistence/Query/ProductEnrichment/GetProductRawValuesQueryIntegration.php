@@ -7,9 +7,14 @@ namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastruct
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEnrichment\GetProductRawValuesQuery;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Test\Integration\TestCase;
-use Ramsey\Uuid\Uuid;
 
 /**
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
@@ -102,10 +107,8 @@ class GetProductRawValuesQueryIntegration extends TestCase
         $productId = $this->createVariantProduct(
             'variant_A_yes',
             [
-                'parent' => 'sub_pm_A',
-                'values' => [
-                    'a_yes_no' => [['scope' => null, 'locale' => null, 'data' => true]],
-                ],
+                new ChangeParent('sub_pm_A'),
+                new SetBooleanValue('a_yes_no', null, null, true)
             ]
         );
 
@@ -154,31 +157,31 @@ class GetProductRawValuesQueryIntegration extends TestCase
         $this->assertProductHasRawValues($expectedResult, $result);
     }
 
+    private function createOrUpdateProduct(string $identifier, array $userIntents): ProductInterface {
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product afterwards
+
+        $this->get('pim_enrich.product.message_bus')->dispatch(UpsertProductCommand::createWithIdentifierSystemUser(
+            $identifier,
+            $userIntents
+        ));
+
+        return $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
+    }
+
     private function createProduct(): ProductUuid
     {
-        $product = $this->get('akeneo_integration_tests.catalog.product.builder')
-            ->withIdentifier('product_with_family')
-            ->withFamily('familyA3')
-            ->build();
-
-        $data = [
-            'values' => [
-                'a_text' => [['scope' => null, 'locale' => null, 'data' => 'some text']],
-                'a_yes_no' => [['scope' => null, 'locale' => null, 'data' => true]],
-            ]
-        ];
-        $this->get('pim_catalog.updater.product')->update($product, $data);
-
-        $this->get('pim_catalog.saver.product')->saveAll([$product]);
+        $product =  $this->createOrUpdateProduct('product_with_family', [
+            new SetFamily('familyA3'),
+            new SetTextValue('a_text', null, null, 'some text'),
+            new SetBooleanValue('a_yes_no', null, null, true),
+        ]);
 
         return $this->get(ProductUuidFactory::class)->create((string)$product->getUuid());
     }
 
-    private function createVariantProduct(string $identifier, array $data): ProductUuid
+    private function createVariantProduct(string $identifier, array $userIntents): ProductUuid
     {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
-        $this->get('pim_catalog.updater.product')->update($product, $data);
-        $this->get('pim_catalog.saver.product')->save($product);
+        $product = $this->createOrUpdateProduct($identifier, $userIntents);
 
         return $this->get(ProductUuidFactory::class)->create((string)$product->getUuid());
     }

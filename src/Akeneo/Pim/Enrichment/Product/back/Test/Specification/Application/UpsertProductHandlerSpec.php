@@ -8,10 +8,12 @@ use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Value\IdentifierValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\LegacyViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
 use Akeneo\Pim\Enrichment\Product\API\Event\ProductWasCreated;
@@ -79,7 +81,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
     ) {
         $command = UpsertProductCommand::createWithIdentifier(1, ProductIdentifier::fromIdentifier('identifier1'), userIntents: []);
         $product = new Product();
-        $product->setIdentifier('identifier1');
+        $product->addValue(IdentifierValue::value('sku', true, 'identifier1'));
 
         $validator->validate($command)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
         $tokenStorage->getToken()->willReturn($token);
@@ -108,7 +110,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
     ) {
         $command = UpsertProductCommand::createWithIdentifier(1, ProductIdentifier::fromIdentifier('identifier1'), userIntents: []);
         $product = new Product();
-        $product->setIdentifier('identifier1');
+        $product->addValue(IdentifierValue::value('sku', true, 'identifier1'));
         $product->setCreated(\DateTime::createFromFormat('Y-m-d H:i:s', '2022-02-12 10:05:24'));
         $product->setUpdated(\DateTime::createFromFormat('Y-m-d H:i:s', '2022-02-12 10:05:24'));
 
@@ -167,7 +169,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
     ) {
         $command = UpsertProductCommand::createWithIdentifier(1, ProductIdentifier::fromIdentifier('identifier1'), userIntents: []);
         $product = new Product();
-        $product->setIdentifier('identifier1');
+        $product->addValue(IdentifierValue::value('sku', true, 'identifier1'));
         $violations = new ConstraintViolationList([
             new ConstraintViolation('error', null, [], $command, null, null),
         ]);
@@ -192,7 +194,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
     ) {
         $command = UpsertProductCommand::createWithIdentifier(1, ProductIdentifier::fromIdentifier('identifier1'), userIntents: []);
         $product = new Product();
-        $product->setIdentifier('identifier1');
+        $product->addValue(IdentifierValue::value('sku', true, 'identifier1'));
         $violations = new ConstraintViolationList([
             new ConstraintViolation('error', null, [], $command, null, null),
         ]);
@@ -222,7 +224,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         $setTextUserIntent = new SetTextValue('name', null, null, 'foo');
         $command = UpsertProductCommand::createWithIdentifier(1, ProductIdentifier::fromIdentifier('identifier1'), userIntents: [$setTextUserIntent]);
         $product = new Product();
-        $product->setIdentifier('identifier1');
+        $product->addValue(IdentifierValue::value('sku', true, 'identifier1'));
 
         $validator->validate($command)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
         $tokenStorage->getToken()->willReturn($token);
@@ -258,7 +260,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         $product = new Product();
         $product->setCreated(\DateTime::createFromFormat('Y-m-d H:i:s', '2022-02-12 10:05:24'));
         $product->setUpdated(\DateTime::createFromFormat('Y-m-d H:i:s', '2022-02-12 10:05:24'));
-        $product->setIdentifier('identifier1');
+        $product->addValue(IdentifierValue::value('sku', true, 'identifier1'));
 
         $validator->validate($command)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
         $tokenStorage->getToken()->willReturn($token);
@@ -312,7 +314,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         ]);
 
         $product = new Product();
-        $product->setIdentifier('identifier1');
+        $product->addValue(IdentifierValue::value('sku', true, 'identifier1'));
 
         $validator->validate($command)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
         $tokenStorage->getToken()->willReturn($token);
@@ -339,7 +341,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         $command = UpsertProductCommand::createWithIdentifier(userId: 1, productIdentifier: ProductIdentifier::fromIdentifier('identifier'), userIntents: []);
 
         $product = new Product();
-        $product->setIdentifier('identifier1');
+        $product->addValue(IdentifierValue::value('sku', true, 'identifier1'));
 
         $validator->validate($command)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
         $tokenStorage->getToken()->willReturn($token);
@@ -351,5 +353,41 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         $productSaver->save($product)->shouldNotBeCalled();
 
         $this->shouldThrow(\LogicException::class)->during('__invoke', [$command]);
+    }
+
+    function it_updates_a_product_without_checking_user(
+        ValidatorInterface $validator,
+        TokenStorageInterface $tokenStorage,
+        ProductRepositoryInterface $productRepository,
+        UserIntentApplierRegistry $applierRegistry,
+        UserIntentApplier $applier,
+        ValidatorInterface $productValidator,
+        SaverInterface $productSaver,
+        EventDispatcherInterface $eventDispatcher,
+        TokenInterface $token,
+        UserInterface $user,
+    ) {
+        $userIntent = new SetFamily('my-family');
+        $command = UpsertProductCommand::createWithIdentifierSystemUser('identifier1', [$userIntent]);
+
+        $product = new Product();
+        $product->setCreated(\DateTime::createFromFormat('Y-m-d H:i:s', '2022-02-12 10:05:24'));
+        $product->setUpdated(\DateTime::createFromFormat('Y-m-d H:i:s', '2022-02-12 10:05:24'));
+        $product->addValue(IdentifierValue::value('sku', true, 'identifier1'));
+        $validator->validate($command)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
+        $tokenStorage->getToken()->shouldBeCalledOnce()->willReturn($token);
+        $user->getUserIdentifier()->willReturn('system');
+        $token->getUser()->willReturn($user);
+        $productRepository->findOneByIdentifier('identifier1')->shouldBeCalledOnce()->willReturn($product);
+
+        $applierRegistry->getApplier($userIntent)->shouldBeCalledOnce()->willReturn($applier);
+        $applier->apply($userIntent, $product, -1)->shouldBeCalledOnce();
+
+        $productValidator->validate($product)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
+        $productSaver->save($product)->shouldBeCalledOnce();
+        $event = new ProductWasUpdated($product->getUuid(), \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2022-02-12 10:05:24'));
+        $eventDispatcher->dispatch($event)->shouldBeCalledOnce()->willReturn($event);
+
+        $this->__invoke($command);
     }
 }

@@ -11,6 +11,8 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\KeyIndicatorCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Ramsey\Uuid\UuidInterface;
@@ -71,11 +73,11 @@ final class GetProductKeyIndicatorsQueryIntegration extends DataQualityInsightsT
         $this->createFamily('family_B', ['attributes' => []]);
 
         $this->givenAProductWithoutValues();
-        $this->givenAProductWithoutValues(['family' => 'family_A']);
-        $this->givenAProductWithoutValues(['family' => 'family_B']);
-        $this->givenAProductWithPerfectEnrichmentAndImage(['family' => 'family_B']);
-        $this->givenAProductWithImageButMissingEnrichment(['family' => 'family_A']);
-        $this->givenAProductWithImageButMissingEnrichment(['family' => 'family_A']);
+        $this->givenAProductWithoutValues([new SetFamily('family_A')]);
+        $this->givenAProductWithoutValues([new SetFamily('family_B')]);
+        $this->givenAProductWithPerfectEnrichmentAndImage([new SetFamily('family_B')]);
+        $this->givenAProductWithImageButMissingEnrichment([new SetFamily('family_A')]);
+        $this->givenAProductWithImageButMissingEnrichment([new SetFamily('family_A')]);
 
         $goodEnrichment = new KeyIndicatorCode('good_enrichment');
         $hasImage = new KeyIndicatorCode('has_image');
@@ -101,21 +103,21 @@ final class GetProductKeyIndicatorsQueryIntegration extends DataQualityInsightsT
         $this->createCategory(['code' => 'category_B']);
 
         $this->givenAProductWithoutValues();
-        $this->givenAProductWithoutValues(['categories' => ['category_A', 'category_B']]);
-        $this->givenAProductWithoutValues(['categories' => ['category_B']]);
-        $this->givenAProductWithPerfectEnrichmentButWithoutAttributeImage(['categories' => ['category_A']]);
-        $this->givenAProductWithPerfectEnrichmentAndImage(['categories' => ['category_A_1', 'category_B']]);
-        $this->givenAProductWithImageButMissingEnrichment(['categories' => ['category_B']]);
+        $this->givenAProductWithoutValues([new SetCategories(['category_A', 'category_B'])]);
+        $this->givenAProductWithoutValues([new SetCategories(['category_B'])]);
+        $this->givenAProductWithPerfectEnrichmentButWithoutAttributeImage([new SetCategories(['category_A'])]);
+        $this->givenAProductWithPerfectEnrichmentAndImage([new SetCategories(['category_A_1', 'category_B'])]);
+        $this->givenAProductWithImageButMissingEnrichment([new SetCategories(['category_B'])]);
 
         $productModelA = $this->createProductModel('product_model_A', 'family_V_1', ['categories' => ['category_A']]);
         $productModelB = $this->createProductModel('product_model_B', 'family_V_1', ['categories' => ['category_B']]);
 
         // Product variant in category B from itself, and in category A from its parent
-        $this->givenAProductVariantWithoutValues($productModelA, ['categories' => ['category_B']]);
+        $this->givenAProductVariantWithoutValues($productModelA, [new SetCategories(['category_B'])]);
         // Product variant in category A from itself, and in category B from its parent
-        $this->givenAProductVariantWithPerfectEnrichmentAndImage($productModelB, ['categories' => ['category_A']]);
+        $this->givenAProductVariantWithPerfectEnrichmentAndImage($productModelB, [new SetCategories(['category_A'])]);
         // Product variant in only category B
-        $this->givenAProductVariantWithPerfectEnrichmentButWithoutAttributeImage($productModelB, ['categories' => ['category_B']]);
+        $this->givenAProductVariantWithPerfectEnrichmentButWithoutAttributeImage($productModelB, [new SetCategories(['category_B'])]);
 
         $goodEnrichment = new KeyIndicatorCode('good_enrichment');
         $hasImage = new KeyIndicatorCode('has_image');
@@ -145,31 +147,31 @@ final class GetProductKeyIndicatorsQueryIntegration extends DataQualityInsightsT
         $this->updateKeyIndicators($product->getUuid(), false, false);
     }
 
-    private function givenAProductWithPerfectEnrichmentAndImage(array $data = []): void
+    private function givenAProductWithPerfectEnrichmentAndImage(array $userIntents = []): void
     {
-        $product = $this->createProduct($this->getRandomCode(), $data);
+        $product = $this->createProduct($this->getRandomCode(), $userIntents);
         $this->updateKeyIndicators($product->getUuid(), true, true);
     }
 
-    private function givenAProductWithPerfectEnrichmentButWithoutAttributeImage(array $data = []): void
+    private function givenAProductWithPerfectEnrichmentButWithoutAttributeImage(array $userIntents = []): void
     {
-        $product = $this->createProduct($this->getRandomCode(), $data);
+        $product = $this->createProduct($this->getRandomCode(), $userIntents);
         $this->updateKeyIndicators($product->getUuid(), true, false);
     }
 
-    private function givenAProductWithImageButMissingEnrichment(array $data = []): void
+    private function givenAProductWithImageButMissingEnrichment(array $userIntents = []): void
     {
-        $product = $this->createProduct($this->getRandomCode(), $data);
+        $product = $this->createProduct($this->getRandomCode(), $userIntents);
         $this->updateKeyIndicators($product->getUuid(), false, true);
     }
 
-    private function givenAProductVariantWithoutValues(ProductModelInterface $productModel, array $data = []): void
+    private function givenAProductVariantWithoutValues(ProductModelInterface $productModel, array $userIntents = []): void
     {
         $productVariant = $this->createMinimalProductVariant(
             $this->getRandomCode(),
             $productModel->getCode(),
             DataQualityInsightsTestCase::MINIMAL_VARIANT_OPTIONS[0],
-            $data
+            $userIntents
         );
 
         $this->updateKeyIndicators($productModel->getId(), false, false, true);
@@ -189,13 +191,13 @@ final class GetProductKeyIndicatorsQueryIntegration extends DataQualityInsightsT
         $this->updateKeyIndicators($productVariant->getUuid(), true, true);
     }
 
-    private function givenAProductVariantWithPerfectEnrichmentButWithoutAttributeImage(ProductModelInterface $productModel, array $data = []): void
+    private function givenAProductVariantWithPerfectEnrichmentButWithoutAttributeImage(ProductModelInterface $productModel, array $userIntents = []): void
     {
         $productVariant = $this->createMinimalProductVariant(
             $this->getRandomCode(),
             $productModel->getCode(),
             DataQualityInsightsTestCase::MINIMAL_VARIANT_OPTIONS[2],
-            $data
+            $userIntents
         );
 
         $this->updateKeyIndicators($productModel->getId(), true, false, true);

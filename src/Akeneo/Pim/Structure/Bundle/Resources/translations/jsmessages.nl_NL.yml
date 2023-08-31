@@ -27,6 +27,8 @@ pim_enrich.entity.family:
       required_label: Verplicht
     create:
       button: Familie aanmaken
+      from_scratch: Creëer vanuit een lege sjabloon
+      browse_templates: Familiesjablonen bekijken
     delete:
       confirm: Weet u zeker dat u deze familie wilt verwijderen?
 pim_enrich.entity.family_variant:
@@ -218,6 +220,17 @@ pim_enrich.entity.attribute:
       invalid: De code is ongeldig
       not_available: Deze code is niet beschikbaar
       is_duplicate: Deze code is al in gebruik.
+    identifier_limit_reached_title: Maximum van 10 identifiers bereikt. 
+    identifier_limit_reached: Je kunt geen andere identifier aanmaken omdat je al het maximum van 10 hebt bereikt.
+    identifier_limit_reached_url: '→ Meer informatie in het Helpcentrum'
+    identifiers_limit: U kunt maximaal 10 identifier attributen maken. Leer meer over meerdere identifiers in de
+    identifiers_limit_link: help center
+    unique_value_helper: Moet de waarde in dit attribuut uniek zijn? U kunt deze instelling later niet aanpassen.
+    scopable_helper: Moet de waarde in dit attribuut per kanaal verschillen (scopeable)? U kunt deze instelling later niet aanpassen.
+    localizable_helper: Moet de waarde in dit attribuut per locale verschillen (localizable)? U kunt deze instelling later niet aanpassen.
+    attribute_creation_type: Attribuuttype
+    attribute_creation_template: Sjabloon
+    attribute_creation_settings: Attribuut instellingen
   module:
     add_attribute:
       no_available_attributes: Er zijn geen attributen meer om toe te voegen
@@ -227,6 +240,36 @@ pim_enrich.entity.attribute:
     edit:
       common: Algemene parameters
       type_specific: Type specifieke parameters
+      attribute_setup:
+        section_title: Attribuut instellingen
+        warning: Acties die hier worden uitgevoerd kunnen grote invloed hebben op uw productinformatie.
+        type: Dit attribuuttype is <em>{{ attributeType }}</em>
+        type_helper: Het attribuuttype kan niet worden gewijzigd aangezien dit zou leiden tot het verwijderen van ingevulde attribuutwaarden in uw producten. 
+        unique_attribute_title: De waarde van dit attribuut is <em>uniek</em>
+        non_unique_attribute_title: De waarde van dit attribuut is <em>niet uniek</em>
+        unique_helper: De waarde van het attribuut is verschillend voor elk product. Dit kan niet worden gewijzigd.
+        non_unique_helper: Dezelfde waarde kan worden gebruikt voor dit attribuut voor verschillende producten. Dit kan niet worden gewijzigd.
+        main_identifier_title: Dit attribuut is <em>hoofd identifier</em>
+        non_main_identifier_title: Dit attribuut is niet de <em>hoofd identifier</em>
+        main_identifier_helper: U kunt maximaal {{ maxIdentifiersCount }} identifiers voor uw producten hebben met één ingesteld als de hoofd identifier. De huidige hoofd identifier is {{ mainIdentifierLabel }}. <link>Leer meer</link>
+        scopable_attribute_title: Dit attribuut is <em>scopable</em>
+        non_scopable_attribute_title: Dit attribuut is <em>niet scopeable</em>
+        scopable_helper: Waarde per kanaal bepaalt of een attribuut per kanaal een andere waarde kan bevatten (scopeable) of niet (niet scopeable) <link>Leer meer</link>
+        localizable_attribute_title: Dit attribuut is <em>lokaliseerbaar</em>
+        non_localizable_attribute_title: Dit attribuut is <em>niet lokaliseerbaar</em>
+        localizable_helper: Waarde per lokale bepaalt of een attribuut per lokale een andere waarde kan bevatten (localizable) of niet (niet localizable) <link>Leer meer</link>
+        set_as_main_identifier:
+          button: Instellen als hoofd identifier
+          confirm: Typ alstublieft "{{ attributeCode }}"
+          confirm_title: Het wijzigen van de hoofd identifier heeft invloed op alle producten
+          are_you_sure: Weet u zeker dat u het {{ attributeLabel }} attribuut als hoofd identifier wilt instellen? <link>Leer meer in het helpcentrum.</link>
+          warning: "{{ attributeLabel }} is momenteel ingesteld als de hoofd identifier. Deze wijziging heeft invloed op alle producten."
+          onboarder_warning: U kunt geen ander identifier attribuut instellen als hoofd identifier omdat deze functie niet compatibel is met Akeneo Onboarder.
+          flash:
+            success: Hoofd identifier is succesvol bijgewerkt.
+            fail: Fout opgetreden tijdens het bijwerken van de hoofd identifier.
+            fail_published_product: Als u uw hoofd identifier wilt wijzigen, zorg er dan voor dat u eerst de publicatie van uw producten ongedaan maakt (gepubliceerde producten) en daarna uw hoofd identifier wijzigt.
+            fail_published_product_link: Navigeer naar gepubliceerde producten
       validation: Validatieparameters
       select_locale: Selecteer uw taal
     delete:
@@ -242,6 +285,7 @@ pim_enrich.entity.attribute:
       confirm_from_family: Weet u zeker dat u dit attribuut uit de familie wilt verwijderen?
       confirm_from_group: Weet u zeker dat u het attribuut {{ attribute }} van deze attribuutgroep wilt verwijderen?
       confirm_from_product: Bent u zeker dat u dit attribuut wil verwijderen van het product?
+      cannot_delete: De hoofd identifier kan niet worden verwijderd. Om dit attribuut te verwijderen, moet u eerst een andere identifier instellen als de hoofd identifier. <link>Leer meer in het help centrum.</link>
     mass_delete:
       modal:
         title: Attributen

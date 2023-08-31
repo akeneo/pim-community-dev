@@ -1,3 +1,6 @@
+parameters:
+  pim_installer.install_status_manager.class: Akeneo\Platform\Installer\Infrastructure\InstallStatusManager\InstallStatusManager
+
 services:
   Akeneo\Platform\Installer\Infrastructure\DatabasePurger\DbalPurger:
     arguments:
@@ -55,3 +58,35 @@ services:
       - '@akeneo_batch_queue.launcher.queue_job_launcher'
       - '@akeneo_batch.job.job_instance_repository'
       - '@security.token_storage'
+
+  pim_installer.install_status_manager:
+    class: '%pim_installer.install_status_manager.class%'
+    arguments:
+      - '@Akeneo\Platform\Installer\Infrastructure\Persistence\Sql\GetInstallDatetime'
+      - '@Akeneo\Platform\Installer\Infrastructure\Persistence\Sql\GetResetEvents'
+
+  pim_installer.processor.denormalization.user:
+    class: '%pim_connector.processor.denormalization.class%'
+    arguments:
+      - '@pim_user.repository.user'
+      - '@pim_user.factory.user'
+      - '@pim_user.updater.user'
+      - '@validator'
+      - '@akeneo_storage_utils.doctrine.object_detacher'
+
+  Akeneo\Platform\Installer\Infrastructure\Persistence\Sql\InstallData:
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Platform\Installer\Infrastructure\Persistence\Sql\GetInstallDatetime:
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Platform\Installer\Infrastructure\Persistence\Sql\GetResetEvents:
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Platform\Installer\Infrastructure\Persistence\Sql\SaveResetEvent:
+    arguments:
+      - '@database_connection'
+      - '@Akeneo\Platform\Installer\Infrastructure\Persistence\Sql\GetResetEvents'

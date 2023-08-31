@@ -31,10 +31,6 @@ Akeneo\Pim\Enrichment\Component\Product\Model\Product:
                 message: 'regex.line_break.message'
                 match: false
                 groups: ['identifiers']
-            - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Length:
-                max: 255
-                attributeCode: 'identifier'
-                groups: ['identifiers']
         associations:
             - Symfony\Component\Validator\Constraints\All:
                 - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\AssociationTypeIsNotQuantified: ~

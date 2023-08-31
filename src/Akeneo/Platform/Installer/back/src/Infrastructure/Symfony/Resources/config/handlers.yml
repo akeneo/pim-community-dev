@@ -13,4 +13,5 @@ services:
 
   Akeneo\Platform\Installer\Application\IsMaintenanceModeEnabled\IsMaintenanceModeEnabledHandler:
     arguments:
+      - '@akeneo.installer.reset_pim.feature'
       - '@Akeneo\Platform\Installer\Infrastructure\Query\IsMaintenanceModeEnabled'

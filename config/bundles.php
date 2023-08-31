@@ -42,7 +42,6 @@ return [
     Akeneo\Platform\Bundle\DashboardBundle\PimDashboardBundle::class => ['all' => true],
     Oro\Bundle\PimDataGridBundle\PimDataGridBundle::class => ['all' => true],
     Akeneo\Platform\Bundle\ImportExportBundle\PimImportExportBundle::class => ['all' => true],
-    Akeneo\Platform\Bundle\InstallerBundle\PimInstallerBundle::class => ['all' => true],
     Akeneo\Platform\Installer\Infrastructure\Symfony\AkeneoInstallerBundle::class => ['all' => true],
     Akeneo\Platform\Bundle\NotificationBundle\PimNotificationBundle::class => ['all' => true],
     Akeneo\Platform\Bundle\UIBundle\PimUIBundle::class => ['all' => true],

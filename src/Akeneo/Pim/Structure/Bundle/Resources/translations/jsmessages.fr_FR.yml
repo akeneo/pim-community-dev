@@ -27,6 +27,8 @@ pim_enrich.entity.family:
       required_label: Obligatoire
     create:
       button: Créer une famille
+      from_scratch: Créer à partir de zéro
+      browse_templates: Parcourir les modèles de famille
     delete:
       confirm: Êtes-vous sûr(e) de que vouloir supprimer cette famille ?
 pim_enrich.entity.family_variant:
@@ -218,6 +220,17 @@ pim_enrich.entity.attribute:
       invalid: Le code est invalide
       not_available: Ce code n'est pas disponible
       is_duplicate: Ce code est déjà utilisé
+    identifier_limit_reached_title: Vous avez atteint la limite maximum de 10 identifiants.
+    identifier_limit_reached: Vous ne pouvez pas créer un autre identifiant car vous avez déjà atteint la limite de 10.
+    identifier_limit_reached_url: '→ En savoir plus sur le Help Center'
+    identifiers_limit: Vous pouvez créer un maximum de 10 identifiants. En savoir plus sur les identifiants additionnels dans le
+    identifiers_limit_link: Help Center.
+    unique_value_helper: La valeur de cet attribut doit-elle être unique ? Vous ne pourrez plus modifier ce paramètre plus tard.
+    scopable_helper: La valeur de cet attribut doit-elle différer par canal (scopable) ?
+    localizable_helper: La valeur de cet attribut doit-elle différer par locale (localisable) ?
+    attribute_creation_type: Type d'attribut
+    attribute_creation_template: Modèle
+    attribute_creation_settings: Paramètres de l'attribut
   module:
     add_attribute:
       no_available_attributes: Il n'y a plus d'attributs disponibles
@@ -227,6 +240,36 @@ pim_enrich.entity.attribute:
     edit:
       common: Paramètres généraux
       type_specific: Paramètres spécifiques
+      attribute_setup:
+        section_title: Configuration de l'attribut
+        warning: Les choix effectués ici pourraient impacter considérablement vos produits.
+        type: Ce type d'attribut est <em>{{ attributeType }}</em>
+        type_helper: Le type d'un attribut ne peut pas être modifié car cela entraînerait la suppression de toutes les valeurs renseignées pour cet attribut dans les produits concernés.
+        unique_attribute_title: La valeur de cet attribut est <em>unique</em>
+        non_unique_attribute_title: La valeur de cet attribut <em>n'est pas unique</em>
+        unique_helper: La valeur de l'attribut est différente pour chaque produit. Vous ne pouvez plus modifier ce paramètre.
+        non_unique_helper: La même valeur peut être utilisée pour cet attribut sur plusieurs produits. Vous ne pouvez plus modifier ce paramètre.
+        main_identifier_title: Cet attribut est <em>l'identifiant principal</em>
+        non_main_identifier_title: Cet attribut <em>n'est pas l'identifiant principal</em>
+        main_identifier_helper: Vous pouvez créer un maximum de {{ maxIdentifiersCount }} identifiants pour vos produits, et paramétrer l'un d'entre eux en tant qu'identifiant principal. L'identifiant principal actuel est {{ mainIdentifierLabel }}. <link>En savoir plus</link>
+        scopable_attribute_title: Les valeurs de cet attribut <em>diffèrent par canal (scopable)</em>
+        non_scopable_attribute_title: Les valeurs de cet attribut <em>ne diffèrent pas par canal (non scopable)</em>
+        scopable_helper: La valeur par canal détermine si un attribut est scopable (valeurs différentes pour différents canaux) ou non (une même valeur pour tous les canaux). <link>En savoir plus</link>
+        localizable_attribute_title: Les valeurs de cet attribut <em>diffèrent par locale (localisable)</em>
+        non_localizable_attribute_title: Les valeurs de cet attribut <em>ne diffèrent pas par locale (non localisable)</em>
+        localizable_helper: La valeur par canal détermine si un attribut est localisable (valeurs différentes pour différentes locales) ou non (une même valeur pour toutes les locales). <link>En savoir plus</link>
+        set_as_main_identifier:
+          button: Définir comme identifiant principal
+          confirm: 'Merci de saisir le code de l''attribut suivant : "{{ attributeCode }}"'
+          confirm_title: Modifier l'identifiant principal aura un impact sur tous les produits
+          are_you_sure: Êtes-vous sûr de vouloir définir l'attribut {{ attributeLabel }} comme identifiant principal ? <link>En savoir plus dans le Help Center.</link>
+          warning: "{{ attributeLabel }} est actuellement défini en tant qu'identifiant principal. Ce changement affectera tous les produits."
+          onboarder_warning: Vous ne pouvez pas définir un autre attribut de type identifiant comme identifiant principal car cette fonctionnalité n'est pas compatible avec Akeneo Onboarder.
+          flash:
+            success: L'identifiant principal a été mis à jour avec succès.
+            fail: Une erreur s'est produite lors de la mise à jour de l'identifiant principal.
+            fail_published_product: Si vous souhaitez modifier votre identifiant principal, assurez-vous d'abord de dépublier vos produits, puis de modifier votre identifiant principal.
+            fail_published_product_link: Accéder à vos produits publiés
       validation: Paramètres de validation
       select_locale: Sélectionnez une locale
     delete:
@@ -242,6 +285,7 @@ pim_enrich.entity.attribute:
       confirm_from_family: Êtes-vous sûr(e) de vouloir supprimer cet attribut de la famille ?
       confirm_from_group: Êtes vous sûr(e) de vouloir retirer l'attribut {{ attribute }} de ce groupe d'attributs ?
       confirm_from_product: Êtes-vous sûr(e) de vouloir supprimer cet attribut du produit ?
+      cannot_delete: Cet attribut ne peut pas être supprimé car il est utilisé en tant qu'identifiant principal. Pour le supprimer, veuillez d'abord définir un autre attribut de type identifiant en tant qu'identifiant principal. <link>En savoir plus dans le Help Center</link>.
     mass_delete:
       modal:
         title: Attributs

@@ -192,20 +192,6 @@ CSV;
         $this->getCacheClearer()->clear();;
     }
 
-    private function getUserId(string $username): int
-    {
-        $query = <<<SQL
-            SELECT id FROM oro_user WHERE username = :username
-        SQL;
-        $stmt = $this->getConnection()->executeQuery($query, ['username' => $username]);
-        $id = $stmt->fetchOne();
-        if (null === $id) {
-            throw new \InvalidArgumentException(\sprintf('No user exists with username "%s"', $username));
-        }
-
-        return \intval($id);
-    }
-
     private function getJobLauncher(): JobLauncher
     {
         return $this->get('akeneo_integration_tests.launcher.job_launcher');

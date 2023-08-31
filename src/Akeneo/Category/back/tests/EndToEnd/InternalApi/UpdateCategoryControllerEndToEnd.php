@@ -40,7 +40,6 @@ class UpdateCategoryControllerEndToEnd extends ControllerIntegrationTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->get('feature_flags')->enable('enriched_category');
         $this->logAs('julia');
         $this->createCategory(
             'jeans',

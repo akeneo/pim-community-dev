@@ -14,6 +14,7 @@ use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Tool\Component\Batch\Item\StatefulInterface;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
+use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\Batch\Job\JobWithStepsInterface;
 use Akeneo\Tool\Component\Batch\Job\PausableJobInterface;
@@ -25,11 +26,15 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class PauseJobOnSigtermSubscriber implements EventSubscriberInterface
 {
+    /**
+     * @param array<string> $jobsAllowedToPause
+     */
     public function __construct(
         private readonly FeatureFlags $featureFlags,
         private readonly LoggerInterface $logger,
         private readonly SqlUpdateJobExecutionStatus $updateJobExecutionStatus,
         private readonly JobRegistry $jobRegistry,
+        private readonly array $jobsAllowedToPause,
     ) {
     }
 
@@ -43,32 +48,36 @@ class PauseJobOnSigtermSubscriber implements EventSubscriberInterface
     public function onBeforeJobExecution(JobExecutionEvent $event): void
     {
         $jobExecution = $event->getJobExecution();
+        $job = $this->jobRegistry->get($jobExecution->getJobInstance()->getJobName());
 
-        if (!$this->featureFlags->isEnabled('pause_jobs') || !$this->isJobExecutionPausable($jobExecution)) {
-            return;
-        }
-
-        pcntl_signal(\SIGTERM, function () use ($jobExecution) {
-            $this->logger->notice('Received SIGTERM signal in PauseJobOnSigtermSubscriber and pausing the job.', [
-                'job_execution_id' => $jobExecution
-            ]);
-
+        pcntl_signal(\SIGTERM, function () use ($job, $jobExecution) {
             if (!$jobExecution->isRunning()) {
                 return;
             }
+            if (!$this->featureFlags->isEnabled('pause_jobs') || !$this->isJobPausable($job) || !$this->isJobAllowedToPause($job)) {
+                return;
+            }
+
+            $this->logger->notice('Received SIGTERM signal in PauseJobOnSigtermSubscriber and pausing the job.', [
+                'job_execution_id' => $jobExecution->getId(),
+                'job_code' => $jobExecution->getJobInstance()->getCode(),
+            ]);
 
             $this->updateJobExecutionStatus->updateByJobExecutionId($jobExecution->getId(), new BatchStatus(BatchStatus::PAUSING));
         });
     }
 
-    private function isJobExecutionPausable(JobExecution $jobExecution): bool
+    private function isJobPausable(JobInterface $job): bool
     {
-        $job = $this->jobRegistry->get($jobExecution->getJobInstance()->getJobName());
-
         if ($job instanceof PausableJobInterface) {
             return $job->isPausable();
         }
 
         return false;
+    }
+
+    private function isJobAllowedToPause(JobInterface $job): bool
+    {
+        return in_array($job->getName(), $this->jobsAllowedToPause);
     }
 }

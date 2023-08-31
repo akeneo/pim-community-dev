@@ -53,7 +53,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface',
 
         // I don't think we should add install subscriber in platform instead of structure (discussed with Arnaud L.)
-        'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
+        'Akeneo\Platform\Installer\Infrastructure\Event\InstallerEvents',
     ])->in('Akeneo\Pim\Structure\Bundle'),
     $builder->only([
         'Symfony\Component',

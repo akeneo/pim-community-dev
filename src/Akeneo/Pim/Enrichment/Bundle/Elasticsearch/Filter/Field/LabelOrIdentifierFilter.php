@@ -3,8 +3,11 @@
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterHelper;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 
 /**
  * Label or identifier filter for an Elasticsearch query
@@ -16,7 +19,11 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
  */
 class LabelOrIdentifierFilter extends AbstractFieldFilter
 {
+    protected const IDENTIFIER_ATTRIBUTE_BACKEND_TYPE = 'text';
+    protected const IDENTIFIER_ATTRIBUTE_TYPE = 'pim_catalog_identifier';
+
     public function __construct(
+        private readonly GetAttributes $getAttributes,
         array $supportedFields = [],
         array $supportedOperators = [],
         private readonly array $idPrefixes = [],
@@ -42,11 +49,8 @@ class LabelOrIdentifierFilter extends AbstractFieldFilter
 
         $this->checkValue($operator, $value);
 
-        $clauses[] = [
-            'wildcard' => [
-                'identifier' => sprintf('*%s*', $this->escapeValue($value)),
-            ]
-        ];
+        $clauses[] = $this->productIdentifierValuesClause($value);
+        $clauses[] = $this->productModelIdentifierClause($value);
 
         if (null !== $channel && null !== $locale) {
             $clauses[] = [
@@ -131,5 +135,68 @@ class LabelOrIdentifierFilter extends AbstractFieldFilter
         $regex = '#[-+=|! &(){}\[\]^"~*<>?:/\\\]#';
 
         return preg_replace($regex, '\\\$0', $value);
+    }
+
+    /**
+     * @return array[]
+     */
+    private function productIdentifierValuesClause(string $value): array
+    {
+        $identifierAttributeFields = \array_map(
+            static fn (Attribute $attributeFromList): string =>
+            \sprintf(
+                'values.%s-%s.<all_channels>.<all_locales>',
+                $attributeFromList->code(),
+                self::IDENTIFIER_ATTRIBUTE_BACKEND_TYPE
+            ),
+            $this->getAttributes->forType(self::IDENTIFIER_ATTRIBUTE_TYPE)
+        );
+
+        $identifierValueClauses = [];
+        foreach ($identifierAttributeFields as $identifierAttributeField) {
+            $identifierValueClauses[] = [
+                'wildcard' => [
+                    $identifierAttributeField => sprintf('*%s*', $this->escapeValue($value)),
+                ]
+            ];
+        }
+
+        $shouldContainIdentifierClause = [
+            'bool' => [
+                'should' => $identifierValueClauses,
+                'minimum_should_match' => 1
+            ]
+        ];
+
+
+        return [
+            'bool' => [
+                'should' => [
+                    [
+                        'term' => [
+                            'document_type' => ProductInterface::class,
+                        ],
+                    ],
+                    [
+                        'bool' => [
+                            'should' => [
+                                $shouldContainIdentifierClause
+                            ],
+                            'minimum_should_match' => 1,
+                        ],
+                    ]
+                ],
+                'minimum_should_match' => 2,
+            ],
+        ];
+    }
+
+    private function productModelIdentifierClause(string $value): array
+    {
+        return [
+            'wildcard' => [
+                'identifier' => sprintf('*%s*', $this->escapeValue($value)),
+            ]
+        ];
     }
 }

@@ -11,6 +11,13 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetOutdatedProductModelIdsByDateAndCriteriaQueryInterface'
             - '@logger'
 
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Messenger\EvaluateAfterAttributeGroupActivateHandler:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductIdsImpactedByAttributeGroupActivationQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductModelIdsImpactedByAttributeGroupActivationQuery'
+            - '@messenger.bus.default'
+            - 50
+
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Messenger\LaunchProductAndProductModelEvaluationsMessageNormalizer:
         tags:
             - { name: akeneo_messenger.message.normalizer }
@@ -19,8 +26,15 @@ services:
         arguments:
             - '@akeneo.pim.automation.data_quality_insights.create_products_criteria_evaluations'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts'
-    
+
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Messenger\ProductModelsWereCreatedOrUpdatedHandler:
       arguments:
         - '@akeneo.pim.automation.data_quality_insights.create_products_criteria_evaluations'
         - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProductModels'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Application\Command\UpdateAttributeGroupActivationHandler:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\AttributeGroupActivationRepository'
+            - '@messenger.bus.default'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsUcsEventFeature'

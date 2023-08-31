@@ -122,3 +122,15 @@ services:
     class: 'Akeneo\Category\Infrastructure\Storage\Sql\UpdateCategoryTemplateAttributesOrderSql'
     arguments:
       - '@database_connection'
+
+  Akeneo\Category\Domain\ImageFile\GetOrphanCategoryImageFilePaths:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\GetOrphanCategoryImageFilePathsSql
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Category\Domain\ImageFile\DeleteCategoryImageFile:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\DeleteCategoryImageFileSql
+    arguments:
+      - '@database_connection'
+      - '@akeneo_file_storage.file_storage.filesystem_provider'
+      - '@pim_category.infrastructure.registry.preview_generator'

@@ -125,6 +125,13 @@ services:
             - '@akeneo.pim.structure.query.attribute_is_an_family_variant_axis'
             - '@pim_catalog.repository.channel'
 
+    Akeneo\Pim\Structure\Bundle\Controller\InternalApi\GetMainIdentifierAttributeController:
+        public: true
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@pim_enrich.normalizer.attribute'
+            - '@pim_user.context.user'
+
     pim_enrich.controller.rest.attribute_group:
         public: true
         class: 'Akeneo\Pim\Structure\Bundle\Controller\InternalApi\AttributeGroupController'
@@ -253,3 +260,10 @@ services:
             - '@akeneo_batch.job.job_instance_repository'
             - '@oro_security.security_facade'
         tags: ['controller.service_arguments']
+
+    Akeneo\Pim\Structure\Bundle\Controller\InternalApi\SwitchMainIdentifierController:
+        public: true
+        arguments:
+            - '@Akeneo\Pim\Structure\Bundle\Application\SwitchMainIdentifier\SwitchMainIdentifierHandler'
+            - '@Akeneo\Pim\Structure\Bundle\Application\SwitchMainIdentifier\SwitchMainIdentifierValidator'
+            - '@oro_security.security_facade'

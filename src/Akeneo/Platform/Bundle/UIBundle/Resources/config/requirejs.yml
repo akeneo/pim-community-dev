@@ -110,6 +110,7 @@ config:
             urls:
               list: pim_enrich_attribute_rest_index
               get: pim_enrich_attribute_rest_get
+              get_main_identifier: pim_enrich_attribute_rest_main_identifier
         attribute-type:
           module: pim/base-fetcher
           options:
@@ -622,7 +623,6 @@ config:
     pim/association-type-edit-form/delete: pimui/js/association-type/form/delete
 
     # Attribute group
-    pim/model/attribute:                  pimui/js/model/attribute.ts
     pim/model/attribute-group:            pimui/js/model/attribute-group.ts
     pim/attribute-group-edit-form/secondary-actions: pimui/js/attribute-group/form/secondary-actions
     pim/attribute-group-edit-form/list:   pimui/js/attribute-group/form/list
@@ -641,6 +641,7 @@ config:
     # Family
     pim/family-edit-form/delete:                                        pimui/js/family/form/delete
     pim/family-edit-form/save:                                          pimui/js/family/form/save
+    pim/family-edit-form/create-button:                                 pimui/js/family/form/create-button
     pim/family-edit-form/family-variant:                                pimui/js/family/form/family-variant
     pim/family-edit-form/properties/general/code:                       pimui/js/family/form/properties/general/code
     pim/family-edit-form/properties/general/attribute-as-label:         pimui/js/family/form/properties/general/attribute-as-label
@@ -853,11 +854,7 @@ config:
     pim/attribute-edit-form/properties/default-metric-unit: pimui/js/attribute/form/properties/default-metric-unit
     pim/attribute-edit-form/properties/group:               pimui/js/attribute/form/properties/group
     pim/attribute-edit-form/properties/is-locale-specific:  pimui/js/attribute/form/properties/is-locale-specific
-    pim/attribute-edit-form/properties/localizable:         pimui/js/attribute/form/properties/localizable
     pim/attribute-edit-form/properties/metric-family:       pimui/js/attribute/form/properties/metric-family
-    pim/attribute-edit-form/properties/scopable:            pimui/js/attribute/form/properties/scopable
-    pim/attribute-edit-form/properties/type:                pimui/js/attribute/form/properties/type
-    pim/attribute-edit-form/properties/unique:              pimui/js/attribute/form/properties/unique
     pim/attribute-edit-form/properties/validation-regexp:   pimui/js/attribute/form/properties/validation-regexp
     pim/attribute-edit-form/properties/guidelines:          pimui/js/attribute/form/properties/guidelines.tsx
     pim/attribute-edit-form/type-specific-form:             pimui/js/attribute/form/type-specific-form

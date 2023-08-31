@@ -34,7 +34,7 @@ class FetchProductAndProductModelRowsIntegration extends TestCase
         $imagePath = $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'));
         $fixtures = $fixturesLoader->createProductAndProductModels($imagePath);
         [$rootProductModel, $subProductModel] = $fixtures['product_models'];
-        [$product1, $product2] = $fixtures['products'];
+        [$product1, $product2, $product3] = $fixtures['products'];
 
         $pqb = $this
             ->get('akeneo.pim.enrichment.query.product_and_product_model_query_builder_from_size_factory.with_product_identifier_cursor')
@@ -43,8 +43,8 @@ class FetchProductAndProductModelRowsIntegration extends TestCase
         $queryParameters = new FetchProductAndProductModelRowsParameters(
             $pqb,
             ['sku', 'a_localizable_image', 'a_scopable_image'],
-            'ecommerce', 'en_US',
-            (int) $userId
+            'ecommerce',
+            'en_US',
         );
 
         $rows = $query($queryParameters);
@@ -61,7 +61,7 @@ class FetchProductAndProductModelRowsIntegration extends TestCase
                 true,
                 $product2->getCreated(),
                 $product2->getUpdated(),
-                "[baz]",
+                'baz',
                 null,
                 null,
                 $product2->getUuid()->toString(),
@@ -84,11 +84,25 @@ class FetchProductAndProductModelRowsIntegration extends TestCase
                 null,
                 new WriteValueCollection([])
             ),
+            Row::fromProduct(
+                null,
+                null,
+                [],
+                true,
+                $product3->getCreated(),
+                $product3->getUpdated(),
+                '[2c29af3c-625b-4ee0-9ba4-c2783c300b92]',
+                null,
+                null,
+                '2c29af3c-625b-4ee0-9ba4-c2783c300b92',
+                null,
+                new WriteValueCollection([])
+            ),
         ];
 
-        Assert::assertSame(2, $rows->totalCount());
+        Assert::assertSame(3, $rows->totalCount());
         AssertRows::same($expectedRows, $rows->rows());
-        Assert::assertSame(1, $rows->totalProductCount());
+        Assert::assertSame(2, $rows->totalProductCount());
         Assert::assertSame(1, $rows->totalProductModelCount());
     }
 

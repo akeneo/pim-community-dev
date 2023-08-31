@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Command\ZddMigrations;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
-use Akeneo\Platform\Bundle\InstallerBundle\Command\ZddMigration;
+use Akeneo\Platform\Installer\Infrastructure\Command\ZddMigration;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Column;
 use Psr\Log\LoggerInterface;

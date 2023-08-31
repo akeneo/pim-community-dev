@@ -18,14 +18,10 @@ class FamilyAttributeAsLabelChangedSubscriber implements EventSubscriberInterfac
 {
     private array $impactedFamilyCodes = [];
 
-    private FindAttributeCodeAsLabelForFamilyInterface $attributeCodeAsLabelForFamily;
-
-    private Client $esClient;
-
-    public function __construct(FindAttributeCodeAsLabelForFamilyInterface $attributeCodeAsLabelForFamily, Client $esClient)
-    {
-        $this->attributeCodeAsLabelForFamily = $attributeCodeAsLabelForFamily;
-        $this->esClient = $esClient;
+    public function __construct(
+        private readonly FindAttributeCodeAsLabelForFamilyInterface $attributeCodeAsLabelForFamily,
+        private readonly Client $esClient,
+    ) {
     }
 
     public static function getSubscribedEvents(): array
@@ -36,7 +32,7 @@ class FamilyAttributeAsLabelChangedSubscriber implements EventSubscriberInterfac
         ];
     }
 
-    public function storeFamilyCodeIfNeeded(GenericEvent $event)
+    public function storeFamilyCodeIfNeeded(GenericEvent $event): void
     {
         $subject = $event->getSubject();
 
@@ -47,11 +43,11 @@ class FamilyAttributeAsLabelChangedSubscriber implements EventSubscriberInterfac
         $oldAttributeCodeAsLabel = $this->attributeCodeAsLabelForFamily->execute($subject->getCode());
         $newAttributeCodeAsLabel = $subject->getAttributeAsLabel() ? $subject->getAttributeAsLabel()->getCode() : null;
         if ($newAttributeCodeAsLabel !== $oldAttributeCodeAsLabel) {
-            $this->impactedFamilyCodes[] = $subject->getCode();
+            $this->impactedFamilyCodes[$subject->getCode()] = $subject->getCode();
         }
     }
 
-    public function triggerFamilyRelatedProductsReindexation(GenericEvent $event)
+    public function triggerFamilyRelatedProductsReindexation(GenericEvent $event): void
     {
         $subject = $event->getSubject();
 
@@ -59,17 +55,17 @@ class FamilyAttributeAsLabelChangedSubscriber implements EventSubscriberInterfac
             return;
         }
 
-        foreach ($this->impactedFamilyCodes as $familyCode) {
+        if (isset($this->impactedFamilyCodes[$subject->getCode()])) {
             $attributeCodeAsLabel = $subject->getAttributeAsLabel() ? $subject->getAttributeAsLabel()->getCode() : null;
 
             if ($attributeCodeAsLabel) {
                 $this->esClient->updateByQuery([
                     'script' => [
                         'source' => "ctx._source.label = ctx._source.values[params.attributeAsLabel]",
-                        'params' => ['attributeAsLabel' => sprintf('%s-text', $attributeCodeAsLabel)],
+                        'params' => ['attributeAsLabel' => \sprintf('%s-text', $attributeCodeAsLabel)],
                     ],
                     'query' => [
-                        'term' => ['family.code' => $familyCode]
+                        'term' => ['family.code' => $subject->getCode()]
                     ]
                 ]);
             }

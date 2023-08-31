@@ -49,7 +49,7 @@ pim_user:
       current_password:
         wrong: Password errata
       roles:
-        last_user_with_edit_role_permissions: Questo è l'ultimo utente con i permessi del ruolo di modifica.
+        last_user_with_edit_role_permissions: Questo è l'ultimo utente con i permessi di modifica.
     tabs:
       general:
         title: Generale

@@ -132,14 +132,6 @@ final class SqlGetCategoryCodesIntegration extends TestCase
         $this->get('pim_catalog.saver.product_model')->save($productModel);
     }
 
-    private function getUserId(string $username): int
-    {
-        return (int)$this->get('database_connection')->fetchOne(
-            'SELECT id FROM oro_user WHERE username = :username',
-            ['username' => $username]
-        );
-    }
-
     private function assertEqualArrays(array $expected, array $actual): void
     {
         Assert::assertSameSize($expected, $actual);

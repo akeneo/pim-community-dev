@@ -9,3 +9,4 @@ framework:
                 default_middleware: false
                 middleware:
                     - 'Akeneo\Tool\Bundle\MessengerBundle\Middleware\HandleProcessMessageMiddleware'
+            category.command.bus: ~

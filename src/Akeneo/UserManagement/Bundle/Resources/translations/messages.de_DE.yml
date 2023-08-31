@@ -48,6 +48,8 @@ pim_user:
         not_match: Passwörter stimmen nicht überein
       current_password:
         wrong: Falsches Passwort
+      roles:
+        last_user_with_edit_role_permissions: Dieser Benutzer ist der letzte Benutzer mit Berechtigungen zur Bearbeitung von Rollen.
     tabs:
       general:
         title: Allgemein
@@ -92,6 +94,8 @@ pim_user:
     role:
       message:
         saved: "Rolle gespeichert"
+        cannot_delete_last_edit_role_permission: Sie können die Berechtigungen zur Bearbeitung der letzten Rolle nicht löschen.
+        cannot_remove_last_edit_role_permission: Sie können die Berechtigung zur Bearbeitung der Rolle nicht für die letzte Rolle entfernen.
     user:
       message:
         saved: "Benutzer gespeichert"

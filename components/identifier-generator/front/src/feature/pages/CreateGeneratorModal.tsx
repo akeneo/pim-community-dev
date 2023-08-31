@@ -1,9 +1,9 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {AttributesIllustration, Button, Field, Helper, Modal, TextInput, useAutoFocus} from 'akeneo-design-system';
 import {IdentifierGenerator, TEXT_TRANSFORMATION} from '../models';
 import {useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {Styled} from '../components/Styled';
-import {useGetIdentifierGenerators, useIdentifierAttributes, useValidateFormWithEnter} from '../hooks';
+import {useGetIdentifierGenerators, useValidateFormWithEnter} from '../hooks';
 
 type CreateGeneratorModalProps = {
   onClose: () => void;
@@ -14,15 +14,7 @@ const CreateGeneratorModal: React.FC<CreateGeneratorModalProps> = ({onClose, onS
   const [label, setLabel] = useState<string>('');
   const [code, setCode] = useState<string>('');
   const [isCodeDirty, setIsCodeDirty] = useState(false);
-  const [target, setTarget] = useState<string | undefined>();
-  const {data} = useIdentifierAttributes();
   const {data: generators = []} = useGetIdentifierGenerators();
-
-  useEffect(() => {
-    if (data) {
-      setTarget(data[0].code);
-    }
-  }, [data]);
 
   const translate = useTranslate();
   const userContext = useUserContext();
@@ -60,10 +52,10 @@ const CreateGeneratorModal: React.FC<CreateGeneratorModalProps> = ({onClose, onS
   }, []);
 
   const onConfirm = useCallback(() => {
-    if (target && !isFormInvalid) {
+    if (!isFormInvalid) {
       onSave({
         code,
-        target,
+        target: '',
         labels: label.trim() ? {[uiLocale]: label.trim()} : {},
         conditions: [],
         structure: [],
@@ -71,7 +63,7 @@ const CreateGeneratorModal: React.FC<CreateGeneratorModalProps> = ({onClose, onS
         text_transformation: TEXT_TRANSFORMATION.NO,
       });
     }
-  }, [target, isFormInvalid, onSave, code, uiLocale, label]);
+  }, [isFormInvalid, onSave, code, uiLocale, label]);
 
   useValidateFormWithEnter(onConfirm);
 

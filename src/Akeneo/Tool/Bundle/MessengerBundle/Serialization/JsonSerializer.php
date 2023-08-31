@@ -4,6 +4,7 @@ namespace Akeneo\Tool\Bundle\MessengerBundle\Serialization;
 
 use Akeneo\Tool\Bundle\MessengerBundle\Stamp\CorrelationIdStamp;
 use Akeneo\Tool\Bundle\MessengerBundle\Stamp\TenantIdStamp;
+use Akeneo\Tool\Component\Messenger\Stamp\CustomHeaderStamp;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Exception\MessageDecodingFailedException;
 use Symfony\Component\Messenger\Stamp\RedeliveryStamp;
@@ -90,9 +91,19 @@ class JsonSerializer implements SerializerInterface
     public function encode(Envelope $envelope): array
     {
         $body = $this->serializer->serialize($envelope->getMessage(), 'json');
-        $headers = [
-            'class' => $envelope->getMessage()::class,
-        ];
+
+        $headers = [];
+
+        foreach ($envelope->all() as $stamps) {
+            $stamp = end($stamps);
+
+            if ($stamp instanceof CustomHeaderStamp) {
+                $this->ensureStampIsUsedOnlyOnce($stamps);
+                $headers[$stamp->header()] = $stamp->value();
+            }
+        }
+
+        $headers['class'] = $envelope->getMessage()::class;
 
         /** @var TenantIdStamp|null $tenantIdStamp */
         $tenantIdStamp = $envelope->last(TenantIdStamp::class);
@@ -117,5 +128,17 @@ class JsonSerializer implements SerializerInterface
             'body' => $body,
             'headers' => $headers,
         ];
+    }
+
+    private function ensureStampIsUsedOnlyOnce(array $stamps): void
+    {
+        if (count($stamps) > 1) {
+            throw new \LogicException(
+                sprintf(
+                    'Custom header stamp %s should have only one instance in the message.',
+                    get_class(end($stamps))
+                )
+            );
+        }
     }
 }

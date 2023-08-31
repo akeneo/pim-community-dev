@@ -21,7 +21,7 @@ $rules = [
         [
             'Akeneo\Platform\CommunicationChannel\Application',
             'Akeneo\Platform\CommunicationChannel\Domain',
-            'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
+            'Akeneo\Platform\Installer\Infrastructure\Event\InstallerEvents',
             'Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface',
             'Akeneo\UserManagement\Bundle\Context\UserContext',
             'Symfony\Component',

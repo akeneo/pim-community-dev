@@ -30,6 +30,10 @@ final class AttributeGroupShouldBeEditableValidator extends ConstraintValidator
         $command = $this->context->getRoot();
         Assert::isInstanceOf($command, UpsertProductCommand::class);
 
+        if (-1 === (int) $command->userId()) {
+            return;
+        }
+
         $isEditable = $this->isAttributeEditable->forCode($valueUserIntent->attributeCode(), $command->userId());
 
         if (!$isEditable) {

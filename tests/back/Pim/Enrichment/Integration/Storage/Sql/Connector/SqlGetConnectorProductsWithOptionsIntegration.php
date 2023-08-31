@@ -51,10 +51,7 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
         parent::setUp();
 
         $this->connection = $this->get('database_connection');
-        $this->adminUserId = (int) $this->connection->fetchOne(
-            'SELECT id FROM oro_user WHERE username = :username',
-            ['username' => 'admin']
-        );
+        $this->adminUserId = $this->getUserId('admin');
 
         $this->createQuantifiedAssociationType('PRODUCT_SET');
         $this->createQuantifiedAssociationType('ANOTHER_PRODUCT_SET');

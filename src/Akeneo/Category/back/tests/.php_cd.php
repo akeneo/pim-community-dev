@@ -35,15 +35,12 @@ $rules = [
         'Akeneo\Category\Infrastructure\Exception\ContentArrayConversionException',
         'Akeneo\Category\Infrastructure\Exception\StructureArrayConversionException',
         'Akeneo\Category\Infrastructure\Registry\FindCategoryAdditionalPropertiesRegistry',
-        'Akeneo\Tool\Component\FileStorage\File\FileStorer',
-        'Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface',
-        'Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface',
         'Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface',
         'Oro\Bundle\SecurityBundle\SecurityFacade',
         'Akeneo\Category\Infrastructure\Validation\TemplateCodeShouldBeUnique',
+        'Akeneo\Tool\Component\FileStorage\FilesystemProvider',
 
         // Vendors
-        'Symfony\Component\HttpFoundation\File\UploadedFile',
         'Symfony\Component\Validator',
         'Symfony\Component\HttpKernel',
         'Symfony\Component\EventDispatcher',
@@ -105,10 +102,9 @@ $rules = [
         'Akeneo\Tool\Component',
         'Symfony\Component\OptionsResolver\OptionsResolver',
         // Infrastructure Bundles /!\
-        'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
-        'Akeneo\Platform\Bundle\InstallerBundle\Command\ZddMigration',
-        'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent',
-        'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
+        'Akeneo\Platform\Installer\Infrastructure\Command\ZddMigration',
+        'Akeneo\Platform\Installer\Infrastructure\Event\InstallerEvent',
+        'Akeneo\Platform\Installer\Infrastructure\Event\InstallerEvents',
         'Akeneo\Tool\Bundle\ApiBundle\Documentation',
         'Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse',
         'Oro\Bundle\SecurityBundle\SecurityFacade',
@@ -127,6 +123,7 @@ $rules = [
         'Symfony\Component\HttpFoundation',
         'Symfony\Component\HttpKernel',
         'Symfony\Component\Lock',
+        'Symfony\Component\Messenger',
         'Symfony\Component\Mime',
         'Symfony\Component\PropertyAccess',
         'Symfony\Component\Routing',
@@ -150,7 +147,6 @@ $rules = [
 
     $builder->only([
         // Vendors
-        'Symfony\Component\Messenger',
         'Webmozart\Assert',
     ])->in('Akeneo\Category\Api'),
 

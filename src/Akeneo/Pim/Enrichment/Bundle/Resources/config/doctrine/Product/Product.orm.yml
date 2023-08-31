@@ -14,9 +14,10 @@ Akeneo\Pim\Enrichment\Component\Product\Model\Product:
             column: is_enabled
         identifier:
             type: string
-            length: 255
             unique: true
             nullable: true
+            updatable: false
+            insertable: false
         rawValues:
             type: json
             column: raw_values

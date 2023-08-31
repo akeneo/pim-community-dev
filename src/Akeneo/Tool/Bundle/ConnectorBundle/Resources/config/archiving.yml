@@ -18,6 +18,7 @@ services:
     pim_connector.archiver.file_reader_archiver:
         class: '%pim_connector.archiver.file_reader_archiver.class%'
         arguments:
+            - '@oneup_flysystem.local_storage_filesystem'
             - '@oneup_flysystem.archivist_filesystem'
             - '@akeneo_batch.job.job_registry'
         tags:

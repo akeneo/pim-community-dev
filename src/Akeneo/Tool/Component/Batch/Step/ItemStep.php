@@ -85,6 +85,7 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
     {
         $itemsToWrite = [];
         $batchCount = 0;
+        $allItemsHaveBeenRead = false;
 
         $this->initializeStepElements($stepExecution);
 
@@ -96,6 +97,7 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
             try {
                 $readItem = $this->reader->read();
                 if (null === $readItem) {
+                    $allItemsHaveBeenRead = true;
                     break;
                 }
             } catch (InvalidItemException $e) {
@@ -149,7 +151,7 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
                 $this->jobStopper->stop($stepExecution);
             }
 
-            if ($this->jobStopper->isPausing($this->stepExecution)) {
+            if ($this->jobStopper->isPausing($this->stepExecution) && !$allItemsHaveBeenRead) {
                 return;
             }
         }

@@ -25,18 +25,6 @@ class QuantifiedEntitySpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    function it_cannot_be_constructed_with_negative_quantity()
-    {
-        $this->beConstructedWith('foo', -5);
-        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
-    }
-
-    function it_cannot_be_constructed_with_zero_quantity()
-    {
-        $this->beConstructedWith('foo', 0);
-        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
-    }
-
     function it_returns_the_entity_identifier()
     {
         $this->entityIdentifier()->shouldReturn('foo');

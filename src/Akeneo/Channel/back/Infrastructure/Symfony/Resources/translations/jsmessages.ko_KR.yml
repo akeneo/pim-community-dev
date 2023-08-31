@@ -65,8 +65,8 @@ pim_enrich.entity.locale:
   uppercase_label: 로케일
   plural_label: 로케일
   page_title:
-    index: "]-Inf, 1]{{ count }}개의 활성화된 로케일|]1, Inf[{{ count }}개의 활성화된 로케일"
-  helper: "로케일을 활성화 또는 비활성화하려면 <a href={{ href }}>내 채널</a> 중 하나로 이동하여 로케일을 추가 또는 제거합니다."
+    index: "]-Inf, 1]{{ count }}개의 활성화된 로케일|]1, Inf[{{ count }}개"
+  helper: "로케일을 활성화 또는 비활성화하려면 <a href={{ href }}>내 채널</a> "
   grid:
     columns:
       code: 활성화된 로케일

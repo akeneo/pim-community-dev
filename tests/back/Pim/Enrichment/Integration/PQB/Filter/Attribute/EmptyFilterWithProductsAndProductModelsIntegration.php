@@ -267,18 +267,4 @@ class EmptyFilterWithProductsAndProductModelsIntegration extends TestCase
         Assert::assertEmpty($this->get('pim_catalog.validator.product_model')->validate($productModel));
         $this->get('pim_catalog.saver.product_model')->save($productModel);
     }
-
-    protected function getUserId(string $username): int
-    {
-        $query = <<<SQL
-            SELECT id FROM oro_user WHERE username = :username
-        SQL;
-        $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
-        $id = $stmt->fetchOne();
-        if (null === $id) {
-            throw new \InvalidArgumentException(\sprintf('No user exists with username "%s"', $username));
-        }
-
-        return \intval($id);
-    }
 }

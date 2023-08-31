@@ -54,7 +54,7 @@ pim_enrich.entity.channel:
     category_tree: Árbol de categoría
     do_not_convert: No convertir
     measurement: Ajustes de medición
-    label_conversion_units: Elija una unidad de conversión para cada atributo de medida que se utilizará durante la exportación del producto
+    label_conversion_units: Elija una unidad de conversión para cada atributo de medid
   module:
     create:
       button: Crear canal
@@ -65,8 +65,8 @@ pim_enrich.entity.locale:
   uppercase_label: Configuración regional
   plural_label: Configuraciones regionales
   page_title:
-    index: "]-Inf, 1]{{ count }} configuración regional habilitada|]1, Inf[{{ count }} configuraciones regionales habilitadas"
-  helper: "Para habilitar o deshabilitar una configuración regional, vaya a uno de <a href={{ href }}>sus canales</a> y añada o elimine una configuración regional."
+    index: "]-Inf, 1]{{ count }} configuración regional habilitada|]1"
+  helper: "Para habilitar o deshabilitar una configuración regional"
   grid:
     columns:
       code: Configuraciones regionales habilitadas

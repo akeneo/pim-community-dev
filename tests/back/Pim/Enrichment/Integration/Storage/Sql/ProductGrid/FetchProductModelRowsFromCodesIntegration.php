@@ -239,20 +239,6 @@ class FetchProductModelRowsFromCodesIntegration extends TestCase
         $this->get('pim_enrich.product.message_bus')->dispatch($command);
     }
 
-    protected function getUserId(string $username): int
-    {
-        $query = <<<SQL
-            SELECT id FROM oro_user WHERE username = :username
-        SQL;
-        $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
-        $id = $stmt->fetchOne();
-        if (null === $id) {
-            throw new \InvalidArgumentException(\sprintf('No user exists with username "%s"', $username));
-        }
-
-        return \intval($id);
-    }
-
     private function getFetchProductRowsFromCodes(): FetchProductModelRowsFromCodes
     {
         return $this->get('akeneo.pim.enrichment.product.grid.query.fetch_product_model_rows_from_codes');

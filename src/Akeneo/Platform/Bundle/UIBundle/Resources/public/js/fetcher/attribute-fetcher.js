@@ -12,19 +12,12 @@ define(['jquery', 'underscore', 'pim/base-fetcher', 'routing'], function ($, _, 
      */
     getIdentifierAttribute: function () {
       if (null === this.identifierPromise) {
-        this.identifierPromise = $.Deferred();
-
-        return this.fetchByTypes([this.options.identifier_type]).then(
-          function (attributes) {
-            if (attributes.length > 0) {
-              this.identifierPromise.resolve(attributes[0]).promise();
-
-              return this.identifierPromise;
-            }
-
-            return this.identifierPromise.reject().promise();
-          }.bind(this)
-        );
+        const url = Routing.generate(this.options.urls.get_main_identifier);
+        this.identifierPromise = $.ajax({
+          contentType: 'application/json',
+          type: 'GET',
+          url: url,
+        });
       }
 
       return this.identifierPromise;

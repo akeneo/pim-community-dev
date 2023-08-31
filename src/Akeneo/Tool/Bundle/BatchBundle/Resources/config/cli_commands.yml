@@ -13,7 +13,7 @@ services:
 
     Akeneo\Tool\Bundle\BatchBundle\Command\CreateJobInstanceCommand:
         arguments:
-            - '@Akeneo\Platform\Job\Application\CreateJobInstanceHandler'
+            - '@Akeneo\Platform\Job\Application\CreateJobInstance\CreateJobInstanceHandler'
         tags:
             - { name: console.command }
             - { name: 'akeneo.command.authenticated_as_admin_user' }

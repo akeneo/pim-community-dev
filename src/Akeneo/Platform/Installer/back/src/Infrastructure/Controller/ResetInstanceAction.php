@@ -9,8 +9,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Installer\Infrastructure\Controller;
 
-use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
-use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
+use Akeneo\Platform\Installer\Infrastructure\Event\InstallerEvent;
+use Akeneo\Platform\Installer\Infrastructure\Event\InstallerEvents;
 use Akeneo\Platform\Installer\Application\ResetInstance\ResetInstanceCommand;
 use Akeneo\Platform\Installer\Application\ResetInstance\ResetInstanceHandler;
 use Oro\Bundle\SecurityBundle\SecurityFacade;

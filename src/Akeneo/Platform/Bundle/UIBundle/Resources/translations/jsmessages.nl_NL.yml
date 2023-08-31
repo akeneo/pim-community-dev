@@ -199,6 +199,7 @@ pim_common:
   label: Label
   label_translations: Labelvertalingen
   Label or identifier: label of identifier
+  Label or main identifier: label of hoofd identifier
   code_or_label: code of label
   less_than: Minder dan
   loading: Laden...
@@ -304,7 +305,10 @@ pim_enrich.entity.job_execution:
     create:
       upload: Versleep jouw {{ type }} bestand naar hier, of klik om bestand te zoeken
     download:
+      dropdown_title: "]-Inf, 1]Download gegenereerde bestanden ]1, Inf[Download gegenereerde bestanden"
       archive: Download gegenereerd archief
+      output: Download gegenereerd bestand
+      input: Download leesbestand
       invalid_xlsx: Download ongeldige data
       invalid_csv: Download ongeldige data
 pim_title:

@@ -1,0 +1,32 @@
+pim_measurements:
+  validation:
+    common:
+      code:
+        pattern: 'Dit veld mag alleen letters, cijfers en een laag streepje bevatten.'
+        limit_reached: 'U kunt de "%measurement_family_code%" meetfamilie niet aanmaken omdat u de limiet van %limit% meetfamilies hebt bereikt'
+    measurement_family:
+      standard_unit_code:
+        is_required: 'De standaardeenheid is vereist.'
+        should_be_in_the_list_of_units: 'De "%standard_unit_code%" standaardcode van de eenheid bestaat niet in de lijst van eenheden voor de "%measurement_family_code%" matenfamilie.'
+        cannot_be_changed: 'De standaard eenheidscode van de "%measurement_family_code%" matenfamilie kan niet worden gewijzigd'
+        operation_should_be_multiply_by_one: 'De standaard eenheidscode van de "%measurement_family_code%" matenfamilie moet een vermenigvuldigingen met 1 bewerking zijn'
+      should_contain_max_elements: 'U hebt de limiet van %limit% matenfamilies bereikt.'
+      code:
+        must_be_unique: 'Deze code voor de matenfamilie bestaat al.'
+      convert:
+        value_should_be_a_number_in_a_string: 'De bewerkingswaarde moet een geldig nummer zijn'
+        should_contain_min_elements: 'Een minimum van één conversiebewerking per eenheid is vereist.'
+        should_contain_max_elements: 'U heeft de limiet van %limit% conversie bewerkingen per eenheid bereikt.'
+      measurement_family_units_is_locked_for_updates: 'Een productattribuut is gekoppeld aan deze matenfamilie. U kunt alleen de vertaalde labels en het symbool van een eenheid bewerken.'
+      measurement_family_unit_operations_locked_for_updates: 'Een productattribuut is gekoppeld aan deze matenfamilie. U kunt alleen de vertaalde labels en het symbool van een eenheid bewerken'
+      units:
+        should_contain_min_elements: 'Een minimum van één conversiebewerking per eenheid is vereist.'
+        should_contain_max_elements: 'U heeft de limiet van %limit% conversie bewerkingen per eenheid bereikt.'
+        operation:
+          invalid_operator: 'De {{ value }} bewerking is ongeldig, gebruik in plaats daarvan {{ choices }}.'
+        should_contain_at_least_one_unit: 'Er moet ten minste %limit% eenheid in de matenfamilie zijn.'
+        should_not_contain_duplicates: 'We hebben een aantal dubbele eenheden gevonden in de matenfamilie. De matenfamilie heeft unieke eenheden nodig.'
+        must_be_indexed_by_code: 'De index komt niet overeen met de eenheidcode.'
+    unit:
+      code:
+        must_be_unique: 'Deze eenheidscode bestaat al.'

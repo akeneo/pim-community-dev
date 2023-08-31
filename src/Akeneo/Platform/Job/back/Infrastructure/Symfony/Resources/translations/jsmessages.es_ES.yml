@@ -32,7 +32,7 @@ akeneo_job_process_tracker:
         type: Tipo
         started_at: Ejecutado el
         username: Nombre de usuario
-        progress: Progreso 
+        progress: Progreso
         status: Estado
         warning_count: Advertencias
   type_filter:

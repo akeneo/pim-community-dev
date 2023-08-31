@@ -1,0 +1,4 @@
+pim_family_templates_get_action:
+  path: /rest/family-templates
+  defaults: { _controller: akeneo.family_templates.controller.get_family_templates_action }
+  methods: [GET]

@@ -12,6 +12,10 @@ use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
 use Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalExtractConnectionsProductEventCountQuery;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection as DbalConnection;
@@ -38,6 +42,9 @@ class DbalExtractConnectionsProductEventCountQueryIntegration extends TestCase
         $this->extractConnectionsProductEventCountQuery = $this->get(DbalExtractConnectionsProductEventCountQuery::class);
         $this->dbalConnection = self::getContainer()->get('database_connection');
         $this->productClass = self::getContainer()->getParameter('pim_catalog.entity.product.class');
+        $this->client = self::getContainer()->get('akeneo_elasticsearch.client.product_and_product_model');
+        $this->productMessageBus = self::getContainer()->get('pim_enrich.product.message_bus');
+        $this->productRepository = self::getContainer()->get('pim_catalog.repository.product');
     }
 
     public function test_it_extracts_created_products_by_connection(): void
@@ -52,15 +59,15 @@ class DbalExtractConnectionsProductEventCountQueryIntegration extends TestCase
         $dateTime = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
         $hourlyInterval = HourlyInterval::createFromDateTime($dateTime);
 
-        $erpProduct1 = $this->createProduct('erp_product1', ['enabled' => false]);
-        $erpProduct2 = $this->createProduct('erp_product2', ['enabled' => true]);
+        $erpProduct1 = $this->createProduct('erp_product1', [new SetEnabled(false)]);
+        $erpProduct2 = $this->createProduct('erp_product2', [new SetEnabled(true)]);
         $this->setVersioningAuthorAndDate($erpConnection->username(), $erpProduct1, $dateTime);
         $this->setVersioningAuthorAndDate($erpConnection->username(), $erpProduct2, $dateTime);
 
-        $notAuditableConnectionProduct1 = $this->createProduct('not_auditable_connection_product1', ['enabled' => true]);
+        $notAuditableConnectionProduct1 = $this->createProduct('not_auditable_connection_product1', [new SetEnabled(true)]);
         $this->setVersioningAuthorAndDate($notAuditableConnection->username(), $notAuditableConnectionProduct1, $dateTime);
 
-        $sapProduct1 = $this->createProduct('sap_product1', ['enabled' => false]);
+        $sapProduct1 = $this->createProduct('sap_product1', [new SetEnabled(false)]);
         $this->setVersioningAuthorAndDate($sapConnection->username(), $sapProduct1, $dateTime);
 
         $result = $this->extractConnectionsProductEventCountQuery->extractCreatedProductsByConnection($hourlyInterval);
@@ -83,14 +90,14 @@ class DbalExtractConnectionsProductEventCountQueryIntegration extends TestCase
         $dateTime = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
         $hourlyInterval = HourlyInterval::createFromDateTime($dateTime);
 
-        $erpProduct1 = $this->createProduct('erp_product1', ['enabled' => false]);
-        $erpProduct2 = $this->createProduct('erp_product2', ['enabled' => true]);
-        $this->updateProduct($erpProduct1, ['enabled' => true]);
+        $erpProduct1 = $this->createProduct('erp_product1', [new SetEnabled(false)]);
+        $erpProduct2 = $this->createProduct('erp_product2', [new SetEnabled(true)]);
+        $this->createProduct('erp_product1', [new SetEnabled(true)]);
         $this->setVersioningAuthorAndDate($erpConnection->username(), $erpProduct1, $dateTime);
         $this->setVersioningAuthorAndDate($erpConnection->username(), $erpProduct2, $dateTime);
 
-        $notAuditableConnectionProduct1 = $this->createProduct('not_auditable_connection_product1', ['enabled' => true]);
-        $this->updateProduct($notAuditableConnectionProduct1, ['enabled' => true]);
+        $notAuditableConnectionProduct1 = $this->createProduct('not_auditable_connection_product1', [new SetEnabled(true)]);
+        $this->updateProduct('not_auditable_connection_product1', [new SetEnabled(true)]);
         $this->setVersioningAuthorAndDate($notAuditableConnection->username(), $notAuditableConnectionProduct1, $dateTime);
 
         $result = $this->extractConnectionsProductEventCountQuery->extractUpdatedProductsByConnection($hourlyInterval);
@@ -102,20 +109,14 @@ class DbalExtractConnectionsProductEventCountQueryIntegration extends TestCase
         Assert::assertEquals($expectedResult, $result);
     }
 
-    private function createProduct(string $identifier, array $data = []): ProductInterface
+    private function createProduct(string $identifier, array $userIntents = []): ProductInterface
     {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
-        $this->updateProduct($product, $data);
-
-        return $product;
+        return $this->createOrUpdateProduct($identifier, $userIntents);
     }
 
-    private function updateProduct(ProductInterface $product, array $data = []): ProductInterface
+    private function updateProduct(string $identifier, array $userIntents = []): ProductInterface
     {
-        $this->get('pim_catalog.updater.product')->update($product, $data);
-        $this->get('pim_catalog.saver.product')->save($product);
-
-        return $product;
+        return $this->createOrUpdateProduct($identifier, $userIntents);
     }
 
     private function setVersioningAuthorAndDate(
@@ -157,5 +158,19 @@ SQL;
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
+    }
+
+    /**
+     * @param UserIntent[] $userIntents
+     */
+    private function createOrUpdateProduct(string $identifier, array $userIntents = []) : ProductInterface
+    {
+        $this->get('pim_catalog.validator.unique_value_set')->reset();
+
+        $this->productMessageBus->dispatch(
+            UpsertProductCommand::createWithIdentifierSystemUser($identifier, $userIntents)
+        );
+
+        return $this->productRepository->findOneByIdentifier($identifier);
     }
 }

@@ -8,4 +8,9 @@ class NullFlatTranslator implements FlatTranslatorInterface
     {
         return $flatItems;
     }
+
+    public function translateHeaders(array $columnCodes, string $locale): array
+    {
+        return $columnCodes;
+    }
 }

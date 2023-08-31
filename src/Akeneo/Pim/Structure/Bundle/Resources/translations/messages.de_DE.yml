@@ -51,3 +51,13 @@ job_execution.summary:
   skipped_attribute_groups: Übersprungene Attributgruppen
   moved_attributes: Verschobene Attribute
   deleted_attributes: Gelöschte Attribute
+pim_import_export:
+  notification:
+    attribute_group_mass_delete:
+      error: Mehrfache Löschung von Attributgruppen fehlgeschlagen
+      warning: Mehrfache Löschung von Attributgruppen mit einigen Warnungen abgeschlossen
+      success: Mehrfache Löschung von Attributgruppen abgeschlossen
+    attribute_mass_delete:
+      error: Mehrfache Löschung von Attributen fehlgeschlagen
+      warning: Mehrfache Löschung von Attributen mit einigen Warnungen abgeschlossen
+      success: Massenlöschung von Attributen abgeschlossen

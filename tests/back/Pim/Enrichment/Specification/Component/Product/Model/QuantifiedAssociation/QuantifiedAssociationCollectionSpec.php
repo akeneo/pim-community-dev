@@ -127,13 +127,14 @@ class QuantifiedAssociationCollectionSpec extends ObjectBehavior
         )->shouldReturn($expectedNormalizedAssociations);
     }
 
-    public function it_returns_the_list_of_product_identifiers()
+    public function it_returns_the_list_of_product_identifiers_or_uuids()
     {
         $expectedRawQuantifiedAssociations = [
             'PACK' => [
                 'products'       => [
                     ['id' => 1, 'uuid' => '3f090f5e-3f54-4f34-879c-87779297d130', 'quantity' => 1],
                     ['id' => 2, 'uuid' => '52254bba-a2c8-40bb-abe1-195e3970bd93', 'quantity' => 2],
+                    ['id' => 3, 'uuid' => '3aa5cfe1-83d0-4677-ae7f-d9d3c9f085b7', 'quantity' => 1], // association without identifier
                 ],
                 'product_models' => [],
             ],
@@ -162,6 +163,11 @@ class QuantifiedAssociationCollectionSpec extends ObjectBehavior
         );
 
         $this->getQuantifiedAssociationsProductIdentifiers()->shouldReturn(['entity_1', 'entity_2']);
+        $this->getQuantifiedAssociationsProductUuids()->shouldBeLike([
+            Uuid::fromString('3f090f5e-3f54-4f34-879c-87779297d130'),
+            Uuid::fromString('52254bba-a2c8-40bb-abe1-195e3970bd93'),
+            Uuid::fromString('3aa5cfe1-83d0-4677-ae7f-d9d3c9f085b7'),
+        ]);
     }
 
     public function it_returns_the_list_of_product_model_codes()
@@ -659,6 +665,7 @@ class QuantifiedAssociationCollectionSpec extends ObjectBehavior
         return UuidMapping::createFromMapping([
             ['uuid' => '3f090f5e-3f54-4f34-879c-87779297d130', 'identifier' => 'entity_1', 'id' => 1],
             ['uuid' => '52254bba-a2c8-40bb-abe1-195e3970bd93', 'identifier' => 'entity_2', 'id' => 2],
+            ['uuid' => '3aa5cfe1-83d0-4677-ae7f-d9d3c9f085b7', 'identifier' => null, 'id' => 3],
         ]);
     }
 

@@ -14,6 +14,7 @@ use Akeneo\UserManagement\Component\Model\UserInterface;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\HttpKernel\HttpKernelBrowser;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
@@ -206,5 +207,46 @@ SQL,
         )->fetchOne();
 
         return $productUuid ? Uuid::fromString($productUuid) : null;
+    }
+
+    protected function getProductIdentifier(UuidInterface $uuid): ?string
+    {
+        return $this->get('database_connection')->executeQuery(<<<SQL
+WITH main_identifier AS (
+    SELECT id
+    FROM pim_catalog_attribute
+    WHERE main_identifier = 1
+    LIMIT 1
+)
+SELECT raw_data AS identifier
+FROM pim_catalog_product
+LEFT JOIN pim_catalog_product_unique_data pcpud
+    ON pcpud.product_uuid = pim_catalog_product.uuid 
+    AND pcpud.attribute_id = (SELECT id FROM main_identifier)
+WHERE uuid = :uuid
+SQL,
+            ['uuid' => $uuid->getBytes()]
+        )->fetchOne();
+    }
+
+    protected function getUserId(string $username): int
+    {
+        $query = <<<SQL
+            SELECT id FROM oro_user WHERE username = :username
+        SQL;
+        $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
+        $id = $stmt->fetchOne();
+        if (null === $id) {
+            throw new \InvalidArgumentException(\sprintf('No user exists with username "%s"', $username));
+        }
+
+        return \intval($id);
+    }
+
+    protected function loginAs(string $username, ?HttpKernelBrowser $client = null): int
+    {
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn($username, $client);
+
+        return $this->getUserId($username);
     }
 }

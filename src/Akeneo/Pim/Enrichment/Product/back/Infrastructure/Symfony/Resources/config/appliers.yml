@@ -4,6 +4,8 @@ services:
             - !tagged_iterator 'pim.enrichment.product.user_intent_applier'
 
     Akeneo\Pim\Enrichment\Product\Application\Applier\SetEnabledApplier:
+        arguments:
+            - '@pim_catalog.updater.product'
         tags:
             - { name: 'pim.enrichment.product.user_intent_applier' }
 

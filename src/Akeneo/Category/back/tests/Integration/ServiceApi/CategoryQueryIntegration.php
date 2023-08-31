@@ -92,11 +92,12 @@ SQL;
         Assert::assertInstanceOf(Category::class, $category);
     }
 
-    public function testItDoNotGetCategoryById(): void
+    public function testItDoesNotGetCategoryById(): void
     {
         $this->expectException(NotFoundHttpException::class);
 
-        $this->getHandler()->byId(999);
+        $maxId = $this->get('database_connection')->fetchOne('SELECT MAX(id) FROM pim_catalog_category');
+        $this->getHandler()->byId($maxId + 1);
     }
 
     public function testItGetCategoryByCode(): void

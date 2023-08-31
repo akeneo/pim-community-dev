@@ -1485,12 +1485,18 @@ final class UpsertProductIntegration extends TestCase
         Assert::assertNull($unknownProduct);
     }
 
-    private function getUserId(string $username): int
+    /** @test */
+    public function it_creates_a_product_without_user_id(): void
     {
-        $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
-        Assert::assertNotNull($user);
+        $this->loginAs('system');
 
-        return $user->getId();
+        $this->messageBus->dispatch(UpsertProductCommand::createWithIdentifierSystemUser(
+            'my-product',
+            [new SetFamily('familyA')]
+        ));
+
+        $product = $this->productRepository->findOneByIdentifier('my-product');
+        Assert::assertNotNull($product);
     }
 
     private function loadAssetFixtures(): void

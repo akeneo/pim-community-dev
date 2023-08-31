@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Job\Infrastructure\Query;
 
 use Akeneo\Platform\Job\Application\DeleteJobInstance\DeleteJobInstanceInterface;
+use Akeneo\Platform\Job\ServiceApi\JobInstance\DeleteJobInstance\CannotDeleteJobInstanceException;
 use Doctrine\DBAL\Connection;
 
 final class DeleteJobInstance implements DeleteJobInstanceInterface
@@ -24,10 +25,31 @@ final class DeleteJobInstance implements DeleteJobInstanceInterface
      */
     public function byCodes(array $codes): void
     {
+        $this->checkJobsExist($codes);
+
         $sql = <<<SQL
             DELETE FROM akeneo_batch_job_instance WHERE code IN (:codes)
         SQL;
 
         $this->connection->executeQuery($sql, ['codes' => $codes], ['codes' => Connection::PARAM_STR_ARRAY])->execute();
+    }
+
+    public function checkJobsExist(array $codes): void
+    {
+        $sql = <<<SQL
+            SELECT code FROM akeneo_batch_job_instance WHERE code IN (:codes)
+        SQL;
+
+        $existingJobCodes = $this->connection->executeQuery(
+            $sql,
+            ['codes' => $codes],
+            ['codes' => Connection::PARAM_STR_ARRAY],
+        )->fetchFirstColumn();
+
+        foreach ($codes as $code) {
+            if (!in_array($code, $existingJobCodes)) {
+                throw CannotDeleteJobInstanceException::notFound($code);
+            }
+        }
     }
 }

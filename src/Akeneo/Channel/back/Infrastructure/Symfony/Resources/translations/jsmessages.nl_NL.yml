@@ -54,7 +54,7 @@ pim_enrich.entity.channel:
     category_tree: Categorieboom
     do_not_convert: Niet converteren
     measurement: Instellingen voor meeteenheden
-    label_conversion_units: Kies voor de conversie van elk attribuut met meeteenheden een eenheid die wordt gebruikt tijdens de productexport
+    label_conversion_units: Kies voor de conversie van elk attribuut met meeteenhede
   module:
     create:
       button: Kanaal aanmaken
@@ -65,8 +65,8 @@ pim_enrich.entity.locale:
   uppercase_label: Taal
   plural_label: Talen
   page_title:
-    index: "]-Inf, 1]{{ count }} ingeschakelde taal|]1, Inf[{{ count }} ingeschakelde talen"
-  helper: "Om een taal in of uit te schakelen, gaat u naar een van <a href={{ href }}>uw kanalen</a> om een taal toe te voegen of te verwijderen."
+    index: "]-Inf, 1]{{ count }} ingeschakelde taal]1, Inf[{{ count }"
+  helper: "Om een taal in of uit te schakelen, gaat u naar een van <"
   grid:
     columns:
       code: Ingeschakelde talen
@@ -80,5 +80,5 @@ pim_enrich.entity.currency:
 flash:
   currency:
     error:
-      linked_to_channel: U kunt een aan een kanaal gekoppelde valuta niet uitschakelen
+      linked_to_channel: U kunt een aan een kanaal gekoppelde valuta nie
     updated: De valuta is bijgewerkt

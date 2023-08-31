@@ -179,6 +179,7 @@ JSON;
                 "product-export-builder": "akeneo-attribute-identifier-filter"
             },
             "is_locale_specific": false,
+            "is_main_identifier": true,
             "meta": {
                 "id": {$attribute->getId()}
             }
@@ -227,6 +228,7 @@ JSON;
                 "product-export-builder": "akeneo-attribute-metric-filter"
             },
             "is_locale_specific": false,
+            "is_main_identifier": false,
             "meta": {
                 "id": {$attribute->getId()}
             }

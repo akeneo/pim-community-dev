@@ -75,7 +75,7 @@ services:
         arguments:
             - '@validator'
             - '@pim_category.serializer'
-            - '@Akeneo\Category\Application\Handler\StoreUploadedFile'
+            - '@akeneo_file_storage.file_storage.file.file_storer'
             - '%supported_category_image_mime_types%'
 
     Akeneo\Category\Infrastructure\Controller\InternalApi\ImagePreviewController:

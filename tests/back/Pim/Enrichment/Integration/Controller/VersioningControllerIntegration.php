@@ -99,7 +99,7 @@ class VersioningControllerIntegration extends WebTestCase
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
     }
 
-    protected function getUserId(string $username): int
+    private function getUserId(string $username): int
     {
         $query = <<<SQL
             SELECT id FROM oro_user WHERE username = :username

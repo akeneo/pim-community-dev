@@ -29,11 +29,11 @@ akeneo_data_quality_insights:
         message: Selecteer de families om op het dashboard te tonen.
         max_families_msg: Sorry, u kunt niet meer dan {{ count }} families toevoegen om te volgen op uw dashboard
       category_modal:
-        subtitle: Categorieën toevoegen
+        subtitle: Categoriën toevoegen
         message: Selecteer de categorieën om op je dashboard weer te geven.
         max_categories_msg: Sorry, u kunt niet meer dan {{ count }} categorieën toevoegen om te volgen op uw dashboard
       add_families: Families toevoegen
-      add_categories: Categorieën toevoegen
+      add_categories: Categoriën toevoegen
       title: Titel
       score: Score
       no_family_helper_msg: Selecteer de families waarvoor u de gegevenskwaliteit wilt meten
@@ -144,7 +144,7 @@ akeneo_data_quality_insights:
     activated: Ingeschakeld
     disabled: Uitgeschakeld
     used_groups_helper: "De volgende attribuutgroepen worden meegenomen in de berekening van de datakwaliteitsscore:"
-    all_groups_evaluated: Alle attribuutgroepen van dit product worden meegenomen bij de berekening van de kwaliteitsscore. Ga naar <a href="{{ link }}" target="_blank"> in ons helpcentrum voor meer informatie over het uitschakelen van attribuutgroepen om de meest relevante kwaliteitsscore te krijgen.</a>
+    all_groups_evaluated: Alle attribuutgroepen van dit product worden meegenomen bij de berekening van de kwaliteitsscore. Ga naar <a href="{{ link }}" target="_blank">  in ons help centervoor meer informatie over het uitschakelen va
   product_grid:
     filter_label:
       quality_score: Kwaliteitsscore

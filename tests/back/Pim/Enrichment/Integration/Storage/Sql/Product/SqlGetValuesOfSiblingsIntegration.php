@@ -245,18 +245,4 @@ class SqlGetValuesOfSiblingsIntegration extends TestCase
         return $this->get('akeneo.pim.enrichment.product_model.query.get_values_of_siblings')
                     ->for($entity, $attributeCodes);
     }
-
-    protected function getUserId(string $username): int
-    {
-        $query = <<<SQL
-            SELECT id FROM oro_user WHERE username = :username
-        SQL;
-        $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
-        $id = $stmt->fetchOne();
-        if (null === $id) {
-            throw new \InvalidArgumentException(\sprintf('No user exists with username "%s"', $username));
-        }
-
-        return \intval($id);
-    }
 }

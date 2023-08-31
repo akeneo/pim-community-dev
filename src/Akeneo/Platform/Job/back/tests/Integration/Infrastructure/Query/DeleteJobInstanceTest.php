@@ -21,7 +21,7 @@ class DeleteJobInstanceTest extends IntegrationTestCase
         $this->loadFixtures();
     }
 
-    public function test_it_delete_job_by_codes(): void
+    public function test_it_deletes_job_by_codes(): void
     {
         $this->assertEqualsCanonicalizing([
             'a_job_instance_to_delete',
@@ -32,6 +32,13 @@ class DeleteJobInstanceTest extends IntegrationTestCase
         $this->deleteJobInstanceQuery->byCodes(['a_job_instance_to_delete', 'another_job_instance_to_delete']);
 
         $this->assertEqualsCanonicalizing(['a_job_instance_to_keep'], $this->findAllJobInstanceCodes());
+    }
+
+    public function test_it_throws_exception_when_job_does_not_exist(): void
+    {
+        $this->expectExceptionMessage('Job instance with the code "unknown" does not exist');
+
+        $this->deleteJobInstanceQuery->byCodes(['a_job_instance_to_delete', 'unknown']);
     }
 
     private function loadFixtures(): void

@@ -17,6 +17,7 @@ class CreateJobInstanceCommand
         public string $connector,
         public string $jobName,
         public array $rawParameters,
+        public bool $isVisible = true,
     ) {
     }
 }

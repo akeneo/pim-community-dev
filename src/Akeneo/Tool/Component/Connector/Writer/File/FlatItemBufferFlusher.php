@@ -50,7 +50,8 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
         FlatItemBuffer $buffer,
         array $writerOptions,
         $basePathname,
-        $maxLinesPerFile = -1
+        $maxLinesPerFile = -1,
+        bool $withHeaders = true,
     ) {
         if (0 === $buffer->count()) {
             return [];
@@ -61,10 +62,11 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
                 $buffer,
                 $writerOptions,
                 $maxLinesPerFile,
-                $basePathname
+                $basePathname,
+                $withHeaders
             );
         } else {
-            $writtenFiles = $this->writeIntoSingleFile($buffer, $writerOptions, $basePathname);
+            $writtenFiles = $this->writeIntoSingleFile($buffer, $writerOptions, $basePathname, $withHeaders);
         }
 
         return $writtenFiles;
@@ -77,7 +79,7 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
      *
      * @return array
      */
-    protected function writeIntoSingleFile(FlatItemBuffer $buffer, array $writerOptions, $filePath)
+    protected function writeIntoSingleFile(FlatItemBuffer $buffer, array $writerOptions, $filePath, bool $withHeaders)
     {
         $writtenFiles = [];
 
@@ -85,7 +87,7 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
         $headers = $this->columnPresenter->present($headers, $this->stepExecution->getJobParameters()->all());
 
         $writer = $this->getWriter($filePath, $writerOptions);
-        if ([] !== $headers) {
+        if ($withHeaders) {
             $writer->addRow(Row::fromValues($headers));
         }
 
@@ -124,7 +126,8 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
         FlatItemBuffer $buffer,
         array $writerOptions,
         $maxLinesPerFile,
-        $basePathname
+        $basePathname,
+        bool $withHeaders
     ) {
         $writtenFiles = [];
         $basePathPattern = $this->getNumberedPathname($basePathname);
@@ -146,7 +149,7 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
                 );
                 $writtenLinesCount = 0;
                 $writer = $this->getWriter($filePath, $writerOptions);
-                if ([] !== $headers) {
+                if ($withHeaders) {
                     $writer->addRow(Row::fromValues($headers));
                 }
             }

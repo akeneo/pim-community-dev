@@ -168,7 +168,7 @@ class PreventDuplicateVariantAssociation extends TestCase
     {
         $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
         $command = UpsertProductCommand::createWithIdentifier(
-            userId: $this->getAdminId(),
+            userId: $this->getUserId('admin'),
             productIdentifier: ProductIdentifier::fromIdentifier($identifier),
             userIntents: $userIntents
         );
@@ -182,19 +182,6 @@ class PreventDuplicateVariantAssociation extends TestCase
     {
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
         $this->get('pim_connector.doctrine.cache_clearer')->clear();
-    }
-
-    private function getAdminId(): int
-    {
-        $query = <<<SQL
-            SELECT id FROM oro_user WHERE username = :username
-        SQL;
-        $id = $this->getConnection()->executeQuery($query, ['username' => 'admin'])->fetchOne();
-        if (null === $id) {
-            throw new \InvalidArgumentException('No user exists with username "admin"');
-        }
-
-        return \intval($id);
     }
 
     /**

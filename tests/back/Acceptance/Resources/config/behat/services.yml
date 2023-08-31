@@ -88,6 +88,7 @@ services:
         arguments:
             - '@pim_user.factory.user'
             - '@security.token_storage'
+            - '@pim_user.repository.user'
         public: true
 
     test.attribute.context:
@@ -122,6 +123,11 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@test.catalog.product.builder'
             - '@pim_catalog.repository.product'
+            - '@test.attribute.builder'
+            - '@pim_catalog.repository.attribute'
+            - '@test.attribute_group.builder'
+            - '@pim_catalog.repository.attribute_group'
+            - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetAttributeTypes'
 
     test.catalog.product_validation.context:
         public: true

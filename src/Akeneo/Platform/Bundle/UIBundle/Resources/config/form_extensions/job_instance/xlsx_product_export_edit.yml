@@ -298,6 +298,9 @@ extensions:
         parent: pim-job-instance-xlsx-product-export-edit-content-structure
         targetZone: filters
         position: 110
+        config:
+            helper:
+                text: pim_enrich.export.product.filter.attributes.modal.helper.text
 
     pim-job-instance-xlsx-product-export-edit-content-data:
         module: pim/job/product/edit/content/data

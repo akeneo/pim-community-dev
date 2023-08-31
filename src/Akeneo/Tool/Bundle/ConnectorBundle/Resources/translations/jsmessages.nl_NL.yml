@@ -24,7 +24,7 @@ batch_jobs:
       clean_product_model: Opschonen productmodellen
       clean_product: Opschonen producten
       remove_attribute_codes_from_blacklist: Verwijder code van zwarte lijst
-    check_job_unique: Controleer dat de taak uniek is
+    check_job_unique: Controleer of de taak uniek is
   csv_product_export:
     label: Productexport in CSV
     export.label: Productexport

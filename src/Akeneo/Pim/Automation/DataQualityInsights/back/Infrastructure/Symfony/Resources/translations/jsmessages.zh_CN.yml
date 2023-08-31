@@ -45,7 +45,7 @@ akeneo_data_quality_insights:
       title: 关键指标
       products: '{1}1 个产品|]1, 200[{{ count }} 个产品|[200, Inf[超过 {{ count }} 个产品'
       product_models: '{1}1 个产品模型|]1, 200[{{ count }} 个产品模型|[200, Inf[超过 {{ count }} 个产品模型'
-      entities_to_work_on: '您有 <improvable_products_count_link/> 个产品待处理。'
+      entities_to_work_on: 'Co有 <improvable_products_count_link/> 个实体待处理。'
       entities_to_work_on_2_kinds: '您有 <improvable_products_count_link/> 个产品和 <improvable_product_models_count_link/> 个产品模型待处理。'
       list:
         has_image:
@@ -53,9 +53,9 @@ akeneo_data_quality_insights:
           no_data: 您的图像属性似乎是空的，您应该为这个关键指标上传图像以突出显示您产品的质量。
           messages:
             first_step:
-              message1: 如果没有图像，您的产品显不出它们应有的本色。
+              message1: 如果没有图像，您的产品显不出它应有的本色。
               message2: 第一印象需要精心打造。好好打理您的资产，您的客户会留意到的。
-              message3: 以我们的经验来看，图像确实会起到非一般的效果。您可能需要花更多的时间来打理您的资产。
+              message3: 以我们的经验来看，图像确实会起到非一般的效果。您可能需要花更多的时间来料理您的资产。
             second_step:
               message1: 再好好打理一下您的产品图像，然后一切就完美了。
               message2: 图像要比文字更直观。现在就添加图像，为将来节省时间！
@@ -112,7 +112,7 @@ akeneo_data_quality_insights:
     axis:
       enrichment:
         title: 丰富度
-        attributes_link: 显示所有缺失的属性
+        attributes_link: 显示所有缺少内容的属性
         success: 您的产品数据非常完整。恭喜！
     messages:
       error:
@@ -134,7 +134,7 @@ akeneo_data_quality_insights:
         help_center_link: 在我们的帮助中心查找原因。
   product_edit_form:
     attribute_filter:
-      all_missing_attributes: 所有缺少内容的属性
+      all_missing_attributes: 所有缺失的属性
     back_to_products: 返回到产品
   attribute_group:
     helper_dqi_info: 质量评分计算将仅考虑属于在数据质量上启用的属性组的帐户属性。

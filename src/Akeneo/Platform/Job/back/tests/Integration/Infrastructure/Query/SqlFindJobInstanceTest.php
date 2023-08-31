@@ -30,11 +30,11 @@ class SqlFindJobInstanceTest extends IntegrationTestCase
         $query = new JobInstanceQuery();
 
         $expectedJobInstances = [
-            new JobInstance('a_product_import', 'A product import'),
-            new JobInstance('another_product_import', 'Another product import'),
-            new JobInstance('a_scheduled_job', 'A scheduled job'),
-            new JobInstance('a_product_export', 'A product export'),
-            new JobInstance('a_quick_export', 'A quick export'),
+            new JobInstance('a_product_import', 'A product import', ['param1' => 'value1', 'param2' => 'value2']),
+            new JobInstance('another_product_import', 'Another product import', ['param3' => 'value3', 'param4' => 'value4']),
+            new JobInstance('a_scheduled_job', 'A scheduled job', ['param5' => 'value5', 'param6' => 'value6']),
+            new JobInstance('a_product_export', 'A product export', ['param7' => 'value7', 'param8' => 'value8']),
+            new JobInstance('a_quick_export', 'A quick export', ['param9' => 'value9', 'param1' => 'value1']),
         ];
 
         $this->assertEquals($expectedJobInstances, $this->findJobInstanceQuery->fromQuery($query));
@@ -49,8 +49,8 @@ class SqlFindJobInstanceTest extends IntegrationTestCase
         $query->jobNames = ['a_product_import'];
 
         $expectedJobInstances = [
-            new JobInstance('a_product_import', 'A product import'),
-            new JobInstance('another_product_import', 'Another product import'),
+            new JobInstance('a_product_import', 'A product import', ['param1' => 'value1', 'param2' => 'value2']),
+            new JobInstance('another_product_import', 'Another product import', ['param3' => 'value3', 'param4' => 'value4']),
         ];
 
         $this->assertEquals($expectedJobInstances, $this->findJobInstanceQuery->fromQuery($query));
@@ -65,7 +65,7 @@ class SqlFindJobInstanceTest extends IntegrationTestCase
         $query->search = 'a_product_import';
 
         $expectedJobInstances = [
-            new JobInstance('a_product_import', 'A product import'),
+            new JobInstance('a_product_import', 'A product import', ['param1' => 'value1', 'param2' => 'value2']),
         ];
 
         $this->assertEquals($expectedJobInstances, $this->findJobInstanceQuery->fromQuery($query));
@@ -83,8 +83,8 @@ class SqlFindJobInstanceTest extends IntegrationTestCase
         $query->pagination = $queryPagination;
 
         $expectedJobInstances = [
-            new JobInstance('a_product_import', 'A product import'),
-            new JobInstance('another_product_import', 'Another product import'),
+            new JobInstance('a_product_import', 'A product import', ['param1' => 'value1', 'param2' => 'value2']),
+            new JobInstance('another_product_import', 'Another product import', ['param3' => 'value3', 'param4' => 'value4']),
         ];
 
         $this->assertEquals($expectedJobInstances, $this->findJobInstanceQuery->fromQuery($query));
@@ -94,8 +94,8 @@ class SqlFindJobInstanceTest extends IntegrationTestCase
         $query->pagination = $queryPagination;
 
         $expectedJobInstances = [
-            new JobInstance('a_scheduled_job', 'A scheduled job'),
-            new JobInstance('a_product_export', 'A product export'),
+            new JobInstance('a_scheduled_job', 'A scheduled job', ['param5' => 'value5', 'param6' => 'value6']),
+            new JobInstance('a_product_export', 'A product export', ['param7' => 'value7', 'param8' => 'value8']),
         ];
 
         $this->assertEquals($expectedJobInstances, $this->findJobInstanceQuery->fromQuery($query));
@@ -108,6 +108,7 @@ class SqlFindJobInstanceTest extends IntegrationTestCase
             'job_name' => 'a_product_import',
             'label' => 'A product import',
             'type' => 'import',
+            'raw_parameters' => ['param1' => 'value1', 'param2' => 'value2'],
         ]);
 
         $this->expectedJobInstances[] = $this->fixturesJobHelper->createJobInstance([
@@ -115,6 +116,7 @@ class SqlFindJobInstanceTest extends IntegrationTestCase
             'job_name' => 'a_product_import',
             'label' => 'Another product import',
             'type' => 'import',
+            'raw_parameters' => ['param3' => 'value3', 'param4' => 'value4'],
         ]);
 
         $this->expectedJobInstances[] = $this->fixturesJobHelper->createJobInstance([
@@ -122,6 +124,7 @@ class SqlFindJobInstanceTest extends IntegrationTestCase
             'job_name' => 'a_scheduled_job',
             'label' => 'A scheduled job',
             'type' => 'scheduled_job',
+            'raw_parameters' => ['param5' => 'value5', 'param6' => 'value6'],
         ]);
 
         $this->expectedJobInstances[] = $this->fixturesJobHelper->createJobInstance([
@@ -129,6 +132,7 @@ class SqlFindJobInstanceTest extends IntegrationTestCase
             'job_name' => 'a_product_export',
             'label' => 'A product export',
             'type' => 'export',
+            'raw_parameters' => ['param7' => 'value7', 'param8' => 'value8'],
         ]);
 
         $this->expectedJobInstances[] = $this->fixturesJobHelper->createJobInstance([
@@ -136,6 +140,7 @@ class SqlFindJobInstanceTest extends IntegrationTestCase
             'job_name' => 'a_quick_export',
             'label' => 'A quick export',
             'type' => 'quick_export',
+            'raw_parameters' => ['param9' => 'value9', 'param1' => 'value1'],
         ]);
     }
 }

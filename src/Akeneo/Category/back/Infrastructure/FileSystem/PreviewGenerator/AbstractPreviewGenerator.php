@@ -62,15 +62,14 @@ abstract class AbstractPreviewGenerator implements PreviewGeneratorInterface
         }
 
         $data = base64_decode($data, true);
-        $url = $this->generateUrl($data, $attribute);
-        $filename = $this->createCacheFilename($url, $type);
+        $filename = $this->createCacheFilename($data, $type);
         $previewType = $this->getPreviewType($type);
 
         try {
             $isStored = $this->cacheManager->isStored($filename, $previewType);
 
             if (!$isStored) {
-                $binary = $this->dataManager->find($previewType, $url);
+                $binary = $this->dataManager->find($previewType, $data);
                 $content = $binary->getContent();
 
                 if (null === $content) {
@@ -127,7 +126,7 @@ abstract class AbstractPreviewGenerator implements PreviewGeneratorInterface
         return $this->cacheManager->resolve($filename, $previewType);
     }
 
-    public function remove(string $data, Attribute $attribute, string $type): void
+    public function remove(string $data, string $type): void
     {
         if (empty($data)) {
             return;
@@ -138,7 +137,6 @@ abstract class AbstractPreviewGenerator implements PreviewGeneratorInterface
                 'The preview generator for type requires a base64 encoded input.',
                 [
                     'data' => $data,
-                    'attribute' => $attribute->normalize(),
                 ],
             );
 
@@ -146,8 +144,7 @@ abstract class AbstractPreviewGenerator implements PreviewGeneratorInterface
         }
 
         $data = base64_decode($data, true);
-        $url = $this->generateUrl($data, $attribute);
-        $filename = $this->createCacheFilename($url, $type);
+        $filename = $this->createCacheFilename($data, $type);
         $previewType = $this->getPreviewType($type);
 
         try {
@@ -157,7 +154,6 @@ abstract class AbstractPreviewGenerator implements PreviewGeneratorInterface
                 'Exception when trying to remove a thumbnail',
                 [
                     'data' => $data,
-                    'attribute' => $attribute->normalize(),
                     'exception' => [
                         'type' => $exception::class,
                         'message' => $exception->getMessage(),
@@ -209,8 +205,6 @@ abstract class AbstractPreviewGenerator implements PreviewGeneratorInterface
     }
 
     abstract protected function getPreviewType(string $type): string;
-
-    abstract protected function generateUrl(string $data, Attribute $attribute): string;
 
     abstract protected function defaultImage(): string;
 }

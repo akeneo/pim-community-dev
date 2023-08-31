@@ -8,6 +8,7 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\ProductLoader;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Structure\AttributeLoader;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Structure\FamilyLoader;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
@@ -54,7 +55,9 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
             'attributes' => ['sku', 'name']
         ]);
 
-        $this->productLoader->create('high-top_sneakers', ['family' => 'shoes']);
+        $this->productLoader->create('high-top_sneakers', [
+            new SetFamily('shoes'),
+        ]);
 
         $connection = $this->createConnection('erp', 'ERP', FlowType::DATA_SOURCE, true);
 
@@ -142,7 +145,9 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
     public function test_it_collects_an_unknown_attribute_error(): void
     {
         $this->familyLoader->create(['code' => 'shoes', 'attributes' => ['sku']]);
-        $this->productLoader->create('high-top_sneakers', ['family' => 'shoes']);
+        $this->productLoader->create('high-top_sneakers', [
+            new SetFamily('shoes'),
+        ]);
 
         $connection = $this->createConnection('erp', 'ERP', FlowType::DATA_SOURCE, true);
 

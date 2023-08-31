@@ -34,9 +34,7 @@ class FlatItemBuffer extends JSONFileBuffer implements BufferInterface, \Countab
     public function write($items, array $options = [])
     {
         foreach ($items as $item) {
-            if (isset($options['withHeader']) && $options['withHeader']) {
-                $this->addToHeaders(array_keys($item));
-            }
+            $this->addToHeaders(array_keys($item));
 
             $this->count++;
             parent::write($item, $options);

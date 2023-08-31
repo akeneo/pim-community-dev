@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Controller\InternalApi;
 
-use Akeneo\Category\Api\Command\CommandMessageBus;
 use Akeneo\Category\Application\Command\ReorderTemplateAttributesCommand\ReorderTemplateAttributesCommand;
 use Akeneo\Category\Domain\Exception\TemplateNotFoundException;
+use Akeneo\Category\Infrastructure\Bus\CommandBus;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +22,7 @@ class ReorderTemplateAttributesController
 {
     public function __construct(
         private readonly SecurityFacade $securityFacade,
-        private readonly CommandMessageBus $categoryCommandBus,
+        private readonly CommandBus $commandBus,
     ) {
     }
 
@@ -39,7 +39,7 @@ class ReorderTemplateAttributesController
         );
 
         try {
-            $this->categoryCommandBus->dispatch($command);
+            $this->commandBus->dispatch($command);
         } catch (TemplateNotFoundException $e) {
             throw new NotFoundHttpException($e->getMessage());
         }

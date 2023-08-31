@@ -29,7 +29,7 @@ define(['underscore', 'pim/common/item-picker', 'pim/media-url-generator'], func
      */
     selectModel: function (model) {
       this.addItem({
-        id: model.get('identifier'),
+        id: model.get('identifier') ?? `[${model.get('technical_id')}]`,
         itemCode: `${model.get('document_type')};${model.get('id')}`,
         document_type: model.get('document_type'),
         technical_id: model.get('technical_id'),
@@ -149,7 +149,7 @@ define(['underscore', 'pim/common/item-picker', 'pim/media-url-generator'], func
     /**
      * {@inheritdoc}
      */
-    labelMethod: item => item.label,
+    labelMethod: item => item.label ?? `[${item.id}]`,
 
     /**
      * {@inheritdoc}

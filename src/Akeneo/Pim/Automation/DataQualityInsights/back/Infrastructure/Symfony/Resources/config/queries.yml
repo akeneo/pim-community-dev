@@ -185,6 +185,7 @@ services:
         arguments:
             - '@database_connection'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetFamilyIds'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductModelIdsImpactedByAttributeGroupActivationQuery:
         arguments:
@@ -294,5 +295,10 @@ services:
 
     Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetOutdatedProductModelIdsByDateAndCriteriaQueryInterface:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetOutdatedProductModelIdsByDateAndCriteriaQuery
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetFamilyIds:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\SqlGetFamilyIds
         arguments:
             - '@database_connection'

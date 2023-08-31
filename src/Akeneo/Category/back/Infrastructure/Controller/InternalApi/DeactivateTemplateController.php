@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Controller\InternalApi;
 
-use Akeneo\Category\Api\Command\CommandMessageBus;
 use Akeneo\Category\Application\Command\DeactivateTemplateCommand;
+use Akeneo\Category\Infrastructure\Bus\CommandBus;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,7 +19,7 @@ class DeactivateTemplateController
 {
     public function __construct(
         private readonly SecurityFacade $securityFacade,
-        private readonly CommandMessageBus $categoryCommandBus,
+        private readonly CommandBus $commandBus,
     ) {
     }
 
@@ -30,7 +30,7 @@ class DeactivateTemplateController
         }
 
         $command = DeactivateTemplateCommand::create($templateUuid);
-        $this->categoryCommandBus->dispatch($command);
+        $this->commandBus->dispatch($command);
 
         return new JsonResponse(null, Response::HTTP_ACCEPTED);
     }

@@ -1,8 +1,21 @@
-import React, {FunctionComponentElement} from 'react';
+import React, {FunctionComponentElement, useMemo, useState} from 'react';
 import {useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {useAttributeCodeInput} from '../hooks/attributes/useAttributeCodeInput';
-import {AttributesIllustration, Button, Field, Locale, Modal, TextInput, useAutoFocus} from 'akeneo-design-system';
+import {
+  AttributesIllustration,
+  Button,
+  Checkbox,
+  Field,
+  Helper,
+  Link,
+  Locale,
+  Modal,
+  TextInput,
+  Tooltip,
+  useAutoFocus,
+} from 'akeneo-design-system';
 import styled from 'styled-components';
+import {CheckBoxesContainer} from './styles';
 
 const FieldSet = styled.div`
   & > * {
@@ -26,6 +39,7 @@ type CreateAttributeModalProps = {
   initialData?: AttributeData;
   extraFields?: CreateAttributeModalExtraField[];
   onBack?: () => void;
+  children?: React.ReactNode;
 };
 
 const CreateAttributeModal: React.FC<CreateAttributeModalProps> = ({
@@ -34,6 +48,7 @@ const CreateAttributeModal: React.FC<CreateAttributeModalProps> = ({
   initialData,
   extraFields = [],
   onBack,
+  children,
 }) => {
   const translate = useTranslate();
   const userContext = useUserContext();
@@ -42,6 +57,13 @@ const CreateAttributeModal: React.FC<CreateAttributeModalProps> = ({
     defaultCode: initialData?.code,
     generatedFromLabel: label,
   });
+  const [isUniqueValue, setIsUniqueValue] = useState(initialData?.attribute_type === 'pim_catalog_identifier');
+  const [isScopable, setIsScopable] = useState(false);
+  const [isLocalizable, setIsLocalizable] = useState(false);
+
+  const isUniqueValueReadOnly = useMemo(() => {
+    return !['pim_catalog_number', 'pim_catalog_text'].includes(initialData?.attribute_type || '');
+  }, [initialData]);
 
   const labelRef: React.RefObject<HTMLInputElement> = React.createRef();
 
@@ -49,13 +71,28 @@ const CreateAttributeModal: React.FC<CreateAttributeModalProps> = ({
     const extraFieldsData = extraFields.reduce((old, extraField: CreateAttributeModalExtraField) => {
       return {...old, ...extraField.data};
     }, {} as {[key: string]: any});
-    onStepConfirm({code, label, ...extraFieldsData});
+    onStepConfirm({
+      code,
+      label,
+      unique: isUniqueValue,
+      scopable: isScopable,
+      localizable: isLocalizable,
+      ...extraFieldsData,
+    });
   };
 
   useAutoFocus(labelRef);
 
   const handleBack = () => {
     onBack?.();
+  };
+
+  const handleUniqueValueChange = (value: boolean) => {
+    if (value) {
+      setIsLocalizable(false);
+      setIsScopable(false);
+    }
+    setIsUniqueValue(value);
   };
 
   return (
@@ -69,6 +106,17 @@ const CreateAttributeModal: React.FC<CreateAttributeModalProps> = ({
         {translate('pim_enrich.entity.attribute.module.create.button')}
       </Modal.SectionTitle>
       <Modal.Title>{translate('pim_common.create')}</Modal.Title>
+      {initialData?.attribute_type === 'pim_catalog_identifier' && (
+        <Helper level="info">
+          {translate('pim_enrich.entity.attribute.property.identifiers_limit') + ' '}
+          <Link
+            href="https://help.akeneo.com/serenity-build-your-catalog/33-serenity-manage-your-product-identifiers"
+            target="_blank"
+          >
+            {translate('pim_enrich.entity.attribute.property.identifiers_limit_link')}
+          </Link>
+        </Helper>
+      )}
       <FieldSet>
         <Field label={translate('pim_common.label')} locale={<Locale code={userContext.get('catalogLocale')} />}>
           <TextInput
@@ -87,6 +135,33 @@ const CreateAttributeModal: React.FC<CreateAttributeModalProps> = ({
         {extraFields.map((field: CreateAttributeModalExtraField, i: number) =>
           React.cloneElement<CreateAttributeModalExtraFieldProps>(field.component, {key: i})
         )}
+        <CheckBoxesContainer>
+          <Checkbox readOnly={isUniqueValueReadOnly} checked={isUniqueValue} onChange={handleUniqueValueChange}>
+            {translate('pim_enrich.entity.attribute.property.unique')}
+          </Checkbox>
+          <Tooltip direction="right" iconSize={16} width={300}>
+            <b>{translate('pim_enrich.entity.attribute.property.unique')}</b>
+            <p>{translate('pim_enrich.entity.attribute.property.unique_value_helper')}</p>
+          </Tooltip>
+        </CheckBoxesContainer>
+        <CheckBoxesContainer>
+          <Checkbox readOnly={isUniqueValue} checked={isScopable} onChange={setIsScopable}>
+            {translate('pim_enrich.entity.attribute.property.scopable')}
+          </Checkbox>
+          <Tooltip direction="right" iconSize={16} width={300}>
+            <b>{translate('pim_enrich.entity.attribute.property.scopable')}</b>
+            <p>{translate('pim_enrich.entity.attribute.property.scopable_helper')}</p>
+          </Tooltip>
+        </CheckBoxesContainer>
+        <CheckBoxesContainer>
+          <Checkbox readOnly={isUniqueValue} checked={isLocalizable} onChange={setIsLocalizable}>
+            {translate('pim_enrich.entity.attribute.property.localizable')}
+          </Checkbox>
+          <Tooltip direction="right" iconSize={16} width={300}>
+            <b>{translate('pim_enrich.entity.attribute.property.localizable')}</b>
+            <p>{translate('pim_enrich.entity.attribute.property.localizable_helper')}</p>
+          </Tooltip>
+        </CheckBoxesContainer>
       </FieldSet>
       <Modal.BottomButtons>
         <Button level="tertiary" onClick={onClose}>
@@ -100,6 +175,7 @@ const CreateAttributeModal: React.FC<CreateAttributeModalProps> = ({
           {translate('pim_common.confirm')}
         </Button>
       </Modal.BottomButtons>
+      {children}
     </Modal>
   );
 };
