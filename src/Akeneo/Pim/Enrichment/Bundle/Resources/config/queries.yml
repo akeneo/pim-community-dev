@@ -167,6 +167,7 @@ services:
             - '@database_connection'
             - '@akeneo.pim.enrichment.product.query.quantified_association.get_uuid_mapping_query'
             - '@akeneo.pim.enrichment.product.query.find_quantified_association_codes'
+            - '@pim_catalog.repository.product'
 
     Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\QuantifiedAssociation\GetProductModelQuantifiedAssociationsByProductUuids:
         arguments:

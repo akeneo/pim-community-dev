@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\QuantifiedAssociation\GetIdM
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Query\FindQuantifiedAssociationTypeCodesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\QuantifiedAssociation\GetUuidMappingQueryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -17,7 +18,8 @@ final class GetProductQuantifiedAssociationsByProductUuids
     public function __construct(
         private readonly Connection $connection,
         private readonly GetUuidMappingQueryInterface $getUuidMappingQuery,
-        private readonly FindQuantifiedAssociationTypeCodesInterface $findQuantifiedAssociationTypeCodes
+        private readonly FindQuantifiedAssociationTypeCodesInterface $findQuantifiedAssociationTypeCodes,
+        private readonly ProductRepositoryInterface $productRepository
     ) {
     }
 
@@ -122,6 +124,10 @@ SQL;
 
             $uniqueQuantifiedAssociations = [];
             foreach ($associationWithUuids['products'] as $associationWithProductUuid) {
+                if (!$this->productExists($associationWithProductUuid['uuid'])) {
+                    continue;
+                }
+
                 try {
                     $identifier = $productUuidMapping->getIdentifierFromId($associationWithProductUuid['id']);
                 } catch (\Exception $exception) {
@@ -149,5 +155,10 @@ SQL;
             },
             $quantifiedAssociationWithProductUuids['products'] ?? []
         );
+    }
+
+    private function productExists(string $uuid): bool
+    {
+        return null !== $this->productRepository->find($uuid);
     }
 }
