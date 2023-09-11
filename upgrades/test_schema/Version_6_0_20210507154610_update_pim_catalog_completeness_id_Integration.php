@@ -10,7 +10,7 @@ class Version_6_0_20210507154610_update_pim_catalog_completeness_id_Integration 
 {
     use ExecuteMigrationTrait;
 
-    private const MIGRATION_LABEL = '_5_0_20210507154610_update_pim_catalog_completeness_id';
+    private const MIGRATION_LABEL = '_6_0_20210507154610_update_pim_catalog_completeness_id';
 
     protected function setUp(): void
     {
