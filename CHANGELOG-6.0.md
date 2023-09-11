@@ -575,6 +575,7 @@
 - PIM-10212: Prevent spaces in locale codes
 - PIM-10218: Remove previous scope filter before moving the new one
 - PIM-11008: [Backport PIM-10960] Fix no violation raised when importing variant with already existing siblings
+- PIM-10918: Fix migrations not executed but added in executed migrations
 
 ## New features
 
