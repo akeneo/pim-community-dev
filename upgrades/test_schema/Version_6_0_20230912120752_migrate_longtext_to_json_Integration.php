@@ -18,7 +18,7 @@ use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
 
-final class Version_6_0_20211018134301_migrate_longtext_to_json_Integration extends TestCase
+final class Version_6_0_20230912120752_migrate_longtext_to_json_Integration extends TestCase
 {
     use ExecuteMigrationTrait;
 
@@ -52,11 +52,10 @@ final class Version_6_0_20211018134301_migrate_longtext_to_json_Integration exte
         $sql = <<<SQL
         SELECT DATA_TYPE
         FROM INFORMATION_SCHEMA.COLUMNS
-        WHERE table_schema = :db_name AND table_name = :table_name AND column_name = :column_name
+        WHERE table_schema = DATABASE() AND table_name = :table_name AND column_name = :column_name
         SQL;
 
         $statement = $this->connection->executeQuery($sql, [
-            'db_name' => $this->connection->getParams()['dbname'],
             'table_name' => $tableName,
             'column_name' => $columnName,
         ]);
@@ -69,11 +68,10 @@ final class Version_6_0_20211018134301_migrate_longtext_to_json_Integration exte
         $sql = <<<SQL
         SELECT IS_NULLABLE
         FROM INFORMATION_SCHEMA.COLUMNS
-        WHERE table_schema = :db_name AND table_name = :table_name AND column_name = :column_name
+        WHERE table_schema = DATABASE() AND table_name = :table_name AND column_name = :column_name
         SQL;
 
         $statement = $this->connection->executeQuery($sql, [
-            'db_name' => $this->connection->getParams()['dbname'],
             'table_name' => $tableName,
             'column_name' => $columnName,
         ]);

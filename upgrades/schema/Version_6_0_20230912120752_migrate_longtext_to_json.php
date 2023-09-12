@@ -11,7 +11,7 @@ use Doctrine\Migrations\AbstractMigration;
  * Catalogs created in 3.0 (and older ones) have columns created with longtext type. See PIM-10040.
  * To be consistent with new catalogs we migrate them in json.
  */
-final class Version_6_0_20211018134301_migrate_longtext_to_json extends AbstractMigration
+final class Version_6_0_20230912120752_migrate_longtext_to_json extends AbstractMigration
 {
     private array $columnsToMigrate = [
         [
@@ -36,7 +36,7 @@ final class Version_6_0_20211018134301_migrate_longtext_to_json extends Abstract
         return 'Migrate doctrine\'s json_array type from longtext to json.';
     }
 
-    public function up(Schema $schema) : void
+    public function up(Schema $schema): void
     {
         $this->disableMigrationWarning();
 
@@ -49,7 +49,7 @@ final class Version_6_0_20211018134301_migrate_longtext_to_json extends Abstract
         }
     }
 
-    public function down(Schema $schema) : void
+    public function down(Schema $schema): void
     {
         $this->throwIrreversibleMigrationException();
     }
@@ -59,11 +59,10 @@ final class Version_6_0_20211018134301_migrate_longtext_to_json extends Abstract
         $sql = <<<SQL
         SELECT DATA_TYPE
         FROM INFORMATION_SCHEMA.COLUMNS
-        WHERE table_schema = :db_name AND table_name = :table_name AND column_name = :column_name
+        WHERE table_schema = DATABASE() AND table_name = :table_name AND column_name = :column_name
         SQL;
 
         $statement = $this->connection->executeQuery($sql, [
-            'db_name' => $this->connection->getParams()['dbname'],
             'table_name' => $column['table'],
             'column_name' => $column['column'],
         ]);

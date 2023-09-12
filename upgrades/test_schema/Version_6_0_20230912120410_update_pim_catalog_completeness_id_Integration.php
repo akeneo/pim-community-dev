@@ -6,11 +6,11 @@ namespace Pim\Upgrade\Schema\Tests;
 
 use Akeneo\Test\Integration\TestCase;
 
-class Version_6_0_20210507154610_update_pim_catalog_completeness_id_Integration extends TestCase
+class Version_6_0_20230912120410_update_pim_catalog_completeness_id_Integration extends TestCase
 {
     use ExecuteMigrationTrait;
 
-    private const MIGRATION_LABEL = '_6_0_20210507154610_update_pim_catalog_completeness_id';
+    private const MIGRATION_LABEL = '_6_0_20230912120410_update_pim_catalog_completeness_id';
 
     protected function setUp(): void
     {
@@ -23,11 +23,11 @@ class Version_6_0_20210507154610_update_pim_catalog_completeness_id_Integration 
         $this->reExecuteMigration(self::MIGRATION_LABEL);
 
         $sql = <<<SQL
-select data_type
-from information_schema.COLUMNS
-where
-  TABLE_NAME='pim_catalog_completeness'
-  and COLUMN_NAME='id';
+SELECT data_type
+FROM information_schema.COLUMNS
+WHERE table_schema = DATABASE()
+AND TABLE_NAME='pim_catalog_completeness'
+AND COLUMN_NAME='id';
 SQL;
         $result = $this->get('database_connection')
             ->executeQuery($sql)

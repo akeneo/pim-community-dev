@@ -17,7 +17,7 @@ use Doctrine\DBAL\Connection;
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  */
-final class Version_6_0_20200728092625_add_remove_non_existing_values_job_Integration extends TestCase
+final class Version_6_0_20230912120502_add_remove_non_existing_values_job_Integration extends TestCase
 {
     use ExecuteMigrationTrait;
 

@@ -8,11 +8,12 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Add the remove_non_existing_product_values job
  */
-final class Version_6_0_20200728092625_add_remove_non_existing_values_job extends AbstractMigration
+final class Version_6_0_20230912120502_add_remove_non_existing_values_job extends AbstractMigration
 {
     public function up(Schema $schema) : void
     {
         if ($this->jobExists('remove_non_existing_product_values')) {
+            $this->disableMigrationWarning();
             return;
         }
 
@@ -34,6 +35,11 @@ SQL;
     public function down(Schema $schema) : void
     {
         $this->throwIrreversibleMigrationException();
+    }
+
+    private function disableMigrationWarning(): void
+    {
+        $this->addSql('SELECT 1');
     }
 
     private function jobExists(string $jobCode): bool
