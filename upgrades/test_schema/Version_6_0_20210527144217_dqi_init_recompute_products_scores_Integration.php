@@ -19,6 +19,7 @@ final class Version_6_0_20210527144217_dqi_init_recompute_products_scores_Integr
 
     public function testItInitiateProductsScoresRecomputing(): void
     {
+        $this->deleteJobIfExist();
         $this->givenProductsScores();
         $this->reExecuteMigration(self::MIGRATION_LABEL);
 
@@ -65,5 +66,12 @@ SQL;
 
         $jobInstanceId = $this->get('database_connection')->executeQuery($findJobInstance)->fetchOne();
         $this->assertNotFalse($jobInstanceId, 'Job instance not found.');
+    }
+
+    private function deleteJobIfExist(): void
+    {
+        $this->get('database_connection')->executeStatement(
+            "DELETE FROM akeneo_batch_job_instance WHERE code = 'data_quality_insights_recompute_products_scores'",
+        );
     }
 }
