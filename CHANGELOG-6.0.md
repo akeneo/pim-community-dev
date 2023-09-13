@@ -1,5 +1,12 @@
 # 6.0.x
 
+## Bug fixes
+
+- PIM-10918: Fix migrations not executed but added in executed migrations
+# 6.0.101 (2023-09-13)
+
+# 6.0.100 (2023-09-07)
+
 # 6.0.99 (2023-08-30)
 
 - PIM-11155: Fix scroll on datagrid columns manager when browser zoom is not 100%
