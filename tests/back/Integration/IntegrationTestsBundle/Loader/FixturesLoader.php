@@ -190,6 +190,7 @@ class FixturesLoader implements FixturesLoaderInterface
 
         $this->generateAsymmetricKeysHandler->handle(new GenerateAsymmetricKeysCommand());
         $this->measurementInstaller->createMeasurementTableAndStandardMeasurementFamilies();
+        $this->eventDispatcher->dispatch(new InstallerEvent(), InstallerEvents::PRE_LOAD_FIXTURES);
         $this->loadSqlFiles($filesByType['sql']);
         $this->loadImportFiles($filesByType['import']);
         $this->loadReferenceData();
