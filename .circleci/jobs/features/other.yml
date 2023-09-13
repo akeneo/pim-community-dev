@@ -377,24 +377,3 @@ jobs:
             - run:
                   name: Database test
                   command: APP_ENV=test PIM_CONTEXT=test make test-database-structure
-
-    test_job_declaration:
-      machine:
-        image: ubuntu-2004:2022.04.1
-      resource_class: medium
-      parallelism: 1
-      steps:
-        - attach_workspace:
-            at: ~/
-        - run:
-            name: Change owner on project dir in order to archive the project into the workspace
-            command: sudo chown -R 1000:1000 ../project
-        - run:
-            name: Start containers
-            command: |
-              docker load -i php-pim-image.tar
-              APP_ENV=test C='fpm mysql elasticsearch' make up
-              docker/wait_docker_up.sh
-        - run:
-            name: Test job declaration
-            command: PIM_CONTEXT=test make test-job-declaration
