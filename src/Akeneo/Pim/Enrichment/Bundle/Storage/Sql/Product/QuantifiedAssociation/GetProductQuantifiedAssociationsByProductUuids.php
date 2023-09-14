@@ -19,7 +19,6 @@ final class GetProductQuantifiedAssociationsByProductUuids
         private readonly Connection $connection,
         private readonly GetUuidMappingQueryInterface $getUuidMappingQuery,
         private readonly FindQuantifiedAssociationTypeCodesInterface $findQuantifiedAssociationTypeCodes,
-        private readonly ProductRepositoryInterface $productRepository
     ) {
     }
 
@@ -106,7 +105,7 @@ SQL;
             $productUuids = array_merge($productUuids, $this->productUuids($quantifiedAssociationWithId));
         }
 
-        $productUuids = array_map(static fn(string $uuidAsString): UuidInterface => Uuid::fromString($uuidAsString), $productUuids);
+        $productUuids = array_map(static fn (string $uuidAsString): UuidInterface => Uuid::fromString($uuidAsString), $productUuids);
 
         $productUuidMapping = $this->getUuidMappingQuery->fromProductIds([], $productUuids);
 
@@ -124,17 +123,13 @@ SQL;
 
             $uniqueQuantifiedAssociations = [];
             foreach ($associationWithUuids['products'] as $associationWithProductUuid) {
-                if (!$this->productExists($associationWithProductUuid['uuid'])) {
+                if (!$productUuidMapping->hasUuidFromId($associationWithProductUuid['id'])) {
+                    // the product does not exist
                     continue;
                 }
 
-                try {
-                    $identifier = $productUuidMapping->getIdentifierFromId($associationWithProductUuid['id']);
-                } catch (\Exception $exception) {
-                    continue;
-                }
-                $uniqueQuantifiedAssociations[$identifier] = [
-                    'identifier' => $identifier,
+                $uniqueQuantifiedAssociations[$associationWithProductUuid['uuid']] = [
+                    'identifier' => $productUuidMapping->getIdentifierFromId($associationWithProductUuid['id']),
                     'quantity' => (int)$associationWithProductUuid['quantity'],
                     'uuid' => $associationWithProductUuid['uuid'],
                 ];
@@ -155,10 +150,5 @@ SQL;
             },
             $quantifiedAssociationWithProductUuids['products'] ?? []
         );
-    }
-
-    private function productExists(string $uuid): bool
-    {
-        return null !== $this->productRepository->find($uuid);
     }
 }

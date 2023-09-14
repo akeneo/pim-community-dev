@@ -112,7 +112,7 @@ class EntityBuilder
      * @return ProductInterface
      */
     public function createProduct(
-        string $identifier,
+        ?string $identifier,
         string $familyCode,
         array $data
     ): ProductInterface {

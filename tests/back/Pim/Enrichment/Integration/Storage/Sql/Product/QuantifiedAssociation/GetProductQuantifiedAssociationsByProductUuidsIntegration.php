@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\Product\Association;
 
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\QuantifiedAssociation\GetProductQuantifiedAssociationsByProductUuids;
+use Akeneo\Test\Integration\Configuration;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\EntityWithQuantifiedAssociations\QuantifiedAssociationsTestCaseTrait;
 use AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\AbstractQuantifiedAssociationIntegration;
 use Doctrine\DBAL\Connection;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 
 class GetProductQuantifiedAssociationsByProductUuidsIntegration extends AbstractQuantifiedAssociationIntegration
 {
@@ -386,12 +385,40 @@ SQL;
         $this->assertSame([], $actual);
     }
 
+    /** @test */
+    public function itDoesNotFailIfAssociatedProductsHaveNoIdentifier(): void
+    {
+        $uuidA = $this->getEntityBuilder()->createProduct(null, 'aFamily', [])->getUuid();
+        $uuidB = $this->getEntityBuilder()->createProduct('productB', 'aFamily', [
+            'quantified_associations' => [
+                'PRODUCT_SET' => [
+                    'products' => [
+                        ['identifier' => null, 'uuid' => $uuidA->toString(), 'quantity' => 3],
+                    ],
+                ],
+            ],
+        ])->getUuid();
+
+        $expected = [
+            $uuidB->toString() => [
+                'PRODUCT_SET' => [
+                    'products' => [
+                        ['identifier' => null, 'quantity' => 3, 'uuid' => $uuidA->toString()],
+                    ],
+                ],
+            ],
+        ];
+        $actual = $this->getQuery()->fromProductUuids([$uuidB]);
+
+        $this->assertSame($expected, $actual);
+    }
+
     private function getQuery(): GetProductQuantifiedAssociationsByProductUuids
     {
         return $this->get('Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\QuantifiedAssociation\GetProductQuantifiedAssociationsByProductUuids');
     }
 
-    protected function getConfiguration()
+    protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
     }
