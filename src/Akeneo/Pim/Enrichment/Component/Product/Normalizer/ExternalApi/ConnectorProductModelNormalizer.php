@@ -48,7 +48,7 @@ final class ConnectorProductModelNormalizer
             'created' => $this->dateTimeNormalizer->normalize($connectorProductModel->createdDate()),
             'updated' => $this->dateTimeNormalizer->normalize($connectorProductModel->updatedDate()),
             'associations' => empty($connectorProductModel->associations()) ? (object) [] : $connectorProductModel->associations(),
-            'quantified_associations' => empty($connectorProductModel->quantifiedAssociations()) ? (object) [] : $connectorProductModel->quantifiedAssociations(),
+            'quantified_associations' => empty($connectorProductModel->quantifiedAssociations()) ? (object) [] : $this->normalizeQuantifiedAssociations($connectorProductModel->quantifiedAssociations()),
         ];
 
         if (!empty($connectorProductModel->metadata())) {
@@ -78,5 +78,44 @@ final class ConnectorProductModelNormalizer
         }
 
         return $qualityScores;
+    }
+
+    /**
+     * This method keeps only the identifier and quantity values from the associated products and removes the uuid from
+     * result.
+     *
+     * @param array $quantifiedAssociations
+     * Example
+     * [
+     *   'X_SELL' => [
+     *     'products' => [
+     *       ['uuid' => '95341071-a0dd-47c6-81b1-315913952c43', 'identifier' => 'product_code_1', 'quantity' => 8]
+     *     ],
+     *     'product_models' => [],
+     *     'groups' => ['group_code_2']
+     *   ],
+     * ],
+     *
+     * @return array
+     */
+    private function normalizeQuantifiedAssociations(array $quantifiedAssociations): array
+    {
+        $result = [];
+        foreach ($quantifiedAssociations as $associationType => $associationsByType) {
+            foreach ($associationsByType as $entityType => $associationsByEntityType) {
+                $result[$associationType][$entityType] = $entityType === 'products' ?
+                    array_map(
+                        fn (array $associatedObject): array => array_filter(
+                            $associatedObject,
+                            fn (string $key): bool => in_array($key, ['identifier', 'quantity']),
+                            ARRAY_FILTER_USE_KEY
+                        ),
+                        $associationsByEntityType
+                    ) :
+                    $result[$associationType][$entityType] = $associationsByEntityType;
+            }
+        }
+
+        return $result;
     }
 }

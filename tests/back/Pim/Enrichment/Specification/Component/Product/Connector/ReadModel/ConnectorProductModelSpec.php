@@ -43,8 +43,8 @@ final class ConnectorProductModelSpec extends ObjectBehavior
             [
                 'PRODUCT_SET' => [
                     'products' => [
-                        ['identifier' => 'product_1', 'quantity' => 1],
-                        ['identifier' => 'product_2', 'quantity' => 2]
+                        ['identifier' => 'product_1', 'quantity' => 1, 'uuid' => '9e031351-dc02-457a-bb82-00339ab7b691'],
+                        ['identifier' => 'product_2', 'quantity' => 2, 'uuid' => '59a498db-f7d1-4364-8451-e573ebdde55b'],
                     ],
                     'product_models' => [
                         ['identifier' => 'product_model_1', 'quantity' => 3],
@@ -53,8 +53,8 @@ final class ConnectorProductModelSpec extends ObjectBehavior
                 ],
                 'PRODUCT_SET1' => [
                     'products' => [
-                        ['identifier' => 'product_1', 'quantity' => 2],
-                        ['identifier' => 'product_3', 'quantity' => 9]
+                        ['identifier' => 'product_1', 'quantity' => 2, 'uuid' => '9e031351-dc02-457a-bb82-00339ab7b691'],
+                        ['identifier' => 'product_3', 'quantity' => 9, 'uuid' => 'ad7b6aff-a8b0-488d-aec7-ae6483b16b60'],
                     ],
                     'product_models' => [
                         ['identifier' => 'product_model_1', 'quantity' => 2],
@@ -89,9 +89,13 @@ final class ConnectorProductModelSpec extends ObjectBehavior
         $this->associatedProductModelCodes()->shouldBeLike(['product_model_5']);
     }
 
-    function it_gets_associated_with_quantity_product_identifiers()
+    function it_gets_associated_with_quantity_product_uuids()
     {
-        $this->associatedWithQuantityProductIdentifiers()->shouldBeLike(['product_1', 'product_2', 'product_3']);
+        $this->associatedWithQuantityProductUuids()->shouldBeLike([
+            '9e031351-dc02-457a-bb82-00339ab7b691',
+            '59a498db-f7d1-4364-8451-e573ebdde55b',
+            'ad7b6aff-a8b0-488d-aec7-ae6483b16b60',
+        ]);
     }
 
     function it_gets_associated_with_quantity_product_model_codes()
@@ -142,20 +146,21 @@ final class ConnectorProductModelSpec extends ObjectBehavior
 
     function it_filters_associated_with_quantity_products_with_empty_array_of_product_identifiers()
     {
-        $connectorProductModel = $this->filterAssociatedWithQuantityProductsByProductIdentifiers([]);
-        $connectorProductModel->associatedWithQuantityProductIdentifiers()->shouldReturn([]);
+        $connectorProductModel = $this->filterAssociatedWithQuantityProductsByProductUuids([]);
+        $connectorProductModel->associatedWithQuantityProductUuids()->shouldReturn([]);
     }
 
-    function it_filters_associated_with_quantity_product_by_identifier()
+    function it_filters_associated_with_quantity_product_by_uuid()
     {
-        $connectorProductModel = $this->filterAssociatedWithQuantityProductsByProductIdentifiers(
-            ['product_2', 'product_4']
+        $connectorProductModel = $this->filterAssociatedWithQuantityProductsByProductUuids(
+            ['9e031351-dc02-457a-bb82-00339ab7b691', '59a498db-f7d1-4364-8451-e573ebdde55b']
         );
 
         $connectorProductModel->quantifiedAssociations()->shouldReturn([
             'PRODUCT_SET' => [
                 'products' => [
-                    ['identifier' => 'product_2', 'quantity' => 2]
+                    ['identifier' => 'product_1', 'quantity' => 1, 'uuid' => '9e031351-dc02-457a-bb82-00339ab7b691'],
+                    ['identifier' => 'product_2', 'quantity' => 2, 'uuid' => '59a498db-f7d1-4364-8451-e573ebdde55b'],
                 ],
                 'product_models' => [
                     ['identifier' => 'product_model_1', 'quantity' => 3],
@@ -163,7 +168,9 @@ final class ConnectorProductModelSpec extends ObjectBehavior
                 ],
             ],
             'PRODUCT_SET1' => [
-                'products' => [],
+                'products' => [
+                    ['identifier' => 'product_1', 'quantity' => 2, 'uuid' => '9e031351-dc02-457a-bb82-00339ab7b691'],
+                ],
                 'product_models' => [
                     ['identifier' => 'product_model_1', 'quantity' => 2],
                     ['identifier' => 'product_model_3', 'quantity' => 3],
@@ -187,8 +194,8 @@ final class ConnectorProductModelSpec extends ObjectBehavior
         $connectorProductModel->quantifiedAssociations()->shouldReturn([
             'PRODUCT_SET' => [
                 'products' => [
-                    ['identifier' => 'product_1', 'quantity' => 1],
-                    ['identifier' => 'product_2', 'quantity' => 2]
+                    ['identifier' => 'product_1', 'quantity' => 1, 'uuid' => '9e031351-dc02-457a-bb82-00339ab7b691'],
+                    ['identifier' => 'product_2', 'quantity' => 2, 'uuid' => '59a498db-f7d1-4364-8451-e573ebdde55b'],
                 ],
                 'product_models' => [
                     ['identifier' => 'product_model_2', 'quantity' => 4],
@@ -196,8 +203,8 @@ final class ConnectorProductModelSpec extends ObjectBehavior
             ],
             'PRODUCT_SET1' => [
                 'products' => [
-                    ['identifier' => 'product_1', 'quantity' => 2],
-                    ['identifier' => 'product_3', 'quantity' => 9]
+                    ['identifier' => 'product_1', 'quantity' => 2, 'uuid' => '9e031351-dc02-457a-bb82-00339ab7b691'],
+                    ['identifier' => 'product_3', 'quantity' => 9, 'uuid' => 'ad7b6aff-a8b0-488d-aec7-ae6483b16b60'],
                 ],
                 'product_models' => [],
             ],

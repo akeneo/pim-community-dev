@@ -223,7 +223,7 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\QuantifiedAssociation\GetProductQuantifiedAssociationsByProductModelCodes'
         arguments:
             - '@database_connection'
-            - '@akeneo.pim.enrichment.product.query.quantified_association.get_id_mapping_from_product_ids_query'
+            - '@akeneo.pim.enrichment.product.query.quantified_association.get_uuid_mapping_query'
             - '@akeneo.pim.enrichment.product.query.find_quantified_association_codes'
 
     akeneo.pim.enrichment.product_model.query.get_product_model_quantified_associations_by_product_model_codes:
