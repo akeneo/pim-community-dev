@@ -72,6 +72,7 @@ const InputContainer = styled.li<AkeneoThemedProps>`
     width: 100%;
 
     &::placeholder {
+      padding: 0 11px;
       opacity: 1;
       color: ${getColor('grey', 100)};
       font-family: ${getFontFamily('default')};
