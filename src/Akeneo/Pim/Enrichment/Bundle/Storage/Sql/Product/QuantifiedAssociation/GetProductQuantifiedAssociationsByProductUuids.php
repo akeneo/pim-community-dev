@@ -80,13 +80,13 @@ SQL;
                 continue;
             }
             $allQuantifiedAssociationsWithProductId = json_decode($row['all_quantified_associations'], true);
-            $associationWithIdentifiers = $this->associationsWithUuids(
+            $associationWithUuids = $this->associationsWithUuids(
                 $allQuantifiedAssociationsWithProductId,
                 $validQuantifiedAssociationTypeCodes
             );
-            if (!empty($associationWithIdentifiers)) {
+            if (!empty($associationWithUuids)) {
                 $productUuid = $row['uuid'];
-                $results[$productUuid] = $associationWithIdentifiers;
+                $results[$productUuid] = $associationWithUuids;
             }
         }
 
