@@ -24,6 +24,8 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
 {
     use QuantifiedAssociationsTestCaseTrait;
 
+    private array $uuids = [];
+
     /**
      * @test
      *
@@ -119,7 +121,7 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                         'product_models' => [['identifier' => 'simple_pm', 'quantity' => 2]],
                     ],
                     'ANOTHER_PRODUCT_SET' => [
-                        'products' => [['identifier' => 'a_simple_product', 'quantity' => 4]],
+                        'products' => [['identifier' => 'a_simple_product', 'quantity' => 4, 'uuid' => $this->uuids['a_simple_product']]],
                         'product_models' => [],
                     ],
                 ],
@@ -177,11 +179,11 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                 ],
                 [
                     'PRODUCT_SET' => [
-                        'products' => [['identifier' => 'a_simple_product', 'quantity' => 1]],
+                        'products' => [['identifier' => 'a_simple_product', 'quantity' => 1, 'uuid' => $this->uuids['a_simple_product']]],
                         'product_models' => [['identifier' => 'simple_pm', 'quantity' => 9]],
                     ],
                     'ANOTHER_PRODUCT_SET' => [
-                        'products' => [['identifier' => 'a_simple_product', 'quantity' => 4]],
+                        'products' => [['identifier' => 'a_simple_product', 'quantity' => 4, 'uuid' => $this->uuids['a_simple_product']]],
                         'product_models' => [],
                     ],
                 ],
@@ -308,7 +310,7 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                         'product_models' => [['identifier' => 'simple_pm', 'quantity' => 2]],
                     ],
                     'ANOTHER_PRODUCT_SET' => [
-                        'products' => [['identifier' => 'a_simple_product', 'quantity' => 4]],
+                        'products' => [['identifier' => 'a_simple_product', 'quantity' => 4, 'uuid' => $this->uuids['a_simple_product']]],
                         'product_models' => [],
                     ],
                 ],
@@ -359,11 +361,11 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                 ],
                 [
                     'PRODUCT_SET' => [
-                        'products' => [['identifier' => 'a_simple_product', 'quantity' => 1]],
+                        'products' => [['identifier' => 'a_simple_product', 'quantity' => 1, 'uuid' => $this->uuids['a_simple_product']]],
                         'product_models' => [['identifier' => 'simple_pm', 'quantity' => 9]],
                     ],
                     'ANOTHER_PRODUCT_SET' => [
-                        'products' => [['identifier' => 'a_simple_product', 'quantity' => 4]],
+                        'products' => [['identifier' => 'a_simple_product', 'quantity' => 4, 'uuid' => $this->uuids['a_simple_product']]],
                         'product_models' => [],
                     ],
                 ],
@@ -429,11 +431,11 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
             ],
             [
                 'PRODUCT_SET' => [
-                    'products' => [['identifier' => 'a_simple_product', 'quantity' => 1]],
+                    'products' => [['identifier' => 'a_simple_product', 'quantity' => 1, 'uuid' => $this->uuids['a_simple_product']]],
                     'product_models' => [['identifier' => 'simple_pm', 'quantity' => 9]],
                 ],
                 'ANOTHER_PRODUCT_SET' => [
-                    'products' => [['identifier' => 'a_simple_product', 'quantity' => 4]],
+                    'products' => [['identifier' => 'a_simple_product', 'quantity' => 4, 'uuid' => $this->uuids['a_simple_product']]],
                     'product_models' => [],
                 ],
             ],
@@ -559,7 +561,7 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                         'product_models' => [['identifier' => 'simple_pm', 'quantity' => 2]],
                     ],
                     'ANOTHER_PRODUCT_SET' => [
-                        'products' => [['identifier' => 'a_simple_product', 'quantity' => 4]],
+                        'products' => [['identifier' => 'a_simple_product', 'quantity' => 4, 'uuid' => $this->uuids['a_simple_product']]],
                         'product_models' => [],
                     ],
                 ],
@@ -617,11 +619,11 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                 ],
                 [
                     'PRODUCT_SET' => [
-                        'products' => [['identifier' => 'a_simple_product', 'quantity' => 1]],
+                        'products' => [['identifier' => 'a_simple_product', 'quantity' => 1, 'uuid' => $this->uuids['a_simple_product']]],
                         'product_models' => [['identifier' => 'simple_pm', 'quantity' => 9]],
                     ],
                     'ANOTHER_PRODUCT_SET' => [
-                        'products' => [['identifier' => 'a_simple_product', 'quantity' => 4]],
+                        'products' => [['identifier' => 'a_simple_product', 'quantity' => 4, 'uuid' => $this->uuids['a_simple_product']]],
                         'product_models' => [],
                     ],
                 ],
@@ -682,8 +684,8 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
 
         $this->createQuantifiedAssociationType('PRODUCT_SET');
         $this->createQuantifiedAssociationType('ANOTHER_PRODUCT_SET');
-        $this->createProduct('a_simple_product', []);
-        $this->createProduct('another_product', []);
+        $this->uuids['a_simple_product'] = $this->createProduct('a_simple_product', [])->getUuid()->toString();
+        $this->uuids['another_product'] = $this->createProduct('another_product', [])->getUuid()->toString();
         $this->createProductModel(
             [
                 'code' => 'simple_pm',

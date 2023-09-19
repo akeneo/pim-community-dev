@@ -90,7 +90,7 @@ class QuantifiedAssociationCollection
                 Assert::keyExists($productAssociation, 'id');
                 Assert::keyExists($productAssociation, 'quantity');
 
-                if (isset($productAssociation['id']) && $mappedProductIds->hasIdentifierFromId($productAssociation['id'])) {
+                if (isset($productAssociation['id']) && $mappedProductIds->hasUuidFromId($productAssociation['id'])) {
                     $quantifiedLink = QuantifiedLink::fromUuid(
                         $mappedProductIds->getUuidFromId($productAssociation['id']),
                         $mappedProductIds->getIdentifierFromId($productAssociation['id']),

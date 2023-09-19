@@ -115,7 +115,7 @@ class ConnectorProductSpec extends ObjectBehavior
                         ['uuid' => '11cd5db0-c69f-4f12-819c-ab55240d5ac3', 'identifier' => 'product_code_1'],
                     ],
                     'product_models' => [],
-                    'groups' => ['group_code_2']
+                    'groups' => ['group_code_2'],
                 ],
                 'UPSELL' => [
                     'products' => [],
@@ -151,22 +151,22 @@ class ConnectorProductSpec extends ObjectBehavior
         );
     }
 
-    function it_filters_associated_with_quantity_products_with_empty_array_of_product_identifiers()
+    function it_filters_associated_with_quantity_products_with_empty_array_of_product_uuids()
     {
-        $connectorProduct = $this->filterAssociatedWithQuantityProductsByProductIdentifiers([]);
-        $connectorProduct->associatedWithQuantityProductIdentifiers()->shouldReturn([]);
+        $connectorProduct = $this->filterAssociatedWithQuantityProductsByProductUuids([]);
+        $connectorProduct->associatedWithQuantityProductUuids()->shouldReturn([]);
     }
 
-    function it_filters_associated_with_quantity_product_by_identifier()
+    function it_filters_associated_with_quantity_product_by_uuid()
     {
-        $connectorProduct = $this->filterAssociatedWithQuantityProductsByProductIdentifiers(
-            ['product_2', 'product_4']
+        $connectorProduct = $this->filterAssociatedWithQuantityProductsByProductUuids(
+            ['b9c3b775-d6ef-4748-b384-a99a759e469a', '77ff41a7-69fc-4b4a-898c-3117e08e60da']
         );
 
         $connectorProduct->quantifiedAssociations()->shouldReturn([
             'PRODUCT_SET' => [
                 'products' => [
-                    ['identifier' => 'product_2', 'quantity' => 2, 'uuid' => '894631da-832f-4818-a2ae-44d70c16e679'],
+                    ['identifier' => 'product_1', 'quantity' => 1, 'uuid' => 'b9c3b775-d6ef-4748-b384-a99a759e469a'],
                 ],
                 'product_models' => [
                     ['identifier' => 'product_model_1', 'quantity' => 3],
@@ -174,7 +174,10 @@ class ConnectorProductSpec extends ObjectBehavior
                 ],
             ],
             'PRODUCT_SET1' => [
-                'products' => [],
+                'products' => [
+                    ['identifier' => 'product_1', 'quantity' => 2, 'uuid' => 'b9c3b775-d6ef-4748-b384-a99a759e469a'],
+                    ['identifier' => 'product_3', 'quantity' => 9, 'uuid' => '77ff41a7-69fc-4b4a-898c-3117e08e60da'],
+                ],
                 'product_models' => [
                     ['identifier' => 'product_model_1', 'quantity' => 2],
                     ['identifier' => 'product_model_3', 'quantity' => 3],
@@ -262,9 +265,13 @@ class ConnectorProductSpec extends ObjectBehavior
     }
 
 
-    function it_gets_associated_with_quantity_product_identifiers()
+    function it_gets_associated_with_quantity_product_uuids()
     {
-        $this->associatedWithQuantityProductIdentifiers()->shouldBeLike(['product_1', 'product_2', 'product_3']);
+        $this->associatedWithQuantityProductUuids()->shouldBeLike([
+            'b9c3b775-d6ef-4748-b384-a99a759e469a',
+            '894631da-832f-4818-a2ae-44d70c16e679',
+            '77ff41a7-69fc-4b4a-898c-3117e08e60da',
+        ]);
     }
 
     function it_gets_associated_with_quantity_product_model_codes()
@@ -301,7 +308,7 @@ class ConnectorProductSpec extends ObjectBehavior
 
         $this->associatedProductUuids()->shouldReturn([]);
         $this->associatedProductModelCodes()->shouldReturn([]);
-        $this->associatedWithQuantityProductIdentifiers()->shouldReturn([]);
+        $this->associatedWithQuantityProductUuids()->shouldReturn([]);
         $this->associatedWithQuantityProductModelCodes()->shouldReturn([]);
     }
 

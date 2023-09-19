@@ -1,5 +1,9 @@
 # 7.0.x
 
+## Bug fixes
+
+- PIM-11172: Fix product and product model endpoints when quantified associated products have no identifier
+
 # 7.0.27 (2023-09-14)
 
 # 7.0.26 (2023-08-30)
