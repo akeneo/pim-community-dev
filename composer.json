@@ -76,7 +76,7 @@
         "ext-zip": "*",
         "akeneo/oauth-server-bundle": "^v3.0.0",
         "ass/xmlsecurity": "1.1.1",
-        "aws/aws-sdk-php": "3.253.0",
+        "aws/aws-sdk-php": "3.281.9",
         "doctrine/annotations": "^1.13.2",
         "doctrine/cache": "^1.12.1",
         "doctrine/collections": "^v1.6.2",
