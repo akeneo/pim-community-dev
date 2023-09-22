@@ -1,5 +1,9 @@
 # 6.0.x
 
+# 6.0.103 (2023-09-22)
+
+# 6.0.102 (2023-09-13)
+
 ## Bug fixes
 
 - PIM-10918: Fix migrations not executed but added in executed migrations
