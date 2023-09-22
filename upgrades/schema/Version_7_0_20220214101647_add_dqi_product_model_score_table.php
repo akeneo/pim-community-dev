@@ -13,7 +13,7 @@ final class Version_7_0_20220214101647_add_dqi_product_model_score_table extends
     public function up(Schema $schema): void
     {
         $this->addSql(<<<SQL
-CREATE TABLE pim_data_quality_insights_product_model_score (
+CREATE TABLE IF NOT EXISTS pim_data_quality_insights_product_model_score (
     product_model_id INT NOT NULL PRIMARY KEY,
     evaluated_at DATE NOT NULL,
     scores JSON NOT NULL,
