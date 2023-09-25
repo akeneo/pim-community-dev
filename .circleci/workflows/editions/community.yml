@@ -13,6 +13,16 @@ aliases:
 
 workflows:
     version: 2
+    nightly_docker:
+        when:
+            and:
+                - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+                - equal: [ "nightly_docker_master", << pipeline.schedule.name >> ]
+        jobs:
+            - checkout_ce
+            - build_docker_images:
+                  requires:
+                      - checkout_ce
 
     on_demand:
         when:
