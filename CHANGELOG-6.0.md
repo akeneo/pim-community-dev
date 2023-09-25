@@ -1,5 +1,7 @@
 # 6.0.x
 
+- PIM-11192: Fix boolean switch for Japan locale
+
 # 6.0.104 (2023-09-22)
 
 # 6.0.103 (2023-09-22)
