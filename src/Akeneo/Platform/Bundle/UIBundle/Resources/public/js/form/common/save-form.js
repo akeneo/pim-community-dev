@@ -93,7 +93,7 @@ define([
         if (this.config.identifierParamName === 'undefined') {
           identifierProperty = undefined;
         } else {
-          identifierProperty = this.configure.identifierParamName;
+          identifierProperty = this.config.identifierParamName;
         }
       }
       const entityId = propertyAccessor.accessProperty(this.getFormData(), entityIdProperty, '');
