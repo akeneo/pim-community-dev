@@ -148,6 +148,7 @@
 
   var userAgent = navigator.userAgent;
   var isMSIE = /MSIE|Trident/i.test(userAgent);
+  var isFF = /firefox/i.test(userAgent);
   var browserVersion;
   if (isMSIE) {
     var matches = /MSIE (\d+[.]\d+)/.exec(userAgent);
@@ -155,6 +156,12 @@
       browserVersion = parseFloat(matches[1]);
     }
     matches = /Trident\/.*rv:([0-9]{1,}[\.0-9]{0,})/.exec(userAgent);
+    if (matches) {
+      browserVersion = parseFloat(matches[1]);
+    }
+  }
+  if (isFF) {
+    var matches = /Firefox\/(\d+[.]\d+)/.exec(userAgent);
     if (matches) {
       browserVersion = parseFloat(matches[1]);
     }
@@ -5124,7 +5131,7 @@
       // [workaround] getting image from clipboard
       //  - IE11 and Firefox: CTRL+v hook
       //  - Webkit: event.clipboardData
-      if ((agent.isMSIE && agent.browserVersion > 10) || agent.isFF) {
+      if ((agent.isMSIE && agent.browserVersion > 10) || (agent.isFF && agent.browserVersion < 22)) {
         $paste = $('<div />').attr('contenteditable', true).css({
           position : 'absolute',
           left : -100000,
