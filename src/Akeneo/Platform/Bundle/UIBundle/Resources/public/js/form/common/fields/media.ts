@@ -1,4 +1,3 @@
-import * as $ from 'jquery';
 const _ = require('underscore');
 const __ = require('oro/translator');
 const BaseField = require('pim/form/common/fields/field');
