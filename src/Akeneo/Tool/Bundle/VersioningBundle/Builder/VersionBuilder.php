@@ -184,11 +184,12 @@ class VersionBuilder
 
     private function hasValueChanged($old, $new): bool
     {
-        if (null !== $hasChanged = $this->hasLegacyDateChanged($old, $new)) {
+        $hasChanged = $this->hasLegacyDateChanged($old, $new);
+        if (null !== $hasChanged) {
             return $hasChanged;
         }
 
-        return $old !== $new;
+        return \json_decode($old, true) != \json_decode($new, true);
     }
 
     /**
