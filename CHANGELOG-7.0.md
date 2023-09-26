@@ -1,5 +1,7 @@
 # 7.0.x
 
+- CPM-11195: Fix paste scroll with summernote and Firefox
+
 # 7.0.31 (2023-09-25)
 
 # 7.0.30 (2023-09-25)
