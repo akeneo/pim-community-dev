@@ -21,6 +21,12 @@ services:
             - { name: 'console.command' }
             - { name: 'akeneo.command.authenticated_as_admin_user' }
 
+    Akeneo\Pim\Enrichment\Bundle\Command\TmpAddUniqueData:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: 'console.command' }
+
     akeneo.pim.enrichment.command.index_product_model:
         class: 'Akeneo\Pim\Enrichment\Bundle\Command\IndexProductModelCommand'
         arguments:
