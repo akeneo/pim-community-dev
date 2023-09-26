@@ -1,6 +1,6 @@
 parameters:
-    akeneo_pim_app_store_url: 'https://apps.akeneo.com'
-    akeneo_pim_app_store_api_url: 'https://api.apps.akeneo.cloud'
+    akeneo_pim_app_store_url: 'https://akeneo.store.ppr.heedjy.com'
+    akeneo_pim_app_store_api_url: 'https://api-dev.apps.akeneo.cloud/'
     akeneo_pim_marketplace_api_pagination_size: 100
 
 services:

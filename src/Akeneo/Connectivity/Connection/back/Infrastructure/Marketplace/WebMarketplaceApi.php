@@ -46,9 +46,10 @@ class WebMarketplaceApi implements WebMarketplaceApiInterface
 
     public function getApps(int $offset = 0, int $limit = 10): array
     {
+        /*
         if ($this->fakeAppsFeatureFlag->isEnabled()) {
             return \json_decode(\file_get_contents($this->fixturePath . 'marketplace-data-apps.json'), true, 512, JSON_THROW_ON_ERROR);
-        }
+        }*/
 
         $edition = $this->webMarketplaceAliases->getEdition();
         $version = $this->webMarketplaceAliases->getVersion();
