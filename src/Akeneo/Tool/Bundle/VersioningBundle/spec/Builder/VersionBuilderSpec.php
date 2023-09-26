@@ -129,4 +129,121 @@ class VersionBuilderSpec extends ObjectBehavior
 
         $this->buildVersion($productModel, 'julia', $previousVersion, null);
     }
+
+    function it_should_not_build_version_if_table_value_is_ordered(
+        NormalizerInterface $normalizer,
+        VersionFactory $versionFactory,
+        ProductInterface $product,
+        Version $previousVersion,
+        Version $newVersion,
+    ): void {
+        $uuid = Uuid::uuid4();
+        $product
+            ->getUuid()
+            ->shouldBeCalled()
+            ->willReturn($uuid);
+
+        $previousVersion
+            ->getVersion()
+            ->shouldBeCalled()
+            ->willReturn(1);
+
+        $previousVersion
+            ->getSnapshot()
+            ->shouldBeCalled()
+            ->willReturn([
+                'nutrition' => '[{"per_100g":"300","per_serving":"12"}]'
+            ]);
+
+        $normalizer
+            ->normalize($product, 'flat', [])
+            ->shouldBeCalled()
+            ->willReturn([
+                'nutrition' => '[{"per_serving":"12","per_100g":"300"}]'
+            ]);
+
+        $versionFactory
+            ->create(Argument::cetera())
+            ->shouldBeCalled()
+            ->willReturn($newVersion);
+
+        $newVersion
+            ->setVersion(2)
+            ->shouldBeCalled()
+            ->willReturn($newVersion);
+
+        $newVersion
+            ->setSnapshot([
+                'nutrition' => '[{"per_serving":"12","per_100g":"300"}]'
+            ])
+            ->shouldBeCalled()
+            ->willReturn($newVersion);
+
+        $newVersion
+            ->setChangeset([]) // Here
+            ->shouldBeCalled();
+
+        $this->buildVersion($product, 'julia', $previousVersion);
+    }
+
+    function it_should_build_version_if_table_value_is_updated(
+        NormalizerInterface $normalizer,
+        VersionFactory $versionFactory,
+        ProductInterface $product,
+        Version $previousVersion,
+        Version $newVersion,
+    ): void {
+        $uuid = Uuid::uuid4();
+        $product
+            ->getUuid()
+            ->shouldBeCalled()
+            ->willReturn($uuid);
+
+        $previousVersion
+            ->getVersion()
+            ->shouldBeCalled()
+            ->willReturn(1);
+
+        $previousVersion
+            ->getSnapshot()
+            ->shouldBeCalled()
+            ->willReturn([
+                'nutrition' => '[{"per_100g":"300","per_serving":"12"}]'
+            ]);
+
+        $normalizer
+            ->normalize($product, 'flat', [])
+            ->shouldBeCalled()
+            ->willReturn([
+                'nutrition' => '[{"per_serving":"4000","per_100g":"300"}]'
+            ]);
+
+        $versionFactory
+            ->create(Argument::cetera())
+            ->shouldBeCalled()
+            ->willReturn($newVersion);
+
+        $newVersion
+            ->setVersion(2)
+            ->shouldBeCalled()
+            ->willReturn($newVersion);
+
+        $newVersion
+            ->setSnapshot([
+                'nutrition' => '[{"per_serving":"4000","per_100g":"300"}]'
+            ])
+            ->shouldBeCalled()
+            ->willReturn($newVersion);
+
+        $newVersion
+            ->setChangeset([
+                'nutrition' => [
+                    'old' => '[{"per_100g":"300","per_serving":"12"}]',
+                    'new' => '[{"per_serving":"4000","per_100g":"300"}]',
+                ]
+            ])
+            ->shouldBeCalled();
+
+        $this->buildVersion($product, 'julia', $previousVersion);
+    }
 }

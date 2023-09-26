@@ -184,8 +184,14 @@ class VersionBuilder
 
     private function hasValueChanged($old, $new): bool
     {
-        if (null !== $hasChanged = $this->hasLegacyDateChanged($old, $new)) {
-            return $hasChanged;
+        $hasLegacyDateChanged = $this->hasLegacyDateChanged($old, $new);
+        if (null !== $hasLegacyDateChanged) {
+            return $hasLegacyDateChanged;
+        }
+
+        $hasTableAttributeChanged = $this->hasTableAttributeChanged($old, $new);
+        if (null !== $hasTableAttributeChanged) {
+            return $hasTableAttributeChanged;
         }
 
         return $old !== $new;
@@ -227,5 +233,42 @@ class VersionBuilder
         }
 
         return $oldDateTime->format('U') !== $newDateTime->format('U');
+    }
+
+    /**
+     * In the case of a table attribute value, ordering of each line is not important. We need to ensure that
+     * '[{columnA: "valueA", columnB: "valueB"}]' and '[{columnB: "valueB", columnA: "valueA"}]' do not add a new
+     * version for the product.
+     */
+    private function hasTableAttributeChanged($old, $new): bool|null
+    {
+        if (!is_string($old) || !is_string($new)) {
+            return null;
+        }
+
+        $oldJson = \json_decode($old, true);
+        $newJson = \json_decode($new, true);
+
+        if (!\is_array($oldJson) || !\is_array($newJson)) {
+            return null;
+        }
+
+        if (\count($oldJson) !== \count($newJson)) {
+            return true;
+        }
+
+        foreach ($oldJson as $oldJsonItem) {
+            if (!\is_array($oldJsonItem)) {
+                return null;
+            }
+        }
+
+        foreach ($newJson as $newJsonItem) {
+            if (!\is_array($newJsonItem)) {
+                return null;
+            }
+        }
+
+        return $oldJson != $newJson;
     }
 }
