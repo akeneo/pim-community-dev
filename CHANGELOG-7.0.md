@@ -1,5 +1,7 @@
 # 7.0.x
 
+- PIM-11200: Fix versioning on table attribute in case of column reordering
+
 # 7.0.31 (2023-09-25)
 
 # 7.0.30 (2023-09-25)
