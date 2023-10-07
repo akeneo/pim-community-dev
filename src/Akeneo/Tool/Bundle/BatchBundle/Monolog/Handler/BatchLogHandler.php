@@ -17,6 +17,9 @@ class BatchLogHandler extends StreamHandler
     /** @var string */
     protected $filename;
 
+    /** @var int */
+    protected $directoryPermissions;
+
     /** @var string */
     protected $logDir;
 
@@ -32,6 +35,7 @@ class BatchLogHandler extends StreamHandler
         $bubble = true,
         $filePermission = null,
         $useLocking = false,
+        $directoryPermissions = 0755,
         $logDir
     ) {
         $this->level = $level;
@@ -40,6 +44,7 @@ class BatchLogHandler extends StreamHandler
         $this->url = null;
         $this->filePermission = $filePermission;
         $this->useLocking = $useLocking;
+        $this->directoryPermissions = $directoryPermissions;
         $this->logDir = $logDir;
     }
 
@@ -90,7 +95,7 @@ class BatchLogHandler extends StreamHandler
         }
 
         if (!is_dir(dirname($this->url))) {
-            mkdir(dirname($this->url), 0755, true);
+            mkdir(dirname($this->url), $this->directoryPermissions, true);
         }
 
         parent::write($record);
