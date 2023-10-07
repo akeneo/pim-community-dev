@@ -27,7 +27,7 @@ batch_jobs:
     label: Esportazione canali in CSV
     export.label: Esportazione canali
   csv_channel_import:
-    label: Importazione canali in CSB
+    label: Importazione canali in CSV
     import.label: Importazione canali
   xlsx_channel_export:
     label: Esportazione canali in XLSX
