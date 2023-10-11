@@ -1,5 +1,8 @@
 # 6.0.x
 
+
+## Bug fixes
+
 - PIM-11227: Fix impossible to change channel from one channel with multiple locales to one channel with only one locale
 
 # 6.0.105 (2023-09-25)
