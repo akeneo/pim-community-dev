@@ -1,5 +1,12 @@
 # 6.0.x
 
+# 6.0.106 (2023-10-11)
+
+
+## Bug fixes
+
+- PIM-11227: Fix impossible to change channel from one channel with multiple locales to one channel with only one locale
+
 # 6.0.105 (2023-09-25)
 
 - PIM-11192: Fix boolean switch for Japan locale
