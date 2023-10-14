@@ -8,7 +8,7 @@ akeneo.category:
       unhandled_attribute_type: Impossible de trouver le constructeur de champ d'attribut pour le type d'attribut "{{type}}"
     template:
       title: Modèle
-      fetching_failed: Une erreur est survenue lors de la récupération du template
+      fetching_failed: Une erreur est survenue lors de la récupération du modèle
     unsaved_changes: Vous perdrez les modifications apportées à la catégorie si vous quittez la page.
   tree:
     create: Créer un arbre
