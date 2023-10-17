@@ -1,5 +1,7 @@
 # 7.0.x
 
+# 7.0.34 (2023-10-17)
+
 ## Bug fixes
 
 - PIM-11212: Fix error handling in mass associate bulk action
