@@ -6,15 +6,21 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\Mass
 
 use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Special reader that will select all the ancestry of the selected items
@@ -30,37 +36,16 @@ class ProductAndProductModelReader implements
     StepExecutionAwareInterface,
     TrackableItemReaderInterface
 {
-    /** @var ProductQueryBuilderFactoryInterface */
-    private $pqbFactory;
+    private ?StepExecution $stepExecution = null;
+    private ?CursorInterface $productsAndProductModels = null;
 
-    /** @var ChannelRepositoryInterface */
-    private $channelRepository;
-
-    /** @var StepExecution */
-    private $stepExecution;
-
-    /** @var CursorInterface */
-    private $productsAndProductModels;
-
-    /** @var bool */
-    private $readChildren;
-
-    /** @var bool */
-    private $firstRead = true;
-
-    /**
-     * @param ProductQueryBuilderFactoryInterface $pqbFactory
-     * @param ChannelRepositoryInterface          $channelRepository
-     * @param bool                                $readChildren
-     */
     public function __construct(
-        ProductQueryBuilderFactoryInterface $pqbFactory,
-        ChannelRepositoryInterface $channelRepository,
-        bool $readChildren
+        private readonly ProductQueryBuilderFactoryInterface $pqbFactory,
+        private readonly ChannelRepositoryInterface $channelRepository,
+        private readonly ProductRepositoryInterface $productRepository,
+        private readonly ProductModelRepositoryInterface $productModelRepository,
+        private readonly bool $readChildren
     ) {
-        $this->pqbFactory          = $pqbFactory;
-        $this->channelRepository   = $channelRepository;
-        $this->readChildren        = $readChildren;
     }
 
     /**
@@ -68,12 +53,11 @@ class ProductAndProductModelReader implements
      */
     public function initialize(): void
     {
-        $this->firstRead = true;
-
         $channel = $this->getConfiguredChannel();
 
         $filters = $this->getConfiguredFilters();
         $this->productsAndProductModels = $this->getCursor($filters, $channel);
+        $this->productsAndProductModels->rewind();
     }
 
     /**
@@ -82,20 +66,20 @@ class ProductAndProductModelReader implements
     public function read(): ?EntityWithFamilyInterface
     {
         $entity = null;
-
-        if ($this->productsAndProductModels->valid()) {
-            if (!$this->firstRead) {
-                $this->productsAndProductModels->next();
-            }
-
-            $entity = $this->productsAndProductModels->current();
-            if (false === $entity) {
-                return null;
-            }
+        while (null === $entity && $this->productsAndProductModels->valid()) {
+            $identifier = $this->productsAndProductModels->current();
+            Assert::isInstanceOf($identifier, IdentifierResult::class);
+            $entity = match ($identifier->getType()) {
+                ProductInterface::class => $this->productRepository->findOneBy(
+                    ['uuid' => \preg_replace('/^product_/', '', $identifier->getId())]
+                ),
+                ProductModelInterface::class => $this->productModelRepository->findOneByIdentifier($identifier->getIdentifier()),
+            };
+            $this->productsAndProductModels->next();
+        }
+        if (null !== $entity) {
             $this->stepExecution->incrementSummaryInfo('read');
         }
-
-        $this->firstRead = false;
 
         return $entity;
     }

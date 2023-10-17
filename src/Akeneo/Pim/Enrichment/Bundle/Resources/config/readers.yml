@@ -114,15 +114,19 @@ services:
     pim_enrich.reader.database.product_and_product_model:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\MassEdit\ProductAndProductModelReader'
         arguments:
-            - '@pim_catalog.query.product_and_product_model_query_builder_factory'
+            - '@pim_catalog.query.product_and_product_model_identifier_query_builder_factory'
             - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.product_model'
             - true
 
     pim_enrich.reader.database.grouped_product_and_product_model:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\MassEdit\ProductAndProductModelReader'
         arguments:
-            - '@pim_catalog.query.product_and_product_model_query_builder_factory'
+            - '@pim_catalog.query.product_and_product_model_identifier_query_builder_factory'
             - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.product_model'
             - false
 
     pim_enrich.reader.database.products_and_variant_products_of_product_models:

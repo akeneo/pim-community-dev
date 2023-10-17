@@ -2,8 +2,11 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit;
 
+use Akeneo\Pim\Enrichment\Component\Product\Exception\TwoWayAssociationWithTheSameProductException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
+use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertyAdderInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -16,20 +19,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class AddProductValueProcessor extends AbstractProcessor
 {
-    /** @var PropertyAdderInterface */
-    protected $propertyAdder;
-
-    /** @var ValidatorInterface */
-    protected $validator;
-
-    /**
-     * @param PropertyAdderInterface              $propertyAdder
-     * @param ValidatorInterface                  $validator
-     */
-    public function __construct(PropertyAdderInterface $propertyAdder, ValidatorInterface $validator)
-    {
-        $this->propertyAdder = $propertyAdder;
-        $this->validator = $validator;
+    public function __construct(
+        private readonly PropertyAdderInterface $propertyAdder,
+        private readonly ValidatorInterface $validator
+    ) {
     }
 
     /**
@@ -38,7 +31,14 @@ class AddProductValueProcessor extends AbstractProcessor
     public function process($product)
     {
         $actions = $this->getConfiguredActions();
-        $this->addData($product, $actions);
+        try {
+            $this->addData($product, $actions);
+        } catch (PropertyException|TwoWayAssociationWithTheSameProductException $e) {
+            $this->stepExecution->addWarning($e->getMessage(), [], new DataInvalidItem($product));
+            $this->stepExecution->incrementSummaryInfo('skipped_products');
+
+            return null;
+        }
 
         if (!$this->isProductValid($product)) {
             $this->stepExecution->incrementSummaryInfo('skipped_products');
@@ -70,7 +70,7 @@ class AddProductValueProcessor extends AbstractProcessor
      * @param ProductInterface|ProductModelInterface $product
      * @param array                                  $actions
      */
-    protected function addData($product, array $actions)
+    protected function addData($product, array $actions): void
     {
         foreach ($actions as $action) {
             $this->propertyAdder->addData($product, $action['field'], $action['value']);
