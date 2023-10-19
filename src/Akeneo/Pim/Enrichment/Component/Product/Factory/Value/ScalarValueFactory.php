@@ -26,7 +26,7 @@ abstract class ScalarValueFactory implements ValueFactory
             return ScalarValue::scopableValue($attributeCode, $data, $channelCode);
         }
 
-        if ($attribute->isLocalizable()) {
+        if ($attribute->isLocalizable() && !is_null($localeCode)) {
             return ScalarValue::localizableValue($attributeCode, $data, $localeCode);
         }
 
