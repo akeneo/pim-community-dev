@@ -48,4 +48,52 @@ final class AttributeTypes
     const BACKEND_TYPE_TEXTAREA = 'textarea';
     const BACKEND_TYPE_TEXT = 'text';
     const BACKEND_TYPE_TABLE = 'table';
+
+    public static function attributeTypes(): array
+    {
+        return [
+            self::BOOLEAN,
+            self::DATE,
+            self::FILE,
+            self::IDENTIFIER,
+            self::IMAGE,
+            self::METRIC,
+            self::NUMBER,
+            self::OPTION_MULTI_SELECT,
+            self::OPTION_SIMPLE_SELECT,
+            self::PRICE_COLLECTION,
+            self::TEXTAREA,
+            self::TEXT,
+            self::REFERENCE_DATA_MULTI_SELECT,
+            self::REFERENCE_DATA_SIMPLE_SELECT,
+            self::REFERENCE_ENTITY_SIMPLE_SELECT,
+            self::REFERENCE_ENTITY_COLLECTION,
+            self::ASSET_COLLECTION,
+            self::LEGACY_ASSET_COLLECTION,
+            self::TABLE,
+        ];
+    }
+
+    public static function backendTypes(): array
+    {
+        return [
+            self::BACKEND_TYPE_BOOLEAN,
+            self::BACKEND_TYPE_COLLECTION,
+            self::BACKEND_TYPE_DATE,
+            self::BACKEND_TYPE_DATETIME,
+            self::BACKEND_TYPE_DECIMAL,
+            self::BACKEND_TYPE_ENTITY,
+            self::BACKEND_TYPE_INTEGER,
+            self::BACKEND_TYPE_MEDIA,
+            self::BACKEND_TYPE_METRIC,
+            self::BACKEND_TYPE_OPTION,
+            self::BACKEND_TYPE_OPTIONS,
+            self::BACKEND_TYPE_PRICE,
+            self::BACKEND_TYPE_REF_DATA_OPTION,
+            self::BACKEND_TYPE_REF_DATA_OPTIONS,
+            self::BACKEND_TYPE_TEXTAREA,
+            self::BACKEND_TYPE_TEXT,
+            self::BACKEND_TYPE_TABLE,
+        ];
+    }
 }
