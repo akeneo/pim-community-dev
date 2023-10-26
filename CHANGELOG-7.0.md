@@ -1,5 +1,7 @@
 # 7.0.x
 
+- PIM-11251: Fix updated products count displayed in the process tracker without any change on the products
+
 # 7.0.34 (2023-10-17)
 
 ## Bug fixes
