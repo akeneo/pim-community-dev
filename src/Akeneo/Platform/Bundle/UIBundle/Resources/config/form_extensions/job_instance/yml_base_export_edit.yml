@@ -45,16 +45,6 @@ extensions:
             tabTitle: pim_common.properties
             tabCode: pim-job-instance-properties
 
-    pim-job-instance-yml-base-export-edit-global:
-        module: pim/job/common/edit/properties
-        parent: pim-job-instance-yml-base-export-edit-tabs
-        aclResourceId: pim_importexport_export_profile_property_edit
-        targetZone: container
-        position: 120
-        config:
-            tabTitle: pim_enrich.export.product.global_settings.title
-            tabCode: pim-job-instance-global
-
     pim-job-instance-yml-base-export-edit-history:
         module: pim/common/tab/history
         parent: pim-job-instance-yml-base-export-edit-tabs
