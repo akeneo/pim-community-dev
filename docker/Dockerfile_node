@@ -1,7 +1,10 @@
 FROM debian:bullseye-slim
 
-RUN groupadd --gid 1000 node \
-    && useradd --uid 1000 --gid node --shell /bin/bash --create-home node
+ARG DEV_UID=1000
+ARG DEV_GID=1000
+
+RUN groupadd --gid ${DEV_GID} node \
+    && useradd --uid ${DEV_UID} --gid node --shell /bin/bash --create-home node
 
 RUN echo 'path-exclude=/usr/share/man/*' > /etc/dpkg/dpkg.cfg.d/path_exclusions && \
     echo 'path-exclude=/usr/share/doc/*' >> /etc/dpkg/dpkg.cfg.d/path_exclusions && \
