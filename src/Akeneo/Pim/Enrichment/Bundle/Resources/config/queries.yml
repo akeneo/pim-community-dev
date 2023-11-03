@@ -74,13 +74,15 @@ services:
             - '@database_connection'
             - '@akeneo.pim.enrichment.factory.write_value_collection'
             - '@akeneo.pim.enrichment.product.grid.query.product_model_images_from_codes'
+            - '@pim_channel.query.cache.channel_exists_with_locale'
 
     akeneo.pim.enrichment.product.grid.query.fetch_product_rows_from_identifiers:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid\FetchProductRowsFromIdentifiers'
         arguments:
             - '@database_connection'
             - '@akeneo.pim.enrichment.factory.write_value_collection'
-            -
+            - '@pim_channel.query.cache.channel_exists_with_locale'
+
     akeneo.pim.enrichment.product.grid.query.add_additional_product_properties:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Grid\Query\AddAdditionalProductPropertiesRegistry'
         arguments:

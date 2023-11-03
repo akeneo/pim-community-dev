@@ -110,6 +110,86 @@ class FetchProductRowsFromIdentifiersIntegration extends TestCase
         ]);
     }
 
+    public function test_it_does_not_return_localized_data_not_bound_to_channel()
+    {
+        $userId = $this
+            ->get('database_connection')
+            ->fetchColumn('SELECT id FROM oro_user WHERE username = "admin"', [], 0);
+
+        $fixturesLoader = $this->get('akeneo_integration_tests.loader.product_grid_fixtures_loader');
+        $imagePath = $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'));
+        $product2 = $fixturesLoader->createProductAndProductModels($imagePath)['products'][1];
+
+        $query = $this->getFetchProductRowsFromIdentifiers();
+        $rows = $query(['baz'], ['sku', 'a_localizable_image', 'a_scopable_image'], 'ecommerce', 'zh_CN', $userId);
+
+        $akeneoImage = current($this
+            ->get('akeneo_file_storage.repository.file_info')
+            ->findAll($this->getFixturePath('akeneo.jpg')));
+
+        $expectedRows = [
+            Row::fromProduct(
+                'baz',
+                null,
+                [],
+                true,
+                $product2->getCreated(),
+                $product2->getUpdated(),
+                '[baz]',
+                null,
+                null,
+                $product2->getId(),
+                null,
+                new WriteValueCollection([
+                    ScalarValue::value('sku', 'baz'),
+                    MediaValue::scopableValue('a_scopable_image', $akeneoImage, 'ecommerce'),
+                ])
+            ),
+        ];
+
+        AssertRows::sameButOrderNotGuaranteed($expectedRows, $rows);
+    }
+
+    public function test_it_returns_localized_data_bound_to_channel()
+    {
+        $userId = $this
+            ->get('database_connection')
+            ->fetchColumn('SELECT id FROM oro_user WHERE username = "admin"', [], 0);
+
+        $fixturesLoader = $this->get('akeneo_integration_tests.loader.product_grid_fixtures_loader');
+        $imagePath = $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'));
+        $product2 = $fixturesLoader->createProductAndProductModels($imagePath)['products'][1];
+
+        $query = $this->getFetchProductRowsFromIdentifiers();
+        $rows = $query(['baz'], ['sku', 'a_localizable_image', 'a_scopable_image'], 'ecommerce_china', 'zh_CN', $userId);
+
+        $akeneoImage = current($this
+            ->get('akeneo_file_storage.repository.file_info')
+            ->findAll($this->getFixturePath('akeneo.jpg')));
+
+        $expectedRows = [
+            Row::fromProduct(
+                'baz',
+                null,
+                [],
+                true,
+                $product2->getCreated(),
+                $product2->getUpdated(),
+                '[baz]',
+                null,
+                null,
+                $product2->getId(),
+                null,
+                new WriteValueCollection([
+                    ScalarValue::value('sku', 'baz'),
+                    MediaValue::localizableValue('a_localizable_image', $akeneoImage, 'zh_CN'),
+                ])
+            ),
+        ];
+
+        AssertRows::sameButOrderNotGuaranteed($expectedRows, $rows);
+    }
+
     /**
      * {@inheritdoc}
      */
