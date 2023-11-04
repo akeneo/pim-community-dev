@@ -3,7 +3,7 @@ free_trial:
     assets: Ressources
     entities: Entités
     proposals: Propositions
-    sso: Authentification unique basée sur SAML
+    sso: Authentification unique SAML
     rules: Règles
     feature_ee_only: Cette fonctionnalité est uniquement disponible sur l'Enterprise Edition
   dqi:
