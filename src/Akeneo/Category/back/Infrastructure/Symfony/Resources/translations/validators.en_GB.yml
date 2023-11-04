@@ -1,0 +1,11 @@
+akeneo.category:
+  validation:
+    upsert:
+      category_code:
+        wrong_format: Category code may contain only letters, numbers and underscores
+        line_feed: Category code may not contain line-feed characters
+      duplicated_value_user_intents: The value for attribute {{ attributeCode }} is being updated multiple times
+      value:
+        text_too_long: The value cannot be longer than {{ limit }} characters
+        textarea_too_long: The value cannot be longer than {{ limit }} characters
+        richtext_too_long: The value cannot be longer than {{ limit }} characters

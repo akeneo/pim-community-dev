@@ -150,10 +150,82 @@ pim_import_export:
           file_locale:
             title: File locale
             help: Define the locale in which labels are displayed.
+          with_uuid:
+            title: With product UUID
+            help: Export the product's (and associated product's) UUID
+          with_uuid_for_models:
+            title: With product UUID
+            help: Export associated product UUID instead of their identifier
       file_path: File path
       storage_form:
+        title: Storage
+        connection:
+          label: Type
+          local: Local
+          sftp: SFTP
+          amazon_s3: Amazon S3
+          microsoft_azure: Microsoft Azure
+          google_cloud_storage: Google Cloud Storage
+          none: No storage configured
         file_path:
           label: File path
+          placeholder: myfile.{{ file_extension }}
+        host:
+          label: Host
+          placeholder: example.com
+        fingerprint:
+          label: Host fingerprint (optional)
+          placeholder: "c1:91:5e:42:55:5c:74:65:b6:12:32:7e:1f:6d:80:3e"
+          helper: We require a SHA-512 or MD5 hashed checksum with colon notation for the host fingerprint.
+        port:
+          label: Port
+          placeholder: 22
+        username:
+          label: Login
+          placeholder: Enter your login
+        password:
+          label: Password
+          placeholder: Enter your password
+        public_key:
+          label: Public key
+        login_type:
+          label: Authentication method
+          password: Login & password
+          private_key: Private key
+        region:
+          label: Region
+          placeholder: Enter your region
+        bucket:
+          label: Bucket name
+          placeholder: Enter your region name
+        key:
+          label: Key
+          placeholder: Enter your key
+        secret:
+          label: Secret
+          placeholder: Enter your secret
+        connection_string:
+          label: Connection string
+          placeholder: Enter your connection string
+        container_name:
+          label: Container name
+          placeholder: Enter your container name
+        project_id:
+          label: Project ID
+          placeholder: Enter your project ID
+        service_account:
+          label: Service Account
+          placeholder: Enter your service account
+      validation:
+        storage:
+          unavailable_type: This storage is not available, only {{ available_types }} are available.
+        file_path:
+          unsupported_extension: Unsupported file extension
+        fingerprint:
+          invalid_encoding: Host fingerprint should be a valid SHA-512 or MD5 checksum hash with colon notation.
+      connection_checker:
+        label: Test connection settings
+        exception: Connection can't be established, please check your settings.
   batch_status:
     1: Completed
     2: Starting

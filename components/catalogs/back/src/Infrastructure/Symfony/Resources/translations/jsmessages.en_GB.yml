@@ -1,10 +1,150 @@
 akeneo_catalogs:
+  common:
+    select:
+      open: Open
+      remove: Remove
+      no_matches: No matches found
+  catalog_list:
+    catalogs_name: Catalogue name
+    status: Status
+    enabled: enabled
+    disabled: disabled
+    empty: There is no catalogue
+    more_information: Check out our Help Centre for more information.
+  catalog_edit:
+    tabs:
+      settings: Catalogue settings
+      product_selection: Product selection
+      more: More
+      product_value_filters: Filter the values
+      product_mapping: Mapping
   catalog_status_widget:
+    fields:
+      enable_catalog: Enable catalogue
+    helper: By default, new catalogues are disabled. Enable the catalogue to allow the app to retrieve your product data.
     inputs:
       yes: Yes
       no: No
+  product_value_filters:
+    action:
+      open: Open
+      remove: Remove
+    filters:
+      channel:
+        label: Channel
+        no_matches: No matches found
+        placeholder: Select a channel
+      locale:
+        label: Locale
+        no_matches: No matches found
+        placeholder: Select a locale
+      currency:
+        label: Currency
+        no_matches: No matches found
+        placeholder: Select a currency
   product_selection:
+    empty: Add selection criteria to create your product selection
+    count:
+      products: '{0} No products|{1} 1 product|[2,Inf[ {{ count }} products'
+      error: Impossible to calculate the number of products
+    more_information: Check out our Help Centre for more information.
+    add_criteria:
+      label: Add selection criteria
+      search: Search criterion
+      no_results: No matches found
+      section_system: system
+      section_attributes: attributes
+    action:
+      open: Open
+      remove: Remove
+    locale:
+      label: Locale
+      empty: No locale found
+    channel:
+      label: Channel
+      empty: No channel found
     criteria:
+      unknown: This attribute has been deleted.
+      max_reached: You reached the limit of {{ maxCount }} selection criteria.
+      status:
+        label: Status
+        enabled: Enabled
+        disabled: Disabled
+      family:
+        label: Family
+        no_matches: No matches found
+        placeholder: Select a family
+      completeness:
+        label: Completeness
+      attribute_option:
+        no_matches: No matches found
+        placeholder: Select an option
+      category:
+        label: Category
+        remove: Remove category
+        category_tree: Category tree
+      measurement:
+        search: Unit
+        no_results: No matches found
       boolean:
         yes: Yes
         no: No
+    operators:
+      "STARTS WITH": starts with
+      "ENDS WITH": ends with
+      "CONTAINS": contains
+      "DOES NOT CONTAIN": does not contain
+      "EMPTY": is empty
+      "NOT EMPTY": is not empty
+      "IN": in
+      "NOT IN": not in
+      "IN CHILDREN": in children
+      "NOT IN CHILDREN": not in children
+      "UNCLASSIFIED": is unclassified
+      "IN OR UNCLASSIFIED": is unclassified or in
+      "BETWEEN": between
+      "NOT BETWEEN": not between
+      "=": equals
+      "!=": does not equal
+      ">": greater than
+      ">=": equals or greater than
+      "<": less than
+      "<=": equals or less than
+  product_mapping:
+    target:
+      title: Target list
+      filter:
+        label: Filter
+        option:
+          all: All
+      table:
+        target: Catalogue Target
+        source: Pim Source
+        placeholder: Define a content source
+      placeholder:
+        illustration_title: No catalogue target available
+    source:
+      title: Select Source
+      parameters:
+        title: Source parameters
+        channel:
+          label: Channel
+          placeholder: Select a channel
+        locale:
+          label: Locale
+          placeholder: Select a locale
+      select_source:
+        label: Pim source
+        search: Search criterion
+        no_results: No matches found
+        section_system: system
+        section_attributes: attributes
+      placeholder:
+        title: Select Source
+        illustration_title: Click on a target in the right panel to configure your catalogue mapping.
+        subtitle: Then you'll be able to match a PIM attribute with the selected target.
+        link: Check out our Help Centre for more information.
+      uuid_placeholder:
+        illustration_title: The UUID is a technical product identifier.
+        subtitle: All apps must require it as a target. You have nothing to configure for this target as we automatically map it with the Akeneo product UUID.
+        link: More information about the UUID.

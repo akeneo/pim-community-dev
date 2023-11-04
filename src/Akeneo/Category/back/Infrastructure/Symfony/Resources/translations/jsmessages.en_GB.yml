@@ -1,0 +1,33 @@
+akeneo.category:
+  tree_list:
+    column:
+      category_templates: Category templates
+  attributes: Attributes
+  edition_form:
+    error:
+      unhandled_attribute_type: Could not find attribute field builder for attribute type "{{type}}"
+    template:
+      title: Template
+      fetching_failed: An error occurred while fetching template
+    unsaved_changes: You will lose changes to the category if you leave the page.
+  tree:
+    create: Create tree
+    delete: Delete tree
+  template:
+    create: Activate template
+    edit: View template
+    delete: Delete template
+    notification_success: Template activated successfully
+    notification_error: Template could not be activated
+    attribute:
+      description_title: Description Settings
+      type:
+        text: Text
+        textarea: Text Area
+        richtext: Rich Text
+        image: Image
+  template_list:
+    columns:
+      header: Label
+      code: Code
+      type: Type

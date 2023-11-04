@@ -19,6 +19,7 @@ This value should not be a decimal.: This value should not be a decimal.
 "The {{ attribute_code }} attribute can not have the same value more than once. The {{ value }} value is already set on another product.": The {{ attribute_code }} attribute can not have the same value more than once. The {{ value }} value is already set on another product.
 The same identifier is already set on another product: The same identifier is already set on another product
 regex.comma_or_semicolon_or_surrounding_space.message: This field should not contain any comma or semicolon or leading/trailing space
+regex.line_break.message: This field should not contain any line break
 file.extensions.message: 'This file extension is not allowed (allowed extensions: %extensions%).'
 "This type of value expects the use of {{ decimal_separator }} to separate decimals.": This type of value expects the use of {{ decimal_separator }} to separate decimals.
 "This type of value expects the use of dot (.) to separate decimals.": This type of value expects the use of a dot (.) to separate decimals.
@@ -37,6 +38,7 @@ product_model.family_variant.not_blank.message: The product model family variant
 "The {{ attribute_code }} attribute requires a date that should be {{ limit }} or after.": The {{ attribute_code }} attribute requires a date that should be {{ limit }} or after.
 "The {{ attribute_code }} attribute requires a date that should be {{ limit }} or before.": The {{ attribute_code }} attribute requires a date that should be {{ limit }} or before.
 "The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.": The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.
+"The {{ attribute }} attribute requires a value which does not contain space, and the submitted \"{{ value }}\" has at least one.": The {{ attribute }} attribute requires a value which does not contain a space, and the submitted "{{ value }}" has at least one.
 "The %attribute% attribute must not contain more than %limit% characters. The submitted value is too long.": The %attribute% attribute must not contain more than %limit% characters. The submitted value is too long.
 "The %type% file extension is not allowed for the %attribute% attribute. Allowed extensions are %extensions%.": The %type% file extension is not allowed for the %attribute% attribute. Allowed extensions are %extensions%.
 "The %attribute% attribute requires a url link.": The %attribute% attribute requires a url link.
@@ -65,6 +67,8 @@ pim_catalog:
     variant_product_invalid_family: 'The variant product family must be the same than its parent'
     php_int_max_reached: 'The maximum number must be lower than %php_int_max%.'
     not_null_family: The family cannot be "null" because your product with the %sku% identifier is a variant product.
+    variant_product_has_parent: 'The variant product must have a parent'
+    invalid_variant_product_parent: 'The variant product cannot have product model "%product_model%" as parent, (this product model can only have other product models as children)'
     modified_variant_axis_value: 'Variant axis "%variant_axis%" cannot be modified, "%provided_value%" given'
     family_variant_attributes_unique: Attributes must be unique, "%attributes%" are used several times in variant attributes sets
     family_variant_axes_unique: Variant axes must be unique, "%attributes%" are used several times in variant attributes sets

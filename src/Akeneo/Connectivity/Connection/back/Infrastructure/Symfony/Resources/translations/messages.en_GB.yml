@@ -3,3 +3,8 @@ akeneo_connectivity.connection:
   acl.manage_apps: Manage apps
   acl.manage_test_apps: Manage test apps
   acl.open_apps: Open apps
+pim_notification:
+  connected_app_authorizations:
+    message: 'The <strong>{{ app_name }}</strong> App requires an authorisation update. Please open the app to proceed.'
+  disabled_catalog:
+    message: "One or several modifications in the settings of your PIM impacted the {{ catalogue_name }} catalogue. Please review the related product selection and enable the catalogue again."
