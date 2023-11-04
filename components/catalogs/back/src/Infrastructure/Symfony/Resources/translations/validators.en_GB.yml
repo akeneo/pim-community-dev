@@ -1,0 +1,51 @@
+akeneo_catalogs:
+  validation:
+    max_number_of_catalogs_per_user_message: You can create up to 15 catalogues
+    product_selection:
+      criteria:
+        channel:
+          not_empty: 'This channel must be empty.'
+          empty: 'This channel must not be empty.'
+          unknown: 'This channel has been deactivated. Please check your channel settings or remove this criterion.'
+        locale:
+          not_empty: 'This locale must be empty.'
+          empty: 'This locale must not be empty.'
+          unknown: 'This locale does not exist.'
+          disabled: 'This locale is disabled for this channel. Please check your channel settings or remove this criterion.'
+        value:
+          not_empty: 'This value must be empty.'
+          empty: 'This value must not be empty.'
+        family:
+          unknown: 'At least one selected family does not exist.'
+        completeness:
+          value: 'Completeness value must be between 0 and 100 percent.'
+        attribute_option:
+          unknown: 'At least one selected option does not exists.'
+        category:
+          value: 'The following categories do not exist anymore: {{ codes }}. Please remove them from the criterion value.'
+        date:
+          between_is_empty: 'These values must not be empty.'
+        measurement:
+          unit:
+            not_exist: 'The unit of the field "{{ field }}" does not exist.'
+            not_empty: 'The unit must not be empty.'
+    product_value_filters:
+      channel:
+        unknown: 'The channel "{{ channel_name }}" has been deactivated. Please check your channel settings or remove this filter.'
+      currencies:
+        unknown: 'The currency "{{ currency_name }}" has been deactivated. Please check your currencies settings or remove this filter.'
+      locale:
+        unknown: 'The locale "{{ locale_name }}" has been deactivated. Please check your locale settings or remove this filter.'
+    product_mapping:
+      source:
+        invalid: 'This attribute has been deleted.'
+        unknown: 'Unknown source value'
+        channel:
+          not_empty: 'This channel must be empty.'
+          empty: 'This channel must not be empty.'
+          unknown: 'This channel has been deleted. Please check your channel settings or update this value.'
+        locale:
+          not_empty: 'This locale must be empty.'
+          empty: 'This locale must not be empty.'
+          unknown: 'This locale is disabled or does not exist any more. Please check your channel and locale settings.'
+          disabled: 'This locale is disabled. Please check your channel and locale settings or update this value.'

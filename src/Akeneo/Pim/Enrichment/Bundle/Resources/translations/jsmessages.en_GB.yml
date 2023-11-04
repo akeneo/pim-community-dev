@@ -21,9 +21,11 @@ pim_enrich.entity.product:
     update:
       success: Product successfully updated.
       fail: The product could not be updated.
+      fail_session_expired: The product could not be updated. Your user session has expired. Please log in again.
       fields_not_ready: "The product cannot be saved right now. The following fields are not ready: {{ fields }}"
       already_in_upload: A file is already in upload for this attribute in the locale "{{ locale }}" and scope "{{ scope }}"
       file_upload: An error occurred during the file upload
+      identifier_warning: Your product has been saved but your identifier could not be generated.
     delete:
       success: Product successfully deleted.
       fail: The product could not be deleted.
@@ -41,6 +43,7 @@ pim_enrich.entity.product:
       title: Select your action
       choose_family: Choose a family
       choose_family_variant: Choose a family variant
+      helper: The identifier is now an optional field. <a class="AknMessageBox-link" href="{{ link }}" target="_blank">Read more</a> about this change and the possible impacts for your products.
     variant_navigation:
       common: Common
     status:
@@ -49,6 +52,7 @@ pim_enrich.entity.product:
     download_pdf:
       label: PDF
     copy:
+      button_label: Compare
       label: Compare / Translate
       select: Select
       all_visible: All visible
@@ -69,6 +73,7 @@ pim_enrich.entity.product:
     meta:
       updated: Last update
       groups: Groups
+      uuid: UUID
     show_group:
       title: Group {{ group }}
       view_group: View group
@@ -107,6 +112,7 @@ pim_enrich.entity.product:
       variant_products: Variant products
       quantified:
         quantity: Quantities
+        unlinked: Unlinked
       search:
         placeholder: Search on label or identifier
       no_data: There are no associated products
@@ -218,6 +224,7 @@ pim_enrich.entity.category:
       columns:
         label: Tree label
         number_of_categories: Number of categories
+        actions: Actions
         count_categories: ']-Inf, 1]{{ count }} category|]1, Inf[{{ count }} categories'
     tree:
       not_found: Category tree not found
@@ -436,6 +443,8 @@ pim_datagrid:
         all_attributes: All attributes
         with_codes: With codes
         with_labels: With labels
+        without_uuid: Without UUID
+        with_uuid: With UUID
         without_media: Without media
         with_media: With media
       flash:
@@ -491,6 +500,8 @@ pim_datagrid:
       label: Parent
     identifier:
       label: Identifier
+    uuid:
+      label: UUID
   search: Search by {{ label }}
 batch_jobs:
   add_association:

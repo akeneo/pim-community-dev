@@ -197,6 +197,8 @@ pim_common:
   less_than: Less than
   loading: Loading...
   media_upload: Drag and drop to upload or click here
+  media_uploading: Uploading…
+  media_upload_error: An error occurred during upload
   more_actions: More actions
   more_than: More than
   next: Next
@@ -273,6 +275,7 @@ pim_enrich.entity.fallback:
     generic_error: An error occurred
     update:
       fail: Update failed
+      fail_session_expired: Your user session has expired. Please log in again.
       success: Successfully updated
     delete:
       fail: Cannot delete this item
