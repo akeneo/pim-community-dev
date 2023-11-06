@@ -67,7 +67,10 @@ final class AssertRows
 
         Assert::assertSame($expectedRow->values()->count(), $row->values()->count());
         foreach ($expectedRow->values() as $value) {
-            Assert::assertNotNull($row->values()->getSame($value));
+            Assert::assertNotNull(
+                $row->values()->getSame($value),
+                $value->getAttributeCode() . '-' . $value->getLocaleCode() . '-' . $value->getScopeCode() . ' not found'
+            );
         }
     }
 }
