@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid;
 
+use Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
@@ -24,14 +25,21 @@ final class FetchProductRowsFromIdentifiers implements FetchProductRowsFromIdent
     /** @var WriteValueCollectionFactory */
     private $valueCollectionFactory;
 
+    /** @var ChannelExistsWithLocaleInterface */
+    private $channelExistsWithLocale;
+
     /**
      * @param Connection                      $connection
      * @param WriteValueCollectionFactory $valueCollectionFactory
      */
-    public function __construct(Connection $connection, WriteValueCollectionFactory $valueCollectionFactory)
-    {
+    public function __construct(
+        Connection $connection,
+        WriteValueCollectionFactory $valueCollectionFactory,
+        ChannelExistsWithLocaleInterface $channelExistsWithLocale,
+    ) {
         $this->connection = $connection;
         $this->valueCollectionFactory = $valueCollectionFactory;
+        $this->channelExistsWithLocale = $channelExistsWithLocale;
     }
 
     /**
@@ -165,8 +173,12 @@ SQL;
         foreach ($valueCollections as $productIdentifier => $valueCollection) {
             $result[$productIdentifier]['value_collection'] = $valueCollection->filter(
                 function (ValueInterface $value) use ($channelCode, $localeCode) {
-                    return ($value->getScopeCode() === $channelCode || $value->getScopeCode() === null)
-                        && ($value->getLocaleCode() === $localeCode || $value->getLocaleCode() === null);
+                    $isScopeMatching = $value->getScopeCode() === null || $value->getScopeCode() === $channelCode;
+                    $isLocaleMatching = $value->getLocaleCode() === null || $value->getLocaleCode() === $localeCode;
+                    $isLocaleBoundToChannel = null === $value->getLocaleCode()
+                        || $this->channelExistsWithLocale->isLocaleBoundToChannel($value->getLocaleCode(), $channelCode);
+
+                    return $isScopeMatching && $isLocaleMatching && $isLocaleBoundToChannel;
                 }
             );
         }

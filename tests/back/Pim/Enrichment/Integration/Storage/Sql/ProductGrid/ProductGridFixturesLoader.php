@@ -293,6 +293,7 @@ final class ProductGridFixturesLoader
                 'a_localizable_image' => [
                     ['data' => $akeneoImagePath, 'locale' => 'en_US', 'scope' => null],
                     ['data' => $akeneoImagePath, 'locale' => 'fr_FR', 'scope' => null],
+                    ['data' => $akeneoImagePath, 'locale' => 'zh_CN', 'scope' => null],
                 ],
                 'a_scopable_image' => [
                     ['data' => $akeneoImagePath, 'locale' => null, 'scope' => 'ecommerce'],
