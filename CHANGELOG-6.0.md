@@ -1,5 +1,13 @@
 # 6.0.x
 
+# 6.0.108 (2023-11-06)
+
+## Bug fixes
+
+- PIM-11256: Filter values not bound to channel on datagrid
+
+# 6.0.107 (2023-10-19)
+
 # 6.0.106 (2023-10-11)
 
 
