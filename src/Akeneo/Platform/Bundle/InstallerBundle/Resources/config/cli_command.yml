@@ -43,3 +43,9 @@ services:
             - '%kernel.bundles%'
         tags:
             - { name: console.command }
+
+    Akeneo\Platform\Bundle\InstallerBundle\Command\CheckAttributesCompatibilityWithSaasCommand:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: console.command }
