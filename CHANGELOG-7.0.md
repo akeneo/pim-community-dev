@@ -1,5 +1,9 @@
 # 7.0.x
 
+## Bug fixes
+
+- PIM-11269: Fix potential lost connection during 6.0 -> 7.0 migration
+
 # 7.0.37 (2023-11-13)
 
 ## Bug fixes
@@ -13,6 +17,8 @@
 PIM-11266: Fix export value starting with "=<" causes error when opening in Excel
 
 # 7.0.35 (2023-10-27)
+
+## Bug fixes
 
 - PIM-11251: Fix updated products count displayed in the process tracker without any change on the products
 
