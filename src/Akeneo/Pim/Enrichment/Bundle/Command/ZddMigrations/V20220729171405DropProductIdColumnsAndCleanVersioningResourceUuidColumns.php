@@ -249,6 +249,12 @@ class V20220729171405DropProductIdColumnsAndCleanVersioningResourceUuidColumns i
 
     private function setColumnNullable(string $table, string $column, bool $isZdd = true): void
     {
+        if ($this->isColumnNullable($table, $column)) {
+            $this->log(\sprintf('Skip: the %s.%s column is already nullable.', $table, $column));
+
+            return;
+        }
+
         $algorithm = $isZdd ? ', ALGORITHM=INPLACE' : '';
         $lock = $isZdd ? ', LOCK=NONE' : '';
 
@@ -306,5 +312,25 @@ class V20220729171405DropProductIdColumnsAndCleanVersioningResourceUuidColumns i
             return;
         }
         $this->logger->notice($message, ['zdd_migration' => $this->getName()]);
+    }
+
+    private function isColumnNullable(string $tableName, string $columnName): bool
+    {
+        $schema = $this->connection->getDatabase();
+        $sql = <<<SQL
+            SELECT IS_NULLABLE 
+            FROM information_schema.columns 
+            WHERE table_schema=:schema 
+              AND table_name=:tableName
+              AND column_name=:columnName;
+        SQL;
+
+        $result = $this->connection->fetchOne($sql, [
+            'schema' => $schema,
+            'tableName' => $tableName,
+            'columnName' => $columnName
+        ]);
+
+        return $result === 'YES';
     }
 }
