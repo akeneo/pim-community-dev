@@ -132,7 +132,7 @@ type TableRowProps = Override<
     /**
      * Define if the row is selected, required when table is selectable
      */
-    isSelected?: boolean;
+    isSelected?: boolean | 'mixed';
 
     /**
      * Define if the row has a warning
@@ -165,7 +165,7 @@ const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
   (
     {
       rowIndex = 0,
-      isSelected,
+      isSelected = false,
       level,
       onSelectToggle,
       onClick,
@@ -228,7 +228,7 @@ const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
             onClick={handleCheckboxChange}
           >
             <Checkbox
-              checked={!!isSelected}
+              checked={isSelected}
               onChange={(_value, e) => {
                 handleCheckboxChange(e);
               }}

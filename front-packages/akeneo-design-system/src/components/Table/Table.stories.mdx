@@ -376,7 +376,7 @@ To compare information, for example how many products are completed versus how m
 <Canvas>
   <Story name="Complex table">
     {args => {
-      const [selectedLines, setSelectedLines] = useState([2]);
+      const [selectedLines, setSelectedLines] = useState([2, 3]);
       const handleToggleSelected = lineId => {
         if (selectedLines.indexOf(lineId) === -1) {
           setSelectedLines([...selectedLines, lineId]);
@@ -410,7 +410,7 @@ To compare information, for example how many products are completed versus how m
                 key={row.id}
                 onClick={() => handleClick(row.id)}
                 onSelectToggle={() => handleToggleSelected(row.id)}
-                isSelected={selectedLines.indexOf(row.id) !== -1}
+                isSelected={selectedLines.indexOf(row.id) !== -1 ? (row.id == 3 ? 'mixed' : true) : false}
               >
                 <Table.Cell>
                   <Image src={row.image} alt="The alt" />

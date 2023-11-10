@@ -75,27 +75,6 @@ test('it throws when onSelectToggle is not given on selectable table', () => {
   mockConsole.mockRestore();
 });
 
-test('it throws when isSelected is not given on selectable table', () => {
-  const mockConsole = jest.spyOn(console, 'error').mockImplementation();
-
-  const onSelectToggle = jest.fn();
-  const cellRender = () =>
-    render(
-      <Table isSelectable={true}>
-        <Table.Body>
-          <Table.Row onSelectToggle={onSelectToggle}>
-            <Table.Cell>A value</Table.Cell>
-            <Table.Cell>Another value</Table.Cell>
-          </Table.Row>
-        </Table.Body>
-      </Table>
-    );
-
-  expect(cellRender).toThrowError();
-
-  mockConsole.mockRestore();
-});
-
 test('Table.Row supports forwardRef', () => {
   const ref = {current: null};
   render(
