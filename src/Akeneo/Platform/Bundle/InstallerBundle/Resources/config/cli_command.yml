@@ -48,3 +48,9 @@ services:
             - !tagged_iterator { tag: 'akeneo.pim.zdd_migration' }
         tags:
             - { name: 'console.command' }
+
+    Akeneo\Platform\Bundle\InstallerBundle\Command\CheckAttributesCompatibilityWithSaasCommand:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: console.command }
