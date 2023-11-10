@@ -132,7 +132,7 @@ type TableRowProps = Override<
     /**
      * Define if the row is selected, required when table is selectable
      */
-    isSelected?: boolean| 'mixed';
+    isSelected?: boolean | 'mixed';
 
     /**
      * Define if the row has a warning
