@@ -4,6 +4,7 @@ namespace Akeneo\Tool\Component\Connector\Writer\File;
 
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
+use OpenSpout\Common\Entity\Cell;
 use OpenSpout\Common\Entity\Row;
 use OpenSpout\Common\Exception\UnsupportedTypeException;
 use OpenSpout\Writer\WriterInterface;
@@ -88,7 +89,7 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
 
         $writer = $this->getWriter($filePath, $writerOptions);
         if ([] !== $headers) {
-            $writer->addRow(Row::fromValues($headers));
+            $writer->addRow($this->escapeFormulaCells(Row::fromValues($headers)));
         }
 
         foreach ($buffer as $incompleteItem) {
@@ -100,7 +101,7 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
             $incompleteItem = array_combine($incompleteKeys, $incompleteItem);
 
             $item = array_replace($hollowItem, $incompleteItem);
-            $writer->addRow(Row::fromValues($item));
+            $writer->addRow($this->escapeFormulaCells(Row::fromValues($item)));
 
             if (null !== $this->stepExecution) {
                 $this->stepExecution->incrementSummaryInfo('write');
@@ -149,7 +150,7 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
                 $writtenLinesCount = 0;
                 $writer = $this->getWriter($filePath, $writerOptions);
                 if ([] !== $headers) {
-                    $writer->addRow(Row::fromValues($headers));
+                    $writer->addRow($this->escapeFormulaCells(Row::fromValues($headers)));
                 }
             }
 
@@ -161,7 +162,7 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
             $incompleteItem = array_combine($incompleteKeys, $incompleteItem);
 
             $item = array_replace($hollowItem, $incompleteItem);
-            $writer->addRow(Row::fromValues($item));
+            $writer->addRow($this->escapeFormulaCells(Row::fromValues($item)));
             $writtenLinesCount++;
 
             if (null !== $this->stepExecution) {
@@ -282,5 +283,18 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
         $writer->openToFile($filePath);
 
         return $writer;
+    }
+
+    private function escapeFormulaCells(Row $row): Row
+    {
+        $escapedCells = array_map(static function (Cell $cell): Cell {
+            if ($cell instanceof Cell\FormulaCell) {
+                return new Cell\StringCell($cell->getValue(), null);
+            }
+
+            return $cell;
+        }, $row->getCells());
+
+        return new Row($escapedCells);
     }
 }
