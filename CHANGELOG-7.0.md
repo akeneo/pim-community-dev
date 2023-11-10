@@ -1,5 +1,9 @@
 # 7.0.x
 
+## Bug fixes
+
+- PIM-11265: Fix mass delete action when using big grid filters
+
 # 7.0.36 (2023-11-10)
 
 ## Bug fixes
