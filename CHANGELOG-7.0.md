@@ -1,5 +1,7 @@
 # 7.0.x
 
+# 7.0.36 (2023-11-10)
+
 ## Bug fixes
 
 PIM-11266: Fix export value starting with "=<" causes error when opening in Excel
