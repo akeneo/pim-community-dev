@@ -1,5 +1,7 @@
 # 7.0.x
 
+# 7.0.38 (2023-11-16)
+
 ## Bug fixes
 
 - PIM-11269: Fix potential lost connection during 6.0 -> 7.0 migration
