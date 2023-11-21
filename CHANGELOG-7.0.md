@@ -1,5 +1,7 @@
 # 7.0.x
 
+# 7.0.39 (2023-11-21)
+
 ## Bug fixes
 
 - PIM-10903: Fix Doctrine warning related to Product and Group
