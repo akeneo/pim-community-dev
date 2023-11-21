@@ -1,5 +1,9 @@
 # 7.0.x
 
+## Bug fixes
+
+- PIM-10903: Fix Doctrine warning related to Product and Group
+
 # 7.0.38 (2023-11-16)
 
 ## Bug fixes
@@ -16,7 +20,7 @@
 
 ## Bug fixes
 
-PIM-11266: Fix export value starting with "=<" causes error when opening in Excel
+- PIM-11266: Fix export value starting with "=<" causes error when opening in Excel
 
 # 7.0.35 (2023-10-27)
 
@@ -34,11 +38,15 @@ PIM-11266: Fix export value starting with "=<" causes error when opening in Exce
 
 # 7.0.32 (2023-09-27)
 
+## Bug fixes
+
 - PIM-11200: Fix versioning on table attribute in case of column reordering
 
 # 7.0.31 (2023-09-25)
 
 # 7.0.30 (2023-09-25)
+
+## Bug fixes
 
 - PIM-11196: Fix DQI migration script Version_7_0_20220214101647
 
@@ -101,6 +109,8 @@ PIM-11266: Fix export value starting with "=<" causes error when opening in Exce
 # 7.0.11 (2023-03-21)
 
 # 7.0.10 (2023-02-28)
+
+## Bug fixes
 
 - RAB-1356: [Backport PIM-10840]: Fix attribute update date on attribute options change above 10000 options
 - RAB-1356: [Backport PIM-10853]: Fix type checking in SaveFamilyVariantOnFamilyUpdate bulk action

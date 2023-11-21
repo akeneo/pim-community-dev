@@ -27,9 +27,6 @@ class Group implements GroupInterface
     /** @var GroupTypeInterface */
     protected $type;
 
-    /**  @var ArrayCollection */
-    protected $products;
-
     /**
      * Used locale to override Translation listener's locale
      * this is not a mapped field of entity metadata, just a simple property
@@ -46,7 +43,6 @@ class Group implements GroupInterface
      */
     public function __construct()
     {
-        $this->products = new ArrayCollection();
         $this->translations = new ArrayCollection();
     }
 

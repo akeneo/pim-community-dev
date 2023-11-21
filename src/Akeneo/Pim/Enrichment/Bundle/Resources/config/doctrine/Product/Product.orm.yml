@@ -54,7 +54,6 @@ Akeneo\Pim\Enrichment\Component\Product\Model\Product:
     manyToMany:
         groups:
             targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface
-            inversedBy: products
             joinTable:
                 name: pim_catalog_group_product
                 joinColumns:
