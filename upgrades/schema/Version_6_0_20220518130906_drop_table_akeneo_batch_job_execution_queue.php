@@ -11,7 +11,12 @@ final class Version_6_0_20220518130906_drop_table_akeneo_batch_job_execution_que
 {
     public function up(Schema $schema): void
     {
-        $this->skipIf($this->tableDoesNotExist(), 'The table akeneo_batch_job_execution_queue does not exist');
+        if ($this->tableDoesNotExist()) {
+            $this->write('The table akeneo_batch_job_execution_queue does not exist');
+
+            return;
+        }
+
         if (!$this->queueJobIsEmpty()) {
             throw new \RuntimeException('Some jobs need have not be launched, please launch `bin/console akeneo:batch:migrate-job-messages-from-old-queue` to migrate them or execute `TRUNCATE akeneo_batch_job_execution_queue` if you didn\'t want to migrate them');
         }

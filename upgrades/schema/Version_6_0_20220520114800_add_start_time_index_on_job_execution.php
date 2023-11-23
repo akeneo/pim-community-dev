@@ -11,7 +11,11 @@ final class Version_6_0_20220520114800_add_start_time_index_on_job_execution ext
 {
     public function up(Schema $schema): void
     {
-        $this->skipIf($this->indexExists(), 'Indexed IDX_START_TIME already exists in akeneo_batch_job_execution');
+        if ($this->indexExists()) {
+            $this->write('Indexed IDX_START_TIME already exists in akeneo_batch_job_execution');
+
+            return;
+        }
 
         $this->addSql('CREATE INDEX start_time_idx ON akeneo_batch_job_execution (start_time)');
     }

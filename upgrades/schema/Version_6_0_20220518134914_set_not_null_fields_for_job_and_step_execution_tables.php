@@ -21,8 +21,17 @@ final class Version_6_0_20220518134914_set_not_null_fields_for_job_and_step_exec
 
     public function up(Schema $schema): void
     {
-        $this->skipIf($this->isSassVersion(), 'This migration is only for non Sass version');
-        $this->skipIf($this->isMigrationDone(), 'Migration already done');
+        if ($this->isSassVersion()) {
+            $this->write('This migration is only for non Sass version');
+
+            return;
+        }
+
+        if ($this->isMigrationDone()) {
+            $this->write('Migration already done');
+
+            return;
+        }
 
         $this->addSql("UPDATE akeneo_batch_job_execution SET is_stoppable = 0 WHERE is_stoppable IS NULL");
         $this->addSql("UPDATE akeneo_batch_job_execution SET step_count = 1 WHERE step_count IS NULL");
