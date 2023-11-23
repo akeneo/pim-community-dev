@@ -55,7 +55,7 @@ class UniqueAxesCombinationSet
 
         if (isset($this->uniqueAxesCombination[$familyVariantCode][$parentCode][$loweredAxisValueCombination])) {
             $cachedIdentifier = $this->uniqueAxesCombination[$familyVariantCode][$parentCode][$loweredAxisValueCombination];
-            if ($cachedIdentifier !== $entity->getIdentifier()) {
+            if ($cachedIdentifier !== \mb_strtolower($entity->getIdentifier())) {
                 if ($entity instanceof ProductInterface) {
                     throw new AlreadyExistingAxisValueCombinationException(
                         $cachedIdentifier,

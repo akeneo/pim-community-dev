@@ -55,10 +55,17 @@ class UniqueAxesCombinationSetSpec extends ObjectBehavior
         $variantProductB->setFamilyVariant($familyVariant);
         $variantProductB->setParent($productModel);
 
+        $variantProductBBis = new Product();
+        $variantProductBBis->addValue($identifierB);
+        $variantProductBBis->setIdentifier('PRODUCT_B');
+        $variantProductBBis->setFamilyVariant($familyVariant);
+        $variantProductBBis->setParent($productModel);
+
         $this->addCombination($productModel, '[a_color]');
         $this->addCombination($anotherProductModel, '[another_color]');
         $this->addCombination($variantProductA, '[a_size]');
         $this->addCombination($variantProductB, '[another_size]');
+        $this->addCombination($variantProductBBis, '[another_size]');
     }
 
     function it_does_not_add_same_combination_of_axis_values_twice_for_product_models()
