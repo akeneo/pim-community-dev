@@ -45,7 +45,7 @@ class Version_6_0_20220520114800_add_start_time_index_on_job_execution_Integrati
         $this->dropIndexIfExists();
 
         $this->reExecuteMigration(self::MIGRATION_LABEL);
-        $this->reExecuteMigration(self::MIGRATION_LABEL);
+        $this->reExecuteMigration(self::MIGRATION_LABEL, true);
 
         Assert::assertTrue($this->indexExists());
     }

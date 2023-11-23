@@ -45,7 +45,7 @@ class Version_6_0_20211130113100_add_index_to_improve_search_on_job_instance_Int
         $this->dropIndexIfExists('code_idx');
 
         $this->reExecuteMigration(self::MIGRATION_LABEL);
-        $this->reExecuteMigration(self::MIGRATION_LABEL);
+        $this->reExecuteMigration(self::MIGRATION_LABEL, true);
 
         Assert::assertTrue($this->indexExists('code_idx'));
     }

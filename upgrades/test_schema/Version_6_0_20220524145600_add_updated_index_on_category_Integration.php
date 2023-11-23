@@ -45,7 +45,7 @@ class Version_6_0_20220524145600_add_updated_index_on_category_Integration exten
         $this->dropIndexIfExists();
 
         $this->reExecuteMigration(self::MIGRATION_LABEL);
-        $this->reExecuteMigration(self::MIGRATION_LABEL);
+        $this->reExecuteMigration(self::MIGRATION_LABEL, true);
 
         Assert::assertTrue($this->indexExists());
     }

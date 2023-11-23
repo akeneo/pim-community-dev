@@ -48,7 +48,7 @@ class Version_6_0_20220518130906_drop_table_akeneo_batch_job_execution_queue_Int
         $this->createJobQueueTable();
 
         $this->reExecuteMigration(self::MIGRATION_LABEL);
-        $this->reExecuteMigration(self::MIGRATION_LABEL);
+        $this->reExecuteMigration(self::MIGRATION_LABEL, true);
 
         Assert::assertFalse($this->jobQueueTableExists());
     }

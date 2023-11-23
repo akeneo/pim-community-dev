@@ -62,7 +62,7 @@ class Version_6_0_20211119154203_add_is_stoppable_in_job_execution_Integration e
         $this->createJobExecution($jobInstanceId);
 
         $this->reExecuteMigration(self::MIGRATION_LABEL);
-        $this->reExecuteMigration(self::MIGRATION_LABEL);
+        $this->reExecuteMigration(self::MIGRATION_LABEL, true);
 
         Assert::assertTrue($this->columnExists());
     }

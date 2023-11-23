@@ -64,7 +64,7 @@ class Version_6_0_20211122154203_add_step_count_in_job_execution_Integration ext
         $this->createJobExecution($jobInstanceId);
 
         $this->reExecuteMigration(self::MIGRATION_LABEL);
-        $this->reExecuteMigration(self::MIGRATION_LABEL);
+        $this->reExecuteMigration(self::MIGRATION_LABEL, true);
 
         Assert::assertTrue($this->columnExists());
     }

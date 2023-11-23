@@ -11,7 +11,7 @@ final class Version_6_0_20211207154203_add_is_trackable_in_step_execution extend
 {
     public function up(Schema $schema): void
     {
-        if ($this->$schema->getTable('akeneo_batch_step_execution')->hasColumn('is_trackable')) {
+        if ($schema->getTable('akeneo_batch_step_execution')->hasColumn('is_trackable')) {
             $this->write('is_trackable column already exists in akeneo_batch_step_execution');
 
             return;
