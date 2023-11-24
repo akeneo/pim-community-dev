@@ -1,5 +1,7 @@
 # 7.0.x
 
+# 7.0.40 (2023-11-24)
+
 ## Bug fixes
 
 - PIM-11289: Fix case-sensitive check in UniqueAxesCombinationSet
