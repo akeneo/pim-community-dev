@@ -1,5 +1,7 @@
 # 6.0.x
 
+# 6.0.110 (2023-11-24)
+
 - PIM-10985: Mark skipped migrations as executed
 
 # 6.0.109 (2023-11-08)
