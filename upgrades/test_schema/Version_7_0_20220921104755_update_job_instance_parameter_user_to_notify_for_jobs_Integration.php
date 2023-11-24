@@ -37,7 +37,7 @@ final class Version_7_0_20220921104755_update_job_instance_parameter_user_to_not
         $this->assertFalse($this->jobIsMigrated('a_mass_upload', []));
 
         $this->reExecuteMigration(self::MIGRATION_LABEL);
-        $this->reExecuteMigration(self::MIGRATION_LABEL);
+        $this->reExecuteMigration(self::MIGRATION_LABEL, true);
 
         $this->assertTrue($this->jobIsMigrated('a_mass_edit', ['admin']));
         $this->assertTrue($this->jobIsMigrated('a_mass_edit_rule', ['greg']));
@@ -55,7 +55,7 @@ final class Version_7_0_20220921104755_update_job_instance_parameter_user_to_not
         $this->assertFalse($this->jobIsMigrated('a_mass_upload', []));
 
         $this->reExecuteMigration(self::MIGRATION_LABEL);
-        $this->reExecuteMigration(self::MIGRATION_LABEL);
+        $this->reExecuteMigration(self::MIGRATION_LABEL, true);
 
         $this->assertTrue($this->jobIsMigrated('a_mass_edit', ['admin']));
         $this->assertTrue($this->jobIsMigrated('a_mass_edit_rule', ['greg']));

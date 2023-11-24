@@ -35,7 +35,7 @@ final class Version_7_0_20220914143410_update_job_instance_parameter_user_to_not
         $this->assertFalse($this->jobIsMigrated('another_quick_export', []));
 
         $this->reExecuteMigration(self::MIGRATION_LABEL);
-        $this->reExecuteMigration(self::MIGRATION_LABEL);
+        $this->reExecuteMigration(self::MIGRATION_LABEL, true);
 
         $this->assertTrue($this->jobIsMigrated('a_quick_export', ['admin']));
         $this->assertTrue($this->jobIsMigrated('another_quick_export', []));

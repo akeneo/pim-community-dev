@@ -15,10 +15,11 @@ final class Version_7_0_20220808143128_add_value_collection_to_category extends 
 {
     public function up(Schema $schema): void
     {
-        $this->skipIf(
-            $schema->getTable('pim_catalog_category')->hasColumn('value_collection'),
-            'value_collection column already exists in pim_catalog_category'
-        );
+        if ($schema->getTable('pim_catalog_category')->hasColumn('value_collection')) {
+            $this->write('value_collection column already exists in pim_catalog_category');
+
+            return;
+        }
 
         $this->addSql('ALTER TABLE pim_catalog_category ADD COLUMN value_collection JSON AFTER rgt, ALGORITHM=INPLACE, LOCK=NONE;');
     }

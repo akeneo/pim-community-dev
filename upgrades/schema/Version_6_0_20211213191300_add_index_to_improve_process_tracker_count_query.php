@@ -11,7 +11,11 @@ final class Version_6_0_20211213191300_add_index_to_improve_process_tracker_coun
 {
     public function up(Schema $schema): void
     {
-        $this->skipIf($this->indexExists(), 'Index job_instance_id_user_status_is_visible_idx already exists in akeneo_batch_job_instance');
+        if ($this->indexExists()) {
+            $this->write('Index job_instance_id_user_status_is_visible_idx already exists in akeneo_batch_job_instance');
+
+            return;
+        }
 
         $this->addSql('CREATE INDEX job_instance_id_user_status_is_visible_idx ON akeneo_batch_job_execution (job_instance_id, user, status, is_visible)');
     }

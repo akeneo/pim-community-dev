@@ -24,10 +24,11 @@ final class Version_6_0_20211124154203_add_is_visible_in_job_execution extends A
 
     public function up(Schema $schema): void
     {
-        $this->skipIf(
-            $schema->getTable('akeneo_batch_job_execution')->hasColumn('is_visible'),
-            'is_visible column already exists in akeneo_batch_job_execution'
-        );
+        if ($schema->getTable('akeneo_batch_job_execution')->hasColumn('is_visible')) {
+            $this->write('is_visible column already exists in akeneo_batch_job_execution');
+
+            return;
+        }
 
         $this->addSql("ALTER TABLE akeneo_batch_job_execution ADD is_visible TINYINT(1) DEFAULT 1");
         $this->addSql("UPDATE akeneo_batch_job_execution SET is_visible = 0 WHERE job_instance_id IN (SELECT id FROM akeneo_batch_job_instance WHERE code IN ('"

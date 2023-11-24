@@ -72,7 +72,7 @@ class Version_6_0_20220518134914_set_not_null_fields_for_job_and_step_execution_
 
         $this->insertJobExecutionWithNullValues();
         $this->reExecuteMigration(self::MIGRATION_LABEL);
-        $this->reExecuteMigration(self::MIGRATION_LABEL);
+        $this->reExecuteMigration(self::MIGRATION_LABEL, true);
 
         $this->assertFalse($this->columnIsNullable('akeneo_batch_job_execution', 'step_count'));
         $this->assertFalse($this->columnIsNullable('akeneo_batch_job_execution', 'is_stoppable'));

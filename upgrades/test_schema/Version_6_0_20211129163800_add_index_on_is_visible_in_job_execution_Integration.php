@@ -45,7 +45,7 @@ class Version_6_0_20211129163800_add_index_on_is_visible_in_job_execution_Integr
         $this->dropIndexIfExists();
 
         $this->reExecuteMigration(self::MIGRATION_LABEL);
-        $this->reExecuteMigration(self::MIGRATION_LABEL);
+        $this->reExecuteMigration(self::MIGRATION_LABEL, true);
 
         Assert::assertTrue($this->indexExists());
     }

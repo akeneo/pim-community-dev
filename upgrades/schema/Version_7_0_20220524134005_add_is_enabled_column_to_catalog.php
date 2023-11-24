@@ -16,10 +16,11 @@ final class Version_7_0_20220524134005_add_is_enabled_column_to_catalog extends 
 {
     public function up(Schema $schema): void
     {
-        $this->skipIf(
-            $schema->getTable('akeneo_catalog')->hasColumn('is_enabled'),
-            'is_enabled column already exists in akeneo_catalog'
-        );
+        if ($schema->getTable('akeneo_catalog')->hasColumn('is_enabled')) {
+            $this->write('is_enabled column already exists in akeneo_catalog');
+
+            return;
+        }
 
         $this->addSql(<<<SQL
         ALTER TABLE akeneo_catalog

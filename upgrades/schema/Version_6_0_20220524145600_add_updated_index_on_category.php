@@ -15,7 +15,11 @@ final class Version_6_0_20220524145600_add_updated_index_on_category extends Abs
 {
     public function up(Schema $schema): void
     {
-        $this->skipIf($this->indexExists(), 'Indexed updated_idx already exists in pim_catalog_category');
+        if ($this->indexExists()) {
+            $this->write('Indexed updated_idx already exists in pim_catalog_category');
+
+            return;
+        }
 
         $this->addSql('CREATE INDEX updated_idx ON pim_catalog_category (updated)');
     }

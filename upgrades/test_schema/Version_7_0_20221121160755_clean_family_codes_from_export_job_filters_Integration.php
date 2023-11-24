@@ -57,7 +57,7 @@ final class Version_7_0_20221121160755_clean_family_codes_from_export_job_filter
         $this->assertJobContainsFilteredFamilyCodes('an_export', [1 => 'shoes', 2 => 'hat']);
 
         $this->reExecuteMigration(self::MIGRATION_LABEL);
-        $this->reExecuteMigration(self::MIGRATION_LABEL);
+        $this->reExecuteMigration(self::MIGRATION_LABEL, true);
 
         $this->assertJobContainsFilteredFamilyCodes('an_export', ['shoes', 'hat']);
     }

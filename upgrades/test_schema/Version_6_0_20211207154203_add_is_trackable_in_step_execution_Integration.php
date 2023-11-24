@@ -46,7 +46,7 @@ class Version_6_0_20211207154203_add_is_trackable_in_step_execution_Integration 
         $this->dropColumnIfExists();
 
         $this->reExecuteMigration(self::MIGRATION_LABEL);
-        $this->reExecuteMigration(self::MIGRATION_LABEL);
+        $this->reExecuteMigration(self::MIGRATION_LABEL, true);
 
         Assert::assertTrue($this->columnExists());
     }
