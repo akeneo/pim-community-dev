@@ -11,7 +11,11 @@ final class Version_6_0_20211130113100_add_index_to_improve_search_on_job_instan
 {
     public function up(Schema $schema): void
     {
-        $this->skipIf($this->indexExists(), 'Index code_idx already exists in akeneo_batch_job_instance');
+        if ($this->indexExists()) {
+            $this->write('Index code_idx already exists in akeneo_batch_job_instance');
+
+            return;
+        }
 
         $this->addSql('CREATE INDEX code_idx ON akeneo_batch_job_instance (code)');
     }

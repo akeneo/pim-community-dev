@@ -42,7 +42,7 @@ class Version_6_0_20211221170000_modify_metric_family_and_default_metric_unit_In
         $attributeId = $this->addAttribute($metricFamily, $defaultMetricUnit);
 
         $this->reExecuteMigration(self::MIGRATION_LABEL);
-        $this->reExecuteMigration(self::MIGRATION_LABEL);
+        $this->reExecuteMigration(self::MIGRATION_LABEL, true);
 
         Assert::assertTrue($this->attributeHasMetricFamilyAndDefaultMetricUnitSet($attributeId, $metricFamily, $defaultMetricUnit));
     }

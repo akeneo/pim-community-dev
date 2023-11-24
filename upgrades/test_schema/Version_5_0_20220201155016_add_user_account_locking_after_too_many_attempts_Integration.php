@@ -43,7 +43,7 @@ final class Version_5_0_20220201155016_add_user_account_locking_after_too_many_a
         Assert::assertEquals(false, $this->columnExists());
 
         $this->reExecuteMigration(self::MIGRATION_LABEL);
-        $this->reExecuteMigration(self::MIGRATION_LABEL);
+        $this->reExecuteMigration(self::MIGRATION_LABEL, true);
 
         Assert::assertEquals(true, $this->columnExists());
     }

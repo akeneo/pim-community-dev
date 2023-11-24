@@ -194,10 +194,11 @@ final class Version_6_0_20211122154203_add_step_count_in_job_execution extends A
 
     public function up(Schema $schema): void
     {
-        $this->skipIf(
-            $schema->getTable('akeneo_batch_job_execution')->hasColumn('step_count'),
-            'step_count column already exists in akeneo_batch_job_execution'
-        );
+        if ($schema->getTable('akeneo_batch_job_execution')->hasColumn('step_count')) {
+            $this->write('step_count column already exists in akeneo_batch_job_execution');
+
+            return;
+        }
 
         $this->addSql('ALTER TABLE akeneo_batch_job_execution ADD step_count INT DEFAULT 1');
 

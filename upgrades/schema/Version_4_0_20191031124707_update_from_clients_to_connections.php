@@ -48,7 +48,12 @@ SQL;
         $clientsStatement = $this->dbalConnection()->executeQuery($selectClients);
         $clients = $clientsStatement->fetchAllAssociative();
 
-        $this->skipIf(empty($clients), 'No API connection to migrate.');
+        if (empty($clients)) {
+            $this->write('No API connection to migrate.');
+
+            return;
+        }
+
         $this->write(sprintf('%s API connections found. They will be migrate to Connection.', count($clients)));
 
         $clients = $this->generateConnectionsCode($clients);
