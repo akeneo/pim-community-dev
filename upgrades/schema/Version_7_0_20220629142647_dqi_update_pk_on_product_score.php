@@ -15,10 +15,11 @@ final class Version_7_0_20220629142647_dqi_update_pk_on_product_score extends Ab
 {
     public function up(Schema $schema): void
     {
-        $this->skipIf(
-            $this->isProductUuidAlreadyPrimaryAndNotEvaluatedAt($schema),
-            'product_uuid column is already the primary key of pim_data_quality_insights_product_score and no more evaluated_at'
-        );
+        if ($this->isProductUuidAlreadyPrimaryAndNotEvaluatedAt($schema)) {
+            $this->write('product_uuid column is already the primary key of pim_data_quality_insights_product_score and no more evaluated_at');
+
+            return;
+        }
 
         $this->runCommand('pim:data-quality-insights:clean-product-scores');
 
