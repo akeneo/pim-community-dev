@@ -1,3 +1,5 @@
+export * from './Avatar/Avatar';
+export * from './Avatar/Avatars';
 export * from './Badge/Badge';
 export * from './Block/Block';
 export * from './BlockButton/BlockButton';

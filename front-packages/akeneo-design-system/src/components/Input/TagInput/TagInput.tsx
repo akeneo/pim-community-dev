@@ -55,12 +55,12 @@ const TagText = styled.span`
   white-space: nowrap;
 `;
 
-const InputContainer = styled.li<AkeneoThemedProps>`
+const InputContainer = styled.li<AkeneoThemedProps & {hasTags: boolean}>`
   list-style-type: none;
   color: ${getColor('grey', 120)};
   border: 0;
   flex: 1;
-  padding: 0;
+  padding: ${({hasTags}) => (hasTags ? '0' : '0 11px')};
   align-items: center;
   display: flex;
 
@@ -255,7 +255,7 @@ const TagInput: FC<TagInputProps> = ({
           </Tag>
         );
       })}
-      <InputContainer ref={inputContainerRef} onClick={focusOnInputField}>
+      <InputContainer ref={inputContainerRef} onClick={focusOnInputField} hasTags={value.length > 0}>
         <input
           type="text"
           data-testid="tag-input"

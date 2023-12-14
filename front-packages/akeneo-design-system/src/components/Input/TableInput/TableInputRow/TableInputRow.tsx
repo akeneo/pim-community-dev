@@ -96,15 +96,10 @@ const TableInputTr = styled.tr<
           height: 0;
           margin-top: -1px;
         }
-        &:has(div) {
-          background: red !important;
-        }
         border-bottom-color: ${getColor('blue', 100)};
-        &:first-child {
-          border-left: 1px solid ${getColor('blue', 100)};
-        }
+        border-left-color: ${getColor('blue', 100)};
         &:last-child {
-          border-right: 1px solid ${getColor('blue', 100)};
+          border-right-color: ${getColor('blue', 100)};
         }
       }
     `}

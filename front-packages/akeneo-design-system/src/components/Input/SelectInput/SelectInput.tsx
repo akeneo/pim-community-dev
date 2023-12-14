@@ -178,17 +178,24 @@ type SelectInputProps = Override<
      * Force the vertical position of the overlay.
      */
     verticalPosition?: VerticalPosition;
-
-    /**
-     * Handler called when the next page is almost reached.
-     */
-    onNextPage?: () => void;
-
-    /**
-     * Handler called when the search value changed
-     */
-    onSearchChange?: (searchValue: string) => void;
-  }
+  } & (
+      | {
+          /**
+           * Handler called when the next page is almost reached.
+           */
+          onNextPage?: () => void;
+          /**
+           * Handler called when the search value changed
+           */
+          onSearchChange?: (searchValue: string) => void;
+          disableInternalSearch?: false;
+        }
+      | {
+          onNextPage: () => void;
+          onSearchChange: (searchValue: string) => void;
+          disableInternalSearch: true;
+        }
+    )
 >;
 
 /**
@@ -209,6 +216,7 @@ const SelectInput = ({
   verticalPosition,
   onNextPage,
   onSearchChange,
+  disableInternalSearch = false,
   'aria-labelledby': ariaLabelledby,
   ...rest
 }: SelectInputProps) => {
@@ -235,14 +243,16 @@ const SelectInput = ({
     return optionCodes;
   }, []);
 
-  const filteredChildren = validChildren.filter(child => {
-    const content = typeof child.props.children === 'string' ? child.props.children : '';
-    const title = child.props.title ?? '';
-    const value = child.props.value;
-    const optionValue = value + content + title;
+  const filteredChildren = disableInternalSearch
+    ? validChildren
+    : validChildren.filter(child => {
+        const content = typeof child.props.children === 'string' ? child.props.children : '';
+        const title = child.props.title ?? '';
+        const value = child.props.value;
+        const optionValue = value + content + title;
 
-    return optionValue.toLowerCase().includes(searchValue.toLowerCase());
-  });
+        return optionValue.toLowerCase().includes(searchValue.toLowerCase());
+      });
 
   const currentValueElement =
     validChildren.find(child => {
