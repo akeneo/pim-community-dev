@@ -149,7 +149,7 @@ type BooleanInputProps = Override<
         clearLabel?: string;
       }
   ) & {
-    readOnly: boolean;
+    readOnly?: boolean;
     yesLabel: string;
     noLabel: string;
     invalid?: boolean;
@@ -165,7 +165,7 @@ const BooleanInput = React.forwardRef<HTMLDivElement, BooleanInputProps>(
   (
     {
       value,
-      readOnly,
+      readOnly = false,
       onChange,
       clearable = false,
       yesLabel,

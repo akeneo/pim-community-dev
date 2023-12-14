@@ -150,17 +150,24 @@ type MultiMultiSelectInputProps = Override<
      * Callback called when the user hit enter on the field.
      */
     onSubmit?: () => void;
-
-    /**
-     * Handler called when the next page is almost reached.
-     */
-    onNextPage?: () => void;
-
-    /**
-     * Handler called when the search value changed
-     */
-    onSearchChange?: (searchValue: string) => void;
-  }
+  } & (
+      | {
+          /**
+           * Handler called when the next page is almost reached.
+           */
+          onNextPage?: () => void;
+          /**
+           * Handler called when the search value changed
+           */
+          onSearchChange?: (searchValue: string) => void;
+          disableInternalSearch?: false;
+        }
+      | {
+          onNextPage: () => void;
+          onSearchChange: (searchValue: string) => void;
+          disableInternalSearch: true;
+        }
+    )
 >;
 
 /**
@@ -183,6 +190,7 @@ const MultiSelectInput = ({
   verticalPosition,
   onNextPage,
   onSearchChange,
+  disableInternalSearch = false,
   'aria-labelledby': ariaLabelledby,
   ...rest
 }: MultiMultiSelectInputProps) => {
@@ -211,12 +219,14 @@ const MultiSelectInput = ({
     return indexedChips;
   }, {});
 
-  const filteredChildren = validChildren.filter(({props}) => {
-    const childValue = props.value;
-    const optionValue = childValue + props.children;
+  const filteredChildren = disableInternalSearch
+    ? validChildren
+    : validChildren.filter(({props}) => {
+        const childValue = props.value;
+        const optionValue = childValue + props.children;
 
-    return !value.includes(childValue) && optionValue.toLowerCase().includes(searchValue.toLowerCase());
-  });
+        return !value.includes(childValue) && optionValue.toLowerCase().includes(searchValue.toLowerCase());
+      });
 
   const handleEnter = () => {
     if (filteredChildren.length > 0 && dropdownIsOpen) {

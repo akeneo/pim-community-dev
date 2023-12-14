@@ -95,6 +95,58 @@ test('it handles search', () => {
   expect(onChange).toHaveBeenCalledWith('es_ES');
 });
 
+test('it handles external search', () => {
+  const onChange = jest.fn();
+  const onNextPage = jest.fn();
+  const onSearchChange = jest.fn();
+
+  const observe = jest.fn();
+  const unobserve = jest.fn();
+  window.IntersectionObserver = jest.fn(() => ({
+    observe,
+    unobserve,
+  })) as unknown as jest.Mock<IntersectionObserver>;
+
+  render(
+    <SelectInput
+      openLabel="Open"
+      value="en_US"
+      onChange={onChange}
+      placeholder="Placeholder"
+      emptyResultLabel="Empty result"
+      onNextPage={onNextPage}
+      onSearchChange={onSearchChange}
+      disableInternalSearch={true}
+    >
+      <SelectInput.Option value="en_US" title="English (United States)">
+        <Locale code="en_US" languageLabel="English" />
+      </SelectInput.Option>
+      <SelectInput.Option value="fr_FR" title="French (France)">
+        Français
+      </SelectInput.Option>
+      <SelectInput.Option value="de_DE">
+        <Locale code="de_DE" languageLabel="German" />
+      </SelectInput.Option>
+      <SelectInput.Option value="es_ES" title="Spanish (Spain)">
+        <Locale code="es_ES" languageLabel="Spanish" />
+      </SelectInput.Option>
+    </SelectInput>
+  );
+
+  const input = screen.getByRole('textbox');
+  fireEvent.click(input);
+  fireEvent.change(input, {target: {value: 'Français'}});
+
+  const germanOption = screen.queryByText('German');
+  expect(germanOption).toBeInTheDocument();
+  const usOption = screen.queryByText('English');
+  expect(usOption).toBeInTheDocument();
+  const spanishOption = screen.queryByText('Spanish');
+  expect(spanishOption).toBeInTheDocument();
+  const frenchOption = screen.getByText('Français');
+  expect(frenchOption).toBeInTheDocument();
+});
+
 test('it handles empty cases', () => {
   const onChange = jest.fn();
   render(

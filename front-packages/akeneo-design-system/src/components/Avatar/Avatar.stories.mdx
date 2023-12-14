@@ -1,0 +1,147 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
+import {Avatar} from './Avatar.tsx';
+import {Avatars} from './Avatars.tsx';
+
+<Meta
+  title="Components/Avatar"
+  component={Avatar}
+  argTypes={{
+    firstName: {control: {type: 'text'}},
+    lastName: {control: {type: 'text'}},
+    username: {control: {type: 'text'}},
+    avatarUrl: {control: {type: 'text'}},
+    size: {control: {type: 'select', options: ['default', 'big']}},
+  }}
+  args={{
+    firstName: 'John',
+    lastName: 'Doe',
+    username: 'admin',
+    avatarUrl: undefined,
+    size: 'default',
+  }}
+/>
+
+# Avatar
+
+## Usage
+
+This component is used to display users avatars. If no avatar is available, first letters of the first and last name are
+displayed with a dedicated color.
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return <Avatar firstName={'John'} lastName={'Doe'} username={'admin'} {...args} />;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on background colors
+
+The background color is based from the username.
+
+<Canvas>
+  <Story name="Background colors">
+    {args => {
+      return (
+        <>
+          <Avatar {...args} firstName={'Albert'} lastName={'Doe'} username={'a'} />
+          <Avatar {...args} firstName={'Bertrand'} lastName={'Doe'} username={'b'} />
+          <Avatar {...args} firstName={'Chris'} lastName={'Doe'} username={'c'} />
+          <Avatar {...args} firstName={'Danny'} lastName={'Doe'} username={'d'} />
+          <Avatar {...args} firstName={'Elon'} lastName={'Doe'} username={'e'} />
+          <Avatar {...args} firstName={'Fred'} lastName={'Doe'} username={'f'} />
+          <Avatar {...args} firstName={'Gus'} lastName={'Doe'} username={'g'} />
+          <Avatar {...args} firstName={'Helen'} lastName={'Doe'} username={'h'} />
+          <Avatar {...args} firstName={'Isabel'} lastName={'Doe'} username={'i'} />
+          <Avatar {...args} firstName={'John'} lastName={'Doe'} username={'j'} />
+          <Avatar {...args} firstName={'Kurt'} lastName={'Doe'} username={'k'} />
+          <Avatar {...args} firstName={'Leonard'} lastName={'Doe'} username={'l'} />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation with image
+
+<Canvas>
+  <Story name="With image">
+    {args => {
+      return (
+        <>
+          <Avatar {...args} avatarUrl={'https://picsum.photos/seed/akeneo/32/32'} />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on List
+
+You can use a dedicated component to display avatar list. After a defined maximum, other avatars are not displayed.
+
+<Canvas>
+  <Story name="Avatar list">
+    {args => {
+      return (
+        <>
+          <Avatars
+            max={5}
+            title="Helen Doe&#10;Isabel Doe&#10;John Doe&#10;Kurt Doe&#10;Leonard Doe"
+          >
+            <Avatar
+              {...args}
+              firstName={'Albert'}
+              lastName={'Doe'}
+              username={'a'}
+              avatarUrl={'https://picsum.photos/seed/akeneo/32/32'}
+            />
+            <Avatar {...args} firstName={'Bertrand'} lastName={'Doe'} username={'b'} />
+            <Avatar
+              {...args}
+              firstName={'Chris'}
+              lastName={'Doe'}
+              username={'c'}
+              avatarUrl={'https://picsum.photos/seed/bkeneo/32/32'}
+            />
+            <Avatar {...args} firstName={'Danny'} lastName={'Doe'} username={'d'} />
+            <Avatar
+              {...args}
+              firstName={'Elon'}
+              lastName={'Doe'}
+              username={'e'}
+              avatarUrl={'https://picsum.photos/seed/ckeneo/32/32'}
+            />
+            <Avatar {...args} firstName={'Fred'} lastName={'Doe'} username={'f'} />
+            <Avatar {...args} firstName={'Gus'} lastName={'Doe'} username={'g'} />
+            <Avatar {...args} firstName={'Helen'} lastName={'Doe'} username={'h'} />
+            <Avatar {...args} firstName={'Isabel'} lastName={'Doe'} username={'i'} />
+            <Avatar {...args} firstName={'John'} lastName={'Doe'} username={'j'} />
+            <Avatar {...args} firstName={'Kurt'} lastName={'Doe'} username={'k'} />
+            <Avatar {...args} firstName={'Leonard'} lastName={'Doe'} username={'l'} />
+          </Avatars>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on Size
+
+<Canvas>
+  <Story name="Avatar size">
+    {args => {
+      return (
+        <>
+          <Avatar {...args} size={'default'} />
+          <Avatar {...args} size={'big'} />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
