@@ -1,5 +1,7 @@
 # 7.0.x
 
+## Bug fixes
+
 - PIM-11316: Fix default grid on user account when there are too many views
 
 # 7.0.42 (2023-12-11)
