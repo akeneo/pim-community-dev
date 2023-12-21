@@ -70,15 +70,6 @@ SQL;
         return $qb->getQuery()->execute();
     }
 
-    public function findAllDatagridViewsBySearch(
-        UserInterface $user,
-        string        $alias,
-        string        $term = ''
-    ): array {
-        $qb = $this->buildQueryForListingViews($user, $alias, $term);
-        return $qb->getQuery()->execute();
-    }
-
     private function buildQueryForListingViews(UserInterface $user, string $alias, string $term): QueryBuilder
     {
         return $this->createQueryBuilder('v')

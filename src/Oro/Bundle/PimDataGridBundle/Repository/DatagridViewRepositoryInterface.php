@@ -34,19 +34,6 @@ interface DatagridViewRepositoryInterface
         array $options = []
     ): array;
 
-    /**
-     * Search datagrid views for the given $user and grid $alias.
-     * The search is applied on label with the given $term.
-     * Results are not paginated
-     *
-     * Returns a collection of DatagridView objects
-     */
-    public function findAllDatagridViewsBySearch(
-        UserInterface $user,
-        string $alias,
-        string $term = ''
-    ): array;
-
     public function findPublicDatagridViewByLabel(string $label): ?DatagridView;
 
     public function findPrivateDatagridViewByLabel(string $label, UserInterface $user): ?DatagridView;
