@@ -1,5 +1,7 @@
 # 6.0.x
 
+- PIM-11249: Keep resolution metadata (DPI) of transformed asset images
+
 # 6.0.110 (2023-11-24)
 
 - PIM-10985: Mark skipped migrations as executed
