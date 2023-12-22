@@ -1,5 +1,9 @@
 # 7.0.x
 
+## Bug fixes
+
+- PIM-11324: [Backport PIM-11296] PEF - Fix categories fetching on product with many categories
+
 # 7.0.43 (2023-12-21)
 
 ## Bug fixes
