@@ -1,6 +1,6 @@
 <?php
 
-namespace Specification\Akeneo\Platform\Bundle\UIBundle\Imagine;
+namespace AkeneoTest\Platform\Integration\UI\Imagine;
 
 use Akeneo\Platform\Bundle\UIBundle\Imagine\IccStripFilter;
 use Imagine\Imagick\Image;
@@ -16,7 +16,7 @@ class IccStripFilterIntegration extends TestCase
     {
         $sut = new IccStripFilter();
 
-        $image = (new Imagine())->open(__DIR__.'/fixtures/'.$fileName);
+        $image = (new Imagine())->open(__DIR__ . '/fixtures/' .$fileName);
 
         $this->assertInstanceOf(Image::class, $image);
 
