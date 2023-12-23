@@ -108,7 +108,7 @@ pim_enrich.entity.product:
       quantified:
         quantity: Quantität
       search:
-        placeholder: In Label oder Bezeichner suchen
+        placeholder: In Label oder ID suchen
       no_data: Es gibt keine verbundenen Produkte
       remove: Verbindung entfernen
       edit: Produkt bearbeiten
