@@ -6,6 +6,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
+use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -206,27 +207,52 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
         return $qb->getQuery()->execute();
     }
 
+    /**
+     * @note:
+     * This query do a first step to order product models because it prevents error message
+     * "Out of sort memory, consider increasing server sort buffer size"
+     */
     public function findProductModelsForFamilyVariant(
         FamilyVariantInterface $familyVariant,
         ?string $search = null,
         int $limit = 20,
         int $page = 1
     ): array {
-        $qb = $this
-            ->createQueryBuilder('pm')
-            ->where('pm.familyVariant = :familyVariant')
-            ->setParameter('familyVariant', $familyVariant->getId())
-            ->addOrderBy('pm.parent', 'ASC')
-            ->setFirstResult(($page -1) * $limit)
-            ->setMaxResults($limit)
-        ;
+        $sql = <<<SQL
+SELECT /*+ SET_VAR(sort_buffer_size = 1000000) */ code
+FROM pim_catalog_product_model pm
+WHERE pm.family_variant_id = :familyVariantId {{ whereSearch }}
+ORDER BY pm.parent_id ASC LIMIT :offset, :limit;
+SQL;
+        $params = [
+            'familyVariantId' => $familyVariant->getId(),
+            'offset' => ($page - 1) * $limit,
+            'limit' => $limit,
+        ];
+        $types = [
+            'limit' => \PDO::PARAM_INT,
+            'offset' => \PDO::PARAM_INT,
+        ];
 
-        if (! empty($search)) {
-            $qb->andWhere($qb->expr()->like('pm.code', '?1'))
-               ->setParameter(1, '%' . $search . '%');
+        $whereSearch = '';
+        if (!empty($search)) {
+            $whereSearch = 'AND pm.code LIKE :search';
+            $params['search'] = '%' . $search . '%';
+        }
+        $sql = \strtr($sql, ['{{ whereSearch }}' => $whereSearch]);
+
+        $codes = $this->_em->getConnection()->fetchFirstColumn($sql, $params, $types);
+
+        $productModels = $this->findByIdentifiers($codes);
+        
+        $results = [];
+        foreach ($codes as $productModelCode) {
+            $matchingProductModels = \array_filter($productModels, fn ($productModel) => $productModel->getCode() === $productModelCode);
+
+            $results[] = \array_values($matchingProductModels)[0];
         }
 
-        return $qb->getQuery()->execute();
+        return $results;
     }
 
     /**
