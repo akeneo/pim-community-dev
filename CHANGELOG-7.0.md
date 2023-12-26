@@ -1,5 +1,9 @@
 # 7.0.x
 
+## Bug fixes
+
+- PIM-11318: Fix out of memory on some product model queries
+
 # 7.0.43 (2023-12-21)
 
 ## Bug fixes
