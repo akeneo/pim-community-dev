@@ -1,8 +1,10 @@
 # 7.0.x
 
-# 7.0.44 (2023-12-26)
-
 ## Bug fixes
+
+- PIM-11324: [Backport PIM-11296] PEF - Fix categories fetching on product with many categories
+
+# 7.0.44 (2023-12-26)
 
 - PIM-11318: Fix out of memory on some product model queries
 

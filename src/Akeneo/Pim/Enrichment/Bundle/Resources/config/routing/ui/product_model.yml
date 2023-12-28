@@ -17,3 +17,4 @@ pim_enrich_product_model_listcategories:
     requirements:
         id: '[0-9a-f]+'
         categoryId: \d+
+    methods: [POST]
