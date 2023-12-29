@@ -15,6 +15,7 @@
 ## Bug fixes
 
 - PIM-11316: Fix default grid on user account when there are too many views
+- PIM-11332: Inconsistency betweenThe sequence of columns in an index between migration and doctrine declaration
 
 # 7.0.42 (2023-12-11)
 
