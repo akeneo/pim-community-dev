@@ -24,10 +24,36 @@ final class IccStripFilter implements LoaderInterface
 {
     public function load(ImageInterface $image, array $options = []): ImageInterface
     {
-        if ($image instanceof Image) {
-            $image->getImagick()->stripImage();
+        if (!$image instanceof Image) {
+            return $image;
         }
 
-        return $image;
+        $dpi = $image->getImagick()->getImageResolution();
+        $unit = $image->getImagick()->getImageUnits();
+
+        $image->getImagick()->stripImage();
+
+        if (false === $this->getKeepResolutionMetadataOption($options)) {
+            return $image;
+        }
+
+        // PIM-11249: Metadata won't set if a different instance of Imagick is not made.
+        $imageWithResolutionMetadata = new Image(
+            (new \Imagick()),
+            $image->palette(),
+            $image->metadata()
+        );
+        $imageWithResolutionMetadata->getImagick()->readImageBlob($image->getImagick()->getImageBlob());
+        $imageWithResolutionMetadata->getImagick()->setImageUnits($unit);
+        $imageWithResolutionMetadata->getImagick()->setImageResolution($dpi['x'], $dpi['y']);
+
+        return $imageWithResolutionMetadata;
+    }
+
+    private function getKeepResolutionMetadataOption(array $options): bool
+    {
+        return
+            true === array_key_exists('keep_resolution_metadata', $options)
+            && true === $options['keep_resolution_metadata'];
     }
 }
