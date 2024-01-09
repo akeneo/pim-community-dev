@@ -71,13 +71,22 @@ final class RecomputeProductScoresTasklet implements TaskletInterface
         $query = <<<SQL
             SELECT BIN_TO_UUID(uuid) as uuid 
             FROM pim_catalog_product 
-            WHERE uuid > :lastUuid ORDER BY uuid ASC LIMIT :limit
         SQL;
+
+        $parameters = ['limit' => self::BULK_SIZE];
+        $parametersTypes = ['limit' => \PDO::PARAM_INT];
+
+        if ('' !== $lastProductUuid) {
+            $query .= ' WHERE uuid > UUID_TO_BIN(:lastUuid)';
+            $parameters['lastUuid'] = $lastProductUuid;
+        }
+
+        $query .= ' ORDER BY uuid ASC LIMIT :limit';
 
         return $this->connection->executeQuery(
             $query,
-            ['lastUuid' => $lastProductUuid, 'limit' => self::BULK_SIZE],
-            ['lastUuid' => \PDO::PARAM_STR, 'limit' => \PDO::PARAM_INT]
+            $parameters,
+            $parametersTypes,
         )->fetchFirstColumn();
     }
 
