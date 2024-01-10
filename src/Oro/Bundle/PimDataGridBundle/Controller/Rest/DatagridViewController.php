@@ -88,14 +88,20 @@ class DatagridViewController
 
         $term = $request->query->get('search', '');
 
-        $views = $this->datagridViewRepo->findDatagridViewBySearch($user, $alias, $term, $options);
+        $views = $this->datagridViewRepo->findAllDatagridViewsBySearch($user, $alias, $term);
 
         $filteredViews = $this->datagridViewFilter->filterCollection($views, 'pim.internal_api.datagrid_view.view');
 
-        $moreResults = count($filteredViews) >= $options['limit'];
+        $viewsInPage = array_slice(
+            $filteredViews,
+            ($options['page']-1)*$options['limit'],
+            $options['limit']
+        );
+
+        $moreResults = count($filteredViews) > $options['page']*$options['limit'];
 
         return new JsonResponse([
-            'results' => $this->normalizer->normalize($filteredViews, 'internal_api'),
+            'results' => $this->normalizer->normalize($viewsInPage, 'internal_api'),
             'more' => $moreResults,
         ]);
     }
