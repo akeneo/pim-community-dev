@@ -1,8 +1,8 @@
 import React, {useMemo} from 'react';
 import styled, {css} from 'styled-components';
 import {useTheme} from '../../hooks';
-import {Override} from '../../shared';
 import {AkeneoThemedProps, getColor} from '../../theme';
+import {AvatarProps} from './types';
 
 const AvatarContainer = styled.span<AvatarProps & AkeneoThemedProps>`
   ${({size}) =>
@@ -31,43 +31,13 @@ const AvatarContainer = styled.span<AvatarProps & AkeneoThemedProps>`
   cursor: ${({onClick}) => (onClick ? 'pointer' : 'default')};
 `;
 
-type AvatarProps = Override<
-  React.HTMLAttributes<HTMLSpanElement>,
-  {
-    /**
-     * Username to use as fallback if the avatar is not provided and the Firstname and Lastname are empty.
-     */
-    username: string;
-
-    /**
-     * Firstname to use as fallback with the Lastname if the avatar is not provided.
-     */
-    firstName: string;
-
-    /**
-     * Lastname to use as fallback with the Firstname if the avatar is not provided.
-     */
-    lastName: string;
-
-    /**
-     * Url of the avatar image.
-     */
-    avatarUrl?: string;
-
-    /**
-     * Size of the avatar.
-     */
-    size?: 'default' | 'big';
-  }
->;
-
 const Avatar = ({username, firstName, lastName, avatarUrl, size = 'default', ...rest}: AvatarProps) => {
   const theme = useTheme();
 
   const fallback = (
     firstName.trim().charAt(0) + lastName.trim().charAt(0) || username.substring(0, 2)
   ).toLocaleUpperCase();
-  const title = `${firstName} ${lastName}`.trim() || username;
+  const title = `${firstName || ''} ${lastName || ''}`.trim() || username;
 
   const backgroundColor = useMemo(() => {
     const colorId = username.split('').reduce<number>((s, l) => s + l.charCodeAt(0), 0);

@@ -1,5 +1,5 @@
 import React from 'react';
-import {render, screen} from '../../storybook/test-util';
+import {fireEvent, render, screen} from '../../storybook/test-util';
 import {Avatar} from './Avatar';
 import {Avatars} from './Avatars';
 
@@ -24,7 +24,7 @@ test('renders a maximum number of avatars', () => {
   );
 
   expect(screen.getByTitle('John Doe')).toBeInTheDocument();
-  expect(screen.queryByTitle('Leonard Doe')).not.toBeInTheDocument();
+  expect(screen.queryByText('LD')).not.toBeInTheDocument();
   expect(screen.getByText('+1')).toBeInTheDocument();
 });
 
@@ -38,4 +38,24 @@ test('supports ...rest props', () => {
   render(<Avatars max={1} data-testid="my_value" />);
 
   expect(screen.getByTestId('my_value')).toBeInTheDocument();
+});
+
+test('displays remaining users names on plus hover', () => {
+  const invalidChild = 'I should not be in the title';
+  render(
+    <Avatars max={1} maxTitle={1}>
+      <Avatar username="dSchrute" firstName="Dwight" lastName="Schrute" />
+      <Avatar username="mscott" firstName=" " lastName="  " />
+      <Avatar username="kMalone" firstName="Kevin" lastName="Malone" />
+      {invalidChild}
+    </Avatars>
+  );
+
+  expect(screen.getByText('DS')).toBeInTheDocument();
+  expect(screen.getByText('+3')).toBeInTheDocument();
+  // Kevin Malone should not be visible as it should be part of the +1
+  expect(screen.queryByText('mscott')).not.toBeInTheDocument();
+
+  fireEvent.mouseOver(screen.getByText('+3'));
+  expect(screen.getByTitle('mscott ...')).toBeInTheDocument();
 });

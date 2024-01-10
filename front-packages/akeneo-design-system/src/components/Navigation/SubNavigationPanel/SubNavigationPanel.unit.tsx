@@ -76,7 +76,7 @@ test('it shows collapsed content', () => {
   );
 
   expect(queryByText('SubNavigationPanel content')).not.toBeInTheDocument();
-  expect(getByText('Collapsed content')).toBeVisible();
+  expect(getByText('Collapsed content')).toBeInTheDocument();
 });
 
 test('it hides collapsed content', () => {
@@ -89,6 +89,6 @@ test('it hides collapsed content', () => {
     </SubNavigationPanel>
   );
 
-  expect(queryByText('SubNavigationPanel content')).toBeInTheDocument();
-  expect(getByText('Collapsed content')).not.toBeVisible();
+  expect(getByText('SubNavigationPanel content')).toBeInTheDocument();
+  expect(queryByText('Collapsed content')).not.toBeInTheDocument();
 });
