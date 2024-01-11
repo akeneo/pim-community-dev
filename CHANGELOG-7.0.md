@@ -1,5 +1,13 @@
 # 7.0.x
 
+# 7.0.47 (2024-01-10)
+
+## Bug fixes
+
+- PIM-11342: Fix infinite loop in Re-compute DQI products scores
+
+# 7.0.46 (2024-01-04)
+
 # 7.0.45 (2023-12-28)
 
 ## Bug fixes
