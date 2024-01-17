@@ -135,7 +135,7 @@ interface MigrateToUuidStep
             self::UUID_COLUMN_INDEX_NAME_INDEX => 'IDX_6F63A25F5C977207',
             self::PRIMARY_KEY_UUID_INDEX => null,
             self::FOREIGN_KEY_INDEX => 'FK_6F63A25F5C977207',
-            self::UNIQUE_CONSTRAINTS_INDEX => ['unique_author_product_idx' => ['product_uuid', 'author']],
+            self::UNIQUE_CONSTRAINTS_INDEX => ['unique_author_product_idx' => ['author', 'product_uuid']],
             self::INDEXES_INDEX => ['IDX_6F63A25F5C977207' => ['product_uuid']],
             self::TEMPORARY_INDEXES_INDEX => [],
         ],
