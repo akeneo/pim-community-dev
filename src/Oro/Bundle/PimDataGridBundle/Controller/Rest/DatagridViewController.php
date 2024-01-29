@@ -92,7 +92,7 @@ class DatagridViewController
 
         $filteredViews = $this->datagridViewFilter->filterCollection($views, 'pim.internal_api.datagrid_view.view');
 
-        $moreResults = count($filteredViews) >= $options['limit'];
+        $moreResults = count($views) >= $options['limit'];
 
         return new JsonResponse([
             'results' => $this->normalizer->normalize($filteredViews, 'internal_api'),
