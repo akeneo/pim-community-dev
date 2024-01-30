@@ -1,5 +1,7 @@
 # 7.0.x
 
+# 7.0.50 (2024-01-30)
+
 ## Bug fixes
 
 - PIM-11354 [Backport PIM-11345]: Fix views list when some views are filtered and total greater than 20
