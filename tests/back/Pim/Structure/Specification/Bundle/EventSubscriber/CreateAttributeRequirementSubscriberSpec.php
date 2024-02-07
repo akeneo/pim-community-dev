@@ -2,35 +2,31 @@
 
 namespace Specification\Akeneo\Pim\Structure\Bundle\EventSubscriber;
 
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Event\LifecycleEventArgs;
-use PhpSpec\ObjectBehavior;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Pim\Structure\Component\Factory\AttributeRequirementFactory;
+use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeRequirementInterface;
-use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
+use Doctrine\Common\EventSubscriber;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Event\PrePersistEventArgs;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class CreateAttributeRequirementSubscriberSpec extends ObjectBehavior
 {
     function let(
         AttributeRequirementFactory $requirementFactory,
-        LifecycleEventArgs $eventArgs,
-        ChannelInterface $channel,
-        EntityManagerInterface $entityManager
     ) {
         $this->beConstructedWith($requirementFactory);
-
-        $eventArgs->getObject()->willReturn($channel);
-        $eventArgs->getObjectManager()->willReturn($entityManager);
     }
 
-    public function it_is_an_event_subscriber()
+    public function it_is_a_doctrine_event_subscriber()
     {
-        $this->shouldImplement('Doctrine\Common\EventSubscriber');
+        $this->shouldImplement(EventSubscriber::class);
     }
 
     public function it_subscribes_to_prePersist()
@@ -38,21 +34,20 @@ class CreateAttributeRequirementSubscriberSpec extends ObjectBehavior
         $this->getSubscribedEvents()->shouldReturn(['prePersist']);
     }
 
-    public function it_ignores_non_ChannelInterface_entity(
-        LifecycleEventArgs $eventArgs,
-        EntityManagerInterface $entityManager
+    public function it_ignores_non_channel_entity(
+        AttributeRequirementFactory $requirementFactory,
+        EntityManagerInterface $entityManager,
     ) {
-        $eventArgs->getObject()->willReturn(null);
-        $entityManager->persist(Argument::any())->shouldNotBeCalled();
+        $entityManager->getRepository(Argument::any())->shouldNotBeCalled();
+        $requirementFactory->createAttributeRequirement(Argument::cetera())->shouldNotBeCalled();
 
-        $this->prePersist($eventArgs)->shouldReturn(null);
+        $this->prePersist(new PrePersistEventArgs(new Attribute(), $entityManager->getWrappedObject()));
     }
 
     public function it_creates_requirements_for_the_attribute_defined_as_identifier(
-        $requirementFactory,
-        $eventArgs,
-        $channel,
-        $entityManager,
+        AttributeRequirementFactory $requirementFactory,
+        EntityManagerInterface $entityManager,
+        ChannelInterface $channel,
         FamilyRepositoryInterface $familyRepository,
         AttributeRepositoryInterface $attributeRepository,
         FamilyInterface $familyA,
@@ -77,6 +72,6 @@ class CreateAttributeRequirementSubscriberSpec extends ObjectBehavior
         $entityManager->persist($attributeRequirementA)->shouldBeCalled();
         $entityManager->persist($attributeRequirementB)->shouldBeCalled();
 
-        $this->prePersist($eventArgs)->shouldReturn(null);
+        $this->prePersist(new PrePersistEventArgs($channel->getWrappedObject(), $entityManager->getWrappedObject()));
     }
 }

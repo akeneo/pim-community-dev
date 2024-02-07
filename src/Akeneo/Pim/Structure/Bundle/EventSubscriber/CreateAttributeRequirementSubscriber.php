@@ -8,7 +8,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Doctrine\Common\EventSubscriber;
-use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\Event\PrePersistEventArgs;
 use Webmozart\Assert\Assert;
 
 /**
@@ -37,17 +37,15 @@ class CreateAttributeRequirementSubscriber implements EventSubscriber
     /**
      * {@inheritdoc}
      */
-    public function getSubscribedEvents()
+    public function getSubscribedEvents(): array
     {
         return ['prePersist'];
     }
 
     /**
      * Create requirements for each families' attributes for the newly created channel
-     *
-     * @param LifecycleEventArgs $event
      */
-    public function prePersist(LifecycleEventArgs $event)
+    public function prePersist(PrePersistEventArgs $event): void
     {
         $entity = $event->getObject();
 

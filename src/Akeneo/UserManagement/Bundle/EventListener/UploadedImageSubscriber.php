@@ -4,7 +4,11 @@ namespace Akeneo\UserManagement\Bundle\EventListener;
 
 use Akeneo\UserManagement\Component\EntityUploadedImageInterface;
 use Doctrine\Common\EventSubscriber;
-use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\Event\PostPersistEventArgs;
+use Doctrine\ORM\Event\PostRemoveEventArgs;
+use Doctrine\ORM\Event\PostUpdateEventArgs;
+use Doctrine\ORM\Event\PrePersistEventArgs;
+use Doctrine\ORM\Event\PreUpdateEventArgs;
 
 class UploadedImageSubscriber implements EventSubscriber
 {
@@ -43,10 +47,8 @@ class UploadedImageSubscriber implements EventSubscriber
 
     /**
      * Remove uploaded image if any.
-     *
-     * @param LifecycleEventArgs $args
      */
-    public function postRemove(LifecycleEventArgs $args)
+    public function postRemove(PostRemoveEventArgs $args)
     {
         /** @var EntityUploadedImageInterface $entity */
         $entity = $args->getObject();
@@ -55,10 +57,8 @@ class UploadedImageSubscriber implements EventSubscriber
 
     /**
      * Handle preUpdate.
-     *
-     * @param LifecycleEventArgs $args
      */
-    public function preUpdate(LifecycleEventArgs $args)
+    public function preUpdate(PreUpdateEventArgs $args)
     {
         /** @var EntityUploadedImageInterface $entity */
         $entity = $args->getObject();
@@ -78,42 +78,33 @@ class UploadedImageSubscriber implements EventSubscriber
 
     /**
      * Handle prePersist.
-     *
-     * @param LifecycleEventArgs $args
      */
-    public function prePersist(LifecycleEventArgs $args)
+    public function prePersist(PrePersistEventArgs $args)
     {
         $this->updateImageName($args);
     }
 
     /**
      * Handle postPersist.
-     *
-     * @param LifecycleEventArgs $args
      */
-    public function postPersist(LifecycleEventArgs $args)
+    public function postPersist(PostPersistEventArgs $args)
     {
-        $this->handleImageUpload($args);
+        $this->handleImageUpload($args->getObject());
     }
 
     /**
      * Handle postUpdate.
-     *
-     * @param LifecycleEventArgs $args
      */
-    public function postUpdate(LifecycleEventArgs $args)
+    public function postUpdate(PostUpdateEventArgs $args)
     {
-        $this->handleImageUpload($args);
+        $this->handleImageUpload($args->getObject());
     }
 
     /**
      * Move uploaded image to upload dir.
-     *
-     * @param LifecycleEventArgs $args
      */
-    protected function handleImageUpload(LifecycleEventArgs $args)
+    protected function handleImageUpload(?object $entity)
     {
-        $entity = $args->getObject();
         if ($this->isExpectedEntity($entity)) {
             if (!$this->hasUploadedImage($entity)) {
                 return;
@@ -131,13 +122,9 @@ class UploadedImageSubscriber implements EventSubscriber
 
     /**
      * Update uploaded image name.
-     *
-     * @param LifecycleEventArgs $args
      */
-    protected function updateImageName(LifecycleEventArgs $args)
+    protected function updateImageName(?object $entity)
     {
-        /** @var EntityUploadedImageInterface $entity */
-        $entity = $args->getObject();
         if ($this->hasUploadedImage($entity)) {
             $filename = sha1(uniqid(mt_rand(), true));
             $entity->setImage($filename . '.' . $entity->getImageFile()->guessExtension());

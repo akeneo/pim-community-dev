@@ -5,6 +5,7 @@ namespace Akeneo\Platform\Bundle\UIBundle\EventListener;
 use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\Event\PostLoadEventArgs;
 
 /**
  * Aims to inject user context locale into translatable entities, used by views to display relevant titles for family,
@@ -45,10 +46,8 @@ class AddLocaleListener implements EventSubscriber
 
     /**
      * Post load
-     *
-     * @param LifecycleEventArgs $args
      */
-    public function postLoad(LifecycleEventArgs $args)
+    public function postLoad(PostLoadEventArgs $args)
     {
         $entity = $args->getObject();
 
