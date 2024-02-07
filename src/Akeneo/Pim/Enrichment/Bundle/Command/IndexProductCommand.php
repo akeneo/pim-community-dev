@@ -67,7 +67,7 @@ class IndexProductCommand extends Command
             )
             ->addOption(
                 'batch-size',
-                false,
+                null,
                 InputOption::VALUE_REQUIRED,
                 'Number of products to index per batch',
                 self::DEFAULT_BATCH_SIZE
