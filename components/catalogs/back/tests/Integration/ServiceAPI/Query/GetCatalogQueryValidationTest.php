@@ -42,7 +42,7 @@ class GetCatalogQueryValidationTest extends IntegrationTestCase
             ],
             'id is an uuid' => [
                 'query' => new GetCatalogQuery('not an uuid'),
-                'error' => 'This is not a valid UUID.',
+                'error' => 'This value is not a valid UUID.',
             ],
         ];
     }
