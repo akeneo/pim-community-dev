@@ -155,7 +155,6 @@
         "akeneo/php-coupling-detector": "^0.8.1",
         "behat/mink-selenium2-driver": "^1.5.0",
         "blackfire/php-sdk": "^1.25",
-        "friends-of-behat/mink": "^1.9.0",
         "friends-of-behat/mink-browserkit-driver": "^1.5.0",
         "friends-of-behat/mink-extension": "^2.5.0",
         "friends-of-behat/symfony-extension": "^2.4.0",
