@@ -43,3 +43,18 @@ It's a complementary information that will help the user better understand what 
 </Canvas>
 
 <ArgsTable story="Standard" />
+
+## With a title
+
+<Canvas>
+  <Story name="With title">
+    {args => {
+      return (
+        <Tooltip>
+          <Tooltip.Title>My wonderful title</Tooltip.Title>
+          The rest of the amazing content
+        </Tooltip>
+      );
+    }}
+  </Story>
+</Canvas>
