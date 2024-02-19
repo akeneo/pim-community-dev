@@ -147,6 +147,11 @@ type MultiMultiSelectInputProps = Override<
     verticalPosition?: VerticalPosition;
 
     /**
+     * Values that cannot be unselected
+     */
+    lockedValues?: string[];
+
+    /**
      * Callback called when the user hit enter on the field.
      */
     onSubmit?: () => void;
@@ -191,6 +196,7 @@ const MultiSelectInput = ({
   onNextPage,
   onSearchChange,
   disableInternalSearch = false,
+  lockedValues = [],
   'aria-labelledby': ariaLabelledby,
   ...rest
 }: MultiMultiSelectInputProps) => {
@@ -289,6 +295,7 @@ const MultiSelectInput = ({
           onSearchChange={handleSearch}
           onRemove={handleRemove}
           onFocus={handleFocus}
+          lockedValues={lockedValues}
         />
         {!readOnly && (
           <ActionContainer>

@@ -40,6 +40,12 @@ const TooltipContent = styled.div<{direction: Direction; width: number; top: num
   opacity: ${({top, left}) => (-1 === top && -1 === left ? 0 : 1)};
 `;
 
+const TooltipTitle = styled.div`
+  color: ${getColor('blue', 120)};
+  font-weight: 700;
+  margin-bottom: 5px;
+`;
+
 const computePosition = (
   direction: Direction,
   parentRef?: RefObject<HTMLDivElement>,
@@ -104,7 +110,7 @@ export type TooltipProps = Override<
   }
 >;
 
-const Tooltip: React.FC<TooltipProps> = ({direction = 'top', iconSize = 24, width = 200, children, ...rest}) => {
+const Tooltip = ({direction = 'top', iconSize = 24, width = 200, children, ...rest}: TooltipProps) => {
   const [isVisible, showTooltip, hideTooltip] = useBooleanState(false);
   const portalNode = document.createElement('div');
   portalNode.setAttribute('id', 'tooltip-root');
@@ -147,5 +153,7 @@ const Tooltip: React.FC<TooltipProps> = ({direction = 'top', iconSize = 24, widt
     </TooltipContainer>
   );
 };
+
+Tooltip.Title = TooltipTitle;
 
 export {Tooltip};
