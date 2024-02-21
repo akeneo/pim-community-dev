@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub;
 
+use Psr\Cache\CacheItemPoolInterface;
 use Google\Cloud\PubSub\PubSubClient;
 
 /**
@@ -14,21 +15,20 @@ use Google\Cloud\PubSub\PubSubClient;
  */
 class PubSubClientFactory
 {
-    /** @var ?string */
-    private $keyFilePath = null;
+    private array $baseConfig = ['transport' => 'rest'];
 
-    public function __construct(string $keyFilePath)
+    public function __construct(string $keyFilePath = null, CacheItemPoolInterface $authCache = null)
     {
         if (!empty($keyFilePath)) {
-            $this->keyFilePath = $keyFilePath;
+            $this->baseConfig['keyFilePath'] = $keyFilePath;
+        }
+        if ($authCache !== null) {
+            $this->baseConfig['authCache'] = $authCache;
         }
     }
 
     public function createPubSubClient(array $config): PubSubClient
     {
-        return new PubSubClient(array_merge([
-            'keyFilePath' => $this->keyFilePath,
-            'transport' => 'rest',
-        ], $config));
+        return new PubSubClient(array_merge($this->baseConfig, $config));
     }
 }
