@@ -1,0 +1,8 @@
+parameters:
+    pim_versioning.factory.version.class: Akeneo\Tool\Bundle\VersioningBundle\Factory\VersionFactory
+
+services:
+    pim_versioning.factory.version:
+        class: '%pim_versioning.factory.version.class%'
+        arguments:
+            - '%pim_versioning.entity.version.class%'

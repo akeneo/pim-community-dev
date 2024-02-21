@@ -1,0 +1,581 @@
+pim_notification:
+  types:
+    settings: 设置 
+    mass_delete: 删除
+    attribute_mass_delete: 删除
+flash:
+  comment:
+    create:
+      success: 您的评论已经成功创建。
+      error: 创建评论时出错。
+    delete:
+      success: 已成功删除您的评论。
+      error: 删除您的评论时出错。
+    reply:
+      success: 您的回复已经成功创建。
+      error: 创建回复时出错。
+pim_enrich.entity.product:
+  label: 产品
+  uppercase_label: 产品
+  plural_label: 产品
+  flash:
+    update:
+      success: 产品已成功更新。
+      fail: 无法更新产品。
+      fail_session_expired: 无法更新产品。您的用户会话已过期。请重新登录。
+      fields_not_ready: "该产品目前无法保存。以下字段未准备好： {{ fields }}"
+      already_in_upload: 在区域"{{ locale }}"和范围"{{ scope }}"中，已有针对此属性的文件在上传
+      file_upload: 上传文件时发生错误
+      identifier_warning: 您的产品已保存，但无法生成标识符。
+    delete:
+      success: 产品已成功删除。
+      fail: 产品无法删除。
+    create:
+      success: 产品已成功创建
+      fail: 没有属性被配置为产品标识符，或者您没有编辑的权限。
+  page_title:
+    index: "]-Inf, 1]{{ count }} 个结果|]1, Inf[{{ count }} 个结果"
+    product: "]-Inf, 1]{{ count }} 个产品|]1, Inf[{{ count }} 个产品"
+    product_model: "]-Inf, 1]{{ count }} 个产品模型|]1, Inf[{{ count }} 个产品模型"
+    product_and_product_model: "{{ productCount }}, {{ productModelCount }}"
+  module:
+    create:
+      subtitle: 创建产品
+      title: 选择操作
+      choose_family: 选择品类
+      choose_family_variant: 选择品类变型
+      helper: 标识符现在为可选字段。<a class="AknMessageBox-link" href="{{ link }}" target="_blank">阅读更多</a>关于此更改的信息及其对您的产品可能造成的影响。
+    variant_navigation:
+      common: 通用
+    status:
+      enabled: 已启用
+      disabled: 已禁用
+    download_pdf:
+      label: PDF
+    copy:
+      button_label: 对比
+      label: 比较/翻译
+      select: 选择
+      all_visible: 所有可见
+      copy: 复制
+    convert_variant_to_simple:
+      label: 转换为简单产品
+      dialog:
+        title: 确认转换
+        content: "确定要将此变型产品转换为简单的产品吗？其以前的所有值、类别和关联都将被保存。"
+    history:
+      version: 版本
+      author: 作者
+      logged_at: 日期/时间
+      from: 从
+      modified: 已修改
+      old_value: 旧值
+      new_value: 新值
+      limit: '仅显示最新的 {{ limit }} 个版本。'
+    meta:
+      updated: 上次更新
+      groups: 分组
+      uuid: UUID
+    show_group:
+      title: 分组 {{ group }}
+      view_group: 查看组
+      more_products: '{{ count }} 个以上产品...'
+    attribute:
+      remove_optional: 移除此属性
+      locale_specific_unavailable: 此区域特定字段在此区域不可用
+      locale_unavailable: 这个可本地化的字段不能用于本地化语言 '{{ locale }}' 和 '{{ channel }}' 渠道
+      to_fill_count: "{1}缺少 1 个必要属性 |]1，Inf[缺少 {{ count }} 个必要属性"
+      add_attribute_option: 添加属性选项
+      add_option: 添加选项
+    completeness:
+      title: 完成度
+      complete: 完成度
+      no_family: 没有定义品类。请定义一个品类来计算该产品的完成度。
+      no_completeness: 您只是改变了该产品的品类。请先保存以计算新品类的完成度。
+      missing_values: "{1}缺少 1 个值|]1，Inf[缺少 {{ count }} 个值"
+    sequential_edit:
+      item_limit: 在该序列编辑中只显示头 1000 个条目（{{ count }} 个已选）
+      empty: 您的选择为空，请更改搜索条件
+      save_and_next: 保存并执行下一步
+      save_and_finish: 保存并完成
+    associations:
+      title: 关联 ({{ count }})
+      none_exist: 没有关联类型存在。
+      show_products: 显示产品
+      show_groups: 显示分组
+      number_of_associations: "{{ productCount }} 个产品, {{ productModelCount }} 个产品模型和 {{ groupCount }} 个组"
+      number_of_quantified_associations: "{{ productCount }} 个产品和 {{ productModelCount }} 个产品模型"
+      association_type_selector: 关联类型
+      target: 目标
+      manage: 添加 {{ associationType }} 关联
+      manage_description: 选择想要与产品“{{ productLabel }}”关联的产品
+      mass_edit_description: 选择想要关联到选中的 {{ productCount }} 个产品的产品
+      add_associations: 添加关联
+      variant_products: 变型产品
+      quantified:
+        quantity: 数量
+        unlinked: 未链接
+      search:
+        placeholder: 按标签、标识符或 UUID 搜索
+      no_data: 没有关联的产品。
+      remove: 移除关联
+      edit: 编辑产品
+      limit_reached: 添加到此产品的关联不能超过 {{ maxLimit }} 个。
+      variant_updated: 您已更新变型的数量，此数量将不再同步。
+    attribute_filter:
+      display: 显示
+      all: 全部属性
+      missing_required: 缺少全部必要属性
+      at_this_level: 所有级别的特定属性
+    change_family:
+      title: 更改产品品类
+      merge_attributes: 当前属性将与新品类中的属性合并
+      keep_attributes: 没有属性要移除。
+      change_family_to: 更改品类为
+      empty_selection: 选择品类
+    basket:
+      title: 购物车
+      empty_basket: 购物车是空的
+    delete:
+      confirm: 确定要删除此产品吗？
+    comment:
+      post: 添加新评论
+      reply: 回复
+      title: 评论
+      empty: 当前无评论
+      header_comment: '{{ user }} 评论了产品'
+      header_reply: '{{ user }} 回复了评论'
+      delete_confirm: 确定要删除此评论吗？
+      removed_author: 已移除用户
+    asset:
+      title: 资产
+pim_enrich.entity.product_model:
+  label: 产品模型
+  uppercase_label: 产品模型
+  plural_label: 产品模型
+  flash:
+    create:
+      success: 产品模型已成功创建
+      product_model_added: 产品模型已成功添加到此产品模型
+      variant_product_added: 变型产品已成功添加到产品模型
+    update:
+      success: 产品模型已成功更新。其变型产品的完成度将重新计算。
+      fail: 产品模型无法更新。
+      fields_not_ready: "该产品模型目前无法保存。以下字段未准备好：{{ fields }}"
+    delete:
+      success: 产品模型已成功删除。
+      fail: 无法删除此产品模型
+  choose: 选择产品模型
+  property:
+    family_variant: 变型
+  module:
+    create:
+      title: 创建产品模型
+      content: 产品模型收集各种变型产品，并使它们的通用属性更加丰富。
+    attribute:
+      read_only_parent_attribute_from_common: 此属性可以在通用属性中更新。
+      read_only_parent_attribute_from_model: "此属性可通过 {{ axes }} 属性更新"
+    variant_axis:
+      label: '变量轴'
+      create: 新增
+      title_create_label: "]-Inf, 1]添加新的 {{ axes }}|]1, Inf[添加新的 {{ axes }}"
+      required_label: '(变量轴)'
+    completeness:
+      variant_product: "]-Inf, 1]{{ complete }} / {{ total }} 个变型产品|]1, Inf[{{ complete }} / {{ total }} 个变型产品"
+      label: 变型
+    delete:
+      confirm: 确定要删除此产品模型吗？其所有的子模型、产品模型和变型产品也将被删除。
+      confirm_for_products_and_product_models: 确定要删除选定的产品和产品模型吗？所有产品模型的子元素也将被删除。
+pim_enrich.entity.group:
+  label: 分组
+  flash:
+    update:
+      success: 分组已成功更新。
+      fail: 分组不能更新。
+      fields_not_ready: "分组目前无法保存。以下字段未准备好： {{ fields }}"
+    create:
+      success: 分组已成功创建
+    delete:
+      success: 分组已成功移除
+      fail: 不能删除该组
+  page_title:
+    index: "]-Inf, 1]{{ count }} 个组|]1, Inf[{{ count }} 个组"
+  module:
+    create:
+      button: 创建组
+    delete:
+      confirm: 确定要删除此组吗？
+pim_enrich.entity.role:
+  module:
+    delete:
+      confirm: 确定要删除此角色吗？
+  flash:
+    delete:
+      success: 角色已成功移除
+pim_enrich.entity.category:
+  label: 类别
+  uppercase_label: 类别
+  plural_label: 类别
+  page_title:
+    index: "]-Inf, 1]{{ count }} 个树|]1, Inf[{{ count }} 个树"
+  content:
+    empty_tree_list:
+      title: 您没有任何树
+      hint: 创建您的第一个。
+    tree_list:
+      columns:
+        label: 树标签
+        number_of_categories: 类别数量
+        actions: 操作
+        count_categories: ']-Inf, 1]{{ count }} 个类别|]1, Inf[{{ count }} 个类别'
+    tree:
+      not_found: 找不到类别树
+    edit:
+      not_found: 找不到类别
+      default_tree_label: 树
+      success: 类别已成功更新
+      fail: 无法更新类别
+  new_category: 新类别
+  new_category_tree: 新类别树
+  category_created: 类别“{{ code }}”已成功创建
+  category_creation_error: 无法创建类别"{{ code }}"
+  category_tree_creation:
+    success: 树“{{ code }}”已成功创建
+    error: 无法创建树"{{ code }}"
+  category_tree_deletion:
+    success: 树"{{ tree }}"已成功删除
+    error: 无法删除树"{{ tree }}"
+    confirmation: 确定要删除树 {{ name }} 吗？该树中的所有类别将被删除，所有类别中的产品将被删除。
+    confirmation_question: 确定要删除 {{ name }} 吗？
+    warning_categories_number: 关联的 {{ categoriesNumber }} 个类别将被删除，且产品也将从所有这些类别中被删除。
+    warning_products: 所有关联的产品将从 {{ name }} 删除
+    products_limit_exceeded:
+      title: 无法删除此树
+      message: 树"{{ tree }}"包含的产品超过 {{ limit }} 个，因此无法删除。
+  category_deletion:
+    success: 类别“{{ name }}”已成功删除
+    error: 无法删除类别“{{ name }}”
+    confirmation: 确定要删除类别 {{ name }} 吗？此类别中的产品将不会被删除。
+    confirmation_question: 确定要删除 {{ name }} 吗？
+    products_limit_exceeded:
+      title: 无法删除此类别
+      message: 类别“{{ name }}”包含的产品超过 {{ limit }} 个，因此无法删除。
+pim_enrich.export.product:
+  data:
+    title: 筛选产品
+  structure:
+    title: 筛选数据
+  filter:
+    channel:
+      help: 渠道定义了产品值的范围、用于选择数据的区域，以及用来选择产品的树。
+    locales:
+      help: "区域设置定义了要导出的本地化产品值。例如，仅用法语显示的产品信息"
+    attributes:
+      label: "{0}所有属性 |{1}选定一个属性 |]1,Inf[选定 {{ count }} 个属性"
+      help: "选择要导出的产品信息。例如︰ 仅导出有技术类的属性。"
+      empty: 将导出所有属性
+      modal:
+        title: 属性选择
+    attributes_selector:
+      attributes: "在 {{ itemsCount }} 项属性中搜索"
+      selected: "选定的属性"
+      clear: 清除
+      all_group: 所有分组
+      empty_selection: 将导出所有属性
+      description: 选择要导出的产品信息
+    family:
+      title: 品类
+      help: "按品类选中产品进行导出。例如︰ 只导出鞋和衣服。"
+      operators:
+        IN: 在列表中
+        "NOT IN": 不在列表中
+        EMPTY: 没有品类的产品
+        "NOT EMPTY": 有品类的产品
+      empty_selection: 没有关于品类的条件
+    updated:
+      title: 时间条件
+      operators:
+        ALL: 无日期条件
+        "SINCE LAST N DAYS": 在过去 n 天（例如， 6） 中更新过的产品
+        ">": 从该日期开始更新过的产品
+        "SINCE LAST JOB": 从上次导出后更新过的产品
+    enabled:
+      title: 状态
+      help: "按状态选择要导出的产品。例如：导出任何状态的产品。"
+      value:
+        enabled: 已启用
+        disabled: 已禁用
+    completeness:
+      title: 完成度
+      help: 按完成度选择要导出的产品。
+      operators:
+        ALL: 没有关于完成度的条件
+        ">=": 至少在一个选定的区域完成
+        "GREATER OR EQUALS THAN ON ALL LOCALES": 在所有选定的区域完成
+        "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": 至少在一个选定的区域完成
+        LOWER THAN ON ALL LOCALES: 在所有选定的区域未完成
+        AT LEAST COMPLETE: 至少在选定的一个区域完成一个子产品
+        ALL COMPLETE: 在所有选定的区域完成所有子产品
+      empty_selection: 选择品类
+    category:
+      title: 类别
+      help: 使用树（由上述渠道定义）中的产品类别来选择要导出的产品
+    identifier:
+      title: 标识符
+      help: 使用要导出的产品标识符，用逗号、空格或换行分隔
+    string:
+      operators:
+        ALL: 所有
+    select:
+      operators:
+        IN: 在列表中
+    date:
+      operators:
+        BETWEEN: 介于
+        NOT BETWEEN: 不介于
+    quality-score:
+      title: 质量评分
+      operator_choice_title: 导出满足以下条件的质量评分：
+      empty_selection: 无质量评分条件
+      operators:
+        IN AT LEAST ONE LOCALE: 至少一个区域
+        IN ALL LOCALES: 所有选定的区域
+  global_settings:
+    title: 全局设置
+pim_enrich.mass_edit.product:
+  title: 产品批量操作
+  confirm: "{0}您即将更新一些产品的以下信息，以前的值将被替换。请确认。|{1}您即将更新一个产品的以下信息，以前的值将被替换。请确认。|]1，Inf[您即将更新 {{ itemsCount }} 个产品的以下信息，以前的值将被替换。请确认。"
+  step:
+    select:
+      label: 选择产品
+    choose:
+      title: 产品批量操作
+      label_count: "]0, Inf[选择操作"
+    configure:
+      label: 配置
+    confirm:
+      label: 确认
+    launch_error:
+      label: 启动批量编辑操作时出错
+    launched:
+      label: 批量操作“{{ operation }}”已启动。完成后会通知您。
+  operation:
+    common:
+      select_attributes: 选择属性
+    change_status:
+      label: 更改状态
+      label_count: "{0}更改一些<span class=\"AknFullPage-title--highlight\">产品</span>的状态|{1}更改 <span class=\"AknFullPage-title--highlight\">1 件产品</span>的状态|]1, Inf[更改 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 件产品</span>的状态"
+      description: 将启用或禁用选定的产品。
+      field: 要启用
+    edit_common:
+      label: 编辑属性值
+      label_count: "{0}编辑一些<span class=\"AknFullPage-title--highlight\">产品</span>的属性值|{1}编辑<span class=\"AknFullPage-title--highlight\"> 1 件产品</span>的属性值|]1, Inf[编辑 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 件产品的属性值</span>"
+      description: 只有属于所选产品品类的属性将被编辑，其中包含 {{ locale }} 区域和 {{ scope }} 渠道的以下数据。以前的值将被替换。
+      no_update: 请选择至少一个要更新的字段。
+    add_attribute_value:
+      label: 添加属性值
+      label_count: "{0}为一些<span class=\"AknFullPage-title--highlight\">产品</span>添加属性值|{1}为 <span class=\"AknFullPage-title--highlight\">1 件产品</span>添加属性值|]1, Inf[为 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 件产品</span>添加属性值"
+      description: 只有属于产品品类的多值属性将被编辑，编辑内容包含以下 {{ locale }} 区域和 {{ scope }} 渠道数据。已添加属性值，之前的值被保留。
+    change_family:
+      label: 更改品类
+      label_count: "{0}更改一些<span class=\"AknFullPage-title--highlight\">产品</span>的品类|{1}更改 <span class=\"AknFullPage-title--highlight\">1 件产品</span>的品类|]1, Inf[更改 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 件产品</span>的品类"
+      description: 选定产品的品类将更改为被选定的品类
+    add_to_group:
+      label: 添加到组
+      label_count: "{0}将一些<span class=\"AknFullPage-title--highlight\">产品</span>添加到分组|{1}将 <span class=\"AknFullPage-title--highlight\">1 件产品</span>添加到分组|]1, Inf[将 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 件产品</span>添加到分组"
+      description: 选择要将选定的产品加入其中的组
+      field: 分组
+      no_update: 请先选择一个组以继续
+    add_to_category:
+      label: 添加到类别
+      label_count: "{0}将一些<span class=\"AknFullPage-title--highlight\">产品</span>添加到类别|{1}将 <span class=\"AknFullPage-title--highlight\">1 件产品</span>添加到类别|]1, Inf[将 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 件产品</span>添加到类别"
+      description: 产品将被放入以下类别，现存的分类也会保留。
+    move_to_category:
+      label: 在类别之间移动
+      label_count: "{0}将一些<span class=\"AknFullPage-title--highlight\">产品</span>在类别之间移动|{1}将 <span class=\"AknFullPage-title--highlight\">1 件产品</span>在类别之间移动|]1, Inf[将 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 件产品</span>在类别之间移动"
+      description: 产品将被放入以下类别，现存的分类会丢失。
+      no_update: 请选择类别。
+    remove_from_category:
+      label: 从类别中移除
+      label_count: "{0}从类别中移除一些<span class=\"AknFullPage-title--highlight\">产品</span>|{1}从类别中移除 <span class=\"AknFullPage-title--highlight\">1 件产品</span>|]1, Inf[从类别中移除 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 件产品</span>"
+      description: 产品将从以下类别中移除。
+      no_update: 没有选中的类别来从中移除选定的产品。
+    add_to_existing_product_model:
+      label: 添加到现有的产品模型
+      label_count: "{0}将一些<span class=\"AknFullPage-title--highlight\">产品</span>添加到现有的产品模型|{1}将 <span class=\"AknFullPage-title--highlight\">1 件产品</span>添加到现有的产品模型|]1, Inf[将 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 件产品</span>添加到现有的产品模型"
+      description: 选定的产品模型将收集这些产品，并使其通用属性更加丰富。
+      no_update: 请先选择一个产品模型以继续
+    convert_to_simple_products:
+      label: 转换为简单产品
+      label_count: "{0}将一些<span class=\"AknFullPage-title--highlight\">产品</span>转换为简单产品|{1}将 <span class=\"AknFullPage-title--highlight\">1 个产品</span>转换为简单产品|]1, Inf[将 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 个产品</span>转换为简单产品"
+      description: 所有之前的值、类别和关联将被保存。
+    associate_to_product_and_product_model:
+      label: 关联产品
+      label_count: "{0}将一些<span class=\"AknFullPage-title--highlight\">产品</span>关联到产品或产品模型|{1}将 <span class=\"AknFullPage-title--highlight\">1 件产品关联到产品或产品模型</span>|]1, Inf[将 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 件产品</span>关联到产品或产品模型。"
+      description: 在网格中选择的产品将关联到所选关联类型下的产品和产品模型
+      validate: 请先添加关联，再前往下一步
+    change_parent_product_model:
+      label: 更改父产品模型
+      label_count: "{0}更改一些<span class=\"AknFullPage-title--highlight\">产品</span>的父产品模型|{1}更改 <span class=\"AknFullPage-title--highlight\">1 件产品</span>的父产品模型|]1, Inf[更改 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 件产品</span>的父产品模型"
+      description: 在网格中选定的变型产品或子产品模型的父级将被更改为选定的产品模型。
+pim_datagrid:
+  no_entities: "未找到 {{ entityHint }}"
+  no_entities.product: "未找到产品" #Custom translation for product grid
+  no_results: "抱歉，找不到与搜索相符的 {{ entityHint }} 。"
+  no_results.product: "抱歉，找不到与搜索相符的产品。" #Custom translation for product grid
+  mass_action_group:
+    bulk_actions:
+      label: 批量操作
+    quick_export:
+      label: 快速导出
+  mass_action:
+    delete:
+      confirm_content: 确定要删除选定的产品吗？
+      success: 选定的产品已成功删除。
+      error: 尝试删除选定的产品时发生错误，请重试。
+    quick_export:
+      csv_all: CSV（所有属性）
+      csv_grid_context: CSV（网格上下文）
+      xlsx_all: Excel（所有属性）
+      xlsx_grid_context: Excel（网格上下文）
+      configurator:
+        subtitle: 快速导出
+        title: 选择操作
+        csv: CSV
+        xlsx: XLSX
+        grid_context: 网格上下文
+        all_attributes: 全部属性
+        with_codes: 使用代码
+        with_labels: 有标签
+        without_uuid: 不含 UUID
+        with_uuid: 含 UUID
+        without_media: 无媒体
+        with_media: 含媒体
+      flash:
+        message: "可在此处查看导出进度。"
+    mass_edit: 批量操作
+    sequential_edit: 顺序编辑
+    mass_delete: 批量删除
+    selected:
+      family: "]-Inf, 1]已选定 {{ count }} 个品类|]1, Inf[已选定 {{ count }} 个品类"
+      attribute: "]-Inf, 1]已选定 {{ count }} 个属性|]1, Inf[已选定 {{ count }} 个属性"
+      product: "]-Inf, 1]已选定 {{ count }} 个结果|]1, Inf[已选定 {{ count }} 个结果"
+  view_selector:
+    view: 视图
+    choose_type: 我想创建一个专用视图
+  actions:
+    edit_product_attributes: 编辑产品属性
+    classify_product: 分类产品
+    delete_product: 删除产品
+    change_status: 更改状态
+    toggle_status: 切换状态
+    other: 其他操作
+  empty_results:
+    associated_product:
+      hint: 没有关联产品
+      subHint: '点击"添加关联"按钮来关联此产品'
+  filters:
+    label: 筛选器
+    system: 系统
+    product_typology:
+      label: '产品类型'
+      simple: '简单'
+      variant: '变型'
+    entity_type:
+      label: '变型'
+      grouped: '已分组'
+      ungrouped: '未分组'
+    family:
+      label: 品类
+    groups:
+      label: 分组
+    enabled:
+      label: 状态
+    scope:
+      label: 范围
+    completeness:
+      label: 完成
+    created:
+      label: 创建于
+    updated:
+      label: 更新于
+    label_or_identifier:
+      label: 标签或标识符
+      label_with_uuid: 标签、标识符或 UUID
+    parent:
+      label: 父级
+    identifier:
+      label: 标识符
+    uuid:
+      label: Uuid
+    code_or_label:
+      label: 代码或标签
+  search: 按 {{ label }} 搜索
+batch_jobs:
+  add_association:
+    label: 关联
+    perform.label: 关联
+  add_attribute_value:
+    label: 添加属性值
+    perform.label: 添加属性值
+  add_product_value:
+    label: 添加产品值
+    perform.label: 添加产品值
+  add_to_category:
+    label: 添加到类别
+    perform.label: 添加到类别
+  add_to_existing_product_model:
+    label: 添加到现有的产品模型
+    perform.label: 添加到现有的产品模型
+  convert_to_simple_products:
+    label: 转换为简单产品
+    perform.label: 转换为简单产品
+  csv_product_grid_context_quick_export:
+    quick_export.label: Csv 产品网格上下文快速导出
+    quick_export_product_model.label: CSV 产品模型网格上下文快速导出
+    perform.label: Csv 产品网格上下文快速导出
+  csv_product_quick_export:
+    quick_export.label: Csv 产品快速导出
+    quick_export_product_model.label: CSV 产品模型快速导出
+    perform.label: Csv 产品快速导出
+  delete_products_and_product_models:
+    label: 批量删除产品
+    perform.label: 批量删除产品
+  change_parent_product:
+    label: 更改父产品模型
+    perform.label: 更改父产品模型
+  edit_common_attributes:
+    label: 编辑属性
+    perform.label: 编辑属性
+    clean.label: 清除属性文件
+    cleaner.label: 清除属性文件
+  compute_completeness_of_products_family:
+    label: 计算完成度
+    perform.label: 计算完成度
+  move_to_category:
+    label: 移动到类别
+    perform.label: 移动到类别
+  update_product_value:
+    label: 更新产品值
+    perform.label: 更新产品值
+  remove_from_category:
+    label: 从类别中移除
+    perform.label: 从类别中移除
+  set_attribute_requirements:
+    label: 设置属性要求
+    perform.label: 设置属性要求
+  xlsx_product_grid_context_quick_export:
+    quick_export.label: XLSX 产品网格上下文快速导出
+    quick_export_product_model.label: XLSX 产品模型网格上下文快速导出
+    perform.label: XLSX 产品网格上下文快速导出
+  xlsx_product_quick_export:
+    quick_export.label: XLSX 产品快速导出
+    quick_export_product_model.label: XLSX 产品模型快速导出
+    perform.label: XLSX 产品快速导出
+  default_steps:
+    delete_products_and_product_models: 删除产品和产品模型
+    remove_completeness_for_channel_and_locale: 移除渠道和区域的完成度
+error:
+  removing:
+    group: 无法移除分组
+    association type: 无法移除关联类型

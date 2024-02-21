@@ -1,0 +1,61 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
+import {Link} from './Link';
+
+<Meta
+  title="Components/Link"
+  component={Link}
+  argTypes={{
+    disabled: {control: {type: 'boolean'}},
+    href: {control: {type: 'text'}},
+    target: {control: {type: 'select'}, options: ['_blank', '_self', '_parent', '_top']},
+    children: {control: {type: 'text'}},
+  }}
+  args={{
+    children: 'Link',
+    href: 'https://www.akeneo.com/',
+    target: '_self',
+  }}
+/>
+
+# Link
+
+## Usage
+
+Allows to redirect user to another page.
+
+## Playground
+
+Use this playground to test the link component
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return <Link {...args} />;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Having a link looking like a button
+
+To make your Link look like a `Button`, you can follow <LinkTo kind="Components/Buttons/Button" story="Link">this documentation</LinkTo>
+
+## Variation on status
+
+<Canvas>
+  <Story name="Status">
+    {args => {
+      return (
+        <>
+          <Link href="https://akeneo.com" disabled={false} {...args}>
+            Enabled
+          </Link>
+          <Link href="https://akeneo.com" disabled={true} {...args}>
+            Disabled
+          </Link>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>

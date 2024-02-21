@@ -1,0 +1,48 @@
+pim_catalog_volume:
+  product_values: "You have <span>{{values}}</span> product values in your PIM! On average, it's <span>{{average}}</span> product values per product!&nbsp;💪"
+  product_values_description: 'The more product values you have, the more valuable your PIM is, the higher your ROI is! More details <a href="{{link}}" target="_blank">here</a>'
+  section:
+    product_values:
+      hint: 'Did you know that the total number of product values in your PIM is directly linked to the following axes?<br/>To have more details, we invite you to <a href="{{link}}" target="_blank">browse this article</a>.'
+      title: Axes that leverage the number of product values
+    catalog_structure:
+      hint: You may know that a good catalog structure is really important and is a condition to efficient enrichment. Below are the various axes to monitor your catalog structure.
+      title: Axes related to the catalog structure
+    variant_modelling:
+      hint: If you are using the variant modelling, here are the axes to help you monitor your volume.
+      title: Axes regarding the variant modelling
+  axis:
+    count_products: Products
+    average_max_attributes_per_family: Attributes per family
+    count_channels: Channels
+    count_locales: Locales (enabled)
+    count_scopable_attributes: Scopable attributes
+    count_localizable_and_scopable_attributes: Localisable and scopable attributes
+    count_localizable_attributes: Localisable attributes
+    count_families: Families
+    count_attributes: Attributes
+    average_max_options_per_attribute: Options by attribute
+    count_categories: Categories
+    count_category_trees: Category trees
+    count_variant_products: Variant products
+    count_product_models: Product models
+    count_product_and_product_model_values: Product values
+    average_max_product_and_product_model_values: Product values by products
+    count_reference_entity: Reference entities
+    average_max_records_per_reference_entity: Records per reference entity
+    average_max_attributes_per_reference_entity: Attributes per reference entity
+    count_asset_family: Asset families
+    average_max_assets_per_asset_family: Assets per asset family
+    average_max_attributes_per_asset_family: Attributes per asset family
+    title:
+      product: Product
+      catalog: Catalog
+      product_structure: Product structure
+      variant_modeling: Variant modeling
+      reference_entities: Reference entities
+      assets: Assets
+  mean: 'Average:'
+  max: 'Max:'
+  error:
+    generic_title: Sorry, an error has occured.
+    generic_message: Try again in a few moments.

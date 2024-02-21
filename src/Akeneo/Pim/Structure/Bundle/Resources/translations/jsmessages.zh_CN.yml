@@ -1,0 +1,348 @@
+pim_enrich.entity.family:
+  label: 品类
+  uppercase_label: 品类
+  plural_label: 品类
+  flash:
+    update:
+      success: 品类已成功更新。
+      fail: 品类更新时出错。
+      cant_remove_attribute_as_label: 不能移除用作标签的属性
+      cant_remove_attribute_as_image: 不能移除用作主图片的属性
+      cant_remove_attribute_used_as_axis: 无法移除此属性，其被用作品类变型中的变量轴
+      fields_not_ready: "该品类目前无法保存。以下字段未准备好： {{ fields }}"
+    create:
+      success: 品类已成功创建
+    delete:
+      success: 品类已成功移除
+      fail: 不能删除此品类
+  property:
+    attribute_as_label: 用作标签的属性
+    attribute_as_image: 用作主要图片的属性
+    empty_attribute_as_image: 未选择
+  page_title:
+    index: "]-Inf, 1]{{ count }} 个品类|]1, Inf[{{ count }} 个品类"
+  module:
+    attributes:
+      not_required_label: 非必填
+      required_label: 必填
+    create:
+      button: 创建品类
+    delete:
+      confirm: 确定要删除此品类吗？
+pim_enrich.entity.family_variant:
+  label: 品类变型
+  short_plural_label: 变型
+  short_label: 变型
+  flash:
+    update:
+      success: 品类变型已成功更新。含有变量的产品将根据您的更改进行更新。
+      fail: 无法更新品类变型。
+    create:
+      success: 品类变型已成功创建
+    delete:
+      success: 品类变型已成功删除
+  module:
+    edit:
+      common_attributes: 共同属性
+      no_common_attributes: 没有共同属性
+      variant_axis_label: 变量轴
+      variant_attributes: 变型属性
+      level_1: 变型属性级别一
+      level_2: 变型属性级别二
+      description: 拖放属性到选定的变量级别，让这些属性在变量级别中进行管理。
+      attribute_remove: 移除属性
+      attribute_group_remove: 移除属性组
+      confirm_attribute_removal_title: 确认属性移除
+      confirm_attribute_removal_message: 通过移除这些属性，会将它们放回到品类变型的共用属性中，并从变型产品中移除值
+    create:
+      label: 添加变型
+      title: 新建品类变型
+      description: 在品类变型中，您可以定义带有变型的产品结构。 选择管理的变量级别数，每个级别作为变量轴使用的属性，然后定义属性如何分配。
+      variant_levels: 变量级别
+      axis_level: "变量轴级别 {{ level }}"
+    update_translations:
+      title: 更新翻译
+    delete:
+      confirm: 确定要删除此品类变型吗？
+pim_enrich.entity.attribute_option:
+  short_uppercase_label: 选项
+  flash:
+    create:
+      success: 属性选项已成功创建
+      fail: 尝试创建属性选项时出错
+    update:
+      fail: 无法保存属性选项
+    delete:
+      fail: 删除属性选项时出错
+  page_title:
+    index: "]-Inf, 1]{{ count }} 个选项|]1, Inf[{{ count }} 个选项"
+  module:
+    edit:
+      cancel_title: 取消修改
+      cancel_description: 警告，您将丢失未保存的数据。确定要取消对该新选项的修改吗？
+      options_labels: 选项标签
+      options_settings: 选项设置
+      options_codes: 选项代码
+      option_code: 选项代码
+      new_option_code: new_option
+      no_options_msg: 抱歉，没有任何选项！
+      add_option: 点击此处进行添加
+      delete_confirmation_title_msg: 从您的选项中删除"{{ optionCode }}" ？
+      delete_confirmation_subtitle_msg: 确定要删除此选项？此操作无法撤消。
+      display_options_limit: 此处只列出了前 500 个选项。如果您想要看到更多选项，请进行搜索或导出。
+      search:
+        placeholder: 搜索标签或代码
+        no_result:
+          title: 找不到与搜索相符的结果。
+pim_enrich.entity.association_type:
+  label: 关联类型
+  property:
+    is_two_way: 双向关联
+    is_quantified: 关联数量
+  flash:
+    update:
+      success: 关联类型已成功更新。
+      fail: 关联类型无法更新。
+      fields_not_ready: "目前无法保存关联类型。以下字段未准备好： {{ fields }}"
+    create:
+      success: 关联类型已成功创建
+    delete:
+      success: 关联类型已成功移除
+      fail: 无法删除此关联类型
+  page_title:
+    index: "]-Inf, 1]{{ count }} 个关联类型|]1, Inf[{{ count }} 个关联类型"
+  module:
+    create:
+      title: 创建新的关联类型
+      button: 创建关联类型
+      is_two_way:
+        message_on_read_only: 关联类型可以是量化或双向的，要选择此类型，请取消选中另一个
+      is_quantified:
+        message_on_read_only: 关联类型可以是量化或双向的，要选择此类型，请取消选中另一个
+    delete:
+      confirm: 确定要删除此关联类型吗?
+  hint: <a href="{{link}}" target="_blank">在此文章中</a>，您可找到创建自己关联类型所需的一切信息。
+  no_association_types:
+    title: 您没有任何关联类型
+    hint: 创建您的第一个
+pim_enrich.entity.group_type:
+  label: 分组类型
+  flash:
+    update:
+      success: 分组类型已成功更新。
+      fail: 分组类型无法更新。
+      fields_not_ready: "分组类型目前无法保存。以下字段未准备好： {{ fields }}"
+    create:
+      success: 分组类型已成功创建
+    delete:
+      success: 分组类型已成功移除
+      fail: 不能删除该组类型
+  page_title:
+    index: "]-Inf, 1]{{ count }} 个分组类型|]1, Inf[{{ count }} 个分组类型"
+  module:
+    create:
+      button: 创建分组类型
+    delete:
+      confirm: 确定要删除此组类型吗？
+pim_enrich.entity.attribute:
+  label: 属性
+  plural_label: 属性
+  flash:
+    update:
+      success: 属性已成功更新。
+      fail: 属性无法更新。
+      fields_not_ready: "该属性目前无法保存。以下字段未准备好： {{ fields }}"
+    delete:
+      success: 属性已成功移除
+      fail: 不能删除该属性
+  page_title:
+    index: "]-Inf, 1]{{ count }} 项属性|]1, Inf[{{ count }} 项属性"
+  property:
+    allowed_extensions: 允许的扩展名
+    auto_option_sorting: 按字母顺序自动排序选项
+    available_locales: 可用区域
+    date_max: 最大日期
+    date_min: 最小日期
+    decimals_allowed: 允许小数值
+    default_metric_unit:
+      label: 默认测量单位
+      choose: 选择单位
+    guidelines: 属性准则
+    group:
+      label: 属性组
+      choose: 选择属性组
+    is_locale_specific: 区域特定
+    localizable: 每项区域设置的值
+    max_characters: 最大字符数
+    max_file_size: 最大文件大小 (MB)
+    metric_family:
+      label: 测量单位群
+      choose: 选择品类
+    minimum_input_length: 自动完成的最小长度
+    name: 名称
+    negative_allowed: 允许负值
+    number_max: 最大数
+    number_min: 最小数
+    reference_data_name:
+      label: 参考数据类型
+      choose: 选择参考数据类型
+    scopable: 每个渠道的值
+    type:
+      choose: 选择属性类型
+      pim_catalog_identifier: 标识符
+      pim_catalog_text: 文本
+      pim_catalog_textarea: 文本区域
+      pim_catalog_number: 数字
+      pim_catalog_price_collection: 价格
+      pim_catalog_multiselect: 多选
+      pim_catalog_simpleselect: 单选
+      pim_catalog_file: 文件
+      pim_catalog_image: 图像
+      pim_catalog_boolean: "是/否"
+      pim_catalog_date: 日期
+      pim_catalog_metric: 测量
+      pim_reference_data_simpleselect: 参考数据单选
+      pim_reference_data_multiselect: 参考数据多选
+    unique: 唯一值
+    useable_as_grid_filter: 在网格中可用
+    validation_regexp: 正则表达式
+    validation_rule:
+      label: 验证规则
+      email: 电子邮件
+      regexp: 正则表达式
+      url: URL
+    wysiwyg_enabled: 富文本编辑器已启用
+    default_value: 默认值
+    code:
+      must_be_filled: 必须填写代码
+      invalid: 代码无效
+      not_available: 此代码不可用
+      is_duplicate: 此代码已被使用
+  module:
+    add_attribute:
+      no_available_attributes: 没有需要再添加的属性
+      attributes_selected: "已选定 {{ itemsCount }} 项属性"
+    create:
+      button: 创建属性
+    edit:
+      common: 一般参数
+      type_specific: 类型特定参数
+      validation: 验证参数
+      select_locale: 选择区域
+    delete:
+      confirm: 确定要删除此属性吗？
+      attribute_removal: 将从所有产品中移除该属性。
+      product_count: '{0}0 个产品|{1}1 个产品|]1, Inf[{{ count }} 个产品'
+      product_model_count: '{0}0 个产品模型|{1}1 个产品模型|]1, Inf[{{ count }} 个产品模型'
+      used: ']-Inf,1]当前已设置了此属性的值。|]1, Inf[当前已设置了此属性的值。'
+      helper:
+        content: 如果您需要更改属性类型，使其具有区域或范围属性，同时保持对现有属性值的访问，
+        link: 查看我们的“帮助中心”（获取更多信息）。
+      type: 请输入"{{ attributeCode }}"
+      confirm_from_family: 确定要从品类中删除此属性吗？
+      confirm_from_group: 确定要从该属性组中移除属性 {{ attribute }}？
+      confirm_from_product: 确定要从产品中删除此属性？
+    mass_delete:
+      modal:
+        title: 属性
+        subtitle: '{1}确认删除 {{ count }} 个属性|]1, Inf[确认删除 {{ count }} 个属性'
+        label: 请输入 "{{ textToCheck }}"
+        confirm: 确定要删除这些属性吗？
+      message_bar:
+        success: 已开始执行删除。作业完成后，您将收到通知。同时，您可以随时在进程跟踪器上关注进度。
+        fail: 启动删除时出错
+pim_enrich.entity.attribute_group:
+  label: 属性组
+  uppercase_label: 属性组
+  plural_label: 属性组
+  result_count: '{0}0 个属性组|{1}1 个属性组|]1, Inf[{{ count }} 个属性组'
+  limit_reached: 您已达到 {{ max }} 个属性组的限制。
+  show_more_attribute:
+    title: 这里比较拥挤，我们会显示 {{ attributeCount }}/{{ totalAttributeCount }} 个属性。
+    subtitle: 要探索此组的所有属性，请点击下面！
+    button: 查看所有属性
+  dropdown:
+    label: 选择
+    all: 所有属性组
+    none: 无属性组
+  flash:
+    update:
+      success: 属性组已成功更新
+      fail: 属性组无法更新
+      fields_not_ready: "该属性组目前无法保存。以下字段未准备好： {{ fields }}"
+    delete:
+      success: 已开始执行删除。作业完成后，您将收到通知。同时，您可以随时在进程跟踪器上关注进度。
+      fail: 启动删除时出错
+    mass_delete:
+      success: 已开始执行删除。作业完成后，您将收到通知。同时，您可以随时在进程跟踪器上关注进度。
+      fail: 启动删除时出错
+  module:
+    add_attribute_group:
+      label: 按分组添加
+      no_attribute_groups_available: 没有可用的属性组
+      attributes_groups_selected: '已选定 {{ itemsCount }} 个分组'
+    delete:
+      confirm: 确定要删除此属性组吗？
+  grid:
+    columns:
+      attribute_count: 相关属性计数
+  selected: '{0}已选择 0 个属性组|{1}已选择 1 个属性组|]1, Inf[已选择 {{ count }} 个属性组'
+  mass_delete:
+    confirm: '{1}确定要删除此属性组吗？|]1, Inf[确定要删除 {{ count }} 个属性组吗？'
+    confirmation_phrase: '请输入 "{{ confirmation_word }}"'
+    confirmation_word: 删除
+    attribute_warning: '{1}删除这些属性组会影响 {{ number_of_attribute }} 个相关的属性。您需要将此相关的属性移动到一个新的属性组。]1，Inf[删除这些属性组会影响 {{ number_of_attribute }} 个相关的属性。您需要将这些相关的属性移动到一个新的属性组。'
+    select_attribute_group: '{1}请选择要将相关的属性移动到其中的属性组：|]1，Inf[请选择要将 {{ number_of_attribute }} 个相关的属性移动到其中的属性组'
+    empty_result_label: '未找到属性组'
+    placeholder: '选择属性组'
+    open_label: '属性组列表'
+  delete:
+    confirm: '确定要删除此属性组吗？'
+    attribute_warning: '删除此属性组将会影响 {{ number_of_attribute }} 个相关的属性。您需要将此相关的属性移动到一个新的属性组。'
+    select_attribute_group: '{1}请选择要将相关的属性移动到其中的属性组：|]1，Inf[请选择要将 {{ number_of_attribute }} 个相关的属性移动到其中的属性组：'
+  batch_jobs:
+    delete_attribute_groups:
+      delete_attribute_groups:
+        label: 删除属性组
+pim_import_export:
+  notification:
+    mass_delete_attribute_groups:
+      error: 批量删除属性组失败
+      warning: 批量删除属性组完成，但有一些警告
+      success: 批量删除属性组完成
+pim_enrich.mass_edit.family:
+  title: 品类批量操作
+  confirm: "{1}您将更新品类的以下信息，请确认。|]1, Inf[您将更新 {{ itemsCount }} 个品类的以下信息，请确认。"
+  step:
+    select:
+      label: 选择品类
+    choose:
+      title: 品类批量操作
+      label_count: "]0, Inf[选择操作"
+    configure:
+      label: 配置
+    confirm:
+      label: 确认
+    launched:
+      label: 批量操作“{{ operation }}”已启动。完成后会通知您。
+  operation:
+    set_requirements:
+      label: 设置属性要求
+      description: 下列属性要求将应用于所选的品类中
+      label_count: "{1}设置 <span class=\"AknFullPage-title--highlight\">1 个品类</span>的属性要求|]1, Inf[设置 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 个品类</span>的属性要求"
+batch_jobs:
+  default_steps:
+    delete_attribute_groups: 删除属性组
+    move_child_attributes: 移动子属性
+  delete_attributes:
+    delete_attributes:
+      label: 删除属性
+job_execution:
+  summary:
+    deleted_attributes: 已删除的属性
+akeneo_job_process_tracker:
+  type_filter:
+    attribute_group_mass_delete: 删除属性组
+pim_notification:
+  types:
+    attribute_group_mass_delete: 删除

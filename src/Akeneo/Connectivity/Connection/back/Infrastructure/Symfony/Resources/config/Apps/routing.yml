@@ -1,0 +1,126 @@
+# Internal API
+akeneo_connectivity_connection_apps_rest_get_app_activate_url:
+    path: '/rest/apps/activate/{id}'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\GetAppActivateUrlAction
+    methods: [GET]
+
+akeneo_connectivity_connection_apps_rest_get_wizard_data:
+    path: '/rest/apps/load-wizard-data/{clientId}'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\GetWizardDataAction
+    methods: [GET]
+
+akeneo_connectivity_connection_apps_rest_confirm_authorization:
+    path: '/rest/apps/confirm-authorization/{clientId}'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\ConfirmAuthorizationAction
+    methods: [POST]
+
+akeneo_connectivity_connection_apps_rest_confirm_authentication:
+    path: '/rest/apps/confirm-authentication/{clientId}'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\ConfirmAuthenticationAction
+    methods: [POST]
+
+akeneo_connectivity_connection_apps_rest_get_all_connected_app_scope_messages:
+    path: '/rest/apps/connected-apps/{connectionCode}/scope-messages'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\GetAllConnectedAppScopeMessagesAction
+    methods: [GET]
+
+akeneo_connectivity_connection_apps_rest_get_connected_app_authentication_scopes:
+    path: '/rest/apps/connected-apps/{connectionCode}/authentication-scopes'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\GetConnectedAppAuthenticationScopesAction
+    methods: [GET]
+
+akeneo_connectivity_connection_apps_rest_get_connected_app:
+    path: '/rest/apps/connected-apps/{connectionCode}'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\GetConnectedAppAction
+    methods: [GET]
+
+akeneo_connectivity_connection_apps_rest_get_all_connected_apps:
+    path: '/rest/apps/connected-apps'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\GetAllConnectedAppsAction
+    methods: [GET]
+
+akeneo_connectivity_connection_apps_rest_delete:
+    path: '/rest/apps/connected-apps/{connectionCode}'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\DeleteAppAction
+    methods: [DELETE]
+
+akeneo_connectivity_connection_apps_rest_get_connected_app_monitoring_settings:
+    path: '/rest/apps/connected-apps/{connectionCode}/monitoring-settings'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\GetConnectedAppMonitoringSettingsAction
+    methods: [GET]
+
+akeneo_connectivity_connection_apps_rest_update_connected_app_monitoring_settings:
+    path: '/rest/apps/connected-apps/{connectionCode}/monitoring-settings'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\UpdateConnectedAppMonitoringSettingsAction
+    methods: [POST]
+
+akeneo_connectivity_connection_apps_rest_refresh:
+    path: '/rest/apps/connected-apps/{connectionCode}/refresh'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\RefreshConnectedAppAction
+    methods: [POST]
+
+akeneo_connectivity_connection_apps_rest_get_open_app_url:
+    path: '/rest/apps/connected-apps/{connectionCode}/open-app-url'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\GetOpenAppUrlAction
+    methods: [GET]
+
+# Public API
+akeneo_connectivity_connection_connect_apps_v1_authorize:
+    path: '/connect/apps/v1/authorize'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public\AuthorizeAction
+    methods: [ GET ]
+
+akeneo_connectivity_connection_connect_apps_v1_token:
+    path: '/connect/apps/v1/oauth2/token'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public\RequestAccessTokenAction
+    methods: [ POST ]
+
+akeneo_connectivity_connection_connect_apps_v1_openid_public_key:
+    path: '/connect/apps/v1/openid/public-key'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public\GetOpenIdPublicKeyAction
+    methods: [ GET ]
+
+akeneo_connectivity_connection_connect_apps_v1_scopes_update:
+    path: '/connect/apps/v1/scopes/update'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public\FlagConnectedAppWithOutdatedScopesAction
+    methods: [ POST ]
+
+akeneo_connectivity_connection_connect_apps_v1_redirect_to_connected_app:
+    path: '/connect/apps/v1/connected_app/{id}'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public\RedirectToEditConnectedAppAction
+    methods: [ GET ]
+
+# Front API
+## Apps
+akeneo_connectivity_connection_connect_apps_activate:
+    path: '/connect/apps/activate'
+
+akeneo_connectivity_connection_connect_apps_authorize:
+    path: '/connect/apps/authorize'
+
+akeneo_connectivity_connection_connect_apps_authenticate:
+    path: '/connect/apps/authenticate'
+
+## Connected Apps
+akeneo_connectivity_connection_connect_connected_apps:
+    path: '/connect/connected-apps'
+
+akeneo_connectivity_connection_connect_connected_apps_edit:
+    path: '/connect/connected-apps/{connectionCode}'
+    requirements:
+        connectionCode: '[a-zA-Z0-9_-]+'
+
+akeneo_connectivity_connection_connect_connected_apps_delete:
+    path: '/connect/connected-apps/{connectionCode}/delete'
+    requirements:
+        connectionCode: '[a-zA-Z0-9_-]+'
+
+akeneo_connectivity_connection_connect_connected_apps_open:
+    path: '/connect/connected-apps/{connectionCode}/open'
+    requirements:
+        connectionCode: '[a-zA-Z0-9_-]+'
+
+akeneo_connectivity_connection_connect_connected_apps_regenerate_secret:
+    path: '/connect/connected-apps/{connectionCode}/regenerate-secret'
+    requirements:
+        connectionCode: '[a-zA-Z0-9_-]+'

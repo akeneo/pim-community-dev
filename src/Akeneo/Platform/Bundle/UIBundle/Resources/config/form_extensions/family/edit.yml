@@ -1,0 +1,253 @@
+extensions:
+    pim-family-edit-form:
+        module: pim/form/common/edit-form
+
+    pim-family-edit-form-sandbox-helper:
+        module: pim/sandbox-helper
+        parent: pim-family-edit-form
+        targetZone: helper
+
+    pim-family-edit-form-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-family-edit-form
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-settings
+            item: pim-menu-settings-family
+
+    pim-family-edit-form-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-family-edit-form
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
+    pim-family-edit-form-cache-invalidator:
+        module: pim/cache-invalidator
+        parent: pim-family-edit-form
+        position: 1000
+
+    pim-family-edit-form-form-tabs:
+        module: pim/form/common/form-tabs
+        parent: pim-family-edit-form
+        targetZone: content
+        position: 90
+
+    pim-family-edit-form-label:
+        module: pim/form/common/label
+        parent: pim-family-edit-form
+        targetZone: title
+        position: 110
+
+    pim-family-edit-form-secondary-actions:
+        module: pim/form/common/secondary-actions
+        parent: pim-family-edit-form
+        targetZone: buttons
+        position: 50
+
+    pim-family-edit-form-delete:
+        module: pim/family-edit-form/delete
+        parent: pim-family-edit-form-secondary-actions
+        targetZone: secondary-actions
+        aclResourceId: pim_enrich_family_remove
+        position: 100
+        config:
+            trans:
+                title: pim_enrich.entity.family.module.delete.confirm
+                subTitle: pim_menu.item.family
+                content: pim_common.confirm_deletion
+                success: pim_enrich.entity.family.flash.delete.success
+                fail: pim_enrich.entity.family.flash.delete.fail
+                buttonText: pim_common.delete
+            redirect: pim_enrich_family_index
+
+    pim-family-edit-form-save-buttons:
+        module: pim/form/common/save-buttons
+        parent: pim-family-edit-form
+        targetZone: buttons
+        position: 110
+
+    pim-family-edit-form-save:
+        module: pim/family-edit-form/save
+        parent: pim-family-edit-form
+        targetZone: buttons
+        position: 0
+
+    pim-family-edit-form-state:
+        module: pim/form/common/state
+        parent: pim-family-edit-form
+        targetZone: state
+        position: 900
+        config:
+            entity: pim_enrich.entity.family.label
+
+    pim-family-edit-form-properties-tab:
+        module: pim/common/tab
+        parent: pim-family-edit-form-form-tabs
+        targetZone: container
+        position: 100
+        config:
+            label: 'pim_common.properties'
+
+    pim-family-edit-form-properties:
+        module: pim/common/simple-view
+        parent: pim-family-edit-form-properties-tab
+        targetZone: self
+        config:
+            template: pim/template/form/tab/sections
+
+    pim-family-edit-form-properties-general:
+        module: pim/family-edit-form/properties/general
+        parent: pim-family-edit-form-properties
+        targetZone: accordion
+        position: 110
+        config:
+            label: 'pim_common.general_properties'
+            dropZone: properties-general
+
+    pim-family-edit-form-properties-general-code:
+        module: pim/family-edit-form/properties/general/code
+        parent: pim-family-edit-form-properties-general
+        targetZone: properties-general
+        position: 120
+        config:
+            label: 'pim_common.code'
+            fieldBaseId: 'pim_enrich_family_form_label_'
+
+    pim-family-edit-form-properties-general-attribute-as-label:
+        module: pim/family-edit-form/properties/general/attribute-as-label
+        parent: pim-family-edit-form-properties-general
+        targetZone: properties-general
+        position: 130
+        config:
+            label: 'pim_enrich.entity.family.property.attribute_as_label'
+            fieldBaseId: 'pim_enrich_family_form_label_'
+
+    pim-family-edit-form-properties-general-attribute-as-image:
+        module: pim/family-edit-form/properties/general/attribute-as-image
+        parent: pim-family-edit-form-properties-general
+        targetZone: properties-general
+        position: 135
+        config:
+            label: 'pim_enrich.entity.family.property.attribute_as_image'
+            emptyLabel: 'pim_enrich.entity.family.property.empty_attribute_as_image'
+            fieldBaseId: 'pim_enrich_family_form_label_'
+            validAttributeTypes: [ 'pim_catalog_image' ]
+
+    pim-family-edit-form-properties-translation-section:
+        module: pim/common/simple-view
+        parent: pim-family-edit-form-properties
+        targetZone: accordion
+        position: 120
+        config:
+            template: pim/template/form/tab/section
+            templateParams:
+                sectionTitle: pim_common.label_translations
+                dropZone: content
+
+    pim-family-edit-form-properties-translation:
+        module: pim/family-edit-form/properties/general/translation
+        parent: pim-family-edit-form-properties-translation-section
+        targetZone: content
+        position: 100
+        config:
+            label: pim_common.label_translations
+            fieldBaseId: 'pim_enrich_family_form_label_'
+
+    pim-family-edit-form-attributes:
+        module: pim/family-edit-form/attributes
+        parent: pim-family-edit-form-form-tabs
+        targetZone: container
+        position: 150
+        config:
+            label: 'pim_enrich.entity.attribute.plural_label'
+
+    pim-family-edit-form-attributes-toolbar:
+        module: pim/family-edit-form/attributes/toolbar
+        parent: pim-family-edit-form-attributes
+        targetZone: attributes-content
+        aclResourceId: pim_enrich_family_edit_attributes
+        position: 160
+
+    pim-family-edit-form-attributes-toolbar-add-attribute-by-group:
+        module: pim/family-edit-form/attributes/toolbar/add-select/attribute-group
+        parent: pim-family-edit-form-attributes-toolbar
+        targetZone: attributes-toolbar
+        position: 170
+        config:
+            select2:
+                placeholder:      'pim_enrich.entity.attribute_group.module.add_attribute_group.label'
+                title:            'pim_common.add'
+                buttonTitle:      'pim_common.add'
+                countTitle:       'pim_enrich.entity.attribute_group.module.add_attribute_group.attributes_groups_selected'
+                emptyText:        'pim_enrich.entity.attribute_group.module.add_attribute_group.no_attribute_groups_available'
+                classes:          'pim-add-attributes-multiselect'
+                dropdownCssClass: 'add-attribute-group'
+            resultsPerPage: 10
+            mainFetcher: 'attribute-group'
+            className: 'AknButtonList-item add-attribute-group'
+            events:
+                add: 'add-attribute-group:add'
+
+    pim-family-edit-form-attributes-toolbar-add-attribute:
+        module: pim/family-edit-form/attributes/toolbar/add-select/attribute
+        parent: pim-family-edit-form-attributes-toolbar
+        targetZone: attributes-toolbar
+        position: 180
+        config:
+            select2:
+                placeholder:      'pim_common.add_attributes'
+                title:            'pim_common.add'
+                buttonTitle:      'pim_common.add'
+                emptyText:        'pim_enrich.entity.attribute.module.add_attribute.no_available_attributes'
+            className: 'AknButtonList-item add-attribute'
+
+    pim-family-edit-form-attributes-attributes:
+        module: pim/family-edit-form/attributes/attributes
+        parent: pim-family-edit-form-attributes
+        targetZone: attributes-content
+        position: 190
+        config:
+            label: pim_common.label
+            confirmation:
+                title: pim_enrich.entity.fallback.module.delete.alternative_title
+                subTitle: pim_enrich.entity.attribute.plural_label
+                message: pim_enrich.entity.attribute.module.delete.confirm_from_family
+                buttonText: pim_common.remove
+
+    pim-family-edit-form-variant:
+        module: pim/family-edit-form/family-variant
+        parent: pim-family-edit-form-form-tabs
+        targetZone: container
+        position: 155
+        config:
+            title: 'pim_enrich.entity.family_variant.short_plural_label'
+            gridName: 'family-variant-grid'
+
+    pim-family-edit-form-variant-filters-list:
+        module: oro/datafilter/filters-list
+        parent: pim-family-edit-form-variant
+        targetZone: filters
+
+    pim-family-edit-form-filters-manage:
+        module: oro/datafilter/filters-button
+        parent: pim-family-edit-form-variant
+        targetZone: filters
+
+    pim-family-edit-form-add-family-variant:
+        module: pim/family-edit-form/add-family-variant
+        parent: pim-family-edit-form-variant
+        targetZone: variant-toolbar
+        position: 100
+        aclResourceId: pim_enrich_family_edit_variants
+
+    pim-family-edit-form-history:
+        module: pim/common/tab/history
+        parent: pim-family-edit-form-form-tabs
+        targetZone: container
+        aclResourceId: pim_enrich_family_history
+        position: 160
+        config:
+            class: 'family'
+            title: 'pim_common.history'

@@ -1,0 +1,75 @@
+An identifier attribute already exists.: Định danh của thuộc tính đã tồn tại.
+Attribute code may contain only letters, numbers and underscore: Mã thuộc tính chỉ có thể chứa ký tự, số và dấu gạch dưới
+Attribute code may contain only letters (at least one), numbers and underscores: Mã thuộc tính có thể chứa một chữ cái (ít nhất một), số và dấu gạch dưới
+This attribute type can't be used as a grid filter: Loại thuộc tính này không thể được sử dụng làm bộ lọc trên lưới
+This code is not available: Mã này là không có sẵn
+This attribute type must be required: Loại thuộc tính này là bắt buộc
+This attribute type can't be required: Loại thuộc tính này không thể bắt buộc
+This attribute type can't have unique value: Loại thuộc tính này không thể có giá trị duy nhất
+No default value may be specified for this attribute type: Không có giá trị mặc định có thể được chỉ định cho loại thuộc tính này
+This value should be Yes or No: Giá trị này nên là Có hay Không
+This value should not be blank: Giá trị này không nên để trống
+Option code may contain only letters, numbers and underscores: Mã tuỳ chọn có thể chứa ký tự, số, và dấu gạch dưới
+Option code may contain only letters (at least one), numbers and underscores: Mả tùy chọn có thể chứa một chữ cái (ít nhất một), số và dấu gạch dưới
+This value should not be a decimal.: Giá trị này không nên là một số thập phân.
+'The file extension is not allowed (allowed extensions: %extensions%).': 'Phần mở rộng của tập tin không được cho phép (cho phép mở rộng: %extensions%).'
+The same identifier is already set on another product: Mẫu nhận dạng tương tự đã được thiết lập trên một sản phẩm khác
+file.extensions.message: 'Phần mở rộng tập tin không được cho phép (cho phép mở rộng: %extensions%).'
+"This type of value expects the use of {{ decimal_separator }} to separate decimals.": Loại giá trị này nên sử dụng {{ decimal_separator }} để phân số thập phân.
+"This type of value expects the use of dot (.) to separate decimals.": Loại giá trị này nên sử dụng một dấu chấm (.) để phân số thập phân.
+"This type of value expects the use of comma (,) to separate decimals.": Loại giá trị này nên sử dụng một dấu phẩy (,) để phân số thập phân.
+"This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Loại giá trị này nên sử dụng dấu phân số thập phân arabic (٫) để phân số thập phân.
+"This type of value expects the use of the format {{ date_format }} for dates.": Loại giá trị này nên sử dụng định dạng {{ date_format }} cho ngày.
+"The category \"%category%\" has to be a root category.": Danh mục "%category%" phải là danh mục gốc.
+"The attribute \"%attributeCode%\" does not exist.": Thuộc tính "%attributeCode%" không tồn tại.
+"The currency \"%currency%\" has to be activated.": Tiền tệ "%currency%" phải được kích hoạt.
+product_model.code.not_blank.message: Mã dòng sản phẩm không được để trống.
+product_model.code.unique.message: Mã tương tự đã được thiết lập trên dòng sản phẩm khác.
+product_model.family_variant.not_blank.message: Dòng sản phẩm thể gia đình không được để trống.
+pim_catalog:
+  constraint:
+    can_have_family_variant_empty_axis_value: 'Thuộc tính "%attribute%" không được để trống, bởi vì nó được xem như là trụ cột cho thực thể này'
+    can_have_family_variant_unexpected_attribute: 'Không thể thiết lập đặc tính "%attribute%" và thực thể này bởi vì nó không có trong bộ thuộc tính'
+    cannot_have_product_model_as_parent: 'Mô hình sản phẩm "%product_model%" không thể có dòng sản phẩm "%parent_product_model%" như phụ huynh'
+    cannot_have_parent: 'Dòng sản phẩm "%product_model%" không thể có phụ huynh'
+    attribute_does_not_belong_to_family: 'Thuộc tính "%attribute%" không thuôc về gia đình "%family%"'
+    variant_product_invalid_family: 'Sản phẩm biến thể gia đình phải giống nhau hơn so với phụ huynh của nó'
+    not_null_family: Gia đình không thể "null" vì sản phẩm của bạn với nhận dạng "%sku%" là sản phẩm biến thể.
+    variant_product_has_parent: 'Sản phẩm biến thể "%variant_product%" phải có phụ huynh'
+    invalid_variant_product_parent: 'Sản phẩm biến thể "%variant_product%" không thể có dòng sản phẩm "%product_model%" là phụ huynh, (dòng sản phẩm này chỉ có thể có các dòng sản phẩm khác như là con cái)'
+    modified_variant_axis_value: 'Trụ cột biến thể "%variant_axis%" không thể sửa đổi, "%provided_value%" đã cho'
+    family_variant_attributes_unique: Thuộc tính phải là độc nhất, "%attributes%" được sử dụng vài lần trong các bộ thuộc tính biến thể
+    family_variant_axes_unique: Các trụ cột biến thể phải là độc nhất, "%attributes%" được sử dụng vài lần trong các bộ thuộc tính biến thể
+    family_variant_axes_immutable: 'Các trụ cột biến thể không thể được sửa đổi cho cấp độ "%level%"'
+    family_variant_axes_attribute_type_unique: Các trụ cột biến thể "%axis%" không được độc nhất hoặc là nhận dạng
+    family_variant_axes_wrong_type: Các trụ cột biến thể "%axis%" không thể nội địa hóa, không thể phạm vi hóa và không phải một địa phương cụ thể
+    family_variant_axes_number_of_axes: 'Bộ thuộc tính biến thể không thể có hơn %max_axes_number% trụ cột'
+    family_variant_no_axis: Nên có ít nhất một thuộc tính được xác định như là trụ cột cho bộ thuộc tính cho cấp độ "%level%"
+    family_variant_axis_level: Thuộc tính "%axis%" phải được thiết lập như là thuộc tính trong cùng bộ thuộc tính biến thể của nó đã được thiết lập như là trụ cột
+    family_variant_has_family_attribute: '"%attribute%" thuộc tính không thể được thêm vào "%family_variant%" gia đình biến thể, bởi vì nó không phải là thuộc tính của "%family%" gia đình'
+    family_variant_level_do_not_exist: Không có bộ thuộc tính biến thể cho cấp độ "%level%"
+    family_variant_no_level: Nên có ít nhất một cấp độ được xác định trong gia đình biến thể
+    family_variant_maximum_number_of_level: Gia đình biến thể không thể có hơn "%level%" cấp độ
+    family_variant_unique_attributes_in_last_level: Thuộc tình độc nhất "%attribute%" phải được thiết lập tại cấp độ sản phẩm
+    product_identifier: Các định danh "%s" không tồn tại.
+    0: Lỗi không mong đợi đã xảy ra.
+    100: Giá trị không mong đợi
+    101: Lĩnh vực này kỳ vọng một giá trị boolean.
+    102: Lĩnh vực này kỳ vọng một giá trị float.
+    103: Lĩnh vực này kỳ vọng một giá trị integer.
+    104: Lĩnh vực này kỳ vọng một giá trị numeric.
+    105: Lĩnh vực này kỳ vọng một giá trị string.
+    106: Lĩnh vực này kỳ vọng một giá trị array.
+    107: Lĩnh vực này kỳ vọng array của những array là một giá trị.
+    200: Lỗi nội bộ đã xảy ra
+    201: Lỗi nội bộ đã xảy ra
+    202: Lĩnh vực này kỳ vọng một giá trị numeric.
+    203: Lĩnh vực này kỳ vọng một giá trị string.
+    204: Lĩnh vực này kỳ vọng một giá trị string.
+    205: Lỗi nội bộ đã xảy ra
+    300: Lĩnh vực này kỳ vọng một mã thực thể hợp lệ.
+    301: Lĩnh vực này kỳ vọng một phạm vi và địa phương hợp lệ.
+    302: Lĩnh vực này kỳ vọng một phạm vi hợp lệ.
+    303: Lĩnh vực này kỳ vọng một định dạng liên kết hợp lệ.
+    pim_immutable_product_validator: Định dạng tương tự đã được thiết lập trên một sản phẩm khác
+    pim_immutable_product_model_validator: Mã tương tự đã được xác lập trên một dòng sản phẩm khác.

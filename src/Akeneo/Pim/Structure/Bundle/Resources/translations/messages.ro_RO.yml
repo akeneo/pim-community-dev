@@ -1,0 +1,39 @@
+pim_enrich:
+  #Attribute
+  attribute:
+    tab:
+      parameter.title: Parametri
+      value.title: Valori
+      history.title: Istoric
+  #Family
+  family:
+    info:
+      cant_remove_attribute_used_as_axis: Nu se poate elimina acest atribut utilizat ca o varianta axin in o varianta familie
+  #Group type
+  group_type:
+    tab:
+      property.title: Proprietăți
+  #Mass edit operations
+  mass_edit_action:
+    family:
+      page_title: Familii
+      page_subtitle: Editare in masa (1 familie) |Editare in masa (%count% familii)
+      title: Alege Operatiunea
+      subtitle: Alegeţi operaţiunea pe care doriţi să o efectuaţi pe familia selectata | Alegeţi operaţiunea pe care doriţi să o efectuaţi pe cele %count% familii selectate
+      confirm: Sunteți pe cale de a actualiza familia cu următoarele informații, vă rugăm să confirmați.|Sunteți pe cale de a actualiza %count% familii cu următoarele informații, vă rugăm să confirmați.
+      steps:
+        first: Alege familiile
+        second: Alege operațiune
+        third: Configurare
+        fourth: Confirmă
+pim_enrich_attribute_form:
+  code: Cod
+  type: Tip de atribut
+  reference_data_name: Referinţă data nume
+  scopable: Valoare pe canal
+  localizable: Valoare pe local
+  unique: Valoare unica
+  availableLocales: Locale disponibile
+  locale_specific: Specific local
+  group: Grup de atribute
+  useableAsGridFilter: Utilizabil în grilă

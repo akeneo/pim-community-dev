@@ -1,0 +1,241 @@
+pim_enrich.entity.family:
+  label: 品類
+  uppercase_label: 品類
+  plural_label: 品類
+  flash:
+    update:
+      success: 品類已成功更新。
+      cant_remove_attribute_as_label: 無法刪除作為標籤的屬性
+      cant_remove_attribute_as_image: 無法刪除作為主圖的屬性
+      cant_remove_attribute_used_as_axis: 無法刪除作為品類變體中變體軸的屬性
+      fields_not_ready: "此品類現在無法保存。以下字段尚未準備就緒：{{ fields }}"
+    create:
+      success: 品類已成功創建
+    delete:
+      success: 成功刪除品類
+      fail: 無法刪除此品類
+  property:
+    attribute_as_label: 作為標籤的屬性
+    attribute_as_image: 作為主圖的屬性
+    empty_attribute_as_image: 未選擇
+  page_title:
+    index: "]-Inf, 1]{{ count }} 個品類|]1, Inf[{{ count }} 個品類"
+  module:
+    attributes:
+      not_required_label: 非必填
+      required_label: 必填
+    create:
+      button: 創建品類
+    delete:
+      confirm: 確定要刪除此品類嗎?
+pim_enrich.entity.family_variant:
+  label: 品類變量
+  short_plural_label: 變量
+  short_label: 變量
+  flash:
+    update:
+      success: 品類變量已成功更新。 包含變體的產品將按照您的更改進行更新。
+      fail: 此品類變體無法更新。
+    create:
+      success: 品類變體已成功創建
+    delete:
+      success: 品類變體已成功刪除
+  module:
+    edit:
+      common_attributes: 通用屬性
+      no_common_attributes: 無通用屬性
+      variant_axis_label: 變量軸
+      variant_attributes: 變量屬性
+      level_1: 變量屬性一級
+      level_2: 變量屬性二級
+      description: 將屬性拖放到選定的變量級別，以在變量級別管理這些屬性。
+      attribute_remove: 移除屬性
+      attribute_group_remove: 移除屬性組
+      confirm_attribute_removal_title: 確認移除屬性
+      confirm_attribute_removal_message: 刪除這些屬性，可以將它們放回品類變量的通用屬性，並刪除變量產品中的值
+    create:
+      label: 添加變量
+      title: 創建一個新的品類變量
+      description: 在品類變量中，您可以為含有變量的產品定義結構。 選擇管理變量級別的數量和作為每個級別的變量軸的屬性，然後定義屬性的分佈方式。
+      variant_levels: 變量級別
+      axis_level: "變量軸級別{{ level }}"
+    update_translations:
+      title: 更新翻譯
+    delete:
+      confirm: 確定要刪除此品類變量嗎?
+pim_enrich.entity.attribute_option:
+  short_uppercase_label: 選項
+  flash:
+    create:
+      success: 屬性選項已成功創建
+    update:
+      fail: 無法保存屬性選項
+    delete:
+      fail: 刪除屬性選項中發現了錯誤
+  module:
+    edit:
+      cancel_title: 取消更改
+      cancel_description: 警告，您將丟失未保存的數據。 您確定要取消對此新選項的修改嗎？
+pim_enrich.entity.association_type:
+  label: 關聯類型
+  flash:
+    update:
+      success: 關聯類型已成功更新。
+      fail: 此關聯類型不可更新。
+      fields_not_ready: "此關聯類型現在無法保存。以下字段尚未準備就緒：{{ fields }}"
+    create:
+      success: 關聯類型已成功創建
+    delete:
+      success: 關聯類型已成功刪除
+      fail: 無法刪除此關聯類型
+  page_title:
+    index: "]-Inf, 1]{{ count }}關聯類型]1, Inf[{{ count }}關聯類型"
+  module:
+    create:
+      button: 創建關聯類型
+    delete:
+      confirm: 確定要刪除此關聯類型嗎?
+pim_enrich.entity.group_type:
+  label: 分組類型
+  flash:
+    update:
+      success: 分組類型已成功更新。
+      fail: 此分組類型不能更新。
+      fields_not_ready: "此分組類型現在無法保存。以下字段尚未準備就緒：{{ fields }}"
+    create:
+      success: 分組類型已成功創建
+    delete:
+      success: 分組類型已成功刪除
+      fail: 不能刪除此分組類型
+  page_title:
+    index: "]-Inf, 1]{{ count }} 個分組類型|]1, Inf[{{ count }} 個分組類型"
+  module:
+    create:
+      button: 創建分組類型
+    delete:
+      confirm: 確定要刪除此分組類型嗎？
+pim_enrich.entity.attribute:
+  label: 屬性
+  plural_label: 屬性
+  flash:
+    update:
+      success: 屬性已成功更新。
+      fail: 屬性不能更新。
+      fields_not_ready: "此屬性現在無法保存。以下字段尚未準備就緒：{{ fields }}"
+    delete:
+      success: 屬性已移除
+      fail: 無法刪除此屬性
+  page_title:
+    index: "]-Inf, 1]{{ count }} 個屬性|]1, Inf[{{ count }} 個屬性"
+  property:
+    allowed_extensions: 允許的擴展名
+    auto_option_sorting: 按字母順序自動排序選項
+    available_locales: 可用的區域
+    date_max: 最大數據
+    date_min: 最小日期
+    decimals_allowed: 允許小數數值
+    default_metric_unit:
+      label: 默認計量單位
+      choose: 選擇一個單位
+    group:
+      label: 屬性分組
+      choose: 選擇屬性組
+    is_locale_specific: 特定區域
+    localizable: 區域值
+    max_characters: 最大字符
+    max_file_size: 最大文件體積（MB）
+    metric_family:
+      label: 計量品類
+      choose: 選擇一個品類
+    minimum_input_length: 自動完成的最小長度
+    name: 名稱
+    negative_allowed: 允許負值
+    number_max: 最大數值
+    number_min: 最小數值
+    reference_data_name:
+      label: 參考日期類型
+      choose: 選擇參考日期類型
+    scopable: 渠道值
+    type:
+      choose: 選擇屬性類型
+      pim_catalog_identifier: 標識符
+      pim_catalog_text: 文本
+      pim_catalog_textarea: 文字區
+      pim_catalog_number: 數字
+      pim_catalog_price_collection: 價格
+      pim_catalog_multiselect: 多選
+      pim_catalog_simpleselect: 單選
+      pim_catalog_file: 檔案
+      pim_catalog_image: 圖片
+      pim_catalog_boolean: "是/否"
+      pim_catalog_date: 日期
+      pim_catalog_metric: 公制
+      pim_reference_data_simpleselect: 參考日期單選
+      pim_reference_data_multiselect: 參考日期多選
+    unique: 唯一值
+    useable_as_grid_filter: 可在界面中使用
+    validation_regexp: 正則運算式
+    validation_rule:
+      label: 確認法則
+      email: 電子郵件
+      regexp: 正則運算式
+      url: 網址
+    wysiwyg_enabled: 富文本編輯器已啟用
+  module:
+    add_attribute:
+      no_available_attributes: 沒有更多屬性待添加
+      attributes_selected: "已選中{{ itemsCount }}個屬性"
+    create:
+      button: 創建屬性
+    edit:
+      common: 一般參數
+      type_specific: 特定類型參數
+      validation: 確認參數
+    delete:
+      confirm: 確定要刪除該屬性？
+      confirm_from_family: 確定要從此品類中刪除此屬性？
+      confirm_from_group: 確定要從此屬性組中移除屬性{{ attribute }}？
+      confirm_from_product: 確定要從此產品中刪除此屬性？
+pim_enrich.entity.attribute_group:
+  label: 屬性分組
+  uppercase_label: 屬性分組
+  plural_label: 屬性分組
+  show_more_attribute:
+    title: 這裡數據龐大，我們為您顯示了{{ attributeCount }}/{{ totalAttributeCount }}屬性。
+    subtitle: 如需查看此分組的全部屬性，請點擊下方！
+    button: 查看所有屬性
+  flash:
+    update:
+      success: 屬性組已成功更新
+      fail: 屬性分組不能更新
+      fields_not_ready: "此屬性組現在無法保存。以下字段尚未準備就緒：{{ fields }}"
+    delete:
+      success: 屬性組已成功移除
+      fail: 無法刪除此屬性組
+  module:
+    add_attribute_group:
+      label: 按分組添加
+      no_attribute_groups_available: 無可用的屬性組
+      attributes_groups_selected: '已選中{{ itemsCount }}個分組'
+    delete:
+      confirm: 確定要刪除該屬性分組？
+pim_enrich.mass_edit.family:
+  title: 品類批量操作
+  confirm: "{1}您將要更新包含以下信息的品類，請確認。|]1, Inf[您將要更新{{ itemsCount }}個包含以下信息的品類，請確認。"
+  step:
+    select:
+      label: 選擇品類
+    choose:
+      title: 品類批量操作
+      label_count: "]0, Inf[選擇您的操作"
+    configure:
+      label: 配置
+    confirm:
+      label: 確認
+    launched:
+      label: 批量操作“{{ operation }}”已啟動。完成後您將收到通知。
+  operation:
+    set_requirements:
+      label: 設置屬性要求
+      description: 以下屬性要求將被用於選中的品類
+      label_count: "{1}設置<span class=\"AknFullPage-title--highlight\">1 個品類</span>的屬性要求|]1, Inf[編輯<span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 個品類</span>的屬性要求"

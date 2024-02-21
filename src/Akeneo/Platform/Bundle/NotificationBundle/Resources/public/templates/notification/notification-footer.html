@@ -1,0 +1,13 @@
+<p class="AknNotificationList-footer">
+    <% if (loading) { %>
+        <img src="<%= options.imgUrl %>" alt="<%= options.loadingText %>"/>
+    <% } %>
+
+    <% if (!loading && !hasNotifications && !hasMore) { %>
+        <span><%= options.noNotificationsMessage %></span>
+    <% } %>
+
+    <% if (hasNotifications && hasUnread) { %>
+        <button class="AknButton AknButton--grey mark-as-read"><%= options.markAsReadMessage %></button>
+    <% } %>
+</p>

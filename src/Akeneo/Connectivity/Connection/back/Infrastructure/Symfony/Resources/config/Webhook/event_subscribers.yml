@@ -1,0 +1,18 @@
+services:
+    Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventSubscribers\EventsApiRequestsLimitIncrementSubscriber:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\Persistence\DbalUpdateEventsApiRequestCountQuery'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventSubscribers\EventsApiClearCacheSubscriber:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\CacheClearer'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventSubscribers\EventsApiLoggingSubscriber:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence\ElasticsearchEventsApiDebugRepository'
+        tags:
+            - { name: kernel.event_subscriber }

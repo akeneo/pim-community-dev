@@ -1,0 +1,124 @@
+pim_user:
+  user:
+    title: Utilizator
+    fields:
+      name_prefix: Prefixul numelui
+      email: Adresa de e-mail
+      username: Nume de utilizator
+      first_name: Prenume
+      middle_name: Numele mijlociu
+      last_name: Nume
+      name_suffix: Sufixul numelui
+      date_of_birth: Data naşterii
+      avatar: Avatar
+      timezone: Fus orar
+      roles: Roluri
+      groups: Grupuri
+      password: Parolă
+      password_again: Reintroduceți parola
+      product_grid_filters: Filtre grilă produse
+      catalog_locale: Catalog local
+      default_tree: Arbore implicit
+      current_password: Parola actuală
+      new_password: Parolă nouă
+      new_password_again: Repetă parola nouă
+      default_grid_view:
+        none: Niciunul
+      ui_locale: UI local
+      last_logged_in: Ultima autentificare
+      login_count: Număr de autentificări
+      created: Creat
+      updated: Actualizat
+      status: Stare
+      capabilities: Capacități
+      has_role: Are rol
+      has_group: Are grup
+      active: Activ
+      inactive: Inactiv
+    tabs:
+      general:
+        title: General
+        contact_information: Informații de contact
+      additional:
+        title: Adițional
+      interfaces:
+        title: Interfețe
+      group_and_role.title: Grupuri si roluri
+      password.title: Parolă
+      business_unit.title: Unități business
+      email_synchronization.title: Setări de sincronizare email
+    removed_user: Utilizator eliminat
+    login:
+      username_or_email: Nume de utilizator sau E-mail
+      remember_me: Ţine-mă minte pe acest computer
+      password_forgotten: Ți-ai uitat parola?
+      forgot_password: Ați uitat parola
+      request: Solicitare
+      reset: Resetează
+  group:
+    tab:
+      general.title: Generale
+      users.title: Utilizatori
+  roles:
+    title: Rol
+    tab:
+      general: General
+      action: Permisiuni
+      users: Utilizatori
+  controller:
+    group:
+      message:
+        saved: "Grup salvat"
+    role:
+      message:
+        saved: "Rol salvat"
+    user:
+      message:
+        saved: "Utilizator salvat"
+pim_datagrid:
+  columns:
+    user:
+      createdAt: "Creat la"
+      updatedAt: "Actualizat pe"
+    roles:
+      label: "Etichetă"
+    groups:
+      name: "Nume"
+confirmation:
+  remove:
+    role: Sunteți sigur că vreți să ștergeți acest rol?
+    user: Sunteți sigur că vreți să ștergeți acest utilizator?
+flash:
+  role:
+    removed: Rolul a fost şters
+  user:
+    removed: Utilizatorul a fost șters cu succes
+oro_security:
+  acl_group:
+    user: Utilizatori
+    role: Roluri
+    group: Grupuri de utilizatori
+  acl:
+    user:
+      view: Listeazā utilizatorii
+      create: Creează utilizator
+      edit: Modifică utilizatori
+      delete: Elimină un utilizator
+    role:
+      view: Listează rolurile
+      create: Creează un rol
+      edit: Modifică rolurile
+      delete: Ștergeți un rol
+    group:
+      view: Listează grupuri de utilizatori
+      create: Creează un grup de utilizatori
+      edit: Modifică grupuri de utilizatori
+      delete: Șterge un grup de utilizator
+#Security
+(default): Permisiune implicită pe entități
+VIEW: Vizualizează
+CREATE: Creează
+EDIT: Editează
+DELETE: Şterge
+ASSIGN: Atribuie
+SHARE: Distribuie

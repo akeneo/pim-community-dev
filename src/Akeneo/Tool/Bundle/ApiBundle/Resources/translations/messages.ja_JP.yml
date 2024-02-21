@@ -1,0 +1,50 @@
+pim_api:
+  acl:
+    rights: Web API のアクセス権限
+    attribute:
+      edit: 属性を作成して更新
+      list: 属性を一覧表示
+    attribute_option:
+      edit: 属性オプションを作成して更新
+      list: 属性オプションを一覧表示
+    attribute_group:
+      edit: 属性グループを作成して更新
+      list: 属性グループを一覧表示
+    category:
+      edit: カテゴリを作成して更新
+      list: カテゴリを一覧表示
+    family:
+      edit: ファミリーを作成して更新
+      list: ファミリーを一覧表示
+    family_variant:
+      edit: ファミリーバリエーションを作成して更新
+      list: ファミリーバリエーションを一覧表示
+    channel:
+      edit: チャンネルを作成して更新
+      list: チャンネルを一覧表示
+    locale.list: ロケールを一覧表示
+    product:
+      edit: 商品を作成して更新
+      list: 商品をリスト
+      remove: 商品を削除
+    currency.list: 通貨を一覧表示
+    association_type:
+      edit: 関連タイプを作成して更新
+      list: 関連タイプを一覧表示
+  acl_group:
+    overall_access: Web API の全体的なアクセス
+    attribute: 属性
+    attribute_option: 属性オプション
+    attribute_group: 属性グループ
+    category: カテゴリ
+    family: ファミリー
+    family_variant: ファミリーバリエーション
+    channel: チャンネル
+    locale: ロケール
+    product: 商品
+    currency: 通貨
+    association_type: 関連タイプ
+pim_user:
+  roles:
+    tab:
+      api: Web API のアクセス権限

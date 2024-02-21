@@ -1,0 +1,17 @@
+oneup_flysystem:
+    filesystems:
+        catalog_storage:
+            adapter: catalog_storage_adapter
+            mount: catalogStorage
+        archivist:
+            adapter: archivist_adapter
+            mount: archivist
+        jobs_storage:
+            adapter: jobs_storage_adapter
+            mount: jobsStorage
+        category_storage:
+            adapter: category_storage_adapter
+            mount: categoryStorage
+        local_storage:
+            adapter: local_storage_adapter
+            mount: localFilesystem

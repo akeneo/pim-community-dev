@@ -1,0 +1,103 @@
+Item deleted: Stavka je obrisana
+Are you sure you want to delete this item?: Jeste li sigurni da želite izbrisati ovu stavku?
+Delete Error: Pogreška prilikom brisanja
+Are you sure you want to do remove selected items?: Jeste li sigurni da želite ukloniti odabrane stavke?
+Selected items were removed.: Odabrane stavke su uklonjene.
+Selected items were not removed.: Odabrane stavke nisu uklonjene.
+Please, select items to remove.: Molimo, odaberite stavke za uklanjanje.
+Cannot delete item.: Nije moguće izbrisati stavku.
+Refresh Confirmation: Osvježite potvrdu
+Your local changes will be lost. Are you sure you want to refresh grid?: Lokalne promjene bit će izgubljene. Jeste li sigurni da želite osvježiti prikaz tablice?
+Reset Confirmation: Poništi potvrdu
+Your local changes will be lost. Are you sure you want to reset grid?: Lokalne promjene bit će izgubljene. Jeste li sigurni da želite poništiti prikaz tablice?
+Confirmation: Potvrda
+edit: uredi
+copy: kopiraj
+remove: ukloni
+Status: Status
+All: Sve
+Per page: Po stranici
+Mass Action Confirmation: Potvrda masovne akcije
+Mass action performed.: Masovna akcija je izvršena.
+Mass action is not performed.: Masovna akcija nije izvršena.
+Please, select items to perform mass action.: Molimo. odaberite stavke za masovnu akciju.
+Execution Confirmation: Potvrdi izvršavanje
+Are you sure you want to do this?: Da li ste sigurni da želite to napraviti?
+Action performed.: Akcija je izvršena.
+Action is not performed.: Akcija nije izvršena.
+Please, select item to perform action.: Molimo, odaberite stavku za izvođenje akcije.
+View per page: Pregled po stranici
+Enabled: Omogućeno
+Disabled: Onemogućeno
+not_available: N/A
+Yes: true
+No: false
+oro.datagrid.entityHint: Entitet
+oro.datagrid.noentities: Nisu pronađeni rezultati
+oro.datagrid.nocolumns: Stupci za prikaz tablice nisu konfigurirani
+oro.datagrid.pagination.label: "Stranica"
+oro.datagrid.pagination.totalPages: "od {{ totalPages }}"
+oro.datagrid.pagination.totalRecords: "{{ totalRecords }} zapisa"
+oro.datagrid.action.reset: "Poništi"
+oro.datagrid.action.refresh: "Osvježi"
+oro_datagrid.select.all: "Sve"
+oro_datagrid.select.visible: "Sve vidljive"
+oro_datagrid.select.none: "Niti jedan"
+oro_datagrid.select.select: "Odaberi"
+pim.grid.ajax_choice_filter.label_empty: je prazan
+pim.grid.ajax_choice_filter.label_not_empty: nije prazan
+pim:
+  grid:
+    choice_filter:
+      label_contains: sadrži
+      label_does_not_contain: ne sadrži
+      label_equal: je jednako
+      label_start_with: počinje sa
+      label_empty: je prazan
+      label_not_empty: nije prazan
+      label_in_list: na popisu
+    price_filter:
+      label: Valuta
+    category_filter:
+      done: Gotovo
+Available Columns: Dostupni stupci
+Displayed Columns: Odabrani stupci
+datagrid_view.columns.min_message: Odaberi barem jedan stupac u prikazu tablice
+pim_datagrid:
+  column_configurator:
+    label: Stupci
+    all_groups: Sve grupe
+    search: Pretraživanje
+    clear: Obriši
+    displayed_columns: Odabrani stupci
+    apply: Primijeni
+    cancel: Poništi
+    remove_column: Ukloni
+    attribute_groups: Grupe atributa
+  mass_action:
+    delete:
+      confirm_title: Potvrdi brisanje
+      confirm_ok: OK
+      empty_selection: Niti jedan proizvod nije odabran
+pim.grid.mass_action.quick_export.title: Brzi izvoz
+pim.grid.mass_action.quick_export.launched: Pokrenut je brz izvoz
+pim.grid.action.launch.title: Pokreni
+pim.grid.action.show.title: Prikaži
+Please select view: Odaberite prikaz
+Loading...: Učitavanje...
+View: Prikaz
+from: od
+to: u
+grid.view_selector:
+  default_view: Zadani prikaz
+  save_changes: Spremi ovaj prikaz
+  remove: Izbriši ovaj prikaz
+  create_view: Stvaranje prikaza
+  create: Kreiraj
+  search: Pretraživanje
+  views: Pregledi
+  placeholder: Naziv novog prikaza
+  choose_label: Odaberi oznaku za prikaz
+  confirmation:
+    delete: Potvrdi brisanje
+grid.view_selector.flash.updated: Prikaz tablice je uspješno ažuriran

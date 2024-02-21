@@ -1,0 +1,174 @@
+#Entities
+Job: Taak
+Connector: Connector
+pim_import_export:
+  job: Taak
+  connector: Connector
+  ## Job status
+  status:
+    0: Gereed
+  batch_status:
+    1: Voltooid
+    2: Opstarten
+    3: Gestart
+    4: Aan het stoppen
+    5: Gestopt
+    6: Mislukt
+    7: Afgebroken
+    8: Onbekend
+    9: Pauze aangevraagd
+    10: Gepauzeerd
+  download_archive:
+    archive: download gegenereerd archief | download gegenereerde archieven
+    output: download gegenereerd bestand | download gegenereerde bestanden
+    input: download ingelezen bestand | download ingelezen bestanden
+    invalid_xlsx: download ongeldige data
+    invalid_csv: download ongeldige data
+  notification:
+    export:
+      error: Export <strong>%label%</strong> mislukt
+      warning: Export <strong>%label%</strong> met enkele waarschuwingen beëindigd
+      success: Export <strong>%label%</strong> beëindigd
+      warnings:
+        xlsx_cell_conversion_error: Uitzondering tijdens het converteren van de kolom "{0}" naar het attribuuttype van het PIM-doelproduct (controleer de celindeling in Excel)
+        xlsx_cell_date_to_text_conversion_error: Kan cel {0} niet converteren met datumindeling naar attribuuttype 'tekst'
+    import:
+      error: Import <strong>%label%</strong> mislukt
+      warning: Import <strong>%label%</strong> met enkele waarschuwingen beëindigd
+      success: Import <strong>%label%</strong> beëindigd
+      warnings:
+        xlsx_cell_date_conversion_error: Kan cel "{cellName}" niet converteren met datumformaat naar attribuut van type {attributeType}
+  list: Selecteer een taak
+  job_profile:
+    tab:
+      property.title: Algemene eigenschappen
+      history.title: Geschiedenis
+      job_content.title: Inhoud
+#Page titles:
+pim_title.export_profile.index: Beheer van exportprofielen
+pim_title.export_profile.edit: Exportprofielen %job.label% | Bewerken
+pim_title.export_profile.show: Exportprofielen %job.label% | Tonen
+pim_title.export_execution.index: Exportverwerkingen geschiedenis
+pim_title.export_execution.show: Exportverwerkingen | Details
+pim_title.import_profile.index: Beheer van importprofielen
+pim_title.import_profile.edit: Importprofielen %job.label% | Bewerken
+pim_title.import_profile.show: Importprofielen %job.label% | Tonen
+pim_title.import_execution.index: Importverwerkingen geschiedenis
+pim_title.import_execution.show: Importverwerkingen | Details
+#Entity and page header titles
+export profile:
+  title: Profiel exporteren
+  edit: exportprofiel bewerken
+import profile:
+  title: Profiel importeren
+  edit: importprofiel bewerken
+#ACLs
+pim_importexport:
+  acl:
+    export_profile:
+      index: Bekijk exportprofielen lijst
+      create: Exportprofiel aanmaken
+      show: Toon een exportprofiel
+      edit: Een exportprofiel bewerken
+      remove: Een exportprofiel verwijderen
+      launch: Start een exportprofiel
+      property_edit: Wijzig de algemene eigenschappen van een exportprofiel
+      property_show: Toon de algemene eigenschappen van een exportprofiel
+      history: Bekijk geschiedenis van exportprofiel
+      content_edit: Wijzig de inhoud van een exportprofiel
+      content_show: Toon inhoud van exportprofiel
+    import_profile:
+      index: Bekijk importprofielen lijst
+      create: Importprofiel aanmaken
+      show: Toon een importprofiel
+      edit: Een importprofiel bewerken
+      remove: Een importprofiel verwijderen
+      launch: Start een importprofiel
+      history: Bekijk geschiedenis van importprofiel
+    export_execution:
+      index: Bekijk export-rapporten lijst
+      show: Bekijk export-rapport details
+      dl_log: Export-logboek downloaden
+      dl_files: Geëxporteerde bestanden downloaden
+    import_execution:
+      index: Bekijk import-rapporten lijst
+      show: Bekijk import-rapport details
+      dl_log: Import-logboek downloaden
+      dl_files: Geïmporteerde bestanden downloaden
+  acl_group:
+    export: Exportprofielen
+    import: Importprofielen
+#Buttons
+btn:
+  create:
+    export profile: Exportprofiel aanmaken
+    import profile: Importprofiel aanmaken
+Upload and import now: Uploaden en nu importeren
+import now: Nu importeren
+export now: Nu exporteren
+#Confirmation messages
+confirmation:
+  remove:
+    export profile: Weet u zeker dat u het exportprofiel %name% wilt verwijderen?
+    import profile: Weet u zeker dat u het importprofiel %name% wilt verwijderen?
+#Flash messages
+flash:
+  export:
+    created: De export is succesvol aangemaakt
+    removed: De export is verwijderd
+    updated: De export is succesvol bijgewerkt
+    running: De export is bezig
+  import:
+    created: De import is succesvol aangemaakt
+    removed: De import is verwijderd
+    updated: De import is succesvol bijgewerkt
+    running: De import is bezig
+#Tabs
+General properties: Algemene eigenschappen
+History: Geschiedenis
+pane.accordion:
+  properties: Eigenschappen
+  global_settings: Algemene instellingen
+  filters: Filters
+#Popin titles
+popin.create:
+  export_profile.title: Een nieuw exportprofiel aanmaken
+  import_profile.title: Een nieuw importprofiel aanmaken
+#Job execution
+'Display item': Object weergeven
+'Hide item': Object verbergen
+'Collecting data about job execution...': Gegevens verzamelen over taakverwerking...
+'You must select a file to upload': U moet een bestand selecteren om te uploaden
+Download log: Logbestand downloaden
+Show profile: Profiel weergeven
+execution details: verwerkingsdetails
+job_execution.summary:
+  read: lees
+  write: geschreven
+  skip: overgeslagen
+  create: gecreëerd
+  update: geüpdatet
+  update_products: geüpdatete producten
+  skip_products: overgeslagen producten
+  displayed: eerste waarschuwingen weergegeven
+  charset_validator:
+    title: 'Bestandscodering:'
+    skipped: overgeslagen, extensie in whitelist
+Step: Stap
+Status: Status
+Warnings: Waarschuwingen
+Summary: Samenvatting
+Start: Start
+End: Einde
+#Process tracker
+set_attribute_requirements: Instellen Attribuut vereisten
+COMPLETED: Voltooid
+STARTING: Opstarten
+STARTED: Gestart
+STOPPING: Aan het stoppen
+STOPPED: Gestopt
+FAILED: Mislukt
+ABANDONED: Afgebroken
+UNKNOWN: Onbekend
+warning.label: Waarschuwing
+pim_datagrid.column.username: Gebruikersnaam

@@ -1,0 +1,48 @@
+pim_catalog_volume:
+  product_values: "您的 PIM 中有 <span>{{values}}</span> 个产品值！平均每个产品 <span>{{average}}</span> 个产品值！&nbsp; 💪"
+  product_values_description: '您拥有的产品值越多，您的 PIM 就越有价值，您的 ROI 就越高！更多详情 <a href="{{link}}" target="_blank">在这里</a>'
+  section:
+    product_values:
+      hint: '您是否知道，您的 PIM 中的产品值总数直接与以下坐标轴相关联？<br/>为了解更多详情，我们邀请您<a href="{{link}}" target="_blank">浏览这篇文章</a>。'
+      title: 影响产品值数量的轴
+    catalog_structure:
+      hint: 您可能知道，良好的目录结构确实很重要，是有效丰富的条件。下面是用于监视您目录结构的各种轴。
+      title: 与目录结构相关的轴
+    variant_modelling:
+      hint: 如果您正在使用变量建模，此处是帮助您监视量的轴。
+      title: 关于变量建模的轴
+  axis:
+    count_products: 产品
+    average_max_attributes_per_family: 每个品类的属性
+    count_channels: 渠道
+    count_locales: 区域(已启用)
+    count_scopable_attributes: 可确定范围的属性
+    count_localizable_and_scopable_attributes: 可本地化和可确定范围的属性
+    count_localizable_attributes: 可本地化的属性
+    count_families: 品类
+    count_attributes: 属性
+    average_max_options_per_attribute: 按属性的选项
+    count_categories: 类别
+    count_category_trees: 类别树
+    count_variant_products: 变型产品
+    count_product_models: 产品模型
+    count_product_and_product_model_values: 产品价值
+    average_max_product_and_product_model_values: 按产品分列的产品价值
+    count_reference_entity: 参考实体
+    average_max_records_per_reference_entity: 每个参考实体的记录
+    average_max_attributes_per_reference_entity: 每个参考实体的属性
+    count_asset_family: 资产品类
+    average_max_assets_per_asset_family: 每个资产品类的资产
+    average_max_attributes_per_asset_family: 每个资产品类的属性
+    title:
+      product: 产品
+      catalog: 目录
+      product_structure: 产品结构
+      variant_modeling: 变量建模
+      reference_entities: 参考实体
+      assets: 资产
+  mean: '平均：'
+  max: '最大值：'
+  error:
+    generic_title: 抱歉，发生错误。
+    generic_message: 稍后再试。

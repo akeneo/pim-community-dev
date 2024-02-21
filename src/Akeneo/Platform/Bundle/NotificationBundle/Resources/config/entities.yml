@@ -1,0 +1,3 @@
+parameters:
+    pim_notification.entity.notification.class:      Akeneo\Platform\Bundle\NotificationBundle\Entity\Notification
+    pim_notification.entity.user_notification.class: Akeneo\Platform\Bundle\NotificationBundle\Entity\UserNotification

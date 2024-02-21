@@ -1,0 +1,152 @@
+services:
+    pim_enrich.connector.use_cases.validator.list_products:
+        class: Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ListProductsQueryValidator
+        arguments:
+            - '@akeneo.pim.enrichment.use_cases.validator.attributes'
+            - '@akeneo.pim.enrichment.use_cases.validator.channel'
+            - '@akeneo.pim.enrichment.use_cases.validator.locales'
+            - '@akeneo.pim.enrichment.use_cases.validator.pagination'
+            - '@akeneo.pim.enrichment.use_cases.validator.criterion'
+            - '@akeneo.pim.enrichment.use_cases.validator.categories'
+            - '@akeneo.pim.enrichment.use_cases.validator.properties'
+            - '@akeneo.pim.enrichment.use_cases.validator.search_locale'
+            - '@akeneo.pim.enrichment.use_cases.validator.validate_granted_search_locale'
+            - '@akeneo.pim.enrichment.use_cases.validator.validate_granted_categories'
+            - '@akeneo.pim.enrichment.use_cases.validator.validate_granted_properties'
+            - '@akeneo.pim.enrichment.use_cases.validator.validate_granted_attributes'
+            - '@akeneo.pim.enrichment.use_cases.validator.validate_granted_locales'
+            - '@akeneo.pim.enrichment.use_cases.validator.validate_identifiers_limit'
+
+    pim_enrich.connector.use_cases.handler.list_products:
+        class: Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductsQueryHandler
+        arguments:
+            - '@pim_catalog.repository.cached_channel'
+            - '@akeneo.pim.enrichment.use_cases.apply_product_search_query_parameters_to_pqb'
+            - '@pim_catalog.query.product_query_builder_from_size_factory_external_api'
+            - '@pim_catalog.query.product_query_builder_search_after_size_factory_external_api'
+            - '@akeneo.pim.enrichment.product.connector.get_product_from_uuids'
+            - '@akeneo.pim.enrichment.product.connector.get_product_from_uuids_with_options'
+            - '@event_dispatcher'
+            - '@akeneo.pim.enrichment.use_cases.get_products_with_quality_scores'
+            - '@akeneo.pim.enrichment.use_cases.get_products_with_completenesses'
+            - '@akeneo.pim.enrichment.product.query.find_id'
+
+    Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductsByUuidQueryHandler:
+        arguments:
+            - '@pim_catalog.repository.cached_channel'
+            - '@akeneo.pim.enrichment.use_cases.apply_product_search_query_parameters_to_pqb'
+            - '@pim_catalog.query.product_query_builder_from_size_factory_external_api'
+            - '@pim_catalog.query.product_query_builder_search_after_size_factory_external_api'
+            - '@akeneo.pim.enrichment.product.connector.get_product_from_uuids'
+            - '@akeneo.pim.enrichment.product.connector.get_product_from_uuids_with_options'
+            - '@event_dispatcher'
+            - '@akeneo.pim.enrichment.use_cases.get_products_with_quality_scores'
+            - '@akeneo.pim.enrichment.use_cases.get_products_with_completenesses'
+            - '@akeneo.pim.enrichment.product.query.find_id'
+
+    pim_enrich.connector.use_cases.handler.list_product_models:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductModelsQueryHandler'
+        arguments:
+            - '@akeneo.pim.enrichment.use_cases.apply_product_search_query_parameters_to_pqb'
+            - '@pim_catalog.query.product_model_query_builder_from_size_factory_external_api'
+            - '@pim_catalog.query.product_model_query_builder_search_after_size_factory_external_api'
+            - '@akeneo.pim.enrichment.product.connector.get_product_models_from_codes'
+            - '@pim_catalog.repository.cached_channel'
+            - '@akeneo.pim.enrichment.product_model.query.find_id'
+            - '@akeneo.pim.enrichment.use_cases.get_product_models_with_quality_scores'
+
+    pim_enrich.connector.use_cases.validator.list_product_models:
+        class: Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ListProductModelsQueryValidator
+        arguments:
+            - '@akeneo.pim.enrichment.use_cases.validator.attributes'
+            - '@akeneo.pim.enrichment.use_cases.validator.channel'
+            - '@akeneo.pim.enrichment.use_cases.validator.locales'
+            - '@akeneo.pim.enrichment.use_cases.validator.pagination'
+            - '@akeneo.pim.enrichment.use_cases.validator.criterion'
+            - '@akeneo.pim.enrichment.use_cases.validator.categories'
+            - '@akeneo.pim.enrichment.use_cases.validator.properties'
+            - '@akeneo.pim.enrichment.use_cases.validator.search_locale'
+            - '@akeneo.pim.enrichment.use_cases.validator.validate_granted_search_locale'
+            - '@akeneo.pim.enrichment.use_cases.validator.validate_granted_categories'
+            - '@akeneo.pim.enrichment.use_cases.validator.validate_granted_properties'
+            - '@akeneo.pim.enrichment.use_cases.validator.validate_granted_attributes'
+            - '@akeneo.pim.enrichment.use_cases.validator.validate_granted_locales'
+
+    akeneo.pim.enrichment.use_cases.apply_product_search_query_parameters_to_pqb:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ApplyProductSearchQueryParametersToPQB'
+        arguments:
+            - '@pim_catalog.repository.cached_channel'
+
+    akeneo.pim.enrichment.use_cases.validator.attributes:
+        class: Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ValidateAttributes
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
+
+    akeneo.pim.enrichment.use_cases.validator.channel:
+        class: Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ValidateChannel
+        arguments:
+            - '@pim_catalog.repository.cached_channel'
+
+    akeneo.pim.enrichment.use_cases.validator.locales:
+        class: Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ValidateLocales
+        arguments:
+            - '@pim_catalog.repository.cached_channel'
+            - '@pim_catalog.repository.cached_locale'
+
+    akeneo.pim.enrichment.use_cases.validator.pagination:
+        class: Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ValidatePagination
+        arguments:
+            - '@pim_api.pagination.parameter_validator'
+
+    akeneo.pim.enrichment.use_cases.validator.criterion:
+        class: Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ValidateCriterion
+
+    akeneo.pim.enrichment.use_cases.validator.categories:
+        class: Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ValidateCategories
+        arguments:
+            - '@pim_catalog.repository.cached_category'
+
+    akeneo.pim.enrichment.use_cases.validator.properties:
+        class: Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ValidateProperties
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
+
+    akeneo.pim.enrichment.use_cases.validator.validate_identifiers_limit:
+        class: Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ValidateIdentifiersLimit
+
+    akeneo.pim.enrichment.use_cases.validator.search_locale:
+        class: Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ValidateSearchLocale
+        arguments:
+            - '@pim_catalog.repository.cached_locale'
+
+    akeneo.pim.enrichment.use_cases.validator.validate_granted_search_locale:
+        class: Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ValidateAlwaysGrantedSearchLocale
+
+    akeneo.pim.enrichment.use_cases.validator.validate_granted_categories:
+        class: Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ValidateAlwaysGrantedCategories
+
+    akeneo.pim.enrichment.use_cases.validator.validate_granted_properties:
+        class: Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ValidateAlwaysGrantedProperties
+
+    akeneo.pim.enrichment.use_cases.validator.validate_granted_attributes:
+        class: Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ValidateAlwaysGrantedAttributes
+
+    akeneo.pim.enrichment.use_cases.validator.validate_granted_locales:
+        class: Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ValidateAlwaysGrantedLocales
+
+    akeneo.pim.enrichment.use_cases.get_products_with_quality_scores:
+        class: Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithQualityScores
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Query\ProductEvaluation\GetProductScoresQuery'
+            - '@akeneo.pim.automation.data_quality_insights.feature'
+
+    akeneo.pim.enrichment.use_cases.get_products_with_completenesses:
+        class: Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithCompletenesses
+        arguments:
+            - '@akeneo.pim.enrichment.product.query.get_product_completenesses'
+
+    akeneo.pim.enrichment.use_cases.get_product_models_with_quality_scores:
+        class: Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductModelsWithQualityScores
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Query\ProductEvaluation\GetProductModelScoresQuery'
+            - '@akeneo.pim.automation.data_quality_insights.feature'

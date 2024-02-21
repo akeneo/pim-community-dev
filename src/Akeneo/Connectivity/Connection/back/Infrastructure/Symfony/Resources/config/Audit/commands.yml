@@ -1,0 +1,15 @@
+services:
+    Akeneo\Connectivity\Connection\Infrastructure\Audit\Command\PurgeAuditErrorCommand:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\PurgeAuditErrorQuery'
+        tags:
+            - {name: 'console.command'}
+            - { name: 'akeneo.command.authenticated_as_admin_user' }
+
+    Akeneo\Connectivity\Connection\Infrastructure\Audit\Command\UpdateAuditDataCommand:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Audit\UpdateAuditData'
+            - '@logger'
+        tags:
+            - { name: 'console.command' }
+            - { name: 'akeneo.command.authenticated_as_admin_user' }

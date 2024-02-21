@@ -1,0 +1,48 @@
+pim_catalog_volume:
+  product_values: "Tens <span>{{values}}</span> valors de producte en el PIM! Amb una mitjana de <span>{{average}}</span> valors de productes per producte!&nbsp;💪"
+  product_values_description: 'El PIM es torna més valuós com més productes tens, i el ROI més poderós! Més detalls <a href="{{link}}" target="_blank">aquí</a>'
+  section:
+    product_values:
+      hint: 'Sap que el nombre total de valors de producte en el PIM està directament relacionat amb els següents eixos?<br/> Per més detalls, l''invitem a <a href="{{link}}" target="_blank">llegir aquest article</a>.'
+      title: Eixos que influeixen al número de valors de producte
+    catalog_structure:
+      hint: Vostè sap que l'estructura d'un bon catàleg és molt important i va condicionat a un enriquiment eficient. A continuació es presenten els diversos eixos per controlar l'estructura del catàleg.
+      title: Eixos relacionats amb l'estructura del catàleg
+    variant_modelling:
+      hint: Si esteu utilitzant el modelatge de variant, aquí teniu ajuda dels eixos per controlar el volum.
+      title: Eixos sobre el variant de modelatge
+  axis:
+    count_products: Productes
+    average_max_attributes_per_family: Atributs per família
+    count_channels: Canals
+    count_locales: Locals (activats)
+    count_scopable_attributes: Atributs multicanal
+    count_localizable_and_scopable_attributes: Atributs localitzables i multicanal
+    count_localizable_attributes: Atributs localitzables
+    count_families: Famílies
+    count_attributes: Atributs
+    average_max_options_per_attribute: Opcions per atribut
+    count_categories: Categories
+    count_category_trees: Arbres de categories
+    count_variant_products: Variant de productes
+    count_product_models: Models de producte
+    count_product_and_product_model_values: Valors del producte
+    average_max_product_and_product_model_values: Valors de producte per producte
+    count_reference_entity: Entitats de referència
+    average_max_records_per_reference_entity: Registres per entitat de referencia
+    average_max_attributes_per_reference_entity: Atributs per entitat de referencia
+    count_asset_family: Famílies de recursos
+    average_max_assets_per_asset_family: Recursos per famílies de recursos
+    average_max_attributes_per_asset_family: Atributs per famílies de recursos
+    title:
+      product: Producte
+      catalog: Catàleg
+      product_structure: Estructura del producte
+      variant_modeling: Model de variant
+      reference_entities: Entitas de referència
+      assets: Recursos
+  mean: 'Mitjana:'
+  max: 'Màxim:'
+  error:
+    generic_title: Ho sentim, ha sorgit un error.
+    generic_message: Proveu-ho novament d'aquí un moment.

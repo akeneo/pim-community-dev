@@ -1,0 +1,213 @@
+job_execution:
+  summary:
+    display_item: Näytä kohde
+    hide_item: Piilota kohde
+pim_connector:
+  export:
+    categories:
+      selector:
+        modal:
+          title: Kategoriavalinta
+        label: "{0}Kaikki tuotteet|{1}Yksi kategoria valittu|]1,Inf[{{ count }} kategoriaa valittu"
+        title: Valitse kategoriat
+    locales:
+      validation:
+        not_blank: Yksi lokaatio on valittava, valitse vietävä lokaatio.
+pim_import_export:
+  validation:
+    max_length_reached: Arvo on liian pitkä. Siinä saa olla enintään {{ limit }} merkkiä tai vähemmän.
+  entity:
+    job_instance:
+      label: työprofiili
+      flash:
+        update:
+          success: Työprofiili päivitetty.
+          fail: Työprofiilia ei voitu päivittää.
+        delete:
+          success: Tehtävä poistaminen onnistui
+      duplicate:
+        title: Monista profiili {{ job_code }}
+        success: Työprofiili on onnistuneesti kopioitu.
+        fail: Työprofiilia ei voitu kopioida.
+    import_profile:
+      uppercase_label: Tuontiprofiili
+      flash:
+        create:
+          success: Tuontiprofiilin tallentaminen onnistui
+        upload:
+          error: Tiedoston lataaminen ei onnistu. Sen koko ylittää maksimikokorajoituksen (PHP tai HTTP palvelimen konfiguraatio)
+      page_title:
+        index: "]-Inf, 1] {{ count }} tuontiprofiili|]1, Inf [{{ count }} tuontiprofiilia"
+      module:
+        create:
+          button: Luo tuontiprofiili
+    export_profile:
+      uppercase_label: Vientiprofiili
+      flash:
+        create:
+          success: Vientiprofiilin tallentaminen onnistui
+      page_title:
+        index: "]-Inf, 1] {{ count }} vientiprofiili|]1, Inf [{{ count }} vientiprofiilia"
+      module:
+        create:
+          button: Luo vientiprofiili
+  form:
+    job_execution:
+      title.details: Suorittamisen yksityiskohdat
+      refreshing: Suorituksen tiedot päivittyvät
+      refreshBtn.title: Päivitä
+      button:
+        show_profile.title: Näytä profiili
+        download_log.title: Lataa loki
+        download_file.title: Lataa viety tiedosto
+        download_archive.title: Lataa luotu pakattu kansio
+      summary:
+        fetching: Kerää tietoja työsuorituksesta...
+        warning: Varoitus
+        header.step: Vaihe
+        header.warnings: Varoitus
+        header.summary: Yhteenveto
+        header.start: Aloitus
+        header.end: Loppu
+    job_instance:
+      fail:
+        launch: Profiilin käynnistäminen epäonnistui. Varmista profiilin oikeellisuus ja että sinulla on oikeudet sen käynnistämiseen.
+        save: Profiilin tallentaminen epäonnistui. Varmista että sinulla on oikeudet profiilin muokkaamiseen.
+      button:
+        export.title: Vie nyt
+        import.launch: Tuo nyt
+        import.upload: Lataa ja tuo nyt
+        import.upload_file: Lataa tiedosto
+      meta:
+        job: Työ
+        connector: Liitin
+      subsection:
+        last_executions: Viimeksi suoritettu
+      tab:
+        content:
+          title: Sisältö
+        properties:
+          decimal_separator:
+            title: Desimaalierotin
+            help: Määritä desimaalierotin
+          date_format:
+            title: Päivämäärän muoto
+            help: Määritä päivämääräkenttien formaatti
+          file_path:
+            title: Tiedostopolku
+            help: Mihin kirjoittaa generoitu tiedosto tiedostorakenteessa
+            help_import: Käytettävän tiedoston tiedostopolku
+          delimiter:
+            title: Erotin
+            help: Yhtä merkkiä käytetään kentän erottajan määrittämiseen
+          enclosure:
+            title: Liite
+            help: Yhtä merkkiä käytetään kentän liitteen määrittämiseen
+          with_header:
+            title: Sarakeotsikon kanssa
+            help: Tulostaako sarakkeen nimen vai ei
+          with_media:
+            title: Vie media
+            help: Viedäänkö media vai ei
+          lines_per_file:
+            title: Riviä per tiedosto
+            help: Määritä rivimäärä per tiedosto
+          upload_allowed:
+            title: Salli tiedoston tuonti
+            help: Sallitaanko tiedoston suora lataus järjestelmään
+          categories_column:
+            title: Kategoriasarake
+            help: Kategoriasarakkeen nimi
+          escape:
+            title: Koodinvaihto
+            help: Yhtä merkkiä käytetään kentän "poistu" määrittämiseen
+          family_column:
+            title: Perhesarake
+            help: Perhesarakkeen nimi
+          groups_column:
+            title: Ryhmäsarake
+            help: Ryhmäsarakkeen nimi
+          enabled:
+            title: Ota tuote käyttöön
+            help: Pitääkö tuodun tuotteen olla käytössä
+          enabled_comparison:
+            title: Vertaa arvoja
+            help: Ota päälle alkuperäisten ja tuotujen arvojen vertailu. Voi nopeuttaa tuonti, ja tuodut arvot ovat hyvin samanlaisia kuin alkuperäiset arvot
+          real_time_versioning:
+            title: Reaaliaikainen historiapäivitys
+            help: Tarkoittaa että tuotehistoria on automaattisesti päivitetty, voidaan laittaa pois päältä suorituskyvyn parantamiseksi
+          convert_variant_to_simple:
+            title: Muunna variantti yksittäistuotteeksi
+            help: Yritä muuntaa varianttituotteet yksittäistuotteiksi, kun parent -sarake on tyhjä. Jos asetus on "Ei", tyhjä parent-sarake jätetään huomiotta.
+          family_variant_column:
+            title: Varianttiperheen sarake
+          with_label:
+            title: Arvojen otsikoiden kanssa
+            help: Määritä, näyttääkö vientitiedosto arvojen otsikot arvojen koodien sijasta
+          header_with_label:
+            title: Sarakenimet otsikoilla
+            help: Määritä, näyttääkö vientitiedosto sarakkeiden otsikot sarakkeiden koodien sijasta
+          file_locale:
+            title: Tiedoston lokaali
+            help: Määritä lokaali, jossa otsikot näytetään
+      file_path: Tiedostopolku
+      storage_form:
+        file_path:
+          label: Tiedostopolku
+  batch_status:
+    1: Valmis
+    2: Alkaa
+    3: Työn alla
+    4: Päättyy
+    5: Päättynyt
+    6: Epäonnistunut
+    7: Hylätty
+    8: Tuntematon
+  job_status:
+    COMPLETED: Valmis
+    STARTING: Alkaa
+    STARTED: Työn alla
+    STOPPING: Päättyy
+    STOPPED: Päättynyt
+    FAILED: Epäonnistunut
+    ABANDONED: Hylätty
+    UNKNOWN: Tuntematon
+  tracking:
+    completed: "Käytetty aika: {{ duration }}"
+    in_progress: "Arvioitu aika jäljellä: {{ duration }}"
+    not_started: "Odottaa"
+    untrackable: Ei-seurattava vaihe
+    estimating: "Arvioidaan jäljellä olevaa aikaa:"
+confirmation:
+  remove:
+    import_profile: Oletko varma, että haluat poistaa tämän tuontiprofiilin?
+    export_profile: Oletko varma, että haluat poistaa tämän vientiprofiilin?
+    job_instance: Oletko varma, että haluat poistaa tämän tehtävän?
+pim_enrich:
+  entity:
+    import_profile:
+      module:
+        delete:
+          confirm: Oletko varma, että haluat poistaa tämän tuontiprofiilin?
+      flash:
+        delete:
+          success: Tuontiprofiili poistettiin onnistuneesti
+    export_profile:
+      module:
+        delete:
+          confirm: Oletko varma, että haluat poistaa tämän vientiprofiilin?
+      flash:
+        delete:
+          success: Vientiprofiili poistettiin onnistuneesti
+pim_title:
+  pim_importexport_export_profile_index: Vientiprofiilien hallinta
+  pim_importexport_export_profile_edit: Vientiprofiili {{ job.label }} | Muokkaa
+  pim_importexport_export_profile_show: Vientiprofiili {{ job.label }} | Näytä
+  pim_importexport_export_execution_index: Vientihistoria
+  pim_importexport_export_execution_show: Vientisuoritukset | Yksityiskohdat
+  pim_importexport_import_profile_index: Tuontiprofiilien hallinta
+  pim_importexport_import_profile_edit: Tuontiprofiili {{ job.label }} | Muokkaa
+  pim_importexport_import_profile_show: Tuontiprofiili {{ job.label }} | Näytä
+  pim_importexport_import_execution_index: Tuontihistoria
+  pim_importexport_import_execution_show: Tuontisuoritukset | Yksityiskohdat
+

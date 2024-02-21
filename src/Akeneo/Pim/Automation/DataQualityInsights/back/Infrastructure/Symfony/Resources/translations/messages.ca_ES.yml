@@ -1,0 +1,15 @@
+akeneo_data_quality_insights:
+  axis:
+    enrichment: Enriquiment
+  acl:
+    activation_attribute_group:
+      edit: Editar l'activació de la informació de la qualitat de dades
+  acl_group:
+    dqi: Informació de la qualitat de dades
+  product_grid:
+    filter_label:
+      quality_score: Puntuació de qualitat
+      enrichment_quality: Qualitat d'enriquiment
+      images_quality: Imatge del producte
+Enrichment: Enriquiment
+Quality Score: Puntuació de qualitat

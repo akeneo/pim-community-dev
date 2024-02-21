@@ -1,0 +1,78 @@
+An identifier attribute already exists.: Tanımlayıcı özellik zaten bulunmakta.
+Attribute code may contain only letters, numbers and underscore: Özellik kodu yalnızca ingilizce karakterler, rakam ve alt çizgi içerebilir
+Attribute code may contain only letters (at least one), numbers and underscores: Özellik kodu sadece harfler (en az bir tane), rakamlar ve alt çizgiler içerebilir
+This attribute type can't be used as a grid filter: Bu özellik türü katalog filtresi olarak kullanılamaz
+This code is not available: Bu kod geçersiz
+This attribute type must be required: Bu özellik türü gerekli olmalıdır
+This attribute type can't be required: Bu özellik türü gerekli olmamalıdır
+This attribute type can't have unique value: Bu özellik türü benzersiz değere sahip olamaz
+No default value may be specified for this attribute type: Bu özellik türüne varsayılan değer atanamaz
+This value should be Yes or No: Evet ya da Hayır değeri olmalıdır
+This value should not be blank: Bu değer boş olmamalıdır
+Option code may contain only letters, numbers and underscores: Seçenek kodu yalnızca harf, sayı ve alt çizgi içerebilir
+Option code may contain only letters (at least one), numbers and underscores: Seçenek kodu yalnız harfler (en az bir), sayları ve alt çizgiler içerebilir
+This value should not be a decimal.: Bu değer bir ondalık olmamalıdır.
+'The file extension is not allowed (allowed extensions: %extensions%).': 'Dosya uzantısına izin verilmiyor (izin verilen uzantılar: %extensions%).'
+The same identifier is already set on another product: Aynı tanımlayıcı başka bir ürün için zaten belirlenmiş
+file.extensions.message: 'Dosya uzantısına izin verilmiyor (izin verilen uzantılar: %extensions%).'
+"This type of value expects the use of {{ decimal_separator }} to separate decimals.": Bu tip bir değer, ondalık sayıları ayırırken {{ decimal_separator }} kullanımını ister.
+"This type of value expects the use of dot (.) to separate decimals.": Bu tür bir değer ondalık basamakları ayırmak için bir nokta (.) kullanımını bekliyor.
+"This type of value expects the use of comma (,) to separate decimals.": Bu tip bir değer, ondalık sayıları ayırırken virgül (,) kullanımını ister.
+"This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Bu tip bir değer, ondalık sayıları ayırırken Arapça ondalık ayracı (٫) kullanımını ister.
+"This type of value expects the use of the format {{ date_format }} for dates.": Bu tip bir değer, tarihler için {{ date_format }} biçiminde kullanım ister.
+"The category \"%category%\" has to be a root category.": '%category% kategorisi ana kategori olmalıdır.'
+"The attribute \"%attributeCode%\" does not exist.": '%attributeCode% özelliği yok.'
+"The currency \"%currency%\" has to be activated.": '%currency% para birimi aktifleştirilmelidir.'
+product_model.code.not_blank.message: Ürün model kodu boş olmamalıdır.
+product_model.code.unique.message: Aynı kod başka bir ürün modeli için önceden ayarlanmış.
+product_model.family_variant.not_blank.message: Ürün modeli tür değişkeni boş olmamalı.
+pim_catalog:
+  constraint:
+    can_have_family_variant_empty_axis_value: 'Bu varlık için eksen olarak tanımlanan %attribute% özelliği boş olamaz'
+    can_have_family_variant_unexpected_attribute: 'Özellik kümesinde olmadığı için %attribute% özelliği bu varlığa ayarlanamıyor'
+    cannot_have_product_model_as_parent: '%product_model% ürün modeli üst model olarak %parent_product_model% ürün modeline sahip olamaz'
+    cannot_have_parent: '%product_model% ürün modeli üst modele sahip olamaz'
+    attribute_does_not_belong_to_family: '%attribute% özelliği %family% türüne ait değil'
+    variant_product_invalid_family: 'Varyant ürün ailesi ebeveyninden farklı olmalıdır'
+    not_null_family: Aile, "%sku%" tanımlayıcısı ile ürününüz varyant ürün olduğundan "null" olamaz.
+    variant_product_has_parent: 'Varyant ürün "%varıant_product%" bir üst olmalıdır'
+    invalid_variant_product_parent: 'Varyant ürün "%varıant_product%" ürün modeli olamaz "%product_model%" üst olarak, (bu ürün modeli yalnızca çocuk olarak diğer ürün modelleri olabilir)'
+    modified_variant_axis_value: 'Değişken ekseni %variant_axis% ''ya değiştirilemiyor, %provided_value% verildi'
+    family_variant_attributes_unique: Özellikler benzersiz olmalı, %attributes% özellikleri değişken özellik kümelerinde birkaç kez kullanılmış
+    family_variant_axes_unique: Değişim eksenleri benzersiz olmalı, %attributes% değişken özellik kümeleri içinde birkaç kez kullanılmış
+    family_variant_axes_immutable: 'Değişken eksen düzeyi "%level%". seviye için değiştirilemez'
+    family_variant_axes_attribute_type_unique: Değişken eksenleri "%axis%" emsalsiz veya belirleyici olamaz
+    family_variant_axes_wrong_type: Değişken eksenleri "%axis%" yerelleştirilebilir olamaz, scopable değil ve yerel özel değil
+    family_variant_axes_number_of_axes: 'Değişken özellik kümesi%max_axes_number% ekseninden fazla olamaz'
+    family_variant_no_axis: '"%Seviye% " için ayarlanmış öznitelik için eksen olarak tanımlanan en az bir öznitelik olmalıdır'
+    family_variant_axis_level: '"%Axis%" özniteliği aynı variant öznitelik kümesi eksen olarak ayarlanmış öznitelik olarak ayarlanmalıdır'
+    family_variant_has_family_attribute: "%attribute% özellik eklenemez %family_variant% aile varyantı, çünkü bu bir özellik değildir. %family% \naile"
+    family_variant_level_do_not_exist: '"%level%". seviye için ayarlanmış değişim özelliği yoktur'
+    family_variant_no_level: Tür değişiminde tanımlanmış en az bir seviye olmalıdır
+    family_variant_maximum_number_of_level: Tür değişimi "%level%" seviyesinden fazla olamaz
+    family_variant_unique_attributes_in_last_level: Benzersiz %attribute% özelliği ürün seviyesinde ayarlanması gerekir
+    product_identifier: Tanımlayıcılar mevcut değil. "%s"
+    0: Beklenmeyen bir hata oluştu.
+    100: Beklenmedik değer
+    101: Bu alan bir boolean değerini beklemekte.
+    102: Bu alan kayan bir değer beklemekte.
+    103: Bu alan tam bir sayı değeri beklemekte.
+    104: Bu alan sayısal değer bekliyor.
+    105: Bu alan metinsel değer bekliyor.
+    106: Bu alan bir dizi değer beklemekte.
+    107: Bu alan bir dizi dizinin değer olmasını beklemekte.
+    200: Bir iç hata meydana geldi
+    201: Bir iç hata meydana geldi
+    202: Bu alan sayısal değer bekliyor.
+    203: Bu alan metinsel değer bekliyor.
+    204: Bu alan metinsel değer bekliyor.
+    205: Bir iç hata meydana geldi
+    300: Bu alan geçerli bir varlık kodunu beklemekte.
+    301: Bu alan geçerli bir kapsam ve yerel bir ayar beklemekte.
+    302: Bu alan geçerli bir kapsam beklemekte.
+    303: Bu alan geçerli bir ilişki biçimi beklemektedir.
+    pim_immutable_product_validator: Tanımlayıcı başka bir ürün için zaten belirlenmiş
+    pim_immutable_product_model_validator: Aynı kod başka bir ürün modeli için daha önce ayarlanmış.
+mass_edit:
+  edit_common_attributes:
+    invalid_values: Form özelliklerinde hatalar var

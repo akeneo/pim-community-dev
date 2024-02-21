@@ -1,0 +1,7 @@
+services:
+    pim_datagrid.remover.datagrid_view:
+        class: '%pim_catalog.remover.base.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '%pim_datagrid.entity.datagrid_view.class%'

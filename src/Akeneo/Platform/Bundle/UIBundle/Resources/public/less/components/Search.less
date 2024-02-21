@@ -1,0 +1,29 @@
+@import '../base/variables';
+
+.AknSearch {
+  height: @AknLittleButtonSize;
+  display: flex;
+  width: 100%;
+  border-bottom: 1px solid @AknBorderColor;
+  justify-content: flex-end;
+  padding-bottom: 1px;
+  margin-bottom: 10px;
+
+  &-input {
+    height: @AknLittleButtonSize;
+    color: @AknDefaultFontColor;
+    font-size: 12px;
+    line-height: @AknLittleButtonSize;
+    border: none;
+    background: url("/bundles/pimui/images/icon-search.svg") no-repeat 0 center;
+    padding-left: 30px;
+    flex-grow: 1;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &-selectors {
+  }
+}

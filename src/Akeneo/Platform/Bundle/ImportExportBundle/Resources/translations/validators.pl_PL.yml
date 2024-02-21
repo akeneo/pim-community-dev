@@ -1,0 +1,5 @@
+This directory is not writable: Ten katalog nie ma możliwości zapisu.
+This directory is not valid: Ten katalog nie jest prawidłowy.
+pim_import_export.job_instance.unknown_job_definition: Nie można utworzyć %job_type% z nieznaną definicją zadania
+This code is already taken: Ten kod jest już zajęty
+pim_import_export.validation.max_length_reached: 'Ta wartość jest zbyt długa. Powinna składać się z nie więcej niż następującej liczby znaków: {{ limit }}.'

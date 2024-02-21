@@ -1,0 +1,17 @@
+<div class="AknFormContainer AknFormContainer--withPadding">
+    <div class="AknFieldContainer">
+        <div class="AknFieldContainer-header">
+            <label class="AknFieldContainer-label control-label AknFieldContainer-label required" for="pim_enrich_mass_edit_choose_action_operation_change_family">
+                <%- label %>
+            </label>
+        </div>
+        <div class="AknFieldContainer-inputContainer field-input">
+            <input id="pim_enrich_mass_edit_choose_action_operation_change_family" type="hidden" class="input-large family select-field"
+                   value="<%- value !== null ? value : '' %>"
+                   <%- readOnly ? 'readonly disabled' : '' %>
+                   <%- value ? ' selected' : '' %>
+                   data-placeholder="<%- _.__('pim_enrich.entity.product.module.change_family.empty_selection') %>"
+            />
+        </div>
+    </div>
+</div>

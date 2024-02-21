@@ -1,0 +1,112 @@
+akeneo_data_quality_insights_dashboard:
+    path: /data-quality-insights/dashboard
+    defaults:
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\Dashboard\DashboardController
+        _feature: data_quality_insights
+    methods: [GET]
+
+akeneo_data_quality_insights_dashboard_overview:
+    path: /data-quality-insights/dashboard/overview/{channel}/{locale}/{timePeriod}
+    defaults:
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\Dashboard\DashboardOverviewController
+        _feature: data_quality_insights
+    methods: [GET]
+
+akeneo_data_quality_insights_dashboard_widget_families:
+    path: /data-quality-insights/dashboard/widget/families/{channel}/{locale}
+    defaults:
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\Dashboard\DashboardWidgetFamiliesController
+        _feature: data_quality_insights
+    methods: [GET]
+
+akeneo_data_quality_insights_dashboard_widget_categories:
+    path: /data-quality-insights/dashboard/widget/categories/{channel}/{locale}
+    defaults:
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\Dashboard\DashboardWidgetCategoriesController
+        _feature: data_quality_insights
+    methods: [GET]
+
+akeneo_data_quality_insights_dashboard_key_indicators:
+    path: /data-quality-insights/dashboard/key_indicators/{channel}/{locale}
+    defaults:
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\Dashboard\DashboardKeyIndicatorsController
+        _feature: data_quality_insights
+    methods: [GET]
+
+akeneo_data_quality_insights_dashboard_quality_score_evolution:
+    path: /data-quality-insights/dashboard/quality-score-evolution/{channel}/{locale}
+    defaults:
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\Dashboard\DashboardQualityScoreEvolutionController
+        _feature: data_quality_insights
+    methods: [GET]
+
+akeneo_data_quality_insights_product_evaluation:
+    path: /data-quality-insights/product-evaluation/{productUuid}
+    defaults:
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetProductEvaluationController
+        _feature: data_quality_insights
+    methods: [GET]
+
+akeneo_data_quality_insights_evaluate_product:
+    path: /data-quality-insights/product-evaluation/{productId}
+    defaults:
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\EvaluateProductController
+        _feature: data_quality_insights
+    methods: [POST]
+
+akeneo_data_quality_insights_product_model_evaluation:
+    path: /data-quality-insights/product-model-evaluation/{productModelId}
+    defaults:
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetProductModelEvaluationController
+        _feature: data_quality_insights
+    methods: [GET]
+
+akeneo_data_quality_insights_evaluate_product_model:
+    path: /data-quality-insights/product-model-evaluation/{productId}
+    defaults:
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\EvaluateProductModelController
+        _feature: data_quality_insights
+    methods: [POST]
+
+akeneo_data_quality_insights_update_attribute_group_activation:
+    path: /data-quality-insights/attribute-group-activation
+    defaults:
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\UpdateAttributeGroupActivationController
+        _feature: data_quality_insights
+    methods: [ POST ]
+
+akeneo_data_quality_insights_get_attribute_group_activation:
+    path: /data-quality-insights/attribute-group-activation/{attributeGroupCode}
+    defaults:
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetAttributeGroupActivationController
+        _feature: data_quality_insights
+    methods: [ GET ]
+
+akeneo_data_quality_insights_get_all_attribute_groups_activation:
+    path: /data-quality-insights/attribute-groups-activation
+    defaults:
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetAllAttributeGroupsActivationController
+        _feature: data_quality_insights
+    methods: [ GET ]
+
+akeneo_data_quality_insights_product_quality_score:
+    path: /data-quality-insights/product-quality-score/{productUuid}
+    defaults:
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetProductQualityScoreController
+        _feature: data_quality_insights
+    methods: [GET]
+
+akeneo_data_quality_insights_product_model_quality_score:
+    path: /data-quality-insights/product-model-quality-score/{productId}
+    defaults:
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetProductModelQualityScoreController
+        _feature: data_quality_insights
+    methods: [GET]
+
+
+akeneo_data_quality_insights_find_families:
+    path: /data-quality-insights/families
+    defaults:
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\Dashboard\FindFamiliesController
+        _feature: data_quality_insights
+    methods: [GET]

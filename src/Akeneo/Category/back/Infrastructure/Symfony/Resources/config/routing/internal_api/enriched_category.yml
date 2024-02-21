@@ -1,0 +1,25 @@
+pim_enriched_category_rest_update:
+  path: /rest/{id}
+  requirements: {'id': '\d+'}
+  defaults:
+    _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\UpdateCategoryController
+  methods: [POST]
+
+pim_enriched_category_rest_get:
+  path: /rest/{id}
+  requirements: {'id': '\d+'}
+  defaults:
+    _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\GetCategoryController
+  methods: [GET]
+
+pim_enriched_category_rest_file_upload:
+  path: '/rest/file/upload'
+  defaults:
+    _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\UploadController
+  methods: [POST]
+
+pim_enriched_category_rest_image_preview:
+  path: '/rest/file/image_preview/{attributeCode}/{type}'
+  defaults:
+    _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\ImagePreviewController
+  methods: [GET, POST]

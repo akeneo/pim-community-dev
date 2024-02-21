@@ -1,0 +1,8 @@
+<% _.each(attributes, function (attribute) { %>
+<li class="AknVerticalList-item AknVerticalList-item--movable" data-attribute-code="<%- attribute.code %>">
+    <div class="AknVerticalList-item-itemLabel" title="<%- i18n.getLabel(attribute.labels, userContext.get('catalogLocale'), attribute.code) %>">
+        <span class="attribute-label"><%- i18n.getLabel(attribute.labels, userContext.get('catalogLocale'), attribute.code) %></span>
+    </div>
+    <span class="AknIconButton AknIconButton--grey AknIconButton--small remove"><i class="icon-trash"></i></span>
+</li>
+<% }); %>

@@ -1,0 +1,86 @@
+No products to remove: Ei poistettavia tuotteita
+"dot (.)": piste (.)
+"comma (,)": pilkku (,)
+pim_enrich:
+  #Category
+  category:
+    tab:
+      property.title: Ominaisuudet
+      history.title: Historia
+    suggest_selection: Valitse kategoria vasemmalta
+    or: tai
+    create_new: Luo uusi kategoria
+  #Mass edit operations
+  mass_edit_action:
+    limit_exceeded: Ole hyvä ja valitse alle %limit% kohdetta muokattavaksi
+    product:
+      page_title: Tuotteet
+      page_subtitle: Massamuokkaa (1 tuote) | Massamuokkaa (%count% tuotetta)
+      title: Valitse toiminto
+      subtitle: Valitse toiminto, jonka haluat suorittaa valitulle tuotteelle| Valitse toiminto, jota haluat suorittaa valituille %count% tuotteille
+      confirm: Olet päivittämässä tuotetta seuraavilla tiedoilla, ole hyvä ja vahvista. | Olet päivittämässä tuotteita %count% seuraavilla tiedoilla, ole hyvä ja vahvista.
+      steps:
+        first: Valitse tuotteet
+        second: Valitse toiminto
+        third: Muuta asetuksia
+        fourth: Vahvista
+    change-status:
+      label: Muuta tuotteen tila
+      description: Valitut tuotteet otetaan käyttöön tai pois käytöstä.
+      success_flash: Tuotteiden tila on muutettu
+      launched_flash: Massatoiminto "Muuta tilaa" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
+    edit-common-attributes:
+      label: Muokkaa attribuutteja
+      description: Valittujen tuotteiden attribuutit muokataan seuraavalla valitun lokaation datalla.
+      empty: Ole hyvä ja valitse attribuutit joita haluat muokata
+      success_flash: Työ "Tuotteiden tilan päivitys" on tällä hetkellä käynnissä
+      launched_flash: Massatoiminto "muokkaa attribuutteja" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
+      message:
+        warning: Valituille tuotteille ei ole yhteistä attribuuttia. Vaihda valintaasi.
+        invalid_attribute: Attribuutti koodilla "attribute_code" ei yhdistä valittuja tuotteita, attributti ohitettu.
+        no_valid_attribute: Mitään valituista attribuuteista ei voi ottaa käyttöön tällä tuotteella.
+    classify-add:
+      label: Lisää ryhmiin
+      description: Tuotteet asetetaan seuraaviin kategorioihin, olemassaolevat asetukset pyyvät.
+      success_flash: Tuote / tuotteet ovat luokiteltu valittuihin kategorioihin
+      launched_flash: Massatoiminto "lisää kategorioihin" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
+    classify-move:
+      label: Siirrä ryhmiin
+      description: Tuotteet asetetaan seuraaviin kategorioihin, aikaisemmat kategorisoinnit menetetään.
+      success_flash: Tuote/tuotteet on siirretty valittuihin kategorioihin
+      launched_flash: Massatoiminto "siirrä kategorioihin" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
+    classify-remove:
+      label: Poista ryhmistä
+      description: Tuotteet poistetaan seuraavista kategorioista.
+      success_flash: Tuote/tuotteet on poistettu valituista kategorioista
+      launched_flash: Massatoiminto "poista kategorioista" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
+    change-family:
+      label: Muuta perhe
+      description: Valittujen tuotteiden perhe vaihdetaan valittuun perheeseen
+      success_flash: Valittujen tuotteiden perhe on vaihdettu onnistuneesti
+      launched_flash: Massatoiminto "Vaihda perhettä" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
+    add-to-groups:
+      label: Lisää ryhmiin
+      description: Valitse ryhmät joihin valitut tuotteet lisätään
+      success_flash: Tuotteet lisättiin onnistuneesti valittuihin ryhmiin
+      launched_flash: Massatoiminto "Lisää ryhmiin" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
+      no_group: Ei ryhmää toistaiseksi, aloita luomalla ryhmä.
+    set-attribute-requirements:
+      label: Aseta vaaditut attribuutit
+      description: Seuraavat attribuuttivaatimukset otetaan käyttöön valituille perheille
+      success_flash: Attribuuttivaatimukset otetaan käyttöön valituille perheille
+      launched_flash: Massatoiminto "aseta attribuuttivaatimukset" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
+    convert_to_simple_products:
+      warning:
+        non_variant_product: Tuote "{{ identifier }}" on jo yksittäistuote, sitä ei tarvitse muuntaa.
+    mass_action:
+      quick_export:
+        launched_flash: Tuotteiden vienti on parhaillaan käynnissä
+category:
+  edit: Muokkaa kategoriaa
+  overview: Kategoriat
+tree:
+  edit: Muokkaa kategoriapuuta
+  remove:
+    error_linked: Kategoriapuuta ei voi poistaa, koska se on linkitetty kanavaan
+  create: Luo uusi kategoriapuu

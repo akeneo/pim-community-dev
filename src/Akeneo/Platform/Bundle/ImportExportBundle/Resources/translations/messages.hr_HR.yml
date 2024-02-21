@@ -1,0 +1,142 @@
+#Entities
+Job: Posao
+Connector: Priključak
+pim_import_export:
+  job: Posao
+  connector: Priključak
+  ## Job status
+  status:
+    0: Spreman
+  download_archive:
+    archive: preuzimanje generirane arhive|preuzimanje generiranih arhiva
+    output: preuzimanje generirane datoteke|preuzimanje generiranih datoteka
+    input: preuzimanje datoteke za čitanje | preuzimanje datoteka za čitanje
+    invalid_xlsx: preuzmite podatke koji nisu valjani
+    invalid_csv: preuzmite podatke koji nisu valjani
+  notification:
+    export:
+      error: Izvoz <strong>%label%</strong> nije uspio
+      warning: Izvoz <strong>%label%</strong> je završio sa upozorenjima
+      success: Izvoz <strong>%label%</strong> je završen
+    import:
+      error: Uvoz <strong>%label%</strong> nije uspio
+      warning: Uvoz <strong>%label%</strong> je završio sa upozorenjima
+      success: Uvoz <strong>%label%</strong> je završen
+  list: Odaberite posao
+  job_profile:
+    tab:
+      property.title: Opća svojstva
+      history.title: Povijest
+      job_content.title: Sadržaj
+#Page titles:
+pim_title.export_profile.index: Upravljanje profilima izvoza
+pim_title.export_execution.index: Povijest izvođenja izvoza
+pim_title.export_execution.show: Izvoz izvođenja | Detalji
+pim_title.import_profile.index: Upravljanje profilima uvoza
+pim_title.import_execution.index: Povijest izvođenja uvoza
+pim_title.import_execution.show: Uvoz izvođenja | Detalji
+#Entity and page header titles
+export profile:
+  title: izvoz profila
+  edit: uredi profil izvoza
+import profile:
+  title: uvoz profila
+  edit: uredi profil uvoza
+#ACLs
+pim_importexport:
+  acl:
+    export_profile:
+      index: Pogledaj listu izvoznih profila
+      create: Kreiraj profil izvoza
+      show: Prikaži Izvoz profila
+      edit: Uredi profil izvoza
+      remove: Ukloni profil izvoza
+      launch: Pokreni profil izvoza
+      property_edit: Uredi opća svojstva profila izvoza
+      property_show: Prikaži opća svojstva profila izvoza
+      history: Pogledaj povijest izvoznih profila
+      content_edit: Uredi sadržaj profila izvoza
+      content_show: Prikaži sadržaj profila izvoza
+    import_profile:
+      index: Pogledaj listu uvoznih profila
+      create: Kreiraj profil uvoza
+      show: Prikaži profil uvoza
+      edit: Uredi profil uvoza
+      remove: Ukloni profil uvoza
+      launch: Pokreni profil uvoza
+      history: Pogledaj povijest uvoznih profila
+    export_execution:
+      index: Pogledaj listu izvoznih izvješća
+      show: Pogledaj detalje izvoznih izvješća
+      dl_log: Preuzmi zapisnik izvješća izvoza
+      dl_files: Preuzmi izvezene datoteke
+    import_execution:
+      index: Pogledaj listu uvoznih izvješća
+      show: Pogledaj detalje uvoznih izvješća
+      dl_log: Preuzmi zapisnik izvješća uvoza
+      dl_files: Preuzmi uvezene datoteke
+  acl_group:
+    export: Izvoz profila
+    import: Uvoz profila
+#Buttons
+btn:
+  create:
+    export profile: kreiraj profil izvoza
+    import profile: kreiraj profil uvoza
+Upload and import now: Prebaci i uvezi odmah
+import now: Uvezi odmah
+export now: Izvezi odmah
+#Confirmation messages
+confirmation:
+  remove:
+    export profile: Da li ste sigurni da želite izbrisati izvozni profil %name%?
+    import profile: Da li ste sigurni da želite izbrisati uvozni profil %name%?
+#Flash messages
+flash:
+  export:
+    created: Izvoz je uspješno kreiran
+    removed: Izvoz je uklonjen
+    updated: Izvoz je uspješno ažuriran
+    running: Izvoz se izvodi
+  import:
+    created: Uvoz je uspješno kreiran
+    removed: Uvoz je uklonjen
+    updated: Uvoz je uspješno ažuriran
+    running: Uvoz se izvodi
+#Tabs
+General properties: Opća svojstva
+History: Povijest
+pane.accordion:
+  properties: Svojstva
+  global_settings: Globalne postavke
+  filters: Filteri
+#Popin titles
+popin.create:
+  export_profile.title: Kreiraj novi profil izvoza
+  import_profile.title: Kreiraj novi profil uvoza
+#Job execution
+'Display item': Prikaži stavku
+'Hide item': Sakrij stavku
+'Collecting data about job execution...': Prikupljanje podataka o izvršenju posla...
+'You must select a file to upload': Morate odabrati datoteku za prijenos
+Download log: Preuzmi log
+Show profile: Prikaži profil
+execution details: detalji pokretanja
+job_execution.summary:
+  read: pročitano
+  write: upisano
+  skip: preskočeno
+  create: kreirano
+  update: ažurirano
+  update_products: ažurirani proizvodi
+  skip_products: preskočeni proizvodi9
+  displayed: prikazana prva upozorenja
+  charset_validator:
+    title: 'Kod datoteke:'
+    skipped: preskočeno, ekstenzija u bijeloj listi
+Step: Korak
+Status: Status
+Summary: Sažetak
+Start: Početak
+End: Kraj
+warning.label: Upozorenje

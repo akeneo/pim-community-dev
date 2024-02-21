@@ -1,0 +1,81 @@
+pim_title:
+  akeneo_job_process_tracker_index: 进程跟踪器
+  akeneo_job_process_tracker_details: 进程跟踪器 | 显示作业
+akeneo_job:
+  job_status:
+    COMPLETED: 已完成
+    STARTED: 进行中
+    STARTING: 启动中
+    STOPPING: 正在停止
+    STOPPED: 已停止
+    FAILED: 已失败
+    ABANDONED: 已放弃
+    UNKNOWN: 未知
+    IN_PROGRESS: 进行中
+    PAUSING: 暂停中
+    PAUSED: 已暂停
+akeneo_job_process_tracker:
+  tooltip:
+    paused: 由于内部维护您的实例，此作业已暂停。完成操作后将自动恢复该作业。
+  last_operations:
+    title: 上次操作
+    view_all: 查看全部
+    details: 详细信息
+    no_result: 现在没有要显示的操作。
+  last_executions:
+    title: 上一次执行
+  job_execution_list:
+    search_placeholder: 按作业名称搜索
+    table:
+      headers:
+        job_name: 作业名称
+        type: 类型
+        started_at: 开始于
+        username: 用户名
+        progress: 进度
+        status: 状态
+        warning_count: 警告
+  type_filter:
+    label: 类型
+    all: 所有
+    quick_export: 快速导出
+    import: 导入
+    export: 导出
+    mass_edit: 批量编辑
+    mass_delete: 批量删除产品
+    attribute_mass_delete: 批量删除属性
+    compute_family_variant_structure_changes: 计算品类变型结构变化
+    compute_completeness_of_products_family: 计算产品品类的完成度
+    clean_removed_attribute_job: 清理已删除的属性值
+    execute_rules: 执行规则
+    scheduled_job: 计划的作业
+  user_filter:
+    label: 用户
+    all: 所有
+    search: 搜索
+  status_filter:
+    label: 状态
+    all: 所有
+    abandoned: 已放弃
+    completed: 已完成
+    failed: 已失败
+    starting: 启动中
+    stopped: 已停止
+    stopping: 正在停止
+    unknown: 未知
+    in_progress: 进行中
+    pausing: 暂停中
+    paused: 已暂停
+  automation_filter:
+    all: 所有
+    yes: Yes
+    no: No
+    label: 自动化
+  max_page_without_filter_helper:
+    - 为了向您展示最相关的结果，请改进您的搜索。
+  tracking:
+    completed: "花费的时间：{{ duration }}"
+    in_progress: "当前步骤估计剩余时间：{{ duration }}"
+    not_started: 等待
+    untrackable: 不可跟踪步骤
+    estimating: 正在估算剩余时间...

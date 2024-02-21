@@ -1,0 +1,33 @@
+@import '../base/variables';
+
+[class^="icon-"],
+[class*=" icon-"] {
+  display:inline-block !important;
+  margin: 0 3px;
+  font-size: 15px;
+}
+
+[class^='icon-'].hide-text:after,
+[class^='icon-'].hide-text:before {
+  font-size: @AknFontSizeBig;
+  color: @AknSlateGrey;
+  padding:0;
+  text-indent:0;
+}
+
+.icon-category,
+.icon-product {
+  float: left;
+  width: 16px;
+  height: 16px;
+  margin-right: 5px;
+  margin-left: -1px;
+}
+
+.icon-category {
+  background-image: url("/bundles/pimui/images/small-icon-category.png");
+}
+
+.icon-product {
+  background-image: url("/bundles/pimui/images/small-icon-product.png");
+}

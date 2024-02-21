@@ -1,0 +1,34 @@
+services:
+    # controllers
+    pim_api.controller.internal_api.create_measurement_family:
+        class: Akeneo\Tool\Bundle\MeasureBundle\Controller\InternalApi\CreateMeasurementFamilyAction
+        public: true
+        arguments:
+            - '@validator'
+            - '@serializer'
+            - '@akeneo_measure.application.create_measurement_family_handler'
+            - '@oro_security.security_facade'
+
+    pim_api.controller.internal_api.delete_measurement_family:
+        class: Akeneo\Tool\Bundle\MeasureBundle\Controller\InternalApi\DeleteMeasurementFamilyAction
+        public: true
+        arguments:
+            - '@validator'
+            - '@akeneo_measure.application.delete_measurement_family_handler'
+            - '@oro_security.security_facade'
+
+    pim_api.controller.internal_api.save_measurement_family:
+        class: Akeneo\Tool\Bundle\MeasureBundle\Controller\InternalApi\SaveMeasurementFamilyAction
+        public: true
+        arguments:
+            - '@validator'
+            - '@akeneo_measure.application.save_measurement_family_handler'
+            - '@serializer'
+            - '@oro_security.security_facade'
+
+    pim_api.controller.internal_api.validate_unit:
+        class: Akeneo\Tool\Bundle\MeasureBundle\Controller\InternalApi\ValidateUnitAction
+        public: true
+        arguments:
+            - '@validator'
+            - '@serializer'

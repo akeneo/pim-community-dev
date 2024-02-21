@@ -1,0 +1,632 @@
+parameters:
+    pim_catalog.updater.product.class:                        Akeneo\Pim\Enrichment\Component\Product\Updater\ProductUpdater
+    pim_catalog.updater.product_model.class:                  Akeneo\Pim\Enrichment\Component\Product\Updater\ProductModelUpdater
+    pim_catalog.updater.entity_with_values.class:             Akeneo\Pim\Enrichment\Component\Product\Updater\EntityWithValuesUpdater
+    pim_catalog.updater.property_setter.class:                Akeneo\Pim\Enrichment\Component\Product\Updater\PropertySetter
+    pim_catalog.updater.property_adder.class:                 Akeneo\Pim\Enrichment\Component\Product\Updater\PropertyAdder
+    pim_catalog.updater.property_copier.class:                Akeneo\Pim\Enrichment\Component\Product\Updater\PropertyCopier
+    pim_catalog.updater.property_remover.class:               Akeneo\Pim\Enrichment\Component\Product\Updater\PropertyRemover
+    pim_catalog.updater.group.class:                          Akeneo\Pim\Enrichment\Component\Product\Updater\GroupUpdater
+    pim_catalog.updater.setter.registry.class:                Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\SetterRegistry
+    pim_catalog.updater.setter.abstract.class:                Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\AbstractAttributeSetter
+    pim_catalog.updater.setter.value.class:                   Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\AttributeSetter
+    pim_catalog.updater.setter.category_field.class:          Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\CategoryFieldSetter
+    pim_catalog.updater.setter.group_field.class:             Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\GroupFieldSetter
+    pim_catalog.updater.setter.family_field.class:            Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\FamilyFieldSetter
+    pim_catalog.updater.setter.parent_field.class:            Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\ParentFieldSetter
+    pim_catalog.updater.setter.association_field.class:       Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\AssociationFieldSetter
+    pim_catalog.updater.setter.enabled_field.class:           Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\EnabledFieldSetter
+    pim_catalog.updater.setter.media_value.class:             Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\MediaAttributeSetter
+    pim_catalog.updater.setter.quantified_associations_field.class: Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\QuantifiedAssociationsFieldSetter
+
+    pim_catalog.updater.copier.registry.class:                Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\CopierRegistry
+    pim_catalog.updater.copier.abstract.class:                Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\AbstractAttributeCopier
+    pim_catalog.updater.copier.value.class:                   Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\AttributeCopier
+    pim_catalog.updater.copier.media_value.class:             Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\MediaAttributeCopier
+    pim_catalog.updater.copier.metric_value.class:            Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\MetricAttributeCopier
+
+    pim_catalog.updater.adder.registry.class:                 Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AdderRegistry
+    pim_catalog.updater.adder.category_field.class:           Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\CategoryFieldAdder
+    pim_catalog.updater.adder.association_field.class:        Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AssociationFieldAdder
+    pim_catalog.updater.adder.group_field.class:              Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\GroupFieldAdder
+    pim_catalog.updater.adder.multiselect_value.class:        Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\MultiSelectAttributeAdder
+    pim_catalog.updater.adder.price_collection_value.class:   Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\PriceCollectionAttributeAdder
+
+    pim_catalog.updater.remover.registry.class:               Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\RemoverRegistry
+    pim_catalog.updater.remover.category_field.class:         Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\CategoryFieldRemover
+    pim_catalog.updater.remover.price_collection_value.class: Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\PriceCollectionAttributeRemover
+    pim_catalog.updater.remover.group_field.class:            Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\GroupFieldRemover
+    pim_catalog.updater.remover.multiselect_value.class:      Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\MultiSelectAttributeRemover
+    pim_catalog.updater.category_translatable.class:          Akeneo\Pim\Enrichment\Component\Category\CategoryUpdater
+
+    pim_catalog.command.cleaner.wrong_value_on_variant_product.class: Akeneo\Pim\Enrichment\Bundle\Command\Cleaner\WrongValuesOnVariantProductCleaner
+
+services:
+    # Updaters
+    pim_catalog.updater.product:
+        class: '%pim_catalog.updater.product.class%'
+        arguments:
+            - '@pim_catalog.updater.property_setter'
+            - '@pim_catalog.updater.entity_with_values'
+            - '@pim_catalog.association.filter.parent_associations'
+            - '@pim_catalog.quantified_associations.quantified_associations_from_ancestors_filter'
+            - '@pim_catalog.updater.validator.quantified_associations_structure_validator'
+            - ['uuid', 'identifier', 'created', 'updated', 'parent_associations', 'metadata', 'quality_scores', 'completenesses']
+
+    pim_catalog.updater.product_model:
+        class: '%pim_catalog.updater.product_model.class%'
+        arguments:
+            - '@pim_catalog.updater.property_setter'
+            - '@pim_catalog.updater.entity_with_values'
+            - '@pim_catalog.repository.family_variant'
+            - '@pim_catalog.repository.product_model'
+            - '@pim_catalog.association.filter.parent_associations'
+            - '@pim_catalog.quantified_associations.quantified_associations_from_ancestors_filter'
+            - '@pim_catalog.updater.validator.quantified_associations_structure_validator'
+            - ['identifier', 'created', 'updated', 'parent_associations', 'metadata']
+
+    pim_catalog.updater.entity_with_values:
+        class: '%pim_catalog.updater.entity_with_values.class%'
+        arguments:
+            - '@pim_catalog.updater.property_setter'
+
+    pim_catalog.updater.property_setter:
+        class: '%pim_catalog.updater.property_setter.class%'
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.updater.setter.registry'
+
+    pim_catalog.updater.property_adder:
+        class: '%pim_catalog.updater.property_adder.class%'
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.updater.adder.registry'
+
+    pim_catalog.updater.property_remover:
+        class: '%pim_catalog.updater.property_remover.class%'
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.updater.remover.registry'
+
+    pim_catalog.updater.property_copier:
+        class: '%pim_catalog.updater.property_copier.class%'
+        public: true
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.updater.copier.registry'
+
+    pim_catalog.updater.property_clearer:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\PropertyClearer'
+        public: true
+        arguments:
+            - '@pim_catalog.updater.clearer.registry'
+
+    pim_catalog.updater.category:
+        class: '%akeneo_classification.updater.category.class%'
+        arguments:
+            - '@pim_catalog.repository.category'
+            - '@pim_user.query.is_category_tree_linked_to_user'
+            - '@pim_channel.query.sql.is_category_tree_linked_to_channel'
+
+    pim_catalog.updater.category_translatable:
+        decorates: pim_catalog.updater.category
+        decoration_inner_name: pim_catalog.updater.category.base
+        class: '%pim_catalog.updater.category_translatable.class%'
+        arguments:
+            - '@pim_catalog.updater.category.base'
+            - '@pim_enrichment.updater.translatable'
+
+    pim_catalog.updater.group:
+        class: '%pim_catalog.updater.group.class%'
+        arguments:
+            - '@pim_catalog.repository.group_type'
+            - '@pim_catalog.repository.attribute'
+
+    pim_enrichment.updater.translatable:
+        class: 'Akeneo\Tool\Component\Localization\TranslatableUpdater'
+
+    pim_catalog.command.cleaner.wrong_value_on_variant_product:
+        class: '%pim_catalog.command.cleaner.wrong_value_on_variant_product.class%'
+
+    # Setters
+    pim_catalog.updater.setter.registry:
+        class: '%pim_catalog.updater.setter.registry.class%'
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
+
+    pim_catalog.updater.setter.abstract:
+        class: '%pim_catalog.updater.setter.abstract.class%'
+        public: false
+        abstract: true
+        arguments:
+            - '@pim_catalog.builder.entity_with_values'
+
+    pim_catalog.updater.setter.text_value:
+        class: '%pim_catalog.updater.setter.value.class%'
+        parent: pim_catalog.updater.setter.abstract
+        arguments:
+            - ['pim_catalog_text', 'pim_catalog_textarea', 'pim_catalog_identifier']
+        tags:
+            - { name: 'pim_catalog.updater.setter' }
+
+    pim_catalog.updater.setter.metric_value:
+        class: '%pim_catalog.updater.setter.value.class%'
+        parent: pim_catalog.updater.setter.abstract
+        arguments:
+            - ['pim_catalog_metric']
+        tags:
+            - { name: 'pim_catalog.updater.setter' }
+
+    pim_catalog.updater.setter.boolean_value:
+        class: '%pim_catalog.updater.setter.value.class%'
+        parent: pim_catalog.updater.setter.abstract
+        arguments:
+            - ['pim_catalog_boolean']
+        tags:
+            - { name: 'pim_catalog.updater.setter' }
+
+    pim_catalog.updater.setter.date_value:
+        class: '%pim_catalog.updater.setter.value.class%'
+        parent: pim_catalog.updater.setter.abstract
+        arguments:
+            - ['pim_catalog_date']
+        tags:
+            - { name: 'pim_catalog.updater.setter' }
+
+    pim_catalog.updater.setter.number_value:
+        class: '%pim_catalog.updater.setter.value.class%'
+        parent: pim_catalog.updater.setter.abstract
+        arguments:
+            - ['pim_catalog_number']
+        tags:
+            - { name: 'pim_catalog.updater.setter' }
+
+    pim_catalog.updater.setter.quantified_associations_field:
+        class: '%pim_catalog.updater.setter.quantified_associations_field.class%'
+        tags:
+            - { name: 'pim_catalog.updater.setter' }
+
+    pim_catalog.updater.setter.association_field:
+        class: '%pim_catalog.updater.setter.association_field.class%'
+        arguments:
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.product_model'
+            - '@pim_catalog.repository.group'
+            - '@pim_catalog.association.two_way_association_updater'
+            - '@pim_catalog.association.missing_association_adder'
+            - '@pim_catalog.repository.association_type'
+            - ['associations']
+        tags:
+            - { name: 'pim_catalog.updater.setter' }
+
+    pim_catalog.updater.setter.category_field:
+        class: '%pim_catalog.updater.setter.category_field.class%'
+        arguments:
+            - '@pim_catalog.repository.cached_category'
+            - ['categories']
+        tags:
+            - { name: 'pim_catalog.updater.setter' }
+
+    pim_catalog.updater.setter.group_field:
+        class: '%pim_catalog.updater.setter.group_field.class%'
+        arguments:
+            - '@pim_catalog.repository.group'
+            - ['groups']
+        tags:
+            - { name: 'pim_catalog.updater.setter' }
+
+    pim_catalog.updater.setter.parent_field:
+        class: '%pim_catalog.updater.setter.parent_field.class%'
+        arguments:
+            - '@pim_catalog.repository.product_model'
+            - ['parent']
+        tags:
+            - { name: 'pim_catalog.updater.setter' }
+
+    pim_catalog.updater.setter.family_field:
+        class: '%pim_catalog.updater.setter.family_field.class%'
+        arguments:
+            - '@pim_catalog.repository.cached_family'
+            - ['family']
+        tags:
+            - { name: 'pim_catalog.updater.setter' }
+
+    pim_catalog.updater.setter.enabled_field:
+        class: '%pim_catalog.updater.setter.enabled_field.class%'
+        arguments:
+            - ['enabled']
+        tags:
+            - { name: 'pim_catalog.updater.setter' }
+
+    pim_catalog.updater.setter.multiselect_value:
+        class: '%pim_catalog.updater.setter.value.class%'
+        parent: pim_catalog.updater.setter.abstract
+        arguments:
+            - ['pim_catalog_multiselect']
+        tags:
+            - { name: 'pim_catalog.updater.setter' }
+
+    pim_catalog.updater.setter.price_collection_value:
+        class: '%pim_catalog.updater.setter.value.class%'
+        parent: pim_catalog.updater.setter.abstract
+        arguments:
+            - ['pim_catalog_price_collection']
+        tags:
+            - { name: 'pim_catalog.updater.setter' }
+
+    pim_catalog.updater.setter.simpleselect_value:
+        class: '%pim_catalog.updater.setter.value.class%'
+        parent: pim_catalog.updater.setter.abstract
+        arguments:
+            - ['pim_catalog_simpleselect']
+        tags:
+            - { name: 'pim_catalog.updater.setter' }
+
+    pim_catalog.updater.setter.media_value:
+        class: '%pim_catalog.updater.setter.media_value.class%'
+        parent: pim_catalog.updater.setter.abstract
+        arguments:
+            - '@akeneo_file_storage.repository.file_info'
+            - ['pim_catalog_file', 'pim_catalog_image']
+        tags:
+            - { name: 'pim_catalog.updater.setter' }
+
+    # Copiers
+    pim_catalog.updater.copier.abstract:
+        class: '%pim_catalog.updater.copier.abstract.class%'
+        public: false
+        abstract: true
+        arguments:
+            - '@pim_catalog.builder.entity_with_values'
+            - '@pim_catalog.validator.helper.attribute'
+
+    pim_catalog.updater.copier.registry:
+        class: '%pim_catalog.updater.copier.registry.class%'
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
+
+    pim_catalog.updater.copier.text_value:
+        class: '%pim_catalog.updater.copier.value.class%'
+        parent: pim_catalog.updater.copier.abstract
+        arguments:
+            - '@pim_standard_format_serializer'
+            - ['pim_catalog_text']
+            - ['pim_catalog_text']
+        tags:
+            - { name: 'pim_catalog.updater.copier' }
+
+    pim_catalog.updater.copier.image_value:
+        class: '%pim_catalog.updater.copier.media_value.class%'
+        parent: pim_catalog.updater.copier.abstract
+        arguments:
+            - '@akeneo_file_storage.file_storage.file.file_fetcher'
+            - '@akeneo_file_storage.file_storage.file.file_storer'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
+            - ['pim_catalog_image']
+            - ['pim_catalog_image']
+        tags:
+            - { name: 'pim_catalog.updater.copier' }
+
+    pim_catalog.updater.copier.file_value:
+        class: '%pim_catalog.updater.copier.media_value.class%'
+        parent: pim_catalog.updater.copier.abstract
+        arguments:
+            - '@akeneo_file_storage.file_storage.file.file_fetcher'
+            - '@akeneo_file_storage.file_storage.file.file_storer'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
+            - ['pim_catalog_file']
+            - ['pim_catalog_file']
+        tags:
+            - { name: 'pim_catalog.updater.copier' }
+
+    pim_catalog.updater.copier.textarea_value:
+        class: '%pim_catalog.updater.copier.value.class%'
+        parent: pim_catalog.updater.copier.abstract
+        arguments:
+            - '@pim_standard_format_serializer'
+            - ['pim_catalog_textarea']
+            - ['pim_catalog_textarea']
+        tags:
+            - { name: 'pim_catalog.updater.copier' }
+
+    pim_catalog.updater.copier.boolean_value:
+        class: '%pim_catalog.updater.copier.value.class%'
+        parent: pim_catalog.updater.copier.abstract
+        arguments:
+            - '@pim_standard_format_serializer'
+            - ['pim_catalog_boolean']
+            - ['pim_catalog_boolean']
+        tags:
+            - { name: 'pim_catalog.updater.copier' }
+
+    pim_catalog.updater.copier.number_value:
+        class: '%pim_catalog.updater.copier.value.class%'
+        parent: pim_catalog.updater.copier.abstract
+        arguments:
+            - '@pim_standard_format_serializer'
+            - ['pim_catalog_number']
+            - ['pim_catalog_number']
+        tags:
+            - { name: 'pim_catalog.updater.copier' }
+
+    pim_catalog.updater.copier.date_value:
+        class: '%pim_catalog.updater.copier.value.class%'
+        parent: pim_catalog.updater.copier.abstract
+        arguments:
+            - '@pim_standard_format_serializer'
+            - ['pim_catalog_date']
+            - ['pim_catalog_date']
+        tags:
+            - { name: 'pim_catalog.updater.copier' }
+
+    pim_catalog.updater.copier.metric_value:
+        class: '%pim_catalog.updater.copier.metric_value.class%'
+        parent: pim_catalog.updater.copier.abstract
+        arguments:
+            - '@pim_standard_format_serializer'
+            - ['pim_catalog_metric']
+            - ['pim_catalog_metric']
+        tags:
+            - { name: 'pim_catalog.updater.copier' }
+
+    pim_catalog.updater.copier.simpleselect_value:
+        class: '%pim_catalog.updater.copier.value.class%'
+        parent: pim_catalog.updater.copier.abstract
+        arguments:
+            - '@pim_standard_format_serializer'
+            - ['pim_catalog_simpleselect']
+            - ['pim_catalog_simpleselect']
+        tags:
+            - { name: 'pim_catalog.updater.copier' }
+
+    pim_catalog.updater.copier.multiselect_value:
+        class: '%pim_catalog.updater.copier.value.class%'
+        parent: pim_catalog.updater.copier.abstract
+        arguments:
+            - '@pim_standard_format_serializer'
+            - ['pim_catalog_multiselect']
+            - ['pim_catalog_multiselect']
+        tags:
+            - { name: 'pim_catalog.updater.copier' }
+
+    pim_catalog.updater.copier.price_collection_value:
+        class: '%pim_catalog.updater.copier.value.class%'
+        parent: pim_catalog.updater.copier.abstract
+        arguments:
+            - '@pim_standard_format_serializer'
+            - ['pim_catalog_price_collection']
+            - ['pim_catalog_price_collection']
+        tags:
+            - { name: 'pim_catalog.updater.copier' }
+
+    # Adders
+    pim_catalog.updater.adder.registry:
+        class: '%pim_catalog.updater.adder.registry.class%'
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
+
+    pim_catalog.updater.adder.category_field:
+        class: '%pim_catalog.updater.adder.category_field.class%'
+        arguments:
+            - '@pim_catalog.repository.cached_category'
+            - ['categories']
+        tags:
+            - { name: 'pim_catalog.updater.adder' }
+
+    pim_catalog.updater.adder.group_field:
+        class: '%pim_catalog.updater.adder.group_field.class%'
+        arguments:
+            - '@pim_catalog.repository.group'
+            - ['groups']
+        tags:
+            - { name: 'pim_catalog.updater.adder' }
+
+    pim_catalog.updater.adder.multiselect_value:
+        class: '%pim_catalog.updater.adder.multiselect_value.class%'
+        arguments:
+            - '@pim_catalog.builder.entity_with_values'
+            - ['pim_catalog_multiselect', 'pim_reference_data_multiselect']
+        tags:
+            - { name: 'pim_catalog.updater.adder' }
+
+    pim_catalog.updater.adder.association_field:
+        class: '%pim_catalog.updater.adder.association_field.class%'
+        arguments:
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.product_model'
+            - '@pim_catalog.repository.group'
+            - '@pim_catalog.association.missing_association_adder'
+            - '@pim_catalog.repository.association_type'
+            - '@pim_catalog.association.two_way_association_updater'
+            - ['associations']
+        tags:
+            - { name: 'pim_catalog.updater.adder' }
+
+    pim_catalog.updater.adder.quantified_association_field:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\QuantifiedAssociationFieldAdder'
+        arguments:
+            - ['quantified_associations']
+        tags:
+            - { name: 'pim_catalog.updater.adder' }
+
+    pim_catalog.updater.adder.price_collection_value:
+        class: '%pim_catalog.updater.adder.price_collection_value.class%'
+        arguments:
+            - '@pim_catalog.builder.entity_with_values'
+            - '@pim_standard_format_serializer'
+            - ['pim_catalog_price_collection']
+        tags:
+            - { name: 'pim_catalog.updater.adder' }
+
+    # Removers
+    pim_catalog.updater.remover.registry:
+        class: '%pim_catalog.updater.remover.registry.class%'
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
+
+    pim_catalog.updater.remover.category_field:
+        class: '%pim_catalog.updater.remover.category_field.class%'
+        arguments:
+            - '@pim_catalog.repository.cached_category'
+            - ['categories']
+        tags:
+            - { name: 'pim_catalog.updater.remover' }
+
+    pim_catalog.updater.remover.price_collection_value:
+        class: '%pim_catalog.updater.remover.price_collection_value.class%'
+        arguments:
+            - '@pim_catalog.validator.helper.attribute'
+            - '@pim_catalog.query.find_activated_currencies'
+            - '@pim_catalog.builder.entity_with_values'
+            - ['pim_catalog_price_collection']
+        tags:
+            - { name: 'pim_catalog.updater.remover' }
+
+    pim_catalog.updater.remover.group_field:
+        class: '%pim_catalog.updater.remover.group_field.class%'
+        arguments:
+            - '@pim_catalog.repository.group'
+            - ['groups']
+        tags:
+            - { name: 'pim_catalog.updater.remover' }
+
+    pim_catalog.updater.remover.multiselect_value:
+        class: '%pim_catalog.updater.remover.multiselect_value.class%'
+        arguments:
+            - '@pim_catalog.validator.helper.attribute'
+            - '@pim_catalog.builder.entity_with_values'
+            - ['pim_catalog_multiselect']
+        tags:
+            - { name: 'pim_catalog.updater.remover' }
+
+    pim_api.updater.product_model:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\ExternalApi\ProductModelUpdater'
+        arguments:
+            - '@pim_catalog.updater.product_model'
+
+    pim_reference_data.updater.setter.reference_data_value:
+        class: '%pim_catalog.updater.setter.value.class%'
+        parent: pim_catalog.updater.setter.abstract
+        arguments:
+            - ['pim_reference_data_simpleselect']
+        tags:
+            - { name: 'pim_catalog.updater.setter' }
+
+    pim_reference_data.updater.setter.reference_data_collection_value:
+        class: '%pim_catalog.updater.setter.value.class%'
+        parent: pim_catalog.updater.setter.abstract
+        arguments:
+            - ['pim_reference_data_multiselect']
+        tags:
+            - { name: 'pim_catalog.updater.setter' }
+
+    pim_reference_data.updater.copier.reference_data_value:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\ReferenceDataAttributeCopier'
+        parent: pim_catalog.updater.copier.abstract
+        arguments:
+            - ['pim_reference_data_simpleselect']
+            - ['pim_reference_data_simpleselect']
+        tags:
+            - { name: 'pim_catalog.updater.copier' }
+
+    pim_reference_data.updater.copier.reference_data_collection_value:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\ReferenceDataCollectionAttributeCopier'
+        parent: pim_catalog.updater.copier.abstract
+        arguments:
+            - ['pim_reference_data_multiselect']
+            - ['pim_reference_data_multiselect']
+        tags:
+            - { name: 'pim_catalog.updater.copier' }
+
+    pim_catalog.updater.copier.heterogeneous_attributes:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\HeterogeneousAttributeCopier'
+        arguments:
+            - '@pim_catalog.updater.converter.registry'
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.validator.helper.attribute'
+        tags:
+            - { name: 'pim_catalog.updater.copier' }
+
+    pim_catalog.updater.converter.registry:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Converter\ValueDataConverterRegistry'
+        arguments:
+            - !tagged pim_catalog.updater.value_data_converter
+
+    pim_catalog.updater.value_converter.string_to_string:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Converter\StringToStringDataConverter'
+        tags:
+            - { name: 'pim_catalog.updater.value_data_converter' }
+
+    pim_catalog.updater.value_converter.number_to_string:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Converter\NumberToStringDataConverter'
+        tags:
+            - { name: 'pim_catalog.updater.value_data_converter' }
+
+    pim_catalog.updater.value_converter.number_to_metric:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Converter\NumberToMetricDataConverter'
+        tags:
+            - { name: 'pim_catalog.updater.value_data_converter' }
+
+    pim_catalog.updater.value_converter.collection_to_string:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Converter\CollectionToStringDataConverter'
+        tags:
+            - { name: 'pim_catalog.updater.value_data_converter' }
+
+    pim_catalog.updater.value_converter.collection_to_array:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Converter\CollectionToArrayDataConverter'
+        tags:
+            - { name: 'pim_catalog.updater.value_data_converter' }
+
+    pim_catalog.updater.value_converter.date_to_string:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Converter\DateToStringDataConverter'
+        tags:
+            - { name: 'pim_catalog.updater.value_data_converter' }
+
+    pim_catalog.updater.value_converter.metric_to_number:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Converter\MetricToNumberDataConverter'
+        tags:
+            - { name: 'pim_catalog.updater.value_data_converter' }
+
+    pim_catalog.updater.value_converter.metric_to_string:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Converter\MetricToStringDataConverter'
+        tags:
+            - { name: 'pim_catalog.updater.value_data_converter' }
+
+    # Clearers
+    pim_catalog.updater.clearer.registry:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\ClearerRegistry'
+        arguments:
+            - !tagged_iterator pim_catalog.updater.clearer
+
+    pim_catalog.updater.clearer.attributes:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\AttributeClearer'
+        arguments:
+            - '@akeneo.pim.structure.query.get_attributes'
+        tags:
+            - { name: 'pim_catalog.updater.clearer' }
+
+    pim_catalog.updater.clearer.association_field:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\Field\AssociationFieldClearer'
+        arguments:
+            - '@pim_catalog.association.two_way_association_updater'
+        tags:
+            - { name: 'pim_catalog.updater.clearer' }
+
+    pim_catalog.updater.clearer.quantified_association_field:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\Field\QuantifiedAssociationFieldClearer'
+        tags:
+            - { name: 'pim_catalog.updater.clearer' }
+
+    pim_catalog.updater.clearer.category_field:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\Field\CategoryFieldClearer'
+        tags:
+            - { name: 'pim_catalog.updater.clearer' }
+
+    pim_catalog.updater.clearer.group_field:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\Field\GroupFieldClearer'
+        tags:
+            - { name: 'pim_catalog.updater.clearer' }
+
+    # Validators
+    pim_catalog.updater.validator.quantified_associations_structure_validator:
+        class: Akeneo\Pim\Enrichment\Component\Product\Updater\Validator\QuantifiedAssociationsStructureValidator

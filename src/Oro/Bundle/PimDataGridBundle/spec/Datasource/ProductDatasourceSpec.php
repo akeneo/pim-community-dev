@@ -1,0 +1,153 @@
+<?php
+
+namespace spec\Oro\Bundle\PimDataGridBundle\Datasource;
+
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
+use Doctrine\Persistence\ObjectManager;
+use Oro\Bundle\DataGridBundle\Datagrid\Datagrid;
+use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
+use PhpSpec\ObjectBehavior;
+use Oro\Bundle\PimDataGridBundle\Datasource\DatasourceInterface;
+use Oro\Bundle\PimDataGridBundle\Datasource\ParameterizableInterface;
+use Oro\Bundle\PimDataGridBundle\Datasource\ProductDatasource;
+use Oro\Bundle\PimDataGridBundle\EventSubscriber\FilterEntityWithValuesSubscriber;
+use Oro\Bundle\PimDataGridBundle\EventSubscriber\FilterEntityWithValuesSubscriberConfiguration;
+use Oro\Bundle\PimDataGridBundle\Extension\Pager\PagerExtension;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
+use Ramsey\Uuid\Uuid;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+
+class ProductDatasourceSpec extends ObjectBehavior
+{
+    function let(
+        ObjectManager $objectManager,
+        ProductQueryBuilderFactoryInterface $pqbFactory,
+        NormalizerInterface $productNormalizer,
+        FilterEntityWithValuesSubscriber $subscriber
+    ) {
+        $this->beConstructedWith($objectManager, $pqbFactory, $productNormalizer, $subscriber);
+
+        $this->setParameters(['dataLocale' => 'fr_FR']);
+    }
+
+    function it_is_initializable()
+    {
+        $this->shouldHaveType(ProductDatasource::class);
+    }
+
+    function it_is_a_datasource()
+    {
+        $this->shouldImplement(DatasourceInterface::class);
+        $this->shouldImplement(ParameterizableInterface::class);
+    }
+
+    function it_gets_products(
+        $pqbFactory,
+        $productNormalizer,
+        $subscriber,
+        Datagrid $datagrid,
+        ProductQueryBuilderInterface $pqb,
+        ProductInterface $product1,
+        CursorInterface $productCursor
+    ) {
+        $product1->getUuid()->willReturn(Uuid::uuid4());
+        $config = [
+            'displayed_attribute_ids' => [1, 2],
+            'attributes_configuration' => [
+                'attribute_1' => [
+                    'id' => 1,
+                    'code' => 'attribute_1'
+                ],
+                'attribute_2' => [
+                    'id' => 2,
+                    'code' => 'attribute_2'
+                ],
+                'attribute_3' => [
+                    'id' => 3,
+                    'code' => 'attribute_3'
+                ],
+                'sku' => [
+                    'id' => 4,
+                    'code' => 'sku',
+                    'mainIdentifier' => true,
+                ]
+            ],
+            'locale_code' => 'fr_FR',
+            'scope_code' => 'ecommerce',
+
+            'association_type_id' => 2,
+            'current_group_id' => 3,
+            PagerExtension::PER_PAGE_PARAM => 15
+        ];
+
+        $pqbFactory->create([
+            'repository_parameters' => [],
+            'repository_method'     => 'createQueryBuilder',
+            'limit'                 => 15,
+            'from'                  => 0,
+            'default_locale'        => 'fr_FR',
+            'default_scope'         => 'ecommerce',
+        ])->willReturn($pqb);
+
+        $pqb->getQueryBuilder()->shouldBeCalledTimes(1);
+        $pqb->execute()->willReturn($productCursor);
+        $productCursor->count()->willReturn(1);
+
+        $productCursor->rewind()->shouldBeCalled();
+        $productCursor->valid()->willReturn(true, false);
+        $productCursor->current()->willReturn($product1);
+        $productCursor->next()->shouldBeCalled();
+
+        $this->process($datagrid, $config);
+
+        $productNormalizer->normalize($product1, 'datagrid', [
+            'locales'       => ['fr_FR'],
+            'channels'      => ['ecommerce'],
+            'data_locale'   => 'fr_FR',
+            'association_type_id' => 2,
+            'current_group_id' => 3
+        ])->willReturn([
+            'identifier'       => 'product_1',
+            'family'           => null,
+            'enabled'          => true,
+            'label'            => 'foo',
+            'values'           => [],
+            'created'          => '2000-01-01',
+            'updated'          => '2000-01-01',
+            'compleneteness'   => null,
+            'variant_products' => null,
+            'document_type'    => null,
+        ]);
+
+        // CPM-1082: mainIdentifier attribute should be kept for display purposes in the grid
+        $subscriber
+            ->configure(FilterEntityWithValuesSubscriberConfiguration::filterEntityValues(['attribute_1', 'attribute_2', 'sku']))
+            ->shouldBeCalled();
+
+        $results = $this->getResults();
+        $results->shouldBeArray();
+        $results->shouldHaveCount(2);
+        $results->shouldHaveKey('data');
+        $results->shouldHaveKeyWithValue('totalRecords', 1);
+        $results['data']->shouldBeArray();
+        $results['data']->shouldHaveCount(1);
+        $results['data']->shouldBeAnArrayOfInstanceOf(ResultRecord::class);
+    }
+
+    public function getMatchers(): array
+    {
+        return [
+            'beAnArrayOfInstanceOf' => function (array $subjects, $class) {
+                foreach ($subjects as $subject) {
+                    if (!$subject instanceof $class) {
+                        return false;
+                    }
+                }
+
+                return true;
+            },
+        ];
+    }
+}

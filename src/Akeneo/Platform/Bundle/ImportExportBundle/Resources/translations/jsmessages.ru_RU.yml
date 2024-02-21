@@ -1,0 +1,198 @@
+job_execution:
+  summary:
+    display_item: Показать элемент
+    hide_item: Скрыть элемент
+pim_connector:
+  export:
+    categories:
+      selector:
+        modal:
+          title: Выбор категориий
+        title: Выберите категории
+    locales:
+      validation:
+        not_blank: Одна локаль должена быть выбрана, пожалуйста, выберите локаль для экспорта.
+pim_import_export:
+  entity:
+    job_instance:
+      label: профиль процесса
+      flash:
+        update:
+          success: Профиль процесса был успешно обновлен.
+          fail: Не удалось обновить профиль процесса.
+        delete:
+          success: Экземпляр процесса был успешно удален
+    import_profile:
+      uppercase_label: Профиль импорта
+      flash:
+        create:
+          success: Профиль импорта успешно создан
+      module:
+        create:
+          button: Создать профиль импорта
+    export_profile:
+      uppercase_label: Профиль экспорта
+      flash:
+        create:
+          success: Профиль экспорта успешно создан
+      module:
+        create:
+          button: Создать профиль экспорта
+  form:
+    job_execution:
+      title.details: Подробности выполнения
+      refreshBtn.title: Обновить
+      button:
+        show_profile.title: Показать профиль
+        download_log.title: Журнал загрузок
+        download_file.title: Скачать сгенерированный файл
+        download_archive.title: Скачать созданный архив
+      summary:
+        fetching: Сбор данных о выполнении задания...
+        warning: Предупреждение
+        header.step: Этап
+        header.warnings: Предупреждения
+        header.summary: Сводка
+        header.start: Начало
+        header.end: Окончание
+    job_instance:
+      fail:
+        launch: Не удалось запустить профиль процесса. Убедитесь, что он валидный и что вы имеете право запустить его.
+        save: Не удалось сохранить профиль процесса. Убедитесь, что вы имеете право редактировать его.
+      button:
+        export.title: Экспортировать сейчас
+        import.launch: Импортировать сейчас
+        import.upload: Загрузить и импортировать сейчас
+        import.upload_file: Загрузить файл
+      meta:
+        job: Работа
+        connector: Коннектор
+      subsection:
+        last_executions: Последние запуски
+      tab:
+        content:
+          title: Содержание
+        properties:
+          decimal_separator:
+            title: Десятичный разделитель
+            help: Введите десятичный разделитель
+          date_format:
+            title: Формат даты
+            help: Введите формат даты
+          file_path:
+            title: Путь к файлу
+            help: Путь к сгенерированному файлу
+          delimiter:
+            title: Разделитель
+            help: Символ, используемый как разделитель полей
+          enclosure:
+            title: Символ обрамления
+            help: Символ, используемый для обрамления полей
+          with_header:
+            title: Включая заголовки
+            help: Добавить строку с заголовками
+          with_media:
+            title: Экспорт медиа
+            help: Экспортировать ли медиа файлы
+          lines_per_file:
+            title: Количество строк в файле
+            help: Определить предельное число строк в файле
+          upload_allowed:
+            title: Разрешить загрузку файлов
+            help: Разрешить загрузку файлов
+          categories_column:
+            title: Колонка категорий
+            help: Название колонки категорий
+          escape:
+            title: Экранирование
+            help: Символ, используемый для экранирования
+          family_column:
+            title: Колонка семейства
+            help: Название колонки семейства
+          groups_column:
+            title: Колонка групп
+            help: Название колонки групп
+          enabled:
+            title: Активировать продукт
+            help: Активировать импортируемые продукты
+          enabled_comparison:
+            title: Сравнивать значения
+            help: Включить сравнение исходных значений и импортированных значений. Может ускорить импорт, если импортированные значения очень похожи на исходные значения
+          real_time_versioning:
+            title: Обновление истории изменений в реальном времени
+            help: Означает, что история изменений продукта автоматически обновляется, можно выключить для улучшения производительности
+          convert_variant_to_simple:
+            title: Преобразовать вариативный продукт в простой продукт
+            help: Преобразуйте вариативный продукт в простой, когда родительский столбец пустой. Если значение не задано, пустой родительский столбец будет проигнорирован
+          family_variant_column:
+            title: Столбец разновидности семейства
+          with_label:
+            title: С метками
+            help: Отобразить в экспортируемом файле метки заголовков вместо кодов заголовков
+          header_with_label:
+            title: Заголовки с метками
+            help: Отобразить в экспортируемом файле метки заголовков вместо кодов заголовков
+          file_locale:
+            title: Локаль файла
+            help: Определите язык (локаль), в котором отображаются метки
+      file_path: Путь к файлу
+  widget:
+    last_operations:
+      details: Подробнее
+      header.view_all: Просмотреть все
+  batch_status:
+    1: Завершено
+    2: Запущено
+    3: In progress
+    4: Завершается
+    5: Завершено
+    6: Не выполнено
+    7: Прервано
+    8: Неизвестно
+  job_status:
+    COMPLETED: Завершено
+    STARTING: Запущено
+    STOPPING: Завершается
+    STOPPED: Завершено
+    FAILED: Не выполнено
+    ABANDONED: Прервано
+    UNKNOWN: Неизвестно
+  tracking:
+    completed: "Прошло времени: {{ duration }}"
+    in_progress: "Оставшееся время: {{ duration }}"
+    not_started: "В ожидании"
+    untrackable: Не отслеживаемый шаг
+    estimating: "Оценка остатка времени..."
+confirmation:
+  remove:
+    import_profile: Вы действительно хотите удалить этот профиль импорта?
+    export_profile: Вы действительно хотите удалить этот профиль экспорта?
+    job_instance: Вы уверены, что хотите удалить этот экземпляр процесса?
+pim_enrich:
+  entity:
+    import_profile:
+      module:
+        delete:
+          confirm: Вы действительно хотите удалить этот профиль импорта?
+      flash:
+        delete:
+          success: Профиль импорта успешно удален
+    export_profile:
+      module:
+        delete:
+          confirm: Вы действительно хотите удалить этот профиль экспорта?
+      flash:
+        delete:
+          success: Профиль экспорта успешно удален
+pim_title:
+  pim_importexport_export_profile_index: Управление профилями экспорта
+  pim_importexport_export_profile_edit: Экспорт профиля {{ job.label }} | Редактировать
+  pim_importexport_export_profile_show: Экспорт профиля {{ job.label }} | Показать
+  pim_importexport_export_execution_index: История запусков экспорта
+  pim_importexport_export_execution_show: Запуск экспорта | Детали
+  pim_importexport_import_profile_index: Управление профилями импорта
+  pim_importexport_import_profile_edit: Импорт профиля {{ job.label }} | Редактировать
+  pim_importexport_import_profile_show: Импорт профиля {{ job.label }} | Показать
+  pim_importexport_import_execution_index: История запусков импорта
+  pim_importexport_import_execution_show: Запуск импорта | Детали
+

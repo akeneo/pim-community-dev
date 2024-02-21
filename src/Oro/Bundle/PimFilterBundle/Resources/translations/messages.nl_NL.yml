@@ -1,0 +1,21 @@
+oro.filter.form.label_type_equal: '='
+oro.filter.form.label_type_greater_equal: '>='
+oro.filter.form.label_type_greater_than: '>'
+oro.filter.form.label_type_less_equal: '<='
+oro.filter.form.label_type_less_than: '<'
+oro.filter.form.label_type_yes: "ja"
+oro.filter.form.label_type_no: "nee"
+oro.filter.form.label_type_contains: bevat
+oro.filter.form.label_type_not_contains: bevat geen
+oro.filter.form.label_type_equals: is gelijk aan
+oro.filter.form.label_type_start_with: begint met
+oro.filter.form.label_type_end_with: eindigt op
+oro.filter.form.label_type_empty: is leeg
+oro.filter.form.label_type_not_empty: is niet leeg
+oro.filter.form.label_type_in_list: in lijst
+oro.filter.form.label_date_type_between: tussen
+oro.filter.form.label_date_type_not_between: niet tussen
+oro.filter.form.label_date_type_more_than: meer dan
+oro.filter.form.label_date_type_less_than: minder dan
+oro.filter.form.label_not_selected: Niet geselecteerd
+oro.filter.form.label_selected: Geselecteerd

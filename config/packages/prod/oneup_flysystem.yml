@@ -1,0 +1,17 @@
+oneup_flysystem:
+    adapters:
+        catalog_storage_adapter:
+            local:
+                location: '%kernel.project_dir%/var/file_storage/catalog'
+        jobs_storage_adapter:
+            local:
+                location: '%kernel.project_dir%/var/file_storage/jobs'
+        archivist_adapter:
+            local:
+                location: '%kernel.project_dir%/var/file_storage/archive'
+        category_storage_adapter:
+            local:
+                location: '%kernel.project_dir%/var/file_storage/category'
+        local_storage_adapter:
+            local:
+                location: '%local_storage_root%'

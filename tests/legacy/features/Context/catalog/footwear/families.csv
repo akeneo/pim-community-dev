@@ -1,0 +1,6 @@
+code;label-en_US;attributes;attribute_as_label;requirements-tablet;requirements-mobile;attribute_as_image
+boots;Boots;sku,name,manufacturer,description,weather_conditions,price,rating,side_view,top_view,size,color,lace_color;name;sku,name,description,weather_conditions,price,rating,side_view,size,color;sku,name,price,size,color;
+heels;Heels;sku,name,manufacturer,description,price,side_view,top_view,size,color,heel_color,sole_color,sole_fabric;name;sku,name,description,price,side_view,size,color,heel_color,sole_color;sku,name,price,size,color,heel_color,sole_color;
+sneakers;Sneakers;sku,name,manufacturer,description,weather_conditions,price,rating,side_view,top_view,size,color,lace_color;name;sku,name,description,weather_conditions,price,rating,side_view,size,color;sku,name,price,size,color;
+sandals;Sandals;sku,name,manufacturer,description,price,rating,side_view,size,color;name;sku,name,description,price,rating,side_view,size,color;sku,name,price,size,color;side_view
+led_tvs;LED TVs;sku,name,manufacturer,description,price,rating,side_view,size,color;name;sku,name,description,price,rating,side_view,size,color;sku,name,price,size,color;

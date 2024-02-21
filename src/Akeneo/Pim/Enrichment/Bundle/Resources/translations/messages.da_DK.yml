@@ -1,0 +1,82 @@
+No products to remove: Ingen produkter at fjerne
+"dot (.)": punktum (.)
+"comma (,)": komma (,)
+pim_enrich:
+  #Category
+  category:
+    tab:
+      property.title: Egenskaber
+      history.title: Historik
+    suggest_selection: Vælg venligst en kategori til venstre
+    or: eller
+    create_new: Opret ny kategori
+  #Mass edit operations
+  mass_edit_action:
+    limit_exceeded: Vælg venligst mindst %limit% elementer der skal redigeres
+    product:
+      page_title: Produkter
+      page_subtitle: Masse redigere (1 produkt) | Masse redigere (%count% produkter)
+      title: Vælg handling
+      subtitle: Vælg den handling, du ønsker at udføre på det valgte produkt|Vælg den handling, du ønsker at udføre på de valgte %count% produkter
+      confirm: Du er ved at opdatere et produkt med følgende oplysninger, bekræft venligst. |Du er ved at opdatere %count% produkter med følgende oplysninger, bekræft venligst.
+      steps:
+        first: Vælg produkter
+        second: Vælg handling
+        third: Konfigurér
+        fourth: Bekræft
+    change-status:
+      label: Skift status
+      description: De valgte produkter vil blive aktiveret eller deaktiveret.
+      success_flash: Produkt(er) status er blevet ændret
+      launched_flash: Bulk-handlingen "Skift status" er blevet startet. Du får besked, når det er gjort.
+    edit-common-attributes:
+      label: Rediger attributter
+      description: De valgte produktattributter vil blive redigeret med følgende data for den valgte landestandard.
+      empty: Vælg venligst den eller de attribut(ter), du vil redigere
+      success_flash: Kørslen der opdaterer produkt(er) status kører i øjeblikket
+      launched_flash: Massehandling "Tilføj etiketter til aktiver" er blevet igangsat. Du får besked, når det er afsluttet.
+      message:
+        warning: Der er ingen fælles egenskaber for de valgte produkter. Ændre venligst dit valg.
+        invalid_attribute: Attribut med koden "attribute_code" er ikke fælles for de valgte produkter, attributten springes over.
+        no_valid_attribute: Ingen af de valgte attributter kan anvendes på dette produkt.
+    classify-add:
+      label: Tilføje til kategorier
+      description: Produkterne vil blive placeret i følgende kategorier, den nuværende placering bibeholdes.
+      success_flash: Produkt(er), der er blevet klassificeret i udvalgte kategorier
+      launched_flash: Handlingen bulk "Føj til kategorier" er blevet startet. Du får besked, når det er afsluttet.
+    classify-move:
+      label: Flyt mellem kategorier
+      description: Produkterne vil blive placeret i følgende kategorier, den nuværende placering er bibeholdt.
+      success_flash: Produkt(er), der er blevet flyttet til udvalgte kategorier
+      launched_flash: Handlingen bulk "Føj til kategorier" er blevet igangsat. Du får besked, når den er afsluttet.
+    classify-remove:
+      label: Fjern fra kategorier
+      description: Produkterne vil blive fjernet fra følgende kategorier.
+      success_flash: Produkt(er), der er blevet fjernet fra de valgte kategorier
+      launched_flash: Handlingen bulk "Føj til kategorier" er blevet igangsat. Du får besked, når den er afsluttet.
+    change-family:
+      label: Ændre familie
+      description: Familie på de udvalgte produkter vil blive ændret til den valgte familie
+      success_flash: Familien af valgte produkt(er) er blevet ændret
+      launched_flash: Bulk-handlingen "Skift status" er blevet igangsat. Du får besked, når den er afsluttet.
+    add-to-groups:
+      label: Tilføj til grupper
+      description: Vælg de grupper hvor de udvalgte produkter skal tilføjes til
+      success_flash: Produkter blev tilføjet til de valgte grupper
+      launched_flash: Handlingen bulk "Føj til kategorier" er blevet igangsat. Du får besked, når den er afsluttet.
+      no_group: Ingen gruppe for nu. Start med at oprette en gruppe.
+    set-attribute-requirements:
+      label: Indstil attribut krav
+      description: Følgende attribut krav vil blive anvendt til de valgte familier
+      success_flash: Attribut krav blev anvendt til de valgte familier
+      launched_flash: Bulk handling "sæt attribut krav" er igangsat. Du får besked, når den afsluttet.
+    mass_action:
+      quick_export:
+        launched_flash: Jobbet, der eksporterer produkter kører i øjeblikket
+category:
+  edit: Redigér kategori
+  overview: Kategorier
+tree:
+  edit: Redigere træ
+  remove:
+    error_linked: Dette kategoritræ kan ikke slettes, det er tilknyttet en kanal

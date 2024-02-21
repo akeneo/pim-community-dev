@@ -1,0 +1,27 @@
+services:
+    Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes:
+        class: Akeneo\Pim\Enrichment\Product\Infrastructure\Query\SqlGetCategoryCodes
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Pim\Enrichment\Product\Domain\Query\GetNonViewableCategoryCodes:
+        class: Akeneo\Pim\Enrichment\Product\Infrastructure\Query\GetNonViewableCategoryCodes
+        arguments:
+            - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes'
+            - '@Akeneo\Pim\Enrichment\Category\API\Query\GetViewableCategories'
+
+    Akeneo\Pim\Enrichment\Product\Domain\Query\GetViewableProducts:
+        class: Akeneo\Pim\Enrichment\Product\Infrastructure\Query\GetViewableProducts
+
+    Akeneo\Pim\Enrichment\Product\Domain\Query\GetViewableProductModels:
+        class: Akeneo\Pim\Enrichment\Product\Infrastructure\Query\GetViewableProductModels
+
+    Akeneo\Pim\Enrichment\Product\Infrastructure\Query\SqlGetProductUuids:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Pim\Enrichment\Product\API\Query\GetProductUuids:
+        class: Akeneo\Pim\Enrichment\Product\Infrastructure\Query\Cache\LRUCacheGetProductUuids
+        arguments:
+            - '@Akeneo\Pim\Enrichment\Product\Infrastructure\Query\SqlGetProductUuids'
+        tags: [ 'akeneo.pim.cached_query' ]

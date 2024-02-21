@@ -1,0 +1,21 @@
+<div class="AknGrid--gallery AknColumnConfigurator-listContainer">
+    <div class="AknGridContainer AknGridContainer--withCheckbox">
+        <div class="AknGrid AknGrid--withCheckbox">
+            <div class="AknGrid-body AknGrid-body--small basket-inner">
+                <% if (!_.isEmpty(items)) { %>
+                <% _.each(items, function (item) { %>
+                <div class="AknGrid-bodyRow AknGrid-bodyRow--thumbnail AknGrid-bodyRow--withoutTopBorder">
+                    <div class="AknGrid-fullImage AknGrid-fullImage--small" style="background-image: url('<%- imagePathMethod(item) %>')"></div>
+                    <div class="AknGrid-title"><%- labelMethod(item) %></div>
+                    <div class="AknGrid-subTitle"><%- item['identifier'] %></div>
+                </div>
+                <% }); %>
+                <% } else { %>
+                <div class="empty-basket">
+                    <%- emptyLabel %>
+                </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>

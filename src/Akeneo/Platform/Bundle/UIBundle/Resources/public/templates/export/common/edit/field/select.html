@@ -1,0 +1,5 @@
+<select class="select2" id="jobInstance_<%- config.fieldCode.replace('.', '_') %>" title="<%- __(config.label) %>" <%- true === config.readOnly ? 'readonly disabled' : '' %>>
+    <% _.each(config.options, function (label, code) { %>
+        <option value="<%- code %>" <%- value === code ? 'selected' : '' %>><%- __(label) %></option>
+    <% }) %>
+</select>

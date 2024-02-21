@@ -1,0 +1,51 @@
+parameters: ~
+
+services:
+    # Validation constraints depending on Job
+    pim_installer.job_parameters.constraints.simple_csv_import:
+        class: '%pim_connector.job.job_parameters.constraint_collection_provider.simple_csv_import.class%'
+        arguments:
+            -
+                - 'fixtures_category_csv'
+                - 'fixtures_attribute_group_csv'
+                - 'fixtures_channel_csv'
+                - 'fixtures_locale_csv'
+                - 'fixtures_currency_csv'
+                - 'fixtures_group_type_csv'
+                - 'fixtures_association_type_csv'
+                - 'fixtures_attribute_csv'
+                - 'fixtures_attribute_options_csv'
+                - 'fixtures_family_csv'
+                - 'fixtures_family_variant_csv'
+                - 'fixtures_user_csv'
+                - 'fixtures_user_role_csv'
+                - 'fixtures_user_group_csv'
+                - 'fixtures_group_csv'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
+    pim_installer.job_parameters.constraints.product_csv_import:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductCsvImport'
+        arguments:
+            - '@akeneo_pim_enrichment.job.job_parameters.constraint_collection_provider.simple_csv_import'
+            -
+                - 'fixtures_product_csv'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
+    pim_installer.job_parameters.constraints.product_model_csv_import:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductModelCsvImport'
+        arguments:
+            - '@akeneo_pim_enrichment.job.job_parameters.constraint_collection_provider.simple_csv_import'
+            -
+                - 'fixtures_product_model_csv'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
+    pim_installer.job_parameters.constraints.simple_yaml_import:
+        class: '%pim_connector.job.job_parameters.constraint_collection_provider.simple_yaml_import.class%'
+        arguments:
+            -
+                - 'fixtures_job_yml'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }

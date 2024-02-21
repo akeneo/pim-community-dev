@@ -1,0 +1,70 @@
+services:
+    # INTERNAL
+    Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controller\Internal\CreateCustomAppAction:
+        public: true
+        arguments:
+            - '@akeneo_connectivity.connection.marketplace_activate.feature'
+            - '@validator'
+            - '@security.token_storage'
+            - '@Akeneo\Connectivity\Connection\Application\CustomApps\Command\CreateCustomAppCommandHandler'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Persistence\GetCustomAppSecretQuery'
+            - '@oro_security.security_facade'
+
+    Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controller\Internal\DeleteCustomAppAction:
+        public: true
+        arguments:
+            - '@oro_security.security_facade'
+            - '@Akeneo\Connectivity\Connection\Application\CustomApps\Command\DeleteCustomAppHandler'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Persistence\GetCustomAppQuery'
+            - '@Akeneo\Connectivity\Connection\Application\Apps\Command\DeleteAppHandler'
+
+    Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controller\Internal\GetAllCustomAppsAction:
+        public: true
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Application\Marketplace\AppUrlGenerator'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Persistence\GetAllCustomAppsQuery'
+
+    Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controller\Internal\GetCustomAppSecretAction:
+        public: true
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Persistence\GetCustomAppQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Persistence\GetCustomAppSecretQuery'
+
+    Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controller\Internal\RegenerateCustomAppSecretAction:
+        public: true
+        arguments:
+            - '@oro_security.security_facade'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Persistence\GetCustomAppQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Persistence\GetCustomAppSecretQuery'
+            - '@Akeneo\Connectivity\Connection\Application\CustomApps\Command\RegenerateCustomAppSecretHandler'
+            -
+    Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controller\Internal\IsCustomAppsNumberLimitReachedAction:
+        public: true
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Persistence\IsCustomAppsNumberLimitReachedQuery'
+
+
+    # EXTERNAL
+    Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controller\External\CreateCustomAppAction:
+        public: true
+        arguments:
+            - '@oro_security.security_facade'
+            - '@validator'
+            - '@translator'
+            - '@security.token_storage'
+            - '@Akeneo\Connectivity\Connection\Application\CustomApps\Command\CreateCustomAppCommandHandler'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Persistence\GetCustomAppSecretQuery'
+
+    Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controller\External\DeleteCustomAppAction:
+        public: true
+        arguments:
+            - '@oro_security.security_facade'
+            - '@Akeneo\Connectivity\Connection\Application\CustomApps\Command\DeleteCustomAppHandler'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Persistence\GetCustomAppQuery'
+            - '@Akeneo\Connectivity\Connection\Application\Apps\Command\DeleteAppHandler'
+
+    Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controller\External\GetCustomAppsAction:
+        public: true
+        arguments:
+            - '@security.token_storage'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Persistence\GetCustomAppsQuery'

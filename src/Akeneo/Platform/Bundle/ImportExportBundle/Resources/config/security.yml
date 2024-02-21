@@ -1,0 +1,4 @@
+services:
+  Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Security\CredentialsEncrypterRegistry:
+    arguments:
+      - !tagged pim_import_export.credentials_encrypter

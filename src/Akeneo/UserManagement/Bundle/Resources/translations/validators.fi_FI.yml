@@ -1,0 +1,5 @@
+pim_user:
+  min_role: "Sinun on valittava vähintään {{ limit }} rooli.|Valitse vähintään {{ limit }} roolia."
+  password_match: "Salasanat eivät täsmää."
+  role:
+    invalid_role_format: 'Roolin pitäisi alkaa "ROLE_" ja sen pitäisi sisältää vain alaviivoja, viivoja ja aakkosnumeerisia merkkejä isoin kirjaimin.'

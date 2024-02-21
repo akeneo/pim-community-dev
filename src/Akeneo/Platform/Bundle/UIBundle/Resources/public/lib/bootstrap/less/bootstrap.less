@@ -1,0 +1,81 @@
+@import 'bootstrap_variables';
+@import 'bootstrap_mixins';
+
+/*!
+ * Disclaimer
+ *
+ * This file was originally Bootstrap v2.3.2.
+ * It has been overridden several times, and does not looks anymore to the original one.
+ * To be closest than the original Bootstrap, we split this folder like the historical v2.3.2.
+ *
+ * https://github.com/twbs/bootstrap/tree/v2.3.2/less
+ *
+ * The files contained in this folder are not the original ones, because it needs a lot of work to reset to the
+ * original less files.
+ *
+ * The next comment is the original copyright.
+ */
+
+/*!
+ * Bootstrap v2.3.2
+ *
+ * Copyright 2013 Twitter, Inc
+ * Licensed under the Apache License v2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Designed and built with all the love in the world by @mdo and @fat.
+ */
+
+@import 'dropdown';
+@import 'navs';
+@import 'popover';
+@import 'tabs';
+@import 'tooltip';
+
+.hide-text {
+  font: 0/0 a;
+  color: transparent;
+  text-shadow: none;
+  background-color: transparent;
+  border: 0;
+}
+
+.input-block-level {
+  display: block;
+  width: 100%;
+  min-height: 30px;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.img-rounded {
+  -webkit-border-radius: 6px;
+     -moz-border-radius: 6px;
+          border-radius: 6px;
+}
+
+.hide {
+  display: none;
+}
+
+.show {
+  display: block;
+}
+
+.transparent {
+  opacity: 0;
+}
+
+.invisible {
+  visibility: hidden;
+}
+
+.fade {
+  opacity: 0;
+  transition: opacity 0.15s linear;
+}
+.fade.in {
+  opacity: 1;
+}
+

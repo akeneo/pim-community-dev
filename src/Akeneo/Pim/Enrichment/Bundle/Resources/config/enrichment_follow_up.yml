@@ -1,0 +1,6 @@
+services:
+    akeneo.pim.enrichment.follow_up.completeness_widget_query:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\FollowUp\GetCompletenessPerChannelAndLocale'
+        arguments:
+            - '@database_connection'
+            - '@akeneo_elasticsearch.client.product_and_product_model'

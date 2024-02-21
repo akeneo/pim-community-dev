@@ -1,0 +1,5 @@
+pim_user_security_rest_get:
+    path: /
+    defaults: { _controller: pim_user.controller.security_rest:getAction }
+    requirements:
+        method: GET

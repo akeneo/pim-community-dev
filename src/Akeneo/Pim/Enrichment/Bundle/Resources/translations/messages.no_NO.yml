@@ -1,0 +1,80 @@
+No products to remove: Ingen produkter å fjerne
+"dot (.)": punktum (.)
+"comma (,)": komma (,)
+pim_enrich:
+  #Category
+  category:
+    tab:
+      property.title: Egenskaper
+      history.title: Historie
+    suggest_selection: Vennligst velg en kategori til venstre
+    or: eller
+    create_new: Opprett ny kategori
+  #Mass edit operations
+  mass_edit_action:
+    limit_exceeded: Velg mindre enn %limit% elementer å redigere
+    product:
+      page_title: Produkter
+      page_subtitle: Masse redigere (1 produkt) | Masse redigere (%count% produkter)
+      title: Velg operasjon
+      subtitle: Velg operasjonen du vil utføre på den valgte produkt| Velg operasjonen du vil utføre på de valgte %count% produktene
+      confirm: Du er ferd med å oppdatere et produkt med følgende informasjon, vennligst bekreft. | Du er ferd med å oppdatere %count% produkter med følgende informasjon, vennligst bekreft.
+      steps:
+        first: Velg produkt
+        second: Velg operasjon
+        third: Konfigurer
+        fourth: Bekreft
+    change-status:
+      label: Endre status
+      description: De valgte produktene vil aktiveres eller deaktiveres.
+      success_flash: Status for produkt(ene) har blitt endret
+      launched_flash: Massehandlingen "endre status" har startet. Du vil få en notifikasjon når den er ferdig.
+    edit-common-attributes:
+      label: Rediger attributter
+      description: De valgte produktenes attributter vil redigert med følgende data for det valgte språk.
+      empty: Vennligst velg attributt(ene) du ønsker å redigere
+      success_flash: Jobben som oppdaterer status på produkt(ene) kjører for øyeblikket
+      launched_flash: Massehandlingen "redigere attributter" har startet. Du vil få en notifikasjon når den er ferdigstilt.
+      message:
+        warning: Det er ingen felles attributter for de valgte produktene. Vennligst endre ditt valg.
+        invalid_attribute: Attributt med kode "attribute_code" er ikke felles for de valgte produktene, hopper over attributt.
+        no_valid_attribute: Ingen av de valgte attributtene kan legges på dette produktet.
+    classify-add:
+      label: Legg til kategorier
+      description: Produktene vil bli klassifisert i følgende kategorier, eksisterende klassifiseringer vil beholdes.
+      success_flash: Produkt(er) har blitt klassifisert i følgende valgte kategorier
+      launched_flash: Massehandlingen "redigere attributter" har startet. Du vil få en notifikasjon når den er ferdigstilt.
+    classify-move:
+      label: Flytt mellom kategorier
+      description: Produktene vil bli klassifisert i følgende kategorier, eksisterende plassering vil gå tapt.
+      success_flash: Produkt(er) har blitt klassifisert i følgende valgte kategorier
+      launched_flash: Massehandlingen "redigere attributter" har startet. Du vil få en notifikasjon når den er ferdigstilt.
+    classify-remove:
+      label: Fjern fra kategorier
+      description: Produktene vil fjernes fra følgende kategorier.
+      success_flash: Produkt(er) har blitt fjernet fra de valgte kategorier
+      launched_flash: Massehandlingen "fjern fra attributter" har startet. Du vil få en notifikasjon når den er ferdigstilt.
+    change-family:
+      label: Endre familie
+      description: Familien til de valgte produktene vil bli endret på den valgte familien
+      success_flash: Familien til de valgte produkt(ene) har blitt endret
+      launched_flash: Massehandlingen "endre familie" har startet. Du vil få en notifikasjon når den er ferdig.
+    add-to-groups:
+      label: Legg til grupper
+      description: Velg de gruppene hvor de valgte produktene skal legges til
+      success_flash: Produkter ble lagt til i de valgte gruppene
+      launched_flash: Massehandlingen "legg til i grupper" har startet. Du vil få en notifikasjon når den er ferdigstilt.
+      no_group: Ingen grupper eksisterer. Start med å opprette en gruppe.
+    set-attribute-requirements:
+      label: Definer attributtkrav
+      description: Følgende attributtkrav vil bli lagt til i valgte familier
+      success_flash: Følgende attributtkrav ble lagt til i valgte familier
+      launched_flash: Massehandlingen "definer attributtkrav" har startet. Du vil få en notifikasjon når den er ferdigstilt.
+    mass_action:
+      quick_export:
+        launched_flash: Jobben med å eksportere produkter kjører
+category:
+  edit: Rediger kategori
+  overview: Kategorier
+tree:
+  edit: Rediger tre

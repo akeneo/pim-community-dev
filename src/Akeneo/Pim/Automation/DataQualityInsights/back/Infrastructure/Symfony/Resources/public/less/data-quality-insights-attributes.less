@@ -1,0 +1,201 @@
+#data-quality-insights-product-tab-content {
+    @recommendationLineHeight: 20px;
+
+    .AknDataQualityInsightsAttribute {
+        color: @AknGrey140;
+        vertical-align: initial;
+        display: inline-block;
+        font-style: italic;
+        height: @recommendationLineHeight;
+        line-height: @recommendationLineHeight;
+
+        &--link {
+            & > span {
+                color: @AknLightPurple;
+                transition: color 0.1s ease-in;
+            }
+
+            &:hover > span {
+                color: @AknPurple;
+            }
+        }
+    }
+
+    .AknVerticalList-item--clickable {
+        .AknDataQualityInsightsAttribute--link {
+            &:hover > span {
+                color: @AknLightPurple;
+            }
+        }
+    }
+
+    .AknDataQualityInsightsManyAttributes {
+        color: @AknLightPurple;
+        transition: color 0.1s ease-in;
+        vertical-align: initial;
+        display: inline-block;
+        font-style: italic;
+    }
+
+    .AknSubsection-title {
+        margin-bottom: 0;
+        color: @AknGrey140;
+        border-bottom: 1px solid @AknGrey140;
+    }
+
+    .AknSubsection.AxisEvaluationContainer {
+        margin-bottom: 20px;
+
+        .AknVerticalList-item {
+            min-height: 56px;
+            line-height: 56px;
+            height: auto;
+            padding: 0;
+
+            &--clickable {
+                cursor: pointer;
+            }
+        }
+    }
+
+    .AxisEvaluationTitle {
+        display: inline-block;
+        margin-right: 10px;
+        font-weight: normal;
+    }
+
+    .CriterionMessage {
+        line-height: @recommendationLineHeight;
+        width: 100%;
+        margin: 20px auto;
+        display: flex;
+        justify-content: start;
+        white-space: pre-wrap;
+        color: @AknGrey140;
+
+        .CriterionSuccessMessage {
+            color: @AknGreen120;
+        }
+
+        .CriterionSuccessContainer {
+            display: flex;
+            justify-content: space-between;
+            flex-direction: row;
+            flex: auto;
+
+            .CriterionSuccessTick {
+                display: inline-block;
+                background-image: url('@{pimuiBundlePath}/images/icon-check-green.svg');
+                background-repeat: no-repeat;
+                background-position: center center;
+                width: 20px;
+                margin: 0;
+            }
+        }
+
+        .CriterionErrorMessage {
+            color: @AknRed100;
+        }
+        .CriterionInProgressMessage {
+            color: @AknSlateGrey;
+        }
+    }
+
+    .CriterionVariantRecommendations {
+        margin-left: 20px;
+
+        .attributeList {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .attributeList:nth-child(2) {
+            margin-left: 25px;
+            margin-top: @recommendationLineHeight / 2;
+        }
+        .attributeList:nth-child(3) {
+            margin-left: 50px;
+            margin-top: @recommendationLineHeight / 2;
+        }
+    }
+
+    .CriterionRecommendationMessage {
+        height: @recommendationLineHeight;
+        color: @AknGrey140;
+        font-size: 13px;
+        font-weight: normal;
+        white-space: nowrap;
+    }
+
+    .NoRateWindow {
+        color: @AknRed100;
+        background: #faefed;
+        border-radius: 0px;
+        height: 44px;
+        line-height: 44px;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+    }
+
+    .NoRateIconWindow {
+        background-image: url('@{pimuiBundlePath}/images/icon-danger.svg');
+        height: 25px;
+        width: 38px;
+        border-right: solid 1px;
+        background-repeat: no-repeat;
+        margin-left: 12px;
+        margin-top: auto;
+        margin-bottom: auto;
+        text-align: center;
+    }
+
+    .AxisErrorMessage {
+        font-weight: 600;
+        font-size: 13px;
+        height: 25px;
+        width: 100%;
+        line-height: 25px;
+        margin-left: 15px;
+        margin-top: auto;
+        margin-bottom: auto;
+    }
+
+    .NotApplicableAttribute {
+        color: @AknGrey140;
+    }
+
+    .AknDataQualityInsightsEvaluation {
+        color: @AknSlateGrey;
+        background: #f5f9fc;
+        border-radius: 0px;
+        height: 44px;
+        line-height: 44px;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+
+        .gradingInProgressIcon {
+            background-image: url('@{pimuiBundlePath}/images/icon-info.svg');
+            height: 25px;
+            width: 38px;
+            border-right: solid 1px;
+            background-repeat: no-repeat;
+            margin-left: 12px;
+            margin-top: auto;
+            margin-bottom: auto;
+            text-align: center;
+        }
+
+        .gradingInProgressMessage {
+            font-weight: 600;
+            font-size: 13px;
+            height: 25px;
+            width: 100%;
+            line-height: 25px;
+            margin-left: 15px;
+            margin-top: auto;
+            margin-bottom: auto;
+        }
+    }
+}

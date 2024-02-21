@@ -1,0 +1,41 @@
+{% extends '@PimUser/layout.html.twig' %}
+
+{% form_theme form '@PimUser/Reset/_fields.html.twig' %}
+
+{% block bodyClass %}AknLogin{% endblock %}
+
+{% block messages %}
+    {{ form_errors(form) }}
+{% endblock %}
+
+{% block content %}
+    {{ form_start(form, {
+        'action': path('pim_user_reset_reset', {token: token}),
+        'method': 'post',
+        'class': 'Form'
+    }) }}
+    <div class="InputGroup">
+        {{ form_widget(form.plainPassword, {'required': true}) }}
+        <div class="CancelPasswordReset">
+            <a href="{{ path('pim_user_security_login') }}">{{ 'pim_common.cancel'|trans }}</a>
+        </div>
+    </div>
+    <button type="submit" id="_submit" class="AknButton AknButton--apply">
+        {{- 'pim_user.user.login.reset'|trans -}}
+    </button>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block deferred_javascript %}
+    {{ parent() }}
+    <script type="text/javascript" nonce="{{ js_nonce() }}">
+      (function () {
+        const passwordFirst = document.getElementById('pim_user_reset_form_plainPassword_first');
+        const passwordSecond = document.getElementById('pim_user_reset_form_plainPassword_second');
+        const submit = document.getElementById('_submit');
+        const form = document.querySelector('form.Form');
+
+        initPimLoginForm([passwordFirst, passwordSecond], submit, form);
+      })();
+    </script>
+{% endblock %}

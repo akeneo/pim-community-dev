@@ -1,0 +1,45 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
+import {Tooltip} from './Tooltip.tsx';
+
+<Meta title="Components/Tooltip" component={Tooltip} args={{direction: 'top', content: 'Tooltip content'}} />
+
+# Tooltip
+
+## Usage
+
+It's a complementary information that will help the user better understand what he sees / reads (e.g. definition, explication concerning the UI / wording)
+
+👍 **Good reasons to use the tooltip :**
+
+- There are too many helpers in the page, it would blur the readability
+- There isn't enough space in the page to integrate a helper, so we need an overlay
+
+👎 **Bad reasons to use the tooltip :**
+
+- It's an important guiding information to navigate, enrich or complete a task (use a helper instead)
+- I find it more beautiful (it shouldn't matter first)
+- It's an error explanation (this needs to be in a helper)
+
+## Playground
+
+<Canvas>
+  <Story
+    name="Standard"
+    parameters={{
+      layout: 'centered',
+    }}
+    decorators={[
+      Story => (
+        <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '200px'}}>
+          <Story />
+        </div>
+      ),
+    ]}
+  >
+    {args => {
+      return <Tooltip {...args}>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Tooltip>;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />

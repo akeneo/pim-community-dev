@@ -1,0 +1,77 @@
+datagrid:
+    family-grid:
+        options:
+            entityHint: family
+            locale_parameter: localeCode
+            manageFilters: false
+        source:
+            acl_resource: pim_enrich_family_index
+            type: pim_datasource_family
+        columns:
+            label:
+                label: Label
+                frontend_type: label
+            attributeAsLabel:
+                label: Attribute as label
+        properties:
+            id: ~
+            edit_link:
+                type: url
+                route: pim_enrich_family_edit
+                params:
+                    - code
+            delete_link:
+                type: url
+                route: pim_enrich_family_rest_remove
+                params:
+                    - code
+        actions:
+            edit:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--edit
+                type:      navigate
+                label:     pim_common.edit
+                link:      edit_link
+                rowAction: true
+            delete:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--trash
+                type:  delete
+                label: pim_common.delete
+                link:  delete_link
+                acl_resource: pim_enrich_family_remove
+        sorters:
+            columns:
+                label:
+                    data_name: familyLabel
+                attributeAsLabel:
+                    data_name: f.attributeAsLabel
+            default:
+                label: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
+        filters:
+            columns:
+                code:
+                    type: string
+                    label: pim_common.code
+                    data_name: f.code
+                label:
+                    type: search
+                    label: Label
+                    data_name: translation.label
+                attributeAsLabel:
+                    type:      choice
+                    label:     Attribute as label
+                    data_name: a.code
+                    options:
+                        field_options:
+                            multiple: true
+                            choices:  '@pim_enrich.repository.attribute->findTranslatedLabels'
+        mass_actions:
+            family_edit:
+                type: edit
+                label: pim_datagrid.mass_action.mass_edit
+                route: pim_enrich_mass_edit_action
+                route_parameters:
+                    actionName: family-edit
+                acl_resource: pim_enrich_family_edit_attributes
+                className: 'AknButton AknButton--action AknButtonList-item'

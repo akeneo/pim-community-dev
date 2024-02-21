@@ -1,0 +1,12 @@
+framework:
+    messenger:
+        default_bus: messenger.bus.default
+        buses:
+            messenger.bus.default:
+                middleware:
+                    - Akeneo\Tool\Bundle\MessengerBundle\Middleware\UcsMiddleware
+            pim_event.handle.bus:
+                default_middleware: false
+                middleware:
+                    - 'Akeneo\Tool\Bundle\MessengerBundle\Middleware\HandleProcessMessageMiddleware'
+            category.command.bus: ~

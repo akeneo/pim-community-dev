@@ -1,0 +1,25 @@
+Acme\Bundle\AppBundle\Entity\Fabric:
+    repositoryClass: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ReferenceDataRepository
+    type: entity
+    table: acme_reference_data_fabric
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        code:
+            type: string
+            length: 255
+            unique: true
+        sortOrder:
+            type: integer
+        name:
+            type: string
+            length: 255
+        alternativeName:
+            type: string
+            length: 255
+            nullable: true
+    lifecycleCallbacks: {  }

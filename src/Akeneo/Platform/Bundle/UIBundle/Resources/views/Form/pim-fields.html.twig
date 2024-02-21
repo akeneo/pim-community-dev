@@ -1,0 +1,430 @@
+{% extends 'form_div_layout.html.twig' %}
+
+{% block widget_container_attributes %}
+    {% if errors|length > 0 %}
+        {% set attr = attr|merge({'class': attr.class is defined ? attr.class ~ ' error' : 'error'}) %}
+    {% endif %}
+    {{ parent() }}
+{% endblock widget_container_attributes %}
+
+{% block date_widget %}
+    {% apply spaceless %}
+        {% set type = 'text' %}
+        {% if widget == 'single_text' %}
+            {{ block('form_widget_simple')|raw }}
+        {% else %}
+            <div {{ block('widget_container_attributes') }}>
+                {{ date_pattern|replace({
+                    '{{ year }}':  form_widget(form.year),
+                    '{{ month }}': form_widget(form.month),
+                    '{{ day }}':   form_widget(form.day),
+                })|raw }}
+            </div>
+        {% endif %}
+    {% endapply %}
+{% endblock date_widget %}
+
+{% block choice_widget_expanded %}
+    {% apply spaceless %}
+        {% set attr = attr|merge({'class': attr.class is defined ? attr.class ~ ' horizontal' : 'horizontal'}) %}
+        {% set attr = attr|merge({'class': attr.class ~ ' validate-group'}) %}
+        {% set attr = attr|merge({'class': attr.class ~ ' AknChoicesField'}) %}
+        <div {{ block('widget_container_attributes') }}>
+            {% for child in form %}
+                <div class="AknChoicesField-choiceItem">
+                    {{ form_widget(child) }}
+                    {{ form_label(child) }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endapply %}
+{% endblock choice_widget_expanded %}
+
+{% block choice_widget_options %}
+    {% apply spaceless %}
+        {% for group_label, choice in options %}
+            {% if choice is iterable %}
+                <optgroup label="{{ choice_translation_domain is same as(false) ? group_label : group_label|trans({}, choice_translation_domain) }}">
+                    {% set options = choice %}
+                    {{ block('choice_widget_options') }}
+                </optgroup>
+            {% else %}
+                {% set label = choice_translation_domain is same as(false) ? choice.label : choice.label|trans({}, choice_translation_domain) %}
+                <option {{ block('choice_widget_option_attributes') }} value="{{ choice.value }}"{% if choice is selectedchoice(value) %} selected="selected"{% endif %}>{% if (configs.is_safe is defined and configs.is_safe) %}{{ label|raw }}{% else %}{{ label }}{% endif %}</option>
+            {% endif %}
+        {% endfor %}
+    {% endapply %}
+{% endblock choice_widget_options %}
+
+{% block choice_widget_option_attributes %}
+    {% apply spaceless %}
+        {% if choice.label.attr is defined and choice.label.attr|length > 0 %}
+            {% for attrname, attrvalue in choice.label.attr %}{{ attrname }}="{{ attrvalue }}" {% endfor %}
+        {% endif %}
+    {% endapply %}
+{% endblock choice_widget_option_attributes %}
+
+{% block form_start %}
+{% apply spaceless %}
+    {% set method = method|upper %}
+    {% if method in ["GET", "POST"] %}
+        {% set form_method = method %}
+    {% else %}
+        {% set form_method = "POST" %}
+    {% endif %}
+    {% set formClass = class is defined ? class : 'form-horizontal' %}
+    {% if attr.class is defined %}
+        {% set class = attr.class ~ ' ' ~ formClass %}
+    {% else %}
+        {% set class = formClass %}
+    {% endif %}
+    {% set attr = attr|merge({'class': class }) %}
+    <form id="{{ id }}" method="{{ form_method|lower }}" action="{{ action }}"{% for attrname, attrvalue in attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}{% if multipart %} enctype="multipart/form-data"{% endif %}>
+    {% if form_method != method %}
+        <input type="hidden" name="_method" value="{{ method }}" />
+    {% endif %}
+{% endapply %}
+{% endblock form_start %}
+
+{% block form_end %}
+{% apply spaceless %}
+    {{ form_row(form._token) }}
+</form>
+{% endapply %}
+{% endblock form_end %}
+
+{% block form_row_field %}
+    <div class="AknFieldContainer{% if attr.class is defined %} {{ attr.class }}{% endif %}">
+        <div class="AknFieldContainer-header">
+            {{ form_label(form, '', { label_attr: label_attr|merge({ class: 'AknFieldContainer-label control-label' })}) }}
+        </div>
+        <div class="AknFieldContainer-inputContainer field-input{% if errors|length > 0 %} validation-error{% endif %}">
+            {{ form_widget(form) }}
+            {% if form.children|length == 0 %}
+                {{ block('form_info') }}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block form_row %}
+    {% apply spaceless %}
+        {{ block('form_row_field') }}
+    {% endapply %}
+{% endblock form_row %}
+
+{% block form_label %}
+{% apply spaceless %}
+    {% if label is not same as(false) %}
+        {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' AknFieldContainer-label')|trim}) %}
+        {% if not compound %}
+            {% set label_attr = label_attr|merge({'for': id}) %}
+        {% endif %}
+        {% if required %}
+            {% set label_attr = label_attr|merge({'class': (label_attr.class ~ ' required')|trim}) %}
+        {% endif %}
+        {% if label is empty %}
+            {% set label = name|humanize %}
+        {% endif %}
+        {% set isRadioLabel = form.parent.vars.expanded|default(false) and checked is defined %}
+        {% set label = label|trans({}, translation_domain) %}
+        {% if label_attr.truncate is defined and label_attr.truncate %}
+            {% set label_attr = { 'title': label }|merge(label_attr) %}
+            {% set label_attr = label_attr|merge({ 'class': (label_attr.class is defined ? label_attr.class ~ ' ' : '') ~ 'truncate' }) %}
+        {% endif %}
+        <label {% for attrname, attrvalue in label_attr|filter(attrname => attrname != 'truncate') -%} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
+            {% if form.parent.vars.mode is defined and 'comparison' == form.parent.vars.mode %}
+                <input type="checkbox" class="comparisonSelection exclude" />
+            {% else %}
+                {{ label }}{% if required and not isRadioLabel %} <em>{{ 'required'|trans }}</em>{% endif %}
+            {% endif %}
+        </label>
+    {% endif %}
+{% endapply %}
+{% endblock form_label %}
+
+{% block form_info %}
+    {% apply spaceless %}
+        {% if type is not defined or type != 'hidden' %}
+            <div class="AknFieldContainer-iconsContainer icons-container">
+                {% if help is defined %}
+                    <i class="AknIconButton icon-info-sign" data-toggle="tooltip" data-placement="right" data-original-title="{{ help|trans }}"></i>
+                {% endif %}
+                {% if from_variant is defined %}
+                    <i class="AknIconButton icon-lock" data-trigger="hover" data-toggle="popover" data-placement="right" data-title="{{ 'pim_enrich.product_value.tooltip.from_variant.title'|trans }}" data-content="{{ 'pim_enrich.product_value.tooltip.from_variant.content'|trans }} : {{ from_variant.code }}" data-container="body"></i>
+                {% endif %}
+                {{ form_errors(form) }}
+            </div>
+            {% if info is defined %}
+                <div>{{ info|trans }}</div>
+            {% endif %}
+        {% endif %}
+    {% endapply %}
+{% endblock form_info %}
+
+{% macro getRootId(form) -%}
+    {{ form.parent ? _self.getRootId(form.parent) : form.vars.id }}
+{%- endmacro %}
+
+{% block form_errors %}{% apply spaceless %}
+    {% if errors|length > 0 %}
+        <script type="text/javascript" nonce="{{ js_nonce() }}">
+            var el = document.getElementById('{{ _self.getRootId(form) }}');
+
+            if (el) {
+                el.dispatchEvent(new Event('change'));
+            }
+
+        </script>
+        {% if form.parent %}
+            {% set combinedError = '' %}
+            {% for error in errors %}
+                {% set error = error.messageTemplate|trans(error.messageParameters, 'validators', null, error.messagePluralization) %}
+                {% set combinedError = (combinedError != '') ? combinedError ~ '; ' ~ error : error %}
+            {% endfor %}
+            <i class="AknIconButton AknIconButton--important icon-warning-sign validation-tooltip" data-placement="right" data-toggle="tooltip" data-original-title="{{ combinedError|trans }}"></i>
+        {% else %}
+            {{ parent() }}
+        {% endif %}
+    {% endif %}
+{% endapply %}{% endblock form_errors %}
+
+{% block pim_translatable_field_row %}
+    {{ form_errors(form) }}
+    {% for translation in form %}
+    <div class="AknFieldContainer">
+        <div class="AknFieldContainer-header">
+            {{ form_label(translation) }}
+        </div>
+        <div class="AknFieldContainer-inputContainer field-input{% if errors|length > 0 %} validation-error{% endif %}">
+            {{ form_widget(translation) }}
+            {% if form.children|length == 0 %}
+                {{ block('form_info') }}
+            {% endif %}
+        </div>
+        <div class="AknFieldContainer-footer">
+            {{ form_errors(translation) }}
+        </div>
+    </div>
+    {% endfor %}
+{% endblock %}
+
+{% block pim_enrich_media_row %}
+    {% apply spaceless %}
+    {% set empty = not form.vars.value or not form.vars.value.key %}
+    {% if not (empty and form.parent.vars.mode is defined and 'comparison' == form.parent.vars.mode) %}
+        <div class="AknFormContainer AknFormContainer--withPadding AknFormContainer--centered control-group upload-zone-container">
+            <div class="controls AknMediaField">
+                <label class="upload-zone file{% if empty %} empty{% endif %}{% if disabled %} disabled{% endif %}">
+                    {% if form.parent.vars.mode is not defined or 'comparison' != form.parent.vars.mode %}
+                        <a class="AknMediaField-trashIcon no-hash remove-upload{% if empty %} hide{% endif %}{% if disabled %} disabled{% endif %}">
+                            <i class="icon-trash"></i>
+                        </a>
+                    {% endif %}
+                    <div class="upload-info">
+                        {% if not empty %}
+                            <a class="no-hash upload-preview" href="{{ path('pim_enrich_media_show', { 'filename': form.vars.value.key|url_encode }) }}" target="_blank" title="{{ form.vars.value.originalFilename }}">
+                                <img src="/bundles/pimui/images/upload.png" alt="upload icon" class="AknMediaField-uploadIcon upload-preview">
+                            </a>
+                            {% set filename = form.vars.value.originalFilename %}
+                            {% if filename|length > 20 %}
+                                {% set filename = filename|slice(0, 17) ~ '...' %}
+                            {% endif %}
+                            <span class="upload-filename" data-empty-title="{{ 'Drag and drop a file or click here'|trans }}">{% if empty %}{{ 'Drag and drop a file or click here'|trans }}{% else %}{{ filename }}{% endif %}</span>
+                        {% else %}
+                            <div class="AknMediaField-emptyContainer">
+                                <img src="/bundles/pimui/images/upload.png" alt="upload icon" class="AknMediaField-uploadIcon upload-preview">
+                                <span class="upload-filename" data-empty-title="{{ 'Drag and drop a file or click here'|trans }}">{% if empty %}{{ 'Drag and drop a file or click here'|trans }}{% else %}{{ filename }}{% endif %}</span>
+                            </div>
+                        {% endif %}
+                    </div>
+                    {% if empty %}
+                        {{ form_widget(form.uploadedFile, { attr: { 'class': 'AknTextField--fileDropZone' }}) }}
+                    {% else %}
+                        {{ form_widget(form.uploadedFile, { attr: { 'class': 'hide', 'disabled': 'disabled' }}) }}
+                        {{ form_widget(form.removed, {'attr': { 'class': 'hide' }}) }}
+                    {% endif %}
+                </label>
+                {{ block('form_info') }}
+                {{ form_widget(form.id) }}
+            </div>
+        </div>
+        <script type="text/javascript" nonce="{{ js_nonce() }}">
+            require(
+                ['pim/fileinput'],
+                function(fileinput) {
+                    fileinput.init('{{ form.uploadedFile.vars.id }}');
+                }
+            );
+        </script>
+    {% else %}
+        <div class="control-group">
+            <div class="controls">
+                <label class="upload-zone file empty">
+                    <div class="upload-info">
+                        <span class="upload-filename">
+                            {{ 'pim_enrich.product.no_compared_media'|trans }}
+                        </span>
+                    </div>
+                </label>
+            </div>
+        </div>
+    {% endif %}
+
+    {% endapply %}
+{% endblock %}
+
+{% block widget_attributes %}
+{% apply spaceless %}
+    id="{{ id }}" name="{{ full_name }}"{% if attr.read_only is defined and attr.read_only == true %} readonly="readonly"{% endif %}{% if disabled %} disabled="disabled"{% endif %}{% if attr.max_length is defined %} maxlength="{{ max_length }}"{% endif %}{% if pattern is defined %} pattern="{{ pattern }}"{% endif %}
+    {% for attrname, attrvalue in attr %}{% if attrname in ['placeholder', 'title'] %}{{ attrname }}="{{ attrvalue|trans({}, translation_domain) }}" {% else %}{{ attrname }}="{{ attrvalue }}" {% endif %}{% endfor %}
+{% endapply %}
+{% endblock widget_attributes %}
+
+{% block switch_widget %}
+{% apply spaceless %}
+    {% set originalId = id %}
+    {% set id         = 'input-' ~ originalId %}
+    {% set switchId   = 'switch-' ~ originalId %}
+    <div id="{{ switchId }}" class="switch switch-{{ attr.size is defined ? attr.size : 'small' }}" data-on-label="{{ (attr['data-on-label'] is defined ? attr['data-on-label'] : 'switch_on')|trans }}" data-off-label="{{ (attr['data-off-label'] is defined ? attr['data-off-label'] : 'switch_off')|trans }}">
+        {% if required %}{% set required = false %}{% endif %}
+        <input id="{{ originalId }}" type="checkbox" {% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %}{% if disabled %} disabled="disabled"{% endif %}>
+        <input type="hidden" {{ block('widget_attributes') }}{% if checked or attr.checked is defined and attr.checked %} value="1"{% endif %}>
+    </div>
+    <script type="text/javascript" nonce="{{ js_nonce() }}">
+    require(
+        ['jquery'],
+        function ($) {
+            'use strict';
+            $(function() {
+                $('#{{ switchId }}').closest('form').on('switch-change', '#{{ switchId }}', function (e, data) {
+                    $('#{{ id }}').val(+data.value);
+                });
+            });
+        }
+    );
+    </script>
+{% endapply %}
+{% endblock switch_widget %}
+
+{% block pim_ajax_entity_row %}
+    {{ block('form_row_field') }}
+{% endblock %}
+
+{% block pim_ajax_reference_data_row %}
+    {{ block('form_row_field') }}
+{% endblock %}
+
+{% block pim_date_widget %}
+    {% set attr = attr|merge({ 'class': (attr.class is defined ? attr.class ~ ' ' : '') ~ 'datepicker add-on', 'placeholder': placeholder|trans }) %}
+    {% if form.vars.disabled %}
+        {% set attr = attr|merge({'disabled': 'disabled'}) %}
+    {% endif %}
+
+    {{ block('date_widget') }}
+{% endblock pim_date_widget %}
+
+{% block pim_number_widget %}
+    {{ block('number_widget') }}
+{% endblock %}
+
+{% block oro_acl_privilege_widget %}
+    {% apply spaceless %}
+        {% if 'groups' == privileges_config.view_type %}
+            {% if 'entity' == form.vars.value.extensionKey and '(default)' != form.vars.value.identity.name %}
+                {{ form_widget(form.identity.id) }}
+                {{ form_widget(form.permissions) }}
+            {% else %}
+                <div class="AknAcl AknAcl-item acl-permission{{ form.vars.value.identity.name == '(default)' ? ' default-field AknAcl--hide hide' : '' }}">
+                    {{ form_widget(form.permissions) }}
+                    {{ form_widget(form.identity) }}
+                </div>
+            {% endif %}
+        {% else %}
+            <tr class="acl-permission{{ form.vars.value.identity.name == '(default)' ? ' default-field hide' : '' }}">
+                <td>
+                    {{ form_widget(form.identity) }}
+                </td>
+                {{ form_widget(form.permissions) }}
+            </tr>
+        {% endif %}
+    {% endapply %}
+{% endblock %}
+
+{% block oro_acl_permission_widget %}
+    {{ form_widget(form.name) }}
+    {{ form_widget(form.accessLevel) }}
+{% endblock %}
+
+{% block oro_acl_permission_collection_widget %}
+    {% if 'entity' == form.parent.vars.value.extensionKey %}
+        {% for field in privileges_config['permissions'] %}
+            {% for permission in form|filter(permission => permission.vars.value.name == field) -%}
+                {% set additionalClass = field == 'ASSIGN' or '(default)' == form.parent.vars.value.identity.name ? ' default-field hide' : '' %}
+                {% if 'entity:Akeneo\\UserManagement\\Component\\Model\\Role' == form.parent.vars.value.identity.id %}
+                    {% set additionalClass = additionalClass ~ ' default-field-toggle' %}
+                {% endif %}
+                <div class="acl-permission{{ additionalClass }}" data-permission="{{ field }}">
+                    <span>{{ ('oro_security.acl.' ~ form.parent.vars.value.identity.name ~ '.' ~ field)|lower|trans }}</span>
+                    {{ form_widget(permission) }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+    {% else %}
+        {% for field in privileges_config['permissions'] %}
+            {% for permission in form|filter(permission => permission.vars.value.name == field) -%}
+                {{ form_widget(permission) }}
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
+{% endblock %}
+
+{% block pim_acl_access_level_selector_widget %}
+    {% set iconClass = '' %}
+    {% if form.vars.checked %}
+        {% set iconClass = 'AknSelectButton--selected granted' %}
+    {% else %}
+        {% set iconClass = 'non-granted' %}
+    {% endif %}
+    <div class="select-button AknAcl-icon AknSelectButton {{ iconClass }} acl-permission-toggle"></div>
+    {% set attr = attr|merge({ class: 'hide' }) %}
+    {{ block('checkbox_widget') }}
+{% endblock %}
+
+{% block oro_acl_label_widget %}
+    <span>{{ value|trans }}</span>
+{% endblock %}
+
+{% block pim_async_select_widget %}
+    {% if attr['data-placeholder'] is defined %}
+        {% set attr = attr|merge({'data-placeholder': attr['data-placeholder']|trans}) %}
+    {% endif %}
+    {{ block('hidden_widget') }}
+{% endblock %}
+
+{% block select_family_type_row %}
+    {{ block('form_row_field') }}
+{% endblock %}
+
+{%- block form_widget_simple -%}
+    {%- set type = type|default('text') -%}
+    {% if attr.class is defined %}
+        {% if 'input-' not in attr.class %}
+            {% set class = attr.class ~ ' AknTextField' %}
+        {% else %}
+            {% set class = attr.class %}
+        {% endif %}
+    {% else %}
+        {% set class = ' AknTextField' %}
+    {% endif %}
+    {% if 'file' == type %}
+        {% set class = class ~ ' AknTextField--file' %}
+    {% endif %}
+    {% set attr = attr|merge({'class': class }) %}
+    {# This override is needed until this twig PR is not merged: https://github.com/twigphp/Twig/pull/2433 #}
+    <input type="{{ type }}" {{ block('widget_attributes') }} {% if value == '\\' or value is not empty %}value="{{ value }}" {% endif %}/>
+{%- endblock form_widget_simple -%}
+
+{%- block textarea_widget -%}
+    <textarea class="AknTextareaField" {{ block('widget_attributes') }}>{{ value }}</textarea>
+{%- endblock textarea_widget -%}

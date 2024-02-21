@@ -1,0 +1,71 @@
+@import '../base/variables';
+
+.AknSteps {
+  @width: 175px;
+  @circleSize: 32px;
+
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+
+  &-step {
+    width: @width;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: @AknFontSizeSmall;
+
+    &--checked {
+      color: @AknDefaultFontColor;
+    }
+
+    &--undefined {
+      &:after {
+        display: none;
+      }
+    }
+  }
+
+  &-stepCircle {
+    display: block;
+    content: ' ';
+    border: 1px solid @AknBorderColor;
+    border-radius: 100px;
+    height: @circleSize;
+    width: @circleSize;
+    position: relative;
+    top: -38px;
+    left: (@width - @circleSize) / 2;
+    background: white;
+    color: @AknGrey;
+    margin-bottom: -@circleSize;
+  }
+
+  &-step--checked &-stepCircle {
+    border-color: @AknGreen;
+    background: @AknGreen url("/bundles/pimui/images/icon-checkwhite.svg") no-repeat 50%;
+  }
+
+  &-step + &-step {
+    &:before {
+      display: block;
+      content: ' ';
+      width: @width;
+      border-bottom: 1px solid @AknBorderColor;
+      position: relative;
+      left: -(@width - @circleSize) / 2;
+      top: -22px;
+    }
+  }
+
+  &-step + &-step&-step--checked {
+    &:before {
+      border-color: @AknGreen;
+    }
+  }
+
+  &-step + &-step&-step--undefined {
+    &:before {
+      border-bottom: 1px dashed @AknBorderColor;
+    }
+  }
+}

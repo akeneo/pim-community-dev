@@ -1,0 +1,29 @@
+{% extends "@PimNotification/Email/notification.html.twig" %}
+
+{% block title %}
+    Akeneo reset password
+{% endblock %}
+
+{% block link %}
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,900" rel="stylesheet" type="text/css"/>
+{% endblock %}
+
+{% block emailMessage %}
+    <p style="margin: 0 0 30px 0; font-size: 20px; font-family: 'Lato', sans-serif">
+        Dear <strong>{{ user.userIdentifier }}</strong>,<br/>
+        We just received a request to reset your Akeneo PIM password.
+        If that was you, then you can change your password by clicking the button below.
+    </p>
+{% endblock %}
+
+{% block emailUserAction %}
+    {% set url = url('pim_user_reset_reset', { token: user.confirmationToken }) %}
+    <span>
+        <a target="_blank"
+           role="button"
+           style="-webkit-appearance: button; -moz-appearance: button; appearance: auto;
+           padding: 10px 20px; border-radius: 25px; background-color: #9452ba; color: white;
+           text-decoration: none; text-transform: uppercase; font-size: 15px; font-weight: 900;"
+           href="{{ url }}">Reset password</a>
+    </span>
+{% endblock %}

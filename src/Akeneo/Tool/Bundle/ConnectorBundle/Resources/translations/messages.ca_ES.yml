@@ -1,0 +1,24 @@
+pim_connector:
+  steps:
+    file_reader:
+      invalid_item_columns_count: 'Esperem tenir %totalColumnsCount% columnes, ara tenim %itemColumnsCount% a %filePath%:%lineno%'
+job_execution.summary:
+  read: llegir
+  write: escrit
+  skip: omès
+  create: creat
+  process: processat
+  update: actualitzat
+  update_products: productes actualitzats
+  process_products: productes processats
+  skip_products: productes omesos
+  displayed: primers avisos mostrats
+  charset_validator:
+    title: 'Codificació de l''arxiu:'
+    skipped: omès, extensió a la llista blanca
+  product_skipped_no_diff: producte omès (no hi ha diferències)
+  product_skipped_no_associations: producte omès (cap associació detectada)
+  product_model_skipped_no_diff: models de producte omès (no hi ha diferències)
+  item_position: llegir les línies
+  skipped_in_root_product_model: ometre el model de producte amb el pare
+  skipped_in_sub_product_model: ometre el model de producte sense el pare

@@ -1,0 +1,41 @@
+parameters:
+    pim_datagrid.extension.filter.class:                Oro\Bundle\PimDataGridBundle\Extension\Filter\FilterExtension
+    pim_datagrid.extension.sorter.class:                Oro\Bundle\PimDataGridBundle\Extension\Sorter\SorterExtension
+    pim_datagrid.extension.pager.class:                 Oro\Bundle\PimDataGridBundle\Extension\Pager\PagerExtension
+    pim_datagrid.extension.selector.orm_selector.class: Oro\Bundle\PimDataGridBundle\Extension\Selector\OrmSelectorExtension
+
+services:
+    pim_datagrid.extension.filter:
+        class: '%pim_datagrid.extension.filter.class%'
+        arguments:
+            - '@oro_datagrid.datagrid.request_params'
+            - '@translator'
+            - '@pim_datagrid.datasource.adapter_resolver'
+        tags:
+             - { name: oro_datagrid.extension }
+
+    pim_datagrid.extension.sorter:
+        class: '%pim_datagrid.extension.sorter.class%'
+        arguments:
+            - '@oro_datagrid.datagrid.request_params'
+        tags:
+            - { name: oro_datagrid.extension }
+
+    pim_datagrid.extension.pager:
+        class: '%pim_datagrid.extension.pager.class%'
+        arguments:
+            - '@pim_datagrid.extension.pager.pager_resolver'
+            - '@oro_datagrid.datagrid.request_params'
+        tags:
+            - { name: oro_datagrid.extension }
+
+    pim_datagrid.extension.selector.orm_selector:
+        class: '%pim_datagrid.extension.selector.orm_selector.class%'
+        arguments:
+            - '@oro_datagrid.datagrid.request_params'
+        calls:
+            - [addEligibleDatasource, ['pim_datasource_product']]
+            - [addEligibleDatasource, ['pim_datasource_associated_product']]
+            - [addEligibleDatasource, ['pimee_datasource_published_product']]
+        tags:
+             - { name: oro_datagrid.extension }

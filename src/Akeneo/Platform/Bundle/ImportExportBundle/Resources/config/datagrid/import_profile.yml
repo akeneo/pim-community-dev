@@ -1,0 +1,47 @@
+datagrid:
+    import-profile-grid:
+        extend: job-profile-grid
+        options:
+            entityHint: import profile
+        source:
+            acl_resource: pim_importexport_import_profile_index
+        properties:
+            edit_link:
+                route: pim_importexport_import_profile_edit
+            delete_link:
+                route: pim_enrich_job_instance_rest_import_delete
+            show_link:
+                route: pim_importexport_import_profile_show
+        actions:
+            view:
+                acl_resource: pim_importexport_import_profile_show
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--view
+                type:      navigate
+                label:     pim_datagrid.action.show.title
+                link:      show_link
+                rowAction: true
+            edit:
+                acl_resource:  pim_importexport_import_profile_edit
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--edit
+                type:  navigate
+                label: pim_common.edit
+                link:  edit_link
+            delete:
+                acl_resource:  pim_importexport_import_profile_remove
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--trash
+                type:  delete
+                label: pim_common.delete
+                link:  delete_link
+        filters:
+            columns:
+                job_name:
+                    options:
+                        field_options:
+                            choices: '@pim_import_export.datagrid.provider.job->getImportJobChoices'
+                connector:
+                    options:
+                        field_options:
+                            choices: '@pim_import_export.datagrid.provider.job->getImportConnectorChoices'

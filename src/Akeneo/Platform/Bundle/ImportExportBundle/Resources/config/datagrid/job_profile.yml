@@ -1,0 +1,68 @@
+datagrid:
+    job-profile-grid:
+        options:
+            manageFilters: false
+        source:
+            type: pim_datasource_job_instance
+        columns:
+            label:
+                label: Label
+                frontend_type: label
+            job_name:
+                label:     Job
+                type:      job_name
+            connector:
+                label: Connector
+            status:
+                label:     Status
+                type:      translateable
+                data_name: statusLabel
+        properties:
+            code: ~
+            edit_link:
+                type: url
+                params:
+                    - code
+            delete_link:
+                type: url
+                params:
+                    - code
+            show_link:
+                type: url
+                params:
+                    - code
+        sorters:
+            columns:
+                label:
+                    data_name: j.label
+                connector:
+                    data_name: j.connector
+                status:
+                    data_name: statusLabel
+            default:
+                label: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
+        filters:
+            columns:
+                label:
+                    type:      search
+                    data_name: j.label
+                job_name:
+                    type:      choice
+                    data_name: j.jobName
+                    options:
+                        field_options:
+                            multiple: true
+                connector:
+                    type:      choice
+                    data_name: j.connector
+                    options:
+                        field_options:
+                            multiple: true
+                status:
+                    type:      choice
+                    data_name: j.status
+                    options:
+                        field_options:
+                            multiple: true
+                            choices:
+                                pim_import_export.status.0: 0

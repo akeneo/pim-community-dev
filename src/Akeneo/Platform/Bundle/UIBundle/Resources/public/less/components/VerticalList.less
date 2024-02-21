@@ -1,0 +1,80 @@
+@import '../base/variables';
+
+.AknVerticalList {
+  @itemHeight: 50px;
+
+  min-height: 3 * @itemHeight;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  height: auto !important; // Bootstrap adds an height in JS for nav-list, we have to remove it.
+
+  &-item {
+    border-bottom: 1px solid @AknBorderColor;
+    height: @itemHeight;
+    line-height: 50px;
+    margin: 0 0 -1px 0;
+    padding: 0 10px;
+    display: flex;
+    justify-content: space-between;
+    flex-shrink: 0;
+    align-items: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+
+    &-itemLabel {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    &--selectable {
+      cursor: pointer;
+    }
+
+    // For jquery ui => remove the ellipsis when drag and dropping a very long attribute name.
+    &.ui-sortable-helper {
+      background: rgba(255, 255, 255, 0.8);
+      width: auto !important;
+    }
+
+    &--movable {
+      cursor: move;
+      background: url("/bundles/pimui/images/icon-dragcolumns.svg") no-repeat 0 center;
+      background-size: 13px;
+      padding-left: 20px;
+    }
+
+    &--hide {
+      display: none;
+    }
+
+    &.active, // This is the bootstrap selector
+    &--active {
+      color: @AknLightPurple;
+    }
+  }
+
+  &-itemLink {
+    color: @AknDefaultFontColor;
+    flex-grow: 1;
+
+    &:hover {
+      color: darken(@AknDefaultFontColor, 20%);
+    }
+  }
+
+  &-delete {
+    background: url("/bundles/pimui/images/icon-delete-slategrey.svg") no-repeat center;
+    background-size: 24px;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+  }
+
+  &--withoutBorder &-item {
+    border-left: none;
+    border-right: none;
+  }
+}

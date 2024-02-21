@@ -1,0 +1,65 @@
+<div class="AknGridContainer">
+    <table class="AknGrid AknGrid--unclickable groups">
+        <thead>
+            <th class="AknGrid-headerCell"><%- label %></th>
+            <% _.each(channels, function (channel) { %>
+            <th class="AknGrid-headerCell AknGrid-headerCell--center channel">
+                <%- i18n.getLabel(channel.labels, catalogLocale, channel.code) %>
+            </th>
+            <% }) %>
+            <th class="AknGrid-headerCell">&nbsp;</th>
+        </thead>
+        <% _.each(_.keys(groupedAttributes), function (group) { %>
+        <% var attributeGroup = _.findWhere(attributeGroups, {code: group}) %>
+        <% var collapsed = (true === attributeGroup.collapsed) %>
+
+        <tbody class="AknGrid-bodyContainer <%- collapsed ? 'AknGrid-bodyContainer--collapsed': '' %>"  data-group="<%- group %>">
+            <tr class="AknGrid-bodyRow AknGrid-bodyRow--highlight AknGrid-headerToggle group">
+                <td class="AknGrid-bodyCell AknGrid-bodyCell--tight">
+                    <div class="<%- collapsed ? 'AknGrid-expand' : 'AknGrid-expand AknGrid-expand--expanded' %>"></div>
+                </td>
+                <td class="AknGrid-bodyCell" colspan="<%- colspan %>">
+                    <%-
+                        i18n.getLabel(
+                            attributeGroup.labels,
+                            catalogLocale,
+                            attributeGroup.code
+                        )
+                    %>
+                </td>
+            </tr>
+            <% _.each(groupedAttributes[group], function (attribute) { %>
+            <tr class="AknGrid-bodyRow">
+                <td class="AknGrid-bodyCell">
+                    <%- i18n.getLabel(attribute.labels, catalogLocale, attribute.code) %>
+                </td>
+                <% _.each(channels, function (channel) { %>
+                <td class="AknGrid-bodyCell AknGrid-bodyCell--center">
+                    <div class="attribute-requirement">
+                        <% isRequired = isAttributeRequirementRequired(attribute, channel) %>
+                        <i
+                            class="AknAcl-icon
+                                <%- isRequired ? 'AknSelectButton AknSelectButton--selected required' : 'AknSelectButton non-required' %>
+                                <%- isAttributeEditable() ? '' : 'AknAcl-disabled' %>"
+                            data-attribute="<%- attribute.code %>"
+                            data-type="<%- attribute.type %>"
+                            data-channel="<%- channel.code %>"
+                            data-required="<%- isRequired %>"
+                            data-toggle="tooltip"
+                            data-original-title="<%- getAttributeRequirementTooltip(attribute, channel) %>"
+                            data-placement="right"
+                        ></i>
+                    </div>
+                </td>
+                <% }) %><!-- end each channel -->
+                <td class="AknGrid-bodyCell AknGrid-bodyCell--right">
+                    <% if (!readOnly) { %>
+                    <span class="AknIconButton AknIconButton--small AknIconButton--trash remove-attribute" data-attribute="<%- attribute.code %>"></span>
+                    <% } %>
+                </td>
+            </tr>
+            <% }) %><!-- end each attribute -->
+        </tbody>
+        <% }) %><!-- end each group -->
+    </table>
+</div>

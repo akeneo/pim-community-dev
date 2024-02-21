@@ -1,0 +1,42 @@
+{
+  "_links": {
+    "self": {
+      "href": "http://localhost/api/rest/v1/products-uuid/{uuid}"
+    }
+  },
+  "uuid": "{uuid}",
+  "family": null,
+  "parent": null,
+  "groups": [],
+  "categories": ["master"],
+  "enabled": true,
+  "values": {
+    "sku": [{
+      "locale": null,
+      "scope": null,
+      "data": "simple"
+    }],
+    "a_metric": [{
+      "locale": null,
+      "scope": null,
+      "data": {
+        "amount": "10.0000",
+        "unit": "KILOWATT"
+      }
+    }],
+    "a_text": [{
+      "locale": null,
+      "scope": null,
+      "data": "Text"
+    }]
+  },
+  "created": "2017-03-11T10:39:38+01:00",
+  "updated": "2017-03-11T10:39:38+01:00",
+  "associations": {
+    "PACK": { "products" : [], "product_models": [], "groups": [] },
+    "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
+    "UPSELL": { "products" : [], "product_models": [], "groups": [] },
+    "X_SELL": { "products" : [], "product_models": [], "groups": [] }
+  },
+  "quantified_associations": {}
+}

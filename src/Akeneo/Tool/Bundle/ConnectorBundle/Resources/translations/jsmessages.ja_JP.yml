@@ -1,0 +1,196 @@
+#Job labels
+batch_jobs:
+  default_steps:
+    download_files: ファイルをダウンロード
+    upload_files: ファイルをアップロード
+    export: エクスポート
+    import: インポート
+    validation: ファイルの検証
+    import_associations: 関連付けのインポート
+    import_model_associations: 関連付けのインポート
+    import_root_product_model: ルート商品モデルのインポート
+    import_sub_product_model: サブ商品モデルのインポート
+    compute_data_related_to_family_root_product_models: ルート商品モデルデータを計算
+    compute_data_related_to_family_sub_product_models: サブ商品モデルデータを計算
+    compute_data_related_to_family_products: 商品データを計算
+    index_family_products_and_product_models: 製品ファミリーと商品モデルのインデックスを作成
+    compute_family_variant_structure_changes: ファミリーバリエーションの変更を計算
+    compute_completeness_of_products_family: 商品ファミリーの完全性を検算
+    index_family_products: 製品ファミリーと商品モデルのインデックスを作成
+    delete_products_and_product_models: 製品を一括削除
+    ensure_attribute_group_order: 属性グループのソート順をチェックする
+    clean_attribute:
+      register_clean_job: ブラックリストにコードを追加中
+      clean_product_model: 商品モデルを消去中
+      clean_product: 商品を消去中
+      remove_attribute_codes_from_blacklist: ブラックリストからコードを削除中
+    check_job_unique: ジョブが一意であることをチェック
+  csv_product_export:
+    label: 商品をCSV形式でエクスポート
+    export.label: 商品エクスポート
+  csv_product_model_export:
+    label: 商品モデルをCSV形式でエクスポート
+    export.label: 商品モデルのエクスポート
+  csv_category_export:
+    label: カテゴリをCSV形式でエクスポート
+    export.label: カテゴリエクスポート
+  csv_attribute_export:
+    label: 属性をCSV形式でエクスポート
+    export.label: 属性エクスポート
+  csv_attribute_option_export:
+    label: 属性オプションをCSV形式でエクスポート
+    export.label: 属性オプションのエクスポート
+  csv_association_type_export:
+    label: 関連タイプをCSV形式でエクスポート
+    export.label: 関連タイプのエクスポート
+  csv_group_export:
+    label: グループをCSV形式でエクスポート
+    export.label: グループのエクスポート
+  csv_family_export:
+    label: CSV形式でファミリーをエクスポート
+    export.label: ファミリーエクスポート
+  csv_family_variant_export:
+    label: ファミリーバリエーションをCSV形式でエクスポート
+    export.label: ファミリーバリエーションのエクスポート
+  csv_user_group_export:
+    label: ユーザーグループを CSV 形式でエクスポート
+    export.label: ユーザーグループをエクスポート
+  csv_user_role_export:
+    label: ユーザー権限を CSV 形式でエクスポート
+    export.label: ユーザー権限をエクスポート
+  csv_user_export:
+    label: ユーザーを CSV 形式でエクスポート
+    export.label: ユーザーをエクスポート
+  csv_product_import:
+    label: 商品をCSV形式でインポート
+    import.label: 商品のインポート
+  csv_product_model_import:
+    label: 商品モデルをCSV形式でインポート
+    import_product_model_descendants.label: 商品モデルの下位を全て計算
+  csv_category_import:
+    label: カテゴリをCSV形式でインポート
+    import.label: カテゴリのインポート
+  csv_attribute_import:
+    label: 属性をCSV形式でインポート
+    import.label: 属性のインポート
+  csv_attribute_option_import:
+    label: 属性オプションをCSV形式でインポート
+    import.label: 属性オプションのインポート
+  csv_association_type_import:
+    label: 関連タイプをCSV形式でインポート
+    import.label: 関連付けタイプのインポート
+  csv_family_import:
+    label: ファミリーをCSV形式でインポート
+    import.label: ファミリーのインポート
+    compute_data_related_to_family_variants.label: 商品モデルデータを計算
+  csv_family_variant_import:
+    label: ファミリーバリアントをCSV形式でインポート
+    import.label: ファミリーのバリエーションをインポート
+  csv_group_import:
+    label: グループをCSV形式でインポート
+    import.label: グループのインポート
+  csv_attribute_group_export:
+    label: 属性グループをCSV形式でエクスポート
+    export.label: 属性グループのエクスポート
+  csv_group_type_export:
+    label: グループタイプをCSV形式でエクスポート
+    export.label: グループタイプのエクスポート
+  csv_attribute_group_import:
+    label: 属性グループをCSV形式でインポート
+    import.label: 属性グループのインポート
+  csv_group_type_import:
+    label: グループタイプをCSV形式でインポート
+    import.label: グループタイプのインポート
+  csv_user_group_import:
+    label: ユーザーグループを CSV 形式でインポート
+    import.label: ユーザーグループをインポート
+  csv_user_import:
+    label: ユーザーを CSV 形式でインポート
+    import.label: ユーザーをインポート
+  csv_user_role_import:
+    label: ユーザー権限を CSV 形式でインポート
+    import.label: ユーザー権限をインポート
+  xlsx_category_import:
+    label: カテゴリをXLSX形式でインポート
+    import.label: カテゴリのインポート
+  xlsx_association_type_import:
+    label: 関連タイプをXLSXでインポート
+    import.label: 関連付けタイプのインポート
+  xlsx_attribute_import:
+    label: 属性をXLSX形式でインポート
+    import.label: 属性のインポート
+  xlsx_attribute_option_import:
+    label: 属性オプションをXLSX形式でインポート
+    import.label: 属性オプションのインポート
+  xlsx_family_import:
+    label: ファミリーをXLSX形式でインポート
+    import.label: ファミリーのインポート
+  xlsx_family_variant_import:
+    label: ファミリーバリエーションをXLSX形式でインポート
+    import.label: ファミリーのバリエーションをインポート
+  xlsx_product_export:
+    label: 商品をXLSX形式でエクスポート
+    export.label: 商品のエクスポート
+  xlsx_product_model_export:
+    label: 商品モデルをXLSX形式でエクスポート
+    export.label: 商品モデルをエクスポート
+  xlsx_product_import:
+    label: 商品をXLSX形式でインポート
+    import.label: 商品のインポート
+  xlsx_product_model_import:
+    label: 製品モデルをXLSX形式でインポート
+    import_product_model_descendants.label: 商品モデルの下位を全て計算
+  xlsx_group_export:
+    label: グループをXLSX形式でエクスポート
+    export.label: グループのエクスポート
+  xlsx_group_import:
+    label: グループをXLSX形式でインポート
+    import.label: グループのインポート
+  xlsx_family_export:
+    label: ファミリーをXLSX形式でエクスポート
+    export.label: ファミリーのエクスポート
+  xlsx_family_variant_export:
+    label: ファミリーバリエーションをXLSX形式でエクスポート
+    export.label: ファミリーバリエーションをエクスポート
+  xlsx_category_export:
+    label: カテゴリをXLSX形式でエクスポート
+    export.label: カテゴリのエクスポート
+  xlsx_attribute_export:
+    label: 属性をXLSX形式でエクスポート
+    export.label: 属性をXLSX形式でエクスポート
+  xlsx_attribute_option_export:
+    label: 属性オプションをXLSX形式でエクスポート
+    export.label: 属性オプションをXLSX形式でエクスポート
+  xlsx_association_type_export:
+    label: 関連タイプをXLSX形式でエクスポート
+    export.label: 関連タイプをXLSX形式でエクスポート
+  xlsx_attribute_group_export:
+    label: 属性グループをXLSX形式でエクスポート
+    export.label: 属性グループのエクスポート
+  xlsx_group_type_export:
+    label: グループタイプをXLSX形式でエクスポート
+    export.label: グループタイプのエクスポート
+  xlsx_user_group_export:
+    label: ユーザーグループを XLSX 形式でエクスポート
+    export.label: ユーザーグループをエクスポート
+  xlsx_user_role_export:
+    label: ユーザー権限を XLSX 形式でエクスポート
+    export.label: ユーザー権限をエクスポート
+  xlsx_user_export:
+    label: ユーザーを XLSX 形式でエクスポート
+    export.label: ユーザーをエクスポート
+  xlsx_attribute_group_import:
+    label: 属性グループをXLSX形式でインポート
+    import.label: 属性グループのインポート
+  xlsx_group_type_import:
+    label: グループタイプをXLSX形式でインポート
+    import.label: グループタイプのインポート
+  xlsx_user_group_import:
+    label: ユーザーグループを XLSX 形式でインポート
+    import.label: ユーザーグループをインポート
+  xlsx_user_import:
+    label: ユーザーを XLSX 形式でインポート
+    import.label: ユーザーをインポート
+  xlsx_user_role_import:
+    label: ユーザー権限を XLSX 形式でインポート
+    import.label: ユーザー権限をインポート

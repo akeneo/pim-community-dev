@@ -1,0 +1,625 @@
+pim_menu:
+  tab:
+    connect: Connetti
+  navigation:
+    connect: Connetti navigazione
+  navigation_back:
+    connection: Torna a Connetti
+  navigation_block:
+    connection: Navigazione di connessione
+  item:
+    connection_audit: Dashboard connessioni
+    connection_settings: Connessioni
+    connection_settings_edit: Impostazioni di connessione
+    connection_monitoring: Monitoraggio errori
+    connection_webhook_edit: Iscrizione evento
+    connection_webhook_event_logs: Registri eventi
+    data_flows: Flussi di dati
+    connect_connection_settings: Impostazioni di connessione
+    marketplace: App Store
+    connected_apps: App connesse
+pim_title:
+  akeneo_connectivity_connection_connect_marketplace: App Store
+  akeneo_connectivity_connection_connect_marketplace_profile: App Store
+  akeneo_connectivity_connection_connect_apps_activate: Connetti
+  akeneo_connectivity_connection_connect_apps_authorize: Connetti
+  akeneo_connectivity_connection_connect_apps_authenticate: Connetti
+  akeneo_connectivity_connection_settings_index: Impostazioni di connessione
+  akeneo_connectivity_connection_settings_edit: Impostazioni di connessione
+  akeneo_connectivity_connection_settings_any: Impostazioni di connessione
+  akeneo_connectivity_connection_audit_index: Dashboard connessioni
+  akeneo_connectivity_connection_audit_any: Dashboard connessioni
+  akeneo_connectivity_connection_error_management_dashboard: Dashboard connessioni
+  akeneo_connectivity_connection_error_management_connection_monitoring: Monitoraggio della connessione
+  akeneo_connectivity_connection_webhook_edit: Iscrizione evento
+  akeneo_connectivity_connection_webhook_regenerate_secret: Iscrizione evento
+  akeneo_connectivity_connection_webhook_event_logs: Registri eventi
+  akeneo_connectivity_connection_settings_redirect: Connessioni
+  akeneo_connectivity_connection_connect_connected_apps: App connesse
+  akeneo_connectivity_connection_connect_connected_apps_edit: Impostazioni app
+  akeneo_connectivity_connection_connect_connected_apps_delete: Eliminazione app
+  akeneo_connectivity_connection_connect_connected_apps_regenerate_secret: Rigenera credenziali
+  akeneo_connectivity_connection_connect_custom_apps_create: Crea una app personalizzata
+  akeneo_connectivity_connection_connect_custom_apps_delete: Elimina app personalizzata
+  akeneo_connectivity_connection_connect_connected_apps_open: Apri app
+  akeneo_connectivity_connection_connect_connected_apps_catalogs_edit: Modifica catalogo
+akeneo_connectivity.connection:
+  connect:
+    marketplace:
+      title: Vuoi connettere il tuo PIM con un'altra applicazione? 🤟
+      sub_title: Controlla il nostro App Store per vedere quale applicazione può essere connessa con Akeneo PIM.
+      link: Accedi all'App Store
+      helper:
+        title: '{0} Non ci sono app né connettori compatibili con la tua versione di PIM.|{1} C''è {{ count }} app o connettore compatibile con la tua versione di PIM.|[2,Inf] Ci sono {{ count }} app e connettori compatibili con la tua versione di PIM.'
+        title_without_apps: '{0} Non ci sono connettori compatibili con la tua versione di PIM. {1} C''è {{ count }} connettore compatibile con la tua versione di PIM. [2,Inf] Ci sono {{ count }} connettori compatibili con la tua versione di PIM.'
+        description: Questa è solo una panoramica. Per maggiori dettagli, ti invitiamo a dare un'occhiata all'App Store di Akeneo.
+        link: Vai all'App Store di Akeneo
+      search:
+        placeholder: Ricerca per nome
+        total: '{0} Nessun risultato|{1} 1 risultato|[2,Inf] {{ total }} risultati'
+      card:
+        developed_by: 'Sviluppata da {{ author }}'
+        read_more: mostra di più
+        more_info: Maggiori info
+        connect: Connetti
+        connected: Connesso
+        pending: In sospeso...
+      extensions:
+        title: Connettori
+        total: '{0} Nessun connettore<unk>{1} 1 connettore<unk> [2,Inf] {{ total }} connettori'
+        empty: Nessun connettore compatibile con la tua versione
+      apps:
+        title: App
+        total: '{0} Nessuna app|{1} 1 app|[2,Inf] {{ total }} app'
+        empty: Non ci sono app compatibili con la tua versione
+      unreachable: Non riusciamo a raggiungere l'App Store, torna più tardi.
+      scroll_to_top: Scorri in alto
+      custom_apps:
+        title: Le mie app personalizzate
+        removed_user: Utente rimosso
+    connected_apps:
+      list:
+        apps:
+          title: App connesse
+          total: '{0} Nessuna app|{1} 1 app|[2,Inf] {{ total }} app'
+          empty: Nessuna app ancora connessa
+          check_marketplace: 'Controlla {{ marketplaceLink }} per sfogliare tutti i contenuti disponibili e installare la tua prima app.'
+          marketplace_link_anchor: App Store
+          at_least_one_is_not_listed_on_the_appstore: Alcune delle tue app connesse non sono compatibili con la tua versione PIM o non esistono più nell'App Store di Akeneo. Contattaci per maggiori informazioni.
+          pending_apps: Alcune delle tue app non sono connesse al tuo PIM.
+        custom_apps:
+          title: Le mie app personalizzate collegate
+          removed_user: Utente rimosso
+        helper:
+          title: '[0,1] Il tuo PIM è connesso con {{ count }} app.<unk> [2,Inf] Il tuo PIM è connesso con {{ count }} app.'
+          description_1: Nuove app sono sviluppate regolarmente, quindi rimani sintonizzato e controlla spesso la pagina del nostro App Store per scoprire come connettere il tuo PIM.
+          description_2: Desideri scoprire di più sulle app?
+          link: Consulta il nostro Help Center per ulteriori informazioni.
+        card:
+          developed_by: 'Sviluppata da {{ author }}'
+          new_access_authorization_required: Nuova autorizzazione di accesso richiesta
+          not_listed_on_the_appstore: L'app non è più elencata nell'App Store di Akeneo. Contatta il supporto dell'app.
+          manage_app: Gestisci app
+          open_app: Apri app
+          pending: App non connessa. L'apertura dell'app dovrebbe risolvere i problemi di connessione.
+        flash:
+          error: Spiacenti, si è verificato un errore durante il recupero dell'elenco delle app connesse.
+      edit:
+        header:
+          open_app_button:
+            label: Vai all’app
+            icon_alt: Icona Vai all'app
+        not_found: App non trovata
+        tabs:
+          settings: Impostazioni
+          permissions: Permessi
+          catalogs: Cataloghi
+          error_monitoring: Monitoraggio errori
+        settings:
+          monitoring:
+            title: Impostazioni generali
+          authorizations:
+            title: autorizzazioni
+            information: 'Per scoprire di più sulle autorizzazioni delle app, consulta il nostro {{ link }}.'
+            no_access_to_product_information: 'Questa app connessa non accede alle informazioni di prodotto.'
+            information_link_anchor: Articolo dell'Help Center
+            no_scope: Nessuna autorizzazione specifica richiesta.
+          authentication:
+            title: autenticazione
+            information: 'Per scoprire di più sull''autenticazione dell''app, consulta il nostro {{ link }}.'
+            information_link_anchor: Articolo dell'Help Center
+            openid_only: Questa app utilizza l'autenticazione Akeneo App senza richiedere i tuoi dati personali.
+          pending: Questa app non è connessa al tuo PIM. L'apertura dell'app dovrebbe risolvere il problema di connessione. Se il problema persiste, contatta il supporto dell'app.
+          credentials:
+            title: Credenziali
+            client_id: ID client
+            client_secret: Chiave privata client
+            regenerate_button: Rigenera
+            regenerate_secret:
+              flash_error: Si è verificato un errore durante la rigenerazione della chiave segreta della connessione.
+              confirm:
+                title: Conferma rigenerazione
+                description: Rigenerare il segreto avrà effetto sulla connessione tra la tua app personalizzata e il PIM. Confermi di voler procedere?
+                regenerate_button: Rigenera
+                cancel_button: Annulla
+              new_credentials:
+                title: Nuove credenziali
+                subtitle: Rigenera credenziali
+                done_button: Completato
+        error_monitoring:
+          error: Ops, si è verificato un errore!
+          helper:
+            description: Qui puoi vedere il dettaglio di ogni errore per questa app negli ultimi 7 giorni. Il numero di errori è limitato a 100.
+          not_data_source: Per ora, la pagina di monitoraggio è disponibile solo per l'app sorgente.
+          not_auditable:
+            title: App non monitorata
+            description:
+              1: Per monitorare gli errori di questa app,
+              2: attivare il monitoraggio
+              3: nelle impostazioni.
+        catalogs:
+          edit:
+            flash:
+              success: Impostazioni catalogo aggiornate corretamente.
+              error: Non è stato possibile salvare il catalogo. Risolvi gli errori visualizzati e salva nuovamente.
+              unknown_error: Si è verificato un errore durante il salvataggio del catalogo.
+            not_found: Catalogo non trovato
+        flash:
+          load_permissions_error.title: 'I permessi salvati su {{ entity }} non possono essere caricati.'
+          load_permissions_error.description: Riprova più tardi.
+          save_permissions_error.title: 'I permessi su {{ entity }} non possono essere aggiornati.'
+          save_permissions_error.description: Controlla le impostazioni dei permessi dell'app.
+          success: Impostazioni dell'app aggiornate con successo
+          monitoring_settings_error.description: Spiacenti, si è verificato un errore durante la modifica dell'app.
+      delete:
+        subtitle: App
+        title: Conferma eliminazione
+        description: Sei sicuro di voler eliminare l'app? Non sei sicuro dei possibili impatti?
+        link: Ecco cosa succederà.
+        flash:
+          success: App eliminata con successo
+          error: Spiacenti, si è verificato un errore durante l'eliminazione dell'app.
+      open:
+        flash:
+          error: Spiacenti, si è verificato un errore durante l'apertura dell'app.
+    apps:
+      loader:
+        message: Caricamento...
+      flash:
+        permissions_error.title: 'I permessi su {{ entity }} non possono essere salvati.'
+        permissions_error.description: Controlla le impostazioni dei permessi dell'app.
+      wizard:
+        title: Connetti
+        action:
+          confirm: Conferma
+          cancel: Annulla
+          previous: Precedente
+          next: Successivo
+          allow_and_next: Consenti e avanza
+        progress:
+          authentication: Autenticazione
+          authorizations: Autorizzazioni
+          permissions: Permessi
+          summary: Ottimo!
+        authentication:
+          title: '{{ app_name }} deve'
+          helper: Per scoprire di più sull'autenticazione dell'app, consulta il nostro articolo
+          helper_link: Come connetto il mio PIM con le app?
+          scope_profile: 'Vedi il tuo {{ firstname }} e il tuo {{ lastname }}'
+          scope_email: 'Visualizza il tuo indirizzo {{ email }}'
+          consent:
+            label: 'Accetto l''Informativa sulla privacy e i Termini di utilizzo di questa app, disponibili per la visualizzazione nella {{ app_marketplace_page }}.'
+            app_marketplace_page: Pagina App Store
+            subtext: 'Confermi e accetti di essere reindirizzato verso un''app di terze parti. Akeneo non è responsabile e non può essere ritenuta responsabile del contenuto di questa app. Se hai qualche problema durante la visita all''App Store di Akeneo, {{ contact_us }}.'
+            contact_us: contattaci
+          firstname: nome
+          lastname: cognome
+          email: e-mail
+        authorize:
+          title: '{{ app_name }} deve'
+          no_scope_title: '{{ app_name }} vorrebbe accedere al tuo PIM.'
+          no_scope: Nessuna autorizzazione specifica richiesta.
+          helper: Per scoprire di più sull'autorizzazione dell'app,
+          helper_link: consulta il nostro articolo dell'Help Center.
+          is_allowed_to: 'Già consentito:'
+          certification_consent:
+            label: 'Ho letto e accetto la seguente dichiarazione di esclusione di responsabilità riguardo al certificato.'
+            subtext: 'Akeneo non assume alcuna responsabilità rispetto all''uso dell''app da parte del cliente, né per le sue funzionalità. Il certificato non garantisce l’interoperabilità dell''app né che essa funzioni correttamente nell''ambiente del cliente.'
+        flash:
+          success: App configurata con successo.
+          error: Spiacenti, si è verificato un errore durante la connessione dell'app.
+        permission:
+          helper: Se hai bisogno di aiuto, consulta il nostro articolo
+          helper_link: Come configurare i permessi dell'app?
+      title: Connetti
+      activate:
+        flash:
+          error: Spiacenti, si è verificato un errore durante la connessione dell'App.
+      scope:
+        type:
+          view: 'Visualizza {{ entities }}'
+          edit: 'Visualizza e modifica {{ entities }}'
+          delete: 'Visualizza, modifica ed elimina {{ entities }}'
+        entities:
+          catalog_structure: attributi, gruppi di attributi, famiglie e famiglie varianti
+          attribute_options: opzioni attributo
+          categories: categorie
+          channel_localization: impostazioni locali e valute
+          channel_settings: canali
+          association_types: tipi di associazione
+          products: prodotti e modelli prodotto
+          reference_entity: entità di riferimento
+          reference_entity_record: registri dell'entità di riferimento
+          asset_families: famiglie di asset
+          assets: asset
+          catalogs: cataloghi
+        new: NOVITÀ
+      error:
+        sub_text: Contatta il supporto dell'app.
+        app_not_found: Il client_id non corrisponde ad alcuna app esistente.
+      constraint:
+        client_id:
+          not_blank: Client_id obbligatorio.
+          must_be_valid: Il client_id non corrisponde ad alcun client conosciuto.
+          must_have_ongoing_authorization: Il client_id non ha alcun processo di autorizzazione in corso al momento
+        response_type:
+          not_blank: Response_type obbligatorio.
+          must_be_code: Il response_type deve essere "code".
+        redirect_uri:
+          not_blank: Redirect_uri obbligatorio.
+          must_be_url: Il redirect_uri non è un url valido.
+        scope:
+          must_be_a_string: L'elenco degli ambiti deve essere una stringa con spazi di separazione.
+          too_long: L'elenco ambiti non deve contenere più di 1000 caratteri.
+    custom_apps:
+      creation_limit_reached: Hai raggiunto il limite di 20 app personalizzate.
+      create_button: Crea un'app
+      create_modal:
+        subtitle: Crea un'app personalizzata
+        app_information:
+          title: Informazioni app
+          description: Se hai bisogno di aiuto, consulta il nostro articolo
+          link: Come testare la mia app prima di pubblicarla?
+          fields:
+            name: Nome
+            activate_url: URL di attivazione
+            callback_url: URL di callback
+          field_placeholder:
+            name: Definisci nome app
+            activate_url: Inserisci URL di attivazione
+            callback_url: Inserisci URL di callback
+        credentials:
+          title: Credenziali
+          client_id: ID client
+          client_secret: Chiave privata client
+        errors:
+          limit_reached: Puoi creare fino a 20 app personalizzate.
+          name:
+            min_length: Il nome dell'app è troppo corto. Deve contenere almeno 3 caratteri.
+            max_length: Il nome dell'app è troppo lungo. Non deve contenere più di 255 caratteri.
+            not_blank: Il nome dell'app è obbligatorio.
+          client_id:
+            max_length: L'ID client dell'app è troppo lungo. Non deve contenere più di 36 caratteri.
+            not_blank: L'ID client è obbligatorio.
+          activate_url:
+            max_length: L'URL di attivazione dell'app è troppo lungo. Non deve contenere più di 255 caratteri.
+            must_be_url: L'URL di attivazione deve essere un URL valido.
+            not_blank: L'URL di attivazione è obbligatorio.
+          callback_url:
+            max_length: L'URL di callback dell'app è troppo lungo. Non deve contenere più di 255 caratteri.
+            must_be_url: L'URL di callback deve essere un URL valido
+            not_blank: L'URL di callback è obbligatorio.
+      delete_modal:
+        subtitle: Elimina un'app personalizzata
+        title: Conferma eliminazione
+        description: Stai per eliminare la tua app da questo PIM.
+        warning: Confermando l'eliminazione, eliminerai l'app sulla pagina dell'App Store e la corrispondente app connessa.
+        flash:
+          success: App personalizzata eliminata correttamente.
+          error: Spiacenti, si è verificato un errore durante l'eliminazione dell'app personalizzata.
+  connections: Connessioni
+  secondary_actions:
+    title: Altre azioni
+  connection:
+    code: Codice
+    label: Etichetta
+    flow_type: Tipo di flusso
+    image: Immagine
+    auditable: Monitora nella dashboard dei flussi di dati
+    client_id: ID Client
+    secret: Chiave segreta
+    username: Nome utente
+    password: Password
+    user_role_id: Ruolo
+    user_group_id: Gruppo
+    constraint:
+      connections_number_limit_reached: Hai raggiunto il limite di 50 connessioni e app connesse.
+      code:
+        required: Il codice connessione è obbligatorio.
+        invalid: Il codice connessione può contenere solo lettere, numeri e trattini bassi
+        too_short: Il codice connessione è troppo corto. Dovrebbe essere di 3 o più caratteri.
+        too_long: Il codice connessione è troppo lungo. Dovrebbe essere al massimo di 100 caratteri.
+        must_be_unique: Il codice connessione deve essere univoco.
+      label:
+        required: L'etichetta connessione è obbligatoria.
+        too_short: L'etichetta della connessione è troppo corta. Dovrebbe essere di 3 o più caratteri.
+        too_long: L'etichetta della connessione è troppo lunga. Dovrebbe essere al massimo di 100 caratteri.
+      flow_type:
+        invalid: Il tipo di flusso della connessione può essere solo 'Sorgente dati', 'Destinazione dati' o 'Altro'.
+      image:
+        must_exist: L'immagine non è stata trovata. Si prega di riprovare.
+      type:
+        required: Il tipo di connessione è obbligatorio.
+        too_long: Il tipo di connessione è troppo lungo. Dovrebbe essere al massimo 30 caratteri.
+      user_group:
+        must_exist: Il gruppo di utenti specificato non è stato trovato. Controlla che esista.
+  flow_type:
+    data_source: Sorgente dati | Sorgente dati
+    data_destination: Destinazione dati | Destinazione dati
+    other: Altro | Altri
+  connection_count: 'Connessione {{ count }} | {{ count }} connessioni'
+  no_connection:
+    title: Nessuna connessione dichiarata finora.
+    message: Aggiungi la prima cliccando sul pulsante "Crea" o
+    message_link: clicca qui.
+  create_connection:
+    title: Crea una nuova connessione
+    description: Puoi connettere fino a 50 terze parti o app.
+    flash:
+      success: Connessione creata correttamente.
+      error: Si è verificato un errore durante la creazione della connessione.
+  edit_connection:
+    subtitle: Impostazioni
+    flash:
+      success: Connessione aggiornata correttamente.
+      error: Si è verificato un errore durante la modifica della connessione.
+    image_uploader:
+      extension_not_allowed: Il file che si sta tentando di caricare ha una estensione non consentita.
+    credentials:
+      title: Credenziali
+      helper:
+        message: 'Ecco le credenziali da usare nel tuo connettore {{ label }}.'
+        link: Maggiori informazioni qui...
+      wrong_credentials_combinations:
+        single: Abbiamo notato che stai usando il nome utente {{ wrong_username }} per questa connessione (ultimo uso il {{ date }} alle {{ time }}. Piuttosto, consigliamo di usare il nome utente {{ good_username }}.
+        link: Scopri perché dovresti usarlo.
+        link_list: Scopri perché consigliamo di usare questo nome utente.
+        several: Abbiamo notato che non sati usando il nome utente {{ good_username }} per questa connessione.
+        list: 'Ecco l''elenco dei nomi utente che sono stati usati negli ultimi 7 giorni:'
+        username_date: '{{ wrong_username }} il {{ date }} alle {{ time }}'
+      password_helper:
+        message: Se hai dimenticato la password, puoi generarne una nuova qui.
+        link: Ulteriori informazioni...
+      clear_password_helper:
+        message: Assicurati di salvare questa password da qualche parte perché non sarà più visualizzata.
+        link: Ulteriori informazioni...
+      action:
+        copy: Copia negli appunti
+        regenerate: Rigenera
+      flash:
+        copied: '{{ name }} copiato negli appunti'
+    permissions:
+      title: Permessi
+      helper:
+        message: 'In questa sezione è possibile definire i permessi per la connessione {{ label }}.'
+        link: Maggiori informazioni sui permessi delle connessioni...
+      user_role_helper:
+        message: Il ruolo predefinito `{{ role }}` non è la scelta migliore per la tua connessione. E' vivamente consigliato di scegliere un ruolo su misura per le tue necessità di connessione.
+        link: Maggiori informazioni qui...
+      user_group_helper:
+        message: E' vivamente consigliato scegliere un gruppo su misura per le tue necessità di connessione.
+        link: Maggiori informazioni qui...
+  regenerate_secret:
+    title: Conferma rigenerazione
+    description: Sei sicuro di voler rigenerare la chiave segreta della connessione? Non sei sicuro dei possibili impatti?
+    link: Ecco cosa succederà.
+    action:
+      regenerate: Rigenera
+    flash:
+      success: Chiave segreta connessione rigenerata correttamente.
+      error: Si è verificato un errore durante la rigenerazione della chiave segreta della connessione.
+  regenerate_password:
+    title: Conferma rigenerazione
+    description: Sei sicuro di voler rigenerare la password di connessione? Non sei sicuro dei possibili impatti?
+    link: Ecco cosa succederà.
+    action:
+      regenerate: Rigenera
+    flash:
+      success: Password di connessione rigenerata correttamente.
+      error: Si è verificato un errore durante la rigenerazione della password della connessione.
+  delete_connection:
+    title: Conferma eliminazione
+    description: Sei sicuro di voler eliminare la connessione? Non sei sicuro dei possibili impatti?
+    link: Ecco cosa succederà.
+    flash:
+      success: Connessione eliminata correttamente.
+  helper:
+    title: '{0} Per ora, non hai alcuna connessione per collegare il tuo PIM ad applicazioni di terze parti.|{1} Hai 1 connessione che collega il tuo PIM ad applicazioni di terze parti. Ben fatto, in questo modo il tuo PIM è ben integrato nel suo ecosistema.<unk> |]1,Inf] Hai {{ count }} connessioni che collegano il tuo PIM ad applicazioni di terze parti. Ben fatto, in questo modo il tuo PIM è ben integrato nel suo ecosistema.'
+    description: Un PIM senza integrazioni con altri servizi è abbastanza inutile, vero? Grazie alle connessioni, è possibile dichiarare tutti i flussi dati che saranno inviati ed estratti dal PIM.
+    link: Per scoprire di più sulle connessioni, consulta questa pagina
+  flow_type_helper:
+    message: Ti stai chiedendo cosa sia un tipo di flusso?
+    link: Possiamo aiutarti cliccando qui!
+  auditable_helper:
+    message: Puoi tracciare solo le connessioni "Sorgente" e "Destinazione".
+    link: Ulteriori informazioni...
+  edit_image:
+    upload_helper: Modifica la tua immagine, trascina e rilascia o
+    remove_helper: Rimuovi l'immagine
+    click_here: clicca qui
+    flash:
+      extension_not_allowed: Il file che si sta tentando di caricare ha una estensione non consentita.
+  grid.wrong_credentials_combination_helper: Alcune delle connessioni sotto non stanno usando i loro nomi utenti della connessione. Sono identificati da un segnale di avviso giallo.
+  dashboard:
+    helper:
+      title: '👋 Benvenuto nei flussi di dati!'
+      description: Qui puoi tracciare il flusso di dati tra il PIM e terzi.
+      link: Vuoi scoprire di più sul menu Connetti e sui flussi di dati? Eccoti servito!
+    user_survey:
+      title: Vuoi più dati in questa dashboard?
+      content: Il tuo feedback è prezioso per noi. Aiutaci a scegliere il prossimo widget rispondendo a questo sondaggio di una sola domanda!
+      button: Vai!
+    connection_selector:
+      title:
+        source: Connessioni dati
+        destination: Destinazioni
+      all: Tutte
+    charts:
+      inbound: In entrata
+      outbound: In uscita
+      number_of_products_created: Prodotti creati
+      number_of_products_updated: Prodotti aggiornati
+      number_of_products_sent: Prodotti inviati
+      legend:
+        during_the_last_seven_days: 'Totale sugli ultimi 7 giorni:'
+        today: Oggi
+    error_management:
+      data_source_error_chart:
+        section:
+          title: Errori nelle origini dati
+          helper: Qui puoi vedere il numero di errori totali, inclusi quelli aziendali.
+        chart:
+          title: Conteggio errori per giorno
+      widget:
+        title: Errori aziendali per origine dati
+        over_the_last_seven_days: Sugli ultimi 7 giorni
+        business_errors: errori aziendali
+    no_connection:
+      title:
+        default: Vuoi vedere qualche grafico dettagliato sulle tue connessioni?
+        data_source: Vuoi vedere qualche grafico fantasioso sulle tue connessioni sorgente?
+        data_destination: Vuoi vedere qualche grafico fantasioso sulle tue connessioni di destinazione?
+      message_with_permission:
+        message: Crea e inizia a monitorare il primo
+        link: qui.
+      message_without_permission:
+        message: Chiedi all'amministratore di crearne una.
+        link: Maggiori informazioni sulle connessioni qui...
+  webhook:
+    title: Iscrizione eventi
+    event_subscription: Iscrizione eventi
+    download_logs: Scarica registri
+    helper:
+      message: Puoi essere notificato degli eventi che si verificano nel PIM per i prodotti sincronizzati con quest'app connessa. Devi solo definire un URL.
+      link: Scopri di più sulla configurazione dell'iscrizione evento...
+      url.test_disabled: Clicca sul pulsante Salva per testare l'URL.
+    form:
+      url: URL
+      secret: Chiave segreta
+      enabled: Attivazione di iscrizione dell'evento
+      is_using_uuid: Utilizzare UUID del prodotto invece dell'identificatore del prodotto?
+      test: Prova
+    error:
+      wrong_url: Questo valore non è un URL valido
+      required: Questo campo è obbligatorio.
+      not_found: Stai provando ad aggiornare una connessione che non esiste.
+      limit_reached: Hai raggiunto il limite di iscrizioni all'evento attivo.
+      not_allowed_url: Questo URL non è consentito.
+    flash:
+      success: Iscrizione dell'evento aggiornata correttamente.
+      error: Spiacenti, si è verificato un errore modificando l'iscrizione dell'evento.
+    regenerate_secret:
+      title: Conferma rigenerazione
+      description: Sei sicuro di voler rigenerare il segreto dell'iscrizione dell'evento?
+      action:
+        regenerate: Rigenera
+      link: Ecco cosa succederà.
+      flash:
+        success: Chiave segreta webhook rigenerata correttamente.
+        error: Si è verificato un errore durante la rigenerazione della chiave segreta del webhook.
+    active_event_subscriptions_limit_reached:
+      message: Puoi collegare fino a {{ limit }} connessioni alla funzione di iscrizione evento. Hai raggiunto questo limite.
+      link: Scopri di più sulla configurazione degli abbonamenti agli eventi.
+    event_logs:
+      title: Registri eventi
+      event_subscription_disabled:
+        title: L'iscrizione all'evento non è attivata per questa connessione.
+        link: Attiva l'iscrizione all'evento
+      no_event_logs:
+        title: Al momento non ci sono registri.
+      no_event_logs_with_those_filters:
+        title: Spiacenti, la tua ricerca non ha restituito registri
+        caption: Riprova con nuovi criteri di ricerca.
+      level:
+        info: Info
+        notice: Nota
+        warning: Avviso
+        error: Errore
+      list:
+        search:
+          placeholder: Cerca nei messaggi
+          total: '{0} Nessun risultato|{1} 1 risultato|[2,Inf] {{ total }} risultati'
+          level: Livello
+          all: Tutte
+          none: Nessuno
+        date_range_filter:
+          label: Data e ora
+          reset: Azzera
+          from: Da
+          to: A
+          all: Tutte
+        info:
+          title: Ecco i registri relativi a tutte le richieste di eventi inviate a questa connessione.
+          content: Questa pagina visualizza i registri di errori e avvisi per le passate 72 ore e gli ultimi 100 registri di info e notizie.
+          link: Più informazioni sui registri eventi.
+        headers:
+          datetime: Data e ora
+          level: Livello
+          message: Messaggio
+  error_management:
+    connection_monitoring:
+      title: Monitoraggio errori
+      helper:
+        title: '{0} Hai {{ count }} errore |[1,Inf] Hai {{ count }} errori'
+        description: Qui puoi vedere il dettaglio di ogni errore per questa connessione negli ultimi 7 giorni. Il numero di errori è limitato a 100 errori.
+        link: Per capire come risolvere questo problema, visita il centro di aiuto API.
+      search_filter:
+        placeholder: Cerca nei messaggi di errore
+        result_count: '{0} Nessun risultato|{1} 1 risultato|[2,Inf] {{ count }} risultati'
+      error_list:
+        date_time_column:
+          title: Giorno e ora
+        content_column:
+          title: Messaggio di errore business
+          product_name: Nome del prodotto
+          with_id: con l'ID
+        details_column:
+          title: Dettaglio
+          locale: Località
+          channel: Canale
+          family: Famiglia
+      no_error:
+        title: Fantastico! Nessun errore trovato!
+      not_auditable:
+        title: Connessione non monitorata
+        description:
+          1: Per monitorare gli errori di questa connessione,
+          2: attivare il monitoraggio
+          3: nelle impostazioni.
+      not_data_source:
+        title: Per ora, la pagina di monitoraggio è disponibile solo per la connessione sorgente.
+  runtime_error:
+    error_message: Uffa! Si è verificato un errore...
+    reload_helper: Prova a ricaricare la pagina e a provare di nuovo.
+    reload_button: Ricarica
+pim_permissions:
+  widget:
+    action:
+      all: Tutte
+      clear: Cancella
+    level:
+      own: Personale
+      edit: Modifica
+      view: Visualizza
+    all: Tutte
+pim_notification:
+  types:
+    connected_app_authorizations: Autorizzazioni app connesse
+    disabled_catalog: Catalogo app disabilitato
+    attribute_removed: Catalogo app interessato
+  connected_app_authorizations:
+    button_label: Apri app
+  disabled_catalog:
+    button_label: Impostazioni catalogo
+  attribute_removed:
+    button_label: Impostazioni catalogo

@@ -1,0 +1,31 @@
+pim_catalog_volume:
+  product_values: "Du har <span> {{values}} </ span> produktværdier i din PIM! I gennemsnit er det <span> {{average}} </ span> produktværdier pr. produkt! & nbsp; 💪"
+  product_values_description: 'Jo flere produktværdier du har, jo mere værdifulde din PIM er, jo højere er dit ROI! Flere detaljer <a href="{{link}}" target="_blank"> her </a>'
+  section:
+    product_values:
+      hint: 'Vidste du, at det samlede antal produktværdier i din PIM er direkte forbundet med følgende akser? <br/> For at få flere detaljer inviterer vi dig til <a href = "{{link}}" target = "_ blank" > gennemse denne artikel </a>.'
+      title: Akser, der udnytter antallet af produktværdier
+    catalog_structure:
+      hint: Du ved måske, at en god katalogstruktur er virkelig vigtig og er en forudsætning for effektiv berigelse. Nedenfor er de forskellige akser til at overvåge din katalogstruktur.
+      title: Akser relateret til katalogstrukturen
+    variant_modelling:
+      hint: Hvis du bruger variantmodelleringen, her er akserne, der hjælper dig med at overvåge dit lydstyrke.
+      title: Akser vedrørende variantmodellering
+  axis:
+    count_products: Produkter
+    average_max_attributes_per_family: Attributter pr. familie
+    count_channels: Kanaler
+    count_locales: Lokaler (aktiveret)
+    count_scopable_attributes: Ckopebare attrinutter
+    count_localizable_and_scopable_attributes: Antallet af oversætbare og afgrænsbare attributter
+    count_localizable_attributes: Lokaliserbare attributter
+    count_families: Familier
+    count_attributes: Egenskaber
+    average_max_options_per_attribute: Valg ved attributt
+    count_categories: Kategorier
+    count_category_trees: Kategoritræstrukturen
+    count_variant_products: Variant produkter
+    count_product_models: Produktmodeller
+    warning: Wow! Du ramte en rekord med denne akse! Tøv ikke med at kontakte os, hvis du har brug for hjælp til denne slags lydstyrke.
+  mean: 'Middel:'
+  max: 'Maks:'

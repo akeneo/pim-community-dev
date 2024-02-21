@@ -1,0 +1,31 @@
+code;label-en_US;label-en_GB;label-fr_FR;label-de_DE;type;group;useable_as_grid_filter;required;unique;sort_order;localizable;scopable;max_characters;max_file_size;allowed_extensions;number_min;number_max;decimals_allowed;negative_allowed;metric_family;default_metric_unit;available_locales
+sku;SKU;SKU;SKU;SKU;pim_catalog_identifier;general;1;1;1;1;0;0;;;;;;;;;;
+name;Name;Name;Nom;Name;pim_catalog_text;general;1;0;0;2;1;0;;;;;;;;;;
+description;Description;Description;Description;Beschreibung;pim_catalog_textarea;general;1;0;0;3;1;1;1000;;;;;;;;;
+thumbnail;Thumbnail;Thumbnail;Imagette;Miniaturansicht;pim_catalog_image;media;0;0;0;1;0;0;;1;gif,png,jpeg,jpg;;;;;;;
+image;Image;Image;Image;Bild;pim_catalog_image;media;0;0;0;2;0;0;;1;gif,png,jpeg,jpg;;;;;;;
+legend;Legend;Legend;Légende;Legende;pim_catalog_text;media;0;0;0;3;1;0;;;;;;;;;;
+price;Price;Price;Prix;Preis;pim_catalog_price_collection;sales;1;0;0;1;0;0;;;;1;1000;1;;;;
+customer_rating;Customer rating;Customer rating;Évaluation du client;Kundenbewertung;pim_catalog_simpleselect;sales;1;0;0;2;0;1;;;;;;;;;;
+release_date;Release date;Release date;Date de sortie;Erscheinungsdatum;pim_catalog_date;sales;1;0;0;3;0;1;;;;;;;;;;
+size;Size;Size;Taille;Größe;pim_catalog_simpleselect;sizes;1;0;0;1;0;0;;;;;;;;;;
+chest_size;Chest size;Chest size;Tour de poitrine;Brustumfang;pim_catalog_simpleselect;sizes;1;0;0;2;0;0;;;;;;;;;;
+waist_size;Waist size;Waist size;Tour de taille;Taillengröße;pim_catalog_simpleselect;sizes;1;0;0;3;0;0;;;;;;;;;;
+color;Color;Colour;Couleur;Farbe;pim_catalog_simpleselect;colors;1;0;0;1;0;0;;;;;;;;;;
+additional_colors;Additional colors;Additional colours;Autres couleurs;Zusätzliche Farben;pim_catalog_multiselect;colors;1;0;0;2;0;0;;;;;;;;;;
+manufacturer;Manufacturer;Manufacturer;Fabricant;Hersteller;pim_catalog_simpleselect;additional;1;0;0;1;0;0;;;;;;;;;;
+country_of_manufacture;Country of manufacture;Country of manufacture;Pays de fabrication;Herstellungsland;pim_catalog_simpleselect;additional;1;0;0;2;0;0;;;;;;;;;;
+handmade;Handmade;Handmade;Fait main;Handgefertigt;pim_catalog_boolean;additional;1;0;0;3;0;0;;;;;;;;;;
+weather_conditions;Weather conditions;Weather conditions;Conditions météorologiques;Wetterverhältnisse;pim_catalog_multiselect;additional;0;0;0;4;0;0;;;;;;;;;;
+care_instructions;Care instructions;Care instructions;Conseils d'entretien;Pflegehinweise;pim_catalog_textarea;additional;0;0;0;5;1;1;1000;;;;;;;;;
+washing_temperature;Washing temperature;Washing temperature;Température de lavage;Waschtemperatur;pim_catalog_metric;additional;0;0;0;6;0;0;;;;;100;0;0;Temperature;CELSIUS;
+weight;Weight;Weight;Poids;Gewicht;pim_catalog_metric;additional;0;0;0;7;0;0;;;;;10;0;0;Weight;KILOGRAM;
+material;Material;Material;Matériau;Material;pim_catalog_simpleselect;additional;1;0;0;8;0;0;;;;;;;;;;
+additional_materials;Additional materials;Additional materials;Matériels supplémentaires;Zusätzliche Materialien;pim_catalog_multiselect;additional;1;0;0;9;0;0;;;;;;;;;;
+cost;Cost;Cost;Coût;Kosten;pim_catalog_price_collection;internal;1;0;0;1;0;0;;;;1;1000;1;;;;
+number_in_stock;Number in stock;Number in stock;Nombre en stock;Anzahl auf Lager;pim_catalog_number;internal;1;0;0;2;0;1;;;;1;10000;0;0;;;
+customs_tax;Customs tax;Customs tax;Taxe de douanes;Zollsteuer;pim_catalog_price_collection;internal;1;0;0;3;1;0;;;;1;1000;1;;;;de_DE
+under_european_law;Under European law;Under European law;Sous la loi Européenne;Nach europäischem Recht;pim_catalog_boolean;general;1;0;0;4;0;0;;;;;;;;;;de_DE,fr_FR
+datasheet;Datasheet;Datasheet;Fiche technique;Datenblatt;pim_catalog_file;internal;0;0;0;4;0;0;;10;txt,pdf,doc,docx,csv,rtf;;;;;;;
+attachment;Attachment;Attachment;Attachements;Befestigung;pim_catalog_file;internal;0;0;0;5;0;0;;10;txt,pdf,doc,docx,csv,rtf;;;;;;;
+localizable_image;Localizable image;Localizable image;Image localisée;Lokalisiertes Bild;pim_catalog_image;media;0;0;0;3;1;0;;1;gif,png,jpeg,jpg;;;;;;;

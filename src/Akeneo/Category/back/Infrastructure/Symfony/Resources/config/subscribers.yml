@@ -1,0 +1,44 @@
+services:
+    Akeneo\Category\Infrastructure\EventSubscriber\InitCategoryDbSchemaSubscriber:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: 'kernel.event_subscriber' }
+
+    Akeneo\Category\Infrastructure\EventSubscriber\CleanCategoryDataAfterChannelChangeSubscriber:
+        arguments:
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@akeneo_batch.launcher.simple_job_launcher'
+            - '@security.token_storage'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Category\Infrastructure\EventSubscriber\CleanCategoryTemplateAndEnrichedValuesOnTemplateDeactivatedSubscriber:
+        arguments:
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@akeneo_batch.launcher.simple_job_launcher'
+            - '@security.token_storage'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Category\Infrastructure\EventSubscriber\CleanCategoryTemplateAttributeAndEnrichedValuesOnAttributeDeactivatedSubscriber:
+        arguments:
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@akeneo_batch.launcher.simple_job_launcher'
+            - '@security.token_storage'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Category\Infrastructure\EventSubscriber\UpdateCategoryVersionSubscriber:
+        arguments:
+            - '@Akeneo\Tool\Bundle\VersioningBundle\ServiceApi\VersionBuilder'
+            - '@Akeneo\Category\Infrastructure\Builder\CategoryVersionBuilder'
+        tags:
+            - { name: 'kernel.event_subscriber' }
+
+    Akeneo\Category\Infrastructure\EventSubscriber\ReorderTemplateAttributesOnAttributeDeactivatedSubscriber:
+        arguments:
+            - '@Akeneo\Category\Application\Query\GetAttribute'
+            - '@Akeneo\Category\Domain\Query\UpdateCategoryTemplateAttributesOrder'
+        tags:
+            - { name: 'kernel.event_subscriber' }

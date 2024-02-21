@@ -1,0 +1,18 @@
+pim_datagrid:
+  column_configurator:
+    min_message: Heu de seleccionar almenys una columna de la graella de dades per mostrar
+  label:
+    unique_message: L'etiqueta ha de ser única
+    not_blank_message: L'etiqueta no pot quedar en blanc
+  view_selector:
+    flash:
+      created: Vista de Graella de dades creada correctament
+      removed: Vista de Graella de dades eliminada correctament
+      not_removable: No tens permís per eliminar aquesta vista
+  cells:
+    type:
+      quick_export: Exportació ràpida
+      import: Importar
+      export: Exportar
+      mass_edit: Edició massiva
+      mass_delete: Esborrat massiu

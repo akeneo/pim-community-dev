@@ -1,0 +1,8 @@
+services:
+    Akeneo\Connectivity\Connection\Infrastructure\Connections\Command\CreateConnectionCommand:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionHandler'
+            - '@translator'
+        tags:
+            - { name: 'console.command' }
+            - { name: 'akeneo.command.authenticated_as_admin_user' }

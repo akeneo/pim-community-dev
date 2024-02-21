@@ -1,0 +1,123 @@
+version: '3.7'
+
+services:
+  php:
+    image: 'akeneo/pim-php-dev:8.1'
+    environment:
+      APP_ENV: '${APP_ENV:-prod}'
+      COMPOSER_HOME: '/var/www/.composer'
+      PHP_IDE_CONFIG: 'serverName=pim-docker-cli'
+      XDEBUG_MODE: '${XDEBUG_MODE:-off}'
+      XDEBUG_CONFIG: 'client_host=172.17.0.1'
+      EXPERIMENTAL_TEST_DATABASE: '${EXPERIMENTAL_TEST_DATABASE:-0}'
+    volumes:
+      - './:/srv/pim'
+      - '${HOST_COMPOSER_HOME:-~/.composer}:/var/www/.composer'
+    working_dir: '/srv/pim'
+    command: 'php'
+    user: 'www-data'
+    init: true
+    networks:
+      - 'pim'
+
+  httpd:
+    image: 'akeneo/pim-php-dev:8.1'
+    environment:
+      APP_ENV: '${APP_ENV:-prod}'
+      BEHAT_TMPDIR: '/srv/pim/var/cache/tmp'
+      BEHAT_SCREENSHOT_PATH: '/srv/pim/var/tests/screenshots'
+      PHP_IDE_CONFIG: 'serverName=pim-docker-web'
+      XDEBUG_MODE: '${XDEBUG_MODE:-off}'
+      XDEBUG_CONFIG: 'client_host=172.17.0.1'
+    volumes:
+      - './:/srv/pim'
+      - './docker/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro'
+      - './docker/akeneo.conf:/usr/local/apache2/conf/vhost.conf:ro'
+    working_dir: '/srv/pim'
+    ports:
+      - '${DOCKER_PORT_HTTP:-8080}:80'
+    networks:
+      - 'pim'
+
+  node:
+    image: 'akeneo/node:18'
+    environment:
+      YARN_CACHE_FOLDER: '/home/node/.yarn'
+      CYPRESS_CACHE_FOLDER: '/home/node/.cypress'
+    volumes:
+      - './:/srv/pim'
+      - '${HOST_YARN_CACHE_FOLDER:-~/.cache/yarn}:/home/node/.yarn'
+      - '${HOST_CYPRESS_CACHE_FOLDER:-~/.cache/Cypress}:/home/node/.cypress'
+    working_dir: '/srv/pim'
+    networks:
+      - 'pim'
+
+  selenium:
+    image: 'selenium/standalone-chrome-debug:3.141.59'
+    volumes:
+      - './:/srv/pim:ro'
+      - '/dev/shm:/dev/shm'
+    ports:
+      - '${DOCKER_PORT_SELENIUM:-5910}:5900'
+    networks:
+      - 'pim'
+
+  mysql:
+    image: 'mysql:8.0.30'
+    command: '--default-authentication-plugin=mysql_native_password --log_bin_trust_function_creators=1'
+    environment:
+      MYSQL_ROOT_PASSWORD: 'root'
+      MYSQL_USER: '${APP_DATABASE_USER}'
+      MYSQL_DATABASE: '${APP_DATABASE_NAME}'
+      MYSQL_PASSWORD: '${APP_DATABASE_PASSWORD}'
+    volumes:
+      - './docker/initdb.d:/docker-entrypoint-initdb.d:ro'
+    ports:
+      - '${DOCKER_PORT_MYSQL:-33006}:3306'
+    networks:
+      - 'pim'
+
+  elasticsearch:
+    image: 'elastic/elasticsearch:8.4.2'
+    environment:
+      ES_JAVA_OPTS: '${ES_JAVA_OPTS:--Xms1g -Xmx1g}'
+      discovery.type: 'single-node'
+      xpack.security.enabled: 'false'
+      indices.id_field_data.enabled: 'true'
+    ports:
+      - '${DOCKER_PORT_ELASTICSEARCH:-9210}:9200'
+    networks:
+      - 'pim'
+
+  object-storage:
+    image: 'minio/minio:RELEASE.2021-09-15T04-54-25Z'
+    entrypoint: '/bin/sh -c "mkdir -p /data/archive /data/catalog /data/jobs /data/category /data/catalogs_mapping && minio server --console-address :9091 /data"'
+    environment:
+      MINIO_ACCESS_KEY: 'AKENEO_OBJECT_STORAGE_ACCESS_KEY'
+      MINIO_SECRET_KEY: 'AKENEO_OBJECT_STORAGE_SECRET_KEY'
+    ports:
+      - '${DOCKER_PORT_OBJECT_STORAGE:-9090}:9000'
+      - '${DOCKER_PORT_OBJECT_STORAGE_CONSOLE:-9091}:9091'
+    networks:
+      - 'pim'
+
+  pubsub-emulator:
+    image: 'google/cloud-sdk:375.0.0-emulators'
+    command: 'gcloud --user-output-enabled --log-http beta emulators pubsub start --host-port=0.0.0.0:8085'
+    networks:
+      - 'pim'
+
+  gcs-emulator:
+    image: 'fsouza/fake-gcs-server:1.45'
+    command: ["-scheme", "http", "-external-url", "http://localhost:4443"]
+    volumes:
+      - './docker/buckets:/data'
+    ports:
+      - '4443:4443'
+    networks:
+      - 'pim'
+    profiles:
+      - 'gcp'
+
+networks:
+  pim:

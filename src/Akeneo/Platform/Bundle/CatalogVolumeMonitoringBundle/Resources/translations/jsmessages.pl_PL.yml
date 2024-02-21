@@ -1,0 +1,48 @@
+pim_catalog_volume:
+  product_values: "Masz <span>{{values}}</span> wartości produktów w Twoim PIM! Daje to średnio <span>{{average}}</span> wartości na produkt!&nbsp;💪"
+  product_values_description: 'Im więcej masz wartości produktów tym bardziej wartościowy i efektywny jest Twój PIM! Więcej informacji <a href="{{link}}" target="_blank">tutaj</a>.'
+  section:
+    product_values:
+      hint: 'Czy wiesz, że łączna liczba wartości produktów w Twoim PIM bezpośrednio łączy się z osiami?<br/>Po więcej informacji zapraszamy Cię do <a href="{{link}}" target="_blank">tego artykułu</a>.'
+      title: Osie które zwiększają liczbę wartości produktów
+    catalog_structure:
+      hint: Być może wiesz, że odpowiednia struktura katalogu jest bardzo ważna i wpływa na wypełnienie wartości. Poniżej znajdziesz osie służące do monitorowania struktury katalogu.
+      title: Osie zależne od struktury katalogu
+    variant_modelling:
+      hint: Jeśli używasz wariantowania modeli skorzystaj z tych osi by monitorować objętość katalogu.
+      title: Osie zależne od wariantowania modeli
+  axis:
+    count_products: Produkty
+    average_max_attributes_per_family: Atrybuty na rodzinę
+    count_channels: Kanały
+    count_locales: Wersje językowe (włączone)
+    count_scopable_attributes: Atrybuty zmienne
+    count_localizable_and_scopable_attributes: Atrybuty zmienne i tłumaczone
+    count_localizable_attributes: Atrybuty tłumaczone
+    count_families: Rodziny
+    count_attributes: Atrybuty
+    average_max_options_per_attribute: Opcje na atrybut
+    count_categories: Kategorie
+    count_category_trees: Drzewo kategorii
+    count_variant_products: Produkty wariantowe
+    count_product_models: Model produktu
+    count_product_and_product_model_values: Wartości produktu
+    average_max_product_and_product_model_values: Wartości produktów na produkty
+    count_reference_entity: Obiekty referencyjne
+    average_max_records_per_reference_entity: Rekordy na obiekt referencyjny
+    average_max_attributes_per_reference_entity: Atrybuty na obiekt referencyjny
+    count_asset_family: Rodziny zasobów
+    average_max_assets_per_asset_family: Zasoby na rodzinę zasobów
+    average_max_attributes_per_asset_family: Atrybuty na rodzinę zasobów
+    title:
+      product: Produkt
+      catalog: Katalog
+      product_structure: Struktura produktu
+      variant_modeling: Modelowanie wariantu
+      reference_entities: Obiekty referencyjne
+      assets: Zasoby
+  mean: 'Średnio:'
+  max: 'Maksimum:'
+  error:
+    generic_title: Przepraszamy, wystąpił błąd.
+    generic_message: Spróbuj ponownie za chwilę.

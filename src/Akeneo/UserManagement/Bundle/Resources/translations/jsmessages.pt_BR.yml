@@ -1,0 +1,99 @@
+pim_title:
+  pim_user_index: Usuários
+  pim_user_role_index: Papeis
+  pim_user_group_index: Grupo de usuários
+  oro_config_configuration_system: Configuração
+  pim_user_edit: 'Usuário {{ username }} | Editar'
+  pim_user_create: 'Usuários | Criar'
+  pim_user_role_update: 'Papel {{ role }} | Editar'
+  pim_user_role_create: 'Papel | Criar'
+  pim_user_security_login: Entrar
+  pim_user_reset_reset: Redefinição de Senha
+  pim_user_reset_request: Esqueci a senha
+  pim_user_group_create: 'Grupos | Criar'
+  pim_user_group_update: 'Grupo {{ group }} | Editar'
+confirmation:
+  remove:
+    user: Tem certeza de que deseja exvluir este usuário?
+    group: Tem certeza de que deseja excluir este produto?
+pim_enrich:
+  entity:
+    user:
+      flash:
+        delete:
+          fail: O usuário não pode ser excluído
+          success: O usuário foi excluído
+      module:
+        delete:
+          confirm: Tem certeza de que deseja exvluir este usuário?
+pim_user_management:
+  entity:
+    user:
+      label: usuário
+      flash:
+        update:
+          success: Usuário atualizado com sucesso.
+          fail: O usuário não pôde ser atualizado.
+          fields_not_ready: "O usuário não pode ser salvo agora. Os seguintes campos não estão prontos: {{ fields }}"
+        create:
+          success: Usuário criado com sucesso.
+      page_title:
+        index: "]-Inf, 1] {{ count }} usuário|]1, Inf [{{ count }} usuários"
+      properties:
+        username: Nome de usuário
+        name_prefix: Prefixo do nome
+        first_name: Primeiro nome
+        middle_name: Nome do meio
+        last_name: Sobrenome
+        name_suffix: Sufixo do nome
+        phone: Telefone
+        avatar: Avatar
+        email: E-Mail
+        catalog_locale: Catalogar localidade
+        catalog_scope: Catalogar escopo
+        default_tree: Árvore Padrão
+        default_asset_tree: Árvore de ativos padrão
+        product_grid_filters: Filtros de grade de produtos
+        current_password: Senha atual
+        new_password: Nova senha
+        new_password_repeat: Nova senha (repetir)
+        password: Senha
+        password_repeat: Senha (repita)
+        last_logged_in: Último acesso
+        login_count: Contagem de acessos
+        ui_locale: Linguagem do UI
+        timezone: Fuso horário
+        default_product_grid_view: Exibição padrão da grade de produtos
+        default_published_product_grid_view: Exibição padrão da grade de produtos publicada #EE Only
+        proposals_to_review_notification: Quando houver novas propostas para revisar #EE Only
+        proposals_state_notifications: Quando a proposta é aceita ou rejeitada #EE Only
+      meta:
+        created: Criado
+        updated: Atualizado
+      module:
+        create:
+          button: Criar Usuário
+        delete:
+          confirm: Tem certeza de que deseja exvluir este usuário?
+        update:
+          additional: Adicional
+          groups_and_roles: Grupos e papéis
+          password: Senha
+          interfaces: Interfaces
+          notifications: Notificações #TODO EE Only
+    role:
+      plural_label: Papeis
+      page_title:
+        index: "]-Inf, 1] {{ count }} papel|]1, Inf [{{ count }} papéis"
+      module:
+        create:
+          button: Criar papel
+        delete:
+          confirm: Tem certeza de que deseja excluir esta função?
+    group:
+      plural_label: Grupo de usuários
+      page_title:
+        index: "]-Inf, 1] {{ count }} grupo|]1, Inf [{{ count }} grupos"
+      module:
+        create:
+          button: Criar Grupo

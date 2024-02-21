@@ -1,0 +1,16 @@
+pim_datagrid:
+  column_configurator:
+    min_message: Sie müssen mindestens eine Spalte der Tabelle zur Anzeige auswählen
+  label:
+    unique_message: Die Bezeichnung muss eindeutig sein.
+    not_blank_message: Die Bezeichnung darf nicht leer sein.
+  view_selector:
+    flash:
+      created: Tabellenansicht erfolgreich erstellt
+      removed: Tabellenansicht erfolgreich entfernt
+  cells:
+    type:
+      quick_export: Schnell-Export
+      import: Import
+      export: Export
+      mass_edit: Massenbearbeitung

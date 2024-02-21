@@ -1,0 +1,29 @@
+<div class="item-picker-basket panel-container">
+    <div class="AknColumnConfigurator-listContainer">
+        <div class="AknColumnConfigurator-columnHeader">
+            <%- title %>
+        </div>
+        <div class="AknGrid--gallery">
+            <div class="AknGridContainer AknGridContainer--withCheckbox">
+                <div class="AknGrid AknGrid--withCheckbox">
+                    <div class="AknGrid-body basket-inner">
+                        <% if (!_.isEmpty(items)) { %>
+                        <% _.each(items, function (item) { %>
+                        <div data-itemCode="<%- itemCodeMethod(item) %>" class="AknGrid-bodyRow AknGrid-bodyRow--thumbnail AknGrid-bodyRow--withoutTopBorder">
+                            <div class="AknGrid-fullImage" style="background-image: url('<%- imagePathMethod(item) %>')"></div>
+                            <div class="AknButton AknButton--important AknButton--micro AknButton-squareIcon AknButton-squareIcon--delete AknAssetCollectionField-icon remove-item" data-itemCode="<%- itemCodeMethod(item) %>"></div>
+                            <div class="AknGrid-title"><%- labelMethod(item) %></div>
+                            <div class="AknGrid-subTitle"><%- item[identifierName] %></div>
+                        </div>
+                        <% }); %>
+                        <% } else { %>
+                        <div class="empty-basket">
+                            <%- emptyLabel %>
+                        </div>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,77 @@
+attribute;code;label-en_US;label-en_GB;label-fr_FR;label-de_DE;sort_order
+customer_rating;1;1 star;1 star;1 étoile;1 Stern;
+customer_rating;2;2 stars;2 stars;2 étoiles;2 Sterne;
+customer_rating;3;3 stars;3 stars;3 étoiles;3 Sterne;
+customer_rating;4;4 stars;4 stars;4 étoiles;4 Sterne;
+customer_rating;5;5 stars;5 stars;5 étoiles;5 Sternen;
+size;size_XXS;XXS;XXS;XXS;XXS;
+size;size_XS;XS;XS;XS;XS;
+size;size_S;S;S;S;S;
+size;size_M;M;M;M;M;
+size;size_L;L;L;L;L;
+size;size_XL;XL;XL;XL;XL;
+size;size_2XL;2XL;2XL;2XL;2XL;
+size;size_3XL;3XL;3XL;3XL;3XL;
+chest_size;chest_size_XXS;XXS;XXS;XXS;XXS;
+chest_size;chest_size_XS;XS;XS;XS;XS;
+chest_size;chest_size_S;S;S;S;S;
+chest_size;chest_size_M;M;M;M;M;
+chest_size;chest_size_L;L;L;L;L;
+chest_size;chest_size_XL;XL;XL;XL;XL;
+chest_size;chest_size_2XL;2XL;2XL;2XL;2XL;
+chest_size;chest_size_3XL;3XL;3XL;3XL;3XL;
+waist_size;waist_size_XXS;XXS;XXS;XXS;XXS;
+waist_size;waist_size_XS;XS;XS;XS;XS;
+waist_size;waist_size_S;S;S;S;S;
+waist_size;waist_size_M;M;M;M;M;
+waist_size;waist_size_L;L;L;L;L;
+waist_size;waist_size_XL;XL;XL;XL;XL;
+waist_size;waist_size_2XL;2XL;2XL;2XL;2XL;
+waist_size;waist_size_3XL;3XL;3XL;3XL;3XL;
+color;black;Black;Black;Noir;Schwarz;
+color;white;White;White;Blanc;Weiß;
+color;gray;Gray;Gray;Gris;Grau;
+color;red;Red;Red;Rouge;Rot;
+color;blue;Blue;Blue;Bleu;Blau;
+color;green;Green;Green;Vert;Grün;
+color;yellow;Yellow;Yellow;Jaune;Gelb;
+additional_colors;additional_black;Black;Black;Noir;Schwarz;1
+additional_colors;additional_white;White;White;Blanc;Weiß;2
+additional_colors;additional_gray;Gray;Gray;Gris;Grau;3
+additional_colors;additional_red;Red;Red;Rouge;Rot;4
+additional_colors;additional_blue;Blue;Blue;Bleu;Blau;5
+additional_colors;additional_green;Green;Green;Vert;Grün;6
+additional_colors;additional_yellow;Yellow;Yellow;Jaune;Gelb;7
+manufacturer;american_apparel;American apparel;American apparel;American apparel;American apparel;
+manufacturer;lacoste;Lacoste;Lacoste;Lacoste;Lacoste;
+manufacturer;columbia;Columbia;Columbia;Columbia;Columbia;
+manufacturer;levi_strauss;Levi Strauss;Levi Strauss;Levi Strauss;Levi Strauss;
+manufacturer;diesel;Diesel;Diesel;Diesel;Diesel;
+manufacturer;prada;Prada;Prada;Prada;Prada;
+manufacturer;marc_o_polo;Marc O’Polo;Marc O’Polo;Marc O’Polo;Marc O’Polo;
+country_of_manufacture;usa;USA;USA;USA;USA;
+country_of_manufacture;france;France;France;France;Frankreich;
+country_of_manufacture;germany;Germany;Germany;Allemagne;Deutschland;
+country_of_manufacture;italy;Italy;Italy;Italie;Italien;
+country_of_manufacture;china;China;China;Chine;China;
+country_of_manufacture;taiwan;Taiwan;Taiwan;Taiwan;Taiwan;
+country_of_manufacture;vietnam;Vietnam;Vietnam;Vietnam;Vietnam;
+weather_conditions;dry;Dry;Dry;Sec;Trocken;1
+weather_conditions;wet;Wet;Wet;Humide;Nass;2
+weather_conditions;hot;Hot;Hot;Chaud;Heiß;3
+weather_conditions;cold;Cold;Cold;Froid;Kalt;4
+weather_conditions;snowy;Snowy;Snowy;Neigeux;Verschneit;5
+material;cotton;Cotton;Cotton;Coton;Baumwolle;1
+material;flax;Flax;Flax;Lin;Flachs;2
+material;wool;Wool;Wool;Laine;Wolle;3
+material;silk;Silk;Silk;Soie;Seide;4
+material;denim;Denim;Denim;Toile;Denim;5
+material;leather;Leather;Leather;Cuir;Leder;6
+material;fur;Fur;Fur;Fourrure;Pelz;7
+additional_materials;additional_cotton;Cotton;Cotton;Coton;Baumwolle;1
+additional_materials;additional_flax;Flax;Flax;Lin;Flachs;2
+additional_materials;additional_wool;Wool;Wool;Laine;Wolle;3
+additional_materials;additional_silk;Silk;Silk;Soie;Seide;4
+additional_materials;additional_denim;Denim;Denim;Toile;Denim;5
+additional_materials;additional_leather;Leather;Leather;Cuir;Leder;6
+additional_materials;additional_fur;Fur;Fur;Fourrure;Pelz;7

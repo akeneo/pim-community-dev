@@ -1,0 +1,276 @@
+parameters:
+    pim_catalog.event_subscriber.timestampable.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\TimestampableSubscriber
+    pim_catalog.event_subscriber.reset_unique_validation.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ResetUniqueValidationSubscriber
+
+services:
+    # Subscribers
+    pim_catalog.event_subscriber.localizable:
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\AttributeOption\LocalizableSubscriber'
+        arguments:
+            - '@pim_catalog.context.catalog'
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    pim_catalog.event_subscriber.timestampable:
+        class: '%pim_catalog.event_subscriber.timestampable.class%'
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    pim_catalog.event_subscriber.category.check_channels:
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category\OnDelete\CheckChannelsOnDeletionSubscriber'
+        arguments:
+            - '@translator'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_catalog.event_subscriber.reset_unique_validation:
+        class: '%pim_catalog.event_subscriber.reset_unique_validation.class%'
+        arguments:
+            - '@pim_catalog.validator.unique_value_set'
+            - '@pim_catalog.validator.unique_axes_combination_set'
+        tags:
+           - { name: kernel.event_listener, event: akeneo_batch.item_step_after_batch }
+
+    pim_catalog.event_subscriber.compute_product_raw_values:
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithValues\ComputeEntityRawValuesSubscriber'
+        arguments:
+            - '@pim_storage_serializer'
+            - '@pim_catalog.repository.attribute'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_catalog.event_subscriber.quantified_associations.compute_entity:
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithQuantifiedAssociations\ComputeEntitySubscriber'
+        arguments:
+            - '@akeneo.pim.enrichment.product.query.quantified_association.get_uuid_mapping_query'
+            - '@akeneo.pim.enrichment.product.query.quantified_association.get_id_mapping_from_product_model_codes_query'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_catalog.event_subscriber.load_product_values:
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithValues\LoadEntityWithValuesSubscriber'
+        arguments:
+            - '@akeneo.pim.enrichment.factory.write_value_collection'
+        tags:
+            - { name: doctrine.event_subscriber, priority: 50 }
+
+    pim_catalog.event_subscriber.load_product_quantified_associations:
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithQuantifiedAssociations\LoadEntitySubscriber'
+        arguments:
+            - '@akeneo.pim.enrichment.product.query.quantified_association.get_uuid_mapping_query'
+            - '@akeneo.pim.enrichment.product.query.quantified_association.get_id_mapping_from_product_model_ids_query'
+            - '@akeneo.pim.enrichment.product.query.find_quantified_association_codes'
+        tags:
+            - { name: doctrine.event_subscriber, priority: 55 }
+
+    pim_catalog.event_subscriber.product.delete.compute_products_and_ancestors:
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\OnDelete\ComputeProductsAndAncestorsSubscriber'
+        arguments:
+            - '@akeneo.pim.enrichment.elasticsearch.indexer.product_and_ancestors'
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_catalog.event_subscriber.product.save.compute_products_and_ancestors:
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\OnSave\ComputeProductsAndAncestorsSubscriber'
+        arguments:
+            - '@pim_catalog.completeness.product.compute_and_persist'
+            - '@akeneo.pim.enrichment.elasticsearch.indexer.product_and_ancestors'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_catalog.event_subscriber.compute_completeness_on_family_update_subscriber:
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Family\ComputeCompletenessOnFamilyUpdateSubscriber'
+        arguments:
+            - '@security.token_storage'
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@pim_catalog.repository.attribute_requirement'
+            - '%pim_catalog.compute_completeness_of_products_family.job_name%'
+            - '@pim_catalog.doctrine.query.find_attributes_for_family'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_catalog.event_subscriber.category.update_indexes_on_category_deletion:
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category\OnDelete\UpdateIndexesOnCategoryDeletion'
+        arguments:
+            - '@pim_catalog.query.get_descendent_category_codes'
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_catalog.event_subscriber.update_exports_on_channel_update:
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category\OnSave\ConfigureCategoryTreeForExportJobsAfterChangingTheChannelCategoryTree'
+        arguments:
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@akeneo_batch.updater.job_instance'
+            - '@akeneo_batch.saver.job_instance'
+            -
+                - 'csv_product_export'
+                - 'xlsx_product_export'
+                - 'csv_product_model_export'
+                - 'xlsx_product_model_export'
+                - 'csv_published_product_export'
+                - 'xlsx_published_product_export'
+                - 'akeneo_shared_catalog'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_catalog.event_subscriber.category.save.set_updated_property_on_translation_update_subscriber:
+        class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category\OnSave\SetUpdatedPropertyOnTranslationUpdateSubscriber
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    pim_catalog.event_subscriber.init_product_completeness_db_schema:
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Db\InitProductCompletenessDbSchemaSubscriber'
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: 'kernel.event_subscriber' }
+
+    pim_catalog.event_subscriber.init_lock_db_schema:
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Db\InitLockDbSchemaSubscriber'
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: 'kernel.event_subscriber' }
+
+#   TODO CPM-1102: Re-enable when table can be created again
+#    Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Db\CreateIdentifiersTableSubscriber:
+#        arguments:
+#            - '@database_connection'
+#        tags:
+#            - { name: 'kernel.event_subscriber' }
+
+    pim_catalog.event_subscriber.attribute_option_set_sort_order:
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\AttributeOption\SetAttributeOptionSortOrderSubscriber'
+        arguments:
+          - '@pim_catalog.query.get_attribute_options_max_sort_order'
+        tags:
+          - { name: kernel.event_subscriber }
+
+    pim_enrich.event_listener.remove_category_filter_in_job_instance:
+        class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category\OnDelete\RemoveCategoryFilterInJobInstanceSubscriber
+        arguments:
+          - '@akeneo_batch.job.job_instance_repository'
+          - '@akeneo_batch.saver.job_instance'
+        tags:
+          - { name: kernel.event_subscriber }
+
+    pim_catalog.event_subscriber.product_model.on_save.compute_descendant_completeness_and_index_product_and_ancestors_subscriber:
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ProductModel\OnSave\ComputeProductAndAncestorsSubscriber'
+        arguments:
+            - '@pim_catalog.completeness.product.compute_and_persist'
+            - '@pim_catalog.elasticsearch.indexer.product_model_descendants_and_ancestors'
+            - '@akeneo.pim.enrichment.product.query.get_descendant_variant_product_uuids'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_catalog.event_subscriber.product_model.on_delete.compute_descendant_completeness_and_index_product_and_ancestors_subscriber:
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ProductModel\OnDelete\ComputeProductAndAncestorsSubscriber'
+        arguments:
+            - '@pim_catalog.elasticsearch.indexer.product_model_descendants_and_ancestors'
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_catalog.event_subscriber.product.on_save.api_aggregator_event_subscriber:
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\OnSave\ApiAggregatorForProductPostSaveEventSubscriber'
+        arguments:
+            - '@event_dispatcher'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_catalog.event_subscriber.product_model.on_save.api_aggregator_event_subscriber:
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ProductModel\OnSave\ApiAggregatorForProductModelPostSaveEventSubscriber'
+        arguments:
+            - '@event_dispatcher'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_catalog.event_subscriber.persist_two_way_association_subscriber:
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithAssociations\PersistTwoWayAssociationSubscriber'
+        arguments:
+            - '@doctrine'
+            - '@pim_catalog.elasticsearch.indexer.product'
+            - '@pim_catalog.elasticsearch.indexer.product_model'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchProductCreatedAndUpdatedEventSubscriber:
+        arguments:
+            - '@security.helper'
+            - '@messenger.default_bus'
+            - '%webhook_max_bulk_size%'
+            - '@logger'
+            - '@monolog.logger.business_event'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchProductRemovedEventSubscriber:
+        arguments:
+            - '@security.helper'
+            - '@messenger.default_bus'
+            - '%webhook_max_bulk_size%'
+            - '@logger'
+            - '@monolog.logger.business_event'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchProductModelCreatedAndUpdatedEventSubscriber:
+        arguments:
+            - '@security.helper'
+            - '@messenger.default_bus'
+            - '%webhook_max_bulk_size%'
+            - '@logger'
+            - '@monolog.logger.business_event'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchProductModelRemovedEventSubscriber:
+        arguments:
+            - '@security.helper'
+            - '@messenger.default_bus'
+            - '%webhook_max_bulk_size%'
+            - '@logger'
+            - '@monolog.logger.business_event'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithValues\AddDefaultValuesSubscriber:
+        arguments:
+            - '@akeneo.pim.structure.query.get_attributes'
+            - '@akeneo.pim.enrichment.factory.value'
+            - '@pim_channel.query.sql.get_channel_code_with_locale_codes'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EventsApi\DispatchReadProductEventFromEventsApiSubscriber:
+        arguments:
+            - '@event_dispatcher'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\OnSave\ReindexFormerAncestorsSubscriber:
+        arguments:
+            - '@akeneo.pim.enrichment.product.query.get_ancestor_and_descendant_product_model_codes'
+            - '@pim_catalog.elasticsearch.indexer.product_model'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Family\FamilyAttributeAsLabelChangedSubscriber:
+        arguments:
+          - '@pim_catalog.doctrine.query.find_attribute_code_as_label_for_family'
+          - '@akeneo_elasticsearch.client.product_and_product_model'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ProductModel\OnSave\ProductModelWasCreatedOrUpdatedSubscriber:
+      arguments:
+        - '@messenger.bus.default'
+        - '@logger'
+        - '%env(default::string:APP_TENANT_ID)%'
+        - '%env(APP_ENV)%'
+        - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsUcsEventFeature'
+      tags:
+        - { name: kernel.event_subscriber }

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512px" height="512px" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.1 (47250) - http://www.bohemiancoding.com/sketch -->
+    <title>association</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="association" fill="#5992C7">
+            <path d="M351,482 L80,482 L60,482 L60,150 L80,150 L130,150 L130,170 L80,170 L80,462 L351,462 L351,170 L302,170 L302,150 L351,150 L372,150 L372,482 L351,482 Z M431,70 L452,70 L452,402 L431,402 L431,90 L380,90 L380,70 L431,70 Z M360,50 L360,90 L340,90 L340,50 L232,50 L232,30 L360,30 L360,50 Z M391,110 L412,110 L412,442 L391,442 L391,130 L340,130 L340,110 L391,110 Z M320,90 L320,130 L300,130 L300,90 L192,90 L192,70 L320,70 L320,90 Z M260,180 L260,130 L172,130 L172,180 L260,180 Z M280,180 L280,200 L152,200 L152,180 L152,130 L152,110 L280,110 L280,130 L280,180 Z M100,110 L128,110 L128,130 L100,130 L100,110 Z M140,70 L168,70 L168,90 L140,90 L140,70 Z M118,310 L313,310 L313,330 L118,330 L118,310 Z M118,236 L313,236 L313,256 L118,256 L118,236 Z M118,384 L313,384 L313,404 L118,404 L118,384 Z" id="Combined-Shape"></path>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,191 @@
+job_execution:
+  summary:
+    display_item: Vis element
+    hide_item: Skjul element
+pim_connector:
+  export:
+    categories:
+      selector:
+        modal:
+          title: Kategorier udvalg
+        label: "{0}Alle produkter|{1}En valgt kategori|]1,Inf[{{ count }} valgte kategorier"
+        title: Vælg kategorier
+    locales:
+      validation:
+        not_blank: En landestandard skal være valgt, skal du vælge en landestandard til eksport.
+pim_import_export:
+  entity:
+    job_instance:
+      label: jobprofil
+      flash:
+        update:
+          success: Jobprofil er blevet opdateret.
+          fail: Jobprofil kunne ikke opdateres.
+        delete:
+          success: Jobbet fjernet
+    import_profile:
+      uppercase_label: Import profiler
+      flash:
+        create:
+          success: Importer profil oprettet
+        upload:
+          error: Det var ikke muligt at uploade filen. Dens størrelse overskrider muligvis den konfigurerede maks. uploadstørrelse på din PHP eller HTTP serverkonfiguration
+      page_title:
+        index: "]-Inf, 1] {{ count }} importprofil|]1, Inf [{{ count }} importprofiler"
+      module:
+        create:
+          button: opret import profil
+    export_profile:
+      uppercase_label: Eksport profiler
+      flash:
+        create:
+          success: Eksport profil oprettet
+      page_title:
+        index: "]-Inf, 1] {{ count }} eksportprofil|]1, Inf [{{ count }} eksport-profiler"
+      module:
+        create:
+          button: opret eksportprofil
+  form:
+    job_execution:
+      title.details: udførelse detaljer
+      refreshBtn.title: Opdatér
+      button:
+        show_profile.title: Vis profil
+        download_log.title: Download log
+        download_file.title: Download genererede fil
+        download_archive.title: Download genereret Arkiv
+      summary:
+        fetching: Indsamling af data om job udførelse...
+        warning: Advarsel
+        header.step: Trin
+        header.warnings: Advarsler
+        header.summary: Opsummering
+        header.start: Start
+        header.end: Slut
+    job_instance:
+      fail:
+        launch: Undladt at lancere jobprofil. Sørg for det er gyldig og at du har ret til at lancere det.
+        save: Kunne ikke gemme jobprofil. Sørg for at du har ret til at redigere den.
+      button:
+        export.title: Eksporter nu
+        import.launch: Importer nu
+        import.upload: Indlæs og importer nu
+        import.upload_file: Overfør en fil
+      meta:
+        job: Job
+        connector: Connector
+      subsection:
+        last_executions: Sidste kørsel
+      tab:
+        content:
+          title: Indhold
+        properties:
+          decimal_separator:
+            title: Decimalseparator
+            help: Bestem decimal separator
+          date_format:
+            title: Dato format
+            help: Bestem formatet af dato felterne
+          file_path:
+            title: Fil sti
+            help: Hvor skal den generede fil gemmes
+            help_import: Kataloget over den fil der skal bruges til import
+          delimiter:
+            title: Afgrænser
+            help: Ét tegn bruges til at angive feltafgrænseren
+          enclosure:
+            title: Beholder
+            help: Ét tegn bruges til at angive felt-indgrænsningen
+          with_header:
+            title: Med hoved
+            help: Udskrive kolonnenavn eller ej
+          with_media:
+            title: Eksportere filer og billeder
+            help: Hvorvidt eller ikke at eksportere produktfiler og billeder
+          lines_per_file:
+            title: Antal linjer pr. fil
+            help: Definere antallet af linier pr. fil
+          upload_allowed:
+            title: Tillad fil upload
+            help: Tilad at uploade filen direkte eller ej
+          categories_column:
+            title: Kategori kolonne
+            help: Navnet på kolonnen kategorier
+          escape:
+            title: Fortryd
+            help: Ét tegn bruges til at angive felt adskillelse
+          family_column:
+            title: Familie kolonne
+            help: Navnet på kolonnen familie
+          groups_column:
+            title: Grupper kolonne
+            help: Navnet på kolonnen grupper
+          enabled:
+            title: Aktiver produkt
+            help: Hvorvidt importerede produkt skal aktiveres
+          enabled_comparison:
+            title: Sammenlign værdier
+            help: Aktiver sammenligning mellem original og importerede værdier. Kan fremskynde import, hvis importerede værdier er meget lig den oprindelige værdier
+          real_time_versioning:
+            title: Realtid historie opdatering
+            help: Betyder at produkt historien opdateres automatisk, kan slås fra for at forbedre indstillinger
+          family_variant_column:
+            title: Familie variant import
+      file_path: Fil sti
+  widget:
+    last_operations:
+      empty: Ingen, handlinger fundet
+      date: Dato
+      profile_name: Profilnavn
+      details: Detaljer
+      warning_count: Advarsler
+      job_type:
+        import: Import
+        export: Eksport
+        mass_edit: Masse Rediger
+        quick_export: Hurtig eksport
+        compute_family_variant_structure_changes: Beregner familie variant struktur ændringer
+        compute_completeness_of_products_family: Beregner fuldstændigheden af produkter familie
+        mass_delete: Masse slet produkter
+      header.view_all: Vis alle
+  batch_status:
+    1: Afsluttet
+    2: Starter
+    3: Startet
+    4: Stopper
+    5: Stoppet
+    6: Mislykkedes
+    7: Opgivet
+    8: Ukendt
+confirmation:
+  remove:
+    import_profile: Er du sikker på du vil slette denne import profil?
+    export_profile: Er du sikker på du vil slette denne eksportprofil?
+    job_instance: Er du sikker på du vil slette dette job?
+pim_enrich:
+  entity:
+    import_profile:
+      module:
+        delete:
+          confirm: Er du sikker på du vil slette denne import profil?
+      flash:
+        delete:
+          success: Importer profil blev slettet
+    export_profile:
+      module:
+        delete:
+          confirm: Er du sikker på du vil slette denne eksportprofil?
+      flash:
+        delete:
+          success: Eksport profil blev slettet
+pim_title:
+  pim_importexport_export_profile_index: Eksporter profil håndtering
+  pim_importexport_export_profile_edit: Eksportere profiler {{ job.label }} | Rediger
+  pim_importexport_export_profile_show: Eksportere profiler {{ job.label }} | Vis
+  pim_importexport_export_execution_index: Eksporter aktivitets historik
+  pim_importexport_export_execution_show: Eksporter aktiviteter | Detaljer
+  pim_importexport_import_profile_index: Importer profiler håndtering
+  pim_importexport_import_profile_edit: Importere profil {{ job.label }} | Rediger
+  pim_importexport_import_profile_show: Importere profil {{ job.label }} | Vis
+  pim_importexport_import_execution_index: Importer aktivitets historik
+  pim_importexport_import_execution_show: Importer aktiviter | Detaljer

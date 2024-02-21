@@ -1,0 +1,151 @@
+@import '../base/variables';
+
+.AknBadge {
+  /** DSM Badge **/
+  display: inline-block;
+  height: 18px;
+  line-height: 16px;
+  border: 1px solid @AknGrey100;
+  padding: 0 6px;
+  border-radius: 2px;
+  text-transform: uppercase;
+  box-sizing: border-box;
+  background: @AknWhite;
+  font-size: @AknFontSizeSmall;
+  color: @AknGrey140;
+  font-weight: normal;
+
+  &-icon {
+    margin: 0;
+  }
+
+  /** level: primary **/
+  &--enabled,
+  &--success,
+  &--primary {
+    color: @AknGreen140;
+    border-color: @AknGreen100;
+  }
+
+  /** level: danger **/
+  &--disabled,
+  &--important,
+  &--invalid,
+  &--danger {
+    color: @AknRed140;
+    border-color: @AknRed100;
+  }
+
+  /** level: warning **/
+  &--warning {
+    color: @AknYellow140;
+    border-color: @AknYellow100;
+  }
+
+  /** level: tertiary **/
+  &--grey,
+  &--tertiary {
+    color: @AknGrey140;
+    border-color: @AknGrey100;
+  }
+
+  /** level: secondary **/
+  &--info,
+  &--secondary {
+    color: @AknBlue140;
+    border-color: @AknBlue100;
+  }
+
+  /** level: ?? **/
+  &--active {
+    color: @AknPurple140;
+    border-color: @AknPurple100;
+  }
+}
+
+.AknBadge--highlight {
+  /** AknBadge reset **/
+  border: none;
+
+  line-height: 22px;
+  height: 22px;
+  min-width: 22px;
+  font-size: @AknDefaultFontSize;
+  background: @AknOrange;
+  color: @AknDefaultFontColor;
+  display: inline-block;
+  border-radius: 100px;
+  padding: 0 8px;
+  transition: background 0.15s ease-in, opacity 0.4s ease-in;
+  white-space: nowrap;
+  margin: 2px 0 -2px 0;
+  text-transform: uppercase;
+  cursor: default;
+
+  &--excellent {
+    background: @AknGreen120;
+  }
+
+  &--good {
+    background: @AknGreen100;
+  }
+
+  &--average {
+    background: @AknYellow100;
+  }
+
+  &--below-average {
+    background: @AknRed100;
+  }
+
+  &--to-improve {
+    background: @AknRed120;
+  }
+}
+
+.AknBadge--light {
+  opacity: 0.2;
+}
+.AknBadge--hidden {
+  display: none;
+
+  &.AknBadge--floating {
+    display: inline-block;
+    opacity: 0;
+  }
+}
+.AknBadge--big {
+  height: 28px;
+  min-width: 28px;
+  line-height: 28px;
+  font-size: 12px;
+  padding: 0 15px;
+  margin: 0;
+  &-icon {
+    margin: 4px -3px -9px 0
+  }
+}
+
+.AknBadge--large {
+  padding: 0 20px;
+}
+.AknBadge--small {
+  height: 8px;
+  padding: 0 4px;
+  margin-bottom: 0;
+  min-width: 8px;
+}
+.AknBadge--floating {
+  margin-left: -12px;
+  margin-top: 6px;
+  position: absolute;
+  transition: opacity .3s ease-in-out;
+}
+.AknBadge--topRight {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-right: 10px;
+  margin-top: 10px;
+  z-index: 1;
+}

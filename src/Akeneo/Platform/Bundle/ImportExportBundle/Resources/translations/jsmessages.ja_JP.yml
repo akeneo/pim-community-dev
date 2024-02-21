@@ -1,0 +1,291 @@
+job_execution:
+  summary:
+    display_item: アイテムを表示
+    hide_item: アイテムを隠す
+pim_connector:
+  export:
+    categories:
+      selector:
+        modal:
+          title: カテゴリ選択
+        label: "{0}全商品 |{1}1件の選択済カテゴリ|]1,Inf[{{ count }} 件の選択済カテゴリ"
+        title: カテゴリを選択
+    locales:
+      validation:
+        not_blank: ロケールは 1 つ選択する必要があります。エクスポートするロケールを選択してください。
+pim_import_export:
+  validation:
+    max_length_reached: 値が長すぎます。{{ limit }}以下の文字数で設定してください。
+  entity:
+    job_instance:
+      label: ジョブプロファイル
+      flash:
+        update:
+          success: ジョブプロファイルを正常に更新しました。
+          fail: ジョブプロファイルを更新できませんでした。
+        delete:
+          success: ジョブインスタンスを削除しました
+      duplicate:
+        title: '{{ job_code }}プロファイルを複製'
+        success: ジョブプロファイルが正常に複製されました。
+        fail: ジョブプロファイルを複製できませんでした。
+    import_profile:
+      uppercase_label: プロファイルをインポート
+      flash:
+        create:
+          success: インポートプロファイルが正常に作成されました
+        upload:
+          error: ファイルをアップロードできません。お使いのPHPあるいはHTTPサーバー構成の最大アップロードサイズを超過しているようです。
+      page_title:
+        index: "]-Inf, 1] {{ count }} インポートプロファイル|]1, Inf [{{ count }} インポートプロファイル"
+      module:
+        create:
+          button: インポートプロファイルを作成
+    export_profile:
+      uppercase_label: プロファイルをエクスポート
+      flash:
+        create:
+          success: エクスポートプロファイルが正常に作成されました
+      page_title:
+        index: "]-Inf, 1] {{ count }} エクスポートプロファイル|]1, Inf [{{ count }} エクスポートプロファイル"
+      module:
+        create:
+          button: エクスポートプロファイルを作成
+  form:
+    job_execution:
+      title.details: 実行の詳細
+      refreshing: 実行の詳細を更新中
+      refreshBtn.title: 更新
+      button:
+        show_profile.title: プロファイルを表示
+        download_log.title: ログをダウンロード
+        download_file.title: 生成されたファイルをダウンロード
+        download_archive.title: 生成されたアーカイブをダウンロード
+      summary:
+        fetching: ジョブ実行データを収集中...
+        warning: 警告
+        header.step: ステップ
+        header.warnings: 警告
+        header.summary: 概要
+        header.start: 開始
+        header.end: 終了
+    job_instance:
+      fail:
+        launch: ジョブプロファイルを起動できません。ジョブプロファイルが有効か、起動権限があるかを確認して下さい
+        save: ジョブプロファイルを保存できませんでした。ジョブプロファイルの編集権限があるか確認して下さい。
+      button:
+        export.title: 今すぐエクスポート
+        import.launch: 今すぐインポート
+        import.upload: 今すぐアップロードおよびインポート
+        import.upload_file: ファイルをアップロード
+      meta:
+        job: ジョブ
+        connector: コネクター
+      subsection:
+        last_executions: 前回の実行
+      tab:
+        content:
+          title: コンテンツ
+        properties:
+          decimal_separator:
+            title: 小数点の区切り
+            help: 小数点の区切り文字を決定する
+          date_format:
+            title: 日付の形式
+            help: 日付フィールドの形式を決定
+          file_path:
+            title: ファイルパス
+            help: ファイルシステムで生成されたファイルの書き込み先
+            help_import: インポート時に使用するファイルディレクトリ
+          delimiter:
+            title: 区切り文字
+            help: 1文字をフィールド区切り文字として使用中
+          enclosure:
+            title: エンクロージャ
+            help: 1文字をフィールドのエンクロージャとして使用中
+          with_header:
+            title: ヘッダーあり
+            help: 列名を出力するかどうか
+          with_media:
+            title: メディアをエクスポート
+            help: メディアをエクスポートするかどうか
+          lines_per_file:
+            title: ファイルごとの行数
+            help: 1ファイルあたりの行数を定義
+          upload_allowed:
+            title: ファイルのアップロードを許可
+            help: ファイルの直接アップロードを許可するかどうか
+          categories_column:
+            title: カテゴリ列
+            help: カテゴリ列の名前
+          escape:
+            title: エスケープ
+            help: 1文字をフィールドエスケープ設定に使用中
+          family_column:
+            title: ファミリー列
+            help: ファミリー列の名前
+          groups_column:
+            title: グループ列
+            help: グループ列の名前
+          enabled:
+            title: 商品を有効にする
+            help: インポートした商品を有効にするか否か
+          enabled_comparison:
+            title: 値を比較
+            help: インポート前と後の値に関する比較機能を有効にしましょう。インポートされた値が元の値に近い場合はインポート処理が速くなります。
+          real_time_versioning:
+            title: リアルタイムの更新履歴
+            help: 商品履歴が自動的にアップデートされます。自動アップデートをオフにするとパフォーマンスが向上します。
+          convert_variant_to_simple:
+            title: バリエーション商品をシンプル商品に変換
+            help: '「上位」列が空である場合、バリエーション商品をシンプル商品に変換しようとします。「いいえ」に設定すると、空の「上位」列は無視されます。'
+          family_variant_column:
+            title: ファミリーバリエーションの列
+          with_label:
+            title: ラベル付き
+            help: エクスポートファイルに値のコードの代わりに値のラベルを表示するかどうかを定義します
+          header_with_label:
+            title: ラベル付きのヘッダ
+            help: エクスポートファイルにヘッダのコードの代わりにヘッダのラベルを表示するかどうかを定義します
+          file_locale:
+            title: ファイルのロケール
+            help: ラベル表示のロケールを定義します
+          with_uuid:
+            title: 商品UUIDあり
+            help: 商品と関連商品のUUIDをエクスポート
+          with_uuid_for_models:
+            title: 商品UUIDあり
+            help: 識別子の代わりに関連商品UUIDをエクスポート
+      file_path: ファイルのパス
+      storage_form:
+        title: ストレージ
+        connection:
+          label: タイプ
+          local: ローカル
+          sftp: SFTP
+          amazon_s3: Amazon S3
+          microsoft_azure: Microsoft Azure
+          google_cloud_storage: Google Cloud Storage
+          none: ストレージが構成されていません
+        file_path:
+          label: ファイルパス
+          placeholder: myfile.{{ file_extension }}
+        host:
+          label: ホスト
+          placeholder: example.com
+        fingerprint:
+          label: ホストの指紋 (オプション)
+          placeholder: "c1:91:5e:42:55:5c:74:65:b6:12:32:7e:1f:6d:80:3e"
+          helper: ホストの指紋にはコロン形式表記のSHA-512またはMD5ハッシュ化チェックサムが必要です。
+        port:
+          label: ポート
+          placeholder: 22
+        username:
+          label: ログイン
+          placeholder: ログイン名を入力
+        password:
+          label: パスワード
+          placeholder: パスワードを入力
+        public_key:
+          label: 公開キー
+          button_title: クリップボードにコピー
+          copy_notification_success: 公開キーがクリップボードにコピーされました
+        login_type:
+          label: 認証方法
+          password: ログインとパスワード
+          private_key: 秘密キー
+        region:
+          label: リージョン
+          placeholder: リージョンを入力してください
+        bucket:
+          label: バケット名
+          placeholder: リージョン名を入力してください
+        key:
+          label: キー
+          placeholder: キーを入力してください
+        secret:
+          label: シークレット
+          placeholder: シークレットを入力してください
+        connection_string:
+          label: 接続文字列
+          placeholder: 接続文字列を入力してください
+        container_name:
+          label: コンテナ名
+          placeholder: コンテナ名を入力してください
+        project_id:
+          label: プロジェクト ID
+          placeholder: プロジェクト ID を入力してください
+        service_account:
+          label: サービスアカウント
+          placeholder: サービスアカウントを入力してください
+      validation:
+        storage:
+          unavailable_type: このストレージは使用できません。{{ available_types }}のみを使用できます。
+        file_path:
+          unsupported_extension: サポートされていないファイル拡張子
+        fingerprint:
+          invalid_encoding: ホストの指紋は、コロン形式表記の有効なSHA-512またはMD5チェックサムハッシュである必要があります。
+      connection_checker:
+        label: テスト接続の設定
+        exception: 接続を確立できません。設定を確認してください。
+  batch_status:
+    1: 完了
+    2: 開始中...
+    3: 処理中
+    4: 停止中
+    5: 停止
+    6: 失敗
+    7: 破棄済
+    8: 不明
+    9: 一時停止中
+    10: 一時停止
+  job_status:
+    COMPLETED: 完了
+    STARTING: 開始中...
+    STARTED: 処理中
+    STOPPING: 停止中
+    STOPPED: 停止
+    FAILED: 失敗
+    ABANDONED: 破棄済
+    UNKNOWN: 不明
+    PAUSING: 一時停止中
+    PAUSED: 一時停止
+  tracking:
+    completed: "経過時間: {{ duration }}"
+    in_progress: "推定残り時間: {{ duration }}"
+    not_started: "保留中"
+    untrackable: 追跡不可能なステップ
+    estimating: "残り時間を推定中…"
+confirmation:
+  remove:
+    import_profile: このインポートプロファイルを削除してもよろしいですか。
+    export_profile: このエクスポートプロファイルを削除してもよろしいですか。
+    job_instance: 本当にこのジョブインスタンスを削除しますか？
+pim_enrich:
+  entity:
+    import_profile:
+      module:
+        delete:
+          confirm: このインポートプロファイルを削除してもよろしいですか。
+      flash:
+        delete:
+          success: インポートプロファイルを正常に削除しました
+    export_profile:
+      module:
+        delete:
+          confirm: このエクスポートプロファイルを削除してもよろしいですか。
+      flash:
+        delete:
+          success: エクスポートプロファイルを正常に削除しました
+pim_title:
+  pim_importexport_export_profile_index: エクスポートプロファイルの管理
+  pim_importexport_export_profile_edit: エクスポートプロファイル {{ job.label }}|編集
+  pim_importexport_export_profile_show: エクスポートプロファイル{{ job.label }}|表示
+  pim_importexport_export_execution_index: 実行履歴をエクスポート
+  pim_importexport_export_execution_show: エクスポートの実行 |詳細
+  pim_importexport_import_profile_index: インポートプロファイル管理
+  pim_importexport_import_profile_edit: インポートプロファイル{{ job.label }} |編集
+  pim_importexport_import_profile_show: インポートプロファイル{{ job.label }} |表示
+  pim_importexport_import_execution_index: インポート実行履歴
+  pim_importexport_import_execution_show: インポートの実行 |詳細
+

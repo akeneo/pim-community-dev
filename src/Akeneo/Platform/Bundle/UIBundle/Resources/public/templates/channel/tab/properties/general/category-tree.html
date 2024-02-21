@@ -1,0 +1,23 @@
+<div class="AknFieldContainer-header">
+    <label class="AknFieldContainer-label control-label required" for="pim_enrich_channel_form_category_tree">
+        <%- label %> <em><%- requiredLabel %></em>
+    </label>
+</div>
+<div class="AknFieldContainer-inputContainer">
+    <select class="select2" id="pim_enrich_channel_form_category_tree">
+        <% _.each(categories, function (category) { %>
+        <option value="<%- category.code %>" <%- (categoryTree == category.code) ? 'selected' : '' %> >
+            <%- i18n.getLabel(category.labels, catalogLocale, category.code) %>
+        </option>
+        <% }); %>
+    </select>
+</div>
+<div class="AknFieldContainer-footer">
+    <div class="AknFieldContainer-validationErrors validation-errors">
+        <% _.each(errors, function (error) { %>
+        <div class="AknFieldContainer-validationError">
+            <%- error %>
+        </div>
+        <% }); %>
+    </div>
+</div>

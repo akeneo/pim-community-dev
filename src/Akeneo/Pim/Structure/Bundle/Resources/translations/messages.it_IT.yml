@@ -1,0 +1,63 @@
+pim_enrich:
+  #Attribute
+  attribute:
+    tab:
+      parameter.title: Parametri
+      value.title: Valori
+      history.title: Cronologia
+  #Family
+  family:
+    info:
+      cant_remove_attribute_used_as_axis: Impossibile rimuovere questo attributo usato come asse variante in una famiglia variante
+  attribute_group:
+    remove:
+      attribute_group_with_attribute_cannot_be_removed: Non è possibile eliminare un gruppo che contiene degli attributi. Prima di eliminare il gruppo, elimina gli attributi che contiene.
+      attribute_group_other_cannot_be_removed: Impossibile eliminare il gruppo di attributi "altro".
+  #Group type
+  group_type:
+    tab:
+      property.title: Proprietà
+  #Mass edit operations
+  mass_edit_action:
+    family:
+      page_title: Famiglie
+      page_subtitle: Modifica di massa (1 famiglia) | Modifica di massa (%count% famiglie)
+      title: Scegli operazione
+      subtitle: Scegliere l'operazione che si desidera eseguire sulla famiglia selezionata| Scegliere l'operazione che si desidera eseguire sulle %count% famiglie selezionate
+      confirm: Stai per aggiornare una famiglia con le seguenti informazioni, si prega di confermare. |Stai per aggiornare %count% famiglie con le seguenti informazioni, si prega di confermare.
+      steps:
+        first: Scegli le famiglie
+        second: Scegli operazione
+        third: Configura
+        fourth: Conferma
+  entity:
+    association_type:
+      property:
+        is_two_way: Associazione bi-direzionale
+        is_quantified: Associazione con quantità
+pim_enrich_attribute_form:
+  code: Codice
+  type: Tipo Attributo
+  reference_data_name: Nome riferimento dati
+  scopable: Valore per canale
+  localizable: Valore per impostazioni internazionali
+  unique: Valore univoco
+  availableLocales: Impostazioni locali disponibili
+  locale_specific: Impostazioni locali specifiche
+  group: Gruppo attributi
+  useableAsGridFilter: Utilizzabile nella griglia
+job_execution.summary:
+  deleted_attribute_groups: Gruppi di attributi eliminati
+  skipped_attribute_groups: Gruppi di attributi saltati
+  moved_attributes: Attributi spostati
+  deleted_attributes: Attributi eliminati
+pim_import_export:
+  notification:
+    attribute_group_mass_delete:
+      error: L'eliminazione in blocco dei gruppi di attributi non è riuscita
+      warning: Eliminazione in blocco dei gruppi di attributi completata con alcuni avvisi
+      success: Eliminazione in blocco dei gruppi di attributi completata
+    attribute_mass_delete:
+      error: L'eliminazione in blocco degli attributi non è riuscita
+      warning: Eliminazione in blocco degli attributi completata con alcuni avvisi
+      success: Eliminazione in blocco degli attributi completata

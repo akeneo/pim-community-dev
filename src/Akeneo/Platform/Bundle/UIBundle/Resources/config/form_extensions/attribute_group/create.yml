@@ -1,0 +1,110 @@
+extensions:
+    pim-attribute-group-create-form:
+        module: pim/form/common/edit-form
+
+    pim-attribute-group-create-form-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-attribute-group-create-form
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-settings
+            item: pim-menu-settings-attribute-group
+
+    pim-attribute-group-create-form-cache-invalidator:
+        module: pim/cache-invalidator
+        parent: pim-attribute-group-create-form
+        position: 1000
+
+    pim-attribute-group-create-form-form-tabs:
+        module: pim/form/common/form-tabs
+        parent: pim-attribute-group-create-form
+        targetZone: content
+        position: 90
+
+    pim-attribute-group-create-form-label:
+        module: pim/form/common/label
+        parent: pim-attribute-group-create-form
+        targetZone: title
+        position: 110
+
+    pim-attribute-group-create-form-save-buttons:
+        module: pim/form/common/save-buttons
+        parent: pim-attribute-group-create-form
+        targetZone: buttons
+        position: 110
+
+    pim-attribute-group-create-form-save:
+        module: pim/form/common/save-form
+        parent: pim-attribute-group-create-form
+        targetZone: buttons
+        position: 0
+        config:
+            updateSuccessMessage: pim_enrich.entity.attribute_group.flash.update.success
+            updateFailureMessage: pim_enrich.entity.attribute_group.flash.update.fail
+            notReadyMessage: pim_enrich.entity.attribute_group.flash.update.fields_not_ready
+            url: pim_enrich_attributegroup_rest_create
+            method: PUT
+            redirectAfter: pim_enrich_attributegroup_edit
+
+    pim-attribute-group-create-form-state:
+        module: pim/form/common/state
+        parent: pim-attribute-group-create-form
+        targetZone: state
+        position: 900
+        config:
+            entity: pim_enrich.entity.attribute_group.label
+
+    pim-attribute-group-create-form-properties-tab:
+        module: pim/common/tab
+        parent: pim-attribute-group-create-form-form-tabs
+        targetZone: container
+        position: 100
+        config:
+            label: pim_common.properties
+
+    pim-attribute-group-create-form-properties:
+        module: pim/common/simple-view
+        parent: pim-attribute-group-create-form-properties-tab
+        targetZone: self
+        config:
+            template: pim/template/form/tab/sections
+
+    pim-attribute-group-create-form-properties-general:
+        module: pim/common/simple-view
+        parent: pim-attribute-group-create-form-properties
+        targetZone: accordion
+        position: 100
+        config:
+            template: pim/template/form/tab/section
+            templateParams:
+                sectionTitle: pim_common.general_properties
+                dropZone: content
+
+    pim-attribute-group-create-form-properties-general-code:
+        module: pim/form/common/fields/text
+        parent: pim-attribute-group-create-form-properties-general
+        targetZone: content
+        position: 90
+        config:
+            fieldName: code
+            label: pim_common.code
+            required: true
+
+    pim-attribute-group-create-form-properties-translation-section:
+        module: pim/common/simple-view
+        parent: pim-attribute-group-create-form-properties
+        targetZone: accordion
+        position: 110
+        config:
+            template: pim/template/form/tab/section
+            templateParams:
+                sectionTitle: pim_common.label_translations
+                dropZone: content
+
+    pim-attribute-group-create-form-properties-translation:
+        module: pim/common/properties/translation
+        parent: pim-attribute-group-create-form-properties-translation-section
+        targetZone: content
+        position: 100
+        config:
+            fieldBaseId: pim_enrich_attribute_group_form_label_

@@ -1,0 +1,126 @@
+pim_title:
+  pim_user_index: 用户
+  pim_user_role_index: 角色
+  pim_user_group_index: 用户组
+  oro_config_configuration_system: 配置
+  pim_user_edit: '用户 {{ username }} | 编辑'
+  pim_user_create: '用户 | 创建'
+  pim_user_role_update: '角色 {{ role }} | 编辑'
+  pim_user_role_create: '角色 | 创建'
+  pim_user_security_login: 登录
+  pim_user_reset_reset: 密码重置
+  pim_user_reset_request: 忘记密码
+  pim_user_group_create: '分组 | 创建'
+  pim_user_group_update: '分组 {{ group }} | 编辑'
+confirmation:
+  remove:
+    user: 确定要删除此用户吗？
+    group: 确定要删除此组吗？
+pim_enrich:
+  entity:
+    user:
+      flash:
+        delete:
+          fail: 无法删除该用户
+          success: 用户已删除
+      module:
+        delete:
+          confirm: 确定要删除此用户吗？
+pim_user.profile:
+  caption: 首先，请告诉我们您的主要使命是什么，以便我们帮助您专注于最相关的内容。
+  why_is_it_needed: 为什么我们需要此信息？
+  save_button: 保存并访问 App Store
+  selector:
+    placeholder: 选择一个选项
+    not_found: 未找到结果
+  product_manager: 我管理产品目录。
+  redactor: 我丰富产品数据。
+  pim_integrator: 我将 Akeneo PIM 整合到我们的 IT 生态系统中。
+  pim_administrator: 我管理 Akeneo PIM。
+  asset_manager: 我管理 PIM 中的资产。
+  translator: 我翻译产品、资产和/或参考实体数据。
+  third_party_developer: 我开发与 Akeneo PIM 相关的解决方案。
+pim_user_management:
+  entity:
+    user:
+      label: 用户
+      flash:
+        update:
+          success: 用户成功更新。
+          fail: 该用户无法更新
+          fields_not_ready: "该用户现在无法保存。 以下字段未准备好: {{ fields }}"
+        create:
+          success: 用户创建成功
+      page_title:
+        index: "] -Inf, 1] {{ count }} 个用户|] 1, Inf [{{ count }} 个用户"
+      properties:
+        username: 用户名
+        profile: 您的主要任务是什么？
+        name_prefix: 名称前缀
+        first_name: 名
+        middle_name: 中间名
+        last_name: 姓
+        name_suffix: 名称后缀
+        phone: 电话
+        avatar: 头像
+        email: 电子邮件
+        catalog_locale: 目录区域设置
+        catalog_scope: 目录范围
+        default_tree: 默认树
+        default_asset_tree: 默认资产树
+        product_grid_filters: 产品网格筛选器
+        current_password: 当前密码
+        new_password: 新密码
+        new_password_repeat: 新密码 (重复)
+        password: 密码
+        password_repeat: 密码 （重复输入）
+        last_logged_in: 上次登录
+        login_count: 登录计数
+        ui_locale: 界面语言
+        timezone: 时区
+        default_product_grid_view: 默认产品网格视图
+        default_published_product_grid_view: 默认的已发布产品网格视图 #EE Only
+        proposals_to_review_notification: 有新的提案待审查时 #EE Only
+        proposals_state_notifications: 当提案被接受或拒绝时 #EE Only
+        not_fully_supported_locale: '所选的 UI 区域 [{{ code }}] 当前不受完全支持。可能因为文本翻译缺失或不完整。请帮助改善区域覆盖面：'
+        link_to_crowdin_label: 参与建设 Crowdin。
+      meta:
+        created: 已创建
+        updated: 已更新
+      module:
+        create:
+          button: 创建用户
+        delete:
+          confirm: 确定要删除此用户吗？
+        update:
+          additional: 附加
+          groups_and_roles: 分组和角色
+          password: 密码
+          interfaces: 界面
+          notifications: 通知 #TODO EE Only
+    role:
+      plural_label: 角色
+      page_title:
+        index: "] -Inf, 1] {{ count }} 个角色|] 1, Inf [{{ count }} 个角色"
+      module:
+        create:
+          button: 创建角色
+        delete:
+          confirm: 确定要删除此角色吗？
+    group:
+      plural_label: 用户组
+      page_title:
+        index: "] -Inf, 1] {{ count }} 个分组|] 1, Inf [{{ count }} 个分组"
+      module:
+        create:
+          button: 创建组
+  form:
+    error:
+      required: 此字段是必填字段。
+      should_not_contain_space: 用户名不应包含空白字符。
+      too_short_value: "此值太短。其应有  {{ count }} 个或更多字符。"
+    duplication:
+      title: '复制“{{ username }}”用户'
+      notification:
+        success: 已成功复制用户
+        failure: 复制用户失败

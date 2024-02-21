@@ -1,0 +1,41 @@
+extensions:
+    pim-export-profile-create-modal:
+        module: pim/form/common/creation/modal
+        config:
+            labels:
+                title: pim_common.create
+                subTitle: pim_menu.item.export_profile
+            picture: illustrations/Attribute.svg
+            successMessage: pim_import_export.entity.export_profile.flash.create.success
+            editRoute: pim_importexport_export_profile_edit
+            postUrl: pim_enrich_job_instance_rest_export_create
+            routerKey: code
+
+    pim-export-profile-create-code:
+        module: pim/form/common/creation/field
+        parent: pim-export-profile-create-modal
+        targetZone: fields
+        position: 10
+        config:
+            identifier: code
+            label: pim_common.code
+
+    pim-export-profile-create-label:
+        module: pim/form/common/creation/field
+        parent: pim-export-profile-create-modal
+        targetZone: fields
+        position: 20
+        config:
+            identifier: label
+            label: pim_common.label
+
+    pim-export-profile-create-job:
+        module: pim/form/common/creation/job
+        parent: pim-export-profile-create-modal
+        targetZone: fields
+        position: 30
+        config:
+          type: export
+          identifier: job_name
+          label: pim_import_export.form.job_instance.meta.job
+          url: pim_enrich_job_instance_rest_jobs_get

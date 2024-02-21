@@ -1,0 +1,5 @@
+services:
+    Akeneo\Pim\Enrichment\Category\API\Query\GetOwnedCategories:
+        class: Akeneo\Test\Category\Acceptance\InMemory\InMemoryGetOwnedCategories
+        arguments:
+            - '@pim_user.repository.user'

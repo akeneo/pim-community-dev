@@ -1,0 +1,6 @@
+parameters:
+    pim_api.negotiator.content_type_negotiator.class: Akeneo\Tool\Bundle\ApiBundle\Negotiator\ContentTypeNegotiator
+
+services:
+    pim_api.negotiator.content_type_negotiator:
+        class: '%pim_api.negotiator.content_type_negotiator.class%'

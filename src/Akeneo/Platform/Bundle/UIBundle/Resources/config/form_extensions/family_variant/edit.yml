@@ -1,0 +1,71 @@
+extensions:
+    pim-family-variant-edit-form:
+        module: pim/form/common/edit-form
+        config:
+            template: pim/template/family-variant/edit
+
+    pim-family-variant-edit-form-cache-invalidator:
+        module: pim/cache-invalidator
+        parent: pim-family-variant-edit-form
+        position: 1000
+
+    pim-family-variant-edit-form-state:
+        module: pim/form/common/state
+        parent: pim-family-variant-edit-form
+        targetZone: state
+        position: 900
+        config:
+            entity: pim_enrich.entity.family_variant.label
+
+    pim-family-variant-edit-form-tabs:
+        module: pim/form/common/form-tabs
+        parent: pim-family-variant-edit-form
+        targetZone: content
+        position: 90
+        config:
+            centered: true
+
+    pim-family-variant-edit-form-attribute-set-tab:
+        module: pim/common/tab
+        parent: pim-family-variant-edit-form-tabs
+        targetZone: container
+        position: 100
+        config:
+            label: 'pim_enrich.entity.family_variant.module.edit.variant_attributes'
+
+    pim-family-variant-edit-form-labels-tab:
+        module: pim/common/tab
+        parent: pim-family-variant-edit-form-tabs
+        targetZone: container
+        position: 110
+        config:
+            label: 'pim_common.label_translations'
+
+    pim-family-variant-edit-form-attribute-set:
+        module: pim/family-variant-edit-form/attribute-set
+        parent: pim-family-variant-edit-form-attribute-set-tab
+        targetZone: self
+
+    pim-family-variant-edit-form-labels-container:
+        module: pim/family-variant-edit-form/labels-container
+        parent: pim-family-variant-edit-form-labels-tab
+        targetZone: self
+
+    pim-family-variant-edit-form-labels-translation:
+        module: pim/common/properties/translation
+        parent: pim-family-variant-edit-form-labels-container
+        targetZone: fields
+        config:
+            fieldBaseId: 'pim_enrich_family_variant_form_label_'
+
+    pim-family-variant-edit-form-save-buttons:
+        module: pim/form/common/save-buttons
+        parent: pim-family-variant-edit-form
+        targetZone: buttons
+        position: 110
+
+    pim-family-variant-edit-form-save:
+        module: pim/family-variant-edit-form/save
+        parent: pim-family-variant-edit-form
+        targetZone: buttons
+        position: 0

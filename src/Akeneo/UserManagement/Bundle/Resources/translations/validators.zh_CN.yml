@@ -1,0 +1,6 @@
+pim_user:
+  min_role: "必须选择至少 {{ limit }} 个角色。| 必须选择至少 {{ limit }} 个角色。"
+  password_match: "密码字段必须相匹配。"
+  role:
+    invalid_role_format: '角色应该以“ROLE_”开头，并且应该只包含下划线、破折号和大写字母数字字符。'
+  reserved_prefix_username: "用户名前缀'{{ prefix }}'已被保留"

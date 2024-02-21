@@ -1,0 +1,17 @@
+parameters:
+    pim_datagrid.repository.datagrid_view.class: Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepository
+    pim_datagrid.entity.datagrid_view.class: Oro\Bundle\PimDataGridBundle\Entity\DatagridView
+
+services:
+    pim_datagrid.repository.datagrid_view:
+        class: '%pim_datagrid.repository.datagrid_view.class%'
+        factory: ['@doctrine.orm.entity_manager', 'getRepository']
+        arguments: ['%pim_datagrid.entity.datagrid_view.class%']
+        tags:
+            - { name: 'pim_repository' }
+
+    pim_enrich.repository.client:
+        class: 'Oro\Bundle\PimDataGridBundle\Repository\ClientRepository'
+        arguments:
+            - '@fos_oauth_server.entity_manager'
+            - '%fos_oauth_server.model.client.class%'

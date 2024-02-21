@@ -1,0 +1,87 @@
+No products to remove: 没有要移除的产品
+"dot (.)": 点（.）
+"comma (,)": 逗号（,）
+pim_enrich:
+  #Category
+  category:
+    tab:
+      property.title: 属性
+      history.title: 历史记录 
+    suggest_selection: 请选择左边的类别
+    or: ' 或 '
+    create_new: 创建新的类别
+  #Mass edit operations
+  mass_edit_action:
+    limit_exceeded: 请选择少于 %limit% 个的编辑条目
+    product:
+      page_title: 产品
+      page_subtitle: 批量编辑（1 个产品） |  批量编辑（%count% 个产品）
+      title: 选择操作
+      subtitle: 请选择想对所选产品执行的操作 |请选择想对所选 %count% 个产品执行的操作
+      confirm: 您将要更新产品的以下信息，请确认。|您将要更新 %count% 个产品的以下信息，请确认。
+      steps:
+        first: 选择产品
+        second: 选择操作
+        third: 配置
+        fourth: 确认
+    change-status:
+      label: 更改状态
+      description: 将启用或禁用选定的产品。
+      success_flash: 产品状态已更改
+      launched_flash: 批量操作"更改状态"已经启动。完成后会通知您。
+    edit-common-attributes:
+      label: 编辑属性
+      description: 将使用选定的区域设置对应的数据来编缉所选定的产品属性。
+      empty: 请选择要编辑的属性
+      success_flash: 更新产品状态的作业正在运行
+      launched_flash: 批量操作"编辑属性"已经启动。完成后会通知您。
+      message:
+        warning: 选定的产品中没有共同的属性。请更改您的选择。
+        invalid_attribute: 具有代码"attribute_code"的属性在选定的产品中并不共用，该属性略过。
+        no_valid_attribute: 选定的属性无一可应用于该产品。
+    classify-add:
+      label: 添加到类别
+      description: 产品将被放入以下类别，现存的位置也会保留。
+      success_flash: 产品已被分类到所选的类别中了
+      launched_flash: 批量操作"添加到类别"已经启动。完成后会通知您。
+    classify-move:
+      label: 在类别之间移动
+      description: 产品将被放入以下类别，现存的位置不会保留。
+      success_flash: 产品已被移至选定的类别中了
+      launched_flash: 批量操作"移动到类别"已经启动。完成后会通知您。
+    classify-remove:
+      label: 从类别中移除
+      description: 产品将从以下类别中移除。
+      success_flash: 产品已从所选的类别中移除
+      launched_flash: 批量操作"从类别中移除"已经启动。完成后会通知您。
+    change-family:
+      label: 更改品类
+      description: 选定产品的品类将更改为被选定的品类
+      success_flash: 所选产品的品类已被成功更改
+      launched_flash: 批量操作"更改品类"已经启动。完成后会通知您。
+    add-to-groups:
+      label: 添加到组
+      description: 选择要将选定的产品加入其中的组
+      success_flash: 产品已成功添加到所选的组
+      launched_flash: 批量操作"添加到组"已经启动。完成后会通知您。
+      no_group: 目前没有组。请首先创建一个组。
+    set-attribute-requirements:
+      label: 设置属性要求
+      description: 下列属性要求将应用于所选的品类中
+      success_flash: 属性要求被应用于所选的品类中
+      launched_flash: 批量操作"设置属性要求"已经启动。完成后会通知您。
+    convert_to_simple_products:
+      warning:
+        non_variant_product: 产品“{{ identifier }}”已经是一个简单的产品，无需转换。
+    mass_action:
+      quick_export:
+        launched_flash: 导出产品的作业正在运行
+category:
+  create: 创建类别
+  edit: 编辑类别
+  overview: 类别
+tree:
+  edit: 编辑树
+  remove:
+    error_linked: 无法删除此类别树，其已链接到一个渠道
+  create: 创建类别树

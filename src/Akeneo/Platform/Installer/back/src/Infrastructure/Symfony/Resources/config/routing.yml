@@ -1,0 +1,26 @@
+akeneo_installer_reset_instance:
+  path: /rest/reset-instance
+  defaults:
+    _controller: Akeneo\Platform\Installer\Infrastructure\Controller\ResetInstanceAction
+    _feature: reset_pim
+  methods: [ POST ]
+
+akeneo_installer_check_reset_instance:
+  path: /rest/check-reset-instance
+  defaults:
+    _controller: Akeneo\Platform\Installer\Infrastructure\Controller\CheckInstanceCanBeResetAction
+    _feature: reset_pim
+  methods: [ GET ]
+
+akeneo_installer_is_maintenance_mode_enabled:
+  path: /rest/is-maintenance-mode-enabled
+  defaults:
+    _controller: Akeneo\Platform\Installer\Infrastructure\Controller\IsMaintenanceModeEnabledAction
+    _feature: reset_pim
+  methods: [ GET ]
+
+akeneo_installer_maintenance_page:
+  path: /maintenance
+  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+  defaults:
+    template: '@AkeneoInstaller/maintenance.html.twig'

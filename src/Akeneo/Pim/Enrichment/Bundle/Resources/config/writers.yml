@@ -1,0 +1,219 @@
+services:
+    pim_connector.writer.database.product:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database\ProductWriter'
+        arguments:
+            - '@pim_versioning.manager.version'
+            - '@pim_catalog.saver.product'
+
+    pim_connector.writer.database.product_model:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database\ProductModelWriter'
+        arguments:
+            - '@pim_versioning.manager.version'
+            - '@pim_catalog.saver.product_model'
+
+    pim_connector.writer.database.product_association:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database\ProductAssociationWriter'
+        arguments:
+            - '@pim_catalog.saver.product'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    pim_connector.writer.database.product_model_association:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database\ProductAssociationWriter'
+        arguments:
+            - '@pim_catalog.saver.product_model'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+
+    pim_connector.writer.file.product_quick_export.flat_item_buffer_flusher:
+        class: 'Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher'
+        arguments:
+            - '@pim_connector.writer.file.product.column_presenter'
+            - '@pim_connector.writer.file.product_quick_export.column_sorter'
+
+    pim_connector.writer.file.product_model_quick_export.flat_item_buffer_flusher:
+        class: 'Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher'
+        arguments:
+            - '@pim_connector.writer.file.product_model.column_presenter'
+            - '@pim_connector.writer.file.product_model_quick_export.column_sorter'
+
+    pim_connector.writer.file.product.flat_item_buffer_flusher:
+        class: 'Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher'
+        arguments:
+            - '@pim_connector.writer.file.product.column_presenter'
+            - '@pim_connector.writer.file.product.column_sorter'
+
+    pim_connector.writer.file.product_model.flat_item_buffer_flusher:
+        class: 'Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher'
+        arguments:
+            - '@pim_connector.writer.file.product_model.column_presenter'
+            - '@pim_connector.writer.file.product_model.column_sorter'
+
+    pim_connector.writer.file.csv_product:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\Csv\ProductWriter'
+        arguments:
+            - '@pim_connector.array_converter.standard_to_flat.product_localized'
+            - '@pim_connector.factory.flat_item_buffer'
+            - '@pim_connector.writer.file.product.flat_item_buffer_flusher'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_connector.writer.file.media_exporter_path_generator'
+            - '@akeneo.pim.enrichment.connector.write.file.flat.generate_headers_from_family_codes'
+            - '@akeneo.pim.enrichment.connector.write.file.flat.generate_headers_from_attribute_codes'
+            - '@pim_enrich.connector.flat_translators.product_translator'
+            - '@akeneo_file_storage.repository.file_info'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
+            - ['pim_catalog_file', 'pim_catalog_image']
+            - '@pim_connector.job.file_backuper'
+
+    pim_connector.writer.file.csv_product_model:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\Csv\ProductModelWriter'
+        arguments:
+            - '@pim_connector.array_converter.standard_to_flat.product_model_localized'
+            - '@pim_connector.factory.flat_item_buffer'
+            - '@pim_connector.writer.file.product_model.flat_item_buffer_flusher'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_connector.writer.file.media_exporter_path_generator'
+            - '@pim_enrich.connector.flat_translators.product_model_translator'
+            - '@akeneo_file_storage.repository.file_info'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
+            - ['pim_catalog_file', 'pim_catalog_image']
+            - '@pim_connector.job.file_backuper'
+
+    pim_connector.writer.file.csv_product_quick_export:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\Csv\ProductWriter'
+        arguments:
+            - '@pim_connector.array_converter.standard_to_flat.product_localized'
+            - '@pim_connector.factory.flat_item_buffer'
+            - '@pim_connector.writer.file.product_quick_export.flat_item_buffer_flusher'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_connector.writer.file.media_exporter_path_generator'
+            - '@akeneo.pim.enrichment.connector.write.file.flat.generate_headers_from_family_codes'
+            - '@akeneo.pim.enrichment.connector.write.file.flat.generate_headers_from_attribute_codes'
+            - '@pim_enrich.connector.flat_translators.product_translator'
+            - '@akeneo_file_storage.repository.file_info'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
+            - ['pim_catalog_file', 'pim_catalog_image']
+            - '@pim_connector.job.file_backuper'
+            - 'filePathProduct'
+
+    pim_connector.writer.file.csv_product_model_quick_export:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\Csv\ProductModelWriter'
+        arguments:
+            - '@pim_connector.array_converter.standard_to_flat.product_model_localized'
+            - '@pim_connector.factory.flat_item_buffer'
+            - '@pim_connector.writer.file.product_model_quick_export.flat_item_buffer_flusher'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_connector.writer.file.media_exporter_path_generator'
+            - '@pim_enrich.connector.flat_translators.product_model_translator'
+            - '@akeneo_file_storage.repository.file_info'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
+            - ['pim_catalog_file', 'pim_catalog_image']
+            - '@pim_connector.job.file_backuper'
+            - 'filePathProductModel'
+
+    pim_connector.writer.file.xlsx_product:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\Xlsx\ProductWriter'
+        arguments:
+            - '@pim_connector.array_converter.standard_to_flat.product_localized'
+            - '@pim_connector.factory.flat_item_buffer'
+            - '@pim_connector.writer.file.product.flat_item_buffer_flusher'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_connector.writer.file.media_exporter_path_generator'
+            - '@akeneo.pim.enrichment.connector.write.file.flat.generate_headers_from_family_codes'
+            - '@akeneo.pim.enrichment.connector.write.file.flat.generate_headers_from_attribute_codes'
+            - '@pim_enrich.connector.flat_translators.product_translator'
+            - '@akeneo_file_storage.repository.file_info'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
+            - ['pim_catalog_file', 'pim_catalog_image']
+            - '@pim_connector.job.file_backuper'
+
+    pim_connector.writer.file.xlsx_product_model:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\Xlsx\ProductModelWriter'
+        arguments:
+            - '@pim_connector.array_converter.standard_to_flat.product_model_localized'
+            - '@pim_connector.factory.flat_item_buffer'
+            - '@pim_connector.writer.file.product_model.flat_item_buffer_flusher'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_connector.writer.file.media_exporter_path_generator'
+            - '@pim_enrich.connector.flat_translators.product_model_translator'
+            - '@akeneo_file_storage.repository.file_info'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
+            - ['pim_catalog_file', 'pim_catalog_image']
+            - '@pim_connector.job.file_backuper'
+
+    pim_connector.writer.file.xlsx_product_quick_export:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\Xlsx\ProductWriter'
+        arguments:
+            - '@pim_connector.array_converter.standard_to_flat.product_localized'
+            - '@pim_connector.factory.flat_item_buffer'
+            - '@pim_connector.writer.file.product_quick_export.flat_item_buffer_flusher'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_connector.writer.file.media_exporter_path_generator'
+            - '@akeneo.pim.enrichment.connector.write.file.flat.generate_headers_from_family_codes'
+            - '@akeneo.pim.enrichment.connector.write.file.flat.generate_headers_from_attribute_codes'
+            - '@pim_enrich.connector.flat_translators.product_translator'
+            - '@akeneo_file_storage.repository.file_info'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
+            - ['pim_catalog_file', 'pim_catalog_image']
+            - '@pim_connector.job.file_backuper'
+            - 'filePathProduct'
+
+    pim_connector.writer.file.xlsx_product_model_quick_export:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\Xlsx\ProductModelWriter'
+        arguments:
+            - '@pim_connector.array_converter.standard_to_flat.product_model_localized'
+            - '@pim_connector.factory.flat_item_buffer'
+            - '@pim_connector.writer.file.product_model_quick_export.flat_item_buffer_flusher'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_connector.writer.file.media_exporter_path_generator'
+            - '@pim_enrich.connector.flat_translators.product_model_translator'
+            - '@akeneo_file_storage.repository.file_info'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
+            - ['pim_catalog_file', 'pim_catalog_image']
+            - '@pim_connector.job.file_backuper'
+            - 'filePathProductModel'
+
+
+    pim_connector.writer.file.product_quick_export.column_sorter:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ProductColumnSorter'
+        arguments:
+            - '@pim_connector.array_converter.flat_to_standard.product.field_splitter'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.association_type'
+            - ['label']
+
+    pim_connector.writer.file.product_model_quick_export.column_sorter:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ProductColumnSorter'
+        arguments:
+            - '@pim_connector.array_converter.flat_to_standard.product.field_splitter'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.association_type'
+            - ['code']
+
+    pim_connector.writer.file.product.column_sorter:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ProductColumnSorter'
+        arguments:
+            - '@pim_connector.array_converter.flat_to_standard.product.field_splitter'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.association_type'
+            - ['categories', 'enabled', 'family', 'parent', 'groups']
+
+    pim_connector.writer.file.product_model.column_sorter:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ProductColumnSorter'
+        arguments:
+            - '@pim_connector.array_converter.flat_to_standard.product.field_splitter'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.association_type'
+            - ['code', 'family_variant', 'parent', 'categories']
+
+    pim_connector.writer.file.product.column_presenter:
+        class: Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\TranslatedColumnPresenter
+
+    pim_connector.writer.file.product_model.column_presenter:
+        class: Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\TranslatedColumnPresenter
+
+    pim_enrich.writer.database.product_and_product_model_writer:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database\MassEdit\ProductAndProductModelWriter'
+        arguments:
+            - '@pim_versioning.manager.version'
+            - '@pim_catalog.saver.product'
+            - '@pim_catalog.saver.product_model'

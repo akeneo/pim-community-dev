@@ -1,0 +1,176 @@
+@import '../base/variables';
+
+.AknHeader {
+  @transitionDelay: 0.1s;
+  @transitionKeyframe: ease-in;
+
+  display: flex;
+  height: 100%;
+
+  &-menu {
+    display: flex;
+    width: @AknMainMenuWidth;
+    flex-basis: @AknMainMenuWidth;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    border-right: 1px solid @AknBorderColor;
+    z-index: 803;
+    background: white;
+  }
+
+  &-menuBlock {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &-menuItemContainer {
+    flex-grow: 1;
+    flex-basis: 70px;
+    position: relative;
+  }
+
+  &-menuItem {
+    position: absolute;
+    height: 100%;
+    display: flex;
+    width: @AknMainMenuWidth;
+    border: 0 solid @AknLightPurple;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    cursor: pointer;
+    padding-right: 0;
+    color: @AknDefaultFontColor;
+    text-align: center;
+    transition:
+      border-left-width @transitionDelay @transitionKeyframe,
+      padding-right @transitionDelay @transitionKeyframe,
+      color @transitionDelay @transitionKeyframe,
+      opacity @transitionDelay @transitionKeyframe;
+
+    &:hover, &--active {
+      border-left-width: 4px;
+      padding-right: 4px;
+      color: @AknLightPurple;
+    }
+  }
+
+  &-menuItemImage {
+    width: 24px;
+    height: 24px;
+    opacity: 0;
+    transition: opacity @transitionDelay @transitionKeyframe;
+    background-size: 22px;
+    background: no-repeat center;
+    display: block;
+
+    &:first-child {
+      position: absolute;
+      opacity: 1;
+    }
+  }
+
+  &-menuItem:hover &-menuItemImage:first-child,
+  &-menuItem--active &-menuItemImage:first-child {
+    opacity: 0;
+  }
+
+  &-menuItem:hover &-menuItemImage:not(:first-child),
+  &-menuItem--active &-menuItemImage:not(:first-child) {
+    opacity: 1;
+  }
+
+  &-menuItemImage {
+    &--iconCard {
+      background-image: url("/bundles/pimui/images/icon-card-purple.svg");
+
+      &:first-child {
+        background-image: url("/bundles/pimui/images/icon-card.svg");
+      }
+    }
+
+    &--iconUpload {
+      background-image: url("/bundles/pimui/images/icon-upload-purple.svg");
+
+      &:first-child {
+        background-image: url("/bundles/pimui/images/icon-upload.svg");
+      }
+    }
+
+    &--iconProduct {
+      background-image: url("/bundles/pimui/images/icon-product-purple.svg");
+
+      &:first-child {
+        background-image: url("/bundles/pimui/images/icon-product.svg");
+      }
+    }
+
+    &--iconDownload {
+      background-image: url("/bundles/pimui/images/icon-download-purple.svg");
+
+      &:first-child {
+        background-image: url("/bundles/pimui/images/icon-download.svg");
+      }
+    }
+
+    &--iconSettings {
+      background-image: url("/bundles/pimui/images/icon-settings-purple.svg");
+
+      &:first-child {
+        background-image: url("/bundles/pimui/images/icon-settings.svg");
+      }
+    }
+
+    &--iconSystem {
+      background-image: url("/bundles/pimui/images/icon-system-purple.svg");
+
+      &:first-child {
+        background-image: url("/bundles/pimui/images/icon-system.svg");
+      }
+    }
+
+    &--iconAssetFamily {
+      background-image: url("/bundles/pimui/images/icon-asset-family-purple.svg");
+
+      &:first-child {
+        background-image: url("/bundles/pimui/images/icon-asset-family.svg");
+      }
+    }
+
+    &--iconAsset {
+      background-image: url("/bundles/pimui/images/icon-asset-purple.svg");
+
+      &:first-child {
+        background-image: url("/bundles/pimui/images/icon-asset.svg");
+      }
+    }
+
+    &--iconReferenceEntity {
+      background-image: url("/bundles/pimui/images/icon-reference-entity-purple.svg");
+
+      &:first-child {
+        background-image: url("/bundles/pimui/images/icon-reference-entity.svg");
+      }
+    }
+
+    &--iconConnect {
+      background-image: url("/bundles/pimui/images/icon-connect-purple.svg");
+
+      &:first-child {
+        background-image: url("/bundles/pimui/images/icon-connect.svg");
+      }
+    }
+
+    &--iconHelp {
+      background-image: url("/bundles/pimui/images/icon-help-purple.svg");
+      background-size: 100%;
+
+      &:first-child {
+        background-image: url("/bundles/pimui/images/icon-help.svg");
+        background-size: 100%;
+      }
+    }
+  }
+}

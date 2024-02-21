@@ -1,0 +1,11 @@
+mappings:
+    properties:
+        id:
+            type: 'keyword'
+        connection_code:
+            type: 'keyword'
+        content:
+            type: 'object'
+            enabled: false
+        error_datetime:
+            type: 'date'

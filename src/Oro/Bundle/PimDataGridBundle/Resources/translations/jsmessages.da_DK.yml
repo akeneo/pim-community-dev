@@ -1,0 +1,70 @@
+pim_datagrid:
+  no_results_subtitle: "Prøv igen med nye søgekriterier."
+  select:
+    title: Vælg
+    all_visible: Alle synlige
+  delete_error:
+    title: Fejl ved sletning
+  reset_confirmation:
+    title: Nulstil bekræftelse
+  refresh_confirmation:
+    title: Opdater bekræftelse
+  column_configurator:
+    label: Kolonner
+    title: Konfigurere kolonner
+    all_groups: Alle grupper
+    search: Søg
+    clear: Nustil
+    displayed_columns: Valgte kolonner
+    remove_column: Fjern
+    description: Vælg de oplysninger, du vil have vist som kolonne
+    min_message: Du skal vælge mindst én datagrid kolonne der skal vises
+    system_group: System
+  view_selector:
+    create_view: Opret visning
+    placeholder: Navn på ny visning
+    choose_label: Vælge en etiket til visningen
+    remove: Slet denne visning
+    save_changes: Gem denne visning
+    default_view: Standardvisning
+    select: Vælg visning
+    confirmation:
+      remove: Er du sikker på du vil slette denne visning?
+  display_selector:
+    label: Vis
+  mass_action:
+    delete:
+      empty_selection: Du har ikke valgt et produkt
+      success_message: "{0} ingen enheder blev fjernet|{1} én enhed blev fjernet|]1, Inf [%count% enheder blev fjernet"
+    default:
+      confirmation:
+        content: Er du sikker på du ønsker at gøre det?
+      no_items: Vælg de elementer, der skal medtages i handlingen.
+    quick_export:
+      title: Hurtig eksport
+      success: Hurtig eksport er blevet startet
+  action:
+    default:
+      confirmation:
+        content: Er du sikker på du ønsker at gøre det?
+      no_items: Vælg vare for at udføre handling.
+    show:
+      title: Vis
+  filters:
+    common:
+      empty: er tom
+      not_empty: ikke er tom
+      in_list: i listen
+      contains: indeholder
+      does_not_contain: indeholder ikke
+      equal: er lig med
+      start_with: starter med
+      operator: Operatør
+    price_filter:
+      label: Valuta
+    metric_filter:
+      label: Enhed
+  cells:
+    credientials:
+      client_id: Klient ID
+      secret: Hemmelighed

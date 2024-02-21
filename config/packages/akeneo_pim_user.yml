@@ -1,0 +1,16 @@
+pim_user:
+    privileges:
+        action:
+            label: rights.action
+            view_type: groups
+            types: [action]
+            field_type: 'Akeneo\UserManagement\Bundle\Form\Type\AclAccessLevelSelectorType'
+            default_value: 5
+            show_default: true
+        api:
+            label: pim_api.acl.rights
+            view_type: groups
+            types: [action]
+            field_type: 'Akeneo\UserManagement\Bundle\Form\Type\AclAccessLevelSelectorType'
+            default_value: 5
+            show_default: true

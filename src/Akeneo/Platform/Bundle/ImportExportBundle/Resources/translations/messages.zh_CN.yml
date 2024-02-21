@@ -1,0 +1,174 @@
+#Entities
+Job: 作业
+Connector: 连接器
+pim_import_export:
+  job: 作业
+  connector: 连接器
+  ## Job status
+  status:
+    0: 就绪
+  batch_status:
+    1: 已完成
+    2: 正在启动
+    3: 已启动
+    4: 正在停止
+    5: 已停止
+    6: 失败
+    7: 已放弃
+    8: 未知
+    9: 正在暂停
+    10: 已暂停
+  download_archive:
+    archive: 下载生成的存档文件 | 下载生成的存档文件
+    output: 下载生成的文件 | 下载生成的文件
+    input: 下载读取文件 | 下载读取文件
+    invalid_xlsx: 下载无效数据
+    invalid_csv: 下载无效数据
+  notification:
+    export:
+      error: 导出 <strong>%label%</strong> 失败
+      warning: 导出 <strong>%label%</strong> 完成，但有一些警告
+      success: 导出 <strong>%label%</strong> 完成
+      warnings:
+        xlsx_cell_conversion_error: 将"{0}"列转换为目标 PIM 产品属性类型时出现异常（请检查 Excel 单元格格式）
+        xlsx_cell_date_to_text_conversion_error: 无法将具有日期格式的单元格 {0} 转换为文本类型的属性
+    import:
+      error: 导入 <strong>%label%</strong> 失败
+      warning: 导入 <strong>%label%</strong> 完成，但有一些警告
+      success: 导入 <strong>%label%</strong> 完成
+      warnings:
+        xlsx_cell_date_conversion_error: 无法将具有日期格式的单元格 "{cellName}" 转换为 {attributeType} 类型的属性
+  list: 选择作业
+  job_profile:
+    tab:
+      property.title: 常规属性
+      history.title: 历史记录 
+      job_content.title: 内容
+#Page titles:
+pim_title.export_profile.index: 导出配置文件管理
+pim_title.export_profile.edit: 导出配置文件 %job.label% | 编辑
+pim_title.export_profile.show: 导出配置文件 %job.label% | 显示
+pim_title.export_execution.index: 导出执行历史记录
+pim_title.export_execution.show: 导出执行|详细信息
+pim_title.import_profile.index: 导入配置文件管理
+pim_title.import_profile.edit: 导入配置文件 %job.label% | 编辑 
+pim_title.import_profile.show: 导入配置文件 %job.label% | 显示 
+pim_title.import_execution.index: 导入执行历史记录
+pim_title.import_execution.show: 导入执行|详细信息
+#Entity and page header titles
+export profile:
+  title: 导出配置文件
+  edit: 编辑导出配置文件
+import profile:
+  title: 导入配置文件
+  edit: 编辑导入配置文件
+#ACLs
+pim_importexport:
+  acl:
+    export_profile:
+      index: 查看导出配置文件列表
+      create: 创建导出配置文件
+      show: 显示导出配置文件
+      edit: 编辑导出配置文件
+      remove: 移除导出配置文件
+      launch: 启动导出配置文件
+      property_edit: 编辑导出配置文件的常规属性
+      property_show: 显示导出配置文件的常规属性
+      history: 查看导出配置文件的历史记录
+      content_edit: 编辑导出配置文件内容
+      content_show: 显示导出配置文件内容
+    import_profile:
+      index: 查看导入配置文件列表
+      create: 创建导入配置文件
+      show: 显示导入配置文件
+      edit: 编辑导入配置文件
+      remove: 移除导入配置文件
+      launch: 启动导入配置文件
+      history: 查看导入配置文件历史记录
+    export_execution:
+      index: 查看导出报告列表
+      show: 查看导出报告详细信息
+      dl_log: 下载导出报告日志
+      dl_files: 下载导出的文件
+    import_execution:
+      index: 查看导入报告列表
+      show: 查看导入报告详细信息
+      dl_log: 下载导入报告日志
+      dl_files: 下载导入的文件
+  acl_group:
+    export: 导出配置文件
+    import: 导入配置文件
+#Buttons
+btn:
+  create:
+    export profile: 创建导出配置文件
+    import profile: 创建导入配置文件
+Upload and import now: 立即上传并导入
+import now: 立即导入
+export now: 立即导出
+#Confirmation messages
+confirmation:
+  remove:
+    export profile: 确定要删除导出配置文件 %name%？
+    import profile: 确定要删除导入配置文件 %name%？
+#Flash messages
+flash:
+  export:
+    created: 导出已成功创建
+    removed: 导出已被移除
+    updated: 导出已成功更新
+    running: 导出正在运行
+  import:
+    created: 导入已成功创建
+    removed: 导入已被移除
+    updated: 导入已成功更新
+    running: 导入正在进行
+#Tabs
+General properties: 常规属性
+History: 历史记录 
+pane.accordion:
+  properties: 属性
+  global_settings: 全局设置
+  filters: 筛选器
+#Popin titles
+popin.create:
+  export_profile.title: 创建新的导出配置文件
+  import_profile.title: 创建新的导入配置文件
+#Job execution
+'Display item': 显示条目
+'Hide item': 隐藏条目
+'Collecting data about job execution...': 正在收集有关作业执行的数据...
+'You must select a file to upload': 必须选择要上传的文件
+Download log: 下载日志
+Show profile: 显示配置文件
+execution details: 执行详细信息
+job_execution.summary:
+  read: 已读取
+  write: 已写入
+  skip: 已跳过
+  create: 已创建
+  update: 已更新
+  update_products: 已更新产品
+  skip_products: 已跳过产品
+  displayed: 已显示第一次警告
+  charset_validator:
+    title: 文件编码：
+    skipped: 已跳过，在白名单中扩展
+Step: 步骤
+Status: 状态
+Warnings: 警告
+Summary: 摘要
+Start: 开始
+End: 结束
+#Process tracker
+set_attribute_requirements: 设置属性要求
+COMPLETED: 已完成
+STARTING: 正在启动
+STARTED: 已启动
+STOPPING: 正在停止
+STOPPED: 已停止
+FAILED: 失败
+ABANDONED: 已放弃
+UNKNOWN: 未知
+warning.label: 警告
+pim_datagrid.column.username: 用户名

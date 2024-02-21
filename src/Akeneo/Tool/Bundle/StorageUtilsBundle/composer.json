@@ -1,0 +1,39 @@
+{
+    "name": "akeneo/storage-utils-bundle",
+    "type": "symfony-bundle",
+    "description": "Akeneo Symfony Storage Utils Bundle",
+    "keywords": ["Akeneo", "Storage", "Utils", "Doctrine", "ORM"],
+    "homepage": "https://github.com/akeneo/StorageUtilsBundle",
+    "license": "OSL-3.0",
+    "authors": [
+        {
+            "name": "Akeneo",
+            "homepage": "http://www.akeneo.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.1.0",
+        "akeneo/storage-utils": "0.6.x-dev",
+        "symfony/dependency-injection": "^2.3",
+        "symfony/http-kernel": "^2.3",
+        "symfony/config": "^2.3",
+        "symfony/options-resolver": "^2.3",
+        "symfony/event-dispatcher": "^2.3",
+        "doctrine/orm": "^2.1.3"
+    },
+    "require-dev": {
+        "phpspec/phpspec": "3.0.0",
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "autoload": {
+        "psr-4": { "Akeneo\\Bundle\\StorageUtilsBundle\\": "" }
+    },
+    "minimum-stability": "stable",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.6.x-dev"
+        }
+    }
+}

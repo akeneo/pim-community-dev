@@ -1,0 +1,12 @@
+<div data-toggle="dropdown">
+    <div class="AknColumn-subtitle"><%- localeLabel %></div>
+    <div class="AknColumn-value value"><%= i18n.getFlag(currentLocale.code, false) %>&nbsp;<%- getDisplayName(currentLocale) %></div>
+</div>
+<div class="AknDropdown-menu">
+    <div class="AknDropdown-menuTitle"><%- localeLabel %></div>
+    <% _.each(locales, (locale) => { %>
+    <div class="AknDropdown-menuLink<% if (currentLocale.code === locale.code) { %> AknDropdown-menuLink--active<% } %>" data-locale="<%- locale.code %>">
+        <span class="label"><%= i18n.getFlag(locale.code, false) %> <%- getDisplayName(locale) %></span>
+    </div>
+    <% }) %>
+</div>

@@ -1,0 +1,63 @@
+pim_enrich:
+  #Attribute
+  attribute:
+    tab:
+      parameter.title: Paramètres 
+      value.title: Valeurs
+      history.title: Historique
+  #Family
+  family:
+    info:
+      cant_remove_attribute_used_as_axis: Impossible de supprimer cet attribut car il est utilisé comme axe de variation dans une famille de variantes
+  attribute_group:
+    remove:
+      attribute_group_with_attribute_cannot_be_removed: Un groupe d'attributs contenant des attributs ne peut pas être supprimé. Veuillez supprimer ses attributs avant de le supprimer.
+      attribute_group_other_cannot_be_removed: Le groupe d'attributs "Autre" est un groupe par défaut et ne peut pas être supprimé.
+  #Group type
+  group_type:
+    tab:
+      property.title: Propriétés
+  #Mass edit operations
+  mass_edit_action:
+    family:
+      page_title: Familles
+      page_subtitle: Édition en masse (1 famille)|Édition en masse (%count% familles)
+      title: Choisissez une opération
+      subtitle: Choisissez l'opération que vous souhaitez effectuer sur la famille sélectionnée|Choisissez l'opération que vous souhaitez effectuer sur les %count% familles sélectionnées
+      confirm: Vous êtes sur le point de mettre à jour une famille avec les renseignements suivants, merci de confirmer.|Vous êtes sur le point de mettre à jour %count% familles avec les renseignements suivants, merci de confirmer.
+      steps:
+        first: Choisir des familles
+        second: Choisissez une opération
+        third: Configurez l'opération à effectuer
+        fourth: Confirmation
+  entity:
+    association_type:
+      property:
+        is_two_way: Association bi-directionnelle
+        is_quantified: Association avec quantités
+pim_enrich_attribute_form:
+  code: Code
+  type: Type d'attribut
+  reference_data_name: Nom de la référence
+  scopable: Valeur par canal
+  localizable: Valeur par locale
+  unique: Valeur unique
+  availableLocales: Locales disponibles
+  locale_specific: Spécifique à une locale
+  group: Groupe d'attributs
+  useableAsGridFilter: Utilisable sur la grille
+job_execution.summary:
+  deleted_attribute_groups: Groupes d'attributs supprimés
+  skipped_attribute_groups: Groupes d'attributs ignorés
+  moved_attributes: Attributs déplacés
+  deleted_attributes: Attributs supprimés
+pim_import_export:
+  notification:
+    attribute_group_mass_delete:
+      error: La suppression en masse des groupes d'attributs a échoué
+      warning: La suppression en masse des groupes d'attributs s'est terminée avec quelques avertissements
+      success: La suppression en masse des groupes d'attributs s'est terminée
+    attribute_mass_delete:
+      error: La suppression en masse des attributs a échoué
+      warning: La suppression en masse des attributs s'est terminée avec quelques avertissements
+      success: La suppression en masse des groupes d'attributs s'est terminée

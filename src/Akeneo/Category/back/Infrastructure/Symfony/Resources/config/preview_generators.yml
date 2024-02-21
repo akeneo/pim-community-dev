@@ -1,0 +1,21 @@
+services:
+    pim_category.infrastructure.registry.preview_generator:
+        class: Akeneo\Category\Infrastructure\FileSystem\PreviewGenerator\PreviewGeneratorRegistry
+
+    Akeneo\Category\Infrastructure\FileSystem\PreviewGenerator\BinaryImageGenerator:
+        arguments:
+            - '@liip_imagine.data.manager'
+            - '@liip_imagine.cache.manager'
+            - '@liip_imagine.filter.manager'
+            - '@Akeneo\Category\Infrastructure\FileSystem\PreviewGenerator\DefaultImageProviderInterface'
+            - '@logger'
+            - '%supported_category_image_mime_types%'
+        tags:
+            - { name: pim_category.preview_generator }
+
+    Akeneo\Category\Infrastructure\FileSystem\Loader\ImageLoader:
+        arguments:
+            - '@liip_imagine.extension_guesser'
+            - '@oneup_flysystem.category_storage_filesystem'
+        tags:
+            - { name: liip_imagine.binary.loader, loader: flysystem_category_data_loader }

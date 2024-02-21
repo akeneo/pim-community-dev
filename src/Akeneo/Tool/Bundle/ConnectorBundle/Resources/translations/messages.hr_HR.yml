@@ -1,0 +1,15 @@
+job_execution.summary:
+  read: pročitano
+  write: upisano
+  skip: preskočeno
+  create: kreirano
+  process: obrađeno
+  update_products: ažurirani proizvodi
+  process_products: obrađeni proizvodi
+  skip_products: preskočeni proizvodi9
+  displayed: prikazana prva upozorenja
+  charset_validator:
+    title: 'Kod datoteke:'
+    skipped: preskočeno, ekstenzija u bijeloj listi
+  product_skipped_no_diff: preskočeni proizvodi (bez razlike)
+  item_position: čitanje redaka

@@ -1,0 +1,66 @@
+extensions:
+    pim-job-instance-xlsx-base-export-show:
+        module: pim/form/common/edit-form
+
+    pim-job-instance-xlsx-base-export-show-main-image:
+        module: pim/form/common/main-image
+        parent: pim-job-instance-xlsx-base-export-show
+        targetZone: main-image
+        config:
+            path: bundles/pimui/images/illustrations/ExportXLSX.svg
+
+    pim-job-instance-xlsx-base-export-show-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-job-instance-xlsx-base-export-show
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
+    pim-job-instance-xlsx-base-export-show-sandbox-helper:
+        module: pim/sandbox-helper
+        parent: pim-job-instance-xlsx-base-export-show
+        targetZone: helper
+
+    pim-job-instance-xlsx-base-export-show-breadcrumbs:
+        module: pim/job/common/breadcrumb/breadcrumb
+        parent: pim-job-instance-xlsx-base-export-show
+        targetZone: breadcrumbs
+
+    pim-job-instance-xlsx-base-export-show-launch:
+        module: pim/job/common/edit/launch
+        parent: pim-job-instance-xlsx-base-export-show
+        targetZone: meta
+        position: 110
+        config:
+            label: pim_import_export.form.job_instance.button.export.title
+            route: pim_enrich_job_instance_rest_export_launch
+            identifier:
+                path: code
+                name: code
+
+    pim-job-instance-xlsx-base-export-show-label:
+        module: pim/job/common/edit/label
+        parent: pim-job-instance-xlsx-base-export-show
+        targetZone: title
+        position: 100
+
+    pim-job-instance-xlsx-base-export-show-edit:
+        module: pim/job/common/edit-button
+        parent: pim-job-instance-xlsx-base-export-show
+        targetZone: buttons
+        position: 100
+        aclResourceId: pim_importexport_export_profile_edit
+        config:
+            label: pim_common.edit
+            route: pim_importexport_export_profile_edit
+            buttonClass: AknButton AknButton--action
+            identifier:
+                path: code
+                name: code
+
+    pim-job-instance-xlsx-base-export-show-last-executions:
+        module: akeneojob/controller/job-instance
+        parent: pim-job-instance-xlsx-base-export-show
+        position: 100
+        targetZone: content

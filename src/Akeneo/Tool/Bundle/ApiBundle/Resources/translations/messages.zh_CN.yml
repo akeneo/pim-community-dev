@@ -1,0 +1,50 @@
+pim_api:
+  acl:
+    rights: Web API 权限
+    attribute:
+      edit: 创建并更新属性
+      list: 列出属性
+    attribute_option:
+      edit: 创建并更新属性选项
+      list: 列出属性选项
+    attribute_group:
+      edit: 创建并更新属性组
+      list: 列出属性组
+    category:
+      edit: 创建并更新类别
+      list: 列出类别
+    family:
+      edit: 创建并更新品类
+      list: 列出品类
+    family_variant:
+      edit: 创建并更新品类变型
+      list: 列出品类变型
+    channel:
+      edit: 创建并更新渠道
+      list: 列出渠道
+    locale.list: 列出本地化语言
+    product:
+      edit: 创建并更新产品
+      list: 列出产品
+      remove: 删除产品
+    currency.list: 列出货币
+    association_type:
+      edit: 创建并更新关联类型
+      list: 列出关联类型
+  acl_group:
+    overall_access: 整体网络 API 访问权限
+    attribute: 属性
+    attribute_option: 属性选项
+    attribute_group: 属性组
+    category: 类别
+    family: 品类
+    family_variant: 品类变型
+    channel: 渠道
+    locale: 区域
+    product: 产品
+    currency: 货币
+    association_type: 关联类型
+pim_user:
+  roles:
+    tab:
+      api: Web API 权限

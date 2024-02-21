@@ -1,0 +1,123 @@
+pim_title:
+  pim_user_index: Käyttäjät
+  pim_user_role_index: Roolit
+  pim_user_group_index: Käyttäjäryhmät
+  oro_config_configuration_system: Kokoonpano
+  pim_user_edit: 'Käyttäjä {{ username }} | Muokkaa'
+  pim_user_create: 'Käyttäjät | luo'
+  pim_user_role_update: 'Rooli {{ role }} | Muokkaa'
+  pim_user_role_create: 'Rooli | luo'
+  pim_user_security_login: Kirjaudu sisään
+  pim_user_reset_reset: Salasanan asettaminen
+  pim_user_reset_request: Unohdin salasanani
+  pim_user_group_create: 'Käyttäjäryhmät | luo'
+  pim_user_group_update: 'Ryhmä {{ group }} | Muokkaa'
+confirmation:
+  remove:
+    user: Haluatko varmasti poistaa tämän käyttäjän?
+    group: Oletko varma että haluat poistaa tämän ryhmän?
+pim_enrich:
+  entity:
+    user:
+      flash:
+        delete:
+          fail: Käyttäjää ei voi poistaa
+          success: Käyttäjä on poistettu
+      module:
+        delete:
+          confirm: Haluatko varmasti poistaa tämän käyttäjän?
+pim_user.profile:
+  caption: Kerro ensiksi, mikä on pääasiallinen tehtäväsi. Se auttaa meitä tarjoamaan sinulle sopivaa sisältöä.
+  why_is_it_needed: Miksi tarvitsemme näitä tietoja?
+  selector:
+    placeholder: Valitse vaihtoehto
+    not_found: Tuloksia ei löytynyt
+  product_manager: Hallinnoin tuotekatalogeja.
+  redactor: Rikastan tuotetietoja.
+  pim_integrator: Integroin Akeneo PIM:n osaksi IT-ekosysteemiämme.
+  pim_administrator: Hallinnoin Akeneo PIM -järjestelmää.
+  asset_manager: Hallinnoin assetteja PIM:ssä
+  translator: Lokalisoin tuotteita, assetteja ja/tai viittaustietoja.
+  third_party_developer: Kehitän Akeneoon yhdistettäviä ratkaisuja.
+pim_user_management:
+  entity:
+    user:
+      label: käyttäjä
+      flash:
+        update:
+          success: Käyttäjä päivitettiin onnistuneesti.
+          fail: Käyttäjää ei voitu päivittää.
+          fields_not_ready: "Käyttäjää ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}"
+        create:
+          success: Käyttäjä luotiin onnistuneesti.
+      page_title:
+        index: "]-Inf, 1] {{ count }} käyttäjä|]1, Inf [{{ count }} käyttäjää"
+      properties:
+        username: Käyttäjänimi
+        profile: Mikä on pääasiallinen tehtäväsi?
+        name_prefix: Nimen etuliite
+        first_name: Etunimi
+        middle_name: Toinen nimi
+        last_name: Sukunimi
+        name_suffix: Nimen liite
+        phone: Puhelin
+        avatar: Avatar
+        email: Sähköpostiosoite
+        catalog_locale: Tuotekatalogin lokaatio
+        catalog_scope: Tuotekatalogin kanava
+        default_tree: Oletuskategoria
+        default_asset_tree: Assettien oletuspuu
+        product_grid_filters: Tuoteruudukon suodattimet
+        current_password: Nykyinen salasana
+        new_password: Uusi salasana
+        new_password_repeat: Uusi salasana (toista)
+        password: Salasana
+        password_repeat: Salasana (toista)
+        last_logged_in: Viimeksi kirjautunut
+        login_count: Kirjautumisten määrä
+        ui_locale: Käyttöliittymän kieli
+        timezone: Aikavyöhyke
+        default_product_grid_view: Tuoteruudukon oletusnäkymä
+        default_published_product_grid_view: Oletusarvoinen julkaistujen tuotteiden ruudukkonäkymä #EE Only
+        proposals_to_review_notification: Kun uusi muutosehdotus on hyväksyttävissä #EE Only
+        proposals_state_notifications: Kun uusi muutosehdotus on hyväksytty tai hylätty #EE Only
+      meta:
+        created: Luotu
+        updated: Päivitetty
+      module:
+        create:
+          button: Luo käyttäjä
+        delete:
+          confirm: Haluatko varmasti poistaa tämän käyttäjän?
+        update:
+          additional: Lisää
+          groups_and_roles: Käyttäjäryhmät ja roolit
+          password: Salasana
+          interfaces: Käyttöliittymä
+          notifications: Ilmoitukset #TODO EE Only
+    role:
+      plural_label: Roolit
+      page_title:
+        index: "]-Inf, 1] {{ count }} rooli|]1, Inf [{{ count }} roolia"
+      module:
+        create:
+          button: Luo rooli
+        delete:
+          confirm: Oletko varma, että haluat poistaa tämän roolin?
+    group:
+      plural_label: Käyttäjäryhmät
+      page_title:
+        index: "]-Inf, 1] {{ count }} ryhmä|]1, Inf [{{ count }} ryhmää"
+      module:
+        create:
+          button: Luo ryhmä
+  form:
+    error:
+      required: Tämä kenttä on pakollinen.
+      should_not_contain_space: Käyttäjänimi ei saa sisältää välilyöntimerkkiä.
+      too_short_value: "Arvo on liian lyhyt. Sen täytyy olla vähintään {{ count }} merkkiä tai enemmän."
+    duplication:
+      title: 'Monista "{{ username }}" käyttäjä'
+      notification:
+        success: Käyttäjä on kopioitu onnistuneesti
+        failure: Käyttäjän kopiointi epäonnistui

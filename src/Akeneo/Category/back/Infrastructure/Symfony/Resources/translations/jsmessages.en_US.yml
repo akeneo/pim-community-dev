@@ -1,0 +1,150 @@
+pim_title:
+    pim_category_template_edit: Edit category template
+
+akeneo.category:
+    unknown_error:
+        title: Sorry, an unknown error occurred.
+        message: Please reload the page and try again.
+    tree_list:
+        column:
+            category_templates: Category templates
+    attributes: Attributes
+    edition_form:
+        error:
+            unhandled_attribute_type: Could not find attribute field builder for attribute type "{{ type }}"
+        template:
+            title: Template
+            no_attribute_title: There is no attribute in this template
+            no_attribute_instructions: The template associated to this category is empty, you can add attributes to this template from the category tree page.
+            fetching_failed: An error occurred while fetching template
+        unsaved_changes: You will lose changes to the category if you leave the page.
+    tree:
+        create: Create tree
+        delete: Delete tree
+    template:
+        learn_more: Learn more about category template
+        create: Create template
+        create_confirmation_modal:
+            title: Create a new category template
+            helper: Create category template to define attributes and activate enrichment on all category of this tree.
+            category_tree: Category tree
+            link: Learn more about category templates
+        edit: Edit template
+        notification_success: Category template created successfully
+        notification_error: Category template could not be created
+        not_found: There is no active template for this category
+        properties:
+            general_properties: General properties
+            label_translations_in_ui_locales: Label translations in UI locales
+        attribute:
+            description_title: Description Settings
+            type:
+                text: Text
+                textarea: Text Area
+                richtext: Rich Text
+                image: Image
+            delete_button: Delete Attribute
+            settings:
+                title: Settings
+                options:
+                    title: Options
+                    value_per_channel: Value per Channel
+                    value_per_locale: Value per Locale
+                    rich_text: Rich Text Editor
+                translations:
+                    title: Label translations
+                error_message: There are invalid values on the page.
+                unsaved_changes: You have unsaved changes, are you sure that you want to leave?
+        add_attribute:
+            no_attribute_title: Create your first attribute
+            no_attribute_instructions: Define the content you want to associate to your categories by adding Text, Text Area or Image attributes to this template.
+            add_button: Add Attribute
+            create_button: Create Attribute
+            confirmation_modal:
+                section_title: Add Attribute
+                title: Create a new category attribute
+                head_helper: Category attributes are attached to one template. They cannot be accessed in other templates.
+                tail_helper: Value per channel and Value per locale cannot be changed once the attribute is created.
+                link: Learn more about category templates.
+                create: Create
+                input:
+                    label: Label
+                    code: Code
+                    type:
+                        label: Attribute type
+                        empty: No attribute type available
+                        option_title:
+                            text: Text
+                            textarea: Text area
+                            image: Image
+            success:
+                notification: Attribute successfully created
+            error:
+                failed: Add template attribute failed
+                limit_reached:
+                    title: You cannot add more than 50 attributes
+                    message: Category templates are limited to 50 attributes per template.
+        delete_attribute:
+            delete: Delete Category Attribute
+            confirmation_modal:
+                title: Delete this category attribute
+                message: Are you sure you want to delete the category attribute named {{ attribute }}?
+                helper: Deleting this attribute will permanently delete the attribute and values of the associated categories.
+            notification_success:
+                title: '{{ attribute }} attribute successfully deleted'
+        deactivate:
+            deactivate_template: Delete template
+            confirmation_modal:
+                title: Delete category template
+                message: Are you sure you want to delete the category template named {{ template }}?
+                helper: Deleting this template will permanently delete the attributes and values of the associated categories.
+                deactivate: Delete
+            notification_success:
+                title: '{{ template }} template deleted'
+                message: '{{ template }} has been deleted. The content of the associated categories has been deleted.'
+        auto-save:
+            saved: Saved
+            saving: Saving
+            editing: Editing
+            errors: Errors not saved
+        initialize:
+            title: Add category attributes
+            message: Define content of your categories by adding Text, Text Area or Image attributes.
+            choice_message: Start by creating a first attribute according to your needs, or load a set of 13 suggested attributes.
+            button:
+                load: Load a set of attributes
+                create: Create 1st attribute
+        load_attribute_set:
+            section_title: Load set of attributes
+            title: Load a set of suggested attributes
+            description: Easily start the configuration of enriched categories by loading a set of suggested attributes.
+            content_description: 'This set contains 13 attributes:'
+            content:
+                description_attributes: 2 Text Area attributes for Long and Short category descriptions
+                url_attributes: 1 Text attribute for URL information
+                image_attributes: 3 Images and 3 Text attributes for image and their alt-text information
+                seo_attributes: 2 Text and 2 Text Area attributes for SEO information
+            confirmation_message: Are you sure want to load this set of attributes?
+            button:
+                load: Load set of attributes
+            notification:
+                success: Attributes successfully created
+
+    template_list:
+        columns:
+            header: Label
+            code: Code
+            type: Type
+
+    tag:
+        new: New
+
+    discover_enriched_categories_information:
+        title: Discover Enriched Categories
+        content:
+            enrich_attribute_values: Enrich any level of your Category Trees with Text, Text Area, and Image attributes
+            customizable_templates: Offer the Product Experience you wish thanks to customizable templates
+        survey_link_label: Tell us what you think
+        learn_more_link_label: Learn more about Enriched Categories
+
+    other_actions: Other actions

@@ -1,0 +1,126 @@
+pim_title:
+  pim_user_index: Benutzer
+  pim_user_role_index: Rollen
+  pim_user_group_index: Benutzergruppen
+  oro_config_configuration_system: Konfiguration
+  pim_user_edit: 'Benutzer {{ username }} | Bearbeiten'
+  pim_user_create: 'Benutzer | Erstellen'
+  pim_user_role_update: 'Rolle {{ role }} | Bearbeiten'
+  pim_user_role_create: 'Rolle | Erstellen'
+  pim_user_security_login: Anmelden
+  pim_user_reset_reset: Passwort zurücksetzen
+  pim_user_reset_request: Passwort vergessen
+  pim_user_group_create: 'Gruppen | Anlegen'
+  pim_user_group_update: 'Gruppe {{ group }} | Bearbeiten'
+confirmation:
+  remove:
+    user: Möchten Sie diesen Benutzer wirklich löschen?
+    group: Möchten Sie diese Gruppe wirklich löschen?
+pim_enrich:
+  entity:
+    user:
+      flash:
+        delete:
+          fail: Der Benutzer kann nicht gelöscht werden.
+          success: Der Benutzer wurde gelöscht.
+      module:
+        delete:
+          confirm: Möchten Sie diesen Benutzer wirklich löschen?
+pim_user.profile:
+  caption: Sagen Sie uns zunächst, was Ihre Hauptaufgabe ist, damit wir Ihnen mit den wichtigsten Inhalten helfen können.
+  why_is_it_needed: Warum brauchen wir diese Informationen?
+  save_button: Speichern und Zugriff auf den App Store
+  selector:
+    placeholder: Wähle eine Option aus
+    not_found: Kein Ergebnis gefunden
+  product_manager: Ich verwalte Produktkataloge.
+  redactor: Ich reichere Produktdaten an.
+  pim_integrator: Ich integriere Akeneo PIM in unser IT-Ökosystem.
+  pim_administrator: Ich administriere Akeneo PIM.
+  asset_manager: Ich verwalte Assets im PIM.
+  translator: Ich übersetze Produkte, Assets und/oder Referenz-Entitätsdaten.
+  third_party_developer: Ich entwickle Lösungen im Zusammenhang mit Akeneo PIM.
+pim_user_management:
+  entity:
+    user:
+      label: benutzer
+      flash:
+        update:
+          success: Benutzer erfolgreich aktualisiert.
+          fail: Der Benutzer konnte nicht aktualisiert werden.
+          fields_not_ready: "Der Benutzer kann zur Zeit nicht gespeichert werden. Die folgenden Felder sind nicht vollständig ausgefüllt: {{ fields }}"
+        create:
+          success: Benutzer erfolgreich angelegt.
+      page_title:
+        index: "] -Inf, 1] {{ count }} Benutzer|] 1, Inf [{{ count }} Benutzer"
+      properties:
+        username: Benutzername
+        profile: Was ist Ihre Hauptaufgaben?
+        name_prefix: Namenspräfix
+        first_name: Vorname
+        middle_name: Zweiter Vorname
+        last_name: Nachname
+        name_suffix: Namenssuffix
+        phone: Telefon
+        avatar: Benutzerbild
+        email: E-Mail
+        catalog_locale: Katalog-Gebietsschema
+        catalog_scope: Standard-Gültigkeitsbereich
+        default_tree: Standardkategoriebaum Produkte
+        default_asset_tree: Standardkategoriebaum Assets
+        product_grid_filters: Filter Produktliste
+        current_password: Aktuelles Passwort
+        new_password: Neues Passwort
+        new_password_repeat: Neues Passwort (Wiederholung)
+        password: Passwort
+        password_repeat: Passwort (Wiederholung)
+        last_logged_in: Zuletzt eingeloggt
+        login_count: Anzahl der Anmeldungen
+        ui_locale: UI-Gebietsschema
+        timezone: Zeitzone
+        default_product_grid_view: Standardansicht Produktliste
+        default_published_product_grid_view: Standardansicht Produktliste veröffentlichte Produkte #EE Only
+        proposals_to_review_notification: Wenn ein neuer Vorschlag zu überprüfen ist #EE Only
+        proposals_state_notifications: Wenn der Vorschlag angenommen oder abgelehnt wird #EE Only
+        not_fully_supported_locale: 'Das ausgewählte UI-Gebietsschema [{{ code }}] wird derzeit nicht vollständig unterstützt. Es könnte zu fehlenden oder unvollständigen Übersetzungen kommen. Helfen Sie mit, die Gebietsschema-Abdeckung zu verbessern:'
+        link_to_crowdin_label: zu Crowdin beitragen.
+      meta:
+        created: Erstellt
+        updated: Aktualisiert
+      module:
+        create:
+          button: Benutzer anlegen
+        delete:
+          confirm: Möchten Sie diesen Benutzer wirklich löschen?
+        update:
+          additional: Weitere Informationen
+          groups_and_roles: Gruppen und Rollen
+          password: Passwort
+          interfaces: Benutzeroberfläche
+          notifications: Benachrichtigungen #TODO EE Only
+    role:
+      plural_label: Rollen
+      page_title:
+        index: "] -Inf, 1] {{ count }} Rolle|] 1, Inf [{{ count }} Rollen"
+      module:
+        create:
+          button: Rolle anlegen
+        delete:
+          confirm: Möchten Sie diese Rolle wirklich löschen?
+    group:
+      plural_label: Benutzergruppen
+      page_title:
+        index: "] -Inf, 1] {{ count }} Gruppe|] 1, Inf [{{ count }} Gruppen"
+      module:
+        create:
+          button: Gruppe anlegen
+  form:
+    error:
+      required: Dieses Feld ist erforderlich.
+      should_not_contain_space: Der Benutzername darf kein Leerzeichen enthalten.
+      too_short_value: "Dieser Wert ist zu kurz. Er sollte {{ count }} oder mehr Zeichen enthalten."
+    duplication:
+      title: '"{{ username }}" Benutzer duplizieren'
+      notification:
+        success: Der Benutzer wurde erfolgreich dupliziert
+        failure: Fehler beim Duplizieren

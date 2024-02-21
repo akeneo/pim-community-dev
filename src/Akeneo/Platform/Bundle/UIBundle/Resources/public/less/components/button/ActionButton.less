@@ -1,0 +1,93 @@
+@import '../../base/variables';
+
+.AknActionButton {
+  height: @AknMicroButtonSize;
+  min-width: @AknMicroButtonSize;
+  line-height: @AknMicroButtonSize - 2;
+  font-size: @AknDefaultFontSize;
+  border: 1px solid @AknBorderColor;
+  color: @AknDefaultFontColor;
+  background-color: white;
+  border-radius: 100px;
+  font-weight: normal;
+  padding: 0 15px;
+  vertical-align: middle;
+  display: inline-block;
+  cursor: pointer;
+  white-space: nowrap;
+  outline: none;
+  text-transform: uppercase;
+  transition: background 0.1s ease-in;
+
+  &-caret {
+    display: inline-block;
+    width: 16px;
+    height: 8px;
+    background: url("/bundles/pimui/images/jstree/icon-down.svg") no-repeat 0 center;
+    background-size: 16px;
+    margin-left: 3px;
+  }
+
+  &:not(&--withoutBorder):hover,
+  &:not(&--withoutBorder):active,
+  &:not(&--withoutBorder):focus {
+    background: @AknDefaultHoverBackground;
+  }
+
+  &--noLeftBorder {
+    border-left: none;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  // Use Button instead
+  &--big {
+    height: @AknDefaultButtonSize;
+    line-height: @AknDefaultButtonSize;
+  }
+
+  // jQuery select adds style for the button, we need to remove it for the filters.
+  .ui-multiselect {
+    width: auto !important;
+    padding: 0 !important;
+  }
+
+  &--disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &--unclickable {
+    opacity: 0.5;
+    cursor: default;
+  }
+
+  &--withoutBorder {
+    border: none;
+    padding: 0;
+    background-color: transparent;
+    text-transform: none;
+  }
+
+  &-highlight {
+    color: @AknLightPurple;
+  }
+
+  &--light {
+    padding: 1px 5px 0 5px;
+
+    &:focus {
+      background: @AknMediumGrey;
+    }
+  }
+
+  &--highlight {
+    color: @AknLightPurple;
+    border-color: @AknLightPurple;
+  }
+
+  &--important {
+    text-transform: uppercase;
+    font-size: @AknFontSizeBig;
+  }
+}

@@ -1,0 +1,39 @@
+Akeneo\Category\Api\Command\UpsertCategoryCommand:
+    properties:
+        categoryCode:
+            - NotBlank: ~
+            - Regex:
+                  pattern: /^[a-zA-Z0-9_]+$/
+                  message: akeneo.category.validation.upsert.category_code.wrong_format
+            - Regex:
+                  pattern: /^[^\n]+$/D
+                  message: akeneo.category.validation.upsert.category_code.line_feed
+            - Length:
+                  max: 100
+        userIntents:
+            - Akeneo\Category\Infrastructure\Validation\LocalizeUserIntentsShouldBeUnique: ~
+            - Akeneo\Category\Infrastructure\Validation\ValueUserIntentsShouldBeUnique: ~
+            - Akeneo\Category\Infrastructure\Validation\ValueUserIntentsShouldHaveAnActivatedTemplate: ~
+            - Valid:
+                  traverse: true
+
+Akeneo\Category\Command\UserIntents\SetText:
+    properties:
+      value:
+        - Length:
+            max: 65535 # See SQL TEXT Max length
+            maxMessage: akeneo.category.validation.upsert.value.text_too_long
+
+Akeneo\Category\Api\Command\UserIntents\SetTextArea:
+    properties:
+        value:
+            - Length:
+                  max: 65535 # See SQL TEXT Max length
+                  maxMessage: akeneo.category.validation.upsert.value.textarea_too_long
+
+Akeneo\Category\Api\Command\UserIntents\SetRichText:
+    properties:
+      value:
+          - Length:
+                max: 65535 # See SQL TEXT Max length
+                maxMessage: akeneo.category.validation.upsert.value.richtext_too_long

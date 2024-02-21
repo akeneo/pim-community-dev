@@ -1,0 +1,2 @@
+parameters:
+    akeneo_storage_utils.saver.base.class:                  Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSaver

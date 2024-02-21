@@ -1,0 +1,126 @@
+pim_title:
+  pim_user_index: Gebruikers
+  pim_user_role_index: Rollen
+  pim_user_group_index: Gebruikersgroepen
+  oro_config_configuration_system: Configuratie
+  pim_user_edit: 'Gebruiker {{ username }} | Bewerken'
+  pim_user_create: 'Gebruikers | Aanmaken'
+  pim_user_role_update: 'Rol {{ role }} | Bewerken'
+  pim_user_role_create: 'Rol | Aanmaken'
+  pim_user_security_login: Aanmelden
+  pim_user_reset_reset: Wachtwoord resetten
+  pim_user_reset_request: Wachtwoord vergeten
+  pim_user_group_create: 'Groepen | Aanmaken'
+  pim_user_group_update: 'Groep {{ group }} | Bewerken'
+confirmation:
+  remove:
+    user: Weet u zeker dat u deze gebruiker wilt verwijderen?
+    group: Weet u zeker dat u deze groep wilt verwijderen?
+pim_enrich:
+  entity:
+    user:
+      flash:
+        delete:
+          fail: De gebruiker kan niet verwijderd worden
+          success: De gebruiker werd verwijderd
+      module:
+        delete:
+          confirm: Weet u zeker dat u deze gebruiker wilt verwijderen?
+pim_user.profile:
+  caption: Vertel ons eerst wat uw belangrijkste missie is, zodat wij u kunnen helpen met de meest relevante inhoud.
+  why_is_it_needed: Waarom hebben we deze informatie nodig?
+  save_button: Opslaan en App Store openen
+  selector:
+    placeholder: Kies een optie
+    not_found: Geen resultaten gevonden
+  product_manager: Ik beheer productcatalogi
+  redactor: Ik verrijk productgegevens.
+  pim_integrator: Ik integreer Akeneo PIM in ons IT-ecosysteem.
+  pim_administrator: Ik beheer Akeneo PIM.
+  asset_manager: Ik beheer assets in de PIM.
+  translator: Ik vertaal gegevens voor producten, assets en/of referentie-entiteiten.
+  third_party_developer: Ik ontwikkel oplossingen die verband houden met Akeneo PIM.
+pim_user_management:
+  entity:
+    user:
+      label: gebruiker
+      flash:
+        update:
+          success: Gebruiker succesvol bijgewerkt.
+          fail: De gebruiker kon niet worden bijgewerkt.
+          fields_not_ready: "De gebruiker kan niet worden opgeslagen. De volgende velden zijn niet klaar: {{ fields }}"
+        create:
+          success: Gebruiker succesvol aangemaakt.
+      page_title:
+        index: "]-Inf, 1] {{ count }} gebruiker|]1, Inf [{{ count }} gebruikers"
+      properties:
+        username: Gebruikersnaam
+        profile: Wat is uw belangrijkste missie?
+        name_prefix: Voorvoegsel
+        first_name: Voornaam
+        middle_name: Tussenvoegsel
+        last_name: Achternaam
+        name_suffix: Achtervoegsel
+        phone: Telefoon
+        avatar: Profielafbeelding
+        email: E-mail
+        catalog_locale: Catalogus lokalisatie
+        catalog_scope: Scope van catalogus
+        default_tree: Standaardstructuur
+        default_asset_tree: Standaard asset boom
+        product_grid_filters: Filters productraster
+        current_password: Huidig wachtwoord
+        new_password: Nieuw wachtwoord
+        new_password_repeat: Nieuw wachtwoord (herhalen)
+        password: Wachtwoord
+        password_repeat: Wachtwoord (herhalen)
+        last_logged_in: Laatste login
+        login_count: Aantal logins
+        ui_locale: Gebruikers Interface
+        timezone: Tijdzone
+        default_product_grid_view: Standaard Productweergave raster
+        default_published_product_grid_view: Standaard gepubliceerde product rasterweergave #EE Only
+        proposals_to_review_notification: Wanneer nieuw voorstel tot nakijken #EE Only
+        proposals_state_notifications: Wanneer voorstel is goedgekeurd of geweigerd #EE Only
+        not_fully_supported_locale: 'De geselecteerde taal van de UI [{{ code }}] wordt momenteel niet volledig ondersteund. Daardoor kunnen vertalingen ontbreken of onvolledig zijn. Help met het verbeteren van de lokale dekking:'
+        link_to_crowdin_label: werk mee aan Crowdin.
+      meta:
+        created: Aangemaakt
+        updated: Bijgewerkt
+      module:
+        create:
+          button: Gebruiker aanmaken
+        delete:
+          confirm: Weet u zeker dat u deze gebruiker wilt verwijderen?
+        update:
+          additional: Aanvullend
+          groups_and_roles: Groepen en rollen
+          password: Wachtwoord
+          interfaces: Interfaces
+          notifications: Meldingen #TODO EE Only
+    role:
+      plural_label: Rollen
+      page_title:
+        index: "]-Inf, 1] {{ count }} rol|]1, Inf [{{ count }} rollen"
+      module:
+        create:
+          button: Rol aanmaken
+        delete:
+          confirm: Weet u zeker dat u deze rol wilt verwijderen?
+    group:
+      plural_label: Gebruikersgroepen
+      page_title:
+        index: "]-Inf, 1] {{ count }} groep|]1, Inf [{{ count }} groepen"
+      module:
+        create:
+          button: Groep aanmaken
+  form:
+    error:
+      required: Dit veld is verplicht.
+      should_not_contain_space: De gebruikersnaam mag geen spatie bevatten.
+      too_short_value: "Deze waarde is te kort. Hij moet {{ count }} tekens of meer bevatten."
+    duplication:
+      title: 'Dupliceer "{{ username }}" gebruiker'
+      notification:
+        success: De gebruiker wordt met succes gedupliceerd
+        failure: Fout tijdens dupliceren van de gebruiker.

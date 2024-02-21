@@ -1,0 +1,74 @@
+@import '../../base/variables';
+
+.AknTextareaField {
+  color: @AknDefaultFontColor;
+  border: 1px solid @AknBorderColor;
+  width: 100%;
+  border-radius: 2px;
+  padding: 12px;
+  min-height: 100px;
+  max-height: 400px;
+
+  &--monospaced {
+    font-family: @AknMonospacedFont;
+  }
+
+  &--light {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+
+    &:focus {
+      border-color: @AknBlue;
+      outline: none;
+    }
+  }
+
+  &-layer {
+    border: 1px solid @AknBorderColor;
+    position: absolute;
+    width: ~"calc(100% - 4px)";
+    height: ~"calc(100% - 4px)";
+    background: white;
+    border-radius: 2px;
+
+    &--first {
+      top: @AknLocalizableGap * 2;
+      left: @AknLocalizableGap * 2;
+    }
+
+    &--second {
+      top: @AknLocalizableGap;
+      left: @AknLocalizableGap;
+    }
+  }
+
+  &[readonly],
+  &[disabled] {
+    background: @AknDisabledInputColor;
+    cursor: not-allowed;
+  }
+
+  &--narrow {
+    width: @AknMaxFormWidth;
+  }
+
+  &--small {
+    height: @AknFormHeight;
+    overflow: hidden;
+  }
+
+  &--localizable {
+    margin-right: @AknLocalizableGap * 2;
+    z-index: 1;
+  }
+}
+
+@-moz-document url-prefix() {
+  .AknTextareaField {
+    &-layer {
+      height: ~"calc(100% - 1px)";
+    }
+  }
+}

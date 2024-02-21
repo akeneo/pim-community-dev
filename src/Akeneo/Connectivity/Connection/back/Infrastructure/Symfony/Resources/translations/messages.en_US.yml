@@ -1,0 +1,13 @@
+akeneo_connectivity.connection:
+    acl.manage_settings: Manage connections settings
+    acl.manage_apps: Manage apps
+    acl.create_and_delete_custom_apps: Create and delete custom apps
+    acl.open_apps: Open apps
+
+pim_notification:
+    connected_app_authorizations:
+        message: 'The <strong>{{ app_name }}</strong> App requires an authorization update. Please open the app to proceed.'
+    disabled_catalog:
+        message: "One or several modifications in the settings of your PIM impacted the {{ catalog_name }} catalog. Please, review its settings, then enable the catalog again."
+    attribute_removed:
+        message: "One or several modifications in the settings of your PIM impacted the {{ catalog_name }} catalog. Please, review the related mapping."

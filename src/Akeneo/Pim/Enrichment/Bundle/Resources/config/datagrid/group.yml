@@ -1,0 +1,64 @@
+datagrid:
+    group-grid:
+        options:
+            entityHint: group
+            manageFilters: false
+        source:
+            acl_resource: pim_enrich_group_index
+            type: pim_datasource_group
+        columns:
+            label:
+                label: Label
+                frontend_type: label
+            type:
+                label: Type
+        properties:
+            id: ~
+            edit_link:
+                type: url
+                route: pim_enrich_group_edit
+                params:
+                    - code
+            delete_link:
+                type: url
+                route: pim_enrich_group_rest_remove
+                params:
+                    - code
+        actions:
+            edit:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--edit
+                type:      navigate
+                label:     pim_common.edit
+                link:      edit_link
+                rowAction: true
+                acl_resource: pim_enrich_group_edit
+            delete:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--trash
+                type:  delete
+                label: pim_common.delete
+                link:  delete_link
+                acl_resource: pim_enrich_group_remove
+        sorters:
+            columns:
+                label:
+                    data_name: groupLabel
+                type:
+                    data_name: typeLabel
+            default:
+                label: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
+        filters:
+            columns:
+                label:
+                    type:      search
+                    label:     Label
+                    data_name: translation.label
+                type:
+                    type:      choice
+                    label:     Type
+                    data_name: g.type
+                    options:
+                        field_options:
+                            multiple: true
+                            choices:  '@pim_enrich.repository.group_type->findTranslatedLabels'

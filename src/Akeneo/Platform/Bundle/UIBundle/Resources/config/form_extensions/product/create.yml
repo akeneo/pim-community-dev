@@ -1,0 +1,41 @@
+extensions:
+    pim-product-create-modal:
+       module: pim/product-edit-form/creation/modal
+       config:
+           labels:
+               title: pim_common.create
+               subTitle: pim_enrich.entity.product.plural_label
+           picture: illustrations/Product.svg
+           successMessage: pim_enrich.entity.product.flash.create.success
+           editRoute: pim_enrich_product_edit
+           postUrl: pim_enrich_product_rest_create
+           routerKey: uuid
+           entityIdentifierParamName: meta.id
+
+    pim-product-create-helper:
+        module: pim/common/simple-view
+        parent: pim-product-create-modal
+        targetZone: fields
+        position: 10
+        config:
+            template: pim/template/product/create-helper
+            templateParams:
+                link: "https://help.akeneo.com/pim/serenity/articles/about-product-identifiers.html"
+
+    pim-product-create-family:
+        module: pim/form/common/fields/simple-select-async
+        parent: pim-product-create-modal
+        targetZone: fields
+        position: 20
+        config:
+            fieldName: family
+            label: pim_enrich.entity.family.uppercase_label
+            choiceRoute: pim_enrich_family_rest_index
+
+    pim-product-create-identifier:
+        module: pim/product-edit-form/creation/identifier-regarding-family
+        parent: pim-product-create-modal
+        targetZone: fields
+        position: 30
+        config:
+            identifier: identifier

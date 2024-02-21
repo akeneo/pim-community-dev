@@ -1,0 +1,9 @@
+<div class="AknSquareList AknSquareList--centered">
+<% _.each(choices, function(choice, key) { %>
+    <div class="AknSquareList-item product-choice" title="<%- choice.title %>" data-form="<%- choice.form %>">
+        <img src="/bundles/pimui/images/<%- choice.icon %>.svg" class="AknSquareList-icon">
+        <img src="/bundles/pimui/images/<%- choice.icon %>.svg" class="AknSquareList-icon AknSquareList-icon--selected">
+        <div><%- choice.title %></div>
+    </div>
+<% }); %>
+</div>

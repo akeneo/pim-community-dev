@@ -1,0 +1,416 @@
+#ORO messages
+"Yes, I Agree": "Kyllä, hyväksyn"
+"Yes, do it": "Kyllä, tee se"
+"Ok, got it.": "OK."
+"Edit": "Muokkaa"
+"Unexpected error occurred. Please contact system administrator.": "Odottamaton virhe. Ota yhteyttä järjestelmänvalvojaan."
+"Yes, revoke": "Kyllä, poista"
+"Revoke Confirmation": "Poiston vahvistus"
+Prev: Edellinen
+Today: Tänään
+Wk: Vk
+AM: AM
+A: A
+PM: PM
+P: P
+"Choose Time": "Valitse aika"
+Time: Aika
+Hour: Tunti
+Minute: Minuutti
+Second: Sekunti
+Millisecond: Millisekunti
+Microsecond: Mikrosekunti
+"Time Zone": "Aikavyöhyke"
+duration:
+  days: "{0}0 päivää|{1}1 päivä|]1, Inf[{{ count }} päivää"
+  hours: "{0}0 tuntia|{1}1 tunti|]1, Inf[{{ count }} tuntia"
+  minutes: "{0}0 minuuttia|{1}1 minuutti|]1, Inf[{{ count }} minuuttia"
+  seconds: "{0}0 sekuntia|{1}1 sekunti|]1, Inf[{{ count }} sekuntia"
+#PIM messages
+Localized value: Paikallinen arvo
+Columns: Sarakkeet
+Datagrid Configuration: Datagrid-kokoonpano
+#Filters
+Action: Toiminto
+Unit: Yksikkö
+Currency: Valuutta
+jstree:
+  all: Kaikki tuotteet
+  unclassified: Luokittelemattomat tuotteet
+  product:
+    all: Kaikki tuotteet
+    unclassified: Luokittelemattomat tuotteet
+  no_tree: Ei puuta käytettävissä
+  include_sub: Sisällytä alakategoriat
+#Datetimepicker
+datetimepicker:
+  days:
+    Sunday: Sunnuntai
+    Monday: Maanantai
+    Tuesday: Tiistai
+    Wednesday: Keskiviikko
+    Thursday: Torstai
+    Friday: Perjantai
+    Saturday: Lauantai
+  daysShort:
+    Sun: Su
+    Mon: Ma
+    Tue: Ti
+    Wed: Ke
+    Thu: To
+    Fri: Pe
+    Sat: La
+  daysMin:
+    Su: Su
+    Mo: Ma
+    Tu: Ti
+    We: Ke
+    Th: To
+    Fr: Pe
+    Sa: La
+  months:
+    January: Tammikuu
+    February: Helmikuu
+    March: Maaliskuu
+    April: Huhtikuu
+    May: Touko
+    June: Kesäkuu
+    July: Heinäkuu
+    August: Elokuu
+    September: Syyskuu
+    October: Lokakuu
+    November: Marraskuu
+    December: Joulukuu
+  monthsShort:
+    Jan: Tammi
+    Feb: Helmi
+    Mar: Maalis
+    Apr: Huhti
+    May: Touko
+    Jun: Kesä
+    Jul: Heinä
+    Aug: Elo
+    Sep: Syys
+    Oct: Loka
+    Nov: Marras
+    Dec: Joulu
+#ORO
+oro_config:
+  form:
+    config:
+      title: Järjestelmäasetukset
+      tab:
+        system:
+          title: Järjestelmä
+      group:
+        localization:
+          fields:
+            system_locale:
+              label: Kieli
+        notification:
+          fields:
+            enabler:
+              label: Käytössä
+        loading_message:
+          fields:
+            enabler:
+              label: Aktivoi latausviestit
+pim_ui:
+  flash:
+    unsaved_changes: 'Sinulla on tallentamattomia muutoksia. Haluatko poistua?'
+"Sorry, page was not loaded correctly": "Valitettavasti sivua ei ole ladattu oikein"
+"Your local changes will be lost. Are you sure you want to refresh the page?": "Paikalliset muutoksesi menetetään. Oletko varma, että haluat päivittää sivun?"
+"navigation.message.content.outdated": "{{ title }} sivun sisältö on vanhentunut, ole hyvä ja <a href='#' data-action='page-refresh'> päivitä sivu</a>"
+"Content of pinned page is outdated": "Valitsemasi sivun sisältö on päivittämätön"
+#Global structure of translation files
+#pim_bundle_name:
+#entity:
+#entity_name:
+#label: entity
+#uppercase_label: Entity
+#plural_label: Entities
+#flash:
+#update:
+#fail: Update failed
+#success: Entity Successfully updated
+#delete:
+#fail: Cannot delete this entity
+#success: Entity successfully removed
+#create:
+#fail: Can not create this entity
+#success: Entity successfully created
+#page_title:
+#index: "]-Inf, 1]1 entity|]1, Inf[{{ count }} entities"
+#property:
+#field_name: Field name
+#complex_field:
+#label: Field name
+#choose: Choose a field name
+#module:
+#module_name:
+#key: message
+pim_common:
+  actions: Toiminnot
+  add: Lisää
+  add_attributes: Lisää attribuutteja
+  after: Jälkeen
+  all: Kaikki
+  and: ja
+  apply: Käytä
+  before: Ennen
+  by: tehnyt
+  cancel: Peruuta
+  characters_left: ']-Inf, 1]{{ count }} merkki jäljellä|]1, Inf[{{ count }} merkkiä jäljellä'
+  clear_value: Tyhjennä arvo
+  close: Sulje
+  code: Koodi
+  completeness: Valmistumisaste
+  confirm: Vahvista
+  confirm_deletion: Vahvista poisto
+  confirm_revocation: Vahvista poisto
+  create: Luo
+  created: Luotu
+  delete: Poista
+  done: Valmis
+  duplicate: Kopioi
+  edit: Muokkaa
+  entity_updated: Tallentamattomia muutoksia löytyy.
+  export: Vienti
+  from: Alkaen
+  general_properties: Yleiset ominaisuudet
+  history: Historia
+  identifier: Tunniste
+  image: Kuva
+  label: Nimike
+  label_translations: Nimikkeiden käännökset
+  Label or identifier: nimike tai tunniste
+  less_than: Vähemmän kuin
+  loading: Lataa...
+  media_upload: Vedä ja pudota tuodaksesi tai klikkaa tästä
+  more_actions: Lisää toimintoja
+  more_than: Enemmän kuin
+  next: Seuraava
+  "no": "Ei"
+  none: Ei yhtään
+  not_available: Ei mitään
+  now: Nyt
+  ok: OK
+  open: Avaa
+  no_result: Tuloksia ei löytynyt
+  no_search_result: Valitettavasti haullesi ei löytynyt tuloksia.
+  other_actions: Muut toiminnot
+  permissions: Käyttöoikeudet
+  previous: Edellinen
+  properties: Ominaisuudet
+  quality_score: Laatupisteytys
+  remove: Poista
+  required_label: (vaadittu)
+  result_count: "{0}0 tulosta|{1}1 tulos|]1, Inf[{{ itemsCount }} tulosta"
+  save: Tallenna
+  search: Etsi
+  select2:
+    search: Hae...
+    no_match: Ei hakutuloksia
+    load_more: Ladataan lisää tuloksia...
+  selected: "{0}Ei valittu{1}Yksi valittu]1, Inf[{{ itemsCount }} valittu"
+  status: Status
+  to: mihin
+  type: Tyyppi
+  update: Päivitä
+  updated: Päivitetty
+  "yes": "Kyllä"
+  operator: Operaattori
+  operators:
+    "=": Yhtä kuin
+    "!=": Erisuuri kuin
+    ">=": Suurempi tai yhtäsuuri kuin
+    ">": Suurempi kuin
+    "<=": Pienempi tai yhtäsuuri kuin
+    "<": Pienempi kuin
+    EMPTY: Tyhjä
+    NOT EMPTY: Ei tyhjä
+    CONTAINS: Sisältää
+    DOES NOT CONTAIN: Ei sisällä
+    STARTS WITH: Alkaa
+    ENDS WITH: Päättyy
+    IN: Luettelossa
+    "NOT IN": Ei luettelossa
+  read_more: Lue lisää
+  channel: Kanava
+  locale: Lokaali
+  categories: Kategoriat
+  family_variant: Varianttiperhe
+  enabled: Käytössä
+  family: Perhe
+  parent: Ylätaso
+  groups: Ryhmät
+  products: Tuotteet
+  product_uuids: Tuotteet
+  product_models: Tuotemallit
+  more: Lisää
+  public_view: Julkinen näkymä
+error:
+  exception: Tapahtui {{ status_code }} virhe...
+  forbidden: Käyttö estetty. Et saa käyttää tätä sivua
+alert:
+  attribute_option:
+    error_occurred_during_submission: Virhe lomakkeen lähettämisessä palvelimelle
+    save_before_edit_other: Rekisteröi muiden rivien muokkauksesi ennen tämän muokkaamista
+  session_storage:
+    not_available: Web-selain ei ole yhteensopiva sessionStorage:n kanssa. Ota yhteyttä järjestelmänvalvojaan.
+pim_enrich.entity.fallback:
+  flash:
+    generic_error: Tapahtui virhe
+    update:
+      fail: Päivitys epäonnistui
+      success: Päivitys onnistui
+    delete:
+      fail: Kohdetta ei voi poistaa
+      success: Kohde poistettu
+  module:
+    delete:
+      title: Poista tämä {{ itemName }}
+      alternative_title: Vahvista poisto
+      item: Oletko varma että haluat poistaa tämän kohteen?
+      item_placeholder: Oletko varma, että haluat poistaa tämän {{ itemName }}? Et voi peruuttaa tätä toimintoa.
+    edit:
+      leave: Oletko varma että haluat poistua sivulta?
+      discard_changes: Käsittelemäsi {{ entity }} on muuttunut. Menetät muutokset siihen, jos poistut sivulta.
+      discard_changes_title: Oletko varma?
+pim_enrich.entity.job_execution:
+  page_title:
+    index: "]-Inf, 1]{{ count }} työ|]1, Inf[{{ count }} työtä"
+  module:
+    create:
+      upload: Pudota {{ type }}-tiedosto tähän tai klikkaa selataksesi tiedostoja
+    download:
+      archive: Lataa viety tallenne
+      output: Lataa viedyt tiedostot
+      input: Lataa tuodut tiedostot
+      invalid_xlsx: Lataa virheelliset tiedot
+      invalid_csv: Lataa virheelliset tiedot
+pim_title:
+  oro_default: Ohjauspaneeli
+  pim_enrich_attributegroup_index: Attribuuttiryhmät
+  pim_enrich_attributegroup_create: Attribuuttiryhmät | Luo
+  pim_enrich_attributegroup_edit: Attribuuttiryhmä {{ group.label }} | Muokkaa
+  pim_enrich_catalog_volume_index: Katalogin koon seuranta
+  pim_enrich_categorytree_index: Kategoriahierarkia
+  pim_enrich_categorytree_create: Kategoriahierarkia | Luo
+  pim_enrich_categorytree_edit: Kategoria {{ category.label }} | Muokkaa
+  pim_enrich_categorytree_create_tree: Kategoriahierarkia | Luo
+  pim_enrich_categorytree_tree: Kategoriahierarkia {{ category.label }} | Muokkaa
+  pim_enrich_attribute_index: Attribuutit
+  pim_enrich_attribute_create: Attribuutit | Luo
+  pim_enrich_attribute_edit: Attribuutti {{ attribute.label }} | Muokkaa
+  pim_enrich_product_index: Tuotteet
+  pim_enrich_product_edit: Tuote {{ product.label }} | Muokkaa
+  pim_enrich_product_model_edit: Tuotemalli {{ product.label }} | Muokkaa
+  pim_enrich_family_index: Perheet
+  pim_enrich_family_edit: Perhe {{ family.label }} | Muokkaa
+  pim_enrich_channel_index: Kanavat
+  pim_enrich_channel_create: Kanavat | Luo
+  pim_enrich_channel_edit: Kanava {{ channel.label }} | Muokkaa
+  pim_enrich_currency_index: Valuutat
+  pim_enrich_locale_index: Lokaatiot
+  pim_enrich_group_index: Ryhmät
+  pim_enrich_group_edit: Ryhmä {{ group.label }} | Muokkaa
+  pim_enrich_associationtype_index: Assosiaatiotyypit
+  pim_enrich_associationtype_edit: Assosiaatiotyyppi {{ association type.label }} | Muokkaa
+  pim_enrich_grouptype_index: Ryhmätyypit
+  pim_enrich_grouptype_edit: Ryhmätyyppi {{ group type.label }} | Muokkaa
+  pim_enrich_mass_edit_action_choose: Massamuokkaus | Valitse
+  pim_enrich_mass_edit_action_configure: Massamuokkaus | Määritä
+  pim_enrich_mass_edit_action_perform: Massamuokkas | Suorita
+  pim_enrich_job_tracker_index: Prosessiseurain
+  pim_enrich_job_tracker_show: Prosessiseurain | Näytä työ
+  pim_enrich_mass_edit_action: Massamuokkaus
+  pim_analytics_system_info_index: Järjestelmätiedot
+  pim_settings_index: Asetukset
+  pim_system_index: Järjestelmä
+pim_menu:
+  tab:
+    activity: Tapahtumat
+    imports: Tuonnit
+    exports: Viennit
+    settings: Asetukset
+    system: Järjestelmä
+    help:
+      title: Ohjeet
+      helper: Akeneo Help center
+  item:
+    association_type: Assosiaatiotyypit
+    attribute_group: Attribuuttiryhmät
+    channel: Kanavat
+    currency: Valuutat
+    dashboard: Aktiviteettien yhteenveto
+    family: Perheet
+    group: Ryhmät
+    group_type: Ryhmätyypit
+    product_model: Tuotemallit
+    export_history: Vientihistoria
+    export_profile: Vientiprofiili
+    import_history: Tuontihistoria
+    import_profile: Tuontiprofiilit
+    configuration: Kokoonpano
+    user_management: Käyttäjähallinta
+    user: Käyttäjät
+    user_group: Käyttäjäryhmät
+    user_role: Roolit
+    info: Järjestelmätiedot
+    job_tracker: Prosessiseurain
+    catalog_volume: Katalogin koon seuranta
+  navigation:
+    activity: Tapahtumanavigaatio
+    system: Järjestelmänavigaatio
+    user: Käyttäjähallinnan navigaatio
+    settings:
+      product: Tuotteiden asetukset
+      catalog: Katalogin asetukset
+      collapsed_label: Asetuksien navigaatio
+    product: Tuotenavigaatio
+    product_infos: Tuoteinformaatio
+  user:
+    logout: Kirjaudu ulos
+    user_account: Oma tili
+pim_notification:
+  types:
+    import: Tuonti
+    export: Vienti
+    quick_export: Nopea vienti
+    mass_edit: Massamuokkaus
+pim_settings:
+  settings_menu: Asetusten valikko
+  catalog_settings: Katalogin asetukset
+  product_settings: Tuotteiden asetukset
+  count:
+    category_trees: '{0}Teillä on 0 kategoriapuuta|{1}Teillä on 1 kategoriapuu |]1, Inf[Teillä on {{ count }} kategoriapuuta '
+    categories: '{0}ja 0 kategoriaa|{1}ja 1 kategoria|]1, Inf[ja {{ count }} kategoriaa'
+    channels: '{0}Teillä on 0 kanavaa|{1}Teillä on 1 kanava|]1, Inf[Teillä on {{ count }} kanavaa'
+    locales: '{0}Teillä on 0 lokaalia käytössä|{1}Teillä on 1 lokaali käytössä|]1, Inf[Teillä on {{ count }} lokaalia käytössä'
+    currencies: '{0}Teillä on 0 valuuttaa käytössä|{1}Teillä on 1 valuutta käytössä|]1, Inf[Teillä on {{ count }} valuuttaa käytössä'
+    attribute_groups: '{0}Teillä on 0 attribuuttiryhmää|{1}Teillä on 1 attribuuttiryhmä|]1, Inf[Teillä on {{ count }} attriibuuttiryhmää'
+    attributes: '{0}Teillä on 0 attribuuttia|{1}Teillä on 1 attribuutti|]1, Inf[Teillä on {{ count }} attribuuttia'
+    families: '{0}Teillä on 0 perhettä|{1}Teillä on 1 perhe|]1, Inf[Teillä on {{ count }} perhettä'
+    measurements: '{0}Teillä on 0 mittaa|{1}Teillä on 1 mitta|]1, Inf[Teillä on {{ count }} mittaa'
+    association_types: '{0}Teillä on 0 tuoteliitostyyppiä|{1}Teillä on 1 tuoteliitostyyppi|]1, Inf[Teillä on {{ count }} tuoteliitostyyppiä'
+    group_types: '{0}Teillä on 0 ryhmätyyppiä|{1}Teillä on 1 ryhmätyyppi|]1, Inf[Teillä on {{ count }} ryhmätyyppiä'
+    groups: '{0}Teillä on 0 ryhmää|{1}Teillä on 1 ryhmä|]1, Inf[Teillä on {{ count }} ryhmää'
+    rules: '{0}Teillä on 0 sääntöä käytössä|{1}Teillä on 1 sääntö käytössä|]1, Inf[Teillä on {{ count }} sääntöä käytössä'
+pim_system:
+  system_menu: Järjestelmävalikko
+  system_navigation: Järjestelmänavigaatio
+  users_management_navigation: Käyttäjähallinnan navigaatio
+  count:
+    product_values: '{0}Teillä on 0 tuotearvoa|{1}Teillä on 1 tuotearvo|]1, Inf[Teillä on {{ count }} tuotearvoa'
+    users: '{0}Teillä on 0 käyttäjää|{1}Teillä on  1 käyttäjä|]1, Inf[Teillä on  {{ count }} käyttäjää'
+    user_groups: '{0}Teillä on 0 käyttäjäryhmää|{1}Teillä on 1 käyttäjäryhmä|]1, Inf[Teillä on {{ count }} käyttäjäryhmää'
+    roles: '{0}Teillä on 0 roolia|{1}Teillä on 1 rooli|]1, Inf[Teillä on {{ count }} roolia'
+  sso:
+    enabled: SSO käytössä
+    disabled: SSO pois käytöstä
+    title: SAML-pohjainen kertakirjautuminen
+pim_datagrid:
+  mass_action:
+    default:
+      select_action: Valitse toiminto

@@ -1,0 +1,158 @@
+services:
+    pim_enrich.event_listener.add_locale_code_to_grid:
+        class: '%pim_datagrid.event_listener.add_locale_code_to_grid.class%'
+        arguments:
+          - '@oro_datagrid.datagrid.request_params'
+        tags:
+          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after, method: onBuildAfter }
+
+    pim_enrich.event_listener.product_grid_before_listener:
+        class: '%pim_datagrid.event_listener.configure_product_grid_listener.class%'
+        arguments:
+            - '@pim_datagrid.datagrid.configuration.product.context_configurator'
+            - '@pim_datagrid.datagrid.configuration.product.columns_configurator'
+            - '@pim_datagrid.datagrid.configuration.product.filters_configurator'
+            - '@pim_datagrid.datagrid.configuration.product.sorters_configurator'
+            - '@pim_datagrid.datagrid.configuration.product.selected_attributes_configurator'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.product-grid, method: buildBefore }
+
+    pim_enrich.event_listener.association_product_picker_grid_before_listener:
+        class: '%pim_datagrid.event_listener.configure_product_grid_listener.class%'
+        arguments:
+            - '@pim_datagrid.datagrid.configuration.product.context_configurator'
+            - '@pim_datagrid.datagrid.configuration.product.columns_configurator'
+            - '@pim_datagrid.datagrid.configuration.product.filters_configurator'
+            - '@pim_datagrid.datagrid.configuration.product.sorters_configurator'
+            - '@pim_datagrid.datagrid.configuration.product.all_attributes_useable_in_grid_configurator'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.association-product-picker-grid, method: buildBefore }
+
+    pim_enrich.event_listener.product_grid_after_listener:
+        class: '%pim_datagrid.event_listener.add_parameters_to_product_grid.class%'
+        arguments:
+          - [dataLocale]
+          - '@oro_datagrid.datagrid.request_params'
+          - '@pim_catalog.context.catalog'
+          - '@pim_user.context.user'
+          - false
+          - '@request_stack'
+        tags:
+          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.product-grid, method: onBuildAfter }
+
+    pim_enrich.event_listener.association_product_picker_grid_after_listener:
+        class: '%pim_datagrid.event_listener.add_parameters_to_product_grid.class%'
+        arguments:
+          - [dataLocale, dataChannel]
+          - '@oro_datagrid.datagrid.request_params'
+          - '@pim_catalog.context.catalog'
+          - '@pim_user.context.user'
+          - false
+          - '@request_stack'
+        tags:
+          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.association-product-picker-grid, method: onBuildAfter }
+
+    pim_enrich.event_listener.product_group_grid_before_listener:
+        class: '%pim_datagrid.event_listener.configure_product_grid_listener.class%'
+        arguments:
+            - '@pim_datagrid.datagrid.configuration.product.context_configurator'
+            - '@pim_datagrid.datagrid.configuration.product.group_columns_configurator'
+            - '@pim_datagrid.datagrid.configuration.product.filters_configurator'
+            - '@pim_datagrid.datagrid.configuration.product.sorters_configurator'
+            - '@pim_datagrid.datagrid.configuration.product.all_attributes_useable_in_grid_configurator'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.product-group-grid, method: buildBefore }
+
+    pim_enrich.event_listener.product_group_grid_after_listener:
+        class: '%pim_datagrid.event_listener.add_parameters_to_product_grid.class%'
+        arguments:
+          - [dataLocale, currentGroup]
+          - '@oro_datagrid.datagrid.request_params'
+          - '@pim_catalog.context.catalog'
+          - '@pim_user.context.user'
+          - true
+          - '@request_stack'
+        tags:
+          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.product-group-grid, method: onBuildAfter }
+
+    pim_enrich.event_listener.group_grid_listener:
+        class: '%pim_datagrid.event_listener.add_parameters_to_grid.class%'
+        arguments:
+          - [localeCode]
+          - '@oro_datagrid.datagrid.request_params'
+        tags:
+          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.group-grid, method: onBuildAfter }
+
+    pim_enrich.event_listener.family_variant_grid_listener:
+        class: '%pim_datagrid.event_listener.add_parameters_to_grid.class%'
+        arguments:
+          - [family_id, localeCode]
+          - '@oro_datagrid.datagrid.request_params'
+          - false
+          - true
+        tags:
+          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.family-variant-grid, method: onBuildAfter }
+
+    pim_enrich.event_listener.association_product_grid_before_listener:
+        class: '%pim_datagrid.event_listener.configure_product_grid_listener.class%'
+        arguments:
+            - '@pim_datagrid.datagrid.configuration.product.context_configurator'
+            - '@pim_datagrid.datagrid.configuration.product.columns_configurator'
+            - '@pim_datagrid.datagrid.configuration.product.filters_configurator'
+            - '@pim_datagrid.datagrid.configuration.product.sorters_configurator'
+            - '@pim_datagrid.datagrid.configuration.product.selected_attributes_configurator'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.association-product-grid, method: buildBefore }
+
+    pim_enrich.event_listener.association_product_grid_after_listener:
+        class: '%pim_datagrid.event_listener.add_parameters_to_product_grid.class%'
+        arguments:
+            - [dataLocale, dataChannel, product, associationType]
+            - '@oro_datagrid.datagrid.request_params'
+            - '@pim_catalog.context.catalog'
+            - '@pim_user.context.user'
+            - true
+            - '@request_stack'
+        tags:
+          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.association-product-grid, method: onBuildAfter }
+
+    pim_enrich.event_listener.association_product_model_grid_before_listener:
+        class: '%pim_datagrid.event_listener.configure_product_grid_listener.class%'
+        arguments:
+            - '@pim_datagrid.datagrid.configuration.product_model.context_configurator'
+            - '@pim_datagrid.datagrid.configuration.product.columns_configurator'
+            - '@pim_datagrid.datagrid.configuration.product.filters_configurator'
+            - '@pim_datagrid.datagrid.configuration.product.sorters_configurator'
+            - '@pim_datagrid.datagrid.configuration.product.selected_attributes_configurator'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.association-product-model-grid, method: buildBefore }
+
+    pim_enrich.event_listener.association_product_model_grid_after_listener:
+        class: '%pim_datagrid.event_listener.add_parameters_to_product_grid.class%'
+        arguments:
+            - [dataLocale, dataChannel, product, associationType]
+            - '@oro_datagrid.datagrid.request_params'
+            - '@pim_catalog.context.catalog'
+            - '@pim_user.context.user'
+            - true
+            - '@request_stack'
+        tags:
+          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.association-product-model-grid, method: onBuildAfter }
+
+    pim_enrich.event_listener.association_group_grid_after_listener:
+        class: '%pim_datagrid.event_listener.add_parameters_to_grid.class%'
+        arguments:
+            - [dataLocale, associatedIds]
+            - '@oro_datagrid.datagrid.request_params'
+            - true
+        tags:
+          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.association-group-grid, method: onBuildAfter }
+
+    pim_enrich.event_listener.history_grid_listener:
+        class: '%pim_datagrid.event_listener.configure_history_grid_listener.class%'
+        arguments:
+            - '@oro_datagrid.datagrid.request_params'
+            - '@pim_catalog.resolver.fqcn'
+        tags:
+          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.history-grid, method: onBuildBefore }
+          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.product-history-grid, method: onBuildBefore }

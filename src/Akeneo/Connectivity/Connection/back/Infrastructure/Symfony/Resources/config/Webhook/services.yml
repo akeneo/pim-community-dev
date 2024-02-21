@@ -1,0 +1,71 @@
+services:
+    akeneo_connectivity.connection.webhook.guzzle_handler:
+        class: GuzzleHttp\HandlerStack
+        factory: ['GuzzleHttp\HandlerStack', 'create']
+
+    akeneo_connectivity.connection.webhook.guzzle_client:
+        class: GuzzleHttp\Client
+        arguments:
+            -
+                handler: '@akeneo_connectivity.connection.webhook.guzzle_handler'
+                headers: {User-Agent: ~}
+
+    akeneo_connectivity.connection.webhook.serializer.json_encoder:
+        class: Symfony\Component\Serializer\Encoder\JsonEncoder
+
+    Akeneo\Connectivity\Connection\Infrastructure\Webhook\Client\GuzzleWebhookClient:
+        arguments:
+            - '@akeneo_connectivity.connection.webhook.guzzle_client'
+            - '@akeneo_connectivity.connection.webhook.serializer.json_encoder'
+            - '@Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\SendApiEventRequestLogger'
+            - '@Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiDebugLogger'
+            - '@event_dispatcher'
+            -
+                concurrency: '%webhook_concurrency%'
+                timeout: '%webhook_timeout%'
+            - '@pim_catalog.version_provider'
+            - '%env(default::PFID)%'
+
+    Akeneo\Connectivity\Connection\Application\Webhook\WebhookEventBuilder:
+        arguments:
+            - !tagged akeneo_connectivity.connection.webhook.event_data_builder
+            - '@Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiDebugLogger'
+
+    Akeneo\Connectivity\Connection\Application\Webhook\WebhookUserAuthenticator:
+        arguments:
+            - '@pim_user.repository.user'
+            - '@security.token_storage'
+
+    Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiDebugLogger:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence\ElasticsearchEventsApiDebugRepository'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\SystemClock'
+            - !tagged akeneo_connectivity.connection.webhook.event_normalizer
+
+    Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\ReachRequestLimitLogger:
+        arguments:
+            - '@monolog.logger.event_api'
+
+    Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\SendApiEventRequestLogger:
+        arguments:
+            - '@monolog.logger.event_api'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\CacheClearer:
+        arguments:
+            - '@pim_connector.doctrine.cache_clearer'
+            - '@akeneo.pim.storage_utils.cache.cached_queries_clearer'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\WebhookReachabilityChecker:
+        arguments:
+            - '@akeneo_connectivity.connection.webhook.guzzle_client'
+            - '@validator'
+            - '@pim_catalog.version_provider'
+            - '%env(default::PFID)%'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Webhook\GenerateSecret: ~
+
+    Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\GetDelayUntilNextRequest:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\Persistence\DbalSelectEventsApiRequestCountWithinLastHourQuery'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\Sleep: ~

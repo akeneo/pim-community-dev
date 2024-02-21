@@ -1,0 +1,74 @@
+config:
+    config:
+        pim/fetcher-registry:
+            fetchers:
+                user:
+                    module: pim/base-fetcher
+                    options:
+                        urls:
+                            get: pim_user_user_rest_get
+                user-group:
+                    module: pim/base-fetcher
+                    options:
+                        urls:
+                            list: pim_user_user_group_rest_index
+                user-role:
+                    module: pim/base-fetcher
+                    options:
+                        urls:
+                            list: pim_user_user_role_rest_index
+                user-profiles:
+                    module: pim/base-fetcher
+                    options:
+                        urls:
+                            list: pim_user_rest_find_all_profiles
+        pim/controller-registry:
+            controllers:
+                pim_user_index:
+                    module: pim/controller/common/index
+                    config:
+                        entity: user
+                pim_user_edit:
+                    module: pim/controller/user
+                pim_user_role_index:
+                    module: pim/controller/common/index
+                    config:
+                        entity: user-role
+                pim_user_role_create:
+                    module: pim/controller/form
+                pim_user_role_update:
+                    module: pim/controller/role
+                pim_user_group_create:
+                    module: pim/controller/form
+                pim_user_group_index:
+                    module: pim/controller/common/index
+                    config:
+                        entity: user-group
+                pim_user_group_update:
+                    module: pim/controller/form
+                pim_user_profile_update:
+                    module: pim/controller/form
+        pim/remover/user:
+            url: pim_user_user_rest_delete
+
+    paths:
+        pim/user/fields/channel:                          pimuser/js/fields/channel.ts
+        pim/user/fields/category-tree:                    pimuser/js/fields/category-tree.ts
+        pim/user/fields/ui-locale:                        pimuser/js/fields/ui-locale.ts
+        pim/user/fields/timezone:                         pimuser/js/fields/timezone.ts
+        pim/user/fields/user-group:                       pimuser/js/fields/user-group.ts
+        pim/user/fields/user-role:                        pimuser/js/fields/user-role.ts
+        pim/user/fields/default-product-grid-view:        pimuser/js/fields/default-product-grid-view.ts
+        pim/user/fields/default-grid-views:               pimuser/js/fields/default-grid-views.ts
+        pim/user/fields/product-grid-filters:             pimuser/js/fields/product-grid-filters.ts
+        pim/user/tools/timezone-formatter:                pimuser/js/tools/timezone-formatter
+        pim/user-edit-form/delete:                        pimuser/js/form/delete
+        pim/user-edit-form/edit-form:                     pimuser/js/form/edit-form
+        pim/user-edit-form/duplicate:                     pimuser/js/form/duplicate-secondary-action.tsx
+        pim/remover/user:                                 pimuser/js/remover/user
+        oro/datagrid/duplicate-user-action:               pimuser/js/datagrid/action/duplicate-user-action.tsx
+        pim/user/form/fields/select-profile:              pimuser/js/form/fields/select-profile.ts
+        pim/templates/user/form/fields/select-profile-container: pimuser/templates/form/fields/select-profile-container.html
+        pim/user/form/user-profile-tab-content:           pimuser/js/form/user-profile-tab-content.ts
+        pim/user/form/create-user-button:                 pimuser/js/form/create-user-button.ts
+        pim/user/form/unsupported-ui-locale-warning-view: pimuser/js/form/unsupported-ui-locale-warning-view.tsx

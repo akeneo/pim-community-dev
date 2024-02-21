@@ -1,0 +1,214 @@
+{#
+    Render attribute row
+    Parameters:
+        title - attribute title
+        value - attribute value
+        additionalData - array with additional data
+#}
+{% macro attibuteRow(title, value, additionalData) %}
+    {% macro attribute_data(value, additionalData) %}
+        {% if value.value is not defined %}
+            <div class="AknTextField AknTextField--disabled">{{ value }}</div>
+        {% else %}
+            <div class="AknTextField AknTextField--disabled">{{ value.value }}</div>
+            <div class="AknFieldContainer-iconsContainer">{{ value.hint|trans }}</div>
+        {% endif %}
+        {% if additionalData|length %}
+            {% for data in additionalData.data %}
+                <div class="AknFieldContainer-iconsContainer">{{ attribute(data, additionalData.field) }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endmacro %}
+    {{ _self.renderAttribute(title, _self.attribute_data(value, additionalData)) }}
+{% endmacro %}
+
+{#
+    Render attribute row with custom data block
+    Parameters:
+        title - row title
+        data - row data
+#}
+{% macro renderAttribute(title, data) %}
+    <div class="AknFieldContainer">
+        <div class="AknFieldContainer-header">
+            <label class="AknFieldContainer-label control-label">{{ title|trans }}</label>
+        </div>
+        <div class="AknFieldContainer-inputContainer">
+            {{ data|raw }}
+        </div>
+    </div>
+{% endmacro %}
+
+{#
+    Button macros with custom button type
+    Parameters - array:
+        [
+            'type' - button type
+            'class' - additional button css classes
+            'label' - label of button
+        ]
+#}
+{% macro buttonType(parameters) %}
+    <button
+            type="{{ parameters.type }}"
+            class="AknButton{% if (parameters.class is defined) %} {{ parameters.class }}{% endif %}{% if (parameters.action is defined) %} action-button{% endif %}"
+            {% if (parameters.action is defined) %}data-action="{{ parameters.action }}"{% endif %}>
+        {{ parameters.label|trans }}
+    </button>
+{% endmacro %}
+
+{% macro saveAndStayButton(acl = '', label = 'Save') %}
+    {% if acl is empty or resource_granted(acl) %}
+        {{ _self.buttonType({
+            'type': 'button',
+            'class': 'AknButton--apply AknButtonList-item',
+            'label': label,
+            'action':
+            'save_and_stay',
+            'iClass': 'icon-ok'
+        }) }}
+    {% endif %}
+{% endmacro %}
+
+{#
+    Create scroll sub block for scroll block
+    Parameters:
+        title - title of sub block
+        data - array with data fields (i.e. form_row() or attibuteRow() data)
+        isForm - flag what scroll block mut contain the form
+#}
+{% macro scrollSubblock(title, data, isForm, class) %}
+    <div class="tabsection">
+        {% if title|length %}<div class="tabsection-title">{{ title|trans }}</div>{% endif %}
+        <div class="tabsection-content {{ class }}">
+            {% for dataBlock in data %}
+                {{ dataBlock|raw }}
+            {% endfor %}
+        </div>
+    </div>
+{% endmacro %}
+
+{#
+    Create scroll block for scroll data area
+    Parameters:
+        blockId - id of block
+        title - block title
+        'subblocks' - array with scroll sub blocks:
+            [
+                'title' - title of sub block
+                'data' - array with data fields (i.e. form_row() or attibuteRow() data)
+            ]
+        isForm - flag what scroll block mut contain the form
+        contentAttributes - additional attributes for block content
+        useSubBlockDivider - indicates if 'row-fluid-divider' css class should be added to a row when there are more than one subblocks
+#}
+{% macro scrollBlock(blockId, title, subblocks, isForm, contentAttributes, useSubBlockDivider, isActive) %}
+    <div id="{{ blockId }}" class="tab-pane {% if isActive %}active{% endif %}">
+        <div class="tabsections">
+            {% for subblock in subblocks %}
+                {{ _self.scrollSubblock(
+                    subblock.title|length ? subblock.title : null,
+                    subblock.data,
+                    isForm,
+                    subblock.class is defined ? subblock.class : ''
+                ) }}
+            {% endfor %}
+        </div>
+    </div>
+{% endmacro %}
+
+{#
+    Create scroll blocks (like in view or update pages)
+    Parameters:
+        dataTarget - id of scroll block
+        data - array with scroll data blocks
+        form
+    data parameter structure:
+        [
+            'dataBlocks' - array of blocks. each block consist of:
+                [
+                    'title' - title of scroll block
+                    'class' - additional css class for scroll block menu item
+                    'useSubBlockDivider' - [optional] indicates if 'row-fluid-divider' css class should be added to a row when there are more than one subblocks
+                    'subblocks' - array with scroll sub blocks:
+                        [
+                            'title' - title of sub block
+                            'data' - array with data fields (i.e. form_row() or attibuteRow() data)
+                        ]
+                ]
+            'formErrors' - errors from the form
+            'hiddenData' - additional data (hidden fields from the form)
+        ]
+#}
+{% macro scrollData(dataTarget, data, form = null) %}
+    {% if form is defined and form %}
+        {% set isForm = true %}
+    {% else %}
+        {% set isForm = false %}
+    {% endif %}
+
+    {% set dataBlocks = data.dataBlocks %}
+
+    <div class="AknTabContainer">
+        <div id="{{ dataTarget }}" class="AknHorizontalNavtab scrollspy-nav">
+            <div class="navbar-inner">
+                <div class="row-fluid">
+                    <ul class="AknHorizontalNavtab-list nav nav-tabs">
+                        {% for navElement in dataBlocks %}
+                            <li class="AknHorizontalNavtab-item {% if loop.first %} AknHorizontalNavtab-item--active active {% endif %}">
+                                <a class="AknHorizontalNavtab-link" href="#scroll-{{ loop.index }}" data-toggle="tab">{{ navElement.title|trans }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="AknTabContainer-content">
+            <div class="row-fluid tab-content {% if isForm %} form-container{% endif %}">
+                {% if data.formErrors is defined and data.formErrors | length%}
+                    <div class="customer-info-actions container-fluid alert-wrap">
+                        <div class="alert alert-error">
+                            <button class="close" type="button" data-dismiss="alert" data-target=".alert-wrap">×</button>
+                            {{ data.formErrors|raw }}
+                        </div>
+                    </div>
+                {% endif %}
+                {% for scrollBlock in dataBlocks %}
+                    {{ _self.scrollBlock(
+                        "scroll-" ~ loop.index,
+                        scrollBlock.title,
+                        scrollBlock.subblocks,
+                        isForm,
+                        scrollBlock.content_attr is defined ? scrollBlock.content_attr : null,
+                        scrollBlock.useSubBlockDivider is defined ? scrollBlock.useSubBlockDivider : true,
+                        loop.first
+                    ) }}
+                {% endfor %}
+                {% if data.hiddenData is defined or isForm %}
+                    <div class="hide">
+                        {% if data.hiddenData is defined %}
+                            {{ data.hiddenData|raw }}
+                        {% endif %}
+                        {% if isForm %}
+                            {{ form_rest(form) }}
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+{#
+    Render attributes of HTML element.
+    Parameters:
+        attr - attributes
+        excludes - names of attributes which should not be rendered even if they exist in attr parameter
+#}
+{% macro attributes(attr, excludes) %}
+    {% apply spaceless %}
+        {% set attr = attr|default({}) %}
+        {% for attrname, attrvalue in attr %}{% if not excludes is defined or not excludes[attrname] is defined %}{% if attrname in ['placeholder', 'title'] %}{{ attrname }}="{{ attrvalue|trans({}, translation_domain) }}" {% else %}{{ attrname }}="{{ attrvalue }}" {% endif %}{% endif %}{% endfor %}
+    {% endapply %}
+{% endmacro %}

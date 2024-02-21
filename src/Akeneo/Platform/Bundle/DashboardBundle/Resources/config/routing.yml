@@ -1,0 +1,13 @@
+pim_dashboard_widget_data:
+    path: /widget/{alias}
+    defaults: { _controller: pim_dashboard.controller.widget:dataAction }
+    methods: [GET]
+
+# Used with authentication test in CI
+pim_dashboard_index:
+    path: /dashboard
+    defaults: { _controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController, path: '/#/dashboard', permanent: true }
+
+pim_dashboard_version_data:
+    path: /dashboard/version_data
+    defaults: { _controller: Akeneo\Platform\Bundle\DashboardBundle\Controller\VersionController }

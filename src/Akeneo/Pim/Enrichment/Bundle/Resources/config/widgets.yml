@@ -1,0 +1,8 @@
+services:
+    pim_dashboard.widget.completeness:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Widget\CompletenessWidget'
+        arguments:
+            - '@pim_user.context.user'
+            - '@akeneo.pim.enrichment.follow_up.completeness_widget_query'
+        tags:
+            - { name: pim_dashboard.widget, position: 20 }

@@ -1,0 +1,28 @@
+code;label-en_US;label-de_DE;label-fr_FR;allowed_extensions;available_locales;date_max;date_min;decimals_allowed;default_metric_unit;group;localizable;max_characters;max_file_size;metric_family;minimum_input_length;negative_allowed;number_max;number_min;reference_data_name;scopable;sort_order;type;unique;useable_as_grid_filter;validation_regexp;validation_rule;wysiwyg_enabled
+sku;SKU;SKU;SKU;;;;;;;erp;0;;;;;;;;;0;1;pim_catalog_identifier;1;1;;;
+name;Model name;Model name;Nom du modèle;;;;;;;marketing;1;;;;;;;;;0;0;pim_catalog_text;0;1;;;
+description;Model description;Model beschreibung;Description du modèle;;;;;;;marketing;1;;;;;;;;;1;6;pim_catalog_textarea;0;1;;;1
+erp_name;ERP name;ERP-Produktname;Nom ERP;;;;;;;erp;1;;;;;;;;;0;10;pim_catalog_text;0;1;;;
+meta_title;Meta title;Meta title;Meta titre;;;;;;;ecommerce;1;;;;;;;;;0;10;pim_catalog_text;0;1;;;
+meta_description;Meta description;Meta description;Meta description;;;;;;;ecommerce;1;;;;;;;;;0;10;pim_catalog_textarea;0;1;;;
+keywords;Keywords;Keywords;Mots clés;;;;;;;ecommerce;1;;;;;;;;;0;20;pim_catalog_textarea;0;1;;;
+image;Model picture;Model bild;Image du modèle;png,jpeg,jpg;;;;;;medias;0;;;;;;;;;0;11;pim_catalog_image;0;1;;;
+notice;Notice;Notice;Notice;pdf;;;;;;medias;0;;;;;;;;;0;15;pim_catalog_file;0;1;;;
+weight;Weight;Gewicht;Poids;;;;;1;GRAM;product;0;;;Weight;;0;;;;0;0;pim_catalog_metric;0;1;;;
+price;Price;Preis;Prix;;;;;1;;erp;0;;;;;;;;;0;17;pim_catalog_price_collection;0;1;;;
+variation_name;Variation Name;Variation Name;Nom de la variation;;;;;;;marketing;1;;;;;;;;;0;4;pim_catalog_text;0;1;;;
+variation_description;Variation description;Variation beschreibung;Description de la variation;;;;;;;marketing;1;;;;;;;;;0;5;pim_catalog_textarea;0;1;;;
+variation_image;Variation picture;Variation bild;Image de la variation;png,jpeg,jpg;;;;;;medias;0;;;;;;;;;0;20;pim_catalog_image;0;1;;;
+collection;Collection;Collection;Collection;;;;;;;marketing;0;;;;;;;;;0;2;pim_catalog_multiselect;0;1;;;
+composition;Composition;Composition;Composition;;;;;;;product;0;;;;;;;;;0;5;pim_catalog_textarea;0;1;;;
+wash_temperature;Wash temperature;Wash temperature;Température de lavage;;;;;;;product;0;;;;;;;;;0;6;pim_catalog_simpleselect;0;1;;;
+care_instructions;Care instructions;Care instructions;Instructions d'entretien;;;;;;;product;0;;;;;;;;;0;7;pim_catalog_textarea;0;1;;;
+color;Color;Color;Couleur;;;;;;;product;0;;;;;;;;;0;1;pim_catalog_simpleselect;0;1;;;
+size;Size;Size;Taille;;;;;;;product;0;;;;;;;;;0;2;pim_catalog_simpleselect;0;1;;;
+eu_shoes_size;EU Shoes Size;EU Shoes Size;Taille chaussures EU;;;;;;;product;0;;;;;;;;;0;3;pim_catalog_simpleselect;0;1;;;
+sole_composition;Sole composition;Sole composition;Composition semelle;;;;;;;product;0;;;;;;;;;0;4;pim_catalog_text;0;1;;;
+top_composition;Top composition;Top composition;Composition dessus;;;;;;;product;0;;;;;;;;;0;8;pim_catalog_text;0;1;;;
+brand;Brand;Brand;Marque;;;;;;;marketing;0;;;;;;;;;0;3;pim_catalog_simpleselect;0;0;;;
+ean;EAN;EAN;EAN;;;;;;;erp;0;;;;;;;;;0;0;pim_catalog_text;1;1;;;
+supplier;Supplier;Lieferant;Fournisseur;;;;;;;erp;0;;;;;;;;;0;2;pim_catalog_simpleselect;0;1;;;
+material;Material;Material;Matière;;;;;;;product;0;;;;;;;;;0;22;pim_catalog_simpleselect;0;1;;;

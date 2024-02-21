@@ -1,0 +1,330 @@
+#ORO messages
+"Yes, I Agree": "Evet, Katılıyorum"
+"Yes, do it": "Evet, yap"
+"Ok, got it.": "Tamam, anladım."
+"Edit": "Düzenle"
+"Yes, revoke": "Evet, iptal et"
+"Revoke Confirmation": "Onayı iptal et"
+Prev: Önceki
+Today: Bugün
+Wk: Hafta
+AM: Öğleden önce
+A: A
+PM: Öğleden sonra
+P: P
+"Choose Time": "Zamanı seçin"
+Time: Zaman
+Hour: Hour
+Minute: Dakika
+Second: İkinci
+Millisecond: Milisaniye
+Microsecond: Mikrosaniye
+"Time Zone": "Zaman dilimi"
+#PIM messages
+Localized value: Yerelleştirilmiş değer
+Columns: Sütunlar
+Datagrid Configuration: Veri Kılavuzu Yapılandırması
+#Filters
+Action: İşlem
+Unit: Birim
+Currency: Para birimi
+jstree:
+  all: Tüm ürünler
+  unclassified: Sınıflandıırlmamış ürünler
+  product:
+    all: Tüm ürünler
+    unclassified: Sınıflandırılmamış ürünler
+  no_tree: Mevcut Bağlantı Yok
+  include_sub: Alt ketegorileri dahil et
+#Datetimepicker
+datetimepicker:
+  days:
+    Sunday: Pazar
+    Monday: Pazartesi
+    Tuesday: Salı
+    Wednesday: Çarşamba
+    Thursday: Perşembe
+    Friday: Cuma
+    Saturday: Cumartesi
+  daysShort:
+    Sun: Pazar
+    Mon: Pts
+    Tue: Sal
+    Wed: Çarş
+    Thu: Prş
+    Fri: Cum
+    Sat: Cmt
+  daysMin:
+    Su: Pzr
+    Mo: Pt
+    Tu: Sa
+    We: Çar
+    Th: Per
+    Fr: Cu
+    Sa: Ct
+  months:
+    January: Ocak
+    February: Şubat
+    March: Mart
+    April: Nisan
+    May: May
+    June: Haziran
+    July: Temmuz
+    August: Ağustos
+    September: Eylül
+    October: Ekim
+    November: Kasım
+    December: Aralık
+  monthsShort:
+    Jan: Oca
+    Feb: Şub
+    Mar: Mar
+    Apr: Nis
+    May: May
+    Jun: Haz
+    Jul: Tem
+    Aug: Agu
+    Sep: Eyl
+    Oct: Eki
+    Nov: Kas
+    Dec: Ara
+#ORO
+oro_config:
+  form:
+    config:
+      title: Sistem yapılandırması
+      tab:
+        system:
+          title: Sistem
+      group:
+        localization:
+          title: Yerelleştirme
+          system_locale: Dil
+        notification:
+          title: Bildirimler
+          system_notification: Yeni sürüm bildirimleri
+        loading_message:
+          title: Mesajlar yükleniyor
+          label: Mesajları yüklemeyi etkinleştir
+        loading_messages:
+          label: Kullanılabilir yükleme mesajları
+pim_ui:
+  flash:
+    unsaved_changes: 'Kaydedilmemiş değişikler var, çıkmak istediğinizden eminmisiniz?'
+"Sorry, page was not loaded correctly": "Üzgünüz, sayfa doğru yüklenmedi"
+"Your local changes will be lost. Are you sure you want to refresh the page?": "Yerel değişiklikler kaybolacak. Sayfayı yenilemek istediğinizden emin misiniz?"
+"navigation.message.content.outdated": "{{ title }} sayfasının içeriği güncel değil, lütfen <a href='#' data-action='page-refresh'>sayfayı yenileyin</a>"
+"Content of pinned page is outdated": "Sabitlenmiş sayfanın içeriği güncel değil"
+#Global structure of translation files
+#pim_bundle_name:
+#entity:
+#entity_name:
+#label: entity
+#uppercase_label: Entity
+#plural_label: Entities
+#flash:
+#update:
+#fail: Update failed
+#success: Entity Successfully updated
+#delete:
+#fail: Cannot delete this entity
+#success: Entity successfully removed
+#create:
+#fail: Can not create this entity
+#success: Entity successfully created
+#page_title:
+#index: "]-Inf, 1]1 entity|]1, Inf[{{ count }} entities"
+#property:
+#field_name: Field name
+#complex_field:
+#label: Field name
+#choose: Choose a field name
+#module:
+#module_name:
+#key: message
+pim_common:
+  actions: Eylemler
+  add: Ekle
+  add_attributes: Özellikleri ekle
+  after: Sonraki
+  all: Tümü
+  and: ve
+  apply: Uygula
+  before: Önceki
+  by: tarafından
+  cancel: İptal
+  code: Kod
+  confirm: Doğrula
+  confirm_deletion: Silmeyi Onayla
+  confirm_revocation: İptali onayla
+  create: Oluştur
+  created: Oluşturuldu
+  delete: Sil
+  done: Bitti
+  edit: Düzenle
+  entity_updated: Kaydedilmemiş değişiklikler var.
+  export: Dışa aktar
+  from: '-den'
+  general_properties: Genel özellikler
+  history: Geçmiş
+  label: Etiket
+  label_translations: Katman çevirileri
+  less_than: Daha az
+  loading: Yükleniyor...
+  media_upload: Yüklemek için sürükle ve bırak veya buraya tıkla
+  more_than: Daha fazla
+  next: Sonraki
+  "no": "Hayır"
+  none: Hiçbiri
+  not_available: N/A
+  now: Şimdi
+  ok: Tamam
+  permissions: İzinler
+  previous: Önceki
+  properties: Özellikler
+  remove: Kaldır
+  required_label: (gerekli)
+  save: Kaydet
+  search: Arama
+  select2:
+    search: Arama...
+    no_match: Eşleşme bulunamadı
+    load_more: Daha fazla sonuç yükleniyor...
+  status: Durum
+  to: e
+  type: Tür
+  update: Güncelle
+  "yes": "Evet"
+  operator: Operatör
+  operators:
+    "=": Eşittir
+    "!=": Eşit değildir
+    ">=": Büyük veya eşit
+    ">": Büyüktür
+    "<=": Daha düşük veya eşit
+    "<": Daha azdır
+    EMPTY: Boş
+    NOT EMPTY: Boş değil
+    CONTAINS: Bulundurur
+    DOES NOT CONTAIN: İçermiyor
+    STARTS WITH: Ile başlar
+    ENDS WITH: İle biter
+error:
+  forbidden: Yasak. Bu sayfaya erişim izniniz yok
+alert:
+  attribute_option:
+    save_before_edit_other: Lütfen bunu düzenlemeden önce farklı satırlardaki modifikasyonlarınızı giriniz
+  session_storage:
+    not_available: Web tarayıcınız Anlık Depolama ile uyumlu görünmüyor. Lütfen yöneticiniz ile iletişime geçiniz
+pim_enrich.entity.fallback:
+  flash:
+    update:
+      fail: Güncelleme başarısız oldu
+      success: Güncelleme başarılı
+    delete:
+      fail: Bu öğe silinemiyor
+      success: Öğe başarıyla kaldırıldı
+  module:
+    delete:
+      title: Bunu {{ itemName }} sil
+      alternative_title: Kaldırmayı onayla
+      item: Bu öğeyi silmek istediğinize emin misiniz?
+      item_placeholder: "{{ itemName }} silmek istediğinize eminmisiniz?\nBu işlem geri alınamaz."
+    edit:
+      leave: Bu sayfadan ayrılmak istediğinize eminmisiniz?
+      discard_changes: Eğer sayfadan ayılırsanız {{ entity }} değişikliklerini kaybedeceksiniz.
+      discard_changes_title: Eminmisiniz?
+pim_enrich.entity.job_execution:
+  module:
+    create:
+      upload: '{{ type }} dosyasını buraya bırak veya diske göz atmak için tıkla'
+    download:
+      archive: Oluşturulan arşiv indirme
+      output: Oluşturulan dosya indirme
+      input: Okuma dosyası indirme
+      invalid_xlsx: Geçersiz veri indirme
+      invalid_csv: Geçersiz veri indirme
+pim_title:
+  oro_default: Gösterge paneli
+  pim_enrich_attributegroup_index: Özellik grupları
+  pim_enrich_attributegroup_create: Özellik grupları | Oluştur
+  pim_enrich_attributegroup_edit: Özellik grubu {{ group.label }} | Düzenle
+  pim_enrich_catalog_volume_index: Katalog sayısı takip ediliyor
+  pim_enrich_categorytree_index: Kategori ağaçları
+  pim_enrich_categorytree_create: Kategori ağaçları | Oluştur
+  pim_enrich_categorytree_edit: Ağaç kategorisi {{ category.label }} | Düzenle
+  pim_enrich_categorytree_create_tree: Kategori ağaçları | Oluştur
+  pim_enrich_attribute_index: Özellikler
+  pim_enrich_attribute_create: Özellikler | Oluştur
+  pim_enrich_attribute_edit: Öznitelik {{özniteliği.etiket}} / Düzenle
+  pim_enrich_product_index: Ürünler
+  pim_enrich_product_edit: Ürün {{ product.label }} | Düzenle
+  pim_enrich_product_model_edit: Ürün modeli {{ product.label }} | Düzenleme
+  pim_enrich_family_index: Aileler
+  pim_enrich_family_edit: Aile {{ aile.etiket}} / Düzenle
+  pim_enrich_channel_index: Kanallar
+  pim_enrich_channel_create: Kanallar | Oluştur
+  pim_enrich_channel_edit: Kanal {{ kanal.etiketi }} / Düzenle
+  pim_enrich_currency_index: Para birimleri
+  pim_enrich_locale_index: Yerel Ayarlar
+  pim_enrich_group_index: Gruplar
+  pim_enrich_group_edit: Grup {{ grup.etiketi }} | Düzenle
+  pim_enrich_associationtype_index: İlişki türleri
+  pim_enrich_associationtype_edit: İlişki türü {{ association type.label }} | Düzenle
+  pim_enrich_grouptype_index: Grup türleri
+  pim_enrich_grouptype_edit: Grup türü {{ group type.label }} | Düzenle
+  pim_enrich_mass_edit_action_choose: Toplu düzenleme | Seç
+  pim_enrich_mass_edit_action_configure: Toplu düzenleme | Yapılandır
+  pim_enrich_mass_edit_action_perform: Kitle Düzenle / Perform
+  pim_enrich_job_tracker_index: İşlem izleyicisi
+  pim_enrich_job_tracker_show: İşlem izleyicisi | İşi göster
+  pim_enrich_mass_edit_action: Toplu Düzenle
+  pim_analytics_system_info_index: Sistem bilgisi
+pim_menu:
+  tab:
+    activity: Faaliyet
+    imports: İçe aktarmalar
+    exports: Dışa aktarmalar
+    settings: Ayarlar
+    system: Sistem
+    help:
+      title: Yardım
+      helper: Akeneo yardım merkezi
+  item:
+    association_type: İlişki türleri
+    attribute_group: Özellik grupları
+    channel: Kanallar
+    currency: Para birimleri
+    dashboard: Gösterge paneli
+    family: Aileler
+    group: Gruplar
+    group_type: Grup türleri
+    product_model: Ürün modelleri
+    export_history: Dışa aktarımların geçmişi
+    export_profile: Profilleri dışarı aktar
+    import_history: İçe aktarımların geçmişi
+    import_profile: Profilleri içe aktar
+    configuration: Yapılandırma
+    user_management: Kullanıcı Yönetimi
+    user: Kullanıcılar
+    user_group: Kullanıcı Grupları
+    user_role: Roller
+    info: Sistem bilgisi
+    job_tracker: İşlem izleyicisi
+    catalog_volume: Katalog sayısı takip ediliyor
+  navigation:
+    activity: Etkinlik gezisi
+    system: Sistemde gez
+    user: Kullanıcı yönetimi gezinme
+    settings: Ayarlarda gez
+    product: Ürün gezintisi
+    product_infos: Ürün bilgileri
+  user:
+    logout: Çıkış
+    user_account: Hesabım
+pim_notification:
+  types:
+    import: İçe aktar
+    export: Dışa aktar
+    quick_export: Dışa hızlı aktarım
+    mass_edit: Toplu Düzenle

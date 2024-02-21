@@ -1,0 +1,15 @@
+services:
+    akeneo.enrichment.lock.store:
+        class: Symfony\Component\Lock\Store\PdoStore
+        arguments:
+            - '@database_connection'
+
+    akeneo.enrichment.lock.store.retry_till_save:
+        class: Symfony\Component\Lock\Store\RetryTillSaveStore
+        decorates: akeneo.enrichment.lock.store
+        arguments: ['@akeneo.enrichment.lock.store.retry_till_save.inner', 100, 50]
+
+    akeneo.enrichment.lock.factory:
+        class: Symfony\Component\Lock\LockFactory
+        arguments:
+            - '@akeneo.enrichment.lock.store'

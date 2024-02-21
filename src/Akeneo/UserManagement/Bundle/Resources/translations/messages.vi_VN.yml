@@ -1,0 +1,101 @@
+pim_user:
+  user:
+    title: Người dùng
+    fields:
+      name_prefix: Tiền tố tên
+      email: Thư điện tử
+      username: Tên người dùng
+      first_name: Tên
+      middle_name: Chữ lót
+      last_name: Họ
+      name_suffix: Hậu tố tên
+      date_of_birth: Ngày sinh
+      avatar: Ảnh đại diện
+      roles: Vai trò
+      groups: Nhóm
+      password: Mật khẩu
+      password_again: Nhập lại mật khẩu
+      catalog_locale: Locale của phân loại
+      catalog_scope: Phạm vi của phân loại
+      default_grid_view:
+        none: Không có
+      last_logged_in: Đăng nhập lần cuối
+      login_count: Số lần đăng nhập
+      created: Đã tạo
+      updated: Đã cập nhật
+      status: Trạng thái
+      capabilities: Khả năng
+      has_role: Có vai trò
+      has_group: Có nhóm
+    tabs:
+      general:
+        title: Tổng quát
+        contact_information: Thông tin liên lạc
+      additional:
+        title: Bổ sung
+      group_and_role.title: Nhóm và Vai trò
+      password.title: Mật khẩu
+      business_unit.title: Đơn vị kinh doanh
+      email_synchronization.title: Thiết đặt đồng bộ thư điện tử
+    removed_user: Xóa người dùng
+    login:
+      username_or_email: Tên người dùng hoặc Email
+      remember_me: Lưu lại trạng thái đăng nhập trên máy tính này
+      password_forgotten: Quên Mật Khẩu?
+      forgot_password: Quên Mật Khẩu
+      request: Yêu cầu
+      reset: Thiết lập lại
+  group:
+    tab:
+      general.title: Tổng quát
+      users.title: Người dùng
+  roles:
+    title: Vai trò
+    tab:
+      general: Tổng quát
+      users: Người dùng
+  controller:
+    group:
+      message:
+        saved: "Nhóm đã được lưu"
+    role:
+      message:
+        saved: "Vai trò đã được lưu"
+    user:
+      message:
+        saved: "Người dùng đã được lưu"
+pim_datagrid:
+  columns:
+    user:
+      createdAt: "Ngày tạo"
+      updatedAt: "Ngày cập nhật"
+    roles:
+      label: "Nhãn"
+    groups:
+      name: "Tên"
+confirmation:
+  remove:
+    role: Bạn có chắc bạn muốn xoá vai trò này không?
+    user: Bạn có chắc bạn muốn xóa người dùng này không?
+flash:
+  role:
+    removed: Vai trò đã được gỡ bỏ thành công
+  user:
+    removed: Người dùng đã được gỡ bỏ thành công
+oro_security:
+  acl_group:
+    user: Người dùng
+    role: Vai trò
+  acl:
+    user:
+      view: Danh sách người dùng
+      create: Tạo người dùng
+      edit: Cập nhật người dùng
+#Security
+(default): Quyền mặc định trên thực thể
+VIEW: Xem
+CREATE: Tạo
+EDIT: Chỉnh sửa
+DELETE: Xóa
+ASSIGN: Chỉ định
+SHARE: Chia sẻ

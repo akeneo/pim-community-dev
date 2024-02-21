@@ -1,0 +1,27 @@
+<div class="AknFilterChoice choicefilter">
+    <div class="AknFilterChoice-header">
+        <div class="AknFilterChoice-title"><%- label %></div>
+        <% if (emptyChoice) { %>
+        <div class="AknDropdown operator">
+            <div class="AknActionButton AknActionButton--withoutBorder" data-toggle="dropdown">
+                <span class="AknActionButton-highlight"><%- selectedOperatorLabel %></span>
+                <span class="AknActionButton-caret"></span>
+            </div>
+            <div class="AknDropdown-menu">
+                <div class="AknDropdown-menuTitle"><%- operatorLabel %></div>
+                <% _.each(operatorChoices, function (label, operator) { %>
+                <div class="AknDropdown-menuLink<% if (selectedOperator == operator) { %> AknDropdown-menuLink--active active<% } %>">
+                    <span class="label operator_choice" data-value="<%= operator %>"><%- label %></span>
+                </div>
+                <% }); %>
+            </div>
+        </div>
+        <% } %>
+    </div>
+    <div>
+        <input type="text" name="value" class="AknTextField select-field"/>
+    </div>
+    <div class="AknFilterChoice-button">
+        <button type="button" class="AknButton AknButton--apply filter-update"><%- updateLabel %></button>
+    </div>
+</div>

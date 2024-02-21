@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.2 (67145) - http://www.bohemiancoding.com/sketch -->
+    <title>Icons / grey / danger</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Icons-/-grey-/-danger" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="icon" transform="translate(2.000000, 0.000000)" fill-rule="nonzero" stroke="#983425">
+            <path d="M11.7888544,3.57770876 L18.5527864,17.1055728 C19.0467649,18.0935298 18.6463162,19.2948759 17.6583592,19.7888544 C17.3806483,19.9277098 17.0744222,20 16.763932,20 L3.23606798,20 C2.13149848,20 1.23606798,19.1045695 1.23606798,18 C1.23606798,17.6895098 1.30835816,17.3832837 1.4472136,17.1055728 L8.21114562,3.57770876 C8.70512412,2.58975177 9.9064702,2.18930308 10.8944272,2.68328157 C11.281482,2.87680898 11.595327,3.19065396 11.7888544,3.57770876 Z" id="shape"></path>
+            <path d="M10.0002191,6.5 L10,13.5" id="shape"></path>
+            <rect id="shape" x="9.5" y="16" width="1" height="1" rx="0.5"></rect>
+        </g>
+    </g>
+</svg>

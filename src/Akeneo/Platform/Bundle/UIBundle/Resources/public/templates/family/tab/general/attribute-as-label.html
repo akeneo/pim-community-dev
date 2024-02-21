@@ -1,0 +1,23 @@
+<div class="AknFieldContainer-header">
+    <label class="AknFieldContainer-label control-label required" for="<%- fieldBaseId + 'attribute_as_label' %>">
+        <%- label %> <em><%- requiredLabel %></em>
+    </label>
+</div>
+<div class="AknFieldContainer-inputContainer">
+    <select class="select2" id="<%- fieldBaseId + 'attribute_as_label' %>" <%- isReadOnly ? 'readonly disabled' : '' %>>
+        <% _.each(attributes, function (attribute) { %>
+        <option value="<%- attribute.code %>" <%- (currentAttribute === attribute.code) ? 'selected' : '' %> >
+        <%- i18n.getLabel(attribute.labels, catalogLocale, attribute.code) %>
+        </option>
+        <% }); %>
+    </select>
+</div>
+<div class="AknFieldContainer-footer">
+    <div class="AknFieldContainer-validationErrors validation-errors">
+        <% _.each(errors, function (error) { %>
+        <div class="AknFieldContainer-validationError">
+            <%- error %>
+        </div>
+        <% }); %>
+    </div>
+</div>

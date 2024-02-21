@@ -1,0 +1,81 @@
+parameters:
+    pim_user.form.type.reset.class:             Akeneo\UserManagement\Bundle\Form\Type\ResetType
+    pim_user.form.type.acl_role_type.class:     Akeneo\UserManagement\Bundle\Form\Type\AclRoleType
+    pim_user.form.type.role.api.class:          Akeneo\UserManagement\Bundle\Form\Type\RoleApiType
+    pim_user.form.type.group.class:             Akeneo\UserManagement\Bundle\Form\Type\GroupType
+    pim_user.form.type.group.api.class:         Akeneo\UserManagement\Bundle\Form\Type\GroupApiType
+    pim_user.form.handler.reset.class:          Akeneo\UserManagement\Bundle\Form\Handler\ResetHandler
+    pim_user.form.handler.role.class:           Akeneo\UserManagement\Bundle\Form\Handler\RoleHandler
+    pim_user.form.handler.group.class:          Akeneo\UserManagement\Bundle\Form\Handler\GroupHandler
+    pim_user.form.handler.acl_role.class:       Akeneo\UserManagement\Bundle\Form\Handler\AclRoleHandler
+
+services:
+    pim_user.form.role:
+        class:                        Symfony\Component\Form\Form
+        factory:                      ['@form.factory', 'createNamed']
+        arguments:                    ["pim_user_role_form", '%pim_user.form.type.acl_role_type.class%']
+
+    pim_user.form.role.api:
+        class:                        Symfony\Component\Form\Form
+        factory:                      ['@form.factory', 'createNamed']
+        arguments:                    ["role", '%pim_user.form.type.role.api.class%', null]
+
+    pim_user.form.group:
+        class:                        Symfony\Component\Form\Form
+        factory:                      ['@form.factory', 'createNamed']
+        arguments:                    ["pim_user_group_form", '%pim_user.form.type.group.class%']
+
+    pim_user.form.group.api:
+        class:                        Symfony\Component\Form\Form
+        factory:                      ['@form.factory', 'createNamed']
+        arguments:                    ["group", '%pim_user.form.type.group.api.class%', null]
+
+    pim_user.form.reset:
+        class:                        Symfony\Component\Form\Form
+        factory:                      ['@form.factory', 'createNamed']
+        arguments:                    ["pim_user_reset_form", '%pim_user.form.type.reset.class%', null, { validation_groups: [ResetPassword, Default] }]
+
+    pim_user.form.type.role.api:
+        class:                        '%pim_user.form.type.role.api.class%'
+        tags:
+            - { name: form.type, alias: role }
+
+    pim_user.form.type.group:
+        class:                        '%pim_user.form.type.group.class%'
+        tags:
+            - { name: form.type, alias: pim_user_group }
+
+    pim_user.form.type.group.api:
+        class:                        '%pim_user.form.type.group.api.class%'
+        tags:
+            - { name: form.type, alias: group }
+
+    pim_user.form.type.reset:
+        class:                        '%pim_user.form.type.reset.class%'
+        arguments:                    ['%pim_user.entity.user.class%']
+        tags:
+            - { name: form.type, alias: pim_user_reset }
+
+    pim_user.form.handler.role.api:
+        class:                        '%pim_user.form.handler.role.class%'
+        arguments:                    ["@pim_user.form.role.api", "@request_stack", "@doctrine.orm.entity_manager"]
+
+    pim_user.form.handler.group:
+        class:                        '%pim_user.form.handler.group.class%'
+        arguments:                    ["@pim_user.form.group", "@request_stack", "@doctrine.orm.entity_manager"]
+
+    pim_user.form.handler.group.api:
+        class:                        '%pim_user.form.handler.group.class%'
+        arguments:                    ["@pim_user.form.group.api", "@request_stack", "@doctrine.orm.entity_manager"]
+
+    pim_user.form.handler.reset:
+        class:                        '%pim_user.form.handler.reset.class%'
+        arguments:                    ["@pim_user.form.reset", "@request_stack", "@pim_user.manager"]
+
+    pim_user.form.handler.acl_role:
+        class:                        '%pim_user.form.handler.acl_role.class%'
+        shared:                       false
+        arguments:                    [ "@form.factory", '%pim_user.privileges%', '@request_stack', '@Akeneo\UserManagement\Domain\Permissions\Query\EditRolePermissionsRoleQuery', '@translator', '@oro_security.acl.extension.action' ]
+        calls:
+            - [setAclManager, ["@oro_security.acl.manager"]]
+            - [setEntityManager, ["@doctrine.orm.entity_manager"]]

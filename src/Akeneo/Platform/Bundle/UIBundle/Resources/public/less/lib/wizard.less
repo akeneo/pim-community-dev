@@ -1,0 +1,63 @@
+@import '../base/variables';
+
+.wizard-header {
+  @itemWidth: @AknCenteredContentWidth / 4;
+
+  background: lighten(@AknGrey, 30%);
+  padding: 15px 0 30px;
+  margin-bottom: 25px;
+  border-top: 1px solid @AknBorderColor;
+  border-bottom: 1px solid @AknBorderColor;
+  text-align: center;
+
+  .wizard {
+    width: @AknCenteredContentWidth;
+    margin: auto;
+
+    li {
+      width: @itemWidth;
+      position: relative;
+      display: inline-block;
+      padding-top: 10px;
+      padding-bottom: 20px;
+      font-weight: bold;
+      text-align: center;
+      list-style: none;
+
+      .dot {
+        left: (@itemWidth - @AknFontSizeBig) / 2;
+        color: @AknPurple;
+        position: absolute;
+        bottom: -6px;
+        line-height: 0;
+
+        .icon-circle {
+          margin: 0;
+          font-size: @AknFontSizeBig;
+        }
+      }
+    }
+
+    .progress-start,
+    .progress-end {
+      background: @AknGrey;
+      position: absolute;
+      bottom: 0;
+      width: 50%;
+      height: 3px;
+
+      &.active {
+        background-color: @AknPurple;
+      }
+    }
+
+    .progress-start {
+      left: 0;
+    }
+
+    .progress-end {
+      right: 0;
+    }
+  }
+}
+

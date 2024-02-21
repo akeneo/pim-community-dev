@@ -1,0 +1,146 @@
+pim_title:
+  akeneo_identifier_generator_index: "Identifier generator"
+  akeneo_identifier_generator_edit: "Identifier generator bewerken"
+pim_error:
+  unauthorized_list_attributes: "U kunt geen attributen tonen. Neem contact op met uw beheerder om uw rechten aan te passen."
+  unauthorized_list_properties: "U hebt geen rechten om deze eigenschap te vermelden. Neem contact op met uw beheerder."
+  unauthorized_list_families: "U kunt geen families tonen. Neem contact op met uw beheerder om uw rechten te wijzigen."
+  general: "Er is een fout opgetreden tijdens het weergeven van deze pagina. Neem contact op met uw beheerder."
+  unexpected: "Er is een onverwachte fout opgetreden. Neem contact op met uw beheerder."
+  404: 'Er is een 404 fout opgetreden...'
+  identifier_generator_not_found: 'Identifier generator niet gevonden'
+  selection_attribute_not_found: 'Een attribuut uit uw productselectie is verwijderd uit uw catalogus. Verwijder deze eigenschap uit uw productselectie.'
+pim_identifier_generator:
+  create:
+    form:
+      title: "Maak een nieuwe identifier generator aan"
+      select_identifier_attribute: "Selecteer uw identifier attribuut"
+  tabs:
+    general: "Algemeen"
+    product_selection: "Productselectie"
+    identifier_structure: "Identifier opbouw"
+  general:
+    title: "Algemene eigenschappen"
+    label_translations_in_ui_locale: "Label vertalingen in de gebruikersinterface taal"
+    text_transformation:
+      label: 'Tekst transformatie'
+      no: 'Geen tekst transformatie'
+      lowercase: 'Kleine letters'
+      uppercase: 'Hoofdletters'
+  flash:
+    create:
+      success: 'De identifier generator "{{ code }}" is succesvol aangemaakt'
+      error: 'De identifier generator kon niet aangemaakt worden'
+    update:
+      success: 'De identifier generator "{{ code }}" is succesvol bijgewerkt'
+      error: 'De identifier generator kon niet worden bijgewerkt'
+    delete:
+      success: 'De identifier generator "{{ code }}" is succesvol verwijderd'
+      error: 'De identifier generator kon niet verwijderd worden'
+  list:
+    identifier: 'Identifier'
+    first_generator: 'Maak je eerste Identifier generator aan!'
+    read_only_list: 'Neem contact op met uw beheerder om toegang te hebben tot deze functie.'
+    helper:
+      title: 'Automatiseer het genereren van identifiers. '
+      info: 'Zodra een identifier generator is aangemaakt, wordt een id automatisch toegewezen aan elk nieuw product dat u aanmaakt en u zelf geen handmatige waarde invoert.'
+    check_help_center: 'Kijk in ons helpcenter voor meer informatie.'
+    max_generator:
+      title: 'U heeft de limiet van {{ count }} id-generatoren bereikt.'
+    confirmation: 'Weet u zeker dat u deze eigenschap wilt verwijderen?'
+  operators:
+    'NOT IN CHILDREN': 'Niet in onderliggende'
+    'IN CHILDREN': 'In onderliggende'
+    UNCLASSIFIED: 'Niet geclassificeerd'
+    CLASSIFIED: 'Geclassificeerd'
+  selection:
+    limit_reached: 'U heeft de limiet van {{ count }} voorwaarden bereikt'
+    helper:
+      title: 'Voeg voorwaarden toe aan uw productselectie, als u:'
+      automate: 'de creatie van identifiers wilt automatiseren voor een gerichte selectie van producten'
+      multiple: 'meerdere id-structuren wilt hebben voor verschillende productselecties'
+    empty:
+      title: 'Definieer uw productselectie'
+      text: 'Al uw producten met een lege identificatie zullen beïnvloed worden.'
+      info: 'Als u specifieke producten wilt beïnvloeden, voeg dan nieuwe voorwaarden toe.'
+    settings:
+      enabled:
+        disabled: 'Uitgeschakeld'
+        placeholder: 'Kies een status'
+      family:
+        placeholder: 'Selecteer ten minste één familie'
+      select_option:
+        placeholder: 'Selecteer tenminste één optie.'
+      categories:
+        tree: Boom
+  structure:
+    helper: 'Definieer de structuur van de Identifier die u wilt genereren. Indien u hulp nodig heeft bij het opzetten van de instelling van de eigenschap, {{link}}.'
+    helper_link: 'Kijk in ons helpcenter voor meer informatie.'
+    title: 'Identifier opbouw.'
+    add_element: 'Nieuwe eigenschap toevoegen'
+    limit_reached: 'U heeft de limiet van {{ count }} eigenschappen bereikt'
+    property_type:
+      sections:
+        system: 'Systeem'
+      free_text: 'Vrije tekst'
+      auto_number: 'Automatische nummering'
+      family: 'Familie'
+    settings:
+      free_text:
+        title: 'Vrije tekstinstellingen'
+        string_label: 'Definieer uw tekst'
+      auto_number:
+        title: 'Automatische nummering'
+        digitsMin_label: 'Min cijfers'
+        numberMin_label: 'Min nummer'
+      family:
+        title: 'Familie'
+      code_format:
+        type:
+          truncate: 'Gebruik eerste tekens'
+          code: 'Gebruik de gehele code'
+          nomenclature: 'Gebruik uw eigen nomenclatuur'
+      operator:
+        title: 'Operator'
+        placeholder: 'Selecteer de operator'
+      simple_select:
+        title: 'Attribuut'
+      abbrev_type: 'Definieer de indeling van deze eigenschap'
+      abbrev_type_empty_label: 'Selecteer de indeling'
+      chars_number: 'Aantal tekens'
+    empty:
+      title: 'Creëer uw identifier opbouw'
+      text: 'Klik op "Voeg nieuwe eigenschap toe" rechtsboven'
+      link_text: 'Kijk in ons helpcenter voor meer informatie.'
+    delimiters:
+      title: 'Scheidingstekens'
+      helper: 'Leer meer over het toevoegen van standaard of aangepaste scheidingstekens in {{link}}.'
+      helper_link: 'ons helpcentrum'
+      checkbox_label: 'Gebruik scheidingstekens tussen elke eigenschap'
+      input_label: 'Definieer uw scheidingstekens'
+  deletion:
+    operations: 'Bewerkingen'
+    confirmation: 'Weet u zeker dat u deze identifier generator wilt verwijderen?'
+    type: 'Typ alstublieft "{{ code }}"'
+  nomenclature:
+    edit: 'Nomenclatuur bewerken'
+    section_title: 'Mijn identifiers genereren voor {{ property }}'
+    title: 'Beheer nomenclatuur'
+    helper: 'Uw nomenclatuur zal worden gebruikt voor al uw id-generatoren.'
+    characters_number: 'Aantal tekens'
+    operator_placeholder: 'Kies uw operator'
+    value_placeholder: 'Kies uw tekens'
+    nomenclature: 'Nomenclatuur'
+    generate_if_empty: 'Nomenclatuur automatisch genereren'
+    display: 'Weergeven'
+    filters:
+      all: 'Alle'
+      error: 'Fout'
+      empty: 'Leeg'
+      filled: 'Gevuld'
+    empty:
+      title: 'Geen nomenclatuur gevonden'
+    flash:
+      success: 'Uw nomenclatuur is succesvol opgeslagen'
+      error: 'Uw nomenclatuur kon niet worden opgeslagen'
+      warning: 'Je nomenclatuur werd met succes opgeslagen, maar sommige waarden worden niet gegenereerd. Bewerk je nomenclatuur om de foutieve waarden aan te passen.'

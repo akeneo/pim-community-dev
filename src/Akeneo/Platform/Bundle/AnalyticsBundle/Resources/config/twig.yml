@@ -1,0 +1,11 @@
+parameters:
+    pim_analytics.twig.update_extension.class: Akeneo\Platform\Bundle\AnalyticsBundle\Twig\UpdateExtension
+
+services:
+    pim_analytics.twig.update_extension:
+        class: '%pim_analytics.twig.update_extension.class%'
+        arguments:
+            - '@oro_config.global'
+            - '%pim_analytics_update_server_url%'
+        tags:
+            - { name: twig.extension }

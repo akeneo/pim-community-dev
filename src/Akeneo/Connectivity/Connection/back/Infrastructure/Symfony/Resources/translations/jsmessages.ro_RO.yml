@@ -1,0 +1,102 @@
+pim_menu:
+  item:
+    connection_settings: Conexiuni
+pim_title:
+  akeneo_connectivity_connection_settings_index: Conexiuni
+akeneo_connectivity.connection:
+  connections: Conexiuni
+  secondary_actions:
+    title: Alte acțiuni
+  connection:
+    code: Cod
+    label: Etichetă
+    flow_type: Tip flux
+    image: Imagine
+    client_id: ID client
+    secret: Secret
+    username: Nume utilizator
+    password: Parolă
+    user_role_id: Rol
+    user_group_id: Grup
+  connection_count: '{{ count }} conexiune | {{ count }} conexiuni'
+  no_connection:
+    title: Nu exista nici o conexiune declarată.
+    message_link: apăsați aici.
+  create_connection:
+    title: Creează o nouă conexiune
+    description: Poți crea până la 50 de conexiuni.
+  edit_connection:
+    subtitle: Setări
+    credentials:
+      title: Credențiale
+      password_helper:
+        link: Mai multe informații…
+      clear_password_helper:
+        link: Mai multe informații
+      action:
+        copy: Copiaţi în clipboard
+        regenerate: Regenerează
+      flash:
+        copied: '{{ name }} copiat în clipboard'
+    permissions:
+      title: Permisiuni
+      helper:
+        link: Aflați mai multe despre permisiunile conexiunilor...
+      user_role_helper:
+        message: Rolul implicit {{ role }} nu este cea mai bună alegere pentru aceasta conexiune. Îți recomandăm să alegi un rol adaptat conexiunii folosite.
+        link: Mai multe informații aici...
+      user_group_helper:
+        message: Îți recomandăm să alegi un rol adaptat conexiunii folosite.
+        link: Mai multe informații aici...
+  regenerate_secret:
+    title: Confirmați regenerarea
+    action:
+      regenerate: Regenerează
+    flash:
+      success: Parola conexiunii a fost regenerată.
+      error: Ne pare rău, a apărut o eroare la regenerarea secretului de conexiune.
+  regenerate_password:
+    title: Confirmați regenerarea
+    link: Iată ce se va întâmpla.
+    action:
+      regenerate: Regenerează
+    flash:
+      success: Parola conexiunii a fost regenerată.
+      error: Ne pare rău, a apărut o eroare la regenerarea parolei conexiunii.
+  delete_connection:
+    title: Confirmă ștergerea
+    flash:
+      success: Conexiune a fost ștearsă.
+  auditable_helper:
+    link: Mai multe informații…
+  edit_image:
+    upload_helper: Schimbă imaginea, drag&drop sau
+    remove_helper: Șterge imaginea
+    click_here: fă clic aici
+  dashboard:
+    helper:
+      title: '👋 Bine ați venit la tabloul de bord al conexiunii!'
+    user_survey:
+      title: Doriți mai multe date pe acest tablou de bord?
+      button: Sa ii dam drumul!
+    connection_selector:
+      all: Toate
+    charts:
+      legend:
+        today: Azi
+    no_connection:
+      message_with_permission:
+        link: aici.
+      message_without_permission:
+        message: Cereți administratorului să creeze una.
+        link: Află mai multe despre conexiuni aici...
+  webhook:
+    form:
+      secret: Secret
+    regenerate_secret:
+      title: Confirmați regenerarea
+      action:
+        regenerate: Regenerează
+  runtime_error:
+    error_message: Ce păcat! S-a produs o eroare...
+    reload_button: Reîncarcă

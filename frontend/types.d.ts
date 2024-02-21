@@ -1,0 +1,5 @@
+declare module '*.gif';
+declare module '*.svg' {
+    const src: string;
+    export default src;
+}

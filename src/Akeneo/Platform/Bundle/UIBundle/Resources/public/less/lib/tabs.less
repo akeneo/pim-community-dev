@@ -1,0 +1,20 @@
+@import '../base/variables';
+
+.tabsection-title {
+  &:not(:empty) {
+    padding: 0;
+    line-height: @AknTabHeight;
+    text-transform: uppercase;
+    font-size: @AknFontSizeBig;
+    border-bottom: 1px solid @AknDarkBlue;
+    color: @AknDarkBlue;
+  }
+}
+
+.tab-container.tab-content {
+  flex-grow: 1;
+}
+
+.tab-content > .tab-pane {
+  padding: 0;
+}

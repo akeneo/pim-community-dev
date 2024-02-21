@@ -1,0 +1,14 @@
+pim_enrich:
+  acl:
+    category:
+      list: Categorieën weergeven
+      create: Maak een categorie aan
+      edit: Bewerk een categorie
+      remove: Verwijder een categorie
+      move: Categorie verplaatsen
+      children: Onderliggende categorieën van categorie bekijken
+      products: Producten van categorie weergeven
+      history: Geschiedenis van categorie weergeven
+      template: Sjabloon voor categorie beheren
+      edit_attributes: Categorie-attributen bewerken
+      order_trees: Categorieën rangschikken/herschikken

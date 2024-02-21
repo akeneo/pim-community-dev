@@ -1,0 +1,22 @@
+parameters:
+    pim_connector.step.validator.class: Akeneo\Tool\Component\Connector\Step\ValidatorStep
+    pim_connector.step.tasklet.class:   Akeneo\Tool\Component\Connector\Step\TaskletStep
+
+services:
+    # Validator steps -------------------------------------------------------------------------------------------------
+    pim_connector.step.charset_validator:
+        class: '%pim_connector.step.validator.class%'
+        arguments:
+            - 'validation'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.validator.item.charset_validator'
+
+    Akeneo\Tool\Component\Connector\Step\CheckJobUniqueStep:
+        arguments:
+            - 'check_job_unique'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@logger'
+            - '@akeneo_batch.manager.job_execution'
+            - '@pim_enrich.repository.job_execution'

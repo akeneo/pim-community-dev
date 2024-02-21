@@ -1,0 +1,41 @@
+@import '../base/variables';
+
+.AknWidget {
+  margin: 20px auto;
+  width: 100%;
+
+  &-header {
+    color: @AknDarkBlue;
+    border-bottom: 1px solid @AknDarkBlue;
+    font-size: @AknFontSizeBig;
+    text-transform: uppercase;
+    line-height: 44px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &--compact {
+      height: 44px;
+    }
+  }
+
+  &-subTitle {
+    padding: 5px 0;
+    border-bottom: 1px solid @AknDarkBlue;
+  }
+
+  &-content {
+    position: relative; // For loading mask
+    min-height: 50px; // For loading mask
+
+    &--withPadding {
+      padding: 10px;
+    }
+  }
+
+  &-footer {
+    border-top: 1px solid @AknBorderColor;
+    padding-top: 10px;
+    margin-top: 10px;
+  }
+}

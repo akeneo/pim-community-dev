@@ -1,0 +1,7 @@
+parameters:
+  level: 6
+  paths:
+    - %rootDir%/../../../src/Akeneo/Category
+  excludePaths:
+    - %rootDir%/../../../src/Akeneo/Category/back/tests/Specification
+    - %rootDir%/../../../src/Akeneo/Category/back/Infrastructure

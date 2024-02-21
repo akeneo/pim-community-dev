@@ -1,0 +1,63 @@
+pim_analytics:
+  new_patch_available: Uusi päivitys saatavilla
+  system_info:
+    title: Järjestelmätiedot
+    download: Lataa
+  info_header:
+    property: Ominaisuus
+    information: Tiedot
+  info_type:
+    pim_edition: Painos
+    pim_version: Versio
+    pim_storage_driver: Tallennustila
+    pim_environment: Ympäristö
+    pim_install_time: Asennusaika
+    registered_bundles: Rekisteröidyt paketit
+    nb_channels: Kanavien määrä
+    nb_products: Tuotteiden määrä
+    nb_product_models: Tuotemallien määrä
+    nb_variant_products: Varianttien määrä
+    nb_family_variants: Varianttiperheiden määrä
+    nb_attributes: Attribuuttien määrä
+    nb_scopable_attributes: Kanavakohtaisten attribuuttien määrä
+    nb_localizable_attributes: Lokalisoitavien attribuuttien määrä
+    nb_scopable_localizable_attributes: Lokalisoitavien ja kanavakohtaisten attribuuttien määrä
+    nb_useable_as_grid_filter_attributes: Tuoteruudukon suodattimissa käytettävien attribuuttien määrä
+    avg_percentage_scopable_attributes_per_family: Kanavakohtaisia attribuutteja attribuuttiperhettä kohden keskimäärin (%)
+    avg_percentage_localizable_attributes_per_family: Lokalistoitavia attribuutteja attribuuttiperhettä kohden keskimäärin (%)
+    avg_percentage_scopable_localizable_attributes_per_family: Lokalistoitavia ja kanavakohtaisia attribuutteja attribuuttiperhettä kohden keskimäärin (%)
+    avg_number_attributes_per_family: Attribuutteja keskimäärin attribuuttiperhettä kohden
+    nb_locales: Lokaalien lukumäärä
+    nb_families: Perheiden määrä
+    nb_users: Käyttäjien määrä
+    nb_categories: Kategorioiden määrä
+    nb_category_trees: Kategoriapuiden määrä
+    max_category_in_one_category: Enimmäismäärä kategorioita yhdessä kategoriassa
+    max_category_levels: Kategoriatasojen suurin määrä
+    nb_product_values: Tuotearvojen määrä
+    avg_product_values_by_product: Keskimääräinen tuotearvojen määrä tuotteella
+    avg_product_values_by_family: Potentiaalisia tuotearvoja keskimäärin attribuuttiperhettä kohden
+    max_product_values_by_family: Potentiaalisia tuotearvoja maksimissaan attribuuttiperhettä kohden
+    pim_storage_version: Tallennustilan versio
+    os_version: Käyttöjärjestelmäversio
+    php_version: PHP-versio
+    mysql_version: MySQL-versio
+    mariadb_version: MariaDB-versio
+    mongodb_version: MongoDB-versio
+    server_version: Palvelimen versio
+    php_extensions: PHP-laajennukset
+    email_domains: Liitetyt verkkoosoitteet
+    api_connection: API-yhteydet
+    nb_media_files_in_products: Tuotteilla olevien mediatiedostojen määrä
+    nb_media_images_in_products: Tuotteilla olevien kuvien määrä
+    is_demo_catalog: Demo-katalogi asennettu
+    nb_active_event_subscription: Aktiivisten web-hookien määrä
+    activated_app_ids: Yhdistetyt sovellukset
+    nb_activated_apps: Yhdistettyjen sovellusten määrä
+    data_source.tracked: Seurattavien lähdetyyppisten API-yhteyksien määrä
+    data_source.untracked: Ei-seurattavien lähdetyyppisten API-yhteyksien määrä
+    data_destination.tracked: Seurattavien kohdetyyppisten API-yhteyksien määrä
+    data_destination.untracked: Ei-seurattavien kohdetyyppisten API-yhteyksien määrä
+    other.tracked: Seurattavien muiden API-yhteyksien määrä
+    other.untracked: Ei-seurattavien muiden API-yhteyksien määrä
+

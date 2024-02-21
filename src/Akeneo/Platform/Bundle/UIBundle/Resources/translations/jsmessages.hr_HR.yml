@@ -1,0 +1,278 @@
+#ORO messages
+"Yes, I Agree": "Da, slažem se"
+"Yes, do it": "Da, uradi"
+"Ok, got it.": "Dobro, razumijem."
+"Edit": "Uredi"
+Prev: Prethodna
+Today: Danas
+Wk: Tj
+AM: AM
+A: A
+PM: PM
+P: P
+"Choose Time": "Odaberi vrijeme"
+Time: Vrijeme
+Hour: Sat
+Minute: Minuta
+Second: Sekunda
+Millisecond: Milisekundi
+Microsecond: Mikrosekundi
+"Time Zone": "Vremenska zona"
+#PIM messages
+Localized value: Vrijednost regionalnih postavki
+Columns: Stupci
+Datagrid Configuration: DataGrid konfiguracija
+#Filters
+Action: Akcija
+Unit: Jedinica
+Currency: Valuta
+jstree:
+  all: Svi proizvodi
+  unclassified: Neklasificirani proizvodi
+  product:
+    all: Svi proizvodi
+    unclassified: Neklasificirani proizvodi
+  no_tree: Nema dostupanog stabla
+  include_sub: Uključuje pod-kategorije
+#Datetimepicker
+datetimepicker:
+  days:
+    Sunday: Nedjelja
+    Monday: Ponedjeljak
+    Tuesday: Utorak
+    Wednesday: Srijeda
+    Thursday: Četvrtak
+    Friday: Petak
+    Saturday: Subota
+  daysShort:
+    Sun: Ned
+    Mon: Pon
+    Tue: Uto
+    Wed: Sri
+    Thu: Čet
+    Fri: Pet
+    Sat: Sub
+  daysMin:
+    Su: Ne
+    Mo: Po
+    Tu: Ut
+    We: Sr
+    Th: Če
+    Fr: Pe
+    Sa: Su
+  months:
+    January: Siječanj
+    February: Veljača
+    March: Ožujak
+    April: Travanj
+    May: Svi
+    June: Lipanj
+    July: Srpanj
+    August: Kolovoz
+    September: Rujan
+    October: Listopad
+    November: Studeni
+    December: Prosinac
+  monthsShort:
+    Jan: Sije
+    Feb: Velj
+    Mar: Ožu
+    Apr: Tra
+    May: Svi
+    Jun: Lip
+    Jul: Srp
+    Aug: Kol
+    Sep: Ruj
+    Oct: Lis
+    Nov: Stud
+    Dec: Pro
+#ORO
+oro_config:
+  form:
+    config:
+      title: Konfiguracija sustava
+      tab:
+        system:
+          title: Sustav
+      group:
+        localization:
+          title: Lokalizacija
+          system_locale: Jezik
+        notification:
+          title: Obavijesti
+          system_notification: Obavijesti o novoj inačici
+        loading_message:
+          title: Učitavanje poruka
+          label: Omogućiti učitavanje poruke
+        loading_messages:
+          label: Dostupno učitavanje poruka
+"Sorry, page was not loaded correctly": "Žao nam je, stranica nije ispravno učitana"
+"Your local changes will be lost. Are you sure you want to refresh the page?": "Lokalne promjene će biti izgubljene. Jeste li sigurni da želite osvježiti stranicu?"
+"navigation.message.content.outdated": "Sadržaj {{ title }} stranice je zastario, molimo <a href='#' data-action='page-refresh'> osvježite stranicu</a>"
+"Content of pinned page is outdated": "Sadržaj prikvačene stranice je zastario"
+#Global structure of translation files
+#pim_bundle_name:
+#entity:
+#entity_name:
+#label: entity
+#uppercase_label: Entity
+#plural_label: Entities
+#flash:
+#update:
+#fail: Update failed
+#success: Entity Successfully updated
+#delete:
+#fail: Cannot delete this entity
+#success: Entity successfully removed
+#create:
+#fail: Can not create this entity
+#success: Entity successfully created
+#page_title:
+#index: "]-Inf, 1]1 entity|]1, Inf[{{ count }} entities"
+#property:
+#field_name: Field name
+#complex_field:
+#label: Field name
+#choose: Choose a field name
+#module:
+#module_name:
+#key: message
+pim_common:
+  actions: Akcije
+  add: Dodaj
+  add_attributes: Dodaj atribute
+  all: Sve
+  and: i
+  apply: Primijeni
+  cancel: Odustani
+  code: Kod
+  confirm: Potvrdi
+  confirm_deletion: Potvrdi brisanje
+  create: Kreiraj
+  created: Kreirano
+  delete: Brisanje
+  done: Gotovo
+  edit: Uredi
+  entity_updated: Postoje nespremljene promjene.
+  export: Izvoz
+  from: Od
+  general_properties: Opća svojstva
+  history: Povijest
+  label: Oznaka
+  label_translations: Prijevodi oznaka
+  less_than: Manje od
+  loading: Učitavanje...
+  media_upload: Povucite i ispustite za upload ili kliknite ovdje
+  more_than: Više od
+  next: Sljedeća
+  "no": "Ne"
+  none: Niti jedan
+  not_available: N/A
+  now: Sada
+  ok: OK
+  permissions: Dozvole
+  previous: Prethodna
+  properties: Svojstva
+  remove: Ukloni
+  required_label: (obavezno)
+  save: Spremi
+  search: Pretraživanje
+  select2:
+    search: Pretraži...
+    no_match: Nisu pronađeni rezultati
+    load_more: Učitavanje više rezultata...
+  status: Status
+  to: u
+  type: Tip
+  update: Ažuriraj
+  "yes": "Da"
+  operators:
+    "=": Je jednako
+    "!=": Nije jednako
+    ">=": Veće od ili jednako
+    ">": Veće od
+    "<=": Manje od ili jednako
+    "<": Manje od
+    EMPTY: Je prazan
+    NOT EMPTY: Nije prazan
+    CONTAINS: Sadrži
+    DOES NOT CONTAIN: Ne sadrži
+    STARTS WITH: Počinje sa
+    ENDS WITH: Završava sa
+alert:
+  attribute_option:
+    save_before_edit_other: Spremite vaše izmjene drugih redaka prije uređivanja ovoga
+  session_storage:
+    not_available: Vaš web preglednik nije kompatibilan sa sessionStorage opcijom. Obratite se administratoru
+pim_enrich.entity.fallback:
+  flash:
+    update:
+      fail: Ažuriranje nije uspjelo
+      success: Uspješno ažurirano
+    delete:
+      fail: Ne možete izbrisati ovu stavku
+      success: Stavka je uspješno uklonjena
+  module:
+    delete:
+      title: Izbrisati ovaj {{ itemName }}
+      item: Jeste li sigurni da želite izbrisati ovu stavku?
+    edit:
+      leave: Jeste li sigurni da želite napustiti ovu stranicu?
+      discard_changes: Promjene u {{ entity }} će se izgubiti ako napustite ovu stranicu.
+pim_title:
+  oro_default: Nadzorna ploča
+  pim_enrich_attributegroup_index: Grupe atributa
+  pim_enrich_attributegroup_create: Atribut grupe | Kreiraj
+  pim_enrich_categorytree_index: Kategorija stabala
+  pim_enrich_categorytree_create: Kategorija stabala | Kreiraj
+  pim_enrich_categorytree_create_tree: Kategorija stabala | Kreiraj
+  pim_enrich_attribute_index: Atributi
+  pim_enrich_attribute_create: Atributi | Kreiraj
+  pim_enrich_product_index: Proizvodi
+  pim_enrich_family_index: Obitelji
+  pim_enrich_channel_index: Kanali
+  pim_enrich_channel_create: Kanali | Kreiraj
+  pim_enrich_currency_index: Valute
+  pim_enrich_locale_index: Lokalizacija
+  pim_enrich_group_index: Grupe
+  pim_enrich_associationtype_index: Tipovi pridruživanja
+  pim_enrich_grouptype_index: Tipovi grupa
+  pim_enrich_mass_edit_action_choose: Masovno uredi | Odaberi
+  pim_enrich_mass_edit_action_configure: Masovno uredi | Konfiguriraj
+  pim_enrich_job_tracker_index: Proces praćenja
+  pim_enrich_job_tracker_show: Proces praćenja | Pokaži posao
+  pim_enrich_mass_edit_action: Masovno uređivanje
+  pim_analytics_system_info_index: Informacije o sustavu
+pim_menu:
+  tab:
+    settings: Postavke
+    system: Sustav
+  item:
+    association_type: Tipovi pridruživanja
+    attribute_group: Grupe atributa
+    channel: Kanali
+    currency: Valute
+    dashboard: Nadzorna ploča
+    family: Obitelji
+    group: Grupe
+    group_type: Tipovi grupa
+    export_history: Povijest izvoza
+    export_profile: Izvoz profila
+    import_history: Povijest izvoza
+    import_profile: Uvoz profila
+    configuration: Konfiguracija
+    user_management: Upravljanje korisnicima
+    user: Korisnici
+    user_group: Korisničke grupe
+    user_role: Role
+    info: Informacije o sustavu
+    job_tracker: Proces praćenja
+  user:
+    logout: Odjava
+    user_account: Moj korisnički račun
+pim_notification:
+  types:
+    import: Uvoz
+    export: Izvoz
+    quick_export: Brzi izvoz
+    mass_edit: Masovno uređivanje

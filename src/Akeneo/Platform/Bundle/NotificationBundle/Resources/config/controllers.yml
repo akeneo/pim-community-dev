@@ -1,0 +1,13 @@
+parameters:
+    pim_notification.controller.notification.class: Akeneo\Platform\Bundle\NotificationBundle\Controller\NotificationController
+
+services:
+    pim_notification.controller.notification:
+        public: true
+        class: '%pim_notification.controller.notification.class%'
+        arguments:
+            - '@twig'
+            - '@pim_user.context.user'
+            - '@pim_notification.repository.user_notification'
+            - '@pim_notification.remover.user_notification'
+            - '@database_connection'

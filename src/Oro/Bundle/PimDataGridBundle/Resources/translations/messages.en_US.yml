@@ -1,0 +1,14 @@
+pim_datagrid:
+  column_configurator:
+    min_message: You must select at least one datagrid column to display
+  label:
+    unique_message: The label must be unique
+    not_blank_message: The label must not be blank
+  type:
+    not_blank_type: The type is required
+    invalid_type: The type must be either "public" or "private"
+  view_selector:
+    flash:
+      created: Datagrid view successfully created
+      removed: Datagrid view successfully removed
+      not_removable: You don't have the permission to remove this view

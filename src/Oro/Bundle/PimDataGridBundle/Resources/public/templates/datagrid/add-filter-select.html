@@ -1,0 +1,13 @@
+<select id="add-filter-select" multiple>
+    <% groups.forEach((group) => { %>
+        <optgroup label="<%= group %>">
+            <% Object.keys(filters).forEach((filterKey) => { %>
+                <% if (filters[filterKey].group === group) { %>
+                    <option value="<%= filterKey %>" <% if (filters[filterKey].enabled) { %>selected<% } %>>
+                        <%= filters[filterKey].label %>
+                    </option>
+                    <% } %>
+            <% }); %>
+        </optgroup>
+    <% }); %>
+</select>

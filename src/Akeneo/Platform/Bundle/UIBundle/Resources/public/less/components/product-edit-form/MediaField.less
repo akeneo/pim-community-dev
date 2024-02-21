@@ -1,0 +1,141 @@
+@import '../../base/variables';
+
+.AknMediaField {
+  @height: 140px;
+
+  height: @height;
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 3px;
+  border: 1px solid @AknMediumGrey;
+
+  &-img {
+    width: @height;
+    height: @height;
+  }
+
+  &--disabled {
+    background: @AknDisabledInputColor;
+    background-image: url("/bundles/pimui/images/icon-lock.svg");
+    background-repeat: no-repeat;
+    background-position: ~"calc(100% - 12px) center";
+  }
+
+  &--disabled &-preview {
+    opacity: 0.5;
+  }
+
+  &-fileUploaderInput {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+
+    &--disabled,
+    &[readonly],
+    &[disabled] {
+      cursor: not-allowed;
+
+      & + .AknMediaField-emptyContainer {
+        background: @AknDisabledInputColor;
+        background-image: url("/bundles/pimui/images/icon-lock.svg");
+        background-repeat: no-repeat;
+        background-position: ~"calc(100% - 12px)" center;
+        padding-right: @AknFormHeight - 4px;
+        color: @AknLightFontColor;
+      }
+
+      & ~ .AknMediaField-progress {
+        background: @AknDisabledInputColor;
+        opacity: 1;
+        flex-basis: @AknMicroProgressBarHeight + 5px;
+        margin: 0;
+        border-radius: 0;
+      }
+    }
+  }
+
+  &-emptyContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    cursor: pointer;
+  }
+
+  &-preview {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+  }
+
+  &-remove {
+    width: 20px;
+    height: 20px;
+    margin-top: 3px;
+    margin-left: 5px;
+    cursor: pointer;
+    background-image: url("/bundles/pimui/images/icon-delete-slategrey.svg");
+    background-size: 100%;
+    display: block;
+    background-repeat: no-repeat;
+  }
+
+  &-thumb {
+    flex-basis: @height;
+    margin: 5px 5px 0 5px;
+    text-align: center;
+    height: 100px;
+  }
+
+  &-image {
+    max-height: @height - 48px;
+  }
+
+  &-info {
+    flex-grow: 1;
+    text-align: center;
+    display: flex;
+  }
+
+  &-progress {
+    flex-basis: @AknMicroProgressBarHeight;
+    opacity: 0;
+    margin: 0 10px 5px;
+  }
+
+  &-icon {
+    font-size: 50px;
+    color: darken(@AknGrey, 10%);
+  }
+
+  &-uploadIcon {
+    height: 100px;
+    width: 100px;
+    display: block;
+    margin-top: 2px;
+    background-size: 100%;
+    background-image: url("/bundles/pimui/images/illustrations/Import.svg");
+  }
+
+  &-trashIcon {
+    background: lighten(@AknGrey, 15%);
+    font-size: @AknTitleFontSize;
+    padding: ((@height - @AknTitleFontSize) / 2) 0;
+    position: absolute;
+    height: 100%;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    right: 0;
+    width: 40px;
+    vertical-align: middle;
+    text-align: center;
+    cursor: pointer;
+  }
+}

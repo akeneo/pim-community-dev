@@ -1,0 +1,35 @@
+parameters:
+    pim_catalog.elasticsearch.indexer.product.class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductIndexer'
+    pim_catalog.elasticsearch.indexer.product_model_indexer.class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelIndexer'
+    pim_catalog.elasticsearch.indexer.product_model_descendants_indexer.class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelDescendantsIndexer'
+
+services:
+    pim_catalog.elasticsearch.indexer.product:
+        class: '%pim_catalog.elasticsearch.indexer.product.class%'
+        public: true
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+            - '@akeneo.pim.enrichment.product.query.get_elasticsearch_product_projection'
+
+    pim_catalog.elasticsearch.indexer.product_model:
+        class: '%pim_catalog.elasticsearch.indexer.product_model_indexer.class%'
+        public: true
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+            - '@akeneo.pim.enrichment.product.query.get_elasticsearch_product_model_projection'
+
+    akeneo.pim.enrichment.elasticsearch.indexer.product_and_ancestors:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductAndAncestorsIndexer'
+        arguments:
+            - '@pim_catalog.elasticsearch.indexer.product'
+            - '@pim_catalog.elasticsearch.indexer.product_model'
+            - '@akeneo.pim.enrichment.product.query.get_ancestor_product_model_codes'
+
+    pim_catalog.elasticsearch.indexer.product_model_descendants_and_ancestors:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelDescendantsAndAncestorsIndexer'
+        public: true
+        arguments:
+            - '@pim_catalog.elasticsearch.indexer.product'
+            - '@pim_catalog.elasticsearch.indexer.product_model'
+            - '@akeneo.pim.enrichment.product.query.get_descendant_variant_product_uuids'
+            - '@akeneo.pim.enrichment.product.query.get_ancestor_and_descendant_product_model_codes'

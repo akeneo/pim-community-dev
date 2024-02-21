@@ -1,0 +1,196 @@
+#Job labels
+batch_jobs:
+  default_steps:
+    download_files: 下载文件
+    upload_files: 上传文件
+    export: 导出
+    import: 导入
+    validation: 文件验证
+    import_associations: 导入关联
+    import_model_associations: 导入关联
+    import_root_product_model: 导入根产品模型
+    import_sub_product_model: 导入子产品模型
+    compute_data_related_to_family_root_product_models: 计算根产品模型数据
+    compute_data_related_to_family_sub_product_models: 计算子产品模型数据
+    compute_data_related_to_family_products: 计算产品数据
+    index_family_products_and_product_models: 指数品类产品和产品模型
+    compute_family_variant_structure_changes: 计算品类变型结构变化
+    compute_completeness_of_products_family: 计算产品品类的完成度
+    index_family_products: 指数品类产品和产品模型
+    delete_products_and_product_models: 批量删除产品
+    ensure_attribute_group_order: 检查属性组排序顺序
+    clean_attribute:
+      register_clean_job: 将代码添加到黑名单
+      clean_product_model: 清理产品模型
+      clean_product: 清理产品
+      remove_attribute_codes_from_blacklist: 从黑名单中移除代码
+    check_job_unique: 检查作业是唯一的
+  csv_product_export:
+    label: 以 CSV 格式导出产品
+    export.label: 导出产品
+  csv_product_model_export:
+    label: 以 CSV 格式导出产品模型
+    export.label: 导出产品模型
+  csv_category_export:
+    label: 以 CSV 格式导出类别
+    export.label: 导出类别
+  csv_attribute_export:
+    label: 以 CSV 格式导出属性
+    export.label: 导出属性
+  csv_attribute_option_export:
+    label: 以 CSV 格式导出属性选项
+    export.label: 导出属性选项
+  csv_association_type_export:
+    label: 以 CSV 格式导出关联类型
+    export.label: 导出关联类型
+  csv_group_export:
+    label: 以 CSV 格式导出分组
+    export.label: 导出分组
+  csv_family_export:
+    label: 以 CSV 格式导出品类
+    export.label: 导出品类
+  csv_family_variant_export:
+    label: 以 CSV 格式导出品类变型
+    export.label: 导出品类变型
+  csv_user_group_export:
+    label: 以 CSV 格式导出用户组
+    export.label: 导出用户组
+  csv_user_role_export:
+    label: 以 CSV 格式导出用户角色
+    export.label: 导出用户角色
+  csv_user_export:
+    label: 以 CSV 格式导出用户
+    export.label: 导出用户
+  csv_product_import:
+    label: 以 CSV 格式导入产品
+    import.label: 导入产品
+  csv_product_model_import:
+    label: 以 CSV 格式导入产品模型
+    import_product_model_descendants.label: 计算产品模型后代
+  csv_category_import:
+    label: 以 CSV 格式导入类别
+    import.label: 导入类别
+  csv_attribute_import:
+    label: 以 CSV 格式导入属性
+    import.label: 导入属性
+  csv_attribute_option_import:
+    label: 以 CSV 格式导入属性选项
+    import.label: 导入属性选项
+  csv_association_type_import:
+    label: 以 CSV 格式导入关联类型
+    import.label: 导入关联类型
+  csv_family_import:
+    label: 以 CSV 格式导入品类
+    import.label: 导入品类
+    compute_data_related_to_family_variants.label: 计算产品模型数据
+  csv_family_variant_import:
+    label: 以 CSV 格式导入品类变型
+    import.label: 导入品类变型
+  csv_group_import:
+    label: 以 CSV 格式导入分组
+    import.label: 导入分组
+  csv_attribute_group_export:
+    label: 以 CSV 格式导出属性组
+    export.label: 导出属性组
+  csv_group_type_export:
+    label: 以 CSV 格式导出分组类型
+    export.label: 导出分组类型
+  csv_attribute_group_import:
+    label: 以 CSV 格式导入属性组
+    import.label: 导入属性组
+  csv_group_type_import:
+    label: 以 CSV 格式导入分组类型
+    import.label: 导入分组类型
+  csv_user_group_import:
+    label: 以 CSV 格式导入用户组
+    import.label: 导入用户组
+  csv_user_import:
+    label: 以 CSV 格式导入用户
+    import.label: 导入用户
+  csv_user_role_import:
+    label: 以 CSV 格式导入用户角色
+    import.label: 导入用户角色
+  xlsx_category_import:
+    label: 以 XLSX 格式导入类别
+    import.label: 导入类别
+  xlsx_association_type_import:
+    label: 以 XLSX 格式导入关联类型
+    import.label: 导入关联类型
+  xlsx_attribute_import:
+    label: 以 XLSX 格式导入属性
+    import.label: 导入属性
+  xlsx_attribute_option_import:
+    label: 以 XLSX 格式导入属性选项
+    import.label: 导入属性选项
+  xlsx_family_import:
+    label: 以 XLSX 格式导入品类
+    import.label: 导入品类
+  xlsx_family_variant_import:
+    label: 以 XLSX 格式导入品类变型
+    import.label: 导入品类变型
+  xlsx_product_export:
+    label: 以 XLSX 格式导出产品
+    export.label: 导出产品
+  xlsx_product_model_export:
+    label: 以 XLSX 格式导出产品模型
+    export.label: 导出产品模型
+  xlsx_product_import:
+    label: 以 XLSX 格式导入产品
+    import.label: 导入产品
+  xlsx_product_model_import:
+    label: 以 XLSX 格式导入产品模型
+    import_product_model_descendants.label: 计算产品模型后代
+  xlsx_group_export:
+    label: 以 XLSX 格式导出分组
+    export.label: 导出分组
+  xlsx_group_import:
+    label: 以 XLSX 格式导入分组
+    import.label: 导入分组
+  xlsx_family_export:
+    label: 以 XLSX 格式导出品类
+    export.label: 导出品类
+  xlsx_family_variant_export:
+    label: 以 XLSX 格式导出品类变型
+    export.label: 导出品类变型
+  xlsx_category_export:
+    label: 以 XLSX 格式导出类别
+    export.label: 导出类别
+  xlsx_attribute_export:
+    label: 以 XLSX 格式导出属性
+    export.label: 以 XLSX 格式导出属性
+  xlsx_attribute_option_export:
+    label: 以 XLSX 格式导出属性选项
+    export.label: 以 XLSX 格式导出属性选项
+  xlsx_association_type_export:
+    label: 以 XLSX 格式导出关联类型
+    export.label: 以 XLSX 格式导出关联类型
+  xlsx_attribute_group_export:
+    label: 以 XLSX 格式导出属性组
+    export.label: 导出属性组
+  xlsx_group_type_export:
+    label: 以 XLSX 格式导出分组类型
+    export.label: 导出分组类型
+  xlsx_user_group_export:
+    label: 以 XLSX 格式导出用户组
+    export.label: 导出用户组
+  xlsx_user_role_export:
+    label: 以 XLSX 格式导出用户角色
+    export.label: 导出用户角色
+  xlsx_user_export:
+    label: 以 XLSX 格式导出用户
+    export.label: 导出用户
+  xlsx_attribute_group_import:
+    label: 以 XLSX 格式导入属性组
+    import.label: 导入属性组
+  xlsx_group_type_import:
+    label: 以 XLSX 格式导入分组类型
+    import.label: 导入分组类型
+  xlsx_user_group_import:
+    label: 以 XLSX 格式导入用户组
+    import.label: 导入用户组
+  xlsx_user_import:
+    label: 以 XLSX 格式导入用户
+    import.label: 导入用户
+  xlsx_user_role_import:
+    label: 以 XLSX 格式导入用户角色
+    import.label: 导入用户角色

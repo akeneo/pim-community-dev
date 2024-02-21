@@ -1,0 +1,25 @@
+{
+  "collectCoverageFrom": [
+    "**/*.{ts,tsx}",
+    "!**/**/index.ts"
+  ],
+  "coverageReporters": [
+    "text-summary",
+    "html"
+  ],
+  "coverageThreshold": {
+    "global": {
+      "statements": 100,
+      "functions": 100,
+      "lines": 100
+    }
+  },
+  "testEnvironment": "jsdom",
+  "setupFilesAfterEnv": ["@testing-library/jest-dom/extend-expect"],
+  "transform": {
+    "^.+\\.(ts|tsx)$": "ts-jest"
+  },
+  "moduleNameMapper": {
+    "\\.(svg|css)$": "<rootDir>/src/__mocks__/fileMock.ts"
+  }
+}

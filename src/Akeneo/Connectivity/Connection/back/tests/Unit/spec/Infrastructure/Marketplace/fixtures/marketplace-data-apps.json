@@ -1,0 +1,37 @@
+{
+    "total": 2,
+    "offset": 0,
+    "limit": 120,
+    "items": [
+        {
+            "id": "6ff52991-1144-45cf-933a-5c45ae58e71a",
+            "name": "Yell extension",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N",
+            "author": "Akeneo connectivity team",
+            "partner": "Akeneo",
+            "description": "Developed by the Akeneo team to demonstrate the different steps of an app activation. You can try it safely!",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-shopware-6-connector-eikona-media",
+            "categories": [
+                "E-commerce"
+            ],
+            "certified": true,
+            "activate_url": "https://yell-extension-t2omu7tdaq-uc.a.run.app/activate",
+            "callback_url": "https://yell-extension-t2omu7tdaq-uc.a.run.app/oauth2"
+        },
+        {
+            "id": "b213fec1-02e6-4f88-9e2e-0ac86fa34d92",
+            "author": "Akeneo",
+            "partner": null,
+            "name": "Akeneo Demo App in docker",
+            "activate_url": "http://172.17.0.1:8090",
+            "callback_url": "http://172.17.0.1:8090/callback",
+            "categories": [
+                "Advertising"
+            ],
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/akeneo-ico-app-demoapp_0.jpeg?itok=U7JH_xFa",
+            "description": "Apps are the best way to connect the third-party technology that you need to your Akeneo platform. The Akeneo Demo App will allow you to test out the connection experience. You can connect your PIM with the Demo App to see just how easy it is!",
+            "certified": false,
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-demo-app"
+        }
+    ]
+}

@@ -1,0 +1,119 @@
+Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily\SaveMeasurementFamilyCommand:
+    group_sequence:
+        - SaveMeasurementFamilyCommand
+        - other_constraints
+    properties:
+        code:
+            - Akeneo\Tool\Bundle\MeasureBundle\Validation\Common\Code: ~
+        labels:
+            - Akeneo\Tool\Bundle\MeasureBundle\Validation\Common\LabelCollection: ~
+        units:
+            - Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\UnitCount: ~
+            - Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\ShouldNotContainDuplicatedUnits: ~
+            - All:
+                - Collection:
+                    fields:
+                        code:
+                            - Akeneo\Tool\Bundle\MeasureBundle\Validation\Common\Code: ~
+                        labels:
+                            - Akeneo\Tool\Bundle\MeasureBundle\Validation\Common\LabelCollection: ~
+                        symbol:
+                            - Type: string
+                            - Length:
+                                max: 255
+                        convert_from_standard:
+                            - Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\OperationCount: ~
+                            - All:
+                                - Collection:
+                                    fields:
+                                        operator:
+                                            - NotBlank: ~
+                                            - Type: string
+                                            - Choice:
+                                                choices: [mul, div, add, sub]
+                                                message: pim_measurements.validation.measurement_family.units.operation.invalid_operator
+                                        value:
+                                            - Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\OperationValue: ~
+    constraints:
+        - Akeneo\Tool\Bundle\MeasureBundle\Validation\SaveMeasurementFamily\StandardUnitCodeShouldExist: ~
+        - Akeneo\Tool\Bundle\MeasureBundle\Validation\SaveMeasurementFamily\StandardUnitCodeCannotBeChanged: { groups: [other_constraints] }
+        - Akeneo\Tool\Bundle\MeasureBundle\Validation\SaveMeasurementFamily\StandardUnitCodeOperationShouldBeMultiplyByOne: { groups: [other_constraints] }
+        - Akeneo\Tool\Bundle\MeasureBundle\Validation\SaveMeasurementFamily\WhenUsedInAProductAttributeShouldBeAbleToUpdateOnlyLabelsAndSymbolAndAddUnits: { groups: [other_constraints] }
+        - Akeneo\Tool\Bundle\MeasureBundle\Validation\SaveMeasurementFamily\Count: { groups: [other_constraints] }
+
+Akeneo\Tool\Bundle\MeasureBundle\Application\CreateMeasurementFamily\CreateMeasurementFamilyCommand:
+    group_sequence:
+        - CreateMeasurementFamilyCommand
+        - other_constraints
+    properties:
+        code:
+            - Akeneo\Tool\Bundle\MeasureBundle\Validation\Common\Code: ~
+            - Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\CodeMustBeUnique: { groups: [other_constraints] }
+        labels:
+            - Akeneo\Tool\Bundle\MeasureBundle\Validation\Common\LabelCollection: ~
+        units:
+            - Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\UnitCount: ~
+            - Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\ShouldNotContainDuplicatedUnits: ~
+            - All:
+                - Collection:
+                    fields:
+                        code:
+                            - Akeneo\Tool\Bundle\MeasureBundle\Validation\Common\Code: ~
+                        labels:
+                            - Akeneo\Tool\Bundle\MeasureBundle\Validation\Common\LabelCollection: ~
+                        symbol:
+                            - Type: string
+                            - Length:
+                                  max: 255
+                        convert_from_standard:
+                            - Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\OperationCount: ~
+                            - All:
+                                - Collection:
+                                    fields:
+                                        operator:
+                                            - NotBlank: ~
+                                            - Type: string
+                                            - Choice:
+                                                choices: [mul, div, add, sub]
+                                                message: pim_measurements.validation.measurement_family.units.operation.invalid_operator
+                                        value:
+                                            - Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\OperationValue: ~
+    constraints:
+        - Akeneo\Tool\Bundle\MeasureBundle\Validation\CreateMeasurementFamily\StandardUnitCodeShouldExist: ~
+        - Akeneo\Tool\Bundle\MeasureBundle\Validation\CreateMeasurementFamily\StandardUnitCodeCannotBeChanged: { groups: [other_constraints] }
+        - Akeneo\Tool\Bundle\MeasureBundle\Validation\CreateMeasurementFamily\StandardUnitCodeOperationShouldBeMultiplyByOne: { groups: [other_constraints] }
+        - Akeneo\Tool\Bundle\MeasureBundle\Validation\CreateMeasurementFamily\WhenUsedInAProductAttributeShouldBeAbleToUpdateOnlyLabelsAndSymbolAndAddUnits: { groups: [other_constraints] }
+        - Akeneo\Tool\Bundle\MeasureBundle\Validation\CreateMeasurementFamily\Count: { groups: [other_constraints] }
+
+Akeneo\Tool\Bundle\MeasureBundle\Application\DeleteMeasurementFamily\DeleteMeasurementFamilyCommand:
+    constraints:
+        - Akeneo\Tool\Bundle\MeasureBundle\Validation\DeleteMeasurementFamily\ShouldNotBeUsedByProductAttribute: ~
+
+Akeneo\Tool\Bundle\MeasureBundle\Application\ValidateUnit\ValidateUnitCommand:
+    group_sequence:
+        - ValidateUnitCommand
+        - other_constraints
+    constraints:
+        - Akeneo\Tool\Bundle\MeasureBundle\Validation\Unit\CodeMustBeUnique: { groups: [other_constraints] }
+    properties:
+        code:
+            - Akeneo\Tool\Bundle\MeasureBundle\Validation\Common\Code: ~
+        labels:
+            - Akeneo\Tool\Bundle\MeasureBundle\Validation\Common\LabelCollection: ~
+        symbol:
+            - Type: string
+            - Length:
+                  max: 255
+        convert_from_standard:
+            - Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\OperationCount: ~
+            - All:
+                - Collection:
+                    fields:
+                        operator:
+                            - NotBlank: ~
+                            - Type: string
+                            - Choice:
+                                choices: [mul, div, add, sub]
+                                message: pim_measurements.validation.measurement_family.units.operation.invalid_operator
+                        value:
+                            - Akeneo\Tool\Bundle\MeasureBundle\Validation\MeasurementFamily\OperationValue: ~

@@ -1,0 +1,31 @@
+pim_catalog_volume:
+  product_values: "Você tem <span>{{values}}</span> valores de produto no seu PIM! A média é de <span>{{average}}</span> valores de produto por produto!&nbsp;💪"
+  product_values_description: 'Quanto mais valores de produto você tiver, mais valioso seu PIM é, e maior será o seu ROI! Mais detalhes <a href="{{link}}" target="_blank">aqui</a>'
+  section:
+    product_values:
+      hint: 'Você sabia que o número total de valores de produto em seu PIM está diretamente ligado aos seguintes eixos?<br/>Para ter mais detalhes, nós convidamos você a <a href="{{link}}" target="_blank">acessar este artigo</a>.'
+      title: Eixos que alavancam o número de valores de produto
+    catalog_structure:
+      hint: Você deve saber que uma boa estrutura de catálogo é realmente importante e é uma condição para o enriquecimento eficiente. Abaixo estão os vários eixos para monitorar sua estrutura de catálogo.
+      title: Eixos relacionados à estrutura do catálogo
+    variant_modelling:
+      hint: Se você estiver usando o modelador de variante, aqui estão os eixos para ajudá-lo a monitorar seu volume.
+      title: Eixos sobre o modelador de variante
+  axis:
+    count_products: Produtos
+    average_max_attributes_per_family: Atributos por família
+    count_channels: Canais
+    count_locales: Localidades (ativadas)
+    count_scopable_attributes: Atributos acessíveis
+    count_localizable_and_scopable_attributes: Atributos localizáveis e acessíveis
+    count_localizable_attributes: Atributos localizáveis
+    count_families: Famílias
+    count_attributes: Atributos
+    average_max_options_per_attribute: Opções por atributo
+    count_categories: Categorias
+    count_category_trees: Árvores de categoria
+    count_variant_products: Variante de produtos
+    count_product_models: Modelos de produto
+    warning: Uau! Você atingiu um recorde com este eixo! Não hesite em entrar em contato conosco se precisar de ajuda com este tipo de volume.
+  mean: 'Média:'
+  max: 'Máx:'

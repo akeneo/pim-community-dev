@@ -1,0 +1,59 @@
+datagrid:
+    association-type-grid:
+        options:
+            entityHint: association_type
+            locale_parameter: localeCode
+            manageFilters: false
+        source:
+            type: pim_datasource_association_type
+            acl_resource: pim_enrich_associationtype_index
+        columns:
+            label:
+                label: Label
+                frontend_type: label
+            isQuantified:
+                label: pim_enrich.entity.association_type.property.is_quantified
+                frontend_type: boolean-status
+            isTwoWay:
+                label: pim_enrich.entity.association_type.property.is_two_way
+                frontend_type: boolean-status
+        properties:
+            id: ~
+            edit_link:
+                type: url
+                route: pim_enrich_associationtype_edit
+                params:
+                    - code
+            delete_link:
+                type: url
+                route: pim_enrich_associationtype_rest_remove
+                params:
+                    - code
+        actions:
+            edit:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--edit
+                type:      navigate
+                label:     pim_common.edit
+                link:      edit_link
+                rowAction: true
+                acl_resource: pim_enrich_associationtype_edit
+            delete:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--trash
+                type:  delete
+                label: pim_common.delete
+                link:  delete_link
+                acl_resource: pim_enrich_associationtype_remove
+        sorters:
+            columns:
+                label:
+                    data_name: label
+            default:
+                label: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
+        filters:
+            columns:
+                label:
+                    type: search
+                    label: Label
+                    data_name: translation.label

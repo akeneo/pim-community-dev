@@ -1,0 +1,34 @@
+@import '../base/variables';
+
+.AknNotificationMenu {
+  margin-left: 10px;
+
+  &-link {
+    height: @AknDefaultButtonSize;
+    width: @AknDefaultButtonSize;
+    border: 1px solid @AknBorderColor;
+    border-radius: 100px;
+    background: url("/bundles/pimui/images/icon-notification.svg") no-repeat 50% 50%;
+    background-size: @AknDefaultButtonSize / 2;
+    cursor: pointer;
+  }
+
+  &-countContainer {
+  }
+
+  &-count {
+    background: @AknRed;
+    color: @AknRed;
+    border-radius: 100px;
+    width: 12px;
+    height: 12px;
+    position: absolute;
+    right: 0;
+    display: block;
+    overflow: hidden;
+
+    &--hidden {
+      display: none;
+    }
+  }
+}

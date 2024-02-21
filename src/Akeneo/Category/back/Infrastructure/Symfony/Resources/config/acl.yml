@@ -1,0 +1,47 @@
+pim_enrich_product_category_list:
+  type: action
+  label: pim_enrich.acl.category.list
+  group_name: pim_enrich.acl_group.category
+  order: 4
+
+pim_enrich_product_category_create:
+  type: action
+  label: pim_enrich.acl.category.create
+  group_name: pim_enrich.acl_group.category
+  order: 1
+
+pim_enrich_product_category_edit:
+  type: action
+  label: pim_enrich.acl.category.edit
+  group_name: pim_enrich.acl_group.category
+  order: 2
+
+pim_enrich_product_category_remove:
+  type: action
+  label: pim_enrich.acl.category.remove
+  group_name: pim_enrich.acl_group.category
+  order: 6
+
+pim_enrich_product_category_history:
+  type: action
+  label: pim_enrich.acl.category.history
+  group_name: pim_enrich.acl_group.category
+  order: 3
+
+pim_enrich_product_category_template:
+  type: action
+  label: pim_enrich.acl.category.template
+  group_name: pim_enrich.acl_group.category
+  order: 7
+
+pim_enrich_product_category_edit_attributes:
+  type: action
+  label: pim_enrich.acl.category.edit_attributes
+  group_name: pim_enrich.acl_group.category
+  order: 8
+
+pim_enrich_product_category_order_trees:
+  type: action
+  label: pim_enrich.acl.category.order_trees
+  group_name: pim_enrich.acl_group.category
+  order: 5

@@ -1,0 +1,29 @@
+services:
+  Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionInterface:
+    class: Akeneo\Platform\Job\Test\Acceptance\FakeServices\InMemorySearchJobExecution
+
+  Akeneo\Platform\Job\Application\SearchJobUser\SearchJobUserInterface:
+    class: Akeneo\Platform\Job\Test\Acceptance\FakeServices\InMemorySearchJobUser
+
+  Akeneo\Platform\Job\Application\FindJobType\FindJobTypeInterface:
+    class: Akeneo\Platform\Job\Test\Acceptance\FakeServices\InMemoryFindJobType
+
+  akeneo_platform.saver.job_instance:
+    class: Akeneo\Platform\Job\Test\Acceptance\FakeServices\InMemoryJobInstanceSaver
+
+  Akeneo\Platform\Job\Application\LaunchJobInstance\GenerateJobExecutionUrlInterface:
+    class: Akeneo\Platform\Job\Test\Acceptance\FakeServices\InMemoryGenerateJobExecutionUrl
+
+  Akeneo\Platform\Job\Application\LaunchJobInstance\JobFileStorerInterface:
+    class: Akeneo\Platform\Job\Test\Acceptance\FakeServices\InMemoryJobFileStorer
+
+  Akeneo\Platform\Job\Application\DeleteJobInstance\DeleteJobInstanceInterface:
+    class: Akeneo\Platform\Job\Test\Acceptance\FakeServices\InMemoryDeleteJobInstance
+    arguments:
+      - '@database_connection'
+
+  akeneo_batch_queue.queue.publish_job_to_queue:
+    class: Akeneo\Platform\Job\Test\Acceptance\FakeServices\InMemoryPublishJobToQueue
+
+  akeneo.job.security_facade:
+    class: Akeneo\Platform\Job\Test\Acceptance\FakeServices\InMemorySecurityFacade

@@ -1,0 +1,50 @@
+pim_api:
+  acl:
+    rights: Web API machtigingen
+    attribute:
+      edit: Attributen aanmaken en bijwerken
+      list: Attributen oplijsten
+    attribute_option:
+      edit: Attribuutopties aanmaken en bijwerken
+      list: Attribuutopties oplijsten
+    attribute_group:
+      edit: Attribuutgroepen aanmaken en bijwerken
+      list: Attritbuutgroepen oplijsten
+    category:
+      edit: Categorieën aanmaken en bijwerken
+      list: Categorieën oplijsten
+    family:
+      edit: Families aanmaken en bijwerken
+      list: Families oplijsten
+    family_variant:
+      edit: Familie varianten aanmaken en bijwerken
+      list: Opsommen familie varianten
+    channel:
+      edit: Kanalen aanmaken en bijwerken
+      list: Kanalen weergeven
+    locale.list: Lokalisaties weergeven
+    product:
+      edit: Producten aanmaken en bijwerken
+      list: Producten vermelden
+      remove: Producten verwijderen
+    currency.list: Valuta weergeven
+    association_type:
+      edit: Associatietypes aanmaken en bijwerken
+      list: Associatietypes weergeven
+  acl_group:
+    overall_access: Algemene Web API-toegang
+    attribute: Attributen
+    attribute_option: Attribuutopties
+    attribute_group: Attribuutgroepen
+    category: Categorieën
+    family: Families
+    family_variant: Familie varianten
+    channel: Kanalen
+    locale: Lokalisaties
+    product: Producten
+    currency: Valuta
+    association_type: Associatietypes
+pim_user:
+  roles:
+    tab:
+      api: Web API machtigingen

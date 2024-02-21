@@ -1,0 +1,352 @@
+parameters:
+    comm_panel_api_url: 'http://localhost:8088'
+    akeneo_integration_tests.loader.reference_data_loader.class: Akeneo\Test\IntegrationTestsBundle\Loader\ReferenceDataLoader
+    akeneo_integration_tests.loader.fixtures_loader.class: Akeneo\Test\IntegrationTestsBundle\Loader\FixturesLoader
+    akeneo_integration_tests.loader.database_schema_handler.class: Akeneo\Test\IntegrationTestsBundle\Loader\DatabaseSchemaHandler
+    akeneo_integration_tests.doctrine.connection.connection_closer.class: Akeneo\Test\IntegrationTestsBundle\Doctrine\Connection\ConnectionCloser
+    akeneo_integration_tests.security.system_user_authenticator.class: Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator
+    akeneo_integration_tests.launcher.job_launcher.class: Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher
+    akeneo_integration_tests.launcher.job_execution_observer.class: Akeneo\Test\IntegrationTestsBundle\Jobs\JobExecutionObserver
+    pim_user.account_lock.max_consecutive_failures: 1
+    env(EXPERIMENTAL_TEST_DATABASE): false
+
+imports:
+    # Akeneo/Connectivity/Connection
+    - { resource: ../../../src/Akeneo/Connectivity/Connection/back/tests/CatalogBuilder/Resources/config/loaders.yml }
+    - { resource: ../../../src/Akeneo/Connectivity/Connection/back/tests/Integration/Resources/config/services.yml }
+    # Akeneo/Platform/CommunicationChannel
+    - { resource: ../../../src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests/Integration/Resources/config/in_memory.yml }
+    # AkeneoJobBundle
+    - { resource: ../../../src/Akeneo/Platform/Job/back/tests/Integration/Resources/config/services.yml }
+    # FeatureFlag
+    - { resource: ../../../src/Akeneo/Platform/Bundle/FeatureFlagBundle/Resources/config/test_services.yml }
+    # MessengerBundle
+    - { resource: ../../../src/Akeneo/Tool/Bundle/MessengerBundle/Resources/config/test_services.yml }
+
+services:
+
+    _defaults:
+        public: true
+
+    akeneo_integration_tests.migration_command_launcher:
+        class: 'Akeneo\Tool\Component\Console\CommandLauncher'
+        arguments:
+            - '%kernel.project_dir%/src'
+            - 'test'
+            - '%kernel.logs_dir%'
+
+    akeneo_integration_tests.loader.reference_data_loader:
+        class: '%akeneo_integration_tests.loader.reference_data_loader.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%kernel.bundles%'
+            - 'AcmeAppBundle'
+            - '\Acme\Bundle\AppBundle\Entity\Fabric'
+            - '\Acme\Bundle\AppBundle\Entity\Color'
+
+    akeneo_integration_tests.loader.fixtures_loader:
+        class: '%akeneo_integration_tests.loader.fixtures_loader.class%'
+        arguments:
+            - '@kernel'
+            - '@akeneo_integration_tests.loader.database_schema_handler'
+            - '@akeneo_integration_tests.security.system_user_authenticator'
+            - '@akeneo_integration_tests.loader.reference_data_loader'
+            - '@oneup_flysystem.archivist_filesystem'
+            - '@akeneo_batch.job_repository'
+            - '@pim_installer.fixture_loader.job_loader'
+            - '@oro_security.acl.manager'
+            - '@pim_catalog.elasticsearch.indexer.product'
+            - '@pim_catalog.elasticsearch.indexer.product_model'
+            - '@akeneo_elasticsearch.registry.clients'
+            - '@database_connection'
+            - '@akeneo_measure.installer.measurement_installer'
+            - '@messenger.transport.business_event'
+            - '@event_dispatcher'
+            - '@akeneo_integration_tests.launcher.job_launcher'
+            - '%env(APP_DATABASE_HOST)%'
+            - '%env(APP_DATABASE_NAME)%'
+            - '%env(APP_DATABASE_USER)%'
+            - '%env(APP_DATABASE_PASSWORD)%'
+            - '%kernel.cache_dir%/sql-dump/'
+            - '%index_hosts%'
+            - '@Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysHandler'
+            - '@Akeneo\Test\IntegrationTestsBundle\Helper\ExperimentalTransactionHelper'
+
+    akeneo_integration_tests.loader.category_tree_loader:
+        class: 'AkeneoTest\Pim\Enrichment\Integration\Storage\ElasticsearchAndSql\CategoryTree\CategoryTreeFixturesLoader'
+        arguments:
+            - '@pim_catalog.factory.category'
+            - '@pim_catalog.updater.category'
+            - '@pim_catalog.saver.category'
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.updater.product'
+            - '@pim_catalog.validator.product'
+            - '@pim_catalog.saver.product'
+            - '@pim_catalog.factory.product_model'
+            - '@pim_catalog.updater.product_model'
+            - '@pim_catalog.validator.product'
+            - '@pim_catalog.saver.product_model'
+            - '@pim_catalog.factory.family'
+            - '@pim_catalog.updater.family'
+            - '@pim_catalog.saver.family'
+            - '@pim_catalog.factory.family_variant'
+            - '@pim_catalog.updater.family_variant'
+            - '@pim_catalog.saver.family_variant'
+            - '@pim_catalog.factory.attribute'
+            - '@pim_catalog.updater.attribute'
+            - '@pim_catalog.saver.attribute'
+            - '@validator'
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+
+    akeneo_integration_tests.loader.product_grid_fixtures_loader:
+        class: 'AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\ProductGrid\ProductGridFixturesLoader'
+        arguments:
+            - '@pim_catalog.factory.product_model'
+            - '@pim_catalog.updater.product_model'
+            - '@pim_catalog.validator.product'
+            - '@pim_catalog.saver.product_model'
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.updater.product'
+            - '@pim_catalog.saver.product'
+            - '@pim_catalog.saver.product'
+            - '@pim_catalog.factory.family'
+            - '@pim_catalog.updater.family'
+            - '@pim_catalog.saver.family'
+            - '@validator'
+            - '@pim_catalog.factory.family_variant'
+            - '@pim_catalog.updater.family_variant'
+            - '@pim_catalog.saver.family_variant'
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+
+    akeneo_integration_tests.loader.database_schema_handler:
+        class: '%akeneo_integration_tests.loader.database_schema_handler.class%'
+        arguments:
+            - '@database_connection'
+
+    akeneo_integration_tests.doctrine.connection.connection_closer:
+        class: '%akeneo_integration_tests.doctrine.connection.connection_closer.class%'
+        arguments:
+            - '@doctrine'
+
+    akeneo_integration_tests.security.system_user_authenticator:
+        class: '%akeneo_integration_tests.security.system_user_authenticator.class%'
+        arguments:
+            - '@pim_user.factory.user'
+            - '@pim_user.repository.group'
+            - '@pim_user.repository.role'
+            - '@security.token_storage'
+
+    akeneo_integration_tests.catalog.fixture.build_entity:
+        class: 'AkeneoTest\Pim\Enrichment\Integration\Fixture\EntityBuilder'
+        arguments:
+            - '@akeneo_integration_tests.launcher.job_launcher'
+            - '@validator'
+            - '@pim_catalog.builder.entity_with_values'
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.updater.product'
+            - '@pim_catalog.saver.product'
+            - '@pim_catalog.factory.product_model'
+            - '@pim_catalog.updater.product_model'
+            - '@pim_catalog.saver.product_model'
+            - '@pim_catalog.repository.family_variant'
+            - '@pim_catalog.factory.family_variant'
+            - '@pim_catalog.updater.family_variant'
+            - '@pim_catalog.saver.family_variant'
+            - '@pim_catalog.repository.attribute'
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+
+    akeneo_integration_tests.catalog.fixture.completeness_filter:
+        class: 'AkeneoTest\Pim\Enrichment\Integration\Fixture\CompletenessFilter'
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+            - '@akeneo_integration_tests.catalog.fixture.build_entity'
+
+    akeneo_integration_tests.launcher.job_launcher:
+        class: '%akeneo_integration_tests.launcher.job_launcher.class%'
+        arguments:
+            - '@kernel'
+            - '@database_connection'
+            - !tagged akeneo.pim.tests.pub_sub_queue_status.job
+            - '@logger'
+            - '@feature_flags'
+
+    akeneo_integration_tests.pub_sub_queue_status.ui_job:
+        class: AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubQueueStatus
+        arguments:
+            - '@Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory'
+            - '%env(GOOGLE_CLOUD_PROJECT)%'
+            - '%env(PUBSUB_TOPIC_JOB_QUEUE_UI)%'
+            - '%env(PUBSUB_SUBSCRIPTION_JOB_QUEUE_UI)%'
+        tags:
+            - { name: 'akeneo.pim.tests.pub_sub_queue_status.job' }
+
+    akeneo_integration_tests.pub_sub_queue_status.import_export_job:
+        class: AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubQueueStatus
+        arguments:
+            - '@Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory'
+            - '%env(GOOGLE_CLOUD_PROJECT)%'
+            - '%env(PUBSUB_TOPIC_JOB_QUEUE_IMPORT_EXPORT)%'
+            - '%env(PUBSUB_SUBSCRIPTION_JOB_QUEUE_IMPORT_EXPORT)%'
+        tags:
+            - { name: 'akeneo.pim.tests.pub_sub_queue_status.job' }
+
+    akeneo_integration_tests.pub_sub_queue_status.data_maintenance_job:
+        class: AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubQueueStatus
+        arguments:
+            - '@Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory'
+            - '%env(GOOGLE_CLOUD_PROJECT)%'
+            - '%env(PUBSUB_TOPIC_JOB_QUEUE_DATA_MAINTENANCE)%'
+            - '%env(PUBSUB_SUBSCRIPTION_JOB_QUEUE_DATA_MAINTENANCE)%'
+        tags:
+            - { name: 'akeneo.pim.tests.pub_sub_queue_status.job' }
+
+    akeneo_integration_tests.pub_sub_queue_status.scheduled_job:
+        class: AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubQueueStatus
+        arguments:
+            - '@Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory'
+            - '%env(GOOGLE_CLOUD_PROJECT)%'
+            - '%env(PUBSUB_TOPIC_JOB_QUEUE_SCHEDULED_JOB)%'
+            - '%env(PUBSUB_SUBSCRIPTION_JOB_QUEUE_SCHEDULED_JOB)%'
+        tags:
+            - { name: 'akeneo.pim.tests.pub_sub_queue_status.job' }
+
+    akeneo_integration_tests.pub_sub_queue_status.dqi_product_score_compute_on_upsert:
+        class: AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubQueueStatus
+        arguments:
+            - '@Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory'
+            - '%env(GOOGLE_CLOUD_PROJECT)%'
+            - '%env(PUBSUB_TOPIC_PRODUCTS_WERE_UPSERT)%'
+            - '%env(PUBSUB_SUBSCRIPTION_DQI_PRODUCT_SCORE_COMPUTE)%'
+
+    akeneo_integration_tests.pub_sub_queue_status.dqi_product_model_score_compute_on_upsert:
+      class: AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubQueueStatus
+      arguments:
+        - '@Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory'
+        - '%env(GOOGLE_CLOUD_PROJECT)%'
+        - '%env(PUBSUB_TOPIC_PRODUCT_MODELS_WERE_UPSERT)%'
+        - '%env(PUBSUB_SUBSCRIPTION_DQI_PRODUCT_MODEL_SCORE_COMPUTE)%'
+  
+    akeneo_integration_tests.launcher.job_execution_observer:
+        class: '%akeneo_integration_tests.launcher.job_execution_observer.class%'
+        arguments:
+            - '@pim_enrich.repository.job_instance'
+            - '@pim_enrich.repository.job_execution'
+            - '@akeneo_batch.saver.job_instance'
+            - '@doctrine.orm.default_entity_manager'
+
+    akeneo_integration_tests.catalogs:
+        class: 'Akeneo\Test\IntegrationTestsBundle\Configuration\Catalog'
+
+    ### Builder
+    akeneo_integration_tests.catalog.product.builder:
+        class: 'Akeneo\Test\Common\EntityWithValue\Builder\Product'
+        shared: false
+        arguments:
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.updater.product'
+            - '@validator'
+
+    akeneo_integration_tests.base.product_model.builder:
+        class: 'Akeneo\Test\Common\EntityBuilder'
+        shared: false
+        arguments:
+            - '@pim_catalog.factory.product_model'
+            - '@pim_catalog.updater.product_model'
+            - '@validator'
+
+    akeneo_integration_tests.base.attribute.builder:
+        class: 'Akeneo\Test\Common\EntityBuilder'
+        arguments:
+            - '@pim_catalog.factory.attribute'
+            - '@pim_catalog.updater.attribute'
+            - '@validator'
+
+    akeneo_integration_tests.base.family.builder:
+        class: 'Akeneo\Test\Common\EntityBuilder'
+        arguments:
+            - '@pim_catalog.factory.family'
+            - '@pim_catalog.updater.family'
+            - '@validator'
+
+    akeneo_integration_tests.base.family_variant.builder:
+        class: 'Akeneo\Test\Common\EntityBuilder'
+        arguments:
+            - '@pim_catalog.factory.family_variant'
+            - '@pim_catalog.updater.family_variant'
+            - '@validator'
+
+    akeneo_integration_tests.catalog.product_model.builder:
+        class: 'Akeneo\Test\Common\EntityWithValue\Builder\ProductModel'
+        shared: false
+        arguments:
+            - '@akeneo_integration_tests.base.product_model.builder'
+            - '@pim_catalog.repository.product_model'
+
+    ### Saver
+    akeneo_integration_tests.fixture.saver.entity_with_value:
+        class: 'Akeneo\Test\IntegrationTestsBundle\Doctrine\Repository\EntityWithValue'
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '@pim_serializer'
+
+    akeneo.pim.structure.query.cache.get_existing_attribute_option_codes_from_option_codes:
+        class: 'Akeneo\Test\IntegrationTestsBundle\Query\PublicApi\AttributeOption\Cache\LRUClearableCachedGetExistingAttributeOptions'
+        decorates: akeneo.pim.structure.query.get_existing_attribute_option_codes_from_option_codes
+        decoration_inner_name: akeneo.pim.structure.query.get_existing_attribute_option_codes_from_option_codes.sql
+        arguments:
+            - '@akeneo.pim.structure.query.get_existing_attribute_option_codes_from_option_codes.sql'
+
+    akeneo_integration_tests.fixture.loader.product_and_product_model_with_removed_attribute:
+        class: 'AkeneoTest\Pim\Enrichment\Integration\Fixture\ProductAndProductModelWithRemovedAttributeLoader'
+        arguments:
+            $productBuilder: '@akeneo_integration_tests.catalog.product.builder'
+            $productSaver: '@pim_catalog.saver.product'
+            $productModelBuilder: '@akeneo_integration_tests.base.product_model.builder'
+            $productModelSaver: '@pim_catalog.saver.product_model'
+            $familyVariantBuilder: '@akeneo_integration_tests.base.family_variant.builder'
+            $familyVariantSaver: '@pim_catalog.saver.family_variant'
+            $familyBuilder: '@akeneo_integration_tests.base.family.builder'
+            $familySaver: '@pim_catalog.saver.family'
+            $attributeBuilder: '@akeneo_integration_tests.base.attribute.builder'
+            $attributeSaver: '@pim_catalog.saver.attribute'
+            $attributeRepository: '@pim_catalog.repository.attribute'
+            $attributeRemover: '@pim_catalog.remover.attribute'
+            $entityValidator: '@validator'
+            $productAndProductModelEsClient: '@akeneo_elasticsearch.client.product_and_product_model'
+
+    akeneo_integration_tests.message_bus_observer:
+        class: Symfony\Component\Messenger\TraceableMessageBus
+        decorates: messenger.default_bus
+        decoration_inner_name: messenger.default_bus.inner
+        arguments:
+            - '@messenger.default_bus.inner'
+
+    akeneo_integration_tests.helper.authenticator:
+        class: 'Akeneo\Test\IntegrationTestsBundle\Helper\AuthenticatorHelper'
+        arguments:
+            - '@pim_user.repository.user'
+            - '@pim_user.factory.user'
+            - '@pim_user.saver.user'
+            - '@pim_user.repository.group'
+            - '@pim_user.repository.role'
+            - '@security.token_storage'
+            - '@session'
+
+    akeneo_integration_tests.helper.web_client:
+        class: 'Akeneo\Test\IntegrationTestsBundle\Helper\WebClientHelper'
+        arguments:
+            - '@router'
+
+    Akeneo\Test\IntegrationTestsBundle\Helper\ExperimentalTransactionHelper:
+        arguments:
+            - '@doctrine'
+            - '@akeneo_integration_tests.loader.database_schema_handler'
+            - '%env(bool:EXPERIMENTAL_TEST_DATABASE)%'
+
+    akeneo_integration_tests.pub_sub_queue_status.dqi_attribute_group_activate_consumer:
+        class: AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubQueueStatus
+        arguments:
+            - '@Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory'
+            - '%env(GOOGLE_CLOUD_PROJECT)%'
+            - '%env(PUBSUB_TOPIC_DQI_ATTRIBUTE_GROUP_ACTIVATE)%'
+            - '%env(PUBSUB_SUBSCRIPTION_DQI_ATTRIBUTE_GROUP_ACTIVATE)%'

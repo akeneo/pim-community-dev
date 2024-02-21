@@ -1,0 +1,123 @@
+@import '../../base/variables';
+
+.AknVariantNavigation {
+  border: 1px solid @AknBorderColor;
+  border-radius: 3px;
+  height: 34px;
+  margin-top: 20px;
+  display: flex;
+  overflow: hidden;
+
+  &-item {
+    display: inline-flex;
+    padding-left: 20px;
+    height: 32px;
+    line-height: 32px;
+    z-index: 5;
+    min-width: 120px;
+
+    &:after {
+      content:"";
+      position: relative;
+      display: block;
+      right:-13px;
+      top:4px;
+      width: 24px;
+      height: 24px;
+      background: #ffffff;
+      transform: rotate(45deg);
+      box-sizing: border-box;
+      border: 1px solid @AknBorderColor;
+      border-width: 1px 1px 0 0;
+      border-radius: 2px;
+    }
+
+    &--highlight {
+      color: @AknLightPurple;
+      background-color: @AknLightGray;
+      z-index: 4;
+
+      &:after {
+        background: @AknLightGray;
+      }
+    }
+
+    & + & {
+      padding-left: 30px;
+    }
+  }
+
+  &-itemLabel {
+    cursor: pointer;
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  &-axisName {
+    text-transform: uppercase;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 240px;
+  }
+
+  &-axisValue {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  &-axisName&-axisName--selected + &-axisValue:before {
+    content:": ";
+  }
+
+  &-listItem {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  &-listProductModelImage,
+  &-listProductImage {
+    border-radius: 4px;
+    max-width: 25px;
+    max-height: 25px;
+  }
+
+  &-listProductModelLabel,
+  &-listProductLabel {
+    margin-left: 5px;
+    margin-right: 5px;
+    flex: 1;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    display: inline-block;
+  }
+
+  &-listProductModelCompleteness,
+  &-listProductCompleteness {
+    border-radius: 50px;
+    float: right;
+    padding: 0 10px;
+    height: 22px;
+    font-size: @AknFontSizeSmall;
+    line-height: 22px;
+    color: #ffffff;
+
+    &--empty {
+      background-color: @AknRed;
+    }
+
+    &--incomplete {
+      background-color: @AknOrange;
+    }
+
+    &--complete {
+      background-color: @AknGreen;
+    }
+  }
+}

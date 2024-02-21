@@ -1,0 +1,106 @@
+@import '../../base/variables';
+
+.AknAssetCollectionField {
+  @itemWidth: 100px;
+  @itemHeight: 100px;
+  @padding: 10px;
+
+  width: 100%;
+  border: 1px solid @AknBorderColor;
+
+  &-header {
+    background: lighten(@AknGrey, 30%);
+    border-bottom: 1px solid @AknBorderColor;
+    padding: @padding;
+    margin: 0;
+  }
+
+  &-list {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 5px;
+    min-height: @itemHeight;
+
+    &--unwrapped {
+      flex-wrap: nowrap;
+      position: relative;
+    }
+  }
+
+  &-listItem {
+    width: @itemWidth;
+    border: 1px solid @AknBorderColor;
+    padding: 10px;
+    text-align: center;
+    margin: 5px;
+    position: relative;
+    background-color: @AknWhite;
+    cursor: pointer;
+
+    &--transparent {
+      opacity: 0.4;
+      transition: opacity 0.15s ease-in;
+
+      &:hover {
+        opacity: 0.6;
+      }
+    }
+
+    footer {
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+  }
+
+  &-assetThumbnail {
+    width: @itemWidth - 2 * (@padding + 1px);
+    height: @itemHeight - 2 * (@padding + 1px);
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
+
+    &--small {
+      width: 45px;
+      height: 45px;
+      background-size: cover;
+    }
+  }
+
+  &-icon {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+  }
+
+  &--withoutBorder {
+    border: none;
+  }
+
+  &--withoutBorder &-list {
+    padding: 0;
+  }
+
+   &-header {
+     &--disabled {
+       display: none;
+     }
+  }
+
+   &-list {
+     &--disabled {
+       background-color: @AknDisabledInputColor;
+       cursor: not-allowed;
+       background-image: url("/bundles/pimui/images/icon-lock.svg");
+       background-repeat: no-repeat;
+       background-position: ~"calc(100% - 12px)" center;
+       padding-right: @AknFormHeight - 4px;
+       color: @AknLightFontColor;
+     }
+  }
+
+  &-listItem {
+    &--disabled {
+      color: @AknLightFontColor;
+    }
+  }
+}

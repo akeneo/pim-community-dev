@@ -1,0 +1,9 @@
+pim_enrich:
+  #Locale
+  locale:
+    tab:
+      property.title: Egenskaper
+  channel:
+    flash:
+      delete:
+        error: Du kan inte ta bort kanal "%channelCode%" eftersom din PIM måste innehålla minst en kanal.

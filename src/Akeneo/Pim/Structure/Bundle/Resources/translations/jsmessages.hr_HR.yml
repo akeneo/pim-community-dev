@@ -1,0 +1,131 @@
+pim_enrich.entity.family:
+  label: obitelj
+  uppercase_label: Obitelj
+  plural_label: Obitelji
+  flash:
+    create:
+      success: Obitelj je uspješno kreirana
+    delete:
+      success: Obitelj je uspješno uklonjena
+      fail: Ne možete izbrisati ovu obitelj
+  property:
+    attribute_as_label: Atribut se koristi kao oznaka
+    empty_attribute_as_image: Nije odabrano
+  module:
+    attributes:
+      not_required_label: Nije obavezno
+      required_label: Obavezno
+    delete:
+      confirm: Jeste li sigurni da želite izbrisati ovu obitelj?
+pim_enrich.entity.family_variant:
+  short_label: Varijanta
+pim_enrich.entity.attribute_option:
+  short_uppercase_label: Opcije
+  flash:
+    create:
+      success: Opcija atributa je uspješno kreirana
+    update:
+      fail: Nije moguće spremiti opciju atributa
+    delete:
+      fail: Pogreška tijekom brisanja opcije atributa
+  module:
+    edit:
+      cancel_title: Odustani od izmjena
+pim_enrich.entity.association_type:
+  label: tip pridruživanja
+  flash:
+    create:
+      success: Tip pridruživanja je uspješno kreiran
+    delete:
+      success: Tip pridruživanja je uspješno uklonjen
+      fail: Ne možete izbrisati ovaj tip pridruživanja
+  module:
+    delete:
+      confirm: Jeste li sigurni da želite izbrisati ovaj tip pridruživanja?
+pim_enrich.entity.group_type:
+  label: tip grupe
+  flash:
+    create:
+      success: Tip grupe je uspješno kreiran
+    delete:
+      success: Tip grupe je uspješno uklonjen
+      fail: Ne možete izbrisati ovaj tip grupe
+  module:
+    delete:
+      confirm: Jeste li sigurni da želite izbrisati ovaj tip grupe?
+pim_enrich.entity.attribute:
+  label: atribut
+  plural_label: Atributi
+  flash:
+    delete:
+      success: Atribut je uspješno uklonjen
+      fail: Ne možete izbrisati ovaj atribut
+  property:
+    allowed_extensions: Dopuštene ekstenzije
+    available_locales: Dostupni lokalni parametri
+    date_max: Max datum
+    date_min: Min datum
+    default_metric_unit:
+      choose: Odaberi jedinicu
+    group:
+      label: Grupa atributa
+      choose: Odaberi grupu atributa
+    is_locale_specific: Specifične regionalne postavke
+    max_characters: Max znakova
+    max_file_size: Max veličina datoteke (MB)
+    metric_family:
+      choose: Odaberi obitelj
+    name: Ime
+    number_max: Max broj
+    number_min: Min broj
+    reference_data_name:
+      choose: Odaberi tip reference podataka
+    type:
+      choose: Odaberi tip atributa
+      pim_catalog_identifier: Identifikator
+      pim_catalog_text: Tekst
+      pim_catalog_textarea: Područje teksta
+      pim_catalog_number: Broj
+      pim_catalog_price_collection: Cijena
+      pim_catalog_multiselect: Višestruki odabir
+      pim_catalog_simpleselect: Jednostavan odabir
+      pim_catalog_file: Datoteka
+      pim_catalog_image: Slika
+      pim_catalog_boolean: "Da/Ne"
+      pim_catalog_date: Datum
+      pim_reference_data_simpleselect: Referentni podatak jednostavnog odabira
+      pim_reference_data_multiselect: Referentni podaci višestrukog odabira
+    unique: Jedinstvena vrijednost
+    useable_as_grid_filter: Može se koristiti u prikazu
+    validation_regexp: Regularni izraz
+    validation_rule:
+      label: Pravilo provjere valjanosti
+      email: Adresa e-pošte
+      regexp: Regularni izraz
+      url: URL
+  module:
+    add_attribute:
+      no_available_attributes: Nema više atributa koje se može dodati
+    edit:
+      common: Opći parametri
+      validation: Provjera valjanosti parametara
+    delete:
+      confirm: Jeste li sigurni da želite izbrisati ovaj atribut?
+      confirm_from_product: Jeste li sigurni da želite izbrisati ovaj atribut proizvoda?
+pim_enrich.entity.attribute_group:
+  label: grupa atributa
+  uppercase_label: Grupa atributa
+  plural_label: Grupe atributa
+  flash:
+    update:
+      success: Atribut grupe je uspješno ažuriran
+    delete:
+      success: Atribut grupe je uspješno uklonjen
+pim_enrich.mass_edit.family:
+  step:
+    select:
+      label: Odaberi obitelji
+    configure:
+      label: Konfiguriraj
+    confirm:
+      label: Potvrdi

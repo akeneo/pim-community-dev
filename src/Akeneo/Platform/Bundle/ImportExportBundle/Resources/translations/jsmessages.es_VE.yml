@@ -1,0 +1,193 @@
+job_execution:
+  summary:
+    display_item: Mostrar elemento
+    hide_item: Ocultar item
+pim_connector:
+  export:
+    categories:
+      selector:
+        modal:
+          title: Selección de categorías
+        label: "{0}Todos los productos|{1}Una categoría seleccionada|]1,Inf[{{ count }} categorías seleccionadas"
+        title: Seleccionar categorías
+    locales:
+      validation:
+        not_blank: Una localidad debe ser seleccionada, por favor seleccione una localidad para que sea exportada.
+pim_import_export:
+  entity:
+    job_instance:
+      label: perfil de trabajo
+      flash:
+        update:
+          success: El perfil de trabajo ha sido actualizado con exito.
+          fail: No se ha podido actualizar el perfil de trabajo.
+        delete:
+          success: Instancia de trabajo removida con éxito
+    import_profile:
+      uppercase_label: Perfil de importación
+      flash:
+        create:
+          success: Perfil de importación creado éxitosamente
+        upload:
+          error: No se puede subir el archivo. Su tamaño puede exceder el tamaño máximo de carga configurado en su configuración de servidor PHP o HTTP
+      page_title:
+        index: "]-Inf, 1] {{ count }} perfil de importación|]1, Inf [{{ count }} perfiles de importación"
+      module:
+        create:
+          button: Crear perfil importado
+    export_profile:
+      uppercase_label: Perfil de exportación
+      flash:
+        create:
+          success: Perfil para exportar creado exitosamente
+      page_title:
+        index: "]-Inf, 1] {{ count }} perfil de exportación|]1, Inf [{{ count }} perfiles de exportación"
+      module:
+        create:
+          button: Crear perfil para exportar
+  form:
+    job_execution:
+      title.details: Detalles de la ejecución
+      refreshBtn.title: Actualizar
+      button:
+        show_profile.title: Ver perfil
+        download_log.title: Descargar registro
+        download_file.title: Descargar archivo generado
+        download_archive.title: Descargar archivo generado
+      summary:
+        fetching: Recopilando datos sobre la ejecución del trabajo...
+        warning: Advertencia
+        header.step: Paso
+        header.warnings: Advertencias
+        header.summary: Resumen
+        header.start: Iniciar
+        header.end: Finalizar
+    job_instance:
+      fail:
+        launch: Se ha producido un error al ejecutar el perfil de trabajo. Asegúrese que sea válido y que posee los derechos para ejecutarlo.
+        save: Se ha producido un error al salvar el perfil de trabajo. Asegúrese que posee el permiso para editarlo.
+      button:
+        export.title: Exportar ahora
+        import.launch: Importar ahora
+        import.upload: Subir e importar ahora
+        import.upload_file: Subir un fichero
+      meta:
+        job: Trabajo
+        connector: Conector
+      subsection:
+        last_executions: Últimas ejecuciones
+      tab:
+        content:
+          title: Contenido
+        properties:
+          decimal_separator:
+            title: Separador de decimales
+            help: Determinar el separador de decimales
+          date_format:
+            title: Formato de fecha
+            help: Determinar el formato de los campos de fecha
+          file_path:
+            title: Camino del fichero
+            help: Ubicación del archivo generado dentro del sistema
+            help_import: El directorio del archivo a utilizar para la importación
+          delimiter:
+            title: Delimitador
+            help: Único caracter utilizado para delimitar el campo
+          enclosure:
+            title: Encuadre
+            help: Único caracter utilizado para encuadrar los campos
+          with_header:
+            title: Con encabezado
+            help: Imprimir o no el nombre de columnas
+          with_media:
+            title: Exportar archivos e imágenes
+            help: Exportar o no archivos de productos e imágenes
+          lines_per_file:
+            title: Número de líneas por archivo
+            help: Definir la cantidad límite de líneas por archivo
+          upload_allowed:
+            title: Permitir la carga de ficheros
+            help: Permitir o no cargar el fichero directamente
+          categories_column:
+            title: Columna de categorías
+            help: Nombre de la columna de categorías
+          escape:
+            title: Escape
+            help: Único carácter utilizado para fijar el escape del campo
+          family_column:
+            title: Columna de familias
+            help: Nombre de la columna de familias
+          groups_column:
+            title: Columna de grupos
+            help: Nombre de la columna de grupos
+          enabled:
+            title: Habilitar el producto
+            help: Habilitar o no los productos importados
+          enabled_comparison:
+            title: Comparar valores
+            help: Permite comparar entre los valores originales y valores importados. Puede acelerar la importación si los valores importados son similares a los valores originales
+          real_time_versioning:
+            title: Actualización del historial en tiempo real
+            help: Significa que el historial del producto es actualizada automáticamente, puede ser desactivada para mejorar el rendimiento
+          family_variant_column:
+            title: Columna de la variante familiar
+      file_path: Camino del fichero
+  widget:
+    last_operations:
+      empty: Ninguna operación encontrada
+      date: Fecha
+      profile_name: Nombre del perfil
+      details: Detalles
+      warning_count: Advertencias
+      job_type:
+        import: Importar
+        export: Exportar
+        mass_edit: Edición en masa
+        mass_edit_rule: Configuración de reglas
+        quick_export: Exportación rápida
+        compute_product_models_descendants: Calcular modelos de productos descendientes
+        compute_family_variant_structure_changes: Calcular los cambios de estructura de las variantes de la familia
+        compute_completeness_of_products_family: Calcular la totalidad de la familia de productos
+        mass_delete: Eliminación masiva de prodcutos
+      header.view_all: Ver todo
+  batch_status:
+    1: Completado
+    2: Iniciando
+    3: Iniciado
+    4: Suspendiendo
+    5: Suspendido
+    6: Fallido
+    7: Abandonado
+    8: Desconocido
+confirmation:
+  remove:
+    import_profile: '¿Está seguro que quiere eliminar este perfil de importación?'
+    export_profile: '¿Está seguro que quiere eliminar este perfil de exportación?'
+    job_instance: '¿Está usted seguro que desea eliminar esta instancia de trabajo?'
+pim_enrich:
+  entity:
+    import_profile:
+      module:
+        delete:
+          confirm: '¿Está seguro que quiere eliminar este perfil de importación?'
+      flash:
+        delete:
+          success: Perfil de importación eliminado éxitosamente
+    export_profile:
+      module:
+        delete:
+          confirm: '¿Está seguro que quiere eliminar este perfil de exportación?'
+      flash:
+        delete:
+          success: Perfil de exportación eliminado éxitosamente
+pim_title:
+  pim_importexport_export_profile_index: Gestión de perfiles de exportación
+  pim_importexport_export_profile_edit: Exportar perfil {{ job.label }} | Editar
+  pim_importexport_export_profile_show: Exportar perfil {{ job.label }} | Mostrar
+  pim_importexport_export_execution_index: Exportar el historial de ejecuciones
+  pim_importexport_export_execution_show: Ejecuciones de exportación | Detalles
+  pim_importexport_import_profile_index: Importar gestión de perfiles
+  pim_importexport_import_profile_edit: Importar perfil {{ job.label }} | Editar
+  pim_importexport_import_profile_show: Importar perfil {{ job.label }} | Mostrar
+  pim_importexport_import_execution_index: Importar historial de ejecuciones
+  pim_importexport_import_execution_show: Ejecuciones de importación | Detalles

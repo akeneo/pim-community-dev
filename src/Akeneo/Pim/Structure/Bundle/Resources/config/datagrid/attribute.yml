@@ -1,0 +1,115 @@
+datagrid:
+    attribute-grid:
+        options:
+            locale_parameter: localeCode
+            entityHint: attribute
+            manageFilters: false
+            removeFiltersNotUsableInGrid: false
+        source:
+            type: pim_datasource_attribute
+            acl_resource: pim_enrich_attribute_index
+        columns:
+            label:
+                label: Label
+                frontend_type: label
+            type:
+                label: Type
+                type: translateable
+                frontend-type: attribute-type
+            group:
+                label:     Group
+                data_name: groupLabel
+            scopable:
+                label:         Scopable
+                frontend_type: boolean-status
+            localizable:
+                label:         Localizable
+                frontend_type: boolean-status
+        properties:
+            id: ~
+            code: ~
+            main_identifier: ~
+            edit_link:
+                type: url
+                route: pim_enrich_attribute_edit
+                params:
+                    - code
+            delete_link:
+                type: url
+                route: pim_enrich_attribute_rest_remove
+                params:
+                    - code
+        actions:
+            edit:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--edit
+                type:      navigate
+                label:     pim_common.edit
+                link:      edit_link
+                rowAction: true
+                acl_resource: pim_enrich_attribute_edit
+            delete:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--trash
+                type:  delete-attribute
+                label: pim_common.delete
+                link:  delete_link
+                acl_resource: pim_enrich_attribute_remove
+        sorters:
+            columns:
+                scopable:
+                    data_name: a.scopable
+                localizable:
+                    data_name: a.localizable
+                group:
+                    data_name: groupLabel
+                label:
+                    data_name: label
+            default:
+                label: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
+        filters:
+            columns:
+                code:
+                    type: string
+                    label: pim_common.code
+                    data_name: a.code
+                label:
+                    type: attribute_search
+                    label: pim_datagrid.filters.code_or_label.label
+                    data_name: code_or_label
+                type:
+                    type:      choice
+                    data_name: a.type
+                    options:
+                        field_options:
+                            multiple: true
+                            choices:  '@pim_catalog.registry.attribute_type->getSortedAliases'
+                group:
+                    type:      choice
+                    data_name: attributeGroup.code
+                    options:
+                        field_options:
+                            multiple: true
+                            choices:  '@pim_enrich.repository.attribute_group->findTranslatedLabels'
+                scopable:
+                    type:      boolean
+                    data_name: a.scopable
+                localizable:
+                    type:      boolean
+                    data_name: a.localizable
+
+        mass_actions:
+            attribute_delete:
+                type: attribute_mass_delete
+                label: pim_common.delete
+                entity_name: attribute
+                acl_resource: pim_enrich_attribute_mass_delete
+                handler: attribute_mass_delete
+                className: 'AknButton AknButton--important AknButtonList-item'
+                messages:
+                    confirm_title: pim_common.confirm_deletion
+                    confirm_content: pim_datagrid.mass_action.delete.confirm_content
+                    confirm_ok: pim_common.ok
+                    success: pim_datagrid.mass_action.delete.success
+                    error: pim_datagrid.mass_action.delete.error
+                    empty_selection: pim_datagrid.mass_action.delete.empty_selection

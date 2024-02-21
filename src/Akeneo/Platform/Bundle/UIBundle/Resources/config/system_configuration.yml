@@ -1,0 +1,40 @@
+oro_system_configuration:
+    groups:
+        loading_message:
+            title: pim_ui.system_config.group.loading_message.title
+            icon:  'icon-info-sign'
+
+        loading_message_enabled:
+            title: pim_ui.system_config.group.loading_message.title
+
+    fields:
+        pim_ui.loading_message_enabled:
+            type: oro_config_checkbox
+            priority: 70
+            options:
+                label:   pim_ui.system_config.form.loading_message_enabled.label
+                tooltip: pim_ui.system_config.form.loading_message_enabled.tooltip
+                required: true
+
+        pim_ui.loading_messages:
+            type: pim_text
+            priority: 90
+            options:
+                label:   pim_ui.system_config.form.loading_messages.label
+                tooltip: pim_ui.system_config.form.loading_messages.tooltip
+                required: true
+
+    tree:
+        system_configuration:
+            platform:
+                children:
+                    general_setup:
+                        children:
+                            notification:
+                                priority: 254
+                                children:
+                                    loading_message_enabled:
+                                        priority: 100
+                                        children:
+                                            - pim_ui.loading_message_enabled
+                                            - pim_ui.loading_messages

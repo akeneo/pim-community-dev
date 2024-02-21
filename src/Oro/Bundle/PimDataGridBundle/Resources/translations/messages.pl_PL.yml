@@ -1,0 +1,29 @@
+"oro_datagrid.no_data_hint %entityHint%": '%entityHint% nie istnieje.'
+oro_datagrid.not_found_hint: Brak wyników. Spróbuj zmienić kryteria wyszukiwania.
+oro_datagrid.label_add_filter: Zarządzaj filtrami
+oro_datagrid.label_loading_mask: Ładowanie . . .
+oro.grid.mass_action.selected_rows: Wybrane Wiersze
+oro.grid.mass_action.confirm_title: Potwierdzenie Akcji Zbiorczej
+oro.grid.mass_action.confirm_content: Czy na pewno chcesz to zrobić?
+oro.grid.mass_action.confirm_ok: Tak, wykonaj to
+oro.grid.mass_action.error_title: Błąd wykonania akcji zbiorczej
+oro.grid.mass_action.error_content: Nie można wykonać akcji zbiorczej
+oro.grid.mass_action.delete.label: Usuń
+oro.grid.mass_action.delete.confirm_title: Potwierdzenie Masowego Usuwania
+oro.grid.mass_action.delete.confirm_content: Czy na pewno chcesz usunąć wybrane elementy?
+oro.grid.datagrid.page_size.all: Wszystkie
+oro.grid.mass_action.delete.success_message: "{0} Żaden rekord nie został usunięty|{1} Jeden rekord został usunięty|]1,4] %count% rekordy zostały usunięte|[5,Inf[ %count% rekordów zostało usuniętych"
+datagrid_view:
+  columns:
+    min_message: Musisz wybrać co najmniej jedną kolumnę tabeli do wyświetlania
+  label:
+    unique_message: Etykieta musi być unikalna
+    not_blank_message: Etykieta nie może być pusta
+grid.view_selector.flash:
+  created: Pomyślnie utworzono widok tabeli
+  removed: Pomyślnie usunięto widok tabeli
+  not_removable: Nie masz wystarczających uprawnień do usunięcia tego widoku
+quick_export: Szybki Eksport
+import: Import
+export: Eksport
+mass_edit: Edycja masowa

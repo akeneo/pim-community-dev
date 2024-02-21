@@ -1,0 +1,24 @@
+akeneo_connectivity_connection_apps:
+    resource: ./Apps/routing.yml
+
+akeneo_connectivity_connection_audit:
+    resource: ./Audit/routing.yml
+
+akeneo_connectivity_connection:
+    resource: ./Connections/routing.yml
+
+akeneo_connectivity_connection_error_management:
+    resource: ./ErrorManagement/routing.yml
+
+akeneo_connectivity_connection_marketplace:
+    resource: ./Marketplace/routing.yml
+
+akeneo_connectivity_connection_custom_apps:
+    resource: ./CustomApps/routing.yml
+
+akeneo_connectivity_connection_webhook:
+    resource: ./Webhook/routing.yml
+
+# connection_settings must be imported at the end because of the order of the front routes is important
+akeneo_connectivity_connection_settings:
+    resource: ./Settings/routing.yml

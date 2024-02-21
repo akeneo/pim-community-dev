@@ -1,0 +1,170 @@
+#Entities
+Job: Työ
+Connector: Liitin
+pim_import_export:
+  job: Työ
+  connector: Liitin
+  ## Job status
+  status:
+    0: Valmiina
+  batch_status:
+    1: Valmis
+    2: Alkaa
+    3: Aloitettu
+    4: Päättyy
+    5: Päättynyt
+    6: Epäonnistunut
+    7: Hylätty
+    8: Tuntematon
+  download_archive:
+    archive: lataa luotu arkisto|lataa luodut arkistot
+    output: lataa luotu tiedosto|lataa luodut tiedostot
+    input: lataa lähdetiedosto|lataa lähdetiedostot
+    invalid_xlsx: lataa virheelliset tiedot
+    invalid_csv: lataa virheelliset tiedot
+  notification:
+    export:
+      error: Vienti <strong>%label%</strong> epäonnistui
+      warning: Vienti <strong>%label%</strong> päättynyt joillain varoituksilla
+      success: Vienti <strong>%label%</strong> valmis
+      warnings:
+        xlsx_cell_conversion_error: "Ongelmia muunnettaessa saraketta \"{0}\" kohdeattribuutin tyyppiseksi (ole hyvä ja tarkista excel solun muoto)\n"
+        xlsx_cell_date_to_text_conversion_error: Solua {0} ei voida muuntaa päivämäärästä tekstiksi
+    import:
+      error: Vienti <strong>%label%</strong> epäonnistui
+      warning: Vienti <strong>%label%</strong> päättynyt joillain varoituksilla
+      success: Vienti <strong>%label%</strong> valmis
+  list: Valitse työ
+  job_profile:
+    tab:
+      property.title: Yleiset ominaisuudet
+      history.title: Historia
+      job_content.title: Sisältö
+#Page titles:
+pim_title.export_profile.index: Vientiprofiilien hallinta
+pim_title.export_profile.edit: Vientiprofiili %job.label% | Muokkaa
+pim_title.export_profile.show: Vientiprofiili %job.label% | Näytä
+pim_title.export_execution.index: Vientihistoria
+pim_title.export_execution.show: Vientisuoritukset | Yksityiskohdat
+pim_title.import_profile.index: Tuontiprofiilien hallinta
+pim_title.import_profile.edit: Tuontiprofiili %job.label% | Muokkaa
+pim_title.import_profile.show: Tuontiprofiili %job.label% | Näytä
+pim_title.import_execution.index: Tuontihistoria
+pim_title.import_execution.show: Tuontisuoritukset | Yksityiskohdat
+#Entity and page header titles
+export profile:
+  title: vientiprofiili
+  edit: muokkaa vientiprofiilia
+import profile:
+  title: tuontiprofiili
+  edit: muokkaa tuontiprofiilia
+#ACLs
+pim_importexport:
+  acl:
+    export_profile:
+      index: Vientiprofiilien listaus
+      create: Vientiprofiilin luonti
+      show: Näytä vientiprofiili
+      edit: Muokkaa vientiprofiilia
+      remove: Poista vientiprofiili
+      launch: Käynnistä vientiprofiili
+      property_edit: Muokkaa vientiprofiilin yleisiä ominaisuuksia
+      property_show: Näytä vientiprofiilin yleiset ominaisuudet
+      history: Näytä vientiprofiilin historia
+      content_edit: Muokkaa vientiprofiilin sisältöä
+      content_show: Näytä vientiprofiilin sisältö
+    import_profile:
+      index: Näytä tuontiprofiilien lista
+      create: Tuontiprofiilin luonti
+      show: Näytä tuontiprofiili
+      edit: Muokkaa tuontiprofiilia
+      remove: Poista tuontiprofiili
+      launch: Käynnistä tuontiprofiili
+      history: Näytä tuontiprofiilin historia
+    export_execution:
+      index: Näytä vientiraporttien lista
+      show: Näytä vientiraportin yksityiskohdat
+      dl_log: Lataa vientiraporttilogi
+      dl_files: Lataa viedyt tiedostot
+    import_execution:
+      index: Näytä tuontiraporttien lista
+      show: Näytä tuontiraportin yksityiskohdat
+      dl_log: Lataa tuontiraporttilogi
+      dl_files: Lataa tuodut tiedostot
+  acl_group:
+    export: Vientiprofiili
+    import: Tuontiprofiilit
+#Buttons
+btn:
+  create:
+    export profile: luo vientiprofiili
+    import profile: luo tuontiprofiili
+Upload and import now: Lataa ja tuo nyt
+import now: Tuo nyt
+export now: Vie nyt
+#Confirmation messages
+confirmation:
+  remove:
+    export profile: Oletko varma, että haluat poistaa vientiprofiilin %name%?
+    import profile: Oletko varma, että haluat poistaa tuontiprofiilin %name%?
+#Flash messages
+flash:
+  export:
+    created: Vienti onnistui
+    removed: Vienti poistettu
+    updated: Vienti on päivitetty
+    running: Vienti on käynnissä
+  import:
+    created: Tuonti onnistui
+    removed: Tuonti poistettu
+    updated: Tuonti päivitetty
+    running: Tuonti on käynnissä
+#Tabs
+General properties: Yleiset ominaisuudet
+History: Historia
+pane.accordion:
+  properties: Ominaisuudet
+  global_settings: Yleiset asetukset
+  filters: Suodattimet
+#Popin titles
+popin.create:
+  export_profile.title: Luo uusi vientiprofiili
+  import_profile.title: Luo uusi tuontiprofiili
+#Job execution
+'Display item': Näytä kohde
+'Hide item': Piilota kohde
+'Collecting data about job execution...': Kerää tietoja työsuorituksesta...
+'You must select a file to upload': Valitse ladattava tiedosto
+Download log: Lataa loki
+Show profile: Näytä profiili
+execution details: suorittamisen yksityiskohdat
+job_execution.summary:
+  read: luettu
+  write: kirjoitettu
+  skip: ohitettu
+  create: luotu
+  update: päivitetty
+  update_products: päivitetyt tuotteet
+  skip_products: ohitetut tuotteet
+  displayed: ensimmäiset varoitukset näytetty
+  charset_validator:
+    title: 'Tiedoston koodaus:'
+    skipped: ohitetaan, laajennus valkolistattu
+Step: Vaihe
+Status: Status
+Warnings: Varoitukset
+Summary: Yhteenveto
+Start: Aloitus
+End: Loppu
+#Process tracker
+set_attribute_requirements: Aseta vaaditut attribuutit
+COMPLETED: Valmis
+STARTING: Alkaa
+STARTED: Aloitettu
+STOPPING: Päättyy
+STOPPED: Päättynyt
+FAILED: Epäonnistunut
+ABANDONED: Hylätty
+UNKNOWN: Tuntematon
+warning.label: Varoitus
+pim_datagrid.column.username: Käyttäjänimi

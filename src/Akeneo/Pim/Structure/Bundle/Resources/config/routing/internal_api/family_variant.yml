@@ -1,0 +1,23 @@
+pim_enrich_family_variant_rest_index:
+    path: ''
+    defaults: { _controller: pim_enrich.controller.rest.family_variant:indexAction }
+    methods: [GET]
+
+pim_enrich_family_variant_rest_create:
+    path: ''
+    defaults: { _controller: pim_enrich.controller.rest.family_variant:createAction }
+    methods: [POST]
+
+pim_enrich_family_variant_rest_put:
+    path: /{identifier}
+    defaults: { _controller: pim_enrich.controller.rest.family_variant:putAction }
+    requirements:
+        identifier: '[a-zA-Z0-9_]+'
+    methods: [PUT]
+
+pim_enrich_family_variant_rest_remove:
+    path: /{familyVariantCode}
+    defaults: { _controller: pim_enrich.controller.rest.family_variant:removeAction }
+    requirements:
+        familyVariantCode: '[a-zA-Z0-9_]+'
+    methods: [DELETE]

@@ -1,0 +1,10 @@
+<div class="AknInfoBlock AknInfoBlock--error">
+    <img src="/bundles/pimui/images/illustration-error-<%- statusCode >= 400 && statusCode < 500 ? '404' : '503' %>.svg"/>
+    <% if (statusCode > 0) {%>
+    <span class="AknInfoBlock-errorNumber AknInfoBlock-errorNumber--<%- statusCode >= 400 && statusCode < 500 ? '400' : '500' %>"><%- statusCode %></span>
+    <h1>
+        <%- _.__('error.exception', {'status_code': statusCode}) %>
+    </h1>
+    <div class="AknMessageBox AknMessageBox--danger AknMessageBox--centered"><%- message %></div>
+    <% } %>
+</div>

@@ -1,0 +1,106 @@
+name: Extract DSM
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'front-packages/akeneo-design-system/**'
+jobs:
+  build:
+    name: Create a lib build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the current branch
+        uses: actions/checkout@v2
+
+      - name: Install node 18 for the rest of the workflow
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+
+      - name: Install node modules
+        run: cd front-packages/akeneo-design-system && yarn install
+
+      - name: Build library
+        run: cd front-packages/akeneo-design-system && yarn lib:build
+
+      - name: Upload the generated lib as an artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: Lib
+          path: front-packages/akeneo-design-system/lib
+
+  bump:
+    name: Bump package version of the lib
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current branch
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Checkout external repository
+        uses: actions/checkout@v2
+        with:
+          repository: 'akeneo/akeneo-design-system'
+          path: external
+          token: ${{ secrets.API_TOKEN_GITHUB }}
+
+      # In this step we take the package.json file of the external repository to generate the new
+      # version number. To do so, we take every commit messages and spot #patch #minor and #major tags
+      - name: Bump package version
+        run: cd front-packages/akeneo-design-system && node .github/workflows/bump-version.js $GITHUB_EVENT_PATH ../../external/package.json ../../commit-messages.txt
+
+      - uses: actions/upload-artifact@v1
+        with:
+          name: package
+          path: front-packages/akeneo-design-system/package.json
+
+      - uses: actions/upload-artifact@v1
+        with:
+          name: commit-messages
+          path: commit-messages.txt
+
+  # Now that the lib is built and the version is bumped, we can extract it to the external repository
+  extract:
+    name: Extract to DSM dedicated repo
+    needs:
+      - build
+      - bump
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the current branch
+        uses: actions/checkout@v2
+
+      - name: Download the lib artifact
+        uses: actions/download-artifact@v1
+        with:
+          name: Lib
+          path: front-packages/akeneo-design-system/lib
+
+      - name: Remove current package.json
+        run: rm front-packages/akeneo-design-system/package.json
+
+      - name: Download the package.json artifact
+        uses: actions/download-artifact@v1
+        with:
+          name: package
+          path: front-packages/akeneo-design-system
+
+      - name: Download the commit messages
+        uses: actions/download-artifact@v1
+        with:
+          name: commit-messages
+          path: ./
+
+      - name: Pushes to dsm repository
+        uses: ./.github/actions/extract
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+        with:
+          source-directory: front-packages/akeneo-design-system
+          destination-github-username: 'akeneo'
+          destination-repository-name: 'akeneo-design-system'
+          user-email: contact@akeneo.com
+          destination-branch: 'master'
+          commit-messages-filepath: '/github/workspace/commit-messages.txt'

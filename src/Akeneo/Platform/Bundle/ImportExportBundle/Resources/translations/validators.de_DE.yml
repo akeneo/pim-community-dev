@@ -1,0 +1,5 @@
+This directory is not writable: Das Verzeichnis ist nicht beschreibbar.
+This directory is not valid: Dieses Verzeichnis ist ungültig.
+pim_import_export.job_instance.unknown_job_definition: Fehler beim Anlegen von %job_type% mit einer unbekannten Job-Definition
+This code is already taken: Dieser Code ist bereits vergeben
+pim_import_export.validation.max_length_reached: Dieser Wert ist zu lang. Er sollte {{ limit }} oder weniger Zeichen enthalten.

@@ -1,0 +1,4 @@
+pim_notification:
+  report: Informe
+  mark_all_as_read: Marcar tots com a llegits
+  no_notifications: Sense notificacions

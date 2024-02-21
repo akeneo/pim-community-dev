@@ -1,0 +1,87 @@
+No products to remove: 削除する商品がありません
+"dot (.)": ドット (.)
+"comma (,)": コンマ (,)
+pim_enrich:
+  #Category
+  category:
+    tab:
+      property.title: プロパティ
+      history.title: 履歴
+    suggest_selection: 左側のカテゴリを選択してください
+    or: または
+    create_new: 新しいカテゴリを作成
+  #Mass edit operations
+  mass_edit_action:
+    limit_exceeded: 編集対象のアイテムは%limit% 件以下で選択してください
+    product:
+      page_title: 商品
+      page_subtitle: 一括編集(1商品)|一括編集(%count%商品)
+      title: 操作を選択
+      subtitle: 指定した商品に対して実行したい操作を選択してください|指定した %count% 件の商品に対して実行したい操作を選択してください
+      confirm: 更新しようとしている以下の商品の内容について、ご確認ください。|更新しようとしている以下の %count% 件の商品の内容について、ご確認ください。
+      steps:
+        first: 商品を選択
+        second: 操作を選択
+        third: 構成
+        fourth: 確認
+    change-status:
+      label: ステータスを変更
+      description: 選択した商品は有効または無効になります。
+      success_flash: 商品のステータスを変更しました
+      launched_flash: ステータスを変更する一括操作が開始されました。終了後に通知されます
+    edit-common-attributes:
+      label: 属性を編集
+      description: 選択した商品の属性は以下の選択したロケールのデータで編集されます。
+      empty: 編集したい属性を選択
+      success_flash: 商品更新のステータスが現在進行中です
+      launched_flash: 一括操作「属性を編集」が開始されました。終了後に通知されます。
+      message:
+        warning: 選択した商品に共通する属性はありません。他の商品を選択してください
+        invalid_attribute: コード「attribute_code」の属性は選択した商品と共通性がありません。属性はスキップされました。
+        no_valid_attribute: 選択した属性は全てこの商品に適用できません。
+    classify-add:
+      label: カテゴリに追加
+      description: 商品は以下のカテゴリに配置されます、既存の表示順が保持されます
+      success_flash: 商品は選択したカテゴリに分類されました
+      launched_flash: 一括操作「カテゴリに追加」が開始されました。終了後に通知されます
+    classify-move:
+      label: カテゴリ間を移動
+      description: 商品は以下のカテゴリに配置されます。既存の表示順は削除されます
+      success_flash: 商品は選択したカテゴリに移動しました
+      launched_flash: 一括操作「カテゴリに移動」が開始されました。終了後に通知されます
+    classify-remove:
+      label: カテゴリから削除
+      description: 次のカテゴリから商品が削除されます。
+      success_flash: 選択されたカテゴリから商品が削除されました
+      launched_flash: 一括操作「カテゴリから削除」が開始されました。終了後に通知されます
+    change-family:
+      label: ファミリーを変更
+      description: 指定した商品のファミリーをお望みのファミリーに変更します
+      success_flash: 指定した商品のファミリーを変更しました
+      launched_flash: 一括操作「ファミリーを変更する」が開始されています。終了後に通知されます
+    add-to-groups:
+      label: グループに追加
+      description: 指定した商品を追加するグループを選択します
+      success_flash: 商品を選択したグループに追加しました
+      launched_flash: 一括操作「グループに追加」が開始されました。終了後に通知されます。
+      no_group: 現時点でグループはありません。グループを作成することから始めてください。
+    set-attribute-requirements:
+      label: 属性の要件を設定
+      description: 以下の属性要件が選択したファミリーに適用されます
+      success_flash: 属性要件が選択したファミリーに適用されました
+      launched_flash: 一括操作「属性要件の設定」が開始されました。終了後に通知されます。
+    convert_to_simple_products:
+      warning:
+        non_variant_product: '「{{ identifier }}」商品はすでにシンプル商品であるため変換する必要はありません。'
+    mass_action:
+      quick_export:
+        launched_flash: 商品エクスポートのジョブを実行中です
+category:
+  create: カテゴリを作成
+  edit: カテゴリーを編集
+  overview: カテゴリ
+tree:
+  edit: ツリーを編集
+  remove:
+    error_linked: このカテゴリツリーはチャンネルにリンクしているため削除できません。
+  create: カテゴリツリーを作成

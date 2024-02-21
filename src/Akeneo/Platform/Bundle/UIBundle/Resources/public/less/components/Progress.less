@@ -1,0 +1,69 @@
+@import '../base/variables';
+
+.AknProgress {
+  height: 20px;
+  overflow: hidden;
+  background-color: @AknMediumGrey;
+  border-radius: 200px;
+  width: 100%;
+  min-width: 90px;
+
+  &-bar {
+    font-size: @AknDefaultFontSize;
+    background-color: @AknPurple;
+    float: left;
+    width: 0;
+    height: 100%;
+    color: white;
+    text-align: center;
+    transition: width 0.6s ease;
+    border-radius: 100px;
+  }
+
+  &--apply &-bar {
+    background: @AknGreen;
+  }
+
+  &--warning &-bar {
+    background: @AknOrange;
+  }
+
+  &--info &-bar {
+    background: @AknBlue;
+  }
+
+  &--small {
+    height: @AknSmallProgressBarHeight;
+  }
+
+  &--micro {
+    height: @AknMicroProgressBarHeight;
+    flex-basis: @AknMicroProgressBarHeight;
+  }
+
+  &--main {
+    width: 300px;
+    margin: auto;
+  }
+
+  &--main &-bar {
+    width: 90%;
+    animation: progress-bar-stripes 1s linear infinite;
+    background-color: @AknBlue;
+    background-image: linear-gradient(-45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);
+    background-size: 40px 40px;
+  }
+
+  &--flat {
+    border-radius: 0;
+    
+    .AknProgress-bar {
+      border-radius: 0;
+    }
+  }
+}
+
+@keyframes progress-bar-stripes {
+  from { background-position: 0 0; }
+  to { background-position: 40px 0; }
+}

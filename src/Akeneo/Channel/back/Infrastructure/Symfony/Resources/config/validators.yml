@@ -1,0 +1,37 @@
+services:
+    pim_catalog.validator.constraints.is_root_category:
+        class: 'Akeneo\Channel\Infrastructure\Component\Validator\Constraint\IsRootCategoryValidator'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_is_root_category_validator }
+
+    pim_catalog.validator.constraints.conversion_units:
+        class: 'Akeneo\Channel\Infrastructure\Component\Validator\Constraint\ConversionUnitsValidator'
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@akeneo_measure.manager'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_conversion_units_validator }
+
+    pim_catalog.validator.constraints.is_currency_activated:
+        class: 'Akeneo\Channel\Infrastructure\Component\Validator\Constraint\IsCurrencyActivatedValidator'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_is_currency_activated_validator }
+
+    pim_catalog.validator.constraint.activated_locale:
+        class: 'Akeneo\Channel\Infrastructure\Component\Validator\Constraint\ActivatedLocaleValidator'
+        arguments:
+            - '@pim_catalog.repository.cached_locale'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_activated_locale_validator }
+
+    pim_catalog.validator.constraints.locale_validator:
+        class: 'Akeneo\Channel\Infrastructure\Component\Validator\Constraint\LocaleValidator'
+        arguments:
+            - '@pim_catalog.repository.cached_locale'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_locale_validator }
+
+    pim_catalog.validator.constraints.locale.locale_code_validator:
+        class: Akeneo\Channel\Infrastructure\Component\Validator\Constraint\LocaleCodeValidator
+        tags:
+            - { name: validator.constraint_validator, alias: pim_locale_code_validator }

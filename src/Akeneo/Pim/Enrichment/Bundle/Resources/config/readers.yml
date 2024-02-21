@@ -1,0 +1,148 @@
+services:
+    pim_connector.reader.database.product:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\ProductReader'
+        arguments:
+            - '@pim_catalog.query.product_query_builder_factory_for_reading_purpose'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.converter.metric'
+
+    pim_connector.reader.database.product_model:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\ProductReader'
+        arguments:
+            - '@pim_catalog.query.product_model_query_builder_factory'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.converter.metric'
+
+    pim_connector.reader.file.csv_product_model_association:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Csv\ProductModelAssociationReader'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.product_model_association'
+
+    pim_connector.reader.file.csv_product:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Csv\ProductReader'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.product_delocalized'
+            - '@pim_connector.reader.file.media_path_transformer'
+            - []
+
+    pim_connector.reader.file.csv_product_model:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Csv\ProductModelReader'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.product_model_delocalized'
+            - '@pim_connector.reader.file.media_path_transformer'
+            - []
+
+    pim_connector.reader.file.xlsx_product:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Xlsx\ProductReader'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.product_delocalized'
+            - '@pim_connector.reader.file.media_path_transformer'
+            - []
+
+    pim_connector.reader.file.xlsx_product_model:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Xlsx\ProductModelReader'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.product_model_delocalized'
+            - '@pim_connector.reader.file.media_path_transformer'
+            - []
+
+    pim_connector.reader.file.xlsx_product_model_association:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Xlsx\ProductModelAssociationReader'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.product_model_association'
+
+    pim_connector.reader.file.csv_category:
+        class: 'Akeneo\Tool\Component\Connector\Reader\File\Csv\Reader'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.category'
+
+    pim_connector.reader.file.xlsx_category:
+        class: 'Akeneo\Tool\Component\Connector\Reader\File\Xlsx\Reader'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.category'
+
+    pim_connector.reader.database.group:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\GroupReader'
+        arguments:
+            - '@pim_catalog.repository.group'
+
+    pim_connector.reader.database.group_type:
+        class: 'Akeneo\Tool\Component\Connector\Reader\Database\Reader'
+        arguments:
+            - '@pim_catalog.repository.group_type'
+
+    pim_connector.reader.file.csv_association_type:
+        class: 'Akeneo\Tool\Component\Connector\Reader\File\Csv\Reader'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.association_type'
+
+    pim_connector.reader.file.csv_association:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Csv\ProductAssociationReader'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.product_association'
+
+    pim_connector.reader.file.xlsx_association_type:
+        class: 'Akeneo\Tool\Component\Connector\Reader\File\Xlsx\Reader'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.association_type'
+
+    pim_connector.reader.file.xlsx_association:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Xlsx\ProductAssociationReader'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.product_association'
+
+    pim_enrich.reader.database.filtered_product_and_product_model:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\MassEdit\FilteredProductAndProductModelReader'
+        arguments:
+            - '@pim_catalog.query.product_and_product_model_query_builder_factory'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.converter.metric'
+            - false
+
+    pim_enrich.reader.database.product_and_product_model:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\MassEdit\ProductAndProductModelReader'
+        arguments:
+            - '@pim_catalog.query.product_and_product_model_query_builder_factory'
+            - '@pim_catalog.repository.channel'
+            - true
+
+    pim_enrich.reader.database.grouped_product_and_product_model:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\MassEdit\ProductAndProductModelReader'
+        arguments:
+            - '@pim_catalog.query.product_and_product_model_query_builder_factory'
+            - '@pim_catalog.repository.channel'
+            - false
+
+    pim_enrich.reader.database.products_and_variant_products_of_product_models:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\MassEdit\FilteredProductAndProductModelReader'
+        arguments:
+            - '@pim_catalog.query.product_and_product_model_query_builder_factory'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.converter.metric'
+            - true
+
+    pim_enrich.reader.database.product:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\MassEdit\FilteredProductReader'
+        arguments:
+            - '@pim_catalog.query.product_and_product_model_query_builder_factory'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.converter.metric'
+
+    pim_enrich.reader.database.product_model:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\MassEdit\FilteredProductModelReader'
+        arguments:
+            - '@pim_catalog.query.product_and_product_model_query_builder_factory'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.converter.metric'

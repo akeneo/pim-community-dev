@@ -1,0 +1,7 @@
+pim_enrich_locale_index:
+    path: ''
+
+pim_enrich_locale_rest_index:
+    path: /rest
+    defaults: { _controller: pim_enrich.controller.rest.locale:indexAction }
+    methods: [GET]

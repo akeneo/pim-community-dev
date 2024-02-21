@@ -1,0 +1,11 @@
+parameters:
+    pim_notification.twig.notification_extension.class: Akeneo\Platform\Bundle\NotificationBundle\Twig\NotificationExtension
+
+services:
+    pim_notification.twig.notification_extension:
+        class: '%pim_notification.twig.notification_extension.class%'
+        arguments:
+            - '@pim_notification.repository.user_notification'
+            - '@pim_user.context.user'
+        tags:
+            - { name: twig.extension }

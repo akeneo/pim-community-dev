@@ -1,0 +1,21 @@
+oro.filter.form.label_type_equal: '='
+oro.filter.form.label_type_greater_equal: '>='
+oro.filter.form.label_type_greater_than: '>'
+oro.filter.form.label_type_less_equal: '<='
+oro.filter.form.label_type_less_than: '<'
+oro.filter.form.label_type_yes: "sí"
+oro.filter.form.label_type_no: "no"
+oro.filter.form.label_type_contains: conté
+oro.filter.form.label_type_not_contains: no conté
+oro.filter.form.label_type_equals: és igual a
+oro.filter.form.label_type_start_with: s'inicia amb
+oro.filter.form.label_type_end_with: acaba amb
+oro.filter.form.label_type_empty: està buit
+oro.filter.form.label_type_not_empty: no és buit
+oro.filter.form.label_type_in_list: a la llista
+oro.filter.form.label_date_type_between: entre
+oro.filter.form.label_date_type_not_between: no entre
+oro.filter.form.label_date_type_more_than: més que
+oro.filter.form.label_date_type_less_than: menys que
+oro.filter.form.label_not_selected: No seleccionat
+oro.filter.form.label_selected: Seleccionat

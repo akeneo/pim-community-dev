@@ -1,0 +1,21 @@
+oro.filter.form.label_type_equal: '='
+oro.filter.form.label_type_greater_equal: '>='
+oro.filter.form.label_type_greater_than: '>'
+oro.filter.form.label_type_less_equal: '<='
+oro.filter.form.label_type_less_than: '<'
+oro.filter.form.label_type_yes: "да"
+oro.filter.form.label_type_no: "нет"
+oro.filter.form.label_type_contains: содержит
+oro.filter.form.label_type_not_contains: не содержит
+oro.filter.form.label_type_equals: равно
+oro.filter.form.label_type_start_with: начинается с
+oro.filter.form.label_type_end_with: заканчивается на
+oro.filter.form.label_type_empty: пусто
+oro.filter.form.label_type_not_empty: не является пустым
+oro.filter.form.label_type_in_list: в списке
+oro.filter.form.label_date_type_between: между
+oro.filter.form.label_date_type_not_between: не между
+oro.filter.form.label_date_type_more_than: более чем
+oro.filter.form.label_date_type_less_than: менее чем
+oro.filter.form.label_not_selected: Не выбран
+oro.filter.form.label_selected: Выбран

@@ -1,0 +1,3 @@
+Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection:
+    constraints:
+        - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\QuantifiedAssociations: ~

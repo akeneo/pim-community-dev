@@ -1,0 +1,8 @@
+pim_dashboard:
+  title: Панель управления
+  version: Версия
+  widget:
+    completeness:
+      title: Законченность по каналам и языкам
+    last_operations:
+      title: Последние операции

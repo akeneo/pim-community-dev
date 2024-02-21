@@ -1,0 +1,348 @@
+pim_enrich.entity.family:
+  label: família
+  uppercase_label: Família
+  plural_label: Famílies
+  flash:
+    update:
+      success: Família actualitzada correctament.
+      fail: S'ha produït un error durant l'actualització de la família.
+      cant_remove_attribute_as_label: No es pot eliminar un atribut utilitzat com etiqueta
+      cant_remove_attribute_as_image: No es pot eliminar l'atribut utilitzat com a imatge principal
+      cant_remove_attribute_used_as_axis: No podeu suprimir aquest atribut utilitzat com un eix variant en una variant familiar
+      fields_not_ready: "Ara no es pot guardar la família. Els següents camps no estan preparats: {{ fields }}"
+    create:
+      success: Família creada correctament
+    delete:
+      success: Família eliminada correctament
+      fail: No podeu eliminar aquesta família
+  property:
+    attribute_as_label: Atribut utilitzat com a etiqueta
+    attribute_as_image: Atribut utilitzat com la imatge principal
+    empty_attribute_as_image: No seleccionat
+  page_title:
+    index: "]-Inf, 1]{{ count }} família|]1, Inf[{{ count }} famílies"
+  module:
+    attributes:
+      not_required_label: No és obligatori
+      required_label: Obligatori
+    create:
+      button: Crear família
+    delete:
+      confirm: Esteu segur que voleu suprimir aquesta família?
+pim_enrich.entity.family_variant:
+  label: variant de família
+  short_plural_label: Variants
+  short_label: Variant
+  flash:
+    update:
+      success: Variant de família actualitzat correctament. Els productes amb variants s'actualitzarà amb els canvis.
+      fail: La variant de família no s'ha pogut actualitzar.
+    create:
+      success: Variant de família creada correctament
+    delete:
+      success: Variant de família eliminada correctament
+  module:
+    edit:
+      common_attributes: Atributs comuns
+      no_common_attributes: No hi ha atributs comuns
+      variant_axis_label: Eix variant
+      variant_attributes: Variants d'atributs
+      level_1: Atributs variants de nivell un
+      level_2: Atributs variants de nivell dos
+      description: Arrossegar i deixar anar els atributs al nivell de variant seleccionat per gestionar-los des del nivell de variant.
+      attribute_remove: Eliminar atribut
+      attribute_group_remove: Suprimir grup d'atributs
+      confirm_attribute_removal_title: Confirmar eliminació d'atributs
+      confirm_attribute_removal_message: Al suprimir aquests atributs, tornaran en el atributs comuns de la variant familiar i es suprimiran els valors dels productes variants
+    create:
+      label: Afegir variant
+      title: Crear una nova variant familiar
+      description: En una variant familiar, podeu definir una estructura per productes amb variants. Trieu el nombre de nivells variants a gestionar, els atributs utilitzats com eixos variants per a cada nivell i després definir com es distribueixen els atributs.
+      variant_levels: Nivells de variants
+      axis_level: "Nivell de variant d'eixos {{ level }}"
+    update_translations:
+      title: Actualitzar traduccions
+    delete:
+      confirm: Esteu segur que voleu suprimir aquesta variant de família?
+pim_enrich.entity.attribute_option:
+  short_uppercase_label: Opcions
+  flash:
+    create:
+      success: Opció d'atribut creat correctament
+      fail: S'ha produït un error al intentar crear la opció d'atribut
+    update:
+      fail: No es pot desar aquesta opció d'atribut
+    delete:
+      fail: Error en suprimir la opció d'atribut
+  page_title:
+    index: "]-Inf, 1]{{ count }} opció|]1, Inf[{{ count }} opcions"
+  module:
+    edit:
+      cancel_title: '﻿Cancel·lar la modificació'
+      cancel_description: 'Alerta: perdreu les dades no desades. Esteu segur que voleu cancel·lar la modificació d''aquesta nova opció?'
+      options_labels: Opcions d'etiquetes
+      options_settings: Configuració d'opcions
+      options_codes: Opcions codis
+      option_code: Opció de codi
+      new_option_code: nova_opció
+      no_options_msg: Ho sentim, no hi ha opcions!
+      add_option: Feu clic aquí per afegir-ne un
+      delete_confirmation_title_msg: Eliminar "{{ optionCode }}" de les seves opcions?
+      delete_confirmation_subtitle_msg: Esteu segur que voleu eliminar la opció? Aquesta acció no és pot desfer.
+      display_options_limit: Aquí només es mostren les primeres 500 opcions. Si voleu veure més opcions, feu una cerca o una exportació.
+      search:
+        placeholder: Cerca a l'etiqueta o codi
+        no_result:
+          title: No hi ha cap resultat per a la vostra cerca.
+pim_enrich.entity.association_type:
+  label: tipus d'associació
+  property:
+    is_two_way: Associació de 2 vies
+    is_quantified: Associació amb quantitat
+  flash:
+    update:
+      success: Tipus d'associació actualitzat correctament.
+      fail: No s'ha pogut actualitzar el tipus d'associació.
+      fields_not_ready: "El tipus d'associació no es pot desar ara mateix. No estan preparats els següents camps: {{ fields }}"
+    create:
+      success: Tipus d'associació creat correctament
+    delete:
+      success: Tipus d'associació suprimid correctament
+      fail: No podeu eliminar aquest tipus d'associació
+  page_title:
+    index: "]-Inf, 1]{{ count }} tipus d'associació|]1, Inf[{{ count }} tipus d'associació"
+  module:
+    create:
+      title: Crear un nou tipus d'associació
+      button: Crear tipus d'associació
+      is_two_way:
+        message_on_read_only: El tipus d'associació pot ser quantificat o de dos vies, per seleccionar aquest, has de desmarcar l'altre
+      is_quantified:
+        message_on_read_only: El tipus d'associació pot ser quantificat o de dos vies, per seleccionar aquest, has de desmarcar l'altre
+    delete:
+      confirm: Esteu segur que voleu suprimir aquest tipus d'associació?
+  hint: <a href="{{link}}" target="_blank">En aquest article</a>trobarà tot el que necessita per crear el seu propi tipus d'associació.
+  no_association_types:
+    title: No teniu cap tipus d'associació
+    hint: Crea el teu primer
+pim_enrich.entity.group_type:
+  label: tipus de grup
+  flash:
+    update:
+      success: Tipus de grup actualitzat correctament.
+      fail: El tipus de grup no s'ha pogut actualitzar.
+      fields_not_ready: "Ara no es pot guardar el tipus de grup. Els següents camps no estan preparats: {{ fields }}"
+    create:
+      success: Tipus de grup creat correctament
+    delete:
+      success: Tipus de grup suprimit correctament
+      fail: No podeu eliminar aquest tipus de grup
+  page_title:
+    index: "]-Inf, 1]{{ count }} tipus de grup|]1, Inf[{{ count }} tipus de grups"
+  module:
+    create:
+      button: Crear tipus de grup
+    delete:
+      confirm: Esteu segur que voleu suprimir aquest tipus de grup?
+pim_enrich.entity.attribute:
+  label: atribut
+  plural_label: Atributs
+  flash:
+    update:
+      success: Atribut actualitzat correctament.
+      fail: No s'ha pogut actualitzar l'atribut.
+      fields_not_ready: "Ara no es pot guardar l'atribut. Els següents camps no estan preparats: {{ fields }}"
+    delete:
+      success: L'atribut s'ha suprimit correctament
+      fail: No podeu eliminar aquest atribut
+  page_title:
+    index: "]-Inf, 1]{{ count }} atribut|]1, Inf[{{ count }} atributs"
+  property:
+    allowed_extensions: Extensions permeses
+    auto_option_sorting: Ordena opcions automàtiques per ordre alfabètic
+    available_locales: Configuracions regionals disponibles
+    date_max: Data màxima
+    date_min: Data mínima
+    decimals_allowed: Valors decimals permesos
+    default_metric_unit:
+      label: Unitat de mètrica per defecte
+      choose: Trieu una unitat
+    guidelines: Directrius d'atributs
+    group:
+      label: Grup d'atributs
+      choose: Trieu el grup de l'atribut
+    is_locale_specific: Configuració regional específica
+    localizable: Valor per local
+    max_characters: Màxim de caràcters
+    max_file_size: Mida màxima de l'arxiu (MB)
+    metric_family:
+      label: Família de mètrica
+      choose: Trieu una família
+    minimum_input_length: Longitud mínima d'auto compleció
+    name: Nom
+    negative_allowed: Valors negatius permesos
+    number_max: Nombre màxim
+    number_min: Nombre mínim
+    reference_data_name:
+      label: Tipus de dades de referència
+      choose: Triar el tipus de dades de referència
+    scopable: Valor per canal
+    type:
+      choose: Trieu el tipus d'atribut
+      pim_catalog_identifier: Identificador
+      pim_catalog_text: Texte
+      pim_catalog_textarea: Àrea de Text
+      pim_catalog_number: Nombre
+      pim_catalog_price_collection: Preu
+      pim_catalog_multiselect: Selecció múltiple
+      pim_catalog_simpleselect: Selecció simple
+      pim_catalog_file: Arxiu
+      pim_catalog_image: Imatge
+      pim_catalog_boolean: "Sí/No"
+      pim_catalog_date: Data
+      pim_catalog_metric: Mètrica
+      pim_reference_data_simpleselect: Selecció simple de dades de referència
+      pim_reference_data_multiselect: Selecció múltiple de dades de referència
+    unique: Valor únic
+    useable_as_grid_filter: Utilitzable en quadrícula
+    validation_regexp: Expressió regular
+    validation_rule:
+      label: Regla de validació
+      email: Correu electrònic
+      regexp: Expressió regular
+      url: URL
+    wysiwyg_enabled: Editor de text enriquit habilitat
+    default_value: Valor per defecte
+    code:
+      must_be_filled: Cal omplir el codi
+      invalid: El codi no és vàlid
+      not_available: Aquest codi no està disponible
+      is_duplicate: Aquest codi ja s'utilitza.
+  module:
+    add_attribute:
+      no_available_attributes: No hi ha més atributs a afegir
+      attributes_selected: "{{ itemsCount }} atribut(s) seleccionat(s)"
+    create:
+      button: Crear atribut
+    edit:
+      common: Paràmetres generals
+      type_specific: Escriu els paràmetres específics
+      validation: Paràmetres de validació
+      select_locale: Seleccioneu el local
+    delete:
+      confirm: Esteu segur que voleu suprimir aquest atribut?
+      attribute_removal: L'atribut no es pot suprimir de tots productes.
+      product_count: '{0}0 productes|{1}1 producte|]1, Inf[{{ count }} productes'
+      product_model_count: '{0}0 models de producte|{1}1 model de producte|]1, Inf[{{ count }} models de producte'
+      used: ']-Inf,1]actualment té valors establerts per a aquest atribut.|]1, Inf[actualment tenen valors establerts per a aquest atribut.'
+      helper:
+        content: Si necessita canviar el seu tipus d'atribut per fer-lo localitzable o definible, mantenint l'accés als seus valors d'atributs existents,
+        link: consulteu el nostre Centre d'ajuda (per a més informació).
+      type: Escriu "{{ attributeCode }}"
+      confirm_from_family: Esteu segur que voleu suprimir aquest atribut de la família?
+      confirm_from_group: Esteu segur que voleu suprimir l'atribut {{ attribute }} d'aquest grup d'atributs?
+      confirm_from_product: Esteu segur que voleu suprimir aquest atribut del producte?
+    mass_delete:
+      modal:
+        title: Atributs
+        subtitle: '{1}Confirmar la supressió de {{ count }} atribut|]1, Inf[Confirmar la supressió de {{ count }} atributs'
+        label: Si us plau, escriviu "{{ textToCheck }}"
+        confirm: Esteu segur que voleu suprimir aquests atributs?
+      message_bar:
+        success: S'ha iniciat l'eliminació. Rebràs una notificació un cop finalitzada la feina. Mentrestant, podeu vigilar el seu progrés al rastrejador de processos.
+        fail: S'ha produït un error durant l'inici de la supressió
+pim_enrich.entity.attribute_group:
+  label: grup d'atributs
+  uppercase_label: Grup d'atributs
+  plural_label: Grups d'atribut
+  result_count: '{0}0 grups d''atribut|{1}1 grup d''atributs|]1, Inf[{{ count }} grups d''atributs'
+  limit_reached: Heu assolit el límit de {{ max }} grups d'atributs.
+  show_more_attribute:
+    title: Esta una mica encreuat per aquí. T'ho ensenyem {{ attributeCount }}/{{ totalAttributeCount }} atributs.
+    subtitle: Per descobrir tots els atributs d'aquest grup, cliqueu a continuació!
+    button: Mostrar tots els atributs
+  dropdown:
+    label: Seleccionar
+    all: Tots els Grups d'atributs
+    none: No hi ha grups d'atributs
+  flash:
+    update:
+      success: Grup d'atributs actualitzat correctament
+      fail: El grup d'atributs no s'ha pogut actualitzar
+      fields_not_ready: "Ara no es pot guardar el grup d'atributs. Els següents camps no estan preparats: {{ fields }}"
+    delete:
+      success: S'ha iniciat l'eliminació. Rebràs una notificació un cop finalitzada la feina. Mentrestant, podeu vigilar el seu progrés al rastrejador de processos.
+      fail: S'ha produït un error durant l'inici de la supressió
+    mass_delete:
+      success: S'ha iniciat l'eliminació. Rebràs una notificació un cop finalitzada la feina. Mentrestant, podeu vigilar el seu progrés al rastrejador de processos.
+      fail: S'ha produït un error durant l'inici de la supressió
+  module:
+    add_attribute_group:
+      label: Afegir per grups
+      no_attribute_groups_available: Cap grup d'atributs disponible
+      attributes_groups_selected: '{{ itemsCount }} grup(s) seleccionat(s)'
+    delete:
+      confirm: Esteu segur que voleu suprimir aquest grup d'atributs?
+  grid:
+    columns:
+      attribute_count: Número d'atributs relacionats
+  selected: '{0}0 grup d''atributs seleccionat|{1}1 grup d''atributs seleccionat|]1, Inf[{{ count }} grups d''atributs seleccionats'
+  mass_delete:
+    confirm: '{1}Esteu segur que voleu suprimir aquest grup d''atributs?|]1, Inf[Esteu segur que voleu suprimir aquests {{ count }} grups d''atributs?'
+    confirmation_phrase: 'Si us plau, escriu "{{ confirmation_word }}"'
+    confirmation_word: eliminar
+    attribute_warning: '{1}La supressió d''aquests grups d''atributs afectarà l''atribut relacionat {{ number_of_attribute }}. Haureu de moure aquest atribut relacionat a un nou grup d''atributs.|]1, Inf[La supressió d''aquests grups d''atributs afectarà els atributs relacionats {{ number_of_attribute }}. Haureu de moure aquests atributs relacionats a un grup d''atributs nou.'
+    select_attribute_group: '{1}Seleccioneu el grup d''atributs al qual moure l''atribut relacionat|]1, Inf[Seleccioneu el grup d''atributs al qual moure els atributs relacionats {{ number_of_attribute }}'
+    empty_result_label: 'No s''ha trobat grup d''atributs'
+    placeholder: 'Selecciona grups d''atributs'
+    open_label: 'Llista de grups d''atribut'
+  delete:
+    confirm: 'Esteu segur que voleu suprimir aquest grup d''atributs'
+    attribute_warning: 'La supressió d''aquest grup d''atributs afectarà l''atribut relacionat {{ number_of_attribute }}. Haureu de moure aquest atribut relacionat a un grup d''atributs nou.'
+    select_attribute_group: '{1}Seleccioneu el grup d''atributs per moure l''atribut relacionat a:|]1, Inf[Seleccioneu el grup d''atributs per moure els atributs relacionats {{ number_of_attribute }} a:'
+  batch_jobs:
+    delete_attribute_groups:
+      delete_attribute_groups:
+        label: Eliminar grups d'atributs
+pim_import_export:
+  notification:
+    mass_delete_attribute_groups:
+      error: S'ha produït un error en la supressió massiva dels grups d'atributs
+      warning: La supressió massiva dels grups d'atributs ha acabat amb alguns advertiments
+      success: S'ha acabat la supressió massiva dels grups d'atributs
+pim_enrich.mass_edit.family:
+  title: Acció en massa de família
+  confirm: "{1}Esteu a punt d'actualitzar una família amb la informació següent, confirmeu-ho si us plau.|] 1, Inf [Esteu a punt d'actualitzar {{ itemsCount }} famílies amb la informació següent, confirmeu-ho si us plau."
+  step:
+    select:
+      label: Triar famílies
+    choose:
+      title: Accions massives familiars
+      label_count: "]0, Inf[Selecciona l'acció"
+    configure:
+      label: Configurar
+    confirm:
+      label: Confirmar
+    launched:
+      label: L'acció en massa "{{ operation }}" ja s'ha engegat. Se li notificarà una cop acabi.
+  operation:
+    set_requirements:
+      label: Establir els requeriments d'atributs
+      description: Els següents requisits d'atributs s'aplicaran a les famílies seleccionades
+      label_count: "{1}Configurar els requeriments d'atributs de <span class=\"AknFullPage-title--highlight\">1 família</span>|]1, Inf[Configurar els requeriments d'atributs de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} famílies</span>"
+batch_jobs:
+  default_steps:
+    delete_attribute_groups: Eliminar grups d'atributs
+    move_child_attributes: Moure els atributs fills
+  delete_attributes:
+    delete_attributes:
+      label: Eliminar atributs
+job_execution:
+  summary:
+    deleted_attributes: Atributs eliminats
+akeneo_job_process_tracker:
+  type_filter:
+    attribute_group_mass_delete: Eliminar grups d'atributs
+pim_notification:
+  types:
+    attribute_group_mass_delete: Supressió

@@ -1,0 +1,7 @@
+services:
+    pim_catalog.validator.constraint.immutable:
+        class: 'Akeneo\Tool\Component\StorageUtils\Validator\Constraints\ImmutableValidator'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_immutable_validator }

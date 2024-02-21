@@ -1,0 +1,9 @@
+parameters:
+    pim_versioning.builder.version.class: Akeneo\Tool\Bundle\VersioningBundle\Builder\VersionBuilder
+
+services:
+    pim_versioning.builder.version:
+        class: '%pim_versioning.builder.version.class%'
+        arguments:
+            - '@pim_versioning.serializer'
+            - '@pim_versioning.factory.version'

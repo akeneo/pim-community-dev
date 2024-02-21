@@ -1,0 +1,23 @@
+pim_connector:
+  steps:
+    file_reader:
+      invalid_item_columns_count: 'Mong đợi có %totalColumnsCount% cột, thực tế có%itemColumnsCount% trong %filePath%:%lineno%'
+job_execution.summary:
+  read: đọc
+  write: đã viết
+  skip: đã bỏ qua
+  create: đã tạo
+  process: đã được xử lý
+  update_products: các sản phẩm đã được cập nhật
+  process_products: các sản phẩm đã được xử lý
+  skip_products: các sản phẩm đã được bỏ qua
+  displayed: cảnh báo đầu tiên đã được hiển thị
+  charset_validator:
+    title: 'Tập tin đang được mã hóa:'
+    skipped: đã bỏ qua, phần mở rộng trong white list
+  product_skipped_no_diff: đã bỏ qua sản phẩm (không có sự khác biệt)
+  product_skipped_no_associations: đã bỏ qua sản phẩm (không có sự liên kết được tìm thấy)
+  product_model_skipped_no_diff: đã bỏ qua dòng sản phẩm (không có sự khác biệt)
+  item_position: đọc các dòng
+  skipped_in_root_product_model: đã bỏ qua dòng sản phẩm với phụ huynh
+  skipped_in_sub_product_model: đã bỏ qua dòng sản phẩm không có phụ huynh

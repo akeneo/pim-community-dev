@@ -1,0 +1,24 @@
+pim_connector:
+  steps:
+    file_reader:
+      invalid_item_columns_count: '%totalColumnsCount% 列が必要ですが、現在%filePath%:%lineno%列にあるのは%itemColumnsCount% 列です。'
+job_execution.summary:
+  read: 既読
+  write: 書き込み済
+  skip: スキップ済
+  create: 作成済
+  process: 処理済
+  update: 更新済み
+  update_products: 更新済商品
+  process_products: 処理済商品
+  skip_products: スキップされた製品
+  displayed: 最初の警告が表示済
+  charset_validator:
+    title: 'ファイルのエンコード:'
+    skipped: スキップしました。拡張子がホワイトリストにあります
+  product_skipped_no_diff: スキップされた商品 (相違なし)
+  product_skipped_no_associations: スキップされた商品 (関連性はなし)
+  product_model_skipped_no_diff: スキップされた商品モデル (相違なし)
+  item_position: 行の読み込み
+  skipped_in_root_product_model: スキップされた上位つき商品モデル
+  skipped_in_sub_product_model: スキップされた上位なし商品モデル

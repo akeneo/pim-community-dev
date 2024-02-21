@@ -1,0 +1,12 @@
+<% if (attribute.localizable) { %>
+    <div class="AknTextareaField-layer AknTextareaField-layer--first"></div>
+    <div class="AknTextareaField-layer AknTextareaField-layer--second"></div>
+<% } %>
+<textarea
+    id="<%- fieldId %>"
+    class="AknTextareaField<% if (attribute.localizable) { %> AknTextareaField--localizable <% } %>"
+    data-locale="<%- locale %>"
+    data-scope="<%- scope %>"
+    <%- editMode === 'view' ? 'disabled' : '' %>
+>
+<%- value ? value.data: null %></textarea>

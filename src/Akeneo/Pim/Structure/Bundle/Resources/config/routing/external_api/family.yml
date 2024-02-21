@@ -1,0 +1,49 @@
+pim_api_family_list:
+    path: /families
+    defaults: { _controller: pim_api.controller.family:listAction, _format: json }
+    methods: [GET]
+
+pim_api_family_get:
+    path: /families/{code}
+    defaults: { _controller: pim_api.controller.family:getAction, _format: json }
+    methods: [GET]
+
+pim_api_family_create:
+    path: /families
+    defaults: { _controller: pim_api.controller.family:createAction, _format: json }
+    methods: [POST]
+
+pim_api_family_partial_update:
+    path: /families/{code}
+    defaults: { _controller: pim_api.controller.family:partialUpdateAction, _format: json }
+    methods: [PATCH]
+
+pim_api_family_partial_update_list:
+    path: /families
+    defaults: { _controller: pim_api.controller.family:partialUpdateListAction, _format: json }
+    methods: [PATCH]
+
+pim_api_family_variant_list:
+    path: /families/{familyCode}/variants
+    defaults: { _controller: pim_api.controller.family_variant:listAction, _format: json }
+    methods: [GET]
+
+pim_api_family_variant_get:
+    path: /families/{familyCode}/variants/{code}
+    defaults: { _controller: pim_api.controller.family_variant:getAction, _format: json }
+    methods: [GET]
+
+pim_api_family_variant_create:
+    path: /families/{familyCode}/variants
+    defaults: { _controller: pim_api.controller.family_variant:createAction, _format: json }
+    methods: [POST]
+
+pim_api_family_variant_partial_update:
+    path: /families/{familyCode}/variants/{code}
+    defaults: { _controller: pim_api.controller.family_variant:partialUpdateAction, _format: json }
+    methods: [PATCH]
+
+pim_api_family_variant_partial_update_list:
+    path: /families/{familyCode}/variants
+    defaults: { _controller: pim_api.controller.family_variant:partialUpdateListAction, _format: json }
+    methods: [PATCH]

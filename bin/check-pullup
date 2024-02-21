@@ -1,0 +1,250 @@
+#!/usr/bin/env php
+
+<?php
+
+/**
+ * In the 3.x branch, all classes have been (or will be) moved from src/Pim to src/Akeneo/Something.
+ * It happens that during patches, we create new classes (or files).
+ * During the pull of 2.x into 3.x, those new classes won't be moved automatically,
+ * as it would be for most of the other former src/Pim classes.
+ *
+ * The goal of this script is to ensure that the person responsible of the pull-up, checked that those new
+ * classes and files have been correctly moved. To achieve that, we simply look at a list of forbidden directories which
+ * are the directories/namespaces/components/bundles we have already dispatched or moved with AL.
+ *
+ * Of course, if you don't know where to put those files:
+ * - Take a look at the definitions of the big set of features, they can help you: https://github.com/akeneo/pim-community-dev/blob/master/internal_doc/ARCHITECTURE.md#you-said-bounded-contexts
+ * - Don't hesitate to ask for the help of AL or JJ
+ */
+
+class CheckPullUp
+{
+    /**
+     * @param ForbiddenDirectory[] $forbiddenDirectories
+     */
+    public function __invoke(array $forbiddenDirectories): bool
+    {
+        $pullUpOk = true;
+
+        foreach ($forbiddenDirectories as $forbiddenDirectory) {
+            if ($forbiddenDirectory->exists()) {
+                echo (string)$forbiddenDirectory;
+                $pullUpOk = false;
+            }
+        }
+
+        return $pullUpOk;
+    }
+}
+
+class ForbiddenDirectory
+{
+    private const PATH_START_PIM = 'src/Pim'; // for src/Pim in CE and src/PimEntreprise in EE
+    private const PATH_START_AKENEO = 'src/Akeneo'; // for old Tools
+    private const PATH_START_SPEC = 'spec/'; // for spec/ in EE
+
+    /** @var string */
+    private $path;
+
+    /** @var Reason */
+    private $reason;
+
+    public function __construct(string $path, Reason $reason)
+    {
+        if (0 !== strpos($path, self::PATH_START_PIM) && 0 !== strpos($path, self::PATH_START_SPEC) && 0 !== strpos($path, self::PATH_START_AKENEO)) {
+            throw new \LogicException(sprintf('The path "%s" should start by "%s", "%s" or "%s".', $path, self::PATH_START_PIM, self::PATH_START_SPEC, self::PATH_START_AKENEO));
+        }
+
+        $this->path = $path;
+        $this->reason = $reason;
+    }
+
+    public function __toString()
+    {
+        return sprintf(
+            'The directory "%s" exists whereas it shouldn\'t. %s' . "\n",
+            $this->path,
+            (string)$this->reason
+        );
+    }
+
+    public function exists(): bool
+    {
+        return is_dir($this->path);
+    }
+}
+
+interface Reason
+{
+    public function __toString(): string;
+}
+
+class Moved implements Reason
+{
+    /** @var string */
+    private $moved;
+
+    public function __construct(string $moved)
+    {
+        $this->moved = $moved;
+    }
+
+    public function __toString(): string
+    {
+        return sprintf('This folder has been moved to "%s".', $this->moved);
+    }
+}
+
+class Dispatched implements Reason
+{
+    /** @var array */
+    private $among;
+
+    public function __construct(array $among)
+    {
+        $this->among = $among;
+    }
+
+    public function __toString(): string
+    {
+        $among = array_map(
+            function ($folder) {
+                return '"' . $folder . '"';
+            },
+            $this->among
+        );
+
+        return sprintf('This folder was dispacthed **mainly** among %s.', implode(', ', $among));
+    }
+
+    public static function mainCommunityBusinessTopics(): Dispatched
+    {
+        return new Dispatched(['src/Akeneo/Channel', 'src/Akeneo/Pim']);
+    }
+
+    public static function mainEnterpriseBusinessTopics(): Dispatched
+    {
+        return new Dispatched(['src/Akeneo/Pim/Permission', 'src/Akeneo/Pim/WorkOrganization', 'src/Akeneo/Asset']);
+    }
+
+    public static function everywhereCommunity(): Dispatched
+    {
+        return new Dispatched(['src/Akeneo/Channel', 'src/Akeneo/Pim', 'src/Akeneo/Tool', 'and many others...']);
+    }
+}
+
+class Removed implements Reason
+{
+    public function __toString(): string
+    {
+        return 'This folder has been completely removed and should not be pulled up anymore';
+    }
+}
+
+$check = new CheckPullUp;
+$pullUpOk = $check(
+    [
+        // Community Bundles
+        new ForbiddenDirectory('src/Pim/Bundle/ApiBundle', Dispatched::everywhereCommunity()),
+        new ForbiddenDirectory('src/Pim/Bundle/CatalogBundle', Dispatched::mainCommunityBusinessTopics()),
+        new ForbiddenDirectory('src/Pim/Bundle/CommentBundle', new Moved('src/Akeneo/Pim')),
+        new ForbiddenDirectory('src/Pim/Bundle/ConnectorBundle', Dispatched::mainCommunityBusinessTopics()),
+        new ForbiddenDirectory('src/Pim/Bundle/DashboardBundle', new Moved('src/Akeneo/Platform')),
+        new ForbiddenDirectory('src/Pim/Bundle/NotificationBundle', new Moved('src/Akeneo/Platform')),
+        new ForbiddenDirectory('src/Pim/Bundle/PdfGeneratorBundle', new Moved('src/Akeneo/Pim/Enrichment')),
+        new ForbiddenDirectory('src/Pim/Bundle/UserBundle', new Moved('src/Akeneo/UserManagement')),
+        new ForbiddenDirectory('src/Pim/Bundle/VersioningBundle', new Moved('src/Akeneo/Tool')),
+        new ForbiddenDirectory('src/Pim/Bundle/PimUIBundle', new Moved('src/Akeneo/Platform')),
+        new ForbiddenDirectory('src/Pim/Bundle/NavigationBundle', new Moved('src/Akeneo/Platform/Bundle/UIBundle')),
+        new ForbiddenDirectory('src/Pim/Bundle/DataGridBundle', new Moved('src/Oro/Bundle/PimDataGridBundle')),
+        new ForbiddenDirectory('src/Pim/Bundle/FilterBundle', new Moved('src/Oro/Bundle/PimFilterBundle')),
+        new ForbiddenDirectory('src/Pim/Bundle/ReferenceDataBundle', new Moved('src/Akeneo/Pim')),
+        new ForbiddenDirectory('src/Pim/Bundle/InstallerBundle', new Moved('src/Akeneo/Platform')),
+        new ForbiddenDirectory('src/Pim/Bundle/LocalizationBundle', new Dispatched(['src/Akeneo/Pim/Enrichment', 'src/Akeneo/Platform/Bundle/UIBundle'])),
+        new ForbiddenDirectory('src/Pim/Bundle/EnrichBundle', new Dispatched(['src/Akeneo/Pim/Enrichment', 'src/Akeneo/Pim/Structure', 'src/Akeneo/Platform/Bundle/UIBundle'])),
+        new ForbiddenDirectory('src/Akeneo/Bundle', new Dispatched(['src/Akeneo/Platform', 'src/Akeneo/Tool'])),
+
+        // Community Components
+        new ForbiddenDirectory('src/Pim/Component/Enrich', new Dispatched(['src/Akeneo/Pim/Structure', 'src/Akeneo/Pim/Enrichment'])),
+        new ForbiddenDirectory('src/Pim/Component/Api', Dispatched::everywhereCommunity()),
+        new ForbiddenDirectory('src/Pim/Component/Catalog', Dispatched::mainCommunityBusinessTopics()),
+        new ForbiddenDirectory('src/Pim/Component/Connector', Dispatched::mainCommunityBusinessTopics()),
+        new ForbiddenDirectory('src/Pim/Component/User', new Moved('src/Akeneo/UserManagement')),
+        new ForbiddenDirectory('src/Pim/Component/ReferenceData', new Dispatched(['src/Akeneo/Pim/Enrichment', 'src/Akeneo/Pim/Structure'])),
+        new ForbiddenDirectory('src/Akeneo/Component', new Dispatched(['src/Akeneo/Platform', 'src/Akeneo/Tool'])),
+
+        // Enterprise Bundles
+        new ForbiddenDirectory('src/PimEnterprise/Bundle/ApiBundle', Dispatched::mainEnterpriseBusinessTopics()),
+        new ForbiddenDirectory('src/PimEnterprise/Bundle/CatalogBundle', new Dispatched(['src/Akeneo/Pim/Permission'])),
+        new ForbiddenDirectory(
+            'src/PimEnterprise/Bundle/CatalogRuleBundle',
+            new Dispatched(['src/Akeneo/Pim/Automation'])
+        ),
+        new ForbiddenDirectory(
+            'src/PimEnterprise/Bundle/ConnectorBundle', new Dispatched(['src/Akeneo/Pim/Permission'])
+        ),
+        new ForbiddenDirectory('src/PimEnterprise/Bundle/FilterBundle', Dispatched::mainEnterpriseBusinessTopics()),
+        new ForbiddenDirectory(
+            'src/PimEnterprise/Bundle/ImportExportBundle',
+            new Dispatched(['src/Akeneo/Pim/Permission'])
+        ),
+        new ForbiddenDirectory(
+            'src/PimEnterprise/Bundle/PdfGeneratorBundle',
+            new Dispatched(['src/Akeneo/Pim/Permission'])
+        ),
+        new ForbiddenDirectory('src/PimEnterprise/Bundle/ProductAssetBundle', new Moved('src/Akeneo/Asset')),
+        new ForbiddenDirectory(
+            'src/PimEnterprise/Bundle/ReferenceDataBundle',
+            new Dispatched(['src/Akeneo/Pim/WorkOrganization'])
+        ),
+        new ForbiddenDirectory(
+            'src/PimEnterprise/Bundle/SecurityBundle', new Dispatched(['src/Akeneo/Pim/Permission'])
+        ),
+        new ForbiddenDirectory(
+            'src/PimEnterprise/Bundle/TeamworkAssistantBundle',
+            new Moved('src/Akeneo/Pim/WorkOrganization')
+        ),
+        new ForbiddenDirectory(
+            'src/PimEnterprise/Bundle/VersioningBundle',
+            new Dispatched(['src/Akeneo/Pim/WorkOrganization/ProductRevert'])
+        ),
+        new ForbiddenDirectory('src/PimEnterprise/Bundle/WorkflowBundle', new Moved('src/Akeneo/Pim/WorkOrganization')),
+        new ForbiddenDirectory('src/PimEnterprise/Bundle/InstallerBundle', new Moved('src/Akeneo/Platform')),
+        new ForbiddenDirectory('src/PimEnterprise/Bundle/DataGridBundle', Dispatched::mainEnterpriseBusinessTopics()),
+        new ForbiddenDirectory('src/PimEnterprise/Bundle/UserBundle', Dispatched::mainEnterpriseBusinessTopics()),
+
+        // Enterprise Components
+        new ForbiddenDirectory('src/PimEnterprise/Component/Api', Dispatched::mainEnterpriseBusinessTopics()),
+        new ForbiddenDirectory('src/PimEnterprise/Component/Catalog', Dispatched::mainEnterpriseBusinessTopics()),
+        new ForbiddenDirectory('src/PimEnterprise/Component/CatalogRule', new Moved('src/Akeneo/Pim/Automation')),
+        new ForbiddenDirectory('src/PimEnterprise/Component/Connector', Dispatched::mainEnterpriseBusinessTopics()),
+        new ForbiddenDirectory('src/PimEnterprise/Component/ProductAsset', new Moved('src/Akeneo/Asset')),
+        new ForbiddenDirectory('src/PimEnterprise/Component/Security', new Moved('src/Akeneo/Pim/Permission')),
+        new ForbiddenDirectory(
+            'src/PimEnterprise/Component/TeamworkAssistant',
+            new Moved('src/Akeneo/Pim/WorkOrganization')
+        ),
+        new ForbiddenDirectory('src/PimEnterprise/Component/User', new Moved('src/UserManagement')),
+        new ForbiddenDirectory('src/PimEnterprise/Component/Workflow', new Moved('src/Akeneo/Pim/WorkOrganization')),
+        new ForbiddenDirectory('src/PimEnterprise/Bundle/EnrichBundle', Dispatched::mainEnterpriseBusinessTopics()),
+        new ForbiddenDirectory('src/PimEnterprise/Component/Enrich', Dispatched::mainEnterpriseBusinessTopics()),
+        new ForbiddenDirectory('src/Akeneo/Asset', new Removed()),
+        new ForbiddenDirectory('src/Akeneo/Pim/Enrichment/Asset', new Removed()),
+
+        //tests folder
+        new ForbiddenDirectory('spec/', new Dispatched(['tests/back/Pim/**/Specification','tests/back/Pim/**/spec'])),
+    ]
+);
+
+if ($pullUpOk) {
+    echo 'Pull up OK. Well done!' . "\n";
+} else {
+    echo "\n" . 'Still a few classes to dispatch before finishing the pull up. Keep going! ';
+    echo "\n" . 'Take a look at the definitions of the big set of features, they can help you: https://github.com/akeneo/pim-community-dev/blob/master/internal_doc/ARCHITECTURE.md#you-said-bounded-contexts.';
+    echo "\n" . 'And don\'t hesitate to ask for the help of AL or JJ.';
+    echo "\n";
+}
+
+$return = $pullUpOk ? 0 : 1;
+
+exit($return);

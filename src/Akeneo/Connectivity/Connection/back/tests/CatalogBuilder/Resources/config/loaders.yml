@@ -1,0 +1,141 @@
+services:
+    _defaults:
+        public: true
+
+    akeneo_connectivity.connection.fixtures.connection_loader:
+        class: 'Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader'
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionHandler'
+            - '@Akeneo\Connectivity\Connection\Application\Settings\Command\UpdateConnectionHandler'
+
+    akeneo_connectivity.connection.fixtures.audit_loader:
+        class: 'Akeneo\Connectivity\Connection\Tests\CatalogBuilder\AuditLoader'
+        arguments:
+            - '@database_connection'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalBulkInsertEventCountsQuery'
+
+    akeneo_connectivity.connection.fixtures.audit_error_loader:
+        class: 'Akeneo\Connectivity\Connection\Tests\CatalogBuilder\AuditErrorLoader'
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Application\ErrorManagement\Command\UpdateConnectionErrorCountHandler'
+
+    akeneo_connectivity.connection.fixtures.structure.attribute:
+        class: 'Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Structure\AttributeLoader'
+        arguments:
+            - '@pim_catalog.factory.attribute'
+            - '@pim_catalog.updater.attribute'
+            - '@pim_catalog.saver.attribute'
+            - '@validator'
+
+    akeneo_connectivity.connection.fixtures.structure.family:
+        class: 'Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Structure\FamilyLoader'
+        arguments:
+            - '@pim_catalog.factory.family'
+            - '@pim_catalog.updater.family'
+            - '@pim_catalog.saver.family'
+            - '@validator'
+
+    akeneo_connectivity.connection.fixtures.structure.family_variant:
+        class: 'Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Structure\FamilyVariantLoader'
+        arguments:
+            - '@pim_catalog.factory.family_variant'
+            - '@pim_catalog.updater.family_variant'
+            - '@validator'
+            - '@pim_catalog.saver.family_variant'
+
+    akeneo_connectivity.connection.fixtures.enrichment.product:
+        class: 'Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\ProductLoader'
+        arguments:
+            - '@pim_catalog.repository.product'
+            - '@pim_enrich.product.message_bus'
+            - '@pim_catalog.validator.unique_value_set'
+
+    akeneo_connectivity.connection.fixtures.enrichment.product_model:
+        class: 'Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\ProductModelLoader'
+        arguments:
+            - '@pim_catalog.factory.product_model'
+            - '@pim_catalog.updater.product_model'
+            - '@pim_catalog.validator.product'
+            - '@pim_catalog.saver.product_model'
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+
+    akeneo_connectivity.connection.fixtures.enrichment.category:
+        class: 'Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\CategoryLoader'
+        arguments:
+            - '@pim_catalog.factory.category'
+            - '@pim_catalog.updater.category'
+            - '@validator'
+            - '@pim_catalog.saver.category'
+
+    akeneo_connectivity.connection.fixtures.enrichment.user_group_loader:
+        class: 'Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\UserGroupLoader'
+        arguments:
+            - '@pim_user.factory.group'
+            - '@pim_user.updater.group'
+            - '@validator'
+            - '@pim_user.saver.group'
+            - '@database_connection'
+
+    akeneo_connectivity.connection.fixtures.enrichment.user_role_loader:
+        class: 'Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\UserRoleLoader'
+        arguments:
+            - '@pim_user.factory.role'
+            - '@pim_user.updater.role'
+            - '@validator'
+            - '@pim_user.saver.role'
+            - '@database_connection'
+
+    akeneo_connectivity.connection.fixtures.webhook_loader:
+        class: Akeneo\Connectivity\Connection\Tests\CatalogBuilder\WebhookLoader
+        arguments:
+            - '@database_connection'
+
+    akeneo_connectivity.connection.fixtures.event_subscription_log_loader:
+        class: Akeneo\Connectivity\Connection\Tests\CatalogBuilder\EventSubscriptionLogLoader
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence\ElasticsearchEventsApiDebugRepository'
+
+    Akeneo\Connectivity\Connection\Tests\CatalogBuilder\UserConsentLoader:
+        arguments:
+            - '@database_connection'
+
+    akeneo_connectivity.connection.fixtures.events_api_request_count_loader:
+        class: Akeneo\Connectivity\Connection\Tests\CatalogBuilder\EventsApiRequestCountLoader
+        arguments:
+            - '@database_connection'
+
+    akeneo_connectivity.connection.fixtures.connected_app_loader:
+        class: 'Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectedAppLoader'
+        arguments:
+            - '@database_connection'
+            - '@akeneo_connectivity.connection.fixtures.enrichment.user_role_loader'
+            - '@fos_oauth_server.storage'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProvider'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\User\CreateUserGroup'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Service\User\CreateUser'
+            - '@Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnection'
+            - '@Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectedApp'
+            - '@pim_user.repository.user'
+            - '@pim_connector.doctrine.cache_clearer'
+
+    Akeneo\Connectivity\Connection\Tests\CatalogBuilder\PimConfigurationLoader:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\UserLoader:
+        arguments:
+            - '@pim_user.factory.user'
+            - '@pim_user.updater.user'
+            - '@validator'
+            - '@pim_user.saver.user'
+            - '@akeneo_connectivity.connection.fixtures.enrichment.user_group_loader'
+            - '@akeneo_connectivity.connection.fixtures.enrichment.user_role_loader'
+
+    Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Security\AclLoader:
+        arguments:
+            - '@oro_security.acl.manager'
+            - '@pim_user.repository.role'
+
+    Akeneo\Connectivity\Connection\Tests\CatalogBuilder\CustomAppLoader:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Application\CustomApps\Command\CreateCustomAppCommandHandler'

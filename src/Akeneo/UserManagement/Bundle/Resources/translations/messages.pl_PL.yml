@@ -1,0 +1,148 @@
+pim_user:
+  user:
+    title: Użytkownik
+    fields:
+      name_prefix: Przyimek
+      email: E-mail
+      username: Nazwa użytkownika
+      first_name: Imię
+      middle_name: Drugie imię
+      last_name: Nazwisko
+      name_suffix: Przyrostek
+      phone: Telefon
+      date_of_birth: Data urodzenia
+      avatar: Awatar
+      timezone: Strefa czasowa
+      roles: Role
+      groups: Grupy
+      password: Hasło
+      password_again: Powtórz hasło
+      product_grid_filters: Filtry listy produktów
+      catalog_locale: Wersja językowa katalogu
+      catalog_scope: Zakres katalogu
+      default_tree: Domyślne drzewo
+      current_password: Aktualne hasło
+      new_password: Nowe hasło
+      new_password_again: Nowe hasło (powtórz)
+      default_grid_view:
+        none: Żaden
+      default_product_grid_view:
+        label: Domyślny widok tabeli produktów
+      ui_locale: Język interfejsu
+      last_logged_in: Ostatnio zalogowany
+      login_count: Liczba logowań
+      user_salt: Sól użytkownika
+      created: Utworzono
+      updated: Zaktualizowano
+      status: Status
+      capabilities: Możliwości
+      has_role: Ma rolę
+      has_group: Ma grupę
+      active: Aktywne
+      inactive: Nieaktywny
+    fields_errors:
+      new_password:
+        minimum_length: Hasło musi zawierać co najmniej 8 znaków
+        maximum_length: Hasło musi zawierać mniej niż 4096 znaków
+      new_password_repeat:
+        not_match: Różne hasła
+      current_password:
+        wrong: Błędne hasło
+      roles:
+        last_user_with_edit_role_permissions: To ostatni użytkownik z uprawnieniami do edycji roli.
+    tabs:
+      general:
+        title: Ogólne
+        basic_information: Podstawowe Informacje
+        contact_information: Informacje kontaktowe
+      additional:
+        title: Dodatkowe
+      additional_data:
+        title: Informacje dodatkowe
+      interfaces:
+        title: Interfejsy
+      group_and_role.title: Grupy i Role
+      password.title: Hasło
+      business_unit.title: Jednostki Biznesowe
+      email_synchronization.title: Ustawienia synchronizacji poczty email
+    removed_user: Użytkownik usunięty
+    login:
+      username_or_email: Login lub Email
+      remember_me: Zapamiętaj mnie na tym komputerze
+      password_forgotten: Zapomniałeś hasła?
+      log_in: Zaloguj się
+      forgot_password: Zapomniałem hasła
+      request: Żądanie
+      password_reset: Resetowanie hasła
+      reset: Resetuj
+      password_reset_email_sent: Wiadomość email została wysłana do użytkownika. Zawiera ona link do resetowania hasła.
+      homepage: Powrót do strony głównej
+  group:
+    tab:
+      general.title: Ogólne
+      users.title: Użytkownicy
+  roles:
+    title: Rola
+    tab:
+      general: Ogólne
+      action: Uprawnienia
+      users: Użytkownicy
+  controller:
+    group:
+      message:
+        saved: "Grupa zapisana"
+    role:
+      message:
+        saved: "Rola zapisana"
+        cannot_delete_last_edit_role_permission: Nie możesz usunąć uprawnień do edycji roli ostatniemu użytkownikowi z tą rolą.
+        cannot_remove_last_edit_role_permission: Nie możesz usunąć uprawnień do edycji roli ostatniemu użytkownikowi z tą rolą.
+    user:
+      message:
+        saved: "Użytkownik zapisany"
+pim_datagrid:
+  columns:
+    user:
+      createdAt: "Data utworzenia"
+      updatedAt: "Aktualizowano"
+    roles:
+      label: "Etykieta"
+    groups:
+      name: "Nazwa"
+confirmation:
+  remove:
+    role: Czy na pewno chcesz usunąć tę rolę?
+    user: Czy na pewno chcesz usunąć tego użytkownika?
+flash:
+  role:
+    removed: Rola pomyślnie usunięta
+  user:
+    removed: Użytkownik pomyślnie usunięty
+oro_security:
+  acl_group:
+    user: Użytkownicy
+    role: Role
+    group: Grupy użytkowników
+  acl:
+    user:
+      view: Przeglądaj użytkowników
+      create: Utwórz użytkownika
+      edit: Edytuj użytkowników
+      delete: Usuń użytkownika
+    role:
+      view: Przeglądaj role
+      create: Utwórz rolę
+      edit: Edytuj role
+      delete: Usuń rolę
+    group:
+      view: Przeglądaj grupy użytkowników
+      create: Utwórz grupę użytkowników
+      edit: Edycja grup użytkowników
+      delete: Usuwanie grup użytkowników
+#Security
+(default): Domyślne uprawnienia obiektu
+VIEW: Zobacz
+CREATE: Utwórz
+EDIT: Edytuj
+DELETE: Skasuj
+ASSIGN: Przypisz
+SHARE: Udostępnij

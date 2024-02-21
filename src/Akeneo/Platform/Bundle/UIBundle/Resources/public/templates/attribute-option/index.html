@@ -1,0 +1,24 @@
+<colgroup>
+    <col class="code" span="1">
+    <col class="fields" span="<%- locales.length %>"/>
+    <col class="action" span="1"/>
+</colgroup>
+<thead>
+    <tr>
+        <th class="AknGrid-headerCell AknAttributeOptions-columnHeader"><%- code_label %></th>
+        <% _.each(locales, function (locale) { %>
+            <th class="AknGrid-headerCell AknAttributeOptions-columnHeader">
+                <%- locale %>
+            </th>
+        <% }); %>
+        <th class="AknGrid-headerCell AknGrid-headerCell--right AknAttributeOptions-columnHeader"><%- _.__('pim_common.actions') %></th>
+    </tr>
+</thead>
+<tbody></tbody>
+<tfoot>
+    <tr class="AknGrid-bodyRow">
+        <td class="AknGrid-bodyCell" colspan="<%- 2 + locales.length %>">
+            <span class="AknButton AknButton--grey AknButton--small option-add"><%- add_option_label %></span>
+        </td>
+    </tr>
+</tfoot>

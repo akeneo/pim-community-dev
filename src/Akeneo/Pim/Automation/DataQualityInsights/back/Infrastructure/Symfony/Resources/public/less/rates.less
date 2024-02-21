@@ -1,0 +1,51 @@
+.AknDataQualityInsightsRate {
+    width: 31px;
+    height: 18px;
+    line-height: 16px;
+    font-size: 13px;
+    text-align: center;
+    display: inline-block;
+    text-transform: uppercase;
+    border-style: solid;
+    border-width: 1px 1px 1px 7px;
+    border-radius: 2px;
+    background-color: @AknWhite;
+    font-weight: bold;
+
+    &.AknDataQualityInsightsRate-A {
+        border-color: @AknGreen120;
+        color: @AknGreen140;
+    }
+    &.AknDataQualityInsightsRate-B {
+        border-color: @AknGreen;
+        color: @AknGreen120;
+    }
+    &.AknDataQualityInsightsRate-C {
+        border-color: @AknYellow100;
+        color: @AknYellow120;
+    }
+    &.AknDataQualityInsightsRate-D {
+        border-color: @AknRed;
+        color: @AknRed120;
+    }
+    &.AknDataQualityInsightsRate-E {
+        border-color: @AknRed120;
+        color: @AknRed140;
+    }
+    &.AknDataQualityInsightsRate-noRate {
+        border-color: @AknGrey;
+        color: @AknGrey;
+        width: 45px;
+    }
+
+    &.AknDataQualityInsightsRate-Loading {
+        border-color: @AknGrey;
+        color: @AknGrey;
+        line-height: 20px !important;
+        white-space: nowrap;
+
+        .AknDataQualityInsightsRate-Loader {
+            width: 65%;
+        }
+    }
+}

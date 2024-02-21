@@ -1,0 +1,118 @@
+Item deleted: Item excluído
+Are you sure you want to delete this item?: Tem certeza de que deseja excluir este item?
+Delete Error: Erro ao realizar a exclusão
+Are you sure you want to do remove selected items?: Tem certeza de que deseja excluir os itens selecionados?
+Selected items were removed.: Os itens selecionados foram excluídos.
+Selected items were not removed.: Os itens selecionados não foram excluídos.
+Please, select items to remove.: Por favor, selecione os itens que deseja excluir.
+Cannot delete item.: Não é possível excluir o item.
+Refresh Confirmation: Confirmação de atualização
+Your local changes will be lost. Are you sure you want to refresh grid?: As alterações locais serão perdidas. Tem certeza de que deseja atualizar o grid?
+Reset Confirmation: Confirmação de redefinição
+Your local changes will be lost. Are you sure you want to reset grid?: As alterações locais serão perdidas. Tem certeza de que deseja redefinir o grid?
+Confirmation: Confirmação
+edit: editar
+copy: copiar
+remove: remover
+Status: Status
+All: Todos
+Per page: Por página
+Mass Action Confirmation: Confirmação de ação em massa
+Mass action performed.: Ação em massa executada.
+Mass action is not performed.: Ação em massa não executada.
+Please, select items to perform mass action.: Por favor, selecione os itens para executar a ação em massa.
+Execution Confirmation: Confirmação de execução
+Are you sure you want to do this?: Tem certeza de que deseja fazer isso?
+Action performed.: Ação executada.
+Action is not performed.: A ação não foi executada.
+Please, select item to perform action.: Por favor, selecione o item para executar a ação.
+View per page: Visualização por Página
+Enabled: Habilitado
+Disabled: Desabilitado
+not_available: N/A
+Yes: true
+No: false
+oro.datagrid.entityHint: Entidade
+oro.datagrid.noentities: Nenhum registro encontrado
+oro.datagrid.noresults_subTitle: "Tente novamente com novos critérios de pesquisa."
+oro.datagrid.nocolumns: Não há colunas configuradas para esse grid
+oro.datagrid.pagination.label: "Página"
+oro.datagrid.pagination.totalPages: "de {{ totalPages }}"
+oro.datagrid.pagination.totalRecords: "{{ totalRecords }} registros"
+oro.datagrid.action.reset: "Resetar"
+oro.datagrid.action.refresh: "Atualizar"
+oro_datagrid.select.all: "Todos"
+oro_datagrid.select.visible: "Todos visiveis"
+oro_datagrid.select.none: "Nenhum"
+oro_datagrid.select.select: "Selecionar"
+pim.grid.ajax_choice_filter.label_empty: está vazio
+pim.grid.ajax_choice_filter.label_not_empty: não está vazio
+pim:
+  grid:
+    choice_filter:
+      label_contains: contém
+      label_does_not_contain: não contém
+      label_equal: é igual a
+      label_start_with: começa com
+      label_empty: está vazio
+      label_not_empty: não está vazio
+      label_in_list: na lista
+      operator: Operador
+    price_filter:
+      label: Moeda
+    category_filter:
+      done: Cocluído
+#Column configuration
+Available Columns: Colunas Disponíveis
+Displayed Columns: Colunas selecionadas
+datagrid_view.columns.min_message: Você deve selecionar ao menos uma coluna para exibição
+pim_datagrid:
+  column_configurator:
+    label: Colunas
+    all_groups: Todos os Grupos
+    search: Pesquisar
+    clear: Limpar
+    displayed_columns: Colunas selecionadas
+    apply: Aplicar
+    cancel: Cancelar
+    remove_column: Remover
+    attribute_groups: Grupos de Atributos
+  mass_action:
+    delete:
+      confirm_title: Confirmar exclusão
+      confirm_ok: OK
+      empty_selection: Nenhum produto selecionado
+#Quick export
+pim.grid.mass_action.quick_export.title: Exportação Rápida
+pim.grid.mass_action.quick_export.launched: A exportação rápida foi iniciada
+#Custom actions
+pim.grid.action.launch.title: Começar
+pim.grid.action.show.title: Exibir
+Please select view: Por favor, selecione uma visualização
+Loading...: Carregando...
+View: Visão
+#Datetimepicker
+from: de
+to: para
+#View selector
+grid.view_selector:
+  default_view: Vista por defeito
+  save_changes: Salvar essa visualização
+  remove: Deletar essa visualização
+  create_view: Criar Visualização
+  create: Criar
+  search: Pesquisar
+  views: Visualizações
+  placeholder: Nome da visualização
+  choose_label: Escolha um rótulo para a visualização
+  confirmation:
+    delete: Confirmar exclusão
+#View selector flash messages
+grid.view_selector.flash.updated: Visualização de grid atualizada com sucesso
+#Display selector
+grid.display_selector:
+  label: Exibir
+grid.empty_results:
+  associated_product:
+    hint: Não existem produtos associados
+    subHint: 'Clique no botão "Adicionar associações" para associar esse produto'

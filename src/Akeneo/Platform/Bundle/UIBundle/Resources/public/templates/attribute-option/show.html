@@ -1,0 +1,19 @@
+<td class="AknGrid-bodyCell AknAttributeOptions-rowHeader">
+    <span class="handle ui-sortable-handle AknGrid-movableRow"><i class="icon-reorder"></i></span>
+    <span class="option-code"><%- item.code %></span>
+</td>
+<% _.each(locales, function (locale) { %>
+    <td class="AknGrid-bodyCell">
+        <% if (item.optionValues[locale]) { %>
+            <span title="<%- item.optionValues[locale].value %>">
+                <%- item.optionValues[locale].value %>
+            </span>
+        <% } %>
+    </td>
+<% }); %>
+<td class="AknGrid-bodyCell">
+    <div class="AknButtonList AknButtonList--right AknButtonList--expanded">
+        <span class="AknButtonList-item AknIconButton AknIconButton--round AknIconButton--apply AknIconButton--editWhite edit-row"></span>
+        <span class="AknButtonList-item AknIconButton AknIconButton--round AknIconButton--important AknIconButton--removeWhite delete-row"></span>
+    </div>
+</td>

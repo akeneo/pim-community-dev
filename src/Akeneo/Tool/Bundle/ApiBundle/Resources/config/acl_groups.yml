@@ -1,0 +1,36 @@
+pim_api.acl_group.overall_access:
+    order: 10
+    permission_group: api
+pim_api.acl_group.attribute:
+    order: 20
+    permission_group: api
+pim_api.acl_group.attribute_option:
+    order: 20
+    permission_group: api
+pim_api.acl_group.category:
+    order: 20
+    permission_group: api
+pim_api.acl_group.family:
+    order: 20
+    permission_group: api
+pim_api.acl_group.family_variant:
+    order: 20
+    permission_group: api
+pim_api.acl_group.channel:
+    order: 20
+    permission_group: api
+pim_api.acl_group.locale:
+    order: 20
+    permission_group: api
+pim_api.acl_group.attribute_group:
+    order: 20
+    permission_group: api
+pim_api.acl_group.currency:
+    order: 20
+    permission_group: api
+pim_api.acl_group.association_type:
+    order: 20
+    permission_group: api
+pim_api.acl_group.product:
+    order: 20
+    permission_group: api

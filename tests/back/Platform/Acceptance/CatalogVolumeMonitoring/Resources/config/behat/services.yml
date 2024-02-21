@@ -1,0 +1,205 @@
+services:
+    test.catalog_volume_limits.system_info_context:
+        public: true
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Context\SystemInfoContext'
+        arguments:
+            - '@pim_analytics.data_collector.database'
+
+
+    test.catalog_volume_limits.system_info_attribute_context:
+        public: true
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Context\SystemInfoAttributeContext'
+        arguments:
+            - '@pim_analytics.data_collector.attribute'
+
+
+    test.catalog_volume_limits.report_context:
+        public: true
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Context\ReportContext'
+        arguments:
+            - '@pim_volume_monitoring.volume.normalizer.volumes'
+
+
+    test.catalog_volume_limits.attribute_per_family_context:
+        public: true
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Context\AttributePerFamilyContext'
+        arguments:
+            - '@test.catalog_volume_limits.report_context'
+            - '@pim_volume_monitoring.persistence.query.average_max_attributes_per_family'
+
+
+    test.catalog_volume_limits.localizable_attribute_per_family_context:
+        public: true
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Context\LocalizableAttributePerFamilyContext'
+        arguments:
+            - '@test.catalog_volume_limits.report_context'
+            - '@pim_volume_monitoring.persistence.query.average_max_localizable_attributes_per_family'
+
+
+    test.catalog_volume_limits.scopable_attribute_per_family_context:
+        public: true
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Context\ScopableAttributePerFamilyContext'
+        arguments:
+            - '@test.catalog_volume_limits.report_context'
+            - '@pim_volume_monitoring.persistence.query.average_max_scopable_attributes_per_family'
+
+
+    test.catalog_volume_limits.localizable_and_scopable_attribute_per_family_context:
+        public: true
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Context\LocalizableAndScopableAttributePerFamilyContext'
+        arguments:
+            - '@test.catalog_volume_limits.report_context'
+            - '@pim_volume_monitoring.persistence.query.average_max_localizable_and_scopable_attributes_per_family'
+
+
+    test.catalog_volume_limits.product_context:
+        public: true
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Context\ProductContext'
+        arguments:
+            - '@test.catalog_volume_limits.report_context'
+            - '@pim_volume_monitoring.persistence.query.count_products'
+
+
+    test.catalog_volume_limits.channel_context:
+        public: true
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Context\ChannelContext'
+        arguments:
+            - '@test.catalog_volume_limits.report_context'
+            - '@pim_volume_monitoring.persistence.query.count_channels'
+
+
+    test.catalog_volume_limits.locale_context:
+        public: true
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Context\LocaleContext'
+        arguments:
+            - '@test.catalog_volume_limits.report_context'
+            - '@pim_volume_monitoring.persistence.query.count_locales'
+
+
+    test.catalog_volume_limits.scopable_attribute_context:
+        public: true
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Context\ScopableAttributeContext'
+        arguments:
+            - '@test.catalog_volume_limits.report_context'
+            - '@pim_volume_monitoring.persistence.query.count_scopable_attributes'
+
+
+    test.catalog_volume_limits.localizable_attribute_context:
+        public: true
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Context\LocalizableAttributeContext'
+        arguments:
+            - '@test.catalog_volume_limits.report_context'
+            - '@pim_volume_monitoring.persistence.query.count_localizable_attributes'
+
+
+    test.catalog_volume_limits.localizable_and_scopable_attribute_context:
+        public: true
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Context\LocalizableAndScopableAttributeContext'
+        arguments:
+            - '@test.catalog_volume_limits.report_context'
+            - '@pim_volume_monitoring.persistence.query.count_localizable_and_scopable_attributes'
+
+
+    test.catalog_volume_limits.family_context:
+        public: true
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Context\FamilyContext'
+        arguments:
+            - '@test.catalog_volume_limits.report_context'
+            - '@pim_volume_monitoring.persistence.query.count_families'
+
+
+    test.catalog_volume_limits.product_value_per_family_context:
+        public: true
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Context\ProductValuePerFamilyContext'
+        arguments:
+            - '@test.catalog_volume_limits.report_context'
+            - '@pim_volume_monitoring.persistence.query.average_max_product_values_per_family'
+
+
+    test.catalog_volume_limits.attribute_context:
+        public: true
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Context\AttributeContext'
+        arguments:
+            - '@test.catalog_volume_limits.report_context'
+            - '@pim_volume_monitoring.persistence.query.count_attributes'
+
+
+    test.catalog_volume_limits.useable_as_grid_filter_attribute_context:
+        public: true
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Context\UseableAsGridFilterAttributeContext'
+        arguments:
+            - '@test.catalog_volume_limits.report_context'
+            - '@pim_volume_monitoring.persistence.query.count_useable_as_grid_filter_attributes'
+
+
+    test.catalog_volume_limits.option_per_attribute_context:
+        public: true
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Context\OptionPerAttributeContext'
+        arguments:
+            - '@test.catalog_volume_limits.report_context'
+            - '@pim_volume_monitoring.persistence.query.aggregated_average_max_options_per_attribute'
+
+
+    test.catalog_volume_limits.category_context:
+        public: true
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Context\CategoryContext'
+        arguments:
+            - '@test.catalog_volume_limits.report_context'
+            - '@pim_volume_monitoring.persistence.query.count_categories'
+
+
+    test.catalog_volume_limits.category_tree_context:
+        public: true
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Context\CategoryTreeContext'
+        arguments:
+            - '@test.catalog_volume_limits.report_context'
+            - '@pim_volume_monitoring.persistence.query.count_category_trees'
+
+
+    test.catalog_volume_limits.variant_product_context:
+        public: true
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Context\VariantProductContext'
+        arguments:
+            - '@test.catalog_volume_limits.report_context'
+            - '@pim_volume_monitoring.persistence.query.count_variant_products'
+
+
+    test.catalog_volume_limits.product_model_context:
+        public: true
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Context\ProductModelContext'
+        arguments:
+            - '@test.catalog_volume_limits.report_context'
+            - '@pim_volume_monitoring.persistence.query.count_product_models'
+
+
+    test.catalog_volume_limits.product_value_context:
+        public: true
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Context\ProductValueContext'
+        arguments:
+            - '@test.catalog_volume_limits.report_context'
+            - '@pim_volume_monitoring.persistence.query.aggregated_count_product_and_product_model_values'
+            - '@pim_volume_monitoring.persistence.query.aggregated_average_max_product_and_product_model_values'
+
+
+    test.catalog_volume_limits.user_context:
+        public: true
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Context\UserContext'
+        arguments:
+            - '@test.catalog_volume_limits.report_context'
+            - '@pim_volume_monitoring.persistence.query.count_users'
+
+
+    test.catalog_volume_limits.category_in_one_category_context:
+        public: true
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Context\CategoryInOneCategoryContext'
+        arguments:
+            - '@test.catalog_volume_limits.report_context'
+            - '@pim_volume_monitoring.persistence.query.average_max_categories_in_one_category'
+
+
+    test.catalog_volume_limits.category_level_context:
+        public: true
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Context\CategoryLevelContext'
+        arguments:
+            - '@test.catalog_volume_limits.report_context'
+            - '@pim_volume_monitoring.persistence.query.average_max_category_levels'

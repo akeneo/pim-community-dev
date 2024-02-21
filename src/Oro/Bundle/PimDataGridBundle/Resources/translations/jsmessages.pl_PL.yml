@@ -1,0 +1,86 @@
+Item deleted: Element został usunięty
+Are you sure you want to delete this item?: Czy na pewno chcesz usunąć ten element?
+Delete Error: Błąd usuwania
+Are you sure you want to do remove selected items?: Czy na pewno chcesz usunąć zaznaczone elementy?
+Selected items were removed.: Zaznaczone elementy zostały usunięte.
+Selected items were not removed.: Zaznaczone elementy nie zostały usunięte.
+Please, select items to remove.: Proszę, zaznacz elementy do usunięcia.
+Cannot delete item.: Nie można usunąć elementu.
+Refresh Confirmation: Potwierdzenie Przeładowania
+Your local changes will be lost. Are you sure you want to refresh grid?: Twoje zmiany zostaną utracone. Czy na pewno chcesz przeładować tabelę?
+Reset Confirmation: Potwierdzenie Resetowania
+Your local changes will be lost. Are you sure you want to reset grid?: Twoje zmiany zostaną utracone. Czy na pewno chcesz zresetować tabelę?
+Confirmation: Potwierdzenie
+edit: edytuj
+copy: kopiuj
+remove: usuń
+Status: Status
+All: Wszystkie
+Per page: Na stronę
+Mass Action Confirmation: Potwierdzenie Akcji Zbiorczej
+Mass action performed.: Akcja zbiorcza została wykonana.
+Mass action is not performed.: Akcja zbiorcza nie została wykonana.
+Please, select items to perform mass action.: Proszę, zaznacz elementy do wykonania akcji zbiorczej.
+Execution Confirmation: Potwierdzenie Wykonania
+Are you sure you want to do this?: Czy na pewno chcesz to zrobić?
+Action performed.: Akcja została wykonana.
+Action is not performed.: Akcja nie została wykonana.
+Please, select item to perform action.: Proszę, zaznacz elementy do wykonania akcji.
+View per page: Wyników na stronie
+"Yes": true
+"No": false
+oro.datagrid.entityHint: Encja
+oro.datagrid.noentities: Nie znaleziono żadnych rekordów
+oro.datagrid.noresults: "Brak wyników. Spróbuj zmienić kryteria wyszukiwania."
+oro.datagrid.nocolumns: Kolumny dla tej tabeli nie zostały ustawione
+oro.datagrid.pagination.label: "Strona"
+oro.datagrid.pagination.totalPages: "z {{ totalPages }}"
+oro.datagrid.pagination.totalRecords: "rekordy {{ totalRecords }}"
+oro.datagrid.action.reset: "Resetuj"
+oro.datagrid.action.refresh: "Odśwież"
+oro_datagrid.select.all: "Wszystkie"
+oro_datagrid.select.visible: "Wszystkie widoczne"
+oro_datagrid.select.none: "Brak"
+pim.grid.ajax_choice_filter.label_empty: jest pusty
+pim.grid.choice_filter:
+  label_empty: jest pusty
+  label_in_list: na liście
+Available Columns: Dostępne kolumny
+datagrid_view.columns.min_message: Musisz wybrać co najmniej jedną kolumnę tabeli do wyświetlania
+pim_datagrid:
+  column_configurator:
+    label: Kolumny
+    title: Zaznaczenie kolumny
+    all_groups: Wszystkie grupy
+    search: Szukaj
+    clear: Wyczyść
+    apply: Zastosuj
+    cancel: Anuluj
+    remove_column: Usuń
+  mass_action:
+    delete:
+      confirm_title: Potwierdzenie usunięcia
+      confirm_ok: OK
+pim.grid.mass_action.quick_export.title: Szybki Eksport
+pim.grid.mass_action.quick_export.launched: Szybki eksport został uruchomiony
+pim.grid.action.launch.title: Uruchom
+pim.grid.action.show.title: Pokaż
+Please select view: Proszę wybierz widok
+Loading...: Ładuję...
+View: Zobacz
+from: od
+to: do
+grid.view_selector:
+  default_view: Domyślny widok
+  save_changes: Zapisz ten widok
+  remove: Usuń ten widok
+  create_view: Utwórz widok
+  create: Utwórz
+  search: Szukaj
+  views: Widoki
+  placeholder: Nazwa nowego widoku
+  choose_label: Wybierz etykietę dla widoku
+  confirmation:
+    remove: Czy na pewno chcesz usunąć ten widok tabeli?
+    delete: Potwierdzenie usunięcia
+grid.view_selector.flash.updated: Widok tabeli został pomyślnie zaktualizowany

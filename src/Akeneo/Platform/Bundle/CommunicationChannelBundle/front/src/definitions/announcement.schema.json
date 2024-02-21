@@ -1,0 +1,30 @@
+{
+  "title": "Announcement",
+  "type": "object",
+  "properties": {
+    "id": {"type": "string"},
+    "title": {"type": "string"},
+    "description": {"type": "string"},
+    "img": {"type": ["string", "null"]},
+    "altImg": {"type": ["string", "null"]},
+    "link": {"type": ["string", "null"]},
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "startDate": {"type": "string"}
+  },
+  "required": [
+    "id",
+    "title",
+    "description",
+    "link",
+    "img",
+    "altImg",
+    "tags",
+    "startDate"
+  ],
+  "additionalProperties": false
+}

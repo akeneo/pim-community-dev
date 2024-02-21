@@ -1,0 +1,13 @@
+<table class="table-history-details">
+    <tbody>
+        <% _.each(changes, function(value, label) { %>
+            <tr class="AknGrid-bodyRow">
+                <td class="AknGrid-bodyCell AknGrid-bodyCell--highlightAlternative AknGrid-bodyCell--withoutBottomBorder property" colspan="2"><%= label %></td>
+            </tr>
+            <tr class="AknGrid-bodyRow AknGrid-bodyRow--wordBreakable">
+                <td class="AknGrid-bodyCell AknGrid-bodyCell--withoutTopBorder"><span class="AknDiff--remove"><%- __('pim_enrich.entity.product.module.history.old_value') %>:</span> <span class="old-values"><%- value.old %></span></td>
+                <td class="AknGrid-bodyCell AknGrid-bodyCell--withoutTopBorder"><span class="AknDiff--add"><%- __('pim_enrich.entity.product.module.history.new_value') %>:</span> <span class="new-values"><%- value.new %></span></td>
+            </tr>
+        <% }); %>
+    </tbody>
+</table>

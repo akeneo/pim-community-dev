@@ -1,0 +1,4 @@
+config:
+    paths:
+        pim/reference-simple-select-field: akeneopimenrichment/js/product/field/reference-simple-select-field
+        pim/reference-multi-select-field:  akeneopimenrichment/js/product/field/reference-multi-select-field

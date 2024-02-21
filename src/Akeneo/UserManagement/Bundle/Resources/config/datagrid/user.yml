@@ -1,0 +1,106 @@
+datagrid:
+    pim-user-grid:
+        extended_entity_name: '%pim_user.entity.user.class%'
+        options:
+            entityHint: user
+            manageFilters: false
+        source:
+            acl_resource: pim_user_user_index
+            type: orm
+            query:
+                select:
+                    - u.id
+                    - u.username
+                    - u.email
+                    - u.firstName
+                    - u.lastName
+                    - u.createdAt
+                    - u.updatedAt
+                    - u.enabled
+                from:
+                    - { table: '%pim_user.entity.user.class%', alias: u }
+                where:
+                    and:
+                        - u.type = '%pim_user.entity.user.class%::TYPE_USER'
+        columns:
+            username:
+                label: pim_user.user.fields.username
+                frontend_type: label
+            firstName:
+                label: pim_user.user.fields.first_name
+            lastName:
+                label: pim_user.user.fields.last_name
+            enabled:
+                label: pim_user.user.fields.status
+                frontend_type: select
+                choices:
+                   - Inactive
+                   - Active
+
+        properties:
+            id: ~
+            update_link:
+                type: url
+                route: pim_user_edit
+                params:
+                    identifier: id
+            delete_link:
+                type: url
+                route: pim_user_user_rest_delete
+                params:
+                    identifier: id
+        sorters:
+            columns:
+                username:
+                    data_name: u.username
+                firstName:
+                    data_name: u.firstName
+                lastName:
+                    data_name: u.lastName
+                enabled:
+                    data_name: u.enabled
+            default:
+                username: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
+
+        filters:
+            columns:
+                username:
+                    type: search
+                    data_name: u.username
+                firstName:
+                    type: string
+                    data_name: u.firstName
+                lastName:
+                    type: string
+                    data_name: u.lastName
+                enabled:
+                    type: choice
+                    data_name: u.enabled
+                    options:
+                        field_options:
+                            choices:
+                               Inactive : 0
+                               Active : 1
+
+        actions:
+            update:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--edit
+                type:          navigate
+                label:         pim_common.update
+                link:          update_link
+                rowAction:     true
+            duplicate:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--copy
+                type:          duplicate-user
+                label:         pim_common.duplicate
+                rowAction:     true
+                acl_resource:  pim_user_user_create
+            delete:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--trash
+                type:          delete
+                label:         pim_common.delete
+                link:          delete_link
+                acl_resource:  pim_user_user_remove

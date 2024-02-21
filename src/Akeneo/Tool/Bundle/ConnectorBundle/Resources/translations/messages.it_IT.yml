@@ -1,0 +1,24 @@
+pim_connector:
+  steps:
+    file_reader:
+      invalid_item_columns_count: 'Erano attese %totalColumnsCount% colonne, invece ci sono %itemColumnsCount% in %filePath%:%lineno%'
+job_execution.summary:
+  read: leggere
+  write: scritti
+  skip: saltato
+  create: creato
+  process: elaborato
+  update: aggiornato
+  update_products: prodotti aggiornati
+  process_products: prodotti elaborati
+  skip_products: prodotti saltati
+  displayed: primi avvisi visualizzati
+  charset_validator:
+    title: 'Codifica del file:'
+    skipped: saltato, estensione nella white list
+  product_skipped_no_diff: prodotto saltato (nessuna differenza)
+  product_skipped_no_associations: prodotto saltato (nessuna associazione rilevata)
+  product_model_skipped_no_diff: modello di prodotto saltato (nessuna differenza)
+  item_position: linee lette
+  skipped_in_root_product_model: modello di prodotto con padre saltato
+  skipped_in_sub_product_model: modello di prodotto senza padre saltato

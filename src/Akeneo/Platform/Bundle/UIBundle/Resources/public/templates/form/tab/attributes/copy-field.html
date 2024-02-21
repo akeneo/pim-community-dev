@@ -1,0 +1,18 @@
+<div class="AknComparableFields-copyContainer copy-container">
+    <input type="checkbox" class="AknComparableFields-checkbox copy-field-selector" <%- selected ? 'checked' : '' %>></input>
+    <div class="<%- type %> AknFieldContainer AknComparableFields-item">
+        <div class="AknFieldContainer-header">
+            <label class="AknFieldContainer-label"><%- label %></label>
+            <span class="AknFieldContainer-fieldInfo field-info">
+                <% if (attribute.localizable || attribute.scopable) { %>
+                    <span class="field-context">
+                        <% if (attribute.scopable) { %> <span><%- context.scopeLabel %></span> <% } %>
+                        <% if (attribute.localizable) { %> <span><%= i18n.getFlag(context.locale) %></span> <% } %>
+                    </span>
+                <% } %>
+            </span>
+        </div>
+        <div class="AknFieldContainer-inputContainer field-input">
+        </div>
+    </div>
+</div>

@@ -1,0 +1,5 @@
+<% _.each(handles, function (handle) { %>
+<a class="AknActionButton AknGridToolbar-actionButton <% if (handle.className || disabled) { %><%- handle.className %> <% if (disabled) { %>disabled<% } %><% } %>" href="#" <% if (handle.title) {%> title="<%- handle.title %>"<% } %>>
+    <span <% if (handle.wrapClass) { %>class="<%- handle.wrapClass %>"<% } %>><%- handle.label %></span>
+</a>
+<% }); %>

@@ -1,0 +1,9 @@
+services:
+    Akeneo\Pim\Structure\Bundle\ReferenceData\Command\CheckRequirementsCommand:
+        arguments:
+            - '@pim_reference_data.registry'
+            - '@doctrine.orm.default_entity_manager'
+            - '%pim_reference_data.model.reference_data.interface%'
+        tags:
+            - { name: 'console.command' }
+            - { name: 'akeneo.command.authenticated_as_admin_user' }

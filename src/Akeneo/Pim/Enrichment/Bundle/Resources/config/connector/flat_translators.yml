@@ -1,0 +1,46 @@
+imports:
+  - {resource: flat_translators/header_translators.yml}
+  - {resource: flat_translators/property_value_translators.yml}
+  - {resource: flat_translators/attribute_value_translators.yml}
+
+services:
+  pim_enrich.connector.flat_translators.product_translator:
+    class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\ProductAndProductModelFlatTranslator
+    arguments:
+      - '@pim_enrich.connector.flat_translators.header_registry'
+      - '@pim_enrich.connector.flat_translators.property_value_registry'
+      - '@pim_enrich.connector.flat_translators.attribute_values_translator'
+      - '@pim_enrich.connector.flat_translators.property_value_translator.associations'
+
+  pim_enrich.connector.flat_translators.product_model_translator:
+    class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\ProductAndProductModelFlatTranslator
+    arguments:
+      - '@pim_enrich.connector.flat_translators.header_registry'
+      - '@pim_enrich.connector.flat_translators.property_value_registry'
+      - '@pim_enrich.connector.flat_translators.attribute_values_translator'
+      - '@pim_enrich.connector.flat_translators.property_value_translator.associations'
+
+  pim_enrich.connector.flat_translators.attribute_values_translator:
+    class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AttributeValuesFlatTranslator
+    arguments:
+      - '@pim_enrich.connector.flat_translators.attribute_value_registry'
+      - '@pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor'
+      - '@pim_connector.array_converter.flat_to_standard.product.attribute_columns_resolver'
+
+  pim_enrich.connector.flat_translators.property_value_translator.associations:
+    class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AssociationTranslator
+    arguments:
+      - '@pim_connector.array_converter.flat_to_standard.product.association_columns_resolver'
+      - '@akeneo.pim.enrichment.product.query.get_product_model_labels'
+      - '@akeneo.pim.enrichment.product.query.get_product_labels'
+      - '@akeneo.pim.structure.query.get_group_translations'
+
+  # Registries
+  pim_enrich.connector.flat_translators.header_registry:
+    class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\HeaderRegistry
+
+  pim_enrich.connector.flat_translators.property_value_registry:
+    class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\PropertyValueRegistry
+
+  pim_enrich.connector.flat_translators.attribute_value_registry:
+    class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AttributeValueRegistry

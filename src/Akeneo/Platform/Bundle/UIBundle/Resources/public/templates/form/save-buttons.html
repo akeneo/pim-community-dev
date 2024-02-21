@@ -1,0 +1,23 @@
+<% if ((primaryButton) && !(secondaryButtons && secondaryButtons.length)) { %>
+    <button class="AknButton AknButton--apply <%- primaryButton.className || '' %>">
+        <%- primaryButton.label %>
+    </button>
+<% } else { %>
+    <div class="AknSeveralActionsButton AknSeveralActionsButton--apply AknDropdown">
+        <button class="AknSeveralActionsButton-mainAction <%- primaryButton.className || '' %>">
+            <%- primaryButton.label %>
+        </button>
+        <button class="AknSeveralActionsButton-caretContainer" data-toggle="dropdown">
+            <img src="/bundles/pimui/images/icon-down-white.svg" class="AknSeveralActionsButton-caret"/>
+        </button>
+        <ul class="AknSeveralActionsButton-menu AknDropdown-menu AknDropdown-menu--right">
+            <% _.each(secondaryButtons, function (btn) { %>
+                <li>
+                    <button type="button" class="AknDropdown-menuLink <%- btn.className || '' %>">
+                        <%- btn.label %>
+                    </button>
+                </li>
+            <% }) %>
+        </ul>
+    </div>
+<% } %>

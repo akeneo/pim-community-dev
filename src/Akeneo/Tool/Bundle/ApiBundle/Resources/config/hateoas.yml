@@ -1,0 +1,19 @@
+parameters:
+    pim_api.pagination.offset_hal_paginator.class: Akeneo\Tool\Component\Api\Pagination\OffsetHalPaginator
+    pim_api.pagination.search_after_hal_paginator.class: Akeneo\Tool\Component\Api\Pagination\SearchAfterHalPaginator
+
+services:
+    pim_api.pagination.parameter_validator:
+        class: 'Akeneo\Tool\Component\Api\Pagination\PaginationParametersValidator'
+        arguments:
+            - '%pim_api.configuration%'
+
+    pim_api.pagination.offset_hal_paginator:
+        class: '%pim_api.pagination.offset_hal_paginator.class%'
+        arguments:
+            - '@router'
+
+    pim_api.pagination.search_after_hal_paginator:
+        class: '%pim_api.pagination.search_after_hal_paginator.class%'
+        arguments:
+            - '@router'

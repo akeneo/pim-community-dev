@@ -1,0 +1,196 @@
+#Job labels
+batch_jobs:
+  default_steps:
+    download_files: Télécharger le(s) fichier(s)
+    upload_files: Envoyer le(s) fichier(s)
+    export: Export
+    import: Import
+    validation: Validation du fichier
+    import_associations: Import des associations de produits
+    import_model_associations: Import des associations de produits
+    import_root_product_model: Import modèle de produit racine
+    import_sub_product_model: Import sous-modèle de produit
+    compute_data_related_to_family_root_product_models: Mise à jour des données des modèles de produit racine
+    compute_data_related_to_family_sub_product_models: Mise à jour des données des modèles de sous-produit
+    compute_data_related_to_family_products: Calcul des données produits
+    index_family_products_and_product_models: Indexer la famille des produits et des modèles de produits
+    compute_family_variant_structure_changes: Calcul des changements de structure des familles variantes
+    compute_completeness_of_products_family: Calcul de la complétude des familles variantes
+    index_family_products: Indexer la famille des produits et des modèles de produits
+    delete_products_and_product_models: Suppression massive de produits
+    ensure_attribute_group_order: Vérifier l'ordre de tri des groupes d'attributs
+    clean_attribute:
+      register_clean_job: Blocage du code
+      clean_product_model: Traitement des modèles de produits
+      clean_product: Traitement des produits
+      remove_attribute_codes_from_blacklist: Déblocage du code
+    check_job_unique: Vérification de l'unicité du processus
+  csv_product_export:
+    label: Export des produits en CSV
+    export.label: Export des produits
+  csv_product_model_export:
+    label: Export de modèles de produit en CSV
+    export.label: Export de modèles de produit
+  csv_category_export:
+    label: Export des catégories en CSV
+    export.label: Export des catégories
+  csv_attribute_export:
+    label: Export des attributs en CSV
+    export.label: Export des attributs
+  csv_attribute_option_export:
+    label: Export des options d'attributs en CSV
+    export.label: Export des options d'attributs
+  csv_association_type_export:
+    label: Export des types d'association en CSV
+    export.label: Export des types d'association
+  csv_group_export:
+    label: Export des groupes en CSV
+    export.label: Export de groupes
+  csv_family_export:
+    label: Export des familles en CSV
+    export.label: Export des familles
+  csv_family_variant_export:
+    label: Export des variantes de famille en CSV
+    export.label: Export des variantes de famille
+  csv_user_group_export:
+    label: Export des groupes d'utilisateurs en CSV
+    export.label: Export des groupes d'utilisateurs
+  csv_user_role_export:
+    label: Export des rôles en CSV
+    export.label: Export des rôles
+  csv_user_export:
+    label: Export des utilisateurs en CSV
+    export.label: Export des utilisateurs
+  csv_product_import:
+    label: Import des produits en CSV
+    import.label: Import des produits
+  csv_product_model_import:
+    label: Import de modèles de produit en CSV
+    import_product_model_descendants.label: Mise à jour des descendants des modèles de produit
+  csv_category_import:
+    label: Import des catégories en CSV
+    import.label: Import des catégories
+  csv_attribute_import:
+    label: Import des attributs en CSV
+    import.label: Import des attributs
+  csv_attribute_option_import:
+    label: Import des options d'attributs en CSV
+    import.label: Import des options d'attributs
+  csv_association_type_import:
+    label: Import des types d'association en CSV
+    import.label: Import des types d'association
+  csv_family_import:
+    label: Import des familles en CSV
+    import.label: Import des familles
+    compute_data_related_to_family_variants.label: Mise à jour des données des modèles de produit
+  csv_family_variant_import:
+    label: Import des variantes de famille en CSV
+    import.label: Import des variantes de famille
+  csv_group_import:
+    label: Import des groupes en CSV
+    import.label: Import des groupes
+  csv_attribute_group_export:
+    label: Export des groupes d'attributs en CSV
+    export.label: Export des groupes d'attributs
+  csv_group_type_export:
+    label: Export des types de groupe en CSV
+    export.label: Export des types de groupe
+  csv_attribute_group_import:
+    label: Import des groupes d'attributs en CSV
+    import.label: Import des groupes d'attributs
+  csv_group_type_import:
+    label: Import des types de groupe en CSV
+    import.label: Import des types de groupe
+  csv_user_group_import:
+    label: Import des groupes d'utilisateurs en CSV
+    import.label: Import des groupes d'utilisateurs
+  csv_user_import:
+    label: Import des utilisateurs en CSV
+    import.label: Import des utilisateurs
+  csv_user_role_import:
+    label: Import des rôles en CSV
+    import.label: Import des rôles
+  xlsx_category_import:
+    label: Import des catégories en XLSX
+    import.label: Import des catégories
+  xlsx_association_type_import:
+    label: Import des types d'association en XLSX
+    import.label: Import des types d'association
+  xlsx_attribute_import:
+    label: Import des attributs en XLSX
+    import.label: Import des attributs
+  xlsx_attribute_option_import:
+    label: Import des options d'attributs en XLSX
+    import.label: Import des options d'attributs
+  xlsx_family_import:
+    label: Import des familles en XLSX
+    import.label: Import des familles
+  xlsx_family_variant_import:
+    label: Import des variantes de famille en XLSX
+    import.label: Import des variantes de famille
+  xlsx_product_export:
+    label: Export des produits en XLSX
+    export.label: Export des produits
+  xlsx_product_model_export:
+    label: Export de modèles de produit en XLSX
+    export.label: Export de modèles de produit
+  xlsx_product_import:
+    label: Import des produits en XLSX
+    import.label: Import des produits
+  xlsx_product_model_import:
+    label: Import de modèles de produit en XLSX
+    import_product_model_descendants.label: Mise à jour des descendants des modèles de produit
+  xlsx_group_export:
+    label: Export des groupes en XLSX
+    export.label: Export des groupes
+  xlsx_group_import:
+    label: Import des groupes en XLSX
+    import.label: Import des groupes
+  xlsx_family_export:
+    label: Export des familles en XLSX
+    export.label: Export des familles
+  xlsx_family_variant_export:
+    label: Export des variantes de famille en XLSX
+    export.label: Export des variantes de famille
+  xlsx_category_export:
+    label: Export des catégories en XLSX
+    export.label: Export des catégories
+  xlsx_attribute_export:
+    label: Export des attributs en XLSX
+    export.label: Export des attributs en XLSX
+  xlsx_attribute_option_export:
+    label: Export des options d'attributs en XLSX
+    export.label: Export des options d'attributs en XLSX
+  xlsx_association_type_export:
+    label: Export des types d'association en XLSX
+    export.label: Export des types d'association en XLSX
+  xlsx_attribute_group_export:
+    label: Export des groupes d'attributs en XLSX
+    export.label: Export des groupes d'attributs
+  xlsx_group_type_export:
+    label: Export des types de groupe en XLSX
+    export.label: Export des types de groupe
+  xlsx_user_group_export:
+    label: Export des groupes d'utilisateurs en XLSX
+    export.label: Export des groupes d'utilisateurs
+  xlsx_user_role_export:
+    label: Export des rôles en XLSX
+    export.label: Export des rôles
+  xlsx_user_export:
+    label: Export des utilisateurs en XLSX
+    export.label: Export des utilisateurs
+  xlsx_attribute_group_import:
+    label: Import des groupes d'attributs en XLSX
+    import.label: Import des groupes d'attributs
+  xlsx_group_type_import:
+    label: Import des types de groupe en XLSX
+    import.label: Import des types de groupe
+  xlsx_user_group_import:
+    label: Import des groupes d'utilisateurs en XLSX
+    import.label: Import des groupes d'utilisateurs
+  xlsx_user_import:
+    label: Import des utilisateurs en XLSX
+    import.label: Import des utilisateurs
+  xlsx_user_role_import:
+    label: Import des rôles en XLSX
+    import.label: Import des rôles

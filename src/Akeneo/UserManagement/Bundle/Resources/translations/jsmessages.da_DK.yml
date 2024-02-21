@@ -1,0 +1,94 @@
+pim_title:
+  pim_user_index: Brugere
+  pim_user_role_index: Roller
+  pim_user_group_index: Brugergrupper
+  oro_config_configuration_system: Konfiguration
+  pim_user_edit: 'Bruger {{ username }} | Vis'
+  pim_user_create: 'Brugere | Opret'
+  pim_user_role_update: 'Rolle {{ role }} | Ret'
+  pim_user_role_create: 'Rolle | Opret'
+  pim_user_security_login: Login
+  pim_user_reset_reset: Nulstil adgangskode
+  pim_user_reset_request: Glemt adgangskode
+  pim_user_group_create: 'Grupper | Opret'
+  pim_user_group_update: 'Gruppe {{ group }} | Ret'
+confirmation:
+  remove:
+    user: Er du sikker på du vil slette denne bruger?
+    group: Er du sikker på du vil slette denne gruppe?
+pim_enrich:
+  entity:
+    user:
+      flash:
+        delete:
+          fail: Denne bruger kan ikke slettes
+          success: Denne bruger kan ikke slettes
+      module:
+        delete:
+          confirm: Er du sikker på du vil slette denne bruger?
+pim_user_management:
+  entity:
+    user:
+      label: bruger
+      flash:
+        update:
+          success: Bruger blev opdateret.
+          fail: Denne bruger kan ikke opdateres.
+          fields_not_ready: "Denne bruger kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}"
+        create:
+          success: Bruger blev oprettet.
+      page_title:
+        index: "]-Inf, 1] {{ count }} bruger|]1, Inf [{{ count }} brugere"
+      properties:
+        username: Brugernavn
+        name_prefix: Navnepræfiks
+        first_name: Fornavn
+        middle_name: Mellemnavn
+        last_name: Efternavn
+        name_suffix: Navnesuffiks
+        phone: Telefon
+        avatar: Avatar
+        email: E-mail
+        catalog_locale: Katalog landestandard
+        catalog_scope: Katalog anvendelsesområde
+        default_tree: Standardtræ
+        default_asset_tree: Standard aktiver træ
+        product_grid_filters: Produkt gitter filtre
+        current_password: Nuværende adgangskode
+        new_password: Ny adgangskode
+        new_password_repeat: Ny adgangskode (gentag)
+        password: Adgangskode
+        password_repeat: Adgangskode (gentag)
+        ui_locale: UI landestandard
+        timezone: Tidszone
+        default_product_grid_view: Standard produkt gittervisningen
+        default_published_product_grid_view: Standard offentliggjorte produkter grid view #EE Only
+        proposals_to_review_notification: Når nye forslag til revision #EE Only
+        proposals_state_notifications: Når forslaget er accepteret eller afvist #EE Only
+      module:
+        create:
+          button: Opret bruger
+        delete:
+          confirm: Er du sikker på du vil slette denne bruger?
+        update:
+          additional: Yderligere
+          groups_and_roles: Grupper og roller
+          password: Adgangskode
+          interfaces: Grænseflader
+          notifications: Notifikationer #TODO EE Only
+    role:
+      plural_label: Roller
+      page_title:
+        index: "]-Inf, 1] {{ count }} rolle|]1, Inf [{{ count }} roller"
+      module:
+        create:
+          button: Opret rolle
+        delete:
+          confirm: Er du sikker på du vil slette denne rolle?
+    group:
+      plural_label: Brugergrupper
+      page_title:
+        index: "]-Inf, 1] {{ count }} gruppe|]1, Inf [{{ count }} grupper"
+      module:
+        create:
+          button: Opret gruppe

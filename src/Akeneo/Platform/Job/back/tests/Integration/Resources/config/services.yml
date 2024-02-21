@@ -1,0 +1,3 @@
+services:
+  Akeneo\Platform\Job\Infrastructure\Clock\ClockInterface:
+    class: Akeneo\Platform\Job\Test\Integration\FakeServices\SystemClock

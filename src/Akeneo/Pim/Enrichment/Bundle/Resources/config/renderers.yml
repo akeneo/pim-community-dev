@@ -1,0 +1,26 @@
+parameters:
+    pim_pdf_generator.renderer.product_pdf.class: Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\ProductPdfRenderer
+    pim_pdf_generator.renderer.registry.class:    Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\RendererRegistry
+
+services:
+    pim_pdf_generator.renderer.product_pdf:
+        class: '%pim_pdf_generator.renderer.product_pdf.class%'
+        arguments:
+            - '@twig'
+            - '@pim_pdf_generator.builder.dompdf'
+            - '@liip_imagine.data.manager'
+            - '@liip_imagine.cache.manager'
+            - '@liip_imagine.filter.manager'
+            - '@pim_catalog.repository.cached_attribute'
+            - '@@AkeneoPimEnrichment/Product/renderPdf.html.twig'
+            - '%pim_pdf_generator_font%'
+        tags:
+            - { name: pim_pdf_generator.renderer, priority: 80 }
+
+    pim_pdf_generator.renderer.registry:
+        class: '%pim_pdf_generator.renderer.registry.class%'
+
+    Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\ProductValueRenderer\ProductValueRendererRegistry:
+        arguments:
+            - !tagged_iterator pim_pdf_generator.product_value_renderer
+            - '@Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\ProductValueRenderer\DefaultProductValueRenderer'

@@ -1,0 +1,186 @@
+parameters:
+    pim_connector.writer.dummy_item.class:                         Akeneo\Tool\Component\Connector\Writer\DummyItemWriter
+    pim_connector.writer.database.class:                           Akeneo\Tool\Component\Connector\Writer\Database\Writer
+    pim_connector.writer.file.abstract.class:                      Akeneo\Tool\Component\Connector\Writer\File\AbstractFileWriter
+    pim_connector.writer.file.csv.class:                           Akeneo\Tool\Component\Connector\Writer\File\Csv\Writer
+    pim_connector.writer.file.yaml.class:                          Akeneo\Tool\Component\Connector\Writer\File\Yaml\Writer
+    pim_connector.writer.file.media_exporter_path_generator.class: Akeneo\Tool\Component\Connector\Writer\File\MediaExporterPathGenerator
+    pim_connector.writer.file.xlsx.class:                          Akeneo\Tool\Component\Connector\Writer\File\Xlsx\Writer
+    pim_connector.writer.file.default.column_sorter.class:         Akeneo\Tool\Component\Connector\Writer\File\DefaultColumnSorter
+    pim_connector.writer.file.flat_item_buffer_flusher.class:      Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher
+
+services:
+    # Dummy writer
+    pim_connector.writer.dummy_item:
+        class: '%pim_connector.writer.dummy_item.class%'
+
+    # Database writers
+    pim_connector.writer.database.category:
+        class: '%pim_connector.writer.database.class%'
+        arguments:
+            - '@pim_catalog.saver.category'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    pim_connector.writer.database.group:
+        class: '%pim_connector.writer.database.class%'
+        arguments:
+            - '@pim_catalog.saver.group'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    pim_connector.writer.database.user:
+        class: '%pim_connector.writer.database.class%'
+        arguments:
+            - '@pim_user.saver.user'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    pim_connector.writer.database.user_role:
+        class: '%pim_connector.writer.database.class%'
+        arguments:
+            - '@pim_user.saver.role'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    pim_connector.writer.database.user_group:
+        class: '%pim_connector.writer.database.class%'
+        arguments:
+            - '@pim_user.saver.group'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    pim_connector.writer.database.association_type:
+        class: '%pim_connector.writer.database.class%'
+        arguments:
+            - '@pim_catalog.saver.association_type'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    pim_connector.writer.database.group_type:
+        class: '%pim_connector.writer.database.class%'
+        arguments:
+            - '@pim_catalog.saver.group_type'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    pim_connector.writer.database.job_instance:
+        class: 'Akeneo\Tool\Component\Connector\Writer\Database\JobInstanceWriter'
+        arguments:
+            - '@akeneo_batch.saver.job_instance'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    # File writers
+    pim_connector.writer.file.media_exporter_path_generator:
+        class: '%pim_connector.writer.file.media_exporter_path_generator.class%'
+
+    pim_connector.writer.file.yaml:
+        class: '%pim_connector.writer.file.yaml.class%'
+        arguments:
+            - '@pim_connector.array_converter.dummy'
+            - '@pim_connector.job.file_backuper'
+
+    pim_connector.writer.file.flat_item_buffer_flusher:
+        class: '%pim_connector.writer.file.flat_item_buffer_flusher.class%'
+        arguments:
+            - '@pim_connector.writer.file.default.column_presenter'
+            - '@pim_connector.writer.file.default.column_sorter'
+
+    pim_connector.writer.file.flat_invalid_item_buffer_flusher:
+        class: '%pim_connector.writer.file.flat_item_buffer_flusher.class%'
+        arguments:
+            - '@pim_connector.writer.file.default.column_presenter'
+
+    # CSV
+    pim_connector.writer.file.csv:
+        class: '%pim_connector.writer.file.csv.class%'
+        arguments:
+            - '@pim_connector.array_converter.dummy'
+            - '@pim_connector.factory.flat_item_buffer'
+            - '@pim_connector.writer.file.flat_item_buffer_flusher'
+            - '@pim_connector.job.file_backuper'
+
+    pim_connector.writer.file.invalid_items_csv:
+        class: '%pim_connector.writer.file.csv.class%'
+        arguments:
+            - '@pim_connector.array_converter.dummy'
+            - '@pim_connector.factory.flat_item_buffer'
+            - '@pim_connector.writer.file.flat_invalid_item_buffer_flusher'
+            - '@pim_connector.job.file_backuper'
+
+    pim_connector.writer.file.csv_category:
+        class: '%pim_connector.writer.file.csv.class%'
+        arguments:
+            - '@pim_connector.array_converter.standard_to_flat.category'
+            - '@pim_connector.factory.flat_item_buffer'
+            - '@pim_connector.writer.file.flat_item_buffer_flusher'
+            - '@pim_connector.job.file_backuper'
+
+    pim_connector.writer.file.csv_association_type:
+        class: '%pim_connector.writer.file.csv.class%'
+        arguments:
+            - '@pim_connector.array_converter.standard_to_flat.association_type'
+            - '@pim_connector.factory.flat_item_buffer'
+            - '@pim_connector.writer.file.flat_item_buffer_flusher'
+            - '@pim_connector.job.file_backuper'
+
+    pim_connector.writer.file.csv_group:
+        class: '%pim_connector.writer.file.csv.class%'
+        arguments:
+            - '@pim_connector.array_converter.standard_to_flat.group'
+            - '@pim_connector.factory.flat_item_buffer'
+            - '@pim_connector.writer.file.flat_item_buffer_flusher'
+            - '@pim_connector.job.file_backuper'
+
+    pim_connector.writer.file.csv_group_type:
+        class: '%pim_connector.writer.file.csv.class%'
+        arguments:
+            - '@pim_connector.array_converter.standard_to_flat.group_type'
+            - '@pim_connector.factory.flat_item_buffer'
+            - '@pim_connector.writer.file.flat_item_buffer_flusher'
+            - '@pim_connector.job.file_backuper'
+
+    # XLSX
+    pim_connector.writer.file.invalid_items_xlsx:
+        class: '%pim_connector.writer.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.array_converter.invalid_data_item'
+            - '@pim_connector.factory.flat_item_buffer'
+            - '@pim_connector.writer.file.flat_invalid_item_buffer_flusher'
+            - '@pim_connector.job.file_backuper'
+
+    pim_connector.writer.file.xlsx_group:
+        class: '%pim_connector.writer.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.array_converter.standard_to_flat.group'
+            - '@pim_connector.factory.flat_item_buffer'
+            - '@pim_connector.writer.file.flat_item_buffer_flusher'
+            - '@pim_connector.job.file_backuper'
+
+    pim_connector.writer.file.xlsx_category:
+        class: '%pim_connector.writer.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.array_converter.standard_to_flat.category'
+            - '@pim_connector.factory.flat_item_buffer'
+            - '@pim_connector.writer.file.flat_item_buffer_flusher'
+            - '@pim_connector.job.file_backuper'
+
+    pim_connector.writer.file.xlsx_association_type:
+        class: '%pim_connector.writer.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.array_converter.standard_to_flat.association_type'
+            - '@pim_connector.factory.flat_item_buffer'
+            - '@pim_connector.writer.file.flat_item_buffer_flusher'
+            - '@pim_connector.job.file_backuper'
+
+    pim_connector.writer.file.xlsx_group_type:
+        class: '%pim_connector.writer.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.array_converter.standard_to_flat.group_type'
+            - '@pim_connector.factory.flat_item_buffer'
+            - '@pim_connector.writer.file.flat_item_buffer_flusher'
+            - '@pim_connector.job.file_backuper'
+
+    # Column sorter
+    pim_connector.writer.file.default.column_sorter:
+        class: '%pim_connector.writer.file.default.column_sorter.class%'
+        arguments:
+            - '@pim_connector.array_converter.field_splitter'
+            - ['code','label']
+
+    # Column presenter
+    pim_connector.writer.file.default.column_presenter:
+        class: 'Akeneo\Tool\Component\Connector\Writer\File\SimpleColumnPresenter'

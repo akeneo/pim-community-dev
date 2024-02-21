@@ -1,0 +1,9 @@
+parameters:
+    pim_catalog.product_models.image_as_label.class: Akeneo\Pim\Enrichment\Component\Product\ProductModel\ImageAsLabel
+
+services:
+    pim_catalog.product_models.image_as_label:
+        class: '%pim_catalog.product_models.image_as_label.class%'
+        arguments:
+            - '@pim_catalog.repository.product_model'
+            - '@pim_catalog.repository.variant_product'

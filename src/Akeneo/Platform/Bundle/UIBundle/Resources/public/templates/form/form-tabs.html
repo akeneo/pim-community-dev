@@ -1,0 +1,17 @@
+<header class="AknHorizontalNavtab <% if (centered) { %> AknHorizontalNavtab--centered<% } %>">
+    <ul class="AknHorizontalNavtab-list nav nav-tabs form-tabs">
+        <% _.each(tabs, function (tab) { %>
+            <li class="AknHorizontalNavtab-item<% if (currentTab === tab.code) { %> active<% } %>" data-tab="<%- tab.code %>">
+                <a class="AknHorizontalNavtab-link <% if (currentTab === tab.code) { %> AknHorizontalNavtab-link--active<% } %>">
+                    <%= tab.label %>
+                    <% if (tab.fieldErrors.length) { %>
+                        <div class="AknBadge AknBadge--small  AknBadge--highlight AknBadge--highlight--below-average"></div>
+                    <% } %>
+                </a>
+            </li>
+        <% }); %>
+    </ul>
+</header>
+<div class="AknTabContainer-contentThreeColumns form-container form-horizontal">
+    <div data-drop-zone="container" class="tab-container tab-content"></div>
+</div>

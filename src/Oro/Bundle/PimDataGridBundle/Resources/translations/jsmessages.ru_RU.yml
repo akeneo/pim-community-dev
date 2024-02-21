@@ -1,0 +1,119 @@
+Item deleted: Элемент удален
+Are you sure you want to delete this item?: Вы уверены, что хотите удалить этот элемент?
+Delete Error: Ошибка удаления
+Are you sure you want to do remove selected items?: Вы уверены, что вы хотите удалить выбранные элементы?
+Selected items were removed.: Выбранные элементы были удалены.
+Selected items were not removed.: Выбранные элементы не были удалены.
+Please, select items to remove.: Пожалуйста, выберите элементы для удаления.
+Cannot delete item.: Не удается удалить элемент.
+Refresh Confirmation: Подтверждение обновления
+Your local changes will be lost. Are you sure you want to refresh grid?: Ваши локальные изменения будут потеряны. Вы уверены, что вы хотите, чтобы обновить сетку?
+Reset Confirmation: Подтверждение сброса
+Your local changes will be lost. Are you sure you want to reset grid?: Ваши локальные изменения будут потеряны. Вы действительно хотите произвести сброс сетки таблицы?
+Confirmation: Подтверждение
+edit: редактировать
+copy: копировать
+remove: удалить
+Status: Статус
+All: Все
+Per page: На странице
+Mass Action Confirmation: Подтверждение массового действия
+Mass action performed.: Массовое действие выполнено.
+Mass action is not performed.: Массовое действие не выполнено.
+Please, select items to perform mass action.: Пожалуйста, выберите элементы для выполнения массовых действий.
+Execution Confirmation: Подтверждение исполнения
+Are you sure you want to do this?: Вы уверены, что хотите сделать это?
+Action performed.: Действие выполнено.
+Action is not performed.: Действие не выполнено.
+Please, select item to perform action.: Пожалуйста, выберите элемент для выполнения действия.
+View per page: Записей на странице
+Enabled: Включено
+Disabled: Отключено
+not_available: Н/Д
+Yes: true
+No: false
+oro.datagrid.entityHint: Объект
+oro.datagrid.noentities: Записи не найдены
+oro.datagrid.noresults: "Поиск не дал результатов."
+oro.datagrid.noresults_subTitle: "Попробовать еще раз по другому критерию поиска."
+oro.datagrid.nocolumns: Ни один столбец не настроен для этой сетки
+oro.datagrid.pagination.label: "Страница"
+oro.datagrid.pagination.totalPages: "из {{ totalPages }}"
+oro.datagrid.pagination.totalRecords: "{{ totalRecords }} записей"
+oro.datagrid.action.reset: "Сброс"
+oro.datagrid.action.refresh: "Обновить"
+oro_datagrid.select.all: "Все"
+oro_datagrid.select.visible: "Все видимые"
+oro_datagrid.select.none: "Нет"
+oro_datagrid.select.select: "Выбрать"
+pim.grid.ajax_choice_filter.label_empty: пусто
+pim.grid.ajax_choice_filter.label_not_empty: не является пустым
+pim:
+  grid:
+    choice_filter:
+      label_contains: содержит
+      label_does_not_contain: не содержит
+      label_equal: равно
+      label_start_with: начинается с
+      label_empty: пусто
+      label_not_empty: не является пустым
+      label_in_list: в списке
+      operator: Оператор
+    price_filter:
+      label: Валюта
+    category_filter:
+      done: Готово
+Available Columns: Доступные столбцы
+Displayed Columns: Выбранные столбцы
+datagrid_view.columns.min_message: Вы должны выбрать по крайней мере один столбец для отображения
+pim_datagrid:
+  column_configurator:
+    label: Столбцы
+    title: Настройка столбцов
+    all_groups: Все группы
+    search: Поиск
+    clear: Очистить
+    displayed_columns: Выбранные столбцы
+    apply: Применить
+    cancel: Отмена
+    remove_column: Удалить
+    description: Выберите информацию, которую вы хотите отобразить в столбце
+    attribute_groups: Группы атрибутов
+  mass_action:
+    delete:
+      confirm_title: Подтвердить удаление
+      confirm_ok: Подтвердить
+      empty_selection: Не выбрано ни одного продукта
+pim.grid.mass_action.quick_export.title: Быстрый экспорт
+pim.grid.mass_action.quick_export.launched: Экспорт запущен
+pim.grid.action.launch.title: Запуск
+pim.grid.action.show.title: Показать
+Please select view: Пожалуйста выберите представление
+Loading...: Загрузка...
+View: Просмотр
+from: от
+to: до
+grid.view_selector:
+  default_view: Представление по умолчанию
+  save_changes: Сохранить представление
+  remove: Удалить это представление
+  create_view: Создать представление
+  create: Создать
+  search: Поиск
+  views: Представления
+  placeholder: Название нового представления
+  choose_label: Выберите ярлык для представления
+  confirmation:
+    remove: Вы действительно хотите удалить это представление?
+    delete: Подтвердить удаление
+grid.view_selector.flash.updated: Представление табличных данных успешно обновлено
+grid.display_selector:
+  label: Показать
+  gallery: Галерея
+  list: Список
+Client ID: ID клиента
+Secret: Секрет
+grid.empty_results:
+  associated_product:
+    hint: Нет связанных продуктов
+    subHint: 'Нажмите на кнопку "Добавить ассоциации" чтобы добавить связи к этому продукту'

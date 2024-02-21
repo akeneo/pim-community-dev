@@ -1,0 +1,48 @@
+pim_catalog_volume:
+  product_values: "Hai <span>{{values}}</span> valori di prodotto nel tuo PIM! In media sono <span>{{average}}</span> valori di prodotto per prodotto!&nbsp;💪"
+  product_values_description: 'Più dati di prodotto hai, più valore ha il tuo PIM, più alto è il tuo ROI! Maggiori dettagli <a href="{{link}}" target="_blank">qui</a>'
+  section:
+    product_values:
+      hint: 'Sapevi che il numero totale di valori di prodotto nel tuo PIM è direttamente collegato agli assi seguenti?<br/>Per avere più dettagli, vi invitiamo a <a href="{{link}}" target="_blank">leggere questo articolo</a>.'
+      title: Assi che influenzano il numero di valori di prodotto
+    catalog_structure:
+      hint: Potresti sapere che una buona struttura di catalogo è davvero importante ed è una condizione per un arricchimento efficiente. Qui sotto ci sono i vari assi per monitorare la struttura del tuo catalogo.
+      title: Assi correlati alla struttura di catalogo
+    variant_modelling:
+      hint: Se stai usando la modellazione variante, qui ci sono gli assi per aiutarti a monitorare il volume.
+      title: Assi relativi alla modellazione di varianti
+  axis:
+    count_products: Prodotti
+    average_max_attributes_per_family: Attributi per famiglia
+    count_channels: Canali
+    count_locales: Impostazioni locali (abilitate)
+    count_scopable_attributes: Attributi personalizzabili per canale
+    count_localizable_and_scopable_attributes: Attributi localizzabili e personalizzabili per canale
+    count_localizable_attributes: Attributi localizzabili
+    count_families: Famiglie
+    count_attributes: Attributi
+    average_max_options_per_attribute: Opzioni per attributo
+    count_categories: Categorie
+    count_category_trees: Albero della categoria
+    count_variant_products: Prodotti varianti
+    count_product_models: Modelli di prodotto
+    count_product_and_product_model_values: Valori di prodotto
+    average_max_product_and_product_model_values: Valori di prodotto per prodotti
+    count_reference_entity: Entità di riferimento
+    average_max_records_per_reference_entity: Registri per entità di riferimento
+    average_max_attributes_per_reference_entity: Attributi per entità di riferimento
+    count_asset_family: Famiglie di asset
+    average_max_assets_per_asset_family: Asset per famiglia di asset
+    average_max_attributes_per_asset_family: Attributi per famiglia di asset
+    title:
+      product: Prodotto
+      catalog: Catalogo
+      product_structure: Struttura prodotto
+      variant_modeling: Modellazione variante
+      reference_entities: Entità di riferimento
+      assets: Asset
+  mean: 'Media:'
+  max: 'Massimo:'
+  error:
+    generic_title: Spiacenti, si è verificato un errore.
+    generic_message: Riprova tra poco.

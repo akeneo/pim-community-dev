@@ -1,0 +1,334 @@
+pim_enrich.entity.family:
+  label: Produktfamilie
+  uppercase_label: Produktfamilie
+  plural_label: Produktfamilien
+  flash:
+    update:
+      success: Produktfamilie erfolgreich aktualisiert.
+      fail: Beim Aktualisieren der Produktfamilie ist ein Fehler aufgetreten.
+      cant_remove_attribute_as_label: Das Attribut kann nicht entfernt werden, da es als Label verwendet wird
+      cant_remove_attribute_as_image: Attribute kann nicht entfernt werden, da es als Hauptbild verwendet wird
+      cant_remove_attribute_used_as_axis: Dieses Attribut, das als Variantenachse in einer Variante der Produktfamilie verwendet wird, kann nicht entfernt werden
+      fields_not_ready: "Die Produktfamilie kann gerade nicht gespeichert werden. Folgende Felder sind unvollständig: {{ fields }}"
+    create:
+      success: Produktfamilie erfolgreich angelegt
+    delete:
+      success: Produktfamilie erfolgreich entfernt
+      fail: Diese Produktfamilie kann nicht gelöscht werden
+  property:
+    attribute_as_label: Attribut als Label verwendet
+    attribute_as_image: Attribut als Hauptbild in Verwendung
+    empty_attribute_as_image: Nicht ausgewählt
+  page_title:
+    index: "]-Inf, 1]{{ count }} Famile|]1, Inf[{{ count }} Familien"
+  module:
+    attributes:
+      not_required_label: Nicht erforderlich
+      required_label: Erforderlich
+    create:
+      button: Produktfamilie anlegen
+    delete:
+      confirm: Möchten Sie diese Produktfamilie wirklich löschen?
+pim_enrich.entity.family_variant:
+  label: Varianten
+  short_plural_label: Varianten
+  short_label: Variante
+  flash:
+    update:
+      success: Die Variante der Produktfamilie wurde erfolgreich aktualisiert. Die Variantenprodukte werden entsprechend aktualisiert.
+      fail: Die Familienvariante konnte nicht aktualisiert werden.
+    create:
+      success: Variante der Produktfamilie erfolgreich erstellt
+    delete:
+      success: Familien-Variante erfolgreich gelöscht
+  module:
+    edit:
+      common_attributes: Gemeinsame Attribute
+      no_common_attributes: Es gibt keine gemeinsamen Attribute
+      variant_axis_label: Variantenachse(n)
+      variant_attributes: Variantenattribute
+      level_1: Varianten-Attribute erstes Level
+      level_2: Varianten-Attribute zweites Level
+      description: Verschieben Sie Attribute in die Variantenebenen, um sie dort zu pflegen.
+      attribute_remove: Attribut entfernen
+      attribute_group_remove: Attributgruppe entfernen
+      confirm_attribute_removal_title: Bestätigen Sie das Entfernen der Attribute
+      confirm_attribute_removal_message: Mit dem Entfernen dieser Attribute werden diese zurück auf die erste Ebene der Variante der Produktfamilie gesetzt und die Werte der Produktvarianten werden entfernt
+    create:
+      label: Variante hinzufügen
+      title: Neue Variante der Produktfamilie erstellen
+      description: In der Variante einer Produktfamilie können Sie die Struktur für  Variantenprodukte definieren. Wählen Sie die Anzahl der zu verwaltenden Variantenebenen, die Attribute, die als Variantenachse für die jeweilige Ebene genutzt werden und definieren Sie dann die Aufteilung der Attribute auf die Variantenebenen.
+      variant_levels: Variantenebenen
+      axis_level: "Variantenachsen-Ebene {{ level }}"
+    update_translations:
+      title: Übersetzungen aktualisieren
+    delete:
+      confirm: Möchten Sie diese Produktfamilie wirklich löschen?
+pim_enrich.entity.attribute_option:
+  short_uppercase_label: Optionen
+  flash:
+    create:
+      success: Attributoption erfolgreich erstellt
+      fail: Während des Erstellens der Attributoption ist ein Fehler aufgetreten
+    update:
+      fail: Attributoption kann nicht gespeichert werden
+    delete:
+      fail: Fehler beim Löschen der Attributoption
+  page_title:
+    index: "]-Inf, 1]{{ count }} Option|]1, Inf[{{ count }} Optionen"
+  module:
+    edit:
+      cancel_title: Änderung abbrechen
+      cancel_description: Achtung, Sie verlieren nicht gespeicherte Daten. Sind Sie sicher, dass Sie die Änderung an dieser neuen Option abbrechen möchten?
+      options_labels: Optionen-Labels
+      options_settings: Optionen Einstellungen
+      options_codes: Optionen-Codes
+      option_code: Optionscode
+      new_option_code: new_option
+      no_options_msg: Es gibt leider keine Optionen!
+      add_option: Hier klicken, um eins hinzuzufügen.
+      delete_confirmation_title_msg: '"{{ optionCode }}" aus Ihren Optionen löschen?'
+      delete_confirmation_subtitle_msg: Sind Sie sicher, dass Sie diese Option löschen möchten? Sie können diese Aktion nicht rückgängig machen.
+      display_options_limit: Hier sind nur die ersten 500 Optionen aufgelistet. Wenn Sie weitere Optionen sehen möchten, führen Sie eine Suche oder einen Export durch.
+      search:
+        placeholder: Auf Label oder Code suchen
+        no_result:
+          title: Es gibt kein Ergebnis für Ihre Suche.
+pim_enrich.entity.association_type:
+  label: Verbindungstyp
+  property:
+    is_two_way: 2-Wege-Verbindung
+    is_quantified: Verbindung mit Menge
+  flash:
+    update:
+      success: Verbindungstyp erfolgreich aktualisiert.
+      fail: Verbindungstyp konnte nicht aktualisiert werden.
+      fields_not_ready: "Der Verbindungstyp kann gerade nicht gespeichert werden. Folgende Felder sind unvollständig: {{ fields }}"
+    create:
+      success: Verbindungstyp erfolgreich erstellt
+    delete:
+      success: Verbindungstyp erfolgreich entfernt
+      fail: Dieser Verbindungstyp kann nicht gelöscht werden
+  page_title:
+    index: "]-Inf, 1]{{ count }} Verbindungstyp|]1, Inf[{{ count }} Verbindungstypen"
+  module:
+    create:
+      title: Einen neuen Verbindungstyp anlegen
+      button: Verbindungstyp anlegen
+      is_two_way:
+        message_on_read_only: Verbindungstyp kann entweder quantifiziert oder zweiseitig gewählt werden, um diesen auszuwählen, deaktivieren Sie den anderen
+      is_quantified:
+        message_on_read_only: Verbindungstyp kann entweder quantifiziert oder zweiseitig gewählt werden, um diesen auszuwählen, deaktivieren Sie den anderen
+    delete:
+      confirm: Möchten Sie diesen Verbindungstyp wirklich löschen?
+  hint: <a href="{{link}}" target="_blank">In diesem Artikel</a>findest du alles, was du brauchst, um deinen eigenen Verbindungstyp zu erstellen.
+  no_association_types:
+    title: Du hast keine Verbindungstypen
+    hint: Erstelle deinen ersten
+pim_enrich.entity.group_type:
+  label: Gruppentyp
+  flash:
+    update:
+      success: Gruppentyp erfolgreich aktualisiert.
+      fail: Der Gruppentyp konnte nicht aktualisiert werden.
+      fields_not_ready: "Der Gruppentyp kann gerade nicht gespeichert werden. Folgende Felder sind unvollständig: {{ fields }}"
+    create:
+      success: Gruppentyp erfolgreich erstellt
+    delete:
+      success: Gruppentyp erfolgreich entfernt
+      fail: Dieser Gruppentyp kann nicht gelöscht werden
+  page_title:
+    index: "]-Inf, 1]{{ count }} Gruppentyp|]1, Inf[{{ count }} Gruppentypen"
+  module:
+    create:
+      button: Gruppentyp anlegen
+    delete:
+      confirm: Möchten Sie diesen Gruppentyp wirklich löschen?
+pim_enrich.entity.attribute:
+  label: Attribut
+  plural_label: Attribute
+  flash:
+    update:
+      success: Attribut erfolgreich aktualisiert.
+      fail: Das Attribut konnte nicht aktualisiert werden.
+      fields_not_ready: "Dieses Attribut kann im Augenblick nicht gespeichert werden. Die folgenden Felder sind noch unvollständig {{ fields }}"
+    delete:
+      success: Attribut erfolgreich entfernt
+      fail: Dieses Attribut kann nicht gelöscht werden
+  page_title:
+    index: "]-Inf, 1]{{ count }} Attribut|]1, Inf[{{ count }} Attribute"
+  property:
+    allowed_extensions: Zulässige Dateiendungen
+    auto_option_sorting: Automatische Sortierung der Optionen in alphabetischer Reihenfolge
+    available_locales: Verfügbare Gebietsschemata
+    date_max: Max. Datum
+    date_min: Min. Datum
+    decimals_allowed: Dezimalwerte erlaubt
+    default_metric_unit:
+      label: Standardmesseinheit
+      choose: Wählen Sie eine Einheit
+    guidelines: Attribut-Richtlinien
+    group:
+      label: Attributgruppe
+      choose: Wählen Sie die Attributgruppe
+    is_locale_specific: Gebietsschemaspezifisch
+    localizable: Wert je Gebietsschema
+    max_characters: Max. Zeichen
+    max_file_size: Maximale Dateigröße (MB)
+    metric_family:
+      label: Messfamilie
+      choose: Wählen Sie eine Messfamilie
+    minimum_input_length: Mindestlänge für Auto-Vervollständigung
+    name: Name
+    negative_allowed: Negativwerte erlaubt
+    number_max: Max. Wert
+    number_min: Min. Wert
+    reference_data_name:
+      label: Referenzdatentyp
+      choose: Wählen Sie den Referenz-Datentyp
+    scopable: Wert je Ausgabekanal
+    type:
+      choose: Wählen Sie den Attributtyp aus
+      pim_catalog_identifier: Kennung
+      pim_catalog_text: Text
+      pim_catalog_textarea: Textbereich
+      pim_catalog_number: Nummer
+      pim_catalog_price_collection: Preis
+      pim_catalog_multiselect: Mehrfachauswahl
+      pim_catalog_simpleselect: Einfachauswahl
+      pim_catalog_file: Datei
+      pim_catalog_image: Abbildung
+      pim_catalog_boolean: "Ja/Nein"
+      pim_catalog_date: Datum
+      pim_catalog_metric: Messung
+      pim_reference_data_simpleselect: Referenz-Datentyp Einfachauswahl
+      pim_reference_data_multiselect: Referenz-Datentyp Mehrfachauswahl
+    unique: Eindeutiger Wert
+    useable_as_grid_filter: Anwendbar in der Listenansicht
+    validation_regexp: Regulärer Ausdruck
+    validation_rule:
+      label: Validierungsregel
+      email: E-Mail
+      regexp: Regulärer Ausdruck
+      url: URL
+    wysiwyg_enabled: Rich-Text-Editor aktiviert
+    default_value: Standardwert
+    code:
+      must_be_filled: Der Code muss ausgefüllt werden
+      invalid: Der Code ist ungültig
+      not_available: Dieser Code ist nicht verfügbar
+      is_duplicate: Dieser Code wird bereits verwendet
+  module:
+    add_attribute:
+      no_available_attributes: Es gibt keine weiteren Attribute zum Hinzufügen
+      attributes_selected: "{{ itemsCount }} Attribut(e) ausgewählt"
+    create:
+      button: Attribut anlegen
+    edit:
+      common: Allgemeine Parameter
+      type_specific: Spezifische Parameter
+      validation: Validierungsparameter
+      select_locale: Gebietsschema auswählen
+    delete:
+      confirm: Möchten Sie dieses Attribut wirklich löschen?
+      attribute_removal: Das Attribut wird von allen Produkten entfernt.
+      product_count: '{0}0 Produkte|{1}1 Produkt|]1, Inf[{{ count }} Produkte'
+      product_model_count: '{0}0 Produktmodelle|{1}1 Produktmodell|]1, Inf[{{ count }} Produktmodelle'
+      used: ']-Inf,1]hat derzeit Werte für dieses Attribut gesetzt.|]1, Inf[Derzeit haben Werte für dieses Attribut gesetzt.'
+      helper:
+        content: Wenn Sie Ihren Attributtyp ändern müssen, um ihn lokalisierbar oder skalierbar zu machen, während Sie den Zugriff auf Ihre vorhandenen Attributwerte behalten
+        link: prüfe unser Hilfe-Center für weitere Informationen.
+      type: Bitte geben Sie "{{ attributeCode }} " ein
+      confirm_from_family: Sind Sie sicher, dass Sie dieses Attribut aus der Familie löschen möchten?
+      confirm_from_group: Soll das Attribut {{ attribute }} wirklich aus dieser Attributgruppe entfernt werden?
+      confirm_from_product: Sind Sie sicher, dass Sie dieses Attribut vom Produkt löschen möchten?
+    mass_delete:
+      modal:
+        title: Attribute
+        subtitle: '{1}Löschen von {{ count }} Attribut bestätigen|]1, Inf[Löschen von {{ count }} Attributen bestätigen'
+        label: Bitte geben Sie "{{ textToCheck }}" ein
+        confirm: Möchten Sie diese Attribute wirklich löschen?
+pim_enrich.entity.attribute_group:
+  label: Attributgruppe
+  uppercase_label: Attributgruppe
+  plural_label: Attributgruppen
+  result_count: '{0}0 Attributgruppen|{1}1 Attributgruppe |]1, Inf [{{ count }} Attributgruppen'
+  limit_reached: Sie haben das Limit von {{ max }} Attributgruppen erreicht.
+  show_more_attribute:
+    title: Es ist ein bisschen überfüllt hier, wir zeigen dir {{ attributeCount }}/{{ totalAttributeCount }} Attribute.
+    subtitle: Um alle Attribute dieser Gruppe zu entdecken, klicken Sie einfach unten!
+    button: Alle Attribute anzeigen
+  dropdown:
+    label: Auswählen
+    all: Alle Attributgruppen
+    none: Keine Attributgruppen
+  flash:
+    update:
+      success: Attributgruppe erfolgreich aktualisiert
+      fail: Die Attributgruppe konnte nicht aktualisiert werden
+      fields_not_ready: "Die Attributgruppe kann zur Zeit nicht gespeichert werden. Die folgenden Felder sind nicht vollständig ausgefüllt: {{ fields }}"
+    mass_delete:
+      success: Die Löschung wurde gestartet. Sie erhalten eine Benachrichtigung, sobald der Job abgeschlossen ist. In der Zwischenzeit können Sie den Fortschritt des Prozess-Trackers im Auge behalten.
+      fail: Bei der Massenbearbeitung ist ein Fehler aufgetreten
+  module:
+    add_attribute_group:
+      label: Nach Gruppen hinzufügen
+      no_attribute_groups_available: Keine Attributgruppe vorhanden
+      attributes_groups_selected: '{{ itemsCount }} Gruppe(n) ausgewählt'
+    delete:
+      confirm: Möchten Sie diese Attributgruppe wirklich löschen?
+  grid:
+    columns:
+      attribute_count: Anzahl verknüpfter Attribute
+  selected: '{0}0 Attributgruppe ausgewählt|{1}1 Attributgruppe ausgewählt|]1, Inf [{{ count }} Attributgruppen ausgewählt'
+  mass_delete:
+    confirm: '{1}Sind Sie sicher, dass Sie diese Attributgruppe löschen wollen?|]1, Inf[Sind Sie sicher, dass Sie diese {{ count }} Attributgruppen löschen möchten?'
+    confirmation_phrase: 'Bitte geben Sie "{{ confirmation_word }}" ein'
+    confirmation_word: löschen
+    select_attribute_group: '{1}Bitte wählen Sie die Attributgruppe um das zugehörige Attribut zu verschieben|]1, Inf[Bitte wählen Sie die Attributgruppe aus, um die zugehörigen {{ number_of_attribute }} Attribute zu verschieben'
+    empty_result_label: 'Keine Attributgruppe gefunden'
+    placeholder: 'Attributgruppe auswählen'
+    open_label: 'Attributgruppen-Liste'
+  delete:
+    confirm: 'Möchten Sie diese Attributgruppe wirklich löschen?'
+    attribute_warning: 'Das Löschen dieser Attributgruppe wirkt sich auf das zugehörige Attribut von {{ number_of_attribute }} aus. Sie müssen dieses zugehörige Attribut in eine neue Attributgruppe verschieben.'
+    select_attribute_group: '{1}Bitte wählen Sie die Attributgruppe aus, um das zugehörige Attribut zu verschieben:|]1, Inf[Bitte wählen Sie die Attributgruppe aus, um die {{ number_of_attribute }} zugehörigen Attribute zu verschieben auf:'
+  batch_jobs:
+    delete_attribute_groups:
+      delete_attribute_groups:
+        label: Attributgruppen löschen
+pim_enrich.mass_edit.family:
+  title: Massenbearbeitung Produktfamilien
+  confirm: "{1}Sie sind im Begriff, eine Familie mit den folgenden Informationen zu aktualisieren, bitte bestätigen Sie.|]1, Inf[Sie sind im Begriff, {{ itemsCount }} Familien mit den folgenden Informationen zu aktualisieren, bitte bestätigen."
+  step:
+    select:
+      label: Produktfamilien auswählen
+    choose:
+      title: Familien-Massenaktionen
+      label_count: "]0, Inf[Wählen Sie Ihre Aktion aus"
+    configure:
+      label: Konfigurieren
+    confirm:
+      label: Bestätigen
+    launched:
+      label: Die Massenbearbeitung "{{ operation }}" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
+  operation:
+    set_requirements:
+      label: Benötigte Attribute auswählen
+      description: Die folgenden benötigten Attribute werden den ausgewählten Produktfamilien zugeordnet
+      label_count: "{1}Setze Attribut-Bedingungen für <span class=\"AknFullPage-title--highlight\">1 Familie</span>|] 1, Inf [Setze Attribut-Bedingungen für <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Familie</span>"
+batch_jobs:
+  default_steps:
+    delete_attribute_groups: Attributgruppen löschen
+  delete_attributes:
+    delete_attributes:
+      label: Attribute löschen
+job_execution:
+  summary:
+    deleted_attributes: Gelöschte Attribute
+akeneo_job_process_tracker:
+  type_filter:
+    attribute_group_mass_delete: Attributgruppen löschen
+pim_notification:
+  types:
+    attribute_group_mass_delete: Löschung

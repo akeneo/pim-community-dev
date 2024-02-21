@@ -1,0 +1,159 @@
+@import 'variables';
+
+@font-face {
+  font-family: 'Lato';
+  src: url('/bundles/pimui/fonts/Lato/Lato-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Lato';
+  src: url('/bundles/pimui/fonts/Lato/Lato-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Lato';
+  src: url('/bundles/pimui/fonts/Lato/Lato-Light.ttf') format('truetype');
+  font-weight: 200;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Flag Emoji';
+  unicode-range: U+1F1E6-1F1FF;
+  src: url('/bundles/pimui/fonts/Twemoji/TwemojiCountryFlags.woff2') format('woff2');
+}
+
+* {
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  color: @AknDefaultFontColor;
+  font-family: @AknDefaultFont;
+  font-size: @AknDefaultFontSize;
+  background-color: white;
+  line-height: 20px;
+  min-width: 980px;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  height: 100%;
+
+  &.konami:hover {
+    cursor: url("/bundles/pimui/images/unicorn-akeneo_43.png"), pointer !important;
+  }
+}
+
+ul, ol, li, menu {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+  line-height: normal;
+  vertical-align: middle;
+  margin: -2px 0 0 0;
+  height: 16px;
+  width: 16px;
+}
+
+input,
+button,
+select,
+textarea {
+  font-family: @AknDefaultFont;
+  font-size: @AknDefaultFontSize;
+}
+
+a,
+a:hover,
+a:active,
+a:focus {
+  text-decoration: none;
+}
+
+a {
+  color: @AknPurple;
+}
+
+fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+select {
+  height: @AknFormHeight;
+  line-height: @AknFormHeight;
+  border: 1px solid @AknBorderColor;
+  color: @AknDefaultFontColor;
+  background: white;
+  width: 100%;
+  padding: 0 8px;
+  border-radius: 2px;
+
+  option {
+    color: @AknDefaultFontColor;
+  }
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+input[type=checkbox] {
+  margin: -6px 5px 0px 0;
+
+  &:before {
+    content: '';
+    width: @AknCheckboxSize;
+    height: @AknCheckboxSize;
+    display: inline-block;
+    background-color: @AknLightGray;
+    background-position: 0 -@AknCheckboxSize;
+    border: 1px solid @AknBorderColor;
+    border-radius: 3px;
+    cursor: pointer;
+    transition:
+      background-color 0.1s ease-in,
+      background-position 0.2s ease-in;
+  }
+
+  &:checked:before {
+    border-color: @AknBlue;
+    background-color: @AknBlue;
+    background-image: url("/bundles/pimui/images/icon-checkwhite.svg");
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    background-size: @AknCheckboxSize - 1px;
+  }
+
+  &:focus {
+    outline: none !important;
+  }
+}
+
+label > em {
+  padding-left: 3px;
+}
+
+// https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#Notes
+button::-moz-focus-inner {
+  padding: 0;
+  border: 0
+}

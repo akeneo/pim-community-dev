@@ -1,0 +1,29 @@
+@import '../base/variables';
+
+.AknAcl {
+  display: inline-flex;
+  align-items: center;
+
+  &-icon {
+    margin-right: 10px;
+    cursor: pointer;
+  }
+
+  &-item {
+    display: flex;
+    line-height: @AknTabHeight;
+  }
+
+  &-disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+  }
+
+  &--hide {
+    display: none;
+  }
+
+  &--centered {
+    justify-content: center;
+  }
+}

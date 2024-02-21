@@ -1,0 +1,126 @@
+services:
+
+    pim_connector.processor.denormalization.product:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\ProductProcessor'
+        arguments:
+            - '@pim_catalog.repository.product'
+            - '@pim_connector.processor.denormalization.product_to_import'
+            - '@pim_catalog.entity_with_family_variant.add_parent_to_product'
+            - '@pim_catalog.updater.product'
+            - '@pim_catalog.validator.product'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+            - '@pim_catalog.comparator.filter.product'
+            - '@pim_connector.processor.attribute_filter.product'
+            - '@pim_connector.processor.denormalization.media_storer'
+            - '@pim_catalog.entity_with_family_variant.remove_parent_from_product'
+            - '@pim_connector.processor.attribute_cleaner.text_attribute_line_break'
+
+    pim_connector.processor.denormalization.product_to_import:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\FindProductToImport'
+        arguments:
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.builder.product'
+
+    pim_connector.processor.denormalization.root_product_model:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\ProductModelProcessor'
+        arguments:
+            - '@pim_catalog.factory.product_model'
+            - '@pim_catalog.updater.product_model'
+            - '@pim_catalog.repository.product_model'
+            - '@pim_catalog.validator.product'
+            - '@pim_catalog.comparator.filter.product_model'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+            - '@pim_connector.processor.attribute_filter.product_model'
+            - '@pim_connector.processor.denormalization.media_storer'
+            - '@pim_connector.processor.attribute_cleaner.text_attribute_line_break'
+            - 'root_product_model'
+
+    pim_connector.processor.denormalization.sub_product_model:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\ProductModelProcessor'
+        arguments:
+            - '@pim_catalog.factory.product_model'
+            - '@pim_catalog.updater.product_model'
+            - '@pim_catalog.repository.product_model'
+            - '@pim_catalog.validator.product'
+            - '@pim_catalog.comparator.filter.product_model'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+            - '@pim_connector.processor.attribute_filter.product_model'
+            - '@pim_connector.processor.denormalization.media_storer'
+            - '@pim_connector.processor.attribute_cleaner.text_attribute_line_break'
+            - 'sub_product_model'
+
+    pim_connector.processor.denormalization.product_association:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\ProductAssociationProcessor'
+        arguments:
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.updater.product'
+            - '@pim_catalog.validator.product'
+            - '@pim_catalog.comparator.filter.product_association'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    pim_connector.processor.denormalization.product_model_association:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\ProductModelAssociationProcessor'
+        arguments:
+            - '@pim_catalog.repository.product_model'
+            - '@pim_catalog.updater.product_model'
+            - '@pim_catalog.validator.product_model'
+            - '@pim_catalog.comparator.filter.product_association'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    pim_connector.processor.normalization.get_normalized_product_quality_scores:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization\GetNormalizedProductQualityScores'
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Query\ProductEvaluation\GetProductScoresQuery'
+            - '@akeneo.pim.automation.data_quality_insights.feature'
+
+    pim_connector.processor.normalization.get_normalized_product_model_quality_scores:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization\GetNormalizedProductModelQualityScores'
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Query\ProductEvaluation\GetProductModelScoresQuery'
+            - '@akeneo.pim.automation.data_quality_insights.feature'
+
+    pim_connector.processor.normalization.product:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization\ProductProcessor'
+        arguments:
+            - '@pim_catalog.normalizer.standard.product'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.product_model.fill_missing_values'
+            - '@akeneo.pim.structure.query.get_attributes'
+            - '@pim_connector.processor.normalization.get_normalized_product_quality_scores'
+
+    pim_connector.processor.normalization.product_model:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization\ProductProcessor'
+        arguments:
+            - '@pim_catalog.normalizer.standard.product_model'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.product_model.fill_missing_values'
+            - '@akeneo.pim.structure.query.get_attributes'
+            - '@pim_connector.processor.normalization.get_normalized_product_model_quality_scores'
+
+    pim_connector.processor.attribute_filter.product_model:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\ProductModelAttributeFilter'
+        arguments:
+            - '@pim_catalog.repository.family_variant'
+            - '@pim_catalog.repository.product_model'
+            - '@pim_catalog.repository.cached_attribute'
+
+    pim_connector.processor.attribute_filter.product:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\ProductAttributeFilter'
+        arguments:
+            - '@pim_catalog.repository.product_model'
+            - '@pim_catalog.repository.cached_family'
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.cached_attribute'
+
+    pim_connector.processor.denormalization.media_storer:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\MediaStorer'
+        arguments:
+            - '@akeneo_file_storage.file_storage.file.file_storer'
+            - '@pim_catalog.repository.attribute'
+
+    pim_connector.processor.attribute_cleaner.text_attribute_line_break:
+        class: Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\CleanLineBreaksInTextAttributes
+        arguments:
+            - '@akeneo.pim.structure.query.get_attributes'

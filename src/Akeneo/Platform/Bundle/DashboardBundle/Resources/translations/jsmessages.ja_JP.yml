@@ -1,0 +1,28 @@
+pim_dashboard:
+  title: アクティビティダッシュボード
+  greetings: '{{ name }} さん、こんにちは！'
+  welcome_sentence:
+    message0: 素晴らしい 1 日になる予感がします。
+    message1: お会いできて光栄です。
+    message2: ここでお会いできて嬉しいです。
+    message3: ここでお会いできて嬉しいです！
+    message4: よくぞいらっしゃいました！
+    message5: では、始めましょう。
+    message6: 早速、始めましょう。
+    message7: 今日も何かをやり遂げましょう。
+    message8: 準備は OK ですか？
+    message9: 商品を充実化する作業が待っています。
+  widget:
+    completeness:
+      load_more: 'さらに読み込む...'
+      title: チャンネルとロケールについての完全性
+      progress_messages:
+        message1: 完全性に向けた充実化に着手しましょう。
+        message2: 作業はまだ残っていますが、正しい方向に向かっています。
+        message3: この調子で商品情報を完成させましょう。
+        message4: おめでとうございます！このチャンネルの商品の完全性を達成しました！
+    last_operations:
+      title: 前回の操作
+  version: バージョン
+pim_title:
+  pim_dashboard_index: ダッシュボード

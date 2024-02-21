@@ -1,0 +1,22 @@
+services:
+    akeneo_communication_channel.internal_api.announcement.add_viewed_announcements:
+        public: true
+        class: 'Akeneo\Platform\CommunicationChannel\Infrastructure\Delivery\InternalApi\Announcement\AddViewedAnnouncementsAction'
+        arguments:
+            - '@pim_user.context.user'
+            - '@akeneo_communication_channel.handler.command.add_viewed_announcements_by_user'
+
+    akeneo_communication_channel.handler.command.add_viewed_announcements_by_user:
+        class: 'Akeneo\Platform\CommunicationChannel\Application\Announcement\Command\AddViewedAnnouncementsByUserHandler'
+        arguments:
+            - '@akeneo_communication_channel.repository.dbal.viewed_announcement'
+
+    akeneo_communication_channel.repository.dbal.viewed_announcement:
+        class: 'Akeneo\Platform\CommunicationChannel\Infrastructure\Persistence\Dbal\Repository\DbalViewedAnnouncementRepository'
+        arguments:
+            - '@database_connection'
+
+    akeneo_communication_channel.query.dbal.find_viewed_announcement_ids:
+        class: 'Akeneo\Platform\CommunicationChannel\Infrastructure\Persistence\Dbal\Query\DbalFindViewedAnnouncementIds'
+        arguments:
+            - '@database_connection'

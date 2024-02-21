@@ -1,0 +1,401 @@
+@import '../../base/variables';
+
+.AknButton {
+  @darken: 10%;
+  @lighten: 20%;
+
+  background-color: white;
+  color: @AknDefaultFontColor;
+  height: @AknDefaultButtonSize;
+  line-height: @AknDefaultButtonSize - 2px;
+  font-size: @AknFontSizeBig;
+  min-width: @AknDefaultButtonSize;
+  display: inline-block;
+  padding: 0 @AknDefaultButtonSize/2;
+  border-radius: 100px;
+  border: 1px solid @AknBorderColor;
+  cursor: pointer;
+  text-align: left;
+  white-space: nowrap;
+  transition:
+    background 0.1s ease,
+    color 0.1s ease,
+    border-color 0.1s ease;
+  position: relative;
+  text-transform: uppercase;
+
+  &:hover,
+  &--active {
+    background-color: darken(white, @darken);
+    color: darken(@AknDefaultFontColor, @darken);
+  }
+
+  &-icon {
+    margin: -4px -4px -7px 0;
+  }
+
+  &--disabled, &:disabled {
+    color: lighten(@AknDefaultFontColor, @lighten);
+    border-color: lighten(@AknBorderColor, @lighten);
+    cursor: not-allowed;
+  }
+
+  &--delete {
+    background-color: transparent;
+    color: @AknRed;
+    display: inline-block;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+    transition:
+      color 0.1s ease;
+    text-transform: none;
+    height: auto;
+
+    font-size: @AknFontSizeSmall;
+
+    &:hover {
+      background-color: transparent;
+      color: darken(@AknRed, @darken);
+    }
+  }
+
+  &--spaced {
+    margin-left: 10px;
+  }
+
+  // Apply color
+  &--apply {
+    background-color: @AknGreen;
+    border-color: @AknGreen;
+    color: white;
+  }
+
+  &--apply:hover,
+  &--apply&--active {
+    background-color: darken(@AknGreen, @darken);
+    border-color: darken(@AknGreen, @darken);
+    color: white;
+  }
+
+  &--apply&--disabled, &--apply:disabled {
+    color: white;
+    background-color: lighten(@AknGreen, @lighten);
+    border-color: lighten(@AknGreen, @lighten);
+    cursor: not-allowed;
+  }
+
+  &-animatedIcon {
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
+    position: relative;
+    top: 2px;
+  }
+
+  // Grey color
+  &--grey {
+    background-color: @AknGrey;
+    border-color: @AknGrey;
+    color: white;
+  }
+
+  &--grey:hover,
+  &--grey&--active {
+    background-color: darken(@AknGrey, @darken);
+    border-color: darken(@AknGrey, @darken);
+    color: white;
+  }
+
+  &--grey&--disabled, &--grey:disabled {
+    color: white;
+    background-color: lighten(@AknGrey, @lighten);
+    border-color: lighten(@AknGrey, @lighten);
+    cursor: not-allowed;
+  }
+
+  // GreyLight
+  &--greyLight {
+    background-color: white;
+    border-color: @AknGrey;
+    color: @AknGrey;
+  }
+
+  &--greyLight:hover,
+  &--greyLight&--active {
+    background-color: white;
+    border-color: darken(@AknGrey, 20%);
+    color: darken(@AknGrey, 20%);
+  }
+
+  &--greyLight&--disabled, &--greyLight:disabled {
+    background-color: white;
+    border-color: lighten(@AknGrey, 20%);
+    color: lighten(@AknGrey, 20%);
+    cursor: not-allowed;
+  }
+
+  // Slate Grey
+  &--slateGrey {
+    background-color: @AknSlateGrey;
+    border-color: @AknSlateGrey;
+    color: white;
+  }
+
+  &--slateGrey:hover,
+  &--slateGrey&--active {
+    background-color: darken(@AknSlateGrey, @darken);
+    border-color: darken(@AknSlateGrey, @darken);
+    color: white;
+  }
+
+  &--slateGrey&--disabled, &--slateGrey:disabled {
+    color: white;
+    background-color: lighten(@AknSlateGrey, @lighten);
+    border-color: lighten(@AknSlateGrey, @lighten);
+    cursor: not-allowed;
+  }
+
+  // Important color
+  &--important {
+    background-color: @AknRed;
+    border-color: @AknRed;
+    color: white;
+  }
+
+  &--important:hover,
+  &--important&--active {
+    background-color: darken(@AknRed, @darken);
+    border-color: darken(@AknRed, @darken);
+    color: white;
+  }
+
+  &--important&--disabled, &--important:disabled {
+    color: white;
+    background-color: lighten(@AknRed, @lighten);
+    border-color: lighten(@AknRed, @lighten);
+    cursor: not-allowed;
+  }
+
+  // Action color
+  &--action {
+    background-color: @AknBlue;
+    border-color: @AknBlue;
+    color: white;
+  }
+
+  &--action:hover,
+  &--action&--active {
+    background-color: darken(@AknBlue, @darken);
+    border-color: darken(@AknBlue, @darken);
+    color: white;
+  }
+
+  &--action&--disabled, &--action:disabled {
+    color: white;
+    background-color: lighten(@AknBlue, @lighten);
+    border-color: lighten(@AknBlue, @lighten);
+    cursor: not-allowed;
+  }
+
+  // Sizes
+  &--big {
+    height: @AknBigButtonSize;
+    line-height: calc(@AknBigButtonSize - 2px);
+    min-width: @AknBigButtonSize;
+    font-size: @AknFontSizeBig;
+  }
+
+  &--small {
+    height: @AknLittleButtonSize;
+    line-height: calc(@AknLittleButtonSize - 2px);
+    min-width: @AknLittleButtonSize;
+    font-size: @AknDefaultFontSize;
+  }
+
+  &--micro {
+    height: @AknMicroButtonSize;
+    line-height: calc(@AknMicroButtonSize - 2px);
+    min-width: @AknMicroButtonSize;
+    font-size: @AknDefaultFontSize;
+  }
+
+  &--noLeftRadius {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  &--hidden {
+    display: none;
+  }
+
+  &--disabled:focus, &:disabled:focus {
+    outline: -webkit-focus-ring-color auto 0;
+  }
+
+  &--glued {
+    &:not(:first-child) {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      border-left: none;
+    }
+
+    &:not(:last-child) {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+  }
+
+  &--centered {
+    display: block;
+    margin: auto;
+  }
+
+  &--dropdown {
+    background-image: url("/bundles/pimui/images/icon-down-white.svg");
+    background-repeat: no-repeat;
+    background-position: 92% center;
+    background-size: 20px;
+    padding-right: 34px;
+  }
+
+  &-squareIcon {
+    width: 54px;
+    height: 54px;
+    display: flex;
+    background-size: 100%;
+    margin: 5px auto 10px;
+    cursor: pointer;
+
+    &--small {
+      width: 22px;
+      height: 22px;
+    }
+
+    &--id {
+      background-image: url("/bundles/pimui/images/attribute/icon-id.svg");
+    }
+
+    &--text {
+      background-image: url("/bundles/pimui/images/attribute/icon-text.svg");
+    }
+
+    &--textarea {
+      background-image: url("/bundles/pimui/images/attribute/icon-textarea.svg");
+    }
+
+    &--number {
+      background-image: url("/bundles/pimui/images/attribute/icon-number.svg");
+    }
+
+    &--price {
+      background-image: url("/bundles/pimui/images/attribute/icon-price.svg");
+    }
+
+    &--multiselect {
+      background-image: url("/bundles/pimui/images/attribute/icon-multiselect.svg");
+    }
+
+    &--select {
+      background-image: url("/bundles/pimui/images/attribute/icon-select.svg");
+    }
+
+    &--file {
+      background-image: url("/bundles/pimui/images/attribute/icon-file.svg");
+    }
+
+    &--asset {
+      background-image: url("/bundles/pimui/images/attribute/icon-asset.svg");
+    }
+
+    &--switch {
+      background-image: url("/bundles/pimui/images/attribute/icon-switch.svg");
+    }
+
+    &--date {
+      background-image: url("/bundles/pimui/images/attribute/icon-date.svg");
+    }
+
+    &--metric {
+      background-image: url("/bundles/pimui/images/attribute/icon-metric.svg");
+    }
+
+    &--assetCollection {
+      background-image: url("/bundles/pimui/images/attribute/icon-assetCollection.svg");
+    }
+
+    &--asset-collection {
+      background-image: url("/bundles/pimui/images/attribute/icon-asset-collection.svg");
+    }
+
+    &--reference-entity {
+      background-image: url("/bundles/pimui/images/attribute/icon-reference-entity.svg");
+    }
+
+    &--reference-entity-multiple {
+      background-image: url("/bundles/pimui/images/attribute/icon-reference-entity-multiple.svg");
+    }
+
+    &--delete {
+      background-image: url("/bundles/pimui/images/icon-delete-white.svg")
+    }
+
+    &--dismiss {
+      background-image: url("/bundles/pimui/images/icon-delete-slategrey.svg")
+    }
+
+    &--validate {
+      background-image: url("/bundles/pimui/images/icon-check-green.svg")
+    }
+  }
+
+  &-squareIcon&--micro {
+    background-position: center;
+    background-size: 75%;
+    width: @AknMicroButtonSize;
+    height: @AknMicroButtonSize;
+    padding: 0;
+    background-repeat: no-repeat;
+  }
+
+  &--asIcon {
+    margin-top: -4px;
+    margin-left: 10px;
+  }
+
+  &--round {
+    padding-left: 0;
+    padding-right: 0;
+    text-align: center;
+  }
+
+  &--ghost {
+    padding:0 15px;
+    border-radius: 16px;
+    text-decoration: none;
+    font-size: @AknDefaultFontSize;
+    border:1px solid @AknMediumGrey;
+    color: @AknSlateGrey;
+
+    &:hover {
+      border:1px solid @AknGrey;
+    }
+    &:active {
+      border:1px solid @AknSlateGrey;
+      background: @AknMediumGrey;
+    }
+  }
+
+  &--withSuffix {
+    margin-left: 20px;
+
+    &::before {
+      content : "";
+      position: absolute;
+      top: 4px;
+      height: 22px;
+      border-left: 1px solid white;
+      transform: translateX(-10px);
+    }
+  }
+}

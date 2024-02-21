@@ -1,0 +1,40 @@
+parameters:
+    pim_user.normalizer.user.class: Akeneo\UserManagement\Component\Normalizer\UserNormalizer
+
+services:
+    pim_user.normalizer.user:
+        class: '%pim_user.normalizer.user.class%'
+        arguments:
+            - '@serializer.normalizer.datetime'
+            - '@pim_enrich.normalizer.file'
+            - '@oro_security.security_facade'
+            - '@security.token_storage'
+            - '@pim_datagrid.repository.datagrid_view'
+            - []
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+
+    pim_user.normalizer.user.standard:
+        class: 'Akeneo\UserManagement\Component\Normalizer\Standard\UserNormalizer'
+        arguments:
+            - '@pim_user.normalizer.date_time'
+        tags:
+            - { name: pim_standard_format_serializer.normalizer }
+
+    pim_user.normalizer.date_time:
+        class: Akeneo\UserManagement\Component\Normalizer\DateTimeNormalizer
+        tags:
+            - { name: pim_standard_format_serializer.normalizer }
+
+    pim_user.normalizer.user_group:
+        class: Akeneo\UserManagement\Component\Normalizer\GroupNormalizer
+        tags:
+            - { name: pim_standard_format_serializer.normalizer }
+
+    pim_user.normalizer.user_role:
+        class: Akeneo\UserManagement\Component\Normalizer\RoleNormalizer
+        arguments:
+            - '@oro_security.acl.manager'
+            - '@oro_security.normalizer.acl_privilege'
+        tags:
+            - { name: pim_standard_format_serializer.normalizer }

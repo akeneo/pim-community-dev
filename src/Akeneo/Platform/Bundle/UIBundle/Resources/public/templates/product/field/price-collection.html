@@ -1,0 +1,25 @@
+<div class="AknPriceList<% if (attribute.localizable) { %> AknPriceList--localizable<% } %>">
+    <% if (!value || !value.data) { %>
+        <% _.each(currencies, function (currency) { %>
+            <div class="AknPriceList-item price-input">
+                <% if (attribute.localizable) { %>
+                    <div class="AknTextField-layer AknTextField-layer--first"></div>
+                    <div class="AknTextField-layer AknTextField-layer--second"></div>
+                <% } %>
+                <input class="AknTextField AknTextField--noRightRadius" type="text" data-locale="<%- locale %>" data-scope="<%- scope %>" data-currency="<%- currency.code %>" value="" <%- editMode === 'view' ? 'disabled' : '' %> size="1">
+                <span class="AknPriceList-currency"><%- currency.code %></span>
+            </div>
+        <% }) %>
+    <% } else { %>
+        <% _.each(value.data, function (price) { %>
+            <div class="AknPriceList-item price-input">
+                <% if (attribute.localizable) { %>
+                    <div class="AknTextField-layer AknTextField-layer--first"></div>
+                    <div class="AknTextField-layer AknTextField-layer--second"></div>
+                <% } %>
+                <input class="AknTextField AknTextField--noRightRadius" type="text" data-locale="<%- locale %>" data-scope="<%- scope %>" data-currency="<%- price.currency %>" value="<%- price.amount %>" <%- editMode === 'view' ? 'disabled' : '' %> size="1">
+                <span class="AknPriceList-currency"><%- price.currency %></span>
+            </div>
+        <% }) %>
+    <% } %>
+</div>

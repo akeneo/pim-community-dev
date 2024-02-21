@@ -1,0 +1,17 @@
+<a href="<%= url ? '#' + url : 'javascript: void(0);' %>" class="AknNotification-link <%= viewed ? '' : 'AknNotification-link--new new' %>">
+    <div class="AknNotification-header">
+        <div class="AknNotification-icon AknNotification-icon--<%= actionType %>">
+            <i class="AknNotification-status AknNotification-status--<%= type %> icon-<%= icon %>"></i>
+        </div>
+        <div class="AknNotification-metas">
+            <time class="AknNotification-time"><%= createdAt %></time>
+            <span class="AknNotification-title"><%= actionTypeMessage %></span>
+        </div>
+        <i class="AknIconButton AknIconButton--light icon-<%= viewed ? 'trash' : 'eye-close' %> action"></i>
+    </div>
+    <div class="AknNotification-message"><%= message %></div>
+    <% if (comment) { %> <div class="AknNotification-comment"><%= comment %></div> <% } %>
+    <% if (showReportButton) { %>
+    <button class="AknNotification-button AknButton AknButton--micro AknButton--grey "><%- _.__(buttonLabel) %></button>
+    <% } %>
+</a>

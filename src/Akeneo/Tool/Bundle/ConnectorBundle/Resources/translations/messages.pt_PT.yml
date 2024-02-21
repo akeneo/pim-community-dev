@@ -1,0 +1,16 @@
+job_execution.summary:
+  read: ler
+  write: escrito
+  skip: ignorado
+  create: criado
+  process: processado
+  update: atualizado
+  update_products: produtos atualizados
+  process_products: produtos processados
+  skip_products: produtos ignorados
+  displayed: primeiros avisos exibidos
+  charset_validator:
+    title: 'codificação do ficheiro:'
+    skipped: ignorado, extensão na lista branca
+  product_skipped_no_diff: produtos ignorados (sem diferenças)
+  item_position: linhas lidas

@@ -1,0 +1,25 @@
+services:
+    pim_catalog.factory.attribute:
+        class: 'Akeneo\Pim\Structure\Component\Factory\AttributeFactory'
+        arguments:
+            - '@pim_catalog.registry.attribute_type'
+            - '%pim_catalog.entity.attribute.class%'
+            - '%pim_catalog.entity.product.class%'
+
+    pim_catalog.factory.attribute_requirement:
+        class: 'Akeneo\Pim\Structure\Component\Factory\AttributeRequirementFactory'
+        arguments:
+            - '%pim_catalog.entity.attribute_requirement.class%'
+
+    pim_catalog.factory.family:
+        class: 'Akeneo\Pim\Structure\Component\Factory\FamilyFactory'
+        arguments:
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.factory.attribute_requirement'
+            - '@pim_catalog.repository.attribute'
+            - '%pim_catalog.entity.family.class%'
+
+    pim_catalog.factory.group_type:
+        class: 'Akeneo\Pim\Structure\Component\Factory\GroupTypeFactory'
+        arguments:
+            - '%pim_catalog.entity.group_type.class%'

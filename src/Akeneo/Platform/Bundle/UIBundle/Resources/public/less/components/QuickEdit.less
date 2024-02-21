@@ -1,0 +1,22 @@
+@import '../base/variables';
+
+.AknQuickEdit {
+  position: sticky;
+  border: 1px solid @AknBorderColor;
+  top: ~"calc(192px + 100px)";
+  background-color: white;
+  box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.15);
+  max-height: ~"calc(100vh - 320px)";
+  overflow-y: auto;
+  margin-left: 70px;
+  align-self: flex-start;
+  transition: .2s ease-in-out opacity, .2s ease-in-out transform;
+  min-width: 400px;
+  max-width: @AknMaxFormWidth;
+  flex: 1;
+
+  &--hidden {
+    opacity: 0;
+    transform: translate(-100px, 0);
+  }
+}

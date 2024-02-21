@@ -1,0 +1,167 @@
+services:
+    ## INTERNAL
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\GetAppActivateUrlAction:
+        public: true
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAppQuery'
+            - '@Akeneo\Connectivity\Connection\Application\Marketplace\AppUrlGenerator'
+            - '@oro_security.security_facade'
+            - '@akeneo_connectivity.connection.marketplace_activate.feature'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\IsConnectionsNumberLimitReachedQuery'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\ConfirmAuthorizationAction:
+        public: true
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Application\Apps\Command\CreateConnectedAppWithAuthorizationHandler'
+            - '@akeneo_connectivity.connection.marketplace_activate.feature'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetAppConfirmationQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Normalizer\ViolationListNormalizer'
+            - '@oro_security.security_facade'
+            - '@logger'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RedirectUriWithAuthorizationCodeGenerator'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ConnectedPimUserProvider'
+            - '@Akeneo\Connectivity\Connection\Application\Apps\Command\ConsentAppAuthenticationHandler'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAppQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByIdQuery'
+            - '@Akeneo\Connectivity\Connection\Application\Apps\Command\UpdateConnectedAppScopesWithAuthorizationHandler'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\ConfirmAuthenticationAction:
+        public: true
+        arguments:
+            - '@akeneo_connectivity.connection.marketplace_activate.feature'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetAppConfirmationQuery'
+            - '@oro_security.security_facade'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RedirectUriWithAuthorizationCodeGenerator'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ConnectedPimUserProvider'
+            - '@Akeneo\Connectivity\Connection\Application\Apps\Command\ConsentAppAuthenticationHandler'
+            - '@logger'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Normalizer\ViolationListNormalizer'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAppQuery'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\GetAllConnectedAppsAction:
+        public: true
+        arguments:
+            - '@akeneo_connectivity.connection.marketplace_activate.feature'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindAllConnectedAppsQuery'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\GetConnectedAppAction:
+        public: true
+        arguments:
+            - '@akeneo_connectivity.connection.marketplace_activate.feature'
+            - '@oro_security.security_facade'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByConnectionCodeQuery'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\GetAllConnectedAppScopeMessagesAction:
+        public: true
+        arguments:
+            - '@akeneo_connectivity.connection.marketplace_activate.feature'
+            - '@oro_security.security_facade'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByConnectionCodeQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\DeleteAppAction:
+        public: true
+        arguments:
+            - '@akeneo_connectivity.connection.marketplace_activate.feature'
+            - '@oro_security.security_facade'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByConnectionCodeQuery'
+            - '@Akeneo\Connectivity\Connection\Application\Apps\Command\DeleteAppHandler'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\GetConnectedAppMonitoringSettingsAction:
+        public: true
+        arguments:
+            - '@akeneo_connectivity.connection.marketplace_activate.feature'
+            - '@oro_security.security_facade'
+            - '@Akeneo\Connectivity\Connection\Application\Settings\Query\FindAConnectionHandler'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByConnectionCodeQuery'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\UpdateConnectedAppMonitoringSettingsAction:
+        public: true
+        arguments:
+            - '@akeneo_connectivity.connection.marketplace_activate.feature'
+            - '@oro_security.security_facade'
+            - '@Akeneo\Connectivity\Connection\Application\Settings\Query\FindAConnectionHandler'
+            - '@Akeneo\Connectivity\Connection\Application\Settings\Command\UpdateConnectionHandler'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByConnectionCodeQuery'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\GetConnectedAppAuthenticationScopesAction:
+        public: true
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetUserConsentedAuthenticationScopesQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByConnectionCodeQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ConnectedPimUserProvider'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\GetWizardDataAction:
+        public: true
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAppQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByIdQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\ScopeListComparator'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ConnectedPimUserProvider'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetUserConsentedAuthenticationScopesQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\HasUserConsentForAppQuery'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\GetOpenAppUrlAction:
+        public: true
+        arguments:
+            - '@akeneo_connectivity.connection.marketplace_activate.feature'
+            - '@oro_security.security_facade'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByConnectionCodeQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAppQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\SaveConnectedAppOutdatedScopesFlagQuery'
+            - '@Akeneo\Connectivity\Connection\Application\Marketplace\AppUrlGenerator'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\RefreshConnectedAppAction:
+        public: true
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByConnectionCodeQuery'
+            - '@Akeneo\Connectivity\Connection\Application\Apps\Command\RefreshConnectedAppHandler'
+
+    ## PUBLIC
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public\AuthorizeAction:
+        public: true
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationHandler'
+            - '@router'
+            - '@akeneo_connectivity.connection.marketplace_activate.feature'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetAppConfirmationQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RedirectUriWithAuthorizationCodeGenerator'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ConnectedPimUserProvider'
+            - '@Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthenticationHandler'
+            - '@oro_security.security_facade'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAppQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetConnectedAppScopesQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\ScopeListComparator'
+            - '@Akeneo\Connectivity\Connection\Application\Apps\Command\UpdateConnectedAppScopesWithAuthorizationHandler'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProvider'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public\RequestAccessTokenAction:
+        public: true
+        arguments:
+            - '@akeneo_connectivity.connection.marketplace_activate.feature'
+            - '@validator'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\CreateAccessToken'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public\GetOpenIdPublicKeyAction:
+        public: true
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetAsymmetricKeysQuery'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public\FlagConnectedAppWithOutdatedScopesAction:
+        public: true
+        arguments:
+            - '@security.token_storage'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByUserIdentifierQuery'
+            - '@Akeneo\Connectivity\Connection\Application\Apps\Command\FlagAppContainingOutdatedScopesHandler'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public\RedirectToEditConnectedAppAction:
+        public: true
+        arguments:
+            - '@router'
+            - '@oro_security.security_facade'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByIdQuery'

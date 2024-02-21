@@ -1,0 +1,9 @@
+pim_localization_format_index:
+    path: /localization/format
+    defaults: { _controller: pim_localization.controller.format:indexAction }
+    methods: [GET]
+
+pim_localization_format_date:
+    path: /localization/format/date
+    defaults: { _controller: pim_localization.controller.format:dateAction }
+    methods: [GET]

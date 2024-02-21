@@ -1,0 +1,32 @@
+@import '../base/variables';
+
+.AknInfoBlock {
+  font-size: @AknFontSizeBig;
+  max-width: @AknCenteredContentWidth;
+  margin: 10px auto;
+  text-align: center;
+
+  &--error {
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  &-errorNumber {
+    position: relative;
+    font-size: 24px;
+    font-weight: bold;
+    color: lighten(@AknDarkBlue, 20%);
+
+    &--400 {
+      left: 55px;
+      bottom: 44px;
+    }
+
+    &--500 {
+      left: -101px;
+      bottom: 44px;
+    }
+  }
+}

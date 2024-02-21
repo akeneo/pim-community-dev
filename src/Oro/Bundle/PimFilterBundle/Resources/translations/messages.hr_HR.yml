@@ -1,0 +1,21 @@
+oro.filter.form.label_type_equal: '='
+oro.filter.form.label_type_greater_equal: '>='
+oro.filter.form.label_type_greater_than: '>'
+oro.filter.form.label_type_less_equal: '<='
+oro.filter.form.label_type_less_than: '<'
+oro.filter.form.label_type_yes: "da"
+oro.filter.form.label_type_no: "ne"
+oro.filter.form.label_type_contains: sadrži
+oro.filter.form.label_type_not_contains: ne sadrži
+oro.filter.form.label_type_equals: je jednako
+oro.filter.form.label_type_start_with: počinje sa
+oro.filter.form.label_type_end_with: završava sa
+oro.filter.form.label_type_empty: je prazan
+oro.filter.form.label_type_not_empty: nije prazan
+oro.filter.form.label_type_in_list: na popisu
+oro.filter.form.label_date_type_between: između
+oro.filter.form.label_date_type_not_between: nije između
+oro.filter.form.label_date_type_more_than: više od
+oro.filter.form.label_date_type_less_than: manje od
+oro.filter.form.label_not_selected: Nije odabrano
+oro.filter.form.label_selected: Odabrano

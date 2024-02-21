@@ -1,0 +1,56 @@
+An identifier attribute already exists.: Ett attribut för identifiering finns redan.
+Attribute code may contain only letters, numbers and underscore: Attribut-koden får endast innehålla bokstäver, siffror och understreck
+Attribute code may contain only letters (at least one), numbers and underscores: Attribut-koden får endast innehålla bokstäver (minst en), siffror och understreck
+This attribute type can't be used as a grid filter: Här attribut-typen kan inte användas som ett tabell filter
+This code is not available: Denna kod är inte tillgänglig
+This attribute type must be required: Den här attribut-typen måste vara tvingande
+This attribute type can't be required: Den här attribut-typen får inte vara tvingande
+This attribute type can't have unique value: Den här attribut-typen får inte vara unika värden
+No default value may be specified for this attribute type: Inget standardvärde får anges för den här attribut-typen
+This value should be Yes or No: Detta värde ska vara ja eller Nej
+This value should not be blank: Detta värde får inte vara tomt
+Option code may contain only letters, numbers and underscores: Alternativ-koden får endast innehålla bokstäver, siffror och understreck
+Option code may contain only letters (at least one), numbers and underscores: Alternativ-koden får endast innehålla bokstäver (minst en), siffror och understreck
+This value should not be a decimal.: Detta värde bör inte vara ett decimaltal.
+'The file extension is not allowed (allowed extensions: %extensions%).': 'Filändelsen tillåts inte (tillåtna filändelser: %extensions%).'
+The same identifier is already set on another product: Samma identifierare är redan satt på en annan produkt
+file.extensions.message: 'Filändelsen tillåts inte (tillåtna filändelser: %extensions%).'
+"This type of value expects the use of {{ decimal_separator }} to separate decimals.": Det här värdet förväntar sig att {{ decimal_separator }} används för att separera decimaler.
+"This type of value expects the use of dot (.) to separate decimals.": Det här värdet förväntar sig punkt (.) för att separera decimaler.
+"This type of value expects the use of comma (,) to separate decimals.": Det här värdet förväntar sig komma (,) för att separera decimaler.
+"This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Det här värdet förväntar sig arabiskt decimaltecken (٫) för att separera decimaler.
+"This type of value expects the use of the format {{ date_format }} for dates.": Det här värdet förväntar sig att datumformatet {{ date_format }} används för datum.
+"The category \"%category%\" has to be a root category.": Kategorin ”%category%” måste vara en rotkategori.
+"The attribute \"%attributeCode%\" does not exist.": Attributet ”%attributeCode%” existerar inte.
+"The currency \"%currency%\" has to be activated.": Valutan ”%currency%” måste vara aktiverad.
+product_model.code.not_blank.message: Productmodellens identifierare får inte vara tom.
+product_model.code.unique.message: Samma kod är redan inställd på en annan produktmodell.
+product_model.family_variant.not_blank.message: Produktmodellens variantfamilj får inte vara tom.
+pim_catalog:
+  constraint:
+    can_have_family_variant_empty_axis_value: 'Attributet "%attribute%" får inte vara tomt eftersom det används som en axel för denna entitet'
+    product_identifier: Identifierarna "%s" existerar inte.
+    0: Ett oväntat fel uppstod.
+    100: Icke-förväntat värde
+    101: Det här fältet förväntar sig ett booleskt värde.
+    102: Det här fältet förväntar sig ett flyttal.
+    103: Det här fältet förväntar sig ett heltal.
+    104: Det här fältet förväntar sig ett numeriskt värde.
+    105: Det här fältet förväntar sig ett strängvärde.
+    106: Det här fältet förväntar sig en matris.
+    107: Det här fältet förväntar sig en matris av matriser som värde.
+    200: Ett internt fel uppstod
+    201: Ett internt fel uppstod
+    202: Det här fältet förväntar sig ett numeriskt värde.
+    203: Det här fältet förväntar sig ett strängvärde.
+    204: Det här fältet förväntar sig ett strängvärde.
+    205: Ett internt fel uppstod
+    300: Det här fältet förväntar sig en giltig entitetskod.
+    301: Det här fältet förväntar sig ett giltigt tillämpningsområde och språk.
+    302: Det här fältet förväntar sig ett giltigt tillämpningsområde.
+    303: Det här fältet förväntar sig ett giltigt associationsformat.
+    pim_immutable_product_validator: Samma identifierare är redan satt på en annan produkt
+    pim_immutable_product_model_validator: Samma kod är redan inställd på en annan produktmodell.
+mass_edit:
+  edit_common_attributes:
+    invalid_values: Det finns fel i attributformuläret

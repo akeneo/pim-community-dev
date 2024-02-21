@@ -1,0 +1,76 @@
+#!/usr/bin/env php
+<?php
+
+/**
+ * This script print dependencies for each yarn workspace where the version is out of sync with the main project,
+ * meaning that yarn has to install it multiple times, in multiple versions, increasing the project size.
+ */
+
+$package = json_decode(file_get_contents(__DIR__ . '/../package.json'), true);
+$dependencies = array_merge($package['dependencies'] ?? [], $package['devDependencies'] ?? []);
+
+/** @var array<string> $workspaces */
+$workspaces = $package['workspaces'];
+
+foreach ($workspaces as $workspace) {
+    $path = __DIR__ . '/../' . $workspace;
+
+    if (!is_dir($path . '/node_modules')) {
+        continue;
+    }
+
+    $workspacePackage = json_decode(file_get_contents($path . '/package.json'), true);
+    $workspaceDependencies = array_merge(
+        $workspacePackage['dependencies'] ?? [],
+        $workspacePackage['devDependencies'] ?? []
+    );
+
+    $output = [];
+    exec(sprintf('du -sh %s', $path . '/node_modules'), $output);
+    $size = explode("\t", $output[0])[0];
+
+    $duplicates = [];
+
+    // For each dependency in the workspace, check if it's installed in the workspace node_modules directory.
+    // If that the case, yarn installed both because there is a different version in main node_modules directory.
+    foreach ($workspaceDependencies as $dependency => $version) {
+        if (!file_exists(sprintf('%s/node_modules/%s', $path, $dependency))) {
+            continue;
+        }
+
+        if (!isset($dependencies[$dependency])) {
+            continue;
+        }
+
+        $duplicates[] = $dependency;
+    }
+
+    if (empty($duplicates)) {
+        continue;
+    }
+
+    echo sprintf("You can save up to \e[1m%s\e[0m in the workspace \e[1m%s\e[0m\n", $size, $workspace);
+    echo sprintf("because these workspace packages are out of sync the project:\n");
+
+    foreach ($duplicates as $duplicate) {
+        $rootPackage = json_decode(
+            file_get_contents(sprintf(__DIR__ . '/../node_modules/%s/package.json', $duplicate)),
+            true
+        );
+        $rootVersion = $rootPackage['version'];
+        $workspacePackage = json_decode(
+            file_get_contents(sprintf('%s/node_modules/%s/package.json', $path, $duplicate)),
+            true
+        );
+        $workspaceVersion = $workspacePackage['version'];
+
+        $rootConstraint = $dependencies[$duplicate];
+        $workspaceConstraint = $workspaceDependencies[$duplicate];
+
+        echo sprintf("\t%s\n", $duplicate);
+        echo sprintf("\t\t%s => %s (workspace)\n", $workspaceConstraint, $workspaceVersion);
+        echo sprintf("\t\t%s => %s (project)\n", $rootConstraint, $rootVersion);
+    }
+
+    echo PHP_EOL;
+}

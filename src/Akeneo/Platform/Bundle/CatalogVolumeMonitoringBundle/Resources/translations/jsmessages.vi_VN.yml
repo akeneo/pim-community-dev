@@ -1,0 +1,6 @@
+pim_catalog_volume:
+  axis:
+    count_products: Sản phẩm
+    count_channels: Kênh
+    count_families: Các chủng loại
+    count_attributes: Thuộc tính

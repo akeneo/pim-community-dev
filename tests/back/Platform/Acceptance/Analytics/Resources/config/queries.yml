@@ -1,0 +1,18 @@
+services:
+    pim_analytics.query.email_domains:
+        class: AkeneoTest\Platform\Acceptance\Analytics\Query\InMemory\EmailDomainsInMemory
+
+    pim_analytics.query.api_connection_count:
+        class: AkeneoTest\Platform\Acceptance\Analytics\Query\InMemory\ApiConnectionCountInMemory
+
+    pim_analytics.query.active_event_subscription_count:
+        class: AkeneoTest\Platform\Acceptance\Analytics\Query\InMemory\ActiveEventSubscriptionCountInMemory
+
+    pim_analytics.query.media_count:
+        class: AkeneoTest\Platform\Acceptance\Analytics\Query\InMemory\MediaCountInMemory
+
+    pim_analytics.query.is_demo_catalog:
+        class: AkeneoTest\Platform\Acceptance\Analytics\Query\InMemory\IsDemoCatalogInMemory
+
+    pim_analytics.query.get_connected_apps_identifiers:
+        class: AkeneoTest\Platform\Acceptance\Analytics\Query\InMemory\GetConnectedAppsIdentifiersQueryInMemory

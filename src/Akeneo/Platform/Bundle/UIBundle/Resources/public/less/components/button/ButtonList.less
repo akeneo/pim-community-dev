@@ -1,0 +1,100 @@
+@import '../../base/variables';
+
+.AknButtonList {
+  @marginSpace: 10px;
+  @bigMarginSpace: 20px;
+
+  display: flex;
+  align-items: center;
+  margin-right: -@marginSpace;
+
+  &-item {
+    margin-right: @marginSpace;
+
+    &--hide,
+    &.disabled {
+      display: none;
+    }
+
+    &--transparent {
+      visibility: hidden;
+    }
+  }
+
+  &--hide {
+    display: none;
+  }
+
+  &--wrap {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  &--wrap :first-child {
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+
+  &--right {
+    justify-content: flex-end;
+    margin-right: 0;
+    margin-left: -@marginSpace;
+  }
+
+  &--right &-item {
+    margin-right: 0;
+    margin-left: @marginSpace;
+  }
+
+  &--centered {
+    justify-content: center;
+  }
+
+  &--centered &-item {
+    margin-right: @marginSpace / 2;
+    margin-left: @marginSpace / 2;
+  }
+
+  &--twoColumns {
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  &--twoColumns &-item {
+    margin-left: 0;
+    margin-right: 0;
+    flex-basis: ~"calc(50% - 5px)";
+    margin-bottom: 10px;
+  }
+
+  &--single {
+    padding-top: 20px;
+  }
+
+  &--vertical {
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  &--vertical &-item:not(:first-child) {
+    margin-top: 10px;
+  }
+
+  &--expanded {
+    margin-right: -@bigMarginSpace;
+  }
+
+  &--expanded &-item {
+    margin-right: @bigMarginSpace;
+  }
+
+  &--expanded&--right {
+    margin-right: 0;
+    margin-left: -@bigMarginSpace;
+  }
+
+  &--expanded&--right &-item {
+    margin-right: 0;
+    margin-left: @bigMarginSpace;
+  }
+}

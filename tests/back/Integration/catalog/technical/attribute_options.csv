@@ -1,0 +1,24 @@
+code;attribute;sort_order;label-en_US
+optionA;a_multi_select;10;Option A
+optionB;a_multi_select;20;Option B
+optionA;a_simple_select;10;Option A
+optionB;a_simple_select;20;Option B
+orange;a_simple_select_color;1;Orange
+green;a_simple_select_color;1;Green
+white;a_simple_select_color;1;White
+blue;a_simple_select_color;1;Blue
+red;a_simple_select_color;1;Red
+pink;a_simple_select_color;1;Pink
+yellow;a_simple_select_color;1;Yellow
+brown;a_simple_select_color;1;Brown
+black;a_simple_select_color;1;Black
+grey;a_simple_select_color;1;Grey
+l;a_simple_select_size;1;L
+xxl;a_simple_select_size;1;XXL
+xs;a_simple_select_size;1;XS
+m;a_simple_select_size;1;M
+xl;a_simple_select_size;1;XL
+s;a_simple_select_size;1;S
+xxs;a_simple_select_size;1;XXS
+xxxl;a_simple_select_size;1;XXXL
+u;a_simple_select_size;1;U

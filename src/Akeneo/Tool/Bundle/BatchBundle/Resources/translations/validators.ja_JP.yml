@@ -1,0 +1,2 @@
+akeneo_batch.job_instance.unknown_job_definition: ジョブ定義不明により、%job_type%を作成できませんでした
+akeneo.job_automation.validation.import_should_have_storage: インポートプロファイルのプロパティタブにストレージが設定されていません。

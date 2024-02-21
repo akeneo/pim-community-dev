@@ -1,0 +1,148 @@
+pim_user:
+  user:
+    title: Benutzer
+    fields:
+      name_prefix: Namenspräfix
+      email: E-Mail
+      username: Benutzername
+      first_name: Vorname
+      middle_name: Zweiter Vorname
+      last_name: Nachname
+      name_suffix: Namenssuffix
+      phone: Telefon
+      date_of_birth: Geburtsdatum
+      avatar: Benutzerbild
+      timezone: Zeitzone
+      roles: Rollen
+      groups: Gruppen
+      password: Passwort
+      password_again: Passwort erneut eingeben
+      product_grid_filters: Filter Produktliste
+      catalog_locale: Katalog-Gebietsschema
+      catalog_scope: Standard-Gültigkeitsbereich
+      default_tree: Standardkategoriebaum Produkte
+      current_password: Aktuelles Passwort
+      new_password: Neues Passwort
+      new_password_again: Neues Passwort (Wiederholung)
+      default_grid_view:
+        none: keine
+      default_product_grid_view:
+        label: Standardansicht Produktliste
+      ui_locale: UI-Gebietsschema
+      last_logged_in: Zuletzt eingeloggt
+      login_count: Anzahl der Anmeldungen
+      user_salt: Benutzer-Salt
+      created: Erstellt
+      updated: Aktualisiert
+      status: Status
+      capabilities: Fähigkeiten
+      has_role: hat Rolle
+      has_group: hat Gruppe
+      active: Aktiv
+      inactive: Inaktiv
+    fields_errors:
+      new_password:
+        minimum_length: Passwort muss mindestens 8 Zeichen enthalten
+        maximum_length: Passwort muss weniger als 4096 Zeichen enthalten
+      new_password_repeat:
+        not_match: Passwörter stimmen nicht überein
+      current_password:
+        wrong: Falsches Passwort
+      roles:
+        last_user_with_edit_role_permissions: Dieser Benutzer ist der letzte Benutzer mit Berechtigungen zur Bearbeitung von Rollen.
+    tabs:
+      general:
+        title: Allgemein
+        basic_information: Basisinformationen
+        contact_information: Kontaktinformationen
+      additional:
+        title: Weitere Informationen
+      additional_data:
+        title: Zusätzliche Daten
+      interfaces:
+        title: Benutzeroberfläche
+      group_and_role.title: Gruppen und Rollen
+      password.title: Passwort
+      business_unit.title: Geschäftsbereich
+      email_synchronization.title: Einstellungen für E-Mail Synchronisierung
+    removed_user: Benutzer gelöscht
+    login:
+      username_or_email: Benutzername oder E-Mail
+      remember_me: Automatisch anmelden
+      password_forgotten: Passwort vergessen?
+      log_in: Anmelden
+      forgot_password: Passwort vergessen
+      request: Anfrage
+      password_reset: Passwort zurücksetzen
+      reset: Zurücksetzen
+      password_reset_email_sent: Eine eMail wurde an den Benutzer geschickt. Diese enthält einen Link zum Zurücksetzen des Passworts.
+      homepage: Zurück zur Startseite
+  group:
+    tab:
+      general.title: Allgemein
+      users.title: Benutzer
+  roles:
+    title: Rolle
+    tab:
+      general: Allgemein
+      action: Berechtigungen
+      users: Benutzer
+  controller:
+    group:
+      message:
+        saved: "Gruppe gespeichert"
+    role:
+      message:
+        saved: "Rolle gespeichert"
+        cannot_delete_last_edit_role_permission: Sie können die Berechtigungen zur Bearbeitung der letzten Rolle nicht löschen.
+        cannot_remove_last_edit_role_permission: Sie können die Berechtigung zur Bearbeitung der Rolle nicht für die letzte Rolle entfernen.
+    user:
+      message:
+        saved: "Benutzer gespeichert"
+pim_datagrid:
+  columns:
+    user:
+      createdAt: "Erstellt am"
+      updatedAt: "Aktualisiert am"
+    roles:
+      label: "Bezeichnung"
+    groups:
+      name: "Name"
+confirmation:
+  remove:
+    role: Möchten Sie diese Rolle wirklich löschen?
+    user: Möchten Sie diesen Benutzer wirklich löschen?
+flash:
+  role:
+    removed: Rolle erfolgreich entfernt
+  user:
+    removed: Benutzer erfolgreich entfernt
+oro_security:
+  acl_group:
+    user: Benutzer
+    role: Rollen
+    group: Benutzergruppen
+  acl:
+    user:
+      view: Benutzer auflisten
+      create: Benutzer anlegen
+      edit: Benutzer bearbeiten
+      delete: Benutzer entfernen
+    role:
+      view: Rollen auflisten
+      create: Rolle anlegen
+      edit: Rolle bearbeiten
+      delete: Rolle entfernen
+    group:
+      view: Benutzergruppen auflisten
+      create: Benutzergruppe anlegen
+      edit: Benutzergruppe bearbeiten
+      delete: Benutzergruppe entfernen
+#Security
+(default): Standardberechtigung für Entitäten
+VIEW: Ansehen
+CREATE: Anlegen
+EDIT: Bearbeiten
+DELETE: Löschen
+ASSIGN: Zuweisen
+SHARE: Teilen

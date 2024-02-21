@@ -1,0 +1,3 @@
+pim_enrich.entity.locale:
+  constraint:
+    invalid_locale_code: Ce code régional ne correspond pas au format attendu

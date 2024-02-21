@@ -1,0 +1,8 @@
+pim_dashboard:
+  title: Tableau de bord
+  version: Version
+  widget:
+    completeness:
+      title: Complétude par canal et par locale
+    last_operations:
+      title: Dernières opérations

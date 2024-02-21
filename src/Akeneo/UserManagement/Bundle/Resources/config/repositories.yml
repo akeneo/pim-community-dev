@@ -1,0 +1,37 @@
+parameters:
+    pim_user.repository.role.class:  Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleRepository
+    pim_user.repository.group.class: Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\GroupRepository
+    pim_user.repository.user.class:  Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\UserRepository
+
+services:
+    pim_user.repository.role:
+        public: true
+        class: '%pim_user.repository.role.class%'
+        factory: ['@doctrine.orm.entity_manager', 'getRepository']
+        arguments: ['%pim_user.entity.role.class%']
+        tags:
+            - { name: pim_repository }
+
+    pim_user.repository.group:
+        class: '%pim_user.repository.group.class%'
+        factory: ['@doctrine.orm.entity_manager', 'getRepository']
+        arguments: ['%pim_user.entity.group.class%']
+        tags:
+            - { name: pim_repository }
+
+    pim_user.repository.user:
+        class: '%pim_user.repository.user.class%'
+        factory: ['@doctrine.orm.entity_manager', 'getRepository']
+        arguments: ['%pim_user.entity.user.class%']
+        tags:
+            - { name: pim_repository }
+
+    pim_user.repository.role_with_permissions:
+        class: 'Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleWithPermissionsRepository'
+        arguments:
+            - '@pim_user.repository.role'
+            - '@oro_security.acl.manager'
+        public: true
+
+    pim_user.repository.profile:
+        class: Akeneo\UserManagement\Bundle\Storage\ProfileRepository

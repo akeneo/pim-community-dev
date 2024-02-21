@@ -1,0 +1,11 @@
+parameters:
+    pim_enrich.connector.item.mass_edit.temporary_file_cleaner.class: Akeneo\Pim\Enrichment\Component\Product\Connector\Item\MassEdit\TemporaryFileCleaner
+
+services:
+    pim_enrich.connector.item.mass_edit.temporary_file_cleaner:
+        class: '%pim_enrich.connector.item.mass_edit.temporary_file_cleaner.class%'
+        arguments:
+            - '@pim_catalog.updater.product'
+            - '@pim_catalog.validator.product'
+            - '@pim_catalog.repository.product_mass_action'
+            - '@pim_catalog.repository.attribute'

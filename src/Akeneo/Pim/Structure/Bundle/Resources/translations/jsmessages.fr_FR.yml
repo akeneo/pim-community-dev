@@ -1,0 +1,392 @@
+pim_enrich.entity.family:
+  label: famille
+  uppercase_label: Famille
+  plural_label: Familles
+  flash:
+    update:
+      success: Famille mise à jour avec succès.
+      fail: Une erreur s'est produite à la mise à jour de la famille.
+      cant_remove_attribute_as_label: Impossible de supprimer un attribut utilisé comme libellé
+      cant_remove_attribute_as_image: Impossible de supprimer un attribut utilisé comme image principale
+      cant_remove_attribute_used_as_axis: Impossible d'enlever cet attribut car il est utilisé comme axe de variation de la variante de famille
+      fields_not_ready: "La famille ne peut actuellement pas être sauvegardée. Les champs suivants ne sont pas prêts : {{ fields }}"
+    create:
+      success: Famille créée avec succès
+    delete:
+      success: La famille a bien été supprimée
+      fail: Impossible de supprimer cette famille
+  property:
+    attribute_as_label: Attribut utilisé comme libellé
+    attribute_as_image: Attribut utilisé comme l’image principale
+    empty_attribute_as_image: Pas sélectionné
+  page_title:
+    index: "]-Inf, 1]{{ count }} famille|]1, Inf[{{ count }} familles"
+  module:
+    attributes:
+      not_required_label: Non requis
+      required_label: Obligatoire
+    create:
+      button: Créer une famille
+      from_scratch: Créer à partir de zéro
+      browse_templates: Parcourir les modèles de famille
+    delete:
+      confirm: Êtes-vous sûr(e) de que vouloir supprimer cette famille ?
+pim_enrich.entity.family_variant:
+  label: variante de famille
+  short_plural_label: Variantes
+  short_label: Variante
+  flash:
+    update:
+      success: Famille variante mise à jour avec succès. Les produits avec variantes vont être mis à jour avec vos changements.
+      fail: La variante de famille n'a pas pu être mise à jour.
+    create:
+      success: La variante de famille a été créée
+    delete:
+      success: La variante de famille a bien été supprimée
+  module:
+    edit:
+      common_attributes: Attributs communs
+      no_common_attributes: Il n'y a aucun attribut commun
+      variant_axis_label: Axe de variante
+      variant_attributes: Attributs variants
+      level_1: Attributs variants niveau 1
+      level_2: Attributs variants niveau 2
+      description: Glissez & déposez les attributs au niveau de variante choisi, afin d’avoir ces attributs gérés à ce niveau.
+      attribute_remove: Supprimer l'attribut
+      attribute_group_remove: Supprimer un groupe d'attributs
+      confirm_attribute_removal_title: Confirmer la suppression des attributs
+      confirm_attribute_removal_message: Ces attributs supprimés de la famille de variante resteront visibles dans les attributs communs de la famille variante, mais les valeurs définies sur les produits variants seront supprimées
+    create:
+      label: Ajouter une variante
+      title: Créer une nouvelle variante de famille
+      description: Dans une variante de famille, vous pouvez définir la structure de vos produits avec variantes. Choisissez le nombreux de niveaux variants gérés, les attributs utilisés comme axes de variantes pour chaque niveau. Puis, définissez la répartition des attributs de la famille.
+      variant_levels: Niveaux variants
+      axis_level: "Variante d’axe niveau {{ level }}"
+    update_translations:
+      title: Mettre à jour les traductions
+    delete:
+      confirm: Êtes-vous sûr(e) de vouloir supprimer cette variante de famille ?
+pim_enrich.entity.attribute_option:
+  short_uppercase_label: Options
+  flash:
+    create:
+      success: L'option d'attribut a été créée avec succès.
+      fail: Une erreur s'est produite en essayant de créer l'option d'attribut
+    update:
+      fail: Impossible d'enregistrer l'option de l'attribut
+    delete:
+      fail: Erreur lors de la suppression de l'option de l'attribut
+  page_title:
+    index: "]-Inf, 1]{{ count }} option|]1, Inf[{{ count }} options"
+  module:
+    edit:
+      cancel_title: Annuler les modifications
+      cancel_description: Attention, vous allez perdre les données non sauvegardées. Êtes-vous sûr(e) de vouloir annuler les modifications sur cette nouvelle option ?
+      options_labels: Libellés des options
+      options_settings: Paramètres des options
+      options_codes: Codes des options
+      option_code: Code de l'option
+      new_option_code: nouvelle_option
+      no_options_msg: Désolé, il n'y a pas d'options !
+      add_option: Cliquez ici pour en ajouter une
+      delete_confirmation_title_msg: Supprimer "{{ optionCode }}" de vos options ?
+      delete_confirmation_subtitle_msg: Êtes-vous sûr de vouloir supprimer cette option ? Vous ne pouvez pas annuler cette action.
+      display_options_limit: Seules les 500 premières options sont affichées ici. Si vous voulez voir plus d'options, effectuez une recherche ou un export.
+      search:
+        placeholder: Rechercher en utilisant un libellé ou un code
+        no_result:
+          title: Il n'y a aucun résultat pour votre recherche.
+pim_enrich.entity.association_type:
+  label: type d'association
+  property:
+    is_two_way: Association bi-directionnelle
+    is_quantified: Association avec une quantité
+  flash:
+    update:
+      success: Le type d'association a été mis à jour avec succès.
+      fail: Le type d’association n’a pas pu être modifié.
+      fields_not_ready: "Le type d'association ne peut actuellement pas être sauvegardé. Les champs suivants ne sont pas prêts : {{ fields }}"
+    create:
+      success: Le type d'association est créé avec succès
+    delete:
+      success: Le type d'association a été supprimé avec succès
+      fail: Impossible de supprimer ce type d'association
+  page_title:
+    index: "]-Inf, 1]{{ count }} type d'association|]1, Inf[{{ count }} types d'association"
+  module:
+    create:
+      title: Créer un nouveau type d'association
+      button: Créer un type d'association
+      is_two_way:
+        message_on_read_only: Le type d'association peut être avec une quantité ou bi-directionnel. Pour sélectionner ce dernier, merci de décocher l'autre.
+      is_quantified:
+        message_on_read_only: Le type d'association peut être avec une quantité ou bi-directionnel. Pour sélectionner ce dernier, merci de décocher l'autre.
+    delete:
+      confirm: Êtes-vous sûr(e) de que vouloir supprimer ce type d'association ?
+  hint: <a href="{{link}}" target="_blank">Dans cet article</a>, vous trouverez tout ce dont vous avez besoin pour créer votre propre type d'association.
+  no_association_types:
+    title: Vous n'avez aucun type d'association
+    hint: Créez votre premier type d'association
+pim_enrich.entity.group_type:
+  label: type de groupe
+  flash:
+    update:
+      success: Le type de groupe a bien été mis à jour.
+      fail: Le type de groupe n'a pas pu être mis à jour.
+      fields_not_ready: "Le type de groupe ne peut actuellement pas être sauvegardé. Les champs suivants ne sont pas prêts : {{ fields }}"
+    create:
+      success: Le type de groupe a bien été créé
+    delete:
+      success: Le type de groupe a bien été supprimé
+      fail: Impossible de supprimer ce type de groupe
+  page_title:
+    index: "]-Inf, 1]{{ count }} type de groupe|]1, Inf[{{ count }} types de groupe"
+  module:
+    create:
+      button: Créer un type de groupe
+    delete:
+      confirm: Êtes-vous sûr(e) de vouloir supprimer ce type de groupe ?
+pim_enrich.entity.attribute:
+  label: attribut
+  plural_label: Attributs
+  flash:
+    update:
+      success: Attribut mis à jour avec succès.
+      fail: L'attribut n'a pas pu être mis à jour.
+      fields_not_ready: "L'attribut ne peut actuellement pas être sauvegardé. Les champs suivants ne sont pas prêts : {{ fields }}"
+    delete:
+      success: L'attribut a bien été supprimé
+      fail: Impossible de supprimer cet attribut
+  page_title:
+    index: "]-Inf, 1]{{ count }} attribut|]1, Inf[{{ count }} attributs"
+  property:
+    allowed_extensions: Extensions autorisées
+    auto_option_sorting: Trier automatiquement les options par ordre alphabétique
+    available_locales: Locales disponibles
+    date_max: Date maxi
+    date_min: Date mini
+    decimals_allowed: Valeurs décimales autorisées
+    default_metric_unit:
+      label: Unité de mesure par défaut
+      choose: Choisir une unité
+    guidelines: Recommandations d'enrichissement de l'attribut
+    group:
+      label: Groupe d'attributs
+      choose: Choisir le groupe d'attributs
+    is_locale_specific: Spécifique à une locale
+    localizable: Valeur par locale
+    max_characters: Nombre maximum de caractères
+    max_file_size: Taille de fichier maximale (MB)
+    metric_family:
+      label: Famille de mesure
+      choose: Choisir une famille
+    minimum_input_length: Longueur minimale pour l’auto-complétion
+    name: Nom
+    negative_allowed: Valeurs négatives autorisées
+    number_max: Nombre max
+    number_min: Nombre min
+    reference_data_name:
+      label: Type de données de référence
+      choose: Choisir un type de données référentielles
+    scopable: Valeur par canal
+    type:
+      choose: Choisir le type d'attribut
+      pim_catalog_identifier: Identifiant
+      pim_catalog_text: Texte
+      pim_catalog_textarea: Zone de texte
+      pim_catalog_number: Nombre
+      pim_catalog_price_collection: Prix
+      pim_catalog_multiselect: Liste à choix multiples
+      pim_catalog_simpleselect: Liste à choix unique
+      pim_catalog_file: Fichier
+      pim_catalog_image: Image
+      pim_catalog_boolean: "Oui / Non"
+      pim_catalog_date: Date
+      pim_catalog_metric: Mesure
+      pim_reference_data_simpleselect: Liste à choix unique de données référentielles
+      pim_reference_data_multiselect: Liste à choix multiples de données référentielles
+    unique: Valeur unique
+    useable_as_grid_filter: Utilisable sur la grille
+    validation_regexp: Expression régulière
+    validation_rule:
+      label: Règle de validation
+      email: E-mail
+      regexp: Expression régulière
+      url: URL
+    wysiwyg_enabled: Éditeur de texte enrichi activé
+    default_value: Valeur par défaut
+    code:
+      must_be_filled: Le code doit être rempli
+      invalid: Le code est invalide
+      not_available: Ce code n'est pas disponible
+      is_duplicate: Ce code est déjà utilisé
+    identifier_limit_reached_title: Vous avez atteint la limite maximum de 10 identifiants.
+    identifier_limit_reached: Vous ne pouvez pas créer un autre identifiant car vous avez déjà atteint la limite de 10.
+    identifier_limit_reached_url: '→ En savoir plus sur le Help Center'
+    identifiers_limit: Vous pouvez créer un maximum de 10 identifiants. En savoir plus sur les identifiants additionnels dans le
+    identifiers_limit_link: Help Center.
+    unique_value_helper: La valeur de cet attribut doit-elle être unique ? Vous ne pourrez plus modifier ce paramètre plus tard.
+    scopable_helper: La valeur de cet attribut doit-elle différer par canal (scopable) ?
+    localizable_helper: La valeur de cet attribut doit-elle différer par locale (localisable) ?
+    attribute_creation_type: Type d'attribut
+    attribute_creation_template: Modèle
+    attribute_creation_settings: Paramètres de l'attribut
+  module:
+    add_attribute:
+      no_available_attributes: Il n'y a plus d'attributs disponibles
+      attributes_selected: "{{ itemsCount }} attribut(s) sélectionné(s)"
+    create:
+      button: Créer un attribut
+    edit:
+      common: Paramètres généraux
+      type_specific: Paramètres spécifiques
+      attribute_setup:
+        section_title: Configuration de l'attribut
+        warning: Les choix effectués ici pourraient impacter considérablement vos produits.
+        type: Ce type d'attribut est <em>{{ attributeType }}</em>
+        type_helper: Le type d'un attribut ne peut pas être modifié car cela entraînerait la suppression de toutes les valeurs renseignées pour cet attribut dans les produits concernés.
+        unique_attribute_title: La valeur de cet attribut est <em>unique</em>
+        non_unique_attribute_title: La valeur de cet attribut <em>n'est pas unique</em>
+        unique_helper: La valeur de l'attribut est différente pour chaque produit. Vous ne pouvez plus modifier ce paramètre.
+        non_unique_helper: La même valeur peut être utilisée pour cet attribut sur plusieurs produits. Vous ne pouvez plus modifier ce paramètre.
+        main_identifier_title: Cet attribut est <em>l'identifiant principal</em>
+        non_main_identifier_title: Cet attribut <em>n'est pas l'identifiant principal</em>
+        main_identifier_helper: Vous pouvez créer un maximum de {{ maxIdentifiersCount }} identifiants pour vos produits, et paramétrer l'un d'entre eux en tant qu'identifiant principal. L'identifiant principal actuel est {{ mainIdentifierLabel }}. <link>En savoir plus</link>
+        scopable_attribute_title: Les valeurs de cet attribut <em>diffèrent par canal (scopable)</em>
+        non_scopable_attribute_title: Les valeurs de cet attribut <em>ne diffèrent pas par canal (non scopable)</em>
+        scopable_helper: La valeur par canal détermine si un attribut est scopable (valeurs différentes pour différents canaux) ou non (une même valeur pour tous les canaux). <link>En savoir plus</link>
+        localizable_attribute_title: Les valeurs de cet attribut <em>diffèrent par locale (localisable)</em>
+        non_localizable_attribute_title: Les valeurs de cet attribut <em>ne diffèrent pas par locale (non localisable)</em>
+        localizable_helper: La valeur par canal détermine si un attribut est localisable (valeurs différentes pour différentes locales) ou non (une même valeur pour toutes les locales). <link>En savoir plus</link>
+        set_as_main_identifier:
+          button: Définir comme identifiant principal
+          confirm: 'Merci de saisir le code de l''attribut suivant : "{{ attributeCode }}"'
+          confirm_title: Modifier l'identifiant principal aura un impact sur tous les produits
+          are_you_sure: Êtes-vous sûr de vouloir définir l'attribut {{ attributeLabel }} comme identifiant principal ? <link>En savoir plus dans le Help Center.</link>
+          warning: "{{ attributeLabel }} est actuellement défini en tant qu'identifiant principal. Ce changement affectera tous les produits."
+          onboarder_warning: Vous ne pouvez pas définir un autre attribut de type identifiant comme identifiant principal car cette fonctionnalité n'est pas compatible avec Akeneo Onboarder.
+          flash:
+            success: L'identifiant principal a été mis à jour avec succès.
+            fail: Une erreur s'est produite lors de la mise à jour de l'identifiant principal.
+            fail_published_product: Si vous souhaitez modifier votre identifiant principal, assurez-vous d'abord de dépublier vos produits, puis de modifier votre identifiant principal.
+            fail_published_product_link: Accéder à vos produits publiés
+      validation: Paramètres de validation
+      select_locale: Sélectionnez une locale
+    delete:
+      confirm: Êtes-vous sûr(e) de vouloir supprimer cet attribut ?
+      attribute_removal: L'attribut sera supprimé de tous les produits qui pourraient l'utiliser.
+      product_count: '{0}0 produits|{1}1 produit|]1, Inf[{{ count }} produits'
+      product_model_count: '{0}0 modèles de produit|{1}1 modèle de produit|]1, Inf[{{ count }} modèles de produit'
+      used: ']-Inf,1]a actuellement des valeurs définies pour cet attribut.|]1, Inf[ont actuellement des valeurs définies pour cet attribut.'
+      helper:
+        content: Si vous souhaitez modifier votre type d'attribut, pour le rendre localisable ou scopable, tout en gardant vos valeurs existantes pour cet attribut, 
+        link: Consultez notre Help Center pour plus d'informations.
+      type: 'Merci de saisir le code de l''attribut suivant : "{{ attributeCode }}"'
+      confirm_from_family: Êtes-vous sûr(e) de vouloir supprimer cet attribut de la famille ?
+      confirm_from_group: Êtes vous sûr(e) de vouloir retirer l'attribut {{ attribute }} de ce groupe d'attributs ?
+      confirm_from_product: Êtes-vous sûr(e) de vouloir supprimer cet attribut du produit ?
+      cannot_delete: Cet attribut ne peut pas être supprimé car il est utilisé en tant qu'identifiant principal. Pour le supprimer, veuillez d'abord définir un autre attribut de type identifiant en tant qu'identifiant principal. <link>En savoir plus dans le Help Center</link>.
+    mass_delete:
+      modal:
+        title: Attributs
+        subtitle: '{1}Confirmer la suppression d''{{ count }} attribut|]1, Inf[Confirmer la suppression de {{ count }} attributs'
+        label: Veuillez retaper le texte suivant "{{ textToCheck }}"
+        confirm: Êtes-vous sûr(e) de vouloir supprimer ces attributs ?
+      message_bar:
+        success: La suppression a commencé. Vous recevrez une notification une fois la tâche terminée. En attendant, vous pouvez garder un œil sur son évolution depuis le traqueur de processus.
+        fail: Une erreur s'est produite lors du lancement de l'opération de suppression en masse.
+pim_enrich.entity.attribute_group:
+  label: groupe d'attributs
+  uppercase_label: Groupe d'attributs
+  plural_label: Groupes d'attributs
+  result_count: '{0}0 groupe d''attributs |{1}1 groupe d''attributs|]1, Inf[{{ count }} groupes d''attributs'
+  limit_reached: Vous avez atteint la limite de {{ max }} groupes d'attributs.
+  show_more_attribute:
+    title: C'est un peu bondé ici, nous vous montrons les attributs {{ attributeCount }}/{{ totalAttributeCount }}.
+    subtitle: Pour découvrir tous les attributs de ce groupe, cliquez ci-dessous !
+    button: Voir tous les attributs
+  dropdown:
+    label: Sélectionner
+    all: Tous les groupes d'attributs
+    none: Aucun groupe d'attribut
+  flash:
+    update:
+      success: Groupe d'attributs mis à jour avec succès
+      fail: Le groupe d'attributs n'a pas pu être mis à jour.
+      fields_not_ready: "Le groupe d''attributs ne peut actuellement pas être sauvegardé. Les champs suivants ne sont pas prêts : {{ fields }}"
+    delete:
+      success: La suppression a commencé. Vous recevrez une notification une fois la tâche terminée. En attendant, vous pouvez garder un œil sur son évolution depuis le traqueur de processus.
+      fail: Une erreur s'est produite lors du lancement de l'opération de suppression.
+    mass_delete:
+      success: La suppression a commencé. Vous recevrez une notification une fois la tâche terminée. En attendant, vous pouvez garder un œil sur son évolution depuis le traqueur de processus.
+      fail: Une erreur s'est produite lors du lancement de l'opération de suppression en masse.
+  module:
+    add_attribute_group:
+      label: Ajouter par groupes
+      no_attribute_groups_available: Aucun groupe d'attributs accessible
+      attributes_groups_selected: '{{ itemsCount }} groupe(s) sélectionné(s)'
+    delete:
+      confirm: Êtes-vous sûr(e) de vouloir supprimer ce groupe d'attributs ?
+  grid:
+    columns:
+      attribute_count: Nombre d'attributs liés
+  selected: '{0}Aucun groupe d''attributs sélectionnés|{1}1 groupe d''attributs sélectionné|]1, Inf[{{ count }} groupes d''attributs sélectionnés'
+  mass_delete:
+    confirm: '{1}Êtes-vous sûr de vouloir supprimer ce groupe d''attributs ?|]1, Inf[Êtes-vous sûr de vouloir supprimer ces {{ count }} groupes d''attributs ?'
+    confirmation_phrase: 'Veuillez retaper le texte suivant "{{ confirmation_word }}"'
+    confirmation_word: supprimer
+    attribute_warning: '{1}La suppression de ces groupes d''attributs aura un impact sur {{ number_of_attribute }} attribut lié. Vous devrez déplacer cet attribut vers un nouveau groupe d''attributs. ]1, Inf[Supprimer ces groupes d''attributs aura un impact sur {{ number_of_attribute }} attributs liés. Vous devrez déplacer ces attributs dans un nouveau groupe d''attributs.'
+    select_attribute_group: '{1}Veuillez sélectionner le groupe d''attributs vers lequel vous souhaitez déplacer l''attribut lié :|]1, Inf[Veuillez sélectionner le groupe d''attributs vers lequel vous souhaitez déplacer les {{ number_of_attribute }} attributs liés :'
+    empty_result_label: 'Aucun groupe d''attributs trouvé'
+    placeholder: 'Sélectionner un groupe d''attributs'
+    open_label: 'liste des groupes d’attributs'
+  delete:
+    confirm: 'Êtes-vous sûr(e) de vouloir supprimer ce groupe d''attributs ?'
+    attribute_warning: 'La suppression de ce groupe d''attributs aura un impact sur {{ number_of_attribute }} attributs lié(s). Vous devrez déplacer cet/ces attribut(s) lié(s) vers un nouveau groupe d''attributs.'
+    select_attribute_group: '{1}Veuillez sélectionner le groupe d''attributs vers lequel vous souhaitez déplacer l''attribut lié :|]1, Inf[Veuillez sélectionner le groupe d''attributs vers lequel vous souhaitez déplacer les {{ number_of_attribute }} attributs liés :'
+  batch_jobs:
+    delete_attribute_groups:
+      delete_attribute_groups:
+        label: Supprimer des groupes d'attributs
+pim_import_export:
+  notification:
+    mass_delete_attribute_groups:
+      error: La suppression en masse des groupes d'attributs a échoué
+      warning: La suppression en masse des groupes d'attributs s'est terminée avec quelques avertissements
+      success: La suppression en masse des groupes d'attributs s'est terminée
+pim_enrich.mass_edit.family:
+  title: Action de masse sur les familles
+  confirm: "{1}Vous êtes sur le point de mettre à jour une famille avec les renseignements suivants, merci de confirmer.|]1, Inf[Vous êtes sur le point de mettre à jour {{ itemsCount }} familles avec les renseignements suivants, merci de confirmer."
+  step:
+    select:
+      label: Choisir des familles
+    choose:
+      title: Actions de masse sur les familles
+      label_count: "]0, Inf[Sélectionnez votre action"
+    configure:
+      label: Configurez l'opération à effectuer
+    confirm:
+      label: Confirmation
+    launched:
+      label: L'action de masse "{{ operation }}" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
+  operation:
+    set_requirements:
+      label: Configurer les exigences d'attributs
+      description: Les exigences d'attributs suivants s'appliqueront aux familles sélectionnées
+      label_count: "{1}Modifier les exigences d'attributs d'<span class=\"AknFullPage-title--highlight\">1 famille</span>|]1, Inf[Modifier les exigences d'attributes de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} familles</span>"
+batch_jobs:
+  default_steps:
+    delete_attribute_groups: Supprimer les groupes d'attributs
+    move_child_attributes: Déplacer les attributs liés
+  delete_attributes:
+    delete_attributes:
+      label: Supprimer les attributs
+job_execution:
+  summary:
+    deleted_attributes: Attributs supprimés
+akeneo_job_process_tracker:
+  type_filter:
+    attribute_group_mass_delete: Supprimer les groupes d'attributs
+pim_notification:
+  types:
+    attribute_group_mass_delete: Suppression

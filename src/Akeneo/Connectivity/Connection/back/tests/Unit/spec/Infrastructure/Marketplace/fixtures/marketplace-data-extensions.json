@@ -1,0 +1,33 @@
+{
+  "total": 2,
+  "offset": 0,
+  "limit": 100,
+  "items": [
+    {
+      "id": "90741597-54c5-48a1-98da-a68e7ee0a715",
+      "name": "Akeneo Shopware 6 Connector by EIKONA Media",
+      "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N",
+      "author": "EIKONA Media GmbH",
+      "partner": "Akeneo Preferred Partner",
+      "description": "description_1",
+      "url": "url_1",
+      "categories": [
+        "E-commerce"
+      ],
+      "certified": false
+    },
+    {
+      "id": "b18561ff-378e-41a5-babb-ca0ec0af569a",
+      "name": "Akeneo PIM Connector for Shopify",
+      "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/shopify-connector-logo-1200x.png?itok=mASOVlwC",
+      "author": "StrikeTru",
+      "partner": "Akeneo Partner",
+      "description": "description_2",
+      "url": "url_2",
+      "categories": [
+        "E-commerce"
+      ],
+      "certified": false
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+services:
+    Akeneo\Pim\Enrichment\Bundle\Twig\AttributeExtension:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Twig\AttributeExtension'
+        tags:
+            - { name: twig.extension }
+
+    #Attribute value renderers
+    Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\ProductValueRenderer\ProductValueRendererExtension:
+        arguments:
+            - '@Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\ProductValueRenderer\ProductValueRendererRegistry'
+        tags:
+            - { name: twig.extension }
+
+    Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\ProductValueRenderer\DefaultProductValueRenderer: ~
+
+    Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\ProductValueRenderer\BooleanProductValueRenderer:
+        arguments:
+            - '@translator'
+        tags:
+            - { name: pim_pdf_generator.product_value_renderer }
+
+    Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\ProductValueRenderer\SimpleSelectProductValueRenderer:
+        arguments:
+            - '@pim_catalog.repository.cached_attribute_option'
+        tags:
+            - { name: pim_pdf_generator.product_value_renderer }
+
+    Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\ProductValueRenderer\MultiSelectProductValueRenderer:
+        arguments:
+            - '@pim_catalog.repository.cached_attribute_option'
+        tags:
+            - { name: pim_pdf_generator.product_value_renderer }
+
+    Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\ProductValueRenderer\ImageProductValueRenderer:
+        tags:
+            - { name: pim_pdf_generator.product_value_renderer }
+
+    Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\ProductValueRenderer\TextareaProductValueRenderer:
+        tags:
+            - { name: pim_pdf_generator.product_value_renderer }

@@ -1,0 +1,84 @@
+batch_jobs:
+  csv_currency_export:
+    label: Esportazione valute in CSV
+    export.label: Esportazione valute
+  csv_currency_import:
+    label: Importazione valute in CSV
+    import.label: Importazione valute
+  xlsx_currency_export:
+    label: Esportazione valute in XLSX
+    export.label: Esportazione valute
+  xlsx_currency_import:
+    label: Importazione valute in XLSX
+    import.label: Importazione valute
+  csv_locale_export:
+    label: Esportazione impostazioni locali in CSV
+    export.label: Esportazione impostazioni locali
+  csv_locale_import:
+    label: Importazione impostazioni locali in CSV
+    import.label: Importazione impostazioni locali
+  xlsx_locale_export:
+    label: Esportazione impostazioni locali in XLSX
+    export.label: Esportazione impostazioni locali
+  xlsx_locale_import:
+    label: Importazione impostazioni locali in XLSX
+    import.label: Importazione impostazioni locali
+  csv_channel_export:
+    label: Esportazione canali in CSV
+    export.label: Esportazione canali
+  csv_channel_import:
+    label: Importazione canali in CSB
+    import.label: Importazione canali
+  xlsx_channel_export:
+    label: Esportazione canali in XLSX
+    export.label: Esportazione canali
+  xlsx_channel_import:
+    label: Importazione canali in XLSX
+    import.label: Importazione canali
+pim_enrich.entity.channel:
+  label: canale
+  uppercase_label: Canale
+  flash:
+    update:
+      success: Canale aggiornato con successo.
+      fail: Il canale non può essere aggiornato.
+    create:
+      success: Canale creato con successo.
+      fail: Il canale non può essere creato.
+    delete:
+      success: Canale rimosso con successo
+      fail: Non è possibile eliminare questo canale
+  page_title:
+    index: "]-Inf, 1]{{ count }} canale|]1, Inf[{{ count }} canali"
+  property:
+    category_tree: Albero di categorie
+    do_not_convert: Non convertire
+    measurement: Impostazioni di misurazione
+    label_conversion_units: Seleziona un'unità di conversione per ogni attributo d
+  module:
+    create:
+      button: Crea canale
+    delete:
+      confirm: Sei sicuro di voler eliminare questo canale?
+pim_enrich.entity.locale:
+  label: impostazione locale
+  uppercase_label: Impostazione locale
+  plural_label: Impostazioni locali
+  page_title:
+    index: "]-Inf, 1]{{ count }} impostazione locale attivata|]1, Inf[{"
+  helper: "Per attivare o disattivare un'impostazione locale, vai a un"
+  grid:
+    columns:
+      code: Impostazioni locali attivate
+    filters:
+      search_placeholder: Cerca un'impostazione locale attivata
+    no_search_result: Spiacenti, non ci sono risultati per la tua ricerca
+pim_enrich.entity.currency:
+  plural_label: Valute
+  page_title:
+    index: "]-Inf, 1]{{ count }} valuta|]1, Inf[{{ count }} valute"
+flash:
+  currency:
+    error:
+      linked_to_channel: Non è possibile disattivare una valuta collegata a u
+    updated: Valuta aggiornata con successo

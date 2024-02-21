@@ -1,0 +1,110 @@
+pim_enrich.entity.family:
+  label: Chủng loại
+  uppercase_label: Chủng loại
+  plural_label: Các chủng loại
+  flash:
+    create:
+      success: Chủng loại đã được tạo thành công
+    delete:
+      success: Chủng loại đã được xoá thành công
+      fail: Không thể xóa chủng loại này
+  property:
+    attribute_as_label: Thuộc tính được sử dụng như nhãn
+    empty_attribute_as_image: Không được chọn
+  module:
+    attributes:
+      not_required_label: Không bắt buộc
+      required_label: Bắt buộc
+    delete:
+      confirm: Bạn có chắc bạn muốn xóa chủng loại này không?
+pim_enrich.entity.family_variant:
+  short_label: Biến thể
+pim_enrich.entity.attribute_option:
+  short_uppercase_label: Tùy chọn
+pim_enrich.entity.association_type:
+  label: Kiểu kết hợp
+  flash:
+    create:
+      success: Kiểu kết hợp đã được tạo thành công
+    delete:
+      success: Kiểu kết hợp đã được gỡ bỏ thành công
+      fail: Không thể xoá kiểu kết hợp này
+  module:
+    delete:
+      confirm: Bạn có chắc chắn muốn xóa kiểu kết hợp này không?
+pim_enrich.entity.group_type:
+  label: Kiểu nhóm
+  flash:
+    create:
+      success: Kiểu nhóm đã được tạo thành công
+    delete:
+      success: Kiểu nhóm đã được gỡ bỏ thành công
+      fail: Không thể xoá kiểu nhóm này
+  module:
+    delete:
+      confirm: Bạn có chắc bạn muốn xóa bỏ kiểu nhóm này không?
+pim_enrich.entity.attribute:
+  label: Thuộc tính
+  plural_label: Thuộc tính
+  flash:
+    delete:
+      success: Thuộc tính đã được gỡ bỏ thành công
+      fail: Không thể xóa thuộc tính này
+  property:
+    allowed_extensions: Đuôi tập tin cho phép
+    available_locales: Locale sẵn có
+    date_max: Ngày lớn nhất
+    date_min: Ngày nhỏ nhất
+    default_metric_unit:
+      choose: Chọn một đơn vị
+    group:
+      label: Nhóm thuộc tính
+    is_locale_specific: Locale cụ thể
+    max_characters: Số ký tự tối đa
+    max_file_size: Kích thước tập tin tối đa (MB)
+    metric_family:
+      choose: Chọn một chủng loại
+    name: Tên
+    number_max: Số lớn nhất
+    number_min: Số nhỏ nhất
+    type:
+      choose: Chọn loại thuộc tính
+      pim_catalog_identifier: Định danh
+      pim_catalog_text: Văn bản
+      pim_catalog_textarea: Khung văn bản
+      pim_catalog_number: Số
+      pim_catalog_price_collection: Giá
+      pim_catalog_multiselect: Chọn nhiều mục
+      pim_catalog_simpleselect: Lựa chọn đơn
+      pim_catalog_file: Tập tin
+      pim_catalog_image: Hình ảnh
+      pim_catalog_boolean: "Yes/No"
+      pim_catalog_date: Ngày tháng năm
+    unique: Giá trị duy nhất
+    validation_regexp: Biểu thức chính quy
+    validation_rule:
+      label: Quy tắc kiểm tra
+      email: Thư điện tử
+      regexp: Biểu thức chính quy
+      url: URL
+  module:
+    add_attribute:
+      no_available_attributes: Không có thuộc tính nào để thêm
+    edit:
+      common: Tham số chung
+    delete:
+      confirm: Bạn có chắc bạn muốn xóa thuộc tính này không?
+pim_enrich.entity.attribute_group:
+  label: Nhóm thuộc tính
+  uppercase_label: Nhóm thuộc tính
+  flash:
+    update:
+      success: Nhóm thuộc tính đã được cập nhật thành công
+    delete:
+      success: Nhóm thuộc tính đã gỡ bỏ thành công
+pim_enrich.mass_edit.family:
+  step:
+    configure:
+      label: Cấu hình
+    confirm:
+      label: Xác nhận

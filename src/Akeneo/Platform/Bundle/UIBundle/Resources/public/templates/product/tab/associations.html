@@ -1,0 +1,47 @@
+<% if (!associationTypes.length) { %>
+<div class="buffer-top buffer-left">
+  <span class="buffer-small-right">
+    <%- _.__('pim_enrich.entity.product.module.associations.none_exist') %>
+  </span>
+</div>
+<% } else { %>
+<div class="tabbable">
+  <div class="tab-content">
+    <div
+      class="association-grid-container <%- datagridName %><% if ('products' !== currentAssociationTarget || isQuantifiedAssociation) { %> hide<% } %>"
+    >
+      <div class="AknGrid AknGrid--gallery AknGrid--inner">
+        <div id="grid-<%- datagridName %>" data-type="datagrid">
+          <% if (addAssociationVisible) { %>
+          <div class="AknGridToolbar">
+            <div class="AknGridToolbar-center"></div>
+            <div class="AknGridToolbar-right AknButtonList AknButtonList--right">
+              <div class="AknButton AknButton--action AknButtonList-item add-associations">
+                <%- addAssociationsLabel %>
+              </div>
+            </div>
+          </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="association-grid-container  association-group-grid<% if ('groups' !== currentAssociationTarget || isQuantifiedAssociation) { %> hide<% } %>"
+    >
+      <div id="grid-association-group-grid" data-type="datagrid"></div>
+    </div>
+
+    <div id="product-quantified-associations" class="<%- !isQuantifiedAssociation && 'hide' %>"></div>
+
+    <div class="selection-inputs">
+      <% _.each(associationTypes, function (associationType) { %>
+      <input type="hidden" id="<%- associationType.code %>-products-appendfield" />
+      <input type="hidden" id="<%- associationType.code %>-products-removefield" />
+      <input type="hidden" id="<%- associationType.code %>-groups-appendfield" />
+      <input type="hidden" id="<%- associationType.code %>-groups-removefield" />
+      <% }); %>
+    </div>
+  </div>
+</div>
+<% } %>

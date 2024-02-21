@@ -1,0 +1,84 @@
+batch_jobs:
+  csv_currency_export:
+    label: Export van valuta in CSV
+    export.label: Export van valuta
+  csv_currency_import:
+    label: Import van valuta in CSV
+    import.label: Import van valuta
+  xlsx_currency_export:
+    label: Export van valuta in XLSX
+    export.label: Export van valuta
+  xlsx_currency_import:
+    label: Import van valuta in XLSX
+    import.label: Import van valuta
+  csv_locale_export:
+    label: Export van talen in CSV
+    export.label: Export van talen
+  csv_locale_import:
+    label: Import van talen in CSV
+    import.label: Import van talen 
+  xlsx_locale_export:
+    label: Export van talen in XLSX
+    export.label: Export van talen
+  xlsx_locale_import:
+    label: Import van talen in XLSX
+    import.label: Import van talen 
+  csv_channel_export:
+    label: Export van kanalen in CSV
+    export.label: Export van kanalen
+  csv_channel_import:
+    label: Import van kanalen in CSV
+    import.label: Import van kanalen
+  xlsx_channel_export:
+    label: Export van kanalen in XLSX
+    export.label: Export van kanalen
+  xlsx_channel_import:
+    label: Import van kanalen in XLSX
+    import.label: Import van kanalen
+pim_enrich.entity.channel:
+  label: kanaal
+  uppercase_label: Kanaal
+  flash:
+    update:
+      success: Het kanaal is bijgewerkt.
+      fail: Het kanaal kon niet worden bijgewerkt.
+    create:
+      success: Het kanaal is aangemaakt.
+      fail: Het kanaal kon niet worden aangemaakt.
+    delete:
+      success: Het kanaal is verwijderd
+      fail: Kan dit kanaal niet verwijderen
+  page_title:
+    index: "]-Inf, 1]{{ count }} kanaal|]1, Inf[{{ count }} kanalen"
+  property:
+    category_tree: Categorieboom
+    do_not_convert: Niet converteren
+    measurement: Instellingen voor meeteenheden
+    label_conversion_units: Kies voor de conversie van elk attribuut met meeteenhede
+  module:
+    create:
+      button: Kanaal aanmaken
+    delete:
+      confirm: Weet u zeker dat u dit kanaal wilt verwijderen?
+pim_enrich.entity.locale:
+  label: taal
+  uppercase_label: Taal
+  plural_label: Talen
+  page_title:
+    index: "]-Inf, 1]{{ count }} ingeschakelde taal]1, Inf[{{ count }"
+  helper: "Om een taal in of uit te schakelen, gaat u naar een van <"
+  grid:
+    columns:
+      code: Ingeschakelde talen
+    filters:
+      search_placeholder: Een ingeschakelde taal zoeken
+    no_search_result: Er zijn geen resultaten voor uw zoekopdracht.
+pim_enrich.entity.currency:
+  plural_label: Valuta's
+  page_title:
+    index: "]-Inf, 1]{{ count }} valuta|]1, Inf[{{ count }} valuta's"
+flash:
+  currency:
+    error:
+      linked_to_channel: U kunt een aan een kanaal gekoppelde valuta nie
+    updated: De valuta is bijgewerkt

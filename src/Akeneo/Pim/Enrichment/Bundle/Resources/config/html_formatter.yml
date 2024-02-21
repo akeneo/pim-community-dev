@@ -1,0 +1,2 @@
+services:
+  Akeneo\Pim\Enrichment\Bundle\PdfGeneration\HtmlFormatter\ArabicHtmlFormatter: ~

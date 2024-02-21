@@ -1,0 +1,51 @@
+services:
+    pim_enrich.product.paginator:
+        class: 'Akeneo\Tool\Component\StorageUtils\Cursor\PaginatorFactory'
+        arguments:
+            - 'Akeneo\Tool\Component\StorageUtils\Cursor\Paginator'
+            - '%pim_job_product_batch_size%'
+
+    Akeneo\Pim\Enrichment\Bundle\Command\CleanRemovedAttributesFromProductAndProductModelCommand:
+        arguments:
+            - '@pim_connector.doctrine.cache_clearer'
+            - '@pim_catalog.query.product_and_product_model_query_builder_factory'
+            - '%kernel.project_dir%/src'
+            - '%pim_job_product_batch_size%'
+            - '@event_dispatcher'
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@akeneo.pim.enrichment.product.query.count_products_with_removed_attribute'
+            - '@akeneo.pim.enrichment.product.query.count_product_models_with_removed_attribute'
+            - '@akeneo.pim.enrichment.product.query.count_products_and_product_models_with_inherited_removed_attribute'
+            - '@router'
+            - '%env(AKENEO_PIM_URL)%'
+            - '@akeneo.pim.structure.query.get_all_blacklisted_attribute_codes'
+            - '@pim_catalog.manager.attribute_code_blacklister'
+        tags:
+            - { name: console.command }
+            - { name: 'akeneo.command.authenticated_as_admin_user' }
+
+    Akeneo\Pim\Enrichment\Bundle\Command\QueryHelpProductCommand:
+        arguments:
+            - '@pim_catalog.query.filter.product.field_dumper'
+            - '@pim_catalog.query.filter.product.attribute_dumper'
+        tags:
+            - { name: console.command }
+            - { name: 'akeneo.command.authenticated_as_admin_user' }
+
+    Akeneo\Pim\Enrichment\Bundle\Command\QueryHelpProductModelCommand:
+        arguments:
+            - '@pim_catalog.query.filter.product_model.field_dumper'
+            - '@pim_catalog.query.filter.product_model.attribute_dumper'
+        tags:
+            - { name: console.command }
+            - { name: 'akeneo.command.authenticated_as_admin_user' }
+
+    Akeneo\Pim\Enrichment\Bundle\Command\RefreshProductCommand:
+        arguments:
+            - '@pim_catalog.saver.product'
+            - '@pim_catalog.saver.product_model'
+            - '@pim_catalog.query.product_and_product_model_query_builder_factory'
+        tags:
+            - { name: console.command }
+            - { name: 'akeneo.command.authenticated_as_admin_user' }

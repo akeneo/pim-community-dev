@@ -1,0 +1,42 @@
+services:
+  Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository:
+    class: 'Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Repository\SqlIdentifierGeneratorRepository'
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Domain\Query\GetNextIdentifierQuery:
+    class: 'Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Query\SqlGetSequencedNextIdentifierQuery'
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Query\SqlGetNextIdentifierQuery'
+      - '@database_connection'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Domain\Query\SqlGetNextIdentifierQuery:
+    class: 'Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Query\SqlGetNextIdentifierQuery'
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Query\SqlUpdateIdentifierPrefixesQuery:
+    arguments:
+      - '@pim_catalog.repository.attribute'
+      - '@database_connection'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\FamilyNomenclatureRepository:
+    class: 'Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Repository\SqlFamilyNomenclatureRepository'
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\SimpleSelectNomenclatureRepository:
+    class: 'Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Repository\SqlSimpleSelectNomenclatureRepository'
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\ReferenceEntityNomenclatureRepository:
+    class: 'Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Repository\SqlReferenceEntityNomenclatureRepository'
+    arguments:
+      - '@database_connection'
+      - '@akeneo.pim.structure.query.get_attributes'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Domain\Query\ReorderIdentifierGenerators:
+    class: 'Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Query\SqlReorderIdentifierGenerators'
+    arguments:
+      - '@database_connection'

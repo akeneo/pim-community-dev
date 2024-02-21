@@ -1,0 +1,14 @@
+monolog:
+    handlers:
+        console:
+          type:  console
+          channels: ['!event', '!doctrine', '!event_api', '!business_event', '!api_requests']
+
+services:
+    monolog.logger.pim_api_acl.test:
+        decorates: monolog.logger.pim_api_acl
+        class: Psr\Log\Test\TestLogger
+
+    monolog.logger.api_requests.test:
+        decorates: monolog.logger.api_requests
+        class: Psr\Log\Test\TestLogger

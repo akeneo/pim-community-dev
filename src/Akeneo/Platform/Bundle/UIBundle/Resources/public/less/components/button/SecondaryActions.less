@@ -1,0 +1,21 @@
+@import '../../base/variables';
+
+.AknSecondaryActions {
+  &-button {
+    height: @AknDefaultButtonSize;
+    width: @AknDefaultButtonSize;
+    position: relative;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: opacity 0.1s ease-in;
+    background: url("/bundles/pimui/images/icon-more.svg") no-repeat center center;
+
+    &--rotated {
+      transform: rotate(90deg);
+    }
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}

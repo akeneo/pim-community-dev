@@ -1,0 +1,96 @@
+version: 2
+updates:
+  # Default branch (master)
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    allow:
+      - dependency-type: "production"
+    open-pull-requests-limit: 0
+
+  - package-ecosystem: "npm"
+    directory: "/front-packages/akeneo-design-system"
+    schedule:
+      interval: "daily"
+    allow:
+      - dependency-type: "production"
+    open-pull-requests-limit: 0
+
+  - package-ecosystem: "npm"
+    directory: "/front-packages/shared"
+    schedule:
+      interval: "daily"
+    allow:
+      - dependency-type: "production"
+    open-pull-requests-limit: 0
+
+  - package-ecosystem: "composer"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    allow:
+      - dependency-type: "production"
+    ignore:
+      - dependency-name: "*"
+        update-types: [ "version-update:semver-major" ]
+
+  #6.0
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    target-branch: "6.0"
+    allow:
+      - dependency-type: "production"
+    open-pull-requests-limit: 0
+
+  - package-ecosystem: "npm"
+    directory: "/front-packages/akeneo-design-system"
+    schedule:
+      interval: "daily"
+    target-branch: "6.0"
+    allow:
+      - dependency-type: "production"
+    open-pull-requests-limit: 0
+
+  - package-ecosystem: "composer"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    target-branch: "6.0"
+    allow:
+      - dependency-type: "production"
+    ignore:
+      - dependency-name: "*"
+        update-types: [ "version-update:semver-major" ]
+
+  #5.0
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    target-branch: "5.0"
+    allow:
+      - dependency-type: "production"
+    open-pull-requests-limit: 0
+
+  - package-ecosystem: "npm"
+    directory: "/front-packages/akeneo-design-system"
+    schedule:
+      interval: "daily"
+    target-branch: "5.0"
+    allow:
+      - dependency-type: "production"
+    open-pull-requests-limit: 0
+
+  - package-ecosystem: "composer"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    target-branch: "5.0"
+    allow:
+      - dependency-type: "production"
+    ignore:
+      - dependency-name: "*"
+        update-types: [ "version-update:semver-major" ]

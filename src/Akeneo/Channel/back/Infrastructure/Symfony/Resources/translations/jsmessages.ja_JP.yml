@@ -1,0 +1,84 @@
+batch_jobs:
+  csv_currency_export:
+    label: CSV形式での通貨のエクスポート
+    export.label: 通貨のエクスポート
+  csv_currency_import:
+    label: CSV形式での通貨のインポート
+    import.label: 通貨のインポート
+  xlsx_currency_export:
+    label: XLSX形式での通貨のエクスポート
+    export.label: 通貨のエクスポート
+  xlsx_currency_import:
+    label: XLSX形式での通貨のインポート
+    import.label: 通貨のインポート
+  csv_locale_export:
+    label: CSV形式でのロケールのエクスポート
+    export.label: ロケールのエクスポート
+  csv_locale_import:
+    label: CSV形式でのロケールのインポート
+    import.label: ロケールのインポート
+  xlsx_locale_export:
+    label: XLSX形式でのロケールのエクスポート
+    export.label: ロケールのエクスポート
+  xlsx_locale_import:
+    label: XLSX形式でのロケールのインポート
+    import.label: ロケールのインポート
+  csv_channel_export:
+    label: CSV形式でのチャンネルのエクスポート
+    export.label: チャンネルのエクスポート
+  csv_channel_import:
+    label: CSV形式でのチャンネルのインポート
+    import.label: チャンネルのインポート
+  xlsx_channel_export:
+    label: XLSX形式でのチャンネルのエクスポート
+    export.label: チャンネルのエクスポート
+  xlsx_channel_import:
+    label: XLSX形式でのチャンネルのインポート
+    import.label: チャンネルのインポート
+pim_enrich.entity.channel:
+  label: チャンネル
+  uppercase_label: チャンネル
+  flash:
+    update:
+      success: チャンネルを正常に更新しました。
+      fail: チャンネルを更新できませんでした。
+    create:
+      success: チャンネルを正常に作成しました。
+      fail: チャンネルを作成できませんでした。
+    delete:
+      success: チャンネルを正常に削除しました
+      fail: このチャンネルを削除できません
+  page_title:
+    index: "]-Inf, 1]{{ count }} 件のチャンネル|]1, Inf[{{ count }"
+  property:
+    category_tree: カテゴリツリー
+    do_not_convert: 変換しない
+    measurement: 測定の設定
+    label_conversion_units: 商品のエクスポート時に使用する各測定属性のための変換ユニットを選択します
+  module:
+    create:
+      button: チャンネルを作成
+    delete:
+      confirm: このチャンネルを削除してもよろしいですか？
+pim_enrich.entity.locale:
+  label: ロケール
+  uppercase_label: ロケール
+  plural_label: ロケール
+  page_title:
+    index: "]-Inf, 1]{{ count }} 個の有効なロケール]1, Inf[{{ count }"
+  helper: "ロケールを有効化または無効化するには、いずれかの<a href={{ hre"
+  grid:
+    columns:
+      code: 有効なロケール
+    filters:
+      search_placeholder: 有効なロケールを検索
+    no_search_result: 検索結果はありません。
+pim_enrich.entity.currency:
+  plural_label: 通貨
+  page_title:
+    index: "]-Inf, 1]{{ count }} 個の通貨|]1, Inf[{{ count }} 個の通貨"
+flash:
+  currency:
+    error:
+      linked_to_channel: チャンネルにリンクされている通貨は無効にできません。
+    updated: 通貨が正常に更新されました

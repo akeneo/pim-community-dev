@@ -1,0 +1,17 @@
+pim_datagrid:
+  column_configurator:
+    min_message: Valitse vähintään yksi näytettävä datagrid-sarake
+  label:
+    unique_message: Nimikkeen on oltava yksilöllinen
+    not_blank_message: Nimike ei saa olla tyhjä
+  view_selector:
+    flash:
+      created: Datagrid näkymän luominen onnistui
+      removed: Datagrid-näkymä poistettu
+  cells:
+    type:
+      quick_export: Nopea vienti
+      import: Tuonti
+      export: Vienti
+      mass_edit: Massamuokkaus
+      mass_delete: Massapoisto

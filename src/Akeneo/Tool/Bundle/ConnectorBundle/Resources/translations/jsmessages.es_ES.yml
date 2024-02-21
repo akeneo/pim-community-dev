@@ -1,0 +1,196 @@
+#Job labels
+batch_jobs:
+  default_steps:
+    download_files: Descargar archivo(s)
+    upload_files: Subir archivo(s)
+    export: Exportar
+    import: Importar
+    validation: Validación de fichero
+    import_associations: Importar asociaciones
+    import_model_associations: Importar asociaciones
+    import_root_product_model: Importación del modelo del producto base
+    import_sub_product_model: Importación del modelo del sub producto
+    compute_data_related_to_family_root_product_models: Calcular datos de modelos productos de base
+    compute_data_related_to_family_sub_product_models: Calcular datos de los modelos de subproductos
+    compute_data_related_to_family_products: Calcular datos de los productos
+    index_family_products_and_product_models: Indexar productos familiares y modelos de productos
+    compute_family_variant_structure_changes: Calcular los cambios de estructura de las variantes de la familia
+    compute_completeness_of_products_family: Calcular la completitud de la familia de productos
+    index_family_products: Indexar productos familiares y modelos de productos
+    delete_products_and_product_models: Eliminar productos en masa
+    ensure_attribute_group_order: Comprobar el orden de clasificación de los grupos de atributos
+    clean_attribute:
+      register_clean_job: Añadiendo código a la lista negra
+      clean_product_model: Limpiando modelos de productos
+      clean_product: Limpiando productos
+      remove_attribute_codes_from_blacklist: Eliminando código de la lista negra
+    check_job_unique: Comprobar que el trabajo es único
+  csv_product_export:
+    label: Exportar productos a CSV
+    export.label: Exportar producto
+  csv_product_model_export:
+    label: Exportación de modelo de producto en CSV
+    export.label: Exportación de modelo de producto
+  csv_category_export:
+    label: Exportar categorías en CSV
+    export.label: Exportar categorías
+  csv_attribute_export:
+    label: Exportar atributos en CSV
+    export.label: Exportar atributos
+  csv_attribute_option_export:
+    label: Exportar opciones de atributos en CSV
+    export.label: Exportar opciones de atributos
+  csv_association_type_export:
+    label: Exportar tipos de asociociones en CSV
+    export.label: Exportar tipo de asociaciones
+  csv_group_export:
+    label: Exportar grupos en CSV
+    export.label: Exportar grupos
+  csv_family_export:
+    label: Exportar familias en CSV
+    export.label: Exportar familias
+  csv_family_variant_export:
+    label: Exportación de variante familiar en CSV
+    export.label: Exportación de variante familiar
+  csv_user_group_export:
+    label: Exportar grupo de usuarios en CSV
+    export.label: Exportar grupo de usuarios
+  csv_user_role_export:
+    label: Exportar funciones de usuario en CSV
+    export.label: Exportar función de usuario
+  csv_user_export:
+    label: Exportar usuarios en CSV
+    export.label: Exportar usuario
+  csv_product_import:
+    label: Importar productos en CSV
+    import.label: Importar productos
+  csv_product_model_import:
+    label: Importación de modelo de producto en CSV
+    import_product_model_descendants.label: Calcular modelos del producto descendientes
+  csv_category_import:
+    label: Importar categorías en CSV
+    import.label: Importar categorías
+  csv_attribute_import:
+    label: Importar atributos en CSV
+    import.label: Importar atributos
+  csv_attribute_option_import:
+    label: Importar opciones de atributos en CSV
+    import.label: Importar opciones de atributos
+  csv_association_type_import:
+    label: Importar tipos de asociaciones en CSV
+    import.label: Importar tipos de asociaciones
+  csv_family_import:
+    label: Importar familias en CSV
+    import.label: Importe de familias
+    compute_data_related_to_family_variants.label: Calcular datos de los modelos de productos
+  csv_family_variant_import:
+    label: Importación de variante familiar en CSV
+    import.label: Importación de variante familiar
+  csv_group_import:
+    label: Importar grupos en CSV
+    import.label: Importar grupos
+  csv_attribute_group_export:
+    label: Exportar grupo de atributos en CSV
+    export.label: Exportar grupo de atributos
+  csv_group_type_export:
+    label: Exportar tipo de grupos en CSV
+    export.label: Exportar tipo de grupos
+  csv_attribute_group_import:
+    label: Importar grupo de atributos en CSV
+    import.label: Importar grupo de atributos
+  csv_group_type_import:
+    label: Importar tipo de grupos en CSV
+    import.label: Importar tipo de grupos
+  csv_user_group_import:
+    label: Importar grupo de usuarios en CSV
+    import.label: Importar grupo de usuarios
+  csv_user_import:
+    label: Importar usuarios en CSV
+    import.label: Importar usuario
+  csv_user_role_import:
+    label: Importar funciones de usuario en CSV
+    import.label: Importar función de usuario
+  xlsx_category_import:
+    label: Importar categorías en XLSX
+    import.label: Importar categorías
+  xlsx_association_type_import:
+    label: Importar tipo de asociaciones en XLSX
+    import.label: Importar tipos de asociaciones
+  xlsx_attribute_import:
+    label: Importar atributos en XLSX
+    import.label: Importar atributos
+  xlsx_attribute_option_import:
+    label: Importar opciones de atributos en XLSX
+    import.label: Importar opciones de atributos
+  xlsx_family_import:
+    label: Importar familias en XLSX
+    import.label: Importe de familias
+  xlsx_family_variant_import:
+    label: Importación de variante familiar en XLSX
+    import.label: Importación de variante familiar
+  xlsx_product_export:
+    label: Exportar producto en XLSX
+    export.label: Exportar producto
+  xlsx_product_model_export:
+    label: Exportación de modelo de producto en XLSX
+    export.label: Exportación de modelo de producto
+  xlsx_product_import:
+    label: Importar productos en XLSX
+    import.label: Importar productos
+  xlsx_product_model_import:
+    label: Importar modelo de producto a XLSX
+    import_product_model_descendants.label: Calcular modelos del producto descendientes
+  xlsx_group_export:
+    label: Exportar grupos en XLSX
+    export.label: Exportar grupos
+  xlsx_group_import:
+    label: Importar grupos en XLSX
+    import.label: Importar grupos
+  xlsx_family_export:
+    label: Exportar familias en XLSX
+    export.label: Exportar familias
+  xlsx_family_variant_export:
+    label: Exportación de variante familiar en XLSX
+    export.label: Exportación de variante familiar
+  xlsx_category_export:
+    label: Exportar categorías en XLSX
+    export.label: Exportar categorías
+  xlsx_attribute_export:
+    label: Exportar atributos en XLSX
+    export.label: Exportar atributos en XLSX
+  xlsx_attribute_option_export:
+    label: Exportar opciones de atributos en XLSX
+    export.label: Exportar opciones de atributos en XLSX
+  xlsx_association_type_export:
+    label: Exportar tipo de asociaciones en XLSX
+    export.label: Exportar tipo de asociaciones en XLSX
+  xlsx_attribute_group_export:
+    label: Exportar grupo de atributos en XLSX
+    export.label: Exportar grupo de atributos
+  xlsx_group_type_export:
+    label: Exportar tipo de grupos en XLSX
+    export.label: Exportar tipo de grupos
+  xlsx_user_group_export:
+    label: Exportar grupo de usuarios en XLSX
+    export.label: Exportar grupo de usuarios
+  xlsx_user_role_export:
+    label: Exportar función de usuario en XLSX
+    export.label: Exportar función de usuario
+  xlsx_user_export:
+    label: Exportar usuarios en XLSX
+    export.label: Exportar usuario
+  xlsx_attribute_group_import:
+    label: Importar grupo de atributos en XLSX
+    import.label: Importar grupo de atributos
+  xlsx_group_type_import:
+    label: Importar tipo de grupos en XLSX
+    import.label: Importar tipo de grupos
+  xlsx_user_group_import:
+    label: Importar grupo de usuarios en XLSX
+    import.label: Importar grupo de usuarios
+  xlsx_user_import:
+    label: Importar usuarios en XLSX
+    import.label: Importar usuario
+  xlsx_user_role_import:
+    label: Importar función de usuario en XLSX
+    import.label: Importar función de usuario

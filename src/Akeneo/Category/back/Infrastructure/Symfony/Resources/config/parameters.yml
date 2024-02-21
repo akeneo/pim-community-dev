@@ -1,0 +1,9 @@
+parameters:
+    supported_category_image_mime_types:
+        - 'image/gif'
+        - 'image/jpeg'
+        - 'image/jpg'
+        - 'image/png'
+        - 'image/svg'
+        - 'image/svg+xml'
+        - 'image/webp'

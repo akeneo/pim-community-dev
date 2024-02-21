@@ -1,0 +1,198 @@
+extensions:
+    pim-attribute-edit-form:
+        module: pim/attribute-edit-form
+
+    pim-attribute-edit-form-sandbox-helper:
+        module: pim/sandbox-helper
+        parent: pim-attribute-edit-form
+        targetZone: helper
+
+    pim-attribute-edit-form-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-attribute-edit-form
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-settings
+            item: pim-menu-settings-attribute
+
+    pim-attribute-edit-form-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-attribute-edit-form
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
+    pim-attribute-edit-form-cache-invalidator:
+        module: pim/cache-invalidator
+        parent: pim-attribute-edit-form
+        position: 1000
+
+    pim-attribute-edit-form-label:
+        module: pim/form/common/label
+        parent: pim-attribute-edit-form
+        targetZone: title
+        position: 90
+
+    pim-attribute-edit-form-secondary-actions:
+        module: pim/form/common/secondary-actions
+        parent: pim-attribute-edit-form
+        targetZone: buttons
+        position: 50
+
+    pim-attribute-edit-form-delete:
+        module: pim/attribute-edit-form/delete
+        parent: pim-attribute-edit-form-secondary-actions
+        position: 100
+        targetZone: secondary-actions
+        aclResourceId: pim_enrich_attribute_remove
+
+    pim-attribute-edit-form-save-buttons:
+        module: pim/form/common/save-buttons
+        parent: pim-attribute-edit-form
+        targetZone: buttons
+        position: 110
+
+    pim-attribute-edit-form-save:
+        module: pim/attribute-edit-form/save-form
+        parent: pim-attribute-edit-form
+        targetZone: buttons
+        position: 0
+        config:
+            updateSuccessMessage: pim_enrich.entity.attribute.flash.update.success
+            updateFailureMessage: pim_enrich.entity.attribute.flash.update.fail
+            notReadyMessage: pim_enrich.entity.attribute.flash.update.fields_not_ready
+            url: pim_enrich_attribute_rest_post
+            identifierParamName: identifier
+            entityIdentifierParamName: code
+            redirectAfter: pim_enrich_attribute_edit
+            redirectAfterRouteIdentifierParamName: code
+            excludedProperties: [empty_value, field_type, filter_types, is_locale_specific]
+
+    pim-attribute-edit-form-state:
+        module: pim/form/common/state
+        parent: pim-attribute-edit-form
+        targetZone: state
+        position: 900
+        config:
+            entity: pim_enrich.entity.attribute.label
+
+    pim-attribute-edit-form-form-tabs:
+        module: pim/form/common/form-tabs
+        parent: pim-attribute-edit-form
+        targetZone: content
+        position: 100
+
+    pim-attribute-edit-form-properties-tab:
+        module: pim/common/tab
+        parent: pim-attribute-edit-form-form-tabs
+        targetZone: container
+        position: 100
+        config:
+            label: pim_common.properties
+
+    pim-attribute-edit-form-properties:
+        module: pim/common/simple-view
+        parent: pim-attribute-edit-form-properties-tab
+        targetZone: self
+        position: 80
+        config:
+            template: pim/template/form/tab/sections
+            templateParams:
+                twoColumns: true
+
+    pim-attribute-edit-form-properties-common:
+        module: pim/common/simple-view
+        parent: pim-attribute-edit-form-properties
+        targetZone: accordion
+        position: 100
+        config:
+            template: pim/template/form/tab/section
+            templateParams:
+                sectionTitle: pim_enrich.entity.attribute.module.edit.common
+                dropZone: content
+
+    pim-attribute-edit-form-properties-common-code:
+        module: pim/form/common/fields/text
+        parent: pim-attribute-edit-form-properties-common
+        targetZone: content
+        position: 90
+        config:
+            fieldName: code
+            label: pim_common.code
+            required: true
+            readOnly: true
+
+    pim-attribute-edit-form-properties-common-group:
+        module: pim/attribute-edit-form/properties/group
+        parent: pim-attribute-edit-form-properties-common
+        targetZone: content
+        position: 110
+        aclResourceId: pim_enrich_attributegroup_add_attribute
+        config:
+            fieldName: group
+            label: pim_enrich.entity.attribute.property.group.label
+            required: true
+
+    pim-attribute-edit-form-setup:
+        module: pim/attribute-edit-form/setup
+        parent: pim-attribute-edit-form-properties-tab
+        targetZone: self
+        position: 90
+
+    pim-attribute-edit-form-properties-guidelines:
+        module: pim/attribute-edit-form/properties/guidelines
+        parent: pim-attribute-edit-form-properties-tab
+        targetZone: self
+        position: 100
+
+    pim-attribute-edit-form-properties-type-specific:
+        module: pim/attribute-edit-form/type-specific-form
+        parent: pim-attribute-edit-form-properties-tab
+        targetZone: self
+        position: 110
+        config:
+            mode: edit
+
+    pim-attribute-edit-form-choices:
+        module: pim/attribute-edit-form/tab/choices
+        parent: pim-attribute-edit-form-form-tabs
+        targetZone: container
+        position: 110
+        config:
+            label: pim_enrich.entity.attribute_option.short_uppercase_label
+            activeForTypes: [pim_catalog_multiselect, pim_catalog_simpleselect]
+
+    pim-attribute-edit-form-labels-tab:
+        module: pim/common/tab
+        parent: pim-attribute-edit-form-form-tabs
+        targetZone: container
+        position: 120
+        config:
+            label: pim_common.label_translations
+
+    pim-attribute-edit-form-labels-container:
+        module: pim/common/simple-view
+        parent: pim-attribute-edit-form-labels-tab
+        targetZone: self
+        position: 100
+        config:
+            template: pim/template/common/form-container
+
+    pim-attribute-edit-edit-form-labels-translation:
+        module: pim/common/properties/translation
+        parent: pim-attribute-edit-form-labels-container
+        targetZone: form-container
+        position: 100
+        config:
+            fieldBaseId: 'pim_enrich_attribute_form_label_'
+
+    pim-attribute-edit-form-history:
+        module: pim/common/tab/history
+        parent: pim-attribute-edit-form-form-tabs
+        targetZone: container
+        position: 130
+        aclResourceId: pim_enrich_attribute_history
+        config:
+            class: attribute
+            title: pim_common.history

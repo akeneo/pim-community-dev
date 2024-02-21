@@ -1,0 +1,113 @@
+import {useState} from 'react';
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
+import {Checkbox} from './Checkbox.tsx';
+import {useArgs, updateArgs} from '@storybook/client-api';
+
+<Meta
+  title="Components/Checkbox"
+  component={Checkbox}
+  argTypes={{
+    readOnly: {control: {type: 'boolean'}},
+    checked: {control: {type: 'select'}, options: [true, false, 'mixed']},
+    onChange: {action: 'Checkbox component onChange'},
+  }}
+  args={{
+    checked: true,
+    children: 'Checkbox',
+  }}
+/>
+
+# Checkbox
+
+## Usage
+
+The checkboxes are applied when users can select all, several, or none of the options from a given list.
+
+### Checkbox states
+
+The checkbox control allows three states: selected, unselected, and undetermined. The undetermined state comes into play when the checkbox contains a sublist of selections, some of which are selected, and others aren't.
+
+Users must be able to check the box by clicking directly on the box or by clicking on its label.
+
+### Content
+
+#### Title
+
+If necessary, a header can accompany a set of checkboxes to provide more context or clarity.
+
+#### Labels
+
+Always use clear and concise labels for the checkboxes. The labels appears on the right of the checkboxes.
+
+## Playground
+
+Use this playground to test the checkbox component
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      const [{checked}, updateArgs] = useArgs();
+      const toggleChecked = () => {
+        updateArgs({checked: !checked});
+      };
+      return <Checkbox {...args} checked={checked} onChange={toggleChecked} />;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on state
+
+<Canvas>
+  <Story name="State">
+    {args => {
+      return (
+        <>
+          <Checkbox {...args} checked={true}>
+            Checkbox checked
+          </Checkbox>
+          <Checkbox {...args} checked="mixed">
+            Checkbox mixed
+          </Checkbox>
+          <Checkbox {...args} checked={false}>
+            Checkbox false
+          </Checkbox>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on disabled
+
+<Canvas>
+  <Story name="Disabled">
+    {args => {
+      return (
+        <>
+          <Checkbox {...args} readOnly={true} checked={true}>
+            Checked disabled
+          </Checkbox>
+          <Checkbox {...args} readOnly={true} checked="mixed">
+            Mixed disabled
+          </Checkbox>
+          <Checkbox {...args} readOnly={true} checked={false}>
+            Unchecked disabled
+          </Checkbox>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Animation
+
+<Canvas>
+  <Story name="Animation">
+    {args => {
+      const [checked, setChecked] = useState(true);
+      return <Checkbox {...args} checked={checked} onChange={newChecked => setChecked(newChecked)} />;
+    }}
+  </Story>
+</Canvas>

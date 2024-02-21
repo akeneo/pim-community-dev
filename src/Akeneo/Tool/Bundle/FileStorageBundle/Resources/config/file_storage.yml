@@ -1,0 +1,44 @@
+parameters:
+    akeneo_file_storage.file_storage.file.file_storer.class: Akeneo\Tool\Component\FileStorage\File\FileStorer
+    akeneo_file_storage.file_storage.file.file_fetcher.class: Akeneo\Tool\Component\FileStorage\File\FileFetcher
+    akeneo_file_storage.file_storage.file.output_file_fetcher.class: Akeneo\Tool\Component\FileStorage\File\OutputFileFetcher
+    akeneo_file_storage.file_storage.file.streamed_file_fetcher.class: Akeneo\Tool\Component\FileStorage\File\StreamedFileFetcher
+    akeneo_file_storage.file_storage.file_info_factory.class: Akeneo\Tool\Component\FileStorage\FileInfoFactory
+    akeneo_file_storage.file_storage.path_generator.class: Akeneo\Tool\Component\FileStorage\PathGenerator
+    akeneo_file_storage.file_storage.filesystem_provider.class: Akeneo\Tool\Component\FileStorage\FilesystemProvider
+
+services:
+    akeneo_file_storage.file_storage.file.file_storer:
+        class: '%akeneo_file_storage.file_storage.file.file_storer.class%'
+        arguments:
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
+            - '@akeneo_file_storage.saver.file'
+            - '@akeneo_file_storage.file_storage.file_info_factory'
+
+    akeneo_file_storage.file_storage.file.file_fetcher:
+        class: '%akeneo_file_storage.file_storage.file.file_fetcher.class%'
+
+    akeneo_file_storage.file_storage.file.output_file_fetcher:
+        class: '%akeneo_file_storage.file_storage.file.output_file_fetcher.class%'
+
+    akeneo_file_storage.file_storage.file.streamed_file_fetcher:
+        class: '%akeneo_file_storage.file_storage.file.streamed_file_fetcher.class%'
+
+    akeneo_file_storage.file_storage.file_info_factory:
+        class: '%akeneo_file_storage.file_storage.file_info_factory.class%'
+        arguments:
+            - '@akeneo_file_storage.file_storage.path_generator'
+            - '%akeneo_file_storage.model.file_info.class%'
+
+    akeneo_file_storage.file_storage.path_generator:
+        class: '%akeneo_file_storage.file_storage.path_generator.class%'
+
+    akeneo_file_storage.file_storage.filesystem_provider:
+        class: '%akeneo_file_storage.file_storage.filesystem_provider.class%'
+        arguments:
+            - !tagged_iterator { tag: 'oneup_flysystem.filesystem', index_by: 'mount' }
+
+    pim_enrich.normalizer.file:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\FileNormalizer'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }

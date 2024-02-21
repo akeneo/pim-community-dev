@@ -1,0 +1,64 @@
+datagrid:
+    pim-group-user-grid:
+        extend: pim-user-relation-grid
+        source:
+            acl_resource: pim_user_group_edit
+            query:
+                select:
+                    - >
+                      (CASE WHEN (:group_id IS NOT NULL) THEN
+                        CASE WHEN (:group_id MEMBER OF u.groups OR u.id IN (:data_in)) AND u.id NOT IN (:data_not_in)
+                        THEN true ELSE false END
+                      ELSE
+                        CASE WHEN u.id IN (:data_in) AND u.id NOT IN (:data_not_in)
+                        THEN true ELSE false END
+                      END) as has_group
+        columns:
+            has_group:
+                label: pim_user.user.fields.has_group
+                editable: true
+                frontend_type: boolean
+            username:
+                label: pim_user.user.fields.username
+                frontend_type: label
+            email:
+                label: pim_user.user.fields.email
+            firstName:
+                label: pim_user.user.fields.first_name
+            lastName:
+                label: pim_user.user.fields.last_name
+        filters:
+            columns:
+                has_group:
+                    type: boolean
+                    data_name: has_group
+                    filter_by_having: true
+                username:
+                    type: string
+                    data_name: u.username
+                email:
+                    type: string
+                    data_name: u.email
+                firstName:
+                    type: string
+                    data_name: u.firstName
+                lastName:
+                    type: string
+                    data_name: u.lastName
+        sorters:
+            columns:
+                has_group:
+                    data_name: has_group
+            default:
+                has_group: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
+
+        options:
+            requireJSModules:
+              - oro/datagrid/column-form-listener
+              - oro/datagrid/pagination-input
+            columnListener:
+                dataField: id
+                columnName: has_group
+                selectors:
+                    included: '#groupAppendUsers'
+                    excluded: '#groupRemoveUsers'

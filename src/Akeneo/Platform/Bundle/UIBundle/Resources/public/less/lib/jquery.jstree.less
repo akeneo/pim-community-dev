@@ -1,0 +1,255 @@
+@import '../base/variables';
+
+#jstree-marker {
+  margin-top: 5px !important;
+}
+
+#jstree-marker-line {
+  margin-top: 5px !important;
+}
+
+.jstree {
+  .select2-container-active .select2-choice {
+    box-shadow: none;
+  }
+  &.jstree-default {
+    & > ul {
+      max-height: ~"calc(100vh - 213px)";
+      overflow: hidden auto;
+    }
+
+    ins {
+      height: 25px;
+      width: 25px;
+    }
+
+    li {
+      line-height: 24px;
+      background-image: none;
+    }
+
+    .jstree-hovered {
+      background: none;
+      border-color: transparent;
+    }
+
+    .jstree-clicked,
+    .jstree-checked > a {
+      background: none;
+      border-color: transparent;
+      font-weight: bold;
+      color: @AknBlue;
+    }
+
+    li.jstree-checked > a > .jstree-checkbox {
+      background-color: @AknBlue;
+      background-image: url("/bundles/pimui/images/icon-checkwhite.svg");
+      background-position: 0 0;
+      background-size: 22px 22px;
+      background-repeat: no-repeat;
+      border: 1px solid @AknBorderColor;
+      height: 24px;
+      width: 24px;
+      border-radius: 3px;
+      margin-top: 8px;
+    }
+
+    li.jstree-unchecked > a > .jstree-checkbox {
+      background-color: @AknLightGray;
+      background: none;
+      border: 1px solid @AknBorderColor;
+      height: 24px;
+      width: 24px;
+      border-radius: 3px;
+      margin-top: 8px;
+    }
+
+    a {
+      font-size: @AknFontSizeBig;
+      color: @AknDarkBlue;
+      line-height: 24px;
+      padding-right: 30px;
+    }
+
+    .jstree-closed > ins {
+      background-size: 20px 20px;
+      background-image: url("/bundles/pimui/images/jstree/icon-right.svg");
+      opacity: 0.5;
+      background-position: 0 3px;
+    }
+
+    .jstree-leaf > ins {
+      background: none;
+    }
+
+    .jstree-leaf > a > ins.jstree-icon {
+      background-size: 20px 20px;
+      background-image: url("/bundles/pimui/images/jstree/icon-folder.svg");
+      background-repeat: no-repeat;
+      opacity: 1;
+      background-position: 0 3px;
+    }
+
+    .jstree-leaf.jstree-checked > a > ins.jstree-icon,
+    .jstree-leaf > a.jstree-clicked > ins.jstree-icon {
+      background-size: 20px 20px;
+      background-image: url("/bundles/pimui/images/jstree/icon-folderfull.svg");
+      background-repeat: no-repeat;
+      opacity: 1;
+      background-position: 0 3px;
+    }
+
+    .jstree-open > ins {
+      background-size: 20px 20px;
+      background-image: url("/bundles/pimui/images/jstree/icon-down.svg");
+      opacity: 0.5;
+      background-position: 0 3px;
+    }
+
+    a .jstree-icon {
+      background-size: 20px 20px;
+      background: url("/bundles/pimui/images/jstree/icon-folders.svg") 0 0;
+      background-repeat: no-repeat;
+      opacity: 1;
+      width: 22px;
+    }
+
+    a.jstree-clicked .jstree-icon,
+    .jstree-checked > a > ins.jstree-icon {
+      background-size: 20px 20px;
+      background: url("/bundles/pimui/images/jstree/icon-foldersfull.svg") 0 0;
+      opacity: 1;
+      height: 22px;
+    }
+  }
+
+  .jstree-locked {
+    a {
+      color: @AknDarkBlue !important;
+      cursor: default;
+    }
+
+    .jstree-checkbox {
+      display: none;
+    }
+  }
+
+  .jstree-tree-toolbar {
+    .select2-container-active .select2-choice {
+      box-shadow: none;
+    }
+    .select2-container {
+      .select2-choice {
+        border-left: none;
+        border-right: none;
+        border-top: none;
+        border-bottom: 1px solid @AknLightPurple;
+        color: @AknLightPurple;
+        padding: 0;
+        margin-top: -10px;
+        font-size: @AknFontSizeBig;
+        line-height: 44px;
+
+        .select2-arrow {
+          border-left: none;
+          background: url("/bundles/pimui/images/icon-down.svg") no-repeat 100% center;
+          background-size: 20px;
+
+          b {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+
+  .jstree-footer {
+    position: absolute;
+    width: ~"calc(100% - 40px)";
+    border-top: 1px solid @AknBorderColor;
+    bottom: 0;
+    display: block;
+    line-height: 32px;
+    overflow: hidden;
+    padding: 10px 0 20px 0;
+    background: white;
+
+    .control-label {
+      display: block;
+      line-height: 20px;
+    }
+
+    .pull-left, .pull-right {
+      float: none;
+    }
+  }
+
+  .jstree-lockeditem {
+    display: inline-flex;
+    font-size: 15px;
+    padding: 14px 0 0 2px;
+    color: @AknDarkBlue !important;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: ~"calc(100% - 32px)";
+    overflow: hidden;
+    cursor: not-allowed;
+    font-weight: bold;
+
+    .AknSelectButton--disabled {
+      width: 23px;
+      height: 23px;
+      background-size: 21px;
+    }
+  }
+
+  .jstree-lockedicon {
+    background: url("/bundles/pimui/images/jstree/icon-folderfull.svg") no-repeat center 0;
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    margin: 2px 5px 0 8px;
+  }
+}
+
+#root-unselectable .jstree-root > a {
+  font-weight: normal;
+  color: @AknDarkBlue !important;
+
+  > .jstree-checkbox {
+    display: none;
+  }
+
+  > .jstree-icon {
+    background-size: 20px 20px;
+    background: url("/bundles/pimui/images/jstree/icon-folders.svg") 0 0;
+    opacity: 1;
+    height: 22px;
+  }
+}
+
+.jstree-default {
+  .jstree-locked {
+    a {
+      color: @AknDarkBlue !important;
+      cursor: default;
+    }
+
+    .jstree-checkbox {
+      display: none;
+    }
+  }
+}
+
+.AknColumnConfigurator-column .jstree.jstree-default {
+  margin-top: 16px;
+
+  & > ul {
+    overflow: hidden;
+    max-height: none;
+  }
+
+  .jstree-footer {
+    position: inherit;
+  }
+}

@@ -1,0 +1,22 @@
+Akeneo\Pim\Structure\Component\Model\GroupType:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
+        - Akeneo\Tool\Component\StorageUtils\Validator\Constraints\Immutable:
+            properties:
+                - code
+    properties:
+        code:
+            - NotBlank: ~
+            - Regex:
+                pattern: /^[a-zA-Z0-9_]+$/
+                message: Group type code may contain only letters, numbers and underscores.
+            - Length:
+                max: 100
+        translations:
+            - Valid: ~
+
+Akeneo\Pim\Structure\Component\Model\GroupTypeTranslation:
+    properties:
+        label:
+            - Length:
+                max: 100

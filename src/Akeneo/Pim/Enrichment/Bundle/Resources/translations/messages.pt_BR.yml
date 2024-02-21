@@ -1,0 +1,83 @@
+No products to remove: Não existem produtos a serem removidos
+"dot (.)": ponto (.)
+"comma (,)": vírgula (,)
+pim_enrich:
+  #Category
+  category:
+    tab:
+      property.title: Propriedade
+      history.title: História
+    suggest_selection: Por favor, selecione uma categoria à esquerda
+    or: ou
+    create_new: Cria uma nova categoria
+  #Mass edit operations
+  mass_edit_action:
+    limit_exceeded: Por favor, selecione menos de %limit% items para editar
+    product:
+      page_title: Produtos
+      page_subtitle: Editar em massa (1 produto)|Editar em massa (%count% produtos)
+      title: Escolher operação
+      subtitle: Selecione a operação que deseja realizar no produto escolhido|Selecione a operação que deseja realizar nos %count% produtos escolhidos
+      confirm: Está prestes a atualizar um produto com a seguinte informação, por favor confirme.|Está prestes a atualizar %count% produtos com a seguinte informação, por favor confirme.
+      steps:
+        first: Escolha produtos
+        second: Escolher operação
+        third: Configurar
+        fourth: Confirmar
+    change-status:
+      label: Alterar Status
+      description: Os produtos selecionados serão habilitados ou desabilitados.
+      success_flash: O status do(s) produto(s) foi alterado
+      launched_flash: A ação em massa "mudar status" foi iniciada. Irá receber uma notificação quando estiver concluída.
+    edit-common-attributes:
+      label: Editar atributos
+      description: Os atributos do produto selecionado serão editados com os seguintes dados para a linguagem escolhida.
+      empty: Por favor, selecione o(s) atributo(s) que deseja editar
+      success_flash: A tarefa de atualização de status de produto(s) está em execução
+      launched_flash: A ação em massa "editar atributos" foi iniciada. Irá receber uma notificação quando estiver concluída.
+      message:
+        warning: Não existe atributo em comum nos produtos selecionados. Por favor, altere a sua seleção.
+        invalid_attribute: O atributo com código "attribute_code" não é comum para os produtos que foram selecionados, atributo ignorado.
+        no_valid_attribute: Nenhum dos atributos selecionados pode ser aplicado a este produto.
+    classify-add:
+      label: Adicionar às categorias
+      description: Os produtos serão posicionados nas categorias, o posicionamento existente será mantido.
+      success_flash: O(s) produto(s) foi(ram) classificado(s) nas categorias selecionadas
+      launched_flash: A ação em massa "Adicionar às categorias" foi iniciada. Irá receber uma notificação quando estiver concluída.
+    classify-move:
+      label: Mover entre categorias
+      description: Os produtos serão posicionados nas seguintes categorias, a posição atual será perdida.
+      success_flash: O(s) produto(s) foram movidos para as categorias selecionadas
+      launched_flash: A ação em massa "Mover para categorias" foi iniciada. Irá receber uma notificação quando estiver concluída.
+    classify-remove:
+      label: Remover das categorias
+      description: Os produtos serão removidos das seguintes categorias.
+      success_flash: O(s) produto(s) foram removidos das categorias selecionadas
+      launched_flash: A ação em massa "Remover das categorias" foi iniciada. Irá receber uma notificação quando estiver concluída.
+    change-family:
+      label: Alterar a família
+      description: A família dos produtos selecionados será alterada para a família escolhida
+      success_flash: A família do(s) produto(s) selecionado(s) foi alterada com êxito
+      launched_flash: A ação em massa "Alterar a família" foi iniciada. Irá receber uma notificação quando estiver concluída.
+    add-to-groups:
+      label: Adicionar aos grupos
+      description: Selecione os grupos nos quais os produtos selecionados devem ser adicionados
+      success_flash: Os produtos foram adicionados com êxito nos grupos selecionados
+      launched_flash: A ação em massa "Adicionar aos grupos" foi iniciada. Irá receber uma notificação quando estiver concluída.
+      no_group: Não existem grupos, por enquanto. Por favor, comece criando um grupo.
+    set-attribute-requirements:
+      label: Definir os requisitos de atributos
+      description: Os seguintes requisitos de atributo serão aplicados às famílias selecionadas
+      success_flash: Os requisitos dos atributos foram aplicados às famílias selecionadas
+      launched_flash: A ação em massa "Definir os requisitos de atributos" foi iniciada. Irá receber uma notificação quando estiver concluída.
+    mass_action:
+      quick_export:
+        launched_flash: A tarefa de exportação de produtos está em execução
+category:
+  edit: Editar categoria
+  overview: Categorias
+tree:
+  edit: Editar árvore
+  remove:
+    error_linked: Esta árvore de categorias não pode ser excluída, está vinculada a um canal
+  create: Criar uma árvore de categoria

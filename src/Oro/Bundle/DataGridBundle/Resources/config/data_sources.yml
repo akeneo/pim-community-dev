@@ -1,0 +1,10 @@
+parameters:
+    oro_datagrid.datasource.orm.class:       Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource
+
+services:
+    oro_datagrid.datasource.orm:
+        class: '%oro_datagrid.datasource.orm.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: oro_datagrid.datasource, type: orm }

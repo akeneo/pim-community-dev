@@ -1,0 +1,30 @@
+settings:
+    analysis:
+        char_filter:
+            newline_pattern:
+                type: "pattern_replace"
+                pattern: "\\n"
+                replacement: ""
+
+mappings:
+    properties:
+        name:
+            properties:
+                last:
+                    type: text
+        user_id:
+            type: keyword
+            ignore_above: 100
+    dynamic_templates:
+        -
+            my_dynamic_template_1:
+                path_match: '*foo*'
+                match_mapping_type: 'object'
+                mapping:
+                    type: 'object'
+        -
+            my_dynamic_template_2:
+                path_match: '*bar*'
+                mapping:
+                    type: 'keyword'
+                    index: 'not_analyzed'

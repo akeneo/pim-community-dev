@@ -1,0 +1,337 @@
+#ORO messages
+"Yes, I Agree": "Sim, Eu Concordo"
+"Yes, do it": "Sim, faça"
+"Ok, got it.": "Ok. Eu entendi."
+"Edit": "Editar"
+"Unexpected error occurred. Please contact system administrator.": "Ocorreu um erro inesperado. Por favor, contate o administrador do sistema."
+"Yes, revoke": "Sim, Revogar"
+"Revoke Confirmation": "Confirmação de revogação"
+Prev: Anterior
+Today: Hoje
+Wk: Sem.
+AM: Antes do meio-dia
+A: A
+PM: Depois do meio-dia
+P: P
+"Choose Time": "Selecione a hora"
+Time: Horário
+Hour: Hora
+Minute: Minuto
+Second: Segundo
+Millisecond: Milissegundo
+Microsecond: Microssegundo
+"Time Zone": "Fuso Horário"
+#PIM messages
+Localized value: Valor localizado
+Columns: Colunas
+Datagrid Configuration: Configuração do Datagrid
+#Filters
+Action: Ação
+Unit: Unidade
+Currency: Moeda
+jstree:
+  all: Todos os Produtos
+  unclassified: Produtos não classificados
+  product:
+    all: Todos os Produtos
+    unclassified: Produtos não classificados
+  no_tree: Nenhuma árvore de classificação disponível
+  include_sub: Incluir subcategorias
+#Datetimepicker
+datetimepicker:
+  days:
+    Sunday: Domingo
+    Monday: Segunda
+    Tuesday: Terça
+    Wednesday: Quarta-Feira
+    Thursday: Quinta-Feira
+    Friday: Sexta-Feira
+    Saturday: Sábado
+  daysShort:
+    Sun: Dom
+    Mon: Seg
+    Tue: Ter
+    Wed: Qua
+    Thu: Qui
+    Fri: Sex
+    Sat: Sab
+  daysMin:
+    Su: Do
+    Mo: Se
+    Tu: Te
+    We: Qa
+    Th: Qi
+    Fr: Sx
+    Sa: Sa
+  months:
+    January: Janeiro
+    February: Fevereiro
+    March: Março
+    April: Abril
+    May: Maio
+    June: Junho
+    July: Julho
+    August: Agosto
+    September: Setembro
+    October: Outubro
+    November: Novembro
+    December: Dezembro
+  monthsShort:
+    Jan: Jan
+    Feb: Fev
+    Mar: Mar
+    Apr: Abr
+    May: Maio
+    Jun: Jun
+    Jul: Jul
+    Aug: Ago
+    Sep: Set
+    Oct: Out
+    Nov: Nov
+    Dec: Dez
+#ORO
+oro_config:
+  form:
+    config:
+      title: Configuração do sistema
+      tab:
+        system:
+          title: Sistema
+      group:
+        localization:
+          title: Localização
+          system_locale: Idioma
+        notification:
+          title: Notificações
+          system_notification: Notificação de nova versão
+        loading_message:
+          title: Carregando mensagens
+          label: Habilitar mensagens de carregamento
+        loading_messages:
+          label: Mensagens de carregamento disponíveis
+pim_ui:
+  flash:
+    unsaved_changes: 'Você tem alterações não salvas, tem certeza que deseja sair?'
+"Sorry, page was not loaded correctly": "Desculpe, a página não foi carregada corretamente"
+"Your local changes will be lost. Are you sure you want to refresh the page?": "Suas alterações locais serão perdidas. Tens a certeza de que deseja atualizar a página?"
+"navigation.message.content.outdated": "O conteúdo da página {{ title }} está desatualizado. Por favor, <a href='#' data-action='page-refresh'> atualize-a</a>"
+"Content of pinned page is outdated": "O conteúdo da página está desatualizado"
+#Global structure of translation files
+#pim_bundle_name:
+#entity:
+#entity_name:
+#label: entity
+#uppercase_label: Entity
+#plural_label: Entities
+#flash:
+#update:
+#fail: Update failed
+#success: Entity Successfully updated
+#delete:
+#fail: Cannot delete this entity
+#success: Entity successfully removed
+#create:
+#fail: Can not create this entity
+#success: Entity successfully created
+#page_title:
+#index: "]-Inf, 1]1 entity|]1, Inf[{{ count }} entities"
+#property:
+#field_name: Field name
+#complex_field:
+#label: Field name
+#choose: Choose a field name
+#module:
+#module_name:
+#key: message
+pim_common:
+  actions: Ações
+  add: Adicionar
+  add_attributes: Adicionar Atributos
+  after: Depois
+  all: Todos
+  and: e
+  apply: Aplicar
+  before: Antes
+  by: por
+  cancel: Cancelar
+  code: Código
+  confirm: Confirmar
+  confirm_deletion: Confirmar exclusão
+  confirm_revocation: Confirmar revogação
+  create: Criar
+  created: Criado
+  delete: Deletar
+  done: Cocluído
+  edit: Editar
+  entity_updated: Existem alterações não salvas.
+  export: Exportação
+  from: De
+  general_properties: Propriedades gerais
+  history: História
+  label: Rótulo
+  label_translations: Traduções do rótulo
+  Label or identifier: rótulo ou identificador
+  less_than: Menos de
+  loading: Carregando...
+  media_upload: Arraste e solte para fazer o envio ou clique aqui
+  more_than: Mais do que
+  next: Próximo
+  "no": "Não"
+  none: Nenhum
+  not_available: N/A
+  now: Agora
+  ok: OK
+  permissions: Permissões
+  previous: Anterior
+  properties: Propriedade
+  remove: Remover
+  required_label: (Obrigatório)
+  save: Salvar
+  search: Pesquisar
+  select2:
+    search: Pesquisar...
+    no_match: Nenhum resultado encontrado
+    load_more: Carregando mais resultados...
+  status: Status
+  to: para
+  type: Tipo
+  update: Atualizar
+  "yes": "Sim"
+  operator: Operador
+  operators:
+    "=": É igual a
+    "!=": Não é igual a
+    ">=": Maior ou igual a
+    ">": Maior que
+    "<=": Menor ou igual a
+    "<": Menor do que
+    EMPTY: Está vazio
+    NOT EMPTY: Não é vazio
+    CONTAINS: Contém
+    DOES NOT CONTAIN: Não contém
+    STARTS WITH: Começa com
+    ENDS WITH: Termina com
+error:
+  exception: Oh! Ocorreu um erro {{ status_code }}...
+  forbidden: Proibido. Você não tem permissão para acessar esta página
+alert:
+  attribute_option:
+    error_occurred_during_submission: Ocorreu um erro durante o envio do formulário ao servidor
+    save_before_edit_other: Por favor, registre suas modificações em outra linha antes de editar essa
+  session_storage:
+    not_available: Seu browser parece não ser compatível com sessionStorage. Por favor, contate seu administrador
+pim_enrich.entity.fallback:
+  flash:
+    generic_error: Um erro ocorreu
+    update:
+      fail: A atualização falhou
+      success: Atualizado com sucesso
+    delete:
+      fail: Não é possível excluir este item
+      success: Item removido com sucesso
+  module:
+    delete:
+      title: Deletar item {{ itemName }}
+      alternative_title: Confirmar remoção
+      item: Tem certeza de que deseja excluir este item?
+      item_placeholder: Tem certeza que deseja excluir este {{ itemName }}? Não é possível desfazer esta ação.
+    edit:
+      leave: Tem certeza que deseja sair desta página?
+      discard_changes: Você perderá as alterações feitas em %entity% se sair dessa página.
+      discard_changes_title: Tem certeza?
+pim_enrich.entity.job_execution:
+  page_title:
+    index: "]-Inf, 1]{{ count }} operação|]1, Inf[{{ count }} operações"
+  module:
+    create:
+      upload: Solte seu arquivo {{ type }} aqui, ou clique para escolher um arquivo
+    download:
+      archive: Baixar arquivo gerado
+      output: Baixar arquivos gerados
+      input: Baixar arquivos de leitura
+      invalid_xlsx: Baixar dados inválidos
+      invalid_csv: Baixar dados inválidos
+pim_title:
+  oro_default: Dashboard
+  pim_enrich_attributegroup_index: Grupos de Atributos
+  pim_enrich_attributegroup_create: Grupo de atributos | Criar
+  pim_enrich_attributegroup_edit: Grupo de atributo {{ group.label }} | Editar
+  pim_enrich_catalog_volume_index: Monitoramento de volume do catálogo
+  pim_enrich_categorytree_index: Árvores de categoria
+  pim_enrich_categorytree_create: Árvores de categoria | Criar
+  pim_enrich_categorytree_edit: Árvore de categoria {{ category.label }} | Editar
+  pim_enrich_categorytree_create_tree: Árvores de categoria | Criar
+  pim_enrich_attribute_index: Atributos
+  pim_enrich_attribute_create: Atributos | Criar
+  pim_enrich_attribute_edit: Atributo {{ attribute.label }} | Editar
+  pim_enrich_product_index: Produtos
+  pim_enrich_product_edit: Produto {{ product.label }} | Editar
+  pim_enrich_product_model_edit: Modelo de produto {{ product.label }} | Editar
+  pim_enrich_family_index: Famílias
+  pim_enrich_family_edit: Família {{ family.label }} | Editar
+  pim_enrich_channel_index: Canais
+  pim_enrich_channel_create: Canais | Criar
+  pim_enrich_channel_edit: Canal {{ channel.label }} | Editar
+  pim_enrich_currency_index: Moedas
+  pim_enrich_locale_index: Locais
+  pim_enrich_group_index: Grupos
+  pim_enrich_group_edit: Grupo {{ group.label }} | Editar
+  pim_enrich_associationtype_index: Tipos de Associação
+  pim_enrich_associationtype_edit: Tipo de associação {{ association type.label }} | Editar
+  pim_enrich_grouptype_index: Tipos de grupos
+  pim_enrich_grouptype_edit: Tipo de grupo {{ group type.label }} | Editar
+  pim_enrich_mass_edit_action_choose: Edição em massa | Escolher
+  pim_enrich_mass_edit_action_configure: Edição em massa | Configurar
+  pim_enrich_mass_edit_action_perform: Edição em massa | Executar
+  pim_enrich_job_tracker_index: Rastreamento de processo
+  pim_enrich_job_tracker_show: Rastreamento de processo | Mostrar job
+  pim_enrich_mass_edit_action: Edição em Massa
+  pim_analytics_system_info_index: Informações do Sistema
+pim_menu:
+  tab:
+    activity: Atividade
+    imports: Importações
+    exports: Exportações
+    settings: Configurações
+    system: Sistema
+    help:
+      title: Ajuda
+      helper: Centro de Ajuda Akeneo
+  item:
+    association_type: Tipos de Associação
+    attribute_group: Grupos de Atributos
+    channel: Canais
+    currency: Moedas
+    dashboard: Dashboard
+    family: Famílias
+    group: Grupos
+    group_type: Tipos de grupos
+    product_model: Modelos de produto
+    export_history: Histórico de exportações
+    export_profile: Exportar perfis
+    import_history: Histórico de importações
+    import_profile: Importar perfis
+    configuration: Configuração
+    user_management: Gerenciamento de usuários
+    user: Usuários
+    user_group: Grupo de usuários
+    user_role: Papeis
+    info: Informações do Sistema
+    job_tracker: Rastreamento de processo
+    catalog_volume: Monitoramento de volume do catálogo
+  navigation:
+    activity: Navegação de atividade
+    system: Navegação do sistema
+    user: Navegação de gerenciamento de usuários
+    settings: Navegação de configurações
+    product: Navegação de produto
+    product_infos: Informações de produto
+  user:
+    logout: Sair
+    user_account: Minha Conta
+pim_notification:
+  types:
+    import: Importação
+    export: Exportação
+    quick_export: Exportação Rápida
+    mass_edit: Edição em Massa

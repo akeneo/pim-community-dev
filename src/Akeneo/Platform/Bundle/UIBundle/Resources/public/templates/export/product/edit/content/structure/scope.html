@@ -1,0 +1,26 @@
+<div class="AknFieldContainer-header">
+    <label class="AknFieldContainer-label control-label required" for="pim_enrich.export.product.filter.channel">
+        <%- __('pim_enrich.entity.channel.uppercase_label') %> <em><%- __('pim_common.required_label') %></em>
+    </label>
+</div>
+<div class="AknFieldContainer-inputContainer">
+    <select class="select2" <%- isEditable ? '' : 'disabled' %> id="pim_enrich.export.product.filter.channel">
+        <% _.each(channels, function (channel) { %>
+            <option value="<%- channel.code %>" <%- channel.code === scope ? 'selected' : '' %>><%- channel.label %></option>
+        <% }); %>
+    </select>
+    <div class="AknFieldContainer-iconsContainer icons-container">
+        <i class="AknIconButton icon-info-sign" data-toggle="tooltip" data-placement="right" data-original-title="<%- __('pim_enrich.export.product.filter.channel.help') %>"></i>
+    </div>
+</div>
+<div class="AknFieldContainer-footer">
+    <span class="below-input">
+        <span class="AknFieldContainer-validationErrors validation-errors">
+            <% errors.forEach(function (error) { %>
+                <span class="AknFieldContainer-validationError">
+                    <span class="error-message"><%- error %></span>
+                </span>
+            <% }); %>
+        </span>
+    </span>
+</div>

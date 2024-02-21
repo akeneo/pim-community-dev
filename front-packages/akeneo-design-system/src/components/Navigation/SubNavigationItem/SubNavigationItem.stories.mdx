@@ -1,0 +1,142 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
+import {SubNavigationItem} from './SubNavigationItem.tsx';
+import {Tag} from '../../Tags/Tags';
+import {SpaceContainer} from '../../../storybook/PreviewGallery';
+
+<Meta
+  title="Components/Navigation/SubNavigationItem"
+  component={SubNavigationItem}
+  argTypes={{
+    disabled: {control: {type: 'boolean'}},
+    active: {control: {type: 'boolean'}},
+    href: {control: {type: 'text'}},
+    children: {control: {type: 'text'}},
+  }}
+  args={{
+    href: '#',
+    children: 'Default',
+  }}
+/>
+
+# SubNavigationItem
+
+## Usage
+
+The Sub Navigation Item is used by the Navigation pattern. This components helps the users in their daily usage as an easy
+way to discover and navigate the interface. Also, it's a companion for them to understand where they are in their
+journey.
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return <SubNavigationItem {...args} />;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Label
+
+<Canvas>
+  <Story name="Label">
+    {args => {
+      return (
+        <SpaceContainer width={280}>
+          <SubNavigationItem {...args}>Default</SubNavigationItem>
+          <SubNavigationItem {...args}>Lengthy label that take way too much space</SubNavigationItem>
+        </SpaceContainer>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on active
+
+<Canvas>
+  <Story name="Active">
+    {args => {
+      return (
+        <>
+          <SubNavigationItem {...args} active={false}>
+            Default
+          </SubNavigationItem>
+          <SubNavigationItem {...args} active={true}>
+            Active
+          </SubNavigationItem>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on disabled
+
+<Canvas>
+  <Story name="Disabled">
+    {args => {
+      return (
+        <>
+          <SubNavigationItem {...args} disabled={false}>
+            Default
+          </SubNavigationItem>
+          <SubNavigationItem {...args} disabled={true}>
+            Disabled
+          </SubNavigationItem>
+          <SubNavigationItem {...args} disabled={true} active={true}>
+            Disabled and Active
+          </SubNavigationItem>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## With tag
+
+<Canvas>
+  <Story name="Tag">
+    {args => {
+      return (
+        <SpaceContainer width={280}>
+          <SubNavigationItem {...args}>
+            Default <Tag tint="blue">Tag</Tag>
+          </SubNavigationItem>
+          <SubNavigationItem {...args} disabled>
+            Disabled <Tag tint="yellow">Tag</Tag>
+          </SubNavigationItem>
+          <SubNavigationItem {...args}>
+            Default <Tag tint="purple">Lengthy tag that take way too much space</Tag>
+          </SubNavigationItem>
+          <SubNavigationItem {...args}>
+            Lengthy label that take way too much space <Tag tint="green">Tag</Tag>
+          </SubNavigationItem>
+          <SubNavigationItem {...args}>
+            Lengthy label that take way too much space <Tag tint="red">Lengthy tag that take way too much space</Tag>
+          </SubNavigationItem>
+        </SpaceContainer>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on onClick
+
+<Canvas>
+  <Story name="Link">
+    {args => {
+      return (
+        <>
+          <SubNavigationItem {...args} href={undefined} onClick={() => alert('Clicked!')}>
+            Click handler
+          </SubNavigationItem>
+          <SubNavigationItem {...args} href={undefined} onClick={() => alert('Clicked!')} disabled={true}>
+            Click handler disabled
+          </SubNavigationItem>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>

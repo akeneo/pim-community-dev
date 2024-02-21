@@ -1,0 +1,46 @@
+Akeneo\Pim\Enrichment\Component\Product\Model\Product:
+    group_sequence:
+        - Product
+        - identifiers
+        - VariantProduct
+        - UniqueAxis
+        - api
+    constraints:
+        - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product\UniqueProductEntity:
+              groups: ['identifiers']
+        - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\NotEmptyFamily:
+            groups:
+              - api
+        - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\SameFamilyThanParent: ~
+        - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\NotEmptyVariantAxes: ~
+        - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\VariantProductParent: ~
+        - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\UniqueVariantAxis:
+            groups: [UniqueAxis]
+        - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\OnlyExpectedAttributes: ~
+
+    properties:
+        uuid:
+            - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\IsUuid4: ~
+        identifier:
+            - Regex:
+                pattern: '/^(?!\s)[^,;]+(?<!\s)$/'
+                message: 'regex.comma_or_semicolon_or_surrounding_space.message'
+                groups: ['identifiers']
+            - Regex:
+                pattern: '/[\r\n]/'
+                message: 'regex.line_break.message'
+                match: false
+                groups: ['identifiers']
+        associations:
+            - Symfony\Component\Validator\Constraints\All:
+                - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\AssociationTypeIsNotQuantified: ~
+    getters:
+        values:
+            - Symfony\Component\Validator\Constraints\Valid:
+                traverse: true
+            - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\AttributeOptionsExist: ~
+            - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ReferenceDataOptionsExist: ~
+            - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ScopableValues: ~
+            - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\LocalizableValues: ~
+        quantifiedAssociations:
+            - Symfony\Component\Validator\Constraints\Valid: ~

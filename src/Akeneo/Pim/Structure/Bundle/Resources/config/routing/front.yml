@@ -1,0 +1,46 @@
+### Used by the front application
+pim_enrich_attribute_index:
+    path: '/configuration/attribute/'
+
+pim_enrich_attribute_create:
+    path: '/configuration/attribute/create'
+
+pim_enrich_attribute_edit:
+    path: '/configuration/attribute/{code}/edit'
+    requirements:
+        code: '[a-zA-Z0-9_]+'
+
+pim_enrich_attributegroup_index:
+    path: '/configuration/attribute-group/'
+
+pim_enrich_attributegroup_create:
+    path: '/configuration/attribute-group/create'
+
+pim_enrich_attributegroup_edit:
+    path: '/configuration/attribute-group/{identifier}/edit'
+    requirements:
+        identifier: '[a-zA-Z0-9_]+'
+
+pim_enrich_family_index:
+    path: '/configuration/family/'
+
+pim_enrich_family_edit:
+    path: '/configuration/family/{code}/edit'
+    requirements:
+        code: '[a-zA-Z0-9_]+'
+
+pim_enrich_associationtype_index:
+    path: '/configuration/association-type/'
+
+pim_enrich_associationtype_edit:
+    path: '/configuration/association-type/{code}/edit'
+    requirements:
+        code: '[a-zA-Z0-9_]+'
+
+pim_enrich_grouptype_index:
+    path: '/configuration/group-type'
+
+pim_enrich_grouptype_edit:
+    path: '/configuration/group-type/{code}/edit'
+    requirements:
+        code: '[a-zA-Z0-9_]+'

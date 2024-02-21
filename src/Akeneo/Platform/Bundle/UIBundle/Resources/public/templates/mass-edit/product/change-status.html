@@ -1,0 +1,14 @@
+<div class="AknFormContainer AknFormContainer--withPadding">
+    <div class="AknFieldContainer">
+        <div class="AknFieldContainer-header">
+            <label class="AknFieldContainer-label control-label AknFieldContainer-label required" for="pim_enrich_mass_edit_choose_action_operation_enable">
+                <%- labels.field %>
+            </label>
+        </div>
+        <div class="AknFieldContainer-inputContainer field-input">
+            <div class="switch switch-small" data-on-label="<%- labels.on %>" data-off-label="<%- labels.off %>">
+                <input type="checkbox" name="enabled" id="pim_enrich_mass_edit_choose_action_operation_enable" <%- value ? 'checked' : '' %> <%- readOnly ? 'readonly disabled' : '' %>/>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,2 @@
+akeneo_batch.job_instance.unknown_job_definition: Het maken van een %job_type% met een onbekende taakdefinitie is mislukt
+akeneo.job_automation.validation.import_should_have_storage: Er is geen opslag geconfigureerd in het tabblad Eigenschappen van uw importprofiel.

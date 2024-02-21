@@ -1,0 +1,22 @@
+<div class="AknFormContainer AknFormContainer--withPadding">
+    <div class="AknFieldContainer">
+        <div class="AknFieldContainer-header">
+            <label class="AknFieldContainer-label" title="<%- __('pim_common.code') %>">
+                <%- __('pim_common.code') %> <em><%- __('pim_common.required_label') %></em>
+            </label>
+        </div>
+        <div class="AknFieldContainer-inputContainer field-input">
+            <input class="AknTextField" type="text" name="code">
+        </div>
+    </div>
+    <div class="AknFieldContainer">
+        <div class="AknFieldContainer-header">
+            <label class="AknFieldContainer-label">
+                <%- __('pim_common.label') %> <span><%= i18n.getFlag(locale) %></span>
+            </label>
+        </div>
+        <div class="AknFieldContainer-inputContainer field-input">
+            <input class="AknTextField input-large" type="text" name="label-<%- locale %>" data-locale="<%- locale %>">
+        </div>
+    </div>
+</div>

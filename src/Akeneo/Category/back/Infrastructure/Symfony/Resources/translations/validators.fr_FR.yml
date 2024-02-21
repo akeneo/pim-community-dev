@@ -1,0 +1,24 @@
+akeneo.category:
+  validation:
+    upsert:
+      category_code:
+        wrong_format: Le code de la catégorie ne peut contenir que des lettres, des chiffres et/ou des tirets bas.
+        line_feed: Le code de la catégorie ne doit pas contenir un caractère de saut de ligne.
+      duplicated_value_user_intents: La valeur de l'attribut {{ attributeCode }} est mise à jour plusieurs fois
+      value_user_intents_on_deactivated_template: Il n'y a aucun template actif lié aux attributs de catégorie que vous souhaitez modifier
+      value:
+        text_too_long: La valeur ne doit pas dépasser {{ limit }} caractères
+        textarea_too_long: La valeur ne doit pas dépasser {{ limit }} caractères
+        richtext_too_long: La valeur ne doit pas dépasser {{ limit }} caractères
+    template:
+      code:
+        not_blank: Cette valeur ne devrait pas être vide.
+        unique: 'Le code du template : {{ templateCode }} existe déjà.'
+        wrong_format: Ce champ ne peut contenir que des lettres, des chiffres et des tirets bas.
+    attribute:
+      limit:
+        title: Vous ne pouvez pas ajouter plus de 50 attributs
+        message: Les templates de catégories sont limités à 50 attributs par modèle.
+      code:
+        wrong_format: Le code de l'attribut ne doit contenir que des lettres, chiffres et tirets bas.
+        unique_in_the_template: Le code d'attribut {{ attributeCode }} doit être unique dans le template

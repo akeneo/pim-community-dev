@@ -1,0 +1,71 @@
+# to move in enrichment bundle, not possible for now because of the common root URI path
+pim_enrich_product_grid_category_tree_listtree:
+    path: /product-grid/list-tree.{_format}
+    defaults: { _controller: akeneo.pim.enrichment.controller.product_grid_category_tree:listTreeAction }
+    requirements:
+        _format: json
+
+# to move in enrichment bundle, not possible for now because of the common root URI path
+pim_enrich_product_grid_category_tree_children:
+    path: /product-grid/children.{_format}
+    defaults: { _controller: akeneo.pim.enrichment.controller.product_grid_category_tree:listChildrenAction }
+    requirements:
+        _format: json
+
+pim_enrich_categorytree_listtree:
+    path: /list-tree.{_format}
+    defaults: { _controller: pim_enrich.controller.category_tree.product:listTreeAction }
+    requirements:
+        _format: json
+
+pim_enrich_categorytree_movenode:
+    path: /move-node
+    defaults: { _controller: pim_enrich.controller.category_tree.product:moveNodeAction }
+
+pim_enrich_categorytree_children:
+    path: /children.{_format}
+    defaults: { _controller: pim_enrich.controller.category_tree.product:childrenAction }
+    requirements:
+        _format: json
+
+pim_enrich_categorytree_index:
+    path: /
+
+pim_enrich_categorytree_create:
+    path: /create
+    defaults: { _controller: pim_enrich.controller.category_tree.product:createAction }
+
+pim_enrich_categorytree_edit:
+    path: /{id}/edit
+    defaults: { _controller: pim_enrich.controller.category_tree.product:editAction }
+    requirements:
+        id: \d+
+
+pim_enrich_categorytree_tree:
+    path: /{id}/tree
+    requirements:
+        id: \d+
+
+pim_enrich_categorytree_remove:
+    path: /{id}/remove
+    defaults: { _controller: pim_enrich.controller.category_tree.product:removeAction }
+    requirements:
+        id: \d+
+    methods: [DELETE]
+
+pim_enrich_categorytree_get_products_number:
+    path: /products-number-by-category-tree
+    defaults: { _controller: pim_enrich.controller.category_tree.product:getCategoryTreesProductsNumberAction }
+    methods: [GET]
+
+pim_enrich_categorytree_count_category_products:
+    path: /{id}/count-products
+    defaults: { _controller: pim_enrich.controller.category_tree.product:countCategoryProducts }
+    requirements:
+        id: \d+
+    methods: [ GET ]
+
+pim_enrich_categorytree_count_trees_children:
+    path: /count-trees-children
+    defaults: { _controller: pim_enrich.controller.category_tree.product:countTreesChildrenAction }
+    methods: [GET]

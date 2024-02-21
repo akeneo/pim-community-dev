@@ -1,0 +1,73 @@
+parameters:
+    pim_user.event_subscriber.group.class:            Akeneo\UserManagement\Bundle\EventListener\GroupSubscriber
+    # Move this class
+    pim_user.event_subscriber.remove_role.class:      Akeneo\UserManagement\Bundle\EventListener\RemoveRoleSubscriber
+    # Move this class
+    pim_locale.locale_subscriber.class:               Akeneo\UserManagement\Bundle\EventListener\LocaleSubscriber
+
+services:
+    pim_user.event_listener.user_preferences:
+        class: 'Akeneo\UserManagement\Bundle\EventListener\UserPreferencesListener'
+        lazy: true
+        arguments:
+            - '@pim_catalog.repository.category'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.locale'
+            - '@pim_user.repository.user'
+        tags:
+            - { name: doctrine.event_listener, event: onFlush, lazy: true }
+            - { name: doctrine.event_listener, event: postFlush, lazy: true }
+
+    pim_user.event_subscriber.group:
+        class: '%pim_user.event_subscriber.group.class%'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_user.event_subscriber.remove_role:
+        class: '%pim_user.event_subscriber.remove_role.class%'
+        arguments:
+            - '@pim_user.query.get_user_count'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_locale.locale_subscriber:
+        class: '%pim_locale.locale_subscriber.class%'
+        arguments:
+            - '@request_stack'
+            - '@translator'
+            - '@doctrine.orm.entity_manager'
+            - '@security.firewall.map'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\UserManagement\Infrastructure\Cli\Registry\AuthenticatedAsAdminCommandRegistry: ~
+
+    Akeneo\UserManagement\Infrastructure\Cli\AuthenticateAdminUser:
+        lazy: true
+        arguments:
+            - '@security.token_storage'
+            - '@pim_user.repository.group'
+            - '@pim_user.repository.role'
+            - '@pim_user.factory.user'
+
+    Akeneo\UserManagement\Infrastructure\Cli\EventListener\AuthenticateCommandAsAdminUserListener:
+        arguments:
+            - '@Akeneo\UserManagement\Infrastructure\Cli\AuthenticateAdminUser'
+            - '@Akeneo\UserManagement\Infrastructure\Cli\Registry\AuthenticatedAsAdminCommandRegistry'
+        tags:
+            - { name: kernel.event_listener, event: console.command, method: createUserSystem }
+
+    Akeneo\UserManagement\Bundle\EventListener\AddDefaultPrivilegesSubscriber:
+        arguments:
+            - '@pim_user.repository.role'
+            - '@oro_security.acl.manager'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\UserManagement\Bundle\EventListener\LoginRateLimitListener:
+        arguments:
+            - '@pim_user.manager'
+            - '%pim_user.account_lock.duration%'
+            - '%pim_user.account_lock.max_consecutive_failures%'
+        tags:
+           - { name: 'kernel.event_subscriber', dispatcher: 'security.event_dispatcher.main' }

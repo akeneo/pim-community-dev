@@ -1,0 +1,74 @@
+parameters:
+    pim_datagrid.extension.mass_action.type.export.class:                 Oro\Bundle\PimDataGridBundle\Extension\MassAction\Actions\Export\ExportMassAction
+    pim_datagrid.extension.mass_action.type.delete.class:                 Oro\Bundle\PimDataGridBundle\Extension\MassAction\Actions\Ajax\DeleteMassAction
+    pim_datagrid.extension.mass_action.handler.edit.class:                Oro\Bundle\PimDataGridBundle\Extension\MassAction\Handler\EditMassActionHandler
+    pim_datagrid.extension.mass_action.dispatcher.class:                  Oro\Bundle\PimDataGridBundle\Extension\MassAction\MassActionDispatcher
+    pim_datagrid.extension.mass_action.handler.registry.class:            Oro\Bundle\PimDataGridBundle\Extension\MassAction\MassActionHandlerRegistry
+    pim_datagrid.extension.mass_action.handler.delete.class:              Oro\Bundle\PimDataGridBundle\Extension\MassAction\Handler\DeleteMassActionHandler
+
+services:
+    # Dispatchers
+    pim_datagrid.extension.mass_action.dispatcher:
+        class: '%pim_datagrid.extension.mass_action.dispatcher.class%'
+        arguments:
+            - '@pim_datagrid.extension.mass_action.handler.registry'
+            - '@oro_datagrid.datagrid.manager'
+            - '@oro_datagrid.datagrid.request_params'
+            - '@oro_datagrid.mass_action.parameters_parser'
+            - ['product-grid', 'proposal-grid', 'published-product-grid']
+
+    # Handlers
+    pim_datagrid.extension.mass_action.handler.edit:
+        class: '%pim_datagrid.extension.mass_action.handler.edit.class%'
+        arguments:
+            - '@pim_datagrid.datasource.result_record.hydrator.orm.object'
+            - '@event_dispatcher'
+        tags:
+            - { name: pim_datagrid.extension.mass_action.handler, alias: mass_edit }
+
+    pim_datagrid.extension.mass_action.type.edit:
+        public: true
+        class: Oro\Bundle\PimDataGridBundle\Extension\MassAction\Actions\Redirect\EditMassAction
+        shared: false
+        tags:
+            - { name: oro_datagrid.extension.mass_action.type, type: edit }
+
+    pim_datagrid.extension.mass_action.type.sequential_edit:
+        public: true
+        class: Oro\Bundle\PimDataGridBundle\Extension\MassAction\Actions\Redirect\SequentialEditMassAction
+        shared: false
+        tags:
+            - { name: oro_datagrid.extension.mass_action.type, type: sequential_edit }
+
+    # Mass actions
+    pim_datagrid.extension.mass_action.type.export:
+        public: true
+        class: '%pim_datagrid.extension.mass_action.type.export.class%'
+        shared: false
+        tags:
+            - { name: oro_datagrid.extension.mass_action.type, type: export }
+
+    pim_datagrid.extension.mass_action.type.delete:
+        public: true
+        class: '%pim_datagrid.extension.mass_action.type.delete.class%'
+        shared: false
+        tags:
+            - { name: oro_datagrid.extension.mass_action.type, type: delete }
+
+    pim_datagrid.extension.mass_action.type.product_mass_delete:
+        public: true
+        class: '%pim_datagrid.extension.mass_action.type.delete.class%'
+        shared: false
+        tags:
+            - { name: oro_datagrid.extension.mass_action.type, type: mass_delete }
+
+    pim_datagrid.extension.mass_action.type.attribute_mass_delete:
+        public: true
+        class: 'Oro\Bundle\PimDataGridBundle\Extension\MassAction\Actions\Ajax\DeleteMassAction'
+        shared: false
+        tags:
+            - { name: oro_datagrid.extension.mass_action.type, type: attribute_mass_delete }
+
+    # Handler registry
+    pim_datagrid.extension.mass_action.handler.registry:
+        class: '%pim_datagrid.extension.mass_action.handler.registry.class%'

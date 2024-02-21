@@ -1,0 +1,59 @@
+<div class="AknHorizontalNavtab-item--active AknVerticalNavtab-item--active">
+    <div class="AknGridToolbar">
+        <div class="AknGridToolbar-center"></div>
+        <div class="AknGridToolbar-right AknButtonList AknButtonList--right" data-drop-zone="actions">
+        </div>
+    </div>
+    <div class="tabsection-content">
+        <div class="AknGridContainer">
+            <table class="AknGrid AknGrid--unclickable table attributes">
+                <thead>
+                    <tr>
+                        <% if (canSortAttributes) { %>
+                            <th class="AknGrid-headerCell">&nbsp;</th>
+                        <% } %>
+                        <th class="AknGrid-headerCell"><%- __('pim_enrich.entity.attribute.property.name') %></th>
+                        <th class="AknGrid-headerCell"><%- __('pim_common.type') %></th>
+                        <th class="AknGrid-headerCell"><%- __('pim_enrich.entity.attribute.property.scopable') %></th>
+                        <th class="AknGrid-headerCell"><%- __('pim_enrich.entity.attribute.property.localizable') %></th>
+                        <% if (hasRightToRemove) { %>
+                        <th class="AknGrid-headerCell">&nbsp;</th>
+                        <% } %>
+                    </tr>
+                </thead>
+                <tbody class="attribute-list">
+                    <% _.each(attributes, function (attribute) { %>
+                        <tr class="AknGrid-bodyRow attribute" data-attribute-code="<%- attribute.code %>">
+                            <% if (canSortAttributes) { %>
+                                <td class="AknGrid-bodyCell AknGrid-bodyCell--tight">
+                                    <span class="handle">
+                                        <i class="icon-reorder"></i>
+                                    </span>
+                                </td>
+                            <% } %>
+                            <td class="AknGrid-bodyCell"><%- i18n.getLabel(attribute.labels, UserContext.get('catalogLocale'), attribute.code) %></td>
+                            <td class="AknGrid-bodyCell"><%- __('pim_enrich.entity.attribute.property.type.' + attribute.type) %></td>
+                            <td class="AknGrid-bodyCell">
+                                <input type="checkbox" disabled="disabled"<%- attribute.scopable ? ' checked="checked"' : '' %>>
+                            </td>
+                            <td class="AknGrid-bodyCell">
+                                <input type="checkbox" disabled="disabled"<%- attribute.localizable ? ' checked="checked"' : '' %>>
+                            </td>
+                            <% if (hasRightToRemove) { %>
+                            <td class="AknGrid-bodyCell AknGrid-bodyCell--right">
+                                <span class="AknIconButton AknIconButton--small AknIconButton--trash remove-attribute" data-attribute-code="<%- attribute.code %>"></span>
+                            </td>
+                            <% } %>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+            <% if (totalAttributeCount !== attributeCount) { %>
+                <div class="AknGridContainer-notEnoughDataTitle"><%- __('pim_enrich.entity.attribute_group.show_more_attribute.title', {attributeCount: attributeCount, totalAttributeCount: totalAttributeCount}) %></div>
+                <div class="AknGridContainer-notEnoughDataSubtitle"><%- __('pim_enrich.entity.attribute_group.show_more_attribute.subtitle') %></div>
+                <button class="AknButton AknButton--big AknButton--apply AknButton--centered redirect-attribute-list"><%- __('pim_enrich.entity.attribute_group.show_more_attribute.button') %></button>
+                <img class="AknImage--centeredWithMargin" src="/bundles/pimui/images/illustration_scroll.svg"/>
+            <% } %>
+        </div>
+    </div>
+</div>

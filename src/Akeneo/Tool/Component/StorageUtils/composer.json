@@ -1,0 +1,33 @@
+{
+    "name": "akeneo/storage-utils",
+    "type": "library",
+    "description": "Akeneo Storage Utils",
+    "keywords": ["Akeneo", "Persistence"],
+    "homepage": "https://github.com/akeneo/storage-utils",
+    "license": "OSL-3.0",
+    "authors": [
+        {
+            "name": "Akeneo",
+            "homepage": "http://www.akeneo.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.1.0",
+        "symfony/event-dispatcher": "^2.3"
+    },
+    "require-dev": {
+        "phpspec/phpspec": "3.0.0"
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "autoload": {
+        "psr-4": { "Akeneo\\Component\\StorageUtils\\": "" }
+    },
+    "minimum-stability": "stable",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.6.x-dev"
+        }
+    }
+}

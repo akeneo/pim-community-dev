@@ -1,0 +1,81 @@
+pim_title:
+  akeneo_job_process_tracker_index: プロセストラッカー
+  akeneo_job_process_tracker_details: プロセストラッカー | ジョブの表示
+akeneo_job:
+  job_status:
+    COMPLETED: 完了
+    STARTED: 実行中
+    STARTING: 開始中
+    STOPPING: 停止中
+    STOPPED: 停止
+    FAILED: 失敗
+    ABANDONED: 破棄
+    UNKNOWN: 不明
+    IN_PROGRESS: 実行中
+    PAUSING: 一時停止中
+    PAUSED: 一時停止
+akeneo_job_process_tracker:
+  tooltip:
+    paused: このジョブはインスタンスの内部メンテナンスのため一時停止されています。メンテナンスが終了すると自動的に再開します。
+  last_operations:
+    title: 最後の操作
+    view_all: すべて表示
+    details: 詳細
+    no_result: 現在表示する操作はありません。
+  last_executions:
+    title: 最後の実行
+  job_execution_list:
+    search_placeholder: ジョブ名で検索
+    table:
+      headers:
+        job_name: ジョブ名
+        type: タイプ
+        started_at: 開始日時
+        username: ユーザー名
+        progress: 進捗状況
+        status: ステータス
+        warning_count: 警告
+  type_filter:
+    label: タイプ
+    all: すべて
+    quick_export: クイックエクスポート
+    import: インポート
+    export: エクスポート
+    mass_edit: 一括編集
+    mass_delete: 商品を一括削除
+    attribute_mass_delete: 属性の一括削除
+    compute_family_variant_structure_changes: ファミリーバリエーション構造の変化を計算
+    compute_completeness_of_products_family: 商品ファミリーの完全性を計算
+    clean_removed_attribute_job: 削除された属性値を消去中
+    execute_rules: ルールを実行
+    scheduled_job: スケジュールされたジョブ
+  user_filter:
+    label: ユーザー
+    all: すべて
+    search: 検索
+  status_filter:
+    label: ステータス
+    all: すべて
+    abandoned: 破棄
+    completed: 完了
+    failed: 失敗
+    starting: 開始中
+    stopped: 停止
+    stopping: 停止中
+    unknown: 不明
+    in_progress: 実行中
+    pausing: 一時停止中
+    paused: 一時停止
+  automation_filter:
+    all: すべて
+    yes: Yes
+    no: No
+    label: 自動化
+  max_page_without_filter_helper:
+    - 最も関連性の高い結果を表示するには、検索を絞り込んでください。
+  tracking:
+    completed: "経過時間: {{ duration }}"
+    in_progress: "現在のステップの推定残り時間: {{ duration }}"
+    not_started: 保留中
+    untrackable: 追跡不可能なステップ
+    estimating: 残り時間を推定中…

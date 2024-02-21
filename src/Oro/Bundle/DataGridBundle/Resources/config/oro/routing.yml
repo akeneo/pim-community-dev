@@ -1,0 +1,3 @@
+oro_datagrid_index:
+    path:   /datagrid/{gridName}
+    defaults: { _controller: oro_datagrid.controller.grid:get }

@@ -1,0 +1,289 @@
+@import '../../base/variables';
+
+.AknFilterBox {
+  @searchHeight: 44px;
+  background-color: white;
+
+  &-addFilterButton {
+    background: url("/bundles/pimui/images/icon-plus.svg") no-repeat right center;
+    background-size: 19px;
+    width: ~"calc(100% + 10px)" !important; // Width is set by multiselect
+    padding: 0 !important; // Padding is set by multiselect
+    border: none;
+    height: 30px;
+    font-size: @AknFontSizeBig;
+    color: @AknDarkBlue;
+    transition: color 0.1s ease-in;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  &--search:not(:empty) {
+    min-height: @searchHeight;
+    display: flex;
+    width: 100%;
+    border-bottom: 1px solid @AknBorderColor;
+    justify-content: flex-end;
+    padding: 0 0 1px 0;
+    background: none;
+    flex-wrap: wrap;
+    background: white;
+  }
+
+  &--sticky {
+    position: sticky;
+    background: white;
+    padding: 10px 0 1px 0;
+    margin: -10px 0 10px 0;
+    top: 0;
+    z-index: 1;
+  }
+
+  &--sticky:not(:empty) {
+    padding: 0;
+    margin-bottom: 0;
+    margin-top: -10px;
+    padding-top: 10px;
+    top: -10px;
+  }
+
+
+  &-title {
+    order: -1;
+    flex-grow: 10;
+    display: flex;
+    min-width: 300px;
+    background: white;
+    color: @AknSlateGrey;
+    font-size: @AknFontSizeBig;
+    text-transform: uppercase;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    z-index: 2;
+  }
+
+  &-search {
+    height: @searchHeight;
+    line-height: @searchHeight;
+    color: @AknDefaultFontColor;
+    font-size: @AknDefaultFontSize;
+    border: none;
+    background: url("/bundles/pimui/images/icon-search.svg") no-repeat 0 center;
+    padding-left: 30px;
+    flex-grow: 1;
+    margin-top: 20px;
+    width: 100%;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &-searchContainer {
+    order: -1;
+    flex-grow: 10;
+    display: flex;
+    margin-top: -20px;
+    min-width: 300px;
+  }
+
+  &-filterContainer {
+    cursor: pointer;
+    position: relative;
+    margin-top: 20px;
+
+    &--inline {
+      display: flex;
+      flex-wrap: wrap;
+    }
+  }
+
+  &--search &-filterContainer {
+    margin-top: 0;
+  }
+
+  &-filter {
+    margin: 0 5px @AknPaddingLeftColumn 0;
+
+    &--relative {
+      position: relative;
+    }
+  }
+
+  &-disableFilter {
+    position: absolute;
+    right: -16px;
+    top: 6px;
+    opacity: 0;
+    transition: opacity 0.2s ease-in;
+  }
+
+  &-filterContainer:hover &-disableFilter {
+    opacity: 1;
+  }
+
+  &-filterLabel {
+    display: block;
+    color: @AknGrey;
+    text-transform: uppercase;
+    font-size: @AknDefaultFontSize;
+    white-space: nowrap;
+    margin-bottom: 3px;
+
+    .AknFilterBox--search & {
+      color: @AknDarkBlue;
+    }
+  }
+
+  &-filterCriteria {
+    color: @AknDarkBlue;
+    font-size: @AknDefaultFontSize;
+
+    & .filter-criteria-hint {
+      max-width: 300px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    &.ui-multiselect {
+      // jQuery select adds style for the button, we need to remove it for the filters.
+      width: auto !important;
+      padding: 0 !important;
+      border: none;
+      background: none;
+      line-height: 0;
+      height: 0;
+    }
+
+    &--limited {
+      max-width: 200px;
+      overflow: hidden;
+      white-space: nowrap;
+      display: block;
+      text-overflow: ellipsis;
+    }
+
+    &Hint {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: inherit;
+    }
+  }
+
+  &-column {
+    width: 230px;
+    display: none;
+    top: -191px;
+    left: 59px;
+    position:absolute;
+    overflow: scroll;
+
+    &--expanded {
+      left: 360px;
+      overflow-x: hidden;
+      padding-bottom: 0 !important;
+    }
+  }
+
+  &--search &-filter {
+    display: flex;
+    height: @searchHeight;
+    line-height: @searchHeight;
+    cursor: pointer;
+    background: none;
+    border: none;
+    margin: 0 0 0 20px;
+
+    &--smallMargin {
+      margin: 0 0 0 10px;
+    }
+  }
+
+  &--search &-filterCriteria {
+    color: @AknLightPurple;
+    height: @searchHeight;
+    line-height: @searchHeight;
+    display: inherit;
+  }
+
+  &--search &-filterCaret {
+    display: inline-block;
+    width: 16px;
+    height: @searchHeight;
+    background: url("/bundles/pimui/images/jstree/icon-down.svg") no-repeat 0 center;
+    background-size: 16px;
+    margin-left: 3px;
+  }
+
+  &--search &-filterLabel {
+    text-transform: none;
+
+    &:after {
+      content: ' : ';
+      margin-right: 3px;
+      color: @AknDefaultFontColor;
+    }
+  }
+
+  &-filterDetails {
+    background: white;
+    position: absolute;
+    z-index: 804;
+    right: 0;
+    -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+
+    &--rightAlign {
+      right: auto;
+      left: 0;
+    }
+  }
+
+  &--search &-filterContainer {
+    margin-right: 0;
+  }
+
+  &--search &-disableFilter {
+    display: none;
+  }
+
+  &--search &-list {
+    margin-right: 10px;
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+  }
+
+  &--search &-addFilterButton {
+    line-height: @AknLittleButtonSize;
+    min-height: @searchHeight;
+    min-width: @searchHeight;
+    border: none;
+    order: -1;
+    width: auto !important; // The width is updated by JS method.
+    background-color: white;
+    background: url("/bundles/pimui/images/icon-filters.svg") no-repeat left 50%;
+    flex-grow: 1;
+    padding-left: 35px !important; // The padding is updated by JS method.
+    margin-left: 10px;
+    margin-top: 30px;
+  }
+
+  &-itemsCounter {
+    padding-right: 8px;
+    border-right: 1px solid #ccd1d8;
+    color: #9452BA;
+
+    &--inline {
+      padding-right: 10px;
+      position: relative;
+      top: 2px;
+    }
+  }
+}

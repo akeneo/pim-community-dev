@@ -1,0 +1,10 @@
+parameters:
+    pim_datagrid.form.type.datagrid_view.class:          Oro\Bundle\PimDataGridBundle\Form\Type\DatagridViewType
+
+services:
+    pim_datagrid.form.type.datagrid_view:
+        class: '%pim_datagrid.form.type.datagrid_view.class%'
+        arguments:
+            - '%pim_datagrid.entity.datagrid_view.class%'
+        tags:
+            - { name: form.type, alias: pim_datagrid_view }

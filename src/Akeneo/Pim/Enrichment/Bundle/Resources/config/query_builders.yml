@@ -1,0 +1,848 @@
+parameters:
+    pim_catalog.query.elasticsearch.product_query_builder_factory.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ProductQueryBuilderFactory
+    pim_catalog.query.elasticsearch.product_and_model_query_builder_factory.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ProductAndProductModelQueryBuilderFactory
+    pim_catalog.query.product_query_builder.class: Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilder
+    pim_catalog.query.product_model_query_builder.class: Akeneo\Pim\Enrichment\Component\Product\Query\ProductModelQueryBuilder
+    pim_catalog.query.product_and_product_model_query_builder.class: Akeneo\Pim\Enrichment\Component\Product\Query\ProductAndProductModelQueryBuilder
+    pim_catalog.elasticsearch.cursor_factory.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\CursorFactory
+
+    # resolvers
+    pim_catalog.elasticsearch.product_query_builder_search_after_resolver.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ProductQueryBuilderSearchAfterOptionsResolver
+    pim_catalog.elasticsearch.product_query_builder_from_size_resolver.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ProductQueryBuilderFromSizeOptionsResolver
+    pim_catalog.query.product_query_builder_resolver.class:  Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderOptionsResolver
+
+    pim_catalog.query.filter.registry.class:                      Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FilterRegistry
+    pim_catalog.query.sorter.registry.class:                      Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\SorterRegistry
+    pim_catalog.query.filter.field_dumper.class:                  Akeneo\Pim\Enrichment\Bundle\Command\ProductQueryHelp\FieldFilterDumper
+    pim_catalog.query.filter.attribute_dumper.class:              Akeneo\Pim\Enrichment\Bundle\Command\ProductQueryHelp\AttributeFilterDumper
+    pim_catalog.doctrine.query.filter.object_code_resolver.class: Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Filter\ObjectCodeResolver
+
+    pim_catalog.query.elasticsearch.filter.label_or_identifier.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\LabelOrIdentifierFilter
+    pim_catalog.query.elasticsearch.filter.identifier_field.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\IdentifierFilter
+    pim_catalog.query.elasticsearch.filter.id.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\IdFilter
+    pim_catalog.query.elasticsearch.filter.family.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\FamilyFilter
+    pim_catalog.query.elasticsearch.filter.category.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\CategoryFilter
+    pim_catalog.query.elasticsearch.filter.group.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\GroupFilter
+    pim_catalog.query.elasticsearch.filter.status.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\StatusFilter
+    pim_catalog.query.elasticsearch.filter.datetime.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\DateTimeFilter
+    pim_catalog.query.elasticsearch.filter.product.completeness.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\Product\CompletenessFilter
+    pim_catalog.query.elasticsearch.filter.completeness.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\CompletenessFilter
+    pim_catalog.query.elasticsearch.filter.parent.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\ParentFilter
+    pim_catalog.query.elasticsearch.filter.entity_type.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\EntityTypeFilter
+    pim_catalog.query.elasticsearch.filter.identifier_attribute.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Attribute\IdentifierFilter
+    pim_catalog.query.elasticsearch.filter.date.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Attribute\DateFilter
+    pim_catalog.query.elasticsearch.filter.number.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Attribute\NumberFilter
+    pim_catalog.query.elasticsearch.filter.text.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Attribute\TextFilter
+    pim_catalog.query.elasticsearch.filter.text_area.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Attribute\TextAreaFilter
+    pim_catalog.query.elasticsearch.filter.option.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Attribute\OptionFilter
+    pim_catalog.query.elasticsearch.filter.price.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Attribute\PriceFilter
+    pim_catalog.query.elasticsearch.filter.metric.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Attribute\MetricFilter
+    pim_catalog.query.elasticsearch.filter.media.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Attribute\MediaFilter
+    pim_catalog.query.elasticsearch.filter.boolean.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Attribute\BooleanFilter
+    pim_catalog.query.elasticsearch.filter.ancestor_id.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\AncestorIdFilter
+    pim_catalog.query.elasticsearch.filter.self_and_ancestor.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\SelfAndAncestorFilter
+
+    pim_catalog.query.elasticsearch.sorter.base_field.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Sorter\Field\BaseFieldSorter
+    pim_catalog.query.elasticsearch.sorter.family.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Sorter\Field\FamilySorter
+    pim_catalog.query.elasticsearch.sorter.identifier.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Sorter\IdentifierSorter
+    pim_catalog.query.elasticsearch.sorter.completeness.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Sorter\Field\CompletenessSorter
+    pim_catalog.query.elasticsearch.sorter.attribute.base.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Sorter\Attribute\BaseAttributeSorter
+    pim_catalog.query.elasticsearch.sorter.attribute.metric.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Sorter\Attribute\MetricSorter
+    pim_catalog.query.elasticsearch.sorter.attribute.text_area.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Sorter\Attribute\TextAreaSorter
+
+    pim_enrich.query.product_and_product_model_query_builder.class: Akeneo\Pim\Enrichment\Bundle\ProductQueryBuilder\ProductAndProductModelQueryBuilder
+    pim_enrich.datagrid.product_batch_size: 25
+
+    pim_enrich.query.product_and_product_model_search_aggregator.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ProductAndProductModelSearchAggregator
+    pim_enrich.query.elasticsearch.product_and_product_model_query_builder_factory.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ProductAndProductModelQueryBuilderWithSearchAggregatorFactory
+
+services:
+    # Disclaimer: use this factory only for read purpose. For write purpose, it could bring some problems (see PIM-10232).
+    # For write, use "pim_catalog.query.product_identifier_query_builder_factory" instead
+    pim_catalog.query.product_query_builder_factory_for_reading_purpose:
+        class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
+        arguments:
+            - '%pim_catalog.query.product_query_builder.class%'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.filter.product_registry'
+            - '@pim_catalog.query.sorter.registry'
+            - '@pim_catalog.factory.product_cursor'
+            - '@pim_catalog.query.product_query_builder_resolver'
+
+    pim_catalog.query.product_identifier_query_builder_factory:
+        class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
+        arguments:
+            - '%pim_catalog.query.product_query_builder.class%'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.filter.product_registry'
+            - '@pim_catalog.query.sorter.registry'
+            - '@pim_catalog.factory.product_and_product_model_identifier_cursor'
+            - '@pim_catalog.query.product_query_builder_resolver'
+
+    pim_catalog.query.product_query_builder_search_after_size_factory:
+        class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
+        arguments:
+            - '%pim_catalog.query.product_query_builder.class%'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.filter.product_registry'
+            - '@pim_catalog.query.sorter.registry'
+            - '@pim_catalog.factory.product_search_after_size_cursor'
+            - '@pim_catalog.elasticsearch.product_query_builder_search_after_resolver'
+
+    pim_catalog.query.product_query_builder_search_after_size_factory_external_api:
+        class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
+        arguments:
+            - 'Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilder'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.filter.product_registry'
+            - '@pim_catalog.query.sorter.registry'
+            - '@akeneo.pim.enrichment.factory.product_identifier_cursor_search_after_size_cursor'
+            - '@pim_catalog.elasticsearch.product_query_builder_search_after_resolver'
+
+    pim_catalog.query.product_model_query_builder_search_after_size_factory_external_api:
+        class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
+        arguments:
+            - 'Akeneo\Pim\Enrichment\Component\Product\Query\ProductModelQueryBuilder'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.filter.product_model_registry'
+            - '@pim_catalog.query.sorter.registry'
+            - '@akeneo.pim.enrichment.factory.product_model_identifier_cursor_search_after_size_cursor'
+            - '@pim_catalog.elasticsearch.product_query_builder_search_after_resolver'
+
+    pim_catalog.query.product_query_builder_from_size_factory:
+        class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
+        arguments:
+            - '%pim_catalog.query.product_query_builder.class%'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.filter.product_registry'
+            - '@pim_catalog.query.sorter.registry'
+            - '@pim_enrich.factory.product_and_product_model_from_size_cursor'
+            - '@pim_catalog.elasticsearch.product_query_builder_from_size_resolver'
+
+    pim_catalog.query.product_query_builder_from_size_factory_external_api:
+        class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
+        arguments:
+            - 'Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilder'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.filter.product_registry'
+            - '@pim_catalog.query.sorter.registry'
+            - '@akeneo.pim.enrichment.factory.product_identifier_cursor_from_size_cursor'
+            - '@pim_catalog.elasticsearch.product_query_builder_from_size_resolver'
+
+    pim_catalog.query.product_model_query_builder_from_size_factory_external_api:
+        class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
+        arguments:
+            - 'Akeneo\Pim\Enrichment\Component\Product\Query\ProductModelQueryBuilder'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.filter.product_model_registry'
+            - '@pim_catalog.query.sorter.registry'
+            - '@akeneo.pim.enrichment.factory.product_model_identifier_cursor_from_size_cursor'
+            - '@pim_catalog.elasticsearch.product_query_builder_from_size_resolver'
+
+    pim_catalog.query.product_model_query_builder_factory:
+        class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
+        arguments:
+            - '%pim_catalog.query.product_model_query_builder.class%'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.filter.product_model_registry'
+            - '@pim_catalog.query.sorter.registry'
+            - '@pim_catalog.factory.product_model_cursor'
+            - '@pim_catalog.query.product_query_builder_resolver'
+
+    pim_catalog.query.product_model_query_builder_from_size_factory:
+        class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
+        arguments:
+            - '%pim_catalog.query.product_model_query_builder.class%'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.filter.product_model_registry'
+            - '@pim_catalog.query.sorter.registry'
+            - '@pim_catalog.factory.product_model_from_size_cursor'
+            - '@pim_catalog.elasticsearch.product_query_builder_from_size_resolver'
+
+    pim_catalog.query.product_model_query_builder_search_after_size_factory:
+        class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
+        arguments:
+            - '%pim_catalog.query.product_model_query_builder.class%'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.filter.product_model_registry'
+            - '@pim_catalog.query.sorter.registry'
+            - '@pim_catalog.factory.product_model_search_after_size_cursor'
+            - '@pim_catalog.elasticsearch.product_query_builder_search_after_resolver'
+
+    pim_catalog.query.product_and_product_model_query_builder_factory:
+        class: '%pim_catalog.query.elasticsearch.product_and_model_query_builder_factory.class%'
+        arguments:
+            - '%pim_catalog.query.product_and_product_model_query_builder.class%'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.filter.product_and_product_model_registry'
+            - '@pim_catalog.query.sorter.registry'
+            - '@pim_catalog.factory.product_and_product_model_cursor'
+            - '@pim_catalog.query.product_query_builder_resolver'
+
+    pim_catalog.query.product_and_product_model_identifier_query_builder_factory:
+        class: '%pim_catalog.query.elasticsearch.product_and_model_query_builder_factory.class%'
+        arguments:
+            - '%pim_catalog.query.product_and_product_model_query_builder.class%'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.filter.product_and_product_model_registry'
+            - '@pim_catalog.query.sorter.registry'
+            - '@pim_catalog.factory.product_and_product_model_identifier_cursor'
+            - '@pim_catalog.query.product_query_builder_resolver'
+
+    pim_catalog.factory.product_and_product_model_cursor:
+        public: false
+        class: '%pim_catalog.elasticsearch.cursor_factory.class%'
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.product_model'
+            - '%pim_job_product_batch_size%'
+            - 'pim_catalog_product'
+
+    pim_catalog.query.product_query_builder_resolver:
+        class: '%pim_catalog.query.product_query_builder_resolver.class%'
+
+    pim_catalog.elasticsearch.product_query_builder_search_after_resolver:
+        class: '%pim_catalog.elasticsearch.product_query_builder_search_after_resolver.class%'
+
+    pim_catalog.elasticsearch.product_query_builder_from_size_resolver:
+        class: '%pim_catalog.elasticsearch.product_query_builder_from_size_resolver.class%'
+
+    pim_catalog.query.filter.product_registry:
+        class: '%pim_catalog.query.filter.registry.class%'
+        arguments:
+            - '@pim_catalog.repository.attribute'
+
+    pim_catalog.query.filter.product_model_registry:
+        class: '%pim_catalog.query.filter.registry.class%'
+        arguments:
+            - '@pim_catalog.repository.attribute'
+
+    pim_catalog.query.filter.product_and_product_model_registry:
+        class: '%pim_catalog.query.filter.registry.class%'
+        arguments:
+            - '@pim_catalog.repository.attribute'
+
+    pim_catalog.query.sorter.registry:
+        class: '%pim_catalog.query.sorter.registry.class%'
+
+    pim_catalog.query.filter.product.field_dumper:
+        class: '%pim_catalog.query.filter.field_dumper.class%'
+        arguments:
+            - '@pim_catalog.query.filter.product_registry'
+
+    pim_catalog.query.filter.product.attribute_dumper:
+        class: '%pim_catalog.query.filter.attribute_dumper.class%'
+        arguments:
+            - '@pim_catalog.query.filter.product_registry'
+            - '@pim_catalog.repository.attribute'
+
+    pim_catalog.query.filter.product_model.field_dumper:
+        class: '%pim_catalog.query.filter.field_dumper.class%'
+        arguments:
+            - '@pim_catalog.query.filter.product_model_registry'
+
+    pim_catalog.query.filter.product_model.attribute_dumper:
+        class: '%pim_catalog.query.filter.attribute_dumper.class%'
+        arguments:
+            - '@pim_catalog.query.filter.product_model_registry'
+            - '@pim_catalog.repository.attribute'
+
+    # PQB common utils
+    pim_catalog.doctrine.query.filter.object_code_resolver:
+        class: '%pim_catalog.doctrine.query.filter.object_code_resolver.class%'
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+        calls:
+            - [ addFieldMapping, ['family', '%pim_catalog.entity.family.class%']]
+            - [ addFieldMapping, ['option', '%pim_catalog.entity.attribute_option.class%']]
+            - [ addFieldMapping, ['category', '%pim_catalog.entity.category.class%']]
+            - [ addFieldMapping, ['group', '%pim_catalog.entity.group.class%']]
+
+    # Fields filters
+    pim_catalog.query.elasticsearch.filter.identifier_field:
+        class: '%pim_catalog.query.elasticsearch.filter.identifier_field.class%'
+        arguments:
+            - '@Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\GetMainIdentifierAttributeCode'
+            - ['identifier']
+            - ['STARTS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', '!=', 'IN', 'NOT IN', 'EMPTY', 'NOT EMPTY']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.label_or_identifier:
+        class: '%pim_catalog.query.elasticsearch.filter.label_or_identifier.class%'
+        arguments:
+            - '@akeneo.pim.structure.query.get_attributes'
+            - [ 'label_or_identifier' ]
+            - [ 'CONTAINS' ]
+            - [ 'product_' ]
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.id:
+        class: '%pim_catalog.query.elasticsearch.filter.id.class%'
+        arguments:
+            - ['id']
+            - ['IN', 'NOT IN', '=', '!=']
+            - ''
+            - '@database_connection'
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.product.filter.id:
+        class: '%pim_catalog.query.elasticsearch.filter.id.class%'
+        arguments:
+            - ['id']
+            - ['IN', 'NOT IN', '=', '!=']
+            - 'product_'
+            - '@database_connection'
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+
+    Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\UuidFilter:
+        arguments:
+            - 'product_'
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.product_model.filter.id:
+        class: '%pim_catalog.query.elasticsearch.filter.id.class%'
+        arguments:
+            - ['id']
+            - ['IN', 'NOT IN', '=', '!=']
+            - 'product_model_'
+            - '@database_connection'
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.family:
+        class: '%pim_catalog.query.elasticsearch.filter.family.class%'
+        arguments:
+            - '@pim_catalog.repository.family'
+            - ['family']
+            - ['IN', 'NOT IN', 'EMPTY', 'NOT EMPTY']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.family_variant:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\FamilyVariantFilter'
+        arguments:
+            - '@pim_catalog.repository.family_variant'
+            - ['family_variant']
+            - ['IN', 'NOT IN', 'EMPTY', 'NOT EMPTY']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.group:
+        class: '%pim_catalog.query.elasticsearch.filter.group.class%'
+        arguments:
+            - '@pim_catalog.repository.group'
+            - ['groups']
+            - ['IN', 'NOT IN', 'EMPTY', 'NOT EMPTY']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.category:
+        class: '%pim_catalog.query.elasticsearch.filter.category.class%'
+        arguments:
+            - '@pim_catalog.repository.category'
+            - ['categories']
+            - ['IN', 'NOT IN', 'UNCLASSIFIED', 'IN OR UNCLASSIFIED', 'IN CHILDREN', 'NOT IN CHILDREN', 'NOT EMPTY']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.status:
+        class: '%pim_catalog.query.elasticsearch.filter.status.class%'
+        arguments:
+            - ['enabled']
+            - ['=', '!=']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.boolean:
+        class: '%pim_catalog.query.elasticsearch.filter.boolean.class%'
+        arguments:
+            - '@pim_catalog.validator.helper.attribute_filter'
+            - ['pim_catalog_boolean']
+            - ['=', '!=', 'NOT EMPTY', 'EMPTY']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    pim_catalog.doctrine.elasticsearch.filter.datetime:
+        class: '%pim_catalog.query.elasticsearch.filter.datetime.class%'
+        arguments:
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@akeneo_batch.job_repository'
+            - ['created', 'updated']
+            -
+                - '='
+                - '<'
+                - '>'
+                - 'BETWEEN'
+                - 'NOT BETWEEN'
+                - 'EMPTY'
+                - 'NOT EMPTY'
+                - '!='
+                - 'SINCE LAST N DAYS'
+                - 'SINCE LAST JOB'
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.product.completeness:
+        class: '%pim_catalog.query.elasticsearch.filter.product.completeness.class%'
+        arguments:
+            - '@pim_catalog.repository.cached_channel'
+            - ['completeness']
+            -
+                - 'NOT EQUALS ON AT LEAST ONE LOCALE'
+                - 'EQUALS ON AT LEAST ONE LOCALE'
+                - 'GREATER THAN ON AT LEAST ONE LOCALE'
+                - 'GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE'
+                - 'LOWER OR EQUALS THAN ON AT LEAST ONE LOCALE'
+                - 'LOWER THAN ON AT LEAST ONE LOCALE'
+                - 'GREATER THAN ON ALL LOCALES'
+                - 'GREATER OR EQUALS THAN ON ALL LOCALES'
+                - 'LOWER OR EQUALS THAN ON ALL LOCALES'
+                - 'LOWER THAN ON ALL LOCALES'
+                - '!='
+                - '='
+                - '>'
+                - '>='
+                - '<='
+                - '<'
+                - 'EMPTY'
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.product_and_product_model.completeness:
+        class: '%pim_catalog.query.elasticsearch.filter.completeness.class%'
+        arguments:
+            - ['completeness']
+            -
+                - 'AT LEAST COMPLETE'
+                - 'AT LEAST INCOMPLETE'
+                - 'ALL COMPLETE'
+                - 'ALL INCOMPLETE'
+                - '!='
+                - '='
+                - '>'
+                - '<'
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.product_model.completeness:
+        class: '%pim_catalog.query.elasticsearch.filter.completeness.class%'
+        arguments:
+            - ['completeness']
+            -
+              - 'AT LEAST COMPLETE'
+              - 'AT LEAST INCOMPLETE'
+              - 'ALL COMPLETE'
+              - 'ALL INCOMPLETE'
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.parent:
+        class: '%pim_catalog.query.elasticsearch.filter.parent.class%'
+        arguments:
+            - '@pim_catalog.repository.product_model'
+            - ['parent']
+            - ['IN', 'EMPTY', 'NOT EMPTY']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.document_type:
+        class: '%pim_catalog.query.elasticsearch.filter.entity_type.class%'
+        arguments:
+            - ['entity_type']
+            - ['=']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.ancestor:
+        class: '%pim_catalog.query.elasticsearch.filter.ancestor_id.class%'
+        arguments:
+            - '@pim_catalog.repository.product_model'
+            - ['ancestor.id']
+            - ['IN', 'NOT IN']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.ancestor_code:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\AncestorCodeFilter'
+        arguments:
+            - '@pim_catalog.repository.product_model'
+            - ['ancestor.code']
+            - ['=', 'IN', 'NOT IN']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.self_and_ancestor:
+        class: '%pim_catalog.query.elasticsearch.filter.self_and_ancestor.class%'
+        arguments:
+            - '@pim_catalog.repository.product_model'
+            - '@pim_catalog.repository.product'
+            - ['self_and_ancestor.id']
+            - ['IN', 'NOT IN']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.self_and_ancestor_label_or_identifier:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\SelfAndAncestorFilterLabelOrIdentifier'
+        arguments:
+            - ['self_and_ancestor.label_or_identifier']
+            - ['CONTAINS']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    # Attributes filters
+    pim_catalog.query.elasticsearch.filter.identifier_attribute:
+        class: '%pim_catalog.query.elasticsearch.filter.identifier_attribute.class%'
+        arguments:
+            - ['pim_catalog_identifier']
+            - ['STARTS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', '!=', 'IN', 'NOT IN', 'EMPTY', 'NOT EMPTY']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.number:
+        class: '%pim_catalog.query.elasticsearch.filter.number.class%'
+        arguments:
+            - '@pim_catalog.validator.helper.attribute_filter'
+            - ['pim_catalog_number']
+            - ['<', '<=', '=', '!=', '>=', '>', 'EMPTY', 'NOT EMPTY']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    pim_catalog.doctrine.query.filter.date:
+        class: '%pim_catalog.query.elasticsearch.filter.date.class%'
+        arguments:
+            - '@pim_catalog.validator.helper.attribute_filter'
+            - ['pim_catalog_date']
+            - ['=', '<', '>', 'BETWEEN', 'NOT BETWEEN', 'EMPTY', 'NOT EMPTY', '!=']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.text:
+        class: '%pim_catalog.query.elasticsearch.filter.text.class%'
+        arguments:
+            - '@pim_catalog.validator.helper.attribute_filter'
+            - ['pim_catalog_text']
+            - ['STARTS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY', 'NOT EMPTY', '!=']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.text_area:
+        class: '%pim_catalog.query.elasticsearch.filter.text_area.class%'
+        arguments:
+            - '@pim_catalog.validator.helper.attribute_filter'
+            - ['pim_catalog_textarea']
+            - ['STARTS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY', 'NOT EMPTY', '!=']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.option:
+        class: '%pim_catalog.query.elasticsearch.filter.option.class%'
+        arguments:
+            - '@pim_catalog.validator.helper.attribute_filter'
+            - '@pim_catalog.repository.attribute_option'
+            - ['pim_catalog_simpleselect', 'pim_catalog_multiselect']
+            - ['IN', 'EMPTY', 'NOT EMPTY', 'NOT IN']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.price:
+        class: '%pim_catalog.query.elasticsearch.filter.price.class%'
+        arguments:
+            - '@pim_catalog.validator.helper.attribute_filter'
+            - '@pim_catalog.query.find_activated_currencies'
+            - ['pim_catalog_price_collection']
+            - ['<', '<=', '=', '!=', '>=', '>', 'EMPTY', 'EMPTY FOR CURRENCY', 'EMPTY ON ALL CURRENCIES', 'NOT EMPTY', 'NOT EMPTY ON AT LEAST ONE CURRENCY', 'NOT EMPTY FOR CURRENCY']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.metric:
+        class: '%pim_catalog.query.elasticsearch.filter.metric.class%'
+        arguments:
+            - '@pim_catalog.validator.helper.attribute_filter'
+            - '@akeneo_measure.manager'
+            - '@akeneo_measure.measure_converter'
+            - ['pim_catalog_metric']
+            - ['<', '<=', '=', '!=', '>=', '>', 'EMPTY', 'EMPTY FOR CURRENCY', 'EMPTY ON ALL CURRENCIES', 'NOT EMPTY', 'NOT EMPTY ON AT LEAST ONE CURRENCY', 'NOT EMPTY FOR CURRENCY']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.media:
+        class: '%pim_catalog.query.elasticsearch.filter.media.class%'
+        arguments:
+            - '@pim_catalog.validator.helper.attribute_filter'
+            - ['pim_catalog_file', 'pim_catalog_image']
+            - ['STARTS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', '!=', 'EMPTY', 'NOT EMPTY']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    # Fields sorters
+    pim_catalog.query.elasticsearch.sorter.datetime:
+        class: '%pim_catalog.query.elasticsearch.sorter.base_field.class%'
+        arguments:
+            - ['updated', 'created']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.sorter.family:
+        class: '%pim_catalog.query.elasticsearch.sorter.family.class%'
+        arguments:
+            - '@pim_catalog.repository.locale'
+            - [ 'family' ]
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
+
+    Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Sorter\Field\IdSorter:
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.sorter.identifier:
+        class: '%pim_catalog.query.elasticsearch.sorter.identifier.class%'
+        arguments:
+            - ['identifier']
+            - ['pim_catalog_identifier']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.sorter.completeness:
+        class: '%pim_catalog.query.elasticsearch.sorter.completeness.class%'
+        arguments:
+            - ['completeness']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.sorter.status:
+        class: '%pim_catalog.query.elasticsearch.sorter.base_field.class%'
+        arguments:
+            - ['enabled']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.sorter.id:
+        class: '%pim_catalog.query.elasticsearch.sorter.base_field.class%'
+        arguments:
+            - ['id']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
+
+    # Attributes sorters
+    pim_catalog.query.elasticsearch.sorter.metric:
+        class: '%pim_catalog.query.elasticsearch.sorter.attribute.metric.class%'
+        arguments:
+            - '@pim_catalog.validator.helper.attribute'
+            - ['pim_catalog_metric']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.sorter.boolean:
+        class: '%pim_catalog.query.elasticsearch.sorter.attribute.base.class%'
+        arguments:
+            - '@pim_catalog.validator.helper.attribute'
+            - ['pim_catalog_boolean']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.sorter.text:
+        class: '%pim_catalog.query.elasticsearch.sorter.attribute.base.class%'
+        arguments:
+            - '@pim_catalog.validator.helper.attribute'
+            - ['pim_catalog_text']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.sorter.text_area:
+        class: '%pim_catalog.query.elasticsearch.sorter.attribute.text_area.class%'
+        arguments:
+            - '@pim_catalog.validator.helper.attribute'
+            - ['pim_catalog_textarea']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.sorter.number:
+        class: '%pim_catalog.query.elasticsearch.sorter.attribute.base.class%'
+        arguments:
+            - '@pim_catalog.validator.helper.attribute'
+            - ['pim_catalog_number']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.sorter.option:
+        class: '%pim_catalog.query.elasticsearch.sorter.attribute.base.class%'
+        arguments:
+            - '@pim_catalog.validator.helper.attribute'
+            - ['pim_catalog_simpleselect']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.sorter.date:
+        class: '%pim_catalog.query.elasticsearch.sorter.attribute.base.class%'
+        arguments:
+            - '@pim_catalog.validator.helper.attribute'
+            - ['pim_catalog_date']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
+
+    pim.reference_data.query.filter.reference_data:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Attribute\ReferenceDataFilter'
+        arguments:
+            - '@pim_catalog.validator.helper.attribute_filter'
+            - '@pim_reference_data.repository_resolver'
+            - '@pim_reference_data.registry'
+            - ['pim_reference_data_simpleselect', 'pim_reference_data_multiselect']
+            - ['IN', 'EMPTY', 'NOT EMPTY', 'NOT IN']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    pim.reference_data.query.sorter.attribute.reference_data:
+        class: '%pim_catalog.query.elasticsearch.sorter.attribute.base.class%'
+        arguments:
+            - '@pim_catalog.validator.helper.attribute'
+            - ['pim_reference_data_simpleselect']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
+
+    pim_enrich.factory.product_and_product_model_from_size_cursor:
+        public: false
+        class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\FromSizeCursorFactory'
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.product_model'
+            - '%pim_enrich.datagrid.product_batch_size%'
+            - 'pim_catalog_product'
+
+    pim_catalog.query.elasticsearch.sorter.in_group:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Sorter\InGroupSorter'
+        arguments:
+            - '@pim_catalog.repository.group'
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
+
+    # Filters
+    pim_enrich.product_query_builder.filter.dummy:
+        class: 'Akeneo\Pim\Enrichment\Bundle\ProductQueryBuilder\Filter\DummyFilter'
+        arguments:
+            - []
+            - ['enabled', 'completeness']
+            - ['ALL']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    # Services used by the products and product models' grid
+    # here, products and product models should be gathered by the most top level product model
+    akeneo.pim.enrichment.query.product_query_builder_from_size_factory.with_product_identifier_cursor:
+        public: false
+        class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ProductAndProductModelQueryBuilderFactory'
+        arguments:
+            - 'Akeneo\Pim\Enrichment\Component\Product\Query\ProductAndProductModelQueryBuilder'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.filter.product_and_product_model_registry'
+            - '@pim_catalog.query.sorter.registry'
+            - '@akeneo.pim.enrichment.factory.product_and_product_model_identifier_cursor_from_size_cursor'
+            - '@pim_catalog.elasticsearch.product_query_builder_from_size_resolver'
+
+    akeneo.pim.enrichment.query.product_and_product_model_query_builder_from_size_factory.with_product_identifier_cursor:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ProductAndProductModelQueryBuilderWithSearchAggregatorFactory'
+        arguments:
+            - 'Akeneo\Pim\Enrichment\Bundle\ProductQueryBuilder\ProductAndProductModelQueryBuilder'
+            - '@akeneo.pim.enrichment.query.product_query_builder_from_size_factory.with_product_identifier_cursor'
+            - '@pim_enrich.query.product_and_product_model_search_aggregator'
+
+    pim_enrich.query.product_and_product_model_query_builder_from_size_factory:
+        class: '%pim_enrich.query.elasticsearch.product_and_product_model_query_builder_factory.class%'
+        arguments:
+            - '%pim_enrich.query.product_and_product_model_query_builder.class%'
+            - '@pim_enrich.query.product_query_builder_from_size_factory.with_product_and_product_model_from_size_cursor'
+            - '@pim_enrich.query.product_and_product_model_search_aggregator'
+
+    pim_enrich.query.product_query_builder_from_size_factory.with_product_and_product_model_from_size_cursor:
+        public: false
+        class: '%pim_catalog.query.elasticsearch.product_and_model_query_builder_factory.class%'
+        arguments:
+            - '%pim_catalog.query.product_and_product_model_query_builder.class%'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.filter.product_and_product_model_registry'
+            - '@pim_catalog.query.sorter.registry'
+            - '@pim_enrich.factory.product_and_product_model_from_size_cursor'
+            - '@pim_catalog.elasticsearch.product_query_builder_from_size_resolver'
+
+    pim_enrich.query.product_query_sequential_edit_builder_factory:
+        class: '%pim_catalog.query.elasticsearch.product_and_model_query_builder_factory.class%'
+        arguments:
+            - '%pim_catalog.query.product_and_product_model_query_builder.class%'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.filter.product_and_product_model_registry'
+            - '@pim_catalog.query.sorter.registry'
+            - '@pim_enrich.factory.sequential_edit_product_cursor'
+            - '@pim_catalog.query.product_query_builder_resolver'
+
+    pim_enrich.factory.sequential_edit_product_cursor:
+        class: '%pim_catalog.elasticsearch.cursor_factory.class%'
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.product_model'
+            - 1000
+
+    pim_enrich.query.product_and_product_model_search_aggregator:
+        public: false
+        class: '%pim_enrich.query.product_and_product_model_search_aggregator.class%'
+        arguments:
+            - '@pim_catalog.repository.category'
+
+    pim_enrich.query.product_and_product_model_query_sequential_edit_builder_factory:
+        class: '%pim_enrich.query.elasticsearch.product_and_product_model_query_builder_factory.class%'
+        arguments:
+            - '%pim_enrich.query.product_and_product_model_query_builder.class%'
+            - '@pim_enrich.query.product_query_sequential_edit_builder_factory'
+            - '@pim_enrich.query.product_and_product_model_search_aggregator'
+
+    pim_enrich.query.product_and_product_model_document_type_facet_factory:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Facet\ProductAndProductsModelDocumentTypeFacetFactory'

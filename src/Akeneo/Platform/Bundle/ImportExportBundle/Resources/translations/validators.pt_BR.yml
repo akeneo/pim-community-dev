@@ -1,0 +1,4 @@
+This directory is not writable: Esse diretório não tem permissão de escrita.
+This directory is not valid: Esse não é um diretório válido.
+pim_import_export.job_instance.unknown_job_definition: Falha ao criar %job_type% com uma definição de trabalho indefinida
+This code is already taken: Esse código já está em uso

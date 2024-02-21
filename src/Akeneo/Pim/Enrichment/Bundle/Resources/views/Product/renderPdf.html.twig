@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{ product.identifier }} - {{ renderingDate|date }}</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <style type="text/css">
+            {% if (null != customFont) %}
+                @font-face {
+                    font-family: "Custom font";
+                    font-style: normal;
+                    font-weight: 400;
+                    src: url({{ customFont }}) format('truetype');
+                }
+            {% endif %}
+
+            body {
+                font-family: "Custom font", "DejaVu Sans", monospace;
+                font-weight: 400 !important;
+                font-size: 14px;
+            }
+
+            .header {
+                margin-bottom: 20px;
+                width: 100%;
+            }
+
+            .header h1 {
+                margin-bottom: 5px;
+            }
+
+            .header .rendering-date {
+                font-size: 15px;
+            }
+
+            .images {
+                width: 100%;
+                overflow: hidden;
+            }
+
+            .images img {
+                max-height: 100px;
+                display: inline-block;
+                margin-right: 20px;
+                margin-bottom: 20px;
+            }
+
+            .attribute-groups h2 {
+                width: 100%;
+                background: #7887AB;
+                color: white;
+                padding: 2.5px 5px;
+                font-size: 23px;
+                text-transform: uppercase;
+                margin: 0px;
+            }
+
+            .group {
+                border: 1px solid #aaa;
+                margin-bottom: 20px;
+            }
+
+            .attributes {
+                clear:both;
+                position:relative;
+            }
+
+            .left-column {
+                position: absolute;
+                left: 0;
+                padding: 5px;
+                width: 35%;
+            }
+
+            .right-column {
+                margin-left: 35%;
+                padding: 5px;
+                width: 65%;
+            }
+
+            .attributes.pim_catalog_text.han-text .right-column,
+            .attributes.pim_catalog_textarea.han-text .right-column {
+                font-family: 'fireflysung', "DejaVu Sans", monospace;
+            }
+
+            table {
+                table-layout: fixed;
+                border-spacing : 0;
+                border-collapse : collapse;
+                margin-left: -250px;
+                margin-top: 30px;
+                width: 450px;
+            }
+            table > thead > tr > th,
+            table > tbody > tr > td {
+                font-size: 9px;
+                height: 29px;
+                padding: 0 10px;
+                text-align: left;
+            }
+            table > thead > tr > th {
+                background: #f0f1f3;
+                border: 1px solid #e8ebee;
+                font-weight: bold;
+            }
+            table > tbody > tr > td {
+                border: 1px solid #e8ebee;
+            }
+            table > tbody > tr:nth-child(2n+1) > td {
+                background: #f6f7fb;
+            }
+
+        </style>
+    </head>
+    <body>
+        <div class="header">
+            {% block header %}
+                <h1>{{ product.getLabel(locale, scope) }} {{ product.identifier != product.getLabel(locale, scope) ? '(' ~ product.identifier ~ ')' : '' }}</h1>
+                <span class="rendering-date">{{ renderingDate|date }}</span>
+            {% endblock %}
+        </div>
+        <div class="images">
+            {% block images %}
+                {% for imagePath in imagePaths %}
+                    <img src="media/cache/{{ filter }}/{{ imagePath }}">
+                {% endfor %}
+            {% endblock %}
+        </div>
+        <div class="attribute-groups">
+            {% for group, attributes in groupedAttributes %}
+                {% block attribute_group %}
+                    <div class="group">
+                        <h2>{{ group }}</h2>
+                        {% for attribute in attributes %}
+                            {% block attribute %}
+                                {% set locale_attribute = attribute.isLocalizable or attribute.isLocaleSpecific ? locale : null %}
+                                {% set channel_attribute = attribute.isScopable ? scope : null %}
+                                {% set content = product.getValue(attribute.code, locale_attribute, channel_attribute) %}
+                                {% set manualHeight = true %}
+
+                                {% if 'pim_catalog_image' == attribute.type and content.data is defined and content.data is not null %}
+                                    {% set manualHeight = false %}
+                                {% endif %}
+
+                                {% if content != null and manualHeight == true %}
+                                    {% set manualHeight = attribute.label|length > (content|trim|length / 3) %}
+                                {% endif %}
+
+                                <div class="attributes {{ attribute.type }} {% if contains_han_characters(content) %}han-text{% endif %}"
+                                        {% if manualHeight %} style="height: {{ (attribute.label|length / 30)|round(0, 'ceil') * 18 + 10 }}px"{% endif %}>
+                                    <div class="left-column">
+                                        {{ attribute.label }}
+                                    </div>
+                                    <div class="right-column">
+                                        {{ render_attribute_value(attribute, content, locale)|raw }}
+                                    </div>
+                                </div>
+                            {% endblock %}
+                        {% endfor %}
+                    </div>
+                {% endblock %}
+            {% endfor %}
+        </div>
+    </body>
+</html>

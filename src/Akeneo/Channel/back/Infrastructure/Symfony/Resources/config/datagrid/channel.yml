@@ -1,0 +1,66 @@
+datagrid:
+    channel-grid:
+        options:
+            entityHint: channel
+            locale_parameter: localeCode
+            manageFilters: false
+        source:
+            acl_resource: pim_enrich_channel_index
+            type: pim_datasource_channel
+        columns:
+            label:
+                label: Label
+                frontend_type: label
+            category:
+                label:     Category tree
+                data_name: categoryLabel
+        properties:
+            id: ~
+            edit_link:
+                type: url
+                route: pim_enrich_channel_edit
+                params:
+                    - code
+            delete_link:
+                type: url
+                route: pim_enrich_channel_rest_remove
+                params:
+                    - code
+        actions:
+            edit:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--edit
+                type:      navigate
+                label:     pim_common.edit
+                link:      edit_link
+                rowAction: true
+                acl_resource: pim_enrich_channel_edit
+            delete:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--trash
+                type:  delete
+                label: pim_common.delete
+                link:  delete_link
+                acl_resource: pim_enrich_channel_remove
+        sorters:
+            columns:
+                label:
+                    data_name: channelLabel
+                category:
+                    data_name: categoryLabel
+            default:
+                label: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
+        filters:
+            columns:
+                label:
+                    type:      search
+                    label:     Label
+                    data_name: translation.label
+                category:
+                    type:      choice
+                    label:     Category tree
+                    data_name: category.code
+                    options:
+                        field_options:
+                            multiple: true
+                            choices:  '@pim_enrich.repository.category->findTranslatedLabels'

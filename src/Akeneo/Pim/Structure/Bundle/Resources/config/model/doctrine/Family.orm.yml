@@ -1,0 +1,74 @@
+Akeneo\Pim\Structure\Component\Model\Family:
+    type: entity
+    table: pim_catalog_family
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    repositoryClass: Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\FamilyRepository
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        code:
+            type: string
+            length: 100
+            unique: true
+        created:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: create
+        updated:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: update
+    manyToMany:
+        attributes:
+            targetEntity: Akeneo\Pim\Structure\Component\Model\AttributeInterface
+            inversedBy: families
+            joinTable:
+                name: pim_catalog_family_attribute
+                joinColumns:
+                     family_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+                inverseJoinColumns:
+                    attribute_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+    oneToMany:
+        familyVariants:
+            targetEntity: Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface
+            mappedBy: family
+        translations:
+            targetEntity: Akeneo\Pim\Structure\Component\Model\FamilyTranslationInterface
+            mappedBy: foreignKey
+            cascade:
+                - persist
+                - detach
+                - remove
+            orphanRemoval: true
+            indexBy: locale
+        requirements:
+            targetEntity: Akeneo\Pim\Structure\Component\Model\AttributeRequirementInterface
+            mappedBy: family
+            orphanRemoval: true
+            cascade:
+                - persist
+                - detach
+                - remove
+                - refresh
+    manyToOne:
+        attributeAsLabel:
+            targetEntity: Akeneo\Pim\Structure\Component\Model\AttributeInterface
+            joinColumns:
+                label_attribute_id:
+                    referencedColumnName: id
+                    onDelete: 'SET NULL'
+        attributeAsImage:
+            targetEntity: Akeneo\Pim\Structure\Component\Model\AttributeInterface
+            joinColumns:
+                image_attribute_id:
+                    referencedColumnName: id
+                    onDelete: 'SET NULL'

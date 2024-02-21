@@ -1,0 +1,15 @@
+extensions:
+    pim-menu-measurements-settings:
+        module: pim/menu/item
+        parent: pim-menu-product-settings-block
+        aclResourceId: akeneo_measurements_manage_settings
+        position: 40
+        config:
+            title: pim_menu.item.measurements
+            to: akeneo_measurements_settings_index
+
+    pim-measurements-user-navigation:
+        module: pim/menu/user-navigation
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout

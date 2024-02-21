@@ -1,0 +1,158 @@
+extensions:
+    akeneo-text-filter:
+        module: pim/filter/text
+
+    akeneo-product-family-filter:
+        module: pim/filter/product/family
+        config:
+            url: pim_enrich_family_rest_index
+
+
+    akeneo-product-quality-score-filter:
+        module: pim/filter/product/quality-score
+        config:
+            operators:
+                - IN AT LEAST ONE LOCALE
+                - IN ALL LOCALES
+
+    akeneo-product-model-quality-score-filter:
+        module: pim/filter/product/quality-score
+        config:
+            operators:
+                - IN AT LEAST ONE LOCALE
+                - IN ALL LOCALES
+
+    akeneo-product-completeness-filter:
+        module: pim/filter/product/completeness
+        config:
+            neverEmpty: true
+            operators:
+                - GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE
+                - ALL
+                - GREATER OR EQUALS THAN ON ALL LOCALES
+                - LOWER THAN ON ALL LOCALES
+
+    akeneo-product-model-completeness-filter:
+        module: pim/filter/product/completeness
+        config:
+            neverEmpty: false
+            operators:
+                - ALL
+                - AT LEAST COMPLETE
+                - ALL COMPLETE
+
+    akeneo-product-category-filter:
+        module: pim/filter/product/category
+
+    akeneo-product-enabled-filter:
+        module: pim/filter/product/enabled
+
+    akeneo-product-updated-filter:
+        module: pim/filter/product/updated
+        config:
+            operators:
+                - ALL
+                - SINCE LAST N DAYS
+                - ">"
+                - SINCE LAST JOB
+
+    akeneo-attribute-identifier-filter:
+        module: pim/filter/attribute/identifier
+
+    akeneo-attribute-boolean-filter:
+        module: pim/filter/attribute/boolean
+
+    akeneo-attribute-metric-filter:
+        module: pim/filter/attribute/metric
+        config:
+            operators:
+                - "="
+                - "!="
+                - ">="
+                - ">"
+                - "<="
+                - "<"
+                - EMPTY
+                - NOT EMPTY
+
+    akeneo-attribute-number-filter:
+        module: pim/filter/attribute/number
+        config:
+            operators:
+                - "="
+                - "!="
+                - ">="
+                - ">"
+                - "<="
+                - "<"
+                - EMPTY
+                - NOT EMPTY
+
+    akeneo-attribute-price-collection-filter:
+        module: pim/filter/attribute/price-collection
+        config:
+            operators:
+                - "="
+                - "!="
+                - ">="
+                - "<="
+                - ">"
+                - "<"
+                - EMPTY
+                - NOT EMPTY
+
+    akeneo-attribute-string-filter:
+        module: pim/filter/attribute/string
+        config:
+            operators:
+                - CONTAINS
+                - DOES NOT CONTAIN
+                - "="
+                - STARTS WITH
+                - ENDS WITH
+                - EMPTY
+                - NOT EMPTY
+
+    akeneo-attribute-select-filter:
+        module: pim/filter/attribute/select
+        config:
+            url: pim_ui_ajaxentity_list
+            entityClass: Akeneo\Pim\Structure\Component\Model\AttributeOption
+            operators:
+                - IN
+                - EMPTY
+                - NOT EMPTY
+
+    akeneo-attribute-select-reference-data-filter:
+        module: pim/filter/attribute/select
+        config:
+            url: pim_ui_ajaxentity_list
+            operators:
+                - IN
+                - EMPTY
+                - NOT EMPTY
+
+    akeneo-attribute-media-filter:
+        module:  pim/filter/attribute/media
+        config:
+            operators:
+                - CONTAINS
+                - DOES NOT CONTAIN
+                - "="
+                - STARTS WITH
+                - ENDS WITH
+                - EMPTY
+                - NOT EMPTY
+
+    akeneo-attribute-date-filter:
+        module: pim/filter/attribute/date
+        config:
+            operators:
+                - ">"
+                - "<"
+                - "="
+                - "!="
+                - BETWEEN
+                - NOT BETWEEN
+                - EMPTY
+                - NOT EMPTY

@@ -1,0 +1,24 @@
+<div class="AknFieldContainer-header">
+    <label class="AknFieldContainer-label control-label required" for="pim_enrich_channel_form_currencies">
+        <%- label %> <em><%- requiredLabel %></em>
+    </label>
+</div>
+<div class="AknFieldContainer-inputContainer">
+    <select class="select2" multiple id="pim_enrich_channel_form_currencies">
+        <% _.each(currencies, function (currency) { %>
+        <option value="<%- currency.code %>"
+            <%- _.contains(currentCurrencies, currency.code) ? 'selected' : '' %>>
+            <%- currency.code %>
+        </option>
+        <% }); %>
+    </select>
+</div>
+<div class="AknFieldContainer-footer">
+    <span class="AknFieldContainer-validationErrors validation-errors">
+        <% _.each(errors, function (error) { %>
+            <span class="AknFieldContainer-validationError">
+                <span class="error-message"><%- error %></span>
+            </span>
+        <% }); %>
+    </span>
+</div>

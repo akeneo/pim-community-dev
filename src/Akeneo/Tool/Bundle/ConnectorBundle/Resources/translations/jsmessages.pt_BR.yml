@@ -1,0 +1,145 @@
+#Job labels
+batch_jobs:
+  default_steps:
+    validation: Validação de Arquivo
+    import_associations: Importar Associação
+    import_root_product_model: Importação do modelo de produto de raiz
+    import_sub_product_model: Importar modelo de subproduto
+    compute_data_related_to_family_root_product_models: Calcular dados dos modelos de produtos raiz
+    compute_data_related_to_family_sub_product_models: Calcular dados dos modelos de subproduto
+    compute_data_related_to_family_products: Calcular dados de produtos
+    compute_family_variant_structure_changes: Calcular mudanças na estrutura da variante de família
+    compute_completeness_of_products_family: Calcular a completude da família de produtos
+  csv_product_export:
+    label: Exportar Produto em CSV
+    export.label: Exportar Produto
+  csv_product_model_export:
+    label: Exportação de modelo de produto em CSV
+    export.label: Exportação de modelo de produto
+  csv_category_export:
+    label: Exportar Categoria em CSV
+    export.label: Exportar Categoria
+  csv_attribute_export:
+    label: Exportar Atributo em CSV
+    export.label: Exportar Atributo
+  csv_attribute_option_export:
+    label: Opção de Atributo Exportar em CSV
+    export.label: Exportar Opção de Atributo
+  csv_association_type_export:
+    label: Tipo de Associação Exportar em CSV
+    export.label: Exportar tipo de associação
+  csv_group_export:
+    label: Exportar grupo em CSV
+    export.label: Exportar Grupo
+  csv_family_export:
+    label: Exportação de família em CSV
+    export.label: Exportação de família
+  csv_family_variant_export:
+    label: Exportação de variante de família em CSV
+    export.label: Exportação de variante de família
+  csv_product_import:
+    label: Importar Produtos em CSV
+    import.label: Importar Produto
+  csv_product_model_import:
+    label: Exportação de modelo de produto em CSV
+    import_product_model_descendants.label: Calcular os modelos de produto descendentes
+  csv_category_import:
+    label: Importar Categoria em CSV
+    import.label: Importar Categoria
+  csv_attribute_import:
+    label: Importar Atributo em CSV
+    import.label: Importar Atributo
+  csv_attribute_option_import:
+    label: Importar Opção de Atributo em CSV
+    import.label: Importar Opção de Atributo
+  csv_association_type_import:
+    label: Importar Tipo de Associação em CSV
+    import.label: Importar Tipo de Associação
+  csv_family_import:
+    label: Importar família em CSV
+    import.label: Importar família
+    compute_data_related_to_family_variants.label: Calcular os dados dos modelos de produto
+  csv_family_variant_import:
+    label: Importação de variante de família em CSV
+    import.label: Importação de variante de família
+  csv_group_import:
+    label: Importar Grupo em CSV
+    import.label: Importar Grupo
+  csv_attribute_group_export:
+    label: Exportação de grupo de atributos em CSV
+    export.label: Exportação de grupo de atributos
+  csv_group_type_export:
+    label: Exportação de tipos de grupo em CSV
+    export.label: Exportação de tipos de grupo
+  csv_attribute_group_import:
+    label: Importação de grupo de atributos em CSV
+    import.label: Importação de grupo de atributos
+  csv_group_type_import:
+    label: Importação de tipos de grupo em CSV
+    import.label: Grupo tipo importação
+  xlsx_category_import:
+    label: Importação de categorias em XLSX
+    import.label: Importar Categoria
+  xlsx_association_type_import:
+    label: Importação de tipos de associação em XLSX
+    import.label: Importar Tipo de Associação
+  xlsx_attribute_import:
+    label: Importação de atributos em XLSX
+    import.label: Importar Atributo
+  xlsx_attribute_option_import:
+    label: Importação de opções de atributos em XLSX
+    import.label: Importar Opção de Atributo
+  xlsx_family_import:
+    label: Importação de família em XLSX
+    import.label: Importar família
+  xlsx_family_variant_import:
+    label: Importação de variante de família em XLSX
+    import.label: Importação de variante de família
+  xlsx_product_export:
+    label: Exportação de produto em XLSX
+    export.label: Exportar Produto
+  xlsx_product_model_export:
+    label: Exportação de modelo de produto em XLSX
+    export.label: Exportação de modelo de produto
+  xlsx_product_import:
+    label: Importação de produto em XLSX
+    import.label: Importar Produto
+  xlsx_product_model_import:
+    label: Importação de modelo de produto em XLSX
+    import_product_model_descendants.label: Calcular os modelos de produto descendentes
+  xlsx_group_export:
+    label: Exportação de grupos em XLSX
+    export.label: Exportar Grupo
+  xlsx_group_import:
+    label: Importação de grupos em XLSX
+    import.label: Importar Grupo
+  xlsx_family_export:
+    label: Exportação de famílias em XLSX
+    export.label: Exportação de família
+  xlsx_family_variant_export:
+    label: Exportação de variante de família em XLSX
+    export.label: Exportação de variante de família
+  xlsx_category_export:
+    label: Exportação de categorias em XLSX
+    export.label: Exportar Categoria
+  xlsx_attribute_export:
+    label: Exportação de atributos em XLSX
+    export.label: Exportação de atributos em XLSX
+  xlsx_attribute_option_export:
+    label: Exportação de opções de atributos em XLSX
+    export.label: Exportação de opções de atributos em XLSX
+  xlsx_association_type_export:
+    label: Exportação de tipos de associação em XLSX
+    export.label: Exportação de tipos de associação em XLSX
+  xlsx_attribute_group_export:
+    label: Exportação de grupo de atributos em XLSX
+    export.label: Exportação de grupo de atributos
+  xlsx_group_type_export:
+    label: Exportação de tipos de grupos em XLSX
+    export.label: Exportação de tipos de grupo
+  xlsx_attribute_group_import:
+    label: Importação de grupos de atributos em XLSX
+    import.label: Importação de grupo de atributos
+  xlsx_group_type_import:
+    label: Importação de tipos de grupo em XLSX
+    import.label: Grupo tipo importação

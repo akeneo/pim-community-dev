@@ -1,0 +1,27 @@
+parameters:
+    pim_ui.controller.ajax_option.class: Akeneo\Platform\Bundle\UIBundle\Controller\AjaxOptionController
+
+services:
+    pim_ui.controller.ajax_option:
+        public: true
+        class: '%pim_ui.controller.ajax_option.class%'
+        arguments:
+            - '@doctrine'
+            - '@pim_reference_data.registry'
+
+    pim_localization.controller.locale:
+        public: true
+        class: 'Akeneo\Platform\Bundle\UIBundle\Controller\LocaleController'
+        arguments:
+            - '@pim_localization.provider.ui_locale'
+            - '@pim_internal_api_serializer'
+
+    Akeneo\Platform\Bundle\UIBundle\Controller\SettingsController:
+        public: true
+        arguments:
+            - '@akeneo.pim_ui.query.count_settings_entities_query'
+            -
+    Akeneo\Platform\Bundle\UIBundle\Controller\SystemController:
+        public: true
+        arguments:
+            - '@akeneo.pim_ui.query.count_system_entities_query'

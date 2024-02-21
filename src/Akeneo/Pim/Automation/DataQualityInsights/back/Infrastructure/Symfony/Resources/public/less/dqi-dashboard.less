@@ -1,0 +1,97 @@
+#data-quality-insights-activity-dashboard {
+    .AknFilterBox--search:not(:empty) {
+        min-height: 44px;
+        display: flex;
+        width: auto;
+        justify-content: flex-end;
+        background: none;
+        flex-wrap: wrap;
+        border-bottom: none;
+    }
+
+    .AknFilterBox-filterLabel {
+        color: @AknGrey140;
+    }
+
+    .AknBadge {
+        margin-left: 18px;
+    }
+
+    #AknFamily-filter {
+        width: 300px;
+        max-width: 300px !important;
+        height: 400px !important;
+        top: 0;
+        right: 0;
+
+        ul {
+            max-height: 325px !important;
+        }
+    }
+
+    #data-quality-insights-activity-dashboard-widgets {
+        margin-top: 40px;
+        display: flex;
+
+        .no-family {
+            text-align: center;
+
+            img {
+                height: 150px;
+            }
+        }
+
+        .AknGrid {
+            th {
+                color: @AknGrey140;
+                font-size: 13px;
+            }
+            td:not(.AknGrid-bodyCell--actions) {
+                padding: 12px 4px;
+
+                &.AknGrid-bodyCell--highlight {
+                    font-weight: bold;
+                    font-style: italic;
+                    font-size: 13px;
+                }
+            }
+        }
+
+        .AknDataQualityInsights-widgetColumn {
+            flex: 1;
+
+            &:first-child {
+                padding-right: 40px;
+            }
+        }
+    }
+}
+
+.modal.AknDataQualityInsightsCategoryModal {
+    ins {
+        display: inline-block;
+        text-decoration: none;
+        margin: 10px 5px 0 0;
+        padding: 0;
+        background-size: 24px 24px !important;
+        background-position: -1px -1px !important;
+    }
+
+    li {
+        display: block;
+        min-height: 18px;
+        white-space: nowrap;
+        margin-left: 18px;
+        min-width: 18px;
+    }
+}
+
+.modal.AknDataQualityInsightsFamilyFilter {
+    .select2-container {
+        margin-top: 8px;
+        width: 600px;
+    }
+    .AknMessageBox {
+        width: 600px;
+    }
+}

@@ -1,0 +1,10 @@
+{% extends "@PimNotification/Email/notification.txt.twig" %}
+
+{% block emailMessage %}
+    Dear {{ user.userIdentifier }},
+    We just received a request to reset your Akeneo PIM password.
+    If that was you, then you can change your password by clicking the link below.
+
+    {% set url = url('pim_user_reset_reset', { token: user.confirmationToken }) %}
+    RESET PASSWORD : {{ url }}
+{% endblock %}

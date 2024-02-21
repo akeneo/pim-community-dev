@@ -1,0 +1,13 @@
+<div class="AknColumn-navigation">
+    <div class="AknSecondaryActions AknDropdown">
+        <div class="AknSecondaryActions-button AknSecondaryActions-button--rotated dropdown-button" data-toggle="dropdown"></div>
+        <div class="AknDropdown-menu">
+            <div class="AknDropdown-menuTitle"><%= title %></div>
+            <% _.each(navigationItems, function (navigationItem) { %>
+                <div class="AknDropdown-menuLink navigation-link" data-tab="<%- navigationItem.route %>">
+                    <%- navigationItem.label %>
+                </div>
+            <% }); %>
+        </div>
+    </div>
+</div>

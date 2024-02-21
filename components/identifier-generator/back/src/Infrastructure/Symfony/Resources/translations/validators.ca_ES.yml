@@ -1,0 +1,28 @@
+validation:
+  create:
+    identifier_limit_reached: 'S''ha arribat al límit de generadors d''identificadors "{{limit}}"'
+    code_already_used: 'Aquest codi ja s''utilitza.'
+  update:
+    identifier_generator_code_not_found: 'El generador d''identificadors "{{code}}" no existeix o no teniu permís per accedir-hi.'
+  identifier_generator:
+    attribute_does_not_exist: 'L''atribut "{{code}}" no existeix.'
+    attribute_should_have_type: 'El codi d''atribut "{{ code }}" és de tipus "{{ type }}" i hauria de ser de tipus "{{ expected }}".'
+    free_text_string_field_required: 'El text lliure hauria de contenir la clau "cadena".'
+    enabled_value_field_required: 'Habilita quan conté la clau "valor".'
+    enabled_boolean_value: 'Aquest valor hauria de ser un booleà.'
+    auto_number_fields_required: 'Els camps "{{field}}" són obligatoris per al tipus "auto_number"'
+    structure_auto_number_limit_reached: 'només hauria de contenir {{limit}} número automàtic'
+    conditions_limit_reached: 'només hauria de contenir {{limit}} {{type}} condició'
+    unknown_operator: 'L''operador {{ value }} només pot ser un dels següents: {{ choices }}.'
+    families_do_not_exist: 'Les famílies següents s''han suprimit del vostre catàleg: {{ familyCodes }}. Podeu eliminar-los de la vostra selecció de productes.'
+    options_do_not_exist: 'Les opcions d''atribut següents no existeixen per a l''atribut "{{ attributeCode }}": {{ optionCodes }}.'
+    unknown_scope: 'El canal "{{ scopeCode }}" no existeix'
+    unknown_locale: 'La configuració regional "{{ localeCode }}" no existeix o no està activada,'
+    inactive_locale: 'La configuració regional "{{ localeCode }}" no està activa per al canal "{{ scopeCode }}".'
+    family_property_fields_required: 'El camp "{{ field }}" és obligatori per al tipus "família".'
+    simple_select_property_fields_required: '"{{ field }}" el camp és obligatori per al tipus "simple_select".'
+    reference_entity_property_fields_required: '"{{ field }}" el camp és obligatori per al tipus "reference_entity".'
+    process_unknown_operator: 'L''operador {{ value }} només pot ser un dels següents: {{ choices }}.'
+    locale_required: 'Es requereix una configuració regional per a l''atribut "{{ attributeCode }}".'
+    scope_required: 'Es requereix un canal per a l''atribut "{{ attributeCode }}".'
+    categories_do_not_exist: 'Les categories següents s''han suprimit del vostre catàleg: {{ categoryCodes }}. Podeu eliminar-los de la vostra selecció de productes.'

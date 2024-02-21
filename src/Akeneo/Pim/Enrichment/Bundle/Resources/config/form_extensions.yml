@@ -1,0 +1,3 @@
+attribute_fields:
+    akeneo-simple-select-reference-data-field: pim/reference-simple-select-field
+    akeneo-multi-select-reference-data-field:  pim/reference-multi-select-field

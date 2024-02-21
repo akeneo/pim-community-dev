@@ -1,0 +1,20 @@
+services:
+    Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\Persistence\ElasticsearchSelectLastConnectionBusinessErrorsQuery:
+        arguments:
+            - '@akeneo_connectivity.client.connection_error'
+
+    Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\Persistence\PurgeConnectionErrorsQuery:
+        arguments:
+            - '@akeneo_connectivity.client.connection_error'
+
+    Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\Persistence\DbalErrorCountRepository:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\Persistence\ElasticsearchBusinessErrorRepository:
+        arguments:
+            - '@akeneo_connectivity.client.connection_error'
+
+    Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\Persistence\SelectAllAuditableConnectionCodeQuery:
+        arguments:
+            - '@database_connection'

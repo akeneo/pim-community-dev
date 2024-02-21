@@ -1,0 +1,40 @@
+Acme\Bundle\AppBundle\Entity\Color:
+    repositoryClass: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ReferenceDataRepository
+    type: entity
+    table: acme_reference_data_color
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        code:
+            type: string
+            length: 255
+            unique: true
+        sortOrder:
+            type: integer
+        name:
+            type: string
+            length: 255
+        hex:
+            type: string
+            length: 255
+        red:
+            type: integer
+        green:
+            type: integer
+        blue:
+            type: integer
+        hue:
+            type: integer
+        hslSaturation:
+            type: integer
+        light:
+            type: integer
+        hsvSaturation:
+            type: integer
+        value:
+            type: integer
+    lifecycleCallbacks: {  }

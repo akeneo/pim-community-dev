@@ -1,0 +1,33 @@
+<select
+    id="pim_enrich_form_<%- fieldId %>"
+    class="select2"
+    name="<%- fieldName %>"
+    data-placeholder="<%- labels.defaultLabel %>"
+    <% if (multiple) { %>multiple<% } %>
+    <% if (readOnly) { %>readonly disabled<% } %>
+>
+    <option value=""<% if (!value) { %> selected<% } %>></option>
+    <% if (Object.keys(choices).length > 0 && Object.values(choices)[0] instanceof Object) { %>
+        <% _.each(choices, function (optGroupOptions, optGroupLabel) { %>
+            <optgroup label="<%- optGroupLabel %>">
+                <% _.each(optGroupOptions, function (choiceLabel, choiceValue) { %>
+                <option
+                    value="<%- choiceValue %>"
+                    <% if ((!multiple && choiceValue === value) || (multiple && _.contains(value, choiceValue))) { %> selected<% } %>
+                    >
+                    <%- choiceLabel %>
+                </option>
+                <% }); %>
+            </optgroup>
+        <% }); %>
+    <% } else { %>
+        <% _.each(choices, function (choiceLabel, choiceValue) { %>
+            <option
+                value="<%- choiceValue %>"
+                <% if ((!multiple && choiceValue === value) || (multiple && _.contains(value, choiceValue))) { %> selected<% } %>
+            >
+                <%- choiceLabel %>
+            </option>
+        <% }); %>
+    <% } %>
+</select>

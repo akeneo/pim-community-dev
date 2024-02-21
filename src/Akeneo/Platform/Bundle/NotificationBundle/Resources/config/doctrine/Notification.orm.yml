@@ -1,0 +1,31 @@
+Akeneo\Platform\Bundle\NotificationBundle\Entity\Notification:
+    type: entity
+    table: pim_notification_notification
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        route:
+            type: string
+            length: 255
+            nullable: true
+        routeParams:
+            type: array
+        message:
+            type: string
+            length: 255
+        messageParams:
+            type: array
+        comment:
+            type: string
+            length: 255
+            nullable: true
+        created:
+            type: datetime
+        type:
+            type: string
+            length: 20
+        context:
+            type: array

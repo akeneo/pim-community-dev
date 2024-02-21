@@ -1,0 +1,15 @@
+parameters:
+    pim_reference_data.filter.reference_data.class: Pim\Bundle\ReferenceDataBundle\DataGrid\Filter\ReferenceDataFilter
+
+services:
+    pim_reference_data.filter.reference_data:
+        class: '%pim_reference_data.filter.reference_data.class%'
+        arguments:
+            - '@form.factory'
+            - '@pim_filter.product_utility'
+            - '@pim_user.context.user'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_reference_data.registry'
+            - '@pim_catalog.repository.attribute_option'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: product_value_reference_data }

@@ -1,0 +1,23 @@
+pim_connector:
+  steps:
+    file_reader:
+      invalid_item_columns_count: 'Должно быть %totalColumnsCount% колонок, фактически %itemColumnsCount% в %filePath%:%lineno%'
+job_execution.summary:
+  read: прочитано
+  write: записано
+  skip: пропущено
+  create: создано
+  process: обработано
+  update_products: продуктов обновлено
+  process_products: обработанных продуктов
+  skip_products: пропущенных продуктов
+  displayed: первые предупреждения отображены
+  charset_validator:
+    title: 'Кодировка файла:'
+    skipped: пропущено, расширение в белом списке
+  product_skipped_no_diff: пропущен продукт (нет различий)
+  product_skipped_no_associations: пропущенный продукт (не обнаружено соответствий)
+  product_model_skipped_no_diff: пропущенная модель продукта (нет различий)
+  item_position: прочитанных строк
+  skipped_in_root_product_model: модель продукта пропущена вместе с родительской
+  skipped_in_sub_product_model: модель продукта пропущена без родительской

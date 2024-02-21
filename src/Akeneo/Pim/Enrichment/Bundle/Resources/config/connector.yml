@@ -1,0 +1,3 @@
+services:
+  pim_connector.analyzer.product:
+    class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ProductAnalyzer'

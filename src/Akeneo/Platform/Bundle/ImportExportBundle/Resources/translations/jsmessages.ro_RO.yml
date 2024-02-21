@@ -1,0 +1,160 @@
+job_execution:
+  summary:
+    display_item: Afişare element
+    hide_item: Ascunde element
+pim_connector:
+  export:
+    categories:
+      selector:
+        modal:
+          title: Selecție categorii
+        title: Selectaţi categoriile
+    locales:
+      validation:
+        not_blank: Un local trebuie sa fie selectat, va rugam sa alegeti un local pentru a fi exportat.
+pim_import_export:
+  entity:
+    job_instance:
+      label: profil de lucru
+      flash:
+        update:
+          success: Profilul de lucru a fost actualizat cu succes.
+          fail: Profilul de lucru nu s-a putut actualiza.
+        delete:
+          success: Instanța de muncă a fost ştearsă
+    import_profile:
+      uppercase_label: Importă profil
+    export_profile:
+      uppercase_label: Exportă profil
+  form:
+    job_execution:
+      title.details: Detalii de execuție
+      refreshBtn.title: Reîmprospătează
+      button:
+        show_profile.title: Arată profil
+        download_log.title: Descarcă jurnal
+        download_file.title: Descarcă fișierul generat
+      summary:
+        fetching: Se colectează datele despre executarea sarcinii...
+        warning: Avertisment
+        header.step: Pas
+        header.warnings: Avertismente
+        header.summary: Rezumat
+        header.start: Începe
+        header.end: Termină
+    job_instance:
+      button:
+        export.title: Exportă acum
+        import.launch: Importă acum
+        import.upload: Încarcă și importă acum
+        import.upload_file: Încarcă un fișier
+      meta:
+        job: Loc de muncă
+        connector: Conector
+      subsection:
+        last_executions: Ultimele execuții
+      tab:
+        content:
+          title: Conținut
+        properties:
+          decimal_separator:
+            title: Separator zecimal
+            help: Determinați separatorul zecimal
+          date_format:
+            title: Formatul datei
+            help: Determinați formatul câmpurilor de date
+          file_path:
+            title: Calea fișierului
+            help: Unde să se scrie fișierul generat pe sistemul de fișier
+          delimiter:
+            title: Delimitator
+          enclosure:
+            title: Împrejmuire
+          with_header:
+            help: Imprimați sau nu numele coloanei
+          lines_per_file:
+            title: Număr de linii per fișier
+            help: Definiți numărul limită de linii per fișier
+          upload_allowed:
+            title: Permite încărcarea fișierului
+            help: Permite sau nu încărcarea directă a fișierului
+          categories_column:
+            title: Coloană de categorii
+            help: Numele coloanei de categorii
+          family_column:
+            title: Coloană de familie
+            help: Numele coloanei de familie
+          groups_column:
+            title: Coloană de grupuri
+            help: Numele coloanei de grupuri
+          enabled:
+            title: Activați produsul
+            help: Produsul importat sau nu, trebuie să fie activat
+          enabled_comparison:
+            title: Comparați valorile
+            help: Activați comparația dintre valorile originale și valorile importate. Importul se poate accelera dacă valorile importate sunt foarte asemănătoare cu valorile originale
+          real_time_versioning:
+            title: Actualizarea istoria timpului real
+            help: Înseamnă că istoria produsului este actualizată automat, poate fi oprită pentru a îmbunătăți performanțele
+      file_path: Calea fișierului
+  widget:
+    last_operations:
+      empty: Nu a fost găsită nicio operație
+      date: Data
+      profile_name: Nume profil
+      details: Detalii
+      warning_count: Avertismente
+      job_type:
+        import: Importă
+        export: Exportă
+        mass_edit: Modificare în masă
+        quick_export: Exportare rapidă
+        compute_family_variant_structure_changes: Calculează schimbarile structurii de variantă de familie
+        compute_completeness_of_products_family: Calculează completitudinea familiei de produse
+      header.view_all: Vezi toate
+  batch_status:
+    1: Finalizat
+    2: Se porneşte
+    3: Inceput
+    4: Se opreşte
+    5: Oprit
+    6: Eşuată
+    7: Abandonată
+    8: Necunoscută
+  job_status:
+    COMPLETED: Finalizat
+    STARTING: Se porneşte
+    STARTED: Inceput
+    STOPPING: Se opreşte
+    STOPPED: Oprit
+    FAILED: Eşuată
+    ABANDONED: Abandonată
+    UNKNOWN: Necunoscută
+confirmation:
+  remove:
+    import_profile: Sunteti sigur ca doriti sa stergeti acest profil de import?
+    export_profile: Sunteti sigur ca doriti sa stergeti acest profil de export?
+    job_instance: Sunteți sigur că doriți să ştergeți această instanță de muncă?
+pim_enrich:
+  entity:
+    import_profile:
+      module:
+        delete:
+          confirm: Sunteți sigur că vreți să ștergeți acest profil de import?
+      flash:
+        delete:
+          success: Profilul de import a fost şters
+    export_profile:
+      module:
+        delete:
+          confirm: Sunteți sigur că vreți să ștergeți acest profil de export?
+      flash:
+        delete:
+          success: Profilul de export a fost şters
+pim_title:
+  pim_importexport_export_profile_index: Exportă profilele de management
+  pim_importexport_export_execution_index: Exportă istoricul executărilor
+  pim_importexport_export_execution_show: Exportă executările | Detalii
+  pim_importexport_import_profile_index: Importă profilele de management
+  pim_importexport_import_execution_index: Importă istoricul executărilor
+  pim_importexport_import_execution_show: Importă executările | Detalii

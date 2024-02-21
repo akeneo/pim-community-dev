@@ -1,0 +1,21 @@
+oneup_flysystem:
+    adapters:
+        catalog_storage_adapter:
+            awss3v3:
+                client: 'Aws\S3\S3Client'
+                bucket: 'catalog'
+        jobs_storage_adapter:
+            awss3v3:
+                client: 'Aws\S3\S3Client'
+                bucket: 'jobs'
+        archivist_adapter:
+            awss3v3:
+                client: 'Aws\S3\S3Client'
+                bucket: 'archive'
+        category_storage_adapter:
+            awss3v3:
+                client: 'Aws\S3\S3Client'
+                bucket: 'category'
+        local_storage_adapter:
+            local:
+                location: '%local_storage_root%'

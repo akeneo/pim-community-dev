@@ -1,0 +1,199 @@
+contexts: &context
+    -   Context\FeatureContext
+    -   Context\FeatureFlagContext
+    -   Context\FixturesContext
+    -   Context\CatalogConfigurationContext
+    -   Context\WebUser
+    -   Context\DataGridContext
+    -   Context\CommandContext
+    -   Context\NavigationContext
+    -   Context\TransformationContext
+    -   Context\AssertionContext
+    -   Context\ViewSelectorContext
+    -   Context\SecurityContext
+    -   Context\UserContext
+    -   Pim\Behat\Context\AttributeValidationContext
+    -   Pim\Behat\Context\Domain\Collect\ImportProfilesContext
+    -   Pim\Behat\Context\Domain\Enrich\AttributeTabContext
+    -   Pim\Behat\Context\Domain\Enrich\CompletenessContext
+    -   Pim\Behat\Context\Domain\Enrich\ProductGroupContext
+    -   Pim\Behat\Context\Domain\Enrich\ProductModelContext
+    -   Pim\Behat\Context\Domain\Enrich\ProductContext
+    -   Pim\Behat\Context\Domain\Enrich\VariantNavigationContext
+    -   Pim\Behat\Context\Domain\Spread\ExportBuilderContext
+    -   Pim\Behat\Context\Domain\Spread\ExportProfilesContext
+    -   Pim\Behat\Context\Domain\Spread\XlsxFileContext
+    -   Pim\Behat\Context\Domain\System\PermissionsContext
+    -   Pim\Behat\Context\Domain\SecondaryActionsContext
+    -   Pim\Behat\Context\Domain\TreeContext
+    -   Pim\Behat\Context\HookContext
+    -   Pim\Behat\Context\JobContext
+    -   Pim\Behat\Context\ImportExportFileContext
+    -   Pim\Behat\Context\Storage\FileInfoStorage
+    -   Pim\Behat\Context\Storage\ProductStorage
+    -   Pim\Behat\Context\Storage\ProductModelStorage
+    -   Pim\Behat\Context\Domain\Enrich\FamilyVariantConfigurationContext
+    -   Pim\Behat\Context\Domain\Enrich\ItemPickerContext
+    -   Pim\Behat\Context\Storage\VariantProductStorage
+    -   Pim\Behat\Context\Storage\AttributeOptionStorage
+    -   Pim\Behat\Context\MassEditJobContext
+    -   Akeneo\Connectivity\Connection\Tests\EndToEnd\Context\SettingsContext
+    -   Akeneo\Connectivity\Connection\Tests\EndToEnd\Context\AppActivateContext
+    -   Context\ConnectivityContext
+    -   Pim\Behat\Context\Domain\Structure\AssociationTypeContext
+    -   Pim\Behat\Context\Domain\Structure\CategoryContext
+    -   Pim\Behat\Context\FeatureFlagContext
+
+legacy:
+    suites:
+        critical:
+            contexts: *context
+            paths:
+                - tests/legacy/features
+            filters:
+                tags: '@critical&&~@ce&&~@skip&&~@skip-pef'
+        all:
+            contexts: *context
+            paths:
+                - tests/legacy/features
+                - src/Akeneo/Connectivity/Connection/tests/features/
+            filters:
+                tags: '~@skip&&~@skip-pef&&~@skip-nav&&~@doc&&~@unstable&&~@unstable-app&&~@deprecated&&~@critical&&~@optional'
+        chipmunk:
+            contexts: *context
+            paths:
+                - tests/legacy/features/pim/
+                - tests/legacy/features/platform/
+            filters:
+                tags: '~@skip&&~@skip-pef&&~@skip-nav&&~@doc&&~@unstable&&~@unstable-app&&~@deprecated&&~@critical'
+        raccoon:
+            contexts: *context
+            paths:
+                - tests/legacy/features/user-management/
+                - tests/legacy/features/channel/
+                - tests/legacy/features/platform/
+            filters:
+                tags: '~@skip&&~@skip-pef&&~@skip-nav&&~@doc&&~@unstable&&~@unstable-app&&~@deprecated&&~@critical'
+        weasel:
+            contexts: *context
+            paths:
+                - tests/legacy/features/platform/
+            filters:
+                tags: '~@skip&&~@skip-pef&&~@skip-nav&&~@doc&&~@unstable&&~@unstable-app&&~@deprecated&&~@critical'
+        connectivity:
+            contexts: *context
+            paths:
+                - src/Akeneo/Connectivity/Connection/tests/features/
+    extensions:
+        Behat\ChainedStepsExtension: ~
+        Behat\MinkExtension:
+            default_session: symfony
+            browser_name: 'chrome'
+            base_url: 'http://httpd/'
+            files_path: 'tests/legacy/features/Context/fixtures/'
+            javascript_session: selenium2
+            sessions:
+                symfony:
+                    symfony: ~
+                selenium2:
+                    selenium2:
+                        wd_host: 'http://selenium:4444/wd/hub'
+                        capabilities:
+                            browser: "chrome"
+                            browserName: "chrome"
+                            chrome:
+                                switches:
+                                    - "--window-size=1280,1024"
+                                    - "--start-maximized"
+                                    - "--no-sandbox"
+                                    - "--headless"
+                                prefs:
+                                    foo: "Just because prefs must be a dictionnary"
+        FriendsOfBehat\SymfonyExtension:
+            bootstrap: config/bootstrap.php
+            kernel:
+                path: src/Kernel.php
+                class: Kernel
+                environment: behat
+                debug: false
+        SensioLabs\Behat\PageObjectExtension:
+            namespaces:
+                page: [Context\Page, Akeneo\Connectivity\Connection\Tests\EndToEnd\Context\Page]
+            factory:
+                page_parameters:
+                    base_url: 'http://httpd/'
+        Pim\Behat\Extension\PimFormatter\PimFormatterExtension: ~
+        Liuggio\Fastest\Behat\ListFeaturesExtension\Extension: ~
+
+    formatters:
+        pretty: true
+        pim:
+            output_path: /tmp/pod/
+
+acceptance:
+    suites:
+        pim:
+            paths:
+                - '%paths.base%/tests/features/pim'
+            contexts:
+                - test.catalog.product_creation.context
+                - test.catalog.product_validation.context
+                - test.enrichment.enrichment_follow_up_context
+                - test.enrichment.quantified_associations_context
+                - test.attribute.context
+                - test.attribute_option.context
+                - test.locale.context
+                - test.channel.context
+                - test.user.context
+            filters:
+                tags: '@acceptance-back'
+        channel:
+            paths:
+                - '%paths.base%/tests/features/channel'
+            contexts:
+                - test.locale.context
+                - test.channel.context
+            filters:
+                tags: '@acceptance-back'
+        platform:
+            paths:
+                - '%paths.base%/tests/features/platform'
+            contexts:
+                - test.catalog_volume_limits.report_context
+                - test.catalog_volume_limits.system_info_context
+                - test.catalog_volume_limits.system_info_attribute_context
+                - test.catalog_volume_limits.attribute_per_family_context
+                - test.catalog_volume_limits.product_context
+                - test.catalog_volume_limits.channel_context
+                - test.catalog_volume_limits.locale_context
+                - test.catalog_volume_limits.useable_as_grid_filter_attribute_context
+                - test.catalog_volume_limits.product_value_per_family_context
+                - test.catalog_volume_limits.localizable_attribute_per_family_context
+                - test.catalog_volume_limits.scopable_attribute_per_family_context
+                - test.catalog_volume_limits.localizable_and_scopable_attribute_per_family_context
+                - test.catalog_volume_limits.scopable_attribute_context
+                - test.catalog_volume_limits.localizable_attribute_context
+                - test.catalog_volume_limits.localizable_and_scopable_attribute_context
+                - test.catalog_volume_limits.family_context
+                - test.catalog_volume_limits.attribute_context
+                - test.catalog_volume_limits.option_per_attribute_context
+                - test.catalog_volume_limits.category_context
+                - test.catalog_volume_limits.category_tree_context
+                - test.catalog_volume_limits.variant_product_context
+                - test.catalog_volume_limits.product_model_context
+                - test.catalog_volume_limits.product_value_context
+                - test.catalog_volume_limits.user_context
+                - test.catalog_volume_limits.category_in_one_category_context
+                - test.catalog_volume_limits.category_level_context
+            filters:
+                tags: '@acceptance-back'
+    extensions:
+        FriendsOfBehat\SymfonyExtension:
+            bootstrap: config/bootstrap.php
+            kernel:
+                path: src/Kernel.php
+                class: Kernel
+                environment: test_fake
+                debug: false
+        Pim\Behat\Extension\PimFormatter\PimFormatterExtension: ~
+        Liuggio\Fastest\Behat\ListFeaturesExtension\Extension: ~

@@ -1,0 +1,55 @@
+parameters:
+    legacy_pim_api.controller.measure_family.class: Akeneo\Tool\Bundle\MeasureBundle\Controller\ExternalApi\LegacyMeasureFamilyController
+
+services:
+    # controllers
+    akeneo_measure.controller.rest.measures:
+        class: 'Akeneo\Tool\Bundle\MeasureBundle\Controller\MeasuresController'
+        public: true
+        arguments:
+            - '@akeneo_measure.persistence.measurement_family_repository'
+            - '@akeneo.pim.structure.query.is_there_at_least_one_attribute_configured_with_measurement_family'
+
+    legacy_pim_api.controller.measure_family:
+        class: '%legacy_pim_api.controller.measure_family.class%'
+        public: true
+        arguments:
+            - '@pim_api.converter.measure_family'
+            - '@pim_api.pagination.parameter_validator'
+            - '@pim_api.pagination.offset_hal_paginator'
+            - '@akeneo_measure.provider.measurement_provider'
+            - '%pim_api.configuration%'
+
+    pim_api.controller.get_measurement_families:
+        class: Akeneo\Tool\Bundle\MeasureBundle\Controller\ExternalApi\GetMeasurementFamiliesAction
+        public: true
+        arguments:
+            - '@akeneo_measure.persistence.measurement_family_repository'
+            - '@akeneo_measure.normalizer.external_measurement_family'
+
+    pim_api.controller.create_update_measurement_families:
+        class: Akeneo\Tool\Bundle\MeasureBundle\Controller\ExternalApi\SaveMeasurementFamiliesAction
+        public: true
+        arguments:
+            - '@pim_api.controller.external_api.json_schema.measurement_family_list_validator'
+            - '@pim_api.controller.external_api.json_schema.measurement_family_common_structure_validator'
+            - '@pim_api.controller.external_api.json_schema.measurement_family_validator'
+            - '@validator'
+            - '@pim_api.normalizer.exception.violation'
+            - '@akeneo_measure.application.save_measurement_family_handler'
+            - '@akeneo_measure.application.create_measurement_family_handler'
+            - '@akeneo_measure.persistence.measurement_family_repository'
+
+    # Json schema
+    pim_api.controller.external_api.json_schema.measurement_family_list_validator:
+        class: Akeneo\Tool\Bundle\MeasureBundle\Controller\ExternalApi\JsonSchema\MeasurementFamilyListValidator
+
+    pim_api.controller.external_api.json_schema.measurement_family_common_structure_validator:
+        class: Akeneo\Tool\Bundle\MeasureBundle\Controller\ExternalApi\JsonSchema\MeasurementFamilyCommonStructureValidator
+
+    pim_api.controller.external_api.json_schema.measurement_family_validator:
+        class: Akeneo\Tool\Bundle\MeasureBundle\Controller\ExternalApi\JsonSchema\MeasurementFamilyValidator
+
+    # Normalizers
+    akeneo_measure.normalizer.external_measurement_family:
+        class: Akeneo\Tool\Bundle\MeasureBundle\Normalizer\ExternalMeasurementFamilyNormalizer

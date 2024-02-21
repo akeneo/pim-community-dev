@@ -1,0 +1,80 @@
+<div class="AknFieldContainer">
+    <div class="AknFieldContainer-header">
+        <label class="AknFieldContainer-label"><%- __('pim_common.code') %> <%- __('pim_common.required_label') %></label>
+    </div>
+    <div class="AknFieldContainer-inputContainer">
+        <input type="text" value="<%- familyVariant.code %>" name="code" class="AknTextField" />
+    </div>
+    <footer>
+        <% if (fieldErrors.code) { %>
+        <div class="AknFieldContainer-footer footer-elements-container error-code">
+            <div class="AknFieldContainer-validationErrors validation-errors">
+                <% fieldErrors.code.forEach((error) => { %>
+                <span class="AknFieldContainer-validationError">
+                    <span class="error-message"><%- error.message %></span>
+                </span>
+                <% }); %>
+            </div>
+        </div>
+        <% } %>
+    </footer>
+</div>
+<div class="AknFieldContainer">
+    <div class="AknFieldContainer-header">
+        <label class="AknFieldContainer-label"><%- __('pim_common.label') %></label>
+    </div>
+    <div class="AknFieldContainer-inputContainer">
+        <input type="text" value="<%- label %>" name="label" class="AknTextField" />
+    </div>
+    <footer>
+        <% if (fieldErrors['translations[0].label']) { %>
+        <div class="AknFieldContainer-footer footer-elements-container error-code">
+            <div class="AknFieldContainer-validationErrors validation-errors">
+                <% fieldErrors['translations[0].label'].forEach((error) => { %>
+                <span class="AknFieldContainer-validationError">
+                    <span class="error-message"><%- error.message %></span>
+                </span>
+                <% }); %>
+            </div>
+        </div>
+        <% } %>
+    </footer>
+</div>
+<div class="AknFieldContainer">
+    <div class="AknFieldContainer-header">
+        <label class="AknFieldContainer-label"><%- __('pim_enrich.entity.family_variant.module.create.variant_levels') %></label>
+    </div>
+    <div class="AknFieldContainer-inputContainer">
+        <select name="numberOfLevels" class="AknChoicesField">
+            <option value="1" <% if(1 === familyVariant.variant_attribute_sets.length) { %> selected <% } %> >1</option>
+            <option value="2" <% if(2 === familyVariant.variant_attribute_sets.length) { %> selected <% } %> >2</option>
+        </select>
+    </div>
+</div>
+<div class="AknFieldContainer">
+    <div class="AknFieldContainer-header">
+        <label for="pim_enrich_family_variant_axis1" class="AknFieldContainer-label"><%- __('pim_enrich.entity.family_variant.module.create.axis_level', { level: 1 }) %> <%- __('pim_common.required_label') %></label>
+    </div>
+    <div class="AknFieldContainer-inputContainer">
+        <input id="pim_enrich_family_variant_axis1" type="hidden" value="<%- axes1 %>" name="axes1" class="select-field" />
+    </div>
+</div>
+
+<div class="AknFieldContainer <% if(1 === familyVariant.variant_attribute_sets.length) { %> AknFieldContainer--hidden <% } %>">
+    <div class="AknFieldContainer-header">
+        <label for="pim_enrich_family_variant_axis2" class="AknFieldContainer-label"><%- __('pim_enrich.entity.family_variant.module.create.axis_level', { level: 2 }) %> <%- __('pim_common.required_label') %></label>
+    </div>
+    <div class="AknFieldContainer-inputContainer">
+        <input id="pim_enrich_family_variant_axis2" type="hidden" value="<%- axes2 %>" name="axes2" class="select-field" />
+    </div>
+</div>
+
+<% if (globalErrors.length > 0) { %>
+<div class="AknMessageBox AknMessageBox--danger global-errors">
+    <ul class="AknMessageBox-list">
+        <% for (let i in globalErrors) { %>
+        <li class="global-error"><%- globalErrors[i].message %></li>
+        <% } %>
+    </ul>
+</div>
+<% } %>

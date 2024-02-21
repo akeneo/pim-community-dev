@@ -1,0 +1,625 @@
+pim_menu:
+  tab:
+    connect: Verbinden
+  navigation:
+    connect: Navigeren door Verbinden
+  navigation_back:
+    connection: Terug naar Verbinden
+  navigation_block:
+    connection: Verbindingen navigatie
+  item:
+    connection_audit: Connectie dashboard
+    connection_settings: Verbindingen
+    connection_settings_edit: Verbindingen instellingen
+    connection_monitoring: Foutenmonitoring
+    connection_webhook_edit: Abonnement voor gebeurtenissen
+    connection_webhook_event_logs: Gebeurtenislogboeken
+    data_flows: Gegevensstromen
+    connect_connection_settings: Verbindingen instellingen
+    marketplace: App Store
+    connected_apps: Verbonden apps
+pim_title:
+  akeneo_connectivity_connection_connect_marketplace: App Store
+  akeneo_connectivity_connection_connect_marketplace_profile: App Store
+  akeneo_connectivity_connection_connect_apps_activate: Verbinden
+  akeneo_connectivity_connection_connect_apps_authorize: Verbinden
+  akeneo_connectivity_connection_connect_apps_authenticate: Verbinden
+  akeneo_connectivity_connection_settings_index: Verbindingsinstellingen
+  akeneo_connectivity_connection_settings_edit: Verbindingen instellingen
+  akeneo_connectivity_connection_settings_any: Verbindingen instellingen
+  akeneo_connectivity_connection_audit_index: Connectie dashboard
+  akeneo_connectivity_connection_audit_any: Connectie dashboard
+  akeneo_connectivity_connection_error_management_dashboard: Connectie dashboard
+  akeneo_connectivity_connection_error_management_connection_monitoring: Verbindingen monitoren
+  akeneo_connectivity_connection_webhook_edit: Abonnement voor gebeurtenissen
+  akeneo_connectivity_connection_webhook_regenerate_secret: Abonnement voor gebeurtenissen
+  akeneo_connectivity_connection_webhook_event_logs: Gebeurtenislogboeken
+  akeneo_connectivity_connection_settings_redirect: Verbindingen
+  akeneo_connectivity_connection_connect_connected_apps: Verbonden apps
+  akeneo_connectivity_connection_connect_connected_apps_edit: App-instellingen
+  akeneo_connectivity_connection_connect_connected_apps_delete: App verwijderen
+  akeneo_connectivity_connection_connect_connected_apps_regenerate_secret: Regenereer inloggegevens
+  akeneo_connectivity_connection_connect_custom_apps_create: Maak een aangepaste app
+  akeneo_connectivity_connection_connect_custom_apps_delete: Aangepaste app verwijderen
+  akeneo_connectivity_connection_connect_connected_apps_open: App openen
+  akeneo_connectivity_connection_connect_connected_apps_catalogs_edit: Catalogus bewerken
+akeneo_connectivity.connection:
+  connect:
+    marketplace:
+      title: Wilt u uw PIM verbinden met een andere applicatie? 🤟
+      sub_title: Bekijk onze App Store om te zien welke applicatie kan worden verbonden met Akeneo PIM.
+      link: Open de App Store
+      helper:
+        title: '{0} Er zijn geen apps of connectoren compatibel met uw PIM-versie.|{1} Er is {{ count }} app of connector compatibel met uw PIM-versie.|[2,Inf] Er zijn {{ count }} apps of connectoren compatibel met uw PIM-versie.'
+        title_without_apps: '{0} Er zijn geen connectoren compatibel met uw PIM versie.|{1} Er is {{ count }} connector compatibel met uw PIM-versie.## |[2,Inf] Er zijn {{ count }} connectoren compatibel met uw PIM-versie.'
+        description: Dit is slechts een overzicht. Neem voor meer details een kijkje in de Akeneo App Store.
+        link: Ga naar de Akeneo App Store
+      search:
+        placeholder: Zoeken op naam
+        total: '{0} Geen resultaten|{1} 1 resultaat|[2,Inf] {{ total }} resultaten'
+      card:
+        developed_by: 'Ontwikkeld door {{ author }}'
+        read_more: meer lezen
+        more_info: Meer informatie
+        connect: Verbinden
+        connected: Verbonden
+        pending: In afwachting…
+      extensions:
+        title: Connectoren
+        total: '{0} Geen connectoren|{1} 1 connector|[2,Inf] {{ total }} connectoren'
+        empty: Er zijn geen connectoren die compatibel zijn met uw versie
+      apps:
+        title: Apps
+        total: '{0} Geen apps|{1} 1 app|[2,Inf] {{ total }} apps'
+        empty: Er zijn geen apps die compatibel zijn met uw versie
+      unreachable: We kunnen de App Store niet bereiken. Kom later terug.
+      scroll_to_top: Naar boven scrollen
+      custom_apps:
+        title: Mijn aangepaste apps
+        removed_user: Verwijderde gebruiker
+    connected_apps:
+      list:
+        apps:
+          title: Verbonden apps
+          total: '{0} Geen apps|{1} 1 app|[2,Inf] {{ total }} apps'
+          empty: Nog geen apps verbonden.
+          check_marketplace: 'Kijk op {{ marketplaceLink }} om alle beschikbare content te bekijken en uw eerste app te installeren.'
+          marketplace_link_anchor: App Store
+          at_least_one_is_not_listed_on_the_appstore: Sommige verbonden apps zijn niet compatibel met uw PIM-versie of bestaan niet meer in de Akeneo App Store. Neem contact met ons op voor meer informatie.
+          pending_apps: Sommige apps zijn niet verbonden met uw PIM.
+        custom_apps:
+          title: Mijn verbonden aangepaste apps
+          removed_user: Verwijderde gebruiker
+        helper:
+          title: '[0,1] Uw PIM is verbonden met {{ count }} app.|[2,Inf] Uw PIM is verbonden met {{ count }} apps.'
+          description_1: Er worden regelmatig nieuwe apps ontwikkeld, dus blijf het in de gaten houden en controleer regelmatig onze App Store-pagina om te ontdekken hoe u uw PIM kunt verbinden.
+          description_2: Wilt u graag meer weten over apps?
+          link: Ga naar Hulp voor meer informatie.
+        card:
+          developed_by: 'Ontwikkeld door {{ author }}'
+          new_access_authorization_required: Nieuwe autorisatie voor toegang vereist.
+          not_listed_on_the_appstore: De app staat niet meer in de Akeneo App Store. Neem contact op met het ondersteuningsteam voor apps.
+          manage_app: App beheren
+          open_app: App openen
+          pending: De app is niet verbonden. Door de app te openen, zouden de verbindingsproblemen opgelost moeten zijn.
+        flash:
+          error: Er is een fout opgetreden tijdens het ophalen van de lijst met verbonden apps.
+      edit:
+        header:
+          open_app_button:
+            label: Ga naar app
+            icon_alt: Ga naar app-pictogram
+        not_found: App niet gevonden
+        tabs:
+          settings: Instellingen
+          permissions: Machtigingen
+          catalogs: Catalogi
+          error_monitoring: Foutenmonitoring
+        settings:
+          monitoring:
+            title: Algemene instellingen
+          authorizations:
+            title: autorisaties
+            information: 'Bekijk onze {{ link }} voor meer informatie over app-autorisaties.'
+            no_access_to_product_information: 'Deze verbonden app heeft geen toegang tot uw productinformatie.'
+            information_link_anchor: Artikel in Hulp
+            no_scope: Er zijn geen specifieke autorisaties aangevraagd.
+          authentication:
+            title: authenticatie
+            information: 'Bekijk {{ link }} voor meer informatie over de authenticatie van apps.'
+            information_link_anchor: Artikel in Hulp
+            openid_only: Deze app maakt gebruik van Akeneo app-authenticatie zonder uw persoonlijke gegevens te gebruiken
+          pending: Deze app is niet verbonden met uw PIM. Door de app te openen, zou het probleem opgelost moeten zijn. Als dit niet zo is, neem dan contact op met het ondersteuningsteam voor apps.
+          credentials:
+            title: Toegangsgegevens
+            client_id: Cliënt-id
+            client_secret: Geheim van cliënt
+            regenerate_button: Regenereren
+            regenerate_secret:
+              flash_error: Sorry, er is een fout opgetreden bij het opnieuw genereren van het verbindingsgeheim.
+              confirm:
+                title: Opnieuw genereren bevestigen
+                description: Het opnieuw genereren van het geheim heeft invloed op uw aangepaste app verbinding met het PIM. Weet u zeker dat u door wilt gaan?
+                regenerate_button: Regenereren
+                cancel_button: Annuleren
+              new_credentials:
+                title: Nieuwe inloggegevens
+                subtitle: Regenereer inloggegevens
+                done_button: Voltooid
+        error_monitoring:
+          error: Er is iets fout gegaan.
+          helper:
+            description: Hier kunt u de details van alle fouten voor deze app in de afgelopen 7 dagen zien. Het aantal fouten is beperkt tot 100.
+          not_data_source: Op dit moment is de monitoringspagina alleen beschikbaar voor de bronapp.
+          not_auditable:
+            title: Niet-gemonitorde app
+            description:
+              1: Om fouten in deze app bij te houden,
+              2: activeer monitoring
+              3: in de instellingen.
+        catalogs:
+          edit:
+            flash:
+              success: De catalogusinstellingen zijn bijgewerkt.
+              error: De catalogus kon niet worden opgeslagen. Los de weergegeven fouten op en sla daarna opnieuw op.
+              unknown_error: Er is een fout opgetreden tijdens het opslaan van de catalogus.
+            not_found: Catalogus niet gevonden
+        flash:
+          load_permissions_error.title: 'De opgeslagen machtigingen op {{ entity }} kunnen niet worden geladen.'
+          load_permissions_error.description: Probeer het later opnieuw.
+          save_permissions_error.title: 'De machtigingen op {{ entity }} kunnen niet worden bijgewerkt.'
+          save_permissions_error.description: Controleer de instellingen voor app-machtigingen.
+          success: De app-instellingen zijn bijgewerkt.
+          monitoring_settings_error.description: Er is een fout opgetreden tijdens het bewerken van de app.
+      delete:
+        subtitle: Apps
+        title: Bevestig verwijderen
+        description: Weet u zeker dat u de app wilt verwijderen? Niet zeker over de gevolgen?
+        link: Dat is wat er gaat gebeuren.
+        flash:
+          success: De app is verwijderd.
+          error: Er is een fout opgetreden tijdens het verwijderen van de app.
+      open:
+        flash:
+          error: Er is een fout opgetreden tijdens het openen van de app.
+    apps:
+      loader:
+        message: Bezig met laden...
+      flash:
+        permissions_error.title: 'De machtigingen in {{ entity }} kunnen niet worden opgeslagen.'
+        permissions_error.description: Controleer de instellingen voor app-machtigingen.
+      wizard:
+        title: Verbinden
+        action:
+          confirm: Bevestigen
+          cancel: Annuleren
+          previous: Vorige
+          next: Volgende
+          allow_and_next: Toestaan en volgende
+        progress:
+          authentication: Authenticatie
+          authorizations: Autorisaties
+          permissions: Machtigingen
+          summary: Goed gedaan!
+        authentication:
+          title: '{{ app_name }} moet'
+          helper: Bekijk ons artikel voor meer informatie over app-authenticatie
+          helper_link: Hoe verbind ik mijn PIM met apps?
+          scope_profile: 'Uw {{ firstname }} en uw {{ lastname }} weergeven'
+          scope_email: 'Uw {{ email }} weergeven'
+          consent:
+            label: 'Ik ga akkoord met het privacybeleid en de gebruiksvoorwaarden van deze app, die kunnen worden bekeken op de {{ app_marketplace_page }}.'
+            app_marketplace_page: App Store-pagina
+            subtext: 'U erkent en accepteert dat u wordt doorgeleid naar een app van derden. Akeneo is niet verantwoordelijk en kan niet verantwoordelijk worden gehouden voor de inhoud van deze app. Als u problemen ondervindt tijdens uw bezoek aan de Akeneo App Store, {{ contact_us }}.'
+            contact_us: contact
+          firstname: voornaam
+          lastname: achternaam
+          email: e-mailadres
+        authorize:
+          title: '{{ app_name }} moet'
+          no_scope_title: ' {{ app_name }} wil toegang tot uw PIM.'
+          no_scope: Er zijn geen specifieke autorisaties aangevraagd.
+          helper: Voor meer informatie over het autoriseren van apps,
+          helper_link: kunt u het artikel in Hulp raadplegen.
+          is_allowed_to: 'Heeft al toestemming om:'
+          certification_consent:
+            label: 'Ik heb de onderstaande disclaimer over certificering gelezen en ga ermee akkoord.'
+            subtext: 'Akeneo doet afstand van elke verantwoordelijkheid voor het gebruik van de app door de klant en de functionaliteiten ervan. De certificering garandeert niet de interoperabiliteit van de app, noch dat deze goed zal werken in de omgeving van de klant.'
+        flash:
+          success: De app is geconfigureerd.
+          error: Er is een fout opgetreden tijdens het verbinden van de app.
+        permission:
+          helper: Lees ons artikel als u hulp nodig heeft
+          helper_link: App-machtigingen instellen
+      title: Verbinden
+      activate:
+        flash:
+          error: Sorry, er is een fout opgetreden tijdens het verbinden van de app.
+      scope:
+        type:
+          view: '{{ entities }} bekijken'
+          edit: '{{ entities }} bekijken en bewerken'
+          delete: '{{ entities }} bekijken, bewerken en verwijderen'
+        entities:
+          catalog_structure: attributen, attribuutgroepen, families en familievariaties
+          attribute_options: Attribuutopties
+          categories: categorieën
+          channel_localization: talen en valuta's
+          channel_settings: kanalen
+          association_types: associatietypes
+          products: producten en productmodellen
+          reference_entity: referentie-entiteiten
+          reference_entity_record: Records van referentie-entiteiten
+          asset_families: assetfamilies
+          assets: assets
+          catalogs: catalogi
+        new: NIEUW
+      error:
+        sub_text: Neem contact op met het ondersteuningsteam voor de App.
+        app_not_found: De klant_id komt niet overeen met een bestaande app.
+      constraint:
+        client_id:
+          not_blank: De klant_id is vereist
+          must_be_valid: De klant_id komt niet overeen met een bekende klant.
+          must_have_ongoing_authorization: Er loopt op dit moment geen autorisatieproces voor de client_id
+        response_type:
+          not_blank: Het reactie_type is vereist.
+          must_be_code: Het reactie_type moet "code" zijn.
+        redirect_uri:
+          not_blank: De redirect_uri is vereist.
+          must_be_url: De redirect_uri is geen geldige url.
+        scope:
+          must_be_a_string: De lijst met toepassingsgebieden moet een string zijn, gescheiden door spaties.
+          too_long: De lijst voor bereik mag niet meer dan 1000 tekens bevatten.
+    custom_apps:
+      creation_limit_reached: U heeft de limiet bereikt van 20 aangepaste apps.
+      create_button: Maak een app
+      create_modal:
+        subtitle: Maak een aangepaste app
+        app_information:
+          title: Appgegevens
+          description: Lees ons artikel als u hulp nodig heeft
+          link: Mijn app testen voordat hij wordt gepubliceerd
+          fields:
+            name: Naam
+            activate_url: Activerings-URL
+            callback_url: Callback-URL
+          field_placeholder:
+            name: App-naam definiëren
+            activate_url: Voer activatie-URL in
+            callback_url: Vul callback-URL in
+        credentials:
+          title: Toegangsgegevens
+          client_id: Cliënt-id
+          client_secret: Geheim van cliënt
+        errors:
+          limit_reached: U kunt maximaal 20 aangepaste apps maken.
+          name:
+            min_length: De naam van de app is te kort. Hij moet 3 tekens of meer hebben.
+            max_length: De naam van de app is te lang. Deze moet 255 tekens of minder bevatten.
+            not_blank: De naam van de app is vereist.
+          client_id:
+            max_length: Het client-id van de app is te lang. Het moet 36 tekens of minder hebben.
+            not_blank: De cliënt-id is vereist.
+          activate_url:
+            max_length: De activering url van de app is te lang. Deze moet 255 tekens of minder bevatten.
+            must_be_url: De activerings-URL moet een geldige URL zijn.
+            not_blank: De activerings-URL is vereist.
+          callback_url:
+            max_length: De callback url van de app is te lang. Deze moet 255 tekens of minder bevatten.
+            must_be_url: De callback-URL moet een geldige URL zijn.
+            not_blank: De callback-URL is vereist.
+      delete_modal:
+        subtitle: Verwijder een aangepaste app
+        title: Bevestig verwijderen
+        description: U staat op het punt uw app te verwijderen van deze PIM.
+        warning: Door het verwijderen te bevestigen, verwijdert u de app van de App Storepagina en de gerelateerde verbonden app.
+        flash:
+          success: Aangepaste app succesvol verwijderd. 
+          error: Sorry, er is een fout opgetreden tijdens het verwijderen van de aangepaste app.
+  connections: Verbindingen
+  secondary_actions:
+    title: Overige acties
+  connection:
+    code: Code
+    label: Label
+    flow_type: Type stroom
+    image: Afbeelding
+    auditable: Bijhouden in dashboard Gegevensstromen
+    client_id: Klant ID
+    secret: Geheim
+    username: Gebruikersnaam
+    password: Wachtwoord
+    user_role_id: Rol
+    user_group_id: Groep
+    constraint:
+      connections_number_limit_reached: U heeft de limiet van 50 verbindingen en verbonden apps bereikt.
+      code:
+        required: Conectiecode is vereist.
+        invalid: Connectiecode mag alleen letters, cijfers en liggende streepjes bevatten.
+        too_short: Connectiecode is te kort. Het moet minstens drie karakters lang zijn.
+        too_long: Connectiecode is te lang. Het mag maximaal 100 karakters lang zijn.
+        must_be_unique: Connectiecode moet uniek zijn.
+      label:
+        required: Connectielabel is verplicht.
+        too_short: Connectielabel is te kort. Het moet mimimaal drie karakters lang zijn.
+        too_long: Connectielabel is te lang. Het mag maximaal 100 karakters lang zijn.
+      flow_type:
+        invalid: Verbindingsstroomtype kan alleen 'databron', 'datadoel' of 'andere' zijn.
+      image:
+        must_exist: De afbeelding is niet gevonden. Probeer het opnieuw.
+      type:
+        required: Verbindingstype is vereist.
+        too_long: Verbindingstype is te lang. Het moet 30 tekens of minder bevatten.
+      user_group:
+        must_exist: De gebruikersgroep is niet gevonden. Controleer of de opgegeven gebruikersgroep bestaat.
+  flow_type:
+    data_source: Gegevensbron | Gegevensbronnen
+    data_destination: Gegevensdoel | Gegevensdoelen
+    other: Overig | Overige
+  connection_count: '{{ count }} connectie | {{ count }} connecties'
+  no_connection:
+    title: Geen verbinding bekend.
+    message: Voeg je eerste toe door te klikken op de "Aanmaken" knop hierboven of
+    message_link: klik hier.
+  create_connection:
+    title: Maak een nieuwe verbinding
+    description: U kunt maximaal 50 derde partijen of apps verbinden.
+    flash:
+      success: Verbinding succesvol aangemaakt.
+      error: Er is een fout opgetreden tijdens het maken van de verbinding.
+  edit_connection:
+    subtitle: Instellingen
+    flash:
+      success: Verbinding succesvol aangemaakt.
+      error: Er is een fout opgetreden tijdens het aanpassen van de verbinding.
+    image_uploader:
+      extension_not_allowed: Sorry, het bestand dat u probeert te uploaden heeft een extensie die niet is toegestaan.
+    credentials:
+      title: Toegangsgegevens
+      helper:
+        message: 'Hier zijn de toegangsgegevens om te gebruiken in uw {{ label }} connector.'
+        link: Lees hier meer...
+      wrong_credentials_combinations:
+        single: We hebben gemerkt dat u de {{ wrong_username }} gebruikersnaam voor deze verbinding gebruikt (laatst gebruikt op {{ date }} om {{ time }}). We raden het gebruik van de {{ good_username }} gebruikersnaam aan.
+        link: Ontdek waarom je het zou moeten gebruiken.
+        link_list: Ontdek waarom we deze gebruikersnaam aanraden.
+        several: We zien dat je niet de gebruikersnaam {{ good_username }} voor deze verbinding gebruikt.
+        list: 'Hier is de lijst met gebruikersnamen die de afgelopen 7 dagen werden gebruikt:'
+        username_date: '{{ wrong_username }} op {{ date }} om {{ time }}'
+      password_helper:
+        message: Als u uw wachtwoord bent vergeten, kunt u hier een nieuwe genereren.
+        link: Meer informatie...
+      clear_password_helper:
+        message: Zorg ervoor dat je dit wachtwoord ergens opslaat, want we laten het maar één keer zien.
+        link: Meer informatie...
+      action:
+        copy: Naar klembord kopiëren
+        regenerate: Regenereren
+      flash:
+        copied: '{{ name }} gekopieerd naar het klembord'
+    permissions:
+      title: Machtigingen
+      helper:
+        message: 'In deze sectie kunt u machtigingen definiëren voor uw {{ label }} -verbinding.'
+        link: Meer informatie over verbindingsmachtigingen...
+      user_role_helper:
+        message: De standaard `{{ role }}` rol is niet de beste keuze voor uw verbinding. Wij raden u sterk aan om een rol te kiezen die is afgestemd op uw verbindingsbehoeften.
+        link: Meer informatie...
+      user_group_helper:
+        message: Wij raden u ten zeerste aan om een groep te kiezen die is afgestemd op uw verbindingsbehoeften.
+        link: Meer informatie...
+  regenerate_secret:
+    title: Bevestig regeneratie
+    description: Weet u zeker dat u de verbinding geheim wilt hergenereren? Niet zeker over de gevolgen?
+    link: Dat is wat er gaat gebeuren.
+    action:
+      regenerate: Opnieuw genereren
+    flash:
+      success: Opnieuw genereren herstelcodes geslaagd.
+      error: Sorry, er is een fout opgetreden bij het opnieuw genereren van het verbindingsgeheim.
+  regenerate_password:
+    title: Bevestig regeneratie
+    description: Weet u zeker dat u het verbindingwachtwoord opnieuw wilt genereren? Niet zeker over de impact?
+    link: Dit is wat er gaat gebeuren.
+    action:
+      regenerate: Regenereren
+    flash:
+      success: Regenereren verbindingswachtwoord geslaagd.
+      error: Sorry, er is een fout opgetreden bij het opnieuw genereren van het verbindingswachtwoord.
+  delete_connection:
+    title: Bevestig verwijderen
+    description: Weet u zeker dat u de verbinding wilt verwijderen? Niet zeker over de impact?
+    link: Dat is wat er gaat gebeuren.
+    flash:
+      success: Verbinding succesvol verwijderd.
+  helper:
+    title: '{0} Op dit moment hebt u geen verbinding om uw PIM te koppelen aan applicaties van derden.|{1} U hebt 1 verbinding die uw PIM koppelt aan applicaties van derden. Goed gedaan, uw PIM is zo goed geïntegreerd in het ecosysteem.|]1,Inf] U hebt {{ count }} verbindingen die uw PIM koppelen aan applicaties van derden. Goed gedaan, uw PIM is zo goed geïntegreerd in het ecosysteem.'
+    description: Een PIM zonder integraties van derden is een soort van nutteloos, nietwaar? Dankzij de verbindingen, kunt u alle gegevensstromen inrichten die data met PIM moeten uitwisselen.
+    link: Bekijk deze pagina om meer te weten te komen over Verbindingen.
+  flow_type_helper:
+    message: Vraag je je af wat een flowtype is?
+    link: We kunnen je hier helpen!
+  auditable_helper:
+    message: U kunt alleen Bron- en bestemmingsverbindingen volgen.
+    link: Meer informatie...
+  edit_image:
+    upload_helper: Verander je afbeelding, slepen en neerzetten of
+    remove_helper: Afbeelding verwijderen
+    click_here: klik hier
+    flash:
+      extension_not_allowed: Sorry, het bestand dat u probeert te uploaden heeft een extensie die niet is toegestaan.
+  grid.wrong_credentials_combination_helper: Sommige van de onderstaande verbindingen gebruiken niet hun verbindingsgebruikersnamen. Ze worden geïdentificeerd door een gele waarschuwingsteken.
+  dashboard:
+    helper:
+      title: '👋 Welkom bij gegevensstromen!'
+      description: Hier kunt u de gegevensstroom tussen uw PIM en derden bijhouden.
+      link: Wilt u meer weten over het menu Verbindingen en de gegevensstromen? Lees verder!
+    user_survey:
+      title: Wilt u meer gegevens op dit dashboard?
+      content: Jouw feedback is erg waardevol voor ons. Help ons met het kiezen van de volgende widget door het beantwoorden van deze één-vraag enquête!
+      button: Laten we beginnen!
+    connection_selector:
+      title:
+        source: Gegevensverbindingen
+        destination: Bestemmingen
+      all: Alles
+    charts:
+      inbound: Inkomend
+      outbound: Uitgaand
+      number_of_products_created: Producten aangemaakt
+      number_of_products_updated: Producten geüpdatet
+      number_of_products_sent: Producten verzonden
+      legend:
+        during_the_last_seven_days: 'Totaal van de laatste 7 dagen:'
+        today: Vandaag
+    error_management:
+      data_source_error_chart:
+        section:
+          title: Fouten voor gegevensbronnen
+          helper: Hier kunt u het totale aantal fouten zien, inclusief verwerkingsfouten.
+        chart:
+          title: Aantal fouten per dag
+      widget:
+        title: Bedrijfsfouten per gegevensbron
+        over_the_last_seven_days: Over de afgelopen 7 dagen
+        business_errors: Verwerkingsfouten
+    no_connection:
+      title:
+        default: Wil je enkele mooie grafieken zien over je verbindingen?
+        data_source: Wilt u enkele mooie grafieken zien over uw bronverbindingen?
+        data_destination: Wilt u enkele mooie grafieken zien over uw bestemmingsverbindingen?
+      message_with_permission:
+        message: Maak en begin met volgen van uw eerste
+        link: hier. 
+      message_without_permission:
+        message: Vraag uw beheerder om er één aan te maken.
+        link: Leer hier meer over verbindingen...
+  webhook:
+    title: Abonnement voor gebeurtenissen
+    event_subscription: Abonnement voor gebeurtenissen
+    download_logs: Logboeken downloaden
+    helper:
+      message: Je kunt op de hoogte worden gebracht van events die gebeuren in de PIM voor producten die gesynchroniseerd zijn met deze app in de app. Je hoeft alleen maar een URL te definiëren.
+      link: Lees meer over de configuratie van activiteiten abonnementen...
+      url.test_disabled: Klik alstublieft op Opslaan om de URL te kunnen testen.
+    form:
+      url: URL
+      secret: Geheim
+      enabled: Fout bij abonnement activatie
+      is_using_uuid: Product-UUID gebruiken in plaats van product-ID?
+      test: Test
+    error:
+      wrong_url: Dit is geen geldige URL.
+      required: Dit veld is verplicht.
+      not_found: U probeert een verbinding bij te werken die niet bestaat.
+      limit_reached: Je hebt het limiet van actieve event abonnementen bereikt.
+      not_allowed_url: Deze URL is niet toegestaan.
+    flash:
+      success: Inschrijving aanpassen geslaagd.
+      error: Sorry, er is een fout opgetreden tijdens het bewerken van het abonnement voor gebeurtenissen.
+    regenerate_secret:
+      title: Bevestig regeneratie
+      description: Weet u zeker dat u het geheim van het evenementabonnement wilt herstellen?
+      action:
+        regenerate: Regenereren
+      link: Dat is wat er gaat gebeuren.
+      flash:
+        success: Opnieuw genereren herstelcodes geslaagd.
+        error: Sorry, er is een fout opgetreden bij het opnieuw genereren van het webhook geheim.
+    active_event_subscriptions_limit_reached:
+      message: U kunt maximaal {{ limit }} connecties maken met de functie event abonnementen. U heeft deze limiet bereikt.
+      link: Meer informatie over de configuratie van event abonnement.
+    event_logs:
+      title: Gebeurtenislogboeken
+      event_subscription_disabled:
+        title: Het abonnement voor gebeurtenissen is niet ingeschakeld voor deze verbinding.
+        link: Activeer het abonnement voor gebeurtenissen
+      no_event_logs:
+        title: Er is momenteel geen logboek.
+      no_event_logs_with_those_filters:
+        title: Uw zoekopdracht heeft geen logboeken opgeleverd.
+        caption: Probeer opnieuw met andere zoektermen.
+      level:
+        info: Info
+        notice: Melding
+        warning: Waarschuwing
+        error: Fout
+      list:
+        search:
+          placeholder: Zoeken in berichten
+          total: '{0} Geen resultaten|{1} 1 resultaat|[2,Inf] {{ total }} resultaten'
+          level: Niveau
+          all: Alles
+          none: Geen
+        date_range_filter:
+          label: Datum tijd
+          reset: Opnieuw instellen
+          from: van
+          to: tot
+          all: Alles
+        info:
+          title: Hier zijn de logboeken voor alle verzoeken voor gebeurtenissen die naar deze verbinding zijn verzonden.
+          content: Op deze pagina staan de logboeken voor fouten en waarschuwingen van de afgelopen 72 uur, en de laatste 100 met informatie en meldingen.
+          link: Meer informatie over gebeurtenislogboeken
+        headers:
+          datetime: Datum/tijd
+          level: Niveau
+          message: Bericht
+  error_management:
+    connection_monitoring:
+      title: Foutenmonitoring
+      helper:
+        title: '{0} U heeft {{ count }} fout |[1,Inf] U heeft {{ count }} fouten'
+        description: Hier kunt u details van alle fouten zien voor deze verbinding van de laatste 7 dagen. Het aantal fouten is beperkt tot 100.
+        link: Wil je leren hoe je dit kunt oplossen, bezoek dan het API-hulpcentrum.
+      search_filter:
+        placeholder: Zoeken in foutmeldingen
+        result_count: '{0} Geen resultaten|{1} 1 resultaat|[2,Inf] {{ count }} resultaten'
+      error_list:
+        date_time_column:
+          title: Dag en tijd
+        content_column:
+          title: Verwerkingsfoutmeldingen
+          product_name: Productnaam
+          with_id: met ID
+        details_column:
+          title: Details
+          locale: Taal
+          channel: Kanaal
+          family: Familie
+      no_error:
+        title: Geweldig! Geen fouten gevonden!
+      not_auditable:
+        title: Verbinding zonder monitor
+        description:
+          1: Registreer fouten voor deze verbinding
+          2: activeer monitoring
+          3: in de instellingen.
+      not_data_source:
+        title: Op dit moment is de monitor pagina alleen beschikbaar voor de bronverbinding.
+  runtime_error:
+    error_message: Oh nee! Er is een fout opgetreden...
+    reload_helper: Herlaad de pagina en probeer opnieuw
+    reload_button: Herladen
+pim_permissions:
+  widget:
+    action:
+      all: Alles
+      clear: Wissen
+    level:
+      own: Eigen
+      edit: Bewerken
+      view: Weergeven
+    all: Alles
+pim_notification:
+  types:
+    connected_app_authorizations: Autorisaties voor verbonden apps
+    disabled_catalog: Appcatalogus uitgeschakeld
+    attribute_removed: Appcatalogus beïnvloed
+  connected_app_authorizations:
+    button_label: App openen
+  disabled_catalog:
+    button_label: Catalogusinstellingen
+  attribute_removed:
+    button_label: Catalogusinstellingen

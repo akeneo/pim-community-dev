@@ -1,0 +1,7 @@
+username;first_name;last_name;email;password;catalog_default_locale;user_default_locale;catalog_default_scope;default_category_tree;roles;groups;enabled;timezone
+admin;John;Doe;admin@example.com;admin;en_US;en_US;ecommerce;2014_collection;ROLE_ADMINISTRATOR;IT support;1;UTC
+Julia;Julia;Stark;Julia@example.com;Julia;en_US;en_US;tablet;2013_collection;ROLE_CATALOG_MANAGER;Manager;1;UTC
+Peter;Peter;Williams;Peter@example.com;Peter;en_US;en_US;print;2015_collection;ROLE_ADMINISTRATOR;IT support;1;UTC
+Mary;Mary;Smith;Mary@example.com;Mary;en_US;en_US;ecommerce;2013_collection;ROLE_USER;Redactor;1;UTC
+Sandra;Sandra;Harvey;Sandra@example.com;Sandra;en_US;en_US;tablet;2014_collection;ROLE_USER;Redactor;1;UTC
+Julien;Julien;Février;Julien@example.com;Julien;fr_FR;fr_FR;ecommerce;2014_collection;ROLE_USER;Redactor;1;UTC

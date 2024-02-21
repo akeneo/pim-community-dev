@@ -1,0 +1,24 @@
+parameters:
+    pim_analytics.controller.data.class:        Akeneo\Platform\Bundle\AnalyticsBundle\Controller\DataController
+    pim_analytics.controller.system_info.class: Akeneo\Platform\Bundle\AnalyticsBundle\Controller\SystemInfoController
+
+services:
+    pim_analytics.controller.data:
+        public: true
+        class: '%pim_analytics.controller.data.class%'
+        arguments:
+            - '@pim_analytics.data_collector.chained'
+
+    pim_analytics.controller.system_info:
+        public: true
+        class: '%pim_analytics.controller.system_info.class%'
+        arguments:
+            - '@twig'
+            - '@pim_analytics.data_collector.chained'
+
+    pim_analytics.external_api.controller.get_system_information:
+        class: Akeneo\Platform\Bundle\AnalyticsBundle\Controller\ExternalApi\GetSystemInformationController
+        public: true
+        arguments:
+            - '@pim_catalog.version_provider'
+            - '@Akeneo\Platform\Bundle\PimVersionBundle\Version\GrowthVersion'

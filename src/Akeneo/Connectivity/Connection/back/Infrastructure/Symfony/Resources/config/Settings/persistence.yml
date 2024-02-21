@@ -1,0 +1,17 @@
+services:
+    Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\DbalSelectConnectionsQuery:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\DbalSelectConnectionWithCredentialsByCodeQuery:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\IsConnectionsNumberLimitReachedQuery:
+        arguments:
+            - '@database_connection'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Connections\Service\GetConnectionsNumberLimit'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\DbalConnectionRepository:
+        arguments:
+            - '@database_connection'

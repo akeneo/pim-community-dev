@@ -1,0 +1,27 @@
+parameters:
+    pim_enrich.view_element.registry.class:                     Akeneo\Platform\Bundle\UIBundle\ViewElement\ViewElementRegistry
+    pim_enrich.view_element.base.class:                         Akeneo\Platform\Bundle\UIBundle\ViewElement\BaseViewElement
+    pim_enrich.view_element.visibility_checker.acl.class:       Akeneo\Platform\Bundle\UIBundle\ViewElement\Checker\AclVisibilityChecker
+    pim_enrich.view_element.visibility_checker.voter.class:     Akeneo\Platform\Bundle\UIBundle\ViewElement\Checker\VoterVisibilityChecker
+    pim_enrich.view_element.visibility_checker.edit_form.class: Akeneo\Platform\Bundle\UIBundle\ViewElement\Checker\EditFormVisibilityChecker
+    pim_enrich.view_element.visibility_checker.non_empty_property.class: Akeneo\Platform\Bundle\UIBundle\ViewElement\Checker\NonEmptyPropertyVisibilityChecker
+
+services:
+    pim_enrich.view_element.registry:
+        class: '%pim_enrich.view_element.registry.class%'
+
+    pim_enrich.view_element.visibility_checker.acl:
+        class: '%pim_enrich.view_element.visibility_checker.acl.class%'
+        arguments:
+            - '@oro_security.security_facade'
+
+    pim_enrich.view_element.visibility_checker.voter:
+        class: '%pim_enrich.view_element.visibility_checker.voter.class%'
+        arguments:
+            - '@oro_security.security_facade'
+
+    pim_enrich.view_element.visibility_checker.edit_form:
+        class: '%pim_enrich.view_element.visibility_checker.edit_form.class%'
+
+    pim_enrich.view_element.visibility_checker.non_empty_property:
+        class: '%pim_enrich.view_element.visibility_checker.non_empty_property.class%'

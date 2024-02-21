@@ -1,0 +1,174 @@
+#Entities
+Job: Auftrag
+Connector: Konnektor
+pim_import_export:
+  job: Auftrag
+  connector: Konnektor
+  ## Job status
+  status:
+    0: Bereit
+  batch_status:
+    1: Vollständig
+    2: Wird gestartet...
+    3: Gestartet
+    4: Beende...
+    5: Beendet
+    6: Fehlgeschlagen
+    7: Abgebrochen
+    8: Unbekannt
+    9: Pausieren
+    10: Pausiert
+  download_archive:
+    archive: generiertes Archiv herunterladen|generierte Archive herunterladen
+    output: generierte Datei herunterladen|generierte Dateien herunterladen
+    input: gelesene Datei herunterladen|gelesene Dateien herunterladen
+    invalid_xlsx: Ungültige Daten herunterladen
+    invalid_csv: Ungültige Daten herunterladen
+  notification:
+    export:
+      error: Export <strong>%label%</strong> fehlgeschlagen
+      warning: Export <strong>%label%</strong> mit Warnmeldungen fertiggestellt
+      success: Export <strong>%label%</strong> fertiggestellt
+      warnings:
+        xlsx_cell_conversion_error: Ausnahme während der Umwandlung der Spalte "{0}" in den PIM-Produkt-Attributtyp (bitte überprüfen Sie das Excel-Zellenformat)
+        xlsx_cell_date_to_text_conversion_error: Kann Zelle  {0} mit Datumsformat nicht in Textribut umwandeln
+    import:
+      error: Import <strong>%label%</strong> fehlgeschlagen
+      warning: Import <strong>%label%</strong> mit Warnmeldungen fertiggestellt
+      success: Import <strong>%label%</strong> fertiggestellt
+      warnings:
+        xlsx_cell_date_conversion_error: Kann Zelle "{cellName}" nicht mit Datumsformat in Attribut des Typs {attributeType} konvertieren
+  list: Wählen Sie einen Auftrag
+  job_profile:
+    tab:
+      property.title: Allgemeine Eigenschaften
+      history.title: Historie
+      job_content.title: Inhalt
+#Page titles:
+pim_title.export_profile.index: Verwaltung der Export-Profile
+pim_title.export_profile.edit: Export-Profile %job.label% | Bearbeiten
+pim_title.export_profile.show: Export-Profile %job.label% | Anzeigen
+pim_title.export_execution.index: Historie der ausgeführten Exporte
+pim_title.export_execution.show: Ausgeführte Exporte | Details
+pim_title.import_profile.index: Verwaltung der Import-Profile
+pim_title.import_profile.edit: Import-Profile %job.label% | Bearbeiten
+pim_title.import_profile.show: Import-Profile %job.label% | Anzeigen
+pim_title.import_execution.index: Historie der ausgeführten Importe
+pim_title.import_execution.show: Ausgeführte Importe | Details
+#Entity and page header titles
+export profile:
+  title: Profil exportieren
+  edit: Exportprofil bearbeiten
+import profile:
+  title: Profil importieren
+  edit: Importprofil bearbeiten
+#ACLs
+pim_importexport:
+  acl:
+    export_profile:
+      index: Auflistung der Exportprofile
+      create: Ein Exportprofil anlegen
+      show: Ein Exportprofil anzeigen
+      edit: Ein Exportprofil bearbeiten
+      remove: Ein Exportprofil löschen
+      launch: Ein Exportprofil ausführen
+      property_edit: Allgemeine Eigenschaften eines Export Profil bearbeiten
+      property_show: Allgemeine Eigenschaften eines Export Profil anzeigen
+      history: Export-Profil Historie ansehen
+      content_edit: Inhalt eines Export Profil bearbeiten
+      content_show: Inhalt eines Export Profil anzeigen
+    import_profile:
+      index: Auflistung der Importprofile
+      create: Ein Importprofil anlegen
+      show: Ein Importprofil anzeigen
+      edit: Ein Importprofil bearbeiten
+      remove: Ein Importprofil löschen
+      launch: Ein Importprofil ausführen
+      history: Import-Profil Historie ansehen
+    export_execution:
+      index: Auflistung der Export-Reports
+      show: Export-Reportdetails anzeigen
+      dl_log: Export-Report Logdatei herunterladen
+      dl_files: Exportierte Dateien herunterladen
+    import_execution:
+      index: Auflistung der Import-Reports
+      show: Import-Reportdetails anzeigen
+      dl_log: Import-Report Logdatei herunterladen
+      dl_files: Importierte Dateien herunterladen
+  acl_group:
+    export: Export-Profile
+    import: Import-Profile
+#Buttons
+btn:
+  create:
+    export profile: Exportprofil anlegen
+    import profile: Importprofil anlegen
+Upload and import now: Hochladen und jetzt importieren
+import now: Jetzt importieren
+export now: Jetzt exportieren
+#Confirmation messages
+confirmation:
+  remove:
+    export profile: Sind Sie sicher, dass Sie das Export-Profil %name% löschen möchten?
+    import profile: Sind Sie sicher, dass Sie das Import-Profil %name% löschen möchten?
+#Flash messages
+flash:
+  export:
+    created: Der Export wurde erfolgreich erstellt
+    removed: Der Export wurde entfernt
+    updated: Der Export wurde erfolgreich aktualisiert
+    running: Der Export läuft
+  import:
+    created: Der Import wurde erfolgreich erstellt
+    removed: Der Import wurde entfernt
+    updated: Der Import wurde erfolgreich aktualisiert
+    running: Der Import läuft
+#Tabs
+General properties: Allgemeine Eigenschaften
+History: Historie
+pane.accordion:
+  properties: Eigenschaften
+  global_settings: Globale Einstellungen
+  filters: Filter
+#Popin titles
+popin.create:
+  export_profile.title: Ein neues Exportprofil anlegen
+  import_profile.title: Ein neues Importprofil anlegen
+#Job execution
+'Display item': Element anzeigen
+'Hide item': Element ausblenden
+'Collecting data about job execution...': Sammle Daten zur Ausführung des Jobs...
+'You must select a file to upload': Sie müssen eine Datei für den Upload auswählen
+Download log: Log herunterladen
+Show profile: Profil anzeigen
+execution details: Ausführungsdetails
+job_execution.summary:
+  read: gelesen
+  write: geschrieben
+  skip: übersprungen
+  create: erstellt
+  update: aktualisiert
+  update_products: aktualisierte Produkte
+  skip_products: übersprungene Produkte
+  displayed: Die ersten Warnungen angezeigt
+  charset_validator:
+    title: 'Zeichenkodierung der Datei:'
+    skipped: übersprungen, Erweiterung in der Whitelist
+Step: Schritt
+Status: Status
+Warnings: Warnungen
+Summary: Zusammenfassung
+Start: Start
+End: Ende
+#Process tracker
+set_attribute_requirements: Benötigte Attribute auswählen
+COMPLETED: Vollständig
+STARTING: Wird gestartet...
+STARTED: Gestartet
+STOPPING: Beende...
+STOPPED: Beendet
+FAILED: Fehlgeschlagen
+ABANDONED: Abgebrochen
+UNKNOWN: Unbekannt
+warning.label: Warnung
+pim_datagrid.column.username: Benutzername

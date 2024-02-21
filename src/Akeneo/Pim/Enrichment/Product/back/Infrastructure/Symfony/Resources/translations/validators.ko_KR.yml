@@ -1,0 +1,21 @@
+pim_enrich.product:
+  validation:
+    upsert:
+      unknown_user: '''{{ user_id }}'' 사용자가 없습니다'
+      category_no_access_to_products: 트리의 제품에 액세스할 수 있는 권한이 없습니다. 관리자에게 문의하십시오.
+      should_keep_one_owned_category: 본인에게 고유한 권한이 있는 하나 이상의 카테고리에 제품을 보관해야 합니다
+      locale_no_access_to_products: 활성화된 로케일의 제품 데이터에 액세스할 수 있는 권한이 없습니다. 관리자에게 문의하십시오.
+      attribute_group_no_access_to_attributes: 이 제품의 {{ attributeCode }} 특성에 액세스할 수 있는 권한이 없습니다. 관리자에게 문의하십시오.
+      product_identifier_empty: 제품 식별자에는 공백 없는 문자열이 필요합니다
+      duplicated_user_intents: '{{ attributeCode }} 특성의 값이 여러 번 업데이트되고 있습니다'
+      family_code_empty: 패밀리 코드에는 공백 없는 문자열이 필요합니다
+      category_does_not_exist: '{1}''{{ categoryCodes }}'' 카테고리가 없습니다|]1,+Inf[''{{ categoryCodes }}'' 카테고리가 없습니다'
+      set_value:
+        no_channel_code_provided_for_scopable_attribute: '{{ attributeCode }} 특성에 채널이 필요합니다'
+        channel_code_provided_for_non_scopable_attribute: '{{ attributeCode }} 특성에는 채널이 필요하지 않습니다. ''{{ channelCode }}''이(가) 탐지되었습니다'
+        no_locale_code_provided_for_localizable_attribute: '{{ attributeCode }} 특성에 로케일이 필요합니다'
+        locale_code_provided_for_non_localizable_attribute: '{{ attributeCode }} 특성에는 로케일이 필요하지 않습니다. ''{{ localeCode }}''이(가) 탐지되었습니다'
+        invalid_locale_code_for_locale_specific_attribute: '{{ attributeCode }}에는 {{ availableLocales }} 중 하나의 로케일이 필요합니다. ''{{ localeCode }}''이(가) 탐지되었습니다'
+        channel_does_not_exist: '{{ channelCode }} 채널이 없습니다'
+        locale_is_not_active: '{{ localeCode }} 로케일이 없거나 활성화되지 않았습니다'
+        locale_not_activated_for_channel: '{{ localeCode }} 로케일이 {{ channelCode }} 채널에서 활성화되지 않았습니다'

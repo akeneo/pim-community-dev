@@ -1,0 +1,15 @@
+services:
+    Akeneo\Connectivity\Connection\Application\CustomApps\Command\CreateCustomAppCommandHandler:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Service\RandomCodeGenerator'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Persistence\CreateCustomAppQuery'
+
+    Akeneo\Connectivity\Connection\Application\CustomApps\Command\DeleteCustomAppHandler:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Persistence\GetCustomAppQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Persistence\DeleteCustomAppQuery'
+
+    Akeneo\Connectivity\Connection\Application\CustomApps\Command\RegenerateCustomAppSecretHandler:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Persistence\UpdateCustomAppSecretQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Service\RandomCodeGenerator'

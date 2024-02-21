@@ -1,0 +1,29 @@
+pim_dashboard:
+    title: Activity dashboard
+    greetings: Hello {{ name }}!
+    welcome_sentence:
+        message0: This is going to be a great day.
+        message1: It's great to see you.
+        message2: Glad to see you here.
+        message3: Happy to see you here.
+        message4: It's great to have you on board.
+        message5: Let's get started.
+        message6: Let's get to work.
+        message7: Let's do great things today.
+        message8: Ready to get started?
+        message9: Your products are eager to be enriched.
+    widget:
+        completeness:
+            load_more: 'Load more...'
+            title: Completeness Over Channels and Locales
+            progress_messages:
+                message1: Be ready to start the enrichment journey towards completeness.
+                message2: You still have some work to do, but you’re on the right path.
+                message3: Keep up the great work to complete your product information.
+                message4: Congratulations! You reached perfect product completeness for this channel!
+        last_operations:
+            title: Last operations
+    version: Version
+
+pim_title:
+    pim_dashboard_index: Dashboard

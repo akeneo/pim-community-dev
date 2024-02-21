@@ -1,0 +1,51 @@
+@import '../base/variables';
+
+.dropdown-menu > li > a,
+.dropdown-menu > li.active > a {
+  color: lighten(@AknPurple, 20%);
+
+  &:hover,
+  &:active {
+    color: darken(@AknPurple, 10%);
+    cursor: pointer;
+  }
+}
+
+.dropdown-menu {
+  margin-top:-1px;
+  border-radius: 0;
+  z-index: 1050;
+}
+
+.dropdown-menu {
+  .divider {
+    border-bottom-color: @AknBorderColor;
+    margin:4px 0;
+  }
+}
+
+.dropdown:after {
+  content: "";
+  clear: both;
+  display: block;
+}
+
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus,
+.dropdown-submenu:hover > a,
+.dropdown-submenu:focus > a {
+  background: @AknDefaultHoverBackground;
+  color: @AknDefaultFontColor;
+}
+
+.dropdown-menu > li > a,
+.dropdown-menu > li.active > a {
+  color: @AknDefaultFontColor;
+}
+
+.dropdown-menu > li.active > a,
+.dropdown-menu > li.active > a:hover,
+.dropdown-menu > li.active > a:focus {
+  background: @AknPurple;
+  color: white;
+}

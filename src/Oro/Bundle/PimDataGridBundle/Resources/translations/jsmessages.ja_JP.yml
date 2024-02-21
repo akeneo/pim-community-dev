@@ -1,0 +1,70 @@
+pim_datagrid:
+  no_results_subtitle: "新しい検索条件を再度実行してください。"
+  select:
+    title: 選択
+    all_visible: すべて表示
+  delete_error:
+    title: 削除エラー
+  reset_confirmation:
+    title: リセットの確認
+  refresh_confirmation:
+    title: 更新の確認
+  column_configurator:
+    label: 列
+    title: 列を設定します。
+    all_groups: すべてのグループ
+    search: 検索
+    clear: クリア
+    displayed_columns: 選択された項目
+    remove_column: 削除
+    description: 列として表示する情報を選択
+    min_message: 最低でも1つの表示する列を選択してください
+    system_group: システム
+  view_selector:
+    create_view: ビューを作成
+    placeholder: 新しいビューの名前
+    choose_label: ビューのラベルを選択
+    remove: このビューを削除
+    save_changes: このビューを保存
+    default_view: デフォルトビュー
+    select: ビューを選択してください。
+    confirmation:
+      remove: 本当に削除したいですか?
+  display_selector:
+    label: 表示
+  mass_action:
+    delete:
+      empty_selection: 商品が選択されていません。
+      success_message: "{0} 削除されたエンティティはありませんでした| {1} 1件のエンティティが削除されました|]1,Inf [%count% 件のエンティティが削除されました"
+    default:
+      confirmation:
+        content: 実行してもよろしいですか？
+      no_items: 一括操作を実行するアイテムを選択してください。
+    quick_export:
+      title: クイック エクスポート
+      success: クイックエクスポート処理が開始されました。
+  action:
+    default:
+      confirmation:
+        content: 実行してもよろしいですか？
+      no_items: アクションを実行する項目を選択してください。
+    show:
+      title: 表示
+  filters:
+    common:
+      empty: 空
+      not_empty: 空ではない
+      in_list: リストに存在する
+      contains: 含む
+      does_not_contain: 含まない
+      equal: 等しい
+      start_with: で始まる
+      operator: オペレータ
+    price_filter:
+      label: 通貨
+    metric_filter:
+      label: 単位
+  cells:
+    credientials:
+      client_id: クライアントID
+      secret: 秘密鍵

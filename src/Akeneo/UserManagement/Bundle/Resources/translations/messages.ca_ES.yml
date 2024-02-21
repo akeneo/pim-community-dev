@@ -1,0 +1,144 @@
+pim_user:
+  user:
+    title: Usuari
+    fields:
+      name_prefix: Prefix del nom
+      email: Correu electrònic
+      username: Nom d’usuari
+      first_name: Nom
+      middle_name: Primer cognom
+      last_name: Cognoms
+      name_suffix: Sufix del nom
+      phone: Telèfon
+      date_of_birth: Data de naixement
+      avatar: Avatar
+      timezone: Zona horària
+      roles: Rols
+      groups: Grups
+      password: Contrasenya
+      password_again: Torneu a introduir la contrasenya
+      product_grid_filters: Filtres de quadrícula de producte
+      catalog_locale: Catàleg de configuracions regionals
+      catalog_scope: Catàleg d'abastos
+      default_tree: Arbre per defecte
+      current_password: Contrasenya actual
+      new_password: Contrasenya nova
+      new_password_again: Nova contrasenya (repetir)
+      default_grid_view:
+        none: Cap
+      default_product_grid_view:
+        label: Vista de quadrícula de producte per defecte
+      ui_locale: Configuració regional de la interfície d'usuari
+      last_logged_in: Darrer inici de sessió
+      login_count: Recompte d'inicis de sessió
+      user_salt: Usuari per sal
+      created: Creat
+      updated: Actualitzat
+      status: Estat
+      capabilities: Capacitats
+      has_role: Té rol
+      has_group: Té grup
+      active: Actiu
+      inactive: Inactiu
+    fields_errors:
+      new_password:
+        minimum_length: La contrasenya ha de contenir com a mínim 8 caràcters
+        maximum_length: La contrasenya ha de contenir menys de 4096 caràcters
+      new_password_repeat:
+        not_match: Les contrassenyes no coincideixen
+      current_password:
+        wrong: Contrasenya incorrecta
+    tabs:
+      general:
+        title: General
+        basic_information: Informació bàsica
+        contact_information: Informació de contacte
+      additional:
+        title: Addicional
+      additional_data:
+        title: Dades addicionals
+      interfaces:
+        title: Interfícies
+      group_and_role.title: Grups i Rols
+      password.title: Contrasenya
+      business_unit.title: Unitats de negoci
+      email_synchronization.title: Configuració de sincronització de correu electrònic
+    removed_user: Usuari suprimit
+    login:
+      username_or_email: Usuari o correu electrònic
+      remember_me: Recorda'm en aquest ordinador
+      password_forgotten: Heu oblidat la contrasenya?
+      log_in: Iniciar Sessió
+      forgot_password: He oblidat la contrasenya
+      request: Petició
+      password_reset: Reiniciar contrasenya
+      reset: Reinicia
+      password_reset_email_sent: S'ha enviat un correu electrònic a l'usuari. Conté un enllaç per restablir la contrasenya.
+      homepage: Tornar a la pàgina d'inici
+  group:
+    tab:
+      general.title: General
+      users.title: Usuaris
+  roles:
+    title: Rol
+    tab:
+      general: General
+      action: Permisos
+      users: Usuaris
+  controller:
+    group:
+      message:
+        saved: "Grup guardat"
+    role:
+      message:
+        saved: "Rol desat"
+    user:
+      message:
+        saved: "Usuari desat"
+pim_datagrid:
+  columns:
+    user:
+      createdAt: "Creat el"
+      updatedAt: "Actualitzat el"
+    roles:
+      label: "Etiqueta"
+    groups:
+      name: "Nom"
+confirmation:
+  remove:
+    role: Estàs segur que vols suprimir aquest rol?
+    user: Esteu segur que voleu eliminar aquest usuari?
+flash:
+  role:
+    removed: Rol eliminat correctament
+  user:
+    removed: Usuari suprimit correctament
+oro_security:
+  acl_group:
+    user: Usuaris
+    role: Rols
+    group: Grup d'usuaris
+  acl:
+    user:
+      view: Llistar usuaris
+      create: Crear un usuari
+      edit: Editar usuaris
+      delete: Suprimir un usuari
+    role:
+      view: Llistar rols
+      create: Crear un rol
+      edit: Editar rol
+      delete: Suprimir un rol
+    group:
+      view: Llistar grups d'usuaris
+      create: Crear un grup d'usuaris
+      edit: Editar grups d'usuaris
+      delete: Suprimir un grup d'usuaris
+#Security
+(default): Permís per defecte a les entitats
+VIEW: Vista
+CREATE: Crear
+EDIT: Editar
+DELETE: Suprimir
+ASSIGN: Assignar
+SHARE: Compartir

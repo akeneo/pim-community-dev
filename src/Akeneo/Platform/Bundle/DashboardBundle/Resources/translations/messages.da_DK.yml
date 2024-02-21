@@ -1,0 +1,10 @@
+pim_dashboard:
+  title: Kontrolpanel
+  version: Version
+  widget:
+    completeness:
+      title: Færdiggørelse af kanaler og lande
+    last_operations:
+      title: Seneste handlinger
+      status: Status
+      type: Type

@@ -1,0 +1,76 @@
+parameters:
+    env(PIM_EDITION): 'community_edition_instance'
+
+services:
+    feature_flags:
+        public: true
+        class: 'Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\ImmutableFeatureFlags'
+        arguments:
+            - '@akeneo.feature_flag.service.registry'
+
+    akeneo.feature_flag.service.controller:
+        public: true
+        class: 'Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Controller'
+        arguments:
+            - '@feature_flags'
+
+    akeneo.feature_flag.filter_routes_subscriber:
+        public: false
+        class: 'Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\FilterRoutesSubscriber'
+        arguments:
+            - '@feature_flags'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    akeneo.feature_flag.service.registry:
+        public: false
+        class: 'Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Registry'
+
+    akeneo.feature_flag.service.only_serenity_feature:
+        class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\OnlySerenityFeatureFlag
+        arguments:
+            - '%env(string:PIM_EDITION)%'
+        public: true
+
+    akeneo.feature_flag.service.only_saas_feature:
+        class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\OnlySaasFeatureFlag
+        arguments:
+            - '%env(string:PIM_EDITION)%'
+        public: true
+
+    akeneo.feature_flag.service.only_enterprise_edition_feature:
+        class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\OnlyEnterpriseEditionFeatureFlag
+        arguments:
+            - '%env(string:PIM_EDITION)%'
+        public: true
+
+    akeneo.feature_flag.service.only_flexibility_on_premise_feature:
+        class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\OnlyFlexibilityOnPremiseFeatureFlag
+        arguments:
+            - '%env(string:PIM_EDITION)%'
+        public: true
+
+    akeneo.feature_flag.service.only_free_trial_feature:
+        class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\OnlyFreeTrialFeatureFlag
+        arguments:
+            - '%env(string:PIM_EDITION)%'
+        public: true
+
+    akeneo.feature_flag.service.only_growth_and_serenity_feature:
+        class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\OnlyGrowthAndSerenityFeatureFlag
+        arguments:
+            - '%env(string:PIM_EDITION)%'
+        public: true
+
+    akeneo.feature_flag.service.always_enabled_feature:
+        class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\FakeFeatureFlag
+        arguments:
+            - 'true'
+        public: true
+
+    akeneo.feature_flag.service.only_growth_and_serenity_sandbox_feature:
+        class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\OnlyGrowthAndSerenitySandboxFeatureFlag
+        arguments:
+            - '%env(bool:FLAG_IS_SERENITY_SANDBOX_INSTANCE)%'
+            - '%env(bool:FLAG_IS_GROWTH_EDITION_SANDBOX_INSTANCE)%'
+        public: true

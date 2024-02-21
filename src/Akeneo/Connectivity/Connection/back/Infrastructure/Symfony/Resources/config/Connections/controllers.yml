@@ -1,0 +1,47 @@
+services:
+    Akeneo\Connectivity\Connection\Infrastructure\Connections\Controller\Internal\ListConnectionsAction:
+        public: true
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Application\Settings\Query\FetchConnectionsHandler'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Connections\Controller\Internal\CreateConnectionAction:
+        public: true
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionHandler'
+            - '@oro_security.security_facade'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Connections\Controller\Internal\GetConnectionAction:
+        public: true
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Application\Settings\Query\FindAConnectionHandler'
+            - '@oro_security.security_facade'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Connections\Controller\Internal\UpdateConnectionAction:
+        public: true
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Application\Settings\Command\UpdateConnectionHandler'
+            - '@oro_security.security_facade'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Connections\Controller\Internal\DeleteConnectionAction:
+        public: true
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Application\Settings\Command\DeleteConnectionHandler'
+            - '@oro_security.security_facade'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Connections\Controller\Internal\RegenerateSecretAction:
+        public: true
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Application\Settings\Command\RegenerateConnectionSecretHandler'
+            - '@oro_security.security_facade'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Connections\Controller\Internal\RegeneratePasswordAction:
+        public: true
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Application\Settings\Command\RegenerateConnectionPasswordHandler'
+            - '@oro_security.security_facade'
+
+    # WRONG CREDENTIALS COMBINATION
+    Akeneo\Connectivity\Connection\Infrastructure\Connections\WrongCredentialsCombination\Controller\Internal\ListWrongCredentialsCombinationsAction:
+        public: true
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Connections\WrongCredentialsCombination\Persistence\DbalWrongCredentialsCombinationRepository'

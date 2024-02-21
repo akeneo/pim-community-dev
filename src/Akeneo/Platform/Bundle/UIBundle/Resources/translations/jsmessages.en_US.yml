@@ -1,0 +1,502 @@
+# ORO messages
+"Yes, I Agree": "Yes, I Agree"
+"Yes, do it": "Yes, do it"
+"Ok, got it.": "Ok, got it."
+"Edit": "Edit"
+"Unexpected error occurred. Please contact system administrator.": "Unexpected error occurred. Please contact system administrator."
+"Yes, revoke": "Yes, Revoke"
+"Revoke Confirmation": "Revoke Confirmation"
+Prev: Prev
+Today: Today
+Wk: Wk
+AM: AM
+A: A
+PM: PM
+P: P
+"Choose Time": "Choose Time"
+Time: Time
+Hour: Hour
+Minute: Minute
+Second: Second
+Millisecond: Millisecond
+Microsecond: Microsecond
+"Time Zone": "Time Zone"
+
+duration:
+    days: "{0}0 days|{1}1 day|]1, Inf[{{ count }} days"
+    hours: "{0}0 hours|{1}1 hour|]1, Inf[{{ count }} hours"
+    minutes: "{0}0 minutes|{1}1 minute|]1, Inf[{{ count }} minutes"
+    seconds: "{0}0 seconds|{1}1 second|]1, Inf[{{ count }} seconds"
+
+# PIM messages
+Localized value: Localized value
+Columns: Columns
+Datagrid Configuration: Datagrid Configuration
+
+# Filters
+Action:   Action
+Unit:     Unit
+Currency: Currency
+
+jstree:
+    all:          All products
+    unclassified: Unclassified products
+    product:
+        all:          All products
+        unclassified: Unclassified products
+    no_tree:      No tree available
+    include_sub:  Include sub-categories
+
+# Datetimepicker
+datetimepicker:
+    days:
+        Sunday: Sunday
+        Monday: Monday
+        Tuesday: Tuesday
+        Wednesday: Wednesday
+        Thursday: Thursday
+        Friday: Friday
+        Saturday: Saturday
+    daysShort:
+        Sun: Sun
+        Mon: Mon
+        Tue: Tue
+        Wed: Wed
+        Thu: Thu
+        Fri: Fri
+        Sat: Sat
+    daysMin:
+        Su: Su
+        Mo: Mo
+        Tu: Tu
+        We: We
+        Th: Th
+        Fr: Fr
+        Sa: Sa
+    months:
+       January: January
+       February: February
+       March: March
+       April: April
+       May: May
+       June: June
+       July: July
+       August: August
+       September: September
+       October: October
+       November: November
+       December: December
+    monthsShort:
+       Jan: Jan
+       Feb: Feb
+       Mar: Mar
+       Apr: Apr
+       May: May
+       Jun: Jun
+       Jul: Jul
+       Aug: Aug
+       Sep: Sep
+       Oct: Oct
+       Nov: Nov
+       Dec: Dec
+
+# ORO
+oro_config:
+    form:
+        config:
+            title: System configuration
+            tab:
+                system:
+                    title: System
+            save_ok: Successfully saved configuration
+            save_error: Sorry, could not save the configuration ({{ reason }})
+            group:
+                localization:
+                    title: Login page setting
+                    fields:
+                        system_locale:
+                            label: Language
+                notification:
+                    title: New version notifications
+                    helper: When enabled, you receive a notification when new version is available for you.
+                    fields:
+                        enabler:
+                            label: Enabled
+                environment:
+                    title: Environment settings
+                    fields:
+                        sandbox_banner:
+                            label: Display sandbox alert banner
+
+                loading_message:
+                    title: Customized loading messages
+                    helper: Entertain your users with customized messages for loading screens.
+                    placeholder: Please write your own message to be displayed on your loading screen
+                    fields:
+                        enabler:
+                            label: Enable loading messages
+                        messages:
+                            label: Add your own loading messages
+
+
+pim_ui:
+  flash:
+    unsaved_changes: 'You have unsaved changes, are you sure that you want to leave?'
+
+"Sorry, page was not loaded correctly": "Sorry, page was not loaded correctly"
+"Your local changes will be lost. Are you sure you want to refresh the page?": "Your local changes will be lost. Are you sure you want to refresh the page?"
+"navigation.message.content.outdated": "Content of {{ title }} page is outdated, please <a href='#' data-action='page-refresh'>refresh the page</a>"
+"Content of pinned page is outdated": "Content of pinned page is outdated"
+
+#Global structure of translation files
+#
+#pim_bundle_name:
+#    entity:
+#        entity_name:
+#            label: entity
+#            uppercase_label: Entity
+#            plural_label: Entities
+#            flash:
+#                update:
+#                    fail: Update failed
+#                    success: Entity Successfully updated
+#                delete:
+#                    fail: Cannot delete this entity
+#                    success: Entity successfully removed
+#                create:
+#                    fail: Can not create this entity
+#                    success: Entity successfully created
+#            page_title:
+#                index: "]-Inf, 1]1 entity|]1, Inf[{{ count }} entities"
+#            property:
+#                field_name: Field name
+#                complex_field:
+#                    label: Field name
+#                    choose: Choose a field name
+#            module:
+#                module_name:
+#                    key: message
+
+pim_common:
+    actions: Actions
+    add: Add
+    add_attributes: Add attributes
+    after: After
+    all: All
+    and: and
+    apply: Apply
+    before: Before
+    by: by
+    cancel: Cancel
+    characters_left: ]-Inf, 1]{{ count }} character left|]1, Inf[{{ count }} characters left
+    clear_value: Clear value
+    close: Close
+    code: Code
+    completeness: Completeness
+    confirm: Confirm
+    confirm_deletion: Confirm deletion
+    confirm_revocation: Confirm revocation
+    create: Create
+    created: Created
+    delete: Delete
+    done: Done
+    duplicate: Duplicate
+    edit: Edit
+    entity_updated: There are unsaved changes.
+    export: Export
+    from: From
+    general_properties: General properties
+    history: History
+    identifier: Identifier
+    image: Image
+    label: Label
+    label_translations: Label translations
+    Label or identifier: label or identifier
+    Label or main identifier: label or main identifier
+    code_or_label: code or label
+    less_than: Less than
+    loading: Loading...
+    media_upload: Drag and drop to upload or click here
+    media_uploading: Uploading…
+    media_upload_error: An error occurred during upload
+    more_actions: More actions
+    more_than: More than
+    next: Next
+    "no": "No"
+    none: None
+    not_available: N/A
+    now: Now
+    ok: OK
+    open: Open
+    no_result: No result found
+    no_search_result: Sorry, there is no result for your search.
+    other_actions: Other actions
+    permissions: Permissions
+    previous: Previous
+    properties: Properties
+    quality_score: Quality score
+    remove: Remove
+    required_label: (required)
+    result_count: "{0}0 results|{1}1 result|]1, Inf[{{ itemsCount }} results"
+    save: Save
+    search: Search
+    select2:
+        search: Search...
+        no_match: No matches found
+        load_more: Loading more results...
+    selected: "{0}None selected|{1}One selected|]1, Inf[{{ itemsCount }} selected"
+    status: Status
+    to: to
+    type: Type
+    update: Update
+    updated: Updated
+    "yes": "Yes"
+    operator: Operator
+    operators:
+        "=": Is equal to
+        "!=": Is not equal to
+        ">=": Greater than or equals
+        ">": Greater than
+        "<=": Lower than or equals
+        "<": Lower than
+        EMPTY: Is empty
+        NOT EMPTY: Is not empty
+        CONTAINS: Contains
+        DOES NOT CONTAIN: Does not contain
+        STARTS WITH: Starts with
+        ENDS WITH: Ends with
+        IN: In list
+        "NOT IN": Not in list
+    read_more: Read more
+    channel: Channel
+    locale: Locale
+    categories: Categories
+    family_variant: Family variant
+    enabled: Enabled
+    family: Family
+    parent: Parent
+    groups: Groups
+    products: Products
+    product_uuids: Products
+    product_models: Product models
+    more: More
+    public_view: Public view
+    view: View
+
+error:
+    exception: A {{ status_code }} error occurred...
+    forbidden: Forbidden. You are not allowed to access this page
+
+alert:
+    attribute_option:
+        error_occurred_during_submission: An error occurred during the form submission on the server
+        save_before_edit_other:          Please register your modifications on other rows before editing this one
+    session_storage:
+        not_available: Your web browser does not seems compatible with sessionStorage. Please contact your administrator
+
+pim_enrich.entity.fallback:
+    flash:
+        generic_error: An error occurred
+        update:
+            fail: Update failed
+            fail_session_expired: Your user session has expired. Please log in again.
+            success: Successfully updated
+        delete:
+            fail: Cannot delete this item
+            success: Item successfully removed
+    module:
+        delete:
+            title: Delete this {{ itemName }}
+            alternative_title: Confirm removal
+            item: Are you sure you want to delete this item?
+            item_placeholder: Are you sure you want to delete this {{ itemName }}? It is not possible to undo this action.
+        edit:
+            leave: Are you sure you want to leave this page?
+            discard_changes: You will lose changes to the {{ entity }} if you leave the page.
+            discard_changes_title: Are you sure?
+
+pim_enrich.entity.job_execution:
+    page_title:
+        index: "]-Inf, 1]{{ count }} job|]1, Inf[{{ count }} jobs"
+    module:
+        create:
+            upload: Drop your {{ type }} file here, or click to browse disk
+        download:
+            dropdown_title: "]-Inf, 1]Download generated files|]1, Inf[Download generated files"
+            archive: Download generated archive
+            output: Download generated file
+            input: Download read file
+            invalid_xlsx: Download invalid data
+            invalid_csv: Download invalid data
+
+pim_title:
+    oro_default:                           Dashboard
+    pim_enrich_attributegroup_index:       Attribute groups
+    pim_enrich_attributegroup_create:      Attribute groups | Create
+    pim_enrich_attributegroup_edit:        Attribute group {{ group.label }} | Edit
+    pim_enrich_catalog_volume_index:       Catalog volume monitoring
+    pim_enrich_categorytree_index:         Category trees
+    pim_enrich_categorytree_create:        Category trees | Create
+    pim_enrich_categorytree_edit:          Category {{ category.label }} | Edit
+    pim_enrich_categorytree_create_tree:   Category trees | Create
+    pim_enrich_categorytree_tree:          Category tree {{ category.label }} | Edit
+    pim_enrich_attribute_index:            Attributes
+    pim_enrich_attribute_create:           Attributes | Create
+    pim_enrich_attribute_edit:             Attribute {{ attribute.label }} | Edit
+    pim_enrich_product_index:              Products
+    pim_enrich_product_edit:               Product {{ product.label }} | Edit
+    pim_enrich_product_model_edit:         Product model {{ product.label }} | Edit
+    pim_enrich_family_index:               Families
+    pim_enrich_family_edit:                Family {{ family.label }} | Edit
+    pim_enrich_channel_index:              Channels
+    pim_enrich_channel_create:             Channels | Create
+    pim_enrich_channel_edit:               Channel {{ channel.label }} | Edit
+    pim_enrich_currency_index:             Currencies
+    pim_enrich_locale_index:               Locales
+    pim_enrich_group_index:                Groups
+    pim_enrich_group_edit:                 Group {{ group.label }} | Edit
+    pim_enrich_associationtype_index:      Association types
+    pim_enrich_associationtype_edit:       Association type {{ association type.label }} | Edit
+    pim_enrich_grouptype_index:            Group types
+    pim_enrich_grouptype_edit:             Group type {{ group type.label }} | Edit
+    pim_enrich_mass_edit_action_choose:    Mass Edit | Choose
+    pim_enrich_mass_edit_action_configure: Mass Edit | Configure
+    pim_enrich_mass_edit_action_perform:   Mass Edit | Perform
+    pim_enrich_job_tracker_index:          Process tracker
+    pim_enrich_job_tracker_show:           Process tracker | Show job
+    pim_enrich_mass_edit_action:           Mass Edit
+    pim_analytics_system_info_index:       System information
+    pim_settings_index:                    Settings
+    pim_system_index:                      System
+
+pim_menu:
+    tag.new: New
+    tab:
+        activity: Activity
+        imports: Imports
+        exports: Exports
+        settings: Settings
+        system: System
+        help:
+            title: Help
+            helper: Akeneo Help center
+            new: NEW
+            news: What’s new?
+            help_center: Help Center
+            akademy_training: Akademy training
+    item:
+        association_type: Association types
+        attribute_group: Attribute groups
+        channel: Channels
+        currency: Currencies
+        dashboard: Activity dashboard
+        family: Families
+        group: Groups
+        group_type: Group types
+        product_model: Product Models
+        export_history: Exports history
+        export_profile: Export profiles
+        import_history: Imports history
+        import_profile: Import profiles
+        configuration: Configuration
+        user_management: Users Management
+        user: Users
+        user_group: User groups
+        user_role: Roles
+        info: System information
+        job_tracker: Process tracker
+        catalog_volume: Catalog volume monitoring
+
+    navigation:
+        activity: Activity navigation
+        system: System navigation
+        user: Users management navigation
+        settings:
+          product: Product settings
+          catalog: Catalog settings
+          collapsed_label: Settings navigation
+          automation: Automation
+        product: Product navigation
+        product_infos: Product infos
+
+    user:
+        logout: Logout
+        user_account: My Account
+
+pim_notification:
+    types:
+        import: Import
+        export: Export
+        quick_export: Quick Export
+        mass_edit: Mass Edit
+
+pim_settings:
+  settings_menu: Settings menu
+  catalog_settings: Catalog settings
+  product_settings: Product settings
+  automation_settings: Automation
+  count:
+    category_trees: '{0}You have 0 trees |{1}You have 1 tree |]1, Inf[You have {{ count }} trees '
+    categories: '{0}and 0 categories|{1}and 1 category|]1, Inf[and {{ count }} categories'
+    channels: '{0}You have 0 channels|{1}You have 1 channel|]1, Inf[You have {{ count }} channels'
+    locales: '{0}You have 0 enabled locales|{1}You have 1 enabled locale|]1, Inf[You have {{ count }} enabled locales'
+    currencies: '{0}You have 0 enabled currencies|{1}You have 1 enabled currency|]1, Inf[You have {{ count }} enabled currencies'
+    attribute_groups: '{0}You have 0 attribute groups|{1}You have 1 attribute group|]1, Inf[You have {{ count }} attribute groups'
+    attributes: '{0}You have 0 attributes|{1}You have 1 attribute|]1, Inf[You have {{ count }} attributes'
+    families: '{0}You have 0 families|{1}You have 1 family|]1, Inf[You have {{ count }} families'
+    measurements: '{0}You have 0 measurements|{1}You have 1 measurement|]1, Inf[You have {{ count }} measurements'
+    association_types: '{0}You have 0 association types|{1}You have 1 association type|]1, Inf[You have {{ count }} association types'
+    group_types: '{0}You have 0 group types|{1}You have 1 group type|]1, Inf[You have {{ count }} group types'
+    groups: '{0}You have 0 groups|{1}You have 1 group|]1, Inf[You have {{ count }} groups'
+    rules: '{0}You have 0 enabled rules|{1}You have 1 enabled rule|]1, Inf[You have {{ count }} enabled rules'
+    identifier_generators: '{0}You have 0 identifier generator|{1}You have 1 identifier generator|]1, Inf[You have {{ count }} identifier generators'
+
+pim_system:
+  system_menu: System menu
+  system_navigation: System navigation
+  users_management_navigation: Users management navigation
+  count:
+    product_values: '{0}You have 0 product values|{1}You have 1 product value|]1, Inf[You have {{ count }} product values'
+    users: '{0}You have 0 users|{1}You have 1 user|]1, Inf[You have {{ count }} users'
+    user_groups: '{0}You have 0 user groups|{1}You have 1 user group|]1, Inf[You have {{ count }} user groups'
+    roles: '{0}You have 0 roles|{1}You have 1 role|]1, Inf[You have {{ count }} roles'
+  sso:
+    enabled: SSO enabled
+    disabled: SSO disabled
+    title: SAML-based Single Sign-On
+  reset_pim:
+    modal:
+      summary:
+        name: Summary
+        title: 'Warning: resetting your PIM is irreversible'
+        text: 'It will lead to the deletion of all elements except the following:'
+        users:
+          name: Users
+          tooltip: Users are persons you allow to collaborate within your PIM.
+        user_groups:
+          name: User Groups
+          tooltip: User Groups define teams that will perform different actions within your PIM.
+        roles:
+          name: Roles
+          tooltip: Roles define accesses and actions users and user groups can take within your PIM.
+      confirm:
+        name: Confirm
+        title: Confirm reset of your PIM
+        helper:
+          emphasis: There is no going back once you reset your PIM.
+          text: By clicking the reset button, you will be logged out and will be brought back to the login page.
+      confirmation_phrase: Please type "{{ confirmation_word }}"
+      confirmation_word: reset
+    button:
+      label: Reset instance
+      confirm: Reset and log out
+    error_notification: An error occurred during instance reset, please contact your system administrator.
+    jobs_running: You cannot reset your instance at the moment, as some processes are still queued or running.
+  sandbox:
+    helper:
+      text: This is a sandbox environment; your changes will not impact your production.
+
+pim_datagrid:
+  mass_action:
+    default:
+      select_action: Select Action

@@ -1,0 +1,27 @@
+pim_api:
+  acl:
+    attribute:
+      edit: Experimente os atributos Criar e também atualizar
+      list: Listar atributos
+    attribute_group:
+      edit: Tente criar e atualizar grupos de atributos
+      list: Listar grupos de atributos
+    category:
+      list: Listar categorias
+    family:
+      list: Listar famílias
+    channel:
+      list: Listar canais
+    locale.list: Listar linguagens
+    currency.list: Listar moedas
+    association_type:
+      list: Listar tipos de associação
+  acl_group:
+    attribute: Atributos
+    attribute_group: Grupos de atributos
+    category: Categorias
+    family: Famílias
+    channel: Canais
+    locale: Linguagens
+    currency: Moedas
+    association_type: Tipos de associação

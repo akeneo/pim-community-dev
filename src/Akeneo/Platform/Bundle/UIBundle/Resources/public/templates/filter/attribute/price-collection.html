@@ -1,0 +1,19 @@
+<select class="select2 operator" <%- editable ? '' : 'disabled' %> name="filter-operator">
+    <% _.each(operators, function (operatorChoiceLabel, operatorChoice) { %>
+        <option value="<%- operatorChoice %>"<%- operator === operatorChoice ? ' selected' : '' %>>
+            <%- operatorChoiceLabel %>
+        </option>
+    <% }); %>
+</select>
+
+<% if (!_.contains(['EMPTY', 'NOT EMPTY'], operator)) { %>
+    <input type="text" name="filter-data" class="AknTextField AknTextField--noRightRadius AknTextField--noLeftRadius value" value="<%- value.amount %>" <%- editable ? '' : 'disabled' %>>
+
+    <select class="select2 currency" name="filter-currency" <%- editable ? '' : 'disabled' %>>
+        <% _.each(currencies, function (currencyChoice) { %>
+            <option value="<%- currencyChoice.code %>"<%- value.currency === currencyChoice.code ? ' selected' : '' %>>
+                <%- currencyChoice.code %>
+            </option>
+        <% }); %>
+    </select>
+<% } %>

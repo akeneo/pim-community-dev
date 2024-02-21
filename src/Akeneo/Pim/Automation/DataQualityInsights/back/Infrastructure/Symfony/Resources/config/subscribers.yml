@@ -1,0 +1,51 @@
+services:
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\EventSubscriber\InitDataQualityInsightsDbSchemaSubscriber:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: 'kernel.event_subscriber' }
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Product\InitializeEvaluationOfAProductSubscriber:
+        arguments:
+            - '@akeneo.pim.automation.data_quality_insights.feature'
+            - '@akeneo.pim.automation.data_quality_insights.create_products_criteria_evaluations'
+            - '@logger'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\ProductModel\InitializeEvaluationOfAProductModelSubscriber:
+        arguments:
+            - '@akeneo.pim.automation.data_quality_insights.feature'
+            - '@akeneo.pim.automation.data_quality_insights.create_product_models_criteria_evaluations'
+            - '@logger'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductModelIdFactory'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\EventSubscriber\InitDataQualityInsightsJobsSubscriber:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\InitializeJobs'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\AttributeGroup\UpdateAttributeGroupActivationSubscriber:
+        arguments:
+            - '@akeneo.pim.automation.data_quality_insights.feature'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\AttributeGroupActivationRepository'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetAttributeGroupActivationQuery'
+            - '@logger'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Product\BulkUpdateProductQualityScoresIndexSubscriber:
+        arguments:
+            - '@akeneo.pim.automation.data_quality_insights.elasticsearch.bulk_update_product_quality_scores_index'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Product\BulkUpdateProductModelQualityScoresIndexSubscriber:
+        arguments:
+            - '@akeneo.pim.automation.data_quality_insights.elasticsearch.bulk_update_product_model_quality_scores_index'
+        tags:
+            - { name: kernel.event_subscriber }

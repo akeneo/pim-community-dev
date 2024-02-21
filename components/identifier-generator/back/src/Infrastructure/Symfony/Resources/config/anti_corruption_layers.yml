@@ -1,0 +1,4 @@
+services:
+  Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\AntiCorruptionLayer\CategoriesHaveAtLeastOneChild:
+    arguments:
+      - '@Akeneo\Category\ServiceApi\Query\CategoriesHaveAtLeastOneChild'

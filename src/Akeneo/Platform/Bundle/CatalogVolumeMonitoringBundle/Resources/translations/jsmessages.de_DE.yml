@@ -1,0 +1,48 @@
+pim_catalog_volume:
+  product_values: "Sie haben <span>{{values}}</span> Produktinformationen in Ihrem PIM! Durchschnittlich sind es <span>{{average}}</span> Produktinformationen je Produkt!&nbsp;💪"
+  product_values_description: 'Desto mehr Produktinformationen Sie haben, desto wertvoller ist Ihr PIM, umso höher ist Ihr ROI! Mehr Details <a href="{{link}}" target="_blank">hier</a>'
+  section:
+    product_values:
+      hint: 'Wussten Sie, dass die Gesamtanzahl Ihrer Produktinformationen direkt mit folgenden Achsen verbunden sind? <br/> Für mehr Details, empfehlen wir Ihnen folgenden <a href="{{link}}" target="_blank">Artikel </a>.'
+      title: Kennzahlen, die die Anzahl der Produktwerte beeinflussen
+    catalog_structure:
+      hint: Sie wissen sicherlich, dass eine gute Katalogstruktur sehr wichtig ist und eine Voraussetzung für effizienten anreichern. Im folgenden sehen Sie die verschiedene Achsen, um Ihre Katalogstruktur zu überwachen.
+      title: Kennzahlen zur Katalogstruktur
+    variant_modelling:
+      hint: Falls du Variantenmodellierung nutzt, können diese Achsen dir beim beobachten helfen.
+      title: Kennzahlen zu Produktmodellen
+  axis:
+    count_products: Produkte
+    average_max_attributes_per_family: Attribute pro Produktfamilie
+    count_channels: Ausgabekanäle
+    count_locales: Gebietsschema (aktiviert)
+    count_scopable_attributes: Scopable Attribute
+    count_localizable_and_scopable_attributes: Lokalisierbar und scopable Attribute
+    count_localizable_attributes: Lokalisierbare Attribute
+    count_families: Produktfamilien
+    count_attributes: Attribute
+    average_max_options_per_attribute: Optionen je Attribut
+    count_categories: Kategorien
+    count_category_trees: Kategorie-Strukturbäume
+    count_variant_products: Produktvarianten
+    count_product_models: Produktmodelle
+    count_product_and_product_model_values: Produktwerte
+    average_max_product_and_product_model_values: Produktwerte nach Produkten
+    count_reference_entity: Referenz Entitäten
+    average_max_records_per_reference_entity: Datensätze pro Referenz Entität
+    average_max_attributes_per_reference_entity: Attribute pro Referenz Entität
+    count_asset_family: Asset-Familien
+    average_max_assets_per_asset_family: Assets pro Asset-Familie
+    average_max_attributes_per_asset_family: Assets pro Asset-Familie
+    title:
+      product: Produkt
+      catalog: Katalog
+      product_structure: Produktstruktur
+      variant_modeling: Variantenmodellierung
+      reference_entities: Referenz Entitäten
+      assets: Assets
+  mean: 'Durchschnitt:'
+  max: 'Max:'
+  error:
+    generic_title: Entschuldigung, ein Fehler ist aufgetreten.
+    generic_message: Versuchen Sie es in paar Minuten erneut.

@@ -1,0 +1,28 @@
+framework:
+    translator:
+        fallback: en_US
+    secret: '%env(APP_SECRET)%'
+    router:
+        strict_requirements: '%env(APP_DEBUG)%'
+    form: true
+    csrf_protection: true
+    validation:
+        enable_annotations: true
+        enabled: true
+    default_locale: '%env(APP_DEFAULT_LOCALE)%'
+    session:
+        name: BAPID
+        handler_id: session.handler.pdo
+        gc_maxlifetime: 3600
+        cookie_samesite: 'lax' # needed to not be strict for SSO and Apps oAuth2 workflows
+    serializer:
+        enabled: true
+    http_method_override: true
+    assets:
+        packages:
+            frontend:
+                version_strategy: pim_enrich.version_strategy
+    cache:
+        pools:
+            name:
+                adapter: cache.adapter.apcu

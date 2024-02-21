@@ -1,0 +1,20 @@
+Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationCommand:
+  properties:
+    clientId:
+      - NotBlank:
+          message: akeneo_connectivity.connection.connect.apps.constraint.client_id.not_blank
+      - Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation\ClientIdMustBeValid:
+          message: akeneo_connectivity.connection.connect.apps.constraint.client_id.must_be_valid
+    responseType:
+      - NotBlank:
+          message: akeneo_connectivity.connection.connect.apps.constraint.response_type.not_blank
+      - IdenticalTo:
+          value: code
+          message: akeneo_connectivity.connection.connect.apps.constraint.response_type.must_be_code
+    scope:
+      - Type:
+          type: string
+          message: akeneo_connectivity.connection.connect.apps.constraint.scope.must_be_a_string
+      - Length:
+          maxMessage: akeneo_connectivity.connection.connect.apps.constraint.scope.too_long
+          max: 1000

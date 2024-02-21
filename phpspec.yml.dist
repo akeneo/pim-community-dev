@@ -1,0 +1,305 @@
+## Rename this file in phpspec.yml to customize the phpspec configuration
+suites:
+    ## Category context
+    LegacyCategory:
+        namespace: Akeneo\Test\Category\Acceptance
+        psr4_prefix: Akeneo\Test\Category\Acceptance
+        spec_path: tests/back/Category/Acceptance
+        src_path: tests/back/Category/Acceptance
+        spec_prefix: Specification
+
+    Category:
+        namespace: Akeneo\Category
+        psr4_prefix: Akeneo\Category
+        src_path: src/Akeneo/Category/back
+        spec_path: src/Akeneo/Category/back/tests
+        spec_prefix: Specification
+
+    ## Channel context
+    LegacyChannel:
+        namespace: Akeneo\Channel
+        psr4_prefix: Akeneo\Channel
+        spec_path: tests/back/Channel
+        src_path: src/Akeneo/Channel/back
+        spec_prefix: Specification
+
+    ChannelAcceptance:
+        namespace: Akeneo\Test\Channel\Acceptance
+        psr4_prefix: Akeneo\Test\Channel\Acceptance
+        spec_path: src/Akeneo/Channel/back/tests/Acceptance
+        src_path: src/Akeneo/Channel/back/tests/Acceptance
+        spec_prefix: Specification
+
+    Channel:
+        namespace: Akeneo\Channel
+        psr4_prefix: Akeneo\Channel
+        spec_path: src/Akeneo/Channel/back/tests
+        src_path: src/Akeneo/Channel/back
+        spec_prefix: Specification
+
+    ## Structure context
+    Structure:
+        namespace: Akeneo\Pim\Structure
+        psr4_prefix: Akeneo\Pim\Structure
+        spec_path: tests/back/Pim/Structure
+        src_path: src/Akeneo/Pim/Structure
+        spec_prefix: Specification
+
+    ## Enrichment context
+    EnrichmentProductAcceptance:
+        namespace: Akeneo\Pim\Enrichment\Product\Test\Acceptance
+        psr4_prefix: Akeneo\Pim\Enrichment\Product\Test\Acceptance
+        src_path: src/Akeneo/Pim/Enrichment/Product/back/Test/Acceptance
+        spec_path: src/Akeneo/Pim/Enrichment/Product/back/Test/Acceptance
+        spec_prefix: Specification
+
+    EnrichmentProduct:
+        namespace: Akeneo\Pim\Enrichment\Product
+        psr4_prefix: Akeneo\Pim\Enrichment\Product
+        src_path: src/Akeneo/Pim/Enrichment/Product/back
+        spec_path: src/Akeneo/Pim/Enrichment/Product/back/Test
+        spec_prefix: Specification
+
+    EnrichmentCategoryAcceptance:
+        namespace: Akeneo\Pim\Enrichment\Category\Test\Acceptance
+        psr4_prefix: Akeneo\Pim\Enrichment\Category\Test\Acceptance
+        src_path: src/Akeneo/Pim/Enrichment/Category/back/Test/Acceptance
+        spec_path: src/Akeneo/Pim/Enrichment/Category/back/Test/Acceptance
+        spec_prefix: Specification
+
+    Enrichment:
+        namespace: Akeneo\Pim\Enrichment
+        psr4_prefix: Akeneo\Pim\Enrichment
+        src_path: src/Akeneo/Pim/Enrichment
+        spec_path: tests/back/Pim/Enrichment
+        spec_prefix: Specification
+
+
+    ## Platform context
+    Platform:
+        namespace: Akeneo\Platform
+        psr4_prefix: Akeneo\Platform
+        spec_path: tests/back/Platform
+        src_path: src/Akeneo/Platform
+        spec_prefix: Specification
+
+    ## Communication Channel context
+    CommunicationChannel:
+        namespace: Akeneo\Platform\CommunicationChannel
+        psr4_prefix: Akeneo\Platform\CommunicationChannel
+        spec_path: src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests/Unit
+        src_path: src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back
+
+    ## Apps context
+    Apps:
+        namespace: Akeneo\Connectivity\Connection
+        psr4_prefix: Akeneo\Connectivity\Connection
+        spec_path: src/Akeneo/Connectivity/Connection/back/tests/Unit
+        src_path: src/Akeneo/Connectivity/Connection/back
+
+    DataQualityInsights:
+        namespace: Akeneo\Pim\Automation\DataQualityInsights
+        psr4_prefix: Akeneo\Pim\Automation\DataQualityInsights
+        spec_path: src/Akeneo/Pim/Automation/DataQualityInsights/tests/back/
+        src_path: src/Akeneo/Pim/Automation/DataQualityInsights
+        spec_prefix: Specification
+
+    IdentifierGenerator:
+        namespace: Akeneo\Pim\Automation\IdentifierGenerator
+        psr4_prefix: Akeneo\Pim\Automation\IdentifierGenerator
+        spec_path: components/identifier-generator/back/tests
+        src_path: components/identifier-generator
+        spec_prefix: Specification
+
+    ## Akeneo Components
+    Connector:
+        namespace: Akeneo\Tool\Component\Connector
+        psr4_prefix: Akeneo\Tool\Component\Connector
+        spec_path: src/Akeneo/Tool/Component/Connector
+        src_path: src/Akeneo/Tool/Component/Connector
+    Analytics:
+        namespace: Akeneo\Tool\Component\Analytics
+        psr4_prefix: Akeneo\Tool\Component\Analytics
+        spec_path: src/Akeneo/Tool/Component/Analytics
+        src_path: src/Akeneo/Tool/Component/Analytics
+    Batch:
+        namespace: Akeneo\Tool\Component\Batch
+        psr4_prefix: Akeneo\Tool\Component\Batch
+        spec_path: src/Akeneo/Tool/Component/Batch
+        src_path: src/Akeneo/Tool/Component/Batch
+    BatchQueue:
+        namespace: Akeneo\Tool\Component\BatchQueue
+        psr4_prefix: Akeneo\Tool\Component\BatchQueue
+        spec_path: src/Akeneo/Tool/Component/BatchQueue
+        src_path: src/Akeneo/Tool/Component/BatchQueue
+    Buffer:
+        namespace: Akeneo\Tool\Component\Buffer
+        psr4_prefix: Akeneo\Tool\Component\Buffer
+        spec_path: src/Akeneo/Tool/Component/Buffer
+        src_path: src/Akeneo/Tool/Component/Buffer
+    Classification:
+        namespace: Akeneo\Tool\Component\Classification
+        psr4_prefix: Akeneo\Tool\Component\Classification
+        spec_path: src/Akeneo/Tool/Component/Classification
+        src_path: src/Akeneo/Tool/Component/Classification
+    Console:
+        namespace: Akeneo\Tool\Component\Console
+        psr4_prefix: Akeneo\Tool\Component\Console
+        spec_path: src/Akeneo/Tool/Component/Console
+        src_path: src/Akeneo/Tool/Component/Console
+    FileStorage:
+        namespace: Akeneo\Tool\Component\FileStorage
+        psr4_prefix: Akeneo\Tool\Component\FileStorage
+        spec_path: src/Akeneo/Tool/Component/FileStorage
+        src_path: src/Akeneo/Tool/Component/FileStorage
+    Localization:
+        namespace: Akeneo\Tool\Component\Localization
+        psr4_prefix: Akeneo\Tool\Component\Localization
+        spec_path: src/Akeneo/Tool/Component/Localization
+        src_path: src/Akeneo/Tool/Component/Localization
+    StorageUtils:
+        namespace: Akeneo\Tool\Component\StorageUtils
+        psr4_prefix: Akeneo\Tool\Component\StorageUtils
+        spec_path: src/Akeneo/Tool/Component/StorageUtils
+        src_path: src/Akeneo/Tool/Component/StorageUtils
+    Versioning:
+        namespace: Akeneo\Tool\Component\Versioning
+        psr4_prefix: Akeneo\Tool\Component\Versioning
+        spec_path: src/Akeneo/Tool/Component/Versioning
+        src_path: src/Akeneo/Tool/Component/Versioning
+    Email:
+        namespace: Akeneo\Tool\Component\Email
+        psr4_prefix: Akeneo\Tool\Component\Email
+        spec_path: src/Akeneo/Tool/Component/Email
+        src_path: src/Akeneo/Tool/Component/Email
+
+    ## Akeneo Bundles
+    BatchBundle:
+        namespace: Akeneo\Tool\Bundle\BatchBundle
+        psr4_prefix: Akeneo\Tool\Bundle\BatchBundle
+        spec_path: src/Akeneo/Tool/Bundle/BatchBundle
+        src_path: src/Akeneo/Tool/Bundle/BatchBundle
+    BatchQueueBundle:
+        namespace: Akeneo\Tool\Bundle\BatchQueueBundle
+        psr4_prefix: Akeneo\Tool\Bundle\BatchQueueBundle
+        spec_path: src/Akeneo/Tool/Bundle/BatchQueueBundle
+        src_path: src/Akeneo/Tool/Bundle/BatchQueueBundle
+    ClassificationBundle:
+        namespace: Akeneo\Tool\Bundle\ClassificationBundle
+        psr4_prefix: Akeneo\Tool\Bundle\ClassificationBundle
+        spec_path: src/Akeneo/Tool/Bundle/ClassificationBundle
+        src_path: src/Akeneo/Tool/Bundle/ClassificationBundle
+    ElasticsearchBundle:
+        namespace: Akeneo\Tool\Bundle\ElasticsearchBundle
+        psr4_prefix: Akeneo\Tool\Bundle\ElasticsearchBundle
+        spec_path: src/Akeneo/Tool/Bundle/ElasticsearchBundle
+        src_path: src/Akeneo/Tool/Bundle/ElasticsearchBundle
+    StorageUtilsBundle:
+        namespace: Akeneo\Tool\Bundle\StorageUtilsBundle
+        psr4_prefix: Akeneo\Tool\Bundle\StorageUtilsBundle
+        spec_path: src/Akeneo/Tool/Bundle/StorageUtilsBundle
+        src_path: src/Akeneo/Tool/Bundle/StorageUtilsBundle
+    Job:
+        namespace: Akeneo\Platform\Job
+        psr4_prefix: Akeneo\Platform\Job
+        spec_path: src/Akeneo/Platform/Job/back/tests
+        src_path: src/Akeneo/Platform/Job/back
+        spec_prefix: Specification
+    FileStorageBundle:
+        namespace: Akeneo\Tool\Bundle\FileStorageBundle
+        psr4_prefix: Akeneo\Tool\Bundle\FileStorageBundle
+        spec_path: src/Akeneo/Tool/Bundle/FileStorageBundle
+        src_path: src/Akeneo/Tool/Bundle/FileStorageBundle
+    MeasureBundle:
+        namespace: Akeneo\Tool\Bundle\MeasureBundle
+        psr4_prefix: Akeneo\Tool\Bundle\MeasureBundle
+        spec_path: src/Akeneo/Tool/Bundle/MeasureBundle/back/tests
+        src_path: src/Akeneo/Tool/Bundle/MeasureBundle/back
+        spec_prefix: spec
+    MessengerBundle:
+        namespace: Akeneo\Tool\Bundle\MessengerBundle
+        psr4_prefix: Akeneo\Tool\Bundle\MessengerBundle
+        spec_path: src/Akeneo/Tool/Bundle/MessengerBundle
+        src_path: src/Akeneo/Tool/Bundle/MessengerBundle
+    VersioningBundle:
+        namespace: Akeneo\Tool\Bundle\VersioningBundle
+        psr4_prefix: Akeneo\Tool\Bundle\VersioningBundle
+        spec_path: src/Akeneo/Tool/Bundle/VersioningBundle
+        src_path: src/Akeneo/Tool/Bundle/VersioningBundle
+    WebhookBundle:
+        namespace: Akeneo\Tool\Bundle\WebhookBundle
+        psr4_prefix: Akeneo\Tool\Bundle\WebhookBundle
+        spec_path: src/Akeneo/Tool/Bundle/WebhookBundle
+        src_path: src/Akeneo/Tool/Bundle/WebhookBundle
+
+    ## Pim Components
+    Api:
+        namespace: Akeneo\Tool\Component\Api
+        psr4_prefix: Akeneo\Tool\Component\Api
+        spec_path: src/Akeneo/Tool/Component/Api
+        src_path: src/Akeneo/Tool/Component/Api
+    ApiBundle:
+        namespace: Akeneo\Tool\Bundle\ApiBundle
+        psr4_prefix: Akeneo\Tool\Bundle\ApiBundle
+        spec_path: src/Akeneo/Tool/Bundle/ApiBundle
+        src_path: src/Akeneo/Tool/Bundle/ApiBundle
+    ConnectorBundle:
+        namespace: Akeneo\Tool\Bundle\ConnectorBundle
+        psr4_prefix: Akeneo\Tool\Bundle\ConnectorBundle
+        spec_path: src/Akeneo/Tool/Bundle/ConnectorBundle
+        src_path: src/Akeneo/Tool/Bundle/ConnectorBundle
+    LegacyUser:
+        namespace: Akeneo\UserManagement
+        psr4_prefix: Akeneo\UserManagement
+        spec_path: tests/back/UserManagement
+        src_path: src/Akeneo/UserManagement
+        spec_prefix: Specification
+    User:
+        namespace: Akeneo\UserManagement
+        psr4_prefix: Akeneo\UserManagement
+        spec_path: src/Akeneo/UserManagement/back/tests
+        src_path: src/Akeneo/UserManagement/back
+        spec_prefix: Specification
+    ## Oro bundles
+    OroFilterBundle:
+        namespace: Oro\Bundle\FilterBundle
+        psr4_prefix: Oro\Bundle\FilterBundle
+        spec_path: src/Oro/Bundle/FilterBundle
+        src_path: src/Oro/Bundle/FilterBundle
+    OroDataGridBundle:
+        namespace: Oro\Bundle\DataGridBundle
+        psr4_prefix: Oro\Bundle\DataGridBundle
+        spec_path: src/Oro/Bundle/DataGridBundle
+        src_path: src/Oro/Bundle/DataGridBundle
+
+    ## Test
+    Acceptance:
+        namespace: Akeneo\Test\Acceptance
+        psr4_prefix: Akeneo\Test\Acceptance
+        spec_path: tests/back/Acceptance
+        src_path: tests/back/Acceptance
+
+    Common:
+        namespace: Akeneo\Test\Common
+        psr4_prefix: Akeneo\Test\Common
+        spec_path: tests/back/Common
+        src_path: tests/back/Common
+
+    ## Misc
+    PimDataGridBundle:
+        namespace: Oro\Bundle\PimDataGridBundle
+        psr4_prefix: Oro\Bundle\PimDataGridBundle
+        spec_path: src/Oro/Bundle/PimDataGridBundle
+        src_path: src/Oro/Bundle/PimDataGridBundle
+    FilterBundle:
+        namespace: Oro\Bundle\PimFilterBundle
+        psr4_prefix: Oro\Bundle\PimFilterBundle
+        spec_path: src/Oro/Bundle/PimFilterBundle
+        src_path: src/Oro/Bundle/PimFilterBundle
+
+    Installer:
+        namespace: Akeneo\Platform\Installer
+        psr4_prefix: Akeneo\Platform\Installer
+        spec_path: src/Akeneo/Platform/Installer/back/tests
+        src_path: src/Akeneo/Platform/Installer/back/src
+        spec_prefix: Specification

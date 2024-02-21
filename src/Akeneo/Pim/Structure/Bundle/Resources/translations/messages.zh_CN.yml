@@ -1,0 +1,63 @@
+pim_enrich:
+  #Attribute
+  attribute:
+    tab:
+      parameter.title: 参数
+      value.title: 值
+      history.title: 历史记录 
+  #Family
+  family:
+    info:
+      cant_remove_attribute_used_as_axis: 无法移除此属性，其被用作品类变型中的变量轴
+  attribute_group:
+    remove:
+      attribute_group_with_attribute_cannot_be_removed: 无法移除包含属性的属性组。请在删除属性组之前先移除其属性。
+      attribute_group_other_cannot_be_removed: 无法移除属性组“其他”。
+  #Group type
+  group_type:
+    tab:
+      property.title: 属性
+  #Mass edit operations
+  mass_edit_action:
+    family:
+      page_title: 品类
+      page_subtitle: 批量编辑（1 个品类）| 批量编辑（%count% 个品类）
+      title: 选择操作
+      subtitle: 请选择想要对所选品类执行的操作 |请选择想要对所选的 %count% 个品类执行的操作
+      confirm: 将要更新品类的以下信息，请确认。|将要更新 %count% 个品类的以下信息，请确认。
+      steps:
+        first: 选择品类
+        second: 选择操作
+        third: 配置
+        fourth: 确认
+  entity:
+    association_type:
+      property:
+        is_two_way: 双向关联
+        is_quantified: 关联数量
+pim_enrich_attribute_form:
+  code: 代码
+  type: 属性类型
+  reference_data_name: 参考数据名称
+  scopable: 每个渠道的值
+  localizable: 每项区域设置的值
+  unique: 唯一值
+  availableLocales: 可用区域
+  locale_specific: 区域特定
+  group: 属性组
+  useableAsGridFilter: 在网格中可用
+job_execution.summary:
+  deleted_attribute_groups: 已删除属性组
+  skipped_attribute_groups: 已跳过属性组
+  moved_attributes: 已移动的属性
+  deleted_attributes: 已删除的属性
+pim_import_export:
+  notification:
+    attribute_group_mass_delete:
+      error: 批量删除属性组失败
+      warning: 批量删除属性组完成，但有一些警告
+      success: 批量删除属性组完成
+    attribute_mass_delete:
+      error: 批量删除属性失败
+      warning: 批量删除属性完成，但有一些警告
+      success: 批量删除属性完成

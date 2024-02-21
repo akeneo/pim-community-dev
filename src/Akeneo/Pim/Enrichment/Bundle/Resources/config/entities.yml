@@ -1,0 +1,13 @@
+parameters:
+    pim_catalog.entity.abstract_product.class:             Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProduct
+    pim_catalog.entity.product.class:                      Akeneo\Pim\Enrichment\Component\Product\Model\Product
+    pim_catalog.entity.product_model.class:                Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel
+    pim_catalog.entity.product_unique_data.class:          Akeneo\Pim\Enrichment\Component\Product\Model\ProductUniqueData
+    pim_catalog.entity.association.class:                  Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation
+    pim_catalog.entity.product_model_association.class:    Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociation
+    pim_catalog.entity.group.class:                        Akeneo\Pim\Enrichment\Component\Product\Model\Group
+    pim_catalog.entity.group_translation.class:            Akeneo\Pim\Enrichment\Component\Product\Model\GroupTranslation
+    pim_catalog.entity.metric.class:                       Akeneo\Pim\Enrichment\Component\Product\Model\Metric
+    pim_catalog.entity.product_price.class:                Akeneo\Pim\Enrichment\Component\Product\Model\ProductPrice
+    pim_comment.entity.comment.class: Akeneo\Pim\Enrichment\Component\Comment\Model\Comment
+    pim_reference_data.model.abstract_reference_data.class: Akeneo\Pim\Enrichment\Component\Product\Model\AbstractReferenceData

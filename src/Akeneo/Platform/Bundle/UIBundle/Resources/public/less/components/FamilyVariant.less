@@ -1,0 +1,142 @@
+@import '../base/variables';
+
+.AknFamilyVariant {
+    display: flex;
+    padding: 0 0 0 @AknFullPagePadding;
+    margin-top: 50px;
+    margin-bottom: @AknFullPagePadding;
+
+    &-description {
+        margin: @AknFullPagePadding + 6px auto 0;
+        max-width: 600px;
+    }
+
+    &-level {
+        flex-basis: 30%;
+        flex-grow: 1;
+        margin-right: @AknFullPagePadding;
+        max-width: calc(33vw - 40px);
+
+        &:nth-child(3) {
+            margin-top: 65px;
+        }
+
+        &:first-child {
+            background-color: @AknLightGray;
+        }
+    }
+
+    &-column {
+        border: 1px solid @AknBorderColor;
+        padding: 5px 20px;
+        overflow-y: auto;
+        color: @AknDarkBlue;
+        min-height: 300px;
+
+        &--common {
+            max-height: ~"calc(100vh - 320px)";
+        }
+    }
+
+    &-axes {
+        color: @AknLightPurple;
+        background-color: @AknLightGray;
+        font-size: @AknFontSizeBig;
+        white-space: nowrap;
+        min-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: inline-block;
+    }
+
+    &-column--level2 {
+        max-height: ~"calc(100vh - (320px + 2 * 65px))";
+    }
+
+    &-column--level1 {
+        max-height: ~"calc(100vh - (320px + 65px))";
+    }
+
+    &-columTitle {
+        text-transform: uppercase;
+        border-bottom: 1px solid @AknSlateGrey;
+        font-size: @AknFontSizeBig;
+        color: @AknGrey;
+        margin: 0;
+    }
+
+    &-columnList {
+        font-size: @AknDefaultFontSize;
+        margin-bottom: 20px;
+    }
+
+    &-levelPathLabel {
+        background-color: darken(@AknBlue, 10%);
+        border-color: darken(@AknBlue, 20%);
+        color: white;
+        height: @AknDefaultButtonSize;
+        line-height: @AknDefaultButtonSize - 2px;
+        font-size: @AknFontSizeBig;
+        min-width: @AknDefaultButtonSize;
+        display: inline-block;
+        padding: 0 @AknDefaultButtonSize/2;
+        border-radius: 100px;
+        white-space: nowrap;
+        position: relative;
+        text-transform: uppercase;
+    }
+
+    &-levelPath {
+        display: flex;
+        position: relative;
+        left: -32px;
+        margin: 5px 0 0 0;
+
+        &:before {
+            content: '';
+            width: 60px;
+            height: 32px;
+            background-image: url("/bundles/pimui/images/connector-start.svg");
+            display: inline-block;
+        }
+
+        &:after {
+            content: '';
+            width: 60px;
+            height: 60px;
+            background-image: url("/bundles/pimui/images/connector-end.svg");
+            display: inline-block;
+        }
+    }
+
+    &-attribute {
+        background-color: white;
+        margin: 0;
+
+        &--common {
+            background-color: @AknLightGray;
+        }
+    }
+
+    &-attribute, &-columTitle {
+        &--movable {
+            background: url("/bundles/pimui/images/icon-dragcolumns.svg") no-repeat 0 center;
+            background-size: 13px;
+            padding-left: 20px;
+            cursor: move;
+            display: block;
+        }
+    }
+
+    &-attributeGroup {
+        background-color: white;
+
+        &--common {
+            background-color: @AknLightGray;
+        }
+
+        &--empty {
+            min-height: 250px;
+        }
+    }
+}

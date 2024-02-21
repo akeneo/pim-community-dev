@@ -1,0 +1,21 @@
+pim_enrich.product:
+  validation:
+    upsert:
+      unknown_user: 'De "{{ user_id }}" gebruiker bestaat niet'
+      category_no_access_to_products: U heeft geen toegang tot producten in geen enkele boom, neemt contact op met uw beheerder.
+      should_keep_one_owned_category: U moet uw product laten staan in minstens één categorie waarvoor u zelf toestemming heeft.
+      locale_no_access_to_products: U heeft in geen enkele geactiveerde taal toegang tot productgegevens. Neem contact op met uw beheerder
+      attribute_group_no_access_to_attributes: U heeft geen toegang tot het attribuut {{ attributeCode }} van dit product. Neem contact op met uw beheerder.
+      product_identifier_empty: Het product ID vereist een niet-lege tekenreeks
+      duplicated_user_intents: De waarde voor attribuut {{ attributeCode }} wordt meerdere keren bijgewerkt
+      family_code_empty: Voor de familiecode is een niet lege string vereist
+      category_does_not_exist: '{1}De categorie "{{ categoryCodes }}" categorie bestaat niet.|]1, Inf[De categorieën "{{ categoryCodes }}" bestaan niet'
+      set_value:
+        no_channel_code_provided_for_scopable_attribute: 'Voor attribuut {{ attributeCode }} is een kanaal vereist'
+        channel_code_provided_for_non_scopable_attribute: 'Voor attribuut {{ attributeCode }} is geen kanaal vereist. "{{ channelCode }}" werd gedetecteerd'
+        no_locale_code_provided_for_localizable_attribute: 'Voor attribuut {{ attributeCode }} is een taal vereist'
+        locale_code_provided_for_non_localizable_attribute: 'Voor attribuut {{ attributeCode }} is geen taal vereist. "{{ localeCode }}" werd gedetecteerd'
+        invalid_locale_code_for_locale_specific_attribute: 'Voor {{ attributeCode }} is een van de volgende talen vereist: {{ availableLocales }}; "{{ localeCode }}" werd gedetecteerd'
+        channel_does_not_exist: 'Het kanaal {{ channelCode }} bestaat niet'
+        locale_is_not_active: 'De taal {{ localeCode }} bestaat niet of is niet geactiveerd'
+        locale_not_activated_for_channel: 'De taal {{ localeCode }} is niet geactiveerd voor het kanaal {{ channelCode }}'

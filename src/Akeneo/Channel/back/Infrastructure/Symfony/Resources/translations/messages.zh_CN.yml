@@ -1,0 +1,10 @@
+pim_enrich:
+  #Locale
+  locale:
+    tab:
+      property.title: 属性
+  channel:
+    flash:
+      delete:
+        error: 您不能移除渠道"%channelCode%"，因为您的 PIM 必须包含至少一个渠道。
+        linked_to_export_profile: 无法删除链接到导出配置文件的渠道。

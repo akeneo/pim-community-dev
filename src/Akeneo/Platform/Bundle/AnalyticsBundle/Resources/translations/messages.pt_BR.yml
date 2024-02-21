@@ -1,0 +1,59 @@
+pim_analytics:
+  new_patch_available: Novo patch disponível
+  system_config:
+    group:
+      notification.title: Notificações
+      version_update.title: Atualizações da versão
+    form:
+      version_update.label: Notificação de nova versão
+      version_update.tooltip: Envia requisição para o servidor para receber informações sobre novas versões
+  system_info:
+    title: Informações do Sistema
+    download: TXT
+  info_type:
+    pim_edition: Edição
+    pim_version: Versão
+    pim_storage_driver: Armazenamento
+    pim_environment: Ambiente
+    pim_install_time: Tempo de instalação
+    registered_bundles: Pacotes registrados
+    nb_channels: Número de canais
+    nb_products: Número de produtos
+    nb_product_models: Número de modelos de produto
+    nb_variant_products: Número de variante de produtos
+    nb_family_variants: Número de variantes de família
+    nb_attributes: Número de atributos
+    nb_scopable_attributes: Número de atributos acessíveis
+    nb_localizable_attributes: Número de atributos localizáveis
+    nb_scopable_localizable_attributes: Número de atributos localizáveis e acessíveis
+    nb_useable_as_grid_filter_attributes: Número de atributos utilizáveis como filtro de grade
+    avg_percentage_scopable_attributes_per_family: Porcentagem média de atributos acessíveis por família (%)
+    avg_percentage_localizable_attributes_per_family: Porcentagem média de atributos localizáveis por família (%)
+    avg_percentage_scopable_localizable_attributes_per_family: Porcentagem média de atributos localizáveis e acessíveis por família (%)
+    avg_number_attributes_per_family: Número médio de atributos por família
+    nb_locales: Número de locais
+    nb_families: Número de famílias
+    nb_users: Número de usuários
+    nb_categories: Número de categorias
+    nb_category_trees: Número de árvores de categoria
+    max_category_in_one_category: Número máximo de categorias em uma categoria
+    max_category_levels: Número máximo de níveis de categoria
+    nb_product_values: Número de valores de produto
+    avg_product_values_by_product: Número médio de valores de produto por produto
+    avg_product_values_by_family: Número médio do potencial de valores de produtos por família
+    max_product_values_by_family: Número máximo do potencial de valores de produto por família
+    pim_storage_version: Versão de armazenamento
+    os_version: Versão OS
+    php_version: Versão do PHP
+    mysql_version: Versão do MySQL
+    mariadb_version: Versão do MariaDB
+    mongodb_version: Versão do MongoDB
+    server_version: Versão do servidor
+    php_extensions: Extensões do PHP
+    email_domains: Domínios associados
+  acl:
+    system_info:
+      index: Informações do Sistema
+pim_menu:
+  item:
+    system_info: Informações do Sistema

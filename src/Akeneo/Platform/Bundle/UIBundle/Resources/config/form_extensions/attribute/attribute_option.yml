@@ -1,0 +1,6 @@
+extensions:
+    pim-attribute-option-form:
+        module: pim/attribute-option-form
+        zones:
+            form: self
+            fields: .row-fluid

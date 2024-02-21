@@ -1,0 +1,25 @@
+<div class="AknFieldContainer">
+    <div class="AknFieldContainer-header">
+        <label class="AknFieldContainer-label" for="jobInstance_<%- config.fieldCode.replace('.', '_') %>"><%- __(config.label) %></label>
+    </div>
+    <div class="AknFieldContainer-inputContainer field-input">
+        <% if (undefined !== config.tooltip) { %>
+        <div class="icons-container">
+            <i class="AknIconButton icon-info-sign" data-toggle="tooltip" data-placement="right" data-original-title="<%- __(config.tooltip) %>"></i>
+        </div>
+        <% } %>
+    </div>
+    <div class="AknFieldContainer-footer">
+        <span class="below-input-elements-container">
+            <% if (null !== error) { %>
+            <span class="validation-container">
+                <span class="AknFieldContainer-validationErrors validation-errors">
+                    <span class="AknFieldContainer-validationError">
+                        <span class="error-message"><%- error %></span>
+                    </span>
+                </span>
+            </span>
+            <% } %>
+        </span>
+    </div>
+</div>

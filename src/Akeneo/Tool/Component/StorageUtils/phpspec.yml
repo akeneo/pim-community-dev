@@ -1,0 +1,5 @@
+suites:
+    default:
+        namespace: Akeneo\Tool\Component\StorageUtils
+        psr4_prefix: Akeneo\Tool\Component\StorageUtils
+        src_path: .

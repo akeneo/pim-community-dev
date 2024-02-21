@@ -1,0 +1,2 @@
+akeneo_batch.job_instance.unknown_job_definition: Nie można utworzyć %job_type% z nieznaną definicją zadania
+akeneo.job_automation.validation.import_should_have_storage: Pamięć nie została skonfigurowana w karcie Właściwości Twojego profilu importu.

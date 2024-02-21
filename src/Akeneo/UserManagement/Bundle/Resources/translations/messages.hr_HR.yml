@@ -1,0 +1,128 @@
+pim_user:
+  user:
+    title: Korisnik
+    fields:
+      name_prefix: Prefiks imena
+      email: Adresa e-pošte
+      username: Korisničko ime
+      first_name: Ime
+      middle_name: Srednje ime
+      last_name: Prezime
+      name_suffix: Sufiks imena
+      date_of_birth: Datum rođenja
+      avatar: Avatar
+      timezone: Vremenska zona
+      roles: Role
+      groups: Grupe
+      password: Lozinka
+      password_again: Ponovo upiši lozinku
+      product_grid_filters: Filtri tablice proizvoda
+      catalog_locale: Katalog regionalnih postavki
+      catalog_scope: Katalog opsega
+      default_tree: Zadano stablo
+      current_password: Trenutna lozinka
+      new_password: Nova lozinka
+      new_password_again: Nova lozinka (ponovi)
+      default_grid_view:
+        none: Niti jedan
+      default_product_grid_view:
+        label: Zadani prikaz tablice proizvoda
+      ui_locale: Regionalne postavke UI sučelja
+      last_logged_in: Zadnji prijavljeni
+      login_count: Broj prijava
+      user_salt: Korisnik je zaštićen
+      created: Kreirano
+      updated: Ažurirano
+      status: Status
+      capabilities: Mogućnosti
+      has_role: Ima rolu
+      has_group: Sadržava grupu
+      active: Aktivno
+      inactive: Neaktivno
+    tabs:
+      general:
+        title: Općenito
+        contact_information: Kontakt informacije
+      additional:
+        title: Dodatno
+      interfaces:
+        title: Sučelja
+      group_and_role.title: Grupe i role
+      password.title: Lozinka
+      business_unit.title: Poslovne jedinice
+      email_synchronization.title: Postavke sinkronizacije e-pošte
+    removed_user: Uklonjen korisnik
+    login:
+      username_or_email: Korisničko ime ili E-mail
+      remember_me: Zapamti me na ovom računalu
+      password_forgotten: Zaboravili ste svoju lozinku?
+      forgot_password: Zaboravio/la si lozinku
+      request: Zahtjev
+      reset: Poništi
+  group:
+    tab:
+      general.title: Općenito
+      users.title: Korisnici
+  roles:
+    title: Rola
+    tab:
+      general: Općenito
+      action: Dozvole
+      users: Korisnici
+  controller:
+    group:
+      message:
+        saved: "Grupa je spremljena"
+    role:
+      message:
+        saved: "Rola je spremljena"
+    user:
+      message:
+        saved: "Korisnik je spremljen"
+pim_datagrid:
+  columns:
+    user:
+      createdAt: "Kreirano u"
+      updatedAt: "Ažurirano u"
+    roles:
+      label: "Oznaka"
+    groups:
+      name: "Ime"
+confirmation:
+  remove:
+    role: Jeste li sigurni da želite izbrisati ovu rolu?
+    user: Jeste li sigurni da želite izbrisati ovog korisnika?
+flash:
+  role:
+    removed: Rola je uspješno uklonjena
+  user:
+    removed: Korisnik je uspješno uklonjen
+oro_security:
+  acl_group:
+    user: Korisnici
+    role: Role
+    group: Korisničke grupe
+  acl:
+    user:
+      view: Popis korisnika
+      create: Kreiraj korisnika
+      edit: Uredi korisnika
+      delete: Ukloni korisnika
+    role:
+      view: Popis rola
+      create: Kreiraj rolu
+      edit: Uredi rolu
+      delete: Ukloni rolu
+    group:
+      view: Popis korisničkih grupa
+      create: Kreiraj korisničku grupu
+      edit: Uredi korisničke grupe
+      delete: Ukloni korisničku grupu
+#Security
+(default): Zadane dozvole na entitete
+VIEW: Prikaz
+CREATE: Kreiraj
+EDIT: Uredi
+DELETE: Brisanje
+ASSIGN: Dodijeli
+SHARE: Podijeli

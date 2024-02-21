@@ -1,0 +1,35 @@
+parameters:
+    akeneo.pim.automation.data_quality_insights.persistence.product_criterion_evaluation_table: 'pim_data_quality_insights_product_criteria_evaluation'
+    akeneo.pim.automation.data_quality_insights.persistence.product_model_criterion_evaluation_table: 'pim_data_quality_insights_product_model_criteria_evaluation'
+
+services:
+      Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductScoreRepository:
+          arguments:
+              - '@database_connection'
+
+      Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductModelScoreRepository:
+          arguments:
+            - '@database_connection'
+
+      Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\CriterionEvaluationRepository:
+          arguments:
+              - '@database_connection'
+              - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\TransformCriterionEvaluationResultCodes'
+
+      akeneo.pim.automation.data_quality_insights.repository.product_criterion_evaluation:
+          class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductCriterionEvaluationRepository
+          arguments:
+              - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\CriterionEvaluationRepository'
+
+      akeneo.pim.automation.data_quality_insights.repository.product_model_criterion_evaluation:
+          class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductModelCriterionEvaluationRepository
+          arguments:
+              - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\CriterionEvaluationRepository'
+
+      Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\DashboardScoresProjectionRepository:
+          arguments:
+              - '@database_connection'
+
+      Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\AttributeGroupActivationRepository:
+          arguments:
+              - '@database_connection'

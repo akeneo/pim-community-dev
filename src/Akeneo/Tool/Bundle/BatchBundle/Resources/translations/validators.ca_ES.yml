@@ -1,0 +1,2 @@
+akeneo_batch.job_instance.unknown_job_definition: No s'ha pogut crear un %job_type% amb una definició de job desconegut
+akeneo.job_automation.validation.import_should_have_storage: No s'ha configurat cap emmagatzematge a la pestanya Propietats del vostre perfil d'importació.

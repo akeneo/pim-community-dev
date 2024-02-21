@@ -1,0 +1,61 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
+import LinkTo from '@storybook/addon-links/react';
+import {Pill} from './Pill.tsx';
+
+<Meta
+  title="Components/Pill"
+  component={Pill}
+  argTypes={{
+    level: {control: {type: 'select'}, options: ['primary', 'warning', 'danger']},
+  }}
+  args={{level: 'warning'}}
+/>
+
+# Pill
+
+## Usage
+
+The Pill component is used to attract attention on a specific part of the UI, such as on a List/Table row or on a Tab component.
+
+Example of use:
+
+<ul>
+  <li>
+    <LinkTo kind="Components/TabBar" story="With Pills">
+      TabBar
+    </LinkTo>
+  </li>
+  <li>
+    <LinkTo kind="Components/Field" story="Completeness">
+      Field
+    </LinkTo>
+  </li>
+</ul>
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return <Pill {...args} />;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on level
+
+<Canvas>
+  <Story name="Level">
+    {args => {
+      return (
+        <>
+          <Pill {...args} level="primary" />
+          <Pill {...args} level="warning" />
+          <Pill {...args} level="danger" />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>

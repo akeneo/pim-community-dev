@@ -1,0 +1,334 @@
+extensions:
+    pim-user-show:
+        module: pim/form/common/edit-form
+
+    pim-user-show-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-user-show
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-system
+            item: pim-menu-system-user-user
+
+    pim-user-show-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-user-show
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
+    pim-user-show-main-image:
+        module: pim/form/common/main-image
+        parent: pim-user-show
+        targetZone: main-image
+        config:
+            fallbackPath: '/bundles/pimui/images/info-user.png'
+
+    pim-user-show-cache-invalidator:
+        module: pim/cache-invalidator
+        parent: pim-user-show
+        position: 1000
+
+    pim-user-show-label:
+        module: pim/form/common/label
+        parent: pim-user-show
+        targetZone: title
+        position: 110
+        config:
+            field: username
+
+    pim-user-show-form-tabs:
+        module: pim/form/common/form-tabs
+        parent: pim-user-show
+        targetZone: content
+        position: 90
+
+    # General tab
+    pim-user-show-general-tab:
+        module: pim/common/tab
+        parent: pim-user-show-form-tabs
+        targetZone: container
+        position: 10
+        config:
+            label: pim_common.general_properties
+
+    pim-user-show-general-tab-content:
+        module: pim/common/simple-view
+        parent: pim-user-show-general-tab
+        position: 10
+        config:
+            template: pim/template/form/tab/section
+            templateParams:
+                sectionTitle: ''
+                dropZone: content
+
+    pim-user-show-enabled:
+        module: pim/form/common/fields/boolean
+        parent: pim-user-show-general-tab-content
+        position: 10
+        targetZone: content
+        config:
+            fieldName: enabled
+            label: pim_common.status
+            required: true
+            readOnly: true
+
+    pim-user-show-username:
+        module: pim/form/common/fields/text
+        parent: pim-user-show-general-tab-content
+        position: 20
+        targetZone: content
+        config:
+            fieldName: username
+            label: pim_user_management.entity.user.properties.username
+            required: true
+            readOnly: true
+
+    pim-user-show-name-prefix:
+        module: pim/form/common/fields/text
+        parent: pim-user-show-general-tab-content
+        position: 30
+        targetZone: content
+        config:
+            fieldName: name_prefix
+            label: pim_user_management.entity.user.properties.name_prefix
+            readOnly: true
+
+    pim-user-show-first-name:
+        module: pim/form/common/fields/text
+        parent: pim-user-show-general-tab-content
+        position: 40
+        targetZone: content
+        config:
+            fieldName: first_name
+            label: pim_user_management.entity.user.properties.first_name
+            required: true
+            readOnly: true
+
+    pim-user-show-middle-name:
+        module: pim/form/common/fields/text
+        parent: pim-user-show-general-tab-content
+        position: 50
+        targetZone: content
+        config:
+            fieldName: middle_name
+            label: pim_user_management.entity.user.properties.middle_name
+            readOnly: true
+
+    pim-user-show-last-name:
+        module: pim/form/common/fields/text
+        parent: pim-user-show-general-tab-content
+        position: 60
+        targetZone: content
+        config:
+            fieldName: last_name
+            label: pim_user_management.entity.user.properties.last_name
+            required: true
+            readOnly: true
+
+    pim-user-show-name-suffix:
+        module: pim/form/common/fields/text
+        parent: pim-user-show-general-tab-content
+        position: 70
+        targetZone: content
+        config:
+            fieldName: name_suffix
+            label: pim_user_management.entity.user.properties.name_suffix
+            readOnly: true
+
+    pim-user-show-phone:
+        module: pim/form/common/fields/text
+        parent: pim-user-show-general-tab-content
+        position: 80
+        targetZone: content
+        config:
+            fieldName: phone
+            label: pim_user_management.entity.user.properties.phone
+            readOnly: true
+
+    pim-user-show-avatar:
+        module: pim/form/common/fields/media
+        parent: pim-user-show-general-tab-content
+        position: 100
+        targetZone: content
+        config:
+            fieldName: avatar
+            label: pim_user_management.entity.user.properties.avatar
+            readOnly: true
+
+    pim-user-show-email:
+        module: pim/form/common/fields/text
+        parent: pim-user-show-general-tab-content
+        position: 110
+        targetZone: content
+        config:
+            fieldName: email
+            label: pim_user_management.entity.user.properties.email
+            required: true
+            readOnly: true
+
+    # Additional tab
+    pim-user-show-additional-tab:
+        module: pim/common/tab
+        parent: pim-user-show-form-tabs
+        targetZone: container
+        position: 20
+        config:
+            label: pim_user_management.entity.user.module.update.additional
+
+    pim-user-show-additional-tab-content:
+        module: pim/common/simple-view
+        parent: pim-user-show-additional-tab
+        position: 10
+        config:
+            template: pim/template/form/tab/section
+            templateParams:
+                sectionTitle: ''
+                dropZone: content
+
+    pim-user-show-catalog-locale:
+        module: pim/form/common/fields/available-locales
+        parent: pim-user-show-additional-tab-content
+        position: 10
+        targetZone: content
+        config:
+            fieldName: catalog_default_locale
+            label: pim_user_management.entity.user.properties.catalog_locale
+            required: true
+            isMultiple: false
+            allowClear: false
+            readOnly: true
+
+    pim-user-show-catalog-channel:
+        module: pim/user/fields/channel
+        parent: pim-user-show-additional-tab-content
+        position: 20
+        targetZone: content
+        config:
+            fieldName: catalog_default_scope
+            label: pim_user_management.entity.user.properties.catalog_scope
+            required: true
+            isMultiple: false
+            allowClear: false
+            readOnly: true
+
+    pim-user-show-default-tree:
+        module: pim/user/fields/category-tree
+        parent: pim-user-show-additional-tab-content
+        targetZone: content
+        position: 30
+        config:
+            fieldName: default_category_tree
+            label: pim_user_management.entity.user.properties.default_tree
+            required: true
+            isMultiple: false
+            allowClear: false
+            readOnly: true
+
+    pim-user-show-product-grid-filters:
+        module: pim/user/fields/product-grid-filters
+        parent: pim-user-show-additional-tab-content
+        position: 40
+        targetZone: content
+        config:
+            fieldName: product_grid_filters
+            label: pim_user_management.entity.user.properties.product_grid_filters
+            choiceRoute: pim_enrich_product_grid_filters
+            readOnly: true
+
+    pim-user-show-default-grid-views:
+        module: pim/user/fields/default-grid-views
+        parent: pim-user-show-additional-tab-content
+        position: 40
+        targetZone: content
+        config:
+            readOnly: true
+
+    # Groups and Roles tab
+    pim-user-show-groups-and-roles-tab:
+        module: pim/common/tab
+        parent: pim-user-show-form-tabs
+        targetZone: container
+        position: 30
+        config:
+            label: pim_user_management.entity.user.module.update.groups_and_roles
+
+    pim-user-show-groups-and-roles-tab-content:
+        module: pim/common/simple-view
+        parent: pim-user-show-groups-and-roles-tab
+        position: 10
+        config:
+            template: pim/template/form/tab/section
+            templateParams:
+                sectionTitle: ''
+                dropZone: content
+
+    pim-user-show-groups:
+        module: pim/user/fields/user-group
+        parent: pim-user-show-groups-and-roles-tab-content
+        targetZone: content
+        position: 10
+        config:
+            fieldName: groups
+            label: pim_user_management.entity.group.plural_label
+            isMultiple: true
+            allowClear: true
+            readOnly: true
+
+    pim-user-show-roles:
+        module: pim/user/fields/user-role
+        parent: pim-user-show-groups-and-roles-tab-content
+        targetZone: content
+        position: 20
+        config:
+            fieldName: roles
+            label: pim_user_management.entity.role.plural_label
+            isMultiple: true
+            allowClear: true
+            readOnly: true
+
+    # Interfaces tab
+    pim-user-show-interfaces-tab:
+        module: pim/common/tab
+        parent: pim-user-show-form-tabs
+        targetZone: container
+        position: 50
+        config:
+            label: pim_user_management.entity.user.module.update.interfaces
+
+    pim-user-show-interfaces-tab-content:
+        module: pim/common/simple-view
+        parent: pim-user-show-interfaces-tab
+        position: 10
+        config:
+            template: pim/template/form/tab/section
+            templateParams:
+                sectionTitle: ''
+                dropZone: content
+
+    pim-user-show-ui-locale:
+        module: pim/user/fields/ui-locale
+        parent: pim-user-show-interfaces-tab-content
+        position: 10
+        targetZone: content
+        config:
+            fieldName: user_default_locale
+            label: pim_user_management.entity.user.properties.ui_locale
+            required: true
+            isMultiple: false
+            allowClear: false
+            readOnly: true
+
+    pim-user-show-timezone:
+        module: pim/user/fields/timezone
+        parent: pim-user-show-interfaces-tab-content
+        position: 20
+        targetZone: content
+        config:
+            fieldName: timezone
+            label: pim_user_management.entity.user.properties.timezone
+            required: true
+            isMultiple: false
+            allowClear: false
+            readOnly: true

@@ -1,0 +1,8 @@
+services:
+    pim_catalog.quantified_associations.quantified_associations_merger:
+        class: Akeneo\Pim\Enrichment\Component\Product\QuantifiedAssociation\QuantifiedAssociationsMerger
+
+    pim_catalog.quantified_associations.quantified_associations_from_ancestors_filter:
+        class: Akeneo\Pim\Enrichment\Component\Product\QuantifiedAssociation\QuantifiedAssociationsFromAncestorsFilter
+        arguments:
+            - '@pim_catalog.quantified_associations.quantified_associations_merger'

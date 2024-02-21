@@ -1,0 +1,28 @@
+pim_dashboard:
+  title: 活动仪表板
+  greetings: '{{ name }}，您好！'
+  welcome_sentence:
+    message0: 这将是个好日子。
+    message1: 真高兴见到您。
+    message2: 很高兴在这里看到您。
+    message3: 很高兴在这里见到您。
+    message4: 有您的加入简直太棒了。
+    message5: 让我们开始吧！
+    message6: 撸起袖子加油干吧。
+    message7: 让我们立即大干一场。
+    message8: 准备好开始了吗？
+    message9: 您的产品急需得到丰富。
+  widget:
+    completeness:
+      load_more: '加载更多...'
+      title: 在渠道与区域上的完成度
+      progress_messages:
+        message1: 准备开启朝向完成度的丰富度之旅吧。
+        message2: 您仍需要一些工作要做，但是您已步入正轨。
+        message3: 继续努力，完成您的产品信息。
+        message4: 恭喜！在该渠道上您的产品完成度达到了百分百！
+    last_operations:
+      title: 上次运算
+  version: 版本
+pim_title:
+  pim_dashboard_index: 主界面

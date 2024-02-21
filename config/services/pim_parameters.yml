@@ -1,0 +1,57 @@
+# this file contains all non local parameters required by the PIM to work
+# if you need to override one of these parameter, you can do it directly in your own parameters.yml file
+parameters:
+    database_unix_socket: ~
+
+    # WebSocket server config
+    websocket_host:       "127.0.0.1"
+    websocket_port:       8080
+
+    max_products_category_removal: 100
+
+    pim_catalog_image_allowed_extensions: [gif, jfif, jif, jpeg, jpg, pdf, png, psd, tif, tiff]
+    pim_catalog_file_allowed_extensions: [csv, doc, docx, mp3, pdf, ppt, pptx, rtf, svg, txt, wav]
+
+    doctrine_migrations_dir: '%kernel.project_dir%/upgrades/schema'
+
+    pim_analytics_update_server_url: https://updates.akeneo.com
+
+    # Maximum number of items returned in the paginated responses of the API
+    api_pagination_limit_max: 100
+
+    # Number of items returned by default if limit is not filled in request
+    api_pagination_limit_by_default: 10
+
+    # Maximum length in bytes of the resource's json representation when updating a list of resources
+    api_input_buffer_size: 1000000
+
+    # Maximum number of resources when updating a list of resources
+    api_input_max_resources_number: 100
+
+    elasticsearch_total_fields_limit: '%env(APP_ELASTICSEARCH_TOTAL_FIELDS_LIMIT)%'
+
+    # Files used as configuration for the Elasticsearch index
+    elasticsearch_index_configuration_files:
+        - '%pim_ce_dev_src_folder_location%/src/Akeneo/Pim/Enrichment/Bundle/Resources/elasticsearch/settings.yml'
+        - '%pim_ce_dev_src_folder_location%/src/Akeneo/Pim/Enrichment/Bundle/Resources/elasticsearch/product_mapping.yml'
+
+    connection_error_elasticsearch_index_configuration_file:
+        - '%pim_ce_dev_src_folder_location%/src/Akeneo/Connectivity/Connection/back/Infrastructure/Symfony/Resources/elasticsearch/connection_error_mapping.yml'
+
+    events_api_debug_elasticsearch_index_configuration_file:
+        - "%pim_ce_dev_src_folder_location%/src/Akeneo/Connectivity/Connection/back/Infrastructure/Symfony/Resources/elasticsearch/events_api_debug_mapping.yml"
+
+    index_list_changed_total_field_limit:
+        - '%env(APP_PRODUCT_AND_PRODUCT_MODEL_INDEX_NAME)%'
+    # url to request to fetch announcements in the communication panel
+    comm_panel_api_url: '%env(COMM_PANEL_API_URL)%'
+
+    webhook_concurrency: 5
+    webhook_timeout: 0.5
+    webhook_max_bulk_size: 10
+    webhook_active_event_subscriptions_limit: 3
+    webhook_requests_limit: 4000
+
+    openssl_config_path: '%pim_ce_dev_src_folder_location%/config/openssl.cnf'
+
+    local_storage_root: '/'

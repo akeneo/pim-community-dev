@@ -1,0 +1,70 @@
+services:
+    Akeneo\Connectivity\Connection\Infrastructure\Service\User\CreateUser:
+        arguments:
+            - '@pim_user.factory.user'
+            - '@pim_user.updater.user'
+            - '@validator'
+            - '@pim_user.saver.user'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Service\User\DeleteUser:
+        arguments:
+            - '@pim_user.repository.user'
+            - '@pim_user.remover.user'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Service\User\DeleteUserGroup:
+        arguments:
+            - '@pim_user.repository.group'
+            - '@pim_user.remover.user_group'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Service\User\DeleteUserRole:
+        arguments:
+            - '@pim_user.repository.role'
+            - '@pim_user.remover.role'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Service\User\RegenerateUserPassword:
+        arguments:
+            - '@pim_user.manager'
+            - '@database_connection'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Service\User\UpdateUserPermissions:
+        arguments:
+            - '@pim_user.manager'
+            - '@pim_user.repository.role'
+            - '@pim_user.repository.group'
+            - '@pim_user.updater.user'
+
+    Akeneo\Connectivity\Connection\Infrastructure\ConnectionContext:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Connections\WrongCredentialsCombination\Persistence\DbalAreCredentialsValidCombinationQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Connections\Persistence\DbalSelectConnectionCodeByClientIdQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\DbalConnectionRepository'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\SystemClock: ~
+
+    Akeneo\Connectivity\Connection\Infrastructure\Service\Encrypter:
+        arguments:
+            - 'AES-256-OFB'
+            - '%env(APP_SECRET)%'
+            - '%env(APP_SECRET)%'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Service\DnsLookup: ~
+
+    Akeneo\Connectivity\Connection\Infrastructure\Service\IpMatcher: ~
+
+    Akeneo\Connectivity\Connection\Infrastructure\Service\RandomCodeGenerator: ~
+
+    Akeneo\Connectivity\Connection\ServiceApi\Service\ConnectedAppFactory:
+        arguments:
+            - '@fos_oauth_server.storage'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProvider'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\User\CreateUserGroup'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\AppRoleWithScopesFactory'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\User\CreateUser'
+            - '@Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnection'
+            - '@Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectedApp'
+            - '@database_connection'
+            - '@pim_user.repository.user'
+
+    Akeneo\Connectivity\Connection\ServiceApi\Service\ConnectedAppRemover:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Application\Apps\Command\DeleteAppHandler'

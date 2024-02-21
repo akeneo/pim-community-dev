@@ -1,0 +1,87 @@
+No products to remove: Keine Produkte zum Entfernen
+"dot (.)": Punkt (.)
+"comma (,)": Komma (,)
+pim_enrich:
+  #Category
+  category:
+    tab:
+      property.title: Eigenschaften
+      history.title: Historie
+    suggest_selection: Bitte wählen Sie eine Kategorie auf der linken Seite
+    or: oder
+    create_new: Eine neue Kategorie anlegen
+  #Mass edit operations
+  mass_edit_action:
+    limit_exceeded: Bitte wählen Sie weniger als %limit% Elemente für die Bearbeitung
+    product:
+      page_title: Produkte
+      page_subtitle: Massenbearbeitung (1 Produkt)|Massenbearbeitung (%count% Produkte)
+      title: Aktion auswählen
+      subtitle: Wählen Sie die Aktion aus, die Sie auf das ausgewählte Produkt anwenden wollen|Wählen Sie die Aktion aus, die Sie auf die ausgewählten %count% Produkte anwenden wollen
+      confirm: Sie sind dabei ein Produkt mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|Sie sind dabei %count% Produkte mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.
+      steps:
+        first: Produkte auswählen
+        second: Aktion auswählen
+        third: Konfigurieren
+        fourth: Bestätigen
+    change-status:
+      label: Status ändern
+      description: Die ausgewählten Produkte werden aktiviert oder deaktiviert.
+      success_flash: Der Produktstatus wurde geändert
+      launched_flash: Die Massenbearbeitung "Status ändern" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
+    edit-common-attributes:
+      label: Attribute bearbeiten
+      description: Die ausgewählten Produktattribute werden mit den folgenden Daten für das ausgewählte Gebietsschema bearbeitet.
+      empty: Bitte wählen Sie die Attribute aus, welche Sie bearbeiten möchten
+      success_flash: Die Statusaktualisierung der Produkte wird derzeit ausgeführt
+      launched_flash: Die Massenaktion "Attribute bearbeiten" wurde gestartet. Sie werden benachrichtigt, wenn sie erledigt ist.
+      message:
+        warning: Für die ausgewählten Produkte gibt es keine gemeinsamen Attribute. Bitte passen Sie Ihre Auswahl an.
+        invalid_attribute: Das Attribut mit dem Code "attribute_code" ist kein gemeinsames Attribut der ausgewählten Produkte. Attribut übersprungen.
+        no_valid_attribute: Keines der ausgewählten Attribute kann auf dieses Produkt angewendet werden.
+    classify-add:
+      label: Zu Kategorien hinzufügen
+      description: Die Produkte werden den folgenden Kategorien zugeordnet, bereits bestehende Zuordnungen bleiben erhalten.
+      success_flash: Die Produkte wurden den ausgewählten Kategorien zugeordnet
+      launched_flash: Die Massenbearbeitung "zu Kategorien hinzufügen" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
+    classify-move:
+      label: Zwischen Kategorien verschieben
+      description: Die Produkte werden folgenden Kategorien zugeordnet, die bestehende Zuordnung wird verworfen.
+      success_flash: Produkt(e) wurden in die ausgewählten Kategorien verschoben
+      launched_flash: Die Massenbearbeitung "in Kategorien verschieben" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
+    classify-remove:
+      label: Aus Kategorien entfernen
+      description: Die Produkte werden aus den folgenden Kategorien entfernt.
+      success_flash: Produkt(e) wurden aus den ausgewählten Kategorien entfernt
+      launched_flash: Die Massenbearbeitung "aus Kategorien entfernen" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
+    change-family:
+      label: Familie wechseln
+      description: Die Produktfamilie der ausgewählten Produkte wird auf die gewählte Produktfamilie geändert
+      success_flash: Die Produktfamilie der ausgewählten Produkte wurde erfolgreich geändert
+      launched_flash: Die Massenbearbeitung "Produktfamilie ändern" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
+    add-to-groups:
+      label: Zu Gruppen hinzufügen
+      description: Wählen Sie die Gruppen aus, in welche die ausgewählten Produkte hinzugefügt werden sollen
+      success_flash: Die Produkte wurden den ausgewählten Gruppen erfolgreich hinzugefügt
+      launched_flash: Die Massenbearbeitung "zu Gruppen hinzufügen" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
+      no_group: Bis jetzt keine Gruppen vorhanden. Beginnen Sie mit dem Anlegen einer Gruppe.
+    set-attribute-requirements:
+      label: Benötigte Attribute auswählen
+      description: Die folgenden Attribut-Anforderungen werden den ausgewählten Produktfamilien zugeordnet
+      success_flash: Die Attribut-Anforderungen wurden den ausgewählten Produktfamilien zugeordnet
+      launched_flash: Die Massenbearbeitung "setzen von Attributanforderungen" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
+    convert_to_simple_products:
+      warning:
+        non_variant_product: Das "{{ identifier }}" Produkt ist bereits ein einfaches Produkt, es muss nicht konvertiert werden.
+    mass_action:
+      quick_export:
+        launched_flash: Der Produkt-Export wird derzeit ausgeführt
+category:
+  create: Eine Kategorie anlegen
+  edit: Kategorie bearbeiten
+  overview: Kategorien
+tree:
+  edit: Baumstruktur bearbeiten
+  remove:
+    error_linked: Dieser Kategoriebaum kann nicht gelöscht werden, er ist mit einem Kanal verknüpft
+  create: Kategoriebaum erstellen

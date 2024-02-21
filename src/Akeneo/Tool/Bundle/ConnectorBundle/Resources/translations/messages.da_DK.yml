@@ -1,0 +1,23 @@
+pim_connector:
+  steps:
+    file_reader:
+      invalid_item_columns_count: 'Forventede at have %totalColumnsCount% kolonner, har %itemColumnsCount% i %filePath%:%lineno%'
+job_execution.summary:
+  read: læs
+  write: gemt
+  skip: sprunget over
+  create: oprettet
+  process: færdig
+  update_products: opdaterede produkter
+  process_products: bearbejdede produkter
+  skip_products: produkter sprunget over
+  displayed: første advarsel vist
+  charset_validator:
+    title: 'Fil kodning:'
+    skipped: ignoreret, udvidelse i hvidlisten
+  product_skipped_no_diff: produkter sprunget over (ingen forskel)
+  product_skipped_no_associations: produkter sprunget over (ingen sammekædning)
+  product_model_skipped_no_diff: produkter sprunget over (ingen forskel)
+  item_position: læs linjer
+  skipped_in_root_product_model: produkter sprunget over med forældre
+  skipped_in_sub_product_model: Produkter sprunget over uden forældre

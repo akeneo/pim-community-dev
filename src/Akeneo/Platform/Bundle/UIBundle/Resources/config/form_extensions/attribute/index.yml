@@ -1,0 +1,88 @@
+extensions:
+    pim-attribute-index:
+        module: pim/common/simple-view
+        config:
+            template: pim/template/common/default-template
+        forwarded-events:
+            grid_load:start: grid_load:start
+            grid_load:complete: grid_load:complete
+
+    pim-attribute-index-grid-container:
+        module: pim/common/simple-view
+        parent: pim-attribute-index
+        targetZone: content
+        config:
+            template: pim/template/form/index/index
+
+    pim-attribute-index-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-attribute-index
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
+    pim-attribute-index-grid-title:
+        module: pim/common/grid-title
+        parent: pim-attribute-index
+        targetZone: title
+        config:
+            title: pim_enrich.entity.attribute.page_title.index
+
+    pim-attribute-index-sandbox-helper:
+        module: pim/sandbox-helper
+        parent: pim-attribute-index
+        targetZone: helper
+
+    pim-attribute-index-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-attribute-index
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-settings
+            item: pim-menu-settings-attribute
+
+    pim-attribute-index-grid-filters-list:
+        module: oro/datafilter/filters-list
+        parent: pim-attribute-index-grid-container
+        targetZone: filters
+
+    pim-attribute-index-grid-filters-manage:
+        module: oro/datafilter/filters-button
+        parent: pim-attribute-index-grid-container
+        targetZone: filters
+
+    pim-attribute-index-mass-actions:
+        module: pim/grid/mass-actions
+        parent: pim-attribute-index
+        targetZone: bottom-panel
+        config:
+            label: pim_datagrid.mass_action.selected.attribute
+
+    pim-attribute-index-actions-panel:
+        module: oro/datagrid/actions-panel
+        parent: pim-attribute-index-mass-actions
+        targetZone: actions-panel
+
+    pim-attribute-index-pagination:
+        module: oro/datagrid/pagination-input
+        parent: pim-attribute-index-grid-container
+        targetZone: toolbar
+        config:
+            gridName: attribute-grid
+
+    pim-attribute-index-grid:
+        module: pim/attribute/grid
+        parent: pim-attribute-index-grid-container
+        position: 1000
+        config:
+            alias: attribute-grid
+
+    pim-attribute-index-create-button:
+        module: pim/form/common/attributes/create-button
+        parent: pim-attribute-index
+        targetZone: buttons
+        position: 100
+        aclResourceId: pim_enrich_attribute_create
+        config:
+            buttonTitle: pim_enrich.entity.attribute.module.create.button

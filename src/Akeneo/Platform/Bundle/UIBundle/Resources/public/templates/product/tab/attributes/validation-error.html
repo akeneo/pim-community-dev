@@ -1,0 +1,11 @@
+<% _.each(errors, function(error) { %>
+    <span class="AknFieldContainer-validationError">
+        <% if (error.locale || error.scope) { %>
+            <span class="field-context change-context" data-locale="<%- error.locale %>" data-scope="<%- error.scope %>">
+                <% if (error.scope) { %> <span><%- error.scope %></span> <% } %>
+                <% if (error.locale) { %> <span><%= i18n.getFlag(error.locale) %></span> <% } %>
+            </span> &nbsp;
+        <% } %>
+        <span class="error-message"><%- error.message %></span>
+    </span>
+<% }) %>

@@ -1,0 +1,62 @@
+<div class="AknFullPage-description AknFamilyVariant-description"><%- __('pim_enrich.entity.family_variant.module.edit.description') %></div>
+<div class="AknFamilyVariant family-variant-levels">
+    <div class="AknFamilyVariant-level">
+        <div class="common-attribute AknFamilyVariant-column AknFamilyVariant-column--common">
+            <div class="AknFamilyVariant-axes AknVerticalList-item" title="<%- __('pim_enrich.entity.family.variant.common.title') %>">
+                <%- __('pim_enrich.entity.family_variant.module.edit.common_attributes') %>
+            </div>
+            <div data-level="0" id="attribute-groups-column-level-0" class="attribute-list connected-group-sortable">
+            <% groupAttributes(commonAttributes, lockedAttributes).forEach(section => { %>
+                <div data-attribute-group-code="<%- section.attributeGroup.code %>" class="AknFamilyVariant-attributeGroup AknFamilyVariant-attributeGroup--common <%- !section.attributeGroup.locked ? 'movable-group' : '' %>">
+                    <span class="AknFamilyVariant-columTitle AknVerticalList-item <%- !section.attributeGroup.locked ? 'AknFamilyVariant-columTitle--movable' : '' %>">
+                        <%- i18n.getLabel(section.attributeGroup.labels, UserContext.get('catalogLocale'), section.attributeGroup.code) %>
+                    </span>
+                    <%= renderSection(0, section.attributes, true) %>
+                </div>
+            <% }) %>
+            <% if (commonAttributes.length === 0) { %>
+                <div class="AknFamilyVariant-attributeGroup AknFamilyVariant-attributeGroup--common AknFamilyVariant-attributeGroup--empty">
+                    <%- __('pim_enrich.entity.family_variant.module.edit.no_common_attributes') %>
+                </div>
+            <% } %>
+            </div>
+        </div>
+    </div>
+    <% familyVariant.variant_attribute_sets.forEach(function (level) { %>
+    <div class="AknFamilyVariant-level">
+        <div class="AknFamilyVariant-levelPath">
+            <span class="AknFamilyVariant-levelPathLabel"><%- __('pim_enrich.entity.family_variant.module.edit.level_' + level.level) %></span>
+        </div>
+        <div class="family-variant-level AknFamilyVariant-column AknFamilyVariant-column--level<%- level.level %>" data-level="<%- level.level %>">
+            <div class="AknFamilyVariant-axes AknVerticalList-item" title="
+                <%- level.axes.map(function (axis) {
+                    return i18n.getLabel(getAttribute(axis).labels, UserContext.get('catalogLocale'), getAttribute(axis).code);
+                }).join(', ') %>
+                (<%- __('pim_enrich.entity.family.variant.axis.label') %>)">
+                <%- level.axes.map(function (axis) {
+                    return i18n.getLabel(getAttribute(axis).labels, UserContext.get('catalogLocale'), getAttribute(axis).code);
+                }).join(', ') %>
+                (<%- __('pim_enrich.entity.family_variant.module.edit.variant_axis_label') %>)
+            </div>
+            <div data-level="<%- level.level %>" id="attribute-groups-column-level-<%- level.level %>" class="attribute-list connected-group-sortable">
+            <% groupAttributes(level.attributes, lockedAttributes).forEach(section => { %>
+                <% const movable = !(section.attributeGroup.locked || familyVariant.variant_attribute_sets.length === level.level); %>
+                <% const deletable = !section.attributeGroup.locked; %>
+                <div data-attribute-group-code="<%- section.attributeGroup.code %>" class="AknFamilyVariant-attributeGroup <%- movable ? 'movable-group' : '' %> <%- deletable ? 'deletable-group' : '' %> attribute-group-section">
+                    <span class="AknFamilyVariant-columTitle AknVerticalList-item <%- movable ? 'AknFamilyVariant-columTitle--movable' : '' %>">
+                        <%- i18n.getLabel(section.attributeGroup.labels, UserContext.get('catalogLocale'), section.attributeGroup.code) %>
+                        <% if (deletable) { %>
+                        <span
+                            class="AknIconButton AknIconButton--small AknIconButton--delete AknButtonList-item delete-attribute-group"
+                            title="<%- __('pim_enrich.entity.family_variant.module.edit.attribute_group_remove') %>"
+                        ></span>
+                        <% } %>
+                    </span>
+                    <%= renderSection(level.level, section.attributes, movable) %>
+                </div>
+            <% }) %>
+            </div>
+        </div>
+    </div>
+<% }); %>
+</div>

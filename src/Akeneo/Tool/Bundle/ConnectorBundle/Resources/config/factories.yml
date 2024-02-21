@@ -1,0 +1,13 @@
+parameters:
+    pim_connector.factory.flat_item_buffer.class: Akeneo\Tool\Component\Connector\Writer\File\FlatItemBuffer
+
+services:
+    pim_connector.factory.job_instance:
+        class: '%akeneo_storage_utils.factory.simple.class%'
+        arguments:
+            - '%akeneo_batch.entity.job_instance.class%'
+
+    pim_connector.factory.flat_item_buffer:
+        class: 'Akeneo\Tool\Component\Buffer\BufferFactory'
+        arguments:
+            - '%pim_connector.factory.flat_item_buffer.class%'

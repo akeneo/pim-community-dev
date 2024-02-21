@@ -1,0 +1,48 @@
+parameters:
+    pim_user.form.type.acl_collection.class:            Akeneo\UserManagement\Bundle\Form\Type\PrivilegeCollectionType
+    pim_user.form.type.acl_role.class:                  Akeneo\UserManagement\Bundle\Form\Type\AclRoleType
+    pim_user.form.handler.acl_role.class:               Akeneo\UserManagement\Bundle\Form\Handler\AclRoleHandler
+    pim_user.form.type.acl_access_level_selector.class: Akeneo\UserManagement\Bundle\Form\Type\AclAccessLevelSelectorType
+
+services:
+    pim_user.form.type.acl_collection:
+        class: '%pim_user.form.type.acl_collection.class%'
+        tags:
+            - { name: form.type, alias: oro_acl_collection }
+
+    pim_user.form.type.acl_access_level_selector:
+        class: '%pim_user.form.type.acl_access_level_selector.class%'
+        tags:
+            - { name: form.type, alias: pim_acl_access_level_selector }
+
+    pim_user.form.type.acl_role:
+        class: '%pim_user.form.type.acl_role.class%'
+        arguments:
+            - []
+        tags:
+            - { name: form.type, alias: pim_user_acl_role }
+
+    pim_user.form.subscriber.user:
+        class: 'Akeneo\UserManagement\Bundle\Form\Subscriber\UserSubscriber'
+        arguments:
+            - '@form.factory'
+            - '@security.token_storage'
+
+    pim_user.provider.form.job_instance:
+        class: 'Akeneo\Platform\Bundle\ImportExportBundle\Provider\Form\JobInstanceFormProvider'
+        arguments:
+            -
+                csv_user_group_export: pim-job-instance-csv-base-export
+                xlsx_user_group_export: pim-job-instance-xlsx-base-export
+                csv_user_role_export: pim-job-instance-csv-base-export
+                xlsx_user_role_export: pim-job-instance-xlsx-base-export
+                csv_user_export: pim-job-instance-csv-base-export
+                xlsx_user_export: pim-job-instance-xlsx-base-export
+                csv_user_group_import: pim-job-instance-csv-base-import
+                xlsx_user_group_import: pim-job-instance-xlsx-base-import
+                csv_user_import: pim-job-instance-csv-base-import
+                xlsx_user_import: pim-job-instance-xlsx-base-import
+                csv_user_role_import: pim-job-instance-csv-base-import
+                xlsx_user_role_import: pim-job-instance-xlsx-base-import
+        tags:
+            - { name: pim_enrich.provider.form, priority: 100 }

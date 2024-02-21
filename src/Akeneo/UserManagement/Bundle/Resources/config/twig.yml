@@ -1,0 +1,11 @@
+parameters:
+    pim_user.twig.acl_groups_extension.class: Akeneo\UserManagement\Bundle\Twig\AclGroupsExtension
+
+services:
+    pim_user.twig.acl_groups_extension:
+        class: '%pim_user.twig.acl_groups_extension.class%'
+        arguments:
+            - '%kernel.bundles%'
+            - '@feature_flags'
+        tags:
+            - { name: twig.extension }

@@ -1,0 +1,48 @@
+pim_catalog_volume:
+  product_values: "Sinulla on <span>{{values}}</span> tuotearvoa PIM:ssä!. Tuotteella on on keskimäärin <span>{{average}}</span> tuotearvoa!&nbsp;💪"
+  product_values_description: 'Mitä enemmän tuotearvoja on, sitä arvokkaampi PIM on ja sitä korkeampi ROI on! <a href="{{link}}" target="_blank">Lue lisää aiheesta </a>'
+  section:
+    product_values:
+      hint: 'Tiesitkö, että tuotearvojen kokonaismäärä liittyy suoraan seuraaviin ulottuvuuksiin?<br/>Löydät lisätietoja aiheesta <a href="{{link}}" target="_blank">tästä artikkelista</a>.'
+      title: Ulottuvuudet, jotka vaikuttavat tuotearvojen lukumäärään
+    catalog_structure:
+      hint: Varmaan tiedätkin, että hyvä katalogirakenne on erittäin tärkeä ja edellytys tehokkaalle rikastukselle. Alla on joitakin ulottuvuuksia katalogirakenteen seurantaan.
+      title: Tuotekatalogin rakenteeseen liittyvät ulottuvuudet
+    variant_modelling:
+      hint: Jos käytät tuotevariantteja, seuraavat ulottuvuudet auttavat seuraamaan katalogin kokoa.
+      title: Ulottuvuudet koskien tuotemalleja
+  axis:
+    count_products: Tuotteet
+    average_max_attributes_per_family: Attribuutteja perheellä
+    count_channels: Kanavat
+    count_locales: Lokaatiot (käytössä)
+    count_scopable_attributes: Kanavakohtaisia attribuutteja
+    count_localizable_and_scopable_attributes: Lokalisoituja ja kanavakohtaisia attribuutteja
+    count_localizable_attributes: Lokalisoituja attribuutteja
+    count_families: Tuoteperheet
+    count_attributes: Attribuutit
+    average_max_options_per_attribute: Attribuuttioptioita
+    count_categories: Kategoriat
+    count_category_trees: Kategoriahierarkia
+    count_variant_products: Varianttituotteita
+    count_product_models: Tuotemallit
+    count_product_and_product_model_values: Tuotteen arvot
+    average_max_product_and_product_model_values: Tuotearvot tuotteittain
+    count_reference_entity: Viitetiedot
+    average_max_records_per_reference_entity: Tietuetta viittaustietoa kohden
+    average_max_attributes_per_reference_entity: Attribuuttia viittaustietoa kohden
+    count_asset_family: Assettiperheet
+    average_max_assets_per_asset_family: Assettia assettiperhettä kohti
+    average_max_attributes_per_asset_family: Attribuuttia assettiperhettä kohti
+    title:
+      product: Tuote
+      catalog: Katalogi
+      product_structure: Tuotteiden rakenne
+      variant_modeling: Variantit
+      reference_entities: Viitetiedot
+      assets: Assetit
+  mean: 'Keskiarvo:'
+  max: 'Maksimi:'
+  error:
+    generic_title: Valitettavasti on tapahtunut virhe.
+    generic_message: Yritä uudelleen hetken kuluttua.

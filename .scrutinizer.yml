@@ -1,0 +1,60 @@
+filter:
+    paths:
+        - src/*
+    excluded_paths:
+        - src/*/*/*/spec/*
+        - src/*/*/*/tests/*
+        - src/Pim/Bundle/JsFormValidationBundle/Generator/*
+        - src/Oro/*
+
+tools:
+    php_mess_detector:
+        filter:
+            paths:
+                - src/*
+            excluded_paths:
+                - src/Pim/Bundle/JsFormValidationBundle/Generator/*
+                - src/Oro/*
+    php_cs_fixer:
+        config:
+            level: all
+    php_analyzer:
+        filter:
+            paths:
+                - src/*
+            excluded_paths:
+                - src/Pim/Bundle/JsFormValidationBundle/Generator/*
+                - src/Oro/*
+    php_code_sniffer:
+        config:
+            standard: PSR2
+        filter:
+            paths:
+                - src/*
+            excluded_paths:
+                - src/Pim/Bundle/JsFormValidationBundle/Generator/*
+                - src/Oro/*
+    sensiolabs_security_checker: true
+    php_cpd:
+        filter:
+            paths:
+                - src/*
+            excluded_paths:
+                - src/Pim/Bundle/JsFormValidationBundle/Generator/*
+                - src/Oro/*
+    php_loc:
+        excluded_dirs:
+            - app/
+            - features/
+            - src/Pim/Bundle/JsFormValidationBundle/Generator/*
+            - src/Oro/*
+            - vendor/
+            - public/
+    php_pdepend:
+        excluded_dirs:
+            - app/
+            - features/
+            - src/Pim/Bundle/JsFormValidationBundle/Generator/*
+            - src/Oro/*
+            - vendor/
+            - public/

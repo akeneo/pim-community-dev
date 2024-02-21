@@ -1,0 +1,144 @@
+pim_user:
+  user:
+    title: Käyttäjä
+    fields:
+      name_prefix: Nimen etuliite
+      email: Sähköposti
+      username: Käyttäjänimi
+      first_name: Etunimi
+      middle_name: Toinen nimi
+      last_name: Sukunimi
+      name_suffix: Nimen liite
+      phone: Puhelin
+      date_of_birth: Syntymäaika
+      avatar: Avatar
+      timezone: Aikavyöhyke
+      roles: Roolit
+      groups: Ryhmät
+      password: Salasana
+      password_again: Toista uusi salasana
+      product_grid_filters: Tuoteruudukon suodattimet
+      catalog_locale: Tuotekatalogin lokaatio
+      catalog_scope: Tuotekatalogin kanava
+      default_tree: Oletuskategoria
+      current_password: Nykyinen salasana
+      new_password: Uusi salasana
+      new_password_again: Uusi salasana (toista)
+      default_grid_view:
+        none: Ei yhtään
+      default_product_grid_view:
+        label: Tuoteruudukon oletusnäkymä
+      ui_locale: Käyttöliittymän kieli
+      last_logged_in: Viimeksi kirjautunut
+      login_count: Kirjautumisien määrä
+      user_salt: Käyttäjän suola
+      created: Luotu
+      updated: Päivitetty
+      status: Status
+      capabilities: Ominaisuudet
+      has_role: Roolissa
+      has_group: Ryhmässä
+      active: Aktiivinen
+      inactive: Ei aktiivinen
+    fields_errors:
+      new_password:
+        minimum_length: Salasanan täytyy olla vähintään 8 merkkiä pitkä
+        maximum_length: Salasanan on oltava lyhempi kuin 4096 merkkiä
+      new_password_repeat:
+        not_match: Salasanat eivät täsmää
+      current_password:
+        wrong: Väärä salasana
+    tabs:
+      general:
+        title: Yleinen
+        basic_information: Perustiedot
+        contact_information: Yhteystiedot
+      additional:
+        title: Lisää
+      additional_data:
+        title: Lisätiedot
+      interfaces:
+        title: Käyttöliittymä
+      group_and_role.title: Ryhmät ja roolit
+      password.title: Salasana
+      business_unit.title: Liiketoimintayksiköt
+      email_synchronization.title: Sähköpostin synkronoinnin asetukset
+    removed_user: Poistettu käyttäjä
+    login:
+      username_or_email: Käyttäjänimi tai sähköpostiosoite
+      remember_me: Muista minut tässä tietokoneessa
+      password_forgotten: Unohditko salasanasi?
+      log_in: Kirjaudu sisään
+      forgot_password: Unohdin salasanani
+      request: Pyyntö
+      password_reset: Salasanan asettaminen
+      reset: Tallenna
+      password_reset_email_sent: Sähköposti lähetettiin käyttäjälle. Se sisältää linkin salasanan vaihtamiseksi.
+      homepage: Takaisin etusivulle
+  group:
+    tab:
+      general.title: Yleinen
+      users.title: Käyttäjät
+  roles:
+    title: Rooli
+    tab:
+      general: Yleinen
+      action: Käyttöoikeudet
+      users: Käyttäjät
+  controller:
+    group:
+      message:
+        saved: "Ryhmä tallennettu"
+    role:
+      message:
+        saved: "Rooli tallennettu"
+    user:
+      message:
+        saved: "Käyttäjän tallennettu"
+pim_datagrid:
+  columns:
+    user:
+      createdAt: "Luontiaika"
+      updatedAt: "Päivitysaika"
+    roles:
+      label: "Nimike"
+    groups:
+      name: "Nimi"
+confirmation:
+  remove:
+    role: Oletko varma, että haluat poistaa tämän roolin?
+    user: Haluatko varmasti poistaa tämän käyttäjän?
+flash:
+  role:
+    removed: Roolin poistaminen onnistui
+  user:
+    removed: Käyttäjä poistettu onnistuneesti
+oro_security:
+  acl_group:
+    user: Käyttäjät
+    role: Roolit
+    group: Käyttäjäryhmät
+  acl:
+    user:
+      view: Listaa käyttäjät
+      create: Luo käyttäjä
+      edit: Muokkaa käyttäjiä
+      delete: Poista käyttäjä
+    role:
+      view: Listaa roolit
+      create: Luo rooli
+      edit: Muokkaa rooleja
+      delete: Poista rooli
+    group:
+      view: Listaa käyttäjäryhmät
+      create: Luo käyttäjäryhmä
+      edit: Muokkaa käyttäjäryhmiä
+      delete: Poista käyttäjäryhmä
+#Security
+(default): Entiteettien oletusoikeudet
+VIEW: Näytä
+CREATE: Luo
+EDIT: Muokkaa
+DELETE: Poista
+ASSIGN: Määritä
+SHARE: Jaa

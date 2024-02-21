@@ -1,0 +1,174 @@
+#Entities
+Job: Lavoro
+Connector: Connettore
+pim_import_export:
+  job: Lavoro
+  connector: Connettore
+  ## Job status
+  status:
+    0: Pronto
+  batch_status:
+    1: Completato
+    2: In avvio
+    3: Avviato
+    4: In fase di interruzione
+    5: Fermato
+    6: Fallito
+    7: Abbandonato
+    8: Sconosciuto
+    9: Sospensione in corso
+    10: In pausa
+  download_archive:
+    archive: scarica l'archivio generato |scarica gli archivi generati
+    output: scarica il file generato |scarica i files generati
+    input: scarica il file letto |scarica i files letti
+    invalid_xlsx: Scarica dati non validi
+    invalid_csv: Scarica dati non validi
+  notification:
+    export:
+      error: Esportazione <strong>%label%</strong> non riuscita
+      warning: Esportazione <strong>%label%</strong> completata con alcuni avvisi
+      success: Esportazione <strong>%label%</strong> completata
+      warnings:
+        xlsx_cell_conversion_error: Eccezione durante la conversione della colonna "{0}" al tipo di attributo di prodotto PIM di destinazione (controlla il formato cella Excel)
+        xlsx_cell_date_to_text_conversion_error: Impossibile convertire la cella {0} con formato data in attributo di tipo testo
+    import:
+      error: Importazione <strong>%label%</strong> non riuscita
+      warning: Importazione <strong>%label%</strong> completata con alcuni avvisi
+      success: Importazione <strong>%label%</strong> completata
+      warnings:
+        xlsx_cell_date_conversion_error: Impossibile convertire la cella "{cellName}" con formato data in attributo di tipo {attributeType}
+  list: Seleziona un job
+  job_profile:
+    tab:
+      property.title: Proprietà generali
+      history.title: Cronologia
+      job_content.title: Contenuto
+#Page titles:
+pim_title.export_profile.index: Gestione profili di esportazione
+pim_title.export_profile.edit: Profilo di esportazione %job.label% | Modifica
+pim_title.export_profile.show: Profilo di esportazione %job.label% | Visualizza
+pim_title.export_execution.index: Esportare la cronologia delle esecuzioni
+pim_title.export_execution.show: Esecuzioni di esportazione | Dettagli
+pim_title.import_profile.index: Gestione profili di importazione
+pim_title.import_profile.edit: Profilo di importazione %job.label% | Modifica
+pim_title.import_profile.show: Profilo di importazione %job.label% | Visualizza
+pim_title.import_execution.index: Importare la cronologia delle esecuzioni
+pim_title.import_execution.show: Importare le esecuzioni | Dettagli
+#Entity and page header titles
+export profile:
+  title: Profilo di esportazione
+  edit: modificare il profilo di esportazione
+import profile:
+  title: Profilo di importazione
+  edit: modificare il profilo di importazione
+#ACLs
+pim_importexport:
+  acl:
+    export_profile:
+      index: Vedi la lista dei profili esportazione
+      create: Crea un profilo di esportazione
+      show: Mostra un profilo di esportazione
+      edit: Modifica un profilo di esportazione
+      remove: Rimuovi un profilo di esportazione
+      launch: Esegui un profilo di esportazione
+      property_edit: Modifica le proprietà generali del profilo di esportazione
+      property_show: Visualizza le proprietà generali del profilo di esportazione
+      history: Vedi lo storico del profilo di esportazione
+      content_edit: Modifica il contenuto del profilo di esportazione
+      content_show: Visualizza il contenuto del profilo di esportazione
+    import_profile:
+      index: Visualizza la lista dei profili di importazione
+      create: Crea un profilo di importazione
+      show: Mostra un profilo di importazione
+      edit: Modifica un profilo di importazione
+      remove: Rimuovi un profilo di importazione
+      launch: Esegui un profilo di importazione
+      history: Vedi lo storico del profilo di importazione
+    export_execution:
+      index: Vedi la lista dei rapporti di esportazione
+      show: Vedi il dettaglio del rapporto di esportazione
+      dl_log: Scarica il report log dell'esportazione
+      dl_files: Scarica file esportati
+    import_execution:
+      index: Visualizza la lista dei rapporti importazione
+      show: Visualizza i dettagli del rapporto di importazione
+      dl_log: Scarica il report log dell'importazione
+      dl_files: Scarica i file importati
+  acl_group:
+    export: Profili di esportazione
+    import: Profili di importazione
+#Buttons
+btn:
+  create:
+    export profile: crea il profilo di esportazione
+    import profile: crea il profilo di importazione
+Upload and import now: Carica e importa ora
+import now: Importa ora
+export now: Esporta ora
+#Confirmation messages
+confirmation:
+  remove:
+    export profile: Sei sicuro di voler cancellare il profilo di esportazione %name%?
+    import profile: Sei sicuro di voler cancellare il profilo di importazione %name%?
+#Flash messages
+flash:
+  export:
+    created: L'esportazione è stata creata con successo
+    removed: L'esportazione è stata rimossa
+    updated: L'esportazione è stata creata con successo
+    running: L'esportazione è in esecuzione
+  import:
+    created: L'importazione è stata creata con successo
+    removed: L'importazione è stata rimossa
+    updated: L'importazione è stato caricata con successo
+    running: L'importazione è in esecuzione
+#Tabs
+General properties: Proprietà generali
+History: Cronologia
+pane.accordion:
+  properties: Proprietà
+  global_settings: Impostazioni Globali
+  filters: Filtri
+#Popin titles
+popin.create:
+  export_profile.title: Crea un nuovo profilo di esportazione
+  import_profile.title: Crea un nuovo profilo di importazione
+#Job execution
+'Display item': Visualizza articoli
+'Hide item': Nascondi articoli
+'Collecting data about job execution...': Raccolta di dati sull'esecuzione del lavoro...
+'You must select a file to upload': È necessario selezionare un file da caricare
+Download log: Scarica il log
+Show profile: Visualizza profilo
+execution details: dettagli esecuzione
+job_execution.summary:
+  read: leggere
+  write: scritti
+  skip: saltato
+  create: creato
+  update: caricato
+  update_products: prodotti aggiornati
+  skip_products: prodotti saltati
+  displayed: primi avvisi visualizzati
+  charset_validator:
+    title: 'Codifica del file:'
+    skipped: saltato, estensione nella white list
+Step: Passo
+Status: Stato
+Warnings: Attenzione
+Summary: Riepilogo
+Start: Inizio
+End: Fine
+#Process tracker
+set_attribute_requirements: Imposta i requisiti degli attributi
+COMPLETED: Completato
+STARTING: In avvio
+STARTED: Avviato
+STOPPING: In fase di interruzione
+STOPPED: Fermato
+FAILED: Fallito
+ABANDONED: Abbandonato
+UNKNOWN: Sconosciuto
+warning.label: Attenzione
+pim_datagrid.column.username: Nome utente

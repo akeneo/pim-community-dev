@@ -1,0 +1,75 @@
+services:
+    # Contexts
+    Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\ConstraintViolationsContext:
+        public: true
+
+    Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\ProductContext:
+        public: true
+        arguments:
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.category'
+            - '@Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\ConstraintViolationsContext'
+            - '@validator'
+            - '@pim_user.repository.user'
+
+    Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\UserContext:
+        public: true
+        arguments:
+            - '@pim_user.repository.role'
+            - '@pim_user.repository.group'
+            - '@pim_user.repository.user'
+            - '@pim_user.factory.user'
+            - '@validator'
+            - '@security.token_storage'
+
+    Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\CategoryContext:
+        public: true
+        arguments:
+            - '@pim_catalog.repository.category'
+            - '@Akeneo\Pim\Enrichment\Category\API\Query\GetOwnedCategories'
+
+    Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\ChannelContext:
+        public: true
+        arguments:
+            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.repository.category'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.currency'
+
+    Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\LocaleContext:
+        public: true
+        arguments:
+            - '@pim_catalog.repository.locale'
+            - '@Akeneo\Channel\API\Query\IsLocaleEditable'
+
+    Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\AttributeContext:
+        public: true
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.updater.attribute'
+            - '@pim_catalog.repository.attribute_group'
+            - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetAttributeTypes'
+
+    Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\ExceptionContext:
+        public: true
+
+
+    Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\UserIntentContext:
+        public: true
+        arguments:
+            - '@Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\ExceptionContext'
+            - '@pim_enrich.product.query_message_bus'
+
+    # Queries
+    Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes:
+        class: Akeneo\Pim\Enrichment\Product\Test\Acceptance\InMemory\InMemoryGetCategoryCodes
+        arguments:
+            - '@pim_catalog.repository.product'
+
+    Akeneo\Pim\Enrichment\Product\Domain\Query\GetAttributeTypes:
+        class: Akeneo\Pim\Enrichment\Product\Test\Acceptance\InMemory\InMemoryGetAttributeTypes
+
+    Akeneo\Pim\Enrichment\Product\API\Query\GetProductUuids:
+        class: Akeneo\Pim\Enrichment\Product\Test\Acceptance\InMemory\InMemoryGetProductUuids
+        arguments:
+            - '@pim_catalog.repository.product'

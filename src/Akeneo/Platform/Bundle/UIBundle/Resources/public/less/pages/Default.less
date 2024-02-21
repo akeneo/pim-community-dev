@@ -1,0 +1,167 @@
+@import '../base/variables';
+
+.AknDefault {
+  @mainContentPadding: 40px;
+
+  &-page {
+    width: 100%;
+    height: 100%;
+    display: flex;
+  }
+
+  &-container {
+    flex-grow: 1;
+    width: 1px;
+  }
+
+  &-verticalScrollContainer {
+    display: flex;
+  }
+
+  &-horizontalScrollContainer {
+    overflow-x: auto;
+    height: ~"calc(100vh - 246px)";
+  }
+
+  &-horizontalScroller {
+    overflow-x: auto;
+    flex: 1;
+  }
+
+  &-progressContainer {
+    width: @AknCenteredContentWidth;
+    font-size: @AknTitleFontSize;
+    display: block;
+    margin: 200px auto 0;
+    text-align: center;
+    line-height: 40px;
+
+    &--loadingMessages {
+      margin: 0;
+      color: @AknDarkBlue;
+      font-size: @AknTitleFontSize;
+      font-weight: 400;
+      font-style: italic;
+
+      &:before {
+        content: url("/bundles/pimui/images/quote-left.svg");
+        position: relative;
+        top: -10px;
+      }
+
+      &:after {
+        content: url("/bundles/pimui/images/quote-right.svg");
+        position: relative;
+        bottom: -@AknTitleFontSize + -10px;
+      }
+    }
+  }
+
+  &-contentWithColumn {
+    display: flex;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  &-contentWithBottom {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  &-mainContent {
+    padding: 0 @mainContentPadding @mainContentPadding @mainContentPadding;
+    overflow-x: auto;
+    flex-grow: 1;
+    position: relative;
+    height: 100%;
+
+    &--withoutPadding {
+      padding: 10px 0 0 0;
+    }
+
+    &--withoutBottomPadding {
+      padding-bottom: 0;
+    }
+  }
+
+  &-horizontalscrollContainer {
+      overflow-x: scroll;
+  }
+
+  &-thirdColumnContainer {
+    order: -5;
+    margin-left: -@AknThirdColumnWidth;
+    position: relative;
+    transition: margin 0.3s ease-in-out;
+
+    // Added !important to fix the animation
+    // since the margin values are set with jQuery
+    &--open {
+      margin-left: 0 !important;
+    }
+  }
+
+  &-thirdColumn {
+    height: 100vh;
+    background: white;
+    z-index: 801;
+    border-right: 1px solid @AknBorderColor;
+    padding: 20px;
+    margin: 0;
+    width: 300px;
+  }
+
+  &-thirdColumnButton {
+    position: absolute;
+    bottom: 90px;
+    width: ~"calc(100% - 40px)";
+    text-align: center;
+    padding: 20px;
+    border-top: 1px solid @AknBorderColor;
+  }
+
+  &-bottomPanel {
+    background: white;
+    border-top: 1px solid @AknMediumGrey;
+    display: flex;
+    align-items: center;
+    padding: 0 20px 0 10px;
+    flex-basis: @AknBottomPanelHeight;
+    min-height: @AknBottomPanelHeight;
+    transition:
+      flex-basis 0.3s ease-in-out,
+      min-height 0.3s ease-in-out;
+
+    &--hidden {
+      flex-basis: 0;
+      min-height: 0;
+      overflow: hidden;
+    }
+  }
+}
+
+@-moz-document url-prefix() {
+  // On Firefox, there is a bug to display the main menu border
+  .AknDefault {
+    &-contentWithColumn {
+      margin-left: 1px;
+    }
+  }
+}
+
+/* Temporary block */
+.view {
+  height: 100%;
+}
+.view-global {
+  height: 100%;
+  overflow: auto;
+}
+.app {
+  height: 100%;
+  overflow: hidden;
+}

@@ -1,0 +1,23 @@
+pim_connector:
+  steps:
+    file_reader:
+      invalid_item_columns_count: 'Esperava ter %totalColumnsCount% colunas, porém tem %itemColumnsCount% em %filePath%:%lineno%'
+job_execution.summary:
+  read: ler
+  write: escrito
+  skip: pulado
+  create: criado
+  process: processado
+  update_products: produtos atualizados
+  process_products: produtos processados
+  skip_products: produtos pulados
+  displayed: primeiros alertas exibidos
+  charset_validator:
+    title: 'Codificação do arquivo:'
+    skipped: pulado, extensão na lista branca
+  product_skipped_no_diff: produto pulado (nenhuma diferença)
+  product_skipped_no_associations: produto ignorado (associações não detectadas)
+  product_model_skipped_no_diff: modelo de produto ignorado (sem diferenças)
+  item_position: ler linhas
+  skipped_in_root_product_model: modelo de produto ignorado com pai
+  skipped_in_sub_product_model: modelo de produto ignorado sem pai

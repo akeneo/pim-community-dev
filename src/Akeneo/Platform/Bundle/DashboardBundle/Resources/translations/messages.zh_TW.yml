@@ -1,0 +1,10 @@
+pim_dashboard:
+  title: 控制面板
+  version: 版本
+  widget:
+    completeness:
+      title: 渠道和區域完成度
+    last_operations:
+      title: 上次操作
+      status: 狀態
+      type: 類型

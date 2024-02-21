@@ -1,0 +1,27 @@
+services:
+  pim_enrich.connector.flat_translators.header.association:
+    class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\Header\AssociationTranslator
+    arguments:
+      - '@pim_connector.array_converter.flat_to_standard.product.association_columns_resolver'
+      - '@pim_catalog.localization.translator.label'
+      - '@akeneo.pim.structure.query.get_association_type_translations'
+    tags: [{ name: pim_enrich.connector.flat_translators.header }]
+
+  pim_enrich.connector.flat_translators.header.attribute:
+    class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\Header\AttributeTranslator
+    arguments:
+      - '@pim_catalog.localization.translator.label'
+      - '@pim_connector.array_converter.flat_to_standard.product.attribute_columns_resolver'
+      - '@pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor'
+      - '@akeneo.pim.structure.query.get_channel_translations'
+      - '@pim_catalog.localization.translator.language'
+      - '@pim_catalog.localization.translator.currency'
+      - '@akeneo.pim.structure.query.get_attribute_translations'
+    tags: [{ name: pim_enrich.connector.flat_translators.header }]
+
+  pim_enrich.connector.flat_translators.header.property:
+    class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\Header\PropertyTranslator
+    arguments:
+      - '@pim_catalog.localization.translator.label'
+      - ['uuid', 'categories', 'family_variant', 'enabled', 'family', 'parent', 'groups']
+    tags: [{ name: pim_enrich.connector.flat_translators.header }]

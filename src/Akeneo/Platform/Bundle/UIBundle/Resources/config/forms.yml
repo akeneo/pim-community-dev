@@ -1,0 +1,138 @@
+parameters:
+    pim_ui.form.type.ajax_entity.class:                Akeneo\Platform\Bundle\UIBundle\Form\Type\AjaxEntityType
+    pim_ui.form.type.ajax_reference_data.class:        Akeneo\Platform\Bundle\UIBundle\Form\Type\AjaxReferenceDataType
+    pim_ui.form.type.number.class:                     Akeneo\Platform\Bundle\UIBundle\Form\Type\NumberType
+    pim_ui.form.type.date.class:                       Akeneo\Platform\Bundle\UIBundle\Form\Type\DateType
+    pim_ui.form.type.switch.class:                     Akeneo\Platform\Bundle\UIBundle\Form\Type\SwitchType
+    pim_ui.form.transformer.ajax_entity.factory.class: Akeneo\Platform\Bundle\UIBundle\Form\Transformer\AjaxEntityTransformerFactory
+    pim_ui.form.transformer.ajax_entity.class:         Akeneo\Platform\Bundle\UIBundle\Form\Transformer\AjaxEntityTransformer
+    pim_ui.form.transformer.ajax_reference_data.factory.class:   Akeneo\Platform\Bundle\UIBundle\Form\Transformer\AjaxReferenceDataTransformerFactory
+    pim_ui.form.transformer.ajax_reference_data.class:           Akeneo\Platform\Bundle\UIBundle\Form\Transformer\AjaxReferenceDataTransformer
+    pim_ui.form.transformer.ajax_creatable_entity.factory.class: Akeneo\Platform\Bundle\UIBundle\Form\Transformer\AjaxCreatableEntityTransformerFactory
+
+services:
+    pim_ui.form.extension.help:
+        class: Akeneo\Platform\Bundle\UIBundle\Form\Extension\FormTypeHelpExtension
+        tags:
+            - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\FormType }
+
+    pim_ui.form.extension.select2:
+        class: Akeneo\Platform\Bundle\UIBundle\Form\Extension\FormTypeSelect2Extension
+        tags:
+            - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\FormType }
+
+    pim_ui.form.type.switch:
+        class: '%pim_ui.form.type.switch.class%'
+        tags:
+            - { name: form.type, alias: switch }
+
+    pim_ui.form.type.number:
+        class: '%pim_ui.form.type.number.class%'
+        arguments:
+            - '@pim_catalog.localization.localizer.number'
+            - '@pim_enrich.resolver.locale'
+            - '@pim_catalog.localization.validator.constraint.number_format'
+            - '@pim_catalog.localization.factory.number'
+        tags:
+            - { name: form.type, alias: pim_number }
+
+    pim_ui.form.type.date:
+        class: '%pim_ui.form.type.date.class%'
+        arguments:
+            - '@pim_enrich.resolver.locale'
+            - '@pim_catalog.localization.factory.date'
+        tags:
+            - { name: form.type, alias: pim_date }
+
+    pim_ui.form.type.ajax_entity:
+        class: '%pim_ui.form.type.ajax_entity.class%'
+        arguments:
+            - '@router'
+            - '@pim_ui.form.transformer.ajax_entity.factory'
+            - '@pim_user.context.user'
+        tags:
+            - { name: form.type, alias: pim_ajax_entity }
+
+    pim_ui.form.type.ajax_reference_data:
+        class: '%pim_ui.form.type.ajax_reference_data.class%'
+        arguments:
+            - '@router'
+            - '@pim_ui.form.transformer.ajax_reference_data.factory'
+            - '@pim_user.context.user'
+        tags:
+            - { name: form.type, alias: pim_ajax_reference_data }
+
+    pim_ui.form.transformer.ajax_entity.factory:
+        class: '%pim_ui.form.transformer.ajax_entity.factory.class%'
+        arguments:
+            - '@doctrine'
+            - '%pim_ui.form.transformer.ajax_entity.class%'
+
+    pim_ui.form.transformer.ajax_creatable_entity.factory:
+        class: '%pim_ui.form.transformer.ajax_creatable_entity.factory.class%'
+        arguments:
+            - '@doctrine'
+
+    pim_ui.form.transformer.ajax_reference_data.factory:
+        class: '%pim_ui.form.transformer.ajax_reference_data.factory.class%'
+        arguments:
+            - '@doctrine'
+            - '@pim_reference_data.label_renderer'
+            - '%pim_ui.form.transformer.ajax_reference_data.class%'
+
+    pim_enrich.factory.transformer.identifiable_model:
+        class: Akeneo\Platform\Bundle\UIBundle\Form\Factory\IdentifiableModelTransformerFactory
+        public: false
+        arguments:
+            - 'Akeneo\Platform\Bundle\UIBundle\Form\Transformer\IdentifiableModelTransformer'
+
+    pim_enrich.form.type.localized_collection:
+        class: 'Akeneo\Platform\Bundle\UIBundle\Form\Type\LocalizedCollectionType'
+        tags:
+            - { name: form.type, alias: pim_enrich_localized_collection }
+
+    pim_enrich.form.type.media:
+        class: 'Akeneo\Platform\Bundle\UIBundle\Form\Type\MediaType'
+        arguments:
+            - '%akeneo_file_storage.model.file_info.class%'
+        tags:
+            - { name: form.type, alias: pim_enrich_media }
+
+    pim_enrich.form.type.light_entity:
+        class: 'Akeneo\Platform\Bundle\UIBundle\Form\Type\LightEntityType'
+        tags:
+            - { name: form.type, alias: light_entity }
+
+    pim_enrich.form.type.object_identifier:
+        class: 'Akeneo\Platform\Bundle\UIBundle\Form\Type\ObjectIdentifierType'
+        tags:
+            - { name: form.type, alias: pim_object_identifier }
+
+    pim_enrich.form.type.translatable_field:
+        class: 'Akeneo\Platform\Bundle\UIBundle\Form\Type\TranslatableFieldType'
+        arguments:
+            - '@validator'
+            - '@pim_user.context.user'
+        tags:
+            - { name: form.type, alias: pim_translatable_field }
+
+    pim_enrich.type.entity_identifier:
+        class: 'Akeneo\Platform\Bundle\UIBundle\Form\Type\EntityIdentifierType'
+        arguments: ["@doctrine"]
+        tags:
+            - { name: form.type, alias: pim_enrich_entity_identifier }
+
+    pim_localization.form.type.locale:
+        class: 'Akeneo\Platform\Bundle\UIBundle\Form\Type\LocaleType'
+        arguments:
+            - '@pim_localization.provider.ui_locale'
+        tags:
+            - { name: form.type, alias: "pim_locale" }
+
+    pim_enrich.form.type.async_select:
+        class: Akeneo\Platform\Bundle\UIBundle\Form\Type\AsyncSelectType
+        arguments:
+            - '@router'
+            - '@pim_enrich.factory.transformer.identifiable_model'
+        tags:
+            - { name: form.type, alias: pim_async_select }

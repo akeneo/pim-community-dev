@@ -1,0 +1,69 @@
+pim_analytics:
+  new_patch_available: 有可用新补丁
+  system_config:
+    group:
+      notification.title: 通知
+      version_update.title: 版本更新
+    form:
+      version_update.label: 新版本通知
+      version_update.tooltip: 向远程服务器发送请求以取得有关新补丁发布的信息
+  system_info:
+    title: 系统信息
+    download: TXT
+  info_type:
+    pim_edition: 版本
+    pim_version: 版本
+    pim_storage_driver: 存储
+    pim_environment: 环境
+    pim_install_time: 安装时间
+    registered_bundles: 已注册的包
+    nb_channels: 渠道数量
+    nb_products: 产品数量
+    nb_product_models: 产品模型数量
+    nb_variant_products: 变型产品数量
+    nb_family_variants: 品类变型数量
+    nb_attributes: 属性数量
+    nb_scopable_attributes: 可确定范围属性的数量
+    nb_localizable_attributes: 可本地化属性的数量
+    nb_scopable_localizable_attributes: 可本地化和可确定范围属性的数量
+    nb_useable_as_grid_filter_attributes: 可用作网格筛选器的属性数量
+    avg_percentage_scopable_attributes_per_family: 每个品类可确定范围属性的平均百分比(%)
+    avg_percentage_localizable_attributes_per_family: 每个品类可本地化属性的平均百分比(%)
+    avg_percentage_scopable_localizable_attributes_per_family: 每个品类可本地化和可确定范围属性的平均百分比(%)
+    avg_number_attributes_per_family: 每个品类的平均属性数量
+    nb_locales: 区域数量
+    nb_families: 品类数量
+    nb_users: 用户数量
+    nb_categories: 类别数量
+    nb_category_trees: 类别树数量
+    max_category_in_one_category: 一个类别中类别数量的上限
+    max_category_levels: 类别级别的数量上限
+    nb_product_values: 产品值数量
+    avg_product_values_by_product: 按产品分列的产品值平均数
+    avg_product_values_by_family: 按品类分列的潜在产品值的平均数
+    max_product_values_by_family: 按品类分列的潜在产品值的最大数
+    pim_storage_version: 存储版本
+    os_version: 操作系统版本
+    php_version: PHP 版本
+    mysql_version: MySQL 版本
+    mariadb_version: MariaDB 版本
+    mongodb_version: MongoDB 版本
+    server_version: 服务器版本
+    php_extensions: PHP 扩展
+    email_domains: 关联的电子邮件域
+    api_connection: API 连接
+    nb_media_files_in_products: 产品中媒体文件的数量
+    nb_media_images_in_products: 产品中媒体图像的数量
+    is_demo_catalog: 已安装演示目录
+    data_source.tracked: 已跟踪的 API 源连接的数量
+    data_source.untracked: 已取消跟踪的 API 源连接的数量
+    data_destination.tracked: 已跟踪的 API 目的地连接的数量
+    data_destination.untracked: 已取消跟踪的 API 目的地连接的数量
+    other.tracked: 已跟踪的 API 其他连接的数量
+    other.untracked: 已取消跟踪的 API 其他连接的数量
+  acl:
+    system_info:
+      index: 系统信息
+pim_menu:
+  item:
+    system_info: 系统信息

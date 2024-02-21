@@ -1,0 +1,12 @@
+oro_config_configuration_system:
+    path: /system/
+
+oro_config_configuration_system_get:
+    path: /system/rest
+    defaults: { _controller: oro_config.controller.configuration:getAction }
+    methods: [GET]
+
+oro_config_configuration_system_post:
+    path: /system/rest
+    defaults: { _controller: oro_config.controller.configuration:postAction }
+    methods: [POST]

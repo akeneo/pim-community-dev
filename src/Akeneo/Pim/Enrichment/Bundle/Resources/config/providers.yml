@@ -1,0 +1,35 @@
+parameters:
+    pim_enrich.provider.structure_version.class:   Akeneo\Pim\Enrichment\Bundle\StructureVersion\Provider\StructureVersion
+
+services:
+    pim_enrich.provider.form.product:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Provider\Form\ProductFormProvider'
+        tags:
+            - { name: pim_enrich.provider.form, priority: 100 }
+
+    pim_enrich.provider.form.product_model:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Provider\Form\ProductModelFormProvider'
+        tags:
+            - { name: pim_enrich.provider.form, priority: 100 }
+
+    pim_enrichment.provider.form.job_instance:
+        class: 'Akeneo\Platform\Bundle\ImportExportBundle\Provider\Form\JobInstanceFormProvider'
+        arguments:
+            -   csv_category_export: pim-job-instance-csv-base-export
+                csv_group_export: pim-job-instance-csv-base-export
+                csv_product_export: pim-job-instance-csv-product-export
+                csv_product_model_export: pim-job-instance-csv-product-model-export
+                xlsx_category_export: pim-job-instance-xlsx-base-export
+                xlsx_group_export: pim-job-instance-xlsx-base-export
+                xlsx_product_export: pim-job-instance-xlsx-product-export
+                xlsx_product_model_export: pim-job-instance-xlsx-product-model-export
+                csv_category_import: pim-job-instance-csv-base-import
+                csv_group_import: pim-job-instance-csv-base-import
+                csv_product_import: pim-job-instance-csv-product-import
+                csv_product_model_import: pim-job-instance-csv-product-model-import
+                xlsx_category_import: pim-job-instance-xlsx-base-import
+                xlsx_group_import: pim-job-instance-xlsx-base-import
+                xlsx_product_import: pim-job-instance-xlsx-product-import
+                xlsx_product_model_import: pim-job-instance-xlsx-product-model-import
+        tags:
+            - { name: pim_enrich.provider.form, priority: 100 }

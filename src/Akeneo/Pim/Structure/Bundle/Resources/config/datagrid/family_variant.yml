@@ -1,0 +1,53 @@
+datagrid:
+    family-variant-grid:
+        options:
+            entityHint: family_variant
+            requireJSModules:
+                - oro/datagrid/pagination-input
+            locale_parameter: localeCode
+            manageFilters: false
+        source:
+            type: pim_datasource_family_variant
+            repository_method: createDatagridQueryBuilder
+        columns:
+            label:
+                label: Label
+                frontend_type: label
+            level_1:
+                label: Variant axis level 1
+                frontend_type: label
+            level_2:
+                label: Variant axis level 2
+                frontend_type: label
+        properties:
+            id: ~
+            familyVariantCode: ~
+            familyCode: ~
+            delete_link:
+                type: url
+                route: pim_enrich_family_variant_rest_remove
+                params:
+                    - familyVariantCode
+        actions:
+            edit:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--edit
+                type:         edit-in-modal
+                label:        pim_common.edit
+                propertyCode: familyVariantCode
+                fetcher:      family-variant
+                rowAction:    true
+                acl_resource: pim_enrich_family_edit_variants
+            delete:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--trash
+                type:  delete
+                label: pim_common.delete
+                link:  delete_link
+                acl_resource: pim_enrich_family_variant_remove
+        filters:
+            columns:
+                label:
+                    type: search
+                    label: Label
+                    data_name: translation.label

@@ -1,0 +1,46 @@
+parameters:
+    pim_api.normalizer.exception.documented.class: Akeneo\Tool\Component\Api\Normalizer\Exception\DocumentedNormalizer
+    pim_api.normalizer.exception.violation.class: Akeneo\Tool\Component\Api\Normalizer\Exception\ViolationNormalizer
+    pim_api.normalizer.collection.class: Akeneo\Tool\Component\Api\Normalizer\CollectionNormalizer
+    pim_api.normalizer.attribute_group.class: Akeneo\Pim\Structure\Component\Normalizer\ExternalApi\AttributeGroupNormalizer
+    pim_api.normalizer.file.class: Akeneo\Tool\Component\Api\Normalizer\FileNormalizer
+
+services:
+    fos_rest.serializer:
+        class: FOS\RestBundle\Serializer\SymfonySerializerAdapter
+        arguments:
+            - '@pim_external_api_exception_serializer'
+
+    Akeneo\Tool\Bundle\ApiBundle\Serializer\Normalizer\FlattenExceptionNormalizer:
+        decorates: fos_rest.serializer.flatten_exception_normalizer
+        arguments:
+            - '@Akeneo\Tool\Bundle\ApiBundle\Serializer\Normalizer\FlattenExceptionNormalizer.inner'
+        calls:
+            - [ 'setNormalizer', [ '@pim_external_api_exception_serializer' ] ]
+        tags:
+            - { name: pim_external_api_exception_serializer.normalizer, priority: 100 }
+
+    pim_api.normalizer.exception.documented:
+        class: '%pim_api.normalizer.exception.documented.class%'
+        tags:
+            - { name: pim_external_api_exception_serializer.normalizer, priority: 100 }
+
+    pim_api.normalizer.exception.violation:
+        class: '%pim_api.normalizer.exception.violation.class%'
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
+        tags:
+            - { name: pim_external_api_exception_serializer.normalizer, priority: 100 }
+
+    pim_api.normalizer.collection:
+        class: '%pim_api.normalizer.collection.class%'
+        tags:
+            - { name: pim_external_api_serializer.normalizer, priority: 90 }
+
+    pim_api.normalizer.file:
+        class: '%pim_api.normalizer.file.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.file'
+            - '@router'
+        tags:
+            - { name: pim_external_api_serializer.normalizer, priority: 90 }

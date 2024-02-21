@@ -1,0 +1,8 @@
+pim_dashboard:
+  title: Dashboard
+  version: Versie
+  widget:
+    completeness:
+      title: Volledigheid over kanalen en lokalisaties
+    last_operations:
+      title: Laatste bewerkingen

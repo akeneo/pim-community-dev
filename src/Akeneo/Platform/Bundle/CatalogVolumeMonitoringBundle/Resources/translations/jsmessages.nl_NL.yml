@@ -1,0 +1,48 @@
+pim_catalog_volume:
+  product_values: "Je hebt <span>{{values}}</span> productwaarden in je PIM! Gemiddeld is dat <span>{{average}}</span> productwaardes per product!&nbsp;💪"
+  product_values_description: 'Hoe meer productwaarden je hebt, hoe waardevoller je PIM is, hoe hoger je ROI is! Meer details <a href="{{link}}" target="_blank">hier</a>'
+  section:
+    product_values:
+      hint: 'Wist u dat het totaalaantal productwaarden in uw PIM direct gekoppeld is aan de volgende assen?<br/>Om meer details te hebben, nodigen we u uit om <a href="{{link}}" target="_blank">dit artikel</a> te lezen.'
+      title: Assen die het aantal productwaarden benutten
+    catalog_structure:
+      hint: U weet wellicht dat een goede catalogus structuur echt belangrijk is en een voorwaarde is voor een efficiënte verrijking. Hieronder zijn de verschillende assen om uw catalogusstructuur te controleren.
+      title: Assen gerelateerd aan de catalogusstructuur
+    variant_modelling:
+      hint: Als u de variant modellering gebruikt, zijn hier de assen om u te helpen uw volume te controleren.
+      title: Assen met betrekking tot het modelleren van varianten
+  axis:
+    count_products: Producten
+    average_max_attributes_per_family: Attributen per familie
+    count_channels: Kanalen
+    count_locales: Talen (ingeschakeld)
+    count_scopable_attributes: Scopable attributen
+    count_localizable_and_scopable_attributes: Vertaalbare en kanaalafhankelijke attributen
+    count_localizable_attributes: Vertaalbare attributen
+    count_families: Families
+    count_attributes: Attributen
+    average_max_options_per_attribute: Opties op attribuut
+    count_categories: Categorieën
+    count_category_trees: Categorie boomstructuren
+    count_variant_products: Variant products
+    count_product_models: Productmodels
+    count_product_and_product_model_values: productwaarden
+    average_max_product_and_product_model_values: Productwaarden van producten
+    count_reference_entity: Referentie-entiteiten
+    average_max_records_per_reference_entity: Records per referentie-entiteit
+    average_max_attributes_per_reference_entity: Attributen per referentie-entiteit
+    count_asset_family: Asset-families
+    average_max_assets_per_asset_family: Assets per asset-familie
+    average_max_attributes_per_asset_family: Attributen per asset-familie
+    title:
+      product: Product
+      catalog: Catalogus
+      product_structure: Productstructuur
+      variant_modeling: Variant modelleren
+      reference_entities: Referentie-entiteiten
+      assets: Assets
+  mean: 'Gemiddeld:'
+  max: 'Max:'
+  error:
+    generic_title: Sorry, er is iets fout gegaan.
+    generic_message: Probeer het zo weer

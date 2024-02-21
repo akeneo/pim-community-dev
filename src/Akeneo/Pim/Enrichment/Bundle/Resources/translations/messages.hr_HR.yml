@@ -1,0 +1,71 @@
+No products to remove: Nema proizvoda za uklanjanje
+"dot (.)": točka (.)
+"comma (,)": zarez (,)
+pim_enrich:
+  #Category
+  category:
+    tab:
+      property.title: Svojstva
+      history.title: Povijest
+    suggest_selection: Molimo odaberi kategoriju na lijevoj strani
+    or: ili
+    create_new: Kreiraj novu kategoriju
+  #Mass edit operations
+  mass_edit_action:
+    limit_exceeded: Odaberi manje od %limit% stvari za uređivanje
+    product:
+      page_title: Proizvodi
+      page_subtitle: Masovno uređivanje (1 proizvod) | Masovno uređivanje (%count% proizvoda)
+      title: Odabiri operaciju
+      subtitle: Odaberi operaciju koju želiš obaviti na odabranom proizvodu| Odaberi operaciju koju želiš izvesti na %count% odabranih proizvoda
+      confirm: Spremate se ažurirati proizvod sa sljedećim podacima, molimo vas da potvrdite. | Spremate se ažurirati %count% proizvoda sa sljedećim podacima, molimo vas da potvrdite.
+      steps:
+        first: Odaberi proizvode
+        second: Odabiri operaciju
+        third: Konfiguriraj
+        fourth: Potvrdi
+    change-status:
+      label: Promjena statusa
+      description: Odabrani proizvodi će biti omogućeni ili onemogućeni.
+      success_flash: Status proizvoda se promijenio
+      launched_flash: Pokrenuta je masovna radnja "promijeni status". Biti ćete obaviješteni kad bude gotovo.
+    edit-common-attributes:
+      label: Uredi atribute
+      description: Atributi odabranih proizvoda će se uređivati s podacima za odabrane postavke lokalizacije.
+      empty: Odaberi atribut(e) koje želiš urediti
+      success_flash: Proces ažuriranja statusa proizvoda se izvodi
+      message:
+        warning: Ne postoji zajednički atribut za odabrane proizvode. Promijenite odabir.
+        invalid_attribute: Atribut sa kodom "attribute_code" nije zajednički za odabrane proizvode, atribut je preskočen.
+        no_valid_attribute: Niti jedan od odabranih atributa se ne može primijeniti na ovaj proizvod.
+    classify-add:
+      description: Proizvodi će biti postavljeni u sljedeće kategorije, postojeći položaj je zadržan.
+      success_flash: Proizvodi su klasificirani u odabrane kategorije
+      launched_flash: Pokrenuta je masovna radnja "dodati u grupe". Biti ćete obaviješteni kad bude gotovo.
+    classify-move:
+      description: Proizvodi će biti postavljeni u sljedeće kategorije, postojeći položaj je zadržan.
+      success_flash: Proizvodi su premješteni u odabrane kategorije
+      launched_flash: Pokrenuta je masovna radnja "premjesti u kategorije". Biti ćete obaviješteni kad bude gotovo.
+    classify-remove:
+      description: Proizvodi će biti uklonjeni iz sljedećih kategorija.
+      success_flash: Proizvodi su uklonjeni iz odabranih kategorija
+      launched_flash: Masovna radnja "ukloni iz kategorija" je pokrenuta. Biti ćete obaviješteni kad bude gotovo.
+    change-family:
+      description: Obitelj odabranih proizvoda će se promijeniti u odabranu obitelj
+      success_flash: Obitelj odabranih proizvoda je uspješno promijenjena
+      launched_flash: Pokrenuta je masovna radnja "promijeni status". Biti ćete obaviješteni kad bude gotovo.
+    add-to-groups:
+      label: Dodaj u grupe
+      description: Odaberi grupe u koju se dodaju odabrani proizvodi
+      success_flash: Proizvodi su uspješno dodani u odabrane grupe
+      launched_flash: Pokrenuta je masovna radnja "dodati u grupe". Biti ćete obaviješteni kad bude gotovo.
+      no_group: Nema grupa za sada. Molimo da najprije kreirate grupu.
+    set-attribute-requirements:
+      description: Sljedeći zahtjevi atributa će se primijeniti na odabrane obitelji
+      success_flash: Zahtjevi atributa su primjenjeni na odabrane obitelji
+      launched_flash: Masovna akcija "postavi zahtjeve za atribute" je pokrenuta. Biti ćete obaviješteni kada bude gotovo.
+    mass_action:
+      quick_export:
+        launched_flash: Izvoz proizvoda se trenutno izvodi
+category:
+  overview: Kategorije

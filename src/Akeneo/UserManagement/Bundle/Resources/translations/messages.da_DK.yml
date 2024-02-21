@@ -1,0 +1,143 @@
+pim_user:
+  user:
+    title: Bruger
+    fields:
+      name_prefix: Navnepræfiks
+      email: E-mail
+      username: Brugernavn
+      first_name: Fornavn
+      middle_name: Mellemnavn
+      last_name: Efternavn
+      name_suffix: Navnesuffiks
+      phone: Telefon
+      date_of_birth: Fødselsdato
+      avatar: Avatar
+      timezone: Tidszone
+      roles: Roller
+      groups: Grupper
+      password: Adgangskode
+      password_again: Indtast adgangskode igen
+      product_grid_filters: Produkt gitter filtre
+      catalog_locale: Katalog landestandard
+      catalog_scope: Katalog anvendelsesområde
+      default_tree: Standardtræ
+      current_password: Nuværende adgangskode
+      new_password: Ny adgangskode
+      new_password_again: Ny adgangskode (gentag)
+      default_grid_view:
+        none: Ingen
+      default_product_grid_view:
+        label: Standard produkt gittervisningen
+      ui_locale: UI landestandard
+      last_logged_in: Sidst logget ind
+      login_count: Antal logins
+      user_salt: Bruger salt
+      created: Oprettet
+      updated: Opdateret
+      status: Status
+      capabilities: Kapaciteter
+      has_role: Har rolle
+      has_group: Har gruppen
+      active: Aktiv
+      inactive: Inaktiv
+    fields_errors:
+      new_password:
+        minimum_length: Adgangskode skal indeholde mindst to tegn
+      new_password_repeat:
+        not_match: Adgangskode stemmer ikke overens
+      current_password:
+        wrong: Forkert adgangskode
+    tabs:
+      general:
+        title: Generelt
+        basic_information: Basisinformation
+        contact_information: Kontaktoplysninger
+      additional:
+        title: Yderligere
+      additional_data:
+        title: Yderligere data
+      interfaces:
+        title: Grænseflader
+      group_and_role.title: Grupper og roller
+      password.title: Adgangskode
+      business_unit.title: Afdelinger
+      email_synchronization.title: Email synkroniseringsindstillinger
+    removed_user: Slet bruger
+    login:
+      username_or_email: Brugernavn eller e-mail
+      remember_me: Husk mig på denne computer
+      password_forgotten: Glemt din adgangskode?
+      log_in: Log på
+      forgot_password: Glemt adgangskode
+      request: Anmodning
+      password_reset: Nulstil adgangskode
+      reset: Nulstil
+      password_reset_email_sent: En e-mail er blevet sendt til % e-mail %. Den indeholder et link du skal klikke på for at nulstille din adgangskode.
+      homepage: Gå til hjemmeside
+  group:
+    tab:
+      general.title: Generelt
+      users.title: Brugere
+  roles:
+    title: Rolle
+    tab:
+      general: Generelt
+      action: Rettigheder
+      users: Brugere
+  controller:
+    group:
+      message:
+        saved: "Gruppe gemt"
+    role:
+      message:
+        saved: "Rolle gemt"
+    user:
+      message:
+        saved: "Brugeren gemt"
+pim_datagrid:
+  columns:
+    user:
+      createdAt: "Oprettet den"
+      updatedAt: "Opdateret den"
+    roles:
+      label: "Etiket"
+    groups:
+      name: "Navn"
+confirmation:
+  remove:
+    role: Er du sikker på du vil slette denne rolle?
+    user: Er du sikker på du vil slette denne bruger?
+flash:
+  role:
+    removed: Rollen blev slettet
+  user:
+    removed: Brugeren blev fjernet
+oro_security:
+  acl_group:
+    user: Brugere
+    role: Roller
+    group: Brugergrupper
+  acl:
+    user:
+      view: Vis brugere
+      create: Opret en bruger
+      edit: Rediger brugere
+      delete: Slet bruger
+    role:
+      view: List roller
+      create: Opret rolle
+      edit: Rediger roller
+      delete: Fjern en rolle
+    group:
+      view: List brugergrupper
+      create: Opret en brugergruppe
+      edit: Rediger brugergrupper
+      delete: Fjern en brugergruppe
+#Security
+(default): Standardtilladelse på enheder
+VIEW: Se
+CREATE: Opret
+EDIT: Redigér
+DELETE: Slet
+ASSIGN: Tildel
+SHARE: Del

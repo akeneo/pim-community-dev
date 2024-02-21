@@ -1,0 +1,87 @@
+services:
+    pim_catalog.object_manager.product:
+        alias: doctrine.orm.entity_manager
+
+    pim_catalog.object_manager.association:
+        alias: doctrine.orm.entity_manager
+
+    pim_catalog.factory.product_cursor:
+        class: '%pim_catalog.elasticsearch.cursor_factory.class%'
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.product_model'
+            - '%pim_job_product_batch_size%'
+
+    pim_catalog.factory.product_and_product_model_identifier_cursor:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierCursorFactory'
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+            - 500
+
+    pim_catalog.factory.product_search_after_size_cursor:
+        class: '%pim_catalog.elasticsearch.cursor_factory.class%'
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.product_model'
+            - '%pim_job_product_batch_size%'
+
+    pim_catalog.factory.product_from_size_cursor:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\FromSizeCursorFactory'
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.product_model'
+            - '%pim_job_product_batch_size%'
+
+    pim_catalog.factory.product_model_cursor:
+        class: '%pim_catalog.elasticsearch.cursor_factory.class%'
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.product_model'
+            - '%pim_job_product_batch_size%'
+
+    pim_catalog.factory.product_model_from_size_cursor:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\FromSizeCursorFactory'
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.product_model'
+            - '%pim_job_product_batch_size%'
+
+    pim_catalog.factory.product_model_search_after_size_cursor:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchAfterSizeIdentifierResultCursorFactory'
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+
+    akeneo.pim.enrichment.factory.product_and_product_model_identifier_cursor_from_size_cursor:
+        public: false
+        class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\FromSizeIdentifierResultCursorFactory'
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+
+    akeneo.pim.enrichment.factory.product_identifier_cursor_from_size_cursor:
+        public: false
+        class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\FromSizeIdentifierResultCursorFactory'
+        arguments:
+        - '@akeneo_elasticsearch.client.product_and_product_model'
+
+    akeneo.pim.enrichment.factory.product_identifier_cursor_search_after_size_cursor:
+        public: false
+        class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchAfterSizeIdentifierResultCursorFactory'
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+
+    akeneo.pim.enrichment.factory.product_model_identifier_cursor_from_size_cursor:
+        public: false
+        class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\FromSizeIdentifierResultCursorFactory'
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+
+    akeneo.pim.enrichment.factory.product_model_identifier_cursor_search_after_size_cursor:
+        public: false
+        class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchAfterSizeIdentifierResultCursorFactory'
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'

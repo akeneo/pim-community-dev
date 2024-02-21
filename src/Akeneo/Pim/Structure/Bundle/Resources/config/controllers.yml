@@ -1,0 +1,269 @@
+services:
+    ### External API
+    pim_api.controller.attribute:
+        public: true
+        class: 'Akeneo\Pim\Structure\Bundle\Controller\ExternalApi\AttributeController'
+        arguments:
+            - '@pim_api.repository.attribute'
+            - '@pim_external_api_serializer'
+            - '@pim_catalog.factory.attribute'
+            - '@pim_catalog.updater.attribute'
+            - '@validator'
+            - '@pim_catalog.saver.attribute'
+            - '@router'
+            - '@pim_api.pagination.offset_hal_paginator'
+            - '@pim_api.pagination.parameter_validator'
+            - '@pim_api.stream.attribute_partial_update_stream'
+            - '%pim_api.configuration%'
+            - '@Akeneo\Pim\Structure\Bundle\EventSubscriber\ApiAggregatorForAttributePostSaveEventSubscriber'
+            - '@logger'
+
+    pim_api.controller.attribute_group:
+        public: true
+        class: 'Akeneo\Pim\Structure\Bundle\Controller\ExternalApi\AttributeGroupController'
+        arguments:
+            - '@pim_api.repository.attribute_group'
+            - '@pim_external_api_serializer'
+            - '@pim_api.pagination.parameter_validator'
+            - '@pim_api.pagination.offset_hal_paginator'
+            - '@pim_catalog.factory.attribute_group'
+            - '@pim_catalog.updater.attribute_group'
+            - '@validator'
+            - '@router'
+            - '@pim_catalog.saver.attribute_group'
+            - '@pim_api.stream.attribute_group_partial_update_stream'
+            - '%pim_api.configuration%'
+
+    pim_api.controller.attribute_option:
+        public: true
+        class: 'Akeneo\Pim\Structure\Bundle\Controller\ExternalApi\AttributeOptionController'
+        arguments:
+            - '@pim_api.repository.attribute'
+            - '@pim_api.repository.attribute_option'
+            - '@pim_external_api_serializer'
+            - '@pim_catalog.factory.attribute_option'
+            - '@pim_catalog.updater.attribute_option'
+            - '@validator'
+            - '@pim_catalog.saver.attribute_option'
+            - '@router'
+            - '@pim_api.pagination.offset_hal_paginator'
+            - '@pim_api.pagination.parameter_validator'
+            - '@pim_api.stream.attribute_option_partial_update_stream'
+            - '@Akeneo\Pim\Structure\Bundle\EventSubscriber\ApiAggregatorForAttributeOptionPostSaveEventSubscriber'
+            - '@logger'
+            - '%pim_api.configuration%'
+            - ['pim_catalog_simpleselect', 'pim_catalog_multiselect']
+
+    pim_api.controller.family:
+        public: true
+        class: 'Akeneo\Pim\Structure\Bundle\Controller\ExternalApi\FamilyController'
+        arguments:
+            - '@pim_api.repository.family'
+            - '@pim_external_api_serializer'
+            - '@pim_catalog.factory.family'
+            - '@pim_catalog.updater.family'
+            - '@validator'
+            - '@pim_catalog.saver.family'
+            - '@router'
+            - '@pim_api.pagination.offset_hal_paginator'
+            - '@pim_api.pagination.parameter_validator'
+            - '@pim_api.stream.family_partial_update_stream'
+            - '%pim_api.configuration%'
+
+    pim_api.controller.family_variant:
+        public: true
+        class: 'Akeneo\Pim\Structure\Bundle\Controller\ExternalApi\FamilyVariantController'
+        arguments:
+            - '@pim_api.repository.family'
+            - '@pim_api.repository.family_variant'
+            - '@pim_external_api_serializer'
+            - '@pim_api.pagination.offset_hal_paginator'
+            - '@pim_api.pagination.parameter_validator'
+            - '@validator'
+            - '@pim_catalog.factory.family_variant'
+            - '@pim_api.updater.family_variant'
+            - '@pim_catalog.saver.family_variant'
+            - '@router'
+            - '@pim_api.stream.family_variant_partial_update_stream'
+            - '%pim_api.configuration%'
+
+    pim_api.controller.association_type:
+        public: true
+        class: 'Akeneo\Pim\Structure\Bundle\Controller\ExternalApi\AssociationTypeController'
+        arguments:
+            - '@pim_api.repository.association_type'
+            - '@pim_external_api_serializer'
+            - '@pim_api.pagination.parameter_validator'
+            - '@pim_api.pagination.offset_hal_paginator'
+            - '@pim_catalog.factory.association_type'
+            - '@pim_catalog.updater.association_type'
+            - '@validator'
+            - '@router'
+            - '@pim_catalog.saver.association_type'
+            - '@pim_api.stream.association_type_partial_update_stream'
+            - '%pim_api.configuration%'
+
+    ### Internal Api
+    pim_enrich.controller.rest.attribute:
+        public: true
+        class: 'Akeneo\Pim\Structure\Bundle\Controller\InternalApi\AttributeController'
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@pim_internal_api_serializer'
+            - '@security.token_storage'
+            - '@pim_catalog.filter.chained'
+            - '@pim_enrich.repository.attribute.search'
+            - '@pim_catalog.updater.attribute'
+            - '@validator'
+            - '@pim_catalog.saver.attribute'
+            - '@pim_catalog.remover.attribute'
+            - '@pim_catalog.factory.attribute'
+            - '@pim_user.context.user'
+            - '@pim_catalog.localization.localizer.number'
+            - '@pim_enrich.normalizer.attribute'
+            - '@translator'
+            - '@akeneo.pim.structure.query.attribute_is_an_family_variant_axis'
+            - '@pim_catalog.repository.channel'
+
+    Akeneo\Pim\Structure\Bundle\Controller\InternalApi\GetMainIdentifierAttributeController:
+        public: true
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@pim_enrich.normalizer.attribute'
+            - '@pim_user.context.user'
+
+    pim_enrich.controller.rest.attribute_group:
+        public: true
+        class: 'Akeneo\Pim\Structure\Bundle\Controller\InternalApi\AttributeGroupController'
+        arguments:
+            - '@pim_catalog.repository.attribute_group'
+            - '@pim_enrich.repository.attribute_group.search'
+            - '@pim_internal_api_serializer'
+            - '@pim_catalog.filter.chained'
+            - '@pim_catalog.updater.attribute_group'
+            - '@validator'
+            - '@pim_catalog.saver.attribute_group'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.updater.attribute'
+            - '@pim_catalog.saver.attribute'
+            - '@oro_security.security_facade'
+            - '@pim_catalog.factory.attribute_group'
+            - '@event_dispatcher'
+            - '@pim_catalog.filter.chained'
+            - '@akeneo.pim.structure.query.find_attribute_codes_for_attribute_groups'
+            - '@security.token_storage'
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
+            - '@akeneo_batch.job.job_instance_repository'
+
+    pim_enrich.controller.rest.family:
+        public: true
+        class: 'Akeneo\Pim\Structure\Bundle\Controller\InternalApi\FamilyController'
+        arguments:
+            - '@pim_catalog.repository.family'
+            - '@pim_internal_api_serializer'
+            - '@pim_enrich.repository.family.search'
+            - '@pim_catalog.updater.family'
+            - '@pim_catalog.saver.family'
+            - '@pim_catalog.remover.family'
+            - '@validator'
+            - '@oro_security.security_facade'
+            - '@pim_catalog.factory.family'
+            - '@pim_enrich.normalizer.violation'
+
+    pim_enrich.controller.rest.family_variant:
+        public: true
+        class: 'Akeneo\Pim\Structure\Bundle\Controller\InternalApi\FamilyVariantController'
+        arguments:
+            - '@pim_catalog.repository.family_variant'
+            - '@pim_internal_api_serializer'
+            - '@pim_catalog.factory.family_variant'
+            - '@pim_catalog.updater.family_variant'
+            - '@validator'
+            - '@pim_enrich.normalizer.violation'
+            - '@pim_catalog.saver.family_variant'
+            - '@pim_catalog.remover.family_variant'
+            - '@pim_enrich.repository.family_variant.search'
+
+    pim_enrich.controller.attribute_option:
+        public: true
+        class: 'Akeneo\Pim\Structure\Bundle\Controller\InternalApi\AttributeOptionController'
+        arguments:
+            - '@pim_internal_api_serializer'
+            - '@form.factory'
+            - '@pim_catalog.manager.attribute_options_sorter'
+            - '@pim_catalog.factory.attribute_option'
+            - '@pim_catalog.saver.attribute_option'
+            - '@pim_catalog.remover.attribute_option'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.attribute_option'
+            - '@pim_enrich.repository.attribute_option.search'
+            - '@pim_enrich.normalizer.structured.attribute_option'
+
+    pim_enrich.controller.rest.attribute_type:
+        public: true
+        class: 'Akeneo\Pim\Structure\Bundle\Controller\InternalApi\AttributeTypeController'
+        arguments:
+            - '@pim_catalog.registry.attribute_type'
+
+    pim_enrich.controller.rest.association_type:
+        public: true
+        class: 'Akeneo\Pim\Structure\Bundle\Controller\InternalApi\AssociationTypeController'
+        arguments:
+            - '@pim_catalog.repository.association_type'
+            - '@pim_internal_api_serializer'
+            - '@pim_catalog.remover.association_type'
+            - '@pim_catalog.updater.association_type'
+            - '@pim_catalog.saver.association_type'
+            - '@validator'
+            - '@pim_user.context.user'
+            - '@pim_enrich.normalizer.violation'
+
+    pim_enrich.controller.rest.group_type:
+        public: true
+        class: 'Akeneo\Pim\Structure\Bundle\Controller\InternalApi\GroupTypeController'
+        arguments:
+            - '@pim_catalog.repository.group_type'
+            - '@pim_internal_api_serializer'
+            - '@pim_catalog.remover.group_type'
+            - '@pim_catalog.updater.group_type'
+            - '@pim_catalog.saver.group_type'
+            - '@validator'
+            - '@pim_user.context.user'
+            - '@pim_catalog.factory.group_type'
+            - '@pim_enrich.normalizer.violation'
+
+    pim_reference_data.controller.configuration_rest:
+        public: true
+        class: 'Akeneo\Pim\Structure\Bundle\Controller\InternalApi\ReferenceDataConfigurationRestController'
+        arguments:
+            - '@pim_reference_data.registry'
+            - '@pim_internal_api_serializer'
+
+    Akeneo\Pim\Structure\Bundle\Infrastructure\Controller\GetAttributeGroupsController:
+        public: true
+        arguments:
+            - '@oro_security.security_facade'
+            - '@Akeneo\Pim\Structure\Bundle\Application\GetAttributesGroup\GetAttributeGroupsHandler'
+
+    Akeneo\Pim\Structure\Bundle\Infrastructure\Controller\MassDeleteAttributeGroupsController:
+        public: true
+        arguments:
+            - '@security.token_storage'
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@oro_security.security_facade'
+
+    Akeneo\Pim\Structure\Bundle\Controller\InternalApi\MassDeleteAttributeController:
+        arguments:
+            - '@security.token_storage'
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@oro_security.security_facade'
+        tags: ['controller.service_arguments']
+
+    Akeneo\Pim\Structure\Bundle\Controller\InternalApi\SwitchMainIdentifierController:
+        public: true
+        arguments:
+            - '@Akeneo\Pim\Structure\Bundle\Application\SwitchMainIdentifier\SwitchMainIdentifierHandler'
+            - '@Akeneo\Pim\Structure\Bundle\Application\SwitchMainIdentifier\SwitchMainIdentifierValidator'
+            - '@oro_security.security_facade'

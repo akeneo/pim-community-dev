@@ -1,0 +1,28 @@
+pim_dashboard:
+  title: Panel de actividades
+  greetings: '¡Hola {{ name }}!'
+  welcome_sentence:
+    message0: Este va a ser un gran día.
+    message1: Es genial verte.
+    message2: Encantado de verte aquí.
+    message3: Feliz de verte aquí.
+    message4: Es genial tenerte a bordo.
+    message5: Empecemos.
+    message6: A trabajar.
+    message7: Hagamos hoy grandes cosas.
+    message8: '¿Listo para empezar?'
+    message9: Tus productos están deseando ser enriquecidos.
+  widget:
+    completeness:
+      load_more: 'Cargar más...'
+      title: Integridad sobre canales y configuraciones regionales
+      progress_messages:
+        message1: Prepárate para comenzar el viaje de enriquecimiento hacia la completitud.
+        message2: Aún tienes trabajo por hacer, pero estás en el buen camino.
+        message3: Mantenga el gran trabajo completando la información de su producto.
+        message4: '¡Enhorabuena! ¡Has alcanzado la perfección del producto para este canal!'
+    last_operations:
+      title: Últimas operaciones
+  version: Versión
+pim_title:
+  pim_dashboard_index: Cartelera

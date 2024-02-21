@@ -1,0 +1,167 @@
+swagger: "2.0"
+info:
+    description: ""
+    version: "1.0.5"
+    title: "Marketplace"
+host: "marketplace.akeneo.com"
+basePath: "/api/1.0"
+schemes:
+    - "https"
+paths:
+    /extensions:
+        get:
+            tags:
+                - "extensions"
+            summary: "Finds extensions"
+            description: >
+                Extensions with certified:true are returned first, ordered from newest to oldest. Then, all the other extensions are returned, ordered from newest to oldest.
+                Only API-Based extensions are returned.
+            produces:
+                - "application/json"
+            parameters:
+                -   name: edition
+                    in: query
+                    type: string
+                    enum:
+                        - serenity
+                        - growth-edition
+                        - enterprise-edition
+                        - community-edition
+                -   name: version
+                    in: query
+                    type: string
+                    enum:
+                        - "5.0"
+                        - "4.0"
+                        - "3.2"
+                        - "3.1"
+                        - "3.0"
+                -   name: offset
+                    in: query
+                    type: integer
+                    default: 0
+                    minimum: 0
+                -   name: limit
+                    in: query
+                    type: integer
+                    minimum: 1
+                    default: 10
+                    maximum: 100
+                -   name: extension_type
+                    in: query
+                    type: array
+                    items:
+                        type: "string"
+                        enum:
+                            - bundle
+                            - connector
+                            - app
+            responses:
+                "200":
+                    description: "OK"
+                    schema:
+                        type: "object"
+                        properties:
+                            total:
+                                type: "number"
+                            offset:
+                                type: "number"
+                            limit:
+                                type: "number"
+                            items:
+                                type: "array"
+                                items:
+                                    $ref: "#/definitions/Extension"
+                    examples:
+                        application/json:
+                            total: 2
+                            offset: 0
+                            limit: 10
+                            items:
+                                -   id: "2db5207b-a1fc-4ff0-81f0-43443004d112"
+                                    name: "Akeneo PIM Connector for Shopify"
+                                    logo: "https://marketplace.akeneo.com/sites/default/files/styles/extension_logo_large/public/extension-logos/shopify-connector-logo-1200x.png?itok=mASOVlwC"
+                                    author: "StrikeTru"
+                                    partner: "Akeneo Partner"
+                                    description: "SaaS software from StrikeTru that seamlessly connects Akeneo PIM to the Shopify platform. It allows Shopify users to quickly setup a link to Akeneo PIM and sync all product catalog data to Shopify within minutes. It eliminates a lot of manual and repetitive work involved in updating the product catalog of a Shopify store."
+                                    url: "https://marketplace.akeneo.com/extension/akeneo-pim-connector-shopify"
+                                    categories: [ "E-commerce" ]
+                                    certified: false
+                                -   id: "ab7b0bd8-692e-4589-b17e-91d01e46ce0f"
+                                    name: "Shopify App"
+                                    logo: "https://marketplace.akeneo.com/sites/default/files/styles/extension_logo_large/public/extension-logos/shopify-connector-logo-1200x.png?itok=mASOVlwC"
+                                    author: "Akeneo"
+                                    partner: "Akeneo"
+                                    description: "App compatible with the Akeneo Simple Activation Process that seamlessly connects Akeneo PIM to the Shopify platform."
+                                    url: "https://marketplace.akeneo.com/extension/shopify-app"
+                                    categories: [ "E-commerce" ]
+                                    certified: false
+                                    activate_url: "https://fake.shopify.akeneo.com/activate"
+                                    callback_url: "https://fake.shopify.akeneo.com/oauth2/callback"
+                "400":
+                    description: "Invalid parameters"
+    /app/{id}/challenge:
+        post:
+            tags:
+                - "apps"
+            summary: "Challenge an app identity"
+            description: >
+                During the OAuth process, the App will give to the Authorization Server an additionnal pair of identifiers validated by the marketplace.
+            produces:
+                - "application/json"
+            parameters:
+                -   name: id
+                    in: path
+                    type: string
+                    required: true
+                -   name: code_identifier
+                    in: query
+                    type: string
+                    required: true
+                -   name: code_challenge
+                    in: query
+                    type: string
+                    required: true
+            responses:
+                "200":
+                    description: "OK"
+                    schema:
+                        type: "object"
+                        properties:
+                            valid:
+                                type: "boolean"
+                    examples:
+                        application/json:
+                            valid: true
+                "404":
+                    description: "Invalid app id"
+definitions:
+    Extension:
+        type: "object"
+        properties:
+            id:
+                type: "string"
+                description: "UUID v4"
+            name:
+                type: "string"
+            logo:
+                type: "string"
+                description: "Url of the 325x325px image"
+            author:
+                type: "string"
+            partner:
+                type: "string"
+            description:
+                type: "string"
+            url:
+                type: "string"
+            categories:
+                type: "array"
+                items:
+                    type: "string"
+            certified:
+                type: "boolean"
+            activate_url:
+                type: "string"
+            callback_url:
+                type: "string"

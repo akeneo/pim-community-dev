@@ -1,0 +1,25 @@
+services:
+  Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Symfony\Install\InstallerSubscriber:
+    arguments:
+      - '@database_connection'
+    tags:
+      - { name: kernel.event_subscriber }
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Subscriber\SetIdentifiersSubscriber:
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\GenerateIdentifierHandler'
+      - '@validator'
+      - '@pim_catalog.validator.mapping.delegating_class_metadata_factory'
+      - '@event_dispatcher'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Match\MatchIdentifierGeneratorHandler'
+      - '@monolog.logger'
+      - '@pim_catalog.repository.cached_attribute'
+    tags:
+      - { name: kernel.event_subscriber }
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Subscriber\UnableToSetIdentifiersSubscriber:
+    arguments:
+      - '@akeneo_batch.job_repository'
+    tags:
+      - { name: kernel.event_subscriber }

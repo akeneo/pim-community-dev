@@ -1,0 +1,59 @@
+parameters:
+    pim_api.repository.client.class: Akeneo\Tool\Bundle\ApiBundle\Doctrine\ORM\Repository\ClientRepository
+    pim_api.repository.api_resource.class: Akeneo\Tool\Bundle\ApiBundle\Doctrine\ORM\Repository\ApiResourceRepository
+
+services:
+    pim_api.repository.client:
+        class: '%pim_api.repository.client.class%'
+        arguments:
+            - '@fos_oauth_server.entity_manager'
+            - '%fos_oauth_server.model.client.class%'
+
+    pim_api.repository.product_model:
+        class: 'Akeneo\Tool\Bundle\ApiBundle\Doctrine\ORM\Repository\ProductModelRepository'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pim_catalog.entity.product_model.class%'
+            - '@pim_catalog.repository.product_model'
+
+    pim_api.repository.attribute_option:
+        class: '%pim_api.repository.api_resource.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pim_catalog.entity.attribute_option.class%'
+            - '@pim_catalog.repository.attribute_option'
+
+    pim_api.repository.channel:
+        class: '%pim_api.repository.api_resource.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pim_catalog.entity.channel.class%'
+            - '@pim_catalog.repository.channel'
+
+    pim_api.repository.family_variant:
+        class: '%pim_api.repository.api_resource.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pim_catalog.entity.family_variant.class%'
+            - '@pim_catalog.repository.family_variant'
+
+    pim_api.repository.media_file:
+        class: '%pim_api.repository.api_resource.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%akeneo_file_storage.model.file_info.class%'
+            - '@akeneo_file_storage.repository.file_info'
+
+    pim_api.repository.currency:
+        class: '%pim_api.repository.api_resource.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pim_catalog.entity.currency.class%'
+            - '@pim_catalog.repository.currency'
+
+    pim_api.repository.association_type:
+        class: '%pim_api.repository.api_resource.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pim_catalog.entity.association_type.class%'
+            - '@pim_catalog.repository.association_type'

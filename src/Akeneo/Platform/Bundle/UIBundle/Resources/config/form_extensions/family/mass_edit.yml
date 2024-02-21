@@ -1,0 +1,60 @@
+extensions:
+    pim-mass-family-edit-form:
+        module: pim/form/common/edit-form
+
+    pim-mass-family-edit-form-attributes-toolbar:
+        module: pim/family-edit-form/attributes/toolbar
+        parent: pim-mass-family-edit-form
+        targetZone: content
+        position: 160
+
+    pim-mass-family-edit-form-attributes-toolbar-add-attribute-by-group:
+        module: pim/family-edit-form/attributes/toolbar/add-select/attribute-group
+        parent: pim-mass-family-edit-form-attributes-toolbar
+        targetZone: attributes-toolbar
+        position: 170
+        config:
+            select2:
+                placeholder:      'pim_enrich.entity.attribute_group.module.add_attribute_group.label'
+                title:            'pim_common.add'
+                buttonTitle:      'pim_common.add'
+                countTitle:       'pim_enrich.entity.attribute_group.module.add_attribute_group.attributes_groups_selected'
+                emptyText:        'pim_enrich.entity.attribute_group.module.add_attribute_group.no_attribute_groups_available'
+                classes:          'pim-add-attributes-multiselect'
+                dropdownCssClass: 'add-attribute-group'
+            resultsPerPage: 10
+            mainFetcher: 'attribute-group'
+            className: 'AknButtonList-item add-attribute-group'
+            events:
+                add: 'add-attribute-group:add'
+                disable: 'mass-edit:form:lock'
+                enable: 'mass-edit:form:unlock'
+
+    pim-mass-family-edit-form-attributes-toolbar-add-attribute:
+        module: pim/mass-family-edit-form/toolbar/add-select/attribute
+        parent: pim-mass-family-edit-form-attributes-toolbar
+        targetZone: attributes-toolbar
+        position: 180
+        config:
+            select2:
+                placeholder:      'pim_common.add_attributes'
+                title:            'pim_common.add'
+                buttonTitle:      'pim_common.add'
+                emptyText:        'pim_enrich.form.mass_edit.family.attributes.toolbox.no_attributes_available'
+            className: 'AknButtonList-item add-attribute'
+            events:
+                disable: 'mass-edit:form:lock'
+                enable: 'mass-edit:form:unlock'
+
+    pim-mass-family-edit-form-attributes:
+        module: pim/family-edit-form/attributes/attributes
+        parent: pim-mass-family-edit-form
+        targetZone: content
+        position: 190
+        config:
+            label: pim_common.label
+
+    pim-mass-family-edit-form-form-model-updater:
+        module: pim/mass-family-edit-form/form-model-updater
+        parent: pim-mass-family-edit-form
+        position: 500

@@ -1,0 +1,50 @@
+services:
+    # Field registry
+    pim_enrich.provider.field.chained:
+        class: 'Akeneo\Platform\Bundle\UIBundle\Provider\Field\FieldChainedProvider'
+
+    pim_enrich.provider.field.base:
+        class: 'Akeneo\Platform\Bundle\UIBundle\Provider\Field\BaseFieldProvider'
+        tags:
+            - { name: pim_enrich.provider.field, priority: 100 }
+
+    pim_enrich.provider.field.wysiwyg:
+        class: 'Akeneo\Platform\Bundle\UIBundle\Provider\Field\WysiwygFieldProvider'
+        tags:
+            - { name: pim_enrich.provider.field, priority: 90 }
+
+    pim_reference_data.enrich.provider.field.reference_data:
+        class: 'Akeneo\Platform\Bundle\UIBundle\Provider\Field\ReferenceDataFieldProvider'
+        tags:
+            - { name: pim_enrich.provider.field, priority: 100 }
+
+    pim_enrich.provider.filter.chained:
+        class: 'Akeneo\Platform\Bundle\UIBundle\Provider\Filter\FilterChainedProvider'
+
+    pim_enrich.provider.filter.base:
+        class: 'Akeneo\Platform\Bundle\UIBundle\Provider\Filter\BaseFilterProvider'
+        tags:
+            - { name: pim_enrich.provider.filter, priority: 100 }
+
+    pim_reference_data.enrich.provider.filter.reference_data:
+        class: 'Akeneo\Platform\Bundle\UIBundle\Provider\Filter\ReferenceDataFilterProvider'
+        tags:
+            - { name: pim_enrich.provider.filter, priority: 100 }
+
+    # Empty value registry
+    pim_enrich.provider.empty_value.chained:
+        class: 'Akeneo\Platform\Bundle\UIBundle\Provider\EmptyValue\EmptyValueChainedProvider'
+
+    pim_enrich.provider.empty_value.base:
+        class: 'Akeneo\Platform\Bundle\UIBundle\Provider\EmptyValue\BaseEmptyValueProvider'
+        tags:
+            - { name: pim_enrich.provider.empty_value, priority: 100 }
+
+    pim_reference_data.enrich.provider.empty_value.reference_data:
+        class: 'Akeneo\Platform\Bundle\UIBundle\Provider\EmptyValue\ReferenceDataEmptyValueProvider'
+        tags:
+            - { name: pim_enrich.provider.empty_value, priority: 90 }
+
+    # Form registry
+    pim_enrich.provider.form.chained:
+        class: 'Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormChainedProvider'

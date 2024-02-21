@@ -1,0 +1,12 @@
+pim_user_index:
+    path: /
+
+pim_user_edit:
+    path: /{identifier}/edit
+    requirements:
+        identifier: '\d+'
+
+
+pim_user_logout_redirect:
+    path: /logout/redirect
+    defaults: { _controller: pim_user.controller.security:logoutRedirect }

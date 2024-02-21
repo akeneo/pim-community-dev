@@ -1,0 +1,13 @@
+<% if (typeof hint !== 'undefined' && hint) { %>
+<div class="ModalHint">
+    <div class="ModalHint-icon AknIconButton AknIconButton--info"></div>
+    <div class="ModalHint-title"> <%= hint %></div>
+</div>
+<% } %>
+<div class="AknFormContainer AknFormContainer--withPadding">
+    <div data-drop-zone="fields" class="AknFormContainer">
+        <% if (null !== fields) { %>
+            <%= fields %>
+        <% } %>
+    </div>
+</div>

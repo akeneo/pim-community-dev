@@ -1,0 +1,9 @@
+<select class="select2 operator" name="filter-operator" <%- editable ? '' : 'disabled' %>>
+    <% _.each(operators, function (operatorChoiceLabel, operatorChoice) { %>
+        <option value="<%- operatorChoice %>"<%- operator === operatorChoice ? ' selected' : '' %>>
+            <%- operatorChoiceLabel %>
+        </option>
+    <% }); %>
+</select>
+
+<input type="hidden" name="filter-value" class="select2 value noLeftBorder" value="<%- value ? value : '' %>" <%- editable ? '' : 'disabled' %> />

@@ -1,0 +1,128 @@
+pim_user:
+  user:
+    title: Kullanıcı
+    fields:
+      name_prefix: Ad ön eki
+      email: E-posta
+      username: Kullanıcı adı
+      first_name: İsim
+      middle_name: Göbek Adı
+      last_name: Soyisim
+      name_suffix: Ad son eki
+      date_of_birth: Doğum tarihi
+      avatar: Profil resmi
+      timezone: Zaman dilimi
+      roles: Roller
+      groups: Gruplar
+      password: Parola
+      password_again: Parola (tekrar)
+      product_grid_filters: Ürün tablosu filtreleri
+      catalog_locale: Yerel ayarlar kataloğu
+      catalog_scope: Katalog içeriği
+      default_tree: Varsayılan bağlantı
+      current_password: Güncel şifre
+      new_password: Yeni Şifre
+      new_password_again: Yeni Şifre ( Tekrar)
+      default_grid_view:
+        none: Hiçbiri
+      default_product_grid_view:
+        label: varsayılan ürün kılavuzu görünümü
+      ui_locale: Kullanıcı arayüz ayarları
+      last_logged_in: Son giriş
+      login_count: Giriş sayısı
+      user_salt: Kullanıcı
+      created: Oluşturuldu
+      updated: Güncellendi
+      status: Durum
+      capabilities: Özellikler
+      has_role: Rolü var
+      has_group: Grubu var
+      active: Etkin
+      inactive: Aktif Değil
+    tabs:
+      general:
+        title: Genel
+        contact_information: İletişim Bilgileri
+      additional:
+        title: Ek Bilgiler
+      interfaces:
+        title: Arayüzler
+      group_and_role.title: Gruplar ve Yetkiler
+      password.title: Parola
+      business_unit.title: Departmanlar
+      email_synchronization.title: E-posta senkronizasyon ayarları
+    removed_user: Silinmiş Kullanıcı
+    login:
+      username_or_email: Kullanıcı adı veya Email
+      remember_me: Bu bilgisayarı hatırla
+      password_forgotten: Parolanızı mı unuttunuz?
+      forgot_password: Parolamı unuttum
+      request: İstekler
+      reset: Sıfırlama
+  group:
+    tab:
+      general.title: Genel
+      users.title: Kullanıcılar
+  roles:
+    title: Yetki
+    tab:
+      general: Genel
+      action: İzinler
+      users: Kullanıcılar
+  controller:
+    group:
+      message:
+        saved: "Grup kaydedildi"
+    role:
+      message:
+        saved: "Yetki kaydedildi"
+    user:
+      message:
+        saved: "Kullanıcı kaydedildi"
+pim_datagrid:
+  columns:
+    user:
+      createdAt: "Oluşturulduğu zaman"
+      updatedAt: "Güncellendiği tarih"
+    roles:
+      label: "Etiket"
+    groups:
+      name: "Ad"
+confirmation:
+  remove:
+    role: Bu rolü silmek istediğinizden emin misiniz?
+    user: Bu kullanıcıyı silmek istediğinizden emin misiniz?
+flash:
+  role:
+    removed: Rol başarı ile silindi
+  user:
+    removed: Kullanıcı başarılı bir şekilde silindi
+oro_security:
+  acl_group:
+    user: Kullanıcılar
+    role: Görevler
+    group: Kullanıcı Grupları
+  acl:
+    user:
+      view: Kulanıcıları listele
+      create: Kullanıcı oluştur
+      edit: Kullanıcıları düzenle
+      delete: Bir kullanıcı sil
+    role:
+      view: Rolleri Listele
+      create: Bir rol yarat
+      edit: Rolleri düzenle
+      delete: Görevi kaldır
+    group:
+      view: Kullanıcı gruplarını Listele
+      create: Kullanıcı grubu oluştur
+      edit: Kullanıcı gruplarını düzenle
+      delete: Gruptan bir kullanıcı çıkar
+#Security
+(default): Kuruluşlar için varsayılan izin
+VIEW: Görünüm
+CREATE: Oluştur
+EDIT: Düzenle
+DELETE: Sil
+ASSIGN: Atama
+SHARE: Paylaş

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PHPUnit">
+    <option name="directories">
+      <list>
+        <option value="$PROJECT_DIR$/src" />
+        <option value="$PROJECT_DIR$/tests" />
+        <option value="$PROJECT_DIR$/upgrades/test_schema" />
+        <option value="$PROJECT_DIR$/src/Akeneo/Connectivity/Connection/back/tests/Integration" />
+        <option value="$PROJECT_DIR$/src/Akeneo/Tool/Bundle/FileStorageBundle/tests/Integration" />
+        <option value="$PROJECT_DIR$/src/Akeneo/Tool/Bundle/MeasureBundle/back/tests/Integration" />
+        <option value="$PROJECT_DIR$/src/Akeneo/Tool/Bundle/MeasureBundle/back/tests/Acceptance" />
+        <option value="$PROJECT_DIR$/src/Akeneo/Tool/Bundle/MeasureBundle/back/tests/EndToEnd" />
+        <option value="$PROJECT_DIR$/src/Akeneo/Connectivity/Connection/back/tests/EndToEnd" />
+        <option value="$PROJECT_DIR$/src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests/Integration" />
+        <option value="$PROJECT_DIR$/src/Akeneo/Pim/Automation/DataQualityInsights/tests/back/Integration" />
+        <option value="$PROJECT_DIR$/src/Akeneo/Pim/Automation/DataQualityInsights/tests/back/EndToEnd" />
+        <option value="$PROJECT_DIR$/src/Akeneo/Tool/Bundle/BatchQueueBundle/tests/Acceptance" />
+        <option value="$PROJECT_DIR$/tests/back" />
+        <option value="$PROJECT_DIR$/src/Akeneo/Pim/Enrichment/Product/back/Test/Integration" />
+        <option value="$PROJECT_DIR$/src/Akeneo/Category/back/tests/Integration" />
+        <option value="$PROJECT_DIR$/components/identifier-generator/back/tests/EndToEnd" />
+        <option value="$PROJECT_DIR$/components/identifier-generator/back/tests/Integration" />
+      </list>
+    </option>
+  </component>
+</project>

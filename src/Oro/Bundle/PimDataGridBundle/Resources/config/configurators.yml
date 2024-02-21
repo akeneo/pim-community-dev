@@ -1,0 +1,73 @@
+parameters:
+    pim_datagrid.datagrid.configuration.product.context_configurator.class:       Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\Product\ContextConfigurator
+    pim_datagrid.datagrid.configuration.product.columns_configurator.class:       Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\Product\ColumnsConfigurator
+    pim_datagrid.datagrid.configuration.product.filters_configurator.class:       Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator
+    pim_datagrid.datagrid.configuration.product.sorters_configurator.class:       Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\Product\SortersConfigurator
+    pim_datagrid.datagrid.configuration.product.group_columns_configurator.class: Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\Product\GroupColumnsConfigurator
+    pim_datagrid.datagrid.request.parameters_extractor.class:                     Oro\Bundle\PimDataGridBundle\Datagrid\Request\RequestParametersExtractor
+
+services:
+    pim_datagrid.datagrid.configuration.product.context_configurator:
+        class: '%pim_datagrid.datagrid.configuration.product.context_configurator.class%'
+        arguments:
+            - '@pim_catalog.repository.product'
+            - '@oro_datagrid.datagrid.request_params'
+            - '@pim_user.context.user'
+            - '@pim_catalog.object_manager.product'
+            - '@pim_catalog.repository.group'
+            - '@request_stack'
+
+    pim_datagrid.datagrid.configuration.product_model.context_configurator:
+        class: '%pim_datagrid.datagrid.configuration.product.context_configurator.class%'
+        arguments:
+            - '@pim_catalog.repository.product_model'
+            - '@oro_datagrid.datagrid.request_params'
+            - '@pim_user.context.user'
+            - '@pim_catalog.object_manager.product'
+            - '@pim_catalog.repository.group'
+            - '@request_stack'
+
+    pim_datagrid.datagrid.configuration.product.selected_attributes_configurator:
+        class: Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\Product\SelectedAttributesConfigurator
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@pim_user.context.user'
+            - '@oro_datagrid.datagrid.request_params'
+            - '@request_stack'
+
+    pim_datagrid.datagrid.configuration.product.all_attributes_useable_in_grid_configurator:
+        class: Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\Product\AllAttributesUseableInGridConfigurator
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@pim_user.context.user'
+            - '@oro_datagrid.datagrid.request_params'
+            - '@request_stack'
+
+    pim_datagrid.datagrid.configuration.product.columns_configurator:
+        class: '%pim_datagrid.datagrid.configuration.product.columns_configurator.class%'
+        arguments:
+            - '@pim_datagrid.datagrid.configuration.product.configuration_registry'
+
+    pim_datagrid.datagrid.configuration.product.filters_configurator:
+        class: '%pim_datagrid.datagrid.configuration.product.filters_configurator.class%'
+        arguments:
+            - '@pim_datagrid.datagrid.configuration.product.configuration_registry'
+
+    pim_datagrid.datagrid.configuration.product.sorters_configurator:
+        class: '%pim_datagrid.datagrid.configuration.product.sorters_configurator.class%'
+        arguments:
+            - '@pim_datagrid.datagrid.configuration.product.configuration_registry'
+
+    pim_datagrid.datagrid.configuration.product.group_columns_configurator:
+        class: '%pim_datagrid.datagrid.configuration.product.group_columns_configurator.class%'
+        arguments:
+            - '@pim_datagrid.datagrid.configuration.product.configuration_registry'
+            - '@oro_datagrid.datagrid.request_params'
+            - '@pim_catalog.repository.group'
+            - '@request_stack'
+
+    pim_datagrid.datagrid.request.parameters_extractor:
+        class: '%pim_datagrid.datagrid.request.parameters_extractor.class%'
+        arguments:
+            - '@oro_datagrid.datagrid.request_params'
+            - '@request_stack'

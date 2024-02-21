@@ -1,0 +1,554 @@
+User: 用户
+Run demo: 运行演示
+Product: 产品
+Attribute list: 属性列表
+Attribute Group list: 属性组列表
+Users: 用户
+Roles: 角色
+Groups: 分组
+Configuration: 配置
+Currency list: 货币列表
+Locale list: 本地化语言列表
+Logged in as: 登录身份
+Logout: 退出登录
+Login: 登录
+Previous: 上一步
+Next: 下一步
+Channel list: 渠道列表
+Select file: 选择文件
+Change file: 更改文件
+Remove file: 移除文件
+Delete: 删除
+Save: 保存
+Get help: 获取帮助
+My User: 我的帐户
+oro.form.choose_value: 选择值....
+Read more: 阅读更多
+oro.form.click_here_to_select: 单击此处进行选择...
+Add: 添加
+"Learn how to use this space": "了解如何使用此空间"
+"How To Use Pinbar": "如何使用 Pinbar"
+Pinbar: Pinbar
+Favorites: 收藏夾
+Most Viewed: 查看最多
+"Add this page to favorites": "将此页添加到收藏夹"
+"Minimize the window to the pinbar": "最小化窗口到 pinbar"
+"Loading ...": "加载..."
+"Yes": "是"
+"No": "否　"
+required: '（必填）'
+The element could not be deleted: 无法删除该元素
+pim_ui.system_config:
+  form:
+    loading_message_enabled.label: 启用加载消息
+    loading_message_enabled.tooltip: 等待页面加载时显示用户友好消息
+    loading_messages.label: 可用的加载消息
+    loading_messages.tooltip: 全部可用的加载消息以换行符分隔
+  group:
+    loading_message.title: 加载消息
+other_actions: 其他操作
+pim_common:
+  association_types: 关联类型
+  cancel: 取消
+  categories: 类别
+  code: 代码
+  create: 创建
+  created: 已创建
+  delete: 删除
+  edit: 编辑
+  enabled: 已启用
+  family_variant: 品类变型
+  family: 品类
+  groups: 分组
+  label: 标签
+  name: 名称
+  no: "否　"
+  parent: '父目录:'
+  permissions: 权限
+  product_models: 产品模型
+  products: 产品
+  properties: 属性
+  quality_score: 质量评分
+  quantity: 数量
+  remove: 移除
+  save: 保存
+  unit: 单位
+  update: 更新
+  updated: 已更新
+  view: 查看
+  yes: "是"
+  uuid: UUID
+pim_enrich:
+  #ACLs
+  acl:
+    locale:
+      index: 列出本地化语言
+    currency:
+      index: 列出货币
+      toggle: 切换货币
+    product:
+      index: 列出产品
+      create: 创建产品
+      edit_attributes: 编辑产品属性
+      remove: 移除产品
+      add_attribute: 将属性添加到产品
+      remove_attribute: 从产品中移除属性
+      categories_view: 查阅产品的类别
+      associations_view: 查看产品的关联
+      associations_edit: 将关联添加到产品
+      change_family: 更改产品品类
+      change_state: 更改产品状态
+      add_to_groups: 将产品添加到组
+      mass_edit: 产品批量编辑操作
+      comment: 评论产品
+      download: 下载 PDF 格式的产品
+      history: 查看产品历史记录
+      convert_variant_to_simple: 将变型产品转换为简单产品
+    product_model:
+      create: 创建产品模型
+      edit_attributes: 编辑产品模型的属性
+      categories_view: 查阅产品模型的类别
+      history: 查看产品模型的历史记录
+      remove: 移除产品模型（包括子产品）
+    channel:
+      index: 列出渠道
+      create: 创建渠道
+      edit: 编辑渠道
+      remove: 移除渠道
+      history: 查看渠道历史记录
+    family:
+      index: 列出品类
+      create: 创建品类
+      edit_properties: 编辑品类属性
+      edit_attributes: 编辑品类属性
+      edit_variants: 编辑品类变型
+      remove: 移除品类
+      history: 查看品类历史记录
+    family_variant:
+      remove: 移除品类变型
+    attribute_group:
+      index: 列出属性组
+      create: 创建属性组
+      edit: 编辑属性组
+      remove: 移除属性组
+      mass_delete: 批量移除属性组
+      sort: 排序属性组
+      add_attribute: 将属性添加到组
+      remove_attribute: 从组中移除属性
+      history: 查看属性组历史记录
+    attribute:
+      index: 列出属性
+      create: 创建属性
+      edit: 编辑属性
+      remove: 移除属性
+      mass_delete: 批量删除属性
+      sort: 在属性组内对属性排序
+      history: 查看属性历史记录
+    group:
+      index: 列出组
+      create: 创建组
+      edit: 编辑组
+      remove: 移除组
+      history: 查看组历史记录
+    group_type:
+      index: 列出组类型
+      create: 创建组类型
+      edit: 编辑组类型
+      remove: 移除组类型
+    association_type:
+      index: 列出关联类型
+      create: 创建关联类型
+      edit: 编辑关联类型
+      remove: 移除关联类型
+      history: 查看关联类型历史记录
+    association:
+      remove: 移除产品关联
+    job_tracker:
+      index: 查看进程跟踪器
+      view_all_jobs: 查看进程跟踪器中的所有作业
+      stop_job: 停止正在进行的作业
+  acl_group:
+    association_type: 关联类型
+    attribute: 属性
+    attribute_group: 属性组
+    category: 类别
+    channel: 渠道
+    currency: 货币
+    family: 品类
+    group: 分组
+    group_type: 分组类型
+    locale: 区域设置
+    product: 产品
+    product_model: 产品模型
+  notification:
+    settings:
+      remove_completeness_for_channel_and_locale:
+        start: 已从渠道中移除区域设置。我们目前正在清理与之链接的完成度。
+        done: 移除渠道区域设置完成。
+  create:
+    attribute: 创建属性
+    attribute group: 创建属性组
+    category: 创建类别
+    tree: 创建树
+    channel: 创建渠道
+    currency: 创建货币
+    family: 创建品类
+    locale: 创建区域设置
+    product: 创建产品
+    group: 创建组
+    association type: 创建关联类型
+    group type: 创建分组类型
+    drag_or_upload: 拖放即可上传或点击这里
+#Confirmation messages
+confirmation:
+  delete: 确认删除 
+  leave: 确定要离开此页面？
+  discard changes: 如果离开此页面，将会丢失对 %entity% 的更改。
+  remove:
+    category: 确定要删除类别 %name% 吗？
+    user: 确定要删除用户 %name% 吗？
+#Flash messages
+flash:
+  entity:
+    removed: 条目已被删除
+  attribute:
+    identifier_not_removable: 标识符属性无法移除
+    used_as_conversion_unit: 此属性不能移除，因为其在渠道 %channelCodes% 中用作转换单位。
+    cant_remove_attributes_used_as_label: 无法移除产品类中用作标签的属性。
+    cant_remove_attribute_used_as_axis: 无法移除此属性，其被用作品类变型中的变量轴
+  category:
+    removed: 类别已成功移除
+  tree:
+    removed: 树已成功移除
+    not removable: 关联到渠道的树无法移除
+  currency:
+    updated: 货币已成功更新
+    error.linked_to_channel: 无法禁用链接到渠道的货币。
+  product:
+    enabled: 产品已被启用
+    disabled: 产品已被禁用
+  group type:
+    created: 分组类型已成功创建
+  user:
+    removed: 用户已成功移除
+  error occurred: 操作失败，请重试。
+#Info messages
+info:
+  updated: 有未保存的更改。
+  category:
+    remove children: 将删除所有的子类别
+    keep products: 这些类别中的产品将不会被删除。
+    products limit exceeded: 此类别包含的产品数量超过此操作所允许的数量（最多 %limit% 个产品）
+  product:
+    no available attributes: 没有需要再添加的属性
+    no family defined: 没有定义品类
+    change family: 更改产品品类
+    change family to: 更改品类为
+    merge attributes: 当前属性将与新品类中的属性合并
+    keep attributes: 没有属性要移除。
+    number of associations: '%productCount% 个产品和 %groupCount% 个组'
+    enable: 启用
+    enabled: 已启用
+    disable: 禁用
+    disabled: 已禁用
+  group:
+    axis: '变量轴：%attributes%'
+    select products: 请选择属于该组的产品
+    selectable products: 以下可选产品在每个轴上都有定义值
+    no group types: 没有分组类型存在，请单击此处创建一个
+    more products: '%count% 个以上产品...'
+  association type:
+    show products: 显示产品
+    show groups: 显示组
+    remove from products: 删除该关联类型将从 %count% 个产品中移除它。
+    none exist: 没有关联类型存在。
+    create one: 单击此处创建一个
+  attribute:
+    auto option sorting: 如果启用，选项将自动按照区域标签排序
+  completeness:
+    not calculated: 尚未计算
+#Form elements
+Created: 已创建
+Updated: 已更新
+Last update: 上次更新
+by: 由
+N/A: N/A
+Manage products: 管理产品
+Manage groups: 管理分组
+Code: 代码
+Name: 名称
+Type: 类型
+Scope: 渠道
+Required: 必填
+Unique: 唯一
+Not required: 非必填
+Translatable: 可翻译
+Scopable: 范围允许
+Localizable: 可本地化
+Unique value: 唯一值
+Attribute group: 属性组
+Other: 其他
+Variants behavior when edited: 编辑时的变型行为
+Remove: 移除
+Parameters: 参数
+System: 系统
+Values: 值
+General parameters: 一般参数
+Backend parameters: 后端参数
+Label: 标签
+Default label: 默认标签
+Default value: 默认值
+Attributetype: 属性类型
+Attribute type: 属性类型
+Defaultvalue: 默认值
+Variant: 变量
+Smart: 智能
+Useable as grid column: 可用作网格列
+Useable as grid filter: 在网格中可用
+Family: 品类
+Image: 图像
+Variant products: 变型产品
+Available locales: 可用的本地化语言
+Locale specific: 区域特定
+default: 默认
+Axis: 轴
+Add attributes: 添加属性
+switch_on: "是"
+switch_off: "否　"
+Close: 关闭
+Search: 搜索
+Choose the attribute type: 选择属性类型
+Choose the attribute group: 选择属性组
+Drag and drop a file or click here: 拖放文件或点击这里
+Drop an image or click here: 拖入图像或点击这里
+Automatic option sorting: 自动对选项排序
+save_attribute_before_manage_option: 若要管理选项，请先保存属性
+Please select: 请选择
+Active: 激活
+Inactive: 未激活
+Do not convert: 不转换
+Create: 创建
+Choose a family: 选择品类
+Choose a unit: 选择单位
+No matches found: 未找到匹配项
+Category tree: 类别树
+Completeness: 完成度
+Attribute used as label: 用作标签的属性
+Credentials: 凭据
+#Scopes
+Global: 全局
+Channel: 渠道
+Expand all channels: 展开所有渠道
+Collapse all channels: 折叠所有渠道
+#Variants
+Always override: 总是重写
+Ask: 询问
+#Attribute group
+General Properties: 常规属性
+Group values: 分组值
+New group: 新组
+Groups overview: 分组概述
+'Y-m-d h:i:s': 'Y-m-d h:i:s'
+#Attribute properties
+Max characters: 最大字符数
+Validation rule: 验证规则
+Validation regexp: 验证正则表达式
+Wysiwyg enabled: 所见即所得已启用
+Number min: 最小数
+Number max: 最大数
+Decimals allowed: 允许小数
+Negative allowed: 允许负值
+Date min: 最小日期
+Date max: 最大日期
+Metric family: 测量单位群
+Default metric unit: 默认测量单位
+Max file size: 最大文件大小 (MB)
+Allowed extensions: 允许的扩展名
+None: 无
+E-mail: 电子邮件
+URL: URL
+Regular expression: 正则表达式
+Minimum input length: 输入的最小长度
+Default: 默认
+#Family
+Attributes: 属性
+#Category
+Title: 标题
+#Page titles
+pim_catalog_identifier: 标识符
+pim_catalog_text: 文本
+pim_catalog_textarea: 文本区域
+pim_catalog_number: 数字
+pim_catalog_price_collection: 价格
+pim_catalog_multiselect: 多选
+pim_catalog_simpleselect: 单选
+pim_catalog_file: 文件
+pim_catalog_image: 图像
+pim_catalog_boolean: "是/否"
+pim_catalog_date: 日期
+pim_catalog_metric: 测量
+pim_reference_data_simpleselect: 参考数据单选
+pim_reference_data_multiselect: 参考数据多选
+#Locales
+Activated: 已激活
+Edit: 编辑
+Disable: 禁用
+To enable: 要启用
+Select attributes: 选择属性
+Select: 选择
+Remove this attribute: 移除此属性
+Copy: 复制
+Translate from: 翻译自
+Current tab: 当前选项卡
+#Product view
+Group: 分组
+View group: 查看组
+Products: 产品
+#Tabs
+Properties: 属性
+History: 历史记录 
+pane.accordion:
+  node_values: 节点值
+  general_properties: 常规属性
+  locale_values: 本地化的值
+  backend_parameters: 后端参数
+  general_parameters: 一般参数
+  validation_parameters: 验证参数
+  label_translations: 标签翻译
+  options: 选项
+  group_values: 分组值
+#Popin titles
+popin.create:
+  association_type.title: 新建关联类型
+  group.title: 新建组
+  product.title: 新建产品
+  option.title: 新建选项
+#Datagrid contents
+In group: 在组中
+Attribute as label: 属性作为标签
+Is associated: 已关联
+Complete: 完成
+Created At: 创建于
+Updated At: 更新于
+Enabled: 已启用
+Disabled: 已禁用
+Status: 状态
+pim_datagrid:
+  filters:
+    product_typology:
+      label: 产品类型
+    entity_type:
+      label: 变量
+    family:
+      label: 品类
+    groups:
+      label: 分组
+    enabled:
+      label: 状态
+    scope:
+      label: 渠道
+    completeness:
+      label: 完成
+    created:
+      label: 已创建
+    updated:
+      label: 已更新
+    label_or_identifier:
+      label: 标签或标识符
+      label_with_uuid: 标签、标识符或 UUID
+    parent:
+      label: 父级
+    identifier:
+      label: 标识符
+    uuid:
+      label: Uuid
+#Versioning / history
+Change History: 更改历史记录
+Data Audit: 数据审计
+Data Audit - System: '数据审计 - 系统'
+Action: 操作
+Version: 版本
+Entity type: 实体类型
+Entity name: 实体名称
+Entity id: 实体 id
+Data: 数据
+Author: 作者
+Logged at: 登录时间
+Deleted: 已删除
+Old values: 旧值
+New values: 新值
+#Configuration
+System configuration: 系统配置
+General setup: 常规设置
+Localization: 本地化
+Localization options: 本地化选项
+Locale: 本地化语言
+Location: 所在地
+Format address by address country: 按地址所在国家进行格式化地址
+Language: 语言
+Timezone: 时区
+Currency: 货币
+oro.locale:
+  address_format:
+    region_name_type:
+      parish: "行政区"
+      state: "国家"
+      island: "岛"
+      county: "县"
+      area: "区域"
+      prefecture: "县"
+      department: "部门"
+      district: "地区"
+      province: "省份"
+  form:
+    tooltip:
+      locale: "选择用于格式化数字、 地址、 名称和日期的区域设置选项"
+      location: "当选项”按地址中的国家来格式化地址“选项被禁用时，\"所在地\"将被用来格式化地址。"
+      format_address_by_address_country: "选择该选项时，将会使用他们所在的国家来格式化地址。不选择该选项时，将使用您所在地的地址格式来格式化地址"
+      language: "选择想要使用的系统语言"
+      timezone: "选择用于显示日期和时间的时区"
+      currency: "选择默认货币"
+#Datagrid
+Selected products successfully deleted: 所选产品已成功删除
+pim_mass_edit:
+  notification:
+    mass_edit:
+      error: 批量编辑 <strong>%label%</strong> 失败
+      warning: 批量编辑 <strong>%label%</strong> 完成，但有一些警告
+      success: 批量编辑 <strong>%label%</strong> 完成
+    quick_export:
+      error: 快速导出 <strong>%label%</strong> 失败
+      warning: 快速导出 <strong>%label%</strong> 完成，但有一些警告
+      success: 快速导出 <strong>%label%</strong> 完成
+    mass_delete:
+      error: 批量删除 <strong>%label%</strong> 失败
+      warning: 批量删除 <strong>%label%</strong> 已完成，但有一些警告
+      success: 批量删除 <strong>%label%</strong> 已完成
+job_execution.summary:
+  mass_edited: 已批量编辑
+  skipped_products: 已跳过产品
+  skipped_attributes: 已跳过属性
+  skipped_families: 已跳过品类
+  deleted_products: 已删除产品
+  deleted_product_models: 已删除产品模型
+pim_mass_edit_execution_show: 批量编辑执行 |详细信息
+edit_common_attributes.steps.edit_common_attributes_processor.title: 编辑属性
+update_product_value.steps.update_product_value_processor.title: 更新产品值
+remove_product_value.steps.update_product_value_processor.title: 移除产品值
+edit_common_attributes: 编辑属性
+edit_common_attributes_clean: 清除属性文件
+perform.steps.duplicated.title: 重复的轴
+perform.steps.excluded.title: 被排除的产品
+mass_edit report:
+  overview: 批量编辑报告
+job_tracker:
+  tab:
+    title: 进程跟踪器
+  filter:
+    started_at: 开始于
+pim_login:
+  logo_title: Akeneo PIM
+  footer:
+    powered: 提供者
+    powered_image_title: Logo Akeneo
+pim_system.acl_group.connect: 连接

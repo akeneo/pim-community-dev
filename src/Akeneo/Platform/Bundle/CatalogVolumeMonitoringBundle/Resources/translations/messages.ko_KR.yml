@@ -1,0 +1,3 @@
+pim_catalog_volume:
+  acl:
+    view_catalog_volume_monitoring: 카탈로그 볼륨 모니터링 보기

@@ -1,0 +1,159 @@
+parameters:
+    pim_datagrid.product.attribute_type.pim_catalog_identifier:
+        column:
+            type:        product_value_field
+        filter:
+            type:        product_value_string
+            ftype:       identifier
+            options:
+                field_options:
+                    attr:
+                        choice_list: true
+                        empty_choice: true
+        sorter:          product_value
+    pim_datagrid.product.attribute_type.pim_catalog_text:
+        column:
+            type:        product_value_field
+        filter:
+            type:        product_value_string
+            ftype:       string
+            options:
+                field_options:
+                    attr:
+                        empty_choice: true
+        sorter:          product_value
+    pim_datagrid.product.attribute_type.pim_catalog_textarea:
+        column:
+            type:        product_value_field
+        filter:
+            type:        product_value_string
+            ftype:       string
+            options:
+                field_options:
+                    attr:
+                        empty_choice: true
+        sorter:          product_value
+    pim_datagrid.product.attribute_type.pim_catalog_simpleselect:
+        column:
+            type:        product_value_field
+        filter:
+            type:        product_value_choice
+            ftype:       ajax_choice
+            options:
+                field_options:
+                    multiple: true
+                    attr:
+                        empty_choice: true
+        sorter:          product_value
+    pim_datagrid.product.attribute_type.pim_catalog_multiselect:
+        column:
+            type:        product_value_field
+        filter:
+            type:        product_value_choice
+            ftype:       ajax_choice
+            options:
+                field_options:
+                    multiple: true
+                    attr:
+                        empty_choice: true
+        sorter:          ~
+    pim_datagrid.product.attribute_type.pim_catalog_number:
+        column:
+            type:        product_value_field
+        filter:
+            type:        product_value_number
+            ftype: number
+            options:
+                field_options:
+                    attr:
+                        empty_choice: true
+        sorter:          product_value
+    pim_datagrid.product.attribute_type.pim_catalog_boolean:
+        column:
+            type:          product_value_field
+            frontend_type: boolean-label
+        filter:
+            type:        product_value_boolean
+            ftype: boolean
+        sorter:          product_value
+    pim_datagrid.product.attribute_type.pim_catalog_date:
+        column:
+            type:          product_value_field
+        filter:
+            type:          product_value_date
+            ftype:   date
+            options:
+                field_options:
+                    attr:
+                        empty_choice: true
+        sorter:            product_value
+    pim_datagrid.product.attribute_type.pim_catalog_file:
+        column:
+            type:          product_value_file
+            frontend_type: string
+        filter:
+            type:        product_value_string
+            ftype:       string
+            options:
+                field_options:
+                    attr:
+                        empty_choice: true
+        sorter:            ~
+    pim_datagrid.product.attribute_type.pim_catalog_image:
+        column:
+            type:          product_value_field
+            frontend_type: image
+        filter:
+            type:        product_value_string
+            ftype:       string
+            options:
+                field_options:
+                    attr:
+                        empty_choice: true
+        sorter:            ~
+    pim_datagrid.product.attribute_type.pim_catalog_price_collection:
+        column:
+            type:        product_value_field
+        filter:
+            type:        product_value_price
+            ftype:       price
+            options:
+                field_options:
+                    attr:
+                        empty_choice: true
+        sorter:          ~
+    pim_datagrid.product.attribute_type.pim_catalog_metric:
+        column:
+            type:          product_value_field
+        filter:
+            type:          product_value_metric
+            ftype:         metric
+            options:
+                field_options:
+                    attr:
+                        empty_choice: true
+        sorter:            ~
+    pim_datagrid.product.attribute_type.pim_reference_data_simpleselect:
+        column:
+            type:        product_value_field
+        filter:
+            type:        product_value_reference_data
+            ftype:       ajax_choice
+            options:
+                field_options:
+                    multiple: true
+                    attr:
+                        empty_choice: true
+        sorter:          product_value_reference_data
+    pim_datagrid.product.attribute_type.pim_reference_data_multiselect:
+        column:
+            type:        product_value_field
+        filter:
+            type:        product_value_reference_data
+            ftype:       ajax_choice
+            options:
+                field_options:
+                    multiple: true
+                    attr:
+                        empty_choice: true
+        sorter:          ~

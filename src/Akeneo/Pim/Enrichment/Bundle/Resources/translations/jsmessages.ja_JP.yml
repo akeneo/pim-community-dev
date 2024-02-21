@@ -1,0 +1,581 @@
+pim_notification:
+  types:
+    settings: 設定
+    mass_delete: 削除
+    attribute_mass_delete: 削除
+flash:
+  comment:
+    create:
+      success: コメントが正常に作成されました。
+      error: コメントの作成中にエラーが発生しました。
+    delete:
+      success: コメントは正常に削除されました。
+      error: コメントの削除中にエラーが発生しました。
+    reply:
+      success: 返信が正常に作成されました。
+      error: 返信の作成中にエラーが発生しました。
+pim_enrich.entity.product:
+  label: 商品
+  uppercase_label: 商品
+  plural_label: 商品
+  flash:
+    update:
+      success: 商品を正常に更新しました
+      fail: 商品を更新できませんでした
+      fail_session_expired: 商品を更新できません。ユーザーセッションが期限切れになっています。もう一度ログインしてください。
+      fields_not_ready: "この商品は現在保存できません。次のフィールドが準備ができていません：{{ fields }}"
+      already_in_upload: ファイルはすでに {{ locale }} ローケル と {{ scope }} スコープでこの属性のためにアップロードされています
+      file_upload: ファイルをアップロード中にエラーが発生しました
+      identifier_warning: 商品は保存されましたが、あなたの識別子は生成されませんでした。
+    delete:
+      success: 商品を正常に削除しました
+      fail: 商品を削除できませんでした
+    create:
+      success: 商品は正常に作成されました
+      fail: 商品識別子として属性が構成されていないか、それを編集する権限がありません
+  page_title:
+    index: "]-Inf, 1] {{ count }} 結果 |]1, Inf [{{ count }} 結果"
+    product: "]-Inf, 1]{{ count }} 個の商品|]1, Inf[{{ count }} 個の商品"
+    product_model: "]-Inf, 1]{{ count }} 個の商品モデル|]1, Inf[{{ count }} 個の商品モデル"
+    product_and_product_model: "{{ productCount }}、{{ productModelCount }}"
+  module:
+    create:
+      subtitle: 商品を作成
+      title: アクションを選択
+      choose_family: ファミリーを選択
+      choose_family_variant: ファミリーバリエーションを選択
+      helper: 識別子がオプションのフィールドになりました。このカタログと商品への考えられる影響について詳しくは、<a class="AknMessageBox-link" href="{{ link }}" target="_blank">こちらをご確認ください</a>。
+    variant_navigation:
+      common: 一般
+    status:
+      enabled: 有効
+      disabled: 無効
+    download_pdf:
+      label: PDF
+    copy:
+      button_label: 比較
+      label: 比較/翻訳
+      select: 選択
+      all_visible: すべて表示
+      copy: コピー
+    convert_variant_to_simple:
+      label: シンプル商品に変換
+      dialog:
+        title: 変換を確認
+        content: "このバリエーション商品をシンプル商品に本当に変換しますか？以前の値、カテゴリ、および関連付けはすべて保存されます。"
+    history:
+      version: バージョン
+      author: 作成者
+      logged_at: 日付/時間
+      from: 開始
+      modified: 修正
+      old_value: 以前の値
+      new_value: 現在の値
+      limit: '最新の {{ limit }} バージョンのみが表示されています。'
+    meta:
+      updated: 最終更新
+      groups: グループ
+      uuid: UUID
+    show_group:
+      title: '{{ group }} グループ'
+      view_group: 表示グループ
+      more_products: '{{ count }} 件以上の商品...'
+    attribute:
+      remove_optional: この属性を削除
+      locale_specific_unavailable: このロケール特定分野は、このロケールでは利用できません
+      locale_unavailable: このローカライズ可能なフィールドはローケル「 {{ locale }} 」とチャンネル「{{ channel }} 」で使用できません
+      to_fill_count: "{1}1 件の必須属性が不足しています |]1, Inf [{{ count }} 件の必須属性が不足しています"
+      add_attribute_option: 属性オプションの追加
+      add_option: オプションを追加
+    completeness:
+      title: 完全性
+      complete: 完全性
+      no_family: ファミリーが未定義です。この商品の完全性を計算するファミリーを定義してください。
+      no_completeness: 商品のファミリーを変更しました。新しいファミリーの完全性を計算するために、まずは保存して下さい。
+      missing_values: "{1}不足値１件 |]、Inf [不足値{{ count }} 件"
+    sequential_edit:
+      item_limit: この連続編集で最初に表示された1000件のアイテムのみ ({{ count }} 選択中)
+      empty: 何も選択していません。検索条件を変更してください
+      save_and_next: 保存して次へ
+      save_and_finish: 保存して終了
+    associations:
+      title: 関連 ({{ count }})
+      none_exist: 関連タイプがありません。
+      show_products: 商品を表示
+      show_groups: グループを表示
+      number_of_associations: "商品{{ productCount }} 、商品モデル {{ productModelCount }} 、グループ{{ groupCount }}"
+      number_of_quantified_associations: "{{ productCount }} 製品と {{ productModelCount }} 製品モデル"
+      association_type_selector: 関連タイプ
+      target: ターゲット
+      manage: 関連性{{ associationType }} を追加
+      manage_description: 製品に関連付けたい製品を選択してください "{{ productLabel }}"
+      mass_edit_description: 選択した {{ productCount }} の製品に関連付けたい製品を選択してください
+      add_associations: 関連性を追加
+      variant_products: バリエーション商品
+      quantified:
+        quantity: 数量
+        unlinked: リンク解除済み
+      search:
+        placeholder: ラベル、識別子、またはUUIDで検索
+      no_data: 関連商品はありません
+      remove: 関連付けを削除
+      edit: 製品の編集
+      limit_reached: この製品に {{ maxLimit }} 件以上の関連付けを追加することはできません。
+      variant_updated: バリエーションの数量を更新しました。数量は同期されません。
+    attribute_filter:
+      display: 表示
+      all: 属性全部
+      missing_required: 不足した必須の属性全て
+      at_this_level: 全レベルの特殊属性
+    change_family:
+      title: 商品ファミリーを変更
+      merge_attributes: 現在の属性は新しいファミリーの属性と併合されます
+      keep_attributes: 削除する属性はありません。
+      change_family_to: 'ファミリーを次に変更:'
+      empty_selection: ファミリーを選択
+    basket:
+      title: カート
+      empty_basket: カートが空です。
+    delete:
+      confirm: この商品を本当に削除してよいですか？
+    comment:
+      post: コメントを新規追加
+      reply: 返答
+      title: コメント
+      empty: 現在コメントはありません。
+      header_comment: '{{ user }} さんが商品にコメントしています'
+      header_reply: '{{ user }} さんがコメントに返信しています'
+      delete_confirm: 本当にこのコメントを削除しますか？
+      removed_author: 削除済みのユーザー
+    asset:
+      title: アセット
+pim_enrich.entity.product_model:
+  label: 商品モデル
+  uppercase_label: 商品モデル
+  plural_label: 商品モデル
+  flash:
+    create:
+      success: 商品モデルを正常に作成しました
+      product_model_added: 商品モデルが商品モデルに正常に追加されました
+      variant_product_added: バリエーション商品が商品モデルに正常に追加されました
+    update:
+      success: 商品モデルが正常に更新されました。商品バリエーションの完全性が再計算されます
+      fail: 商品モデルを更新できませんでした
+      fields_not_ready: "この商品モデルは現在保存できません。次のフィールドが準備ができていません：{{ fields }}"
+    delete:
+      success: 商品モデルが正常に削除されました
+      fail: この製品モデルを削除できません
+  choose: 商品モデルを選択
+  property:
+    family_variant: バリエーション
+  module:
+    create:
+      title: 商品モデルを作成
+      content: "商品モデルは商品のバリエーションを集積したものであり、共通の性質を簡単に抽出できるようになります。\n"
+    attribute:
+      read_only_parent_attribute_from_common: この属性は、共通の項目内で更新できます
+      read_only_parent_attribute_from_model: "この属性は、{{ axes }}による属性内で更新できます"
+    variant_axis:
+      label: 'バリアントの軸'
+      create: 新規追加
+      title_create_label: "]-Inf, 1]新しい {{ axes }} を追加|]1, Inf[新しい {{ axes }} を追加"
+      required_label: 'バリエーションの軸'
+    completeness:
+      variant_product: "]-Inf, 1]{{ complete }} / {{ total }} バリエーション商品|]1, Inf[{{ complete }} / {{ total }} バリエーション商品"
+      label: バリエーション
+    delete:
+      confirm: この商品モデルを削除しますか？　全ての下位商品、商品モデルとバリエーション商品も削除されます。
+      confirm_for_products_and_product_models: 選択した商品および商品モデルを削除してもよろしいですか？ 　商品モデル下位も全て削除されます
+pim_enrich.entity.group:
+  label: グループ
+  flash:
+    update:
+      success: グループは正常に更新されました
+      fail: グループを更新できませんでした。
+      fields_not_ready: "このグループは現在保存できません。次のフィールドが準備ができていません：{{ fields }}"
+    create:
+      success: グループが正常に作成されました
+    delete:
+      success: グループを削除しました
+      fail: このグループは削除できません
+  page_title:
+    index: "]-Inf, 1]{{ count }} グループ|]1, Inf[{{ count }} グループ"
+  module:
+    create:
+      button: グループを作成
+    delete:
+      confirm: 本当にこのグループを削除してもよろしいですか？
+pim_enrich.entity.role:
+  module:
+    delete:
+      confirm: 本当にこの権限を削除してもよろしいですか？
+  flash:
+    delete:
+      success: 権限を正常に削除しました
+pim_enrich.entity.category:
+  label: カテゴリ
+  uppercase_label: カテゴリ
+  plural_label: カテゴリ
+  page_title:
+    index: "]-Inf, 1]{{ count }} 個のツリー|]1, Inf[{{ count }} 個のツリー"
+  content:
+    empty_tree_list:
+      title: ツリーはありません
+      hint: 最初のツリーを作成します。
+    tree_list:
+      columns:
+        label: ツリーのラベル
+        number_of_categories: カテゴリ数
+        actions: アクション
+        count_categories: ']-Inf, 1]{{ count }} 個のカテゴリ|]1, Inf[{{ count }} 個のカテゴリ'
+    tree:
+      not_found: カテゴリツリーが見つかりません
+    edit:
+      not_found: カテゴリが見つかりません
+      default_tree_label: ツリー
+      success: カテゴリを正常に更新しました
+      fail: カテゴリを更新できませんでした
+  new_category: 新規カテゴリ
+  new_category_tree: 新規カテゴリツリー
+  category_created: カテゴリ "{{ code }}" は正常に作成されました
+  category_creation_error: カテゴリ "{{ code }}" を作成できませんでした
+  category_tree_creation:
+    success: ツリー "{{ code }}" は正常に作成されました
+    error: ツリー "{{ code }}" を作成できませんでした
+  category_tree_deletion:
+    success: ツリー "{{ tree }}" は正常に削除されました
+    error: ツリー "{{ tree }}" を削除できませんでした
+    confirmation: '{{ name }} ツリーを本当に削除しますか？そのツリーのすべてのカテゴリが削除され、それらのカテゴリの商品が削除されます。'
+    confirmation_question: '{{ name }}を本当に削除しますか？'
+    warning_categories_number: 関連付けられた{{ categoriesNumber }}カテゴリは削除され、商品はこれらすべてのカテゴリから削除されます。
+    warning_products: すべての関連付けられた商品は{{ name }}から削除されます
+    products_limit_exceeded:
+      title: このツリーを削除することはできません
+      message: ツリー "{{ tree }}" には {{ limit }} 個を超える商品が含まれているため、削除できません。
+  category_deletion:
+    success: カテゴリ "{{ name }}" は正常に削除されました
+    error: カテゴリ "{{ name }}" を削除できませんでした
+    confirmation: カテゴリ {{ name }} を本当に削除しますか？このカテゴリの商品は削除されません。
+    confirmation_question: '{{ name }}を本当に削除しますか？'
+    products_limit_exceeded:
+      title: このカテゴリを削除することはできません
+      message: '"{{ name }}" カテゴリには {{ limit }} 個を超える商品が含まれているため、削除できません。'
+pim_enrich.export.product:
+  data:
+    title: 商品をフィルターする
+  structure:
+    title: データをフィルターする
+  filter:
+    channel:
+      help: チャンネルは、商品の値、データを選択するために使用するロケール、商品を選択するために使用するツリーのフィルターを定義しています。
+    locales:
+      help: "ロケールは、エクスポートするローカライズされた製品の値を定義します。例: フランス語で書かれた唯一の商品情報"
+    attributes:
+      label: "{0} すべての属性 |{1} 1つの属性の選択 |]1, Inf [{{ count }} 属性の選択"
+      help: "エクスポートする商品情報を選択します。例: 技術的な属性のみ。"
+      empty: 全ての属性をエクスポート
+      modal:
+        title: 属性の選択
+    attributes_selector:
+      attributes: "{{ itemsCount }} 属性で検索"
+      selected: "選択済の属性"
+      clear: クリア
+      all_group: 全てのグループ
+      empty_selection: 全ての属性をエクスポート
+      description: エクスポートする商品情報を選択
+    family:
+      title: ファミリー
+      help: "ファミリーによってエクスポートする商品を選択します。例: 靴とドレスのみをエクスポート"
+      operators:
+        IN: 一覧にある
+        "NOT IN": 一覧にない
+        EMPTY: ファミリーを持たない商品
+        "NOT EMPTY": ファミリーを持つ商品
+      empty_selection: ファミリーの条件なし
+    updated:
+      title: 時間条件
+      operators:
+        ALL: 日付の条件なし
+        "SINCE LAST N DAYS": 過去 n 日間 （例. 6日） で更新された商品
+        ">": この日付以降に更新された商品
+        "SINCE LAST JOB": 前回のエクスポートから更新された商品
+    enabled:
+      title: ステータス
+      help: "ステータスでエクスポートする商品を選択します。例: ステータスの内容に関係なく商品をエクスポート"
+      value:
+        enabled: 有効
+        disabled: 無効
+    completeness:
+      title: 完全性
+      help: 製品の完全性によってエクスポートする商品を選択します。
+      operators:
+        ALL: 完全性の条件なし
+        ">=": １つ以上の選択されたロケールで完了
+        "GREATER OR EQUALS THAN ON ALL LOCALES": 全ての選択されたロケールで完了
+        "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": １つ以上の選択されたロケールで完了
+        LOWER THAN ON ALL LOCALES: 全ての選択されたロケールで完了しませんでした
+        AT LEAST COMPLETE: 1つの選択されたロケールで、1つ以上の下位商品が完成
+        ALL COMPLETE: 選択されたロケール全てで、下位商品全てが完成
+      empty_selection: ファミリーを選択
+    category:
+      title: カテゴリ
+      help: エクスポートする商品を選択するために、（上記のチャンネルによって定義される）ツリー内の商品カテゴリを使用する
+    identifier:
+      title: 識別子
+      help: カンマやスペース、改行で分けられている商品識別子をエクスポートで利用
+    string:
+      operators:
+        ALL: すべて
+    select:
+      operators:
+        IN: 一覧にある
+    date:
+      operators:
+        BETWEEN: '次の間にある:'
+        NOT BETWEEN: '次の間にない:'
+    quality-score:
+      title: 品質スコア
+      operator_choice_title: '品質スコアのエクスポート: '
+      empty_selection: 品質スコアに条件がありません
+      operators:
+        IN AT LEAST ONE LOCALE: 少なくとも 1 つのロケール
+        IN ALL LOCALES: すべての選択済みのロケール
+  global_settings:
+    title: グローバル設定
+pim_enrich.mass_edit.product:
+  title: 商品一括操作
+  confirm: "{0}次の情報をともなう商品を数点更新しようとしており、前の値は置き換えられます。ご確認ください。|{1}次の情報をともなう商品を1点更新しようとしており、前の値は置き換えられます。ご確認ください。|]1, Inf[次の情報をともなう商品を{{ itemsCount }}点更新しようとしており、前の値は置き換えられます。ご確認ください。"
+  step:
+    select:
+      label: 商品を選択
+    choose:
+      title: 商品一括操作
+      label_count: "]0, Inf[アクションを選択"
+    configure:
+      label: 構成
+    confirm:
+      label: 確認
+    launch_error:
+      label: 一括編集操作の起動中にエラーが発生しました
+    launched:
+      label: 一括操作「{{ operation }}」が開始されました。終了後に通知されます
+  operation:
+    common:
+      select_attributes: 属性を選択
+    change_status:
+      label: ステータスを変更
+      label_count: "{0} <span class=\"AknFullPage-title--highlight\">商品</span>のステータスを数点変更|{1}<span class=\"AknFullPage-title--highlight\">商品</span>のステータスを1点変更|]1, Inf[<span class=\"AknFullPage-title--highlight\">商品</span>のステータスを{{ itemsCount }}点変更"
+      description: 選択した商品は有効または無効になります
+      field: 有効にするには
+    edit_common:
+      label: 属性値を編集
+      label_count: "{0}一部の<span class=\"AknFullPage-title--highlight\">商品</span>の属性値を編集|{1}1つの<span class=\"AknFullPage-title--highlight\">商品</span>の属性値を編集|]1, Inf[<span class=\"AknFullPage-title--highlight\">{{ itemsCount }}つの商品</span>の属性値を編集"
+      description: '{{ locale }}ロケールおよび{{ scope }}チャンネルの選択した商品のファミリーに属する属性のみが、次のデータで編集されます。前の値は置き換えられます。'
+      no_update: アップデートするフィールドを1つ以上選択してください
+    add_attribute_value:
+      label: 属性値を追加
+      label_count: "{0}一部の<span class=\"AknFullPage-title--highlight\">商品</span>の属性値を追加|{1}1つの<span class=\"AknFullPage-title--highlight\">商品</span>の属性値を追加|]1, Inf[<span class=\"AknFullPage-title--highlight\">{{ itemsCount }}つの商品</span>の属性値を追加"
+      description: 商品ファミリーに属した多値属性のみが{{ locale }}ロケールならびに{{ scope }}チャンネルにより編集されます。属性値が追加され、以前の値は保持されます。
+    change_family:
+      label: ファミリーを変更
+      label_count: "{0} <span class=\"AknFullPage-title--highlight\">商品</span>のファミリーを数点変更|{1}<span class=\"AknFullPage-title--highlight\">商品</span>のファミリーを1点変更|]1, Inf[<span class=\"AknFullPage-title--highlight\">商品</span>のファミリーを{{ itemsCount }}点変更"
+      description: 選択した商品のファミリーを選択したファミリーに変更します
+    add_to_group:
+      label: グループに追加
+      label_count: "{0} <span class=\"AknFullPage-title--highlight\">商品</span>を数点グループに追加|{1}<span class=\"AknFullPage-title--highlight\">商品</span>|]を1点グループに追加1, Inf[<span class=\"AknFullPage-title--highlight\">商品</span>を{{ itemsCount }}点グループに追加"
+      description: 選択した商品を追加するグループを選択します
+      field: グループ
+      no_update: 継続するにはグループを選択してください
+    add_to_category:
+      label: カテゴリに追加
+      label_count: "{0} <span class=\"AknFullPage-title--highlight\">商品</span>を数点カテゴリに追加|{1}<span class=\"AknFullPage-title--highlight\">商品</span>|]を1点カテゴリに追加1, Inf[<span class=\"AknFullPage-title--highlight\">商品</span>を{{ itemsCount }}点カテゴリに追加"
+      description: この商品は以下のカテゴリに分類され、既存の分類は保持されます
+    move_to_category:
+      label: カテゴリ間を移動
+      label_count: "{0} <span class=\"AknFullPage-title--highlight\">商品</span>を数点をカテゴリ間で移動|{1}<span class=\"AknFullPage-title--highlight\">商品</span>|]を1点をカテゴリ間で移動1, Inf[<span class=\"AknFullPage-title--highlight\">商品</span>を{{ itemsCount }}点カテゴリ間で移動"
+      description: 商品は以下のカテゴリに分類され、既存の分類は削除されます。
+      no_update: カテゴリを選択してください。
+    remove_from_category:
+      label: カテゴリから削除
+      label_count: "{0} <span class=\"AknFullPage-title--highlight\">商品</span>を数点カテゴリから削除|{1}<span class=\"AknFullPage-title--highlight\">商品</span>|]を1点カテゴリから削除1, Inf[<span class=\"AknFullPage-title--highlight\">商品</span>を{{ itemsCount }}カテゴリから削除"
+      description: 次のカテゴリから商品が削除されます。
+      no_update: 選択した製品を削除するカテゴリがチェックされていません。
+    add_to_existing_product_model:
+      label: 既存の商品モデルに追加
+      label_count: "{0} <span class=\"AknFullPage-title--highlight\">商品</span>を数点、既存の商品モデルに追加|{1}<span class=\"AknFullPage-title--highlight\">商品</span>|]を1点、既存の商品モデルに追加1, Inf[<span class=\"AknFullPage-title--highlight\">商品</span>を{{ itemsCount }}点、既存の商品モデルに追加"
+      description: 選択された商品モデルは商品を集積し、共通プロパティを充実させる
+      no_update: 継続するには商品モデルを選択してください
+    convert_to_simple_products:
+      label: シンプル商品に変換
+      label_count: "{0}一部の<span class=\"AknFullPage-title--highlight\">商品</span>をシンプル商品に変換|{1}<span class=\"AknFullPage-title--highlight\">1 個の商品</span>をシンプル商品に変換|]1, Inf[<span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 個の商品</span>をシンプル商品に変換"
+      description: 以前の値、カテゴリ、および関連付けはすべて保存されます。
+    associate_to_product_and_product_model:
+      label: 関連商品
+      label_count: "{0} <span class=\"AknFullPage-title--highlight\">商品</span>を数点、別の商品もしくは商品モデルに関連付け|{1}<span class=\"AknFullPage-title--highlight\">商品</span>|]を1点、別の商品もしくは商品モデルに関連付け1, Inf[<span class=\"AknFullPage-title--highlight\">商品</span>を{{ itemsCount }}点、別の商品もしくは商品モデルに関連付け"
+      description: 一覧表で選択された商品は、関連タイプによって選択された商品および商品モデルに関連付けされます
+      validate: 次に進む前に、関連性を追加してください
+    change_parent_product_model:
+      label: 上位商品モデルを変更
+      label_count: "{0} <span class=\"AknFullPage-title--highlight\">商品</span>の数点が属する上位商品モデルを変更|{1}<span class=\"AknFullPage-title--highlight\">商品</span>の1点が属する上位商品モデルを変更|]1, Inf[<span class=\"AknFullPage-title--highlight\">商品</span>の{{ itemsCount }}点が属する上位商品モデルを変更"
+      description: この一覧表で選択されたバリエーション商品の上位もしくはサブ商品モデルの上位は選択された商品モデルに変更されます
+pim_datagrid:
+  no_entities: "{{ entityHint }} は見つかりませんでした。"
+  no_entities.product: "商品が見つかりません" #Custom translation for product grid
+  no_results: "検索した {{ entityHint }} はありません。"
+  no_results.product: "検索した商品はありません。" #Custom translation for product grid
+  mass_action_group:
+    bulk_actions:
+      label: 一括操作
+    quick_export:
+      label: クイックエクスポート
+  mass_action:
+    delete:
+      confirm_content: 選択した商品を削除してもよろしいですか？
+      success: 選択した商品が正常に削除されました
+      error: 商品の削除中にエラーが発生しました　再度試行してください
+    quick_export:
+      csv_all: CSV (すべての属性)
+      csv_grid_context: CSV (グリッドコンテキスト)
+      xlsx_all: Excel (すべての属性)
+      xlsx_grid_context: Excel(グリッドコンテキスト)
+      configurator:
+        subtitle: クイックエクスポート
+        title: アクションを選択
+        csv: CSV形式
+        xlsx: XLSX形式
+        grid_context: 一覧表コンテキスト
+        all_attributes: 属性全部
+        with_codes: コー​​ドを含む
+        with_labels: ラベルを含む
+        without_uuid: UUIDなし
+        with_uuid: UUIDあり
+        without_media: メディアを含まない
+        with_media: メディアを含む
+      flash:
+        message: "エクスポートの進捗状況はこちらで確認できます。"
+    mass_edit: 一括操作
+    sequential_edit: 連続編集
+    mass_delete: 一括削除
+    selected:
+      family: "]-Inf, 1]{{ count }} 個のファミリーを選択済み|]1, Inf[{{ count }} 個のファミリーを選択済み"
+      attribute: "]-Inf, 1]{{ count }} 個の属性を選択済み|]1, Inf[{{ count }} 個の属性を選択済み"
+      product: "]-Inf, 1]{{ count }} 個の結果を選択済み|]1, Inf[{{ count }} 個の結果を選択済み"
+  view_selector:
+    view: 表示
+    choose_type: プライベートビューを作成したい
+  actions:
+    edit_product_attributes: 商品の属性を編集
+    classify_product: 商品を分類
+    delete_product: 商品を削除
+    change_status: ステータスを変更
+    toggle_status: ステータスを切り替える
+    other: その他の操作
+  empty_results:
+    associated_product:
+      hint: 関連商品はありません
+      subHint: '商品を関連付けするには、「関連を追加」ボタンをクリックしてください。'
+  filters:
+    label: フィルタ
+    system: システム
+    product_typology:
+      label: '商品タイプ'
+      simple: 'シンプル'
+      variant: 'バリエーション'
+    entity_type:
+      label: 'バリエーション'
+      grouped: 'グループ化'
+      ungrouped: 'グループ解除'
+    family:
+      label: ファミリー
+    groups:
+      label: グループ
+    enabled:
+      label: ステータス
+    scope:
+      label: スコープ
+    completeness:
+      label: 完了
+    created:
+      label: 作成日
+    updated:
+      label: 更新日
+    label_or_identifier:
+      label: ラベルもしくは識別子
+      label_with_uuid: ラベル、識別子、UUID
+    parent:
+      label: 親
+    identifier:
+      label: 識別子
+    uuid:
+      label: Uuid
+    code_or_label:
+      label: コードまたはラベル
+  search: '{{ label }}で検索'
+batch_jobs:
+  add_association:
+    label: 関連付ける
+    perform.label: 関連付ける
+  add_attribute_value:
+    label: 属性値を追加
+    perform.label: 属性値を追加
+  add_product_value:
+    label: 商品値を追加
+    perform.label: 商品値を追加
+  add_to_category:
+    label: カテゴリーに追加
+    perform.label: カテゴリーに追加
+  add_to_existing_product_model:
+    label: 既存の商品モデルに追加
+    perform.label: 既存の商品モデルに追加
+  convert_to_simple_products:
+    label: シンプル商品に変換
+    perform.label: シンプル商品に変換
+  csv_product_grid_context_quick_export:
+    quick_export.label: CSV商品のグリッドコンテキストのクイックエクスポート
+    quick_export_product_model.label: CSV商品モデルの一覧表コンテキストのクイックエクスポート
+    perform.label: CSV商品のグリッドコンテキストのクイックエクスポート
+  csv_product_quick_export:
+    quick_export.label: CSV商品のクイックエクスポート
+    quick_export_product_model.label: CSV商品モデルのクイックエクスポート
+    perform.label: CSV商品のクイックエクスポート
+  delete_products_and_product_models:
+    label: 商品を一括削除
+    perform.label: 商品を一括削除
+  change_parent_product:
+    label: 上位商品モデルを変更
+    perform.label: 上位商品モデルを変更
+  edit_common_attributes:
+    label: 属性を編集
+    perform.label: 属性を編集
+    clean.label: 属性を持つファイルを削除
+    cleaner.label: 属性を持つファイルを削除
+  compute_completeness_of_products_family:
+    label: 完全性を計算する
+    perform.label: 完全性を計算する
+  move_to_category:
+    label: カテゴリへ移動
+    perform.label: カテゴリへ移動
+  update_product_value:
+    label: 商品値を更新
+    perform.label: 商品値を更新
+  remove_from_category:
+    label: カテゴリから削除
+    perform.label: カテゴリから削除
+  set_attribute_requirements:
+    label: 属性の要件を設定
+    perform.label: 属性の要件を設定
+  xlsx_product_grid_context_quick_export:
+    quick_export.label: XLSX商品の一覧表コンテキストのクイックエクスポート
+    quick_export_product_model.label: XLSX商品モデルの一覧表コンテキストのクイックエクスポート
+    perform.label: XLSX商品の一覧表コンテキストのクイックエクスポート
+  xlsx_product_quick_export:
+    quick_export.label: XLSX商品のクイックエクスポート
+    quick_export_product_model.label: XLSX商品モデルのクイックエクスポート
+    perform.label: XLSX商品のクイックエクスポート
+  default_steps:
+    delete_products_and_product_models: 商品と商品モデルを削除
+    remove_completeness_for_channel_and_locale: チャネルとロケールの完全性を削除
+error:
+  removing:
+    group: グループを削除できません
+    association type: 関連タイプを削除できません

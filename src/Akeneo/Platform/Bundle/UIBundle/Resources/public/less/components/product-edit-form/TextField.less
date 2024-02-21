@@ -1,0 +1,139 @@
+@import '../../base/variables';
+
+.AknTextField {
+  height: @AknFormHeight;
+  line-height: @AknFormHeight;
+  color: @AknDarkBlue;
+  border: 1px solid @AknBorderColor;
+  width: 100%;
+  border-radius: 2px;
+  padding: 0 8px;
+  z-index: 1;
+
+  &-layer {
+    border: 1px solid @AknBorderColor;
+    position: absolute;
+    width: ~"calc(100% - 4px)";
+    height: 100%;
+    background: white;
+    border-radius: 2px;
+
+    &--first {
+      top: @AknLocalizableGap * 2;
+      left: @AknLocalizableGap * 2;
+    }
+
+    &--second {
+      top: @AknLocalizableGap;
+      left: @AknLocalizableGap;
+    }
+  }
+
+  &--noRightRadius {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right: none;
+  }
+
+  &--noLeftRadius {
+    margin-left: -1px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  &--noRadius {
+    border-radius: 0;
+  }
+
+  &--withDashedBottomBorder {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px dashed @AknMediumGrey;
+  }
+
+  &--withRightButton {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 1px;
+  }
+
+  &--select2 {
+    padding: 0;
+    border: none;
+    height: auto;
+  }
+
+  &--fileDropZone {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    top: 0;
+  }
+
+  &--transparent {
+    background: none;
+    border: none;
+  }
+
+  &--file {
+    color: transparent; // To remove the generated label near the text
+    height: 140px;
+    margin-top: -30px;
+  }
+
+  &--narrow {
+    width: @AknMaxFormWidth;
+  }
+
+  &--disabled:not(.AknTextField--light),
+  &[readonly]:not(.AknTextField--light),
+  &[disabled]:not(.AknTextField--light) {
+    background: @AknDisabledInputColor;
+    background-image: url("/bundles/pimui/images/icon-lock.svg");
+    background-repeat: no-repeat;
+    background-position: ~"calc(100% - 12px)" center;
+    padding-right: @AknFormHeight - 4px;
+    color: @AknLightFontColor;
+    cursor: not-allowed;
+  }
+
+  &--light {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px solid @AknMediumGrey;
+    border-radius: 0;
+    padding: 0;
+    font-size: 15px;
+    background: #fff;
+
+    &:focus {
+      outline: none;
+      border-color: @AknBlue;
+    }
+
+    &.AknTextField--disabled {
+      border-bottom: 1px dotted @AknMediumGrey;
+      background-image: url("/bundles/pimui/images/icon-lock2.svg");
+      background-repeat: no-repeat;
+      background-size: 16px;
+      background-position: ~"calc(100% - 12px)" center;
+      padding-right: @AknFormHeight - 4px;
+      color: @AknGrey;
+      cursor: not-allowed;
+    }
+  }
+
+  &--localizable {
+    width: ~"calc(100% - 4px)";
+
+    &.AknTextField--narrow {
+      width: @AknMaxFormWidth - 4px;
+    }
+
+    position: relative;
+  }
+}

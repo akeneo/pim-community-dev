@@ -1,0 +1,64 @@
+Akeneo\Tool\Component\Versioning\Model\Version:
+    type: entity
+    table: pim_versioning_version
+    repositoryClass: Akeneo\Tool\Bundle\VersioningBundle\Doctrine\ORM\VersionRepository
+    indexes:
+        pending_idx:
+            columns:
+                - pending
+        version_idx:
+            columns:
+                - version
+        logged_at_idx:
+            columns:
+                - logged_at
+        # this index is useful to get the maximum version for a given entity when doing the purge
+        # it allows to do an index-only scan, which improved greatly the performance
+        # @see https://use-the-index-luke.com/sql/clustering/index-only-scan-covering-index
+        resource_name_resource_id_version_idx:
+            columns:
+                - resource_name
+                - resource_id
+                - version
+        resource_name_resource_uuid_version_idx:
+            columns:
+                - resource_name
+                - resource_uuid
+                - version
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        author:
+            type: string
+        resourceName:
+            type: string
+            column: resource_name
+        resourceId:
+            type: string
+            column: resource_id
+            length: 24
+            nullable: true
+        # @TODO CPM-578: Add constraint to check resourceId or resourceUuid is not null
+        resourceUuid:
+            type: uuid_binary
+            column: resource_uuid
+            nullable: true
+        snapshot:
+            type: array
+            nullable: true
+        changeset:
+            type: array
+        context:
+            type: string
+            nullable: true
+        version:
+            type: integer
+            nullable: true
+        loggedAt:
+            type: datetime
+            column: logged_at
+        pending:
+            type: boolean

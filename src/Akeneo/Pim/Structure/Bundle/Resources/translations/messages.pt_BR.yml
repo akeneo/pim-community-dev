@@ -1,0 +1,39 @@
+pim_enrich:
+  #Attribute
+  attribute:
+    tab:
+      parameter.title: Parametros
+      value.title: Valores
+      history.title: História
+  #Family
+  family:
+    info:
+      cant_remove_attribute_used_as_axis: Não é possível remover este atributo usado como um eixo de variante em uma variante de família
+  #Group type
+  group_type:
+    tab:
+      property.title: Propriedade
+  #Mass edit operations
+  mass_edit_action:
+    family:
+      page_title: Famílias
+      page_subtitle: Edição em massa (1 família)|Edição em massa (%count% famílias)
+      title: Escolher operação
+      subtitle: Escolha a operação que deseja executar na família selecionada|Escolha a operação que deseja executar nas %count% famílias selecionadas
+      confirm: Você está prestes a atualizar uma família com a seguinte informação, por favor confirme.|Você está prestes a atualizar %count% famílias com a seguinte informação, por favor confirme.
+      steps:
+        first: Escolher famílias
+        second: Escolher operação
+        third: Configurar
+        fourth: Confirmar
+pim_enrich_attribute_form:
+  code: Código
+  type: Tipo de atributo
+  reference_data_name: Nome de dados de referência
+  scopable: Valor por canal
+  localizable: Valor por localidade
+  unique: Valor exclusivo
+  availableLocales: Localidades disponíveis
+  locale_specific: Localidade específica
+  group: Grupo de atributos
+  useableAsGridFilter: Usar na grade

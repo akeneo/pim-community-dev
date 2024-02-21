@@ -1,0 +1,28 @@
+pim_dashboard:
+  title: Dashboard attività
+  greetings: Salve, {{ name }}!
+  welcome_sentence:
+    message0: Questo si preannuncia un gran giorno.
+    message1: È bello vederti.
+    message2: È bello vederti qui.
+    message3: Felice di vederti qui.
+    message4: È bello averti a bordo.
+    message5: Iniziamo.
+    message6: Mettiamoci al lavoro.
+    message7: Oggi faremo grandi cose.
+    message8: Pronto a iniziare?
+    message9: I tuoi prodotti sono desiderosi di essere arricchiti.
+  widget:
+    completeness:
+      load_more: 'Carica di più...'
+      title: Percentuale di completamento per canale e impostazioni locali
+      progress_messages:
+        message1: Preparati a iniziare un cammino di arricchimento per ultimare il tuo progetto.
+        message2: Hai ancora del lavoro da fare, ma sei sulla strada giusta.
+        message3: Continua a lavorare in questo modo per completare le informazioni sul prodotto.
+        message4: Congratulazioni! Hai raggiunto il completamento perfetto del prodotto per questo canale!
+    last_operations:
+      title: Ultime operazioni
+  version: Versione
+pim_title:
+  pim_dashboard_index: Dashboard

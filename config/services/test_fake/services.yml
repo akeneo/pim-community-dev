@@ -1,0 +1,51 @@
+imports:
+    - { resource: ../../../tests/back/Acceptance/Resources/config/pim/repositories.yml }
+    - { resource: ../../../tests/back/Acceptance/Resources/config/pim/queries.yml }
+    - { resource: ../../../tests/back/Acceptance/Resources/config/pim/file_storage.yml }
+    - { resource: ../../../tests/back/Acceptance/Resources/config/pim/messenger.yml }
+    - { resource: ../../../tests/back/Platform/Acceptance/CatalogVolumeMonitoring/Resources/config/pim/queries.yml }
+    - { resource: ../../../tests/back/Acceptance/Resources/config/behat/services.yml }
+    - { resource: ../../../tests/back/Platform/Acceptance/CatalogVolumeMonitoring/Resources/config/behat/services.yml }
+    - { resource: ../../../tests/back/Platform/Acceptance/ImportExport/Resources/config/services.yml }
+    - { resource: ../../../tests/back/Pim/Enrichment/Acceptance/Resources/config/behat/services.yml }
+    - { resource: ../../../tests/back/Platform/Acceptance/Analytics/Resources/config/queries.yml }
+    # Akeneo/Connectivity/Connection
+    - { resource: ../../../src/Akeneo/Connectivity/Connection/back/tests/CatalogBuilder/Resources/config/loaders.yml }
+    - { resource: ../../../src/Akeneo/Connectivity/Connection/tests/Resources/config/services.yml }
+    # AkeneoJobBundle
+    - { resource: ../../../src/Akeneo/Platform/Job/back/tests/Acceptance/Resources/config/services.yml }
+    # FeatureFlag
+    - { resource: ../../../src/Akeneo/Platform/Bundle/FeatureFlagBundle/Resources/config/test_fake_services.yml }
+    # Enrichment
+    - { resource: ../../../src/Akeneo/Pim/Enrichment/Product/back/Test/Acceptance/Resources/config/services.yml }
+    # Structure
+    - { resource: ../../../src/Akeneo/Pim/Structure/Family/back/Test/Acceptance/Resources/config/services.yml }
+    # Category
+    - { resource: ../../../tests/back/Category/Acceptance/Resources/config/services.yml }
+    # Channel
+    - { resource: ../../../src/Akeneo/Channel/back/tests/Acceptance/Resources/config/services.yml }
+    # Notification
+    - { resource: ../../../tests/back/Platform/Acceptance/NotificationBundle/Resources/config/services.yml }
+    # Identifier Generator
+    - { resource: ../../../components/identifier-generator/back/tests/Acceptance/Resources/config/services.yml }
+    # Installer
+    - { resource: ../../../src/Akeneo/Platform/Installer/back/tests/Acceptance/Resources/config/fake_services.yml }
+
+services:
+    akeneo_integration_tests.doctrine.connection.connection_closer:
+        class: Akeneo\Test\IntegrationTestsBundle\Doctrine\Connection\ConnectionCloser
+        arguments:
+            - '@doctrine'
+
+    akeneo_integration_tests.message_bus_observer:
+        class: Symfony\Component\Messenger\TraceableMessageBus
+        decorates: messenger.default_bus
+        decoration_inner_name: messenger.default_bus.inner
+        arguments:
+            - '@messenger.default_bus.inner'
+
+    akeneo_integration_tests.event_dispatcher:
+        class: 'Akeneo\Test\Acceptance\EventDispatcher\EventDispatcherMock'
+        decorates: event_dispatcher
+        arguments:
+            - '@akeneo_integration_tests.event_dispatcher.inner'

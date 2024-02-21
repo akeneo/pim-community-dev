@@ -1,0 +1,128 @@
+# Export
+pim_importexport_export_profile_index:
+    type: action
+    label: pim_importexport.acl.export_profile.index
+    group_name: pim_importexport.acl_group.export
+pim_importexport_export_profile_create:
+    type: action
+    label: pim_importexport.acl.export_profile.create
+    group_name: pim_importexport.acl_group.export
+pim_importexport_export_profile_show:
+    type: action
+    label: pim_importexport.acl.export_profile.show
+    group_name: pim_importexport.acl_group.export
+pim_importexport_export_profile_edit:
+    type: action
+    label: pim_importexport.acl.export_profile.edit
+    group_name: pim_importexport.acl_group.export
+pim_importexport_export_profile_remove:
+    type: action
+    label: pim_importexport.acl.export_profile.remove
+    group_name: pim_importexport.acl_group.export
+pim_importexport_export_profile_launch:
+    type: action
+    label: pim_importexport.acl.export_profile.launch
+    group_name: pim_importexport.acl_group.export
+pim_importexport_export_profile_property_show:
+    type: action
+    label: pim_importexport.acl.export_profile.property_show
+    group_name: pim_importexport.acl_group.export
+pim_importexport_export_profile_property_edit:
+    type: action
+    label: pim_importexport.acl.export_profile.property_edit
+    group_name: pim_importexport.acl_group.export
+pim_importexport_export_profile_history:
+    type: action
+    label: pim_importexport.acl.export_profile.history
+    group_name: pim_importexport.acl_group.export
+pim_importexport_export_profile_content_show:
+    type: action
+    label: pim_importexport.acl.export_profile.content_show
+    group_name: pim_importexport.acl_group.export
+pim_importexport_export_profile_content_edit:
+    type: action
+    label: pim_importexport.acl.export_profile.content_edit
+    group_name: pim_importexport.acl_group.export
+
+# Import
+pim_importexport_import_profile_index:
+    type: action
+    label: pim_importexport.acl.import_profile.index
+    group_name: pim_importexport.acl_group.import
+pim_importexport_import_profile_create:
+    type: action
+    label: pim_importexport.acl.import_profile.create
+    group_name: pim_importexport.acl_group.import
+pim_importexport_import_profile_show:
+    type: action
+    label: pim_importexport.acl.import_profile.show
+    group_name: pim_importexport.acl_group.import
+pim_importexport_import_profile_edit:
+    type: action
+    label: pim_importexport.acl.import_profile.edit
+    group_name: pim_importexport.acl_group.import
+pim_importexport_import_profile_remove:
+    type: action
+    label: pim_importexport.acl.import_profile.remove
+    group_name: pim_importexport.acl_group.import
+pim_importexport_import_profile_launch:
+    type: action
+    label: pim_importexport.acl.import_profile.launch
+    group_name: pim_importexport.acl_group.import
+pim_importexport_import_profile_history:
+    type: action
+    label: pim_importexport.acl.import_profile.history
+    group_name: pim_importexport.acl_group.import
+
+# Export reports
+pim_importexport_export_execution_index:
+    type: action
+    label: pim_importexport.acl.export_execution.index
+    group_name: pim_importexport.acl_group.export
+pim_importexport_export_execution_show:
+    type: action
+    label: pim_importexport.acl.export_execution.show
+    group_name: pim_importexport.acl_group.export
+pim_importexport_export_execution_download_log:
+    type: action
+    label: pim_importexport.acl.export_execution.dl_log
+    group_name: pim_importexport.acl_group.export
+pim_importexport_export_execution_download_files:
+    type: action
+    label: pim_importexport.acl.export_execution.dl_files
+    group_name: pim_importexport.acl_group.export
+
+# Import reports
+pim_importexport_import_execution_index:
+    type: action
+    label: pim_importexport.acl.import_execution.index
+    group_name: pim_importexport.acl_group.import
+pim_importexport_import_execution_show:
+    type: action
+    label: pim_importexport.acl.import_execution.show
+    group_name: pim_importexport.acl_group.import
+pim_importexport_import_execution_download_log:
+    type: action
+    label: pim_importexport.acl.import_execution.dl_log
+    group_name: pim_importexport.acl_group.import
+pim_importexport_import_execution_download_files:
+    type: action
+    label: pim_importexport.acl.import_execution.dl_files
+    group_name: pim_importexport.acl_group.import
+
+# Job
+pim_enrich_job_tracker_index:
+    type: action
+    label: pim_enrich.acl.job_tracker.index
+    group_name: pim_enrich.acl_group.job_tracker
+
+pim_enrich_job_tracker_view_all_jobs:
+    type: action
+    label: pim_enrich.acl.job_tracker.view_all_jobs
+    group_name: pim_enrich.acl_group.job_tracker
+    enabled_at_creation: false
+
+pim_importexport_stop_job:
+    type: action
+    label: pim_enrich.acl.job_tracker.stop_job
+    group_name: pim_enrich.acl_group.job_tracker

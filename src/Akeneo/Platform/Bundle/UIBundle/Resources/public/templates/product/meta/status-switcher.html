@@ -1,0 +1,22 @@
+<div data-toggle="dropdown">
+    <div class="AknColumn-subtitle"><%- label %></div>
+    <div class="AknColumn-value product-status" data-status="<%- status ? 'enabled' : 'disabled' %>">
+        <div class="status-switcher">
+            <%- status ? enabledLabel : disabledLabel %>
+            <div class="AknColumn-blockDown"></div>
+        </div>
+    </div>
+</div>
+<ul class="AknDropdown-menu">
+    <li class="AknDropdown-menuTitle"><%- label %></li>
+    <li>
+        <div class="AknDropdown-menuLink <% status ? '' : 'AknDropdown-menuLink--active' %>" data-status="disable">
+            <span class="label"><%- disabledLabel %></span>
+        </div>
+    </li>
+    <li>
+        <div class="AknDropdown-menuLink <% status ? 'AknDropdown-menuLink--active' : '' %>" data-status="enable">
+            <span class="label"><%- enabledLabel %></span>
+        </div>
+    </li>
+</ul>

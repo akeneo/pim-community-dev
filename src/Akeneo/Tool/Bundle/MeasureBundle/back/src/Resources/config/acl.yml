@@ -1,0 +1,34 @@
+akeneo_measurements_manage_settings:
+    type: action
+    label: measurements.acl.manage_settings
+    group_name: pim_enrich.acl_group.measurements
+
+akeneo_measurements_measurement_family_create:
+    type: action
+    label: measurements.acl.family.create
+    group_name: pim_enrich.acl_group.measurements
+
+akeneo_measurements_measurement_family_edit_properties:
+    type: action
+    label: measurements.acl.family.edit.properties
+    group_name: pim_enrich.acl_group.measurements
+
+akeneo_measurements_measurement_family_delete:
+    type: action
+    label: measurements.acl.family.delete
+    group_name: pim_enrich.acl_group.measurements
+
+akeneo_measurements_measurement_unit_add:
+    type: action
+    label: measurements.acl.unit.add
+    group_name: pim_enrich.acl_group.measurements
+
+akeneo_measurements_measurement_unit_edit:
+    type: action
+    label: measurements.acl.unit.edit
+    group_name: pim_enrich.acl_group.measurements
+
+akeneo_measurements_measurement_unit_delete:
+    type: action
+    label: measurements.acl.unit.delete
+    group_name: pim_enrich.acl_group.measurements

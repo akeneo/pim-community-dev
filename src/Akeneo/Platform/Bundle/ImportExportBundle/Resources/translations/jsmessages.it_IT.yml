@@ -1,0 +1,291 @@
+job_execution:
+  summary:
+    display_item: Visualizza articoli
+    hide_item: Nascondi articoli
+pim_connector:
+  export:
+    categories:
+      selector:
+        modal:
+          title: Selezione categorie
+        label: "{0}Tutti i prodotti!{1}Una categoria selezionata|]1,Inf[{{ count }} categoria selezionate"
+        title: Seleziona categorie
+    locales:
+      validation:
+        not_blank: Una impostazione internazionale deve essere selezionata, si prega di scegliere una impostazione internazionale per l'esportazione.
+pim_import_export:
+  validation:
+    max_length_reached: Valore troppo lungo. Deve contenere {{ limit }} caratteri o meno.
+  entity:
+    job_instance:
+      label: profilo del job
+      flash:
+        update:
+          success: Il profilo del job è stato aggiornato con successo.
+          fail: Il profilo del job non può essere aggiornato.
+        delete:
+          success: Istanza di lavoro rimossa correttamente
+      duplicate:
+        title: Duplica profilo {{ job_code }}
+        success: Il profilo del job è stato duplicato con successo.
+        fail: Il profilo del job non può essere duplicato.
+    import_profile:
+      uppercase_label: Profilo di importazione
+      flash:
+        create:
+          success: Profilo di importazione creato correttamente
+        upload:
+          error: Impossibile caricare il file. La sua dimensione potrebbe superare la dimensione massima di upload sulla tua configurazione di PHP o del server HTTP
+      page_title:
+        index: "]-Inf, 1] {{ count }} Profilo di importazione|]1, Inf [{{ count }} Profili di importazione"
+      module:
+        create:
+          button: Crea un profilo di importazione
+    export_profile:
+      uppercase_label: Profilo di esportazione
+      flash:
+        create:
+          success: Profilo di esportazione creato correttamente
+      page_title:
+        index: "]-Inf, 1] {{ count }} profilo di esportazione|]1, Inf [{{ count }} profili di esportazione"
+      module:
+        create:
+          button: Crea un profilo di esportazione
+  form:
+    job_execution:
+      title.details: Dettagli esecuzione
+      refreshing: Aggiornamento dettagli esecuzione
+      refreshBtn.title: Aggiorna
+      button:
+        show_profile.title: Visualizza profilo
+        download_log.title: Scarica il log
+        download_file.title: Scarica file generati
+        download_archive.title: Scarica archivio generato
+      summary:
+        fetching: Raccolta di dati sull'esecuzione del lavoro...
+        warning: Attenzione
+        header.step: Passo
+        header.warnings: Attenzione
+        header.summary: Riepilogo
+        header.start: Inizio
+        header.end: Fine
+    job_instance:
+      fail:
+        launch: Impossibile avviare il profilo di lavoro. Assicurarsi che sia valido e che si abbia il permesso per lanciarlo.
+        save: Impossibile salvare il profilo di lavoro. Assicurarsi che si abbia il permesso per modificarlo.
+      button:
+        export.title: Esporta ora
+        import.launch: Importa ora
+        import.upload: Carica e importa ora
+        import.upload_file: Carica un file
+      meta:
+        job: Lavoro
+        connector: Connettore
+      subsection:
+        last_executions: Ultime esecuzioni
+      tab:
+        content:
+          title: Contenuto
+        properties:
+          decimal_separator:
+            title: Separatore decimale
+            help: Determina il separatore decimale
+          date_format:
+            title: Formato della data
+            help: Determina il formato dei campi data
+          file_path:
+            title: Percorso del file
+            help: Dove scrivere il file generato nel file System
+            help_import: La directory del file da usare per l'importazione
+          delimiter:
+            title: Delimitatore
+            help: Un carattere utilizzato per impostare il delimitatore di campo
+          enclosure:
+            title: Contenitore
+            help: Un carattere utilizzato per impostare il delimitatore del campo
+          with_header:
+            title: Con intestazione
+            help: Stampare o no la l'intestazione della colonna
+          with_media:
+            title: Esporta media
+            help: Esportare o meno file multimediali
+          lines_per_file:
+            title: Numero di linee per file
+            help: Definisci il numero limite di righe per file
+          upload_allowed:
+            title: Consentire il caricamento di file
+            help: Consentire o no il caricamento diretto di file
+          categories_column:
+            title: Colonna categorie
+            help: Nome della colonna categorie
+          escape:
+            title: Escape
+            help: Un carattere di escape utilizzato
+          family_column:
+            title: Colonna famiglia
+            help: Nome della colonna famiglia
+          groups_column:
+            title: Colonna gruppi
+            help: Nome della colonna gruppi
+          enabled:
+            title: Attivare il prodotto
+            help: Attivare o no i prodotti importati
+          enabled_comparison:
+            title: Confronta i valori
+            help: Abilita il confronto tra i valori originali e valori importati. L'importazione può essere velocizzata se i valori importati sono abbastanza simili ai valori originali
+          real_time_versioning:
+            title: Aggiornamento cronologia in tempo reale
+            help: Significa che la cronologia del prodotto viene aggiornata automaticamente, può essere disattivato per migliorare le prestazioni
+          convert_variant_to_simple:
+            title: Converti prodotti variante in prodotti semplici
+            help: Prova a convertire prodotti variante in prodotti semplici quando la colonna "genitore" è vuota. Se impostata su "No", la colonna "genitore" vuota verrà ignorata
+          family_variant_column:
+            title: Colonna famiglia variante
+          with_label:
+            title: Con etichette
+            help: Definisci se il file di esportazione visualizza le etichette dei valori invece dei codici valori
+          header_with_label:
+            title: Intestazioni con etichette
+            help: Definisci se il file di esportazione visualizza le etichette delle intestazioni invece dei codici intestazioni
+          file_locale:
+            title: Impostazione locale file
+            help: Definisci l'impostazione locale in cui visualizzare le etichette
+          with_uuid:
+            title: Con UUID prodotto
+            help: Esporta UUID del prodotto e dei prodotti associati
+          with_uuid_for_models:
+            title: Con UUID prodotto
+            help: Esporta UUID del prodotto associato invece del suo identificatore
+      file_path: Percorso del file
+      storage_form:
+        title: Storage
+        connection:
+          label: Tipo
+          local: Locale
+          sftp: SFTP
+          amazon_s3: Amazon S3
+          microsoft_azure: Microsoft Azure
+          google_cloud_storage: Google Cloud Storage
+          none: Nessuno storage configurato
+        file_path:
+          label: Percorso del file
+          placeholder: myfile.{{ file_extension }}
+        host:
+          label: Host
+          placeholder: esempio.it
+        fingerprint:
+          label: Fingerprint dell'host (facoltativo)
+          placeholder: "c1:91:5e:42:55:5c:74:65:b6:12:32:7e:1f:6d:80:3e"
+          helper: Il fingerprint dell'host deve essere una somma di controllo crittografata SHA-512 o MD5, nella notazione con i due punti.
+        port:
+          label: Porta
+          placeholder: 22
+        username:
+          label: Login
+          placeholder: Inserisci il tuo nome utente
+        password:
+          label: Password
+          placeholder: Inserisci la password
+        public_key:
+          label: Chiave pubblica
+          button_title: Copia negli appunti
+          copy_notification_success: Chiave pubblica copiata negli appunti
+        login_type:
+          label: Metodo di autenticazione
+          password: Nome utente e password
+          private_key: Chiave privata
+        region:
+          label: Regione
+          placeholder: Inserisci la tua regione
+        bucket:
+          label: Nome bucket
+          placeholder: Inserisci il nome della tua regione
+        key:
+          label: Chiave
+          placeholder: Inserisci la tua chiave
+        secret:
+          label: Segreto
+          placeholder: Inserisci il segreto
+        connection_string:
+          label: Stringa di connessione
+          placeholder: Inserisci la stringa di connessione
+        container_name:
+          label: Nome contenitore
+          placeholder: Inserisci il nome del contenitore
+        project_id:
+          label: ID Progetto
+          placeholder: Inserisci l'ID del progetto
+        service_account:
+          label: Profilo di servizio
+          placeholder: Inserisci il profilo di servizio
+      validation:
+        storage:
+          unavailable_type: Questo storage non è disponibile. Sono disponibili solo {{ available_types }}.
+        file_path:
+          unsupported_extension: Estensione del file non supportata
+        fingerprint:
+          invalid_encoding: Il fingerprint dell'host deve essere una somma di controllo crittografata SHA-512 o MD5 valida, nella notazione con i due punti.
+      connection_checker:
+        label: Prova impostazioni di connessione
+        exception: Impossibile stabilire la connessione, controlla le impostazioni.
+  batch_status:
+    1: Completato
+    2: In avvio
+    3: In corso
+    4: In fase di interruzione
+    5: Fermato
+    6: Fallito
+    7: Abbandonato
+    8: Sconosciuto
+    9: Sospensione in corso
+    10: In pausa
+  job_status:
+    COMPLETED: Completato
+    STARTING: In avvio
+    STARTED: In corso
+    STOPPING: In fase di interruzione
+    STOPPED: Fermato
+    FAILED: Fallito
+    ABANDONED: Abbandonato
+    UNKNOWN: Sconosciuto
+    PAUSING: Sospensione in corso
+    PAUSED: In pausa
+  tracking:
+    completed: "Tempo speso: {{ duration }}"
+    in_progress: "Tempo rimanente stimato: {{ duration }}"
+    not_started: "In attesa"
+    untrackable: Passo non tracciabile
+    estimating: "Stima del tempo rimanente..."
+confirmation:
+  remove:
+    import_profile: Sei sicuro di voler eliminare questo profilo di importazione?
+    export_profile: Sei sicuro di voler eliminare questo profilo di esportazione?
+    job_instance: È sicuro di che volere cancellare questa istanza di lavoro?
+pim_enrich:
+  entity:
+    import_profile:
+      module:
+        delete:
+          confirm: Sei sicuro di voler eliminare questo profilo di importazione?
+      flash:
+        delete:
+          success: Profilo di importazione rimosso con successo
+    export_profile:
+      module:
+        delete:
+          confirm: Sei sicuro di voler eliminare questo profilo di esportazione?
+      flash:
+        delete:
+          success: Profilo di esportazione rimosso con successo
+pim_title:
+  pim_importexport_export_profile_index: Gestione profili di esportazione
+  pim_importexport_export_profile_edit: Profilo di esportazione {{ job.label }} | Modifica
+  pim_importexport_export_profile_show: Profilo di esportazione {{ job.label }} | Visualizza
+  pim_importexport_export_execution_index: Esportare la cronologia delle esecuzioni
+  pim_importexport_export_execution_show: Esecuzioni di esportazione | Dettagli
+  pim_importexport_import_profile_index: Gestione profili di importazione
+  pim_importexport_import_profile_edit: Profilo di importazione {{ job.label }} | Modifica
+  pim_importexport_import_profile_show: Profilo di importazione {{ job.label }} | Visualizza
+  pim_importexport_import_execution_index: Importare la cronologia delle esecuzioni
+  pim_importexport_import_execution_show: Importare le esecuzioni | Dettagli
+

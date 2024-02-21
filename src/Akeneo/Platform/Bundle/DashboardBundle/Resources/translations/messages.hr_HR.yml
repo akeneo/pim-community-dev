@@ -1,0 +1,10 @@
+pim_dashboard:
+  title: Nadzorna ploča
+  version: Verzija
+  widget:
+    completeness:
+      title: Potpunost kanala i lokalizacije
+    last_operations:
+      title: Zadnja operacija
+      status: Status
+      type: Tip

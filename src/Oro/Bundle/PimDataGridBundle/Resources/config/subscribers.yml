@@ -1,0 +1,8 @@
+parameters:
+    pim_datagrid.event_subscriber.filter_entity_with_values_subscriber.class: Oro\Bundle\PimDataGridBundle\EventSubscriber\FilterEntityWithValuesSubscriber
+
+services:
+    pim_datagrid.event_subscriber.filter_entity_with_values_subscriber:
+        class: '%pim_datagrid.event_subscriber.filter_entity_with_values_subscriber.class%'
+        tags:
+            - { name: doctrine.event_subscriber, priority: 100 }

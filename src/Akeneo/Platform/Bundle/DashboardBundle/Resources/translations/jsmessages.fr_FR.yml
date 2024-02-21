@@ -1,0 +1,28 @@
+pim_dashboard:
+  title: Tableau de bord des activités
+  greetings: Bonjour {{ name }} !
+  welcome_sentence:
+    message0: Bonjour à vous !
+    message1: Quel plaisir de vous voir ici !
+    message2: Ravi de vous voir ici.
+    message3: Heureux de vous voir ici.
+    message4: C'est bon de vous avoir avec nous.
+    message5: C'est parti !
+    message6: Mettons-nous au travail.
+    message7: ' Nous allons faire de belles choses aujourd''hui.'
+    message8: Prêt à démarrer?
+    message9: Vos produits n'attendent que vous !
+  widget:
+    completeness:
+      load_more: 'Voir plus...'
+      title: Complétude par canal et par locale
+      progress_messages:
+        message1: Bienvenue dans cette aventure de l'enrichissement produit.
+        message2: Encore encore quelques produits à enrichir... vous êtes sur le bon chemin !
+        message3: Vous y êtes presque, quelques finitions et ça sera parfait !
+        message4: Félicitations ! Vos produits sont complets pour ce canal.
+    last_operations:
+      title: Dernières opérations
+  version: Version
+pim_title:
+  pim_dashboard_index: Tableau de bord

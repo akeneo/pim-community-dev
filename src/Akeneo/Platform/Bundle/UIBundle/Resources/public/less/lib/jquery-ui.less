@@ -1,0 +1,74 @@
+@import '../base/variables';
+
+.ui-dialog {
+  background: white;
+  border: 1px solid @AknBorderColor;
+}
+
+.ui-sortable-handle {
+  cursor: move;
+}
+
+.ui-sortable.ui-sortable-disabled .ui-sortable-handle {
+  display: none;
+}
+
+.AknHorizontalNavtab-item.active .AknHorizontalNavtab-link {
+  color: @AknLightPurple;
+  border-bottom: 3px solid @AknLightPurple;
+}
+
+.ui-resizable-e {
+  &:hover {
+    cursor: ew-resize;
+  }
+
+  position: absolute;
+  width: 7px;
+  border-left: 1px @AknBorderColor solid;
+  height: 100%;
+  top: 0;
+  display: block;
+  right: 0;
+
+  // Firefox
+  word-break: break-all;
+  word-break: break-word;
+
+  &:after {
+    display: block;
+    content: '...';
+    width: 100%;
+    font-size: 17px;
+    top: 50%;
+    position: absolute;
+    line-height: 5px;
+    color: @AknGrey;
+    height: 24px;
+    margin-top: -24px;
+    text-align: center;
+  }
+}
+
+.ui-resizable-container {
+    position: relative;
+
+    .ui-resizable-e {
+        border-left: 0;
+        border-right: 1px @AknBorderColor solid;
+        right: -10px;
+    }
+
+    &--column {
+        position: relative;
+
+        .ui-resizable-e {
+            height: ~"calc(100% + 2px)";
+            top: -1px;
+            right: -8px;
+            border: 1px @AknBorderColor solid;
+            border-left: 0;
+        }
+    }
+}
+

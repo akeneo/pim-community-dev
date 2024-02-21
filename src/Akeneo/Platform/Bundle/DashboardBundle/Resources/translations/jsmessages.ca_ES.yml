@@ -1,0 +1,28 @@
+pim_dashboard:
+  title: Activitat del panell de control
+  greetings: Hola {{ name }}!
+  welcome_sentence:
+    message0: Avui serà un gran dia.
+    message1: És genial veure't.
+    message2: Encantat de veure't.
+    message3: Content de veure't per aquí.
+    message4: És genial tenir-te per aquí.
+    message5: Comencem.
+    message6: Anem per feina.
+    message7: Anem a fer grans coses avui.
+    message8: A punt per començar?
+    message9: Els teus productes desitgen ser enriquits.
+  widget:
+    completeness:
+      load_more: 'Carrega''n més...'
+      title: Integritat per canals i locals
+      progress_messages:
+        message1: Prepara't per començar el viatge de l'enriquiment cap a la integritat.
+        message2: Encara queda feina per fer, però anem pel bon camí.
+        message3: Segueix amb la bona feina completant la informació del seu producte.
+        message4: Felicitats! Has arribat a la perfecció del producte en aquest canal!
+    last_operations:
+      title: Últimes operacions
+  version: Versió
+pim_title:
+  pim_dashboard_index: Panell de contol

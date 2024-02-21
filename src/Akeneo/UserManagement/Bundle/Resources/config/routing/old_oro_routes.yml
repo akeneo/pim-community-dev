@@ -1,0 +1,68 @@
+pim_user_group_create:
+    path: /user/group/create
+    defaults: { _controller: pim_user.controller.user_group:create }
+
+pim_user_group_update:
+    path: /user/group/update/{id}
+    defaults: { _controller: pim_user.controller.user_group:update, id: 0 }
+    requirements:
+        id: \d+
+
+pim_user_group_index:
+    path: /user/group/
+
+pim_user_group_delete:
+    path: /user/group/delete/{id}
+    defaults: { _controller: pim_user.controller.user_group:delete }
+    requirements:
+        id: \d+
+    methods: [DELETE]
+
+pim_user_reset_request:
+    path: /user/reset-request
+    defaults: { _controller: pim_user.controller.reset:request }
+    methods: [GET]
+
+pim_user_reset_send_email:
+    path: /user/send-email
+    defaults: { _controller: pim_user.controller.reset:sendEmail }
+    methods: [POST]
+
+pim_user_reset_reset:
+    path: /user/reset/{token}
+    defaults: { _controller: pim_user.controller.reset:reset }
+    methods: [GET, POST]
+    requirements:
+        token: \w+
+
+pim_user_role_create:
+    path: /user/role/create
+    defaults: { _controller: pim_user.controller.role:create }
+
+pim_user_role_update:
+    path: /user/role/update/{id}
+    defaults: { _controller: pim_user.controller.role:update, id: 0 }
+    requirements:
+        id: \d+
+
+pim_user_role_index:
+    path: /user/role/
+
+pim_user_role_delete:
+    path: /user/role/delete/{id}
+    defaults: { _controller: pim_user.controller.role:delete }
+    requirements:
+        id: \d+
+    methods: [DELETE]
+
+pim_user_security_login:
+    path: /user/login
+    defaults: { _controller: pim_user.controller.security:login }
+
+pim_user_security_check:
+    path: /user/login-check
+    defaults: { _controller: pim_user.controller.security:check }
+
+pim_user_security_logout:
+    path: /user/logout
+    defaults: { _controller: pim_user.controller.security:logout }

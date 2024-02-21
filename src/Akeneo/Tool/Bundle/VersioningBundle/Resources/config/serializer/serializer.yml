@@ -1,0 +1,14 @@
+parameters:
+    # Encoder
+    pim_serializer.encoder.csv.class: Akeneo\Tool\Component\Connector\Encoder\CsvEncoder
+
+services:
+    pim_versioning.serializer:
+        class: 'Symfony\Component\Serializer\Serializer'
+
+    # Encoder
+    pim_versioning.serializer.encoder.csv:
+        public: false
+        class: '%pim_serializer.encoder.csv.class%'
+        tags:
+            - { name: pim_versioning.serializer.encoder, priority: 90 }

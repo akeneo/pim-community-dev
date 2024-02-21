@@ -1,0 +1,22 @@
+{
+  "testPathIgnorePatterns": [
+    "node_modules"
+  ],
+  "moduleDirectories": [
+    "node_modules",
+    "public/bundles"
+  ],
+  "moduleFileExtensions": [
+    "js",
+    "jsx",
+    "json",
+    "node"
+  ],
+  "collectCoverage": true,
+  "coverageReporters": [
+    "html"
+  ],
+  "cacheDirectory": "/tmp/jest",
+  "testURL": "http://localhost/",
+  "coveragePathIgnorePatterns": ["./lib/"]
+}

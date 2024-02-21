@@ -1,0 +1,36 @@
+pim_enrich_group_rest_search:
+    path: /rest/search
+    defaults: { _controller: pim_enrich.controller.rest.group:searchAction }
+    methods: [GET]
+
+pim_enrich_group_rest_get:
+    path: /rest/{identifier}
+    defaults: { _controller: pim_enrich.controller.rest.group:getAction }
+    requirements:
+        identifier: '[a-zA-Z0-9_]+'
+    methods: [GET]
+
+pim_enrich_group_rest_list_products:
+    path: /rest/{identifier}/products
+    defaults: { _controller: pim_enrich.controller.rest.group:listProductsAction }
+    requirements:
+        identifier: '[a-zA-Z0-9_]+'
+    methods: [GET]
+
+pim_enrich_group_rest_post:
+    path: /rest/{code}
+    defaults: { _controller: pim_enrich.controller.rest.group:postAction }
+    requirements:
+        code: '[a-zA-Z0-9_]+'
+    methods: [POST]
+
+pim_enrich_group_rest_remove:
+    path: /rest/{code}
+    defaults: { _controller: pim_enrich.controller.rest.group:removeAction }
+    requirements:
+        code: '[a-zA-Z0-9_]+'
+    methods: [DELETE]
+pim_enrich_group_rest_create:
+    path: /rest
+    defaults: { _controller: pim_enrich.controller.rest.group:createAction }
+    methods: [POST]

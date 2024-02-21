@@ -1,0 +1,108 @@
+@import '../../base/variables';
+
+.AknDropdownButton {
+  white-space: nowrap;
+  display: inline-block;
+
+  &-button {
+    background: lighten(@AknGrey, 25%);
+    height: @AknDefaultButtonSize;
+    line-height: @AknDefaultButtonSize - 2px;
+    font-size: @AknFontSizeBig;
+    border: 1px solid @AknBorderColor;
+    color: @AknDefaultFontColor;
+    padding: 0 0 0 @AknButtonsPadding;
+    border-radius: 2px;
+    cursor: pointer;
+    display: flex;
+  }
+
+  &-button:hover,
+  &.open &-button {
+    background: lighten(@AknGrey, 15%);
+  }
+
+  &-caretContainer {
+    width: @AknDefaultButtonSize - 2px;
+    height: @AknDefaultButtonSize - 2px;
+    background: lighten(@AknGrey, 15%);
+    margin-left: @AknButtonsPadding;
+    display: inline-block;
+    text-align: center;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+  }
+
+  &--apply &-button {
+    background: lighten(@AknGreen, 30%);
+    color: darken(@AknGreen, 20%);
+    border: 1px solid darken(@AknGreen, 10%);
+  }
+
+  &--apply &-caretContainer {
+    background: lighten(@AknGreen, 20%);
+    color: darken(@AknGreen, 20%);
+  }
+
+  &--apply:hover &-button,
+  &--apply.open &-button {
+    background: lighten(@AknGreen, 20%);
+  }
+
+  &--important &-button {
+    background: lighten(@AknRed, 30%);
+    color: darken(@AknRed, 20%);
+    border: 1px solid darken(@AknRed, 10%);
+  }
+
+  &--important &-caretContainer {
+    background: lighten(@AknRed, 20%);
+    color: darken(@AknRed, 20%);
+  }
+
+  &--important:hover &-button,
+  &--important.open &-button {
+    background: lighten(@AknRed, 20%);
+  }
+
+  &--grey &-button {
+    background: @AknGrey;
+    color: white;
+    border: 1px solid darken(@AknGrey, 10%);
+  }
+
+  &--grey &-caretContainer {
+    background: darken(@AknGrey, 10%);
+    color: white;
+  }
+
+  &--grey:hover &-button,
+  &--grey.open &-button {
+    background: darken(@AknGrey, 10%);
+  }
+
+  &--stickedRight &-caretContainer,
+  &--stickedRight &-button {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  &--stickedRight &-button {
+    border: 1px solid #848fa1;
+  }
+
+  &--small &-button {
+    height: @AknLittleButtonSize;
+    line-height: @AknLittleButtonSize;
+    font-size: @AknDefaultFontSize;
+  }
+
+  &--small &-caretContainer {
+    width: @AknLittleButtonSize - 2px;
+    height: @AknLittleButtonSize - 2px;
+  }
+
+  &--hide {
+    display: none;
+  }
+}

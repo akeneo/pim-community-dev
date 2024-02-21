@@ -1,0 +1,271 @@
+pim_notification:
+  types:
+    settings: Preferências
+flash:
+  comment:
+    create:
+      success: O seu comentário foi criado com êxito.
+    delete:
+      success: O seu comentário foi eliminado com êxito.
+    reply:
+      success: A sua resposta foi criada com êxito.
+pim_enrich.entity.product:
+  label: produto
+  uppercase_label: Produto
+  plural_label: Produtos
+  flash:
+    update:
+      success: Produto atualizado com sucesso.
+      fail: O produto não pôde ser atualizado.
+      already_in_upload: Um ficheiro já se encntra em upload para este atributo na linguagem "{{ locale }}" e âmbito "{{ scope }}"
+    delete:
+      success: Produto eliminado com sucesso.
+      fail: Não foi possível eliminar o produto.
+    create:
+      success: Produto criado com sucesso
+  module:
+    create:
+      subtitle: Criar produto
+      title: Escolha sua ação
+      choose_family: Escolha uma família
+    status:
+      enabled: Ativo
+      disabled: Inativo
+    download_pdf:
+      label: PDF
+    copy:
+      button_label: Comparar
+      label: Comparar / traduzir
+      select: Selecionar
+      all_visible: Tudo visível
+      copy: Copiar
+    history:
+      version: Versão
+      author: Autor
+      from: De
+      modified: Modificado
+    meta:
+      updated: Última atualização
+      groups: Grupos
+      uuid: UUID
+    show_group:
+      title: Grupo {{ group }}
+      view_group: Visualizar grupo
+      more_products: '{{ count }} mais produtos...'
+    attribute:
+      remove_optional: Remover este atributo
+      locale_specific_unavailable: Este campo de linguagem específica não está disponível nesta linguagem
+      locale_unavailable: Este campo localizável não está disponível para a linguagem '{{ locale }}' e canal '{{ channel }}'
+      add_attribute_option: Adicionar a opção de atributo
+    completeness:
+      title: Completude
+      complete: Completude
+      no_family: Nenhuma família definida. Por favor defina uma família para calcular a integridade da informação deste produto.
+      no_completeness: Alterou a família do produto. Por favor, grave-o primeiro para calcular a integridade dos dados para a nova família.
+    sequential_edit:
+      empty: Sua seleção está vazia, mude seus critérios de pesquisa
+      save_and_next: Gravar e avançar
+      save_and_finish: Gravar e terminar
+    associations:
+      none_exist: Nenhum tipo de associação existente.
+      quantified:
+        unlinked: Não vinculado
+    change_family:
+      title: Mudar a família do produto
+      merge_attributes: Os atributos atuais serão fundidos com os da nova família.
+      keep_attributes: Nenhuns atributos serão removidos.
+      change_family_to: Mudar a família para
+      empty_selection: Escolha uma família
+    basket:
+      title: Cesta
+    delete:
+      confirm: Tem certeza que deseja eliminar este produto?
+    comment:
+      post: Adicionar um novo comentário
+      reply: Responder
+      title: Comentários
+      empty: Sem comentários
+      delete_confirm: Tem a certeza que quer apagar este comentário?
+      removed_author: Utilizador removido
+pim_enrich.entity.product_model:
+  uppercase_label: Modelo do produto
+  flash:
+    create:
+      success: Criou com sucesso um modelo de produto
+    update:
+      success: Modelo de produto bem sucedido atualizado. A completude da variante do produto será recalculada.
+      fail: Não pode atualizar o modelo do produto.
+    delete:
+      success: Modelo de produto foi removido.
+  property:
+    family_variant: Variante
+  module:
+    create:
+      title: Crie um modelo de produto
+    attribute:
+      read_only_parent_attribute_from_common: Este atributo pode ser atualizado em atributos comuns.
+    completeness:
+      label: Variante
+pim_enrich.entity.group:
+  label: Grupo
+  flash:
+    update:
+      success: Grupo atualizado com sucesso.
+      fail: O atributo não pode ser atualizado.
+      fields_not_ready: "Não é possível salvar o grupo atual. Os seguintes campos não estão prontos: {{ fields }}"
+    create:
+      success: Grupo criado com sucesso
+    delete:
+      success: Grupo removido com sucesso
+      fail: Não é possível eliminar este grupo
+  module:
+    create:
+      button: Criar grupo
+    delete:
+      confirm: Tem certeza que deseja eliminar este grupo?
+pim_enrich.entity.category:
+  label: categoria
+  uppercase_label: Categoria
+  plural_label: Categorias
+  content:
+    tree_list:
+      columns:
+        actions: Ações
+pim_enrich.export.product:
+  data:
+    title: Filtra o produto
+  filter:
+    attributes:
+      help: "Selecione a informação do produto para exportar. Exemplo: apenas seus atributos técnicos."
+      empty: Todos os atributos serão exportados
+      modal:
+        title: Seleção de atributos
+    attributes_selector:
+      clear: Limpar
+      all_group: Todos os grupos
+      empty_selection: Todos os atributos serão exportados
+      description: Selecione as informações do produto a serem exportadas
+    family:
+      title: Família
+      operators:
+        IN: Na lista
+    updated:
+      operators:
+        ALL: Sem restrição de data
+        "SINCE LAST JOB": Produtos atualizados desde a última exportação
+    enabled:
+      title: Estado
+      value:
+        enabled: Ativo
+        disabled: Inativo
+    completeness:
+      title: Completude
+      operators:
+        ALL: Sem restrições em relação ao nível de preenchimento da informação
+        ">=": Completo em pelo menos uma das linguagens selecionadas
+        "GREATER OR EQUALS THAN ON ALL LOCALES": Completo em todas as linguagens escolhidas
+        "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": Completo em pelo menos uma das linguagens selecionadas
+        LOWER THAN ON ALL LOCALES: Não completo em todas as linguagens escolhidas
+      empty_selection: Selecione o grupo
+    category:
+      title: Categoria
+    identifier:
+      title: Identificador
+    string:
+      operators:
+        ALL: Tudo
+    select:
+      operators:
+        IN: Na lista
+    date:
+      operators:
+        BETWEEN: Entre
+        NOT BETWEEN: Não entre
+  global_settings:
+    title: Definições Gerais
+pim_enrich.mass_edit.product:
+  step:
+    select:
+      label: Escolher produtos
+    configure:
+      label: Configurar
+    confirm:
+      label: Confirmar
+  operation:
+    common:
+      select_attributes: Selecionar atributos
+    change_status:
+      label: Alterar estado
+      description: Os produtos selecionados serão ativados ou desativados.
+      field: Para ativar
+    change_family:
+      description: A família dos produtos seleccionados será alterada para a família escolhida
+    add_to_group:
+      label: Adicionar a grupos
+      description: Selecione os grupos aos quais pretende adicionar os produtos selecionados
+      field: Grupos
+    add_to_category:
+      description: O produto será classificado nas seguintes categorias, a classificação existente será armazenada.
+    remove_from_category:
+      label: Remover das categorias
+      description: Os produtos serão retirados das seguintes categorias.
+    associate_to_product_and_product_model:
+      validate: Adicione a associação antes de passar para o próximo passo
+pim_datagrid:
+  mass_action_group:
+    bulk_actions:
+      label: Ações em massa
+    quick_export:
+      label: Exportação rápida
+  mass_action:
+    delete:
+      success: Produtos selecionados eliminados com sucesso.
+    quick_export:
+      csv_all: CSV (todos os atributos)
+      csv_grid_context: CSV (Contexto de grelha)
+      xlsx_all: Excel (todos os atributos)
+      xlsx_grid_context: Excel (Contexto de grelha)
+      configurator:
+        title: Escolha sua ação
+        without_uuid: Sem UUID
+    mass_edit: Ações em massa
+    sequential_edit: Editar em sequência
+  view_selector:
+    view: Visualizações
+  actions:
+    edit_product_attributes: Editar atributos do produto
+    classify_product: Classificar o produto
+    delete_product: Eliminar o produto
+    change_status: Alterar estado
+    toggle_status: Ativar estado
+    other: Outra ação
+  filters:
+    label: Filtros
+    system: Sistema
+    product_typology:
+      variant: 'Variante'
+    entity_type:
+      label: 'Variante'
+    family:
+      label: Família
+    groups:
+      label: Grupos
+    enabled:
+      label: Estado
+    completeness:
+      label: Completo
+    identifier:
+      label: Identificador
+batch_jobs:
+  add_product_value:
+    label: Adicionar valor do produto
+    perform.label: Adicionar valor do produto
+  csv_product_quick_export:
+    quick_export.label: Csv exportação rápida de produtos
+    perform.label: Csv exportação rápida de produtos
+  edit_common_attributes:
+    label: Editar atributos
+    perform.label: Editar atributos
+  update_product_value:
+    label: Atualizar o valor do produto
+    perform.label: Atualizar o valor do produto

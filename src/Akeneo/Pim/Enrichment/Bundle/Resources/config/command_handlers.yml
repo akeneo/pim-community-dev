@@ -1,0 +1,8 @@
+services:
+  Akeneo\Pim\Enrichment\Component\Product\Command\GroupProductsHandler:
+    arguments:
+      - '@Akeneo\Pim\Enrichment\Component\Product\Query\FindProductUuidsInGroup'
+      - '@pim_catalog.repository.group'
+      - '@pim_catalog.saver.product'
+      - '@pim_catalog.repository.product'
+      - '%pim_job_product_batch_size%'

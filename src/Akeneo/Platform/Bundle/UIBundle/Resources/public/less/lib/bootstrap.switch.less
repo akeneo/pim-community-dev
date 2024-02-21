@@ -1,0 +1,124 @@
+@import '../base/variables';
+
+/* Overrides src/Pim/Bundle/UIBundle/Resources/public/lib/bootstrap-switch/bootstrap.switch.css */
+.has-switch {
+  @switchSize: @AknDefaultButtonSize;
+  @borderWidth: 1px;
+
+  border-radius: 100px;
+  height: @switchSize;
+  width: @switchSize * 2;
+  border: none;
+  overflow: initial;
+  margin-right: @AknMaxFormWidth - 100px;
+
+  label,
+  label:active {
+    background: none;
+    width: 3 * @switchSize;
+    border: none;
+    margin-left: -@switchSize;
+    z-index: 1;
+
+    &:hover {
+      background: none;
+    }
+
+    &:after {
+      content: ' ';
+      background: white;
+      height: @switchSize - 2 * @borderWidth;
+      width: @switchSize - 2 * @borderWidth;
+      border-radius: 100px;
+      position: absolute;
+      top: @borderWidth + 1px;
+      left: @switchSize + @borderWidth;
+    }
+  }
+
+  &.switch-small {
+    min-width: @switchSize * 2;
+  }
+
+  .switch-off,
+  .switch-on {
+    height: @switchSize;
+    margin-left: @switchSize;
+    width: 100%;
+  }
+
+  & > div {
+    transition: all 0.2s ease !important;
+    border-radius: 100px;
+    display: flex;
+  }
+
+  .switch-off {
+    background: lighten(@AknSlateGrey, 20%);
+  }
+
+  .switch-on {
+    background: @AknGreen;
+    margin-left: 0;
+    padding-left: 50%;
+  }
+
+  &.deactivate {
+    cursor: not-allowed !important;
+
+    label:hover {
+      color: white;
+      cursor: not-allowed !important;
+    }
+
+    span {
+      cursor: not-allowed !important;
+    }
+  }
+
+  span.switch-primary,
+  span.switch-left {
+    background: none;
+  }
+
+  span.switch-right {
+    background: none;
+  }
+
+  span.switch-right:hover,
+  span.switch-right:focus,
+  span.switch-right:active,
+  span.switch-right.active,
+  span.switch-right.disabled,
+  span.switch-right[disabled] {
+    background: none;
+  }
+
+  span.switch-primary:hover,
+  span.switch-left:hover,
+  span.switch-primary:focus,
+  span.switch-left:focus,
+  span.switch-primary:active,
+  span.switch-left:active,
+  span.switch-primary.active,
+  span.switch-left.active,
+  span.switch-primary.disabled,
+  span.switch-left.disabled,
+  span.switch-primary[disabled],
+  span.switch-left[disabled] {
+    background: none;
+  }
+
+  span.switch-small {
+    position: absolute;
+    left: @switchSize * 2 + 10px;
+    color: @AknDarkFontColor !important;
+    line-height: @switchSize;
+    padding: 0;
+  }
+
+  .switch-off .switch-left,
+  .switch-on .switch-right {
+    display: none;
+  }
+}

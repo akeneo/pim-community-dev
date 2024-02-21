@@ -1,0 +1,77 @@
+import {useState} from 'react';
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
+import {ColorInput} from './ColorInput.tsx';
+
+<Meta
+  title="Components/Inputs/Color input"
+  component={ColorInput}
+  argTypes={{
+    readOnly: {
+      control: {type: 'boolean'},
+      description:
+        'Defines if the input should be read only. If defined so, the user cannot change the value of the input.',
+      table: {type: {summary: 'boolean'}},
+    },
+    onChange: {
+      description: 'The handler called when the value of the input changes.',
+      table: {type: {summary: '(newValue: string) => void'}},
+    },
+  }}
+  args={{
+    value: '#9452ba',
+    placeholder: 'Please enter a value in the ColorInput',
+  }}
+/>
+
+# ColorInput (Beta)
+
+## Usage
+
+Color input component allows the user to enter a color in hexadecimal format.
+
+### Placeholder text
+
+The placeholder text provides tips or examples of items to enter. Placeholder text disappears when the user begins entering data.
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      const [value, setValue] = useState(args.value);
+      return <ColorInput {...args} value={value} onChange={setValue} />;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on readOnly
+
+<Canvas>
+  <Story name="Read only">
+    {args => {
+      return (
+        <>
+          <ColorInput value="#000" readOnly={false} />
+          <ColorInput value="#008542" readOnly={true} />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on invalid
+
+<Canvas>
+  <Story name="Invalid">
+    {args => {
+      return (
+        <>
+          <ColorInput value="#ffe000" invalid={false} />
+          <ColorInput value="not a color" invalid={true} />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>

@@ -1,0 +1,23 @@
+services:
+    Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateSaver:
+        class: 'Akeneo\Category\Infrastructure\Storage\Save\Query\SqlCategoryTemplateSaver'
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Category\Application\Storage\Save\Saver\CategoryTreeTemplateSaver:
+        class: 'Akeneo\Category\Infrastructure\Storage\Save\Query\SqlCategoryTreeTemplateSaver'
+        arguments:
+            - '@database_connection'
+            - '@Akeneo\Category\Application\Query\IsTemplateDeactivated'
+
+    Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateAttributeSaver:
+        class: 'Akeneo\Category\Infrastructure\Storage\Save\Query\SqlCategoryTemplateAttributeSaver'
+        arguments:
+            - '@database_connection'
+            - '@Akeneo\Category\Application\Query\IsTemplateDeactivated'
+
+    Akeneo\Category\Domain\Query\DeleteTemplateAttribute:
+        class: 'Akeneo\Category\Infrastructure\Storage\Save\Query\DeleteCategoryTemplateAttributeSql'
+        arguments:
+            - '@database_connection'
+            - '@Akeneo\Category\Application\Query\IsTemplateDeactivated'

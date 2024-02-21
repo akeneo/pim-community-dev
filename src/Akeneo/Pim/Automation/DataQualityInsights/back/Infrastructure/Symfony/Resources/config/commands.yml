@@ -1,0 +1,87 @@
+services:
+    akeneo.pim.automation.data_quality_insights.command.launch_evaluations_command:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\LaunchEvaluationsCommand
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobLauncher\RunUniqueProcessJob'
+            - '@akeneo.pim.automation.data_quality_insights.feature'
+            - '@database_connection'
+        tags:
+            - { name: 'console.command' }
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\PrepareEvaluationsCommand:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobLauncher\RunUniqueProcessJob'
+            - '@akeneo.pim.automation.data_quality_insights.feature'
+        tags:
+            - { name: 'console.command' }
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\SchedulePeriodicTasksCommand:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobLauncher\SchedulePeriodicTasks'
+            - '@akeneo.pim.automation.data_quality_insights.feature'
+        tags:
+            - { name: 'console.command' }
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\PurgeOutdatedDataCommand:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\PurgeOutdatedData'
+        tags:
+            - { name: 'console.command' }
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\ConsolidateDashboardRatesCommand:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateDashboardRates'
+        tags:
+            - { name: 'console.command' }
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\MigrateProductCriterionEvaluationCommand:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: 'console.command' }
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\InitializeProductsEvaluationsCommand:
+        arguments:
+            - '@database_connection'
+            - '@akeneo.pim.automation.data_quality_insights.product_criteria_by_feature_registry'
+            - '@akeneo.pim.automation.data_quality_insights.product_model_criteria_by_feature_registry'
+        tags:
+            - { name: 'console.command' }
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\EvaluateAllProductsCommand:
+        arguments:
+            - '@database_connection'
+            - '@akeneo.pim.automation.data_quality_insights.query.get_product_ids_to_evaluate'
+            - '@akeneo.pim.automation.data_quality_insights.query.get_product_model_ids_to_evaluate'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProductModels'
+        tags:
+            - { name: 'console.command' }
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\RecomputeProductsScores:
+        arguments:
+            - '@akeneo.pim.automation.data_quality_insights.feature'
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
+            - '@akeneo_batch.job.job_instance_repository'
+        tags:
+            - { name: 'console.command' }
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\PopulateProductModelScoresAndKeyIndicatorsCommand:
+        arguments:
+            - '@database_connection'
+            - '@akeneo.pim.automation.data_quality_insights.create_product_models_criteria_evaluations'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductModelIdFactory'
+        tags:
+            - { name: 'console.command' }
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\OneTimeTask\CleanCompletenessEvaluationResultsCommand:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: 'console.command' }
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\OneTimeTask\CleanProductScoresCommand:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: 'console.command' }

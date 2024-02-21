@@ -1,0 +1,21 @@
+pim_enrich.product:
+  validation:
+    upsert:
+      unknown_user: '用户"{{ user_id }}" 不存在'
+      category_no_access_to_products: 您无权访问任何树中的产品，请联系您的管理员
+      should_keep_one_owned_category: 您至少应将产品保留在自己拥有权限的一个类别中
+      locale_no_access_to_products: 您无权访问任何已激活区域中的产品数据。请联系您的管理员
+      attribute_group_no_access_to_attributes: 您无权访问该产品的属性 {{ attributeCode }}。请联系您的管理员。
+      product_identifier_empty: 该产品标识符要求非空字符串
+      duplicated_user_intents: 属性 {{ attributeCode }} 的值被多次更新
+      family_code_empty: 该品类代码要求非空字符串
+      category_does_not_exist: '{1}类别“{{ categoryCodes }}”不存在|]1, Inf[ 类别“{{ categoryCodes }}”不存在'
+      set_value:
+        no_channel_code_provided_for_scopable_attribute: '属性 {{ attributeCode }} 需要渠道'
+        channel_code_provided_for_non_scopable_attribute: '属性 {{ attributeCode }} 不需要渠道，检测到“{{ channelCode }}” '
+        no_locale_code_provided_for_localizable_attribute: '属性 {{ attributeCode }} 需要区域'
+        locale_code_provided_for_non_localizable_attribute: '属性 {{ attributeCode }} 不需要区域，检测到“{{ localeCode }}”'
+        invalid_locale_code_for_locale_specific_attribute: '属性 {{ attributeCode }} 需要以下区域之一：{{ availableLocales }}；检测到“{{ localeCode }}”'
+        channel_does_not_exist: '渠道 {{ channelCode }} 不存在'
+        locale_is_not_active: '区域 {{ localeCode }} 不存在或未激活'
+        locale_not_activated_for_channel: '区域 {{ localeCode }} 对于渠道 {{ channelCode }} 未激活'

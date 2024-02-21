@@ -1,0 +1,8 @@
+includes:
+  - %rootDir%/../phpstan-symfony/extension.neon
+  - %rootDir%/../phpstan-webmozart-assert/extension.neon
+
+parameters:
+  level: 6
+  paths:
+    - %rootDir%/../../../src/Akeneo/Platform/Installer/back/src

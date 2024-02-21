@@ -1,0 +1,14 @@
+pim_enrich:
+  acl:
+    category:
+      list: カテゴリ一覧
+      create: カテゴリを作成
+      edit: カテゴリを編集
+      remove: カテゴリを削除
+      move: カテゴリを移動
+      children: 下位カテゴリを見る
+      products: カテゴリの商品を見る
+      history: カテゴリの履歴を表示
+      template: カテゴリテンプレートを管理
+      edit_attributes: カテゴリ属性を編集
+      order_trees: カテゴリを並べ替える

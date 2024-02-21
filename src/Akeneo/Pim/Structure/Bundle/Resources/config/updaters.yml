@@ -1,0 +1,56 @@
+services:
+    pim_api.updater.family_variant:
+        class: 'Akeneo\Pim\Structure\Component\Updater\ExternalApi\FamilyVariantUpdater'
+        arguments:
+            - '@pim_catalog.updater.family_variant'
+
+    pim_catalog.updater.family_variant:
+        class: 'Akeneo\Pim\Structure\Component\Updater\FamilyVariantUpdater'
+        arguments:
+            - '@pim_catalog.factory.variant_attribute_set'
+            - '@pim_structure.updater.translatable'
+            - '@pim_catalog.repository.family'
+            - '@pim_catalog.repository.attribute'
+
+    pim_catalog.updater.family:
+        class: 'Akeneo\Pim\Structure\Component\Updater\FamilyUpdater'
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.factory.attribute_requirement'
+            - '@pim_catalog.repository.attribute_requirement'
+            - '@pim_structure.updater.translatable'
+            - '@pim_catalog.repository.locale'
+
+    pim_catalog.updater.attribute:
+        class: 'Akeneo\Pim\Structure\Component\Updater\AttributeUpdater'
+        arguments:
+            - '@pim_catalog.repository.attribute_group'
+            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.registry.attribute_type'
+            - '@pim_structure.updater.translatable'
+            - ['auto_option_sorting', 'is_read_only', 'default_value']
+            - ['group_labels', 'is_main_identifier']
+
+    pim_catalog.updater.attribute_option:
+        class: 'Akeneo\Pim\Structure\Component\Updater\AttributeOptionUpdater'
+        arguments:
+            - '@pim_catalog.repository.attribute'
+
+    pim_catalog.updater.group_type:
+        class: 'Akeneo\Pim\Structure\Component\Updater\GroupTypeUpdater'
+
+    pim_catalog.updater.association_type:
+        class: 'Akeneo\Pim\Structure\Component\Updater\AssociationTypeUpdater'
+        arguments:
+            - '@pim_structure.updater.translatable'
+
+    pim_catalog.updater.attribute_group:
+        class: 'Akeneo\Pim\Structure\Component\Updater\AttributeGroupUpdater'
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.attribute_group'
+            - '@pim_structure.updater.translatable'
+
+    pim_structure.updater.translatable:
+        class: 'Akeneo\Tool\Component\Localization\TranslatableUpdater'

@@ -1,0 +1,162 @@
+akeneo_data_quality_insights:
+  title: 데이터 품질 인사이트
+  dqi_dashboard:
+    menu: 데이터 품질 인사이트
+    helper:
+      title: Akeneo의 데이터 품질 소개
+      description: 데이터 품질 대시보드에서 카탈로그 데이터의 품질을 측정할 수 있습니다. 카테고리 또는 패밀리에 초점을 맞출 수도 있습니다.
+      help_center: 자세한 내용은 헬프 센터를 확인하십시오.
+    no_data_title: 죄송합니다. 아직 데이터가 부족하여 데이터 품질 개요를 표시할 수 없습니다.
+    no_data_subtitle: 나중에 다시 시도하십시오.
+    time_period:
+      label: 기간
+      daily: 일
+      weekly: 주
+      monthly: 월
+    legend:
+      excellent: 탁월
+      good: 우수
+      average: 평균
+      below_average: 평균 이하
+      to_improve: 개선하려면
+    average_grade: 평균 등급
+    category_modal_filter:
+      subtitle: 카테고리에서 필터링
+      message: 카테고리를 선택하여 대시보드에서 탐색
+    widgets:
+      family_modal:
+        subtitle: 패밀리 추가
+        message: 패밀리를 선택하여 대시보드에 추가
+        max_families_msg: 죄송합니다. 해당 대시보드에서 추적하기 위한 패밀리를 {{ count }}개 넘게 추가할 수 없습니다.
+      category_modal:
+        subtitle: 카테고리 추가
+        message: 카테고리를 선택하여 대시보드에 추가
+        max_categories_msg: 죄송합니다. 해당 대시보드에서 추적하기 위한 카테고리를 {{ count }}개 넘게 추가할 수 없습니다.
+      add_families: 패밀리 추가
+      add_categories: 카테고리 추가
+      title: 타이틀
+      score: 결과
+      no_family_helper_msg: 데이터 품질을 측정하려는 패밀리 선택
+      no_category_helper_msg: 데이터 품질을 측정하려는 카테고리 선택
+      see_in_grid: 그리드에서 보기
+    time_axis:
+      day: 일
+    key_indicators:
+      title: 주요 지표
+      products: '{1}1개 제품|]1, 200[{{ count }}개 제품|[200, Inf[{{ count }}개 초과한 제품'
+      product_models: '{1}1개 제품 모델|]1, 200[{{ count }}개 제품 모델|[200, Inf[{{ count }}개 초과한 제품 모델'
+      entities_to_work_on: '처리해야 할 <improvable_products_count_link/>이(가) 있습니다.'
+      entities_to_work_on_2_kinds: '처리해야 할 <improvable_products_count_link/> 및 <improvable_product_models_count_link/>이(가) 있습니다.'
+      list:
+        has_image:
+          title: 이미지 포함 제품
+          no_data: 이미지 특성이 비어 있는 것 같습니다. 제품의 품질을 강조하려면 이 주요 지표에 관한 이미지를 업로드해야 합니다.
+          messages:
+            first_step:
+              message1: 이미지가 없으면 제품이 원래 가치만큼 좋아보이지 않습니다.
+              message2: 첫 인상은 오래 갑니다. 애셋에 정성을 들이면 고객이 알아봅니다.
+              message3: 경험에 따르면 이미지는 매우 다른 결과를 낳습니다. 애셋에 더 많은 시간을 들여보십시오.
+            second_step:
+              message1: 제품 이미지를 조금만 더 작업하면 끝납니다.
+              message2: 한 장의 이미지가 열마디 말보다 강력합니다. 지금 작업하여 나중에 들어가는 시간을 절약하십시오.
+              message3: 이미지 작업을 조금 더 하면 제품 이미지가 훨씬 개선됩니다.
+            third_step:
+              message1: 몇 개의 이미지가 누락된 것만 제외하면 매우 좋습니다.
+              message2: 매우 좋습니다. 거의 다 왔습니다.
+              message3: 마지막으로 손보면 준비가 완전히 끝납니다.
+            perfect_score_step:
+              message1: 잘하셨습니다! 이제 준비가 완료되었습니다!
+              message2: 훌륭합니다! 제품이 모두 멋져 보입니다!
+              message3: 완벽합니다.
+        good_enrichment:
+          title: 보강 비율이 우수한 제품
+          no_data: 제품이 비어 있는 것 같습니다. 제품의 품질을 강조하려면 이 주요 지표에 관한 특성을 추가해야 합니다.
+          messages:
+            first_step:
+              message1: 이 비율을 개선하는 한 가지 방법은 가장 적절한 특성을 신중하게 정의하는 것입니다. <a href="{{ link }}" target="_blank">도움말 센터를 확인해보십시오.</a>.
+              message2: PIM을 여전히 잘 모르시겠습니까?<a href="{{ link }}" target="_blank">이를 효과적으로 활용하는 방법을 알아보십시오.</a>.
+              message3: PIM은 Akeneo 팀에서 개발했으니 여러분은 이를 활용하십시오!
+              message4: 자세한 제품 정보는 고객에게 실질적 차이를 만듭니다. 시장에서 승기를 잡으십시오!
+            second_step:
+              message1: 고객이 감동받을 수 있도록 조금 더 높은 목표를 향해 봅시다.
+              message2: 중간까지 왔습니다! 조금 더 가면 제품이 멋지게 보강될 것입니다.
+              message3: 성공 비결은 디테일에 있습니다. 이는 해당 업계에서도 통합니다.
+              message4: 제품 보강을 직접 작업하시겠습니까? <a href="{{ link }}" target="_blank">여기</a>에서 가장 적절한 특성을 신중하게 선택하는 방법을 알아보십시오.
+            third_step:
+              message1: 지금까지 훌륭합니다. 조금만 더 개선해보십시오!
+              message2: 매우 훌륭한 비율이지만 100% 좋아보이지는 않습니다.
+              message3: 일부 제품은 완벽해지려면 조금 더 작업이 필요합니다. 거의 다 끝나갑니다!
+              message4: 조금만 더하면 완벽해집니다.
+            perfect_score_step:
+              message1: 이제 제품 자체가 고객을 끌어들일 겁니다! 잘하셨습니다.
+              message2: 정말 작업을 훌륭히 마치셨습니다.
+              message3: 카탈로그를 최신으로 유지하는 방법을 모두 익히셨습니다.
+              message4: 축하합니다. 문제가 하나도 없군요!
+      no_data: 죄송합니다. 아직 데이터가 부족하여 주요 지표를 표시할 수 없습니다.
+      no_data_subtitle: 나중에 다시 시도하십시오.
+    score_distribution:
+      title: 품질 점수 분포
+    quality_score_evolution:
+      title: 품질 점수 변화
+      current_score: 이 범위의 현재 카탈로그 품질 점수입니다.
+      current_month_label: 이번 달
+      no_catalog_score: 현재 품질 점수를 계산할 수 없습니다.
+  product_evaluation:
+    criteria:
+      completeness_of_required_attributes:
+        recommendation: 값이 누락된 필수 특성
+      completeness_of_non_required_attributes:
+        recommendation: 값이 누락된 비필수 특성
+      enrichment_image:
+        recommendation: 누락된 이미지
+    axis:
+      enrichment:
+        title: 보강
+        attributes_link: 누락된 모든 특성 표시
+        success: 제품 데이터 보강이 완료되었습니다. 축하합니다!
+    messages:
+      error:
+        axis_error: 오류로 인해 등급을 완전히 계산할 수 없습니다. 나중에 다시 시도하십시오.
+        criterion_error: 등급을 계산할 수 없습니다.
+      success:
+        criterion: 모두 좋습니다.
+      grading_in_progress: 등급 평가 진행 중입니다.
+      axis_grading_in_progress: 등급 평가 진행 중입니다. 나중에 다시 시도하십시오.
+      too_many_attributes: 개선할 {{ count }}개 특성이 있습니다.
+      no_attribute_groups:
+        title: 죄송합니다. 품질 점수를 계산할 수 없습니다.
+        subtitle: "품질 점수를 계산할 수 없습니다. 이 제품의 특성 그룹 중에 활성화된 그룹이 없습니다."
+        help_center_link: 도움말 센터에서 데이터 품질 인사이트를 이용해 데이터 품질을 개선하는 방법을 알아보십시오.
+      add_image_attribute_recommendation: 한 장의 이미지가 열 마디 말보다 강력합니다. 이미지 특성을 추가하여 이 제품의 데이터 품질을 개선하십시오.
+      fill_image_attribute_recommendation: 경험에 따르면 이미지는 실제로 차이를 만듭니다. 하나 이상의 이미지를 추가하여 이 제품의 데이터 품질을 개선하십시오.
+      not_applicable:
+        message: 이 기준은 이 컨텍스트에서 적용할 수 없습니다.
+        help_center_link: 도움말 센터에서 이유를 확인해보십시오.
+  product_edit_form:
+    attribute_filter:
+      all_missing_attributes: 누락된 모든 특성
+    back_to_products: 제품으로 돌아가기
+  attribute_group:
+    helper_dqi_info: 품질 점수 계산은 데이터 품질에서 활성화된 특성 그룹에 속한 특성만 고려합니다.
+    helper_dqi_link: 자세한 내용은 도움말 센터에서 확인하십시오.
+    activation: 활성화됨
+    dqi_status: 데이터 품질 인사이트 상태
+    activated: 활성화됨
+    disabled: 비활성화됨
+    used_groups_helper: "데이터 품질 인사이트 계산에는 다음 특성 그룹이 고려됩니다."
+    all_groups_evaluated: 품질 점수 계산에는 이 제품의 모든 특성 그룹이 고려됩니다. 가장 적절한 품질 점수를 얻으려면 <a href="{{ link }}" target="_blank">도움말 센터에서 특성 그룹을 비활성화하는 방법을 알아보십시오.</a>
+  product_grid:
+    filter_label:
+      quality_score: 품질 점수
+      enrichment_quality: 보강 품질
+      images_quality: 제품 이미지
+    filter_value:
+      good: 우수
+      to_improve: 개선 필요
+      "yes": "예"
+      "no": "아니요"
+  quality_score:
+    pending: 진행 중
+    title: "품질 점수:"
+pim_title:
+  akeneo_data_quality_insights_dashboard: 데이터 품질 인사이트

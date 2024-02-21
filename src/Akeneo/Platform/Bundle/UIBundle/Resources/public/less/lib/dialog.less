@@ -1,0 +1,76 @@
+@import '../base/variables';
+
+/* jQuery UI dialog */
+
+.ui-dialog {
+  z-index: 950;
+
+  .ui-widget-header {
+    background: @AknPurple;
+    font-size: @AknTitleFontSize;
+    height: 50px;
+    line-height: 50px;
+    color: white;
+    padding: 0 16px;
+    font-weight:normal;
+    border: none;
+  }
+
+  .ui-dialog-titlebar-close {
+    display: none;
+  }
+
+  .row-fluid {
+    padding: 10px 20px;
+  }
+
+  .ui-dialog-buttonset {
+    border-top: 1px solid @AknBorderColor;
+    display: flex;
+    flex-direction: row-reverse;
+    padding: 10px 20px;
+  }
+
+  .btn {
+    color: white;
+    height: @AknDefaultButtonSize;
+    line-height: @AknDefaultButtonSize;
+    font-size: @AknFontSizeBig;
+    min-width: @AknDefaultButtonSize;
+    padding: 0 @AknDefaultButtonSize / 2;
+    display: inline-block;
+    border-radius: 100px;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    white-space: nowrap;
+    margin-left: 10px;
+    transition:
+      background 0.1s ease,
+      border-color 0.1s ease,
+      color 0.1s ease;
+
+    &.btn-primary {
+      background-color: @AknGreen;
+
+      &:hover {
+        background: darken(@AknGreen, 10%);
+      }
+    }
+
+    &:not(.btn-primary) {
+      border: 1px solid @AknGrey;
+      color: @AknGrey;
+      background: white;
+
+      &:hover {
+        color: darken(@AknGrey, 20%);
+        border-color: darken(@AknGrey, 20%);
+      }
+    }
+  }
+}
+
+.ui-widget-overlay {
+  background: black;
+}

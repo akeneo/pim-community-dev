@@ -1,0 +1,230 @@
+parameters:
+    pim_filter.datasource.orm_adapter.class: Oro\Bundle\PimFilterBundle\Datasource\Orm\OrmFilterDatasourceAdapter
+    pim_filter.datasource.product_orm_adapter.class: Oro\Bundle\PimFilterBundle\Datasource\Orm\OrmFilterProductDatasourceAdapter
+
+    pim_filter.ajax_choice_filter.class:  Oro\Bundle\PimFilterBundle\Filter\AjaxChoiceFilter
+
+    pim_filter.product_scope_filter.class:               Oro\Bundle\PimFilterBundle\Filter\Product\ScopeFilter
+    pim_filter.product_groups_filter.class:              Oro\Bundle\PimFilterBundle\Filter\Product\GroupsFilter
+    pim_filter.product_family_filter.class:              Oro\Bundle\PimFilterBundle\Filter\Product\FamilyFilter
+    pim_filter.product_completeness_filter.class:        Oro\Bundle\PimFilterBundle\Filter\Product\ProductCompletenessFilter
+    pim_filter.product_date_filter.class:                Oro\Bundle\PimFilterBundle\Filter\ProductValue\DateTimeRangeFilter
+    pim_filter.category_filter.class:                    Oro\Bundle\PimFilterBundle\Filter\CategoryFilter
+    pim_filter.product_enabled_filter.class:             Oro\Bundle\PimFilterBundle\Filter\Product\EnabledFilter
+    pim_filter.product_in_group_filter.class:            Oro\Bundle\PimFilterBundle\Filter\Product\InGroupFilter
+    pim_filter.product_is_associated_filter.class:       Oro\Bundle\PimFilterBundle\Filter\Product\IsAssociatedFilter
+    pim_filter.product_value_string.class:               Oro\Bundle\PimFilterBundle\Filter\ProductValue\StringFilter
+    pim_filter.product_value_choice.class:               Oro\Bundle\PimFilterBundle\Filter\ProductValue\ChoiceFilter
+    pim_filter.product_value_number.class:               Oro\Bundle\PimFilterBundle\Filter\ProductValue\NumberFilter
+    pim_filter.product_value_date.class:                 Oro\Bundle\PimFilterBundle\Filter\ProductValue\DateRangeFilter
+    pim_filter.product_value_datetime.class:             Oro\Bundle\PimFilterBundle\Filter\ProductValue\DateTimeRangeFilter
+    pim_filter.product_value_boolean.class:              Oro\Bundle\PimFilterBundle\Filter\ProductValue\BooleanFilter
+    pim_filter.product_value_metric.class:               Oro\Bundle\PimFilterBundle\Filter\ProductValue\MetricFilter
+    pim_filter.product_value_price.class:                Oro\Bundle\PimFilterBundle\Filter\ProductValue\PriceFilter
+    pim_filter.product_label_or_identifier_filter.class: Oro\Bundle\PimFilterBundle\Filter\Product\LabelOrIdentifierFilter
+
+services:
+    pim_filter.ajax_choice_filter:
+        class: '%pim_filter.ajax_choice_filter.class%'
+        arguments:
+            - '@form.factory'
+            - '@pim_filter.product_utility'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: ajax_choice }
+
+    pim_filter.product_scope_filter:
+        class: '%pim_filter.product_scope_filter.class%'
+        arguments:
+            - '@form.factory'
+            - '@pim_filter.product_utility'
+            - '@pim_catalog.context.catalog'
+            - '@pim_user.context.user'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: product_scope }
+
+    pim_filter.product_category_filter:
+        class: '%pim_filter.category_filter.class%'
+        arguments:
+            - '@form.factory'
+            - '@pim_filter.product_utility'
+            - '@pim_catalog.repository.category'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: product_category }
+
+    pim_filter.product_groups_filter:
+        class: '%pim_filter.product_groups_filter.class%'
+        arguments:
+            - '@form.factory'
+            - '@pim_filter.product_utility'
+            - '@pim_user.context.user'
+            - '%pim_catalog.entity.group.class%'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: product_groups }
+
+    pim_filter.product_family_filter:
+        class: '%pim_filter.product_family_filter.class%'
+        arguments:
+            - '@form.factory'
+            - '@pim_filter.product_utility'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: product_family }
+
+    pim_filter.product_completeness_filter:
+        class: '%pim_filter.product_completeness_filter.class%'
+        arguments:
+            - '@form.factory'
+            - '@pim_filter.product_utility'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: product_completeness }
+
+    pim_filter.product_and_product_model_completeness_filter:
+        class: Oro\Bundle\PimFilterBundle\Filter\ProductAndProductModelCompletenessFilter
+        arguments:
+            - '@form.factory'
+            - '@pim_filter.product_utility'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: product_and_product_model_completeness }
+
+    pim_filter.product_date_filter:
+        class: '%pim_filter.product_date_filter.class%'
+        arguments:
+            - '@form.factory'
+            - '@pim_filter.product_utility'
+            - '@pim_user.context.user'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: product_date }
+
+    pim_filter.product_enabled_filter:
+        class: '%pim_filter.product_enabled_filter.class%'
+        arguments:
+            - '@form.factory'
+            - '@pim_filter.product_utility'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: product_enabled }
+
+    pim_filter.product_typology_filter:
+        class: Oro\Bundle\PimFilterBundle\Filter\Product\ProductTypologyFilter
+        arguments:
+            - '@form.factory'
+            - '@pim_filter.product_utility'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: product_typology }
+
+    pim_filter.entity_type_filter:
+        class: Oro\Bundle\PimFilterBundle\Filter\Product\EntityTypeFilter
+        arguments:
+            - '@form.factory'
+            - '@pim_filter.product_utility'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: entity_type }
+
+    pim_filter.product_in_group_filter:
+        class: '%pim_filter.product_in_group_filter.class%'
+        arguments:
+            - '@form.factory'
+            - '@pim_filter.product_utility'
+            - '@pim_datagrid.datagrid.request.parameters_extractor'
+            - '@pim_catalog.doctrine.query.filter.object_code_resolver'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: product_in_group }
+
+    pim_filter.product_is_associated_filter:
+        class: '%pim_filter.product_is_associated_filter.class%'
+        arguments:
+            - '@form.factory'
+            - '@pim_filter.product_utility'
+            - '@pim_datagrid.datagrid.request.parameters_extractor'
+            - '@pim_catalog.repository.association_type'
+            - '@pim_catalog.repository.product'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: product_is_associated }
+
+    pim_filter.product_value_string:
+        class: '%pim_filter.product_value_string.class%'
+        arguments:
+            - '@form.factory'
+            - '@pim_filter.product_utility'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: product_value_string }
+
+    pim_filter.product_value_choice:
+        class: '%pim_filter.product_value_choice.class%'
+        arguments:
+            - '@form.factory'
+            - '@pim_filter.product_utility'
+            - '@pim_user.context.user'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.attribute_option'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: product_value_choice }
+
+    pim_filter.product_value_number:
+        class: '%pim_filter.product_value_number.class%'
+        arguments:
+            - '@form.factory'
+            - '@pim_filter.product_utility'
+            - '@pim_catalog.repository.attribute'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: product_value_number }
+
+    pim_filter.product_value_date:
+        class: '%pim_filter.product_value_date.class%'
+        arguments:
+            - '@form.factory'
+            - '@pim_filter.product_utility'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: product_value_date }
+
+    pim_filter.product_value_datetime:
+        class: '%pim_filter.product_value_datetime.class%'
+        arguments:
+            - '@form.factory'
+            - '@pim_filter.product_utility'
+            - '@pim_user.context.user'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: product_value_datetime }
+
+    pim_filter.product_value_boolean:
+        class: '%pim_filter.product_value_boolean.class%'
+        arguments:
+            - '@form.factory'
+            - '@pim_filter.product_utility'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: product_value_boolean }
+
+    pim_filter.product_value_metric:
+        class: '%pim_filter.product_value_metric.class%'
+        arguments:
+            - '@form.factory'
+            - '@pim_filter.product_utility'
+            - '@akeneo_measure.manager'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: product_value_metric }
+
+    pim_filter.product_value_price:
+        class: '%pim_filter.product_value_price.class%'
+        arguments:
+            - '@form.factory'
+            - '@pim_filter.product_utility'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: product_value_price }
+
+    pim_filter.product_label_or_identifier_filter:
+        class: '%pim_filter.product_label_or_identifier_filter.class%'
+        arguments:
+            - '@form.factory'
+            - '@pim_filter.product_utility'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: label_or_identifier }
+
+    pim_reference_data.filter.reference_data:
+        class: 'Oro\Bundle\PimFilterBundle\Filter\ProductValue\ReferenceDataFilter'
+        arguments:
+            - '@form.factory'
+            - '@pim_filter.product_utility'
+            - '@pim_user.context.user'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_reference_data.registry'
+            - '@pim_catalog.repository.attribute_option'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: product_value_reference_data }

@@ -1,0 +1,28 @@
+<div class="tabsection-title">
+    <%- sectionTitle %>
+</div>
+<div class="tabsection-content">
+    <div class="AknFormContainer AknFormContainer--withPadding" data-drop-zone="general-select-fields">
+        <div class="AknFieldContainer">
+            <div class="AknFieldContainer-header">
+                <label class="AknFieldContainer-label control-label required" for="pim_enrich_entity_form_code">
+                    <%- label %> <em><%- requiredLabel %></em>
+                </label>
+            </div>
+            <div class="AknFieldContainer-inputContainer">
+                <input id="pim_enrich_entity_form_code" class="AknTextField code" type="text"
+                    <%- false === hasId ? '' : 'readonly disabled' %>
+                    required value="<%- code %>">
+            </div>
+            <div class="AknFieldContainer-footer">
+                <div class="AknFieldContainer-validationErrors validation-errors">
+                    <% _.each(errors, function (error) { %>
+                        <div class="AknFieldContainer-validationError">
+                            <%- error %>
+                        </div>
+                    <% }); %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

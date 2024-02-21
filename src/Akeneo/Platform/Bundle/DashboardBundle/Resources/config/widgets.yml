@@ -1,0 +1,6 @@
+parameters:
+    pim_dashboard.widget.registry.class: Akeneo\Platform\Bundle\DashboardBundle\Widget\Registry
+
+services:
+    pim_dashboard.widget.registry:
+        class: '%pim_dashboard.widget.registry.class%'

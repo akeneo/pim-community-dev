@@ -1,0 +1,20 @@
+pim_catalog_identifier_generator:
+  acl:
+    view: 'Visualitza els generadors d''identificadors'
+    manage: 'Gestionar els generadors d''identificadors'
+  acl_group:
+    identifier_generator: 'Generador d''identificadors'
+  condition:
+    fields:
+      family: Família
+      enabled: Estat
+      categories: Categories
+    field_groups:
+      system: Sistema
+  structure:
+    fields:
+      free_text: Text lliure
+      auto_number: Número automàtic
+      family: Família
+    field_groups:
+      system: Sistema

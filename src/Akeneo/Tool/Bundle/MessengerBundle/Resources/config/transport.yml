@@ -1,0 +1,29 @@
+services:
+    Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory:
+        arguments:
+            - '%env(string:SRNT_GOOGLE_APPLICATION_CREDENTIALS)%'
+
+    Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\GpsTransportFactory:
+        arguments:
+            - '@Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory'
+            - '@Akeneo\Tool\Bundle\MessengerBundle\Ordering\OrderingKeySolver'
+        tags: [messenger.transport_factory]
+
+    Akeneo\Tool\Bundle\MessengerBundle\Ordering\OrderingKeySolver:
+        arguments:
+            - !tagged_iterator akeneo_messenger.ordering_key_candidate
+
+    Akeneo\Tool\Bundle\MessengerBundle\Middleware\UcsMiddleware:
+        arguments:
+            - '%env(default::string:APP_TENANT_ID)%'
+            - '@logger'
+
+    Akeneo\Tool\Bundle\MessengerBundle\Process\RunMessageProcess:
+        arguments:
+            - '@akeneo_messenger.message.serializer'
+            - '@logger'
+
+    Akeneo\Tool\Bundle\MessengerBundle\Middleware\HandleProcessMessageMiddleware:
+        arguments:
+            - '@Akeneo\Tool\Bundle\MessengerBundle\Process\RunMessageProcess'
+            - '@logger'

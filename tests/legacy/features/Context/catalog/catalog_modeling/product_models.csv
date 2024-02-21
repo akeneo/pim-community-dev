@@ -1,0 +1,173 @@
+code;family_variant;parent;categories;name-en_US;collection;image;variation_image;description-en_US-ecommerce;erp_name-en_US;price-EUR;supplier;wash_temperature;color;composition;variation_name-en_US;material;size;name-fr_FR
+amor;clothing_colorsize;;master_men_blazers,supplier_zaro;Heritage jacket navy;summer_2016;;;Heritage jacket navy blue tweed suit with single breasted 2 button. 53% wool, 22% polyester, 18% acrylic, 5% nylon, 1% cotton, 1% viscose. Dry Cleaning uniquement.Le mannequin measuring 1m85 and wears UK size 40, size 50 FR;Amor;999;zaro;800;;;;;;
+aphrodite;clothing_colorsize;;master_women_blouses,print_clothing,supplier_zaro;Top Layered Sleeveless gauze snake print;summer_2016;;;Top Layered Sleeveless gauze snake print. Pleated round neck and drop back closure. · Back length 55.2 cmCes measures are calculated for a size M.;Aphrodite;299;zaro;700;;;;;;
+apollon;clothing_color_size;;master_men_blazers_deals,supplier_zaro;Long gray suit jacket and matching pants unstructured;winter_2016;files/apollon/image/apollon.jpg;;Long gray suit jacket and matching pants unstructured. 61% wool, 30% polyester, 9% ramie. Dry clean only.;Apollon;899;zaro;600;;;;;;
+apollon_blue;clothing_color_size;apollon;master_men_blazers_deals,supplier_zaro;;;files/apollon_blue/image/apollon.jpg;;;;;;;blue;;Apollon blue;;;
+apollon_pink;clothing_color_size;apollon;master_men_blazers_deals,supplier_zaro;;;files/apollon_pink/image/apollon.jpg;;;;;;;pink;;Apollon pink;;;
+apollon_red;clothing_color_size;apollon;master_men_blazers_deals,supplier_zaro;;;files/apollon_red/image/apollon.jpg;;;;;;;red;;Apollon red;;;
+apollon_yellow;clothing_color_size;apollon;master_men_blazers_deals,supplier_zaro;;;files/apollon_yellow/image/apollon.jpg;files/apollon_yellow/variation_image/apollon.jpg;;;;;;yellow;;Apollon yellow;;;
+ares;clothing_color_size;;master_men_blazers_deals,print_clothing,supplier_mongo;Blazer wool mixed with sand print foot hen;spring_2015;;;Blazer wool mixed with sand print foot hen, single breasted with two buttons, patch pockets and contrasting lapel collar, model 'Vienna'. Das Model 185 cm groß ist und trägt Größe 40 (DE Größe 50 - 101cm Brustumfang) 60% wool, 30% polyester, 10% cotton. Machine washable.;Ares;1099;mongo;600;;;;;;
+ares_blue;clothing_color_size;ares;master_men_blazers_deals,print_clothing,supplier_mongo;;;;;;;;;;blue;;Ares blue;;;
+ares_pink;clothing_color_size;ares;master_men_blazers_deals,print_clothing,supplier_mongo;;;;;;;;;;pink;;Ares pink;;;
+ares_yellow;clothing_color_size;ares;master_men_blazers_deals,print_clothing,supplier_mongo;;;;;;;;;;yellow;;Ares yellow;;;
+artemis;clothing_color_size;;master_women_blouses,print_clothing,supplier_zaro;T-Shirt cotton round neck;spring_2016;files/artemis/image/artemis.jpg;;T-Shirt cotton round neck, three quarter sleeves and neckline in the back.;Artemis;499;zaro;400;;;;;;
+artemis_blue;clothing_color_size;artemis;master_women_blouses,print_clothing,supplier_zaro;;;files/artemis_blue/image/artemis.jpg;files/artemis_blue/variation_image/artemis.jpg;;;;;;blue;;Artemis blue;;;
+artemis_red;clothing_color_size;artemis;master_women_blouses,print_clothing,supplier_zaro;;;files/artemis_red/image/artemis.jpg;;;;;;;red;;Artemis red;;;
+athena;clothing_colorsize;;master_women_dresses,supplier_mongo;athena;autumn_2016;files/athena/image/athena.jpg;;"Length: Short
+Lining: 100% polyester
+Model: Model is 179 cm and wears a size 36
+Cervical Shape: Deep V-neck
+Total length: 88 cm in size 36
+Additional Info: zip, lined
+Handle Type: Sleeveless
+Composition: 100% nylon
+Care instructions: hand wash";Athena;699;mongo;800;;;;;;
+aurora;clothing_colorsize;;master_women_blouses,print_clothing,supplier_mongo;aurora;summer_2017;;;"Length: Long
+Fit: Relaxed
+Model: Model is 175 cm tall and wears a size 36
+Total length: 71 cm in size 36
+Collar: Shawl Collar
+Sleeve length: 37 cm in size 36
+Handle Type: three quarter sleeve
+Composition: 100% polyester
+Care instructions: do not tumble dry, Machine wash at 30 ° C, shrink possibility limited to 5%, delicates wash";Aurora;599;mongo;700;;;;;;
+bacchus;clothing_color_size;;master_men_pants_shorts,supplier_zaro;Slightly washed denim shorts;summer_2016;files/bacchus/image/bacchus.jpg;;Slightly washed denim shorts with worn finish on the front. The model is 185cm and is wearing a size UK 32, size 42 EN 100% cotton. Machine washable.;Bacchus;599;zaro;600;;;;;;
+bacchus_blue;clothing_color_size;bacchus;master_men_pants_shorts,supplier_zaro;;;files/bacchus_blue/image/bacchus.jpg;files/bacchus_blue/variation_image/bacchus.jpg;;;;;;blue;;Bacchus blue;;;
+bacchus_orange;clothing_color_size;bacchus;master_men_pants_shorts,supplier_zaro;;;files/bacchus_orange/image/bacchus.jpg;;;;;;;orange;;Bacchus orange;;;
+bacchus_pink;clothing_color_size;bacchus;master_men_pants_shorts,supplier_zaro;;;files/bacchus_pink/image/bacchus.jpg;;;;;;;pink;;Bacchus pink;;;
+bacchus_yellow;clothing_color_size;bacchus;master_men_pants_shorts,supplier_zaro;;;files/bacchus_yellow/image/bacchus.jpg;;;;;;;yellow;;Bacchus yellow;;;
+brogueshoe;shoes_size;;master_men_shoes,supplier_abibas;brogueshoe;summer_2016;;;;Brogue shoe;267;abibas;;;;;;;
+brooksblue;shoes_size;;master_men_shoes;Brooks blue;summer_2017;;;Brooks blue;Brooks blue;;;;blue;;Brooks blue;;;
+brookspink;shoes_size;;master_women_shoes;Brooks pink;summer_2017;;;Brooks pink;Brooks pink;;;;pink;;Brooks pink;;;
+caelus;clothing_color_size;;master_men_blazers_deals,supplier_mongo;Tuxedo with animal print;summer_2016;;;"Get ready to party in this tuxedo with animal print grabbing composed of a single-breasted jacket with 2 buttons and matching pants. Our skinny suits offer a perfect contemporary snowstorm.
+The model is 1.85 meters (6 feet 1 inch), wears a size 40 jacket and pants 32R.
+Dry clean only.";Caelus;999;mongo;600;;;;;;
+caelus_blue;clothing_color_size;caelus;master_men_blazers_deals,supplier_mongo;;;;;;;;;;blue;;Caelus blue;;;
+caelus_red;clothing_color_size;caelus;master_men_blazers_deals,supplier_mongo;;;;;;;;;;red;;Caelus red;;;
+climbingshoe;shoes_size;;master_men_shoes,print_shoes,supplier_abibas;climbingshoe;summer_2017;files/climbingshoe/image/climbingshoe.jpg;;;Climbing shoe;258;abibas;;;;;;;
+converseblack;shoes_size;;master_men_shoes,master_women_shoes;Converse black;summer_2017;files/converseblack/image/feet-1842328_960_720.jpg;;Converse black;Converse black;;;;black;;Converse black;;;
+conversered;shoes_size;;master_men_shoes,master_women_shoes;Converse red;summer_2017;files/conversered/image/converse-932667_960_720.jpg;;Converse red;Converse red;;;;red;;Converse red;;;
+derby;shoes_size;;master_men_shoes,print_shoes,supplier_abibas;derby;summer_2016;;;;Derby shoe;123;abibas;;;;;;;
+diana;clothing_color_size;;master_women_dresses,print_clothing,supplier_zaro;diana;winter_2016;files/diana/image/diana2.jpg;;"Length: Short
+Lining: 100% polyester
+Model: Model is 179 cm and wears a size 36
+Cervical Shape: Deep V-neck
+Total length: 88 cm in size 36
+Additional Info: zip, lined
+Handle Type: Sleeveless
+Composition: 100% nylon
+Care instructions: hand wash";Diana;149;zaro;400;;;;;;
+diana_pink;clothing_color_size;diana;master_women_dresses,print_clothing,supplier_zaro;;;files/diana_pink/image/diana2.jpg;files/diana_pink/variation_image/diana2.jpg;;;;;;pink;;Diana pink;;;
+diana_red;clothing_color_size;diana;master_women_dresses,print_clothing,supplier_zaro;;;files/diana_red/image/diana2.jpg;;;;;;;red;;Diana red;;;
+dionysos;clothing_colorsize;;master_men_blazers_deals,supplier_zaro;Black-breasted jacket;;;;;Dionysos;1099;zaro;800;;;;;;
+dressshoe;shoes_size;;master_men_shoes,supplier_abibas;;;files/dressshoe/image/dressshoe.jpg;;;Dress shoe;444;abibas;;;;;;;
+elegance;shoes_size;;master_men_shoes;elegance;summer_2017;files/elegance/image/elegance.jpg;;;Elegance;;;;black;;Elegance;;;
+eris;clothing_colorsize;;master_women_shirts,print_clothing,supplier_zaro;Relaxed with a classic or dynamic piec;spring_2016;;;"Relaxed with a classic or dynamic piece with an extravagant accessory: white blouse with it the Mexx brand, your look will be 100% successful!
+
+Length: normal
+Cut: bent
+Back width: 46 cm
+Model: 178 cm
+Occasion: Business
+Pattern / Color: Solid colors
+Total length: 67 cm in size 36
+Col: flared neck
+Sleeve length: 63 cm in size 36
+Sleeve type: Long Sleeve
+Composition: 67% cotton, 28% polyamide, 5% elastane
+Care instructions: machine wash at 30 ° C";Eris;399;zaro;700;;;;;;
+galesh;shoes_size;;master_men_shoes,print_shoes,supplier_abibas;galesh;summer_2016;;;;Galesh shoe;144;abibas;;;;;;;
+hades;clothing_color_size;;master_men_pants_jeans,print_clothing,supplier_zaro;Elegant slim long sleeve shirt;autumn_2016;;;Elegant slim long sleeve shirt white with button-down collar and breast pocket. 65% polyester, 35% cotton. Machine washable.;Hades;699;zaro;600;;;;;;
+hades_blue;clothing_color_size;hades;master_men_pants_jeans,print_clothing,supplier_zaro;;;;;;;;;;blue;;Hades blue;;;
+hades_red;clothing_color_size;hades;master_men_pants_jeans,print_clothing,supplier_zaro;;;;;;;;;;red;;Hades red;;;
+hefaistos;clothing_colorsize;;master_men_pants_shorts,supplier_mongo;Jacket and trousers;summer_2017;;;Jacket and trousers: 39% polyester, 37% acrylic, 15% wool, 7% nylon, 1% cotton, 1% viscose. Dry clean only.;Hefaistos;499;mongo;600;;;;;;
+hera;clothing_colorsize;;master_women_shirts,print_clothing,supplier_mongo;hera;summer_2016;;;"Relaxed with a classic or dynamic piece with an extravagant accessory: white blouse with it the Mexx brand, your look will be 100% successful!
+
+Length: normal
+Cut: bent
+Back width: 46 cm
+Model: 178 cm
+Occasion: Business
+Pattern / Color: Solid colors
+Total length: 67 cm in size 36
+Col: flared neck
+Sleeve length: 63 cm in size 36
+Sleeve type: Long Sleeve
+Composition: 67% cotton, 28% polyamide, 5% elastane
+Care instructions: machine wash at 30 ° C";Hera;699;mongo;400;;;;;;
+hermes;clothing_colorsize;;master_men_blazers,supplier_mongo;Suit Jacket Heritage multicolored;summer_2016;;;Suit Jacket Heritage multicolored checkered Prince of Wales with single breasted 2 button and skinny pants to match.;Hermes;799;mongo;800;;;;;;
+hestia;clothing_colorsize;;master_women_blouses_deals,supplier_zaro;hestia;winter_2016;;;Model: Model is 180 cm tall and wears a size 36;Hestia;499;zaro;700;;;;;;
+jack;clothing_color_size;;tshirts;jack;summer_2017;;;;Jack;;;;;;;;;
+jack_brown;clothing_color_size;jack;tshirts;;;;files/jack_brown/variation_image/t-shirt-marron.png;;;;;;brown;;Jack brown;;;
+jack_green;clothing_color_size;jack;tshirts;;;;files/jack_green/variation_image/t-shirt-green.jpg;;;;;;green;;Jack green;;;
+jellyshoes;shoes_size;;master_women_shoes,supplier_abibas;jellyshoes;winter_2016;;;;Jelly shoe;176;abibas;;;;;;;
+juno;clothing_colorsize;;master_women_blouses_deals,print_clothing,supplier_zaro;juno;spring_2015;;;"Back width: 40 cm in size 36
+Model: Model is 180 cm tall and wears a size 36
+Cervical Shape: V-Neck
+Pattern / Color: Solid colors
+Total length: 45 cm in size 36
+Transparency: light
+Handle Type: Sleeveless
+Composition: 100% polyester
+Care instructions: machine wash at 40 ° C, do not put in dryer, washing delicates";Juno;349;zaro;600;;;;;;
+minerva;clothing_color_size;;master_women_shirts,supplier_mongo;minerva;spring_2016;;;"Relaxed with a classic or dynamic piece with an extravagant accessory: white blouse with it the Mexx brand, your look will be 100% successful!
+
+Length: normal
+Cut: bent
+Back width: 46 cm
+Model: 178 cm
+Occasion: Business
+Pattern / Color: Solid colors
+Total length: 67 cm in size 36
+Col: flared neck
+Sleeve length: 63 cm in size 36
+Sleeve type: Long Sleeve
+Composition: 67% cotton, 28% polyamide, 5% elastane
+Care instructions: machine wash at 30 ° C";Minerva;799;mongo;600;;;;;;
+moccasin;shoes_size;;master_men_shoes,print_shoes,supplier_abibas;moccasin;spring_2015;;;;Moccasin;322;abibas;;;;;;;
+plain;clothing_color_size;;tshirts;plain;summer_2017;;;;Plain;;;;;;;;;
+plain_red;clothing_color_size;plain;tshirts;;;;files/plain_red/variation_image/plain_red.jpg;;;;;;red;;Plain red ;;;
+plain_white;clothing_color_size;plain;tshirts;;;;;;;;;;white;;Plain white;;;
+portunus;clothing_colorsize;;master_men_pants_shorts,print_clothing,supplier_zaro;Black shorts with pattern Christmas Santa tattoo;autumn_2016;;;Black shorts with pattern Christmas Santa tattoo. 100% cotton. Machine washable.;Portunus;599;zaro;400;;;;;;
+poseidon;clothing_colorsize;;master_men_pants_jeans,print_clothing,supplier_zaro;Vintage skinny jeans;summer_2017;;;Vintage skinny jeans is part of the collection Topman long time. Second pair of denim collection with 13 oz edge and raw edges, this style is totally unique with its coated blue color. 100% cotton. Machine washable.;Poseidon;699;zaro;hand;;;;;;
+quirinus;clothing_colorsize;;master_men_pants_shorts,supplier_mongo;quirinus;summer_2016;;;Black shorts with pattern Christmas Santa tattoo. 100% cotton. Machine washable.;Quirinus;499;mongo;hand;;;;;;
+securitas;clothing_colorsize;;;securitas;summer_2016;;;"Length: normal
+Fit: Normal
+Material: Denim
+Back width: 47 cm
+Model: 186 cm
+Occasion: relax
+Total length: 73 cm in size M
+Collar: button down collar
+Sleeve length: 66 cm in size M
+Sleeve type: Long Sleeve
+Composition: 100% cotton
+Care instructions: machine wash at 30 ° C";Securitas;799;zaro;800;;;;;;
+stilleto;shoes_size;;master_women_shirts,print_clothing,supplier_zaro;stilleto;spring_2016;;;;Stiletto;123;abibas;;;;;;;
+stock;shoes_size;;master_women_shoes,supplier_abibas;stock;summer_2017;files/stilleto/image/stilleto.jpg;;;Stock;;;;red;;Stock;;;
+terminus;clothing_colorsize;;master_women_shoes;terminus;winter_2016;;;Short chino solid light gray. 100% cotton. Machine washable.;Terminus;499;zaro;700;;;;;;
+venus;clothing_colorsize;;master_men_pants_shorts,supplier_zaro;venus;spring_2015;files/terminus/image/terminus.jpg;;"Length: noon
+Cup: close to the body
+Model: Model is 175 cm tall and wears a size 36
+Cervical shape: round neck
+Occasion: festive evening
+Total length: 99 cm in size 36
+Details: zipper
+Composition: 75% viscose, 22% nylon, 3% elastane
+Care instructions: do not tumble dry machine, hand wash";Venus;149;zaro;600;;;;;;
+vulcanus;clothing_colorsize;;master_women_dresses,supplier_zaro;vulcanus;spring_2016;;;Black shorts with Christmas mistletoe pattern. 100% cotton. Machine washable.;Vulcanus;499;zaro;600;;;;;;
+zeus;clothing_colorsize;;master_men_pants_shorts,print_clothing,supplier_zaro;zeus;autumn_2016;;;Poplin shirts are easy to iron and do not wrinkle. A must-have for any wardrobe that respects the Ellington section has a hidden button collar and a fitted and stylish look. 100% cotton. * Returns this article are made only by post. This item can only be returned in store.;Zeus;1290;zaro;400;;;;;;
+model-tshirt-divided;clothing_color_size;;tshirts;Cotton t-shirt with a round neck Divided;summer_2017;files/model-tshirt-divided/image/red.png;;Divided slim T-shirt with 2 buttons suit trousers and matching waistcoat. Jacket: 67% polyester, 22% viscose. Pants: 100% cotton. Vest: 65% polyester, 35% viscose. Dry clean only.;;;;;;;;;;
+model-tshirt-divided-navy-blue;clothing_color_size;model-tshirt-divided;tshirts;;;files/model-tshirt-divided-blue/image/red.png;files/model-tshirt-divided-blue/variation_image/blue.png;;;;;;navy_blue;;Divided navy blue;polyester;;
+model-tshirt-divided-battleship-grey;clothing_color_size;model-tshirt-divided;tshirts;;;files/model-tshirt-divided-grey/image/red.png;files/model-tshirt-divided-grey/variation_image/grey.png;;;;;;battleship_grey;;Divided battleship grey;cotton;;
+model-tshirt-divided-crimson-red;clothing_color_size;model-tshirt-divided;tshirts;;;files/model-tshirt-divided-red/image/red.png;files/model-tshirt-divided-red/variation_image/red.png;;;;;;crimson_red;;Divided crimson red;cotton;;
+model-tshirt-unique-color-kurt;clothing_size;;tshirts;T-shirt with a Kurt Cobain print motif;summer_2017;;;Divided slim T-shirt with 2 buttons in the honor of the legendary Kurt Cobain.;;;;;crimson_red;;;cotton;;
+model-braided-hat;accessories_size;;master_accessories_hats;Braided hat ;summer_2017;files/model-braided-hat/image/braided-hat.jpg;;Braided hat ;;;;;battleship_grey;;Braided hat battleship grey;wool;;Chapeau tressé
+model-tshirt-unique-size;clothing_color;;tshirts;T-shirt unique size;summer_2017;files/model-tshirt-unique-size/image/unique-size.jpg;;Divided slim T-shirt with 2 buttons. Unique size.;;;;;;;;cotton;u;
+model-running-shoes;shoes_size_color;;master_men_shoes;Running shoes;summer_2017;;;Running shoes;;;;;;;;leather;;
+model-running-shoes-xxs;shoes_size_color;model-running-shoes;master_men_shoes;;;;;;;;;;;;Running shoes XXS;;xxs;
+model-running-shoes-m;shoes_size_color;model-running-shoes;master_men_shoes;;;;;;;;;;;;Running shoes M;;m;
+model-running-shoes-xxxl;shoes_size_color;model-running-shoes;master_men_shoes;;;;;;;;;;;;Running shoes 3XL;;xxxl;
+model-biker-jacket;clothing_material_size;;master_men_blazers;Biker jacket;summer_2017;;;Biker jacket;;;;;;;;;;
+model-biker-jacket-leather;clothing_material_size;model-biker-jacket;master_men_blazers;;;;;;;;;;antique_white;;Biker jacket leather;leather;;
+model-biker-jacket-polyester;clothing_material_size;model-biker-jacket;master_men_blazers;;;;;;;;;;antique_white;;Biker jacket polyester;polyester;;

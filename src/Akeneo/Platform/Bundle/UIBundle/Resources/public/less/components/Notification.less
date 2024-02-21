@@ -1,0 +1,170 @@
+@import '../base/variables';
+
+.AknNotification {
+  @bigIconSize: 50px;
+  @statusIconSize: 20px;
+
+  width: 400px;
+
+  &-link {
+    border-bottom: 1px solid @AknBorderColor;
+    color: @AknDefaultFontColor;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    opacity: 0.4;
+    transition: background 0.2s ease;
+
+    &:hover {
+      background: @AknDefaultHoverBackground;
+    }
+
+    &--new {
+      opacity: 1;
+    }
+  }
+
+  &-header {
+    display: flex;
+  }
+
+  &-icon {
+    width: @bigIconSize;
+    height: @bigIconSize;
+    border: 1px solid @AknBorderColor;
+    border-radius: 2px;
+    background-position: center center;
+    background-size: 50% 50%;
+    background-repeat: no-repeat;
+    position: relative;
+
+    &--import, &--massUpload {
+      background-image: url("/bundles/pimui/images/icon-import.svg");
+    }
+
+    &--export, &--quickExport {
+      background-image: url("/bundles/pimui/images/icon-export.svg");
+    }
+
+    &--massEdit {
+      background-image: url("/bundles/pimui/images/icon-edit.svg");
+    }
+
+    &--massDelete, &--attributeGroupMassDelete, &--attributeMassDelete {
+      background-image: url("/bundles/pimui/images/icon-trash.svg");
+    }
+
+    &--pimeeWorkflowProductDraftNotificationNewProposal,
+    &--pimeeWorkflowProductDraftNotificationPartialApprove,
+    &--pimeeWorkflowProductDraftNotificationPartialReject,
+    &--pimeeWorkflowProductDraftNotificationPartialRemove,
+    &--pimeeWorkflowProductDraftNotificationApprove,
+    &--pimeeWorkflowProductDraftNotificationRefuse,
+    &--pimeeWorkflowProductDraftNotificationRemove,
+    &--pimeeWorkflowProductDraftNotificationSent {
+      background-image: url("/bundles/pimui/images/icon-proposal.svg");
+    }
+
+    &--pimeeWorkflowImportNotificationNewProposals {
+      background-image: url("/bundles/pimui/images/icon-import-proposals.svg");
+    }
+
+    &--rule {
+      background-image: url("/bundles/pimui/images/icon-rules.svg");
+    }
+
+    &--settings {
+      background-image: url("/bundles/pimui/images/icon-rules.svg");
+    }
+
+    &--projectCalculation {
+      background-image: url("/bundles/pimui/images/icon-tasks.svg");
+    }
+
+    &--projectCreated {
+      background-image: url("/bundles/pimui/images/icon-tasks.svg");
+    }
+
+    &--projectFinished {
+      background-image: url("/bundles/pimui/images/icon-tasks-done.svg");
+    }
+
+    &--robot {
+      background-image: url("/bundles/pimui/images/icon-robot.svg");
+    }
+
+    &--connectedAppAuthorizations,
+    &--disabledCatalog,
+    &--attributeRemoved {
+      background-image: url("/bundles/pimui/images/icon-connect.svg");
+    }
+  }
+
+  &-status {
+    width: @statusIconSize;
+    height: @statusIconSize;
+    line-height: @statusIconSize;
+    right: -@statusIconSize / 3;
+    top: -@statusIconSize / 3;
+    position: absolute;
+    margin: 0;
+    color: white;
+    text-align: center;
+
+    &--apply,
+    &--add,
+    &--success {
+      background: @AknGreen;
+    }
+
+    &--warning {
+      background: @AknOrange;
+    }
+
+    &--error {
+      background: @AknRed;
+    }
+  }
+
+  &-metas {
+    flex-grow: 1;
+    line-height: 20px;
+    padding: 0 16px;
+    align-self: center;
+  }
+
+  &-time {
+    color: @AknGrey;
+    font-size: @AknDefaultFontSize;
+    display: block;
+  }
+
+  &-title {
+    font-size: @AknFontSizeBig;
+    font-weight: bold;
+    display: block;
+  }
+
+  &-message {
+    line-height: 16px;
+    padding: 16px 0;
+  }
+
+  &-comment {
+    background-color: @AknLightGray;
+    color: @AknDarkFontColor;
+    line-height: 16px;
+    padding: 16px;
+    margin-bottom: 16px;
+    width: 100%;
+    transition: background 0.2s ease;
+  }
+
+  &:hover &-comment {
+    background: darken(@AknLightGray, 10%);
+  }
+
+  &-button {
+    align-self: flex-start;
+  }
+}

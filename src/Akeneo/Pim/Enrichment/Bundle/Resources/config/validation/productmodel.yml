@@ -1,0 +1,41 @@
+Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel:
+    group_sequence:
+        - ProductModel
+        - UniqueAxis
+    constraints:
+        - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ProductModelPositionInTheVariantTree: ~
+        - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\OnlyExpectedAttributes: ~
+        - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\UniqueVariantAxis:
+            groups: [UniqueAxis]
+        - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\NotEmptyVariantAxes: ~
+        - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product\UniqueProductModelEntity:
+            message: pim_catalog.constraint.pim_immutable_product_model_validator
+    properties:
+        code:
+            - NotBlank:
+                message: 'product_model.code.not_blank.message'
+            - Regex:
+                pattern: '/^(?!\s)[^,;]+(?<!\s)$/'
+                message: 'regex.comma_or_semicolon_or_surrounding_space.message'
+            - Regex:
+                pattern: '/[\r\n]/'
+                message: 'regex.line_break.message'
+                match: false
+            - Length:
+                max: 255
+        familyVariant:
+            - NotBlank:
+                message: 'product_model.family_variant.not_blank.message'
+        associations:
+            - Symfony\Component\Validator\Constraints\All:
+                - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\AssociationTypeIsNotQuantified: ~
+    getters:
+        values:
+            - Symfony\Component\Validator\Constraints\Valid:
+                traverse: true
+            - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\AttributeOptionsExist: ~
+            - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ReferenceDataOptionsExist: ~
+            - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ScopableValues: ~
+            - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\LocalizableValues: ~
+        quantifiedAssociations:
+            - Symfony\Component\Validator\Constraints\Valid: ~

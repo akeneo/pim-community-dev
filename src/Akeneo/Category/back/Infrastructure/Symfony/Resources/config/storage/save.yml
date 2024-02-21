@@ -1,0 +1,9 @@
+services:
+    Akeneo\Category\Application\Storage\Save\SaveCategory:
+        class: Akeneo\Category\Application\Storage\Save\CategorySaverProcessor
+        arguments:
+            - '@Akeneo\Category\Application\Storage\Save\CategorySaverRegistry'
+
+    Akeneo\Category\Application\Storage\Save\CategorySaverRegistry:
+        arguments:
+            - !tagged_iterator 'pim.category.save.category_saver'

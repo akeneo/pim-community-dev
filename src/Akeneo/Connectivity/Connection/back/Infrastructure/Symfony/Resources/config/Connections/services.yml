@@ -1,0 +1,7 @@
+parameters:
+    akeneo_connectivity.connection.max_limit: 50
+
+services:
+    Akeneo\Connectivity\Connection\Infrastructure\Connections\Service\GetConnectionsNumberLimit:
+        arguments:
+            - '%akeneo_connectivity.connection.max_limit%'

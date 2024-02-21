@@ -1,0 +1,40 @@
+Akeneo\UserManagement\Component\Model\Group:
+    type: entity
+    table: oro_access_group
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    repositoryClass: Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\GroupRepository
+    fields:
+        id:
+            type: smallint
+            id: true
+            generator:
+                strategy: AUTO
+        name:
+            type: string
+            unique: true
+            nullable: false
+            length: 255
+        defaultPermissions:
+            column: default_permissions
+            type: json
+            unique: false
+            nullable: true
+        type:
+            type: string
+            nullable: false
+            length: 30
+            options:
+                default: 'default'
+    manyToMany:
+        roles:
+            targetEntity: Akeneo\UserManagement\Component\Model\Role
+            joinTable:
+                name: oro_user_access_group_role
+                joinColumns:
+                    group_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+                inverseJoinColumns:
+                    role_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE

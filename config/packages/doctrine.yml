@@ -1,0 +1,70 @@
+# Please do not remove placeholder, to keep the listener getting registered
+doctrine:
+    dbal:
+        default_connection:   default
+        connections:
+            default:
+                driver: 'pdo_mysql'
+                dbname: '%env(APP_DATABASE_NAME)%'
+                host: '%env(APP_DATABASE_HOST)%'
+                port: '%env(APP_DATABASE_PORT)%'
+                user: '%env(APP_DATABASE_USER)%'
+                password: '%env(APP_DATABASE_PASSWORD)%'
+                charset: utf8mb4
+                default_table_options:
+                        charset: utf8mb4
+                        collate: utf8mb4_unicode_ci
+                        row_format: DYNAMIC
+                server_version: '8.0'
+                mapping_types:
+                    json: string
+                options:
+                    # active PDO::ATTR_STRINGIFY_FETCHES witch is false by default in php-8.1
+                    17: true
+        types:
+            datetime: Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\DBAL\Types\UTCDateTimeType
+            datetime_immutable: Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\DBAL\Types\UTCDateTimeImmutableType
+            uuid_binary: Ramsey\Uuid\Doctrine\UuidBinaryType
+    orm:
+        auto_generate_proxy_classes: '%kernel.debug%'
+        auto_mapping: true
+        resolve_target_entities:
+            placeholder: placeholder
+        mappings:
+            tree:
+                type: annotation
+                alias: Gedmo
+                prefix: Gedmo\Tree\Entity
+                dir: '%kernel.project_dir%/vendor/gedmo/doctrine-extensions/src/Tree/Entity'
+
+services:
+    doctrine.result_cache_provider:
+        class: Symfony\Component\Cache\DoctrineProvider
+        public: false
+        arguments:
+            - '@doctrine.result_cache_pool'
+    doctrine.system_cache_provider:
+        class: Symfony\Component\Cache\DoctrineProvider
+        public: false
+        arguments:
+            - '@doctrine.system_cache_pool'
+
+framework:
+    cache:
+        pools:
+            doctrine.result_cache_pool:
+                adapters:
+                    - cache.adapter.apcu
+                    - cache.adapter.array
+            doctrine.system_cache_pool:
+                adapter: cache.system
+
+doctrine_migrations:
+    migrations_paths:
+        'Pim\Upgrade\Schema': '%doctrine_migrations_dir%'
+    storage:
+        table_storage:
+            table_name: 'migration_versions'
+            version_column_name: 'version'
+            version_column_length: 190
+            executed_at_column_name: 'executed_at'

@@ -1,0 +1,52 @@
+extensions:
+    pim-association-type-create-modal:
+        module: pim/form/common/creation/modal
+        config:
+            labels:
+                title: pim_enrich.entity.association_type.module.create.title
+                subTitle: pim_menu.item.association_type
+            hint:
+                title: pim_enrich.entity.association_type.hint
+                link: https://help.akeneo.com/pim/articles/manage-your-association-types.html
+            picture: illustrations/Association-types.svg
+            successMessage: pim_enrich.entity.association_type.flash.create.success
+            editRoute: pim_enrich_associationtype_edit
+            postUrl: pim_enrich_associationtype_rest_create
+            routerKey: code
+
+    pim-association-type-create-form:
+        module: pim/form/common/creation/field
+        parent: pim-association-type-create-modal
+        targetZone: fields
+        position: 10
+        config:
+            identifier: code
+            label: pim_common.code
+
+    pim-association-type-properties:
+        module: pim/form/common/exclusif-boolean
+        parent: pim-association-type-create-modal
+        targetZone: fields
+        position: 15
+
+    pim-association-type-properties-is-quantified:
+        module: pim/form/common/fields/boolean
+        parent: pim-association-type-properties
+        targetZone: fields
+        position: 20
+        config:
+            fieldName: is_quantified
+            label: pim_enrich.entity.association_type.property.is_quantified
+            messageOnReadOnly: pim_enrich.entity.association_type.module.create.is_quantified.message_on_read_only
+            defaultValue: false
+
+    pim-association-type-properties-is-two-way:
+        module: pim/form/common/fields/boolean
+        parent: pim-association-type-properties
+        targetZone: fields
+        position: 30
+        config:
+            fieldName: is_two_way
+            label: pim_enrich.entity.association_type.property.is_two_way
+            messageOnReadOnly: pim_enrich.entity.association_type.module.create.is_two_way.message_on_read_only
+            defaultValue: false

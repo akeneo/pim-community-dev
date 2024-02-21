@@ -1,0 +1,187 @@
+Akeneo\UserManagement\Component\Model\User:
+    type: entity
+    table: oro_user
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    repositoryClass: Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\UserRepository
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        username:
+            type: string
+            length: 255
+            unique: true
+        email:
+            type: string
+            length: 255
+            unique: true
+        namePrefix:
+            type: string
+            length: 255
+            nullable: true
+            column: name_prefix
+        firstName:
+            type: string
+            length: 255
+            nullable: true
+            column: first_name
+        middleName:
+            type: string
+            length: 255
+            nullable: true
+            column: middle_name
+        lastName:
+            type: string
+            length: 255
+            nullable: true
+            column: last_name
+        nameSuffix:
+            type: string
+            length: 255
+            nullable: true
+            column: name_suffix
+        image:
+            type: string
+            length: 255
+            nullable: true
+        enabled:
+            type: boolean
+            options:
+                default: true
+        salt:
+            type: string
+        password:
+            type: string
+        confirmationToken:
+            type: string
+            nullable: true
+            column: confirmation_token
+        passwordRequestedAt:
+            type: datetime
+            nullable: true
+            column: password_requested
+        lastLogin:
+            type: datetime
+            nullable: true
+            column: last_login
+        loginCount:
+            type: integer
+            column: login_count
+            nullable: false
+            options:
+                unsigned: true
+                default: "0"
+        createdAt:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: create
+        updatedAt:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: update
+        productGridFilters:
+            type: json
+            nullable: true
+            column: product_grid_filters
+        emailNotifications:
+            type: boolean
+            options:
+                default: false
+        phone:
+            type: string
+            nullable: true
+            length: 20
+        timezone:
+            type: string
+            nullable: false
+            length: 30
+        type:
+            type: string
+            nullable: false
+            column: user_type
+            length: 20
+            options:
+                default: user
+        properties:
+            type: json
+        consecutiveAuthenticationFailureCounter:
+            type: integer
+            nullable: false
+            column: consecutive_authentication_failure_counter
+            options:
+                default: 0
+                unsigned: true
+        authenticationFailureResetDate:
+            type: datetime
+            nullable: true
+            column: authentication_failure_reset_date
+        profile:
+            type: string
+            nullable: true
+            length: 255
+
+    manyToMany:
+        roles:
+            targetEntity: Akeneo\UserManagement\Component\Model\Role
+            joinTable:
+                name: oro_user_access_role
+                joinColumns:
+                    user_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+                inverseJoinColumns:
+                    role_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+        groups:
+            targetEntity: Akeneo\UserManagement\Component\Model\Group
+            joinTable:
+                name: oro_user_access_group
+                joinColumns:
+                    user_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+                inverseJoinColumns:
+                    group_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+        defaultGridViews:
+            targetEntity: Oro\Bundle\PimDataGridBundle\Entity\DatagridView
+            joinTable:
+                name: pim_user_default_datagrid_view
+                joinColumns:
+                    user_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+                inverseJoinColumns:
+                    view_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+    manyToOne:
+        catalogLocale:
+            targetEntity: Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface
+            nullable: false
+        uiLocale:
+            targetEntity: Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface
+            joinColumn:
+              name: ui_locale_id
+              nullable: false
+        catalogScope:
+            targetEntity: Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface
+            nullable: false
+        defaultTree:
+            targetEntity: Akeneo\Category\Infrastructure\Component\Model\CategoryInterface
+            nullable: false
+    oneToOne:
+        avatar:
+            targetEntity: Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface
+            joinColumn:
+                name: file_info_id
+                referencedColumnName: id
+    lifecycleCallbacks:
+        prePersist: [beforeSave]
+        preUpdate: [preUpdate]

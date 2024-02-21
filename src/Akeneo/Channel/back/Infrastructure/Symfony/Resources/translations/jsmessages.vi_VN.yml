@@ -1,0 +1,55 @@
+batch_jobs:
+  csv_currency_export:
+    label: Xuất khẩu tiền tệ trong CSV
+    export.label: Xuất khẩu tiền tệ
+  csv_currency_import:
+    label: Nhập khẩu tiền tệ trong CSV
+    import.label: Nhập khẩu tiền tệ
+  xlsx_currency_export:
+    label: Xuất khẩu tiền tệ trong XLSX
+    export.label: Xuất khẩu tiền tệ
+  xlsx_currency_import:
+    label: Nhập khẩu tiền tệ trong XLSX
+    import.label: Nhập khẩu tiền tệ
+  csv_locale_export:
+    label: Xuất khẩu nội địa trong CSV
+    export.label: Xuất khẩu nội địa
+  csv_locale_import:
+    label: Nhập khẩu nội địa trong CSV
+    import.label: Nhập khẩu nội địa
+  xlsx_locale_export:
+    label: Xuất khẩu nội địa trong XLSX
+    export.label: Xuất khẩu nội địa
+  xlsx_locale_import:
+    label: Nhập khẩu nội địa trong XLSX
+    import.label: Nhập khẩu nội địa
+  csv_channel_export:
+    label: Kênh xuất khẩu trong CSV
+    export.label: Kênh xuất khẩu
+  csv_channel_import:
+    label: Kênh nhập khẩu trong CSV
+    import.label: Kênh nhập khẩu
+  xlsx_channel_export:
+    label: Kênh xuất khẩu trong XLSX
+    export.label: Kênh xuất khẩu
+  xlsx_channel_import:
+    label: Kênh nhập khẩu trong XLSX
+    import.label: Kênh nhập khẩu
+pim_enrich.entity.channel:
+  label: Kênh
+  uppercase_label: Kênh
+  flash:
+    delete:
+      success: Kênh đã được gỡ bỏ thành công
+      fail: Không thể xóa kênh này
+  property:
+    category_tree: Cây danh mục
+    label_conversion_units: Chọn một đơn vị chuyển đổi cho từng thuộc tính đo lường sẽ được sử dụng trong quá trình export sản phẩm
+  module:
+    delete:
+      confirm: Bạn có chắc bạn muốn xóa kênh này?
+pim_enrich.entity.locale:
+  label: locale
+  plural_label: Locale
+pim_enrich.entity.currency:
+  plural_label: Tiền tệ

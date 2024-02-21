@@ -1,0 +1,24 @@
+pim_connector:
+  steps:
+    file_reader:
+      invalid_item_columns_count: 'Er worden %totalColumnsCount% kolommen verwacht, in werkelijkheid %itemColumnsCount% in %filePath%:%lineno%'
+job_execution.summary:
+  read: lees
+  write: geschreven
+  skip: overgeslagen
+  create: gecreëerd
+  process: verwerkt
+  update: bijgewerkt
+  update_products: geüpdatete producten
+  process_products: verwerkte producten
+  skip_products: overgeslagen producten
+  displayed: eerste waarschuwingen weergegeven
+  charset_validator:
+    title: 'Bestandscodering:'
+    skipped: overgeslagen, extensie in whitelist
+  product_skipped_no_diff: overgeslagen product (geen verschillen)
+  product_skipped_no_associations: product overgeslagen (geen associaties gedetecteerd)
+  product_model_skipped_no_diff: overgeslagen product model (geen verschillen)
+  item_position: lees de lijnen
+  skipped_in_root_product_model: overgeslagen productmodel met parent
+  skipped_in_sub_product_model: overgeslagen productmodel zonder parent

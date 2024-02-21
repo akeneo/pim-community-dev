@@ -1,0 +1,203 @@
+config:
+    config:
+        oro/datagrid/mass_delete-action:
+            jobInstanceCode: delete_products_and_product_models
+            route: pim_enrich_mass_edit_rest_launch
+            backRoute: pim_enrich_product_index
+            launchErrorLabel: pim_enrich.mass_edit.product.step.launch_error.label
+            launchedLabel: pim_enrich.mass_edit.product.step.launched.label
+            confirmLabel: pim_enrich.entity.product_model.module.delete.confirm_for_products_and_product_models
+            buttonText: pim_common.delete
+        pim/fetcher-registry:
+            fetchers:
+                datagrid-view:
+                    module: pim/datagrid-view-fetcher
+                    options:
+                        urls:
+                            list: pim_datagrid_view_rest_index
+                            get: pim_datagrid_view_rest_get
+                            columns: pim_datagrid_view_rest_default_columns
+                            userDefaultView: pim_datagrid_view_rest_default_user_view
+        pim/saver/datagrid-view:
+            url: pim_datagrid_view_rest_save
+        pim/remover/datagrid-view:
+            url: pim_datagrid_view_rest_remove
+
+    shim:
+        backgrid:
+            deps:
+                - jquery
+                - underscore
+                - backbone
+            exports: Backgrid
+        jquery.multiselect:
+            deps:
+                - jquery-ui
+        jquery.multiselect.filter:
+            deps:
+                - jquery.multiselect
+
+    paths:
+        oro/datagrid/tab-redirect-action:       pimdatagrid/js/datagrid/action/tab-redirect-action
+
+        pim/datagrid/column-selector:           pimdatagrid/js/datagrid/column-selector
+
+        pim/datagrid/display-selector:          pimdatagrid/js/datagrid/display-selector
+        oro/export-widget:                      pimdatagrid/js/datagrid/widget/export-widget
+        pim/datagrid/state:                     pimdatagrid/js/datagrid/state
+        pim/datagrid/state-listener:            pimdatagrid/js/datagrid/state-listener
+        pim/datagrid/column-form-listener:      pimdatagrid/js/datagrid/listener/column-form-listener
+
+        oro/datagrid/action-launcher:           pimdatagrid/js/datagrid/action-launcher
+        oro/datagrid/abstract-action:           pimdatagrid/js/datagrid/action/abstract-action
+        oro/datagrid/delete-action:             pimdatagrid/js/datagrid/action/delete-action
+        oro/datagrid/delete-confirm:            pimdatagrid/js/datagrid/action/delete-confirm.ts
+        oro/datagrid/sequential_edit-action:    pimdatagrid/js/datagrid/action/sequential-edit-action
+        oro/datagrid/mass_delete-action:        pimdatagrid/js/datagrid/action/mass-delete-action
+        oro/datagrid/attribute_mass_delete-action: pimdatagrid/js/datagrid/action/attribute-mass-delete-action
+        oro/datagrid/revoke-action:             pimdatagrid/js/datagrid/action/revoke-action
+        oro/datagrid/ajax-action:               pimdatagrid/js/datagrid/action/ajax-action
+        oro/datagrid/mass-action:               pimdatagrid/js/datagrid/action/mass-action
+        oro/datagrid/model-action:              pimdatagrid/js/datagrid/action/model-action
+        oro/datagrid/navigate-action:           pimdatagrid/js/datagrid/action/navigate-action
+        oro/datagrid/refresh-collection-action: pimdatagrid/js/datagrid/action/refresh-collection-action
+        oro/datagrid/reset-collection-action:   pimdatagrid/js/datagrid/action/reset-collection-action
+        oro/datagrid/actions-panel:             pimdatagrid/js/datagrid/actions-panel
+        oro/datagrid/action-column:             pimdatagrid/js/datagrid/column/action-column
+        oro/datagrid/body:                      pimdatagrid/js/datagrid/body
+        oro/datagrid/action-cell:               pimdatagrid/js/datagrid/cell/action-cell
+        oro/datagrid/boolean-cell:              pimdatagrid/js/datagrid/cell/boolean-cell
+        oro/datagrid/html-cell:                 pimdatagrid/js/datagrid/cell/html-cell
+        oro/datagrid/date-cell:                 pimdatagrid/js/datagrid/cell/date-cell
+        oro/datagrid/history-diff-cell:         pimdatagrid/js/datagrid/cell/history-diff-cell
+        oro/datagrid/datetime-cell:             pimdatagrid/js/datagrid/cell/datetime-cell
+        oro/datagrid/number-cell:               pimdatagrid/js/datagrid/cell/number-cell
+        oro/datagrid/integer-cell:              pimdatagrid/js/datagrid/cell/integer-cell
+        oro/datagrid/select-cell:               pimdatagrid/js/datagrid/cell/select-cell
+        oro/datagrid/select-row-cell:           pimdatagrid/js/datagrid/cell/select-row-cell
+        oro/datagrid/string-cell:               pimdatagrid/js/datagrid/cell/string-cell
+        oro/datagrid/attribute-type-cell:       pimdatagrid/js/datagrid/cell/attribute-type-cell
+        oro/datagrid/completeness-cell:         pimdatagrid/js/datagrid/cell/completeness-cell
+        oro/datagrid/expand-history-cell:       pimdatagrid/js/datagrid/cell/expand-history-cell
+        oro/datagrid/enabled-cell:              pimdatagrid/js/datagrid/cell/enabled-cell
+        oro/datagrid/image-cell:                pimdatagrid/js/datagrid/cell/image-cell
+        oro/datagrid/boolean-label-cell:        pimdatagrid/js/datagrid/cell/boolean-label-cell
+        oro/datagrid/boolean-status-cell:        pimdatagrid/js/datagrid/cell/boolean-status-cell
+        oro/datagrid/credentials-cell:          pimdatagrid/js/datagrid/cell/credentials-cell
+        oro/datagrid/complete-variant-product-cell: pimdatagrid/js/datagrid/cell/complete-variant-product-cell
+        oro/datagrid/label-cell:                pimdatagrid/js/datagrid/cell/label-cell
+        oro/datagrid/cell-formatter:            pimdatagrid/js/datagrid/formatter/cell-formatter
+        oro/datagrid/grid:                      pimdatagrid/js/datagrid/grid
+        oro/datagrid/header-cell:               pimdatagrid/js/datagrid/header-cell/header-cell
+        oro/datagrid/select-all-header-cell:    pimdatagrid/js/datagrid/header-cell/select-all-header-cell
+        oro/datagrid/header:                    pimdatagrid/js/datagrid/header
+        oro/datagrid/abstract-listener:         pimdatagrid/js/datagrid/listener/abstract-listener
+        oro/datagrid/column-form-listener:      pimdatagrid/js/datagrid/listener/oro-column-form-listener
+        oro/datagrid/callback-listener:         pimdatagrid/js/datagrid/listener/callback-listener
+        oro/datagrid/grid-views/view:           pimdatagrid/js/datagrid/grid-views/view
+        oro/datagrid/grid-views/model:          pimdatagrid/js/datagrid/grid-views/model
+        oro/datagrid/grid-views/collection:     pimdatagrid/js/datagrid/grid-views/collection
+        oro/datagrid/pagination-input:          pimdatagrid/js/datagrid/pagination-input
+        oro/datagrid/pagination:                pimdatagrid/js/datagrid/pagination
+        oro/datagrid/row:                       pimdatagrid/js/datagrid/row
+        oro/datagrid/history-row:               pimdatagrid/js/datagrid/history-row
+        oro/datagrid/product-row:               pimdatagrid/js/datagrid/product-row
+        oro/datagrid-builder:                   pimdatagrid/js/datagrid-builder
+        oro/loading-mask:                       pimdatagrid/js/loading-mask
+        oro/pageable-collection:                pimdatagrid/js/pageable-collection
+
+        pimdatagrid/datagrid/quickexport/component/QuickExportConfigurator:             pimdatagrid/js/datagrid/quickexport/component/QuickExportConfigurator.tsx
+
+
+        oro/datagrid/product-and-product-model-image-cell: pimdatagrid/js/datagrid/cell/product-and-product-model-image-cell
+        oro/datagrid/product-and-product-model-label-cell: pimdatagrid/js/datagrid/cell/product-and-product-model-label-cell
+        oro/datagrid/attribute-header-cell:                pimdatagrid/js/datagrid/header-cell/attribute-header-cell.ts
+
+        backbone/pageable-collection:           pimdatagrid/lib/backbone-pageable
+        backgrid:                               pimdatagrid/lib/backgrid/backgrid
+
+        jquery.multiselect:                         pimdatagrid/lib/multiselect/jquery.multiselect
+        jquery.multiselect.filter:                  pimdatagrid/lib/multiselect/jquery.multiselect.filter
+        oro/multiselect-decorator:                  pimdatagrid/js/multiselect-decorator
+
+        oro/datafilter/search-filter:               pimdatagrid/js/datafilter/filter/search-filter
+        oro/datafilter/attribute_search-filter:     pimdatagrid/js/datafilter/filter/search-filter
+        oro/datafilter/label_or_identifier-filter:  pimdatagrid/js/datafilter/filter/label_or_identifier-filter
+        oro/datafilter/price-filter:                pimdatagrid/js/datafilter/filter/price-filter
+        oro/datafilter/metric-filter:               pimdatagrid/js/datafilter/filter/metric-filter
+        oro/datafilter/product_scope-filter:        pimdatagrid/js/datafilter/filter/product_scope-filter
+        oro/datafilter/product_category-filter:     pimdatagrid/js/datafilter/filter/product_category-filter
+        oro/datafilter/product_completeness-filter: pimdatagrid/js/datafilter/filter/product_completeness-filter
+        oro/datafilter/ajax-choice-filter:          pimdatagrid/js/datafilter/filter/ajax-choice-filter
+        oro/datafilter/select2-choice-filter:       pimdatagrid/js/datafilter/filter/select2-choice-filter
+        oro/datafilter/select2-rest-choice-filter:  pimdatagrid/js/datafilter/filter/select2-rest-choice-filter
+        oro/datafilter/product_and_product_model_completeness-filter: pimdatagrid/js/datafilter/filter/product_completeness-filter
+
+        oro/datafilter/filters-column:              pimdatagrid/js/datafilter/filters-column
+        oro/datafilter/filters-selector:            pimdatagrid/js/datafilter/filters-selector
+
+        oro/datafilter/filters-list:                pimdatagrid/js/datafilter/filters-list
+        oro/datafilter/filters-button:              pimdatagrid/js/datafilter/filters-button
+        oro/datafilter/abstract-filter:             pimdatagrid/js/datafilter/filter/abstract-filter
+        oro/datafilter/none-filter:                 pimdatagrid/js/datafilter/filter/none-filter
+        oro/datafilter/choice-filter:               pimdatagrid/js/datafilter/filter/choice-filter
+        oro/datafilter/date-filter:                 pimdatagrid/js/datafilter/filter/date-filter
+        oro/datafilter/datetime-filter:             pimdatagrid/js/datafilter/filter/datetime-filter
+        oro/datafilter/multiselect-filter:          pimdatagrid/js/datafilter/filter/multiselect-filter
+        oro/datafilter/number-filter:               pimdatagrid/js/datafilter/filter/number-filter
+        oro/datafilter/select-filter:               pimdatagrid/js/datafilter/filter/select-filter
+        oro/datafilter/grouped-variant-filter:      pimdatagrid/js/datafilter/filter/grouped-variant-filter
+        oro/datafilter/select-row-filter:           pimdatagrid/js/datafilter/filter/select-row-filter
+        oro/datafilter/text-filter:                 pimdatagrid/js/datafilter/filter/text-filter
+        oro/datafilter/parent-filter:               pimdatagrid/js/datafilter/filter/parent-filter
+        oro/datafilter/identifier-filter:           pimdatagrid/js/datafilter/filter/identifier-filter
+        oro/datafilter/uuid-filter:                 pimdatagrid/js/datafilter/filter/uuid-filter
+        pim/filter/text:                            pimdatagrid/js/datafilter/filter/text-filter
+        oro/datafilter/abstract-formatter:          pimdatagrid/js/datafilter/formatter/abstract-formatter
+        oro/datafilter/filters-manager:             pimdatagrid/js/datafilter/filters-manager
+        oro/datafilter/collection-filters-manager:  pimdatagrid/js/datafilter/collection-filters-manager
+        oro/datafilter-builder:                     pimdatagrid/js/datafilter-builder
+
+        # Fetcher
+        pim/datagrid-view-fetcher: pimdatagrid/js/fetcher/datagrid-view-fetcher
+
+        # Saver
+        pim/saver/datagrid-view: pimdatagrid/js/saver/datagrid-view-saver
+
+        # Remover
+        pim/remover/datagrid-view: pimdatagrid/js/remover/datagrid-view-remover
+
+        # Templates
+        pim/template/datagrid/action-launcher-button:    pimdatagrid/templates/datagrid/action-launcher-button.html
+        pim/template/datagrid/action-launcher-list-item: pimdatagrid/templates/datagrid/action-launcher-list-item.html
+        pim/template/datagrid/action-configure-columns:  pimdatagrid/templates/datagrid/action-configure-columns.html
+        pim/template/datagrid/actions-group:             pimdatagrid/templates/datagrid/actions-group.html
+        pim/template/datagrid/add-filter-select:         pimdatagrid/templates/datagrid/add-filter-select.html
+        pim/template/datagrid/add-filter-button:         pimdatagrid/templates/datagrid/add-filter-button.html
+        pim/template/datagrid/done-container:            pimdatagrid/templates/datagrid/done-container.html
+        pim/template/datagrid/done-button:               pimdatagrid/templates/datagrid/done-button.html
+        pim/template/datagrid/pagination:                pimdatagrid/templates/datagrid/pagination.html
+        pim/template/datagrid/display-selector:          pimdatagrid/templates/datagrid/display-selector.html
+        pim/template/datagrid/filter/text-filter:        pimdatagrid/templates/filter/text-filter.html
+        pim/template/datagrid/filter/price-filter:       pimdatagrid/templates/filter/price-filter.html
+        pim/template/datagrid/filter/date-filter:        pimdatagrid/templates/filter/date-filter.html
+        pim/template/datagrid/filter/metric-filter:      pimdatagrid/templates/filter/metric-filter.html
+        pim/template/datagrid/filter/search-filter:      pimdatagrid/templates/filter/search-filter.html
+        pim/template/datagrid/filter-column:             pimdatagrid/templates/filter/filter-column.html
+        pim/template/datagrid/filter-group:              pimdatagrid/templates/filter/filter-group.html
+        pim/template/datagrid/filter-grouped-variant:    pimdatagrid/templates/filter/filter-grouped-variant.html
+        pim/template/datagrid/cell/credentials-cell:     pimdatagrid/templates/datagrid/cell/credentials-cell.html
+        pim/template/datagrid/cell/history-diff-cell:    pimdatagrid/templates/datagrid/cell/history-diff-cell.html
+        pim/template/datagrid/cell/expand-history-cell:  pimdatagrid/templates/datagrid/cell/expand-history-cell.html
+        pim/template/datagrid/cell/enabled-cell:         pimdatagrid/templates/datagrid/cell/enabled-cell.html
+        pim/template/datagrid/filter/scope-filter:       pimdatagrid/templates/filter/scope-filter.html
+        pim/template/datagrid/row/version:               pimdatagrid/templates/datagrid/row/version.html
+        pim/template/datagrid/row/changes:               pimdatagrid/templates/datagrid/row/changes.html
+        pim/template/datagrid/row/product:               pimdatagrid/templates/datagrid/row/product.html
+        pim/template/datagrid/row/product-thumbnail:     pimdatagrid/templates/datagrid/row/product-thumbnail.html
+        pim/template/datagrid/cell/image-cell:           pimdatagrid/templates/datagrid/cell/image-cell.html
+        pim/template/datagrid/cell/product-and-product-model-image-cell: pimdatagrid/templates/datagrid/cell/product-and-product-model-image-cell.html
+        pim/template/datagrid/column-selector/button:    pimdatagrid/templates/datagrid/column-selector/button.html
+        pim/template/datagrid/column-selector/columns:   pimdatagrid/templates/datagrid/column-selector/columns.html
+        pim/template/datagrid/column-selector/modal:     pimdatagrid/templates/datagrid/column-selector/modal.html
+        pim/template/datagrid/column-selector/selected:  pimdatagrid/templates/datagrid/column-selector/selected.html

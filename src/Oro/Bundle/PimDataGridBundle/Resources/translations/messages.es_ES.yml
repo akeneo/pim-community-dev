@@ -1,0 +1,17 @@
+pim_datagrid:
+  column_configurator:
+    min_message: Debe seleccionar al menos una columna de datagrid para mostrar
+  label:
+    unique_message: La etiqueta debe ser única
+    not_blank_message: La etiqueta no debe estar en blanco
+  view_selector:
+    flash:
+      created: Vista de cuadrícula de datos creada correctamente
+      removed: Vista de cuadrícula de datos eliminada correctamente
+  cells:
+    type:
+      quick_export: Exportación rápida
+      import: Importar
+      export: Exportar
+      mass_edit: Edición en masa
+      mass_delete: Eliminación masiva

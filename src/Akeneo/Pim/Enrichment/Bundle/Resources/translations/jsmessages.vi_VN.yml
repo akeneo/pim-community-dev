@@ -1,0 +1,153 @@
+pim_notification:
+  types:
+    settings: Cài đặt
+flash:
+  comment:
+    create:
+      success: Nhận xét của bạn đã được tạo thành công.
+    delete:
+      success: Nhận xét của bạn đã được xóa thành công.
+    reply:
+      success: Trả lời của bạn đã được tạo thành công.
+pim_enrich.entity.product:
+  label: Sản phẩm
+  uppercase_label: Sản phẩm
+  plural_label: Sản phẩm
+  flash:
+    create:
+      success: Sản phẩm đã được tạo thành công
+  module:
+    create:
+      choose_family: Chọn một chủng loại
+    status:
+      enabled: Đã kích hoạt
+      disabled: Đã vô hiệu
+    copy:
+      select: Chọn
+      all_visible: Hiển thị tất cả
+    history:
+      version: Phiên bản
+      author: Tác giả
+    meta:
+      updated: Cập nhật sau cùng
+      groups: Nhóm
+    attribute:
+      remove_optional: Gỡ bỏ thuộc tính này
+    completeness:
+      title: Hoàn thành
+      complete: Hoàn thành
+    associations:
+      title: Liên quan ({{ count }})
+      none_exist: Không có kiểu kết hợp nào tồn tại.
+      manage_description: Chọn sản phẩm bạn muốn liên kết với sản phẩm "{{ productLabel }}"
+      mass_edit_description: Chọn các sản phẩm bạn muốn liên kết với {{ productCount }} sản phẩm đã chọn
+    change_family:
+      title: Thay đổi chủng loại sản phẩm
+      merge_attributes: Thuộc tính hiện tại sẽ được sáp nhập với những thuộc tính trong chủng loại mới này.
+      keep_attributes: Không thuộc tính nào sẽ bị gỡ bỏ.
+      change_family_to: Thay đổi chủng loại sản phẩm thành
+      empty_selection: Chọn một chủng loại
+    delete:
+      confirm: Bạn có chắc bạn muốn xoá sản phẩm này không?
+    comment:
+      post: Thêm một nhận xét mới
+      reply: Trả lời
+      title: Nhận xét
+      empty: Không có nhận xét nào bây giờ
+      header_comment: '{{ user }} bình luận về sản phẩm'
+      header_reply: '{{ user }} phản hồi từ sản phẩm'
+      delete_confirm: Bạn muốn xóa lời nhận xét này phải không?
+      removed_author: Xóa người dùng
+pim_enrich.entity.product_model:
+  property:
+    family_variant: Biến thể
+  module:
+    completeness:
+      label: Biến thể
+pim_enrich.entity.group:
+  label: Nhóm
+  flash:
+    create:
+      success: Nhóm đã được tạo thành công
+    delete:
+      success: Nhóm đã được gỡ bỏ thành công
+      fail: Không thể xoá nhóm này
+  module:
+    create:
+      button: Tạo nhóm
+    delete:
+      confirm: Bạn có chắc bạn muốn xoá sản phẩm này không?
+pim_enrich.entity.category:
+  label: Danh mục
+pim_enrich.export.product:
+  filter:
+    attributes_selector:
+      all_group: Tất cả các Nhóm
+    family:
+      title: Chủng loại
+      operators:
+        IN: Trong danh sách
+    enabled:
+      title: Trạng thái
+      value:
+        enabled: Đã kích hoạt
+        disabled: Đã vô hiệu
+    completeness:
+      title: Hoàn thành
+    identifier:
+      title: Định danh
+    string:
+      operators:
+        ALL: Tất cả
+    select:
+      operators:
+        IN: Trong danh sách
+  global_settings:
+    title: Cài đặt chung
+pim_enrich.mass_edit.product:
+  confirm: "{0} Bạn sắp cập nhật một số sản phẩm với thông tin sau, vui lòng xác nhận. | {1} Bạn sắp cập nhật sản phẩm với thông tin sau, vui lòng xác nhận. |] 1, Inf [Bạn sắp cập nhật {{ itemCount}} sản phẩm có thông tin sau, vui lòng xác nhận."
+  step:
+    select:
+      label: Chọn sản phẩm
+    configure:
+      label: Cấu hình
+    confirm:
+      label: Xác nhận
+  operation:
+    common:
+      select_attributes: Chọn thuộc tính
+    change_status:
+      label_count: "{0} Thay đổi trạng thái của một số <span class = \"AknFullPage-title - highlight\"> sản phẩm </ span> | {1} Thay đổi trạng thái của <span class = \"AknFullPage-title - highlight\"> 1 sản phẩm < / span> |] 1, Inf [Thay đổi trạng thái của <span class = \"AknFullPage-title - highlight\"> {{itemsCount}} sản phẩm </ span>"
+      description: Các sản phẩm được lựa chọn sẽ được kích hoạt hoặc vô hiệu hoá.
+      field: Để kích hoạt
+    edit_common:
+      label_count: "{0} Chỉnh sửa giá trị thuộc tính của một số <span class = \"AknFullPage-title - highlight\"> sản phẩm </ span> | {1} Chỉnh sửa giá trị thuộc tính của <span class = \"AknFullPage-title - highlight\"> 1 sản phẩm < / span> |] 1, Inf [Chỉnh sửa giá trị thuộc tính của <span class = \"AknFullPage-title - highlight\"> {{itemsCount}} sản phẩm </ span>"
+    add_attribute_value:
+      label_count: "{0} Thêm giá trị thuộc tính cho một số <span class = \"AknFullPage-title - highlight\"> sản phẩm </ span> | {1} Thêm giá trị thuộc tính cho <span class = \"AknFullPage-title - highlight\"> 1 sản phẩm < / span> |] 1, Inf [Thêm giá trị thuộc tính cho các sản phẩm <span class = \"AknFullPage-title - highlight\"> {{itemsCount}} </ span>"
+    change_family:
+      description: Chủng loại của những sản phẩm được chọn sẽ thay đổi theo chủng loại được chọn
+    add_to_group:
+      label: Thêm vào nhóm
+      description: Chọn nhóm để thêm các sản phẩm đã chọn
+      field: Nhóm
+pim_datagrid:
+  view_selector:
+    view: Lượt xem
+  filters:
+    system: Hệ thống
+    product_typology:
+      variant: 'Biến thể'
+    entity_type:
+      label: 'Biến thể'
+    family:
+      label: Chủng loại
+    groups:
+      label: Nhóm
+    enabled:
+      label: Trạng thái
+    identifier:
+      label: Định danh
+batch_jobs:
+  edit_common_attributes:
+    label: Chỉnh sửa thuộc tính
+    perform.label: Chỉnh sửa thuộc tính

@@ -1,0 +1,130 @@
+services:
+  Akeneo\Category\Application\UpsertCategoryCommandHandler:
+    arguments:
+      - '@validator'
+      - '@Akeneo\Category\Domain\Query\GetCategoryInterface'
+      - '@Akeneo\Category\Application\Applier\UserIntentApplierRegistry'
+      - '@event_dispatcher'
+      - '@Akeneo\Category\Application\Storage\Save\SaveCategory'
+      - '@Akeneo\Category\Infrastructure\Registry\FindCategoryAdditionalPropertiesRegistry'
+    tags:
+      - { name: messenger.message_handler, bus: category.command.bus }
+
+  Akeneo\Category\Application\Command\DeactivateTemplateCommandHandler:
+    arguments:
+      - '@Akeneo\Category\Application\Query\DeactivateTemplate'
+      - '@event_dispatcher'
+    tags:
+      - { name: messenger.message_handler, bus: category.command.bus }
+
+  Akeneo\Category\Application\Command\CleanCategoryEnrichedValuesByChannelOrLocale\CleanCategoryEnrichedValuesByChannelOrLocaleCommandHandler:
+    arguments:
+      - '@Akeneo\Category\Application\Query\GetEnrichedValuesPerCategoryCode'
+      - '@Akeneo\Category\Application\Enrichment\CategoryAttributeValuesCleaner'
+    tags:
+      - { name: messenger.message_handler, bus: category.command.bus }
+
+  Akeneo\Category\Application\Command\CleanCategoryTemplateAndEnrichedValues\CleanCategoryTemplateAndEnrichedValuesCommandHandler:
+    arguments:
+      - '@Akeneo\Category\Domain\Query\GetEnrichedValuesByTemplateUuid'
+      - '@Akeneo\Category\Application\Enrichment\CategoryAttributeValuesCleaner'
+      - '@Akeneo\Category\Application\Query\GetAttribute'
+      - '@Akeneo\Category\Domain\Query\DeleteCategoryTreeTemplateByTemplateUuid'
+    tags:
+      - { name: messenger.message_handler, bus: category.command.bus }
+
+  Akeneo\Category\Application\Command\LoadAttributeSet\LoadAttributeSetCommandHandler:
+    arguments:
+      - '@Akeneo\Category\Domain\Query\GetTemplate'
+      - '@Akeneo\Category\Application\Query\GetAttribute'
+      - '@Akeneo\Category\Domain\AttributeSetFactory'
+      - '@Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateAttributeSaver'
+    tags:
+      - { name: messenger.message_handler, bus: category.command.bus }
+
+  Akeneo\Category\Application\Command\AddAttributeCommandHandler:
+    arguments:
+      - '@validator'
+      - '@Akeneo\Category\Application\Query\GetAttribute'
+      - '@Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateAttributeSaver'
+    tags:
+      - { name: messenger.message_handler, bus: category.command.bus }
+
+  Akeneo\Category\Application\Command\DeactivateAttributeCommandHandler:
+    arguments:
+      - '@Akeneo\Category\Domain\Query\DeactivateAttribute'
+      - '@event_dispatcher'
+    tags:
+      - { name: messenger.message_handler, bus: category.command.bus }
+
+  Akeneo\Category\Application\Command\UpdateAttributeCommand\UpdateAttributeCommandHandler:
+    arguments:
+      - '@validator'
+      - '@Akeneo\Category\Application\Query\GetAttribute'
+      - '@Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateAttributeSaver'
+    tags:
+      - { name: messenger.message_handler, bus: category.command.bus }
+
+  Akeneo\Category\Application\Command\ReorderTemplateAttributesCommand\ReorderTemplateAttributesCommandHandler:
+    arguments:
+      - '@Akeneo\Category\Domain\Query\GetTemplate'
+      - '@Akeneo\Category\Application\Query\GetAttribute'
+      - '@Akeneo\Category\Domain\Query\UpdateCategoryTemplateAttributesOrder'
+    tags:
+      - { name: messenger.message_handler, bus: category.command.bus }
+
+  Akeneo\Category\Application\Command\UpdateTemplateCommand\UpdateTemplateCommandHandler:
+    arguments:
+      - '@validator'
+      - '@Akeneo\Category\Domain\Query\GetTemplate'
+      - '@Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateSaver'
+    tags:
+      - { name: messenger.message_handler, bus: category.command.bus }
+
+  Akeneo\Category\Application\Handler\StoreUploadedFile:
+    arguments:
+      - '@akeneo_file_storage.file_storage.file.file_storer'
+      - '@akeneo_file_storage.repository.file_info'
+
+  Akeneo\Category\Application\Handler\SearchFilters:
+    class: Akeneo\Category\Infrastructure\Handler\SearchFiltersSql
+    arguments:
+      - '@Akeneo\Category\Infrastructure\Validation\ExternalApiSearchFiltersValidator'
+      - '@Akeneo\Category\Domain\Query\GetCategoryInterface'
+
+  Akeneo\Category\Application\Command\CleanCategoryTemplateAttributeAndEnrichedValues\CleanCategoryTemplateAttributeAndEnrichedValuesCommandHandler:
+    arguments:
+      - '@Akeneo\Category\Domain\Query\GetEnrichedValuesByTemplateUuid'
+      - '@Akeneo\Category\Application\Enrichment\CategoryAttributeValuesCleaner'
+      - '@Akeneo\Category\Application\Query\GetDeactivatedAttribute'
+      - '@Akeneo\Category\Domain\Query\DeleteTemplateAttribute'
+    tags:
+      - { name: messenger.message_handler, bus: category.command.bus }
+
+  Akeneo\Category\Application\Command\DeleteCategoryCommand\DeleteCategoryCommandHandler:
+    arguments:
+      - '@pim_catalog.repository.category'
+      - '@pim_catalog.remover.category'
+      - '@Akeneo\Category\Domain\Query\GetCategoryTreeTemplates'
+      - '@Akeneo\Category\Domain\Query\DeleteCategoryTreeTemplateByTemplateUuid'
+    tags:
+      - { name: messenger.message_handler, bus: category.command.bus }
+
+  Akeneo\Category\Application\Command\CreateTemplate\CreateTemplateCommandHandler:
+    arguments:
+      - '@validator'
+      - '@Akeneo\Category\Domain\Query\GetCategoryInterface'
+      - '@Akeneo\Category\Application\Query\GetCategoryTemplateByCategoryTree'
+      - '@Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateSaver'
+      - '@Akeneo\Category\Application\Storage\Save\Saver\CategoryTreeTemplateSaver'
+      - '@Akeneo\Category\Application\Query\GetCategoryTreeByCategoryTemplate'
+    tags:
+      - { name: messenger.message_handler, bus: category.command.bus }
+
+  Akeneo\Category\Application\Command\PurgeOrphanCategoryImageFiles\PurgeOrphanCategoryImageFilesCommandHandler:
+    arguments:
+      - '@akeneo_file_storage.file_storage.filesystem_provider'
+      - '@Akeneo\Category\Domain\ImageFile\GetOrphanCategoryImageFilePaths'
+      - '@Akeneo\Category\Domain\ImageFile\DeleteCategoryImageFile'
+    tags:
+      - { name: messenger.message_handler, bus: category.command.bus }

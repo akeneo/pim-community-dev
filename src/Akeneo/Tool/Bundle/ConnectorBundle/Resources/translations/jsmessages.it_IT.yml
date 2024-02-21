@@ -1,0 +1,196 @@
+#Job labels
+batch_jobs:
+  default_steps:
+    download_files: Scarica file
+    upload_files: Carica file
+    export: Esportazioni
+    import: Importa
+    validation: Validazione file
+    import_associations: Importazione associazioni
+    import_model_associations: Importazione associazioni
+    import_root_product_model: Importazione modello di prodotto radice
+    import_sub_product_model: Importazione sotto-modelli di prodotto
+    compute_data_related_to_family_root_product_models: Calcola dati modelli di prodotto radice
+    compute_data_related_to_family_sub_product_models: Calcola dati modelli di sotto-prodotti
+    compute_data_related_to_family_products: Calcola dati prodotto
+    index_family_products_and_product_models: Indicizza famiglia di prodotti e modelli di prodotto
+    compute_family_variant_structure_changes: Calcola le modifiche della struttura della famiglia variante
+    compute_completeness_of_products_family: Calcola la completezza della famiglia di prodotti
+    index_family_products: Indicizza famiglia di prodotti e modelli di prodotto
+    delete_products_and_product_models: Eliminazione in massa prodotti
+    ensure_attribute_group_order: Controlla ordinamento gruppo di attributi
+    clean_attribute:
+      register_clean_job: Aggiungi codice a blacklist
+      clean_product_model: Modelli di prodotti per la pulizia
+      clean_product: Prodotti per la pulizia
+      remove_attribute_codes_from_blacklist: Rimuovi codice da blacklist
+    check_job_unique: Verifica che il job sia unico
+  csv_product_export:
+    label: Esportazione prodotti in CSV
+    export.label: Esportazione Prodotti
+  csv_product_model_export:
+    label: Esportazione modelli di prodotto in CSV
+    export.label: Esportazione modello di prodotto
+  csv_category_export:
+    label: Esportazione categorie in CSV
+    export.label: Esportazione categorie
+  csv_attribute_export:
+    label: Esporta gli attributi in CSV
+    export.label: Esportazione di attributo
+  csv_attribute_option_export:
+    label: Esportazione opzioni degli attributi in CSV
+    export.label: Estrazione opzioni degli attributi
+  csv_association_type_export:
+    label: Estrazione tipi associazione in CSV
+    export.label: Estrazione tipi associazione
+  csv_group_export:
+    label: Esportazione gruppi in CSV
+    export.label: Esportazione gruppi
+  csv_family_export:
+    label: Esportazione famiglie in CSV
+    export.label: Esportazione famiglie
+  csv_family_variant_export:
+    label: Esportazione famiglie varianti in CSV
+    export.label: Esportazione famiglie varianti
+  csv_user_group_export:
+    label: Esportazione gruppo di utenti in CSV
+    export.label: Esportazione gruppo di utenti
+  csv_user_role_export:
+    label: Esportazione ruolo utente in CSV
+    export.label: Esportazione ruolo utente
+  csv_user_export:
+    label: Esportazione utente in CSV
+    export.label: Esportazione utente
+  csv_product_import:
+    label: Importazione prodotti in CSV
+    import.label: Importazione prodotti
+  csv_product_model_import:
+    label: Importazione modelli di prodotto in CSV
+    import_product_model_descendants.label: Calcola i modelli di prodotto discendenti
+  csv_category_import:
+    label: Importazione categorie in CSV
+    import.label: Importazione categorie
+  csv_attribute_import:
+    label: Importazione attributi in CSV
+    import.label: Importazione attributi
+  csv_attribute_option_import:
+    label: Importazione opzioni degli attributi in CSV
+    import.label: Opzioni importazione attributi
+  csv_association_type_import:
+    label: Importazione tipi associazione in CSV
+    import.label: Importazione tipi associazione
+  csv_family_import:
+    label: Importazione famiglie in CSV
+    import.label: Importazione famiglie
+    compute_data_related_to_family_variants.label: Calcolare dati di modelli di prodotto
+  csv_family_variant_import:
+    label: Importazione famiglia variante in CSV
+    import.label: Importazione famiglia variante
+  csv_group_import:
+    label: importazione gruppi in CSV
+    import.label: importazione gruppi
+  csv_attribute_group_export:
+    label: Esportazione dei gruppi di attributi in CSV
+    export.label: Esportazione dei gruppi di attributi
+  csv_group_type_export:
+    label: Esportazione dei tipi di gruppo in CSV
+    export.label: Esportazione dei tipi di gruppo
+  csv_attribute_group_import:
+    label: Importazione dei gruppi di attributi in CSV
+    import.label: Importazione dei gruppi di attributi
+  csv_group_type_import:
+    label: Importazione dei tipi di gruppo in CSV
+    import.label: Importazione dei tipi di gruppo
+  csv_user_group_import:
+    label: Importazione gruppo di utenti in CSV
+    import.label: Importazione gruppo di utenti
+  csv_user_import:
+    label: Importazione utente in CSV
+    import.label: Importazione utente
+  csv_user_role_import:
+    label: Importazione ruolo utente in CSV
+    import.label: Importazione ruolo utente
+  xlsx_category_import:
+    label: Importazione categorie in XLSX
+    import.label: Importazione categorie
+  xlsx_association_type_import:
+    label: Importazione dei tipi di associazione in XLSX
+    import.label: Importazione tipi associazione
+  xlsx_attribute_import:
+    label: Importazione attributi in XLSX
+    import.label: Importazione attributi
+  xlsx_attribute_option_import:
+    label: Importazione delle opzioni degli attributi in XLSX
+    import.label: Opzioni importazione attributi
+  xlsx_family_import:
+    label: Importazione famiglie in XLSX
+    import.label: Importazione famiglie
+  xlsx_family_variant_import:
+    label: Importazione famiglia variante in XLSX
+    import.label: Importazione famiglia variante
+  xlsx_product_export:
+    label: Esportazione prodotti in XLSX
+    export.label: Esportazione Prodotti
+  xlsx_product_model_export:
+    label: Esportazione modello di prodotto in XLSX
+    export.label: Esportazione modello di prodotto
+  xlsx_product_import:
+    label: Importazione prodotti in XLSX
+    import.label: Importazione prodotti
+  xlsx_product_model_import:
+    label: Importazione modello di prodotto in XLSX
+    import_product_model_descendants.label: Calcola i modelli di prodotto discendenti
+  xlsx_group_export:
+    label: Esportazione gruppi in XLSX
+    export.label: Esportazione gruppi
+  xlsx_group_import:
+    label: Importazione gruppi in XLSX
+    import.label: importazione gruppi
+  xlsx_family_export:
+    label: Esportazione famiglie in XLSX
+    export.label: Esportazione famiglie
+  xlsx_family_variant_export:
+    label: Esportazione famiglia variante in XLSX
+    export.label: Esportazione famiglia variante
+  xlsx_category_export:
+    label: Esportazione categorie in XLSX
+    export.label: Esportazione categorie
+  xlsx_attribute_export:
+    label: Esportazione attributi in XLSX
+    export.label: Esportazione attributi in XLSX
+  xlsx_attribute_option_export:
+    label: Esportazione delle opzioni degli attributi in XLSX
+    export.label: Esportazione delle opzioni degli attributi in XLSX
+  xlsx_association_type_export:
+    label: Esportazione dei tipi di associazione in XLSX
+    export.label: Esportazione dei tipi di associazione in XLSX
+  xlsx_attribute_group_export:
+    label: Esportazione dei gruppi di attributi in XLSX
+    export.label: Esportazione dei gruppi di attributi
+  xlsx_group_type_export:
+    label: Esportazione dei tipi di gruppo in XLSX
+    export.label: Esportazione dei tipi di gruppo
+  xlsx_user_group_export:
+    label: Esportazione gruppo di utenti in XLSX
+    export.label: Esportazione gruppo di utenti
+  xlsx_user_role_export:
+    label: Esportazione ruolo utente in XLSX
+    export.label: Esportazione ruolo utente
+  xlsx_user_export:
+    label: Esportazione utente in XLSX
+    export.label: Esportazione utente
+  xlsx_attribute_group_import:
+    label: Importazione dei gruppi di attributi in XLSX
+    import.label: Importazione dei gruppi di attributi
+  xlsx_group_type_import:
+    label: Importazione dei tipi di gruppo in XLSX
+    import.label: Importazione dei tipi di gruppo
+  xlsx_user_group_import:
+    label: Importazione gruppo di utenti in XLSX
+    import.label: Importazione gruppo di utenti
+  xlsx_user_import:
+    label: Importazione utente in XLSX
+    import.label: Importazione utente
+  xlsx_user_role_import:
+    label: Importazione ruolo utente in XLSX
+    import.label: Importazione ruolo utente

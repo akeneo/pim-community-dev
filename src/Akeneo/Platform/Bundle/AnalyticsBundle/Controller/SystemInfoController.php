@@ -1,0 +1,70 @@
+<?php
+
+namespace Akeneo\Platform\Bundle\AnalyticsBundle\Controller;
+
+use Akeneo\Tool\Component\Analytics\ChainedDataCollector;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Twig\Environment;
+
+/**
+ * System info controller
+ *
+ * @author    Yohan Blain <yohan.blain@akeneo.com>
+ * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+class SystemInfoController
+{
+    private Environment $templating;
+    private ChainedDataCollector $dataCollector;
+
+    public function __construct(Environment $templating, ChainedDataCollector $dataCollector)
+    {
+        $this->templating = $templating;
+        $this->dataCollector = $dataCollector;
+    }
+
+    /**
+     * @param string $_format
+     *
+     * @AclAncestor("pim_analytics_system_info_index")
+     *
+     * @return Response
+     */
+    public function indexAction($_format)
+    {
+        $moveToEnd = function (array $data, string $key) {
+            $value = $data[$key];
+            unset($data[$key]);
+            $data[$key] = $value;
+
+            return $data;
+        };
+
+        $data = $this->dataCollector->collect('system_info_report');
+        $data = $moveToEnd($data, 'php_extensions');
+        $data = $moveToEnd($data, 'registered_bundles');
+
+        $response = new JsonResponse($data);
+
+        if ('txt' === $_format) {
+            $content = $this->templating->render(
+                '@PimAnalytics/SystemInfo/index.txt.twig',
+                ['data' => $data]
+            );
+
+            $response = new Response($content);
+            $response->headers->set('Content-Type', 'text/plain');
+            $response->headers->set('Content-Disposition', sprintf(
+                '%s; filename="akeneo-pim-system-info_%s.txt"',
+                ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+                date('Y-m-d_H:i')
+            ));
+        }
+
+        return $response;
+    }
+}

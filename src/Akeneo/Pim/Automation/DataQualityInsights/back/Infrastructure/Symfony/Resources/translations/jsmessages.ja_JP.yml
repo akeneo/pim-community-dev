@@ -1,0 +1,162 @@
+akeneo_data_quality_insights:
+  title: データ品質インサイト
+  dqi_dashboard:
+    menu: データ品質インサイト
+    helper:
+      title: Akeneoで紹介しているデータ品質について
+      description: データ品質のダッシュボードを使用すると、カタログデータの品質を測定できます。カテゴリやファミリーに焦点を当てることもできます。
+      help_center: 詳細はヘルプセンターをご確認ください。
+    no_data_title: 申し訳ありませんが、データ品質概要を表示するのに十分なデータがありません。
+    no_data_subtitle: 後ほどご確認ください
+    time_period:
+      label: 期間
+      daily: 毎日
+      weekly: 毎週
+      monthly: 毎月
+    legend:
+      excellent: 最高
+      good: 良い
+      average: 普通
+      below_average: 平均以下
+      to_improve: 向上させる
+    average_grade: 平均成績
+    category_modal_filter:
+      subtitle: カテゴリでフィルター
+      message: カテゴリを選択してダッシュボードに追加
+    widgets:
+      family_modal:
+        subtitle: ファミリーを追加
+        message: ファミリーを選択してダッシュボードに追加
+        max_families_msg: 恐れ入りますがダッシュボードでは {{ count }} ファミリー以上を追加できません
+      category_modal:
+        subtitle: カテゴリを追加
+        message: カテゴリを選択してダッシュボードに追加
+        max_categories_msg: 恐れ入りますがダッシュボードでは {{ count }} カテゴリ以上を追加できません
+      add_families: ファミリーを追加
+      add_categories: カテゴリを追加
+      title: タイトル
+      score: スコア
+      no_family_helper_msg: データ品質を測定したいファミリーを選択してください
+      no_category_helper_msg: データ品質を測定したいカテゴリを選択してください
+      see_in_grid: 一覧表で表示
+    time_axis:
+      day: 日
+    key_indicators:
+      title: 指標
+      products: '{1}1 個の商品|]1, 200[{{ count }} 個の商品|[200, Inf[{{ count }} 個以上の商品'
+      product_models: '{1}1 個の商品モデル|]1, 200[{{ count }} 個の商品モデル|[200, Inf[{{ count }} 個以上の商品モデル'
+      entities_to_work_on: '作業する <improvable_products_count_link/> があります。'
+      entities_to_work_on_2_kinds: '作業する <improvable_products_count_link/> と <improvable_product_models_count_link/> があります。'
+      list:
+        has_image:
+          title: 画像付きの商品
+          no_data: 画像の属性が空のようです。この指標で商品の品質を強調するには、画像をアップロードする必要があります。
+          messages:
+            first_step:
+              message1: 画像がない場合、商品の見栄えが実際より劣ってしまいます。
+              message2: 最初の印象は長続きし、アセットに良い効果を与え、顧客の目に留まるようになります。
+              message3: 私たちの経験では、画像は大きく作用します。アセットにもっと時間を費やす必要があるかもしれません。
+            second_step:
+              message1: 商品の画像にもう少し力を注ぐだけで、改善が期待されます。
+              message2: 百聞は画像に如かずです。今すぐ作業すれば、後で時間を節約できます！
+              message3: もう少し画像に時間を費やす必要があるかもしれません。商品の見栄えが大幅に改善されます。
+            third_step:
+              message1: かなり良くなりましたが、画像がいくつか足りません。
+              message2: 素晴らしい出来です。後もう少しです。
+              message3: 最後の仕上げを行えば、完了です。
+            perfect_score_step:
+              message1: よくできました！準備は万端です！
+              message2: お見事！商品が輝いています！
+              message3: 完璧です。
+        good_enrichment:
+          title: 充実度が良好な商品
+          no_data: 商品が空のようです。この指標で商品の品質を強調するには、属性を追加する必要があります。
+          messages:
+            first_step:
+              message1: この比率を改善するには、一方法として、最も関連性の高い属性を慎重に定義することが挙げられます。<a href="{{ link }}" target="_blank">ヘルプセンターをご覧ください</a>。
+              message2: PIM の仕組みがまだよくわかりませんか？<a href="{{ link }}" target="_blank">活用方法についてご覧ください</a>。 
+              message3: この PIM を開発したのは私たちですが、それを生かすのはあなたです！
+              message4: 商品情報が詳しいと、お客様への印象が大きく変わります。ゲームチェンジャーになりましょう！
+            second_step:
+              message1: もう少し高めを狙ってみましょう！きっとお客様に喜ばれます。
+              message2: 半分まで来ました！もう少し頑張れば、商品がうまく充実します。
+              message3: どんな業界でも細部の詰めが肝心です！
+              message4: 商品を充実化するための手磨きが必要ですか？最も関連性の高い属性を慎重に選択する方法について、<a href="{{ link }}" target="_blank">こちら</a>をご覧ください。
+            third_step:
+              message1: ここまで順調です。もう少し進みましょう！
+              message2: この比率も非常に良いですが、100% であればさらに良いと思いませんか？
+              message3: 一部の商品には完了までもう少しヘルプが必要です！あともう少しです！
+              message4: もう少し細部にこだわれば、完璧です。
+            perfect_score_step:
+              message1: 商品はひとりでに売れるでしょう！よくできました。
+              message2: 大仕事でした。自分の仕事を誇りに思ってください。
+              message3: あなたは真のカタログ更新マスターです。
+              message4: おめでとうございます！汚点が全くありません！
+      no_data: 申し訳ありません。指標を示すのに十分なデータがまだありません。
+      no_data_subtitle: 後ほどご確認ください。
+    score_distribution:
+      title: 品質スコアの分布
+    quality_score_evolution:
+      title: 品質スコアの発展
+      current_score: は、このスコープにおけるあなたの現在のカタログ品質スコアです。
+      current_month_label: 今月
+      no_catalog_score: 現在の品質スコアを計算できませんでした。
+  product_evaluation:
+    criteria:
+      completeness_of_required_attributes:
+        recommendation: 欠損値のある必須属性
+      completeness_of_non_required_attributes:
+        recommendation: 欠損値のある必須属性はありません
+      enrichment_image:
+        recommendation: 画像がありません
+    axis:
+      enrichment:
+        title: Enrichment
+        attributes_link: 不足しているすべての属性を表示
+        success: 商品データは完璧です。おめでとうございます！
+    messages:
+      error:
+        axis_error: エラー発生により等級を完全に計算できませんでした。後で再試行してください。
+        criterion_error: 等級を計算できませんでした
+      success:
+        criterion: 異常なし
+      grading_in_progress: 等級評価の進行中です
+      axis_grading_in_progress: 等級評価の進行中です。後で確認してください。
+      too_many_attributes: 改良する属性が{{ count }}件あります。
+      no_attribute_groups:
+        title: 申し訳ありません。品質スコアを計算できませんでした。
+        subtitle: "品質スコアを計算できません。この商品の属性グループはどれも有効になっていません。"
+        help_center_link: データ品質インサイトでデータ品質がどのように改善されるかについて、ヘルプセンターをご覧ください。
+      add_image_attribute_recommendation: 百聞は画像に如かずです。この商品のデータ品質を改善するには、画像の属性を追加してください。
+      fill_image_attribute_recommendation: 私たちの経験では、画像で成果が大きく変わります。この商品のデータ品質を改善するには、少なくとも画像を 1 つ追加する必要があります。
+      not_applicable:
+        message: この条件はあなたのコンテキストには適用されません。
+        help_center_link: ヘルプセンターで理由をご確認ください。
+  product_edit_form:
+    attribute_filter:
+      all_missing_attributes: 全ての欠損属性
+    back_to_products: 商品に戻る
+  attribute_group:
+    helper_dqi_info: 品質スコアの計算には、データ品質で有効になっている属性グループに属する属性のみが考慮されます。
+    helper_dqi_link: 詳細はヘルプセンターをご覧ください。
+    activation: 有効
+    dqi_status: データ品質インサイトのステータス
+    activated: 有効
+    disabled: 無効
+    used_groups_helper: "次の属性グループは、データ品質インサイトの計算に考慮されます。"
+    all_groups_evaluated: この商品のすべての属性グループは、品質スコアの計算に考慮されます。最も関連性の高い品質スコアを得るには、<a href="{{ link }}" target="_blank">属性グループを無効にする方法についてヘルプセンターをご覧ください</a>。
+  product_grid:
+    filter_label:
+      quality_score: 品質スコア
+      enrichment_quality: 充実性
+      images_quality: 商品の画像
+    filter_value:
+      good: 良い
+      to_improve: 要改善
+      "yes": "はい"
+      "no": "いいえ"
+  quality_score:
+    pending: 処理中
+    title: "品質スコア:"
+pim_title:
+  akeneo_data_quality_insights_dashboard: データ品質インサイト

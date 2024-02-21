@@ -1,0 +1,69 @@
+comment:
+    resource: '@AkeneoPimEnrichmentBundle/Resources/config/routing/comment.yml'
+
+localization:
+    resource: '@AkeneoPimEnrichmentBundle/Resources/config/routing/localization.yml'
+
+external_api_product_model:
+    resource: '@AkeneoPimEnrichmentBundle/Resources/config/routing/external_api/product_model.yml'
+    prefix: /api/rest/v1
+
+external_api_product:
+    resource: '@AkeneoPimEnrichmentBundle/Resources/config/routing/external_api/product.yml'
+    prefix: /api/rest/v1
+
+product_internal_api:
+    resource: '@AkeneoPimEnrichmentBundle/Resources/config/routing/internal_api/product.yml'
+    prefix: /enrich/product
+
+product_model_internal_api:
+    resource: '@AkeneoPimEnrichmentBundle/Resources/config/routing/internal_api/product_model.yml'
+    prefix: /enrich/product-model
+
+group_internal_api:
+    resource: '@AkeneoPimEnrichmentBundle/Resources/config/routing/internal_api/group.yml'
+    prefix: /enrich/group
+
+sequential_edit_internal_api:
+    resource: '@AkeneoPimEnrichmentBundle/Resources/config/routing/internal_api/sequential_edit.yml'
+    prefix: /rest/sequential_edit
+
+product_and_product_model:
+    resource: '@AkeneoPimEnrichmentBundle/Resources/config/routing/internal_api/product_and_product_model.yml'
+    prefix: /rest/product-and-product-model
+
+value_internal_api:
+    resource: '@AkeneoPimEnrichmentBundle/Resources/config/routing/internal_api/value.yml'
+    prefix: /rest/value
+
+mass_edit_rest:
+    resource: '@AkeneoPimEnrichmentBundle/Resources/config/routing/internal_api/mass_edit.yml'
+    prefix: /rest/mass_edit
+
+media_internal_api:
+    resource: '@AkeneoPimEnrichmentBundle/Resources/config/routing/internal_api/media.yml'
+    prefix: /media
+
+categorytree_ui:
+    resource: '@AkeneoPimEnrichmentBundle/Resources/config/routing/ui/categorytree.yml'
+    prefix: /enrich/product-category-tree
+
+media_ui:
+    resource: '@AkeneoPimEnrichmentBundle/Resources/config/routing/ui/media.yml'
+    prefix: /media
+
+product_model_ui:
+    resource: '@AkeneoPimEnrichmentBundle/Resources/config/routing/ui/product_model.yml'
+    prefix: /enrich/product-model
+
+product_ui:
+    resource: '@AkeneoPimEnrichmentBundle/Resources/config/routing/ui/product.yml'
+    prefix: /enrich/product
+
+group_ui:
+    resource: '@AkeneoPimEnrichmentBundle/Resources/config/routing/ui/group.yml'
+    prefix: /enrich/group
+
+mass_edit_action_ui:
+    resource: '@AkeneoPimEnrichmentBundle/Resources/config/routing/ui/mass_edit_action.yml'
+    prefix: /enrich/mass-edit-action

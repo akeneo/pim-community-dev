@@ -1,0 +1,130 @@
+parameters:
+    pim_catalog.factory.metric.class:                Akeneo\Pim\Enrichment\Component\Product\Factory\MetricFactory
+    pim_catalog.factory.group.class:                 Akeneo\Pim\Enrichment\Component\Product\Factory\GroupFactory
+    pim_catalog.factory.product_unique_data.class:   Akeneo\Pim\Enrichment\Component\Product\Factory\ProductUniqueDataFactory
+
+services:
+    pim_catalog.factory.family_variant:
+        class: '%akeneo_storage_utils.factory.simple.class%'
+        arguments:
+            - '%pim_catalog.entity.family_variant.class%'
+
+    pim_catalog.factory.variant_attribute_set:
+        class: '%akeneo_storage_utils.factory.simple.class%'
+        arguments:
+            - '%pim_catalog.entity.variant_attribute_set.class%'
+
+    pim_catalog.factory.product_model:
+        class: '%akeneo_storage_utils.factory.simple.class%'
+        arguments:
+            - '%pim_catalog.entity.product_model.class%'
+
+    pim_catalog.factory.attribute_group:
+        class: '%akeneo_storage_utils.factory.simple.class%'
+        arguments:
+            - '%pim_catalog.entity.attribute_group.class%'
+
+    pim_catalog.factory.attribute_option:
+        class: '%akeneo_storage_utils.factory.simple.class%'
+        arguments:
+            - '%pim_catalog.entity.attribute_option.class%'
+
+    pim_catalog.factory.attribute_option_value:
+        class: '%akeneo_storage_utils.factory.simple.class%'
+        arguments:
+            - '%pim_catalog.entity.attribute_option_value.class%'
+
+    pim_catalog.factory.metric:
+        class: '%pim_catalog.factory.metric.class%'
+        arguments:
+            - '@akeneo_measure.measure_converter'
+            - '@akeneo_measure.manager'
+            - '%pim_catalog.entity.metric.class%'
+
+    pim_catalog.factory.group:
+        class: '%pim_catalog.factory.group.class%'
+        arguments:
+            - '@pim_catalog.repository.group_type'
+            - '%pim_catalog.entity.group.class%'
+
+    pim_catalog.factory.category:
+        class: '%akeneo_storage_utils.factory.simple.class%'
+        arguments:
+            - '%pim_catalog.entity.category.class%'
+
+    pim_catalog.factory.association_type:
+        class: '%akeneo_storage_utils.factory.simple.class%'
+        arguments:
+            - '%pim_catalog.entity.association_type.class%'
+
+    pim_catalog.factory.product_unique_data:
+        class: '%pim_catalog.factory.product_unique_data.class%'
+        arguments:
+            - '%pim_catalog.entity.product_unique_data.class%'
+
+    akeneo.pim.enrichment.factory.non_existent_values_filter.chained:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\ChainedNonExistentValuesFilter'
+        arguments:
+            - !tagged akeneo.pim.enrichment.factory.non_existent_values_filter
+            - '@akeneo.pim.enrichment.factory.non_existent_values_filter.channel_locale'
+            - '@akeneo.pim.enrichment.factory.empty_values_cleaner'
+            - '@akeneo.pim.enrichment.factory.transform_raw_values_collections'
+
+    akeneo.pim.enrichment.factory.non_existent_values_filter.simple_select:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\NonExistentSimpleSelectValuesFilter'
+        arguments:
+            - '@akeneo.pim.structure.query.get_existing_attribute_option_codes_from_option_codes'
+        tags:
+            - { name: akeneo.pim.enrichment.factory.non_existent_values_filter }
+
+    akeneo.pim.enrichment.factory.non_existent_values_filter.multi_select:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\NonExistentMultiSelectValuesFilter'
+        arguments:
+            - '@akeneo.pim.structure.query.get_existing_attribute_option_codes_from_option_codes'
+        tags:
+            - { name: akeneo.pim.enrichment.factory.non_existent_values_filter }
+
+    akeneo.pim.enrichment.factory.non_existent_values_filter.reference_data_simple_select:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\NonExistentReferenceDataSimpleSelectValuesFilter'
+        arguments:
+            - '@akeneo.pim.enrichment.product.query.get_existing_reference_data_codes'
+        tags:
+            - { name: akeneo.pim.enrichment.factory.non_existent_values_filter }
+
+    akeneo.pim.enrichment.factory.non_existent_values_filter.reference_data_multi_select:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\NonExistentReferenceDataMultiSelectValuesFilter'
+        arguments:
+            - '@akeneo.pim.enrichment.product.query.get_existing_reference_data_codes'
+        tags:
+            - { name: akeneo.pim.enrichment.factory.non_existent_values_filter }
+
+    akeneo.pim.enrichment.factory.non_existent_values_filter.price_collection:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\NonExistentPriceCollectionValueFilter'
+        arguments:
+            - '@pim_catalog.query.find_activated_currencies'
+        tags:
+            - { name: akeneo.pim.enrichment.factory.non_existent_values_filter }
+
+    akeneo.pim.enrichment.factory.non_existent_values_filter.file:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\NonExistentFileValueFilter'
+        arguments:
+            - '@akeneo_file_storage.repository.file_info'
+        tags:
+            - { name: akeneo.pim.enrichment.factory.non_existent_values_filter }
+
+    akeneo.pim.enrichment.factory.non_existent_values_filter.channel_locale:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\NonExistentChannelLocaleValuesFilter'
+        arguments:
+            - '@pim_channel.query.cache.channel_exists_with_locale'
+            - '@pim_channel.query.cache.channel_exists_with_locale'
+            - '@pim_channel.query.cache.channel_exists_with_locale'
+            - '@akeneo.pim.structure.query.get_attributes'
+
+    akeneo.pim.enrichment.factory.empty_values_cleaner:
+        public: true
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Factory\EmptyValuesCleaner'
+
+    akeneo.pim.enrichment.factory.transform_raw_values_collections:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Factory\TransformRawValuesCollections'
+        arguments:
+            - '@akeneo.pim.structure.query.get_attributes'

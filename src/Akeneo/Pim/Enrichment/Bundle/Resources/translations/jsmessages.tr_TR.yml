@@ -1,0 +1,368 @@
+pim_notification:
+  types:
+    settings: Ayarlar
+flash:
+  comment:
+    create:
+      success: Yorumunuz başarıyla oluşturuldu.
+    delete:
+      success: Yorumunuz başarıyla silindi.
+    reply:
+      success: Yanıtınız başarı ile oluşturuldu.
+pim_enrich.entity.product:
+  label: ürün
+  uppercase_label: Ürün
+  plural_label: Ürünler
+  flash:
+    update:
+      success: Ürün başarıyla güncelleştirildi.
+      fail: Bu ürün güncellenemedi.
+      fields_not_ready: "Ürün şuan için kayıt edilemiyor. Bu alanlar hazır değil {{ fields }}"
+      already_in_upload: Bu özellik için "{{ locale }}" yerel ve {{ scope }} kapsamı için zaten bir dosya yüklü
+    delete:
+      success: Ürün başarıyla silindi.
+      fail: Bu ürün silinemez.
+    create:
+      success: Ürün başarılı bir şekilde oluşturuldu
+      fail: Ürün kimliği olarak hiçbir özellik yapılandırılmamış ya da bunu düzenleme haklarına sahip değilsiniz.
+  module:
+    create:
+      subtitle: Ürün oluştur
+      title: Bir eylem seç
+      choose_family: Bir sınıf seçin
+      choose_family_variant: Bir aile biçimi seç
+    variant_navigation:
+      common: Genel
+    status:
+      enabled: Etkinleştirildi
+      disabled: Devre dışı
+    download_pdf:
+      label: PDF
+    copy:
+      label: Karşılaştır / Çevir
+      select: Seç
+      all_visible: Hepsi görünür
+      copy: Kopyala
+    history:
+      version: Sürüm
+      author: Sahibi
+      logged_at: Giriş zamanı
+      from: '-den'
+      modified: Değiştirilme
+      old_value: Eski değer
+      new_value: Yeni değer
+    meta:
+      updated: Son güncelleme
+      groups: Gruplar
+    show_group:
+      title: Grup {{ group }}
+      view_group: Grubu görüntüle
+      more_products: '{{ count }} Daha fazla ürün...'
+    attribute:
+      remove_optional: Bu özelliği sil
+      locale_specific_unavailable: Bu yerek özel alan bu yerelde kullanılabilir değil
+      locale_unavailable: Bu yerelleştirilebilir alan{{ locale }} yereli ve {{ channel }} kanalı için uygun değil
+      add_attribute_option: Özellik seçeneği ekle
+    completeness:
+      title: Bütünlük
+      complete: Bütünlük
+      no_family: Aile tanımlanmadı. Lütfen bu ürünün tamlığını hesaplamak için bir aile tanımlayınız.
+      no_completeness: Sadece ürün sınıfını değiştirdiniz. Yeni sınıfın bütünlüğünü hesaplamak için lütfen ilk önce kaydedin.
+    sequential_edit:
+      item_limit: Seçilen {{ count }} bu sıralı düzenlemede sadece ilk 1000 öğe gösterilir
+      empty: Seçiminiz boş, lütfen arama kriterinizi değiştiriniz
+      save_and_next: Kaydet ve ileri
+      save_and_finish: Kaydet ve bitir
+    associations:
+      none_exist: Hiç bir ilişki türü yok.
+      show_products: Ürünleri görüntüle
+      show_groups: Grupları görüntüle
+      number_of_associations: "{{ productCount }} ürün(ler), {{ productModelCount }} ürün model(ler) i ve {{ groupCount }} grup(lar)"
+      association_type_selector: İlişki türü
+      target: Hedef
+      manage: '{{ associationType }} ilişkilendirmesi ekle'
+      add_associations: İlişkilendirmeler ekle
+    attribute_filter:
+      display: Görüntüle
+      all: Bütün özellikler
+      missing_required: Eksik olan tüm gerekli özellikler
+      at_this_level: Tüm seviyelere özel sıfat
+    change_family:
+      title: Ürün sınıfını değiştirin
+      merge_attributes: Geçerli özellikler yeni ailedekilere aktarılacak.
+      keep_attributes: Hiç bir özellik silinmeyecek.
+      change_family_to: Aileyi şuna değiştir
+      empty_selection: Bir sınıf seçin
+    basket:
+      title: Sepet
+      empty_basket: Sepet boş
+    delete:
+      confirm: Bu ürünü silmek istediğinizden emin misiniz?
+    comment:
+      post: Yeni yorum ekle
+      reply: Yanıtla
+      title: Yorumlar
+      empty: Şimdilik yorum yok
+      header_comment: '{{ user }} ürüne yorum yaptı'
+      header_reply: '{{ user }} yoruma cevap attı'
+      delete_confirm: Bu yorumu silmek istediğinize emin misiniz?
+      removed_author: Silinmiş Kullanıcı
+pim_enrich.entity.product_model:
+  label: ürün modeli
+  uppercase_label: Ürün modeli
+  plural_label: Ürün modelleri
+  flash:
+    create:
+      success: Ürün modeli başarıyla oluşturuldu
+      product_model_added: Ürün modeli başarıyla ürün modeline eklendi
+      variant_product_added: Ürün çeşidi başarıyla ürün modeline eklendi
+    update:
+      success: Ürün modeli başarıyla güncellendi. Değişik ürünlerin tamamı yeniden hesaplanacak.
+      fail: Ürün modeli güncellenemiyor.
+      fields_not_ready: "Ürün modeli şu an kaydedilemiyor. Aşağıdaki alanlar hazır değil: {{ fields }}"
+    delete:
+      success: Ürün modeli başarıyla silindi.
+      fail: Bu ürün modeli silinemiyor
+  choose: Ürün modeli seçin
+  property:
+    family_variant: Çeşit
+  module:
+    create:
+      title: Ürün modeli oluştur
+      content: Bir ürün modeli değişken ürünleri toplar ve ortak özelliklerinin zenginleştirilmesini kolaylaştırır.
+    attribute:
+      read_only_parent_attribute_from_common: Bu özellik ortak özelliklerde güncellenebilir.
+      read_only_parent_attribute_from_model: "Bu özellik, {{ axes }} tarafından özelliklerde güncellenebilir"
+    variant_axis:
+      create: Yeni ekle
+      create_label: "Yeni bir {{ axes }} ekle"
+      required_label: '(değişken eksen)'
+    completeness:
+      label: Çeşit
+    delete:
+      confirm: Bu ürün modelini silmek istediğinize emin misiniz? Tüm çocukların, ürün modelleri ve değişkenleri de silinmiş olacak.
+      confirm_for_products_and_product_models: Seçilen ürün ve ürün gruplarını silmek istediğinize emin misiniz? Ürün gruplarının tüm alt öğeleri de silinecektir.
+pim_enrich.entity.group:
+  label: Grup
+  flash:
+    update:
+      success: Grup başarıyla güncellendi.
+      fail: Grup güncellenemedi.
+      fields_not_ready: "Grup şu an kaydedilemiyor. Aşağıdaki alanlar hazır değil: {{ fields }}"
+    create:
+      success: Grup başarıyla oluşturuldu
+    delete:
+      success: Grup başarıyla kaldırıldı
+      fail: Bu grup silinemiyor
+  module:
+    create:
+      button: Grup oluştur
+    delete:
+      confirm: Bu grubu silmek istediğinizden emin misiniz?
+pim_enrich.entity.category:
+  label: kategori
+  uppercase_label: Kategori
+  plural_label: Kategoriler
+pim_enrich.export.product:
+  data:
+    title: Ürünleri filtrele
+  structure:
+    title: Verileri filtrele
+  filter:
+    channel:
+      help: Kanal, ürün değerlerinin kapsamını, verileri seçmek için kullanılan yerel ayarları ve ürünleri seçmek için kullanılan ağacı tanımlar.
+    locales:
+      help: "Yerel ayarları, dışa çıkartmak için için yerelleştirilmiş ürün değerlerini tanımlar. Örn: Fransızca'daki yalnızca ürün bilgileri."
+    attributes:
+      label: "{0}Tüm özellikler|{1}Bir özellik seçildi|],Inf[{{ count }} özellikler seçildi"
+      help: "Dışa çıkartmak için ürün bilgilerini seçin. Ör: yalnızca teknik özellikler."
+      empty: Tüm özellikler dışarı aktarıldı
+      modal:
+        title: Özellik seçimi
+    attributes_selector:
+      attributes: "Arama {{ itemsCount }} özellikleri"
+      selected: "Seçilen özellikler"
+      clear: Temizle
+      all_group: Bütün Gruplar
+      empty_selection: Tüm özellikler dışarı aktarıldı
+      description: Dışa aktarmak için ürün bilgisi seçin
+    family:
+      title: Aile
+      help: "Sınıflarından dışa aktarılacak ürünleri seçin. Ör: Sadece ayakkabıları ve elbiseleri dışarı çıkar."
+      operators:
+        IN: Listede
+        "NOT IN": Listede değil
+        EMPTY: Ürünlerin ailesi yok
+        "NOT EMPTY": Sınıfı olan ürünler
+      empty_selection: Ailelerde bir koşul yok
+    updated:
+      title: Zaman koşulu
+      operators:
+        ALL: Tarih koşulsuz
+        "SINCE LAST N DAYS": Son günlerde güncellenmiş ürünler (ör. 6)
+        ">": Bu tarihten itibaren güncellenen ürünler
+        "SINCE LAST JOB": Bu tarihten itibaren güncellenen ürünler
+    enabled:
+      title: Durum
+      help: "Durumlarına göre dışa aktarılacak ürünleri seçin. Ör: Ürünleri durumları ne olursa olsun dışa aktar."
+      value:
+        enabled: Etkinleştirildi
+        disabled: Devre dışı
+    completeness:
+      title: Bütünlük
+      help: Dışarı aktarılacak ürünleri bütünlüklerine göre seçin.
+      operators:
+        ALL: Bütünlük için bir koşul bulunmuyor
+        ">=": Seçilen en az bir bölgede tamamla
+        "GREATER OR EQUALS THAN ON ALL LOCALES": Tüm seçilmiş bölgelerde tamamla
+        "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": Seçilen en az bir bölgede tamamla
+        LOWER THAN ON ALL LOCALES: Bütün seçilmiş bölgeleri tamamlama
+      empty_selection: Bir aile seçin
+    category:
+      title: Kategori
+      help: Bağlantıda ürün kategorilerini kullan (kanal üzerinden tanımlanmış) dışa aktarmak için ürünleri seç
+    identifier:
+      title: Tanımlayıcı
+      help: Dışa aktarmak için ürün tanımlayıcılarını virgül, boşluk veya satır sonlarıyla ayırarak kullanın
+    string:
+      operators:
+        ALL: Tümü
+    select:
+      operators:
+        IN: Listede
+    date:
+      operators:
+        BETWEEN: Arasında
+        NOT BETWEEN: Arasında değil
+  global_settings:
+    title: Genel ayarlar
+pim_enrich.mass_edit.product:
+  title: Toplu ürün işlemleri
+  step:
+    select:
+      label: Ürünleri seçin
+    choose:
+      title: Toplu ürün işlemleri
+    configure:
+      label: Yapılandırma
+    confirm:
+      label: Doğrula
+    launched:
+      label: Toplu eylem"{{operasyonu}} " başlatıldı. Bittiğinde size bildirilecektir.
+  operation:
+    common:
+      select_attributes: Özellikleri seç
+    change_status:
+      label: Değişim durumu
+      description: Seçilen ürünler etkinleştirilecek veya devre dışı bırakılacaktır.
+      field: Etkinleştirmek için
+    edit_common:
+      description: Yalnızca seçili ürünlerin ailelerine ait öznitelikleri {{ yerel}} yerel ayar ve {{ kapsama }} kanal için aşağıdaki verilerle düzenlenecektir.
+      no_update: Lütfen güncelleme için en az bir alan seçiniz
+    change_family:
+      label: Aileyi değiştir
+      description: Seçilen ürünlerin sınıfı, seçilen sınıfla değiştirilmiş olacak
+    add_to_group:
+      label: Gruplara ekle
+      description: Seçilen ürünleri, eklemek istediğiniz grupların olduğu yere ekleyin
+      field: Gruplar
+    add_to_category:
+      label: Kategorilere ekle
+      description: Ürünler aşağıdaki kategorilerde sınıflandırılacak, muvcut sınıflandırma korunacaktır.
+    move_to_category:
+      label: Kategoriler arasında ilerle
+      description: Ürünler aşağıdaki kategorilerde sınıflandırılacak, mevcut sınıflandırma kaybolacaktır.
+    remove_from_category:
+      label: Kategorilerden kaldır
+      description: Ürünler, şu kategorilerden kaldırılmış olacaktır.
+    add_to_existing_product_model:
+      label: Varolan bir ürün modeline ekle
+      description: Seçilen ürün modeli ürünleri toplar ve ortak özellikleri zenginleştirilmesine olanak sağlar.
+    associate_to_product_and_product_model:
+      description: Kılavuzdan seçilen ürünler, seçilen ürünler veya ürün modellerinden seçilen ilişkinin türünü oluşturur
+      validate: Lütfen bir sonraki aşamaya geçmeden önce ilişkilendirmeyi ekleyiniz
+pim_datagrid:
+  mass_action_group:
+    bulk_actions:
+      label: Toplu eylemler
+    quick_export:
+      label: Hızlı dışa aktar
+  mass_action:
+    delete:
+      confirm_content: Seçili ürünü silmek istediğinizden emin misiniz?
+      success: Seçilen ürünler başarıyla silindi.
+    quick_export:
+      csv_all: CSV (Tüm özellikler)
+      csv_grid_context: CSV(Kılavuz içerik)
+      xlsx_all: Excel(Tüm özellikler)
+      xlsx_grid_context: Excel (kılavuz içerik)
+      configurator:
+        title: Bir eylem seç
+        all_attributes: Bütün özellikler
+    mass_edit: Toplu İşlemler
+    sequential_edit: Sıralı düzenleme
+  view_selector:
+    view: Görünümler
+  actions:
+    edit_product_attributes: Ürünün özelliklerini düzenle
+    classify_product: Ürün sınıflandır
+    delete_product: Ürünü sil
+    change_status: Değişim durumu
+    toggle_status: Geçiş durumu
+    other: Diğer eylemler
+  empty_results:
+    associated_product:
+      hint: İlişkili ürünler yok
+      subHint: 'Bu ürüne ilişki eklemek için "İlişkilendirme Ekle" butonuna tıklayın'
+  filters:
+    label: Filtreler
+    system: Sistem
+    product_typology:
+      variant: 'Çeşit'
+    entity_type:
+      label: 'Çeşit'
+    family:
+      label: Aile
+    groups:
+      label: Gruplar
+    enabled:
+      label: Durum
+    completeness:
+      label: Tamamla
+    identifier:
+      label: Tanımlayıcı
+batch_jobs:
+  add_product_value:
+    label: Ürün değeri ekle
+    perform.label: Ürün değeri ekle
+  add_to_category:
+    label: Kategorilere ekle
+    perform.label: Kategorilere ekle
+  add_to_existing_product_model:
+    label: Varolan bir ürün modeline ekle
+    perform.label: Varolan bir ürün modeline ekle
+  csv_product_grid_context_quick_export:
+    quick_export.label: Csv ürününü kılavuz içeriğini hızla dışa aktar
+    quick_export_product_model.label: CSV ürün modeli sistem içeriği hızlı dışa aktarma
+    perform.label: Csv ürününü kılavuz içeriğini hızla dışa aktar
+  csv_product_quick_export:
+    quick_export.label: Csv ürününü hızlı dışa aktarın
+    quick_export_product_model.label: CSV ürün modeli hızlı ihracat
+    perform.label: Csv ürününü hızlı dışa aktarın
+  edit_common_attributes:
+    label: Özellikleri düzenle
+    perform.label: Özellikleri düzenle
+    clean.label: Öznitelikler için dosyaları temizleme
+    cleaner.label: Öznitelikler için dosyaları temizleme
+  move_to_category:
+    label: Kategorilere taşı
+    perform.label: Kategorilere taşı
+  update_product_value:
+    label: Ürün değerini güncelle
+    perform.label: Ürün değerini güncelleme
+  remove_from_category:
+    label: Kategorilerden kaldır
+    perform.label: Kategorilerden kaldır
+  set_attribute_requirements:
+    label: Özellik gereksinimlerini ayarla
+    perform.label: Özellik gereksinimlerini ayarla

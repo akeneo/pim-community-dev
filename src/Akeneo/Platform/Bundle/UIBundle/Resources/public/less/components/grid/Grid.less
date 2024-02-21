@@ -1,0 +1,618 @@
+@import '../../base/variables';
+
+.AknGrid {
+  @miniPadding: 2px;
+  @fullImageHeight: 200px;
+  @smallImageHeight: 150px;
+
+  font-size: @AknDefaultFontSize;
+  width: 100%;
+  border-collapse: collapse;
+
+  &-bodyRow {
+    transition: background 0.2s ease-in;
+
+    &--wordBreakable {
+      word-wrap: break-word;
+    }
+  }
+
+  &-bodyRow + &-bodyRow:not(&-bodyRow--withoutTopBorder) &-bodyCell {
+    border-top: 1px solid @AknGrey60;
+  }
+
+  &-bodyRow + &-bodyRow &-bodyCell:first-child&-bodyCell--checkbox {
+    border-top: none;
+  }
+
+  &-bodyRow + &-bodyRow &-bodyCell&-bodyCell--withoutTopBorder {
+    padding-top: @miniPadding;
+    border-top: none;
+    vertical-align: top;
+  }
+
+  &-bodyCell&-bodyCell--withoutBottomBorder {
+    padding-bottom: @miniPadding;
+    border-bottom: none;
+  }
+
+  &-bodyCell,
+  &-headerCell {
+    vertical-align: middle;
+    line-height: 20px;
+    padding: 12px 4px;
+    transition: background 0.1s ease;
+
+    &--tight {
+      width: 1px;
+    }
+
+    &--image {
+      width: 54px;
+    }
+
+    &:first-child&--checkbox {
+      background: white;
+      text-align: center;
+      width: @AknCheckboxCellWidth;
+      max-width: @AknCheckboxCellWidth;
+    }
+  }
+
+  &-headerCell&-headerCell--checkbox {
+    border-bottom: none;
+    width: 40px;
+    max-width: 40px;
+    opacity: 0;
+    transform: scale(0);
+  }
+
+  &-body &-bodyRow:not(&-bodyRow--thumbnail):hover,
+  &-bodyRow--highlight {
+    background: @AknDefaultHoverBackground;
+  }
+
+  &-bodyRow--selected {
+    background: lighten(@AknBlue, 35%);
+  }
+
+  &-bodyRow--selected:hover {
+    background: lighten(@AknBlue, 32%);
+  }
+
+  &-bodyContainer--collapsed &-bodyRow:not(&-headerToggle) {
+    display: none;
+  }
+
+  &-bodyCell {
+    cursor: pointer;
+
+    &--flex {
+      display: flex;
+      align-items: center;
+    }
+
+    &--full {
+      padding: 10px 20px;
+      background: white;
+      cursor: default;
+    }
+
+    &--unclickable {
+      cursor: default;
+    }
+
+    &--actions,
+    &:first-child&--checkbox,
+    .AknGrid-onHoverElement {
+      opacity: 0;
+      transition: opacity 0.1s ease-in;
+    }
+
+    &--actions {
+      width: 1px;
+      padding-right: 20px;
+    }
+
+    &--credentials {
+      line-height: 24px;
+    }
+
+    &--highlight {
+      color: @AknLightPurple;
+      font-style: italic;
+      font-size: @AknDefaultFontSize;
+      max-width: 15vw;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    &--highlightWithTooltip {
+      color: @AknLightPurple;
+      font-style: italic;
+      font-size: @AknDefaultFontSize;
+      white-space: nowrap;
+      max-width: 15vw;
+      text-overflow: ellipsis;
+    }
+
+    &--big {
+      font-size: @AknFontSizeBig;
+    }
+
+    &--highlightAlternative {
+      color: @AknDarkBlue;
+      font-size: @AknFontSizeBig;
+    }
+
+    &--noWrap {
+      white-space: nowrap;
+    }
+  }
+
+  &-bodyRow:hover &-bodyCell--actions,
+  &-bodyRow:hover &-bodyCell--checkbox,
+  &-bodyRow:hover &-onHoverElement,
+  &-bodyRow&-bodyRow--selected &-bodyCell--checkbox,
+  &-bodyRow &-bodyCell--checked {
+    opacity: 1;
+  }
+
+  &-headerCell {
+    color: @AknDefaultFontColor;
+    border-bottom: solid 1px @AknDarkBlue;
+    font-size: @AknFontSizeBig;
+    font-weight: normal;
+    text-align: left;
+    white-space: nowrap;
+
+    // TODO To remove when we will remove the global 'a' rule
+    a {
+      color: @AknDefaultFontColor;
+    }
+  }
+
+  &-bodyCell,
+  &-headerCell {
+    &--center {
+      text-align: center;
+    }
+
+    &--right {
+      text-align: right;
+    }
+  }
+
+  &--withCheckbox &-bodyRow &-bodyCell:nth-child(2),
+  &:not(&--withCheckbox) &-bodyRow &-bodyCell:first-child,
+  &--withCheckbox &-bodyRow &-headerCell:nth-child(2),
+  &:not(&--withCheckbox) &-bodyRow &-headerCell:first-child {
+    padding-left: 20px;
+  }
+
+  & &--withCheckbox &-bodyRow &-bodyCell:nth-child(2),
+  & &:not(&--withCheckbox) &-bodyRow &-bodyCell:first-child,
+  & &--withCheckbox &-bodyRow &-headerCell:nth-child(2),
+  & &:not(&--withCheckbox) &-bodyRow &-headerCell:first-child {
+    padding-left: 4px;
+  }
+
+  &-headerCell {
+    &--sticky {
+      position: sticky;
+      background: white;
+    }
+  }
+
+  &-caret {
+    margin-left: 5px;
+    display: none;
+  }
+
+  &-headerCell--ascending &-caret,
+  &-headerCell--descending &-caret {
+    display: inline-block;
+  }
+
+  &-headerCell--ascending &-caret {
+    border-bottom: 4px solid @AknDefaultFontColor;
+    border-top: none;
+  }
+
+  &--condensed {
+    border: 1px solid @AknBorderColor;
+  }
+
+  &--condensed &-bodyCell,
+  &--condensed &-headerCell {
+    line-height: 20px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    background: white;
+  }
+
+  &--gallery & {
+    display: block !important;
+  }
+
+  &--gallery &-header {
+    display: none;
+  }
+
+  &--gallery &-body {
+    display: grid;
+    grid-gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  }
+
+  &--gallery &-body--small {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+
+  &--gallery &--withCheckbox &-body {
+    margin-left: @AknCheckboxCellWidth;
+  }
+
+  & &-bodyRow:first-child &-bodyCell {
+    border-top: none;
+  }
+
+  &--unclickable &-bodyRow &-bodyCell,
+  &--unclickable &-bodyRow &-headerCell {
+    cursor: default;
+  }
+
+  &-label {
+    font-weight: bold;
+    display: inline-block;
+    width: 60px;
+  }
+
+  &-truncatable {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  &-multiline {
+    width: 100%;
+    word-break: break-word;
+  }
+
+  &-expandable {
+    width: 100px;
+  }
+
+  &-expand {
+    width: 32px;
+    height: 32px;
+    background: url('/bundles/pimui/images/icon-right.svg') no-repeat 50%;
+    transition: transform 0.2s ease-in;
+
+    &--expanded {
+      transform: rotate(90deg);
+    }
+  }
+
+  &-imageLayer {
+    position: absolute;
+    border: 1px solid @AknBorderColor;
+    background: white;
+    height: 44px;
+    width: 44px;
+    transform: translate(4px, 0);
+    transition: border-color 0.2s ease-in;
+
+    &:after {
+      content: '';
+      position: absolute;
+      border: 1px solid @AknBorderColor;
+      background: white;
+      height: 42px;
+      width: 42px;
+      transform: translate(-3px, 1px);
+      transition: border-color 0.2s ease-in;
+    }
+  }
+
+  &-bodyRow:hover &-imageLayer,
+  &-bodyRow:hover &-image,
+  &-bodyRow:hover &-imageLayer:after {
+    border-color: darken(@AknBorderColor, 20%);
+  }
+
+  &-image {
+    background: white;
+    position: relative;
+    height: 44px;
+    width: 44px;
+    border: 1px solid @AknBorderColor;
+    transition: border-color 0.2s ease-in;
+    margin-top: 3px;
+    margin-bottom: -3px;
+    object-fit: contain;
+    overflow: hidden;
+
+    &--withLayer {
+      margin-top: 4px;
+      margin-bottom: -4px;
+      margin-right: 4px;
+    }
+  }
+
+  &-fullImage {
+    width: 100%;
+    height: @fullImageHeight;
+    min-height: @fullImageHeight;
+    background-size: cover;
+    background-position: 50%;
+    margin-bottom: 16px;
+    position: relative;
+    display: block;
+
+    &:before {
+      content: '';
+      width: 100%;
+      height: @fullImageHeight;
+      background: @AknDarkBlue;
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      transition: opacity 0.4s ease-in;
+    }
+  }
+
+  &-fullImage--small {
+    height: @smallImageHeight;
+    min-height: @smallImageHeight;
+  }
+
+  &-title {
+    z-index: 2;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    font-style: initial;
+    font-size: @AknDefaultFontSize;
+    padding-left: 20px;
+    padding-right: 20px;
+    max-width: 100%;
+    display: block;
+  }
+
+  &-subTitle,
+  &-description {
+    font-size: @AknDefaultFontSize;
+    color: @AknGrey;
+    padding-top: 6px;
+    max-width: 100%;
+    display: block;
+  }
+
+  &-movableRow {
+    cursor: move;
+  }
+
+  &-bodyRow--withLayer {
+    &:before,
+    &:after {
+      content: '';
+      border: 1px @AknBorderColor solid;
+      border-radius: 3px;
+      transform: translate(1px, 1px);
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      border-color: inherit;
+    }
+
+    &:after {
+      transform: translate(3px, 3px);
+    }
+  }
+
+  &-bodyRow--thumbnail {
+    border: 1px @AknBorderColor solid;
+    border-radius: 3px;
+    display: block;
+    position: relative;
+    cursor: pointer;
+    text-align: center;
+    background: white;
+    overflow: visible;
+    transition: background 0.4s ease-in;
+
+    .AknGrid-bodyCell {
+      padding: 0;
+    }
+
+    .AknGrid-bodyCell--checkbox {
+      align-self: start;
+      background: none !important;
+      z-index: 2;
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      opacity: 0;
+    }
+
+    .AknGrid-bodyCell--actions {
+      transition: none;
+      color: white;
+      z-index: 2;
+      max-width: 100%;
+      margin-top: 4px;
+      display: grid;
+      justify-content: center;
+      width: 100%;
+    }
+  }
+
+  &-bodyRowRemove {
+    display: none;
+    z-index: 3;
+  }
+
+  &-bodyRow--thumbnail:hover {
+    border-color: @AknDarkBlue;
+    background: @AknDarkBlue;
+    color: white;
+  }
+
+  &-bodyRow--thumbnail:hover &-description {
+    color: white;
+  }
+
+  &-bodyRow--thumbnail:hover &-bodyCell--actions {
+    display: grid;
+  }
+
+  &-bodyRow--thumbnail:hover &-fullImage {
+    opacity: 0.7;
+  }
+
+  &-bodyRow--thumbnail:hover &-bodyRowRemove {
+    display: block;
+  }
+
+  &-bodyRow--selected {
+    border-color: @AknBlue;
+    background: white;
+    border-width: 2px;
+
+    &:after,
+    &:before {
+      width: ~'calc(100% + 1px)';
+      height: ~'calc(100% + 1px)';
+    }
+  }
+
+  &--stretched &-bodyCell {
+    padding-top: 17px;
+    padding-bottom: 17px;
+  }
+
+  &-bodyRow--success &-bodyCell {
+    background: lighten(@AknGreen, 40%);
+  }
+
+  &-bodyRow--success:hover &-bodyCell {
+    background: lighten(@AknGreen, 38%);
+  }
+
+  &-bodyCell--sixteen,
+  &-headerCell--sixteen {
+    width: 16%;
+  }
+
+  &--light {
+    font-size: @AknFontSizeBig;
+
+    & .AknGrid-bodyCell {
+      height: 74px;
+      min-width: 75px;
+      background: white;
+      white-space: nowrap;
+      max-width: 250px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    & .AknGrid-headerCell {
+      min-width: 75px;
+      height: 44px;
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: linear-gradient(to top, @AknSlateGrey 1px, white 0px);
+      border: none;
+    }
+  }
+
+  &--left {
+    position: sticky;
+    left: 0;
+    z-index: 3;
+    width: auto;
+
+    & .AknGrid-bodyCell,
+    & .AknGrid-headerCell {
+      max-width: 250px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      z-index: 3;
+    }
+    & .AknGrid-bodyCell {
+      background: none;
+    }
+
+    & .AknGrid-bodyRow {
+      background: linear-gradient(
+        to left,
+        RGBa(255, 255, 255, 0) 0px,
+        RGBa(255, 255, 255, 0.9) 8px,
+        RGBa(255, 255, 255, 1) 100%
+      );
+    }
+  }
+
+  &--right {
+    position: sticky;
+    right: 0;
+    width: 0;
+
+    & .AknGrid-bodyCell {
+      background: none;
+    }
+
+    & .AknGrid-bodyRow {
+      background: linear-gradient(
+        to left,
+        RGBa(255, 255, 255, 1) 0%,
+        RGBa(255, 255, 255, 0.9) 90%,
+        RGBa(255, 255, 255, 0) 100%
+      );
+    }
+  }
+
+  &-bodyCellContainer {
+    max-height: 50px;
+    line-height: 50px;
+    height: 49px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin: 0 10px 0 0;
+    max-width: 250px;
+  }
+}
+
+.AknGridHistory {
+  &-bodyCell {
+    &--highlight {
+      color: @AknLightPurple;
+      font-style: italic;
+      font-size: @AknFontSizeBig;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    &--changes {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      min-width: 250px;
+    }
+  }
+}
+
+.AknGrid-headerCell,
+.AknGrid-bodyCell {
+  &-important {
+    background-color: lighten(@AknBlue, 41%);
+  }
+}

@@ -1,0 +1,258 @@
+parameters:
+    oro_security.security_facade.class:                        Oro\Bundle\SecurityBundle\SecurityFacade
+    oro_security.acl.manager.class:                            Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager
+    oro_security.acl.sid_manager.class:                        Oro\Bundle\SecurityBundle\Acl\Persistence\AclSidManager
+    oro_security.acl.cache.class:                              Oro\Bundle\SecurityBundle\Acl\Cache\FilesystemCache
+    oro_security.acl.ace_provider.class:                       Oro\Bundle\SecurityBundle\Acl\Persistence\AceManipulationHelper
+    oro_security.acl.privilege_repository.class:               Oro\Bundle\SecurityBundle\Acl\Persistence\AclPrivilegeRepository
+    oro_security.acl.extension_selector.class:                 Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionSelector
+    oro_security.acl.extension.entity.class:                   Oro\Bundle\SecurityBundle\Acl\Extension\EntityAclExtension
+    oro_security.acl.entity_class_resolver.class:              Oro\Bundle\SecurityBundle\Acl\Extension\EntityClassResolver
+    oro_security.acl.extension.action.class:                   Oro\Bundle\SecurityBundle\Acl\Extension\ActionAclExtension
+    oro_security.acl.voter.class:                              Oro\Bundle\SecurityBundle\Acl\Voter\AclVoter
+    oro_security.acl.provider.class:                           Oro\Bundle\SecurityBundle\Acl\Domain\RootBasedAclProvider
+    oro_security.acl.dbal.provider.class:                      Oro\Bundle\SecurityBundle\Acl\Dbal\MutableAclProvider
+    oro_security.acl.permission_granting_strategy.class:       Oro\Bundle\SecurityBundle\Acl\Domain\PermissionGrantingStrategy
+    oro_security.acl.permission_map.class:                     Oro\Bundle\SecurityBundle\Acl\Permission\PermissionMap
+    oro_security.acl.object_identity_factory.class:            Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory
+    oro_security.acl.object_identity_retrieval_strategy.class: Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityRetrievalStrategy
+    oro_security.acl.object_id_accessor.class:                 Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdAccessor
+
+    oro_security.type.oro_acl_label.class:                     Oro\Bundle\SecurityBundle\Form\Type\ObjectLabelType
+
+    oro_security.action_metadata_provider.class:               Oro\Bundle\SecurityBundle\Metadata\ActionMetadataProvider
+
+    oro_security.acl.annotation_provider.class:                Oro\Bundle\SecurityBundle\Metadata\AclAnnotationProvider
+    oro_security.acl.annotation_provider.cache.class:          Doctrine\Common\Cache\FilesystemCache
+    oro_security.acl.annotation_loader.class:                  Oro\Bundle\SecurityBundle\Annotation\Loader\AclAnnotationLoader
+    oro_security.acl.yaml_config_loader.class:                 Oro\Bundle\SecurityBundle\Annotation\Loader\AclYamlConfigLoader
+
+    oro_security.acl.annotation_provider.cache.warmer.class:   Oro\Bundle\SecurityBundle\Cache\AclAnnotationCacheWarmer
+    oro_security.acl.annotation_provider.cache.clearer.class:  Oro\Bundle\SecurityBundle\Cache\AclAnnotationCacheClearer
+    oro_security.action_metadata_provider.cache.warmer.class:  Oro\Bundle\SecurityBundle\Cache\ActionMetadataCacheWarmer
+    oro_security.action_metadata_provider.cache.clearer.class: Oro\Bundle\SecurityBundle\Cache\ActionMetadataCacheClearer
+
+    oro_security.listener.controller.class:                    Oro\Bundle\SecurityBundle\EventListener\ControllerListener
+
+    oro_security.twig.security_extension:                      Oro\Bundle\SecurityBundle\Twig\OroSecurityExtension
+
+services:
+    oro_security.security_facade:
+        class: '%oro_security.security_facade.class%'
+        arguments:
+            - '@security.authorization_checker'
+            - '@oro_security.acl.annotation_provider'
+            - '@oro_security.acl.object_identity_factory'
+            - '@logger'
+        tags:
+            - { name: monolog.logger, channel: security }
+
+    oro_security.acl.manager:
+        class: '%oro_security.acl.manager.class%'
+        public: true
+        arguments:
+            - '@oro_security.acl.object_identity_factory'
+            - '@oro_security.acl.extension_selector'
+            - '@?security.acl.dbal.provider'
+            - '@oro_security.acl.ace_provider'
+            - '%oro_security.acl.privilege_repository.class%'
+            - '@event_dispatcher'
+
+    oro_security.acl.sid_manager:
+        class: '%oro_security.acl.sid_manager.class%'
+        arguments:
+            - '@?security.acl.dbal.provider'
+
+    oro_security.link.sid_manager:
+        tags:
+            - { name: oro_service_link,  service: oro_security.acl.sid_manager }
+
+    security.acl.cache.doctrine.cache_impl:
+        public: false
+        class: '%oro_security.acl.cache.class%'
+        arguments:
+            - '%kernel.cache_dir%/oro_acl'
+
+    oro_security.acl.ace_provider:
+        public: false
+        class: '%oro_security.acl.ace_provider.class%'
+
+    oro_security.acl.extension_selector:
+        public: false
+        class: '%oro_security.acl.extension_selector.class%'
+        arguments:
+            - '@oro_security.acl.object_id_accessor'
+
+    oro_security.acl.extension.entity:
+        public: false
+        class: '%oro_security.acl.extension.entity.class%'
+        arguments:
+            - '@oro_security.acl.object_id_accessor'
+            - '@oro_security.acl.entity_class_resolver'
+        tags:
+            - { name: oro_security.acl.extension, priority: 20 }
+
+    oro_security.acl.extension.action:
+        public: false
+        class: '%oro_security.acl.extension.action.class%'
+        arguments:
+            - '@oro_security.action_metadata_provider'
+        tags:
+            - { name: oro_security.acl.extension, priority: 10 }
+
+    oro_security.acl.provider:
+        public: false
+        class: '%oro_security.acl.provider.class%'
+        arguments:
+            - '@oro_security.acl.object_identity_factory'
+
+    oro_security.acl.voter_link:
+        tags:
+            - { name: oro_service_link,  service: ?security.acl.voter.basic_permissions }
+
+    oro_security.acl.permission_granting_strategy:
+        public: false
+        class: '%oro_security.acl.permission_granting_strategy.class%'
+        calls:
+             - [setAuditLogger, ['@?security.acl.audit_logger']]
+
+    oro_security.acl.permission_map:
+        public: false
+        class: '%oro_security.acl.permission_map.class%'
+        arguments:
+            - '@oro_security.acl.extension_selector'
+
+    oro_security.acl.object_identity_factory:
+        class: '%oro_security.acl.object_identity_factory.class%'
+        arguments:
+            - '@oro_security.acl.extension_selector'
+
+    oro_security.acl.object_identity_retrieval_strategy:
+        public: false
+        class: '%oro_security.acl.object_identity_retrieval_strategy.class%'
+        arguments:
+            - '@oro_security.acl.object_identity_factory'
+
+    oro_security.acl.object_id_accessor:
+        public: false
+        class: '%oro_security.acl.object_id_accessor.class%'
+
+    oro_security.form.type.object_label_type:
+        class: '%oro_security.type.oro_acl_label.class%'
+        tags:
+            - { name: form.type, alias: oro_acl_label }
+
+    oro_security.action_metadata_provider:
+        public: false
+        class: '%oro_security.action_metadata_provider.class%'
+        arguments:
+            - '@oro_security.acl.annotation_provider'
+            - '@oro_security.action_metadata_provider.cache'
+
+    oro_security.action_metadata_provider.cache:
+        public: false
+        parent: oro_security.acl.annotation_provider.cache
+
+    oro_security.acl.annotation_provider:
+        class: '%oro_security.acl.annotation_provider.class%'
+        arguments:
+          - '@oro_security.acl.annotation_provider.cache'
+          - '@oro_security.acl.acl_feature_flags'
+
+    oro_security.acl.annotation_provider.cache:
+        public: false
+        class: '%oro_security.acl.annotation_provider.cache.class%'
+        arguments:
+            - '%kernel.cache_dir%/oro_acl_annotations'
+
+    oro_security.acl.annotation_loader:
+        public: false
+        class: '%oro_security.acl.annotation_loader.class%'
+        arguments:
+            - '%kernel.bundles%'
+            - ["Controller"]
+            - '@annotation_reader'
+        tags:
+            - { name: oro_security.acl.config_loader }
+
+    oro_security.acl.yaml_config_loader:
+        public: false
+        class: '%oro_security.acl.yaml_config_loader.class%'
+        arguments:
+            - '%kernel.bundles%'
+        tags:
+            - { name: oro_security.acl.config_loader }
+
+    oro_security.acl.annotation_provider.cache.warmer:
+        public: false
+        class: '%oro_security.acl.annotation_provider.cache.warmer.class%'
+        arguments:
+            - '@oro_security.acl.annotation_provider'
+        tags:
+            - { name: kernel.cache_warmer}
+
+    oro_security.acl.annotation_provider.cache.clearer:
+        public: false
+        class: '%oro_security.acl.annotation_provider.cache.clearer.class%'
+        arguments:
+            - '@oro_security.acl.annotation_provider'
+        tags:
+            - { name: kernel.cache_clearer }
+
+    oro_security.action_metadata_provider.cache.warmer:
+        public: false
+        class: '%oro_security.action_metadata_provider.cache.warmer.class%'
+        arguments:
+            - '@oro_security.action_metadata_provider'
+        tags:
+            - { name: kernel.cache_warmer}
+
+    oro_security.action_metadata_provider.cache.clearer:
+        public: false
+        class: '%oro_security.action_metadata_provider.cache.clearer.class%'
+        arguments:
+            - '@oro_security.action_metadata_provider'
+        tags:
+            - { name: kernel.cache_clearer }
+
+    oro_security.listener.controller:
+        class: '%oro_security.listener.controller.class%'
+        arguments:
+            - '@oro_security.security_facade'
+            - '@logger'
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: -1 }
+            - { name: monolog.logger, channel: security }
+
+    oro_security.twig.security_extension:
+        class: '%oro_security.twig.security_extension%'
+        arguments:
+            - '@oro_security.security_facade'
+        tags:
+            - { name: twig.extension }
+
+    oro_security.acl.entity_class_resolver:
+        class: '%oro_security.acl.entity_class_resolver.class%'
+        arguments:
+            - '@doctrine'
+
+    oro_security.acl.mask_builder.default_action_mask_builder:
+        class: Oro\Bundle\SecurityBundle\Acl\Extension\ActionMaskBuilder
+        tags:
+            - { name: oro_security.acl.action_mask_builder }
+
+    oro_security.normalizer.acl_privilege:
+        class: Oro\Bundle\SecurityBundle\Normalizer\AclPrivilegeNormalizer
+        tags:
+            - { name: pim_standard_format_serializer.normalizer }
+
+    oro_security.acl.acl_feature_flags:
+        class: Oro\Bundle\SecurityBundle\Model\AclFeatureFlags
+        arguments:
+            - '@feature_flags'
+
+    Oro\Bundle\SecurityBundle\EventSubscriber\FeatureFlagAclPrivilegesEventSubscriber:
+        arguments:
+            - '@oro_security.acl.acl_feature_flags'
+        tags:
+            - { name: kernel.event_subscriber }

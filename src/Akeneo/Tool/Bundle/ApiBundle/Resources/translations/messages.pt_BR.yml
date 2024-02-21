@@ -1,0 +1,45 @@
+pim_api:
+  acl:
+    rights: Permissões da API Web
+    attribute:
+      edit: Criar e atualizar atributos
+      list: Listar atributos
+    attribute_option:
+      edit: Criar e atualizar as opções de atributo
+      list: Lista as opções de atributo
+    attribute_group:
+      edit: Criar e atualizar grupos de atributos
+      list: Listar grupo de atributos
+    category:
+      edit: Criar e atualizar as categorias
+      list: Listar categorias
+    family:
+      edit: Criar e atualizar as famílias
+      list: Listar famílias
+    family_variant:
+      edit: Criar e atualizar variantes da família
+      list: Listar variantes da família
+    channel:
+      edit: Criar e atualizar canais
+      list: Listar canais
+    locale.list: Lista de localidades
+    currency.list: Lista de moedas
+    association_type:
+      edit: Criar e atualizar tipos de associação
+      list: Lista de tipos de associação
+  acl_group:
+    overall_access: Acesso total à API Web
+    attribute: Atributos
+    attribute_option: Opções de atributo
+    attribute_group: Grupos de Atributos
+    category: Categorias
+    family: Famílias
+    family_variant: Variantes de família
+    channel: Canais
+    locale: Locais
+    currency: Moedas
+    association_type: Tipos de Associação
+pim_user:
+  roles:
+    tab:
+      api: Permissões da API Web

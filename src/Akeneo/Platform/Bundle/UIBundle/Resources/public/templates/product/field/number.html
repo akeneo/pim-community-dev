@@ -1,0 +1,13 @@
+<% if (attribute.localizable) { %>
+    <div class="AknTextField-layer AknTextField-layer--first"></div>
+    <div class="AknTextField-layer AknTextField-layer--second"></div>
+<% } %>
+<input
+    id="<%- fieldId %>"
+    class="AknTextField<% if (attribute.localizable) { %> AknTextField--localizable <% } %>"
+    type="text"
+    data-locale="<%- locale %>"
+    data-scope="<%- scope %>"
+    value="<%- value ? value.data : null %>"
+    <%- editMode === 'view' ? 'disabled' : '' %>
+/>

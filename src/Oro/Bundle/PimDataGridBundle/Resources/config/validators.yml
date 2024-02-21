@@ -1,0 +1,7 @@
+services:
+    pim_datagrid.validator.constraint.unique_datagrid_view_entity:
+        class: 'Oro\Bundle\PimDataGridBundle\Validator\Constraints\UniqueDatagridViewEntityValidator'
+        arguments:
+            - '@pim_datagrid.repository.datagrid_view'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_unique_datagrid_view_validator_entity }

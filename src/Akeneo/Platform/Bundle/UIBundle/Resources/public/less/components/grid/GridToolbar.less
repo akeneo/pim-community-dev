@@ -1,0 +1,55 @@
+@import '../../base/variables';
+
+.AknGridToolbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  &-left {
+    margin-top: 20px;
+  }
+
+  &-center:not(:empty) {
+    margin-top: 20px;
+    order: 5;
+    flex-grow: 1;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+  }
+
+  &-right {
+    margin-top: 20px;
+    order: 10;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  &-pageSize {
+    display: flex;
+    line-height: @AknLittleButtonSize - 2px;
+  }
+
+  &-actionsPanel {
+    display: flex;
+  }
+
+  &-actionButton {
+    min-width: @AknLittleButtonSize - 2px;
+    margin-left: 5px;
+    text-align: center;
+  }
+
+  &-label {
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+
+  &-left &-actionButton:first-child {
+    margin-left: 0;
+  }
+}
+
+.AknGridToolbarBottom {
+  margin-top: -10px;
+}

@@ -1,0 +1,4 @@
+pim_enrich_media_rest_post:
+    path: ''
+    defaults: { _controller: pim_enrich.controller.rest.media:postAction }
+    methods: [POST]

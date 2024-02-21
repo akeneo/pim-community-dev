@@ -1,0 +1,291 @@
+job_execution:
+  summary:
+    display_item: Object weergeven
+    hide_item: Object verbergen
+pim_connector:
+  export:
+    categories:
+      selector:
+        modal:
+          title: Categorie selectie
+        label: "{0}Alle producten|{1}één geselecteerde categorie|]1,Inf[{{ count }} geselecteerde categorieën"
+        title: Selecteer categorieën
+    locales:
+      validation:
+        not_blank: Één landinstelling moet worden geselecteerd, kies een landinstelling om te exporteren.
+pim_import_export:
+  validation:
+    max_length_reached: Deze waarde is te lang. Hij mag {{ limit }} tekens of minder bevatten.
+  entity:
+    job_instance:
+      label: functieprofiel
+      flash:
+        update:
+          success: Het functieprofiel is succesvol bijgewerkt.
+          fail: Het jobprofiel kon niet worden bijgewerkt.
+        delete:
+          success: Instantie van taak succesvol verwijderd
+      duplicate:
+        title: Profiel van {{ job_code }} dupliceren
+        success: Het taakprofiel is gedupliceerd.
+        fail: Het taakprofiel kon niet worden gedupliceerd.
+    import_profile:
+      uppercase_label: Profiel importeren
+      flash:
+        create:
+          success: Importprofiel succesvol aangemaakt
+        upload:
+          error: Kan het bestand niet uploaden. De grootte van het bestand kan de geconfigureerde maximale uploadgrootte op uw PHP of HTTP server configuratie overschrijden
+      page_title:
+        index: "]-Inf, 1] {{ count }} importprofiel|]1, Inf [{{ count }} importprofielen"
+      module:
+        create:
+          button: Importprofiel aanmaken
+    export_profile:
+      uppercase_label: Profiel exporteren
+      flash:
+        create:
+          success: Exportprofiel succesvol aangemaakt
+      page_title:
+        index: "]-Inf, 1] {{ count }} exportprofiel|]1, Inf [{{ count }} exportprofielen"
+      module:
+        create:
+          button: Exportprofiel aanmaken
+  form:
+    job_execution:
+      title.details: Verwerkingsdetails
+      refreshing: Uitvoeringsgegevens vernieuwen
+      refreshBtn.title: Vernieuwen
+      button:
+        show_profile.title: Profiel weergeven
+        download_log.title: Logbestand downloaden
+        download_file.title: Download gegenereerd bestand
+        download_archive.title: Download gegenereerd archief
+      summary:
+        fetching: Gegevens verzamelen over taakverwerking...
+        warning: Waarschuwing
+        header.step: Stap
+        header.warnings: Waarschuwingen
+        header.summary: Samenvatting
+        header.start: Start
+        header.end: Einde
+    job_instance:
+      fail:
+        launch: Het functieprofiel kon niet gestart worden. Zorg ervoor dat het geldig is en je de nodige rechten heb om het te starten.
+        save: Het functieprofiel kon niet worden opgeslagen. Zorg ervoor dat je bewerkingsrechten hebt.
+      button:
+        export.title: Nu exporteren
+        import.launch: Nu importeren
+        import.upload: Uploaden en nu importeren
+        import.upload_file: Bestand uploaden
+      meta:
+        job: Taak
+        connector: Connector
+      subsection:
+        last_executions: Laatst uitgevoerde taken
+      tab:
+        content:
+          title: Inhoud
+        properties:
+          decimal_separator:
+            title: Decimaal scheidingsteken
+            help: Bepaal het decimaal scheidingsteken
+          date_format:
+            title: Datumnotatie
+            help: Bepaal het formaat van de datumvelden
+          file_path:
+            title: Bestandspad
+            help: Waar het gegenereerde bestand op het bestandssysteem op te slaan
+            help_import: De map van het bestand dat gebruikt moet worden voor de import
+          delimiter:
+            title: Scheidingsteken
+            help: Eén teken voor het scheiden van de velden
+          enclosure:
+            title: Omsluiting
+            help: Eén teken voor gebruik als omsluitingsteken voor het veld
+          with_header:
+            title: Met koptekst
+            help: Of de kolomnaam geprint moet worden
+          with_media:
+            title: Media exporteren
+            help: Wel of niet media exporteren
+          lines_per_file:
+            title: Aantal regels per bestand
+            help: Het maximum aantal regels per bestand definiëren
+          upload_allowed:
+            title: Bestanden uploaden toestaan
+            help: Of direct uploaden van het bestand is toegestaan
+          categories_column:
+            title: Categoriekolom
+            help: Naam van de categoriekolom
+          escape:
+            title: Escape-teken
+            help: Eén teken voor gebruik als escape-teken voor het veld
+          family_column:
+            title: Familiekolom
+            help: Naam van de familiekolom
+          groups_column:
+            title: Groepskolom
+            help: Naam van de groepskolom
+          enabled:
+            title: Het product inschakelen
+            help: Of geïmporteerd product moet worden ingeschakeld
+          enabled_comparison:
+            title: Vergelijk de waarden
+            help: Activeer de vergelijking tussen originele en geïmporteerde waarden. Kan import versnellen als geïmporteerde waarden erg gelijkaardig zijn aan originele waarden
+          real_time_versioning:
+            title: Real-time geschiedenis bijwerken
+            help: Betekent dat de productgeschiedenis automatisch wordt bijgewerkt. Dit kan worden uitgeschakeld om de prestaties te verbeteren
+          convert_variant_to_simple:
+            title: Variantproducten omzetten naar eenvoudige producten
+            help: Probeer variantproducten om te zetten in eenvoudige producten wanneer de kolom "modelproduct" leeg is. Indien ingesteld op "Nee", wordt een lege kolom "modelproducten" genegeerd
+          family_variant_column:
+            title: Familie variant kolom
+          with_label:
+            title: Met labels
+            help: Definieer of het exportbestand de labels laat zien in plaats van codes
+          header_with_label:
+            title: Kopregels met labels
+            help: Bepaal of het exportbestand voor de headers labels toont in plaats van codes
+          file_locale:
+            title: Landinstelling bestand
+            help: Definieer de taal waarin labels worden weergegeven
+          with_uuid:
+            title: Met product-UUID
+            help: Exporteer de UUID van het product en de bijbehorende producten
+          with_uuid_for_models:
+            title: Met product-UUID
+            help: Exporteer de gekoppelde product-UUID in plaats van de ID
+      file_path: Bestandspad
+      storage_form:
+        title: Opslag
+        connection:
+          label: Type
+          local: Lokaal
+          sftp: SFTP
+          amazon_s3: Amazon S3
+          microsoft_azure: Microsoft Azure
+          google_cloud_storage: Google cloupdopslag
+          none: Geen opslag geconfigureerd
+        file_path:
+          label: Bestandspad
+          placeholder: mijnbestand.{{ file_extension }}
+        host:
+          label: Host
+          placeholder: voorbeeld.nl
+        fingerprint:
+          label: Vingerafdruk host (optioneel)
+          placeholder: "c1:91:5e:42:55:5c:74:65:b6:12:32:7e:1f:6d:80:3e"
+          helper: We hebben een SHA-512 of MD5 controlesom met hash-waarde en dubbele punt nodig voor de vingerafdruk van de host.
+        port:
+          label: Poort
+          placeholder: 22
+        username:
+          label: Inlognaam
+          placeholder: Voer uw inlognaam in
+        password:
+          label: Wachtwoord
+          placeholder: Voer het wachtwoord in
+        public_key:
+          label: Publieke sleutel
+          button_title: Kopiëren naar klembord
+          copy_notification_success: Openbare sleutel gekopieerd naar klembord
+        login_type:
+          label: Authenticatiemethode
+          password: 'Inlognaam / wachtwoord:'
+          private_key: Privésleutel
+        region:
+          label: Regio
+          placeholder: Voer uw regio in
+        bucket:
+          label: Naam van bucket
+          placeholder: Voer de naam van uw regio in
+        key:
+          label: Sleutel
+          placeholder: Voer uw sleutel in
+        secret:
+          label: Geheim
+          placeholder: Voer uw geheim in
+        connection_string:
+          label: Verbindingsreeks
+          placeholder: Voer uw verbindingsreeks in
+        container_name:
+          label: Containernaam
+          placeholder: Voer uw containernaam in
+        project_id:
+          label: Project-ID
+          placeholder: Voer uw project-ID in
+        service_account:
+          label: Service-account
+          placeholder: Voer uw service-account in
+      validation:
+        storage:
+          unavailable_type: Deze opslag is niet beschikbaar, alleen {{ available_types }} zijn beschikbaar.
+        file_path:
+          unsupported_extension: Niet-ondersteunde bestandsextensie
+        fingerprint:
+          invalid_encoding: De vingerafdruk van de host moet een geldige SHA-512 of MD5 controlesom met hash-waarde en dubbele punt zijn.
+      connection_checker:
+        label: Verbindingsinstellingen testen
+        exception: Er kan geen verbinding tot stand worden gebracht. Controleer de instellingen.
+  batch_status:
+    1: Voltooid
+    2: Opstarten
+    3: In behandeling
+    4: Aan het stoppen
+    5: Gestopt
+    6: Mislukt
+    7: Afgebroken
+    8: Onbekend
+    9: Pauzeren
+    10: Gepauzeerd
+  job_status:
+    COMPLETED: Voltooid
+    STARTING: Opstarten
+    STARTED: In behandeling
+    STOPPING: Aan het stoppen
+    STOPPED: Gestopt
+    FAILED: Mislukt
+    ABANDONED: Afgebroken
+    UNKNOWN: Onbekend
+    PAUSING: Pauzeren
+    PAUSED: Gepauzeerd
+  tracking:
+    completed: "Gebruikte tijd: {{ duration }}"
+    in_progress: "Geschatte resterende tijd: {{ duration }}"
+    not_started: "In behandeling"
+    untrackable: Ontraceerbare stap
+    estimating: "Geschatte resterende tijd..."
+confirmation:
+  remove:
+    import_profile: Weet u zeker dat u dit importprofiel wilt verwijderen?
+    export_profile: Weet u zeker dat u dit exportprofiel wilt verwijderen?
+    job_instance: Weet u zeker dat u deze job wil verwijderen?
+pim_enrich:
+  entity:
+    import_profile:
+      module:
+        delete:
+          confirm: Weet u zeker dat u dit importprofiel wilt verwijderen?
+      flash:
+        delete:
+          success: Importprofiel succesvol verwijderd
+    export_profile:
+      module:
+        delete:
+          confirm: Weet u zeker dat u dit exportprofiel wilt verwijderen?
+      flash:
+        delete:
+          success: Exportprofiel succesvol verwijderd
+pim_title:
+  pim_importexport_export_profile_index: Beheer van exportprofielen
+  pim_importexport_export_profile_edit: Exportprofiel {{ job.label }}| Bewerken
+  pim_importexport_export_profile_show: Exportprofiel {{ job.label }}| Tonen
+  pim_importexport_export_execution_index: Exportverwerkingen geschiedenis
+  pim_importexport_export_execution_show: Exportverwerkingen | Details
+  pim_importexport_import_profile_index: Beheer van importprofielen
+  pim_importexport_import_profile_edit: Importprofiel {{ job.label }}| Bewerken
+  pim_importexport_import_profile_show: Importprofiel {{ job.label }}| Tonen
+  pim_importexport_import_execution_index: Importverwerkingen geschiedenis
+  pim_importexport_import_execution_show: Importverwerkingen | Details
+

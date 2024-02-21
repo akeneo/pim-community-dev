@@ -1,0 +1,66 @@
+pim_enrich_product_model_category_rest_list:
+    path: /rest/{id}/categories
+    defaults: { _controller: pim_enrich.controller.rest.product_model_category:listAction }
+    requirements:
+        id: '[0-9a-f]+'
+    methods: [GET]
+
+pim_enrich_product_model_rest_get:
+    path: /rest/{id}
+    defaults: { _controller: pim_enrich.controller.rest.product_model:getAction }
+    requirements:
+        id: '[0-9a-f]+'
+    methods: [GET]
+
+pim_enrich_product_model_rest_get_by_code:
+    path: /rest-code/{identifier}
+    defaults: { _controller: pim_enrich.controller.rest.product_model:getByCodeAction }
+    methods: [GET]
+    requirements:
+        identifier: .+
+
+pim_enrich_product_model_rest_index:
+    path: /rest/
+    defaults: { _controller: pim_enrich.controller.rest.product_model:indexAction }
+    methods: [GET]
+
+pim_enrich_product_model_rest_create:
+    path: /rest/create
+    defaults: { _controller: pim_enrich.controller.rest.product_model:createAction }
+    methods: [POST]
+
+pim_enrich_product_model_rest_post:
+    path: /rest/{id}
+    defaults: { _controller: pim_enrich.controller.rest.product_model:postAction }
+    requirements:
+        id: '[0-9a-f]+'
+    methods: [POST]
+
+pim_enrich_product_model_rest_children_list:
+    path: /rest/children
+    defaults: { _controller: pim_enrich.controller.rest.product_model:childrenAction }
+    methods: [GET]
+
+pim_enrich_product_model_family_variant_leaf:
+    path: /rest/family-variant-leaf
+    defaults: { _controller: pim_enrich.controller.rest.product_model:searchLastLevelProductModelByCode }
+    methods: [GET]
+
+pim_enrich_product_model_for_family_variant_rest_list:
+    path: /rest/product-model/family-variant
+    defaults: { _controller: pim_enrich.controller.rest.product_model:listFamilyVariantProductModels }
+    methods: [GET]
+
+pim_enrich_product_model_rest_remove:
+    path: /rest/{id}
+    defaults: { _controller: pim_enrich.controller.rest.product_model:removeAction, _format: json }
+    requirements:
+        id: '\d+'
+    methods: [DELETE]
+
+pim_enrich_product_model_history_rest_get:
+    path: /rest/product-model/{entityId}/history
+    defaults: { _controller: pim_enrich.controller.rest.versioning:getAction, entityType: product_model }
+    requirements:
+        entityId: '[0-9a-f]+'
+    methods: [GET]

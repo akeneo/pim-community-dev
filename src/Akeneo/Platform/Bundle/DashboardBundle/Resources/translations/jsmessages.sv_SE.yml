@@ -1,0 +1,6 @@
+pim_dashboard:
+  widget:
+    completeness:
+      load_more: 'Ladda fler...'
+pim_title:
+  pim_dashboard_index: Instrumentpanel

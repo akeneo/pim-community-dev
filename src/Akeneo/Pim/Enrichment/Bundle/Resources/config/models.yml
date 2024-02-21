@@ -1,0 +1,10 @@
+parameters:
+    pim_catalog.model.product.interface:                Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface
+    pim_catalog.model.product_model.interface:          Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface
+    pim_catalog.model.value.interface:                  Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface
+    pim_catalog.model.association.interface:            Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface
+    pim_catalog.model.group.interface:                  Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface
+    pim_catalog.model.metric.interface:                 Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface
+    pim_catalog.model.product_price.interface:          Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface
+    pim_catalog.model.group_translation.interface:            Akeneo\Pim\Enrichment\Component\Product\Model\GroupTranslationInterface
+    pim_reference_data.model.reference_data.interface: Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface

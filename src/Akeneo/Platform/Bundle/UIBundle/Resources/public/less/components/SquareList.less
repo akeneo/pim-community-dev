@@ -1,0 +1,58 @@
+@import '../base/variables';
+
+.AknSquareList {
+  @margin: 10px;
+
+  max-width: 720px + 2 * @margin;
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+  line-height: 12px;
+
+  &-item {
+    min-height: 128px;
+    flex-basis: 128px;
+    border: 1px solid @AknMediumGrey;
+    margin: 10px;
+    cursor: pointer;
+    padding: 10px;
+    text-align: center;
+    border-radius: 2px;
+    line-height: 16px;
+    transition:
+      background 0.2s ease-in,
+      color 0.2s ease-in;
+
+    &--selected, &:hover {
+      border: 2px solid @AknBlue;
+      background: lighten(@AknBlue, 40%);
+      color: @AknBlue;
+      padding: 9px;
+    }
+  }
+
+  &-icon {
+    width: 54px;
+    height: 54px;
+    display: block;
+    margin: 5px auto 10px;
+
+    &--selected {
+      display: none;
+    }
+  }
+
+  &-item--selected &-icon&-icon--selected,
+  &-item:hover &-icon&-icon--selected {
+    display: block;
+  }
+
+  &-item--selected &-icon:not(&-icon--selected),
+  &-item:hover &-icon:not(&-icon--selected) {
+    display: none;
+  }
+
+  &--centered {
+      justify-content: center;
+  }
+}

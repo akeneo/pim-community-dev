@@ -1,0 +1,58 @@
+Akeneo\Pim\Enrichment\Component\Comment\Model\Comment:
+    type: entity
+    table: pim_comment_comment
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    indexes:
+        resource_name_resource_id_idx:
+            columns:
+                - resource_name
+                - resource_id
+        resource_name_resource_uuid_idx:
+            columns:
+                - resource_name
+                - resource_uuid
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        resourceName:
+            type: string
+            column: resource_name
+        resourceId:
+            type: string
+            column: resource_id
+            length: 24
+            nullable: true
+        body:
+            type: text
+        createdAt:
+            type: datetime
+            column: created_at
+        repliedAt:
+            type: datetime
+            column: replied_at
+        resourceUuid:
+            type: uuid_binary
+            column: resource_uuid
+            nullable: true
+    oneToMany:
+        children:
+            targetEntity: Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface
+            mappedBy: parent
+            orderBy:
+                createdAt: ASC
+
+    manyToOne:
+        parent:
+            targetEntity: Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface
+            inversedBy: children
+            joinColumn:
+                onDelete: CASCADE
+        author:
+            targetEntity: Akeneo\UserManagement\Component\Model\UserInterface
+            joinColumn:
+                name: author_id
+                referencedColumnName: id
+                onDelete: SET NULL

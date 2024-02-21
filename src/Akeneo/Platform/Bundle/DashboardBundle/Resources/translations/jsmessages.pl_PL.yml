@@ -1,0 +1,28 @@
+pim_dashboard:
+  title: Pulpit aktywności
+  greetings: Witaj {{ name }}!
+  welcome_sentence:
+    message0: To będzie świetny dzień.
+    message1: Miło Cię widzieć.
+    message2: Cieszymy się, że jesteś.
+    message3: Dobrze, że jesteś.
+    message4: Cieszymy się, że jesteś z nami.
+    message5: Zaczynajmy!
+    message6: Zabierzmy się do pracy.
+    message7: Zróbmy dziś wspaniałe rzeczy.
+    message8: Zaczynamy?
+    message9: Twoje produkty czekają na wzbogacenie.
+  widget:
+    completeness:
+      load_more: 'Załaduj więcej...'
+      title: Kompletność dla poszczególnych kanałów oraz wersji językowych
+      progress_messages:
+        message1: Przygotuj się na rozpoczęcie wzbogacającej podróży ku kompletności.
+        message2: Masz jeszcze trochę pracy do zrobienia, ale jesteś na właściwej drodze.
+        message3: Kontynuuj wspaniałą pracę uzupełniania informacji o produktach.
+        message4: Gratulacje! Osiągnięto doskonałą kompletność produktów dla tego kanału!
+    last_operations:
+      title: Ostatnie operacje
+  version: Wersja
+pim_title:
+  pim_dashboard_index: Kokpit

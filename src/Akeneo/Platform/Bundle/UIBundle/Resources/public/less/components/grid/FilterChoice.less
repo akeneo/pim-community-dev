@@ -1,0 +1,61 @@
+@import '../../base/variables';
+
+.AknFilterChoice {
+  padding: 10px 20px;
+  cursor: default;
+
+  &-header {
+    border-bottom: 1px solid @AknLightPurple;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    align-items: center;
+    padding-bottom: 5px;
+  }
+
+  &-title {
+    color: @AknLightPurple;
+    text-transform: uppercase;
+    font-size: @AknDefaultFontSize;
+    line-height: 30px;
+    margin-right: 30px;
+  }
+
+  &-button {
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  &-dates {
+    display: flex;
+  }
+
+  &-separator {
+    margin-left: 5px;
+    margin-right: 5px;
+    line-height: @AknFormHeight;
+  }
+
+  &-date {
+    flex-grow: 1;
+    min-width: 100px;
+  }
+
+  &-inputContainer {
+    height: 40px;
+    display: flex;
+  }
+
+  &-unit,
+  &-currency {
+    height: @AknFormHeight;
+    border: 1px solid @AknBorderColor;
+    border-left: none;
+    background: white;
+    margin-left: -1px;
+    z-index: 1;
+    padding: 7px;
+
+    &--centered {}
+  }
+}

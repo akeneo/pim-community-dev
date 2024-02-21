@@ -1,0 +1,23 @@
+.AknNotificationList {
+  padding: 0;
+  overflow-x: auto;
+  max-height: ~"calc(100vh - 130px)";
+
+  &:before {
+    position: absolute;
+    top: -7px;
+    right: 17px;
+    display: inline-block;
+    border-right: 7px solid transparent;
+    border-bottom: 7px solid white;
+    border-left: 7px solid transparent;
+    content: '';
+  }
+
+  &-footer {
+    text-align: center;
+    white-space: nowrap;
+    margin: 0;
+    padding: 15px;
+  }
+}

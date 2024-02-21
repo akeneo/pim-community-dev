@@ -1,0 +1,145 @@
+pim_title:
+  pim_category_template_edit: Bewerk categorie sjabloon
+akeneo.category:
+  unknown_error:
+    title: Sorry, er is een onbekende fout opgetreden.
+    message: Ververs de pagina en probeer het opnieuw.
+  tree_list:
+    column:
+      category_templates: Categoriesjablonen
+  attributes: Attributen
+  edition_form:
+    error:
+      unhandled_attribute_type: Kon attribuut veldbouwer voor attribuut type "{{ type }} " niet vinden
+    template:
+      title: Sjabloon
+      no_attribute_title: Er is geen attribuut in dit sjabloon
+      no_attribute_instructions: Het aan deze categorie gekoppelde sjabloon is leeg. U kunt attributen aan dit sjabloon toevoegen via de pagina met de categorieboom.
+      fetching_failed: Er is een fout opgetreden tijdens het ophalen van het sjabloon
+    unsaved_changes: Als u deze pagina verlaat, worden de wijzigingen aan de categorie niet opgeslagen.
+  tree:
+    create: Boomstructuur maken
+    delete: Boomstructuur verwijderen
+  template:
+    learn_more: Meer informatie over het categoriesjabloon
+    create: Sjabloon maken
+    create_confirmation_modal:
+      title: Nieuw categoriesjabloon maken
+      helper: Maak een categoriesjabloon om attributen te definiëren en verrijking in alle categorieën van deze boom te activeren.
+      category_tree: Categorieboom
+      link: Meer informatie over categoriesjablonen
+    edit: Sjabloon bewerken
+    notification_success: Het categoriesjabloon is gemaakt
+    notification_error: Het categoriesjabloon kon niet gemaakt worden
+    not_found: Er is geen actieve sjabloon voor deze categorie
+    properties:
+      general_properties: Algemene eigenschappen
+      label_translations_in_ui_locales: Labelvertalingen in de talen van de gebruikersinterface
+    attribute:
+      description_title: Instellingen van beschrijving
+      type:
+        text: Tekst
+        textarea: Tekstgebied
+        richtext: Tekst met opmaak
+        image: Afbeelding
+      delete_button: Attribuut verwijderen
+      settings:
+        title: Instellingen
+        options:
+          title: Opties
+          value_per_channel: Waarde per kanaal
+          value_per_locale: Waarde per taal
+          rich_text: Editor voor opgemaakte tekst
+        translations:
+          title: Labelvertalingen
+        error_message: Er staan ongeldige waarden op de pagina.
+        unsaved_changes: Er zijn niet opgeslagen wijzigingen. Wilt u de pagina toch verlaten?
+    add_attribute:
+      no_attribute_title: Uw eerste attribuut aanmaken
+      no_attribute_instructions: Definieer de inhoud die u wilt koppelen aan uw categorieën door attributen voor tekst, tekstgebied of afbeelding toe te voegen aan dit sjabloon.
+      add_button: Attribuut toevoegen
+      create_button: Attribuut aanmaken
+      confirmation_modal:
+        section_title: Attribuut toevoegen
+        title: Een nieuw categorieattribuut maken
+        head_helper: Categorieattributen worden gekoppeld aan één sjabloon. Ze zijn niet toegankelijk in andere sjablonen.
+        tail_helper: De waarde per kanaal en waarde per taal kunnen niet worden gewijzigd zodra het attribuut is gemaakt.
+        link: Meer informatie over categoriesjablonen.
+        create: Maken
+        input:
+          label: Label
+          code: Code
+          type:
+            label: Attribuuttype
+            empty: Geen attribuuttype beschikbaar
+            option_title:
+              text: Tekst
+              textarea: Tekstgebied
+              image: Afbeelding
+      success:
+        notification: Het attribuut is gemaakt
+      error:
+        failed: Toevoegen van sjabloonattribuut mislukt
+        limit_reached:
+          title: U kunt niet meer dan 50 attributen toevoegen.
+          message: Voor categoriesjablonen geldt een beperking van 50 attributen per sjabloon.
+    delete_attribute:
+      delete: Categorieattribuut verwijderen
+      confirmation_modal:
+        title: Dit categorieattribuut verwijderen
+        message: Weet u zeker dat u het categorieattribuut {{ attribute }} wilt verwijderen?
+        helper: Als u dit attribuut verwijdert, worden het attribuut en de waarden van de bijbehorende categorieën permanent verwijderd.
+      notification_success:
+        title: 'Attribuut {{ attribute }} is verwijderd'
+    deactivate:
+      deactivate_template: Sjabloon verwijderen
+      confirmation_modal:
+        title: Categoriesjabloon verwijderen
+        message: Weet u zeker dat u het categoriesjabloon {{ template }} wilt verwijderen?
+        helper: Als u dit sjabloon verwijdert, worden de kenmerken en waardes van de geassocieerde categorieën permanent verwijderd.
+        deactivate: Verwijderen
+      notification_success:
+        title: 'Sjabloon {{ template }} verwijderd'
+        message: '{{ template }} is verwijderd. De inhoud van de geassocieerde categorieën is verwijderd.'
+    auto-save:
+      saved: Opgeslagen
+      saving: Opslaan
+      editing: Bewerken
+      errors: Fouten niet opgeslagen
+    initialize:
+      title: Categorie-attributen toevoegen
+      message: Definieer de inhoud van uw categorieën door attributen voor tekst, tekstgebied of afbeeldingen toe te voegen.
+      choice_message: Begin met het maken van een eerste attribuut op basis van wat u nodig heeft, of laad een reeks van 13 voorgestelde attributen.
+      button:
+        load: Een reeks attributen laden
+        create: Eerste attribuut maken
+    load_attribute_set:
+      section_title: Reeks attributen laden
+      title: Een reeks voorgestelde attributen laden
+      description: Start eenvoudig de configuratie van verrijkte categorieën door een reeks voorgestelde attributen te laden.
+      content_description: 'Deze reeks bevat 13 attributen:'
+      content:
+        description_attributes: 2 tekstgebiedattributen voor lange en korte categoriebeschrijvingen
+        url_attributes: 1 tekstattribuut voor de URL-gegevens
+        image_attributes: 3 afbeeldings- en 3 tekstattributen voor de gegevens van afbeeldingen en alt-tekst
+        seo_attributes: 2 tekst- en 2 tekstgebiedattributen voor SEO-gegevens
+      confirmation_message: Weet u zeker dat u deze reeks attributen wilt laden?
+      button:
+        load: Reeks attributen laden
+      notification:
+        success: De attributen zijn gemaakt
+  template_list:
+    columns:
+      header: Label
+      code: Code
+      type: Type
+  tag:
+    new: Nieuw
+  discover_enriched_categories_information:
+    title: Verrijkte categorieën ontdekken
+    content:
+      enrich_attribute_values: Verrijk een niveau van uw categoriebomen met attributen voor tekst, tekstgebied en afbeelding
+      customizable_templates: Bied de gewenste productervaring aan dankzij de aanpasbare sjablonen
+    survey_link_label: Vertel ons wat u ervan vindt!
+    learn_more_link_label: Meer informatie over verrijkte categorieën
+  other_actions: Andere acties

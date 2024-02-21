@@ -1,0 +1,29 @@
+extensions:
+    pim-mass-family-edit:
+        module: pim/mass-edit-form/form
+        config:
+            backRoute: pim_enrich_family_index
+            launchedLabel: pim_enrich.mass_edit.family.step.launched.label
+            launchErrorLabel: pim_enrich.mass_edit.product.step.launch_error.label
+            confirm: pim_enrich.mass_edit.family.confirm
+
+    pim-mass-family-edit-choose:
+        module: pim/mass-edit-form/choose
+        parent: pim-mass-family-edit
+        position: 100
+        targetZone: choose
+        config:
+            title: pim_enrich.mass_edit.family.step.choose.title
+            labelCount: pim_enrich.mass_edit.family.step.choose.label_count
+
+    pim-mass-family-edit-configure-set-requirements:
+        module: pim/mass-edit-form/family/set-requirements
+        parent: pim-mass-family-edit
+        config:
+            title: pim_enrich.mass_edit.family.title
+            label: pim_enrich.mass_edit.family.operation.set_requirements.label
+            labelCount: pim_enrich.mass_edit.family.operation.set_requirements.label_count
+            description: pim_enrich.mass_edit.family.operation.set_requirements.description
+            code: set_requirements
+            jobInstanceCode: set_attribute_requirements
+            icon: icon-edit

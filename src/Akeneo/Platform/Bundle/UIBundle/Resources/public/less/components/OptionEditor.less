@@ -1,0 +1,58 @@
+.AknOptionEditor {
+  min-width: 80vw;
+  display: flex;
+  margin: 0 auto;
+
+  &-translator {
+    overflow: auto;
+    flex: 2;
+    padding-right: 20px;
+  }
+
+  &-helper {
+    flex: 1;
+    padding-left: 20px;
+    border-left: 1px solid #9452BA;
+    position: sticky;
+    top: 0;
+  }
+
+  &-table {
+    width: 100%;
+    overflow: auto;
+  }
+
+  &-headCell {
+    z-index: 1;
+    position: sticky;
+    top: 62px;
+  }
+
+  &-headCellLabel {
+    width: 100%;
+    font-weight: normal;
+    display: block;
+    text-align: left;
+    box-shadow: 0 -14px 0 white;
+    background: white;
+  }
+
+  &-labelList {
+    overflow: auto;
+    height: 100%;
+  }
+
+  &-remove {
+    width: 16px;
+    height: 16px;
+    margin-top: 14px;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  &-row {
+   vertical-align: top;
+  }
+}

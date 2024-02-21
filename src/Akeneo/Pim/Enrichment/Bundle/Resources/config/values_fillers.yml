@@ -1,0 +1,15 @@
+services:
+    pim_catalog.product.fill_missing_values:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingProductValues'
+        arguments:
+            - '@pim_catalog.repository.cached_family'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.locale'
+            - '@akeneo.pim.structure.query.get_attributes'
+
+    pim_catalog.product_model.fill_missing_values:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingProductModelValues'
+        arguments:
+            - '@pim_catalog.repository.family_variant'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.locale'

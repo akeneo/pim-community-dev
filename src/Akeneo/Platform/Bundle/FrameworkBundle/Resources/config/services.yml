@@ -1,0 +1,30 @@
+services:
+    Akeneo\Platform\Bundle\FrameworkBundle\Command\CheckUpdateRequirementsCommand:
+        arguments:
+            - '@akeneo_elasticsearch.registry.clients'
+            - '@akeneo_elasticsearch.client_builder'
+            - ['%index_hosts%']
+        tags:
+            - { name: console.command }
+
+    pim_framework.service.pim_url:
+        class: Akeneo\Platform\Bundle\FrameworkBundle\Service\PimUrl
+        public: true
+        arguments:
+            - '%env(string:AKENEO_PIM_URL)%'
+
+    pim_framework.lock.store:
+        class: Symfony\Component\Lock\Store\PdoStore
+        arguments:
+            - '@database_connection'
+
+    pim_framework.lock.factory:
+        class: Symfony\Component\Lock\LockFactory
+        arguments:
+            - '@pim_framework.lock.store'
+
+    pim_framework.dbal.resilient_deadlock_connection:
+        class: Akeneo\Platform\Bundle\FrameworkBundle\Service\ResilientDeadlockConnection
+        arguments:
+            - '@database_connection'
+            - '@logger'

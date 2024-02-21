@@ -1,0 +1,26 @@
+user:
+    resource: '@PimUserBundle/Resources/config/routing/user.yml'
+    prefix: /user
+
+user_rest:
+    resource: '@PimUserBundle/Resources/config/routing/user_rest.yml'
+    prefix: /rest/user
+
+user_group_rest:
+    resource: '@PimUserBundle/Resources/config/routing/user_group_rest.yml'
+    prefix: /rest/user_group
+
+user_role_rest:
+    resource: '@PimUserBundle/Resources/config/routing/user_role_rest.yml'
+    prefix: /rest/user_role
+
+security_rest:
+    resource: '@PimUserBundle/Resources/config/routing/security_rest.yml'
+    prefix: /rest/security
+
+old_oro_routes:
+    resource: "@PimUserBundle/Resources/config/routing/old_oro_routes.yml"
+
+api_connection:
+    resource: '@PimUserBundle/Resources/config/routing/api_connection.yml'
+    prefix: /client

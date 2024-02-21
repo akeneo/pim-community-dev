@@ -1,0 +1,66 @@
+pim_title:
+  pim_user_index: Пользователи
+  pim_user_role_index: Роли
+  pim_user_group_index: Группы пользователя
+  oro_config_configuration_system: Настройки
+  pim_user_security_login: Войти
+  pim_user_reset_request: Восстановить пароль
+confirmation:
+  remove:
+    user: Вы действительно хотите удалить этого пользователя?
+    group: Вы действительно хотите удалить эту группу?
+pim_enrich:
+  entity:
+    user:
+      module:
+        delete:
+          confirm: Вы действительно хотите удалить этого пользователя?
+pim_user_management:
+  entity:
+    user:
+      properties:
+        username: Имя пользователя
+        name_prefix: Префикс имени
+        first_name: Имя
+        middle_name: Отчество
+        last_name: Фамилия
+        name_suffix: Суффикс имени
+        avatar: Аватар
+        email: Эл. почта
+        catalog_locale: Локаль каталога
+        catalog_scope: Область видимости каталога
+        default_tree: Дерево каталога по умолчанию
+        default_asset_tree: Дерево медиафайлов по умолчанию
+        product_grid_filters: Фильтры товаров
+        current_password: Действующий пароль
+        new_password: Новый пароль
+        new_password_repeat: Новый пароль (повтор)
+        password: Пароль
+        ui_locale: Локаль пользовательского интерфейса
+        timezone: Часовой пояс
+        default_product_grid_view: Представление сетки продуктов по умолчанию
+        default_published_product_grid_view: Представление данных опубликованных товаров в таблице по умолчанию #EE Only
+        proposals_to_review_notification: При появлении нового предложения для рассмотрения #EE Only
+        proposals_state_notifications: При принятии или отклонении предложения #EE Only
+      module:
+        create:
+          button: Создать пользователя
+        delete:
+          confirm: Вы действительно хотите удалить этого пользователя?
+        update:
+          additional: Дополнительные
+          password: Пароль
+          interfaces: Интерфейсы
+          notifications: Уведомления #TODO EE Only
+    role:
+      plural_label: Роли
+      module:
+        create:
+          button: Создать роль
+        delete:
+          confirm: Вы действительно хотите удалить эту роль?
+    group:
+      plural_label: Группы пользователя
+      module:
+        create:
+          button: Создать группу

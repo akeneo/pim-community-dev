@@ -1,0 +1,33 @@
+@import '../../base/variables';
+
+.AknAttributeActions {
+  display: flex;
+  flex-wrap: wrap;
+  background: @AknWhite;
+  z-index: 3;
+
+  &-close {
+    width: 20px;
+    height: 20px;
+  }
+
+  &-copyActions {
+    flex-basis: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 16px;
+  }
+
+  &-editActions {
+    flex-basis: 100%;
+  }
+
+  &-contextSelectors {
+    padding-left: 10px;
+    margin-right: 0;
+  }
+
+  &-otherActions {
+    margin-left: 0;
+  }
+}

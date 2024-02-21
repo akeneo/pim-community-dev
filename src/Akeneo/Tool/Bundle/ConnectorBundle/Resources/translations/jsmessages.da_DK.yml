@@ -1,0 +1,144 @@
+#Job labels
+batch_jobs:
+  default_steps:
+    validation: Filvalidering
+    import_associations: Association import
+    import_root_product_model: Rodprodukt import
+    import_sub_product_model: Under produkt import
+    compute_data_related_to_family_root_product_models: Beregn rod produkt model data
+    compute_data_related_to_family_sub_product_models: Beregn under produkt model data
+    compute_data_related_to_family_products: Beregn produkt model data
+    compute_family_variant_structure_changes: Beregner familie variant struktur ændringer
+    compute_completeness_of_products_family: Beregner fuldstændigheden af produkter familie
+  csv_product_export:
+    label: Produkt eksport til CSV
+    export.label: Produkt eksport
+  csv_product_model_export:
+    label: Produkt model eksport i CSV-
+    export.label: Produkt model eksport
+  csv_category_export:
+    label: Kategori eksport til CSV
+    export.label: Kategori eksport
+  csv_attribute_export:
+    label: Attributten udførsel til CSV
+    export.label: Attribut eksport
+  csv_attribute_option_export:
+    label: Attribut options eksport til CSV
+    export.label: Attribut option eksport
+  csv_association_type_export:
+    label: Association type export in CSV
+    export.label: Association type export
+  csv_group_export:
+    label: Gruppen eksport til CSV
+    export.label: Gruppe eksport
+  csv_family_export:
+    label: Familie eksport i CSV
+    export.label: Familie eksport
+  csv_family_variant_export:
+    label: Familie variant eksport i CSV
+    export.label: Familie variant eksport
+  csv_product_import:
+    label: Produkt eksport fra CSV-fil
+    import.label: Produkt import
+  csv_product_model_import:
+    label: Produkt model import i CSV-
+    import_product_model_descendants.label: Beregne underliggende produkt modeller
+  csv_category_import:
+    label: Kategori eksport fra CSV
+    import.label: Kategori import
+  csv_attribute_import:
+    label: Attributten udførsel fra CSV
+    import.label: Attribut import
+  csv_attribute_option_import:
+    label: Attribut indstillinger -  import fra CSV
+    import.label: Attribut indstilling import
+  csv_association_type_import:
+    label: Association type import fra CSV
+    import.label: Association type import
+  csv_family_import:
+    label: Familie import i CSV
+    import.label: Familie import
+    compute_data_related_to_family_variants.label: Beregn produkt model data
+  csv_family_variant_import:
+    label: Familie variant import i CSV
+    import.label: Familie variant import
+  csv_group_import:
+    label: Gruppe import fra CSV
+    import.label: Gruppe import
+  csv_attribute_group_export:
+    label: Attribut gruppe eksport til CSV
+    export.label: Attribut gruppe eksport
+  csv_group_type_export:
+    label: Gruppen type eksport til CSV
+    export.label: Grupp type eksport
+  csv_attribute_group_import:
+    label: Attribut gruppe import fra CSV
+    import.label: Attribut gruppe import
+  csv_group_type_import:
+    label: Gruppe type import fra CSV
+    import.label: Gruppe type import
+  xlsx_category_import:
+    label: Kategori import fra XLSX
+    import.label: Kategori import
+  xlsx_association_type_import:
+    label: Sammenkædningstype import fra CSV
+    import.label: Association type import
+  xlsx_attribute_import:
+    label: Attribut import fra XLSX
+    import.label: Attribut import
+  xlsx_attribute_option_import:
+    label: Attribut tilvalg import fra XLSX
+    import.label: Attribut indstilling import
+  xlsx_family_import:
+    label: Familie import i XLSX
+    import.label: Familie import
+  xlsx_family_variant_import:
+    label: Familie variant import i XLSX
+    import.label: Familie variant import
+  xlsx_product_export:
+    label: Produkt eksport til XLSX
+    export.label: Produkt eksport
+  xlsx_product_model_export:
+    label: Produkt model eksport i XLSX
+    export.label: Produkt model eksport
+  xlsx_product_import:
+    label: Produkt import fra XLSX
+    import.label: Produkt import
+  xlsx_product_model_import:
+    import_product_model_descendants.label: Beregne underliggende produkt modeller
+  xlsx_group_export:
+    label: Gruppe eksport til XLSX
+    export.label: Gruppe eksport
+  xlsx_group_import:
+    label: Gruppe import fra XLSX
+    import.label: Gruppe import
+  xlsx_family_export:
+    label: Familie eksport til XLSX
+    export.label: Familie eksport
+  xlsx_family_variant_export:
+    label: Familie variant eksport i XLSX
+    export.label: Familie variant eksport
+  xlsx_category_export:
+    label: Kategori eksport til XLSX
+    export.label: Kategori eksport
+  xlsx_attribute_export:
+    label: Attribut eksport til XLSX
+    export.label: Attribut eksport til XLSX
+  xlsx_attribute_option_export:
+    label: Attribut tilvalg eksport til XLSX
+    export.label: Attribut tilvalg eksport til XLSX
+  xlsx_association_type_export:
+    label: Sammenkædningstype eksport til CSV
+    export.label: Sammenkædningstype eksport til CSV
+  xlsx_attribute_group_export:
+    label: Attribut gruppe eksport til CSV
+    export.label: Attribut gruppe eksport
+  xlsx_group_type_export:
+    label: Gruppe type eksport til XLSX
+    export.label: Grupp type eksport
+  xlsx_attribute_group_import:
+    label: Attribut gruppe import fra CSV
+    import.label: Attribut gruppe import
+  xlsx_group_type_import:
+    label: Gruppen type import fra XLSX
+    import.label: Gruppe type import

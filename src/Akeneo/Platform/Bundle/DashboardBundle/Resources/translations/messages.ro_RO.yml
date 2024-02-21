@@ -1,0 +1,10 @@
+pim_dashboard:
+  title: Tablou de bord
+  version: Versiune
+  widget:
+    completeness:
+      title: Completitudine peste Canale si Locale
+    last_operations:
+      title: Ultimele operațiuni
+      status: Stare
+      type: Tip

@@ -1,0 +1,50 @@
+pim_api:
+  acl:
+    rights: Permessi delle API Web
+    attribute:
+      edit: Crea e aggiorna attributi
+      list: Elenco attributi
+    attribute_option:
+      edit: Crea e aggiorna opzioni attributi
+      list: Elenca le opzioni degli attributi
+    attribute_group:
+      edit: Crea e aggiorna gruppi di attributi
+      list: Elenco attributi di gruppo
+    category:
+      edit: Crea e aggiorna categorie
+      list: Elenco categorie
+    family:
+      edit: Crea e aggiorna famiglie
+      list: Elenco famiglie
+    family_variant:
+      edit: Crea e aggiorna famiglie varianti
+      list: Elenco famiglie varianti
+    channel:
+      edit: Crea e aggiorna canali
+      list: Elenco canali
+    locale.list: Elenco formato impostazioni locali
+    product:
+      edit: Crea e aggiorna prodotti
+      list: Elenca prodotti
+      remove: Elimina prodotti
+    currency.list: Elenco valute
+    association_type:
+      edit: Crea e aggiorna i tipi di associazione
+      list: Elenco tipi di associazione
+  acl_group:
+    overall_access: Accesso globale alle API Web
+    attribute: Attributi
+    attribute_option: Opzioni degli attributi
+    attribute_group: Gruppi di attributi
+    category: Categorie
+    family: Famiglie
+    family_variant: Famiglie varianti
+    channel: Canali
+    locale: Impostazioni locali
+    product: Prodotti
+    currency: Valute
+    association_type: Tipi di associazione
+pim_user:
+  roles:
+    tab:
+      api: Permessi delle API Web

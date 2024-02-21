@@ -1,0 +1,50 @@
+pim_api:
+  acl:
+    rights: Uprawnienia Web API
+    attribute:
+      edit: Utwórz i aktualizuj atrybuty
+      list: Przeglądanie atrybutów
+    attribute_option:
+      edit: Tworzenie i aktualizowanie wartości atrybutów
+      list: Dodaj opcję atrybutu
+    attribute_group:
+      edit: Tworzenie i aktualizowanie grup atrybutów
+      list: Przeglądanie grup atrybutów
+    category:
+      edit: Tworzenie i aktualizowanie kategorii
+      list: Przeglądanie kategorii
+    family:
+      edit: Tworzenie i aktualizowanie rodzin
+      list: Przeglądanie rodzin
+    family_variant:
+      edit: Tworzenie i aktualizowanie wariantów rodziny
+      list: Przeglądanie wariantów rodziny
+    channel:
+      edit: Tworzenie i aktualizowanie kanałów
+      list: Przeglądanie kanałów
+    locale.list: Przeglądanie ustawień regionalnych
+    product:
+      edit: Utwórz i aktualizuj produkty
+      list: Wymień produkty
+      remove: Usuń produkty
+    currency.list: Przeglądanie walut
+    association_type:
+      edit: Tworzenie i aktualizowanie typów powiązań
+      list: Przeglądanie typów powiązań
+  acl_group:
+    overall_access: Dostęp do Web API
+    attribute: Atrybuty
+    attribute_option: Wartości atrybutów
+    attribute_group: Grupy atrybutów
+    category: Kategorie
+    family: Rodziny
+    family_variant: Warianty rodziny
+    channel: Kanały
+    locale: Ustawienia regionalne
+    product: Produkty
+    currency: Waluty
+    association_type: Typy powiązań
+pim_user:
+  roles:
+    tab:
+      api: Uprawnienia Web API

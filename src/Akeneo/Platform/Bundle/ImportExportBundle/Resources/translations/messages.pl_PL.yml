@@ -1,0 +1,174 @@
+#Entities
+Job: Zadanie
+Connector: Wtyczka
+pim_import_export:
+  job: Zadanie
+  connector: Wtyczka
+  ## Job status
+  status:
+    0: Gotowy
+  batch_status:
+    1: Zakończone
+    2: Rozpoczynanie
+    3: Rozpoczęte
+    4: Zatrzymywanie
+    5: Zatrzymane
+    6: Niepowodzenie
+    7: Opuszczone
+    8: Nieznany
+    9: Wstrzymywanie
+    10: Wstrzymano
+  download_archive:
+    archive: pobierz utworzone archiwum|pobierz utworzone archiwa
+    output: pobierz utworzony plik|pobierz utworzone pliki
+    input: pobierz wczytany plik|pobierz wczytane pliki
+    invalid_xlsx: pobierz nieprawidłowe dane
+    invalid_csv: pobierz nieprawidłowe dane
+  notification:
+    export:
+      error: Eksport <strong>%label%</strong> nie powiódł się
+      warning: Eksport <strong>%label%</strong> zakończony z ostrzeżeniami
+      success: Eksport <strong>%label%</strong> zakończony
+      warnings:
+        xlsx_cell_conversion_error: Wyjątek podczas konwersji kolumny "{0}" na docelowy typ atrybutu produktu PIM (sprawdź format komórki Excela)
+        xlsx_cell_date_to_text_conversion_error: Komórki {0} o formacie daty nie można skonwertować na atrybut typu tekstowego
+    import:
+      error: Import <strong>%label%</strong> nie powiódł się
+      warning: Import <strong>%label%</strong> zakończony z ostrzeżeniami
+      success: Import <strong>%label%</strong> zakończony
+      warnings:
+        xlsx_cell_date_conversion_error: Komórki „{cellName}” o formacie daty nie można skonwertować na atrybut typu {attributeType}.
+  list: Wybierz zadanie
+  job_profile:
+    tab:
+      property.title: Właściwości ogólne
+      history.title: Historia
+      job_content.title: Zawartość
+#Page titles:
+pim_title.export_profile.index: Zarządzanie profilami eksportu
+pim_title.export_profile.edit: Profil eksportu %job.label% | Edytuj
+pim_title.export_profile.show: Profil eksportu %job.label% | Pokaż
+pim_title.export_execution.index: Historia wykonanych eksportów
+pim_title.export_execution.show: Wykonane eksporty | Szczegóły
+pim_title.import_profile.index: Zarządzanie profilami importu
+pim_title.import_profile.edit: Profil importu %job.label% | Edytuj
+pim_title.import_profile.show: Profil importu %job.label% | Pokaż
+pim_title.import_execution.index: Historia wykonanych importów
+pim_title.import_execution.show: Wykonane importy | Szczegóły
+#Entity and page header titles
+export profile:
+  title: profil eksportu
+  edit: edytuj profil eksportu
+import profile:
+  title: profil importu
+  edit: edytuj profil importu
+#ACLs
+pim_importexport:
+  acl:
+    export_profile:
+      index: Zobacz listę profili eksportu
+      create: Tworzenie profilu eksportu
+      show: Pokaż profil eksportu
+      edit: Edytuj profil eksportu
+      remove: Usuń profil eksportu
+      launch: Uruchom profil eksportu
+      property_edit: Edytuj ogólne właściwości profilu eksportu
+      property_show: Pokaż ogólne właściwości profilu eksportu
+      history: Zobacz historię profilu eksportu
+      content_edit: Edytuj zawartość profilu eksportu
+      content_show: Pokaż zawartość profilu eksportu
+    import_profile:
+      index: Zobacz listę profili importu
+      create: Utwórz profil importu
+      show: Pokaż profil importu
+      edit: Edytuj profil importu
+      remove: Usuń profil importu
+      launch: Uruchom profil importu
+      history: Zobacz historię profilu importu
+    export_execution:
+      index: Zobacz listę raportów eksportów
+      show: Zobacz szczegóły raportu eksportu
+      dl_log: Pobierz dziennik raportu eksportu
+      dl_files: Pobierz wyeksportowane pliki
+    import_execution:
+      index: Zobacz listę raportów importu
+      show: Zobacz szczegóły raportu importu
+      dl_log: Pobierz dziennik raportu importu
+      dl_files: Pobierz zaimportowane pliki
+  acl_group:
+    export: Profile eksportu
+    import: Profile importu
+#Buttons
+btn:
+  create:
+    export profile: utwórz profil eksportu
+    import profile: utwórz profil importu
+Upload and import now: Załaduj i importuj teraz
+import now: Importuj teraz
+export now: Eksportuj teraz
+#Confirmation messages
+confirmation:
+  remove:
+    export profile: Czy na pewno chcesz usunąć profil eksportu %name%?
+    import profile: Czy na pewno chcesz usunąć profil importu %name%?
+#Flash messages
+flash:
+  export:
+    created: Eksport został pomyślnie utworzony
+    removed: Eksport został usunięty
+    updated: Eksport został pomyślnie zaktualizowany
+    running: Eksport jest uruchomiony
+  import:
+    created: Import został pomyślnie utworzony
+    removed: Import został usunięty
+    updated: Import został pomyślnie zaktualizowany
+    running: Import jest uruchomiony
+#Tabs
+General properties: Właściwości ogólne
+History: Historia
+pane.accordion:
+  properties: Ustawienia
+  global_settings: Ustawienia ogólne
+  filters: Filtry
+#Popin titles
+popin.create:
+  export_profile.title: Utwórz nowy profil eksportu
+  import_profile.title: Utwórz nowy profil importu
+#Job execution
+'Display item': Pokaż element
+'Hide item': Ukryj element
+'Collecting data about job execution...': Zbieranie danych o wykonywaniu zadania...
+'You must select a file to upload': Musisz wybrać plik do przesłania
+Download log: Pobierz dziennik
+Show profile: Pokaż profil
+execution details: szczegóły wykonania
+job_execution.summary:
+  read: odczyt
+  write: zapisano
+  skip: pominięte
+  create: utworzono
+  update: zaktualizowano
+  update_products: zaktualizowanych produktów
+  skip_products: pominiętych produktów
+  displayed: pierwsze ostrzeżenia wyświetlone
+  charset_validator:
+    title: 'Kodowanie pliku:'
+    skipped: pominięte, rozszerzenie na białej liście
+Step: Krok
+Status: Status
+Warnings: Ostrzeżenia
+Summary: Podsumowanie
+Start: Start
+End: Koniec
+#Process tracker
+set_attribute_requirements: Określ wymagania atrybutów
+COMPLETED: Zakończone
+STARTING: Rozpoczynanie
+STARTED: Rozpoczęte
+STOPPING: Zatrzymywanie
+STOPPED: Zatrzymane
+FAILED: Niepowodzenie
+ABANDONED: Porzucony
+UNKNOWN: Nieznany
+warning.label: Uwaga
+pim_datagrid.column.username: Nazwa użytkownika

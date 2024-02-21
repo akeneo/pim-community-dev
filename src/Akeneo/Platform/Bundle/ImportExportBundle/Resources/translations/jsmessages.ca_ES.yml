@@ -1,0 +1,291 @@
+job_execution:
+  summary:
+    display_item: Visualitzar element
+    hide_item: Amagar element
+pim_connector:
+  export:
+    categories:
+      selector:
+        modal:
+          title: Selecció de les categories
+        label: "{0}Tots els productes|{1}Una categoria seleccionada|]1,Inf[{{ count }} categories seleccionades"
+        title: Selecciona categories
+    locales:
+      validation:
+        not_blank: S'ha de seleccionar una configuració regional, trieu una configuració regional per exportar.
+pim_import_export:
+  validation:
+    max_length_reached: Aquest valor és massa llarg. Ha de contenir {{ limit }} caràcters o menys.
+  entity:
+    job_instance:
+      label: perfil de treball
+      flash:
+        update:
+          success: El perfil de treball s'ha actualitzat correctament.
+          fail: No s'ha pogut actualitzar el perfil de treball.
+        delete:
+          success: Instància de feina suprimida correctament
+      duplicate:
+        title: Perfil duplicat {{ job_code }}
+        success: El perfil de treball s'ha duplicat correctament.
+        fail: No s'ha pogut duplicar el perfil de la feina.
+    import_profile:
+      uppercase_label: Perfils d'importació
+      flash:
+        create:
+          success: Perfil d'importació creat correctament
+        upload:
+          error: No es pot pujar l'arxiu. El seva mida pot excedir la mida màxima de pujada configurada a la seva configuració del servidor PHP o HTTP
+      page_title:
+        index: "]-Inf, 1] {{ count }} perfil d'importació|]1, Inf [{{ count }} perfils d'importació"
+      module:
+        create:
+          button: Crear perfil d'importació
+    export_profile:
+      uppercase_label: Perfils d'exportació
+      flash:
+        create:
+          success: Perfil d'exportació creat correctament
+      page_title:
+        index: "]-Inf, 1] {{ count }} perfil d'exportació|]1, Inf [{{ count }} perfils d'exportació"
+      module:
+        create:
+          button: Crear perfil d'exportació
+  form:
+    job_execution:
+      title.details: Detalls de l'execució
+      refreshing: Actualització de detalls d'execució
+      refreshBtn.title: Actualitza
+      button:
+        show_profile.title: Mostrar perfil
+        download_log.title: Descarregar registre
+        download_file.title: Descarregar arxiu generat
+        download_archive.title: Descarregar arxiu generat
+      summary:
+        fetching: Recollida de dades sobre l'execució del job...
+        warning: Avís
+        header.step: Pas
+        header.warnings: Avisos
+        header.summary: Sumari
+        header.start: Començar
+        header.end: Fi
+    job_instance:
+      fail:
+        launch: No s'ha pogut iniciar el perfil de treball. Assegureu-vos que és vàlid i que teniu dret a executar-lo.
+        save: No ha pogut desar el perfil de treball. Assegureu-vos que teniu dret a editar-lo.
+      button:
+        export.title: Exportar ara
+        import.launch: Importar ara
+        import.upload: Carregar i importar ara
+        import.upload_file: Pujar un arxiu
+      meta:
+        job: Job
+        connector: Connector
+      subsection:
+        last_executions: Últimes execucions
+      tab:
+        content:
+          title: Contingut
+        properties:
+          decimal_separator:
+            title: Separador de decimals
+            help: Determinar el separador de decimals
+          date_format:
+            title: Format de data
+            help: Determinar el format dels camps de data
+          file_path:
+            title: Ruta de l'arxiu
+            help: On guardar l'arxiu generat al servidor
+            help_import: El directori del fitxer que s'utilitzarà per a la importació
+          delimiter:
+            title: Delimitador
+            help: Caràcter utilitzat per definir el delimitador de camp
+          enclosure:
+            title: Enquadrament
+            help: Caràcter utilitzat per enquadrar el camp
+          with_header:
+            title: Amb capçalera
+            help: Si vol imprimir el nom de la columna o no
+          with_media:
+            title: Exportar multimèdia
+            help: Exportar o no multimèdia
+          lines_per_file:
+            title: Nombre de línies per arxiu
+            help: Definir el nombre límit de línies per arxiu
+          upload_allowed:
+            title: Permetre la càrrega d'arxius
+            help: Permetre o no la càrrega directa de l'arxiu
+          categories_column:
+            title: Columna de categories
+            help: Nom de la columna categories
+          escape:
+            title: Escapada
+            help: Caràcter per establir l'escapada del camp
+          family_column:
+            title: Columna de famílies
+            help: Nom de la família de columnes
+          groups_column:
+            title: Columna de grups
+            help: Nom de la columna de grups
+          enabled:
+            title: Habilitar el producte
+            help: Habilitar o no els productes importats
+          enabled_comparison:
+            title: Comparar valors
+            help: Permet la comparació entre valors originals i valors importats. Pot accelerar la importació si el valors importats són molt similars als valors originals
+          real_time_versioning:
+            title: Actualització de l'historial en temps real
+            help: Significa que l'historial del producte s'actualitza automàticament, que es pot desactivar per millorar-ne el rendiment
+          convert_variant_to_simple:
+            title: Convertir productes variants en simples
+            help: Intenteu convertir productes variants en productes senzills quan la columna "pare" estigui buida. Si s'estableix a "No", s'ignorarà una columna "pare" buida
+          family_variant_column:
+            title: Columna de la variant familiar
+          with_label:
+            title: Amb etiquetes
+            help: Definiu si el fitxer d'exportació mostra etiquetes de valors en lloc de codis de valors
+          header_with_label:
+            title: Capçaleres amb etiquetes
+            help: Definir si l'arxiu d'exportació mostra les etiquetes de les capçaleres en comptes del codi de les capçaleres
+          file_locale:
+            title: Local de l'arxiu
+            help: Definiu la configuració regional en què es mostren les etiquetes
+          with_uuid:
+            title: Amb l'UUID del producte
+            help: Exporteu l'UUID del producte i dels productes associats
+          with_uuid_for_models:
+            title: Amb l'UUID del producte
+            help: Exporteu l'UUID del producte associat en lloc del seu identificador
+      file_path: Ruta de l'arxiu
+      storage_form:
+        title: Emmagatzematge
+        connection:
+          label: Tipus
+          local: Local
+          sftp: SFTP
+          amazon_s3: Amazon S3
+          microsoft_azure: Microsoft Azure
+          google_cloud_storage: Google Cloud Storage
+          none: No s'ha configurat emmagatzematge
+        file_path:
+          label: Ruta de l'arxiu
+          placeholder: myfile.{{ file_extension }}
+        host:
+          label: Host
+          placeholder: example.com
+        fingerprint:
+          label: Host fingerprint (optional)
+          placeholder: "c1:91:5e:42:55:5c:74:65:b6:12:32:7e:1f:6d:80:3e"
+          helper: Necessitem una suma de comprovació hash SHA-512 o MD5 amb la notació de dos punts per a l'empremta digital de l'amfitrió.
+        port:
+          label: Port
+          placeholder: 22
+        username:
+          label: Iniciar Sessió
+          placeholder: Enter your login
+        password:
+          label: Contrasenya
+          placeholder: Introduïu la vostra contrasenya
+        public_key:
+          label: Clau pública
+          button_title: Copiar al porta-retalls
+          copy_notification_success: S'ha copiat la clau pública al porta-retalls
+        login_type:
+          label: Mètode d'autenticació
+          password: Inici de sessió i contrasenya
+          private_key: Clau privada
+        region:
+          label: Regió
+          placeholder: Introdueix la teva regió
+        bucket:
+          label: Nom del bucket
+          placeholder: Introdueix el nom de la teva regió
+        key:
+          label: Clau
+          placeholder: Introdueixi la teva clau
+        secret:
+          label: Secret
+          placeholder: Introdueix el teu secret
+        connection_string:
+          label: Cadena de connexió
+          placeholder: Introdueix la teva cadena de connexió
+        container_name:
+          label: Nom del contenidor
+          placeholder: Introdueix el teu nom del contenidor
+        project_id:
+          label: Identificació del projecte
+          placeholder: Introdueix el teu nom ID del projecte
+        service_account:
+          label: Compte del servei
+          placeholder: Introduïu el vostre compte de servei
+      validation:
+        storage:
+          unavailable_type: Aquest emmagatzematge no està disponible, només hi ha {{ available_types }} disponibles.
+        file_path:
+          unsupported_extension: Extensió d'arxiu no admesa
+        fingerprint:
+          invalid_encoding: L'empremta digital de l'amfitrió ha de ser un hash de suma de comprovació SHA-512 o MD5 vàlid amb la notació de dos punts.
+      connection_checker:
+        label: Provar configuració de connexió
+        exception: No es pot establir la connexió, comproveu la vostra configuració.
+  batch_status:
+    1: Acabat
+    2: Començant
+    3: En procés
+    4: Aturant
+    5: Aturat
+    6: Fallit
+    7: Abandonat
+    8: Desconegut
+    9: Aturant
+    10: Aturat
+  job_status:
+    COMPLETED: Acabat
+    STARTING: Començant
+    STARTED: En procés
+    STOPPING: Aturant
+    STOPPED: Aturat
+    FAILED: Fallit
+    ABANDONED: Abandonat
+    UNKNOWN: Desconegut
+    PAUSING: Aturant
+    PAUSED: Aturat
+  tracking:
+    completed: "Temps emprat: {{ duration }}"
+    in_progress: "Temps restant estimat: {{ duration }}"
+    not_started: "Pendent"
+    untrackable: Pas no rastrejable
+    estimating: "Calculant el temps restant..."
+confirmation:
+  remove:
+    import_profile: Esteu segur que voleu suprimir aquest perfil d'importació?
+    export_profile: Esteu segur que voleu eliminar aquest perfil d'exportació?
+    job_instance: Esteu segur que voleu suprimir aquesta instància de feina?
+pim_enrich:
+  entity:
+    import_profile:
+      module:
+        delete:
+          confirm: Esteu segur que voleu suprimir aquest perfil d'importació?
+      flash:
+        delete:
+          success: Perfil d'importació eliminat correctament
+    export_profile:
+      module:
+        delete:
+          confirm: Esteu segur que voleu eliminar aquest perfil d'exportació?
+      flash:
+        delete:
+          success: Perfil d'exportació eliminat correctament
+pim_title:
+  pim_importexport_export_profile_index: Gestió de perfils d'exportació
+  pim_importexport_export_profile_edit: Exportar perfil {{ job.label }} | Editar
+  pim_importexport_export_profile_show: Exportar perfil {{ job.label }} | Mostrar
+  pim_importexport_export_execution_index: Exportar històric d'execucions
+  pim_importexport_export_execution_show: Exportar execucions | Detalls
+  pim_importexport_import_profile_index: Gestió de perfils d'importació
+  pim_importexport_import_profile_edit: Importar perfil {{ job.label }} | Editar
+  pim_importexport_import_profile_show: Importar perfil {{ job.label }} | Mostrar
+  pim_importexport_import_execution_index: Importar històric d'execucions
+  pim_importexport_import_execution_show: Importar execucions | Detalls
+

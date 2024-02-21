@@ -1,0 +1,33 @@
+external_api_category:
+    resource: '@AkeneoCategoryBundle/Resources/config/routing/external_api/category.yml'
+    prefix: /api/rest/v1
+
+# Old category
+internal_api_category:
+    resource: '@AkeneoCategoryBundle/Resources/config/routing/internal_api/category.yml'
+    prefix: /enrich/category
+
+# New category
+internal_api_enriched_category:
+    resource: '@AkeneoCategoryBundle/Resources/config/routing/internal_api/enriched_category.yml'
+    prefix: /category
+
+internal_api_category_template:
+    resource: '@AkeneoCategoryBundle/Resources/config/routing/internal_api/category_template.yml'
+    prefix: /category/template
+
+internal_api_user_group:
+    resource: '@AkeneoCategoryBundle/Resources/config/routing/internal_api/user_group.yml'
+    prefix: /category/user_group
+
+# This was done to stay consistent with existing routes
+pim_category_template_edit:
+    path: /enrich/product-category-tree/{treeId}/template/{templateUuid}
+    requirements:
+        treeId: \d+
+        templateUuid: '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}'
+
+# Other Bounded Contexts
+internal_api_catalog:
+    resource: '@AkeneoCategoryBundle/Resources/config/routing/internal_api/catalog.yml'
+    prefix: /category

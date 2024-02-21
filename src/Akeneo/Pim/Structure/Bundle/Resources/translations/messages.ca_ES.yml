@@ -1,0 +1,63 @@
+pim_enrich:
+  #Attribute
+  attribute:
+    tab:
+      parameter.title: Paràmetres
+      value.title: Valors
+      history.title: Històric
+  #Family
+  family:
+    info:
+      cant_remove_attribute_used_as_axis: No podeu suprimir aquest atribut utilitzat com un eix variant en una variant familiar
+  attribute_group:
+    remove:
+      attribute_group_with_attribute_cannot_be_removed: El grup d'atributs que conté atributs no es pot eliminar. Si us plau, traieu els seus atributs abans de suprimir-lo.
+      attribute_group_other_cannot_be_removed: El grup d'atributs "altre" no es pot eliminar.
+  #Group type
+  group_type:
+    tab:
+      property.title: Propietats
+  #Mass edit operations
+  mass_edit_action:
+    family:
+      page_title: Famílies
+      page_subtitle: Editar en massa (1 família) | Editar en massa (%count% famílies)
+      title: Trieu l'operació
+      subtitle: Trieu la operació que voleu realitzar a la familília seleccionada | Trieu la operació que desitja realitzar a les %count% famílies seleccionades
+      confirm: Esteu a punt d'actualitzar una família amb la següent informació, confirmeu-ho si us plau. | Esteu a punt d'actualitzar %count% famílies amb la següent informació, confirmeu-ho si us plau.
+      steps:
+        first: Triar famílies
+        second: Trieu l'operació
+        third: Configurar
+        fourth: Confirmar
+  entity:
+    association_type:
+      property:
+        is_two_way: Associació de 2 vies
+        is_quantified: Associació amb quantitat
+pim_enrich_attribute_form:
+  code: Codi
+  type: Tipus d'atribut
+  reference_data_name: Nom de dades de referència
+  scopable: Valor per canal
+  localizable: Valor per local
+  unique: Valor únic
+  availableLocales: Configuracions regionals disponibles
+  locale_specific: Configuració regional específica
+  group: Grup d'atributs
+  useableAsGridFilter: Utilitzable en quadrícula
+job_execution.summary:
+  deleted_attribute_groups: Eliminar grups d'atributs
+  skipped_attribute_groups: S'han omès grups d'atributs
+  moved_attributes: Atributs moguts
+  deleted_attributes: Atributs eliminats
+pim_import_export:
+  notification:
+    attribute_group_mass_delete:
+      error: S'ha produït un error en la supressió massiva dels grups d'atributs
+      warning: La supressió massiva dels grups d'atributs ha acabat amb alguns advertiments
+      success: S'ha acabat la supressió massiva dels grups d'atributs
+    attribute_mass_delete:
+      error: S'ha produït un error en la supressió massiva d'atributs
+      warning: La supressió massiva d'atributs ha acabat amb alguns advertiments
+      success: S'ha acabat la supressió massiva dels atributs

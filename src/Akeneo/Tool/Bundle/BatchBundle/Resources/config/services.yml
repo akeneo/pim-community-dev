@@ -1,0 +1,251 @@
+parameters:
+    akeneo_batch.job_instance_factory.class:                  Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceFactory
+    akeneo_batch.logger_subscriber.class:                     Akeneo\Tool\Bundle\BatchBundle\EventListener\LoggerSubscriber
+    akeneo_batch.notification_subscriber.class:               Akeneo\Tool\Bundle\BatchBundle\EventListener\NotificationSubscriber
+    akeneo_batch.lock_subscriber.class:                       Akeneo\Tool\Bundle\BatchBundle\EventListener\LockSubscriber
+    akeneo_batch.load_job_parameters_listener.class:          Akeneo\Tool\Bundle\BatchBundle\EventListener\LoadJobParametersListener
+    akeneo_batch.logger.batch_log_handler.class:              Akeneo\Tool\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler
+    akeneo_batch.mail_notifier.class:                         Akeneo\Tool\Bundle\BatchBundle\Notification\MailNotifier
+    akeneo_batch.set_job_execution_log_file_subscriber.class: Akeneo\Tool\Bundle\BatchBundle\EventListener\SetJobExecutionLogFileSubscriber
+    akeneo_batch.manager.job_execution.class:                 Akeneo\Tool\Bundle\BatchBundle\Manager\JobExecutionManager
+    akeneo_batch.launcher.simple_job_launcher.class:          Akeneo\Tool\Bundle\BatchBundle\Launcher\SimpleJobLauncher
+    akeneo_batch.entity_manager.persisted_connection_entity_manager.class: Akeneo\Tool\Bundle\BatchBundle\EntityManager\PersistedConnectionEntityManager
+    akeneo_batch.connectors_config:                           ~
+    akeneo_batch.jobs_config:                                 ~
+    akeneo_batch.jobs_allowed_to_pause:
+        - csv_user_group_export
+        - xlsx_user_group_export
+        - csv_user_export
+        - xlsx_user_export
+        - csv_user_group_import
+        - xlsx_user_group_import
+        - csv_user_import
+        - csv_user_role_import
+        - xlsx_user_import
+        - xlsx_user_role_import
+        - csv_locale_import
+        - csv_locale_export
+        - xlsx_locale_import
+        - xlsx_locale_export
+        - csv_channel_import
+        - csv_channel_export
+        - xlsx_channel_import
+        - xlsx_channel_export
+        - csv_currency_import
+        - csv_currency_export
+        - xlsx_currency_import
+        - xlsx_currency_export
+        - csv_group_import
+        - csv_group_export
+        - csv_category_import
+        - csv_category_export
+        - xlsx_category_import
+        - xlsx_category_export
+        - xlsx_group_import
+        - xlsx_group_export
+        - move_to_category
+        - add_to_category
+        - add_association
+        - edit_common_attributes
+        - add_attribute_value
+        - csv_attribute_import
+        - csv_attribute_option_import
+        - csv_attribute_group_import
+        - csv_attribute_export
+        - csv_attribute_option_export
+        - csv_attribute_group_export
+        - xlsx_attribute_import
+        - xlsx_attribute_option_import
+        - xlsx_attribute_group_import
+        - xlsx_attribute_export
+        - xlsx_attribute_option_export
+        - xlsx_attribute_group_export
+        - csv_association_type_import
+        - csv_association_type_export
+        - xlsx_association_type_import
+        - xlsx_association_type_export
+        - csv_family_import
+        - csv_family_variant_import
+        - csv_family_export
+        - csv_family_variant_export
+        - xlsx_family_import
+        - xlsx_family_variant_import
+        - xlsx_family_export
+        - xlsx_family_variant_export
+        - csv_group_type_import
+        - csv_group_type_export
+        - xlsx_group_type_import
+        - xlsx_group_type_export
+        - yml_rule_export
+        - csv_reference_entity_record_export
+services:
+    akeneo_batch.job_instance_factory:
+        class: '%akeneo_batch.job_instance_factory.class%'
+        arguments:
+            - '%akeneo_batch.entity.job_instance.class%'
+
+    akeneo_batch.logger_subscriber:
+        class: '%akeneo_batch.logger_subscriber.class%'
+        arguments:
+            - '@logger'
+            - '@translator'
+        tags:
+            - { name: kernel.event_subscriber }
+            - { name: monolog.logger, channel: batch }
+
+    akeneo_batch.notification_subscriber:
+        class: '%akeneo_batch.notification_subscriber.class%'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    akeneo_batch.load_job_parameters_listener:
+        class: '%akeneo_batch.load_job_parameters_listener.class%'
+        arguments:
+            - '@akeneo_batch.job_parameters_factory'
+        tags:
+            - { name: doctrine.orm.entity_listener, lazy: true }
+
+    Akeneo\Tool\Bundle\BatchBundle\EventListener\PauseJobOnSigtermSubscriber:
+        arguments:
+            - '@feature_flags'
+            - '@logger'
+            - '@akeneo_batch.query.update_job_execution_status'
+            - '@akeneo_batch.job.job_registry'
+            - '%akeneo_batch.jobs_allowed_to_pause%'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Tool\Bundle\BatchBundle\EventListener\LogOnJobResumeSubscriber:
+        arguments:
+            - '@logger'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Tool\Bundle\BatchBundle\EventListener\BackupImportFileOnPauseSubscriber:
+        arguments:
+            - '@pim_connector.job.file_backuper'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Tool\Bundle\BatchBundle\EventListener\RecoverImportFileOnResumeSubscriber:
+        arguments:
+            - '@pim_connector.job.file_backuper'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Tool\Bundle\BatchBundle\EventListener\CleanImportFileAfterJobExecutionSubscriber:
+        arguments:
+            - '@pim_connector.job.file_backuper'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    akeneo_batch.mail_notifier:
+        class: '%akeneo_batch.mail_notifier.class%'
+        arguments:
+            - '@logger'
+            - '@security.token_storage'
+            - '@twig'
+            - '@pim_notification.email.email_notifier'
+
+    akeneo_batch.logger.batch_log_handler:
+        class: '%akeneo_batch.logger.batch_log_handler.class%'
+        arguments:
+            - 100
+            - true
+            - null
+            - false
+            - '%kernel.logs_dir%/batch'
+
+    akeneo_batch.set_job_execution_log_file_subscriber:
+        class: '%akeneo_batch.set_job_execution_log_file_subscriber.class%'
+        arguments:
+            - '@akeneo_batch.logger.batch_log_handler'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    akeneo_batch.manager.job_execution:
+        class: '%akeneo_batch.manager.job_execution.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    akeneo_batch.launcher.simple_job_launcher:
+        class: '%akeneo_batch.launcher.simple_job_launcher.class%'
+        arguments:
+            - '@akeneo_batch.job_repository'
+            - '@akeneo_batch.job_parameters_factory'
+            - '@akeneo_batch.job.job_registry'
+            - '@akeneo_batch.job.job_parameters_validator'
+            - '@event_dispatcher'
+            - '%kernel.project_dir%/src'
+            - '%kernel.environment%'
+            - '%kernel.logs_dir%'
+
+    akeneo_batch.launcher.synchronous_job_launcher:
+        class: Akeneo\Tool\Bundle\BatchBundle\Launcher\SynchronousJobLauncher
+        arguments:
+            - '@akeneo_batch_queue.manager.job_execution_manager'
+            - '@akeneo_batch.job_repository'
+            - '@pim_enrich.repository.job_execution'
+            - '@logger'
+            - '@akeneo_batch.job.job_registry'
+            - '%kernel.project_dir%'
+
+    akeneo_batch.entity_manager.persisted_connection_entity_manager:
+        class: '%akeneo_batch.entity_manager.persisted_connection_entity_manager.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    Akeneo\Tool\Bundle\BatchBundle\Storage\DeleteJobExecutionLogs:
+        arguments:
+            - '@Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\GetJobExecutionIds'
+            - '@filesystem'
+            - '%kernel.logs_dir%/batch'
+
+    akeneo_batch.query.get_job_execution_status:
+        class: 'Akeneo\Tool\Component\Batch\Query\SqlGetJobExecutionStatus'
+        arguments:
+            - '@database_connection'
+
+    akeneo_batch.query.update_job_execution_status:
+        class: 'Akeneo\Tool\Component\Batch\Query\SqlUpdateJobExecutionStatus'
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlMarkJobExecutionAsFailedWhenInterrupted:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Tool\Component\Batch\Event\ErrorHandlerConfigurationListener:
+        arguments:
+          - '@logger'
+          - '%kernel.environment%'
+        tags:
+          - { name: kernel.event_listener, event: console.command }
+
+    Akeneo\Tool\Bundle\BatchBundle\EventListener\RequeuePausedJobSubscriber:
+        arguments:
+            - '@akeneo_batch_queue.queue.job_execution_queue'
+            - '@logger'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Tool\Bundle\BatchBundle\JobExecution\ExecuteJobExecutionHandlerInterface:
+        class: Akeneo\Tool\Bundle\BatchBundle\JobExecution\ExecuteJobExecutionHandler
+        arguments:
+            - '@akeneo_batch.logger.batch_log_handler'
+            - '@akeneo_batch.job_repository'
+            - '@akeneo_batch.job.job_registry'
+            - '@feature_flags'
+
+    Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandlerInterface:
+        class: Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandler
+        arguments:
+            - '@akeneo_batch.job_repository'
+            - '@doctrine'
+            - '@akeneo_batch.job.job_registry'
+            - '@akeneo_batch.job_parameters_factory'
+            - '@akeneo_batch.job.job_parameters_validator'
+            - '@validator'
+
+    Akeneo\Tool\Component\Batch\Clock\ClockInterface:
+        class: Akeneo\Tool\Component\Batch\Clock\SystemClock

@@ -1,0 +1,7 @@
+services:
+    Akeneo\Connectivity\Connection\Infrastructure\Webhook\MessageHandler\BusinessEventHandler:
+        arguments:
+            - '%kernel.project_dir%'
+            - '@logger'
+            - '@Akeneo\Platform\Component\EventQueue\BulkEventNormalizer'
+        tags: [messenger.message_handler]

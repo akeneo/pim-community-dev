@@ -1,0 +1,63 @@
+pim_enrich:
+  #Attribute
+  attribute:
+    tab:
+      parameter.title: Parameter
+      value.title: Werte
+      history.title: Historie
+  #Family
+  family:
+    info:
+      cant_remove_attribute_used_as_axis: Sie können dieses Attribut nicht entfernen, da es als Achse in der Variante der Produktfamilie verwendet wird
+  attribute_group:
+    remove:
+      attribute_group_with_attribute_cannot_be_removed: Attributgruppe mit Attributen kann nicht entfernt werden. Bitte entfernen Sie ihre Attribute bevor Sie sie löschen.
+      attribute_group_other_cannot_be_removed: Attributgruppe "other" kann nicht entfernt werden.
+  #Group type
+  group_type:
+    tab:
+      property.title: Eigenschaften
+  #Mass edit operations
+  mass_edit_action:
+    family:
+      page_title: Produktfamilien
+      page_subtitle: Massenbearbeitung (1 Produktfamilie)|Massenbearbeitung (%count% Produktfamilien)
+      title: Aktion auswählen
+      subtitle: Wählen Sie die Aktion aus, die Sie auf die ausgewählte Produktfamilie anwenden wollen|Wählen Sie die Aktion aus, die Sie auf die ausgewählten %count% Produktfamilien anwenden wollen
+      confirm: Sie sind dabei eine Produktfamilie mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|Sie sind dabei %count% Produktfamilien mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.
+      steps:
+        first: Produktfamilien auswählen
+        second: Aktion auswählen
+        third: Konfigurieren
+        fourth: Bestätigen
+  entity:
+    association_type:
+      property:
+        is_two_way: 2-Wege-Verbindung
+        is_quantified: Verbindung mit Menge
+pim_enrich_attribute_form:
+  code: Code
+  type: Attributtyp
+  reference_data_name: Referenzdaten Name
+  scopable: Wert je Ausgabekanal
+  localizable: Wert je Gebietsschema
+  unique: Eindeutiger Wert
+  availableLocales: Verfügbare Gebietsschemata
+  locale_specific: Gebietsschemaspezifisch
+  group: Attributgruppe
+  useableAsGridFilter: Anwendbar in der Listenansicht
+job_execution.summary:
+  deleted_attribute_groups: Gelöschte Attributgruppen
+  skipped_attribute_groups: Übersprungene Attributgruppen
+  moved_attributes: Verschobene Attribute
+  deleted_attributes: Gelöschte Attribute
+pim_import_export:
+  notification:
+    attribute_group_mass_delete:
+      error: Mehrfache Löschung von Attributgruppen fehlgeschlagen
+      warning: Mehrfache Löschung von Attributgruppen mit einigen Warnungen abgeschlossen
+      success: Mehrfache Löschung von Attributgruppen abgeschlossen
+    attribute_mass_delete:
+      error: Mehrfache Löschung von Attributen fehlgeschlagen
+      warning: Mehrfache Löschung von Attributen mit einigen Warnungen abgeschlossen
+      success: Massenlöschung von Attributen abgeschlossen

@@ -1,0 +1,21 @@
+oro.filter.form.label_type_equal: '='
+oro.filter.form.label_type_greater_equal: '>='
+oro.filter.form.label_type_greater_than: '>'
+oro.filter.form.label_type_less_equal: '<='
+oro.filter.form.label_type_less_than: '<'
+oro.filter.form.label_type_yes: "ja"
+oro.filter.form.label_type_no: "nej"
+oro.filter.form.label_type_contains: indeholder
+oro.filter.form.label_type_not_contains: indeholder ikke
+oro.filter.form.label_type_equals: er lig med
+oro.filter.form.label_type_start_with: starter med
+oro.filter.form.label_type_end_with: slutter med
+oro.filter.form.label_type_empty: er tom
+oro.filter.form.label_type_not_empty: ikke er tom
+oro.filter.form.label_type_in_list: i listen
+oro.filter.form.label_date_type_between: mellem
+oro.filter.form.label_date_type_not_between: ikke mellem
+oro.filter.form.label_date_type_more_than: mere end
+oro.filter.form.label_date_type_less_than: mindre end
+oro.filter.form.label_not_selected: Ikke valgte
+oro.filter.form.label_selected: Valgte

@@ -1,0 +1,6 @@
+pim_user:
+  min_role: "少なくとも{{ limit }} 件の権限を選択する必要があります。 |少なくとも{{ limit }} 件の権限を選択する必要があります。"
+  password_match: "パスワード入力は一致させてください"
+  role:
+    invalid_role_format: '権限は "ROLE_" で始まり、アンダースコア、ダッシュ、大文字の英字、数字のみを使用できます。'
+  reserved_prefix_username: "ユーザー名接頭辞 '{{ prefix }}' は予約されています"

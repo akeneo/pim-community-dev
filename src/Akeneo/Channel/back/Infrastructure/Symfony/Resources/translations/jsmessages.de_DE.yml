@@ -1,0 +1,84 @@
+batch_jobs:
+  csv_currency_export:
+    label: Währungs-Export als CSV-Datei
+    export.label: Währungs-Export
+  csv_currency_import:
+    label: Währungs-Import aus CSV-Datei
+    import.label: Währungs-Import
+  xlsx_currency_export:
+    label: Währungs-Export als XLSX-Datei
+    export.label: Währungs-Export
+  xlsx_currency_import:
+    label: Währungs-Import aus XLSX-Datei
+    import.label: Währungs-Import
+  csv_locale_export:
+    label: Gebietsschema-Export als CSV-Datei
+    export.label: Gebietsschema-Export
+  csv_locale_import:
+    label: Gebietsschema-Import aus CSV-Datei
+    import.label: Gebietsschema-Import
+  xlsx_locale_export:
+    label: Gebietsschema-Export als XLSX-Datei
+    export.label: Gebietsschema-Export
+  xlsx_locale_import:
+    label: Gebietsschema-Import aus XLSX-Datei
+    import.label: Gebietsschema-Import
+  csv_channel_export:
+    label: Ausgabekanal-Export als CSV-Datei
+    export.label: Ausgabekanal-Export
+  csv_channel_import:
+    label: Ausgabekanal-Import aus CSV-Datei
+    import.label: Ausgabekanal-Import
+  xlsx_channel_export:
+    label: Ausgabekanal-Export als XLSX-Datei
+    export.label: Ausgabekanal-Export
+  xlsx_channel_import:
+    label: Ausgabekanal-Import aus XLSX-Datei
+    import.label: Ausgabekanal-Import
+pim_enrich.entity.channel:
+  label: Ausgabekanal
+  uppercase_label: Kanal
+  flash:
+    update:
+      success: Ausgabekanal erfolgreich aktualisiert.
+      fail: Ausgabekanal konnte nicht aktualisiert werden.
+    create:
+      success: Ausgabekanal erfolgreich angelegt.
+      fail: Ausgabekanal konnte nicht angelegt werden.
+    delete:
+      success: Ausgabekanal erfolgreich entfernt
+      fail: Dieser Ausgabekanal kann nicht gelöscht werden
+  page_title:
+    index: "]-Inf, 1]{{ count }} Kanal|]1, Inf[{{ count }} Kanäle"
+  property:
+    category_tree: Kategorie-Strukturbaum
+    do_not_convert: Nicht konvertieren
+    measurement: Messeinstellungen
+    label_conversion_units: Wählen Sie eine Konvertierungseinheit für jedes Messattribut aus, das während des Produkt-Exports verwendet wird
+  module:
+    create:
+      button: Ausgabekanal anlegen
+    delete:
+      confirm: Möchten Sie diesen Ausgabekanal wirklich löschen?
+pim_enrich.entity.locale:
+  label: Gebietsschema
+  uppercase_label: Gebietsschema
+  plural_label: Gebietsschemata
+  page_title:
+    index: "]-Inf, 1]{{ count }} aktivierte Gebietsschema|]1, Inf[{{ count }} aktivierte Gebietsschemata"
+  helper: "Um ein Gebietsschema zu aktivieren oder zu deaktivieren, gehen Sie zu einem von <a href={{ href }}>Ihren Ausgabekanälen</a> und fügen Sie ein Gebietsschema hinzu oder entfernen Sie es."
+  grid:
+    columns:
+      code: Aktivierte Gebietsschemata
+    filters:
+      search_placeholder: Ein aktiviertes Gebietsschema suchen
+    no_search_result: Für Ihre Suche wurden leider keine passenden Treffer gefunden.
+pim_enrich.entity.currency:
+  plural_label: Währungen
+  page_title:
+    index: "] -Inf, 1] {{ count }} Währung|] 1, Inf [{{ count }} Währungen"
+flash:
+  currency:
+    error:
+      linked_to_channel: Sie können eine Währung, die einem Ausgabekanal zugeordnet ist, nicht deaktivieren
+    updated: Währung erfolgreich aktualisiert

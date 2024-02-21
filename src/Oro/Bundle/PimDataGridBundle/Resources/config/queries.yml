@@ -1,0 +1,17 @@
+services:
+    pim_datagrid.product_grid.query.list_attributes:
+        class: Oro\Bundle\PimDataGridBundle\Query\Sql\ListAttributesUseableInProductGrid
+        arguments:
+            - '@database_connection'
+
+    pim_datagrid.product_grid.query.list_available_columns:
+        class: Oro\Bundle\PimDataGridBundle\Query\Sql\ListProductGridAvailableColumns
+        arguments:
+            - '@database_connection'
+            - '@oro_datagrid.configuration.provider.chain'
+
+    pim_datagrid.product_grid.query.list_available_column_groups:
+        class: Oro\Bundle\PimDataGridBundle\Query\Sql\ListProductGridAvailableColumnGroups
+        arguments:
+            - '@database_connection'
+            - '@oro_datagrid.configuration.provider.chain'

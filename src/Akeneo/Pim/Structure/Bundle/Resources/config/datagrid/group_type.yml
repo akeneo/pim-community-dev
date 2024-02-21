@@ -1,0 +1,53 @@
+datagrid:
+    group-type-grid:
+        options:
+            locale_parameter: localeCode
+            entityHint: group type
+            manageFilters: false
+        source:
+            acl_resource: pim_enrich_grouptype_index
+            type: pim_datasource_group_type
+        columns:
+            label:
+                label: Label
+                frontend_type: label
+        properties:
+            id: ~
+            edit_link:
+                type: url
+                route: pim_enrich_grouptype_edit
+                params:
+                    - code
+            delete_link:
+                type: url
+                route: pim_enrich_grouptype_rest_remove
+                params:
+                    - code
+        actions:
+            edit:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--edit
+                type:      navigate
+                label:     pim_common.edit
+                link:      edit_link
+                rowAction: true
+                acl_resource: pim_enrich_grouptype_edit
+            delete:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--trash
+                type:  delete
+                label: pim_common.delete
+                link:  delete_link
+                acl_resource: pim_enrich_grouptype_remove
+        sorters:
+            columns:
+                label:
+                    data_name: label
+            default:
+                label: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
+        filters:
+            columns:
+                label:
+                    type: search
+                    label: Label
+                    data_name: translation.label

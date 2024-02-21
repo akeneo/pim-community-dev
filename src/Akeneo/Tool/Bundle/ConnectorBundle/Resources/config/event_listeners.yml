@@ -1,0 +1,16 @@
+parameters:
+    pim_connector.reset_processed_items_batch_subscriber.class: Akeneo\Tool\Bundle\ConnectorBundle\EventListener\ResetProcessedItemsBatchSubscriber
+    pim_connector.clear_batch_cache_subscriber.class: Akeneo\Tool\Bundle\ConnectorBundle\EventListener\ClearBatchCacheSubscriber
+
+services:
+    pim_connector.reset_processed_items_batch_subscriber:
+        class: '%pim_connector.reset_processed_items_batch_subscriber.class%'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_connector.clear_batch_cache_subscriber:
+        class: '%pim_connector.clear_batch_cache_subscriber.class%'
+        arguments:
+            - '@pim_connector.doctrine.cache_clearer'
+        tags:
+            - { name: kernel.event_subscriber }

@@ -1,0 +1,322 @@
+@import '../base/variables';
+
+// This file override jquery.multiselect. It contains several !important annotation because the CSS file is loaded
+// on the fly (after pim.css).
+
+.ui-multiselect {
+  height: @AknLittleButtonSize;
+  line-height: @AknLittleButtonSize;
+  font-size: @AknDefaultFontSize;
+  border: 1px solid @AknBorderColor;
+  color: @AknDefaultFontColor;
+  background-color: white;
+  border-radius: 2px;
+  font-weight: normal;
+  padding: 0 10px !important;
+  display: inline-block;
+  cursor: pointer;
+  white-space: nowrap;
+  outline: none;
+}
+
+.ui-multiselect-filter {
+  float: none !important;
+}
+
+.ui-multiselect-menu {
+  max-width: 235px;
+  border: 1px solid @AknBorderColor;
+  background: white;
+  padding: 12px @AknInsideBoxesMargin @AknInsideBoxesMargin @AknInsideBoxesMargin;
+  -webkit-box-shadow: 0 4px 5px rgba(0,0,0,0.15);
+  -moz-box-shadow: 0 4px 5px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 5px rgba(0,0,0,0.15);
+
+  &.select-filter-widget {
+    .ui-multiselect-header .ui-helper-reset {
+      display: none; // Removes the check all / uncheck all.
+    }
+
+    ul {
+      max-height: 200px;
+      margin-bottom: 20px;
+    }
+
+    ul.full {
+      max-height: none;
+      overflow: hidden;
+    }
+  }
+
+  input[type="search"] {
+    height: @AknFormHeight;
+    line-height: @AknFormHeight;
+    color: @AknDefaultFontColor;
+    border: 1px solid @AknBorderColor;
+    width: 100% !important;
+    border-radius: 2px;
+    padding: 0 8px;
+    margin-left: 0;
+    margin-bottom: 3px;
+  }
+
+  .ui-multiselect-header {
+    border: none;
+    padding: 0;
+    margin-bottom: 12px;
+    height: 40px;
+  }
+
+  .ui-multiselect-filter input {
+    height: @AknFormHeight;
+    line-height: @AknFormHeight;
+    color: @AknDefaultFontColor;
+    border: 1px solid @AknBorderColor;
+    font-size: @AknDefaultFontSize;
+    border-radius: 2px;
+    padding: 0 8px;
+    margin: 0;
+    width: ~"calc(100% - 14px) !important";
+  }
+
+  .ui-multiselect-checkboxes {
+    padding: 0;
+    clear: both;
+    background: white;
+
+    label {
+      line-height: 30px;
+    }
+
+    li {
+      line-height: @AknSelectLineHeight - 3px;
+      height: @AknSelectLineHeight;
+      padding-right: 0;
+      margin-bottom: 3px;
+    }
+
+    &.ui-helper-reset li {
+      font-size: @AknDefaultFontSize;
+    }
+  }
+
+  .ui-multiselect-checkboxes label {
+    padding: 0;
+    line-height: 54px;
+    height: 54px;
+  }
+
+  .ui-multiselect-checkboxes li.ui-multiselect-optgroup-label a {
+    text-align: left;
+    text-transform: uppercase;
+    padding: 0;
+    margin: -12px 0 -4px 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .ui-multiselect-checkboxes li.ui-multiselect-optgroup-label {
+    border: none;
+    padding: 10px 0;
+  }
+
+  .ui-multiselect-checkboxes label input {
+    top: -2px;
+    margin-right: 10px;
+  }
+
+  .ui-multiselect-checkboxes label {
+    padding: 0 6px;
+    cursor: pointer;
+    font-weight: normal;
+    color: @AknDefaultFontColor;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 100%;
+    overflow: hidden;
+    display: inline-block;
+    line-height: @AknSelectLineHeight;
+
+    &:hover {
+      background: @AknDefaultHoverBackground;
+    }
+
+    &.ui-state-active {
+      color: darken(@AknSlateGrey, 30%);
+    }
+  }
+}
+
+.ui-multiselect-footer {
+  text-align: right;
+  padding: 0 4px 4px 0;
+
+  .btn.btn-small {
+    padding: 0 @AknButtonsPadding;
+    height: @AknLittleButtonSize;
+    line-height: @AknLittleButtonSize;
+    min-width: @AknLittleButtonSize;
+    font-size: @AknDefaultFontSize;
+    background-color: @AknGreen;
+    display: inline-block;
+    border-radius: 2px;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    white-space: nowrap;
+    transition: background 0.1s ease;
+    color: white;
+  }
+}
+
+// Modifiers
+.ui-multiselect.ui-multiselect--select2 {
+  height: @AknDefaultButtonSize;
+  line-height: @AknDefaultButtonSize;
+  padding: 0 0 0 10px !important;
+  display: flex;
+
+  &:hover {
+    background: @AknDefaultHoverBackground;
+  }
+
+  span {
+      float: left;
+  }
+
+  .caret {
+    width: @AknDefaultButtonSize;
+    height: @AknDefaultButtonSize - 2px;
+    display: inline-block;
+    border-left: 1px solid @AknBorderColor;
+    background-size: 96px 48px;
+    background-image: url("/bundles/pimui/css/images/select2x2.png");
+    background-position: 3px 2px;
+    margin-left: 10px;
+  }
+
+  &.ui-state-active .caret {
+    background-color: @AknDefaultHoverBackground;
+  }
+}
+
+.AknFilterBox-filterCriteria.ui-multiselect-menu {
+  margin-top: -6px;
+
+  .ui-multiselect-header {
+    border-bottom: 1px solid @AknLightPurple;
+
+    .ui-multiselect-filter input {
+      border: none;
+      color: @AknDefaultFontColor;
+      height: 30px;
+      line-height: 30px;
+      background: url("/bundles/pimui/images/icon-search.svg") no-repeat 0 5px;
+      background-size: 20px;
+      padding-left: 25px;
+
+      &:focus {
+        outline: none !important;
+      }
+
+      &::-webkit-input-placeholder {
+        color: @AknLightPurple;
+        text-transform: uppercase;
+      }
+
+      &::-moz-placeholder {
+        color: @AknLightPurple;
+        opacity: 1;
+        text-transform: uppercase;
+      }
+    }
+  }
+}
+
+.AknFilterBox-addFilterButton {
+  &.ui-multiselect.ui-state-active {
+    color: @AknLightPurple;
+  }
+
+  &.ui-multiselect-menu {
+    background: white;
+    padding: 15px 20px 0 !important;
+
+    &:not(.AknFilterBox-addFilterButton--asPanel) {
+      top: 0 !important;
+      width: @AknThirdColumnWidth !important;
+      min-width: @AknThirdColumnWidth !important;
+      height: 100vh !important;
+      border-right: 1px solid @AknBorderColor;
+      z-index: 750;
+      transition: left @AknColumnTiming @AknColumnTransition;
+
+      &.select-filter-widget ul {
+        max-height: ~"calc(100vh - 140px)";
+
+        &.full {
+          max-height: none;
+        }
+      }
+    }
+
+    &.AknFilterBox-addFilterButton--asPanel {
+      height: auto;
+      border: 1px solid @AknBorderColor;
+      max-height: 300px;
+      overflow: auto;
+
+      .AknColumn-bottomButtonContainer {
+        display: none;
+      }
+    }
+
+    .ui-multiselect-filter {
+      border-bottom: 1px solid @AknLightPurple;
+      margin-right: 0;
+
+      input {
+        height: 34px;
+        border: none;
+        width: ~"calc(100% - 25px)" !important;
+        color: @AknLightPurple;
+        font-size: @AknFontSizeBig;
+        background: url("/bundles/pimui/images/icon-search.svg") no-repeat 0 9px;
+        background-size: 20px;
+        padding: 0 0 0 25px;
+
+        &:focus {
+          outline: none !important;
+        }
+
+        &::-webkit-input-placeholder {
+          color: @AknLightPurple;
+          text-transform: uppercase;
+        }
+
+        &::-moz-placeholder {
+          color: @AknLightPurple;
+          opacity: 1;
+          text-transform: uppercase;
+        }
+      }
+    }
+
+    .ui-multiselect-checkboxes {
+      li.ui-multiselect-optgroup-label {
+        border-bottom: 1px solid @AknBorderColor;
+        height: @AknSelectLineHeight;
+        line-height: @AknSelectLineHeight + 7px;
+        font-weight: normal;
+        font-size: @AknFontSizeBig;
+        color: @AknDarkBlue !important;
+        margin-bottom: 7px;
+      }
+
+      .ui-helper-reset li {
+        height: 30px;
+      }
+    }
+  }
+}

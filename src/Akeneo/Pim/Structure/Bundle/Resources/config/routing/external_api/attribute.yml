@@ -1,0 +1,49 @@
+pim_api_attribute_list:
+    path: /attributes
+    defaults: { _controller: pim_api.controller.attribute:listAction, _format: json }
+    methods: [GET]
+
+pim_api_attribute_create:
+    path: /attributes
+    defaults: { _controller: pim_api.controller.attribute:createAction, _format: json }
+    methods: [POST]
+
+pim_api_attribute_partial_update:
+    path: /attributes/{code}
+    defaults: { _controller: pim_api.controller.attribute:partialUpdateAction, _format: json }
+    methods: [PATCH]
+
+pim_api_attribute_get:
+    path: /attributes/{code}
+    defaults: { _controller: pim_api.controller.attribute:getAction, _format: json }
+    methods: [GET]
+
+pim_api_attribute_partial_update_list:
+    path: /attributes
+    defaults: { _controller: pim_api.controller.attribute:partialUpdateListAction, _format: json }
+    methods: [PATCH]
+
+pim_api_attribute_option_list:
+    path: /attributes/{attributeCode}/options
+    defaults: { _controller: pim_api.controller.attribute_option:listAction, _format: json }
+    methods: [GET]
+
+pim_api_attribute_option_create:
+    path: /attributes/{attributeCode}/options
+    defaults: { _controller: pim_api.controller.attribute_option:createAction, _format: json }
+    methods: [POST]
+
+pim_api_attribute_option_partial_update:
+    path: /attributes/{attributeCode}/options/{code}
+    defaults: { _controller: pim_api.controller.attribute_option:partialUpdateAction, _format: json }
+    methods: [PATCH]
+
+pim_api_attribute_option_partial_update_list:
+    path: /attributes/{attributeCode}/options
+    defaults: { _controller: pim_api.controller.attribute_option:partialUpdateListAction, _format: json }
+    methods: [PATCH]
+
+pim_api_attribute_option_get:
+    path: /attributes/{attributeCode}/options/{code}
+    defaults: { _controller: pim_api.controller.attribute_option:getAction, _format: json }
+    methods: [GET]

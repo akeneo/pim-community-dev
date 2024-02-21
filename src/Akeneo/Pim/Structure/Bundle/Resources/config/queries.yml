@@ -1,0 +1,235 @@
+services:
+    akeneo.pim.structure.query.get_existing_attribute_option_codes_from_option_codes:
+        class: 'Akeneo\Pim\Structure\Bundle\Query\PublicApi\AttributeOption\Sql\GetExistingAttributeOptionCodes'
+        arguments:
+            $connection: '@database_connection'
+
+    akeneo.pim.structure.query.get_existing_attribute_options_with_values:
+        class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\AttributeOption\Sql\SqlGetExistingAttributeOptionsWithValues
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.structure.query.search_attribute_options:
+        class: 'Akeneo\Pim\Structure\Bundle\Query\PublicApi\AttributeOption\Sql\SqlSearchAttributeOptions'
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.structure.query.lru_cached_get_existing_attribute_options_with_values:
+        class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\AttributeOption\Cache\LruCachedGetExistingAttributeOptionsWithValues
+        arguments:
+            - '@akeneo.pim.structure.query.get_existing_attribute_options_with_values'
+
+    akeneo.pim.structure.query.cache.get_existing_attribute_option_codes_from_option_codes:
+        class: 'Akeneo\Pim\Structure\Bundle\Query\PublicApi\AttributeOption\Cache\LRUCachedGetExistingAttributeOptions'
+        decorates: akeneo.pim.structure.query.get_existing_attribute_option_codes_from_option_codes
+        decoration_inner_name: akeneo.pim.structure.query.get_existing_attribute_option_codes_from_option_codes.sql
+        arguments:
+            - '@akeneo.pim.structure.query.get_existing_attribute_option_codes_from_option_codes.sql'
+
+    akeneo.pim.structure.query.sql_get_attributes:
+        class: 'Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Sql\SqlGetAttributes'
+        arguments:
+            $connection: '@database_connection'
+
+    akeneo.pim.structure.query.is_there_at_least_one_attribute_configured_with_measurement_family:
+        class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Sql\IsThereAtLeastOneAttributeConfiguredWithMeasurementFamily
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.structure.query.get_attributes:
+        class: 'Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Cache\LRUCachedGetAttributes'
+        arguments:
+            $getAttributes: '@akeneo.pim.structure.query.sql_get_attributes'
+        tags: ['akeneo.pim.cached_query']
+
+    akeneo.pim.structure.query.sql_get_required_attributes_masks:
+        class: 'Akeneo\Pim\Structure\Bundle\Query\InternalApi\Family\GetRequiredAttributesMasksAggregator'
+        arguments:
+            - !tagged akeneo.pim.structure.query.get_required_attributes_masks_per_attribute_type
+
+    Akeneo\Pim\Structure\Bundle\Query\InternalApi\Family\DefaultSqlGetRequiredAttributesMasks:
+        arguments:
+            - '@database_connection'
+            -
+                - 'pim_catalog_boolean'
+                - 'pim_catalog_date'
+                - 'pim_catalog_file'
+                - 'pim_catalog_identifier'
+                - 'pim_catalog_image'
+                - 'pim_catalog_metric'
+                - 'pim_catalog_number'
+                - 'pim_catalog_multiselect'
+                - 'pim_catalog_simpleselect'
+                - 'pim_catalog_textarea'
+                - 'pim_catalog_text'
+                - 'pim_reference_data_multiselect'
+                - 'pim_reference_data_simpleselect'
+                - 'akeneo_reference_entity'
+                - 'akeneo_reference_entity_collection'
+                - 'pim_catalog_asset_collection'
+                - 'pim_assets_collection'
+        tags:
+            - { name: akeneo.pim.structure.query.get_required_attributes_masks_per_attribute_type }
+
+    Akeneo\Pim\Structure\Bundle\Query\InternalApi\Family\PriceCollectionSqlGetRequiredAttributesMasks:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: akeneo.pim.structure.query.get_required_attributes_masks_per_attribute_type }
+
+    akeneo.pim.structure.query.get_required_attributes_masks:
+        class: 'Akeneo\Pim\Structure\Bundle\Query\PublicApi\Family\Cache\LRUCachedGetRequiredAttributesMasks'
+        arguments:
+            - '@akeneo.pim.structure.query.sql_get_required_attributes_masks'
+
+    akeneo.pim.structure.query.attribute_is_an_family_variant_axis:
+        class: 'Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Sql\AttributeIsAFamilyVariantAxis'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    akeneo.pim.structure.query.find_family_variants_identifiers_by_attribute_axes:
+        class: 'Akeneo\Pim\Structure\Bundle\Storage\Sql\FamilyVariantsByAttributeAxes'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    akeneo.pim.structure.query.find_attribute_group_orders_equal_or_superior_to:
+        class: 'Akeneo\Pim\Structure\Bundle\Storage\Sql\SqlFindAttributeGroupOrdersEqualOrSuperiorTo'
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.structure.query.find_attribute_codes_for_attribute_groups:
+        class: Akeneo\Pim\Structure\Bundle\Query\InternalApi\AttributeGroup\Sql\FindAttributeCodesForAttributeGroup
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.structure.query.get_association_type_translations:
+        class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\Association\Sql\SqlGetAssociationTypeTranslations
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.structure.query.find_association_types:
+        class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\Association\Sql\SqlFindAssociationTypes
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.structure.query.get_association_types:
+        class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\Association\Sql\SqlGetAssociationTypes
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.structure.query.find_flatten_attributes:
+        class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Sql\SqlFindFlattenAttributes
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.structure.query.get_channel_translations:
+        class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\Channel\Sql\SqlGetChannelTranslations
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.structure.query.get_attribute_translations:
+        class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Sql\SqlGetAttributeTranslations
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.structure.query.get_category_translations:
+        class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\Category\Sql\SqlGetCategoryTranslations
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.structure.query.get_family_translations:
+        class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\Family\Sql\SqlGetFamilyTranslations
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.structure.query.get_family_variant_translations:
+        class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\FamilyVariant\Sql\SqlGetFamilyVariantTranslations
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.structure.query.get_group_translations:
+        class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\Group\Sql\SqlGetGroupTranslations
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.structure.query.get_all_families_label_by_locale:
+        class: Akeneo\Pim\Structure\Bundle\Query\InternalApi\Family\GetAllFamiliesLabelByLocaleQuery
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.structure.query.is_attribute_code_blacklisted:
+        class: Akeneo\Pim\Structure\Bundle\Query\InternalApi\Attribute\IsAttributeCodeBlacklisted
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.structure.query.get_blacklisted_attribute_job_execution_id:
+        class: Akeneo\Pim\Structure\Bundle\Query\InternalApi\Attribute\GetBlacklistedAttributeJobExecutionId
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.structure.query.get_all_blacklisted_attribute_codes:
+        class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Sql\GetAllBlacklistedAttributeCodes
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.structure.query.get_attribute_option_codes:
+        class: Akeneo\Pim\Structure\Bundle\Query\InternalApi\AttributeOption\SqlGetAttributeOptionCodes
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.structure.query.get_options_count_and_translation_by_attribute:
+        class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\AttributeOption\Sql\SqlGetOptionsCountAndTranslationByAttribute
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.structure.query.get_attribute_options:
+        class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\AttributeOption\Sql\SqlGetAttributeOptions
+        arguments:
+            - '@database_connection'
+
+    pimee_security.query.get_viewable_attribute_codes_for_user:
+        class: Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\GetViewableAttributeCodesForUser
+
+    Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\IsAttributeEditable:
+        class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\Permission\DummyIsAttributeEditable
+
+    Akeneo\Pim\Structure\Bundle\Query\InternalApi\Family\GetFamilyIdsUsedByProductsQuery:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Pim\Structure\Bundle\Query\InternalApi\Family\GetFamilyIdsNotUsedByProductsQuery:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Pim\Structure\Bundle\Query\InternalApi\AttributeOption\FindAttributeOptions:
+        class: Akeneo\Pim\Structure\Bundle\Query\InternalApi\AttributeOption\SqlFindAttributeOptions
+        arguments:
+            - '@database_connection'
+            - '@pim_user.context.user'
+
+    Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\GetGroupedAttributes:
+        class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Sql\SqlGetGroupedAttributes
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Pim\Structure\Bundle\Infrastructure\Query\Sql\GetAttributeGroups:
+        arguments:
+            - '@database_connection'
+            - '@feature_flags'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Query\AttributeGroup\GetAttributeGroupsActivationQuery'
+
+    Akeneo\Pim\Structure\Component\Query\PublicApi\Family\GetFamilies:
+        class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\Family\Sql\SqlGetFamilies
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.structure.query.sql_get_main_identifier_attribute_code:
+        class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Sql\SqlGetMainIdentifierAttributeCode
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\GetMainIdentifierAttributeCode:
+        class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Cache\CachedGetMainIdentifierAttributeCode
+        arguments:
+            - '@akeneo.pim.structure.query.sql_get_main_identifier_attribute_code'
+        tags: [ 'akeneo.pim.cached_query' ]

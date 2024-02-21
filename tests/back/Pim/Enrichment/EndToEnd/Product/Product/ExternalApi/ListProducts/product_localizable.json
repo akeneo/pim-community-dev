@@ -1,0 +1,57 @@
+{
+  "_links": {
+    "self": {
+      "href": "http://localhost/api/rest/v1/products-uuid/{uuid}"
+    }
+  },
+  "uuid": "{uuid}",
+  "family": null,
+  "parent": null,
+  "groups": [],
+  "categories": ["categoryB"],
+  "enabled": true,
+  "values": {
+    "sku": [{
+      "locale": null,
+      "scope": null,
+      "data": "localizable"
+    }],
+    "a_localizable_image": [{
+      "locale": "en_US",
+      "scope": null,
+      "data": "c/2/0/f/c20f1a4b3e6515d5676e89d52fb9e25fa1d29bd8_akeneo.jpg",
+      "_links": {
+        "download": {
+          "href": "http://localhost/api/rest/v1/media-files/c/2/0/f/c20f1a4b3e6515d5676e89d52fb9e25fa1d29bd8_akeneo.jpg/download"
+        }
+      }
+    }, {
+      "locale": "fr_FR",
+      "scope": null,
+      "data": "5/3/9/a/539a12626cb2fbc62cf7ad5f817174cce02b0519_akeneo.jpg",
+      "_links": {
+        "download": {
+          "href": "http://localhost/api/rest/v1/media-files/5/3/9/a/539a12626cb2fbc62cf7ad5f817174cce02b0519_akeneo.jpg/download"
+        }
+      }
+    }, {
+      "locale": "zh_CN",
+      "scope": null,
+      "data": "5/d/c/a/5dcac0871503e513d5be25807794a09ad9080341_akeneo.jpg",
+      "_links": {
+        "download": {
+          "href": "http://localhost/api/rest/v1/media-files/5/d/c/a/5dcac0871503e513d5be25807794a09ad9080341_akeneo.jpg/download"
+        }
+      }
+    }]
+  },
+  "created": "2017-03-11T10:39:38+01:00",
+  "updated": "2017-03-11T10:39:38+01:00",
+  "associations": {
+    "PACK": { "products" : [], "product_models": [], "groups": [] },
+    "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
+    "UPSELL": { "products" : [], "product_models": [], "groups": [] },
+    "X_SELL": { "products" : [], "product_models": [], "groups": [] }
+  },
+  "quantified_associations": {}
+}

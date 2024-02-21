@@ -1,0 +1,86 @@
+{
+  "name": "@akeneo-pim-community/catalog-volume-monitoring",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@akeneo-pim-community/shared": "link:../../../../../../front-packages/shared",
+    "akeneo-design-system": "link:../../../../../../front-packages/akeneo-design-system",
+    "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "4.0.1",
+    "typescript": "^4.0.3",
+    "web-vitals": "^0.2.4"
+  },
+  "scripts": {
+    "app:start": "yarn translation:build && yarn route:build && yarn packages:build && react-scripts --openssl-legacy-provider start",
+    "test:unit:run": "react-scripts --openssl-legacy-provider test --watchAll=false --maxWorkers=3",
+    "test:unit:watch": "react-scripts --openssl-legacy-provider test --maxWorkers=3",
+    "lib:build": "tsc -p ./tsconfig.build.json",
+    "translation:build": "cp $npm_package_config_application_path/public/js/translation/en_US.js ./src/translations.json",
+    "route:build": "cp $npm_package_config_application_path/public/js/fos_js_routes.json ./src/routes.json",
+    "packages:build": "yarn --cwd=$npm_package_config_front_packages_path/akeneo-design-system run lib:build && yarn --cwd=$npm_package_config_front_packages_path/shared run lib:build",
+    "lint:fix": "prettier --config .prettierrc.json --parser typescript --write \"./src/**/*.{ts,tsx}\"",
+    "lint:check": "prettier --config .prettierrc.json --parser typescript --check \"./src/**/*.{ts,tsx}\" && yarn eslint --max-warnings 0 --ext .tsx,.ts ./src"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "config": {
+    "front_packages_path": "../../../../../../front-packages",
+    "application_path": "../../../../../.."
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "@types/jest": "^26.0.15",
+    "@types/node": "^12.0.0",
+    "@types/react": "^17.0.2",
+    "@types/react-dom": "^17.0.2",
+    "@types/react-router-dom": "^5.1.7",
+    "@types/styled-components": "^5.1.1",
+    "prettier": "^2.1.1"
+  },
+  "proxy": "http://localhost:8080",
+  "main": "lib/index.js",
+  "jest": {
+    "coverageReporters": [
+      "text-summary",
+      "html"
+    ],
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/src/index.tsx",
+      "<rootDir>/src/FakePIM.tsx",
+      "<rootDir>/src/feature/ColumnsTab.tsx"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "statements": 100,
+        "functions": 100,
+        "lines": 100
+      }
+    }
+  },
+  "peerDependencies": {
+    "babel-loader": "8.1.0",
+    "eslint": "^7.11.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "styled-components": "^5.1.1"
+  }
+}

@@ -1,0 +1,74 @@
+parameters:
+    pim_ui.twig.extension.class: Akeneo\Platform\Bundle\UIBundle\Twig\UiExtension
+    pim_ui.twig.style_extension.class: Akeneo\Platform\Bundle\UIBundle\Twig\StyleExtension
+    pim_ui.loading_messages_file: '@@PimUIBundle/Resources/config/loading_messages.txt'
+
+services:
+    pim_ui.twig.ui_extension:
+        class: '%pim_ui.twig.extension.class%'
+        arguments: ['%pim_ui.placeholders%', '%pim_ui.wrap_class%']
+        tags:
+            - { name: twig.extension }
+
+    pim_ui.twig.style_extension:
+        class: '%pim_ui.twig.style_extension.class%'
+        public: false
+        tags:
+            - { name: twig.extension }
+
+    pim_localization.twig.locale_extension:
+        class: 'Akeneo\Platform\Bundle\UIBundle\Twig\LocaleExtension'
+        tags:
+            - { name: twig.extension }
+
+    pim_localization.twig.attribute_extension:
+        class: 'Akeneo\Platform\Bundle\UIBundle\Twig\AttributeExtension'
+        arguments:
+            - '@pim_catalog.localization.presenter.date'
+            - '@pim_catalog.localization.presenter.datetime'
+            - '@pim_enrich.resolver.locale'
+        tags:
+            - { name: twig.extension }
+
+    pim_enrich.twig.version_extension:
+        class: 'Akeneo\Platform\Bundle\UIBundle\Twig\VersionExtension'
+        arguments:
+            - '@pim_catalog.version_provider'
+        tags:
+            - { name: twig.extension }
+
+    pim_enrich.twig.view_element_extension:
+        class: 'Akeneo\Platform\Bundle\UIBundle\Twig\ViewElementExtension'
+        arguments:
+            - '@pim_enrich.view_element.registry'
+            - '@twig'
+            - '%env(APP_DEBUG)%'
+        tags:
+            - { name: twig.extension }
+
+    pim_enrich.twig.translations_extension:
+        class: 'Akeneo\Platform\Bundle\UIBundle\Twig\TranslationsExtension'
+        arguments:
+            - '@pim_catalog.command_launcher'
+            - '@request_stack'
+        tags:
+            - { name: twig.extension }
+
+    pim_enrich.twig.object_class_extension:
+        class: 'Akeneo\Platform\Bundle\UIBundle\Twig\ObjectClassExtension'
+        tags:
+            - { name: twig.extension }
+
+    pim_enrich.twig.content_security_policy_extension:
+        class: Akeneo\Platform\Bundle\UIBundle\Twig\ContentSecurityPolicyExtension
+        arguments:
+            - '@security.script_nonce_generator'
+        tags:
+            - { name: twig.extension }
+
+    Akeneo\Platform\Bundle\UIBundle\Twig\ExternalJavascriptDependenciesExtension:
+        arguments:
+            - '@Akeneo\Platform\Bundle\UIBundle\Provider\ExternalJavascriptDependenciesProvider'
+        tags:
+            - { name: twig.extension }
+

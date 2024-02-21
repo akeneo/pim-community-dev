@@ -1,0 +1,21 @@
+pim_catalog_volume:
+  section:
+    catalog_structure:
+      title: Axlar relaterade till katalogstrukturen
+    variant_modelling:
+      hint: Om du använder variant-modellering så är det här du kan övervaka volymen i axlarna.
+      title: Axlar avseende variantmodellering
+  axis:
+    count_products: Produkter
+    average_max_attributes_per_family: Attribut per familj
+    count_channels: Kanaler
+    count_locales: Språk (aktiverade)
+    count_families: Familjer
+    count_attributes: Attributer
+    count_categories: Kategorier
+    count_category_trees: Kategoriträd
+    count_variant_products: Variantprodukter
+    count_product_models: Produktmodeller
+    warning: Wow! Du har slagit rekord med denna axel! Tveka inte att kontakta oss om du behöver hjälp med denna volym.
+  mean: 'Medelvärde:'
+  max: 'Max:'

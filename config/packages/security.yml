@@ -1,0 +1,89 @@
+security:
+    enable_authenticator_manager: true
+    providers:
+        chain_provider_api:
+            chain:
+                providers: [ pim_user_api, pim_user ] #Retro-compatibility: user ui can log to Rest API
+        chain_provider:
+            chain:
+                providers: [pim_user]
+        pim_user:
+            id: pim_user.provider.user
+        pim_user_api:
+            id: pim_user.provider.user_api
+
+    password_hashers:
+        Akeneo\UserManagement\Component\Model\User: sha512
+        Symfony\Component\Security\Core\User\User: plaintext
+
+    firewalls:
+        dev:
+            pattern:                        ^/(_(profiler|wdt)|css|images|js)/
+            security:                       false
+
+        login:
+            pattern:                        ^/user/(login|reset-request|send-email)$
+            provider:                       chain_provider
+
+        reset_password:
+            pattern:                        ^/user/reset/*
+            provider:                       chain_provider
+
+        oauth_token:
+            pattern:                        ^/api/oauth/v1/token
+            security:                       false
+
+        oauth2_token:
+            pattern:                        ^/connect/apps/v1/oauth2/token
+            security:                       false
+
+        openid_public_key:
+            pattern:                        ^/connect/apps/v1/openid/public-key
+            security:                       false
+
+        app_scopes_update:
+            pattern:                        ^/connect/apps/v1/scopes/update
+            fos_oauth:                      true
+            stateless:                      true
+            access_denied_handler:          pim_api.security.access_denied_handler
+            provider:                       chain_provider_api
+
+        api_index:
+            pattern:                        ^/api/rest/v1$
+            security:                       false
+
+        api:
+            pattern:                        ^/api
+            fos_oauth:                      true
+            stateless:                      true
+            access_denied_handler:          pim_api.security.access_denied_handler
+            provider:                       chain_provider_api
+
+        main:
+            pattern:                        ^/
+            provider:                       chain_provider
+            form_login:
+                enable_csrf:                true
+                check_path:                 pim_user_security_check
+                login_path:                 pim_user_security_login
+                use_forward:                true
+            logout:
+                path:                       pim_user_security_logout
+            remember_me:
+                secret:                     "%env(APP_SECRET)%"
+                name:                       BAPRM
+                lifetime:                   1209600   # stay logged for two weeks
+                samesite:                   'lax'
+
+    access_control:
+        - { path: ^/user/(login|reset-request|send-email)$, roles: PUBLIC_ACCESS }
+        - { path: ^/user/reset/*, roles: PUBLIC_ACCESS }
+        - { path: ^/api/rest/v1$, roles: PUBLIC_ACCESS }
+        - { path: ^/api/, roles: pim_api_overall_access }
+        - { path: ^/ , roles: IS_AUTHENTICATED_REMEMBERED }
+
+acl:
+    connection: default
+    cache:
+        id: security.acl.cache.doctrine
+        prefix: sf2_acl_

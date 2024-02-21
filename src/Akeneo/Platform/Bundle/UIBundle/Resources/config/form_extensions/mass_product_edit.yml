@@ -1,0 +1,59 @@
+extensions:
+    pim-mass-product-edit-form:
+        module: pim/form/common/edit-form
+
+    pim-mass-product-edit-form-attributes:
+        module: pim/mass-product-edit-form/attributes
+        parent: pim-mass-product-edit-form
+        targetZone: content
+        aclResourceId: pim_enrich_product_edit_attributes
+        position: 90
+        config:
+            removeAttributeACL: pim_enrich_product_remove_attribute
+
+    pim-mass-product-edit-form-attribute-group-selector:
+        module: pim/form/common/attributes/attribute-group-selector
+        parent: pim-mass-product-edit-form-attributes
+        targetZone: other-actions
+        position: 100
+
+    pim-mass-product-edit-form-add-attribute:
+        module: pim/product/add-select/attribute
+        parent: pim-mass-product-edit-form-attributes
+        targetZone: other-actions
+        position: 90
+        config:
+            select2:
+                placeholder: 'pim_enrich.mass_edit.product.operation.common.select_attributes'
+            events:
+                disable: 'mass-edit:form:lock'
+                enable: 'mass-edit:form:unlock'
+
+    pim-mass-product-edit-form-validation:
+        module: pim/product-edit-form/attributes/validation
+        parent: pim-mass-product-edit-form-attributes
+        targetZone: header
+        position: 100
+
+    pim-mass-product-edit-form-locale-specific:
+        module: pim/product-edit-form/attributes/locale-specific
+        parent: pim-mass-product-edit-form-attributes
+        targetZone: self
+        position: 100
+
+    pim-mass-product-edit-form-localizable:
+        module: pim/product-edit-form/attributes/localizable
+        parent: pim-mass-product-edit-form-attributes
+        targetZone: self
+        position: 90
+
+    pim-mass-product-edit-form-form-model-updater:
+        module: pim/mass-product-edit-form/form-model-updater
+        parent: pim-mass-product-edit-form
+        position: 500
+
+    pim-mass-product-edit-form-read-only-form:
+        module: pim/product-edit-form/attributes/read-only-form
+        parent: pim-mass-product-edit-form-attributes
+        targetZone: self
+        position: 100

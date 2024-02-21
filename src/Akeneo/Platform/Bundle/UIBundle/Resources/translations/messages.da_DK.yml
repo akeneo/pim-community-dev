@@ -1,0 +1,505 @@
+User: Bruger
+Run demo: Kør demo
+Product: Produkt
+Attribute list: Attribut liste
+Attribute Group list: Attribut gruppe liste
+Users: Brugere
+Roles: Roller
+Groups: Grupper
+Configuration: Konfiguration
+Currency list: Valuta liste
+Locale list: Lande liste
+Logged in as: Logget ind som
+Logout: Log ud
+Login: Login
+Previous: Forrige
+Next: Næste
+Channel list: Kanalliste
+Select file: Vælg fil
+Change file: Skift fil
+Remove file: Fjern fil
+Delete: Slet
+Save: Gem
+Get help: Få hjælp
+My User: Min konto
+oro.form.choose_value: Vælg en værdi...
+Read more: Læs mere
+oro.form.click_here_to_select: Klik her for at vælge...
+Add: Tilføj
+"Learn how to use this space": "Lær at bruge dette omåde"
+"How To Use Pinbar": "Sådan bruges Pinbar"
+Pinbar: Pinbar
+Favorites: Favoritter
+Most Viewed: Mest sete
+"Add this page to favorites": "Føj denne side til favoritter"
+"Minimize the window to the pinbar": "Minimere vindue til pinbar"
+"Loading ...": "Indlæser ..."
+"Yes": "Ja"
+"No": "Nej"
+required: (Påkrævet)
+The element could not be deleted: Elementet kunne ikke slettes
+pim_ui.system_config:
+  form:
+    loading_message_enabled.label: Aktivere indlæsning af meddelelser
+    loading_message_enabled.tooltip: Vis brugervenlige beskeder mens siden indlæses
+    loading_messages.label: Tilgængelige indlæsnings meddelelser
+    loading_messages.tooltip: Alle tilgængelige indlæsnings meddelelser adskilt med linjeskift
+  group:
+    loading_message.title: Indlæser meddelelser
+other_actions: andre handlinger
+pim_common:
+  cancel: Annuller
+  save: Gem
+  delete: Slet
+  update: Opdater
+  view: Se
+  edit: Redigér
+  created: Oprettet
+  updated: Opdateret
+  create: Opret
+  permissions: Rettigheder
+  properties: Egenskaber
+  name: Navn
+  remove: Fjern
+pim_enrich:
+  #ACLs
+  acl:
+    locale:
+      index: Liste over landestandarder
+    currency:
+      index: Liste over valutaer
+      toggle: Skift valutaer
+    product:
+      index: Liste over produkter
+      create: Opret et produkt
+      edit_attributes: Rediger attributterne for et produkt
+      remove: Fjern et produkt
+      add_attribute: Tilføj en attribut til et produkt
+      remove_attribute: Fjerne en attribut fra et produkt
+      categories_view: Konsultere kategorierne af et produkt
+      associations_view: Se sammenhængstyper for et produkt
+      associations_edit: Ret sammenhængstyper for et produkt
+      change_family: Ændre produktfamilie
+      change_state: Ændr produktstatus
+      add_to_groups: Tilføj produkt til grupper
+      mass_edit: Handlinger for masse redigering af produkter
+      comment: Kommenter produkter
+      download: Download produktet som PDF
+      history: Se produkt historik
+    product_model:
+      create: Oprette en produktmodel
+      edit_attributes: Rediger attributterne for en produktmodel
+      categories_view: Konsultere kategorierne af en produktmodel
+      history: Se produkt model historik
+      remove: Fjern en produktmodel
+    category:
+      list: Kategoriliste
+      create: Opret en kategori
+      edit: Redigere en kategori
+      remove: Fjern en kategori
+      move: Flyt kategori
+      children: Se underliggende kategorier
+      products: Se produkter i denne kategori
+      history: Se kategori historik
+    channel:
+      index: Liste over kanaler
+      create: Opret en kanal
+      edit: Redigere en kanal
+      remove: Fjern en kanal
+      history: Se kanal historik
+    family:
+      index: Liste over familier
+      create: Opret en familie
+      edit_properties: Rediger egenskaberne for en familie
+      edit_attributes: Rediger attributterne for en familie
+      remove: Fjern en familie
+      history: Se familie historik
+    family_variant:
+      remove: Vælg en familie variant
+    attribute_group:
+      index: List attributgrupper
+      create: Opret en attributgruppe
+      edit: Redigere en attributgruppe
+      remove: Fjern en attributgruppe
+      sort: Sorter attributgrupper
+      add_attribute: Tilføj attribut til en gruppe
+      remove_attribute: Fjerne attributten fra en gruppe
+      history: Se attribut gruppe historik
+    attribute:
+      index: Liste over attributter
+      create: Opret en attribut
+      edit: Rediger en attribut
+      remove: Fjern en attribut
+      sort: Sorter attributter i attributgrupper
+      history: Se attribut historik
+    group:
+      index: List grupper
+      create: Opret en gruppe
+      edit: Redigere en gruppe
+      remove: Fjern en gruppe
+      history: Se gruppe historik
+    group_type:
+      index: List gruppetyper
+      create: Opret en gruppetype
+      edit: Redigere en gruppetype
+      remove: Fjern en gruppetype
+    association_type:
+      index: List sammenhængstyper
+      create: Opret en sammenhængstype
+      edit: Redigere en sammenhængstype
+      remove: Fjern en sammenhængstype
+      history: Se sammenhængs type historik
+    association:
+      remove: Ret sammenhængstyper for et produkt
+    job_tracker:
+      index: Se process overvågning
+    api_connection:
+      manage: Administrere API-forbindelser
+  acl_group:
+    association_type: Sammenhængstyper
+    attribute: Egenskaber
+    attribute_group: Attributgrupper
+    category: Kategorier
+    channel: Kanaler
+    currency: Valutaer
+    family: Familier
+    group: Grupper
+    group_type: Gruppetyper
+    locale: Landestandarder
+    product: Produkter
+    product_model: Produktmodeller
+  notification:
+    settings:
+      remove_completeness_for_channel_and_locale:
+        start: Landestandard er blevet fjernet fra denne kannal. Relaterede fulstændighed ajourføres 
+        done: Fjernelse af landestandard fra denne kannal er afsluttet.
+  create:
+    attribute: opret attribut
+    attribute group: opret attributgruppe
+    category: opret kategori
+    tree: opret træ
+    channel: opret kanal
+    currency: opret valuta
+    family: opret familie
+    locale: opret landestandard
+    product: opret produkt
+    group: opret gruppe
+    association type: opret sammenhængstype
+    group type: opret gruppetype
+    drag_or_upload: Træk og slip for at indlæse eller klik her
+#Confirmation messages
+confirmation:
+  delete: Bekræft sletning
+  leave: Er du sikker på du vil forlade denne side?
+  discard changes: Du vil miste ændringer til %entity%, hvis du forlader siden.
+  remove:
+    category: Er du sikker på du vil slette kategorien %name%?
+    user: Er du sikker på du vil slette brugeren %name%?
+#Flash messages
+flash:
+  entity:
+    removed: Elementet blev slettet
+  attribute:
+    identifier_not_removable: Id attribut kan ikke fjernes
+  category:
+    removed: Kategori fjernet
+  tree:
+    removed: Træet er fjernet
+    not removable: Træer knyttet til kanaler kan ikke fjernes.
+  currency:
+    updated: Valuta opdateret
+    error.linked_to_channel: Du kan ikke deaktivere en valuta, der er knyttet til en kanal.
+  product:
+    enabled: Produktet er blevet aktiveret
+    disabled: Produktet er blevet deaktiveret
+  group type:
+    created: Gruppetypen oprettet
+  user:
+    removed: Brugeren blev fjernet
+  error occurred: Handlingen fejlede. Prøv venligst igen.
+#Info messages
+info:
+  updated: Der er ikke-gemte ændringer.
+  category:
+    remove children: Alle underkategorier vil blive slettet.
+    keep products: Produkter i disse kategorier vil ikke blive slettet.
+    products limit exceeded: Denne kategori indeholder flere produkter end tilladt for denne handling (%limit% maks. produkter)
+  product:
+    no available attributes: Der er ikke flere attributter at tilføje
+    no family defined: Ingen familie defineret
+    change family: Ændre produktfamilien
+    change family to: Ændre familien til
+    merge attributes: Aktuelle attributter flettes sammen med dem i den nye familie.
+    keep attributes: Ingen attributter vil blive fjernet.
+    number of associations: '%productCount% produkter og %groupCount% grupper'
+    enable: Aktivér
+    enabled: Aktiveret
+    disable: Deaktivér
+    disabled: Deaktiveret
+  group:
+    axis: 'Variation akse: %attributes%'
+    select products: Vælg produkter, der skal tilhøre denne gruppe.
+    selectable products: Følgende valgbare produkter har en defineret værdi for hver akse.
+    no group types: Der findes ingen gruppetyper, klik her for at oprette en
+    more products: '%count% flere produkter...'
+  association type:
+    show products: Vis produkter
+    show groups: Vis grupper
+    remove from products: Sletning af sammenhængstypen vil fjerne den fra %count% produkter.
+    none exist: Der findes ingen sammenhængstype.
+    create one: Klik her for at oprette en
+  attribute:
+    auto option sorting: Hvis aktiveret, bliver etiketter automatisk sorteret efter deres oversatte etiket
+  completeness:
+    not calculated: Endnu ikke beregnet
+#Form elements
+Created: Oprettet
+Updated: Opdateret
+Last update: Sidst opdateret
+by: Af
+N/A: Ikke tilgængelig
+Manage products: Administrere produkter
+Manage groups: Administrér grupper
+Code: Kode
+Name: Navn
+Type: Type
+Scope: Kanal
+Required: Påkrævet
+Unique: Unik
+Not required: Ikke påkrævet
+Translatable: Oversætbare
+Scopable: Omfangbar
+Localizable: Kan oversættes
+Unique value: Unik værdi
+Attribute group: Attributgruppe
+Other: Andet
+Variants behavior when edited: Varianters opførsel ved redigering
+Remove: Fjern
+Parameters: Parametre
+System: System
+Values: Værdier
+General parameters: Generelle parametre
+Backend parameters: Backend parametre
+Label: Etiket
+Default label: Standardetiket
+Default value: Standardværdi
+Attributetype: Attributtype
+Attribute type: Attributtype
+Defaultvalue: Standardværdi
+Variant: Variant
+Smart: Smart
+Useable as grid column: Brugbare som gitterkolonne
+Useable as grid filter: Brugbare i gitter
+Family: Familie
+Image: Billede
+Variant products: Variantprodukter
+Available locales: Tilgængelige landestandarder
+Locale specific: Landestandard specifik
+default: Standard
+Axis: Akse
+Add attributes: Tilføj egenskab
+switch_on: "Ja"
+switch_off: "Nej"
+Close: Luk
+Search: Søg
+Choose the attribute type: Vælg attributtype
+Choose the attribute group: Vælg attributgruppe
+Drag and drop a file or click here: Træk og slip en fil eller klik her
+Drop an image or click here: Drop et billede eller klik her
+Automatic option sorting: Mulighed for automatisk sortering
+save_attribute_before_manage_option: Hvis du vil administrere indstillinger, skal du gemme attributten først
+Please select: Vælg
+Active: Aktiv
+Inactive: Inaktiv
+Do not convert: Konvertér ikke
+Create: Opret
+Choose a family: Vælg familie
+Choose a unit: Vælg enhed
+No matches found: Ingen fundet
+Category tree: Kategoritræstrukturen
+Completeness: Fuldstændighed
+Attribute used as label: Attributten anvendes som etiket
+Credentials: Legitimationsoplysninger
+#Scopes
+Global: Global
+Channel: Kanal
+Expand all channels: Udvid alle kanaler
+Collapse all channels: Skjul alle kanaler
+#Variants
+Always override: Altid tilsidesæt
+Ask: Spørg
+#Attribute group
+General Properties: Generelle egenskaber
+Group values: Gruppeværdier
+New group: Ny gruppe
+Groups overview: Gruppe oversigt
+'Y-m-d h:i:s': 'Å-m-d t:m:s'
+#Attribute properties
+Max characters: Maks. tegn
+Validation rule: Valideringsregel
+Validation regexp: Validering regexp
+Wysiwyg enabled: WYSIWYG aktiveret
+Number min: Min. antal
+Number max: Maks. antal
+Decimals allowed: Tillad decimaler
+Negative allowed: Tillade negative værdier
+Date min: Min. dato
+Date max: Maks. dato
+Metric family: Metriske familie
+Default metric unit: Standard metriske enhed
+Max file size: Maks. filstørrelse (MB)
+Allowed extensions: Tilladte filendelser
+None: Ingen
+E-mail: E-mail
+URL: URL
+Regular expression: Regulære udtryk
+Minimum input length: Minimum inputlængde
+Default: Standard
+#Family
+Attributes: Egenskaber
+#Category
+Title: Titel
+#Page titles
+pim_catalog_identifier: Identifikator
+pim_catalog_text: Tekst
+pim_catalog_textarea: Tekstområde
+pim_catalog_number: Tal
+pim_catalog_price_collection: Pris
+pim_catalog_multiselect: Multi Select
+pim_catalog_simpleselect: Simpel valg
+pim_catalog_file: Fil
+pim_catalog_image: Billede
+pim_catalog_boolean: "Ja / Nej"
+pim_catalog_date: Dato
+pim_catalog_metric: Metrisk
+pim_reference_data_simpleselect: Referencedata simpel valg
+pim_reference_data_multiselect: Reference data multi valg
+#Locales
+Activated: Aktiveret
+Edit: Redigér
+Disable: Deaktivér
+To enable: At aktivere
+Select attributes: Vælg attributter
+Select: Vælg
+Remove this attribute: Fjern denne attribut
+Copy: Kopier
+Translate from: Oversæt fra
+Current tab: Aktuelle fane
+#Product view
+Group: Gruppe
+View group: Se gruppe
+Products: Produkter
+#Tabs
+Properties: Egenskaber
+History: Historik
+pane.accordion:
+  node_values: Node værdier
+  general_properties: Generelle egenskaber
+  locale_values: Landestandard værdier
+  backend_parameters: Backend parametre
+  general_parameters: Generelle parametre
+  validation_parameters: Valideringsparametre
+  label_translations: Etiket oversættelser
+  options: Valgmuligheder
+  group_values: Gruppeværdier
+#Popin titles
+popin.create:
+  association_type.title: Oprette en ny sammenhæng
+  group.title: Opret en ny gruppe
+  product.title: Opret et nyt produkt
+  option.title: Opret et nyt tilvalg
+#Datagrid contents
+In group: I gruppen
+Attribute as label: Attribut som etiket
+Is associated: Er forbundet
+Complete: Fuldført
+Created At: Oprettet den
+Updated At: Opdateret den
+Enabled: Aktiveret
+Disabled: Deaktiveret
+Status: Status
+#Versioning / history
+Change History: Ændre historie
+Data Audit: Data revision
+Data Audit - System: 'Data revision - system'
+Action: Handling
+Version: Version
+Entity type: Enhedstypen
+Entity name: Enhedsnavn
+Entity id: Enheds-id
+Data: Data
+Author: Forfatter
+Logged at: Logget af
+Deleted: Slettet
+Old values: Gamle værdier
+New values: Nye værdier
+#Configuration
+System configuration: Systemkonfiguration
+General setup: Generel opsætning
+Localization: Lokalisering
+Localization options: Lokalisering indstillinger
+Locale: Landestandard
+Location: Placering
+Format address by address country: Formater adresse efter lande adresse
+Language: Sprog
+Timezone: Tidszone
+Currency: Valuta
+oro.locale:
+  address_format:
+    region_name_type:
+      parish: "sogn"
+      state: "stat"
+      island: "ø"
+      county: "landsdel"
+      area: "område"
+      prefecture: "præfektur"
+      department: "afdeling"
+      district: "distrikt"
+      province: "provins"
+  form:
+    tooltip:
+      locale: "Vælg den landestandard indstilling der skal bruges til at formatere tal, adresser, navne og datoer"
+      location: " Placeringen skal bruges til at formatere adresser, når 'Formater adresse efter adresse, land' indstillingen er deaktiveret"
+      format_address_by_address_country: "Aktiver denne indstilling for at få vist adresser formateret i henhold til det land, de er i. Deaktiver denne indstilling for at få vist adresser formateres i henhold til din placering/land"
+      language: "Vælge det systemsprog du ønsker at bruge"
+      timezone: "Vælg tidszone for visning af dato og klokkeslæt"
+      currency: "Vælg standardvalutaen"
+#Datagrid
+Selected products successfully deleted: Udvalgte produkter blev slettet
+pim_mass_edit:
+  notification:
+    mass_edit:
+      error: Masse rediger <strong>%label%</strong> mislykkedes
+      warning: Masse edit <strong>%label%</strong> færdig med nogle advarsler
+      success: Masse rediger <strong>%label%</strong> mislykkedes
+    quick_export:
+      error: Hurtig eksport <strong>%label%</strong> mislykkedes
+      warning: Hurtig eksport <strong>%label%</strong> afsluttede med nogle advarsler
+      success: Hurtig eksport <strong>%label%</strong> mislykkedes
+    mass_delete:
+      error: Masse slet <strong>%label%</strong> mislykkedes
+      warning: Masse slet <strong>%label%</strong> gennemført med advarsler
+      success: Masse slet <strong>%label%</strong> afsluttet
+job_execution.summary:
+  mass_edited: Masse redigeret
+  skip: Sprunget over
+  skipped_products: produkter sprunget over
+  skipped_attributes: Attributter sprunget over
+  skipped_families: Familier sprunget over
+  deleted_products: Slettede produkter
+  deleted_product_models: Slettede produktmodeller
+pim_mass_edit_execution_show: Masse redigere udførsler | Detaljer
+edit_common_attributes.steps.edit_common_attributes_processor.title: Rediger attributter
+update_product_value.steps.update_product_value_processor.title: Opdatere produktets værdi
+remove_product_value.steps.update_product_value_processor.title: Fjern produktværdi
+edit_common_attributes: Rediger attributter
+edit_common_attributes_clean: Rens filer til fælles attributter
+perform.steps.duplicated.title: Duplikeret akse
+perform.steps.excluded.title: Udelukkede produkt
+mass_edit report:
+  overview: Masse redigere rapporter
+job_tracker:
+  tab:
+    title: Process overvågning
+  filter:
+    started_at: Startede på

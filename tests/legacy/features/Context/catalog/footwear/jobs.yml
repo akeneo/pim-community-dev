@@ -1,0 +1,652 @@
+jobs:
+    csv_footwear_product_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_product_import
+        label:     CSV footwear product import
+        type:      import
+        configuration:
+            storage:
+                type: none
+                file_path:           '/tmp/footwear_products.csv'
+            uploadAllowed:      true
+            delimiter:          ;
+            enclosure:          '"'
+            enabled:            true
+            categoriesColumn:   categories
+            familyColumn:       family
+            groupsColumn:       groups
+            realTimeVersioning: true
+            decimalSeparator:   .
+    csv_footwear_product_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_product_export
+        label:     CSV footwear product export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            storage:
+                type: none
+                file_path: /tmp/products.csv
+            filters:
+                data:
+                    -
+                        field: enabled
+                        operator: '='
+                        value: true
+                    -
+                        field: completeness
+                        operator: '>='
+                        value: 100
+                        context:
+                            locales: ['fr_FR', 'en_US', 'de_DE']
+                    -
+                        field: categories
+                        operator: 'IN CHILDREN'
+                        value: ['2014_collection']
+                structure:
+                    scope: mobile
+                    locales:
+                        - en_US
+    csv_footwear_category_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_category_import
+        label:     CSV footwear category import
+        type:      import
+        configuration:
+            uploadAllowed:       true
+            delimiter:           ;
+            enclosure:           '"'
+    csv_footwear_category_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_category_export
+        label:     CSV footwear category export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            storage:
+                type: local
+                file_path: /tmp/category.csv
+    csv_footwear_association_type_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_association_type_import
+        label:     CSV footwear association type import
+        type:      import
+        configuration:
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
+    csv_footwear_association_type_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_association_type_export
+        label:     CSV footwear association type export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            storage:
+                type: local
+                file_path: /tmp/association_type.csv
+    csv_footwear_group_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_group_import
+        label:     CSV footwear group import
+        type:      import
+        configuration:
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
+    xlsx_footwear_group_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_group_import
+        label:     XLSX footwear group import
+        type:      import
+        configuration:
+            uploadAllowed: true
+            storage:
+                type: local
+                file_path:      /tmp/group.xlsx
+    csv_footwear_group_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_group_export
+        label:     CSV footwear group export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            storage:
+                type: local
+                file_path: /tmp/group.csv
+    csv_footwear_attribute_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_attribute_import
+        label:     CSV footwear attribute import
+        type:      import
+        configuration:
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
+    csv_footwear_attribute_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_attribute_export
+        label:     CSV footwear attribute export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            storage:
+                type: local
+                file_path: /tmp/attribute.csv
+    csv_footwear_option_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_attribute_option_import
+        label:     CSV footwear option import
+        type:      import
+        configuration:
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
+    csv_footwear_option_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_attribute_option_export
+        label:     CSV footwear option export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            storage:
+                type: local
+                file_path: /tmp/option.csv
+    csv_footwear_family_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_family_export
+        label:     CSV footwear family export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            storage:
+                type: local
+                file_path: /tmp/family.csv
+    csv_footwear_channel_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_channel_export
+        label:     CSV footwear channel export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            storage:
+                type: local
+                file_path: /tmp/channel.csv
+    csv_footwear_currency_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_currency_export
+        label:     CSV footwear currency export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            storage:
+                type: local
+                file_path: /tmp/currency.csv
+    csv_footwear_locale_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_locale_export
+        label:     CSV footwear locale export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            storage:
+                type: local
+                file_path: /tmp/locale.csv
+    csv_footwear_group_type_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_group_type_export
+        label:     CSV footwear group type export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            storage:
+                type: local
+                file_path: /tmp/group_type.csv
+    csv_footwear_attribute_group_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_attribute_group_export
+        label:     CSV footwear attribute group export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            storage:
+                type: local
+                file_path: /tmp/attribute_group.csv
+    csv_footwear_family_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_family_import
+        label:     CSV footwear family import
+        type:      import
+        configuration:
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
+    csv_footwear_currency_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_currency_import
+        label:     CSV footwear currency import
+        type:      import
+        configuration:
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
+    csv_footwear_channel_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_channel_import
+        label:     CSV footwear channel import
+        type:      import
+        configuration:
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
+    csv_footwear_locale_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_locale_import
+        label:     CSV footwear locale import
+        type:      import
+        configuration:
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
+    csv_footwear_group_type_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_group_type_import
+        label:     CSV footwear group_type import
+        type:      import
+        configuration:
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
+    csv_footwear_attribute_group_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_attribute_group_import
+        label:     CSV footwear attribute_group import
+        type:      import
+        configuration:
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
+    update_product_value:
+        connector: Akeneo Mass Edit Connector
+        alias:     update_product_value
+        label:     Mass update products
+        type:      mass_edit
+    add_product_value:
+        connector: Akeneo Mass Edit Connector
+        alias:     add_product_value
+        label:     Mass add products values
+        type:      mass_edit
+    remove_product_value:
+        connector: Akeneo Mass Edit Connector
+        alias:     remove_product_value
+        label:     Mass remove products values
+        type:      mass_edit
+    move_to_category:
+        connector: Akeneo Mass Edit Connector
+        alias:     move_to_category
+        label:     Mass move to categories
+        type:      mass_edit
+    add_association:
+        connector: Akeneo Mass Edit Connector
+        alias:     add_association
+        label:     Mass associate products
+        type:      mass_edit
+    add_to_category:
+        connector: Akeneo Mass Edit Connector
+        alias:     add_to_category
+        label:     Mass add to categories
+        type:      mass_edit
+    add_to_group:
+        connector: Akeneo Mass Edit Connector
+        alias:     add_to_group
+        label:     Mass add product to group
+        type:      mass_edit
+    remove_from_category:
+        connector: Akeneo Mass Edit Connector
+        alias:     remove_from_category
+        label:     Mass remove from categories
+        type:      mass_edit
+    edit_common_attributes:
+        connector: Akeneo Mass Edit Connector
+        alias:     edit_common_attributes
+        label:     Mass edit product attributes
+        type:      mass_edit
+    add_attribute_value:
+        connector: Akeneo Mass Edit Connector
+        alias:     add_attribute_value
+        label:     Mass add attribute value
+        type:      mass_edit
+    set_attribute_requirements:
+        connector: Akeneo Mass Edit Connector
+        alias:     set_attribute_requirements
+        label:     Set family attribute requirements
+        type:      mass_edit
+    add_to_existing_product_model:
+        connector: Akeneo Mass Edit Connector
+        alias:     add_to_existing_product_model
+        label:     Add to existing product model
+        type:      mass_edit
+    change_parent_product:
+        connector: Akeneo Mass Edit Connector
+        alias:     change_parent_product
+        label:     Change parent product model
+        type:      mass_edit
+    delete_products_and_product_models:
+        connector: Akeneo Mass Edit Connector
+        alias:     delete_products_and_product_models
+        label:     Mass delete products
+        type:      mass_delete
+    delete_attributes:
+        connector: Akeneo Mass Edit Connector
+        alias: delete_attributes
+        label: Bulk delete attributes
+        type: attribute_mass_delete
+    delete_attribute_groups:
+        connector: Akeneo Mass Edit Connector
+        alias: delete_attribute_groups
+        label: Bulk delete attribute groups
+        type: attribute_group_mass_delete
+    csv_product_quick_export:
+        connector: Akeneo CSV Connector
+        alias: csv_product_quick_export
+        label: CSV product quick export
+        type: quick_export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            filePathProduct:      /tmp/1_products_export_%locale%_%scope%.csv
+            filePathProductModel: /tmp/2_product_models_export_%locale%_%scope%.csv
+    xlsx_footwear_product_import_fr:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_product_import
+        label:     XLSX footwear product import FR
+        type:      import
+        configuration:
+            uploadAllowed:      true
+            enabled:            true
+            categoriesColumn:   categories
+            familyColumn:       family
+            groupsColumn:       groups
+            realTimeVersioning: true
+            decimalSeparator:   ,
+            storage:
+                type: local
+                file_path:           /tmp/footwear_products-fr.xlsx
+    xlsx_footwear_product_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_product_import
+        label:     XLSX footwear product import
+        type:      import
+        configuration:
+            uploadAllowed:      true
+            enabled:            true
+            categoriesColumn:   categories
+            familyColumn:       family
+            groupsColumn:       groups
+            realTimeVersioning: true
+            decimalSeparator:   .
+            dateFormat:         yyyy-MM-dd
+            storage:
+                type: local
+                file_path:           /tmp/footwear_products.xlsx
+    xlsx_footwear_category_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_category_import
+        label:     XLSX footwear category import
+        type:      import
+        configuration:
+            uploadAllowed:       true
+    xlsx_footwear_association_type_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_association_type_import
+        label:     XLSX footwear association type import
+        type:      import
+        configuration:
+            uploadAllowed: true
+    xlsx_footwear_attribute_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_attribute_import
+        label:     XLSX footwear attribute import
+        type:      import
+        configuration:
+            uploadAllowed: true
+    xlsx_footwear_option_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_attribute_option_import
+        label:     XLSX footwear option import
+        type:      import
+        configuration:
+            uploadAllowed: true
+    xlsx_footwear_family_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_family_import
+        label:     XLSX footwear family import
+        type:      import
+        configuration:
+            uploadAllowed: true
+    xlsx_footwear_currency_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_currency_import
+        label:     XLSX footwear currency import
+        type:      import
+        configuration:
+            uploadAllowed: true
+    xlsx_footwear_channel_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_channel_import
+        label:     XLSX footwear channel import
+        type:      import
+        configuration:
+            uploadAllowed: true
+    xlsx_footwear_locale_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_locale_import
+        label:     XLSX footwear locale import
+        type:      import
+        configuration:
+            uploadAllowed: true
+    xlsx_footwear_group_type_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_group_type_import
+        label:     XLSX footwear group_type import
+        type:      import
+        configuration:
+            uploadAllowed: true
+    xlsx_footwear_attribute_group_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_attribute_group_import
+        label:     XLSX footwear attribute_group import
+        type:      import
+        configuration:
+            uploadAllowed: true
+    xlsx_product_quick_export:
+        connector: Akeneo XLSX Connector
+        alias: xlsx_product_quick_export
+        label: XLSX product quick export
+        type: quick_export
+        configuration:
+            withHeader: true
+            linesPerFile: 10000
+            filePathProduct:      /tmp/1_products_export_%locale%_%scope%.xlsx
+            filePathProductModel: /tmp/2_product_models_export_%locale%_%scope%.xlsx
+    xlsx_footwear_family_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_family_export
+        label:     XLSX footwear family export
+        type:      export
+        configuration:
+            withHeader: true
+            linesPerFile: 10000
+            storage:
+                type: local
+                file_path: /tmp/family.xlsx
+    xlsx_footwear_category_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_category_export
+        label:     XLSX footwear category export
+        type:      export
+        configuration:
+            withHeader: true
+            linesPerFile: 10000
+            storage:
+                type: local
+                file_path: /tmp/category.xlsx
+    xlsx_footwear_attribute_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_attribute_export
+        label:     XLSX footwear attribute export
+        type:      export
+        configuration:
+            withHeader: true
+            linesPerFile: 10000
+            storage:
+                type: local
+                file_path: /tmp/attribute.xlsx
+    xlsx_footwear_option_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_attribute_option_export
+        label:     XLSX footwear option export
+        type:      export
+        configuration:
+            withHeader: true
+            linesPerFile: 10000
+            storage:
+                type: local
+                file_path: /tmp/option.xlsx
+    xlsx_footwear_association_type_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_association_type_export
+        label:     XLSX footwear association type export
+        type:      export
+        configuration:
+            withHeader: true
+            linesPerFile: 10000
+            storage:
+                type: local
+                file_path: /tmp/association_type.xlsx
+    xlsx_footwear_channel_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_channel_export
+        label:     XLSX footwear channel export
+        type:      export
+        configuration:
+            withHeader: true
+            storage:
+                type: local
+                file_path: /tmp/channel.xlsx
+            linesPerFile: 10000
+    xlsx_footwear_currency_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_currency_export
+        label:     XLSX footwear currency export
+        type:      export
+        configuration:
+            withHeader: true
+            storage:
+                type: local
+                file_path: /tmp/currency.xlsx
+            linesPerFile: 10000
+    xlsx_footwear_locale_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_locale_export
+        label:     XLSX footwear locale export
+        type:      export
+        configuration:
+            withHeader: true
+            storage:
+                type: local
+                file_path: /tmp/locale.xlsx
+            linesPerFile: 10000
+    xlsx_footwear_group_type_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_group_type_export
+        label:     XLSX footwear group type export
+        type:      export
+        configuration:
+            withHeader: true
+            storage:
+                type: local
+                file_path: /tmp/group_type.xlsx
+            linesPerFile: 10000
+    xlsx_footwear_attribute_group_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_attribute_group_export
+        label:     XLSX footwear attribute group export
+        type:      export
+        configuration:
+            withHeader: true
+            storage:
+                type: local
+                file_path: /tmp/attribute_group.xlsx
+            linesPerFile: 10000
+    csv_product_grid_context_quick_export:
+        connector: Akeneo CSV Connector
+        alias: csv_product_grid_context_quick_export
+        label: CSV product quick export grid context
+        type: quick_export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            filePathProduct:      /tmp/1_products_export_grid_context_%locale%_%scope%.csv
+            filePathProductModel: /tmp/2_product_models_export_grid_context_%locale%_%scope%.csv
+    xlsx_product_grid_context_quick_export:
+        connector: Akeneo XLSX Connector
+        alias: xlsx_product_grid_context_quick_export
+        label: XLSX product quick export grid context
+        type: quick_export
+        configuration:
+            withHeader: true
+            linesPerFile: 10000
+            filePathProduct:      /tmp/1_products_export_grid_context_%locale%_%scope%.xlsx
+            filePathProductModel: /tmp/2_product_models_export_grid_context_%locale%_%scope%.xlsx
+    compute_completeness_of_products_family:
+        connector: internal
+        alias:     compute_completeness_of_products_family
+        label:     compute completeness of products family
+        type:      compute_completeness_of_products_family
+    compute_family_variant_structure_changes:
+        connector: internal
+        alias:     compute_family_variant_structure_changes
+        label:     Compute variant structure changes
+        type:      compute_family_variant_structure_changes
+    remove_non_existing_product_values:
+        connector: internal
+        alias:     remove_non_existing_product_values
+        label:     Remove non existing product values
+        type:      remove_non_existing_product_values
+    clean_removed_attribute_job:
+        connector: internal
+        alias: clean_removed_attribute_job
+        label: Cleaning removed attribute values
+        type: clean_removed_attribute_job
+    remove_completeness_for_channel_and_locale:
+        connector: internal
+        alias:     remove_completeness_for_channel_and_locale
+        label:     Remove completeness for channel and locale
+        type:      remove_completeness_for_channel_and_locale

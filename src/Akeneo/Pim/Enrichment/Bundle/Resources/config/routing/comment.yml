@@ -1,0 +1,6 @@
+pim_comment_comment_delete:
+    path: /comment/{id}/remove
+    defaults: { _controller: pim_comment.controller.comment:deleteAction }
+    requirements:
+        id: \d+
+    methods: [DELETE]

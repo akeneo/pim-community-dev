@@ -1,0 +1,57 @@
+### External Api
+external_api_attribute:
+    resource: '@AkeneoPimStructureBundle/Resources/config/routing/external_api/attribute.yml'
+    prefix: /api/rest/v1
+
+external_api_attribute_group:
+    resource: '@AkeneoPimStructureBundle/Resources/config/routing/external_api/attribute_group.yml'
+    prefix: /api/rest/v1
+
+external_api_family:
+    resource: '@AkeneoPimStructureBundle/Resources/config/routing/external_api/family.yml'
+    prefix: /api/rest/v1
+
+association_type:
+    resource: '@AkeneoPimStructureBundle/Resources/config/routing/external_api/association_type.yml'
+    prefix: /api/rest/v1
+
+### Internal API
+internal_api_attribute:
+    resource: '@AkeneoPimStructureBundle/Resources/config/routing/internal_api/attribute.yml'
+    prefix: /rest/attribute
+
+internal_api_attribute_group:
+    resource: '@AkeneoPimStructureBundle/Resources/config/routing/internal_api/attribute_group.yml'
+    prefix: /rest/attribute-group
+
+internal_api_family:
+    resource: '@AkeneoPimStructureBundle/Resources/config/routing/internal_api/family.yml'
+    prefix: /configuration/rest/family
+
+internal_api_family_variant:
+    resource: '@AkeneoPimStructureBundle/Resources/config/routing/internal_api/family_variant.yml'
+    prefix: /configuration/rest/family-variant
+
+internal_api_attribute_option:
+    resource: '@AkeneoPimStructureBundle/Resources/config/routing/internal_api/attribute_option.yml'
+    prefix: /configuration/attribute-option
+
+internal_api_attribute_type:
+    resource: '@AkeneoPimStructureBundle/Resources/config/routing/internal_api/attribute_type.yml'
+    prefix: /rest/attribute-type
+
+association:
+    resource: '@AkeneoPimStructureBundle/Resources/config/routing/internal_api/associationtype.yml'
+    prefix: /configuration/rest/association-type
+
+reference_data_configuration:
+    resource: '@AkeneoPimStructureBundle/Resources/config/routing/internal_api/reference_data_configuration.yml'
+    prefix: /rest/reference-data-configuration
+
+internal_api_grouptype:
+    resource: '@AkeneoPimStructureBundle/Resources/config/routing/internal_api/grouptype.yml'
+    prefix: /configuration/rest/group-type
+
+### Front routes
+front_routes:
+    resource: '@AkeneoPimStructureBundle/Resources/config/routing/front.yml'

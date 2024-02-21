@@ -1,0 +1,134 @@
+pim_user:
+  user:
+    title: Usuário
+    fields:
+      name_prefix: Prefixo do nome
+      email: E-mail
+      username: Nome de usuário
+      first_name: Primeiro nome
+      middle_name: Nome do meio
+      last_name: Sobrenome
+      name_suffix: Sufixo do nome
+      phone: Telefone
+      date_of_birth: Data de nascimento
+      avatar: Avatar
+      timezone: Fuso horário
+      roles: Papeis
+      groups: Grupos
+      password: Senha
+      password_again: Redigite a senha
+      product_grid_filters: Filtros da grade de produtos
+      catalog_locale: Catalogar localidade
+      catalog_scope: Catalogar escopo
+      default_tree: Árvore Padrão
+      current_password: Senha atual
+      new_password: Nova senha
+      new_password_again: Nova senha (repetir)
+      default_grid_view:
+        none: Nenhum
+      default_product_grid_view:
+        label: Exibição padrão da grade de produtos
+      ui_locale: Linguagem do UI
+      last_logged_in: Último acesso em
+      login_count: Contagem de acessos
+      user_salt: Sal de usuário
+      created: Criado
+      updated: Atualizado
+      status: Status
+      capabilities: Capacidades
+      has_role: Tem função
+      has_group: Possui grupo
+      active: Ativo
+      inactive: Inativo
+    tabs:
+      general:
+        title: Geral
+        basic_information: Informações básicas
+        contact_information: Informações para Contato
+      additional:
+        title: Adicional
+      additional_data:
+        title: Dados adicionais
+      interfaces:
+        title: Interfaces
+      group_and_role.title: Grupos e Regras
+      password.title: Senha
+      business_unit.title: Unidades de Negócio
+      email_synchronization.title: Configuração da Sincronização de emails
+    removed_user: Usuário removido
+    login:
+      username_or_email: Usuário ou Email
+      remember_me: Lembrar neste computador
+      password_forgotten: Esqueceu a senha?
+      forgot_password: Esqueci a senha
+      request: Requisição
+      password_reset: Redefinição de Senha
+      reset: Resetar
+      password_reset_email_sent: Um e-mail foi enviado para o usuário. Contém um link para redefinir a senha.
+  group:
+    tab:
+      general.title: Geral
+      users.title: Usuários
+  roles:
+    title: Função
+    tab:
+      general: Geral
+      action: Permissões
+      users: Usuários
+  controller:
+    group:
+      message:
+        saved: "Grupo salvo"
+    role:
+      message:
+        saved: "Função salva"
+    user:
+      message:
+        saved: "Usuário salvo"
+pim_datagrid:
+  columns:
+    user:
+      createdAt: "Criado em"
+      updatedAt: "Atualizado em"
+    roles:
+      label: "Rótulo"
+    groups:
+      name: "Nome"
+confirmation:
+  remove:
+    role: Tem certeza de que deseja excluir esta função?
+    user: Tem certeza de que deseja exvluir este usuário?
+flash:
+  role:
+    removed: Função removida com sucesso
+  user:
+    removed: Usuário removido com sucesso
+oro_security:
+  acl_group:
+    user: Usuários
+    role: Papeis
+    group: Grupo de usuários
+  acl:
+    user:
+      view: Lista de Usuários
+      create: Criar um usuário
+      edit: Editar usuários
+      delete: Remover um usuário
+    role:
+      view: Listar papéis
+      create: Criar papel
+      edit: Editar papéis
+      delete: Remover um papél
+    group:
+      view: Lista de Grupo de usuários
+      create: Criar um grupo de usuário
+      edit: Editar Grupos de Usuários
+      delete: Remover um grupo de usuário
+#Security
+(default): Permissão padrão nas entidades
+VIEW: Visualizar
+CREATE: Criar
+EDIT: Editar
+DELETE: Deletar
+ASSIGN: Atribuir
+SHARE: Compartilhar

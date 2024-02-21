@@ -1,0 +1,103 @@
+Item deleted: Item verwijderd
+Are you sure you want to delete this item?: Weet u zeker dat u dit item wilt verwijderen?
+Delete Error: Fout bij verwijderen
+Are you sure you want to do remove selected items?: Weet u zeker dat u de geselecteerde items wilt verwijderen?
+Selected items were removed.: Geselecteerde items zijn verwijderd.
+Selected items were not removed.: Geselecteerde items zijn niet verwijderd.
+Please, select items to remove.: Selecteer de items die u wilt verwijderen.
+Cannot delete item.: Kan item niet verwijderen.
+Refresh Confirmation: Bevestiging vernieuwen
+Your local changes will be lost. Are you sure you want to refresh grid?: Uw lokale wijzigingen zullen verloren gaan. Weet u zeker dat u het raster wilt herstellen?
+Reset Confirmation: Bevestiging resetten
+Your local changes will be lost. Are you sure you want to reset grid?: Uw lokale wijzigingen zullen verloren gaan. Weet u zeker dat u het raster wilt herstellen?
+Confirmation: Bevestiging
+edit: bewerken
+copy: kopiëren
+remove: verwijderen
+Status: Status
+All: Alle
+Per page: Per pagina
+Mass Action Confirmation: Massa-actie-bevestiging
+Mass action performed.: Massa-actie uitgevoerd.
+Mass action is not performed.: Massa-actie is niet uitgevoerd.
+Please, select items to perform mass action.: Selecteer items om massale actie uit te voeren.
+Execution Confirmation: Bevestiging van de uitvoering
+Are you sure you want to do this?: Weet u zeker dat u dit wilt doen?
+Action performed.: Actie uitgevoerd.
+Action is not performed.: Actie is niet uitgevoerd.
+Please, select item to perform action.: Selecteer item om actie uit te voeren.
+View per page: Bekijk per pagina
+Enabled: Ingeschakeld
+Disabled: Uitgeschakeld
+not_available: Niet beschikbaar
+Yes: true
+No: false
+oro.datagrid.entityHint: Entiteit
+oro.datagrid.noentities: Geen records gevonden
+oro.datagrid.nocolumns: Geen kolommen geconfigureerd voor dit raster
+oro.datagrid.pagination.label: "Pagina"
+oro.datagrid.pagination.totalPages: "van {{ totalPages }}"
+oro.datagrid.pagination.totalRecords: "{{ totalRecords }} records"
+oro.datagrid.action.reset: "Resetten"
+oro.datagrid.action.refresh: "Vernieuwen"
+oro_datagrid.select.all: "Alle"
+oro_datagrid.select.visible: "Alle zichtbare"
+oro_datagrid.select.none: "Geen"
+oro_datagrid.select.select: "Selecteer"
+pim.grid.ajax_choice_filter.label_empty: is leeg
+pim.grid.ajax_choice_filter.label_not_empty: is niet leeg
+pim:
+  grid:
+    choice_filter:
+      label_contains: bevat
+      label_does_not_contain: bevat geen
+      label_equal: is gelijk aan
+      label_start_with: begint met
+      label_empty: is leeg
+      label_not_empty: is niet leeg
+      label_in_list: in lijst
+    price_filter:
+      label: Valuta
+    category_filter:
+      done: Gedaan
+Available Columns: Beschikbare kolommen
+Displayed Columns: Geselecteerde kolommen
+datagrid_view.columns.min_message: U moet ten minste één dataraster kolom selecteren om weer te geven
+pim_datagrid:
+  column_configurator:
+    label: Kolommen
+    all_groups: Alle groepen
+    search: Zoeken
+    clear: Opruimen
+    displayed_columns: Geselecteerde kolommen
+    apply: Toepassen
+    cancel: Annuleren
+    remove_column: Verwijderen
+    attribute_groups: Attribuutgroepen
+  mass_action:
+    delete:
+      confirm_title: Verwijderen bevestigen
+      confirm_ok: OK
+      empty_selection: Geen product geselecteerd
+pim.grid.mass_action.quick_export.title: Snelle Export
+pim.grid.mass_action.quick_export.launched: Snelle export is gelanceerd
+pim.grid.action.launch.title: Starten
+pim.grid.action.show.title: Toon
+Please select view: Selecteer weergave
+Loading...: Laden...
+View: Bekijken
+from: van
+to: tot
+grid.view_selector:
+  default_view: Standaardweergave
+  save_changes: Deze weergave opslaan
+  remove: Deze weergave verwijderen
+  create_view: Weergave maken
+  create: Aanmaken
+  search: Zoeken
+  views: Weergaves
+  placeholder: Naam van nieuwe weergave
+  choose_label: Kies een label voor de weergave
+  confirmation:
+    delete: Verwijderen bevestigen
+grid.view_selector.flash.updated: Datarasterweergave succesvol bijgewerkt

@@ -1,0 +1,2 @@
+akeneo_batch.job_instance.unknown_job_definition: Falha ao criar um %job_type% com uma tarefa definida desconhecida
+akeneo.job_automation.validation.import_should_have_storage: Nenhum armazenamento foi configurado nas Propriedades do Perfil de importação.

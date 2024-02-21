@@ -1,0 +1,110 @@
+<?php
+
+namespace Akeneo\Tool\Component\Connector\Writer\File;
+
+use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithQualityScoresInterface;
+use Akeneo\Tool\Component\Connector\ArrayConverter\FieldSplitter;
+
+/**
+ * Reorder columns before export
+ *
+ * @author    Philippe Mossière <philippe.mossiere@akeneo.com>
+ * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+class DefaultColumnSorter implements ColumnSorterInterface
+{
+    /** @var FieldSplitter */
+    protected $fieldSplitter;
+
+    /** @var array */
+    protected $firstDefaultColumns;
+
+    /**
+     * @param FieldSplitter $fieldSplitter
+     * @param array $firstDefaultColumns
+     */
+    public function __construct(FieldSplitter $fieldSplitter, array $firstDefaultColumns)
+    {
+        $this->fieldSplitter = $fieldSplitter;
+        $this->firstDefaultColumns = $firstDefaultColumns;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function sort(array $unsortedColumns, array $context = [])
+    {
+        $mainColumns = [];
+        $trailingColumns = [];
+        $additionalColumns = [];
+
+        foreach ($unsortedColumns as $column) {
+            if ($this->isInOrderConf($column)) {
+                $mainColumns[] = $column;
+            } elseif ($this->isTrailingColumn($column)) {
+                $trailingColumns[] = $column;
+            } else {
+                $additionalColumns[] = $column;
+            }
+        }
+
+        usort($mainColumns, [$this, 'compare']);
+        natcasesort($additionalColumns);
+        natcasesort($trailingColumns);
+
+        return array_merge($mainColumns, $additionalColumns, $trailingColumns);
+    }
+
+    /**
+     * @param string $column
+     *
+     * @return bool
+     */
+    protected function isInOrderConf($column)
+    {
+        $splitedColumn = $this->fieldSplitter->splitFieldName($column);
+        $column = is_array($splitedColumn) ? $splitedColumn[0] : $column;
+
+        return in_array($column, $this->getFirstDefaultColumns());
+    }
+
+    /**
+     * @param string $a
+     * @param string $b
+     *
+     * @return int
+     */
+    protected function compare($a, $b)
+    {
+        $a = $this->getColumnCode($a);
+        $b = $this->getColumnCode($b);
+
+        return array_search($a, $this->getFirstDefaultColumns()) - array_search($b, $this->getFirstDefaultColumns());
+    }
+
+    /**
+     * @param string $column
+     *
+     * @return string
+     */
+    protected function getColumnCode($column)
+    {
+        $splitedColumn = $this->fieldSplitter->splitFieldName($column);
+
+        return is_array($splitedColumn) ? $splitedColumn[0] : $column;
+    }
+
+    /**
+     * @return string[]
+     */
+    protected function getFirstDefaultColumns(): array
+    {
+        return $this->firstDefaultColumns;
+    }
+
+    private function isTrailingColumn(string $column): bool
+    {
+        return 0 === strpos($column, sprintf('%s-', GetProductsWithQualityScoresInterface::FLAT_FIELD_PREFIX));
+    }
+}

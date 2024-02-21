@@ -1,0 +1,45 @@
+pim_api:
+  acl:
+    rights: Права доступа к Web API
+    attribute:
+      edit: Создание и изменение атрибутов
+      list: Список атрибутов
+    attribute_option:
+      edit: Создать и обновить опции атрибутов
+      list: Список опций атрибута
+    attribute_group:
+      edit: Создать и обновить группы атрибутов
+      list: Список групп атрибутов
+    category:
+      edit: Создать и обновить категории
+      list: Список категорий
+    family:
+      edit: Создать и обновить семейства
+      list: Список семейств
+    family_variant:
+      edit: Создать и обновить варианты семейств
+      list: Список вариантов семейства
+    channel:
+      edit: Создать и обновить каналы
+      list: Список каналов
+    locale.list: Список локалей
+    currency.list: Список валют
+    association_type:
+      edit: Создать и обновить типы ассоциаций
+      list: Список типов ассоциаций
+  acl_group:
+    overall_access: Общий доступ к Web API
+    attribute: Атрибуты
+    attribute_option: Опции атрибутов
+    attribute_group: Группы атрибутов
+    category: Категории
+    family: Семейства
+    family_variant: Варианты семейств
+    channel: Каналы
+    locale: Локали
+    currency: Валюты
+    association_type: Типы ассоциаций
+pim_user:
+  roles:
+    tab:
+      api: Права доступа к Web API

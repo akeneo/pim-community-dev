@@ -1,0 +1,22 @@
+{% if is_last_patch_enabled() %}
+    <div class="AknFooter-item last-version" style="display: none;"><span>{{ 'pim_analytics.new_patch_available'|trans }}:</span><span></span></div>
+
+    <script type="text/javascript" nonce="{{ js_nonce() }}">
+        require(
+            ['jquery', 'pim/patch-fetcher'],
+            function ($, Fetcher) {
+                $(function() {
+                    var updateServerUrl = '{{ get_update_server_url() }}';
+                    Fetcher.fetch(updateServerUrl).then(function (patch) {
+                        var currentVersionName = $('.current-version:first span:last').text();
+                        var currentVersion = currentVersionName.split(' ')[1];
+                        if (patch !== null && currentVersion < patch) {
+                            $('.last-version span:last').text(patch);
+                            $('.last-version').show();
+                        }
+                    });
+                });
+            }
+        );
+    </script>
+{% endif %}

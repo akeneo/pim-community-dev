@@ -1,0 +1,91 @@
+services:
+    ### Channel
+    pim_catalog.repository.locale:
+        class: 'Akeneo\Test\Acceptance\Locale\InMemoryLocaleRepository'
+
+    pim_catalog.repository.channel:
+        class: 'Akeneo\Test\Acceptance\Channel\InMemoryChannelRepository'
+
+    pim_catalog.repository.currency:
+        class: 'Akeneo\Test\Acceptance\Currency\InMemoryCurrencyRepository'
+
+    ### User
+    pim_user.repository.role:
+        class: 'Akeneo\Test\Acceptance\User\InMemoryRoleRepository'
+
+    pim_user.repository.user:
+        class: 'Akeneo\Test\Acceptance\User\InMemoryUserRepository'
+
+    pim_user.repository.group:
+        class: 'Akeneo\Test\Acceptance\User\InMemoryGroupRepository'
+
+    ### Catalog
+    pim_catalog.repository.group:
+        class: 'Akeneo\Test\Acceptance\Catalog\InMemoryGroupRepository'
+
+    pim_catalog.repository.category:
+        class: 'Akeneo\Test\Acceptance\Category\InMemoryCategoryRepository'
+
+    pim_catalog.repository.group_type:
+        class: 'Akeneo\Test\Acceptance\Catalog\InMemoryGroupTypeRepository'
+
+    pim_catalog.repository.product:
+        class: 'Akeneo\Test\Acceptance\Product\InMemoryProductRepository'
+        # TODO CPM-1207: here we use the in-memory repository as product saver, a better solution would be to either:
+        # - implement an in-memory product saver
+        # - or even better, inject a repository in the saver instead of the ORM (a "real" repository, with save method),
+        # in order to decouple from the persistence layer
+        decorates: pim_catalog.saver.product
+
+    pim_catalog.repository.product_unique_data:
+        class: 'AkeneoTest\Acceptance\Product\InMemoryProductUniqueDataRepository'
+        arguments:
+            - '@pim_catalog.repository.product'
+
+    pim_catalog.repository.product_model:
+        class: 'Akeneo\Test\Acceptance\ProductModel\InMemoryProductModelRepository'
+
+    pim_catalog.repository.association_type:
+        class: 'Akeneo\Test\Acceptance\AssociationType\InMemoryAssociationTypeRepository'
+
+    akeneo_measure.persistence.measurement_family_repository:
+        class: 'Akeneo\Test\Acceptance\MeasurementFamily\InMemoryMeasurementFamilyRepository'
+
+    akeneo_measurement.service_api.get_unit:
+        class: 'Akeneo\Test\Acceptance\MeasurementFamily\InMemoryGetUnit'
+        arguments:
+            - '@akeneo_measure.persistence.measurement_family_repository'
+
+    ### Structure
+    pim_catalog.repository.family:
+        class: 'Akeneo\Test\Acceptance\Family\InMemoryFamilyRepository'
+
+    pim_catalog.repository.family_variant:
+        class: 'Akeneo\Test\Acceptance\FamilyVariant\InMemoryFamilyVariantRepository'
+
+    pim_catalog.repository.attribute:
+        class: 'Akeneo\Test\Acceptance\Attribute\InMemoryAttributeRepository'
+
+    pim_catalog.repository.attribute_option:
+        class: 'Akeneo\Test\Acceptance\AttributeOption\InMemoryAttributeOptionRepository'
+
+    pim_catalog.repository.attribute_group:
+        class: 'Akeneo\Test\Acceptance\AttributeGroup\InMemoryAttributeGroupRepository'
+
+    doctrine.orm.validator.unique:
+        class: AkeneoTest\Acceptance\Common\InMemoryUniqueEntityValidator
+        arguments:
+            - '@property_accessor'
+            -
+                'Akeneo\Pim\Structure\Component\Model\Attribute': '@pim_catalog.repository.attribute'
+                'Akeneo\Pim\Structure\Component\Model\AttributeGroup': '@pim_catalog.repository.attribute_group'
+                'Akeneo\Channel\Infrastructure\Component\Model\Channel': '@pim_catalog.repository.channel'
+                'Akeneo\Channel\Infrastructure\Component\Model\Locale': '@pim_catalog.repository.locale'
+                'Akeneo\Channel\Infrastructure\Component\Model\Currency': '@pim_catalog.repository.currency'
+        tags:
+            - { name: validator.constraint_validator, alias: doctrine.orm.validator.unique }
+
+    Akeneo\Category\Domain\Query\GetCategoryInterface:
+        class: Akeneo\Category\Infrastructure\Storage\InMemory\GetCategoryInMemory
+        arguments:
+            - '@pim_catalog.repository.category'

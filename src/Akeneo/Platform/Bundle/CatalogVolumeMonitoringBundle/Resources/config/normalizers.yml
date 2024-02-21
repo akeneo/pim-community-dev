@@ -1,0 +1,19 @@
+parameters:
+    pim_volume_monitoring.volume.normalizer.average_max_volumes.class: Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Normalizer\AverageMaxVolumesNormalizer
+    pim_volume_monitoring.volume.normalizer.count_volume.class: Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Normalizer\CountVolumeNormalizer
+    pim_volume_monitoring.volume.normalizer.volumes.class: Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Normalizer\Volumes
+
+services:
+    pim_volume_monitoring.volume.normalizer.average_max_volumes:
+        class: '%pim_volume_monitoring.volume.normalizer.average_max_volumes.class%'
+
+    pim_volume_monitoring.volume.normalizer.count_volume:
+        class: '%pim_volume_monitoring.volume.normalizer.count_volume.class%'
+
+    pim_volume_monitoring.volume.normalizer.volumes:
+        class: '%pim_volume_monitoring.volume.normalizer.volumes.class%'
+        arguments:
+            - '@pim_volume_monitoring.volume.normalizer.count_volume'
+            - '@pim_volume_monitoring.volume.normalizer.average_max_volumes'
+            - '@feature_flags'
+

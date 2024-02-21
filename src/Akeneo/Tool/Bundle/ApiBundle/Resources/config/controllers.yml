@@ -1,0 +1,17 @@
+parameters:
+    pim_api.controller.token.class: Akeneo\Tool\Bundle\ApiBundle\Controller\TokenController
+    pim_api.controller.root_endpoint.class: Akeneo\Tool\Bundle\ApiBundle\Controller\RootEndpointController
+
+services:
+    pim_api.controller.token:
+        public: true
+        class: '%pim_api.controller.token.class%'
+        arguments:
+            - '@fos_oauth_server.server'
+
+    pim_api.controller.root_endpoint:
+        public: true
+        class: '%pim_api.controller.root_endpoint.class%'
+        arguments:
+            - '@router'
+            - '@feature_flags'

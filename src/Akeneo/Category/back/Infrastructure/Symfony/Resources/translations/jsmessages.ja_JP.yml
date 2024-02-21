@@ -1,0 +1,145 @@
+pim_title:
+  pim_category_template_edit: カテゴリテンプレートを編集
+akeneo.category:
+  unknown_error:
+    title: 申し訳ありません、不明なエラーが発生しました。
+    message: ページをリロードして再試行してください。
+  tree_list:
+    column:
+      category_templates: カテゴリテンプレート
+  attributes: 属性
+  edition_form:
+    error:
+      unhandled_attribute_type: 属性タイプ "{{ type }}" の属性フィールドビルダーが見つかりませんでした
+    template:
+      title: テンプレート
+      no_attribute_title: このテンプレートには属性がありません
+      no_attribute_instructions: このカテゴリに関連付けられたテンプレートは空です。カテゴリツリーページからこのテンプレートに属性を追加できます。
+      fetching_failed: テンプレートを取得中にエラーが発生しました
+    unsaved_changes: このページから移動するとカテゴリに対する変更が失われます。
+  tree:
+    create: ツリーを作成
+    delete: ツリーを削除
+  template:
+    learn_more: カテゴリテンプレートの詳細
+    create: テンプレートを作成
+    create_confirmation_modal:
+      title: カテゴリテンプレートの新規作成
+      helper: このツリーのすべてのカテゴリに属性を定義して充実を有効化するカテゴリテンプレートを作成します。
+      category_tree: カテゴリツリー
+      link: カテゴリテンプレートの詳細
+    edit: テンプレートを編集
+    notification_success: カテゴリテンプレートを正常に作成しました
+    notification_error: カテゴリテンプレートを作成できませんでした
+    not_found: このカテゴリのアクティブなテンプレートはありません。
+    properties:
+      general_properties: プロパティ全般
+      label_translations_in_ui_locales: UIロケールのラベル翻訳
+    attribute:
+      description_title: 説明の設定
+      type:
+        text: テキスト
+        textarea: テキストエリア
+        richtext: リッチテキスト
+        image: 画像
+      delete_button: 属性を削除
+      settings:
+        title: 設定
+        options:
+          title: オプション
+          value_per_channel: チャンネルごとの値
+          value_per_locale: ロケールごとの値
+          rich_text: リッチテキストエディタ
+        translations:
+          title: ラベルの翻訳
+        error_message: ページに無効な値があります。
+        unsaved_changes: 保存していない変更内容があります。このページから移動しますか？
+    add_attribute:
+      no_attribute_title: 最初の属性を作成する
+      no_attribute_instructions: このテンプレートにテキスト、テキストエリア、または画像の属性を追加して、カテゴリに関連付けるコンテンツを定義します。
+      add_button: 属性を追加
+      create_button: 属性を作成
+      confirmation_modal:
+        section_title: 属性の追加
+        title: カテゴリ属性の新規作成
+        head_helper: カテゴリ属性が1つのテンプレートに添付されています。他のテンプレートではアクセスできません。
+        tail_helper: 属性が作成されると、チャンネルあたりの値とロケールあたりの値は変更できません。
+        link: カテゴリテンプレートの詳細。
+        create: 作成
+        input:
+          label: ラベル
+          code: コード
+          type:
+            label: 属性タイプ
+            empty: 使用可能な属性タイプはありません
+            option_title:
+              text: テキスト
+              textarea: テキストエリア
+              image: 画像
+      success:
+        notification: 属性を作成しました
+      error:
+        failed: テンプレート属性の追加に失敗しました
+        limit_reached:
+          title: 50個を超える属性は追加できません
+          message: カテゴリテンプレートの属性は、テンプレートあたり50個に制限されています。
+    delete_attribute:
+      delete: カテゴリ属性を削除
+      confirmation_modal:
+        title: このカテゴリ属性を削除する
+        message: 本当に {{ attribute }} という名前のカテゴリ属性を削除しますか？
+        helper: この属性を削除すると、関連するカテゴリの属性と値が完全に削除されます。
+      notification_success:
+        title: '{{ attribute }} 属性が削除されました'
+    deactivate:
+      deactivate_template: テンプレートを削除
+      confirmation_modal:
+        title: カテゴリテンプレートを削除
+        message: '{{ template }}と言う名前のカテゴリテンプレートを本当に削除しますか？'
+        helper: このテンプレートを削除すると、関連するカテゴリの属性と値が永久に削除されます。
+        deactivate: 削除
+      notification_success:
+        title: '{{ template }}テンプレートが削除されました'
+        message: '{{ template }}が削除されました。関連するカテゴリのコンテンツが削除されました。'
+    auto-save:
+      saved: 保存しました
+      saving: 保存中
+      editing: 編集中
+      errors: エラーは保存されませんでした
+    initialize:
+      title: カテゴリ属性の追加
+      message: テキスト、テキストエリア、または画像の属性を追加して、カテゴリのコンテンツを定義します。
+      choice_message: ニーズに合わせて最初の属性を作成するか、推奨される13個の属性セットをロードします。
+      button:
+        load: 属性のセットをロード
+        create: 最初の属性を作成
+    load_attribute_set:
+      section_title: 属性のセットのロード
+      title: 推奨される属性セットのロード
+      description: 推奨される属性セットをロードすると、充実化されたカテゴリの構成を簡単に開始できます。
+      content_description: 'このセットには13個の属性が含まれています:'
+      content:
+        description_attributes: カテゴリの長い説明と短い説明に使用する2つのテキストエリア属性
+        url_attributes: URL情報に使用する1つのテキスト属性
+        image_attributes: 画像と代替テキスト情報に使用する3つの画像属性と3つのテキスト属性
+        seo_attributes: SEO情報に使用する2つのテキスト属性と2つのテキストエリア属性
+      confirmation_message: この属性セットをロードしますか？
+      button:
+        load: 属性のセットをロード
+      notification:
+        success: 属性を正常に作成しました
+  template_list:
+    columns:
+      header: ラベル
+      code: コード
+      type: タイプ
+  tag:
+    new: 新規
+  discover_enriched_categories_information:
+    title: 充実化されたカテゴリを知る
+    content:
+      enrich_attribute_values: カテゴリツリーのレベルをテキスト、テキストエリア、および画像の属性で充実化
+      customizable_templates: カスタマイズ可能なテンプレートで求めている商品エクスペリエンスを提供
+    survey_link_label: あなたのご意見をお聞かせください
+    learn_more_link_label: 充実されたカテゴリについて詳しく知る
+  other_actions: その他の操作

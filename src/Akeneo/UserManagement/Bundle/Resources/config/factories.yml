@@ -1,0 +1,25 @@
+services:
+    pim_user.factory.user:
+        class: 'Akeneo\UserManagement\Component\Factory\UserFactory'
+        arguments:
+            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.category'
+            - '@pim_user.repository.group'
+            - '@pim_user.repository.role'
+            - 'Akeneo\UserManagement\Component\Model\User'
+
+    pim_user.factory.group:
+        class: '%akeneo_storage_utils.factory.simple.class%'
+        arguments:
+            - '%pim_user.entity.group.class%'
+
+    pim_user.factory.role:
+        class: '%akeneo_storage_utils.factory.simple.class%'
+        arguments:
+            - '%pim_user.entity.role.class%'
+
+    pim_user.factory.role_with_permissions:
+        class: 'Akeneo\UserManagement\Component\Factory\RoleWithPermissionsFactory'
+        arguments:
+            - '@pim_user.factory.role'

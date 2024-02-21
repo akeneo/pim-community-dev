@@ -1,0 +1,2 @@
+services:
+    Akeneo\Tool\Bundle\MessengerBundle\Registry\ProcessMessageHandlerRegistry: ~

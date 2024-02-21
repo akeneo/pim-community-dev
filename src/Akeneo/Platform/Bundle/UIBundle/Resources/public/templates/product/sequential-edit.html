@@ -1,0 +1,20 @@
+<% if (previousObject) { %>
+    <span class="AknSequentialEdit-previous">
+        <span class="previous" data-id="<%- previousObject.id %>" data-type="<%- previousObject.type %>">
+            <%- previousObject.shortLabel %>
+        </span>
+    </span>
+<% } %>
+<span class="AknSequentialEdit-progress AknProgress--info AknProgress progress progress-bar">
+    <div class="AknProgress-bar bar" style="width: <%- ratio %>%;">
+    <% if (ratio < 30) { %></div>&nbsp;&nbsp;<% } %>
+    <%- currentIndex %> / <%- objectCount %> <%- _.__('pim_enrich.entity.product.plural_label') %>
+    <% if (ratio >= 30) { %></div><% } %>
+</span>
+<% if (nextObject) { %>
+    <span class="AknSequentialEdit-next">
+        <span class="next" data-id="<%- nextObject.id %>" data-type="<%- nextObject.type %>">
+            <%- nextObject.shortLabel %>
+        </span>
+    </span>
+<% } %>

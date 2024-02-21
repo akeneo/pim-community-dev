@@ -1,0 +1,36 @@
+extensions:
+    pim-mass-product-edit-configure-add-to-existing-product-model-family:
+        module: pim/mass-edit-form/product/mass-edit-field
+        parent: pim-mass-product-edit-configure-add-to-existing-product-model
+        targetZone: fields
+        position: 20
+        config:
+            fieldName: family
+            required: true
+            label: pim_enrich.entity.family.uppercase_label
+            choiceRoute: pim_enrich_family_index_get_variants
+            placeholder: pim_enrich.entity.product.module.create.choose_family
+
+    pim-mass-product-edit-configure-add-to-existing-product-model-variant:
+        module: pim/mass-edit-form/product/variant-field
+        parent: pim-mass-product-edit-configure-add-to-existing-product-model
+        targetZone: fields
+        position: 30
+        config:
+            fieldName: family_variant
+            label: pim_enrich.entity.product_model.property.family_variant
+            required: true
+            loadUrl: pim_enrich_family_variant_rest_index
+            placeholder: pim_enrich.entity.product.module.create.choose_family_variant
+
+    pim-mass-product-edit-configure-add-to-existing-product-model-product-model:
+        module: pim/mass-edit-form/product/product-model-field
+        parent: pim-mass-product-edit-configure-add-to-existing-product-model
+        targetZone: fields
+        position: 40
+        config:
+            fieldName: product_model
+            label: pim_enrich.entity.product_model.uppercase_label
+            required: true
+            choiceRoute: pim_enrich_product_model_family_variant_leaf
+            placeholder: pim_enrich.entity.product_model.choose

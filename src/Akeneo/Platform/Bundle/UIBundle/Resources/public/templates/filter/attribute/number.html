@@ -1,0 +1,11 @@
+<select class="select2 operator" <%- editable ? '' : 'disabled' %> name="filter-operator">
+    <% _.each(operators, function (operatorChoiceLabel, operatorChoice) { %>
+        <option value="<%- operatorChoice %>"<%- operator === operatorChoice ? ' selected' : '' %>>
+            <%- operatorChoiceLabel %>
+        </option>
+    <% }); %>
+</select>
+
+<% if (!_.contains(['EMPTY', 'NOT EMPTY'], operator)) { %>
+    <input type="text" name="filter-value" class="AknTextField AknTextField--noLeftRadius value" value="<%- value %>" <%- editable ? '' : 'disabled' %>/>
+<% } %>

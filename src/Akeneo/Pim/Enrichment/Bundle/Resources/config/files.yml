@@ -1,0 +1,17 @@
+parameters:
+    pim_enrich.provider.default_image.images:
+        pim_enrich_file_document: { path: '%kernel.project_dir%/public/bundles/pimui/img/text_default.png', mime_type: image/png, extension: png }
+        pim_enrich_file_image:    { path: '%kernel.project_dir%/public/bundles/pimui/img/image_default.png', mime_type: image/png, extension: png }
+        pim_enrich_file_video:    { path: '%kernel.project_dir%/public/bundles/pimui/img/image_default.png', mime_type: image/png, extension: png }
+        pim_enrich_file_misc:     { path: '%kernel.project_dir%/public/bundles/pimui/img/image_default.png', mime_type: image/png, extension: png }
+
+services:
+    pim_enrich.guesser.file_type:
+        class: 'Akeneo\Pim\Enrichment\Bundle\File\FileTypeGuesser'
+
+    pim_enrich.provider.default_image:
+        class: 'Akeneo\Pim\Enrichment\Bundle\File\DefaultImageProvider'
+        arguments:
+            - '@liip_imagine.filter.manager'
+            - '@liip_imagine.cache.manager'
+            - '%pim_enrich.provider.default_image.images%'

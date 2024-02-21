@@ -1,0 +1,6 @@
+pim_user:
+  min_role: "역할을 {{ limit }}개 이상 선택해야 합니다.|역할을 {{ limit }}개 이상 선택해야 합니다."
+  password_match: "암호 필드가 일치해야 합니다."
+  role:
+    invalid_role_format: '역할은 ''ROLE_''로 시작하고 밑줄, 대시, 숫자 및 대문자로된 영문자만 포함해야 합니다.'
+  reserved_prefix_username: "사용자 이름 접두사 '{{ prefix }}'이(가) 예약되었습니다"

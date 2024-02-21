@@ -1,0 +1,7 @@
+services:
+    feature_flags:
+        public: true
+        class: 'Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\FilePersistedFeatureFlags'
+        arguments:
+            - '@akeneo.feature_flag.service.registry'
+            - '%kernel.cache_dir%/'

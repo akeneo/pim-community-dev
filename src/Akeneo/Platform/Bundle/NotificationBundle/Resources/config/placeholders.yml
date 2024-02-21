@@ -1,0 +1,9 @@
+placeholders:
+    user_menu:
+        items:
+            notifications:
+                order: 50
+
+items:
+    notifications:
+        template: '@PimNotification/Default/notifications.html.twig'

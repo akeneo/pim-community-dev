@@ -1,0 +1,21 @@
+services:
+    pim_volume_monitoring.volume.aggregation:
+        class: Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Service\VolumeAggregation
+        arguments:
+            - '@pim_volume_monitoring.volume.repository.aggregated_volume'
+            - !tagged pim_volume_monitoring.persistence.count_query_to_aggregate
+            - !tagged pim_volume_monitoring.persistence.average_max_query_to_aggregate
+            - '@logger'
+
+    pim_volume_monitoring.event_listener.install_database:
+        class: Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\EventListener\InstallDatabase
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Command\AggregateVolumesCommand:
+        arguments:
+            - '@pim_volume_monitoring.volume.aggregation'
+        tags:
+            - { name: console.command }

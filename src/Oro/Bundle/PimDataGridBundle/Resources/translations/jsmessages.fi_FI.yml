@@ -1,0 +1,71 @@
+pim_datagrid:
+  no_results_subtitle: "Yritä uudelleen uusilla hakuehdoilla."
+  select:
+    title: Valitse
+    all_visible: Kaikki näkyvillä olevat
+  delete_error:
+    title: Virhe poistossa
+  reset_confirmation:
+    title: Nollauksen vahvistus
+  refresh_confirmation:
+    title: Päivityksen vahvistus
+  column_configurator:
+    label: Sarakkeet
+    title: Muokkaa sarakkeita
+    all_groups: Kaikki ryhmät
+    search: Etsi
+    clear: Tyhjennä
+    displayed_columns: Valitut sarakkeet
+    remove_column: Poista
+    description: Valitse tiedot, jotka haluat näyttää sarakkeina
+    min_message: Valitse vähintään yksi näytettävä datagrid-sarake
+    system_group: Järjestelmä
+  view_selector:
+    create_view: Näkymän luominen
+    placeholder: Uuden näkymän nimi
+    choose_label: Valitse näkymälle nimike
+    remove: Poista näkymä
+    save_changes: Tallenna näkymä
+    default_view: Oletusnäkymä
+    select: Valitse näkymä
+    confirmation:
+      remove: Haluatko varmasti poistaa tämän näkymän?
+  display_selector:
+    label: Näytä
+    gallery: Galleria
+    list: Lista
+  mass_action:
+    delete:
+      empty_selection: Ei valittuja tuotteita
+      success_message: "{0} yksiköitä ei poistettu|{1} yksi kokonaisuus poistettiin|] 1, Inf [%count% yksiköt poistettiin"
+    default:
+      confirmation:
+        content: Oletko varma, että haluat tehdä tämän?
+      no_items: Voitko valita kohteet jossa suorittaa massatoiminnon.
+    quick_export:
+      title: Nopea vienti
+      success: Nopea vienti on käynnistetty
+  action:
+    default:
+      confirmation:
+        content: Oletko varma, että haluat tehdä tämän?
+      no_items: Valitse kohde toiminnon suorittamiseen.
+    show:
+      title: Näytä
+  filters:
+    common:
+      empty: on tyhjä
+      in_list: '-luettelosta'
+      contains: sisältää
+      does_not_contain: ei sisällä
+      equal: vastaa
+      start_with: alkaa
+      operator: Operaattori
+    price_filter:
+      label: Valuutta
+    metric_filter:
+      label: Yksikkö
+  cells:
+    credientials:
+      client_id: Asiakastunnus
+      secret: Asiakassalaisuus

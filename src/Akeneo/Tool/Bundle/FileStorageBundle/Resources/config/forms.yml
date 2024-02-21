@@ -1,0 +1,10 @@
+parameters:
+    akeneo_file_storage.form.type.file_info.class: Akeneo\Tool\Bundle\FileStorageBundle\Form\Type\FileInfoType
+
+services:
+    akeneo_file_storage.form.type.file_info:
+        class: '%akeneo_file_storage.form.type.file_info.class%'
+        arguments:
+            - '%akeneo_file_storage.model.file_info.class%'
+        tags:
+            - { name: form.type, alias: akeneo_file_storage_file_info }

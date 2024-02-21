@@ -1,0 +1,3 @@
+pim_enrich_mass_edit_action:
+    path: /mass_action
+    methods: [GET]

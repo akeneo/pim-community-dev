@@ -1,0 +1,98 @@
+Akeneo\Pim\Enrichment\Component\Product\Model\Product:
+    type: entity
+    table: pim_catalog_product
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    repositoryClass: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ProductRepository
+    fields:
+        id:
+            type: integer
+            unique: true
+            columnDefinition: INT AUTO_INCREMENT NOT NULL
+            generated: INSERT
+        enabled:
+            type: boolean
+            column: is_enabled
+        identifier:
+            type: string
+            unique: true
+            nullable: true
+            updatable: false
+            insertable: false
+        rawValues:
+            type: json
+            column: raw_values
+        created:
+            type: datetime
+        updated:
+            type: datetime
+        rawQuantifiedAssociations:
+            type: json
+            column: quantified_associations
+            nullable: true
+        uuid:
+            type: uuid_binary
+            id: true
+            unique: true
+    manyToOne:
+        family:
+            targetEntity: Akeneo\Pim\Structure\Component\Model\FamilyInterface
+            joinColumns:
+                family_id:
+                    referencedColumnName: id
+                    onDelete: 'SET NULL'
+        parent:
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface
+            inversedBy: products
+            joinColumns:
+                product_model_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+        familyVariant:
+            targetEntity: Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface
+            joinColumn:
+                name: family_variant_id
+                referencedColumnName: id
+    manyToMany:
+        groups:
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface
+            inversedBy: products
+            joinTable:
+                name: pim_catalog_group_product
+                joinColumns:
+                    product_uuid:
+                        referencedColumnName: uuid
+                        onDelete: CASCADE
+                inverseJoinColumns:
+                    group_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+        categories:
+            targetEntity: Akeneo\Category\Infrastructure\Component\Model\CategoryInterface
+            inversedBy: products
+            joinTable:
+                name: pim_catalog_category_product
+                joinColumns:
+                    product_uuid:
+                        referencedColumnName: uuid
+                        onDelete: CASCADE
+                inverseJoinColumns:
+                    category_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+    oneToMany:
+        associations:
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociationInterface
+            mappedBy: owner
+            cascade:
+                - persist
+                - refresh
+                - detach
+        uniqueData:
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductUniqueDataInterface
+            orphanRemoval: true
+            mappedBy: product
+            cascade:
+                - remove
+                - persist
+                - refresh
+                - detach

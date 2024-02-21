@@ -1,0 +1,14 @@
+pim_enrich:
+  acl:
+    category:
+      list: 카테고리 나열
+      create: 카테고리 만들기
+      edit: 카테고리 편집
+      remove: 카테고리 제거
+      move: 카테고리 이동
+      children: 하위 카테고리 보기
+      products: 카테고리의 제품 보기
+      history: 카테고리 기록 보기
+      template: 카테고리 템플릿 관리
+      edit_attributes: 카테고리 특성 편집
+      order_trees: 카테고리 정렬/다시 정렬

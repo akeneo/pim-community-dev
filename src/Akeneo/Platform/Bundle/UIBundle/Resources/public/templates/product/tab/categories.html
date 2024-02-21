@@ -1,0 +1,17 @@
+<div class="tabbable">
+    <div class="AknHorizontalNavtab">
+        <div class="AknButtonList catalog-switcher"></div>
+    </div>
+    <div class="tab-content">
+        <div class="tab-pane active" id="product-categories">
+            <div id="trees" data-id="<%- product.meta.id %>" data-uuid="<%- product.meta.id %>" data-datalocale="<%- locale %>" data-selected-tree="<%- trees.find(function (tree) { return tree.id === parseInt(state.currentTreeId); }).id %>">
+                <% _.each(trees, function (tree) { %>
+                    <div id="root-unselectable" class="tree root-unselectable" data-tree-id="<%- tree.id %>">
+                        <div id="tree-<%- tree.id %>" class="buffer-small-left"></div>
+                    </div>
+                <% }); %>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="hidden-tree-input" value="<%- JSON.stringify(state.selectedCategories) %>">

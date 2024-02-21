@@ -1,0 +1,39 @@
+attribute;code;label-en_US;sort_order
+manufacturer;Converse;Converse;1
+manufacturer;TimberLand;TimberLand;2
+manufacturer;Nike;Nike;3
+manufacturer;Caterpillar;Caterpillar;4
+weather_conditions;dry;Dry;1
+weather_conditions;wet;Wet;2
+weather_conditions;hot;Hot;3
+weather_conditions;cold;Cold;4
+weather_conditions;snowy;Snowy;5
+rating;1;1 star;1
+rating;2;2 stars;2
+rating;3;3 stars;3
+rating;4;4 stars;4
+rating;5;5 stars;5
+size;35;35;1
+size;36;36;2
+size;37;37;3
+size;38;38;4
+size;39;39;5
+size;40;40;6
+size;41;41;7
+size;42;42;8
+size;43;43;9
+size;44;44;10
+size;45;45;11
+size;46;46;12
+size;60;60;13
+color;white;White;1
+color;black;Black;2
+color;blue;Blue;3
+color;maroon;Maroon;4
+color;saddle;Saddle;5
+color;greem;Greem;6
+color;red;Red;7
+color;charcoal;Charcoal;8
+lace_color;laces_black;Black;1
+lace_color;laces_brown;Brown;2
+lace_color;laces_white;White;3

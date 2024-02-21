@@ -1,0 +1,8 @@
+pim_structure:
+  validation:
+    association_type:
+      cannot_be_quantified_and_two_way: Le type d'association ne peut être qu'avec des quantités ou bi-directionnel.
+    available_locales:
+      is_variant_axis_without_available_locales: Un attribut ne peut pas devenir spécifique à une locale s'il est déjà utilisé comme axe dans une famille de variants.
+    attribute_groups:
+      max: Vous avez atteint la limite de {{ max }} groupes d'attributs.

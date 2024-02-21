@@ -1,0 +1,37 @@
+<div class="AknFormContainer AknFormContainer--withPadding AknFormContainer--expanded">
+    <% if (products.length) { %>
+        <table class="AknGrid AknGrid--condensed AknGrid--unclickable groups">
+            <thead>
+                <tr>
+                    <th class="AknGrid-headerCell">
+                        <%- identifier.labels[locale] || identifier.code %>
+                    </th>
+                    <th class="AknGrid-headerCell">
+                        <%- _.__('pim_common.label') %>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <% _.each(products, function (product) {  %>
+                    <tr class="AknGrid-bodyRow">
+                        <td class="AknGrid-bodyCell">
+                            <a href="javascript:void(0);" data-product-id="<%- product.meta.id %>">
+                                <%- product.values[identifier.code][0].data %>
+                            </a>
+                        </td>
+                        <td class="AknGrid-bodyCell">
+                            <%- product.meta.label[locale] %>
+                        </td>
+                    </tr>
+                <% }); %>
+                <% if (products.length < productCount) { %>
+                    <tr class="AknGrid-bodyRow">
+                        <td colspan="2" class="AknGrid-bodyCell">
+                            <%- _.__('pim_enrich.entity.product.module.show_group.more_products', { 'count': productCount - products.length }) %>
+                        </td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    <% } %>
+</div>

@@ -1,0 +1,21 @@
+<div class="AknFieldContainer-header">
+    <label class="AknFieldContainer-label control-label required" for="pim_enrich_channel_form_locales">
+        <%- label %> <em><%- requiredLabel %></em>
+    </label>
+</div>
+<div class="AknFieldContainer-inputContainer">
+    <select class="select2" multiple id="pim_enrich_channel_form_locales">
+        <% _.each(locales, function (locale) { %>
+        <option value="<%- locale.code %>" <%- _.findWhere(currentLocales, locale) ? 'selected' : '' %>><%- locale.label %></option>
+        <% }); %>
+    </select>
+</div>
+<div class="AknFieldContainer-footer">
+    <div class="AknFieldContainer-validationErrors validation-errors">
+        <% _.each(errors, function (error) { %>
+        <div class="AknFieldContainer-validationError">
+            <%- error %>
+        </div>
+        <% }); %>
+    </div>
+</div>

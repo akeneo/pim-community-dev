@@ -1,0 +1,115 @@
+extensions:
+    pim-job-instance-xlsx-base-import-show:
+        module: pim/form/common/edit-form
+
+    pim-job-instance-xlsx-base-import-show-main-image:
+        module: pim/form/common/main-image
+        parent: pim-job-instance-xlsx-base-import-show
+        targetZone: main-image
+        config:
+            path: bundles/pimui/images/illustrations/ImportXLSX.svg
+
+    pim-job-instance-xlsx-base-import-show-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-job-instance-xlsx-base-import-show
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
+    pim-job-instance-xlsx-base-import-show-sandbox-helper:
+        module: pim/sandbox-helper
+        parent: pim-job-instance-xlsx-base-import-show
+        targetZone: helper
+
+    pim-job-instance-xlsx-base-import-show-breadcrumbs:
+        module: pim/job/common/breadcrumb/breadcrumb
+        parent: pim-job-instance-xlsx-base-import-show
+        targetZone: breadcrumbs
+
+    pim-job-instance-xlsx-base-import-show-switcher:
+        module: pim/job-instance/import/switcher
+        parent: pim-job-instance-xlsx-base-import-show
+        position: 0
+        targetZone: meta
+
+    pim-job-instance-xlsx-base-import-show-launch-switcher-item:
+        module: pim/job-instance/import/switcher-item
+        parent: pim-job-instance-xlsx-base-import-show
+        targetZone: content
+        aclResourceId: pim_importexport_import_profile_launch
+        position: 40
+        config:
+            label: pim_import_export.form.job_instance.button.import.launch
+            hideForCloudEdition: true
+
+    pim-job-instance-xlsx-base-import-show-file-path:
+        module: pim/job/common/file-path
+        parent: pim-job-instance-xlsx-base-import-show-launch-switcher-item
+        config:
+            label: pim_import_export.form.job_instance.file_path
+
+    pim-job-instance-xlsx-base-import-show-import-button:
+        module: pim/job/common/edit/launch
+        parent: pim-job-instance-xlsx-base-import-show-file-path
+        config:
+            label: pim_import_export.form.job_instance.button.import.launch
+            route: pim_enrich_job_instance_rest_import_launch
+            identifier:
+                path: code
+                name: code
+
+    pim-job-instance-xlsx-base-import-show-upload-switcher-item:
+        module: pim/job-instance/import/switcher-item
+        parent: pim-job-instance-xlsx-base-import-show
+        targetZone: content
+        aclResourceId: pim_importexport_import_profile_launch
+        position: 50
+        config:
+            allowedKey: uploadAllowed
+            label: pim_import_export.form.job_instance.button.import.upload_file
+            hideForCloudEdition: false
+
+    pim-job-instance-xlsx-base-import-show-upload:
+        module: pim/job/common/edit/upload
+        parent: pim-job-instance-xlsx-base-import-show-upload-switcher-item
+        position: 50
+        config:
+            type: xlsx
+
+    pim-job-instance-xlsx-base-import-show-upload-button:
+        module: pim/job/common/edit/upload-launch
+        parent: pim-job-instance-xlsx-base-import-show-upload-switcher-item
+        position: 60
+        config:
+            label: pim_import_export.form.job_instance.button.import.upload
+            route: pim_enrich_job_instance_rest_import_launch
+            identifier:
+                path: code
+                name: code
+
+    pim-job-instance-xlsx-base-import-show-last-executions:
+        module: akeneojob/controller/job-instance
+        parent: pim-job-instance-xlsx-base-import-show
+        position: 100
+        targetZone: content
+
+    pim-job-instance-xlsx-base-import-show-label:
+        module: pim/job/common/edit/label
+        parent: pim-job-instance-xlsx-base-import-show
+        targetZone: title
+        position: 100
+
+    pim-job-instance-xlsx-base-import-show-edit:
+        module: pim/job/common/edit-button
+        parent: pim-job-instance-xlsx-base-import-show
+        targetZone: buttons
+        position: 100
+        aclResourceId: pim_importexport_import_profile_edit
+        config:
+            label: pim_common.edit
+            route: pim_importexport_import_profile_edit
+            buttonClass: AknButton AknButton--action
+            identifier:
+                path: code
+                name: code

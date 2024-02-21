@@ -1,0 +1,122 @@
+code;label-de_DE;label-en_US;label-fr_FR;attribute;sort_order
+210_x_1219_mm;210 x 1219 mm;210 x 1219 mm;210 x 1219 mm;maximum_print_size;1
+215_x_355_mm;215 x 355 mm;215 x 355 mm;215 x 355 mm;maximum_print_size;2
+216_x_406_4_mm;216 x 406.4 mm;216 x 406.4 mm;216 x 406.4 mm;maximum_print_size;3
+216_x_432_mm;216 x 432 mm;216 x 432 mm;216 x 432 mm;maximum_print_size;4
+297_x_432_mm;297 x 432 mm;297 x 432 mm;297 x 432 mm;maximum_print_size;5
+a3_297_x_420_mm_;A3 (297 x 420 mm);A3 (297 x 420 mm);A3 (297 x 420 mm);maximum_print_size;6
+a4_210_x_297_mm_;A4 (210 x 297 mm);A4 (210 x 297 mm);A4 (210 x 297 mm);maximum_print_size;7
+a4_letter_216_x_297_mm_;A4 / Letter (216 x 297 mm);A4 / Letter (216 x 297 mm);A4 / Letter (216 x 297 mm);maximum_print_size;8
+din_a3_310_x_437_mm_;DIN A3 (310 x 437 mm);DIN A3 (310 x 437 mm);DIN A3 (310 x 437 mm);maximum_print_size;9
+legal_216_x_356_mm_;Legal (216 x 356 mm);Legal (216 x 356 mm);Legal (216 x 356 mm);maximum_print_size;10
+ccd;CCD;CCD;CCD;sensor_type;1
+cmos;CMOS;CMOS;CMOS;sensor_type;2
+bridge;Bridge;Bridge;Bridge;camera_type;1
+compact;Compact;Compact;Compact;camera_type;2
+milc;MILC;MILC;MILC;camera_type;3
+milc_body;MILC Body;MILC Body;MILC Body;camera_type;4
+slr_body;SLR Body;SLR Body;SLR Body;camera_type;5
+slr_kit;SLR Kit;SLR Kit;SLR Kit;camera_type;6
+6_3mm;6.3mm;6.3mm;6.3mm;headphone_connectivity;1
+1280_x_1024;1280 x 1024;1280 x 1024;1280 x 1024;maximum_video_resolution;1
+1280_x_720;1280 x 720;1280 x 720;1280 x 720;maximum_video_resolution;2
+1280_x_960;1280 x 960;1280 x 960;1280 x 960;maximum_video_resolution;3
+1600_x_1200;1600 x 1200;1600 x 1200;1600 x 1200;maximum_video_resolution;4
+1920_x_1080;1920 x 1080;1920 x 1080;1920 x 1080;maximum_video_resolution;5
+2560_x_1920;2560 x 1920;2560 x 1920;2560 x 1920;maximum_video_resolution;6
+2560_x_2048;2560 x 2048;2560 x 2048;2560 x 2048;maximum_video_resolution;7
+320_x_240;320 x 240;320 x 240;320 x 240;maximum_video_resolution;8
+640_x_480;640 x 480;640 x 480;640 x 480;maximum_video_resolution;9
+800_x_600;800 x 600;800 x 600;800 x 600;maximum_video_resolution;10
+copy;copy;copy;copy;multifunctional_functions;1
+fax;fax;fax;fax;multifunctional_functions;2
+n;N;N;N;multifunctional_functions;3
+print;print;print;print;multifunctional_functions;4
+scan;scan;scan;scan;multifunctional_functions;5
+canon_brand;Canon;Canon;Canon;camera_brand;1
+nikon_brand;Nikon;Nikon;Nikon;camera_brand;2
+earthenware;Tonwaren;Earthenware;Faïence;container_material;1
+porcelain;Porzellan;Porcelain;Porcelaine;container_material;2
+ceramic;Keramisch;Ceramic;Céramique;container_material;3
+cotton;100% Baumwolle;100% Cotton;100% Coton;tshirt_materials;1
+polyester;Polyester;Polyester;Polyester;tshirt_materials;2
+polycotton;Poly/Bauwolle;Poly/Cotton;Poly/Coton;tshirt_materials;3
+wool;Wolle;Wool;Laine;tshirt_materials;4
+organic_cotton;Bio Baumwolle;Organic Cotton;Coton Bio;tshirt_materials;5
+recycled_materials;Recycling-Materialien;Recycled materials;Matières recyclées;tshirt_materials;6
+white;Weiß;White;Blanc;main_color;1
+black;Schwarz;Black;Noir;main_color;2
+grey;Grau;Grey;Gris;main_color;3
+blue;Blau;Blue;Bleu;main_color;4
+purple;Lila;Purple;Violet;main_color;5
+orange;Orange;Orange;Orange;main_color;6
+white;Weiß;White;Blanc;secondary_color;1
+black;Schwarz;Black;Noir;secondary_color;2
+grey;Grau;Grey;Gris;secondary_color;3
+yellow;Gelb;Yellow;Jaune;secondary_color;4
+orange;Orange;Orange;Orange;secondary_color;5
+red;Rot;Red;Rouge;secondary_color;6
+green;Grün;Green;Vert;secondary_color;7
+blue;Blau;Blue;Bleu;secondary_color;8
+purple;Lila;Purple;Violet;secondary_color;9
+xs;XS;XS;XS;clothing_size;1
+s;S;S;S;clothing_size;2
+m;M;M;M;clothing_size;3
+l;L;L;L;clothing_size;4
+xl;XL;XL;XL;clothing_size;5
+xxl;XXL;XXL;XXL;clothing_size;6
+turtleneck;Rollkragen;Turtleneck;Col roulé;tshirt_style;1
+vneck;V-Ausschnitt;V neck;Col en V;tshirt_style;2
+sportwear;Sport Verschleiß;Sport wear;Sportif;tshirt_style;3
+crewneck;Rundhalsausschnitt;Crewneck;Col ras du cou;tshirt_style;4
+long_sleeve;Lange Ärmel;Long sleeve;Manches longues;tshirt_style;5
+short_sleeve;Kurze Ärmel;Short sleeve;Manches courtes;tshirt_style;6
+summer_2016;Summer 2016;Summer 2016;Eté 2016;collection;1
+Spring2017;;Spring 2017;;collection;1
+winter_2016;Winter 2016;Winter 2016;Hiver 2016;collection;1
+spring_2015;Spring 2015;Spring 2015;Printemps 2015;collection;1
+autumn_2016;Autumn 2016;Autumn 2016;Automne 2016;collection;1
+summer_2017;Summer 2017;Summer 2017;Eté 2017;collection;1
+spring_2016;Spring 2016;Spring 2016;Printemps 2016;collection;1
+800;80°;80°;80°;wash_temperature;1
+700;70°;70°;70°;wash_temperature;1
+600;60°;60°;60°;wash_temperature;1
+400;40°;40°;40°;wash_temperature;1
+hand;hand;hand;hand;wash_temperature;1
+black;Black;Black;Noir;color;0
+blue;Blue;Blue;Bleu;color;1
+brown;Brown;Brown;Marron;color;2
+green;Green;Green;Vert;color;3
+grey;Grey;Grey;Gris;color;4
+pink;Pink;Pink;Rose;color;5
+orange;Orange;Orange;Orange;color;6
+red;Red;Red;Rouge;color;7
+yellow;Yellow;Yellow;Jaune;color;8
+white;White;White;Blanc;color;9
+xxs;XXS;XXS;XXS;size;0
+xs;XS;XS;XS;size;1
+s;S;S;S;size;2
+m;M;M;M;size;3
+l;L;L;L;size;4
+xl;XL;XL;XL;size;5
+xxl;XXL;XXL;XXL;size;6
+xxxl;XXXL;XXXL;XXXL;size;7
+u;U;U;U;size;8
+360;36;36;36;eu_shoes_size;0
+370;37;37;37;eu_shoes_size;1
+380;38;38;38;eu_shoes_size;2
+390;39;39;39;eu_shoes_size;3
+410;41;41;41;eu_shoes_size;4
+400;40;40;40;eu_shoes_size;5
+42;42;42;42;eu_shoes_size;6
+43;43;43;43;eu_shoes_size;7
+44;44;44;44;eu_shoes_size;8
+akeneo;;Akeneo;;brand;1
+abibas;abibas;abibas;abibas;supplier;1
+zaro;zaro;zaro;zaro;supplier;1
+mongo;mongo;mongo;mongo;supplier;1
+leather;leather;leather;cuir;material;1
+cotton;cotton;cotton;coton;material;1
+polyester;polyester;polyester;polyester;material;1
+wool;wool;wool;laine;material;1
+metal;metal;metal;metal;material;1

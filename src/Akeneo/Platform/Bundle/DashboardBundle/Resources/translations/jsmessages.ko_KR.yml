@@ -1,0 +1,28 @@
+pim_dashboard:
+  title: 활동 대시보드
+  greetings: 안녕하세요, {{name|raw}} 님.
+  welcome_sentence:
+    message0: 오늘 매우 유익한 시간이 될 겁니다.
+    message1: 만나서 반갑습니다.
+    message2: 만나 뵙게 되어 반갑습니다.
+    message3: 만나 뵙게 되어 반갑습니다.
+    message4: 온보딩에 오신 것을 환영합니다.
+    message5: 이제 시작해보겠습니다.
+    message6: 이제 작업을 시작해보겠습니다.
+    message7: 오늘 멋진 작업을 완성해봅시다.
+    message8: 시작할 준비가 되셨습니까?
+    message9: 제품은 풍부한 정보로 보강해야 합니다.
+  widget:
+    completeness:
+      load_more: '더 로드...'
+      title: 채널 및 로케일의 완성도
+      progress_messages:
+        message1: 완성도를 높이기 위한 보강 작업의 여정을 준비하십시오.
+        message2: 여전히 작업할 사항이 남아 있지만 올바른 방향으로 가고 있습니다.
+        message3: 계속 작업하여 제품 정보를 완성하십시오.
+        message4: 축하합니다! 이 채널의 제품 완성도를 완벽하게 달성하셨습니다!
+    last_operations:
+      title: 최근 작업
+  version: 버전 
+pim_title:
+  pim_dashboard_index: 대시보드

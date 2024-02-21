@@ -1,0 +1,48 @@
+pim_catalog_volume:
+  product_values: "Vous avez <span>{{values}}</span> valeurs de produit dans votre PIM ! En moyenne, chaque produit contient <span>{{average}}</span> valeurs !&nbsp;💪"
+  product_values_description: 'Plus vous aurez de valeurs de produit, plus votre PIM prendra de la valeur et donc, plus vous boosterez votre ROI ! Plus de détails <a href="{{link}}" target="_blank">ici</a>.'
+  section:
+    product_values:
+      hint: 'Saviez-vous que le nombre total de valeurs de produit de votre PIM est directement lié aux axes suivants ?<br/>Pour plus de détails, nous vous invitons à <a href="{{link}}" target="_blank">lire cet article</a>.'
+      title: Axes qui influencent le nombre de valeurs de produit
+    catalog_structure:
+      hint: Vous savez sûrement qu'une bonne structure de catalogue est importante. C'est une condition nécessaire à l'enrichissement efficace de vos produits. Voici les différents axes à suivre sur la structure de votre catalogue.
+      title: Axes liés à la structure de votre catalogue
+    variant_modelling:
+      hint: Si vous utilisez la modélisation des produits avec variantes, voici les axes pour vous aider à suivre votre volumétrie.
+      title: Axes concernant la modélisation des produits avec variantes
+  axis:
+    count_products: Produits
+    average_max_attributes_per_family: Attributs par famille
+    count_channels: Canaux
+    count_locales: Locales (activées)
+    count_scopable_attributes: Attributs déclinés par canal
+    count_localizable_and_scopable_attributes: Attributs traduisibles et déclinés par canal
+    count_localizable_attributes: Attributs traduisibles
+    count_families: Familles
+    count_attributes: Attributs
+    average_max_options_per_attribute: Options par attributs
+    count_categories: Catégories
+    count_category_trees: Arbres des catégories
+    count_variant_products: Produits variants
+    count_product_models: Modèles de produit
+    count_product_and_product_model_values: Valeurs de produit
+    average_max_product_and_product_model_values: Valeurs de produit par produits
+    count_reference_entity: Entités référentielles
+    average_max_records_per_reference_entity: Enregistrements par entité référentielle
+    average_max_attributes_per_reference_entity: Attributs par entité référentielle
+    count_asset_family: Familles de ressources
+    average_max_assets_per_asset_family: Ressources par famille de ressouces
+    average_max_attributes_per_asset_family: Attributs par famille de ressources
+    title:
+      product: Produit
+      catalog: Catalogue
+      product_structure: Structure du produit
+      variant_modeling: Modélisation des variantes
+      reference_entities: Entités référentielles
+      assets: Ressources
+  mean: 'Moyenne :'
+  max: 'Max :'
+  error:
+    generic_title: Désolé, une erreur est survenue.
+    generic_message: Réessayez dans quelques instants.

@@ -1,0 +1,12 @@
+pim_importexport_import_profile_index:
+    path: /
+
+pim_importexport_import_profile_show:
+    path: /{code}
+    requirements:
+        code: '[a-zA-Z0-9_]+'
+
+pim_importexport_import_profile_edit:
+    path: /{code}/edit
+    requirements:
+        code: '[a-zA-Z0-9_]+'

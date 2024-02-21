@@ -1,0 +1,231 @@
+@import '../base/variables';
+
+.AknTitleContainer {
+  @imageSize: 140px;
+  @padding: 40px;
+
+  position: sticky;
+  top: 0;
+  left: -@padding;
+  margin: 0 -@padding 0 -@padding;
+  padding: @padding @padding 10px;
+  background: white;
+  z-index: 10;
+
+  &-line {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &-imageContainer:not(:empty) {
+    position: relative;
+    width: @imageSize + 2px;
+    height: @imageSize + 2px;
+    border: 1px solid @AknBorderColor;
+    margin-right: 20px;
+    border-radius: 4px;
+    display: flex;
+    overflow: hidden;
+    flex-basis: @imageSize + 2px;
+    flex-shrink: 0;
+  }
+
+  &-imageContainer--editable {
+    &:after {
+      content: '';
+      opacity: 0;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: block;
+      transition: opacity 0.3s;
+    }
+  }
+
+  &-imageContainer--dropping {
+    &:after {
+      background: RGBa(255, 255, 255, 0.8) url("/bundles/pimui/images/icon-upload.svg") no-repeat 50% 50%;
+      background-size: 50%;
+      opacity: 1;
+    }
+
+    & .AknTitleContainer-image {
+      filter: blur(4px);
+    }
+  }
+
+  &-imageContainer--removing {
+    &:after {
+      background: RGBa(255, 255, 255, 0.8) url("/bundles/pimui/images/icon-delete-slategrey.svg") no-repeat 50% 50%;
+      background-size: 50%;
+      opacity: 1;
+    }
+
+    & .AknTitleContainer-image {
+      filter: blur(4px);
+    }
+  }
+
+  &-imageContainer--focusing {
+    box-shadow: 0 0 5px;
+    border: 1px solid #999;
+  }
+
+  &-imageLoader {
+    opacity: 0;
+    position: absolute;
+    width: 0%;
+    height: 100%;
+    display: block;
+    transition: opacity 0.3s;
+    background-color: RGBa(255, 255, 255, 0.8);
+  }
+
+  &-imageLoader--loading {
+    opacity: 1;
+  }
+
+  &-image {
+    margin: auto;
+    width: 100%;
+    transition: filter 0.3s;
+    object-fit: contain;
+    height: inherit;
+  }
+
+  &-imageUpdater {
+    opacity: 0;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 11;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  &-mainContainer {
+    flex-grow: 1;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    max-width: 100%;
+  }
+
+  &-imageContainer:not(:empty) ~ &-mainContainer {
+    max-width: ~"calc(100% - 150px)";
+  }
+
+  &-breadcrumbs {
+    flex-grow: 1;
+    max-height: 32px;
+    overflow: hidden;
+    margin-right: 20px;
+    line-height: 16px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  &-buttonsContainer {
+    display: flex;
+    align-content: baseline;
+  }
+
+  &-userMenu:not(:empty) {
+    display: flex;
+    height: @AknDefaultButtonSize;
+  }
+
+  &-userIcon {
+    height: @AknDefaultButtonSize;
+    width: @AknDefaultButtonSize;
+    border-radius: 100px;
+    cursor: pointer;
+    background-size: cover;
+  }
+
+  &-title {
+    color: @AknLightPurple;
+    font-size: @AknTitleFontSize;
+    line-height: 34px;
+    margin: 0;
+    font-weight: normal;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-grow: 1;
+
+    &:first-letter {
+      text-transform: uppercase;
+    }
+  }
+
+  &-state:not(:empty) {
+    order: 50;
+    align-self: center;
+    margin-right: 0;
+    margin-top: 6px;
+    text-align: right;
+    margin-left: 20px;
+  }
+
+  &-context {
+    padding: 10px 0;
+
+    .AknActionButton {
+      color: @AknDarkBlue;
+    }
+  }
+
+  &-search:not(:empty) {
+    flex: 1;
+    border-bottom: 1px solid @AknBorderColor;
+    display: flex;
+    align-items: center;
+    margin-bottom: -10px;
+  }
+
+  &-metaItem {
+    &:not(:empty) + &:not(:empty) {
+      &:before {
+        content: ' | ';
+      }
+    }
+  }
+
+  &-meta {
+    display: flex;
+    align-items: center;
+  }
+
+  &-navigation {
+    width: 100%;
+  }
+
+  &--hidden {
+    display: none;
+  }
+
+  &-mainContainer--contained {
+    max-width: ~"calc(100% - 162px)";
+  }
+
+  &-userMenuContainer+&-actionsContainer:not(:empty) {
+    border-left: 1px solid @AknBorderColor;
+    margin-left: 20px;
+    padding-left: 20px;
+  }
+
+  &-displaySelector {
+    flex-grow: 0.1;
+    text-align: right;
+    order: 2;
+  }
+
+  &-variantSelector {
+    flex-grow: 0.1;
+    text-align: right;
+    order: 1;
+  }
+}

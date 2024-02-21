@@ -1,0 +1,27 @@
+export:
+    resource: '@PimImportExportBundle/Resources/config/routing/export_profile.yml'
+    prefix: /spread/export
+
+import:
+    resource: '@PimImportExportBundle/Resources/config/routing/import_profile.yml'
+    prefix: /collect/import
+
+import_report:
+    resource: '@PimImportExportBundle/Resources/config/routing/import_execution.yml'
+    prefix: /collect/import_execution
+
+export_report:
+    resource: '@PimImportExportBundle/Resources/config/routing/export_execution.yml'
+    prefix: /spread/export_execution
+
+job_instance_internal_api:
+    resource: '@PimImportExportBundle/Resources/config/routing/internal_api/job_instance.yml'
+    prefix: /job-instance
+
+job_execution_internal_api:
+    resource: '@PimImportExportBundle/Resources/config/routing/internal_api/job_execution.yml'
+    prefix: /job-execution
+
+job_tracker_ui:
+    resource: '@PimImportExportBundle/Resources/config/routing/ui/job_tracker.yml'
+    prefix: /job

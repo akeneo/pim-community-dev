@@ -1,0 +1,182 @@
+.AknAttributeOption {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  min-height: 400px;
+
+  &-list {
+    flex: 1;
+    margin-right: 40px;
+    overflow: auto;
+
+    &-optionsList {
+      height: calc(100vh - 352px);
+      overflow-y: auto;
+    }
+
+    .has-switch {
+      margin-right: 0;
+    }
+  }
+
+  &-listItem {
+    line-height: 54px;
+    height: 54px;
+    border-bottom: 1px @AknGrey60 solid;
+
+    &--selected {
+      background-color: @AknBlue20 !important;
+
+      .AknAttributeOption-delete-option-icon {
+        background: url("/bundles/pimui/images/icon-delete-slategrey.svg") no-repeat center;
+      }
+    }
+
+    &--move-target {
+      background-color: #ee5f5b !important;
+      pointer-events: none;
+    }
+
+    &:hover {
+      background-color: @AknLightGray;
+
+      .AknAttributeOption-delete-option-icon {
+        background: url("/bundles/pimui/images/icon-delete-slategrey.svg") no-repeat center;
+      }
+    }
+
+    .AknAttributeOption-itemCode {
+      font-size: 13px;
+      cursor: pointer;
+      display: table-cell;
+
+      &>div {
+        display: table;
+        table-layout: fixed;
+        width: 50%;
+        &>span {
+          white-space: nowrap;
+          display: table-cell;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+
+      &--new {
+        padding-left: 44px;
+      }
+    }
+
+    .AknAttributeOption-itemLabel {
+      font-size: 13px;
+      cursor: pointer;
+      display: table-cell;
+      color: @AknLightPurple;
+      font-style: italic;
+
+      &>div {
+        display: table;
+        table-layout: fixed;
+        width: 50%;
+        &>span {
+          white-space: nowrap;
+          display: table-cell;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+
+      &--new {
+        padding-left: 44px;
+      }
+    }
+
+    .AknAttributeOption-cancel-new-option-icon, .AknAttributeOption-delete-option-icon {
+      width: 56px;
+      cursor: pointer;
+      margin-left: auto;
+      display: table-cell;
+      text-align: center;
+    }
+    .AknAttributeOption-cancel-new-option-icon {
+      background: url("/bundles/pimui/images/icon-delete-slategrey.svg") no-repeat center;
+    }
+
+    .AknAttributeOption-move-icon {
+      width: 42px;
+      background: url("/bundles/pimui/images/icon-row-move.svg") no-repeat center;
+      margin: 0 12px 0 12px;
+      cursor: move;
+      display: table-cell;
+
+      &--disabled {
+        cursor: default;
+      }
+    }
+
+    .AknAttributeOption-extraData {
+      display: table-cell;
+      padding: 0 12px;
+      min-width: 100px;
+
+      & > span {
+        display: flex;
+        flex-flow: row;
+        flex-wrap: nowrap;
+        justify-content: left;
+        align-items: center;
+        line-height: initial;
+        white-space: nowrap;
+      }
+    }
+  }
+
+  &-edit {
+    width: 400px;
+
+    &-translations {
+      max-height: calc(100vh - 354px);
+      overflow-y: auto;
+    }
+
+    &-saveTranslations {
+      border-top: 1px @AknBorderColor solid;
+      padding-top: 10px;
+    }
+  }
+
+  .AknSubsection {
+    &-title {
+      &.AknSubsection-title--glued {
+        font-weight: normal;
+        margin: 20px 0 20px 0;
+      }
+    }
+  }
+
+  .AknAttributeOption-emptyList {
+    text-align: center;
+    width: 100%;
+    margin-top: 80px;
+
+    &-message {
+      font-size: 28px;
+      color: @AknGrey140;
+      margin-top: 5px;
+    }
+
+    &-addLink {
+      font-size: 17px;
+      color: @AknLightPurple;
+      cursor: pointer;
+      margin-top: 15px;
+      text-decoration: underline;
+    }
+  }
+
+  .modal {
+    .AknFullPage-description {
+      margin-top: 20px;
+    }
+  }
+}

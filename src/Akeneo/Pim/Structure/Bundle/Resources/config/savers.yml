@@ -1,0 +1,33 @@
+services:
+    pim_catalog.saver.attribute:
+        class: 'Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\AttributeSaver'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+
+    pim_catalog.saver.family:
+        class: 'Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\FamilySaver'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+
+    pim_catalog.saver.family_variant:
+        class: '%pim_catalog.saver.base.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '%pim_catalog.model.family_variant.interface%'
+
+    pim_catalog.saver.attribute_group:
+        class: '%pim_catalog.saver.base.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '%pim_catalog.model.attribute_group.interface%'
+
+    pim_catalog.saver.attribute_option:
+        class: '%pim_catalog.saver.base.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '%pim_catalog.model.attribute_option.interface%'

@@ -1,0 +1,24 @@
+pim_connector:
+  steps:
+    file_reader:
+      invalid_item_columns_count: '%totalColumnsCount% colonnes attendues, %itemColumnsCount% trouvées dans %filePath%:%lineno%'
+job_execution.summary:
+  read: lu(s)
+  write: écrit(s)
+  skip: ignoré(s)
+  create: Créé(s)
+  process: traité(s)
+  update: mis à jour
+  update_products: produits mis à jour
+  process_products: produits traités
+  skip_products: produits ignorés
+  displayed: premiers avertissements affichés
+  charset_validator:
+    title: 'Encodage de fichier :'
+    skipped: ignoré(s), extension dans la liste blanche
+  product_skipped_no_diff: produit(s) ignoré(s) (aucune différence)
+  product_skipped_no_associations: produit(s) ignoré(s) (aucune association détectée)
+  product_model_skipped_no_diff: modèles de produit(s) ignoré(s) (aucune différence)
+  item_position: Lignes lues
+  skipped_in_root_product_model: modèles de produits avec parent ignorés
+  skipped_in_sub_product_model: modèles de produits sans parent ignorés

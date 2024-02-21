@@ -1,0 +1,45 @@
+pim_api:
+  acl:
+    rights: Web API-rättigheter
+    attribute:
+      edit: Skapa och uppdatera attribut
+      list: Lista attribut
+    attribute_option:
+      edit: Skapa och uppdatera attributalternativ
+      list: Lista attributalternativ
+    attribute_group:
+      edit: Skapa och uppdatera attributalternativ
+      list: Visa attributgrupper
+    category:
+      edit: Skapa och uppdatera kategorier
+      list: Visa kategorier
+    family:
+      edit: Skapa och uppdatera familjer
+      list: Visa familjer
+    family_variant:
+      edit: Skapa och uppdatera familjevarianter
+      list: Lista familjevarianter
+    channel:
+      edit: Skapa och uppdatera kanaler
+      list: Visa kanaler
+    locale.list: Visa språk
+    currency.list: Visa valutor
+    association_type:
+      edit: Skapa och uppdatera föreningsgrupper
+      list: Visa relationstyper
+  acl_group:
+    overall_access: Övergripande Web API-åtkomst
+    attribute: Attribut
+    attribute_option: Attributalternativ
+    attribute_group: Attributgrupper
+    category: Kategorier
+    family: Familjer
+    family_variant: Familjevarianter
+    channel: Kanaler
+    locale: Språk
+    currency: Valutor
+    association_type: Relationstyper
+pim_user:
+  roles:
+    tab:
+      api: Web API-rättigheter

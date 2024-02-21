@@ -1,0 +1,12 @@
+services:
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Install\InstallSubscriber:
+        arguments:
+            - '@database_connection'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Install\AddAclToRoles'
+        tags:
+            - {name: kernel.event_subscriber}
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Install\AddAclToRoles:
+        arguments:
+            - '@oro_security.acl.manager'
+            - '@pim_user.repository.role'

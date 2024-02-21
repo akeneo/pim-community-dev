@@ -1,0 +1,145 @@
+pim_title:
+  pim_category_template_edit: 编辑类别模板
+akeneo.category:
+  unknown_error:
+    title: 抱歉，发生未知错误。
+    message: 请重新加载页面并重试。
+  tree_list:
+    column:
+      category_templates: 类别模板
+  attributes: 属性
+  edition_form:
+    error:
+      unhandled_attribute_type: 找不到属性类型"{{ type }}"的属性字段生成器
+    template:
+      title: 模板
+      no_attribute_title: 此模板中没有属性
+      no_attribute_instructions: 与此类别关联的模板为空，您可以从类别树页面将属性添加到此模板中。
+      fetching_failed: 获取模板时出错。
+    unsaved_changes: 如果离开此页面，将会丢失对类别的更改。
+  tree:
+    create: 创建树
+    delete: 删除树
+  template:
+    learn_more: 了解更多类别模板相关信息
+    create: 创建模板
+    create_confirmation_modal:
+      title: 创建新的类别模板
+      helper: 创建类别模板以定义属性并激活此树下所有类别的丰富度。
+      category_tree: 类别树
+      link: 了解关于类别模板的更多信息
+    edit: 编辑模板
+    notification_success: 类别模板已成功创建
+    notification_error: 无法创建类别模板
+    not_found: 没有为此类别的激活模板
+    properties:
+      general_properties: 常规属性
+      label_translations_in_ui_locales: 用户界面语言的标签翻译
+    attribute:
+      description_title: 描述设置
+      type:
+        text: 文本
+        textarea: 文本区域
+        richtext: 富文本
+        image: 图像
+      delete_button: 删除属性
+      settings:
+        title: 设置 
+        options:
+          title: 选项
+          value_per_channel: 每个渠道的值
+          value_per_locale: 每项区域设置的值
+          rich_text: 富文本编辑器
+        translations:
+          title: 标签翻译
+        error_message: 此页上存在无效的值。
+        unsaved_changes: 您有未保存的更改，确定要离开吗？
+    add_attribute:
+      no_attribute_title: 创建您的第一个属性
+      no_attribute_instructions: 将文本、文本区域或图像属性添加到此模板，可定义您想要关联到类别的内容。
+      add_button: 添加属性
+      create_button: 创建属性
+      confirmation_modal:
+        section_title: 添加属性
+        title: 创建新的类别属性
+        head_helper: 类别属性被附加到了一个模板。无法在其他模板中访问它们。
+        tail_helper: 一旦创建属性，便无法更改每个渠道的值和每个区域的值。
+        link: 了解关于类别模板的更多信息。
+        create: 创建
+        input:
+          label: 标签
+          code: 代码
+          type:
+            label: 属性类型
+            empty: 没有可用的属性类型
+            option_title:
+              text: 文本
+              textarea: 文本区域
+              image: 图像
+      success:
+        notification: 属性已成功创建
+      error:
+        failed: 添加模板属性失败
+        limit_reached:
+          title: 您不能添加超过 50 个属性
+          message: 类别模板仅限每个模板拥有 50 个属性。
+    delete_attribute:
+      delete: 删除类别属性
+      confirmation_modal:
+        title: 删除此类别属性
+        message: 确定要删除名为 {{ attribute }} 的类别属性吗？
+        helper: 删除此属性将永久删除关联类别的属性和值。
+      notification_success:
+        title: '{{ attribute }} 属性已成功删除'
+    deactivate:
+      deactivate_template: 删除模板
+      confirmation_modal:
+        title: 删除类别模板
+        message: 确定要删除名为 {{ template }} 的类别模板吗？
+        helper: 删除此模板将永久删除关联类别的属性和值。
+        deactivate: 删除
+      notification_success:
+        title: '{{ template }} 模板已删除'
+        message: '{{ template }} 已删除。关联类别的内容已被删除。'
+    auto-save:
+      saved: 已保存
+      saving: 正在保存
+      editing: 正在编辑
+      errors: 错误未保存
+    initialize:
+      title: 添加类别属性
+      message: 通过添加文本、文本区域或图像属性来定义类别的内容。
+      choice_message: 请先根据您的需要创建第一个属性，或加载一组（13 个）建议的属性。
+      button:
+        load: 加载一组属性
+        create: 创建第一个属性
+    load_attribute_set:
+      section_title: 加载一组属性
+      title: 加载一组建议的属性
+      description: 加载一组建议的属性，可轻松开始配置丰富的类别。
+      content_description: '一组包含 13 个属性：'
+      content:
+        description_attributes: 2 个用于对类别进行长形式和短形式描述的文本区域属性
+        url_attributes: 1 个用于记录 URL 信息的文本属性
+        image_attributes: 3 个用于图像的图像属性，以及 3 个用于替代文本信息的文本属性
+        seo_attributes: 用于 SEO 信息的 2 个文本属性和 2 个文本区域属性
+      confirmation_message: 确定要加载这组属性吗？
+      button:
+        load: 加载一组属性
+      notification:
+        success: 属性已成功创建
+  template_list:
+    columns:
+      header: 标签
+      code: 代码
+      type: 类型
+  tag:
+    new: 新
+  discover_enriched_categories_information:
+    title: 探索丰富的类别
+    content:
+      enrich_attribute_values: 通过文本、文本区域和图像属性丰富类别树的所有级别
+      customizable_templates: 自定义模板为您带来卓越的产品体验
+    survey_link_label: 告诉我们您的想法
+    learn_more_link_label: 了解更多有关丰富的类别
+  other_actions: 其他操作

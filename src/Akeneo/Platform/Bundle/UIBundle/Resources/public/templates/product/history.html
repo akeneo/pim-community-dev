@@ -1,0 +1,56 @@
+<div class="history-block">
+    <table class="AknGrid expanded">
+        <thead>
+            <tr>
+                <th class="AknGrid-headerCell"></th>
+                <th class="AknGrid-headerCell version"><%- _.__('pim_enrich.entity.product.module.history.version') %></th>
+                <th class="AknGrid-headerCell author"><%- _.__('pim_enrich.entity.product.module.history.author') %></th>
+                <th class="AknGrid-headerCell loggedAt"><%- _.__('pim_enrich.entity.product.module.history.logged_at') %></th>
+                <th class="AknGrid-headerCell changes"><%- _.__('pim_enrich.entity.product.module.history.modified') %></th>
+                <% if (hasAction) { %><th class="AknGrid-headerCell actions"><%- _.__('pim_common.actions') %></th><% } %>
+            </tr>
+        </thead>
+        <tbody>
+            <% if (versions.length >= limit) { %>
+            <tr>
+                <td colspan="6">
+                    <div class="AknMessageBox AknMessageBox--withIcon">
+                        <%- _.__('pim_enrich.entity.product.module.history.limit', {limit}) %>
+                    </div>
+                </td>
+            </tr>
+            <% } %>
+            <% _.each(versions, function(version) { %>
+                <tr data-version="<%- version.version %>" data-version-id="<%- version.id %>" class="AknGrid-bodyRow entity-version <%- expandedVersions.find(item => item == version.version) ? 'AknGrid-bodyRow--expanded' : '' %>">
+                    <td class="AknGrid-bodyCell AknGrid-bodyCell--clickable">
+                        <div class="version-expander AknGrid-expand <%- expandedVersions.find(item => item == version.version) ? 'AknGrid-expand--expanded' : '' %>"></div>
+                    </td>
+                    <td class="AknGrid-bodyCell version" data-column="version"><span class="AknButton AknButton--grey AknButton--round"><%- version.version %></span></td>
+                    <td class="AknGrid-bodyCell AknGridHistory-bodyCell--highlight author" data-column="author"><%- version.author %><%- version.context ? ' (' + version.context + ')' : '' %></td>
+                    <td class="AknGrid-bodyCell AknGrid-bodyCell--noWrap loggedAt" data-column="loggedAt"><%- version.logged_at %></td>
+                    <td class="AknGrid-bodyCell AknGridHistory-bodyCell--changes changes" data-column="changes"><div class="AknGrid-multiline" title="<%- _.keys(version.changeset).join(', ') %>"><%- _.keys(version.changeset).join(', ') %></div></td>
+                    <% if (hasAction) { %><td class="AknGrid-bodyCell AknButtonList AknButtonList--wrap actions"></td><% } %>
+                </tr>
+                <tr data-version="<%- version.version %>" class="AknGrid-bodyRow AknGrid-bodyRow--withoutTopBorder changeset <%- expandedVersions.find(item => item == version.version) ? '' : 'hide' %>">
+                    <td class="AknGrid-bodyCell"></td>
+                    <td class="AknGrid-bodyCell"></td>
+                    <td class="AknGrid-bodyCell" colspan="<%- hasAction ? '4' : '3' %>">
+                        <table class="AknGrid table-history-details">
+                            <tbody>
+                                <% _.each(version.changeset, function(value) { %>
+                                    <tr class="AknGrid-bodyRow">
+                                        <td class="AknGrid-bodyCell AknGrid-bodyCell--highlightAlternative AknGrid-bodyCell--withoutBottomBorder property" colspan="2"><%= value.label %></td>
+                                    </tr>
+                                    <tr class="AknGrid-bodyRow AknGrid-bodyRow--wordBreakable">
+                                        <td class="AknGrid-bodyCell AknGrid-bodyCell--withoutTopBorder"><span class="AknDiff--remove"><%- _.__('pim_enrich.entity.product.module.history.old_value') %>:</span> <span class="old-values"><%- value.old %></span></td>
+                                        <td class="AknGrid-bodyCell AknGrid-bodyCell--withoutTopBorder"><span class="AknDiff--add"><%- _.__('pim_enrich.entity.product.module.history.new_value') %>:</span> <span class="new-values"><%- value.new %></span></td>
+                                    </tr>
+                                <% }); %>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</div>

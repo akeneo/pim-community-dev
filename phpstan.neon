@@ -1,0 +1,16 @@
+includes:
+    - vendor/phpstan/phpstan-symfony/extension.neon
+    - vendor/phpstan/phpstan-webmozart-assert/extension.neon
+parameters:
+    reportUnmatchedIgnoredErrors: false
+    symfony:
+        container_xml_path: %rootDir%/../../../var/cache/dev/KernelDevDebugContainer.xml
+    ignoreErrors:
+        - '#Unsafe usage of new static\(\)\.#'
+    excludePaths:
+        - %currentWorkingDirectory%/src/Akeneo/Pim/Automation/DataQualityInsights/tests
+        - %currentWorkingDirectory%/src/Akeneo/Pim/Enrichment/Bundle/Resources/fonts
+        - %currentWorkingDirectory%/src/Akeneo/Pim/Platform/Job
+        - %currentWorkingDirectory%/src/Akeneo/Pim/Enrichment/Product/back/Test/Specification
+        - %currentWorkingDirectory%/src/Akeneo/Pim/Enrichment/Product/back/Test/Acceptance/Specification
+        - %currentWorkingDirectory%/src/Akeneo/Pim/Enrichment/Category/back/Test/Acceptance/Specification

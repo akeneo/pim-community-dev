@@ -1,0 +1,6 @@
+pim_user:
+  min_role: "Debe seleccionar al menos {{ limit }} rol. | Debe seleccionar al menos {{ limit }} roles."
+  password_match: "Los campos de contraseña deben coincidir."
+  role:
+    invalid_role_format: 'La función debe empezar por «ROLE_» y debe contener solo guiones bajos, guiones y caracteres alfanuméricos en mayúsculas.'
+  reserved_prefix_username: "El prefijo de nombre de usuario «{{ prefix }}» está reservado"

@@ -1,0 +1,58 @@
+datagrid:
+    product-grid:
+        columns:
+            data_quality_insights_score:
+                label:         Quality score
+                data_name:     data_quality_insights_score
+                type:          field
+                frontend_type: quality-score-badge
+                feature_flag: data_quality_insights
+
+        sorters:
+            columns:
+                data_quality_insights_score:
+                    data_name: quality_score
+                    sorter: data_quality_insights_score
+                    feature_flag: data_quality_insights
+        filters:
+            columns:
+                data_quality_insights_score:
+                    type: data_quality_insights_score
+                    ftype: choice
+                    label: 'akeneo_data_quality_insights.product_grid.filter_label.quality_score'
+                    data_name: data_quality_insights_score
+                    options:
+                        field_options:
+                            multiple: true
+                            choices:
+                                A: 1
+                                B: 2
+                                C: 3
+                                D: 4
+                                E: 5
+                    feature_flag: data_quality_insights
+
+                data_quality_insights_enrichment_quality:
+                    type: data_quality_insights_enrichment_quality
+                    ftype: choice
+                    label: 'akeneo_data_quality_insights.product_grid.filter_label.enrichment_quality'
+                    data_name: data_quality_insights_enrichment_quality
+                    options:
+                        field_options:
+                            choices:
+                                akeneo_data_quality_insights.product_grid.filter_value.good: true
+                                akeneo_data_quality_insights.product_grid.filter_value.to_improve: false
+                    feature_flag: data_quality_insights
+
+                data_quality_insights_images_quality:
+                    type: data_quality_insights_images_quality
+                    ftype: choice
+                    label: 'akeneo_data_quality_insights.product_grid.filter_label.images_quality'
+                    data_name: data_quality_insights_images_quality
+                    options:
+                        field_options:
+                            choices:
+                                akeneo_data_quality_insights.product_grid.filter_value.yes: true
+                                akeneo_data_quality_insights.product_grid.filter_value.no: false
+                    feature_flag: data_quality_insights
+

@@ -1,0 +1,2 @@
+monolog:
+    channels: ['event_api', 'business_event', 'pim_api_acl', 'api_requests']

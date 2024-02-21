@@ -1,0 +1,505 @@
+Akeneo\Pim\Structure\Component\Model\Attribute:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
+        - Akeneo\Pim\Structure\Component\Validator\Constraints\IsReferenceDataConfigured: ~
+        - Akeneo\Pim\Structure\Component\Validator\Constraints\IdentifierAttributeCreationLimit: ~
+        - Akeneo\Pim\Structure\Component\Validator\Constraints\IsIdentifierUsableAsGridFilter: ~
+        - Akeneo\Tool\Component\StorageUtils\Validator\Constraints\Immutable:
+            properties:
+                - code
+                - type
+                - scopable
+                - localizable
+                - metricFamily
+                - unique
+                - reference_data_name
+        - Akeneo\Pim\Structure\Component\Validator\Constraints\ValidMetric:
+            groups:
+                - pim_catalog_metric
+        - Akeneo\Pim\Structure\Component\Validator\Constraints\ValidDateRange:
+            groups:
+                - pim_catalog_date
+        - Akeneo\Pim\Structure\Component\Validator\Constraints\ValidNumberRange:
+            groups:
+                - pim_catalog_number
+                - pim_catalog_price_collection
+                - pim_catalog_metric
+        - Akeneo\Pim\Structure\Component\Validator\Constraints\NotNullProperties:
+            properties:
+                - reference_data_name
+        - Akeneo\Pim\Structure\Component\Validator\Constraints\NullProperties:
+            message: This attribute cannot be linked to reference data.
+            properties:
+                - reference_data_name
+            groups:
+                - pim_catalog_identifier
+                - pim_catalog_text
+                - pim_catalog_textarea
+                - pim_catalog_number
+                - pim_catalog_price_collection
+                - pim_catalog_multiselect
+                - pim_catalog_simpleselect
+                - pim_catalog_file
+                - pim_catalog_image
+                - pim_catalog_boolean
+                - pim_catalog_date
+                - pim_catalog_metric
+        - Akeneo\Pim\Structure\Component\Validator\Constraints\NullProperties:
+            message: This attribute cannot have options.
+            properties:
+                - auto_option_sorting
+            groups:
+                - pim_catalog_identifier
+                - pim_catalog_text
+                - pim_catalog_textarea
+                - pim_catalog_number
+                - pim_catalog_price_collection
+                - pim_catalog_file
+                - pim_catalog_image
+                - pim_catalog_boolean
+                - pim_catalog_date
+                - pim_catalog_metric
+                - pim_reference_data_multiselect
+                - pim_reference_data_simpleselect
+        - Akeneo\Pim\Structure\Component\Validator\Constraints\NullProperties:
+            message: This attribute type cannot have a default value.
+            properties:
+                - default_value
+            groups:
+                - pim_catalog_identifier
+                - pim_catalog_text
+                - pim_catalog_textarea
+                - pim_catalog_number
+                - pim_catalog_price_collection
+                - pim_catalog_file
+                - pim_catalog_image
+                - pim_catalog_multiselect
+                - pim_catalog_simpleselect
+                - pim_catalog_date
+                - pim_catalog_metric
+                - pim_reference_data_multiselect
+                - pim_reference_data_simpleselect
+        - Akeneo\Pim\Structure\Component\Validator\Constraints\AttributePropertyType:
+            type: bool
+            properties:
+                - auto_option_sorting
+                - default_value
+        - Akeneo\Pim\Structure\Component\Validator\Constraints\IsVariantAxisWithoutAvailableLocales: ~
+    properties:
+        type:
+            - Type: string
+            - NotBlank: ~
+        code:
+            - Type: string
+            - NotBlank: ~
+            - Akeneo\Pim\Structure\Component\Validator\Constraints\BlacklistedAttributeCode: {}
+            - Regex:
+                pattern: /^[a-zA-Z0-9_]+$/
+                message: Attribute code may contain only letters, numbers and underscore
+            - Length:
+                max: 255
+            - Regex:
+                pattern: /^(?!(id|associationTypes|categories|categoryId|completeness|enabled|(?i)\bfamily\b|groups|associations|products|scope|treeId|values|category|parent|label|(.)*_(products|groups)|entity_type|attributes|uuid|identifier)$)/i
+                message: This code is not available
+            - Regex:
+                pattern: /^[^\n]+$/D
+                message: Attribute code may not contain line-feed characters
+        localizable:
+            - Type: bool
+            - NotNull: ~
+            - 'IsFalse':
+                message: A unique attribute can not be localizable
+                groups:
+                    - unique
+        scopable:
+            - Type: bool
+            - NotNull: ~
+            - 'IsFalse':
+                message: A unique attribute can not be scopable
+                groups:
+                    - unique
+        useableAsGridFilter:
+            - Type: bool
+            - NotNull: ~
+        wysiwygEnabled:
+            - Type: bool
+            - IsNull:
+                groups:
+                    - pim_catalog_identifier
+                    - pim_catalog_text
+                    - pim_catalog_number
+                    - pim_catalog_price_collection
+                    - pim_catalog_multiselect
+                    - pim_catalog_simpleselect
+                    - pim_catalog_file
+                    - pim_catalog_image
+                    - pim_catalog_boolean
+                    - pim_catalog_date
+                    - pim_catalog_metric
+                    - pim_reference_data_multiselect
+                    - pim_reference_data_simpleselect
+        decimalsAllowed:
+            - Type: bool
+            - NotNull:
+                groups:
+                    - pim_catalog_number
+                    - pim_catalog_price_collection
+                    - pim_catalog_metric
+            - IsNull:
+                groups:
+                    - pim_catalog_identifier
+                    - pim_catalog_text
+                    - pim_catalog_textarea
+                    - pim_catalog_multiselect
+                    - pim_catalog_simpleselect
+                    - pim_catalog_file
+                    - pim_catalog_image
+                    - pim_catalog_boolean
+                    - pim_catalog_date
+                    - pim_reference_data_multiselect
+                    - pim_reference_data_simpleselect
+        negativeAllowed:
+            - Type: bool
+            - NotNull:
+                groups:
+                    - pim_catalog_number
+                    - pim_catalog_metric
+            - IsNull:
+                groups:
+                    - pim_catalog_identifier
+                    - pim_catalog_text
+                    - pim_catalog_textarea
+                    - pim_catalog_price_collection
+                    - pim_catalog_multiselect
+                    - pim_catalog_simpleselect
+                    - pim_catalog_file
+                    - pim_catalog_image
+                    - pim_catalog_boolean
+                    - pim_catalog_date
+                    - pim_reference_data_multiselect
+                    - pim_reference_data_simpleselect
+        maxCharacters:
+            - Type: numeric
+            - Akeneo\Pim\Structure\Component\Validator\Constraints\NotDecimal: {}
+            - GreaterThanOrEqual:
+                value: 0
+                groups:
+                    - pim_catalog_identifier
+                    - pim_catalog_text
+                    - pim_catalog_textarea
+            - LessThanOrEqual:
+                value: 255
+                groups:
+                    - pim_catalog_identifier
+                    - pim_catalog_text
+            - LessThanOrEqual:
+                value: 65535
+                groups:
+                    - pim_catalog_textarea
+            - IsNull:
+                groups:
+                    - pim_catalog_number
+                    - pim_catalog_price_collection
+                    - pim_catalog_multiselect
+                    - pim_catalog_simpleselect
+                    - pim_catalog_file
+                    - pim_catalog_image
+                    - pim_catalog_boolean
+                    - pim_catalog_date
+                    - pim_catalog_metric
+                    - pim_reference_data_multiselect
+                    - pim_reference_data_simpleselect
+        sortOrder:
+            - NotNull: ~
+            - Type: numeric
+            - Akeneo\Pim\Structure\Component\Validator\Constraints\NotDecimal: {}
+            - GreaterThanOrEqual:
+                value: 0
+        required:
+            - Type: bool
+            - 'IsTrue':
+                message: This attribute type must be required
+                groups:
+                    - pim_catalog_identifier
+            - 'IsFalse':
+                message: This attribute type can't be required
+                groups:
+                    - pim_catalog_text
+                    - pim_catalog_textarea
+                    - pim_catalog_number
+                    - pim_catalog_price_collection
+                    - pim_catalog_multiselect
+                    - pim_catalog_simpleselect
+                    - pim_catalog_file
+                    - pim_catalog_image
+                    - pim_catalog_boolean
+                    - pim_catalog_date
+                    - pim_catalog_metric
+                    - pim_reference_data_multiselect
+                    - pim_reference_data_simpleselect
+        unique:
+            - Type: bool
+            - NotNull: ~
+            - 'IsTrue':
+                message: This attribute type must be unique
+                groups:
+                    - pim_catalog_identifier
+            - 'IsFalse':
+                message: This attribute type can't have unique value
+                groups:
+                    - pim_catalog_textarea
+                    - pim_catalog_price_collection
+                    - pim_catalog_multiselect
+                    - pim_catalog_simpleselect
+                    - pim_catalog_image
+                    - pim_catalog_file
+                    - pim_catalog_metric
+                    - pim_catalog_boolean
+                    - pim_reference_data_multiselect
+                    - pim_reference_data_simpleselect
+        maxFileSize:
+            - Type: numeric
+            - Range:
+                min: 0.01
+                max: 9999.99
+                groups:
+                    - pim_catalog_file
+                    - pim_catalog_image
+            - IsNull:
+                groups:
+                    - pim_catalog_identifier
+                    - pim_catalog_text
+                    - pim_catalog_textarea
+                    - pim_catalog_number
+                    - pim_catalog_price_collection
+                    - pim_catalog_multiselect
+                    - pim_catalog_simpleselect
+                    - pim_catalog_boolean
+                    - pim_catalog_date
+                    - pim_catalog_metric
+                    - pim_reference_data_multiselect
+                    - pim_reference_data_simpleselect
+        dateMin:
+            - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Date: ~
+            - IsNull:
+                groups:
+                    - pim_catalog_identifier
+                    - pim_catalog_text
+                    - pim_catalog_textarea
+                    - pim_catalog_number
+                    - pim_catalog_price_collection
+                    - pim_catalog_multiselect
+                    - pim_catalog_simpleselect
+                    - pim_catalog_file
+                    - pim_catalog_image
+                    - pim_catalog_boolean
+                    - pim_catalog_metric
+                    - pim_reference_data_multiselect
+                    - pim_reference_data_simpleselect
+        dateMax:
+            - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Date: ~
+            - IsNull:
+                groups:
+                    - pim_catalog_identifier
+                    - pim_catalog_text
+                    - pim_catalog_textarea
+                    - pim_catalog_number
+                    - pim_catalog_price_collection
+                    - pim_catalog_multiselect
+                    - pim_catalog_simpleselect
+                    - pim_catalog_file
+                    - pim_catalog_image
+                    - pim_catalog_boolean
+                    - pim_catalog_metric
+                    - pim_reference_data_multiselect
+                    - pim_reference_data_simpleselect
+        validationRule:
+            - Choice:
+                choices: [url, email, regexp]
+                groups:
+                    - pim_catalog_text
+            - Choice:
+                choices: [regexp]
+                groups:
+                    - pim_catalog_identifier
+            - IsNull:
+                groups:
+                    - pim_catalog_textarea
+                    - pim_catalog_multiselect
+                    - pim_catalog_simpleselect
+                    - pim_catalog_price_collection
+                    - pim_catalog_number
+                    - pim_catalog_boolean
+                    - pim_catalog_date
+                    - pim_catalog_file
+                    - pim_catalog_image
+                    - pim_catalog_metric
+                    - pim_reference_data_multiselect
+                    - pim_reference_data_simpleselect
+        validationRegexp:
+            - Type: string
+            - IsNull:
+                groups:
+                    - pim_catalog_textarea
+                    - pim_catalog_multiselect
+                    - pim_catalog_simpleselect
+                    - pim_catalog_price_collection
+                    - pim_catalog_number
+                    - pim_catalog_boolean
+                    - pim_catalog_date
+                    - pim_catalog_file
+                    - pim_catalog_image
+                    - pim_catalog_metric
+                    - pim_reference_data_multiselect
+                    - pim_reference_data_simpleselect
+            - Akeneo\Pim\Structure\Component\Validator\Constraints\ValidRegex:
+                groups:
+                    - pim_catalog_text
+                    - pim_catalog_identifier
+        allowedExtensions:
+            - Blank:
+                groups:
+                    - pim_catalog_identifier
+                    - pim_catalog_text
+                    - pim_catalog_textarea
+                    - pim_catalog_multiselect
+                    - pim_catalog_simpleselect
+                    - pim_catalog_price_collection
+                    - pim_catalog_number
+                    - pim_catalog_boolean
+                    - pim_catalog_date
+                    - pim_catalog_metric
+                    - pim_reference_data_multiselect
+                    - pim_reference_data_simpleselect
+            - Akeneo\Pim\Structure\Component\Validator\Constraints\FileAllowedExtensions:
+                groups:
+                    - pim_catalog_file
+            - Akeneo\Pim\Structure\Component\Validator\Constraints\ImageAllowedExtensions:
+                groups:
+                    - pim_catalog_image
+        translations:
+            - Valid: ~
+        group:
+            - NotBlank: ~
+        numberMin:
+            - Type: numeric
+            - IsNull:
+                groups:
+                    - pim_catalog_identifier
+                    - pim_catalog_text
+                    - pim_catalog_textarea
+                    - pim_catalog_multiselect
+                    - pim_catalog_simpleselect
+                    - pim_catalog_file
+                    - pim_catalog_image
+                    - pim_catalog_boolean
+                    - pim_catalog_date
+                    - pim_reference_data_multiselect
+                    - pim_reference_data_simpleselect
+        numberMax:
+            - Type: numeric
+            - IsNull:
+                groups:
+                    - pim_catalog_identifier
+                    - pim_catalog_text
+                    - pim_catalog_textarea
+                    - pim_catalog_multiselect
+                    - pim_catalog_simpleselect
+                    - pim_catalog_file
+                    - pim_catalog_image
+                    - pim_catalog_boolean
+                    - pim_catalog_date
+                    - pim_reference_data_multiselect
+                    - pim_reference_data_simpleselect
+        metricFamily:
+            - Type: string
+            - IsNull:
+                groups:
+                    - pim_catalog_identifier
+                    - pim_catalog_text
+                    - pim_catalog_textarea
+                    - pim_catalog_multiselect
+                    - pim_catalog_simpleselect
+                    - pim_catalog_file
+                    - pim_catalog_image
+                    - pim_catalog_price_collection
+                    - pim_catalog_number
+                    - pim_catalog_boolean
+                    - pim_catalog_date
+                    - pim_reference_data_multiselect
+                    - pim_reference_data_simpleselect
+        defaultMetricUnit:
+            - Type: string
+            - IsNull:
+                groups:
+                    - pim_catalog_identifier
+                    - pim_catalog_text
+                    - pim_catalog_textarea
+                    - pim_catalog_multiselect
+                    - pim_catalog_simpleselect
+                    - pim_catalog_file
+                    - pim_catalog_image
+                    - pim_catalog_price_collection
+                    - pim_catalog_number
+                    - pim_catalog_boolean
+                    - pim_catalog_date
+                    - pim_reference_data_multiselect
+                    - pim_reference_data_simpleselect
+        availableLocales:
+            - Count:
+                min: 0
+                max: 0
+                exactMessage: This attribute cannot have available locales.
+                groups:
+                    - pim_catalog_identifier
+        guidelines:
+            - Type: array
+            - All:
+                - Type: string
+                - Length:
+                      max: 500
+    getters:
+        group:
+            - Valid: ~
+        guidelinesLocaleCodes:
+            - All:
+                - Akeneo\Channel\Infrastructure\Component\Validator\Constraint\Locale:
+                    propertyPath: guidelines
+
+Akeneo\Pim\Structure\Component\Model\AttributeTranslation:
+    properties:
+        label:
+            - Length:
+                max: 100
+                payload:
+                    standardPropertyName: labels
+        locale:
+            - Akeneo\Channel\Infrastructure\Component\Validator\Constraint\Locale:
+                payload:
+                    standardPropertyName: labels
+
+Akeneo\Pim\Structure\Component\Model\AttributeOption:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            - code
+            - attribute
+        - Akeneo\Pim\Structure\Component\Validator\Constraints\AttributeTypeForOption:
+            payload:
+              standardPropertyName: attribute
+        - Akeneo\Tool\Component\StorageUtils\Validator\Constraints\Immutable:
+            properties:
+                - code
+                - attribute
+    properties:
+        code:
+            - NotBlank: ~
+            - Regex:
+                pattern: /^[a-zA-Z0-9_]+$/
+                message: Option code may contain only letters, numbers and underscores
+            - Length:
+                max: 100
+        attribute:
+            - NotBlank: ~
+            - Valid: ~
+        optionValues:
+            - Valid: ~

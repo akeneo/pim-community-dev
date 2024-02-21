@@ -1,0 +1,24 @@
+pim_connector:
+  steps:
+    file_reader:
+      invalid_item_columns_count: 'Erwartet wurden %totalColumnsCount% Spalten, tatsächlich vorhanden sind %itemColumnsCount% in %filePath%:%lineno%'
+job_execution.summary:
+  read: gelesen
+  write: geschrieben
+  skip: übersprungen
+  create: erstellt
+  process: verarbeitet
+  update: aktualisiert
+  update_products: aktualisierte Produkte
+  process_products: verarbeitete Produkte
+  skip_products: übersprungene Produkte
+  displayed: Die ersten Warnungen angezeigt
+  charset_validator:
+    title: 'Zeichenkodierung der Datei:'
+    skipped: übersprungen, Erweiterung in der Whitelist
+  product_skipped_no_diff: Übersprungenes Produkt (keine Unterschiede)
+  product_skipped_no_associations: Produkt übersprungen (keine Verbindungen vorhanden)
+  product_model_skipped_no_diff: Produktmodell übersprungen (keine Unterschiede)
+  item_position: gelesene Zeilen
+  skipped_in_root_product_model: Produktmodell mit übergeordneter Ebene übersprungen
+  skipped_in_sub_product_model: Produktmodell ohne übergeordnete Ebene übersprungen

@@ -1,0 +1,60 @@
+framework:
+    messenger:
+        transports:
+            webhook:
+                dsn: doctrine://default
+                options:
+                    table_name: messenger_messages
+                    queue_name: default
+                    redeliver_timeout: 3600
+                    auto_setup: false
+                serializer: pim_enrich.messenger.serializer.business_event
+            ui_job:
+                dsn: doctrine://default
+                options:
+                    table_name: messenger_messages
+                    queue_name: ui_job
+                    redeliver_timeout: 86400
+                    auto_setup: false
+                serializer: akeneo_batch_queue.messenger.serializer
+            import_export_job:
+                dsn: doctrine://default
+                options:
+                    table_name: messenger_messages
+                    queue_name: import_export_job
+                    redeliver_timeout: 86400
+                    auto_setup: false
+                serializer: akeneo_batch_queue.messenger.serializer
+            data_maintenance_job:
+                dsn: doctrine://default
+                options:
+                    table_name: messenger_messages
+                    queue_name: data_maintenance_job
+                    redeliver_timeout: 86400
+                    auto_setup: false
+                serializer: akeneo_batch_queue.messenger.serializer
+            scheduled_job:
+                dsn: doctrine://default
+                options:
+                    table_name: messenger_messages
+                    queue_name: scheduled_job
+                    redeliver_timeout: 86400
+                    auto_setup: false
+                serializer: akeneo_batch_queue.messenger.serializer
+            paused_job:
+                dsn: doctrine://default
+                options:
+                    table_name: messenger_messages
+                    queue_name: paused_job
+                    redeliver_timeout: 86400
+                    auto_setup: false
+                serializer: akeneo_batch_queue.messenger.serializer
+        routing:
+            'Akeneo\Platform\Component\EventQueue\Event': webhook
+            'Akeneo\Platform\Component\EventQueue\BulkEvent': webhook
+            'Akeneo\Tool\Component\BatchQueue\Queue\UiJobExecutionMessage': ui_job
+            'Akeneo\Tool\Component\BatchQueue\Queue\ImportJobExecutionMessage': import_export_job
+            'Akeneo\Tool\Component\BatchQueue\Queue\ExportJobExecutionMessage': import_export_job
+            'Akeneo\Tool\Component\BatchQueue\Queue\DataMaintenanceJobExecutionMessage': data_maintenance_job
+            'Akeneo\Tool\Component\BatchQueue\Queue\ScheduledJobMessage': scheduled_job
+            'Akeneo\Tool\Component\BatchQueue\Queue\PausedJobExecutionMessage': paused_job

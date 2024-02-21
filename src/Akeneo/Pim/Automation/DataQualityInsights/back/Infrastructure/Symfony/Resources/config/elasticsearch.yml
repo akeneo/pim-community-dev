@@ -1,0 +1,75 @@
+services:
+    akeneo.pim.automation.data_quality_insights.elasticsearch.bulk_update_product_quality_scores_index:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\BulkUpdateProductQualityScoresIndex
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductScoresQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductModelScoresQuery'
+            - '@akeneo.pim.automation.data_quality_insights.compute_products_key_indicators'
+            - 'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface'
+
+    akeneo.pim.automation.data_quality_insights.elasticsearch.bulk_update_product_model_quality_scores_index:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\BulkUpdateProductQualityScoresIndex
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductScoresQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductModelScoresQuery'
+            - '@akeneo.pim.automation.data_quality_insights.compute_product_models_key_indicators'
+            - 'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\GetDataQualityInsightsPropertiesForProductProjection:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductScoresQuery'
+            - '@akeneo.pim.automation.data_quality_insights.compute_products_key_indicators'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory'
+        tags:
+            - { name: 'akeneo.pim.enrichment.product.query.indexing_additional_properties' }
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\GetDataQualityInsightsPropertiesForProductModelProjection:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductModelScoresQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEnrichment\GetProductModelIdsFromProductModelCodesQuery'
+            - '@akeneo.pim.automation.data_quality_insights.compute_product_models_key_indicators'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductModelIdFactory'
+        tags:
+            - { name: 'akeneo.pim.enrichment.product_model.query.indexing_additional_properties' }
+
+    akeneo.pim.automation.data_quality_insights.elasticsearch.get_updated_product_ids_query:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Query\GetUpdatedEntityIdsQuery
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+            - 'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory'
+
+    akeneo.pim.automation.data_quality_insights.elasticsearch.get_updated_product_model_ids_query:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Query\GetUpdatedEntityIdsQuery
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+            - 'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductModelIdFactory'
+
+    akeneo.pim.automation.data_quality_insights.infrastructure.elasticsearch.query.get_product_key_indicators_query:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Query\GetProductKeyIndicatorsQuery
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+            - '@pim_catalog.repository.category'
+            - 'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface'
+
+    akeneo.pim.automation.data_quality_insights.infrastructure.elasticsearch.query.get_product_model_key_indicators_query:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Query\GetProductKeyIndicatorsQuery
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+            - '@pim_catalog.repository.category'
+            - 'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Filter\QualityScoreMultiLocalesFilter:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\GetScoresPropertyStrategy'
+        tags:
+            - { name: pim_catalog.elasticsearch.query.product_filter, priority: 30 }
+            - { name: pim_catalog.elasticsearch.query.product_and_product_model_filter, priority: 30 }
+            - { name: pim_catalog.elasticsearch.query.product_model_filter, priority: 30 }
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\GetScoresPropertyStrategy:
+        arguments:
+            - '@akeneo.pim.automation.data_quality_insights.all_criteria.feature'

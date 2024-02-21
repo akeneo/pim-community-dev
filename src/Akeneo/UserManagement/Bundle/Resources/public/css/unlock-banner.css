@@ -1,0 +1,18 @@
+.IllustrationLogin.UnlockBanner--enabled {
+    background-image: url('/bundles/pimui/images/illustrations/login/Unlock-Paris-2023-Product-Log-in.png');
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.UnlockBanner--enabled a {
+    display: block;
+    cursor: pointer;
+    width: 600px;
+    height: 600px;
+
+    /* hide content text */
+    white-space: nowrap;
+    outline: none;
+    text-indent: -9999px;
+}

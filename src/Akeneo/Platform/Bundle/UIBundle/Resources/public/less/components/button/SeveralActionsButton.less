@@ -1,0 +1,88 @@
+@import '../../base/variables';
+
+.AknSeveralActionsButton {
+  @radius: 100px;
+
+  display: flex;
+  text-transform: none;
+
+  &-mainAction, &-caretContainer {
+    height: @AknDefaultButtonSize;
+    line-height: @AknDefaultButtonSize;
+    font-size: @AknFontSizeBig;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+
+  &-mainAction {
+    background: @AknGrey;
+    border-top-left-radius: @radius;
+    border-bottom-left-radius: @radius;
+    padding: 0 @AknButtonsPadding;
+    text-transform: uppercase;
+  }
+
+  &-caretContainer {
+    width: @AknDefaultButtonSize;
+    background: darken(@AknGrey, 10%);
+    border-top-right-radius: @radius;
+    border-bottom-right-radius: @radius;
+    text-align: center;
+    padding: 0;
+  }
+
+  &-caret {
+    width: 22px;
+    margin: 5px;
+  }
+
+  &-menu {
+    margin-top: @AknDefaultButtonSize;
+  }
+
+  &--apply &-mainAction {
+    background-color: @AknGreen;
+    color: white;
+
+    &:hover {
+      background-color: darken(@AknGreen, 10%);
+      color: white;
+    }
+  }
+
+  &--apply &-caretContainer {
+    background: darken(@AknGreen, 10%);
+  }
+
+  &--action &-mainAction {
+    background-color: @AknBlue;
+    color: white;
+
+    &:hover {
+      background-color: darken(@AknBlue, 10%);
+      color: white;
+    }
+  }
+
+  &--action &-caretContainer {
+    background: darken(@AknBlue, 10%);
+  }
+
+  &--small &-mainAction {
+    height: @AknLittleButtonSize;
+    line-height: @AknLittleButtonSize;
+    font-size: @AknDefaultFontSize;
+  }
+
+  &--small &-caretContainer {
+    height: @AknLittleButtonSize;
+    width: @AknLittleButtonSize;
+    line-height: @AknLittleButtonSize;
+    font-size: @AknDefaultFontSize;
+  }
+
+  &--small &-menu {
+    margin-top: @AknLittleButtonSize;
+  }
+}

@@ -1,0 +1,28 @@
+"oro_datagrid.no_data_hint %entityHint%": Ne postoji %entityHint%.
+oro_datagrid.label_add_filter: Upravljanje filtrima
+oro_datagrid.label_loading_mask: Učitavanje . . .
+oro.grid.mass_action.selected_rows: Odabrani retci
+oro.grid.mass_action.confirm_title: Potvrda masovne akcije
+oro.grid.mass_action.confirm_content: Da li ste sigurni da želite to napraviti?
+oro.grid.mass_action.confirm_ok: Da, uradi
+oro.grid.mass_action.error_title: Greška masovne akcije
+oro.grid.mass_action.error_content: Masovna akcija se ne može izvršiti
+oro.grid.mass_action.delete.label: Obriši
+oro.grid.mass_action.delete.confirm_title: Potvrda masovne akcije
+oro.grid.mass_action.delete.confirm_content: Da li ste sigurni da želite ukloniti odabrane stavke?
+oro.grid.datagrid.page_size.all: Sve
+oro.grid.mass_action.delete.success_message: "{0} niti jedan entitet nije uklonjen|{1} jedan entitet je uklonjen|] 1, Inf [%count% entiteta je uklonjeno"
+datagrid_view:
+  columns:
+    min_message: Odaberi barem jedan stupac u prikazu tablice
+  label:
+    unique_message: Oznaka mora biti jedinstvena
+    not_blank_message: Oznaka ne smije biti prazna
+grid.view_selector.flash:
+  created: Prikaz tablice je uspješno kreiran
+  removed: Prikaz tablice je uspješno uklonjen
+  not_removable: Nemate prava da uklonite ovaj prikaz
+quick_export: Brzi izvoz
+import: Uvoz
+export: Izvoz
+mass_edit: Masovno uređivanje

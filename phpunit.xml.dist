@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+    backupGlobals="false"
+    backupStaticAttributes="false"
+    colors="true"
+    convertErrorsToExceptions="true"
+    convertNoticesToExceptions="true"
+    convertWarningsToExceptions="true"
+    processIsolation="false"
+    stopOnFailure="false"
+    beStrictAboutTestsThatDoNotTestAnything="false"
+    bootstrap="config/bootstrap.php">
+
+    <php>
+        <ini name="date.timezone" value="Europe/Paris"/>
+        <ini name="intl.default_locale" value="en"/>
+        <ini name="intl.error_level" value="0"/>
+        <ini name="memory_limit" value="-1"/>
+        <ini name="zend.enable_gc" value="1"/>
+        <server name="KERNEL_CLASS" value="Kernel" force="true" />
+    </php>
+
+    <groups>
+        <exclude>
+            <group>skip</group>
+        </exclude>
+    </groups>
+
+    <testsuites>
+        <testsuite name="PIM_Integration_Test">
+            <directory suffix="Integration.php">src</directory>
+            <directory suffix="Integration.php">tests</directory>
+        </testsuite>
+
+        <testsuite name="PIM_Migration_Test">
+            <directory suffix="Integration.php">upgrades/test_schema</directory>
+        </testsuite>
+
+        <testsuite name="Akeneo_Connectivity_Connection_Integration">
+            <directory suffix="Integration.php">src/Akeneo/Connectivity/Connection/back/tests/Integration</directory>
+        </testsuite>
+
+        <testsuite name="Akeneo_FileStorage_Integration">
+            <directory suffix="Integration.php">src/Akeneo/Tool/Bundle/FileStorageBundle/tests/Integration</directory>
+        </testsuite>
+
+        <testsuite name="Akeneo_Measurement_Integration">
+            <directory suffix="Integration.php">src/Akeneo/Tool/Bundle/MeasureBundle/back/tests/Integration</directory>
+        </testsuite>
+
+        <testsuite name="Akeneo_Measurement_Acceptance">
+            <directory suffix="Test.php">src/Akeneo/Tool/Bundle/MeasureBundle/back/tests/Acceptance</directory>
+        </testsuite>
+
+        <testsuite name="Akeneo_Measurement_EndToEnd">
+            <directory suffix="EndToEnd.php">src/Akeneo/Tool/Bundle/MeasureBundle/back/tests/EndToEnd</directory>
+        </testsuite>
+
+        <testsuite name="Akeneo_Connectivity_Connection_EndToEnd">
+            <directory suffix="EndToEnd.php">src/Akeneo/Connectivity/Connection/back/tests/EndToEnd</directory>
+        </testsuite>
+
+        <testsuite name="Akeneo_Communication_Channel_Integration">
+            <directory suffix="Integration.php">src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests/Integration</directory>
+        </testsuite>
+
+        <testsuite name="Data_Quality_Insights">
+            <directory suffix="Integration.php">src/Akeneo/Pim/Automation/DataQualityInsights/tests/back/Integration</directory>
+            <directory suffix="EndToEnd.php">src/Akeneo/Pim/Automation/DataQualityInsights/tests/back/EndToEnd</directory>
+        </testsuite>
+
+        <testsuite name="Batch_Queue_Acceptance">
+            <directory suffix="Test.php">src/Akeneo/Tool/Bundle/BatchQueueBundle/tests/Acceptance</directory>
+        </testsuite>
+
+        <testsuite name="End_to_End">
+            <directory suffix="EndToEnd.php">tests/back</directory>
+            <directory suffix="EndToEnd.php">src</directory>
+        </testsuite>
+
+        <testsuite name="OroSecurityBundle">
+            <file>src/Oro/Bundle/SecurityBundle/Tests/Unit/Acl/Dbal/MutableAclProviderTest.php</file>
+        </testsuite>
+
+        <testsuite name="Enrichment_Product">
+            <directory suffix="Integration.php">src/Akeneo/Pim/Enrichment/Product/back/Test/Integration</directory>
+        </testsuite>
+
+        <testsuite name="Category">
+            <directory suffix="Integration.php">src/Akeneo/Category/back/tests/Integration</directory>
+        </testsuite>
+
+        <testsuite name="Identifier_Generator_PhpUnit">
+            <directory suffix="EndToEnd.php">components/identifier-generator/back/tests/EndToEnd</directory>
+            <directory suffix="Integration.php">components/identifier-generator/back/tests/Integration</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>

@@ -1,0 +1,193 @@
+liip_imagine:
+    driver: imagick
+    data_loader: flysystem_data_loader
+    resolvers:
+        category_flysystem_cache:
+            flysystem:
+                filesystem_service: oneup_flysystem.category_storage_filesystem
+                root_url: "__root__"
+                cache_prefix: thumbnail/category
+                visibility: private
+    filter_sets:
+        cache: ~
+
+        avatar_med:
+            quality:          95
+            format:           png
+            filters:
+                icc_strip: ~
+                thumbnail:    { size: [58, 58], mode: outbound }
+
+        preview:
+            quality:          95
+            format:           jpg
+            filters:
+                icc_strip: ~
+                background:
+                    color: "#ffffff"
+
+        thumbnail:
+            quality:          95
+            format:           png
+            filters:
+                icc_strip: ~
+                thumbnail:    { size: [320, 320], mode: inset }
+                auto_rotate: ~
+
+        thumbnail_small:
+            quality:          95
+            format:           png
+            filters:
+                icc_strip: ~
+                auto_rotate: ~
+                thumbnail:    { size: [280, 280], mode: inset }
+
+        dropdown_select_picture:
+            quality:          95
+            format:           png
+            filters:
+                icc_strip: ~
+                thumbnail:    { size: [28, 28], mode: outbound }
+
+        pdf_thumbnail:
+            quality:          95
+            format:           png
+            filters:
+                icc_strip: ~
+                downscale: { max: [320, 240] }
+
+        am_url_image_preview:
+            cache: asset_manager_flysystem_cache
+            quality:          95
+            format:           jpg
+            data_loader:      stream_data_loader
+            filters:
+                icc_strip: ~
+                thumbnail:    { size: [1000, 1000], mode: inset }
+                background:
+                    color: "#ffffff"
+
+        am_url_image_thumbnail:
+            cache: asset_manager_flysystem_cache
+            quality:          95
+            format:           jpg
+            data_loader:      stream_data_loader
+            filters:
+                icc_strip: ~
+                thumbnail:    { size: [320, 320], mode: inset }
+                background:
+                    color: "#ffffff"
+
+        am_url_image_thumbnail_small:
+            cache: asset_manager_flysystem_cache
+            quality:          95
+            format:           jpg
+            data_loader:      stream_data_loader
+            filters:
+                icc_strip: ~
+                thumbnail:    { size: [128, 128], mode: inset }
+                background:
+                    color: "#ffffff"
+
+        am_binary_image_preview:
+            cache: asset_manager_flysystem_cache
+            quality:          95
+            format:           jpg
+            data_loader:      flysystem_asset_manager_data_loader
+            filters:
+                icc_strip: ~
+                thumbnail:    { size: [1000, 1000], mode: inset }
+                background:
+                    color: "#ffffff"
+
+        am_binary_image_thumbnail:
+            cache: asset_manager_flysystem_cache
+            quality:          95
+            format:           jpg
+            data_loader:      flysystem_asset_manager_data_loader
+            filters:
+                icc_strip: ~
+                thumbnail:    { size: [320, 320], mode: inset }
+                background:
+                    color: "#ffffff"
+
+        am_binary_image_preview_category:
+            cache: category_flysystem_cache
+            quality: 95
+            format: jpg
+            data_loader: flysystem_category_data_loader
+            filters:
+                icc_strip: ~
+                thumbnail: { size: [ 1000, 1000 ], mode: inset }
+                background:
+                    color: "#ffffff"
+
+        am_binary_image_thumbnail_category:
+            cache: category_flysystem_cache
+            quality: 95
+            format: jpg
+            data_loader: flysystem_category_data_loader
+            filters:
+                icc_strip: ~
+                thumbnail: { size: [ 320, 320 ], mode: inset }
+                background:
+                    color: "#ffffff"
+
+        am_binary_image_thumbnail_small_category:
+            cache: category_flysystem_cache
+            quality: 95
+            format: jpg
+            data_loader: flysystem_category_data_loader
+            filters:
+                icc_strip: ~
+                thumbnail: { size: [ 280, 280 ], mode: inset }
+                background:
+                    color: "#ffffff"
+
+        am_url_pdf_preview:
+            cache: asset_manager_flysystem_cache
+            quality:          95
+            format:           jpg
+            data_loader:      stream_pdf_loader
+            filters:
+                icc_strip: ~
+                thumbnail:    { size: [1000, 1000], mode: inset }
+                background:
+                    color: "#ffffff"
+
+        am_url_pdf_thumbnail:
+            cache: asset_manager_flysystem_cache
+            quality:          95
+            format:           jpg
+            data_loader:      stream_pdf_loader
+            filters:
+                icc_strip: ~
+                thumbnail:    { size: [320, 320], mode: inset }
+                background:
+                    color: "#ffffff"
+
+        am_binary_pdf_preview:
+            cache: asset_manager_flysystem_cache
+            quality:          95
+            format:           jpg
+            data_loader:      flysystem_pdf_loader
+            filters:
+                icc_strip: ~
+                thumbnail:    { size: [1000, 1000], mode: inset }
+                background:
+                    color: "#ffffff"
+
+        am_binary_pdf_thumbnail:
+            cache: asset_manager_flysystem_cache
+            quality:          95
+            format:           jpg
+            data_loader:      flysystem_pdf_loader
+            filters:
+                icc_strip: ~
+                thumbnail:    { size: [320, 320], mode: inset }
+                background:
+                    color: "#ffffff"
+
+services:
+    liip_imagine.extension_guesser:
+        alias: "mime_types"

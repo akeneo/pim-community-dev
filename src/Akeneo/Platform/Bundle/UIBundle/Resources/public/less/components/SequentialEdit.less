@@ -1,0 +1,45 @@
+@import '../base/variables';
+
+.AknSequentialEdit {
+  align-items: center;
+  color: @AknGrey;
+  display: flex;
+  justify-content: center;
+
+  &-progress {
+    flex-basis: 50%;
+    margin: 10px;
+    line-height: @AknMicroButtonSize;
+    background-color: @AknLightGray;
+  }
+
+  &-previous,
+  &-next {
+    margin: 10px;
+    display: flex;
+    align-items: center;
+    color: @AknGrey;
+    line-height: @AknMicroButtonSize;
+    cursor: pointer;
+  }
+
+  &-previous:before, &-next:after {
+    width: 25px;
+    height: 25px;
+    display: block;
+    content: "";
+    cursor: default;
+  }
+
+  &-previous:before {
+    margin-right: 10px;
+    background: url("/bundles/pimui/images/icon-down.svg") no-repeat;
+    transform: rotate(90deg);
+  }
+
+  &-next:after {
+    margin-left: 10px;
+    background: url("/bundles/pimui/images/icon-down.svg") no-repeat;
+    transform: rotate(-90deg);
+  }
+}

@@ -1,0 +1,9 @@
+pim_dashboard:
+  title: Панель действий
+  welcome_sentence:
+    message1: Приятно видеть вас.
+  widget:
+    completeness:
+      load_more: 'Загрузить больше...'
+pim_title:
+  pim_dashboard_index: Панель управления

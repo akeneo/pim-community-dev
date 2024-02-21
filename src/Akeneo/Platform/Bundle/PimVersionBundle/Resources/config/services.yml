@@ -1,0 +1,33 @@
+services:
+    pim_catalog.version_provider:
+        class: 'Akeneo\Platform\Bundle\PimVersionBundle\VersionProvider'
+        public: true
+        arguments:
+            - !tagged_iterator pim_version
+            - '%env(string:PIM_EDITION)%'
+            - '%version_file_folder_location%'
+
+    Akeneo\Platform\Bundle\PimVersionBundle\Version\CommunityVersion:
+        public: true
+        tags:
+            - 'pim_version'
+
+    Akeneo\Platform\Bundle\PimVersionBundle\Version\GrowthVersion:
+        public: true
+        tags:
+            - 'pim_version'
+
+    Akeneo\Platform\Bundle\PimVersionBundle\Version\SerenityVersion:
+        public: true
+        tags:
+            - 'pim_version'
+
+    Akeneo\Platform\Bundle\PimVersionBundle\Version\FreeTrialVersion:
+        public: true
+        tags:
+            - 'pim_version'
+
+    Akeneo\Platform\Bundle\PimVersionBundle\Version\FlexibilityVersion:
+        public: true
+        tags:
+            - 'pim_version'

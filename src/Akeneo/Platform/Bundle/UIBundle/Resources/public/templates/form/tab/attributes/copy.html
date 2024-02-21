@@ -1,0 +1,21 @@
+<% if (copying) { %>
+    <div data-drop-zone="context-selectors" class="AknButtonList AknAttributeActions-contextSelectors context-selectors"></div>
+    <div data-drop-zone="other-actions" class="AknAttributeActions-otherActions AknButtonList AknButtonList--right other-actions">
+        <div data-drop-zone="copy-actions" class="AknButtonList AknButtonList--right copy-actions">
+            <div class="AknDropdown AknButtonList-item selection-dropdown">
+                <a class="AknActionButton AknActionButton--withoutBorder" data-toggle="dropdown">
+                    <span class="AknActionButton-highlight"><%- _.__('pim_enrich.entity.product.module.copy.select') %></span>
+                    <span class="AknActionButton-caret"></span>
+                </a>
+                <ul class="AknDropdown-menu AknDropdown-menu--right">
+                    <li class="AknDropdown-menuTitle"><%- _.__('pim_enrich.entity.product.module.copy.select') %></li>
+                    <li><a class="AknDropdown-menuLink select-all"><%- _.__('pim_common.all') %></a></li>
+                    <li><a class="AknDropdown-menuLink select-all-visible"><%- _.__('pim_enrich.entity.product.module.copy.all_visible') %></a></li>
+                    <li><a class="AknDropdown-menuLink select-none"><%- _.__('pim_common.none') %></a></li>
+                </ul>
+            </div>
+            <div class="AknButtonList-item AknButton AknButton--small AknButton--apply copy"><%- _.__('pim_enrich.entity.product.module.copy.copy') %></div>
+            <div class="AknButtonList-item AknAttributeActions-close AknIconButton--delete stop-copying"></div>
+        </div>
+    </div>
+<% } %>

@@ -1,0 +1,12 @@
+oneup_flysystem:
+    adapters:
+        catalog_storage_adapter:
+            memory: ~
+        jobs_storage_adapter:
+            memory: ~
+        archivist_adapter:
+            memory: ~
+        category_storage_adapter:
+            memory: ~
+        local_storage_adapter:
+            memory: ~

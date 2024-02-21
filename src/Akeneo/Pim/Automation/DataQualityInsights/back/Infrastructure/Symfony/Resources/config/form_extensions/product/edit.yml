@@ -1,0 +1,32 @@
+extensions:
+    pim-product-edit-form-data-quality-insights-tab-content:
+        module: akeneo/data-quality-insights/infrastructure/product-edit-form/data-quality-insights-tab-content
+        parent: pim-product-edit-form-column-tabs
+        targetZone: container
+        position: 101
+        feature: data_quality_insights
+
+    pim-product-edit-form-data-quality-insights-app:
+        module: akeneo/data-quality-insights/infrastructure/product-edit-form/data-quality-insights-app
+        parent: pim-product-edit-form
+        targetZone: content
+        position: 110
+        feature: data_quality_insights
+
+    pim-product-edit-form-attribute-filter-all-missing-attributes:
+        module: pim/product-edit-form/attribute-filter-all-missing-attributes
+        parent: pim-product-edit-form-attribute-filter
+        position: 130
+        feature: data_quality_insights
+
+    pim-product-edit-form-attributes-tab-content:
+        module: akeneo/data-quality-insights/infrastructure/product-edit-form/attributes-tab-content
+        parent: pim-product-edit-form-attributes
+        position: 100
+        feature: data_quality_insights
+
+    pim-product-edit-form-data-quality-insights-product-quality-score:
+        module: akeneo/data-quality-insights/infrastructure/product-edit-form/product-quality-score
+        parent: pim-product-edit-form
+        targetZone: meta
+        position: 90

@@ -1,0 +1,28 @@
+services:
+    pim_connector.archiver.invalid_item_csv_writer:
+        class: 'Akeneo\Tool\Component\Connector\Archiver\CsvInvalidItemWriter'
+        arguments:
+            - '@pim_connector.event_listener.invalid_items_collector'
+            - '@pim_connector.writer.file.invalid_items_csv'
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@oneup_flysystem.local_storage_filesystem'
+            - '@oneup_flysystem.archivist_filesystem'
+            - '@pim_connector.job.job_parameters.default_values_provider.product_csv_export'
+            - '@akeneo_batch.job.job_registry'
+            - 'csv'
+        tags:
+            - { name: pim_connector.archiver }
+
+    pim_connector.archiver.invalid_item_xlsx_writer:
+        class: 'Akeneo\Tool\Component\Connector\Archiver\XlsxInvalidItemWriter'
+        arguments:
+            - '@pim_connector.event_listener.invalid_items_collector'
+            - '@pim_connector.writer.file.invalid_items_xlsx'
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@oneup_flysystem.local_storage_filesystem'
+            - '@oneup_flysystem.archivist_filesystem'
+            - '@pim_connector.job.job_parameters.default_values_provider.product_xlsx_export'
+            - '@akeneo_batch.job.job_registry'
+            - 'xlsx'
+        tags:
+            - { name: pim_connector.archiver }

@@ -1,0 +1,51 @@
+datagrid:
+    translatable-entity-grid:
+        options:
+            locale_parameter: localeCode
+        source:
+            type: pim_datasource_default
+            repository_method: createDatagridQueryBuilder
+        columns:
+            code:
+                label: Code
+            label:
+                label: Label
+        properties:
+            id: ~
+            edit_link:
+                type: url
+                params:
+                    - id
+            delete_link:
+                type: url
+                params:
+                    - id
+        actions:
+            edit:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--edit
+                type:      navigate
+                label:     pim_common.edit
+                link:      edit_link
+                rowAction: true
+            delete:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--trash
+                type:  delete
+                label: pim_common.delete
+                link:  delete_link
+        sorters:
+            columns:
+                label:
+                    data_name: label
+            default:
+                code: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
+        filters:
+            columns:
+                code:
+                    type:  string
+                    label: Code
+                label:
+                    type: string
+                    label: Label
+                    data_name: translation.label

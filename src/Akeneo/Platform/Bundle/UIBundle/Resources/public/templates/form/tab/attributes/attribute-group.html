@@ -1,0 +1,11 @@
+<header class="AknSubsection-title">
+    <span class="group-label"><%- label %></span>
+    <% if (0 < fieldCollection.toFill) { %>
+        <span class="required-attribute-indicator" data-group="<%- fieldCollection.attributeGroup.code %>">
+            <span class="AknSubsection-comment AknSubsection-comment--clickable">
+                <span class="AknBadge AknBadge--small AknBadge--highlight"></span>
+                <%- __('pim_enrich.entity.product.module.attribute.to_fill_count', {count: fieldCollection.toFill}, fieldCollection.toFill) %>
+            </span>
+        </span>
+    <% } %>
+</header>

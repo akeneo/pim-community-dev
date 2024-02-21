@@ -1,0 +1,39 @@
+pim_enrich:
+  #Attribute
+  attribute:
+    tab:
+      parameter.title: Mga parameter
+      value.title: Mga halaga
+      history.title: Kasaysayan
+  #Family
+  family:
+    info:
+      cant_remove_attribute_used_as_axis: Hindi maaaring alisin ang katangiang ito na ginagamit bilang isang baryanteng aksis sa isang pamilyang baryante
+  #Group type
+  group_type:
+    tab:
+      property.title: Mga ari-arian
+  #Mass edit operations
+  mass_edit_action:
+    family:
+      page_title: Mga pamilya
+      page_subtitle: Maramihang Pamamatnugot (1 pamilya)|Maramihang Pamamatnugot (%count% mga pamilya)
+      title: Pumili ng operasyon
+      subtitle: Pumili ng operasyong nais mong gawin sa napiling pamilya|Pumili ng operasyong nais mong gawin sa mga napiling %count% na pamilya
+      confirm: Ikaw ay malapit ng mag-update ng pamilya na may mga sumusunod na impormasyon, mangyaring kumpirmahin.|Ikaw ay malapit ng mag-update ng %count% na mga pamilya na may mga sumusunod na impormasyon, mangyaring kumpirmahin.
+      steps:
+        first: Pumili ka ng mga pamilya
+        second: Pumili ng operaston
+        third: Ikompigura
+        fourth: Kumpirmahin
+pim_enrich_attribute_form:
+  code: Kodigo
+  type: Uri ng katangian
+  reference_data_name: Pangalan ng reperens na datos
+  scopable: Halaga bawat channel
+  localizable: Halaga bawat pinagmulan
+  unique: Natatanging halaga
+  availableLocales: Mga lokal na bukas
+  locale_specific: Espesipikong lokal
+  group: Gropong katangian
+  useableAsGridFilter: Magagamit sa grid

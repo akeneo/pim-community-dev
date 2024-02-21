@@ -1,0 +1,129 @@
+An identifier attribute already exists.: 識別子の項目は既に存在します。
+Attribute code may contain only letters, numbers and underscore: 属性コードに利用できるのは半角英数字とアンダースコアのみです
+Attribute code may contain only letters (at least one), numbers and underscores: 属性コードは、文字(少なくとも1つ)、数字およびアンダースコアのみを含めることができます。
+Attribute code may not contain line-feed characters: 属性コードに改行文字を含めることはできません
+Attribute group code may contain only letters, numbers and underscores: 属性グループコードに利用できるのは半角英数字とアンダースコアのみです
+This attribute type can't be used as a grid filter: この属性タイプはグリッドのフィルターとして使用できません
+This code is not available: このコードは使用できません
+This attribute type must be required: この属性タイプは必須です
+This attribute type can't be required: この属性タイプは必須にできません
+This attribute type can't have unique value: この属性タイプは固有値を持つことができません
+No default value may be specified for this attribute type: この属性タイプにはデフォルト値を指定できない場合があります
+This value should be Yes or No: この値はYesまたはNoでなければなりません
+This value should not be blank: この値は空白にできません
+Option code may contain only letters, numbers and underscores: オプションコードに利用できるのは半角英数字とアンダースコアのみです
+Option code may contain only letters (at least one), numbers and underscores: オプションコードに利用できるのは、文字(少なくとも一つ)、数字およびアンダースコアのみです
+This value should not be a decimal.: この値に少数は利用できません。
+"The %attribute% attribute requires a non-decimal value, and %value% is not a valid value.": '%attribute% 属性には非小数点数が必要ですが、%value% は有効な値ではありません。'
+'The file extension is not allowed (allowed extensions: %extensions%).': 'この拡張子は許可されていません (利用できる拡張子: %extensions%)。'
+"The {{ attribute_code }} attribute can not have the same value more than once. The {{ value }} value is already set on another product.": '{{ attribute_code }} 属性に同じ値を 2 回以上使用することはできません。{{ value }} 値は別の商品にすでに設定されています。'
+The same identifier is already set on another product: この識別子は別の商品に設定済です
+regex.comma_or_semicolon_or_surrounding_space.message: このフィールドではコンマ、セミコロン、行頭/行末の空白を使用できません
+regex.line_break.message: このフィールドには改行を使用できません
+file.extensions.message: 'このファイル拡張子は許可されていません (利用できる拡張子: %extensions%)'
+"This type of value expects the use of {{ decimal_separator }} to separate decimals.": この型の値は少数を分割するために{{ decimal_separator }} の使用を求めています
+"This type of value expects the use of dot (.) to separate decimals.": この型の値は少数を分割するためにドット(.) の使用を求めています
+"This type of value expects the use of comma (,) to separate decimals.": この型の値は少数を分割するためにコンマ(,) の使用を求めています
+"This type of value expects the use of arabic decimal separator (٫) to separate decimals.": この型の値は少数を分割するためにアラビア小数点記号(٫) の使用を求めています
+"This type of value expects the use of the format {{ date_format }} for dates.": この型の値は日付表示のためにフォーマット{{ date_format }} の使用を求めています
+"The category \"%category%\" has to be a root category.": カテゴリ「%category%」は、ルートカテゴリでなければなりません。
+"The attribute \"%attributeCode%\" does not exist.": 属性「%attributeCode%」は存在しません。
+"The attribute \"%attributeCode%\" is not a metric attribute.": 属性「%attributeCode%」は測定の属性ではありません。
+"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": 単位「%unitCode%」が存在しないか、この単位は指定の属性「%attributeCode%」の既定の測定ファミリーに属していません。
+"The currency \"%currency%\" has to be activated.": 通貨「%currency%」を、アクティブにしてください。
+product_model.code.not_blank.message: 商品モデルコードは空白にできません
+product_model.code.unique.message: 同じコードが、既に別の商品モデルに設定してあります。
+product_model.family_variant.not_blank.message: 商品モデルのファミリーバリアントは空にしないでください
+"The %attribute% attribute requires a string, a %givenType% was detected.": '%attribute% 属性には文字列が必要ですが、%givenType% が検出されました。'
+"The {{ attribute_code }} attribute requires a date that should be {{ limit }} or after.": '{{ attribute_code }} 属性には {{ limit }} 以降の日付が必要です。'
+"The {{ attribute_code }} attribute requires a date that should be {{ limit }} or before.": '{{ attribute_code }} 属性には {{ limit }} 以前の日付が必要です。'
+"The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.": '{{ attribute }} 属性には数値が必要ですが、送信された {{ value }} 値は数値ではありません。'
+"The {{ attribute }} attribute requires a value which does not contain space, and the submitted \"{{ value }}\" has at least one.": '{{ attribute }} 属性にはスペースを含まない値が必要です。送信された「{{ value }}」には少なくとも 1 つのスペースがあります。'
+"The %attribute% attribute must not contain more than %limit% characters. The submitted value is too long.": '%attribute% 属性には %limit% 文字以上を含むことはできません。送信された値は長すぎます。'
+"The %type% file extension is not allowed for the %attribute% attribute. Allowed extensions are %extensions%.": '%type% ファイル拡張子はこの %attribute% 属性に対して許可されていません。許可されている拡張子は %extensions% です。'
+"The %attribute% attribute requires a url link.": '%attribute% 属性には URL リンクが必要です。'
+"The %attribute% attribute requires a valid date. Please use the following format %date_format% for dates.": '%attribute% 属性には有効な日付が必要です。日付には、次のフォーマット %date_format% を使用してください。'
+"The %locale% locale is not available on the %attribute% attribute.": '%locale% ロケールは %attribute% 属性で使用できません。'
+'The {{ attribute_code }} attribute must match the following regular expression: {{ pattern }}.': '{{ attribute_code }} 属性は次の正規表現に一致する必要があります: {{ pattern }}。'
+'The {{ attribute_code }} attribute cannot be empty.': '{{ attribute_code }} 属性は空にできません。'
+'The file %file_name% is too large (%file_size% %suffix%). The %attribute% attribute can not exceed %max_file_size% %suffix%.': '%file_name% ファイルは大きすぎます (%file_size% %suffix%)。%attribute% 属性は %max_file_size% %suffix% を超えてはいけません。'
+'The %attribute_code% attribute requires a valid locale. The %invalid_locale% locale does not exist.': '%attribute_code% 属性には有効なロケールが必要です。%invalid_locale% ロケールは存在しません。'
+'The %attribute_code% attribute requires a valid locale. The %invalid_locale% locale is not bound to the %channel_code% channel.': '%attribute_code% 属性には有効なロケールが必要です。%invalid_locale% ロケールは %channel_code% チャンネルにバインドされていません。'
+"The %attribute% attribute requires an e-mail address.": '%attribute% 属性にはメールアドレスが必要です。'
+'The %attribute% attribute requires an equal or greater than %min_value% value.': '%attribute% 属性には %min_value% 以上の値が必要です。'
+'The %attribute% attribute requires an equal or lesser than %max_value% value.': '%attribute% 属性には %max_value% 以下の値が必要です。'
+"The %attribute_code% attribute requires a value per channel. The %channel% channel (scope) must exist in your PIM": '%attribute_code% 属性にはチャンネルごとの値が必要です。%channel% チャンネル (スコープ) は PIM 内に存在する必要があります'
+"The %identifier% identifier is already used for another product.": '%identifier% 識別子は別の商品にすでに使用されています。'
+'Please specify a valid currency for the %attribute_code% attribute, the %currency_code% code was sent.': '%attribute_code% 属性に有効な通貨を指定してください。%currency_code% コー​​ドが送信されました。'
+pim_catalog:
+  constraint:
+    can_have_family_variant_empty_axis_value: 'この属性「%attribute%」は当該エンティティの主軸に定義済みであるため空にできません'
+    product_model_with_same_axis_value_already_exists: '商品モデル 「%sibling_with_same_value%」がこの値であるため、商品モデル 「%validated_entity%」 の属性軸 「%attributes%」に値「%values%」を設定できません'
+    variant_product_with_same_axis_value_already_exists: 'バリエーション商品「%sibling_with_same_value%」がこの値であるため、バリエーション商品「%validated_entity%」 の属性軸 「%attributes%」 に値「%values%」を設定できません'
+    can_have_family_variant_unexpected_attribute: '属性セットにないため、このエンティティにプロパティ「%attribute%」をセットできません'
+    cannot_have_product_model_as_parent: '商品モデル「%product_model%」は商品モデル「%parent_product_model%」を上位に設定できません'
+    cannot_have_parent: '商品モデル「%product_model%」は上位を持つことができません'
+    attribute_does_not_belong_to_family: '属性「%attribute%」はファミリー「%family%」に属していません'
+    variant_product_invalid_family: '商品バリエーションのファミリーは同じ上位に属する必要があります'
+    php_int_max_reached: '最大数値は%php_int_max%より小さく指定してください'
+    not_null_family: '%sku% 識別子を持つ商品はバリエーション商品であるため、ファミリーは「null」にはできません。'
+    variant_product_has_parent: 'バリエーション商品には親が必要です'
+    invalid_variant_product_parent: '商品バリエーションは、商品モデル「%product_model%」を上位にすることはできません (この商品モデルは別の商品モデルを下位にすることのみ可能です)'
+    modified_variant_axis_value: '軸のバリエーション「%variant_axis%」は変更できず、「%provided_value%」に固定されいます'
+    family_variant_attributes_unique: 属性は固有でなければなりません。「%attributes%」は属性セットのバリエーションで複数回使用されます
+    family_variant_axes_unique: 軸のバリエーションは固有でなければなりません。「%attributes%」は属性セットのバリエーションで複数回使用されます
+    family_variant_axes_immutable: '軸のバリエーションはレベル「%level%」に変更できません'
+    family_variant_axes_attribute_type_unique: 軸のバリエーション「%axis%」は固有であったり識別子になることはできません
+    family_variant_axes_attribute_type: バリエーション軸「%axis%」はブール値、単純なセレクト、単純な参照データ、または測定である必要があります。
+    family_variant_axes_wrong_type: 軸のバリエーション「%axis%」はローカライズ不可、参照不可であり、ロケールで分類ことができません
+    family_variant_axes_number_of_axes: '属性セットのバリエーションは %max_axes_number% 軸以上を持つことはできません'
+    family_variant_no_axis: レベル「%level%」の属性セットを目的とするため、軸として定義された1以上の項目が必要です
+    family_variant_axis_level: 属性「%axis%」は、属性セットに配置された属性と同様に設定してください
+    family_variant_has_family_attribute: '属性「%attribute%」はファミリー「%family%」の属性ではないため、ファミリーバリエーション「%family_variant%」に追加することはできません'
+    family_variant_level_do_not_exist: レベル「%level%」のための別の属性セットはありません
+    family_variant_no_level: 1つ以上のレベルがファミリーバリエーションで定義されていることが必要です
+    family_variant_maximum_number_of_level: ファミリーバリエーションが「%level%」レベル以上を持つことはできません
+    family_variant_unique_attributes_in_last_level: 商品レベルで単一属性「%attribute%」を設定してください
+    product_identifier: 識別子「%s」は存在しません。
+    blacklisted_attribute_code: 実行中のクリーンアップジョブが完了するまで、コードは一時的にブロックされます。
+    blacklisted_attribute_code_with_link: "実行中のクリーンアップジョブが完了するまで、コードは一時的にブロックされます。詳細については、<a href='{{ link }}' target='_blank'>ジョブの詳細</a>をご覧ください。"
+    duplicate_options: '{1} 次のオプションが繰り返し使用されています: "{{ duplicate_options }}"。オプションリストをもう一度確認してください。|]1, +Inf] 次のオプションが繰り返し使用されています: "{{ duplicate_options }}"。オプションリストをもう一度確認してください。'
+    0: 予期せぬエラーが発生しました。
+    100: 予期せぬ値
+    101: このフィールドはブール値が必要です
+    102: このフィールドは浮動小数点値が必要です
+    103: このフィールドは整数値が必要です
+    104: このフィールドは数値が必要です
+    105: このフィールドは文字列値が必要です
+    106: このフィールドは配列値が必要です
+    107: このフィールドは配列の配列を値として受け付けます
+    200: 内部エラーが発生しました
+    201: 内部エラーが発生しました
+    202: このフィールドは数値が必要です
+    203: このフィールドは文字列値が必要です
+    204: このフィールドは文字列値が必要です
+    205: 内部エラーが発生しました
+    300: このフィールドは有効なエンティティコードが必要です
+    301: このフィールドは有効な参照とロケールが必要です
+    302: このフィールドは有効な参照が必要です
+    303: このフィールドは有効な関連付け形式が必要です
+    pim_immutable_product_model_validator: このコードは別の商品モデルに設定済みです
+    quantified_associations:
+      unexpected_link_type: リンクタイプ「{{ value }}」は存在しません。商品または商品モデルのみを関連付けることができます。
+      max_associations: '{{ limit }} 個の関連付けの上限に達しました。既存の関連付けをいくつか削除してから新しい関連付けを追加してください。'
+      invalid_quantity: '「{{ value }}」は無効な数量です。{{ min }} から {{ max }} の間の値を入力してください。'
+      products_do_not_exist: "次の商品は存在しません: {{ values }}。商品が削除されていないことを確認してください。"
+      product_models_do_not_exist: "次の商品モデルは存在しません: {{ values }}。商品モデルが削除されていないことを確認してください。"
+      association_type_does_not_exist: この関連タイプは存在しません。削除されていないことを確認してください。
+      association_type_is_not_quantified: '「{{ association_type }}」は数量との関連付けに使用できません。数量に別の関連タイプを選択するか、「associations」プロパティを使用してください。'
+      association_type_should_not_be_quantified: '「{{ association_type }}」は数量との関連付けにしか使用できません。別の関連タイプを選択するか、「quantified_associations」プロパティを使用してください。'
+    boolean:
+      boolean_value_is_required: '{{ attribute_code }} 属性には、データとしてブール値 (true または false) が必要です。{{ given_type }} が検出されました。'
+      boolean_value_is_required_in_import: '{{ attribute_code }} 属性には、データとしてブール値 (1 または 0) が必要です。{{ given_type }} が検出されました。'
+mass_edit:
+  edit_common_attributes:
+    invalid_values: 属性フォームにエラーがあります。
+pim_datagrid:
+  column_configurator:
+    label:
+      unique_message: ラベルは固有でなければなりません

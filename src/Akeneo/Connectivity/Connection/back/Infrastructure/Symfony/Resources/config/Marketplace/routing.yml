@@ -1,0 +1,22 @@
+# Internal API
+akeneo_connectivity_connection_marketplace_rest_get_web_marketplace_url:
+    path: '/rest/marketplace/marketplace-url'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Controller\Internal\GetWebMarketplaceUrlAction
+    methods: [GET]
+
+akeneo_connectivity_connection_marketplace_rest_get_all_extensions:
+    path: '/rest/marketplace/extensions'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Controller\Internal\GetAllExtensionsAction
+    methods: [GET]
+
+akeneo_connectivity_connection_marketplace_rest_get_all_apps:
+    path: '/rest/marketplace/apps'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Controller\Internal\GetAllAppsAction
+    methods: [GET]
+
+# Front API
+akeneo_connectivity_connection_connect_marketplace:
+    path: '/connect/app-store'
+
+akeneo_connectivity_connection_connect_marketplace_profile:
+    path: '/connect/app-store/profile'

@@ -1,0 +1,7 @@
+services:
+    pim_catalog.extension.action.type.delete_attribute:
+        public: true
+        class: Oro\Bundle\DataGridBundle\Extension\Action\Actions\DeleteAction
+        shared: false
+        tags:
+            - { name: oro_datagrid.extension.action.type, type: delete-attribute }

@@ -1,0 +1,33 @@
+jobs:
+    install_back_dependencies:
+        machine:
+            image: 'ubuntu-2004:2022.04.1'
+        parameters:
+            edition:
+                description: either "ce" or "ee"
+                type: string
+        steps:
+            -   attach_workspace:
+                    at: ~/
+            -   setup_docker_compose_override
+            -   restore_backend_dependency_cache
+            -   fix_files_permissions
+
+            -   when:
+                    condition: { equal: [ ce, << parameters.edition >> ] }
+                    steps:
+                        -   load_docker_image_php
+
+            -   when:
+                    condition: { equal: [ ee, << parameters.edition >> ] }
+                    steps:
+                        -   build_docker_image_php
+
+            -   run:
+                    name: Install back dependencies
+                    command: make vendor
+            -   persist_to_workspace:
+                    root: ~/
+                    paths:
+                        - project/vendor
+                        - project/php-pim-image.tar

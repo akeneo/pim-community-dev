@@ -1,0 +1,166 @@
+#Entities
+Job: 工作
+Connector: 連接器
+pim_import_export:
+  job: 工作
+  connector: 連接器
+  ## Job status
+  status:
+    0: 已就緒
+  batch_status:
+    1: 已完成
+    2: 正在開始
+    3: 已開始
+    4: 正在停止
+    5: 已停止
+    6: 已失敗
+    7: 已放棄
+    8: 未知
+  download_archive:
+    archive: 下載生成的記錄|下載生成的記錄
+    output: 下載生成的檔案|下載生成的檔案
+    input: 下載已讀的文件|下載已讀的文件
+    invalid_xlsx: 下載無效數據
+    invalid_csv: 下載無效數據
+  notification:
+    export:
+      error: 匯出<strong>%label%</strong>失敗
+      warning: 匯出<strong>%label%</strong>完成，出現了一些警告
+      success: 匯出<strong>%label%</strong>完成
+    import:
+      error: 匯入<strong>%label%</strong>失敗
+      warning: 匯入<strong>%label%</strong>完成，出現了一些警告
+      success: 匯入<strong>%label%</strong>完成
+  list: 選擇一個工作
+  job_profile:
+    tab:
+      property.title: 常规属性
+      history.title: 歷史紀錄
+      job_content.title: 内容
+#Page titles:
+pim_title.export_profile.index: 匯出資料管理
+pim_title.export_profile.edit: 匯出資料 %job.label% | 編輯
+pim_title.export_profile.show: 匯出資料 %job.label% | 顯示
+pim_title.export_execution.index: 匯出執行歷史記錄
+pim_title.export_execution.show: 匯出執行 | 詳情
+pim_title.import_profile.index: 匯入資料管理
+pim_title.import_profile.edit: 匯入資料 %job.label% | 編輯
+pim_title.import_profile.show: 匯入資料 %job.label% | 顯示
+pim_title.import_execution.index: 匯入執行歷史記錄
+pim_title.import_execution.show: 匯入執行 | 詳情
+#Entity and page header titles
+export profile:
+  title: 匯出資料
+  edit: 創建匯出資料
+import profile:
+  title: 匯入資料
+  edit: 編輯匯入資料
+#ACLs
+pim_importexport:
+  acl:
+    export_profile:
+      index: 查看匯出資料列表
+      create: 創建匯出資料
+      show: 顯示匯出資料
+      edit: 編輯匯出資料
+      remove: 刪除匯出資料
+      launch: 發佈匯出資料
+      property_edit: 編輯匯出資料常規屬性
+      property_show: 顯示匯出資料常規屬性
+      history: 查看匯出資料歷史記錄
+      content_edit: 編輯匯出資料內容
+      content_show: 顯示匯出資料內容
+    import_profile:
+      index: 查看匯入資料清單
+      create: 創建匯入資料
+      show: 顯示匯入資料
+      edit: 編輯匯入資料
+      remove: 刪除匯入資料
+      launch: 發佈匯入資料
+      history: 查看匯入資料歷史記錄
+    export_execution:
+      index: 查看匯出報告列表
+      show: 查看匯出報告詳情
+      dl_log: 下載匯出報告日誌
+      dl_files: 下載匯出的檔案
+    import_execution:
+      index: 查看匯入報告列表
+      show: 查看匯入報告詳情
+      dl_log: 下載匯入報告日誌
+      dl_files: 下載匯入的檔案
+  acl_group:
+    export: 匯出資料
+    import: 匯入資料
+#Buttons
+btn:
+  create:
+    export profile: 創建匯出資料
+    import profile: 創建匯入資料
+Upload and import now: 立即上傳和匯入
+import now: 立即匯入
+export now: 立即匯出
+#Confirmation messages
+confirmation:
+  remove:
+    export profile: 您確定要刪除該匯出資料%name%嗎？
+    import profile: 您確定要刪除該匯入資料%name%嗎？
+#Flash messages
+flash:
+  export:
+    created: 已成功创建此匯出
+    removed: 此匯出已刪除
+    updated: 已成功更新此匯出
+    running: 此匯出正在執行
+  import:
+    created: 已成功创建此匯入
+    removed: 此匯入已刪除
+    updated: 已成功更新此匯入
+    running: 此匯入正在執行
+#Tabs
+General properties: 常规属性
+History: 歷史紀錄
+pane.accordion:
+  properties: 屬性
+  global_settings: 全局設定
+  filters: 篩選
+#Popin titles
+popin.create:
+  export_profile.title: 創建新的匯出資料
+  import_profile.title: 創建新的匯入資料
+#Job execution
+'Display item': 顯示項目
+'Hide item': 隱藏項目 
+'Collecting data about job execution...': 正在收集有關工作執行的數據…
+'You must select a file to upload': 您必須選擇一個檔案上傳
+Download log: 下載日誌
+Show profile: 顯示資料
+execution details: 執行詳情
+job_execution.summary:
+  read: 已讀
+  write: 已寫入
+  skip: 已跳過
+  create: 已創建
+  update: 已更新
+  update_products: 已更新的產品
+  skip_products: 已跳過的產品
+  displayed: 已顯示的首次警告
+  charset_validator:
+    title: 檔案編碼：
+    skipped: 已跳過，白名單中的擴展
+Step: 步驟
+Status: 狀態
+Warnings: 警告
+Summary: 概要
+Start: 開始
+End: 結束
+#Process tracker
+set_attribute_requirements: 設置屬性要求
+COMPLETED: 已完成
+STARTING: 正在開始
+STARTED: 已開始
+STOPPING: 正在停止
+STOPPED: 已停止
+FAILED: 已失敗
+ABANDONED: 已放棄
+UNKNOWN: 未知
+warning.label: 警告

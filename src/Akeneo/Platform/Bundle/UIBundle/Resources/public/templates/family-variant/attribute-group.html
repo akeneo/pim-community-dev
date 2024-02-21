@@ -1,0 +1,21 @@
+<ul data-level="<%- level %>" id="attributes-column-level-<%- level %>" class="AknFamilyVariant-columnList connected-sortable">
+    <% attributes.forEach(function (attribute) { %>
+        <li
+            data-attribute-code="<%- attribute.code %>"
+            class="AknVerticalList-item AknFamilyVariant-columnListItem AknFamilyVariant-attribute attribute <%- !lockedAttributes.includes(attribute.code) && movable ? 'AknFamilyVariant-attribute--movable movable' : 'AknFamilyVariant-attribute--notMovable' %> <%- !lockedAttributes.includes(attribute.code) ? 'deletable' : '' %>"
+            title="<%- i18n.getLabel(attribute.labels, UserContext.get('catalogLocale'), attribute.code) %>"
+        >
+            <%- i18n.getLabel(attribute.labels, UserContext.get('catalogLocale'), attribute.code) %>
+
+            <% if (axesAttributes.includes(attribute.code)) { %>
+            (<%- __('pim_enrich.entity.family_variant.module.edit.variant_axis_label') %>)
+            <% } %>
+            <% if (!lockedAttributes.includes(attribute.code) && 0 !== level) { %>
+            <span
+                class="AknIconButton AknIconButton--small AknIconButton--delete AknButtonList-item delete-attribute"
+                title="<%- __('pim_enrich.entity.family_variant.module.edit.attribute_remove') %>"
+            ></span>
+            <% } %>
+        </li>
+    <% }) %>
+</ul>

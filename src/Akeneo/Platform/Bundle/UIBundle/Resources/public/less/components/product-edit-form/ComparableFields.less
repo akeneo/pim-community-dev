@@ -1,0 +1,33 @@
+@import '../../base/variables';
+
+.AknComparableFields {
+  display: flex;
+  max-width: 960px;
+  justify-content: flex-start;
+
+  &-item:not(:empty) {
+    flex-basis: @AknMaxFormWidth;
+    flex-shrink: 0;
+  }
+
+  &-item--comparisonContainer:not(:empty) {
+    margin-left: 10px;
+  }
+
+  &-copyContainer {
+    display: flex;
+    flex-grow: 1;
+    margin-left: 10px;
+  }
+
+  &-checkbox {
+    flex-basis: 20px;
+    flex-shrink: 0;
+    position: relative;
+    top: 6px;
+  }
+
+  &--maxLength {
+    max-width: none;
+  }
+}

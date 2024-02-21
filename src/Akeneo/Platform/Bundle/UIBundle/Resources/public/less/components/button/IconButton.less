@@ -1,0 +1,218 @@
+@import '../../base/variables';
+
+.AknIconButton {
+  .imageIcon(@url) {
+    background-image: url(@url);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 20px;
+    opacity: 0.8;
+    transition: opacity 0.1s ease-in;
+    font-size: 0;
+
+    &:hover {
+      opacity: 1;
+    }
+
+    &.AknIconButton--big {
+      background-size: 24px;
+    }
+
+    &.AknIconButton--white {
+      filter: brightness(200);
+      opacity: 1;
+      background-color: inherit;
+    }
+  }
+
+  color: lighten(@AknGrey, 15%);
+  width: @AknIconSize;
+  height: @AknIconSize;
+  line-height: @AknIconSize;
+  font-size: @AknBigIconFontSize;
+  border: none;
+  display: inline-block;
+  padding: 0;
+  border-radius: 2px;
+  text-align: center;
+  transition: background 0.1s ease, color 0.1s ease;
+
+  &:hover {
+    color: white;
+    cursor: pointer;
+  }
+
+  &&--light {
+    background-color: @AknLightGray;
+    border: 1px solid @AknBorderColor;
+    color: @AknGrey;
+
+    &:hover {
+      background-color: @AknGrey;
+    }
+  }
+
+  &--glued {
+    height: @AknFormHeight;
+    width: @AknFormHeight;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  &--dark {
+    color: darken(@AknGrey, 30%);
+  }
+
+  &&--grey {
+    background-color: @AknGrey;
+    color: white;
+
+    &:hover {
+      background-color: darken(@AknGrey, 10%);
+    }
+  }
+
+  &&--important {
+    background-color: @AknRed;
+    color: white;
+
+    &:hover {
+      background-color: darken(@AknRed, 10%);
+    }
+  }
+
+  &--gold {
+    color: @AknOrange;
+  }
+
+  &--remove, &--removeWhite, &--ok, &--edit {
+    background-size: 60%;
+  }
+
+  &--apply {
+    background-color: @AknGreen;
+    color: white;
+
+    &:hover {
+      background-color: darken(@AknGreen, 10%);
+    }
+  }
+
+  &--small {
+    font-size: @AknDefaultFontSize;
+    width: @AknMicroButtonSize;
+    height: @AknMicroButtonSize;
+    line-height: @AknMicroButtonSize;
+  }
+
+  &--round {
+    border-radius: 1000px;
+  }
+
+  &--hide {
+    display: none !important; // Font awesome adds !important
+  }
+
+  &--noFocus {
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &--inactive {
+    filter: grayscale(1);
+  }
+
+
+  &--ok {
+    .imageIcon("/bundles/pimui/images/icon-checkwhite.svg");
+  }
+
+  &--editWhite {
+    .imageIcon("/bundles/pimui/images/icon-edit-white.svg");
+  }
+
+  &--remove {
+    .imageIcon("/bundles/pimui/images/icon-delete-slategrey.svg");
+  }
+
+  &--removeWhite {
+    .imageIcon("/bundles/pimui/images/icon-delete-white.svg");
+  }
+
+  &--plus {
+    .imageIcon("/bundles/pimui/images/icon-plus.svg");
+  }
+
+  &--edit {
+    .imageIcon("/bundles/pimui/images/icon-edit.svg");
+  }
+
+  &--folder {
+    .imageIcon("/bundles/pimui/images/icon-folder.svg");
+  }
+
+  &--trash {
+    .imageIcon("/bundles/pimui/images/icon-trash.svg");
+  }
+
+  &--delete {
+    .imageIcon("/bundles/pimui/images/icon-delete-slategrey.svg");
+  }
+
+  &--erase {
+    .imageIcon("../../../images/icon-erase.svg");
+  }
+
+  &--switch {
+    .imageIcon("/bundles/pimui/images/icon-switch.svg");
+  }
+
+  &--view {
+    .imageIcon("/bundles/pimui/images/icon-view.svg");
+  }
+
+  &--unpublish {
+    .imageIcon("/bundles/pimui/images/icon-unpublish.svg");
+  }
+
+  &--play {
+    .imageIcon("/bundles/pimui/images/icon-play.svg");
+  }
+
+  &--value {
+    .imageIcon("/bundles/pimui/images/icon-value.svg");
+  }
+
+  &--link {
+    .imageIcon("/bundles/pimui/images/icon-link.svg");
+  }
+
+  &--info {
+    .imageIcon("/bundles/pimui/images/icon-info.svg");
+  }
+
+  &--copy {
+    .imageIcon("/bundles/pimui/images/icon-copy.svg");
+  }
+
+  &--topLeft {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 10px;
+    width: 25px;
+    height: 25px;
+    color: @AknSlateGrey;
+    border-radius: 20px;
+    text-align: center;
+    background-color: white;
+    opacity: 1;
+    background-size: 15px;
+    z-index: 2;
+
+    &:hover {
+      background-color: white;
+    }
+  }
+}

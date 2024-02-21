@@ -1,0 +1,11 @@
+parameters:
+    akeneo_file_storage.repository.file_info.class: Akeneo\Tool\Bundle\FileStorageBundle\Doctrine\ORM\Repository\FileInfoRepository
+
+services:
+    akeneo_file_storage.repository.file_info:
+        class: '%akeneo_file_storage.repository.file_info.class%'
+        factory: ['@doctrine.orm.entity_manager', 'getRepository']
+        arguments:
+            - '%akeneo_file_storage.model.file_info.class%'
+        tags:
+            - { name: 'akeneo_repository' }

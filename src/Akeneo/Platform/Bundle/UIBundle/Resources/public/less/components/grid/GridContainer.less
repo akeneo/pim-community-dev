@@ -1,0 +1,117 @@
+@import '../../base/variables';
+
+.AknGridContainer {
+  position: relative;
+  padding: 20px 0 10px 0;
+
+  &--withCheckbox {
+    margin-left: -@AknCheckboxCellWidth;
+  }
+
+  &-noData {
+    min-height: ~"calc(100vh - 400px)";
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    line-height: 32px;
+    overflow: hidden;
+  }
+
+  &-noData--small {
+    margin-top: 50px;
+    min-height: 0;
+  }
+
+  &-noDataImage {
+    background-image: url("/bundles/pimui/images/illustrations/Attribute.svg");
+    background-repeat: no-repeat;
+    background-position: center center;
+    height: 200px;
+    width: 200px;
+    margin-bottom: 30px;
+    background-size: 100% auto;
+
+    &--associations {
+      background-image: url("/bundles/pimui/images/illustrations/Association-types.svg");
+    }
+
+    &--reference-entity {
+      background-image: url("/bundles/pimui/images/illustrations/NoResult.svg");
+    }
+
+    &--user-group {
+      background-image: url("/bundles/pimui/images/illustrations/User-groups.svg");
+    }
+  }
+
+  &-noDataTitle {
+    font-size: @AknAltTitleFontSize;
+    color: @AknDarkBlue;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  &-noDataSubtitle {
+    max-width: 600px;
+    margin-bottom: 20px;
+    color: @AknSlateGrey;
+    font-size: @AknFontSizeBigger;
+    line-height: 24px;
+    text-align: center;
+  }
+
+  &--withoutNoDataPanel &-noData {
+    display: none;
+  }
+
+  &-noData--small {
+    min-height: auto;
+  }
+
+  &-noData--small &-noDataImage {
+    height: 115px;
+    background-size: 150px 150px;
+  }
+
+  &-noData--small &-noDataTitle {
+    font-size: @AknTitleFontSize;
+  }
+
+  &--expanded {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  &--box {
+    border: 1px solid @AknBorderColor;
+    padding: 10px 20px;
+    background: white;
+
+    & + & {
+      margin-top: 20px;
+    }
+  }
+
+  &-notEnoughDataTitle {
+    color: @AknDarkBlue;
+    font-size: @AknTitleDefaultFontSize;
+    text-align: center;
+    margin: 30px 0 10px;
+  }
+
+  &-notEnoughDataSubtitle {
+    color: @AknSlateGrey;
+    font-size: @AknDefaultFontSize;
+    text-align: center;
+    line-height: 24px;
+    margin-bottom: 20px;
+  }
+}
+
+@-moz-document url-prefix() {
+  // On Firefox, there is a bug with the padding of the main page.
+  .AknGridContainer {
+    margin-bottom: 40px;
+  }
+}

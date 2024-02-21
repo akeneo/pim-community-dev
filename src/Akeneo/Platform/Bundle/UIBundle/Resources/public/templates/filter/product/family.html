@@ -1,0 +1,8 @@
+<input
+    class="select2 value"
+    name="filter-value"
+    type="hidden"
+    value="<%- value ? value : '' %>"
+    data-placeholder="<%- __('pim_enrich.export.product.filter.' + shortname + '.empty_selection') %>"
+    <%- isEditable ? '' : 'disabled' %>
+/>

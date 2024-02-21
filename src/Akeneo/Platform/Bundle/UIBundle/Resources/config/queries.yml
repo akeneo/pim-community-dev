@@ -1,0 +1,10 @@
+services:
+    akeneo.pim_ui.query.count_settings_entities_query:
+        class: Akeneo\Platform\Bundle\UIBundle\Query\Sql\CountSettingsEntitiesQuery
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim_ui.query.count_system_entities_query:
+        class: Akeneo\Platform\Bundle\UIBundle\Query\Sql\CountSystemEntitiesQuery
+        arguments:
+            - '@database_connection'

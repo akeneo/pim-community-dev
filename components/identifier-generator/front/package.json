@@ -1,0 +1,90 @@
+{
+  "name": "@akeneo-pim-community/identifier-generator",
+  "version": "0.1.0",
+  "private": true,
+  "config": {
+    "front_packages_path": "../../../front-packages"
+  },
+  "peerDependencies": {
+    "babel-loader": "8.1.0",
+    "eslint": "^7.11.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "styled-components": "^5.1.1"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "@types/jest": "^26.0.15",
+    "@types/node": "^12.0.0",
+    "@types/react": "^17.0.2",
+    "@types/react-dom": "^17.0.2",
+    "@types/react-router-dom": "^5.1.7",
+    "@types/styled-components": "^5.1.1",
+    "prettier": "^2.1.1"
+  },
+  "dependencies": {
+    "@akeneo-pim-community/shared": "link:../../../front-packages/shared",
+    "@akeneo-pim-community/structure": "link:../../../src/Akeneo/Pim/Structure/front",
+    "akeneo-design-system": "link:../../../front-packages/akeneo-design-system",
+    "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "4.0.1",
+    "typescript": "^4.0.3",
+    "web-vitals": "^0.2.4",
+    "react-query": "^3.39.1"
+  },
+  "proxy": "http://httpd",
+  "scripts": {
+    "app:start": "yarn translation:build && yarn route:build && yarn packages:build && react-scripts --openssl-legacy-provider start",
+    "app:start:ee": "yarn translation:build:ee && yarn route:build:ee && yarn packages:build && react-scripts --openssl-legacy-provider start",
+    "test:unit:run": "react-scripts --openssl-legacy-provider test --watchAll=false --coverage --coverageDirectory=coverage --maxWorkers=3",
+    "test:unit:watch": "react-scripts --openssl-legacy-provider test --maxWorkers=3",
+    "lib:build": "tsc -p ./tsconfig.build.json",
+    "translation:build": "cp ../../../public/js/translation/en_US.js ./src/translations.json",
+    "translation:build:ee": "cp ../../../../../../public/js/translation/en_US.js ./src/translations.json",
+    "route:build": "cp ../../../public/js/fos_js_routes.json ./src/routes.json",
+    "route:build:ee": "cp ../../../../../../public/js/fos_js_routes.json ./src/routes.json",
+    "packages:build": "yarn --cwd=$npm_package_config_front_packages_path/akeneo-design-system lib:build && yarn workspace @akeneo-pim-community/shared lib:build && yarn workspace @akeneo-pim-community/structure lib:build",
+    "eslint": "eslint --config .eslintrc.json src/**/*.{ts,tsx}",
+    "lint:fix": "prettier --config .prettierrc.json --parser typescript --write \"./src/**/*.{ts,tsx}\" && eslint --config .eslintrc.json src/**/*.{ts,tsx} --fix",
+    "lint:check": "prettier --config .prettierrc.json --parser typescript --check \"./src/**/*.{ts,tsx}\" && yarn eslint --config .eslintrc.json --ext .tsx,.ts ./src"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "main": "lib/index.js",
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "jest": {
+    "coverageReporters": [
+      "text-summary",
+      "html"
+    ],
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/src/index.tsx",
+      "<rootDir>/src/feature/tests"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "statements": 100,
+        "functions": 100,
+        "lines": 100
+      }
+    }
+  }
+}

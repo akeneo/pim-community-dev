@@ -1,0 +1,28 @@
+pim_dashboard:
+  title: Aktiviteettien yhteenveto
+  greetings: Hei {{ name }}!
+  welcome_sentence:
+    message0: Tästä tulee hieno päivä.
+    message1: On hienoa nähdä sinut.
+    message2: Kivä nähdä sinua täällä.
+    message3: Hauska nähdä sinua täällä.
+    message4: On hienoa saada sinut mukaan.
+    message5: Aloitetaan
+    message6: No niin, aloitetaanpas työt.
+    message7: Tehdään hienoja asioita tänään.
+    message8: Oletko valmis aloittamaan?
+    message9: Tuotteesi haluavat rikastua.
+  widget:
+    completeness:
+      load_more: 'Lataa lisää...'
+      title: Valmiusaste kanavittain ja lokaatioittain
+      progress_messages:
+        message1: Ole valmis aloittamaan rikastusmatka kohti valmista.
+        message2: Sinulla on vielä työtä tehtäväksi, mutta olet oikealla tiellä.
+        message3: Jatka hienoa työtä tuotetietojen rikastamiseksi.
+        message4: Onnittelut! Olet saavuttanut täyden valmiusasteen tähän kanavaan!
+    last_operations:
+      title: Viimeiset toiminnot
+  version: Versio
+pim_title:
+  pim_dashboard_index: Ohjauspaneeli

@@ -1,0 +1,30 @@
+<div class="tabsection-title">
+    <%- sectionTitle %>
+</div>
+<div class="tabsection-content">
+    <div class="AknFormContainer AknFormContainer--withPadding">
+        <div class="AknFieldContainer">
+            <div class="AknFieldContainer-header">
+                <label class="AknFieldContainer-label control-label required" for="pim_enrich_group_form_code">
+                    <%- codeLabel %> <em><%- __('pim_common.required_label') %></em>
+                </label>
+            </div>
+            <div class="AknFieldContainer-inputContainer">
+                <input id="pim_enrich_group_form_code" class="AknTextField" type="text" readonly="readonly" disabled="disabled" required="required" value="<%- model.code %>">
+            </div>
+        </div>
+
+        <div class="AknFieldContainer">
+            <div class="AknFieldContainer-header">
+                <label class="AknFieldContainer-label control-label required">
+                    <%- typeLabel %> <em><%- __('pim_common.required_label') %></em>
+                </label>
+            </div>
+            <div class="AknFieldContainer-inputContainer">
+                <select id="pim_enrich_group_form_type" readonly="readonly" disabled="disabled" class="select2 input-large">
+                    <option>[<%- model.type %>]</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>

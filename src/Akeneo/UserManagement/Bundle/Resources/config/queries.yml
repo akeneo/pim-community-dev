@@ -1,0 +1,27 @@
+services:
+    pim_user.query.get_user_count:
+        class: 'Akeneo\UserManagement\Bundle\Storage\Query\SqlGetUserCount'
+        arguments:
+            - '@database_connection'
+
+    pim_user.query.is_category_tree_linked_to_user:
+        class: 'Akeneo\UserManagement\Bundle\Storage\Query\SqlIsCategoryTreeLinkedToUser'
+        arguments:
+            - '@database_connection'
+
+    Akeneo\UserManagement\Infrastructure\Storage\SqlFindUserGroups:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\UserManagement\Infrastructure\Storage\SqlFindUsers:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\UserManagement\Infrastructure\Storage\SqlFindAllUserRoles:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\UserManagement\Domain\Storage\AssignAllUsersToOneCategory:
+        class: 'Akeneo\UserManagement\Infrastructure\Storage\SqlAssignAllUsersToOneCategory'
+        arguments:
+            - '@database_connection'

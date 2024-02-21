@@ -1,0 +1,136 @@
+services:
+  Akeneo\Category\Domain\Query\GetCategoryInterface:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategorySql
+    arguments:
+      - '@database_connection'
+      - '@Akeneo\Category\Domain\Query\GetDeactivatedTemplateAttributes\GetDeactivatedTemplateAttributes'
+      - '@Akeneo\Category\Domain\Query\GetDeactivatedTemplateAttributes\DeactivatedTemplateAttributesInValueCollectionFilter'
+
+  Akeneo\Category\Domain\Query\GetCategoryByIds:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoryByIdsSql
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Category\Application\Query\GetCategoriesInterface:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoriesSql
+    arguments:
+      - '@database_connection'
+      - '@Akeneo\Category\Domain\Query\GetDeactivatedTemplateAttributes\GetDeactivatedTemplateAttributes'
+      - '@Akeneo\Category\Domain\Query\GetDeactivatedTemplateAttributes\DeactivatedTemplateAttributesInValueCollectionFilter'
+
+  Akeneo\Category\Domain\Query\GetCategoryTreesInterface:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoryTreesSql
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Category\Domain\Query\GetTemplate:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoryTemplateSql
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Category\Application\Query\CheckTemplate:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\CheckTemplateSql
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Category\Application\Query\GetAttribute:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoryTemplateAttributeSql
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Category\Application\Query\GetDeactivatedAttribute:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\GetDeactivatedCategoryTemplateAttributeSql
+    arguments:
+      - '@database_connection'
+  Akeneo\Category\Application\Query\GetCategoryTemplateByCategoryTree:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoryTemplateByCategoryTreeSql
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Category\Application\Query\GetCategoryTreeByCategoryTemplate:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoryTreeByCategoryTemplateSql
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Category\Application\Query\GetCategoriesParametersBuilder:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoriesParametersBuilderSql
+    arguments:
+      - '@Akeneo\Category\Application\Handler\SearchFilters'
+
+  Akeneo\Category\Application\Query\GetCategoryChildrenIds:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoryChildrenIdsSql
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Category\Domain\Query\GetCategoryTreeTemplates:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoryTreeTemplatesSql
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Category\Domain\Query\DeleteCategoryTreeTemplateByTemplateUuid:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\DeleteCategoryTreeTemplateByTemplateUuidSql
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Category\Application\Query\IsTemplateDeactivated:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\IsTemplateDeactivatedSql
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Category\Application\Query\DeactivateTemplate:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\DeactivateTemplateSql
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Category\Domain\Query\DeactivateAttribute:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\DeactivateAttributeSql
+    arguments:
+      - '@database_connection'
+      - '@Akeneo\Category\Application\Query\IsTemplateDeactivated'
+
+  Akeneo\Category\Application\Query\GetEnrichedValuesPerCategoryCode:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\GetEnrichedValuesPerCategoryCodeSql
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Category\Domain\Query\GetEnrichedValuesByTemplateUuid:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\GetEnrichedValuesByTemplateUuidSql
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Category\Application\Storage\UpdateCategoryEnrichedValues:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\Update\UpdateCategoryEnrichedValuesSql
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Category\Domain\Query\UpdateCategoryUpdatedDate:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\Update\UpdateCategoryUpdatedDateSql
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Category\Domain\Query\GetDeactivatedTemplateAttributes\GetDeactivatedTemplateAttributes:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\GetDeactivatedTemplateAttributesSql
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Category\Domain\Query\PurgeOrphanCategories:
+    class: 'Akeneo\Category\Infrastructure\Storage\Sql\PurgeOrphanCategoriesSql'
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Category\Domain\Query\UpdateCategoryTemplateAttributesOrder:
+    class: 'Akeneo\Category\Infrastructure\Storage\Sql\UpdateCategoryTemplateAttributesOrderSql'
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Category\Domain\ImageFile\GetOrphanCategoryImageFilePaths:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\GetOrphanCategoryImageFilePathsSql
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Category\Domain\ImageFile\DeleteCategoryImageFile:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\DeleteCategoryImageFileSql
+    arguments:
+      - '@database_connection'
+      - '@akeneo_file_storage.file_storage.filesystem_provider'
+      - '@pim_category.infrastructure.registry.preview_generator'

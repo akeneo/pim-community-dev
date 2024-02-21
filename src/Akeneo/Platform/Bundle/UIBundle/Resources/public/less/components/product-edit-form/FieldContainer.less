@@ -1,0 +1,197 @@
+@import '../../base/variables';
+
+.AknFieldContainer {
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 0;
+
+  &--packed {
+    margin-bottom: 5px;
+
+    &:first-of-type {
+      margin-top: 20px;
+    }
+  }
+
+  &-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+
+    &--light {
+      margin-bottom: 1px;
+      max-width: 456px;
+
+      & .AknFieldContainer-label {
+        font-size: 13px;
+        color: @AknGrey;
+      }
+    }
+  }
+
+  &-label {
+    color: @AknSlateGrey;
+    flex-grow: 1;
+    font-size: @AknDefaultFontSize;
+    display: flex;
+
+    &--grey {
+      color: @AknGrey;
+      font-size: 10px;
+    }
+
+    &--inline {
+      color: @AknDarkBlue;
+    }
+
+    &--withImage {
+      display: flex;
+      font-size: @AknDefaultFontSize;
+      align-items: flex-end;
+      line-height: @AknDefaultFontSize;
+    }
+
+    &--right {
+      margin-left: 10px;
+    }
+  }
+
+  &-label &-labelAnnotation {
+    margin-right: 3px;
+
+    &:not(:first-child) {
+      margin-left: 3px;
+    }
+  }
+
+  &-labelImage {
+    width: 18px;
+    height: 18px;
+    margin-right: 5px;
+  }
+
+  &-unavailable {
+    color: @AknLightFontColor;
+  }
+
+  &-clickable {
+    color: @AknLightFontColor;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &-footer {
+    color: @AknLightFontColor;
+    font-size: @AknFontSizeSmall;
+  }
+  &-footerGuidelines{
+    white-space: break-spaces;
+  }
+
+  &-inputContainer {
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+
+  &-inputLink {
+    margin-left: 4px;
+    position: relative;
+    width: 24px;
+    height: 24px;
+  }
+
+  &-inputSides {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+  }
+
+  &-subContainer {
+    position: relative;
+    flex-grow: 10000;
+    &-multiSelect {
+      min-height: 45px;
+    }
+
+    &-simpleSelect {
+      height: 40px;
+    }
+  }
+
+  &-iconsContainer {
+    padding-top: 4px;
+    min-width: @AknMicroButtonSize;
+    margin-left: 5px;
+  }
+
+  &-contextContainer {
+    display: flex;
+    flex-wrap: nowrap;
+  }
+
+  &-validationErrors {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &-validationError {
+    display: flex;
+    align-items: baseline;
+    margin-top: 3px;
+    color: @AknRed;
+    background: url("/bundles/pimui/images/icon-danger.svg") no-repeat left center;
+    padding-left: 26px;
+    background-size: 20px;
+    background-position: top left;
+  }
+
+  &-validationWarning {
+    display: flex;
+    align-items: baseline;
+    margin-top: 3px;
+    color: @AknDarkBlue;
+    background: url("/bundles/pimui/images/icon-danger-orange.svg") no-repeat left center;
+    padding-left: 26px;
+    background-size: 20px;
+    background-position: top left;
+  }
+
+  &-validationWarningMessage {
+    color: @AknSlateGrey;
+  }
+
+  &--withoutMargin {
+    margin-bottom: 0;
+  }
+
+  &--hidden {
+    display: none;
+  }
+
+  &--inline {
+    display: flex;
+    min-height: @AknFormHeight;
+  }
+
+  &--inline &-inputContainer {
+    width: 350px;
+    margin-right: 10px;
+    flex-shrink: 0;
+  }
+
+  &--inline &-footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-right: 10px;
+  }
+
+  &--big {
+    width: @AknMaxFormWidth * 2;
+  }
+}

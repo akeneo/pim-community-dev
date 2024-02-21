@@ -1,0 +1,62 @@
+parameters:
+    pim_catalog.saver.base.class:                          Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSaver
+    pim_catalog.saver.product.class:                       Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductSaver
+    pim_catalog.saver.group_options_resolver.class:        Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\GroupSavingOptionsResolver
+    pim_catalog.saver.group.class:                         Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\GroupSaver
+    pim_catalog.synchronizer.product_unique_data.class:    Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductUniqueDataSynchronizer
+
+services:
+    pim_catalog.saver.group_type:
+        class: '%pim_catalog.saver.base.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '%pim_catalog.model.group_type.interface%'
+
+    pim_catalog.saver.product:
+        class: '%pim_catalog.saver.product.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '@pim_catalog.synchronizer.product_unique_data'
+            - '@Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Query\SqlUpdateIdentifierPrefixesQuery'
+            - '@Akeneo\Pim\Enrichment\Component\Product\Query\UpdateIdentifierValuesQuery'
+
+    pim_catalog.saver.product_model:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductModelSaver'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+
+    pim_catalog.synchronizer.product_unique_data:
+        class: '%pim_catalog.synchronizer.product_unique_data.class%'
+        arguments:
+            - '@pim_catalog.factory.product_unique_data'
+            - '@pim_catalog.repository.cached_attribute'
+
+    pim_catalog.saver.group:
+        class: '%pim_catalog.saver.group.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@pim_versioning.context.version'
+            - '@pim_catalog.saver.group_options_resolver'
+            - '@event_dispatcher'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+            - '%pim_catalog.entity.product.class%'
+
+    pim_catalog.saver.association_type:
+        class: '%pim_catalog.saver.base.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '%pim_catalog.model.association_type.interface%'
+
+    pim_catalog.saver.group_options_resolver:
+        class: '%pim_catalog.saver.group_options_resolver.class%'
+
+    pim_comment.saver.comment:
+        class: '%akeneo_storage_utils.saver.base.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '%pim_comment.entity.comment.class%'

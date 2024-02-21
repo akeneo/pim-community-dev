@@ -1,0 +1,72 @@
+No products to remove: Inga produkter att ta bort
+"dot (.)": punkt (.)
+"comma (,)": kommatecken (,)
+pim_enrich:
+  #Category
+  category:
+    tab:
+      property.title: Egenskaper
+      history.title: Historik
+    suggest_selection: Vänligen välj en kategori till vänster
+    or: eller
+    create_new: Skapa ny kategori
+  #Mass edit operations
+  mass_edit_action:
+    limit_exceeded: Välj mindre än %limit% objekt att redigera
+    product:
+      page_title: Produkter
+      page_subtitle: Massredigera (1 produkt) | Massredigera (%count% produkter)
+      title: Välj åtgärd
+      subtitle: Välj den funktion som du vill utföra på den valda produkten | Välj den funktion som du vill utföra på de valda %count% produkterna
+      confirm: Du håller på att uppdatera en produkt med följande information, bekräfta. | Du håller på att uppdatera %count% produkter med följande information, bekräfta.
+      steps:
+        first: Välj produkter
+        second: Välj åtgärd
+        third: Konfigurera
+        fourth: Bekräfta
+    change-status:
+      label: Ändra status
+      description: De utvalda produkterna kommer att aktiveras eller inaktiveras.
+      success_flash: Produkt(er) status har ändrats
+      launched_flash: Massåtgärd "ändra status" har inletts. Du meddelas när det är gjort.
+    edit-common-attributes:
+      label: Redigera Attribut
+      description: Den valda produktens attribut kommer att redigeras med följande uppgifter för det valda språket.
+      empty: Välj de attribut(er) som du vill redigera
+      success_flash: De jobb som uppdaterar produkt(er) status körs
+      message:
+        warning: Det finns inga gemensamma attribut för de valda produkterna. Vänligen ändra ditt val.
+        invalid_attribute: Attribut med koden "attribute_code" är inte vanligt för de utvalda produkter, attribut hoppas över.
+        no_valid_attribute: Ingen av valda attribut kan tillämpas på denna produkt.
+    classify-add:
+      description: Produkterna kommer att vara placerad i följande kategorier, befintliga placeringen hålls.
+      success_flash: Produkten har klassificerats i valda kategorier
+      launched_flash: Massåtgärd "Lägg till kategorier" har inletts. Du meddelas när det är gjort.
+    classify-move:
+      description: Produkterna kommer att vara placerad i följande kategorier, befintliga placeringen är förlorad.
+      success_flash: Produkterna har flyttats till valda kategorier
+      launched_flash: Massåtgärd "flytta till kategorier" har inletts. Du meddelas när det är klart.
+    classify-remove:
+      description: Produkterna kommer att tas bort från följande kategorier.
+      success_flash: Produkterna har tagits bort från de valda kategorierna
+      launched_flash: Massåtgärd "ta bort från kategorier" har inletts. Du meddelas när det är klart.
+    change-family:
+      label: Ändra familj
+      description: Familjen av de utvalda produkterna kommer att ändras till den valda familjen
+      success_flash: Familjen av vald(a) produkt(er) har ändrats
+      launched_flash: Massåtgärd "ändra familj" har inletts. Du meddelas när det är gjort.
+    add-to-groups:
+      label: Lägg till i grupp
+      description: Markera de grupper som du vill lägga till de valda produkter
+      success_flash: Produkter har lagts till de valda grupperna
+      launched_flash: Massåtgärd "Lägg till grupper" har inletts. Du meddelas när det är gjort.
+      no_group: Ingen grupp just nu. Börja med att skapa en grupp.
+    set-attribute-requirements:
+      description: Följande attributkrav kommer att tillämpas på de valda familjerna
+      success_flash: Attributkrav tillämpades på de valda familjerna
+      launched_flash: Bulk åtgärder "ange attributet kraven" lanseras. Du kommer att meddelas när det är klart.
+    mass_action:
+      quick_export:
+        launched_flash: Kör jobbet exportera produkter
+category:
+  overview: Kategorier

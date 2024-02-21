@@ -1,0 +1,90 @@
+@import '../base/variables';
+
+.note-editor {
+  width: ~"calc(100% - 4px)";
+  border-color: @AknBorderColor;
+  border-radius: 2px;
+  background: white;
+  margin-bottom: 4px;
+
+  .note-editable {
+    p {
+      margin-bottom: 10px;
+    }
+
+    ol {
+      list-style-type: decimal;
+      margin-left: 1em;
+
+      > li {
+        list-style-type: decimal;
+      }
+    }
+
+    ul {
+      list-style-type: disc;
+      margin-left: 1em;
+
+      > li {
+        list-style-type: disc;
+      }
+    }
+
+    &[contenteditable="false"] {
+      background: @AknDisabledInputColor;
+    }
+  }
+}
+
+.note-editor .note-toolbar {
+  padding: 5px;
+  background: lighten(@AknGrey, 30%);
+  border-color: @AknBorderColor;
+}
+
+.note-toolbar > .btn-group {
+  margin-top: 0;
+
+  & + & {
+    margin-top: 5px;
+  }
+
+  button {
+    background: white;
+    border: 1px solid @AknBorderColor;
+    border-radius: 2px;
+    height: @AknLittleButtonSize;
+    width: @AknLittleButtonSize;
+    cursor: pointer;
+    color: @AknDefaultFontColor;
+    padding: 0;
+
+    &:hover {
+      background: @AknDefaultHoverBackground;
+    }
+
+    & + button {
+      border-left: none;
+    }
+  }
+}
+
+.note-editor .note-toolbar {
+  display: flex;
+}
+
+.note-popover .popover .popover-content, .note-toolbar {
+  padding: 0;
+}
+
+.note-link-dialog.modal.in {
+  @padding: 20px;
+  @modalWidth: @AknMaxFormWidth + 2 * @padding;
+  @modalHeight: 340px;
+  width: @modalWidth;
+  height: @modalHeight;
+  transform: translate(-@modalWidth/2, -@modalHeight/2);
+  left: 50%;
+  top: 50%;
+  padding: @padding;
+}

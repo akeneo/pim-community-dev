@@ -1,0 +1,9 @@
+pim_enrich_mass_edit_rest_get_filter:
+    path: '/get-filter'
+    defaults: { _controller: pim_enrich.controller.rest.mass_edit:getFilterAction }
+    methods: [POST]
+
+pim_enrich_mass_edit_rest_launch:
+    path: '/'
+    defaults: { _controller: pim_enrich.controller.rest.mass_edit:launchAction }
+    methods: [POST]

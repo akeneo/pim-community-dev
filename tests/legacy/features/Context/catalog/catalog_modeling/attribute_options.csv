@@ -1,0 +1,54 @@
+code;label-de_DE;label-en_US;label-fr_FR;attribute;sort_order
+summer_2016;Summer 2016;Summer 2016;Eté 2016;collection;1
+Spring2017;;Spring 2017;;collection;1
+winter_2016;Winter 2016;Winter 2016;Hiver 2016;collection;1
+spring_2015;Spring 2015;Spring 2015;Printemps 2015;collection;1
+autumn_2016;Autumn 2016;Autumn 2016;Automne 2016;collection;1
+summer_2017;Summer 2017;Summer 2017;Eté 2017;collection;1
+spring_2016;Spring 2016;Spring 2016;Printemps 2016;collection;1
+800;80°;80°;80°;wash_temperature;1
+700;70°;70°;70°;wash_temperature;1
+600;60°;60°;60°;wash_temperature;1
+400;40°;40°;40°;wash_temperature;1
+hand;hand;hand;hand;wash_temperature;1
+orange;Orange;Orange;Orange;color;1
+green;;Green;;color;1
+white;;White;;color;1
+blue;Blue;Blue;Bleu;color;1
+red;Red;Red;Rouge;color;1
+pink;Pink;Pink;Rose;color;1
+yellow;Yellow;Yellow;Jaune;color;1
+brown;Brown;Brown;Marron;color;1
+black;Black;Black;Noir;color;1
+grey;Grey;Grey;Gris;color;1
+l;L;L;L;size;1
+xxl;XXL;XXL;XXL;size;1
+xs;XS;XS;XS;size;1
+m;M;M;M;size;1
+xl;XL;XL;XL;size;1
+s;S;S;S;size;1
+xxs;XXS;XXS;XXS;size;1
+xxxl;3XL;3XL;3XL;size;1
+u;U;U;U;size;1
+410;41;41;41;eu_shoes_size;1
+400;40;40;40;eu_shoes_size;1
+390;39;39;39;eu_shoes_size;1
+380;38;38;38;eu_shoes_size;1
+370;37;37;37;eu_shoes_size;1
+360;36;36;36;eu_shoes_size;1
+42;;42;;eu_shoes_size;1
+43;;43;;eu_shoes_size;1
+44;;44;;eu_shoes_size;1
+abibas;abibas;abibas;abibas;supplier;1
+zaro;zaro;zaro;zaro;supplier;1
+mongo;mongo;mongo;mongo;supplier;1
+leather;leather;leather;cuir;material;1
+cotton;cotton;cotton;coton;material;1
+polyester;polyester;polyester;polyester;material;1
+wool;wool;wool;laine;material;1
+metal;metal;metal;metal;material;1
+navy_blue;;Navy blue;;color;1
+battleship_grey;;Battleship grey;;color;2
+crimson_red;;Crimson red;;color;3
+electric_yellow;;Electric yellow;;color;4
+antique_white;;Antique white;;color;5

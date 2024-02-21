@@ -1,0 +1,148 @@
+pim_user:
+  user:
+    title: Gebruiker
+    fields:
+      name_prefix: Voorvoegsel
+      email: E-mail
+      username: Gebruikersnaam
+      first_name: Voornaam
+      middle_name: Tussenvoegsel
+      last_name: Achternaam
+      name_suffix: Achtervoegsel
+      phone: Telefoon
+      date_of_birth: Geboortedatum
+      avatar: Profielafbeelding
+      timezone: Tijdzone
+      roles: Rollen
+      groups: Groepen
+      password: Wachtwoord
+      password_again: Voer wachtwoord opnieuw in
+      product_grid_filters: Filters productraster
+      catalog_locale: Catalogus lokalisatie
+      catalog_scope: Scope van catalogus
+      default_tree: Standaardstructuur
+      current_password: Huidig wachtwoord
+      new_password: Nieuw wachtwoord
+      new_password_again: Nieuw wachtwoord (herhalen)
+      default_grid_view:
+        none: Geen
+      default_product_grid_view:
+        label: Standaard Productweergave raster
+      ui_locale: Gebruikers Interface
+      last_logged_in: Laatst aangemeld
+      login_count: Aantal logins
+      user_salt: Hash Gebruiker
+      created: Aangemaakt
+      updated: Bijgewerkt
+      status: Status
+      capabilities: Mogelijkheden
+      has_role: Heeft rol
+      has_group: Heeft groep
+      active: Actief
+      inactive: Inactief
+    fields_errors:
+      new_password:
+        minimum_length: Het wachtwoord moet ten minste 8 tekens bevatten
+        maximum_length: Het wachtwoord moet minder dan 4096 tekens bevatten.
+      new_password_repeat:
+        not_match: De wachtwoorden komen niet overeen
+      current_password:
+        wrong: Verkeerd wachtwoord
+      roles:
+        last_user_with_edit_role_permissions: Deze gebruiker is de laatste met rechten voor de bewerkingsrol.
+    tabs:
+      general:
+        title: Algemeen
+        basic_information: Basisinformatie
+        contact_information: Contactinformatie
+      additional:
+        title: Aanvullend
+      additional_data:
+        title: Aanvullende gegevens
+      interfaces:
+        title: Interfaces
+      group_and_role.title: Groepen en rollen
+      password.title: Wachtwoord
+      business_unit.title: Bedrijfsdivisies
+      email_synchronization.title: Synchronisatie-instellingen voor e-mail
+    removed_user: Verwijderde gebruiker
+    login:
+      username_or_email: Gebruikersnaam of E-mail
+      remember_me: Onthoud mijn gegevens op deze computer
+      password_forgotten: Uw wachtwoord vergeten?
+      log_in: Inloggen
+      forgot_password: Wachtwoord vergeten
+      request: Aanvragen
+      password_reset: Wachtwoord resetten
+      reset: Resetten
+      password_reset_email_sent: Er is een e-mail verzonden naar de gebruiker. Deze mail bevat een wachtwoord-reset link.
+      homepage: Terug naar de startpagina
+  group:
+    tab:
+      general.title: Algemeen
+      users.title: Gebruikers
+  roles:
+    title: Rol
+    tab:
+      general: Algemeen
+      action: Machtigingen
+      users: Gebruikers
+  controller:
+    group:
+      message:
+        saved: "Groep opgeslagen"
+    role:
+      message:
+        saved: "Rol opgeslagen"
+        cannot_delete_last_edit_role_permission: U kunt de bewerkingsrechten van de laatste gebruiker met die rol niet verwijderen.
+        cannot_remove_last_edit_role_permission: U kunt de bewerkingsrechten van de laatste gebruiker met die rol niet opheffen.
+    user:
+      message:
+        saved: "Gebruiker opgeslagen"
+pim_datagrid:
+  columns:
+    user:
+      createdAt: "Aangemaakt op"
+      updatedAt: "Bijgewerkt op"
+    roles:
+      label: "Label"
+    groups:
+      name: "Naam"
+confirmation:
+  remove:
+    role: Weet u zeker dat u deze rol wilt verwijderen?
+    user: Weet u zeker dat u deze gebruiker wilt verwijderen?
+flash:
+  role:
+    removed: Rol succesvol verwijderd
+  user:
+    removed: Gebruiker succesvol verwijderd
+oro_security:
+  acl_group:
+    user: Gebruikers
+    role: Rollen
+    group: Gebruikersgroepen
+  acl:
+    user:
+      view: Lijst gebruikers
+      create: Een gebruiker maken
+      edit: Gebruikers bewerken
+      delete: Een gebruiker verwijderen
+    role:
+      view: Lijst met rollen
+      create: Maak een rol
+      edit: Rollen bewerken
+      delete: Een rol verwijderen
+    group:
+      view: Lijst gebruikersgroepen
+      create: Maak een gebruikersgroep
+      edit: Bewerken van gebruikersgroepen
+      delete: De gebruikersgroep van een verwijderen
+#Security
+(default): Standaardmachtiging op entiteiten
+VIEW: Bekijk
+CREATE: Aanmaken
+EDIT: Wijzig
+DELETE: Verwijderen
+ASSIGN: Toewijzen
+SHARE: Delen

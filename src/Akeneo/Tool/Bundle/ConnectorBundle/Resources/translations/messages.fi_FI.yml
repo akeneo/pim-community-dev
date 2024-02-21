@@ -1,0 +1,23 @@
+pim_connector:
+  steps:
+    file_reader:
+      invalid_item_columns_count: 'Odotettiin %totalColumnsCount% saraketta, mutta havaittiin %itemColumnsCount% tiedostossa %filePath%:%lineno%'
+job_execution.summary:
+  read: luettu
+  write: kirjoitettu
+  skip: ohitettu
+  create: luotu
+  process: käsitelty
+  update_products: päivitetyt tuotteet
+  process_products: prosessoidut tuotteet
+  skip_products: ohitetut tuotteet
+  displayed: ensimmäiset varoitukset näytetty
+  charset_validator:
+    title: 'Tiedoston koodaus:'
+    skipped: ohitetaan, laajennus valkolistattu
+  product_skipped_no_diff: ohitettu tuote (ei eroavaisuuksia)
+  product_skipped_no_associations: ohitettu tuote (ei havaittuja assosiaatioita)
+  product_model_skipped_no_diff: ohitettu tuotemalli (ei eroavaisuuksia)
+  item_position: lue rivit
+  skipped_in_root_product_model: ohitettu tuotemalli ylätason kanssa
+  skipped_in_sub_product_model: ohitettu tuotemalli ilman ylätasoa

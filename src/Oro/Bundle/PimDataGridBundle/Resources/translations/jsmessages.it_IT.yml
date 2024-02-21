@@ -1,0 +1,70 @@
+pim_datagrid:
+  no_results_subtitle: "Riprova con nuovi criteri di ricerca."
+  select:
+    title: Selezionare
+    all_visible: Tutti visibili
+  delete_error:
+    title: Errore nella Eliminazione
+  reset_confirmation:
+    title: Conferma reset
+  refresh_confirmation:
+    title: Aggiornare la conferma
+  column_configurator:
+    label: Colonne
+    title: Configurare le colonne
+    all_groups: Tutti i gruppi
+    search: Ricerca
+    clear: Ripulisci
+    displayed_columns: Colonne Selezionate
+    remove_column: Rimuovere
+    description: Seleziona le informazioni da visualizzare come colonne
+    min_message: È necessario selezionare almeno una colonna della griglia di dati da visualizzare
+    system_group: Sistema
+  view_selector:
+    create_view: Creare vista
+    placeholder: Nome della nuova visualizzazione
+    choose_label: Scegliere un'etichetta per la visualizzazione
+    remove: Eliminare questa visualizzazione
+    save_changes: Salva questa visualizzazione
+    default_view: Visualizzazione predefinita
+    select: Per favore seleziona una visualizzazione
+    confirmation:
+      remove: Sei sicuro di voler cancellare questa visualizzazione?
+  display_selector:
+    label: Mostra
+  mass_action:
+    delete:
+      empty_selection: Nessun prodotto selezionato
+      success_message: "{0} nessuna entità rimossa|{1} una entità rimossa|]1, Inf[%count% entità sono state rimosse"
+    default:
+      confirmation:
+        content: Sei sicuro di voler proseguire?
+      no_items: Per favore, selezionare gli articoli per eseguire l'azione di massa.
+    quick_export:
+      title: Esportazione rapida
+      success: E' stata lanciata l'esportazione rapida
+  action:
+    default:
+      confirmation:
+        content: Sei sicuro di voler proseguire?
+      no_items: Per favore, seleziona l'articolo per eseguire l'azione.
+    show:
+      title: Visualizza
+  filters:
+    common:
+      empty: è vuoto
+      not_empty: non è vuoto
+      in_list: nell'elenco
+      contains: contiene
+      does_not_contain: non contiene
+      equal: è uguale a
+      start_with: inizia con
+      operator: Operatore
+    price_filter:
+      label: Valuta
+    metric_filter:
+      label: Unità
+  cells:
+    credientials:
+      client_id: ID cliente
+      secret: Segreto

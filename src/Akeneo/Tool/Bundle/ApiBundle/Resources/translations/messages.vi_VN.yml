@@ -1,0 +1,8 @@
+pim_api:
+  acl_group:
+    attribute: Thuộc tính
+    family: Các chủng loại
+    channel: Kênh
+    locale: Locale
+    currency: Tiền tệ
+    association_type: Các kiểu kết hợp

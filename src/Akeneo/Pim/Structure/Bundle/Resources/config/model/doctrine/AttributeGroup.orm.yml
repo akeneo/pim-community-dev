@@ -1,0 +1,44 @@
+Akeneo\Pim\Structure\Component\Model\AttributeGroup:
+    type: entity
+    table: pim_catalog_attribute_group
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    repositoryClass: Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeGroupRepository
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        code:
+            type: string
+            length: 100
+            unique: true
+        sortOrder:
+            type: integer
+            column: sort_order
+        created:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: create
+        updated:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: update
+    oneToMany:
+        attributes:
+            targetEntity: Akeneo\Pim\Structure\Component\Model\AttributeInterface
+            mappedBy: group
+            cascade:
+                - persist
+                - detach
+            orderBy:
+                sortOrder: ASC
+        translations:
+            targetEntity: Akeneo\Pim\Structure\Component\Model\AttributeGroupTranslationInterface
+            mappedBy: foreignKey
+            cascade:
+                - persist
+                - detach
+            orphanRemoval: true

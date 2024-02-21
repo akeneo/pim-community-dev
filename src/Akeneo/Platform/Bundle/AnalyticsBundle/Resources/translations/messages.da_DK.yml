@@ -1,0 +1,58 @@
+pim_analytics:
+  new_patch_available: Ny patch tilgængelig
+  system_config:
+    group:
+      notification.title: Notifikationer
+      version_update.title: Version opdateringer
+    form:
+      version_update.label: Notifikation om nye versioner
+      version_update.tooltip: Send anmodning til en fjernserver til at hente oplysninger om frigivelse af nye rettelser
+  system_info:
+    title: Systemoplysninger
+    download: TXT
+  info_type:
+    pim_edition: Udgave
+    pim_version: Version
+    pim_storage_driver: Lagerplads
+    pim_environment: Miljø
+    pim_install_time: Installationstid
+    registered_bundles: Registrerede bundter
+    nb_channels: Antal af kanaler
+    nb_products: Antal produkter
+    nb_product_models: Antallet af produktmodeller
+    nb_variant_products: Antallet af variant produkter
+    nb_family_variants: Antallet af familie varianter
+    nb_attributes: Antallet af attributter
+    nb_scopable_attributes: Antallet af afgrænsbare attributter
+    nb_localizable_attributes: Antallet af oversætbare attributter
+    nb_scopable_localizable_attributes: Antallet af oversætbare og afgrænsbare attributter
+    nb_useable_as_grid_filter_attributes: Antal attributter, der kan bruges som gitterfilter
+    avg_percentage_scopable_attributes_per_family: Gennemsnitlig procentdel af omfattende attributter pr. familie (%)
+    avg_percentage_localizable_attributes_per_family: Gennemsnitlig procentdel af omfattende attributter pr. familie (%)
+    avg_percentage_scopable_localizable_attributes_per_family: Gennemsnitlig procentdel af oversætbare og omfattende attributter pr. familie (%)
+    avg_number_attributes_per_family: Gennemsnitligt antal attributter pr. familie
+    nb_locales: Antallet af landestandarder
+    nb_families: Antallet af familier
+    nb_users: Antallet af brugere
+    nb_categories: Antal af kategorier
+    nb_category_trees: Antal af kategori træer
+    max_category_in_one_category: Max antal kategorier i én kategori
+    max_category_levels: Max antal kategori niveauer
+    nb_product_values: Antallet af produkt værdier
+    avg_product_values_by_product: Gennemsnitligt antal produkt værdier af produkt
+    avg_product_values_by_family: Gennemsnitligt antal potentielle produktværdier efter familie
+    max_product_values_by_family: Maks antal potentielle produktværdier efter familie
+    pim_storage_version: Lagerplads version
+    os_version: OS-version
+    php_version: PHP version
+    mysql_version: MySQL version
+    mariadb_version: MariaDB version
+    mongodb_version: MongoDB version
+    server_version: Serverversion
+    php_extensions: PHP udvidelser
+  acl:
+    system_info:
+      index: Systemoplysninger
+pim_menu:
+  item:
+    system_info: Systemoplysninger

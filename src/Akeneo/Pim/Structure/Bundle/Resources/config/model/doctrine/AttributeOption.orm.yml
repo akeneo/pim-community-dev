@@ -1,0 +1,41 @@
+Akeneo\Pim\Structure\Component\Model\AttributeOption:
+    type: entity
+    table: pim_catalog_attribute_option
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    repositoryClass: Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeOptionRepository
+    uniqueConstraints:
+        searchunique_idx:
+            columns:
+                - code
+                - attribute_id
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        code:
+            type: string
+            length: 100
+        sortOrder:
+            type: integer
+            column: sort_order
+    manyToOne:
+        attribute:
+            targetEntity: Akeneo\Pim\Structure\Component\Model\AttributeInterface
+            inversedBy: options
+            joinColumns:
+                attribute_id:
+                    nullable: false
+                    referencedColumnName: id
+                    onDelete: CASCADE
+    oneToMany:
+        optionValues:
+            targetEntity: Akeneo\Pim\Structure\Component\Model\AttributeOptionValueInterface
+            indexBy: locale
+            cascade:
+                - persist
+                - remove
+                - detach
+            mappedBy: option
+            orphanRemoval: true

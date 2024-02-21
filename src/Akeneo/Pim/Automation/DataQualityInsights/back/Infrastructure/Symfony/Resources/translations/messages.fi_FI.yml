@@ -1,0 +1,15 @@
+akeneo_data_quality_insights:
+  axis:
+    enrichment: Rikastaminen
+  acl:
+    activation_attribute_group:
+      edit: Muokkaa tuotetiedon laadun analytiikan aktivointia
+  acl_group:
+    dqi: Tuotetiedon laadun analytiikka
+  product_grid:
+    filter_label:
+      quality_score: Laatupisteytys
+      enrichment_quality: Rikastamisen laatu
+      images_quality: Tuotekuva
+Enrichment: Rikastaminen
+Quality Score: Laatupisteytys

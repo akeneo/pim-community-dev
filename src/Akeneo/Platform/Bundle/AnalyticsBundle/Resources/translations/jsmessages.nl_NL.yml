@@ -1,0 +1,64 @@
+pim_analytics:
+  new_patch_available: Nieuwe patch beschikbaar
+  system_info:
+    title: Systeeminformatie
+    download: Downloaden
+  info_header:
+    property: Eigenschap
+    information: Informatie
+  info_type:
+    pim_edition: Editie
+    pim_version: Versie
+    pim_storage_driver: Opslag
+    pim_environment: Omgeving
+    pim_install_time: Tijd van installatie
+    registered_bundles: Geregistreerde bundels
+    nb_channels: Aantal kanalen
+    nb_products: Aantal producten
+    nb_product_models: Aantal productmodellen
+    nb_variant_products: Aantal productvariaties
+    nb_family_variants: Aantal familievariaties
+    nb_attributes: Aantal attributen
+    nb_scopable_attributes: Aantal attributen met meerdere toepassingsgebieden
+    nb_localizable_attributes: Aantal attributen die vertaald kunnen worden
+    nb_scopable_localizable_attributes: Aantal attributen met meerdere talen en meerdere toepassingsgebieden
+    nb_useable_as_grid_filter_attributes: Aantal attributen bruikbaar als rasterfilter
+    avg_percentage_scopable_attributes_per_family: Gemiddeld percentage van attributen met meerdere toepassingsgebieden per familie (%)
+    avg_percentage_localizable_attributes_per_family: Gemiddeld percentage van attributen met meerdere talen per familie (%)
+    avg_percentage_scopable_localizable_attributes_per_family: Gemiddelde percentage van attributen met meerdere talen en meerdere toepassingsgebieden per familie (%)
+    avg_number_attributes_per_family: Gemiddeld aantal attributen per familie
+    nb_locales: Aantal talen
+    nb_families: Aantal families
+    nb_users: Aantal gebruikers
+    nb_categories: Aantal categorieën
+    nb_category_trees: Aantal categoriebomen
+    max_category_in_one_category: Max aantal categorieën in één categorie
+    max_category_levels: Maximum aantal categorieniveaus
+    nb_product_values: Aantal productwaarden
+    avg_product_values_by_product: Gemiddeld aantal productwaarden per product
+    avg_product_values_by_family: Gemiddeld aantal potentiële productwaarden per familie
+    max_product_values_by_family: Maximaal aantal potentiële productwaarden per familie
+    pim_storage_version: Versie van opslag
+    os_version: Versie van besturingssysteem
+    php_version: PHP-versie
+    mysql_version: MySQL-versie
+    mariadb_version: MariaDB-versie
+    mongodb_version: MongoDB-versie
+    server_version: Serverversie
+    php_extensions: PHP-extensies
+    email_domains: Gekoppelde e-maildomeinen
+    api_connection: API-verbindingen
+    nb_media_files_in_products: Aantal mediabestanden in de producten
+    nb_media_images_in_products: Aantal media-afbeeldingen in de producten
+    is_demo_catalog: Democatalogus geïnstalleerd
+    nb_active_event_subscription: Aantal geactiveerde webhooks
+    activated_app_ids: Verbonden apps
+    nb_activated_apps: Aantal verbonden apps
+    data_source.tracked: Aantal gecontroleerde API-bronverbindingen
+    data_source.untracked: Aantal ongecontroleerde API-bronverbindingen
+    data_destination.tracked: Aantal gecontroleerde API-doelverbindingen
+    data_destination.untracked: Aantal ongecontroleerde API-doelverbindingen
+    other.tracked: Aantal gecontroleerde API verbindingen - overig
+    other.untracked: Aantal ongecontroleerde API verbindingen - overig
+    reset_event_count: Aantal keren dat exemplaar is gereset
+    last_reset_time: Laatste tijdstip van resetten

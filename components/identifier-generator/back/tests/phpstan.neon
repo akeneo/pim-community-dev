@@ -1,0 +1,7 @@
+includes:
+    - %currentWorkingDirectory%/vendor/phpstan/phpstan-symfony/extension.neon
+    - %currentWorkingDirectory%/vendor/phpstan/phpstan-webmozart-assert/extension.neon
+parameters:
+    level: 8
+    paths:
+        - %currentWorkingDirectory%/components/identifier-generator

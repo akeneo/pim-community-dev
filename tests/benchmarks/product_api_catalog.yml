@@ -1,0 +1,38 @@
+catalog:
+    entities:
+        channels:
+            - code: ecommerce
+              locales: [en_US, fr_FR, de_DE, es_ES, fr_BE, fr_CA, en_AU, en_GB, en_CA]
+              currencies: [USD, EUR]
+            - code: print
+              locales: [en_US, fr_FR, de_DE, es_ES, fr_BE, fr_CA, en_AU, en_GB, en_CA]
+              currencies: [USD, EUR]
+            - code: web
+              locales: [en_US, fr_FR, de_DE, es_ES, fr_BE, fr_CA, en_AU, en_GB, en_CA]
+              currencies: [USD, EUR]
+        category-trees:
+            -
+                code: suppliers
+                children: 66
+                levels: 4
+            -
+                code: sales
+                children: 66
+                levels: 4
+            -
+                code: master
+                children: 66
+                levels: 4
+        attribute-groups:
+            count: 50
+        attributes:
+            count: 550
+            percentage_of_localizable: 12
+            percentage_of_scopable: 3
+            percentage_of_localizable_and_scopable: 6
+        families:
+            count: 125
+            attributes_count: 120
+        products:
+            count: 150
+            with_images: false

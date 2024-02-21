@@ -1,0 +1,6 @@
+services:
+  akeneo.family_templates.controller.get_family_templates_action:
+    class: Akeneo\Pim\Structure\FamilyTemplate\Infrastructure\Controller\GetFamilyTemplatesAction
+    public: true
+    arguments:
+      - '@akeneo_structure.github.fetch.family_templates'

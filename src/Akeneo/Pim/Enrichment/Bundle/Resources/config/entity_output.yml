@@ -1,0 +1,9 @@
+Pim\Bundle\CatalogBundle\Entity\Category:
+    icon_class:  icon-category
+    name:        Category
+    description: Category allows to organize products
+
+Pim\Component\Catalog\Model\Product:
+    icon_class:  icon-product
+    name:        Product
+    description: Product description

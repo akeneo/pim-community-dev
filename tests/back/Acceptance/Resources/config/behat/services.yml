@@ -1,0 +1,152 @@
+services:
+    ### Entity builder
+    test.channel.builder:
+        class: 'Akeneo\Test\Common\EntityBuilder'
+        arguments:
+            - '@pim_catalog.factory.channel'
+            - '@pim_catalog.updater.channel'
+            - '@validator'
+
+    test.locale.builder:
+        class: 'Akeneo\Test\Common\EntityBuilder'
+        arguments:
+            - '@pim_catalog.factory.locale'
+            - '@pim_catalog.updater.locale'
+            - '@validator'
+
+    test.category.builder:
+        class: 'Akeneo\Test\Common\EntityBuilder'
+        arguments:
+            - '@pim_catalog.factory.category'
+            - '@pim_catalog.updater.category'
+            - '@validator'
+
+    test.currency.builder:
+        class: 'Akeneo\Test\Common\EntityBuilder'
+        arguments:
+            - '@pim_catalog.factory.currency'
+            - '@pim_catalog.updater.currency'
+            - '@validator'
+
+    test.attribute.builder:
+        class: 'Akeneo\Test\Common\EntityBuilder'
+        arguments:
+            - '@pim_catalog.factory.attribute'
+            - '@pim_catalog.updater.attribute'
+            - '@validator'
+
+    test.attribute_option.builder:
+        class: 'Akeneo\Test\Common\EntityBuilder'
+        arguments:
+            - '@pim_catalog.factory.attribute_option'
+            - '@pim_catalog.updater.attribute_option'
+            - '@validator'
+
+    test.attribute_group.builder:
+        class: 'Akeneo\Test\Common\EntityBuilder'
+        arguments:
+            - '@pim_catalog.factory.attribute_group'
+            - '@pim_catalog.updater.attribute_group'
+            - '@validator'
+
+    test.family.builder:
+        class: 'Akeneo\Test\Common\EntityBuilder'
+        arguments:
+            - '@pim_catalog.factory.family'
+            - '@pim_catalog.updater.family'
+            - '@validator'
+
+    test.catalog.product.builder:
+        class: 'Akeneo\Test\Common\EntityWithValue\Builder\Product'
+        shared: false
+        arguments:
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.updater.product'
+            - '@validator'
+
+    test.locale.context:
+        public: true
+        class: 'Akeneo\Test\Acceptance\Locale\LocaleContext'
+        arguments:
+            - '@pim_catalog.repository.locale'
+            - '@test.locale.builder'
+
+    test.channel.context:
+        public: true
+        class: 'Akeneo\Test\Acceptance\Channel\ChannelContext'
+        arguments:
+            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.repository.category'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.currency'
+            - '@test.category.builder'
+            - '@test.channel.builder'
+            - '@test.currency.builder'
+
+    test.user.context:
+        class: 'Akeneo\Test\Acceptance\User\UserContext'
+        arguments:
+            - '@pim_user.factory.user'
+            - '@security.token_storage'
+            - '@pim_user.repository.user'
+        public: true
+
+    test.attribute.context:
+        public: true
+        class: 'Akeneo\Test\Acceptance\Attribute\AttributeContext'
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@test.attribute.builder'
+            - '@pim_catalog.repository.attribute_group'
+            - '@test.attribute_group.builder'
+
+    test.attribute_option.context:
+        public: true
+        class: 'Akeneo\Test\Acceptance\AttributeOption\AttributeOptionContext'
+        arguments:
+            - '@test.attribute_option.builder'
+            - '@pim_catalog.repository.attribute_option'
+
+    test.family.context:
+        public: true
+        class: 'Akeneo\Test\Acceptance\Family\FamilyContext'
+        arguments:
+            - '@pim_catalog.repository.family'
+            - '@pim_catalog.factory.family'
+            - '@pim_catalog.updater.family'
+            - '@pim_catalog.repository.attribute'
+
+    test.catalog.product_creation.context:
+        public: true
+        class: 'Akeneo\Test\Acceptance\Catalog\Context\ProductCreation'
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@test.catalog.product.builder'
+            - '@pim_catalog.repository.product'
+            - '@test.attribute.builder'
+            - '@pim_catalog.repository.attribute'
+            - '@test.attribute_group.builder'
+            - '@pim_catalog.repository.attribute_group'
+            - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetAttributeTypes'
+
+    test.catalog.product_validation.context:
+        public: true
+        class: 'Akeneo\Test\Acceptance\Catalog\Context\ProductValidation'
+        arguments:
+            - '@test.catalog.product.builder'
+            - '@pim_catalog.validator.product'
+            - '@pim_catalog.repository.product'
+
+    test.user_management.user_validation.context:
+        class: 'Akeneo\Test\Acceptance\User\Context\UserValidation'
+        arguments:
+            - '@pim_user.factory.user'
+            - '@pim_user.updater.user'
+            - '@validator'
+            - '@pim_user.repository.group'
+
+    test.feature_flag.context:
+        public: true
+        class: 'Akeneo\Test\Acceptance\FeatureFlag\FeatureFlagContext'
+        arguments:
+            - '@feature_flags'

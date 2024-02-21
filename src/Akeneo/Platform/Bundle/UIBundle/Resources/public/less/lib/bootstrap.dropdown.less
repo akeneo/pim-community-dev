@@ -1,0 +1,31 @@
+.AknDropdown.open .AknDropdown-menu,
+.AknDropdown-menu.ui-multiselect-menu {
+  display: block;
+  transform: scale(1);
+  opacity:1;
+  animation-name: fadeIn;
+  animation-duration: 0.2s;
+  transition-timing-function: ease-in;
+  cursor: default;
+  z-index: 804;
+}
+
+.AknDropdown.top .AknDropdown-menu {
+  bottom: 0;
+  top: auto;
+}
+
+.AknDropdown.left .AknDropdown-menu {
+  right: 0;
+  left: auto;
+}
+
+.AknDropdown.open .AknDropdown-menuTitle,
+.AknDropdown.open .AknDropdown-menuLink {
+  line-height: 26px;
+}
+
+.AknDropdown.open .AknIconButton--value {
+  background-image: url("/bundles/pimui/images/icon-value-purple.svg");
+  opacity: 1;
+}

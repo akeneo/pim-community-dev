@@ -1,0 +1,84 @@
+batch_jobs:
+  csv_currency_export:
+    label: 以 CSV 格式导出货币
+    export.label: 导出货币
+  csv_currency_import:
+    label: 以 CSV 格式导入货币
+    import.label: 导入货币
+  xlsx_currency_export:
+    label: 以 XLSX 格式导出货币
+    export.label: 导出货币
+  xlsx_currency_import:
+    label: 以 XLSX 格式导入货币
+    import.label: 导入货币
+  csv_locale_export:
+    label: 以 CSV 格式导出区域设置
+    export.label: 导出区域设置
+  csv_locale_import:
+    label: 以 CSV 格式导入区域设置
+    import.label: 导入区域设置
+  xlsx_locale_export:
+    label: 以 XLSX 格式导出区域设置
+    export.label: 导出区域设置
+  xlsx_locale_import:
+    label: 以 XLSX 格式导入区域设置
+    import.label: 导入区域设置
+  csv_channel_export:
+    label: 以 CSV 格式导出渠道
+    export.label: 导出渠道
+  csv_channel_import:
+    label: 以 CSV 格式导入渠道
+    import.label: 导入渠道
+  xlsx_channel_export:
+    label: 以 XLSX 格式导出渠道
+    export.label: 导出渠道
+  xlsx_channel_import:
+    label: 以 XLSX 格式导入渠道
+    import.label: 导入渠道
+pim_enrich.entity.channel:
+  label: 渠道
+  uppercase_label: 渠道
+  flash:
+    update:
+      success: 渠道已成功更新。
+      fail: 渠道无法更新。
+    create:
+      success: 渠道已成功创建。
+      fail: 渠道无法创建。
+    delete:
+      success: 渠道已成功移除
+      fail: 无法删除此渠道
+  page_title:
+    index: "]-Inf, 1]{{ count }} 个渠道|]1, Inf[{{ count }} 个渠道"
+  property:
+    category_tree: 类别树
+    do_not_convert: 不转换
+    measurement: 测量设置
+    label_conversion_units: 导出产品时，为每个将要使用的测量属性选择一个换算单位。
+  module:
+    create:
+      button: 创建渠道
+    delete:
+      confirm: 确定要删除此渠道吗？
+pim_enrich.entity.locale:
+  label: 区域
+  uppercase_label: 区域
+  plural_label: 区域
+  page_title:
+    index: "]-Inf, 1]{{ count }} 个已启用区域|]1, Inf[{{ count }"
+  helper: "要启用或禁用某个区域，请转到您的其中一个<a href={{ href }}>渠道</"
+  grid:
+    columns:
+      code: 已启用区域
+    filters:
+      search_placeholder: 搜索已启用区域
+    no_search_result: 抱歉，找不到与搜索相符的结果。
+pim_enrich.entity.currency:
+  plural_label: 货币
+  page_title:
+    index: "]-Inf, 1]{{ count }} 种货币|]1, Inf[{{ count }} 种货币"
+flash:
+  currency:
+    error:
+      linked_to_channel: 无法禁用链接到渠道的货币
+    updated: 货币已成功更新

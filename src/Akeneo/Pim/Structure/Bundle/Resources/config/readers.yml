@@ -1,0 +1,90 @@
+services:
+    pim_connector.reader.database.attribute_option:
+        class: 'Akeneo\Pim\Structure\Component\Reader\Database\AttributeOptionReader'
+        arguments:
+            - '@pim_catalog.repository.attribute_option'
+
+    pim_connector.reader.database.attribute_group:
+        class: '%pim_connector.reader.database.class%'
+        arguments:
+            - '@pim_catalog.repository.attribute_group'
+
+    pim_connector.reader.database.attribute:
+        class: '%pim_connector.reader.database.class%'
+        arguments:
+            - '@pim_catalog.repository.attribute'
+
+    pim_connector.reader.database.family:
+        class: '%pim_connector.reader.database.class%'
+        arguments:
+            - '@pim_catalog.repository.family'
+
+    pim_connector.reader.database.family_variant:
+        class: '%pim_connector.reader.database.class%'
+        arguments:
+            - '@pim_catalog.repository.family_variant'
+
+    pim_connector.reader.file.csv_family:
+        class: '%pim_connector.reader.file.csv.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.family'
+
+    pim_connector.reader.file.csv_family_variant:
+        class: '%pim_connector.reader.file.csv.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.family_variant'
+
+    pim_connector.reader.file.csv_attribute:
+        class: '%pim_connector.reader.file.csv.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.attribute'
+
+    pim_connector.reader.file.csv_attribute_option:
+        class: '%pim_connector.reader.file.csv.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.attribute_option'
+
+    pim_connector.reader.file.xlsx_attribute:
+        class: '%pim_connector.reader.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.attribute'
+
+    pim_connector.reader.file.xlsx_family:
+        class: '%pim_connector.reader.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.family'
+
+    pim_connector.reader.file.xlsx_family_variant:
+        class: '%pim_connector.reader.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.family_variant'
+
+    pim_connector.reader.file.xlsx_attribute_group:
+        class: '%pim_connector.reader.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.attribute_group'
+
+    pim_connector.reader.file.xlsx_attribute_option:
+        class: '%pim_connector.reader.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.attribute_option'
+
+    pim_connector.reader.file.csv_attribute_group:
+        class: '%pim_connector.reader.file.csv.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.attribute_group'
+
+    pim_enrich.connector.reader.mass_edit.family:
+        class: 'Akeneo\Pim\Structure\Component\Reader\Database\MassEdit\FilteredFamilyReader'
+        arguments:
+            - '@pim_catalog.repository.family'

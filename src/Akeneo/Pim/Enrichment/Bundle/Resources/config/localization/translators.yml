@@ -1,0 +1,19 @@
+parameters:
+    pim_catalog.localization.translator.proxy.class: Akeneo\Tool\Component\Localization\TranslatorProxy
+
+services:
+    pim_catalog.localization.translator.proxy:
+        class: '%pim_catalog.localization.translator.proxy.class%'
+        arguments:
+            - '@translator'
+
+    pim_catalog.localization.translator.label:
+        class: 'Akeneo\Tool\Component\Localization\LabelTranslator'
+        arguments:
+            - '@translator.default'
+
+    pim_catalog.localization.translator.currency:
+        class: 'Akeneo\Tool\Component\Localization\CurrencyTranslator'
+
+    pim_catalog.localization.translator.language:
+        class: 'Akeneo\Tool\Component\Localization\LanguageTranslator'

@@ -1,0 +1,22 @@
+services:
+    akeneo_communication_channel.internal_api.announcement.list:
+        public: true
+        class: 'Akeneo\Platform\CommunicationChannel\Infrastructure\Delivery\InternalApi\Announcement\ListAnnouncementsAction'
+        arguments:
+            - '@pim_catalog.version_provider'
+            - '@pim_user.context.user'
+            - '@akeneo_communication_channel.handler.query.list_announcements'
+
+    akeneo_communication_channel.handler.query.list_announcements:
+        class: 'Akeneo\Platform\CommunicationChannel\Application\Announcement\Query\ListAnnouncementsHandler'
+        arguments:
+            - '@akeneo_communication_channel.query.api.find_announcement_items'
+            - '@akeneo_communication_channel.query.dbal.find_viewed_announcement_ids'
+
+    akeneo_communication_channel.query.api.find_announcement_items:
+        class: 'Akeneo\Platform\CommunicationChannel\Infrastructure\CommunicationChannel\Api\ApiFindAnnouncementItems'
+        arguments:
+            - '%comm_panel_api_url%'
+
+    akeneo_communication_channel.query.local_filestorage.find_announcement_items:
+        class: 'Akeneo\Platform\CommunicationChannel\Infrastructure\CommunicationChannel\LocalFilestorage\LocalFilestorageFindAnnouncementItems'

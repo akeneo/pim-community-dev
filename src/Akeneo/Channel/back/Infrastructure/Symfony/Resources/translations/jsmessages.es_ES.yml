@@ -1,0 +1,84 @@
+batch_jobs:
+  csv_currency_export:
+    label: Exportar monedas en CSV
+    export.label: Exportar monedas
+  csv_currency_import:
+    label: Importar monedas en CSV
+    import.label: Importar monedas
+  xlsx_currency_export:
+    label: Exportar monedas en XLSX
+    export.label: Exportar monedas
+  xlsx_currency_import:
+    label: Importar monedas en XLSX
+    import.label: Importar monedas
+  csv_locale_export:
+    label: Exportar configuraciones regionales en CSV
+    export.label: Exportar configuraciones regionales
+  csv_locale_import:
+    label: Importar configuraciones regionales en CSV
+    import.label: Importar configuraciones regionales
+  xlsx_locale_export:
+    label: Exportar configuraciones regionales en XLSX
+    export.label: Exportar configuraciones regionales
+  xlsx_locale_import:
+    label: Importar configuraciones regionales en XLSX
+    import.label: Importar configuraciones regionales
+  csv_channel_export:
+    label: Exportar canales en CSV
+    export.label: Exportar canales
+  csv_channel_import:
+    label: Importar canales en CSV
+    import.label: Importar canales
+  xlsx_channel_export:
+    label: Exportar canales en XLSX
+    export.label: Exportar canales
+  xlsx_channel_import:
+    label: Importar canales en XLSX
+    import.label: Importar canales
+pim_enrich.entity.channel:
+  label: canal
+  uppercase_label: Canal
+  flash:
+    update:
+      success: Canal actualizado correctamente.
+      fail: No se ha podido actualizar el canal.
+    create:
+      success: Canal creado correctamente.
+      fail: No se ha podido crear el canal.
+    delete:
+      success: Canal eliminado correctamente
+      fail: No se puede eliminar este canal
+  page_title:
+    index: "]-Inf, 1]{{ count }} canal|]1, Inf[{{ count }} canales"
+  property:
+    category_tree: Árbol de categoría
+    do_not_convert: No convertir
+    measurement: Ajustes de medición
+    label_conversion_units: Elija una unidad de conversión para cada atributo de medid
+  module:
+    create:
+      button: Crear canal
+    delete:
+      confirm: '¿Seguro que quiere eliminar este canal?'
+pim_enrich.entity.locale:
+  label: configuración regional
+  uppercase_label: Configuración regional
+  plural_label: Configuraciones regionales
+  page_title:
+    index: "]-Inf, 1]{{ count }} configuración regional habilitada|]1"
+  helper: "Para habilitar o deshabilitar una configuración regional"
+  grid:
+    columns:
+      code: Configuraciones regionales habilitadas
+    filters:
+      search_placeholder: Buscar una configuración regional habilitada
+    no_search_result: Lo sentimos, no hay ningún resultado para su búsqueda.
+pim_enrich.entity.currency:
+  plural_label: Monedas
+  page_title:
+    index: "]-Inf, 1]{{ count }} moneda|]1, Inf[{{ count }} monedas"
+flash:
+  currency:
+    error:
+      linked_to_channel: No puede desactivar una moneda vinculada a un canal
+    updated: Moneda actualizada correctamente

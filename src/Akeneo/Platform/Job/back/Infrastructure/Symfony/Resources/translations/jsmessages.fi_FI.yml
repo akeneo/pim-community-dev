@@ -1,0 +1,65 @@
+pim_title:
+  akeneo_job_process_tracker_index: Prosessiseurain
+  akeneo_job_process_tracker_details: Prosessin tracker | Näytä työ
+akeneo_job:
+  job_status:
+    COMPLETED: Valmis
+    STARTED: Työn alla
+    STARTING: Alkaa
+    STOPPING: Päättyy
+    STOPPED: Päättynyt
+    FAILED: Epäonnistunut
+    ABANDONED: Hylätty
+    UNKNOWN: Tuntematon
+    IN_PROGRESS: Työn alla
+akeneo_job_process_tracker:
+  last_executions:
+    title: Viimeksi suoritettu
+  job_execution_list:
+    search_placeholder: Etsi nimen perusteella
+    table:
+      headers:
+        job_name: Työn nimi
+        type: Tyyppi
+        started_at: Alkoi
+        username: Käyttäjänimi
+        progress: Edistyminen
+        status: Tila
+        warning_count: Varoitukset
+  type_filter:
+    label: Tyyppi
+    all: Kaikki
+    quick_export: Nopea vienti
+    import: Tuonti
+    export: Vienti
+    mass_edit: Massamuokkaus
+    mass_delete: Massapoista tuotteet
+    compute_family_variant_structure_changes: Laske varianttiperheen rakenteen muutokset
+    compute_completeness_of_products_family: Laske perheiden valmiusaste
+    clean_removed_attribute_job: Puhdistetaan poistettuja attribuuttien arvoja
+    execute_rules: Suorita säännöt
+  user_filter:
+    label: Käyttäjä
+    all: Kaikki
+    search: Etsi
+  status_filter:
+    label: Status
+    all: Kaikki
+    abandoned: Hylätty
+    completed: Valmis
+    failed: Epäonnistunut
+    starting: Aloitetaan
+    stopped: Pysäytetty
+    stopping: Pysäytetään
+    unknown: Tuntematon
+    in_progress: Työn alla
+  automation_filter:
+    all: Kaikki
+    yes: Yes
+    no: No
+  tracking:
+    completed: "Käytetty aika: {{ duration }}"
+    in_progress: "Arvioitu aika jäljellä nykyiselle vaiheelle: {{ duration }}"
+    not_started: Odottaa
+    untrackable: Ei-seurattava vaihe
+    estimating: 'Arvioidaan jäljellä olevaa aikaa:'

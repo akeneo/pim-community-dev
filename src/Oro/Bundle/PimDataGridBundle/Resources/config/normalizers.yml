@@ -1,0 +1,138 @@
+parameters:
+    pim_datagrid.normalizer.product.class: Oro\Bundle\PimDataGridBundle\Normalizer\ProductNormalizer
+    pim_datagrid.normalizer.product_model.class: Oro\Bundle\PimDataGridBundle\Normalizer\ProductModelNormalizer
+    pim_datagrid.normalizer.product_association.class: Oro\Bundle\PimDataGridBundle\Normalizer\ProductAssociationNormalizer
+    pim_datagrid.normalizer.product.product_values.class: Oro\Bundle\PimDataGridBundle\Normalizer\Product\ProductValuesNormalizer
+    pim_datagrid.normalizer.product.product_value.class: Oro\Bundle\PimDataGridBundle\Normalizer\Product\ValueNormalizer
+    pim_datagrid.normalizer.product.option.class: Oro\Bundle\PimDataGridBundle\Normalizer\Product\OptionNormalizer
+    pim_datagrid.normalizer.product.options.class: Oro\Bundle\PimDataGridBundle\Normalizer\Product\OptionsNormalizer
+    pim_datagrid.normalizer.product.file.class: Oro\Bundle\PimDataGridBundle\Normalizer\Product\FileNormalizer
+    pim_datagrid.normalizer.datetime.class: Oro\Bundle\PimDataGridBundle\Normalizer\DateTimeNormalizer
+    pim_datagrid.normalizer.group_product.class: Oro\Bundle\PimDataGridBundle\Normalizer\GroupProductNormalizer
+    pim_datagrid.normalizer.family_variant.class: Oro\Bundle\PimDataGridBundle\Normalizer\FamilyVariantNormalizer
+
+services:
+    pim_datagrid.normalizer.product_and_product_model_rows:
+        class: 'Oro\Bundle\PimDataGridBundle\Normalizer\ProductAndProductModelRowNormalizer'
+        arguments:
+        - '@pim_enrich.normalizer.image'
+        tags:
+        - { name: pim_datagrid_serializer.normalizer }
+
+    pim_datagrid.normalizer.product:
+        class: '%pim_datagrid.normalizer.product.class%'
+        arguments:
+            - '@pim_catalog.filter.chained'
+            - '@pim_enrich.normalizer.image'
+            - '@akeneo.pim.enrichment.product.query.get_product_completenesses'
+        tags:
+            - { name: pim_datagrid_serializer.normalizer }
+
+    pim_datagrid.normalizer.product_model:
+        class: '%pim_datagrid.normalizer.product_model.class%'
+        arguments:
+            - '@pim_catalog.filter.chained'
+            - '@pim_catalog.doctrine.query.find_variant_product_completeness'
+            - '@pim_catalog.product_models.image_as_label'
+            - '@pim_enrich.normalizer.image'
+        tags:
+            - { name: pim_datagrid_serializer.normalizer }
+
+    pim_datagrid.normalizer.product_association:
+        class: '%pim_datagrid.normalizer.product_association.class%'
+        arguments:
+            - '@pim_enrich.normalizer.image'
+            - '@akeneo.pim.enrichment.product.query.get_product_completenesses'
+        tags:
+            - { name: pim_datagrid_serializer.normalizer }
+
+    pim_datagrid.normalizer.product.option:
+        class: '%pim_datagrid.normalizer.product.option.class%'
+        arguments:
+            - '@pim_catalog.repository.cached_attribute_option'
+        tags:
+            - { name: pim_datagrid_serializer.normalizer }
+
+    pim_datagrid.normalizer.product.options:
+        class: '%pim_datagrid.normalizer.product.options.class%'
+        arguments:
+            - '@pim_catalog.repository.cached_attribute_option'
+        tags:
+            - { name: pim_datagrid_serializer.normalizer }
+
+    pim_datagrid.normalizer.product.product_values:
+        class: '%pim_datagrid.normalizer.product.product_values.class%'
+        arguments:
+            - '@pim_catalog.localization.presenter.registry'
+            - '@pim_user.context.user'
+        tags:
+            - { name: pim_datagrid_serializer.normalizer }
+
+    pim_datagrid.normalizer.datetime:
+        class: '%pim_datagrid.normalizer.datetime.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.datetime'
+            - '@pim_catalog.localization.presenter.date'
+            - '@pim_user.context.user'
+        tags:
+            - { name: pim_datagrid_serializer.normalizer }
+
+    pim_datagrid.normalizer.product.file:
+        class: '%pim_datagrid.normalizer.product.file.class%'
+        tags:
+            - { name: pim_datagrid_serializer.normalizer }
+
+    pim_datagrid.normalizer.product.product_value:
+        class: '%pim_datagrid.normalizer.product.product_value.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.product.product_value'
+        tags:
+            - { name: pim_datagrid_serializer.normalizer, priority: 90 }
+
+    pim_datagrid.normalizer.group_product:
+        class: '%pim_datagrid.normalizer.group_product.class%'
+        arguments:
+            - '@pim_catalog.filter.chained'
+            - '@pim_enrich.normalizer.image'
+            - '@akeneo.pim.enrichment.product.query.get_product_completenesses'
+        tags:
+            - { name: pim_datagrid_serializer.normalizer }
+
+    pim_datagrid.normalizer.family_variant:
+        class: '%pim_datagrid.normalizer.family_variant.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.translation'
+
+    pim_reference_data.datagrid.normalizer.reference_data:
+        class: 'Oro\Bundle\PimDataGridBundle\Normalizer\Product\ReferenceDataNormalizer'
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_reference_data.repository_resolver'
+        tags:
+            - { name: pim_datagrid_serializer.normalizer }
+
+    pim_reference_data.datagrid.normalizer.reference_data_collection:
+        class: 'Oro\Bundle\PimDataGridBundle\Normalizer\Product\ReferenceDataCollectionNormalizer'
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_reference_data.repository_resolver'
+        tags:
+            - { name: pim_datagrid_serializer.normalizer }
+
+    pim_enrich.normalizer.datagrid_view:
+        class: 'Oro\Bundle\PimDataGridBundle\Normalizer\InternalApi\DatagridViewNormalizer'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+
+    pim_enrich.normalizer.version:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\VersionNormalizer'
+        arguments:
+            - '@pim_user.manager'
+            - '@translator'
+            - '@translator'
+            - '@pim_catalog.localization.presenter.datetime'
+            - '@pim_catalog.localization.presenter.registry'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_user.context.user'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }

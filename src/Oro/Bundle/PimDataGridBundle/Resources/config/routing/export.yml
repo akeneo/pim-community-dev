@@ -1,0 +1,7 @@
+pim_datagrid_export_index:
+    path: '/index'
+    defaults: { _controller: pim_datagrid.controller.export:indexAction }
+
+pim_datagrid_export_product_index:
+    path: '/product/index'
+    defaults: { _controller: pim_datagrid.controller.product_export:indexAction }

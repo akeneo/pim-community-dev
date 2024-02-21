@@ -1,0 +1,174 @@
+#Entities
+Job: Treball
+Connector: Connector
+pim_import_export:
+  job: Treball
+  connector: Connector
+  ## Job status
+  status:
+    0: A punt
+  batch_status:
+    1: Acabat
+    2: Començant
+    3: Començat
+    4: Aturant
+    5: Aturat
+    6: Fallit
+    7: Abandonat
+    8: Desconegut
+    9: Aturant
+    10: Aturat
+  download_archive:
+    archive: descarregar l'arxiu generat | descarregar els arxius generats
+    output: descarregar fitxer generat|descarregar fitxers generats
+    input: descarregar fitxer llegit|descarregar fitxers llegits
+    invalid_xlsx: descarregar dades no vàlides
+    invalid_csv: descarregar dades no vàlides
+  notification:
+    export:
+      error: La exportació <strong>%label%</strong> ha fallat
+      warning: La exportació <strong>%label%</strong> acabat amb alguns avisos
+      success: La exportació <strong>%label%</strong> ha acabat
+      warnings:
+        xlsx_cell_conversion_error: Excepció en convertir la columna "{0}" al tipus d'atribut de producte PIM objectiu (comproveu el format de cel·la d'Excel)
+        xlsx_cell_date_to_text_conversion_error: No es pot convertir la cel·la {0} amb format de data en un atribut de tipus text
+    import:
+      error: La importació <strong>%label%</strong> ha fallat
+      warning: La importació <strong>%label%</strong> acabat amb alguns avisos
+      success: La importació <strong>%label%</strong> ha acabat
+      warnings:
+        xlsx_cell_date_conversion_error: No es pot convertir la cel·la "{cellName}" amb format de data a un atribut del tipus {attributeType}
+  list: Seleccioneu un job
+  job_profile:
+    tab:
+      property.title: Propietats generals
+      history.title: Històric
+      job_content.title: Contingut
+#Page titles:
+pim_title.export_profile.index: Gestió de perfils d'exportació
+pim_title.export_profile.edit: Exportar perfil %job.label% | Editar
+pim_title.export_profile.show: Exportar perfil %job.label% | Mostrar
+pim_title.export_execution.index: Exportar històric d'execucions
+pim_title.export_execution.show: Exportar execucions | Detalls
+pim_title.import_profile.index: Gestió de perfils d'importació
+pim_title.import_profile.edit: Importar perfil %job.label% | Editar
+pim_title.import_profile.show: Importar perfil %job.label% | Mostrar
+pim_title.import_execution.index: Importar històric d'execucions
+pim_title.import_execution.show: Importar execucions | Detalls
+#Entity and page header titles
+export profile:
+  title: exportar perfil
+  edit: editar perfil d'exportació
+import profile:
+  title: importar perfil
+  edit: editar perfil d'importació
+#ACLs
+pim_importexport:
+  acl:
+    export_profile:
+      index: Veure llista de perfils exportats
+      create: Creeu un perfil d'exportació
+      show: Mostrar un perfil d'exportació
+      edit: Editar un perfil d'exportació
+      remove: Eliminar un perfil d'exportació
+      launch: Engegar un perfil d'exportació
+      property_edit: Editar una exportació de propietats generals de perfil
+      property_show: Mostrar una exportació de propietats generals de perfil
+      history: Veure exportació de l'històric del perfil
+      content_edit: Editar un contingut de perfil d'exportació
+      content_show: Mostrar un contingut de perfil d'exportació
+    import_profile:
+      index: Veure llista de perfils d'importació
+      create: Crear un perfil d'importació
+      show: Mostrar un perfil d'importació
+      edit: Editar un perfil d'importació
+      remove: Eliminar un perfil d'importació
+      launch: Engegar un perfil d'importació
+      history: Veure l'històric del perfil d'importació
+    export_execution:
+      index: Veure llista d'informes d'exportació
+      show: Veure detalls de l'informe d'exportació
+      dl_log: Descarregar informe del registre d'exportació
+      dl_files: Descarregar els fitxers exportats
+    import_execution:
+      index: Veure llista d'informes d'importació
+      show: Veure detalls de l'informe d'importació
+      dl_log: Descarregar informe de registres d'importació
+      dl_files: Descarregar arxius importats
+  acl_group:
+    export: Perfils d'exportació
+    import: Perfils d'importació
+#Buttons
+btn:
+  create:
+    export profile: crear perfil d'exportació
+    import profile: crear perfil d'importació
+Upload and import now: Carregar i importar ara
+import now: Importar ara
+export now: Exportar ara
+#Confirmation messages
+confirmation:
+  remove:
+    export profile: Esteu segur que voleu suprimir el perfil d'exportació %name%?
+    import profile: Esteu segur que voleu suprimir el perfil d'importació %name%?
+#Flash messages
+flash:
+  export:
+    created: La exportació s'ha creat amb èxit
+    removed: S'ha eliminat la exportació
+    updated: La exportació s'ha actualitzat correctament
+    running: La exportació s'està executant
+  import:
+    created: La importació s'ha creat amb èxit
+    removed: S'ha eliminat la importació
+    updated: La importació s'ha actualitzat correctament
+    running: La importació s'està executant
+#Tabs
+General properties: Propietats generals
+History: Històric
+pane.accordion:
+  properties: Propietats
+  global_settings: Configuració global
+  filters: Filtres
+#Popin titles
+popin.create:
+  export_profile.title: Crear un nou perfil d'exportació
+  import_profile.title: Crear un nou perfil d'importació
+#Job execution
+'Display item': Visualitzar element
+'Hide item': Amagar element
+'Collecting data about job execution...': Recollida de dades sobre l'execució del job...
+'You must select a file to upload': Heu de seleccionar un arxiu per carregar
+Download log: Descarregar registre
+Show profile: Mostrar perfil
+execution details: detalls d'execució
+job_execution.summary:
+  read: llegir
+  write: escrit
+  skip: omès
+  create: creat
+  update: actualitzat
+  update_products: productes actualitzats
+  skip_products: productes omesos
+  displayed: primers avisos mostrats
+  charset_validator:
+    title: 'Codificació de l''arxiu:'
+    skipped: omès, extensió a la llista blanca
+Step: Pas
+Status: Estat
+Warnings: Avisos
+Summary: Sumari
+Start: Començar
+End: Fi
+#Process tracker
+set_attribute_requirements: Establir els requeriments d'atribut
+COMPLETED: Acabat
+STARTING: Començant
+STARTED: Començat
+STOPPING: Aturant
+STOPPED: Aturat
+FAILED: Fallit
+ABANDONED: Abandonat
+UNKNOWN: Desconegut
+warning.label: Avís
+pim_datagrid.column.username: Nom d’usuari

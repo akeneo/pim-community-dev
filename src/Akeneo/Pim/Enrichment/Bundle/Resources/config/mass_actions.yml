@@ -1,0 +1,9 @@
+services:
+    # Mass edit action operation registry
+
+    pim_enrich.mass_edit_action.operation_authenticated_job_launcher:
+        class: Akeneo\Pim\Enrichment\Bundle\MassEditAction\OperationJobLauncher
+        arguments:
+            - '@pim_connector.launcher.authenticated_job_launcher'
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@security.token_storage'

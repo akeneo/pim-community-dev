@@ -1,0 +1,26 @@
+<div class="AknFieldContainer">
+    <div class="AknFieldContainer-header">
+        <label class="AknFieldContainer-label control-label required" for="<%- fieldName%>">
+            <%- label %> <% if (isRequired) { %><em><%- requiredLabel %></em><% } %>
+        </label>
+    </div>
+    <div class="AknFieldContainer-inputContainer">
+        <input
+                id="<%- fieldName%>"
+                class="AknTextField <%- className %>"
+                type="text"
+                value="<%- value %>"
+                <%- isReadOnly ? 'readonly disabled' : '' %>
+                <%- isRequired ? 'required' : '' %>
+        >
+    </div>
+    <div class="AknFieldContainer-footer">
+        <div class="AknFieldContainer-validationErrors validation-errors">
+            <% _.each(errors, function (error) { %>
+            <div class="AknFieldContainer-validationError">
+                <%- error %>
+            </div>
+            <% }); %>
+        </div>
+    </div>
+</div>

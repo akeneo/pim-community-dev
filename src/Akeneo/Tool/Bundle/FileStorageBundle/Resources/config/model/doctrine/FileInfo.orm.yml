@@ -1,0 +1,42 @@
+Akeneo\Tool\Component\FileStorage\Model\FileInfo:
+    type: entity
+    repositoryClass: Akeneo\Tool\Bundle\FileStorageBundle\Doctrine\ORM\Repository\FileInfoRepository
+    table: akeneo_file_storage_file_info
+    indexes:
+        original_filename_hash_storage_idx:
+            columns:
+                - original_filename
+                - hash
+                - storage
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        key:
+            type: string
+            length: 255
+            unique: true
+            column: file_key
+        originalFilename:
+            type: string
+            column: original_filename
+        mimeType:
+            type: string
+            length: 255
+            column: mime_type
+        size:
+            type: integer
+            nullable: true
+        extension:
+            type: string
+            length: 10
+        hash:
+            type: string
+            length: 100
+            nullable: true
+        storage:
+            type: string
+            length: 255
+            nullable: true

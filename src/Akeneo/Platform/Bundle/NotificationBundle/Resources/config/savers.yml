@@ -1,0 +1,14 @@
+services:
+    pim_notification.saver.notification:
+        class: '%akeneo_storage_utils.saver.base.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '%pim_notification.entity.notification.class%'
+
+    pim_notification.saver.user_notification:
+        class: '%akeneo_storage_utils.saver.base.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '%pim_notification.entity.user_notification.class%'

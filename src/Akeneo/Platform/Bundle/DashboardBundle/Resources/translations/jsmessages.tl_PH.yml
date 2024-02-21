@@ -1,0 +1,6 @@
+pim_dashboard:
+  widget:
+    completeness:
+      load_more: 'Mag-load ng higit pa...'
+pim_title:
+  pim_dashboard_index: Ang dasbord

@@ -1,0 +1,9 @@
+parameters:
+    env(FLAG_COMMUNICATION_CHANNEL_ENABLED): 0
+
+services:
+    akeneo_communication_channel.feature:
+        class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag
+        arguments:
+            - '%env(bool:FLAG_COMMUNICATION_CHANNEL_ENABLED)%'
+        public: true

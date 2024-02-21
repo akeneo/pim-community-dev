@@ -1,0 +1,4 @@
+akeneo_connectivity.connection:
+  acl.manage_settings: Manage connections settings
+  acl.manage_apps: Manage apps
+  acl.open_apps: Open apps

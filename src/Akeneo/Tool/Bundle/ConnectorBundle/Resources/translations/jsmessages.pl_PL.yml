@@ -1,0 +1,196 @@
+#Job labels
+batch_jobs:
+  default_steps:
+    download_files: Pobierz plik(i)
+    upload_files: Wyślij plik(i)
+    export: Eksport
+    import: Import
+    validation: Sprawdzanie pliku
+    import_associations: Import Powiązań
+    import_model_associations: Import Powiązań
+    import_root_product_model: Importowanie modelu produktu źródłowego
+    import_sub_product_model: Importowanie modelu produktu dodatkowego
+    compute_data_related_to_family_root_product_models: Oblicz dane modeli produktów źródłowych
+    compute_data_related_to_family_sub_product_models: Oblicz dane modeli produktów podrzędnych
+    compute_data_related_to_family_products: Oblicz dane produktów
+    index_family_products_and_product_models: Indeksuj rodziny i modele produktów
+    compute_family_variant_structure_changes: Oblicz zmiany w strukturze wariantu rodziny
+    compute_completeness_of_products_family: Oblicz kompletność rodziny produktów
+    index_family_products: Indeksuj rodziny i modele produktów
+    delete_products_and_product_models: Masowe usuwanie produktów
+    ensure_attribute_group_order: Sprawdź kolejność sortowania grupy atrybutów
+    clean_attribute:
+      register_clean_job: Dodawanie kodu do czarnej listy
+      clean_product_model: Czyszczenie modeli produktów
+      clean_product: Czyszczenie produktów
+      remove_attribute_codes_from_blacklist: Usuwanie kodu z czarnej listy
+    check_job_unique: Sprawdź, czy zadanie się nie powtarza.
+  csv_product_export:
+    label: Eksport produktu do CSV
+    export.label: Eksport produktu
+  csv_product_model_export:
+    label: Eksport modelu produktu do CSV
+    export.label: Eksport modelu produktu
+  csv_category_export:
+    label: Eksport kategorii do CSV
+    export.label: Eksport kategorii
+  csv_attribute_export:
+    label: Eksport atrybutu do CSV
+    export.label: Eksport atrybutu
+  csv_attribute_option_export:
+    label: Eksport opcji atrybutu do CSV
+    export.label: Eksport opcji atrybutu
+  csv_association_type_export:
+    label: Eksport typu powiązania do CSV
+    export.label: Eksport typu powiązania
+  csv_group_export:
+    label: Eksport grupy do CSV
+    export.label: Eksport grupy
+  csv_family_export:
+    label: Eksport rodziny do CSV
+    export.label: Eksport rodziny
+  csv_family_variant_export:
+    label: Eksport wariantu rodziny do CSV
+    export.label: Eksport wariantu rodziny
+  csv_user_group_export:
+    label: Eksport grup użytkowników w formacie CSV
+    export.label: Eksport grup użytkowników
+  csv_user_role_export:
+    label: Eksport ról użytkowników w formacie CSV
+    export.label: Eksport ról użytkowników
+  csv_user_export:
+    label: Eksport użytkowników w formacie CSV
+    export.label: Eksport użytkowników
+  csv_product_import:
+    label: Import produktu z CSV
+    import.label: Import produktu
+  csv_product_model_import:
+    label: Import modelu produktu z CSV
+    import_product_model_descendants.label: Oblicz potomków modelu produktu
+  csv_category_import:
+    label: Import kategorii z CSV
+    import.label: Import kategorii
+  csv_attribute_import:
+    label: Import atrybutu z CSV
+    import.label: Import atrybutu
+  csv_attribute_option_import:
+    label: Import opcji atrybutu z CSV
+    import.label: Import opcji atrybutu
+  csv_association_type_import:
+    label: Import typu powiązania z CSV
+    import.label: Import typu powiązania
+  csv_family_import:
+    label: Import rodziny z CSV
+    import.label: Import rodziny
+    compute_data_related_to_family_variants.label: Oblicz dane modeli produktów
+  csv_family_variant_import:
+    label: Import wariantu rodziny z CSV
+    import.label: Import wariantu rodziny
+  csv_group_import:
+    label: Import grupy z CSV
+    import.label: Import grupy
+  csv_attribute_group_export:
+    label: Eksport grupy atrybutów do CSV
+    export.label: Eksport grupy atrybutów
+  csv_group_type_export:
+    label: Eksport typu grupy do CSV
+    export.label: Eksport typu grupy
+  csv_attribute_group_import:
+    label: Import grupy atrybutów z CSV
+    import.label: Import grupy atrybutów
+  csv_group_type_import:
+    label: Import typu grupy z CSV
+    import.label: Import typu grupy
+  csv_user_group_import:
+    label: Import grup użytkowników w formacie CSV
+    import.label: Import grup użytkowników
+  csv_user_import:
+    label: Import użytkowników w formacie CSV
+    import.label: Import użytkowników
+  csv_user_role_import:
+    label: Import ról użytkowników w formacie CSV
+    import.label: Import ról użytkowników
+  xlsx_category_import:
+    label: Import kategorii w XLSX
+    import.label: Import kategorii
+  xlsx_association_type_import:
+    label: Import typu powiązania z XSLX
+    import.label: Import typu powiązania
+  xlsx_attribute_import:
+    label: Import atrybutu z XSLX
+    import.label: Import atrybutu
+  xlsx_attribute_option_import:
+    label: Import opcji atrybutu z XLSX
+    import.label: Import opcji atrybutu
+  xlsx_family_import:
+    label: Import rodziny z XSLX
+    import.label: Import rodziny
+  xlsx_family_variant_import:
+    label: Import wariantu rodziny z XLSX
+    import.label: Import wariantu rodziny
+  xlsx_product_export:
+    label: Eksport produktu do XLSX
+    export.label: Eksport produktu
+  xlsx_product_model_export:
+    label: Eksport modelu produktu do XLSX
+    export.label: Eksport modelu produktu
+  xlsx_product_import:
+    label: Import produktu z XSLX
+    import.label: Import produktu
+  xlsx_product_model_import:
+    label: Import modelu produktu z XLSX
+    import_product_model_descendants.label: Oblicz potomków modelu produktu
+  xlsx_group_export:
+    label: Eksport grupy do XLSX
+    export.label: Eksport grupy
+  xlsx_group_import:
+    label: Import grupy z XLSX
+    import.label: Import grupy
+  xlsx_family_export:
+    label: Eksport rodziny do XLSX
+    export.label: Eksport rodziny
+  xlsx_family_variant_export:
+    label: Eksport wariantu rodziny do XLSX
+    export.label: Eksport wariantu rodziny
+  xlsx_category_export:
+    label: Eksport kategorii w XLSX
+    export.label: Eksport kategorii
+  xlsx_attribute_export:
+    label: Eksport atrybutu do XLSX
+    export.label: Eksport atrybutu do XLSX
+  xlsx_attribute_option_export:
+    label: Eksport opcji atrybutu do XLSX
+    export.label: Eksport opcji atrybutu do XLSX
+  xlsx_association_type_export:
+    label: Eksport typu powiązania do XLSX
+    export.label: Eksport typu powiązania do XLSX
+  xlsx_attribute_group_export:
+    label: Eksport grupy atrybutów do XLSX
+    export.label: Eksport grupy atrybutów
+  xlsx_group_type_export:
+    label: Eksport typu grupy do XLSX
+    export.label: Eksport typu grupy
+  xlsx_user_group_export:
+    label: Eksport grup użytkowników w formacie XLSX
+    export.label: Eksport grup użytkowników
+  xlsx_user_role_export:
+    label: Eksport ról użytkowników w formacie XLSX
+    export.label: Eksport ról użytkowników
+  xlsx_user_export:
+    label: Eksport użytkowników w formacie XLSX
+    export.label: Eksport użytkowników
+  xlsx_attribute_group_import:
+    label: Import grupy atrybutów z XLSX
+    import.label: Import grupy atrybutów
+  xlsx_group_type_import:
+    label: Import typu grupy z XLSX
+    import.label: Import typów grupy
+  xlsx_user_group_import:
+    label: Import grup użytkowników w formacie XLSX
+    import.label: Import grup użytkowników
+  xlsx_user_import:
+    label: Import użytkowników w formacie XLSX
+    import.label: Import użytkowników
+  xlsx_user_role_import:
+    label: Import ról użytkowników w formacie XLSX
+    import.label: Import ról użytkowników

@@ -1,0 +1,3 @@
+pim_catalog_volume:
+    acl:
+        view_catalog_volume_monitoring: View catalog volume monitoring

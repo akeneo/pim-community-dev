@@ -1,0 +1,138 @@
+pim_pdf_generator_product_download:
+    type: action
+    label: pim_enrich.acl.product.download
+    group_name: pim_enrich.acl_group.product
+
+# Product
+pim_enrich_product_index:
+    type: action
+    label: pim_enrich.acl.product.index
+    group_name: pim_enrich.acl_group.product
+pim_enrich_product_create:
+    type: action
+    label: pim_enrich.acl.product.create
+    group_name: pim_enrich.acl_group.product
+pim_enrich_product_edit_attributes:
+    type: action
+    label: pim_enrich.acl.product.edit_attributes
+    group_name: pim_enrich.acl_group.product
+pim_enrich_product_remove:
+    type: action
+    label: pim_enrich.acl.product.remove
+    group_name: pim_enrich.acl_group.product
+pim_enrich_product_convert_variant_to_simple:
+    type: action
+    label: pim_enrich.acl.product.convert_variant_to_simple
+    group_name: pim_enrich.acl_group.product
+pim_enrich_product_remove_attribute:
+    type: action
+    label: pim_enrich.acl.product.remove_attribute
+    group_name: pim_enrich.acl_group.product
+pim_enrich_product_categories_view:
+    type: action
+    label: pim_enrich.acl.product.categories_view
+    group_name: pim_enrich.acl_group.product
+pim_enrich_associations_view:
+    type: action
+    label: pim_enrich.acl.product.associations_view
+    group_name: pim_enrich.acl_group.product
+pim_enrich_associations_edit:
+    type: action
+    label: pim_enrich.acl.product.associations_edit
+    group_name: pim_enrich.acl_group.product
+pim_enrich_associations_remove:
+    type: action
+    label: pim_enrich.acl.association.remove
+    group_name: pim_enrich.acl_group.product
+pim_enrich_product_change_family:
+    type: action
+    label: pim_enrich.acl.product.change_family
+    group_name: pim_enrich.acl_group.product
+pim_enrich_product_change_state:
+    type: action
+    label: pim_enrich.acl.product.change_state
+    group_name: pim_enrich.acl_group.product
+pim_enrich_product_add_to_groups:
+    type: action
+    label: pim_enrich.acl.product.add_to_groups
+    group_name: pim_enrich.acl_group.product
+pim_enrich_product_comment:
+    type: action
+    label: pim_enrich.acl.product.comment
+    group_name: pim_enrich.acl_group.product
+pim_enrich_product_history:
+    type: action
+    label: pim_enrich.acl.product.history
+    group_name: pim_enrich.acl_group.product
+
+# Product Model
+pim_enrich_product_model_create:
+    type: action
+    label: pim_enrich.acl.product_model.create
+    group_name: pim_enrich.acl_group.product_model
+pim_enrich_product_model_edit_attributes:
+    type: action
+    label: pim_enrich.acl.product_model.edit_attributes
+    group_name: pim_enrich.acl_group.product_model
+pim_enrich_product_model_categories_view:
+    type: action
+    label: pim_enrich.acl.product_model.categories_view
+    group_name: pim_enrich.acl_group.product_model
+pim_enrich_product_model_history:
+    type: action
+    label: pim_enrich.acl.product_model.history
+    group_name: pim_enrich.acl_group.product_model
+pim_enrich_product_model_remove:
+    type: action
+    label: pim_enrich.acl.product_model.remove
+    group_name: pim_enrich.acl_group.product_model
+
+# Mass edit action
+pim_enrich_mass_edit:
+    type: action
+    label: pim_enrich.acl.product.mass_edit
+    group_name: pim_enrich.acl_group.product
+
+# Group
+pim_enrich_group_index:
+    type: action
+    label: pim_enrich.acl.group.index
+    group_name: pim_enrich.acl_group.group
+pim_enrich_group_create:
+    type: action
+    label: pim_enrich.acl.group.create
+    group_name: pim_enrich.acl_group.group
+pim_enrich_group_edit:
+    type: action
+    label: pim_enrich.acl.group.edit
+    group_name: pim_enrich.acl_group.group
+pim_enrich_group_remove:
+    type: action
+    label: pim_enrich.acl.group.remove
+    group_name: pim_enrich.acl_group.group
+pim_enrich_group_history:
+    type: action
+    label: pim_enrich.acl.group.history
+    group_name: pim_enrich.acl_group.group
+
+# Association
+pim_enrich_associationtype_index:
+    type: action
+    label: pim_enrich.acl.association_type.index
+    group_name: pim_enrich.acl_group.association_type
+pim_enrich_associationtype_create:
+    type: action
+    label: pim_enrich.acl.association_type.create
+    group_name: pim_enrich.acl_group.association_type
+pim_enrich_associationtype_edit:
+    type: action
+    label: pim_enrich.acl.association_type.edit
+    group_name: pim_enrich.acl_group.association_type
+pim_enrich_associationtype_remove:
+    type: action
+    label: pim_enrich.acl.association_type.remove
+    group_name: pim_enrich.acl_group.association_type
+pim_enrich_associationtype_history:
+    type: action
+    label: pim_enrich.acl.association_type.history
+    group_name: pim_enrich.acl_group.association_type

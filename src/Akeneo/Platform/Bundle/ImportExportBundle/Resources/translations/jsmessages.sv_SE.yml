@@ -1,0 +1,181 @@
+job_execution:
+  summary:
+    display_item: Visa objekt
+    hide_item: Dölj objekt
+pim_connector:
+  export:
+    categories:
+      selector:
+        modal:
+          title: Valda kategorier
+        title: Välj kategorier
+    locales:
+      validation:
+        not_blank: Ett språk måste vara markerad, Välj ett språk att exportera.
+pim_import_export:
+  entity:
+    job_instance:
+      label: jobbprofil
+      flash:
+        update:
+          success: Jobbets profil har ändrats.
+          fail: Jobbets profil kunde inte ändras.
+        delete:
+          success: Jobbinstansen har tagits bort
+    import_profile:
+      uppercase_label: Importprofil
+      flash:
+        create:
+          success: Importprofilen har tagits bort
+      module:
+        create:
+          button: Skapa importprofil
+    export_profile:
+      uppercase_label: Exportprofil
+      flash:
+        create:
+          success: Exportprofilen har skapats
+      module:
+        create:
+          button: Skapa exportprofil
+  form:
+    job_execution:
+      title.details: Utförandedetaljer
+      refreshBtn.title: Uppdatera
+      button:
+        show_profile.title: Visa profil
+        download_log.title: Ladda ner logg
+        download_file.title: Ladda ner genererad fil
+      summary:
+        fetching: Samlar in data om jobbkörning...
+        warning: Varning
+        header.step: Steg
+        header.warnings: Varningar
+        header.summary: Sammanfattning
+        header.start: Start
+        header.end: Slut
+    job_instance:
+      fail:
+        launch: Det gick inte att starta jobbprofilen. Kontrollera att den är giltig och att du har rätt att starta den.
+        save: Det gick inte att spara jobbprofilen. Kontrollera att du har rätt att redigera den.
+      button:
+        export.title: Exportera nu
+        import.launch: Importera nu
+        import.upload: Ladda upp och importera nu
+        import.upload_file: Ladda upp en fil
+      meta:
+        job: Jobb
+        connector: Connector
+      subsection:
+        last_executions: Senaste körning
+      tab:
+        content:
+          title: Innehåll
+        properties:
+          decimal_separator:
+            title: Decimalavgränsare
+            help: Bestäm decimalavgränsare
+          date_format:
+            title: Datumformat
+            help: Bestäm vilket datumformat som ska användas
+          file_path:
+            title: Filsökväg
+            help: Var den genererade filen ska sparas i filsystemet
+          delimiter:
+            title: Avgränsare
+            help: Ett tecken som används för att ange fältavgränsaren
+          enclosure:
+            title: Omslutning
+            help: Ett tecken som används för att ange omslutning av fält
+          with_header:
+            title: Med rubrik
+            help: Om du vill skriva ut kolumnnamnet eller inte
+          lines_per_file:
+            title: Antalet rader per fil
+            help: Begränsar antalet rader per fil
+          upload_allowed:
+            title: Tillåt filuppladdning
+            help: Om du vill tillåta filuppladdning direkt eller inte
+          categories_column:
+            title: Kategorierkolumn
+            help: Namnet på kategorikolumnen
+          escape:
+            title: Escape
+            help: Ett tecken som används som escapetecken
+          family_column:
+            title: Familjkolumn
+            help: Namnet på familjekolumnen
+          groups_column:
+            title: Gruppkolumn
+            help: Namnet på gruppkolumnen
+          enabled:
+            title: Aktivera produkten
+            help: Om den importerade produkten ska vara aktiv eller inte
+          enabled_comparison:
+            title: Jämför värden
+            help: Aktivera jämförelsen mellan ursprungliga och importerade värden. Kan påskynda import om importerade värden är mycket liknande ursprungliga värden
+          real_time_versioning:
+            title: Realtidsuppdatering av historiken
+            help: Innebär att produktens historik uppdateras i realtid, kan stängas av för att förbättra prestandarden
+      file_path: Filsökväg
+  widget:
+    last_operations:
+      empty: Inga händelser hittade
+      date: Datum
+      profile_name: Profilnamn
+      details: Detaljer
+      warning_count: Varningar
+      job_type:
+        import: Import
+        export: Export
+        mass_edit: Massredigera
+        quick_export: Snabbexport
+        compute_family_variant_structure_changes: Beräkna variantfamiljers strukturförändringar
+        compute_completeness_of_products_family: Beräkna fullständighet av produktfamilj
+      header.view_all: Visa alla
+  batch_status:
+    1: Slutförd
+    2: Startar
+    3: Startad
+    4: Stoppar
+    5: Stoppad
+    6: Misslyckad
+    7: Övergiven
+    8: Okänt
+  job_status:
+    COMPLETED: Slutförd
+    STARTING: Startar
+    STARTED: Startad
+    STOPPING: Stoppar
+    STOPPED: Stoppad
+    FAILED: Misslyckad
+    ABANDONED: Övergiven
+    UNKNOWN: Okänt
+confirmation:
+  remove:
+    import_profile: Är du säker på att du vill ta bort denna importprofil?
+    export_profile: Är du säker på att du vill ta bort denna exportprofil?
+    job_instance: Är du säker på att du vill ta bort den här jobbinstansen?
+pim_enrich:
+  entity:
+    import_profile:
+      module:
+        delete:
+          confirm: Är du säker på att du vill ta bort denna importprofil?
+      flash:
+        delete:
+          success: Importprofilen har tagits bort
+    export_profile:
+      module:
+        delete:
+          confirm: Är du säker på att du vill ta bort denna exportprofil?
+      flash:
+        delete:
+          success: Exportprofilen har tagits bort
+pim_title:
+  pim_importexport_export_profile_index: Hantera exportprofiler
+  pim_importexport_export_execution_index: Exporthistorik
+  pim_importexport_export_execution_show: Exporthistorik | Detaljer
+  pim_importexport_import_profile_index: Hantera importprofiler
+  pim_importexport_import_execution_index: Importhistorik
+  pim_importexport_import_execution_show: Importhistorik | Detaljer

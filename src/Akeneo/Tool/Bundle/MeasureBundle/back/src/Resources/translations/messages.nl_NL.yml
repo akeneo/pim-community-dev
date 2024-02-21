@@ -1,0 +1,13 @@
+pim_enrich.acl_group.measurements: Maten
+measurements:
+  acl:
+    manage_settings: Matenlijst
+    family:
+      create: Voeg een nieuwe matenfamilie toe
+      edit:
+        properties: Bewerk eigenschappen van een matenfamilie
+      delete: Verwijder een matenfamilie met zijn eenheden
+    unit:
+      add: Voeg een eenheid toe aan een matenfamilie
+      edit: Eenheid van een matenfamilie bewerken
+      delete: Eenheid van een matenfamilie verwijderen

@@ -1,0 +1,22 @@
+services:
+    akeneo_batch.remover.job_instance:
+        class: 'Akeneo\Tool\Bundle\BatchBundle\Remover\JobInstanceRemover'
+        arguments:
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@event_dispatcher'
+            - '@Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\UserManagement\DeleteRunningUser'
+            - '@logger'
+
+    akeneo_batch.delete_job_execution:
+        class: 'Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\DeleteJobExecution'
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlCreateJobInstance:
+        class: 'Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlCreateJobInstance'
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\GetJobExecutionIds:
+        arguments:
+            - '@database_connection'

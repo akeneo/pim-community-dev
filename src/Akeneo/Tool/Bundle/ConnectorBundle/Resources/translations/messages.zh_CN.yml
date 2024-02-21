@@ -1,0 +1,24 @@
+pim_connector:
+  steps:
+    file_reader:
+      invalid_item_columns_count: '期望获取 %totalColumnsCount% 列，实际获取了 %itemColumnsCount% 列。路径：%filePath%:%lineno%'
+job_execution.summary:
+  read: 已读取
+  write: 已写入
+  skip: 已跳过
+  create: 已创建
+  process: 已处理
+  update: 已更新
+  update_products: 已更新产品
+  process_products: 已处理产品
+  skip_products: 已跳过产品
+  displayed: 已显示第一次警告
+  charset_validator:
+    title: '文件编码：'
+    skipped: 已跳过，在白名单中扩展
+  product_skipped_no_diff: 已跳过产品（无差异）
+  product_skipped_no_associations: 跳过的产品（没有检测到任何关联）
+  product_model_skipped_no_diff: 跳过的产品模型（无差异）
+  item_position: 读取行
+  skipped_in_root_product_model: 跳过有父级产品模型的产品模型
+  skipped_in_sub_product_model: 跳过没有父级产品模型的产品模型

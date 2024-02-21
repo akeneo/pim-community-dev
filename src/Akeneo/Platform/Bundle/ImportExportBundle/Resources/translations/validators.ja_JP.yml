@@ -1,0 +1,5 @@
+This directory is not writable: このディレクトリは書き込みできません
+This directory is not valid: このディレクトリは無効です
+pim_import_export.job_instance.unknown_job_definition: ジョブ定義不明により、%job_type%を作成できませんでした
+This code is already taken: このコードは既に使用されています
+pim_import_export.validation.max_length_reached: 値が長すぎます。{{ limit }}以下の文字数で設定してください。

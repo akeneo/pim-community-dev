@@ -1,0 +1,6 @@
+<div class="AknColumn-title"><%= title %></div>
+<% _.each(tabs, function (tab) { %>
+    <div class="AknColumn-navigationLink<% if (currentTab === tab.code) { %> AknColumn-navigationLink--active <% } %> column-navigation-link" data-tab="<%- tab.code %>">
+        <%- tab.label %>
+    </div>
+<% }); %>

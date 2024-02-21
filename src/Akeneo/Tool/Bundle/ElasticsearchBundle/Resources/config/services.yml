@@ -1,0 +1,63 @@
+parameters:
+    akeneo_elasticsearch.client_builder.class: 'Elasticsearch\ClientBuilder'
+    akeneo_elasticsearch.registry.clients.class: 'Akeneo\Tool\Bundle\ElasticsearchBundle\ClientRegistry'
+    env(APP_ELASTICSEARCH_TOTAL_FIELDS_LIMIT): '0'
+    env(APP_ELASTICSEARCH_MAX_CHUNK_SIZE_CHARACTERS): '100000000'
+
+services:
+    akeneo_elasticsearch.registry.clients:
+        class: '%akeneo_elasticsearch.registry.clients.class%'
+
+    akeneo_elasticsearch.client_builder:
+        public: true
+        class: '%akeneo_elasticsearch.client_builder.class%'
+
+    akeneo_elasticsearch.install.install_subscriber:
+        class: Akeneo\Tool\Bundle\ElasticsearchBundle\Infrastructure\Install\InstallSubscriber
+        arguments:
+            - '@database_connection'
+        tags:
+            - {name: kernel.event_subscriber}
+
+    Akeneo\Tool\Bundle\ElasticsearchBundle\Command\ResetIndexesCommand:
+        arguments:
+            - '@akeneo_elasticsearch.registry.clients'
+        tags:
+            - { name: console.command }
+
+    Akeneo\Tool\Bundle\ElasticsearchBundle\GetTotalFieldsLimit:
+        arguments:
+            - '%env(int:APP_ELASTICSEARCH_TOTAL_FIELDS_LIMIT)%'
+
+    Akeneo\Tool\Component\Elasticsearch\PublicApi\Write\MigrateIndexWithoutDowntimeHandlerInterface:
+        class: Akeneo\Tool\Bundle\ElasticsearchBundle\Application\MigrateIndexWithoutDowntimeHandler
+        arguments:
+            - '@Akeneo\Tool\Component\Elasticsearch\ClockInterface'
+            - '@Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration\UpdateIndexMappingWithoutDowntime'
+            - '@Akeneo\Tool\Bundle\ElasticsearchBundle\Infrastructure\Repository\IndexMigrationRepository'
+
+    Akeneo\Tool\Component\Elasticsearch\ClockInterface:
+        class: Akeneo\Tool\Bundle\ElasticsearchBundle\Infrastructure\Clock\SystemClock
+
+    Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration\UpdateIndexMappingWithoutDowntime:
+        arguments:
+            - '@Akeneo\Tool\Component\Elasticsearch\ClockInterface'
+            - '@Akeneo\Tool\Bundle\ElasticsearchBundle\Infrastructure\Client\ClientMigration'
+
+    Akeneo\Tool\Bundle\ElasticsearchBundle\Infrastructure\Client\ClientMigration:
+            - '@akeneo_elasticsearch.client_builder'
+            - ['%index_hosts%']
+
+    Akeneo\Tool\Bundle\ElasticsearchBundle\Infrastructure\Client\IndexUpdaterClient:
+        - '@logger'
+        - '@akeneo_elasticsearch.client_builder'
+        - ['%index_hosts%']
+
+    Akeneo\Tool\Bundle\ElasticsearchBundle\Infrastructure\Repository\IndexMigrationRepository:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Tool\Component\Elasticsearch\PublicApi\Read\IndexMigrationIsDoneInterface:
+        class: Akeneo\Tool\Bundle\ElasticsearchBundle\Infrastructure\PublicApi\IndexMigrationIsDone
+        arguments:
+            - '@database_connection'

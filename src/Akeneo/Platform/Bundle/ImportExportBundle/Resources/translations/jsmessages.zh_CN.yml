@@ -1,0 +1,291 @@
+job_execution:
+  summary:
+    display_item: 显示条目
+    hide_item: 隐藏条目
+pim_connector:
+  export:
+    categories:
+      selector:
+        modal:
+          title: 类别选择
+        label: "{0}所有产品 |{1}一个选定的类别|]1,Inf[{{ count }} 个选定的类别"
+        title: 选择类别
+    locales:
+      validation:
+        not_blank: 必须选择一个区域设置，请选择要导出的区域设置。
+pim_import_export:
+  validation:
+    max_length_reached: 此值太长。其不应超过 {{ limit }} 个字符。
+  entity:
+    job_instance:
+      label: 作业配置文件
+      flash:
+        update:
+          success: 作业配置文件已成功更新。
+          fail: 作业配置文件不能更新。
+        delete:
+          success: 作业实例已成功移除
+      duplicate:
+        title: 复制配置文件 {{ job_code }}
+        success: 作业配置文件已成功复制。
+        fail: 无法复制作业配置文件。
+    import_profile:
+      uppercase_label: 导入配置文件
+      flash:
+        create:
+          success: 导入配置文件已成功创建
+        upload:
+          error: 无法上传文件。文件大小可能超过您的 PHP 或 HTTP 服务器配置上配置的最大上传大小
+      page_title:
+        index: "]-Inf, 1] {{ count }} 个导入配置文件|]1, Inf [{{ count }} 个导入配置文件"
+      module:
+        create:
+          button: 创建导入配置文件
+    export_profile:
+      uppercase_label: 导出配置文件
+      flash:
+        create:
+          success: 导出配置文件已成功创建
+      page_title:
+        index: "]-Inf, 1] {{ count }} 个导出配置文件|]1, Inf [{{ count }} 个导出配置文件"
+      module:
+        create:
+          button: 创建导出配置文件
+  form:
+    job_execution:
+      title.details: 执行详细信息
+      refreshing: 刷新执行详细信息
+      refreshBtn.title: 刷新
+      button:
+        show_profile.title: 显示配置文件
+        download_log.title: 下载日志
+        download_file.title: 下载已生成的文件
+        download_archive.title: 下载已生成的存档文件
+      summary:
+        fetching: 正在收集有关作业执行的数据...
+        warning: 警告
+        header.step: 步骤
+        header.warnings: 警告
+        header.summary: 摘要
+        header.start: 开始
+        header.end: 结束
+    job_instance:
+      fail:
+        launch: 启动作业配置文件失败。请确保其有效且您拥有启动权限。
+        save: 保存作业配置文件失败。请确保您有编辑权限。
+      button:
+        export.title: 立即导出
+        import.launch: 立即导入
+        import.upload: 立即上传并导入
+        import.upload_file: 上传文件
+      meta:
+        job: 作业
+        connector: 连接器
+      subsection:
+        last_executions: 上一次执行
+      tab:
+        content:
+          title: 内容
+        properties:
+          decimal_separator:
+            title: 小数分隔符
+            help: 确定小数分隔符
+          date_format:
+            title: 日期格式
+            help: 确定日期字段的格式
+          file_path:
+            title: 文件路径
+            help: 将生成的文件写入文件系统的位置
+            help_import: 用于导入的文件目录
+          delimiter:
+            title: 分隔符
+            help: 作为字段分隔符的单个字符
+          enclosure:
+            title: 附件
+            help: 作为字段附件的单个字符
+          with_header:
+            title: 包含标题
+            help: 是否打印列名称
+          with_media:
+            title: 导出媒体
+            help: 是否导出媒体
+          lines_per_file:
+            title: 每个文件的行数
+            help: 定义每个文件的行数限制
+          upload_allowed:
+            title: 允许上传文件
+            help: 是否允许直接上传文件
+          categories_column:
+            title: 类别列
+            help: 类别列名称
+          escape:
+            title: 退出
+            help: 作为字段空白的单个字符
+          family_column:
+            title: 品类列
+            help: 品类列的名称
+          groups_column:
+            title: 分组列
+            help: 分组列的名称
+          enabled:
+            title: 启用产品
+            help: 是否启用导入的产品
+          enabled_comparison:
+            title: 比对值
+            help: 开启原始值与导入值的比较。如果导入值与原始值比较接近，可以加快导入速度
+          real_time_versioning:
+            title: 实时历史记录更新
+            help: 自动更新产品的历史记录，可将其关闭以提高性能
+          convert_variant_to_simple:
+            title: 将变型产品转换为简单产品
+            help: 当"父级"列为空时，尝试将变型产品转换为简单产品。如果设置为“否”，将忽略空的“父级”列
+          family_variant_column:
+            title: 品类变型列
+          with_label:
+            title: 有标签
+            help: 定义导出文件是否将值显示为标签而非代码
+          header_with_label:
+            title: 带标签的标题
+            help: 定义导出文件是否将标题显示为标签而非代码
+          file_locale:
+            title: 文件区域
+            help: 定义标签显示的区域
+          with_uuid:
+            title: 含产品 UUID
+            help: 导出产品及其关联产品的 UUID
+          with_uuid_for_models:
+            title: 含产品 UUID
+            help: 导出关联产品的 UUID 而非它们的标识符
+      file_path: 文件路径
+      storage_form:
+        title: 存储
+        connection:
+          label: 类型
+          local: 本地
+          sftp: SFTP
+          amazon_s3: Amazon S3
+          microsoft_azure: Microsoft Azure
+          google_cloud_storage: Google Cloud Storage
+          none: 未配置存储
+        file_path:
+          label: 文件路径
+          placeholder: myfile.{{ file_extension }}
+        host:
+          label: 主机
+          placeholder: example.com
+        fingerprint:
+          label: 主机指纹 (可选)
+          placeholder: "c1:91:5e:42:55:5c:74:65:b6:12:32:7e:1f:6d:80:3e"
+          helper: 我们要求进行 SHA 512 或 MD5 哈希校验，需要带有冒号标记的主机指纹。
+        port:
+          label: 端口
+          placeholder: 22
+        username:
+          label: 登录
+          placeholder: 输入您的登录
+        password:
+          label: 密码
+          placeholder: 输入您的密码
+        public_key:
+          label: 公钥
+          button_title: 复制到剪切板
+          copy_notification_success: 公钥已复制到剪贴板
+        login_type:
+          label: 验证方法
+          password: 登录和密码
+          private_key: 私钥
+        region:
+          label: 地区
+          placeholder: 输入您所在的地区
+        bucket:
+          label: 存储桶名称
+          placeholder: 输入您所在地区的名称
+        key:
+          label: 密钥
+          placeholder: 输入您的密钥
+        secret:
+          label: 密钥
+          placeholder: 输入您的密钥
+        connection_string:
+          label: 连接字符串
+          placeholder: 输入您的连接字符串
+        container_name:
+          label: 容器名称
+          placeholder: 输入您的容器名称
+        project_id:
+          label: 项目 ID
+          placeholder: 输入您的项目 ID
+        service_account:
+          label: 服务帐户
+          placeholder: 输入您的服务帐户
+      validation:
+        storage:
+          unavailable_type: 此存储不可用，仅 {{ available_types }} 可用。
+        file_path:
+          unsupported_extension: 不支持的文件扩展名
+        fingerprint:
+          invalid_encoding: 主机指纹应该是有效且带有冒号标记的 SHA-512或 MD5 哈希校验。
+      connection_checker:
+        label: 测试连接设置
+        exception: 无法建立连接，请检查您的设置。
+  batch_status:
+    1: 已完成
+    2: 正在启动
+    3: 进行中
+    4: 正在停止
+    5: 已停止
+    6: 失败
+    7: 已放弃
+    8: 未知
+    9: 暂停中
+    10: 已暂停
+  job_status:
+    COMPLETED: 已完成
+    STARTING: 正在启动
+    STARTED: 进行中
+    STOPPING: 正在停止
+    STOPPED: 已停止
+    FAILED: 失败
+    ABANDONED: 已放弃
+    UNKNOWN: 未知
+    PAUSING: 暂停中
+    PAUSED: 已暂停
+  tracking:
+    completed: "花费的时间：{{ duration }}"
+    in_progress: "估计剩余时间：{{ duration }}"
+    not_started: "等待"
+    untrackable: 不可跟踪步骤
+    estimating: "正在估算剩余时间..."
+confirmation:
+  remove:
+    import_profile: 确定要删除此导入配置文件吗？
+    export_profile: 确定要删除此导出配置文件吗？
+    job_instance: 确定要删除此作业实例吗？
+pim_enrich:
+  entity:
+    import_profile:
+      module:
+        delete:
+          confirm: 确定要删除此导入配置文件吗？
+      flash:
+        delete:
+          success: 导入配置文件已成功移除
+    export_profile:
+      module:
+        delete:
+          confirm: 确定要删除此导出配置文件吗？
+      flash:
+        delete:
+          success: 导出配置文件已成功移除
+pim_title:
+  pim_importexport_export_profile_index: 导出配置文件管理
+  pim_importexport_export_profile_edit: 导出配置文件 {{ job.label }} | 编辑
+  pim_importexport_export_profile_show: 导出配置文件 {{ job.label }} |显示
+  pim_importexport_export_execution_index: 导出执行历史记录
+  pim_importexport_export_execution_show: 导出执行|详细信息
+  pim_importexport_import_profile_index: 导入配置文件管理
+  pim_importexport_import_profile_edit: 导入配置文件 {{ job.label }} | 编辑
+  pim_importexport_import_profile_show: 导入配置文件 {{ job.label }} |显示
+  pim_importexport_import_execution_index: 导入执行历史记录
+  pim_importexport_import_execution_show: 导入执行|详细信息
+

@@ -1,0 +1,87 @@
+No products to remove: No hi ha productes per eliminar
+"dot (.)": punt (.)
+"comma (,)": coma (,)
+pim_enrich:
+  #Category
+  category:
+    tab:
+      property.title: Propietats
+      history.title: Històric
+    suggest_selection: Seleccioneu una categoria a l'esquerra
+    or: o
+    create_new: Crear una nova categoria
+  #Mass edit operations
+  mass_edit_action:
+    limit_exceeded: Trieu menys de %limit% elements per editar
+    product:
+      page_title: Productes
+      page_subtitle: Edició en massa (1 producte) | Edició en massa (%count% productes)
+      title: Trieu l'operació
+      subtitle: Trieu la operació que voleu realitzar al producte seleccionat| Trieu la operació que voleu realitzar als %count% productes seleccionats
+      confirm: Esteu a punt d'actualitzar un producte amb la informació següent, confirmeu-ho si us plau. | Esteu a punt d'actualitzar %count% productes amb la informació següent, confirmeu-ho si us plau.
+      steps:
+        first: Triar productes
+        second: Trieu l'operació
+        third: Configurar
+        fourth: Confirmar
+    change-status:
+      label: Canviar l'estat
+      description: Els productes seleccionats seran activats o desactivats.
+      success_flash: S'ha canviat l'estat del(s) producte(s)
+      launched_flash: L'acció en massa "canviar estat" ja s'ha engegat. Se li notificarà una cop acabi.
+    edit-common-attributes:
+      label: Editar atributs
+      description: Els atributs del producte seleccionat s'editaran amb les següents dades pels paràmetres regionals triats.
+      empty: Si us plau seleccioneu l'atribut o atributs que voleu editar
+      success_flash: La tasca d'actualització del(s) producte(s) està en marxa
+      launched_flash: L'acció en massa "editar atributs" ja s'ha engegat. Se li notificarà una cop acabi.
+      message:
+        warning: No hi ha cap atribut en comú per als productes seleccionats. Canvieu la vostra selecció, si us plau.
+        invalid_attribute: L'atribut amb codi "attribute_code" no és comú per als productes seleccionats, atribut omès.
+        no_valid_attribute: No es pot aplicar cap dels atributs seleccions a aquest producte.
+    classify-add:
+      label: Afegir a les categories
+      description: Els productes es posicionaran a les següents categories, tot mantenint l'emplaçament actual.
+      success_flash: El(s) producte(s) han estat classificat(s) a les categories seleccionades
+      launched_flash: L'acció en massa "afegir categories" ja s'ha engegat. Se li notificarà una cop acabi.
+    classify-move:
+      label: Moure entre categories
+      description: Els productes es posicionaran a les següents categories, tot mantenint l'emplaçament actual.
+      success_flash: El(s) producte(s) ha(n) estat mogut(s) a les categories seleccionades
+      launched_flash: L'acció en massa "moure a categories" ja s'ha engegat. Se li notificarà una cop acabi.
+    classify-remove:
+      label: Eliminar de les categories
+      description: Els productes s'eliminaran de les següents categories.
+      success_flash: El(s) producte(s) ha(n) estat eliminat(s) de les categories seleccionades
+      launched_flash: L'acció en massa "eliminar de categories" ja s'ha engegat. Se li notificarà una cop acabi.
+    change-family:
+      label: Canviar família
+      description: La família dels productes seleccionats es canviarà per la família escollida
+      success_flash: La família del(s) producte(s) seleccionat(s) s'ha canviat correctament
+      launched_flash: L'acció en massa "canviar família" ja s'ha engegat. Se li notificarà una cop acabi.
+    add-to-groups:
+      label: Afegir a grups
+      description: Seleccioneu els grups on volgueu afegir els productes seleccionats
+      success_flash: Els productes s'han afegit correctament als grups seleccionats
+      launched_flash: L'acció en massa "afegir a grups" ja s'ha engegat. Se li notificarà una cop acabi.
+      no_group: Cap grup ara mateix. Si us plau, comenceu creant un grup.
+    set-attribute-requirements:
+      label: Establir els requeriments d'atributs
+      description: Els següents requisits d'atribut s'aplicaran a les famílies seleccionades
+      success_flash: Els requisits d'atribut s'han aplicat a les famílies seleccionades
+      launched_flash: L'acció en massa "definiu els requeriments d'atribut" ja s'ha engegat. Se li notificarà una cop acabi.
+    convert_to_simple_products:
+      warning:
+        non_variant_product: Aquest producte "{{ identifier }}" ja és un producte simple sense la necessitat de convertir-lo.
+    mass_action:
+      quick_export:
+        launched_flash: La tasca d'exportació del(s) producte(s) està en marxa
+category:
+  create: Crear una categoria
+  edit: Editar categoria
+  overview: Categories
+tree:
+  edit: Editar arbre
+  remove:
+    error_linked: Aquest arbre de categoria no es pot eliminar. Està vinculat a un canal
+  create: Crear un arbre de categories

@@ -1,0 +1,473 @@
+#ORO messages
+"Yes, I Agree": "Sí, estoy de acuerdo"
+"Yes, do it": "Sí, hazlo"
+"Ok, got it.": "De acuerdo."
+"Edit": "Editar"
+"Unexpected error occurred. Please contact system administrator.": "Se ha producido un error inesperado. Por favor, contacte con el administrador del sistema."
+"Yes, revoke": "Si, revocar"
+"Revoke Confirmation": "Revocar confirmación"
+Prev: Ant
+Today: Hoy
+Wk: Smn
+AM: AM
+A: A
+PM: PM
+P: P
+"Choose Time": "Selecciona Hora"
+Time: Tiempo
+Hour: Hora
+Minute: Minuto
+Second: Segundo
+Millisecond: Milisegundo
+Microsecond: Microsegundo
+"Time Zone": "Zona Horaria"
+duration:
+  days: "{0}0 días|{1}1 día|]1, Inf[{{ count }} días"
+  hours: "{0}0 horas|{1}1 hora|]1, Inf[{{ count }} horas"
+  minutes: "{0}0 minutos|{1}1 minuto|]1, Inf[{{ count }} minutos"
+  seconds: "{0}0 segundos|{1}1 segundo|]1, Inf[{{ count }} segundos"
+#PIM messages
+Localized value: Valor localizado
+Columns: Columnas
+Datagrid Configuration: Configuración de cuadrícula de datos
+#Filters
+Action: Acción
+Unit: Unidad
+Currency: Moneda
+jstree:
+  all: Todos los productos
+  unclassified: Productos sin clasificar
+  product:
+    all: Todos los productos
+    unclassified: Productos sin clasificar
+  no_tree: Ningún árbol disponible
+  include_sub: Incluir subcategorías
+#Datetimepicker
+datetimepicker:
+  days:
+    Sunday: Domingo
+    Monday: Lunes
+    Tuesday: Martes
+    Wednesday: Miércoles
+    Thursday: Jueves
+    Friday: Viernes
+    Saturday: Sábado
+  daysShort:
+    Sun: Dom
+    Mon: Lun
+    Tue: Mar
+    Wed: Mie
+    Thu: Jue
+    Fri: Vie
+    Sat: Sab
+  daysMin:
+    Su: Do
+    Mo: Lu
+    Tu: Ma
+    We: Mi
+    Th: Ju
+    Fr: Vi
+    Sa: Sa
+  months:
+    January: Enero
+    February: Febrero
+    March: Marzo
+    April: Abril
+    May: May
+    June: Junio
+    July: Julio
+    August: Agosto
+    September: Septiembre
+    October: Octubre
+    November: Noviembre
+    December: Diciembre
+  monthsShort:
+    Jan: Ene
+    Feb: Feb
+    Mar: Mar
+    Apr: Abr
+    May: May
+    Jun: Jun
+    Jul: Jul
+    Aug: Ago
+    Sep: Sep
+    Oct: Oct
+    Nov: Nov
+    Dec: Dic
+#ORO
+oro_config:
+  form:
+    config:
+      title: Configuración del sitema
+      tab:
+        system:
+          title: Sistema
+      save_ok: Configuración guardada correctamente
+      save_error: Lo sentimos, no se pudo guardar la configuración ({{ reason }})
+      group:
+        localization:
+          title: Ajuste de página de acceso
+          fields:
+            system_locale:
+              label: Idioma
+        notification:
+          title: Notificaciones de nueva versión
+          helper: Si se activa, recibirá una notificación cuando haya una nueva versión disponible para usted.
+          fields:
+            enabler:
+              label: Habilitado
+        environment:
+          title: Ajustes del entorno
+          fields:
+            sandbox_banner:
+              label: Mostrar banner de alerta de sandbox
+        loading_message:
+          title: Mensajes de carga personalizados
+          helper: Entretenga a sus usuarios con mensajes personalizados para las pantallas de carga.
+          placeholder: Escriba su propio mensaje para que aparezca en la pantalla de carga
+          fields:
+            enabler:
+              label: Activar los mensajes de carga
+            messages:
+              label: Añada sus propios mensajes de carga
+pim_ui:
+  flash:
+    unsaved_changes: 'Tiene cambios sin guardar, ¿está seguro que desea salir?'
+"Sorry, page was not loaded correctly": "Lo sentimos, la página no se cargó correctamente"
+"Your local changes will be lost. Are you sure you want to refresh the page?": "Se perderán los cambios locales. ¿Está seguro que desea actualizar la página?"
+"navigation.message.content.outdated": "El contenido de la página {{ title }} es obsoleto, por favor <a href='#' data-action='page-refresh'> actualice la página</a>"
+"Content of pinned page is outdated": "Contenido de página anclada esta anticuado"
+#Global structure of translation files
+#pim_bundle_name:
+#entity:
+#entity_name:
+#label: entity
+#uppercase_label: Entity
+#plural_label: Entities
+#flash:
+#update:
+#fail: Update failed
+#success: Entity Successfully updated
+#delete:
+#fail: Cannot delete this entity
+#success: Entity successfully removed
+#create:
+#fail: Can not create this entity
+#success: Entity successfully created
+#page_title:
+#index: "]-Inf, 1]1 entity|]1, Inf[{{ count }} entities"
+#property:
+#field_name: Field name
+#complex_field:
+#label: Field name
+#choose: Choose a field name
+#module:
+#module_name:
+#key: message
+pim_common:
+  actions: Acciones
+  add: Agregar
+  add_attributes: Agregar atributos
+  after: Después
+  all: Todo
+  and: "y"
+  apply: Aplicar
+  before: Anterior
+  by: por
+  cancel: Cancelar
+  characters_left: ']-Inf, 1]{{ count }} carácter restante|]1, Inf[{{ count }} caracteres restantes'
+  clear_value: Limpiar valor
+  close: Cerrar
+  code: Código
+  completeness: Completitud
+  confirm: Confirmación
+  confirm_deletion: Confirmar la eliminación
+  confirm_revocation: Confirmar revocación
+  create: Crear
+  created: creado
+  delete: Borrar
+  done: Hecho
+  duplicate: Duplicar
+  edit: Editar
+  entity_updated: Hay cambios sin guardar.
+  export: Export
+  from: De
+  general_properties: Propiedades generales
+  history: Historial
+  identifier: Identificador
+  image: Imagen
+  label: Etiqueta
+  label_translations: Traducciones de etiqueta
+  Label or identifier: etiqueta o identificador
+  code_or_label: código o etiqueta
+  less_than: menor que
+  loading: Cargando...
+  media_upload: Arrastre y suelte aquí o haga clic aquí para subir el fichero
+  media_uploading: Subiendo…
+  media_upload_error: Se ha producido un error durante la subida
+  more_actions: Más acciones
+  more_than: mayor que
+  next: Siguiente
+  "no": "No"
+  none: Ninguna
+  not_available: N/A
+  now: Ahora
+  ok: OK
+  open: Abrir
+  no_result: No se encontraron resultados
+  no_search_result: Lo sentimos, no hay ningún resultado para su búsqueda.
+  other_actions: Otras acciones
+  permissions: Permisiones
+  previous: Previo
+  properties: Propiedades
+  quality_score: Puntuación de calidad
+  remove: Eliminar
+  required_label: (obligatorio)
+  result_count: "{0}0 resultados|{1}1 resultado|]1, Inf[{{ itemsCount }} resultados"
+  save: Guardar
+  search: Buscar
+  select2:
+    search: Buscar...
+    no_match: No se encontraron coincidencias
+    load_more: Cargando más resultados...
+  selected: "{0}Ninguno seleccionado|{1}Uno seleccionado|]1, Inf[{{ itemsCount }} seleccionado"
+  status: Estado
+  to: hasta
+  type: Tipo
+  update: Actualizar
+  updated: Actualizado
+  "yes": "Sí"
+  operator: Operador
+  operators:
+    "=": Es igual que
+    "!=": No es igual que
+    ">=": Mayor o igual que
+    ">": Mayor que
+    "<=": Menor o igual que
+    "<": Menor que
+    EMPTY: Está vacío
+    NOT EMPTY: No está vacío
+    CONTAINS: Contiene
+    DOES NOT CONTAIN: No contiene
+    STARTS WITH: Comienza por
+    ENDS WITH: Termina por
+    IN: En la lista
+    "NOT IN": No figura en la lista
+  read_more: Leer más
+  channel: Canal
+  locale: Local
+  categories: Categorías
+  family_variant: Variantes de familia
+  enabled: Habilitado
+  family: Familia
+  parent: Padre
+  groups: Grupos
+  products: Productos
+  product_uuids: Productos
+  product_models: Modelos de producto
+  more: Más
+  public_view: Vista pública
+  view: Ver
+error:
+  exception: Ha ocurrido un error de {{ status_code }}...
+  forbidden: Prohibido. Usted no tiene permitido acceder a esta página
+alert:
+  attribute_option:
+    error_occurred_during_submission: Se ha producido un error durante el envió del formulario en el servidor
+    save_before_edit_other: Por favor registre sus modificaciones en otras filas antes de editar este
+  session_storage:
+    not_available: Su navegador parece no ser compatible con sessionStorage. Por favor contacte a su administrador
+pim_enrich.entity.fallback:
+  flash:
+    generic_error: Ha ocurrido un error
+    update:
+      fail: Error al actualizar
+      fail_session_expired: Su sesión de usuario ha caducado. Inicie sesión de nuevo.
+      success: Actualización exitosa
+    delete:
+      fail: No se puede eliminar este elemento
+      success: Elemento eliminado correctamente
+  module:
+    delete:
+      title: Eliminar este {{ itemName }}
+      alternative_title: Confirme eliminación
+      item: '¿Está seguro de que desea borrar este elemento?'
+      item_placeholder: '¿Está seguro que desea eliminar este {{ itemName }}? No es posible deshacer esta acción.'
+    edit:
+      leave: '¿Está usted seguro que desea abandonar esta página?'
+      discard_changes: Perderá los cambios realizados sobre {{ entity }} si abandona esta página.
+      discard_changes_title: '¿Está seguro?'
+pim_enrich.entity.job_execution:
+  page_title:
+    index: "]-Inf, 1]{{ count }} trabajo|]1, Inf[{{ count }} trabajos"
+  module:
+    create:
+      upload: Soltar su archivo {{ type }} aquí, o haga clic para buscar en el disco
+    download:
+      archive: Descargar archivo ZIP generado
+      invalid_xlsx: Descargar datos inválidos
+      invalid_csv: Descargar datos inválidos
+pim_title:
+  oro_default: Cartelera
+  pim_enrich_attributegroup_index: Grupos de atributos
+  pim_enrich_attributegroup_create: Grupos de Atributos | Crear
+  pim_enrich_attributegroup_edit: Grupo de atributo {{ group.label }} | Editar
+  pim_enrich_catalog_volume_index: Monitoreo del volumen del catálogo
+  pim_enrich_categorytree_index: Árbol de categoría
+  pim_enrich_categorytree_create: Árboles de categoría | Crear
+  pim_enrich_categorytree_edit: Categoría {{ category.label }} | Editar
+  pim_enrich_categorytree_create_tree: Árboles de categoría | Crear
+  pim_enrich_categorytree_tree: Árbol de categoría {{ category.label }} | Editar
+  pim_enrich_attribute_index: Atributos
+  pim_enrich_attribute_create: Atributos | Crear
+  pim_enrich_attribute_edit: Atributo {{ attribute.label }} | Editar
+  pim_enrich_product_index: Productos
+  pim_enrich_product_edit: Producto {{ product.label }} | Editar
+  pim_enrich_product_model_edit: Modelo del producto {{ product.label }} | Editar
+  pim_enrich_family_index: Familias
+  pim_enrich_family_edit: Familia {{ family.label }} | Editar
+  pim_enrich_channel_index: Canales
+  pim_enrich_channel_create: Canales | Crear
+  pim_enrich_channel_edit: Canal {{ channel.label }} | Editar
+  pim_enrich_currency_index: Monedas
+  pim_enrich_locale_index: Locales
+  pim_enrich_group_index: Grupos
+  pim_enrich_group_edit: Grupo {{ group.label }} | Editar
+  pim_enrich_associationtype_index: Tipos de asociaciones
+  pim_enrich_associationtype_edit: Tipo de asociación {{ association type.label }} | Editar
+  pim_enrich_grouptype_index: Tipos de grupo
+  pim_enrich_grouptype_edit: Tipo de grupo {{ group type.label }} | Editar
+  pim_enrich_mass_edit_action_choose: Edición masiva | Seleccionar
+  pim_enrich_mass_edit_action_configure: Edición masiva | Configurar
+  pim_enrich_mass_edit_action_perform: Edición masiva | Realizar
+  pim_enrich_job_tracker_index: Seguimiento de procesos
+  pim_enrich_job_tracker_show: Seguimiento de procesos | Ver el trabajo
+  pim_enrich_mass_edit_action: Edición en masa
+  pim_analytics_system_info_index: Información del sistema
+  pim_settings_index: Configuración
+  pim_system_index: Sistema
+pim_menu:
+  tag.new: Nuevo
+  tab:
+    activity: Actividad
+    imports: Importaciones
+    exports: Exportaciones
+    settings: Configuración
+    system: Sistema
+    help:
+      title: Ayuda
+      helper: Centro de ayuda de Akeneo
+      new: NUEVO
+      news: Novedades
+      help_center: Centro de ayuda
+      akademy_training: Formación en la Akademy
+  item:
+    association_type: Tipos de asociaciones
+    attribute_group: Grupos de atributos
+    channel: Canales
+    currency: Monedas
+    dashboard: Panel de actividades
+    family: Familias
+    group: Grupos
+    group_type: Tipos de grupo
+    product_model: Modelos de Producto
+    export_history: Histórico de exportaciones
+    export_profile: Perfiles de exportación
+    import_history: Histórico de importaciones
+    import_profile: Perfiles de importación
+    configuration: Configuración
+    user_management: Gestión de Usuarios
+    user: Usuarios
+    user_group: Grupos de Usuario
+    user_role: Roles
+    info: Información del sistema
+    job_tracker: Seguimiento de procesos
+    catalog_volume: Monitoreo del volumen del catálogo
+  navigation:
+    activity: Actividad de navegación
+    system: Sistema de navegación
+    user: Navegación del gestor de usuario
+    settings:
+      product: Ajustes del producto
+      catalog: Configuración del catálogo
+      collapsed_label: Navegación de ajustes
+      automation: Automatización
+    product: Navegación de productos
+    product_infos: Información de producto
+  user:
+    logout: Salir
+    user_account: Mi cuenta
+pim_notification:
+  types:
+    import: Importación
+    export: Export
+    quick_export: Exportación rápida
+    mass_edit: Edición en masa
+pim_settings:
+  settings_menu: Menú de ajustes
+  catalog_settings: Configuración del catálogo
+  product_settings: Ajustes del producto
+  automation_settings: Automatización
+  count:
+    category_trees: '{0}Tiene 0 árboles |{1}Tiene 1 árbol |]1, Inf[Tiene {{ count }} árboles '
+    categories: '{0}y 0 categorías|{1}y 1 categoría|]1, Inf[y {{ count }} categorías'
+    channels: '{0}Tiene 0 canales|{1}Tiene 1 canal|]1, Inf[Tiene {{ count }} canales'
+    locales: '{0}Tiene 0 configuraciones regionales habilitadas|{1}Tiene 1 configuración regional habilitada|]1, Inf[Tiene {{ count }} configuraciones regionales habilitadas'
+    currencies: '{0}Tiene 0 monedas habilitadas|{1}Tiene 1 moneda habilitada|]1, Inf[Tiene {{ count }} monedas habilitadas'
+    attribute_groups: '{0}Tiene 0 grupos de atributos|{1}Tiene 1 grupo de atributos|]1, Inf[Tiene {{ count }} grupos de atributos'
+    attributes: '{0}Tiene 0 atributos|{1}Tiene 1 atributo|]1, Inf[Tiene {{ count }} atributos'
+    families: '{0}Tiene 0 familias|{1}Tiene 1 familia|]1, Inf[Tiene {{ count }} familias'
+    measurements: '{0}Tiene 0 mediciones|{1}Tiene 1 medición|]1, Inf[Tiene {{ count }} mediciones'
+    association_types: '{0}Tiene 0 tipos de asociación|{1}Tiene 1 tipo de asociación|]1, Inf[Tiene {{ count }} tipos de asociación'
+    group_types: '{0}Tiene 0 tipos de grupos|{1}Tiene 1 tipo de grupos|]1, Inf[Tiene {{ count }} tipos de grupos'
+    groups: '{0}Tiene 0 grupos|{1}Tiene 1 grupo|]1, Inf[Tiene {{ count }} grupos'
+    rules: '{0}Tiene 0 reglas habilitadas|{1}Tiene 1 regla habilitada|]1, Inf[Tiene {{ count }} reglas habilitadas'
+    identifier_generators: '{0}Tiene 0 generadores de identificadores|{1}Tiene 1 generador de identificadores|]1, Inf[Tiene {{ count }} generadores de identificadores'
+pim_system:
+  system_menu: Menú del sistema
+  system_navigation: Sistema de navegación
+  users_management_navigation: Navegación del gestor de usuario
+  count:
+    product_values: '{0}Tiene 0 valores de producto|{1}Tiene 1 valor de producto|]1, Inf[Tiene {{ count }} valores de producto'
+    users: '{0}Tiene 0 usuarios|{1}Tiene 1 usuario|]1, Inf[Tiene {{ count }} usuarios'
+    user_groups: '{0}Tiene 0 grupos de usuarios|{1}Tiene 1 grupo de usuarios|]1, Inf[Tiene {{ count }} grupos de usuarios'
+    roles: '{0}Tiene 0 funciones|{1}Tiene 1 función|]1, Inf[Tiene {{ count }} funciones'
+  sso:
+    enabled: SSO activado
+    disabled: SSO desactivado
+    title: Inicio de sesión único con SAML
+  reset_pim:
+    modal:
+      summary:
+        name: Resumen
+        title: 'Advertencia: Reiniciar su PIM es irreversible'
+        text: 'Esto hará que se eliminen todos los elementos excepto los siguientes:'
+        users:
+          name: Usuarios
+          tooltip: Los usuarios son las personas a las que permite colaborar dentro de su PIM.
+        user_groups:
+          name: Grupos de usuarios
+          tooltip: Los Grupos de usuarios definen equipos que realizarán diferentes acciones dentro de su PIM.
+        roles:
+          name: Roles
+          tooltip: Los roles definen los accesos y las acciones que los usuarios y los grupos de usuarios pueden realizar dentro de su PIM.
+      confirm:
+        name: Confirmación
+        title: Confirmar el restablecimiento de su PIM
+        helper:
+          emphasis: Una vez que restablezca su PIM, no hay vuelta atrás.
+          text: Al hacer clic en el botón de restablecer, se cerrará la sesión y se volverá a la página de inicio de sesión.
+      confirmation_phrase: Escriba «{{ confirmation_word }}»
+      confirmation_word: restablecer
+    button:
+      label: Restablecer instancia
+      confirm: Restablecer y cerrar sesión
+    error_notification: Se ha producido un error durante el restablecimiento de la instancia, póngase en contacto con el administrador del sistema.
+    jobs_running: No puede reiniciar su instancia en este momento, ya que algunos procesos siguen en cola o en ejecución.
+  sandbox:
+    helper:
+      text: Este es un entorno sandbox; sus cambios no afectarán a su producción.
+pim_datagrid:
+  mass_action:
+    default:
+      select_action: Seleccione una acción

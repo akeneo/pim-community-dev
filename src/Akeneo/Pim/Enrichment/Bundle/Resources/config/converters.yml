@@ -1,0 +1,30 @@
+parameters:
+    pim_catalog.converter.metric.class: Akeneo\Pim\Enrichment\Component\Product\Converter\MetricConverter
+
+services:
+    pim_catalog.converter.metric:
+        class: '%pim_catalog.converter.metric.class%'
+        arguments:
+            - '@akeneo_measure.measure_converter'
+            - '@pim_catalog.builder.entity_with_values'
+            - '@pim_catalog.repository.cached_attribute'
+
+    pim_enrich.converter.standard_to_enrich.product_value:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Converter\StandardToInternalApi\ValueConverter'
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@akeneo_file_storage.repository.file_info'
+
+    pim_enrich.converter.enrich_to_standard.product_value:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Converter\InternalApiToStandard\ValueConverter'
+        arguments:
+            - '@pim_catalog.repository.attribute'
+
+    pim_enrich.converter.mass_operation:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Converter\MassOperationConverter'
+        arguments:
+            - '@pim_user.context.user'
+            - '@pim_enrich.converter.enrich_to_standard.product_value'
+            - '@pim_catalog.localization.localizer.converter'
+            - '@pim_enrich.filter.product_values_edit_data'
+            - '@oro_security.security_facade'

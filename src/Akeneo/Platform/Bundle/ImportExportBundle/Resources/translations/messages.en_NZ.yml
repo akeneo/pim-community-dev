@@ -1,0 +1,166 @@
+#Entities
+Job: Job
+Connector: Connector
+pim_import_export:
+  job: Job
+  connector: Connector
+  ## Job status
+  status:
+    0: Ready
+  batch_status:
+    1: Completed
+    2: Starting
+    3: Started
+    4: Stopping
+    5: Stopped
+    6: Failed
+    7: Abandoned
+    8: Unknown
+  download_archive:
+    archive: download generated archive|download generated archives
+    output: download generated file|download generated files
+    input: download read file|download read files
+    invalid_xlsx: download invalid data
+    invalid_csv: download invalid data
+  notification:
+    export:
+      error: Export <strong>%label%</strong> failed
+      warning: Export <strong>%label%</strong> finished with some warnings
+      success: Export <strong>%label%</strong> finished
+    import:
+      error: Import <strong>%label%</strong> failed
+      warning: Import <strong>%label%</strong> finished with some warnings
+      success: Import <strong>%label%</strong> finished
+  list: Select a job
+  job_profile:
+    tab:
+      property.title: General properties
+      history.title: History
+      job_content.title: Content
+#Page titles:
+pim_title.export_profile.index: Export profiles management
+pim_title.export_profile.edit: Export profile %job.label% | Edit
+pim_title.export_profile.show: Export profile %job.label% | Show
+pim_title.export_execution.index: Export executions history
+pim_title.export_execution.show: Export executions | Details
+pim_title.import_profile.index: Import profiles management
+pim_title.import_profile.edit: Import profile %job.label% | Edit
+pim_title.import_profile.show: Import profile %job.label% | Show
+pim_title.import_execution.index: Import executions history
+pim_title.import_execution.show: Import executions | Details
+#Entity and page header titles
+export profile:
+  title: export profile
+  edit: edit export profile
+import profile:
+  title: import profile
+  edit: edit import profile
+#ACLs
+pim_importexport:
+  acl:
+    export_profile:
+      index: View export profiles list
+      create: Create an export profile
+      show: Show an export profile
+      edit: Edit an export profile
+      remove: Remove an export profile
+      launch: Launch an export profile
+      property_edit: Edit an export profile general properties
+      property_show: Show an export profile general properties
+      history: View export profile history
+      content_edit: Edit an export profile content
+      content_show: Show an export profile content
+    import_profile:
+      index: View import profiles list
+      create: Create an import profile
+      show: Show an import profile
+      edit: Edit an import profile
+      remove: Remove an import profile
+      launch: Launch an import profile
+      history: View import profile history
+    export_execution:
+      index: View export reports list
+      show: View export report details
+      dl_log: Download export report log
+      dl_files: Download exported files
+    import_execution:
+      index: View import reports list
+      show: View import report details
+      dl_log: Download import report log
+      dl_files: Download imported files
+  acl_group:
+    export: Export profiles
+    import: Import profiles
+#Buttons
+btn:
+  create:
+    export profile: create export profile
+    import profile: create import profile
+Upload and import now: Upload and import now
+import now: Import now
+export now: Export now
+#Confirmation messages
+confirmation:
+  remove:
+    export profile: Are you sure you want to delete the export profile %name%?
+    import profile: Are you sure you want to delete the import profile %name%?
+#Flash messages
+flash:
+  export:
+    created: The export has been successfully created
+    removed: The export has been removed
+    updated: The export has been successfully updated
+    running: The export is running
+  import:
+    created: The import has been successfully created
+    removed: The import has been removed
+    updated: The import has been successfully updated
+    running: The import is running
+#Tabs
+General properties: General properties
+History: History
+pane.accordion:
+  properties: Properties
+  global_settings: Global settings
+  filters: Filters
+#Popin titles
+popin.create:
+  export_profile.title: Create a new export profile
+  import_profile.title: Create a new import profile
+#Job execution
+'Display item': Display item
+'Hide item': Hide item
+'Collecting data about job execution...': Collecting data about job execution...
+'You must select a file to upload': You must select a file to upload
+Download log: Download log
+Show profile: Show profile
+execution details: execution details
+job_execution.summary:
+  read: read
+  write: written
+  skip: skipped
+  create: created
+  update: updated
+  update_products: updated products
+  skip_products: skipped products
+  displayed: first warnings displayed
+  charset_validator:
+    title: 'File encoding:'
+    skipped: skipped, extension in white list
+Step: Step
+Status: Status
+Warnings: Warnings
+Summary: Summary
+Start: Start
+End: End
+#Process tracker
+set_attribute_requirements: Set attributes requirements
+COMPLETED: Completed
+STARTING: Starting
+STARTED: Started
+STOPPING: Stopping
+STOPPED: Stopped
+FAILED: Failed
+ABANDONED: Abandoned
+UNKNOWN: Unknown
+warning.label: Warning

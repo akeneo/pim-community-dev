@@ -1,0 +1,16 @@
+<div class="AknGridContainer">
+    <table class="AknGrid AknGrid--unclickable groups">
+        <% _.each(attributeGroups, function (attributeGroup) { %>
+        <tr class="AknGrid-bodyRow attribute-group" data-attribute-group-code="<%- attributeGroup.code %>">
+            <% if (canSortAttributeGroup) { %>
+            <td class="AknGrid-bodyCell AknGrid-bodyCell--tight">
+                <span class="handle">
+                    <i class="icon-reorder"></i>
+                </span>
+            </td>
+            <% } %>
+            <td class="AknGrid-bodyCell attribute-group-link" data-attribute-group-code="<%- attributeGroup.code %>"><%- i18n.getLabel(attributeGroup.labels, uiLocale, attributeGroup.code) %></td>
+        </tr>
+        <% }); %>
+    </table>
+</div>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs></defs>
+    <g id="24x24" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icon-product" fill="#67768A">
+            <path d="M20,4.5 L20,21 L19,21 L19,5 L16,5 L16,4 L20,4 L20,4.5 Z M4.5,4 L8,4 L8,5 L5,5 L5,21 L4,21 L4,4 L4.5,4 Z M10,2 L14,2 L14,3 L10,3 L10,2 Z M10,5 L14,5 L14,6 L10,6 L10,5 Z M7,9 L17,9 L17,10 L7,10 L7,9 Z M7,13 L17,13 L17,14 L7,14 L7,13 Z M7,17 L17,17 L17,18 L7,18 L7,17 Z M14,2 L15,2 L15,6 L14,6 L14,2 Z M4,21 L20,21 L20,22 L4,22 L4,21 Z M9,2 L10,2 L10,6 L9,6 L9,2 Z" id="Combined-Shape"></path>
+        </g>
+    </g>
+</svg>

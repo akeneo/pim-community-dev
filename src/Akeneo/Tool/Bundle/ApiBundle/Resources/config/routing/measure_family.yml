@@ -1,0 +1,19 @@
+legacy_pim_api_measure_family_list:
+    path: /measure-families
+    defaults: { _controller: legacy_pim_api.controller.measure_family:listAction, _format: json }
+    methods: [GET]
+
+legacy_pim_api_measure_family_get:
+    path: /measure-families/{code}
+    defaults: { _controller: legacy_pim_api.controller.measure_family:getAction, _format: json }
+    methods: [GET]
+
+pim_api_measurement_family_get:
+    path: /measurement-families
+    defaults: { _controller: pim_api.controller.get_measurement_families, _format: json }
+    methods: [GET]
+
+pim_api_measurement_family_create_or_update:
+    path: /measurement-families
+    defaults: { _controller: pim_api.controller.create_update_measurement_families }
+    methods: [PATCH]

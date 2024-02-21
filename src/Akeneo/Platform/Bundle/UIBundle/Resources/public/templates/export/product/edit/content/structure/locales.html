@@ -1,0 +1,32 @@
+<div class="AknFieldContainer-header">
+    <label class="AknFieldContainer-label control-label required" for="pim_enrich.export.product.filter.locales">
+        <%- __('pim_enrich.entity.locale.plural_label') %> <em><%- __('pim_common.required_label') %></em>
+    </label>
+</div>
+<div class="AknFieldContainer-inputContainer">
+    <select class="select2" multiple <%- isEditable ? '' : 'disabled' %> id="pim_enrich.export.product.filter.locales">
+        <% _.each(availableLocales, function (locale) { %>
+            <option value="<%- locale.code %>" <%- _.contains(locales, locale.code) ? 'selected' : '' %>><%- locale.label %></option>
+        <% }); %>
+    </select>
+    <div class="AknFieldContainer-iconsContainer icons-container">
+        <i class="AknIconButton icon-info-sign" data-toggle="tooltip" data-placement="right" data-original-title="<%- __('pim_enrich.export.product.filter.locales.help') %>"></i>
+    </div>
+</div>
+<div class="AknFieldContainer-footer">
+    <span class="below-input">
+        <span class="AknFieldContainer-validationErrors validation-errors">
+            <span class="AknFieldContainer-validationError">
+                <span class="error-message">
+                    <% if (errors instanceof Array) { %>
+                        <% errors.forEach(function (error) { %>
+                            <%- error %>
+                        <% }); %>
+                    <% } else { %>
+                        <%- errors %>
+                    <% } %>
+                </span>
+            </span>
+        </span>
+    </span>
+</div>

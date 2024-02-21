@@ -1,0 +1,77 @@
+No products to remove: Kaldırmak için ürün bulunmuyor
+"dot (.)": nokta (.)
+"comma (,)": virgül (,)
+pim_enrich:
+  #Category
+  category:
+    tab:
+      property.title: Özellikler
+      history.title: Geçmiş
+    suggest_selection: Sol taraftan bir kategori seçin
+    or: ya da
+    create_new: Yeni bir kategori oluştur
+  #Mass edit operations
+  mass_edit_action:
+    limit_exceeded: Düzenlemek için lütfen %limit%'in altındaki ögeleri seçin
+    product:
+      page_title: Ürünler
+      page_subtitle: Toplu Düzenle ( 1 Ürün | Toplu düzenle (%count% Ürünler)
+      title: İşlemi seçin
+      subtitle: Seçili ürün üzerinde gerçekleştirmek istediğiniz işlemi seçin | Seçilen %sayı% ürünlerde gerçekleştirmek istediğiniz işlemi seçin
+      confirm: Bir ürünü şu bilgilerle güncellemek üzeresiniz, lütfen onaylayın. %count% ürünlerini sıradaki bilgilerle güncellemek üzeresiniz, lütfen onaylayın.
+      steps:
+        first: Ürünleri seçin
+        second: İşlemi seçin
+        third: Yapılandırma
+        fourth: Doğrula
+    change-status:
+      label: Değişim durumu
+      description: Seçilen ürünler etkinleştirilecek veya devre dışı bırakılacaktır.
+      success_flash: Ürün(lerin) durumu değişti
+      launched_flash: Toplu "durumu değiştirme" işlemi başlatıldı. İşlem tamamlandığında size haber verilecektir.
+    edit-common-attributes:
+      label: Özellikleri düzenle
+      description: Seçili ürünün özellikleri, seçilen yerel ayar için şu verilerle düzenlenecek.
+      empty: Lütfen düzenlemek istediğiniz özelliği / özellikleri seçin
+      success_flash: Ürünlerin iş güncelleme durumu şu an çalışıyor
+      launched_flash: Toplu işlem "nitelikleri düzenle" başlatıldı. İşlem tamamlandığında size haber verilecektir.
+      message:
+        warning: Seçili ürünlerde ortak özellik bulunmamakta. Lütfen seçiminizi değiştirin.
+        invalid_attribute: Kodu Olan Özellikler "attribute_code" seçilmiş ürünler ile benzer değil, özellik atlandı.
+        no_valid_attribute: Seçilmiş özelliklerin hiç biri bu ürüne uygulanamaz.
+    classify-add:
+      label: Kategorilere ekle
+      description: Ürünler aşağıdaki kategorilere yerleştirilecek, mevcut yerleri bozulmayacaktır.
+      success_flash: Ürün(ler) seçilen kategorilerde sınıflandırılmıştır
+      launched_flash: '"Kategorilere ekleme" toplu işlemi başlatıldı. İşlem tamamlandığında size haber verilecektir.'
+    classify-move:
+      label: Kategoriler arasında taşı
+      description: Ürünler şu kategorilere yerleştirilecek, mevcut yerleri kaybolacaktır.
+      success_flash: Ürün(ler) seçilen kategorilere taşındı
+      launched_flash: '"kategorilere taşıma" toplu eylemi başlatıldı. İşlem tamamlandığında size haber verilecektir.'
+    classify-remove:
+      label: Kategorilerden kaldır
+      description: Ürünler, şu kategorilerden kaldırılmış olacaktır.
+      success_flash: Ürün(ler) seçilen kategorilerden kaldırıldı
+      launched_flash: '"Kategoriden kaldır" toplu işlemi başlatıldı. İşlem tamamlandığında size haber verilecektir.'
+    change-family:
+      label: Aileyi değiştir
+      description: Seçilen ürünlerin sınıfı, seçilen sınıfla değiştirilmiş olacak
+      success_flash: Seçilen ürün(ler) sınıfı başarıyla değiştirildi
+      launched_flash: '"Sınıfı değiştirme "toplu işlemi başlatıldı. İşlem tamamlandığında size haber verilecektir.'
+    add-to-groups:
+      label: Gruplara ekle
+      description: Seçilen ürünleri, eklemek istediğiniz grupların olduğu yere ekleyin
+      success_flash: Ürünler başarılı bir şekilde, seçilen gruplara eklendi
+      launched_flash: '"Gruplara ekleme" toplu işlemi başlatıldı. İşlem tamamlandığında size haber verilecektir.'
+      no_group: Şimdilik her hangi bir grup yok. Lütfen bir grup oluşturarak başlayın.
+    set-attribute-requirements:
+      label: Özellik gereksinimleri ayarla
+      description: Şu özellik gereksinimleri, seçilen sınıflarda onaylanmış olacak
+      success_flash: Seçilmiş sınıflara, özellik gereksinimleri onaylandı
+      launched_flash: '"Özellik gereksinimlerini belirleme" toplu işlemi başlatıldı. İşlem tamamlandığında size haber verilecektir.'
+    mass_action:
+      quick_export:
+        launched_flash: Ürünleri dışa aktarma işi şuan devam ediyor
+category:
+  overview: Kategoriler

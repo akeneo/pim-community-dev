@@ -1,0 +1,179 @@
+<?php
+
+namespace Akeneo\UserManagement\Component\Normalizer;
+
+use Akeneo\UserManagement\Component\Model\Group;
+use Akeneo\UserManagement\Component\Model\Role;
+use Akeneo\UserManagement\Component\Model\UserInterface;
+use Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepositoryInterface;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+
+/**
+ * User normalizer
+ *
+ * @author    Filips Alpe <filips@akeneo.com>
+ * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+class UserNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
+{
+    private DateTimeNormalizer $dateTimeNormalizer;
+    private NormalizerInterface $fileNormalizer;
+    private SecurityFacade $securityFacade;
+    private TokenStorageInterface $tokenStorage;
+    private DatagridViewRepositoryInterface $datagridViewRepo;
+
+    /** @var array */
+    private $properties;
+    protected array $supportedFormats = ['internal_api'];
+    private array $userNormalizers;
+
+    public function __construct(
+        DateTimeNormalizer $dateTimeNormalizer,
+        NormalizerInterface $fileNormalizer,
+        SecurityFacade $securityFacade,
+        TokenStorageInterface $tokenStorage,
+        DatagridViewRepositoryInterface $datagridViewRepo,
+        array $userNormalizers = [],
+        string ...$properties
+    ) {
+        $this->dateTimeNormalizer = $dateTimeNormalizer;
+        $this->fileNormalizer = $fileNormalizer;
+        $this->securityFacade = $securityFacade;
+        $this->tokenStorage = $tokenStorage;
+        $this->datagridViewRepo = $datagridViewRepo;
+        $this->properties = $properties;
+        $this->userNormalizers = $userNormalizers;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @var UserInterface $user
+     */
+    public function normalize($user, $format = null, array $context = [])
+    {
+        $result = [
+            'code'                      => $user->getUserIdentifier(), # Every Form Extension requires 'code' field.
+            'enabled'                   => $user->isEnabled(),
+            'username'                  => $user->getUserIdentifier(),
+            'email'                     => $user->getEmail(),
+            'name_prefix'               => $user->getNamePrefix(),
+            'first_name'                => $user->getFirstName(),
+            'middle_name'               => $user->getMiddleName(),
+            'last_name'                 => $user->getLastName(),
+            'name_suffix'               => $user->getNameSuffix(),
+            'phone'                     => $user->getPhone(),
+            'image'                     => $user->getImagePath(),
+            'last_login'                => $user->getLastLogin() ? $user->getLastLogin()->getTimestamp() : null,
+            'login_count'               => $user->getLoginCount(),
+            'catalog_default_locale'    => $user->getCatalogLocale()->getCode(),
+            'user_default_locale'       => $user->getUiLocale()->getCode(),
+            'catalog_default_scope'     => $user->getCatalogScope()->getCode(),
+            'default_category_tree'     => $user->getDefaultTree()->getCode(),
+            'email_notifications'       => $user->isEmailNotifications(),
+            'timezone'                  => $user->getTimezone(),
+            'groups'                    => $user->getGroupNames(),
+            'visible_group_ids'         => $this->getVisibleGroupIds($user),
+            'roles'                     => $this->getRoleNames($user),
+            'product_grid_filters'      => $user->getProductGridFilters(),
+            'profile'                   => $user->getProfile(),
+            'avatar'                    => null === $user->getAvatar() ? [
+                'filePath'         => null,
+                'originalFilename' => null,
+            ] : $this->fileNormalizer->normalize($user->getAvatar()),
+            'meta'                      => [
+                'id'      => $user->getId(),
+                'created' => $user->getCreatedAt() ? $user->getCreatedAt()->getTimestamp() : null,
+                'updated' => $user->getUpdatedAt() ? $user->getUpdatedAt()->getTimestamp() : null,
+                'form'    => $this->getFormName($user),
+                'image'   => [
+                    'filePath' => null === $user->getAvatar() ?
+                        null :
+                        $this->fileNormalizer->normalize($user->getAvatar())['filePath']
+                ]
+            ]
+        ];
+
+        $aliases = $this->datagridViewRepo->getDatagridViewAliasesByUser($user);
+        foreach ($aliases as $alias) {
+            $defaultView = $user->getDefaultGridView($alias);
+            // Set default_product_grid_view, default_published_product_grid_view, etc.
+            $result[sprintf('default_%s_view', str_replace('-', '_', $alias))]
+                = $defaultView === null ? null : $defaultView->getId();
+        }
+
+        $normalizedProperties = array_reduce($this->properties, function ($result, string $propertyName) use ($user) {
+            return $result + [$propertyName => $user->getProperty($propertyName)];
+        }, []);
+
+        $normalizedCompound = array_map(function ($normalizer) use ($user, $format, $context) {
+            return $normalizer->normalize($user, $format, $context);
+        }, $this->userNormalizers);
+
+        $result['properties'] = $normalizedProperties;
+
+        return array_merge_recursive($result, ...$normalizedCompound);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsNormalization($data, $format = null): bool
+    {
+        return $data instanceof UserInterface && in_array($format, $this->supportedFormats);
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
+    }
+
+    /**
+     * @param UserInterface $user
+     *
+     * @return string[]
+     */
+    private function getRoleNames(UserInterface $user): array
+    {
+        return $user->getRolesCollection()->map(function (Role $role) {
+            return $role->getRole();
+        })->toArray();
+    }
+
+    /**
+     * @param UserInterface $user
+     *
+     * @return string
+     */
+    private function getFormName($user): string
+    {
+        if ($this->securityFacade->isGranted('pim_user_user_edit')) {
+            return 'pim-user-edit-form';
+        }
+
+        $token = $this->tokenStorage->getToken();
+        $currentUser = $token ? $token->getUser() : null;
+
+        if ($user->getId() && is_object($currentUser) && $currentUser->getId() == $user->getId()) {
+            return 'pim-user-profile-form';
+        }
+
+        return 'pim-user-show';
+    }
+
+    /** @return int[] */
+    private function getVisibleGroupIds(UserInterface $user): array
+    {
+        $visibleGroups = array_values(array_filter(
+            $user->getGroups()->toArray(),
+            static fn (Group $group) => $group->getName() !== 'All',
+        ));
+
+        return array_map(static fn (Group $group) => $group->getId(), $visibleGroups);
+    }
+}

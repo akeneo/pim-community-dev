@@ -1,0 +1,63 @@
+services:
+    # Structure version
+    pim_structure_version.event_listener.table_creator:
+        class: 'Akeneo\Pim\Enrichment\Bundle\StructureVersion\EventListener\TableCreator'
+        arguments:
+            - '@doctrine'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_structure_version.event_listener.structure_version_updater:
+        class: 'Akeneo\Pim\Enrichment\Bundle\StructureVersion\EventListener\StructureVersionUpdater'
+        arguments:
+            - '@doctrine'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_structure_version.provider.structure_version.product:
+        class: '%pim_enrich.provider.structure_version.class%'
+        arguments:
+            - '@doctrine'
+        calls:
+            - [addResource, ['%pim_catalog.entity.association_type.class%']]
+            - [addResource, ['%pim_catalog.entity.attribute.class%']]
+            - [addResource, ['%pim_catalog.entity.attribute_group.class%']]
+            - [addResource, ['%pim_catalog.entity.category.class%']]
+            - [addResource, ['%pim_catalog.entity.channel.class%']]
+            - [addResource, ['%pim_catalog.entity.family.class%']]
+            - [addResource, ['%pim_catalog.entity.group.class%']]
+            - [addResource, ['%pim_catalog.entity.locale.class%']]
+
+    pim_structure_version.provider.structure_version.group:
+        class: '%pim_enrich.provider.structure_version.class%'
+        arguments:
+            - '@doctrine'
+        calls:
+            - [addResource, ['%pim_catalog.entity.attribute.class%']]
+            - [addResource, ['%pim_catalog.entity.attribute_group.class%']]
+            - [addResource, ['%pim_catalog.entity.channel.class%']]
+            - [addResource, ['%pim_catalog.entity.locale.class%']]
+
+    pim_structure_version.provider.structure_version.group_type:
+        class: '%pim_enrich.provider.structure_version.class%'
+        arguments:
+            - '@doctrine'
+        calls:
+            - [addResource, ['%pim_catalog.entity.locale.class%']]
+
+    pim_structure_version.provider.structure_version.attribute:
+        class: '%pim_enrich.provider.structure_version.class%'
+        arguments:
+            - '@doctrine'
+        calls:
+            - [addResource, ['%pim_catalog.entity.attribute_group.class%']]
+            - [addResource, ['%pim_catalog.entity.locale.class%']]
+
+    pim_structure_version.provider.structure_version.family_variant:
+        class: '%pim_enrich.provider.structure_version.class%'
+        arguments:
+            - '@doctrine'
+        calls:
+            - [addResource, ['%pim_catalog.entity.attribute.class%']]
+            - [addResource, ['%pim_catalog.entity.family.class%']]
+            - [addResource, ['%pim_catalog.entity.locale.class%']]

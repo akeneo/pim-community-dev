@@ -1,0 +1,4 @@
+pim_notification:
+  report: Отчет
+  mark_all_as_read: Отметить все как прочитанное
+  no_notifications: Нет уведомлений

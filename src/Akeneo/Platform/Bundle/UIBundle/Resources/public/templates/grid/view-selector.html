@@ -1,0 +1,30 @@
+<div class="grid-view-selector">
+    <div class="AknColumn-block AknColumn-block--inline">
+        <% if (displaySwitcher) { %>
+        <div class="AknDropdown AknColumn-subtitle">
+            <div class="view-selector-type-switcher" data-toggle="dropdown">
+                <span class="current-view-type"><%- __('pim_datagrid.view_selector.' + currentViewType) %></span>
+                <span class="AknActionButton-caret"></span>
+            </div>
+            <ul class="AknDropdown-menu">
+                <li class="AknDropdown-menuTitle">Type</li>
+                <% viewTypes.forEach(function (type) { %>
+                <li>
+                    <a data-value="<%- type %>" class="AknDropdown-menuLink<% if (currentViewType === type) { %> AknDropdown-menuLink--active<% } %> view-type-item" title="<%- __('pim_datagrid.view_selector.' + type) %>">
+                        <%- __('pim_datagrid.view_selector.' + type) %>
+                    </a>
+                </li>
+                <% });  %>
+            </ul>
+        </div>
+        <% } else { %>
+        <div class="AknColumn-subtitle"><%- __('pim_datagrid.view_selector.' + currentViewType) %></div>
+        <% } %>
+        <div class="AknColumn-subtitle">&nbsp;/&nbsp;</div>
+        <div class="AknColumn-value">
+            <input type="hidden" class="select-field" value="0"/>
+        </div>
+        <div class="AknColumn-blockDropdown" data-drop-zone="buttons"></div>
+    </div>
+    <div class="AknColumn-resume" data-drop-zone="resume"></div>
+</div>

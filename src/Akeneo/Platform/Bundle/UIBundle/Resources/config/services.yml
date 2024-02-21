@@ -1,0 +1,96 @@
+parameters:
+    security.exception_listener.class: 'Akeneo\Platform\Bundle\UIBundle\EventListener\ExceptionListener'
+
+services:
+    pim_enrich.imagine.loader.flysystem:
+        class: 'Akeneo\Platform\Bundle\UIBundle\Imagine\FlysystemLoader'
+        arguments:
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
+            - ['catalogStorage']
+            - '@akeneo_file_storage.repository.file_info'
+        tags:
+            - { name: liip_imagine.binary.loader, loader: flysystem_data_loader }
+
+    Akeneo\Platform\Bundle\UIBundle\Imagine\IccStripFilter:
+        tags:
+            - { name: 'liip_imagine.filter.loader', loader: icc_strip }
+
+    Akeneo\Platform\Bundle\UIBundle\Imagine\FlattenLayersFilter:
+        tags:
+            - { name: 'liip_imagine.filter.loader', loader: flatten_layers }
+
+    pim_enrich.resolver.locale:
+        class: 'Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver'
+        arguments:
+            - '@request_stack'
+            - '%env(APP_DEFAULT_LOCALE)%'
+
+    pim_enrich.version_strategy:
+        class: 'Akeneo\Platform\Bundle\UIBundle\VersionStrategy\CacheBusterVersionStrategy'
+        arguments:
+            - '@pim_catalog.version_provider'
+
+    # inject current locale into translatable entities
+    pim_enrich.event_listener.add_locale:
+        class: 'Akeneo\Platform\Bundle\UIBundle\EventListener\AddLocaleListener'
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    pim_enrich.event_listener.close_session:
+        class: 'Akeneo\Platform\Bundle\UIBundle\EventListener\CloseSessionListener'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    stof_doctrine_extensions.event_listener.locale:
+        class: 'Akeneo\Platform\Bundle\UIBundle\EventListener\UserContextListener'
+        arguments:
+            - '@security.token_storage'
+            - '@pim_enrich.event_listener.add_locale'
+            - '@pim_catalog.context.catalog'
+            - '@pim_user.context.user'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    security.authenticator.form_login:
+        abstract: true
+        class: 'Akeneo\Platform\Bundle\UIBundle\Http\FormLoginAuthenticator'
+        arguments:
+            - '@security.http_utils'
+            - !abstract
+            - !abstract
+            - !abstract
+            - !abstract
+
+    security.script_nonce_generator:
+      class: Akeneo\Platform\Bundle\UIBundle\EventListener\ScriptNonceGenerator
+      arguments:
+          - '@request_stack'
+          - '%kernel.secret%'
+
+    security.event_listener.add_csp:
+        class: Akeneo\Platform\Bundle\UIBundle\EventListener\AddContentSecurityPolicyListener
+        arguments:
+            - '@Akeneo\Platform\Bundle\UIBundle\Provider\ContentSecurityPolicy\ContentSecurityPolicyProvider'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_enrich.normalizer.constraint_violation_list:
+        class: 'Akeneo\Platform\Bundle\UIBundle\Normalizer\ConstraintViolationListNormalizer'
+        arguments:
+            - '@serializer.normalizer.object'
+        tags:
+            - { name: serializer.normalizer, priority: 90 }
+
+    Akeneo\Platform\Bundle\UIBundle\Provider\ContentSecurityPolicy\AkeneoContentSecurityPolicyProvider:
+        arguments:
+            - '@security.script_nonce_generator'
+        tags:
+            - { name: akeneo.pim.security.content_security_policy_provider }
+
+    Akeneo\Platform\Bundle\UIBundle\Provider\ContentSecurityPolicy\ContentSecurityPolicyProvider:
+        arguments:
+            - !tagged akeneo.pim.security.content_security_policy_provider
+
+    Akeneo\Platform\Bundle\UIBundle\Provider\ExternalJavascriptDependenciesProvider:
+        arguments:
+            - !tagged akeneo.pim.security.external_dependency_provider

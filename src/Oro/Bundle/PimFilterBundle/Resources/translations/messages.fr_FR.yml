@@ -1,0 +1,21 @@
+oro.filter.form.label_type_equal: '='
+oro.filter.form.label_type_greater_equal: '>='
+oro.filter.form.label_type_greater_than: '>'
+oro.filter.form.label_type_less_equal: '<='
+oro.filter.form.label_type_less_than: '<'
+oro.filter.form.label_type_yes: "oui"
+oro.filter.form.label_type_no: "non"
+oro.filter.form.label_type_contains: contient
+oro.filter.form.label_type_not_contains: ne contient pas
+oro.filter.form.label_type_equals: est égal à
+oro.filter.form.label_type_start_with: commence par
+oro.filter.form.label_type_end_with: finit par
+oro.filter.form.label_type_empty: Est vide
+oro.filter.form.label_type_not_empty: n'est pas vide
+oro.filter.form.label_type_in_list: dans la liste
+oro.filter.form.label_date_type_between: entre
+oro.filter.form.label_date_type_not_between: pas entre
+oro.filter.form.label_date_type_more_than: plus de
+oro.filter.form.label_date_type_less_than: moins de
+oro.filter.form.label_not_selected: Pas sélectionné
+oro.filter.form.label_selected: Sélectionné

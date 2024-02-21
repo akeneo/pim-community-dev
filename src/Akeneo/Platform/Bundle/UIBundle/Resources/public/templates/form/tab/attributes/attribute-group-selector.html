@@ -1,0 +1,23 @@
+<div class="AknActionButton AknActionButton--withoutBorder" data-toggle="dropdown">
+    <%- label %>:
+    <span class="AknActionButton-highlight">
+        <%- i18n.getLabel(currentElement.labels, locale, currentElement.code) %>
+    </span>
+    <span class="AknActionButton-caret"></span>
+</div>
+<ul class="AknDropdown-menu AknDropdown-menu--right">
+    <li class="AknDropdown-menuTitle"><%- label %></li>
+    <% _.each(elements, function (element) { %>
+        <li class="<%- current === element.code ? 'active' : '' %>" data-element="<%- element.code %>">
+            <div class="AknDropdown-menuLink <%- current === element.code ? 'AknDropdown-menuLink--active' : '' %>">
+                <span class="label"><%- i18n.getLabel(element.labels, locale, element.code) %></span>
+                <span class="badge-elements-container">
+                    <span class="AknBadge AknBadge--small AknBadge--highlight <%- !_.contains(toFillAttributeGroups, element.code) && !(element.code === allAttributeCode && 0 < toFillAttributeGroups.length) ? 'AknBadge--hidden' : '' %>"></span>
+                    <% _.each(badges[element.code], function(badge, type) { %>
+                        <span class="AknBadge AknBadge--<%- type %> <%- type %>-badge label"><%- badge %></span>
+                    <% }) %>
+                </span>
+            </div>
+        </li>
+    <% }); %>
+</ul>

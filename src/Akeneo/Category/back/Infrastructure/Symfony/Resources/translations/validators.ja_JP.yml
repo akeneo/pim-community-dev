@@ -1,0 +1,24 @@
+akeneo.category:
+  validation:
+    upsert:
+      category_code:
+        wrong_format: カテゴリコードに利用できるのは半角英数字とアンダースコアのみです
+        line_feed: カテゴリコードに改行文字を含めることはできません
+      duplicated_value_user_intents: 属性 {{ attributeCode }} の値は複数回更新されています
+      value_user_intents_on_deactivated_template: 編集しようとしているカテゴリ属性にリンクされた有効なテンプレートはありません
+      value:
+        text_too_long: 値は{{count}}文字より長くすることはできません
+        textarea_too_long: 値は{{count}}文字より長くすることはできません
+        richtext_too_long: 値は{{count}}文字より長くすることはできません
+    template:
+      code:
+        not_blank: この値は空白にできません。
+        unique: 'テンプレートコード: {{ templateCode }}はすでに存在します。'
+        wrong_format: フィールドには、文字、数字、アンダースコアを含めることができます。
+    attribute:
+      limit:
+        title: 50個を超える属性は追加できません
+        message: カテゴリテンプレートの属性は、テンプレートあたり50個に制限されています。
+      code:
+        wrong_format: 属性コードに利用できるのは小文字、数字、アンダースコアのみです
+        unique_in_the_template: 属性コード{{ attributeCode }}はテンプレート内で一意である必要があります

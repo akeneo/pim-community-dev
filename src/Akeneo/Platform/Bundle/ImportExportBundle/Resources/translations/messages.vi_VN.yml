@@ -1,0 +1,110 @@
+#Entities
+Job: Job
+Connector: Kết nối
+pim_import_export:
+  job: Job
+  connector: Kết nối
+  ## Job status
+  status:
+    0: Sẵn sàng
+  download_archive:
+    output: Tải tập tin đã xuất | Tải các tập tin đã xuất
+    input: Tải tập tin đã nhập | Tải các tập tin đã nhập
+    invalid_xlsx: tải xuống dữ liệu không hợp lệ
+    invalid_csv: tải xuống dữ liệu không hợp lệ
+  job_profile:
+    tab:
+      property.title: Thuộc tính tổng quan
+      history.title: Lịch sử
+      job_content.title: Nội dung
+#Page titles:
+pim_title.export_profile.index: Quản lý hồ sơ xuất dữ liệu
+pim_title.export_execution.index: Lịch sử thực thi xuất dữ liệu
+pim_title.export_execution.show: Thực thi xuất dữ liệu | Chi tiết
+pim_title.import_profile.index: Quản lý hồ sơ nhập dữ liệu
+pim_title.import_execution.index: Lịch sử thực thi nhập dữ liệu
+pim_title.import_execution.show: Thực thi nhập dữ liệu | Chi tiết
+#Entity and page header titles
+export profile:
+  title: xuất cấu hình
+  edit: Chỉnh sửa hồ sơ xuất dữ liệu
+import profile:
+  edit: chỉnh sửa hồ sơ nhập ữ liệu
+#ACLs
+pim_importexport:
+  acl:
+    export_profile:
+      index: Xem danh sách xuất dữ liệu
+      create: Tạo hồ sơ xuất dữ liệu
+      show: Xem hồ sơ xuất dữ liệu
+      edit: Chỉnh sửa hồ sơ xuất dữ liệu
+      remove: Xoá hồ sơ xuất dữ liệu
+      launch: Thực thi một hồ sơ xuất dữ liệu
+    import_profile:
+      index: Xem danh sách nhập dữ liệu
+      create: Tạo hồ sơ nhập dữ liệu
+      show: Xem hồ sơ nhập dữ liệu
+      edit: Chỉnh sửa hồ sơ nhập dữ liệu
+      remove: Xoá hồ sơ nhập dữ liệu
+      launch: Thực thi một hồ sơ nhập dữ liệu
+    export_execution:
+      index: Xem danh sách báo cáo xuất dữ liệu
+      show: Xem báo cáo chi tiết xuất dữ liệu
+      dl_log: Tải lưu vết báo cáo xuất dữ liệu
+      dl_files: Tải tập tin đã xuất
+    import_execution:
+      index: Xem danh sách báo cáo nhập dữ liệu
+      show: Xem báo cáo chi tiết nhập dữ liệu
+      dl_log: Tải lưu vết báo cáo nhập dữ liệu
+      dl_files: Tải tập tin đã nhập
+  acl_group:
+    export: Hồ sơ xuất dữ liệu
+    import: Hồ sơ nhập dữ liệu
+#Buttons
+btn:
+  create:
+    export profile: Tạo hồ sơ xuất dữ liệu
+    import profile: Tạo hồ sơ nhập dữ liệu
+#Confirmation messages
+confirmation:
+  remove:
+    export profile: Bạn có chắc chắn xoá hồ sơ xuất dữ liệu %name% không?
+    import profile: Bạn có chắc chắn xoá hồ sơ nhập dữ liệu %name% không?
+#Flash messages
+flash:
+  export:
+    created: Hồ sơ xuất dữ liệu đã được tạo thành công
+    removed: Hồ sơ xuất dữ liệu đã được xoá
+    updated: Hồ sơ xuất dữ liệu đã được cập nhật thành công
+  import:
+    created: Hồ sơ nhập dữ liệu đã được tạo thành công
+    removed: Hồ sơ nhập dữ liệu đã được xoá
+    updated: Hồ sơ nhập dữ liệu đã được cập nhật thành công
+#Tabs
+General properties: Thuộc tính tổng quan
+History: Lịch sử
+pane.accordion:
+  properties: Thuộc tính
+  global_settings: Cài đặt chung
+#Popin titles
+popin.create:
+  export_profile.title: Tạo hồ sơ xuất dữ liệu mới
+  import_profile.title: Tạo hồ sơ nhập dữ liệu mới
+#Job execution
+'Display item': Hiển thị mục
+'Hide item': Ẫn mục
+'Collecting data about job execution...': Đang thu thập dữ liệu về tiến trình thực thi...
+'You must select a file to upload': Bạn phải chọn một tệp để tải lên
+job_execution.summary:
+  read: đọc
+  write: đã viết
+  skip: đã bỏ qua
+  create: đã tạo
+  update_products: các sản phẩm đã được cập nhật
+  skip_products: các sản phẩm đã được bỏ qua
+  displayed: cảnh báo đầu tiên đã được hiển thị
+  charset_validator:
+    title: 'Tập tin đang được mã hóa:'
+    skipped: đã bỏ qua, phần mở rộng trong white list
+Status: Trạng thái
+Warnings: Cảnh báo

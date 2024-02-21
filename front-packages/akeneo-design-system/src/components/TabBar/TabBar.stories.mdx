@@ -1,0 +1,162 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
+import {TabBar} from './TabBar.tsx';
+import {Badge} from '../Badge/Badge';
+import {Pill} from '../Pill/Pill';
+import {useTabBar} from '../../hooks';
+import {Scrollable, Content} from '../../storybook/PreviewGallery';
+
+<Meta
+  title="Components/TabBar"
+  component={TabBar}
+  args={{
+    moreButtonTitle: 'More',
+  }}
+/>
+
+# TabBar
+
+## Usage
+
+Tabs are used to move from one content to another within the same context.
+
+## Format
+
+**Text**
+
+Each label describes its content and defines the expectations of the user. Labels are concise and use one or two words maximum. Icons are not allowed in tab labels.
+
+**Order**
+
+The order of the tabs must be consistent across the entire application. Related tabs should be gathered.
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      const [isCurrent, switchTo] = useTabBar('firstTab');
+      return (
+        <TabBar {...args}>
+          <TabBar.Tab isActive={isCurrent('firstTab')} onClick={() => switchTo('firstTab')}>
+            First tab
+          </TabBar.Tab>
+          <TabBar.Tab isActive={isCurrent('anotherTab')} onClick={() => switchTo('anotherTab')}>
+            Another tab
+          </TabBar.Tab>
+          <TabBar.Tab isActive={isCurrent('lastTab')} onClick={() => switchTo('lastTab')}>
+            Last tab
+          </TabBar.Tab>
+        </TabBar>
+      );
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## With Badges
+
+<Canvas>
+  <Story name="With Badges">
+    {args => {
+      const [isCurrent, switchTo] = useTabBar('firstTab');
+      return (
+        <TabBar {...args}>
+          <TabBar.Tab isActive={isCurrent('firstTab')} onClick={() => switchTo('firstTab')}>
+            First tab <Badge level="warning">2</Badge>
+          </TabBar.Tab>
+          <TabBar.Tab isActive={isCurrent('anotherTab')} onClick={() => switchTo('anotherTab')}>
+            Another tab
+          </TabBar.Tab>
+          <TabBar.Tab isActive={isCurrent('lastTab')} onClick={() => switchTo('lastTab')}>
+            Last tab <Badge level="danger">0</Badge>
+          </TabBar.Tab>
+        </TabBar>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## With Pills
+
+<Canvas>
+  <Story name="With Pills">
+    {args => {
+      const [isCurrent, switchTo] = useTabBar('firstTab');
+      return (
+        <TabBar {...args}>
+          <TabBar.Tab isActive={isCurrent('firstTab')} onClick={() => switchTo('firstTab')}>
+            First tab <Pill level="warning" />
+          </TabBar.Tab>
+          <TabBar.Tab isActive={isCurrent('anotherTab')} onClick={() => switchTo('anotherTab')}>
+            Another tab
+          </TabBar.Tab>
+          <TabBar.Tab isActive={isCurrent('lastTab')} onClick={() => switchTo('lastTab')}>
+            Last tab <Pill level="danger" />
+          </TabBar.Tab>
+        </TabBar>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## With a lot of tabs
+
+<Canvas>
+  <Story name="Lot of tabs">
+    {args => {
+      const [isCurrent, switchTo] = useTabBar('Tab 100');
+      return (
+        <TabBar {...args}>
+          {[...Array(100)].map((_, index) => (
+            <TabBar.Tab
+              key={index}
+              isActive={isCurrent(`Tab ${index + 1}`)}
+              onClick={() => switchTo(`Tab ${index + 1}`)}
+            >
+              {`Tab ${index + 1}`}
+            </TabBar.Tab>
+          ))}
+        </TabBar>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Sticky
+
+<Canvas>
+  <Story name="Sticky">
+    {args => {
+      const [isCurrent, switchTo] = useTabBar('firstTab');
+      return (
+        <Scrollable height={300}>
+          <TabBar sticky={0}>
+            <TabBar.Tab isActive={isCurrent('firstTab')} onClick={() => switchTo('firstTab')}>
+              First tab <Pill level="warning" />
+            </TabBar.Tab>
+            <TabBar.Tab isActive={isCurrent('anotherTab')} onClick={() => switchTo('anotherTab')}>
+              Another tab
+            </TabBar.Tab>
+            <TabBar.Tab isActive={isCurrent('lastTab')} onClick={() => switchTo('lastTab')}>
+              Last tab <Pill level="danger" />
+            </TabBar.Tab>
+          </TabBar>
+          <Content height={400}>Some content</Content>
+          <TabBar sticky={0}>
+            <TabBar.Tab isActive={isCurrent('firstTab')} onClick={() => switchTo('firstTab')}>
+              First tab <Pill level="warning" />
+            </TabBar.Tab>
+            <TabBar.Tab isActive={isCurrent('anotherTab')} onClick={() => switchTo('anotherTab')}>
+              Another tab
+            </TabBar.Tab>
+            <TabBar.Tab isActive={isCurrent('lastTab')} onClick={() => switchTo('lastTab')}>
+              Last tab <Pill level="danger" />
+            </TabBar.Tab>
+          </TabBar>
+          <Content height={400}>Some other content</Content>
+        </Scrollable>
+      );
+    }}
+  </Story>
+</Canvas>

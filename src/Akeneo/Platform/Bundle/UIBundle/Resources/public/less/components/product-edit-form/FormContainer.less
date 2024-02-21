@@ -1,0 +1,43 @@
+@import '../../base/variables';
+
+.AknFormContainer {
+  width: @AknMaxFormWidth;
+  z-index: 1;
+
+  &--large {
+    width: 710px;
+  }
+
+  &--small {
+    width: 300px;
+  }
+
+  &--wide {
+    width: 100%;
+  }
+
+  &--withPadding:not(:empty):not(&--centered) {
+    margin: 20px 0 10px;
+  }
+
+  &--withPadding:not(:empty)&--centered {
+    margin-bottom: 20px;
+  }
+
+  &--withSmallPadding:not(:empty) {
+    padding: 0 20px;
+  }
+
+  &--centered {
+    margin: auto;
+  }
+
+  &--expanded {
+    max-width: 920px;
+    width: 100%;
+  }
+
+  &--inline {
+    width: auto;
+  }
+}

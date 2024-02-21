@@ -1,0 +1,113 @@
+#Job labels
+batch_jobs:
+  default_steps:
+    validation: Provjera valjanosti datoteke
+    import_associations: Uvoz pridruživanja
+  csv_product_export:
+    label: Izvoz proizvoda u CSV
+    export.label: Izvoz proizvoda
+  csv_category_export:
+    label: Izvoz kategorije u CSV
+    export.label: Izvoz kategorije
+  csv_attribute_export:
+    label: Izvoz atributa u CSV
+    export.label: Izvoz atributa
+  csv_attribute_option_export:
+    label: Izvoz opcija atributa u CSV
+    export.label: Izvoz opcija atributa
+  csv_association_type_export:
+    label: Izvoz tipa pridruživanja u CSV
+    export.label: Izvoz tipa pridruživanja
+  csv_group_export:
+    label: Izvoz grupe u CSV
+    export.label: Izvoz grupe
+  csv_family_export:
+    label: Izvoz porodice u CSV
+    export.label: Izvoz porodice
+  csv_product_import:
+    label: Uvoz proizvoda iz CSV
+    import.label: Uvoz proizvoda
+  csv_category_import:
+    label: Uvoz kategorije iz CSV
+    import.label: Uvoz kategorije
+  csv_attribute_import:
+    label: Uvoz atributa iz CSV
+    import.label: Uvoz atributa
+  csv_attribute_option_import:
+    label: Uvoz opcija atributa iz CSV
+    import.label: Uvoz opcija atributa
+  csv_association_type_import:
+    label: Uvoz tipa pridruživanja iz CSV
+    import.label: Uvoz tipa pridruživanja
+  csv_family_import:
+    label: Izvoz porodice u CSV
+    import.label: Uvoz porodice
+  csv_group_import:
+    label: Uvoz grupa iz CSV
+    import.label: Uvoz grupa
+  csv_attribute_group_export:
+    label: Izvoz grupe atributa u CSV
+    export.label: Izvoz grupe atributa
+  csv_group_type_export:
+    label: Izvoz tipa grupe u CSV
+    export.label: Izvoz tipa grupe
+  csv_attribute_group_import:
+    label: Uvoz grupe atributa iz CSV
+    import.label: Uvoz grupe atributa
+  csv_group_type_import:
+    label: Uvoz tipa grupe iz CSV
+    import.label: Uvoz tipa grupe
+  xlsx_category_import:
+    label: Uvoz kategorije iz XLSX
+    import.label: Uvoz kategorije
+  xlsx_association_type_import:
+    label: Uvoz tipa pridruživanja iz XLSX
+    import.label: Uvoz tipa pridruživanja
+  xlsx_attribute_import:
+    label: Uvoz atributa iz XLSX
+    import.label: Uvoz atributa
+  xlsx_attribute_option_import:
+    label: Uvoz opcija atributa iz XLSX
+    import.label: Uvoz opcija atributa
+  xlsx_family_import:
+    label: Uvoz obitelji iz XLSX
+    import.label: Uvoz porodice
+  xlsx_product_export:
+    label: Izvoz proizvoda u XLSX
+    export.label: Izvoz proizvoda
+  xlsx_product_import:
+    label: Uvoz proizvoda iz XLSX
+    import.label: Uvoz proizvoda
+  xlsx_group_export:
+    label: Izvoz grupe u XLSX
+    export.label: Izvoz grupe
+  xlsx_group_import:
+    label: Uvoz grupe iz XLSX
+    import.label: Uvoz grupa
+  xlsx_family_export:
+    label: Izvoz obitelji u XLSX
+    export.label: Izvoz porodice
+  xlsx_category_export:
+    label: Izvoz kategorije u XLSX
+    export.label: Izvoz kategorije
+  xlsx_attribute_export:
+    label: Izvoz atributa u XLSX
+    export.label: Izvoz atributa u XLSX
+  xlsx_attribute_option_export:
+    label: Izvoz opcija atributa u XLSX
+    export.label: Izvoz opcija atributa u XLSX
+  xlsx_association_type_export:
+    label: Izvoz tipa pridruživanja u XLSX
+    export.label: Izvoz tipa pridruživanja u XLSX
+  xlsx_attribute_group_export:
+    label: Izvoz grupe atributa u XLSX
+    export.label: Izvoz grupe atributa
+  xlsx_group_type_export:
+    label: Izvoz tipa grupe u XLSX
+    export.label: Izvoz tipa grupe
+  xlsx_attribute_group_import:
+    label: Uvoz grupe atributa iz XLSX
+    import.label: Uvoz grupe atributa
+  xlsx_group_type_import:
+    label: Uvoz tipa grupe iz XLSX
+    import.label: Uvoz tipa grupe

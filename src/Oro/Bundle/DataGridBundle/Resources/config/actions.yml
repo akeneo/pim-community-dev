@@ -1,0 +1,33 @@
+parameters:
+    oro_datagrid.extension.action.type.navigate.class:    Oro\Bundle\DataGridBundle\Extension\Action\Actions\NavigateAction
+    oro_datagrid.extension.action.type.ajax.class:        Oro\Bundle\DataGridBundle\Extension\Action\Actions\AjaxAction
+    oro_datagrid.extension.action.type.delete.class:      Oro\Bundle\DataGridBundle\Extension\Action\Actions\DeleteAction
+
+services:
+    oro_datagrid.extension.action.type.navigate:
+        public: true
+        class: '%oro_datagrid.extension.action.type.navigate.class%'
+        shared: false
+        tags:
+            - { name:  oro_datagrid.extension.action.type, type: navigate }
+
+    oro_datagrid.extension.action.type.ajax:
+        public: true
+        class: '%oro_datagrid.extension.action.type.ajax.class%'
+        shared: false
+        tags:
+            - { name: oro_datagrid.extension.action.type, type: ajax }
+
+    oro_datagrid.extension.action.type.delete:
+        public: true
+        class: '%oro_datagrid.extension.action.type.delete.class%'
+        shared: false
+        tags:
+            - { name: oro_datagrid.extension.action.type, type: delete }
+
+    oro_datagrid.extension.action.type.revoke:
+        public: true
+        class: '%oro_datagrid.extension.action.type.delete.class%'
+        shared: false
+        tags:
+            - { name: oro_datagrid.extension.action.type, type: revoke }

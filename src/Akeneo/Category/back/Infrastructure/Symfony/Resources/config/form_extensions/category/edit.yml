@@ -1,0 +1,3 @@
+extensions:
+  pim-category-edit-form-history:
+    module: pim/category-edit-form/history

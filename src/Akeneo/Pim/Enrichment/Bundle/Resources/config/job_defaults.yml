@@ -1,0 +1,212 @@
+services:
+    pim_catalog.job.job_parameters.default_values_provider.compute_completeness_of_products_family:
+        class: '%akeneo_batch.job.job_parameters.empty_values_provider.class%'
+        arguments:
+            -
+                - '%pim_catalog.compute_completeness_of_products_family.job_name%'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pim_catalog.job.job_parameters.default_values_provider.compute_family_variant_structure_changes:
+        class: '%akeneo_batch.job.job_parameters.empty_values_provider.class%'
+        arguments:
+            -
+                - '%pim_catalog.compute_family_variant_structure_changes.job_name%'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pim_catalog.job.job_parameters.default_values_provider.remove_completeness_for_channel_and_locale:
+        class: '%akeneo_batch.job.job_parameters.empty_values_provider.class%'
+        arguments:
+            -
+                - '%pim_catalog.remove_completeness_for_channel_and_locale.job_name%'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pim_catalog.job.job_parameters.default_values_provider.remove_non_existing_product_values:
+        class: '%akeneo_batch.job.job_parameters.empty_values_provider.class%'
+        arguments:
+            -
+                - '%pim_catalog.job.remove_non_existing_product_values.job_name%'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pim_catalog.job.job_parameters.default_values_provider.clean_removed_attribute:
+        class: '%akeneo_batch.job.job_parameters.empty_values_provider.class%'
+        arguments:
+            -
+                - 'clean_removed_attribute_job'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pim_connector.job.job_parameters.default_values_provider.product_csv_export:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductCsvExport'
+        arguments:
+            - '@akeneo_pim_enrichment.job.job_parameters.default_values_provider.simple_csv_export'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.locale'
+            -
+                - 'csv_product_export'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pim_connector.job.job_parameters.default_values_provider.product_xlsx_export:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductXlsxExport'
+        arguments:
+            - '@akeneo_pim_enrichment.job.job_parameters.default_values_provider.simple_xlsx_export'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.locale'
+            -
+                - 'xlsx_product_export'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pim_connector.job.job_parameters.default_values_provider.product_model_csv_export:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductModelCsvExport'
+        arguments:
+            - '@akeneo_pim_enrichment.job.job_parameters.default_values_provider.simple_csv_export'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.locale'
+            -
+                - 'csv_product_model_export'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pim_connector.job.job_parameters.default_values_provider.product_model_xlsx_export:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductModelCsvExport'
+        arguments:
+            - '@akeneo_pim_enrichment.job.job_parameters.default_values_provider.simple_xlsx_export'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.locale'
+            -
+                - 'xlsx_product_model_export'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pim_connector.job.job_parameters.default_values_provider.product_csv_import:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductCsvImport'
+        arguments:
+            - '@akeneo_pim_enrichment.job.job_parameters.default_values_provider.simple_csv_import'
+            -
+                - 'csv_product_import'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pim_connector.job.job_parameters.default_values_provider.product_xlsx_import:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductCsvImport'
+        arguments:
+            - '@akeneo_pim_enrichment.job.job_parameters.default_values_provider.simple_xlsx_import'
+            -
+                - 'xlsx_product_import'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pim_connector.job.job_parameters.default_values_provider.product_model_csv_import:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductModelCsvImport'
+        arguments:
+            - '@akeneo_pim_enrichment.job.job_parameters.default_values_provider.simple_csv_import'
+            -
+                - 'csv_product_model_import'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pim_connector.job.job_parameters.default_values_provider.product_model_xlsx_import:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductModelCsvImport'
+        arguments:
+            - '@akeneo_pim_enrichment.job.job_parameters.default_values_provider.simple_xlsx_import'
+            -
+                - 'xlsx_product_model_import'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    akeneo_pim_enrichment.job.job_parameters.default_values_provider.simple_csv_export:
+        class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvExport'
+        arguments:
+            -
+                - 'csv_group_export'
+                - 'csv_category_export'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    akeneo_pim_enrichment.job.job_parameters.default_values_provider.simple_xlsx_export:
+        class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleXlsxExport'
+        arguments:
+            -
+                - 'xlsx_group_export'
+                - 'xlsx_category_export'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    akeneo_pim_enrichment.job.job_parameters.default_values_provider.simple_csv_import:
+        class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvImport'
+        arguments:
+            -
+                - 'csv_group_import'
+                - 'csv_category_import'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    akeneo_pim_enrichment.job.job_parameters.default_values_provider.simple_xlsx_import:
+        class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleXlsxImport'
+        arguments:
+            -
+                - 'xlsx_group_import'
+                - 'xlsx_category_import'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pim_enrich.connector.job.job_parameters.default_values_provider.product_mass_edit:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductMassEdit'
+        arguments:
+            -
+                - 'update_product_value'
+                - 'add_to_group'
+                - 'add_product_value'
+                - 'add_attribute_value'
+                - 'remove_product_value'
+                - 'move_to_category'
+                - 'add_to_category'
+                - 'remove_from_category'
+                - 'add_association'
+                - 'edit_common_attributes'
+                - 'add_to_existing_product_model'
+                - 'change_parent_product'
+                - 'convert_to_simple_products'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pim_enrich.connector.job.job_parameters.default_values_provider.product_and_product_model_mass_delete:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductAndProductModelMassDelete'
+        arguments:
+            -
+                - 'delete_products_and_product_models'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pim_enrich.connector.job.job_parameters.default_values_provider.product_csv_quick_export:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductQuickExport'
+        arguments:
+            - '@akeneo_pim_enrichment.job.job_parameters.default_values_provider.simple_csv_export'
+            -
+                - 'csv_product_quick_export'
+                - 'csv_product_grid_context_quick_export'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pim_enrich.connector.job.job_parameters.default_values_provider.product_xlsx_quick_export:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductQuickExport'
+        arguments:
+            - '@akeneo_pim_enrichment.job.job_parameters.default_values_provider.simple_xlsx_export'
+            -
+                - 'xlsx_product_quick_export'
+                - 'xlsx_product_grid_context_quick_export'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+
+    pim_enrich.connector.job.job_parameters.default_values_provider.simple_mass_edit:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\SimpleMassEdit'
+        arguments:
+            - ['set_attribute_requirements']
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }

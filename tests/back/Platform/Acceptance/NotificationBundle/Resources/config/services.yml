@@ -1,0 +1,6 @@
+services:
+  pim_notification.email.email_notifier:
+    class: AkeneoTest\Platform\Acceptance\NotificationBundle\FakeService\FakeMailNotifier
+
+  pim_notification.notifier:
+    class: AkeneoTest\Platform\Acceptance\NotificationBundle\FakeService\FakeNotifier

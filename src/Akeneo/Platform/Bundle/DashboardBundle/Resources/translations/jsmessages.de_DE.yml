@@ -1,0 +1,28 @@
+pim_dashboard:
+  title: Aktivitäts-Dashboard
+  greetings: Hallo {{ name }}!
+  welcome_sentence:
+    message0: Dies wird ein großartiger Tag werden.
+    message1: Es ist großartig, dich zu sehen.
+    message2: Wir freuen uns, Sie hier zu sehen.
+    message3: Wir freuen uns, Sie hier zu sehen.
+    message4: Es ist großartig, Sie an Bord zu haben.
+    message5: Los geht's.
+    message6: Machen wir uns an die Arbeit.
+    message7: Lass uns heute großartige Dinge tun.
+    message8: Bereit loszulegen?
+    message9: Ihre Produkte sind darauf angelegt, angereichert zu werden.
+  widget:
+    completeness:
+      load_more: 'Mehr laden...'
+      title: Vollständigkeit über Ausgabekanäle und Gebietsschemata
+      progress_messages:
+        message1: Seien Sie bereit, die Anreicherungsreise in Richtung Vollständigkeit zu beginnen.
+        message2: Sie haben noch einiges zu tun, aber Sie sind auf dem richtigen Weg.
+        message3: Behalten Sie die großartige Arbeit bei, um Ihre Produktinformationen zu vervollständigen.
+        message4: Herzlichen Glückwunsch! Du hast die perfekte Produktvollständigkeit für diesen Kanal erreicht!
+    last_operations:
+      title: Letzte Vorgänge
+  version: Version
+pim_title:
+  pim_dashboard_index: Dashboard

@@ -1,0 +1,61 @@
+pim_datagrid:
+  select:
+    title: Välj
+    all_visible: Alla synliga
+  delete_error:
+    title: Fel vid radering
+  reset_confirmation:
+    title: Bekräfta återställning
+  refresh_confirmation:
+    title: Uppdatera bekräftelse
+  column_configurator:
+    label: Kolumner
+    all_groups: Alla grupper
+    search: Sök
+    clear: Rensa
+    displayed_columns: Valda Kolumner
+    remove_column: Ta bort
+    min_message: Du måste välja minst en tabellkolumn att visa
+    system_group: System
+  view_selector:
+    create_view: Skapa vy
+    placeholder: Namnge ny vy
+    choose_label: Välj en etikett för vyn
+    remove: Ta bort denna vy
+    save_changes: Spara denna vy
+    default_view: Standardvy
+    select: Välj en vy
+  mass_action:
+    delete:
+      empty_selection: Ingen produkt har valts
+      success_message: "{0} Inga entiteter togs bort|{1} En entitet togs bort|]1,Inf[ %count% entiteter togs bort"
+    default:
+      confirmation:
+        content: Är du säker på att du vill göra detta?
+      no_items: Välj objekt för massåtgärd.
+    quick_export:
+      title: Snabbexport
+      success: Snabbexport har startats
+  action:
+    default:
+      confirmation:
+        content: Är du säker på att du vill göra detta?
+      no_items: Välj ett objekt för åtgärd.
+    show:
+      title: Visa
+  filters:
+    common:
+      empty: är tom
+      not_empty: är inte tom
+      in_list: i listan
+      contains: innehåller
+      does_not_contain: innehåller inte
+      equal: är lika med
+      start_with: börjar med
+    price_filter:
+      label: Valuta
+    metric_filter:
+      label: Enhet
+  cells:
+    credientials:
+      client_id: Klient-ID

@@ -1,0 +1,67 @@
+pim_analytics:
+  new_patch_available: Доступен новый патч
+  system_config:
+    group:
+      notification.title: Уведомления
+      version_update.title: Oбновления версии
+    form:
+      version_update.label: Уведомления о новых версиях
+      version_update.tooltip: Отправить запрос на отдаленный сервер для извлечения уведомлений о выпуске новых патчей
+  system_info:
+    title: Информация о системе
+    download: TXT
+  info_type:
+    pim_edition: Издание
+    pim_version: Версия
+    pim_storage_driver: Диск. пространство
+    pim_environment: Среда
+    pim_install_time: Время установки
+    registered_bundles: Зарегистрированные связки
+    nb_channels: Количество каналов
+    nb_products: Количество продуктов
+    nb_product_models: Количество моделей продуктов
+    nb_variant_products: Количество вариантов продуктов
+    nb_family_variants: Количество вариантов семейств
+    nb_attributes: Количество атрибутов
+    nb_scopable_attributes: Количество видимых атрибутов
+    nb_localizable_attributes: Количество локализуемых атрибутов
+    nb_scopable_localizable_attributes: Количество локализуемых и видимых атрибутов
+    nb_useable_as_grid_filter_attributes: Количество атрибутов используемых в табличном представлении
+    avg_percentage_scopable_attributes_per_family: Средний процент видимых атрибутов на семейство (%)
+    avg_percentage_localizable_attributes_per_family: Средний процент локализуемых атрибутов на семейство (%)
+    avg_percentage_scopable_localizable_attributes_per_family: Средний процент локализуемых и видимых атрибутов на семейство (%)
+    nb_locales: Количество локалeй
+    nb_families: Количество семейств
+    nb_users: Количество пользователей
+    nb_categories: Число категорий
+    nb_category_trees: Число деревьев категорий
+    max_category_in_one_category: Максимальное количество подкатегорий в одной категории
+    max_category_levels: Максимальное количество уровней категорий
+    nb_product_values: Число значений в продукте
+    avg_product_values_by_product: Среднее число по продуктам значений продукта
+    avg_product_values_by_family: Среднее количество по семейству возможных значений продукта
+    max_product_values_by_family: Максимальное количество по семейству возможных значений в продукте
+    pim_storage_version: Версия хранениях базы данных
+    os_version: Версия ОС
+    php_version: Версия PHP
+    mysql_version: Версия MySQL
+    mariadb_version: Версия MariaDB
+    mongodb_version: Версия MongoDB
+    server_version: Версия сервера
+    php_extensions: Расширения PHP
+    api_connection: Подключения к API
+    nb_media_files_in_products: Количество медиа файлов в товарах
+    nb_media_images_in_products: Количество изображений в товарах
+    is_demo_catalog: Демо каталог установлен
+    data_source.tracked: Количество отслеживаемых исходных подключений API
+    data_source.untracked: Количество не отслеживаемых соединений API
+    data_destination.tracked: Количество отслеживаемых подключений к API
+    data_destination.untracked: Количество неотслеживаемых подключений к API
+    other.tracked: Количество прочих отслеживаемых подключений к API
+    other.untracked: Количество прочих неотслеживаемых подключений к API
+  acl:
+    system_info:
+      index: Информация о системе
+pim_menu:
+  item:
+    system_info: Информация о системе

@@ -1,0 +1,394 @@
+jobs:
+    product_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_product_import
+        label:     CSV Product import
+        type:      import
+        configuration:
+            storage:
+                type: none
+            uploadAllowed:     true
+            delimiter:         ;
+            enclosure:         '"'
+            enabled:            true
+            categoriesColumn:   categories
+            familyColumn:       family
+            groupsColumn:       groups
+            realTimeVersioning: true
+            decimalSeparator:   .
+    xlsx_product_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_product_import
+        label:     XLSX product import
+        type:      import
+        configuration:
+            storage:
+                type: none
+            uploadAllowed:      true
+            enabled:            true
+            categoriesColumn:   categories
+            familyColumn:       family
+            groupsColumn:       groups
+            realTimeVersioning: true
+            decimalSeparator:   .
+    ecommerce_product_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_product_export
+        label:     Product export for ecommerce
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            storage:
+                type: local
+                file_path: /tmp/products.csv
+            filters:
+                data:
+                    -
+                        field: enabled
+                        operator: '='
+                        value: true
+                    -
+                        field: categories
+                        operator: 'IN CHILDREN'
+                        value: ['2014_collection']
+                    -
+                        field: completeness
+                        operator: '>='
+                        value: 100
+                        context:
+                            locales: ['fr_FR', 'en_US', 'de_DE']
+                structure:
+                    scope: ecommerce
+                    locales:
+                        - en_US
+                        - en_GB
+                        - fr_FR
+                        - de_DE
+    tablet_product_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_product_export
+        label:     Product export for tablet
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            storage:
+                type: local
+                file_path: /tmp/products.csv
+            filters:
+                data:
+                    -
+                        field: enabled
+                        operator: '='
+                        value: true
+                    -
+                        field: categories
+                        operator: 'IN CHILDREN'
+                        value: ['2013_collection']
+                    -
+                        field: completeness
+                        operator: '>='
+                        value: 100
+                        context:
+                            locales: ['fr_FR', 'en_US', 'de_DE']
+                structure:
+                    scope: tablet
+                    locales:
+                        - en_US
+                        - en_GB
+    xlsx_tablet_product_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_product_export
+        label:     XLSX product export for tablet
+        type:      export
+        configuration:
+            storage:
+                type: local
+                file_path: /tmp/products.xlsx
+            linesPerFile: 10000
+            withHeader: true
+            filters:
+                data:
+                    -
+                        field: enabled
+                        operator: '='
+                        value: true
+                    -
+                        field: categories
+                        operator: 'IN CHILDREN'
+                        value: ['2013_collection']
+                    -
+                        field: completeness
+                        operator: '>='
+                        value: 100
+                        context:
+                            locales: ['fr_FR', 'en_US', 'de_DE']
+                structure:
+                    scope: tablet
+                    locales:
+                        - en_US
+                        - en_GB
+    print_product_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_product_export
+        label:     Product export for print
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            storage:
+                type: local
+                file_path: /tmp/products.csv
+            filters:
+                data:
+                    -
+                        field: enabled
+                        operator: '='
+                        value: true
+                    -
+                        field: categories
+                        operator: 'IN CHILDREN'
+                        value: ['2015_collection']
+                    -
+                        field: completeness
+                        operator: '>='
+                        value: 100
+                        context:
+                            locales: ['fr_FR', 'en_US', 'de_DE']
+                structure:
+                    scope: print
+                    locales:
+                        - en_US
+                        - de_DE
+    csv_apparel_family_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_family_export
+        label:     Footwear family export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            storage:
+                type: local
+                file_path: /tmp/family.csv
+    category_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_category_import
+        label:     Category import
+        type:      import
+        configuration:
+            storage:
+                type: none
+            uploadAllowed:       true
+            delimiter:           ;
+            enclosure:           '"'
+    category_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_category_export
+        label:     Category export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            storage:
+                type: local
+                file_path: /tmp/category.csv
+    association_type_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_association_type_import
+        label:     Association type import
+        type:      import
+        configuration:
+            storage:
+                type: none
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
+    association_type_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_association_type_export
+        label:     Association type export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            storage:
+                type: local
+                file_path: /tmp/association_type.csv
+    group_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_group_import
+        label:     Group import
+        type:      import
+        configuration:
+            storage:
+                type: none
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
+    group_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_group_export
+        label:     Group export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            storage:
+                type: local
+                file_path: /tmp/group.csv
+    xlsx_group_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_group_export
+        label:     XLSX group export
+        type:      export
+        configuration:
+            withHeader: true
+            linesPerFile: 10000
+            storage:
+                type: local
+                file_path: /tmp/xlsx_group_export.xlsx
+    attribute_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_attribute_import
+        label:     Attribute import
+        type:      import
+        configuration:
+            storage:
+                type: none
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
+    attribute_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_attribute_export
+        label:     Attribute export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            storage:
+                type: none
+                file_path: /tmp/attribute.csv
+    option_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_attribute_option_import
+        label:     Option import
+        type:      import
+        configuration:
+            storage:
+                type: none
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
+    option_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_attribute_option_export
+        label:     Option export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            storage:
+                type: local
+                file_path: /tmp/option.csv
+    update_product_value:
+        connector: Akeneo Mass Edit Connector
+        alias:     update_product_value
+        label:     Mass update products
+        type:      mass_edit
+    add_product_value:
+        connector: Akeneo Mass Edit Connector
+        alias:     add_product_value
+        label:     Mass add products values
+        type:      mass_edit
+    remove_product_value:
+        connector: Akeneo Mass Edit Connector
+        alias:     remove_product_value
+        label:     Mass remove products values
+        type:      mass_edit
+    move_to_category:
+        connector: Akeneo Mass Edit Connector
+        alias:     move_to_category
+        label:     Mass move to categories
+        type:      mass_edit
+    add_association:
+        connector: Akeneo Mass Edit Connector
+        alias:     add_association
+        label:     Mass associate products
+        type:      mass_edit
+    add_to_category:
+        connector: Akeneo Mass Edit Connector
+        alias:     add_to_category
+        label:     Mass add to categories
+        type:      mass_edit
+    add_to_group:
+        connector: Akeneo Mass Edit Connector
+        alias:     add_to_group
+        label:     Mass add product to group
+        type:      mass_edit
+    remove_from_category:
+        connector: Akeneo Mass Edit Connector
+        alias:     remove_from_category
+        label:     Mass remove from categories
+        type:      mass_edit
+    edit_common_attributes:
+        connector: Akeneo Mass Edit Connector
+        alias:     edit_common_attributes
+        label:     Mass edit product attributes
+        type:      mass_edit
+    add_attribute_value:
+        connector: Akeneo Mass Edit Connector
+        alias:     add_attribute_value
+        label:     Mass add attribute value
+        type:      mass_edit
+    add_to_existing_product_model:
+        connector: Akeneo Mass Edit Connector
+        alias:     add_to_existing_product_model
+        label:     Add to existing product model
+        type:      mass_edit
+    compute_completeness_of_products_family:
+        connector: internal
+        alias:     compute_completeness_of_products_family
+        label:     compute completeness of products family
+        type:      compute_completeness_of_products_family
+    compute_family_variant_structure_changes:
+        connector: internal
+        alias:     compute_family_variant_structure_changes
+        label:     Compute variant structure changes
+        type:      compute_family_variant_structure_changes
+    remove_completeness_for_channel_and_locale:
+        connector: internal
+        alias:     remove_completeness_for_channel_and_locale
+        label:     Remove completeness for channel and locale
+        type:      remove_completeness_for_channel_and_locale
+    delete_products_and_product_models:
+        connector: Akeneo Mass Edit Connector
+        alias:     delete_products_and_product_models
+        label:     Mass delete products
+        type:      mass_delete
+    change_parent_product:
+        connector: Akeneo Mass Edit Connector
+        alias:     change_parent_product
+        label:     Change parent product model
+        type:      mass_edit
+    remove_non_existing_product_values:
+        connector: internal
+        alias:     remove_non_existing_product_values
+        label:     Remove non existing product values
+        type:      remove_non_existing_product_values
+    clean_removed_attribute_job:
+        connector: internal
+        alias:     clean_removed_attribute_job
+        label:     Cleaning removed attribute values
+        type:      clean_removed_attribute_job

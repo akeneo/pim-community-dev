@@ -1,0 +1,21 @@
+pim_enrich.product:
+  validation:
+    upsert:
+      unknown_user: 'L''utente "{{ user_id }}" non esiste'
+      category_no_access_to_products: Non hai accesso ai prodotti in alcun albero. Contatta il tuo amministratore
+      should_keep_one_owned_category: Dovresti almeno mantenere il tuo prodotto in una categoria con riferimento alla quale disponi di un permesso proprietario
+      locale_no_access_to_products: Non hai accesso ai dati di prodotto in alcuna delle impostazioni locali attivate. Contatta il tuo amministratore
+      attribute_group_no_access_to_attributes: Non hai accesso all'attributo {{ attributeCode }} di questo prodotto. Contatta il tuo amministratore.
+      product_identifier_empty: L'identificatore di prodotto richiede una stringa non vuota
+      duplicated_user_intents: Il valore per l'attributo {{ attributeCode }} è aggiornato più volte
+      family_code_empty: Il codice famiglia richiede una stringa non vuota
+      category_does_not_exist: '{1}La categoria "{{ categoryCodes }}" non esiste|]1, Inf[ Le categorie "{{ categoryCodes }}" non esistono'
+      set_value:
+        no_channel_code_provided_for_scopable_attribute: 'L''attributo {{ attributeCode }} richiede un canale'
+        channel_code_provided_for_non_scopable_attribute: 'L''attributo {{ attributeCode }} non richiede un canale, "{{ channelCode }}" rilevato'
+        no_locale_code_provided_for_localizable_attribute: 'L''attributo {{ attributeCode }} richiede un''impostazione locale'
+        locale_code_provided_for_non_localizable_attribute: 'L''attributo {{ attributeCode }} non richiede un''impostazione locale, "{{ channelCode }}" rilevato'
+        invalid_locale_code_for_locale_specific_attribute: '{{ attributeCode }} richiede una delle seguenti impostazioni locali: {{ availableLocales }}; "{{ localeCode }}" rilevato'
+        channel_does_not_exist: 'Il canale {{ channelCode }} non esiste'
+        locale_is_not_active: 'L''impostazione locale {{ localeCode }} non esiste o non è attiva'
+        locale_not_activated_for_channel: 'L''impostazione locale {{ localeCode }} non è attivata per il canale {{ channelCode }}'

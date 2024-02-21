@@ -1,0 +1,483 @@
+User: Utilizador
+Run demo: Executar demonstração
+Product: Produto
+Attribute list: Lista de atributos
+Attribute Group list: Lista de Grupos de Atributos
+Users: Utilizadores
+Roles: Funções
+Groups: Grupos
+Configuration: Configuração
+Currency list: Lista de moedas
+Locale list: Lista de linguagens
+Logged in as: Iniciou sessão como
+Logout: Terminar sessão
+Login: Início de sessão
+Previous: Anterior
+Next: Seguinte
+Channel list: Lista de canais
+Select file: Selecionar ficheiro
+Change file: Alterar ficheiro
+Remove file: Eliminar ficheiro
+Delete: Eliminar
+Save: Guardar
+Get help: Obter ajuda
+My User: A minha conta
+oro.form.choose_value: Escolher um valor...
+Read more: Ler mais
+oro.form.click_here_to_select: Clique aqui para selecionar...
+Add: Adicionar
+"Learn how to use this space": "Aprenda a usar este espaço"
+"How To Use Pinbar": "Como usar o Pinbar"
+Pinbar: Pinbar
+Favorites: Favoritos
+Most Viewed: Mais Vistos
+"Add this page to favorites": "Adicione esta página aos favoritos"
+"Minimize the window to the pinbar": "Minimizar a janela para o pinbar"
+"Loading ...": "A carregar ..."
+"Yes": "Sim"
+"No": "Não"
+required: (obrigatório)
+other_actions: Outra ação
+pim_common:
+  association_types: Tipos de associação
+  cancel: Cancelar
+  categories: Categorias
+  code: Código
+  create: Criar
+  created: Criado
+  delete: Eliminar
+  edit: Editar
+  enabled: Ativo
+  family: Família
+  groups: Grupos
+  label: Rótulo
+  name: Nome
+  no: "Não"
+  permissions: Permissões
+  products: Produtos
+  properties: Propriedades
+  remove: Remover
+  save: Guardar
+  update: Atualizar
+  updated: Atualizado
+  view: Ver
+  yes: "Sim"
+pim_enrich:
+  #ACLs
+  acl:
+    locale:
+      index: Listar linguagens
+    currency:
+      index: Listar moedas
+      toggle: Ativar moedas
+    product:
+      index: Listar produtos
+      create: Criar um produto
+      edit_attributes: Editar atributos de um produto
+      remove: Remover um produto
+      add_attribute: Adicionar um atributo a um produto
+      remove_attribute: Remover um atributo de um produto
+      categories_view: Consultar as categorias de um produto
+      change_family: Mudar família do produto
+      add_to_groups: Adicionar produto a grupos
+      mass_edit: Executar ações de edição em massa de produtos
+      comment: Comentar produtos
+      download: Transferir o produto em PDF
+      history: Ver histórico do produto
+    product_model:
+      create: Crie um modelo de produto
+    channel:
+      index: Listar canais
+      create: Criar um canal
+      edit: Editar um canal
+      remove: Remover um canal
+      history: Ver histórico de canais
+    family:
+      index: Listar famílias
+      create: Criar famílias
+      edit_properties: Editar propriedades das famílias
+      edit_attributes: Editar atributos de famílias
+      remove: Remover famílias
+      history: Ver histórico de famílias
+    attribute_group:
+      index: Listar grupos de atributos
+      create: Criar grupos de atributos
+      edit: Editar um grupos de atributo
+      remove: Remover grupos de atributos
+      sort: Ordenar grupos de atributos
+      add_attribute: Adicionar atributos a grupos de atributos
+      remove_attribute: Remover atributos de grupos de atributos
+      history: Ver histórico de grupos de atributos
+    attribute:
+      index: Listar atributos
+      create: Criar atributos
+      edit: Editar atributos
+      remove: Remover atributos
+      sort: Ordenar atributos dentro de grupo de atributos
+      history: Ver histórico de atributos
+    group:
+      index: Listar grupos
+      create: Criar um grupo
+      edit: Editar um grupo
+      remove: Remover um grupo
+      history: Ver histórico do grupo
+    group_type:
+      index: Listar tipos de grupos
+      create: Criar um tipo de grupo
+      edit: Editar um tipo de grupo
+      remove: Remover um tipo de grupo
+    association_type:
+      index: Listar tipos de associação
+      create: Criar um tipo de associação
+      edit: Editar um tipo de associação
+      remove: Remover um tipo de associação
+      history: Ver histórico de um tipo de associação
+    job_tracker:
+      index: Ver processos executados
+  acl_group:
+    association_type: Tipos de associação
+    attribute: Atributos
+    attribute_group: Grupos de atributos
+    category: Categorias
+    channel: Canais
+    currency: Moedas
+    family: Famílias
+    group: Grupos
+    group_type: Tipos de grupo
+    locale: Linguagens
+    product: Produtos
+  create:
+    attribute: criar atributo
+    attribute group: criar grupo de atributos
+    category: criar categoria
+    tree: criar árvore
+    channel: criar canal
+    currency: criar moeda
+    family: criar família
+    locale: criar linguagem
+    product: criar produto
+    group: criar grupo
+    association type: criar tipo de associação
+    group type: criar tipo de grupo
+    drag_or_upload: Arraste e solte para fazer o envio ou clique aqui
+#Confirmation messages
+confirmation:
+  delete: Confirmar eliminação
+  leave: Tem certeza que deseja sair desta página?
+  discard changes: Irá perder as alterações que fez para %entity%, se deixar a página.
+  remove:
+    category: Tem a certeza que deseja eliminar a categoria %name%?
+    user: Tem a certeza que deseja eliminar o utilizador %name%?
+#Flash messages
+flash:
+  entity:
+    removed: Item eliminado
+  attribute:
+    identifier_not_removable: O atributo identificador não pode ser eliminado
+  category:
+    removed: Categoria removida com sucesso
+  tree:
+    removed: Árvore removida com sucesso
+    not removable: Árvores associadas a canais não podem ser removidas.
+  currency:
+    updated: Moeda atualizada com sucesso
+    error.linked_to_channel: Não é possível desativar uma moeda ligada a um canal.
+  product:
+    enabled: O produto foi ativado
+    disabled: O produto foi desativado
+  group type:
+    created: Tipo de grupo criado com sucesso
+  user:
+    removed: Utilizador removido com sucesso
+  error occurred: Ação falhou. Por favor, tente novamente.
+#Info messages
+info:
+  updated: Existem alterações não guardadas.
+  category:
+    remove children: Todas as subcategorias serão eliminadas.
+    keep products: Os produtos nestas categorias não serão eliminados.
+    products limit exceeded: Esta categoria contém mais produtos do que o permitido para esta operação (máximo de %limit% produtos)
+  product:
+    no available attributes: Não há mais atributos para adicionar
+    no family defined: Nenhuma família definida
+    change family: Mudar a família do produto
+    change family to: Mudar a família para
+    merge attributes: Os atributos atuais serão fundidos com os da nova família.
+    keep attributes: Nenhuns atributos serão removidos.
+    number of associations: '%productCount% produtos e %groupCount% grupos'
+    enable: Ativar
+    enabled: Ativo
+    disable: Desativar
+    disabled: Inativo
+  group:
+    axis: 'Eixo de variação: %attributes%'
+    select products: Por favor selecione produtos que devem pertencer a este grupo.
+    selectable products: Os seguintes produtos selecionáveis têm um valor definido para cada eixo.
+    no group types: Não há tipos de grupo existentes, clique aqui para criar um
+    more products: 'mais %count% produtos...'
+  association type:
+    show products: Mostrar produtos
+    show groups: Mostrar grupos
+    remove from products: A eliminação deste tipo de associação irá retirá-lo de %count% produtos.
+    none exist: Nenhum tipo de associação existente.
+    create one: Clique aqui para criar um
+  attribute:
+    auto option sorting: Se ativado, as opções serão automaticamente ordenadas pelos seus rótulos
+  completeness:
+    not calculated: Ainda não calculado
+#Form elements
+Created: Criado
+Updated: Atualizado
+Last update: Última atualização
+by: Por
+N/A: N/A
+Manage products: Gerir produtos
+Manage groups: Gerir grupos
+Code: Código
+Name: Nome
+Type: Tipo
+Scope: Canal
+Required: Obrigatório
+Unique: Único
+Not required: Não obrigatório
+Translatable: Traduzível
+Scopable: Com âmbito definível
+Localizable: Multilingue
+Unique value: Valor único
+Attribute group: Grupo de atributos
+Other: Outro
+Variants behavior when edited: Comportamento das variantes quando editadas
+Remove: Remover
+Parameters: Parâmetros
+System: Sistema
+Values: Valores
+General parameters: Parâmetros gerais
+Backend parameters: Parâmetros de back-end
+Label: Rótulo
+Default label: Rótulo padrão
+Default value: Valor padrão
+Attributetype: Tipo de atributo
+Attribute type: Tipo de atributo
+Defaultvalue: Valor padrão
+Variant: Variante
+Smart: Inteligente
+Useable as grid column: Utilizável como coluna de grelha
+Useable as grid filter: Utilizável em grelha
+Family: Família
+Image: Imagem
+Available locales: Linguagens disponíveis
+Locale specific: Específicas de uma linguagem
+default: Padrão
+Axis: Eixo
+Add attributes: Adicionar atributos
+switch_on: "Sim"
+switch_off: "Não"
+Close: Fechar
+Search: Pesquisar
+Choose the attribute type: Escolha o tipo de atributo
+Choose the attribute group: Escolha o grupo de atributos
+Drop an image or click here: Solte uma imagem ou clique aqui
+Automatic option sorting: Opção de ordenação automática
+save_attribute_before_manage_option: Para gerir as opções, por favor, guarde o atributo primeiro
+Please select: Por favor selecione
+Active: Ativo
+Inactive: Inativo
+Do not convert: Não converter
+Create: Criar
+Choose a family: Escolha uma família
+Choose a unit: Escolha uma unidade
+No matches found: Nenhuma correspondência encontrada
+Category tree: Árvore de categoria
+Completeness: Completude
+Attribute used as label: Atributo usado como rótulo
+#Scopes
+Global: Global
+Channel: Canal
+Expand all channels: Expandir todos os canais
+Collapse all channels: Recolher todos os canais
+#Variants
+Always override: Substituir sempre
+Ask: Perguntar
+#Attribute group
+General Properties: Propriedades Gerais
+Group values: Valores do grupo
+New group: Novo grupo
+Groups overview: Visão geral de grupos
+'Y-m-d h:i:s': 'd-m-Y h:i:s'
+#Attribute properties
+Max characters: Máximo de carateres
+Validation rule: Regra de validação
+Validation regexp: Validação "regexp"
+Wysiwyg enabled: WYSIWYG ativo
+Number min: Número mínimo
+Number max: Número máximo
+Decimals allowed: Permitir decimais
+Negative allowed: Permitir valores negativos
+Date min: Data mínima
+Date max: Data máxima
+Max file size: Tamanho máximo do ficheiro (MB)
+Allowed extensions: Extensões permitidas
+None: Nenhum
+E-mail: E-mail
+URL: URL
+Regular expression: Expressões regulares
+Minimum input length: Tamanho mínimo da introdução
+Default: Padrão
+#Family
+Attributes: Atributos
+#Category
+Title: Título
+#Page titles
+pim_catalog_identifier: Identificador
+pim_catalog_text: Texto
+pim_catalog_textarea: Área de Texto
+pim_catalog_number: Número
+pim_catalog_price_collection: Preço
+pim_catalog_multiselect: Seleção múltipla
+pim_catalog_simpleselect: Seleção simples
+pim_catalog_file: Ficheiro
+pim_catalog_image: Imagem
+pim_catalog_boolean: "Sim/Não"
+pim_catalog_date: Data
+pim_reference_data_simpleselect: Selecione os dados de referência simples
+pim_reference_data_multiselect: Referência de dados multi selecionáveis
+#Locales
+Activated: Ativado
+Edit: Editar
+Disable: Desativar
+To enable: Para ativar
+Select attributes: Selecionar atributos
+Select: Selecionar
+Remove this attribute: Remover este atributo
+Copy: Copiar
+Translate from: Traduzir de
+Current tab: Separador atual
+#Product view
+Group: Grupo
+View group: Visualizar grupo
+Products: Produtos
+#Tabs
+Properties: Propriedades
+History: Histórico
+pane.accordion:
+  node_values: Valores de nó
+  general_properties: Propriedades gerais
+  locale_values: Valores multilingue
+  backend_parameters: Parâmetros de back-end
+  general_parameters: Parâmetros gerais
+  validation_parameters: Parâmetros de validação
+  label_translations: Traduções de rótulo
+  options: Opções
+  group_values: Valores do grupo
+#Popin titles
+popin.create:
+  association_type.title: Criar um novo tipo de associação
+  group.title: Criar um novo grupo
+  product.title: Criar um novo produto
+  option.title: Criar uma nova opção
+#Datagrid contents
+In group: No grupo
+Attribute as label: Atributo como rótulo
+Is associated: Está associado
+Complete: Completo
+Created At: Criado em
+Updated At: Atualizado em
+Enabled: Ativo
+Disabled: Inativo
+Status: Estado
+pim_datagrid:
+  filters:
+    entity_type:
+      label: Variante
+    family:
+      label: Família
+    groups:
+      label: Grupos
+    enabled:
+      label: Estado
+    scope:
+      label: Canal
+    completeness:
+      label: Completo
+    created:
+      label: Criado
+    updated:
+      label: Atualizado
+    identifier:
+      label: Identificador
+#Versioning / history
+Change History: Histórico de alterações
+Data Audit: Auditoria de dados
+Data Audit - System: 'Auditoria de dados - sistema'
+Action: Ação
+Version: Versão
+Entity type: Tipo de entidade
+Entity name: Nome da entidade
+Entity id: Identificação da entidade
+Data: Dados
+Author: Autor
+Logged at: Iniciado sessão em
+Deleted: Eliminado
+Old values: Valores antigos
+New values: Novos valores
+#Configuration
+System configuration: Configuração de Sistema
+General setup: Configuração geral
+Localization: Localização
+Localization options: Opções de localização
+Locale: Local
+Location: Localização
+Format address by address country: Formatar endereço por endereço do país
+Language: Idioma
+Timezone: Fuso horário
+Currency: Moeda
+oro.locale:
+  address_format:
+    region_name_type:
+      parish: "freguesia"
+      state: "estado"
+      island: "Ilha"
+      county: "Condado"
+      area: "área"
+      prefecture: "Prefeitura"
+      department: "departamento"
+      district: "distrito"
+      province: "província"
+  form:
+    tooltip:
+      locale: "Selecione a opção de local usada para formatar números, endereços, nomes e datas"
+      location: " A Localização será usada para formatar endereços quando a opção 'Formato endereço pelo endereço país'  estiver desativada"
+      format_address_by_address_country: "Selecionando esta opção será habilitada endereços a ser formatado pelo país em que estão. Desativando esta opção fará com que os endereços sejam formatado no seu formato de endereço de localização"
+      language: "Selecione o idioma de sistema que você deseja usar"
+      timezone: "Selecione o fuso horário para exibir a data e hora"
+      currency: "Selecione a moeda padrão"
+#Datagrid
+Selected products successfully deleted: Os produtos selecionados foram eliminados com êxito
+pim_mass_edit:
+  notification:
+    mass_edit:
+      error: A edição em massa <strong>%label%</strong> falhou
+      warning: A edição em massa <strong>%label%</strong> terminou com alguns avisos
+      success: A edição em massa <strong>%label%</strong> terminou
+    quick_export:
+      error: A exportação rápida <strong>%label%</strong> falhou
+      warning: A exportação rápida <strong>%label%</strong> terminou com alguns avisos
+      success: A exportação rápida <strong>%label%</strong> terminou
+job_execution.summary:
+  mass_edited: Editado em massa
+  skipped_products: Produtos ignorados
+  skipped_attributes: Atributos ignorados
+pim_mass_edit_execution_show: Processos de edição em massa | Detalhes
+edit_common_attributes.steps.edit_common_attributes_processor.title: Editar atributos
+update_product_value.steps.update_product_value_processor.title: Atualizar o valor do produto
+remove_product_value.steps.update_product_value_processor.title: Remover valor do produto
+edit_common_attributes: Editar atributos
+perform.steps.duplicated.title: Eixo duplicado
+perform.steps.excluded.title: Produto excluído
+mass_edit report:
+  overview: Relatórios de edição em massa
+job_tracker:
+  tab:
+    title: Visualizador de processos
+  filter:
+    started_at: Iniciado em

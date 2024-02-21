@@ -1,0 +1,15 @@
+<button type="button" class="AknFilterBox-addFilterButton AknFilterBox-addFilterButton--asPanel" aria-haspopup="true" style="width: 280px" data-toggle>
+    <div><%- filtersLabel %></div>
+</button>
+<div class="filter-selector">
+    <div>
+        <div class="ui-multiselect-menu ui-widget ui-widget-content ui-corner-all AknFilterBox-addFilterButton AknFilterBox-column filter-list select-filter-widget pimmultiselect">
+            <div class="ui-multiselect-filter"><input placeholder="" type="search"></div>
+            <div class="AknLoadingMask loading-mask filter-loading" style="top: 50px"></div>
+            <div class="filters-column"></div>
+            <div class="AknColumn-bottomButtonContainer AknColumn-bottomButtonContainer--sticky">
+                <div class="AknButton AknButton--apply close"><%- doneLabel %></div>
+            </div>
+        </div>
+    </div>
+</div>

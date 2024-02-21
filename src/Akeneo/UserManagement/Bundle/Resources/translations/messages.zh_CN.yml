@@ -1,0 +1,148 @@
+pim_user:
+  user:
+    title: 用户
+    fields:
+      name_prefix: 名称前缀
+      email: 电子邮件
+      username: 用户名
+      first_name: 名
+      middle_name: 中间名
+      last_name: 姓
+      name_suffix: 名称后缀
+      phone: 电话
+      date_of_birth: 出生日期
+      avatar: 头像
+      timezone: 时区
+      roles: 角色
+      groups: 分组
+      password: 密码
+      password_again: 再次输入密码
+      product_grid_filters: 产品网格筛选器
+      catalog_locale: 目录区域设置
+      catalog_scope: 目录范围
+      default_tree: 默认树
+      current_password: 当前密码
+      new_password: 新密码
+      new_password_again: 新密码 (重复)
+      default_grid_view:
+        none: 无
+      default_product_grid_view:
+        label: 默认产品网格视图
+      ui_locale: 界面语言
+      last_logged_in: 上次登录
+      login_count: 登录计数
+      user_salt: 用户盐
+      created: 已创建
+      updated: 已更新
+      status: 状态
+      capabilities: 功能
+      has_role: 有角色
+      has_group: 有分组
+      active: 激活
+      inactive: 未激活
+    fields_errors:
+      new_password:
+        minimum_length: 密码必须包含至少 8 个字符
+        maximum_length: 密码必须少于 4096 个字符
+      new_password_repeat:
+        not_match: 密码不匹配
+      current_password:
+        wrong: 密码错误
+      roles:
+        last_user_with_edit_role_permissions: 此用户是最后一个拥有编辑角色权限的用户。
+    tabs:
+      general:
+        title: 常规​​​​​
+        basic_information: 基本信息
+        contact_information: 联系信息
+      additional:
+        title: 附加
+      additional_data:
+        title: 附加数据
+      interfaces:
+        title: 界面
+      group_and_role.title: 分组和角色
+      password.title: 密码
+      business_unit.title: 业务单元
+      email_synchronization.title: 电子邮件同步设置
+    removed_user: 已移除用户
+    login:
+      username_or_email: 用户名或电子邮件
+      remember_me: 在这台计算机上记住我
+      password_forgotten: 忘记密码？
+      log_in: 登录
+      forgot_password: 忘记密码
+      request: 请求
+      password_reset: 密码重置
+      reset: 重置
+      password_reset_email_sent: 已向用户发送了一封电子邮件，其中包含重置密码的链接。
+      homepage: 返回主页
+  group:
+    tab:
+      general.title: 常规​​​​​
+      users.title: 用户
+  roles:
+    title: 角色
+    tab:
+      general: 常规​​​​​
+      action: 权限
+      users: 用户
+  controller:
+    group:
+      message:
+        saved: "分组已保存"
+    role:
+      message:
+        saved: "角色已保存"
+        cannot_delete_last_edit_role_permission: 您不能删除最后一个拥有编辑角色的用户的编辑角色权限。
+        cannot_remove_last_edit_role_permission: 您不能移除最低角色的编辑角色权限。
+    user:
+      message:
+        saved: "用户已保存"
+pim_datagrid:
+  columns:
+    user:
+      createdAt: "创建于"
+      updatedAt: "更新于"
+    roles:
+      label: "标签"
+    groups:
+      name: "名称"
+confirmation:
+  remove:
+    role: 确定要删除此角色吗？
+    user: 确定要删除此用户吗？
+flash:
+  role:
+    removed: 角色已成功移除
+  user:
+    removed: 用户已成功移除
+oro_security:
+  acl_group:
+    user: 用户
+    role: 角色
+    group: 用户组
+  acl:
+    user:
+      view: 用户列表
+      create: 创建用户
+      edit: 编辑用户
+      delete: 移除用户
+    role:
+      view: 角色列表
+      create: 创建角色
+      edit: 编辑角色
+      delete: 移除角色
+    group:
+      view: 用户组列表
+      create: 创建用户组
+      edit: 编辑用户组
+      delete: 移除用户组
+#Security
+(default): 实体的默认权限
+VIEW: 视图
+CREATE: 创建
+EDIT: 编辑
+DELETE: 删除
+ASSIGN: 指派
+SHARE: 分享

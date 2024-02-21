@@ -1,0 +1,25 @@
+Akeneo\Platform\Bundle\NotificationBundle\Entity\UserNotification:
+    type: entity
+    table: pim_notification_user_notification
+    repositoryClass: Akeneo\Platform\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepository
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        viewed:
+            type: boolean
+    manyToOne:
+        notification:
+            targetEntity: Akeneo\Platform\Bundle\NotificationBundle\Entity\Notification
+            joinColumns:
+                notification:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+        user:
+            targetEntity: Akeneo\UserManagement\Component\Model\UserInterface
+            joinColumns:
+                user:
+                    referencedColumnName: id
+                    onDelete: CASCADE

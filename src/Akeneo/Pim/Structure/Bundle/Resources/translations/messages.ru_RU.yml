@@ -1,0 +1,44 @@
+pim_enrich:
+  #Attribute
+  attribute:
+    tab:
+      parameter.title: Параметры
+      value.title: Значения
+      history.title: Журнал
+  #Family
+  family:
+    info:
+      cant_remove_attribute_used_as_axis: Невозможно удалить атрибут, используемый в качестве конфигурационного атрибута в семействе
+  #Group type
+  group_type:
+    tab:
+      property.title: Свойства
+  #Mass edit operations
+  mass_edit_action:
+    family:
+      page_title: Семейства
+      page_subtitle: Массовое редактирование (1 семейства)|Массовое редактирование (%count% семейств)|Массовое редактирование (%count% семейств)
+      title: Выберите операцию
+      subtitle: Выберите операцию, которую вы хотите применить для выбранного семейства|Выберите операцию, которую вы хотите применить для %count% выбранных семейств|Выберите операцию, которую вы хотите применить для %count% выбранных семейств
+      confirm: Вы собираетесь обновить семейство со следующей информацией, пожалуйста, подтвердите.|Вы собираетесь обновить %count% семейства со следующей информацией, пожалуйста, подтвердите.|Вы собираетесь обновить %count% семейств со следующей информацией, пожалуйста, подтвердите.
+      steps:
+        first: Выберите семейства
+        second: Выберите операцию
+        third: Настроить
+        fourth: Подтверждение
+  entity:
+    association_type:
+      property:
+        is_two_way: 2-сторонняя связь
+        is_quantified: Количественная ассоциация
+pim_enrich_attribute_form:
+  code: Код
+  type: Тип атрибута
+  reference_data_name: Имя справочных данных
+  scopable: Значение в канале
+  localizable: Значение в локали
+  unique: Уникальное значение
+  availableLocales: Доступные локали
+  locale_specific: Специфично для локали
+  group: Группа атрибутов
+  useableAsGridFilter: Используется в сетке

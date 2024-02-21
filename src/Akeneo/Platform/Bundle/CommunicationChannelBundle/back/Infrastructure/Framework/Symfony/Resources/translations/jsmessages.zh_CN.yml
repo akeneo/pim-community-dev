@@ -1,0 +1,8 @@
+akeneo_communication_channel:
+  link:
+    title: 公告
+  panel:
+    title: 公告
+    list:
+      empty: 暂时没有消息。敬请关注！
+      error: 我们检索不到新闻。请稍后再试。

@@ -1,0 +1,280 @@
+pim_enrich.entity.family:
+  label: perhe
+  uppercase_label: Perhe
+  plural_label: Tuoteperheet
+  flash:
+    update:
+      success: Perheen päivittäminen onnistui.
+      fail: Perheen päivittämisessä tapahtui virhe.
+      cant_remove_attribute_as_label: Otsikkona käytettyä attribuuttia ei voida poistaa
+      cant_remove_attribute_as_image: Pääkuvana käytettyä attribuuttia ei voi poistaa
+      cant_remove_attribute_used_as_axis: Et voi poistaa tätä attribuuttia, koska sitä on käytössä varianttiperheessä
+      fields_not_ready: "Attribuuttiperhettä ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}"
+    create:
+      success: Tuoteperhe luotu
+    delete:
+      success: Perhe poistettu
+      fail: Ryhmää ei voi poistaa
+  property:
+    attribute_as_label: Otsikkona käytettävä attribuutti
+    attribute_as_image: Pääkuvana käytettävä attribuutti
+    empty_attribute_as_image: Ei ole valittu
+  page_title:
+    index: "]-Inf, 1] {{ count }} perhe|]1, Inf [{{ count }} perhettä"
+  module:
+    attributes:
+      not_required_label: Ei vaadittu
+      required_label: Vaadittu
+    create:
+      button: Luo perhe
+    delete:
+      confirm: Oletko varma, että haluat poistaa tämän perheen?
+pim_enrich.entity.family_variant:
+  label: varianttiperhe
+  short_plural_label: Variantit
+  short_label: Variantti
+  flash:
+    update:
+      success: Varianttiperhe päivitetty onnistuneesti. Tuotteet ja variantit päivitetään tekemilläsi muutoksilla.
+      fail: Varianttiperhettä ei voitu päivittää.
+    create:
+      success: Varianttiperhe onnistuneesti luotu
+  module:
+    edit:
+      common_attributes: Yhteiset attribuutit
+      no_common_attributes: Yhteisiä attribuutteja ei ole
+      variant_axis_label: Varianttiulottuvuus
+      variant_attributes: Variantin attribuutit
+      level_1: Variantin attribuutit tasolla 1
+      level_2: Variantin attribuutit tasolla 2
+      description: Vedä ja pudota attribuutit valitulle tasolle, jotta niiden rikastaminen tapahtuu varianttien tasolla.
+      attribute_remove: Poista attribuutti
+      attribute_group_remove: Poista attribuuttiryhmä
+      confirm_attribute_removal_title: Vahvista attribuuttien poisto
+      confirm_attribute_removal_message: Poistamalla nämä attribuutit, siirrät ne takaisin varianttiperheen yhteisiin attribuutteihin ja poistat arvot varianteilta
+    create:
+      label: Luo variantti
+      title: Luo uusi varianttiperhe
+      description: Varianttiperheelle voit määrittää tuoterakenteen varianteille. Valitse ylläpidettävien varianttitulottuvuuksien määrä, valitse varianttiulottuvuuksien eri tasoilla käytetyt määrittävät attribuutit ja valitse sitten miten attribuutit on jaettu eri tasoille.
+      variant_levels: Varianttitasot
+      axis_level: "Varianttiulottuvuuden taso {{ level }}"
+    update_translations:
+      title: Päivitä käännökset
+    delete:
+      confirm: Oletko varma, että haluat poistaa tämän varianttiperheen?
+pim_enrich.entity.attribute_option:
+  short_uppercase_label: Vaihtoehdot
+  flash:
+    create:
+      success: Attribuutin vaihtoehdon luominen onnistui
+      fail: Attribuutin vaihtoehdon luonnissa tapahtui virhe
+    update:
+      fail: Attribuutin vaihtoehtoa ei voi tallentaa
+    delete:
+      fail: Virhe attribuutin vaihtoehdon poistossa
+  module:
+    edit:
+      cancel_title: Peruuta muokkaukset
+      cancel_description: Varoitus, menetät tallentamattomat tiedot. Oletko varma, että haluat peruuttaa muutoksesi tallentamatta tätä uutta vaihtoehtoa?
+      options_labels: Valintalistan arvojen otsikot
+      options_settings: Valintalistan arvojen asetukset
+      options_codes: Valintalistan arvojen tunnisteet
+      option_code: Valintalistan arvon tunniste
+      new_option_code: uusi_arvo
+      no_options_msg: Valitettavasti valintalistan arvoja ei ole!
+      add_option: Klikkaa tästä luodaksesi sellainen
+      delete_confirmation_title_msg: Poista "{{ optionCode }}" valintalistan arvoista?
+      delete_confirmation_subtitle_msg: Haluatko varmasti poistaa tämän valintalistan arvon? Et voi peruuttaa tätä toimenpidettä.
+      search:
+        placeholder: Etsi otsikolla tai koodilla
+        no_result:
+          title: Haullasi ei löytynyt tuloksia.
+pim_enrich.entity.association_type:
+  label: assosiaatiotyyppi
+  property:
+    is_two_way: 2-suuntainen tuoteliitos
+    is_quantified: Lukumäärällinen tuoteliitos
+  flash:
+    update:
+      success: Assosiaatiotyypin päivittäminen onnistui.
+      fail: Assosiaatiotyyppiä ei voitu päivittää.
+      fields_not_ready: "Assosiaatiotyyppiä ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}"
+    create:
+      success: Assosiaatiotyyppi luotu onnistuneesti
+    delete:
+      success: Assosiaatiotyyppi poistettu onnistuneesti
+      fail: Liitostyyppiä ei voi poistaa
+  page_title:
+    index: "]-Inf, 1] {{ count }} assosiaatiotyyppi|]1, Inf [{{ count }} assosiaatiotyyppiä"
+  module:
+    create:
+      title: Luo uusi tuoteliitostyyppi
+      button: Luo assosiaatiotyyppi
+      is_two_way:
+        message_on_read_only: Tuoteliitostyyppi voi olla joko lukumäärällinen tai kaksisuuntainen, valitaksesi tämän, poista toinen valinta
+      is_quantified:
+        message_on_read_only: Tuoteliitostyyppi voi olla joko lukumäärällinen tai kaksisuuntainen, valitaksesi tämän, poista toinen valinta
+    delete:
+      confirm: Oletko varma, että haluat poistaa tämän liitostyypin?
+  hint: <a href="{{link}}" target="_blank">Tästä artikkelissa</a>löydät kaiken mitä tarvitset luodaksesi oman tuoteliitostyypin.
+  no_association_types:
+    title: Sinulla ei ole tuoteliitostyyppejä
+    hint: Luo ensimmäinen
+pim_enrich.entity.group_type:
+  label: ryhmän tyyppi
+  flash:
+    update:
+      success: Ryhmätyypin päivittäminen onnistui.
+      fail: Ryhmätyyppiä ei voitu päivittää.
+      fields_not_ready: "Ryhmätyyppiä ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}"
+    create:
+      success: Ryhmätyyppi lisätty onnistuneesti
+    delete:
+      success: Ryhmätyyppi poistettu onnistuneesti
+      fail: Ryhmätyyppiä ei voi poistaa
+  page_title:
+    index: "]-Inf, 1] {{ count }} ryhmätyyppi|]1, Inf [{{ count }} ryhmätyyppiä"
+  module:
+    create:
+      button: Luo ryhmätyyppi
+    delete:
+      confirm: Oletko varma, että haluat poistaa tämän ryhmätyypin?
+pim_enrich.entity.attribute:
+  label: attribuutti
+  plural_label: Attribuutit
+  flash:
+    update:
+      success: Attribuutin päivittäminen onnistui.
+      fail: Attribuuttia ei voitu päivittää.
+      fields_not_ready: "Attribuuttia ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}"
+      cant_remove_attributes_used_as_label: Attribuutteja, joita käytetään perheen otsikkona, ei voi poistaa.
+    delete:
+      success: Attribuutin poistaminen onnistui
+      fail: Attribuuttia ei voi poistaa
+  page_title:
+    index: "]-Inf, 1] {{ count }} attribuutti|]1, Inf [{{ count }} attribuuttia"
+  property:
+    allowed_extensions: Sallitut laajennukset
+    auto_option_sorting: Järjestä arvot automaattisesti aakkosjärjestykseen
+    available_locales: Saatavilla olevat alueet
+    date_max: Max päivämäärä
+    date_min: Min päivämäärä
+    decimals_allowed: Desimaaliarvot sallittu
+    default_metric_unit:
+      label: Oletusarvoinen mittausyksikkö
+      choose: Valitse yksikkö
+    guidelines: Attribuutin ohjeteksti
+    group:
+      label: Attribuuttiryhmä
+      choose: Valitse attribuuttiryhmä
+    is_locale_specific: Aluekohtainen arvo
+    localizable: Lokalisoitavissa
+    max_characters: Maksimimerkkimäärä
+    max_file_size: Suurin tiedostokoko (Mt)
+    metric_family:
+      label: Mittaperhe
+      choose: Valitse perhe
+    minimum_input_length: Automaattisen täydennyshaun minimimerkkimäärä
+    name: Nimi
+    negative_allowed: Negatiiviset arvot ovat sallittuja
+    number_max: Max numero
+    number_min: Min numero
+    reference_data_name:
+      label: Viitetiedon (kustomoitu) tyyppi
+      choose: Valitse viitetiedon (kustomoitu) tyyppi
+    scopable: Kanavakohtainen
+    type:
+      choose: Valitse attribuutin tyyppi
+      pim_catalog_identifier: Tunniste
+      pim_catalog_text: Teksti
+      pim_catalog_textarea: Tekstialue
+      pim_catalog_number: Numero
+      pim_catalog_price_collection: Hinta
+      pim_catalog_multiselect: Monivalinta
+      pim_catalog_simpleselect: Yksinkertainen valinta
+      pim_catalog_file: Tiedosto
+      pim_catalog_image: Kuva
+      pim_catalog_boolean: "Kyllä/ei"
+      pim_catalog_date: Päivämäärä
+      pim_catalog_metric: Mitta
+      pim_reference_data_simpleselect: Viitetiedot yksinkertainen valinta
+      pim_reference_data_multiselect: Viitetiedot monivalinta
+    unique: Yksilöllinen arvo
+    useable_as_grid_filter: Käytettävissä ruudukossa
+    validation_regexp: Säännöllinen lauseke
+    validation_rule:
+      label: Kelpoisuussääntö
+      email: Sähköposti
+      regexp: Säännöllinen lauseke
+      url: URL-osoite
+    wysiwyg_enabled: Tekstin muotoilu käytössä
+    default_value: Oletusarvo
+  module:
+    add_attribute:
+      no_available_attributes: Ei ole enää attribuutteja lisättäväksi
+      attributes_selected: "{{ itemsCount }} attribuutti(a) valittu"
+    create:
+      button: Luo attribuutti
+    edit:
+      common: Yleiset parametrit
+      type_specific: Tyyppikohtaiset parametrit
+      validation: Validaatioparametrit
+      select_locale: Valitse lokaali
+    delete:
+      confirm: Oletko varma, että haluat poistaa tämän attribuutin?
+      product_count: '{0}0 tuotetta|{1}1 tuote|]1, Inf[{{ count }} tuotetta'
+      product_model_count: '{0}0 tuotemallia|{1}1 tuotemalli|]1, Inf[{{ count }} tuotemallia'
+      helper:
+        content: If you need to change your attribute type, to make it localizable or scopable, while keeping access to your existing attribute values,
+      type: Kirjoita "{{ attributeCode }}"
+      confirm_from_family: Oletko varma, että haluat poistaa tämän attribuutin attribuuttiperheeltä?
+      confirm_from_group: Oletko varma, että haluat poistaa attribuutin {{ attribute }} tästä attribuuttiryhmästä?
+      confirm_from_product: Oletko varma, että haluat poistaa tämän attribuutin tuotteesta?
+pim_enrich.entity.attribute_group:
+  label: attribuuttiryhmä
+  uppercase_label: Attribuuttiryhmä
+  plural_label: Attribuuttiryhmät
+  result_count: '{0}0 attribuuttiryhmää|{1}1 attribuuttiryhmä|]1, Inf[{{ count }} attribuuttiryhmää'
+  show_more_attribute:
+    title: Täällä on hiukan tungosta. Näytämme {{ productCount }}/{{ totalCount }} tuotteista.
+    subtitle: Löytääksesi kaikki tämän ryhmän attribuutit, klikkaa vain alta!
+    button: Näytä kaikki attribuutit
+  flash:
+    update:
+      success: Attribuuttiryhmän päivittäminen onnistui
+      fail: Attribuuttiyhmää ei voitu päivittää
+      fields_not_ready: "Attribuuttiryhmää ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}"
+    delete:
+      success: Attribuuttiryhmän poisto onnistui
+      fail: Attribuuttiryhmää ei voi poistaa
+  module:
+    add_attribute_group:
+      label: Lisää ryhmittäin
+      no_attribute_groups_available: Attribuuttiryhmää ei ole
+      attributes_groups_selected: '{{ itemsCount }} ryhmä(ä) valittu'
+    delete:
+      confirm: Oletko varma, että haluat poistaa tämän attribuuttiryhmän?
+  grid:
+    columns:
+      name: Attribuuttiryhmien nimi
+    no_search_result: Valitettavasti haullesi ei löytynyt tuloksia.
+pim_enrich.mass_edit.family:
+  title: Perheiden massamuokkaus
+  confirm: "{1}Olet muokkaamassa perhettä seuraavilla tiedoilla, ole hyvä ja vahvista.|]1, Inf[Olet muokkaamassa {{ itemsCount }} perhettä seuraavilla tiedoilla, ole hyvä ja vahvista."
+  step:
+    select:
+      label: Valitse tuoteperheet
+    choose:
+      title: Perheiden massamuokkaus
+      label_count: "]0, Inf[Valitse toiminto"
+    configure:
+      label: Muuta asetuksia
+    confirm:
+      label: Vahvista
+    launched:
+      label: Massamuokkaus "{{ operation }}" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
+  operation:
+    set_requirements:
+      label: Aseta vaaditut attribuutit
+      description: Seuraavat vaaditut attribuutit lisätään valituille perheille
+      label_count: "{1}Aseta vaaditut attribuutit <span class=\"AknFullPage-title--highlight\">1 perheelle</span>|]1, Inf[Aseta vaaditut attribuutit <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} perheelle</span>"

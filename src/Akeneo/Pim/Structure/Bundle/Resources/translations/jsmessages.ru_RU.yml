@@ -1,0 +1,236 @@
+pim_enrich.entity.family:
+  label: семейство
+  uppercase_label: Семейство
+  plural_label: Семейства
+  flash:
+    update:
+      success: Семейство успешно обновлено.
+      cant_remove_attribute_as_label: Невозможно удалить атрибут используемый в качестве метки
+      cant_remove_attribute_as_image: Невозможно удалить атрибут используемый в качестве основного изображения
+      cant_remove_attribute_used_as_axis: Невозможно удалить атрибут, используемый в качестве конфигурационного атрибута в разновидности семейства
+    create:
+      success: Семейство успешно создано
+    delete:
+      success: Семейство успешно удалено
+      fail: Не удается удалить это семейство
+  property:
+    attribute_as_label: Атрибут используется в качестве метки
+    attribute_as_image: Атрибут используется как основное изображение
+    empty_attribute_as_image: Не выбран
+  module:
+    attributes:
+      not_required_label: Не обязательно
+      required_label: Обязательно
+    create:
+      button: Создать семейство
+    delete:
+      confirm: Вы действительно хотите удалить это семейство?
+pim_enrich.entity.family_variant:
+  short_plural_label: Варианты
+  short_label: Вариант
+  flash:
+    update:
+      success: Разновидность семейства успешно обновлена. Продукты с разновидностями будут обновлены в соответствии с внесенными изменениями.
+    create:
+      success: Разновидность семейства успешно создана
+  module:
+    edit:
+      common_attributes: Общие атрибуты
+      no_common_attributes: Нет общих атрибутов
+      variant_axis_label: Вариант конфигурационного атрибута
+      variant_attributes: Разновидность атрибутов
+      level_1: Разновидности атрибутов первого уровня
+      level_2: Разновидности атрибутов второго уровня
+      description: Перетащите атрибуты на нужный уровень, чтобы управлять данными атрибутами с этого уровня.
+      confirm_attribute_removal_title: Подтвердите удаление атрибутов
+      confirm_attribute_removal_message: При удалении этих атрибутов, вы поместите их обратно в общие атрибуты разновидности семейства и удалите значения из разновидностей продуктов
+    create:
+      label: Добавить вариант
+      title: Создать новый вариант семейства
+      description: Вы можете определить структуру продуктов и их вариантов в семействе. Выберите количество уровней, которые необходимо изменить, атрибуты, используемые в качестве конфигурационных атрибутов для каждого уровня, а затем определите как распределяются атрибуты.
+      variant_levels: Разновидности уровней
+pim_enrich.entity.attribute_option:
+  short_uppercase_label: Параметры
+  flash:
+    create:
+      success: Опция атрибута успешно создана
+    update:
+      fail: Не удается сохранить опцию атрибута
+    delete:
+      fail: При удалении опций атрибута произошла ошибка
+  module:
+    edit:
+      cancel_title: Отмена изменений
+      options_labels: Метки параметров
+      options_settings: Настройки параметров
+      options_codes: Коды параметров
+      option_code: Код параметра
+      new_option_code: new_option
+      no_options_msg: Нет параметров!
+      add_option: Нажмите здесь, чтобы добавить
+      delete_confirmation_title_msg: Удалить "{{ optionCode }}" из параметров?
+      delete_confirmation_subtitle_msg: Вы уверены, что хотите удалить этот параметр? Это действие нельзя отменить.
+pim_enrich.entity.association_type:
+  label: тип ассоциации
+  property:
+    is_two_way: 2-сторонняя связь
+    is_quantified: Количественная ассоциация
+  flash:
+    update:
+      success: Тип связи был успешно удален.
+      fail: Не удалось обновить тип связи.
+      fields_not_ready: "Тип ассоциации не может быть сохранен в данный момент. Следующие обязательные поля не заполнены: {{ fields }}"
+    create:
+      success: Тип ассоциации успешно создан
+    delete:
+      success: Тип ассоциации успешно удален
+      fail: Не удается удалить этот тип ассоциации
+  module:
+    create:
+      title: Создать новый тип ассоциации
+      button: Создать тип взаимосвязи
+      is_two_way:
+        message_on_read_only: Тип ассоциации может быть количественным или двусторонним, чтобы выбрать иной, снимите флаг с текущего
+      is_quantified:
+        message_on_read_only: Тип ассоциации может быть количественным или двусторонним, чтобы выбрать иной, снимите флаг с текущего
+    delete:
+      confirm: Вы действительно хотите удалить этот тип ассоциации?
+  hint: <a href="{{link}}" target="_blank">В этой статье</a> вы найдете все, что вам нужно для создания ассоциации.
+pim_enrich.entity.group_type:
+  label: тип группы
+  flash:
+    update:
+      success: Тип группы успешно обновлён.
+      fail: Не удалось обновить тип группы.
+      fields_not_ready: "Тип группы не может быть сохранён в данный момент. Следующие обязательные поля не заполнены: {{ fields }}"
+    create:
+      success: Тип группы успешно создан
+    delete:
+      success: Тип группы успешно удален
+      fail: Не удается удалить эту группу типов
+  module:
+    create:
+      button: Создать тип группы
+    delete:
+      confirm: Вы действительно хотите удалить эту группу типов?
+pim_enrich.entity.attribute:
+  label: атрибут
+  plural_label: Атрибуты
+  flash:
+    update:
+      success: Атрибут успешно обновлён.
+      fail: Не удалось обновить атрибут.
+      fields_not_ready: "Атрибут не может быть сохранен в данный момент. Следующие обязательные поля не заполнены: {{ fields }}"
+    delete:
+      success: Атрибут успешно удален
+      fail: Не удается удалить этот атрибут
+  property:
+    allowed_extensions: Допустимые расширения
+    auto_option_sorting: Автоматически сортировать опции в алфавитном порядке
+    available_locales: Доступные локали
+    date_max: Макс. дата
+    date_min: Мин. дата
+    decimals_allowed: Разрешены десятичные значения
+    default_metric_unit:
+      label: Единица измерения по умолчанию
+      choose: Выберите единицу измерения
+    group:
+      label: Группа атрибутов
+      choose: Выберите группу атрибутов
+    is_locale_specific: Специфично для локали
+    localizable: Значение в локали
+    max_characters: Максимум символов
+    max_file_size: Максимальный размер файла (МБ)
+    metric_family:
+      label: Семейство единиц измерений
+      choose: Выберите семейство
+    minimum_input_length: Минимальная длина для автозаполнения
+    name: Имя
+    negative_allowed: Допустимы отрицательные значения
+    number_max: Макс. число
+    number_min: Мин. число
+    reference_data_name:
+      label: Ссылочный тип данных
+      choose: Выберите ссылочный тип данных
+    scopable: Значение в канале
+    type:
+      choose: Выберите тип атрибута
+      pim_catalog_identifier: Идентификатор
+      pim_catalog_text: Текст до 255 символов
+      pim_catalog_textarea: Текстовая область
+      pim_catalog_number: Число
+      pim_catalog_price_collection: Цена
+      pim_catalog_multiselect: Множественный раскрывающийся список
+      pim_catalog_simpleselect: Простой раскрывающийся список
+      pim_catalog_file: Файл
+      pim_catalog_image: Изображение
+      pim_catalog_boolean: "Да/Нет"
+      pim_catalog_date: Дата
+      pim_catalog_metric: Единицы измерений
+      pim_reference_data_simpleselect: Простой раскрывающийся список справочныx данныx
+      pim_reference_data_multiselect: Множественный раскрывающийся список справочныx данныx
+    unique: Уникальное значение
+    useable_as_grid_filter: Используется в сетке
+    validation_regexp: Регулярное выражение
+    validation_rule:
+      label: Правило проверки
+      email: Адрес электронной почты
+      regexp: Регулярное выражение
+      url: URL
+    wysiwyg_enabled: Включен расширенный текстовый редактор
+    default_value: Значение по умолчанию
+  module:
+    add_attribute:
+      no_available_attributes: Нет больше атрибутов для добавления
+      attributes_selected: "выбрано атрибутов: {{ itemsCount }}"
+    create:
+      button: Создать атрибут
+    edit:
+      common: Общие параметры
+      type_specific: Параметры, специфические для типа
+      validation: Параметры проверки
+    delete:
+      confirm: Вы действительно хотите удалить этот атрибут?
+      product_count: '{0}0 товаров |{1}1 товар|]1, Inf [{{ count }} товаров'
+      product_model_count: '{0}0 моделей продукта|{1}1 модель продукта|]1, Inf[{{ count }} моделей продукта'
+      helper:
+        content: Если необходимо изменить тип атрибута, сделать его локализируемым или видимым, сохраняя доступ к существующим значениям атрибутов,
+      type: Пожалуйста, введите "{{ attributeCode }}"
+      confirm_from_group: Вы действительно хотите удалить атрибут {{ attribute }} из этой группы атрибутов?
+      confirm_from_product: Вы уверены, что хотите удалить этот атрибут из продукта?
+pim_enrich.entity.attribute_group:
+  label: группа атрибутов
+  uppercase_label: Группа атрибутов
+  plural_label: Группы атрибутов
+  result_count: '{0}0 групп атрибутов|{1}1 группа атрибутов|]1, Inf [{{ count }} групп атрибутов'
+  flash:
+    update:
+      success: Группа атрибутов успешно обновлена
+      fail: Не удалось обновить группу атрибутов
+    delete:
+      success: Группа атрибутов успешно удалена
+  module:
+    add_attribute_group:
+      label: Добавить по группам
+      attributes_groups_selected: 'выбрано групп: {{ itemsCount }}'
+    delete:
+      confirm: Вы действительно хотите удалить эту группу атрибутов?
+  grid:
+    columns:
+      name: Название группы атрибутов
+    no_search_result: Поиск не дал результатов.
+pim_enrich.mass_edit.family:
+  title: Массовые действия с семействами
+  step:
+    select:
+      label: Выберите семейства
+    configure:
+      label: Настроить
+    confirm:
+      label: Подтверждение
+    launched:
+      label: Началось массовое действие "{{ operation }}". Вы будете уведомлены по завершении.
+  operation:
+    set_requirements:
+      label: Установить обязательность/ необязательность атрибутов
+      description: Данные по обязательности/ необязательности атрибутов будут применены к выбранным семействам

@@ -1,0 +1,81 @@
+@import '../../base/variables.less';
+
+.AknHorizontalNavtab {
+  border-bottom: 1px solid @AknBorderColor;
+  display: flex;
+  justify-content: space-between;
+  align-items:center;
+
+  &--centered {
+    justify-content: center;
+    border-bottom: none;
+  }
+
+  &--centered &-list {
+    border-bottom: 1px solid @AknBorderColor;
+  }
+
+  &--centered &-link {
+    padding: 0 20px;
+  }
+
+  &-item {
+    list-style-type: none;
+  }
+
+  &-list {
+    display: flex;
+  }
+
+  &-item:not(:last-child) {
+    margin-right: 10px;
+  }
+
+  &-item--forbidden &-link {
+    opacity: 0.7;
+    cursor: not-allowed;
+    background: url("/bundles/pimui/images/icon-lock2.svg") no-repeat right;
+    background-size: 21px;
+  }
+
+  &-link {
+    font-size: @AknFontSizeBig;
+    height: @AknTabHeight;
+    line-height: @AknTabHeight;
+    color: @AknDefaultFontColor;
+    padding: 0 40px 0 0;
+    display: inline-block;
+    cursor: pointer;
+    margin-bottom: -1px;
+    transition: color 0.1s ease-in, border-width 0.1s ease-in;
+    white-space: nowrap;
+
+    &--errored {
+      font-weight: bold;
+      color: @AknRed;
+
+      &:before {
+        display: inline-block;
+        margin-right: 5px;
+        font-family: 'FontAwesome';
+        font-style: normal;
+        text-decoration: inherit;
+        -webkit-font-smoothing: antialiased;
+        content: "\f06a";
+        text-indent: 0;
+      }
+    }
+  };
+
+  &-item--active {
+    width: 100%;
+  }
+
+  &-item:not(&-item--forbidden):not(&-item--active) &-link:not(&-link--active):hover,
+  &-item--active &-link,
+  &-link--active {
+    background: none;
+    border-bottom: 3px solid @AknLightPurple;
+    color: @AknLightPurple;
+  }
+}

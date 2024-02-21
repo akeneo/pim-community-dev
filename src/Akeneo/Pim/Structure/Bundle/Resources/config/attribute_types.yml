@@ -1,0 +1,118 @@
+parameters:
+    pim_catalog.attribute_type.identifier.class:       Akeneo\Pim\Structure\Component\AttributeType\IdentifierType
+    pim_catalog.attribute_type.text.class:             Akeneo\Pim\Structure\Component\AttributeType\TextType
+    pim_catalog.attribute_type.textarea.class:         Akeneo\Pim\Structure\Component\AttributeType\TextAreaType
+    pim_catalog.attribute_type.multiselect.class:      Akeneo\Pim\Structure\Component\AttributeType\OptionMultiSelectType
+    pim_catalog.attribute_type.simpleselect.class:     Akeneo\Pim\Structure\Component\AttributeType\OptionSimpleSelectType
+    pim_catalog.attribute_type.price_collection.class: Akeneo\Pim\Structure\Component\AttributeType\PriceCollectionType
+    pim_catalog.attribute_type.number.class:           Akeneo\Pim\Structure\Component\AttributeType\NumberType
+    pim_catalog.attribute_type.boolean.class:          Akeneo\Pim\Structure\Component\AttributeType\BooleanType
+    pim_catalog.attribute_type.date.class:             Akeneo\Pim\Structure\Component\AttributeType\DateType
+    pim_catalog.attribute_type.file.class:             Akeneo\Pim\Structure\Component\AttributeType\FileType
+    pim_catalog.attribute_type.image.class:            Akeneo\Pim\Structure\Component\AttributeType\ImageType
+    pim_catalog.attribute_type.metric.class:           Akeneo\Pim\Structure\Component\AttributeType\MetricType
+
+services:
+    pim_catalog.registry.attribute_type:
+        public: true
+        class: 'Akeneo\Pim\Structure\Component\AttributeTypeRegistry'
+        arguments:
+            - '@feature_flags'
+
+    pim_catalog.attributetype.identifier:
+        class: '%pim_catalog.attribute_type.identifier.class%'
+        arguments:
+            - 'text'
+        tags:
+            - { name: pim_catalog.attribute_type, alias: pim_catalog_identifier, entity: '%pim_catalog.entity.product.class%' }
+
+    pim_catalog.attributetype.text:
+        class: '%pim_catalog.attribute_type.text.class%'
+        arguments:
+            - 'text'
+        tags:
+            - { name: pim_catalog.attribute_type, alias: pim_catalog_text, entity: '%pim_catalog.entity.product.class%' }
+
+    pim_catalog.attributetype.textarea:
+        class: '%pim_catalog.attribute_type.textarea.class%'
+        arguments:
+            - 'textarea'
+        tags:
+            - { name: pim_catalog.attribute_type, alias: pim_catalog_textarea, entity: '%pim_catalog.entity.product.class%' }
+
+    pim_catalog.attributetype.multiselect:
+        class: '%pim_catalog.attribute_type.multiselect.class%'
+        arguments:
+            - 'options'
+        tags:
+            - { name: pim_catalog.attribute_type, alias: pim_catalog_multiselect, entity: '%pim_catalog.entity.product.class%' }
+
+    pim_catalog.attributetype.simpleselect:
+        class: '%pim_catalog.attribute_type.simpleselect.class%'
+        arguments:
+            - 'option'
+        tags:
+            - { name: pim_catalog.attribute_type, alias: pim_catalog_simpleselect, entity: '%pim_catalog.entity.product.class%' }
+
+    pim_catalog.attributetype.pricecollection:
+        class: '%pim_catalog.attribute_type.price_collection.class%'
+        arguments:
+            - 'prices'
+        tags:
+            - { name: pim_catalog.attribute_type, alias: pim_catalog_price_collection, entity: '%pim_catalog.entity.product.class%' }
+
+    pim_catalog.attributetype.number:
+        class: '%pim_catalog.attribute_type.number.class%'
+        arguments:
+            - 'decimal'
+        tags:
+            - { name: pim_catalog.attribute_type, alias: pim_catalog_number, entity: '%pim_catalog.entity.product.class%' }
+
+    pim_catalog.attributetype.boolean:
+        class: '%pim_catalog.attribute_type.boolean.class%'
+        arguments:
+            - 'boolean'
+        tags:
+            - { name: pim_catalog.attribute_type, alias: pim_catalog_boolean, entity: '%pim_catalog.entity.product.class%' }
+
+    pim_catalog.attributetype.date:
+        class: '%pim_catalog.attribute_type.date.class%'
+        arguments:
+            - 'date'
+        tags:
+            - { name: pim_catalog.attribute_type, alias: pim_catalog_date, entity: '%pim_catalog.entity.product.class%' }
+
+    pim_catalog.attributetype.file:
+        class: '%pim_catalog.attribute_type.file.class%'
+        arguments:
+            - 'media'
+        tags:
+            - { name: pim_catalog.attribute_type, alias: pim_catalog_file, entity: '%pim_catalog.entity.product.class%' }
+
+    pim_catalog.attributetype.image:
+        class: '%pim_catalog.attribute_type.image.class%'
+        arguments:
+            - 'media'
+        tags:
+            - { name: pim_catalog.attribute_type, alias: pim_catalog_image, entity: '%pim_catalog.entity.product.class%' }
+
+    pim_catalog.attributetype.metric:
+        class: '%pim_catalog.attribute_type.metric.class%'
+        arguments:
+            - 'metric'
+        tags:
+            - { name: pim_catalog.attribute_type, alias: pim_catalog_metric, entity: '%pim_catalog.entity.product.class%' }
+
+    pim_reference_data.attributetype.simpleselect:
+        class: 'Akeneo\Pim\Structure\Component\AttributeType\ReferenceDataSimpleSelectType'
+        arguments:
+            - 'reference_data_option'
+        tags:
+            - { name: pim_catalog.attribute_type, alias: pim_reference_data_simpleselect, entity: '%pim_catalog.entity.product.class%' }
+
+    pim_reference_data.attributetype.multiselect:
+        class: 'Akeneo\Pim\Structure\Component\AttributeType\ReferenceDataMultiSelectType'
+        arguments:
+            - 'reference_data_options'
+        tags:
+            - { name: pim_catalog.attribute_type, alias: pim_reference_data_multiselect, entity: '%pim_catalog.entity.product.class%' }

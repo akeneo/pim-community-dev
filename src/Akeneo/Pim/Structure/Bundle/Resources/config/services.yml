@@ -1,0 +1,111 @@
+services:
+    pim_catalog.family_variant.add_unique_attributes:
+        class: 'Akeneo\Pim\Structure\Component\FamilyVariant\AddUniqueAttributes'
+
+    pim_catalog.event_subscriber.attribute_option_removal:
+        class: 'Akeneo\Pim\Structure\Bundle\EventListener\AttributeOptionRemovalSubscriber'
+        arguments:
+            - '@akeneo.pim.structure.query.find_family_variants_identifiers_by_attribute_axes'
+            - '@pim_catalog.query.product_and_product_model_query_builder_factory'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Structure\Bundle\EventListener\RemoveNonExistingProductValuesSubscriber:
+        arguments:
+            - '@security.token_storage'
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
+            - '%pim_catalog.job.remove_non_existing_product_values.job_name%'
+            - '@Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlCreateJobInstance'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Structure\Bundle\EventSubscriber\InitDeletedAttributeSchemaSubscriber:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: 'kernel.event_subscriber' }
+
+    pim_enrich.form.type.attribute_option_value:
+        class: 'Akeneo\Pim\Structure\Bundle\Form\Type\AttributeOptionValueType'
+        arguments:
+            - '%pim_catalog.entity.attribute_option_value.class%'
+        tags:
+            - { name: form.type, alias: pim_enrich_attribute_option_value }
+
+    pim_enrich.form.type.attribute_option:
+        class: 'Akeneo\Pim\Structure\Bundle\Form\Type\AttributeOptionType'
+        arguments:
+            - '%pim_catalog.entity.attribute_option.class%'
+        tags:
+            - { name: form.type, alias: pim_enrich_attribute_option }
+
+    pim_reference_data.registry:
+        class: 'Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistry'
+
+    pim_structure.provider.form.job_instance:
+        class: 'Akeneo\Platform\Bundle\ImportExportBundle\Provider\Form\JobInstanceFormProvider'
+        arguments:
+            -   csv_association_type_export: pim-job-instance-csv-base-export
+                csv_attribute_export: pim-job-instance-csv-base-export
+                csv_attribute_group_export: pim-job-instance-csv-base-export
+                csv_attribute_option_export: pim-job-instance-csv-base-export
+                csv_family_export: pim-job-instance-csv-base-export
+                csv_family_variant_export: pim-job-instance-csv-base-export
+                csv_group_type_export: pim-job-instance-csv-base-export
+                xlsx_association_type_export: pim-job-instance-xlsx-base-export
+                xlsx_attribute_export: pim-job-instance-xlsx-base-export
+                xlsx_attribute_group_export: pim-job-instance-xlsx-base-export
+                xlsx_attribute_option_export: pim-job-instance-xlsx-base-export
+                xlsx_family_export: pim-job-instance-xlsx-base-export
+                xlsx_family_variant_export: pim-job-instance-xlsx-base-export
+                xlsx_group_type_export: pim-job-instance-xlsx-base-export
+                csv_association_type_import: pim-job-instance-csv-base-import
+                csv_attribute_import: pim-job-instance-csv-base-import
+                csv_attribute_group_import: pim-job-instance-csv-base-import
+                csv_attribute_option_import: pim-job-instance-csv-base-import
+                csv_family_import: pim-job-instance-csv-base-import
+                csv_family_variant_import: pim-job-instance-csv-base-import
+                csv_group_type_import: pim-job-instance-csv-base-import
+                xlsx_association_type_import: pim-job-instance-xlsx-base-import
+                xlsx_attribute_import: pim-job-instance-xlsx-base-import
+                xlsx_attribute_group_import: pim-job-instance-xlsx-base-import
+                xlsx_attribute_option_import: pim-job-instance-xlsx-base-import
+                xlsx_family_import: pim-job-instance-xlsx-base-import
+                xlsx_family_variant_import: pim-job-instance-xlsx-base-import
+                xlsx_group_type_import: pim-job-instance-xlsx-base-import
+        tags:
+            - { name: pim_enrich.provider.form, priority: 100 }
+
+    Akeneo\Pim\Structure\Bundle\Datagrid\Attribute\RegisterFamilyFilter:
+        arguments:
+            - '@akeneo.pim.structure.query.get_all_families_label_by_locale'
+            - '@pim_user.context.user'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.attribute-grid, method: buildBefore }
+
+    Akeneo\Pim\Structure\Bundle\Datagrid\Attribute\FamilyFilter:
+        arguments:
+            - '@form.factory'
+            - '@oro_filter.filter_utility'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: datagrid_attribute_family_filter }
+
+    Akeneo\Pim\Structure\Bundle\Datagrid\Attribute\AttributeFilter:
+        arguments:
+            - '@form.factory'
+            - '@oro_filter.filter_utility'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: attribute_search }
+
+    Akeneo\Pim\Structure\Component\Security\CatalogStructureScopeMapper:
+        tags:
+            - { name: pim_api.security.scope_mapper }
+
+    Akeneo\Pim\Structure\Component\Security\AttributeOptionsScopeMapper:
+        tags:
+            - { name: pim_api.security.scope_mapper }
+
+    Akeneo\Pim\Structure\Component\Security\AssociationTypeScopeMapper:
+        tags:
+            - { name: pim_api.security.scope_mapper }

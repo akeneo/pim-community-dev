@@ -1,0 +1,99 @@
+pim_title:
+  pim_user_index: Användare
+  pim_user_role_index: Roller
+  pim_user_group_index: Användargrupper
+  oro_config_configuration_system: Inställningar
+  pim_user_edit: 'Användare {{ username }} | Redigera'
+  pim_user_create: 'Användare | Skapa'
+  pim_user_role_update: 'Roll {{ role }} | Redigera'
+  pim_user_role_create: 'Roll | Skapa'
+  pim_user_security_login: Logga in
+  pim_user_reset_reset: Återställ lösenord
+  pim_user_reset_request: Glömt Lösenord
+  pim_user_group_create: 'Grupper | Skapa'
+  pim_user_group_update: 'Grupp {{ group }} | Redigera'
+confirmation:
+  remove:
+    user: Är du säker på att du vill ta bort denna användare?
+    group: Är du säker på att du vill ta bort denna grupp?
+pim_enrich:
+  entity:
+    user:
+      flash:
+        delete:
+          fail: Användaren kan inte tas bort
+          success: Användaren har tagits bort
+      module:
+        delete:
+          confirm: Är du säker på att du vill ta bort denna användare?
+pim_user_management:
+  entity:
+    user:
+      label: användare
+      flash:
+        update:
+          success: Användaren har uppdaterats.
+          fail: Användaren kunde inte uppdateras.
+          fields_not_ready: "Användaren kan inte sparas just nu. Följande fält är inte redo: {{ fields }}"
+        create:
+          success: Användaren har skapats.
+      page_title:
+        index: "]-Inf, 1]{{ count }} användare|]1, Inf[{{ count }} användare"
+      properties:
+        username: Användarnanm
+        name_prefix: Namnprefix
+        first_name: Förnamn
+        middle_name: Mellannamn
+        last_name: Efternamn
+        name_suffix: Namnsuffix
+        phone: Telefon
+        avatar: Profilbild
+        email: E-postadress
+        catalog_locale: Katalogspråk
+        catalog_scope: Område för katalog
+        default_tree: Standardträd
+        default_asset_tree: Standard träd för tillgångar
+        product_grid_filters: Filter för produktlista
+        current_password: Nuvarande lösenord
+        new_password: Nytt Lösenord
+        new_password_repeat: Nytt lösenord (upprepa)
+        password: Lösenord
+        password_repeat: Upprepa lösenord
+        last_logged_in: Senast inloggad
+        login_count: Antal inloggningar
+        ui_locale: Gränssnittspråk
+        timezone: Tidszon
+        default_product_grid_view: Standard produktlistningsvy
+        default_published_product_grid_view: Standard produkt publicerad i listan #EE Only
+        proposals_to_review_notification: När nya förslag att granska #EE Only
+        proposals_state_notifications: När förslaget godkänns eller underkänns #EE Only
+      meta:
+        created: Skapad
+        updated: Uppdaterad
+      module:
+        create:
+          button: Skapa användare
+        delete:
+          confirm: Är du säker på att du vill ta bort denna användare?
+        update:
+          additional: Ytterligare
+          groups_and_roles: Grupper och roller
+          password: Lösenord
+          interfaces: Gränssnitt
+          notifications: Notiser #TODO EE Only
+    role:
+      plural_label: Roller
+      page_title:
+        index: "]-Inf, 1] {{ count }} roll| ]1, Inf [{{ count }} roller"
+      module:
+        create:
+          button: Skapa roll
+        delete:
+          confirm: Är du säker på att du vill ta bort denna roll?
+    group:
+      plural_label: Användargrupper
+      page_title:
+        index: "]-Inf, 1] {{ count }} grupp|]1, Inf [{{ count }} grupper"
+      module:
+        create:
+          button: Skapa grupp

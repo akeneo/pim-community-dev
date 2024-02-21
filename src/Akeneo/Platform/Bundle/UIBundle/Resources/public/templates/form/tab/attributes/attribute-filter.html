@@ -1,0 +1,14 @@
+<div class="AknActionButton AknActionButton--withoutBorder" data-toggle="dropdown">
+    <span class="AknActionButton-highlight">
+        <%- __('pim_enrich.entity.product.module.attribute_filter.display') %> <%- currentFilter.label %>
+    </span>
+    <span class="AknActionButton-caret"></span>
+</div>
+<ul class="AknDropdown-menu AknDropdown-menu--right">
+    <li class="AknDropdown-menuTitle"><%- __('pim_enrich.entity.product.module.attribute_filter.display') %></li>
+    <% _.each(filters, function (filter) { %>
+        <li class="AknDropdown-menuLink <%- currentFilter.code === filter.code ? 'AknDropdown-menuLink--active active' : '' %>" data-code="<%- filter.code %>">
+            <span class="label"><%- filter.label %></span>
+        </li>
+    <% }); %>
+</ul>

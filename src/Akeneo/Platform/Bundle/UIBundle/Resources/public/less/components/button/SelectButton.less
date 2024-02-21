@@ -1,0 +1,40 @@
+@import '../../base/variables';
+
+.AknSelectButton {
+  display: inline-block;
+
+  width: @AknCheckboxSize + 2px;
+  height: @AknCheckboxSize + 2px;
+  border: 1px solid @AknBorderColor;
+  border-radius: 3px;
+  background-color: @AknLightGray;
+  cursor: pointer;
+
+  &--selected {
+    border-color: @AknBlue;
+    background-color: @AknBlue;
+    background-image: url("/bundles/pimui/images/icon-checkwhite.svg");
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    background-size: @AknCheckboxSize - 1px;
+  }
+
+  &--partial {
+    border-color: @AknBlue;
+    background-color: @AknBlue;
+    background-image: url("/bundles/pimui/images/icon-checkpartialwhite.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: @AknCheckboxSize @AknCheckboxSize - 1px;
+  }
+
+  &--disabled {
+    cursor: not-allowed;
+    border-color: lighten(@AknSlateGrey, 10%);
+    background-color: lighten(@AknSlateGrey, 10%);
+    background-image: url("/bundles/pimui/images/icon-checkwhite.svg");
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    background-size: @AknCheckboxSize - 1px;
+  }
+}

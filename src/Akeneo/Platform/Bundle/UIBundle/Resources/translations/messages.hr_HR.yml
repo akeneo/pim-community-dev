@@ -1,0 +1,490 @@
+User: Korisnik
+Run demo: Pokreni demo
+Product: Proizvod
+Attribute list: Popis atributa
+Attribute Group list: Popis grupe atributa
+Users: Korisnici
+Roles: Role
+Groups: Grupe
+Configuration: Konfiguracija
+Currency list: Tečajna lista
+Locale list: Popis regionalnih postavki
+Logged in as: Prijavljen kao
+Logout: Odjava
+Login: Prijava
+Previous: Prethodna
+Next: Sljedeća
+Channel list: Popis kanala
+Select file: Odaberi datoteku
+Change file: Promijeni datoteku
+Remove file: Ukloni datoteku
+Delete: Brisanje
+Save: Spremi
+Get help: Pomoć
+My User: Moj korisnički račun
+oro.form.choose_value: Odaberi vrijednost...
+Read more: Pročitaj više
+oro.form.click_here_to_select: Klikni ovdje za odabir...
+Add: Dodaj
+"Learn how to use this space": "Nauči kako koristiti ovaj prostor"
+"How To Use Pinbar": "Kako koristiti Pinbar"
+Pinbar: Pinbar
+Favorites: Favoriti
+Most Viewed: Najgledanije
+"Add this page to favorites": "Dodaj ovu stranicu u favorite"
+"Minimize the window to the pinbar": "Minimiziraj prozor na pinbar"
+"Loading ...": "Učitavanje ..."
+"Yes": "Da"
+"No": "Ne"
+required: (obavezno)
+pim_ui.system_config:
+  form:
+    loading_message_enabled.label: Omogućiti učitavanje poruke
+    loading_messages.label: Dostupno učitavanje poruka
+    loading_messages.tooltip: Sve dostupne poruke učitavanja odvojene su linijama
+  group:
+    loading_message.title: Učitavanje poruka
+pim_common:
+  cancel: Odustani
+  save: Spremi
+  delete: Brisanje
+  update: Ažuriraj
+  view: Prikaz
+  edit: Uredi
+  created: Kreirano
+  updated: Ažurirano
+  create: Kreiraj
+  permissions: Dozvole
+  properties: Svojstva
+  name: Ime
+  remove: Ukloni
+  code: Kod
+  products: Proizvodi
+  categories: Kategorije
+  enabled: Omogućeno
+  family: Obitelj
+  groups: Grupe
+  yes: "Da"
+  no: "Ne"
+pim_enrich:
+  #ACLs
+  acl:
+    locale:
+      index: Popis lokalizacija
+    currency:
+      index: Popis valuta
+      toggle: Uključivanje/isključivanje valute
+    product:
+      index: Popis proizvoda
+      create: Kreiranje proizvoda
+      edit_attributes: Uređivanje atributa proizvoda
+      remove: Uklanjanje proizvoda
+      add_attribute: Dodavanje atributa proizvoda
+      remove_attribute: Ukloni atribut proizvodu
+      categories_view: Pogledajte kategorije proizvoda
+      change_family: Promjena obitelji proizvoda
+      add_to_groups: Dodaj proizvod u grupe
+      mass_edit: Akcije masovnog uređivanja proizvoda
+      comment: Komentar proizvoda
+      download: Preuzimanje proizvoda kao PDF dokument
+      history: Prikaz povijesti proizvoda
+    category:
+      list: Popis kategorija
+      create: Kreiraj kategoriju
+      edit: Uredi kategoriju
+      remove: Ukloni kategoriju
+      move: Premjesti kategoriju
+      children: Pogledaj podkategorije
+      products: Pogledaj kategorije proizvada
+      history: Prikaz povijesti kategorije
+    channel:
+      index: Popis kanala
+      create: Kreiraj kanal
+      edit: Uredi kanal
+      remove: Ukloni kanal
+      history: Prikaz povijesti kanala
+    family:
+      index: Popis obitelji
+      create: Kreiraj obitelj
+      edit_properties: Uredi svojstva obitelji
+      edit_attributes: Uredi atribute obitelji
+      remove: Ukloni obitelj
+      history: Prikaz povijesti obitelji
+    attribute_group:
+      index: Popis atributa grupa
+      create: Kreiraj atribut grupe
+      edit: Uredi atribut grupe
+      remove: Ukloni atribut grupe
+      sort: Poredaj atribute grupe
+      add_attribute: Dodaj atribut grupi
+      remove_attribute: Ukloni atribut iz grupe
+      history: Prikaz povijesti atributa grupe
+    attribute:
+      index: Popis atributa
+      create: Kreiraj atribut
+      edit: Uredi atribut
+      remove: Ukloni atribut
+      sort: Poredaj atribute unutar grupe atributa
+      history: Prikaz povijesti atributa
+    group:
+      index: Popis grupa
+      create: Kreiraj grupu
+      edit: Uredi grupu
+      remove: Uklanjanje grupe
+      history: Prikaz povijesti grupe
+    group_type:
+      index: Prikaži tipove grupe
+      create: Kreiraj tip grupe
+      edit: Uredi tip grupe
+      remove: Ukloni tip grupe
+    association_type:
+      index: Prikaži tipove pridruživanja
+      create: Kreiraj tip pridruživanja
+      edit: Uredi tip pridruživanja
+      remove: Ukloni tip pridruživanja
+      history: Prikaži povijest tipa pridruživanja
+    job_tracker:
+      index: Prikaži proces praćenja
+  acl_group:
+    association_type: Tipovi pridruživanja
+    attribute: Atributi
+    attribute_group: Grupe atributa
+    category: Kategorije
+    channel: Kanali
+    currency: Valute
+    family: Obitelji
+    group: Grupe
+    group_type: Tipovi grupa
+    locale: Lokalizacija
+    product: Proizvodi
+  create:
+    attribute: kreiraj atribut
+    attribute group: kreiraj grupu atributa
+    category: kreiraj kategoriju
+    tree: kreiraj stablo
+    channel: kreiraj kanal
+    currency: kreiraj valutu
+    family: kreiraj obitelj
+    locale: kreiraj lokalizaciju
+    product: kreiraj proizvod
+    group: kreiraj grupu
+    association type: kreiraj tip pridruživanja
+    group type: kreiraj tip grupe
+    drag_or_upload: Povucite i ispustite za upload ili kliknite ovdje
+#Confirmation messages
+confirmation:
+  delete: Potvrdi brisanje
+  leave: Jeste li sigurni da želite napustiti ovu stranicu?
+  discard changes: Promjene u %entity% će se izgubiti ako napustite ovu stranicu.
+  remove:
+    category: Jeste li sigurni da želite izbrisati kategoriju %name%?
+    user: Jeste li sigurni da želite izbrisati korisnika %name%?
+#Flash messages
+flash:
+  entity:
+    removed: Stavka je izbrisana
+  attribute:
+    identifier_not_removable: Identifikator atributa ne može biti uklonjen
+  category:
+    removed: Kategorija je uspješno uklonjena
+  tree:
+    removed: Stablo je uspješno uklonjeno
+    not removable: Stablo pridruženo kanalima ne može biti uklonjeno.
+  currency:
+    updated: Valuta je uspješno ažurirana
+    error.linked_to_channel: Ne može se onemogućiti valutu vezanu za kanal.
+  product:
+    enabled: Proizvod je omogućen
+    disabled: Proizvod je onemogućen
+  group type:
+    created: Tip grupe je uspješno kreiran
+  user:
+    removed: Korisnik je uspješno uklonjen
+  error occurred: Akcija nije uspjela. Pokušajte ponovno.
+#Info messages
+info:
+  updated: Postoje nespremljene promjene.
+  category:
+    remove children: Sve pod-kategorije će biti izbrisane.
+    keep products: Proizvodi u tim kategorijama se neće izbrisati.
+    products limit exceeded: Ova kategorija sadrži više proizvoda nego što je dozvoljeno za ovu operaciju (%limit% proizvoda maksimalno)
+  product:
+    no available attributes: Nema više atributa koje se može dodati
+    no family defined: Obitelj nije definirana
+    change family: Promjeni obitelj proizvoda
+    change family to: Promjeni obitelji na
+    merge attributes: Trenutni atributi će se spojiti se s onima u novoj obitelji.
+    keep attributes: Niti jedan atribut neće biti uklonjen.
+    number of associations: '%productCount% proizvoda i %groupCount% grupa'
+    enable: Omogući
+    enabled: Omogućeno
+    disable: Onemogući
+    disabled: Onemogućeno
+  group:
+    axis: 'Varijanta osi: %attributes%'
+    select products: Odaberite proizvode koji bi trebali pripadajti ovoj grupi.
+    selectable products: Sljedeći odabrani proizvodi imaju definirane vrijednosti za svaku Os.
+    no group types: Ne postoji tip grupe, klikni ovdje da bi kreirao jedan
+    more products: '%count% više proizvoda...'
+  association type:
+    show products: Prikaži proizvode
+    show groups: Prikaži grupe
+    remove from products: Brisanjem tipa pridruživanja uklonit će se iz %count% proizvoda.
+    none exist: Ne postoji tip pridruživanja.
+    create one: Klikni ovdje za kreiranje
+  attribute:
+    auto option sorting: Ako je omogućeno, opcije će se automatski razvrstavati prema njihovim lokaliziranim labelama
+  completeness:
+    not calculated: Nije još izračunato
+#Form elements
+Created: Kreirano
+Updated: Ažurirano
+Last update: Posljednje Ažuriranje
+by: Od
+N/A: N/A
+Manage products: Upravljanje proizvodima
+Manage groups: Upravljanje grupama
+Code: Kod
+Name: Ime
+Type: Tip
+Scope: Kanal
+Required: Obavezno
+Unique: Jedinstveno
+Not required: Nije obavezno
+Translatable: Moguće je prevesti
+Scopable: Moguće je odrediti djelokrug
+Localizable: Moguće je lokalizirati
+Unique value: Jedinstvena vrijednost
+Attribute group: Grupa atributa
+Other: Ostalo
+Variants behavior when edited: Ponašanje varijante prilikom uređivanja
+Remove: Ukloni
+Parameters: Parametri
+System: Sustav
+Values: Vrijednosti
+General parameters: Opći parametri
+Backend parameters: Backend parametri
+Label: Oznaka
+Default label: Zadana oznaka
+Default value: Zadana vrijednost
+Attributetype: Tip atributa
+Attribute type: Tip atributa
+Defaultvalue: Zadana vrijednost
+Variant: Varijanta
+Smart: Pametni
+Useable as grid column: Može se koristiti kao kolona u prikazu
+Useable as grid filter: Može se koristiti u prikazu
+Family: Obitelj
+Image: Slika
+Available locales: Dostupni lokalni parametri
+Locale specific: Specifične regionalne postavke
+default: Zadani
+Axis: Osi
+Add attributes: Dodaj atribute
+switch_on: "Da"
+switch_off: "Ne"
+Close: Zatvori
+Search: Pretraživanje
+Choose the attribute type: Odaberi tip atributa
+Choose the attribute group: Odaberi grupu atributa
+Drag and drop a file or click here: Povucite i ispustite datoteku ili kliknite ovdje
+Drop an image or click here: Spusti sliku ili klikni ovdje
+Automatic option sorting: Mogućnost automatskog sortiranja
+save_attribute_before_manage_option: Za upravljanje opcijama, prvo spremi atribut
+Please select: Molimo odaberi
+Active: Aktivno
+Inactive: Neaktivno
+Do not convert: Ne pretvaraj
+Create: Kreiraj
+Choose a family: Odaberi obitelj
+Choose a unit: Odaberi jedinicu
+No matches found: Nisu pronađeni rezultati
+Category tree: Stablo kategorije
+Completeness: Potpunost
+Attribute used as label: Atribut se koristi kao oznaka
+#Scopes
+Global: Globalno
+Channel: Kanal
+Expand all channels: Proširi sve kanale
+Collapse all channels: Sažmi sve kanale
+#Variants
+Always override: Uvijek imati prednost pred
+Ask: Pitaj
+#Attribute group
+General Properties: Opća svojstva
+Group values: Grupne vrijednosti
+New group: Nova grupa
+Groups overview: Pregled grupe
+'Y-m-d h:i:s': 'G-m-d s:m:s'
+#Attribute properties
+Max characters: Max znakova
+Validation rule: Pravilo provjere valjanosti
+Validation regexp: Provjera valjanosti regexp
+Wysiwyg enabled: WYSIWYG omogućen
+Number min: Min broj
+Number max: Max broj
+Decimals allowed: Omogući decimale
+Negative allowed: Omogući negativne vrijednosti
+Date min: Min datum
+Date max: Max datum
+Max file size: Max veličina datoteke (MB)
+Allowed extensions: Dopuštene ekstenzije
+None: Niti jedan
+E-mail: Adresa e-pošte
+URL: URL
+Regular expression: Regularni izraz
+Minimum input length: Minimalni unos dužine
+Default: Zadani
+#Family
+Attributes: Atributi
+#Category
+Title: Naslov
+#Page titles
+pim_catalog_identifier: Identifikator
+pim_catalog_text: Tekst
+pim_catalog_textarea: Područje teksta
+pim_catalog_number: Broj
+pim_catalog_price_collection: Cijena
+pim_catalog_multiselect: Višestruki odabir
+pim_catalog_simpleselect: Jednostavan odabir
+pim_catalog_file: Datoteka
+pim_catalog_image: Slika
+pim_catalog_boolean: "Da/Ne"
+pim_catalog_date: Datum
+pim_reference_data_simpleselect: Referentni podatak jednostavnog odabira
+pim_reference_data_multiselect: Referentni podaci višestrukog odabira
+#Locales
+Activated: Aktivirano
+Edit: Uredi
+Disable: Onemogući
+To enable: Da se omogući
+Select attributes: Odaberi atribute
+Select: Odaberi
+Remove this attribute: Ukloni ovaj atribut
+Copy: Kopiraj
+Translate from: Prevesti sa
+Current tab: Trenutna kartica
+#Product view
+Group: Grupa
+View group: Prikaz grupe
+Products: Proizvodi
+#Tabs
+Properties: Svojstva
+History: Povijest
+pane.accordion:
+  node_values: Vrijednosti čvora
+  general_properties: Opća svojstva
+  locale_values: Vrijednosti regionalnih postavki
+  backend_parameters: Backend parametri
+  general_parameters: Opći parametri
+  validation_parameters: Provjera valjanosti parametara
+  label_translations: Prijevodi oznaka
+  options: Opcije
+  group_values: Grupne vrijednosti
+#Popin titles
+popin.create:
+  association_type.title: Kreiraj novi tip pridruživanja
+  group.title: Kreiraj novu grupu
+  product.title: Kreiraj novi proizvod
+  option.title: Kreiraj novu opciju
+#Datagrid contents
+In group: U grupi
+Attribute as label: Atribut kao oznaka
+Is associated: Je pridružena
+Complete: Kompletan
+Created At: Kreirano u
+Updated At: Ažurirano u
+Enabled: Omogućeno
+Disabled: Onemogućeno
+Status: Status
+pim_datagrid:
+  filters:
+    entity_type:
+      label: Varijanta
+    family:
+      label: Obitelj
+    groups:
+      label: Grupe
+    enabled:
+      label: Status
+    completeness:
+      label: Kompletan
+    identifier:
+      label: Identifikator
+#Versioning / history
+Change History: Povijest promjena
+Data Audit: Revizija podataka
+Data Audit - System: 'Revizija podataka - sustav'
+Action: Akcija
+Version: Verzija
+Entity type: Vrsta entiteta
+Entity name: Naziv entiteta
+Entity id: Id entiteta
+Data: Podaci
+Author: Autor
+Logged at: Prijavljen u
+Deleted: Obrisan
+Old values: Stare vrijednosti
+New values: Nove vrijednosti
+#Configuration
+System configuration: Konfiguracija sustava
+General setup: Opće postavke
+Localization: Lokalizacija
+Localization options: Opcije lokalizacije
+Locale: Postavke jezika i regije
+Location: Lokacija
+Format address by address country: Oblikovanje adresa prema adresi zemlje
+Language: Jezik
+Timezone: Vremenska zona
+Currency: Valuta
+oro.locale:
+  address_format:
+    region_name_type:
+      parish: "župa"
+      state: "država"
+      island: "otok"
+      county: "županija"
+      area: "područje"
+      prefecture: "prefektura"
+      department: "odjel"
+      district: "područje"
+      province: "pokrajina"
+  form:
+    tooltip:
+      locale: "Odaberi opcije lokalizacije koji se koriste za oblikovanje brojeva, adresa, imena i datuma"
+      location: " Lokacija će se koristiti za oblikovanje adresa kada je opcija 'Oblikuj adresu po adresi zemlje' onemogućena"
+      format_address_by_address_country: "Odabirom ove opcije omogućit će se da adrese budu oblikovane po zemlji u kojoj se nalaze. Onemogućavanje ove opcije rezultirat će da adrese budu oblikovane u obliku adrese lokacije"
+      language: "Odaberi jezik sustava koji želiš koristiti"
+      timezone: "Odaberi vremensku zonu za prikaz datuma i vremena"
+      currency: "Odaberi zadanu valutu"
+#Datagrid
+Selected products successfully deleted: Odabrani proizvodi su uspješno izbrisani
+pim_mass_edit:
+  notification:
+    mass_edit:
+      error: Masovno uređivanje <strong>%label%</strong> nije uspjelo
+      warning: Masovno uređivanje <strong>%label%</strong> završeno sa upozorenjima
+      success: Masovno uređivanje <strong>%label%</strong> je završeno
+    quick_export:
+      error: Brzi izvoz <strong>%label%</strong> nije uspio
+      warning: Brzi izvoz <strong>%label%</strong> je završio sa upozorenjima
+      success: Brzi izvoz <strong>%label%</strong> je završio
+job_execution.summary:
+  mass_edited: Masovno uređeno
+  skip: Preskočeno
+  skipped_products: Preskočeni proizvodi
+  skipped_attributes: Preskočeni atributi
+pim_mass_edit_execution_show: Izvođenje masovnog uređivanja | Detalji
+edit_common_attributes.steps.edit_common_attributes_processor.title: Uredi atribute
+update_product_value.steps.update_product_value_processor.title: Ažuriraj vrijednosti proizvoda
+remove_product_value.steps.update_product_value_processor.title: Uklanjanje vrijednosti proizvoda
+edit_common_attributes: Uredi atribute
+perform.steps.duplicated.title: Dvostruke osi
+perform.steps.excluded.title: Isključeni proizvod
+mass_edit report:
+  overview: Izvješća masovnog uređivanja
+job_tracker:
+  tab:
+    title: Proces praćenja
+  filter:
+    started_at: Počeo u

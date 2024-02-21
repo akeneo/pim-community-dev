@@ -1,0 +1,24 @@
+services:
+    pim_catalog.completeness.calculator:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator'
+        arguments:
+            - '@akeneo.pim.enrichment.completeness.query.get_product_masks'
+            - '@akeneo.pim.structure.query.get_required_attributes_masks'
+
+    pim_catalog.completeness.product.compute_and_persist:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses'
+        public: true
+        arguments:
+            - '@pim_catalog.completeness.calculator'
+            - '@akeneo.pim.enrichment.product.query.save_product_completenesses'
+            - '@akeneo.pim.enrichment.product.query.get_product_completenesses'
+            - '@event_dispatcher'
+            - '@Akeneo\Pim\Enrichment\Product\Domain\Clock'
+            - '@security.token_storage'
+            - '@logger'
+
+    pim_catalog.completeness.missing_required_attributes_calculator:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Completeness\MissingRequiredAttributesCalculator'
+        arguments:
+            - '@akeneo.pim.enrichment.completeness.query.get_product_masks'
+            - '@akeneo.pim.structure.query.sql_get_required_attributes_masks'

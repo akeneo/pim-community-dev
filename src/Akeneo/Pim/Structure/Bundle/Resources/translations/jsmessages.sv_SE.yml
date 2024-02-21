@@ -1,0 +1,169 @@
+pim_enrich.entity.family:
+  label: familj
+  uppercase_label: Familj
+  plural_label: Familjer
+  flash:
+    update:
+      success: Familjen har uppdaterats.
+      cant_remove_attribute_as_label: Kan inte ta bort ett attribut som används som etikett
+      cant_remove_attribute_as_image: Kan inte ta bort attributet används som huvudbild
+    create:
+      success: Familjen har skapats
+    delete:
+      success: Familjen har tagits bort
+      fail: Kan inte ta bort denna familj
+  property:
+    attribute_as_label: Attribut används som etikett
+    attribute_as_image: Attribut används som huvudbilden
+  module:
+    attributes:
+      not_required_label: Ej obligatorisk
+      required_label: Obligatorisk
+    create:
+      button: Skapa familj
+    delete:
+      confirm: Är du säker på att du vill radera den här familjen?
+pim_enrich.entity.family_variant:
+  short_plural_label: Varianter
+  short_label: Variant
+  module:
+    create:
+      label: Lägg till variant
+pim_enrich.entity.attribute_option:
+  short_uppercase_label: Alternativ
+  flash:
+    create:
+      success: Attributalternativ har skapats
+    update:
+      fail: Kan inte spara attributalternativ
+    delete:
+      fail: Ett fel uppstod vid borttagande av attributalternativ
+  module:
+    edit:
+      cancel_title: Avbryt ändringar
+pim_enrich.entity.association_type:
+  label: förbindelse typ
+  flash:
+    update:
+      success: Associationstypen har ändrats.
+      fail: Associationstypen kunde inte ändras.
+      fields_not_ready: "Produkten kan inte sparas just nu. Följande fält inte är redo: {{ fields }}"
+    create:
+      success: Associationstyp har skapats
+    delete:
+      success: Associationstypen har tagits bort
+      fail: Kan inte ta bort denna associationstyp
+  module:
+    create:
+      button: Skapa en förbindelsetyp
+    delete:
+      confirm: Är du säker på att du vill radera den här assosiationstypen?
+pim_enrich.entity.group_type:
+  label: grupp typ
+  flash:
+    update:
+      success: Gruppen uppdaterades.
+      fail: Produkten kunde inte uppdateras.
+      fields_not_ready: "Produkten kan inte sparas just nu. Följande fält inte är redo: {{ fields }}"
+    create:
+      success: Grupptyp skapades
+    delete:
+      success: Grupptypen har tagits bort
+      fail: Kan inte ta bort denna grupptyp
+  module:
+    create:
+      button: Skapa grupptyp
+    delete:
+      confirm: Är du säker på att du vill ta bort denna grupptyp?
+pim_enrich.entity.attribute:
+  label: attribut
+  plural_label: Attributer
+  flash:
+    delete:
+      success: Attributet har tagits bort
+      fail: Kan inte ta bort detta attribut
+  property:
+    allowed_extensions: Tillåtna tillägg
+    auto_option_sorting: Sortera automatiskt alternativ efter bokstavsordning
+    available_locales: Tillgängliga språk
+    date_max: Max datum
+    date_min: Min datum
+    decimals_allowed: Tillåt decimala värden
+    default_metric_unit:
+      choose: Välj en enhet
+    group:
+      label: Attributgrupp
+      choose: Välj attributgrupp
+    is_locale_specific: Specifik språk
+    localizable: Värde per språk
+    max_characters: Max tecken
+    max_file_size: Max filstorlek (MB)
+    metric_family:
+      choose: Välj en familj
+    minimum_input_length: Minsta längd för autokomplettering
+    name: Namn
+    negative_allowed: Tillåt negativa värden
+    number_max: Max antal
+    number_min: Min antal
+    reference_data_name:
+      label: Referens datatyp
+      choose: Välj referens datatyp
+    scopable: Värde per kanal
+    type:
+      choose: Välj attributtyp
+      pim_catalog_identifier: Identifierare
+      pim_catalog_text: Text
+      pim_catalog_textarea: Textruta
+      pim_catalog_number: Nummer
+      pim_catalog_price_collection: Pris
+      pim_catalog_multiselect: Välj Flera
+      pim_catalog_simpleselect: Enkel Välj
+      pim_catalog_file: Fil
+      pim_catalog_image: Bild
+      pim_catalog_boolean: "Ja/Nej"
+      pim_catalog_date: Datum
+      pim_reference_data_simpleselect: Referensdata enkel Välj
+      pim_reference_data_multiselect: Referens data multi Välj
+    unique: Unikt värde
+    useable_as_grid_filter: Användbara i rutnät
+    validation_regexp: Reguljära uttryck
+    validation_rule:
+      label: Verifieringsuttryck
+      email: E-mail
+      regexp: Reguljära uttryck
+      url: URL
+    wysiwyg_enabled: RTF-redigeraren aktiverad
+  module:
+    add_attribute:
+      no_available_attributes: Det finns inga fler attribut att lägga till
+      attributes_selected: "{{ itemsCount }} attribut valda"
+    edit:
+      common: Allmänna parametrar
+      type_specific: Specifika parametrar
+      validation: Valideringsparametrar
+    delete:
+      confirm: Är du säker på att du vill radera det här attributet?
+      confirm_from_product: Är det säkert att du vill ta bort detta attribut från produkten?
+pim_enrich.entity.attribute_group:
+  label: attributgrupp
+  uppercase_label: Attributgrupp
+  plural_label: Attributgrupper
+  flash:
+    update:
+      success: Attributgruppen uppdaterades
+    delete:
+      success: Attributgruppen har tagits bort
+  module:
+    add_attribute_group:
+      label: Lägg till efter grupper
+      attributes_groups_selected: '{{ itemsCount }} grupp(er) valda'
+    delete:
+      confirm: Är du säker på att du vill radera det här attributet?
+pim_enrich.mass_edit.family:
+  step:
+    select:
+      label: Välj familjer
+    configure:
+      label: Konfigurera
+    confirm:
+      label: Bekräfta

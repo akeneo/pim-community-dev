@@ -1,0 +1,21 @@
+pim_notification_notification_list:
+    path: /notification/list
+    defaults: { _controller: pim_notification.controller.notification:listAction }
+
+pim_notification_notification_count_unread:
+    path: /notification/count_unread
+    defaults: { _controller: pim_notification.controller.notification:countUnreadAction }
+
+pim_notification_notification_mark_viewed:
+    path: /notification/mark_viewed/{id}
+    defaults: { _controller: pim_notification.controller.notification:markAsViewedAction, id: ~ }
+    methods: [POST]
+    requirements:
+        id: \d+
+
+pim_notification_notification_remove:
+    path: /notification/remove/{id}
+    defaults: { _controller: pim_notification.controller.notification:removeAction }
+    methods: [DELETE]
+    requirements:
+        id: \d+

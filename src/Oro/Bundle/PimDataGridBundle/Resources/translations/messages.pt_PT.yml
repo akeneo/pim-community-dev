@@ -1,0 +1,28 @@
+"oro_datagrid.no_data_hint %entityHint%": '%entityHint% não existe.'
+oro_datagrid.label_add_filter: Gerir filtros
+oro_datagrid.label_loading_mask: A carregar . . .
+oro.grid.mass_action.selected_rows: Linhas Selecionadas
+oro.grid.mass_action.confirm_title: Confirmação de ação em massa
+oro.grid.mass_action.confirm_content: Tem a certeza que pretende fazer isso?
+oro.grid.mass_action.confirm_ok: Sim, avançar
+oro.grid.mass_action.error_title: Erro na ação em massa
+oro.grid.mass_action.error_content: Não é possível executar a ação em massa
+oro.grid.mass_action.delete.label: Eliminar
+oro.grid.mass_action.delete.confirm_title: Confirmação de remoção em massa
+oro.grid.mass_action.delete.confirm_content: Tem certeza que deseja eliminar os itens selecionados?
+oro.grid.datagrid.page_size.all: Tudo
+oro.grid.mass_action.delete.success_message: "{0} Nenhuma entidade foi removida | {1} Uma entidade foi removida | ]1,Inf[ %count% entidades foram removidas"
+datagrid_view:
+  columns:
+    min_message: Deve selecionar pelo menos uma coluna da grelha para exibir
+  label:
+    unique_message: O nome deve ser único
+    not_blank_message: O nome não deve estar em branco
+grid.view_selector.flash:
+  created: Vista de grelha criada com sucesso
+  removed: Vista de grelha removida com sucesso
+  not_removable: Não tem permissões para remover esta vista
+quick_export: Exportação rápida
+import: Importação
+export: Exportação
+mass_edit: Editar em massa

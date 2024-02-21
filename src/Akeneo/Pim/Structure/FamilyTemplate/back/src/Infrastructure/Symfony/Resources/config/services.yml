@@ -1,0 +1,8 @@
+services:
+  akeneo_structure.github.fetch.family_templates:
+    class: 'Akeneo\Pim\Structure\FamilyTemplate\Infrastructure\Query\FetchFamilyTemplates'
+    arguments:
+      - '%env(string:GITHUB_API_URL)%'
+      - '%env(string:GITHUB_API_FAMILY_TEMPLATES_TOKEN)%'
+      - '%env(string:GITHUB_AKENEO_ORGANISATION)%'
+      - '%env(string:GITHUB_FAMILY_TEMPLATES_REPO)%'

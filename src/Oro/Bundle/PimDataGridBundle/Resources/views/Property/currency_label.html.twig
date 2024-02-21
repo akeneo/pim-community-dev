@@ -1,0 +1,5 @@
+{% if currency_label(value) %}
+  {{ value }} ({{ currency_label(value) }})
+{% else %}
+  {{ value }}
+{% endif %}

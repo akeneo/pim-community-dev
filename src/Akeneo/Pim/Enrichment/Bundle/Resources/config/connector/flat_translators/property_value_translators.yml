@@ -1,0 +1,36 @@
+services:
+  pim_enrich.connector.flat_translators.property_value_translator.category:
+    class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\PropertyValue\CategoryTranslator
+    arguments:
+      - '@akeneo.pim.structure.query.get_category_translations'
+    tags: [{name: pim_enrich.connector.flat_translators.property_value}]
+
+  pim_enrich.connector.flat_translators.property_value_translator.family:
+    class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\PropertyValue\FamilyTranslator
+    arguments:
+      - '@akeneo.pim.structure.query.get_family_translations'
+    tags: [{name: pim_enrich.connector.flat_translators.property_value}]
+
+  pim_enrich.connector.flat_translators.property_value_translator.family_variant:
+    class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\PropertyValue\FamilyVariantTranslator
+    arguments:
+      - '@akeneo.pim.structure.query.get_family_variant_translations'
+    tags: [{name: pim_enrich.connector.flat_translators.property_value}]
+
+  pim_enrich.connector.flat_translators.property_value_translator.group:
+    class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\PropertyValue\GroupTranslator
+    arguments:
+      - '@akeneo.pim.structure.query.get_group_translations'
+    tags: [{name: pim_enrich.connector.flat_translators.property_value}]
+
+  pim_enrich.connector.flat_translators.property_value_translator.enabled:
+    class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\PropertyValue\EnabledTranslator
+    arguments:
+      - '@pim_catalog.localization.translator.label'
+    tags: [{name: pim_enrich.connector.flat_translators.property_value}]
+
+  pim_enrich.connector.flat_translators.property_value_translator.parent:
+    class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\PropertyValue\ParentTranslator
+    arguments:
+      - '@akeneo.pim.enrichment.product.query.get_product_model_labels'
+    tags: [{name: pim_enrich.connector.flat_translators.property_value}]

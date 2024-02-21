@@ -1,0 +1,23 @@
+{
+  "name": "@akeneo-pim-community/shared",
+  "version": "1.0.0",
+  "license": "OSL-3.0",
+  "main": "lib/index.js",
+  "scripts": {
+    "lib:build": "tsc -p ./tsconfig.json",
+    "test:unit:run": "jest --no-cache --config ./jest.config.js --maxWorkers=3",
+    "lint:fix": "prettier --config .prettierrc.json --parser typescript --write \"./src/**/*.{ts,tsx}\"",
+    "lint:check": "prettier --config .prettierrc.json --parser typescript --check \"./src/**/*.{ts,tsx}\""
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "@types/jest": "^26.0.22",
+    "jest": "^26.0.22"
+  },
+  "peerDependencies": {
+    "akeneo-design-system": "link:../akeneo-design-system"
+  },
+  "private": true
+}

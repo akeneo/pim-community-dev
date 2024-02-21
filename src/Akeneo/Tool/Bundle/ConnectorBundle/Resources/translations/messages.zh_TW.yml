@@ -1,0 +1,23 @@
+pim_connector:
+  steps:
+    file_reader:
+      invalid_item_columns_count: '應有%totalColumnsCount%列，但實際上%filePath%中有%itemColumnsCount%：%lineno%'
+job_execution.summary:
+  read: 已讀
+  write: 已寫入
+  skip: 已跳過
+  create: 已創建
+  process: 已處理
+  update_products: 已更新的產品
+  process_products: 已處理的產品
+  skip_products: 已跳過的產品
+  displayed: 已顯示的首次警告
+  charset_validator:
+    title: '檔案編碼：'
+    skipped: 已跳過，白名單中的擴展
+  product_skipped_no_diff: 已跳過的產品（無區別）
+  product_skipped_no_associations: 已跳過的產品（未檢測到關聯）
+  product_model_skipped_no_diff: 已跳過的產品型號（無區別）
+  item_position: 讀取一行數據
+  skipped_in_root_product_model: 已跳過擁有父級的產品類型
+  skipped_in_sub_product_model: 已跳過沒有父級的產品類型

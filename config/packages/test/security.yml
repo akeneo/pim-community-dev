@@ -1,0 +1,11 @@
+security:
+    firewalls:
+        main:
+            entry_point:    form_login
+            http_basic:
+                realm:      "Secured REST Area"
+            provider:       pim_user
+            form_login:
+                check_path: pim_user_security_check
+            logout:         false
+            remember_me:    false

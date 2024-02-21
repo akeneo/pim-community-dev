@@ -1,0 +1,62 @@
+pim_analytics:
+  new_patch_available: Ny uppdatering finns tillgänglig
+  system_config:
+    group:
+      notification.title: Notiser
+      version_update.title: Versionsuppdateringar
+    form:
+      version_update.label: Ny versionsnotiser
+      version_update.tooltip: Skicka begäran till fjärrserver för att hämta information om nya uppdateringar
+  system_info:
+    title: Systeminformation
+    download: TXT
+  info_type:
+    pim_edition: Edition
+    pim_version: Version
+    pim_storage_driver: Lagringsutrymme
+    pim_environment: Miljö
+    pim_install_time: Installationstid
+    registered_bundles: Registrerade bundlar
+    nb_channels: Antal kanaler
+    nb_products: Antal produkter
+    nb_product_models: Antal produktmodeller
+    nb_variant_products: Antal variantprodukter
+    nb_family_variants: Antal variantfamiljer
+    nb_attributes: Antal attribut
+    nb_scopable_attributes: Antal scopable attribut
+    nb_localizable_attributes: Antal lokaliserbara attribut
+    nb_scopable_localizable_attributes: Antal lokaliserbara och scopable attribut
+    nb_useable_as_grid_filter_attributes: Antal attribut som användbara som tabellfilter
+    avg_percentage_scopable_attributes_per_family: Genomsnittliga andelen scopable attribut per familj (%)
+    avg_percentage_localizable_attributes_per_family: Genomsnittliga andelen lokaliserbara attribut per familj (%)
+    avg_percentage_scopable_localizable_attributes_per_family: Genomsnittliga andelen lokaliserbara och scopable attribut per familj (%)
+    avg_number_attributes_per_family: Genomsnittligt antal attribut per familj
+    nb_locales: Antal språk
+    nb_families: Antal familjer
+    nb_users: Antal användare
+    nb_categories: Antalet kategorier
+    nb_category_trees: Antal kategoriträd
+    max_category_in_one_category: Max antal kategorier i en kategori
+    max_category_levels: Max antal kategorinivåer
+    nb_product_values: Antalet produktvärden
+    avg_product_values_by_product: Genomsnittligt antal produktvärden av produkt
+    avg_product_values_by_family: Genomsnittligt antal potentiella produktvärden av familj
+    max_product_values_by_family: Max antal potentiella produktvärden av familj
+    pim_storage_version: Lagringsmodell
+    os_version: OS version
+    php_version: PHP-version
+    mysql_version: MySQL-version
+    mariadb_version: MariaDB version
+    mongodb_version: MongoDB version
+    server_version: Server version
+    php_extensions: PHP-tillägg
+    api_connection: API-anslutningar
+    nb_media_files_in_products: Antal mediafiler i produkterna
+    nb_media_images_in_products: Antal mediabilder i produkterna
+    is_demo_catalog: Demokatalogen installerad
+  acl:
+    system_info:
+      index: Systeminformation
+pim_menu:
+  item:
+    system_info: Systeminformation

@@ -1,0 +1,39 @@
+pim_enrich:
+  #Attribute
+  attribute:
+    tab:
+      parameter.title: 參數
+      value.title: 值
+      history.title: 歷史紀錄
+  #Family
+  family:
+    info:
+      cant_remove_attribute_used_as_axis: 無法移除作為品類變體中變體軸的屬性
+  #Group type
+  group_type:
+    tab:
+      property.title: 屬性
+  #Mass edit operations
+  mass_edit_action:
+    family:
+      page_title: 品類
+      page_subtitle: 批量編輯（1 個品類）|批量編輯（%count% 個品類）
+      title: 選擇操作
+      subtitle: 選擇您想對已選品類執行的操作|選擇您想對已選的%count%個品類執行的操作
+      confirm: 您將要更新包含以下信息的品類，請確認。|您將要更新%count%個包含以下信息的品類，請確認。
+      steps:
+        first: 選擇品類
+        second: 選擇操作
+        third: 配置
+        fourth: 確認
+pim_enrich_attribute_form:
+  code: 代碼
+  type: 屬性類別
+  reference_data_name: 參考日期名稱
+  scopable: 渠道值
+  localizable: 區域值
+  unique: 唯一值
+  availableLocales: 可用的區域
+  locale_specific: 特定區域
+  group: 屬性分組
+  useableAsGridFilter: 可在界面中使用

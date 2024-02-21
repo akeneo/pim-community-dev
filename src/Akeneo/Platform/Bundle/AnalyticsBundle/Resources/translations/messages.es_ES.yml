@@ -1,0 +1,69 @@
+pim_analytics:
+  new_patch_available: Nuevo parche disponible
+  system_config:
+    group:
+      notification.title: Notificaciones
+      version_update.title: Actualizaciones de versión
+    form:
+      version_update.label: Notificaciones de nuevas versiones
+      version_update.tooltip: Enviar una solicitud al servidor remoto para recuperar la información sobre la liberación de nuevos parches
+  system_info:
+    title: Información del sistema
+    download: TXT
+  info_type:
+    pim_edition: Edición
+    pim_version: Versión
+    pim_storage_driver: Almacenamiento
+    pim_environment: Ambiente
+    pim_install_time: Fecha de instalación
+    registered_bundles: Paquetes registrados
+    nb_channels: Número de canales
+    nb_products: Número de productos
+    nb_product_models: Número de modelos del producto
+    nb_variant_products: Número de productos variantes
+    nb_family_variants: Número de variantes de la familia
+    nb_attributes: Número de atributos
+    nb_scopable_attributes: Número de atributos scopable
+    nb_localizable_attributes: Número de atributos localizables
+    nb_scopable_localizable_attributes: Número de atributos localizables y scopable
+    nb_useable_as_grid_filter_attributes: Número de atributos utilizables como filtro de la grilla
+    avg_percentage_scopable_attributes_per_family: Porcentaje promedio de atributos alcanzables por familia(%)
+    avg_percentage_localizable_attributes_per_family: Porcentaje promedio de atributos localizables por familia (%)
+    avg_percentage_scopable_localizable_attributes_per_family: Porcentaje promedio de atributos localizables y alcanzables por familia (%)
+    avg_number_attributes_per_family: Promedio del número de atributos por familia
+    nb_locales: Número de locales
+    nb_families: Número de familias
+    nb_users: Número de usuarios
+    nb_categories: Número de categorías
+    nb_category_trees: Número de árboles de categorías
+    max_category_in_one_category: Número máximo de categorías dentro de una categoría
+    max_category_levels: Número máximo de niveles de categoría
+    nb_product_values: Número de valores del producto
+    avg_product_values_by_product: Promedio de los valores de producto por producto
+    avg_product_values_by_family: Promedio de valores de productos potenciales por familia
+    max_product_values_by_family: Número máximo de valores de productos potenciales por familia
+    pim_storage_version: Versión de almacenamiento
+    os_version: Versión del SO
+    php_version: Versión de PHP
+    mysql_version: Versión de MySQL
+    mariadb_version: Versión de MariaDB
+    mongodb_version: Versión de MongoDB
+    server_version: Versión Servidor
+    php_extensions: Extensiones de PHP
+    email_domains: Dominios de email asociados
+    api_connection: Conexiones API
+    nb_media_files_in_products: Número de archivos multimedia en los productos
+    nb_media_images_in_products: Número de imágenes multimedia en los productos
+    is_demo_catalog: Catálogo de demostración instalado
+    data_source.tracked: Número de conexiones de origen de la API rastreadas
+    data_source.untracked: Número de conexiones de origen de la API no rastreadas
+    data_destination.tracked: Número de conexiones de destino de la API rastreadas
+    data_destination.untracked: Número de conexiones de destino de la API no rastreadas
+    other.tracked: Número de otras conexiones de la API rastreadas
+    other.untracked: Número de otras conexiones de la API no rastreadas
+  acl:
+    system_info:
+      index: Información del sistema
+pim_menu:
+  item:
+    system_info: Información del sistema

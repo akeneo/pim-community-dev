@@ -1,0 +1,32 @@
+pim_enrich_media_show:
+    path: /show/{filename}/{filter}
+    defaults: { _controller: pim_enrich.controller.file:showAction, filter: null }
+    methods: [GET]
+
+pim_enrich_media_download:
+    path: /download/{filename}
+    defaults: { _controller: pim_enrich.controller.file:downloadAction, filter: null }
+    methods: [GET]
+
+pim_enrich_default_thumbnail:
+    path: /default-thumbnail/{mimeType}
+    defaults: { _controller: pim_enrich.controller.file:defaultThumbnailAction, filter: thumbnail }
+    methods: [GET]
+    requirements:
+        mimeType: "[a-z-]+/[a-z0-9.-]+"
+
+pim_enrich_media_cache_resolve:
+    path: /cache/resolve/{filter}/{path}
+    defaults: { _controller: pim_enrich.controller.file:cacheAction}
+    methods: [GET]
+    requirements:
+        filter: '[A-z0-9_-]*'
+        path: .+
+
+pim_enrich_media_cache:
+    path: /cache/{filter}/{path}
+    defaults: { _controller: pim_enrich.controller.file:cacheAction}
+    methods: [GET]
+    requirements:
+        filter: '[A-z0-9_-]*'
+        path: .+

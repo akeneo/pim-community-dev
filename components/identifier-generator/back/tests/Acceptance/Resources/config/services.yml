@@ -1,0 +1,132 @@
+services:
+  # Context
+  Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\ViolationsContext:
+    public: true
+
+  Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\StructureContext:
+    public: true
+    arguments:
+      - '@pim_catalog.repository.attribute'
+      - '@pim_catalog.repository.attribute_option'
+      - '@Akeneo\Pim\Structure\Family\ServiceAPI\Query\FindFamilyCodes'
+      - '@pim_catalog.repository.channel'
+      - '@pim_catalog.repository.category'
+
+  Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\DatabaseContext:
+    public: true
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'
+
+  Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\ReorderIdentifierGeneratorsContext:
+    public: true
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\ReorderGeneratorsHandler'
+
+  Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\Property\AutoNumberPropertyContext:
+    public: true
+    arguments:
+      - '@Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\ViolationsContext'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorHandler'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorHandler'
+
+  Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\Property\FreeTextPropertyContext:
+    public: true
+    arguments:
+      - '@Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\ViolationsContext'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorHandler'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorHandler'
+
+  Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\Property\FamilyPropertyContext:
+    public: true
+    arguments:
+      - '@Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\ViolationsContext'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorHandler'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorHandler'
+
+  Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\Property\SimpleSelectPropertyContext:
+    public: true
+    arguments:
+      - '@Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\ViolationsContext'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorHandler'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorHandler'
+
+  Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\Property\ReferenceEntityPropertyContext:
+    public: true
+    arguments:
+      - '@Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\ViolationsContext'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorHandler'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorHandler'
+
+  Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\Condition\EnabledConditionContext:
+    public: true
+    arguments:
+      - '@Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\ViolationsContext'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorHandler'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorHandler'
+
+  Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\Condition\FamilyConditionContext:
+    public: true
+    arguments:
+      - '@Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\ViolationsContext'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorHandler'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorHandler'
+
+  Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\Condition\CategoryConditionContext:
+    public: true
+    arguments:
+      - '@Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\ViolationsContext'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorHandler'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorHandler'
+
+  Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\Condition\BaseCreateOrUpdateConditionContext:
+    public: true
+    arguments:
+      - '@Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\ViolationsContext'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorHandler'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorHandler'
+
+  Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\CreateIdentifierGeneratorContext:
+    public: true
+    arguments:
+      - '@Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\ViolationsContext'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorHandler'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorHandler'
+
+  Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\UpdateIdentifierGeneratorContext:
+    public: true
+    arguments:
+      - '@Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\ViolationsContext'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorHandler'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorHandler'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\ReorderGeneratorsHandler'
+
+  Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\UpdateFamilyNomenclatureContext:
+    public: true
+    arguments:
+      - '@Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\ViolationsContext'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\FamilyNomenclatureRepository'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateNomenclatureHandler'
+
+  Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\SimpleSelectNomenclatureContext:
+    public: true
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\SimpleSelectNomenclatureRepository'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateNomenclatureHandler'
+
+  # Persistence
+  Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository:
+    class: 'Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Repository\InMemoryIdentifierGeneratorRepository'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\FamilyNomenclatureRepository:
+    class: 'Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Repository\InMemoryFamilyNomenclatureRepository'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\SimpleSelectNomenclatureRepository:
+    class: 'Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Repository\InMemorySimpleSelectNomenclatureRepository'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\ReferenceEntityNomenclatureRepository:
+    class: 'Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Repository\InMemoryReferenceEntityNomenclatureRepository'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Domain\Query\ReorderIdentifierGenerators:
+    class: Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Query\InMemoryReorderIdentifierGenerators
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'

@@ -1,0 +1,10 @@
+monolog:
+    handlers:
+        main:
+            type:  stream
+            path:  '%kernel.logs_dir%/%kernel.environment%.log'
+            level: '%env(LOGGING_LEVEL)%'
+            channels: ['!event', '!event_api', '!business_event', '!api_requests']
+        console:
+            type:  console
+            channels: ['!event', '!doctrine', '!event_api', '!business_event', '!api_requests']

@@ -1,0 +1,28 @@
+parameters:
+    pim_api.security.voter.action_acl.class: Akeneo\Tool\Bundle\ApiBundle\Security\ActionAclVoter
+    pim_api.security.access_denied_handler.class: Akeneo\Tool\Bundle\ApiBundle\Security\AccessDeniedHandler
+    fos_oauth_server.server.class: Akeneo\Tool\Bundle\ApiBundle\Security\OAuth2
+
+services:
+    pim_api.security.acl.voter.overall_access:
+        class: '%pim_api.security.voter.action_acl.class%'
+        arguments:
+            - '@security.acl.voter.basic_permissions'
+            - 'pim_api_overall_access'
+        tags:
+            - { name: security.voter, priority: 200 }
+
+    pim_api.security.access_denied_handler:
+        class: '%pim_api.security.access_denied_handler.class%'
+
+    fos_oauth_server.server:
+        class: '%fos_oauth_server.server.class%'
+        arguments:
+            - '@fos_oauth_server.storage'
+            - '@event_dispatcher'
+            - '%fos_oauth_server.server.options%'
+
+    Akeneo\Tool\Bundle\ApiBundle\Security\Firewall:
+        arguments:
+            - '@security.firewall.map'
+            - '@request_stack'

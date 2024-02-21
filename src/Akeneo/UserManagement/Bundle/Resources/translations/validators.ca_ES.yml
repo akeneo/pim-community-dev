@@ -1,0 +1,6 @@
+pim_user:
+  min_role: "Heu de seleccionar com a mínim {{ limit }} funció.|Heu de seleccionar com a mínim {{ limit }} funció."
+  password_match: "Les contrasenyes tenen que coincidir."
+  role:
+    invalid_role_format: 'La funció hauria de començar per "ROLE_" i només hauria de contenir guions baixos, guions i caràcters alfanumèrics en majúscules.'
+  reserved_prefix_username: "El prefix del nom d'usuari '{{ prefix }}' està reservat"

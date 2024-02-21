@@ -1,0 +1,81 @@
+pim_title:
+  akeneo_job_process_tracker_index: Śledzenie procesu
+  akeneo_job_process_tracker_details: Śledzenie procesu | Pokaż zadanie
+akeneo_job:
+  job_status:
+    COMPLETED: Zakończone
+    STARTED: W toku
+    STARTING: Rozpoczynanie
+    STOPPING: Zatrzymywanie
+    STOPPED: Zatrzymane
+    FAILED: Niepowodzenie
+    ABANDONED: Opuszczone
+    UNKNOWN: Nieznany
+    IN_PROGRESS: W toku
+    PAUSING: Wstrzymywanie
+    PAUSED: Wstrzymano
+akeneo_job_process_tracker:
+  tooltip:
+    paused: To zadanie zostało wstrzymane z powodu wewnętrznej konserwacji Twojej instancji. Zostanie wznowione automatycznie po jej ukończeniu.
+  last_operations:
+    title: Ostatnie operacje
+    view_all: Zobacz wszystko
+    details: Szczegóły
+    no_result: Obecnie nie ma operacji do wyświetlenia.
+  last_executions:
+    title: Ostatnie wykonania
+  job_execution_list:
+    search_placeholder: Szukaj według nazwy zadania
+    table:
+      headers:
+        job_name: Nazwa zadania
+        type: Typ
+        started_at: Rozpoczęto o
+        username: Nazwa użytkownika
+        progress: Postęp
+        status: Status
+        warning_count: Ostrzeżenia
+  type_filter:
+    label: Typ
+    all: Wszystkie
+    quick_export: Szybki eksport
+    import: Import
+    export: Eksport
+    mass_edit: Edycja masowa
+    mass_delete: Masowe usuwanie produktów
+    attribute_mass_delete: Zbiorcze usuwanie atrybutów
+    compute_family_variant_structure_changes: Oblicz zmiany w strukturze wariantu rodziny
+    compute_completeness_of_products_family: Oblicz kompletność rodziny produktów
+    clean_removed_attribute_job: Czyszczenie usuniętych wartości atrybutów
+    execute_rules: Wykonaj reguły
+    scheduled_job: Zaplanowane zadanie
+  user_filter:
+    label: Użytkownik
+    all: Wszyscy
+    search: Szukaj
+  status_filter:
+    label: Status
+    all: Wszystkie
+    abandoned: Opuszczone
+    completed: Zakończone
+    failed: Niepowodzenie
+    starting: Rozpoczynanie
+    stopped: Zatrzymane
+    stopping: Zatrzymywanie
+    unknown: Nieznany
+    in_progress: W toku
+    pausing: Wstrzymywanie
+    paused: Wstrzymano
+  automation_filter:
+    all: Wszystkie
+    yes: Yes
+    no: No
+    label: Automatyzacja
+  max_page_without_filter_helper:
+    - Aby wyświetlić najodpowiedniejsze wyniki, zawęź wyszukiwanie.
+  tracking:
+    completed: "Poświęcony czas: {{ duration }}"
+    in_progress: "Pozostały szacowany czas na bieżący etap: {{ duration }}"
+    not_started: Oczekujące
+    untrackable: Krok niemożliwy do śledzenia
+    estimating: Szacowanie pozostałego czasu...

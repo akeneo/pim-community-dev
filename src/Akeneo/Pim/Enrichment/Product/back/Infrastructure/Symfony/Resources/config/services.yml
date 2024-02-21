@@ -1,0 +1,3 @@
+services:
+    Akeneo\Pim\Enrichment\Product\Domain\Clock:
+        class: Akeneo\Pim\Enrichment\Product\Infrastructure\SystemClock

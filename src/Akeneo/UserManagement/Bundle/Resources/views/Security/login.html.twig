@@ -1,0 +1,88 @@
+{% extends '@PimUser/layout.html.twig' %}
+{%- use "@PimUser/Unlock/login-banner.html.twig" with scripts as unlock_banner_scripts, styles as unlock_banner_styles %}
+
+{% block bodyClass %}AknLogin{% endblock %}
+
+{% block head_style %}
+    {{ parent() }}
+    {% if feature_is_enabled('promote_unlock') %}
+        {{ block('unlock_banner_styles') }}
+    {% endif %}
+{% endblock %}
+
+{% block messages %}
+    {{ parent() }}
+    {% if error %}
+        <div class="Helper">
+            <span class="Icon"></span>
+            <span class="Text">{{ error.messageKey|trans(error.messageData, 'security') }}</span>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <script type="text/javascript" nonce="{{ js_nonce() }}">
+      sessionStorage.clear();
+      document.title = '{{ 'Login'|trans }}';
+    </script>
+
+    {# We keep the "form-signin" class for the compatibility with the following behat step: \Pim\Behat\Context\NavigationContext::iAmLoggedInThroughTheUi #}
+    <form action="{{ path(action_route) }}" method="post" class="Form form-signin">
+        <div class="InputGroup">
+            <div class="InputBlock">
+                <label class="InputLabel" for="username_input">{{ 'pim_user.user.login.username_or_email'|trans }}</label>
+                <div class="InputContainer">
+                    <input class="InputText" type="text" id="username_input" autofocus="autofocus" name="_username"
+                           value="{{ last_username }}" required="required" size="1"/>
+                </div>
+            </div>
+            <div class="InputBlock">
+                <label class="InputLabel" for="password_input">{{ 'pim_user.user.fields.password'|trans }}</label>
+                <div class="InputContainer">
+                    <input class="InputText" type="password" id="password_input" name="_password" required="required"
+                           autocomplete="off" size="1"/>
+                </div>
+            </div>
+
+            <div class="PasswordReset">
+                <a href="{{ path('pim_user_reset_request') }}">
+                    {{ 'pim_user.user.login.password_forgotten'|trans }}
+                </a>
+            </div>
+
+            <div class="RememberMe">
+                <label>
+                    <input type="checkbox" id="remember_me" name="_remember_me"
+                           value="on"/> {{ 'pim_user.user.login.remember_me'|trans }}
+                </label>
+            </div>
+        </div>
+        <button class="AknButton AknButton--apply" type="submit" id="_submit" name="_submit">
+            {{- 'pim_user.user.login.log_in'|trans -}}
+        </button>
+
+        <input type="hidden" name="_target_path" value=""/>
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token }}"/>
+        {% for field in additional_hidden_fields %}
+            <input type="hidden" name="{{ field.field_name }}"
+                   value="{{ app.request.query.get(field.initialized_by) }}"/>
+        {% endfor %}
+    </form>
+{% endblock content %}
+
+{% block deferred_javascript %}
+    {{ parent() }}
+    <script type="text/javascript" nonce="{{ js_nonce() }}">
+      (function () {
+        const username = document.getElementById('username_input');
+        const password = document.getElementById('password_input');
+        const submit = document.getElementById('_submit');
+        const form = document.querySelector('form.Form');
+
+        initPimLoginForm([username, password], submit, form);
+      })();
+    </script>
+    {% if feature_is_enabled('promote_unlock') %}
+        {{ block('unlock_banner_scripts') }}
+    {% endif %}
+{% endblock %}

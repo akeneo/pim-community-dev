@@ -1,0 +1,67 @@
+Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel:
+    type: entity
+    table: pim_catalog_product_model
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    repositoryClass: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ProductModelRepository
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        code:
+            type: string
+            length: 255
+            unique: true
+            nullable: false
+        rawValues:
+            type: json
+            column: raw_values
+        created:
+            type: datetime
+        updated:
+            type: datetime
+        rawQuantifiedAssociations:
+            type: json
+            column: quantified_associations
+            nullable: true
+    manyToMany:
+        categories:
+            targetEntity: Akeneo\Category\Infrastructure\Component\Model\CategoryInterface
+            joinTable:
+                name: pim_catalog_category_product_model
+                joinColumns:
+                    product_model_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+                inverseJoinColumns:
+                    category_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+    oneToMany:
+        products:
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface
+            mappedBy: parent
+        productModels:
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface
+            mappedBy: parent
+        associations:
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociationInterface
+            mappedBy: owner
+            cascade:
+                - persist
+                - refresh
+                - detach
+    manyToOne:
+        parent:
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface
+            inversedBy: productModels
+            joinColumns:
+                parent_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+        familyVariant:
+            targetEntity: Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface
+            joinColumn:
+                name: family_variant_id
+                referencedColumnName: id

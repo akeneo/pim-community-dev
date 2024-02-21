@@ -1,0 +1,72 @@
+services:
+    ### Structure
+    akeneo.pim.structure.query.get_attributes:
+        class: 'Akeneo\Test\Acceptance\Attribute\InMemoryGetAttributes'
+        arguments:
+            - '@pim_catalog.repository.attribute'
+
+    akeneo.pim.structure.query.get_existing_attribute_option_codes_from_option_codes:
+        class: 'Akeneo\Test\Acceptance\AttributeOption\InMemoryGetExistingAttributeOptionCodes'
+        arguments:
+            - '@pim_catalog.repository.attribute_option'
+
+    akeneo.pim.structure.query.is_there_at_least_one_attribute_configured_with_measurement_family:
+        class: Akeneo\Test\Acceptance\Attribute\InMemoryIsThereAtLeastOneAttributeConfiguredWithMeasurementFamilyStub
+
+    akeneo.pim.structure.query.get_existing_attribute_options_with_values:
+        class: 'Akeneo\Test\Acceptance\AttributeOption\InMemoryGetExistingAttributeOptionsWithValues'
+        arguments:
+            - '@pim_catalog.repository.attribute_option'
+
+    pim_channel.query.sql.get_channel_code_with_locale_codes:
+        class: 'Akeneo\Test\Acceptance\Channel\InMemoryGetChannelCodeWithLocaleCodes'
+        arguments:
+            - '@pim_catalog.repository.channel'
+
+    Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\IsAttributeEditable:
+        class: Akeneo\Test\Acceptance\Attribute\InMemoryIsAttributeEditable
+
+    ### Catalog
+    akeneo.pim.enrichment.product.query.find_non_existing_products_query:
+        class: 'Akeneo\Test\Acceptance\Product\InMemoryFindNonExistingProductsQuery'
+        arguments:
+            - '@pim_catalog.repository.product'
+
+    akeneo.pim.enrichment.product.query.find_non_existing_product_model_codes_query:
+        class: 'Akeneo\Test\Acceptance\ProductModel\InMemoryFindNonExistingProductModelCodesQuery'
+        arguments:
+            - '@pim_catalog.repository.product_model'
+
+    akeneo.pim.enrichment.product.query.find_id:
+        class: 'AkeneoTest\Acceptance\Product\InMemoryFindProductId'
+        arguments:
+            - '@pim_catalog.repository.product'
+
+    akeneo.pim.enrichment.product_model.query.find_id:
+        class: 'AkeneoTest\Acceptance\ProductModel\InMemoryFindProductModelId'
+        arguments:
+            - '@pim_catalog.repository.product_model'
+
+    akeneo.pim.enrichment.product.query.find_quantified_association_codes:
+        class: Akeneo\Test\Acceptance\AssociationType\InMemoryFindQuantifiedAssociationTypeCodes
+        arguments:
+            - '@pim_catalog.repository.association_type'
+
+    akeneo.pim.structure.query.find_family_variants_identifiers_by_attribute_axes:
+        class: Akeneo\Test\Acceptance\FamilyVariant\InMemoryFamilyVariantsByAttributeAxes
+        arguments:
+            - '@pim_catalog.repository.family_variant'
+
+    akeneo.pim.enrichment.product.query.get_existing_reference_data_codes:
+        class: Akeneo\Test\Acceptance\Attribute\InMemoryGetExistingReferenceDataCodes
+
+    akeneo.pim.structure.query.is_attribute_code_blacklisted:
+        class: AkeneoTest\Acceptance\Attribute\InMemoryIsAttributeCodeBlacklisted
+
+    akeneo.pim.structure.query.attribute_is_an_family_variant_axis:
+        class: 'Akeneo\Test\Acceptance\Attribute\InMemoryAttributeIsAFamilyVariantAxis'
+
+    pim_catalog.query.find_activated_currencies:
+        class: Akeneo\Test\Acceptance\Channel\InMemoryFindActivatedCurrencies
+        arguments:
+            - '@pim_catalog.repository.channel'

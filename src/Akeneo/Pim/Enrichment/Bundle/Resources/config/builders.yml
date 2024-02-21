@@ -1,0 +1,32 @@
+parameters:
+    pim_catalog.builder.product.class:          Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilder
+    pim_catalog.builder.entity_with_values.class: Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilder
+
+services:
+    pim_catalog.builder.product:
+        class: '%pim_catalog.builder.product.class%'
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.family'
+            - '@event_dispatcher'
+            - '@pim_catalog.builder.entity_with_values'
+            - {product: '%pim_catalog.entity.product.class%'}
+
+    pim_catalog.builder.entity_with_values:
+        class: '%pim_catalog.builder.entity_with_values.class%'
+        arguments:
+            - '@pim_catalog.resolver.attribute_values'
+            - '@akeneo.pim.enrichment.factory.value'
+            - '@akeneo.pim.structure.query.get_attributes'
+
+    pim_pdf_generator.builder.dompdf:
+        class: 'Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Builder\DompdfBuilder'
+        arguments:
+            - '%kernel.project_dir%/src'
+            - '%kernel.project_dir%/public'
+            - '@Akeneo\Pim\Enrichment\Bundle\PdfGeneration\HtmlFormatter\ArabicHtmlFormatter'
+
+    pim_comment.builder.comment:
+        class: 'Akeneo\Pim\Enrichment\Component\Comment\Builder\CommentBuilder'
+        arguments:
+            - '%pim_comment.entity.comment.class%'

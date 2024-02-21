@@ -1,0 +1,14 @@
+pim_enrich:
+  acl:
+    category:
+      list: Kategooriate nimekiri
+      create: Loo uus kategooria
+      edit: Muuda kategooriat
+      remove: Eemalda kategooria
+      move: Liiguta kategooriat
+      children: Näita alamkategooriad
+      products: Näita kategooria tooteid
+      history: Näita kategooria ajalugu
+      template: Halda kategooria kujundusi
+      edit_attributes: Muuda kategooria atribuute
+      order_trees: Järjesta kategooriaid

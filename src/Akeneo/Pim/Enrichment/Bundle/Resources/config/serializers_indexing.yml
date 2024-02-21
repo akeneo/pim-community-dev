@@ -1,0 +1,149 @@
+parameters:
+    pim_catalog.normalizer.indexing_product.datetime.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\DateTimeNormalizer
+    pim_catalog.normalizer.indexing_product.product.product_value_collection.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer
+    pim_catalog.normalizer.indexing_product.product.number.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\NumberNormalizer
+    pim_catalog.normalizer.indexing_product.product.option.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\OptionNormalizer
+    pim_catalog.normalizer.indexing_product.product.options.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\OptionsNormalizer
+    pim_catalog.normalizer.indexing_product.product.dummy.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\DummyNormalizer
+    pim_catalog.normalizer.indexing_product.date.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\DateNormalizer
+    pim_catalog.normalizer.indexing_product.product.text.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\TextNormalizer
+    pim_catalog.normalizer.indexing_product.product.text_area.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\TextAreaNormalizer
+    pim_catalog.normalizer.indexing_product.product.price_collection.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\PriceCollectionNormalizer
+    pim_catalog.normalizer.indexing_product.product.metric.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\MetricNormalizer
+    pim_catalog.normalizer.indexing_product.product.media.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\MediaNormalizer
+    pim_catalog.normalizer.indexing_product.product.boolean.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\BooleanNormalizer
+
+    pim_catalog.normalizer.indexing_product_and_product_model.product.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductNormalizer
+    pim_catalog.normalizer.indexing_product_and_product_model.product.properties.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductPropertiesNormalizer
+
+services:
+    pim_catalog.normalizer.indexing_product.datetime:
+        class: '%pim_catalog.normalizer.indexing_product.datetime.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.datetime'
+        tags:
+            - { name: pim_indexing_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.indexing_product.product.product_value_collection:
+        class: '%pim_catalog.normalizer.indexing_product.product.product_value_collection.class%'
+        arguments:
+            - '@pim_indexing_serializer'
+        tags:
+            - { name: pim_indexing_serializer.normalizer, priority: 40 }
+        lazy: true
+
+    pim_catalog.normalizer.indexing_product.product.product_completeness_collection:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductCompletenessCollectionNormalizer'
+        tags:
+            - { name: pim_indexing_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.indexing_product.product.number:
+        class: '%pim_catalog.normalizer.indexing_product.product.number.class%'
+        arguments:
+            - '@akeneo.pim.structure.query.get_attributes'
+        tags:
+            - { name: pim_indexing_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.indexing_product.product.options:
+        class: '%pim_catalog.normalizer.indexing_product.product.options.class%'
+        arguments:
+            - '@akeneo.pim.structure.query.get_attributes'
+        tags:
+            - { name: pim_indexing_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.indexing_product.product.dummy:
+        class: '%pim_catalog.normalizer.indexing_product.product.dummy.class%'
+        arguments:
+            - '@akeneo.pim.structure.query.get_attributes'
+        tags:
+            - { name: pim_indexing_serializer.normalizer, priority: 80 }
+
+    pim_catalog.normalizer.indexing_product.date:
+        class: '%pim_catalog.normalizer.indexing_product.date.class%'
+        arguments:
+            - '@akeneo.pim.structure.query.get_attributes'
+        tags:
+            - { name: pim_indexing_serializer.normalizer, priority: 100 }
+
+    pim_catalog.normalizer.indexing_product.product.text:
+        class: '%pim_catalog.normalizer.indexing_product.product.text.class%'
+        arguments:
+            - '@akeneo.pim.structure.query.get_attributes'
+        tags:
+            - { name: pim_indexing_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.indexing_product.product.text_area:
+        class: '%pim_catalog.normalizer.indexing_product.product.text_area.class%'
+        arguments:
+            - '@akeneo.pim.structure.query.get_attributes'
+        tags:
+            - { name: pim_indexing_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.indexing_product.product.option:
+        class: '%pim_catalog.normalizer.indexing_product.product.option.class%'
+        arguments:
+            - '@akeneo.pim.structure.query.get_attributes'
+        tags:
+            - { name: pim_indexing_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.indexing_product.product.price_collection:
+        class: '%pim_catalog.normalizer.indexing_product.product.price_collection.class%'
+        arguments:
+            - '@akeneo.pim.structure.query.get_attributes'
+        tags:
+            - { name: pim_indexing_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.indexing_product.product.metric:
+        class: '%pim_catalog.normalizer.indexing_product.product.metric.class%'
+        arguments:
+            - '@akeneo.pim.structure.query.get_attributes'
+        tags:
+            - { name: pim_indexing_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.indexing_product.product.media:
+        class: '%pim_catalog.normalizer.indexing_product.product.media.class%'
+        arguments:
+            - '@akeneo.pim.structure.query.get_attributes'
+        tags:
+            - { name: pim_indexing_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.indexing_product.product.boolean:
+        class: '%pim_catalog.normalizer.indexing_product.product.boolean.class%'
+        arguments:
+            - '@akeneo.pim.structure.query.get_attributes'
+        tags:
+            - { name: pim_indexing_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.indexing_product_and_product_model.product:
+        class: '%pim_catalog.normalizer.indexing_product_and_product_model.product.class%'
+        arguments:
+            - '@pim_catalog.normalizer.indexing_product_and_product_model.product.properties'
+            - '@pim_catalog.family_variant.provider.entity_with_family_variant_attributes'
+        tags:
+            - { name: pim_indexing_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.indexing_product_and_product_model.product.properties:
+        class: '%pim_catalog.normalizer.indexing_product_and_product_model.product.properties.class%'
+        arguments:
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.locale'
+            - '@akeneo.pim.enrichment.product.query.get_product_completenesses'
+            - '@pim_indexing_serializer'
+            - !tagged pim_catalog.normalizer.indexing_product_and_product_model.product.additional_properties
+        tags:
+            - { name: pim_indexing_serializer.normalizer, priority: 40 }
+        lazy: true
+
+    pim_reference_data.normalizer.indexing.product.reference_data:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ReferenceDataNormalizer'
+        arguments:
+            - '@akeneo.pim.structure.query.get_attributes'
+        tags:
+            - { name: pim_indexing_serializer.normalizer, priority: 90 }
+
+    pim_reference_data_collection.normalizer.indexing.product.reference_data:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ReferenceDataCollectionNormalizer'
+        arguments:
+            - '@akeneo.pim.structure.query.get_attributes'
+        tags:
+            - { name: pim_indexing_serializer.normalizer, priority: 90 }

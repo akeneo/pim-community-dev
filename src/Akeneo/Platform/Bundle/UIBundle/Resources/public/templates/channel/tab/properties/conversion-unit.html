@@ -1,0 +1,28 @@
+<div class="tabsection-title"><%- label %></div>
+<div class="tabsection-helper"></div>
+<div class="tabsection-content">
+    <div class="AknFormContainer AknFormContainer--withPadding">
+        <% _.each(metrics, function (attribute, key) { %>
+        <div class="AknFieldContainer">
+            <div class="AknFieldContainer-header">
+                <label class="AknFieldContainer-label control-label" for="<%- fieldBaseId + attribute.code %>">
+                    <%- i18n.getLabel(attribute.labels, locale, attribute.code) %>
+                </label>
+            </div>
+            <div class="AknFieldContainer-inputContainer">
+                <select class="select2" id="<%- fieldBaseId + attribute.code %>">
+                    <% isMetricConfigured = !_.isUndefined(conversionUnits[attribute.code]) %>
+                    <option value="no_conversion" <%- (!isMetricConfigured) ? 'selected' : '' %>>
+                        <%- doNotConvertLabel %>
+                    </option>
+                    <% _.each(measures.find(family => family.code === attribute.metric_family).units, function (unit) { %>
+                    <option value="<%- unit.code %>" <%- (isMetricConfigured && unit.code === conversionUnits[attribute.code]) ? 'selected' : '' %>>
+                        <%- i18n.getLabel(unit.labels, locale, unit.code) %>
+                    </option>
+                    <% }) %>
+                </select>
+            </div>
+        </div>
+        <% }) %>
+    </div>
+</div>

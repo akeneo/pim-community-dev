@@ -1,0 +1,198 @@
+{#
+    Renders datagrid widget
+#}
+{% macro renderGrid(name, params = {}, renderParams = {}) %}
+    {% set metaData = oro_datagrid_metadata(name, params) %}
+
+    <div id="grid-{{ name }}" data-type="datagrid" data-data="{{ oro_datagrid_data(name, params)|escape }}"
+         {% if renderParams.cssClass is defined %} class="{{ renderParams.cssClass }}" {% endif %}
+         data-metadata="{{ metaData|json_encode }}"></div>
+    <script type="text/javascript" nonce="{{ js_nonce() }}">
+        require(['jquery', 'oro/datagrid-builder', 'underscore'].concat({{ metaData.requireJSModules|json_encode|raw }}),
+        function ($, datagridBuilder, _) {
+            var builders = _.toArray(arguments).slice(3);
+            $(function () {
+                datagridBuilder(builders);
+            });
+        });
+    </script>
+{% endmacro %}
+
+{#
+    Datagrid macro to load the grid asynchronously
+#}
+{% macro renderStatefulGrid(name, params = {}, renderParams = {}, defaultView = {}, categoryBaseRoute = null, includeFilters = false) %}
+    <div id="grid-{{ name }}" data-type="datagrid" {% if renderParams.cssClass is defined %} class="{{ renderParams.cssClass }}" {% endif %}></div>
+    <script type="text/javascript" nonce="{{ js_nonce() }}">
+        require(
+            [
+                'underscore',
+                'jquery',
+                'pim/router',
+                'oro/datagrid-builder',
+                'oro/pageable-collection',
+                'pim/datagrid/state',
+                'oro/datafilter/product_category-filter'
+            ],
+            function (
+                _,
+                $,
+                Routing,
+                datagridBuilder,
+                PageableCollection,
+                DatagridState,
+                CategoryFilter
+            ) {
+                'use strict';
+
+                $(function() {
+
+                    var defaultColumnsRoute = Routing.generate(
+                            'pim_datagrid_view_rest_default_columns',
+                            {alias: '{{ name }}' }
+                    );
+
+                    $.get(defaultColumnsRoute, function (defaultColumns) {
+                        initDatagrid(defaultColumns);
+                    });
+
+                    var initDatagrid = function (defaultColumns) {
+                        var urlParams    = {{ params|json_encode|raw }};
+                        urlParams.alias  = '{{ name }}';
+                        urlParams.params = {{ params|json_encode|raw }};
+
+                        {% set hasDefaultView = defaultView is not empty %}
+                        var viewStored = DatagridState.get('{{ name }}', ['view']);
+                        if (!viewStored.view) {
+                            DatagridState.refreshFiltersFromUrl('{{ name }}');
+                        }
+
+                        var hasDefaultView = {% if hasDefaultView %}true{% else %}false{% endif %};
+                        var state          = DatagridState.get('{{ name }}', ['view', 'filters', 'columns']);
+
+                        var applyView = function (viewId) {
+                            urlParams['{{ name }}[_parameters][view][id]'] = viewId;
+
+                            DatagridState.set('{{ name }}', {
+                                view: viewId
+                            });
+                        };
+
+                        var applyFilters = function (rawFilters) {
+                            var filters = PageableCollection.prototype.decodeStateData(rawFilters);
+                            var options = {};
+
+                            if (!_.isEmpty(filters.filters)) {
+                                options = {
+                                    state: {
+                                        filters: _.omit(filters.filters, 'scope')
+                                    }
+                                };
+                            }
+
+                            var collection = new PageableCollection(null, options);
+                            collection.processFiltersParams(urlParams, filters, '{{ name }}[_filter]');
+
+                            for (var column in filters.sorters) {
+                                urlParams['{{ name }}[_sort_by][' + column + ']'] =
+                                        1 === parseInt(filters.sorters[column]) ?
+                                                'DESC' :
+                                                'ASC';
+                            }
+
+                            if (undefined !== filters.pageSize) {
+                                urlParams['{{ name }}[_pager][_per_page]'] = filters.pageSize;
+                            }
+
+                            if (undefined !== filters.currentPage) {
+                                urlParams['{{ name }}[_pager][_page]'] = filters.currentPage;
+                            }
+
+                            DatagridState.set('{{ name }}', {
+                                filters: rawFilters
+                            });
+                        };
+
+                        var applyColumns = function (columns) {
+                            if (_.isArray(columns)) {
+                                columns = columns.join();
+                            }
+                            urlParams['{{ name }}[_parameters][view][columns]'] = columns;
+
+                            DatagridState.set('{{ name }}', {
+                                columns: columns
+                            });
+                        };
+
+                        if (hasDefaultView && ('0' === state.view || null === state.view)) {
+                            {% if hasDefaultView %}
+                            applyView({{ defaultView.id }});
+                            applyFilters('{{ defaultView.filters|raw }}');
+                            applyColumns({{ defaultView.columns|json_encode|raw }});
+                            {% endif %}
+                        } else {
+                            if (state.view) {
+                                applyView(state.view);
+                            }
+
+                            if (state.filters) {
+                                applyFilters(state.filters);
+                            }
+
+                            if (state.columns) {
+                                applyColumns(state.columns);
+                            } else {
+                                applyColumns(defaultColumns);
+                            }
+                        }
+
+                        {% if categoryBaseRoute is not null %}
+                        var categoryFilter = new CategoryFilter(
+                            urlParams,
+                            '{{ name }}',
+                            '{{ categoryBaseRoute }}',
+                            '#tree'
+                        );
+                        {% endif %}
+
+                        state = DatagridState.get('{{ name }}', ['view', 'filters', 'columns']);
+
+                        $.get(Routing.generate('pim_datagrid_load', urlParams), function(resp) {
+                            if (state.columns) {
+                                resp.metadata.state.parameters = _.extend({}, resp.metadata.state.parameters, {
+                                    view: {
+                                        columns: state.columns,
+                                        id: state.view
+                                    }
+                                });
+                            }
+                            $('#grid-{{ name }}').data({ 'metadata': resp.metadata, 'data': JSON.parse(resp.data) });
+
+                            var modules = resp.metadata.requireJSModules;
+                            modules.push('pim/datagrid/state-listener');
+
+                            // Will be removed in TIP-733-2
+                            {% if includeFilters %}
+                                modules.push('oro/datafilter-builder');
+                            {% endif %}
+
+                            var resolvedModules = []
+                            _.each(modules, function(module) {
+                              var resolvedModule = require(module)
+                              resolvedModules.push(resolvedModule)
+                            })
+                            datagridBuilder(resolvedModules);
+                        });
+                    };
+                });
+            }
+        );
+    </script>
+{% endmacro %}
+
+{#
+    Datagrid macro to render entity history grid
+#}
+{% macro renderHistoryGrid(entity) %}
+    {{ _self.renderGrid('history-grid', { object_class: entity|class, object_id: entity.id }) }}
+{% endmacro %}

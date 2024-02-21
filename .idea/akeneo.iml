@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="WEB_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/components/identifier-generator/back/src" isTestSource="false" packagePrefix="Akeneo\Pim\Automation\IdentifierGenerator\" />
+      <sourceFolder url="file://$MODULE_DIR$/components/identifier-generator/back/tests" isTestSource="true" packagePrefix="Akeneo\Test\Pim\Automation\IdentifierGenerator\" />
+      <sourceFolder url="file://$MODULE_DIR$/components/identifier-generator/back/tests/EndToEnd" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/components/identifier-generator/back/tests/Integration" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Akeneo/Category/back" isTestSource="false" packagePrefix="Akeneo\Category\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Akeneo/Category/back/tests" isTestSource="true" packagePrefix="Akeneo\Test\Category\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Akeneo/Category/back/tests/Integration" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Akeneo/Channel/back" isTestSource="false" packagePrefix="Akeneo\Channel\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Akeneo/Channel/back/tests" isTestSource="true" packagePrefix="Akeneo\Test\Channel\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Akeneo/Connectivity/Connection/back" isTestSource="false" packagePrefix="Akeneo\Connectivity\Connection\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Akeneo/Connectivity/Connection/back/tests" isTestSource="true" packagePrefix="Akeneo\Connectivity\Connection\Tests\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Akeneo/Connectivity/Connection/back/tests/EndToEnd" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Akeneo/Connectivity/Connection/back/tests/Integration" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Akeneo/Connectivity/Connection/tests" isTestSource="true" packagePrefix="Akeneo\Connectivity\Connection\Tests\EndToEnd\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Akeneo/FreeTrial/back" isTestSource="false" packagePrefix="Akeneo\FreeTrial\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Akeneo/Pim/Automation/DataQualityInsights/back" isTestSource="false" packagePrefix="Akeneo\Pim\Automation\DataQualityInsights\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Akeneo/Pim/Automation/DataQualityInsights/tests/back" isTestSource="true" packagePrefix="Akeneo\Test\Pim\Automation\DataQualityInsights\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Akeneo/Pim/Automation/DataQualityInsights/tests/back/EndToEnd" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Akeneo/Pim/Automation/DataQualityInsights/tests/back/Integration" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Akeneo/Pim/Enrichment/Category/back" isTestSource="false" packagePrefix="Akeneo\Pim\Enrichment\Category\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Akeneo/Pim/Enrichment/Category/back/Test" isTestSource="true" packagePrefix="Akeneo\Test\Pim\Enrichment\Category\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Akeneo/Pim/Enrichment/Product/back" isTestSource="false" packagePrefix="Akeneo\Pim\Enrichment\Product\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Akeneo/Pim/Enrichment/Product/back/Test" isTestSource="true" packagePrefix="Akeneo\Test\Pim\Enrichment\Product\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Akeneo/Pim/Enrichment/Product/back/Test/Integration" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Akeneo/Pim/Structure/Family/back" isTestSource="false" packagePrefix="Akeneo\Pim\Structure\Family\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Akeneo/Pim/Structure/Family/back/Test" isTestSource="true" packagePrefix="Akeneo\Test\Pim\Structure\Family\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back" isTestSource="false" packagePrefix="Akeneo\Platform\CommunicationChannel\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests" isTestSource="true" packagePrefix="Akeneo\Platform\CommunicationChannel\Test\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests/Integration" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Akeneo/Platform/Installer/back/src" isTestSource="false" packagePrefix="Akeneo\Platform\Installer\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Akeneo/Platform/Installer/back/tests" isTestSource="true" packagePrefix="Akeneo\Platform\Installer\Test\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Akeneo/Platform/Job/back" isTestSource="false" packagePrefix="Akeneo\Platform\Job\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Akeneo/Platform/Job/back/tests" isTestSource="true" packagePrefix="Akeneo\Platform\Job\Test\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Akeneo/Tool/Bundle/BatchQueueBundle/tests/Acceptance" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Akeneo/Tool/Bundle/FileStorageBundle/tests/Integration" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Akeneo/Tool/Bundle/MeasureBundle/back/src" isTestSource="false" packagePrefix="Akeneo\Tool\Bundle\MeasureBundle\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Akeneo/Tool/Bundle/MeasureBundle/back/tests" isTestSource="true" packagePrefix="Akeneo\Tool\Bundle\MeasureBundle\tests\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Akeneo/Tool/Bundle/MeasureBundle/back/tests/Acceptance" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Akeneo/Tool/Bundle/MeasureBundle/back/tests/EndToEnd" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Akeneo/Tool/Bundle/MeasureBundle/back/tests/Integration" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Akeneo/Tool/Component/StorageUtils/" isTestSource="false" packagePrefix="Akeneo\Component\StorageUtils\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Akeneo/UserManagement/back" isTestSource="false" packagePrefix="Akeneo\UserManagement\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Akeneo/UserManagement/back/tests" isTestSource="true" packagePrefix="Akeneo\Test\UserManagement\" />
+      <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/tests/back" isTestSource="true" packagePrefix="AkeneoTest\" />
+      <sourceFolder url="file://$MODULE_DIR$/tests/back/Integration/IntegrationTestsBundle" isTestSource="true" packagePrefix="Akeneo\Test\IntegrationTestsBundle\" />
+      <sourceFolder url="file://$MODULE_DIR$/tests/legacy/features" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/tests/legacy/features/Behat" isTestSource="true" packagePrefix="Pim\Behat\" />
+      <sourceFolder url="file://$MODULE_DIR$/upgrades" isTestSource="false" packagePrefix="Pim\Upgrade\" />
+      <sourceFolder url="file://$MODULE_DIR$/upgrades/schema" isTestSource="false" packagePrefix="Pim\Upgrade\Schema\" />
+      <sourceFolder url="file://$MODULE_DIR$/upgrades/test_schema" isTestSource="true" packagePrefix="Pim\Upgrade\Schema\Tests\" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+  <component name="SonarLintModuleSettings">
+    <option name="uniqueId" value="11eea7e6-f6d0-46a7-8cca-d666647b41a8" />
+  </component>
+</module>

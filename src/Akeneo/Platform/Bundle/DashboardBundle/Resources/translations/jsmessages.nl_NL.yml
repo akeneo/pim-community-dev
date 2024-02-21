@@ -1,0 +1,28 @@
+pim_dashboard:
+  title: Activiteitendashboard
+  greetings: Hallo {{ name }}!
+  welcome_sentence:
+    message0: Het wordt een mooie dag.
+    message1: Wat goed om u te zien.
+    message2: We zijn blij om u hier te zien.
+    message3: Wat fijn om u hier te zien.
+    message4: Het is geweldig om u aan boord te hebben.
+    message5: Aan de slag!
+    message6: Laten we beginnen.
+    message7: Laten we vandaag geweldige dingen gaan doen.
+    message8: Bent u er klaar voor?
+    message9: Het is tijd om uw producten te verrijken.
+  widget:
+    completeness:
+      load_more: 'Laad meer...'
+      title: Volledigheid in alle kanalen en talen
+      progress_messages:
+        message1: Bereid u voor om met het verrijkingstraject op weg naar volledigheid te beginnen.
+        message2: U hebt nog wat werk te doen, maar u bent op de goede weg.
+        message3: Ga door met het voltooien van uw productinformatie.
+        message4: Gefeliciteerd! U hebt de perfecte productvolledigheid voor dit kanaal bereikt!
+    last_operations:
+      title: Laatste bewerkingen
+  version: Versie
+pim_title:
+  pim_dashboard_index: Dashboard

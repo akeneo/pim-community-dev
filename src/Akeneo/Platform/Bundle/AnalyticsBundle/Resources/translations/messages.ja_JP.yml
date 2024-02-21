@@ -1,0 +1,69 @@
+pim_analytics:
+  new_patch_available: 新しいパッチが利用可能です
+  system_config:
+    group:
+      notification.title: お知らせ
+      version_update.title: バージョンアップデート
+    form:
+      version_update.label: 新しいバージョンの通知
+      version_update.tooltip: 外部サーバーにリクエストを送信して新しいパッチのリリース情報を受け取りましょう
+  system_info:
+    title: システム情報
+    download: TXT
+  info_type:
+    pim_edition: エディション
+    pim_version: バージョン
+    pim_storage_driver: ストレージ
+    pim_environment: 環境
+    pim_install_time: インストール日時
+    registered_bundles: 登録済みバンドル
+    nb_channels: チャンネル数
+    nb_products: 商品数
+    nb_product_models: 商品モデル数
+    nb_variant_products: 商品のバリエーション数
+    nb_family_variants: ファミリーバリエーション数
+    nb_attributes: 属性数
+    nb_scopable_attributes: 参照可の属性数
+    nb_localizable_attributes: ローカライズ可の属性数
+    nb_scopable_localizable_attributes: ローカライズ可の属性数ならびに参照可の属性数
+    nb_useable_as_grid_filter_attributes: グリッドフィルターとして使用可能な項目の数
+    avg_percentage_scopable_attributes_per_family: ファミリーごとに参照可能な属性の平均パーセンテージ (%)
+    avg_percentage_localizable_attributes_per_family: ファミリーごとにローカライズ可能な属性の平均パーセンテージ (%)
+    avg_percentage_scopable_localizable_attributes_per_family: ファミリーごとにローカライズ可能、参照可能な属性の平均パーセンテージ (%)
+    avg_number_attributes_per_family: ファミリごとの平均属性数
+    nb_locales: ロケール数
+    nb_families: ファミリー数
+    nb_users: ユーザー数
+    nb_categories: カテゴリ数
+    nb_category_trees: カテゴリツリー数
+    max_category_in_one_category: 1つのカテゴリにおける最大カテゴリ数
+    max_category_levels: 最大カテゴリレベル数
+    nb_product_values: 商品値の数値
+    avg_product_values_by_product: 商品ごとの商品値の平均数値
+    avg_product_values_by_family: ファミリー毎の潜在的商品値の平均数値
+    max_product_values_by_family: ファミリーごとの潜在的商品値の最大数値
+    pim_storage_version: ストレージバージョン
+    os_version: OSバージョン
+    php_version: PHPバージョン
+    mysql_version: "MySQL バージョン\n"
+    mariadb_version: MariaDB バージョン
+    mongodb_version: MongoDB バージョン
+    server_version: サーバーバージョン
+    php_extensions: PHP拡張
+    email_domains: 紐づけられたメールアドレスのドメイン
+    api_connection: API 接続
+    nb_media_files_in_products: 商品のメディアファイルの数
+    nb_media_images_in_products: 商品のメディア画像の数
+    is_demo_catalog: デモカタログをインストール済み
+    data_source.tracked: 追跡されている API 接続元の数
+    data_source.untracked: 追跡されていない API 接続元の数
+    data_destination.tracked: 追跡されている API 接続元の数
+    data_destination.untracked: 追跡されていない API 接続先の数
+    other.tracked: 追跡されている API のその他の接続の数
+    other.untracked: 追跡されていない API のその他の接続の数
+  acl:
+    system_info:
+      index: システム情報
+pim_menu:
+  item:
+    system_info: システム情報

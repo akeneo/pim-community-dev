@@ -1,0 +1,99 @@
+Item deleted: 条目已删除
+Are you sure you want to delete this item?: 确实要删除这个项目吗?
+Delete Error: 删除错误
+Are you sure you want to do remove selected items?: 你确定你想要做移除选定的条目吗?
+Selected items were removed.: 选定的条目被移除。
+Selected items were not removed.: 选定的条目没有被移除。
+Please, select items to remove.: 请选择要移除的条目。
+Cannot delete item.: 不能删除条目。
+Refresh Confirmation: 刷新确认
+Your local changes will be lost. Are you sure you want to refresh grid?: 你本地的更改将会丢失。你确定你想要刷新页面？
+Reset Confirmation: 重置确认
+Your local changes will be lost. Are you sure you want to reset grid?: 你本地的更改将会丢失。你确定你想要重置页面？
+Confirmation: 确认
+edit: 编辑
+copy: 复制
+remove: 删除
+Status: 状态
+All: 所有
+Per page: 每页
+Mass Action Confirmation: 批处理确认
+Mass action performed.: 批量动作已完成。
+Mass action is not performed.: 批量动作未完成。
+Please, select items to perform mass action.: 请选择条目，以进行批处理。
+Execution Confirmation: 执行确认
+Are you sure you want to do this?: 您是否确认要这样做？
+Action performed.: 执行完成。
+Action is not performed.: 执行未完成。
+Please, select item to perform action.: 请选择条目，以进行处理。
+View per page: 查看每页
+Enabled: 已启用
+Disabled: 已禁用
+not_available: 不适用
+Yes: true
+No: false
+oro.datagrid.entityHint: 实体
+oro.datagrid.noentities: 没有找到记录
+oro.datagrid.nocolumns: 没有配置此网格的列
+oro.datagrid.pagination.label: "页"
+oro.datagrid.pagination.totalPages: "{{ totalPages }}"
+oro.datagrid.pagination.totalRecords: "{{ totalRecords }} 记录"
+oro.datagrid.action.reset: "重置"
+oro.datagrid.action.refresh: "刷新"
+oro_datagrid.select.all: "所有"
+oro_datagrid.select.visible: "所有可见的"
+oro_datagrid.select.none: "无"
+oro_datagrid.select.select: "选择"
+pim.grid.ajax_choice_filter.label_empty: 为空
+pim.grid.ajax_choice_filter.label_not_empty: 不为空
+pim:
+  grid:
+    choice_filter:
+      label_empty: 为空
+      label_not_empty: 不为空
+      label_in_list: 在列表中
+    price_filter:
+      label: 货币
+    category_filter:
+      done: 已完成
+Available Columns: 可用的列
+Displayed Columns: 选定的列
+datagrid_view.columns.min_message: 您必须选择至少一个要显示的 datagrid 列
+pim_datagrid:
+  column_configurator:
+    label: 列
+    all_groups: 所有群组
+    search: 搜索
+    clear: 清除
+    displayed_columns: 选定的列
+    apply: 应用
+    cancel: 取消
+    remove_column: 删除
+    attribute_groups: 属性组
+  mass_action:
+    delete:
+      confirm_title: 确定删除
+      confirm_ok: 好的
+      empty_selection: 没有选定的产品
+pim.grid.mass_action.quick_export.title: 快速导出
+pim.grid.mass_action.quick_export.launched: 快速导出已经执行
+pim.grid.action.launch.title: 启动
+pim.grid.action.show.title: 展示
+Please select view: 请选择一个视图。
+Loading...: 正在加载...
+View: 视图
+from: 从
+to: 到
+grid.view_selector:
+  default_view: 默认视图
+  save_changes: 保存此视图
+  remove: 删除此视图
+  create_view: 创建视图
+  create: 创建
+  search: 搜索
+  views: 视图
+  placeholder: 新视图的名称
+  choose_label: 选择视图的标签
+  confirmation:
+    delete: 确定删除
+grid.view_selector.flash.updated: 数据视图已更新

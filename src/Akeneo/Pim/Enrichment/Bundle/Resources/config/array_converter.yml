@@ -1,0 +1,308 @@
+services:
+    ### Product model
+    pim_connector.array_converter.flat_to_standard.product_model:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ProductModel'
+        arguments:
+            - '@pim_connector.array_converter.flat_to_standard.product.columns_mapper'
+            - '@pim_connector.array_converter.flat_to_standard.product_model.field_converter'
+            - '@pim_connector.array_converter.flat_to_standard.product_value'
+            - '@pim_connector.array_converter.flat_to_standard.product.columns_merger'
+            - '@pim_connector.array_converter.flat_to_standard.product.attribute_columns_resolver'
+            - '@pim_connector.array_convertor.checker.fields_requirement'
+            - '@pim_connector.array_converter.flat_to_standard.product.association_columns_resolver'
+
+    pim_connector.array_converter.flat_to_standard.product_model_delocalized:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\EntityWithValuesDelocalized'
+        arguments:
+            - '@pim_connector.array_converter.flat_to_standard.product_model'
+            - '@pim_catalog.localization.localizer.converter'
+
+    ### Association
+    pim_connector.array_converter.flat_to_standard.product_association:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ProductAssociation'
+        arguments:
+            - '@pim_connector.array_converter.flat_to_standard.product'
+
+    pim_connector.array_converter.flat_to_standard.product_model_association:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ProductModelAssociation'
+        arguments:
+            - '@pim_connector.array_converter.flat_to_standard.product_model'
+
+    ### Product
+    pim_connector.array_converter.flat_to_standard.product:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\Product'
+        arguments:
+            - '@pim_connector.array_converter.flat_to_standard.product.association_columns_resolver'
+            - '@pim_connector.array_converter.flat_to_standard.product.attribute_columns_resolver'
+            - '@pim_connector.array_converter.flat_to_standard.product.field_converter'
+            - '@pim_connector.array_converter.flat_to_standard.product.columns_merger'
+            - '@pim_connector.array_converter.flat_to_standard.product.columns_mapper'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_connector.array_converter.flat_to_standard.product_value'
+
+    pim_connector.array_converter.flat_to_standard.product_value:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\Value'
+        arguments:
+            - '@pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor'
+            - '@pim_connector.array_converter.flat_to_standard.product.value_converter.registry'
+            - '@pim_connector.array_converter.flat_to_standard.product.columns_merger'
+
+
+    pim_connector.array_converter.flat_to_standard.product_delocalized:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\EntityWithValuesDelocalized'
+        arguments:
+            - '@pim_connector.array_converter.flat_to_standard.product'
+            - '@pim_catalog.localization.localizer.converter'
+
+    pim_connector.array_converter.standard_to_flat.product:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product'
+        arguments:
+            - '@pim_connector.array_converter.standard_to_flat.product.product_value_converter'
+            - '@pim_connector.array_converter.standard_to_flat.quality_score_converter'
+
+    pim_connector.array_converter.standard_to_flat.product_localized:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\ProductLocalized'
+        arguments:
+            - '@pim_connector.array_converter.standard_to_flat.product'
+            - '@pim_catalog.localization.localizer.converter'
+
+    pim_connector.array_converter.standard_to_flat.product_model:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\ProductModel'
+        arguments:
+            - '@pim_connector.array_converter.standard_to_flat.product.product_value_converter'
+            - '@pim_connector.array_converter.standard_to_flat.quality_score_converter'
+
+    pim_connector.array_converter.standard_to_flat.product_model_localized:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\ProductLocalized'
+        arguments:
+            - '@pim_connector.array_converter.standard_to_flat.product_model'
+            - '@pim_catalog.localization.localizer.converter'
+
+    pim_connector.array_converter.standard_to_flat.product.product_value_converter:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ProductValueConverter'
+        arguments:
+            - '@pim_connector.array_converter.standard_to_flat.product.value_converter.registry'
+            - '@pim_catalog.repository.cached_attribute'
+
+    pim_connector.array_converter.standard_to_flat.quality_score_converter:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\QualityScoreConverter'
+
+    ### Group
+    pim_connector.array_converter.flat_to_standard.group:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\Group'
+        arguments:
+            - '@pim_catalog.repository.locale'
+            - '@pim_connector.array_convertor.checker.fields_requirement'
+
+    pim_connector.array_converter.standard_to_flat.group:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Group'
+
+    ### Category
+    pim_connector.array_converter.standard_to_flat.category:
+        class: 'Akeneo\Category\Infrastructure\Component\Connector\ArrayConverter\StandardToFlat\Category'
+
+    pim_connector.array_converter.flat_to_standard.category:
+        class: 'Akeneo\Category\Infrastructure\Component\Connector\ArrayConverter\FlatToStandard\Category'
+        arguments:
+            - '@pim_connector.array_convertor.checker.fields_requirement'
+
+    ### Extractors
+    pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnInfoExtractor'
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.repository.cached_channel'
+            - '@pim_catalog.repository.cached_locale'
+            - '@pim_connector.array_converter.flat_to_standard.product.association_columns_resolver'
+
+    ### Product value converters
+    pim_connector.array_converter.flat_to_standard.product.value_converter.registry:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter\ValueConverterRegistry'
+
+    pim_connector.array_converter.standard_to_flat.product.value_converter.registry:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\ValueConverterRegistry'
+
+    pim_connector.array_converter.flat_to_standard.product.value_converter.abstract:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter\AbstractValueConverter'
+        abstract: true
+        arguments:
+            - '@pim_connector.array_converter.flat_to_standard.product.field_splitter'
+
+    pim_connector.array_converter.flat_to_standard.product.value_converter.price:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter\PriceConverter'
+        parent: pim_connector.array_converter.flat_to_standard.product.value_converter.abstract
+        arguments:
+            - ['pim_catalog_price_collection']
+        tags:
+            - { name: 'pim_connector.array_converter.flat_to_standard.product.value_converter' }
+
+    pim_connector.array_converter.standard_to_flat.product.value_converter.price:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\PriceConverter'
+        arguments:
+            - '@pim_connector.array_converter.flat_to_standard.product.attribute_columns_resolver'
+            - ['pim_catalog_price_collection']
+        tags:
+            - { name: 'pim_connector.array_converter.standard_to_flat.product.value_converter' }
+
+    pim_connector.array_converter.flat_to_standard.product.value_converter.metric:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter\MetricConverter'
+        parent: pim_connector.array_converter.flat_to_standard.product.value_converter.abstract
+        arguments:
+            - ['pim_catalog_metric']
+        tags:
+            - { name: 'pim_connector.array_converter.flat_to_standard.product.value_converter' }
+
+    pim_connector.array_converter.standard_to_flat.product.value_converter.metric:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\MetricConverter'
+        arguments:
+            - '@pim_connector.array_converter.flat_to_standard.product.attribute_columns_resolver'
+            - ['pim_catalog_metric']
+        tags:
+            - { name: 'pim_connector.array_converter.standard_to_flat.product.value_converter' }
+
+    pim_connector.array_converter.flat_to_standard.product.value_converter.multiselect:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter\MultiSelectConverter'
+        parent: pim_connector.array_converter.flat_to_standard.product.value_converter.abstract
+        arguments:
+            - ['pim_catalog_multiselect', 'pim_reference_data_multiselect']
+        tags:
+            - { name: 'pim_connector.array_converter.flat_to_standard.product.value_converter' }
+
+    pim_connector.array_converter.standard_to_flat.product.value_converter.multiselect:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\MultiSelectConverter'
+        arguments:
+            - '@pim_connector.array_converter.flat_to_standard.product.attribute_columns_resolver'
+            - ['pim_catalog_multiselect', 'pim_reference_data_multiselect']
+        tags:
+            - { name: 'pim_connector.array_converter.standard_to_flat.product.value_converter' }
+
+    pim_connector.array_converter.flat_to_standard.product.value_converter.simpleselect:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter\SimpleSelectConverter'
+        parent: pim_connector.array_converter.flat_to_standard.product.value_converter.abstract
+        arguments:
+            - ['pim_catalog_simpleselect', 'pim_reference_data_simpleselect']
+        tags:
+            - { name: 'pim_connector.array_converter.flat_to_standard.product.value_converter' }
+
+    pim_connector.array_converter.standard_to_flat.product.value_converter.simpleselect:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\SimpleSelectConverter'
+        arguments:
+            - '@pim_connector.array_converter.flat_to_standard.product.attribute_columns_resolver'
+            - ['pim_catalog_simpleselect', 'pim_reference_data_simpleselect']
+        tags:
+            - { name: 'pim_connector.array_converter.standard_to_flat.product.value_converter' }
+
+    pim_connector.array_converter.flat_to_standard.product.value_converter.text:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter\TextConverter'
+        parent: pim_connector.array_converter.flat_to_standard.product.value_converter.abstract
+        arguments:
+            - ['pim_catalog_identifier', 'pim_catalog_text', 'pim_catalog_textarea']
+        tags:
+            - { name: 'pim_connector.array_converter.flat_to_standard.product.value_converter' }
+
+    pim_connector.array_converter.standard_to_flat.product.value_converter.text:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\TextConverter'
+        arguments:
+            - '@pim_connector.array_converter.flat_to_standard.product.attribute_columns_resolver'
+            - ['pim_catalog_identifier', 'pim_catalog_text', 'pim_catalog_textarea', 'pim_catalog_number']
+        tags:
+            - { name: 'pim_connector.array_converter.standard_to_flat.product.value_converter' }
+
+    pim_connector.array_converter.flat_to_standard.product.value_converter.boolean:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter\BooleanConverter'
+        parent: pim_connector.array_converter.flat_to_standard.product.value_converter.abstract
+        arguments:
+            - ['pim_catalog_boolean']
+            - '@translator'
+        tags:
+            - { name: 'pim_connector.array_converter.flat_to_standard.product.value_converter' }
+
+    pim_connector.array_converter.standard_to_flat.product.value_converter.boolean:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\BooleanConverter'
+        arguments:
+            - '@pim_connector.array_converter.flat_to_standard.product.attribute_columns_resolver'
+            - ['pim_catalog_boolean']
+        tags:
+            - { name: 'pim_connector.array_converter.standard_to_flat.product.value_converter' }
+
+    pim_connector.array_converter.flat_to_standard.product.value_converter.media:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter\MediaConverter'
+        parent: pim_connector.array_converter.flat_to_standard.product.value_converter.abstract
+        arguments:
+            - ['pim_catalog_image', 'pim_catalog_file']
+        tags:
+            - { name: 'pim_connector.array_converter.flat_to_standard.product.value_converter' }
+
+    pim_connector.array_converter.standard_to_flat.product.value_converter.media:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\MediaConverter'
+        arguments:
+            - '@pim_connector.array_converter.flat_to_standard.product.attribute_columns_resolver'
+            - ['pim_catalog_image', 'pim_catalog_file']
+        tags:
+            - { name: 'pim_connector.array_converter.standard_to_flat.product.value_converter' }
+
+    pim_connector.array_converter.flat_to_standard.product.value_converter.number:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter\NumberConverter'
+        parent: pim_connector.array_converter.flat_to_standard.product.value_converter.abstract
+        arguments:
+            - ['pim_catalog_number']
+        tags:
+            - { name: 'pim_connector.array_converter.flat_to_standard.product.value_converter' }
+
+    pim_connector.array_converter.flat_to_standard.product.value_converter.date:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter\DateConverter'
+        parent: pim_connector.array_converter.flat_to_standard.product.value_converter.abstract
+        arguments:
+            - ['pim_catalog_date']
+        tags:
+            - { name: 'pim_connector.array_converter.flat_to_standard.product.value_converter' }
+
+    pim_connector.array_converter.standard_to_flat.product.value_converter.date:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\DateConverter'
+        arguments:
+            - '@pim_connector.array_converter.flat_to_standard.product.attribute_columns_resolver'
+            - ['pim_catalog_date']
+        tags:
+            - { name: 'pim_connector.array_converter.standard_to_flat.product.value_converter' }
+
+    ### Product field converter
+    pim_connector.array_converter.flat_to_standard.product.field_converter:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\FieldConverter'
+        arguments:
+            - '@pim_connector.array_converter.flat_to_standard.product.field_splitter'
+            - '@pim_connector.array_converter.flat_to_standard.product.association_columns_resolver'
+            - '@pim_catalog.repository.group_type'
+
+    pim_connector.array_converter.flat_to_standard.product_model.field_converter:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ProductModel\FieldConverter'
+        arguments:
+            - '@pim_connector.array_converter.flat_to_standard.product.field_splitter'
+            - '@pim_connector.array_converter.flat_to_standard.product.association_columns_resolver'
+
+    ### Columns resolvers
+    pim_connector.array_converter.flat_to_standard.product.attribute_columns_resolver:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnsResolver'
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.find_activated_currencies'
+            - '@pim_catalog.resolver.attribute_values'
+
+    pim_connector.array_converter.flat_to_standard.product.association_columns_resolver:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AssociationColumnsResolver'
+        arguments:
+            - '@pim_catalog.repository.association_type'
+
+
+    pim_connector.array_converter.flat_to_standard.product.field_splitter:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\FieldSplitter'
+
+    ### Columns mergers
+    pim_connector.array_converter.flat_to_standard.product.columns_merger:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ColumnsMerger'
+        arguments:
+            - '@pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor'
+            - '@pim_connector.array_converter.flat_to_standard.product.association_columns_resolver'
+
+    ### Columns mappers
+    pim_connector.array_converter.flat_to_standard.product.columns_mapper:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ColumnsMapper'

@@ -1,0 +1,383 @@
+parameters:
+    symfony.validator.recursive.class:                                     Symfony\Component\Validator\Validator\RecursiveValidator
+
+    pim_catalog.validator.helper.attribute.class:                          Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper
+    pim_catalog.validator.helper.attribute_filter.class:                   Akeneo\Pim\Enrichment\Component\Product\Validator\ElasticsearchFilterValidator
+    pim_catalog.validator.constraint.currency.class:                       Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\CurrencyValidator
+    pim_catalog.validator.constraint.unique_value.class:                   Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\UniqueValueValidator
+    pim_catalog.validator.constraints.channel_validator.class:             Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ChannelValidator
+    pim_catalog.validator.constraint_guesser.chained.class:                Akeneo\Pim\Enrichment\Component\Product\Validator\ChainedAttributeConstraintGuesser
+    pim_catalog.validator.constraint_guesser.email.class:                  Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser\EmailGuesser
+    pim_catalog.validator.constraint_guesser.file.class:                   Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser\FileGuesser
+    pim_catalog.validator.constraint_guesser.length.class:                 Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser\LengthGuesser
+    pim_catalog.validator.constraint_guesser.not_blank.class:              Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser\NotBlankGuesser
+    pim_catalog.validator.constraint_guesser.date.class:                   Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser\DateGuesser
+    pim_catalog.validator.constraint_guesser.numeric.class:                Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser\NumericGuesser
+    pim_catalog.validator.constraint_guesser.string.class:                 Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser\StringGuesser
+    pim_catalog.validator.constraint_guesser.boolean.class:                Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser\BooleanGuesser
+    pim_catalog.validator.constraint_guesser.range.class:                  Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser\RangeGuesser
+    pim_catalog.validator.constraint_guesser.currency.class:               Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser\CurrencyGuesser
+    pim_catalog.validator.constraint_guesser.regex.class:                  Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser\RegexGuesser
+    pim_catalog.validator.constraint_guesser.not_decimal.class:            Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser\NotDecimalGuesser
+    pim_catalog.validator.constraint_guesser.url.class:                    Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser\UrlGuesser
+    pim_catalog.validator.constraint_guesser.unique_value.class:           Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser\UniqueValueGuesser
+    pim_catalog.validator.constraint_guesser.price_collection.class:       Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser\PriceCollectionGuesser
+    pim_catalog.validator.constraint_guesser.metric.class:                 Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser\MetricGuesser
+    pim_catalog.validator.mapping.delegating_class_metadata_factory.class: Akeneo\Pim\Enrichment\Component\Product\Validator\Mapping\DelegatingClassMetadataFactory
+    pim_catalog.validator.mapping.product_value_metadata_factory.class:    Akeneo\Pim\Enrichment\Component\Product\Validator\Mapping\ProductValueMetadataFactory
+    pim_catalog.validator.unique_value_set.class:                          Akeneo\Pim\Enrichment\Component\Product\Validator\UniqueValuesSet
+    pim_catalog.validator.unique_axes_combination_set.class:               Akeneo\Pim\Enrichment\Component\Product\Validator\UniqueAxesCombinationSet
+    pim_catalog.validator.constraint.only_expected_attributes.class:       Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\OnlyExpectedAttributesValidator
+    pim_catalog.validator.constraint.unique_variant_axes.class:            Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\UniqueVariantAxisValidator
+    pim_catalog.validator.constraint.not_empty_variant_axes.class:         Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\NotEmptyVariantAxesValidator
+    pim_catalog.validator.constraint.has_a_root_product_model_as_parent.class: Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ProductModelPositionInTheVariantTreeValidator
+    pim_catalog.validator.constraint.family_same_family_than_parent.class: Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\SameFamilyThanParentValidator
+    pim_catalog.validator.constraint.not_empty_family.class: Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\NotEmptyFamilyValidator
+    pim_catalog.validator.constraint.invalid_variant_product_parent.class: Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\VariantProductParentValidator
+
+    pim_catalog.validator.extension_to_mimetype_mapping:
+        mp3:  ['audio/mpeg']
+        wav:  ['audio/x-wav']
+        jpg:  ['image/jpeg']
+        jpeg: ['image/jpeg']
+        jfif: ['image/jpeg']
+        jif:  ['image/jpeg']
+        svg:  ['image/svg+xml']
+        png:  ['image/png']
+        gif:  ['image/gif']
+        tiff: ['image/tiff']
+        tif:  ['image/tiff']
+        txt:  ['text/plain']
+        rtf:  ['text/rtf']
+        csv:  ['text/x-comma-separated-values', 'text/csv', 'text/plain']
+        psd:  ['application/x-photoshop']
+        pdf:  ['application/pdf']
+        doc:  ['application/msword']
+        docx: ['application/vnd.openxmlformats-officedocument.wordprocessingml.document']
+        ppt:  ['application/powerpoint']
+        pptx: ['application/vnd.openxmlformats-officedocument.presentationml.presentation']
+
+services:
+    # Helpers
+    pim_catalog.validator.helper.attribute:
+        class: '%pim_catalog.validator.helper.attribute.class%'
+        public: false
+        arguments:
+            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.repository.channel'
+
+    pim_catalog.validator.helper.attribute_filter:
+        class: '%pim_catalog.validator.helper.attribute_filter.class%'
+        public: false
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.validator.helper.attribute'
+
+    pim_catalog.validator.unique_value_set:
+        class: '%pim_catalog.validator.unique_value_set.class%'
+        public: true
+
+    pim_catalog.validator.unique_axes_combination_set:
+        class: '%pim_catalog.validator.unique_axes_combination_set.class%'
+        public: true
+
+    # Validators
+    pim_catalog.validator.constraint.file_extensions_and_mimetypes:
+        class: Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\FileValidator
+        arguments:
+            - '%pim_catalog.validator.extension_to_mimetype_mapping%'
+        tags:
+            - { name: validator.constraint_validator }
+
+    pim_catalog.validator.constraint.only_expected_attributes:
+        class: '%pim_catalog.validator.constraint.only_expected_attributes.class%'
+        arguments:
+            - '@pim_catalog.family_variant.provider.entity_with_family_variant_attributes'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_only_expected_attributes }
+
+    pim_catalog.validator.constraint.unique_variant_axes:
+        class: '%pim_catalog.validator.constraint.unique_variant_axes.class%'
+        arguments:
+            - '@pim_catalog.family_variant.provider.entity_with_family_variant_attributes'
+            - '@pim_catalog.validator.unique_axes_combination_set'
+            - '@akeneo.pim.enrichment.product_model.query.get_values_of_siblings'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_unique_variant_axes_validator }
+
+    pim_catalog.validator.constraint.attribute_options_exist:
+        class: Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\AttributeOptionsExistValidator
+        arguments:
+            - '@akeneo.pim.structure.query.get_existing_attribute_option_codes_from_option_codes'
+        tags:
+            - { name: validator.constraint_validator, alias: attribute_options_exist_validator }
+
+    pim_catalog.validator.constraint.reference_data_options_exist:
+        class: Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ReferenceDataOptionsExistValidator
+        arguments:
+            - '@akeneo.pim.enrichment.product.query.get_existing_reference_data_codes'
+            - '@pim_catalog.repository.cached_attribute'
+        tags:
+            - { name: validator.constraint_validator, alias: reference_data_options_exist_validator }
+
+    pim_catalog.validator.constraint.duplicate_options:
+        class: Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\DuplicateOptionsValidator
+        tags:
+            - { name: validator.constraint_validator, alias: duplicate_options_validator }
+
+    pim_catalog.validator.constraint.not_empty_variant_axes:
+        class: '%pim_catalog.validator.constraint.not_empty_variant_axes.class%'
+        arguments:
+            - '@pim_catalog.family_variant.provider.entity_with_family_variant_attributes'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_not_empty_axes_validator }
+
+    pim_catalog.validator.constraint.has_a_root_product_model_as_parent:
+        class: '%pim_catalog.validator.constraint.has_a_root_product_model_as_parent.class%'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_has_a_root_product_model_as_parent }
+
+    pim_catalog.validator.constraint.invalid_variant_product_parent:
+        class: '%pim_catalog.validator.constraint.invalid_variant_product_parent.class%'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_invalid_variant_product_parent }
+
+    pim_catalog.validator.constraint.currency:
+        class: '%pim_catalog.validator.constraint.currency.class%'
+        arguments:
+            - '@pim_catalog.query.find_activated_currencies'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_currency_validator }
+
+    pim_catalog.validator.constraint.unique_value:
+        class: '%pim_catalog.validator.constraint.unique_value.class%'
+        arguments:
+            - '@pim_catalog.repository.product_unique_data'
+            - '@pim_catalog.validator.unique_value_set'
+            - '@pim_catalog.repository.cached_attribute'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_unique_value_validator }
+
+    pim_catalog.validator.constraints.channel_validator:
+        class: '%pim_catalog.validator.constraints.channel_validator.class%'
+        arguments:
+            - '@pim_catalog.repository.channel'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_at_least_a_channel }
+
+    pim_catalog.validator.constraint.scopable_values_validator:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ScopableValuesValidator'
+        arguments:
+            - '@pim_catalog.repository.cached_channel'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_scopable_values_validator }
+
+    pim_catalog.validator.constraint.localizable_values:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\LocalizableValuesValidator'
+        arguments:
+            - '@pim_catalog.repository.cached_locale'
+            - '@pim_catalog.repository.cached_channel'
+            - '@akeneo.pim.structure.query.get_attributes'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_localizable_values_validator }
+
+    # Attribute constraint guesser
+    pim_catalog.validator.constraint_guesser.chained_attribute:
+        class: '%pim_catalog.validator.constraint_guesser.chained.class%'
+        public: false
+
+    pim_catalog.validator.constraint_guesser.email:
+        public: false
+        class: '%pim_catalog.validator.constraint_guesser.email.class%'
+        tags:
+            - { name: pim_catalog.constraint_guesser.attribute }
+
+    pim_catalog.validator.constraint_guesser.file:
+        public: false
+        class: '%pim_catalog.validator.constraint_guesser.file.class%'
+        tags:
+            - { name: pim_catalog.constraint_guesser.attribute }
+
+    pim_catalog.validator.constraint_guesser.identifier_format:
+        public: false
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser\IdentifierFormatGuesser'
+        tags:
+            - { name: pim_catalog.constraint_guesser.attribute }
+
+    pim_catalog.validator.constraint_guesser.length:
+        public: false
+        class: '%pim_catalog.validator.constraint_guesser.length.class%'
+        tags:
+            - { name: pim_catalog.constraint_guesser.attribute }
+
+    pim_catalog.validator.constraint_guesser.not_blank:
+        public: false
+        class: '%pim_catalog.validator.constraint_guesser.not_blank.class%'
+        tags:
+            - { name: pim_catalog.constraint_guesser.attribute }
+
+    pim_catalog.validator.constraint_guesser.date:
+        public: false
+        class: '%pim_catalog.validator.constraint_guesser.date.class%'
+        tags:
+            - { name: pim_catalog.constraint_guesser.attribute }
+
+    pim_catalog.validator.constraint_guesser.numeric:
+        public: false
+        class: '%pim_catalog.validator.constraint_guesser.numeric.class%'
+        tags:
+            - { name: pim_catalog.constraint_guesser.attribute }
+
+    pim_catalog.validator.constraint_guesser.string:
+        public: false
+        class: '%pim_catalog.validator.constraint_guesser.string.class%'
+        tags:
+            - { name: pim_catalog.constraint_guesser.attribute }
+
+    pim_catalog.validator.constraint_guesser.boolean:
+        public: false
+        class: '%pim_catalog.validator.constraint_guesser.boolean.class%'
+        tags:
+            - { name: pim_catalog.constraint_guesser.attribute }
+
+    pim_catalog.validator.constraint_guesser.range:
+        public: false
+        class: '%pim_catalog.validator.constraint_guesser.range.class%'
+        tags:
+            - { name: pim_catalog.constraint_guesser.attribute }
+
+    pim_catalog.validator.constraint_guesser.regex:
+        public: false
+        class: '%pim_catalog.validator.constraint_guesser.regex.class%'
+        tags:
+            - { name: pim_catalog.constraint_guesser.attribute }
+
+    pim_catalog.validator.constraint_guesser.not_decimal:
+        public: false
+        class: '%pim_catalog.validator.constraint_guesser.not_decimal.class%'
+        tags:
+            - { name: pim_catalog.constraint_guesser.attribute }
+
+    pim_catalog.validator.constraint_guesser.url:
+        public: false
+        class: '%pim_catalog.validator.constraint_guesser.url.class%'
+        tags:
+            - { name: pim_catalog.constraint_guesser.attribute }
+
+    pim_catalog.validator.constraint_guesser.unique_value:
+        public: false
+        class: '%pim_catalog.validator.constraint_guesser.unique_value.class%'
+        tags:
+            - { name: pim_catalog.constraint_guesser.attribute }
+
+    pim_catalog.validator.constraint_guesser.price_collection:
+        public: false
+        class: '%pim_catalog.validator.constraint_guesser.price_collection.class%'
+        tags:
+            - { name: pim_catalog.constraint_guesser.attribute }
+
+    pim_catalog.validator.constraint_guesser.metric:
+        public: false
+        class: '%pim_catalog.validator.constraint_guesser.metric.class%'
+        tags:
+            - { name: pim_catalog.constraint_guesser.attribute }
+
+    pim_catalog.validator.constraint_guesser.currency:
+        public: false
+        class: '%pim_catalog.validator.constraint_guesser.currency.class%'
+        tags:
+            - { name: pim_catalog.constraint_guesser.attribute }
+
+    pim_catalog.validator.constraint_guesser.options:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser\OptionsGuesser'
+        tags:
+            - { name: pim_catalog.constraint_guesser.attribute }
+
+    # Validator ClassMetadata factory
+    pim_catalog.validator.mapping.product_value_metadata_factory:
+        public: false
+        class: '%pim_catalog.validator.mapping.product_value_metadata_factory.class%'
+        arguments:
+            - '@pim_catalog.validator.constraint_guesser.chained_attribute'
+            - '@pim_catalog.repository.cached_attribute'
+
+    pim_catalog.validator.mapping.delegating_class_metadata_factory:
+        public: false
+        class: '%pim_catalog.validator.mapping.delegating_class_metadata_factory.class%'
+        calls:
+            - [ 'addMetadataFactory', [ '@pim_catalog.validator.mapping.product_value_metadata_factory' ] ]
+            - [ 'addMetadataFactory', [ '@validator.mapping.class_metadata_factory' ] ]
+
+    pim_catalog.validator.context.factory:
+        public: false
+        class:  Symfony\Component\Validator\Context\ExecutionContextFactory
+        arguments:
+            - '@translator.default'
+            - '%validator.translation_domain%'
+
+    pim_catalog.validator.product:
+        class: '%symfony.validator.recursive.class%'
+        arguments:
+            - '@pim_catalog.validator.context.factory'
+            - '@pim_catalog.validator.mapping.delegating_class_metadata_factory'
+            - '@validator.validator_factory'
+            - []
+
+    pim_catalog.validator.product_model:
+        alias: 'pim_catalog.validator.product'
+
+    pim_catalog.validator.constraint.family_same_family_than_parent:
+        class: '%pim_catalog.validator.constraint.family_same_family_than_parent.class%'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_family_same_family_than_parent }
+
+    pim_catalog.validator.constraint.not_empty_family:
+        class: '%pim_catalog.validator.constraint.not_empty_family.class%'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_family_not_empty }
+
+    pim_catalog.validator.constraint.unique_product_entity:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product\UniqueProductEntityValidator'
+        arguments:
+            - '@akeneo.pim.enrichment.product.query.find_id'
+            - '@pim_catalog.validator.unique_value_set'
+            - '@pim_catalog.repository.attribute'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_unique_product_validator_entity }
+
+    pim_catalog.validator.constraint.unique_product_model_entity:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product\UniqueProductModelEntityValidator'
+        arguments:
+            - '@akeneo.pim.enrichment.product_model.query.find_id'
+            - '@pim_catalog.validator.unique_value_set'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_unique_product_model_validator_entity }
+
+    pim_connector.validator.constraints.filter_structure_locale_validator:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\FilterStructureLocaleValidator'
+        arguments:
+            - '@pim_catalog.repository.channel'
+        tags:
+            - { name: validator.constraint_validator, alias: filter_structure_locale_validator }
+
+    pim_connector.validator.constraints.filter_structure_attribute_validator:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\FilterStructureAttributeValidator'
+        arguments:
+            - '@pim_catalog.repository.attribute'
+        tags:
+            - { name: validator.constraint_validator, alias: filter_structure_attribute_validator }
+
+    pim_connector.validator.constraints.quantified_associations_validator:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\QuantifiedAssociationsValidator'
+        arguments:
+            - '@pim_catalog.repository.association_type'
+            - '@akeneo.pim.enrichment.product.query.find_non_existing_products_query'
+            - '@akeneo.pim.enrichment.product.query.find_non_existing_product_model_codes_query'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_connector.validator.constraints.quantified_associations_validator }
+
+    Akeneo\Pim\Enrichment\Component\Product\Validator\ExternalApi\PayloadFormatValidator:
+        arguments:
+            - '@pim_catalog.repository.attribute'
+        tags:
+            - { name: validator.constraint_validator }

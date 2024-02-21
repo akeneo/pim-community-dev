@@ -1,0 +1,9 @@
+<div class="AknColumn-subtitle"><%- label %></div>
+<div class="AknColumn-value product-groups">
+    <% _.each(groups, function (group, index, list) {  %>
+        <div data-group="<%- group.code %>" data-variant="<%- group.isVariant ? 1 : 0 %>" class="product-group">
+            <%- group.label %>
+        </div>
+        <%- list.length > index + 1 ? ',' : '' %>
+    <% }); %>
+</div>

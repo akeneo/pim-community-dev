@@ -1,0 +1,8 @@
+akeneo_communication_channel:
+  link:
+    title: Ogłoszenia
+  panel:
+    title: Ogłoszenia
+    list:
+      empty: Na chwilę obecną nie ma wiadomości. Bądź czujny!
+      error: Nie mogliśmy pobrać wiadomości. Spróbuj ponownie później.

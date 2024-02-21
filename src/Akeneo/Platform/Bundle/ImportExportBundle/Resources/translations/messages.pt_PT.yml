@@ -1,0 +1,138 @@
+#Entities
+Job: Tarefa
+Connector: Conector
+pim_import_export:
+  job: Tarefa
+  connector: Conector
+  ## Job status
+  status:
+    0: Pronto
+  download_archive:
+    archive: transferir ficheiro gerado | transferir ficheiros gerados
+    output: transferir ficheiro gerado | transferir ficheiros gerados
+    input: transferir ficheiro lido| transferir ficheiros lidos
+    invalid_xlsx: transferir dados inválidos
+    invalid_csv: transferir dados inválidos
+  notification:
+    export:
+      error: Falha ao exportar <strong>%label%</strong>
+      warning: Exportar <strong>%label%</strong> terminou com alguns avisos
+      success: Exportação de <strong>%label%</strong> terminado com sucesso
+    import:
+      error: Importação de <strong>%label%</strong> falhado
+      warning: Importar <strong>%label%</strong> terminou com alguns avisos
+      success: Importação de <strong>%label%</strong> terminado com sucesso
+  list: Selecione uma tarefa
+  job_profile:
+    tab:
+      property.title: Propriedades gerais
+      history.title: Histórico
+      job_content.title: Conteúdo
+#Page titles:
+pim_title.export_profile.index: Gestão de perfis de exportação
+pim_title.export_execution.index: Histórico de exportações realizadas
+pim_title.export_execution.show: Execução de exportações | Detalhes
+pim_title.import_profile.index: Gestão de perfis de importação
+pim_title.import_execution.index: Histórico importações realizadas
+pim_title.import_execution.show: Execução de importações | Detalhes
+#Entity and page header titles
+export profile:
+  title: Perfil de exportação
+  edit: Editar perfil de exportação
+import profile:
+  title: Perfil de importação
+  edit: Editar perfil de importação
+#ACLs
+pim_importexport:
+  acl:
+    export_profile:
+      index: Ver lista de perfis de exportação
+      create: Criar um perfil de exportação
+      show: Mostrar um perfil de exportação
+      edit: Editar um perfil de exportação
+      remove: Remover um perfil de exportação
+      launch: Executar um perfil de exportação
+      history: Ver histórico de perfil de exportação
+    import_profile:
+      index: Ver lista de perfis de importação
+      create: Criar um perfil de importação
+      show: Mostrar um perfil de importação
+      edit: Editar um perfil de importação
+      remove: Remover um perfil de importação
+      launch: Lançar um perfil de importação
+      history: Ver histórico de perfil de importação
+    export_execution:
+      index: Ver lista de relatórios de exportação
+      show: Ver detalhes do relatório de exportação
+      dl_log: Transferir log de relatório de exportação
+      dl_files: Transferir arquivos exportados
+    import_execution:
+      index: Ver lista de relatórios de importação
+      show: Ver detalhes do relatório de importação
+      dl_log: Transferir log de relatório de importação
+      dl_files: Transferir arquivos importados
+  acl_group:
+    export: Perfis de exportação
+    import: Perfis de importação
+#Buttons
+btn:
+  create:
+    export profile: criar perfil de exportação
+    import profile: criar perfil de importação
+Upload and import now: Enviar e importar agora
+import now: Importar agora
+export now: Exportar agora
+#Confirmation messages
+confirmation:
+  remove:
+    export profile: Tem certeza que deseja eliminar o perfil de exportação %name%?
+    import profile: Tem certeza que deseja eliminar o perfil de importação %name%?
+#Flash messages
+flash:
+  export:
+    created: A exportação foi criada com sucesso
+    removed: A exportação foi removida
+    updated: A exportação foi atualizada com sucesso
+    running: A exportação está a ser executada
+  import:
+    created: A importação foi criada com sucesso
+    removed: A importação foi removida
+    updated: A exportação foi atualizada com sucesso
+    running: A importação está a ser executada
+#Tabs
+General properties: Propriedades gerais
+History: Histórico
+pane.accordion:
+  properties: Propriedades
+  global_settings: Definições Gerais
+  filters: Filtros
+#Popin titles
+popin.create:
+  export_profile.title: Criar um novo perfil de exportação
+  import_profile.title: Criar um novo perfil de importação
+#Job execution
+'Display item': Mostrar item
+'Hide item': Esconder Item
+'Collecting data about job execution...': A recolher dados sobre a execução da tarefa...
+'You must select a file to upload': Deve selecionar um ficheiro para enviar
+Download log: Transferir log
+Show profile: Ver perfil
+execution details: detalhes de execução
+job_execution.summary:
+  read: ler
+  write: escrito
+  skip: ignorado
+  create: criado
+  update: atualizado
+  update_products: produtos atualizados
+  skip_products: produtos ignorados
+  displayed: primeiros avisos exibidos
+  charset_validator:
+    title: 'codificação do ficheiro:'
+    skipped: ignorado, extensão na lista branca
+Step: Passo
+Status: Estado
+Summary: Resumo
+Start: Início
+End: Fim
+warning.label: Aviso

@@ -1,0 +1,3 @@
+parameters:
+    oro_security.entity.owners:
+        user: 'Akeneo\UserManagement\Component\Model\User'

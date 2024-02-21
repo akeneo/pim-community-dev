@@ -1,0 +1,6 @@
+pim_user:
+  min_role: "Musisz wybrać przynajmniej {{ limit }} rolę.|Musisz wybrać przynajmniej {{ limit }} role/ról."
+  password_match: "Podane hasła nie są identyczne."
+  role:
+    invalid_role_format: 'Rola powinna zaczynać się od wyrażenia "ROLE_" i zawierać wyłącznie znaki podkreślenia, myślniki i znaki alfanumeryczne wielkimi literami.'
+  reserved_prefix_username: "Prefiks „{{ prefix }}” nazwy użytkownika jest zarezerwowany."

@@ -1,0 +1,15 @@
+services:
+  Akeneo\Platform\Installer\Infrastructure\DatabasePurger\DbalPurger:
+    class: Akeneo\Platform\Installer\Test\Acceptance\FakeServices\FakeDatabasePurger
+
+  Akeneo\Platform\Installer\Infrastructure\FixtureInstaller\MinimalFixtureInstaller:
+    class: Akeneo\Platform\Installer\Test\Acceptance\FakeServices\FakeFixturesInstaller
+
+  Akeneo\Platform\Installer\Infrastructure\Query\FindTables:
+    class: Akeneo\Platform\Installer\Test\Acceptance\FakeServices\FakeFindTables
+
+  Akeneo\Platform\Installer\Infrastructure\UserConfigurationResetter\UserConfigurationResetter:
+    class: Akeneo\Platform\Installer\Test\Acceptance\FakeServices\FakeUserConfigurationResetter
+
+  Akeneo\Platform\Installer\Infrastructure\FilesystemsPurger\FilesystemsPurger:
+    class: Akeneo\Platform\Installer\Test\Acceptance\FakeServices\FakeFilesystemsPurger

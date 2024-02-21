@@ -1,0 +1,57 @@
+@import '../base/variables';
+
+.AknDescriptionHeader {
+  background: lighten(@AknBlue, 41%);
+  display: flex;
+  padding: 5px 5px 5px 0;
+  font-size: @AknFontSizeBig;
+  color: @AknSlateGrey;
+  min-height: 80px;
+  align-items: center;
+  margin-bottom: 20px;
+  line-height: 21px;
+  width: 100%;
+
+  &--sticky {
+    position: sticky;
+    left: 0;
+  }
+
+  &--push {
+    margin-top: 30px;
+  }
+
+  &-icon {
+    min-width: 120px;
+    min-height: 100px;
+    height: auto;
+    position: relative;
+    background-repeat: no-repeat;
+    background-size: 80px;
+    background-position: 50%;
+    border-right: 1px solid @AknMediumGrey;
+    margin: 5px 20px 5px 0;
+  }
+
+  &-title {
+    font-size: @AknFontSizeBigger;
+    color: @AknDarkBlue;
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+    &--highlight {
+      color: @AknLightPurple
+    }
+  }
+
+  &-description {
+    font-size: 13px;
+    color: @AknSlateGrey;
+    margin-top: 3px;
+  }
+
+  &-link {
+    color: @AknLightPurple;
+    text-decoration: underline @AknLightPurple;
+  }
+}

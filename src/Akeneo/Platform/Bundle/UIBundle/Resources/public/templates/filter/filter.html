@@ -1,0 +1,17 @@
+<div class="AknFieldContainer-header">
+    <label class="AknFieldContainer-label control-label">
+        <%- label %>
+        <span class="label-elements-container"></span>
+    </label>
+    <div class="after-label-elements-container"></div>
+</div>
+<div class="AknFieldContainer-inputContainer">
+    <div class="filter-input"></div>
+    <span class="after-input-elements-container"></span>
+    <% if (removable && editable) { %>
+        <div class="AknFieldContainer-iconsContainer icons-container"><i class="AknIconButton remove icon-trash"></i></div>
+    <% } %>
+</div>
+<div class="AknFieldContainer-footer">
+    <span class="below-input-elements-container"></span>
+</div>

@@ -1,0 +1,148 @@
+pim_user:
+  user:
+    title: Utilisateur
+    fields:
+      name_prefix: Particule
+      email: E-mail
+      username: Nom d'utilisateur
+      first_name: Prénom
+      middle_name: Deuxième prénom
+      last_name: Nom
+      name_suffix: Suffixe de nom
+      phone: Téléphone
+      date_of_birth: Date de naissance
+      avatar: Photo
+      timezone: Fuseau horaire
+      roles: Rôles
+      groups: Groupes
+      password: Mot de passe
+      password_again: Confirmer le mot de passe
+      product_grid_filters: Filtres de la grille des produits
+      catalog_locale: Locale du catalogue
+      catalog_scope: Portée du catalogue
+      default_tree: Arborescence par défaut
+      current_password: Mot de passe actuel
+      new_password: Nouveau mot de passe
+      new_password_again: Nouveau mot de passe (répéter)
+      default_grid_view:
+        none: Aucune
+      default_product_grid_view:
+        label: Vue par défaut de la grille des produits
+      ui_locale: Langue de l'interface
+      last_logged_in: Dernière connexion
+      login_count: Nombre de connexions
+      user_salt: Sel de hachage
+      created: Créé
+      updated: Mis à jour
+      status: État
+      capabilities: Capacités
+      has_role: A le rôle
+      has_group: Appartient au groupe
+      active: Actif
+      inactive: Inactif
+    fields_errors:
+      new_password:
+        minimum_length: Le mot de passe doit contenir au moins 8 caractères.
+        maximum_length: Le mot de passe doit contenir moins de 4096 caractères.
+      new_password_repeat:
+        not_match: Les mots de passe ne correspondent pas.
+      current_password:
+        wrong: Mot de passe incorrect
+      roles:
+        last_user_with_edit_role_permissions: Cet utilisateur est le dernier avec les permissions d'édition.
+    tabs:
+      general:
+        title: Général
+        basic_information: Informations de base
+        contact_information: Information de contact
+      additional:
+        title: Complémentaire
+      additional_data:
+        title: Données supplémentaires
+      interfaces:
+        title: Interfaces
+      group_and_role.title: Groupes et rôles
+      password.title: Mot de passe
+      business_unit.title: Entités commerciales
+      email_synchronization.title: Paramètres de synchronisation de messagerie
+    removed_user: Utilisateur supprimé
+    login:
+      username_or_email: Nom d'utilisateur ou Email
+      remember_me: Mémoriser mes informations sur cet ordinateur
+      password_forgotten: Mot de passe oublié ?
+      log_in: Connexion
+      forgot_password: Mot de passe oublié
+      request: Demande
+      password_reset: Réinitialisation de mot de passe
+      reset: Réinitialiser
+      password_reset_email_sent: Un email vous a été envoyé. Il contient un lien pour réinitialiser votre mot de passe.
+      homepage: Retour à la page d’accueil
+  group:
+    tab:
+      general.title: Général
+      users.title: Utilisateurs
+  roles:
+    title: rôle
+    tab:
+      general: Général
+      action: Autorisations
+      users: Utilisateurs
+  controller:
+    group:
+      message:
+        saved: "Groupe enregistré"
+    role:
+      message:
+        saved: "Rôle enregistré"
+        cannot_delete_last_edit_role_permission: Vous ne pouvez pas modifier les permissions sur le dernier rôle.
+        cannot_remove_last_edit_role_permission: Vous ne pouvez pas supprimer les permissions sur le dernier rôle.
+    user:
+      message:
+        saved: "Utilisateur enregistré"
+pim_datagrid:
+  columns:
+    user:
+      createdAt: "Créé le"
+      updatedAt: "Mis à jour le"
+    roles:
+      label: "Libellé"
+    groups:
+      name: "Nom"
+confirmation:
+  remove:
+    role: Êtes-vous sûr(e) de vouloir supprimer ce rôle ?
+    user: Êtes-vous sûr(e) de vouloir supprimer cet utilisateur ?
+flash:
+  role:
+    removed: Le rôle a bien été supprimé
+  user:
+    removed: L'utilisateur a bien été supprimé
+oro_security:
+  acl_group:
+    user: Utilisateurs
+    role: Rôles
+    group: Groupes d'utilisateurs
+  acl:
+    user:
+      view: Liste des utilisateurs
+      create: Créer un utilisateur
+      edit: Modifier les utilisateurs
+      delete: Supprimer un utilisateur
+    role:
+      view: Liste des rôles
+      create: Créer un rôle
+      edit: Modifier un rôle
+      delete: Supprimer un rôle
+    group:
+      view: Liste des groupes d'utilisateurs
+      create: Créer un groupe d'utilisateurs
+      edit: Modifier les groupes d'utilisateurs
+      delete: Supprimer un groupe d'utilisateurs
+#Security
+(default): Autorisations par défaut sur les entités
+VIEW: Afficher
+CREATE: Créer
+EDIT: Modifier
+DELETE: Supprimer
+ASSIGN: Assigner
+SHARE: Partager

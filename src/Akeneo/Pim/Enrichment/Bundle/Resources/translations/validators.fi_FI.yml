@@ -1,0 +1,113 @@
+An identifier attribute already exists.: Tunnisteattribuutti on jo olemassa.
+Attribute code may contain only letters, numbers and underscore: Attribuutin koodi voi sisältää vain kirjaimia, numeroita ja alaviivoja
+Attribute code may contain only letters (at least one), numbers and underscores: Attribuutin koodi voi sisältää vain kirjaimia (ainakin yksi), numeroita ja alaviivoja
+Attribute group code may contain only letters, numbers and underscores: Attribuuttiryhmän koodi voi sisältää vain kirjaimia, numeroita ja alaviivoja
+This attribute type can't be used as a grid filter: Tätä attribuuttityyppiä ei voi käyttää ruudukkosuodattimena
+This code is not available: Tämä koodi ei ole käytettävissä
+This attribute type must be required: Tämän attribuuttityypin on oltava pakollinen
+This attribute type can't be required: Tämä attribuuttityyppi ei voi olla pakollinen
+This attribute type can't have unique value: Tällä attribuuttityypillä ei voi olla uniikkia arvoa
+No default value may be specified for this attribute type: Tälle attribuuttityypille ei saa määrittää oletusarvoa
+This value should be Yes or No: Tämän arvon on oltava kyllä tai ei
+This value should not be blank: Tämä arvo ei saa olla tyhjä
+Option code may contain only letters, numbers and underscores: Vaihtoehtokoodi voi sisältää vain kirjaimia, numeroita ja alaviivoja
+Option code may contain only letters (at least one), numbers and underscores: Vaihtoehto koodi voi sisältää vain kirjaimia (ainakin yksi), numeroita ja alaviivoja
+This value should not be a decimal.: Tämän arvon pitäisi olla desimaalimuodossa.
+"The %attribute% attribute requires a non-decimal value, and %value% is not a valid value.": Attribuutti %attribute% vaatii kokonaislukuarvon, eikä %value% ole kelvollinen arvo.
+'The file extension is not allowed (allowed extensions: %extensions%).': 'Tiedostotunnistetta ei sallita (sallitut: %extensions%).'
+"The {{ attribute_code }} attribute can not have the same value more than once. The {{ value }} value is already set on another product.": Attribuutilla {{ attribute_code }} ei voi olla samaa arvoa useammin kuin kerran. Arvo {{ value }} on jo asetettu toiselle tuotteelle.
+The same identifier is already set on another product: Sama tunnus on jo toisen tuotteen käytössä
+regex.comma_or_semicolon_or_surrounding_space.message: Tässä kentässä ei saa olla pilkku- tai puolipisteitä eikä edeltäviä/seuraavia välilyöntejä
+file.extensions.message: 'Tiedostotunnistetta ei sallita (sallitut: %extensions%).'
+"This type of value expects the use of {{ decimal_separator }} to separate decimals.": Tämäntyyppinen arvo vaatii merkin {{ decimal_separator }} käyttämistä desimaalien erottelussa.
+"This type of value expects the use of dot (.) to separate decimals.": Tämäntyyppinen arvo vaatii pisteen (.) käyttöä desimaalien erottelussa.
+"This type of value expects the use of comma (,) to separate decimals.": Tämäntyyppinen arvo vaatii pilkun (,) käyttöä desimaalien erottelussa.
+"This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Tämäntyyppinen arvo vaatii arabialaisen desimaalierottimen (٫) käyttöä desimaalien erottelussa.
+"This type of value expects the use of the format {{ date_format }} for dates.": Tämäntyyppinen arvo vaatii muodon {{ date_format }} käyttöä päivämäärille.
+"The category \"%category%\" has to be a root category.": Kategorian "%category%" täytyy olla juuritason luokka.
+"The attribute \"%attributeCode%\" does not exist.": Attribuutti "%attributeCode%" ei ole olemassa.
+"The attribute \"%attributeCode%\" is not a metric attribute.": Attribuutti ”%attributeCode%” ei ole metrinen attribuutti.
+"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": Yksikköä "%unitCode%" ei ole tai se ei kuulu attribuutin "%attributeCode%" oletusarvoiseen mittayksikköperheeseen.
+"The currency \"%currency%\" has to be activated.": Valuutta "%currency%" on aktivoitava.
+product_model.code.not_blank.message: Tuotemallin koodi ei saa olla tyhjä.
+product_model.code.unique.message: Sama tunnus on jo toisen tuotemallin käytössä.
+product_model.family_variant.not_blank.message: Tuotemallin varianttiperhe ei voi saa olla tyhjä.
+"The %attribute% attribute requires a string, a %givenType% was detected.": Attribuutti %attribute% vaatii merkkijonon, %givenType% havaittiin.
+"The {{ attribute_code }} attribute requires a date that should be {{ limit }} or after.": Attribuutti {{ attribute_code }} vaatii päivämäärän, jonka pitäisi olla {{ limit }} tai sen jälkeen.
+"The {{ attribute_code }} attribute requires a date that should be {{ limit }} or before.": Attribuutti {{ attribute_code }} vaatii päivämäärän, jonka pitäisi olla {{ limit }} tai ennen sitä.
+"The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.": Attribuutti {{ attribute }} vaatii numeerisen arvon, eikä annettu arvo {{ value }} ole sellainen.
+"The %attribute% attribute must not contain more than %limit% characters. The submitted value is too long.": Attribuutti %attribute% ei saa sisältää enempää kuin %limit% merkkiä. Annettu arvo on liian pitkä.
+"The %type% file extension is not allowed for the %attribute% attribute. Allowed extensions are %extensions%.": Tiedostopääte %type% ei ole sallittu attribuutille %attribute% . Sallitut tiedostopäätteet ovat %extensions%.
+"The %attribute% attribute requires a url link.": Attribuutti %attribute% vaatii url-linkin.
+"The %attribute% attribute requires a valid date. Please use the following format %date_format% for dates.": Attribuutti %attribute% vaatii kelvollisen päivämäärän. Ole hyvä ja käytä muotoa %date_format% päivämäärille.
+"The %locale% locale is not available on the %attribute% attribute.": Lokaali %locale% ei ole käytettävissä attribuutissa %attribute%.
+'The {{ attribute_code }} attribute must match the following regular expression: {{ pattern }}.': 'Attribuutin {{ attribute_code }} on vastattava seuraavaa säännöllistä lauseketta: {{ pattern }}.'
+'The {{ attribute_code }} attribute cannot be empty.': 'Attribuutti {{ attribute_code }} ei voi olla tyhjä.'
+'The file %file_name% is too large (%file_size% %suffix%). The %attribute% attribute can not exceed %max_file_size% %suffix%.': Tiedosto %file_name% on liian suuri (%file_size% %suffix%). Attribuutti %attribute% ei voi ylittää %max_file_size% %suffix%.
+'The %attribute_code% attribute requires a valid locale. The %invalid_locale% locale does not exist.': 'Attribuutti %attribute_code% vaatii kelvollisen lokaalin. Lokaalia %invalid_locale% ei ole olemassa.'
+'The %attribute_code% attribute requires a valid locale. The %invalid_locale% locale is not bound to the %channel_code% channel.': 'Attribuutti %attribute_code% vaatii kelvollisen lokaalin. Lokaalia %invalid_locale% ei ole valittu kanavalle %channel_code%.'
+"The %attribute% attribute requires an e-mail address.": 'Attribuutti %attribute% vaatii sähköpostiosoitteen.'
+'The %attribute% attribute requires an equal or greater than %min_value% value.': 'Attribuutti %attribute% vaatii yhtä suuren tai suuremman kuin %min_value% arvon.'
+'The %attribute% attribute requires an equal or lesser than %max_value% value.': 'Attribuutti %attribute% vaatii yhtä suuren tai pienemmän arvon kuin %max_value%'
+"The %attribute_code% attribute requires a value per channel. The %channel% channel (scope) must exist in your PIM": 'Attribuutti %attribute_code% vaatii kanavakohtaisen arvon. Kanavan %channel% täytyy olla PIM:ssä'
+"The %identifier% identifier is already used for another product.": 'Tunniste %identifier% on jo käytössä toisella tuotteella.'
+'Please specify a valid currency for the %attribute_code% attribute, the %currency_code% code was sent.': 'Ole hyvä ja anna kelvollinen valuutta attribuutille %attribute_code% , koodia %currency_code% yritettiin.'
+pim_catalog:
+  constraint:
+    can_have_family_variant_empty_axis_value: 'Attribuutti "%attribute%" ei voi olla tyhjä, koska se on määritetty tämän entiteetin varianttiulottuvuudeksi'
+    cannot_have_product_model_as_parent: 'Tuotemallilla "%product_model%" ei voi olla tuotemalli "%parent_product_model%" ylätason tuotemallina'
+    cannot_have_parent: 'Tuotemallilla "%product_model%" ei voi olla ylätason tuotemallia'
+    attribute_does_not_belong_to_family: 'Attribuutti "%attribute%" ei kuulu perheeseen "%family%"'
+    variant_product_invalid_family: 'Variantin perhe on oltava sama kuin ylätason tuotteella'
+    not_null_family: Perhe ei voi olla "null", koska tuote, jolla on %sku% tunniste, on varianttituote.
+    modified_variant_axis_value: 'Varianttiulottuvuutta "%variant_axis%" ei voi muokata arvolla "%provided_value%"'
+    family_variant_axes_immutable: 'Varianttiulottuvuuksia ei voi muokata tasolla "%level%"'
+    family_variant_axes_attribute_type_unique: Varianttiulottuvuus "%axis%" ei voi olla arvoltaan yksilöllinen tai tunniste
+    family_variant_axes_attribute_type: Varianttiulottuvuuksien "%axis%" on oltava tyypiltään kyllä/ei, yksinkertainen valinta, yksinkertainen valinta (viitetiedot) tai mittayksikkö
+    family_variant_axes_wrong_type: Variantin ulottuvuus ”%axis%” ei voi olla aluekohtainen, kanavakohtainen eikä kielikohtainen
+    family_variant_no_axis: Vähintään yksi attribuutti on määritettävä varianttiulottuvuudeksi tasolla "%level%"
+    family_variant_has_family_attribute: 'Attribuuttia "%attribute%" ei voi lisätä varianttiperheeseen "%family_variant%", koska se ei ole perheen "%family%" attribuutti'
+    family_variant_level_do_not_exist: Tasolla "%level%" ei ole määritetty varianttiattribuuttia
+    family_variant_no_level: Vähintään yksi taso on määritettävä varianttiperheelle
+    family_variant_maximum_number_of_level: Varianttiperheellä ei voi olla enemmän kuin "%level%" taso
+    family_variant_unique_attributes_in_last_level: Yksilöllinen attribuutti "%attribute%" on asetettava tuotetasolle
+    product_identifier: Nämä tunnisteet "%s" eivät ole olemassa.
+    blacklisted_attribute_code: Koodi on väliaikaisesti estetty, kunnes käynnissä oleva puhdistustyö on valmis.
+    blacklisted_attribute_code_with_link: "Koodi on tilapäisesti estetty, kunnes käynnissä oleva siivoustyö on valmis. Jos haluat lisätietoja , tarkista <a href='{{ link }}' target='_blank'>työn tiedot</a>."
+    duplicate_options: '{1} Seuraava valintalistan arvo on käytetty useita kertoja: "{{ duplicate_options }}". Tarkista arvot uudelleen. ]1, +Inf] Seuraavia valintalistan arvoja on käytetty useita kertoja: "{{ duplicate_options }}". Tarkista arvot uudelleen.'
+    0: Odottamaton virhe tapahtui.
+    100: Odottamaton arvo
+    101: Tämä kenttä vaatii totuusarvon.
+    102: Tämä kenttä vaatii liukulukuarvon.
+    103: Tämä kenttä vaatii kokonaislukuarvon.
+    104: Tämä kenttä vaatii numeerisen arvon.
+    105: Tämä kenttä vaatii merkkijonoarvon.
+    106: Tämä kenttä vaatii taulukkoarvon.
+    107: Tämä kenttä vaatii arvon sisäkkäisinä taulukkoina.
+    200: Tapahtui sisäinen virhe
+    201: Tapahtui sisäinen virhe
+    202: Tämä kenttä vaatii numeerisen arvon.
+    203: Tämä kenttä vaatii merkkijonoarvon.
+    204: Tämä kenttä vaatii merkkijonoarvon.
+    205: Tapahtui sisäinen virhe
+    300: Tämä kenttä vaatii kelvollisen entiteettikoodin.
+    301: Tämä kenttä vaatii kelvollisen laajuuden ja lokaation.
+    302: Tämä kenttä vaatii kelvollisen laajuuden.
+    303: Tämä kenttä vaatii kelvollisen assosiaatiomuodon.
+    pim_immutable_product_model_validator: Sama tunnus on jo toisen tuotemallin käytössä.
+    quantified_associations:
+      unexpected_link_type: Linkkityyppiä "{{ value }}" ei ole olemassa. Voit liittää vain tuotteita tai tuotemalleja.
+      max_associations: Olet saavuttanut {{ limit }} tuoteliitostyypin enimmäismäärän. Poista olemassa olevia tuoteliitoksia ennen uusien lisäämistä.
+      invalid_quantity: '"{{ value }}" on virheellinen määrä. Ole hyvä ja syötä arvo väliltä {{ min }} ja {{ max }}.'
+      products_do_not_exist: "Seuraavia tuotteita ei ole olemassa: {{ values }}. Varmista, että tuotteita ei ole tällä välin poistettu."
+      product_models_do_not_exist: "Seuraavia tuotemalleja ei ole olemassa: {{ values }}. Varmista, että tuotemalleja ei ole poistettu."
+      association_type_does_not_exist: Tätä tuoteliitostyyppiä ei ole olemassa. Varmista, että sitä ei ole poistettu.
+      association_type_is_not_quantified: 'Tuoteliitostyyppiä "{{ association_type }}" ei voi käyttää lukumäärälliseen tuoteliitokseen. Ole hyvä ja valitse määrällinen tuoteliitostyyppi tai luo uusi tuoteliitos.'
+      association_type_should_not_be_quantified: 'Tuoteliitostyyppiä "{{ association_type }}" voidaan käyttää ainoastaan lukumäärälliseen tuoteliitokseen. Ole hyvä ja valitse eri tuoteliitostyyppi tai luo uusi määrällinen tuoteliitos.'
+mass_edit:
+  edit_common_attributes:
+    invalid_values: Attribuutit-lomakkeessa on virheitä
+pim_datagrid:
+  column_configurator:
+    label:
+      unique_message: Otsikon oltava yksilöllinen

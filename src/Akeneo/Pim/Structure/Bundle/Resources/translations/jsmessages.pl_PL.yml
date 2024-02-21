@@ -1,0 +1,348 @@
+pim_enrich.entity.family:
+  label: rodzina
+  uppercase_label: Rodzina
+  plural_label: Rodziny
+  flash:
+    update:
+      success: Rodzina pomyślnie zaktualizowana.
+      fail: Wystąpił błąd podczas aktualizacji rodziny.
+      cant_remove_attribute_as_label: Nie można usunąć atrybutu użytego jako etykiety
+      cant_remove_attribute_as_image: Nie można usunąć atrybutu użytego jako główne zdjęcie
+      cant_remove_attribute_used_as_axis: Nie można usunąć tego atrybutu używanego jako oś wariantu w wariancie rodziny
+      fields_not_ready: "Rodzina nie może być teraz zapisana. Następujące pola nie są gotowe: {{ fields }}"
+    create:
+      success: Rodzina produktów została pomyślnie utworzona
+    delete:
+      success: Rodzina produktów usunięta pomyślnie
+      fail: Nie można usunąć tej rodziny
+  property:
+    attribute_as_label: Atrybut używany jako etykieta
+    attribute_as_image: Atrybut używany jako główny obraz
+    empty_attribute_as_image: Nie zaznaczone
+  page_title:
+    index: "]-Inf, 1]{{ count }} rodzina|]1, Inf[{{ count }} rodzin"
+  module:
+    attributes:
+      not_required_label: Nie wymagany
+      required_label: Wymagany
+    create:
+      button: Utwórz rodzinę
+    delete:
+      confirm: Czy na pewno chcesz usunąć tę rodzinę?
+pim_enrich.entity.family_variant:
+  label: wariant rodziny
+  short_plural_label: Warianty
+  short_label: Wariant
+  flash:
+    update:
+      success: Wariant rodziny pomyślnie zaktualizowany. Produkty z wariantami zostaną zaktualizowane ze zmianami.
+      fail: Nie można zaktualizować wariantu rodziny.
+    create:
+      success: Wariant rodziny pomyślnie utworzony
+    delete:
+      success: Wariant rodziny usunięty pomyślnie
+  module:
+    edit:
+      common_attributes: Wspólne atrybuty
+      no_common_attributes: Brak wspólnych atrybutów
+      variant_axis_label: Oś wariantu
+      variant_attributes: Atrybuty wariantu
+      level_1: Atrybuty wariantu poziomu pierwszego
+      level_2: Atrybuty wariantu poziomu drugiego
+      description: Przeciągnij i upuść atrybuty na wybrany poziom wariantu, aby te atrybuty były zarządzane na poziomie wariantu.
+      attribute_remove: Usuń atrybut
+      attribute_group_remove: Usuń grupę atrybutów
+      confirm_attribute_removal_title: Potwierdź usunięcie atrybutów
+      confirm_attribute_removal_message: Usuwając te atrybuty, umieścisz je z powrotem we wspólnych atrybutach wariantu rodziny i usuniesz wartości z wariantów produktów
+    create:
+      label: Dodaj wariant
+      title: Utwórz nowy wariant rodziny
+      description: W wariancie rodziny można zdefiniować strukturę dla produktów z wariantami. Wybierz liczbę zarządzanych poziomów wariantów, atrybuty używane jako osie wariantu dla każdego poziomu, a następnie określ jak atrybuty są rozłożone.
+      variant_levels: Poziomy wariantu
+      axis_level: "Poziom wariantowania {{ level }}"
+    update_translations:
+      title: Aktualizuj tłumaczenia
+    delete:
+      confirm: Czy na pewno chcesz usunąć ten wariant rodziny?
+pim_enrich.entity.attribute_option:
+  short_uppercase_label: Ustawienia
+  flash:
+    create:
+      success: Opcja atrybutu pomyślnie utworzona
+      fail: Wystąpił błąd podczas próby utworzenia opcji atrybutu
+    update:
+      fail: Nie można zapisać opcji atrybutu
+    delete:
+      fail: Błąd podczas usuwania ustawienia atrybutu
+  page_title:
+    index: "{0} opcji|one: {{ count }} opcji|few: {{ count }} opcje|many: {{ count }} opcji|other: {{ count }} opcji"
+  module:
+    edit:
+      cancel_title: Anuluj zmiany
+      cancel_description: Uwaga, utracisz niezapisane dane. Czy na pewno chcesz anulować zmiany dla tego nowego ustawienia?
+      options_labels: Etykiety opcji
+      options_settings: Ustawienia opcji
+      options_codes: Kody opcji
+      option_code: Kod opcji
+      new_option_code: nowa_opcja
+      no_options_msg: Przepraszamy, nie ma żadnych opcji!
+      add_option: Kliknij tutaj, aby dodać
+      delete_confirmation_title_msg: Usunąć "{{ optionCode }}" z opcji?
+      delete_confirmation_subtitle_msg: Czy na pewno chcesz usunąć tę opcję? Tego działania nie można cofnąć.
+      display_options_limit: Tutaj wyświetla się tylko pierwsze 500 opcji. Jeśli chcesz zobaczyć ich więcej, skorzystaj z funkcji wyszukiwania lub eksportu.
+      search:
+        placeholder: Szukaj na etykiecie lub kodzie
+        no_result:
+          title: Przepraszamy, brak wyników Twojego wyszukiwania.
+pim_enrich.entity.association_type:
+  label: typ powiązania
+  property:
+    is_two_way: Powiązanie dwukierunkowe
+    is_quantified: Powiązanie z ilością
+  flash:
+    update:
+      success: Typ powiązania został pomyślnie zaktualizowany.
+      fail: Nie można zaktualizować typu powiązania.
+      fields_not_ready: "Nie można teraz zapisać typu powiązania. Następujące pola nie są gotowe: {{ fields }}"
+    create:
+      success: Typ powiązania pomyślnie utworzony
+    delete:
+      success: Typ powiązania pomyślnie usunięty
+      fail: Nie można usunąć tego typu powiązania
+  page_title:
+    index: "] -Inf, 1] {{ count }} typ powiązania|] 1, Inf [{{ count }} typy powiązania"
+  module:
+    create:
+      title: Utwórz nowy typ powiązania
+      button: Utwórz typ powiązania
+      is_two_way:
+        message_on_read_only: Typ powiązania może być ilościowy albo dwukierunkowy. Aby wybrać jeden, odznacz drugi
+      is_quantified:
+        message_on_read_only: Typ powiązania może być ilościowy albo dwukierunkowy. Aby wybrać jeden, odznacz drugi
+    delete:
+      confirm: Czy na pewno chcesz usunąć ten typ powiązania?
+  hint: <a href="{{link}}" target="_blank">W tym artykule</a>znajdziesz wszystko, czego potrzebujesz, aby utworzyć własny typ powiązania.
+  no_association_types:
+    title: Nie masz żadnych typów powiązań
+    hint: Utwórz pierwszy
+pim_enrich.entity.group_type:
+  label: typ grupy
+  flash:
+    update:
+      success: Typ grupy pomyślnie zaktualizowany.
+      fail: Nie można zaktualizować typu grupy.
+      fields_not_ready: "Nie można teraz zapisać typu grupy. Następujące pola nie są gotowe: {{ fields }}"
+    create:
+      success: Typ grupy pomyślnie utworzony
+    delete:
+      success: Typ grupy pomyślnie usunięty
+      fail: Nie można usunąć tego typu grupy
+  page_title:
+    index: "] -Inf, 1] {{ count }} typ grupy|] 1, Inf [{{ count }} typy/ów grup"
+  module:
+    create:
+      button: Utwórz typ grupy
+    delete:
+      confirm: Czy na pewno chcesz usunąć ten typ grupy?
+pim_enrich.entity.attribute:
+  label: atrybut
+  plural_label: Atrybuty
+  flash:
+    update:
+      success: Atrybut pomyślnie zaktualizowany.
+      fail: Nie można zaktualizować atrybutu.
+      fields_not_ready: "Nie można teraz zapisać atrybutu. Następujące pola nie są gotowe: {{ fields }}"
+    delete:
+      success: Atrybut pomyślnie usunięty
+      fail: Nie można usunąć tego atrybutu
+  page_title:
+    index: "] -Inf, 1] {{ count }} atrybut|] 1, Inf [{{ count }} atrybuty/ów"
+  property:
+    allowed_extensions: Dozwolone rozszerzenia
+    auto_option_sorting: Automatycznie segreguj opcje w kolejności alfabetycznej
+    available_locales: Dostępne wersje językowe
+    date_max: Maksymalna data
+    date_min: Minimalna data
+    decimals_allowed: Dopuszczalne wartości dziesiętne
+    default_metric_unit:
+      label: Domyślna jednostka miary
+      choose: Wybierz jednostkę
+    guidelines: Wytyczne dotyczące atrybutów
+    group:
+      label: Grupa atrybutów
+      choose: Wybierz grupę atrybutów
+    is_locale_specific: Zależne od wersji językowej
+    localizable: Wartość dla wersji językowej
+    max_characters: Maksymalna liczba znaków
+    max_file_size: Maksymalny rozmiar pliku (MB)
+    metric_family:
+      label: Rodzina miar
+      choose: Wybierz rodzinę
+    minimum_input_length: Minimalna długość dla automatycznego uzupełniania
+    name: Nazwa
+    negative_allowed: Dozwolone wartości ujemne
+    number_max: Maksymalna liczba
+    number_min: Minimalna liczba
+    reference_data_name:
+      label: Typ danych referencyjnych
+      choose: Wybierz typ danych referencyjnych
+    scopable: Wartość dla kanału
+    type:
+      choose: Wybierz typ atrybutu
+      pim_catalog_identifier: Identyfikator
+      pim_catalog_text: Tekst
+      pim_catalog_textarea: Pole tekstowe
+      pim_catalog_number: Liczba
+      pim_catalog_price_collection: Cena
+      pim_catalog_multiselect: Wybór wielokrotny
+      pim_catalog_simpleselect: Wybór prosty
+      pim_catalog_file: Plik
+      pim_catalog_image: Zdjęcie
+      pim_catalog_boolean: "Tak/Nie"
+      pim_catalog_date: Data
+      pim_catalog_metric: Miara
+      pim_reference_data_simpleselect: Wybór prosty danych referencyjnych
+      pim_reference_data_multiselect: Wybór wielokrotny danych referencyjnych
+    unique: Unikatowa wartość
+    useable_as_grid_filter: Możliwy do użycia w tabeli
+    validation_regexp: Wyrażenie regularne
+    validation_rule:
+      label: Reguła poprawności
+      email: E-mail
+      regexp: Wyrażenie regularne
+      url: URL
+    wysiwyg_enabled: Włączony edytor tekstu rozszerzonego
+    default_value: Wartość domyślna
+    code:
+      must_be_filled: Trzeba uzupełnić kod.
+      invalid: Kod nieprawidłowy
+      not_available: Kod niedostępny
+      is_duplicate: Ten kod jest już używany.
+  module:
+    add_attribute:
+      no_available_attributes: Nie ma więcej atrybutów do dodania
+      attributes_selected: "{1} 1 wybrany atrybut|{2,3,4} {{ itemsCount }} wybrane atrybuty |[5, Inf [{{ itemsCount }} wybranych atrybutów"
+    create:
+      button: Utwórz atrybut
+    edit:
+      common: Parametry ogólne
+      type_specific: Określone parametry
+      validation: Parametry poprawności
+      select_locale: Wybierz wersję językową
+    delete:
+      confirm: Czy na pewno chcesz usunąć ten atrybut?
+      attribute_removal: Atrybut zostanie usunięty ze wszystkich produktów.
+      product_count: '{0}0 produktów|{1}1 produkt|]1, Inf[{{ count }} produktów'
+      product_model_count: '{0}0 modeli produktów|{1}1 model produktu|]1, Inf[{{ count }} modeli produktów'
+      used: ']-Inf,1]obecnie ma wartości określone dla tego atrybutu.|]1, Inf[obecnie mają wartości określone dla tego atrybutu.'
+      helper:
+        content: Jeśli chcesz zmienić typ atrybutu, aby był tłumaczony lub zmienny, zachowując jednocześnie dostęp do istniejących wartości atrybutu,
+        link: zajrzyj do naszego Centrum Pomocy (aby uzyskać więcej informacji).
+      type: Wprowadź "{{ attributeCode }}"
+      confirm_from_family: Czy na pewno chcesz usunąć ten atrybut z rodziny?
+      confirm_from_group: Czy na pewno chcesz usunąć atrybut {{ attribute }} z tej grupy atrybutów?
+      confirm_from_product: Czy na pewno chcesz usunąć ten atrybut z produktu?
+    mass_delete:
+      modal:
+        title: Atrybuty
+        subtitle: '{1}Potwierdź usunięcie {{ count }} atrybutu|]1, Inf[Potwierdź usunięcie {{ count }} atrybutów'
+        label: Wpisz następujący tekst „{{ textToCheck }}”
+        confirm: Czy na pewno chcesz usunąć te atrybuty?
+      message_bar:
+        success: Usuwanie rozpoczęte. Kiedy się zakończy, otrzymasz powiadomienie. W międzyczasie możesz obserwować jego postępy w trackerze procesów.
+        fail: Podczas uruchamiania usuwania wystąpił błąd.
+pim_enrich.entity.attribute_group:
+  label: grupa atrybutów
+  uppercase_label: Grupa atrybutów
+  plural_label: Grupy Atrybutów
+  result_count: '{0}0 grup atrybutów|{1}1 grupa atrybutów|]1, Inf[{{ count }} grup atrybutów'
+  limit_reached: Osiągnięto limit {{ max }} grup atrybutów.
+  show_more_attribute:
+    title: Trochę tu tłoczno, pokazujemy Ci {{ attributeCount }}/{{ totalAttributeCount }} atrybutów.
+    subtitle: Aby odkryć wszystkie atrybuty tej grupy, kliknij poniżej!
+    button: Zobacz wszystkie atrybuty
+  dropdown:
+    label: Wybierz
+    all: Wszystkie grupy atrybutów
+    none: Brak grup atrybutów
+  flash:
+    update:
+      success: Grupa atrybutów pomyślnie zaktualizowana
+      fail: Nie można zaktualizować grupy atrybutów
+      fields_not_ready: "Nie można teraz zapisać grupy atrybutów. Następujące pola nie są gotowe: {{ fields }}"
+    delete:
+      success: Usuwanie rozpoczęte. Kiedy się zakończy, otrzymasz powiadomienie. W międzyczasie możesz obserwować jego postępy w trackerze procesów.
+      fail: Podczas uruchamiania usuwania wystąpił błąd
+    mass_delete:
+      success: Usuwanie rozpoczęte. Kiedy się zakończy, otrzymasz powiadomienie. W międzyczasie możesz obserwować jego postępy w trackerze procesów.
+      fail: Podczas uruchamiania usuwania wystąpił błąd.
+  module:
+    add_attribute_group:
+      label: Dodaj przez grupy
+      no_attribute_groups_available: Brak dostępnej grupy atrybutów
+      attributes_groups_selected: '{1} 1 wybrana grupa|{2,3,4} {{ itemsCount }} wybrane grupy |[5, Inf [{{ itemsCount }} wybranych grup'
+    delete:
+      confirm: Czy na pewno chcesz usunąć tę grupę atrybutów?
+  grid:
+    columns:
+      attribute_count: Liczba powiązanych atrybutów
+  selected: '{0}Nie wybrano grupy atrybutów|{1}Wybrano jedną grupę atrybutów|]1,Inf]Liczba wybranych grup atrybutów: {{ count }}'
+  mass_delete:
+    confirm: '{1}Czy na pewno chcesz usunąć tę grupę atrybutów?|]1, Inf[Czy na pewno chcesz usunąć następującą liczbę grup atrybutów: {{ count }}?'
+    confirmation_phrase: 'Wpisz „{{ confirmation_word }}”'
+    confirmation_word: usuń
+    attribute_warning: '{1}Usunięcie tych grup atrybutów będzie mieć wpływ na {{ number_of_attribute }} powiązany atrybut. Będzie trzeba przenieść go do nowej grupy atrybutów.|]1, Inf[Usunięcie tych grup atrybutów będzie mieć wpływ na następującą liczbę powiązanych atrybutów: {{ number_of_attribute }}. Będzie trzeba przenieść je do nowej grupy atrybutów.'
+    select_attribute_group: '{1}Wybierz grupę atrybutów, do której chcesz przenieść ten powiązany atrybut|]1, Inf[Wybierz grupę atrybutów, do której chcesz przenieść następującą liczbę powiązanych atrybutów: {{ number_of_attribute }}'
+    empty_result_label: 'Nie znaleziono grup atrybutów'
+    placeholder: 'Wybierz grupę atrybutów'
+    open_label: 'lista grup atrybutów'
+  delete:
+    confirm: 'Czy na pewno chcesz usunąć tę grupę atrybutów?'
+    attribute_warning: '{1}Usunięcie tej grupy atrybutów będzie mieć wpływ na {{ number_of_attribute }} powiązany atrybut. Będzie trzeba przenieść go do nowej grupy atrybutów.'
+    select_attribute_group: '{1}Wybierz grupę atrybutów, do której chcesz przenieść ten powiązany atrybut:|]1, Inf[Wybierz grupę atrybutów, do której chcesz przenieść następującą liczbę powiązanych atrybutów: {{ number_of_attribute }}:'
+  batch_jobs:
+    delete_attribute_groups:
+      delete_attribute_groups:
+        label: Usuń grupy atrybutów
+pim_import_export:
+  notification:
+    mass_delete_attribute_groups:
+      error: Zbiorcze usuwanie grup atrybutów nie powiodło się.
+      warning: Zbiorcze usuwanie grup atrybutów zakończone z ostrzeżeniami
+      success: Zbiorcze usuwanie grup atrybutów zakończone
+pim_enrich.mass_edit.family:
+  title: Działanie zbiorcze rodzin
+  confirm: "{1} Zamierzasz zaktualizować rodzinę następującymi informacjami, proszę potwierdź.|{2,3,4} Zamierzasz zaktualizować {{ itemsCount }} rodzin/y następującymi informacjami, proszę potwierdź.|] 1, Inf [Zamierzasz zaktualizować {{ itemsCount }} rodzin/y następującymi informacjami, proszę potwierdź."
+  step:
+    select:
+      label: Wybierz rodziny
+    choose:
+      title: Działania zbiorcze rodziny
+      label_count: "] 0, Inf [Wybierz działanie"
+    configure:
+      label: Konfiguruj
+    confirm:
+      label: Potwierdź
+    launched:
+      label: Działanie zbiorcze "{{ operation }}" zostało uruchomione. Zostaniesz powiadomiony o jego ukończeniu.
+  operation:
+    set_requirements:
+      label: Określ wymagania atrybutów
+      description: Poniższe wymagania atrybutów zostaną zastosowane do wybranych rodzin
+      label_count: "{1}Ustaw wymagania atrybutów <span class=\"AknFullPage-title--highlight\">1 rodziny</span>|] 1, Inf [Ustaw wymagania atrybutów <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} rodzin</span>"
+batch_jobs:
+  default_steps:
+    delete_attribute_groups: Usuń grupy atrybutów
+    move_child_attributes: Przenieś atrybuty elementów podrzędnych
+  delete_attributes:
+    delete_attributes:
+      label: Usuń atrybuty
+job_execution:
+  summary:
+    deleted_attributes: Usunięte atrybuty
+akeneo_job_process_tracker:
+  type_filter:
+    attribute_group_mass_delete: Usuń grupy atrybutów
+pim_notification:
+  types:
+    attribute_group_mass_delete: Usuwanie

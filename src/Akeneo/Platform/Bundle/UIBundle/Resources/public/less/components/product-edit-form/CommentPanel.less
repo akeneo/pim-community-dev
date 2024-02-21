@@ -1,0 +1,64 @@
+@import '../../base/variables';
+
+.AknCommentPanel {
+  @avatarSize: 48px;
+  @avatarMargin: 10px;
+
+  &-thread {
+    margin-top: 10px;
+  }
+
+  &-item {
+    &--reply {
+      margin-left: @avatarSize + @avatarMargin;
+    }
+  }
+
+  &-header {
+    display: flex;
+    align-items: center;
+    font-size: @AknFontSizeBigger;
+  }
+
+  &-avatar {
+    width: @avatarSize;
+    height: @avatarSize;
+    border-radius: @avatarSize;
+    margin-right: @avatarMargin;
+  }
+
+  &-title {
+    flex-grow: 1;
+  }
+
+  &-author {
+    color: @AknLightPurple;
+    font-style: italic;
+  }
+
+  &-icon {
+    margin-left: 5px;
+    opacity: 0;
+    transition: opacity 0.1s ease-in;
+  }
+
+  &-item:hover &-icon {
+    opacity: 1;
+  }
+
+  &-message {
+    margin: 5px 0 20px @avatarSize + @avatarMargin;
+    border-left: 2px solid @AknLightPurple;
+    background: @AknLightGray;
+    padding: 20px;
+    font-size: @AknFontSizeBig;
+  }
+
+  &-date {
+    font-size: @AknDefaultFontSize;
+  }
+
+  &-replyContainer {
+    margin: 20px 0 -4px 0;
+  }
+}

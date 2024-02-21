@@ -1,0 +1,65 @@
+parameters:
+    pim_versioning.event_subscriber.adduser.class:                     Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber\AddUserSubscriber
+    pim_versioning.event_subscriber.addcontext.class:                  Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber\AddContextSubscriber
+    pim_versioning.event_subscriber.add_remove_version.class:          Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber\AddRemoveVersionSubscriber
+    pim_versioning.event_subscriber.timestampable.class:               Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber\TimestampableSubscriber
+    pim_versioning.event_subscriber.purge_progress_bar_advancer.class: Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber\PurgeProgressBarAdvancerSubscriber
+
+services:
+    pim_versioning.event_listener.addversion:
+        class: 'Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber\AddVersionListener'
+        lazy: true
+        arguments:
+            - '@pim_versioning.manager.version'
+            - '@pim_versioning.serializer'
+            - '@pim_versioning.update_guesser.chained'
+            - '@pim_versioning.context.version'
+        tags:
+            - { name: doctrine.event_listener, event: onFlush, lazy: true }
+            - { name: doctrine.event_listener, event: postFlush, lazy: true }
+
+    pim_versioning.event_subscriber.adduser:
+        class: '%pim_versioning.event_subscriber.adduser.class%'
+        arguments:
+            - '@security.authorization_checker'
+            - '@security.token_storage'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_versioning.event_subscriber.addcontext:
+        class: '%pim_versioning.event_subscriber.addcontext.class%'
+        arguments:
+            - '@pim_versioning.context.version'
+        tags:
+            - { name: kernel.event_subscriber}
+
+    pim_versioning.event_subscriber.add_remove_version:
+        class: '%pim_versioning.event_subscriber.add_remove_version.class%'
+        arguments:
+            - '@pim_versioning.factory.version'
+            - '@pim_versioning.repository.version'
+            - '@security.token_storage'
+            - '@security.authorization_checker'
+            - '@pim_versioning.saver.version'
+        tags:
+            - { name: kernel.event_subscriber, priority: 0 }
+
+    pim_versioning.event_subscriber.purge_progress_bar_advancer:
+        class: '%pim_versioning.event_subscriber.purge_progress_bar_advancer.class%'
+        tags:
+            - { name: kernel.event_subscriber, priority: 0 }
+
+    pim_versioning.event_subscriber.timestampable:
+        class: '%pim_versioning.event_subscriber.timestampable.class%'
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber\RefreshVersioningSubscriber:
+        arguments:
+            - '@Akeneo\Tool\Bundle\BatchBundle\JobExecution\ExecuteJobExecutionHandlerInterface'
+            - '@Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandlerInterface'
+        tags:
+            - { name: 'kernel.event_subscriber' }
+

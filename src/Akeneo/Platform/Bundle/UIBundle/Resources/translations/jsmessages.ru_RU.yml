@@ -1,0 +1,349 @@
+#ORO messages
+"Yes, I Agree": "Да, я согласен"
+"Yes, do it": "Да, сделать это"
+"Ok, got it.": "Ок, я понял."
+"Edit": "Изменить"
+"Yes, revoke": "Да, отозвать"
+"Revoke Confirmation": "Отозвать подтверждение"
+Prev: Предыдущий
+Today: Сегодня
+Wk: Нед
+AM: AM
+A: A
+PM: PM
+P: P
+"Choose Time": "Выберите время"
+Time: Время
+Hour: Час
+Minute: Минута
+Second: Секунда
+Millisecond: Миллисекунда
+Microsecond: Микросекунда
+"Time Zone": "Часовой пояс"
+duration:
+  days: "{0}0 дней|{1}1 день|]1, Inf [{{ count }} дней"
+  hours: "{0}0 часов|{1}1 час|]1, Inf[часов: {{ count }}"
+  minutes: "{0}0 минут |{1}1 минута|]1, Inf[минут: {{ count }}"
+  seconds: "{0}0 секунд|{1}1 секунда|]1, Inf [секунд: {{ count }}"
+#PIM messages
+Localized value: Локализованное значение
+Columns: Столбцы
+Datagrid Configuration: Настройки таблицы
+#Filters
+Action: Действие
+Unit: Единица
+Currency: Валюта
+jstree:
+  all: Все товары
+  unclassified: Неклассифицированные товары
+  product:
+    all: Все товары
+    unclassified: Неклассифицированные товары
+  no_tree: Дерево категорий недоступно
+  include_sub: Включить подкатегории
+#Datetimepicker
+datetimepicker:
+  days:
+    Sunday: Воскресенье
+    Monday: Понедельник
+    Tuesday: Вторник
+    Wednesday: Среда
+    Thursday: Четверг
+    Friday: Пятница
+    Saturday: Суббота
+  daysShort:
+    Sun: Вск
+    Mon: Пнд
+    Tue: Втр
+    Wed: Срд
+    Thu: Чтв
+    Fri: Птн
+    Sat: Сбт
+  daysMin:
+    Su: Вс
+    Mo: По
+    Tu: Вт
+    We: Ср
+    Th: Чт
+    Fr: Пт
+    Sa: Сб
+  months:
+    January: Январь
+    February: Февраль
+    March: Март
+    April: Апрель
+    May: Mай
+    June: Июнь
+    July: Июль
+    August: Август
+    September: Сентябрь
+    October: Октябрь
+    November: Ноябрь
+    December: Декабрь
+  monthsShort:
+    Jan: Янв
+    Feb: Фев
+    Mar: Мар
+    Apr: Апр
+    May: Mай
+    Jun: Июн
+    Jul: Июл
+    Aug: Авг
+    Sep: Сен
+    Oct: Окт
+    Nov: Ноя
+    Dec: Дек
+#ORO
+oro_config:
+  form:
+    config:
+      title: Конфигурация системы
+      tab:
+        system:
+          title: Система
+      group:
+        localization:
+          title: Локализация
+          system_locale: Язык
+        notification:
+          title: Уведомления
+          system_notification: Уведомления о новых версиях
+        loading_message:
+          title: Загрузка сообщений
+          label: Включить загрузку сообщений
+        loading_messages:
+          label: Доступна загрузка сообщений
+pim_ui:
+  flash:
+    unsaved_changes: 'У вас есть несохраненные изменения, вы уверены, что хотите выйти?'
+"Sorry, page was not loaded correctly": "Извините, страница загружена неправильно"
+"Your local changes will be lost. Are you sure you want to refresh the page?": "Ваши локальные изменения будут потеряны. Вы действительно хотите обновить страницу?"
+"navigation.message.content.outdated": "Содержание страницы {{ title }} устарело, пожалуйста, <a href='#' data-action='page-refresh'> обновите страницу</a>"
+"Content of pinned page is outdated": "Содержание закрепленной страницы устарело"
+#Global structure of translation files
+#pim_bundle_name:
+#entity:
+#entity_name:
+#label: entity
+#uppercase_label: Entity
+#plural_label: Entities
+#flash:
+#update:
+#fail: Update failed
+#success: Entity Successfully updated
+#delete:
+#fail: Cannot delete this entity
+#success: Entity successfully removed
+#create:
+#fail: Can not create this entity
+#success: Entity successfully created
+#page_title:
+#index: "]-Inf, 1]1 entity|]1, Inf[{{ count }} entities"
+#property:
+#field_name: Field name
+#complex_field:
+#label: Field name
+#choose: Choose a field name
+#module:
+#module_name:
+#key: message
+pim_common:
+  actions: Действия
+  add: Добавить
+  add_attributes: Добавить атрибуты
+  after: После
+  all: Все
+  and: и
+  apply: Применить
+  by: по
+  cancel: oтменить
+  clear_value: Очистить значение
+  close: Закрыть
+  code: Код
+  completeness: Полнота
+  confirm: Подтверждение
+  confirm_deletion: Подтвердить удаление
+  create: Создать
+  created: Создан
+  delete: Удалить
+  done: Готово
+  edit: Изменить
+  entity_updated: Имеются несохраненные изменения.
+  export: Экспорт
+  from: С
+  general_properties: Общие свойства
+  history: Журнал
+  identifier: Идентификатор
+  image: Изображение
+  label: Ярлык
+  label_translations: Переводы меток
+  less_than: менее чем
+  loading: Загрузка...
+  media_upload: Перетащите чтобы загрузить, или нажмите здесь
+  more_than: более чем
+  next: Следующий
+  "no": "Нет"
+  none: (Пусто)
+  not_available: '-'
+  now: Сейчас
+  ok: Подтвердить
+  other_actions: Другие действия
+  permissions: Права доступа
+  previous: Предыдущая
+  properties: Свойства
+  remove: Удалить
+  required_label: (требуется)
+  result_count: "{0}0 результатов|{1}1 результат|]1, Inf[{{ itemsCount }} результатов"
+  save: Сохранить
+  search: Поиск
+  select2:
+    search: Поиск...
+    no_match: Совпадений не найдено
+    load_more: Загрузка дополнительных результатов...
+  status: Статус
+  to: до
+  type: Тип
+  update: Обновить
+  updated: Обновлено
+  "yes": "Да"
+  operator: Оператор
+  operators:
+    "=": Равно
+    "!=": Не равно
+    ">=": Больше или равно
+    ">": Больше
+    "<=": Меньше или равно
+    "<": Меньше
+    EMPTY: Пустой
+    NOT EMPTY: Не является пустым
+    CONTAINS: Содержит
+    DOES NOT CONTAIN: Не содержит
+    STARTS WITH: Начинается с
+    ENDS WITH: Заканчивается на
+  read_more: Читать далее
+  groups: Группы
+  products: Продукты
+  more: Еще
+error:
+  forbidden: Запрещено. У вас нет доступа к этой странице
+alert:
+  attribute_option:
+    save_before_edit_other: Пожалуйста зафиксируйте ваши изменения на других строках перед редактированием этой
+  session_storage:
+    not_available: Ваш веб-браузер кажется не совместим с sessionStorage. Обратитесь к администратору
+pim_enrich.entity.fallback:
+  flash:
+    update:
+      fail: Не удалось обновить
+      success: Обновление завершено
+    delete:
+      fail: Не удается удалить этот элемент
+      success: Элемент успешно удален
+  module:
+    delete:
+      title: Удалить {{ itemName }}
+      alternative_title: Подтвердите удаление
+      item: Вы действительно хотите удалить этот элемент?
+    edit:
+      leave: Вы уверены, что хотите покинуть эту страницу?
+      discard_changes: Если вы покините страницу изменения будут потеряны для {{ entity }}.
+      discard_changes_title: Вы уверены?
+pim_enrich.entity.job_execution:
+  module:
+    create:
+      upload: Перетащите ваш файл {{ type }} сюда или нажмите кнопку для просмотра диска
+    download:
+      archive: Скачать сгенерированный архив
+      output: Скачать сгенерированный файлы
+      input: Скачать прочитанные файлы
+      invalid_xlsx: Скачать некорректные данные
+      invalid_csv: Скачать некорректные данные
+pim_title:
+  oro_default: Панель управления
+  pim_enrich_attributegroup_index: Группы атрибутов
+  pim_enrich_attributegroup_create: Группы атрибутов | Создать
+  pim_enrich_attributegroup_edit: Группа атрибутов {{ group.label }} | Изменить
+  pim_enrich_catalog_volume_index: Мониторинг объема каталога
+  pim_enrich_categorytree_index: Деревья категории
+  pim_enrich_categorytree_create: Деревья категорий | Создать
+  pim_enrich_categorytree_create_tree: Деревья категорий | Создать
+  pim_enrich_categorytree_tree: Дерево категорий {{ category.label }} | Изменить
+  pim_enrich_attribute_index: Атрибуты
+  pim_enrich_attribute_create: Атрибуты | Создать
+  pim_enrich_attribute_edit: Атрибуты {{ attribute.label }} | Редактировать
+  pim_enrich_product_index: Продукты
+  pim_enrich_product_edit: Продукт {{ product.label }} | Редактировать
+  pim_enrich_product_model_edit: Модель продукта {{ product.label }} | Редактировать
+  pim_enrich_family_index: Семейства
+  pim_enrich_family_edit: Семейство {{ family.label }} | Редактировать
+  pim_enrich_channel_index: Каналы
+  pim_enrich_channel_create: Каналы | Создать
+  pim_enrich_channel_edit: Канал {{ channel.label }} | Редактировать
+  pim_enrich_currency_index: Валюты
+  pim_enrich_locale_index: Локали
+  pim_enrich_group_index: Группы
+  pim_enrich_group_edit: Группа {{ group.label }} | Редактирование
+  pim_enrich_associationtype_index: Типы ассоциаций
+  pim_enrich_associationtype_edit: Тип связи {{ association type.label }} | Редактировать
+  pim_enrich_grouptype_index: Типы групп
+  pim_enrich_grouptype_edit: Тип группы {{ group type.label }} | Изменить
+  pim_enrich_mass_edit_action_choose: Массовое редактирование | Выбрать
+  pim_enrich_mass_edit_action_configure: Массовое редактирование | Настройка
+  pim_enrich_mass_edit_action_perform: Массовые изменения | Выполнить
+  pim_enrich_job_tracker_index: Трекер процессов
+  pim_enrich_job_tracker_show: Трекер процессов | Показать задание
+  pim_enrich_mass_edit_action: Массовое редактирование
+  pim_analytics_system_info_index: Информация о системе
+  pim_settings_index: Настройки
+  pim_system_index: Система
+pim_menu:
+  tab:
+    activity: Активность
+    imports: Импорты
+    exports: Экспорты
+    settings: Настройки
+    system: Система
+    help:
+      title: Помощь
+      helper: Справочный центр Akeneo
+  item:
+    association_type: Типы ассоциаций
+    attribute_group: Группы атрибутов
+    channel: Каналы
+    currency: Валюты
+    family: Семейства
+    group: Группы
+    group_type: Типы групп
+    product_model: Модели продукта
+    export_history: История экспорта
+    export_profile: Профили экспорта
+    import_history: История импорта
+    import_profile: Профили импорта
+    configuration: Настройки
+    user_management: Управление пользователями
+    user: Пользователи
+    user_group: Группы пользователя
+    user_role: Роли
+    info: Информация о системе
+    job_tracker: Трекер процессов
+    catalog_volume: Мониторинг объема каталога
+  navigation:
+    activity: Меню раздела Активность
+    system: Меню раздела Система
+    user: Меню раздела Управление пользователями
+    settings:
+      collapsed_label: Меню раздела Настройки
+    product: Навигацию по продуктам
+    product_infos: Информация о продуктах
+  user:
+    logout: Выйти
+    user_account: Мой аккаунт
+pim_notification:
+  types:
+    import: Импорт
+    export: Экспорт
+    quick_export: Быстрый экспорт
+    mass_edit: Массовое редактирование
+pim_system:
+  system_navigation: Меню раздела Система
+  users_management_navigation: Меню раздела Управление пользователями

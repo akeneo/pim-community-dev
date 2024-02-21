@@ -1,0 +1,10 @@
+<div class="AknCatalogVolume-axis">
+    <div class="AknCatalogVolume-icon AknCatalogVolume-icon--<%- icon %>"></div>
+    <div class="AknCatalogVolume-title">
+        <%- title %>
+        <div class="AknCatalogVolume-value" data-field="<%- name %>">
+            <span><%- meanLabel %> <div><%- value.average.toLocaleString(userLocale, { useGrouping: true }) %></div></span>
+            <span><%- maxLabel %> <div><%- value.max.toLocaleString(userLocale, { useGrouping: true }) %></div></span>
+        </div>
+    </div>
+</div>

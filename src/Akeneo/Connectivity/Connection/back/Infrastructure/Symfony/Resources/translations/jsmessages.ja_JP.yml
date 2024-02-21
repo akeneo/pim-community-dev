@@ -1,0 +1,625 @@
+pim_menu:
+  tab:
+    connect: 接続
+  navigation:
+    connect: 接続ナビゲーション
+  navigation_back:
+    connection: 接続に戻る
+  navigation_block:
+    connection: 接続ナビゲーション
+  item:
+    connection_audit: 接続ダッシュボード
+    connection_settings: 接続
+    connection_settings_edit: 接続設定
+    connection_monitoring: エラーモニタリング
+    connection_webhook_edit: イベントサブスクリプション
+    connection_webhook_event_logs: イベントログ
+    data_flows: データフロー
+    connect_connection_settings: 接続設定
+    marketplace: App Store
+    connected_apps: 接続済みのアプリ
+pim_title:
+  akeneo_connectivity_connection_connect_marketplace: App Store
+  akeneo_connectivity_connection_connect_marketplace_profile: App Store
+  akeneo_connectivity_connection_connect_apps_activate: 接続
+  akeneo_connectivity_connection_connect_apps_authorize: 接続
+  akeneo_connectivity_connection_connect_apps_authenticate: 接続
+  akeneo_connectivity_connection_settings_index: 接続設定
+  akeneo_connectivity_connection_settings_edit: 接続設定
+  akeneo_connectivity_connection_settings_any: 接続設定
+  akeneo_connectivity_connection_audit_index: 接続ダッシュボード
+  akeneo_connectivity_connection_audit_any: 接続ダッシュボード
+  akeneo_connectivity_connection_error_management_dashboard: 接続ダッシュボード
+  akeneo_connectivity_connection_error_management_connection_monitoring: 接続監視
+  akeneo_connectivity_connection_webhook_edit: イベントサブスクリプション
+  akeneo_connectivity_connection_webhook_regenerate_secret: イベントサブスクリプション
+  akeneo_connectivity_connection_webhook_event_logs: イベントログ
+  akeneo_connectivity_connection_settings_redirect: 接続
+  akeneo_connectivity_connection_connect_connected_apps: 接続済みのアプリ
+  akeneo_connectivity_connection_connect_connected_apps_edit: アプリの設定
+  akeneo_connectivity_connection_connect_connected_apps_delete: アプリの削除
+  akeneo_connectivity_connection_connect_connected_apps_regenerate_secret: 認証情報を再生成
+  akeneo_connectivity_connection_connect_custom_apps_create: カスタムアプリの作成
+  akeneo_connectivity_connection_connect_custom_apps_delete: カスタムアプリの削除
+  akeneo_connectivity_connection_connect_connected_apps_open: アプリを開く
+  akeneo_connectivity_connection_connect_connected_apps_catalogs_edit: カタログの編集
+akeneo_connectivity.connection:
+  connect:
+    marketplace:
+      title: PIM を別のアプリケーションに接続しますか？🤟
+      sub_title: どのアプリケーションを Akeneo PIM に接続できるのか、App Store でご覧ください。
+      link: App Store にアクセス
+      helper:
+        title: '{0} お使いの PIM バージョンと互換性のあるアプリまたはコネクターがありません。|{1} お使いの PIM バージョンと互換性のあるアプリまたはコネクターが {{ count }} 個あります。|[2,Inf] お使いの PIM バージョンと互換性のあるアプリとコネクターが {{ count }} 個あります。'
+        title_without_apps: '{0} お使いの PIM バージョンと互換性のあるコネクターがありません。|{1} お使いの PIM バージョンと互換性のあるコネクターが {{ count }} 個あります。|[2,Inf] お使いの PIM バージョンと互換性のあるコネクターが {{ count }} 個あります。'
+        description: これは概要です。詳細については Akeneo App Store をご覧ください。
+        link: Akeneo App Store に移動
+      search:
+        placeholder: 名前で検索
+        total: '{0} 結果がありません|{1} 1 件の結果|[2,Inf] {{ total }} 件の結果'
+      card:
+        developed_by: '開発者: {{ author }}'
+        read_more: 続きを読む
+        more_info: さらに詳しい情報
+        connect: 接続
+        connected: 接続済み
+        pending: 保留中...
+      extensions:
+        title: コネクター
+        total: '{0} コネクターがありません|{1} 1 個のコネクター|[2,Inf] {{ total }} 個のコネクター'
+        empty: お使いのバージョンと互換性のあるコネクターがありません
+      apps:
+        title: アプリ
+        total: '{0} アプリなし|{1} 1 個のアプリ|[2,Inf] {{ total }} 個のアプリ'
+        empty: お使いのバージョンと互換性のあるアプリがありません
+      unreachable: App Store に接続できません。後でもう一度確認してください。
+      scroll_to_top: 上までスクロール
+      custom_apps:
+        title: 自分のカスタムアプリ
+        removed_user: 削除済みのユーザー
+    connected_apps:
+      list:
+        apps:
+          title: 接続済みのアプリ
+          total: '{0} アプリなし|{1} 1個のアプリ|[2,Inf] {{ total }} 個のアプリ'
+          empty: 接続されているアプリがまだありません。
+          check_marketplace: '使用可能なすべてのコンテンツを参照し、最初のアプリをインストールするには {{ marketplaceLink }} をチェックしてください。'
+          marketplace_link_anchor: App Store
+          at_least_one_is_not_listed_on_the_appstore: 一部の接続済みのアプリにご使用の PIM バージョンと互換性がないか、Akeneo App Store に存在しないものがあります。詳しくは、お問い合わせください。
+          pending_apps: 一部のアプリが PIM に接続されていません。
+        custom_apps:
+          title: 自分の接続済みのカスタムアプリ
+          removed_user: 削除済みのユーザー
+        helper:
+          title: '[0,1] PIMは {{ count }} 個のアプリに接続されています。|[2,Inf] PIMは {{ count }} 個のアプリに接続されています。'
+          description_1: 新しいアプリが定期的に開発されているため、PIM の接続方法について App Store ページを頻繁にチェックし、最新情報をご確認ください。
+          description_2: アプリに関する詳しい情報をご要望ですか？
+          link: 詳細についてはヘルプセンターをご確認ください。
+        card:
+          developed_by: '開発者: {{ author }}'
+          new_access_authorization_required: 新たなアクセスの承認が必要です。
+          not_listed_on_the_appstore: アプリが Akeneo App Store に表示されなくなりました。アプリのサポートにお問い合わせください。
+          manage_app: アプリの管理
+          open_app: アプリを開く
+          pending: アプリが接続されていません。アプリを開くと接続問題は解決されるはずです。
+        flash:
+          error: 申し訳ございません、接続されたアプリリストを取得中にエラーが発生しました。
+      edit:
+        header:
+          open_app_button:
+            label: アプリに移動
+            icon_alt: アプリに移動アイコン
+        not_found: アプリが見つかりません
+        tabs:
+          settings: 設定
+          permissions: 許可
+          catalogs: カタログ
+          error_monitoring: エラーモニタリング
+        settings:
+          monitoring:
+            title: 全般設定
+          authorizations:
+            title: 承認
+            information: 'アプリの承認についての詳細は、{{ link }} をご覧ください。'
+            no_access_to_product_information: 'この接続されたアプリは商品情報にアクセスできません。'
+            information_link_anchor: ヘルプセンターの記事
+            no_scope: 特定の承認は要求されていません。
+          authentication:
+            title: 認証
+            information: 'アプリ承認の詳細については、{{ link }} をご覧ください。'
+            information_link_anchor: ヘルプセンターの記事
+            openid_only: このアプリは Akeneo App 認証を使用し、個人データは使用しません。
+          pending: このアプリは PIM に接続されていません。アプリを開くと接続問題は解決されるはずです。解決しない場合は、アプリのサポートにお問い合わせください。
+          credentials:
+            title: 認証情報
+            client_id: クライアントID
+            client_secret: クライアントシークレット
+            regenerate_button: 再生成
+            regenerate_secret:
+              flash_error: 申し訳ございません、接続の非公開を再生成中にエラーが発生しました。
+              confirm:
+                title: 再生成を確認
+                description: シークレットを再生成すると、PIMとのカスタムアプリ接続に影響します。本当に続行しますか？
+                regenerate_button: 再生成
+                cancel_button: キャンセル
+              new_credentials:
+                title: 新しい認証情報
+                subtitle: 認証情報を再生成
+                done_button: 完了
+        error_monitoring:
+          error: エラーが発生しました！
+          helper:
+            description: ここでは、過去7日間のこのアプリの各エラーの詳細を見ることができます。エラー番号は100個までです。
+          not_data_source: 今のところ、モニタリングページはソースアプリのみとなっています。
+          not_auditable:
+            title: 監視されていないアプリ
+            description:
+              1: このアプリのエラーを追跡するには
+              2: モニタリングの有効化
+              3: 設定
+        catalogs:
+          edit:
+            flash:
+              success: カタログ設定が正常に更新されました。
+              error: カタログを保存できませんでした。表示されたエラーを解決してから、もう一度保存してください。
+              unknown_error: カタログを保存中にエラーが発生しました。
+            not_found: カタログが見つかりません
+        flash:
+          load_permissions_error.title: '{{ entity }} の保存済みの権限を読み込めませんでした。'
+          load_permissions_error.description: 後で再試行してください。
+          save_permissions_error.title: '{{ entity }} の権限を更新できませんでした。'
+          save_permissions_error.description: アプリの権限設定を確認してください。
+          success: アプリの設定は正常に更新されました。
+          monitoring_settings_error.description: 申し訳ございません、アプリを編集中にエラーが発生しました。
+      delete:
+        subtitle: アプリ
+        title: 削除を確認
+        description: アプリを削除しますか？影響についてご存じありませんか？
+        link: 何が起こるかご確認ください。
+        flash:
+          success: アプリは正常に削除されました。
+          error: 申し訳ございません、アプリを削除中にエラーが発生しました。
+      open:
+        flash:
+          error: 申し訳ございません、アプリを開こうとしてエラーが発生しました。
+    apps:
+      loader:
+        message: 読み込み中...
+      flash:
+        permissions_error.title: '{{ entity }} の権限を保存できませんでした。'
+        permissions_error.description: アプリの権限設定を確認してください。
+      wizard:
+        title: 接続
+        action:
+          confirm: 確認
+          cancel: キャンセル
+          previous: 前へ
+          next: 次へ
+          allow_and_next: 許可して次へ
+        progress:
+          authentication: 認証
+          authorizations: 承認
+          permissions: 許可
+          summary: よくできました！
+        authentication:
+          title: '{{ app_name }} には以下が必要です:'
+          helper: アプリ認証の詳細については、こちらの記事をご確認ください
+          helper_link: PIMにアプリで接続する方法
+          scope_profile: '{{ firstname }}と{{ lastname }}を表示'
+          scope_email: '{{ email }}アドレスを表示'
+          consent:
+            label: 'このアプリのプライバシーポリシーと利用規約に同意します。これらについては{{ app_marketplace_page }}でご覧いただけます。'
+            app_marketplace_page: App Store ページ
+            subtext: 'サードパーティのアプリにリダイレクトされることに同意したことになります。Akeneo はこのアプリのコンテンツについて一切の責任を負いません。Akeneo App Store で問題が発生した場合は、{{ contact_us }}ください。'
+            contact_us: お問い合わせ
+          firstname: 名
+          lastname: 姓
+          email: メール
+        authorize:
+          title: '{{ app_name }} には以下が必要です:'
+          no_scope_title: '{{ app_name }} がPIMにアクセスしようとしています。'
+          no_scope: 特定の承認は要求されていません。
+          helper: アプリの承認について詳しくは、
+          helper_link: ヘルプセンターの記事をご覧ください。
+          is_allowed_to: '次が既に許可されています:'
+          certification_consent:
+            label: '証明書に関する以下の免責事項を読み、それに同意します。'
+            subtext: 'Akeneo は、お客様によるアプリの使用およびその機能に対する責任を負いません。証明書はアプリの相互運用性やお客様の環境で正しく動作することを保証するものではありません。'
+        flash:
+          success: アプリが正常に構成されました。
+          error: 申し訳ございません、アプリを接続中にエラーが発生しました。
+        permission:
+          helper: ヘルプが必要な場合は、記事をご確認ください
+          helper_link: アプリの権限を設定する方法
+      title: 接続
+      activate:
+        flash:
+          error: 申し訳ございません、アプリを接続中にエラーが発生しました。
+      scope:
+        type:
+          view: '{{ entities }}の表示'
+          edit: '{{ entities }}の表示と編集'
+          delete: '{{ entities }}の表示、編集、削除'
+        entities:
+          catalog_structure: 属性、属性グループ、ファミリーとファミリーバリアント
+          attribute_options: 属性オプション
+          categories: カテゴリ
+          channel_localization: ロケールと通貨
+          channel_settings: チャンネル
+          association_types: 関連タイプ
+          products: 商品と商品モデル
+          reference_entity: 参照エンティティ
+          reference_entity_record: 参照エンティティの記録
+          asset_families: アセットファミリー
+          assets: アセット
+          catalogs: カタログ
+        new: 新規
+      error:
+        sub_text: アプリサポートにお問合せください
+        app_not_found: client_id が既存のアプリと一致しません。
+      constraint:
+        client_id:
+          not_blank: client_idは必須です。
+          must_be_valid: client_idが既知のクライアントと一致しません。
+          must_have_ongoing_authorization: client_idには現在進行中の認証プロセスがありません
+        response_type:
+          not_blank: response_typeは必須です。
+          must_be_code: response_typeは「コード」でなければなりません。
+        redirect_uri:
+          not_blank: redirect_uriは必須です。
+          must_be_url: redirect_uriは有効なURLではありません。
+        scope:
+          must_be_a_string: 範囲リストはスペース区切りの文字列である必要があります。
+          too_long: スコープリストに1000文字以上を含めることはできません。
+    custom_apps:
+      creation_limit_reached: カスタムアプリ20個の制限に達しました。
+      create_button: アプリを作成
+      create_modal:
+        subtitle: カスタムアプリの作成
+        app_information:
+          title: アプリ情報
+          description: ヘルプが必要な場合は、記事をご確認ください
+          link: アプリを公開する前にテストする方法
+          fields:
+            name: 名前
+            activate_url: 有効化URL
+            callback_url: コールバックURL
+          field_placeholder:
+            name: アプリ名を定義
+            activate_url: 有効化URLを入力
+            callback_url: コールバックURLを入力
+        credentials:
+          title: 認証情報
+          client_id: クライアントID
+          client_secret: クライアントシークレット
+        errors:
+          limit_reached: カスタムアプリは20個まで作成できます。
+          name:
+            min_length: アプリの名前が短すぎます。3文字以上である必要があります。
+            max_length: アプリの名前が長すぎます。255文字以下である必要があります。
+            not_blank: アプリの名前は必須です。
+          client_id:
+            max_length: アプリのクライアントIDが長すぎます。36文字以下である必要があります。
+            not_blank: クライアントIDは必須です。
+          activate_url:
+            max_length: アプリの有効化URLが長すぎます。255文字以下である必要があります。
+            must_be_url: 有効化URLは有効なURLである必要があります。
+            not_blank: 有効化URLは必須です。
+          callback_url:
+            max_length: アプリのコールバックURLが長すぎます。255文字以下である必要があります。
+            must_be_url: コールバックURLは有効なURLである必要があります。
+            not_blank: コールバックURLは必須です。
+      delete_modal:
+        subtitle: カスタムアプリの削除
+        title: 削除を確認
+        description: このPIMからアプリを削除しようとしています。
+        warning: 削除を確定すると、App Storeページのアプリと関連する接続済みのアプリが削除されます。
+        flash:
+          success: カスタムアプリは正常に削除されました。
+          error: 申し訳ございません、カスタムアプリを削除中にエラーが発生しました。
+  connections: 接続
+  secondary_actions:
+    title: その他の操作
+  connection:
+    code: コード
+    label: ラベル
+    flow_type: フロータイプ
+    image: 画像
+    auditable: データフローダッシュボードで追跡
+    client_id: クライアントID
+    secret: 非公開
+    username: ユーザー名
+    password: パスワード
+    user_role_id: 権限
+    user_group_id: グループ
+    constraint:
+      connections_number_limit_reached: 接続と接続済みアプリの件数が上限である50に達しました。
+      code:
+        required: 接続コードは必須項目です。
+        invalid: 接続コードに利用できるのは半角英数字とアンダースコアのみです。
+        too_short: 接続コードが短すぎます。3文字以上必要です。
+        too_long: 接続コードが長すぎます。100文字以下にしてください。
+        must_be_unique: 接続コードは固有でなければなりません。
+      label:
+        required: 接続ラベルは必須項目です。
+        too_short: 接続ラベルが短すぎます。3文字以上必要です。
+        too_long: 接続ラベルが長すぎます。100文字以下にしてください。
+      flow_type:
+        invalid: 接続フロータイプは「data_source」「data_destination」「その他」が可能です。
+      image:
+        must_exist: 画像が検出されませんでした。もう一度やり直してください。
+      type:
+        required: 接続タイプは必須項目です。
+        too_long: 接続タイプが長すぎます。30文字以下にする必要があります。
+      user_group:
+        must_exist: ユーザーグループが見つかりませんでした。指定したユーザーグループが存在することを確認してください。
+  flow_type:
+    data_source: データソース | データソース
+    data_destination: データの行先 | データの行先
+    other: その他 | その他
+  connection_count: '接続 {{ count }} 件 | 接続 {{ count }}'
+  no_connection:
+    title: 宣言された接続はまだありません。
+    message: 最初のコネクションを追加するには上の「作成」ボタンをクリックするか
+    message_link: ここをクリック
+  create_connection:
+    title: 新しい接続を作成
+    description: 最大50件のサードパーティまたはアプリに接続できます。
+    flash:
+      success: 接続は正常に作成されました。
+      error: 申し訳ございません、接続の作成中にエラーが発生しました。
+  edit_connection:
+    subtitle: 設定
+    flash:
+      success: 接続は正常に更新されました。
+      error: 申し訳ございません、接続の編集中にエラーが発生しました。
+    image_uploader:
+      extension_not_allowed: 申し訳ございません、アップロードしようとしているファイルには許可されていない拡張子があります。
+    credentials:
+      title: 認証情報
+      helper:
+        message: 'コネクター{{ label }}で使用する認証情報です。'
+        link: 詳細はこちら…
+      wrong_credentials_combinations:
+        single: この接続で使用しているユーザーネームは{{ wrong_username }}です(前回使用日時は{{ date }}の{{ time }})。今回はユーザーネームとして代わりに{{ good_username }}をおすすめします。
+        link: これを使用する理由
+        link_list: このユーザーネームが推奨される理由。
+        several: この接続で使用しているユーザーネームは{{ good_username }}です。
+        list: '過去7日間で使用したユーザーネームの一覧は次の通りです:'
+        username_date: '{{ date }}、{{ time }}に{{ wrong_username }}'
+      password_helper:
+        message: パスワードを忘れた場合はこちらで変更できます。
+        link: さらに詳しく…
+      clear_password_helper:
+        message: 今後このパスワードは表示されません。しっかりと保存しましょう。
+        link: さらに詳しく…
+      action:
+        copy: クリップボードにコピー
+        regenerate: 再生成
+      flash:
+        copied: 'クリップボードにコピー済{{ name }}'
+    permissions:
+      title: 許可
+      helper:
+        message: 'このセクションでは、接続{{ label }}の許可内容を定義できます。'
+        link: 接続許可についてさらに詳しく…
+      user_role_helper:
+        message: 既定の役割「{{ role }}」は設定された接続にとって最適ではありません。合致した役割を選び直すように強くおすすめします。
+        link: 詳しい情報...
+      user_group_helper:
+        message: お使いの接続に合致したグループを選択するように強くおすすめします。
+        link: 詳しい情報...
+  regenerate_secret:
+    title: 再生成を確認
+    description: 本当に接続の非公開を再生成しますか？影響についてご存知ありませんか？
+    link: 何が起こるかご確認ください。
+    action:
+      regenerate: 再生成
+    flash:
+      success: 接続の非公開は問題なく再生成されました。
+      error: 申し訳ございません、接続の非公開を再生成中にエラーが発生しました。
+  regenerate_password:
+    title: 再生成を確認
+    description: 本当に接続パスワードを再生成しますか？影響についてご存知ありませんか？
+    link: 何が起こるかご確認ください。
+    action:
+      regenerate: 再生成
+    flash:
+      success: 接続パスワードは問題なく再生成されました。
+      error: 申し訳ございません、接続のパスワードを再生成中にエラーが発生しました。
+  delete_connection:
+    title: 削除を確認
+    description: 本当に接続を削除しますか？影響についてご存知ありませんか？
+    link: 何が起こるかご確認ください。
+    flash:
+      success: 接続は正常に削除されました。
+  helper:
+    title: '{0} 現在のところ、PIM をサードパーティーアプリケーションにリンクするための接続がありません|{1} PIM をサードパーティーアプリケーションにリンクしている接続が 1 個あります。よくできました。PIM はエコシステムに十分に組み込まれていることになります。|]1,Inf] PIM をサードパーティーアプリケーションにリンクしている接続が {{ count }} 個あります。よくできました。PIM はエコシステムに十分に組み込まれていることになります。'
+    description: サードパーティーを一切利用しないPIMは利用価値がないとお考えですか？接続があれば、PIMの内部ではプッシュされ外部ではプルされるすべてのデータフローを宣言することが可能です。
+    link: 接続の詳細については、このページをご覧ください
+  flow_type_helper:
+    message: フロータイプについてお困りですか？
+    link: 今すぐここで説明しましょう！
+  auditable_helper:
+    message: 追跡できるのは「接続元」および「接続先」のみです。
+    link: さらに詳しく…
+  edit_image:
+    upload_helper: 画像を変更しましょう。ドラッグ＆ドロップか
+    remove_helper: 画像を削除
+    click_here: ここをクリック
+    flash:
+      extension_not_allowed: 申し訳ございません、アップロードしようとしているファイルには許可されていない拡張子があります。
+  grid.wrong_credentials_combination_helper: 以下の接続には、接続用ユーザーネームを使用していないものがあります。該当するものを黄色の警告サインで示しています。
+  dashboard:
+    helper:
+      title: '👋 データフローへようこそ！'
+      description: ここでは、PIM とサードパーティーの間のデータフローを追跡できます。
+      link: 接続メニューとデータフローについてもっと知りたいですか？こちらをどうぞ！
+    user_survey:
+      title: ダッシュボードにあるそのほかのデータとは？
+      content: フィードバックは私たちにとってとても貴重です。このアンケート調査に回答して、次のウィジェットを選択する参考にさせてください。
+      button: はじめよう！
+    connection_selector:
+      title:
+        source: データ接続
+        destination: 宛先
+      all: すべて
+    charts:
+      inbound: 受信
+      outbound: 送信
+      number_of_products_created: 作成済の商品
+      number_of_products_updated: 更新済の商品
+      number_of_products_sent: 送信済の商品
+      legend:
+        during_the_last_seven_days: '過去7日間の合計:'
+        today: 本日
+    error_management:
+      data_source_error_chart:
+        section:
+          title: データソース上のエラー
+          helper: ここでは、ビジネスエラーを含むエラーの合計数を確認できます。
+        chart:
+          title: 1日あたりのエラー数
+      widget:
+        title: データソースごとのビジネスエラー
+        over_the_last_seven_days: 過去１週間
+        business_errors: ビジネスエラー
+    no_connection:
+      title:
+        default: 接続について想定図の表示を希望しますか？
+        data_source: 接続元について想定図の表示を希望しますか？
+        data_destination: 接続先について想定図の表示を希望しますか？
+      message_with_permission:
+        message: 最初のものを作成し追跡をはじめる
+        link: こちら
+      message_without_permission:
+        message: 管理者に連絡して新規作成。
+        link: 接続について、こちらでさらに詳しく…
+  webhook:
+    title: イベントサブスクリプション
+    event_subscription: イベントサブスクリプション
+    download_logs: ログをダウンロード
+    helper:
+      message: この接続アプリと同期された商品について PIM で発生したイベントを通知することができます。URL を定義してください。
+      link: イベントサブスクリプションの構成についてさらに詳しく…
+      url.test_disabled: URL をテストするには、保存ボタンをクリックしてください。
+    form:
+      url: URL
+      secret: 非公開
+      enabled: イベントサブスクリプションの有効化
+      is_using_uuid: 商品識別子の代わりに商品UUIDを使用しますか？
+      test: テスト
+    error:
+      wrong_url: この値は有効な URL ではありません。
+      required: このフィールドは必須です。
+      not_found: 存在しない接続を更新しようとしています。
+      limit_reached: 有効なイベントサブスクリプションの上限に達しました。
+      not_allowed_url: この URL は許可されていません。
+    flash:
+      success: イベントサブスクリプションは正常に更新されました。
+      error: 申し訳ございません。イベントサブスクリプションの編集中にエラーが発生しました。
+    regenerate_secret:
+      title: 再生成を確認
+      description: イベントサブスクリプションのシークレットを本当に再作成しますか？
+      action:
+        regenerate: 再生成
+      link: 何が起こるかご確認ください。
+      flash:
+        success: Webhook シークレットは正常に再作成されました。
+        error: 申し訳ございません。Webhook シークレットを再作成中にエラーが発生しました。
+    active_event_subscriptions_limit_reached:
+      message: イベントサブスクリプション機能には {{ limit }} 個まで接続できます。 この上限に達しました。
+      link: イベントサブスクリプションの構成についてさらに詳しく。
+    event_logs:
+      title: イベントログ
+      event_subscription_disabled:
+        title: この接続のイベントサブスクリプションは有効になっていません。
+        link: イベントサブスクリプションを有効化
+      no_event_logs:
+        title: 現在、ログはありません。
+      no_event_logs_with_those_filters:
+        title: 検索したログはありません。
+        caption: 新しい検索条件で再試行してください。
+      level:
+        info: 情報
+        notice: 通知
+        warning: 警告
+        error: エラー
+      list:
+        search:
+          placeholder: メッセージ内を検索
+          total: '{0} 結果がありません|{1} 1 件の結果|[2,Inf] {{ total }} 件の結果'
+          level: レベル
+          all: すべて
+          none: なし
+        date_range_filter:
+          label: 日付と時間
+          reset: リセット
+          from: 開始
+          to: 終了
+          all: すべて
+        info:
+          title: この接続に送信されたすべてのイベントリクエストに関連するログです。
+          content: このページは、過去 72 時間のエラーと警告のログと、直近の 100 件の情報と通知のログを表示します。
+          link: イベントログの詳細について
+        headers:
+          datetime: 日時
+          level: レベル
+          message: メッセージ
+  error_management:
+    connection_monitoring:
+      title: エラーモニタリング
+      helper:
+        title: '{0} あなたには {{ count }} エラーがあります |[1,Inf] あなたには {{ count }} エラーがあります'
+        description: ここでは、過去7日間のこの接続の各エラーの詳細を見ることができます。エラー番号は100個までです。
+        link: 解決方法については、APIヘルプセンターを参照してください。
+      search_filter:
+        placeholder: エラーメッセージを検索
+        result_count: '{0} 結果がありません|{1} 1 件の結果|[2,Inf] {{ count }} 件の結果'
+      error_list:
+        date_time_column:
+          title: 日にちと時間
+        content_column:
+          title: ビジネスエラーメッセージ
+          product_name: 商品名
+          with_id: ID
+        details_column:
+          title: 詳細
+          locale: 地域
+          channel: チャンネル
+          family: ファミリー
+      no_error:
+        title: 素晴らしい！エラーが見つかりませんでした！
+      not_auditable:
+        title: 監視されていない接続
+        description:
+          1: この接続のエラーを追跡するには
+          2: モニタリングの有効化
+          3: 設定
+      not_data_source:
+        title: 今のところ、モニタリングページはソース接続のみとなっています。
+  runtime_error:
+    error_message: 申し訳ありません！ エラーが発生しました…
+    reload_helper: ページをリロードして再試行してください。
+    reload_button: リロード
+pim_permissions:
+  widget:
+    action:
+      all: すべて
+      clear: クリア
+    level:
+      own: 所有
+      edit: 編集
+      view: 表示
+    all: すべて
+pim_notification:
+  types:
+    connected_app_authorizations: 接続済みアプリの承認
+    disabled_catalog: アプリカタログは無効になっています
+    attribute_removed: アプリカタログに影響しました
+  connected_app_authorizations:
+    button_label: アプリを開く
+  disabled_catalog:
+    button_label: カタログ設定
+  attribute_removed:
+    button_label: カタログ設定

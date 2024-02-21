@@ -1,0 +1,80 @@
+services:
+    akeneo.pim.enrichment.factory.value.boolean:
+        class: Akeneo\Pim\Enrichment\Component\Product\Factory\Value\BooleanValueFactory
+        tags: ['akeneo.pim.enrichment.factory.product_value']
+
+    akeneo.pim.enrichment.factory.value.date:
+        class: Akeneo\Pim\Enrichment\Component\Product\Factory\Value\DateValueFactory
+        tags: ['akeneo.pim.enrichment.factory.product_value']
+
+    akeneo.pim.enrichment.factory.value.file:
+        class: Akeneo\Pim\Enrichment\Component\Product\Factory\Value\FileValueFactory
+        arguments:
+            $fileInfoRepository: '@akeneo_file_storage.repository.file_info'
+        tags: ['akeneo.pim.enrichment.factory.product_value']
+
+    akeneo.pim.enrichment.factory.value.image:
+        class: Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ImageValueFactory
+        arguments:
+            $fileInfoRepository: '@akeneo_file_storage.repository.file_info'
+        tags: ['akeneo.pim.enrichment.factory.product_value']
+
+    akeneo.pim.enrichment.factory.value.identifier:
+        class: Akeneo\Pim\Enrichment\Component\Product\Factory\Value\IdentifierValueFactory
+        tags: ['akeneo.pim.enrichment.factory.product_value']
+
+    akeneo.pim.enrichment.factory.value.metric:
+        class: Akeneo\Pim\Enrichment\Component\Product\Factory\Value\MetricValueFactory
+        arguments:
+            $metricFactory: '@pim_catalog.factory.metric'
+        tags: ['akeneo.pim.enrichment.factory.product_value']
+
+    akeneo.pim.enrichment.factory.value.number:
+        class: Akeneo\Pim\Enrichment\Component\Product\Factory\Value\NumberValueFactory
+        tags: ['akeneo.pim.enrichment.factory.product_value']
+
+    akeneo.pim.enrichment.factory.value.options:
+        class: Akeneo\Pim\Enrichment\Component\Product\Factory\Value\OptionsValueFactory
+        tags: ['akeneo.pim.enrichment.factory.product_value']
+
+    akeneo.pim.enrichment.factory.value.option:
+        class: Akeneo\Pim\Enrichment\Component\Product\Factory\Value\OptionValueFactory
+        tags: ['akeneo.pim.enrichment.factory.product_value']
+
+    akeneo.pim.enrichment.factory.value.price_collection:
+        class: Akeneo\Pim\Enrichment\Component\Product\Factory\Value\PriceCollectionValueFactory
+        tags: ['akeneo.pim.enrichment.factory.product_value']
+
+    akeneo.pim.enrichment.factory.value.reference_data_collection:
+        class: Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ReferenceDataCollectionValueFactory
+        tags: ['akeneo.pim.enrichment.factory.product_value']
+
+    akeneo.pim.enrichment.factory.value.reference_data:
+        class: Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ReferenceDataValueFactory
+        tags: ['akeneo.pim.enrichment.factory.product_value']
+
+    akeneo.pim.enrichment.factory.value.textarea:
+        class: Akeneo\Pim\Enrichment\Component\Product\Factory\Value\TextAreaValueFactory
+        tags: ['akeneo.pim.enrichment.factory.product_value']
+
+    akeneo.pim.enrichment.factory.value.text:
+        class: Akeneo\Pim\Enrichment\Component\Product\Factory\Value\TextValueFactory
+        tags: ['akeneo.pim.enrichment.factory.product_value']
+
+    akeneo.pim.enrichment.factory.value:
+        class: Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory
+        arguments:
+            - !tagged akeneo.pim.enrichment.factory.product_value
+
+    akeneo.pim.enrichment.factory.read_value_collection:
+        class: Akeneo\Pim\Enrichment\Component\Product\Factory\ReadValueCollectionFactory
+        arguments:
+            - '@akeneo.pim.enrichment.factory.value'
+            - '@akeneo.pim.structure.query.get_attributes'
+            - '@akeneo.pim.enrichment.factory.non_existent_values_filter.chained'
+            - '@logger'
+
+    akeneo.pim.enrichment.factory.write_value_collection:
+        class: Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory
+        arguments:
+            - '@akeneo.pim.enrichment.factory.read_value_collection'

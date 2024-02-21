@@ -1,0 +1,19 @@
+parameters:
+    oro_translation.controller.class: Oro\Bundle\TranslationBundle\Controller\Controller
+
+services:
+    oro_translation.controller:
+        class: '%oro_translation.controller.class%'
+        arguments: ['@translator', '@twig', '@@OroTranslation/Translation/translation.js.twig', '']
+        public: true
+
+    Oro\Bundle\TranslationBundle\Command\OroTranslationDumpCommand:
+        arguments:
+            - '@oro_translation.controller'
+            - '@filesystem'
+            - '@router'
+            - '%oro_translation.js_translation.domains%'
+            - '%kernel.project_dir%/src'
+            - '%kernel.default_locale%'
+        tags:
+            - { name: console.command }

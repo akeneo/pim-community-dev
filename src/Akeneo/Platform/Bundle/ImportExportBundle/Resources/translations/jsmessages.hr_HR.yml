@@ -1,0 +1,125 @@
+job_execution:
+  summary:
+    display_item: Prikaži stavku
+    hide_item: Sakrij stavku
+pim_connector:
+  export:
+    categories:
+      selector:
+        modal:
+          title: Odabir kategorija
+        title: Odaberi kategorije
+    locales:
+      validation:
+        not_blank: Mora biti odabrana barem jedan lokalni parametar, odaberite lokalni parametar za izvoz.
+pim_import_export:
+  form:
+    job_execution:
+      refreshBtn.title: Osvježi
+      button:
+        show_profile.title: Prikaži profil
+        download_log.title: Preuzmi log
+      summary:
+        fetching: Prikupljanje podataka o izvršenju posla...
+        warning: Upozorenje
+        header.step: Korak
+        header.summary: Sažetak
+        header.start: Početak
+        header.end: Kraj
+    job_instance:
+      button:
+        export.title: Izvezi odmah
+        import.launch: Uvezi odmah
+        import.upload: Prebaci i uvezi odmah
+      meta:
+        job: Posao
+        connector: Priključak
+      tab:
+        content:
+          title: Sadržaj
+        properties:
+          decimal_separator:
+            title: Odvajanje decimala
+            help: Određivanje odvajanja decimala
+          date_format:
+            title: Format datuma
+            help: Određivanje oblika polja za datum
+          file_path:
+            title: Put datoteke
+            help: Gdje se zapisuje generirana datoteka u datotečnom sustavu
+          delimiter:
+            title: Graničnik
+            help: Jedan znak se koristi za postavljanje granice polja
+          enclosure:
+            title: Zagrada
+            help: Jedan znak se koristi za postavljanje zagrade polja
+          with_header:
+            title: Sa zaglavljem
+            help: Da li se ispisuje naziv stupaca
+          lines_per_file:
+            title: Broj redaka po datoteci
+            help: Definiranje broja redaka po datoteci
+          upload_allowed:
+            title: Omogući prijenos datoteke
+            help: Omogući izravno učitavanje datoteke
+          categories_column:
+            title: Stupac kategorije
+            help: Naziv stupca kategorije
+          escape:
+            title: Izlaz
+            help: Jedan znak koji se koristi za postavljanje polja izlaza
+          family_column:
+            title: Stupac obitelji
+            help: Naziv stupca obitelji
+          groups_column:
+            title: Stupac grupe
+            help: Naziv stupca grupe
+          enabled:
+            title: Omogući proizvod
+            help: Da li uvezeni proizvod treba biti omogućen
+          enabled_comparison:
+            title: Usporedba vrijednosti
+            help: Omogući usporedbe između izvorne vrijednosti i uvezene vrijednosti. Može se ubrzati uvoz ako su uvezene vrijednosti vrlo slične izvornim vrijednostima
+          real_time_versioning:
+            title: Povijest ažuriranja u stvarnom vremenu
+            help: Znači da će se povijest proizvoda automatski ažurirati, može se isključiti za poboljšanje performansi
+      file_path: Put datoteke
+  widget:
+    last_operations:
+      empty: Nije pronađena niti jedna operacija
+      date: Datum
+      profile_name: Naziv profila
+      details: Detalji
+      job_type:
+        import: Uvoz
+        export: Izvoz
+        mass_edit: Masovno uređivanje
+        quick_export: Brzi izvoz
+      header.view_all: Pogledaj sve
+confirmation:
+  remove:
+    import_profile: Jeste li sigurni da želite izbrisati ovaj profil uvoza?
+    export_profile: Jeste li sigurni da želite izbrisati ovaj profil izvoza?
+pim_enrich:
+  entity:
+    import_profile:
+      module:
+        delete:
+          confirm: Jeste li sigurni da želite izbrisati ovaj profil uvoza?
+      flash:
+        delete:
+          success: Profil uvoza je uspješno uklonjen
+    export_profile:
+      module:
+        delete:
+          confirm: Jeste li sigurni da želite izbrisati ovaj profil izvoza?
+      flash:
+        delete:
+          success: Profil izvoza je uspješno uklonjen
+pim_title:
+  pim_importexport_export_profile_index: Upravljanje profilima izvoza
+  pim_importexport_export_execution_index: Povijest izvođenja izvoza
+  pim_importexport_export_execution_show: Izvoz izvođenja | Detalji
+  pim_importexport_import_profile_index: Upravljanje profilima uvoza
+  pim_importexport_import_execution_index: Povijest izvođenja uvoza
+  pim_importexport_import_execution_show: Uvoz izvođenja | Detalji

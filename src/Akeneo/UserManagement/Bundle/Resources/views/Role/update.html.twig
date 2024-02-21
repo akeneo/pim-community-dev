@@ -1,0 +1,289 @@
+{% import '@PimUI/Default/page_elements.html.twig' as elements %}
+{% import '@PimDataGrid/macros.html.twig' as dataGrid %}
+{% import '@PimUI/macros.html.twig' as UI %}
+
+{% block head_script %}
+    <script type="text/javascript" nonce="{{ js_nonce() }}">
+        require(
+            ['jquery', 'pim/security-context'],
+            function ($, securityContext) {
+                'use strict';
+
+                securityContext.initialize();
+                $(function() {
+                    var decorateTabs = function() {
+                        $('.AknVerticalNavtab').find('.AknVerticalNavtab-link').each(function() {
+                            var $target = $($(this).attr('href'));
+                            var hasGranted = $target.find('.acl-permission:not(.default-field) .select-button.granted').length;
+                            var hasNonGranted = $target.find('.acl-permission:not(.default-field) .select-button.non-granted').length;
+                            var iconClass = 'non-granted'
+                            if (hasGranted && 0 === hasNonGranted) {
+                                iconClass = 'AknSelectButton--selected granted';
+                            } else if (hasGranted) {
+                                iconClass = 'AknSelectButton--partial partial';
+                            }
+                            var $icon = $(this).find('.select-button').first();
+                            $icon.removeClass('AknSelectButton--selected AknSelectButton--partial granted partial non-granted').addClass(iconClass);
+                        });
+                    };
+
+                    var togglePermission = function($icon, callback) {
+                        if ($icon.parent().hasClass('default-field-toggle')) {
+                            var permission = $icon.parent().data('permission');
+                            var $defaultIcon = $('.default-field[data-permission="' + permission + '"]').find('.' + ($icon.hasClass('granted') ? 'granted' : 'non-granted'));
+                            $defaultIcon.toggleClass('icon-ok granted').toggleClass('icon-remove non-granted');
+                            var $defaultInput = $defaultIcon.siblings('input[type="checkbox"]').eq(0);
+                            $defaultInput.prop('checked', !$defaultInput.is(':checked'));
+                        }
+
+                        $icon.toggleClass('AknSelectButton--selected granted non-granted');
+                        var $input = $icon.siblings('input[type="checkbox"]').eq(0);
+                        $input.prop('checked', !$input.is(':checked')).trigger('change');
+                        (callback || $.noop)();
+                    };
+
+                    $('.acl-permission .select-button').on('click', function() {
+                        togglePermission($(this), decorateTabs)
+                    });
+
+                    $('.AknVerticalNavtab').on('click', '.select-button', function() {
+                        var classToToggle = $(this).hasClass('AknSelectButton--selected') ? 'granted' : 'non-granted';
+                        var $target = $($(this).closest('.AknVerticalNavtab-link').attr('href'));
+                        $target.find('.acl-permission:not(.default-field) .' + classToToggle).each(function() {
+                            togglePermission($(this));
+                        });
+                        decorateTabs();
+                    });
+
+                    decorateTabs();
+                });
+            }
+        );
+        require('pim/page-title').set({'role': '{{ form.vars.value.label }}'});
+    </script>
+{% endblock %}
+
+{% set entityId = form.vars.value.id %}
+
+{% block content %}
+<div class="AknDefault-helper" data-drop-zone="helper"></div>
+<div class="AknDefault-mainContent">
+    {{ form_start(form, {
+        'action': entityId ? path('pim_user_role_update', { 'id': entityId }) : path('pim_user_role_create'),
+        'attr': {
+            'class': 'form-tabbed',
+            'data-updated-title': 'confirmation.leave'|trans,
+            'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': 'role.title'|trans })
+        }
+    }) }}
+
+        {% set title = entityId ? 'pim_common.edit'|trans ~ ' - ' ~ form.vars.value.label : 'pim_common.create'|trans %}
+
+        {% set buttons %}
+            {% if entityId %}
+                <div class="AknSecondaryActions AknDropdown AknButtonList-item secondary-actions">
+                    <div class="AknSecondaryActions-button dropdown-button" data-toggle="dropdown"></div>
+                    <div class="AknDropdown-menu AknDropdown-menu--right">
+                        <div class="AknDropdown-menuTitle">{{'other_actions'|trans}}</div>
+                        {{ elements.deleteLink(
+                            path('pim_user_role_delete', { id: entityId }),
+                            'pim_user_role_remove',
+                            path('pim_user_role_index'),
+                            'pim_user_management.entity.role.module.delete.confirm'|trans,
+                            'flash.role.removed'|trans,
+                            'confirmation.delete'|trans,
+                            'AknDropdown-menuLink delete',
+                            'Roles'|trans
+                        ) }}
+                    </div>
+                </div>
+            {% endif %}
+            {{ elements.submitBtn('', 'ok', 'AknButtonList-item') }}
+        {% endset %}
+
+        {{ elements.page_header(
+            {
+                title: title,
+                buttons: buttons,
+                state: elements.updated(form.vars.id)
+            }
+        ) }}
+
+        {% set tabs = ['pim_user.roles.tab.general'] %}
+        {% for item in privilegesConfig|keys %}
+            {% set tabs = tabs|merge(['pim_user.roles.tab.' ~ item]) %}
+        {% endfor %}
+        {% set tabs = tabs|merge(['pim_user.roles.tab.users']) %}
+
+            {{ elements.form_navbar(tabs, '') }}
+            <div class="tab-content oro-tab-form">
+
+                {{ elements.form_errors(form) }}
+
+                <div class="tab-pane active" id="pim_user-roles-tab-general">
+                    <div class="tabsections">
+                        <div class="tabsection">
+                            <div class="AknTabContainer-content tabsection-content">
+                                <div class="AknFormContainer AknFormContainer--withPadding">
+                                    {{ form_row(form.label) }}
+                                    {% if form.owner is defined %}
+                                        {{ form_row(form.owner, {attr : { class: 'hide' }}) }}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% set groups = acl_groups() %}
+                {% set groupNames = acl_group_names() %}
+
+                {% for privilegeBlock, privilegeConfig in privilegesConfig %}
+                    {% if groups[privilegeBlock] is defined %}
+                        <div class="tab-pane" id="pim_user-roles-tab-{{ privilegeBlock }}">
+                        <div class="tabs-left">
+                            {% if 'groups' == privilegeConfig.view_type %}
+                                <ul class="AknVerticalNavtab AknVerticalNavtab--condensed">
+                                    <li class="AknVerticalNavtab-item AknVerticalNavtab-header"></li>
+                                    {% for group in groups[privilegeBlock] %}
+                                        <li class="AknVerticalNavtab-item tab{{ loop.index == 1 ? ' active' : '' }}">
+                                            <a class="AknVerticalNavtab-link" href="#tabs-{{ group.name|replace({' ': '-', '.': '-'})|lower }}" data-toggle="tab">
+                                                <span class="AknAcl">
+                                                    <div class="select-button AknAcl-icon AknSelectButton AknSelectButton--selected granted"></div>
+                                                    <span>{{ group.name|trans }}</span>
+                                                </span>
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                    {% for child in form[privilegeBlock].children|reverse %}
+                                    {% if child.vars.value.group not in groups[privilegeBlock] and child.vars.value.extensionKey == 'entity' and child.vars.value.identity.name != '(default)' %}
+                                        {% set groupName = 'oro_security.acl_group.' ~ child.vars.value.identity.name|lower %}
+                                        <li class="AknVerticalNavtab-item tab">
+                                            <a class="AknVerticalNavtab-link" href="#tabs-{{ groupName|replace({' ': '-', '.': '-'}) }}" data-toggle="tab">
+                                                <span class="AknAcl">
+                                                    <div class="select-button AknAcl-icon AknSelectButton AknSelectButton--selected granted"></div>
+                                                    <span>{{ groupName|trans }}</span>
+                                                </span>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                    {% endfor %}
+                                    {% if 'action' == privilegeBlock %}
+                                        <li class="AknVerticalNavtab-item tab">
+                                            <a class="AknVerticalNavtab-link" href="#tabs-group-system" data-toggle="tab">
+                                                <span class="AknAcl">
+                                                    <div class="select-button AknAcl-icon AknSelectButton AknSelectButton--selected granted"></div>
+                                                    <span>{{ 'System'|trans }}</span>
+                                                </span>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                                <div class="AknTabContainer-content AknTabContainer--withPadding tab-content">
+                                    {% for group in groups[privilegeBlock] %}
+                                        <div id="tabs-{{ group.name|replace({' ': '-', '.': '-'})|lower }}" class="tab-pane fullheight">
+                                            <div class="AknTabHeader">
+                                                <h3 class="AknTabHeader-title AknTabHeader-small">{{ group.name|trans }}</h3>
+                                            </div>
+                                            <div class="AknFormContainer AknFormContainer--withPadding acl-group">
+                                                {% for child in form[privilegeBlock].children|filter(child => child.vars.value.group == group.name) %}
+                                                    {{ form_widget(child) }}
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                    {% for child in form[privilegeBlock].children %}
+                                    {% if child.vars.value.group not in groups and child.vars.value.extensionKey == 'entity' and child.vars.value.identity.name != '(default)' %}
+                                        {% set groupName = 'oro_security.acl_group.' ~ child.vars.value.identity.name|lower %}
+                                        <div id="tabs-{{ groupName|replace({' ': '-', '.': '-'}) }}" class="tab-pane fullheight">
+                                            <div class="AknTabHeader">
+                                                <h3 class="AknTabHeader-title">{{ groupName|trans }}</h3>
+                                            </div>
+                                            <div class="AknFormContainer AknFormContainer--withPadding acl-group">
+                                                {{ form_widget(child) }}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                    {% endfor %}
+                                    {% if 'action' == privilegeBlock %}
+                                        <div id="tabs-group-system" class="tab-pane fullheight">
+                                            <div class="AknTabHeader">
+                                                <h3 class="AknTabHeader-title">{{ 'System'|trans }}</h3>
+                                            </div>
+                                            <div class="AknFormContainer AknFormContainer--withPadding acl-group">
+                                                {% for child in form[privilegeBlock].children %}
+                                                {% if child.vars.value.group not in groupNames and (child.vars.value.extensionKey != 'entity' or child.vars.value.identity.name == '(default)') %}
+                                                    {{ form_widget(child) }}
+                                                {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% else %}
+                            {{ form_widget(form[privilegeBlock]) }}
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                {% endfor %}
+
+                <div class="AknTabContainer-content tab-pane" id="pim_user-roles-tab-users">
+                    {{ dataGrid.renderGrid('pim-role-user-grid', {role_id: entityId}) }}
+                    {{ form_widget(form.appendUsers, {'id': 'roleAppendUsers'}) }}
+                    {{ form_widget(form.removeUsers, {'id': 'roleRemoveUsers'}) }}
+                </div>
+        </div>
+
+    {{ form_end(form) }}
+
+    <script nonce="{{ js_nonce() }}">
+        require(
+            [
+                'pim/common/breadcrumbs',
+                'pim/fetcher-registry',
+                'pim/form-builder'
+            ],
+            function(
+                Breadcrumbs,
+                FetcherRegistry,
+                FormBuilder
+            ) {
+                $(function() {
+                    var breadcrumbs = new Breadcrumbs({
+                        config: {
+                            tab: 'pim-menu-system',
+                            item: 'pim-menu-system-user-role'
+                        }
+                    });
+                    breadcrumbs.configure().then(function () {
+                        breadcrumbs.render();
+                        $('*[data-drop-zone="breadcrumbs"]').append(breadcrumbs.$el);
+                    });
+
+                    FetcherRegistry.initialize().done(function () {
+                        FormBuilder.build('pim-menu-user-navigation').then(function (form) {
+                            $('.user-menu').append(form.el);
+                            form.render();
+                        }.bind(this));
+                    });
+                });
+            }
+        );
+    </script>
+    <script nonce="{{ js_nonce() }}">
+        require(
+            ['pim/sandbox-helper'],
+            function(SandboxHelper) {
+                $(function() {
+                    var sandboxHelper = new SandboxHelper({});
+                    sandboxHelper.configure().then(function () {
+                        sandboxHelper.render();
+                        $('*[data-drop-zone="helper"]').append(sandboxHelper.$el);
+                    });
+                });
+            }
+        );
+    </script>
+</div>
+{% endblock %}

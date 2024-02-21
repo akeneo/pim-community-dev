@@ -1,0 +1,11 @@
+pim_importexport_export_execution_download_log:
+    path: /{id}/download
+    defaults: { _controller: pim_import_export.controller.export_execution:downloadLogFileAction }
+    requirements:
+        id: \d+
+
+pim_importexport_export_execution_download_file:
+    path: /{id}/download/{archiver}/{key}
+    defaults: { _controller: pim_import_export.controller.export_execution:downloadFilesAction }
+    requirements:
+        id: \d+

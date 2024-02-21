@@ -1,0 +1,16 @@
+parameters:
+    oro_filter.twig.extension.render_layout.class: Oro\Bundle\FilterBundle\Twig\RenderLayoutExtension
+    oro_filter.twig.extension.render_header.class: Oro\Bundle\FilterBundle\Twig\RenderHeaderExtension
+
+services:
+    oro_filter.twig.extension.render_layout:
+        class: '%oro_filter.twig.extension.render_layout.class%'
+        arguments: ['%oro_filter.twig.layout%']
+        tags:
+            - { name: twig.extension }
+
+    oro_filter.twig.extension.render_header:
+        class: '%oro_filter.twig.extension.render_header.class%'
+        arguments: ['%oro_filter.twig.header%']
+        tags:
+            - { name: twig.extension }

@@ -1,0 +1,38 @@
+pim_menu:
+  navigation_back:
+    connection: Tillbaka till anslutningar
+  navigation_block:
+    connection: Navigation anslutningar
+  item:
+    connection_settings_edit: Anslutningsinställningar
+    connection_monitoring: Övervakning
+pim_title:
+  akeneo_connectivity_connection_settings_edit: Anslutningsinställningar
+  akeneo_connectivity_connection_settings_any: Anslutningsinställningar
+  akeneo_connectivity_connection_error_management_connection_monitoring: Övervakning anslutningar
+  akeneo_connectivity_connection_webhook_edit: Event-prenumeration (BETA)
+  akeneo_connectivity_connection_webhook_regenerate_secret: Event-prenumeration (BETA)
+akeneo_connectivity.connection:
+  connection:
+    auditable: Spåra denna anslutning i instrumentpanelen
+  edit_connection:
+    credentials:
+      wrong_credentials_combinations:
+        single: Vi lade märke till att du använder användarnamnet {{ wrong_username }}  för denna anslutning (senast använd {{ date }} vid {{ time }}). Vi rekommenderar att du använder {{ good_username }} användarnamnet istället.
+        link: Upptäck varför du ska använda den.
+        link_list: Upptäck varför vi rekommenderar att du använder detta användarnamn.
+        several: Vi märkte att du inte använder användarnamnet {{ good_username }} för denna anslutning.
+        list: 'Här är listan över användarnamn som använts under de senaste 7 dagarna:'
+        username_date: '{{ wrong_username }} den {{ date }} kl. {{ time }}'
+  auditable_helper:
+    message: Du kan bara spåra anslutningar av typen "Source" eller "Destination".
+  grid.wrong_credentials_combination_helper: Några av anslutningarna nedan använder inte användarnamnet för anslutningen. De visas med ett gult varningstecken.
+  dashboard:
+    connection_selector:
+      title:
+        destination: Destinations-anslutningar
+    charts:
+      inbound: Inkommande
+      outbound: Utgående
+      number_of_products_created: Skapade produkter
+      number_of_products_updated: Uppdaterade produkter

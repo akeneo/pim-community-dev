@@ -1,0 +1,342 @@
+datagrid:
+    product-grid:
+        options:
+            entityHint: product
+            filtersAsColumn: true
+            displayTypes:
+                default:
+                    label: pim_datagrid.display_selector.list
+                gallery:
+                    label: pim_datagrid.display_selector.gallery
+                    rowView: pim/datagrid/product-gallery-row
+                    manageColumns: false
+            extraKeys:
+                - totalProducts
+                - totalProductModels
+            fetchMethod: POST
+        source:
+            acl_resource:      pim_enrich_product_index
+            type:              pim_datasource_product
+            entity:            '%pim_catalog.entity.product.class%'
+        columns:
+            identifier:
+                label: ID
+                data_name:     identifier
+                type:          field
+            image:
+                label:         Image
+                data_name:     image
+                frontend_type: product-and-product-model-image
+            label:
+                label:         Label
+                data_name:     label
+                type:          field
+                frontend_type: product-and-product-model-label
+            family:
+                label:         Family
+                data_name:     family
+                type:          field
+            enabled:
+                label:         Status
+                frontend_type: enabled
+            completeness:
+                label:         Complete
+                frontend_type: completeness
+            created:
+                label:         Created
+                type:          field
+            updated:
+                label:         Updated
+                type:          field
+            complete_variant_products:
+                label:         Variant products
+                data_name:     complete_variant_product
+                frontend_type: complete-variant-product
+        other_columns:
+            groups:
+                label:         Groups
+                data_name:     groups
+                type:          field
+            parent:
+                label: Parent
+                data_name: parent
+                type: field
+        properties:
+            id:
+                type:          field
+                data_name:     search_id
+            label:
+                type:          field
+                data_name:     label
+            image:
+                data_name:     image
+                frontend_type: product-and-product-model-image
+            identifier:
+                type:          field
+                data_name:     identifier
+            completeness:
+                type:          field
+                frontend_type: completeness
+            complete_variant_products:
+                type:          field
+                data_name:     complete_variant_product
+                frontend_type: complete-variant-product
+            document_type: ~
+            technical_id: ~
+        actions:
+            edit:
+                type:      navigate-product-and-product-model
+                label:
+                icon:
+                rowAction: true
+            edit_attributes:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--edit
+                type:      navigate-product-and-product-model
+                label:     pim_datagrid.actions.edit_product_attributes
+                useDirectLauncherLink: true
+                tabRedirects:
+                    product: pim-product-edit-form-attributes
+                    product_model: pim-product-model-edit-form-attributes
+            edit_categories:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--folder
+                type:  navigate-product-and-product-model
+                useDirectLauncherLink: true
+                label: pim_datagrid.actions.classify_product
+                links:
+                    product: pim_enrich_product_edit_categories
+                    product_model: pim_enrich_product_model_edit_categories
+            delete:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--trash
+                type:  delete-product
+                label: pim_datagrid.actions.delete_product
+                link:  delete_link
+                acl_resource: pim_enrich_product_remove
+            toggle_status:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--switch
+                type:  toggle-product
+                label: pim_datagrid.actions.toggle_status
+                link:  toggle_status_link
+                acl_resource: pim_enrich_product_change_state
+        mass_actions_groups:
+            bulk_actions:
+                label: pim_datagrid.mass_action_group.bulk_actions.label
+            quick_export:
+                label: pim_datagrid.mass_action_group.quick_export.label
+        mass_actions:
+            product_edit:
+                type: edit
+                acl_resource: pim_enrich_mass_edit
+                label: pim_datagrid.mass_action.mass_edit
+                route: pim_enrich_mass_edit_action
+                className: 'AknButton AknButton--action AknButtonList-item'
+                route_parameters:
+                    actionName: product-edit
+            sequential_edit:
+                type: sequential_edit
+                acl_resource: pim_enrich_product_edit_attributes
+                label: pim_datagrid.mass_action.sequential_edit
+                className: 'AknButton AknButton--action AknButtonList-item'
+            delete_products_and_product_models:
+                type: mass_delete
+                label: pim_common.delete
+                entity_name: product
+                acl_resource: pim_enrich_product_remove
+                handler: product_mass_delete
+                className: 'AknButton AknButton--important AknButtonList-item'
+                messages:
+                    confirm_title: pim_common.confirm_deletion
+                    confirm_content: pim_datagrid.mass_action.delete.confirm_content
+                    confirm_ok: pim_common.ok
+                    success: pim_datagrid.mass_action.delete.success
+                    error: pim_datagrid.mass_action.delete.error
+                    empty_selection: pim_datagrid.mass_action.delete.empty_selection
+            quick_export_grid_context_xlsx:
+                type: export
+                label: pim_datagrid.mass_action.quick_export.xlsx_grid_context
+                handler: product_quick_export
+                route: pim_datagrid_export_product_index
+                route_parameters:
+                    _format: xlsx
+                    _contentType: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+                    _jobCode: xlsx_product_grid_context_quick_export
+                    _displayedColumnsOnly: 1
+                context:
+                    withHeader: true
+                messages:
+                    empty_selection: pim_datagrid.mass_action.delete.empty_selection
+                launcherOptions:
+                    group: quick_export
+            quick_export_xlsx:
+                type: export
+                label: pim_datagrid.mass_action.quick_export.xlsx_all
+                handler: product_quick_export
+                route: pim_datagrid_export_product_index
+                route_parameters:
+                    _format: xlsx
+                    _contentType: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+                    _jobCode: xlsx_product_quick_export
+                    _displayedColumnsOnly: 0
+                context:
+                    withHeader: true
+                messages:
+                    empty_selection: pim_datagrid.mass_action.delete.empty_selection
+                launcherOptions:
+                    group: quick_export
+            quick_export_grid_context_csv:
+                type: export
+                label: pim_datagrid.mass_action.quick_export.csv_grid_context
+                handler: product_quick_export
+                route: pim_datagrid_export_product_index
+                route_parameters:
+                    _format: csv
+                    _contentType: text/csv
+                    _jobCode: csv_product_grid_context_quick_export
+                    _displayedColumnsOnly: 1
+                context:
+                    withHeader: true
+                messages:
+                    empty_selection: pim_datagrid.mass_action.delete.empty_selection
+                launcherOptions:
+                    group: quick_export
+            quick_export_csv:
+                type: export
+                label: pim_datagrid.mass_action.quick_export.csv_all
+                handler: product_quick_export
+                route: pim_datagrid_export_product_index
+                route_parameters:
+                    _format: csv
+                    _contentType: text/csv
+                    _jobCode: csv_product_quick_export
+                    _displayedColumnsOnly: 0
+                context:
+                    withHeader: true
+                messages:
+                    empty_selection: pim_datagrid.mass_action.delete.empty_selection
+                launcherOptions:
+                    group: quick_export
+        sorters:
+            columns:
+                identifier:
+                    data_name: identifier
+                    sorter: product_field
+                family:
+                    data_name: familyLabel
+                    sorter:    product_family
+                enabled:
+                    data_name: enabled
+                    sorter:    product_field
+                completeness:
+                    data_name: ratio
+                    sorter:    product_completeness
+                created:
+                    data_name: created
+                    sorter:    product_field
+                updated:
+                    data_name: updated
+                    sorter:    product_field
+            default:
+                updated: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
+        filters:
+            columns:
+                family:
+                    type:      product_family
+                    label:     'pim_datagrid.filters.family.label'
+                    data_name: family
+                    options:
+                        field_options:
+                            multiple: true
+                            attr:
+                                empty_choice: true
+                product_typology:
+                    label: 'pim_datagrid.filters.product_typology.label'
+                    data_name: product_typology
+                    type: product_typology
+                    ftype: choice
+                    options:
+                        field_options:
+                            choices:
+                                'pim_datagrid.filters.product_typology.simple': 'simple'
+                                'pim_datagrid.filters.product_typology.variant': 'variant'
+                groups:
+                    type:      product_groups
+                    label:     'pim_datagrid.filters.groups.label'
+                    data_name: groups
+                    options:
+                        field_options:
+                            multiple: true
+                enabled:
+                    type:      product_enabled
+                    ftype:     choice
+                    label:     'pim_datagrid.filters.enabled.label'
+                    data_name: enabled
+                    options:
+                        field_options:
+                            choices:
+                                Enabled: 1
+                                Disabled: 0
+                scope:
+                    type:      product_scope
+                    label:     'pim_datagrid.filters.scope.label'
+                    data_name: values.scope
+                    options:
+                        field_options:
+                            choices: '@pim_catalog.repository.channel->getLabelsIndexedByCode(@pim_user.context.user->getCurrentLocaleCode())'
+                completeness:
+                    type:      product_and_product_model_completeness
+                    label:     'pim_datagrid.filters.completeness.label'
+                    data_name: ratio
+                created:
+                    type:      product_date
+                    ftype:     date
+                    data_name: created
+                    label:     'pim_datagrid.filters.created.label'
+                updated:
+                    type:      product_date
+                    ftype:     date
+                    data_name: updated
+                    label:     'pim_datagrid.filters.updated.label'
+                label_or_identifier:
+                    type: label_or_identifier
+                    label: 'pim_datagrid.filters.label_or_identifier.label_with_uuid'
+                    data_name: label_or_identifier
+                parent:
+                    label:         'pim_datagrid.filters.parent.label'
+                    data_name:     parent
+                    type:          product_value_string
+                    ftype:         parent
+                    options:
+                        field_options:
+                            attr:
+                                choice_list: true
+                identifier:
+                    type: product_value_string
+                    ftype: identifier
+                    label: 'pim_datagrid.filters.identifier.label'
+                    data_name: identifier
+                    options:
+                        field_options:
+                            attr:
+                                choice_list: true
+                                empty_choice: true
+                entity_type:
+                    label: 'pim_datagrid.filters.entity_type.label'
+                    data_name: entity_type
+                    type: entity_type
+                    ftype: grouped-variant
+                    options:
+                        field_options:
+                            choices:
+                                'pim_datagrid.filters.entity_type.ungrouped': 'product'
+                uuid:
+                    type: product_value_string
+                    ftype: uuid
+                    label: 'pim_datagrid.filters.uuid.label'
+                    data_name: uuid
+                    options:
+                        field_options:
+                            attr:
+                                choice_list: true

@@ -1,0 +1,9 @@
+pim_api_locale_list:
+    path: /locales
+    defaults: { _controller: pim_api.controller.locale:listAction, _format: json }
+    methods: [GET]
+
+pim_api_locale_get:
+    path: /locales/{code}
+    defaults: { _controller: pim_api.controller.locale:getAction, _format: json }
+    methods: [GET]

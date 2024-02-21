@@ -1,0 +1,71 @@
+batch_jobs:
+  csv_currency_export:
+    label: Valuta eksport til CSV
+    export.label: Valuta eksport
+  csv_currency_import:
+    label: Valuta import fra CSV
+    import.label: Valuta import
+  xlsx_currency_export:
+    label: Valuta eksport til XLSX
+    export.label: Valuta eksport
+  xlsx_currency_import:
+    label: Valuta import fra XLSX
+    import.label: Valuta import
+  csv_locale_export:
+    label: Landestandard eksport i CSV
+    export.label: Landestandard eksport
+  csv_locale_import:
+    label: Landestandard import fra CSV
+    import.label: Landestandard import
+  xlsx_locale_export:
+    label: Landestandard eksport til XLSX
+    export.label: Landestandard eksport
+  xlsx_locale_import:
+    label: Landestandard import fra XLSX
+    import.label: Landestandard import
+  csv_channel_export:
+    label: Kanal eksportet til CSV
+    export.label: Kanal eksport
+  csv_channel_import:
+    label: Kanal import fra CSV
+    import.label: Kanal import
+  xlsx_channel_export:
+    label: Kanal eksport til XLSX
+    export.label: Kanal eksport
+  xlsx_channel_import:
+    label: Kanal import fra XLSX
+    import.label: Kanal import
+pim_enrich.entity.channel:
+  label: kanal
+  uppercase_label: Kanal
+  flash:
+    update:
+      success: Kanalen blev opdateret.
+      fail: Kanalen kunne ikke opdateres.
+    create:
+      success: Kanal oprettet.
+      fail: Kanalen kunne ikke opdateres.
+    delete:
+      success: Kanalen blev fjernet
+      fail: Kan ikke slette denne kanal
+  page_title:
+    index: "] -Inf, 1] {{ count }} kanal |] 1, Inf [{{ count }} kanaler"
+  property:
+    category_tree: Kategoritræstrukturen
+    do_not_convert: Konvertér ikke
+    label_conversion_units: Vælge en konvertering enhed for hver metriske attribut, der skal bruges under produkt eksport
+  module:
+    create:
+      button: opret kanal
+    delete:
+      confirm: Er du sikker på du vil slette denne kanal?
+pim_enrich.entity.locale:
+  label: landestandard
+  uppercase_label: Landestandard
+  plural_label: Landestandarder
+  page_title:
+    index: "] -Inf, 1] {{ count }} land |] 1, Inf [{{ count }} landestandarder"
+pim_enrich.entity.currency:
+  plural_label: Valutaer
+  page_title:
+    index: "] -Inf, 1] {{ count }} valuta |] 1, Inf [{{ count }} valutaer"

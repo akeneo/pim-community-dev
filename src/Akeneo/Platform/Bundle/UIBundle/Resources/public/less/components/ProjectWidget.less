@@ -1,0 +1,218 @@
+@import "../base/variables";
+
+.AknProjectWidget {
+  &-boxes {
+    display: flex;
+    justify-content: space-between;
+    min-height: 50px;
+  }
+
+  &-boxContainer {
+    flex-basis: 33%;
+    text-align: center;
+    font-size: @AknFontSizeBig;
+  }
+
+  &-boxContainer + &-boxContainer {
+    margin-left: 20px;
+  }
+
+  &-boxLabel {
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  &-box {
+    color: @AknDarkBlue;
+    border: 1px solid @AknBorderColor;
+    font-size: @AknDefaultFontSize;
+    padding: 12px 0;
+    font-weight: bold;
+    position: relative;
+
+    &--important {
+      border-bottom: 4px solid @AknRed;
+    }
+
+    &--warning {
+      border-bottom: 4px solid @AknOrange;
+    }
+
+    &--success {
+      border-bottom: 4px solid @AknGreen;
+    }
+  }
+
+  &-boxData {
+    font-size: @AknHugeFontSize;
+    line-height: @AknHugeFontSize;
+    padding-bottom: 15px;
+    font-weight: 200;
+    color: @AknGrey;
+  }
+
+  &-box:hover &-boxHover {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  &-boxHover {
+    background: fade(@AknDarkBlue, 90%);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    cursor: pointer;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.1s linear;
+  }
+
+  &-boxHoverText {
+    font-size: @AknDefaultFontSize;
+    color: white;
+    text-transform: uppercase;
+    border: 1px solid white;
+    padding: 5px 10px;
+    border-radius: 2px;
+  }
+
+  &-resume {
+    font-size: @AknFontSizeBig;
+    margin-top: 10px;
+  }
+
+  &-topBar {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid @AknDarkBlue;
+    margin-bottom: 20px;
+    align-items: center;
+  }
+
+  &-tool {
+    margin-right: 15px;
+  }
+
+  &-mainSelectorCurrent {
+    color: @AknLightPurple;
+  }
+
+  &-mainSelectorCurrentTitle {
+    color: @AknDarkBlue;
+    font-size: @AknFontSizeBig;
+    text-transform: uppercase;
+    margin-right: 5px;
+  }
+
+  &-secondarySelectorCurrentTitle {
+    font-size: @AknDefaultFontSize;
+    color: @AknLightPurple;
+  }
+
+  &-mainSelectorLine,
+  &-secondarySelectorLine {
+    color: @AknGrey;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  &-secondarySelectorLine {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &-mainSelectorLineTitle,
+  &-secondarySelectorLineTitle {
+    color: @AknDefaultFontColor;
+  }
+
+  &-secondarySelectorLineTitle {
+    min-width: 33%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  &-mainSelectorLine,
+  &-mainSelectorCurrent {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  &-mainSelectorLineTitle,
+  &-mainSelectorCurrentTitle {
+    flex: 3;
+    min-width: initial;
+  }
+
+  &-mainSelectorLineTitle {
+    margin-right: 10px;
+  }
+
+  &-mainSelectorLineProperties,
+  &-mainSelectorCurrentProperties {
+    flex: 6;
+    text-align: left;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  &-mainSelectorLineCompleteness,
+  &-mainSelectorCurrentCompleteness {
+    flex: 1;
+    margin-left: 10px;
+    text-align: right;
+  }
+
+  &-info {
+    font-size: @AknFontSizeBig;
+  }
+
+  &-emptyWidget {
+    font-size: @AknTitleFontSize;
+    margin: 50px auto;
+    text-align: center;
+    font-style: italic;
+    font-weight: bold;
+  }
+
+  &-link {
+    color: @AknPurple;
+    cursor: pointer;
+  }
+
+  &-loadingMask {
+    top: auto;
+    z-index: auto;
+    height: 50px;
+  }
+}
+
+.teamwork-assistant-widget-project-dropdown,
+.select2-drop--forProjectWidget {
+  max-width: 600px !important;
+
+  &:before {
+    left: 10px;
+    right: auto !important;
+  }
+
+  .select2-result-label, .select2-no-results {
+    display: flex;
+    padding-top: 0;
+  }
+}

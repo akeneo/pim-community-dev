@@ -1,0 +1,19 @@
+parameters:
+  pim_user.provider.user.class: Akeneo\UserManagement\Bundle\Security\UserProvider
+  pim_user.provider.user_api.class: Akeneo\UserManagement\Bundle\Security\UserApiProvider
+
+services:
+  pim_user.provider.user:
+    class: '%pim_user.provider.user.class%'
+    arguments:
+      - '@pim_user.repository.user'
+
+  pim_user.provider.user_api:
+    class: '%pim_user.provider.user_api.class%'
+    arguments:
+      - '@pim_user.repository.user'
+
+  pim_user.provider.job_user:
+    class: 'Akeneo\UserManagement\Bundle\Security\JobUserProvider'
+    arguments:
+      - '@pim_user.repository.user'

@@ -1,0 +1,913 @@
+parameters:
+    pim_catalog.tasklet.compute_completeness_of_products_family.class: Akeneo\Pim\Enrichment\Component\Product\Job\ComputeCompletenessOfProductsFamilyTasklet
+    pim_catalog.tasklet.compute_family_variant_structure_changes.class: Akeneo\Pim\Enrichment\Component\Product\Job\ComputeFamilyVariantStructureChangesTasklet
+
+    pim_catalog.compute_completeness_of_products_family.job_type: 'compute_completeness_of_products_family'
+    pim_catalog.compute_completeness_of_products_family.job_name: 'compute_completeness_of_products_family'
+    pim_catalog.compute_completeness_of_products_family.tasklet_name: 'compute_completeness_of_products_family'
+    pim_catalog.compute_completeness_of_products_family.connector_name: 'compute completeness of products family'
+
+    pim_catalog.compute_family_variant_structure_changes.job_type: 'compute_family_variant_structure_changes'
+    pim_catalog.compute_family_variant_structure_changes.job_name: 'compute_family_variant_structure_changes'
+    pim_catalog.compute_family_variant_structure_changes.tasklet_name: 'compute_family_variant_structure_changes'
+    pim_catalog.compute_family_variant_structure_changes.connector_name: 'compute_family_variant_structure_changes'
+
+    pim_catalog.remove_completeness_for_channel_and_locale.job_type: 'remove_completeness_for_channel_and_locale'
+    pim_catalog.remove_completeness_for_channel_and_locale.job_name: 'remove_completeness_for_channel_and_locale'
+    pim_catalog.remove_completeness_for_channel_and_locale.tasklet_name: 'remove_completeness_for_channel_and_locale'
+    pim_catalog.remove_completeness_for_channel_and_locale.connector_name: 'remove completeness for channel and locale'
+
+    pim_catalog.job.remove_non_existing_product_values.job_type: 'remove_non_existing_product_values'
+    pim_catalog.job.remove_non_existing_product_values.job_name: 'remove_non_existing_product_values'
+    pim_catalog.job.remove_non_existing_product_values.connector_name: 'remove_non_existing_product_values'
+
+    pim_connector.job_name.xlsx_product_export: 'xlsx_product_export'
+    pim_connector.job_name.xlsx_product_import: 'xlsx_product_import'
+    pim_connector.job_name.xlsx_product_model_import: 'xlsx_product_model_import'
+    pim_connector.job_name.xlsx_product_model_export: 'xlsx_product_model_export'
+    pim_connector.job_name.xlsx_group_export: 'xlsx_group_export'
+    pim_connector.job_name.xlsx_group_import: 'xlsx_group_import'
+    pim_connector.job_name.csv_group_export: 'csv_group_export'
+    pim_connector.job_name.csv_group_import: 'csv_group_import'
+    pim_connector.job_name.csv_category_export: 'csv_category_export'
+    pim_connector.job_name.csv_category_import: 'csv_category_import'
+    pim_connector.job_name.xlsx_category_export: 'xlsx_category_export'
+    pim_connector.job_name.xlsx_category_import: 'xlsx_category_import'
+    pim_connector.job_name.csv_product_export: 'csv_product_export'
+    pim_connector.job_name.csv_product_import: 'csv_product_import'
+    pim_connector.job_name.csv_product_model_import: 'csv_product_model_import'
+    pim_connector.job_name.csv_product_model_export: 'csv_product_model_export'
+
+    pim_enrich.connector_name.mass_edit: 'Akeneo Mass Edit Connector'
+    pim_enrich.job_name.csv_product_quick_export: 'csv_product_quick_export'
+    pim_enrich.job_name.csv_product_grid_context_quick_export: 'csv_product_grid_context_quick_export'
+    pim_enrich.job_name.xlsx_product_quick_export: 'xlsx_product_quick_export'
+    pim_enrich.job_name.xlsx_product_grid_context_quick_export: 'xlsx_product_grid_context_quick_export'
+    pim_enrich.job.name.update_product_value: 'update_product_value'
+    pim_enrich.job.name.add_product_value: 'add_product_value'
+    pim_enrich.job.name.remove_product_value: 'remove_product_value'
+    pim_enrich.job.name.move_to_category: 'move_to_category'
+    pim_enrich.job.name.add_to_category: 'add_to_category'
+    pim_enrich.job.name.add_association: 'add_association'
+    pim_enrich.job.name.remove_from_category: 'remove_from_category'
+    pim_enrich.job.name.edit_common_attributes: 'edit_common_attributes'
+    pim_enrich.job.name.add_attribute_value: 'add_attribute_value'
+    pim_enrich.job.name.add_to_group: 'add_to_group'
+    pim_enrich.job.name.add_to_existing_product_model: 'add_to_existing_product_model'
+    pim_enrich.job.name.set_attribute_requirements: 'set_attribute_requirements'
+    pim_enrich.job.name.delete_products_and_product_models: 'delete_products_and_product_models'
+    pim_enrich.job.name.change_parent_product: 'change_parent_product'
+    pim_enrich.job.name.convert_to_simple_products: 'convert_to_simple_products'
+    pim_enrich.job.simple_job.class: Akeneo\Tool\Component\Batch\Job\Job
+    pim_enrich.step.item_step.class: Akeneo\Tool\Component\Batch\Step\ItemStep
+    pim_enrich.job.quick_export_type: quick_export
+    pim_enrich.job.mass_edit_type: mass_edit
+
+services:
+    pim_catalog.tasklet.compute_completeness_of_products_family:
+        class: '%pim_catalog.tasklet.compute_completeness_of_products_family.class%'
+        arguments:
+            - '@pim_catalog.repository.family'
+            - '@pim_catalog.query.product_identifier_query_builder_factory'
+            - '@pim_catalog.completeness.product.compute_and_persist'
+            - '@akeneo.pim.enrichment.elasticsearch.indexer.product_and_ancestors'
+        public: false
+
+    pim_catalog.step.compute_completeness_of_products_family:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - '%pim_catalog.compute_completeness_of_products_family.tasklet_name%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_catalog.tasklet.compute_completeness_of_products_family'
+        public: false
+
+    pim_catalog.job.compute_completeness_of_products_family:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_catalog.compute_completeness_of_products_family.job_name%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_catalog.step.compute_completeness_of_products_family'
+            - true
+            - false
+        public: false
+        tags:
+            -
+                name: akeneo_batch.job
+                connector: '%pim_catalog.compute_completeness_of_products_family.connector_name%'
+                type: '%pim_catalog.compute_completeness_of_products_family.job_type%'
+
+    pim_catalog.tasklet.compute_family_variant_structure_changes:
+        class: '%pim_catalog.tasklet.compute_family_variant_structure_changes.class%'
+        arguments:
+            - '@pim_catalog.repository.family_variant'
+            - '@pim_catalog.query.product_and_product_model_query_builder_factory'
+            - '@pim_catalog.saver.product'
+            - '@pim_catalog.saver.product_model'
+            - '@pim_catalog.entity_with_family_variant.keep_only_values_for_variation'
+            - '@validator'
+            - '@event_dispatcher'
+            - '%pim_job_product_batch_size%'
+        public: false
+
+    pim_catalog.step.compute_family_variant_structure_changes:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - '%pim_catalog.compute_family_variant_structure_changes.tasklet_name%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_catalog.tasklet.compute_family_variant_structure_changes'
+        public: false
+
+    Akeneo\Pim\Enrichment\Component\Product\Job\RemoveCompletenessForChannelAndLocaleTasklet:
+        arguments:
+            - '@pim_connector.doctrine.cache_clearer'
+            - '@pim_notification.notifier'
+            - '@pim_notification.factory.notification'
+            - '@pim_catalog.query.product_identifier_query_builder_factory'
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.saver.product'
+            - '%pim_job_product_batch_size%'
+        public: false
+
+    pim_catalog.step.remove_completeness_for_channel_and_locale:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - '%pim_catalog.remove_completeness_for_channel_and_locale.tasklet_name%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@Akeneo\Pim\Enrichment\Component\Product\Job\RemoveCompletenessForChannelAndLocaleTasklet'
+        public: false
+
+    pim_catalog.job.remove_completeness_for_channel_and_locale:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_catalog.remove_completeness_for_channel_and_locale.job_name%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_catalog.step.remove_completeness_for_channel_and_locale'
+            - false
+            - false
+        public: false
+        tags:
+            -
+                name: akeneo_batch.job
+                connector: '%pim_catalog.remove_completeness_for_channel_and_locale.connector_name%'
+                type: '%pim_catalog.remove_completeness_for_channel_and_locale.job_type%'
+
+    pim_catalog.job.compute_family_variant_structure_changes:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_catalog.compute_family_variant_structure_changes.job_name%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_catalog.step.compute_family_variant_structure_changes'
+            - true
+            - false
+        public: false
+        tags:
+            -
+                name: akeneo_batch.job
+                connector: '%pim_catalog.compute_family_variant_structure_changes.connector_name%'
+                type: '%pim_catalog.compute_family_variant_structure_changes.job_type%'
+
+    pim_connector.tasklet.csv_family.compute_data_related_to_family_root_product_models:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\ComputeDataRelatedToFamilyRootProductModelsTasklet'
+        arguments:
+            - '@pim_catalog.repository.family'
+            - '@pim_catalog.query.product_model_query_builder_factory'
+            - '@pim_connector.reader.file.csv_family'
+            - '@pim_catalog.entity_with_family_variant.keep_only_values_for_variation'
+            - '@validator'
+            - '@pim_catalog.saver.product_model'
+            - '@pim_connector.doctrine.cache_clearer'
+            - '@akeneo_batch.job_repository'
+            - '%pim_job_product_batch_size%'
+
+    pim_connector.tasklet.csv_family.compute_data_related_to_family_sub_product_models:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\ComputeDataRelatedToFamilySubProductModelsTasklet'
+        arguments:
+            - '@pim_catalog.repository.family'
+            - '@pim_catalog.query.product_model_query_builder_factory'
+            - '@pim_connector.reader.file.csv_family'
+            - '@pim_catalog.entity_with_family_variant.keep_only_values_for_variation'
+            - '@validator'
+            - '@pim_catalog.saver.product_model'
+            - '@pim_connector.doctrine.cache_clearer'
+            - '@akeneo_batch.job_repository'
+            - '%pim_job_product_batch_size%'
+
+    pim_connector.tasklet.csv_family.compute_data_related_to_family_products:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\ComputeDataRelatedToFamilyProductsTasklet'
+        arguments:
+            - '@pim_catalog.repository.family'
+            - '@pim_catalog.query.product_identifier_query_builder_factory'
+            - '@pim_connector.reader.file.csv_family'
+            - '@pim_catalog.saver.product'
+            - '@pim_connector.doctrine.cache_clearer'
+            - '@akeneo_batch.job_repository'
+            - '@pim_catalog.entity_with_family_variant.keep_only_values_for_variation'
+            - '@validator'
+            - '@pim_catalog.repository.product'
+            - '%pim_job_product_batch_size%'
+
+    pim_connector.tasklet.mass_edit_family.compute_completeness_of_family_products:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\ComputeCompletenessOfFamilyProductsTasklet'
+        arguments:
+            - '@pim_enrich.connector.reader.mass_edit.family'
+            - '@pim_connector.doctrine.cache_clearer'
+            - '@akeneo_batch.job_repository'
+            - '@pim_catalog.completeness.calculator'
+            - '@akeneo.pim.enrichment.product.query.save_product_completenesses'
+            - '@pim_enrich.product.query_message_bus'
+
+    pim_connector.tasklet.xlsx_family.compute_data_related_to_family_root_product_models:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\ComputeDataRelatedToFamilyRootProductModelsTasklet'
+        arguments:
+            - '@pim_catalog.repository.family'
+            - '@pim_catalog.query.product_model_query_builder_factory'
+            - '@pim_connector.reader.file.xlsx_family'
+            - '@pim_catalog.entity_with_family_variant.keep_only_values_for_variation'
+            - '@validator'
+            - '@pim_catalog.saver.product_model'
+            - '@pim_connector.doctrine.cache_clearer'
+            - '@akeneo_batch.job_repository'
+            - '%pim_job_product_batch_size%'
+
+    pim_connector.tasklet.xlsx_family.compute_data_related_to_family_sub_product_models:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\ComputeDataRelatedToFamilySubProductModelsTasklet'
+        arguments:
+            - '@pim_catalog.repository.family'
+            - '@pim_catalog.query.product_model_query_builder_factory'
+            - '@pim_connector.reader.file.xlsx_family'
+            - '@pim_catalog.entity_with_family_variant.keep_only_values_for_variation'
+            - '@validator'
+            - '@pim_catalog.saver.product_model'
+            - '@pim_connector.doctrine.cache_clearer'
+            - '@akeneo_batch.job_repository'
+            - '%pim_job_product_batch_size%'
+
+    pim_connector.tasklet.xlsx_family.compute_data_related_to_family_products:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\ComputeDataRelatedToFamilyProductsTasklet'
+        arguments:
+            - '@pim_catalog.repository.family'
+            - '@pim_catalog.query.product_identifier_query_builder_factory'
+            - '@pim_connector.reader.file.xlsx_family'
+            - '@pim_catalog.saver.product'
+            - '@pim_connector.doctrine.cache_clearer'
+            - '@akeneo_batch.job_repository'
+            - '@pim_catalog.entity_with_family_variant.keep_only_values_for_variation'
+            - '@validator'
+            - '@pim_catalog.repository.product'
+            - '%pim_job_product_batch_size%'
+
+    pim_connector.tasklet.csv_attribute_group_import.ensure_attribute_group_order:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\EnsureConsistentAttributeGroupOrderTasklet'
+        arguments:
+            - '@pim_catalog.repository.attribute_group'
+            - '@pim_connector.reader.file.csv_attribute_group'
+            - '@pim_catalog.saver.attribute_group'
+            - '@akeneo.pim.structure.query.find_attribute_group_orders_equal_or_superior_to'
+            - '@validator'
+            - '@akeneo_batch.job_repository'
+
+    pim_connector.tasklet.xlsx_attribute_group_import.ensure_attribute_group_order:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\EnsureConsistentAttributeGroupOrderTasklet'
+        arguments:
+            - '@pim_catalog.repository.attribute_group'
+            - '@pim_connector.reader.file.xlsx_attribute_group'
+            - '@pim_catalog.saver.attribute_group'
+            - '@akeneo.pim.structure.query.find_attribute_group_orders_equal_or_superior_to'
+            - '@validator'
+            - '@akeneo_batch.job_repository'
+
+    pim_connector.tasklet.mass_edit_family.index_family_products_and_product_models:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Job\IndexFamilyProductsAndProductModelsTasklet'
+        arguments:
+            - '@akeneo_batch.job_repository'
+            - '@pim_enrich.connector.reader.mass_edit.family'
+            - '@pim_catalog.query.product_model_query_builder_factory'
+            - '@akeneo.pim.enrichment.elasticsearch.indexer.product_and_ancestors'
+            - '@pim_catalog.elasticsearch.indexer.product_model_descendants_and_ancestors'
+            - '@pim_connector.doctrine.cache_clearer'
+            - '@pim_enrich.product.query_message_bus'
+            - '%pim_job_product_batch_size%'
+
+    pim_connector.job.csv_group_import:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_connector.job_name.csv_group_import%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@akeneo.job_automation.connector.step.download'
+                - '@pim_connector.step.charset_validator'
+                - '@pim_connector.step.csv_group.import'
+            - true
+            - true
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.import_type%' }
+
+    pim_connector.job.csv_group_export:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_connector.job_name.csv_group_export%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_connector.step.csv_group.export'
+                - '@akeneo.job_automation.connector.step.upload'
+            - true
+            - true
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.export_type%' }
+
+    pim_connector.job.csv_product_import:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_connector.job_name.csv_product_import%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@akeneo.job_automation.connector.step.download'
+                - '@pim_connector.step.charset_validator'
+                - '@pim_connector.step.csv_product.import'
+                - '@pim_connector.step.csv_product.import_associations'
+            - true
+            - true
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.import_type%' }
+
+    pim_connector.job.csv_product_model_import:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_connector.job_name.csv_product_model_import%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@akeneo.job_automation.connector.step.download'
+                - '@pim_connector.step.charset_validator'
+                - '@pim_connector.step.csv_root_product_model.import'
+                - '@pim_connector.step.csv_sub_product_model.import'
+                - '@pim_connector.step.csv_product_model.import_associations'
+            - true
+            - true
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.import_type%' }
+
+    pim_connector.job.csv_product_export:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_connector.job_name.csv_product_export%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_connector.step.csv_product.export'
+                - '@akeneo.job_automation.connector.step.upload'
+            - true
+            - true
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.export_type%' }
+
+    pim_connector.job.csv_product_model_export:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_connector.job_name.csv_product_model_export%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_connector.step.csv_product_model.export'
+                - '@akeneo.job_automation.connector.step.upload'
+            - true
+            - true
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.export_type%' }
+
+    pim_connector.job.xlsx_product_import:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_connector.job_name.xlsx_product_import%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@akeneo.job_automation.connector.step.download'
+                - '@pim_connector.step.charset_validator'
+                - '@pim_connector.step.xlsx_product.import'
+                - '@pim_connector.step.xlsx_product.import_associations'
+            - true
+            - true
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.import_type%' }
+
+    pim_connector.job.xlsx_product_model_import:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_connector.job_name.xlsx_product_model_import%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@akeneo.job_automation.connector.step.download'
+                - '@pim_connector.step.charset_validator'
+                - '@pim_connector.step.xlsx_root_product_model.import'
+                - '@pim_connector.step.xlsx_sub_product_model.import'
+                - '@pim_connector.step.xlsx_product_model.import_associations'
+            - true
+            - true
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.import_type%' }
+
+    pim_connector.job.xlsx_product_export:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_connector.job_name.xlsx_product_export%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_connector.step.xlsx_product.export'
+                - '@akeneo.job_automation.connector.step.upload'
+            - true
+            - true
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.export_type%' }
+
+    pim_connector.job.xlsx_product_model_export:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_connector.job_name.xlsx_product_model_export%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_connector.step.xlsx_product_model.export'
+                - '@akeneo.job_automation.connector.step.upload'
+            - true
+            - true
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.export_type%' }
+
+    pim_connector.job.csv_category_import:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_connector.job_name.csv_category_import%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@akeneo.job_automation.connector.step.download'
+                - '@pim_connector.step.charset_validator'
+                - '@pim_connector.step.csv_category.import'
+            - true
+            - true
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.import_type%' }
+
+    pim_connector.job.csv_category_export:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_connector.job_name.csv_category_export%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_connector.step.csv_category.export'
+                - '@akeneo.job_automation.connector.step.upload'
+            - true
+            - true
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.export_type%' }
+
+    pim_connector.job.xlsx_category_import:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_connector.job_name.xlsx_category_import%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@akeneo.job_automation.connector.step.download'
+                - '@pim_connector.step.charset_validator'
+                - '@pim_connector.step.xlsx_category.import'
+            - true
+            - true
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.import_type%' }
+
+    pim_connector.job.xlsx_category_export:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_connector.job_name.xlsx_category_export%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_connector.step.xlsx_category.export'
+                - '@akeneo.job_automation.connector.step.upload'
+            - true
+            - true
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.export_type%' }
+
+    pim_connector.job.xlsx_group_import:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_connector.job_name.xlsx_group_import%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@akeneo.job_automation.connector.step.download'
+                - '@pim_connector.step.charset_validator'
+                - '@pim_connector.step.xlsx_group.import'
+            - true
+            - true
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.import_type%' }
+
+    pim_connector.job.xlsx_group_export:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_connector.job_name.xlsx_group_export%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_connector.step.xlsx_group.export'
+                - '@akeneo.job_automation.connector.step.upload'
+            - true
+            - true
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.export_type%' }
+
+    # CSV Quick Exports -----------------------------------------------------------------------------------------------
+    pim_enrich.job.csv_product_quick_export:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_enrich.job_name.csv_product_quick_export%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_enrich.step.csv_product.quick_export'
+                - '@pim_enrich.step.csv_product_model.quick_export'
+            - true
+            - true
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_enrich.job.quick_export_type%' }
+
+    pim_enrich.job.csv_product_grid_context_quick_export:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_enrich.job_name.csv_product_grid_context_quick_export%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_enrich.step.csv_product.quick_export'
+                - '@pim_enrich.step.csv_product_model.quick_export'
+            - true
+            - true
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_enrich.job.quick_export_type%' }
+
+    # XLSX Quick Exports ----------------------------------------------------------------------------------------------
+    pim_enrich.job.xlsx_product_quick_export:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_enrich.job_name.xlsx_product_quick_export%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_enrich.step.xlsx_product.quick_export'
+                - '@pim_enrich.step.xlsx_product_model.quick_export'
+            - true
+            - true
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_enrich.job.quick_export_type%' }
+
+    pim_enrich.job.xlsx_product_grid_context_quick_export:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_enrich.job_name.xlsx_product_grid_context_quick_export%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_enrich.step.xlsx_product.quick_export'
+                - '@pim_enrich.step.xlsx_product_model.quick_export'
+            - true
+            - true
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_enrich.job.quick_export_type%' }
+
+    # Mass Edit -------------------------------------------------------------------------------------------------------
+    pim_enrich.job.update_product_value:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_enrich.job.name.update_product_value%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_enrich.step.update_product_value.mass_edit'
+            - true
+            - true
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
+
+    pim_enrich.job.add_product_value:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_enrich.job.name.add_product_value%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_enrich.step.add_product_value.mass_edit'
+            - true
+            - true
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
+
+    pim_enrich.job.add_to_group:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_enrich.job.name.add_to_group%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_enrich.step.add_to_group.mass_edit'
+            - true
+            - true
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
+
+    pim_enrich.job.remove_product_value:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_enrich.job.name.remove_product_value%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_enrich.step.remove_product_value.mass_edit'
+            - true
+            - true
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
+
+    pim_enrich.job.move_to_category:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_enrich.job.name.move_to_category%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_enrich.step.move_to_category.mass_edit'
+            - true
+            - true
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
+
+    pim_enrich.job.add_to_category:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_enrich.job.name.add_to_category%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_enrich.step.add_to_category.mass_edit'
+            - true
+            - true
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
+
+    pim_enrich.job.remove_from_category:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_enrich.job.name.remove_from_category%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_enrich.step.remove_from_category.mass_edit'
+            - true
+            - true
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
+
+    pim_enrich.job.add_association:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_enrich.job.name.add_association%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_enrich.step.add_association.mass_edit'
+            - true
+            - true
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
+
+    pim_enrich.job.edit_common_attributes:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_enrich.job.name.edit_common_attributes%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_enrich.step.edit_common_attributes.mass_edit'
+                - '@pim_enrich.step.clean'
+            - true
+            - true
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
+
+    pim_enrich.job.add_attribute_value:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_enrich.job.name.add_attribute_value%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_enrich.step.add_attribute_value.mass_edit'
+            - true
+            - true
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
+
+    pim_enrich.job.add_to_existing_product_model:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_enrich.job.name.add_to_existing_product_model%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_enrich.step.add_to_existing_product_model.mass_edit'
+            - true
+            - true
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
+
+    pim_enrich.job.convert_to_simple_products:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_enrich.job.name.convert_to_simple_products%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_enrich.step.convert_to_simple_products.mass_edit'
+            - true
+            - true
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
+
+    pim_enrich.job.delete_products_and_product_models:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_enrich.job.name.delete_products_and_product_models%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_enrich.step.delete_products_and_product_models.mass_edit'
+            - true
+            - true
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
+
+    pim_enrich.job.change_parent:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_enrich.job.name.change_parent_product%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - ['@pim_enrich.step.change_parent.mass_edit']
+            - true
+            - true
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
+
+    pim_enrich.job.remove_non_existing_product_values:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_catalog.job.remove_non_existing_product_values.job_name%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - ['@pim_enrich.step.remove_non_existing_product_values']
+            - true
+            - false
+        tags:
+            -
+                name: akeneo_batch.job
+                connector: '%pim_catalog.job.remove_non_existing_product_values.connector_name%'
+                type: '%pim_catalog.job.remove_non_existing_product_values.job_type%'
+
+    # Clean removed attribute
+    pim_catalog.job.clean_removed_attribute:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'clean_removed_attribute_job'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_catalog.step.clean_attribute.register_clean_job'
+                - '@pim_catalog.step.clean_attribute.clean_product_model'
+                - '@pim_catalog.step.clean_attribute.clean_product'
+                - '@pim_catalog.step.clean_attribute.remove_attribute_codes_from_blacklist'
+            - false
+        public: false
+        tags:
+            -
+                name: akeneo_batch.job
+                connector: 'Cleaning removed attribute values'
+                type: 'clean_removed_attribute_job'
+
+    pim_catalog.step.clean_attribute.register_clean_job:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'clean_attribute.register_clean_job'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.tasklet.clean_attribute.register_clean_job'
+        public: false
+
+    pim_connector.tasklet.clean_attribute.register_clean_job:
+        class: 'Akeneo\Pim\Structure\Bundle\Job\CleanRemovedAttribute\RegisterCleanJobTasklet'
+        arguments:
+            - '@pim_catalog.manager.attribute_code_blacklister'
+        public: false
+
+    pim_catalog.step.clean_attribute.remove_attribute_codes_from_blacklist:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'clean_attribute.remove_attribute_codes_from_blacklist'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.tasklet.clean_attribute.remove_attribute_codes_from_blacklist'
+        public: false
+
+    pim_connector.tasklet.clean_attribute.remove_attribute_codes_from_blacklist:
+        class: 'Akeneo\Pim\Structure\Bundle\Job\CleanRemovedAttribute\RemoveAttributeCodesFromBlacklistTasklet'
+        arguments:
+            - '@pim_catalog.manager.attribute_code_blacklister'
+        public: false
+
+    pim_catalog.step.clean_attribute.clean_product:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'clean_attribute.clean_product'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.tasklet.clean_attribute.clean_product'
+        public: false
+
+    pim_connector.tasklet.clean_attribute.clean_product:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Job\CleanRemovedAttribute\CleanProductTasklet'
+        arguments:
+            - '@akeneo.pim.enrichment.product.query.get_product_uuids_with_removed_attribute'
+            - '@akeneo.pim.enrichment.product.query.count_products_with_removed_attribute'
+            - '@pim_catalog.product_values.remove_values_from_products'
+            - '@akeneo_batch.job_repository'
+        public: false
+
+    pim_catalog.step.clean_attribute.clean_product_model:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'clean_attribute.clean_product_model'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.tasklet.clean_attribute.clean_product_model'
+        public: false
+
+    pim_connector.tasklet.clean_attribute.clean_product_model:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Job\CleanRemovedAttribute\CleanProductModelTasklet'
+        arguments:
+            - '@akeneo.pim.enrichment.product.query.get_product_model_identifiers_with_removed_attribute'
+            - '@akeneo.pim.enrichment.product.query.count_product_models_with_removed_attribute'
+            - '@pim_catalog.product_values.remove_values_from_product_models'
+            - '@akeneo_batch.job_repository'
+        public: false

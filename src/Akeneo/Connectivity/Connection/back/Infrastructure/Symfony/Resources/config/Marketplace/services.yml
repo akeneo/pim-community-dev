@@ -1,0 +1,48 @@
+parameters:
+    akeneo_pim_app_store_url: 'https://apps.akeneo.com'
+    akeneo_pim_app_store_api_url: 'https://api.apps.akeneo.cloud'
+    akeneo_pim_marketplace_api_pagination_size: 100
+
+services:
+    Akeneo\Connectivity\Connection\Application\Marketplace\MarketplaceUrlGenerator:
+        arguments:
+            - '%akeneo_pim_app_store_url%'
+            - '@pim_catalog.version_provider'
+            - '%env(AKENEO_PIM_URL)%'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetUserProfileQuery'
+
+    Akeneo\Connectivity\Connection\Application\Marketplace\MarketplaceAnalyticsGenerator:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetUserProfileQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceAliases'
+            - '@pim_framework.service.pim_url'
+
+    Akeneo\Connectivity\Connection\Application\Marketplace\AppUrlGenerator:
+        arguments:
+            - '@pim_framework.service.pim_url'
+
+    akeneo_connectivity.connection.marketplace.guzzle_client:
+        class: GuzzleHttp\Client
+        arguments:
+            -
+                base_uri: '%akeneo_pim_app_store_api_url%'
+                headers: {User-Agent: ~}
+
+    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi:
+        arguments:
+            - '@akeneo_connectivity.connection.marketplace.guzzle_client'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceAliases'
+            - '@logger'
+            - '@akeneo_connectivity.connection.marketplace_fake_apps.feature'
+        calls:
+            - setFixturePath: [ '%connectivity.marketplace_fixtures_directory%' ]
+
+    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceAliases:
+        arguments:
+            - '@pim_catalog.version_provider'
+            - '@Akeneo\Platform\Bundle\PimVersionBundle\Version\GrowthVersion'
+            - '@Akeneo\Platform\Bundle\PimVersionBundle\Version\FreeTrialVersion'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\ContentSecurityPolicy\MarketplaceContentSecurityPolicy:
+        tags:
+            - { name: akeneo.pim.security.content_security_policy_provider }

@@ -1,0 +1,51 @@
+parameters:
+    pim_user.view_element.user.tab.general.template:        '@@PimUser/User/Tab/general.html.twig'
+    pim_user.view_element.user.tab.additional.template:     '@@PimUser/User/Tab/additional.html.twig'
+    pim_user.view_element.user.tab.group_and_role.template: '@@PimUser/User/Tab/group_and_role.html.twig'
+    pim_user.view_element.user.tab.password.template:       '@@PimUser/User/Tab/password.html.twig'
+    pim_user.view_element.user.tab.interfaces.template:     '@@PimUser/User/Tab/interfaces.html.twig'
+
+services:
+    pim_user.view_element.user.tab.general:
+        class: '%pim_enrich.view_element.base.class%'
+        arguments:
+            - 'pim_user.user.tabs.general'
+            - '%pim_user.view_element.user.tab.general.template%'
+        tags:
+            - { name: pim_enrich.view_element, type: pim_user_user_form.form_tab, position: 90 }
+
+    pim_user.view_element.user.tab.additional:
+        class: '%pim_enrich.view_element.base.class%'
+        arguments:
+            - 'pim_user.user.tabs.additional'
+            - '%pim_user.view_element.user.tab.additional.template%'
+        tags:
+            - { name: pim_enrich.view_element, type: pim_user_user_form.form_tab, position: 100 }
+
+    pim_user.view_element.user.tab.group_and_role:
+        class: '%pim_enrich.view_element.base.class%'
+        arguments:
+            - 'pim_user.user.tabs.group_and_role'
+            - '%pim_user.view_element.user.tab.group_and_role.template%'
+        calls:
+            - [ addVisibilityChecker, ['@pim_user.view_element.visibility_checker.groups_and_roles'] ]
+        tags:
+            - { name: pim_enrich.view_element, type: pim_user_user_form.form_tab, position: 110 }
+
+    pim_user.view_element.user.tab.password:
+        class: '%pim_enrich.view_element.base.class%'
+        arguments:
+            - 'pim_user.user.tabs.password'
+            - '%pim_user.view_element.user.tab.password.template%'
+        calls:
+            - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.non_empty_property', {property: '[form].children[change_password]'}] ]
+        tags:
+            - { name: pim_enrich.view_element, type: pim_user_user_form.form_tab, position: 120 }
+
+    pim_user.view_element.user.tab.interfaces:
+        class: '%pim_enrich.view_element.base.class%'
+        arguments:
+            - 'pim_user.user.tabs.interfaces'
+            - '%pim_user.view_element.user.tab.interfaces.template%'
+        tags:
+            - { name: pim_enrich.view_element, type: pim_user_user_form.form_tab, position: 130 }

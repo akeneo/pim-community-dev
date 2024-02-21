@@ -1,0 +1,8 @@
+pim_dashboard:
+  title: ダッシュボード
+  version: バージョン
+  widget:
+    completeness:
+      title: チャンネルとロケールについての完全性
+    last_operations:
+      title: 前回の操作

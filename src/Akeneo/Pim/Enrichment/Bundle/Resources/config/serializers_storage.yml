@@ -1,0 +1,85 @@
+parameters:
+    pim_catalog.normalizer.storage.product.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage\ProductNormalizer
+    pim_catalog.normalizer.storage.product.properties.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage\Product\PropertiesNormalizer
+    pim_catalog.normalizer.storage.product.associations.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage\Product\AssociationsNormalizer
+    pim_catalog.normalizer.storage.product.product_values.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage\Product\ProductValuesNormalizer
+    pim_catalog.normalizer.storage.product.product_value.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage\Product\ProductValueNormalizer
+    pim_catalog.normalizer.storage.product.price.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage\Product\PriceNormalizer
+    pim_catalog.normalizer.storage.product.metric.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage\Product\MetricNormalizer
+    pim_catalog.normalizer.storage.datetime.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage\DateTimeNormalizer
+    pim_catalog.normalizer.storage.file.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage\FileNormalizer
+services:
+    pim_catalog.normalizer.storage.product:
+        class: '%pim_catalog.normalizer.storage.product.class%'
+        arguments:
+            - '@pim_catalog.normalizer.storage.product.properties'
+            - '@pim_catalog.normalizer.storage.product.associations'
+        tags:
+            - { name: pim_storage_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.storage.product.properties:
+        class: '%pim_catalog.normalizer.storage.product.properties.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.product.properties'
+        tags:
+            - { name: pim_storage_serializer.normalizer, priority: 40 }
+
+    pim_catalog.normalizer.storage.product.associations:
+        class: '%pim_catalog.normalizer.storage.product.associations.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.product.associations'
+        tags:
+            - { name: pim_storage_serializer.normalizer, priority: 40 }
+
+    pim_catalog.normalizer.storage.product.product_values:
+        class: '%pim_catalog.normalizer.storage.product.product_values.class%'
+        arguments:
+            - '@pim_catalog.normalizer.storage.product.product_value'
+        tags:
+            - { name: pim_storage_serializer.normalizer, priority: 90 }
+        lazy: true
+
+    pim_catalog.normalizer.storage_with_standard_format.product.product_value:
+        class: '%pim_catalog.normalizer.standard.product.product_value.class%'
+        arguments:
+            - '@pim_storage_serializer'
+            - '@akeneo.pim.structure.query.get_attributes'
+        tags:
+            - { name: pim_standard_format_serializer.normalizer, priority: 90 }
+        lazy: true
+
+    pim_catalog.normalizer.storage.product.product_value:
+        class: '%pim_catalog.normalizer.storage.product.product_value.class%'
+        arguments:
+            - '@pim_catalog.normalizer.storage_with_standard_format.product.product_value'
+        tags:
+            - { name: pim_storage_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.storage.product.price:
+        class: '%pim_catalog.normalizer.storage.product.price.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.product.price'
+        tags:
+            - { name: pim_storage_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.storage.product.metric:
+        class: '%pim_catalog.normalizer.storage.product.metric.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.product.metric'
+        tags:
+            - { name: pim_storage_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.storage.datetime:
+        class: '%pim_catalog.normalizer.storage.datetime.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.datetime'
+        tags:
+            - { name: pim_storage_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.storage.file:
+        class: '%pim_catalog.normalizer.storage.file.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.file'
+        tags:
+            - { name: pim_storage_serializer.normalizer, priority: 90 }
+

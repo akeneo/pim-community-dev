@@ -1,0 +1,48 @@
+pim_catalog_volume:
+  product_values: "해당 PIM에 <span>{{values}}</span> 제품 값이 있습니다! 평균적으로, 제품당 <span>{{average}}</span> 제품 값입니다!&nbsp;💪"
+  product_values_description: '제품 값 및 PIM 값이 클수록 ROI가 높아집니다! 자세한 내용은 <a href="{{link}}'' target="_blank">여기</a>를 클릭하십시오.'
+  section:
+    product_values:
+      hint: 'PIM의 총 제품 값 수가 다음 축에 직접 링크되어 있다는 것을 알고 계십니까?<br/>자세한 내용 확인을 위해 <a href="{{link}}'' target="_blank">이 문서를 탐색</a>할 수 있도록 초대합니다.'
+      title: 제품 값 수를 이용하는 축
+    catalog_structure:
+      hint: 우수한 카탈로그 구조가 매우 중요하며, 효율적인 보강을 위한 조건임을 알고 계실 수 있습니다. 다음은 카탈로그 구조를 모니터링하기 위한 다양한 축입니다.
+      title: 카탈로그 구조와 관련된 축
+    variant_modelling:
+      hint: 변형 모델을 사용할 경우, 해당 볼륨 모니터링에 도움이 되는 축은 다음과 같습니다.
+      title: 변형 모델링 관련 축
+  axis:
+    count_products: 제품
+    average_max_attributes_per_family: 패밀리별 특성
+    count_channels: 채널
+    count_locales: 로케일(활성화됨)
+    count_scopable_attributes: 확장 가능 특성
+    count_localizable_and_scopable_attributes: 지역화 가능 및 확장 가능 특성
+    count_localizable_attributes: 지역화 가능 특성
+    count_families: 패밀리
+    count_attributes: 특성
+    average_max_options_per_attribute: 특성 기준 옵션
+    count_categories: 카테고리
+    count_category_trees: 카테고리 트리
+    count_variant_products: 변형 제품
+    count_product_models: 제품 모델
+    count_product_and_product_model_values: 제품 값
+    average_max_product_and_product_model_values: 제품별 제품 값
+    count_reference_entity: 참조 엔터티
+    average_max_records_per_reference_entity: 참조 엔터티별 레코드
+    average_max_attributes_per_reference_entity: 참조 엔터티별 특성
+    count_asset_family: 애셋 패밀리
+    average_max_assets_per_asset_family: 애셋 패밀리별 애셋
+    average_max_attributes_per_asset_family: 애셋 패밀리별 특성
+    title:
+      product: 제품
+      catalog: 카탈로그
+      product_structure: 제품 구조
+      variant_modeling: 변형 모델링
+      reference_entities: 참조 엔터티
+      assets: 애셋
+  mean: '평균:'
+  max: '최대:'
+  error:
+    generic_title: 죄송합니다. 오류가 발생했습니다.
+    generic_message: 잠시 후에 다시 시도해주십시오.

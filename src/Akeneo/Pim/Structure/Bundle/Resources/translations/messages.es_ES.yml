@@ -1,0 +1,63 @@
+pim_enrich:
+  #Attribute
+  attribute:
+    tab:
+      parameter.title: Parámetros
+      value.title: Valores
+      history.title: Historial
+  #Family
+  family:
+    info:
+      cant_remove_attribute_used_as_axis: No se puede quitar este atributo utilizado como eje variante en una variante familiar
+  attribute_group:
+    remove:
+      attribute_group_with_attribute_cannot_be_removed: El grupo de atributos que contiene atributos no puede eliminarse. Elimine sus atributos antes de eliminarlo.
+      attribute_group_other_cannot_be_removed: El grupo de atributos «otros» no puede eliminarse.
+  #Group type
+  group_type:
+    tab:
+      property.title: Propiedades
+  #Mass edit operations
+  mass_edit_action:
+    family:
+      page_title: Familias
+      page_subtitle: Edición masiva (1 familia) |Edición masiva (%count% familias)
+      title: Seleccione una operación
+      subtitle: Elija la operación que desea realizar en la familia seleccionada|Elija la operación que desea realizar en las %count% familias seleccionadas
+      confirm: Está a punto de actualizar una familia con la siguiente información, por favor confirme. |Estás a punto de actualizar %count% familias con la siguiente información, por favor confirme.
+      steps:
+        first: Elija las familias
+        second: Seleccione una operación
+        third: Configuración
+        fourth: Confirmación
+  entity:
+    association_type:
+      property:
+        is_two_way: Asociación de 2 vías
+        is_quantified: Asociación con cantidad
+pim_enrich_attribute_form:
+  code: Código
+  type: Tipo de atributo
+  reference_data_name: Nombre de datos de referencia
+  scopable: Valor por canal
+  localizable: Valor por local
+  unique: Valor único
+  availableLocales: Locales disponibles
+  locale_specific: Local específico
+  group: Grupo de atributos
+  useableAsGridFilter: Se puede usar en la cuadrícula
+job_execution.summary:
+  deleted_attribute_groups: Grupos de atributos eliminados
+  skipped_attribute_groups: Grupos de atributos omitidos
+  moved_attributes: Atributos movidos
+  deleted_attributes: Atributos eliminados
+pim_import_export:
+  notification:
+    attribute_group_mass_delete:
+      error: Error al eliminar en masa los grupos de atributos
+      warning: La eliminación en masa de grupos de atributos finalizó con algunas advertencias
+      success: Eliminación en masa de grupos de atributos finalizada
+    attribute_mass_delete:
+      error: Error al eliminar en masa los atributos
+      warning: Eliminación en masa de atributos terminada con algunas advertencias
+      success: Eliminación en masa de atributos finalizada

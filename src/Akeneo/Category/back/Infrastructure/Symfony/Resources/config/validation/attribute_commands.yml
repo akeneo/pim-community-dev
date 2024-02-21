@@ -1,0 +1,24 @@
+Akeneo\Category\Application\Command\AddAttributeCommand:
+    constraints:
+        - Akeneo\Category\Infrastructure\Validation\LimitNumberOfAttributesInTheTemplate: ~
+    properties:
+        code:
+            - NotBlank: ~
+            - Regex:
+                  pattern: /^[a-z0-9_]+$/
+                  message: akeneo.category.validation.attribute.code.wrong_format
+            - Length:
+                  max: 100
+            - Akeneo\Category\Infrastructure\Validation\AttributeCodeShouldBeUniqueInTheTemplate: ~
+        label:
+            - Length:
+                  max: 255
+        locale:
+            - NotBlank: ~
+
+Akeneo\Category\Application\Command\UpdateAttributeCommand\UpdateAttributeCommand:
+  properties:
+    labels:
+      - All:
+        - Length:
+            max: 255

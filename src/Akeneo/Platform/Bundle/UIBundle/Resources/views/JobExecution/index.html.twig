@@ -1,0 +1,10 @@
+{% import '@PimUI/Default/page_elements.html.twig' as elements %}
+{% import '@PimDataGrid/macros.html.twig' as dataGrid %}
+
+{% block content %}
+
+    {{ elements.page_header({ title: title }) }}
+
+    {{ dataGrid.renderGrid(gridName, { jobType: jobType }) }}
+
+{% endblock %}

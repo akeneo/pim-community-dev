@@ -1,0 +1,74 @@
+config:
+    config:
+        pim/controller-registry:
+            controllers:
+                akeneo_connectivity_connection_connect_marketplace:
+                    module: pim/controller/connectivity/connection/connect/marketplace
+                akeneo_connectivity_connection_connect_marketplace_profile:
+                    module: pim/controller/connectivity/connection/connect/marketplace
+                akeneo_connectivity_connection_connect_custom_apps_create:
+                    module: pim/controller/connectivity/connection/connect/custom-apps
+                    aclResourceId: akeneo_connectivity_connection_manage_test_apps
+                akeneo_connectivity_connection_connect_custom_apps_delete:
+                    module: pim/controller/connectivity/connection/connect/custom-apps
+                    aclResourceId: akeneo_connectivity_connection_manage_test_apps
+                akeneo_connectivity_connection_connect_apps_activate:
+                    module: pim/controller/connectivity/connection/connect/apps
+                akeneo_connectivity_connection_connect_apps_authorize:
+                    module: pim/controller/connectivity/connection/connect/apps
+                akeneo_connectivity_connection_connect_apps_authenticate:
+                    module: pim/controller/connectivity/connection/connect/apps
+                akeneo_connectivity_connection_error_management_dashboard:
+                    module: pim/controller/connectivity/connection/error-management
+                akeneo_connectivity_connection_error_management_connection_monitoring:
+                    module: pim/controller/connectivity/connection/error-management
+                    aclResourceId: akeneo_connectivity_connection_manage_settings
+                akeneo_connectivity_connection_webhook_edit:
+                    module: pim/controller/connectivity/connection/webhook
+                    aclResourceId: akeneo_connectivity_connection_manage_settings
+                akeneo_connectivity_connection_webhook_regenerate_secret:
+                    module: pim/controller/connectivity/connection/webhook
+                    aclResourceId: akeneo_connectivity_connection_manage_settings
+                akeneo_connectivity_connection_webhook_event_logs:
+                    module: pim/controller/connectivity/connection/webhook
+                    aclResourceId: akeneo_connectivity_connection_manage_settings
+                akeneo_connectivity_connection_settings_index:
+                    module: pim/controller/connectivity/connection/settings
+                    aclResourceId: akeneo_connectivity_connection_manage_settings
+                akeneo_connectivity_connection_settings_edit:
+                    module: pim/controller/connectivity/connection/settings
+                    aclResourceId: akeneo_connectivity_connection_manage_settings
+                akeneo_connectivity_connection_settings_any:
+                    module: pim/controller/connectivity/connection/settings
+                    aclResourceId: akeneo_connectivity_connection_manage_settings
+                akeneo_connectivity_connection_audit_index:
+                    module: pim/controller/connectivity/connection/audit
+                akeneo_connectivity_connection_audit_any:
+                    module: pim/controller/connectivity/connection/audit
+                akeneo_connectivity_connection_connect_connected_apps:
+                    module: pim/controller/connectivity/connection/connect/connected-apps
+                akeneo_connectivity_connection_connect_connected_apps_edit:
+                    module: pim/controller/connectivity/connection/connect/connected-apps
+                akeneo_connectivity_connection_connect_connected_apps_delete:
+                    module: pim/controller/connectivity/connection/connect/connected-apps
+                akeneo_connectivity_connection_connect_connected_apps_open:
+                    module: pim/controller/connectivity/connection/connect/connected-apps
+                akeneo_connectivity_connection_connect_connected_apps_catalogs_edit:
+                    module: pim/controller/connectivity/connection/connect/connected-apps
+                akeneo_connectivity_connection_connect_connected_apps_regenerate_secret:
+                    module: pim/controller/connectivity/connection/connect/connected-apps
+                    aclResourceId: akeneo_connectivity_connection_manage_test_apps
+
+    paths:
+        pim/controller/connectivity/connection/connect/apps: akeneoconnectivityconnection/js/controller/apps.tsx
+        pim/controller/connectivity/connection/connect/marketplace: akeneoconnectivityconnection/js/controller/marketplace.tsx
+        pim/controller/connectivity/connection/connect/custom-apps: akeneoconnectivityconnection/js/controller/custom-apps.tsx
+        pim/controller/connectivity/connection/settings: akeneoconnectivityconnection/js/controller/settings.tsx
+        pim/controller/connectivity/connection/error-management: akeneoconnectivityconnection/js/controller/error-management.tsx
+        pim/controller/connectivity/connection/webhook: akeneoconnectivityconnection/js/controller/webhook.tsx
+        pim/controller/connectivity/connection/audit: akeneoconnectivityconnection/js/controller/audit.tsx
+        pim/controller/connectivity/connection/connect/connected-apps: akeneoconnectivityconnection/js/controller/connected-apps.tsx
+
+        pim/menu/connectivity/connection/connection-params-provider: akeneoconnectivityconnection/js/menu/connection-params-provider.ts
+
+        pim/permission-form-registry: akeneoconnectivityconnection/js/registry/permission-form-registry

@@ -1,0 +1,295 @@
+pim_notification:
+  types:
+    settings: Inställningar
+flash:
+  comment:
+    create:
+      success: Din kommentar har lagts till.
+    delete:
+      success: Din kommentar har tagits bort.
+    reply:
+      success: Ditt svar har skapats.
+pim_enrich.entity.product:
+  label: produkt
+  uppercase_label: Produkt
+  plural_label: Produkter
+  flash:
+    update:
+      success: Produkten har uppdaterats.
+      fail: Produkten kunde inte uppdateras.
+      fields_not_ready: "Produkten kan inte sparas just nu. Följande fält är inte rätt: {{ fields }}"
+      already_in_upload: En fil är har redan laddats upp för det här attributet i språkvariant "{{ locale }}" och omfattning "{{ scope }}"
+    delete:
+      success: Produkten har raderats.
+      fail: Produkten kunde inte raderas.
+    create:
+      success: Produkten har skapts
+      fail: Inget attribut är konfigurerat som produktidentifierare eller så har du inte rättigheter att redigera det.
+  module:
+    create:
+      choose_family: Välj en familj
+    variant_navigation:
+      common: Vanlig
+    status:
+      enabled: Aktiverad
+      disabled: Inaktiverad
+    download_pdf:
+      label: PDF
+    copy:
+      label: Jämför / Översätta
+      select: Välj
+      all_visible: Alla synliga
+      copy: Kopiera
+    history:
+      version: Version
+      author: Författare
+      logged_at: Loggad den
+      from: Från
+      modified: Ändrad
+      old_value: Gammalt värde
+      new_value: Nytt värde
+    meta:
+      updated: Senast uppdaterad
+      groups: Grupper
+    show_group:
+      title: Grupp {{ group }}
+      view_group: Visa grupp
+      more_products: '{{ count }} produkter till...'
+    attribute:
+      remove_optional: Ta bort detta attributet
+      locale_specific_unavailable: Detta lokaliserbara fältet är inte tillgängligt för detta språket
+      locale_unavailable: Detta lokaliserbara fält är inte tillgänglig för språket '{{ locale }}' och kanal '{{ channel }}'
+      add_attribute_option: Lägg till attributalternativ
+    completeness:
+      title: Fullständighet
+      complete: Fullständighet
+      no_family: Ingen familj har valts. Välj en familj för att beräkna fullständighet av denna produkt.
+      no_completeness: Du ändrade produktens familj. Spara det för att beräkna fullständighet för den nya familjen.
+    sequential_edit:
+      save_and_next: Spara och nästa
+      save_and_finish: Spara och avsluta
+    associations:
+      none_exist: Det finns inga associationstyper.
+      show_products: Displayprodukter
+      target: Mål
+      quantified:
+        quantity: 'Antal:'
+      edit: Redigera produkt
+    attribute_filter:
+      all: Alla attribut
+    change_family:
+      title: Ändra produktfamiljen
+      merge_attributes: Aktuella attribut slås samman med de i den nya familjen.
+      keep_attributes: Inga attribut kommer att tas bort.
+      change_family_to: Ändra familjen till
+      empty_selection: Välj en familj
+    basket:
+      title: Korg
+      empty_basket: Korgen är tom
+    delete:
+      confirm: Är du säker på att du vill ta bort denna produkt?
+    comment:
+      post: Lägg till ny kommentar
+      reply: Svara
+      title: Kommentarer
+      empty: Inga kommentarer hittades
+      header_comment: '{{ user }} kommentarer produkt'
+      header_reply: '{{ user }} svar till kommentar'
+      delete_confirm: Är du säker på att du vill ta bort den här kommentaren?
+      removed_author: Raderad användare
+pim_enrich.entity.product_model:
+  uppercase_label: Produktmodell
+  plural_label: Produktmodeller
+  property:
+    family_variant: Variant
+  module:
+    variant_axis:
+      create: Lägg till ny
+    completeness:
+      label: Variant
+    delete:
+      confirm: Är du säker på att du vill ta bort denna produkt modell? Alla barn, modell och variant produkter, kommer att tas bort.
+pim_enrich.entity.group:
+  label: Grupp
+  flash:
+    update:
+      success: Gruppen ändrades.
+      fail: Gruppen kunde inte ändras.
+    create:
+      success: Gruppen har skapats
+    delete:
+      success: Gruppen har tagits bort
+      fail: Kan inte ta bort denna grupp
+  module:
+    create:
+      button: Skapa grupp
+    delete:
+      confirm: Är du säker på att du vill ta bort denna grupp?
+pim_enrich.entity.category:
+  label: kategori
+  uppercase_label: Kategori
+  plural_label: Kategorier
+pim_enrich.export.product:
+  data:
+    title: Filtrera produkterna
+  structure:
+    title: Filtrera datan
+  filter:
+    channel:
+      help: Kanalen definierar tillämpningsområdet för produktvärden, de språk som används för att välja data och trädet används för att välja produkter.
+    locales:
+      help: "Språken väljer de lokaliserade produktvärdena att exportera. Ex: endast produktinformation på franska."
+    attributes:
+      help: "Välj vilken produktinformation som ska exporteras. Ex: endast tekniska attribut."
+      empty: Alla attribut kommer att exporteras
+      modal:
+        title: Valda attribut
+    attributes_selector:
+      attributes: "Sök i {{ itemsCount }} attribut"
+      selected: "Valda attribut"
+      clear: Rensa
+      all_group: Alla grupper
+      empty_selection: Alla attribut kommer att exporteras
+    family:
+      title: Familj
+      help: "Välj vilka produkter som exporteras beroende på familj. T. ex. exportera endast skor och klänningar."
+      operators:
+        IN: I lista
+        "NOT IN": Inte i listan
+        EMPTY: Produkter som inte har en familj
+        "NOT EMPTY": Produkter som har en familj
+      empty_selection: Inga villkor på familjer
+    updated:
+      title: Tidsvillkor
+      operators:
+        ALL: Inget datumvillkor
+        "SINCE LAST N DAYS": Ändrade produkter de senaste n dagarna (t.ex. 6)
+        ">": Ändrade produkter sedan detta datum
+        "SINCE LAST JOB": Ändrade produkter sedan senaste export
+    enabled:
+      title: Status
+      help: "Välj vilka produkter som exporteras beroende på status. T. ex. exportera produkter oavsett status."
+      value:
+        enabled: Aktiverad
+        disabled: Inaktiverad
+    completeness:
+      title: Fullständighet
+      help: Välj produkterna att exportera från deras fullständighet.
+      operators:
+        ALL: Inga villkor på fullständighet
+        ">=": Fullständig på minst ett valt språk
+        "GREATER OR EQUALS THAN ON ALL LOCALES": Fullständig på alla valda språk
+        "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": Fullständig på minst ett valt språk
+        LOWER THAN ON ALL LOCALES: Inte fullständig på alla valda språk
+      empty_selection: Välj en familj
+    category:
+      title: Kategori
+      help: Använd produktkategorierna i trädet (definierad av kanalen ovan) för att välja produkter att exportera
+    identifier:
+      title: Identifierare
+    string:
+      operators:
+        ALL: Alla
+    select:
+      operators:
+        IN: I lista
+    date:
+      operators:
+        BETWEEN: Mellan
+        NOT BETWEEN: Inte mellan
+  global_settings:
+    title: Globala inställningar
+pim_enrich.mass_edit.product:
+  step:
+    select:
+      label: Välj produkter
+    configure:
+      label: Konfigurera
+    confirm:
+      label: Bekräfta
+  operation:
+    common:
+      select_attributes: Välj attribut
+    change_status:
+      label: Ändra status
+      description: De utvalda produkterna kommer att aktiveras eller inaktiveras.
+      field: Aktivera
+    change_family:
+      label: Ändra familj
+      description: Familjen av de utvalda produkterna kommer att ändras till den valda familjen
+    add_to_group:
+      label: Lägg till i grupp
+      description: Markera de grupper som du vill lägga till de valda produkter
+      field: Grupper
+    remove_from_category:
+      description: Produkterna kommer att tas bort från följande kategorier.
+pim_datagrid:
+  mass_action_group:
+    bulk_actions:
+      label: Massåtgärder
+    quick_export:
+      label: Snabbexport
+  mass_action:
+    delete:
+      success: Valda produkter har tagits bort.
+    quick_export:
+      csv_all: CSV (alla attribut)
+      csv_grid_context: CSV (från tabellen)
+      xlsx_all: Excel (alla attribut)
+      xlsx_grid_context: Excel (från tabellen)
+      configurator:
+        subtitle: Snabbexport
+        csv: CSV
+        xlsx: XLSX
+        all_attributes: Alla attribut
+        without_media: Utan media
+        with_media: Med media
+    mass_edit: Massåtgärder
+  view_selector:
+    view: Vyer
+  actions:
+    edit_product_attributes: Redigera attribut för produkten
+    classify_product: Klassificera produkten
+    delete_product: Ta bort denna produkt
+    change_status: Ändra status
+    toggle_status: Växla status
+    other: Andra åtgärder
+  filters:
+    label: Filter
+    system: System
+    product_typology:
+      variant: 'Variant'
+    entity_type:
+      label: 'Variant'
+      grouped: 'Grupp'
+      ungrouped: 'Ogrupperad'
+    family:
+      label: Familj
+    groups:
+      label: Grupper
+    enabled:
+      label: Status
+    completeness:
+      label: Slutförd
+    created:
+      label: Skapad
+    updated:
+      label: Uppdaterad
+    identifier:
+      label: Identifierare
+batch_jobs:
+  add_product_value:
+    label: Lägg till produkt värde
+    perform.label: Lägg till produkt värde
+  csv_product_grid_context_quick_export:
+    quick_export.label: CSV-produkt rutnät sammanhang snabb export
+    perform.label: CSV-produkt rutnät sammanhang snabb export
+  csv_product_quick_export:
+    quick_export.label: CSV-produkt snabb export
+    perform.label: CSV-produkt snabb export
+  edit_common_attributes:
+    label: Redigera Attribut
+    perform.label: Redigera Attribut
+  update_product_value:
+    label: Uppdatera produktens värde
+    perform.label: Uppdatera produktens värde

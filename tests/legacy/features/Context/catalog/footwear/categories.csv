@@ -1,0 +1,6 @@
+code;label-en_US;parent
+2014_collection;2014 collection;
+summer_collection;Summer collection;2014_collection
+winter_collection;Winter collection;2014_collection
+winter_boots;Winter boots;winter_collection
+sandals;Sandals;summer_collection

@@ -1,0 +1,63 @@
+pim_enrich:
+  #Attribute
+  attribute:
+    tab:
+      parameter.title: パラメータ
+      value.title: 値
+      history.title: 履歴
+  #Family
+  family:
+    info:
+      cant_remove_attribute_used_as_axis: ファミリーバリエーションでバリエーション軸として使用中の属性は削除できません
+  attribute_group:
+    remove:
+      attribute_group_with_attribute_cannot_be_removed: 属性が含まれる属性グループは削除できません。削除する前に属性を取り除いてください。
+      attribute_group_other_cannot_be_removed: 属性グループ "other" を取り除けません。
+  #Group type
+  group_type:
+    tab:
+      property.title: プロパティ
+  #Mass edit operations
+  mass_edit_action:
+    family:
+      page_title: ファミリー
+      page_subtitle: 一括編集(ファミリー1 件)|一括編集 (ファミリー%count% 件)
+      title: 操作を選択
+      subtitle: 指定したファミリーに対して実行したい操作を選択してください|指定した %count% 件のファミリーに対して実行したい操作を選択してください
+      confirm: 更新しようとしている以下のファミリーの内容について、ご確認ください。|更新しようとしている以下の %count% 件のファミリーの内容について、ご確認ください。
+      steps:
+        first: ファミリーを選択
+        second: 操作を選択
+        third: 構成
+        fourth: 確認
+  entity:
+    association_type:
+      property:
+        is_two_way: 双方向の関連付け
+        is_quantified: 数量との関連付け
+pim_enrich_attribute_form:
+  code: コード
+  type: 属性タイプ
+  reference_data_name: 参照データ名
+  scopable: チャンネルごとの値
+  localizable: ロケールごとの値
+  unique: 固有値
+  availableLocales: 使用可能なロケール
+  locale_specific: ロケール固有
+  group: 属性グループ
+  useableAsGridFilter: 一覧表で使用可能
+job_execution.summary:
+  deleted_attribute_groups: 削除された属性グループ
+  skipped_attribute_groups: スキップされた属性グループ
+  moved_attributes: 属性を移動しました
+  deleted_attributes: 属性を削除しました
+pim_import_export:
+  notification:
+    attribute_group_mass_delete:
+      error: 属性グループの一括削除に失敗しました
+      warning: 属性グループの一括削除は警告付きで終了しました
+      success: 属性グループの一括削除が終了しました
+    attribute_mass_delete:
+      error: 属性の一括削除に失敗しました
+      warning: 属性の一括削除は警告付きで終了しました
+      success: 属性の一括削除が終了しました

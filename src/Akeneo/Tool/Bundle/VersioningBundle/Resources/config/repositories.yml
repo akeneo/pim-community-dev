@@ -1,0 +1,52 @@
+parameters:
+    pim_versioning.repository.version.class:                  Akeneo\Tool\Bundle\VersioningBundle\Doctrine\ORM\VersionRepository
+    pim_versioning.doctrine.query.cursor.class:               Akeneo\Tool\Bundle\VersioningBundle\Doctrine\ORM\SearchVersionAfterCursor
+    pim_versioning.doctrine.cursor_factory.version.class:     Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor\CursorFactory
+    pim_versioning.factory.version_cursor.page_size:          100
+
+services:
+    pim_versioning.repository.version:
+        class: '%pim_versioning.repository.version.class%'
+        factory: ['@doctrine.orm.entity_manager', 'getRepository']
+        arguments: ['%pim_versioning.entity.version.class%']
+        tags:
+            - { name: 'pim_repository' }
+        calls:
+            - method: setCursorFactory
+              arguments:
+                - '@pim_versioning.factory.version_cursor'
+
+    pim_versioning.object_manager.version:
+        alias: doctrine.orm.entity_manager
+
+    pim_versioning.factory.version_cursor:
+        class: '%pim_versioning.doctrine.cursor_factory.version.class%'
+        arguments:
+            - '%pim_versioning.doctrine.query.cursor.class%'
+            - '@pim_versioning.object_manager.version'
+            - '%pim_versioning.factory.version_cursor.page_size%'
+
+    pim_versioning.query.delete_versions_by_ids:
+        class: Akeneo\Tool\Bundle\VersioningBundle\Doctrine\Query\SqlDeleteVersionsByIdsQuery
+        arguments:
+            - '@database_connection'
+
+    pim_versioning.query.get_all_resource_names:
+        class: Akeneo\Tool\Bundle\VersioningBundle\Doctrine\Query\SqlGetAllResourceNamesQuery
+        arguments:
+            - '@database_connection'
+
+    pim_versioning.query.get_purgeable_version_list:
+        class: Akeneo\Tool\Bundle\VersioningBundle\Doctrine\Query\SqlGetPurgeableVersionListQuery
+        arguments:
+            - '@database_connection'
+
+    pim_versioning.query.get_latest_version_ids_by_ids:
+        class: Akeneo\Tool\Bundle\VersioningBundle\Doctrine\Query\SqlGetAllButLastVersionIdsByIdsQuery
+        arguments:
+            - '@database_connection'
+
+    pim_versioning.query.get_first_version_ids_by_ids:
+        class: Akeneo\Tool\Bundle\VersioningBundle\Doctrine\Query\SqlGetFirstVersionIdsByIdsQuery
+        arguments:
+            - '@database_connection'

@@ -1,0 +1,39 @@
+pim_enrich:
+  #Attribute
+  attribute:
+    tab:
+      parameter.title: Parametre
+      value.title: Værdier
+      history.title: Historik
+  #Family
+  family:
+    info:
+      cant_remove_attribute_used_as_axis: Kan ikke fjerne denne attribut, bruges som en variant akse i en familie variant
+  #Group type
+  group_type:
+    tab:
+      property.title: Egenskaber
+  #Mass edit operations
+  mass_edit_action:
+    family:
+      page_title: Familier
+      page_subtitle: Masse redigere (1 familie) |Masse redigere (%count% familier)
+      title: Vælg handling
+      subtitle: Vælg den handling, du ønsker at udføre på den valgte familie|Vælg den handling, du ønsker at udføre på de valgte %count% familier
+      confirm: Du er ved at opdatere et produkt med følgende oplysninger, bekræft venligst. |Du er ved at opdatere %count% produkter med følgende oplysninger, bekræft venligst.
+      steps:
+        first: Vælg familier
+        second: Vælg handling
+        third: Konfigurér
+        fourth: Bekræft
+pim_enrich_attribute_form:
+  code: Kode
+  type: Attribute Type
+  reference_data_name: Referencenavn data
+  scopable: Værdi pr. kanal
+  localizable: Værdi pr. landestandard
+  unique: Unik værdi
+  availableLocales: Tilgængelige landestandarder
+  locale_specific: Landestandard specifik
+  group: Attributgruppe
+  useableAsGridFilter: Brugbare i gitter

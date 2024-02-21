@@ -1,0 +1,46 @@
+extensions:
+    pim-product-model-create-modal:
+       module: pim/form/common/creation/modal
+       config:
+           labels:
+               title: pim_enrich.entity.product_model.module.create.title
+               subTitle: pim_enrich.entity.product.plural_label
+               content: pim_enrich.entity.product_model.module.create.content
+           picture: illustrations/Product-model.svg
+           successMessage: pim_enrich.entity.product_model.flash.create.success
+           editRoute: pim_enrich_product_model_edit
+           postUrl: pim_enrich_product_model_rest_create
+           excludedProperties: [ family ]
+
+    pim-product-model-create-sku:
+        module: pim/form/common/creation/field
+        parent: pim-product-model-create-modal
+        targetZone: fields
+        position: 10
+        config:
+            identifier: code
+            label: pim_common.code
+
+    pim-product-model-create-family:
+        module: pim/form/common/fields/simple-select-async
+        parent: pim-product-model-create-modal
+        targetZone: fields
+        position: 20
+        config:
+            fieldName: family
+            required: true
+            label: pim_enrich.entity.family.uppercase_label
+            choiceRoute: pim_enrich_family_index_get_variants
+            placeholder: pim_enrich.entity.product.module.create.choose_family
+
+    pim-product-model-create-variant:
+        module: pim/product-model/form/creation/variant
+        parent: pim-product-model-create-modal
+        targetZone: fields
+        position: 30
+        config:
+            fieldName: family_variant
+            label: pim_enrich.entity.product_model.property.family_variant
+            required: true
+            loadUrl: pim_enrich_family_variant_rest_index
+            placeholder: pim_enrich.entity.product.module.create.choose_family_variant

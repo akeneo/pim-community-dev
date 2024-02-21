@@ -1,0 +1,39 @@
+pim_datagrid_view_rest_types:
+    path: /rest/types
+    defaults: { _controller: pim_datagrid.controller.rest.datagrid_view:typesAction }
+    methods: [GET]
+
+pim_datagrid_view_rest_index:
+    path: /rest/{alias}/views
+    defaults: { _controller: pim_datagrid.controller.rest.datagrid_view:indexAction }
+    methods: [GET]
+
+pim_datagrid_view_rest_default_columns:
+    path: /rest/{alias}/default-columns
+    defaults: { _controller: pim_datagrid.controller.rest.datagrid_view:defaultViewColumnsAction }
+    methods: [GET]
+
+pim_datagrid_view_list_available_columns:
+    path: /rest/{alias}/available-columns
+    defaults: { _controller: pim_datagrid.controller.rest.datagrid_view:listColumnsAction }
+    methods: [GET]
+
+pim_datagrid_view_rest_default_user_view:
+    path: /rest/{alias}/default
+    defaults: { _controller: pim_datagrid.controller.rest.datagrid_view:getUserDefaultDatagridViewAction }
+    methods: [GET]
+
+pim_datagrid_view_rest_save:
+    path: /rest/{alias}
+    defaults: { _controller: pim_datagrid.controller.rest.datagrid_view:saveAction }
+    methods: [POST]
+
+pim_datagrid_view_rest_remove:
+    path: /rest/{identifier}
+    defaults: { _controller: pim_datagrid.controller.rest.datagrid_view:removeAction }
+    methods: [DELETE]
+
+pim_datagrid_view_rest_get:
+    path: /rest/{identifier}
+    defaults: { _controller: pim_datagrid.controller.rest.datagrid_view:getAction }
+    methods: [GET]

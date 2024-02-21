@@ -1,0 +1,12 @@
+<div class="AknFormContainer">
+    <div data-drop-zone="content"></div>
+    <% if (errors.length > 0) { %>
+        <div class="AknMessageBox AknMessageBox--danger global-errors">
+            <ul class="AknMessageBox-list">
+                <% errors.forEach(function(error) { %>
+                    <li class="global-error"><%- error.message %></li>
+                <% }) %>
+            </ul>
+        </div>
+    <% } %>
+</div>

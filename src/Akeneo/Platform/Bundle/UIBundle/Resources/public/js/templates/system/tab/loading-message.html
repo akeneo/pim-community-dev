@@ -1,0 +1,21 @@
+<div class="AknFormContainer AknFormContainer--withPadding system-loading-message-field">
+    <div class="AknFieldContainer">
+        <div class="AknFieldContainer-header">
+            <label class="AknFieldContainer-label" for="loading_message_enabled"><%- _.__('oro_config.form.config.group.loading_message.label') %></label>
+        </div>
+        <div class="AknFieldContainer-inputContainer system-loading-message-enabled-field">
+            <div class="switch switch-small" data-on-label="<%- _.__('pim_common.yes') %>" data-off-label="<%- _.__('pim_common.no') %>">
+                <input type="checkbox" id="loading_message_enabled" <%- loading_message_enabled === '1' ? 'checked' : '' %> />
+            </div>
+        </div>
+    </div>
+
+    <div class="AknFieldContainer">
+        <div class="AknFieldContainer-header">
+            <label class="AknFieldContainer-label" for="loading_messages"><%- _.__('oro_config.form.config.group.loading_messages.label') %></label>
+        </div>
+        <div class="AknFieldContainer-inputContainer system-loading-messages-field">
+            <textarea class="AknTextareaField" id="loading_messages"><%- loading_messages %></textarea>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,87 @@
+No products to remove: Aucun produit à supprimer
+"dot (.)": point (.)
+"comma (,)": virgule (,)
+pim_enrich:
+  #Category
+  category:
+    tab:
+      property.title: Propriétés
+      history.title: Historique
+    suggest_selection: Veuillez sélectionner une catégorie à gauche
+    or: ou
+    create_new: Créer une nouvelle catégorie
+  #Mass edit operations
+  mass_edit_action:
+    limit_exceeded: Veuillez sélectionner moins de %limit% éléments à modifier
+    product:
+      page_title: Produits
+      page_subtitle: Édition en masse (1 produit)|Édition en masse (%count% produits)
+      title: Choisissez une opération
+      subtitle: Choisissez l'opération que vous souhaitez effectuer sur le produit sélectionné|Choisissez l'opération que vous souhaitez effectuer sur les %count% produits sélectionnés
+      confirm: Vous êtes sur le point de mettre à jour un produit avec les renseignements suivants, merci de confirmer.|Vous êtes sur le point de mettre à jour %count% produits avec les renseignements suivants, merci de confirmer.
+      steps:
+        first: Choisir des produits
+        second: Choisissez une opération
+        third: Configurez l'opération à effectuer
+        fourth: Confirmation
+    change-status:
+      label: Changer le statut
+      description: Les produits sélectionnés vont être activés ou désactivés.
+      success_flash: Le statut du/des produit(s) a/ont été changé(s)
+      launched_flash: L'action de masse "changement de statut" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
+    edit-common-attributes:
+      label: Modifier des attributs
+      description: Les attributs sélectionnés du produit vont être modifiés avec les valeurs suivantes pour la locale choisie.
+      empty: Veuillez sélectionner le ou les attribut(s) à modifier
+      success_flash: La mise à jour du statut de produit(s) est en cours
+      launched_flash: L'action de masse "Modification des attributs" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
+      message:
+        warning: Il n'y a pas d'attribut en commun pour les produits sélectionnés. Veuillez modifier votre sélection.
+        invalid_attribute: L'attribut ayant pour code "attribute_code" n'est pas un attribut commun aux produits sélectionnés, attribut ignoré.
+        no_valid_attribute: Aucun des attributs sélectionnés ne peut être appliqué à ce produit.
+    classify-add:
+      label: Ajouter à des catégories
+      description: Les produits seront positionnés dans les catégories suivantes, le placement existant avant l'opération sera conservé.
+      success_flash: Le(s) produit(s) ont été classifiés dans les catégories sélectionnées
+      launched_flash: L'action de masse "ajout aux catégories" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
+    classify-move:
+      label: Déplacer vers d'autres catégories
+      description: Les produits seront positionnés dans les catégories suivantes, le placement existant avant l'opération sera perdu.
+      success_flash: Le(s) produit(s) ont été déplacés dans les catégories sélectionnées
+      launched_flash: L'action de masse "déplacement dans les catégories" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
+    classify-remove:
+      label: Retirer des catégories
+      description: Les produits seront retirés des catégories suivantes.
+      success_flash: Le(s) produit(s) ont été supprimés des catégories sélectionnées
+      launched_flash: L'action de masse "suppression des catégories" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
+    change-family:
+      label: Changer de famille
+      description: La famille des produits sélectionnés sera remplacée par la famille choisie
+      success_flash: La famille de(s) produit(s) sélectionné(s) a été modifiée avec succès
+      launched_flash: L'action de masse "changement de famille" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
+    add-to-groups:
+      label: Ajouter aux groupes
+      description: Sélectionnez les groupes dans lesquels ajouter les produits sélectionnés
+      success_flash: Les produits ont été ajoutés aux groupes sélectionnés
+      launched_flash: L'action de masse "ajout aux groupes" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
+      no_group: Aucun groupe pour l'instant. Veuillez commencer par créer un groupe.
+    set-attribute-requirements:
+      label: Ajouter ou modifier des attributs
+      description: Les exigences d'attributs suivants s'appliqueront aux familles sélectionnées
+      success_flash: Les exigences d'attributs ont été appliquées aux familles sélectionnées
+      launched_flash: L'action de masse "définition des attributs requis" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
+    convert_to_simple_products:
+      warning:
+        non_variant_product: Le produit "{{ identifier }}" est déjà un produit simple, vous n'avez pas besoin de le convertir.
+    mass_action:
+      quick_export:
+        launched_flash: L'export des produits est en cours
+category:
+  create: Créer une catégorie
+  edit: Édition de la catégorie
+  overview: Catégories
+tree:
+  edit: Modifier l'arborescence
+  remove:
+    error_linked: Cet arbre de catégorie ne peut pas être supprimé, il est lié à un canal
+  create: Créer un arbre de catégories

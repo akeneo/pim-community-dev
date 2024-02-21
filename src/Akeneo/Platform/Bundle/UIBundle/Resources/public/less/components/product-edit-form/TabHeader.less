@@ -1,0 +1,32 @@
+@import '../../base/variables';
+
+// @deprecated, please use AknSubsection
+.AknTabHeader {
+  border-bottom: 1px solid @AknDarkBlue;
+  display: flex;
+  padding: 0 10px;
+  align-items: center;
+  justify-content: space-between;
+  min-height: @AknTabHeight;
+
+  &-title {
+    color: @AknPurple;
+    font-size: @AknFontSizeBig;
+    height: @AknTabHeight - 1px;
+    line-height: @AknTabHeight - 5px;
+    margin: 0;
+    font-weight: normal;
+    white-space: nowrap;
+    display: inline-block;
+    text-transform: uppercase;
+
+    &:first-letter {
+      text-transform: uppercase;
+    }
+  }
+
+  &-subTitle {
+    color: @AknLightFontColor;
+    font-size: @AknFontSizeBig;
+  }
+}

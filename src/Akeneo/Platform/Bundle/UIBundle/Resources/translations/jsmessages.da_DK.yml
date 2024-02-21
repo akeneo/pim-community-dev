@@ -1,0 +1,302 @@
+"Yes, I Agree": "Ja, jeg er enig"
+"Yes, do it": "Ja, gør det"
+"Ok, got it.": "OK, fik det."
+"Edit": "Redigér"
+"Unexpected error occurred. Please contact system administrator.": "Der opstod en uventet fejl. Kontakt systemadministratoren."
+"Yes, revoke": "Ja, tilbagekald"
+"Revoke Confirmation": "Tilbagekald bekræftelse"
+Prev: Forrige
+Today: I dag
+Wk: Wk
+AM: AM
+A: A
+PM: PM
+P: P
+"Choose Time": "Vælg tidspunkt"
+Time: Tid
+Hour: Time
+Minute: Minut
+Second: Sekund
+Millisecond: Millisekund
+Microsecond: Mikrosekund
+"Time Zone": "Tidszone"
+Localized value: Lokaliseret værdi
+Columns: Kolonner
+Datagrid Configuration: DataGrid konfiguration
+Action: Handling
+Unit: Enhed
+Currency: Valuta
+jstree:
+  all: Alle produkter
+  unclassified: Ikke-klassificerede produkter
+  product:
+    all: Alle produkter
+    unclassified: Ikke-klassificerede produkter
+  no_tree: Intet træ tilgængeligt
+  include_sub: Inkluder underkategorier
+datetimepicker:
+  days:
+    Sunday: Søndag
+    Monday: Mandag
+    Tuesday: Tirsdag
+    Wednesday: Onsdag
+    Thursday: Torsdag
+    Friday: Fredag
+    Saturday: Lørdag
+  daysShort:
+    Sun: Søn
+    Mon: Man
+    Tue: Tirs
+    Wed: Ons
+    Thu: Tors
+    Fri: Fre
+    Sat: Lør
+  daysMin:
+    Su: Sø
+    Mo: Ma
+    Tu: Ti
+    We: "On"
+    Th: To
+    Fr: Fr
+    Sa: Lø
+  months:
+    January: Januar
+    February: Februar
+    March: Marts
+    April: April
+    May: Maj
+    June: Juni
+    July: Juli
+    August: August
+    September: September
+    October: Oktober
+    November: November
+    December: December
+  monthsShort:
+    Jan: Jan
+    Feb: Feb
+    Mar: Mar
+    Apr: Apr
+    May: Maj
+    Jun: Jun
+    Jul: Jul
+    Aug: Aug
+    Sep: Sep
+    Oct: Okt
+    Nov: Nov
+    Dec: Dec
+oro_config:
+  form:
+    config:
+      title: Systemkonfiguration
+      tab:
+        system:
+          title: System
+      group:
+        localization:
+          title: Lokalisering
+          system_locale: Sprog
+        notification:
+          title: Notifikationer
+          system_notification: Notifikation om nye versioner
+        loading_message:
+          title: Indlæser meddelelser
+          label: Aktivere indlæsning af meddelelser
+        loading_messages:
+          label: Tilgængelige indlæsnings meddelelser
+"Sorry, page was not loaded correctly": "Beklager, siden ikke blev indlæst korrekt"
+"Your local changes will be lost. Are you sure you want to refresh the page?": "Din lokale ændringer vil gå tabt. Er du sikker på at du opdatere siden?"
+"navigation.message.content.outdated": "Indhold af {{title}} side er forældet, venligst <a href='#' data-action='page-refresh'> opdater siden</a>"
+"Content of pinned page is outdated": "Indholdet af den fastgjorte side er forældet"
+pim_common:
+  actions: Aktioner
+  add: Tilføj
+  add_attributes: Tilføj egenskab
+  all: Alle
+  and: og
+  apply: Anvend
+  by: af
+  cancel: Annuller
+  code: Kode
+  confirm: Bekræft
+  confirm_deletion: Bekræft sletning
+  create: Opret
+  created: Oprettet
+  delete: Slet
+  done: Udført
+  edit: Redigér
+  entity_updated: Der er ikke-gemte ændringer.
+  from: Fra
+  general_properties: Generelle egenskaber
+  history: Historik
+  label: Etiket
+  label_translations: Etiket oversættelser
+  less_than: Mindre end
+  loading: Indlæser...
+  media_upload: Træk og slip for at indlæse eller klik her
+  more_than: Mere end
+  next: Næste
+  "no": "Nej"
+  none: Ingen
+  not_available: Ikke tilgængelig
+  now: Nu
+  ok: OK
+  permissions: Rettigheder
+  previous: Forrige
+  properties: Egenskaber
+  remove: Fjern
+  required_label: (Påkrævet)
+  save: Gem
+  search: Søg
+  select2:
+    search: Søg...
+    no_match: Ingen fundet
+    load_more: Indlæs flere resultater...
+  status: Status
+  to: til
+  type: Type
+  update: Opdater
+  "yes": "Ja"
+  operator: Operatør
+  operators:
+    "=": er lig med
+    "!=": Er ikke lig med
+    ">=": Større end eller lig med
+    ">": større end
+    "<=": Mindre end eller lig med
+    "<": mindre end
+    EMPTY: Er tom
+    NOT EMPTY: er ikke tom
+    CONTAINS: Indeholder
+    DOES NOT CONTAIN: Indeholder ikke
+    STARTS WITH: Starter med
+    ENDS WITH: Ender med
+error:
+  exception: Beklager! Der opstod en {{ status_code }} fejl...
+  forbidden: Du har ikke adgang til denne side
+alert:
+  attribute_option:
+    error_occurred_during_submission: Der opstod en fejl under formular modtagelsen på serveren
+    save_before_edit_other: Registrer dine ændringer på andre rækker før du redigerer denne ene
+  session_storage:
+    not_available: Din webbrowser er ikke kompatibel med sessionStorage. Kontakt din administrator
+pim_enrich.entity.fallback:
+  flash:
+    generic_error: Der er opstået en fejl
+    update:
+      fail: Opdateringen fejlede
+      success: Opdatering lykkedes
+    delete:
+      fail: Kan ikke slette denne post
+      success: Vare fjernet succesfuldt
+  module:
+    delete:
+      title: Slet denne {{ itemName }}
+      alternative_title: Bekræft fjernelse af
+      item: Er du sikker på at du vil slette dette emne?
+    edit:
+      leave: Er du sikker på du vil forlade denne side?
+      discard_changes: Du vil miste ændringer til {{ entity }}, hvis du forlader siden.
+pim_enrich.entity.api_connection:
+  flash:
+    create:
+      success: API forbindelse oprettet
+    delete:
+      success: API forbindelse tilbagekaldt
+pim_enrich.entity.job_execution:
+  module:
+    create:
+      upload: Slip din {{ type }} fil her, eller klik for at gennemse disken
+    download:
+      archive: Download genereret Arkiv
+      output: Download genererede fil
+      input: Download læse filer
+      invalid_xlsx: download ugyldige data
+      invalid_csv: download ugyldige data
+pim_title:
+  oro_default: Kontrolpanel
+  pim_enrich_attributegroup_index: Attributgrupper
+  pim_enrich_attributegroup_create: Attribut grupper | Oprette
+  pim_enrich_attributegroup_edit: Attribut grupper {{ group.label }} | Rediger
+  pim_enrich_catalog_volume_index: Katalog volumen overvågning
+  pim_enrich_categorytree_index: Kategoritræstrukturen
+  pim_enrich_categorytree_create: Kategori træer | Oprette
+  pim_enrich_categorytree_edit: Kategori træ {{ category.label }} | Rediger
+  pim_enrich_categorytree_create_tree: Kategori træer | Oprette
+  pim_enrich_attribute_index: Egenskaber
+  pim_enrich_attribute_create: Attributter | Opret
+  pim_enrich_attribute_edit: Attribut {{ attribute.label }} | Rediger
+  pim_enrich_product_index: Produkter
+  pim_enrich_product_edit: Produkt {{ product.label }} | Rediger
+  pim_enrich_product_model_edit: Produkt model {{ product.label }} | Rediger
+  pim_enrich_family_index: Familier
+  pim_enrich_family_edit: Familie {{ family.label }} | Rediger
+  pim_enrich_channel_index: Kanaler
+  pim_enrich_channel_create: Kanaler | Opret
+  pim_enrich_channel_edit: Kanal {{ channel.label }} | Rediger
+  pim_enrich_currency_index: Valutaer
+  pim_enrich_locale_index: Landestandarder
+  pim_enrich_group_index: Grupper
+  pim_enrich_group_edit: Gruppe {{ group.label }} | Rediger
+  pim_enrich_associationtype_index: Sammenhængstyper
+  pim_enrich_associationtype_edit: Sammenhængstype {{ association type.label }} | Rediger
+  pim_enrich_grouptype_index: Gruppetyper
+  pim_enrich_grouptype_edit: Gruppe type {{ group type.label }} | Rediger
+  pim_enrich_mass_edit_action_choose: Masse Rediger | Vælg
+  pim_enrich_mass_edit_action_configure: Masse Rediger | Konfigurere
+  pim_enrich_mass_edit_action_perform: Masse Rediger | Udføre
+  pim_enrich_job_tracker_index: Process overvågning
+  pim_enrich_job_tracker_show: Process overvågning | Vis job
+  pim_enrich_api_connection_index: API-forbindelser
+  pim_enrich_api_connection_create: API forbindelser | Oprette
+  pim_enrich_mass_edit_action: Masse Rediger
+  pim_analytics_system_info_index: Systemoplysninger
+pim_menu:
+  tab:
+    activity: Aktivitet
+    imports: Import
+    exports: Exports
+    settings: Indstillinger
+    system: System
+    help:
+      title: Hjælp
+      helper: Akeneo hjælp center
+  item:
+    association_type: Sammenhængstyper
+    attribute_group: Attributgrupper
+    channel: Kanaler
+    currency: Valutaer
+    dashboard: Kontrolpanel
+    family: Familier
+    group: Grupper
+    group_type: Gruppetyper
+    product_model: Produktmodeller
+    export_history: Eksport historik
+    export_profile: Eksport profiler
+    import_history: Import historik
+    import_profile: Import profiler
+    configuration: Konfiguration
+    user_management: Bruger administration
+    user: Brugere
+    user_group: Brugergrupper
+    user_role: Roller
+    info: Systemoplysninger
+    job_tracker: Process overvågning
+    api_connection: API-forbindelser
+    catalog_volume: Katalog volumen overvågning
+  navigation:
+    activity: Aktivitet navigation
+    system: System navigation
+    user: Brugere håndtering navigation
+    settings: Indstillinger for navigation
+    product: Produkt navigation
+    product_infos: Produkt info
+  user:
+    logout: Log ud
+    user_account: Min konto
+pim_notification:
+  types:
+    import: Import
+    export: Eksport
+    quick_export: Hurtig eksport
+    mass_edit: Masse Rediger

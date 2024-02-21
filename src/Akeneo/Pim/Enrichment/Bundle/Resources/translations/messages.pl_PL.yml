@@ -1,0 +1,87 @@
+No products to remove: Brak produktów do usunięcia
+"dot (.)": kropka (.)
+"comma (,)": przecinek (,)
+pim_enrich:
+  #Category
+  category:
+    tab:
+      property.title: Ustawienia
+      history.title: Historia
+    suggest_selection: Proszę wybrać kategorię po lewej
+    or: lub
+    create_new: Utwórz nową kategorię
+  #Mass edit operations
+  mass_edit_action:
+    limit_exceeded: Proszę wybrać mniej niż %limit% elementów do edycji
+    product:
+      page_title: Produkty
+      page_subtitle: Edycja zbiorcza (1 produkt) | Edycja zbiorcza (%count% produktów)
+      title: Wybierz działanie
+      subtitle: Wybierz działanie, które chcesz wykonać na wybranym produkcie | Wybierz działanie, którą chcesz wykonać na %count% wybranych produktach
+      confirm: Zamierzasz zaktualizować produkt o następujące informacje, proszę potwierdź. | Zamierzasz zaktualizować %count% produkty(ów) o następujące informacje, proszę potwierdź.
+      steps:
+        first: Wybierz produkty
+        second: Wybierz działanie
+        third: Konfiguruj
+        fourth: Potwierdź
+    change-status:
+      label: Zmień status
+      description: Wybrane produkty zostaną aktywowane lub dezaktywowane.
+      success_flash: Status produktu(ów) został zmieniony
+      launched_flash: Działanie zbiorcze "zmiana statusu" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.
+    edit-common-attributes:
+      label: Edytuj atrybuty
+      description: Atrybuty wybranych produktów zostaną zaktualizowane o następujące wartości dla wybranej wersji językowej.
+      empty: Proszę wybrać atrybut(y), które chcesz edytować
+      success_flash: Zadanie aktualizacji statusu produktu(ów) jest aktualnie wykonywane
+      launched_flash: Zadanie zbiorcze "edycja atrybutów" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.
+      message:
+        warning: Brak wspólnych atrybutów dla wybranych produktów. Proszę wybierz inne produkty.
+        invalid_attribute: Atrybut o kodzie "attribute_code" nie jest wspólnym atrybutem wybranych produktów, atrybut pominięty.
+        no_valid_attribute: Żaden z wybranych atrybutów nie może zostać zastosowany do tego produktu.
+    classify-add:
+      label: Dodaj do kategorii
+      description: Produkty zostaną umieszczone w następujących kategoriach, istniejące rozmieszczenie nie zostanie zmienione.
+      success_flash: Produkt(y) został(y) przydzielone do wybranych kategorii
+      launched_flash: Zadanie zbiorcze "dodaj do kategorii" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.
+    classify-move:
+      label: Przenieś zasoby do kategorii
+      description: Produkty zostaną umieszczone w następujących kategoriach, istniejące umiejscowienie zostanie utracone.
+      success_flash: Produkt(y) został(y) przeniesione do wybranych kategorii
+      launched_flash: Zadanie zbiorcze "przenieś do kategorii" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.
+    classify-remove:
+      label: Usuń z kategorii
+      description: Produkty zostaną usunięte z następujących kategorii.
+      success_flash: Produkt(y) został(y) usunięte z wybranych kategorii
+      launched_flash: Zadanie zbiorcze "usuń z kategorii" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.
+    change-family:
+      label: Zmiana rodziny
+      description: Rodzina wybranych produktów zostanie zamieniona na wybraną rodzinę
+      success_flash: Rodzina wybranego produktu(ów) została pomyślnie zmieniona
+      launched_flash: Działanie zbiorcze "zmiany rodziny" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.
+    add-to-groups:
+      label: Dodaj do grup
+      description: Wybierz grupy, do których chcesz dodać wybrane produkty
+      success_flash: Produkty zostały pomyślnie dodane do wybranych grup
+      launched_flash: Działanie zbiorcze "dodaj do grup" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.
+      no_group: Na razie nie ma żadnej grupy. Proszę zacznij od jej utworzenia.
+    set-attribute-requirements:
+      label: Określ wymagania atrybutów
+      description: Następujące wymagania atrybutów zostaną zastosowane do wybranych rodzin
+      success_flash: Wymagania atrybutów zostały zastosowane do wybranych rodzin
+      launched_flash: Działanie zbiorcze "określ wymagania atrybutów" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.
+    convert_to_simple_products:
+      warning:
+        non_variant_product: Produkt "{{ identifier }}" jest już produktem prostym, nie trzeba go konwertować.
+    mass_action:
+      quick_export:
+        launched_flash: Zadanie eksportu produktów jest aktualnie wykonywane
+category:
+  create: Utwórz kategorię
+  edit: Edytuj kategorię
+  overview: Kategorie
+tree:
+  edit: Edytuj drzewo
+  remove:
+    error_linked: Drzewo tej kategorii nie może zostać usunięte, jest połączone z kanałem
+  create: Utwórz drzewo kategorii

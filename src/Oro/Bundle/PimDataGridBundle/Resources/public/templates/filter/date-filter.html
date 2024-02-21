@@ -1,0 +1,32 @@
+<div class="AknFilterChoice">
+    <div class="AknFilterChoice-header">
+        <div class="AknFilterChoice-title"><%- label %></div>
+
+        <div class="AknDropdown operator">
+            <div class="AknActionButton AknActionButton--withoutBorder" data-toggle="dropdown">
+                <span class="AknActionButton-highlight"><%- selectedOperatorLabel %></span>
+                <span class="AknActionButton-caret"></span>
+            </div>
+            <div class="AknDropdown-menu">
+                <div class="AknDropdown-menuTitle"><%- operatorLabel %></div>
+                <% _.each(choices, function (option) { %>
+                <div class="AknDropdown-menuLink<% if (selectedChoice == option.value) { %> AknDropdown-menuLink--active active<% } %>">
+                    <span class="label operator_choice" data-value="<%= option.value %>"><%= option.label %></span>
+                </div>
+                <% }); %>
+            </div>
+        </div>
+    </div>
+    <div class="AknFilterChoice-dates">
+        <span class="AknFilterChoice-date from">
+            <input type="text" value="<%- from %>" class="date-selector <%= inputClass %> add-on" name="start" placeholder="<%- fromLabel %>" size="1">
+        </span>
+        <span class="AknFilterChoice-separator separator">-</span>
+        <span class="AknFilterChoice-date to">
+            <input type="text" value="<%- to %>" class="date-selector <%= inputClass %> add-on" name="end" placeholder="<%- toLabel %>" size="1">
+        </span>
+    </div>
+    <div class="AknFilterChoice-button">
+        <button class="AknButtonList-item AknButton AknButton--apply filter-update" type="button"><%- updateLabel %></button>
+    </div>
+</div>

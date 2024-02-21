@@ -1,0 +1,13 @@
+parameters:
+    pim_catalog.resolver.attribute_values.class:         Akeneo\Pim\Enrichment\Component\Product\Manager\AttributeValuesResolver
+
+services:
+    pim_catalog.resolver.attribute_values:
+        class: '%pim_catalog.resolver.attribute_values.class%'
+        arguments:
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.locale'
+
+    Akeneo\Category\Infrastructure\Component\Manager\PositionResolver:
+        arguments:
+            - '@Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category\GetDirectChildrenCategoryCodes'

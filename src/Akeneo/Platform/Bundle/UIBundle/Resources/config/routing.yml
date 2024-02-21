@@ -1,0 +1,28 @@
+pim_ui_ajaxentity_list:
+    path: /list.json
+    defaults: { _controller: pim_ui.controller.ajax_option:listAction }
+
+pim_localization_locale_index:
+    path: /system/locale/ui
+    defaults: { _controller: pim_localization.controller.locale:indexAction }
+    methods: [GET]
+
+measures:
+    resource: '@PimUIBundle/Resources/config/routing/internal_api/measures.yml'
+    prefix: /configuration/measures
+
+pim_settings_index:
+    path: /settings
+
+pim_settings_count_entities:
+    path: /settings/rest/count-entities
+    defaults: { _controller: Akeneo\Platform\Bundle\UIBundle\Controller\SettingsController::countEntitiesAction }
+    methods: [GET]
+
+pim_system_index:
+    path: /system
+
+pim_system_count_entities:
+    path: /system/rest/count-entities
+    defaults: { _controller: Akeneo\Platform\Bundle\UIBundle\Controller\SystemController::countEntitiesAction }
+    methods: [GET]

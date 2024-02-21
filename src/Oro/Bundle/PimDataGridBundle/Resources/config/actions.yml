@@ -1,0 +1,10 @@
+parameters:
+    pim_datagrid.extension.action.type.tab_redirect.class:   Oro\Bundle\PimDataGridBundle\Extension\Action\Actions\TabRedirectAction
+
+services:
+    pim_datagrid.extension.action.type.tab_redirect:
+        public: true
+        class: '%pim_datagrid.extension.action.type.tab_redirect.class%'
+        shared: false
+        tags:
+            - { name: oro_datagrid.extension.action.type, type: tab-redirect }

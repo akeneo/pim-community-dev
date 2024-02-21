@@ -1,0 +1,581 @@
+pim_notification:
+  types:
+    settings: Ustawienia
+    mass_delete: Usuwanie
+    attribute_mass_delete: Usuwanie
+flash:
+  comment:
+    create:
+      success: Twój komentarz został utworzony pomyślnie.
+      error: Wystąpił błąd podczas tworzenia komentarza.
+    delete:
+      success: Twój komentarz został pomyślnie usunięty.
+      error: Wystąpił błąd podczas usuwania komentarza.
+    reply:
+      success: Twoja odpowiedź została utworzona pomyślnie.
+      error: Wystąpił błąd podczas tworzenia Twojej odpowiedzi.
+pim_enrich.entity.product:
+  label: produkt
+  uppercase_label: Produkt
+  plural_label: Produkty
+  flash:
+    update:
+      success: Produkt pomyślnie zaktualizowany.
+      fail: Nie można zaktualizować produktu.
+      fail_session_expired: Nie można zaktualizować produktu. Sesja wygasła. Zaloguj się ponownie.
+      fields_not_ready: "Nie można teraz zapisać produktu. Następujące pola nie są gotowe: {{ fields }}"
+      already_in_upload: Plik jest aktualnie dodawany dla tego atrybutu w wersji językowej "{{ locale }}" i kanale "{{ scope }}"
+      file_upload: Wystąpił błąd podczas przesyłania pliku
+      identifier_warning: Twój produkt został zapisany, ale nie można było wygenerować identyfikatora.
+    delete:
+      success: Produkt pomyślnie usunięty.
+      fail: Nie można usunąć produktu.
+    create:
+      success: Produkt pomyślnie utworzony
+      fail: Żaden atrybut nie jest skonfigurowany jako identyfikator produktu, albo nie masz uprawnień żeby go edytować.
+  page_title:
+    index: "]-Inf, 1]{{ count }} wynik|]1, Inf[{{ count }} wyników"
+    product: "]-Inf, 1]{{ count }} produkt|]1, Inf[{{ count }} produktów"
+    product_model: "]-Inf, 1]{{ count }} model produktu|]1, Inf[{{ count }} modeli produktu"
+    product_and_product_model: "{{ productCount }}, {{ productModelCount }}"
+  module:
+    create:
+      subtitle: Utwórz produkt
+      title: Wybierz działanie
+      choose_family: Wybierz rodzinę
+      choose_family_variant: Wybierz wariant rodziny
+      helper: Identyfikator jest teraz polem opcjonalnym. <a class="AknMessageBox-link" href="{{ link }}" target="_blank">Dowiedz się więcej</a> o tej zmianie i jej możliwym wpływie na Twoje produkty.
+    variant_navigation:
+      common: Wspólne
+    status:
+      enabled: Włączony
+      disabled: Wyłączony
+    download_pdf:
+      label: PDF
+    copy:
+      button_label: Porównaj
+      label: Porównaj / Tłumacz
+      select: Wybierz
+      all_visible: Wszystkie widoczne
+      copy: Kopiuj
+    convert_variant_to_simple:
+      label: Skonwertuj na produkt prosty
+      dialog:
+        title: Potwierdź konwersję
+        content: "Czy na pewno chcesz skonwertować ten produkt z wariantami na produkt prosty? Jego wszystkie poprzednie wartości, kategorie i powiązania zostaną zapisane."
+    history:
+      version: Wersja
+      author: Autor
+      logged_at: Data/godzina
+      from: Od
+      modified: Zmodyfikowany
+      old_value: Poprzednia wartość
+      new_value: Nowa wartość
+      limit: 'Wyświetlana jest tylko następująca liczba ostatnich wersji: {{ limit }}.'
+    meta:
+      updated: Modyfikowany
+      groups: Grupy
+      uuid: UUID
+    show_group:
+      title: Grupa {{ group }}
+      view_group: Zobacz grupę
+      more_products: '{{ count }} więcej produktów...'
+    attribute:
+      remove_optional: Usuń ten atrybut
+      locale_specific_unavailable: To tłumaczone pole nie jest dostępne w tej wersji językowej
+      locale_unavailable: To tłumaczone pole nie jest dostępne dla wersji językowej '{{ locale }}' i kanału '{{ channel }}'
+      to_fill_count: "{1}1 brak wymaganego atrybutu|]1, Inf[{{ count }} brakujących wymaganych atrybutów"
+      add_attribute_option: Dodaj opcje atrybutu
+      add_option: Dodaj opcję
+    completeness:
+      title: Kompletność
+      complete: Kompletność
+      no_family: Brak zdefiniowanej rodziny. Proszę zdefiniuj rodzinę w celu przeliczenia kompletności tego produktu.
+      no_completeness: Właśnie zmieniłeś rodzinę produktu. Proszę zapisz zmiany w celu przeliczenia kompletności dla nowej rodziny.
+      missing_values: "{1}1 brakująca wartość|]1, Inf[{{ count }} brakujące wartości"
+    sequential_edit:
+      item_limit: Tylko pierwsze 1000 przedmiotów wyświetlonych w tej edycji sekwencyjnej ({{ count }} zaznaczonych)
+      empty: Twój wybór jest pusty, proszę zmień swoje kryteria wyszukiwania
+      save_and_next: Zapisz i przejdź dalej
+      save_and_finish: Zapisz i zakończ
+    associations:
+      title: Skojarzenia ({{ count }})
+      none_exist: Brak typów powiązań.
+      show_products: Wyświetl produkty
+      show_groups: Wyświetl grupy
+      number_of_associations: "{{ productCount }} produkt(ów), {{ productModelCount }} model(i) produkt(ów) i {{ groupCount }} grup(a)"
+      number_of_quantified_associations: "liczba produktów: {{ productCount }} i liczba modeli produktów: {{ productModelCount }}"
+      association_type_selector: Typ powiązania
+      target: Cel
+      manage: Dodaj {{ associationType }} powiązania
+      manage_description: Wybierz produkty, które chcesz powiązać z produktem "{{ productLabel }}"
+      mass_edit_description: Wybierz produkty, które chcesz powiązać z {{ productCount }} wybranymi produktami
+      add_associations: Dodaj powiązania
+      variant_products: Produkty z wariantami
+      quantified:
+        quantity: Ilość
+        unlinked: Usunięto powiązanie
+      search:
+        placeholder: Szukaj według etykiety, identyfikatora lub UUID
+      no_data: Brak powiązanych produktów
+      remove: Usuń powiązanie
+      edit: Edytuj produkt
+      limit_reached: 'Do tego produktu nie możesz dodać więcej niż następującą liczbę powiązań: {{ maxLimit }}.'
+      variant_updated: Zaktualizowano ilość w wariancie. Od teraz ilości nie będą synchronizowane.
+    attribute_filter:
+      display: Wyświetl
+      all: Wszystkie atrybuty
+      missing_required: Wszystkie brakujące wymagane atrybuty
+      at_this_level: Wszystkie atrybuty określonego poziomu
+    change_family:
+      title: Zmiana rodziny produktów
+      merge_attributes: Istniejące atrybuty zostaną złączone z atrybutami nowej rodziny.
+      keep_attributes: Żadne atrybuty nie zostaną usunięte.
+      change_family_to: Zmień rodzinę na
+      empty_selection: Wybierz rodzinę
+    basket:
+      title: Kosz
+      empty_basket: Koszyk jest pusty
+    delete:
+      confirm: Czy na pewno chcesz usunąć ten produkt?
+    comment:
+      post: Dodaj nowy komentarz
+      reply: Odpowiedz
+      title: Komentarze
+      empty: Aktualnie brak komentarzy
+      header_comment: '{{ user }} skomentował ten produkt'
+      header_reply: '{{ user }} odpowiedział na komentarz'
+      delete_confirm: Czy na pewno chcesz usunąć ten komentarz?
+      removed_author: Użytkownik usunięty
+    asset:
+      title: Zasoby
+pim_enrich.entity.product_model:
+  label: Model produktu
+  uppercase_label: Model produktu
+  plural_label: Model produktu
+  flash:
+    create:
+      success: Model produktu utworzony pomyślnie
+      product_model_added: Model produktu pomyślnie dodany do modelu produktu
+      variant_product_added: Wariant produktu pomyślnie dodany do modelu produktu
+    update:
+      success: Model produktu zaktualizowany pomyślnie. Kompletność jego wariantów zostanie przeliczona.
+      fail: Nie można zaktualizować modelu produktu.
+      fields_not_ready: "Nie można teraz zapisać modelu produktu. Następujące pola nie są gotowe: {{ fields }}"
+    delete:
+      success: Model produktu usunięty pomyślnie.
+      fail: Nie można usunąć tego modelu produktu
+  choose: Wybierz model produktu
+  property:
+    family_variant: Wariant
+  module:
+    create:
+      title: Utwórz model produktu
+      content: Model produktu gromadzi warianty produktu i ułatwia wypełnianie ich wspólnych właściwości.
+    attribute:
+      read_only_parent_attribute_from_common: Ten atrybut można zaktualizować we wspólnych atrybutach.
+      read_only_parent_attribute_from_model: "Ten atrybut można zaktualizowany w atrybutach przez {{ axes }}"
+    variant_axis:
+      label: 'Oś wariantu'
+      create: Dodaj nowy
+      title_create_label: "]-Inf, 1]Dodaj nową {{ axes }}|]1, Inf[Dodaj nowe {{ axes }}"
+      required_label: '(oś wariantu)'
+    completeness:
+      variant_product: "]-Inf, 1]{{ complete }}/{{ total }} wariant produkt|]1, Inf[{{ complete }}/{{ total }} wariant produktów"
+      label: Wariant
+    delete:
+      confirm: Czy na pewno chcesz usunąć ten model produktu? Wszystkie jego elementy podrzędne, modele i warianty produktów, zostaną również usunięte.
+      confirm_for_products_and_product_models: Czy na pewno chcesz usunąć wybrane produkty i modele produktów? Wszystkie elementy podrzędne modelu produktu również zostaną usunięte.
+pim_enrich.entity.group:
+  label: Grupa
+  flash:
+    update:
+      success: Grupa pomyślnie zaktualizowana.
+      fail: Nie można zaktualizować grupy.
+      fields_not_ready: "Nie można teraz zapisać grupy. Następujące pola nie są gotowe: {{ fields }}"
+    create:
+      success: Grupa została pomyślnie utworzona
+    delete:
+      success: Grupa pomyślnie usunięta
+      fail: Nie można usunąć tej grupy
+  page_title:
+    index: "]-Inf, 1]{{ count }} grupa|]1, Inf[{{ count }} grup"
+  module:
+    create:
+      button: Utwórz grupę
+    delete:
+      confirm: Czy na pewno chcesz usunąć tę grupę?
+pim_enrich.entity.role:
+  module:
+    delete:
+      confirm: Czy na pewno chcesz usunąć tę rolę?
+  flash:
+    delete:
+      success: Rola pomyślnie usunięta
+pim_enrich.entity.category:
+  label: kategoria
+  uppercase_label: Kategorie
+  plural_label: Kategorie
+  page_title:
+    index: "]-Inf, 1]{{ count }} drzewo|]1, Inf[{{ count }} drzew(a)"
+  content:
+    empty_tree_list:
+      title: Nie masz żadnych drzew
+      hint: Utwórz pierwsze.
+    tree_list:
+      columns:
+        label: Etykieta drzewa
+        number_of_categories: Liczba kategorii
+        actions: Akcje
+        count_categories: ']-Inf, 1]{{ count }} kategoria|]1, Inf[{{ count }} kategorii'
+    tree:
+      not_found: Nie znaleziono drzewa kategorii
+    edit:
+      not_found: Nie znaleziono kategorii
+      default_tree_label: Drzewo
+      success: Zaktualizowano kategorię
+      fail: Nie można zaktualizować kategorii
+  new_category: Nowa kategoria
+  new_category_tree: Nowe drzewo kategorii
+  category_created: Utworzono kategorię "{{ code }}"
+  category_creation_error: Nie można utworzyć kategorii "{{ code }}"
+  category_tree_creation:
+    success: Utworzono drzewo "{{ code }}"
+    error: Nie można utworzyć drzewa "{{ code }}"
+  category_tree_deletion:
+    success: Usunięto drzewo "{{ tree }}"
+    error: Nie można usunąć drzewa "{{ tree }}"
+    confirmation: Czy na pewno chcesz usunąć drzewo {{ name }}? Wszystkie kategorie w tym drzewie zostaną usunięte razem z produktami.
+    confirmation_question: Czy na pewno chcesz usunąć drzewo kategorii {{ name }}?
+    warning_categories_number: 'Następująca liczba powiązanych kategorii zostanie usunięta: {{ categoriesNumber }}. Wszystkie znajdujące się w nich produkty zostaną usunięte.'
+    warning_products: Wszystkie powiązane produkty zostaną usunięte z drzewa kategorii {{ name }}
+    products_limit_exceeded:
+      title: Nie można usunąć drzewa
+      message: Drzewo "{{ tree }}" zawiera więcej niż {{ limit }} produktów i dlatego nie można go usunąć.
+  category_deletion:
+    success: Usunięto kategorię "{{ name }}"
+    error: Nie można usunąć kategorii "{{ name }}"
+    confirmation: Czy na pewno chcesz usunąć kategorię {{ name }}? Produkty z tej kategorii nie zostaną usunięte.
+    confirmation_question: Czy na pewno chcesz usunąć kategorię {{ name }}?
+    products_limit_exceeded:
+      title: Nie można usunąć kategorii
+      message: Drzewo "{{ name }}" zawiera więcej niż {{ limit }} produktów i dlatego nie można go usunąć.
+pim_enrich.export.product:
+  data:
+    title: Filtruj produkty
+  structure:
+    title: Filtruj dane
+  filter:
+    channel:
+      help: Kanał definiuje zakres wartości i wersji językowych dla produktu, używanych do wybierania danych oraz drzewo używane do wybierania produktów.
+    locales:
+      help: "Wersje językowe określają tłumaczone wartości produktów do eksportu. Np: tylko informacje o produkcie w języku polskim."
+    attributes:
+      label: "{0}Wszystkie atrybuty|{1}Wybrany jeden atrybut|{2,3,4} {{ count }} wybrane atrybuty|[ 5, Inf [{{ count }} wybranych atrybutów"
+      help: "Wybierz informacje o produkcie do wyeksportowania. Np. tylko atrybuty techniczne."
+      empty: Wszystkie atrybuty zostaną eksportowane
+      modal:
+        title: Wybieranie atrybutów
+    attributes_selector:
+      attributes: "Szukaj w {{ itemsCount }} atrybutach"
+      selected: "Wybrane atrybuty"
+      clear: Wyczyść
+      all_group: Wszystkie grupy
+      empty_selection: Wszystkie atrybuty zostaną eksportowane
+      description: Wybierz informacje o produkcie do wyeksportowania
+    family:
+      title: Rodzina
+      help: "Wybierz produkty do eksportu dzięki ich rodzinie. Np: Eksportuj tylko buty i sukienki."
+      operators:
+        IN: Na liście
+        "NOT IN": Brak na liście
+        EMPTY: Produkty, które nie mają rodziny
+        "NOT EMPTY": Produkty, które posiadają rodzine
+      empty_selection: Brak warunku dla rodzin
+    updated:
+      title: Warunek czasowy
+      operators:
+        ALL: Brak warunków
+        "SINCE LAST N DAYS": Zaktualizowane produkty w ciągu ostatnich dni (np. 6)
+        ">": Zaktualizowane produkty od tej daty
+        "SINCE LAST JOB": Zaktualizowane produkty od ostatniego exportu
+    enabled:
+      title: Status
+      help: "Wybierz produkty do eksportu ze względu na ich status. Np: Eksportuj produkty niezależnie od ich statusu."
+      value:
+        enabled: Włączony
+        disabled: Wyłączony
+    completeness:
+      title: Kompletność
+      help: Wybierz produkty do eksportu według ich kompletności.
+      operators:
+        ALL: Brak warunku kompletności
+        ">=": Uzupełnij co najmniej jedno wybrane ustawienie regionalne
+        "GREATER OR EQUALS THAN ON ALL LOCALES": Uzupełnij wszystkie wybrane wersje językowe
+        "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": Uzupełnij co najmniej jedno wybrane ustawienie regionalne
+        LOWER THAN ON ALL LOCALES: Nie uzupełniono wszystkich wybranych wersji językowych
+        AT LEAST COMPLETE: Co najmniej jeden kompletny produkt w wybranym ustawieniu regionalnym
+        ALL COMPLETE: Wszystkie elementy podrzędne kompletne w wybranych wersjach językowych
+      empty_selection: Wybierz rodzine
+    category:
+      title: Kategorie
+      help: Użyj kategorii produktów w drzewie (zdefiniowanym przez kanał powyżej), aby wybrać produkty do eksportu
+    identifier:
+      title: Identyfikator
+      help: Użyj identyfikatorów produktów do eksportu, oddzielonych przecinkami, spacjami lub podziałem wierszy
+    string:
+      operators:
+        ALL: Wszystkie
+    select:
+      operators:
+        IN: Na liście
+    date:
+      operators:
+        BETWEEN: Pomiędzy
+        NOT BETWEEN: Nie pomiędzy
+    quality-score:
+      title: Wynik jakości
+      operator_choice_title: Eksportuj Wyniki jakości dla
+      empty_selection: Brak warunku dla Wyniku jakości
+      operators:
+        IN AT LEAST ONE LOCALE: Co najmniej jedna wersja językowa
+        IN ALL LOCALES: Wszystkie wybrane wersje językowe
+  global_settings:
+    title: Ustawienia ogólne
+pim_enrich.mass_edit.product:
+  title: Działanie zbiorcze produktu
+  confirm: "{0}Zamierzasz zaktualizować niektóre produkty następującymi informacjami, poprzednie wartości zostaną zastąpione. Potwierdź zmiany.|{1}Masz zamiar zaktualizować produkt następującymi informacjami, poprzednie wartości zostaną zastąpione. Potwierdź zmiany.|]1, Inf[Zamierzasz zaktualizować określoną liczbę produktów ({{ itemsCount }}) następującymi informacjami, poprzednie wartości zostaną zastąpione. Potwierdź zmiany."
+  step:
+    select:
+      label: Wybierz produkty
+    choose:
+      title: Działania zbiorcze produktu
+      label_count: "]0, Inf[Wybierz swoją akcję"
+    configure:
+      label: Konfiguruj
+    confirm:
+      label: Potwierdź
+    launch_error:
+      label: Wystąpił błąd podczas uruchamiania operacji masowej edycji
+    launched:
+      label: Działanie zbiorcze "{{ operation }}" zostało uruchomione. Zostaniesz powiadomiony o jego ukończeniu.
+  operation:
+    common:
+      select_attributes: Wybierz atrybuty
+    change_status:
+      label: Zmień status
+      label_count: "{0}Zmień status <span class=\"AknFullPage-title--highlight\">produktów</span>|{1}Zmień status<span class=\"AknFullPage-title--highlight\">1 produktu</span>|]1, Inf[Zmień status <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produktów</span>"
+      description: Wybrane produkty zostaną włączone lub wyłączone.
+      field: Do włączenia
+    edit_common:
+      label: Edytuj wartości atrybutu
+      label_count: "{0}Edytuj wartości atrybutu <span class=\"AknFullPage-title--highlight\">produktów</span>|{1}Edytuj wartości atrybutu <span class=\"AknFullPage-title--highlight\">1 produktu</span>|]1, Inf[Edytuj wartości atrybutu <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produktów</span>"
+      description: Tylko atrybuty należące do rodzin wybranych produktów będą edytowane z następującymi danymi dotyczącymi wersji językowej {{ locale }} i kanału {{ scope }}. Poprzednie wartości zostaną zastąpione.
+      no_update: Wybierz co najmniej jedno pole do aktualizacji
+    add_attribute_value:
+      label: Dodaj wartości atrybutu
+      label_count: "{0}Dodaj wartości atrybutu dla <span class=\"AknFullPage-title--highlight\">produktów</span>|{1}Dodaj wartości atrybutu dla <span class=\"AknFullPage-title--highlight\">1 produktu</span>|]1, Inf[Dodaj wartości atrybutu dla <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produktów</span>"
+      description: Tylko wielowartościowe atrybuty należące do rodzin produktów będą edytowane z następującymi danymi w odniesieniu do wersji językowej {{ locale }} i kanału {{ scope }}. Nowe wartości atrybutu zostaną dodane do poprzednich.
+    change_family:
+      label: Zmiana rodziny
+      label_count: "{0}Zmień rodzinę <span class=\"AknFullPage-title--highlight\">produktów</span>|{1}Zmień rodzinę <span class=\"AknFullPage-title--highlight\">1 produktu</span>|]1, Inf[Zmień rodzinę <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produktów</span>"
+      description: Rodzina wybranych produktów zostanie zamieniona na wybraną rodzinę
+    add_to_group:
+      label: Dodaj do grup
+      label_count: "{0}Dodaj <span class=\"AknFullPage-title--highlight\">produktów</span> do grup|{1}Dodaj <span class=\"AknFullPage-title--highlight\">1 produkt</span> do grup|]1, Inf[Dodaj <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produktów</span> do grup"
+      description: Wybierz grupy, do których chcesz dodać wybrane produkty
+      field: Grupy
+      no_update: Proszę wybrać grupę przed kontynuacją
+    add_to_category:
+      label: Dodaj do kategorii
+      label_count: "{0}Dodaj <span class=\"AknFullPage-title--highlight\">produktów</span> do kategorii|{1}Dodaj <span class=\"AknFullPage-title--highlight\">1 produkt</span> do kategorii|]1, Inf[Dodaj <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produktów</span> do kategorii"
+      description: Produkt będzie przydzielony do następujących kategorii, istniejące przydzielenie zostanie zachowane.
+    move_to_category:
+      label: Przenieś pomiędzy kategoriami
+      label_count: "{0}Przenieś <span class=\"AknFullPage-title--highlight\">produktów</span> pomiędzy kategoriami|{1}Przenieś <span class=\"AknFullPage-title--highlight\">1 produkt</span> pomiędzy kategoriami|]1, Inf[Przenieś <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produktów</span> pomiędzy kategoriami"
+      description: Produkt będzie przydzielony do następujących kategorii, istniejące przydzielenie zostanie utracone.
+      no_update: Wybierz kategorię.
+    remove_from_category:
+      label: Usuń z kategorii
+      label_count: "{0}Usuń <span class=\"AknFullPage-title--highlight\">produktów</span> z kategorii|{1}Usuń <span class=\"AknFullPage-title--highlight\">1 produkt</span> z kategorii|]1, Inf[Usuń <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produktów</span> z kategorii"
+      description: Produkty zostaną usunięte z następujących kategorii.
+      no_update: Nie zaznaczono żadnej kategorii, z której mają być usunięte produkty.
+    add_to_existing_product_model:
+      label: Dodaj do istniejącego modelu produktu
+      label_count: "{0}Dodaj <span class=\"AknFullPage-title--highlight\">produktów</span> do istniejącego modelu produktowego|{1}Dodaj <span class=\"AknFullPage-title--highlight\">1 produkt</span> do istniejącego modelu produktowego|]1, Inf[Dodaj <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produktów</span> do istniejącego modelu produktowego"
+      description: Wybrany model produktu będzie gromadził produkty i umożliwi wypełnienie ich wspólnych właściwości.
+      no_update: Proszę wybrać model produktu przed kontynuacją
+    convert_to_simple_products:
+      label: Skonwertuj na produkty proste
+      label_count: "{0}Skonwertuj niektóre <span class=\"AknFullPage-title--highlight\">produkty</span> na produkty proste|{1}Skonwertuj <span class=\"AknFullPage-title--highlight\">1 produkt</span> na produkt prosty|]1, Inf[Skonwertuj <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produktów</span> na produkty proste"
+      description: Wszystkie poprzednie wartości, kategorie i powiązania zostaną zapisane.
+    associate_to_product_and_product_model:
+      label: Powiąż produkty
+      label_count: "{0}Powiąż <span class=\"AknFullPage-title--highlight\">produktów</span> z produktami lub modelami produktowymi|{1}Powiąż <span class=\"AknFullPage-title--highlight\">1 produkt</span> z produktami lub modelami produktowymi|]1, Inf[Powiąż <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produktów</span> z produktami lub modelami produktowymi"
+      description: Produkty wybrane w tabeli będą powiązane z wybranymi produktami i modelami produktów dla typu wybranego powiązania
+      validate: Dodaj powiązanie przed przejściem do następnego kroku
+    change_parent_product_model:
+      label: Zmień model elementu nadrzędnego
+      label_count: "{0}Zmień nadrzędny model produktowy <span class=\"AknFullPage-title--highlight\">produktów</span>|{1}Zmień nadrzędny model produktowy <span class=\"AknFullPage-title--highlight\">1 produkt</span>|]1, Inf[Zmień nadrzędny model produktowy <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produktów</span>"
+      description: Element nadrzędny wariantu produktów lub modele produktu podrzędnego zaznaczone w siatce zostaną zmienione na wybrany model produktu.
+pim_datagrid:
+  no_entities: "Nie znaleziono {{ entityHint }}"
+  no_entities.product: "Nie znaleziono produktu" #Custom translation for product grid
+  no_results: "Przepraszamy, dla tego wyszukiwania nie ma {{ entityHint }}."
+  no_results.product: "Przepraszamy, dla tego wyszukiwania nie ma produktów." #Custom translation for product grid
+  mass_action_group:
+    bulk_actions:
+      label: Działania zbiorcze
+    quick_export:
+      label: Szybki Eksport
+  mass_action:
+    delete:
+      confirm_content: Czy na pewno chcesz usunąć wybrane produkty?
+      success: Wybrane produkty zostały pomyślnie usunięte.
+      error: Wystąpił błąd podczas próby usunięcia wybranych produktów, spróbuj ponownie.
+    quick_export:
+      csv_all: CSV (wszystkie atrybuty)
+      csv_grid_context: CSV (w kontekście siatki)
+      xlsx_all: Excel (wszystkie atrybuty)
+      xlsx_grid_context: Excel (w kontekście siatki)
+      configurator:
+        subtitle: Szybki eksport
+        title: Wybierz działanie
+        csv: CSV
+        xlsx: XLSX
+        grid_context: Kontekst tabeli
+        all_attributes: Wszystkie atrybuty
+        with_codes: Z kodami
+        with_labels: Z etykietami
+        without_uuid: Bez UUID
+        with_uuid: Z UUID
+        without_media: Bez mediów
+        with_media: Z mediami
+      flash:
+        message: "Postęp eksportu można śledzić tutaj."
+    mass_edit: Działania zbiorcze
+    sequential_edit: Edycja sekwencyjna
+    mass_delete: Usuwanie zbiorcze
+    selected:
+      family: "]-Inf, 1]{{ count }} wybrana rodzina|]1, Inf[{{ count }} wybranych rodzin"
+      attribute: "{count, plural, =0 {# wybranych atrybutów} one {# wybrany atrybut} few {# wybrane atrybuty} many {# wybranych atrybutów} other {# wybranego atrybutu}}"
+      product: "]-Inf, 1]{{ count }} wybrany wynik|]1, Inf[{{ count }} wybranych wyników"
+  view_selector:
+    view: Widoki
+    choose_type: Chcę utworzyć widok prywatny
+  actions:
+    edit_product_attributes: Edytuj atrybuty produktu
+    classify_product: Klasyfikuj produkt
+    delete_product: Usuń produkt
+    change_status: Zmień status
+    toggle_status: Przełącz status
+    other: Inne działania
+  empty_results:
+    associated_product:
+      hint: Brak powiązanych produktów
+      subHint: 'Kliknij przycisk "Dodaj powiązania", aby powiązać ten produkt'
+  filters:
+    label: Filtry
+    system: System
+    product_typology:
+      label: 'Typologia produktu'
+      simple: 'Prosta'
+      variant: 'Wariant'
+    entity_type:
+      label: 'Wariant'
+      grouped: 'Grupowana'
+      ungrouped: 'Niegrupowana'
+    family:
+      label: Rodzina
+    groups:
+      label: Grupy
+    enabled:
+      label: Status
+    scope:
+      label: Zakres
+    completeness:
+      label: Kompletny
+    created:
+      label: Utworzono
+    updated:
+      label: Zaktualizowano
+    label_or_identifier:
+      label: Etykieta lub identyfikator
+      label_with_uuid: Etykieta, identyfikator lub UUID
+    parent:
+      label: Element nadrzędny
+    identifier:
+      label: Identyfikator
+    uuid:
+      label: Uuid
+    code_or_label:
+      label: Kod lub etykieta
+  search: Szukaj wg {{ label }}
+batch_jobs:
+  add_association:
+    label: Powiąż
+    perform.label: Powiąż
+  add_attribute_value:
+    label: Dodaj wartość atrybutów
+    perform.label: Dodaj wartość atrybutów
+  add_product_value:
+    label: Dodaj wartość produktu
+    perform.label: Dodaj wartość produktu
+  add_to_category:
+    label: Dodaj do kategorii
+    perform.label: Dodaj do kategorii
+  add_to_existing_product_model:
+    label: Dodaj do istniejącego modelu produktu
+    perform.label: Dodaj do istniejącego modelu produktu
+  convert_to_simple_products:
+    label: Skonwertuj na produkty proste
+    perform.label: Skonwertuj na produkty proste
+  csv_product_grid_context_quick_export:
+    quick_export.label: Szybki eksport kontekstowej tabeli produktu do CSV
+    quick_export_product_model.label: Szybki eksport siatki modeli produktów do CSV
+    perform.label: Szybki eksport kontekstu tabeli produktu do CSV
+  csv_product_quick_export:
+    quick_export.label: Szybki eksport produktu do CSV
+    quick_export_product_model.label: Szybki eksport modelu produktu do CSV
+    perform.label: Szybki eksport produktu do CSV
+  delete_products_and_product_models:
+    label: Usuń wiele produktów
+    perform.label: Usuń wiele produktów
+  change_parent_product:
+    label: Zmień model elementu nadrzędnego
+    perform.label: Zmień model elementu nadrzędnego
+  edit_common_attributes:
+    label: Edytuj atrybuty
+    perform.label: Edytuj atrybuty
+    clean.label: Wyczyść pliki dla atrybutów
+    cleaner.label: Wyczyść pliki dla atrybutów
+  compute_completeness_of_products_family:
+    label: Oblicz kompletność
+    perform.label: Oblicz kompletność
+  move_to_category:
+    label: Przenieś do kategorii
+    perform.label: Przenieś do kategorii
+  update_product_value:
+    label: Aktualizuj wartość produktu
+    perform.label: Aktualizuj wartość produktu
+  remove_from_category:
+    label: Usuń z kategorii
+    perform.label: Usuń z kategorii
+  set_attribute_requirements:
+    label: Określ wymagania atrybutów
+    perform.label: Określ wymagania atrybutów
+  xlsx_product_grid_context_quick_export:
+    quick_export.label: Kontekst siatki produktów XLSX szybki eksport
+    quick_export_product_model.label: Szybki eksport do XLSX kontekstu siatki modeli produktu
+    perform.label: Szybki eksport kontekstu siatki produktu do XLSX
+  xlsx_product_quick_export:
+    quick_export.label: Szybki eksport produktu do XLSX
+    quick_export_product_model.label: Szybki eksport modelu produktu do XLSX
+    perform.label: Szybki eksport produktu do XLSX
+  default_steps:
+    delete_products_and_product_models: Usuń produkty i modele produktów
+    remove_completeness_for_channel_and_locale: Usuń kompletność kanału i ustawień regionalnych
+error:
+  removing:
+    group: Nie można usunąć grupy
+    association type: Nie można usunąć typu powiązania

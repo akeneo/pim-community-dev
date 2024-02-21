@@ -1,0 +1,90 @@
+@import '../base/variables';
+
+.AknMessageBox {
+  color: @AknDefaultFontColor;
+  background: @AknIllustrationBlue20;
+  border-radius: 2px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 8px;
+
+  &--inline {
+    display: inline-block;
+  }
+
+  &-title {
+    display: inline;
+    font-weight: bold;
+    margin-right: 10px;
+    text-transform: uppercase;
+  }
+
+  &--apply {
+    background: lighten(@AknGreen, 30%);
+    color: darken(@AknGreen, 20%);
+  }
+
+  &--warning {
+    background: lighten(@AknOrange, 30%);
+    color: darken(@AknOrange, 20%);
+  }
+
+  &--danger,
+  &--error {
+    background: lighten(@AknRed, 30%);
+    color: darken(@AknRed, 20%);
+  }
+
+  &-list {
+    list-style: disc inside none;
+  }
+
+  &--centered {
+    text-align: center;
+  }
+
+  &--hide {
+    display: none;
+  }
+
+  & + & {
+    margin-top: 10px;
+  }
+
+  &--withIcon{
+    padding-left: 50px;
+
+    &:before {
+      content: '';
+      background-image: url(/bundles/pimui/images/icon-info.svg);
+      background-size: 20px;
+      width: 30px;
+      height: 20px;
+      display: block;
+      border-right: 1px solid @AknGrey80;
+      position: absolute;
+      background-repeat: no-repeat;
+      margin-left: -40px;
+    }
+  }
+
+  &--danger&--withIcon,
+  &--error&--withIcon,
+  &--warning&--withIcon {
+    &:before {
+      background-image: url(/bundles/pimui/images/icon-danger-darkred.svg);
+      border-right-color: @AknRed;
+    }
+  }
+
+  &--bold {
+    font-size: @AknFontSizeBig;
+    font-weight: bold;
+  }
+
+  &-link {
+    text-decoration: underline;
+    color: @AknBlue;
+  }
+}

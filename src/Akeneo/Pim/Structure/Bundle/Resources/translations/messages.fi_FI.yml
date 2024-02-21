@@ -1,0 +1,44 @@
+pim_enrich:
+  #Attribute
+  attribute:
+    tab:
+      parameter.title: Parametrit
+      value.title: Arvot
+      history.title: Historia
+  #Family
+  family:
+    info:
+      cant_remove_attribute_used_as_axis: Et voi poistaa tätä attribuuttia, koska sitä on käytössä varianttiperheessä
+  #Group type
+  group_type:
+    tab:
+      property.title: Ominaisuudet
+  #Mass edit operations
+  mass_edit_action:
+    family:
+      page_title: Tuoteperheet
+      page_subtitle: Massamuokkaa (1 perhe) | Massamuokkaa (%count% perhettä)
+      title: Valitse toiminto
+      subtitle: Valitse toiminto, jonka haluat suorittaa valitulle perheelle| Valitse toiminto, jonka haluat suorittaa valituille %count% perheille
+      confirm: Olet päivittämässä perhettä seuraavilla tiedoilla, ole hyvä ja vahvista. | Olet päivittämässä perheitä %count% seuraavilla tiedoilla, ole hyvä ja vahvista.
+      steps:
+        first: Valitse perheet
+        second: Valitse toiminto
+        third: Muuta asetuksia
+        fourth: Vahvista
+  entity:
+    association_type:
+      property:
+        is_two_way: 2-suuntainen tuoteliitos
+        is_quantified: Lukumäärällinen tuoteliitos
+pim_enrich_attribute_form:
+  code: Koodi
+  type: Attribuuttityyppi
+  reference_data_name: Referenssidatan nimi
+  scopable: Kanavakohtainen
+  localizable: Lokalisoitavissa
+  unique: Yksilöllinen arvo
+  availableLocales: Saatavilla olevat alueet
+  locale_specific: Aluekohtainen arvo
+  group: Attribuuttiryhmä
+  useableAsGridFilter: Käytettävissä ruudukossa

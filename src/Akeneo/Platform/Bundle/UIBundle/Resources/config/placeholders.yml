@@ -1,0 +1,21 @@
+placeholders:
+    header_logo:
+        label: Header Logo
+        items:
+            logo:
+                order: 100
+    user_menu:
+        label: Profile menu
+        items:
+            help:
+                order: 200
+    head_style:
+        label: Head styles
+    head_script:
+        label: Head scripts
+
+items:
+    logo:
+        template: '@PimUI/Default/logo.html.twig'
+    help:
+        template: '@PimUI/Default/help.html.twig'

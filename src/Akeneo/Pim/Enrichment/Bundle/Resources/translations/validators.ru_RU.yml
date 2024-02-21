@@ -1,0 +1,104 @@
+An identifier attribute already exists.: Атрибут-идентификатор уже существует.
+Attribute code may contain only letters, numbers and underscore: Код атрибута может содержать только буквы, цифры и символ подчеркивания
+Attribute code may contain only letters (at least one), numbers and underscores: Код атрибута может содержать только буквы (минимум одну), цифры и символ подчеркивания
+Attribute group code may contain only letters, numbers and underscores: Код группы атрибута может содержать только буквы, цифры и символы подчеркивания
+This attribute type can't be used as a grid filter: Этот тип атрибута не может использоваться как фильтр
+This code is not available: Этот код недоступен
+This attribute type must be required: Этот тип атрибута должен быть обязательным
+This attribute type can't be required: Этот тип атрибута не может быть обязательным
+This attribute type can't have unique value: Этот тип атрибута не может иметь уникальное значение
+No default value may be specified for this attribute type: Значение по умолчанию не может быть указано для этого типа атрибута
+This value should be Yes or No: Это значение должно быть Да или Нет
+This value should not be blank: Это значение не должно быть пустым
+Option code may contain only letters, numbers and underscores: Код элемента может содержать только буквы, цифры и символ подчеркивания
+Option code may contain only letters (at least one), numbers and underscores: Код элемента может содержать только буквы (минимум одну), цифры и символ подчеркивания
+This value should not be a decimal.: Это значение не должно быть десятичным.
+"The %attribute% attribute requires a non-decimal value, and %value% is not a valid value.": Атрибут %attribute% требует недесятичное значение, значение %value% недопустимо.
+'The file extension is not allowed (allowed extensions: %extensions%).': 'Данное расширение файла не разрешается (возможные расширения: %extensions%).'
+"The {{ attribute_code }} attribute can not have the same value more than once. The {{ value }} value is already set on another product.": Атрибут {{ attribute_code }} должен иметь уникальное значение. Значение {{ value }} уже установлено другому товару.
+The same identifier is already set on another product: Этот же идентификатор уже установлен на другом продукте
+regex.comma_or_semicolon_or_surrounding_space.message: Это поле не должно содержать запятую или точку с запятыми или пробел в начале или конце
+file.extensions.message: 'Расширение файла не разрешается (возможные расширения: %extensions%).'
+"This type of value expects the use of {{ decimal_separator }} to separate decimals.": Этот тип значения предполагает использование {{ decimal_separator }} для разделения десятичных знаков.
+"This type of value expects the use of dot (.) to separate decimals.": Этот тип значения предполагает использование точки (.) для разделения десятичных знаков.
+"This type of value expects the use of comma (,) to separate decimals.": Этот тип значения предполагает использование запятой (,) для разделения десятичных знаков.
+"This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Этот тип значения предполагает использование арабского десятичного разделителя (٫) для разделения десятичных знаков.
+"This type of value expects the use of the format {{ date_format }} for dates.": Этот тип значения предполагает использование {{ date_format }} формата для дат.
+"The category \"%category%\" has to be a root category.": Категория "%category%" должна быть корневой категорией.
+"The attribute \"%attributeCode%\" does not exist.": Атрибут «%attributeCode%» не существует.
+"The attribute \"%attributeCode%\" is not a metric attribute.": Атрибут "%attributeCode%" не является атрибутом единицы измерения.
+"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": Единица измерения "%unitCode%" не существует или не принадлежит семейству единиц измерений по умолчанию "%attributeCode%".
+"The currency \"%currency%\" has to be activated.": Валюта "%currency%" должна быть активирована.
+product_model.code.not_blank.message: Код модели продукта не должен быть пустым.
+product_model.code.unique.message: Этот же идентификатор уже установлен на другом продукте.
+product_model.family_variant.not_blank.message: Вариант семейства продукта не должен быть пустым.
+"The %attribute% attribute requires a string, a %givenType% was detected.": Атрибут %attribute% должен включать строчное значение, был обнаружен %givenType%.
+"The {{ attribute_code }} attribute requires a date that should be {{ limit }} or after.": Дата атрибута {{ attribute_code }} должна быть {{ limit }} или позднее.
+"The {{ attribute_code }} attribute requires a date that should be {{ limit }} or before.": Дата атрибута {{ attribute_code }} должна быть {{ limit }} или раньше.
+"The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.": Атрибут {{ attribute }} должен содержать числа, и представленное значение {{ value }}.
+"The %attribute% attribute must not contain more than %limit% characters. The submitted value is too long.": Атрибут %attribute% должен содержать не более %limit% символов. Представленное значение слишком длинное.
+'The {{ attribute_code }} attribute must match the following regular expression: {{ pattern }}.': 'Атрибут {{ attribute_code }} должен соответствовать регулярному выражению: {{ pattern }}.'
+'The {{ attribute_code }} attribute cannot be empty.': 'Атрибут {{ attribute_code }} не может быть пустым.'
+pim_catalog:
+  constraint:
+    can_have_family_variant_empty_axis_value: 'Атрибут "%attribute%" не может быть пустым, т.к. он является основой этого объекта'
+    product_model_with_same_axis_value_already_exists: 'Невозможно установить значение "%values%" для основы атрибута "%attributes%" в модели продукта "%validated_entity%", так как это значение установлено модели продукта "%sibling_with_same_value%"'
+    variant_product_with_same_axis_value_already_exists: 'Невозможно установить значение "%values%" для основы атрибута "%attributes%" в варианте продукта "%validated_entity%", так как это значение уже установлено для варианта продукта "%sibling_with_same_value%"'
+    can_have_family_variant_unexpected_attribute: 'Невозможно присвоить свойство "%attribute%" объекту, так как оно отсутсвует в наборе атрибутов'
+    cannot_have_product_model_as_parent: 'Модель продукта "%product_model%" не может иметь в качестве родительской модель продукта "%parent_product_model%"'
+    cannot_have_parent: 'Модель продукта "%product_model%" не может иметь родительскую'
+    attribute_does_not_belong_to_family: 'Атрибут "%attribute%" не принадлежит семейству "%family%"'
+    variant_product_invalid_family: 'Семейство у варианта продукта должно быть таким же, как у его родителя'
+    php_int_max_reached: 'Максимальное число должно быть меньше %php_int_max%.'
+    variant_product_has_parent: 'Вариант продукта "%variant_product%" должен иметь родителя'
+    invalid_variant_product_parent: 'Данная разновидность продукта "%variant_product%" не может иметь в качестве родительской модель продукта "%product_model%" (она может иметь другие модели продуктов только в качестве дочерних)'
+    modified_variant_axis_value: 'Разновидность основы "%variant_axis%" не может быть изменена, задано "%provided_value%"'
+    family_variant_attributes_unique: Атрибуты должны быть уникальными, "%attributes%" используются несколько раз в разных наборах атрибутов
+    family_variant_axes_unique: Вариант конфигурационного атрибута должен быть уникальным, а "%attributes%" могут использоваться несколько раз в различных наборах атрибутов
+    family_variant_axes_immutable: 'Вариант конфигурационного атрибута не может быть изменен на уровне "%level%"'
+    family_variant_axes_attribute_type_unique: Вариант конфигурационного атрибута "%axis%" не может быть уникальным или являться идентификатором
+    family_variant_axes_attribute_type: Вариант осей "%axis%" должен быть булевым, простым, простыми справочными данными или единицей измерения
+    family_variant_axes_wrong_type: Конфигурационный атрибут "%axis%" не может быть локализуемым, невидимым или не специфическим для локали
+    family_variant_axes_number_of_axes: 'Вариант набора атрибутов не может иметь более чем %max_axes_number% конфигурационных атрибутов'
+    family_variant_no_axis: Минимум один атрибут должен быть определен как конфигурационный атрибут для набора атрибутов на уровне "%level%"
+    family_variant_axis_level: Атрибут "%axis%" должен быть установлен как конфигурационный атрибут в наборе атрибутов
+    family_variant_has_family_attribute: 'Атрибут "%attribute%" не может быть добавлен в семейство разновидностей "%family_variant%", т.к. он не принадлежит семейству "%family%"'
+    family_variant_level_do_not_exist: Не существует другого атрибута варианта для уровня "%level%"
+    family_variant_no_level: В семействе разновидностей должен быть хотя бы один уровень
+    family_variant_maximum_number_of_level: Семейство разновидностей не может иметь уровней более "%level%"
+    family_variant_unique_attributes_in_last_level: На уровне продукта должен быть установлен уникальный атрибут "%attribute%"
+    product_identifier: Эти идентификаторы «%s» не существуют.
+    blacklisted_attribute_code: Код временно заблокирован до завершения операции удаления.
+    blacklisted_attribute_code_with_link: "Код временно заблокирован до завершения операции. Чтобы узнать подробнее, проверьте <a href='{{ link }}' target='_blank'>детализацию</a>."
+    0: Произошла непредвиденная ошибка.
+    100: Неожиданное значение
+    101: В этом поле ожидается логическое значение.
+    102: В этом поле ожидается число с плавающей точкой.
+    103: В этом поле ожидается целочисленное значение.
+    104: В этом поле ожидается числовое значение.
+    105: В этом поле ожидается строковое значение.
+    106: В этом поле ожидается значение массива.
+    107: В этом поле ожидается массив массивов как значение.
+    200: Произошла внутренняя ошибка
+    201: Произошла внутренняя ошибка
+    202: Значение этого поля должно быть числом.
+    203: Значение этого поля должно быть строковым.
+    204: Значение этого поля должно быть строковым.
+    205: Произошла внутренняя ошибка
+    300: В этом поле ожидается действительный код сущности.
+    301: В этом поле ожидаются действительные канал и локаль.
+    302: В этом поле ожидается действительный канал.
+    303: В этом поле ожидается действительный формат ассоциации.
+    pim_immutable_product_model_validator: Этот же код уже установлен на другой модели продукта.
+    quantified_associations:
+      unexpected_link_type: Тип ссылки "{{ value }}" не существует. Вы можете связать только продукты или модели продукта.
+      max_associations: Вы достигли лимита {{ limit }} ассоциаций. Пожалуйста, удалите некоторые существующие ассоциации перед добавлением новых.
+      invalid_quantity: '{{ value }}" является недопустимым значением. Пожалуйста, задайте значение между {{ min }} и {{ max }}.'
+      products_do_not_exist: "Следующие продукты не существуют: {{ values }}. Пожалуйста, убедитесь, что товары не были удалены."
+      product_models_do_not_exist: "Следующие модели продуктов не существуют: {{ values }}. Пожалуйста, убедитесь, что модели продукта не были удалены."
+      association_type_does_not_exist: Этот тип ассоциации не существует. Пожалуйста, убедитесь, что он не был удален.
+      association_type_is_not_quantified: '"{{ association_type }}" не может быть использован для ассоциаций с количествами. Пожалуйста, выберите другой тип ассоциации или измените свойство "ассоциации".'
+      association_type_should_not_be_quantified: '"{{ association_type }}" может быть использован только для ассоциаций с количествами. Пожалуйста, выберите другой тип ассоциации или измените свойство "количественные ассоциации".'
+mass_edit:
+  edit_common_attributes:
+    invalid_values: В формах атрибутов имеются ошибки

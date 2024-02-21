@@ -1,0 +1,27 @@
+# To have more details on the effect of this "pim_job_product_batch_size", on performances
+# memory leak, please have a look at this documentation part:
+# https://docs.akeneo.com/latest/technical_architecture/performances_guide/batch_page_size.html
+#
+# Note to the core developers:
+# The pim_job_product_batch_size has been changed from 100 to 10 at the beginning of 2018
+# already, because of fear of generating memory leak.
+# Now that we have more feedback, it seems to create more problem than real gain in term
+# of performances. Moreover this value was forced at 100 for our cloud customers, so this
+# was creating inconsistency in our installed base. So we are reverting it back to 100.
+#
+# So if you want to change it, do that only for major version and check with the tech team.
+#
+parameters:
+    pim_job_product_batch_size: 100
+
+services:
+    oro.cache.abstract:
+        abstract:  true
+        class:     Doctrine\Common\Cache\PhpFileCache
+        arguments: ['%kernel.cache_dir%']
+
+    session.handler.pdo:
+        class: Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
+        arguments:
+            - 'mysql:dbname=%env(APP_DATABASE_NAME)%; host=%env(APP_DATABASE_HOST)%; port=%env(APP_DATABASE_PORT)%'
+            - { db_table: 'pim_session', db_username: '%env(APP_DATABASE_USER)%', db_password: '%env(APP_DATABASE_PASSWORD)%' }

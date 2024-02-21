@@ -1,0 +1,26 @@
+services:
+    pim_enrich.connector.flat_translators.attribute_value.boolean:
+        class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AttributeValue\BooleanTranslator
+        arguments:
+            - '@pim_catalog.localization.translator.label'
+        tags: [{ name: pim_enrich.connector.flat_translators.attribute_value }]
+
+    pim_enrich.connector.flat_translators.attribute_value_translator.metric_unit:
+        class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AttributeValue\MetricTranslator
+        arguments:
+            - '@akeneo_measurement.service_api.get_unit_translations'
+        tags: [{ name: pim_enrich.connector.flat_translators.attribute_value }]
+
+    pim_enrich.connector.flat_translators.attribute_value_translator.multi_select:
+        class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AttributeValue\MultiSelectTranslator
+        arguments:
+            - '@akeneo.pim.structure.query.lru_cached_get_existing_attribute_options_with_values'
+        tags:
+            - { name: pim_enrich.connector.flat_translators.attribute_value }
+
+    pim_enrich.connector.flat_translators.attribute_value_translator.simple_select:
+        class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AttributeValue\SimpleSelectTranslator
+        arguments:
+            - '@akeneo.pim.structure.query.lru_cached_get_existing_attribute_options_with_values'
+        tags:
+            - { name: pim_enrich.connector.flat_translators.attribute_value }

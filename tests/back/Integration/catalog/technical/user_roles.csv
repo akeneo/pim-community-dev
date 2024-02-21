@@ -1,0 +1,5 @@
+role;label
+ROLE_ADMINISTRATOR;Administrator
+ROLE_CATALOG_MANAGER;Catalog manager
+ROLE_USER;User
+ROLE_TRAINEE;Trainee

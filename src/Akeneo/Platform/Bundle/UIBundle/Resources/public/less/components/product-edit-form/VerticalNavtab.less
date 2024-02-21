@@ -1,0 +1,51 @@
+@import '../../base/variables';
+
+.AknVerticalNavtab {
+  margin-right: -1px;
+  padding: 0;
+
+  &-header {
+    height: 26px;
+  }
+
+  &-item:not(&-header) {
+    min-width: 150px;
+    border-right: 1px solid @AknBorderColor;
+    border-bottom: 1px solid @AknBorderColor;
+  }
+
+  &-link {
+    height: @AknTabHeight;
+    line-height: @AknTabHeight;
+    color: @AknDefaultFontColor;
+    background: @AknWhite;
+    font-size: @AknDefaultFontSize;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+    align-items: center;
+    white-space: nowrap;
+
+    &:hover:not(&--active) {
+      background: @AknDefaultHoverBackground;
+    }
+  }
+
+  &-link--active,
+  &-item--active &-link {
+    background: white;
+    color: @AknDarkFontColor;
+    font-size: @AknDefaultFontSize;
+
+    &:hover {
+      background: @AknLightGray;
+      color: @AknDarkFontColor;
+    }
+  }
+
+  &--condensed &-link {
+    height: @AknFormHeight;
+    line-height: @AknFormHeight;
+  }
+}

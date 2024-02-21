@@ -1,0 +1,129 @@
+An identifier attribute already exists.: Ya existe un atributo identificador.
+Attribute code may contain only letters, numbers and underscore: El código de atributo solo puede contener letras, números y guión bajo
+Attribute code may contain only letters (at least one), numbers and underscores: El código de atributo solo puede contener letras (al menos una), números y guiones bajos
+Attribute code may not contain line-feed characters: El código de atributo no puede contener un salto de línea
+Attribute group code may contain only letters, numbers and underscores: El código de atributo solo puede contener letras, números y guión bajo
+This attribute type can't be used as a grid filter: Este tipo de atributo no puede usarse como un filtro
+This code is not available: Este código no está disponible
+This attribute type must be required: Este tipo de atributo debe ser requerido
+This attribute type can't be required: Este tipo de atributo no puede ser requerido
+This attribute type can't have unique value: Este tipo de atributo no puede tener un valor único
+No default value may be specified for this attribute type: Ningún valor inicial puede ser definido por este tipo de atirbuto
+This value should be Yes or No: Este valor debe ser Si o No
+This value should not be blank: Este valor no debe estar vacío
+Option code may contain only letters, numbers and underscores: El Código de opción debe contener solo letras, números y caracteres especiales
+Option code may contain only letters (at least one), numbers and underscores: El código de opción solo puede contener letras (al menos una), números y guiones bajos
+This value should not be a decimal.: Este valor no debe ser un decimal.
+"The %attribute% attribute requires a non-decimal value, and %value% is not a valid value.": El atributo %attribute% requiere un valor no decimal, y %value% no es un valor válido.
+'The file extension is not allowed (allowed extensions: %extensions%).': 'La extensión del fichero no está permitida (las extensiones permitidas son: %extensions%).'
+"The {{ attribute_code }} attribute can not have the same value more than once. The {{ value }} value is already set on another product.": El atributo {{ attribute_code }} no puede tener el mismo valor más de una vez. El valor {{ value }} ya está establecido en otro producto.
+The same identifier is already set on another product: El mismo identificador se encuentra ya en otro producto
+regex.comma_or_semicolon_or_surrounding_space.message: Este campo no debe contener ninguna coma o punto y coma o espacio principal o final
+regex.line_break.message: Este campo no debe contener ningún salto de línea
+file.extensions.message: 'La extensión del fichero no está permitida (las extensiones permitidas son: %extensions%).'
+"This type of value expects the use of {{ decimal_separator }} to separate decimals.": Se espera el uso de {{ decimal_separator }} para separar los decimales.
+"This type of value expects the use of dot (.) to separate decimals.": Este valor debería usar un punto (.) como separación de decimales.
+"This type of value expects the use of comma (,) to separate decimals.": Este valor debería usar una coma (,) como separación de decimales.
+"This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Este valor debería usar un separador decimal arábigo (٫) como separación de decimales.
+"This type of value expects the use of the format {{ date_format }} for dates.": Se espera el uso del formato {{ date_format }} para las fechas.
+"The category \"%category%\" has to be a root category.": La categoría "%category%" tiene que ser una categoría raiz.
+"The attribute \"%attributeCode%\" does not exist.": No existe el atributo "%attributeCode%".
+"The attribute \"%attributeCode%\" is not a metric attribute.": El atributo "%attributeCode%" no es un atributo de medición.
+"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": La unidad "%unitCode%" no existe o no pertenece a la familia de medida predeterminada del atributo dado "%attributeCode%".
+"The currency \"%currency%\" has to be activated.": La moneda "%currency%" tiene que ser activada.
+product_model.code.not_blank.message: El código de modelo del producto no debe estar vacío.
+product_model.code.unique.message: El mismo código se encuentra ya en otro modelo de producto.
+product_model.family_variant.not_blank.message: La variante de familia del modelo del producto no debe estar vacío.
+"The %attribute% attribute requires a string, a %givenType% was detected.": El atributo %attribute% requiere una cadena, se ha detectado un %givenType%.
+"The {{ attribute_code }} attribute requires a date that should be {{ limit }} or after.": El atributo {{ attribute_code }} requiere una fecha que debe ser {{ limit }} o posterior.
+"The {{ attribute_code }} attribute requires a date that should be {{ limit }} or before.": El atributo {{ attribute_code }} requiere una fecha que debe ser {{ limit }} o anterior.
+"The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.": El atributo {{ attribute }} requiere un número, y el valor {{ value }} enviado no lo es.
+"The {{ attribute }} attribute requires a value which does not contain space, and the submitted \"{{ value }}\" has at least one.": El atributo {{ attribute }} requiere un valor que no contenga espacios, y el enviado «{{ value }}» tiene al menos uno.
+"The %attribute% attribute must not contain more than %limit% characters. The submitted value is too long.": El atributo %attribute% no debe contener más de %limit% caracteres. El valor enviado es demasiado largo.
+"The %type% file extension is not allowed for the %attribute% attribute. Allowed extensions are %extensions%.": La extensión de archivo %type% no está permitida para el atributo %attribute%. Las extensiones permitidas son %extensions%.
+"The %attribute% attribute requires a url link.": El atributo %attribute% requiere un enlace de url.
+"The %attribute% attribute requires a valid date. Please use the following format %date_format% for dates.": El atributo %attribute% requiere una fecha válida. Utilice el siguiente formato %date_format% para las fechas.
+"The %locale% locale is not available on the %attribute% attribute.": La configuración regional %locale% no está disponible en el atributo %attribute%.
+'The {{ attribute_code }} attribute must match the following regular expression: {{ pattern }}.': 'El atributo {{ attribute_code }} debe coincidir con la siguiente expresión regular: {{ pattern }}.'
+'The {{ attribute_code }} attribute cannot be empty.': 'El atributo {{ attribute_code }} no puede estar vacío.'
+'The file %file_name% is too large (%file_size% %suffix%). The %attribute% attribute can not exceed %max_file_size% %suffix%.': El archivo %file_name% es demasiado grande (%file_size% %suffix%). El atributo %attribute% no puede ser mayor de %max_file_size% %suffix%.
+'The %attribute_code% attribute requires a valid locale. The %invalid_locale% locale does not exist.': 'El atributo %attribute_code% requiere una configuración regional válida. La configuración regional %invalid_locale% no existe.'
+'The %attribute_code% attribute requires a valid locale. The %invalid_locale% locale is not bound to the %channel_code% channel.': 'El atributo %attribute_code% requiere una configuración regional válida. La configuración regional %invalid_locale% no está vinculada al canal %channel_code%.'
+"The %attribute% attribute requires an e-mail address.": 'El atributo %attribute% requiere una dirección de correo electrónico.'
+'The %attribute% attribute requires an equal or greater than %min_value% value.': 'El atributo %attribute% requiere un valor igual o superior a %min_value%.'
+'The %attribute% attribute requires an equal or lesser than %max_value% value.': 'El atributo %attribute% requiere un valor igual o menor que %max_value%.'
+"The %attribute_code% attribute requires a value per channel. The %channel% channel (scope) must exist in your PIM": 'El atributo %attribute_code% requiere un valor por canal. El canal %channel% (objetivo) debe existir en su PIM'
+"The %identifier% identifier is already used for another product.": 'El identificador %identifier% ya está en uso para otro producto.'
+'Please specify a valid currency for the %attribute_code% attribute, the %currency_code% code was sent.': 'Especifique una moneda válida para el atributo %attribute_code% , el código %currency_code% fue enviado.'
+pim_catalog:
+  constraint:
+    can_have_family_variant_empty_axis_value: 'El atributo "%attribute%" no debe estar vacío, debido a que se define como eje para esta entidad'
+    product_model_with_same_axis_value_already_exists: 'No se puede establecer el valor "%values%" para los atributos de ejes "%attributes%" al modelo de producto "%validated_entity%", como a modelo de producto "%sibling_with_same_value%" ya tienen este valor'
+    variant_product_with_same_axis_value_already_exists: 'No se puede establecer el valor "%values%" para los atributos de ejes "%attributes%" la variante de producto "%validated_entity%", como a variante de producto "%sibling_with_same_value%" ya tienen este valor'
+    can_have_family_variant_unexpected_attribute: 'No se puede establecer la propiedad "%attribute%" a esta entidad debido a que no está en la configuración de atributos'
+    cannot_have_product_model_as_parent: 'El modelo de producto "%product_model%" no puede tener el modelo de producto %parent_product_model% como padre'
+    cannot_have_parent: 'El modelo de producto "%product_model%" no puede tener un padre'
+    attribute_does_not_belong_to_family: 'El atributo "%attribute%" no pertenece a la familia "%family%"'
+    variant_product_invalid_family: 'La variante de la familia del productos debe ser la misma que la de su padre'
+    php_int_max_reached: 'El número máximo debe ser inferior a %php_int_max%.'
+    not_null_family: La familia no puede ser «null» porque su producto con el identificador %sku% es un producto variante.
+    variant_product_has_parent: 'El producto variante debe tener un principal'
+    invalid_variant_product_parent: 'El producto variante no puede tener el modelo de producto "%product_model%" como padre, (este modelo de producto solo puede tener otro modelo de producto como niño)'
+    modified_variant_axis_value: 'Dado "%provided_value%", el eje variante "%variant_axis%" no puede ser modificado'
+    family_variant_attributes_unique: Los atributos deben ser únicos, "%attributes%" son usados gran cantidad de veces en la configuración de atributos variantes
+    family_variant_axes_unique: Los ejes variantes debe ser únicos, "%attributes%" son usados bastante seguido en la configuración de los atributos variantes
+    family_variant_axes_immutable: 'Los ejes variantes no pueden ser modificados para el nivel "%level%"'
+    family_variant_axes_attribute_type_unique: Los ejes variantes "%axis%" no pueden ser únicos o un identificador
+    family_variant_axes_attribute_type: Los ejes variantes "%axis%" deben ser un valor booleano, una selección simple, un simple dato de referencia o una medición
+    family_variant_axes_wrong_type: Los ejes variantes "%axis%" no pueden ser localizables, ni accesibles y no poseen un lugar específico
+    family_variant_axes_number_of_axes: 'Una configuración de un atributo variante no puede ser mayor a %max_axes_number% ejes'
+    family_variant_no_axis: Debe haber por lo menos un atributo definido como eje para la configuración del atributo para el nivel "%level%"
+    family_variant_axis_level: El atributo "%axis%" debe ser configurado como un atributo en la misma configuración del atributo variante que fue establecida como eje
+    family_variant_has_family_attribute: 'El atributo "%attribute%" no puede ser agregado a la variante de familia "%family_variant%", ya que no no es un atributo de la familia "%family%"'
+    family_variant_level_do_not_exist: No hay una configuración de variante del atributo para el nivel "%level%"
+    family_variant_no_level: Debe haber definido por lo menos un nivel en la variante de la familia
+    family_variant_maximum_number_of_level: La variante de la familia no puede contener mas de "%level%" niveles
+    family_variant_unique_attributes_in_last_level: El atributo único "%attribute%" debe ser configurado en el nivel del producto
+    product_identifier: Estos identificadores "%s" no existen.
+    blacklisted_attribute_code: Código bloqueado temporalmente hasta que se complete el trabajo de limpieza en curso.
+    blacklisted_attribute_code_with_link: "Código bloqueado temporalmente hasta que finalice el trabajo de limpieza en curso. Para obtener más información, consulte el <a href='{{ link }}' target='_blank'>detalle del trabajo</a>."
+    duplicate_options: '{1} La siguiente opción se ha utilizado varias veces: «{{ duplicate_options }}». Por favor, compruebe su lista de opciones de nuevo. |]1, +Inf] Las siguientes opciones fueron usadas varias veces: «{{ duplicate_options }}». Por favor, compruebe su lista de opciones de nuevo.'
+    0: Se ha producido un error inesperado.
+    100: Valor no previsto
+    101: Este campo debe contener un valor booleano.
+    102: Este campo debe contener un valor de coma flotante.
+    103: Este campo debe contener un número entero.
+    104: Este campo debe contener un valor numérico.
+    105: Este campo debe contener un valor string.
+    106: Este campo debe contener un valor array.
+    107: Este campo debe contener un valor array de arrays.
+    200: Se ha producido un error interno
+    201: Se ha producido un error interno
+    202: Este campo debe contener un valor numérico.
+    203: Este campo debe contener un valor string.
+    204: Este campo debe contener un valor string.
+    205: Se ha producido un error interno
+    300: Este campo debe contener un código de entidad válido.
+    301: Este campo debe contener un objetivo y local válidos.
+    302: Este campo debe contener un objetivo válido.
+    303: Este campo debe contener un formato de asociación válido.
+    pim_immutable_product_model_validator: El mismo código se encuentra ya en otro modelo de producto.
+    quantified_associations:
+      unexpected_link_type: El tipo de enlace «{{ value }}» no existe. Solo puede asociar productos o modelos de productos.
+      max_associations: Has alcanzado el límite de {{ limit }} asociaciones. Por favor, elimina algunas asociaciones existentes antes de añadir nuevas.
+      invalid_quantity: '«{{ value }}» es una cantidad no válida. Por favor, escribe un valor entre {{ min }} y {{ max }}.'
+      products_do_not_exist: "Los siguientes productos no existen: {{ values }}. Por favor, asegúrese de que los productos no han sido eliminados mientras tanto."
+      product_models_do_not_exist: "Los siguientes modelos de productos no existen: {{ values }}. Por favor, asegúrese de que los modelos de productos no han sido eliminados mientras tanto."
+      association_type_does_not_exist: Este tipo de asociación no existe. Por favor, asegúrese de que no ha sido eliminado mientras tanto.
+      association_type_is_not_quantified: '«{{ association_type }}» no se puede utilizar para las asociaciones con cantidades. Elija otro tipo de asociación con cantidades o utilice la propiedad «asociaciones».'
+      association_type_should_not_be_quantified: '«{{ association_type }}» solo puede utilizarse para asociaciones con cantidades. Por favor, elija un tipo de asociación diferente o utilice la propiedad "quantified_associations".'
+    boolean:
+      boolean_value_is_required: El atributo {{ attribute_code }} requiere un valor booleano (verdadero o falso) como datos, se detectó un {{ given_type }}.
+      boolean_value_is_required_in_import: El atributo {{ attribute_code }} requiere un valor booleano (1 o 0) como datos, se detectó un {{ given_type }}.
+mass_edit:
+  edit_common_attributes:
+    invalid_values: Hay errores en el formulario de atributos
+pim_datagrid:
+  column_configurator:
+    label:
+      unique_message: La etiqueta debe ser única

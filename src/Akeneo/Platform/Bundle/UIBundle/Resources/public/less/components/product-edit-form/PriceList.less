@@ -1,0 +1,41 @@
+@import '../../base/variables';
+
+.AknPriceList {
+  @margin: 8px;
+
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -@margin;
+  margin-bottom: -@margin;
+
+  &-item {
+    // We have to insert 3 prices in the PEF width
+    width: (@AknMaxFormWidth - 2 * @margin)/3;
+    margin-right: @margin;
+    margin-bottom: @margin;
+    display: flex;
+  }
+
+  &-currency {
+    background: white;
+    height: @AknFormHeight - 2px;
+    line-height: @AknFormHeight - 2px;
+    border-top: 1px solid @AknBorderColor;
+    border-right: 1px solid @AknBorderColor;
+    border-bottom: 1px solid @AknBorderColor;
+    width: 44px;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    padding: 0 4px;
+    display: block;
+    box-sizing: content-box;
+    text-align: center;
+    z-index: 1;
+    color: @AknLightFontColor;
+  }
+
+  &--localizable &-item {
+    position: relative;
+    padding-right: 2 * @AknLocalizableGap;
+  }
+}

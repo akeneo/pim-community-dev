@@ -1,0 +1,131 @@
+pim_user:
+  user:
+    title: Пользователь
+    fields:
+      name_prefix: Префикс имени
+      email: Адрес электронной почты
+      username: Имя пользователя
+      first_name: Имя
+      middle_name: Отчество
+      last_name: Фамилия
+      name_suffix: Суффикс имени
+      date_of_birth: Дата рождения
+      avatar: Аватар
+      timezone: Часовой пояс
+      roles: Роли
+      groups: Группы
+      password: Пароль
+      password_again: Подтвердите пароль
+      product_grid_filters: Фильтры товаров
+      catalog_locale: Локаль каталога
+      catalog_scope: Область видимости каталога
+      default_tree: Дерево каталога по умолчанию
+      current_password: Действующий пароль
+      new_password: Новый пароль
+      new_password_again: Новый пароль (повтор)
+      default_grid_view:
+        none: (Пусто)
+      default_product_grid_view:
+        label: Представление сетки продуктов по умолчанию
+      ui_locale: Локаль пользовательского интерфейса
+      last_logged_in: Дата последнего входа
+      login_count: Количество входов
+      user_salt: Соль пользователя
+      created: Создан
+      updated: обновлено
+      status: Статус
+      capabilities: Способности
+      has_role: Имеет роль
+      has_group: Имеет группу
+      active: Активен
+      inactive: Неактивен
+    tabs:
+      general:
+        title: Основные
+        contact_information: Контактная информация
+      additional:
+        title: Дополнительные
+      interfaces:
+        title: Интерфейсы
+      group_and_role.title: Группы и роли
+      password.title: Пароль
+      business_unit.title: Бизнес-подразделения
+      email_synchronization.title: Настройки синхронизации email
+    removed_user: Удаленный пользователь
+    login:
+      username_or_email: Имя пользователя или Email
+      remember_me: Запомнить меня на этом компьютере
+      password_forgotten: Забыли пароль?
+      log_in: Войти
+      forgot_password: Восстановить пароль
+      request: Запрос
+      reset: Сброс
+      password_reset_email_sent: Пользователю выслан email со ссылкой на сброс пароля.
+      homepage: Вернуться на главную
+  group:
+    tab:
+      general.title: Основные
+      users.title: Пользователи
+  roles:
+    title: роль
+    tab:
+      general: Основные
+      action: Права доступа
+      users: Пользователи
+  controller:
+    group:
+      message:
+        saved: "Группа сохранена"
+    role:
+      message:
+        saved: "Роль сохранена"
+    user:
+      message:
+        saved: "Пользователь сохранен"
+pim_datagrid:
+  columns:
+    user:
+      createdAt: "Дата создания"
+      updatedAt: "Дата обновления"
+    roles:
+      label: "Ярлык"
+    groups:
+      name: "Имя"
+confirmation:
+  remove:
+    role: Вы действительно хотите удалить эту роль?
+    user: Вы действительно хотите удалить этого пользователя?
+flash:
+  role:
+    removed: Роль успешно удалена
+  user:
+    removed: Пользователь успешно удален
+oro_security:
+  acl_group:
+    user: Пользователи
+    role: Роли
+    group: Группы пользователя
+  acl:
+    user:
+      view: Просмотр списка пользователей
+      create: Создание пользователя
+      edit: Изменение пользователей
+      delete: Удаление пользователя
+    role:
+      view: Просмотр списка ролей
+      create: Создание роли
+      edit: Изменение ролей
+      delete: Удаление роли
+    group:
+      view: Просмотр списка групп пользователя
+      create: Создание группы пользователя
+      edit: Изменение групп пользователя
+      delete: Удаление группы пользователя
+#Security
+(default): Разрешения по умолчанию на сущности
+VIEW: Представление
+CREATE: Создать
+EDIT: Изменить
+DELETE: Удалить
+ASSIGN: Назначить
+SHARE: Поделиться

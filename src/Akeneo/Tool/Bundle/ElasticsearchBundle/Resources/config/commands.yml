@@ -1,0 +1,25 @@
+services:
+    akeneo.elasticsearch.update_mapping_command:
+        class: 'Akeneo\Tool\Bundle\ElasticsearchBundle\Command\UpdateMappingIndexCommand'
+        arguments:
+            $clientRegistry: '@akeneo_elasticsearch.registry.clients'
+            $hosts: '%index_hosts%'
+        tags:
+            - {name: console.command}
+            - { name: 'akeneo.command.authenticated_as_admin_user' }
+
+    Akeneo\Tool\Bundle\ElasticsearchBundle\Command\UpdateIndexVersionCommand:
+        arguments:
+            - '@Akeneo\Tool\Bundle\ElasticsearchBundle\Infrastructure\Client\IndexUpdaterClient'
+        tags:
+            - {name: console.command}
+
+    Akeneo\Tool\Bundle\ElasticsearchBundle\Command\UpdateTotalFieldsLimitCommand:
+        arguments:
+            - '@akeneo_elasticsearch.registry.clients'
+            - '@Akeneo\Tool\Bundle\ElasticsearchBundle\GetTotalFieldsLimit'
+            - '%index_hosts%'
+            - '%index_list_changed_total_field_limit%'
+        tags:
+            - { name: 'console.command' }
+            - { name: 'akeneo.command.authenticated_as_admin_user' }

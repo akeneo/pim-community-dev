@@ -1,0 +1,45 @@
+parameters:
+    pim_enrich.extension.action.type.navigate_product_and_product_model.class: 'Akeneo\Pim\Enrichment\Bundle\Extension\Action\NavigateProductAndProductModelAction'
+    pim_enrich.extension.action.type.edit_in_modal.class: 'Akeneo\Pim\Enrichment\Bundle\Extension\Action\EditInModalAction'
+    pim_enrich.extension.action.type.delete_product.class: 'Akeneo\Pim\Enrichment\Bundle\Extension\Action\DeleteProductAction'
+    pim_enrich.extension.action.type.toggle_product.class: 'Akeneo\Pim\Enrichment\Bundle\Extension\Action\ToggleProductAction'
+
+services:
+    pim_enrich.extension.register_identifier_filters:
+        class: Akeneo\Pim\Enrichment\Bundle\Extension\RegisterIdentifierFilters
+        arguments:
+            - '@akeneo.pim.structure.query.get_attributes'
+            - '@akeneo.pim.structure.query.get_attribute_translations'
+            - '@pim_user.context.user'
+            - '@oro_datagrid.datagrid.request_params'
+            - '@request_stack'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.product-grid, method: buildBefore }
+
+    pim_enrich.extension.action.type.navigate_product_and_product_model:
+        public: true
+        class: '%pim_enrich.extension.action.type.navigate_product_and_product_model.class%'
+        shared: false
+        tags:
+            - { name: oro_datagrid.extension.action.type, type: navigate-product-and-product-model }
+
+    pim_enrich.extension.action.type.edit_in_modal:
+        public: true
+        class: '%pim_enrich.extension.action.type.edit_in_modal.class%'
+        shared: false
+        tags:
+            - { name: oro_datagrid.extension.action.type, type: edit-in-modal }
+
+    pim_enrich.extension.action.type.delete_product:
+        public: true
+        class: '%pim_enrich.extension.action.type.delete_product.class%'
+        shared: false
+        tags:
+            - { name: oro_datagrid.extension.action.type, type: delete-product }
+
+    pim_enrich.extension.action.type.toggle_product:
+        public: true
+        class: '%pim_enrich.extension.action.type.toggle_product.class%'
+        shared: false
+        tags:
+            - { name: oro_datagrid.extension.action.type, type: toggle-product }

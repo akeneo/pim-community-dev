@@ -1,0 +1,6 @@
+parameters:
+  level: 5
+  paths:
+    - %rootDir%/../../../src/Akeneo/Platform/Job
+  excludePaths:
+    - %rootDir%/../../../src/Akeneo/Platform/Job/back/tests/Specification

@@ -1,0 +1,20 @@
+<select class="select2 operator" <%- isEditable ? '' : 'disabled' %> name="filter-operator">
+    <% _.each(operators, function (operatorChoiceLabel, operatorChoice) { %>
+        <option value="<%- operatorChoice %>"<%- operator === operatorChoice ? ' selected' : '' %>>
+            <%- operatorChoiceLabel %>
+        </option>
+    <% }); %>
+</select>
+
+<% if (!_.contains(['EMPTY', 'NOT EMPTY', 'BETWEEN', 'NOT BETWEEN'], operator)) { %>
+    <span class="AknFieldContainer-subContainer start-date-wrapper">
+        <input name="filter-value-start" class="AknTextField AknTextField--noLeftRadius add-on value" type="text" <%- isEditable ? '' : 'disabled' %> value="<%- startValue ? startValue : '' %>">
+    </span>
+<% } else if (_.contains(['BETWEEN', 'NOT BETWEEN'], operator)) { %>
+    <span class="AknFieldContainer-subContainer start-date-wrapper">
+        <input name="filter-value-start" class="AknTextField AknTextField--noLeftRadius add-on value" type="text" <%- isEditable ? '' : 'disabled' %> value="<%- startValue ? startValue : '' %>">
+    </span>
+    <span class="AknFieldContainer-subContainer end-date-wrapper">
+        <input name="filter-value-end" class="AknTextField AknTextField--noLeftRadius add-on value" type="text" <%- isEditable ? '' : 'disabled' %> value="<%- endValue ? endValue : '' %>">
+    </span>
+<% } %>

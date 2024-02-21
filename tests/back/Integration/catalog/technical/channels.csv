@@ -1,0 +1,4 @@
+code;label-en_US;label-fr_FR;currencies;locales;tree;conversion_units
+ecommerce;Ecommerce;Ecommerce;USD,EUR;en_US;master;a_metric_without_decimal:METER,a_metric:KILOWATT
+tablet;Tablet;Tablette;USD,EUR;de_DE,fr_FR,en_US;master;
+ecommerce_china;Ecommerce china;Ecommerce chine;CNY;en_US,zh_CN;master_china;

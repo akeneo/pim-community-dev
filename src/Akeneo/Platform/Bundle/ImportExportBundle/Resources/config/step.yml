@@ -1,0 +1,19 @@
+services:
+  akeneo.job_automation.connector.step.download:
+    class: Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Step\DownloadStep
+    arguments:
+      - 'download_files'
+      - '@event_dispatcher'
+      - '@akeneo_batch.job_repository'
+      - '@Akeneo\Platform\Bundle\ImportExportBundle\Application\DownloadFileFromStorage\DownloadFileFromStorageHandler'
+      - '%local_storage_root%'
+
+  akeneo.job_automation.connector.step.upload:
+    class: Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Step\UploadStep
+    arguments:
+      - 'upload_files'
+      - '@event_dispatcher'
+      - '@akeneo_batch.job_repository'
+      - '@Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage\TransferFilesToStorageHandler'
+      - '@pim_connector.archiver.file_writer_archiver'
+

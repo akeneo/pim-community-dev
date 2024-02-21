@@ -1,0 +1,19 @@
+extensions:
+    pim-associations-product-and-product-model-picker-modal:
+        module: pim/product-edit-form/product-and-product-model-picker
+        config:
+            datagridName: association-product-picker-grid
+            categoryTreeRoute: pim_enrich_product_grid_category_tree
+            columnName: id
+            fetcher: product
+
+    pim-association-product-and-product-model-picker-modal-filters-list:
+        module: oro/datafilter/filters-list
+        parent: pim-associations-product-and-product-model-picker-modal
+        targetZone: filters
+
+    pim-association-product-and-product-model-picker-modal-filters-manage:
+        module: oro/datafilter/filters-button
+        parent: pim-association-product-and-product-model-picker-modal-filters-list
+        config:
+            displayAsPanel: true

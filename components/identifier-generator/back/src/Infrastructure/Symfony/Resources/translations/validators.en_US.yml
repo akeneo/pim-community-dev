@@ -1,0 +1,28 @@
+validation:
+    create:
+        identifier_limit_reached: 'Limit of "{{limit}}" identifier generators is reached'
+        code_already_used: 'This code is already used'
+    update:
+        identifier_generator_code_not_found: 'Identifier generator "{{code}}" does not exist or you do not have permission to access it.'
+    identifier_generator:
+        attribute_does_not_exist: 'The "{{code}}" attribute does not exist.'
+        attribute_should_have_type: 'The "{{ code }}" attribute code is "{{ type }}" type and should be of type "{{ expected }}".'
+        free_text_string_field_required: 'Free text should contain "string" key'
+        enabled_value_field_required: 'Enabled should contain "value" key'
+        enabled_boolean_value: 'This value should be a boolean.'
+        auto_number_fields_required: '"{{field}}" fields are required for "auto_number" type'
+        structure_auto_number_limit_reached: 'should contain only {{limit}} auto number'
+        conditions_limit_reached: 'should contain only {{limit}} {{type}} condition'
+        unknown_operator: 'Operator {{ value }} can only be one of the following: {{ choices }}.'
+        families_do_not_exist: 'The following families have been deleted from your catalog: {{ familyCodes }}. You can remove them from your product selection.'
+        options_do_not_exist: 'The following attribute options do not exist for the attribute "{{ attributeCode }}": {{ optionCodes }}.'
+        unknown_scope: 'The "{{ scopeCode }}" scope does not exist.'
+        unknown_locale: 'The "{{ localeCode }}" locale does not exist or is not activated.'
+        inactive_locale: 'The "{{ localeCode }}" locale is not active for the "{{ scopeCode }}" channel.'
+        family_property_fields_required: '"{{ field }}" field is required for "family" type.'
+        simple_select_property_fields_required: '"{{ field }}" field is required for "simple_select" type.'
+        reference_entity_property_fields_required: '"{{ field }}" field is required for "reference_entity" type.'
+        process_unknown_operator: 'Operator {{ value }} can only be one of the following: {{ choices }}.'
+        locale_required: 'A locale is required for the "{{ attributeCode }}" attribute.'
+        scope_required: 'A channel is required for the "{{ attributeCode }}" attribute.'
+        categories_do_not_exist: 'The following categories have been deleted from your catalog: {{ categoryCodes }}. You can remove them from your product selection.'

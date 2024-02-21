@@ -1,0 +1,55 @@
+parameters:
+    pim_datagrid.extension.sorter.orm.field_sorter.class:            Oro\Bundle\PimDataGridBundle\Extension\Sorter\Orm\FieldSorter
+    pim_datagrid.extension.sorter.product.field_sorter.class:        Oro\Bundle\PimDataGridBundle\Extension\Sorter\Product\FieldSorter
+    pim_datagrid.extension.sorter.product.value_sorter.class:        Oro\Bundle\PimDataGridBundle\Extension\Sorter\Product\ValueSorter
+    pim_datagrid.extension.sorter.product.completeness_sorter.class: Oro\Bundle\PimDataGridBundle\Extension\Sorter\Product\CompletenessSorter
+    pim_datagrid.extension.sorter.product.family_sorter.class:       Oro\Bundle\PimDataGridBundle\Extension\Sorter\Product\FamilySorter
+    pim_datagrid.extension.sorter.product.in_group_sorter.class:     Oro\Bundle\PimDataGridBundle\Extension\Sorter\Product\InGroupSorter
+    pim_datagrid.extension.sorter.product.is_associated_sorter.class: Oro\Bundle\PimDataGridBundle\Extension\Sorter\Product\IsAssociatedSorter
+
+services:
+    pim_datagrid.extension.sorter.orm.field_sorter:
+        class: '%pim_datagrid.extension.sorter.orm.field_sorter.class%'
+        tags:
+            - { name: pim_datagrid.extension.sorter, type: field }
+
+    pim_datagrid.extension.sorter.product.field_sorter:
+        class: '%pim_datagrid.extension.sorter.product.field_sorter.class%'
+        tags:
+            - { name: pim_datagrid.extension.sorter, type: product_field }
+
+    pim_datagrid.extension.sorter.product.value_sorter:
+        class: '%pim_datagrid.extension.sorter.product.value_sorter.class%'
+        arguments:
+            - '@pim_catalog.repository.attribute'
+        tags:
+            - { name: pim_datagrid.extension.sorter, type: product_value }
+
+    pim_datagrid.extension.sorter.product.completeness_sorter:
+        class: '%pim_datagrid.extension.sorter.product.completeness_sorter.class%'
+        tags:
+            - { name: pim_datagrid.extension.sorter, type: product_completeness }
+
+    pim_datagrid.extension.sorter.product.family_sorter:
+        class: '%pim_datagrid.extension.sorter.product.family_sorter.class%'
+        tags:
+            - { name: pim_datagrid.extension.sorter, type: product_family }
+
+    pim_datagrid.extension.sorter.product.is_associated_sorter:
+        class: '%pim_datagrid.extension.sorter.product.is_associated_sorter.class%'
+        tags:
+            - { name: pim_datagrid.extension.sorter, type: product_is_associated }
+
+    pim_datagrid.extension.sorter.product.in_group_sorter:
+        class: '%pim_datagrid.extension.sorter.product.in_group_sorter.class%'
+        arguments:
+            - '@oro_datagrid.datagrid.request_params'
+        tags:
+            - { name: pim_datagrid.extension.sorter, type: product_in_group }
+
+    pim_reference_data.extension.sorter.reference_data_sorter:
+        class: 'Oro\Bundle\PimDataGridBundle\Extension\Sorter\Product\ReferenceDataSorter'
+        arguments:
+            - '@oro_datagrid.datagrid.request_params'
+        tags:
+            - { name: pim_datagrid.extension.sorter, type: product_value_reference_data }

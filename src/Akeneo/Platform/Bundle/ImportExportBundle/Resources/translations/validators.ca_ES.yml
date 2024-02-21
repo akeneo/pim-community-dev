@@ -1,0 +1,5 @@
+This directory is not writable: Aquest directori no és editable.
+This directory is not valid: Aquest directori no és vàlid.
+pim_import_export.job_instance.unknown_job_definition: No s'ha pogut crear un %job_type% amb una definició de job desconegut
+This code is already taken: Aquest codi ja s'esta utilizant
+pim_import_export.validation.max_length_reached: Aquest valor és massa llarg. Ha de contenir {{ limit }} caràcters o menys.

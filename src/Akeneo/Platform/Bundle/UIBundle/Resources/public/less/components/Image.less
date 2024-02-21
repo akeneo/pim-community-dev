@@ -1,0 +1,207 @@
+@import '../base/variables';
+
+.AknImage {
+  @imageWidth: 140px;
+  @imageHeight: 140px;
+  @padding: 40px;
+
+  position: relative;
+  width: @imageWidth + 2px;
+  height: @imageHeight + 2px;
+  border: 1px solid @AknBorderColor;
+  margin-right: 20px;
+  border-radius: 4px;
+  display: flex;
+  overflow: hidden;
+  flex-basis: @imageWidth + 2px;
+  flex-shrink: 0;
+
+  &--editable {
+    &:after {
+      content: '';
+      opacity: 0;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: block;
+      transition: opacity 0.3s;
+    }
+  }
+
+  &-uploader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100%;
+
+    &Helper {
+      margin-bottom: 24px;
+    }
+  }
+
+  &:not(&--wide) {
+    .AknImage-uploader {
+      justify-content: space-evenly;
+
+      &Illustration {
+        width: auto;
+        height: 70px;
+        margin: 8px 0;
+      }
+
+      &Helper {
+        margin: 0;
+        text-align: center;
+      }
+    }
+  }
+
+  &-action {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    z-index: 3;
+    display: flex;
+    padding: 0;
+    flex-direction: column;
+    justify-content: flex-end;
+    background: RGBa(0, 0, 0, 0.8);
+    transition: opacity 0.3s;
+
+    & .AknImage-actionItem {
+      margin-top: 10px;
+      display: flex;
+      align-items: end;
+      color: white;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    .AknImage-actionItemIcon {
+      width: 16px;
+      height: 16px;
+      margin-right: 10px;
+      overflow: visible;
+    }
+  }
+
+  &:not(&--empty):not(&--readOnly):not(&--wide):hover {
+    .AknImage-action {
+      padding: 0 0 15px 15px;
+    }
+
+    & .AknImage-actionItemIcon {
+      margin-right: 4px;
+    }
+  }
+
+  &:not(&--empty):not(&--readOnly):hover {
+    .AknImage-action {
+      opacity: 1;
+      width: 100%;
+      height: 100%;
+      padding: 0 0 30px 30px;
+    }
+
+    .AknImage-display {
+      filter: blur(4px);
+    }
+  }
+
+  &--focusing {
+    border-color: @AknBlue;
+    outline: none;
+  }
+
+  &-loader {
+    opacity: 0;
+    position: absolute;
+    width: 0%;
+    height: @imageHeight;
+    display: block;
+    transition: opacity 0.5s;
+    z-index: 2;
+    overflow: hidden;
+
+    &--loading {
+      opacity: 1;
+      transition: width 0.5s;
+    }
+  }
+
+  &-display {
+    margin: auto;
+    width: auto;
+    max-height: @imageHeight;
+    transition: filter 0.3s;
+    z-index: 0;
+    object-fit: contain;
+  }
+
+  &-displayContainer {
+    display: flex;
+    width: 100%;
+    height: 100%;
+  }
+
+  &-updater {
+    opacity: 0;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+
+    &:hover:not(&--readOnly) {
+      cursor: pointer;
+    }
+  }
+
+  &-drop {
+    position: absolute;
+    width: @imageWidth;
+    height: @imageHeight;
+    transform: scale(1.05);
+    background-size: cover;
+    background-position: 50% 50%;
+    filter: blur(5px) brightness(50%);
+  }
+
+  &--wide {
+    @imageWidth: 460px;
+    @imageHeight: 250px;
+
+    & .AknImage-loader {
+      height: @imageHeight;
+    }
+
+    width: @imageWidth;
+    flex-basis: @imageWidth;
+    height: @imageHeight;
+
+    & .AknImage-display {
+      max-height: @imageHeight;
+      max-width: @imageWidth;
+      width: auto;
+    }
+
+    & .AknImage-drop {
+      width: @imageWidth;
+      height: @imageHeight;
+    }
+  }
+
+  &--centered {
+    display: block;
+    margin: auto;
+  }
+
+  &--centeredWithMargin {
+    display: block;
+    margin: 20px auto 0;
+  }
+}

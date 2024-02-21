@@ -1,0 +1,146 @@
+#Job labels
+batch_jobs:
+  default_steps:
+    validation: Перевірка файлу
+    import_associations: Імпорт асоціацій
+    import_root_product_model: Імпорт кореневої моделі продукту
+    import_sub_product_model: Імпорт підлеглої моделі
+    compute_data_related_to_family_root_product_models: Обчислення даних кореневих моделей продукту
+    compute_data_related_to_family_sub_product_models: Обчислення даних підлеглих моделей продукту
+    compute_data_related_to_family_products: Обчислення даних продуктів
+    compute_product_models_descendants: Обчислення дочірніх моделей продукту
+    compute_family_variant_structure_changes: Обчислення структурних змін різновидів сімейства
+    compute_completeness_of_products_family: Підрахувати заповненість продуктів сімейства
+  csv_product_export:
+    label: Експорт продуктів у CSV
+    export.label: Експорт продуктів
+  csv_product_model_export:
+    label: Експорт моделі продукту в CSV
+    export.label: Експорт моделі продукту
+  csv_category_export:
+    label: Експорт категорій у CSV
+    export.label: Експорт категорій
+  csv_attribute_export:
+    label: Експорт атрибутів у CSV
+    export.label: Експорт атрибутів
+  csv_attribute_option_export:
+    label: Експорт налаштувань атрибутів у CSV
+    export.label: Експорт налаштувань атрибутів
+  csv_association_type_export:
+    label: Експорт типів асоціацій у CSV
+    export.label: Експорт типів асоціацій
+  csv_group_export:
+    label: Експорт групи у CSV
+    export.label: Експорт групи
+  csv_family_export:
+    label: Експорт сім'ї у форматі CSV
+    export.label: Експорт сім'ї
+  csv_family_variant_export:
+    label: Експорт варіанту сімейства у форматі CSV
+    export.label: Експорт варіантів сімейства
+  csv_product_import:
+    label: Експорт продуктів у CSV
+    import.label: Експорт продуктів
+  csv_product_model_import:
+    label: Імпорт моделі продукту в CSV
+    import_product_model_descendants.label: Обчислення дочірньої моделі продукту
+  csv_category_import:
+    label: Імпорт категорій у CSV
+    import.label: Імпорт категорій
+  csv_attribute_import:
+    label: Імпорт атрибутів у CSV
+    import.label: Імпорт атрибутів
+  csv_attribute_option_import:
+    label: Імпорт налаштувань атрибутів у CSV
+    import.label: Імпорт налаштувань атрибутів
+  csv_association_type_import:
+    label: Імпорт типів асоціацій у CSV
+    import.label: Імпорт типів асоціацій
+  csv_family_import:
+    label: Імпорт сімейств із CSV
+    import.label: Імпорт сімейств
+    compute_data_related_to_family_variants.label: Обчислення даних моделей продукту
+  csv_family_variant_import:
+    label: Імпорт варіантів сімейства в CSV
+    import.label: Імпорт варіантів сімейства
+  csv_group_import:
+    label: Імпорт групи у CSV
+    import.label: Імпорт групи
+  csv_attribute_group_export:
+    label: Експорт груп атрибутів у CSV
+    export.label: Експорт груп атрибутів
+  csv_group_type_export:
+    label: Експорт типів груп у CSV
+    export.label: Експорт типів груп
+  csv_attribute_group_import:
+    label: Імпорт груп атрибутів з CSV
+    import.label: Імпорт груп атрибутів
+  csv_group_type_import:
+    label: Імпорт типів груп з CSV
+    import.label: Імпорт типів груп
+  xlsx_category_import:
+    label: Імпорт категорій з XLSX
+    import.label: Імпорт категорій
+  xlsx_association_type_import:
+    label: Імпорт типів асоціацій з XLSX
+    import.label: Імпорт типів асоціацій
+  xlsx_attribute_import:
+    label: Імпорт атрибутів з XLSX
+    import.label: Імпорт атрибутів
+  xlsx_attribute_option_import:
+    label: Імпорт опцій атрибутів з XLSX
+    import.label: Імпорт налаштувань атрибутів
+  xlsx_family_import:
+    label: Імпорт сімейств з XLSX
+    import.label: Імпорт сімейств
+  xlsx_family_variant_import:
+    label: Імпорт різновидів сімейства в XLSX
+    import.label: Імпорт варіантів сімейства
+  xlsx_product_export:
+    label: Експорт продуктів в XLSX
+    export.label: Експорт продуктів
+  xlsx_product_model_export:
+    label: Експорт моделі продукту в XLSX
+    export.label: Експорт моделі продукту
+  xlsx_product_import:
+    label: Імпорт продуктів з XLSX
+    import.label: Експорт продуктів
+  xlsx_product_model_import:
+    label: Імпорт моделі продукту в XLSX
+    import_product_model_descendants.label: Обчислення дочірньої моделі продукту
+  xlsx_group_export:
+    label: Експорт груп у XLSX
+    export.label: Експорт групи
+  xlsx_group_import:
+    label: Імпорт груп з XLSX
+    import.label: Імпорт групи
+  xlsx_family_export:
+    label: Експорт сімейств у XLSX
+    export.label: Експорт сім'ї
+  xlsx_family_variant_export:
+    label: Експорт різновидів сімейства в XLSX
+    export.label: Експорт варіантів сімейства
+  xlsx_category_export:
+    label: Експорт категорій у XLSX
+    export.label: Експорт категорій
+  xlsx_attribute_export:
+    label: Експорт атрибутів у XLSX
+    export.label: Експорт атрибутів у XLSX
+  xlsx_attribute_option_export:
+    label: Експорт опцій атрибутів у XLSX
+    export.label: Експорт опцій атрибутів у XLSX
+  xlsx_association_type_export:
+    label: Експорт типів асоціацій у XLSX
+    export.label: Експорт типів асоціацій у XLSX
+  xlsx_attribute_group_export:
+    label: Експорт груп атрибутів у XLSX
+    export.label: Експорт груп атрибутів
+  xlsx_group_type_export:
+    label: Експорт типів груп у XLSX
+    export.label: Експорт типів груп
+  xlsx_attribute_group_import:
+    label: Імпорт груп атрибутів з XLSX
+    import.label: Імпорт груп атрибутів
+  xlsx_group_type_import:
+    label: Імпорт типів груп з XLSX
+    import.label: Імпорт типів груп

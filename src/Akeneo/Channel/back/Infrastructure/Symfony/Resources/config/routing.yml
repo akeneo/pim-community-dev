@@ -1,0 +1,27 @@
+internal_api_locale:
+    resource: '@AkeneoChannelBundle/Resources/config/routing/internal_api/locale.yml'
+    prefix: /configuration/locale
+
+external_api_locale:
+    resource: '@AkeneoChannelBundle/Resources/config/routing/external_api/locale.yml'
+    prefix: /api/rest/v1
+
+internal_api_channel:
+    resource: '@AkeneoChannelBundle/Resources/config/routing/internal_api/channel.yml'
+    prefix: /configuration/channel
+
+external_api_channel:
+    resource: '@AkeneoChannelBundle/Resources/config/routing/external_api/channel.yml'
+    prefix: /api/rest/v1
+
+external_api_currency:
+    resource: '@AkeneoChannelBundle/Resources/config/routing/external_api/currency.yml'
+    prefix: /api/rest/v1
+
+currency_internal_api:
+    resource: '@AkeneoChannelBundle/Resources/config/routing/internal_api/currency.yml'
+    prefix: /configuration/currency
+
+currency_ui:
+    resource: '@AkeneoChannelBundle/Resources/config/routing/ui/currency.yml'
+    prefix: /configuration/currency

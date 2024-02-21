@@ -1,0 +1,13 @@
+extensions:
+    pim-family-variant-create-form:
+        module: pim/family-edit-form/add-family-variant-form
+
+    pim-family-variant-create-form-header:
+        module: pim/family-edit-form/add-family-variant-header
+        parent: pim-family-variant-create-form
+        targetZone: header
+
+    pim-family-variant-create-form-fields-container:
+        module: pim/family-edit-form/add-family-variant-fields-container
+        parent: pim-family-variant-create-form
+        targetZone: fields-container

@@ -1,0 +1,90 @@
+Item deleted: Item eliminado
+Are you sure you want to delete this item?: Tem a certeza que pretende remover este item?
+Delete Error: Erro a remover
+Are you sure you want to do remove selected items?: Tem certeza que deseja remover os itens selecionados?
+Selected items were removed.: Os itens selecionados foram removidos.
+Selected items were not removed.: Os itens selecionados não foram removidos.
+Please, select items to remove.: Por favor, Seleccione os itens a remover.
+Cannot delete item.: Não é possível eliminar o item.
+Refresh Confirmation: Confirmação de atualização
+Your local changes will be lost. Are you sure you want to refresh grid?: As suas alterações locais serão perdidas. Tem a certeza de que deseja atualizar a grelha?
+Reset Confirmation: Confirmação de Reset
+Your local changes will be lost. Are you sure you want to reset grid?: Suas alterações locais serão perdidas. Tem a certeza de que deseja atualizar a grelha?
+Confirmation: Confirmação
+edit: editar
+copy: copiar
+remove: remover
+Status: Estado
+All: Tudo
+Per page: Por página
+Mass Action Confirmation: Confirmação de ação em massa
+Mass action performed.: Ação em massa executada.
+Mass action is not performed.: Ação em massa não executada.
+Please, select items to perform mass action.: Por favor, selecione itens para executar a ação em massa.
+Execution Confirmation: Confirmar execução
+Are you sure you want to do this?: Tem a certeza que pretende fazer isso?
+Action performed.: Ação executada.
+Action is not performed.: Ação não executada.
+Please, select item to perform action.: Por favor, selecione o item para executar a ação.
+View per page: Visualizações por página
+Enabled: Ativo
+Disabled: Inativo
+not_available: N/A
+"Yes": true
+"No": false
+oro.datagrid.entityHint: Entidade
+oro.datagrid.noentities: Nenhum registo encontrado
+oro.datagrid.nocolumns: Não há colunas configuradas para esta grelha
+oro.datagrid.pagination.label: "Página"
+oro.datagrid.pagination.totalPages: "de {{ totalPages }}"
+oro.datagrid.pagination.totalRecords: "{{ totalRecords }} registos"
+oro.datagrid.action.reset: "Reset / Restaurar"
+oro.datagrid.action.refresh: "Atualizar"
+oro_datagrid.select.all: "Tudo"
+oro_datagrid.select.visible: "Tudo visível"
+oro_datagrid.select.none: "Nenhum"
+pim.grid.ajax_choice_filter.label_empty: está vazio
+pim.grid.ajax_choice_filter.label_not_empty: não está vazio
+pim.grid.choice_filter:
+  label_empty: está vazio
+  label_not_empty: não está vazio
+  label_in_list: na lista
+Available Columns: Colunas disponíveis
+datagrid_view.columns.min_message: Deve selecionar pelo menos uma coluna da grelha para exibir
+pim_datagrid:
+  column_configurator:
+    label: Colunas
+    title: Seleção de colunas
+    all_groups: Todos os grupos
+    search: Pesquisar
+    clear: Limpar
+    apply: Aplicar
+    cancel: Cancelar
+    remove_column: Remover
+  mass_action:
+    delete:
+      confirm_title: Confirmar eliminação
+      confirm_ok: OK
+pim.grid.mass_action.quick_export.title: Exportação rápida
+pim.grid.mass_action.quick_export.launched: A exportação rápida foi iniciada
+pim.grid.action.launch.title: Iniciar
+pim.grid.action.show.title: Mostrar
+Please select view: Por favor, escolha uma vista
+Loading...: A carregar...
+View: Ver
+from: desde
+to: até
+grid.view_selector:
+  default_view: Vista por defeito
+  save_changes: Gravar esta vista
+  remove: Eliminar esta vista
+  create_view: Criar vista
+  create: Criar
+  search: Pesquisar
+  views: Visualizações
+  placeholder: Nome da nova vista
+  choose_label: Escolher um nome para a vista
+  confirmation:
+    remove: Tem certeza que deseja remover esta vista da grelha?
+    delete: Confirmar eliminação
+grid.view_selector.flash.updated: Vista de grelha atualizada com sucesso

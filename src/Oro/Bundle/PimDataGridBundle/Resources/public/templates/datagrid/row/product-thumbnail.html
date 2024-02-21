@@ -1,0 +1,8 @@
+<div class="AknGrid-fullImage" style="background-image: url('<%- imagePath %>');background-size: contain;background-repeat: no-repeat;"></div>
+<div class="AknGrid-title"><%- label %></div>
+<div class="AknGrid-subTitle"><%- identifier %></div>
+<% if (completenessText !== null) { %>
+    <div class="AknGrid-bodyCell string-cell AknBadge--topRight">
+        <span class="AknBadge <%- completenessClass %>"><%- completenessText %></span>
+    </div>
+<% } %>

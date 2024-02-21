@@ -1,0 +1,5 @@
+services:
+    pim_connector.reader.database.category:
+        class: 'Akeneo\Category\Infrastructure\Component\Connector\Reader\Database\CategoryReader'
+        arguments:
+            - '@pim_catalog.repository.category'

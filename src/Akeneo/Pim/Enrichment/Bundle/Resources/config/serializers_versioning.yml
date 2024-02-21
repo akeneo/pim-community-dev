@@ -1,0 +1,82 @@
+parameters:
+    pim_serializer.normalizer.flat.product.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\ProductNormalizer
+    pim_serializer.normalizer.flat.value.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\ValueNormalizer
+    pim_serializer.normalizer.flat.product_model.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\ProductModelNormalizer
+    pim_serializer.normalizer.flat.datetime.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\DateTimeNormalizer
+    pim_serializer.normalizer.flat.file.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\FileNormalizer
+    pim_serializer.normalizer.flat.metric.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\MetricNormalizer
+    pim_serializer.normalizer.flat.price.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\PriceNormalizer
+    pim_serializer.normalizer.flat.group.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\GroupNormalizer
+    pim_serializer.normalizer.flat.label_translation.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\TranslationNormalizer
+    pim_serializer.normalizer.flat.collection.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\CollectionNormalizer
+
+services:
+
+    pim_versioning.serializer.normalizer.flat.product:
+        class: '%pim_serializer.normalizer.flat.product.class%'
+        arguments:
+            - '@pim_versioning.serializer.normalizer.flat.quantified_associations'
+        tags:
+            - { name: pim_versioning.serializer.normalizer, priority: 90 }
+
+    pim_versioning.serializer.normalizer.flat.value:
+        public: false
+        class: '%pim_serializer.normalizer.flat.value.class%'
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.repository.cached_attribute_option'
+        tags:
+            - { name: pim_versioning.serializer.normalizer, priority: 90 }
+
+    pim_versioning.serializer.normalizer.flat.product_model:
+        class: '%pim_serializer.normalizer.flat.product_model.class%'
+        arguments:
+            - '@pim_versioning.serializer.normalizer.flat.quantified_associations'
+        tags:
+            - { name: pim_versioning.serializer.normalizer, priority: 90 }
+
+    pim_versioning.serializer.normalizer.flat.datetime:
+        class: '%pim_serializer.normalizer.flat.datetime.class%'
+        tags:
+            - { name: pim_versioning.serializer.normalizer, priority: 90 }
+
+    pim_versioning.serializer.normalizer.flat.file:
+        class: '%pim_serializer.normalizer.flat.file.class%'
+        tags:
+            - { name: pim_versioning.serializer.normalizer, priority: 90 }
+
+    pim_versioning.serializer.normalizer.flat.metric:
+        class: '%pim_serializer.normalizer.flat.metric.class%'
+        tags:
+            - { name: pim_versioning.serializer.normalizer, priority: 90 }
+
+    pim_versioning.serializer.normalizer.flat.price:
+        class: '%pim_serializer.normalizer.flat.price.class%'
+        tags:
+            - { name: pim_versioning.serializer.normalizer, priority: 90 }
+
+    pim_versioning.serializer.normalizer.flat.group:
+        class: '%pim_serializer.normalizer.flat.group.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.group'
+            - '@pim_versioning.serializer.normalizer.flat.label_translation'
+        tags:
+            - { name: pim_versioning.serializer.normalizer, priority: 90 }
+
+    pim_versioning.serializer.normalizer.flat.label_translation:
+        class: '%pim_serializer.normalizer.flat.label_translation.class%'
+        tags:
+            - { name: pim_versioning.serializer.normalizer, priority: 90 }
+
+    pim_reference_data.normalizer.flat.reference_data:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\ReferenceDataNormalizer'
+        tags:
+            - { name: pim_versioning.serializer.normalizer, priority: 90 }
+
+    pim_versioning.serializer.normalizer.flat.collection:
+        class: '%pim_serializer.normalizer.flat.collection.class%'
+        tags:
+            - { name: pim_versioning.serializer.normalizer, priority: 90 }
+
+    pim_versioning.serializer.normalizer.flat.quantified_associations:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\EntityWithQuantifiedAssociations\QuantifiedAssociationsNormalizer'

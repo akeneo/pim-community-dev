@@ -1,0 +1,126 @@
+pim_title:
+  pim_user_index: Użytkownicy
+  pim_user_role_index: Role
+  pim_user_group_index: Grupy użytkowników
+  oro_config_configuration_system: Konfiguracja
+  pim_user_edit: 'Użytkownik {{ username }} | Edytuj'
+  pim_user_create: 'Użytkownicy | Utwórz'
+  pim_user_role_update: 'Rola {{ role }} | Edytuj'
+  pim_user_role_create: 'Rola | Utwórz'
+  pim_user_security_login: Zaloguj się
+  pim_user_reset_reset: Resetowanie hasła
+  pim_user_reset_request: Zapomniałem hasła
+  pim_user_group_create: 'Grupy | Utwórz'
+  pim_user_group_update: 'Grupa {{ group }} | Edytuj'
+confirmation:
+  remove:
+    user: Czy na pewno chcesz usunąć tego użytkownika?
+    group: Czy na pewno chcesz usunąć tę grupę?
+pim_enrich:
+  entity:
+    user:
+      flash:
+        delete:
+          fail: Użytkownik nie może zostać usunięty
+          success: Użytkownik został usunięty
+      module:
+        delete:
+          confirm: Czy na pewno chcesz usunąć tego użytkownika?
+pim_user.profile:
+  caption: Najpierw powiedz nam, jaka jest Twoja główna misja, abyśmy pomogli Ci w najistotniejszych kwestiach.
+  why_is_it_needed: Dlaczego potrzebujemy tych informacji?
+  save_button: Zapisz i przejdź do sklepu z aplikacjami
+  selector:
+    placeholder: Wybierz opcję
+    not_found: Brak wyników
+  product_manager: Zarządzam katalogami produktów.
+  redactor: Wzbogacam dane produktów.
+  pim_integrator: Integruję Akeneo PIM z naszym ekosystemem IT.
+  pim_administrator: Administruję Akeneo PIM.
+  asset_manager: Zarządzam zasobami w PIM.
+  translator: Tłumaczę dane produktów, zasobów i/lub obiektów referencyjnych.
+  third_party_developer: Opracowuję rozwiązania związane z Akeneo PIM.
+pim_user_management:
+  entity:
+    user:
+      label: użytkownik
+      flash:
+        update:
+          success: Użytkownik został pomyślnie zaktualizowany.
+          fail: Użytkownik nie mógł zostać zaktualizowany.
+          fields_not_ready: "Użytkownik nie może być teraz zapisany. Następujące pola nie są gotowe: {{ fields }}"
+        create:
+          success: Użytkownik został utworzony.
+      page_title:
+        index: "]-Inf, 1] {{ count }} użytkownik|]1, Inf [{{ count }} użytkowników"
+      properties:
+        username: Nazwa użytkownika
+        profile: Jaka jest Twoja główna misja?
+        name_prefix: Przyimek
+        first_name: Imię
+        middle_name: Drugie imię
+        last_name: Nazwisko
+        name_suffix: Przyrostek
+        phone: Telefon
+        avatar: Awatar
+        email: Adres email
+        catalog_locale: Wersja językowa katalogu
+        catalog_scope: Zakres katalogu
+        default_tree: Domyślne drzewo
+        default_asset_tree: Domyślne drzewo zasobów
+        product_grid_filters: Filtry listy produktów
+        current_password: Aktualne hasło
+        new_password: Nowe hasło
+        new_password_repeat: Nowe hasło (powtórz)
+        password: Hasło
+        password_repeat: Hasło (powtórz)
+        last_logged_in: Ostatnio zalogowany
+        login_count: Liczba logowań
+        ui_locale: Język interfejsu
+        timezone: Strefa czasowa
+        default_product_grid_view: Domyślny widok tabeli produktów
+        default_published_product_grid_view: Domyślny widok opublikowanych produktów #EE Only
+        proposals_to_review_notification: Kiedy nowa propozycja do przeglądu #EE Only
+        proposals_state_notifications: Kiedy propozycja jest akceptowana lub odrzucona #EE Only
+        not_fully_supported_locale: 'Wybrana wersja językowa interfejsu użytkownika [{{ code }}] nie jest obecnie w pełni obsługiwana. Niektórych tłumaczeń może brakować lub mogą być niekompletne. Pomóż uzupełnić wersję językową:'
+        link_to_crowdin_label: dołącz do projektu w narzędziu Crowdin.
+      meta:
+        created: Utworzono
+        updated: Zaktualizowano
+      module:
+        create:
+          button: Utwórz użytkownika
+        delete:
+          confirm: Czy na pewno chcesz usunąć tego użytkownika?
+        update:
+          additional: Dodatkowe
+          groups_and_roles: Grupy i role
+          password: Hasło
+          interfaces: Interfejsy
+          notifications: Powiadomienia #TODO EE Only
+    role:
+      plural_label: Role
+      page_title:
+        index: "]-Inf, 1] {{ count }} rola|]1, Inf [{{ count }} role"
+      module:
+        create:
+          button: Utwórz rolę
+        delete:
+          confirm: Czy na pewno chcesz usunąć tę rolę?
+    group:
+      plural_label: Grupy użytkowników
+      page_title:
+        index: "] -Inf, 1] {{ count }} grupa|] 1, Inf [{{ count }} grup/y"
+      module:
+        create:
+          button: Utwórz grupę
+  form:
+    error:
+      required: To pole jest wymagane.
+      should_not_contain_space: Nazwa użytkownika nie powinna zawierać spacji.
+      too_short_value: "Ta wartość jest za krótka. Powinna mieć co najmniej następującą liczbę znaków: {{ count }}."
+    duplication:
+      title: 'Powiel użytkownika "{{ username }}"'
+      notification:
+        success: Powielono użytkownika
+        failure: Błąd podczas powielania użytkownika

@@ -1,0 +1,26 @@
+<div class="AknVariantNavigation">
+    <% for (let level in navigation) { %>
+
+    <span class="AknVariantNavigation-item <% if (navigation[level].selected && navigation[level].selected.id === entity.meta.id) { %>AknVariantNavigation-item--highlight<% } %>">
+        <% if (level > 0) { %>
+            <span class="AknVariantNavigation-itemLabel" data-action="navigateToLevel" data-level="<%- level %>">
+                <span class="AknVariantNavigation-axisName <%- navigation[level].selected ? 'AknVariantNavigation-axisName--selected' : '' %>" data-level="<%- level %>" title="<%- navigation[level].axes[currentLocale] %>"><%- navigation[level].axes[currentLocale] %></span>
+
+                <% if (navigation[level].selected) { %>
+                    <span class="AknVariantNavigation-axisValue" data-level="<%- level %>" title="<%- navigation[level].selected.axes_values_labels[currentLocale] %>">
+                        <%- navigation[level].selected.axes_values_labels[currentLocale] %>
+                    </span>
+                <% } %>
+            </span>
+
+            <% if (navigation[level - 1].selected) { %>
+                <input type="hidden" class="variant-navigation select-field" value="0" data-level="<%- level %>">
+            <% } %>
+        <% } else { %>
+            <span class="AknVariantNavigation-axisName AknVariantNavigation-axisValue AknVariantNavigation-itemLabel" data-action="navigateToLevel" data-level="<%- level %>"><%- commonLabel %></span>
+        <% } %>
+
+    </span>
+
+    <% } %>
+</div>

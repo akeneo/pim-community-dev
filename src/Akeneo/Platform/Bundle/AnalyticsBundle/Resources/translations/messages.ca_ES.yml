@@ -1,0 +1,69 @@
+pim_analytics:
+  new_patch_available: Nou pedaç disponible
+  system_config:
+    group:
+      notification.title: Notificacions
+      version_update.title: Actualitzacions de versió
+    form:
+      version_update.label: Notificacions de noves versions
+      version_update.tooltip: Enviar una petició a un servidor remot per recuperar informació sobre el llançament de nous pedaços
+  system_info:
+    title: Informació del sistema
+    download: TXT
+  info_type:
+    pim_edition: Edició
+    pim_version: Versió
+    pim_storage_driver: Emmagatzematge
+    pim_environment: Entorn
+    pim_install_time: Data d'instal·lació
+    registered_bundles: Paquets registrats
+    nb_channels: Nombre de canals
+    nb_products: Nombre de productes
+    nb_product_models: Nombre de models de producte
+    nb_variant_products: Nombre de variants de productes
+    nb_family_variants: Nombre de variants de la família
+    nb_attributes: Nombre d'atributs
+    nb_scopable_attributes: Nombre d'atributs assolits
+    nb_localizable_attributes: Nombre d'atributs localitzables
+    nb_scopable_localizable_attributes: Nombre d'atributs localitzables i assolits
+    nb_useable_as_grid_filter_attributes: Nombre d'atributs utilitzables com a filtre de quadrícula
+    avg_percentage_scopable_attributes_per_family: Percentatge mitjà d'atributs multicanal per família (%)
+    avg_percentage_localizable_attributes_per_family: Percentatge mitjà d'atributs localitzables per família (%)
+    avg_percentage_scopable_localizable_attributes_per_family: Percentatge mitjà d'atributs localitzables i multicanal per família (%)
+    avg_number_attributes_per_family: Nombre mitjà d'atributs per família
+    nb_locales: Nombre de configuracions regionals
+    nb_families: Nombre de famílies
+    nb_users: Nombre d'usuaris
+    nb_categories: Nombre de categories
+    nb_category_trees: Número d'arbres de categoria
+    max_category_in_one_category: Nombre màxim de categories en una categoria
+    max_category_levels: Nombre màxim de nivells de categoria
+    nb_product_values: Nombre de valors de producte
+    avg_product_values_by_product: Mitjana de valors del producte pel producte
+    avg_product_values_by_family: Mitjana de valors productes potencials per família
+    max_product_values_by_family: Nombre màxim de valors de productes potencials per família
+    pim_storage_version: Versió d'emmagatzematge
+    os_version: Versió de Sistema Operatiu
+    php_version: Versió PHP
+    mysql_version: Versió MySQL
+    mariadb_version: Versió MariaDB
+    mongodb_version: Versió MongoDB
+    server_version: Versió del servidor
+    php_extensions: Extensions de PHP
+    email_domains: Dominis de correu electrònic associats
+    api_connection: Connexions d'API
+    nb_media_files_in_products: Nombre d'arxius multimèdia en els productes
+    nb_media_images_in_products: Nombre d'imatges en els productes
+    is_demo_catalog: Catàleg de demostració instal·lat
+    data_source.tracked: Nombre de connexions d'origen de l'API rastrejades
+    data_source.untracked: Nombre de connexions d'origen de l'API no rastrejades
+    data_destination.tracked: Nombre de connexions de destí de l'API rastrejades
+    data_destination.untracked: Nombre de connexions de destí de l'API no rastrejades
+    other.tracked: Nombre d'altres connexions de l'API rastrejades
+    other.untracked: Nombre d'altres connexions de l'API no rastrejades
+  acl:
+    system_info:
+      index: Informació del sistema
+pim_menu:
+  item:
+    system_info: Informació del sistema

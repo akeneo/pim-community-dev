@@ -1,0 +1,8 @@
+pim_dashboard:
+  title: 主界面
+  version: 版本
+  widget:
+    completeness:
+      title: 在渠道与区域上的完成度
+    last_operations:
+      title: 最近的一些操作

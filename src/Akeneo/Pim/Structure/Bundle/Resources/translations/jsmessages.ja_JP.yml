@@ -1,0 +1,348 @@
+pim_enrich.entity.family:
+  label: ファミリー
+  uppercase_label: ファミリー
+  plural_label: ファミリー
+  flash:
+    update:
+      success: ファミリーが正常に更新されました。
+      fail: ファミリーの更新中にエラーが発生しました
+      cant_remove_attribute_as_label: ラベルとして使用中の属性は削除できません
+      cant_remove_attribute_as_image: メイン画像として使用中の属性は削除できません
+      cant_remove_attribute_used_as_axis: ファミリーバリエーションでバリエーション軸として使用中の属性は削除できません
+      fields_not_ready: "このファミリーは現在保存できません。次のフィールドが準備ができていません：{{ fields }}"
+    create:
+      success: ファミリーが正常に作成されました。
+    delete:
+      success: ファミリーを正常に削除しました
+      fail: このファミリーは削除できません
+  property:
+    attribute_as_label: ラベルとして使用中の属性
+    attribute_as_image: メイン画像として使用される属性
+    empty_attribute_as_image: 未選択
+  page_title:
+    index: "]-Inf, 1] {{ count }} ファミリー |]1, Inf [{{ count }} ファミリー"
+  module:
+    attributes:
+      not_required_label: 任意
+      required_label: 必須
+    create:
+      button: ファミリーを作成
+    delete:
+      confirm: このファミリーを本当に削除してもよろしいですか？
+pim_enrich.entity.family_variant:
+  label: ファミリーバリエーション
+  short_plural_label: バリエーション
+  short_label: バリエーション
+  flash:
+    update:
+      success: ファミリーバリエーションが正常に更新されました。バリエーションを含む商品は、変更内容に従って更新されます
+      fail: ファミリーバリエーションは更新できませんでした。
+    create:
+      success: ファミリーバリエーションを正常に作成しました
+    delete:
+      success: ファミリーバリエーションを正常に削除しました
+  module:
+    edit:
+      common_attributes: 共通の属性
+      no_common_attributes: 共通の属性はありません
+      variant_axis_label: バリエーションの軸
+      variant_attributes: バリエーション属性
+      level_1: バリエーション属性レベル 1
+      level_2: バリエーション属性レベル ２
+      description: 属性を、選択したバリエーションレベルにドラッグ＆ドロップすると、その属性をバリエーションレベルで管理できます
+      attribute_remove: 属性を削除
+      attribute_group_remove: 属性グループを削除
+      confirm_attribute_removal_title: 属性の削除を確認
+      confirm_attribute_removal_message: 該当属性は削除すると、ファミリーバリエーションの共通属性に戻り、バリエーション商品から値が削除されます
+    create:
+      label: バリエーションを追加
+      title: ファミリーバリエーションを新規作成
+      description: ファミリーバリエーションでは、バリエーションを含む商品の構造を定義できます。管理するバリエーションのレベル、各レベルのバリエーション軸として使用される属性の数を選択し、属性を分散する方法を定義します
+      variant_levels: バリエーションのレベル
+      axis_level: "バリエーション軸のレベル {{ level }}"
+    update_translations:
+      title: 翻訳を更新
+    delete:
+      confirm: このファミリーバリエーションを削除してもよろしいですか？
+pim_enrich.entity.attribute_option:
+  short_uppercase_label: オプション
+  flash:
+    create:
+      success: 属性オプションが正常に作成されました
+      fail: 項目オプションの作成中にエラーが発生しました
+    update:
+      fail: 属性オプションを保存できません
+    delete:
+      fail: 属性オプションの削除中にエラーが発生しました
+  page_title:
+    index: "]-Inf, 1]{{ count }} オプション|]1, Inf[{{ count }} オプション"
+  module:
+    edit:
+      cancel_title: 変更をキャンセル
+      cancel_description: 警告：未保存のデータは失われます。この新しいオプションの変更を取り消しますか？
+      options_labels: オプションのラベル
+      options_settings: オプションの設定
+      options_codes: オプションのコード
+      option_code: オプションのコード
+      new_option_code: 新しい_オプション
+      no_options_msg: 残念ながら、オプションはありません！
+      add_option: ここをクリックして追加してください
+      delete_confirmation_title_msg: オプションから「{{ optionCode }}」を削除しますか？
+      delete_confirmation_subtitle_msg: 本当にこのオプションを削除しますか？このアクションは元に戻せません。
+      display_options_limit: ここには最初の500件のオプションしか表示されていません。他のオプションを表示するには、検索またはエクスポートを実行してください。
+      search:
+        placeholder: ラベルもしくはコードでの検索
+        no_result:
+          title: 検索結果はありません。
+pim_enrich.entity.association_type:
+  label: 関連タイプ
+  property:
+    is_two_way: 双方向の関連付け
+    is_quantified: 数量との関連付け
+  flash:
+    update:
+      success: 関連タイプが正常に更新されました。
+      fail: 関連タイプは更新できませんでした
+      fields_not_ready: "この関連タイプをすぐに保存できません。次のフィールドが準備ができていません：{{ fields }}"
+    create:
+      success: 関連タイプを正常に作成しました
+    delete:
+      success: 関連タイプを正常に削除しました
+      fail: この関連タイプを削除することはできません
+  page_title:
+    index: "]-Inf, 1]{{ count }} 関連タイプ|]1, Inf[{{ count }} 関連タイプ"
+  module:
+    create:
+      title: 関連タイプを新規作成
+      button: 関連タイプを作成
+      is_two_way:
+        message_on_read_only: 関連タイプは数量または双方向のいずれかで、これを選択するには別のオプションをオフにします
+      is_quantified:
+        message_on_read_only: 関連タイプは数量または双方向のいずれかで、これを選択するには別のオプションをオフにします
+    delete:
+      confirm: この関連タイプを本当に削除してもよろしいですか？
+  hint: <a href="{{link}}" target="_blank">この記事</a>には、独自の関連タイプを作成するために必要な情報が記載されています。
+  no_association_types:
+    title: 関連タイプがありません
+    hint: 最初の関連タイプを作成します。
+pim_enrich.entity.group_type:
+  label: グループタイプ
+  flash:
+    update:
+      success: グループタイプは正常に更新されました
+      fail: グループタイプを更新できませんでした。
+      fields_not_ready: "このグループタイプは現在保存できません。次のフィールドが準備ができていません：{{ fields }}"
+    create:
+      success: グループタイプを正常に作成しました
+    delete:
+      success: グループタイプを正常に削除しました
+      fail: このグループタイプは削除できません
+  page_title:
+    index: "]-Inf, 1]{{ count }} グループタイプ|]1, Inf[{{ count }} グループタイプ"
+  module:
+    create:
+      button: グループタイプを作成
+    delete:
+      confirm: このグループタイプを本当に削除してもよろしいですか？
+pim_enrich.entity.attribute:
+  label: 属性
+  plural_label: 属性
+  flash:
+    update:
+      success: 属性は正常に更新されました
+      fail: 属性を更新できませんでした
+      fields_not_ready: "この属性は現在保存できません。次のフィールドが準備ができていません：{{ fields }}"
+    delete:
+      success: 属性を正常に削除しました
+      fail: この属性は削除できません
+  page_title:
+    index: "]-Inf, 1]{{ count }} 属性|]1, Inf[{{ count }} 属性"
+  property:
+    allowed_extensions: 利用できる拡張子
+    auto_option_sorting: アルファベット順のオプションを自動的に並べ替える
+    available_locales: 使用可能なロケール
+    date_max: 最長日時
+    date_min: 最短日時
+    decimals_allowed: 少数が使用できます
+    default_metric_unit:
+      label: 既定の測定ユニット
+      choose: 単位を選択
+    guidelines: 属性ガイドライン
+    group:
+      label: 属性グループ
+      choose: 属性グループを選択
+    is_locale_specific: ロケール固有
+    localizable: ロケールごとの値
+    max_characters: 最大文字数
+    max_file_size: 最大ファイル サイズ (MB)
+    metric_family:
+      label: 測定ファミリー
+      choose: ファミリーを選択
+    minimum_input_length: 予測変換の最小文字数
+    name: 名前
+    negative_allowed: 負の値を許可
+    number_max: 最大数
+    number_min: 最小数
+    reference_data_name:
+      label: 参照データタイプ
+      choose: 参照データタイプを選択
+    scopable: チャンネルごとの値
+    type:
+      choose: 属性の種類を選択
+      pim_catalog_identifier: 識別子
+      pim_catalog_text: テキスト
+      pim_catalog_textarea: テキストエリア
+      pim_catalog_number: 数値
+      pim_catalog_price_collection: 価格
+      pim_catalog_multiselect: 複数選択
+      pim_catalog_simpleselect: 単一選択
+      pim_catalog_file: ファイル
+      pim_catalog_image: 画像
+      pim_catalog_boolean: "Yes/No"
+      pim_catalog_date: 日付
+      pim_catalog_metric: 測定
+      pim_reference_data_simpleselect: 参照データの単一選択
+      pim_reference_data_multiselect: 参照データの複数選択
+    unique: 固有値
+    useable_as_grid_filter: 一覧表で使用可能
+    validation_regexp: 正規表現
+    validation_rule:
+      label: 値チェックルール
+      email: E-mail
+      regexp: 正規表現
+      url: URL
+    wysiwyg_enabled: リッチテキストエディターは有効
+    default_value: 既定値
+    code:
+      must_be_filled: コードを入力する必要があります
+      invalid: コードが無効です
+      not_available: このコードは使用できません
+      is_duplicate: このコードはすでに使用されています
+  module:
+    add_attribute:
+      no_available_attributes: これ以上追加する属性はありません
+      attributes_selected: "属性{{ itemsCount }} を選択中"
+    create:
+      button: 属性を作成
+    edit:
+      common: パラメータ全般
+      type_specific: タイプ固有のパラメーター
+      validation: パラメータ値のチェック
+      select_locale: ロケールを選択
+    delete:
+      confirm: この属性を削除してもよろしいですか？
+      attribute_removal: この属性はすべての商品から削除されます。
+      product_count: '{0}0 個の商品|{1}1 個の商品|]1, Inf[{{ count }} 個の商品'
+      product_model_count: '{0}0 個の商品モデル|{1}1 個の商品モデル|]1, Inf[{{ count }} 個の商品モデル'
+      used: ']-Inf,1]には現在、この属性の値が設定されています。|]1, Inf[には現在、この属性の値が設定されています。'
+      helper:
+        content: 既存の属性値へのアクセスを維持したまま、属性タイプを変更してローカライズ可または参照可にする必要がある場合は、
+        link: 詳細についてはヘルプセンターをご確認ください。
+      type: '「{{ attributeCode }}」と入力してください'
+      confirm_from_family: この属性をファミリーから本当に削除しますか？
+      confirm_from_group: 属性 {{ attribute }} をこの属性グループから本当に削除しますか。
+      confirm_from_product: 商品からこの属性を本当に削除しますか？
+    mass_delete:
+      modal:
+        title: 属性
+        subtitle: '{1}{{ count }} 個の属性の削除を確認してください|]1, Inf[{{ count }} 個の属性の削除を確認してください'
+        label: '"{{ textToCheck }}" と入力してください'
+        confirm: 本当にこれらの属性を削除しますか？
+      message_bar:
+        success: 削除が開始されました。ジョブが完了すると通知が届きます。それまで、プロセストラッカーで進捗を確認できます。
+        fail: 削除の開始中にエラーが発生しました
+pim_enrich.entity.attribute_group:
+  label: 属性グループ
+  uppercase_label: 属性グループ
+  plural_label: 属性グループ
+  result_count: '{0}0 個の属性グループ|{1}1 個の属性グループ|]1, Inf[{{ count }} 個の属性グループ'
+  limit_reached: '{{ max }} 属性グループの上限に達しました。'
+  show_more_attribute:
+    title: 少し混雑しています。{{ attributeCount }}/{{ totalAttributeCount }} 個の属性を表示します。
+    subtitle: このグループのすべての属性を確認するには、下をクリックしてください！
+    button: すべての属性を表示
+  dropdown:
+    label: 選択
+    all: すべての属性グループ
+    none: 属性グループなし
+  flash:
+    update:
+      success: 属性グループは正常に更新されました
+      fail: 属性グループを更新できませんでした。
+      fields_not_ready: "この属性グループは現在保存できません。次のフィールドが準備ができていません：{{ fields }}"
+    delete:
+      success: 削除が開始されました。ジョブが完了すると通知が届きます。それまで、プロセストラッカーで進捗を確認できます。
+      fail: 削除の開始中にエラーが発生しました
+    mass_delete:
+      success: 削除が開始されました。ジョブが完了すると通知が届きます。それまで、プロセストラッカーで進捗を確認できます。
+      fail: 削除の開始中にエラーが発生しました
+  module:
+    add_attribute_group:
+      label: グループによる追加
+      no_attribute_groups_available: 使用可能な属性グループはありません
+      attributes_groups_selected: '{{ itemsCount }} グループを選択中'
+    delete:
+      confirm: 本当にこの属性グループを削除しますか?
+  grid:
+    columns:
+      attribute_count: 関連する属性数
+  selected: '{0}属性グループは選択されていません|{1}1個の属性グループを選択済み|]1, Inf[{{ count }}個の属性グループを選択済み'
+  mass_delete:
+    confirm: '{1}この属性グループを本当に削除しますか？|]1, Inf[これら{{ count }}個の属性グループを本当に削除しますか？'
+    confirmation_phrase: '"{{ confirmation_word }}" と入力してください'
+    confirmation_word: 削除
+    attribute_warning: '{1}これらの属性グループを削除すると、{{ number_of_attribute }}個の関連属性が影響を受けます。この関連属性を新しい属性グループに移動する必要があります。|]1, Inf[これらの属性グループを削除すると、{{ number_of_attribute }}個の関連属性が影響を受けます。これらの関連属性を新しい属性グループに移動する必要があります。'
+    select_attribute_group: '{1}関連属性の移動先の属性グループを選択してください:|]1, Inf[{{ number_of_attribute }}個の関連属性の移動先の属性グループを選択してください:'
+    empty_result_label: '属性グループが見つかりません'
+    placeholder: '属性グループを選択'
+    open_label: '属性グループリスト'
+  delete:
+    confirm: '本当にこの属性グループを削除しますか'
+    attribute_warning: 'この属性グループを削除すると、{{ number_of_attribute }} 個の関連属性に影響します。この関連属性を新しい属性グループに移動する必要があります。'
+    select_attribute_group: '{1}関連属性の移動先の属性グループを選択してください:|]1, Inf[{{ number_of_attribute }}個の関連属性の移動先の属性グループを選択してください:'
+  batch_jobs:
+    delete_attribute_groups:
+      delete_attribute_groups:
+        label: 属性グループを削除
+pim_import_export:
+  notification:
+    mass_delete_attribute_groups:
+      error: 属性グループの一括削除に失敗しました
+      warning: 属性グループの一括削除は警告付きで終了しました
+      success: 属性グループの一括削除が終了しました
+pim_enrich.mass_edit.family:
+  title: ファミリー一括操作
+  confirm: "{1}次の情報を含むファミリー１件を更新しようとしています。ご確認ください|] 1, Inf[次の情報を含むファミリー{{ itemsCount }}券を変更しようとしています。ご確認ください。"
+  step:
+    select:
+      label: ファミリーを選択
+    choose:
+      title: ファミリー一括操作
+      label_count: "]0, Inf[アクションを選択"
+    configure:
+      label: 構成
+    confirm:
+      label: 確認
+    launched:
+      label: 一括操作「{{ operation }}」が開始されました。終了後に通知されます
+  operation:
+    set_requirements:
+      label: 属性の要件を設定
+      description: 以下の属性要件が選択したファミリーに適用されます
+      label_count: "{1}<span class=\"AknFullPage-title--highlight\">１件のファミリー</span>の属性要件を設定|]1, Inf[<span class=\"AknFullPage-title--highlight\">{{ itemsCount }}件のファミリー</span>の属性要件を設定"
+batch_jobs:
+  default_steps:
+    delete_attribute_groups: 属性グループを削除
+    move_child_attributes: 子属性を移動してください
+  delete_attributes:
+    delete_attributes:
+      label: 属性を削除する
+job_execution:
+  summary:
+    deleted_attributes: 属性を削除しました
+akeneo_job_process_tracker:
+  type_filter:
+    attribute_group_mass_delete: 属性グループを削除
+pim_notification:
+  types:
+    attribute_group_mass_delete: 削除

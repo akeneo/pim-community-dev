@@ -1,0 +1,25 @@
+Akeneo\UserManagement\Component\Model\Role:
+    type: entity
+    table: oro_access_role
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    repositoryClass: Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleRepository
+    fields:
+        id:
+            type: smallint
+            id: true
+            generator:
+                strategy: AUTO
+        role:
+            type: string
+            unique: true
+            nullable: false
+            length: 255
+        label:
+            type: string
+            length: 255
+        type:
+            type: string
+            nullable: false
+            length: 30
+            options:
+                default: 'default'

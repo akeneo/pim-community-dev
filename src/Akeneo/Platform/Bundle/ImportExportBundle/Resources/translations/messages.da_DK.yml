@@ -1,0 +1,166 @@
+#Entities
+Job: Job
+Connector: Connector
+pim_import_export:
+  job: Job
+  connector: Connector
+  ## Job status
+  status:
+    0: Klar
+  batch_status:
+    1: Afsluttet
+    2: Starter
+    3: Startet
+    4: Stopper
+    5: Stoppet
+    6: Mislykkedes
+    7: Opgivet
+    8: Ukendt
+  download_archive:
+    archive: Download genereret arkiv | download genererede arkiver
+    output: hent genererede fil|hent genererede filer
+    input: hent læs file|hent læse filer
+    invalid_xlsx: download ugyldige data
+    invalid_csv: download ugyldige data
+  notification:
+    export:
+      error: Eksport af <strong>%label%</strong> mislykkedes
+      warning: Eksport af <strong>%label%</strong> gennemført med advarsler
+      success: Eksport af <strong>%label%</strong> mislykkedes
+    import:
+      error: Import af <strong>%label%</strong> mislykkedes
+      warning: Import af <strong>%label%</strong> blev gennemført med advarsler
+      success: Eksport af <strong>%label%</strong> mislykkedes
+  list: Vælg et job
+  job_profile:
+    tab:
+      property.title: Generelle egenskaber
+      history.title: Historik
+      job_content.title: Indhold
+#Page titles:
+pim_title.export_profile.index: Eksporter profil håndtering
+pim_title.export_profile.edit: Eksporter profiler %job.label% | Rediger
+pim_title.export_profile.show: Eksporter profiler %job.label% | Vis
+pim_title.export_execution.index: Eksporter aktivitets historik
+pim_title.export_execution.show: Eksporter aktiviteter | Detaljer
+pim_title.import_profile.index: Importer profiler håndtering
+pim_title.import_profile.edit: Importer profiler %job.label% | Rediger
+pim_title.import_profile.show: Import profiler %job.label% | Vis
+pim_title.import_execution.index: Importer aktivitets historik
+pim_title.import_execution.show: Importer aktiviter | Detaljer
+#Entity and page header titles
+export profile:
+  title: eksporter profil
+  edit: redigere eksportprofil
+import profile:
+  title: import profil
+  edit: rediger import profil
+#ACLs
+pim_importexport:
+  acl:
+    export_profile:
+      index: Se eksport profillisten
+      create: Opret en eksportprofil
+      show: Vis en eksportprofil
+      edit: Rediger en eksportprofil
+      remove: Fjern en eksportprofil
+      launch: Iværksæt en eksportprofil
+      property_edit: Redigere ksport profilens generelle egenskaber
+      property_show: Redigere eksport profilens generelle egenskaber
+      history: Se eksport profil historik
+      content_edit: Redigere ksport profilindhold
+      content_show: Vis eksport profilindhold
+    import_profile:
+      index: Se import profillisten
+      create: Opret import profil
+      show: Vis import profil
+      edit: Rediger importprofil
+      remove: Fjern importprofil
+      launch: Aktiver importprofil
+      history: Se eksporter profil historik
+    export_execution:
+      index: Se eksport rapportlisten
+      show: Se eksport rapportdetaljer
+      dl_log: Download eksport rapport log
+      dl_files: Download eksporterede filer
+    import_execution:
+      index: Se import rapport liste
+      show: Se import rapportdetaljer
+      dl_log: Hent import rapport log
+      dl_files: Hent importerede filer
+  acl_group:
+    export: Eksport profiler
+    import: Import profiler
+#Buttons
+btn:
+  create:
+    export profile: opret eksportprofil
+    import profile: opret import profil
+Upload and import now: Indlæs og importer nu
+import now: Importer nu
+export now: Eksporter nu
+#Confirmation messages
+confirmation:
+  remove:
+    export profile: Er du sikker på du vil slette denne eksport profil %name%?
+    import profile: Er du sikker på du vil slette denne import profil %name%?
+#Flash messages
+flash:
+  export:
+    created: Eksporten er blevet oprettet
+    removed: Eksporten er blevet fjernet
+    updated: Eksporten er blevet opdateret
+    running: Eksporten kører
+  import:
+    created: Importen er blevet oprettet
+    removed: Importen er blevet fjernet
+    updated: Importen er blevet opdateret
+    running: Importen kører
+#Tabs
+General properties: Generelle egenskaber
+History: Historik
+pane.accordion:
+  properties: Egenskaber
+  global_settings: Globale indstillinger
+  filters: Filtre
+#Popin titles
+popin.create:
+  export_profile.title: Opret en ny eksportprofil
+  import_profile.title: Opret en ny importprofil
+#Job execution
+'Display item': Vis element
+'Hide item': Skjul element
+'Collecting data about job execution...': Indsamling af data om job udførelse...
+'You must select a file to upload': Du skal vælge den fil der skal indlæses
+Download log: Download log
+Show profile: Vis profil
+execution details: udførelses detaljer
+job_execution.summary:
+  read: læs
+  write: gemt
+  skip: sprunget over
+  create: oprettet
+  update: opdateret
+  update_products: opdaterede produkter
+  skip_products: produkter sprunget over
+  displayed: første advarsel vist
+  charset_validator:
+    title: 'Fil kodning:'
+    skipped: ignoreret, udvidelse i hvidlisten
+Step: Trin
+Status: Status
+Warnings: Advarsler
+Summary: Opsummering
+Start: Start
+End: Slut
+#Process tracker
+set_attribute_requirements: Indstil attribut krav
+COMPLETED: Afsluttet
+STARTING: Starter
+STARTED: Startet
+STOPPING: Stopper
+STOPPED: Stoppet
+FAILED: Mislykkedes
+ABANDONED: Opgivet
+UNKNOWN: Ukendt
+warning.label: Advarsel

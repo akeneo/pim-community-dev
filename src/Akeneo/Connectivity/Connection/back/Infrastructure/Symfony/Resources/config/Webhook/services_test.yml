@@ -1,0 +1,10 @@
+services:
+    Akeneo\Connectivity\Connection\Tests\EndToEnd\GuzzleJsonHistoryContainer:
+        arguments:
+            - '%kernel.project_dir%/var/cache/test/guzzle_history.json'
+
+    akeneo_connectivity.connection.webhook.guzzle_handler:
+        class: 'GuzzleHttp\HandlerStack'
+        factory: ['Akeneo\Connectivity\Connection\Tests\EndToEnd\GuzzleMockHandlerStackFactory', 'createWithHistoryContainer']
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Tests\EndToEnd\GuzzleJsonHistoryContainer'

@@ -1,0 +1,174 @@
+#Entities
+Job: ジョブ
+Connector: コネクター
+pim_import_export:
+  job: ジョブ
+  connector: コネクター
+  ## Job status
+  status:
+    0: 準備
+  batch_status:
+    1: 完了
+    2: 開始中...
+    3: 開始
+    4: 停止中
+    5: 停止
+    6: 失敗
+    7: 破棄された
+    8: 不明
+    9: 一時停止中
+    10: 一時停止
+  download_archive:
+    archive: 生成したアーカイブをダウンロード | 生成したアーカイブをダウンロード
+    output: 生成したファイルをダウンロード | 生成したファイルをダウンロード
+    input: 読み込んだファイルをダウンロード | 読み込んだファイルをダウンロード
+    invalid_xlsx: 無効なデータをダウンロード
+    invalid_csv: 無効なデータをダウンロード
+  notification:
+    export:
+      error: <strong>%label%</strong>のエクスポートが失敗しました
+      warning: <strong>%label%</strong> のエクスポートがいくつかのエラーにより終了しました
+      success: <strong>%label%</strong>のエクスポートが完了しました
+      warnings:
+        xlsx_cell_conversion_error: '"{0}" 列をターゲット PIM 商品属性タイプに変換中に例外が発生しました (Excel セルの書式を確認してください)'
+        xlsx_cell_date_to_text_conversion_error: 日付フォーマットのセル {0} をテキスト型の属性に変換できません
+    import:
+      error: <strong>%label%</strong> のインポートが失敗しました
+      warning: <strong>%label%</strong> のインポートがいくつかのエラーにより終了しました
+      success: <strong>%label%</strong> のインポートが完了しました
+      warnings:
+        xlsx_cell_date_conversion_error: 日付フォーマットのセル "{cellName}" を{attributeType}型の属性に変換できません
+  list: ジョブを選択
+  job_profile:
+    tab:
+      property.title: プロパティ全般
+      history.title: 履歴
+      job_content.title: コンテンツ
+#Page titles:
+pim_title.export_profile.index: エクスポートプロファイルの管理
+pim_title.export_profile.edit: プロファイル %job.label% のエクスポート |編集
+pim_title.export_profile.show: プロファイル %job.label% をエクスポート |表示
+pim_title.export_execution.index: 実行履歴をエクスポート
+pim_title.export_execution.show: エクスポートの実行 |詳細
+pim_title.import_profile.index: インポートプロファイル管理
+pim_title.import_profile.edit: プロファイル %job.label% のインポート |編集
+pim_title.import_profile.show: プロファイル %job.label% のインポート |表示
+pim_title.import_execution.index: インポート実行履歴
+pim_title.import_execution.show: インポートの実行 |詳細
+#Entity and page header titles
+export profile:
+  title: プロファイルをエクスポート
+  edit: エクスポートプロファイルを編集
+import profile:
+  title: プロファイルをインポート
+  edit: インポートプロファイルを編集
+#ACLs
+pim_importexport:
+  acl:
+    export_profile:
+      index: エクスポートプロファイルリストの表示
+      create: エクスポートプロファイルを作成
+      show: エクスポートプロファイルを表示
+      edit: エクスポートプロファイルを編集
+      remove: エクスポートプロファイルを削除
+      launch: エクスポートプロファイルを起動
+      property_edit: エクスポートプロファイルの全般プロパティを編集
+      property_show: エクスポート プロファイルの全般プロパティを表示
+      history: エクスポートプロファイルの履歴を表示
+      content_edit: エクスポートプロファイルコンテンツを編集
+      content_show: エクスポートプロファイルコンテンツを表示
+    import_profile:
+      index: インポートプロファイルリストを表示
+      create: インポートプロファイルを作成
+      show: インポートプロファイルを表示
+      edit: インポートプロファイルを編集
+      remove: インポートプロファイルを削除
+      launch: インポートプロファイルを起動
+      history: インポートプロファイルの履歴を表示
+    export_execution:
+      index: エクスポートレポート一覧を表示
+      show: エクスポートレポートの詳細の表示
+      dl_log: エクスポートレポートログをダウンロード
+      dl_files: エクスポートしたファイルをダウンロード
+    import_execution:
+      index: インポートレポートリストを表示
+      show: インポートレポートの詳細の表示
+      dl_log: インポートレポートログをダウンロード
+      dl_files: インポートしたファイルをダウンロード
+  acl_group:
+    export: プロファイルをエクスポート
+    import: プロファイルをインポート
+#Buttons
+btn:
+  create:
+    export profile: エクスポートプロファイルを作成
+    import profile: インポートプロファイルを作成
+Upload and import now: 今すぐアップロードしてインポートする
+import now: 今すぐインポート
+export now: 今すぐエクスポート
+#Confirmation messages
+confirmation:
+  remove:
+    export profile: エクスポートプロファイル %name% を削除してもよろしいですか？
+    import profile: インポートプロファイル %name% を削除してもよろしいですか？
+#Flash messages
+flash:
+  export:
+    created: エクスポートが正常に作成されました。
+    removed: エクスポートを削除しました
+    updated: エクスポートを正常に更新しました
+    running: エクスポートを実行中
+  import:
+    created: インポートを正常に作成しました
+    removed: インポートを削除しました
+    updated: インポートが正常に更新されました
+    running: インポートを実行中
+#Tabs
+General properties: プロパティ全般
+History: 履歴
+pane.accordion:
+  properties: プロパティ
+  global_settings: グローバル設定
+  filters: フィルタ
+#Popin titles
+popin.create:
+  export_profile.title: エクスポートプロファイルを新規作成
+  import_profile.title: インポートプロファイルを新規作成
+#Job execution
+'Display item': アイテムを表示
+'Hide item': アイテムを隠す
+'Collecting data about job execution...': ジョブ実行データを収集中...
+'You must select a file to upload': アップロードするファイルを選択してください
+Download log: ログをダウンロード
+Show profile: プロファイルを表示
+execution details: 実行の詳細
+job_execution.summary:
+  read: 読み込み
+  write: 書き込み
+  skip: スキップ済
+  create: 作成済
+  update: 更新済
+  update_products: 更新済商品
+  skip_products: スキップされた商品
+  displayed: 最初の警告が表示されています
+  charset_validator:
+    title: 'ファイルの文字コード:'
+    skipped: スキップしました。拡張子がホワイトリストにあります
+Step: ステップ
+Status: ステータス
+Warnings: 警告
+Summary: 概要
+Start: 開始
+End: 終了
+#Process tracker
+set_attribute_requirements: 属性の要件を設定
+COMPLETED: 完了
+STARTING: 開始中...
+STARTED: 開始
+STOPPING: 停止中
+STOPPED: 停止
+FAILED: 失敗
+ABANDONED: 破棄された
+UNKNOWN: 不明
+warning.label: 警告
+pim_datagrid.column.username: ユーザー名

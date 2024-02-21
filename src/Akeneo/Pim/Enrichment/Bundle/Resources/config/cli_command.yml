@@ -1,0 +1,125 @@
+services:
+    akeneo.pim.enrichment.command.calculate_product_completeness:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Command\CalculateCompletenessCommand'
+        arguments:
+            - '@akeneo.pim.enrichment.elasticsearch.indexer.product_and_ancestors'
+            - '@pim_catalog.completeness.product.compute_and_persist'
+            - '@database_connection'
+        tags:
+            - { name: 'console.command' }
+            - { name: 'akeneo.command.authenticated_as_admin_user' }
+
+    akeneo.pim.enrichment.command.index_product:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Command\IndexProductCommand'
+        arguments:
+            - '@akeneo.pim.enrichment.elasticsearch.indexer.product_and_ancestors'
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+            - '@Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\GetProductUuidsNotSynchronisedBetweenEsAndMysql'
+            - '@Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\GetExistingProductUuids'
+            - '@Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\GetAllProductUuids'
+        tags:
+            - { name: 'console.command' }
+            - { name: 'akeneo.command.authenticated_as_admin_user' }
+
+    akeneo.pim.enrichment.command.index_product_model:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Command\IndexProductModelCommand'
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+            - '@pim_catalog.elasticsearch.indexer.product_model_descendants_and_ancestors'
+            - '@Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\GetAllRootProductModelCodes'
+            - '@Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\GetExistingProductModelCodes'
+            - '@Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\GetProductModelCodesNotSynchronisedBetweenEsAndMysql'
+        tags:
+            - { name: 'console.command' }
+            - { name: 'akeneo.command.authenticated_as_admin_user' }
+
+    base_uuid_migration_step:
+        arguments:
+            - '@database_connection'
+            - '@monolog.logger'
+        abstract: true
+
+    Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidCreateIndexes:
+        parent: base_uuid_migration_step
+
+    Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidAddTriggers:
+        parent: base_uuid_migration_step
+
+    Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidFillProductUuid:
+        parent: base_uuid_migration_step
+
+    Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidCleanGhostRecords:
+        parent: base_uuid_migration_step
+
+    Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidFillForeignUuid:
+        parent: base_uuid_migration_step
+
+    Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidFillJson:
+        parent: base_uuid_migration_step
+
+    Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidSetNotNullableUuidColumns:
+        parent: base_uuid_migration_step
+
+    Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidAddConstraints:
+        parent: base_uuid_migration_step
+
+    Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidCompletenessTable:
+        parent: base_uuid_migration_step
+
+    Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidReindexElasticsearch:
+        arguments:
+            - '@database_connection'
+            - '@monolog.logger'
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+            - '@pim_catalog.elasticsearch.indexer.product'
+            - '@Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlFindProductUuids'
+
+    Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidCommand:
+        arguments:
+            - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidCreateIndexes'
+            - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidAddTriggers'
+            - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidFillProductUuid'
+            - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidCleanGhostRecords'
+            - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidFillForeignUuid'
+            - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidFillJson'
+            - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidSetNotNullableUuidColumns'
+            - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidAddConstraints'
+            - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidCompletenessTable'
+            - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidReindexElasticsearch'
+            - '@monolog.logger'
+            - '@database_connection'
+        tags:
+            - { name: 'console.command' }
+            - { name: 'akeneo.command.authenticated_as_admin_user' }
+
+    Akeneo\Pim\Enrichment\Bundle\Command\ZddMigrations\V20220516171405SetProductIdentifierNullableZddMigration:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: 'akeneo.pim.zdd_migration' }
+        public: true
+
+    Akeneo\Pim\Enrichment\Bundle\Command\ZddMigrations\V20220729171405DropProductIdColumnsAndCleanVersioningResourceUuidColumns:
+        arguments:
+            - '@database_connection'
+            - '@monolog.logger'
+        tags:
+            - { name: 'akeneo.pim.zdd_migration' }
+        public: true
+
+    Akeneo\Pim\Enrichment\Bundle\Command\ZddMigrations\V20230512143522FillNewCompletenessTableZddMigration:
+        arguments:
+            - '@database_connection'
+            - '@monolog.logger'
+        tags:
+            - { name: 'akeneo.pim.zdd_migration' }
+        public: true
+
+    Akeneo\Pim\Enrichment\Bundle\Command\CleanRemovedProductsCommand:
+        arguments:
+            - '@Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\GetDeletedProductDocumentIds'
+            - '@Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\GetDeletedProductModelDocumentIds'
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+        tags:
+            - { name: 'console.command' }
+            - { name: 'akeneo.command.authenticated_as_admin_user' }

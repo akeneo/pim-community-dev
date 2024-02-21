@@ -1,0 +1,69 @@
+services:
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ConnectedPimUserProvider:
+        arguments:
+            - '@security.token_storage'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry:
+        arguments:
+            - !tagged_iterator pim_api.security.scope_mapper
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\FindCurrentAppId:
+        arguments:
+            - '@security.token_storage'
+
+    # SERVICES
+    Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectedApp:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\CreateConnectedAppQuery'
+
+    Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnection:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\DbalConnectionRepository'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\DbalSelectConnectionWithCredentialsByCodeQuery'
+
+    # OTHERS
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession:
+        arguments:
+            - '@session'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\AppRoleWithScopesFactory:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry'
+            - '@pim_user.factory.role'
+            - '@pim_user.saver.role_with_permissions'
+        public: true
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\AsymmetricKeysGenerator:
+        public: true
+        arguments:
+            - '%openssl_config_path%'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\User\CreateUserGroup:
+        arguments:
+            - '@pim_user.factory.group'
+            - '@pim_user.updater.group'
+            - '@pim_user.saver.group'
+            - '@validator'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\ScopeListComparator:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Notifier\AuthorizationRequestNotifier:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindAllUsernamesWithAclQuery'
+            - '@pim_notification.notifier'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Service\UpdateConnectedAppRoleWithScopes:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetConnectedAppRoleIdentifierQuery'
+            - '@pim_user.repository.role'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry'
+            - '@pim_user.saver.role_with_permissions'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\User\CreateUser:
+        arguments:
+            - '@pim_user.factory.user'
+            - '@pim_user.updater.user'
+            - '@validator'
+            - '@pim_user.saver.user'

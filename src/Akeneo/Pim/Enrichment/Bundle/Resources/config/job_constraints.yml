@@ -1,0 +1,140 @@
+parameters:
+    pim_catalog.job.job_parameters.constraint_collection_provider.compute_completeness_of_products_family.class: Akeneo\Pim\Enrichment\Component\Product\Job\JobParameters\ConstraintCollectionProvider\ComputeCompletenessOfProductsFamily
+    pim_catalog.job.job_parameters.constraint_collection_provider.compute_family_variant_structure_changes.class: Akeneo\Pim\Enrichment\Component\Product\Job\JobParameters\ConstraintCollectionProvider\ComputeFamilyVariantStructureChanges
+
+services:
+    pim_catalog.job.job_parameters.constraint_collection_provider.compute_completeness_of_products_family:
+        class: '%pim_catalog.job.job_parameters.constraint_collection_provider.compute_completeness_of_products_family.class%'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
+    pim_catalog.job.job_parameters.constraint_collection_provider.compute_family_variant_structure_changes:
+        class: '%pim_catalog.job.job_parameters.constraint_collection_provider.compute_family_variant_structure_changes.class%'
+        arguments:
+            - ['compute_family_variant_structure_changes']
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
+    pim_catalog.job.job_parameters.constraint_collection_provider.remove_non_existing_product_values:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Job\JobParameters\ConstraintCollectionProvider\RemoveNonExistingProductValues'
+        arguments:
+            - ['%pim_catalog.job.remove_non_existing_product_values.job_name%']
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
+    akeneo_pim_enrichment.job.job_parameters.constraint_collection_provider.clean_removed_attribute:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\ConstraintCollectionProvider\CleanRemovedAttribute'
+        arguments:
+            - [ 'clean_removed_attribute_job' ]
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
+    Akeneo\Pim\Enrichment\Component\Product\Job\JobParameters\ConstraintCollectionProvider\RemoveCompletenessForChannelAndLocale:
+        arguments:
+            - ['%pim_catalog.remove_completeness_for_channel_and_locale.job_name%']
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
+    akeneo_pim_enrichment.job.job_parameters.constraint_collection_provider.simple_csv_export:
+        class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleCsvExport'
+        arguments:
+            -
+                - 'csv_group_export'
+                - 'csv_category_export'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
+    akeneo_pim_enrichment.job.job_parameters.constraint_collection_provider.simple_xlsx_export:
+        class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleXlsxExport'
+        arguments:
+            -
+                - 'xlsx_group_export'
+                - 'xlsx_category_export'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
+    akeneo_pim_enrichment.job.job_parameters.constraint_collection_provider.simple_csv_import:
+        class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleCsvImport'
+        arguments:
+            -
+                - 'csv_group_import'
+                - 'csv_category_import'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
+    akeneo_pim_enrichment.job.job_parameters.constraint_collection_provider.simple_xlsx_import:
+        class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleXlsxImport'
+        arguments:
+            -
+                - 'xlsx_group_import'
+                - 'xlsx_category_import'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
+    pim_enrich.connector.job.job_parameters.constraint_collection_provider.product_mass_edit:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductMassEdit'
+        arguments:
+            -
+                - 'update_product_value'
+                - 'add_to_group'
+                - 'add_product_value'
+                - 'add_attribute_value'
+                - 'remove_product_value'
+                - 'move_to_category'
+                - 'add_to_category'
+                - 'remove_from_category'
+                - 'add_association'
+                - 'edit_common_attributes'
+                - 'add_to_existing_product_model'
+                - 'delete_products_and_product_models'
+                - 'change_parent_product'
+                - 'convert_to_simple_products'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
+    pim_enrich.connector.job.job_parameters.constraint_collection_provider.product_csv_quick_export:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductQuickExport'
+        arguments:
+            - '@akeneo_pim_enrichment.job.job_parameters.constraint_collection_provider.simple_csv_export'
+            - []
+            - 'csv'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
+    pim_enrich.connector.job.job_parameters.constraint_collection_provider.product_and_product_model_csv_quick_export:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductAndProductModelQuickExport'
+        arguments:
+            - '@pim_enrich.connector.job.job_parameters.constraint_collection_provider.product_csv_quick_export'
+            -
+                - 'csv_product_quick_export'
+                - 'csv_product_grid_context_quick_export'
+            - 'csv'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
+    pim_enrich.connector.job.job_parameters.constraint_collection_provider.product_xlsx_quick_export:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductQuickExport'
+        arguments:
+            - '@akeneo_pim_enrichment.job.job_parameters.constraint_collection_provider.simple_xlsx_export'
+            - []
+            - 'xlsx'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
+    pim_enrich.connector.job.job_parameters.constraint_collection_provider.product_and_product_model_xlsx_quick_export:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductAndProductModelQuickExport'
+        arguments:
+            - '@pim_enrich.connector.job.job_parameters.constraint_collection_provider.product_xlsx_quick_export'
+            -
+                - 'xlsx_product_quick_export'
+                - 'xlsx_product_grid_context_quick_export'
+            - 'xlsx'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
+    pim_enrich.connector.job.job_parameters.constraint_collection_provider.simple_mass_edit:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleMassEdit'
+        arguments:
+            - ['set_attribute_requirements']
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }

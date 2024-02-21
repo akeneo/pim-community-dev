@@ -1,0 +1,85 @@
+An identifier attribute already exists.: Der findes allerede en id-attribut.
+Attribute code may contain only letters, numbers and underscore: Attributten kode kan indeholde kun bogstaver, tal og understregningstegn
+Attribute code may contain only letters (at least one), numbers and underscores: Attribut koden kan kun indeholde bogstaver (mindst én), tal og understregningstegn
+This attribute type can't be used as a grid filter: Denne attributtype kan ikke bruges som et gitter filter
+This code is not available: Denne kode er ikke tilgængelig
+This attribute type must be required: Denne attributtype er nødvendig
+This attribute type can't be required: Denne attributtype kan ikke anvendes
+This attribute type can't have unique value: Denne attributtype kan ikke have en entydig værdi
+No default value may be specified for this attribute type: Ingen standardværdi kan angives for denne attributtype
+This value should be Yes or No: Denne værdi skal være ja eller nej
+This value should not be blank: Denne værdi må ikke være tom
+Option code may contain only letters, numbers and underscores: Indstillingskoden kan indeholde kun bogstaver, tal og understregningstegn
+Option code may contain only letters (at least one), numbers and underscores: Attribut koden kan kun indeholde bogstaver (mindst én), tal og understregningstegn
+This value should not be a decimal.: Værdien må ikke være en decimal.
+'The file extension is not allowed (allowed extensions: %extensions%).': 'Filtypen er ikke tilladt (tilladte filtyper: %extensions%).'
+"The value %value% is already set on another product for the unique attribute %attribute%": Værdien %value% benyttes allerede på et andet produkt for entydig attribut %attribute%
+The same identifier is already set on another product: Den samme id er allerede indstillet på et andet produkt
+regex.comma_or_semicolon.message: Dette felt må ikke indeholde komma eller semikolon.
+file.extensions.message: 'Filtypen er ikke tilladt (tilladte filtyper: %extensions%).'
+"This type of value expects the use of {{ decimal_separator }} to separate decimals.": Denne form for værdi forventer brugen af {{ decimal_separator }} til at adskille decimaler.
+"This type of value expects the use of dot (.) to separate decimals.": Denne form for værdi forventer brugen af et punktum (.) til at adskille decimaler.
+"This type of value expects the use of comma (,) to separate decimals.": Denne form for værdi forventer brugen af et punktum (.) til at adskille decimaler.
+"This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Denne form for værdi forventer brugen af en arabisk decimalseparator (٫) til at adskille decimaler.
+"This type of value expects the use of the format {{ date_format }} for dates.": Denne form for værdi forventer brug af formatet {{ date_format }} på datoer.
+"The category \"%category%\" has to be a root category.": Kategorien "%category%" skal være en rod kategori.
+"The attribute \"%attributeCode%\" does not exist.": Attributten "%attributeCode%" findes ikke.
+"The attribute \"%attributeCode%\" is not a metric attribute.": Attributten "%attributeCode%" er ikke en metrisk attribut.
+"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": Enhed "%unitCode%" findes ikke eller hører ikke til den standard metriske familie af den givne attribut "%attributeCode%".
+"The currency \"%currency%\" has to be activated.": Valuta "%currency%" skal være aktiveret.
+product_model.code.not_blank.message: Model produktkode må ikke være tom.
+product_model.code.unique.message: Den samme id er allerede benyttet på et andet produkt
+product_model.family_variant.not_blank.message: Model produktkode må ikke være tom.
+pim_catalog:
+  constraint:
+    can_have_family_variant_empty_axis_value: 'Attributten "%attribute%" må ikke være tom, da den er defineret som en akse for denne enhed'
+    product_model_with_same_axis_value_already_exists: 'Kan ikke angive værdien "%values%" for attributten akse "%attributes%" på produkt model "%validated_entity%", som produktet model "%sibling_with_same_value%" allerede har denne værdi'
+    variant_product_with_same_axis_value_already_exists: 'Kan ikke angive værdien "%values%" for attributten akse "%attributes%" på variant produkt "%validated_entity%", som variant produkt "%sibling_with_same_value%" allerede har denne værdi'
+    can_have_family_variant_unexpected_attribute: 'Kan ikke angive egenskaben "%attribute%" til denne enhed, da der ikke er angivet nogen  attributt'
+    cannot_have_product_model_as_parent: 'Produkt model "%product_model%" kan ikke have produkt model "%parent_product_model%" som forælder'
+    cannot_have_parent: 'Produkt model "%product_model%" kan ikke have et overordnet produkt'
+    attribute_does_not_belong_to_family: 'Attributten "%attribute%" tilhører ikke familien "%family%"'
+    variant_product_invalid_family: 'Produktfamilien variant skal være den samme end dens overordnede'
+    not_null_family: Familien kan ikke være "null", fordi produktet med id "%sku%" er et variant produkt.
+    variant_product_has_parent: 'Produkt varianten "%variant_product%" skal have en forælder'
+    invalid_variant_product_parent: 'Produkt varianten "%variant_product%" kan ikke have produkt model "%product_model%" som forælder, (denne produktmodel kan kun have andre produktmodeller som børn)'
+    modified_variant_axis_value: 'Variant akse "%variant_axis%" kan ikke ændres, "%provided_value%" givet'
+    family_variant_attributes_unique: Attributter skal være entydige, "%attributes%" benyttes flere gange i variant attribut sæt
+    family_variant_axes_unique: Variant akser skal være entydige, "%attributes%" benyttes flere gange i variant attribut sæt
+    family_variant_axes_immutable: 'Variant akser kan ikke ændres for niveau "%level%"'
+    family_variant_axes_attribute_type_unique: Variant akser "%axis%" kan ikke være entydigt eller et id
+    family_variant_axes_attribute_type: Variant akser "%axis%" skal være en boolesk værdi, en simpel select, en simpel referencedata eller en metrisk
+    family_variant_axes_wrong_type: Variant akser "%axis%" kan ikke være oversættelige, ikke scopable og ikke landestandard specifikke
+    family_variant_axes_number_of_axes: 'En variant attributtet kan ikke have mere end %max_axes_number% attributter'
+    family_variant_no_axis: Der bør være mindst én attribut defineret som aksen for attributten indstillet til niveau "%level%"
+    family_variant_axis_level: Attributten "%axis%" skal være angivet som attribut i det samme variant attribut sæt der var sat som akse
+    family_variant_has_family_attribute: '"%attribute%" attribut kan ikke føjes til "%family_variant%" familie variant, da det ikke er en attribut af familien "%family%"'
+    family_variant_level_do_not_exist: Der er ingen variant attribut angivet til niveau "%level%"
+    family_variant_no_level: Der bør være mindst ét niveau der er defineret i den familie variant
+    family_variant_maximum_number_of_level: Familie variant kan ikke have mere end "%level%"
+    family_variant_unique_attributes_in_last_level: Unikke attributten "%attribute%" skal angives på niveauet product
+    product_identifier: Disse identifikatorer "%s" findes ikke.
+    0: Der opstod en uventet fejl!
+    100: Ikke-forventet værdi
+    101: Dette felt forventer en boolesk værdi.
+    102: Dette felt forventer en float-værdi.
+    103: Dette felt forventer en heltalsværdi.
+    104: Dette felt forventer en numerisk værdi.
+    105: Dette felt forventer en strengværdi.
+    106: Dette felt forventer en array-værdi.
+    107: Dette felt forventer en matrix af matrixer som værdi.
+    200: Der opstod en intern fejl.
+    201: Der opstod en intern fejl.
+    202: Dette felt forventer en numerisk værdi.
+    203: Dette felt forventer en strengværdi.
+    204: Dette felt forventer en strengværdi.
+    205: Der opstod en intern fejl.
+    300: Dette felt forventer en gyldig enhed kode.
+    301: Dette felt forventer en gyldig anvendelsesområde og landestandard.
+    302: Dette felt forventer et gyldigt område.
+    303: Dette felt forventer en gyldig association format.
+    pim_immutable_product_validator: Den samme id er allerede indstillet på et andet produkt
+    pim_immutable_product_model_validator: Den samme id er allerede benyttet på et andet produkt
+mass_edit:
+  edit_common_attributes:
+    invalid_values: Der er fejl i formen attributter

@@ -1,0 +1,503 @@
+User: 用戶
+Run demo: 運行演示
+Product: 產品
+Attribute list: 屬性列表
+Attribute Group list: 屬性分組列表
+Users: 用戶
+Roles: 角色
+Groups: 分組
+Configuration: 配置
+Currency list: 貨幣列表
+Locale list: 區域列表
+Logged in as: 登入為
+Logout: 登出
+Login: 登入
+Previous: 上一步
+Next: 下一步
+Channel list: 頻道列表
+Select file: 選擇檔案
+Change file: 修改檔案
+Remove file: 移除檔案
+Delete: 刪除
+Save: 儲存
+Get help: 取得幫助
+My User: 我的帳戶
+oro.form.choose_value: 選擇一個值
+Read more: 閱讀更多
+oro.form.click_here_to_select: 點此選擇…
+Add: 添加
+"Learn how to use this space": "學習如何使用這一空間"
+"How To Use Pinbar": "如何使用 Pinbar"
+Pinbar: Pinbar
+Favorites: 收藏夾
+Most Viewed: 最多流覽
+"Add this page to favorites": "將此頁面添加到收藏夾"
+"Minimize the window to the pinbar": "將窗口最小化到 Pinbar"
+"Loading ...": "載入中..."
+"Yes": "是"
+"No": "否"
+required: '（必填）'
+pim_ui.system_config:
+  form:
+    loading_message_enabled.label: 開啟載入訊息
+    loading_message_enabled.tooltip: 在等待頁面加載時顯示用戶友好的訊息
+    loading_messages.label: 可用的載入訊息
+    loading_messages.tooltip: 以換行符分隔所有可用的加載消息
+  group:
+    loading_message.title: 正在載入訊息
+other_actions: 其他操作
+pim_common:
+  cancel: 取消
+  save: 儲存
+  delete: 刪除
+  update: 更新
+  view: 查看
+  edit: 編輯
+  created: 已創建
+  updated: 已更新
+  create: 創建
+  permissions: 權限
+  properties: 屬性
+  name: 名稱
+  remove: 移除
+pim_enrich:
+  #ACLs
+  acl:
+    locale:
+      index: 列表區域
+    currency:
+      index: 列表貨幣
+      toggle: 切換貨幣
+    product:
+      index: 列表產品
+      create: 創建產品
+      edit_attributes: 編輯產品屬性
+      remove: 刪除商品
+      add_attribute: 添加屬性到一個產品
+      remove_attribute: 移除產品中的屬性
+      categories_view: 咨詢產品類別
+      associations_view: 查看產品關聯
+      associations_edit: 添加關聯到一個產品
+      change_family: 修改產品品類
+      add_to_groups: 添加產品到分組
+      mass_edit: 產品批量編輯操作
+      comment: 評論產品
+      download: 下載PDF版產品
+      history: 查看產品歷史記錄
+    product_model:
+      create: 創建一個產品型號
+      edit_attributes: 編輯產品型號屬性
+      categories_view: 咨詢產品型號類別
+      history: 查看產品型號歷史記錄
+      remove: 刪除一個產品型號
+    category:
+      list: 列表類別
+      create: 創建類別
+      edit: 編輯類別
+      remove: 刪除類別
+      move: 移動類別
+      children: 查看類別子項
+      products: 查看類別產品
+      history: 查看類別記錄
+    channel:
+      index: 列表渠道
+      create: 創建渠道
+      edit: 編輯渠道
+      remove: 移除渠道
+      history: 檢視渠道記錄
+    family:
+      index: 列表品項
+      create: 創建品類
+      edit_properties: 編輯品項屬性
+      edit_attributes: 編輯品項屬性
+      edit_variants: 編輯品項變量
+      remove: 刪除品項
+      history: 查看品類記錄
+    family_variant:
+      remove: 移除一個品類變量
+    attribute_group:
+      index: 列表屬性分組
+      create: 創建屬性分組
+      edit: 編輯屬性分組
+      remove: 移除屬性分組
+      sort: 整理屬性分組
+      add_attribute: 添加屬性到一個分組
+      remove_attribute: 移除分組中的屬性
+      history: 查看屬性分組記錄
+    attribute:
+      index: 列表屬性
+      create: 創建屬性
+      edit: 編輯屬性
+      remove: 移除屬性
+      sort: 整理屬性分組中的屬性
+      history: 查看屬性記錄
+    group:
+      index: 列表分組
+      create: 創建群組
+      edit: 編輯分組
+      remove: 移除分組
+      history: 查看分組記錄
+    group_type:
+      index: 列表分組類型
+      create: 創建分組類型
+      edit: 編輯分組類型
+      remove: 移除分組流量類型
+    association_type:
+      index: 列表關聯類型
+      create: 創建關聯類型
+      edit: 編輯關聯類型
+      remove: 刪除關聯類型
+      history: 查看關聯類型記錄
+    association:
+      remove: 移除關聯到一個產品
+    job_tracker:
+      index: 查看流程追蹤
+    api_connection:
+      manage: 管理API連結
+  acl_group:
+    association_type: 關聯類型
+    attribute: 屬性
+    attribute_group: 屬性分組
+    category: 類別
+    channel: 渠道
+    currency: 貨幣
+    family: 品類
+    group: 分組
+    group_type: 分組類型
+    locale: 區域
+    product: 產品
+    product_model: 產品型號
+  notification:
+    settings:
+      remove_completeness_for_channel_and_locale:
+        start: 已從該渠道刪除該區域。我們正在清理與其關聯的完整度。
+        done: 已移除一個渠道的區域。
+  create:
+    attribute: 創建屬性
+    attribute group: 創建屬性分組
+    category: 創建類別
+    tree: 創建目錄
+    channel: 創建渠道
+    currency: 創建貨幣
+    family: 創建品類
+    locale: 創建區域
+    product: 創建產品
+    group: 創建分組
+    association type: 創建關聯類型
+    group type: 創建分組類型
+    drag_or_upload: 拖拽到此處上傳或點擊此處
+#Confirmation messages
+confirmation:
+  delete: 確認刪除
+  leave: 您確定要離開此頁面嗎？
+  discard changes: 如果離開頁面，您將丟失對%entity%的更改。
+  remove:
+    category: 確定要刪除類別%name%？
+    user: 確定要刪除用戶%name%？
+#Flash messages
+flash:
+  entity:
+    removed: 項目已刪除
+  attribute:
+    identifier_not_removable: 不可刪除標識符屬性
+  category:
+    removed: 成功刪除類別
+  tree:
+    removed: 成功刪除目錄
+    not removable: 不可刪除與渠道關聯的目錄。
+  currency:
+    updated: 渠道已成功更新
+    error.linked_to_channel: 您不能禁用與渠道關聯的貨幣。
+  product:
+    enabled: 產品已啟用
+    disabled: 產品已禁用
+  group type:
+    created: 分組類型已成功創建
+  user:
+    removed: 用戶已成功刪除
+#Info messages
+info:
+  updated: 有尚未儲存的變更。
+  category:
+    remove children: 所有子類別將被刪除。
+    keep products: 這些類別下的產品將不會被刪除。
+    products limit exceeded: 此類別包含的產品數量超出了此操作所允許的數量（產品數量不可超過%limit%）
+  product:
+    no available attributes: 沒有更多屬性待添加
+    no family defined: 沒有定義的品項
+    change family: 修改產品品類
+    change family to: 修改品類為
+    merge attributes: 當前屬性將與新品類中的屬性合併。
+    keep attributes: 將不會移除屬性。
+    number of associations: '%productCount% 個產品和 %groupCount% 個分組'
+    enable: 啟用
+    enabled: 已啟用
+    disable: 禁用
+    disabled: 已禁用
+  group:
+    axis: '變量軸：%attributes%'
+    select products: 請選擇應屬於該分組的產品。
+    selectable products: 以下可選產品的每個軸都有一個定義的值。
+    no group types: 沒有分組類型存在，點此創建
+    more products: '%count%更多產品…'
+  association type:
+    show products: 顯示產品
+    show groups: 顯示分組
+    remove from products: 刪除關聯類型會將其從%count%個產品中刪除。
+    none exist: 沒有關聯的類型存在。
+    create one: 點此開始創建
+  attribute:
+    auto option sorting: 如已啟用，選項將按其本地化標籤自動排序
+  completeness:
+    not calculated: 尚未計算
+#Form elements
+Created: 已創建
+Updated: 已更新
+Last update: 上次更新
+by: 根據
+N/A: 不適用
+Manage products: 管理產品
+Manage groups: 管理分組
+Code: 代碼
+Name: 名稱
+Type: 類型
+Scope: 渠道
+Required: 必填
+Unique: 唯一
+Not required: 非必填
+Translatable: 可翻譯
+Scopable: 可適用
+Localizable: 可本地化
+Unique value: 唯一值
+Attribute group: 屬性分組
+Other: 其它
+Variants behavior when edited: 編輯時的變量行為
+Remove: 移除
+Parameters: 參數
+System: 系統
+Values: 值
+General parameters: 一般參數
+Backend parameters: 後端參數
+Label: 標籤
+Default label: 默認標籤
+Default value: 默認值
+Attributetype: 屬性類別
+Attribute type: 屬性類別
+Defaultvalue: 默認值
+Variant: 變量
+Smart: 靈巧
+Useable as grid column: 可在界面列中使用
+Useable as grid filter: 可在界面中使用
+Family: 品類
+Image: 圖片
+Variant products: 變量產品
+Available locales: 可用的區域
+Locale specific: 特定區域
+default: 默認
+Axis: 軸
+Add attributes: 添加屬性
+switch_on: "是"
+switch_off: "否"
+Close: 關閉
+Search: 搜索
+Choose the attribute type: 選擇屬性類型
+Choose the attribute group: 選擇屬性分組
+Drag and drop a file or click here: 拖放檔案到此處或點擊
+Drop an image or click here: 拖放圖片到此處或點擊
+Automatic option sorting: 自動排序選項
+save_attribute_before_manage_option: 管理選項前請先保存屬性
+Please select: 請選擇
+Active: 激活
+Inactive: 未激活
+Do not convert: 不轉換
+Create: 創建
+Choose a family: 選擇一個品類
+Choose a unit: 選擇一個單位
+No matches found: 沒有找到匹配項
+Category tree: 類別目錄
+Completeness: 完成度
+Attribute used as label: 作為標籤的屬性
+Credentials: 認證
+#Scopes
+Global: 全局
+Channel: 渠道
+Expand all channels: 展開所有渠道
+Collapse all channels: 折疊所有渠道
+#Variants
+Always override: 總是覆蓋
+Ask: 詢問
+#Attribute group
+General Properties: 常规属性
+Group values: 分組值
+New group: 新分組
+Groups overview: 分組概覽
+'Y-m-d h:i:s': 'Y-m-d h:i:s'
+#Attribute properties
+Max characters: 最大字符
+Validation rule: 確認法則
+Validation regexp: 驗證正則表達式
+Wysiwyg enabled: WYSIWYG 已啟用
+Number min: 最小數值
+Number max: 最大數值
+Decimals allowed: 允許小數
+Negative allowed: 允許負值
+Date min: 最小日期
+Date max: 最大數據
+Metric family: 計量品類
+Default metric unit: 默認計量單位
+Max file size: 最大文件體積（MB）
+Allowed extensions: 允許的擴展名
+None: 無
+E-mail: 電子郵件
+URL: 網址
+Regular expression: 正則運算式
+Minimum input length: 最小輸入長度
+Default: 默認
+#Family
+Attributes: 屬性
+#Category
+Title: 標題
+#Page titles
+pim_catalog_identifier: 標識符
+pim_catalog_text: 文本
+pim_catalog_textarea: 文字區
+pim_catalog_number: 數字
+pim_catalog_price_collection: 價格
+pim_catalog_multiselect: 多選
+pim_catalog_simpleselect: 簡單選擇
+pim_catalog_file: 檔案
+pim_catalog_image: 圖片
+pim_catalog_boolean: "是/否"
+pim_catalog_date: 日期
+pim_catalog_metric: 公制
+pim_reference_data_simpleselect: 參考日期簡單選擇
+pim_reference_data_multiselect: 參考日期多選
+#Locales
+Activated: 已激活
+Edit: 編輯
+Disable: 禁用
+To enable: 啟用
+Select attributes: 選擇屬性
+Select: 選擇
+Remove this attribute: 移除此屬性
+Copy: 複製
+Translate from: "翻译自\n"
+Current tab: 當前標籤
+#Product view
+Group: 分組
+View group: 查看分組
+Products: 產品
+#Tabs
+Properties: 屬性
+History: 歷史紀錄
+pane.accordion:
+  node_values: 節點值
+  general_properties: 常规属性
+  locale_values: 區域值
+  backend_parameters: 後端參數
+  general_parameters: 一般參數
+  validation_parameters: 確認參數
+  label_translations: 標記翻譯
+  options: 選項
+  group_values: 分組值
+#Popin titles
+popin.create:
+  association_type.title: 創建一個新的關聯類別
+  group.title: 創建新分組
+  product.title: 創建新產品
+  option.title: 創建新選項
+#Datagrid contents
+In group: 在分組中
+Attribute as label: 標籤屬性
+Is associated: 已關聯
+Complete: 完成
+Created At: 創建於
+Updated At: 更新於
+Enabled: 已啟用
+Disabled: 已禁用
+Status: 狀態
+#Versioning / history
+Change History: 修改歷史記錄
+Data Audit: 數據審核
+Data Audit - System: '數據審核 - 系統'
+Action: 操作
+Version: 版本
+Entity type: 實體類型
+Entity name: 實體名稱
+Entity id: 實體 ID
+Data: 數據
+Author: 作者
+Logged at: 登錄於
+Deleted: 已刪除
+Old values: 舊值
+New values: 新值
+#Configuration
+System configuration: 系統配置
+General setup: 通用安裝
+Localization: 本地化
+Localization options: 本土化選項
+Locale: 區域
+Location: 地點
+Format address by address country: 按地址國家格式化地址
+Language: 語言
+Timezone: 時區
+Currency: 貨幣
+oro.locale:
+  address_format:
+    region_name_type:
+      parish: "教區"
+      state: "州"
+      island: "島"
+      county: "縣"
+      area: "區"
+      prefecture: "縣"
+      department: "部"
+      district: "區"
+      province: "省"
+  form:
+    tooltip:
+      locale: "選擇地區選項用於格式化數字、地址、姓名和日期"
+      location: " 禁用“按地址國家/地區格式化地址”選項時，將使用位置來格式化地址"
+      format_address_by_address_country: "選擇此選項將使地址能夠按其所在國家進行格式化。取消此選項將使地址以您的位置地址格式進行格式化"
+      language: "選擇您要使用的系統語言"
+      timezone: "選擇顯示日期和時間的時區"
+      currency: "選擇目標貨幣"
+#Datagrid
+Selected products successfully deleted: 已成功刪除選中的產品
+pim_mass_edit:
+  notification:
+    mass_edit:
+      error: 批量編輯 <strong>%label%</strong> 失敗
+      warning: 批量編輯<strong>%label%</strong>完成，出現了一些警告
+      success: 批量編輯 <strong>%label%</strong> 完成
+    quick_export:
+      error: 快速匯出<strong>%label%</strong>失敗
+      warning: 快速匯出<strong>%label%</strong>完成，出現了一些警告
+      success: 快速匯出<strong>%label%</strong>完成
+    mass_delete:
+      error: 批量刪除 <strong>%label%</strong> 失敗
+      warning: 批量刪除<strong>%label%</strong>完成，出現了一些警告
+      success: 批量刪除 <strong>%label%</strong> 完成
+job_execution.summary:
+  mass_edited: 批量編輯
+  skip: 已跳過
+  skipped_products: 已跳過的產品
+  skipped_attributes: 已跳過的屬性
+  skipped_families: 已跳過的品項
+  deleted_products: 已刪除的產品
+  deleted_product_models: 已刪除的產品型號
+pim_mass_edit_execution_show: 批量編輯執行 | 詳情
+edit_common_attributes.steps.edit_common_attributes_processor.title: 編輯屬性
+update_product_value.steps.update_product_value_processor.title: 更新產品值
+remove_product_value.steps.update_product_value_processor.title: 刪除產品值
+edit_common_attributes: 編輯屬性
+edit_common_attributes_clean: 清空屬性文件
+perform.steps.duplicated.title: 已複製的軸
+perform.steps.excluded.title: 已排除的產品
+mass_edit report:
+  overview: 批量修改報告
+job_tracker:
+  tab:
+    title: 流程追蹤
+  filter:
+    started_at: 開始於

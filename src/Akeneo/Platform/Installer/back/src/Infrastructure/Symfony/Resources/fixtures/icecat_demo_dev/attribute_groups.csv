@@ -1,0 +1,12 @@
+code;sort_order;label-en_US;label-fr_FR;label-de_DE
+marketing;0;Marketing;Marketing;Marketing
+erp;1;ERP;ERP;ERP
+technical;2;Technical;Technique;Technische
+design;3;Design;Style;Stil
+product;4;Product;Produit;Product
+manufacturing;6;Manufacturing;Fabrication;Herstellung
+ecommerce;6;Ecommerce;Ecommerce;Ecommerce
+color;8;Color;Couleur;Farbe
+size;8;Size;Taille;Größe
+medias;9;Media;Media;Media
+other;10;Other;Autre;Ander

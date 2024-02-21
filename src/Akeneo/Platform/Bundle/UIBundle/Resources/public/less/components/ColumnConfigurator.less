@@ -1,0 +1,84 @@
+@import '../base/variables';
+
+.AknColumnConfigurator {
+  @itemHeight: 50px;
+
+  display: flex;
+  padding: 0 0 0 @AknFullPagePadding;
+  font-size: @AknFontSizeBig;
+
+  &-column {
+    width: 30%;
+    flex-grow: 1;
+    border: 1px solid @AknBorderColor;
+    margin-right: @AknFullPagePadding;
+
+    &--large {
+      width: 80%;
+    }
+
+    &--gray {
+      background: @AknLightGray;
+    }
+
+    &--fixed {
+      width: 300px;
+    }
+  }
+
+  &-columnHeader {
+    height: @itemHeight;
+    border-bottom: 1px solid @AknLightPurple;
+    font-size: @AknFontSizeBig;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-transform: uppercase;
+    margin: 5px 20px 0 20px;
+  }
+
+  &-listContainer {
+    max-height: ~"calc(100vh - 210px)";
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 10px 20px;
+    min-height: 100px;
+    color: @AknDarkBlue;
+  }
+
+  &-searchInput {
+    font-size: @AknFontSizeBig;
+    padding-left: 32px;
+    background: url("/bundles/pimui/images/icon-search-purple.svg") no-repeat 0 9px;
+    background-size: 20px;
+    border: none;
+    color: @AknLightPurple;
+
+    &:focus {
+      outline: none !important;
+    }
+
+    &::-webkit-input-placeholder {
+      color: @AknLightPurple;
+      text-transform: uppercase;
+    }
+
+    &::-moz-placeholder {
+      color: @AknLightPurple;
+      opacity: 1;
+      text-transform: uppercase;
+    }
+  }
+
+  &-searchIcon {
+    font-size: @AknTitleFontSize;
+    position: absolute;
+    margin-left: 10px;
+    top: 30px;
+    color: @AknSlateGrey;
+  }
+
+  &-relativeContent {
+    position: relative;
+  }
+}

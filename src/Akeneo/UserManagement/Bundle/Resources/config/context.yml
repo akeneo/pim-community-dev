@@ -1,0 +1,15 @@
+parameters:
+    pim_user.context.user.class: Akeneo\UserManagement\Bundle\Context\UserContext
+
+services:
+    pim_user.context.user:
+        public: true
+        class: '%pim_user.context.user.class%'
+        arguments:
+            - '@security.token_storage'
+            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.category'
+            - '@request_stack'
+            - '%env(APP_DEFAULT_LOCALE)%'
+            - '@security.firewall.map'

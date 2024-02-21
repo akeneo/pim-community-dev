@@ -1,0 +1,20 @@
+<ul class="ui-multiselect-checkboxes ui-helper-reset full">
+    <li class="ui-multiselect-optgroup-label">
+        <a title="<%- groupName %>"><%- groupName %></a>
+    </li>
+    <% filters.forEach(filter => { %>
+    <li>
+        <label for="<%- filter.name %>" title="<%- filter.label %>" class="ui-corner-all ui-state-hover">
+            <input
+                    id="<%- filter.name %>"
+                    name="multiselect_add-filter-select"
+                    type="checkbox" value="<%- filter.name %>"
+                    title="<%- filter.label %>"
+            <%- filter.enabled ? 'checked="checked"' : ''  %>
+            <%- true === ignoredFilters.includes(filter.name) ? 'disabled="true"' : ''  %>
+            aria-selected="true">
+            <span><%- filter.label %></span>
+        </label>
+    </li>
+    <% }) %>
+</ul>

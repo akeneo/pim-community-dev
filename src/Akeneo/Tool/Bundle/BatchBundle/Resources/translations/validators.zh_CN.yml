@@ -1,0 +1,2 @@
+akeneo_batch.job_instance.unknown_job_definition: 创建 %job_type% 失败，因其作业定义未知
+akeneo.job_automation.validation.import_should_have_storage: 没有在导入配置文件的属性选项卡中配置存储。
