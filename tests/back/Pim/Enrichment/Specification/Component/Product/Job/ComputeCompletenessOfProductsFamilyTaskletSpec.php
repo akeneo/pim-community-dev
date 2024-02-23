@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Job;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductAndAncestorsIndexer;
+use Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses;
 use Akeneo\Pim\Enrichment\Component\Product\Job\ComputeCompletenessOfProductsFamilyTasklet;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
@@ -20,6 +22,7 @@ use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Ramsey\Uuid\Uuid;
 
 class ComputeCompletenessOfProductsFamilyTaskletSpec extends ObjectBehavior
@@ -27,16 +30,14 @@ class ComputeCompletenessOfProductsFamilyTaskletSpec extends ObjectBehavior
     function let(
         IdentifiableObjectRepositoryInterface $familyRepository,
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
-        ProductRepositoryInterface $productRepository,
-        BulkSaverInterface $bulkProductSaver,
-        EntityManagerClearerInterface $cacheClearer
+        ComputeAndPersistProductCompletenesses $computeAndPersistProductCompletenesses,
+        ProductAndAncestorsIndexer $productAndAncestorsIndexer,
     ) {
         $this->beConstructedWith(
             $familyRepository,
             $productQueryBuilderFactory,
-            $productRepository,
-            $bulkProductSaver,
-            $cacheClearer
+            $computeAndPersistProductCompletenesses,
+            $productAndAncestorsIndexer,
         );
     }
 
@@ -53,17 +54,13 @@ class ComputeCompletenessOfProductsFamilyTaskletSpec extends ObjectBehavior
     function it_recomputes_the_completeness_of_all_the_products_belonging_the_given_family(
         IdentifiableObjectRepositoryInterface $familyRepository,
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
-        ProductRepositoryInterface $productRepository,
-        BulkSaverInterface $bulkProductSaver,
-        EntityManagerClearerInterface $cacheClearer,
+        ComputeAndPersistProductCompletenesses $computeAndPersistProductCompletenesses,
+        ProductAndAncestorsIndexer $productAndAncestorsIndexer,
         StepExecution $stepExecution,
         JobParameters $jobParameters,
         FamilyInterface $family,
         ProductQueryBuilderInterface $pqb,
         CursorInterface $cursor,
-        ProductInterface $product1,
-        ProductInterface $product2,
-        ProductInterface $product3
     ) {
         $uuid1 = Uuid::uuid4();
         $uuid2 = Uuid::uuid4();
@@ -87,12 +84,8 @@ class ComputeCompletenessOfProductsFamilyTaskletSpec extends ObjectBehavior
         $cursor->next()->shouldBeCalled();
         $cursor->rewind()->shouldBeCalled();
 
-        $productRepository->getItemsFromUuids([$uuid1->toString(), $uuid2->toString(), $uuid3->toString()])->willReturn(
-            [$product1, $product2, $product3]
-        );
-
-        $bulkProductSaver->saveAll([$product1, $product2, $product3], ['force_save' => true])->shouldBeCalled();
-        $cacheClearer->clear()->shouldBeCalled();
+        $computeAndPersistProductCompletenesses->fromProductUuids([$uuid1, $uuid2, $uuid3])->shouldBeCalled();
+        $productAndAncestorsIndexer->indexFromProductUuids([$uuid1, $uuid2, $uuid3])->shouldBeCalled();
 
         $this->setStepExecution($stepExecution);
         $this->execute();
@@ -100,15 +93,17 @@ class ComputeCompletenessOfProductsFamilyTaskletSpec extends ObjectBehavior
 
     function it_does_not_recompute_if_the_given_family_code_is_invalid(
         IdentifiableObjectRepositoryInterface $familyRepository,
-        BulkSaverInterface $bulkProductSaver,
+        ComputeAndPersistProductCompletenesses $computeAndPersistProductCompletenesses,
+        ProductAndAncestorsIndexer $productAndAncestorsIndexer,
         StepExecution $stepExecution,
         JobParameters $jobParameters
     ) {
         $jobParameters->get('family_code')->willReturn('unknown_family');
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $familyRepository->findOneByIdentifier('unknown_family')->willReturn(null);
-
-        $bulkProductSaver->saveAll()->shouldNotBeCalled();
+        
+        $computeAndPersistProductCompletenesses->fromProductUuids(Argument::any())->shouldNotBeCalled();
+        $productAndAncestorsIndexer->indexFromProductUuids(Argument::any())->shouldNotBeCalled();
 
         $this->setStepExecution($stepExecution);
         $this->shouldThrow(new \InvalidArgumentException('Family not found, "unknown_family" given'))

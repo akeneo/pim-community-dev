@@ -208,6 +208,10 @@ $rules = [
         'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder',
         'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult',
 
+        // PIM-10832: Remove coupling with indexer and completeness persistence
+        'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductAndAncestorsIndexer',
+        'Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses',
+
         // TIP-932: KeepOnlyValuesForVariation should use the public API related to the root aggregate Family Variant
         'Akeneo\Pim\Structure\Component\Model\CommonAttributeCollection',
 
