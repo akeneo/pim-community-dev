@@ -12,6 +12,8 @@ const FigureContainer = styled.div`
   color: ${getColor('brand', 100)};
   font-size: 16px;
   margin: 0 15px 0 3px;
+  display: flex;
+  align-items: center;
 
   :only-child {
     margin: 0;

@@ -24,7 +24,9 @@ const Container = styled.ul<AkeneoThemedProps & {invalid: boolean}>`
   }
 `;
 
-const Chip = styled.li<AkeneoThemedProps & {isSelected: boolean; readOnly: boolean; isErrored: boolean}>`
+const Chip = styled.li<
+  AkeneoThemedProps & {isSelected: boolean; readOnly: boolean; isErrored: boolean; isLocked: boolean}
+>`
   list-style-type: none;
   padding: 3px 15px;
   padding-left: ${({readOnly}) => (readOnly ? '15px' : '4px')};
@@ -35,8 +37,8 @@ const Chip = styled.li<AkeneoThemedProps & {isSelected: boolean; readOnly: boole
   align-items: center;
   height: 30px;
   box-sizing: border-box;
-  color: ${({readOnly, isErrored}) =>
-    isErrored ? getColor('red', 100) : readOnly ? getColor('grey', 100) : getColor('grey', 140)};
+  color: ${({readOnly, isErrored, isLocked}) =>
+    isErrored ? getColor('red', 100) : readOnly || isLocked ? getColor('grey', 100) : getColor('grey', 140)};
 `;
 
 const Input = styled.input`
@@ -76,6 +78,10 @@ const ReadOnlyIcon = styled(LockIcon)`
   color: ${getColor('grey', 100)};
 `;
 
+const LockedValueIcon = styled(LockIcon)`
+  padding-right: 5px;
+`;
+
 const RemoveButton = styled(IconButton)<AkeneoThemedProps & {isErrored: boolean}>`
   background-color: transparent;
   margin-left: -3px;
@@ -100,6 +106,7 @@ type ChipInputProps = {
   onRemove: (chipCode: string) => void;
   onSearchChange: (searchValue: string) => void;
   onFocus?: () => void;
+  lockedValues?: string[];
 };
 
 const ChipInput = React.forwardRef<HTMLInputElement, ChipInputProps>(
@@ -116,6 +123,7 @@ const ChipInput = React.forwardRef<HTMLInputElement, ChipInputProps>(
       onRemove,
       onSearchChange,
       onFocus,
+      lockedValues,
     }: ChipInputProps,
     forwardedRef: Ref<HTMLInputElement>
   ) => {
@@ -148,10 +156,11 @@ const ChipInput = React.forwardRef<HTMLInputElement, ChipInputProps>(
           <Chip
             key={chip.code}
             readOnly={readOnly}
+            isLocked={lockedValues?.includes(chip.code)}
             isErrored={invalidValue.includes(chip.code)}
             isSelected={index === value.length - 1 && isLastSelected}
           >
-            {!readOnly && (
+            {!readOnly && !lockedValues?.includes(chip.code) && (
               <RemoveButton
                 title={removeLabel}
                 ghost="borderless"
@@ -162,6 +171,7 @@ const ChipInput = React.forwardRef<HTMLInputElement, ChipInputProps>(
                 isErrored={invalidValue.includes(chip.code)}
               />
             )}
+            {lockedValues?.includes(chip.code) && <LockedValueIcon size={16} />}
             {chip.label}
           </Chip>
         ))}

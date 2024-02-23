@@ -326,6 +326,26 @@ test('MultiSelectInput supports ...rest props', () => {
   expect(screen.getByTestId('my_value')).toBeInTheDocument();
 });
 
+test('MultiSelectInput supports locked values prop', () => {
+  const onChange = jest.fn();
+  render(
+    <MultiSelectInput
+      value={['fr_FR', 'en_US']}
+      data-testid="my_value"
+      removeLabel="Remove"
+      openLabel="Open"
+      emptyResultLabel="Empty result"
+      onChange={onChange}
+      lockedValues={['fr_FR']}
+    >
+      <MultiSelectInput.Option value="en_US">English</MultiSelectInput.Option>
+      <MultiSelectInput.Option value="fr_FR">French</MultiSelectInput.Option>
+      <MultiSelectInput.Option value="es_ES">Spanish</MultiSelectInput.Option>
+    </MultiSelectInput>
+  );
+  expect(screen.getByTestId('my_value')).toBeInTheDocument();
+});
+
 test('MultiSelectInput does not support duplicated options', () => {
   const mockConsole = jest.spyOn(console, 'error').mockImplementation();
   expect(() => {
