@@ -235,7 +235,7 @@ class DatabaseCommand extends Command
 
     private function getLatestMigration(InputInterface $input): string
     {
-        $params = ['bin/console', 'doctrine:migrations:latest'];
+        $params = ['php', 'bin/console', 'doctrine:migrations:latest'];
 
         $params[] = '--no-debug';
 
