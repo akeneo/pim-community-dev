@@ -50,6 +50,7 @@ parameters:
         - '#Cannot import type alias StandardInternalApi: type alias does not exist in Akeneo\\Category\\Infrastructure\\Converter\\InternalApi\\InternalApiToStd.#'
         - '#Class PHP_CodeSniffer\\Standards\\Generic\\Sniffs\\Formatting\\SpaceAfterNotSniff not found.#'
         - '#Class PHP_CodeSniffer\\Standards\\Generic\\Sniffs\\Files\\LineLengthSniff not found.#'
+        - '#Call to deprecated method create\(\) of class Doctrine\\ORM\\EntityManager#'
     excludePaths:
         - %currentWorkingDirectory%/*Spec.php
         - %currentWorkingDirectory%/src/Akeneo/Pim/Enrichment/Bundle/Resources/fonts/dompdf_font_family_cache.php
