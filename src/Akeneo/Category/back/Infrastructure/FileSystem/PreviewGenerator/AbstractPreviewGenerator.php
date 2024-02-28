@@ -40,9 +40,6 @@ abstract class AbstractPreviewGenerator implements PreviewGeneratorInterface
         return \in_array(\strtolower($mimeType), $this->supportedMimeTypes);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function generate(string $data, Attribute $attribute, string $type): string
     {
         if (empty($data)) {

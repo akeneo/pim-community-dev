@@ -28,9 +28,6 @@ class CommandMessageBus implements MessageBusInterface
         Assert::allObject($this->handlers);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function dispatch(object $message, array $stamps = []): Envelope
     {
         $handler = $this->handlers[get_class($message)] ?? null;

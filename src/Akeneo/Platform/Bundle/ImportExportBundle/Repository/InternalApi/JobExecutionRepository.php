@@ -22,9 +22,6 @@ class JobExecutionRepository extends EntityRepository implements DatagridReposit
         parent::__construct($em, $em->getClassMetadata($class));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function createDatagridQueryBuilder()
     {
         $qb = $this->createQueryBuilder('e');

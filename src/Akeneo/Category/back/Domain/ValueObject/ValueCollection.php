@@ -24,7 +24,7 @@ final class ValueCollection implements \IteratorAggregate, \Countable
      */
     private function __construct(private array $values)
     {
-        assert::allIsInstanceOf($values, Value::class);
+        Assert::allIsInstanceOf($values, Value::class);
         $this->assertUniqueValue($values);
     }
 

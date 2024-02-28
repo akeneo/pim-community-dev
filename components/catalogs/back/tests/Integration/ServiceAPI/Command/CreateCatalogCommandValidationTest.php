@@ -60,7 +60,7 @@ class CreateCatalogCommandValidationTest extends IntegrationTestCase
                     name: 'foo',
                     ownerUsername: 'shopifi',
                 ),
-                'error' => 'This is not a valid UUID.',
+                'error' => 'This value is not a valid UUID.',
             ],
             'name is not empty' => [
                 'command' => new CreateCatalogCommand(

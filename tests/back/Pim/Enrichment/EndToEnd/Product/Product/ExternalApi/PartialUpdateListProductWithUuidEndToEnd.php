@@ -224,7 +224,7 @@ JSON;
 {"line":8,"status_code":413,"message":"Line is too long."}
 {"line":9,"status_code":413,"message":"Line is too long."}
 {"line":10,"status_code":400,"message":"Invalid json message received"}
-{"line":11,"uuid":"122345","status_code":422,"message":"This is not a valid UUID. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products_uuid__uuid_"}}}
+{"line":11,"uuid":"122345","status_code":422,"message":"This value is not a valid UUID. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products_uuid__uuid_"}}}
 JSON;
 
         $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/products-uuid', [], [], [], $data);
@@ -293,7 +293,7 @@ JSON;
 
         $expectedContent =
 <<<JSON
-{"line":1,"uuid":"{$uuid->toString()},","status_code":422,"message":"This is not a valid UUID. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products_uuid__uuid_"}}}
+{"line":1,"uuid":"{$uuid->toString()},","status_code":422,"message":"This value is not a valid UUID. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products_uuid__uuid_"}}}
 JSON;
 
 

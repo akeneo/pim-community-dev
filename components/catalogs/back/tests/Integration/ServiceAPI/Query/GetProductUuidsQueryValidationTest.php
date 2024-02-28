@@ -42,11 +42,11 @@ class GetProductUuidsQueryValidationTest extends IntegrationTestCase
             ],
             'catalogId is not an uuid' => [
                 'query' => new GetProductUuidsQuery('not_an_uuid'),
-                'error' => 'This is not a valid UUID.',
+                'error' => 'This value is not a valid UUID.',
             ],
             'searchAfter is not an uuid' => [
                 'query' => new GetProductUuidsQuery('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'not_an_uuid'),
-                'error' => 'This is not a valid UUID.',
+                'error' => 'This value is not a valid UUID.',
             ],
             'limit is negative' => [
                 'query' => new GetProductUuidsQuery('db1079b6-f397-4a6a-bae4-8658e64ad47c', null, -1),

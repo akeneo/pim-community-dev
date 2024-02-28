@@ -99,7 +99,7 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
     {
         $this
             ->setDescription('Removes all values of deleted attributes on all products and product models')
-            ->addOption('all-blacklisted-attributes', InputArgument::OPTIONAL)
+            ->addOption('all-blacklisted-attributes', null, InputArgument::OPTIONAL)
             ->addArgument('attributes', InputArgument::OPTIONAL | InputArgument::IS_ARRAY);
     }
 

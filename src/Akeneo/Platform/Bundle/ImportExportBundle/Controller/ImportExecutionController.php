@@ -14,8 +14,6 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 class ImportExecutionController extends JobExecutionController
 {
     /**
-     * {@inheritdoc}
-     *
      * @AclAncestor("pim_importexport_import_execution_download_log")
      */
     public function downloadLogFileAction($id)
@@ -24,8 +22,6 @@ class ImportExecutionController extends JobExecutionController
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @AclAncestor("pim_importexport_import_execution_download_files")
      */
     public function downloadFilesAction($id, $archiver, $key)

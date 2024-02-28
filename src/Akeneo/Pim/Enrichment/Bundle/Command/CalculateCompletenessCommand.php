@@ -29,36 +29,24 @@ class CalculateCompletenessCommand extends Command
 
     protected static $defaultName = 'pim:completeness:calculate';
 
-    /** @var ProductAndAncestorsIndexer */
-    private $productAndAncestorsIndexer;
-
-    /** @var ComputeAndPersistProductCompletenesses */
-    private $computeAndPersistProductCompleteness;
-
-    /** @var Connection */
-    private $connection;
-
     public function __construct(
-        ProductAndAncestorsIndexer $productANdAncestorsIndexer,
-        ComputeAndPersistProductCompletenesses $computeAndPersistProductCompleteness,
-        Connection $connection
+        private readonly ProductAndAncestorsIndexer $productAndAncestorsIndexer,
+        private readonly ComputeAndPersistProductCompletenesses $computeAndPersistProductCompleteness,
+        private readonly Connection $connection
     ) {
         parent::__construct();
-        $this->productAndAncestorsIndexer = $productANdAncestorsIndexer;
-        $this->computeAndPersistProductCompleteness = $computeAndPersistProductCompleteness;
-        $this->connection = $connection;
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Launch the product completeness calculation')
             ->addOption(
                 'batch-size',
-                false,
+                null,
                 InputArgument::OPTIONAL,
                 'The number of product completeness calculated in one cycle.',
                 self::DEFAULT_BATCH_SIZE
@@ -100,6 +88,9 @@ class CalculateCompletenessCommand extends Command
         return $this->connection->executeQuery('SELECT COUNT(0) FROM pim_catalog_product')->fetchOne();
     }
 
+    /**
+     * @return iterable<UuidInterface>
+     */
     private function getProductUuids(int $batchSize): iterable
     {
         $lastUuidAsBytes = '';

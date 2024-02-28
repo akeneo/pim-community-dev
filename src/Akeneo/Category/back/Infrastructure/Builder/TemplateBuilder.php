@@ -36,7 +36,6 @@ class TemplateBuilder
     }
 
     /**
-     * @param Code $categoryTreeCode
      * @param string $templateCode
      *
      * @throws \Exception

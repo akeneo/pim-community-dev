@@ -79,11 +79,9 @@ interface CategoryInterface
     public function getRoot();
 
     /**
-     * @param CategoryInterface $parent
-     *
      * @return CategoryInterface
      */
-    public function setParent(CategoryInterface $parent = null);
+    public function setParent(?CategoryInterface $parent = null);
 
     /**
      * @return CategoryInterface|null

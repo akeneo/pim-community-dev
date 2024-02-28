@@ -20,9 +20,6 @@ use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
  */
 class CategoryRepository extends NestedTreeRepository implements IdentifiableObjectRepositoryInterface, CategoryRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getCategoriesByIds(array $categoriesIds = [])
     {
         if (empty($categoriesIds)) {
@@ -45,9 +42,6 @@ class CategoryRepository extends NestedTreeRepository implements IdentifiableObj
         return $result;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCategoriesByCodes(array $categoriesCodes = [])
     {
         if (empty($categoriesCodes)) {
@@ -70,9 +64,6 @@ class CategoryRepository extends NestedTreeRepository implements IdentifiableObj
         return $result;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTreeFromParents(array $parentsIds)
     {
         if (\count($parentsIds) === 0) {
@@ -95,9 +86,6 @@ class CategoryRepository extends NestedTreeRepository implements IdentifiableObj
         return $this->buildTreeNode($nodes);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFilledTree(CategoryInterface $root, Collection $categories)
     {
         $parentsIds = [];
@@ -117,9 +105,6 @@ class CategoryRepository extends NestedTreeRepository implements IdentifiableObj
         return $this->getTreeFromParents($parentsIds);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getAllChildrenIds(CategoryInterface $parent, $includeNode = false)
     {
         $categoryQb = $this->getAllChildrenQueryBuilder($parent, $includeNode);
@@ -132,9 +117,6 @@ class CategoryRepository extends NestedTreeRepository implements IdentifiableObj
         return array_keys($categoryQb->getQuery()->execute([], AbstractQuery::HYDRATE_ARRAY));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getAllChildrenCodes(CategoryInterface $parent, $includeNode = false)
     {
         $categoryQb = $this->getAllChildrenQueryBuilder($parent, $includeNode);
@@ -153,9 +135,6 @@ class CategoryRepository extends NestedTreeRepository implements IdentifiableObj
         return $codes;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCategoryIdsByCodes(array $categoriesCodes)
     {
         if (empty($categoriesCodes)) {
@@ -181,25 +160,16 @@ class CategoryRepository extends NestedTreeRepository implements IdentifiableObj
         return $ids;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findOneByIdentifier($code)
     {
         return $this->findOneBy(['code' => $code]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getIdentifierProperties()
     {
         return ['code'];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getChildrenByParentId($parentId)
     {
         $parent = $this->find($parentId);
@@ -207,9 +177,6 @@ class CategoryRepository extends NestedTreeRepository implements IdentifiableObj
         return $this->getChildren($parent, true);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getChildrenGrantedByParentId(CategoryInterface $parent, array $grantedCategoryIds = [])
     {
         return $this->getChildrenQueryBuilder($parent, true)
@@ -219,9 +186,6 @@ class CategoryRepository extends NestedTreeRepository implements IdentifiableObj
             ->getResult();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getChildrenTreeByParentId($parentId, $selectNodeId = false, array $grantedCategoryIds = [])
     {
         $children = [];
@@ -265,9 +229,6 @@ class CategoryRepository extends NestedTreeRepository implements IdentifiableObj
         return $children;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildTreeNode(array $nodes)
     {
         $vectorMap = [];
@@ -337,17 +298,11 @@ class CategoryRepository extends NestedTreeRepository implements IdentifiableObj
         return $tree;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTrees()
     {
         return $this->getChildren(null, true, 'created', 'DESC');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getGrantedTrees(array $grantedCategoryIds = [])
     {
         $qb = $this->getChildrenQueryBuilder(null, true, 'created', 'DESC');
@@ -360,9 +315,6 @@ class CategoryRepository extends NestedTreeRepository implements IdentifiableObj
         return $result;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isAncestor(CategoryInterface $parentNode, CategoryInterface $childNode)
     {
         $sameRoot = $parentNode->getRoot() === $childNode->getRoot();
@@ -373,9 +325,6 @@ class CategoryRepository extends NestedTreeRepository implements IdentifiableObj
         return $sameRoot && $isAncestor;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getOrderedAndSortedByTreeCategories()
     {
         $queryBuilder = $this->createQueryBuilder('c');

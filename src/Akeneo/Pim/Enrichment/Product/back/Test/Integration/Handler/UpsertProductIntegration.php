@@ -1464,20 +1464,20 @@ final class UpsertProductIntegration extends TestCase
         $this->get('feature_flags')->enable('asset_manager');
 
         ($this->get('akeneo_assetmanager.application.asset_family.create_asset_family_handler'))(
-        /** @phpstan-ignore-next-line */
+            /** @phpstan-ignore-next-line */
             new CreateAssetFamilyCommand('packshot', ['en_US' => 'Packshot'])
         );
 
         ($this->get('akeneo_assetmanager.application.asset.create_asset_handler'))(
-        /** @phpstan-ignore-next-line */
+            /** @phpstan-ignore-next-line */
             new CreateAssetCommand('packshot', 'packshot1', ['en_US' => 'Packshot 1'])
         );
         ($this->get('akeneo_assetmanager.application.asset.create_asset_handler'))(
-        /** @phpstan-ignore-next-line */
+            /** @phpstan-ignore-next-line */
             new CreateAssetCommand('packshot', 'packshot2', ['en_US' => 'Packshot 2'])
         );
         ($this->get('akeneo_assetmanager.application.asset.create_asset_handler'))(
-        /** @phpstan-ignore-next-line */
+            /** @phpstan-ignore-next-line */
             new CreateAssetCommand('packshot', 'packshot3', ['en_US' => 'Packshot 3'])
         );
 

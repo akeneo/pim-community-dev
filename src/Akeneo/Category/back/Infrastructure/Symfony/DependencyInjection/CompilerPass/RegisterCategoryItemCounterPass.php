@@ -19,9 +19,6 @@ class RegisterCategoryItemCounterPass implements CompilerPassInterface
 
     public const CATEGORY_REGISTRY = 'pim_enrich.doctrine.counter.category_registry';
 
-    /**
-     * {@inheritdoc}
-     */
     public function process(ContainerBuilder $container)
     {
         if (!$container->hasDefinition(static::CATEGORY_REGISTRY)) {

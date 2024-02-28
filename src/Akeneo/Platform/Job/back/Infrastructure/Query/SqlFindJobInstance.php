@@ -44,7 +44,7 @@ class SqlFindJobInstance implements FindJobInstanceInterface
 SQL;
 
         $sqlWherePart = $this->buildWherePart($jobNames, $search);
-        $sqlPaginationPart = null !== $pagination ? $this->buildPaginationPart($pagination) : '';
+        $sqlPaginationPart = $pagination instanceof JobInstanceQueryPagination ? $this->buildPaginationPart($pagination) : '';
 
         return sprintf($sql, $sqlWherePart, $sqlPaginationPart);
     }
@@ -111,7 +111,7 @@ SQL;
             'search' => \PDO::PARAM_STR,
         ];
 
-        if (null !== $query->pagination) {
+        if ($query->pagination instanceof JobInstanceQueryPagination) {
             $queryParameters = array_merge($queryParameters, [
                 'offset' => ($query->pagination->page - 1) * $query->pagination->limit,
                 'limit' => $query->pagination->limit,

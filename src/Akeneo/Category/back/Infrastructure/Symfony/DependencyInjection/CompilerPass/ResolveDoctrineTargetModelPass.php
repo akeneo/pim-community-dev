@@ -17,9 +17,6 @@ use Akeneo\Tool\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\AbstractR
  */
 class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelPass
 {
-    /**
-     * {@inheritdoc}
-     */
     protected function getParametersMapping(): array
     {
         return [

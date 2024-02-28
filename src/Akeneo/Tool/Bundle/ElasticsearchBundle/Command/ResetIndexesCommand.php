@@ -44,7 +44,7 @@ class ResetIndexesCommand extends Command
         $this
             ->addOption(
                 'reset-indexes',
-                true,
+                null,
                 InputOption::VALUE_NONE,
                 'Resets registered ES indexes prior to reindex'
             )

@@ -41,9 +41,6 @@ class JobExecutionNormalizer implements NormalizerInterface, CacheableSupportsMe
         $this->jobExecutionTrackingNormalizer = $jobExecutionTrackingNormalizer;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function normalize($jobExecution, $format = null, array $context = []): array
     {
         try {
@@ -67,9 +64,6 @@ class JobExecutionNormalizer implements NormalizerInterface, CacheableSupportsMe
         return $normalizedJobExecution;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supportsNormalization($jobExecution, $format = null): bool
     {
         return $jobExecution instanceof JobExecution && 'internal_api' === $format;
