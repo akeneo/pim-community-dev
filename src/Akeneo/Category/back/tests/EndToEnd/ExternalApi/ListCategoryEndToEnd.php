@@ -718,9 +718,6 @@ JSON;
         return $category;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useTechnicalCatalog();

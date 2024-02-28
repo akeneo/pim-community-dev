@@ -28,8 +28,6 @@ class CreateTemplateController
     }
 
     /**
-     * @param string $templateCode
-     *
      * @throws \Doctrine\DBAL\Driver\Exception
      * @throws \Doctrine\DBAL\Exception
      */

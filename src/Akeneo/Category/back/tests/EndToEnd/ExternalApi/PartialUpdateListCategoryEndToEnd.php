@@ -292,9 +292,6 @@ JSON;
         $this->assertSame($expectedCategory, $standardizedCategory);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useTechnicalCatalog();

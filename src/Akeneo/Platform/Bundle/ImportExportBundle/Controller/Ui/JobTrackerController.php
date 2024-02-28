@@ -141,7 +141,6 @@ class JobTrackerController
      * Returns if a user has read permission on an import or export.
      *
      * @param JobExecution $jobExecution
-     * @param mixed        $object
      */
     protected function isJobGranted($jobExecution, $object = null): bool
     {

@@ -39,7 +39,7 @@ final class UnableToSetIdentifiersSubscriber implements EventSubscriberInterface
         $warnings = [];
         foreach ($this->events as $event) {
             $exception = $event->getException();
-            $warnings[]= new Warning(
+            $warnings[] = new Warning(
                 $stepExecution,
                 $exception->getMessage(),
                 [],

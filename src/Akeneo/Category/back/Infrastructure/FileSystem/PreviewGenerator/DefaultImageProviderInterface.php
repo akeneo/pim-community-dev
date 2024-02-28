@@ -16,7 +16,7 @@ interface DefaultImageProviderInterface
      * Return the url of the default image corresponding to the specified file type.
      *
      * @param $fileType string type, defined in Akeneo\Pim\Enrichment\Bundle\File\FileTypes
-     * @param $filter   string filter name
+     * @param $filter string filter name
      */
     public function getImageUrl(string $fileType, string $filter): string;
 

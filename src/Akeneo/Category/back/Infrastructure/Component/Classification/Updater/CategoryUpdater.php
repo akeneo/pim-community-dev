@@ -41,9 +41,6 @@ class CategoryUpdater implements ObjectUpdaterInterface
         $this->isCategoryTreeLinkedToChannel = $isCategoryTreeLinkedToChannel;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function update($category, array $data, array $options = [])
     {
         if (!$category instanceof CategoryInterface) {
@@ -62,7 +59,6 @@ class CategoryUpdater implements ObjectUpdaterInterface
      * Validate the data type of a field.
      *
      * @param string $field
-     * @param mixed $data
      *
      * @throws InvalidPropertyTypeException
      * @throws UnknownPropertyException
@@ -90,7 +86,6 @@ class CategoryUpdater implements ObjectUpdaterInterface
 
     /**
      * @param string $field
-     * @param mixed $data
      *
      * @throws InvalidPropertyException
      * @throws UnknownPropertyException

@@ -352,9 +352,6 @@ JSON;
         $this->assertSame($expectedContent, json_decode($response->getContent(), true));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useTechnicalCatalog();

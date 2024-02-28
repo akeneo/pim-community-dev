@@ -55,17 +55,11 @@ class Category extends BaseCategory implements CategoryInterface
         $this->updated = new \DateTime('now', new \DateTimeZone('UTC'));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasProducts()
     {
         return $this->products->count() !== 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getProducts()
     {
         return $this->products;
@@ -81,17 +75,11 @@ class Category extends BaseCategory implements CategoryInterface
         return $this->products->count();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasProductModels(): bool
     {
         return $this->productModels->count() !== 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getProductModels(): Collection
     {
         return $this->productModels;
@@ -119,9 +107,6 @@ class Category extends BaseCategory implements CategoryInterface
         return $this->updated;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setLocale($locale)
     {
         $this->locale = $locale;
@@ -129,9 +114,6 @@ class Category extends BaseCategory implements CategoryInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTranslation(?string $locale = null): ?CategoryTranslationInterface
     {
         $locale = ($locale) ? $locale : $this->locale;
@@ -153,17 +135,11 @@ class Category extends BaseCategory implements CategoryInterface
         return $translation;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTranslations()
     {
         return $this->translations;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addTranslation(TranslationInterface $translation)
     {
         if (!$this->translations->contains($translation)) {
@@ -173,9 +149,6 @@ class Category extends BaseCategory implements CategoryInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function removeTranslation(TranslationInterface $translation)
     {
         $this->translations->removeElement($translation);
@@ -183,9 +156,6 @@ class Category extends BaseCategory implements CategoryInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTranslationFQCN()
     {
         return CategoryTranslation::class;
@@ -228,9 +198,6 @@ class Category extends BaseCategory implements CategoryInterface
         return $this->getLabel();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getReference()
     {
         return $this->code;

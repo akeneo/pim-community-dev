@@ -119,9 +119,6 @@ class GetCategoryEndToEnd extends ApiTestCase
         $this->assertEquals($expected, $result);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useTechnicalCatalog();

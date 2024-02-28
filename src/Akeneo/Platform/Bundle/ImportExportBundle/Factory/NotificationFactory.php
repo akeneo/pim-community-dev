@@ -31,9 +31,6 @@ class NotificationFactory extends AbstractNotificationFactory implements Notific
         $this->notificationClass = $notificationClass;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function create($jobExecution)
     {
         if (!$jobExecution instanceof JobExecution) {
@@ -55,9 +52,6 @@ class NotificationFactory extends AbstractNotificationFactory implements Notific
         return $notification;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports($type)
     {
         return in_array($type, $this->notificationTypes);
