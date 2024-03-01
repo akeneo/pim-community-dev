@@ -1,5 +1,7 @@
 # 7.0.x
 
+# 7.0.53 (2024-03-01)
+
 ## Bug fixes
 
 - PIM-11388 [Backport PIM-10832]: Fix compute completeness job after removing an attribute from a family
