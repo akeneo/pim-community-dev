@@ -16,6 +16,7 @@ use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\FileS
 use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\StorageClientProviderInterface;
 use League\Flysystem\Filesystem;
 use League\Flysystem\Local\LocalFilesystemAdapter;
+use League\Flysystem\UnixVisibility\PortableVisibilityConverter;
 
 final class LocalStorageClientProvider implements StorageClientProviderInterface
 {
