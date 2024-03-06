@@ -27,7 +27,21 @@ final class LocalStorageClientProvider implements StorageClientProviderInterface
 
         $dirname = dirname($storage->getFilePath());
 
-        return new FileSystemStorageClient(new Filesystem(new LocalFilesystemAdapter($dirname)));
+        $visibility = PortableVisibilityConverter::fromArray([
+            'file' => [
+                'public' => 0644,
+                'private' => 0644,
+            ],
+            'dir' => [
+                'public' => 0744,
+                'private' => 0744,
+            ],
+        ]);
+
+        return new FileSystemStorageClient(new Filesystem(new LocalFilesystemAdapter(
+            $dirname,
+            $visibility,
+        )));
     }
 
     public function supports(StorageInterface $storage): bool
