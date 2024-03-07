@@ -1,5 +1,9 @@
 # 7.0.x
 
+## Bug fixes
+
+- PIM-11405: Fix permission on created files on local storage
+
 # 7.0.54 (2024-03-07)
 
 # 7.0.53 (2024-03-01)
