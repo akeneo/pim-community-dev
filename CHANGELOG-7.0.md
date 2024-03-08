@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-11405: Fix permission on created files on local storage
+- [Backport PIM-11407]: Fix family sorting on product grid
 
 # 7.0.54 (2024-03-07)
 

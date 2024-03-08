@@ -56,7 +56,7 @@ class FamilySorterSpec extends ObjectBehavior
             [
                 'family.labels.en_US' => [
                     'order'         => 'ASC',
-                    'unmapped_type' => 'string',
+                    'unmapped_type' => 'long',
                     'missing'       => '_last',
                 ],
             ]
@@ -98,7 +98,7 @@ class FamilySorterSpec extends ObjectBehavior
             [
                 'family.labels.en_US' => [
                     'order'         => 'DESC',
-                    'unmapped_type' => 'string',
+                    'unmapped_type' => 'long',
                     'missing'       => '_last',
                 ],
             ]
