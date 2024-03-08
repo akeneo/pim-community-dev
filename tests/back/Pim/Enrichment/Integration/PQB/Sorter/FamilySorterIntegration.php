@@ -40,6 +40,10 @@ class FamilySorterIntegration extends AbstractProductQueryBuilderTestCase
 
         $result = $this->executeSorter([['family', Directions::DESCENDING, ['locale'=> 'fr_FR']]]);
         $this->assertOrder($result, ['fooA', 'fooA2', 'fooA1', 'baz']);
+
+        $this->activateLocaleForChannel('fr_CA', 'ecommerce');
+        $result = $this->executeSorter([['family', Directions::DESCENDING, ['locale' => 'fr_CA']]]);
+        $this->assertOrder($result, ['fooA2', 'fooA1', 'fooA', 'baz']);
     }
 
     public function testSortCodeAscendant()
@@ -54,6 +58,10 @@ class FamilySorterIntegration extends AbstractProductQueryBuilderTestCase
         $this->assertOrder($result, ['fooA', 'fooA1', 'fooA2', 'baz']);
 
         $result = $this->executeSorter([['family', Directions::ASCENDING, ['locale' => 'fr_FR']]]);
+        $this->assertOrder($result, ['fooA', 'fooA1', 'fooA2', 'baz']);
+
+        $this->activateLocaleForChannel('fr_CA', 'ecommerce');
+        $result = $this->executeSorter([['family', Directions::ASCENDING, ['locale' => 'fr_CA']]]);
         $this->assertOrder($result, ['fooA', 'fooA1', 'fooA2', 'baz']);
     }
 
