@@ -1,5 +1,9 @@
 # 7.0.x
 
+## Bug fixes
+
+- PIM-11418: Fix API Product Model endpoint when trying to update family with wrong case
+
 # 7.0.58 (2024-03-18)
 
 ## Bug fixes
