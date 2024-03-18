@@ -1,5 +1,9 @@
 # 7.0.x
 
+## Bug fixes
+
+- PIM-11405: Improve previous fix on permission
+
 # 7.0.57 (2024-03-11)
 
 # 7.0.56 (2024-03-08)

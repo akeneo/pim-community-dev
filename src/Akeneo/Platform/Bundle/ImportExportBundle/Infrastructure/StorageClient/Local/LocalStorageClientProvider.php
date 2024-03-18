@@ -20,6 +20,9 @@ use League\Flysystem\UnixVisibility\PortableVisibilityConverter;
 
 final class LocalStorageClientProvider implements StorageClientProviderInterface
 {
+    private const FILE_PERMISSIONS = 0655;
+    private const DIRECTORY_PERMISSIONS = 0755;
+
     public function getFromStorage(StorageInterface $storage): StorageClientInterface
     {
         if (!$storage instanceof LocalStorage) {
@@ -30,12 +33,12 @@ final class LocalStorageClientProvider implements StorageClientProviderInterface
 
         $visibility = PortableVisibilityConverter::fromArray([
             'file' => [
-                'public' => 0644,
-                'private' => 0644,
+                'public' => self::FILE_PERMISSIONS,
+                'private' => self::FILE_PERMISSIONS,
             ],
             'dir' => [
-                'public' => 0744,
-                'private' => 0744,
+                'public' => self::DIRECTORY_PERMISSIONS,
+                'private' => self::DIRECTORY_PERMISSIONS,
             ],
         ]);
 
