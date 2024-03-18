@@ -20,15 +20,9 @@ use Doctrine\Common\Util\ClassUtils;
  */
 class ProductModelUpdater implements ObjectUpdaterInterface
 {
-    /** @var ObjectUpdaterInterface */
-    private $productModelUpdater;
-
-    /**
-     * @param ObjectUpdaterInterface $productModelUpdater
-     */
-    public function __construct(ObjectUpdaterInterface $productModelUpdater)
-    {
-        $this->productModelUpdater = $productModelUpdater;
+    public function __construct(
+        private readonly ObjectUpdaterInterface $productModelUpdater
+    ) {
     }
 
     /**
@@ -81,7 +75,7 @@ class ProductModelUpdater implements ObjectUpdaterInterface
     private function validateFamilyCode($familyCode, ProductModelInterface $productModel): void
     {
         if (null !== $productModel->getId()) {
-            if (!is_string($familyCode) || empty($familyCode) || \strtolower($productModel->getFamily()->getCode()) !== \strtolower($familyCode)) {
+            if (!\is_string($familyCode) || empty($familyCode) || \strtolower($productModel->getFamily()->getCode()) !== \strtolower($familyCode)) {
                 throw ImmutablePropertyException::immutableProperty(
                     'family',
                     is_scalar($familyCode) ? $familyCode : gettype($familyCode),

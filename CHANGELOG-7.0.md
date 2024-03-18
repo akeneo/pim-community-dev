@@ -2,7 +2,7 @@
 
 ## Bug fixes
 
-- PIM-11418: Fix API Product Model endpoint when trying to update family with wrong case
+- [Backport PIM-11406] PIM-11418: Fix case sensitivity family and family variant on product model update and product update
 
 # 7.0.58 (2024-03-18)
 
