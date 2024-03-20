@@ -44,9 +44,10 @@ SELECT attribute.code,
        attribute.decimals_allowed,
        attribute.backend_type,
        attribute.useable_as_grid_filter,
+       attribute.sort_order,
        COALESCE(locale_codes, JSON_ARRAY()) AS available_locale_codes
 FROM pim_catalog_attribute attribute
-    LEFT JOIN locale_specific_codes on attribute.id = attribute_id    
+    LEFT JOIN locale_specific_codes on attribute.id = attribute_id
 WHERE code IN (:attributeCodes)
 SQL;
 
@@ -72,7 +73,8 @@ SQL;
                 boolval($rawAttribute['decimals_allowed']),
                 $rawAttribute['backend_type'],
                 json_decode($rawAttribute['available_locale_codes']),
-                boolval($rawAttribute['useable_as_grid_filter'])
+                boolval($rawAttribute['useable_as_grid_filter']),
+                $rawAttribute['sort_order'] ? (int) $rawAttribute['sort_order'] : 0,
             );
         }
 

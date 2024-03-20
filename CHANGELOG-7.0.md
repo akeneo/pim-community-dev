@@ -1,5 +1,11 @@
 # 7.0.x
 
+# 7.0.59 (2024-03-20)
+
+## Bug fixes
+
+- PIM-11319: Fix sort order for asset collection attributes linked products
+
 # 7.0.58 (2024-03-18)
 
 ## Bug fixes

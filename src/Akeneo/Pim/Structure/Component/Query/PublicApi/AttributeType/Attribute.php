@@ -20,7 +20,8 @@ final class Attribute
         private ?bool $decimalsAllowed,
         private string $backendType,
         private array $availableLocaleCodes,
-        private ?bool $useableAsGridFilter = null
+        private ?bool $useableAsGridFilter = null,
+        private ?int $sortOrder = 0,
     ) {
     }
 
@@ -87,5 +88,10 @@ final class Attribute
     public function useableAsGridFilter(): ?bool
     {
         return $this->useableAsGridFilter;
+    }
+
+    public function sortOrder(): ?int
+    {
+        return $this->sortOrder;
     }
 }
