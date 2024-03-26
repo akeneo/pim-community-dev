@@ -25,58 +25,19 @@ use Doctrine\Common\Util\ClassUtils;
  */
 class ProductModelUpdater implements ObjectUpdaterInterface
 {
-    /** @var PropertySetterInterface */
-    private $propertySetter;
-
-    /** @var ObjectUpdaterInterface */
-    private $valuesUpdater;
-
-    /** @var array */
-    private $ignoredFields;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $familyVariantRepository;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $productModelRepository;
-
-    /** @var ParentAssociationsFilter */
-    private $parentAssociationsFilter;
-
-    /** @var QuantifiedAssociationsFromAncestorsFilter */
-    private $quantifiedAssociationsFromAncestorsFilter;
-
-    /** @var QuantifiedAssociationsStructureValidatorInterface */
-    private $quantifiedAssociationsStructureValidator;
-
     /**
-     * @param PropertySetterInterface $propertySetter
-     * @param ObjectUpdaterInterface $valuesUpdater
-     * @param IdentifiableObjectRepositoryInterface $familyVariantRepository
-     * @param IdentifiableObjectRepositoryInterface $productModelRepository
-     * @param ParentAssociationsFilter $parentAssociationsFilter
-     * @param QuantifiedAssociationsFromAncestorsFilter $quantifiedAssociationsFromAncestorsFilter
-     * @param QuantifiedAssociationsStructureValidatorInterface $quantifiedAssociationsStructureValidator
-     * @param array $ignoredFields
+     * @param string[] $ignoredFields
      */
     public function __construct(
-        PropertySetterInterface $propertySetter,
-        ObjectUpdaterInterface $valuesUpdater,
-        IdentifiableObjectRepositoryInterface $familyVariantRepository,
-        IdentifiableObjectRepositoryInterface $productModelRepository,
-        ParentAssociationsFilter $parentAssociationsFilter,
-        QuantifiedAssociationsFromAncestorsFilter $quantifiedAssociationsFromAncestorsFilter,
-        QuantifiedAssociationsStructureValidatorInterface $quantifiedAssociationsStructureValidator,
-        array $ignoredFields
+        private readonly PropertySetterInterface $propertySetter,
+        private readonly ObjectUpdaterInterface $valuesUpdater,
+        private readonly IdentifiableObjectRepositoryInterface $familyVariantRepository,
+        private readonly IdentifiableObjectRepositoryInterface $productModelRepository,
+        private readonly ParentAssociationsFilter $parentAssociationsFilter,
+        private readonly QuantifiedAssociationsFromAncestorsFilter $quantifiedAssociationsFromAncestorsFilter,
+        private readonly QuantifiedAssociationsStructureValidatorInterface $quantifiedAssociationsStructureValidator,
+        private readonly array $ignoredFields
     ) {
-        $this->propertySetter = $propertySetter;
-        $this->valuesUpdater = $valuesUpdater;
-        $this->familyVariantRepository = $familyVariantRepository;
-        $this->productModelRepository = $productModelRepository;
-        $this->ignoredFields = $ignoredFields;
-        $this->parentAssociationsFilter = $parentAssociationsFilter;
-        $this->quantifiedAssociationsFromAncestorsFilter = $quantifiedAssociationsFromAncestorsFilter;
-        $this->quantifiedAssociationsStructureValidator = $quantifiedAssociationsStructureValidator;
     }
 
     /**
@@ -313,7 +274,7 @@ class ProductModelUpdater implements ObjectUpdaterInterface
         }
 
         $parent = $productModel->getParent();
-        if (null !== $parent && $familyVariantCode !== $parent->getFamilyVariant()->getCode()) {
+        if (null !== $parent && \strtolower($familyVariantCode) !== \strtolower($parent->getFamilyVariant()->getCode())) {
             throw InvalidPropertyException::expected(
                 sprintf(
                     'The parent is not a product model of the family variant "%s" but belongs to the family "%s".',

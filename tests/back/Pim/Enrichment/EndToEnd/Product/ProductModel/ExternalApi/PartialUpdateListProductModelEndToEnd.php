@@ -5,10 +5,9 @@ namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\ProductModel\ExternalApi;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
-use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
+use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 use PHPUnit\Framework\Assert;
-use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Response;
 
 class PartialUpdateListProductModelEndToEnd extends AbstractProductModelTestCase
@@ -337,6 +336,25 @@ JSON;
         $response = $result['http_response'];
 
         $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+    }
+
+    public function testUpdateProductModelWithFamilyAndFamilyVariantIgnoringCase(): void
+    {
+        $data = <<<JSON
+    {"code": "sub_sweat_option_a", "family_variant": "FAMILYVARIANTA1"}
+    {"code": "root_product_model", "family": "FAMILYA", "family_variant": "FAMILYVARIANTA1"}
+JSON;
+
+        $expectedContent = <<<JSON
+{"line":1,"code":"sub_sweat_option_a","status_code":204}
+{"line":2,"code":"root_product_model","status_code":201}
+JSON;
+
+        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/product-models', [], [], [], $data);
+        $httpResponse = $response['http_response'];
+
+        $this->assertSame(Response::HTTP_OK, $httpResponse->getStatusCode());
+        $this->assertSame($expectedContent, $response['content']);
     }
 
     /**

@@ -147,4 +147,27 @@ class ProductModelUpdaterSpec extends ObjectBehavior
             )
         )->during('update', [$productModel, $data]);
     }
+
+    public function it_can_validate_family_ignoring_case(
+        ProductModelInterface $productModel,
+        ObjectUpdaterInterface $updater,
+        Family $family,
+        FamilyVariant $familyVariant
+    ): void
+    {
+        $family->getCode()->willReturn('family_a');
+        $familyVariant->getCode()->willreturn('family_variant_a1');
+
+        $updater->update($productModel, Argument::type('array'), [])->shouldBeCalled();
+
+        $productModel->getId()->willReturn(1);
+        $productModel->getParent()->willReturn(null);
+        $productModel->getFamily()->willReturn($family);
+        $productModel->getFamilyVariant()->willReturn($familyVariant);
+
+        $this->update($productModel, [
+            'family' => 'FAMILY_A',
+            'family_variant' => 'FAMILY_VARIANT_A1',
+        ]);
+    }
 }

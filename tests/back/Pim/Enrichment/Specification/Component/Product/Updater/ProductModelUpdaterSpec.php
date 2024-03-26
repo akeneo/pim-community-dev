@@ -4,6 +4,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Updater;
 
 use Akeneo\Pim\Enrichment\Component\Product\QuantifiedAssociation\QuantifiedAssociationsFromAncestorsFilter;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Validator\QuantifiedAssociationsStructureValidatorInterface;
+use Akeneo\Pim\Structure\Component\Repository\FamilyVariantRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\ImmutablePropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
@@ -226,6 +227,26 @@ class ProductModelUpdaterSpec extends ObjectBehavior
         $this->shouldThrow(InvalidPropertyException::class)->during('update', [$productModel, [
             'family_variant' => 'new_family_variant'
         ]]);
+    }
+
+    public function it_ignores_case_on_family_variant(
+        ProductModelInterface $productModel,
+        ProductModelInterface $parent,
+        FamilyVariantInterface $familyVariant,
+        FamilyVariantRepositoryInterface $familyVariantRepository
+    ): void {
+        $productModel->getFamilyVariant()->willReturn(null);
+        $productModel->getParent()->willReturn($parent);
+        $parent->getFamilyVariant()->willReturn($familyVariant);
+        $familyVariant->getCode()->willreturn('family_variant');
+
+        $familyVariantRepository->findOneByIdentifier('FAMILY_VARIANT')
+            ->willReturn($familyVariant);
+        $productModel->setFamilyVariant($familyVariant)->shouldBeCalled();
+
+        $this->update($productModel, [
+            'family_variant' => 'FAMILY_VARIANT',
+        ])->shouldReturn($this);
     }
 
     function it_only_works_with_product_model(ProductInterface $product)

@@ -1347,6 +1347,36 @@ JSON;
         $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }
 
+    public function testItCanCallEndpointWithWrongFamilyCase()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+            <<<JSON
+{
+    "code": "sub_sweat",
+    "family": "FaMiLyA",
+    "family_variant": "familyVariantA1",
+    "parent": "sweat",
+    "values": {
+        "a_text": [
+            {
+                "locale": null,
+                "scope": null,
+                "data": "My awesome text"
+            }
+        ]
+    }
+}
+JSON;
+
+        $client->request('PATCH', 'api/rest/v1/product-models/sub_sweat', [], [], [], $data);
+        $response = $client->getResponse();
+
+        $this->assertSame('', $response->getContent());
+        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+    }
+
     /**
      * @param array  $expectedProductModel normalized data of the product model that should be created
      * @param string $identifier           identifier of the product that should be created
