@@ -1,5 +1,7 @@
 # 7.0.x
 
+# 7.0.59 (2024-03-26)
+
 ## Bug fixes
 
 - [Backport PIM-11406] PIM-11418: Fix case sensitivity family and family variant on product model update and product update
