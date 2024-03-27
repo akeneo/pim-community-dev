@@ -69,9 +69,6 @@ pim_catalog:
     204: Acest câmp se aşteaptă la o valoare string.
     205: A avut loc o eroare internă
     300: Acest câmp se așteaptă la un cod valid de entitate.
-    301: This field expects a valid scope and locale.
-    302: This field expects a valid scope.
-    303: This field expects a valid association format.
     pim_immutable_product_validator: Acelaşi identificator este deja folosit pe un alt produs
     pim_immutable_product_model_validator: Acelaşi cod este deja folosit pe un alt model de produs.
 mass_edit:
