@@ -143,7 +143,6 @@ pim_import_export:
   batch_status:
     1: Завершено
     2: Запущено
-    3: In progress
     4: Завершается
     5: Завершено
     6: Не выполнено
