@@ -9,7 +9,22 @@ import {useShortcut} from '../../hooks';
 import {Key, Override} from '../../shared';
 import {ModalContext, useInModal} from './ModalContext';
 
-const ModalContainer = styled.div`
+const TIMING = 300;
+
+const Background = styled.div<{isOpen?: boolean} & AkeneoThemedProps>`
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background-color: black;
+  opacity: 0.1;
+  transition: all ${TIMING / 1000}s;
+  z-index: 1799;
+  ${({isOpen}) => (isOpen === false ? 'opacity: 0;' : '')}
+`;
+
+const ModalContainer = styled.div<{isOpen?: boolean} & AkeneoThemedProps>`
   ${CommonStyle}
   position: fixed;
   width: 100vw;
@@ -25,6 +40,10 @@ const ModalContainer = styled.div`
   overflow: hidden;
   padding: 20px 80px;
   box-sizing: border-box;
+  transition: all ${TIMING / 1000}s;
+  opacity: 1;
+  transform: scale(1);
+  ${({isOpen}) => (isOpen === false ? 'opacity: 0; transform: scale(0.9);' : '')}
 `;
 
 const ModalCloseButton = styled(IconButton)`
@@ -112,6 +131,8 @@ type ModalProps = Override<
      * The handler to call when the Modal is closed.
      */
     onClose: () => void;
+
+    isOpen?: boolean;
   }
 >;
 
@@ -124,10 +145,25 @@ const Modal: React.FC<ModalProps> & {
   TopLeftButtons: typeof TopLeftButtons;
   SectionTitle: typeof SectionTitle;
   Title: typeof Title;
-} = ({onClose, illustration, closeTitle, children, ...rest}: ModalProps) => {
+} = ({onClose, illustration, closeTitle, children, isOpen, ...rest}: ModalProps) => {
   const portalNode = document.createElement('div');
   portalNode.setAttribute('id', 'modal-root');
   const containerRef = useRef(portalNode);
+
+  const [isOpenWithLag, setIsOpenWithLag] = React.useState<boolean>(isOpen || false);
+  const [isOpenWithLag2, setIsOpenWithLag2] = React.useState<boolean>(isOpen || false);
+
+  React.useEffect(() => {
+    if (isOpen === true) {
+      setIsOpenWithLag(true);
+      window.setTimeout(() => setIsOpenWithLag2(true), 10);
+    }
+
+    if (isOpen === false) {
+      setIsOpenWithLag2(false);
+      window.setTimeout(() => setIsOpenWithLag(false), TIMING);
+    }
+  }, [isOpen]);
 
   useShortcut(Key.Escape, onClose);
 
@@ -145,23 +181,28 @@ const Modal: React.FC<ModalProps> & {
 
   return createPortal(
     <ModalContext.Provider value={true}>
-      <ModalContainer onClick={stopEventPropagation} role="dialog" {...rest}>
-        <ModalCloseButton
-          title={closeTitle}
-          level="tertiary"
-          ghost="borderless"
-          icon={<CloseIcon />}
-          onClick={onClose}
-        />
-        {undefined === illustration ? (
-          children
-        ) : (
-          <ModalContent>
-            <IconContainer>{React.cloneElement(illustration, {size: 220})}</IconContainer>
-            <ModalChildren>{children}</ModalChildren>
-          </ModalContent>
-        )}
-      </ModalContainer>
+      {isOpenWithLag && (
+        <>
+          <Background isOpen={isOpenWithLag2} />
+          <ModalContainer onClick={stopEventPropagation} role="dialog" isOpen={isOpenWithLag2} {...rest}>
+            <ModalCloseButton
+              title={closeTitle}
+              level="tertiary"
+              ghost="borderless"
+              icon={<CloseIcon />}
+              onClick={onClose}
+            />
+            {undefined === illustration ? (
+              children
+            ) : (
+              <ModalContent>
+                <IconContainer>{React.cloneElement(illustration, {size: 220})}</IconContainer>
+                <ModalChildren>{children}</ModalChildren>
+              </ModalContent>
+            )}
+          </ModalContainer>
+        </>
+      )}
     </ModalContext.Provider>,
     containerRef.current
   );
