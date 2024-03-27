@@ -27,6 +27,27 @@
     </groups>
 
     <testsuites>
+        <testsuite name="PIM_All_Integration_Test">
+            <directory suffix="Test.php">components/catalogs/back/tests/Integration</directory>
+
+            <directory suffix="Integration.php">components</directory>
+            <directory suffix="EndToEnd.php">components</directory>
+
+            <directory suffix="Integration.php">src</directory>
+            <directory suffix="EndToEnd.php">src</directory>
+
+            <directory suffix="Integration.php">tests</directory>
+            <directory suffix="EndToEnd.php">tests</directory>
+
+            <directory suffix="Integration.php">upgrades/test_schema</directory>
+        </testsuite>
+
+        <testsuite name="PIM_All_Unit_Test">
+            <directory suffix="Test.php">components/catalogs/back/tests/Unit</directory>
+            <directory suffix="Test.php">src</directory>
+            <directory suffix="Test.php">tests</directory>
+        </testsuite>
+
         <testsuite name="PIM_Integration_Test">
             <directory suffix="Integration.php">src</directory>
             <directory suffix="Integration.php">tests</directory>
