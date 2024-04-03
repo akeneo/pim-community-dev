@@ -81,6 +81,18 @@ class ProductIdentifierValidationIntegration extends TestCase
         );
     }
 
+    public function testItCannotCreateAnIdentifierWithNonBreakingSpaceCharacter()
+    {
+        $correctProduct = $this->createProduct('sku-001 ');
+        $violations = $this->validateProduct($correctProduct);
+
+        $this->assertCount(1, $violations);
+        $this->assertSame(
+            $violations->get(0)->getMessage(),
+            'This field should not contain any comma or semicolon or leading/trailing space'
+        );
+    }
+
     public function testItCanCreateProductWithoutIdentifier()
     {
         $correctProduct = $this->createProduct('sku-001');
