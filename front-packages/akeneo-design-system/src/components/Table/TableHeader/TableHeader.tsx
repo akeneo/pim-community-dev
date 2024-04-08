@@ -23,6 +23,10 @@ const HasWarningColumn = styled.th`
   width: 20px;
   background: linear-gradient(to top, ${getColor('grey', 120)} 1px, ${getColor('white')} 0px);
 `;
+const HasLockedColumn = styled.th`
+  width: 20px;
+  background: linear-gradient(to top, ${getColor('grey', 120)} 1px, ${getColor('white')} 0px);
+`;
 const OrderColumn = styled.th`
   width: 40px;
   background: linear-gradient(to top, ${getColor('grey', 120)} 1px, ${getColor('white')} 0px);
@@ -42,7 +46,7 @@ type TableHeaderProps = {
 
 const TableHeader = React.forwardRef<HTMLTableSectionElement, TableHeaderProps>(
   ({children, sticky, ...rest}: TableHeaderProps, forwardedRef: Ref<HTMLTableSectionElement>) => {
-    const {isSelectable, isDragAndDroppable, hasWarningRows} = React.useContext(TableContext);
+    const {isSelectable, isDragAndDroppable, hasWarningRows, hasLockedRows} = React.useContext(TableContext);
 
     return (
       <TableHead sticky={sticky} ref={forwardedRef}>
@@ -52,6 +56,7 @@ const TableHeader = React.forwardRef<HTMLTableSectionElement, TableHeaderProps>(
           {hasWarningRows && <HasWarningColumn />}
           {isDragAndDroppable && <OrderColumn />}
           {children}
+          {hasLockedRows && <HasLockedColumn />}
         </tr>
       </TableHead>
     );
