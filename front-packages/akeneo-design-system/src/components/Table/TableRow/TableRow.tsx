@@ -14,10 +14,10 @@ import {Checkbox} from '../../../components';
 import {Override} from '../../../shared';
 import {TableContext} from '../TableContext';
 import {TableCell} from '../TableCell/TableCell';
-import {RowIcon, DangerIcon} from '../../../icons';
+import {RowIcon, DangerIcon, LockIcon} from '../../../icons';
 import {PlaceholderPosition, usePlaceholderPosition} from '../../../hooks/usePlaceholderPosition';
 
-type Level = 'warning';
+type Level = 'warning' | 'tertiary';
 
 const RowContainer = styled.tr<
   {
@@ -78,15 +78,22 @@ const RowContainer = styled.tr<
   }
 
   ${({level}) =>
-    level === 'warning' &&
-    css`
-      > td {
-        :first-child {
-          padding: 0 0 0 5px;
-        }
-        background-color: ${getColor('yellow', 10)};
-      }
-    `};
+    level === 'warning'
+      ? css`
+          > td {
+            :first-child {
+              padding: 0 0 0 5px;
+            }
+            background-color: ${getColor('yellow', 10)};
+          }
+        `
+      : level === 'tertiary' &&
+        css`
+          > td {
+            background-color: ${getColor('grey', 20)};
+            color: ${getColor('grey', 120)};
+          }
+        `};
 `;
 
 const CheckboxContainer = styled.td<{isVisible: boolean}>`
@@ -111,6 +118,15 @@ const HandleCell = styled(TableCell)`
     cursor: grabbing;
   }
 `;
+
+const getIcon = (level: Level) => {
+  switch (level) {
+    case 'warning':
+      return <WarningIcon />;
+    case 'tertiary':
+      return <LockIcon />;
+  }
+};
 
 const WarningIcon = styled(DangerIcon)`
   color: ${getColor('yellow', 120)};
@@ -180,7 +196,7 @@ const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
     const [placeholderPosition, placeholderDragEnter, placeholderDragLeave, placeholderDragEnd] =
       usePlaceholderPosition(rowIndex);
 
-    const {isSelectable, displayCheckbox, isDragAndDroppable, hasWarningRows} = useContext(TableContext);
+    const {isSelectable, displayCheckbox, isDragAndDroppable, hasWarningRows, hasLockedRows} = useContext(TableContext);
     if (isSelectable && (undefined === isSelected || undefined === onSelectToggle)) {
       throw Error('A row in a selectable table should have the prop "isSelected" and "onSelectToggle"');
     }
@@ -240,8 +256,17 @@ const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
             <RowIcon size={16} />
           </HandleCell>
         )}
-        {hasWarningRows && <TableCell>{level === 'warning' && <WarningIcon size={16} />}</TableCell>}
+        {hasWarningRows && (
+          <TableCell>
+            {level === 'warning' && React.cloneElement(getIcon(level), {size: 16, 'data-testid': 'warning-icon'})}
+          </TableCell>
+        )}
         {children}
+        {hasLockedRows && (
+          <TableCell>
+            {level === 'tertiary' && React.cloneElement(getIcon(level), {size: 16, 'data-testid': 'lock-icon'})}
+          </TableCell>
+        )}
       </RowContainer>
     );
   }

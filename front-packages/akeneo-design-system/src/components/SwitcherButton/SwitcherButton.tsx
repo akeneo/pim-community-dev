@@ -112,7 +112,7 @@ const SwitcherButton = forwardRef<HTMLDivElement, SwitcherButtonProps>(
 
     return (
       <SwitcherButtonContainer ref={forwardedRef} {...rest}>
-        <LabelAndValueContainer id={buttonId} onClick={onClick} $inline={inline}>
+        <LabelAndValueContainer type="button" id={buttonId} onClick={onClick} $inline={inline}>
           <Label htmlFor={buttonId} $inline={inline}>
             {label ? (inline ? `${label}:` : label) : ''}
           </Label>

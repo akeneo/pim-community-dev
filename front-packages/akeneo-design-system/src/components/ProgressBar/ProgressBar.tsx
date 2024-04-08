@@ -161,11 +161,9 @@ const ProgressBar = forwardRef<HTMLDivElement, ProgressBarProps>(
       <ProgressBarContainer ref={forwardedRef} {...rest}>
         {(title || progressLabel) && (
           <Header>
-            {title && (
-              <Title title={title} id={labelId} htmlFor={progressBarId}>
-                {title}
-              </Title>
-            )}
+            <Title title={title} id={labelId} htmlFor={progressBarId}>
+              {title}
+            </Title>
             {progressLabel && <ProgressLabel title={progressLabel}>{progressLabel}</ProgressLabel>}
           </Header>
         )}

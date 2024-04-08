@@ -101,3 +101,33 @@ test('Table.Row supports ...rest props', () => {
 
   expect(screen.getByTestId('my_value')).toBeInTheDocument();
 });
+
+test('it renders warning icon when row has a warning', () => {
+  render(
+    <Table hasWarningRows>
+      <Table.Body>
+        <Table.Row level="warning">
+          <Table.Cell>A value</Table.Cell>
+          <Table.Cell>Another value</Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    </Table>
+  );
+
+  expect(screen.getByTestId('warning-icon')).toBeInTheDocument();
+});
+
+test('it renders lock icon when row is locked', () => {
+  render(
+    <Table hasLockedRows>
+      <Table.Body>
+        <Table.Row level="tertiary">
+          <Table.Cell>A value</Table.Cell>
+          <Table.Cell>Another value</Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    </Table>
+  );
+
+  expect(screen.getByTestId('lock-icon')).toBeInTheDocument();
+});
