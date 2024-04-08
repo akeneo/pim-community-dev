@@ -21,7 +21,7 @@ Akeneo\Pim\Enrichment\Component\Product\Model\Product:
             - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\IsUuid4: ~
         identifier:
             - Regex:
-                pattern: '/^(?!\s)[^,;]+(?<!\s)$/'
+                pattern: '/^(?!\s)[^,;]+(?<!\s)$/u'
                 message: 'regex.comma_or_semicolon_or_surrounding_space.message'
             - Regex:
                 pattern: '/[\r\n]/'

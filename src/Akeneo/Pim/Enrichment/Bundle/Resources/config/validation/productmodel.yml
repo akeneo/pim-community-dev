@@ -15,7 +15,7 @@ Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel:
             - NotBlank:
                 message: 'product_model.code.not_blank.message'
             - Regex:
-                pattern: '/^(?!\s)[^,;]+(?<!\s)$/'
+                pattern: '/^(?!\s)[^,;]+(?<!\s)$/u'
                 message: 'regex.comma_or_semicolon_or_surrounding_space.message'
             - Regex:
                 pattern: '/[\r\n]/'
