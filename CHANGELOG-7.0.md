@@ -1,5 +1,7 @@
 # 7.0.x
 
+# 7.0.61 (2024-04-08)
+
 ## Bug fixes
 
 - PIM-11452: Forbid the usage of non-breaking space in product identifier and product model code
