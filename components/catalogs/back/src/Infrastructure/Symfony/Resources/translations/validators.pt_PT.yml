@@ -1,0 +1,51 @@
+akeneo_catalogs:
+  validation:
+    max_number_of_catalogs_per_user_message: É possível criar até 15 catálogos
+    product_selection:
+      criteria:
+        channel:
+          not_empty: 'Este canal deve estar vazio.'
+          empty: 'Este canal não pode estar vazio.'
+          unknown: 'Este canal foi desativado. Verifique as suas definições de canal ou remova este critério.'
+        locale:
+          not_empty: 'Esta localidade deve estar vazia.'
+          empty: 'Esta localidade não pode estar vazia.'
+          unknown: 'Esta localidade não existe.'
+          disabled: 'Esta localidade está desactivada para este canal. Verifique as definições do seu canal ou remova este critério.'
+        value:
+          not_empty: 'Este valor tem de estar vazio.'
+          empty: 'Este valor não pode estar vazio.'
+        family:
+          unknown: 'Pelo menos uma família selecionada não existe.'
+        completeness:
+          value: 'O valor integral deve estar entre 0 e 100%.'
+        attribute_option:
+          unknown: 'Pelo menos uma opção selecionada não existe.'
+        category:
+          value: 'As seguintes categorias já não existem: {{ codes }}. Retire-as do valor do critério.'
+        date:
+          between_is_empty: 'Estes valores não podem estar vazios.'
+        measurement:
+          unit:
+            not_exist: 'A unidade do campo "{{ field }}" não existe.'
+            not_empty: 'A unidade não deve estar vazia.'
+    product_value_filters:
+      channel:
+        unknown: 'O canal "{{ channel_name }}" foi desativado. Verifique as definições do seu canal ou remova este filtro.'
+      currencies:
+        unknown: 'A moeda "{{ currency_name }}" foi desativada. Verifique as suas definições de moeda ou remova este filtro.'
+      locale:
+        unknown: 'A localidade "{{ locale_name }}" foi desativada. Verifique as suas definições de localidade ou remova este filtro.'
+    product_mapping:
+      source:
+        invalid: 'Este atributo foi suprimido.'
+        unknown: 'Valor de origem desconhecido'
+        channel:
+          not_empty: 'Este canal deve estar vazio.'
+          empty: 'Este canal não pode estar vazio.'
+          unknown: 'Este canal foi eliminado. Verifique as definições do canal ou atualize este valor.'
+        locale:
+          not_empty: 'Esta localidade deve estar vazia.'
+          empty: 'Esta localidade não pode estar vazia.'
+          unknown: 'Esta localidade está desativada ou já não existe. Verifique os seus canais e configurações de localidades.'
+          disabled: 'Esta localidade está desativada. Verifique as suas definições de canais e localidades ou atualize este valor.'
