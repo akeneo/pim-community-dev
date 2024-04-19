@@ -88,6 +88,7 @@ services:
       discovery.type: 'single-node'
       xpack.security.enabled: 'false'
       indices.id_field_data.enabled: 'true'
+      cluster.routing.allocation.disk.threshold_enabled: false
     ports:
       - '${DOCKER_PORT_ELASTICSEARCH:-9210}:9200'
     networks:
