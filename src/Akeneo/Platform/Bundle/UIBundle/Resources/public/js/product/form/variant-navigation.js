@@ -170,11 +170,10 @@ define([
      * @param {Element} dropDown
      */
     addSelect2Footer: function (dropDown) {
-      $('#select2-drop .select2-drop-footer').remove();
-
       const targetLevel = dropDown[0].dataset.level;
       this.getEntityParentCode(targetLevel).then(parentCode => {
         this.isVariantProduct(parentCode).then(async isVariantProduct => {
+          $('#select2-drop .select2-drop-footer').remove();
           if (!(await this.isCreationGranted(isVariantProduct))) {
             return;
           }
