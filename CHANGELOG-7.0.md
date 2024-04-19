@@ -1,5 +1,7 @@
 # 7.0.x
 
+# 7.0.62 (2024-04-19)
+
 ## Bug fixes
 
 - PIM-11478: Fix duplicate creation buttons in variant navigation dropdowns
