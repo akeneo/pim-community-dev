@@ -80,6 +80,10 @@ fix-cs-back:
 var/cache/dev:
 	APP_ENV=dev make cache
 
+.PHONY: composer
+composer:
+	$(DOCKER_COMPOSE) run --rm php composer install
+
 .PHONY: cache
 cache:
 	$(DOCKER_COMPOSE) run --rm php rm -rf var/cache && $(PHP_RUN) bin/console cache:warmup
@@ -148,7 +152,9 @@ pim-test:
 .PHONY: pim-dev
 pim-dev:
 	APP_ENV=dev $(MAKE) up
+	APP_ENV=dev $(MAKE) composer
 	APP_ENV=dev $(MAKE) cache
+	$(MAKE) node_modules
 	$(MAKE) assets
 	$(MAKE) css
 	$(MAKE) front-packages
@@ -159,7 +165,9 @@ pim-dev:
 .PHONY: pim-prod
 pim-prod:
 	APP_ENV=prod $(MAKE) up
+	APP_ENV=prod $(MAKE) composer
 	APP_ENV=prod $(MAKE) cache
+	$(MAKE) node_modules
 	$(MAKE) assets
 	$(MAKE) css
 	$(MAKE) front-packages
