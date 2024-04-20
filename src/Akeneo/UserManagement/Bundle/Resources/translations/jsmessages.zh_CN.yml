@@ -76,7 +76,7 @@ pim_user_management:
         password_repeat: 密码 （重复输入）
         last_logged_in: 上次登录
         login_count: 登录计数
-        ui_locale: 界面语言
+        ui_locale: UI 区域设置
         timezone: 时区
         default_product_grid_view: 默认产品网格视图
         default_published_product_grid_view: 默认的已发布产品网格视图 #EE Only

@@ -8,14 +8,14 @@ batch_jobs:
     validation: Validação do ficheiro
     import_associations: Importar associação
     import_model_associations: Importar associação
-    import_root_product_model: Root product model import
-    import_sub_product_model: Sub product model import
-    compute_data_related_to_family_root_product_models: Compute root product models data
-    compute_data_related_to_family_sub_product_models: Compute sub product models data
-    compute_data_related_to_family_products: Compute products data
+    import_root_product_model: Importação do modelo de produto raiz
+    import_sub_product_model: Importação de modelos de subprodutos
+    compute_data_related_to_family_root_product_models: Calcular dados de modelos de produtos de raiz
+    compute_data_related_to_family_sub_product_models: Calcular os dados dos modelos de subprodutos
+    compute_data_related_to_family_products: Calcular os dados dos produtos
     index_family_products_and_product_models: Index family products and product models
-    compute_family_variant_structure_changes: Compute family variant structure changes
-    compute_completeness_of_products_family: Compute completeness of products family
+    compute_family_variant_structure_changes: Calcular alterações na estrutura de variantes da família
+    compute_completeness_of_products_family: Calcular a completude da família de produtos
     index_family_products: Index family products and product models
     delete_products_and_product_models: Mass delete products
     ensure_attribute_group_order: Verificar ordenação do grupo de atributos
@@ -28,8 +28,8 @@ batch_jobs:
     label: Exportar produto para o CSV
     export.label: Exportar produto
   csv_product_model_export:
-    label: Product model export in CSV
-    export.label: Product model export
+    label: Exportação de modelos de produtos em CSV
+    export.label: Exportação do modelo do produto
   csv_category_export:
     label: Exportar categoria para o CSV
     export.label: Exportar categoria
@@ -49,8 +49,8 @@ batch_jobs:
     label: Exportação de famílias em CSV
     export.label: Exportação de famílias
   csv_family_variant_export:
-    label: Family variant export in CSV
-    export.label: Family variant export
+    label: Exportação de variantes de família em CSV
+    export.label: Exportação de variantes da família
   csv_user_group_export:
     label: User group export in CSV
     export.label: User group export
@@ -64,8 +64,8 @@ batch_jobs:
     label: Importar produto para o CSV
     import.label: Importar produto
   csv_product_model_import:
-    label: Product model import in CSV
-    import_product_model_descendants.label: Compute product model descendants
+    label: Importação de modelos de produtos em CSV
+    import_product_model_descendants.label: Calcular os descendentes do modelo de produto
   csv_category_import:
     label: Importar categoria para o CSV
     import.label: Importar categoria
@@ -81,25 +81,25 @@ batch_jobs:
   csv_family_import:
     label: Importação de famílias por CSV
     import.label: Importação de famílias
-    compute_data_related_to_family_variants.label: Compute product models data
+    compute_data_related_to_family_variants.label: Calcular dados de modelos de produtos
   csv_family_variant_import:
-    label: Family variant import in CSV
-    import.label: Family variant import
+    label: Importação de variantes de família em CSV
+    import.label: Importação de variantes de família
   csv_group_import:
     label: Importar grupo para o CSV
     import.label: Importar grupo
   csv_attribute_group_export:
-    label: Attribute group export in CSV
-    export.label: Attribute group export
+    label: Exportação de grupos de atributos em CSV
+    export.label: Exportação de grupos de atributos
   csv_group_type_export:
-    label: Group type export in CSV
-    export.label: Group type export
+    label: Exportação do tipo de grupo em CSV
+    export.label: Exportação de tipo de grupo
   csv_attribute_group_import:
-    label: Attribute group import in CSV
-    import.label: Attribute group import
+    label: Importação de grupos de atributos em CSV
+    import.label: Importação de grupos de atributos
   csv_group_type_import:
-    label: Group type import in CSV
-    import.label: Group type import
+    label: Importação de tipo de grupo em CSV
+    import.label: Importação de tipo de grupo
   csv_user_group_import:
     label: User group import in CSV
     import.label: User group import
@@ -125,20 +125,20 @@ batch_jobs:
     label: Importação de famílias por XLSX
     import.label: Importação de famílias
   xlsx_family_variant_import:
-    label: Family variant import in XLSX
-    import.label: Family variant import
+    label: Importação de variantes de família em XLSX
+    import.label: Importação de variantes de família
   xlsx_product_export:
     label: Exportação de produtos em XLSX
     export.label: Exportar produto
   xlsx_product_model_export:
-    label: Product model export in XLSX
-    export.label: Product model export
+    label: Exportação de modelos de produtos em XLSX
+    export.label: Exportação do modelo do produto
   xlsx_product_import:
     label: Importação de produtos por XLSX
     import.label: Importar produto
   xlsx_product_model_import:
-    label: Product model import in XLSX
-    import_product_model_descendants.label: Compute product model descendants
+    label: Importação de modelos de produtos em XLSX
+    import_product_model_descendants.label: Calcular os descendentes do modelo de produto
   xlsx_group_export:
     label: Exportação de grupos em XLSX
     export.label: Exportar grupo
@@ -149,8 +149,8 @@ batch_jobs:
     label: Exportação de famílias em XLSX
     export.label: Exportação de famílias
   xlsx_family_variant_export:
-    label: Family variant export in XLSX
-    export.label: Family variant export
+    label: Exportação de variantes de família em XLSX
+    export.label: Exportação de variantes da família
   xlsx_category_export:
     label: Exportação de categorias em XLSX
     export.label: Exportar categoria
@@ -164,11 +164,11 @@ batch_jobs:
     label: Exportação de tipos de associação em XLSX
     export.label: Exportação de tipos de associação em XLSX
   xlsx_attribute_group_export:
-    label: Attribute group export in XLSX
-    export.label: Attribute group export
+    label: Exportação de grupos de atributos em XLSX
+    export.label: Exportação de grupos de atributos
   xlsx_group_type_export:
-    label: Group type export in XLSX
-    export.label: Group type export
+    label: Exportação de tipo de grupo em XLSX
+    export.label: Exportação de tipo de grupo
   xlsx_user_group_export:
     label: User group export in XLSX
     export.label: User group export
@@ -179,11 +179,11 @@ batch_jobs:
     label: User export in XLSX
     export.label: User export
   xlsx_attribute_group_import:
-    label: Attribute group import in XLSX
-    import.label: Attribute group import
+    label: Importação de grupos de atributos em XLSX
+    import.label: Importação de grupos de atributos
   xlsx_group_type_import:
-    label: Group type import in XLSX
-    import.label: Group type import
+    label: Importação de tipo de grupo em XLSX
+    import.label: Importação de tipo de grupo
   xlsx_user_group_import:
     label: User group import in XLSX
     import.label: User group import

@@ -3,15 +3,15 @@ pim_title:
   pim_user_role_index: Funções
   pim_user_group_index: Grupos de utilizadores
   oro_config_configuration_system: Configuração
-  pim_user_edit: 'User {{ username }} | Edit'
-  pim_user_create: 'Users | Create'
-  pim_user_role_update: 'Role {{ role }} | Edit'
-  pim_user_role_create: 'Role | Create'
+  pim_user_edit: 'Utilizador {{ username }} | Editar'
+  pim_user_create: 'Utilizadores | Criar'
+  pim_user_role_update: 'Função {{ role }} | Editar'
+  pim_user_role_create: 'Função | Criar'
   pim_user_security_login: Início de sessão
-  pim_user_reset_reset: Password Reset
+  pim_user_reset_reset: Redefinição da palavra-passe
   pim_user_reset_request: Esqueci-me da Password
-  pim_user_group_create: 'Groups | Create'
-  pim_user_group_update: 'Group {{ group }} | Edit'
+  pim_user_group_create: 'Grupos | Criar'
+  pim_user_group_update: 'Grupo {{ group }} | Editar'
 confirmation:
   remove:
     user: Tem a certeza que deseja eliminar este utilizador?
@@ -21,8 +21,8 @@ pim_enrich:
     user:
       flash:
         delete:
-          fail: The user can not be deleted
-          success: The user has been deleted
+          fail: O utilizador não pode ser eliminado
+          success: O utilizador foi eliminado
       module:
         delete:
           confirm: Tem a certeza que deseja eliminar este utilizador?
@@ -43,16 +43,16 @@ pim_user.profile:
 pim_user_management:
   entity:
     user:
-      label: user
+      label: utilizador
       flash:
         update:
-          success: User successfully updated.
-          fail: The user could not be updated.
-          fields_not_ready: "The user cannot be saved right now. The following fields are not ready: {{ fields }}"
+          success: Utilizador atualizado com sucesso.
+          fail: Não foi possível atualizar o utilizador.
+          fields_not_ready: "O utilizador não pode ser guardado neste momento. Os seguintes campos não estão prontos: {{ fields }}"
         create:
-          success: User successfully created.
+          success: Utilizador criado com sucesso.
       page_title:
-        index: "]-Inf, 1] {{ count }} user|]1, Inf [{{ count }} users"
+        index: "]-Inf, 1] {{ count }} utilizador|]1, Inf [{{ count }} utilizadores"
       properties:
         username: Nome do Utilizador
         profile: What is your main mission?
@@ -61,30 +61,30 @@ pim_user_management:
         middle_name: Nome do meio
         last_name: Último nome
         name_suffix: Sufixo do nome
-        phone: Phone
+        phone: Telefone
         avatar: Avatar
         email: Email
         catalog_locale: Linguagem do catálogo
         catalog_scope: Âmbito do catálogo
         default_tree: Árvore padrão
-        default_asset_tree: Default asset tree
+        default_asset_tree: Árvore de ativos por defeito
         product_grid_filters: Filtros da grelha de produtos
         current_password: Senha atual
         new_password: Nova senha
         new_password_repeat: Nova senha (repetir)
         password: Senha
-        password_repeat: Password (repeat)
-        last_logged_in: Last logged in
-        login_count: Login count
+        password_repeat: Palavra-passe (repetir)
+        last_logged_in: Última sessão iniciada
+        login_count: Contagem de registos
         ui_locale: Linguagem do UI
         timezone: Fuso horário
         default_product_grid_view: Vista da grelha de produtos por defeito
-        default_published_product_grid_view: Default published product grid view #EE Only
-        proposals_to_review_notification: When new proposal to review #EE Only
-        proposals_state_notifications: When proposal is accepted or rejected #EE Only
+        default_published_product_grid_view: Vista predefinida da grade de produtos publicados #EE Only
+        proposals_to_review_notification: Quando nova proposta a analisar #EE Only
+        proposals_state_notifications: Quando a proposta é aceite ou rejeitada #EE Only
       meta:
-        created: Created
-        updated: Updated
+        created: Criado
+        updated: Atualizado
       module:
         create:
           button: Criar utilizador
@@ -92,14 +92,14 @@ pim_user_management:
           confirm: Tem a certeza que deseja eliminar este utilizador?
         update:
           additional: Adicional
-          groups_and_roles: Groups and roles
+          groups_and_roles: Grupo e funções
           password: Senha
           interfaces: Interfaces
           notifications: Notificações #TODO EE Only
     role:
       plural_label: Funções
       page_title:
-        index: "]-Inf, 1] {{ count }} role|]1, Inf [{{ count }} roles"
+        index: "]-Inf, 1] {{ count }} função|]1, Inf [{{ count }} funções"
       module:
         create:
           button: Criar função
@@ -108,7 +108,7 @@ pim_user_management:
     group:
       plural_label: Grupos de utilizadores
       page_title:
-        index: "]-Inf, 1] {{ count }} group|]1, Inf [{{ count }} groups"
+        index: "]-Inf, 1] {{ count }} grupo|]1, Inf [{{ count }} grupos"
       module:
         create:
           button: Criar grupo

@@ -1,14 +1,18 @@
 pim_notification:
   types:
     settings: Preferências
+    mass_delete: Eliminação
 flash:
   comment:
     create:
       success: O seu comentário foi criado com êxito.
+      error: Ocorreu um erro durante a criação do seu comentário.
     delete:
       success: O seu comentário foi eliminado com êxito.
+      error: Ocorreu um erro durante a eliminação do seu comentário.
     reply:
       success: A sua resposta foi criada com êxito.
+      error: Ocorreu um erro durante a criação da sua resposta.
 pim_enrich.entity.product:
   label: produto
   uppercase_label: Produto
@@ -17,17 +21,31 @@ pim_enrich.entity.product:
     update:
       success: Produto atualizado com sucesso.
       fail: O produto não pôde ser atualizado.
+      fail_session_expired: O produto não pode ser atualizado. A sua sessão de utilizador expirou. Por favor, faça login novamente.
+      fields_not_ready: "O produto não pode ser guardado neste momento. Os seguintes campos não estão prontos: {{ fields }}"
       already_in_upload: Um ficheiro já se encntra em upload para este atributo na linguagem "{{ locale }}" e âmbito "{{ scope }}"
+      file_upload: Ocorreu um erro durante o carregamento do ficheiro
+      identifier_warning: O produto foi guardado, mas o seu identificador não pôde ser gerado.
     delete:
       success: Produto eliminado com sucesso.
       fail: Não foi possível eliminar o produto.
     create:
       success: Produto criado com sucesso
+      fail: Nenhum atributo está configurado como identificador de produto ou o utilizador não tem direitos para o editar.
+  page_title:
+    index: "]-Inf, 1]{{ count }} resultado|] 1, Inf[{{ count }} resultados"
+    product: "]-Inf, 1]{{ count }} produto|]1, Inf[{{ count }} produtos"
+    product_model: "]-Inf, 1]{{ count }} modelo do produto|]1, Inf[{{ count }} modelos de produtos"
+    product_and_product_model: "{{ productCount }}, {{ productModelCount }}"
   module:
     create:
       subtitle: Criar produto
       title: Escolha sua ação
       choose_family: Escolha uma família
+      choose_family_variant: Escolher uma variante da família
+      helper: O identificador agora é um campo opcional. <a class="AknMessageBox-link" href="{{ link }}" target="_blank">Leia mais</a> sobre essa alteração e o possível impacto para os produtos.
+    variant_navigation:
+      common: Comum
     status:
       enabled: Ativo
       disabled: Inativo
@@ -39,11 +57,19 @@ pim_enrich.entity.product:
       select: Selecionar
       all_visible: Tudo visível
       copy: Copiar
+    convert_variant_to_simple:
+      label: Converter para um produto simples
+      dialog:
+        title: Confirmar conversão
+        content: "Tem a certeza de que pretende converter este produto variante num produto simples? Todos os seus valores, categorias e associações anteriores serão guardados."
     history:
       version: Versão
       author: Autor
+      logged_at: Date/Time
       from: De
       modified: Modificado
+      old_value: Valor antigo
+      new_value: Novo valor
     meta:
       updated: Última atualização
       groups: Grupos
@@ -56,20 +82,49 @@ pim_enrich.entity.product:
       remove_optional: Remover este atributo
       locale_specific_unavailable: Este campo de linguagem específica não está disponível nesta linguagem
       locale_unavailable: Este campo localizável não está disponível para a linguagem '{{ locale }}' e canal '{{ channel }}'
+      to_fill_count: "{1}1 atributo obrigatório em falta|]1, Inf[{{ count }} atributos obrigatórios em falta"
       add_attribute_option: Adicionar a opção de atributo
+      add_option: Adicionar opção
     completeness:
       title: Completude
       complete: Completude
       no_family: Nenhuma família definida. Por favor defina uma família para calcular a integridade da informação deste produto.
       no_completeness: Alterou a família do produto. Por favor, grave-o primeiro para calcular a integridade dos dados para a nova família.
+      missing_values: "{1}1 valor em falta|]1, Inf[{{ count }} valores em falta"
     sequential_edit:
+      item_limit: Apenas os primeiros 1000 itens mostrados nesta edição sequencial ({{ count }} selecionado)
       empty: Sua seleção está vazia, mude seus critérios de pesquisa
       save_and_next: Gravar e avançar
       save_and_finish: Gravar e terminar
     associations:
+      title: Associações ({{ count }})
       none_exist: Nenhum tipo de associação existente.
+      show_products: Mostrar produtos
+      show_groups: Mostrar grupos
+      number_of_associations: "{{ productCount }} produto(s), {{ productModelCount }} modelo(s) de produto(s) e {{ groupCount }} grupo(s)"
+      number_of_quantified_associations: "{{ productCount }} produto(s) e {{ productModelCount }} modelo(s) de produto(s)"
+      association_type_selector: Tipo de associação
+      target: Objetivo
+      manage: Adicionar associações {{ associationType }}
+      manage_description: Selecione os produtos que pretende associar ao produto "{{ productLabel }}"
+      mass_edit_description: Selecione os produtos que pretende associar ao(s) {{ productCount }} produto(s) selecionado(s)
+      add_associations: Adicionar associações
+      variant_products: Produtos variantes
       quantified:
+        quantity: Quantidade
         unlinked: Não vinculado
+      search:
+        placeholder: Pesquisar na etiqueta ou identificador
+      no_data: Não existem produtos associados.
+      remove: Remover associação
+      edit: Editar produto
+      limit_reached: Não pode adicionar mais do que {{ maxLimit }} associações a este produto.
+      variant_updated: Se tiver atualizado uma quantidade numa variante, as quantidades deixarão de ser sincronizadas.
+    attribute_filter:
+      display: Visualização
+      all: Todos os atributos
+      missing_required: Todos os atributos necessários em falta
+      at_this_level: Todos os atributos específicos do nível
     change_family:
       title: Mudar a família do produto
       merge_attributes: Os atributos atuais serão fundidos com os da nova família.
@@ -78,6 +133,7 @@ pim_enrich.entity.product:
       empty_selection: Escolha uma família
     basket:
       title: Cesta
+      empty_basket: O cesto está vazio
     delete:
       confirm: Tem certeza que deseja eliminar este produto?
     comment:
@@ -85,27 +141,49 @@ pim_enrich.entity.product:
       reply: Responder
       title: Comentários
       empty: Sem comentários
+      header_comment: '{{ user }} comenta o produto'
+      header_reply: '{{ user }} respondeu ao comentário'
       delete_confirm: Tem a certeza que quer apagar este comentário?
       removed_author: Utilizador removido
+    asset:
+      title: Ativos
 pim_enrich.entity.product_model:
+  label: modelo de produto
   uppercase_label: Modelo do produto
+  plural_label: Modelos de produtos
   flash:
     create:
       success: Criou com sucesso um modelo de produto
+      product_model_added: Modelo de produto adicionado com sucesso ao modelo de produto
+      variant_product_added: Variante adicionado com sucesso ao modelo de produto
     update:
       success: Modelo de produto bem sucedido atualizado. A completude da variante do produto será recalculada.
       fail: Não pode atualizar o modelo do produto.
+      fields_not_ready: "O modelo do produto não pode ser guardado neste momento. Os seguintes campos não estão prontos: {{ fields }}"
     delete:
       success: Modelo de produto foi removido.
+      fail: Não é possível eliminar este modelo de produto
+  choose: Selecionar um modelo de produto
   property:
     family_variant: Variante
   module:
     create:
       title: Crie um modelo de produto
+      content: Um modelo de produto reúne produtos variantes e facilita o enriquecimento das suas propriedades comuns.
     attribute:
       read_only_parent_attribute_from_common: Este atributo pode ser atualizado em atributos comuns.
+      read_only_parent_attribute_from_model: "Este atributo pode ser atualizado nos atributos por {{ axes }}"
+    variant_axis:
+      label: 'Eixo de variante'
+      create: Adicionar novo
+      title_create_label: "]-Inf, 1]Add a new {{ axes }}|]1, Inf[Add a new {{ axes }}"
+      required_label: '(eixo de variante)'
     completeness:
+      variant_product: "]-Inf, 1]{{ complete }}/{{ total }} variante do produto|]1, Inf[{{ complete }}/{{ total }} variante de produtos"
       label: Variante
+    delete:
+      confirm: Tem a certeza de que pretende eliminar este modelo de produto? Todos os seus filhos, modelos de produtos e variantes de produtos, também serão eliminados.
+      confirm_for_products_and_product_models: Tem a certeza de que pretende eliminar os produtos e modelos de produtos selecionados? Todos os filhos dos modelos de produtos também serão eliminados.
 pim_enrich.entity.group:
   label: Grupo
   flash:
@@ -118,62 +196,132 @@ pim_enrich.entity.group:
     delete:
       success: Grupo removido com sucesso
       fail: Não é possível eliminar este grupo
+  page_title:
+    index: "] -Inf, 1] {{ count }} grupo|] 1, Inf [{{ count }} grupos"
   module:
     create:
       button: Criar grupo
     delete:
       confirm: Tem certeza que deseja eliminar este grupo?
+pim_enrich.entity.role:
+  module:
+    delete:
+      confirm: Tem certeza que deseja eliminar esta função?
+  flash:
+    delete:
+      success: Função removida com sucesso
 pim_enrich.entity.category:
   label: categoria
   uppercase_label: Categoria
   plural_label: Categorias
+  page_title:
+    index: "]-Inf, 1]{{ count }} tree|]1, Inf[{{ count }} trees"
   content:
+    empty_tree_list:
+      title: You don’t have any tree
+      hint: Create your first one.
     tree_list:
       columns:
+        label: Tree label
+        number_of_categories: Number of categories
         actions: Ações
+        count_categories: ']-Inf, 1]{{ count }} category|]1, Inf[{{ count }} categories'
+    tree:
+      not_found: Category tree not found
+    edit:
+      not_found: Category not found
+      default_tree_label: Tree
+      success: Category successfully updated
+      fail: The category could not be updated
+  new_category: New category
+  new_category_tree: New category tree
+  category_created: The category "{{ code }}" was successfully created
+  category_creation_error: The category "{{ code }}" could not be created
+  category_tree_creation:
+    success: The tree "{{ code }}" was successfully created
+    error: The tree "{{ code }}" could not be created
+  category_tree_deletion:
+    success: The tree "{{ tree }}" was successfully deleted
+    error: The tree "{{ tree }}" could not be deleted
+    confirmation: Are you sure want to delete the {{ name }} tree? All the categories in that tree will be deleted, and the products will be removed from all those categories.
+    products_limit_exceeded:
+      title: This tree cannot be deleted
+      message: The tree "{{ tree }}" contains more than {{ limit }} products and therefore cannot be deleted.
+  category_deletion:
+    success: The category "{{ name }}" was successfully deleted
+    error: The category "{{ name }}" could not be deleted
+    confirmation: Are you sure you want to delete the category {{ name }}? Products in this category will not be deleted.
+    products_limit_exceeded:
+      title: This category cannot be deleted
+      message: The "{{ name }}" category contains more than {{ limit }} products and therefore cannot be deleted.
 pim_enrich.export.product:
   data:
     title: Filtra o produto
+  structure:
+    title: Filtrar os dados
   filter:
+    channel:
+      help: O canal define o âmbito dos valores do produto, as localidades utilizadas para selecionar dados e a árvore utilizada para selecionar produtos.
+    locales:
+      help: "As localidades definem os valores localizados do produto a exportar. Ex: apenas informações sobre produtos em Francês."
     attributes:
+      label: "{0}Todos os atributos|{1}Um atributo selecionado|]1,Inf[{{ count }} atributos selecionados"
       help: "Selecione a informação do produto para exportar. Exemplo: apenas seus atributos técnicos."
       empty: Todos os atributos serão exportados
       modal:
         title: Seleção de atributos
     attributes_selector:
+      attributes: "Buscar em {{ itemsCount }} atributos"
+      selected: "Atributos selecionados"
       clear: Limpar
       all_group: Todos os grupos
       empty_selection: Todos os atributos serão exportados
       description: Selecione as informações do produto a serem exportadas
     family:
       title: Família
+      help: "Selecionar os produtos a exportar por família. Ex: Exportar apenas os sapatos e os vestidos."
       operators:
         IN: Na lista
+        "NOT IN": Não está na lista
+        EMPTY: Produtos que não têm uma família
+        "NOT EMPTY": Produtos que têm uma família
+      empty_selection: Sem condições para as famílias
     updated:
+      title: Condição de tempo
       operators:
         ALL: Sem restrição de data
+        "SINCE LAST N DAYS": Produtos atualizados nos últimos n dias (por exemplo, 6)
+        ">": Produtos atualizados desde esta data
         "SINCE LAST JOB": Produtos atualizados desde a última exportação
     enabled:
       title: Estado
+      help: "Selecionar os produtos a exportar de acordo com o seu estado. Ex: Exportar produtos segundo o seu estado."
       value:
         enabled: Ativo
         disabled: Inativo
     completeness:
       title: Completude
+      help: Selecione os produtos para exportar por sua completude.
       operators:
         ALL: Sem restrições em relação ao nível de preenchimento da informação
         ">=": Completo em pelo menos uma das linguagens selecionadas
         "GREATER OR EQUALS THAN ON ALL LOCALES": Completo em todas as linguagens escolhidas
         "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": Completo em pelo menos uma das linguagens selecionadas
         LOWER THAN ON ALL LOCALES: Não completo em todas as linguagens escolhidas
+        AT LEAST COMPLETE: Pelo menos um produto secundário concluído num local selecionado
+        ALL COMPLETE: Todos os produtos filhos completos em todos os locais selecionados
       empty_selection: Selecione o grupo
     category:
       title: Categoria
+      help: Utilize as categorias de produtos na árvore (definidas pelo canal acima) para selecionar os produtos a exportar
     identifier:
       title: Identificador
+      help: Utilize os identificadores de produtos para exportar, separados por vírgulas, espaços ou quebras de linha
     string:
       operators:
         ALL: Tudo
+    price-collection:
+      operators:
     select:
       operators:
         IN: Na lista
@@ -181,37 +329,96 @@ pim_enrich.export.product:
       operators:
         BETWEEN: Entre
         NOT BETWEEN: Não entre
+    quality-score:
+      title: Quality Score
+      operator_choice_title: Export Quality Score(s) for
+      empty_selection: No condition on Quality Score
+      operators:
+        IN AT LEAST ONE LOCALE: At least one locale
+        IN ALL LOCALES: All selected locales
   global_settings:
     title: Definições Gerais
 pim_enrich.mass_edit.product:
+  title: Product bulk action
+  confirm: "{0}You are about to update some products with the following information, the former values will be replaced. Please confirm.|{1}You are about to update a product with the following information, the former values will be replaced. Please confirm.|]1, Inf[You are about to update {{ itemsCount }} products with the following information, the former values will be replaced. Please confirm."
   step:
     select:
       label: Escolher produtos
+    choose:
+      title: Product bulk actions
+      label_count: "]0, Inf[Selecione a sua ação"
     configure:
       label: Configurar
     confirm:
       label: Confirmar
+    launch_error:
+      label: Ocorreu um erro durante o lançamento da operação de edição em massa
+    launched:
+      label: A ação em massa "{{ operation }}" foi lançada. Será notificado quando a ação for concluída.
   operation:
     common:
       select_attributes: Selecionar atributos
     change_status:
       label: Alterar estado
+      label_count: "{0}Alterar o estado de alguns <span class=\"AknFullPage-title--highlight\">produtos</span>|{1}Alterar o estado de <span class=\"AknFullPage-title--highlight\">1 produto</span>|]1, Inf[Alterar o estado de<span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produtos</span>"
       description: Os produtos selecionados serão ativados ou desativados.
       field: Para ativar
+    edit_common:
+      label: Edit attribute values
+      label_count: "{0}Edit attribute values of some <span class=\"AknFullPage-title--highlight\">products</span>|{1}Edit attribute values of <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Edit attribute values of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+      description: Only the attributes belonging to the families of the selected products will be edited with the following data for the {{ locale }} locale and the {{ scope }} channel. The former values will be replaced.
+      no_update: Selecione pelo menos um campo para atualizar
+    add_attribute_value:
+      label: Add attribute values
+      label_count: "{0}Add attribute values for some <span class=\"AknFullPage-title--highlight\">products</span>|{1}Add attribute values for <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Add attribute values for <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+      description: Only the multivalued attributes belonging to the families of the products will be edited with the following data for the {{ locale }} locale and the {{ scope }} channel. The attribute values are added, the previous values are kept.
     change_family:
+      label: Mudar de família
+      label_count: "{0}Mudar a família de alguns  <span class=\"AknFullPage-title--highlight\">produtos</span>|{1}Mudar a família do <span class=\"AknFullPage-title--highlight\">1 produto</span>|]1, Inf[Mudar a família de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produtos</span>"
       description: A família dos produtos seleccionados será alterada para a família escolhida
     add_to_group:
       label: Adicionar a grupos
+      label_count: "{0}Adicionar alguns <span class=\"AknFullPage-title--highlight\">produtos</span> a grupos|{1}Adicionar <span class=\"AknFullPage-title--highlight\">1 produto</span> a grupos|]1, Inf[Adicionar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produtos</span> a grupos"
       description: Selecione os grupos aos quais pretende adicionar os produtos selecionados
       field: Grupos
+      no_update: Selecione um grupo antes de continuar
     add_to_category:
+      label: Adicionar às categorias
+      label_count: "{0}Adicionar alguns <span class=\"AknFullPage-title--highlight\">produtos</span> a categorias|{1}Adicionar <span class=\"AknFullPage-title--highlight\">1 produto</span> a categorias|]1, Inf[Adicionar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produtos</span> a categorias"
       description: O produto será classificado nas seguintes categorias, a classificação existente será armazenada.
+    move_to_category:
+      label: Mover-se entre categorias
+      label_count: "{0}Mover alguns <span class=\"AknFullPage-title--highlight\">produtos</span> entre categorias|{1}Mover <span class=\"AknFullPage-title--highlight\">1 produto</span> entre categorias|]1, Inf[Mover <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produtos</span> entre categorias"
+      description: Os produtos serão classificados nas seguintes categorias, perdendo-se a classificação atual.
+      no_update: Selecione uma categoria.
     remove_from_category:
       label: Remover das categorias
+      label_count: "{0}Remover alguns <span class=\"AknFullPage-title--highlight\">produtos</span> das categorias|{1}Remover <span class=\"AknFullPage-title--highlight\">1 produto</span> das categorias|]1, Inf[Remove <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produtos</span> das categorias"
       description: Os produtos serão retirados das seguintes categorias.
+      no_update: Não há nenhuma categoria marcada para remover os produtos selecionados.
+    add_to_existing_product_model:
+      label: Adicionar a um modelo de produto existente
+      label_count: "{0}Adicionar alguns <span class=\"AknFullPage-title--highlight\">produtos</span> para um modelo de produto existente|{1}Adicionar <span class=\"AknFullPage-title--highlight\">1 produto</span> para um modelo de produto existente|]1, Inf[Adicionar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produtos</span> para um modelo de produto existente"
+      description: O modelo de produto selecionado reunirá os produtos e permitirá o enriquecimento das suas propriedades comuns.
+      no_update: Selecione um modelo de produto antes de continuar
+    convert_to_simple_products:
+      label: Converter para produtos simples
+      label_count: "{0}Converter alguns <span class=\"AknFullPage-title--highlight\">produtos</span> a produtos simples|{1}Converter <span class=\"AknFullPage-title--highlight\">1 produto</span> para um produto simples|]1, Inf[Converter <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produtos</span> a produtos simples"
+      description: Todos os valores, categorias e associações anteriores serão guardados.
     associate_to_product_and_product_model:
+      label: Associate products
+      label_count: "{0}Associar alguns <span class=\"AknFullPage-title--highlight\">produtos</span> a produtos ou modelos de produtos|{1}Associar <span class=\"AknFullPage-title--highlight\">1 produto</span> a produtos ou modelos de produtos|]1, Inf[Associar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produtos</span> a produtos ou modelos de produtos"
+      description: Os produtos selecionados na grade serão associados aos produtos e modelos de produtos selecionados para o tipo de associação escolhido
       validate: Adicione a associação antes de passar para o próximo passo
+    change_parent_product_model:
+      label: Alterar o modelo do produto principal
+      label_count: "{0}Alterar o modelo de produto pai de alguns <span class=\"AknFullPage-title--highlight\">produtos</span>|{1}Alterar o modelo do produto pai de <span class=\"AknFullPage-title--highlight\">1 produto</span>|]1, Inf[Alterar o modelo do produto pai de<span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produtos</span>"
+      description: O pai dos produtos variantes ou modelos de subprodutos selecionados na grelha será alterado para o modelo de produto escolhido.
 pim_datagrid:
+  no_entities: "Nenhum {{ entityHint }} encontrado"
+  no_entities.product: "No product found" #Custom translation for product grid
+  no_results: "Sorry, there is no {{ entityHint }} for your search."
+  no_results.product: "Sorry, there is no product for your search." #Custom translation for product grid
   mass_action_group:
     bulk_actions:
       label: Ações em massa
@@ -219,19 +426,38 @@ pim_datagrid:
       label: Exportação rápida
   mass_action:
     delete:
+      confirm_content: Tem a certeza de que pretende eliminar os produtos selecionados?
       success: Produtos selecionados eliminados com sucesso.
+      error: Ocorreu um erro ao tentar eliminar produtos selecionados, tente novamente.
     quick_export:
       csv_all: CSV (todos os atributos)
       csv_grid_context: CSV (Contexto de grelha)
       xlsx_all: Excel (todos os atributos)
       xlsx_grid_context: Excel (Contexto de grelha)
       configurator:
+        subtitle: Exportação rápida
         title: Escolha sua ação
+        csv: CSV
+        xlsx: XLSX
+        grid_context: Contexto da grade
+        all_attributes: Todos os atributos
+        with_codes: Com códigos
+        with_labels: Com etiquetas
         without_uuid: Sem UUID
+        with_uuid: Com UUID
+        without_media: Sem media
+        with_media: Com media
+      flash:
+        message: "Pode acompanhar a evolução da sua exportação aqui."
     mass_edit: Ações em massa
     sequential_edit: Editar em sequência
+    mass_delete: Eliminação em massa
+    selected:
+      family: "]-Inf, 1]{{ count }} família selecionada|]1, Inf[{{ count }} famílias selecionadas"
+      product: "]-Inf, 1]{{ count }} resultado selecionado|]1, Inf[{{ count }} resultados selecionados"
   view_selector:
     view: Visualizações
+    choose_type: I want to create a private view
   actions:
     edit_product_attributes: Editar atributos do produto
     classify_product: Classificar o produto
@@ -239,33 +465,109 @@ pim_datagrid:
     change_status: Alterar estado
     toggle_status: Ativar estado
     other: Outra ação
+  empty_results:
+    associated_product:
+      hint: Não existem produtos associados
+      subHint: 'Clique no botão "Adicionar associações" para associar este produto'
   filters:
     label: Filtros
     system: Sistema
     product_typology:
+      label: 'Tipologia do produto'
+      simple: 'Simples'
       variant: 'Variante'
     entity_type:
       label: 'Variante'
+      grouped: 'Agrupados'
+      ungrouped: 'Não agrupado'
     family:
       label: Família
     groups:
       label: Grupos
     enabled:
       label: Estado
+    scope:
+      label: Âmbito
     completeness:
       label: Completo
+    created:
+      label: Criado em
+    updated:
+      label: Atualizado em
+    label_or_identifier:
+      label: Etiqueta ou identificador
+    parent:
+      label: Pai
     identifier:
       label: Identificador
+    uuid:
+      label: UUID
+  search: Search by {{ label }}
 batch_jobs:
+  add_association:
+    label: Associar
+    perform.label: Associar
+  add_attribute_value:
+    label: Adicionar valor de atributos
+    perform.label: Adicionar valor de atributos
   add_product_value:
     label: Adicionar valor do produto
     perform.label: Adicionar valor do produto
+  add_to_category:
+    label: Adicionar à categoria
+    perform.label: Adicionar à categoria
+  add_to_existing_product_model:
+    label: Adicionar a um modelo de produto existente
+    perform.label: Adicionar a um modelo de produto existente
+  convert_to_simple_products:
+    label: Converter para produtos simples
+    perform.label: Converter para produtos simples
+  csv_product_grid_context_quick_export:
+    quick_export.label: Exportação rápida do contexto da grade de produtos em CSV
+    quick_export_product_model.label: Exportação rápida do contexto da grade do modelo de produto em CSV
+    perform.label: Exportação rápida do contexto da grade de produtos em CSV
   csv_product_quick_export:
     quick_export.label: Csv exportação rápida de produtos
+    quick_export_product_model.label: Exportação rápida do modelo de produto em CSV
     perform.label: Csv exportação rápida de produtos
+  delete_products_and_product_models:
+    label: Eliminar produtos em massa
+    perform.label: Eliminar produtos em massa
+  change_parent_product:
+    label: Alterar o modelo de produto pai
+    perform.label: Alterar o modelo de produto pai
   edit_common_attributes:
     label: Editar atributos
     perform.label: Editar atributos
+    clean.label: Limpar ficheiros para atributos
+    cleaner.label: Limpar ficheiros para atributos
+  compute_completeness_of_products_family:
+    label: Calcular completude
+    perform.label: Calcular completude
+  move_to_category:
+    label: Mover para a categoria
+    perform.label: Mover para a categoria
   update_product_value:
     label: Atualizar o valor do produto
     perform.label: Atualizar o valor do produto
+  remove_from_category:
+    label: Remover da categoria
+    perform.label: Remover da categoria
+  set_attribute_requirements:
+    label: Definir requisitos de atributos
+    perform.label: Definir requisitos de atributos
+  xlsx_product_grid_context_quick_export:
+    quick_export.label: Exportação rápida do contexto da grade de produtos em XSLX
+    quick_export_product_model.label: Exportação rápida do contexto da grade do modelo de produto em XSLX
+    perform.label: Exportação rápida do contexto da grade de produtos em XSLX
+  xlsx_product_quick_export:
+    quick_export.label: Exportação rápida de produtos em XSLX
+    quick_export_product_model.label: Exportação rápida do modelo de produto em XSLX
+    perform.label: Exportação rápida de produtos em XSLX
+  default_steps:
+    delete_products_and_product_models: Eliminar produtos e modelos de produtos
+    remove_completeness_for_channel_and_locale: Remover a integralidade para canal e localidade
+error:
+  removing:
+    group: Impossível remover o grupo
+    association type: Impossível remover o tipo de associação

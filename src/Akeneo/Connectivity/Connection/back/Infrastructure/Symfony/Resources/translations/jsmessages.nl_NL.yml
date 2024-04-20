@@ -513,7 +513,7 @@ akeneo_connectivity.connection:
       title: Gebeurtenislogboeken
       event_subscription_disabled:
         title: Het abonnement voor gebeurtenissen is niet ingeschakeld voor deze verbinding.
-        link: Activeer het abonnement voor gebeurtenissen
+        link: Inschakelen abonnement voor gebeurtenissen
       no_event_logs:
         title: Er is momenteel geen logboek.
       no_event_logs_with_those_filters:
