@@ -25,6 +25,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Product import processor, allows to,
@@ -56,7 +57,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
         private RemoveParentInterface $removeParent,
         private CleanLineBreaksInTextAttributes $cleanLineBreaksInTextAttributes
     ) {
-        parent::__construct($repository);
+        $this->repository = $repository;
     }
 
     /**
@@ -204,11 +205,17 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
      */
     protected function getFamilyCode(array $item): string
     {
-        if (key_exists('family', $item)) {
+        if (\array_key_exists('family', $item)) {
             return $item['family'];
         }
 
-        $product = $this->repository->findOneByIdentifier($item['identifier']);
+        $product = null;
+        if (\array_key_exists('uuid', $item) && $item['uuid']) {
+            Assert::methodExists($this->repository, 'findOneByUuid');
+            $product = $this->repository->findOneByUuid(Uuid::fromString($item['uuid']));
+        } elseif (\array_key_exists('identifier', $item) && $item['identifier']) {
+            $product = $this->repository->findOneByIdentifier($item['identifier']);
+        }
         if (null === $product) {
             return '';
         }
@@ -231,11 +238,11 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
      */
     protected function filterItemData(array $item)
     {
-        foreach ($this->repository->getIdentifierProperties() as $identifierProperty) {
-            unset($item['values'][$identifierProperty]);
-        }
+        // After the item will go through a comparator on its fields and values
+        // uuid is not part of the needed compared values, so we unset it here
         unset($item['uuid']);
         unset($item['identifier']);
+
         unset($item['associations']);
         unset($item['quantified_associations']);
 
