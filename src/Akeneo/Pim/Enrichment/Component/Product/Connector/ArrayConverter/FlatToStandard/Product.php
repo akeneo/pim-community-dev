@@ -41,9 +41,6 @@ class Product implements ArrayConverterInterface
     /** @var ColumnsMapper */
     protected $columnsMapper;
 
-    /** @var FieldsRequirementChecker */
-    protected $fieldChecker;
-
     /** @var array */
     protected $optionalAssocFields;
 
@@ -59,7 +56,6 @@ class Product implements ArrayConverterInterface
      * @param FieldConverter                  $fieldConverter
      * @param ColumnsMerger                   $columnsMerger
      * @param ColumnsMapper                   $columnsMapper
-     * @param FieldsRequirementChecker        $fieldChecker
      * @param AttributeRepositoryInterface    $attributeRepository
      * @param ArrayConverterInterface         $productValueConverter
      */
@@ -69,7 +65,6 @@ class Product implements ArrayConverterInterface
         FieldConverter $fieldConverter,
         ColumnsMerger $columnsMerger,
         ColumnsMapper $columnsMapper,
-        FieldsRequirementChecker $fieldChecker,
         AttributeRepositoryInterface $attributeRepository,
         ArrayConverterInterface $productValueConverter
     ) {
@@ -78,7 +73,6 @@ class Product implements ArrayConverterInterface
         $this->fieldConverter = $fieldConverter;
         $this->columnsMerger = $columnsMerger;
         $this->columnsMapper = $columnsMapper;
-        $this->fieldChecker = $fieldChecker;
         $this->optionalAssocFields = [];
         $this->attributeRepository = $attributeRepository;
         $this->productValueConverter = $productValueConverter;
@@ -244,18 +238,11 @@ class Product implements ArrayConverterInterface
 
         $convertedValues = $this->productValueConverter->convert($convertedValues);
 
-        if (empty($convertedValues)) {
-            throw new \LogicException('Cannot find any values. There should be at least one identifier attribute');
-        }
-
         $convertedItem['values'] = $convertedValues;
 
         $identifierCode = $this->attributeRepository->getIdentifierCode();
-        if (!isset($convertedItem['values'][$identifierCode])) {
-            throw new \LogicException(sprintf('Unable to find the column "%s"', $identifierCode));
-        }
 
-        $convertedItem['identifier'] = $convertedItem['values'][$identifierCode][0]['data'];
+        $convertedItem['identifier'] = $convertedItem['values'][$identifierCode][0]['data'] ?? null;
 
         return $convertedItem;
     }
@@ -265,8 +252,6 @@ class Product implements ArrayConverterInterface
      */
     protected function validateItem(array $item): void
     {
-        $requiredField = $this->attrColumnsResolver->resolveIdentifierField();
-        $this->fieldChecker->checkFieldsPresence($item, [$requiredField]);
         $this->validateOptionalFields($item);
         $this->validateFieldValueTypes($item);
     }
@@ -306,8 +291,8 @@ class Product implements ArrayConverterInterface
         foreach ($nonLocalizableOrScopableFields as $nonLocalizableOrScopableField) {
             $messages[] = sprintf(
                 'The field "%s" needs an additional locale and/or a channel information; ' .
-                    'in order to do that, please set the code as follow: ' .
-                    '\'%s-[locale_code]-[channel_code]\'.',
+                'in order to do that, please set the code as follow: ' .
+                '\'%s-[locale_code]-[channel_code]\'.',
                 $nonLocalizableOrScopableField,
                 $nonLocalizableOrScopableField
             );
