@@ -1,10 +1,150 @@
 akeneo_catalogs:
+  common:
+    select:
+      open: Aberto
+      remove: Remover
+      no_matches: Nenhuma correspondência encontrada
+  catalog_list:
+    catalogs_name: Nome do catálogo
+    status: Estado
+    enabled: ativado
+    disabled: desativado
+    empty: Não há catálogo
+    more_information: Consulte o nosso Centro de ajuda para obter mais informações.
+  catalog_edit:
+    tabs:
+      settings: Configurações do catálogo
+      product_selection: Seleção de produtos
+      more: Mais
+      product_value_filters: Filtrar os valores
+      product_mapping: Mapeamento
   catalog_status_widget:
+    fields:
+      enable_catalog: Ativar o catálogo
+    helper: Por padrão, novos catálogos são desativados. Ative o catálogo para permitir que o aplicativo recupere os seus dados de produtos.
     inputs:
       yes: Yes
       no: No
+  product_value_filters:
+    action:
+      open: Aberto
+      remove: Remover
+    filters:
+      channel:
+        label: Canal
+        no_matches: Nenhuma correspondência encontrada
+        placeholder: Selecionar um canal
+      locale:
+        label: Local
+        no_matches: Nenhuma correspondência encontrada
+        placeholder: Selecionar uma localidade
+      currency:
+        label: Moeda
+        no_matches: Nenhuma correspondência encontrada
+        placeholder: Selecionar uma moeda
   product_selection:
+    empty: Adicione critérios de seleção para criar a sua seleção de produtos
+    count:
+      products: '{0} Nenhum produto|{1} 1 produto|[2,Inf[ {{ count }} produtos'
+      error: Impossível calcular o número de produtos
+    more_information: Consulte o nosso Centro de ajuda para obter mais informações.
+    add_criteria:
+      label: adicionar critérios de seleção
+      search: Critério de pesquisa
+      no_results: nenhuma correspondência encontrada
+      section_system: sistema
+      section_attributes: atributos
+    action:
+      open: Aberto
+      remove: Remover
+    locale:
+      label: Local
+      empty: Nenhuma localidade encontrada
+    channel:
+      label: Canal
+      empty: Nenhum canal encontrado
     criteria:
+      unknown: Este atributo foi suprimido.
+      max_reached: Você atingiu o limite de critérios de seleção {{ maxCount }}.
+      status:
+        label: Estado
+        enabled: Ativado
+        disabled: Desativado
+      family:
+        label: Família
+        no_matches: Nenhuma correspondência encontrada
+        placeholder: Selecionar uma família
+      completeness:
+        label: Completude
+      attribute_option:
+        no_matches: Nenhuma correspondência encontrada
+        placeholder: Selecionar uma opção
+      category:
+        label: Categoria
+        remove: Remover categoria
+        category_tree: Árvore de categoria
+      measurement:
+        search: Unidade
+        no_results: Nenhuma correspondência encontrada
       boolean:
         yes: Yes
         no: No
+    operators:
+      "STARTS WITH": começa com
+      "ENDS WITH": termina com
+      "CONTAINS": contém
+      "DOES NOT CONTAIN": não contém
+      "EMPTY": está vazio
+      "NOT EMPTY": não está vazio
+      "IN": em
+      "NOT IN": não em
+      "IN CHILDREN": em descendentes
+      "NOT IN CHILDREN": não está em descendentes
+      "UNCLASSIFIED": não é classificado
+      "IN OR UNCLASSIFIED": não é classificado ou está em
+      "BETWEEN": entre
+      "NOT BETWEEN": não entre
+      "=": igual
+      "!=": não é igual a
+      ">": maior que
+      ">=": igual ou maior que
+      "<": inferior a
+      "<=": igual ou menor que
+  product_mapping:
+    target:
+      title: Lista de alvos
+      filter:
+        label: Filtro
+        option:
+          all: Tudo
+      table:
+        target: Objetivo do catálogo
+        source: Fonte Pim
+        placeholder: Definir uma fonte de conteúdo
+      placeholder:
+        illustration_title: Nenhum objetivo de catálogo disponível
+    source:
+      title: Selecionar fonte
+      parameters:
+        title: Parâmetros de origem
+        channel:
+          label: Canal
+          placeholder: Selecionar um canal
+        locale:
+          label: Local
+          placeholder: Selecionar uma localidade
+      select_source:
+        label: Fonte Pim
+        search: Critério de pesquisa
+        no_results: nenhuma correspondência encontrada
+        section_system: sistema
+        section_attributes: atributos
+      placeholder:
+        title: Selecionar fonte
+        illustration_title: Clique em um alvo no painel direito para configurar seu mapeamento de catálogo.
+        subtitle: Então você poderá combinar um atributo PIM com o alvo selecionado.
+        link: Consulte o nosso Centro de ajuda para obter mais informações.
+      uuid_placeholder:
+        illustration_title: O UUID é um identificador técnico de produto.
+        subtitle: Todas as aplicações têm de o exigir como alvo. Não é necessário configurar nada para este alvo, pois nós o mapeamos automaticamente com o UUID do produto Akeneo.
+        link: Mais informações sobre o UUID.

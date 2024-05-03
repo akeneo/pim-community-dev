@@ -356,7 +356,7 @@ pim_menu:
     attribute_group: 属性组
     channel: 渠道
     currency: 货币
-    dashboard: 活动仪表板
+    dashboard: 活动信息中心
     family: 品类
     group: 分组
     group_type: 分组类型

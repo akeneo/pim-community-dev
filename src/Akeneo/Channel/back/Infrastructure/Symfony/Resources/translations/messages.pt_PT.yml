@@ -1,0 +1,10 @@
+pim_enrich:
+  #Locale
+  locale:
+    tab:
+      property.title: Propriedades
+  channel:
+    flash:
+      delete:
+        error: Não é possível remover o canal "%channelCode%" porque o PIM tem de conter pelo menos um canal.
+        linked_to_export_profile: Não é possível eliminar um canal ligado a um perfil de exportação.

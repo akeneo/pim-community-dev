@@ -1,6 +1,162 @@
 akeneo_data_quality_insights:
+  title: Informações sobre a qualidade dos dados
   dqi_dashboard:
+    menu: Informações sobre a qualidade dos dados
+    helper:
+      title: Apresentando a qualidade dos dados em Akeneo
+      description: Com o painel de controlo da qualidade dos dados, é possível medir a qualidade dos dados do catálogo. Também pode concentrar-se numa categoria ou família.
+      help_center: Consulte o nosso Centro de Ajuda para obter mais informações.
+    no_data_title: Desculpe, ainda não temos dados suficientes para mostrar a visão geral da qualidade dos dados.
+    no_data_subtitle: Por favor, volte mais tarde.
+    time_period:
+      label: Período de tempo
+      daily: Diário
+      weekly: Semanal
+      monthly: Mensal
+    legend:
+      excellent: Excelente
+      good: Bom
+      average: Média
+      below_average: Abaixo da média
+      to_improve: Para melhorar
+    average_grade: Nota média
+    category_modal_filter:
+      subtitle: Filtrar numa categoria
+      message: Escolha a categoria a explorar no seu painel de controlo
+    widgets:
+      family_modal:
+        subtitle: Adicionar famílias
+        message: Escolha as famílias a adicionar ao seu painel de controlo
+        max_families_msg: Lamentamos, mas não pode adicionar mais do que {{ count }} famílias para acompanhar no seu painel de controlo
+      category_modal:
+        subtitle: Adicionar categorias
+        message: Escolha as categorias a adicionar ao seu painel de controlo
+        max_categories_msg: Lamentamos, mas não pode adicionar mais do que {{ count }} categorias para acompanhar no seu painel
+      add_families: Adicionar famílias
+      add_categories: Adicionar categorias
+      title: Título
+      score: Pontuação
+      no_family_helper_msg: Selecionar as famílias para as quais se pretende medir a qualidade dos dados
+      no_category_helper_msg: Selecionar as categorias para as quais se pretende medir a qualidade dos dados
+      see_in_grid: Ver na grelha
+    time_axis:
+      day: dia
     key_indicators:
+      title: Indicadores-chave
       products: '{1}1 produto|]1, 200[{{ count }} produtos|[200, Inf[mais de {{ count }} produtos'
+      product_models: '{1}1 modelo de produto|]1, 200[{{ count }} modelos de produtos|[200, Inf[maior que {{ count }} modelos de produtos'
+      entities_to_work_on: 'Você tem <improvable_products_count_link/> a trabalhar.'
+      entities_to_work_on_2_kinds: 'Você tem <improvable_products_count_link/> e <improvable_product_models_count_link/> para trabalhar.'
+      list:
+        has_image:
+          title: Produtos com uma imagem
+          no_data: Os seus atributos de imagem parecem estar vazios. Deve carregar imagens para este indicador-chave para realçar a qualidade dos seus produtos.
+          messages:
+            first_step:
+              message1: Sem imagens, os seus produtos não terão o aspeto que merecem.
+              message2: A primeira impressão é muito importante. Mime os seus ativos, os seus clientes vão reparar.
+              message3: Na nossa experiência, as imagens fazem realmente a diferença. Poderá ser necessário dedicar mais tempo aos ativos.
+            second_step:
+              message1: Basta um pouco mais de trabalho nas imagens dos seus produtos e estará pronto para começar.
+              message2: Uma imagem vale mais do que mil palavras, trabalhe nela agora e poupe tempo mais tarde!
+              message3: Pode ser necessário dedicar algum tempo às imagens, mas os seus produtos terão um aspeto muito melhor.
+            third_step:
+              message1: Ótimo, apenas algumas imagens faltando.
+              message2: Isso é bom, está tão perto.
+              message3: Adicione os toques finais e estará tudo pronto.
+            perfect_score_step:
+              message1: Muito bem! Está pronto para ir!
+              message2: Surpreendente! Os seus produtos são todos agradáveis e brilhantes!
+              message3: Isso é perfeito.
+        good_enrichment:
+          title: Produtos com uma boa relação de enriquecimento
+          no_data: Os seus produtos parecem estar vazios, pelo que deve adicionar atributos a este indicador-chave para realçar a qualidade dos seus produtos.
+          messages:
+            first_step:
+              message1: Uma forma de melhorar este rácio é certificar-se de que define cuidadosamente os atributos mais relevantes.  <a href="{{ link }}" target="_blank">Consulte o nosso centro de ajuda</a>.
+              message2: O seu PIM continua a ser demasiado misterioso para si? <a href="{{ link }}" target="_blank">Aprenda como tirar o máximo partido dela</a>.
+              message3: As nossas equipas desenvolveram o PIM, você o torna vivo!
+              message4: Informações detalhadas sobre o produto fazem uma diferença real para os seus clientes. Pode ser um divisor de águas!
+            second_step:
+              message1: Vamos tentar apontar um pouco mais alto! Os seus clientes ficarão gratos.
+              message2: Está no meio do caminho! Espere e os seus produtos serão bem enriquecidos.
+              message3: O diabo está nos detalhes, mesmo na sua indústria!
+              message4: Precisa de um polimento manual para o enriquecimento do seu produto? Saiba como selecionar cuidadosamente os atributos mais relevantes <a href="{{ link }}" target="_blank">aqui</a>.
+            third_step:
+              message1: Até aí tudo bem, agora pode ir um pouco mais longe!
+              message2: Esta é uma proporção ótima, mas não ficaria 100% bom?
+              message3: Alguns dos seus produtos ainda precisam de uma pequena ajuda para estarem completos! Está quase lá!
+              message4: Apenas alguns é para dotar e Ts para cruzar e será perfeito.
+            perfect_score_step:
+              message1: Os seus produtos vão se vender! Ótimo trabalho.
+              message2: Que aventura, pode se orgulhar do seu trabalho.
+              message3: É um verdadeiro mestre em manter o seu catálogo atualizado.
+              message4: Parabéns, isso é impecável!
+      no_data: Desculpe, ainda não temos dados suficientes para mostrar os indicadores-chave.
+      no_data_subtitle: Por favor, volte mais tarde.
+    score_distribution:
+      title: Distribuição do índice de qualidade
+    quality_score_evolution:
+      title: Evolução do índice de qualidade
+      current_score: é o índice de qualidade do catálogo atual para este escopo.
+      current_month_label: Este mês
+      no_catalog_score: Não foi possível calcular o seu índice de qualidade atual.
+  product_evaluation:
+    criteria:
+      completeness_of_required_attributes:
+        recommendation: Atributos necessários com valores em falta
+      completeness_of_non_required_attributes:
+        recommendation: Atributos não obrigatórios com valores em falta
+      enrichment_image:
+        recommendation: Imagem em falta
+    axis:
+      enrichment:
+        title: Enriquecimento
+        attributes_link: Mostrar todos os atributos em falta
+        success: Os dados do seu produto estão totalmente enriquecidos. Parabéns!
+    messages:
+      error:
+        axis_error: Devido a um erro, não foi possível calcular totalmente a nota. Tente novamente mais tarde.
+        criterion_error: Não foi possível calcular o grau.
+      success:
+        criterion: Tudo é bom.
+      grading_in_progress: Avaliação em curso.
+      axis_grading_in_progress: Avaliação em curso. Por favor, volte mais tarde.
+      too_many_attributes: Tem {{ count }} atributos para melhorar.
+      no_attribute_groups:
+        title: Desculpe, não foi possível calcular o seu índice de qualidade.
+        subtitle: "O índice de qualidade não pode ser calculado: nenhum dos grupos de atributos deste produto é ativado."
+        help_center_link: Saiba como as informações sobre a qualidade dos dados podem ajudá-lo a melhorar a qualidade dos seus dados no nosso centro de ajuda.
+      add_image_attribute_recommendation: Uma imagem vale mais do que mil palavras. Deve adicionar um atributo de imagem para melhorar a qualidade dos dados deste produto.
+      fill_image_attribute_recommendation: Na nossa experiência, as imagens realmente fazem a diferença. Deve adicionar pelo menos uma imagem para melhorar a qualidade dos dados deste produto.
+      not_applicable:
+        message: Este critério não é aplicável no seu contexto.
+        help_center_link: Descubra porquê no nosso Centro de Ajuda.
+  product_edit_form:
+    attribute_filter:
+      all_missing_attributes: Todos os atributos ausentes
+    back_to_products: Voltar aos produtos
+  attribute_group:
+    helper_dqi_info: The quality score calculation will only take into account attributes belonging to attribute groups enabled on data quality.
+    helper_dqi_link: Mais informações no nosso centro de ajuda.
+    activation: Enabled
+    dqi_status: Situação da qualidade de dados e Informações
+    activated: Enabled
+    disabled: Desabilitado
+    used_groups_helper: "Os seguintes grupos de atributos são tidos em conta no cálculo das Informações sobre a qualidade dos dados:"
+    all_groups_evaluated: All the attribute groups of this product are taken into account for the calculation of the quality score. To get the most relevant quality score, <a href="{{ link }}" target="_blank">learn how to disable attribute groups in our help center.</a>
+  product_grid:
+    filter_label:
+      quality_score: Pontuação de qualidade
+      enrichment_quality: Qualidade do enriquecimento
+      images_quality: Product image
+    filter_value:
+      good: Bom
+      to_improve: Para melhorar
+      "yes": "Yes"
+      "no": "No"
   quality_score:
+    pending: Em processamento
     title: "Qualidade da pontuação:"
+pim_title:
+  akeneo_data_quality_insights_dashboard: Informação de qualidade de dados
