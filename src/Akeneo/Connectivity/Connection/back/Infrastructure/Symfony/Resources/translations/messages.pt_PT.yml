@@ -1,0 +1,10 @@
+akeneo_connectivity.connection:
+  acl.manage_settings: Gerir configurações de conexões
+  acl.manage_apps: Gerir aplicativos
+  acl.manage_test_apps: Gerir aplicações de teste
+  acl.open_apps: Abrir aplicações
+pim_notification:
+  connected_app_authorizations:
+    message: 'A aplicação <strong>{{ app_name }}</strong>  requer uma autorização de atualização. Por favor, abra a aplicação para proceder.'
+  disabled_catalog:
+    message: "Uma ou mais alterações nas definições do PIM teve impacto no catálogo {{ catalog_name }}. Por favor, reveja a seleção de produtos relacionados e ative o catálogo novamente."

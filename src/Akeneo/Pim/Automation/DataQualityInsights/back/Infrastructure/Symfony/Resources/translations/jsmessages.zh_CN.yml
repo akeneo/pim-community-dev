@@ -4,7 +4,7 @@ akeneo_data_quality_insights:
     menu: 数据质量洞察
     helper:
       title: Akeneo 数据质量简介
-      description: 借助数据质量仪表板，您可测量目录数据的质量。还可着重于某一类别或品类。
+      description: 借助数据质量信息中心，您可测量目录数据的质量。还可着重于某一类别或品类。
       help_center: 查看我们的“帮助中心”获取更多信息。
     no_data_title: 抱歉，我们仍没有足够的数据来显示数据质量概览。
     no_data_subtitle: 请稍后再回来。
@@ -22,16 +22,16 @@ akeneo_data_quality_insights:
     average_grade: 平均等级
     category_modal_filter:
       subtitle: 按类别筛选
-      message: 选择要在您的仪表板上探索的类别
+      message: 选择要在您的信息中心上探索的类别
     widgets:
       family_modal:
         subtitle: 添加品类
-        message: 选择要在您的仪表板上添加的品类
-        max_families_msg: 抱歉，在仪表板上进行跟踪操作时添加的品类数目不能超过 {{ count }} 个
+        message: 选择要在您的信息中心上添加的品类
+        max_families_msg: 抱歉，在信息中心上进行跟踪操作时添加的品类数目不能超过 {{ count }} 个
       category_modal:
         subtitle: 添加类别
-        message: 选择要添加到仪表板上的类别
-        max_categories_msg: 抱歉，在仪表板上进行跟踪操作时添加的类别数目不能超过 {{ count }} 个
+        message: 选择要添加到信息中心上的类别
+        max_categories_msg: 抱歉，在信息中心上进行跟踪操作时添加的类别数目不能超过 {{ count }} 个
       add_families: 添加品类
       add_categories: 添加类别
       title: 标题
