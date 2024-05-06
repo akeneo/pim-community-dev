@@ -37,6 +37,15 @@ Most Viewed: Mais Vistos
 "Yes": "Sim"
 "No": "Não"
 required: (obrigatório)
+The element could not be deleted: The element could not be deleted
+pim_ui.system_config:
+  form:
+    loading_message_enabled.label: Enable loading messages
+    loading_message_enabled.tooltip: Display user friendly messages while waiting for a page to load
+    loading_messages.label: Available loading messages
+    loading_messages.tooltip: All available loading messages separated by line breaks
+  group:
+    loading_message.title: Loading messages
 other_actions: Outra ação
 pim_common:
   association_types: Tipos de associação
@@ -48,20 +57,27 @@ pim_common:
   delete: Eliminar
   edit: Editar
   enabled: Ativo
+  family_variant: Family variant
   family: Família
   groups: Grupos
   label: Rótulo
   name: Nome
   no: "Não"
+  parent: Parent
   permissions: Permissões
+  product_models: Product models
   products: Produtos
   properties: Propriedades
+  quality_score: Quality score
+  quantity: Quantity
   remove: Remover
   save: Guardar
+  unit: Unit
   update: Atualizar
   updated: Atualizado
   view: Ver
   yes: "Sim"
+  uuid: UUID
 pim_enrich:
   #ACLs
   acl:
@@ -78,14 +94,22 @@ pim_enrich:
       add_attribute: Adicionar um atributo a um produto
       remove_attribute: Remover um atributo de um produto
       categories_view: Consultar as categorias de um produto
+      associations_view: View the associations of a product
+      associations_edit: Add associations to a product
       change_family: Mudar família do produto
+      change_state: Change the status of a product
       add_to_groups: Adicionar produto a grupos
       mass_edit: Executar ações de edição em massa de produtos
       comment: Comentar produtos
       download: Transferir o produto em PDF
       history: Ver histórico do produto
+      convert_variant_to_simple: Convert a variant product to a simple product
     product_model:
       create: Crie um modelo de produto
+      edit_attributes: Edit attributes of a product model
+      categories_view: Consult the categories of a product model
+      history: View product model history
+      remove: Remove a product model (including children)
     channel:
       index: Listar canais
       create: Criar um canal
@@ -97,8 +121,11 @@ pim_enrich:
       create: Criar famílias
       edit_properties: Editar propriedades das famílias
       edit_attributes: Editar atributos de famílias
+      edit_variants: Edit a family variant
       remove: Remover famílias
       history: Ver histórico de famílias
+    family_variant:
+      remove: Remove a family variant
     attribute_group:
       index: Listar grupos de atributos
       create: Criar grupos de atributos
@@ -132,8 +159,12 @@ pim_enrich:
       edit: Editar um tipo de associação
       remove: Remover um tipo de associação
       history: Ver histórico de um tipo de associação
+    association:
+      remove: Remove associations to a product
     job_tracker:
       index: Ver processos executados
+      view_all_jobs: View all jobs in process tracker
+      stop_job: Stop an ongoing job
   acl_group:
     association_type: Tipos de associação
     attribute: Atributos
@@ -146,6 +177,12 @@ pim_enrich:
     group_type: Tipos de grupo
     locale: Linguagens
     product: Produtos
+    product_model: Product models
+  notification:
+    settings:
+      remove_completeness_for_channel_and_locale:
+        start: The locale has been removed from the channel. We are currently cleaning completenesses linked to them.
+        done: Removal of a locale on a channel finished.
   create:
     attribute: criar atributo
     attribute group: criar grupo de atributos
@@ -174,6 +211,7 @@ flash:
     removed: Item eliminado
   attribute:
     identifier_not_removable: O atributo identificador não pode ser eliminado
+    used_as_conversion_unit: This attribute can not be removed because it is used as conversion unit in the channel(s) %channelCodes%.
   category:
     removed: Categoria removida com sucesso
   tree:
@@ -265,6 +303,7 @@ Useable as grid column: Utilizável como coluna de grelha
 Useable as grid filter: Utilizável em grelha
 Family: Família
 Image: Imagem
+Variant products: Variant products
 Available locales: Linguagens disponíveis
 Locale specific: Específicas de uma linguagem
 default: Padrão
@@ -276,6 +315,7 @@ Close: Fechar
 Search: Pesquisar
 Choose the attribute type: Escolha o tipo de atributo
 Choose the attribute group: Escolha o grupo de atributos
+Drag and drop a file or click here: Drag and drop a file or click here
 Drop an image or click here: Solte uma imagem ou clique aqui
 Automatic option sorting: Opção de ordenação automática
 save_attribute_before_manage_option: Para gerir as opções, por favor, guarde o atributo primeiro
@@ -290,6 +330,7 @@ No matches found: Nenhuma correspondência encontrada
 Category tree: Árvore de categoria
 Completeness: Completude
 Attribute used as label: Atributo usado como rótulo
+Credentials: Credentials
 #Scopes
 Global: Global
 Channel: Canal
@@ -315,6 +356,8 @@ Decimals allowed: Permitir decimais
 Negative allowed: Permitir valores negativos
 Date min: Data mínima
 Date max: Data máxima
+Metric family: Measurement family
+Default metric unit: Default measurement unit
 Max file size: Tamanho máximo do ficheiro (MB)
 Allowed extensions: Extensões permitidas
 None: Nenhum
@@ -339,6 +382,7 @@ pim_catalog_file: Ficheiro
 pim_catalog_image: Imagem
 pim_catalog_boolean: "Sim/Não"
 pim_catalog_date: Data
+pim_catalog_metric: Measurement
 pim_reference_data_simpleselect: Selecione os dados de referência simples
 pim_reference_data_multiselect: Referência de dados multi selecionáveis
 #Locales
@@ -387,6 +431,8 @@ Disabled: Inativo
 Status: Estado
 pim_datagrid:
   filters:
+    product_typology:
+      label: Product typology
     entity_type:
       label: Variante
     family:
@@ -403,8 +449,14 @@ pim_datagrid:
       label: Criado
     updated:
       label: Atualizado
+    label_or_identifier:
+      label: Label or identifier
+    parent:
+      label: Parent
     identifier:
       label: Identificador
+    uuid:
+      label: Uuid
 #Versioning / history
 Change History: Histórico de alterações
 Data Audit: Auditoria de dados
@@ -463,15 +515,23 @@ pim_mass_edit:
       error: A exportação rápida <strong>%label%</strong> falhou
       warning: A exportação rápida <strong>%label%</strong> terminou com alguns avisos
       success: A exportação rápida <strong>%label%</strong> terminou
+    mass_delete:
+      error: Mass delete <strong>%label%</strong> failed
+      warning: Mass delete <strong>%label%</strong> finished with some warnings
+      success: Mass delete <strong>%label%</strong> finished
 job_execution.summary:
   mass_edited: Editado em massa
   skipped_products: Produtos ignorados
   skipped_attributes: Atributos ignorados
+  skipped_families: Skipped families
+  deleted_products: Deleted products
+  deleted_product_models: Deleted product models
 pim_mass_edit_execution_show: Processos de edição em massa | Detalhes
 edit_common_attributes.steps.edit_common_attributes_processor.title: Editar atributos
 update_product_value.steps.update_product_value_processor.title: Atualizar o valor do produto
 remove_product_value.steps.update_product_value_processor.title: Remover valor do produto
 edit_common_attributes: Editar atributos
+edit_common_attributes_clean: Clean files for attributes
 perform.steps.duplicated.title: Eixo duplicado
 perform.steps.excluded.title: Produto excluído
 mass_edit report:
@@ -481,3 +541,9 @@ job_tracker:
     title: Visualizador de processos
   filter:
     started_at: Iniciado em
+pim_login:
+  logo_title: Akeneo PIM
+  footer:
+    powered: Powered by
+    powered_image_title: logo Akeneo
+pim_system.acl_group.developer_mode: Developer mode

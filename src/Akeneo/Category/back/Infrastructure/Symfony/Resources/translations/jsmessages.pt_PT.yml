@@ -1,0 +1,33 @@
+akeneo.category:
+  tree_list:
+    column:
+      category_templates: Modelos de categorias
+  attributes: Atributos
+  edition_form:
+    error:
+      unhandled_attribute_type: Não foi possível encontrar o construtor do campo de atributo para o tipo de atributo "{{type}}"
+    template:
+      title: Modelo
+      fetching_failed: Ocorreu um erro ao obter o modelo
+    unsaved_changes: Se sair da página, perderá as alterações efetuadas na categoria.
+  tree:
+    create: Criar árvore
+    delete: Eliminar árvore
+  template:
+    create: Ativar modelo
+    edit: Ver modelo
+    delete: Eliminar modelo
+    notification_success: Modelo criado com êxito
+    notification_error: Não foi possível ativar o modelo
+    attribute:
+      description_title: Configurações de Descrição
+      type:
+        text: Texto
+        textarea: Área de texto
+        richtext: Texto rico
+        image: Imagem
+  template_list:
+    columns:
+      header: Etiqueta
+      code: Código
+      type: Tipo

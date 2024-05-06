@@ -4,36 +4,68 @@ job_execution:
     hide_item: Esconder Item
 pim_connector:
   export:
+    categories:
+      selector:
+        modal:
+          title: Categories selection
+        label: "{0}All products|{1}One selected category|]1,Inf[{{ count }} selected categories"
+        title: Select categories
     locales:
       validation:
         not_blank: Uma linguagem deve ser selecionada, por favor, escolha uma para exportar.
 pim_import_export:
+  validation:
+    max_length_reached: This value is too long. It should contain {{ limit }} characters or less.
   entity:
     job_instance:
+      label: job profile
       flash:
         update:
+          success: The job profile has been successfully updated.
           fail: O perfil de trabalho não pode ser atualizado.
         delete:
           success: A instância do trabalho foi removida com sucesso
+      duplicate:
+        title: Duplicate profile {{ job_code }}
+        success: The job profile has been successfully duplicated.
+        fail: The job profile could not be duplicated.
     import_profile:
       uppercase_label: Perfil de importação
+      flash:
+        create:
+          success: Import profile successfully created
+        upload:
+          error: Unable to upload the file. Its size may exceed the configured maximum upload size on your PHP or HTTP server configuration
+      page_title:
+        index: "]-Inf, 1] {{ count }} import profile|]1, Inf [{{ count }} import profiles"
+      module:
+        create:
+          button: Create import profile
     export_profile:
+      uppercase_label: Export profile
       flash:
         create:
           success: O perfil de exportação foi criado com sucesso
+      page_title:
+        index: "]-Inf, 1] {{ count }} export profile|]1, Inf [{{ count }} export profiles"
       module:
         create:
           button: Criar perfil de exportação
   form:
     job_execution:
+      title.details: Execution details
+      refreshing: Execution details refreshing
       refreshBtn.title: Atualizar
       button:
         show_profile.title: Ver perfil
         download_log.title: Transferir log
+        download_file.title: Download generated file
+        download_archive.title: Download generated archive
       summary:
         fetching: A recolher dados sobre a execução da tarefa...
         warning: Aviso
         header.step: Passo
+        header.warnings: Warnings
         header.summary: Resumo
         header.start: Início
         header.end: Fim
@@ -45,9 +77,12 @@ pim_import_export:
         export.title: Exportar agora
         import.launch: Importar agora
         import.upload: Enviar e importar agora
+        import.upload_file: Upload a file
       meta:
         job: Tarefa
         connector: Conector
+      subsection:
+        last_executions: Last executions
       tab:
         content:
           title: Conteúdo
@@ -61,6 +96,7 @@ pim_import_export:
           file_path:
             title: Caminho do ficheiro
             help: Onde escrever o ficheiro gerado no sistema de ficheiros
+            help_import: The directory of the file to be used for the import
           delimiter:
             title: Delimitador
             help: Um carácter usado para definir o delimitador de campo
@@ -70,6 +106,9 @@ pim_import_export:
           with_header:
             title: Com o cabeçalho
             help: Imprimir ou não o nome da coluna
+          with_media:
+            title: Export media
+            help: Whether or not to export media
           lines_per_file:
             title: Número de linhas por ficheiro
             help: Definir o número limite de linhas por ficheiro
@@ -97,10 +136,120 @@ pim_import_export:
           real_time_versioning:
             title: Atulização do histórico a tempo real
             help: Signifca que a história do produto é atualizada automaticmente, pode ser desligado para melhorar a performance
+          convert_variant_to_simple:
+            title: Convert variant products to simple products
+            help: Try to convert variant products to simple products when the "parent" column is empty. If set to "No", an empty "parent" column will be ignored
+          family_variant_column:
+            title: Family variant column
+          with_label:
+            title: With labels
+            help: Define if the export file displays values' labels instead of values' codes
+          header_with_label:
+            title: Headers with labels
+            help: Define if the export file displays headers' labels instead of headers' codes
+          file_locale:
+            title: File locale
+            help: Define the locale in which labels are displayed
+          with_uuid:
+            title: Com o produto UUID
+            help: Exportar o produto e os produtos associados UUID
+          with_uuid_for_models:
+            title: Com o produto UUID
+            help: Exportar UUID do produto associado em vez do identificador
       file_path: Caminho do ficheiro
       storage_form:
+        title: Armazenamento
+        connection:
+          label: Tipo
+          local: Locais
+          sftp: SFTP
+          amazon_s3: Amazon S3
+          microsoft_azure: Microsoft Azure
+          google_cloud_storage: Armazenamento do Google Cloud
+          none: Nenhum armazenamento configurado
         file_path:
           label: Caminho do ficheiro
+          placeholder: meuficheiro.{{ file_extension }}
+        host:
+          label: Servidor
+          placeholder: exemplo.com
+        fingerprint:
+          label: Impressão digital do servidor (opcional)
+          placeholder: "c1:91:5e:42:55:5c:74:65:b6:12:32:7e:1f:6d:80:3e"
+          helper: Exigimos uma soma de verificação com hash SHA-512 ou MD5 com notação de dois pontos para a impressão digital do host.
+        port:
+          label: Porta
+          placeholder: 22
+        username:
+          label: Iniciar Sessão
+          placeholder: Introduza o seu login
+        password:
+          label: Palavra-Passe
+          placeholder: Introduza a sua palavra-passe
+        public_key:
+          label: Chave pública
+        login_type:
+          label: Método de autenticação
+          password: Login & palavra-passe
+          private_key: Chave privada
+        region:
+          label: Região
+          placeholder: Insira a sua região
+        bucket:
+          label: Nome do bucket
+          placeholder: Introduza o nome da sua região
+        key:
+          label: Chave
+          placeholder: Introduza a sua chave
+        secret:
+          label: Secreto
+          placeholder: Introduza o seu segredo
+        connection_string:
+          label: Cadeia de conexão
+          placeholder: Introduza a sua cadeia de conexão
+        container_name:
+          label: Nome do contentor
+          placeholder: Introduzir o nome do contentor
+        project_id:
+          label: ID do Projeto
+          placeholder: Introduza o ID do seu projeto
+        service_account:
+          label: Conta de Serviço
+          placeholder: Introduza a sua conta de serviço
+      validation:
+        storage:
+          unavailable_type: Este armazenamento não está disponível, apenas {{ available_types }} estão disponíveis.
+        file_path:
+          unsupported_extension: Extensão de ficheiro não suportada
+        fingerprint:
+          invalid_encoding: A impressão digital do host deve ser um hash de soma de verificação SHA-512 ou MD5 válido com notação de dois pontos.
+      connection_checker:
+        label: Testar configurações de conexão
+        exception: A conexão não pode ser estabelecida, verifique as configurações.
+  batch_status:
+    1: Completed
+    2: Starting
+    3: In progress
+    4: Stopping
+    5: Stopped
+    6: Failed
+    7: Abandoned
+    8: Unknown
+  job_status:
+    COMPLETED: Completed
+    STARTING: Starting
+    STARTED: In progress
+    STOPPING: Stopping
+    STOPPED: Stopped
+    FAILED: Failed
+    ABANDONED: Abandoned
+    UNKNOWN: Unknown
+  tracking:
+    completed: "Time spent: {{ duration }}"
+    in_progress: "Estimated time left: {{ duration }}"
+    not_started: "Pending"
+    untrackable: Untrackable step
+    estimating: "Estimating time remaining..."
 confirmation:
   remove:
     import_profile: Tem certeza que deseja eliminar este perfil de importação?
@@ -124,9 +273,13 @@ pim_enrich:
           success: Perfil de exportação removido com sucesso
 pim_title:
   pim_importexport_export_profile_index: Gestão de perfis de exportação
+  pim_importexport_export_profile_edit: Export profile {{ job.label }} | Edit
+  pim_importexport_export_profile_show: Export profile {{ job.label }} | Show
   pim_importexport_export_execution_index: Histórico de exportações realizadas
   pim_importexport_export_execution_show: Execução de exportações | Detalhes
   pim_importexport_import_profile_index: Gestão de perfis de importação
+  pim_importexport_import_profile_edit: Import profile {{ job.label }} | Edit
+  pim_importexport_import_profile_show: Import profile {{ job.label }} | Show
   pim_importexport_import_execution_index: Histórico importações realizadas
   pim_importexport_import_execution_show: Execução de importações | Detalhes
 

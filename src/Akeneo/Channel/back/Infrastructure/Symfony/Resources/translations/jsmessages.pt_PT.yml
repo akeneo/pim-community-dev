@@ -1,0 +1,84 @@
+batch_jobs:
+  csv_currency_export:
+    label: Exportação de moeda em CSV
+    export.label: Exportação de moeda
+  csv_currency_import:
+    label: Importação de moeda em CSV
+    import.label: Importação de moeda
+  xlsx_currency_export:
+    label: Exportação de moeda em XLSX
+    export.label: Exportação de moeda
+  xlsx_currency_import:
+    label: Importação de moeda em XLSX
+    import.label: Importação de moeda
+  csv_locale_export:
+    label: Exportação de localidade em CSV
+    export.label: Exportação de localidade
+  csv_locale_import:
+    label: Importação de localidade em CSV
+    import.label: Importação de localidade
+  xlsx_locale_export:
+    label: Exportação de localidade em XLSX
+    export.label: Exportação de localidade
+  xlsx_locale_import:
+    label: Importação de localidade em XLSX
+    import.label: Importação de localidade
+  csv_channel_export:
+    label: Exportação de canais em CSV
+    export.label: Exportação de canais
+  csv_channel_import:
+    label: Importação de canais em CSV
+    import.label: Importação de canais
+  xlsx_channel_export:
+    label: Exportação de canais em XLSX
+    export.label: Exportação de canais
+  xlsx_channel_import:
+    label: Importação de canais em XLSX
+    import.label: Importação de canais
+pim_enrich.entity.channel:
+  label: canal
+  uppercase_label: Canal
+  flash:
+    update:
+      success: Canal atualizado com sucesso.
+      fail: Não foi possível atualizar o canal.
+    create:
+      success: Canal criado com sucesso.
+      fail: Não foi possível criar o canal.
+    delete:
+      success: Canal removido com sucesso
+      fail: Não é possível eliminar este canal
+  page_title:
+    index: "]-Inf, 1]{{ count }} canal|]1, Inf[{{ count }} canais"
+  property:
+    category_tree: Árvore de categoria
+    do_not_convert: Não converter
+    measurement: Configurações de medição
+    label_conversion_units: Selecione uma unidade de conversão para cada atributo de medição que será utilizado durante a exportação do produto
+  module:
+    create:
+      button: Criar canal
+    delete:
+      confirm: Tem certeza que deseja eliminar este canal?
+pim_enrich.entity.locale:
+  label: idioma
+  uppercase_label: Idioma
+  plural_label: Idiomas
+  page_title:
+    index: "]-Inf, 1]{{ count }} localidade ativada|]1, Inf[{{ count }} localidades ativadas"
+  helper: "Para ativar ou desativar uma localidade, aceda a um dos <a href={{ href }}>seus canais</a> e adicione ou remova uma localidade."
+  grid:
+    columns:
+      code: Localidades activadas
+    filters:
+      search_placeholder: Pesquisar uma localidade ativada
+    no_search_result: Lamentamos, mas não há resultados para a sua pesquisa.
+pim_enrich.entity.currency:
+  plural_label: Moedas
+  page_title:
+    index: "]-Inf, 1]{{ count }} moeda|]1, Inf[{{ count }} moedas"
+flash:
+  currency:
+    error:
+      linked_to_channel: Não é possível desativar uma moeda ligada a um canal
+    updated: Moeda actualizada com sucesso
