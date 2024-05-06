@@ -75,7 +75,7 @@ class ProductAssociation implements ArrayConverterInterface
      */
     protected function filter(array $item)
     {
-        $expectedFields = ['identifier', 'associations', 'quantified_associations'];
+        $expectedFields = ['identifier', 'uuid', 'associations', 'quantified_associations'];
         foreach (array_keys($item) as $fieldName) {
             if (!in_array($fieldName, $expectedFields)) {
                 unset($item[$fieldName]);

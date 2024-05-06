@@ -45,7 +45,6 @@ class ProductProcessorSpec extends ObjectBehavior
         RemoveParentInterface $removeParent,
         CleanLineBreaksInTextAttributes $cleanLineBreaksInTextAttributes
     ) {
-        $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $this->beConstructedWith(
             $productRepository,
             $productToImport,
@@ -134,6 +133,13 @@ class ProductProcessorSpec extends ObjectBehavior
         $filteredData = [
             'family' => 'Summer Tshirt',
             'values' => [
+                'sku'         => [
+                    [
+                        'locale' => null,
+                        'scope'  => null,
+                        'data'   => 'tshirt'
+                    ],
+                ],
                 'name'        => [
                     [
                         'locale' => 'fr_FR',
@@ -241,6 +247,13 @@ class ProductProcessorSpec extends ObjectBehavior
         $filteredData = [
             'family' => 'Summer Tshirt',
             'values' => [
+                'sku'         => [
+                    [
+                        'locale' => null,
+                        'scope'  => null,
+                        'data'   => 'tshirt'
+                    ],
+                ],
                 'name'        => [
                     [
                         'locale' => 'fr_FR',
@@ -347,6 +360,13 @@ class ProductProcessorSpec extends ObjectBehavior
         $preFilteredData = $filteredData = [
             'family' => 'Tshirt',
             'values' => [
+                'sku'         => [
+                    [
+                        'locale' => null,
+                        'scope'  => null,
+                        'data'   => 'tshirt'
+                    ],
+                ],
                 'name'        => [
                     [
                         'locale' => 'fr_FR',
@@ -454,6 +474,13 @@ class ProductProcessorSpec extends ObjectBehavior
         $filteredData = [
             'family' => 'Tshirt',
             'values' => [
+                'sku' => [
+                    [
+                        'locale' => null,
+                        'scope'  => null,
+                        'data'   => 'tshirt'
+                    ],
+                ],
                 'name' => [
                     [
                         'locale' => 'fr_FR',
@@ -561,6 +588,13 @@ class ProductProcessorSpec extends ObjectBehavior
         $filteredData = [
             'family' => 'Tshirt',
             'values' => [
+                'sku' => [
+                    [
+                        'locale' => null,
+                        'scope' =>  null,
+                        'data' => 'tshirt'
+                    ],
+                ],
                 'name' => [
                     [
                         'locale' => 'fr_FR',
@@ -672,6 +706,13 @@ class ProductProcessorSpec extends ObjectBehavior
         $filteredData = [
             'family' => 'Tshirt',
             'values' => [
+                'sku' => [
+                    [
+                        'locale' => null,
+                        'scope' =>  null,
+                        'data' => 'tshirt'
+                    ],
+                ],
                 'name' => [
                     [
                         'locale' => 'fr_FR',
@@ -785,6 +826,13 @@ class ProductProcessorSpec extends ObjectBehavior
         $filteredData = [
             'family' => 'Tshirt',
             'values' => [
+                'sku' => [
+                    [
+                        'locale' => null,
+                        'scope' =>  null,
+                        'data' => 'tshirt'
+                    ],
+                ],
                 'name' => [
                     [
                         'locale' => 'fr_FR',
@@ -927,6 +975,13 @@ class ProductProcessorSpec extends ObjectBehavior
         $filteredData = [
             'family' => 'Summer Tshirt',
             'values' => [
+                'sku' => [
+                    [
+                        'locale' => null,
+                        'scope' =>  null,
+                        'data' => 'tshirt'
+                    ],
+                ],
                 'name' => [
                     [
                         'locale' => 'fr_FR',
@@ -1014,8 +1069,10 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $filteredData = [
             'family' => 'Tshirt',
+            'values' => [
+                'sku' => [['locale' => null, 'scope' => null, 'data' => 'tshirt']]
+            ],
             'enabled' => true,
-            'values' => [],
         ];
 
         $mediaStorer->store($filteredData['values'])->willReturn($filteredData['values']);
@@ -1111,7 +1168,15 @@ class ProductProcessorSpec extends ObjectBehavior
         $filteredData = [
             'family' => 'Tshirt',
             'enabled' => true,
-            'values' => [],
+            'values' => [
+                'sku' => [
+                    [
+                        'locale' => null,
+                        'scope' => null,
+                        'data' => 'tshirt',
+                    ],
+                ],
+            ],
         ];
 
         $mediaStorer->store($filteredData['values'])->willReturn($filteredData['values']);
@@ -1274,8 +1339,10 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $filteredData = [
             'family' => 'Summer Tshirt',
-            'family' => 'Summer Tshirt',
             'values' => [
+                'sku' => [
+                    ['locale' => null, 'scope' => null, 'data' => 'tshirt']
+                ],
                 'name' => [
                     ['locale' => 'fr_FR', 'scope' => null, 'data' => "Mon super beau \nt-shirt"],
                     ['locale' => 'en_US', 'scope' => null, 'data' => 'My very awesome T-shirt'],
