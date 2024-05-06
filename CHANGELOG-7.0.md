@@ -1,5 +1,7 @@
 # 7.0.x
 
+# 7.0.64 (2024-05-06)
+
 ## Bug fixes
 
 - PIM-11496: Fix import without SKU
