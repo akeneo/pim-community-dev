@@ -1,4 +1,73 @@
+pim_title:
+  akeneo_job_process_tracker_index: Visualizador de processos
+  akeneo_job_process_tracker_details: Visualizador de processos | Mostrar tarefa
+akeneo_job:
+  job_status:
+    COMPLETED: Concluído
+    STARTED: Em progresso
+    STARTING: Iniciando
+    STOPPING: Parando
+    STOPPED: Parado
+    FAILED: Falhado
+    ABANDONED: Abandonado
+    UNKNOWN: Desconhecido
+    IN_PROGRESS: Em progresso
 akeneo_job_process_tracker:
+  last_operations:
+    title: Últimas operações
+    view_all: Ver tudo
+    details: Detalhes
+    no_result: Por enquanto, não há nenhuma operação a apresentar.
+  last_executions:
+    title: Últimas execuções
+  job_execution_list:
+    search_placeholder: Procurar por nome do trabalho
+    table:
+      headers:
+        job_name: Nome do trabalho
+        type: Tipo
+        started_at: Iniciado em
+        username: Nome do Utilizador
+        progress: Progresso
+        status: Estado
+        warning_count: Avisos
+  type_filter:
+    label: Tipo
+    all: Tudo
+    quick_export: Exportação rápida
+    import: Importação
+    export: Exportação
+    mass_edit: Editar em massa
+    mass_delete: Eliminar produtos em massa
+    compute_family_variant_structure_changes: Calcular alterações na estrutura de variantes da família
+    compute_completeness_of_products_family: Calcular a completude da família de produtos
+    clean_removed_attribute_job: Limpando valores de atributo removidos
+    execute_rules: Executar regras
+  user_filter:
+    label: Utilizador
+    all: Tudo
+    search: Pesquisar
+  status_filter:
+    label: Estado
+    all: Tudo
+    abandoned: Abandonado
+    completed: Concluído
+    failed: Falhado
+    starting: Iniciando
+    stopped: Parado
+    stopping: Parando
+    unknown: Desconhecido
+    in_progress: Em progresso
   automation_filter:
+    all: Tudo
     yes: Yes
     no: No
+    label: Automatização
+  max_page_without_filter_helper:
+    - 
+  tracking:
+    completed: "Tempo gasto: {{ duration }}"
+    in_progress: "Tempo estimado restante para o passo atual: {{ duration }}"
+    not_started: Pendente
+    untrackable: Passo não rastreável
+    estimating: Estimativa do tempo restante...

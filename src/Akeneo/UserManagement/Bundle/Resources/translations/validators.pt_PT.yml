@@ -1,6 +1,6 @@
 pim_user:
-  min_role: "You must select at least {{ limit }} role.|You must select at least {{ limit }} roles."
-  password_match: "The password fields must match."
+  min_role: "Tem de selecionar pelo menos {{ limit }} funções.|Tem de selecionar pelo menos {{ limit }} funções."
+  password_match: "Os campos da palavra-passe devem corresponder."
   role:
-    invalid_role_format: 'The role should begin with "ROLE_" and should contain only underscores, dashes and alphanumeric characters in uppercase.'
+    invalid_role_format: 'A função deve começar por "ROLE_" e deve conter apenas sublinhados, traços e caracteres alfanuméricos em maiúsculas.'
   reserved_prefix_username: "O prefixo do nome de usuário '{{ prefix }}' está reservado"
