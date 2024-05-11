@@ -1,6 +1,8 @@
 An identifier attribute already exists.: Um atributo identificador já existe.
 Attribute code may contain only letters, numbers and underscore: O código do atributo só pode conter letras, números e sublinhado
 Attribute code may contain only letters (at least one), numbers and underscores: O código do atributo só pode conter letras (pelo menos uma), números e sublinhados
+Attribute code may not contain line-feed characters: O código do atributo não pode conter caracteres de avanço de linha
+Attribute group code may contain only letters, numbers and underscores: O código do grupo de atributos só pode conter letras, números e sublinhados
 This attribute type can't be used as a grid filter: Este tipo de atributo não pode ser usado como um filtro de grelha
 This code is not available: Este código não está disponível
 This attribute type must be required: Este tipo de atributo deve ser obrigatório
@@ -12,40 +14,116 @@ This value should not be blank: Este valor não deve estar em branco
 Option code may contain only letters, numbers and underscores: O código da opção só pode conter letras, números e sublinhados
 Option code may contain only letters (at least one), numbers and underscores: O código da opção só pode conter letras (pelo menos uma), números e sublinhados
 This value should not be a decimal.: Este valor não deve ser um número decimal.
+"The %attribute% attribute requires a non-decimal value, and %value% is not a valid value.": O atributo %attribute% requer um valor não decimal e %value% não é um valor válido.
 'The file extension is not allowed (allowed extensions: %extensions%).': 'Extensão de ficheiro não permitida (extensões permitidas: %extensions%).'
+"The {{ attribute_code }} attribute can not have the same value more than once. The {{ value }} value is already set on another product.": O atributo {{ attribute_code }} não pode ter o mesmo valor mais do que uma vez. O valor {{ value }} já está definido noutro produto.
 The same identifier is already set on another product: O mesmo identificador já existe em outros produtos
+regex.comma_or_semicolon_or_surrounding_space.message: Este campo não deve conter vírgula ou ponto-e-vírgula ou espaço à esquerda/à direita.
+regex.line_break.message: Este campo não deve conter nenhuma quebra de linha
 file.extensions.message: 'Extensão de ficheiro não permitida (extensões permitidas: %extensions%).'
 "This type of value expects the use of {{ decimal_separator }} to separate decimals.": Neste tipo de valor deve utilizar {{ decimal_separator }} para separar as casas decimais.
 "This type of value expects the use of dot (.) to separate decimals.": Neste tipo de valor deve utilizar o ponto (.) para separar as casas decimais.
 "This type of value expects the use of comma (,) to separate decimals.": Neste tipo de valor deve utilizar a vírgula (,) para separar as casas decimais.
 "This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Neste tipo de valor deve utilizar o separador decimal árabe (٫) para separar as casas decimais.
 "This type of value expects the use of the format {{ date_format }} for dates.": Neste tipo de valor deve utilizar o formato {{ date_format }} para datas.
+"The category \"%category%\" has to be a root category.": A categoria "%category%" tem de ser uma categoria de raiz.
+"The attribute \"%attributeCode%\" does not exist.": O atributo "%attributeCode%" não existe.
+"The attribute \"%attributeCode%\" is not a metric attribute.": O atributo "%attributeCode%" não é um atributo de medida.
+"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": A unidade "%unitCode%" não existe ou não pertence à família de medida por defeito do atributo "%attributeCode%" indicado.
+"The currency \"%currency%\" has to be activated.": A moeda "%currency%" tem de ser ativada.
 product_model.code.not_blank.message: O código do modelo do produto não pode estar vazio.
 product_model.code.unique.message: O mesmo código já foi atribuído a outro modelo de produto.
+product_model.family_variant.not_blank.message: A variante da família de modelos de produtos não pode estar vazia.
+"The %attribute% attribute requires a string, a %givenType% was detected.": O atributo %attribute% requer uma cadeia de caracteres, foi detetado um %givenType%.
+"The {{ attribute_code }} attribute requires a date that should be {{ limit }} or after.": O atributo {{ attribute_code }} requer uma data que deve ser {{ limit }} ou posterior.
+"The {{ attribute_code }} attribute requires a date that should be {{ limit }} or before.": O atributo {{ attribute_code }} requer uma data que deve ser {{ limit }} ou anterior.
+"The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.": O atributo {{ attribute }} requer um número e o valor {{ value }} apresentado não o é.
+"The {{ attribute }} attribute requires a value which does not contain space, and the submitted \"{{ value }}\" has at least one.": O atributo {{ attribute }} requer um valor que não contém espaço, e o "{{ value }}" enviado tem pelo menos um.
+"The %attribute% attribute must not contain more than %limit% characters. The submitted value is too long.": O atributo %attribute% não pode conter mais do que %limit% caracteres. O valor apresentado é demasiado longo.
+"The %type% file extension is not allowed for the %attribute% attribute. Allowed extensions are %extensions%.": A extensão de ficheiro %type% não é permitida para o atributo %attribute%. As extensões permitidas são %extensions%.
+"The %attribute% attribute requires a url link.": O atributo %attribute% requer uma ligação url.
+"The %attribute% attribute requires a valid date. Please use the following format %date_format% for dates.": O atributo %attribute% requer uma data válida. Utilize o seguinte formato %date_format% para as datas.
+"The %locale% locale is not available on the %attribute% attribute.": A localidade %locale% não está disponível no atributo %attribute%.
+'The {{ attribute_code }} attribute must match the following regular expression: {{ pattern }}.': 'O atributo {{ attribute_code }} tem de corresponder à seguinte expressão regular: {{ pattern }}.'
+'The {{ attribute_code }} attribute cannot be empty.': 'O atributo {{ attribute_code }} não pode estar vazio.'
+'The file %file_name% is too large (%file_size% %suffix%). The %attribute% attribute can not exceed %max_file_size% %suffix%.': O ficheiro %file_name% é demasiado grande (%file_size% %suffix%). O atributo %attribute% não pode exceder %max_file_size% %suffix%.
+'The %attribute_code% attribute requires a valid locale. The %invalid_locale% locale does not exist.': 'O atributo %attribute_code% requer um locale válido. A localidade %invalid_locale% não existe.'
+'The %attribute_code% attribute requires a valid locale. The %invalid_locale% locale is not bound to the %channel_code% channel.': 'O atributo %attribute_code% requer uma localidade válida. A localidade %invalid_locale% não está ligada ao canal %channel_code%.'
+"The %attribute% attribute requires an e-mail address.": 'O atributo %attribute% requer um endereço de correio eletrónico.'
+'The %attribute% attribute requires an equal or greater than %min_value% value.': 'O atributo %attribute% requer um valor igual ou superior a %min_value%.'
+'The %attribute% attribute requires an equal or lesser than %max_value% value.': 'O atributo %attribute% requer um valor igual ou inferior a %max_value%.'
+"The %attribute_code% attribute requires a value per channel. The %channel% channel (scope) must exist in your PIM": 'O atributo %attribute_code% requer um valor por canal. O canal %channel% (âmbito) tem de existir no seu PIM'
+"The %identifier% identifier is already used for another product.": 'O identificador %identifier% já é utilizado para outro produto.'
+'Please specify a valid currency for the %attribute_code% attribute, the %currency_code% code was sent.': 'Especifique uma moeda válida para o atributo %attribute_code%, foi enviado o código %currency_code%.'
 pim_catalog:
   constraint:
+    can_have_family_variant_empty_axis_value: 'O atributo "%attribute%" não pode estar vazio, uma vez que está definido como um eixo para esta entidade'
+    product_model_with_same_axis_value_already_exists: 'Não é possível definir o valor "%values%" para o eixo de atributos "%attributes%" no modelo de produto "%validated_entity%", uma vez que o modelo de produto "%sibling_with_same_value%" já tem este valor'
+    variant_product_with_same_axis_value_already_exists: 'Não é possível definir o valor "%values%" para o eixo de atributos "%attributes%" no produto variante "%validated_entity%", uma vez que o produto variante "%sibling_with_same_value%" já tem este valor'
+    can_have_family_variant_unexpected_attribute: 'Não é possível definir a propriedade "%attribute%" para esta entidade porque não consta do conjunto de atributos'
+    cannot_have_product_model_as_parent: 'O modelo de produto "%product_model%" não pode ter o modelo de produto "%parent_product_model%" como pai'
+    cannot_have_parent: 'O modelo de produto "%product_model%" não pode ter um pai'
+    attribute_does_not_belong_to_family: 'O atributo "%attribute%" não pertence à família "%family%"'
+    variant_product_invalid_family: 'A variante da família de produtos tem que ser a mesma que a do seu pai'
+    php_int_max_reached: 'O número máximo deve ser inferior a %php_int_max%.'
+    not_null_family: A família não pode ser "nula" porque o seu produto com o identificador %sku% é um produto variante.
+    variant_product_has_parent: 'A variante do produto deve ter um pai'
+    invalid_variant_product_parent: 'A variante do produto não pode ter o modelo de produto "%product_model%" como pai, (este modelo de produto pode ter apenas outros modelos de produtos como filhos)'
+    modified_variant_axis_value: 'Eixo da variante "%variant_axis%" não pode ser modificado, "%provided_value%" fornecido'
+    family_variant_attributes_unique: Atributos devem ser únicos, "%attributes%" são usados várias vezes nos conjuntos de variantes de atributos
+    family_variant_axes_unique: Os eixos de variantes devem ser únicos, "%attributes%" são utilizados várias vezes em conjuntos de atributos de variantes
     family_variant_axes_immutable: 'O eixo variante não pode ser alterado para o nível "%level%"'
+    family_variant_axes_attribute_type_unique: Os eixos de variantes "%axis%" não podem ser únicos ou um identificador
+    family_variant_axes_attribute_type: Os eixos variantes "%axis%" devem ser um booleano, uma seleção simples, um dado de referência simples ou uma medida
+    family_variant_axes_wrong_type: Os eixos de variantes "%axis%" não podem ser localizáveis, nem acessíveis e não podem ser específicos por linguagem
+    family_variant_axes_number_of_axes: 'Um conjunto de atributos de variantes não pode ter mais do que %max_axes_number% eixos'
+    family_variant_no_axis: Deve haver pelo menos um atributo definido como eixo para o conjunto de atributos para o nível "%level%"
+    family_variant_axis_level: O atributo "%axis%" deve ser definido como atributo no mesmo conjunto de atributos de variantes em que foi definido como eixo
+    family_variant_has_family_attribute: 'O atributo "%attribute%" não pode ser adicionado à variante da família "%family_variant%", uma vez que não é um atributo da família "%family%".'
+    family_variant_level_do_not_exist: Não existe nenhum atributo de variante definido para o nível "%level%"
+    family_variant_no_level: Deve haver pelo menos um nível definido na variante de família
+    family_variant_maximum_number_of_level: A variante da família não pode ter mais do que o nível "%level%"
+    family_variant_unique_attributes_in_last_level: O atributo único "%attribute%" deve ser definido a nível do produto
     product_identifier: Estes identificadores "%s" não existem.
+    blacklisted_attribute_code: Código temporariamente bloqueado até que o trabalho de limpeza em curso esteja concluído.
+    blacklisted_attribute_code_with_link: "Código temporariamente bloqueado até que o trabalho de limpeza em curso esteja concluído. Para saber mais, consulte os  <a href='{{ link }}' target='_blank'>detalhes da tarefa</a>."
+    duplicate_options: '{1} A seguinte opção foi utilizada várias vezes: "{{ duplicate_options }}". Verifique novamente a sua lista de opções.|]1, +Inf] As seguintes opções foram utilizadas várias vezes: "{{ duplicate_options }}". Verifique novamente a sua lista de opções.'
     0: Um erro inesperado ocorreu.
-    100: Non-expected value
+    100: Valor não previsto
     101: É necessário um valor booleano para este campo.
     102: É necessário um valor de flutuação para este campo.
     103: Valores inteiros são necessários para este campo.
     104: Valores numéricos são necessários para este campo.
     105: Este campo espera um valor de seqüência de caracteres.
     106: É necessário um valor de matriz para este campo.
-    107: This field expects an array of arrays as value.
+    107: Este campo espera uma matriz de matrizes como valor.
     200: Ocorreu um erro interno
     201: Ocorreu um erro interno
     202: Valores numéricos são necessários para este campo.
     203: Este campo espera um valor de seqüência de caracteres.
     204: Este campo espera um valor de seqüência de caracteres.
     205: Ocorreu um erro interno
-    300: This field expects a valid entity code.
-    301: This field expects a valid scope and locale.
-    302: This field expects a valid scope.
-    303: This field expects a valid association format.
+    300: Este campo espera um código de entidade válido.
+    301: Este campo espera um âmbito e uma localidade válidos.
+    302: Este campo espera um âmbito válido.
+    303: Este campo espera um formato de associação válido.
     pim_immutable_product_model_validator: O mesmo código já foi atribuído a outro modelo de produto.
+    quantified_associations:
+      unexpected_link_type: O tipo de ligação "{{ value }}" não existe. Só é possível associar produtos ou modelos de produtos.
+      max_associations: Atingiu o limite de {{ limit }} associações. Por favor, elimine algumas associações existentes antes de adicionar novas.
+      invalid_quantity: '"{{ value }}" é uma quantidade inválida. Por favor, escreva um valor entre {{ min }} e {{ max }}.'
+      products_do_not_exist: "Os seguintes produtos não existem: {{ values }}. Certifique-se de que os produtos não foram eliminados entretanto."
+      product_models_do_not_exist: "Os seguintes modelos de produtos não existem: {{ values }}. Certifique-se de que os modelos de produtos não foram entretanto eliminados."
+      association_type_does_not_exist: Este tipo de associação não existe. Certifique-se de que não foi eliminado entretanto.
+      association_type_is_not_quantified: '"{{ association_type }}" não pode ser utilizado para associações com quantidades. Por favor, escolha um tipo de associação diferente com quantidades ou utilize a propriedade "associações".'
+      association_type_should_not_be_quantified: 'A propriedade "{{ association_type }}" só pode ser utilizada para associações com quantidades. Por favor, escolha um tipo de associação diferente ou utilize a propriedade "quantified_associations".'
+    boolean:
+      boolean_value_is_required: O atributo {{ attribute_code }} requer um valor booleano (verdadeiro ou falso) como dados, um {{ given_type }} foi detetado.
+      boolean_value_is_required_in_import: O atributo {{ attribute_code }} requer um valor booleano (verdadeiro ou falso) como dado, um {{ given_type }} foi detetado.
 mass_edit:
   edit_common_attributes:
     invalid_values: Existem erros no formulário dos atributos
+pim_datagrid:
+  column_configurator:
+    label:
+      unique_message: O rótulo deve ser único

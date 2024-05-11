@@ -1,7 +1,7 @@
 pim_connector:
   steps:
     file_reader:
-      invalid_item_columns_count: 'Expecting to have %totalColumnsCount% columns, actually have %itemColumnsCount% in %filePath%:%lineno%'
+      invalid_item_columns_count: 'Esperando ter %totalColumnsCount% colunas, na realidade tem %itemColumnsCount% em %filePath%:%lineno%'
 job_execution.summary:
   read: ler
   write: escrito
@@ -17,8 +17,8 @@ job_execution.summary:
     title: 'codificação do ficheiro:'
     skipped: ignorado, extensão na lista branca
   product_skipped_no_diff: produtos ignorados (sem diferenças)
-  product_skipped_no_associations: skipped product (no associations detected)
-  product_model_skipped_no_diff: skipped product model (no differences)
+  product_skipped_no_associations: produto ignorado (não foram detectadas associações)
+  product_model_skipped_no_diff: modelo de produto ignorado (sem diferenças)
   item_position: linhas lidas
-  skipped_in_root_product_model: skipped product model with parent
-  skipped_in_sub_product_model: skipped product model without parent
+  skipped_in_root_product_model: modelo de produto ignorado com pai
+  skipped_in_sub_product_model: modelo de produto ignorado sem pai

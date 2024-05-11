@@ -1,0 +1,21 @@
+pim_enrich.product:
+  validation:
+    upsert:
+      unknown_user: 'O utilizador "{{ user_id }}" não existe'
+      category_no_access_to_products: Não tem acesso a produtos em nenhuma árvore, contacte o seu administrador
+      should_keep_one_owned_category: Deve, pelo menos, manter o seu produto numa categoria em que tenha uma autorização própria
+      locale_no_access_to_products: Não tem acesso aos dados do produto em nenhum local ativado, contacte o seu administrador
+      attribute_group_no_access_to_attributes: Não tem acesso ao atributo {{ attributeCode }} deste produto. Contacte o seu administrador.
+      product_identifier_empty: O identificador do produto requer uma cadeia não vazia
+      duplicated_user_intents: O valor do atributo {{ attributeCode }} está a ser atualizado várias vezes
+      family_code_empty: O código da família requer uma cadeia não vazia
+      category_does_not_exist: '{1}A categoria "{{ categoryCodes }}" não existe|]1, Inf[ As categorias "{{ categoryCodes }}" não existem'
+      set_value:
+        no_channel_code_provided_for_scopable_attribute: 'O atributo {{ attributeCode }} requer um canal'
+        channel_code_provided_for_non_scopable_attribute: 'O atributo {{ attributeCode }} não requer um canal, foi detectado "{{ channelCode }}"'
+        no_locale_code_provided_for_localizable_attribute: 'O atributo {{ attributeCode }} requer uma localidade'
+        locale_code_provided_for_non_localizable_attribute: 'O atributo {{ attributeCode }} não requer uma localidade, foi detetado "{{ localeCode }}"'
+        invalid_locale_code_for_locale_specific_attribute: 'O {{ attributeCode }} requer uma das seguintes localidades: {{ availableLocales }}; "{{ localeCode }}" foi detetado'
+        channel_does_not_exist: 'O canal {{ channelCode }} não existe'
+        locale_is_not_active: 'A localidade {{ localeCode }} não existe ou não está ativa'
+        locale_not_activated_for_channel: 'A localidade {{ localeCode }} não está ativada para o canal {{ channelCode }}'

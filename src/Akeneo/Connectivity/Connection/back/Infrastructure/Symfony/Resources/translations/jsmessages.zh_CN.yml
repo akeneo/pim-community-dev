@@ -8,7 +8,7 @@ pim_menu:
   navigation_block:
     connection: 连接导航
   item:
-    connection_audit: 连接仪表板
+    connection_audit: 连接信息中心
     connection_settings: 连接
     connection_settings_edit: 连接设置
     connection_monitoring: 错误监测
@@ -27,9 +27,9 @@ pim_title:
   akeneo_connectivity_connection_settings_index: 连接设置
   akeneo_connectivity_connection_settings_edit: 连接设置
   akeneo_connectivity_connection_settings_any: 连接设置
-  akeneo_connectivity_connection_audit_index: 连接仪表板
-  akeneo_connectivity_connection_audit_any: 连接仪表板
-  akeneo_connectivity_connection_error_management_dashboard: 连接仪表板
+  akeneo_connectivity_connection_audit_index: 连接信息中心
+  akeneo_connectivity_connection_audit_any: 连接信息中心
+  akeneo_connectivity_connection_error_management_dashboard: 连接信息中心
   akeneo_connectivity_connection_error_management_connection_monitoring: 连接监测
   akeneo_connectivity_connection_webhook_edit: 事件订阅
   akeneo_connectivity_connection_webhook_regenerate_secret: 事件订阅
@@ -304,7 +304,7 @@ akeneo_connectivity.connection:
     label: 标签
     flow_type: 流类型
     image: 图像
-    auditable: 跟踪数据流仪表板
+    auditable: 跟踪数据流信息中心
     client_id: 客户 ID
     secret: 密钥
     username: 用户名
@@ -435,7 +435,7 @@ akeneo_connectivity.connection:
       description: 在这里，您可以跟踪您的 PIM 和第三方之间的数据流。
       link: 想要了解更多关于“连接”菜单和数据流方面的信息？这里为您提供！
     user_survey:
-      title: 想要在此仪表板上获得更多数据吗？
+      title: 想要在此信息中心上获得更多数据吗？
       content: 您的反馈对我们非常宝贵。恳请您参与此简短调查，帮助我们选择下一个小部件！
       button: 开始吧！
     connection_selector:
