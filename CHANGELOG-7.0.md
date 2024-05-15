@@ -1,5 +1,11 @@
 # 7.0.x
 
+# 7.0.65 (2024-05-15)
+
+## Improvements
+
+- Portuguese translations added
+
 # 7.0.64 (2024-05-06)
 
 ## Bug fixes
