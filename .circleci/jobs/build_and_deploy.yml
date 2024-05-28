@@ -1,3 +1,5 @@
+executor-machine: &executor-machine
+
 aliases:
     - &envVarsDeployDev
         ENV_NAME: "dev"
@@ -54,7 +56,7 @@ commands:
 jobs:
     checkout_ee:
         machine:
-            image: ubuntu-2004:2022.04.1
+            image: *executor-machine
         steps:
             - add_ssh_keys:
                   fingerprints:
@@ -98,7 +100,7 @@ jobs:
 
     checkout_ce:
         machine:
-            image: ubuntu-2004:2022.04.1
+            image: *executor-machine
         steps:
             - checkout
             - install_yq
@@ -119,7 +121,7 @@ jobs:
                 type: string
                 default: front-packages
         machine:
-            image: ubuntu-2004:2022.04.1
+            image: *executor-machine
         steps:
             - attach_workspace:
                   at: ~/
@@ -276,7 +278,7 @@ jobs:
         environment:
             <<: *envVarsDeployDev
         machine:
-            image: ubuntu-2004:2022.04.1
+            image: *executor-machine
         resource_class: medium
         working_directory: ~/project
         steps:

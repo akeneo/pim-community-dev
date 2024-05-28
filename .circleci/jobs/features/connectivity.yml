@@ -1,7 +1,9 @@
+executor-machine: &executor-machine
+
 jobs:
     test_front_connectivity:
         machine:
-            image: ubuntu-2004:2022.04.1
+            image: *executor-machine
             docker_layer_caching: true
         steps:
             -   attach_workspace:
@@ -27,7 +29,7 @@ jobs:
 
     test_back_connectivity:
         machine:
-            image: ubuntu-2004:2022.04.1
+            image: *executor-machine
             docker_layer_caching: true
         steps:
             -   attach_workspace:
@@ -69,7 +71,7 @@ jobs:
 
     test_marketplace_activate_e2e:
         machine:
-            image: ubuntu-2004:2022.04.1
+            image: *executor-machine
         steps:
             -   attach_workspace:
                     at: ~/
@@ -99,7 +101,7 @@ jobs:
 
     test_octopus_code_quality:
         machine:
-            image: ubuntu-2004:2022.04.1
+            image: *executor-machine
         steps:
             - attach_workspace:
                   at: ~/

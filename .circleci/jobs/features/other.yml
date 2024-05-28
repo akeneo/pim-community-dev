@@ -1,7 +1,9 @@
+executor-machine: &executor-machine
+
 jobs:
     test_back_static_and_acceptance:
         machine:
-            image: ubuntu-2004:2022.04.1
+            image: *executor-machine
         steps:
             - attach_workspace:
                   at: ~/
@@ -38,7 +40,7 @@ jobs:
 
     test_back_phpunit:
         machine:
-            image: ubuntu-2004:2022.04.1
+            image: *executor-machine
         parallelism: 20
         steps:
             - attach_workspace:
