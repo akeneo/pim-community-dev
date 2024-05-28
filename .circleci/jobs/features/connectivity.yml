@@ -1,4 +1,4 @@
-executor-machine: &executor-machine 'ubuntu-2004:2022.04.1'
+executor-machine: &executor-machine
 
 jobs:
     test_front_lint_connectivity:

@@ -1,8 +1,6 @@
 # Rename this file into docker-compose.override.yml:
 # mv docker-compose.override-osx.yml docker-compose.override.yml
 
-version: '3.7'
-
 services:
   php:
     environment:
