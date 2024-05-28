@@ -1,7 +1,9 @@
+executor-machine: &executor-machine
+
 jobs:
     test_performance_catalogs_ce:
         machine:
-            image: 'ubuntu-2004:2022.04.1'
+            image: *executor-machine
             docker_layer_caching: true
         steps:
             -   attach_workspace:

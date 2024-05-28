@@ -1,7 +1,9 @@
+executor-machine: &executor-machine
+
 jobs:
     install_back_dependencies:
         machine:
-            image: 'ubuntu-2004:2022.04.1'
+            image: *executor-machine
         parameters:
             edition:
                 description: either "ce" or "ee"

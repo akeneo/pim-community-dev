@@ -1,0 +1,1 @@
+executor-machine: &executor-machine "ubuntu-2204:current"
