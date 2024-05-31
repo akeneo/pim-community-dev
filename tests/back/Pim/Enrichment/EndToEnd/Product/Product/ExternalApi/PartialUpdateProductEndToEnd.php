@@ -8,14 +8,18 @@ use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateGroups;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\SetGroups;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\PriceValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetImageValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetPriceValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
+use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Response;
 
 class PartialUpdateProductEndToEnd extends AbstractProductTestCase
@@ -60,6 +64,12 @@ class PartialUpdateProductEndToEnd extends AbstractProductTestCase
             new SetSimpleSelectValue('a_simple_select', null, null, 'optionB'),
             new AssociateProducts('X_SELL', ['product_categories']),
             new AssociateGroups('X_SELL', ['groupA'])
+        ]);
+
+        $this->createProduct('product_with_price', [
+            new SetFamily('familyA2'),
+            new SetPriceValue('a_scopable_price', 'ecommerce', null, new PriceValue('50', 'USD')),
+            new SetPriceValue('a_scopable_price', 'ecommerce', null, new PriceValue('45', 'EUR'))
         ]);
     }
 
@@ -1493,6 +1503,93 @@ JSON;
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
     }
 
+//    public function testProductPartialUpdateWithAttributeInWrongCase(): void
+//    {
+//        $client = $this->createAuthenticatedClient();
+//
+//        $data =
+//            <<<JSON
+//    {
+//        "identifier": "product_family",
+//        "values": {
+//            "a_MeTrIc": [{
+//                "data": {"amount": 2, "unit": "WATT"},
+//                "locale": null,
+//                "scope": null
+//            }]
+//        }
+//    }
+//JSON;
+//
+//        $client->request('PATCH', 'api/rest/v1/products/product_family', [], [], [], $data);
+//
+//        $response = $client->getResponse();
+//        $this->assertSame('', $response->getContent());
+//        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+//    }
+
+    public function testProductPartialUpdateWithScopeInWrongCase(): void
+    {
+        $client = $this->createAuthenticatedClient();
+        $data =
+            <<<JSON
+    {
+        "identifier": "product_with_price",
+        "values": {
+            "a_scopable_price": [{
+                "data": [
+                    {"amount": 14.8, "currency": "EUR"},
+                    {"amount": 17.25, "currency": "USD"}
+                ],
+                "locale": null,
+                "scope": "eCoMmErCe"
+            }]
+        }
+    }
+JSON;
+
+        $client->request('PATCH', 'api/rest/v1/products/product_with_price', [], [], [], $data);
+        $response = $client->getResponse();
+        $this->assertSame('', $response->getContent());
+        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+
+        $client2 = $this->createAuthenticatedClient();
+        $client2->request('GET', 'api/rest/v1/products/product_with_price');
+        $response = $client2->getResponse();
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        $expectedProduct = [
+            'uuid' => Uuid::NIL,
+            'identifier' => 'product_with_price',
+            'family' => 'familyA2',
+            'parent' => null,
+            'groups' => [],
+            'categories' => [],
+            'enabled' => true,
+            'values' => [
+                'a_scopable_price' => [
+                    [
+                        'data' => [
+                            ['amount' => '14.10', 'currency' => 'EUR'],
+                            ['amount' => '17.20', 'currency' => 'USD']
+                        ],
+                        'locale' => null,
+                        'scope' => 'ecommerce'
+                    ]
+                ],
+            ],
+            'created' => '2016-06-14T13:12:50+02:00',
+            'updated' => '2016-06-14T13:12:50+02:00',
+            'associations' => [
+                'PACK' => ['groups' => [], 'products' => [], 'product_models' => []],
+                'SUBSTITUTION' => ['groups' => [], 'products' => [], 'product_models' => []],
+                'UPSELL' => ['groups' => [], 'products' => [], 'product_models' => []],
+                'X_SELL' => ['groups' => [], 'products' => [], 'product_models' => []],
+            ],
+            'quantified_associations' => [],
+        ];
+        $this->assertResponse($response, $expectedProduct);
+    }
+
     public function testProductPartialUpdateWithInvalidFieldData()
     {
         $client = $this->createAuthenticatedClient();
@@ -1613,5 +1710,16 @@ JSON;
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useTechnicalCatalog();
+    }
+
+    private function assertResponse(Response $response, array $expected): void
+    {
+        $result = json_decode($response->getContent(), true);
+        NormalizedProductCleaner::clean($expected);
+        NormalizedProductCleaner::clean($result);
+        unset($expected['uuid']);
+        unset($result['uuid']);
+
+        $this->assertEquals($expected, $result);
     }
 }
