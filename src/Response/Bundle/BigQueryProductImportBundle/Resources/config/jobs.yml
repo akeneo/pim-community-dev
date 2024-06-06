@@ -1,0 +1,13 @@
+services:
+  # Job definition
+  bigquery_product_connector.job.bigquery_product_import:
+    class: '%pim_connector.job.simple_job.class%'
+    arguments:
+      - 'bigquery_product_import'    # Job name
+      - '@event_dispatcher'
+      - '@akeneo_batch.job_repository'
+      -
+        - '@bigquery_product_connector.step.bigquery_product_import.import'
+      - true    # Job is stoppable
+    tags:
+      - { name: akeneo_batch.job, connector: 'BigQuery Product Import Connector', type: '%pim_connector.job.import_type%' }

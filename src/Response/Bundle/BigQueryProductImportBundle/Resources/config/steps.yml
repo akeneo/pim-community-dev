@@ -1,0 +1,13 @@
+services:
+  # Job step definition
+  bigquery_product_connector.step.bigquery_product_import.import:
+    class: '%pim_connector.step.item_step.class%'
+    arguments:
+      - 'import'
+      - '@event_dispatcher'
+      - '@akeneo_batch.job_repository'
+      - '@bigquery_product_connector.reader.bigquery.bigquery_product'
+      - '@pim_connector.processor.denormalization.product'
+      - '@pim_connector.writer.database.product'
+      - 100   # Record batch size
+      - '@akeneo_batch.job.job_stopper'

@@ -1,0 +1,11 @@
+services:
+    bigquery_product_connector.reader.bigquery.bigquery_product:
+        class: 'Response\Bundle\BigQueryProductImportBundle\Reader\BigQuery\BigQueryProductReader'
+        arguments:
+            - '@pim_connector.array_converter.flat_to_standard.product'
+
+    bigquery_product_connector.reader.bigquery.bigquery_iterator_factory:
+        class: '%pim_connector.reader.file.file_iterator_factory.class%'
+        arguments:
+            - 'Response\Bundle\BigQueryProductImportBundle\Reader\BigQuery\BigQueryIterator'
+            - 'csv'

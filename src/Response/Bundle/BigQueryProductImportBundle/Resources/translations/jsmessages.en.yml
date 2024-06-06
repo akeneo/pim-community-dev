@@ -1,0 +1,18 @@
+bigquery_product_connector:
+  jobs:
+    bigquery_product_import:
+      title: BigQuery Product Import
+      import:
+        title: Product Import Step
+  form:
+    job_instance:
+      tab:
+        properties:
+          bigquery_dataset:
+            title: BigQuery dataset
+            help: The fully-qualified BigQuery dataset containing product data to import
+
+batch_jobs:
+  bigquery_product_import:
+    label: BigQuery Product Import
+    import.label: Product Import

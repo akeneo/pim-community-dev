@@ -1,0 +1,19 @@
+services:
+  bigquery_product_connector.job.job_parameters.bigquery_product_import:
+    class: 'Response\Bundle\BigQueryProductImportBundle\Job\JobParameters\BigQueryProductImportJobParameters'
+    arguments:
+      - '@akeneo_pim_enrichment.job.job_parameters.default_values_provider.simple_csv_import'
+      - '@akeneo_pim_enrichment.job.job_parameters.constraint_collection_provider.simple_csv_import'
+      -
+        - 'bigquery_product_import'
+    tags:
+      - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+      - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+  bigquery_product_connector.provider.form.job_instance:
+    class: 'Akeneo\Platform\Bundle\ImportExportBundle\Provider\Form\JobInstanceFormProvider'
+    arguments:
+      -
+        bigquery_product_import: pim-job-instance-bigquery-product-import
+    tags:
+      - { name: pim_enrich.provider.form }

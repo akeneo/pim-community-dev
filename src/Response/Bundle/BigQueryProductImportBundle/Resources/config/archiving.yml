@@ -1,0 +1,14 @@
+services:
+  bigquery_product_connector.archiver.invalid_item_bigquery_writer:
+    class: 'Response\Bundle\BigQueryProductImportBundle\Archiver\BigQueryInvalidItemWriter'
+    arguments:
+      - '@pim_connector.event_listener.invalid_items_collector'
+      - '@pim_connector.writer.file.invalid_items_csv'
+      - '@bigquery_product_connector.reader.bigquery.bigquery_iterator_factory'
+      - '@oneup_flysystem.local_storage_filesystem'
+      - '@oneup_flysystem.archivist_filesystem'
+      - '@bigquery_product_connector.job.job_parameters.bigquery_product_import'
+      - '@akeneo_batch.job.job_registry'
+      - 'bigquery'
+    tags:
+      - { name: pim_connector.archiver }

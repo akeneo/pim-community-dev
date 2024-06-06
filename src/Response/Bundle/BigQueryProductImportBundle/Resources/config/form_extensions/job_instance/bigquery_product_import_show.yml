@@ -1,0 +1,66 @@
+extensions:
+    pim-job-instance-bigquery-product-import-show:
+        module: pim/form/common/edit-form
+
+    pim-job-instance-bigquery-product-import-show-main-image:
+        module: pim/form/common/main-image
+        parent: pim-job-instance-bigquery-product-import-show
+        targetZone: main-image
+        config:
+            path: bundles/pimui/images/illustrations/Import.svg
+
+    pim-job-instance-bigquery-product-import-show-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-job-instance-bigquery-product-import-show
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
+    pim-job-instance-bigquery-product-import-show-sandbox-helper:
+        module: pim/sandbox-helper
+        parent: pim-job-instance-bigquery-product-import-show
+        targetZone: helper
+
+    pim-job-instance-bigquery-product-import-show-breadcrumbs:
+        module: pim/job/common/breadcrumb/breadcrumb
+        parent: pim-job-instance-bigquery-product-import-show
+        targetZone: breadcrumbs
+
+    pim-job-instance-bigquery-product-import-show-import-button:
+        module: pim/job/common/edit/launch
+        parent: pim-job-instance-bigquery-product-import-show
+        targetZone: buttons
+        position: 90
+        config:
+            label: pim_import_export.form.job_instance.button.import.launch
+            route: pim_enrich_job_instance_rest_import_launch
+            identifier:
+                path: code
+                name: code
+
+    pim-job-instance-bigquery-product-import-show-last-executions:
+        module: akeneojob/controller/job-instance
+        parent: pim-job-instance-bigquery-product-import-show
+        position: 100
+        targetZone: content
+
+    pim-job-instance-bigquery-product-import-show-label:
+        module: pim/job/common/edit/label
+        parent: pim-job-instance-bigquery-product-import-show
+        targetZone: title
+        position: 100
+
+    pim-job-instance-bigquery-product-import-show-edit:
+        module: pim/job/common/edit-button
+        parent: pim-job-instance-bigquery-product-import-show
+        targetZone: buttons
+        position: 100
+        aclResourceId: pim_importexport_import_profile_edit
+        config:
+            label: pim_common.edit
+            route: pim_importexport_import_profile_edit
+            buttonClass: AknButton AknButton--action
+            identifier:
+                path: code
+                name: code
