@@ -160,6 +160,10 @@ class ProductModelNormalizer implements NormalizerInterface, NormalizerAwareInte
                 $productModels[] = $productModel->getCode();
             }
 
+            asort($groups);
+            asort($products);
+            asort($productModels);
+
             $results[$columnPrefix . '-groups'] = implode(',', $groups);
             $results[$columnPrefix . '-products'] = implode(',', $products);
             $results[$columnPrefix . '-product_models'] = implode(',', $productModels);
