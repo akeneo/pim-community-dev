@@ -22,8 +22,6 @@ class AttributeOptionValue implements AttributeOptionValueInterface
     protected $option;
 
     /**
-     * LocaleInterface scope
-     *
      * @var string
      */
     protected $locale;
