@@ -1,5 +1,7 @@
 # 7.0.x
 
+# 7.0.67 (2024-06-27)
+
 ## Bug fixes
 
 - [Backport PIM-10855] PIM-11576: Fix products and models with empty attribute values are counted by CountItemsWithAttributeValueAction
