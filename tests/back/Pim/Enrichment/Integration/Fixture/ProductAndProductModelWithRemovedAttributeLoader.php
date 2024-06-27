@@ -220,6 +220,14 @@ class ProductAndProductModelWithRemovedAttributeLoader
             ],
         ]);
 
+
+        // Simple product
+        $this->createProduct([
+            'identifier' => 'product_5',
+            'family' => 'a_family',
+            'values' => [],
+        ]);
+
         // Product model with only one level of variations
         $this->createProductModel([
             'code' => 'a_product_model',
@@ -264,6 +272,21 @@ class ProductAndProductModelWithRemovedAttributeLoader
                 'a_forth_attribute' => [
                     [
                         'data' => true,
+                        'locale' => null,
+                        'scope' => null,
+                    ],
+                ],
+            ],
+        ]);
+
+        //Sub product model for the second level of variations
+        $this->createProductModel([
+            'code' => 'a_second_sub_product_model',
+            'parent' => 'a_second_product_model',
+            'values' => [
+                'a_forth_attribute' => [
+                    [
+                        'data' => false,
                         'locale' => null,
                         'scope' => null,
                     ],

@@ -6,7 +6,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Storage\ElasticsearchAndSql\Prod
 
 use Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\GetExistingProductUuids;
 use Akeneo\Test\Integration\TestCase;
-use Ramsey\Uuid\Lazy\LazyUuidFromString;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -26,7 +26,7 @@ final class GetProductExistingAmongIntegration extends TestCase
         $productUuids = $this->getProductExistingAmong()->among(['product_1', 'product_2', 'product_unknown']);
 
         $this->assertCount(2, $productUuids);
-        $this->assertContainsOnlyInstancesOf(LazyUuidFromString::class, $productUuids);
+        $this->assertContainsOnlyInstancesOf(UuidInterface::class, $productUuids);
     }
 
     private function getProductExistingAmong(): GetExistingProductUuids
