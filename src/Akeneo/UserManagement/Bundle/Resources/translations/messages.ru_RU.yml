@@ -9,6 +9,7 @@ pim_user:
       middle_name: Отчество
       last_name: Фамилия
       name_suffix: Суффикс имени
+      phone: Phone
       date_of_birth: Дата рождения
       avatar: Аватар
       timezone: Часовой пояс
@@ -39,12 +40,22 @@ pim_user:
       has_group: Имеет группу
       active: Активен
       inactive: Неактивен
+    fields_errors:
+      new_password:
+        minimum_length: Password must contains at least 2 characters
+      new_password_repeat:
+        not_match: Password does not match
+      current_password:
+        wrong: Wrong password
     tabs:
       general:
         title: Основные
+        basic_information: Basic information
         contact_information: Контактная информация
       additional:
         title: Дополнительные
+      additional_data:
+        title: Additional data
       interfaces:
         title: Интерфейсы
       group_and_role.title: Группы и роли
@@ -59,6 +70,7 @@ pim_user:
       log_in: Войти
       forgot_password: Восстановить пароль
       request: Запрос
+      password_reset: Password Reset
       reset: Сброс
       password_reset_email_sent: Пользователю выслан email со ссылкой на сброс пароля.
       homepage: Вернуться на главную

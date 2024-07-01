@@ -75,3 +75,10 @@ pim_enrich.entity.locale:
     no_search_result: Üzgünüz, aramıza uygun sonuç bulunamadı.
 pim_enrich.entity.currency:
   plural_label: Para birimleri
+  page_title:
+    index: "]-Inf, 1]{{ count }} currency|]1, Inf[{{ count }} currencies"
+flash:
+  currency:
+    error:
+      linked_to_channel: You cannot disable a currency linked to a channel
+    updated: Currency successfully updated

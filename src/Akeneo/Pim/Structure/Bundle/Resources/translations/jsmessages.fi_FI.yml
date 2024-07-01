@@ -39,6 +39,8 @@ pim_enrich.entity.family_variant:
       fail: Varianttiperhettä ei voitu päivittää.
     create:
       success: Varianttiperhe onnistuneesti luotu
+    delete:
+      success: Family variant successfully deleted
   module:
     edit:
       common_attributes: Yhteiset attribuutit

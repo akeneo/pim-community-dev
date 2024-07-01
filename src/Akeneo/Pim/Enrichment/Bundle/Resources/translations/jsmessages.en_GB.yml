@@ -274,6 +274,8 @@ pim_enrich.export.product:
     string:
       operators:
         ALL: All
+    price-collection:
+      operators:
     select:
       operators:
         IN: In list
