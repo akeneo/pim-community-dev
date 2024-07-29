@@ -33,7 +33,7 @@ final class SpoutReaderFactory
             case self::CSV:
                 $options = new CsvOptions();
                 $options->FIELD_DELIMITER = $normalizedOptions['fieldDelimiter'] ?? $options->FIELD_DELIMITER;
-                $options->FIELD_ENCLOSURE = $normalizedOptions['filedEnclosure'] ?? $options->FIELD_ENCLOSURE;
+                $options->FIELD_ENCLOSURE = $normalizedOptions['fieldEnclosure'] ?? $options->FIELD_ENCLOSURE;
                 break;
             default:
                 throw new \InvalidArgumentException(sprintf('"%s" is not a valid reader type', $type));
