@@ -1,5 +1,7 @@
 # 7.0.x
 
+# 7.0.71 (2024-09-02)
+
 ## Bug fixes
 
 - PIM-11673: [Backport PIM-11670] fix asset transformation job that fails because it does not find a file but should keep going instead
