@@ -5,6 +5,7 @@ namespace Akeneo\Tool\Component\FileStorage\File;
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
 use League\Flysystem\FilesystemReader;
 use League\Flysystem\UnableToReadFile;
+use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -29,7 +30,7 @@ class OutputFileFetcher implements FileFetcherInterface
         }
 
         if (!$filesystem->fileExists($fileKey)) {
-            throw new \LogicException(sprintf('The file "%s" is not present on the filesystem.', $fileKey));
+            throw new FileNotFoundException($fileKey);
         }
 
         try {

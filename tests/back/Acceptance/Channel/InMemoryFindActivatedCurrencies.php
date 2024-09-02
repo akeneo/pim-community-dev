@@ -54,7 +54,7 @@ final class InMemoryFindActivatedCurrencies implements FindActivatedCurrenciesIn
     public function forAllChannelsIndexedByChannelCode(): array
     {
         $currenciesByChannel = [];
-        foreach ($this->channelRepository->findAll()as $channel) {
+        foreach ($this->channelRepository->findAll() as $channel) {
             $currenciesByChannel[$channel->getCode()] = $channel->getCurrencies()->map(
                 static fn (CurrencyInterface $currency): string => $currency->getCode()
             )->getValues();

@@ -7,6 +7,7 @@ use League\Flysystem\FilesystemReader;
 use League\Flysystem\UnableToReadFile;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Exception\Prediction\FailedPredictionException;
+use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 use Symfony\Component\Filesystem\Filesystem;
 
 class OutputFileFetcherSpec extends ObjectBehavior
@@ -91,7 +92,7 @@ class OutputFileFetcherSpec extends ObjectBehavior
         $filesystem->fileExists('path/to/file.txt')->willReturn(false);
 
         $this->shouldThrow(
-            new \LogicException('The file "path/to/file.txt" is not present on the filesystem.')
+            new FileNotFoundException("path/to/file.txt")
         )->during('fetch', [$filesystem, 'path/to/file.txt', [
             'filePath' => 'locale/path/filename.txt'
         ]]);

@@ -52,8 +52,7 @@ class RegisterGenericProvidersPass implements CompilerPassInterface
         $registryDefinition = $container->getDefinition(sprintf(static::REGISTRY_ID, $this->providerType));
 
         $providers = [];
-        foreach ($container->findTaggedServiceIds(sprintf(static::PROVIDER_TAG, $this->providerType)) as
-            $serviceId => $tags) {
+        foreach ($container->findTaggedServiceIds(sprintf(static::PROVIDER_TAG, $this->providerType)) as $serviceId => $tags) {
             foreach ($tags as $tag) {
                 $priority = isset($tag['priority']) ? $tag['priority'] : static::DEFAULT_PRIORITY;
                 if (!isset($providers[$priority])) {
