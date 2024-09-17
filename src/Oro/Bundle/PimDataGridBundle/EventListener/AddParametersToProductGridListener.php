@@ -71,6 +71,8 @@ class AddParametersToProductGridListener extends AddParametersToGridListener
 
         $dataScope = $this->getScope();
         $queryParameters['scopeCode'] = $dataScope;
+        // ensure dataChannel is correctly provided for building legacy results (eg. with associated product datagrid)
+        $queryParameters['dataChannel'] = $dataScope;
 
         return $queryParameters;
     }
