@@ -54,7 +54,9 @@ class AddParametersToProductGridListener extends AddParametersToGridListener
      */
     protected function getRequest(): ?Request
     {
-        return $this->requestStack->getCurrentRequest();
+        // The Datagrid main request carries the filter values (including catalog locale and channel)
+        // The sub request used for loading grid data is stacked (returned by getCurrentRequest) does not use the exact same parameters
+        return $this->requestStack->getMainRequest();
     }
 
     /**
@@ -71,6 +73,8 @@ class AddParametersToProductGridListener extends AddParametersToGridListener
 
         $dataScope = $this->getScope();
         $queryParameters['scopeCode'] = $dataScope;
+        // ensure dataChannel is correctly provided for building legacy results (eg. with associated product datagrid)
+        $queryParameters['dataChannel'] = $dataScope;
 
         return $queryParameters;
     }
