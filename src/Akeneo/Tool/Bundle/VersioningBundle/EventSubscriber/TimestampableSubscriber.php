@@ -73,6 +73,6 @@ class TimestampableSubscriber implements EventSubscriber
 
     private function isProduct(string $resourceName): bool
     {
-        return in_array(ProductInterface::class, class_implements($resourceName));
+        return in_array(ProductInterface::class, class_implements($resourceName) ?? []);
     }
 }
