@@ -2,7 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\Versioning\Model\TimestampableInterface;
 use Akeneo\Tool\Component\Versioning\Model\Version;
 use Doctrine\Common\EventSubscriber;
@@ -60,7 +60,7 @@ class TimestampableSubscriber implements EventSubscriber
 
         $related = $this->em->find(
             $version->getResourceName(),
-            $version->getResourceName() === Product::class ? $version->getResourceUuid() : $version->getResourceId()
+            $this->isProduct($version->getResourceName()) ? $version->getResourceUuid() : $version->getResourceId()
         );
 
         if (null === $related) {
@@ -69,5 +69,10 @@ class TimestampableSubscriber implements EventSubscriber
 
         $related->setUpdated($version->getLoggedAt());
         $this->em->getUnitOfWork()->computeChangeSet($metadata, $related);
+    }
+
+    private function isProduct(string $resourceName): bool
+    {
+        return in_array(ProductInterface::class, class_implements($resourceName));
     }
 }
