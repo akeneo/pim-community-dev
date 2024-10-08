@@ -1,5 +1,7 @@
 # 6.0.x
 
+# 6.0.113 (2024-10-08)
+
 # 6.0.112 (2023-12-22)
 
 - PIM-11249: Keep resolution metadata (DPI) of transformed asset images
