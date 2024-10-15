@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Bundle\ElasticsearchBundle;
 
 use Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration\Loader;
+use Elasticsearch\Client as NativeClient;
 use Elasticsearch\ClientBuilder;
 
 /**
@@ -21,15 +22,14 @@ final class DualIndexationClient extends Client
     private Client $dualClient;
 
     public function __construct(
-        ClientBuilder $builder,
-        Loader $configurationLoader,
-        array $hosts,
-        string $aliasName,
-        string $idPrefix,
-        int $maxChunkSize,
-        Client $dualClient
+        NativeClient $client,
+        Loader       $configurationLoader,
+        string       $aliasName,
+        string       $idPrefix,
+        int          $maxChunkSize,
+        Client       $dualClient
     ) {
-        parent::__construct($builder, $configurationLoader, $hosts, $aliasName, $idPrefix, $maxChunkSize);
+        parent::__construct($client, $configurationLoader, $aliasName, $idPrefix, $maxChunkSize);
         $this->dualClient = $dualClient;
     }
 

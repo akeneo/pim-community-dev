@@ -2,8 +2,8 @@ services:
     Akeneo\Platform\Bundle\FrameworkBundle\Command\CheckUpdateRequirementsCommand:
         arguments:
             - '@akeneo_elasticsearch.registry.clients'
-            - '@akeneo_elasticsearch.client_builder'
             - ['%index_hosts%']
+            - '@akeneo_elasticsearch_native_client'
         tags:
             - { name: console.command }
 

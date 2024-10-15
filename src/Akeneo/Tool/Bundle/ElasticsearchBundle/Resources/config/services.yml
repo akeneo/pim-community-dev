@@ -1,16 +1,37 @@
 parameters:
-    akeneo_elasticsearch.client_builder.class: 'Elasticsearch\ClientBuilder'
     akeneo_elasticsearch.registry.clients.class: 'Akeneo\Tool\Bundle\ElasticsearchBundle\ClientRegistry'
     env(APP_ELASTICSEARCH_TOTAL_FIELDS_LIMIT): '0'
     env(APP_ELASTICSEARCH_MAX_CHUNK_SIZE_CHARACTERS): '100000000'
+    env(ELASTICSEARCH_BASIC_AUTH_USER): ''
+    env(ELASTICSEARCH_BASIC_AUTH_PASS): ''
+    env(ELASTICSEARCH_CLOUD_ID): ''
+    env(ELASTICSEARCH_API_KEY): ''
+    env(ELASTICSEARCH_API_KEY_ID): ''
 
 services:
     akeneo_elasticsearch.registry.clients:
         class: '%akeneo_elasticsearch.registry.clients.class%'
 
-    akeneo_elasticsearch.client_builder:
-        public: true
-        class: '%akeneo_elasticsearch.client_builder.class%'
+    akeneo_elasticsearch.client_builder_factory:
+        class: Akeneo\Tool\Bundle\ElasticsearchBundle\Infrastructure\Client\ClientBuilderFactory
+        arguments:
+            - ['%index_hosts%']
+            - '%env(string:ELASTICSEARCH_BASIC_AUTH_USER)%'
+            - '%env(string:ELASTICSEARCH_BASIC_AUTH_USER_PASSWORD)%'
+            - '%env(string:ELASTICSEARCH_CLOUD_ID)%'
+            - '%env(string:ELASTICSEARCH_API_KEY)%'
+            - '%env(string:ELASTICSEARCH_API_KEY_ID)%'
+
+    akeneo_elasticsearch_native_client:
+        factory: '@akeneo_elasticsearch.client_builder_factory'
+        arguments:
+            - ['%index_hosts%']
+            - '%env(string:ELASTICSEARCH_BASIC_AUTH_USER)%'
+            - '%env(string:ELASTICSEARCH_BASIC_AUTH_USER_PASSWORD)%'
+            - '%env(string:ELASTICSEARCH_CLOUD_ID)%'
+            - '%env(string:ELASTICSEARCH_API_KEY)%'
+            - '%env(string:ELASTICSEARCH_API_KEY_ID)%'
+        class: Elasticsearch\Client
 
     akeneo_elasticsearch.install.install_subscriber:
         class: Akeneo\Tool\Bundle\ElasticsearchBundle\Infrastructure\Install\InstallSubscriber
@@ -45,13 +66,11 @@ services:
             - '@Akeneo\Tool\Bundle\ElasticsearchBundle\Infrastructure\Client\ClientMigration'
 
     Akeneo\Tool\Bundle\ElasticsearchBundle\Infrastructure\Client\ClientMigration:
-            - '@akeneo_elasticsearch.client_builder'
-            - ['%index_hosts%']
+        - '@akeneo_elasticsearch_native_client'
 
     Akeneo\Tool\Bundle\ElasticsearchBundle\Infrastructure\Client\IndexUpdaterClient:
         - '@logger'
-        - '@akeneo_elasticsearch.client_builder'
-        - ['%index_hosts%']
+        - '@akeneo_elasticsearch_native_client'
 
     Akeneo\Tool\Bundle\ElasticsearchBundle\Infrastructure\Repository\IndexMigrationRepository:
         arguments:
