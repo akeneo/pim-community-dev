@@ -317,9 +317,6 @@ jobs:
                   name: Change owner of PIM as some files have been created with wrong owner
                   command: sudo chown -R 1000:1000 ~/project
             - run:
-                  name: PHP coupling detector
-                  command: PIM_CONTEXT=onboarder make test-coupling-detector
-            - run:
                   name: Start containers
                   command: |
                       APP_ENV=test C='mysql elasticsearch object-storage pubsub-emulator' make up

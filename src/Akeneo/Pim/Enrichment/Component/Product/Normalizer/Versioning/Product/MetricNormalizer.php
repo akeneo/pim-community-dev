@@ -90,14 +90,12 @@ class MetricNormalizer extends AbstractValueDataNormalizer implements CacheableS
             return '';
         }
 
-        $pattern = $decimalsAllowed ? '%.4F' : '%d';
+        $isInt = (int) $data == $data;
+        $value = ($decimalsAllowed && !$isInt) ? (float) $data : (int) $data;
         if ($withUnit) {
-            $data = sprintf($pattern. ' %s', $metric->getData(), $metric->getUnit());
-        } else {
-            $data = sprintf($pattern, $metric->getData());
+            return sprintf('%s %s', $value, $metric->getUnit());
         }
-
-        return $data;
+        return $value;
     }
 
     /**
