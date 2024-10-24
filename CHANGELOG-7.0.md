@@ -1,5 +1,7 @@
 # 7.0.x
 
+# 7.0.73 (2024-10-24)
+
 ## Bug fixes
 
 - PIM-11738 [Backport PIM-11108]: Fix number precision in history
