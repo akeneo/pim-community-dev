@@ -73,7 +73,7 @@ final class MicrosoftAzureBlobContainerClient
     {
         $nextMarker = "";
 
-        while(true) {
+        while (true) {
             $response = $this->listBlobs($prefix, $delimiter, $nextMarker, $options->pageSize);
             $nextMarker = $response->nextMarker;
 

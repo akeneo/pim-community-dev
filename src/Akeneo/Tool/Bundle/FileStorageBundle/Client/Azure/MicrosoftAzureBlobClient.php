@@ -58,7 +58,7 @@ final class MicrosoftAzureBlobClient
     {
         try {
             $this->client->request('HEAD', $this->uri);
-        } catch(\Exception) {
+        } catch (\Exception) {
             return false;
         }
         return true;
@@ -124,7 +124,7 @@ final class MicrosoftAzureBlobClient
                 $blockContent = Utils::streamFor();
                 Utils::copyToStream($content, $blockContent, $options->maximumTransferSize);
 
-                if($blockContent->getSize() === 0) {
+                if ($blockContent->getSize() === 0) {
                     break;
                 }
 

@@ -26,7 +26,7 @@ final class MicrosoftAzureBlobServiceClient
         }
 
         $sas = ConnectionStringHelper::getSas($connectionString);
-        if($sas !== null) {
+        if ($sas !== null) {
             return new self($uri->withQuery($sas));
         }
 
