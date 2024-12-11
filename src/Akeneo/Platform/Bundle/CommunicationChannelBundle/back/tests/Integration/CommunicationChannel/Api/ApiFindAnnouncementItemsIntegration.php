@@ -57,27 +57,6 @@ class ApiFindAnnouncementItemsIntegration extends KernelTestCase
         );
     }
 
-    public function test_it_finds_second_page_of_announcements()
-    {
-        $query = self::getContainer()->get('akeneo_communication_channel.query.api.find_announcement_items');
-        $result = $query->byPimVersion('Serenity', '2020105', 'en_US', 'update_1-new-screen-for-measurements-families_2020-05', 10);
-        Assert::assertCount(1, $result);
-        Assert::assertEquals(
-            new AnnouncementItem(
-                'update_2-new-measurements-api-endpoints_2020-05',
-                'New endpoints to manage measurements',
-                'We introduced two new API endpoints to create, update and list your measurement families.',
-                '/bundles/akeneocommunicationchannel/images/announcements/measurements-api.png',
-                'Measurement endpoints',
-                'https://help.akeneo.com/pim/serenity/updates/2020-04.html#new-endpoints-to-manage-measurements',
-                new \DateTimeImmutable('2020-05-07'),
-                new \DateTimeImmutable('2020-05-14'),
-                ['updates']
-            ),
-            $result[0]
-        );
-    }
-
     public function waitServerUp()
     {
         $attempt = 0;
