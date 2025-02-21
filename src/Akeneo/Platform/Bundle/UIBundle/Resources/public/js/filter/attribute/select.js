@@ -104,6 +104,9 @@ define([
                   select2Options: this.getSelect2Options(attribute),
                   removable: this.isRemovable(),
                   editable: this.isEditable(),
+                  errors: this.getParentForm()
+                    .getFilterValidationErrors(this.getCode())
+                    .map(error => __(error.messageTemplate, error.parameters)),
                 };
               }.bind(this)
             );
