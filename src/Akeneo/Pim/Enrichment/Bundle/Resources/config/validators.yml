@@ -361,6 +361,14 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: filter_structure_attribute_validator }
 
+    Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Export\ProductFiltersValidator:
+         arguments:
+             - '@akeneo.pim.structure.query.get_attributes'
+             - []
+             - ['enabled', 'completeness', 'categories', 'family', 'quality_score_multi_locales', 'updated']
+         tags:
+             - { name: validator.constraint_validator }
+
     pim_connector.validator.constraints.quantified_associations_validator:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\QuantifiedAssociationsValidator'
         arguments:

@@ -4,6 +4,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\Co
 
 use Akeneo\Channel\Infrastructure\Component\Validator\Constraint\ActivatedLocale;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Channel;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Export\ProductFilters;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\FilterStructureLocale;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
@@ -86,6 +87,9 @@ class ProductXlsxExport implements ConstraintCollectionProviderInterface
             new Collection(
                 [
                     'fields'           => [
+                        'data' => [
+                            new ProductFilters(),
+                        ],
                         'structure' => [
                             new FilterStructureLocale(['groups' => ['Default', 'DataFilters']]),
                             new Collection(

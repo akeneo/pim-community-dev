@@ -234,6 +234,10 @@ define(['jquery', 'underscore', 'oro/translator', 'oro/mediator', 'pim/form', 'p
           label: __('pim_enrich.export.product.filter.' + this.shortname + '.title'),
           removable: this.isRemovable(),
           editable: this.isEditable(),
+          errors: this.getParentForm()
+            .getFilterValidationErrors(this.getCode())
+            .map(error => __(error.messageTemplate, error.parameters)),
+          warnings: this.getParentForm().getFilterWarningInfos(this.getCode()),
         })
         .promise();
     },

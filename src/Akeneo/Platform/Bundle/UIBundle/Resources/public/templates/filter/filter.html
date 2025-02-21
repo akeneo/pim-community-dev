@@ -13,5 +13,27 @@
     <% } %>
 </div>
 <div class="AknFieldContainer-footer">
-    <span class="below-input-elements-container"></span>
+    <span class="below-input-elements-container">
+        <% if (typeof warnings !== "undefined" && warnings.length > 0) { %>
+            <span class="validation-container">
+                <% _.each(warnings, function (warning) { %>
+                    <span class="AknFieldContainer-multilineValidationWarning">
+                        <i class="AknFieldContainer-iconValidationWarning"></i>
+                        <span class="AknFieldContainer-validationWarningMessage"><%- warning %></span>
+                    </span>
+                <% }); %>
+            </span>
+        <% } %>
+        <% if (typeof errors !== "undefined" && errors.length > 0) { %>
+            <span class="validation-container">
+                <span class="AknFieldContainer-validationErrors validation-errors">
+                    <% _.each(errors, function (error) { %>
+                        <span class="AknFieldContainer-validationError">
+                            <span class="error-message"><%- error %></span>
+                        </span>
+                    <% }); %>
+                </span>
+            </span>
+        <% } %>
+    </span>
 </div>
