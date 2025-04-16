@@ -2,8 +2,17 @@
 # yarn lockfile v1
 
 
+"@akeneo-pim-community/shared@link:../front-packages/shared":
+  version "1.0.0"
+
 "@akeneo-pim-community/shared@link:front-packages/shared":
   version "1.0.0"
+
+"@akeneo-pim-community/structure@link:src/Akeneo/Pim/Structure/front":
+  version "0.1.0"
+  dependencies:
+    "@akeneo-pim-community/shared" "link:../front-packages/shared"
+    typescript "^4.0.3"
 
 "@babel/code-frame@7.10.4":
   version "7.10.4"
@@ -2911,7 +2920,11 @@ ajv@^8.0.1:
 
 "akeneo-design-system@link:front-packages/akeneo-design-system":
   version "0.0.0"
-  uid ""
+  dependencies:
+    draft-js "^0.10.5"
+    draftjs-to-html "^0.8.4"
+    html-to-draftjs "^1.5.0"
+    react-draft-wysiwyg "^1.12.13"
 
 alphanum-sort@^1.0.0:
   version "1.0.2"
@@ -10125,15 +10138,10 @@ minimatch@3.0.4, minimatch@^3.0.4:
   dependencies:
     brace-expansion "^1.1.7"
 
-minimist@^1.1.1, minimist@^1.2.0, minimist@^1.2.5:
-  version "1.2.5"
-  resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.5.tgz#67d66014b66a6a8aaa0c083c5fd58df4e4e97602"
-  integrity sha512-FM9nNUYrRBAELZQT3xeZQ7fmMOBg6nWNmJKTcgsJeaLstP/UODVpGsr5OhXhhXg6f+qtJ8uiZ+PUxkDWcgIXLw==
-
-minimist@^1.2.6:
-  version "1.2.6"
-  resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.6.tgz#8637a5b759ea0d6e98702cfb3a9283323c93af44"
-  integrity sha512-Jsjnk4bw3YJqYzbdyBiNsPWHPfO++UGG749Cxs6peCu5Xg4nrena6OVxOYxrQTqww0Jmwt+Ref8rggumkTLz9Q==
+minimist@^1.1.1, minimist@^1.2.0, minimist@^1.2.5, minimist@^1.2.6:
+  version "1.2.8"
+  resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.8.tgz#c1a464e7693302e082a075cee0c057741ac4772c"
+  integrity sha512-2yyAR8qBkN3YuheJanUpWC5U3bb5osDywNB8RzDVlDwDHbocAJveqqj1u8+SVD7jkWT4yvsHCpWqqWqAxb0zCA==
 
 minipass-collect@^1.0.2:
   version "1.0.2"
