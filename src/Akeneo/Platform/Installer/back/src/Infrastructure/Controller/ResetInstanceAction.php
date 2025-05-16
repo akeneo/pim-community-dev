@@ -9,9 +9,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Installer\Infrastructure\Controller;
 
+use Akeneo\Platform\Installer\Infrastructure\Event\InstallerEvent;
+use Akeneo\Platform\Installer\Infrastructure\Event\InstallerEvents;
 use Akeneo\Platform\Installer\Application\ResetInstance\ResetInstanceCommand;
 use Akeneo\Platform\Installer\Application\ResetInstance\ResetInstanceHandler;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
@@ -20,6 +23,7 @@ class ResetInstanceAction
     public function __construct(
         private readonly ResetInstanceHandler $resetInstanceHandler,
         private readonly SecurityFacade $securityFacade,
+        private readonly EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -29,7 +33,9 @@ class ResetInstanceAction
             throw new AccessDeniedException();
         }
 
+        $this->eventDispatcher->dispatch(new InstallerEvent(), InstallerEvents::PRE_RESET_INSTANCE);
         $this->resetInstanceHandler->handle(new ResetInstanceCommand());
+        $this->eventDispatcher->dispatch(new InstallerEvent(), InstallerEvents::POST_RESET_INSTANCE);
 
         return new JsonResponse();
     }

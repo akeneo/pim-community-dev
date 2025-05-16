@@ -6,6 +6,7 @@ namespace Akeneo\Tool\Component\Batch\Job;
 
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
+use Akeneo\Tool\Component\Batch\Item\ExecutionContext;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepInterface;
@@ -24,7 +25,7 @@ use Symfony\Component\Filesystem\Filesystem;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  */
-class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface, VisibleJobInterface
+class Job implements JobInterface, StoppableJobInterface, PausableJobInterface, JobWithStepsInterface, VisibleJobInterface
 {
     protected string $name;
     protected EventDispatcherInterface $eventDispatcher;
@@ -32,6 +33,7 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
     protected array $steps;
     protected bool $isStoppable;
     protected bool $isVisible;
+    protected bool $isPausable;
     protected Filesystem $filesystem;
 
     public function __construct(
@@ -40,7 +42,8 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
         JobRepositoryInterface $jobRepository,
         array $steps = [],
         bool $isStoppable = false,
-        bool $isVisible = true
+        bool $isVisible = true,
+        bool $isPausable = false
     ) {
         $this->name = $name;
         $this->eventDispatcher = $eventDispatcher;
@@ -48,6 +51,7 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
         $this->steps = $steps;
         $this->isStoppable = $isStoppable;
         $this->isVisible = $isVisible;
+        $this->isPausable = $isPausable;
         $this->filesystem = new Filesystem();
     }
 
@@ -118,8 +122,11 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
 
             $this->dispatchJobExecutionEvent(EventInterface::BEFORE_JOB_EXECUTION, $jobExecution);
 
-            if ($jobExecution->getStatus()->getValue() !== BatchStatus::STOPPING) {
+            if ($jobExecution->getStatus()->isStarting()) {
                 $jobExecution->setStartTime(new \DateTime());
+            }
+
+            if ($jobExecution->getStatus()->getValue() !== BatchStatus::STOPPING) {
                 $this->updateStatus($jobExecution, BatchStatus::STARTED);
                 $this->jobRepository->updateJobExecution($jobExecution);
 
@@ -146,7 +153,9 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
 
             $this->dispatchJobExecutionEvent(EventInterface::AFTER_JOB_EXECUTION, $jobExecution);
 
-            $jobExecution->setEndTime(new \DateTime());
+            if (!$jobExecution->getStatus()->isPaused()) {
+                $jobExecution->setEndTime(new \DateTime());
+            }
             $this->jobRepository->updateJobExecution($jobExecution);
         } catch (JobInterruptedException $e) {
             $jobExecution->setExitStatus($this->getDefaultExitStatusForFailure($e));
@@ -184,6 +193,11 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
         return $this->isVisible;
     }
 
+    public function isPausable(): bool
+    {
+        return $this->isPausable;
+    }
+
     /**
      * Handler of steps sequentially as provided, checking each one for success
      * before moving to the next. Returns the last {@link StepExecution}
@@ -198,8 +212,14 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
         /* @var StepExecution $stepExecution */
         $stepExecution = null;
 
-        foreach ($this->steps as $step) {
-            $stepExecution = $this->handleStep($step, $jobExecution);
+        foreach ($this->steps as $index => $step) {
+            $stepExecution = $this->getStepExecution($jobExecution, $index);
+
+            if (!$this->isRunnable($stepExecution)) {
+                continue;
+            }
+
+            $stepExecution = $this->handleStep($step, $jobExecution, $stepExecution);
             $this->jobRepository->updateStepExecution($stepExecution);
 
             if ($stepExecution->getStatus()->getValue() !== BatchStatus::COMPLETED) {
@@ -231,13 +251,16 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
      *
      * @throws JobInterruptedException
      */
-    protected function handleStep(StepInterface $step, JobExecution $jobExecution): StepExecution
+    protected function handleStep(StepInterface $step, JobExecution $jobExecution, ?StepExecution $stepExecution): StepExecution
     {
         if ($jobExecution->isStopping()) {
             throw new JobInterruptedException("JobExecution interrupted.");
         }
 
-        $stepExecution = $jobExecution->createStepExecution($step->getName());
+        if ($stepExecution === null) {
+            $stepExecution = $jobExecution->createStepExecution($step->getName());
+            $stepExecution->setStartTime(new \DateTime());
+        }
 
         try {
             if ($step instanceof StoppableStepInterface) {
@@ -337,5 +360,27 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
         if ($this->filesystem->exists($directory)) {
             $this->filesystem->remove($directory);
         }
+    }
+
+    private function isRunnable(?StepExecution $stepExecution): bool
+    {
+        return null === $stepExecution || in_array($stepExecution->getStatus()->getValue(), [BatchStatus::STARTING, BatchStatus::PAUSED]);
+    }
+
+    private function getStepExecution(JobExecution $jobExecution, int $index): ?StepExecution
+    {
+        $stepExecution = $jobExecution->getStepExecutions()[$index] ?? null;
+
+        if (null === $stepExecution) {
+            return null;
+        }
+
+        if ($stepExecution->getStepName() !== $this->steps[$index]->getName()) {
+            throw new \RuntimeException("Can't resume the job because steps configuration has changed during pause.");
+        }
+
+        $stepExecution->setExecutionContext(new ExecutionContext());
+
+        return $stepExecution;
     }
 }

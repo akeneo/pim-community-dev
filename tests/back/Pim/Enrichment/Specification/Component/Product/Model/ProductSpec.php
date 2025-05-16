@@ -8,13 +8,13 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\Group;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociation;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Value\IdentifierValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\Model\AssociationType;
@@ -24,7 +24,6 @@ use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Ramsey\Uuid\UuidInterface;
 
 class ProductSpec extends ObjectBehavior
@@ -141,14 +140,13 @@ class ProductSpec extends ObjectBehavior
 
         $values = new WriteValueCollection(
             [
-                ScalarValue::value('sku', 'shovel'),
+                IdentifierValue::value('sku', true, 'shovel'),
                 ScalarValue::localizableValue('name', 'Petit outil agricole authentique', 'fr_FR'),
             ]
         );
 
         $this->setFamily($family);
         $this->setValues($values);
-        $this->setIdentifier('shovel');
 
         $this->getLabel('fr_FR', 'mobile')->shouldReturn('Petit outil agricole authentique');
     }
@@ -165,14 +163,13 @@ class ProductSpec extends ObjectBehavior
 
         $values = new WriteValueCollection(
             [
-                ScalarValue::value('sku', 'shovel'),
+                IdentifierValue::value('sku', true, 'shovel'),
                 ScalarValue::scopableLocalizableValue('name', 'Petite pelle', 'mobile', 'fr_FR'),
             ]
         );
 
         $this->setFamily($family);
         $this->setValues($values);
-        $this->setIdentifier('shovel');
 
         $this->getLabel('fr_FR', 'mobile')->shouldReturn('Petite pelle');
     }
@@ -187,8 +184,9 @@ class ProductSpec extends ObjectBehavior
         $attributeAsLabel->getCode()->willReturn('name');
 
         $this->setFamily(null);
-        $this->setValues(new WriteValueCollection());
-        $this->setIdentifier('shovel');
+        $this->setValues(new WriteValueCollection([
+            IdentifierValue::value('sku', true, 'shovel')
+        ]));
 
         $this->getLabel('fr_FR')->shouldReturn('shovel');
     }
@@ -207,8 +205,9 @@ class ProductSpec extends ObjectBehavior
         $attributeAsLabel->getCode()->willReturn('name');
 
         $this->setFamily($family);
-        $this->setValues(new WriteValueCollection());
-        $this->setIdentifier('shovel');
+        $this->setValues(new WriteValueCollection([
+            IdentifierValue::value('sku', true, 'shovel')
+        ]));
 
         $this->getLabel('fr_FR')->shouldReturn('shovel');
     }
@@ -224,7 +223,9 @@ class ProductSpec extends ObjectBehavior
         $attributeAsLabel->isScopable()->willReturn(false);
 
         $this->setFamily($family);
-        $this->setIdentifier('shovel');
+        $this->setValues(new WriteValueCollection([
+            IdentifierValue::value('sku', true, 'shovel')
+        ]));
 
         $this->getLabel('fr_FR')->shouldReturn('shovel');
     }
@@ -1516,5 +1517,18 @@ class ProductSpec extends ObjectBehavior
 
         $this->addAssociatedGroup($associatedGroup, 'X_SELL');
         $this->getAssociatedGroups('X_SELL')->shouldBeLike(new ArrayCollection());
+    }
+
+    function it_updates_main_identifier(): void
+    {
+        $this->getIdentifier()->shouldReturn(null);
+        $this->setValues(new WriteValueCollection(
+            [
+                IdentifierValue::value('sku', true, 'shovel'),
+                ScalarValue::localizableValue('name', 'a name', 'fr_FR'),
+            ]
+        ));
+
+        $this->getIdentifier()->shouldReturn('shovel');
     }
 }

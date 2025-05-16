@@ -77,7 +77,6 @@ class ListCategoryEndToEnd extends ApiCategoryTestCase
      */
     public function testListAllPaginatedCategories(): void
     {
-        $this->enableEnrichedCategoryFeature();
         $categories = $this->getStandardizedCategories(false, false);
         $firstPageClient = $this->createAuthenticatedClient();
         $firstPageClient->request('GET', 'api/rest/v1/categories?limit=4&page=1');
@@ -193,7 +192,6 @@ class ListCategoryEndToEnd extends ApiCategoryTestCase
      */
     public function testListCategoriesByParent(): void
     {
-        $this->enableEnrichedCategoryFeature();
         $this->createCategory(['parent' => 'categoryA1', 'code' => 'categoryA1-1']);
         $this->createCategory(['parent' => 'categoryA1-1', 'code' => 'categoryA1-1-1']);
 
@@ -287,7 +285,6 @@ class ListCategoryEndToEnd extends ApiCategoryTestCase
      */
     public function testListCategoriesWithCount(): void
     {
-        $this->enableEnrichedCategoryFeature();
         $categories = $this->getStandardizedCategories(false, false);
         $client = $this->createAuthenticatedClient();
 
@@ -357,7 +354,6 @@ class ListCategoryEndToEnd extends ApiCategoryTestCase
      */
     public function testListCategoriesByCodes(): void
     {
-        $this->enableEnrichedCategoryFeature();
         $categories = $this->getStandardizedCategories(false, false);
         $search = '{"code":[{"operator":"IN","value":["master","categoryA2","master_china"]}]}';
         $searchEncoded = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($search);
@@ -423,7 +419,6 @@ JSON;
      */
     public function testOutOfRangeListCategories(): void
     {
-        $this->enableEnrichedCategoryFeature();
         $client = $this->createAuthenticatedClient();
         $client->request('GET', 'api/rest/v1/categories?limit=10&page=2');
 
@@ -489,7 +484,6 @@ JSON;
      */
     public function testListCategoriesWithPosition(): void
     {
-        $this->enableEnrichedCategoryFeature();
         $categories = $this->getStandardizedCategories(true, false);
         $client = $this->createAuthenticatedClient();
 
@@ -527,7 +521,6 @@ JSON;
     public function testListCategoriesWithEnrichedValues(): void
     {
         $category = $this->get(GetCategoryInterface::class)->byCode('master');
-        $this->enableEnrichedCategoryFeature();
         $this->updateCategoryWithValues('master');
 
         $templateModel = $this->generateMockedCategoryTemplateModel(categoryTreeId: $category->getId()->getValue());
@@ -566,7 +559,6 @@ JSON;
     public function testListCategoriesWithEnrichedValuesOnDeactivateTemplate(): void
     {
         $category = $this->get(GetCategoryInterface::class)->byCode('master');
-        $this->enableEnrichedCategoryFeature();
         $this->updateCategoryWithValues('master');
 
         $templateModel = $this->generateMockedCategoryTemplateModel(categoryTreeId: $category->getId()->getValue());

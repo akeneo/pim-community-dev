@@ -77,6 +77,51 @@ test('it handles search', () => {
   expect(onChange).toHaveBeenCalledTimes(2);
 });
 
+test('it handles external search', () => {
+  const onChange = jest.fn();
+  const onNextPage = jest.fn();
+  const onSearchChange = jest.fn();
+
+  const observe = jest.fn();
+  const unobserve = jest.fn();
+  window.IntersectionObserver = jest.fn(() => ({
+    observe,
+    unobserve,
+  })) as unknown as jest.Mock<IntersectionObserver>;
+
+  render(
+    <MultiSelectInput
+      openLabel="Open"
+      value={[]}
+      onChange={onChange}
+      placeholder="Placeholder"
+      emptyResultLabel="Empty result"
+      onNextPage={onNextPage}
+      onSearchChange={onSearchChange}
+      disableInternalSearch={true}
+      removeLabel="Remove"
+    >
+      <MultiSelectInput.Option value="en_US">English</MultiSelectInput.Option>
+      <MultiSelectInput.Option value="fr_FR">French</MultiSelectInput.Option>
+      <MultiSelectInput.Option value="de_DE">German</MultiSelectInput.Option>
+      <MultiSelectInput.Option value="es_ES">Spanish</MultiSelectInput.Option>
+    </MultiSelectInput>
+  );
+
+  const input = screen.getByRole('textbox');
+  fireEvent.click(input);
+  fireEvent.change(input, {target: {value: 'Fr'}});
+
+  const germanOption = screen.queryByText('German');
+  expect(germanOption).toBeInTheDocument();
+  const usOption = screen.queryByText('English');
+  expect(usOption).toBeInTheDocument();
+  const spanishOption = screen.queryByText('Spanish');
+  expect(spanishOption).toBeInTheDocument();
+  const frenchOption = screen.getByText('French');
+  expect(frenchOption).toBeInTheDocument();
+});
+
 test('it handles empty cases', () => {
   const onChange = jest.fn();
   render(
@@ -277,6 +322,26 @@ test('MultiSelectInput supports ...rest props', () => {
       emptyResultLabel="Empty result"
       onChange={onChange}
     />
+  );
+  expect(screen.getByTestId('my_value')).toBeInTheDocument();
+});
+
+test('MultiSelectInput supports locked values prop', () => {
+  const onChange = jest.fn();
+  render(
+    <MultiSelectInput
+      value={['fr_FR', 'en_US']}
+      data-testid="my_value"
+      removeLabel="Remove"
+      openLabel="Open"
+      emptyResultLabel="Empty result"
+      onChange={onChange}
+      lockedValues={['fr_FR']}
+    >
+      <MultiSelectInput.Option value="en_US">English</MultiSelectInput.Option>
+      <MultiSelectInput.Option value="fr_FR">French</MultiSelectInput.Option>
+      <MultiSelectInput.Option value="es_ES">Spanish</MultiSelectInput.Option>
+    </MultiSelectInput>
   );
   expect(screen.getByTestId('my_value')).toBeInTheDocument();
 });

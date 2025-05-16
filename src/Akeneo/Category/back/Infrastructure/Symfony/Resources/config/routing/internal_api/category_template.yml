@@ -2,14 +2,24 @@ pim_category_template_rest_get_by_template_uuid:
     path: /rest/{templateUuid}
     defaults:
         _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\GetTemplateController:byTemplateUuid
-        _feature: enriched_category
     methods: [GET]
 
 pim_category_template_rest_create:
     path: /rest/{categoryTreeId}
     defaults:
         _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\CreateTemplateController
-        _feature: enriched_category
+    methods: [POST]
+
+pim_category_template_rest_update:
+    path: /rest/{templateUuid}
+    defaults:
+        _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\UpdateTemplateController
+    methods: [PATCH]
+
+pim_category_template_rest_reorder_attributes:
+    path: /rest/{templateUuid}/reorder
+    defaults:
+        _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\ReorderTemplateAttributesController
     methods: [POST]
 
 pim_enriched_category_rest_deactivate_template:
@@ -18,23 +28,32 @@ pim_enriched_category_rest_deactivate_template:
         _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\DeactivateTemplateController
     methods: [DELETE]
 
+pim_category_template_rest_load_attribute_set:
+    path: /rest/{templateUuid}/load_attribute_set
+    defaults:
+        _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\LoadAttributeSetController
+    methods: [POST]
+
 pim_category_template_rest_add_attribute:
     path: /rest/{templateUuid}/attribute
     defaults:
         _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\AddAttributeController
-        _feature: category_template_customization
     methods: [POST]
 
 pim_category_template_rest_update_attribute:
     path: /rest/{templateUuid}/attribute/{attributeUuid}
     defaults:
         _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\UpdateAttributeController
-        _feature: category_update_template_attribute
     methods: [POST]
 
 pim_category_template_rest_delete_attribute:
     path: /rest/{templateUuid}/attribute/{attributeUuid}
     defaults:
         _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\DeactivateAttributeController
-        _feature: category_template_customization
     methods: [DELETE]
+
+pim_category_template_track_usage_of_load_predefined_attributes:
+    path: /rest/{templateUuid}/track_usage_of_load_predefined_attributes
+    defaults:
+        _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\TrackUsageOfLoadPredefinedAttributesController
+    methods: [POST]

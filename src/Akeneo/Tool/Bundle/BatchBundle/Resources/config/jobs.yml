@@ -57,3 +57,4 @@ services:
         arguments:
             - '@akeneo_batch.job_repository'
             - '@akeneo_batch.query.get_job_execution_status'
+            - '@logger'

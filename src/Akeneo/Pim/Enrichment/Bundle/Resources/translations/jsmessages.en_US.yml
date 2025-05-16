@@ -283,6 +283,8 @@ pim_enrich.export.product:
             empty: All attributes will be exported
             modal:
                 title: Attribute selection
+                helper:
+                    text: "The main identifier will always be exported with the selected attributes."
         attributes_selector:
             attributes: "Search in {{ itemsCount }} attributes"
             selected: "Selected attributes"
@@ -521,6 +523,8 @@ pim_datagrid:
             label: Identifier
         uuid:
             label: Uuid
+        code_or_label:
+            label: Code or label
     search: Search by {{ label }}
 
 batch_jobs:

@@ -5,6 +5,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver;
 use Akeneo\Pim\Automation\IdentifierGenerator\API\Query\UpdateIdentifierPrefixesQuery;
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductUniqueDataSynchronizer;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\UpdateIdentifierValuesQuery;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
@@ -22,12 +23,16 @@ class ProductSaverSpec extends ObjectBehavior
         EventDispatcherInterface $eventDispatcher,
         ProductUniqueDataSynchronizer $uniqueDataSynchronizer,
         UpdateIdentifierPrefixesQuery $updateIdentifierPrefixesQuery,
+        UpdateIdentifierValuesQuery $updateIdentifierValuesQuery,
+        Connection $connection,
     ) {
+        $objectManager->getConnection()->willReturn($connection);
         $this->beConstructedWith(
             $objectManager,
             $eventDispatcher,
             $uniqueDataSynchronizer,
             $updateIdentifierPrefixesQuery,
+            $updateIdentifierValuesQuery,
         );
     }
 
@@ -47,15 +52,16 @@ class ProductSaverSpec extends ObjectBehavior
         ProductUniqueDataSynchronizer $uniqueDataSynchronizer,
         ProductInterface $product,
         UpdateIdentifierPrefixesQuery $updateIdentifierPrefixesQuery,
+        UpdateIdentifierValuesQuery $updateIdentifierValuesQuery,
         Connection $connection
     ) {
         $product->isDirty()->willReturn(true);
         $product->getCreated()->willReturn(null);
         $eventDispatcher->dispatch(Argument::type(GenericEvent::class), StorageEvents::PRE_SAVE)->shouldBeCalled();
-        $objectManager->getConnection()->shouldBeCalled()->willReturn($connection);
         $connection->beginTransaction()->shouldBeCalled();
         $objectManager->persist($product)->shouldBeCalled();
         $updateIdentifierPrefixesQuery->updateFromProducts([$product])->shouldBeCalled();
+//        $updateIdentifierValuesQuery->forProducts([$product])->shouldBeCalled();
         $uniqueDataSynchronizer->synchronize($product)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
         $connection->commit()->shouldBeCalled();
@@ -79,15 +85,16 @@ class ProductSaverSpec extends ObjectBehavior
         ProductUniqueDataSynchronizer $uniqueDataSynchronizer,
         ProductInterface $product,
         UpdateIdentifierPrefixesQuery $updateIdentifierPrefixesQuery,
+        UpdateIdentifierValuesQuery $updateIdentifierValuesQuery,
         Connection $connection
     ) {
         $product->isDirty()->willReturn(true);
         $product->getCreated()->willReturn(\DateTime::createFromFormat('Y-m-d H:i:s', '2019-01-28 12:12:12'));
         $eventDispatcher->dispatch(Argument::type(GenericEvent::class), StorageEvents::PRE_SAVE)->shouldBeCalled();
-        $objectManager->getConnection()->shouldBeCalled()->willReturn($connection);
         $connection->beginTransaction()->shouldBeCalled();
         $objectManager->persist($product)->shouldBeCalled();
         $updateIdentifierPrefixesQuery->updateFromProducts([$product])->shouldBeCalled();
+//        $updateIdentifierValuesQuery->forProducts([$product])->shouldBeCalled();
         $uniqueDataSynchronizer->synchronize($product)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
         $connection->commit()->shouldBeCalled();
@@ -126,6 +133,7 @@ class ProductSaverSpec extends ObjectBehavior
         EventDispatcherInterface $eventDispatcher,
         ProductUniqueDataSynchronizer $uniqueDataSynchronizer,
         UpdateIdentifierPrefixesQuery $updateIdentifierPrefixesQuery,
+        UpdateIdentifierValuesQuery $updateIdentifierValuesQuery,
         ProductInterface $product1,
         ProductInterface $product2,
         Connection $connection
@@ -138,7 +146,6 @@ class ProductSaverSpec extends ObjectBehavior
         $eventDispatcher->dispatch(Argument::type(GenericEvent::class), StorageEvents::PRE_SAVE_ALL)->shouldBeCalled();
         $eventDispatcher->dispatch(Argument::type(GenericEvent::class), StorageEvents::PRE_SAVE)->shouldBeCalledTimes(2);
 
-        $objectManager->getConnection()->shouldBeCalled()->willReturn($connection);
         $connection->beginTransaction()->shouldBeCalled();
 
         $uniqueDataSynchronizer->synchronize($product1)->shouldBeCalled();
@@ -146,6 +153,7 @@ class ProductSaverSpec extends ObjectBehavior
         $uniqueDataSynchronizer->synchronize($product2)->shouldBeCalled();
         $objectManager->persist($product2)->shouldBeCalled();
         $updateIdentifierPrefixesQuery->updateFromProducts([$product1, $product2])->shouldBeCalled();
+//        $updateIdentifierValuesQuery->forProducts([$product1, $product2])->shouldBeCalled();
 
         $connection->commit()->shouldBeCalled();
 
@@ -179,6 +187,7 @@ class ProductSaverSpec extends ObjectBehavior
         EventDispatcherInterface $eventDispatcher,
         ProductUniqueDataSynchronizer $uniqueDataSynchronizer,
         UpdateIdentifierPrefixesQuery $updateIdentifierPrefixesQuery,
+        UpdateIdentifierValuesQuery $updateIdentifierValuesQuery,
         ProductInterface $product1,
         ProductInterface $product2,
         Connection $connection,
@@ -194,12 +203,12 @@ class ProductSaverSpec extends ObjectBehavior
         $uniqueDataSynchronizer->synchronize($product1)->shouldBeCalledTimes(1);
         $uniqueDataSynchronizer->synchronize($product2)->shouldBeCalled();
 
-        $objectManager->getConnection()->shouldBeCalled()->willReturn($connection);
         $connection->beginTransaction()->shouldBeCalled();
 
         $objectManager->persist($product1)->shouldBeCalledTimes(1);
         $objectManager->persist($product2)->shouldBeCalled();
         $updateIdentifierPrefixesQuery->updateFromProducts([$product1, $product2])->shouldBeCalled();
+//        $updateIdentifierValuesQuery->forProducts([$product1, $product2])->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
 
         $connection->commit()->shouldBeCalled();
@@ -217,6 +226,7 @@ class ProductSaverSpec extends ObjectBehavior
         EventDispatcherInterface $eventDispatcher,
         ProductUniqueDataSynchronizer $uniqueDataSynchronizer,
         UpdateIdentifierPrefixesQuery $updateIdentifierPrefixesQuery,
+        UpdateIdentifierValuesQuery $updateIdentifierValuesQuery,
         ProductInterface $product1,
         ProductInterface $product2,
         ProductInterface $product3,
@@ -236,13 +246,13 @@ class ProductSaverSpec extends ObjectBehavior
         $uniqueDataSynchronizer->synchronize($product2)->shouldNotBeCalled();
         $uniqueDataSynchronizer->synchronize($product3)->shouldBeCalled();
 
-        $objectManager->getConnection()->shouldBeCalled()->willReturn($connection);
         $connection->beginTransaction()->shouldBeCalled();
 
         $objectManager->persist($product1)->shouldBeCalled();
         $objectManager->persist($product2)->shouldNotBeCalled();
         $objectManager->persist($product3)->shouldBeCalled();
         $updateIdentifierPrefixesQuery->updateFromProducts([$product1, $product3])->shouldBeCalled();
+//        $updateIdentifierValuesQuery->forProducts([$product1, $product3])->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
 
         $connection->commit()->shouldBeCalled();
@@ -261,6 +271,7 @@ class ProductSaverSpec extends ObjectBehavior
         EventDispatcherInterface $eventDispatcher,
         ProductUniqueDataSynchronizer $uniqueDataSynchronizer,
         UpdateIdentifierPrefixesQuery $updateIdentifierPrefixesQuery,
+        UpdateIdentifierValuesQuery $updateIdentifierValuesQuery,
         ProductInterface $product1,
         ProductInterface $product2,
         ProductInterface $product3
@@ -274,6 +285,7 @@ class ProductSaverSpec extends ObjectBehavior
         $objectManager->persist(Argument::any())->shouldNotBeCalled();
         $objectManager->flush()->shouldNotBeCalled();
         $updateIdentifierPrefixesQuery->updateFromProducts(Argument::any())->shouldNotBeCalled();
+//        $updateIdentifierValuesQuery->forProducts(Argument::any())->shouldNotBeCalled();
 
         $this->saveAll([$product1, $product2, $product3]);
     }
@@ -283,12 +295,15 @@ class ProductSaverSpec extends ObjectBehavior
         EventDispatcherInterface $eventDispatcher,
         ProductUniqueDataSynchronizer $uniqueDataSynchronizer,
         UpdateIdentifierPrefixesQuery $updateIdentifierPrefixesQuery,
+        UpdateIdentifierValuesQuery $updateIdentifierValuesQuery,
     ) {
         $uniqueDataSynchronizer->synchronize(Argument::any())->shouldNotBeCalled();
         $eventDispatcher->dispatch(Argument::cetera())->shouldNotBeCalled();
         $objectManager->persist(Argument::any())->shouldNotBeCalled();
         $objectManager->flush()->shouldNotBeCalled();
         $updateIdentifierPrefixesQuery->updateFromProducts(Argument::any())->shouldNotBeCalled();
+//        $updateIdentifierValuesQuery->forProducts(Argument::any())->shouldNotBeCalled();
+
         $this->saveAll([]);
     }
 }

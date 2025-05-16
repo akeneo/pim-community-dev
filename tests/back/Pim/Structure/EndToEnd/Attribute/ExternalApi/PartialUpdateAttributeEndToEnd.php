@@ -468,6 +468,28 @@ JSON;
         $this->assertSame($attributeStandard, $normalizer->normalize($attribute));
     }
 
+    public function testAttributePartialUpdateWithIgnoredMainIdentifier()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data = '{
+    "code": "sku",
+    "guidelines": {
+        "en_US": "This is the main identifier SKU"
+    },
+    "is_main_identifier": false
+}';
+
+        $client->request('PATCH', 'api/rest/v1/attributes/sku', [], [], [], $data);
+
+        $attribute = $this->get('pim_catalog.repository.attribute')->findOneByIdentifier('sku');
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+        $this->assertSame(true, $attribute->isMainIdentifier());
+        $this->assertSame(['en_US' => 'This is the main identifier SKU'], $attribute->getGuidelines());
+    }
+
     public function testResponseWhenContentIsEmpty()
     {
         $client = $this->createAuthenticatedClient();

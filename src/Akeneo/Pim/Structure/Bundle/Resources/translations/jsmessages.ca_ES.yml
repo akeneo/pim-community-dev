@@ -74,6 +74,8 @@ pim_enrich.entity.attribute_option:
       fail: No es pot desar aquesta opció d'atribut
     delete:
       fail: Error en suprimir la opció d'atribut
+  page_title:
+    index: "]-Inf, 1]{{ count }} opció|]1, Inf[{{ count }} opcions"
   module:
     edit:
       cancel_title: '﻿Cancel·lar la modificació'
@@ -229,8 +231,10 @@ pim_enrich.entity.attribute:
       select_locale: Seleccioneu el local
     delete:
       confirm: Esteu segur que voleu suprimir aquest atribut?
+      attribute_removal: L'atribut no es pot suprimir de tots productes.
       product_count: '{0}0 productes|{1}1 producte|]1, Inf[{{ count }} productes'
       product_model_count: '{0}0 models de producte|{1}1 model de producte|]1, Inf[{{ count }} models de producte'
+      used: ']-Inf,1]actualment té valors establerts per a aquest atribut.|]1, Inf[actualment tenen valors establerts per a aquest atribut.'
       helper:
         content: Si necessita canviar el seu tipus d'atribut per fer-lo localitzable o definible, mantenint l'accés als seus valors d'atributs existents,
         link: consulteu el nostre Centre d'ajuda (per a més informació).
@@ -241,20 +245,37 @@ pim_enrich.entity.attribute:
     mass_delete:
       modal:
         title: Atributs
+        subtitle: '{1}Confirmar la supressió de {{ count }} atribut|]1, Inf[Confirmar la supressió de {{ count }} atributs'
+        label: Si us plau, escriviu "{{ textToCheck }}"
+        confirm: Esteu segur que voleu suprimir aquests atributs?
+      message_bar:
+        success: S'ha iniciat l'eliminació. Rebràs una notificació un cop finalitzada la feina. Mentrestant, podeu vigilar el seu progrés al rastrejador de processos.
+        fail: S'ha produït un error durant l'inici de la supressió
 pim_enrich.entity.attribute_group:
   label: grup d'atributs
   uppercase_label: Grup d'atributs
   plural_label: Grups d'atribut
   result_count: '{0}0 grups d''atribut|{1}1 grup d''atributs|]1, Inf[{{ count }} grups d''atributs'
+  limit_reached: Heu assolit el límit de {{ max }} grups d'atributs.
   show_more_attribute:
     title: Esta una mica encreuat per aquí. T'ho ensenyem {{ attributeCount }}/{{ totalAttributeCount }} atributs.
     subtitle: Per descobrir tots els atributs d'aquest grup, cliqueu a continuació!
     button: Mostrar tots els atributs
+  dropdown:
+    label: Seleccionar
+    all: Tots els Grups d'atributs
+    none: No hi ha grups d'atributs
   flash:
     update:
       success: Grup d'atributs actualitzat correctament
       fail: El grup d'atributs no s'ha pogut actualitzar
       fields_not_ready: "Ara no es pot guardar el grup d'atributs. Els següents camps no estan preparats: {{ fields }}"
+    delete:
+      success: S'ha iniciat l'eliminació. Rebràs una notificació un cop finalitzada la feina. Mentrestant, podeu vigilar el seu progrés al rastrejador de processos.
+      fail: S'ha produït un error durant l'inici de la supressió
+    mass_delete:
+      success: S'ha iniciat l'eliminació. Rebràs una notificació un cop finalitzada la feina. Mentrestant, podeu vigilar el seu progrés al rastrejador de processos.
+      fail: S'ha produït un error durant l'inici de la supressió
   module:
     add_attribute_group:
       label: Afegir per grups
@@ -262,6 +283,33 @@ pim_enrich.entity.attribute_group:
       attributes_groups_selected: '{{ itemsCount }} grup(s) seleccionat(s)'
     delete:
       confirm: Esteu segur que voleu suprimir aquest grup d'atributs?
+  grid:
+    columns:
+      attribute_count: Número d'atributs relacionats
+  selected: '{0}0 grup d''atributs seleccionat|{1}1 grup d''atributs seleccionat|]1, Inf[{{ count }} grups d''atributs seleccionats'
+  mass_delete:
+    confirm: '{1}Esteu segur que voleu suprimir aquest grup d''atributs?|]1, Inf[Esteu segur que voleu suprimir aquests {{ count }} grups d''atributs?'
+    confirmation_phrase: 'Si us plau, escriu "{{ confirmation_word }}"'
+    confirmation_word: eliminar
+    attribute_warning: '{1}La supressió d''aquests grups d''atributs afectarà l''atribut relacionat {{ number_of_attribute }}. Haureu de moure aquest atribut relacionat a un nou grup d''atributs.|]1, Inf[La supressió d''aquests grups d''atributs afectarà els atributs relacionats {{ number_of_attribute }}. Haureu de moure aquests atributs relacionats a un grup d''atributs nou.'
+    select_attribute_group: '{1}Seleccioneu el grup d''atributs al qual moure l''atribut relacionat|]1, Inf[Seleccioneu el grup d''atributs al qual moure els atributs relacionats {{ number_of_attribute }}'
+    empty_result_label: 'No s''ha trobat grup d''atributs'
+    placeholder: 'Selecciona grups d''atributs'
+    open_label: 'Llista de grups d''atribut'
+  delete:
+    confirm: 'Esteu segur que voleu suprimir aquest grup d''atributs'
+    attribute_warning: 'La supressió d''aquest grup d''atributs afectarà l''atribut relacionat {{ number_of_attribute }}. Haureu de moure aquest atribut relacionat a un grup d''atributs nou.'
+    select_attribute_group: '{1}Seleccioneu el grup d''atributs per moure l''atribut relacionat a:|]1, Inf[Seleccioneu el grup d''atributs per moure els atributs relacionats {{ number_of_attribute }} a:'
+  batch_jobs:
+    delete_attribute_groups:
+      delete_attribute_groups:
+        label: Eliminar grups d'atributs
+pim_import_export:
+  notification:
+    mass_delete_attribute_groups:
+      error: S'ha produït un error en la supressió massiva dels grups d'atributs
+      warning: La supressió massiva dels grups d'atributs ha acabat amb alguns advertiments
+      success: S'ha acabat la supressió massiva dels grups d'atributs
 pim_enrich.mass_edit.family:
   title: Acció en massa de família
   confirm: "{1}Esteu a punt d'actualitzar una família amb la informació següent, confirmeu-ho si us plau.|] 1, Inf [Esteu a punt d'actualitzar {{ itemsCount }} famílies amb la informació següent, confirmeu-ho si us plau."
@@ -282,3 +330,19 @@ pim_enrich.mass_edit.family:
       label: Establir els requeriments d'atributs
       description: Els següents requisits d'atributs s'aplicaran a les famílies seleccionades
       label_count: "{1}Configurar els requeriments d'atributs de <span class=\"AknFullPage-title--highlight\">1 família</span>|]1, Inf[Configurar els requeriments d'atributs de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} famílies</span>"
+batch_jobs:
+  default_steps:
+    delete_attribute_groups: Eliminar grups d'atributs
+    move_child_attributes: Moure els atributs fills
+  delete_attributes:
+    delete_attributes:
+      label: Eliminar atributs
+job_execution:
+  summary:
+    deleted_attributes: Atributs eliminats
+akeneo_job_process_tracker:
+  type_filter:
+    attribute_group_mass_delete: Eliminar grups d'atributs
+pim_notification:
+  types:
+    attribute_group_mass_delete: Supressió

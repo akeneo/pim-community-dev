@@ -29,6 +29,7 @@ $rules = [
             //External dependencies
             'Psr\Log\LoggerInterface',
             'Symfony\Component\EventDispatcher\EventDispatcherInterface',
+            'Symfony\Component\Messenger\MessageBusInterface',
             'Webmozart\Assert\Assert',
         ]
     )->in('Akeneo\Pim\Automation\DataQualityInsights\Application'),
@@ -39,12 +40,14 @@ $rules = [
             'Akeneo\Pim\Automation\DataQualityInsights\Application',
 
             //Akeneo external bounded contexts :
+            'Akeneo\Pim\Enrichment\Product\API\Event',
+            'Akeneo\Pim\Enrichment\Component\Product\Event',
 
             //Enrichment computing
             'Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator',
 
             //Bundle installation
-            'Akeneo\Platform\Bundle\InstallerBundle\Event',
+            'Akeneo\Platform\Installer\Infrastructure\Event',
             'Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository',
             'Akeneo\UserManagement\Component\Model\UserInterface',
 
@@ -58,6 +61,9 @@ $rules = [
 
             //Subscribers for attribute group updates
             'Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface',
+
+            // Attribute events
+            'Akeneo\Pim\Structure\Component\Model\Attribute',
 
             //Connector / (Tasklets, job parameters)
             'Akeneo\Tool\Component\Batch\Job\JobInterface',
@@ -128,8 +134,11 @@ $rules = [
             'Symfony\Component\HttpKernel',
             'Symfony\Component\Security',
             'Symfony\Component\Serializer\Normalizer\NormalizerInterface',
+            'Symfony\Component\Serializer\Normalizer\DenormalizerInterface',
+            'Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface',
             'Symfony\Component\Validator\Constraints',
             'Symfony\Component\Form\FormFactoryInterface',
+            'Symfony\Component\Messenger\MessageBusInterface',
             'Webmozart\Assert\Assert',
             'Ramsey\Uuid\Uuid',
             'Ramsey\Uuid\UuidInterface',
@@ -139,7 +148,6 @@ $rules = [
             'Akeneo\Tool\Component\StorageUtils\Cache\LRUCache',
             'Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface',
             'Akeneo\Channel\Infrastructure\Component\Query\PublicApi',
-            'Akeneo\Tool\Component\Messenger',
         ]
     )->in('Akeneo\Pim\Automation\DataQualityInsights\Infrastructure'),
 ];

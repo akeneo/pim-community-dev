@@ -48,6 +48,8 @@ pim_user:
         not_match: 비밀번호가 일치하지 않습니다.
       current_password:
         wrong: 잘못된 암호
+      roles:
+        last_user_with_edit_role_permissions: 이 사용자는 편집 역할 권한이 있는 마지막 사용자입니다.
     tabs:
       general:
         title: 일반
@@ -92,6 +94,8 @@ pim_user:
     role:
       message:
         saved: "역할 저장됨"
+        cannot_delete_last_edit_role_permission: 마지막 역할의 편집 역할 권한은 삭제할 수 없습니다.
+        cannot_remove_last_edit_role_permission: 마지막 역할의 편집 역할 권한은 제거할 수 없습니다.
     user:
       message:
         saved: "사용자 저장됨"

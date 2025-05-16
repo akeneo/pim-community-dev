@@ -33,6 +33,7 @@ final class MessengerConfigBuilder
 {
     private const CONFIG_FILEPATH = 'config/messages.yml';
     private const CONFIG_FILEPATH_FOR_ENV = 'config/messages_%s.yml';
+    public const MAX_RETRIES_DEFAULT = 1;
 
     private const SERIALIZER = 'akeneo_messenger.envelope.serializer';
 
@@ -79,11 +80,16 @@ final class MessengerConfigBuilder
                 // Create 1 transport to send event on the topic
                 $transportNames[] = $queueName;
                 $allTransportNames[$queueName] = ($allTransportNames[$queueName] ?? 0) + 1;
-                $transports[$queueName] = $this->createPubSubProducerTransport($queueName);
+                Assert::keyExists($pimMessageConfig, 'env_var', 'The parameter env_var must be defined to configure the PubSub topic');
+                $transports[$queueName] = $this->createPubSubProducerTransport($pimMessageConfig['env_var']);
 
                 // Create 1 transport by subscription/consumer to receive the messages.
                 foreach ($pimMessageConfig['consumers'] as $consumer) {
-                    $transports[$consumer['name']] = $this->createPubSubReceiverTransport($queueName, $consumer['name']);
+                    Assert::keyExists($consumer, 'env_var', 'The parameter env_var must be defined to configure the PubSub subscription');
+                    $transports[$consumer['name']] = $this->createPubSubReceiverTransport(
+                        $pimMessageConfig['env_var'],
+                        $consumer['env_var']
+                    );
                 }
             } else {
                 // Create 1 queue by consumer
@@ -127,32 +133,38 @@ final class MessengerConfigBuilder
                 'auto_setup' => false,
             ],
             'serializer' => self::SERIALIZER,
+            'retry_strategy' => [
+                'max_retries' => self::MAX_RETRIES_DEFAULT,
+            ],
         ];
     }
 
     /**
      * @return array<string, mixed>
      */
-    private function createPubSubProducerTransport(string $topicName): array
+    private function createPubSubProducerTransport(string $topicEnvVarName): array
     {
         return [
             'dsn' => 'gps:',
             'options' => [
                 'project_id' => '%env(GOOGLE_CLOUD_PROJECT)%',
-                'topic_name' => $topicName,
+                'topic_name' => sprintf('%%env(default::string:%s)%%', $topicEnvVarName),
                 'auto_setup' => \in_array($this->env, ['dev', 'test', 'test_fake']),
             ],
             'serializer' => self::SERIALIZER,
+            'retry_strategy' => [
+                'max_retries' => self::MAX_RETRIES_DEFAULT,
+            ],
         ];
     }
 
     /**
      * @return array<string, mixed>
      */
-    private function createPubSubReceiverTransport(string $topicName, string $subscriptionName): array
+    private function createPubSubReceiverTransport(string $topicEnvVarName, string $subscriptionEnvVarName): array
     {
-        $transport = $this->createPubSubProducerTransport($topicName);
-        $transport['options']['subscription_name'] = $subscriptionName;
+        $transport = $this->createPubSubProducerTransport($topicEnvVarName);
+        $transport['options']['subscription_name'] = sprintf('%%env(default::string:%s)%%', $subscriptionEnvVarName);
 
         return $transport;
     }
@@ -164,6 +176,9 @@ final class MessengerConfigBuilder
     {
         return [
             'dsn' => 'in-memory://',
+            'retry_strategy' => [
+                'max_retries' => self::MAX_RETRIES_DEFAULT,
+            ],
         ];
     }
 
@@ -174,6 +189,9 @@ final class MessengerConfigBuilder
     {
         return [
             'dsn' => 'sync://',
+            'retry_strategy' => [
+                'max_retries' => self::MAX_RETRIES_DEFAULT,
+            ],
         ];
     }
 }

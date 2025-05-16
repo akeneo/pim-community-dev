@@ -305,8 +305,6 @@ pim_enrich.entity.job_execution:
       upload: 将您的 {{ type }} 文件拖到此处，或点击浏览磁盘
     download:
       archive: 下载已生成的存档文件
-      output: 下载已生成的文件
-      input: 下载已读文件
       invalid_xlsx: 下载无效数据
       invalid_csv: 下载无效数据
 pim_title:
@@ -464,7 +462,8 @@ pim_system:
     button:
       label: 重置实例
       confirm: 重置并退出登录
-    error_notification: 重置 PIM 时发生错误，请联系系统管理员。
+    error_notification: 重置实例时发生错误，请联系您的系统管理员。
+    jobs_running: 目前无法重置实例，因为有些进程仍在队列中或正在运行。
   sandbox:
     helper:
       text: 这是沙盒环境；您的更改不会影响生产。

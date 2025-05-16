@@ -35,8 +35,6 @@ class V20221214GiveNewCategoryAclToUserWithOldCategoryAclZddMigrationIntegration
 
     public function testMigrationGivesACLToEditEnrichedCategoryWhenUserHasACLToEditCategory(): void
     {
-        $this->enableEnrichedCategoryFeature();
-
         $this->createRoleWithAcls('ROLE_WITH_CATEGORY_EDIT_PERMS', ['pim_enrich_product_category_edit']);
 
         // This role has only its initial ACLs
@@ -80,8 +78,6 @@ class V20221214GiveNewCategoryAclToUserWithOldCategoryAclZddMigrationIntegration
 
     public function testMigrationGivesACLToEditCategoryTemplateWhenUserHasACLToCreateCategory(): void
     {
-        $this->enableEnrichedCategoryFeature();
-
         $this->createRoleWithAcls('ROLE_WITH_CATEGORY_CREATE_PERMS', ['pim_enrich_product_category_create']);
 
         // This role has only its initial ACLs
@@ -124,8 +120,6 @@ class V20221214GiveNewCategoryAclToUserWithOldCategoryAclZddMigrationIntegration
 
     public function testMigrationGivesACLOnEnrichedCategoryOnlyToRolesWithACLToCreateAndEditCategory(): void
     {
-        $this->enableEnrichedCategoryFeature();
-
         $this->createRoleWithAcls('ROLE_WITH_CATEGORY_PERMS', ['pim_enrich_product_category_edit','pim_enrich_product_category_create']);
         $this->createRoleWithAcls('ROLE_WITHOUT_CATEGORY_PERMS', []);
 

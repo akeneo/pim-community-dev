@@ -48,6 +48,7 @@ akeneo_job_process_tracker:
     compute_completeness_of_products_family: 商品ファミリーの完全性を計算
     clean_removed_attribute_job: 削除された属性値を消去中
     execute_rules: ルールを実行
+    scheduled_job: スケジュールされたジョブ
   user_filter:
     label: ユーザー
     all: すべて

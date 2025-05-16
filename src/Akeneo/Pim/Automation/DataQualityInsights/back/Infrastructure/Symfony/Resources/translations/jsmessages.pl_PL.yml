@@ -3,7 +3,7 @@ akeneo_data_quality_insights:
   dqi_dashboard:
     menu: Wgląd w jakość danych
     helper:
-      title: Przedstawiamy Jakość danych w Akeneo
+      title: Przedstawiamy Jakość Danych w Akeneo
       description: Dzięki pulpitowi jakości danych możesz zmierzyć jakość danych w katalogu. Możesz również skupić się na kategorii lub rodzinie.
       help_center: Aby uzyskać więcej informacji, sprawdź nasze Centrum Pomocy.
     no_data_title: Przepraszamy, nie mamy jeszcze wystarczającej ilości danych, aby wyświetlić przegląd jakości danych.
@@ -27,7 +27,7 @@ akeneo_data_quality_insights:
       family_modal:
         subtitle: Dodaj rodziny
         message: Wybierz rodziny, które chcesz dodać do pulpitu
-        max_families_msg: 'Przepraszamy, nie możesz dodać więcej niż następującą liczbę rodzin: {{ count }} do śledzenia na pulpicie'
+        max_families_msg: 'Przepraszamy, nie możesz dodać więcej niż następującą liczbę rodzin: {{ count }} do śledzenia na Twoim pulpicie'
       category_modal:
         subtitle: Dodaj kategorie
         message: Wybierz kategorie, które chcesz dodać do pulpitu
@@ -43,8 +43,8 @@ akeneo_data_quality_insights:
       day: dzień
     key_indicators:
       title: Kluczowe wskaźniki
-      products: 'one: 1 produkt|few: {{ count }} produkty|many: {{ count }} produktów|[200, Inf[ponad {{ count }} produktów'
-      product_models: '{1}1 model produktu|[2, 4]{{ count }} modele produktów|[5, 19]{{ count }} modeli produktów|[20, Inf[ponad {{ count }} modeli produktów'
+      products: '{1}1 produkt|[2, 4]{{ count }} produkty|[5, 19]{{ count }} produktów|[20, Inf[ponad {{ count }} produktów'
+      product_models: '{1}1 model produktu|]1, 200[{{ count }} modeli produktów|[200, Inf[ponad {{ count }} modeli produktów'
       entities_to_work_on: 'Musisz zająć się następującymi produktami: <improvable_products_count_link/>'
       entities_to_work_on_2_kinds: 'Musisz zająć się następującymi produktami (<improvable_products_count_link/>) i modelami produktów (<improvable_product_models_count_link/>).'
       list:
@@ -54,11 +54,11 @@ akeneo_data_quality_insights:
           messages:
             first_step:
               message1: Bez obrazów Twoje produkty nie będą wyglądały tak dobrze, jak na to zasługują.
-              message2: Pierwsze wrażenie zostaje na długo. Dbaj o zasoby, a Twoi klienci to zauważą.
+              message2: Pierwsze wrażenie pozostaje na długo. Dbaj o swoje zasoby, a Twoi klienci to zauważą.
               message3: Z naszego doświadczenia obrazy naprawdę robią różnicę. Warto poświęcić więcej czasu na zasoby.
             second_step:
               message1: Jeszcze trochę pracy nad obrazami produktów i będzie pięknie.
-              message2: Obraz jest wart tysiąca słów. Popracuj nad nim teraz, a oszczędzisz czas później!
+              message2: Obraz jest warty tysiąca słów. Popracuj nad nim teraz i oszczędź czas później!
               message3: Być może będziesz musieć spędzić trochę czasu nad obrazami. Twoje produkty będą wyglądać znacznie lepiej.
             third_step:
               message1: Całkiem nieźle, brakuje tylko kilku obrazów.
@@ -116,18 +116,18 @@ akeneo_data_quality_insights:
         success: Dane produktu są w pełni wzbogacone. Gratulacje!
     messages:
       error:
-        axis_error: Z powodu błędu, ocena nie może zostać w pełni obliczona. Spróbuj ponownie później.
+        axis_error: Z powodu błędu, ocena nie może być w pełni obliczona. Spróbuj ponownie później.
         criterion_error: Nie można obliczyć oceny.
       success:
         criterion: Wszystko OK!
       grading_in_progress: Ocena w toku.
       axis_grading_in_progress: Ocena w toku. Wróć później.
-      too_many_attributes: 'Masz następującą liczbę atrybutów do ulepszenia: {{ count }}.'
+      too_many_attributes: 'Masz następującą liczbę atrybutów: {{ count }} do ulepszenia.'
       no_attribute_groups:
         title: Przepraszamy, nie mnożna obliczyć wyniku jakości.
         subtitle: "Nie można obliczyć wyniku jakości: żadna z grup atrybutów tego produktu nie jest aktywna."
-        help_center_link: W naszym centrum pomocy dowiesz się, jak Wgląd w jakość danych może pomóc poprawić ich jakość.
-      add_image_attribute_recommendation: Obraz jest wart tysiąca słów. Dodaj atrybut obrazu, aby poprawić jakość danych tego produktu.
+        help_center_link: W naszym centrum pomocy dowiesz się, jak wgląd w jakość danych może pomóc poprawić ich jakość.
+      add_image_attribute_recommendation: Obraz jest warty tysiąca słów. Dodaj atrybut obrazu, aby poprawić jakość danych tego produktu.
       fill_image_attribute_recommendation: Z naszego doświadczenia wynika, że obrazy naprawdę robią różnicę. Dodaj co najmniej jeden obraz, aby poprawić jakość danych produktu.
       not_applicable:
         message: Te kryteria nie mają zastosowania w tym kontekście.
@@ -138,17 +138,17 @@ akeneo_data_quality_insights:
     back_to_products: Powrót do produktów
   attribute_group:
     helper_dqi_info: Obliczanie wyniku jakości uwzględni wyłącznie atrybuty należące do grup atrybutów aktywowanych pod kątem jakości danych.
-    helper_dqi_link: Więcej informacji znajduje się w naszym centrum pomocy.
+    helper_dqi_link: Więcej informacji na temat naszego centrum pomocy.
     activation: Włączona
-    dqi_status: Status Wglądu w jakość danych
+    dqi_status: Status wglądu w jakość danych
     activated: Włączona
     disabled: Wyłączono
     used_groups_helper: "W obliczeniach dotyczących Wglądu w jakość danych uwzględnia się następujące grupy atrybutów:"
-    all_groups_evaluated: Wszystkie grupy atrybutów tego produktu są brane pod uwagę przy obliczaniu wyniku jakości. Aby uzyskać najtrafniejszy Wynik jakości, <a href="{{ link }}" target="_blank">zajrzyj do naszego centrum pomocy i dowiedz się, jak wyłączać grupy atrybutów.</a>
+    all_groups_evaluated: Wszystkie grupy atrybutów tego produktu są brane pod uwagę przy obliczaniu wyniku jakości. Aby uzyskać najtrafniejszy Wynik jakości, <a href="{{ link }}" target="_blank">zajrzyj do naszego centrum pomocy i dowied
   product_grid:
     filter_label:
       quality_score: Wynik jakości
-      enrichment_quality: Jakość wzbogacania
+      enrichment_quality: Jakość wzbogacenia
       images_quality: Obraz produktu
     filter_value:
       good: Dobra

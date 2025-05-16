@@ -11,7 +11,7 @@ services:
         arguments:
             - '@Akeneo\Platform\Job\Application\FindJobType\FindJobTypeInterface'
 
-    Akeneo\Platform\Job\Application\CreateJobInstanceHandler:
+    Akeneo\Platform\Job\Application\CreateJobInstance\CreateJobInstanceHandler:
         public: true
         arguments:
             - '@akeneo_batch.job_instance_factory'
@@ -20,6 +20,7 @@ services:
             - '@akeneo_batch.job.job_parameters_validator'
             - '@validator'
             - '@akeneo_platform.saver.job_instance'
+            - '@akeneo.job.security_facade'
 
     Akeneo\Platform\Job\Application\LaunchJobInstance\LaunchJobInstanceHandler:
         public: true
@@ -33,3 +34,10 @@ services:
         public: true
         arguments:
             - '@Akeneo\Platform\Job\Application\DeleteJobInstance\DeleteJobInstanceInterface'
+            - '@akeneo.job.security_facade'
+
+    Akeneo\Platform\Job\Application\ListExportedFiles\ListExportedFilesHandler:
+        arguments:
+            - '@pim_enrich.repository.job_execution'
+#            - '@pim_connector.event_listener.archivist'
+            - '@pim_connector.archiver.file_writer_archiver'

@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Installer\Application\ResetInstance;
 
-class ResetInstanceCommand
+final class ResetInstanceCommand
 {
     public function __construct()
     {

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Category\Infrastructure\Job;
 
-use Akeneo\Category\Api\Command\CommandMessageBus;
 use Akeneo\Category\Application\Command\CleanCategoryEnrichedValuesByChannelOrLocale\CleanCategoryEnrichedValuesByChannelOrLocaleCommand;
+use Akeneo\Category\Infrastructure\Bus\CommandBus;
 use Akeneo\Category\Infrastructure\Job\CleanCategoriesEnrichedValuesTasklet;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -15,7 +15,7 @@ use Symfony\Component\Messenger\Envelope;
 
 class CleanCategoriesEnrichedValuesTaskletSpec extends ObjectBehavior
 {
-    function let(CommandMessageBus $commandBus): void
+    function let(CommandBus $commandBus): void
     {
         $this->beConstructedWith($commandBus);
     }
@@ -27,7 +27,7 @@ class CleanCategoriesEnrichedValuesTaskletSpec extends ObjectBehavior
     }
 
     function it_dispatches_a_command_message_to_clean_category_enriched_values_by_channel_or_locale(
-        CommandMessageBus $commandBus,
+        CommandBus $commandBus,
         StepExecution $stepExecution
     ): void {
         $jobParameters = new JobParameters([

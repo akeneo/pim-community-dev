@@ -24,3 +24,6 @@ services:
 
   akeneo_batch_queue.queue.publish_job_to_queue:
     class: Akeneo\Platform\Job\Test\Acceptance\FakeServices\InMemoryPublishJobToQueue
+
+  akeneo.job.security_facade:
+    class: Akeneo\Platform\Job\Test\Acceptance\FakeServices\InMemorySecurityFacade

@@ -9,11 +9,16 @@ const useDashboardCompleteness = (catalogLocale: string): ChannelsLocalesComplet
 
   useEffect(() => {
     (async () => {
-      const result = await fetch(router.generate('pim_dashboard_widget_data', {alias: 'completeness'}), {
-        method: 'GET',
-      });
-      const convertedData = convertBackendDashboardCompletenessData(await result.json(), catalogLocale);
-      setData(convertedData);
+      try {
+        const result = await fetch(router.generate('pim_dashboard_widget_data', {alias: 'completeness'}), {
+          method: 'GET',
+        });
+        const data = await result.json();
+        const convertedData = convertBackendDashboardCompletenessData(data, catalogLocale);
+        setData(convertedData);
+      } catch (error) {
+        setData(null);
+      }
     })();
   }, [catalogLocale]);
 

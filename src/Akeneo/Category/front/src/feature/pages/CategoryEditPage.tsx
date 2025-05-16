@@ -56,7 +56,6 @@ const CategoryEditPage: FC = () => {
   const userContext = useUserContext();
 
   // locales
-  const uiLocale = userContext.get('uiLocale');
   const [catalogLocale, setCatalogLocale] = useState<string | null>(null);
   const handleLocaleChanges = (locale: string) => {
     setCatalogLocale(locale);
@@ -185,7 +184,7 @@ const CategoryEditPage: FC = () => {
     );
   }
   const templateHasAttribute = () => {
-    return template?.attributes.length != 0;
+    return template?.attributes.length !== 0;
   };
 
   return (
@@ -295,12 +294,7 @@ const CategoryEditPage: FC = () => {
           isCurrent(Tabs.ATTRIBUTE) &&
           category &&
           template &&
-          !templateHasAttribute() && (
-            <NoTemplateAttribute
-              title={translate('akeneo.category.edition_form.template.no_attribute_title')}
-              instructions={translate('akeneo.category.edition_form.template.no_attribute_instructions')}
-            />
-          )}
+          !templateHasAttribute() && <NoTemplateAttribute />}
         {isGranted('pim_enrich_product_category_edit_attributes') &&
           isCurrent(Tabs.ATTRIBUTE) &&
           category &&

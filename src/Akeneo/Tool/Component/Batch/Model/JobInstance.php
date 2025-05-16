@@ -68,6 +68,8 @@ class JobInstance
     /** @var Collection|JobExecution[] */
     protected $jobExecutions;
 
+    protected bool $isVisible = true;
+
     /**
      * Constructor.
      *
@@ -275,6 +277,18 @@ class JobInstance
     public function getAutomation(): ?array
     {
         return $this->automation;
+    }
+
+    public function setIsVisible(bool $isVisible): self
+    {
+        $this->isVisible = $isVisible;
+
+        return $this;
+    }
+
+    public function isVisible(): bool
+    {
+        return $this->isVisible;
     }
 
     /**

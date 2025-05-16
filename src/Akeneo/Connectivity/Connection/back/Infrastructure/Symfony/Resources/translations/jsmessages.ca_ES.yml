@@ -269,6 +269,7 @@ akeneo_connectivity.connection:
           not_blank: El redirect_uri és obligatori.
           must_be_url: El redirect_uri no és una url vàlida.
         scope:
+          must_be_a_string: La llista d'àmbits ha de ser una cadena separada per espais.
           too_long: La llista d'abast no ha de contenir més de 1000 caràcters.
     custom_apps:
       creation_limit_reached: Has arribat al límit de 20 aplicacions personalitzades.
@@ -319,7 +320,6 @@ akeneo_connectivity.connection:
   connections: Connexions
   secondary_actions:
     title: Altres accions
-  developer_mode: Mode desenvolupador
   connection:
     code: Codi
     label: Etiqueta
@@ -616,6 +616,7 @@ pim_notification:
   types:
     connected_app_authorizations: Aplicacions autoritzades connectades
     disabled_catalog: Catàleg d'aplicacions desactivat
+    attribute_removed: Catàleg d'aplicacions afectada
   connected_app_authorizations:
     button_label: Obre l'aplicació
   disabled_catalog:

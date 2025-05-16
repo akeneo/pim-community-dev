@@ -2,7 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\FileStorageBundle\Command;
 
-use Akeneo\Platform\Bundle\InstallerBundle\Command\ZddMigration;
+use Akeneo\Platform\Installer\Infrastructure\Command\ZddMigration;
 use Doctrine\DBAL\Connection;
 
 class V20230324153137AddIndexOnFileInfoZddMigration implements ZddMigration

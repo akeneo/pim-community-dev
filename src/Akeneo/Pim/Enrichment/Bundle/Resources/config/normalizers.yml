@@ -215,3 +215,7 @@ services:
             - '@pim_enrich.error.documentation_builder_registry'
         tags:
             - { name: pim_domain_error_serializer.normalizer, priority: 100 }
+    
+    Akeneo\Pim\Enrichment\Bundle\Normalizer\ProductModelsWereCreatedOrUpdatedNormalizer:
+      tags:
+        - { name: akeneo_messenger.message.normalizer }

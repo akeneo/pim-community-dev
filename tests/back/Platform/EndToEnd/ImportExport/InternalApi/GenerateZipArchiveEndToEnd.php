@@ -94,10 +94,7 @@ class GenerateZipArchiveEndToEnd extends InternalApiTestCase
             \mkdir(\dirname($this->tmpFile), 0777, true);
         }
         $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
-        $this->adminId = (int)$this->get('database_connection')->fetchOne(
-            'SELECT id FROM oro_user WHERE username = :username',
-            ['username' => 'admin']
-        );
+        $this->adminId = $this->getUserId('admin');
 
         $this->createProduct('4168a79a-65b7-418f-b713-ac25b0291131', [
             new SetIdentifierValue('sku', 'sku1'),

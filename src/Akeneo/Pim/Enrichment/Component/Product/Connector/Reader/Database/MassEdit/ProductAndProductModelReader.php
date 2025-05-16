@@ -11,6 +11,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\StatefulInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
@@ -28,7 +29,8 @@ class ProductAndProductModelReader implements
     ItemReaderInterface,
     InitializableInterface,
     StepExecutionAwareInterface,
-    TrackableItemReaderInterface
+    TrackableItemReaderInterface,
+    StatefulInterface
 {
     /** @var ProductQueryBuilderFactoryInterface */
     private $pqbFactory;
@@ -47,6 +49,8 @@ class ProductAndProductModelReader implements
 
     /** @var bool */
     private $firstRead = true;
+
+    private array $state = [];
 
     /**
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
@@ -74,6 +78,15 @@ class ProductAndProductModelReader implements
 
         $filters = $this->getConfiguredFilters();
         $this->productsAndProductModels = $this->getCursor($filters, $channel);
+
+        if (!array_key_exists('position', $this->state)) {
+            return;
+        }
+
+        while ($this->productsAndProductModels->valid() && ($this->productsAndProductModels->key() < $this->state['position'] || is_null($this->state['position']))) {
+            $this->productsAndProductModels->next();
+        }
+        $this->firstRead = false;
     }
 
     /**
@@ -194,5 +207,15 @@ class ProductAndProductModelReader implements
         }
 
         return $this->productsAndProductModels->count();
+    }
+
+    public function getState(): array
+    {
+        return null !== $this->productsAndProductModels ? ['position' =>  $this->productsAndProductModels->key()]: [];
+    }
+
+    public function setState(array $state): void
+    {
+        $this->state = $state;
     }
 }

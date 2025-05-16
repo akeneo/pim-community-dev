@@ -8,7 +8,6 @@ use Akeneo\Connectivity\Connection\Application\CustomApps\Command\CreateCustomAp
 use Akeneo\Connectivity\Connection\Application\CustomApps\Command\CreateCustomAppCommandHandler;
 use Akeneo\Connectivity\Connection\Domain\CustomApps\Persistence\GetCustomAppSecretQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controller\External\CreateCustomAppAction;
-use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PhpSpec\Exception\Example\FailureException;
@@ -19,7 +18,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\User\UserInterface as SymfonyUserInterface;
@@ -35,7 +33,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class CreateCustomAppActionSpec extends ObjectBehavior
 {
     public function let(
-        FeatureFlag $developerModeFeatureFlag,
         SecurityFacade $security,
         ValidatorInterface $validator,
         TranslatorInterface $translator,
@@ -44,7 +41,6 @@ class CreateCustomAppActionSpec extends ObjectBehavior
         GetCustomAppSecretQueryInterface $getCustomAppSecretQuery,
     ): void {
         $this->beConstructedWith(
-            $developerModeFeatureFlag,
             $security,
             $validator,
             $translator,
@@ -59,23 +55,10 @@ class CreateCustomAppActionSpec extends ObjectBehavior
         $this->shouldHaveType(CreateCustomAppAction::class);
     }
 
-    public function it_throws_a_not_found_exception_when_developer_mode_feature_flag_is_disabled(
-        FeatureFlag $developerModeFeatureFlag,
-        Request $request,
-    ): void {
-        $developerModeFeatureFlag->isEnabled()->willReturn(false);
-
-        $this
-            ->shouldThrow(new NotFoundHttpException())
-            ->during('__invoke', [$request]);
-    }
-
     public function it_throws_an_access_denied_exception_when_connection_cannot_manage_custom_apps(
-        FeatureFlag $developerModeFeatureFlag,
         Request $request,
         SecurityFacade $security,
     ): void {
-        $developerModeFeatureFlag->isEnabled()->willReturn(true);
         $security->isGranted('akeneo_connectivity_connection_manage_test_apps')->willReturn(false);
 
         $this
@@ -84,12 +67,10 @@ class CreateCustomAppActionSpec extends ObjectBehavior
     }
 
     public function it_throws_a_bad_request_exception_when_token_storage_have_no_token(
-        FeatureFlag $developerModeFeatureFlag,
         Request $request,
         SecurityFacade $security,
         TokenStorageInterface $tokenStorage,
     ): void {
-        $developerModeFeatureFlag->isEnabled()->willReturn(true);
         $security->isGranted('akeneo_connectivity_connection_manage_test_apps')->willReturn(true);
         $tokenStorage->getToken()->willReturn(null);
 
@@ -99,14 +80,12 @@ class CreateCustomAppActionSpec extends ObjectBehavior
     }
 
     public function it_throws_a_bad_request_exception_when_no_valid_user_found(
-        FeatureFlag $developerModeFeatureFlag,
         Request $request,
         SecurityFacade $security,
         TokenStorageInterface $tokenStorage,
         TokenInterface $token,
         SymfonyUserInterface $user,
     ): void {
-        $developerModeFeatureFlag->isEnabled()->willReturn(true);
         $security->isGranted('akeneo_connectivity_connection_manage_test_apps')->willReturn(true);
 
         $token->getUser()->willReturn($user);
@@ -117,7 +96,6 @@ class CreateCustomAppActionSpec extends ObjectBehavior
     }
 
     public function it_returns_a_list_of_errors_when_submit_data_is_invalid(
-        FeatureFlag $developerModeFeatureFlag,
         Request $request,
         SecurityFacade $security,
         TokenStorageInterface $tokenStorage,
@@ -126,7 +104,6 @@ class CreateCustomAppActionSpec extends ObjectBehavior
         ValidatorInterface $validator,
         TranslatorInterface $translator,
     ): void {
-        $developerModeFeatureFlag->isEnabled()->willReturn(true);
         $security->isGranted('akeneo_connectivity_connection_manage_test_apps')->willReturn(true);
 
         $user->getId()->willReturn(42);
@@ -171,7 +148,6 @@ class CreateCustomAppActionSpec extends ObjectBehavior
     }
 
     public function it_fails_retrieve_the_custom_app_secret(
-        FeatureFlag $developerModeFeatureFlag,
         Request $request,
         SecurityFacade $security,
         TokenStorageInterface $tokenStorage,
@@ -181,7 +157,6 @@ class CreateCustomAppActionSpec extends ObjectBehavior
         CreateCustomAppCommandHandler $createCustomAppCommandHandler,
         GetCustomAppSecretQueryInterface $getCustomAppSecretQuery,
     ): void {
-        $developerModeFeatureFlag->isEnabled()->willReturn(true);
         $security->isGranted('akeneo_connectivity_connection_manage_test_apps')->willReturn(true);
 
         $user->getId()->willReturn(42);
@@ -214,7 +189,6 @@ class CreateCustomAppActionSpec extends ObjectBehavior
     }
 
     public function it_creates_a_custom_app(
-        FeatureFlag $developerModeFeatureFlag,
         Request $request,
         SecurityFacade $security,
         TokenStorageInterface $tokenStorage,
@@ -224,7 +198,6 @@ class CreateCustomAppActionSpec extends ObjectBehavior
         CreateCustomAppCommandHandler $createCustomAppCommandHandler,
         GetCustomAppSecretQueryInterface $getCustomAppSecretQuery,
     ): void {
-        $developerModeFeatureFlag->isEnabled()->willReturn(true);
         $security->isGranted('akeneo_connectivity_connection_manage_test_apps')->willReturn(true);
 
         $user->getId()->willReturn(42);

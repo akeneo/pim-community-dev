@@ -1,4 +1,4 @@
-FROM httpd:2.4 AS base
+FROM httpd:2.4-bullseye AS base
 
 ENV PHP_CONF_DATE_TIMEZONE=UTC \
     PHP_CONF_MAX_EXECUTION_TIME=60 \

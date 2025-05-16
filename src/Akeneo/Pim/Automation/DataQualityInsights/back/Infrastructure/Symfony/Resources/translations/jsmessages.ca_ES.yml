@@ -144,7 +144,7 @@ akeneo_data_quality_insights:
     activated: Habilitat
     disabled: Deshabilitat
     used_groups_helper: "Els grups d'atributs següents es tenen en compte en el càlcul de Data Quality Insights:"
-    all_groups_evaluated: Tots els grups d'atributs d'aquest producte es tenen en compte per al càlcul de la puntuació de qualitat. Per obtenir el nivell de qualitat més rellevant, <a href="{{ link }}" target="_blank">obteniu informació sobre com desactivar els grups d'atributs al nostre centre d'ajuda.</a>
+    all_groups_evaluated: Tots els grups d'atributs d'aquest producte es tenen en compte per al càlcul de la puntuació de qualitat. Per obtenir el nivell de qualitat més rellevant, <a href="{{ link }}" target="_blank">obteniu informació sobr
   product_grid:
     filter_label:
       quality_score: Puntuació de qualitat

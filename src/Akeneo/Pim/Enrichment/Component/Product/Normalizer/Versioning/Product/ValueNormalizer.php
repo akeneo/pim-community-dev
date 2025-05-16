@@ -76,9 +76,10 @@ class ValueNormalizer implements NormalizerInterface, NormalizerAwareInterface, 
             if ('metric' === $backendType) {
                 $result[$fieldName . '-unit'] = '';
             }
-        } elseif (is_int($data) || is_float($data) || 'decimal' === $attribute->getBackendType()) {
-            $pattern = $attribute->isDecimalsAllowed() ? sprintf('%%.%sF', $this->precision) : '%d';
-            $result = [$fieldName => sprintf($pattern, $data)];
+        } elseif ('decimal' === $attribute->getBackendType() && !$attribute->isDecimalsAllowed()) {
+            $result = [$fieldName => sprintf('%d', $data)];
+        } elseif ('decimal' === $attribute->getBackendType() && $attribute->isDecimalsAllowed()) {
+            $result = [$fieldName => floatval($data) . ''];
         } elseif (is_string($data)) {
             $result = [$fieldName => $data];
         } elseif (is_object($data)) {

@@ -50,7 +50,7 @@ class PartialUpdateListProductModelEndToEnd extends AbstractProductModelTestCase
     public function testCreateAndUpdateAListOfProductModels()
     {
         // We remove all completenesses in order to check that completeness is recomputed.
-        $this->get('database_connection')->exec('TRUNCATE pim_catalog_completeness;');
+        $this->get('database_connection')->exec('TRUNCATE pim_catalog_product_completeness;');
 
         $data =
             <<<JSON

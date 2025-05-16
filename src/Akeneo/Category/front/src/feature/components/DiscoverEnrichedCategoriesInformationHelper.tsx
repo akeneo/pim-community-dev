@@ -26,8 +26,7 @@ const Item = styled.li`
   }
 `;
 
-const surveyLink =
-  'https://docs.google.com/forms/d/e/1FAIpQLSdrPJk35QxrtEc0gGwE39KJ42cMlEdH3TCygRfYTiG-zYx72A/viewform?usp=sf_link';
+const surveyLink = 'https://www.surveymonkey.com/r/3K7JWK3';
 
 const DiscoverEnrichedCategoriesInformationHelper: FC = () => {
   const translate = useTranslate();
@@ -45,7 +44,6 @@ const DiscoverEnrichedCategoriesInformationHelper: FC = () => {
           <Item>
             {translate('akeneo.category.discover_enriched_categories_information.content.customizable_templates')}
           </Item>
-          <Item>{translate('akeneo.category.discover_enriched_categories_information.content.edit_attributes')}</Item>
         </List>
         <Footer>
           <Link href="https://help.akeneo.com/pim/serenity/articles/enrich-your-category.html" target="_blank">

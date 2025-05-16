@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MessengerBundle\tests\config;
 
-use Akeneo\Tool\Component\Messenger\CorrelationAwareInterface;
-use Akeneo\Tool\Component\Messenger\NormalizableMessageInterface;
-use Akeneo\Tool\Component\Messenger\Tenant\TenantAwareInterface;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -18,19 +15,20 @@ use Doctrine\DBAL\Connection;
  */
 final class HandlerObserver
 {
+    private const PIM_CONF_CODE = 'messenger.handler_observer';
+
     private array $executedHandlers = [];
 
     public function __construct(private readonly Connection $connection)
     {
     }
 
-    public function handlerWasExecuted(string $class, NormalizableMessageInterface $message): void
+    public function handlerWasExecuted(string $class, object $message): void
     {
+        $this->loadFromDb();
         $this->executedHandlers[] = [
             'class' => $class,
             'message' => $message->normalize(),
-            'correlation_id' => $message instanceof CorrelationAwareInterface ? $message->getCorrelationId() : null,
-            'tenant_id' => $message instanceof TenantAwareInterface ? $message->getTenantId() : null,
         ];
         $this->saveInDb();
     }
@@ -45,13 +43,12 @@ final class HandlerObserver
         ));
     }
 
-    public function messageIsHandledByHandler(string $correlationId, string $handlerClass): bool
+    public function messageIsHandledByHandler(object $message, string $handlerClass): bool
     {
         $this->loadFromDb();
 
         foreach ($this->executedHandlers as $execution) {
-            $messageCorrelationId = $execution['correlation_id'] ?? null;
-            if ($execution['class'] === $handlerClass && $correlationId === $messageCorrelationId) {
+            if ($execution['class'] === $handlerClass && $execution['message'] === $message->normalize()) {
                 return true;
             }
         }
@@ -66,6 +63,14 @@ final class HandlerObserver
         return \count($this->executedHandlers);
     }
 
+    public function reset(): void
+    {
+        $query = <<<SQL
+DELETE FROM pim_configuration WHERE code = :code
+SQL;
+        $this->connection->executeQuery($query, ['code' => self::PIM_CONF_CODE]);
+    }
+
     private function saveInDb(): void
     {
         $query = <<<SQL
@@ -73,7 +78,7 @@ INSERT INTO pim_configuration (`code`, `values`) VALUES (:code, :values)
 ON DUPLICATE KEY UPDATE `values` = :values
 SQL;
         $this->connection->executeQuery($query, [
-            'code' => 'messenger.handler_observer',
+            'code' => self::PIM_CONF_CODE,
             'values' => \json_encode($this->executedHandlers),
         ]);
     }
@@ -84,7 +89,7 @@ SQL;
 SELECT `values` FROM pim_configuration WHERE code = :code
 SQL;
         $values = $this->connection->executeQuery($query, [
-            'code' => 'messenger.handler_observer',
+            'code' => self::PIM_CONF_CODE,
         ])->fetchOne();
 
         if ($values) {

@@ -25,14 +25,16 @@ final class GetProductUuidsToEvaluateQuery implements GetEntityIdsToEvaluateQuer
     /**
      * @return \Generator<int, ProductUuidCollection>
      */
-    public function execute(int $limit, int $bulkSize): \Generator
+    public function execute(?int $limit = null, int $bulkSize = GetEntityIdsToEvaluateQueryInterface::BULK_SIZE): \Generator
     {
+        $limitSql = null === $limit ? '' : sprintf('LIMIT %d', $limit);
+
         $sql = <<<SQL
 SELECT DISTINCT BIN_TO_UUID(p.uuid) AS uuid
 FROM pim_data_quality_insights_product_criteria_evaluation e
     JOIN pim_catalog_product p ON p.uuid = e.product_uuid
 WHERE e.status = :status
-LIMIT $limit
+$limitSql
 SQL;
 
         $stmt = $this->db->executeQuery($sql, ['status' => CriterionEvaluationStatus::PENDING], ['status' => \PDO::PARAM_STR]);

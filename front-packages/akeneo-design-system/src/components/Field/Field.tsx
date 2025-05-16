@@ -1,6 +1,6 @@
 import React, {Ref, ReactElement, ReactNode} from 'react';
 import styled from 'styled-components';
-import {Helper, HelperProps, InputProps, Locale, LocaleProps, Pill} from '../../components';
+import {Helper, HelperProps, InputProps, Locale, LocaleProps, Pill, Block, BlockProps} from '../../components';
 import {useId} from '../../hooks';
 
 const FieldContainer = styled.div<{fullWidth: boolean}>`
@@ -104,6 +104,10 @@ const Field = React.forwardRef<HTMLDivElement, FieldProps>(
     const decoratedChildren = React.Children.map(children, child => {
       if (React.isValidElement<HelperProps>(child) && child.type === Helper) {
         return <HelperContainer>{React.cloneElement(child, {inline: true})}</HelperContainer>;
+      }
+
+      if (React.isValidElement<BlockProps>(child) && child.type === Block) {
+        return React.cloneElement(child, {id: inputId, ariaLabelledBy: labelId});
       }
 
       if (React.isValidElement<InputProps<unknown>>(child)) {

@@ -10,6 +10,11 @@ akeneo.category:
         text_too_long: 이 값은 {{ limit }}자를 넘을 수 없습니다.
         textarea_too_long: 이 값은 {{ limit }}자를 넘을 수 없습니다.
         richtext_too_long: 이 값은 {{ limit }}자를 넘을 수 없습니다.
+    template:
+      code:
+        not_blank: 이 값은 비워둘 수 없습니다.
+        unique: '템플릿 코드: {{ templateCode }}이(가) 이미 존재합니다.'
+        wrong_format: 이 필드에는 문자, 숫자 및 밑줄만 사용할 수 있습니다.
     attribute:
       limit:
         title: 50개 넘게 특성을 추가할 수 없습니다.

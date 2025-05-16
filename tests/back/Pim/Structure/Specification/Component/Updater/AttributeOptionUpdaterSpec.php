@@ -50,7 +50,7 @@ class AttributeOptionUpdaterSpec extends ObjectBehavior
         AttributeInterface $attribute,
         AttributeOptionValueInterface $attributeOptionValue
     ) {
-        $attributeOption->getId()->willReturn(null);
+        $attributeOption->getCode()->willReturn(null);
         $attributeOption->getAttribute()->willReturn(null);
 
         $attributeOption->setCode('mycode')->shouldBeCalled();
@@ -116,7 +116,7 @@ class AttributeOptionUpdaterSpec extends ObjectBehavior
         $attributeRepository,
         AttributeOptionInterface $attributeOption
     ) {
-        $attributeOption->getId()->willReturn(null);
+        $attributeOption->getCode()->willReturn(null);
         $attributeOption->getAttribute()->willReturn(null);
 
         $attributeOption->setCode('mycode')->shouldBeCalled();
@@ -191,5 +191,22 @@ class AttributeOptionUpdaterSpec extends ObjectBehavior
                 )
             )
             ->during('update', [$attributeOption, ['sort_order' => '15'], []]);
+    }
+
+    function it_does_not_fail_when_using_numeric_code(
+        AttributeOptionInterface $attributeOption
+    )
+    {
+        $values = [
+            'code' => 12345,
+        ];
+
+        $attributeOption->setCode($values['code'])->willReturn($attributeOption);
+        $attributeOption->getCode()->willReturn($values['code']);
+
+        $this->update(
+            $attributeOption,
+            $values
+        );
     }
 }

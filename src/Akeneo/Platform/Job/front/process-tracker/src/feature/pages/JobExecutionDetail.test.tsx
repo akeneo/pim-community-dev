@@ -153,8 +153,8 @@ test('it can show every downloadable files', () => {
 
   expect(screen.getByText('pim_menu.tab.activity')).toBeInTheDocument();
   expect(screen.getByText('pim_menu.item.job_tracker')).toBeInTheDocument();
-  expect(screen.getByText('pim_enrich.entity.job_execution.module.download.output')).toBeInTheDocument();
-  userEvent.click(screen.getByText('pim_enrich.entity.job_execution.module.download.output'));
+  expect(screen.getByText('pim_enrich.entity.job_execution.module.download.dropdown_title')).toBeInTheDocument();
+  userEvent.click(screen.getByText('pim_enrich.entity.job_execution.module.download.dropdown_title'));
   expect(screen.getByText('pim_enrich.entity.job_execution.module.download.archive')).toBeInTheDocument();
 });
 

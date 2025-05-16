@@ -10,6 +10,11 @@ akeneo.category:
         text_too_long: 値は{{count}}文字より長くすることはできません
         textarea_too_long: 値は{{count}}文字より長くすることはできません
         richtext_too_long: 値は{{count}}文字より長くすることはできません
+    template:
+      code:
+        not_blank: この値は空白にできません。
+        unique: 'テンプレートコード: {{ templateCode }}はすでに存在します。'
+        wrong_format: フィールドには、文字、数字、アンダースコアを含めることができます。
     attribute:
       limit:
         title: 50個を超える属性は追加できません

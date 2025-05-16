@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Tests\EndToEnd\CustomApps\Controller\External;
 
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Security\AclLoader;
-use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeFeatureFlag;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Doctrine\DBAL\Connection;
@@ -19,7 +18,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class CreateCustomAppActionEndToEnd extends ApiTestCase
 {
-    private FakeFeatureFlag $developerModeFeatureFlag;
     private Connection $connection;
     private AclLoader $aclLoader;
 
@@ -32,14 +30,12 @@ class CreateCustomAppActionEndToEnd extends ApiTestCase
     {
         parent::setUp();
 
-        $this->developerModeFeatureFlag = $this->get('akeneo_connectivity.connection.app_developer_mode.feature');
         $this->connection = $this->get('database_connection');
         $this->aclLoader = $this->get(AclLoader::class);
     }
 
     public function test_it_creates_a_custom_app(): void
     {
-        $this->developerModeFeatureFlag->enable();
         $this->aclLoader->addAclToRoles('akeneo_connectivity_connection_manage_test_apps', ['ROLE_ADMINISTRATOR']);
 
         $connection = $this->createConnection();

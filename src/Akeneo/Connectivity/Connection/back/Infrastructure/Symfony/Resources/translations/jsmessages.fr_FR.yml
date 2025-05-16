@@ -269,6 +269,7 @@ akeneo_connectivity.connection:
           not_blank: La redirect_uri est requise.
           must_be_url: Le redirect_uri n'est pas une URL valide.
         scope:
+          must_be_a_string: La liste des scopes requis doit être une chaîne de caractères séparées par des espaces.
           too_long: La liste des scopes ne peut pas dépasser 1000 caractères.
     custom_apps:
       creation_limit_reached: Vous avez atteint la limite de 20 apps custom.
@@ -285,8 +286,8 @@ akeneo_connectivity.connection:
             callback_url: URL de retour (callback)
           field_placeholder:
             name: Définir le nom de l'app
-            activate_url: Remplir l'URL d'activation (activate)
-            callback_url: Remplir l'URL de retour (callback)
+            activate_url: Remplir l'url d'activation (activate url)
+            callback_url: Remplir l'url d'appel (callback url)
         credentials:
           title: Identifiants
           client_id: ID Client
@@ -319,7 +320,6 @@ akeneo_connectivity.connection:
   connections: Connexions
   secondary_actions:
     title: Autres actions
-  developer_mode: Mode Développeur
   connection:
     code: Code
     label: Libellé

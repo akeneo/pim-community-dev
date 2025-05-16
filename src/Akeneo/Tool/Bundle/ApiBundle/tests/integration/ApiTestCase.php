@@ -18,6 +18,7 @@ use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 use Oro\Bundle\SecurityBundle\Model\AclPermission;
 use Oro\Bundle\SecurityBundle\Model\AclPrivilege;
 use Oro\Bundle\SecurityBundle\Model\AclPrivilegeIdentity;
+use PHPUnit\Framework\Assert;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -197,6 +198,31 @@ abstract class ApiTestCase extends WebTestCase
             $responseBody['access_token'],
             $responseBody['refresh_token'],
         ];
+    }
+
+    protected function loginAs(string $username): int
+    {
+        $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
+        Assert::assertInstanceOf(UserInterface::class, $user);
+        $this->get('security.token_storage')->setToken(
+            new UsernamePasswordToken($user, 'main', $user->getRoles())
+        );
+
+        return (int) $user->getId();
+    }
+
+    protected function getUserId(string $username): int
+    {
+        $query = <<<SQL
+            SELECT id FROM oro_user WHERE username = :username
+        SQL;
+        $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
+        $id = $stmt->fetchOne();
+        if (null === $id) {
+            throw new \InvalidArgumentException(\sprintf('No user exists with username "%s"', $username));
+        }
+
+        return \intval($id);
     }
 
     /**
@@ -398,7 +424,13 @@ abstract class ApiTestCase extends WebTestCase
     protected function getProductUuid(string $productIdentifier): ?UuidInterface
     {
         $productUuid = $this->get('database_connection')->executeQuery(
-            'SELECT BIN_TO_UUID(uuid) as uuid from pim_catalog_product where identifier = :identifier',
+            <<<SQL
+SELECT BIN_TO_UUID(product_uuid) AS uuid
+FROM pim_catalog_product_unique_data
+INNER JOIN pim_catalog_attribute ON pim_catalog_product_unique_data.attribute_id = pim_catalog_attribute.id
+WHERE raw_data = :identifier
+AND pim_catalog_attribute.main_identifier = 1
+SQL,
             ['identifier' => $productIdentifier]
         )->fetchOne();
 

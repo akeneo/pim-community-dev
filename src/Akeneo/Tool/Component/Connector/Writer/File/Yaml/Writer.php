@@ -3,9 +3,11 @@
 namespace Akeneo\Tool\Component\Connector\Writer\File\Yaml;
 
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
+use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Job\RuntimeErrorException;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Akeneo\Tool\Component\Connector\Job\JobFileBackuper;
 use Akeneo\Tool\Component\Connector\Writer\File\AbstractFileWriter;
 use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
 use Symfony\Component\Yaml\Yaml;
@@ -17,7 +19,7 @@ use Symfony\Component\Yaml\Yaml;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Writer extends AbstractFileWriter implements ItemWriterInterface, FlushableInterface
+class Writer extends AbstractFileWriter implements ItemWriterInterface, FlushableInterface, InitializableInterface
 {
     const INLINE_ARRAY_LEVEL = 8;
     const INDENT_SPACES = 4;
@@ -31,17 +33,35 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Flushabl
     /** @var bool */
     protected $isFirstWriting;
 
+    protected array $state = [];
+
     /**
      * @param ArrayConverterInterface $arrayConverter
      * @param string                  $header
      */
-    public function __construct(ArrayConverterInterface $arrayConverter, $header = null)
-    {
+    public function __construct(
+        ArrayConverterInterface $arrayConverter,
+        private readonly JobFileBackuper $jobFileBackuper,
+        $header = null,
+    ) {
         parent::__construct();
 
         $this->arrayConverter = $arrayConverter;
         $this->header = $header;
         $this->isFirstWriting = true;
+    }
+
+    public function initialize()
+    {
+        $filePath = $this->state['file_path'] ?? null;
+
+        if ($filePath === null) {
+            return;
+        }
+
+        $this->jobFileBackuper->recover($this->stepExecution->getJobExecution(), $filePath);
+
+        $this->isFirstWriting = false;
     }
 
     /**
@@ -139,5 +159,19 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Flushabl
         foreach ($items as $item) {
             $this->stepExecution->incrementSummaryInfo('write');
         }
+    }
+
+    public function getState(): array
+    {
+        $filePath = $this->getPath();
+        $this->jobFileBackuper->backup($this->stepExecution->getJobExecution(), $filePath);
+
+        return [
+            'file_path' => $filePath,
+        ];
+    }
+    public function setState(array $state): void
+    {
+        $this->state = $state;
     }
 }

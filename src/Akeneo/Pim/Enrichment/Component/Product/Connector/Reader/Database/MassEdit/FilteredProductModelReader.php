@@ -12,6 +12,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\StatefulInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
@@ -28,7 +29,8 @@ class FilteredProductModelReader implements
     ItemReaderInterface,
     InitializableInterface,
     StepExecutionAwareInterface,
-    TrackableItemReaderInterface
+    TrackableItemReaderInterface,
+    StatefulInterface
 {
     /** @var ProductQueryBuilderFactoryInterface */
     private $pqbFactory;
@@ -47,6 +49,8 @@ class FilteredProductModelReader implements
 
     /** @var bool */
     private $firstRead = true;
+
+    private array $state = [];
 
     /**
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
@@ -73,6 +77,16 @@ class FilteredProductModelReader implements
         $channel = $this->getConfiguredChannel();
         $filters = $this->getConfiguredFilters();
         $this->productsAndProductModels = $this->getProductModelsCursor($filters, $channel);
+
+        if (!array_key_exists('position', $this->state)) {
+            $this->productsAndProductModels->rewind();
+            return;
+        }
+
+        while ($this->productsAndProductModels->valid() && ($this->productsAndProductModels->key() < $this->state['position'] || is_null($this->state['position']))) {
+            $this->productsAndProductModels->next();
+        }
+        $this->firstRead = false;
     }
 
     /**
@@ -80,7 +94,6 @@ class FilteredProductModelReader implements
      */
     public function read(): ?ProductModelInterface
     {
-        $productModel = null;
         $productModel = $this->getNextProductModel();
 
         if (null !== $productModel) {
@@ -198,5 +211,15 @@ class FilteredProductModelReader implements
         }
 
         return $this->productsAndProductModels->count();
+    }
+
+    public function getState(): array
+    {
+        return null !== $this->productsAndProductModels ? ['position' => $this->productsAndProductModels->key()] : [];
+    }
+
+    public function setState(array $state): void
+    {
+        $this->state = $state;
     }
 }

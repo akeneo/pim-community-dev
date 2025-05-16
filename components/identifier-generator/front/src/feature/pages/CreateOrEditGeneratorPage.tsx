@@ -41,7 +41,7 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
     [validationErrors]
   );
 
-  const generalValidationErrors = getErrorByPathNames(['code', 'labels']);
+  const generalValidationErrors = getErrorByPathNames(['code', 'labels', 'target']);
   const selectionValidationErrors = getErrorByPathNames(['conditions']);
   const structureValidationErrors = getErrorByPathNames(['structure', 'delimiter']);
 

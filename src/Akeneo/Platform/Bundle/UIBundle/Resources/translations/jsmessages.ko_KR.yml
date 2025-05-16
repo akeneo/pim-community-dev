@@ -305,8 +305,6 @@ pim_enrich.entity.job_execution:
       upload: 여기에 {{ type }} 파일을 놓거나, 클릭하여 디스크 찾아보기
     download:
       archive: 생성된 아카이브 다운로드
-      output: 생성된 파일 다운로드
-      input: 읽은 파일 다운로드
       invalid_xlsx: 잘못된 데이터 다운로드
       invalid_csv: 잘못된 데이터 다운로드
 pim_title:
@@ -464,7 +462,8 @@ pim_system:
     button:
       label: 인스턴스 재설정
       confirm: 재설정 및 로그아웃
-    error_notification: PIM 재설정 중에 오류가 발생했습니다. 시스템 관리자에게 문의하십시오.
+    error_notification: 인스턴스 재설정 중에 오류가 발생했습니다. 시스템 관리자에게 문의하십시오.
+    jobs_running: 일부 프로세스가 아직 대기열에 있거나 실행 중이므로 지금 인스턴스를 재설정할 수 없습니다.
   sandbox:
     helper:
       text: 샌드박스 환경이므로, 변경 사항이 프로덕션에 영향을 미치지 않습니다.

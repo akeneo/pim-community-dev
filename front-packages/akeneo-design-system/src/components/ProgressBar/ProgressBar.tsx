@@ -14,11 +14,8 @@ const progressBarAnimation = keyframes`
 
 const Header = styled.div`
   display: flex;
-  align-items: stretch;
-  flex-direction: row;
   font-size: ${getFontSize('default')};
-  flex-flow: row wrap;
-  margin-bottom: -4px;
+  justify-content: space-between;
 `;
 
 const Title = styled.div`
@@ -27,24 +24,11 @@ const Title = styled.div`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 100%;
-  flex-grow: 1;
-  margin-bottom: 4px;
-
-  /* When header div is greater than 300px the flex-basic is negative, progress label is on same line */
-  /* When header div is lower than 300px the flex-basic is positive, progress label is move to new line */
-  flex-basis: calc((301px - 100%) * 999);
 `;
 
 const ProgressLabel = styled.div`
   color: ${getColor('grey', 120)};
-  flex-grow: 0;
-  flex-basis: auto;
-  flex-shrink: 1;
-  margin-bottom: 4px;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 `;
 
 const ProgressBarBackground = styled.div<{size: ProgressBarSize} & AkeneoThemedProps>`
@@ -177,11 +161,9 @@ const ProgressBar = forwardRef<HTMLDivElement, ProgressBarProps>(
       <ProgressBarContainer ref={forwardedRef} {...rest}>
         {(title || progressLabel) && (
           <Header>
-            {title && (
-              <Title title={title} id={labelId} htmlFor={progressBarId}>
-                {title}
-              </Title>
-            )}
+            <Title title={title} id={labelId} htmlFor={progressBarId}>
+              {title}
+            </Title>
             {progressLabel && <ProgressLabel title={progressLabel}>{progressLabel}</ProgressLabel>}
           </Header>
         )}

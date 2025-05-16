@@ -12,6 +12,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\StatefulInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
@@ -28,7 +29,8 @@ class FilteredProductReader implements
     ItemReaderInterface,
     InitializableInterface,
     StepExecutionAwareInterface,
-    TrackableItemReaderInterface
+    TrackableItemReaderInterface,
+    StatefulInterface
 {
     /** @var ProductQueryBuilderFactoryInterface */
     private $pqbFactory;
@@ -47,6 +49,8 @@ class FilteredProductReader implements
 
     /** @var bool */
     private $firstRead = true;
+
+    private array $state = [];
 
     /**
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
@@ -74,6 +78,16 @@ class FilteredProductReader implements
 
         $filters = $this->getConfiguredFilters();
         $this->products = $this->getProductsCursor($filters, $channel);
+        $this->products->rewind();
+
+        if (!array_key_exists('position', $this->state)) {
+            return;
+        }
+
+        while ($this->products->valid() && ($this->products->key() < $this->state['position'] || is_null($this->state['position']))) {
+            $this->products->next();
+        }
+        $this->firstRead = false;
     }
 
     /**
@@ -201,5 +215,15 @@ class FilteredProductReader implements
         }
 
         return $this->products->count();
+    }
+
+    public function getState(): array
+    {
+        return null !== $this->products ? ['position' =>  $this->products->key()] : [];
+    }
+
+    public function setState(array $state): void
+    {
+        $this->state = $state;
     }
 }

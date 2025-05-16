@@ -11,5 +11,8 @@ namespace Akeneo\Platform\Job\ServiceApi\JobInstance\DeleteJobInstance;
 
 interface DeleteJobInstanceHandlerInterface
 {
+    /**
+     * @throws CannotDeleteJobInstanceException
+     */
     public function handle(DeleteJobInstanceCommand $command): void;
 }

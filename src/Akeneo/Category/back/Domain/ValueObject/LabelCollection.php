@@ -16,20 +16,26 @@ use Webmozart\Assert\Assert;
 final class LabelCollection implements \IteratorAggregate
 {
     /**
-     * @param LocalizedLabels $translatedLabels
+     * @phpstan-var LocalizedLabels
      */
-    private function __construct(private ?array $translatedLabels)
+    private array $labels = [];
+
+    /**
+     * @phpstan-param LocalizedLabels $labels
+     */
+    private function __construct(array $labels)
     {
-        Assert::nullOrIsArray($translatedLabels);
-        Assert::allStringNotEmpty(array_keys($translatedLabels));
+        foreach ($labels as $localeCode => $label) {
+            $this->setTranslation($localeCode, $label);
+        }
     }
 
     /**
-     * @param LocalizedLabels $translatedLabels
+     * @phpstan-param LocalizedLabels $labels
      */
-    public static function fromArray(array $translatedLabels): self
+    public static function fromArray(array $labels): self
     {
-        return new self($translatedLabels);
+        return new self($labels);
     }
 
     /**
@@ -37,23 +43,32 @@ final class LabelCollection implements \IteratorAggregate
      */
     public function getTranslations(): array
     {
-        return $this->translatedLabels;
+        return $this->labels;
     }
 
     public function getTranslation(string $localeCode): ?string
     {
-        return $this->translatedLabels[$localeCode] ?? null;
+        return $this->labels[$localeCode] ?? null;
     }
 
     public function setTranslation(string $localeCode, ?string $label): void
     {
         Assert::notEmpty($localeCode);
-        $this->translatedLabels[$localeCode] = $label;
+        Assert::nullOrMaxLength($label, 255);
+
+        $this->labels[$localeCode] = empty($label) ? null : $label;
     }
 
     public function hasTranslation(string $localeCode): bool
     {
-        return array_key_exists($localeCode, $this->translatedLabels);
+        return array_key_exists($localeCode, $this->labels);
+    }
+
+    public function merge(LabelCollection $labelCollection): void
+    {
+        foreach ($labelCollection as $localeCode => $label) {
+            $this->setTranslation($localeCode, $label);
+        }
     }
 
     /**
@@ -61,7 +76,7 @@ final class LabelCollection implements \IteratorAggregate
      */
     public function getIterator(): \ArrayIterator
     {
-        return new \ArrayIterator($this->translatedLabels);
+        return new \ArrayIterator($this->labels);
     }
 
     /**
@@ -69,6 +84,6 @@ final class LabelCollection implements \IteratorAggregate
      */
     public function normalize(): array
     {
-        return $this->translatedLabels ?? [];
+        return $this->labels;
     }
 }

@@ -15,6 +15,7 @@ datagrid:
             type:
                 label: Type
                 type: translateable
+                frontend-type: attribute-type
             group:
                 label:     Group
                 data_name: groupLabel
@@ -27,6 +28,7 @@ datagrid:
         properties:
             id: ~
             code: ~
+            main_identifier: ~
             edit_link:
                 type: url
                 route: pim_enrich_attribute_edit
@@ -73,7 +75,7 @@ datagrid:
                     data_name: a.code
                 label:
                     type: attribute_search
-                    label: code_or_label
+                    label: pim_datagrid.filters.code_or_label.label
                     data_name: code_or_label
                 type:
                     type:      choice

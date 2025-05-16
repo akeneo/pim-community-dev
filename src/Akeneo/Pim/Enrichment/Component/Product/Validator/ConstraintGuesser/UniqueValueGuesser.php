@@ -19,31 +19,34 @@ class UniqueValueGuesser implements ConstraintGuesserInterface
     /**
      * {@inheritdoc}
      */
-    public function supportAttribute(AttributeInterface $attribute)
+    public function supportAttribute(AttributeInterface $attribute): bool
     {
         $availableTypes = [
             AttributeTypes::BACKEND_TYPE_TEXT,
             AttributeTypes::BACKEND_TYPE_DATE,
             AttributeTypes::BACKEND_TYPE_DATETIME,
-            AttributeTypes::BACKEND_TYPE_DECIMAL
+            AttributeTypes::BACKEND_TYPE_DECIMAL,
         ];
 
-        return in_array($attribute->getBackendType(), $availableTypes);
+        return in_array($attribute->getBackendType(), $availableTypes) && true !== $attribute->isMainIdentifier();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function guessConstraints(AttributeInterface $attribute)
+    public function guessConstraints(AttributeInterface $attribute): array
     {
-        $constraints = [];
-
-        // We don't apply the unique value constraint on identifier because it is done
-        // by `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product\UniqueProductEntity`
-        if ($attribute->isUnique() && AttributeTypes::IDENTIFIER !== $attribute->getType()) {
-            $constraints[] = new UniqueValue();
+        // We don't apply the unique value constraint on the main identifier because it is done
+        // by `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product\UniqueProductEntity'
+        if (!$attribute->isUnique() || $attribute->isMainIdentifier()) {
+            return [];
         }
 
-        return $constraints;
+        $constraint = new UniqueValue();
+        if (AttributeTypes::IDENTIFIER === $attribute->getType()) {
+            $constraint->message = 'pim_catalog.constraint.unique_identifier_value';
+        }
+
+        return [$constraint];
     }
 }

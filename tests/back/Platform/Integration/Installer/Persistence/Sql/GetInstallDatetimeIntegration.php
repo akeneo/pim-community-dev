@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Platform\Integration\Installer\Persistence\Sql;
 
-use Akeneo\Platform\Bundle\InstallerBundle\Persistence\Sql\GetInstallDatetime;
-use Akeneo\Platform\Bundle\InstallerBundle\Persistence\Sql\InstallData;
+use Akeneo\Platform\Installer\Infrastructure\Persistence\Sql\GetInstallDatetime;
+use Akeneo\Platform\Installer\Infrastructure\Persistence\Sql\InstallData;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
@@ -25,8 +25,8 @@ class GetInstallDatetimeIntegration extends TestCase
 
     public function test_it_gets_install_datetime(): void
     {
-        $intallDataQuery = $this->get(InstallData::class);
-        $intallDataQuery->withDatetime(new \DateTimeImmutable('2022-12-13'));
+        $installDataQuery = $this->get(InstallData::class);
+        $installDataQuery->withDatetime(new \DateTimeImmutable('2022-12-13'));
 
         $installDatetime = $this->getQuery()->__invoke();
 

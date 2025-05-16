@@ -1,5 +1,5 @@
 import React, {useCallback} from 'react';
-import {IdentifierGenerator, LabelCollection, TextTransformation} from '../models';
+import {IdentifierGenerator, LabelCollection, Target, TextTransformation} from '../models';
 import {Field, SectionTitle, TextInput} from 'akeneo-design-system';
 import {
   IdentifierAttributeSelector,
@@ -30,6 +30,11 @@ const GeneralPropertiesTab: React.FC<GeneralPropertiesProps> = ({generator, onGe
     [onGeneratorChange, generator]
   );
 
+  const onTargetChange = useCallback(
+    (target: Target) => onGeneratorChange({...generator, target}),
+    [onGeneratorChange, generator]
+  );
+
   return (
     <>
       <TabValidationErrors errors={validationErrors} />
@@ -40,7 +45,7 @@ const GeneralPropertiesTab: React.FC<GeneralPropertiesProps> = ({generator, onGe
         <Field label={translate('pim_common.code')}>
           <TextInput value={generator.code} readOnly={true} />
         </Field>
-        <IdentifierAttributeSelector code={generator.target || ''} />
+        <IdentifierAttributeSelector code={generator.target || ''} onChange={onTargetChange} />
         <Field label={translate('pim_identifier_generator.general.text_transformation.label')}>
           <TextTransformationSelector value={generator.text_transformation} onChange={onTextTransformationChange} />
         </Field>

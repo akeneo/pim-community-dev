@@ -276,6 +276,8 @@ pim_enrich.export.product:
       empty: Tous les attributs vont être exportés
       modal:
         title: Sélection d'attributs
+        helper:
+          text: "L'identifiant principal sera toujours exporté avec les attributs sélectionnés."
     attributes_selector:
       attributes: "Rechercher dans les {{ itemsCount }} attributs"
       selected: "Attributs sélectionnés"
@@ -326,6 +328,8 @@ pim_enrich.export.product:
     string:
       operators:
         ALL: Tous
+    price-collection:
+      operators:
     select:
       operators:
         IN: Dans la liste
@@ -508,6 +512,8 @@ pim_datagrid:
       label: Identifiant
     uuid:
       label: UUID
+    code_or_label:
+      label: Code ou libellé
   search: Rechercher sur {{ label }}
 batch_jobs:
   add_association:

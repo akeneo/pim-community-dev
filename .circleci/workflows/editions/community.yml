@@ -13,40 +13,6 @@ aliases:
 
 workflows:
     version: 2
-
-    nightly:
-        when:
-            and:
-                - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
-                - equal: [ "nightly_master", << pipeline.schedule.name >> ]
-        jobs:
-            - checkout_ce
-            - build_dev:
-                  <<: *slack-fail-post-step
-                  is_ee_built: false
-                  requires:
-                      - checkout_ce
-            - test_back_static_and_acceptance:
-                  <<: *slack-fail-post-step
-                  requires:
-                      - build_dev
-            - test_front_static_acceptance_and_integration:
-                  <<: *slack-fail-post-step
-                  requires:
-                      - build_dev
-            - test_back_phpunit:
-                  <<: *slack-fail-post-step
-                  requires:
-                      - build_dev
-            - test_back_behat_legacy:
-                  <<: *slack-fail-post-step
-                  requires:
-                      - build_dev
-            - test_back_data_migrations:
-                  <<: *slack-fail-post-step
-                  requires:
-                      - build_dev
-
     nightly_docker:
         when:
             and:
@@ -55,8 +21,8 @@ workflows:
         jobs:
             - checkout_ce
             - build_docker_images:
-                requires:
-                    - checkout_ce
+                  requires:
+                      - checkout_ce
 
     on_demand:
         when:

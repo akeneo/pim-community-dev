@@ -15,6 +15,7 @@ use Akeneo\Pim\Enrichment\Product\API\Event\ProductWasUpdated;
 use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier;
 use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
 use Akeneo\Pim\Enrichment\Product\Application\Applier\UserIntentApplierRegistry;
+use Akeneo\Pim\Enrichment\Product\Domain\Clock;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
@@ -39,7 +40,8 @@ final class UpsertProductHandler
         private ValidatorInterface $productValidator,
         private EventDispatcherInterface $eventDispatcher,
         private UserIntentApplierRegistry $applierRegistry,
-        private TokenStorageInterface $tokenStorage
+        private TokenStorageInterface $tokenStorage,
+        private Clock $clock
     ) {
     }
 
@@ -74,13 +76,18 @@ final class UpsertProductHandler
             throw new LegacyViolationsException($violations);
         }
 
+        if ($command->dryRun()) {
+            return;
+        }
+
         $isUpdate = $product->isDirty();
         $this->productSaver->save($product);
 
+        $date = $this->clock->now();
         if ($isCreation) {
-            $this->eventDispatcher->dispatch(new ProductWasCreated($product->getUuid()));
+            $this->eventDispatcher->dispatch(new ProductWasCreated($product->getUuid(), $date));
         } elseif ($isUpdate) {
-            $this->eventDispatcher->dispatch(new ProductWasUpdated($product->getUuid()));
+            $this->eventDispatcher->dispatch(new ProductWasUpdated($product->getUuid(), $date));
         }
     }
 
@@ -148,6 +155,12 @@ final class UpsertProductHandler
     {
         $user = $this->tokenStorage->getToken()?->getUser();
         Assert::implementsInterface($user, UserInterface::class);
+
+        // should be deleted once we don't rely on the token storage anymore
+        // user system is used for some tests or commands
+        if (-1 === $userId && $user->getUserIdentifier() === 'system') {
+            return;
+        }
 
         if ($userId !== $user->getId()) {
             throw new \LogicException('User id provided to the command is not the same as the connected user');

@@ -20,10 +20,18 @@ final class Version_8_0_20230417092236_fix_completeness_table_auto_increment ext
 
     public function up(Schema $schema): void
     {
-        $this->skipIf(
-            $this->isColumnAutoIncremental('pim_catalog_completeness', 'id'),
-            'id column is already using auto_increment'
-        );
+        if (!$this->tableExists('pim_catalog_completeness')) {
+            $this->disableMigrationWarning();
+
+            return;
+        }
+
+        if ($this->isColumnAutoIncremental('pim_catalog_completeness', 'id')) {
+            $this->write('id column is already using auto_increment');
+            $this->disableMigrationWarning();
+
+            return;
+        }
 
         $this->connection->executeStatement(<<<SQL
 ALTER TABLE pim_catalog_completeness MODIFY COLUMN id bigint NOT NULL AUTO_INCREMENT
@@ -53,5 +61,22 @@ SQL;
         ]);
 
         return \intval($result) > 0;
+    }
+
+    private function tableExists(string $tableName): bool
+    {
+        $rows = $this->connection->fetchAllAssociative(
+            <<<SQL
+                SHOW TABLES LIKE :tableName
+            SQL,
+            ['tableName' => $tableName]
+        );
+
+        return count($rows) >= 1;
+    }
+
+    private function disableMigrationWarning(): void
+    {
+        $this->addSql('SELECT 1');
     }
 }

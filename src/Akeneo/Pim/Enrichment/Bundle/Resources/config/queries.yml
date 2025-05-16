@@ -19,7 +19,7 @@ services:
             - '@pim_enrich.filter.category_code'
 
     pim_catalog.doctrine.query.find_variant_product_completeness:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Completeness\VariantProductRatio'
+        class: Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Completeness\VariantProductCompletenessRatio
         arguments:
             - '@database_connection'
 
@@ -132,37 +132,14 @@ services:
             - '@database_connection'
 
     akeneo.pim.enrichment.product.query.get_product_completenesses:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Completeness\SqlGetProductCompletenesses'
-        arguments:
-            - '@database_connection'
-
-    Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Completeness\SqlGetCompletenesses:
+        class: Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Completeness\SqlGetCompletenesses
         arguments:
             - '@database_connection'
             - '@pim_channel.query.cache.channel_exists_with_locale'
 
-    Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Completeness\SwitchSqlGetCompleteness:
-        decorates: akeneo.pim.enrichment.product.query.get_product_completenesses
-        arguments:
-            - '@.inner'
-            - '@Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Completeness\SqlGetCompletenesses'
-            - '@database_connection'
-
     akeneo.pim.enrichment.product.query.save_product_completenesses:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Completeness\SqlSaveProductCompletenesses'
+        class: Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Completeness\SqlSaveCompletenesses
         arguments:
-            - '@database_connection'
-            - '@logger'
-
-    Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Completeness\SqlSaveCompletenesses:
-        arguments:
-            - '@database_connection'
-
-    Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Completeness\DoubleStorageCompletenesses:
-        decorates: akeneo.pim.enrichment.product.query.save_product_completenesses
-        arguments:
-            - '@.inner'
-            - '@Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Completeness\SqlSaveCompletenesses'
             - '@database_connection'
 
     Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetCategoryCodesByProductUuids:
@@ -497,4 +474,9 @@ services:
     Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\GetDeletedProductModelDocumentIds:
         arguments:
             - '@akeneo_elasticsearch.client.product_and_product_model'
+            - '@database_connection'
+
+    Akeneo\Pim\Enrichment\Component\Product\Query\UpdateIdentifierValuesQuery:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlUpdateIdentifierValuesQuery'
+        arguments:
             - '@database_connection'

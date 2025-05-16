@@ -4,3 +4,14 @@ services:
     arguments:
       - '@Akeneo\Platform\Installer\Application\ResetInstance\ResetInstanceHandler'
       - '@oro_security.security_facade'
+      - '@event_dispatcher'
+
+  Akeneo\Platform\Installer\Infrastructure\Controller\CheckInstanceCanBeResetAction:
+    public: true
+    arguments:
+      - '@Akeneo\Platform\Job\ServiceApi\JobExecution\FindQueuedAndRunningJobExecutionInterface'
+
+  Akeneo\Platform\Installer\Infrastructure\Controller\IsMaintenanceModeEnabledAction:
+    public: true
+    arguments:
+      - '@Akeneo\Platform\Installer\Application\IsMaintenanceModeEnabled\IsMaintenanceModeEnabledHandler'

@@ -19,9 +19,10 @@ $rules = [
         'Akeneo\Pim\Automation\IdentifierGenerator\API',
         'Akeneo\Pim\Enrichment\Component',
         'Akeneo\Pim\Structure\Component\Query\PublicApi',
-        'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent',
+        'Akeneo\Platform\Installer\Infrastructure\Event\InstallerEvent',
         'Akeneo\Platform\Job\Domain\Model\Status',
-        'Akeneo\Platform\Bundle\InstallerBundle\Command\ZddMigration',
+        'Akeneo\Platform\Installer\Infrastructure\Command\ZddMigration',
+        'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
         'Oro\Bundle\SecurityBundle\SecurityFacade',
         'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
         'Liip\ImagineBundle',
@@ -107,7 +108,7 @@ $rules = [
         'Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface',
 
         // TIP-1015: Move TableCreator to Platform
-        'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
+        'Akeneo\Platform\Installer\Infrastructure\Event\InstallerEvents',
         'Akeneo\Platform\Bundle\UIBundle\Provider\StructureVersion\StructureVersionProviderInterface',
 
         // TIP-1013: Rework Notification system
@@ -121,6 +122,9 @@ $rules = [
 
         // PIM-10259: Add support for Arabic characters in PDF export
         'ArPHP\I18N\Arabic',
+
+        // PIM-11078: Add checks on file before generating a thumbnail
+        'League\MimeTypeDetection\FinfoMimeTypeDetector',
 
         'Akeneo\Pim\Enrichment\Product\Domain\Model\ViolationCode',
         'Akeneo\Platform\Bundle\FrameworkBundle\Service\ResilientDeadlockConnection',

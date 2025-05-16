@@ -193,6 +193,7 @@ const Item = React.forwardRef<HTMLDivElement, ItemProps>(
         disabled={disabled}
         aria-disabled={disabled}
         isActive={isActive}
+        title={title}
         {...rest}
         ref={forwardedRef}
       >

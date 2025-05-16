@@ -5,7 +5,6 @@ import {waitFor} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {TEXT_TRANSFORMATION} from '../../models';
 
-jest.mock('../../hooks/useIdentifierAttributes');
 jest.mock('../../hooks/useGetIdentifierGenerators');
 
 describe('CreateGeneratorModal', () => {
@@ -40,7 +39,7 @@ describe('CreateGeneratorModal', () => {
       delimiter: null,
       labels: {en_US: 'Other label'},
       structure: [],
-      target: 'sku',
+      target: '',
       text_transformation: TEXT_TRANSFORMATION.NO,
     });
   });
@@ -68,7 +67,7 @@ describe('CreateGeneratorModal', () => {
       delimiter: null,
       labels: {},
       structure: [],
-      target: 'sku',
+      target: '',
       text_transformation: TEXT_TRANSFORMATION.NO,
     });
   });
@@ -114,7 +113,7 @@ describe('CreateGeneratorModal', () => {
       delimiter: null,
       labels: {en_US: 'New label 123'},
       structure: [],
-      target: 'sku',
+      target: '',
       text_transformation: TEXT_TRANSFORMATION.NO,
     });
   });

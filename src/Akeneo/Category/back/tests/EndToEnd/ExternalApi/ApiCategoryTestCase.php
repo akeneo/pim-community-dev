@@ -33,11 +33,6 @@ use Ramsey\Uuid\Uuid;
 
 abstract class ApiCategoryTestCase extends ApiTestCase
 {
-    protected function enableEnrichedCategoryFeature(): void
-    {
-        $this->get('feature_flags')->enable('enriched_category');
-    }
-
     /**
      * @param array<string, string>|null $templateLabels
      * @param array<array<string, mixed>>|null $templateAttributes

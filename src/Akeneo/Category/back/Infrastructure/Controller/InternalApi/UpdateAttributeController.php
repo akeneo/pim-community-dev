@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Controller\InternalApi;
 
-use Akeneo\Category\Api\Command\CommandMessageBus;
 use Akeneo\Category\Application\Command\UpdateAttributeCommand\UpdateAttributeCommand;
-use Akeneo\Category\Domain\Exceptions\ViolationsException;
+use Akeneo\Category\Domain\Exception\ViolationsException;
+use Akeneo\Category\Infrastructure\Bus\CommandBus;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,7 +21,7 @@ class UpdateAttributeController
 {
     public function __construct(
         private readonly SecurityFacade $securityFacade,
-        private readonly CommandMessageBus $categoryCommandBus,
+        private readonly CommandBus $commandBus,
     ) {
     }
 
@@ -42,18 +42,9 @@ class UpdateAttributeController
                 isRichTextArea: $data['isRichTextArea'] ?? null,
                 labels: $data['labels'] ?? null,
             );
-            $this->categoryCommandBus->dispatch($command);
-        } catch (ViolationsException $violationsException) {
-            $normalizedViolations = $violationsException->normalize();
-            foreach ($normalizedViolations as &$violation) {
-                $locale = $violation['error']['property'];
-                $regex = "/\[(.*?)\]/";
-                if (preg_match($regex, $locale, $matches)) {
-                    $violation['error']['property'] = $matches[1];
-                }
-            }
-
-            return new JsonResponse($normalizedViolations, Response::HTTP_BAD_REQUEST);
+            $this->commandBus->dispatch($command);
+        } catch (ViolationsException $exception) {
+            return new JsonResponse($exception->normalize(), Response::HTTP_BAD_REQUEST);
         }
 
         return new JsonResponse(null, Response::HTTP_OK);

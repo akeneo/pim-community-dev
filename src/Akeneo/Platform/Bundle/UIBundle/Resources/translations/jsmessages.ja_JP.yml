@@ -305,8 +305,6 @@ pim_enrich.entity.job_execution:
       upload: '{{ type }} ファイルをここにドロップするか、ディスクを参照するをクリックしてください'
     download:
       archive: 生成されたアーカイブをダウンロード
-      output: 生成されたファイルをダウンロード
-      input: 読み取りファイルをダウンロード
       invalid_xlsx: 無効なデータをダウンロード
       invalid_csv: 無効なデータをダウンロード
 pim_title:
@@ -464,7 +462,8 @@ pim_system:
     button:
       label: インスタンスをリセット
       confirm: リセットしてログアウト
-    error_notification: PIM のリセット中にエラーが発生しました。システム管理者にお問い合わせください。
+    error_notification: インスタンスのリセット中にエラーが発生しました。システム管理者にお問い合わせください。
+    jobs_running: 一部のプロセスがキューに入っているか実行中であるため、現在インスタンスをリセットできません。
   sandbox:
     helper:
       text: これはサンドボックス環境です。変更による本番環境への影響はありません。

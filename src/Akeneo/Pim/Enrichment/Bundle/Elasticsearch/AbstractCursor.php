@@ -23,6 +23,7 @@ abstract class AbstractCursor implements CursorInterface
     protected Client $esClient;
     protected ProductRepositoryInterface $productRepository;
     protected ProductModelRepositoryInterface $productModelRepository;
+    protected array $esQuery;
     protected ?array $items = null;
     protected ?int $count = null;
     protected int $position = 0;
@@ -68,8 +69,11 @@ abstract class AbstractCursor implements CursorInterface
      */
     public function count(): int
     {
-        if (null === $this->items) {
-            $this->rewind();
+        if (null === $this->count) {
+            $esQuery = \array_replace($this->esQuery, ['track_total_hits' => true]);
+
+            $response = $this->esClient->search($esQuery);
+            $this->count = $response['hits']['total']['value'];
         }
 
         return $this->count;

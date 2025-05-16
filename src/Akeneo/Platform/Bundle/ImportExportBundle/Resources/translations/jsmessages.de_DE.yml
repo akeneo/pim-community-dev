@@ -188,6 +188,8 @@ pim_import_export:
           placeholder: Passwort eingeben
         public_key:
           label: Öffentlicher Schlüssel
+          button_title: In die Zwischenablage kopieren
+          copy_notification_success: Öffentlicher Schlüssel in Zwischenablage kopiert
         login_type:
           label: Authentifizierungsmethode
           password: Login & Passwort
@@ -235,8 +237,8 @@ pim_import_export:
     6: Fehlgeschlagen
     7: Abgebrochen
     8: Unbekannt
-    9: Pausing
-    10: Paused
+    9: Pausieren
+    10: Pausiert
   job_status:
     COMPLETED: Vollständig
     STARTING: Wird gestartet...
@@ -246,6 +248,8 @@ pim_import_export:
     FAILED: Fehlgeschlagen
     ABANDONED: Abgebrochen
     UNKNOWN: Unbekannt
+    PAUSING: Pausieren
+    PAUSED: Pausiert
   tracking:
     completed: "Benötigte Zeit: {{ duration }}"
     in_progress: "Geschätzte verbleibende Zeit: {{ duration }}"

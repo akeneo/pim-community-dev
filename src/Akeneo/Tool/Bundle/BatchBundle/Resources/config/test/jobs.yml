@@ -59,3 +59,29 @@ services:
             - true
         tags:
             - { name: akeneo_batch.job, connector: 'Integration Test Connector', type: 'integration_test_type', feature: 'coffee_maker'}
+
+    akeneo_batch.job.pausable_job:
+        class: 'Akeneo\Tool\Component\Batch\Job\Job'
+        arguments:
+            - 'pausable_job'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - [ ]
+            - true
+            - true
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: 'Integration Test Connector', type: 'integration_test_type', feature: 'pause_jobs' }
+
+    akeneo_batch.job.unpausable_job:
+        class: 'Akeneo\Tool\Component\Batch\Job\Job'
+        arguments:
+            - 'unpausable_job'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - [ ]
+            - true
+            - true
+            - false
+        tags:
+            - { name: akeneo_batch.job, connector: 'Integration Test Connector', type: 'integration_test_type', feature: 'pause_jobs' }

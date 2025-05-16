@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Platform\Bundle\AnalyticsBundle\DataCollector;
 
-use Akeneo\Platform\Bundle\InstallerBundle\InstallStatusManager\InstallStatusManager;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
+use Akeneo\Platform\Installer\Infrastructure\InstallStatusManager\InstallStatusManager;
 use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -21,34 +24,13 @@ use Symfony\Component\HttpFoundation\RequestStack;
  */
 class VersionDataCollector implements DataCollectorInterface
 {
-    /** @var RequestStack */
-    protected $requestStack;
-
-    /** @var VersionProviderInterface */
-    protected $versionProvider;
-
-    /** @var string */
-    protected $environment;
-
-    /** @var InstallStatusManager */
-    protected $installStatusManager;
-
-    /**
-     * @param RequestStack             $requestStack
-     * @param VersionProviderInterface $versionProvider
-     * @param InstallStatusManager     $installStatusManager
-     * @param string                   $environment
-     */
     public function __construct(
-        RequestStack $requestStack,
-        VersionProviderInterface $versionProvider,
-        InstallStatusManager $installStatusManager,
-        string $environment
+        protected RequestStack $requestStack,
+        protected VersionProviderInterface $versionProvider,
+        protected InstallStatusManager $installStatusManager,
+        protected string $environment,
+        private readonly FeatureFlags $featureFlags,
     ) {
-        $this->requestStack = $requestStack;
-        $this->versionProvider = $versionProvider;
-        $this->installStatusManager = $installStatusManager;
-        $this->environment = $environment;
     }
 
     /**
@@ -56,21 +38,18 @@ class VersionDataCollector implements DataCollectorInterface
      */
     public function collect()
     {
-        return [
+        $collectedData = [
             'pim_edition'      => $this->versionProvider->getEdition(),
             'pim_version'      => $this->versionProvider->getPatch(),
             'pim_environment'  => $this->environment,
             'pim_install_time' => $this->installStatusManager->getPimInstallDateTime()?->format(\DateTime::ATOM),
             'server_version'   => $this->getServerVersion(),
         ];
+
+        return $this->appendResetData($collectedData);
     }
 
-    /**
-     * Returns the server version.
-     *
-     * @return string
-     */
-    protected function getServerVersion()
+    protected function getServerVersion(): string
     {
         $version = '';
         $request = $this->requestStack->getCurrentRequest();
@@ -80,5 +59,21 @@ class VersionDataCollector implements DataCollectorInterface
         }
 
         return $version;
+    }
+
+    private function appendResetData(array $collectedData): array
+    {
+        if (!$this->featureFlags->isEnabled('reset_pim')) {
+            return $collectedData;
+        }
+
+        $resetEvents = $this->installStatusManager->getPimResetEvents();
+        $collectedData['reset_event_count'] = count($resetEvents);
+
+        if (!empty($resetEvents)) {
+            $collectedData['last_reset_time'] = end($resetEvents)['time']->format('c');
+        }
+
+        return $collectedData;
     }
 }

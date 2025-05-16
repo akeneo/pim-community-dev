@@ -9,11 +9,13 @@ use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Tool\Component\Batch\Item\StatefulInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Buffer\BufferFactory;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Akeneo\Tool\Component\Connector\Job\JobFileBackuper;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -28,7 +30,8 @@ abstract class AbstractItemMediaWriter implements
     InitializableInterface,
     FlushableInterface,
     StepExecutionAwareInterface,
-    ArchivableWriterInterface
+    ArchivableWriterInterface,
+    StatefulInterface
 {
     protected const DEFAULT_FILE_PATH = 'file_path';
 
@@ -51,6 +54,7 @@ abstract class AbstractItemMediaWriter implements
     /** @var WrittenFileInfo[] */
     protected array $writtenFiles = [];
     protected string $datetimeFormat = 'Y-m-d_H-i-s';
+    protected array $state = [];
 
     public function __construct(
         ArrayConverterInterface $arrayConverter,
@@ -62,6 +66,7 @@ abstract class AbstractItemMediaWriter implements
         FileInfoRepositoryInterface $fileInfoRepository,
         FilesystemProvider $filesystemProvider,
         array $mediaAttributeTypes,
+        private readonly JobFileBackuper $jobFileBackuper,
         string $jobParamFilePath = self::DEFAULT_FILE_PATH
     ) {
         $this->arrayConverter = $arrayConverter;
@@ -83,13 +88,21 @@ abstract class AbstractItemMediaWriter implements
      */
     public function initialize(): void
     {
-        if (null === $this->flatRowBuffer) {
-            $this->flatRowBuffer = $this->bufferFactory->create();
+        $bufferFilePath = $this->state['buffer_file_path'] ?? null;
+
+        if ($bufferFilePath) {
+            $this->jobFileBackuper->recover($this->stepExecution->getJobExecution(), $bufferFilePath);
         }
+
+        $this->flatRowBuffer = $this->bufferFactory->create($bufferFilePath);
 
         $exportDirectory = dirname($this->getPath());
         if (!is_dir($exportDirectory)) {
             $this->localFs->mkdir($exportDirectory);
+        }
+
+        if (array_key_exists('headers', $this->state)) {
+            $this->flatRowBuffer->addToHeaders($this->state['headers']);
         }
     }
 
@@ -110,10 +123,6 @@ abstract class AbstractItemMediaWriter implements
             $flatItems[] = $this->arrayConverter->convert($item, $converterOptions);
         }
 
-        if (!empty($items) && $parameters->has('withHeader') && true === $parameters->get('withHeader')) {
-            $flatItems = $this->fillMissingFlatItemValues($flatItems);
-        }
-
         if ($parameters->has('with_label') && $parameters->get('with_label') && $parameters->has('file_locale')) {
             $fileLocale = $parameters->get('file_locale');
             $headerWithLabel = $parameters->has('header_with_label') && $parameters->get('header_with_label');
@@ -122,21 +131,7 @@ abstract class AbstractItemMediaWriter implements
             $flatItems = $this->flatTranslator->translate($flatItems, $fileLocale, $scope, $headerWithLabel);
         }
 
-        $options = [];
-        $options['withHeader'] = $parameters->get('withHeader');
-
-        $this->flatRowBuffer->write($flatItems, $options);
-    }
-
-    private function fillMissingFlatItemValues(array $items): array
-    {
-        $additionalHeaders = $this->getAdditionalHeaders();
-        $additionalHeadersFilled = array_fill_keys($additionalHeaders, '');
-
-        $flatItemIndex = array_keys($items);
-        $additionalHeadersFilledInFlatItemFormat = array_fill_keys($flatItemIndex, $additionalHeadersFilled);
-
-        return array_replace_recursive($additionalHeadersFilledInFlatItemFormat, $items);
+        $this->flatRowBuffer->write($flatItems);
     }
 
     protected function getAdditionalHeaders(): array
@@ -152,12 +147,19 @@ abstract class AbstractItemMediaWriter implements
         $this->flusher->setStepExecution($this->stepExecution);
 
         $parameters = $this->stepExecution->getJobParameters();
+        $additionalHeaders = $this->getAdditionalHeaders();
+        if ($parameters->has('with_label') && $parameters->get('with_label') && $parameters->has('file_locale') && $parameters->has('header_with_label') && $parameters->get('header_with_label')) {
+            $additionalHeaders = $this->flatTranslator->translateHeaders($additionalHeaders, $parameters->get('file_locale'));
+        }
+
+        $this->flatRowBuffer->addToHeaders($additionalHeaders);
 
         $flatFiles = $this->flusher->flush(
             $this->flatRowBuffer,
             $this->getWriterConfiguration(),
             $this->getPath(),
-            ($parameters->has('linesPerFile') ? $parameters->get('linesPerFile') : -1)
+            ($parameters->has('linesPerFile') ? $parameters->get('linesPerFile') : -1),
+            $parameters->has('withHeader') ? $parameters->get('withHeader') : true
         );
 
         foreach ($flatFiles as $flatFile) {
@@ -389,5 +391,25 @@ abstract class AbstractItemMediaWriter implements
             $fileInfo->getStorage(),
             $outputFilePath,
         );
+    }
+
+    public function getState(): array
+    {
+        if (null === $this->flatRowBuffer) {
+            return [];
+        }
+
+        $filePath = $this->flatRowBuffer->getFilePath();
+        $this->jobFileBackuper->backup($this->stepExecution->getJobExecution(), $filePath);
+
+        return [
+            'buffer_file_path' => $filePath,
+            'headers' => $this->flatRowBuffer->getHeaders(),
+        ];
+    }
+
+    public function setState(array $state): void
+    {
+        $this->state = $state;
     }
 }

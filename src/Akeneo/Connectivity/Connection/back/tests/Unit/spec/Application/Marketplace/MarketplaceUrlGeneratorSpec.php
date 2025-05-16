@@ -40,7 +40,7 @@ class MarketplaceUrlGeneratorSpec extends ObjectBehavior
         $this
             ->generateUrl('willy')
             ->shouldReturn(
-                'https://marketplace.akeneo.test/discover/serenity/?' .
+                'https://marketplace.akeneo.test/?' .
                 'utm_medium=pim&' .
                 'utm_content=marketplace_button&' .
                 'utm_source=http%3A%2F%2Fmy-akeneo.test&' .
@@ -59,7 +59,7 @@ class MarketplaceUrlGeneratorSpec extends ObjectBehavior
         $this
             ->generateUrl('willy')
             ->shouldReturn(
-                'https://marketplace.akeneo.test/discover/growth-edition/?' .
+                'https://marketplace.akeneo.test/?' .
                 'utm_medium=pim&' .
                 'utm_content=marketplace_button&' .
                 'utm_source=http%3A%2F%2Fmy-akeneo.test&' .

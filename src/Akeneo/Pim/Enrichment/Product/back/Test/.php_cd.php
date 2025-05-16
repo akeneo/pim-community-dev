@@ -79,13 +79,16 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Query',
         'Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator',
         'Akeneo\Tool\Component\Api\Exception\InvalidQueryException',
+        'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
         'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags',
         'Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category\GetGrantedCategoryCodes',
         'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
         'Akeneo\Tool\Component\StorageUtils\Cache\CachedQueryInterface',
         'Akeneo\Tool\Component\StorageUtils\Cache\LRUCache',
+        'Akeneo\Tool\Component\StorageUtils\StorageEvents',
 
         // Symfony, Doctrine DBAL and other libs
+        'Psr\\',
         'Webmozart\Assert\Assert',
         'Ramsey\Uuid',
         'Symfony\Component\Validator',
@@ -93,6 +96,10 @@ $rules = [
         'Symfony\Component\HttpKernel',
         'Symfony\Component\Config\FileLocator',
         'Doctrine\DBAL\Connection',
+        'Symfony\Component\EventDispatcher',
+        'Symfony\Component\Messenger\MessageBusInterface',
+        'Symfony\Component\Serializer\Normalizer\DenormalizerInterface',
+        'Symfony\Component\Serializer\Normalizer\NormalizerInterface',
     ])->in('Akeneo\Pim\Enrichment\Product\Infrastructure'),
 ];
 

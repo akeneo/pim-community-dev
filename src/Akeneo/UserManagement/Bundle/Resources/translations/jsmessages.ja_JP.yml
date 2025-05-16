@@ -82,6 +82,8 @@ pim_user_management:
         default_published_product_grid_view: デフォルト公開商品のグリッドビュー #EE Only
         proposals_to_review_notification: レビューの新規提案に際して #EE Only
         proposals_state_notifications: 提案の受領または拒否に際して #EE Only
+        not_fully_supported_locale: '選択されたUIロケール [{{ code }}] は現在完全にサポートされていません。テキスト翻訳が不足しているか不完全である可能性があります。ロケール対応の改善にご協力ください:'
+        link_to_crowdin_label: Crowdinに貢献する。
       meta:
         created: '作成:'
         updated: '更新:'

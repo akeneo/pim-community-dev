@@ -1,6 +1,9 @@
 pim_title:
   pim_category_template_edit: Modifica modello categoria
 akeneo.category:
+  unknown_error:
+    title: Spiacenti, si è verificato un errore sconosciuto.
+    message: Ricarica la pagina e riprova.
   tree_list:
     column:
       category_templates: Modelli di categoria
@@ -19,11 +22,19 @@ akeneo.category:
     delete: Elimina struttura
   template:
     learn_more: Scopri di più sui modelli di categoria
-    create: Attiva modello
+    create: Crea modello
+    create_confirmation_modal:
+      title: Crea un nuovo modello di categoria
+      helper: Crea un modello di categoria per definire attributi e attivare l'arricchimento su tutte le categorie di questo albero.
+      category_tree: Albero delle categorie
+      link: Scopri di più sui modelli di categoria.
     edit: Modifica modello
-    notification_success: Modello attivato correttamente
-    notification_error: Impossibile attivare il modello
+    notification_success: Modello di categoria creato correttamente
+    notification_error: Non è stato possibile creare il modello di categoria
     not_found: Per questa categoria non c'è un modello attivo
+    properties:
+      general_properties: Proprietà generali
+      label_translations_in_ui_locales: Traduzione delle etichette nelle lingue dell'interfaccia
     attribute:
       description_title: Impostazioni descrizione
       type:
@@ -41,6 +52,8 @@ akeneo.category:
           rich_text: Editor di Testi Avanzato
         translations:
           title: Traduzioni etichette
+        error_message: La pagina contiene valori non validi.
+        unsaved_changes: Hai delle modifiche non salvate, confermi di voler uscire?
     add_attribute:
       no_attribute_title: Crea il tuo primo attributo
       no_attribute_instructions: Definisci il contenuto che vuoi associare alle tue categorie aggiungendo attributi Testo, Area di Testo o Immagine a questo modello.
@@ -79,15 +92,42 @@ akeneo.category:
       notification_success:
         title: 'Attributo {{ attribute }} eliminato correttamente'
     deactivate:
-      deactivate_template: Disattiva modello
+      deactivate_template: Elimina modello
       confirmation_modal:
-        title: Disattiva modello categoria
-        message: Confermi di voler disattivare il modello di categoria denominato {{ template }}?
-        helper: Disattivando questo modello si eliminano definitivamente gli attributi e i valori delle categorie associate.
-        deactivate: Disattiva
+        title: Elimina il modello di categoria
+        message: Confermi di voler eliminare il modello di categoria denominato {{ template }}?
+        helper: Eliminando questo modello si eliminano definitivamente gli attributi e i valori delle categorie associate.
+        deactivate: Elimina
       notification_success:
-        title: 'Modello {{ template }} disattivato'
-        message: '{{ template }} è stato disattivato. Il contenuto delle categorie associate è stato eliminato.'
+        title: 'Modello {{ template }} eliminato'
+        message: '{{ template }} è stato eliminato. Il contenuto delle categorie associate è stato eliminato.'
+    auto-save:
+      saved: Salvato
+      saving: Salvataggio
+      editing: Modifica
+      errors: Errori non salvati
+    initialize:
+      title: Aggiungi attributi alla categoria
+      message: Definisci il contenuto delle categorie aggiungendo attributi Testo, Area di testo o Immagine.
+      choice_message: Inizia a creare gli attributi in base alle tue esigenze oppure carica un insieme di 13 attributi suggeriti.
+      button:
+        load: Carica un insieme di attributi
+        create: Crea il primo attributo
+    load_attribute_set:
+      section_title: Carica un insieme di attributi
+      title: Carica un insieme di attributi suggeriti
+      description: Inizia con facilità la configurazione delle categorie arricchite caricando un insieme di attributi suggeriti.
+      content_description: 'Questo insieme contiene 13 attributi:'
+      content:
+        description_attributes: 2 attributi Area di testo per le descrizioni lunghe e brevi della categoria
+        url_attributes: 1 attributo Testo per l'URL
+        image_attributes: 3 attributi Immagine e 3 Testo, per le immagini e per i rispettivi testi alternativi
+        seo_attributes: 2 attributi Testo e 2 Area di testo per le informazioni SEO
+      confirmation_message: Confermi di voler caricare questo insieme di attributi?
+      button:
+        load: Carica l'insieme di attributi
+      notification:
+        success: Attributi caricati correttamente
   template_list:
     columns:
       header: Etichetta
@@ -100,7 +140,6 @@ akeneo.category:
     content:
       enrich_attribute_values: Arricchisci qualsiasi livello degli alberi di categorie con gli attributi Testo, Area di Testo e Immagine
       customizable_templates: Offri l'esperienza di prodotto che desideri grazie a modelli personalizzabili
-      edit_attributes: 'Prossimamente: aggiornamento delle impostazioni di questi attributi di categoria'
     survey_link_label: Dicci cosa ne pensi
     learn_more_link_label: Scopri di più sulle Categorie arricchite
   other_actions: Altre azioni

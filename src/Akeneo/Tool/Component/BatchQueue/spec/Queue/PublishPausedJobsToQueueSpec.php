@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\Akeneo\Tool\Component\BatchQueue\Queue;
 
 use Akeneo\Tool\Component\Batch\Query\GetPausedJobExecutionIdsInterface;
@@ -48,11 +50,17 @@ class PublishPausedJobsToQueueSpec extends ObjectBehavior
         $jobExecutionQueue->publish(Argument::that(
             static fn (PausedJobExecutionMessage $jobMessage) => 1 === $jobMessage->getJobExecutionId()
         ))->shouldBeCalled()->willThrow(\Exception::class);
-        $logger->error('An error occurred trying to publish paused job execution', ['job_execution_id' => 1])->shouldBeCalled();
+        $logger->error('An error occurred trying to publish paused job execution', [
+            'job_execution_id' => 1,
+            'error_message' => '',
+        ])->shouldBeCalled();
         $jobExecutionQueue->publish(Argument::that(
             static fn (PausedJobExecutionMessage $jobMessage) => 9 === $jobMessage->getJobExecutionId()
         ))->shouldBeCalled();
-        $logger->error('An error occurred trying to publish paused job execution', ['job_execution_id' => 9])->shouldNotBeCalled();
+        $logger->error('An error occurred trying to publish paused job execution', [
+            'job_execution_id' => 9,
+            'error_message' => '',
+        ])->shouldNotBeCalled();
 
         $this->publish();
     }

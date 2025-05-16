@@ -3,10 +3,10 @@ import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {renderHook} from '@testing-library/react-hooks';
 import {act} from 'react-test-renderer';
-import {OrderableTreeProvider} from 'feature/components';
-import {TreeNode} from 'feature/models';
+import {OrderableTreeProvider} from '../components';
+import {TreeNode} from '../models';
 import {useDragTreeNode} from './useDragTreeNode';
-import {aTreeNode} from 'tests/provideTreeNodeHelper';
+import {aTreeNode} from '../../tests/provideTreeNodeHelper';
 
 const DefaultProviders: FC<{orderable: boolean}> = ({children, orderable}) => (
   <ThemeProvider theme={pimTheme}>

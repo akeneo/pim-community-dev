@@ -212,6 +212,7 @@ pim_common:
     label: Label
     label_translations: Label translations
     Label or identifier: label or identifier
+    Label or main identifier: label or main identifier
     code_or_label: code or label
     less_than: Less than
     loading: Loading...
@@ -321,9 +322,10 @@ pim_enrich.entity.job_execution:
         create:
             upload: Drop your {{ type }} file here, or click to browse disk
         download:
+            dropdown_title: "]-Inf, 1]Download generated files|]1, Inf[Download generated files"
             archive: Download generated archive
-            output: Download generated files
-            input: Download read files
+            output: Download generated file
+            input: Download read file
             invalid_xlsx: Download invalid data
             invalid_csv: Download invalid data
 
@@ -488,7 +490,8 @@ pim_system:
     button:
       label: Reset instance
       confirm: Reset and log out
-    error_notification: An error occurred during the PIM reset, please contact system administrator.
+    error_notification: An error occurred during instance reset, please contact your system administrator.
+    jobs_running: You cannot reset your instance at the moment, as some processes are still queued or running.
   sandbox:
     helper:
       text: This is a sandbox environment; your changes will not impact your production.

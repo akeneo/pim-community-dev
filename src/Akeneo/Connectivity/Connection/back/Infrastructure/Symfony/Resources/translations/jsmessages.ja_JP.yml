@@ -269,6 +269,7 @@ akeneo_connectivity.connection:
           not_blank: redirect_uriは必須です。
           must_be_url: redirect_uriは有効なURLではありません。
         scope:
+          must_be_a_string: 範囲リストはスペース区切りの文字列である必要があります。
           too_long: スコープリストに1000文字以上を含めることはできません。
     custom_apps:
       creation_limit_reached: カスタムアプリ20個の制限に達しました。
@@ -319,7 +320,6 @@ akeneo_connectivity.connection:
   connections: 接続
   secondary_actions:
     title: その他の操作
-  developer_mode: 開発者モード
   connection:
     code: コード
     label: ラベル

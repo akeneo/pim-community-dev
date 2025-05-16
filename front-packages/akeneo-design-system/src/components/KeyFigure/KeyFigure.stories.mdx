@@ -1,6 +1,7 @@
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
 import {KeyFigure, KeyFigureGrid} from './KeyFigure';
 import * as Icons from '../../icons';
+import {Tooltip} from '../Tooltip/Tooltip';
 
 <Meta
   title="Components/KeyFigure"
@@ -71,7 +72,10 @@ Key figures are used in dashboards to illustrate metrics.
             <KeyFigure.Figure>123</KeyFigure.Figure>
           </KeyFigure>
           <KeyFigure icon={React.createElement(Icons[args.icon])} title="Key figure 3">
-            <KeyFigure.Figure>456</KeyFigure.Figure>
+            <KeyFigure.Figure>
+              456
+              <Tooltip iconSize={16}>More informations on this figure</Tooltip>
+            </KeyFigure.Figure>
           </KeyFigure>
           <KeyFigure icon={React.createElement(Icons[args.icon])} title="Key figure 4">
             <KeyFigure.Figure label="Average:">789454</KeyFigure.Figure>

@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Enrichment\Product\Application\Applier;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -15,13 +16,21 @@ use Webmozart\Assert\Assert;
  */
 final class SetEnabledApplier implements UserIntentApplier
 {
+    public function __construct(
+        private readonly ObjectUpdaterInterface $productUpdater,
+    ) {
+    }
+
     /**
      * {@inheritDoc}
      */
     public function apply(UserIntent $userIntent, ProductInterface $product, int $userId): void
     {
         Assert::isInstanceOf($userIntent, SetEnabled::class);
-        $product->setEnabled($userIntent->enabled());
+        //should be replaced by $product->setEnabled($userIntent->enabled()); when UpsertProductCommand has the right validation
+        $this->productUpdater->update($product, [
+            'enabled' => $userIntent->enabled(),
+        ]);
     }
 
     /**

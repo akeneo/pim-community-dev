@@ -21,6 +21,7 @@ Feature: Import attributes
       pim_catalog_date;release;"Release date";info;0;1;0;0;;;;0;;;
       pim_catalog_metric;lace_length;"Lace length";info;0;0;0;0;;Length;CENTIMETER;0;0;0;
       pim_catalog_boolean;is_enabled;"Is enabled";info;0;1;1;0;;;;0;;;1
+      pim_catalog_identifier;ean;Ean;marketing;1;1;0;0;;;;0;;;
       """
     When the attributes are imported via the job csv_footwear_attribute_import
     Then there should be the following attributes:
@@ -38,6 +39,7 @@ Feature: Import attributes
       | pim_catalog_date             | release      | Release date | info      | 0      | 1                      | 0           | 0        |                    |               |                     | 0          |               |
       | pim_catalog_metric           | lace_length  | Lace length  | info      | 0      | 0                      | 0           | 0        |                    | Length        | CENTIMETER          | 0          |               |
       | pim_catalog_boolean          | is_enabled   | Is enabled   | info      | 0      | 1                      | 1           | 0        |                    |               |                     | 0          | 1             |
+      | pim_catalog_identifier       | ean          | Ean          | marketing | 1      | 1                      | 0           | 0        |                    |               |                     | 0          |               |
 
   # @jira https://akeneo.atlassian.net/browse/PIM-3266
   @javascript

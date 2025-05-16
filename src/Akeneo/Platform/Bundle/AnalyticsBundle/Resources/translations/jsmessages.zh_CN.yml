@@ -60,4 +60,5 @@ pim_analytics:
     data_destination.untracked: 已取消跟踪的 API 目的地连接的数量
     other.tracked: 已跟踪的 API 其他连接的数量
     other.untracked: 已取消跟踪的 API 其他连接的数量
-
+    reset_event_count: 重置实例的次数
+    last_reset_time: 上次重置时间

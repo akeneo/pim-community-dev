@@ -1,10 +1,14 @@
 import {useRoute} from '@akeneo-pim-community/shared';
 import {useMutation} from 'react-query';
-import {apiFetch} from '../tools/apiFetch';
+import {ApiError, apiFetch} from '../tools/apiFetch';
 
-type Body = {
+type Data = {
   isRichTextArea?: boolean;
   labels?: {[locale: string]: string};
+};
+
+type Error = {
+  labels: {[localeCode: string]: string[]};
 };
 
 export const useUpdateTemplateAttribute = (templateUuid: string, attributeUuid: string) => {
@@ -13,13 +17,10 @@ export const useUpdateTemplateAttribute = (templateUuid: string, attributeUuid: 
     attributeUuid: attributeUuid,
   });
 
-  const mutation = useMutation((body: Body) =>
+  return useMutation<void, ApiError<Error>, Data>(data =>
     apiFetch(url, {
       method: 'POST',
-      body: JSON.stringify(body),
+      body: JSON.stringify(data),
     })
   );
-  return async (body: Body) => {
-    await mutation.mutateAsync(body);
-  };
 };

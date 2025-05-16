@@ -26,3 +26,6 @@ services:
         class: 'Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag'
         arguments:
             - '%env(bool:FLAG_PAUSE_JOBS_ENABLED)%'
+
+    akeneo.job.security_facade:
+        alias: oro_security.security_facade

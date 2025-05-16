@@ -10,6 +10,11 @@ akeneo.category:
         text_too_long: 'Wartość może mieć maksymalnie następującą liczbę znaków: {{ limit }}'
         textarea_too_long: 'Wartość może mieć maksymalnie następującą liczbę znaków: {{ limit }}'
         richtext_too_long: 'Wartość może mieć maksymalnie następującą liczbę znaków: {{ limit }}'
+    template:
+      code:
+        not_blank: Ta wartość nie może być pusta.
+        unique: 'Ten kod szablonu ({{ templateCode }}) już istnieje.'
+        wrong_format: To pole może zawierać tylko litery, cyfry i podkreślenia.
     attribute:
       limit:
         title: Nie możesz dodać więcej niż 50 atrybutów

@@ -7,8 +7,8 @@ namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Subscriber;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UnableToSetIdentifierException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\GenerateIdentifierCommand;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\GenerateIdentifierHandler;
-use Akeneo\Pim\Automation\IdentifierGenerator\Application\Match\MatchIdentifierGeneratorQuery;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Match\MatchIdentifierGeneratorHandler;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Match\MatchIdentifierGeneratorQuery;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Validation\Error;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Validation\ErrorList;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
@@ -17,8 +17,9 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGenera
 use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Event\UnableToSetIdentifierEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product\UniqueProductEntity;
-use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
+use Akeneo\Pim\Enrichment\Component\Product\Value\IdentifierValue;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -51,6 +52,7 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly MatchIdentifierGeneratorHandler $matchIdentifierGeneratorHandler,
         private readonly LoggerInterface $logger,
+        private readonly IdentifiableObjectRepositoryInterface $attributeRepository,
     ) {
     }
 
@@ -109,16 +111,15 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
         $command = GenerateIdentifierCommand::fromIdentifierGenerator($identifierGenerator, $productProjection);
         $newIdentifier = ($this->generateIdentifierCommandHandler)($command);
 
-        $value = ScalarValue::value($identifierGenerator->target()->asString(), $newIdentifier);
-        Assert::isInstanceOf($value, ScalarValue::class);
+        $attributeCode = $identifierGenerator->target()->asString();
+        $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+        Assert::isInstanceOf($attribute, AttributeInterface::class);
+        $value = IdentifierValue::value($identifierGenerator->target()->asString(), $attribute->isMainIdentifier(), $newIdentifier);
+        Assert::isInstanceOf($value, IdentifierValue::class);
         $product->addValue($value);
-        $product->setIdentifier($newIdentifier);
+        $product->addValue(IdentifierValue::value($attributeCode, $attribute->isMainIdentifier(), $newIdentifier));
 
-        $violations = $this->updatePropertyPath(
-            $this->validator->validate($product, $this->getProductConstraints($product)),
-            'identifier'
-        );
-
+        $violations = $this->validator->validate($product, null, ['identifiers']);
         $violations->addAll($this->updatePropertyPath(
             $this->validator->validate($value, $this->getValueConstraints($value)),
             $identifierGenerator->target()->asString()
@@ -126,7 +127,6 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
 
         if (\count($violations) > 0) {
             $product->removeValue($value);
-            $product->setIdentifier(null);
 
             throw new UnableToSetIdentifierException(
                 $newIdentifier,
@@ -156,30 +156,11 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Returns Symfony constraints defined here:
-     * src/Akeneo/Pim/Enrichment/Bundle/Resources/config/validation/product.yml
-     *
-     * @return Constraint[]
-     */
-    private function getProductConstraints(ProductInterface $product): array
-    {
-        $metadata = $this->metadataFactory->getMetadataFor($product);
-        Assert::isInstanceOf($metadata, ClassMetadataInterface::class);
-        $propertiesMetadata = $metadata->getPropertyMetadata('identifier');
-        $constraints = [new UniqueProductEntity()];
-        foreach ($propertiesMetadata as $propertyMetadata) {
-            $constraints = \array_merge($constraints, $propertyMetadata->getConstraints());
-        }
-
-        return $constraints;
-    }
-
-    /**
      * Returns user defined constraints (Regex, max length, etc).
      *
      * @return Constraint[]
      */
-    private function getValueConstraints(ScalarValue $value): array
+    private function getValueConstraints(IdentifierValue $value): array
     {
         $metadata = $this->metadataFactory->getMetadataFor($value);
         Assert::isInstanceOf($metadata, ClassMetadataInterface::class);

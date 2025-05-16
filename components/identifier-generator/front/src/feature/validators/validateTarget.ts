@@ -5,7 +5,7 @@ import {Violation} from './Violation';
 const validateTarget: Validator<Target | undefined> = (target, path) => {
   const violations: Violation[] = [];
 
-  if (target?.trim() === '') {
+  if ((target || '').trim() === '') {
     violations.push({path, message: 'The target must be filled'});
   }
 

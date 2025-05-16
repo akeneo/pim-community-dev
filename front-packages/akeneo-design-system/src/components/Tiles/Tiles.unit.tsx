@@ -2,15 +2,22 @@ import React from 'react';
 import {Tile, Tiles} from './Tiles';
 import {render, screen, fireEvent} from '../../storybook/test-util';
 import {AssetCollectionIcon} from '../../icons';
+import {Tooltip} from '../Tooltip/Tooltip';
 
-test('it renders tile correctly', () => {
+test('it trigger onClick when title is clicked', () => {
+  const onClick = jest.fn();
   render(
     <Tiles size={'big'}>
-      <Tile icon={<AssetCollectionIcon />}>A label</Tile>
+      <Tile icon={<AssetCollectionIcon />} onClick={onClick}>
+        A label
+      </Tile>
     </Tiles>
   );
 
-  expect(screen.getByText('A label')).toBeInTheDocument();
+  const input = screen.getByText('A label') as HTMLInputElement;
+  expect(input).toBeInTheDocument();
+  fireEvent.click(input);
+  expect(onClick).toBeCalled();
 });
 
 test('it fails when there are invalid children', () => {
@@ -87,8 +94,42 @@ test('it triggers onclick when pressing enter with focus', () => {
     </Tiles>
   );
 
-  expect(screen.getByText('A label')).toBeInTheDocument();
   const input = screen.getByText('A label') as HTMLInputElement;
+  expect(input).toBeInTheDocument();
   fireEvent.keyDown(input, {key: 'Enter', code: 'Enter'});
   expect(handleClick).toBeCalled();
+});
+
+test('it should not trigger onClick when tile is disabled', () => {
+  const handleClick = jest.fn();
+
+  render(
+    <Tiles size={'big'}>
+      <Tile icon={<AssetCollectionIcon />} onClick={handleClick} disabled>
+        A label
+      </Tile>
+    </Tiles>
+  );
+
+  const input = screen.getByText('A label') as HTMLInputElement;
+  expect(input).toBeInTheDocument();
+  fireEvent.click(input);
+  expect(handleClick).not.toBeCalled();
+});
+
+test('it renders tooltip', () => {
+  const handleClick = jest.fn();
+
+  render(
+    <Tiles size={'big'}>
+      <Tile icon={<AssetCollectionIcon />} onClick={handleClick} disabled>
+        A label
+        <Tooltip>This is a tooltip</Tooltip>
+      </Tile>
+    </Tiles>
+  );
+
+  const input = screen.getByText('A label') as HTMLInputElement;
+  expect(input).toBeInTheDocument();
+  expect(screen.getByRole('tooltip')).toBeInTheDocument();
 });

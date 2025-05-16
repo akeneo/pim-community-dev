@@ -1,10 +1,18 @@
 pim_catalog_identifier_generator:
+  acl:
+    view: 'Identifikatorgeneratoren anzeigen'
+    manage: 'Identifikatorgeneratoren verwalten'
   condition:
     fields:
       family: Produktfamilie
       enabled: Status
+      categories: Kategorien
     field_groups:
       system: System
   structure:
     fields:
       free_text: Freitext
+      auto_number: Auto-Nummerierung
+      family: Produktfamilie
+    field_groups:
+      system: System

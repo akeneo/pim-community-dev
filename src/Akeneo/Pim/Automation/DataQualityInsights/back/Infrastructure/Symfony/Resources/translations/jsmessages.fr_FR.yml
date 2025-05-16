@@ -4,15 +4,15 @@ akeneo_data_quality_insights:
     menu: Qualité des données
     helper:
       title: Bienvenue dans le nouveau tableau de bord d'Akeneo !
-      description: Avec le tableau de bord de la qualité des données, vous pouvez mesurer la qualité des données de votre catalogue. Vous pouvez également vous concentrer sur une catégorie ou une famille.
+      description: Le tableau de bord "Data quality insights" permet de mesurer la qualité du catalogue, d'une catégorie ou d'une famille.
       help_center: Consultez notre Help Center pour plus d'informations.
     no_data_title: Désolé, nous n'avons pas encore assez de données pour afficher l'aperçu de la qualité des données.
     no_data_subtitle: Merci de revenir plus tard.
     time_period:
       label: Période
-      daily: Quotidienne
+      daily: Quotidien
       weekly: Hebdomadaire
-      monthly: Mensuelle
+      monthly: Mensuel
     legend:
       excellent: Excellent
       good: Bon
@@ -45,7 +45,7 @@ akeneo_data_quality_insights:
       title: Indicateurs clés
       products: '{1}1 produit|]1, 200[{{ count }} produits|[200, Inf[plus de {{ count }} produits'
       product_models: '{1}1 modèle de produit|]1, 200[{{ count }} modèles de produit|[200, Inf[plus de {{ count }} modèles de produit'
-      entities_to_work_on: 'Vous avez <improvable_products_count_link/> à améliorer.'
+      entities_to_work_on: 'Vous avez <improvable_attributes_count_link/> à améliorer.'
       entities_to_work_on_2_kinds: 'Vous avez <improvable_products_count_link/> et <improvable_product_models_count_link/> à améliorer.'
       list:
         has_image:
@@ -54,7 +54,7 @@ akeneo_data_quality_insights:
           messages:
             first_step:
               message1: Sans image pour les illustrer, vos produits ne seront pas aussi bien mis en valeur qu'ils le méritent.
-              message2: La première impression compte, peaufinez vos images, vos clients le remarqueront.
+              message2: La première impression compte, peaufiner vos images, vos clients le remarqueront.
               message3: Nous avons observé que les images font une vraie différence. Il vous faut peut être consacrer plus de temps à vos médias.
             second_step:
               message1: Les images de vos produits peuvent encore être améliorées, ensuite ce sera bien !
@@ -69,7 +69,7 @@ akeneo_data_quality_insights:
               message2: C'est super ! Vous avez des produits trois étoiles !
               message3: C'est parfait.
         good_enrichment:
-          title: Produits avec un bon taux d'enrichissement
+          title: Produits complètement enrichis
           no_data: Vos produits ne peuvent pas être enrichis. En ajoutant des attributs, cet indicateur vous permettra de suivre la qualité de vos produits.
           messages:
             first_step:
@@ -80,7 +80,7 @@ akeneo_data_quality_insights:
             second_step:
               message1: Vous pouvez faire un peu mieux encore ! Vos clients vous remercieront.
               message2: Vous y êtes presque, accrochez-vous et vos produits seront parfaitement enrichis.
-              message3: Le diable se cache dans les détails, même sur votre marché.
+              message3: Le diable se cache dans les détails, même sur votre marché. 
               message4: Vous avez besoin d'un coup de main pour peaufiner l'enrichissement de vos produits ? Sur cette page vous pourrez <a href="{{ link }}" target="_blank">apprendre à sélectionner les attributs les plus pertinents</a>. 
             third_step:
               message1: C'est bien jusqu'à présent, il faut s'accrocher encore un peu.
@@ -98,7 +98,7 @@ akeneo_data_quality_insights:
       title: Distribution du score de qualité
     quality_score_evolution:
       title: Evolution du score de qualité
-      current_score: est le score de qualité pour votre sélection.
+      current_score: est le score de qualité pour votre sélection
       current_month_label: Ce mois
       no_catalog_score: Votre score de qualité n'a pas pu être calculé.
   product_evaluation:
@@ -144,7 +144,7 @@ akeneo_data_quality_insights:
     activated: Activé
     disabled: Désactivé
     used_groups_helper: "Les groupes d'attributs suivants sont pris en compte dans le calcul de la qualité des données :"
-    all_groups_evaluated: Tous les groupes d'attributs de ce produit sont pris en compte pour le calcul du score de qualité. Pour obtenir un score de qualité le plus pertinent possible, <a href="{{ link }}" target="_blank">apprenez comment désactiver les groupes d'attributs dans notre centre d'aide.</a>
+    all_groups_evaluated: Tous les groupes d'attributs de ce produit sont pris en compte pour le calcul du score de qualité. Pour obtenir un score de qualité le plus pertinent possible, <a href="{{ link }}" target="_blank">apprenez commen
   product_grid:
     filter_label:
       quality_score: Score de qualité
@@ -153,7 +153,7 @@ akeneo_data_quality_insights:
     filter_value:
       good: Bon
       to_improve: A améliorer
-      "yes": "Oui"
+      "yes": "Yes"
       "no": "Non"
   quality_score:
     pending: En cours

@@ -40,6 +40,12 @@ const TooltipContent = styled.div<{direction: Direction; width: number; top: num
   opacity: ${({top, left}) => (-1 === top && -1 === left ? 0 : 1)};
 `;
 
+const TooltipTitle = styled.div`
+  color: ${getColor('blue', 120)};
+  font-weight: 700;
+  margin-bottom: 5px;
+`;
+
 const computePosition = (
   direction: Direction,
   parentRef?: RefObject<HTMLDivElement>,
@@ -79,7 +85,7 @@ const computePosition = (
   }
 };
 
-type TooltipProps = Override<
+export type TooltipProps = Override<
   HTMLAttributes<HTMLDivElement>,
   {
     /**
@@ -147,5 +153,7 @@ const Tooltip = ({direction = 'top', iconSize = 24, width = 200, children, ...re
     </TooltipContainer>
   );
 };
+
+Tooltip.Title = TooltipTitle;
 
 export {Tooltip};

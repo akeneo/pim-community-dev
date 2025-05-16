@@ -305,8 +305,6 @@ pim_enrich.entity.job_execution:
       upload: Upuść twój plik {{ type }} tutaj, lub kliknij aby przeglądać dysk
     download:
       archive: Pobierz wygenerowane archiwum
-      output: Pobierz wygenerowane pliki
-      input: Pobierz przeczytane pliki
       invalid_xlsx: Pobierz nieprawidłowe dane
       invalid_csv: Pobierz nieprawidłowe dane
 pim_title:
@@ -464,7 +462,8 @@ pim_system:
     button:
       label: Zresetuj instancję
       confirm: Zresetuj i wyloguj
-    error_notification: Podczas resetu PIM wystąpił błąd, skontaktuj się z administratorem systemu.
+    error_notification: Podczas resetu instancji wystąpił błąd, skontaktuj się z administratorem systemu.
+    jobs_running: W tej chwili nie możesz zresetować swojej instancji, ponieważ niektóre procesy nadal oczekują w kolejce lub są uruchomione.
   sandbox:
     helper:
       text: To środowisko piaskownicy; zmiany nie wpłyną na Twoje środowisko produkcyjne.

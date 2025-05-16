@@ -1,0 +1,10 @@
+services:
+    Akeneo\Pim\Enrichment\Product\Infrastructure\Subscriber\ProductWasCreatedOrUpdatedSubscriber:
+        arguments:
+            - '@messenger.bus.default'
+            - '@logger'
+            - '%env(default::string:APP_TENANT_ID)%'
+            - '%env(APP_ENV)%'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsUcsEventFeature'
+        tags:
+            - { name: kernel.event_subscriber }

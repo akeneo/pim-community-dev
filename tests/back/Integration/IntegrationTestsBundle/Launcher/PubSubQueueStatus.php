@@ -105,4 +105,39 @@ final class PubSubQueueStatus
 
         return $topic->subscription($this->subscriptionName);
     }
+
+    public function createTopicAndSubscription(): void
+    {
+        $pubSubClient = $this->pubSubClientFactory->createPubSubClient(['projectId' => $this->projectId]);
+        $topic = $pubSubClient->topic($this->topicName);
+
+        if (!$topic->exists()) {
+            $topic->create();
+        }
+
+        $subscription = $topic->subscription($this->subscriptionName);
+        if (!$subscription->exists()) {
+            $subscription->create();
+        }
+    }
+
+    public function flushJobQueue(): void
+    {
+        $subscription = $this->getSubscription();
+        try {
+            $subscription->reload();
+        } catch (\Exception $e) {
+        }
+        if (!$subscription->exists()) {
+            return;
+        }
+
+        do {
+            $messages = $subscription->pull(['maxMessages' => 10, 'returnImmediately' => true]);
+            $count = count($messages);
+            if ($count > 0) {
+                $subscription->acknowledgeBatch($messages);
+            }
+        } while (0 < $count);
+    }
 }

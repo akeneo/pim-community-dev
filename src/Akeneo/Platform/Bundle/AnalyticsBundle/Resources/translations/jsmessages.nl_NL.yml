@@ -60,4 +60,5 @@ pim_analytics:
     data_destination.untracked: Aantal ongecontroleerde API-doelverbindingen
     other.tracked: Aantal gecontroleerde API verbindingen - overig
     other.untracked: Aantal ongecontroleerde API verbindingen - overig
-
+    reset_event_count: Aantal keren dat exemplaar is gereset
+    last_reset_time: Laatste tijdstip van resetten

@@ -276,6 +276,8 @@ pim_enrich.export.product:
       empty: Alle attributen worden geëxporteerd
       modal:
         title: Attribuut selectie
+        helper:
+          text: "De primaire identifier wordt altijd geëxporteerd met de geselecteerde attributen. "
     attributes_selector:
       attributes: "Zoek in {{ itemsCount }} attributen"
       selected: "Geselecteerde attributen"
@@ -326,6 +328,8 @@ pim_enrich.export.product:
     string:
       operators:
         ALL: Alle
+    price-collection:
+      operators:
     select:
       operators:
         IN: In lijst
@@ -508,6 +512,8 @@ pim_datagrid:
       label: Identifier
     uuid:
       label: Uuid
+    code_or_label:
+      label: Code of label
   search: Zoeken op {{ label }}
 batch_jobs:
   add_association:

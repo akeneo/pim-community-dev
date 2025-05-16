@@ -17,8 +17,9 @@ Feature: Display the family history
   Scenario: Successfully create a family and see the history
     Given I am on the families grid
     And I create a new family
-    And I fill in the following information in the popin:
-      | Code | Flyer |
+    And I fill the input labelled 'Code' with 'Flyer'
+#    And I fill in the following information in the popin:
+#      | Code | Flyer |
     And I press the "Save" button
     And I should see the flash message "Family successfully created"
     And I should not see the text "There are unsaved changes."

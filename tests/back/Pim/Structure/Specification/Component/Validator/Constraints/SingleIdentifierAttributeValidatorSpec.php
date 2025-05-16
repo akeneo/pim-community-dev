@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Structure\Component\Validator\Constraints;
 
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Validator\Constraints\SingleIdentifierAttributeValidator;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -13,22 +14,22 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class SingleIdentifierAttributeValidatorSpec extends ObjectBehavior
 {
-    function let(AttributeRepositoryInterface $attributeRepository, ExecutionContextInterface $context)
+    public function let(AttributeRepositoryInterface $attributeRepository, ExecutionContextInterface $context): void
     {
         $this->beConstructedWith($attributeRepository);
         $this->initialize($context);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(SingleIdentifierAttributeValidator::class);
     }
 
-    function it_does_nothing_if_attribute_type_is_not_identifier(
+    public function it_does_nothing_if_attribute_type_is_not_identifier(
         $context,
         AttributeInterface $attribute,
         SingleIdentifierAttribute $constraint
-    ) {
+    ): void {
         $attribute->getType()->willReturn('pim_catalog_text');
 
         $context
@@ -38,16 +39,17 @@ class SingleIdentifierAttributeValidatorSpec extends ObjectBehavior
         $this->validate($attribute, $constraint);
     }
 
-    function it_does_nothing_if_identifiers_id_are_the_same(
+    public function it_does_nothing_if_identifiers_id_are_the_same(
         $context,
-        $attributeRepository,
+        AttributeRepositoryInterface $attributeRepository,
         AttributeInterface $attribute,
         AttributeInterface $identifier,
         SingleIdentifierAttribute $constraint
-    ) {
+    ): void {
         $attribute->getType()->willReturn('pim_catalog_identifier');
         $attribute->getId()->willReturn(1);
 
+        $attributeRepository->getAttributeCodesByType(AttributeTypes::IDENTIFIER)->willReturn(['some_code']);
         $attributeRepository->getIdentifier()->willReturn($identifier);
 
         $identifier->getId()->willReturn(1);
@@ -59,17 +61,18 @@ class SingleIdentifierAttributeValidatorSpec extends ObjectBehavior
         $this->validate($attribute, $constraint);
     }
 
-    function it_adds_a_violation_if_attribute_identifier_already_exists(
+    public function it_adds_a_violation_if_attribute_identifier_already_exists(
         $context,
-        $attributeRepository,
+        AttributeRepositoryInterface $attributeRepository,
         AttributeInterface $attribute,
         AttributeInterface $identifier,
         SingleIdentifierAttribute $constraint,
         ConstraintViolationBuilderInterface $violationBuilder
-    ) {
+    ): void {
         $attribute->getType()->willReturn('pim_catalog_identifier');
         $attribute->getId()->willReturn(2);
 
+        $attributeRepository->getAttributeCodesByType(AttributeTypes::IDENTIFIER)->willReturn(['some_code']);
         $attributeRepository->getIdentifier()->willReturn($identifier);
 
         $identifier->getId()->willReturn(1);

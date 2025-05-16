@@ -13,7 +13,9 @@ use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\GetValuesOfSiblin
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\UniqueVariantAxis;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\UniqueVariantAxisValidator;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\UniqueAxesCombinationSet;
+use Akeneo\Pim\Enrichment\Component\Product\Value\IdentifierValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValue;
+use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariant;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
@@ -192,7 +194,6 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         FamilyVariantInterface $familyVariant,
         ProductModelInterface $parent,
         AttributeInterface $color,
-        WriteValueCollection $valuesOfSibling,
         UniqueVariantAxis $constraint
     ) {
         $axes = [$color];
@@ -201,10 +202,12 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         $entity->setParent($parent->getWrappedObject());
         $entity->setFamilyVariant($familyVariant->getWrappedObject());
         $entity->addValue(OptionValue::value('color', 'blue'));
+        $entity->addValue(IdentifierValue::value('sku',true, 'blue_variant'));
 
         $axesProvider->getAxes($entity)->willReturn($axes);
         $color->getCode()->willReturn('color');
 
+        $valuesOfSibling = new WriteValueCollection([IdentifierValue::value('sku', true, 'sibbling_identifier')]);
         $getValuesOfSiblings->for($entity, ['color'])->willReturn(
             [
                 'sibbling_identifier' => $valuesOfSibling,
@@ -305,10 +308,10 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         $axes = [$color];
 
         $entity = new Product();
-        $entity->setIdentifier('my_identifier');
         $entity->setParent($parent->getWrappedObject());
         $entity->setFamilyVariant($familyVariant->getWrappedObject());
         $entity->addValue(OptionValue::value('color', 'blue'));
+        $entity->addValue(IdentifierValue::value('sku', true, 'my_identifier'));
 
         $axesProvider->getAxes($entity)->willReturn($axes);
 
@@ -336,6 +339,51 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         $this->validate($entity, $constraint);
     }
 
+    function it_raises_a_violation_if_there_is_a_duplicate_boolean_value_in_any_sibling_variant_product(
+        ExecutionContextInterface $context,
+        EntityWithFamilyVariantAttributesProvider $axesProvider,
+        GetValuesOfSiblings $getValuesOfSiblings,
+        FamilyVariantInterface $familyVariant,
+        ProductModelInterface $parent,
+        AttributeInterface $autoExposure,
+        UniqueVariantAxis $constraint,
+        ConstraintViolationBuilderInterface $violation
+    ) {
+        $autoExposure->getCode()->willReturn('auto_exposure');
+        $axes = [$autoExposure];
+
+        $entity = new Product();
+        $entity->addValue(IdentifierValue::value('sku', true, 'my_identifier'));
+        $entity->setParent($parent->getWrappedObject());
+        $entity->setFamilyVariant($familyVariant->getWrappedObject());
+        $entity->addValue(ScalarValue::value('auto_exposure', false));
+
+        $axesProvider->getAxes($entity)->willReturn($axes);
+
+        $getValuesOfSiblings->for($entity, ['auto_exposure'])->willReturn(
+            [
+                'sibling1' => new WriteValueCollection([ScalarValue::value('auto_exposure', null)]),
+                'sibling2' => new WriteValueCollection([ScalarValue::value('auto_exposure', false)]),
+            ]
+        );
+
+        $context
+            ->buildViolation(
+                UniqueVariantAxis::DUPLICATE_VALUE_IN_VARIANT_PRODUCT,
+                [
+                    '%values%' => '0',
+                    '%attributes%' => 'auto_exposure',
+                    '%validated_entity%' => 'my_identifier',
+                    '%sibling_with_same_value%' => 'sibling2',
+                ]
+            )
+            ->shouldBeCalled()->willReturn($violation);
+        $violation->atPath('attribute')->willReturn($violation);
+        $violation->addViolation()->shouldBeCalled();
+
+        $this->validate($entity, $constraint);
+    }
+
     function it_raises_a_violation_if_there_is_a_duplicate_value_with_a_different_case_in_any_sibling_product_model(
         ExecutionContextInterface $context,
         EntityWithFamilyVariantAttributesProvider $axesProvider,
@@ -350,10 +398,10 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         $axes = [$color];
 
         $entity = new Product();
-        $entity->setIdentifier('my_identifier');
         $entity->setParent($parent->getWrappedObject());
         $entity->setFamilyVariant($familyVariant->getWrappedObject());
         $entity->addValue(OptionValue::value('color', 'Blue'));
+        $entity->addValue(IdentifierValue::value('sku', true, 'my_identifier'));
 
         $axesProvider->getAxes($entity)->willReturn($axes);
 
@@ -397,11 +445,11 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         $axes = [$color, $size];
 
         $entity = new Product();
-        $entity->setIdentifier('entity_code');
         $entity->setParent($parent->getWrappedObject());
         $entity->setFamilyVariant($familyVariant->getWrappedObject());
         $entity->addValue(OptionValue::value('color', 'blue'));
         $entity->addValue(OptionValue::value('size', 'xl'));
+        $entity->addValue(IdentifierValue::value('sku', true, 'entity_code'));
 
         $axesProvider->getAxes($entity)->willReturn($axes);
 
@@ -496,16 +544,16 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         $color->getCode()->willReturn('color');
 
         $entity1 = new Product();
-        $entity1->setIdentifier('entity_1');
         $entity1->setParent($parent->getWrappedObject());
         $entity1->setFamilyVariant($familyVariant->getWrappedObject());
         $entity1->addValue(OptionValue::value('color', 'blue'));
+        $entity1->addValue(IdentifierValue::value('sku', true, 'entity_1'));
 
         $entity2 = new Product();
-        $entity2->setIdentifier('entity_2');
         $entity2->setParent($parent->getWrappedObject());
         $entity2->setFamilyVariant($familyVariant->getWrappedObject());
         $entity2->addValue(OptionValue::value('color', 'blue'));
+        $entity2->addValue(IdentifierValue::value('sku', true,'entity_2'));
 
         $getValuesOfSiblings->for($entity1, ['color'])->shouldBeCalled()->willReturn([]);
         $getValuesOfSiblings->for($entity2, ['color'])->willReturn([]);

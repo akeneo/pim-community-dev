@@ -16,9 +16,17 @@ class FlatItemBuffer extends JSONFileBuffer implements BufferInterface, \Countab
 {
     /** @var array */
     protected $headers = [];
+    private int $count = 0;
 
-    /** @var int */
-    protected $count = 0;
+    public function __construct(?string $filePath = null)
+    {
+        parent::__construct($filePath);
+        if ($filePath) {
+            $file = new \SplFileObject($filePath, 'a+');
+            $file->seek(PHP_INT_MAX);
+            $this->count = $file->key();
+        }
+    }
 
     /**
      * {@inheritdoc}
@@ -26,12 +34,10 @@ class FlatItemBuffer extends JSONFileBuffer implements BufferInterface, \Countab
     public function write($items, array $options = [])
     {
         foreach ($items as $item) {
-            if (isset($options['withHeader']) && $options['withHeader']) {
-                $this->addToHeaders(array_keys($item));
-            }
+            $this->addToHeaders(array_keys($item));
 
-            parent::write($item, $options);
             $this->count++;
+            parent::write($item, $options);
         }
     }
 

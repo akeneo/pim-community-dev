@@ -159,7 +159,7 @@ class ProductDatasource extends Datasource
     {
         $attributeCodes = [];
         foreach ($attributes as $attribute) {
-            if (in_array($attribute['id'], $attributeIdsToDisplay)) {
+            if ((in_array($attribute['id'], $attributeIdsToDisplay) || (isset($attribute['mainIdentifier'])) && $attribute['mainIdentifier'])) {
                 $attributeCodes[] = $attribute['code'];
             }
         }

@@ -67,9 +67,9 @@ Feature: Validate editing common image attributes of multiple products
     And I press the "Bulk actions" button
     And I choose the "Edit attribute values" operation
     And I display the Side view attribute
-    And I attach file "akeneo.txt" to "Side view"
+    And I attach file "bic-core-148.gif" to "Side view"
     And I move on to the next step
-    Then I should see validation tooltip "The txt file extension is not allowed for the side_view attribute. Allowed extensions are gif, png, jpeg, jpg."
+    Then I should see validation tooltip "The gif file extension is not allowed for the side_view attribute. Allowed extensions are png, jpeg, jpg."
     And the product "boots" should not have the following values:
       | side_view |
     And the product "sandals" should not have the following values:

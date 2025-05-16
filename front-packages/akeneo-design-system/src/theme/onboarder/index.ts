@@ -1,5 +1,5 @@
 import {Theme} from '../theme';
-import {color, fontSize, palette, fontFamily} from '../common';
+import {color, fontSize, palette, fontFamily, colorAlternative} from '../common';
 
 const onboarderTheme: Theme = {
   name: 'Onboarder',
@@ -13,6 +13,7 @@ const onboarderTheme: Theme = {
     brand120: '#3c86b3',
     brand140: '#2d6486',
   },
+  colorAlternative,
   fontSize,
   palette,
   fontFamily,

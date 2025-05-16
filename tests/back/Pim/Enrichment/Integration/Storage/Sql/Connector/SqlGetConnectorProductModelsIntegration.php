@@ -36,7 +36,7 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                     ->create(['limit' => 10]);
         $actualProductModelList = $this->getQuery()->fromProductQueryBuilder(
             $pqb,
-            $this->getUserIdFromUsername('admin'),
+            $this->getUserId('admin'),
             null,
             null,
             null
@@ -225,7 +225,7 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                     ->create(['limit' => 10]);
         $actualProductModelList = $this->getQuery()->fromProductQueryBuilder(
             $pqb,
-            $this->getUserIdFromUsername('admin'),
+            $this->getUserId('admin'),
             ['a_localized_and_scopable_text_area', 'a_number_float', 'a_simple_select'],
             'ecommerce',
             ['en_US']
@@ -462,7 +462,7 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
             null
         );
 
-        $actualProductModel = $this->getQuery()->fromProductModelCode('sub_pm_A', $this->getUserIdFromUsername('admin'));
+        $actualProductModel = $this->getQuery()->fromProductModelCode('sub_pm_A', $this->getUserId('admin'));
 
         Assert::assertEquals($expectedProductModel, $actualProductModel);
     }
@@ -476,7 +476,7 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
     {
         $actualProductModelList = $this->getQuery()->fromProductModelCodes(
             ['simple_pm', 'root_pm', 'sub_pm_A'],
-            $this->getUserIdFromUsername('admin'),
+            $this->getUserId('admin'),
             null,
             null,
             null
@@ -662,7 +662,7 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
         $this->get('database_connection')->executeQuery('DELETE FROM pim_catalog_association_type_translation');
         $this->get('database_connection')->executeQuery('DELETE FROM pim_catalog_association_type');
 
-        $subProductModel = $this->getQuery()->fromProductModelCode('sub_pm_A', $this->getUserIdFromUsername('admin'));
+        $subProductModel = $this->getQuery()->fromProductModelCode('sub_pm_A', $this->getUserId('admin'));
 
         Assert::assertSame([], $subProductModel->associations());
     }
@@ -674,7 +674,7 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
     {
         $this->expectException(ObjectNotFoundException::class);
         $this->expectExceptionMessage('Product model "unknown_product_model" was not found');
-        $this->getQuery()->fromProductModelCode('unknown_product_model', $this->getUserIdFromUsername('admin'));
+        $this->getQuery()->fromProductModelCode('unknown_product_model', $this->getUserId('admin'));
     }
 
     protected function setUp(): void
@@ -784,16 +784,6 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
     private function getQuery(): GetConnectorProductModels
     {
         return $this->get('akeneo.pim.enrichment.product.connector.get_product_models_from_codes');
-    }
-
-    private function getUserIdFromUsername(string $username): int
-    {
-        return (int)$this->get('database_connection')->fetchColumn(
-            'SELECT id from oro_user WHERE username = :username',
-            [
-                'username' => $username,
-            ]
-        );
     }
 
     private function getIdAndDatesFromProductModelCode(string $productModelCode): array

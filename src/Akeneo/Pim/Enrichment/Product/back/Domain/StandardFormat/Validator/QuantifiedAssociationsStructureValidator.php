@@ -84,18 +84,6 @@ class QuantifiedAssociationsStructureValidator
                     );
                 }
 
-                if (!in_array($quantifiedLinkType, self::QUANTIFIED_LINK_TYPES)) {
-                    throw InvalidPropertyTypeException::validArrayStructureExpected(
-                        $field,
-                        sprintf(
-                            'entity type in "%s" should contain one of these value',
-                            implode(',', self::QUANTIFIED_LINK_TYPES)
-                        ),
-                        static::class,
-                        $data
-                    );
-                }
-
                 foreach ($quantifiedLinks as $quantifiedLink) {
                     if (!isset($quantifiedLink['quantity'])) {
                         throw InvalidPropertyTypeException::validArrayStructureExpected(

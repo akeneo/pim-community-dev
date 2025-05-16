@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Tool\Component\Connector\Archiver;
 
 use Akeneo\Tool\Bundle\ConnectorBundle\EventListener\InvalidItemsCollector;
@@ -8,6 +10,7 @@ use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
+use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Reader\File\FileIteratorFactory;
@@ -19,33 +22,24 @@ use League\Flysystem\FilesystemOperator;
  * Mutualizes code for writers
  *
  * @author    Soulet Olivier <olivier.soulet@akeneo.com>
- * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @copyright 2016 Akeneo SAS (https://www.akeneo.com)
+ * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 abstract class AbstractInvalidItemWriter extends AbstractFilesystemArchiver
 {
-    protected InvalidItemsCollector $collector;
-    protected ItemWriterInterface $writer;
-    protected FileIteratorFactory $fileIteratorFactory;
-    protected DefaultValuesProviderInterface $defaultValuesProvider;
-    protected string $invalidItemFileFormat;
-
     protected int $batchSize = 100;
 
     public function __construct(
-        InvalidItemsCollector $collector,
-        ItemWriterInterface $writer,
-        FileIteratorFactory $fileIteratorFactory,
-        FilesystemOperator $filesystem,
-        DefaultValuesProviderInterface $defaultValuesProvider,
-        $invalidItemFileFormat
+        protected readonly InvalidItemsCollector $collector,
+        protected readonly ItemWriterInterface $writer,
+        protected readonly FileIteratorFactory $fileIteratorFactory,
+        protected readonly FilesystemOperator $localFilesystem,
+        FilesystemOperator $archivistFilesystem,
+        protected readonly DefaultValuesProviderInterface $defaultValuesProvider,
+        JobRegistry $jobRegistry,
+        protected readonly string $invalidItemFileFormat,
     ) {
-        $this->collector = $collector;
-        $this->writer = $writer;
-        $this->fileIteratorFactory = $fileIteratorFactory;
-        $this->filesystem = $filesystem;
-        $this->defaultValuesProvider = $defaultValuesProvider;
-        $this->invalidItemFileFormat = $invalidItemFileFormat;
+        parent::__construct($archivistFilesystem, $jobRegistry);
     }
 
     /**
@@ -53,7 +47,7 @@ abstract class AbstractInvalidItemWriter extends AbstractFilesystemArchiver
      *
      * Re-parse the imported file and write into a new one the invalid lines.
      */
-    public function archive(JobExecution $jobExecution): void
+    public function archive(StepExecution $stepExecution): void
     {
         if (empty($this->collector->getInvalidItems())) {
             return;
@@ -66,6 +60,7 @@ abstract class AbstractInvalidItemWriter extends AbstractFilesystemArchiver
             }
         }
 
+        $jobExecution = $stepExecution->getJobExecution();
         $readJobParameters = $jobExecution->getJobParameters();
         $currentItemPosition = 0;
         $itemsToWrite = [];
@@ -121,10 +116,11 @@ abstract class AbstractInvalidItemWriter extends AbstractFilesystemArchiver
     /**
      * {@inheritdoc}
      */
-    public function supports(JobExecution $jobExecution): bool
+    public function supports(StepExecution $stepExecution): bool
     {
+        $jobExecution = $stepExecution->getJobExecution();
         if ($jobExecution->getJobParameters()->has('invalid_items_file_format')) {
-            return $this->invalidItemFileFormat === $jobExecution->getJobParameters()->get('invalid_items_file_format');
+            return $this->invalidItemFileFormat === $jobExecution->getJobParameters()->get('invalid_items_file_format') && $this->isTheLastStep($stepExecution);
         }
 
         return false;
@@ -143,10 +139,10 @@ abstract class AbstractInvalidItemWriter extends AbstractFilesystemArchiver
         $workingDirectory = $jobExecution->getExecutionContext()->get(JobInterface::WORKING_DIRECTORY_PARAMETER);
         $localFilePath = $workingDirectory . $this->getFilename();
 
-        if (is_readable($localFilePath)) {
-            $localStream = fopen($localFilePath, 'r');
+        if ($this->localFilesystem->fileExists($localFilePath)) {
+            $localStream = $this->localFilesystem->readStream($localFilePath);
 
-            $this->filesystem->writeStream($fileKey, $localStream);
+            $this->archivistFilesystem->writeStream($fileKey, $localStream);
 
             if (is_resource($localStream)) {
                 fclose($localStream);
@@ -222,5 +218,13 @@ abstract class AbstractInvalidItemWriter extends AbstractFilesystemArchiver
     private function trimTrailingValuesWithoutHeaders(array $readItem, int $headersLength): array
     {
         return array_slice($readItem, 0, $headersLength);
+    }
+
+    private function isTheLastStep(StepExecution $stepExecution): bool
+    {
+        $job = $this->getJob($stepExecution);
+        $lastStep = $job->getSteps()[array_key_last($job->getSteps())];
+
+        return $stepExecution->getStepName() === $lastStep->getName();
     }
 }

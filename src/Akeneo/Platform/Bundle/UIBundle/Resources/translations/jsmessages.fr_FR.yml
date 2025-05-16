@@ -199,6 +199,7 @@ pim_common:
   label: Libellé
   label_translations: Traduction des libellés
   Label or identifier: libellé ou identifiant
+  Label or main identifier: Libellé ou identifiant principal
   code_or_label: code ou libellé
   less_than: Moins de
   loading: Chargement en cours...
@@ -304,9 +305,10 @@ pim_enrich.entity.job_execution:
     create:
       upload: Déposez votre fichier {{ type }} ici, ou cliquez ici pour le chercher sur votre disque
     download:
+      dropdown_title: "]-Inf, 1]Télécharger le fichier généré|]1, Inf[Télécharger les fichiers générés"
       archive: Télécharger l'archive générée
-      output: Télécharger les fichiers générés
-      input: Télécharger les fichiers lus
+      output: Télécharger le fichier généré
+      input: Télécharger fichier lu
       invalid_xlsx: Télécharger les données invalides
       invalid_csv: Télécharger les données invalides
 pim_title:
@@ -360,6 +362,9 @@ pim_menu:
       title: Aide
       helper: Centre d'aide Akeneo
       new: NOUVEAU
+      news: Nouveautés
+      help_center: Centre d'aide
+      akademy_training: Formation Akademy
   item:
     association_type: Types d'association
     attribute_group: Groupes d'attributs
@@ -461,7 +466,8 @@ pim_system:
     button:
       label: Réinitialiser cet environnement
       confirm: Réinitialiser et se déconnecter
-    error_notification: Une erreur s'est produite lors de la réinitialisation de cet environnement, veuillez contacter votre administrateur système.
+    error_notification: Une erreur s'est produite lors de la réinitialisation de cette instance, veuillez contacter votre administrateur système.
+    jobs_running: Vous ne pouvez pas réinitialiser votre instance pour le moment, car certains processus sont toujours en attente ou en cours d'exécution.
   sandbox:
     helper:
       text: 'Cet environnement est un bac à sable : les changements que vous y ferez n''affecteront pas votre environnement de production.'

@@ -9,6 +9,10 @@ pim_enrich:
   family:
     info:
       cant_remove_attribute_used_as_axis: Sie können dieses Attribut nicht entfernen, da es als Achse in der Variante der Produktfamilie verwendet wird
+  attribute_group:
+    remove:
+      attribute_group_with_attribute_cannot_be_removed: Attributgruppe mit Attributen kann nicht entfernt werden. Bitte entfernen Sie ihre Attribute bevor Sie sie löschen.
+      attribute_group_other_cannot_be_removed: Attributgruppe "other" kann nicht entfernt werden.
   #Group type
   group_type:
     tab:
@@ -42,3 +46,18 @@ pim_enrich_attribute_form:
   locale_specific: Gebietsschemaspezifisch
   group: Attributgruppe
   useableAsGridFilter: Anwendbar in der Listenansicht
+job_execution.summary:
+  deleted_attribute_groups: Gelöschte Attributgruppen
+  skipped_attribute_groups: Übersprungene Attributgruppen
+  moved_attributes: Verschobene Attribute
+  deleted_attributes: Gelöschte Attribute
+pim_import_export:
+  notification:
+    attribute_group_mass_delete:
+      error: Mehrfache Löschung von Attributgruppen fehlgeschlagen
+      warning: Mehrfache Löschung von Attributgruppen mit einigen Warnungen abgeschlossen
+      success: Mehrfache Löschung von Attributgruppen abgeschlossen
+    attribute_mass_delete:
+      error: Mehrfache Löschung von Attributen fehlgeschlagen
+      warning: Mehrfache Löschung von Attributen mit einigen Warnungen abgeschlossen
+      success: Massenlöschung von Attributen abgeschlossen

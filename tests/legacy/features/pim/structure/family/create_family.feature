@@ -13,8 +13,7 @@ Feature: Family creation
   @critical
   Scenario: Successfully create a family
     Then I should see the Code field
-    When I fill in the following information in the popin:
-      | Code | CAR |
+    When I fill the input labelled 'Code' with 'CAR'
     And I press the "Save" button
     Then I should be redirected to the "CAR" family page
     And I should see the text "Family successfully created"

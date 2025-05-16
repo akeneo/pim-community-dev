@@ -82,6 +82,8 @@ pim_user_management:
         default_published_product_grid_view: Vista por defecto de cuadrícula de productos publicados #EE Only
         proposals_to_review_notification: Si hay nuevas propuestas a revisar #EE Only
         proposals_state_notifications: Cuando una nueva propuesta es aceptada o rachazada #EE Only
+        not_fully_supported_locale: 'La interfaz local de usuario seleccionada [{{ code }}] no está totalmente soportada. Puede encontrarse con traducciones de texto incompletas o faltantes. Ayuda a mejorar la cobertura local:'
+        link_to_crowdin_label: contribuir a Crowdin.
       meta:
         created: Creado
         updated: actualizado

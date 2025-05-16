@@ -10,6 +10,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterfac
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
 use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Ramsey\Uuid\UuidInterface;
@@ -19,7 +20,8 @@ class InMemoryProductRepository implements
     IdentifiableObjectRepositoryInterface,
     SaverInterface,
     ProductRepositoryInterface,
-    CursorableRepositoryInterface
+    CursorableRepositoryInterface,
+    BulkSaverInterface
 {
     /** @var ArrayCollection */
     private $products;
@@ -42,7 +44,13 @@ class InMemoryProductRepository implements
      */
     public function findOneByIdentifier($identifier)
     {
-        return $this->products->get($identifier);
+        foreach ($this->products as $product) {
+            if ($product->getIdentifier() === $identifier) {
+                return $product;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -54,18 +62,23 @@ class InMemoryProductRepository implements
             throw new \InvalidArgumentException('The object argument should be a product');
         }
 
-        $this->products->set($product->getIdentifier(), $product);
+        $this->products->set($product->getUuid()->toString(), $product);
+    }
+
+    public function saveAll(array $products, array $options = [])
+    {
+        foreach ($products as $product) {
+            $this->save($product, $options);
+        }
     }
 
     public function find($uuid)
     {
-        $product = $this->products->filter(
-            function (ProductInterface $product) use ($uuid) {
-                return $product->getUuid()->equals($uuid);
-            }
-        )->first();
+        if ($uuid instanceof UuidInterface) {
+            $uuid = $uuid->toString();
+        }
 
-        return (false === $product) ? null : $product;
+        return $this->products->get($uuid);
     }
 
     public function findAll()

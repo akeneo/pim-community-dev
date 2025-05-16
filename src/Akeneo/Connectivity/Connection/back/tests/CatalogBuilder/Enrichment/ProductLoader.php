@@ -4,15 +4,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment;
 
-use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
-use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use PHPUnit\Framework\Assert;
-use Ramsey\Uuid\Uuid;
-use Symfony\Component\Messenger\TraceableMessageBus;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\UniqueValuesSet;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -21,42 +18,39 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class ProductLoader
 {
     public function __construct(
-        private ProductBuilderInterface $builder,
-        private ObjectUpdaterInterface $updater,
-        private SaverInterface $saver,
-        private ValidatorInterface $validator,
-        private Client $client,
-        private TraceableMessageBus $messageBus,
+        private readonly ProductRepositoryInterface $productRepository,
+        private readonly MessageBusInterface $productMessageBus,
+        private readonly UniqueValuesSet $uniqueValuesSet
     ) {
     }
 
-    public function createWithUuid(?string $uuid, ?string $identifier, array $data): ProductInterface
+    /**
+     * @param UserIntent[] $userIntents
+     */
+    public function create(string $identifier, array $userIntents = []) : ProductInterface
     {
-        $family = $data['family'] ?? null;
-
-        $product = $this->builder->createProduct($identifier, $family, $uuid);
-        $this->update($product, $data);
-
-        $this->messageBus->reset();
-
-        return $product;
+        return $this->createOrUpdate($identifier, $userIntents);
     }
 
-    public function create(?string $identifier, array $data): ProductInterface
+    /**
+     * @param UserIntent[] $userIntents
+     */
+    public function update(string $identifier, array $userIntents = []) : ProductInterface
     {
-        return $this->createWithUuid(Uuid::uuid4()->toString(), $identifier, $data);
+        return $this->createOrUpdate($identifier, $userIntents);
     }
 
-    public function update(ProductInterface $product, array $data): void
+    /**
+     * @param UserIntent[] $userIntents
+     */
+    public function createOrUpdate(string $identifier, array $userIntents = []) : ProductInterface
     {
-        $this->updater->update($product, $data);
+        $this->uniqueValuesSet->reset();
 
-        $constraints = $this->validator->validate($product);
-        Assert::assertCount(0, $constraints, 'The validation from the product creation failed.');
+        $this->productMessageBus->dispatch(
+            UpsertProductCommand::createWithIdentifierSystemUser($identifier, $userIntents)
+        );
 
-        $this->saver->save($product);
-
-        $this->client->refreshIndex();
-        $this->messageBus->reset();
+        return $this->productRepository->findOneByIdentifier($identifier);
     }
 }

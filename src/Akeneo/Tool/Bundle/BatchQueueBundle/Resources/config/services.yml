@@ -88,7 +88,6 @@ services:
             - '@logger'
             - '%kernel.project_dir%'
             - '@Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandlerInterface'
-            - '@pim_framework.lock.factory'
         tags:
             - { name: console.command }
             - { name: 'akeneo.command.authenticated_as_admin_user' }
@@ -136,6 +135,12 @@ services:
             - { name: 'akeneo_messenger.ordering_key_candidate' }
 
     Akeneo\Tool\Bundle\BatchQueueBundle\EventListener\AckMessageEventListener:
+        arguments:
+            - '@messenger.receiver_locator'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Tool\Bundle\BatchQueueBundle\EventListener\AddReceiverStampEventListener:
         arguments:
             - '@messenger.receiver_locator'
         tags:

@@ -25,7 +25,14 @@ $rules = [
         [
             'Akeneo\Platform\Installer\Application',
             'Akeneo\Platform\Installer\Domain',
+
+            'Akeneo\Platform\Installer\Infrastructure\Event',
+            'Akeneo\Platform\Job\ServiceApi',
+            'Akeneo\Tool',
             'Doctrine\DBAL\Connection',
+            'Doctrine\DBAL\Schema\AbstractAsset',
+            'Doctrine\DBAL\Types\Types',
+            'League\Flysystem\FilesystemOperator',
             'Symfony\Component',
             'Webmozart\Assert\Assert',
             'Oro\Bundle\SecurityBundle\SecurityFacade',

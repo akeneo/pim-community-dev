@@ -91,40 +91,6 @@ const Page: FC = () => {
                 Permission
               </Checkbox>
             </Field>
-            <Field>
-              <Checkbox
-                checked={configuration.features.enriched_category}
-                onClick={() => changeFeature('enriched_category', !configuration.features.enriched_category)}
-              >
-                Enriched Categories
-              </Checkbox>
-            </Field>
-            <Field>
-              <Checkbox
-                checked={configuration.features.category_template_customization}
-                onClick={() =>
-                  changeFeature(
-                    'category_template_customization',
-                    !configuration.features.category_template_customization
-                  )
-                }
-              >
-                Enriched Categories: Customize Template
-              </Checkbox>
-            </Field>
-            <Field>
-              <Checkbox
-                checked={configuration.features.category_update_template_attribute}
-                onClick={() =>
-                  changeFeature(
-                    'category_update_template_attribute',
-                    !configuration.features.category_update_template_attribute
-                  )
-                }
-              >
-                Enriched Categories: Update Templace Attribute
-              </Checkbox>
-            </Field>
           </Content>
         </Section>
 

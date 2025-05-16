@@ -1,0 +1,6 @@
+pim_api.acl_group.catalog: Catalogi
+akeneo_catalogs:
+  acl:
+    catalog_list: Catalogi weergeven
+    catalog_edit: Catalogi aanmaken en bijwerken
+    catalog_remove: Catalogi verwijderen

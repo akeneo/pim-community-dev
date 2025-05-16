@@ -8,7 +8,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\API\Query\UpdateIdentifierPrefixes
 use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Platform\Bundle\InstallerBundle\Command\ZddMigration;
+use Akeneo\Platform\Installer\Infrastructure\Command\ZddMigration;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
 use Psr\Log\LoggerInterface;

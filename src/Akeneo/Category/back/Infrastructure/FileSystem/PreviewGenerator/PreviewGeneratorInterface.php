@@ -30,5 +30,5 @@ interface PreviewGeneratorInterface
      * @param Attribute $attribute The attribute which need to have a preview
      * @param string $type The format type used to generate the image (ex : dam_thumbnail, dam_preview)
      */
-    public function remove(string $data, Attribute $attribute, string $type);
+    public function remove(string $data, string $type);
 }

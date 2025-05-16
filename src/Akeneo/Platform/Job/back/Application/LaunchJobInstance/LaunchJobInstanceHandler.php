@@ -3,6 +3,7 @@
 namespace Akeneo\Platform\Job\Application\LaunchJobInstance;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\ManualUploadStorage;
+use Akeneo\Platform\Job\ServiceApi\JobInstance\File;
 use Akeneo\Platform\Job\ServiceApi\JobInstance\LaunchJobInstanceCommand;
 use Akeneo\Platform\Job\ServiceApi\JobInstance\LaunchJobInstanceHandlerInterface;
 use Akeneo\Platform\Job\ServiceApi\JobInstance\LaunchJobInstanceResult;
@@ -24,14 +25,14 @@ class LaunchJobInstanceHandler implements LaunchJobInstanceHandlerInterface
         $code = $launchJobInstanceCommand->code;
         $file = $launchJobInstanceCommand->file;
 
-        $filePath = $this->jobFileStorer->store($code, $file->getFileName(), $file->getResource());
-        $jobConfig = [
-            'storage' => [
+        $jobConfig = ['is_user_authenticated' => true];
+        if ($file instanceof File) {
+            $filePath = $this->jobFileStorer->store($code, $file->getFileName(), $file->getResource());
+            $jobConfig['storage'] = [
                 'type' => ManualUploadStorage::TYPE,
                 'file_path' => $filePath,
-            ],
-            'is_user_authenticated' => true,
-        ];
+            ];
+        }
 
         $username = $this->tokenStorage->getToken()?->getUser()?->getUserIdentifier();
 

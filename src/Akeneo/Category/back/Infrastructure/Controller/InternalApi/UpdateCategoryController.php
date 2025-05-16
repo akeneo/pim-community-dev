@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Controller\InternalApi;
 
-use Akeneo\Category\Api\Command\CommandMessageBus;
 use Akeneo\Category\Api\Command\UpsertCategoryCommand;
 use Akeneo\Category\Application\Converter\ConverterInterface;
 use Akeneo\Category\Application\Converter\StandardFormatToUserIntentsInterface;
 use Akeneo\Category\Application\Filter\CategoryEditAclFilter;
 use Akeneo\Category\Application\Filter\CategoryEditUserIntentFilter;
 use Akeneo\Category\Domain\Event\CategoryEditedEvent;
-use Akeneo\Category\Domain\Exceptions\ViolationsException;
+use Akeneo\Category\Domain\Exception\ViolationsException;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
+use Akeneo\Category\Infrastructure\Bus\CommandBus;
 use Akeneo\Category\Infrastructure\Converter\InternalApi\InternalApiToStd;
 use Akeneo\Category\Infrastructure\Registry\FindCategoryAdditionalPropertiesRegistry;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
@@ -32,7 +32,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class UpdateCategoryController
 {
     public function __construct(
-        private readonly CommandMessageBus $categoryCommandBus,
+        private readonly CommandBus $commandBus,
         private readonly SecurityFacade $securityFacade,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly ConverterInterface $internalApiToStandardConverter,
@@ -69,10 +69,10 @@ class UpdateCategoryController
                 (string) $category->getCode(),
                 $filteredUserIntents,
             );
-            $this->categoryCommandBus->dispatch($command);
+            $this->commandBus->dispatch($command);
             $this->eventDispatcher->dispatch(new CategoryEditedEvent($category, $filteredUserIntents));
         } catch (ViolationsException $exception) {
-            return new JsonResponse($exception->normalize(), Response::HTTP_BAD_REQUEST);
+            return new JsonResponse($exception->normalizeDeprecated(), Response::HTTP_BAD_REQUEST);
         }
 
         $category = $this->getCategory->byId($category->getId()->getValue());

@@ -99,7 +99,7 @@ class CalculateCompletenessCommandIntegration extends TestCase
 
     private function purgeCompletenessAndResetIndex(): void
     {
-        $this->get('database_connection')->executeUpdate('DELETE c.* from pim_catalog_completeness c');
+        $this->get('database_connection')->executeUpdate('DELETE c.* from pim_catalog_product_completeness c');
         $client = $this->get('akeneo_elasticsearch.client.product_and_product_model');
         $client->refreshIndex();
         $client->bulkDelete(
@@ -135,20 +135,6 @@ class CalculateCompletenessCommandIntegration extends TestCase
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
 
         $this->productUuids[$identifier] = $product->getUuid();
-    }
-
-    protected function getUserId(string $username): int
-    {
-        $query = <<<SQL
-            SELECT id FROM oro_user WHERE username = :username
-        SQL;
-        $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
-        $id = $stmt->fetchOne();
-        if (null === $id) {
-            throw new \InvalidArgumentException(\sprintf('No user exists with username "%s"', $username));
-        }
-
-        return \intval($id);
     }
 
     private function createProductModel(array $data): void

@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
+use Akeneo\Pim\Enrichment\Component\Product\Value\IdentifierValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProductModels;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateGroups;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProducts;
@@ -60,7 +61,7 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
         ProductInterface $product,
     ) {
         $associatedProduct = new Product();
-        $associatedProduct->setIdentifier('baz');
+        $associatedProduct->addValue(IdentifierValue::value('sku', true, 'baz'));
 
         $product->getAssociatedProducts('X_SELL')->shouldBeCalledOnce()->willReturn(
             new ArrayCollection([$associatedProduct])
@@ -83,7 +84,7 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
         ProductInterface $product,
     ) {
         $associatedProduct = new Product();
-        $associatedProduct->setIdentifier('baz');
+        $associatedProduct->addValue(IdentifierValue::value('sku', true, 'baz'));
         $product->getAssociatedProducts('X_SELL')->shouldBeCalledOnce()->willReturn(
             new ArrayCollection([$associatedProduct])
         );
@@ -113,7 +114,7 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
         ProductInterface $product,
     ) {
         $associatedProduct = new Product();
-        $associatedProduct->setIdentifier('baz');
+        $associatedProduct->addValue(IdentifierValue::value('sku', true, 'baz'));
         $product->getAssociatedProducts('X_SELL')
             ->shouldBeCalledTimes(2)
             ->willReturn(new ArrayCollection([$associatedProduct]));
@@ -137,7 +138,7 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
         ProductInterface $product,
     ) {
         $associatedProduct = new Product();
-        $associatedProduct->setIdentifier('baz');
+        $associatedProduct->addValue(IdentifierValue::value('sku', true, 'baz'));
 
         $product->getAssociatedProducts('X_SELL')->shouldBeCalledOnce()->willReturn(
             new ArrayCollection([$associatedProduct])
@@ -157,10 +158,10 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
     ) {
         $associatedProducts = [];
         $associatedProduct = new Product();
-        $associatedProduct->setIdentifier('baz');
+        $associatedProduct->addValue(IdentifierValue::value('sku', true, 'baz'));
         $associatedProducts[] = $associatedProduct;
         $associatedProduct = new Product();
-        $associatedProduct->setIdentifier('qux');
+        $associatedProduct->addValue(IdentifierValue::value('sku', true, 'qux'));
         $associatedProducts[] = $associatedProduct;
 
         $product->getAssociatedProducts('X_SELL')->shouldBeCalledOnce()->willReturn(
@@ -184,7 +185,7 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
         ProductInterface $product
     ) {
         $associatedProduct = new Product();
-        $associatedProduct->setIdentifier('baz');
+        $associatedProduct->addValue(IdentifierValue::value('sku', true, 'baz'));
 
         $product->getAssociatedProducts('X_SELL')->shouldBeCalledOnce()->willReturn(
             new ArrayCollection([$associatedProduct])
@@ -202,7 +203,7 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
         ProductInterface $product
     ) {
         $associatedProduct = new Product();
-        $associatedProduct->setIdentifier('baz');
+        $associatedProduct->addValue(IdentifierValue::value('sku', true, 'baz'));
 
         $product->getAssociatedProducts('X_SELL')->shouldBeCalledTimes(2)->willReturn(
             new ArrayCollection([$associatedProduct])
@@ -228,10 +229,10 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
     ) {
         $associatedProducts = [];
         $associatedProduct = new Product();
-        $associatedProduct->setIdentifier('baz');
+        $associatedProduct->addValue(IdentifierValue::value('sku', true, 'baz'));
         $associatedProducts[] = $associatedProduct;
         $associatedProduct = new Product();
-        $associatedProduct->setIdentifier('non_viewable_product');
+        $associatedProduct->addValue(IdentifierValue::value('sku', true, 'non_viewable_product'));
         $associatedProducts[] = $associatedProduct;
 
         $product->getAssociatedProducts('X_SELL')->shouldBeCalledOnce()->willReturn(
@@ -297,10 +298,10 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
     ) {
         $associatedProducts = [];
         $associatedProduct = new Product();
-        $associatedProduct->setIdentifier('baz');
+        $associatedProduct->addValue(IdentifierValue::value('sku', true, 'baz'));
         $associatedProducts[] = $associatedProduct;
         $associatedProduct = new Product();
-        $associatedProduct->setIdentifier('qux');
+        $associatedProduct->addValue(IdentifierValue::value('sku', true, 'qux'));
         $associatedProducts[] = $associatedProduct;
 
         $product->getAssociatedProducts('X_SELL')->shouldBeCalledOnce()->willReturn(

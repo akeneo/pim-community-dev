@@ -11,7 +11,6 @@ Feature: Remove a category
       | caterpillar_1 | winter_collection,2014_collection |
       | caterpillar_2 | winter_boots,2014_collection      |
     And I am logged in as "Julia"
-    And feature flag "enriched_category" is activated
 
   Scenario: Remove a simple category via the edit page
     Given I am on the "sandals" category page

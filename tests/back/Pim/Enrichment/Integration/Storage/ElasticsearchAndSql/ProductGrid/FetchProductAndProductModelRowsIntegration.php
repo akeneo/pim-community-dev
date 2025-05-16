@@ -7,8 +7,8 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Storage\ElasticsearchAndSql\Prod
 use Akeneo\Pim\Enrichment\Component\Product\Grid\Query\FetchProductAndProductModelRowsParameters;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Value\IdentifierValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MediaValue;
-use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\ProductGrid\AssertRows;
@@ -34,7 +34,7 @@ class FetchProductAndProductModelRowsIntegration extends TestCase
         $imagePath = $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'));
         $fixtures = $fixturesLoader->createProductAndProductModels($imagePath);
         [$rootProductModel, $subProductModel] = $fixtures['product_models'];
-        [$product1, $product2] = $fixtures['products'];
+        [$product1, $product2, $product3] = $fixtures['products'];
 
         $pqb = $this
             ->get('akeneo.pim.enrichment.query.product_and_product_model_query_builder_from_size_factory.with_product_identifier_cursor')
@@ -43,8 +43,8 @@ class FetchProductAndProductModelRowsIntegration extends TestCase
         $queryParameters = new FetchProductAndProductModelRowsParameters(
             $pqb,
             ['sku', 'a_localizable_image', 'a_scopable_image'],
-            'ecommerce', 'en_US',
-            (int) $userId
+            'ecommerce',
+            'en_US',
         );
 
         $rows = $query($queryParameters);
@@ -61,13 +61,13 @@ class FetchProductAndProductModelRowsIntegration extends TestCase
                 true,
                 $product2->getCreated(),
                 $product2->getUpdated(),
-                "[baz]",
+                'baz',
                 null,
                 null,
                 $product2->getUuid()->toString(),
                 null,
                 new WriteValueCollection([
-                    ScalarValue::value('sku', 'baz'),
+                    IdentifierValue::value('sku', false, 'baz'),
                     MediaValue::localizableValue('a_localizable_image', $akeneoImage, 'en_US'),
                     MediaValue::scopableValue('a_scopable_image', $akeneoImage, 'ecommerce'),
                 ])
@@ -84,11 +84,25 @@ class FetchProductAndProductModelRowsIntegration extends TestCase
                 null,
                 new WriteValueCollection([])
             ),
+            Row::fromProduct(
+                null,
+                null,
+                [],
+                true,
+                $product3->getCreated(),
+                $product3->getUpdated(),
+                '[2c29af3c-625b-4ee0-9ba4-c2783c300b92]',
+                null,
+                null,
+                '2c29af3c-625b-4ee0-9ba4-c2783c300b92',
+                null,
+                new WriteValueCollection([])
+            ),
         ];
 
-        Assert::assertSame(2, $rows->totalCount());
+        Assert::assertSame(3, $rows->totalCount());
         AssertRows::same($expectedRows, $rows->rows());
-        Assert::assertSame(1, $rows->totalProductCount());
+        Assert::assertSame(2, $rows->totalProductCount());
         Assert::assertSame(1, $rows->totalProductModelCount());
     }
 
@@ -100,4 +114,3 @@ class FetchProductAndProductModelRowsIntegration extends TestCase
         return $this->catalog->useTechnicalCatalog();
     }
 }
-

@@ -77,18 +77,24 @@ interface AttributeRepositoryInterface extends
 
     /**
      * Get the identifier attribute
-     * Only one identifier attribute can exists
-     *
-     * @return AttributeInterface
      */
-    public function getIdentifier();
+    public function getIdentifier(): AttributeInterface;
+
+    /**
+     * Get the main identifier attribute
+     * Only one main identifier attribute can exist
+     */
+    public function getMainIdentifier(): AttributeInterface;
 
     /**
      * Get the identifier code
-     *
-     * @return string
      */
-    public function getIdentifierCode();
+    public function getIdentifierCode(): string;
+
+    /**
+     * Get the main identifier code
+     */
+    public function getMainIdentifierCode(): string;
 
     /**
      * Get attribute type by code attributes

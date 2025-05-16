@@ -32,6 +32,11 @@ final class LocaleShouldBeEditableByUserValidator extends ConstraintValidator
 
         $localeCode = $valueUserIntent->localeCode();
         $userId = $command->userId();
+
+        if (-1 === (int) $userId) {
+            return;
+        }
+
         if (!empty($localeCode) && !$this->isLocaleEditable->forUserId($localeCode, $userId)) {
             $this->context
                 ->buildViolation($constraint->message, ['{{ locale_code }}' => $localeCode])

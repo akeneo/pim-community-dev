@@ -3,13 +3,15 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Tests\Integration\Webhook;
 
-use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\UniqueValuesSet;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
-use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
-use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -19,36 +21,46 @@ class ProduceEventOnBulkProductUpdateIntegration extends TestCase
 {
     use AssertEventCountTrait;
 
-    private ProductBuilderInterface $productBuilder;
-    private BulkSaverInterface $productSaver;
-    private ObjectUpdaterInterface $productUpdater;
+    private UniqueValuesSet $uniqueValuesSet;
 
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->productBuilder = $this->get('pim_catalog.builder.product');
-        $this->productSaver = $this->get('pim_catalog.saver.product');
-        $this->productUpdater = $this->get('pim_catalog.updater.product');
     }
 
     public function test_the_bulk_product_update_event(): void
     {
         $count = 3;
-        $products = [];
         for ($i = 0; $i < $count; $i++) {
-            $products[] = $this->productBuilder->createProduct(\sprintf('t-shirt-%s', $i));
+            $this->createProduct(\sprintf('t-shirt-%s', $i));
         }
-        $this->productSaver->saveAll($products);
 
-        foreach ($products as $product) {
-            $this->productUpdater->update($product, [
-                'enabled' => false,
+        for ($i = 0; $i < $count; $i++) {
+            $this->updateProduct(\sprintf('t-shirt-%s', $i), [
+                new SetEnabled(false)
             ]);
         }
-        $this->productSaver->saveAll($products);
 
         $this->assertEventCount($count, ProductUpdated::class);
+    }
+
+    private function createProduct(string $identifier) : void
+    {
+        $this->get('pim_enrich.product.message_bus')->dispatch(
+            UpsertProductCommand::createWithIdentifierSystemUser($identifier, [])
+        );
+    }
+
+
+    /**
+     * @param UserIntent[] $userIntents
+     */
+    private function updateProduct(string $identifier, array $userIntents) : void
+    {
+        $this->get('pim_catalog.validator.unique_value_set')->reset();
+        $this->get('pim_enrich.product.message_bus')->dispatch(
+            UpsertProductCommand::createWithIdentifierSystemUser($identifier, $userIntents)
+        );
     }
 
     protected function getConfiguration(): Configuration

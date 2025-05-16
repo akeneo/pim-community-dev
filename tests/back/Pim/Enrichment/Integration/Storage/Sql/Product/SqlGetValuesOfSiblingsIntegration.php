@@ -54,15 +54,18 @@ class SqlGetValuesOfSiblingsIntegration extends TestCase
 
     public function test_that_it_gets_the_siblings_values_of_a_new_variant_product()
     {
-        $variantProduct = $this->createProduct('new_identifier', [
-            new ChangeParent('sub_sweat_option_a'),
-            new SetBooleanValue('a_yes_no', null, null, false)
-        ]);
+        $variantProduct = $this->createProduct(
+            'apollon_optionb_false',
+            [
+                new SetCategories(['master']),
+                new ChangeParent('sub_sweat_option_b'),
+                new SetBooleanValue('a_yes_no', null, null, false)
+            ]
+        );
 
         $valuesOfSiblings = $this->getValuesOfSiblings($variantProduct);
-        Assert::assertCount(2, $valuesOfSiblings);
-        Assert::assertArrayHasKey('apollon_optiona_true', $valuesOfSiblings);
-        Assert::assertArrayHasKey('apollon_optiona_false', $valuesOfSiblings);
+        Assert::assertCount(1, $valuesOfSiblings);
+        Assert::assertArrayHasKey('apollon_optionb_true', $valuesOfSiblings);
     }
 
     public function test_that_it_gets_the_siblings_values_of_an_existing_variant_product()
@@ -184,6 +187,14 @@ class SqlGetValuesOfSiblingsIntegration extends TestCase
                 new SetBooleanValue('a_yes_no', null, null, false)
             ]
         );
+        $this->createProduct(
+            'apollon_optionb_true',
+            [
+                new SetCategories(['master']),
+                new ChangeParent('sub_sweat_option_b'),
+                new SetBooleanValue('a_yes_no', null, null, true)
+            ]
+        );
     }
 
     protected function getConfiguration()
@@ -233,19 +244,5 @@ class SqlGetValuesOfSiblingsIntegration extends TestCase
     {
         return $this->get('akeneo.pim.enrichment.product_model.query.get_values_of_siblings')
                     ->for($entity, $attributeCodes);
-    }
-
-    protected function getUserId(string $username): int
-    {
-        $query = <<<SQL
-            SELECT id FROM oro_user WHERE username = :username
-        SQL;
-        $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
-        $id = $stmt->fetchOne();
-        if (null === $id) {
-            throw new \InvalidArgumentException(\sprintf('No user exists with username "%s"', $username));
-        }
-
-        return \intval($id);
     }
 }

@@ -6,19 +6,14 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Messenger;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
-use Akeneo\Tool\Component\Messenger\NormalizableMessageInterface;
-use Akeneo\Tool\Component\Messenger\TraceableMessageInterface;
-use Akeneo\Tool\Component\Messenger\TraceableMessageTrait;
 use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class LaunchProductAndProductModelEvaluationsMessage implements TraceableMessageInterface, NormalizableMessageInterface
+final class LaunchProductAndProductModelEvaluationsMessage
 {
-    use TraceableMessageTrait;
-
     /**
      * @param string[] $criteriaToEvaluate (All criteria will be evaluated if empty)
      */
@@ -77,7 +72,7 @@ final class LaunchProductAndProductModelEvaluationsMessage implements TraceableM
         ];
     }
 
-    public static function denormalize(array $normalized): NormalizableMessageInterface
+    public static function denormalize(array $normalized): LaunchProductAndProductModelEvaluationsMessage
     {
         Assert::keyExists($normalized, 'datetime');
         Assert::string($normalized['datetime']);

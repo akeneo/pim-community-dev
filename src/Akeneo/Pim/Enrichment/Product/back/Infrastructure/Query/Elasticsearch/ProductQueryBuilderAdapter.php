@@ -36,7 +36,6 @@ final class ProductQueryBuilderAdapter extends AbstractEntityWithValuesQueryBuil
         ProductQueryBuilderOptionsResolverInterface $optionResolver,
         private FeatureFlags $featureFlags,
         private UserRepositoryInterface $userRepository,
-        /* @phpstan-ignore-next-line */
         private ?GetGrantedCategoryCodes $getGrantedCategoryCodes
     ) {
         $cursorFactory = new class implements CursorFactoryInterface {

@@ -269,8 +269,8 @@ class ColumnSelector extends BaseView {
     this.listenToListScroll();
 
     const scrollColumn = this.modal.$el.find('[data-columns]');
-    const scrollHeight = scrollColumn.get(0).scrollHeight;
-    const columnHeight = scrollColumn.outerHeight();
+    const scrollHeight = Math.floor(scrollColumn.get(0).scrollHeight);
+    const columnHeight = Math.floor(scrollColumn.outerHeight());
 
     if (scrollHeight === columnHeight) {
       this.fetchNextColumns(true);
@@ -299,7 +299,8 @@ class ColumnSelector extends BaseView {
     const list: any = this.modal.$el.find('[data-columns]').get(0);
     const scrollPosition = Math.max(0, list.scrollTop);
     const bottomPosition = list.scrollHeight - list.offsetHeight;
-    const isBottom = bottomPosition === scrollPosition;
+    const limitForLoadingInPx = 5;
+    const isBottom = Math.abs(bottomPosition - scrollPosition) < limitForLoadingInPx;
 
     if (isBottom || true === loadNextPage) {
       this.page = this.page + 1;

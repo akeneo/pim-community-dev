@@ -1,7 +1,7 @@
-import React from 'react';
+import {ChannelCode} from '@akeneo-pim-community/shared';
 import {FileInfo} from 'akeneo-design-system';
+import React from 'react';
 import {Attribute, CATEGORY_ATTRIBUTE_TYPE_IMAGE} from '../../models';
-import {Channel, ChannelCode, getLabel} from '@akeneo-pim-community/shared';
 
 export type TextAttributeInputValue = string;
 

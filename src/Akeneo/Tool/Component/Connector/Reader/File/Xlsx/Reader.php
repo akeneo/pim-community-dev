@@ -3,8 +3,11 @@
 namespace Akeneo\Tool\Component\Connector\Reader\File\Xlsx;
 
 use Akeneo\Tool\Component\Batch\Item\FileInvalidItem;
+use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
+use Akeneo\Tool\Component\Batch\Item\StatefulInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\Exception\BusinessArrayConversionException;
@@ -21,7 +24,7 @@ use Akeneo\Tool\Component\Connector\Reader\File\FileReaderInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Reader implements FileReaderInterface, TrackableItemReaderInterface
+class Reader implements FileReaderInterface, TrackableItemReaderInterface, InitializableInterface, StatefulInterface
 {
     /** @var FileIteratorFactory */
     protected $fileIteratorFactory;
@@ -37,6 +40,8 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface
 
     /** @var array */
     protected $options;
+
+    protected array $state = [];
 
     /**
      * @param FileIteratorFactory     $fileIteratorFactory
@@ -55,11 +60,10 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface
 
     public function totalItems(): int
     {
-        $jobParameters = $this->stepExecution->getJobParameters();
-        $filePath = $jobParameters->get('storage')['file_path'];
-        $iterator = $this->fileIteratorFactory->create($filePath, $this->options);
+        $totalItems = max(iterator_count($this->fileIterator) - 1, 0);
+        $this->rewindToState();
 
-        return max(iterator_count($iterator) - 1, 0);
+        return $totalItems;
     }
 
     /**
@@ -69,11 +73,6 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface
     {
         $jobParameters = $this->stepExecution->getJobParameters();
         $filePath = $jobParameters->get('storage')['file_path'];
-
-        if (null === $this->fileIterator) {
-            $this->fileIterator = $this->fileIteratorFactory->create($filePath, $this->options);
-            $this->fileIterator->rewind();
-        }
 
         $this->fileIterator->next();
 
@@ -197,6 +196,42 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface
                     '%lineno%'            => $this->fileIterator->key()
                 ]
             );
+        }
+    }
+
+    public function getState(): array
+    {
+        return null !== $this->fileIterator ? ['position' => $this->fileIterator->key()] : [];
+    }
+
+    public function setState(array $state): void
+    {
+        $this->state = $state;
+    }
+
+    public function initialize(): void
+    {
+        $jobParameters = $this->stepExecution->getJobParameters();
+        $filePath = $jobParameters->get('storage')['file_path'];
+
+        $this->fileIterator = $this->fileIteratorFactory->create($filePath, $this->options);
+
+        $this->rewindToState();
+    }
+
+    /**
+     * This method should always replace a rewind of the FileIterator has it would result
+     * in a wrong position of the pointer when resuming a job.
+     */
+    private function rewindToState(): void
+    {
+        $this->fileIterator->rewind();
+        if (!array_key_exists('position', $this->state)) {
+            return;
+        }
+
+        while ($this->fileIterator->key() < $this->state['position']) {
+            $this->fileIterator->next();
         }
     }
 }

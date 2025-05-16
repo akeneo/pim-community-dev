@@ -40,16 +40,20 @@
             <directory suffix="Integration.php">src/Akeneo/Connectivity/Connection/back/tests/Integration</directory>
         </testsuite>
 
+        <testsuite name="Akeneo_FileStorage_Integration">
+            <directory suffix="Integration.php">src/Akeneo/Tool/Bundle/FileStorageBundle/tests/Integration</directory>
+        </testsuite>
+
         <testsuite name="Akeneo_Measurement_Integration">
-            <directory suffix="Integration.php">src/Akeneo/Tool/Bundle/MeasureBundle/tests/Integration</directory>
+            <directory suffix="Integration.php">src/Akeneo/Tool/Bundle/MeasureBundle/back/tests/Integration</directory>
         </testsuite>
 
         <testsuite name="Akeneo_Measurement_Acceptance">
-            <directory suffix="Test.php">src/Akeneo/Tool/Bundle/MeasureBundle/tests/Acceptance</directory>
+            <directory suffix="Test.php">src/Akeneo/Tool/Bundle/MeasureBundle/back/tests/Acceptance</directory>
         </testsuite>
 
         <testsuite name="Akeneo_Measurement_EndToEnd">
-            <directory suffix="EndToEnd.php">src/Akeneo/Tool/Bundle/MeasureBundle/tests/EndToEnd</directory>
+            <directory suffix="EndToEnd.php">src/Akeneo/Tool/Bundle/MeasureBundle/back/tests/EndToEnd</directory>
         </testsuite>
 
         <testsuite name="Akeneo_Connectivity_Connection_EndToEnd">
@@ -62,6 +66,7 @@
 
         <testsuite name="Data_Quality_Insights">
             <directory suffix="Integration.php">src/Akeneo/Pim/Automation/DataQualityInsights/tests/back/Integration</directory>
+            <directory suffix="EndToEnd.php">src/Akeneo/Pim/Automation/DataQualityInsights/tests/back/EndToEnd</directory>
         </testsuite>
 
         <testsuite name="Batch_Queue_Acceptance">

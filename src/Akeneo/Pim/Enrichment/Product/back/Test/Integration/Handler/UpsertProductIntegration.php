@@ -1459,12 +1459,44 @@ final class UpsertProductIntegration extends TestCase
         Assert::assertEquals($productCount + 1, $this->productRepository->countAll());
     }
 
-    private function getUserId(string $username): int
+    /** @test */
+    public function it_validates_a_product_with_dry_run(): void
     {
-        $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
-        Assert::assertNotNull($user);
+        $this->expectException(ViolationsException::class);
+        $this->expectExceptionMessage('The unknown_family family does not exist in your PIM.');
 
-        return $user->getId();
+        $this->messageBus->dispatch(UpsertProductCommand::createWithIdentifierDryRun(
+            userId: $this->getUserId('admin'),
+            productIdentifier: ProductIdentifier::fromIdentifier('my_product'),
+            userIntents: [new SetFamily('unknown_family')]
+        ));
+    }
+
+    /** @test */
+    public function it_validates_a_product_without_save_with_dry_run(): void
+    {
+        $this->messageBus->dispatch(UpsertProductCommand::createWithIdentifierDryRun(
+            userId: $this->getUserId('admin'),
+            productIdentifier: ProductIdentifier::fromIdentifier('my_validated_product'),
+            userIntents: [new SetFamily('familyA')]
+        ));
+
+        $unknownProduct = $this->productRepository->findOneByIdentifier('my_validated_product');
+        Assert::assertNull($unknownProduct);
+    }
+
+    /** @test */
+    public function it_creates_a_product_without_user_id(): void
+    {
+        $this->loginAs('system');
+
+        $this->messageBus->dispatch(UpsertProductCommand::createWithIdentifierSystemUser(
+            'my-product',
+            [new SetFamily('familyA')]
+        ));
+
+        $product = $this->productRepository->findOneByIdentifier('my-product');
+        Assert::assertNotNull($product);
     }
 
     private function loadAssetFixtures(): void

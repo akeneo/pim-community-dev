@@ -23,7 +23,7 @@ services:
     arguments:
       - '@database_connection'
 
-  Akeneo\Category\Application\Query\GetTemplate:
+  Akeneo\Category\Domain\Query\GetTemplate:
     class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoryTemplateSql
     arguments:
       - '@database_connection'
@@ -38,6 +38,10 @@ services:
     arguments:
       - '@database_connection'
 
+  Akeneo\Category\Application\Query\GetDeactivatedAttribute:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\GetDeactivatedCategoryTemplateAttributeSql
+    arguments:
+      - '@database_connection'
   Akeneo\Category\Application\Query\GetCategoryTemplateByCategoryTree:
     class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoryTemplateByCategoryTreeSql
     arguments:
@@ -113,3 +117,20 @@ services:
     class: 'Akeneo\Category\Infrastructure\Storage\Sql\PurgeOrphanCategoriesSql'
     arguments:
       - '@database_connection'
+
+  Akeneo\Category\Domain\Query\UpdateCategoryTemplateAttributesOrder:
+    class: 'Akeneo\Category\Infrastructure\Storage\Sql\UpdateCategoryTemplateAttributesOrderSql'
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Category\Domain\ImageFile\GetOrphanCategoryImageFilePaths:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\GetOrphanCategoryImageFilePathsSql
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Category\Domain\ImageFile\DeleteCategoryImageFile:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\DeleteCategoryImageFileSql
+    arguments:
+      - '@database_connection'
+      - '@akeneo_file_storage.file_storage.filesystem_provider'
+      - '@pim_category.infrastructure.registry.preview_generator'

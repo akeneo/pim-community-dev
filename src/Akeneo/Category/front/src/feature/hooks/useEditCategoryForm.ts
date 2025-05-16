@@ -3,7 +3,7 @@ import {cloneDeep, set} from 'lodash/fp';
 import {Channel, Locale, NotificationLevel, useNotify, useRouter, useTranslate} from '@akeneo-pim-community/shared';
 import {saveEditCategoryForm} from '../infrastructure';
 import {useCategory} from './useCategory';
-import {EditCategoryContext} from '../components';
+import {CanLeavePageContext, EditCategoryContext} from '../components';
 import {Attribute, buildCompositeKey, CategoryAttributeValueData, EnrichCategory, Template} from '../models';
 import {alterPermissionsConsistently, categoriesAreEqual, populateCategory} from '../helpers';
 import {useTemplateByTemplateUuid} from './useTemplateByTemplateUuid';
@@ -22,7 +22,7 @@ const useEditCategoryForm = (categoryId: number) => {
 
   const {load: loadCategory, category: fetchedCategory, status: categoryStatus} = useCategory(categoryId);
 
-  const {data: template, status: templateStatus} = useTemplateByTemplateUuid(fetchedCategory?.template_uuid ?? null);
+  const {data: template} = useTemplateByTemplateUuid(fetchedCategory?.template_uuid ?? null);
 
   const [category, setCategory] = useState<EnrichCategory | null>(null);
   const [categoryEdited, setCategoryEdited] = useState<EnrichCategory | null>(null);
@@ -30,7 +30,8 @@ const useEditCategoryForm = (categoryId: number) => {
   const [applyPermissionsOnChildren, setApplyPermissionsOnChildren] = useState(true);
 
   const [historyVersion, setHistoryVersion] = useState<number>(0);
-  const {setCanLeavePage, channels, locales} = useContext(EditCategoryContext);
+  const {channels, locales} = useContext(EditCategoryContext);
+  const {setCanLeavePage} = useContext(CanLeavePageContext);
 
   const isModified =
     categoryStatus === 'fetched' && !!category && !!categoryEdited && !categoriesAreEqual(category, categoryEdited);
@@ -89,7 +90,7 @@ const useEditCategoryForm = (categoryId: number) => {
       notify(NotificationLevel.SUCCESS, translate('pim_enrich.entity.category.content.edit.success'));
 
       // force to fetch attribute list from template to hide potentially deleted attributes
-      await queryClient.invalidateQueries(['template', fetchedCategory?.template_uuid]);
+      await queryClient.invalidateQueries(['get-template', fetchedCategory?.template_uuid]);
     } else {
       notify(NotificationLevel.ERROR, response.error.message);
       if (response.error.code && response.error.code === DEACTIVATED_TEMPLATE) {
@@ -145,7 +146,6 @@ const useEditCategoryForm = (categoryId: number) => {
 
   return {
     categoryFetchingStatus: categoryStatus,
-    templateFetchingStatus: templateStatus,
     category: categoryEdited,
     template,
     applyPermissionsOnChildren,

@@ -51,6 +51,8 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
         }
 
         $rows = $this->fetchRows($productUuids);
+        $rows = $this->getCompletenesses($rows);
+
         $rows = $this->calculateAttributeCodeAncestors($rows);
         $rows = $this->calculateAttributeCodeForOwnLevel($rows);
 
@@ -107,7 +109,7 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
                 \json_decode($row['category_codes'], true),
                 \json_decode($row['category_codes_of_ancestors'], true),
                 \json_decode($row['group_codes'], true),
-                \json_decode($row['completeness'], true),
+                \json_decode($row['completeness'] ?? '{}', true),
                 $row['parent_product_model_code'],
                 $values,
                 array_filter(\json_decode($row['ancestor_ids'], true)),
@@ -124,11 +126,17 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
     private function fetchRows(array $productUuids): array
     {
         $sql = <<<SQL
-WITH
+WITH 
+    main_identifier AS (
+        SELECT id
+        FROM pim_catalog_attribute
+        WHERE main_identifier = 1
+        LIMIT 1
+    ),
     product as (
         SELECT
             product.uuid,
-            product.identifier,
+            pim_catalog_product_unique_data.raw_data AS identifier,
             product.is_enabled,
             product.product_model_id AS parent_product_model_id,
             sub_product_model.code AS parent_product_model_code,
@@ -151,6 +159,9 @@ WITH
             CASE WHEN root_product_model.id IS NOT NULL THEN 2 ELSE 1 END AS product_lvl_in_attribute_set
         FROM
             pim_catalog_product product
+            LEFT JOIN pim_catalog_product_unique_data 
+                ON pim_catalog_product_unique_data.product_uuid = product.uuid
+                AND pim_catalog_product_unique_data.attribute_id = (SELECT id FROM main_identifier)
             LEFT JOIN pim_catalog_product_model sub_product_model ON sub_product_model.id = product.product_model_id
             LEFT JOIN pim_catalog_product_model root_product_model ON root_product_model.id = sub_product_model.parent_id
             LEFT JOIN pim_catalog_family family ON family.id = product.family_id
@@ -198,31 +209,6 @@ WITH
             JOIN pim_catalog_group_product group_product ON group_product.product_uuid = product.uuid
             JOIN pim_catalog_group pim_group ON pim_group.id = group_product.group_id
         GROUP BY product.uuid
-    ),
-    product_completeness AS (
-        SELECT
-            completeness.product_uuid,
-            JSON_OBJECTAGG(channel_code, completeness.completeness_per_locale) as completeness_per_channel
-        FROM (
-            SELECT
-                product_uuid,
-                JSON_OBJECTAGG(
-                    locale.code,
-                    IF(
-                        completeness.required_count = 0,
-                        100,
-                        floor(((completeness.required_count - completeness.missing_count)/completeness.required_count) * 100)
-                    )
-                ) as completeness_per_locale,
-                channel.code as channel_code
-            FROM
-                product
-                STRAIGHT_JOIN pim_catalog_completeness completeness ON completeness.product_uuid = product.uuid
-                JOIN pim_catalog_channel channel ON channel.id = completeness.channel_id
-                JOIN pim_catalog_locale locale ON locale.id = completeness.locale_id
-            GROUP BY product_uuid, channel_code
-        ) as completeness
-        GROUP BY completeness.product_uuid
     ),
     product_family_label AS (
         SELECT
@@ -281,7 +267,6 @@ WITH
         COALESCE(ancestor_categories.category_codes, JSON_ARRAY()) as category_codes_of_ancestors,
         COALESCE(product_groups.group_codes, JSON_ARRAY()) AS group_codes,
         COALESCE(product_family_label.labels, JSON_ARRAY()) AS family_labels,
-        COALESCE(product_completeness.completeness_per_channel, JSON_OBJECT()) AS completeness,
         COALESCE(family_attributes.attribute_codes_in_family, JSON_ARRAY()) AS attribute_codes_in_family,
         COALESCE(variant_product_attributes.attribute_codes_at_variant_product_level, JSON_ARRAY()) AS attribute_codes_at_variant_product_level
     FROM
@@ -290,16 +275,22 @@ WITH
         LEFT JOIN product_categories ON product_categories.product_uuid = product.uuid
         LEFT JOIN ancestor_categories ON ancestor_categories.product_uuid = product.uuid
         LEFT JOIN product_family_label ON product_family_label.family_id = product.family_id
-        LEFT JOIN product_completeness ON product_completeness.product_uuid = product.uuid
         LEFT JOIN family_attributes ON family_attributes.family_id = product.family_id
         LEFT JOIN variant_product_attributes ON variant_product_attributes.family_variant_id = product.family_variant_id
 SQL;
 
         $productUuidsAsBytes = \array_map(static fn (UuidInterface $uuid): string => $uuid->getBytes(), $productUuids);
 
-        return $this
+        $rows =  $this
             ->connection
             ->fetchAllAssociative($sql, ['uuids' => $productUuidsAsBytes], ['uuids' => Connection::PARAM_STR_ARRAY]);
+
+        $result = [];
+        foreach ($rows as $row) {
+            $result[$row['uuid']] = $row;
+        }
+
+        return $result;
     }
 
     private function calculateAttributeCodeAncestors(array $rows): array
@@ -390,5 +381,41 @@ SQL;
         }
 
         return $rowsIndexedByProductUuid;
+    }
+
+    private function getCompletenesses(array $rows): array
+    {
+        $query = <<<SQL
+            SELECT bin_to_uuid(product_uuid) as uuid, completeness
+            FROM pim_catalog_product_completeness
+            WHERE product_uuid in (:uuids)
+            SQL;
+
+        $results = $this->connection->fetchAllKeyValue(
+            $query,
+            [
+                'uuids' => \array_map(static fn (string $uuid): string => Uuid::fromString($uuid)->getBytes(), \array_keys($rows)),
+            ],
+            [
+                'uuids' => Connection::PARAM_STR_ARRAY
+            ]
+        );
+
+        foreach ($results as $uuid => $value) {
+            $completenesses = \json_decode($value, true);
+            $completenessesByUuid = [];
+            foreach ($completenesses as $channelCode => $completenessByLocale) {
+                foreach ($completenessByLocale as $localeCode => $value) {
+                    if (0 === $value['required']) {
+                        continue;
+                    }
+                    $ratio = (int) floor(100 * ($value['required'] - $value['missing']) / $value['required']);
+                    $completenessesByUuid[$channelCode][$localeCode] = $ratio;
+                }
+            }
+            $rows[$uuid]['completeness'] = json_encode($completenessesByUuid);
+        }
+
+        return $rows;
     }
 }

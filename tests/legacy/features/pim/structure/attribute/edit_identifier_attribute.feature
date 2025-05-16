@@ -8,10 +8,10 @@ Feature: Edit an identifier attribute
     Given the "default" catalog configuration
     And I am logged in as "Julia"
 
-  Scenario: Fail to create a second identifier attribute
+  Scenario: Can create a second identifier attribute
     Given I am on the attributes page
     When I create an "Identifier" attribute with code "mySecondId"
     And I fill in the following information:
       | Attribute group | Other      |
     And I press the "Save" button
-    Then I should see the text "An identifier attribute already exists."
+    Then I should see the text "Attribute successfully updated"

@@ -269,6 +269,7 @@ akeneo_connectivity.connection:
           not_blank: El redirect_uri es obligatorio.
           must_be_url: El redirect_uri no es una url válida.
         scope:
+          must_be_a_string: La lista de objetivos debe ser una cadena separada por espacios.
           too_long: La lista de objetivo no debe contener más de 1000 caracteres.
     custom_apps:
       creation_limit_reached: Ha alcanzado el límite de 20 aplicaciones personalizadas.
@@ -319,7 +320,6 @@ akeneo_connectivity.connection:
   connections: Conexiones
   secondary_actions:
     title: Otras acciones
-  developer_mode: Modo de desarrollador
   connection:
     code: Código
     label: Etiqueta

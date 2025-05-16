@@ -6,7 +6,6 @@ namespace Akeneo\Connectivity\Connection\Tests\EndToEnd\CustomApps\Controller\In
 
 use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\CustomAppLoader;
-use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\FilePersistedFeatureFlags;
 use Akeneo\Test\Integration\Configuration;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
@@ -20,7 +19,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class DeleteCustomAppActionEndToEnd extends WebTestCase
 {
-    private ?FilePersistedFeatureFlags $featureFlags;
     private ?Connection $connection;
     private ?CustomAppLoader $customAppLoader;
 
@@ -28,7 +26,6 @@ class DeleteCustomAppActionEndToEnd extends WebTestCase
     {
         parent::setUp();
 
-        $this->featureFlags = $this->get('feature_flags');
         $this->connection = $this->get('database_connection');
         $this->customAppLoader = $this->get(CustomAppLoader::class);
     }
@@ -40,7 +37,6 @@ class DeleteCustomAppActionEndToEnd extends WebTestCase
 
     public function test_it_successfully_deletes_the_custom_app(): void
     {
-        $this->featureFlags->enable('app_developer_mode');
         $user = $this->authenticateAsAdmin();
         $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_test_apps');
 
@@ -63,6 +59,7 @@ class DeleteCustomAppActionEndToEnd extends WebTestCase
         Assert::assertEquals(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         Assert::assertEquals(0, $this->countCustomApps());
     }
+
     private function countCustomApps(): int
     {
         $query = <<<SQL

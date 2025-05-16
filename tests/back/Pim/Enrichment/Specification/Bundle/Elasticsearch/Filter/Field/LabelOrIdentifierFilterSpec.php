@@ -7,6 +7,8 @@ use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\LabelOrIdentifierFil
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -18,13 +20,42 @@ use PhpSpec\ObjectBehavior;
  */
 class LabelOrIdentifierFilterSpec extends ObjectBehavior
 {
-    function let()
-    {
+    function let(
+        GetAttributes $getAttributes
+    ) {
         $this->beConstructedWith(
+            $getAttributes,
             ['label_or_identifier'],
             ['CONTAINS'],
             ['product_'],
         );
+
+        $skuAttribute = new Attribute(
+            'sku',
+            'pim_catalog_identifier',
+            [],
+            false,
+            false,
+            null,
+            null,
+            null,
+            'text',
+            []
+        );
+
+        $eanAttribute = new Attribute(
+            'ean',
+            'pim_catalog_identifier',
+            [],
+            false,
+            false,
+            null,
+            null,
+            null,
+            'text',
+            []
+        );
+        $getAttributes->forType('pim_catalog_identifier')->willReturn([$skuAttribute, $eanAttribute]);
     }
 
     function it_is_initializable()
@@ -57,16 +88,7 @@ class LabelOrIdentifierFilterSpec extends ObjectBehavior
         SearchQueryBuilder $sqb
     ) {
         $sqb->addFilter(
-            [
-                'bool' => [
-                    'should' => [
-                        ['wildcard' => ['identifier' => '*book*']],
-                        ['wildcard' => ['label.<all_channels>.<all_locales>' => '*book*']],
-                        ['term' => ['id' => 'product_book']],
-                    ],
-                    'minimum_should_match' => 1,
-                ],
-            ]
+            ["bool" => ["should" => [["bool" => ["should" => [["term" => ["document_type" => "Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface"]], ["bool" => ["should" => [["bool" => ["should" => [["wildcard" => ["values.sku-text.<all_channels>.<all_locales>" => "*book*"]], ["wildcard" => ["values.ean-text.<all_channels>.<all_locales>" => "*book*"]]], "minimum_should_match" => 1]]], "minimum_should_match" => 1]]], "minimum_should_match" => 2]], ["wildcard" => ["identifier" => "*book*"]], ["wildcard" => ["label.<all_channels>.<all_locales>" => "*book*"]], ["term" => ["id" => "product_book"]]], "minimum_should_match" => 1]]
         )->shouldBeCalled();
 
         $this->setQueryBuilder($sqb);
@@ -77,17 +99,7 @@ class LabelOrIdentifierFilterSpec extends ObjectBehavior
         SearchQueryBuilder $sqb
     ) {
         $sqb->addFilter(
-            [
-                'bool' => [
-                    'should' => [
-                        ['wildcard' => ['identifier' => '*book*']],
-                        ['wildcard' => ['label.ecommerce.<all_locales>' => '*book*']],
-                        ['wildcard' => ['label.<all_channels>.<all_locales>' => '*book*']],
-                        ['term' => ['id' => 'product_book']],
-                    ],
-                    'minimum_should_match' => 1,
-                ],
-            ]
+            ["bool" => ["should" => [["bool" => ["should" => [["term" => ["document_type" => "Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface"]], ["bool" => ["should" => [["bool" => ["should" => [["wildcard" => ["values.sku-text.<all_channels>.<all_locales>" => "*book*"]], ["wildcard" => ["values.ean-text.<all_channels>.<all_locales>" => "*book*"]]], "minimum_should_match" => 1]]], "minimum_should_match" => 1]]], "minimum_should_match" => 2]], ["wildcard" => ["identifier" => "*book*"]], ["wildcard" => ["label.ecommerce.<all_locales>" => "*book*"]], ["wildcard" => ["label.<all_channels>.<all_locales>" => "*book*"]], ["term" => ["id" => "product_book"]]], "minimum_should_match" => 1]]
         )->shouldBeCalled();
 
         $this->setQueryBuilder($sqb);
@@ -98,17 +110,7 @@ class LabelOrIdentifierFilterSpec extends ObjectBehavior
         SearchQueryBuilder $sqb
     ) {
         $sqb->addFilter(
-            [
-                'bool' => [
-                    'should' => [
-                        ['wildcard' => ['identifier' => '*book*']],
-                        ['wildcard' => ['label.<all_channels>.en_US' => '*book*']],
-                        ['wildcard' => ['label.<all_channels>.<all_locales>' => '*book*']],
-                        ['term' => ['id' => 'product_book']],
-                    ],
-                    'minimum_should_match' => 1,
-                ],
-            ]
+            ["bool" => ["should" => [["bool" => ["should" => [["term" => ["document_type" => "Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface"]], ["bool" => ["should" => [["bool" => ["should" => [["wildcard" => ["values.sku-text.<all_channels>.<all_locales>" => "*book*"]], ["wildcard" => ["values.ean-text.<all_channels>.<all_locales>" => "*book*"]]], "minimum_should_match" => 1]]], "minimum_should_match" => 1]]], "minimum_should_match" => 2]], ["wildcard" => ["identifier" => "*book*"]], ["wildcard" => ["label.<all_channels>.en_US" => "*book*"]], ["wildcard" => ["label.<all_channels>.<all_locales>" => "*book*"]], ["term" => ["id" => "product_book"]]], "minimum_should_match" => 1]]
         )->shouldBeCalled();
 
         $this->setQueryBuilder($sqb);
@@ -119,19 +121,7 @@ class LabelOrIdentifierFilterSpec extends ObjectBehavior
         SearchQueryBuilder $sqb
     ) {
         $sqb->addFilter(
-            [
-                'bool' => [
-                    'should' => [
-                        ['wildcard' => ['identifier' => '*book*']],
-                        ['wildcard' => ['label.ecommerce.en_US' => '*book*']],
-                        ['wildcard' => ['label.ecommerce.<all_locales>' => '*book*']],
-                        ['wildcard' => ['label.<all_channels>.en_US' => '*book*']],
-                        ['wildcard' => ['label.<all_channels>.<all_locales>' => '*book*']],
-                        ['term' => ['id' => 'product_book']],
-                    ],
-                    'minimum_should_match' => 1,
-                ],
-            ]
+            ["bool" => ["should" => [["bool" => ["should" => [["term" => ["document_type" => "Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface"]], ["bool" => ["should" => [["bool" => ["should" => [["wildcard" => ["values.sku-text.<all_channels>.<all_locales>" => "*book*"]], ["wildcard" => ["values.ean-text.<all_channels>.<all_locales>" => "*book*"]]], "minimum_should_match" => 1]]], "minimum_should_match" => 1]]], "minimum_should_match" => 2]], ["wildcard" => ["identifier" => "*book*"]], ["wildcard" => ["label.ecommerce.en_US" => "*book*"]], ["wildcard" => ["label.ecommerce.<all_locales>" => "*book*"]], ["wildcard" => ["label.<all_channels>.en_US" => "*book*"]], ["wildcard" => ["label.<all_channels>.<all_locales>" => "*book*"]], ["term" => ["id" => "product_book"]]], "minimum_should_match" => 1]]
         )->shouldBeCalled();
 
         $this->setQueryBuilder($sqb);

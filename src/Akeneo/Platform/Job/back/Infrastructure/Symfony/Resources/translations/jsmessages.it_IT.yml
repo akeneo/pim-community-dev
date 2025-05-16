@@ -16,7 +16,7 @@ akeneo_job:
     PAUSED: In pausa
 akeneo_job_process_tracker:
   tooltip:
-    paused: Questa operazione è stata sospesa a causa della manutenzione interna sulla tua istanza. Al termine verrà ripresa automaticamente.
+    paused: Questa operazione è stata messa in pausa a causa della manutenzione interna sulla tua istanza. Al termine verrà ripresa automaticamente.
   last_operations:
     title: Ultime operazioni
     view_all: Mostra tutti
@@ -48,6 +48,7 @@ akeneo_job_process_tracker:
     compute_completeness_of_products_family: Calcola la completezza della famiglia di prodotti
     clean_removed_attribute_job: Pulizia valori attributo rimossi
     execute_rules: Esegui le regole
+    scheduled_job: Job pianificato
   user_filter:
     label: Utente
     all: Tutto

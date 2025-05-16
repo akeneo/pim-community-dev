@@ -188,6 +188,8 @@ pim_import_export:
           placeholder: Introduïu la vostra contrasenya
         public_key:
           label: Clau pública
+          button_title: Copiar al porta-retalls
+          copy_notification_success: S'ha copiat la clau pública al porta-retalls
         login_type:
           label: Mètode d'autenticació
           password: Inici de sessió i contrasenya
@@ -235,8 +237,8 @@ pim_import_export:
     6: Fallit
     7: Abandonat
     8: Desconegut
-    9: Pausing
-    10: Paused
+    9: Aturant
+    10: Aturat
   job_status:
     COMPLETED: Acabat
     STARTING: Començant
@@ -246,6 +248,8 @@ pim_import_export:
     FAILED: Fallit
     ABANDONED: Abandonat
     UNKNOWN: Desconegut
+    PAUSING: Aturant
+    PAUSED: Aturat
   tracking:
     completed: "Temps emprat: {{ duration }}"
     in_progress: "Temps restant estimat: {{ duration }}"

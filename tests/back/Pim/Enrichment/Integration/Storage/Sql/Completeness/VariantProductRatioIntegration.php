@@ -115,24 +115,6 @@ class VariantProductRatioIntegration extends TestCase
         ], $result->values());
     }
 
-    /**
-     * This test filters the completeness by channel and locale
-     */
-    public function testCompletenesseDependingOnLocaleAndChannel()
-    {
-        $productModel = $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('model-braided-hat');
-        $result = $this->get('pim_catalog.doctrine.query.find_variant_product_completeness')->findComplete(
-            $productModel,
-            'ecommerce',
-            'en_US'
-        );
-
-        $this->assertEquals([
-            'complete' => 2,
-            'total' => 2
-        ], $result->value('ecommerce', 'en_US'));
-    }
-
     private function createVariantProductWithoutIdentifier(string $size): void
     {
         $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
@@ -144,20 +126,6 @@ class VariantProductRatioIntegration extends TestCase
             ]
         );
         $this->get('pim_enrich.product.message_bus')->dispatch($command);
-    }
-
-    private function getUserId(string $username): int
-    {
-        $id = $this->get('database_connection')->fetchOne(
-            'SELECT id FROM oro_user WHERE username = :username',
-            ['username' => $username]
-        );
-
-        if (false === $id) {
-            throw new \InvalidArgumentException(\sprintf('The %s user does not exist', $username));
-        }
-
-        return (int) $id;
     }
 
     /**

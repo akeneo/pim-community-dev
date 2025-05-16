@@ -3,7 +3,7 @@ pim_enrich.product:
     upsert:
       unknown_user: 'Der Benutzer "{{ user_id }}" existiert nicht'
       category_no_access_to_products: Sie haben keinen Zugriff auf Produkte in einem Strukturbaum. Bitte kontaktieren Sie Ihren Administrator.
-      should_keep_one_owned_category: Sie sollten Ihr Produkt mindestens einer Kategorie zuweisen, in der Sie eine eigene Rechte haben
+      should_keep_one_owned_category: Sie sollten Ihr Produkt mindestens einer Kategorie zuweisen, in der Sie Rechte haben
       locale_no_access_to_products: Sie haben keinen Zugriff auf Produktinformationen in ausgewählten Gebietsschemata. Bitte kontaktieren Sie Ihren Administrator.
       attribute_group_no_access_to_attributes: Sie haben keinen Zugriff auf das {{ attributeCode }} -Attribut dieses Artikels. Bitte kontaktieren Sie Ihren Administrator.
       product_identifier_empty: Der Produkt-Bezeichner benötigt eine nicht leere Zeichenkette

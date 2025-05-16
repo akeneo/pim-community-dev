@@ -1,11 +1,13 @@
 Akeneo\Pim\Enrichment\Component\Product\Model\Product:
     group_sequence:
         - Product
+        - identifiers
         - VariantProduct
         - UniqueAxis
         - api
     constraints:
-        - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product\UniqueProductEntity: ~
+        - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product\UniqueProductEntity:
+              groups: ['identifiers']
         - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\NotEmptyFamily:
             groups:
               - api
@@ -23,13 +25,12 @@ Akeneo\Pim\Enrichment\Component\Product\Model\Product:
             - Regex:
                 pattern: '/^(?!\s)[^,;]+(?<!\s)$/'
                 message: 'regex.comma_or_semicolon_or_surrounding_space.message'
+                groups: ['identifiers']
             - Regex:
                 pattern: '/[\r\n]/'
                 message: 'regex.line_break.message'
                 match: false
-            - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Length:
-                max: 255
-                attributeCode: 'identifier'
+                groups: ['identifiers']
         associations:
             - Symfony\Component\Validator\Constraints\All:
                 - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\AssociationTypeIsNotQuantified: ~

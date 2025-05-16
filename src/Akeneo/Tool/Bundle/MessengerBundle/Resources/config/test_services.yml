@@ -15,27 +15,51 @@ services:
         arguments:
             - '@Akeneo\Tool\Bundle\MessengerBundle\tests\config\HandlerObserver'
 
+    Akeneo\Tool\Bundle\MessengerBundle\tests\config\FailingHandler:
+        arguments:
+            - '@Akeneo\Tool\Bundle\MessengerBundle\tests\config\HandlerObserver'
+
     # Helpers to access to the PubSub topics/consumers
     akeneo_integration_tests.pub_sub_queue_status.consumer1:
         class: AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubQueueStatus
         arguments:
             - '@Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory'
             - '%env(GOOGLE_CLOUD_PROJECT)%'
-            - 'test_queue1'
-            - 'consumer1'
+            - '%env(PUBSUB_TOPIC_TEST_QUEUE_1)%'
+            - '%env(PUBSUB_SUBSCRIPTION_TEST_CONSUMER_1)%'
 
     akeneo_integration_tests.pub_sub_queue_status.consumer2:
         class: AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubQueueStatus
         arguments:
             - '@Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory'
             - '%env(GOOGLE_CLOUD_PROJECT)%'
-            - 'test_queue1'
-            - 'consumer2'
+            - '%env(PUBSUB_TOPIC_TEST_QUEUE_1)%'
+            - '%env(PUBSUB_SUBSCRIPTION_TEST_CONSUMER_2)%'
 
     akeneo_integration_tests.pub_sub_queue_status.consumer3:
         class: AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubQueueStatus
         arguments:
             - '@Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory'
             - '%env(GOOGLE_CLOUD_PROJECT)%'
-            - 'test_queue2'
-            - 'consumer3'
+            - '%env(PUBSUB_TOPIC_TEST_QUEUE_2)%'
+            - '%env(PUBSUB_SUBSCRIPTION_TEST_CONSUMER_3)%'
+
+    akeneo_integration_tests.pub_sub_queue_status.failing_consumer:
+        class: AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubQueueStatus
+        arguments:
+            - '@Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory'
+            - '%env(GOOGLE_CLOUD_PROJECT)%'
+            - '%env(PUBSUB_TOPIC_TEST_QUEUE_2)%'
+            - '%env(PUBSUB_SUBSCRIPTION_TEST_CONSUMER_4)%'
+
+    akeneo_integration_tests.pub_sub_queue_status.test_upsert_attributes_consumer:
+        class: AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubQueueStatus
+        arguments:
+            - '@Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory'
+            - '%env(GOOGLE_CLOUD_PROJECT)%'
+            - '%env(PUBSUB_TOPIC_ATTRIBUTES_WERE_UPSERT)%'
+            - '%env(PUBSUB_SUBSCRIPTION_DQI_ATTRIBUTE_EVALUATE)%'
+
+    Akeneo\Tool\Bundle\MessengerBundle\tests\config\MessageNormalizer:
+        tags:
+              - { name: akeneo_messenger.message.normalizer }

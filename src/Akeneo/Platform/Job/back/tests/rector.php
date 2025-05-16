@@ -16,5 +16,6 @@ return static function (RectorConfig $rectorConfig): void {
 
     $rectorConfig->paths([__DIR__.'/..']);
     $rectorConfig->importShortClasses(false);
+    $rectorConfig->importNames();
     $rectorConfig->skip([JsonThrowOnErrorRector::class, SimplifyEmptyCheckOnEmptyArrayRector::class]);
 };

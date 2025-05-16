@@ -84,13 +84,6 @@ jobs:
                       cd /home/circleci/project
                       echo "Current commit: $(git rev-parse --short HEAD)"
             - run:
-                  name: BIG COMMERCE CONNECTOR - Checkout BigCommerce Connector
-                  command: |
-                      mkdir -p tmp
-                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_ee73a1e4ef57139ecfd323fbe2c1d792 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
-                      CONNECTOR_BC_BRANCH=$(git -c 'versionsort.suffix=-' ls-remote --exit-code --refs --sort='version:refname' --tags git@github.com:akeneo/bigcommerce-connector.git 'v*' | tail -n1 | cut -d'/' -f3)
-                      git clone --depth=1 --single-branch --branch $CONNECTOR_BC_BRANCH git@github.com:akeneo/bigcommerce-connector.git tmp/build-connector
-            - run:
                   name: Update composer.json if same branch exists in pim-onboader for EE
                   command: |
                       export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_ee73a1e4ef57139ecfd323fbe2c1d792 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
@@ -223,7 +216,7 @@ jobs:
                   # Adding date allows to invalidate the cache each new day, adding front package path avoid conflict between CE build and EE build
                   command: |
                       find << parameters.path_to_front_packages >>/akeneo-design-system -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/akeneo-design-system.hash
-                      find << parameters.path_to_front_packages >>/measurement -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/measurement.hash
+                      find << parameters.path_to_front_packages >>/../src/Akeneo/Tool/Bundle/MeasureBundle/front -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/measurement.hash
                       find << parameters.path_to_front_packages >>/shared -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/shared.hash
                       find << parameters.path_to_front_packages >>/../src/Akeneo/Platform/Job/front/process-tracker -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/process-tracker.hash
                       find << parameters.path_to_front_packages >>/../src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/catalog-volume-monitoring.hash
@@ -555,15 +548,15 @@ jobs:
                       docker run --rm akeneo/pim-php-dev:8.1 php -v
             - run:
                   name: Build Akeneo Node image
-                  command: docker build -t akeneo/node:16 -f docker/Dockerfile_node .
+                  command: docker build -t akeneo/node:18 -f docker/Dockerfile_node .
             - run:
                   name: Display Node and Yarn versions
                   command: |
-                      docker run --rm akeneo/node:16 node --version
-                      docker run --rm akeneo/node:16 yarn --version
+                      docker run --rm akeneo/node:18 node --version
+                      docker run --rm akeneo/node:18 yarn --version
             - run:
                   name: Push images to Dockerhub
                   command: |
                       docker login -u="$DOCKERHUB_USER" -p="$DOCKERHUB_PWD"
                       docker push akeneo/pim-php-dev:8.1
-                      docker push akeneo/node:16
+                      docker push akeneo/node:18

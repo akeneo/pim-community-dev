@@ -21,6 +21,7 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Buffer\BufferFactory;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Akeneo\Tool\Component\Connector\Job\JobFileBackuper;
 use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBuffer;
@@ -50,6 +51,7 @@ class ProductWriterSpec extends ObjectBehavior
         FlatTranslatorInterface $flatTranslator,
         FileInfoRepositoryInterface $fileInfoRepository,
         FilesystemProvider $filesystemProvider,
+        JobFileBackuper $jobFileBackuper,
         FlatItemBuffer $flatRowBuffer,
         StepExecution $stepExecution
     ) {
@@ -57,7 +59,7 @@ class ProductWriterSpec extends ObjectBehavior
         $this->filesystem = new Filesystem();
         $this->filesystem->mkdir($this->directory);
 
-        $bufferFactory->create()->willReturn($flatRowBuffer);
+        $bufferFactory->create(null)->willReturn($flatRowBuffer);
 
         $this->beConstructedWith(
             $arrayConverter,
@@ -70,7 +72,8 @@ class ProductWriterSpec extends ObjectBehavior
             $flatTranslator,
             $fileInfoRepository,
             $filesystemProvider,
-            ['pim_catalog_file', 'pim_catalog_image']
+            ['pim_catalog_file', 'pim_catalog_image'],
+            $jobFileBackuper,
         );
 
         $stepExecution->getStartTime()->willReturn(\DateTime::createFromFormat('Y-m-d H:i:s', '2021-03-24 16:00:00'));
@@ -103,7 +106,8 @@ class ProductWriterSpec extends ObjectBehavior
         StepExecution $stepExecution,
         JobExecution $jobExecution,
         FileInfoInterface $fileInfo,
-        FilesystemOperator $catalogFilesystem
+        FilesystemOperator $catalogFilesystem,
+        BufferFactory $bufferFactory
     ) {
         $jobParameters = new JobParameters(
             [
@@ -200,10 +204,7 @@ class ProductWriterSpec extends ObjectBehavior
         ];
 
         $arrayConverter->convert($productStandardWithMedia, [])->shouldBeCalled()->willReturn($flatProduct);
-        $generateHeadersFromFamilyCodes->__invoke(["clothes"], "ecommerce", ["fr_FR", "en_US"])->shouldBeCalled()
-            ->willReturn([]);
-
-        $flatRowBuffer->write([$flatProduct], ['withHeader' => true])->shouldBeCalled();
+        $flatRowBuffer->write([$flatProduct])->shouldBeCalled();
 
         $this->initialize();
         $this->write([$productStandard]);
@@ -373,10 +374,7 @@ class ProductWriterSpec extends ObjectBehavior
         ];
 
         $arrayConverter->convert($productStandard, ['with_uuid' => false])->shouldBeCalled()->willReturn($flatProduct);
-        $generateHeadersFromFamilyCodes->__invoke(["clothes"], "ecommerce", ["fr_FR", "en_US"])->shouldBeCalled()
-            ->willReturn([]);
-
-        $flatRowBuffer->write([$flatProduct], ['withHeader' => true])->shouldBeCalled();
+        $flatRowBuffer->write([$flatProduct])->shouldBeCalled();
 
         $this->initialize();
         $this->write([$productStandard]);
@@ -398,6 +396,8 @@ class ProductWriterSpec extends ObjectBehavior
                 'enclosure' => '"',
                 'storage' => ['type' => 'local', 'file_path' => $this->directory . '%job_label%_product.csv'],
                 'with_label' => false,
+                'withHeader' => false,
+                'filters' => ['structure' => ['locales' => ['fr_FR', 'en_US'], 'scope' => 'ecommerce']],
             ]
         );
 
@@ -410,7 +410,7 @@ class ProductWriterSpec extends ObjectBehavior
         $stepExecution->getJobParameters()->willReturn($jobParameters);
 
         $flusher->setStepExecution($stepExecution)->shouldBeCalled();
-        $flusher->flush($flatRowBuffer, Argument::type('array'), Argument::type('string'), -1)
+        $flusher->flush($flatRowBuffer, Argument::type('array'), Argument::type('string'), -1, false)
             ->shouldBeCalled()
             ->willReturn(
                 [
@@ -471,7 +471,7 @@ class ProductWriterSpec extends ObjectBehavior
             ->willReturn([$descHeader, $nameHeader, $brandHeader]);
 
         $flusher->setStepExecution($stepExecution)->shouldBeCalled();
-        $flusher->flush($flatRowBuffer, Argument::type('array'), Argument::type('string'), -1)
+        $flusher->flush($flatRowBuffer, Argument::type('array'), Argument::type('string'), -1, true)
             ->shouldBeCalled()
             ->willReturn(
                 [
@@ -544,7 +544,7 @@ class ProductWriterSpec extends ObjectBehavior
             ->willReturn([$nameHeader, $descHeader]);
 
         $flusher->setStepExecution($stepExecution)->shouldBeCalled();
-        $flusher->flush($flatRowBuffer, Argument::type('array'), Argument::type('string'), -1)
+        $flusher->flush($flatRowBuffer, Argument::type('array'), Argument::type('string'), -1, true)
             ->shouldBeCalled()
             ->willReturn(
                 [
@@ -727,7 +727,6 @@ class ProductWriterSpec extends ObjectBehavior
                     'Média' => 'wrong/path',
                 ],
             ],
-            ["withHeader" => true]
         )->shouldBeCalled();
         $this->initialize();
         $this->write([$productStandard1, $productStandard2]);

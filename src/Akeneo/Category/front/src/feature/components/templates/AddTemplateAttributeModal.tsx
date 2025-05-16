@@ -4,13 +4,13 @@ import {useQueryClient} from 'react-query';
 import {useCreateAttribute} from '../../hooks/useCreateAttribute';
 import {userContext} from '@akeneo-pim-community/shared/lib/dependencies/user-context';
 import {
-  AttributesIllustration,
   Button,
   Checkbox,
   Field,
   Helper,
   Link,
   Modal,
+  ProductCategoryIllustration,
   SelectInput,
   TextInput,
 } from 'akeneo-design-system';
@@ -41,9 +41,10 @@ type FormError = {label?: string[]; code?: string[]};
 type Props = {
   templateId: string;
   onClose: () => void;
+  onSuccess?: () => void;
 };
 
-export const AddTemplateAttributeModal = ({templateId, onClose}: Props) => {
+export const AddTemplateAttributeModal = ({templateId, onClose, onSuccess}: Props) => {
   const defaultCatalogLocale = userContext.get('catalog_default_locale');
   const mutation = useCreateAttribute();
   const notify = useNotify();
@@ -68,7 +69,11 @@ export const AddTemplateAttributeModal = ({templateId, onClose}: Props) => {
 
   const displayError = (errorMessages: string[]) => {
     return errorMessages.map(message => {
-      return <Helper level="error">{message}</Helper>;
+      return (
+        <Helper key={message} level="error">
+          {message}
+        </Helper>
+      );
     });
   };
 
@@ -88,8 +93,9 @@ export const AddTemplateAttributeModal = ({templateId, onClose}: Props) => {
           setError(error.data);
         },
         onSuccess: async () => {
-          await queryClient.invalidateQueries(['template', templateId]);
+          await queryClient.invalidateQueries(['get-template', templateId]);
           notify(NotificationLevel.SUCCESS, translate('akeneo.category.template.add_attribute.success.notification'));
+          onSuccess && onSuccess();
           onClose();
         },
       }
@@ -97,7 +103,7 @@ export const AddTemplateAttributeModal = ({templateId, onClose}: Props) => {
   };
 
   return (
-    <Modal illustration={<AttributesIllustration />} onClose={onClose} closeTitle={translate('pim_common.close')}>
+    <Modal illustration={<ProductCategoryIllustration />} onClose={onClose} closeTitle={translate('pim_common.close')}>
       <Modal.SectionTitle color="brand">
         {translate('akeneo.category.template.add_attribute.confirmation_modal.section_title')}
       </Modal.SectionTitle>

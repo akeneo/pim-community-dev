@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastructure\Persistence\Query\ProductEvaluation;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeGroupCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductModelIdsImpactedByAttributeGroupActivationQuery;
@@ -54,6 +54,35 @@ final class GetProductModelIdsImpactedByAttributeGroupActivationQueryIntegration
         $productModelIds = array_map(fn (ProductModelIdCollection $collection) => $collection->toArray(), $productModelIds);
 
         $this->assertCount(3, $productModelIds);
+        $this->assertEqualsCanonicalizing($expectedProductModelIds, array_merge_recursive(...$productModelIds));
+    }
+
+    public function test_it_retrieves_impacted_product_models_for_a_given_attribute_group(): void
+    {
+        $this->createAttributeGroupActivation('other', false, $this->updatedSince->modify('-1 day'));
+        $this->createAttributeGroupWithAttributes('not_recently_activated', ['name', 'description'], true, $this->updatedSince->modify('-1 second'));
+        $this->createAttributeGroupWithAttributes('recently_activated', ['ean'], true, $this->updatedSince->modify('+1 minute'));
+        $this->createAttributeGroupWithAttributes('recently_deactivated', ['weight', 'length'], false, $this->updatedSince->modify('+1 second'));
+        $this->createAttributeGroupWithAttributesForVariationAxes('not_recently_deactivated', ['color', 'size'], false, $this->updatedSince->modify('-1 month'));
+
+        $expectedProductModelIds[] = $this->givenAnImpactedRootProductModelWithASingleVariationLevel();
+        $expectedProductModelIds[] = $this->givenAnImpactedRootProductModelWithTwoVariationLevels();
+        $expectedProductModelIds[] = $this->givenAnotherImpactedRootProductModelWithTwoVariationLevels();
+        $expectedProductModelIds[] = $this->givenASubProductModelImpactedByACommonAttribute();
+        $expectedProductModelIds[] = $this->givenASubProductModelImpactedByALevelOneVariantAttribute();
+
+        $this->givenARootProductModelNotImpactedBecauseOfItsVariantFamily();
+        $this->givenARootProductModelNotImpactedBecauseOfItsLevelOneAttributes();
+
+        $this->givenASubProductModelNotImpactedBecauseOfItsVariantFamily();
+        $this->givenASubProductModelNotImpactedBecauseOfItsLevelTwoAttributes();
+
+        $productModelIds = \array_merge(
+            \iterator_to_array($this->get(GetProductModelIdsImpactedByAttributeGroupActivationQuery::class)->forAttributeGroup(new AttributeGroupCode('recently_activated'), 2)),
+            \iterator_to_array($this->get(GetProductModelIdsImpactedByAttributeGroupActivationQuery::class)->forAttributeGroup(new AttributeGroupCode('recently_deactivated'), 2)),
+        );
+        $productModelIds = array_map(fn (ProductModelIdCollection $collection) => $collection->toArray(), $productModelIds);
+
         $this->assertEqualsCanonicalizing($expectedProductModelIds, array_merge_recursive(...$productModelIds));
     }
 

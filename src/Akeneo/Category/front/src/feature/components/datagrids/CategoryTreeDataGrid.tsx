@@ -7,15 +7,14 @@ import {
   useRouter,
   useSecurity,
   useTranslate,
-  useUserContext,
 } from '@akeneo-pim-community/shared';
 import {CategoryTreeModel, Template} from '../../models';
 import styled from 'styled-components';
 import {NoResults} from './NoResults';
 import {DeleteCategoryModal} from './DeleteCategoryModal';
 import {deleteCategory} from '../../infrastructure';
-import {createTemplate} from '../templates/createTemplate';
 import {useCountCategoryTreesChildren} from '../../hooks';
+import {CreateTemplateModal} from '../templates/CreateTemplateModal';
 
 type Props = {
   trees: CategoryTreeModel[];
@@ -31,9 +30,10 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
   const notify = useNotify();
   const [isConfirmationModalOpen, openConfirmationModal, closeConfirmationModal] = useBooleanState();
   const [categoryTreeToDelete, setCategoryTreeToDelete] = useState<CategoryTreeModel | null>(null);
+  const [categoryTreeForTemplateCreation, setCategoryTreeForTemplateCreation] = useState<CategoryTreeModel | null>(
+    null
+  );
   const [displayCategoryTemplatesColumn, setDisplayCategoryTemplatesColumn] = useState<boolean>(false);
-  const userContext = useUserContext();
-  const catalogLocale = userContext.get('catalogLocale');
 
   const followCategoryTree = useCallback(
     (tree: CategoryTreeModel): void => {
@@ -75,19 +75,11 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
     closeConfirmationModal();
   };
 
-  const onCreateTemplate = (categoryTree: CategoryTreeModel) => {
-    createTemplate(categoryTree, catalogLocale, router)
-      .then(response => {
-        response.json().then((template: Template) => {
-          if (template) {
-            notify(NotificationLevel.SUCCESS, translate('akeneo.category.template.notification_success'));
-            redirectToTemplate(categoryTree.id, template.uuid);
-          }
-        });
-      })
-      .catch(() => {
-        notify(NotificationLevel.ERROR, translate('akeneo.category.template.notification_error'));
-      });
+  const [isCreateTemplateModalOpen, openCreateTemplateModal, closeCreateTemplateModal] = useBooleanState(false);
+
+  const handleCreateTemplate = (categoryTree: CategoryTreeModel) => {
+    setCategoryTreeForTemplateCreation(categoryTree);
+    openCreateTemplateModal();
   };
 
   const redirectToTemplate = (treeId: number, templateUuid: string) => {
@@ -218,7 +210,9 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
                         level="tertiary"
                         size={'small'}
                         onClick={() => {
-                          tree.templateUuid ? redirectToTemplate(tree.id, tree.templateUuid) : onCreateTemplate(tree);
+                          tree.templateUuid
+                            ? redirectToTemplate(tree.id, tree.templateUuid)
+                            : handleCreateTemplate(tree);
                         }}
                         disabled={!tree.hasOwnProperty('productsNumber')}
                       >
@@ -243,6 +237,15 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
               ))}
             </Table.Body>
           </Table>
+          {isCreateTemplateModalOpen && categoryTreeForTemplateCreation && (
+            <CreateTemplateModal
+              categoryTree={categoryTreeForTemplateCreation}
+              onClose={() => {
+                refreshCategoryTrees();
+                closeCreateTemplateModal();
+              }}
+            />
+          )}
           {isConfirmationModalOpen && categoryTreeToDelete && (
             <DeleteCategoryModal
               categoryLabel={categoryTreeToDelete.label}

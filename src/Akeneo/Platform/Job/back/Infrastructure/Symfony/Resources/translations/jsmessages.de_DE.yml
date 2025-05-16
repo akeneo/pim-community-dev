@@ -12,7 +12,11 @@ akeneo_job:
     ABANDONED: Abgebrochen
     UNKNOWN: Unbekannt
     IN_PROGRESS: In Bearbeitung
+    PAUSING: Pausieren
+    PAUSED: Pausiert
 akeneo_job_process_tracker:
+  tooltip:
+    paused: Diese Aufgabe wurde wegen interner Wartung pausiert. Sie wird automatisch fortgesetzt, sobald sie erledigt ist.
   last_operations:
     title: Letzte Operationen
     view_all: Alle anzeigen
@@ -58,6 +62,8 @@ akeneo_job_process_tracker:
     stopping: Beende...
     unknown: Unbekannt
     in_progress: In Bearbeitung
+    pausing: Pausieren
+    paused: Pausiert
   automation_filter:
     all: Alle
     yes: Yes

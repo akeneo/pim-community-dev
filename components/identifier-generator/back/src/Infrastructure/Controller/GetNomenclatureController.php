@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller;
 
-use Akeneo\Pim\Automation\IdentifierGenerator\Application\Get\GetNomenclatureQuery;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UndefinedAttributeException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UnexpectedAttributeTypeException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Get\GetNomenclatureHandler;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Get\GetNomenclatureQuery;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,10 +32,13 @@ final class GetNomenclatureController
             return new RedirectResponse('/');
         }
 
-        $query = new GetNomenclatureQuery($propertyCode);
-
         try {
-            return new JsonResponse(($this->getNomenclatureHandler)($query));
+            $nomenclature = ($this->getNomenclatureHandler)(new GetNomenclatureQuery($propertyCode));
+            if ([] === $nomenclature['values']) {
+                $nomenclature['values'] = (object)[];
+            }
+
+            return new JsonResponse($nomenclature);
         } catch (UndefinedAttributeException $e) {
             throw new NotFoundHttpException($e->getMessage());
         } catch (UnexpectedAttributeTypeException $e) {

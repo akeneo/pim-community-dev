@@ -7,7 +7,6 @@ Feature: Edit a category
   Background:
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
-    And feature flag "enriched_category" is activated
 
   Scenario: Successfully edit a category
     Given I edit the "Sandals" category

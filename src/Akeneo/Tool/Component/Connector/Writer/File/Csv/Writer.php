@@ -7,6 +7,7 @@ use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Buffer\BufferFactory;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Akeneo\Tool\Component\Connector\Job\JobFileBackuper;
 use Akeneo\Tool\Component\Connector\Writer\File\AbstractFileWriter;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBuffer;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher;
@@ -36,15 +37,13 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Initiali
     /** @var array */
     protected $headers = [];
 
-    /**
-     * @param ArrayConverterInterface $arrayConverter
-     * @param BufferFactory           $bufferFactory
-     * @param FlatItemBufferFlusher   $flusher
-     */
+    protected array $state = [];
+
     public function __construct(
         ArrayConverterInterface $arrayConverter,
         BufferFactory $bufferFactory,
-        FlatItemBufferFlusher $flusher
+        FlatItemBufferFlusher $flusher,
+        private readonly JobFileBackuper $jobFileBackuper,
     ) {
         parent::__construct();
 
@@ -58,8 +57,16 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Initiali
      */
     public function initialize(): void
     {
-        if (null === $this->flatRowBuffer) {
-            $this->flatRowBuffer = $this->bufferFactory->create();
+        $bufferFilePath = $this->state['buffer_file_path'] ?? null;
+
+        if ($bufferFilePath) {
+            $this->jobFileBackuper->recover($this->stepExecution->getJobExecution(), $bufferFilePath);
+        }
+
+        $this->flatRowBuffer = $this->bufferFactory->create($bufferFilePath);
+
+        if (array_key_exists('headers', $this->state)) {
+            $this->flatRowBuffer->addToHeaders($this->state['headers']);
         }
     }
 
@@ -109,5 +116,25 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Initiali
         foreach ($writtenFiles as $writtenFile) {
             $this->writtenFiles[] = WrittenFileInfo::fromLocalFile($writtenFile, \basename($writtenFile));
         }
+    }
+
+    public function getState(): array
+    {
+        if (null === $this->flatRowBuffer) {
+            return [];
+        }
+
+        $filePath = $this->flatRowBuffer->getFilePath();
+        $this->jobFileBackuper->backup($this->stepExecution->getJobExecution(), $filePath);
+
+        return [
+            'buffer_file_path' => $filePath,
+            'headers' => $this->flatRowBuffer->getHeaders(),
+        ];
+    }
+
+    public function setState(array $state): void
+    {
+        $this->state = $state;
     }
 }

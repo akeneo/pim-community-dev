@@ -102,6 +102,30 @@ The placeholder text provides tips or examples of items to enter. Placeholder te
   </Story>
 </Canvas>
 
+## Variation on locked values
+
+<Canvas>
+  <Story name="LockedValues">
+    {args => {
+      const [value, setValue] = useState(['en_US', 'fr_FR', 'de_DE']);
+      return (
+          <MultiSelectInput
+            value={value}
+            placeholder="Placeholder"
+            emptyResultLabel="No match found"
+            lockedValues={['en_US', 'fr_FR']}
+            onChange={setValue}
+          >
+            <MultiSelectInput.Option value="en_US">English (United States)</MultiSelectInput.Option>
+            <MultiSelectInput.Option value="fr_FR">French (France)</MultiSelectInput.Option>
+            <MultiSelectInput.Option value="de_DE">German (Germany)</MultiSelectInput.Option>
+            <MultiSelectInput.Option value="es_ES">Spanish (Spain)</MultiSelectInput.Option>
+          </MultiSelectInput>
+      );
+    }}
+  </Story>
+</Canvas>
+
 ## Variation on invalid
 
 <Canvas>

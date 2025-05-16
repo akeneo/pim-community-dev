@@ -48,6 +48,8 @@ pim_user:
         not_match: De wachtwoorden komen niet overeen
       current_password:
         wrong: Verkeerd wachtwoord
+      roles:
+        last_user_with_edit_role_permissions: Deze gebruiker is de laatste met rechten voor de bewerkingsrol.
     tabs:
       general:
         title: Algemeen
@@ -92,6 +94,8 @@ pim_user:
     role:
       message:
         saved: "Rol opgeslagen"
+        cannot_delete_last_edit_role_permission: U kunt de bewerkingsrechten van de laatste gebruiker met die rol niet verwijderen.
+        cannot_remove_last_edit_role_permission: U kunt de bewerkingsrechten van de laatste gebruiker met die rol niet opheffen.
     user:
       message:
         saved: "Gebruiker opgeslagen"

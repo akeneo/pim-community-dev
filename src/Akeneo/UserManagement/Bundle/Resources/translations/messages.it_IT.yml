@@ -48,6 +48,8 @@ pim_user:
         not_match: Le password non corrispondono
       current_password:
         wrong: Password errata
+      roles:
+        last_user_with_edit_role_permissions: Questo è l'ultimo utente con i permessi di modifica.
     tabs:
       general:
         title: Generale
@@ -92,6 +94,8 @@ pim_user:
     role:
       message:
         saved: "Ruolo salvato"
+        cannot_delete_last_edit_role_permission: Non è possibile eliminare i permessi del ruolo di modifica dell'ultimo utente che ha questo ruolo.
+        cannot_remove_last_edit_role_permission: Non è possibile eliminare i permessi del ruolo di modifica dell'ultimo utente che ha questo ruolo.
     user:
       message:
         saved: "Utente salvato"

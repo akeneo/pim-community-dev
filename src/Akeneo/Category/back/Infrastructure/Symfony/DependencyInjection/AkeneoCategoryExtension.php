@@ -24,8 +24,8 @@ class AkeneoCategoryExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('bus.yml');
         $loader->load('cli.yml');
-        $loader->load('feature_flags.yml');
         $loader->load('controllers.yml');
         $loader->load('entities.yml');
         $loader->load('forms.yml');
@@ -34,7 +34,6 @@ class AkeneoCategoryExtension extends Extension
         $loader->load('readers.yml');
         $loader->load('repositories.yml');
         $loader->load('serializers.yml');
-        $loader->load('message_buses.yml');
         $loader->load('queries.yml');
         $loader->load('converters.yml');
         $loader->load('filters.yml');

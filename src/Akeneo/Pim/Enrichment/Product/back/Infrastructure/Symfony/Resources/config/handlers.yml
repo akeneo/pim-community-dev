@@ -9,6 +9,7 @@ services:
             - '@event_dispatcher'
             - '@Akeneo\Pim\Enrichment\Product\Application\Applier\UserIntentApplierRegistry'
             - '@security.token_storage'
+            - '@Akeneo\Pim\Enrichment\Product\Domain\Clock'
         tags:
             - { name: 'akeneo.pim.enrichment.product.handler', command: 'Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand' }
 
@@ -32,3 +33,12 @@ services:
             - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes'
         tags:
             - { name: 'akeneo.pim.enrichment.product.query_handler', query: 'Akeneo\Pim\Enrichment\Product\API\Query\GetProductCategoryCodesQuery' }
+
+    Akeneo\Pim\Enrichment\Product\Application\HandleProductDraftHandler:
+        arguments:
+            - '@pim_catalog.repository.product'
+            - '@validator'
+            - '@pim_catalog.updater.product'
+            - '@pim_catalog.saver.product'
+        tags:
+            - { name: 'akeneo.pim.enrichment.product_draft.handler', command: 'Akeneo\Pim\Enrichment\Product\API\Command\HandleProductDraftCommand' }

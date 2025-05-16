@@ -61,6 +61,18 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface, Saver
             throw new \InvalidArgumentException('The object argument should be a attribute');
         }
 
+        if (AttributeTypes::IDENTIFIER === $attribute->getType()) {
+            $mainIdentifier = $this->attributes->filter(
+                static fn (AttributeInterface $savedAttribute): bool =>
+                    $savedAttribute->isMainIdentifier() && $savedAttribute->getCode() !== $attribute->getCode()
+            )->isEmpty();
+
+            if ($mainIdentifier) {
+                $refl = new \ReflectionClass($attribute);
+                $refl->getProperty('mainIdentifier')->setValue($attribute, true);
+            }
+        }
+
         $this->attributes->set($attribute->getCode(), $attribute);
     }
 
@@ -180,23 +192,50 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface, Saver
     /**
      * {@inheritdoc}
      */
-    public function getIdentifier()
+    public function getIdentifier(): AttributeInterface
     {
-        $attribute = $this->attributes->filter(function (AttributeInterface $attribute): bool {
-            return  $attribute->getType() === AttributeTypes::IDENTIFIER;
-        })->first();
-
-        return false !== $attribute ? $attribute : null;
+        return $this->getMainIdentifier();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getIdentifierCode()
+    public function getMainIdentifier(): AttributeInterface
     {
-        $identifierAttribute = $this->getIdentifier();
+        $attribute = $this->attributes->filter(function (AttributeInterface $attribute): bool {
+            return  $attribute->getType() === AttributeTypes::IDENTIFIER && $attribute->isMainIdentifier();
+        })->first();
 
-        return null !== $identifierAttribute ? $identifierAttribute->getCode() : null;
+        if (false === $attribute) {
+            $attribute = $this->attributes->filter(function (AttributeInterface $attribute): bool {
+                return  $attribute->getType() === AttributeTypes::IDENTIFIER;
+            })->first();
+        }
+
+        if (!$attribute) {
+            throw new \RuntimeException('The PIM has no identifier attribute');
+        }
+        // it's kind of dirty but it saves from creating useless setter
+        $refl = new \ReflectionClass($attribute);
+        $refl->getProperty('mainIdentifier')->setValue($attribute, true);
+
+        return $attribute;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIdentifierCode(): string
+    {
+        return $this->getMainIdentifierCode();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMainIdentifierCode(): string
+    {
+        return $this->getMainIdentifier()->getCode();
     }
 
     /**

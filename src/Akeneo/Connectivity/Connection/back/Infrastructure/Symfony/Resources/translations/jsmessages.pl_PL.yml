@@ -269,6 +269,7 @@ akeneo_connectivity.connection:
           not_blank: Atrybut redirect_uri jest wymagany.
           must_be_url: Atrybut redirect_uri nie jest prawidłowym adresem URL.
         scope:
+          must_be_a_string: Lista zakresu musi być ciągiem rozdzielonym spacjami.
           too_long: Lista zakresu może zawierać maksymalnie 1000 znaków.
     custom_apps:
       creation_limit_reached: Osiągnięto limit 20 aplikacji niestandardowych.
@@ -319,7 +320,6 @@ akeneo_connectivity.connection:
   connections: Połączenia
   secondary_actions:
     title: Inne działania
-  developer_mode: Tryb deweloperski
   connection:
     code: Kod
     label: Nazwa
@@ -616,7 +616,7 @@ pim_notification:
   types:
     connected_app_authorizations: Autoryzacje połączonych aplikacji
     disabled_catalog: Katalog aplikacji wyłączony
-    attribute_removed: Odnotowano wpływ na katalog aplikacji
+    attribute_removed: Wpłynięto na katalog aplikacji
   connected_app_authorizations:
     button_label: Otwórz aplikację
   disabled_catalog:

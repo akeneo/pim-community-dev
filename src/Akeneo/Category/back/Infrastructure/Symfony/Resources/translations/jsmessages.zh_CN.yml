@@ -1,6 +1,9 @@
 pim_title:
   pim_category_template_edit: 编辑类别模板
 akeneo.category:
+  unknown_error:
+    title: 抱歉，发生未知错误。
+    message: 请重新加载页面并重试。
   tree_list:
     column:
       category_templates: 类别模板
@@ -19,13 +22,21 @@ akeneo.category:
     delete: 删除树
   template:
     learn_more: 了解更多类别模板相关信息
-    create: 激活模板
+    create: 创建模板
+    create_confirmation_modal:
+      title: 创建新的类别模板
+      helper: 创建类别模板以定义属性并激活此树下所有类别的丰富度。
+      category_tree: 类别树
+      link: 了解关于类别模板的更多信息
     edit: 编辑模板
-    notification_success: 模板已成功激活
-    notification_error: 无法激活模板
+    notification_success: 类别模板已成功创建
+    notification_error: 无法创建类别模板
     not_found: 没有为此类别的激活模板
+    properties:
+      general_properties: 常规属性
+      label_translations_in_ui_locales: 用户界面语言的标签翻译
     attribute:
-      description_title: 描述设置 
+      description_title: 描述设置
       type:
         text: 文本
         textarea: 文本区域
@@ -41,6 +52,8 @@ akeneo.category:
           rich_text: 富文本编辑器
         translations:
           title: 标签翻译
+        error_message: 此页上存在无效的值。
+        unsaved_changes: 您有未保存的更改，确定要离开吗？
     add_attribute:
       no_attribute_title: 创建您的第一个属性
       no_attribute_instructions: 将文本、文本区域或图像属性添加到此模板，可定义您想要关联到类别的内容。
@@ -79,15 +92,42 @@ akeneo.category:
       notification_success:
         title: '{{ attribute }} 属性已成功删除'
     deactivate:
-      deactivate_template: 停用模板
+      deactivate_template: 删除模板
       confirmation_modal:
-        title: 停用类别模板
-        message: 确定要停用名为 {{ template }} 的类别模板吗？
-        helper: 停用此模板将永久删除关联类别的属性和值。
-        deactivate: 停用
+        title: 删除类别模板
+        message: 确定要删除名为 {{ template }} 的类别模板吗？
+        helper: 删除此模板将永久删除关联类别的属性和值。
+        deactivate: 删除
       notification_success:
-        title: '{{ template }} 模板已停用'
-        message: '{{ template }} 已被停用。关联类别的内容已被删除。'
+        title: '{{ template }} 模板已删除'
+        message: '{{ template }} 已删除。关联类别的内容已被删除。'
+    auto-save:
+      saved: 已保存
+      saving: 正在保存
+      editing: 正在编辑
+      errors: 错误未保存
+    initialize:
+      title: 添加类别属性
+      message: 通过添加文本、文本区域或图像属性来定义类别的内容。
+      choice_message: 请先根据您的需要创建第一个属性，或加载一组（13 个）建议的属性。
+      button:
+        load: 加载一组属性
+        create: 创建第一个属性
+    load_attribute_set:
+      section_title: 加载一组属性
+      title: 加载一组建议的属性
+      description: 加载一组建议的属性，可轻松开始配置丰富的类别。
+      content_description: '一组包含 13 个属性：'
+      content:
+        description_attributes: 2 个用于对类别进行长形式和短形式描述的文本区域属性
+        url_attributes: 1 个用于记录 URL 信息的文本属性
+        image_attributes: 3 个用于图像的图像属性，以及 3 个用于替代文本信息的文本属性
+        seo_attributes: 用于 SEO 信息的 2 个文本属性和 2 个文本区域属性
+      confirmation_message: 确定要加载这组属性吗？
+      button:
+        load: 加载一组属性
+      notification:
+        success: 属性已成功创建
   template_list:
     columns:
       header: 标签
@@ -100,7 +140,6 @@ akeneo.category:
     content:
       enrich_attribute_values: 通过文本、文本区域和图像属性丰富类别树的所有级别
       customizable_templates: 自定义模板为您带来卓越的产品体验
-      edit_attributes: '即将推出：更新所有这些类别属性的设置'
     survey_link_label: 告诉我们您的想法
     learn_more_link_label: 了解更多有关丰富的类别
   other_actions: 其他操作

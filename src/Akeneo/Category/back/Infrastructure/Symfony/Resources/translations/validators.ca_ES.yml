@@ -5,7 +5,20 @@ akeneo.category:
         wrong_format: El codi de categoria només pot contenir lletres, números i guions baixos
         line_feed: El codi de categoria no pot contenir caràcters d'alimentació de línia
       duplicated_value_user_intents: El valor de l'atribut {{ attributeCode }} s'està actualitzant diverses vegades
+      value_user_intents_on_deactivated_template: No hi ha cap plantilla activada enllaçada amb els atributs de categoria que voleu editar
       value:
         text_too_long: El valor no pot tenir més de {{ limit }} caràcters
         textarea_too_long: El valor no pot tenir més de {{ limit }} caràcters
         richtext_too_long: El valor no pot tenir més de {{ limit }} caràcters
+    template:
+      code:
+        not_blank: Aquest valor no es pot deixar en blanc.
+        unique: 'Codi de plantilla: {{ templateCode }} ja existeix.'
+        wrong_format: Aquest camp només pot contenir lletres, números i guions baixos.
+    attribute:
+      limit:
+        title: No podeu afegir més de 50 atributs
+        message: Les plantilles de categoria estan limitades a 50 atributs per plantilla.
+      code:
+        wrong_format: El codi d'atribut només pot contenir lletres minúscules, números i guions baixos
+        unique_in_the_template: El codi de l'atribut {{ attributeCode }} ha de ser únic a la plantilla

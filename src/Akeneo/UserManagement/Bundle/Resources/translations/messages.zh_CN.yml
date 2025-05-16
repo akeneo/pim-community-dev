@@ -48,6 +48,8 @@ pim_user:
         not_match: 密码不匹配
       current_password:
         wrong: 密码错误
+      roles:
+        last_user_with_edit_role_permissions: 此用户是最后一个拥有编辑角色权限的用户。
     tabs:
       general:
         title: 常规​​​​​
@@ -92,6 +94,8 @@ pim_user:
     role:
       message:
         saved: "角色已保存"
+        cannot_delete_last_edit_role_permission: 您不能删除最后一个拥有编辑角色的用户的编辑角色权限。
+        cannot_remove_last_edit_role_permission: 您不能移除最低角色的编辑角色权限。
     user:
       message:
         saved: "用户已保存"

@@ -109,6 +109,7 @@ class ProductReaderSpec extends ObjectBehavior
         $arrayConverter->convert($item, $converterOptions)->willReturn($convertedItem);
         $mediaPathTransformer->transform($convertedItem['values'], $filePath)->shouldBeCalled();
 
+        $this->initialize();
         $this->read();
     }
 }

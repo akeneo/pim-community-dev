@@ -48,6 +48,8 @@ pim_user:
         not_match: Różne hasła
       current_password:
         wrong: Błędne hasło
+      roles:
+        last_user_with_edit_role_permissions: To ostatni użytkownik z uprawnieniami do edycji roli.
     tabs:
       general:
         title: Ogólne
@@ -92,6 +94,8 @@ pim_user:
     role:
       message:
         saved: "Rola zapisana"
+        cannot_delete_last_edit_role_permission: Nie możesz usunąć uprawnień do edycji roli ostatniemu użytkownikowi z tą rolą.
+        cannot_remove_last_edit_role_permission: Nie możesz usunąć uprawnień do edycji roli ostatniemu użytkownikowi z tą rolą.
     user:
       message:
         saved: "Użytkownik zapisany"

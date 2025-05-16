@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MessengerBundle\Middleware;
 
+use Akeneo\Tool\Bundle\MessengerBundle\Stamp\CorrelationIdStamp;
 use Akeneo\Tool\Bundle\MessengerBundle\Stamp\TenantIdStamp;
 use Akeneo\Tool\Component\Messenger\Tenant\TenantAwareInterface;
 use Psr\Log\LoggerInterface;
@@ -19,7 +20,6 @@ class UcsMiddleware implements MiddlewareInterface
 {
     public function __construct(
         private readonly ?string $pimTenantId,
-        private readonly LoggerInterface $logger,
     ) {
     }
 
@@ -29,19 +29,16 @@ class UcsMiddleware implements MiddlewareInterface
         // If there is none, we fallback on the tenantid coming from the env variables.
         $tenantId = $envelope->last(TenantIdStamp::class)?->pimTenantId() ?: $this->pimTenantId;
 
-        if (empty($tenantId)) {
-            $this->logger->warning(sprintf(
-                'A message of type "%s" is consumed without a tenant id available',
-                get_class($envelope->getMessage()),
-            ));
-        }
-
         if ($tenantId && null === $envelope->last(TenantIdStamp::class)) {
             $envelope = $envelope->with(new TenantIdStamp($tenantId));
         }
 
         if ($tenantId && $envelope->getMessage() instanceof TenantAwareInterface) {
             $envelope->getMessage()->setTenantId($tenantId);
+        }
+
+        if (null === $envelope->last(CorrelationIdStamp::class)) {
+            $envelope = $envelope->with(CorrelationIdStamp::generate());
         }
 
         return $stack->next()->handle($envelope, $stack);

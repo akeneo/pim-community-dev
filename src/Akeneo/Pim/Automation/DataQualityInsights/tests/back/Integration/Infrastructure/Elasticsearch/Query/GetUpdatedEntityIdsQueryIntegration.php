@@ -7,10 +7,15 @@ namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastruct
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetUpdatedEntityIdsQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelIdCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\AssertionFailedError;
@@ -29,6 +34,7 @@ final class GetUpdatedEntityIdsQueryIntegration extends TestCase
         parent::setUp();
 
         $this->db = $this->get('database_connection');
+        $this->createAttributeOption('a_simple_select', 'optionC', ['en_US' => 'Option C']);
     }
 
     protected function getConfiguration()
@@ -49,11 +55,11 @@ final class GetUpdatedEntityIdsQueryIntegration extends TestCase
         $expectedProduct2 = $this->givenAnUpdatedProduct($today->modify('+1 HOUR'));
 
         $this->givenAProductModel('a_product_model_not_recently_updated', 'familyVariantA2', $today->modify('-1 DAY'));
-        $expectedProductVariant1 = $this->givenAnUpdatedProductVariant('a_product_model_not_recently_updated', $today->modify('+1 MINUTE'));
-        $this->givenAnUpdatedProductVariant('a_product_model_not_recently_updated', $today->modify('-2 MINUTE'));
+        $expectedProductVariant1 = $this->givenAnUpdatedProductVariant('product_variant_1', 'a_product_model_not_recently_updated', $today->modify('+1 MINUTE'), 'optionA');
+        $this->givenAnUpdatedProductVariant('product_variant_2', 'a_product_model_not_recently_updated', $today->modify('-2 MINUTE'), 'optionB');
 
         $this->givenAProductModel('a_product_model_recently_updated', 'familyVariantA2', $today->modify('+2 MINUTE'));
-        $expectedProductVariant2 = $this->givenAnUpdatedProductVariant('a_product_model_recently_updated', $today->modify('-1 MINUTE'));
+        $expectedProductVariant2 = $this->givenAnUpdatedProductVariant('product_variant_3','a_product_model_recently_updated', $today->modify('-1 MINUTE'), 'optionC');
 
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
@@ -88,7 +94,7 @@ final class GetUpdatedEntityIdsQueryIntegration extends TestCase
         $expectedSubProductModel2 = $this->givenAnUpdatedSubProductModel('a_product_model_not_recently_updated', $today->modify('+10 SECOND'));
 
         $this->givenAnUpdatedProduct($today->modify('+1 MINUTE'));
-        $this->givenAnUpdatedProductVariant('a_product_model_not_recently_updated', $today->modify('+1 HOUR'));
+        $this->givenAnUpdatedProductVariant('product_variant_1', 'a_product_model_not_recently_updated', $today->modify('+1 HOUR'), 'optionA');
 
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
@@ -106,28 +112,26 @@ final class GetUpdatedEntityIdsQueryIntegration extends TestCase
         $this->assertExpectedEntityId($expectedSubProductModel2, $productIds);
     }
 
-    private function createProduct(): ProductInterface
+    private function createProduct(string $identifier = null, array $userIntents = []): ProductInterface
     {
-        $product = $this->get('akeneo_integration_tests.catalog.product.builder')
-            ->withIdentifier(strval(Uuid::uuid4()))
-            ->build();
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product afterwards
+        $identifier = $identifier?: strval(Uuid::uuid4());
 
-        $this->get('pim_catalog.saver.product')->save($product);
+        $this->get('pim_enrich.product.message_bus')->dispatch(UpsertProductCommand::createWithIdentifierSystemUser(
+            $identifier,
+            $userIntents
+        ));
 
-        return $product;
+        return $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
     }
 
-    private function createProductVariant(string $parentCode): ProductInterface
-    {
-        $product = $this->get('akeneo_integration_tests.catalog.product.builder')
-            ->withIdentifier(strval(Uuid::uuid4()))
-            ->withFamily('familyA')
-            ->build();
-
-        $this->get('pim_catalog.updater.product')->update($product, ['parent' => $parentCode]);
-        $this->get('pim_catalog.saver.product')->save($product);
-
-        return $product;
+    private function createProductVariant(string $identifier, string $parentCode, string $variantOptionValue): ProductInterface {
+        return $this->createProduct($identifier, [
+            new SetFamily('familyA'),
+            new ChangeParent($parentCode),
+            new SetSimpleSelectValue('a_simple_select', null, null, $variantOptionValue),
+            new SetBooleanValue('a_yes_no', null, null, true)
+        ]);
     }
 
     private function updateProductAt(ProductInterface $product, \DateTimeImmutable $updatedAt)
@@ -166,9 +170,9 @@ SQL;
         return ProductUuid::fromUuid($product->getUuid());
     }
 
-    private function givenAnUpdatedProductVariant(string $parentCode, \DateTimeImmutable $updatedAt): ProductUuid
+    private function givenAnUpdatedProductVariant(string $identifier, string $parentCode, \DateTimeImmutable $updatedAt, string $variantOptionValue): ProductUuid
     {
-        $productVariant = $this->createProductVariant($parentCode);
+        $productVariant = $this->createProductVariant($identifier, $parentCode, $variantOptionValue);
         $this->updateProductAt($productVariant, $updatedAt);
 
         return ProductUuid::fromUuid($productVariant->getUuid());
@@ -189,7 +193,7 @@ SQL;
     {
         $productModel = $this->get('akeneo_integration_tests.catalog.product_model.builder')
             ->withCode($productModelCode)
-            ->withFamilyVariant('familyVariantA1')
+            ->withFamilyVariant('familyVariantA2')
             ->build();
 
         $this->get('pim_catalog.saver.product_model')->save($productModel);
@@ -222,5 +226,17 @@ SQL;
         }
 
         throw new AssertionFailedError(sprintf('Expected entity id %s not found', (string) $expectedEntityId));
+    }
+
+    private function createAttributeOption(string $attributeCode, string $optionCode, array $labels): void
+    {
+        $attributeOption = $this->get('pim_catalog.factory.attribute_option')->create();
+        $this->get('pim_catalog.updater.attribute_option')->update($attributeOption, [
+            'code' => $optionCode,
+            'attribute' => $attributeCode,
+            'labels' => $labels,
+        ]);
+
+        $this->get('pim_catalog.saver.attribute_option')->save($attributeOption);
     }
 }

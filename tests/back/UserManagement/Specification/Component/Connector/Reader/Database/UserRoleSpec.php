@@ -39,6 +39,7 @@ class UserRoleSpec extends ObjectBehavior
         $anonymous->getRole()->willReturn(User::ROLE_ANONYMOUS);
         $userRoleRepository->findAll()->shouldBeCalledOnce()->willReturn([$roleAdmin, $roleUser, $anonymous]);
 
+        $this->initialize();
         $this->read()->shouldReturn($roleAdmin);
         $this->read()->shouldReturn($roleUser);
         $this->read()->shouldReturn(null);

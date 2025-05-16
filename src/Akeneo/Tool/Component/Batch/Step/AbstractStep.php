@@ -29,7 +29,7 @@ abstract class AbstractStep implements StepInterface
     public function __construct(
         protected string $name,
         protected EventDispatcherInterface $eventDispatcher,
-        protected JobRepositoryInterface $jobRepository
+        protected JobRepositoryInterface $jobRepository,
     ) {
     }
 
@@ -67,8 +67,10 @@ abstract class AbstractStep implements StepInterface
     final public function execute(StepExecution $stepExecution)
     {
         $this->dispatchStepExecutionEvent(EventInterface::BEFORE_STEP_EXECUTION, $stepExecution);
+        if ($stepExecution->getStatus()->getValue() === BatchStatus::PAUSED) {
+            $this->dispatchStepExecutionEvent(EventInterface::BEFORE_STEP_EXECUTION_RESUME, $stepExecution);
+        }
 
-        $stepExecution->setStartTime(new \DateTime());
         $stepExecution->setStatus(new BatchStatus(BatchStatus::STARTED));
         $this->jobRepository->updateStepExecution($stepExecution);
 
@@ -79,7 +81,7 @@ abstract class AbstractStep implements StepInterface
             $this->doExecute($stepExecution);
 
             $exitStatus = new ExitStatus(ExitStatus::COMPLETED);
-            $exitStatus->logicalAnd($stepExecution->getExitStatus());
+            $exitStatus->logicalAnd($stepExecution->getExitStatus() ?? $exitStatus);
 
             $this->jobRepository->updateStepExecution($stepExecution);
 
@@ -88,9 +90,13 @@ abstract class AbstractStep implements StepInterface
                 throw new JobInterruptedException("JobExecution interrupted.");
             }
 
-            // Need to upgrade here not set, in case the execution was stopped
-            $stepExecution->upgradeStatus(BatchStatus::COMPLETED);
-            $this->dispatchStepExecutionEvent(EventInterface::STEP_EXECUTION_SUCCEEDED, $stepExecution);
+            if ($stepExecution->getStatus()->isPaused()) {
+                $this->dispatchStepExecutionEvent(EventInterface::BEFORE_STEP_EXECUTION_PAUSED, $stepExecution);
+            } else {
+                // Need to upgrade here not set, in case the execution was stopped
+                $stepExecution->upgradeStatus(BatchStatus::COMPLETED);
+                $this->dispatchStepExecutionEvent(EventInterface::STEP_EXECUTION_SUCCEEDED, $stepExecution);
+            }
         } catch (\Exception $e) {
             $stepExecution->upgradeStatus($this->determineBatchStatus($e));
 
@@ -107,7 +113,9 @@ abstract class AbstractStep implements StepInterface
 
         $this->dispatchStepExecutionEvent(EventInterface::STEP_EXECUTION_COMPLETED, $stepExecution);
 
-        $stepExecution->setEndTime(new \DateTime());
+        if (!$stepExecution->getStatus()->isPaused()) {
+            $stepExecution->setEndTime(new \DateTime());
+        }
         $stepExecution->setExitStatus($exitStatus);
         $this->jobRepository->updateStepExecution($stepExecution);
     }

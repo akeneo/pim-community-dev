@@ -6,7 +6,7 @@ namespace Akeneo\Category\Application\Command\UpdateAttributeCommand;
 
 use Akeneo\Category\Application\Query\GetAttribute;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateAttributeSaver;
-use Akeneo\Category\Domain\Exceptions\ViolationsException;
+use Akeneo\Category\Domain\Exception\ViolationsException;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 

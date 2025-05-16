@@ -39,7 +39,7 @@ test('it render trees', async () => {
         init={init}
         initTree={initTree}
         childrenCallback={childrenCallback}
-        initialSelectedTreeId={42}
+        initialSelectedNodeId={42}
         initialIncludeSubCategories={true}
         onCategoryClick={handleCatagoryClick}
         onTreeChange={handleTreeChange}
@@ -62,7 +62,7 @@ test('it selects all categories', async () => {
         init={init}
         initTree={initTree}
         childrenCallback={childrenCallback}
-        initialSelectedTreeId={42}
+        initialSelectedNodeId={42}
         initialIncludeSubCategories={true}
         onCategoryClick={handleCatagoryClick}
         onTreeChange={handleTreeChange}
@@ -85,7 +85,7 @@ test('it changes tree', async () => {
         init={init}
         initTree={initTree}
         childrenCallback={childrenCallback}
-        initialSelectedTreeId={42}
+        initialSelectedNodeId={42}
         initialIncludeSubCategories={true}
         onCategoryClick={handleCatagoryClick}
         onTreeChange={handleTreeChange}
@@ -103,7 +103,7 @@ test('it changes tree', async () => {
   await act(async () => {
     fireEvent.click(screen.getAllByRole('option')[0]);
   });
-  expect(handleTreeChange).toBeCalledWith(42, 'Master Catalog');
+  expect(handleTreeChange).toBeCalledWith(42, 'Master Catalog', 42);
 });
 
 test('it updates include_sub_categories', async () => {
@@ -113,7 +113,7 @@ test('it updates include_sub_categories', async () => {
         init={init}
         initTree={initTree}
         childrenCallback={childrenCallback}
-        initialSelectedTreeId={42}
+        initialSelectedNodeId={42}
         initialIncludeSubCategories={true}
         onCategoryClick={handleCatagoryClick}
         onTreeChange={handleTreeChange}

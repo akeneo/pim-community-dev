@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Job;
 
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\KeepOnlyValuesForVariation;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\StepExecutionEvent;
+use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
@@ -29,39 +30,23 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
 {
     private ?StepExecution $stepExecution = null;
-    private IdentifiableObjectRepositoryInterface $familyVariantRepository;
-    private ProductQueryBuilderFactoryInterface $productQueryBuilderFactory;
-    private BulkSaverInterface $productSaver;
-    private BulkSaverInterface $productModelSaver;
-    private KeepOnlyValuesForVariation $keepOnlyValuesForVariation;
-    private ValidatorInterface $validator;
-    private EventDispatcherInterface $eventDispatcher;
-    private int $batchSize;
 
     public function __construct(
-        IdentifiableObjectRepositoryInterface $familyVariantRepository,
-        ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
-        BulkSaverInterface $productSaver,
-        BulkSaverInterface $productModelSaver,
-        KeepOnlyValuesForVariation $keepOnlyValuesForVariation,
-        ValidatorInterface $validator,
-        EventDispatcherInterface $eventDispatcher,
-        int $batchSize = 100
+        private readonly IdentifiableObjectRepositoryInterface $familyVariantRepository,
+        private readonly ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
+        private readonly BulkSaverInterface $productSaver,
+        private readonly BulkSaverInterface $productModelSaver,
+        private readonly KeepOnlyValuesForVariation $keepOnlyValuesForVariation,
+        private readonly ValidatorInterface $validator,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly int $batchSize = 100
     ) {
-        $this->familyVariantRepository = $familyVariantRepository;
-        $this->productQueryBuilderFactory = $productQueryBuilderFactory;
-        $this->productSaver = $productSaver;
-        $this->productModelSaver = $productModelSaver;
-        $this->keepOnlyValuesForVariation = $keepOnlyValuesForVariation;
-        $this->validator = $validator;
-        $this->batchSize = $batchSize;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setStepExecution(StepExecution $stepExecution)
+    public function setStepExecution(StepExecution $stepExecution): void
     {
         $this->stepExecution = $stepExecution;
     }
@@ -69,7 +54,7 @@ class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
     /**
      * {@inheritdoc}
      */
-    public function execute()
+    public function execute(): void
     {
         $jobParameters = $this->stepExecution->getJobParameters();
         $familyVariantCodes = $jobParameters->get('family_variant_codes');
@@ -78,8 +63,8 @@ class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
             $familyVariant = $this->familyVariantRepository->findOneByIdentifier($familyVariantCode);
             $levelNumber = $familyVariant->getNumberOfLevel();
 
-            while ($levelNumber >= ProductModel::ROOT_VARIATION_LEVEL) {
-                if (ProductModel::ROOT_VARIATION_LEVEL === $levelNumber) {
+            while ($levelNumber >= EntityWithFamilyVariantInterface::ROOT_VARIATION_LEVEL) {
+                if (EntityWithFamilyVariantInterface::ROOT_VARIATION_LEVEL === $levelNumber) {
                     $this->updateRootProductModels($familyVariantCode);
                 } elseif ($levelNumber === $familyVariant->getNumberOfLevel()) {
                     $this->updateVariantProducts($familyVariantCode);
@@ -92,7 +77,7 @@ class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
         }
     }
 
-    private function updateRootProductModels(string $familyVariant)
+    private function updateRootProductModels(string $familyVariant): void
     {
         $pmqb = $this->productQueryBuilderFactory->create([
             'filters' => [
@@ -105,7 +90,7 @@ class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
         $this->updateValuesOfEntities($pmqb->execute());
     }
 
-    private function updateVariantProducts(string $familyVariant)
+    private function updateVariantProducts(string $familyVariant): void
     {
         $pmqb = $this->productQueryBuilderFactory->create([
             'filters' => [
@@ -118,7 +103,7 @@ class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
         $this->updateValuesOfEntities($pmqb->execute());
     }
 
-    private function updateSubProductModels(string $familyVariant)
+    private function updateSubProductModels(string $familyVariant): void
     {
         $pmqb = $this->productQueryBuilderFactory->create([
             'filters' => [
@@ -145,29 +130,33 @@ class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
             }
 
             if (count($productModels) >= $this->batchSize) {
-                $this->validateProductModels($productModels);
-                $this->productModelSaver->saveAll($productModels);
+                $validProductModels = $this->validateProductModels($productModels);
+                $this->productModelSaver->saveAll($validProductModels);
+                $this->stepExecution->incrementSummaryInfo('process', count($validProductModels));
                 $this->clearBatchCaches();
                 $productModels = [];
             }
 
             if (count($products) >= $this->batchSize) {
-                $this->validateProducts($products);
-                $this->productSaver->saveAll($products);
+                $validProducts = $this->validateProducts($products);
+                $this->stepExecution->incrementSummaryInfo('process', count($validProducts));
+                $this->productSaver->saveAll($validProducts);
                 $this->clearBatchCaches();
                 $products = [];
             }
         }
 
         if (!empty($productModels)) {
-            $this->validateProductModels($productModels);
-            $this->productModelSaver->saveAll($productModels);
+            $validProductModels = $this->validateProductModels($productModels);
+            $this->productModelSaver->saveAll($validProductModels);
+            $this->stepExecution->incrementSummaryInfo('process', count($validProductModels));
             $this->clearBatchCaches();
         }
 
         if (!empty($products)) {
-            $this->validateProducts($products);
-            $this->productSaver->saveAll($products);
+            $validProducts = $this->validateProducts($products);
+            $this->productSaver->saveAll($validProducts);
+            $this->stepExecution->incrementSummaryInfo('process', count($validProducts));
             $this->clearBatchCaches();
         }
     }
@@ -183,57 +172,58 @@ class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
 
     /**
      * @param ProductModelInterface[] $productModels
-     *
-     * @throws \LogicException
+     * @return ProductModelInterface[]
      */
-    private function validateProductModels(array $productModels): void
+    private function validateProductModels(array $productModels): array
     {
-        foreach ($productModels as $productModel) {
+        $validProductModels = [];
+        foreach ($productModels as $key => $productModel) {
             $violations = $this->validator->validate($productModel);
 
             if ($violations->count() !== 0) {
-                throw new \LogicException(
-                    $this->buildErrorMessage(
-                        sprintf(
-                            'One or more validation errors occured for ProductModel with code "%s" during family variant structure change:',
-                            $productModel->getCode()
-                        ),
-                        $violations
-                    )
+                $this->stepExecution->addWarning(
+                    $this->buildErrorMessage($violations),
+                    [],
+                    new DataInvalidItem($productModel)
                 );
+                $this->stepExecution->incrementSummaryInfo('skip');
+            } else {
+                $validProductModels[] = $productModel;
             }
         }
+
+        return $validProductModels;
     }
 
     /**
      * @param ProductInterface[] $products
-     *
-     * @throws \LogicException
+     * @return ProductInterface[]
      */
-    private function validateProducts(array $products): void
+    private function validateProducts(array $products): array
     {
-        foreach ($products as $product) {
+        $validProducts = [];
+        foreach ($products as $key => $product) {
             $violations = $this->validator->validate($product);
 
             if ($violations->count() !== 0) {
-                throw new \LogicException(
-                    $this->buildErrorMessage(
-                        sprintf(
-                            'One or more validation errors occured for Product with identifier "%s" during family variant structure change:',
-                            $product->getIdentifier()
-                        ),
-                        $violations
-                    )
+                $this->stepExecution->addWarning(
+                    $this->buildErrorMessage($violations),
+                    [],
+                    new DataInvalidItem($product)
                 );
+                $this->stepExecution->incrementSummaryInfo('skip');
+            } else {
+                $validProducts[] = $product;
             }
         }
+
+        return $validProducts;
     }
 
     private function buildErrorMessage(
-        string $baseMessage,
         ConstraintViolationListInterface $constraintViolationList
     ): string {
-        $errorMessage = $baseMessage;
+        $errorMessage = '';
         foreach ($constraintViolationList as $violation) {
             $errorMessage .= sprintf("\n  - %s", $violation->getMessage());
         }

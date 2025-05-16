@@ -4,9 +4,14 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -52,7 +57,7 @@ abstract class AbstractProductAndProductModelQueryBuilderTestCase extends TestCa
         );
 
         foreach ($filters as $filter) {
-            $context = isset($filter[3]) ? $filter[3] : [];
+            $context = $filter[3] ?? [];
             $pqb->addFilter($filter[0], $filter[1], $filter[2], $context);
         }
 
@@ -80,5 +85,33 @@ abstract class AbstractProductAndProductModelQueryBuilderTestCase extends TestCa
         sort($expected);
 
         $this->assertSame($expected, $entities);
+    }
+
+    /**
+     * @param UserIntent[] $userIntents
+     */
+    protected function createProduct(?string $identifier, array $userIntents): ProductInterface
+    {
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
+
+        if (null !== $identifier) {
+            $command = UpsertProductCommand::createWithIdentifier(
+                userId: $this->getUserId('admin'),
+                productIdentifier: ProductIdentifier::fromIdentifier($identifier),
+                userIntents: $userIntents
+            );
+        } else {
+            $uuid = Uuid::uuid4();
+            $command = UpsertProductCommand::createWithUuid(
+                userId: $this->getUserId('admin'),
+                productUuid: ProductUuid::fromUuid($uuid),
+                userIntents: $userIntents
+            );
+        }
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+
+        return null !== $identifier ? $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier) :
+            $this->get('pim_catalog.repository.product')->find($uuid);
     }
 }

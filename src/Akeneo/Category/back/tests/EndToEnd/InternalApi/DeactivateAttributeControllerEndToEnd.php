@@ -39,7 +39,6 @@ class DeactivateAttributeControllerEndToEnd extends ControllerIntegrationTestCas
     {
         parent::setUp();
 
-        $this->get('feature_flags')->enable('category_template_customization');
         $this->logAs('julia');
         $this->createTemplate();
     }
@@ -66,9 +65,9 @@ class DeactivateAttributeControllerEndToEnd extends ControllerIntegrationTestCas
             $response = $this->client->getResponse();
             $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
         }
-        // TODO : reactivate after GRF-783
-        // $insertedAttributes = $this->get(GetAttribute::class)->byTemplateUuid($this->templateUuid);
-        // $this->assertCount(10, $insertedAttributes);
+
+        $insertedAttributes = $this->get(GetAttribute::class)->byTemplateUuid($this->templateUuid);
+        $this->assertCount(10, $insertedAttributes);
     }
 
     public function testItThrowsExceptionsWhenUuidInvalid(): void

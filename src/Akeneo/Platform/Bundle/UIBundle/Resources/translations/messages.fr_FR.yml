@@ -212,7 +212,7 @@ flash:
   entity:
     removed: L'entité a été supprimée
   attribute:
-    identifier_not_removable: Un attribut de type identifiant ne peut pas être supprimé
+    main_identifier_not_removable: L'attribut utilisé en tant qu'identifiant principal ne peut pas être supprimé
     used_as_conversion_unit: Cet attribut ne peut pas être supprimé car il est utilisé comme unité de conversion dans le(s) canal(aux) %channelCodes%.
     cant_remove_attributes_used_as_label: Les attributs utilisés comme libellés dans une famille ne peuvent pas être supprimés.
     cant_remove_attribute_used_as_axis: Impossible d'enlever cet attribut car il est utilisé comme axe de variation d'une famille.

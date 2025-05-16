@@ -36,8 +36,8 @@ class ProductIdentifierValidationIntegration extends TestCase
         $violations = $this->validateProduct($product);
 
         $this->assertCount(1, $violations);
-        $this->assertSame($violations->get(0)->getMessage(), 'This field should not contain any line break');
-        $this->assertSame($violations->get(0)->getPropertyPath(), 'identifier');
+        $this->assertSame('This field should not contain any line break', $violations->get(0)->getMessage());
+        $this->assertSame('values[sku-<all_channels>-<all_locales>].data', $violations->get(0)->getPropertyPath());
 
         $this->saveProduct($product);
     }
@@ -56,8 +56,8 @@ class ProductIdentifierValidationIntegration extends TestCase
         $violations = $this->validateProduct($wrongProduct);
         $this->assertCount(1, $violations);
         $this->assertSame(
-            $violations->get(0)->getMessage(),
-            'The identifier attribute must not contain more than 4 characters. The submitted value is too long.'
+            'The sku attribute must not contain more than 4 characters. The submitted value is too long.',
+            $violations->get(0)->getMessage()
         );
     }
 

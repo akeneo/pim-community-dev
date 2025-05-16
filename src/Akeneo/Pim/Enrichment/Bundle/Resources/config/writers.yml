@@ -62,6 +62,7 @@ services:
             - '@akeneo_file_storage.repository.file_info'
             - '@akeneo_file_storage.file_storage.filesystem_provider'
             - ['pim_catalog_file', 'pim_catalog_image']
+            - '@pim_connector.job.file_backuper'
 
     pim_connector.writer.file.csv_product_model:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\Csv\ProductModelWriter'
@@ -75,6 +76,7 @@ services:
             - '@akeneo_file_storage.repository.file_info'
             - '@akeneo_file_storage.file_storage.filesystem_provider'
             - ['pim_catalog_file', 'pim_catalog_image']
+            - '@pim_connector.job.file_backuper'
 
     pim_connector.writer.file.csv_product_quick_export:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\Csv\ProductWriter'
@@ -90,6 +92,7 @@ services:
             - '@akeneo_file_storage.repository.file_info'
             - '@akeneo_file_storage.file_storage.filesystem_provider'
             - ['pim_catalog_file', 'pim_catalog_image']
+            - '@pim_connector.job.file_backuper'
             - 'filePathProduct'
 
     pim_connector.writer.file.csv_product_model_quick_export:
@@ -104,6 +107,7 @@ services:
             - '@akeneo_file_storage.repository.file_info'
             - '@akeneo_file_storage.file_storage.filesystem_provider'
             - ['pim_catalog_file', 'pim_catalog_image']
+            - '@pim_connector.job.file_backuper'
             - 'filePathProductModel'
 
     pim_connector.writer.file.xlsx_product:
@@ -120,6 +124,7 @@ services:
             - '@akeneo_file_storage.repository.file_info'
             - '@akeneo_file_storage.file_storage.filesystem_provider'
             - ['pim_catalog_file', 'pim_catalog_image']
+            - '@pim_connector.job.file_backuper'
 
     pim_connector.writer.file.xlsx_product_model:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\Xlsx\ProductModelWriter'
@@ -133,6 +138,7 @@ services:
             - '@akeneo_file_storage.repository.file_info'
             - '@akeneo_file_storage.file_storage.filesystem_provider'
             - ['pim_catalog_file', 'pim_catalog_image']
+            - '@pim_connector.job.file_backuper'
 
     pim_connector.writer.file.xlsx_product_quick_export:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\Xlsx\ProductWriter'
@@ -148,6 +154,7 @@ services:
             - '@akeneo_file_storage.repository.file_info'
             - '@akeneo_file_storage.file_storage.filesystem_provider'
             - ['pim_catalog_file', 'pim_catalog_image']
+            - '@pim_connector.job.file_backuper'
             - 'filePathProduct'
 
     pim_connector.writer.file.xlsx_product_model_quick_export:
@@ -162,6 +169,7 @@ services:
             - '@akeneo_file_storage.repository.file_info'
             - '@akeneo_file_storage.file_storage.filesystem_provider'
             - ['pim_catalog_file', 'pim_catalog_image']
+            - '@pim_connector.job.file_backuper'
             - 'filePathProductModel'
 
 

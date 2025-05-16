@@ -5,3 +5,13 @@ services:
       - '@Akeneo\Platform\Installer\Infrastructure\DatabasePurger\DbalPurger'
       - '@Akeneo\Platform\Installer\Infrastructure\FixtureInstaller\MinimalFixtureInstaller'
       - '@Akeneo\Platform\Installer\Infrastructure\UserConfigurationResetter\UserConfigurationResetter'
+      - '@Akeneo\Platform\Installer\Infrastructure\FilesystemsPurger\FilesystemsPurger'
+
+  Akeneo\Platform\Installer\Application\UpdateMaintenanceMode\UpdateMaintenanceModeHandler:
+    arguments:
+      - '@Akeneo\Platform\Installer\Infrastructure\Query\UpdateMaintenanceMode'
+
+  Akeneo\Platform\Installer\Application\IsMaintenanceModeEnabled\IsMaintenanceModeEnabledHandler:
+    arguments:
+      - '@akeneo.installer.reset_pim.feature'
+      - '@Akeneo\Platform\Installer\Infrastructure\Query\IsMaintenanceModeEnabled'

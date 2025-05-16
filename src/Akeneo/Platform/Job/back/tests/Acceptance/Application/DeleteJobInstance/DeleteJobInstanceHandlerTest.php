@@ -15,12 +15,13 @@ use Akeneo\Platform\Job\ServiceApi\JobInstance\DeleteJobInstance\DeleteJobInstan
 use Akeneo\Platform\Job\ServiceApi\JobInstance\DeleteJobInstance\DeleteJobInstanceHandlerInterface;
 use Akeneo\Platform\Job\Test\Acceptance\AcceptanceTestCase;
 use Akeneo\Platform\Job\Test\Acceptance\FakeServices\InMemoryDeleteJobInstance;
+use Akeneo\Platform\Job\Test\Acceptance\FakeServices\InMemorySecurityFacade;
 
 final class DeleteJobInstanceHandlerTest extends AcceptanceTestCase
 {
     private DeleteJobInstanceHandlerInterface $deleteJobInstanceHandler;
-
     private InMemoryDeleteJobInstance $deleteJobInstance;
+    private InMemorySecurityFacade $securityFacade;
 
     protected function setUp(): void
     {
@@ -28,12 +29,15 @@ final class DeleteJobInstanceHandlerTest extends AcceptanceTestCase
 
         $this->deleteJobInstanceHandler = $this->get(DeleteJobInstanceHandler::class);
         $this->deleteJobInstance = $this->get(DeleteJobInstanceInterface::class);
+        $this->securityFacade = $this->get('akeneo.job.security_facade');
+
+        $this->securityFacade->setIsGranted('pim_importexport_export_profile_remove', true);
     }
 
     /**
      * @test
      */
-    public function it_delete_one_job()
+    public function it_deletes_one_job(): void
     {
         $this->assertContains('job_1', $this->deleteJobInstance->getJobCodes());
 
@@ -45,7 +49,7 @@ final class DeleteJobInstanceHandlerTest extends AcceptanceTestCase
     /**
      * @test
      */
-    public function it_delete_several_job()
+    public function it_deletes_several_job(): void
     {
         $this->assertContains('job_1', $this->deleteJobInstance->getJobCodes());
         $this->assertContains('job_2', $this->deleteJobInstance->getJobCodes());
@@ -54,5 +58,17 @@ final class DeleteJobInstanceHandlerTest extends AcceptanceTestCase
 
         $this->assertNotContains('job_1', $this->deleteJobInstance->getJobCodes());
         $this->assertNotContains('job_2', $this->deleteJobInstance->getJobCodes());
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_exception_when_right_is_not_granted(): void
+    {
+        $this->securityFacade->setIsGranted('pim_importexport_export_profile_remove', false);
+
+        $this->expectExceptionMessage('Insufficient privilege');
+
+        $this->deleteJobInstanceHandler->handle(new DeleteJobInstanceCommand(['job_1']));
     }
 }

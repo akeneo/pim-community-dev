@@ -59,7 +59,7 @@ akeneo_data_quality_insights:
             second_step:
               message1: Nur ein bisschen mehr Arbeit an Ihren Produktbildern und Sie sind bereit zu gehen.
               message2: Ein Bild sagt mehr als tausend Wörter. Arbeiten Sie jetzt daran, sparen Sie später Zeit!
-              message3: Möglicherweise müssen Sie etwas Zeit mit Bildern aufwänden. Ihre Produkte werden viel besser aussehen.
+              message3: Möglicherweise müssen Sie etwas Zeit mit Bildern aufwänden, Ihre Produkte werden viel besser aussehen.
             third_step:
               message1: Ziemlich gut, nur einige Bilder fehlen.
               message2: Das ist schön, Sie sind so nah.
@@ -144,7 +144,7 @@ akeneo_data_quality_insights:
     activated: Aktiviert
     disabled: Deaktiviert
     used_groups_helper: "Die folgenden Attributgruppen werden bei der Berechnung der Datenqualitätseinsichten berücksichtigt:"
-    all_groups_evaluated: Alle Attributgruppen dieses Produktes werden bei der Berechnung des Qualitätswertes berücksichtigt. Um die relevanteste Qualität zu erhalten, lernt <a href="{{ link }}" target="_blank">, wie man Attributgruppen in unserem Hilfe-Center deaktiviert.</a>
+    all_groups_evaluated: Alle Attributgruppen dieses Produktes werden bei der Berechnung des Qualitätswertes berücksichtigt. Um die relevanteste Qualität zu erhalten, lernt <a href="{{ link }}" target="_blank">, wie man Attributgruppen i
   product_grid:
     filter_label:
       quality_score: Qualität

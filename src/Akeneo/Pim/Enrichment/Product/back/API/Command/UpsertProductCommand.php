@@ -31,22 +31,24 @@ final class UpsertProductCommand
      * The product can now be created or updated by :
      * - a ProductIdentifier: the value of the identifier attribute
      * - a ProductUuid: the uuid of the existing product or the one you want to assign to the future product
-     * - null: the product will have a random uuid and no identifier
+     * - null: the product will have a random uuid and no identifier.
+     *
      * @param ValueUserIntent[] $valueUserIntents
      */
     private function __construct(
-        private int $userId,
-        private ProductUuid | ProductIdentifier | null $productIdentifierOrUuid,
-        private ?FamilyUserIntent $familyUserIntent = null,
-        private ?CategoryUserIntent $categoryUserIntent = null,
-        private ?ParentUserIntent $parentUserIntent = null,
-        private ?GroupUserIntent $groupUserIntent = null,
-        private ?SetEnabled $enabledUserIntent = null,
-        private ?AssociationUserIntentCollection $associationUserIntents = null,
-        private ?QuantifiedAssociationUserIntentCollection $quantifiedAssociationUserIntents = null,
-        private array $valueUserIntents = []
+        private readonly int $userId,
+        private readonly ProductUuid|ProductIdentifier|null $productIdentifierOrUuid,
+        private readonly ?FamilyUserIntent $familyUserIntent = null,
+        private readonly ?CategoryUserIntent $categoryUserIntent = null,
+        private readonly ?ParentUserIntent $parentUserIntent = null,
+        private readonly ?GroupUserIntent $groupUserIntent = null,
+        private readonly ?SetEnabled $enabledUserIntent = null,
+        private readonly ?AssociationUserIntentCollection $associationUserIntents = null,
+        private readonly ?QuantifiedAssociationUserIntentCollection $quantifiedAssociationUserIntents = null,
+        private readonly array $valueUserIntents = [],
+        private readonly bool $dryRun = false,
     ) {
-        /**
+        /*
          * TODO to remove when false negative will be fixed
          * Call to static method Webmozart\Assert\Assert::allImplementsInterface() with array<Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent> and
         'Akeneo\\Pim\\Enrichment\\Product\\API\\Command\\UserIntent\\ValueUserIntent' will always evaluate to false.
@@ -81,6 +83,15 @@ final class UpsertProductCommand
 
     /**
      * @param UserIntent[] $userIntents
+     */
+    public static function createWithIdentifierDryRun(int $userId, ProductIdentifier $productIdentifier, array $userIntents): self
+    {
+        return self::create($userIntents, $userId, $productIdentifier, true);
+    }
+
+    /**
+     * @param UserIntent[] $userIntents
+     *
      * @deprecated
      */
     public static function createFromCollection(int $userId, string $productIdentifier, array $userIntents): self
@@ -94,6 +105,22 @@ final class UpsertProductCommand
         );
 
         return self::create($userIntents, $userId, ProductIdentifier::fromIdentifier($productIdentifier));
+    }
+
+    /**
+     * @param UserIntent[] $userIntents
+     */
+    public static function createWithIdentifierSystemUser(string $productIdentifier, array $userIntents): self
+    {
+        return self::create($userIntents, -1, ProductIdentifier::fromIdentifier($productIdentifier));
+    }
+
+    /**
+     * @param UserIntent[] $userIntents
+     */
+    public static function createWithUuidSystemUser(ProductUuid $productUuid, array $userIntents): self
+    {
+        return self::create($userIntents, -1, $productUuid);
     }
 
     public function userId(): int
@@ -149,11 +176,20 @@ final class UpsertProductCommand
         return $this->quantifiedAssociationUserIntents;
     }
 
+    public function dryRun(): bool
+    {
+        return $this->dryRun;
+    }
+
     /**
      * @param UserIntent[] $userIntents
      */
-    private static function create(array $userIntents, int $userId, ProductIdentifier | ProductUuid | null $productIdentifierOrUuid = null): self
-    {
+    private static function create(
+        array $userIntents,
+        int $userId,
+        ProductIdentifier|ProductUuid|null $productIdentifierOrUuid = null,
+        bool $dryRun = false
+    ): self {
         $valueUserIntents = [];
         $categoryUserIntent = null;
         $groupUserIntent = null;
@@ -170,10 +206,10 @@ final class UpsertProductCommand
             if ($userIntent instanceof ValueUserIntent) {
                 $valueUserIntents[] = $userIntent;
             } elseif ($userIntent instanceof GroupUserIntent) {
-                Assert::null($groupUserIntent, "Only one group intent can be passed to the command.");
+                Assert::null($groupUserIntent, 'Only one group intent can be passed to the command.');
                 $groupUserIntent = $userIntent;
             } elseif ($userIntent instanceof SetEnabled) {
-                Assert::null($enabledUserIntent, "Only one enabled intent can be passed to the command.");
+                Assert::null($enabledUserIntent, 'Only one enabled intent can be passed to the command.');
                 $enabledUserIntent = $userIntent;
             } elseif ($userIntent instanceof FamilyUserIntent) {
                 Assert::null($familyUserIntent, 'Only one family intent can be passed to the command.');
@@ -201,7 +237,8 @@ final class UpsertProductCommand
             quantifiedAssociationUserIntents: [] === $quantifiedAssociationUserIntents
                 ? null
                 : new QuantifiedAssociationUserIntentCollection($quantifiedAssociationUserIntents),
-            valueUserIntents: $valueUserIntents
+            valueUserIntents: $valueUserIntents,
+            dryRun: $dryRun
         );
     }
 }

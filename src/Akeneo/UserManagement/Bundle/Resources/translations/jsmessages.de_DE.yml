@@ -82,6 +82,8 @@ pim_user_management:
         default_published_product_grid_view: Standardansicht Produktliste veröffentlichte Produkte #EE Only
         proposals_to_review_notification: Wenn ein neuer Vorschlag zu überprüfen ist #EE Only
         proposals_state_notifications: Wenn der Vorschlag angenommen oder abgelehnt wird #EE Only
+        not_fully_supported_locale: 'Das ausgewählte UI-Gebietsschema [{{ code }}] wird derzeit nicht vollständig unterstützt. Es könnte zu fehlenden oder unvollständigen Übersetzungen kommen. Helfen Sie mit, die Gebietsschema-Abdeckung zu verbessern:'
+        link_to_crowdin_label: zu Crowdin beitragen.
       meta:
         created: Erstellt
         updated: Aktualisiert

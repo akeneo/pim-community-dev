@@ -6,7 +6,6 @@ namespace Akeneo\Connectivity\Connection\Tests\EndToEnd\CustomApps\Controller\In
 
 use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\CustomAppLoader;
-use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\FilePersistedFeatureFlags;
 use Akeneo\Test\Integration\Configuration;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,16 +16,15 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class IsCustomAppsNumberLimitReachedActionEndToEnd extends WebTestCase
 {
-    private ?FilePersistedFeatureFlags $featureFlags;
     private ?CustomAppLoader $customAppLoader;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->featureFlags = $this->get('feature_flags');
         $this->customAppLoader = $this->get(CustomAppLoader::class);
     }
+
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
@@ -34,7 +32,6 @@ class IsCustomAppsNumberLimitReachedActionEndToEnd extends WebTestCase
 
     public function test_it_returns_custom_app_not_limit_reached_flag(): void
     {
-        $this->featureFlags->enable('app_developer_mode');
         $user = $this->authenticateAsAdmin();
         $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_test_apps');
 
