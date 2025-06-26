@@ -26,7 +26,8 @@ final class UpdateIndexMappingWithoutDowntime
         string $destinationIndexAlias,
         string $destinationIndexName,
         IndexConfiguration $indexConfiguration,
-        \Closure $findUpdatedDocumentQuery
+        \Closure $findUpdatedDocumentQuery,
+        ?int $batchSize = null,
     ): void {
         $indexToMigrateDoesNotHaveAlias = $this->indexToMigrateDoesNotHaveAlias($sourceIndexAlias);
         if ($indexToMigrateDoesNotHaveAlias) {
@@ -39,7 +40,8 @@ final class UpdateIndexMappingWithoutDowntime
         $lastReferenceDatetime = $this->moveAllDocuments(
             $sourceIndexAlias,
             $destinationIndexAlias,
-            $findUpdatedDocumentQuery
+            $findUpdatedDocumentQuery,
+            $batchSize,
         );
 
         $this->resetIndexSettings($destinationIndexName, $sourceIndexName);
@@ -88,7 +90,8 @@ final class UpdateIndexMappingWithoutDowntime
     private function moveAllDocuments(
         string $sourceIndexAlias,
         string $targetIndexAlias,
-        \Closure $findUpdatedDocumentQuery
+        \Closure $findUpdatedDocumentQuery,
+        ?int $batchSize = null,
     ): \DateTimeImmutable {
         $lastReferenceDatetime = $this->clock->now()->setTimestamp(0);
         do {
@@ -97,7 +100,8 @@ final class UpdateIndexMappingWithoutDowntime
                 $sourceIndexAlias,
                 $targetIndexAlias,
                 $lastReferenceDatetime,
-                $findUpdatedDocumentQuery
+                $findUpdatedDocumentQuery,
+                $batchSize
             );
 
             $lastReferenceDatetime = $nextUpdateTime;
@@ -110,12 +114,14 @@ final class UpdateIndexMappingWithoutDowntime
         string $sourceIndexAlias,
         string $targetIndexAlias,
         \DateTimeImmutable $referenceDatetime,
-        \Closure $findUpdatedDocumentQuery
+        \Closure $findUpdatedDocumentQuery,
+        ?int $batchSize = null,
     ): int {
         return $this->migrationClient->reindex(
             $sourceIndexAlias,
             $targetIndexAlias,
-            $findUpdatedDocumentQuery($referenceDatetime)
+            $findUpdatedDocumentQuery($referenceDatetime),
+            $batchSize,
         );
     }
 
