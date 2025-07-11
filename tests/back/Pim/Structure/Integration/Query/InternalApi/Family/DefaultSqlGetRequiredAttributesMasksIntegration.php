@@ -103,6 +103,48 @@ final class DefaultSqlGetRequiredAttributesMasksIntegration extends AbstractGetR
         ], $tabletFrFr->mask());
     }
 
+    public function test_that_the_generated_masks_are_empty_if_there_is_no_attribute_requirement(): void
+    {
+        $this->get('database_connection')->executeStatement(
+            'DELETE FROM pim_catalog_attribute_requirement;'
+        );
+
+        $result = $this->defaultSqlGetRequiredAttributesMasks->fromFamilyCodes(['familyA']);
+        $familyAMask = $result['familyA'];
+        Assert::count($familyAMask->masks(), 3);
+
+        $ecommerceEnUsMask = $familyAMask->requiredAttributesMaskForChannelAndLocale('ecommerce', 'en_US');
+        $tabletEnUS = $familyAMask->requiredAttributesMaskForChannelAndLocale('tablet', 'en_US');
+        $tabletFrFr = $familyAMask->requiredAttributesMaskForChannelAndLocale('tablet', 'fr_FR');
+
+        $this->assertEqualsCanonicalizing([], $ecommerceEnUsMask->mask());
+
+        $this->assertEqualsCanonicalizing([], $tabletEnUS->mask());
+
+        $this->assertEqualsCanonicalizing([], $tabletFrFr->mask());
+    }
+
+    public function test_that_the_generated_masks_are_empty_if_attribute_requirements_are_no_required(): void
+    {
+        $this->get('database_connection')->executeStatement(
+            'Update pim_catalog_attribute_requirement SET required = 0;'
+        );
+
+        $result = $this->defaultSqlGetRequiredAttributesMasks->fromFamilyCodes(['familyA']);
+        $familyAMask = $result['familyA'];
+        Assert::count($familyAMask->masks(), 3);
+
+        $ecommerceEnUsMask = $familyAMask->requiredAttributesMaskForChannelAndLocale('ecommerce', 'en_US');
+        $tabletEnUS = $familyAMask->requiredAttributesMaskForChannelAndLocale('tablet', 'en_US');
+        $tabletFrFr = $familyAMask->requiredAttributesMaskForChannelAndLocale('tablet', 'fr_FR');
+
+        $this->assertEqualsCanonicalizing([], $ecommerceEnUsMask->mask());
+
+        $this->assertEqualsCanonicalizing([], $tabletEnUS->mask());
+
+        $this->assertEqualsCanonicalizing([], $tabletFrFr->mask());
+    }
+
     public function test_the_generated_mask_is_ok_for_a_family_without_requirement()
     {
         $result = $this->defaultSqlGetRequiredAttributesMasks->fromFamilyCodes(['familyB', 'familyC', 'familyD']);
