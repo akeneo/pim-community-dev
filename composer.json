@@ -92,7 +92,7 @@
         "doctrine/orm": "^2.9.0",
         "doctrine/persistence": "^2.2.3",
         "dompdf/dompdf": "2.0.3",
-        "elasticsearch/elasticsearch": "7.11.0",
+        "elasticsearch/elasticsearch": "7.17.3",
         "friendsofsymfony/jsrouting-bundle": "3.2.1",
         "friendsofsymfony/rest-bundle": "^3.4.0",
         "gedmo/doctrine-extensions": "^3.2.0",
