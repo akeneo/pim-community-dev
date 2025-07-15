@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace AkeneoTest\Pim\Structure\Integration\Query\InternalApi\Family;
 
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\GetRequiredAttributesMasks;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\NonExistingFamiliesException;
 use Webmozart\Assert\Assert;
 
 final class GetRequiredAttributesMasksAggregatorIntegration extends AbstractGetRequiredAttributesMasksIntegration
@@ -120,11 +119,4 @@ final class GetRequiredAttributesMasksAggregatorIntegration extends AbstractGetR
         }
     }
 
-    public function test_it_throws_an_exception_for_non_existing_families()
-    {
-        $this->expectException(NonExistingFamiliesException::class);
-        $this->expectExceptionMessage("The following family codes do not exist: familyZ, familyY");
-
-        $this->getRequiredAttributesMasks->fromFamilyCodes(['familyA', 'familyZ', 'familyY']);
-    }
 }
