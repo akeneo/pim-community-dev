@@ -27,6 +27,7 @@ class DatabaseContext implements Context
      */
     public function loadFixtures(): void
     {
+        $this->container->get('feature_flags')->enable('catalogs');
         $catalog = $this->container->get('akeneo_integration_tests.catalogs');
         $configuration = $catalog->useMinimalCatalog();
         $fixturesLoader = $this->container->get('akeneo_integration_tests.loader.fixtures_loader');
