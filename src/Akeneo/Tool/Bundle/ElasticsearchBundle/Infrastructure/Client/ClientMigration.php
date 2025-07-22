@@ -34,7 +34,7 @@ final class ClientMigration implements ClientMigrationInterface
         return \array_keys($aliases);
     }
 
-    public function reindex(string $sourceIndexAlias, string $targetIndexAlias, array $query)
+    public function reindex(string $sourceIndexAlias, string $targetIndexAlias, array $query, ?int $batchSize = null)
     {
         $reindexResponse = $this->client->reindex([
             'wait_for_completion' => true,
@@ -42,6 +42,7 @@ final class ClientMigration implements ClientMigrationInterface
                 "source" => [
                     "index" => $sourceIndexAlias,
                     "query" => $query,
+                    "size" => (null != $batchSize) ? $batchSize : 1000
                 ],
                 "dest" => [
                     "index" => $targetIndexAlias,

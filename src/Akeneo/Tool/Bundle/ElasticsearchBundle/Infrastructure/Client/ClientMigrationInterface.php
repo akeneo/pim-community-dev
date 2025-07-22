@@ -14,7 +14,7 @@ interface ClientMigrationInterface
     public function getIndexNameFromAlias(string $indexAlias): array;
     public function aliasExist(string $indexAlias): bool;
     public function createAlias(string $indexAlias, string $indexName): void;
-    public function reindex(string $sourceIndexAlias, string $targetIndexAlias, array $query);
+    public function reindex(string $sourceIndexAlias, string $targetIndexAlias, array $query, ?int $batchSize = null);
     public function removeIndex(string $indexName): void;
     public function getIndexSettings(string $indexName): array;
     public function putIndexSetting(string $indexName, array $indexSettings);
