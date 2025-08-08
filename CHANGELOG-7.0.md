@@ -1,5 +1,7 @@
 # 7.0.x
 
+# 7.0.80 (2025-08-08)
+
 ## Bug fixes
 
 - CEQIF-333: Fix potential error in completeness family mask aggregation query 
