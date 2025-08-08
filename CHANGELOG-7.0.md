@@ -1,5 +1,9 @@
 # 7.0.x
 
+## Bug fixes
+
+- CEQIF-333: Fix potential error in completeness family mask aggregation query 
+
 # 7.0.79 (2025-03-24)
 
 # 7.0.78 (2025-02-25)
