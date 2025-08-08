@@ -6,7 +6,6 @@ namespace Akeneo\Pim\Structure\Bundle\Query\InternalApi\Family;
 
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\GetRequiredAttributesMasks;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\GetRequiredAttributesMasksForAttributeType;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\NonExistingFamiliesException;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\RequiredAttributesMask;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\RequiredAttributesMaskForChannelAndLocale;
 use Webmozart\Assert\Assert;
@@ -33,20 +32,20 @@ final class GetRequiredAttributesMasksAggregator implements GetRequiredAttribute
     public function fromFamilyCodes(array $familyCodes): array
     {
         $result = [];
+
+        foreach ($familyCodes as $resultArrayKey) {
+            $result[$resultArrayKey] = new RequiredAttributesMask($resultArrayKey, []);
+        }
+
         foreach ($this->getAttributeMasksPerAttributeTypes as $getAttributeMasksPerAttributeType) {
             $masksPerAttributeTypeCollection = $getAttributeMasksPerAttributeType->fromFamilyCodes($familyCodes);
             foreach ($masksPerAttributeTypeCollection as $familyCode => $requiredAttributeMask) {
-                if (!isset($result[$familyCode])) {
+                if ($result[$familyCode] === []) {
                     $result[$familyCode] = $requiredAttributeMask;
                 } else {
                     $result[$familyCode] = $result[$familyCode]->merge($requiredAttributeMask);
                 }
             }
-        }
-
-        $nonExistingFamilyCodes = array_diff($familyCodes, \array_keys($result));
-        if (\count($nonExistingFamilyCodes) > 0) {
-            throw new NonExistingFamiliesException($nonExistingFamilyCodes);
         }
 
         return $result;

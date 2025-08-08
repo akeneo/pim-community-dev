@@ -15,8 +15,6 @@ interface GetRequiredAttributesMasks
      * @param string[] $familyCodes
      *
      * @return RequiredAttributesMask[]
-     *
-     * @throws NonExistingFamiliesException
      */
     public function fromFamilyCodes(array $familyCodes): array;
 }

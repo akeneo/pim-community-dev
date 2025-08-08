@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace AkeneoTest\Pim\Structure\Integration\Query\InternalApi\Family;
 
 use Akeneo\Pim\Structure\Bundle\Query\InternalApi\Family\DefaultSqlGetRequiredAttributesMasks;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\NonExistingFamiliesException;
 use Webmozart\Assert\Assert;
 
 final class DefaultSqlGetRequiredAttributesMasksIntegration extends AbstractGetRequiredAttributesMasksIntegration
@@ -101,6 +100,53 @@ final class DefaultSqlGetRequiredAttributesMasksIntegration extends AbstractGetR
             'a_non_localizable_scopable_locale_specific-tablet-<all_locales>',
             'a_localizable_scopable_locale_specific-tablet-fr_FR'
         ], $tabletFrFr->mask());
+    }
+
+    public function test_that_the_generated_masks_are_empty_if_there_is_no_attribute_requirement(): void
+    {
+        $this->get('database_connection')->executeStatement(
+            'DELETE FROM pim_catalog_attribute_requirement;'
+        );
+
+        $result = $this->defaultSqlGetRequiredAttributesMasks->fromFamilyCodes(['familyA']);
+        $this->assertEquals([], $result);
+    }
+
+    public function test_that_the_generated_masks_are_empty_if_attribute_requirements_are_no_required(): void
+    {
+        $this->get('database_connection')->executeStatement(
+            'UPDATE pim_catalog_attribute_requirement SET required = 0;'
+        );
+
+        $result = $this->defaultSqlGetRequiredAttributesMasks->fromFamilyCodes(['familyA']);
+        $this->assertEquals([], $result);
+    }
+
+    public function test_that_the_generated_masks_are_ok_if_only_one_attribute_is_required(): void
+    {
+        $this->get('database_connection')->executeStatement(
+            'UPDATE pim_catalog_attribute_requirement SET required = 0;'
+        );
+
+        $requirementId = $this->get('database_connection')->fetchOne(
+            'SELECT car.id FROM pim_catalog_attribute_requirement car LEFT JOIN pim_catalog_channel cc ON car.channel_id = cc.id LEFT JOIN pim_catalog_family cf ON car.family_id = cf.id WHERE cc.code = "ecommerce" AND cf.code = "familyA" LIMIT 1;'
+        );
+
+        $sql = "UPDATE pim_catalog_attribute_requirement SET required = 1 WHERE id = :test_result";
+
+        $params['test_result'] = $requirementId;
+
+        $this->get('database_connection')->executeStatement($sql, $params);
+
+        $result = $this->defaultSqlGetRequiredAttributesMasks->fromFamilyCodes(['familyA']);
+        $familyAMask = $result['familyA'];
+        Assert::count($familyAMask->masks(), 1);
+
+        $ecommerceEnUsMask = $familyAMask->requiredAttributesMaskForChannelAndLocale('ecommerce', 'en_US');
+
+        $this->assertEqualsCanonicalizing([
+            'sku-<all_channels>-<all_locales>'
+        ], $ecommerceEnUsMask->mask());
     }
 
     public function test_the_generated_mask_is_ok_for_a_family_without_requirement()
