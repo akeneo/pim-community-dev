@@ -2,9 +2,10 @@
 
 namespace Akeneo\UserManagement\Bundle\Controller;
 
+use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\UserManagement\Bundle\Form\Handler\AclRoleHandler;
-use Akeneo\UserManagement\Component\Model\Role;
+use Akeneo\UserManagement\Component\Model\RoleInterface;
 use Akeneo\UserManagement\Component\Repository\RoleRepositoryInterface;
 use Akeneo\UserManagement\Domain\Permissions\Query\EditRolePermissionsRoleQuery;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclSidManager;
@@ -26,6 +27,7 @@ class RoleController extends AbstractController
         private readonly AclRoleHandler $aclRoleHandler,
         private readonly TranslatorInterface $translator,
         private readonly EditRolePermissionsRoleQuery $editRolePermissionsRoleQuery,
+        private readonly SimpleFactoryInterface $roleFactory,
     ) {
     }
 
@@ -34,7 +36,7 @@ class RoleController extends AbstractController
      */
     public function create(): Response
     {
-        $newRole = new Role();
+        $newRole = $this->roleFactory->create();
         return $this->updateRole($newRole);
     }
 
@@ -86,7 +88,7 @@ class RoleController extends AbstractController
         return new JsonResponse('', 204);
     }
 
-    private function updateRole(Role $role): Response
+    protected function updateRole(RoleInterface $role): Response
     {
         $this->aclRoleHandler->createForm($role);
 
