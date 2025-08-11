@@ -2,6 +2,7 @@ parameters:
     pim_user.controller.user_rest.class: Akeneo\UserManagement\Bundle\Controller\Rest\UserController
     pim_user.controller.security_rest.class: Akeneo\UserManagement\Bundle\Controller\Rest\SecurityController
     pim_user.controller.user_group_rest.class: Akeneo\UserManagement\Bundle\Controller\Rest\UserGroupController
+    pim_user.controller.user_role.class: Akeneo\UserManagement\Bundle\Controller\RoleController
 
 services:
     pim_user.controller.user_rest:
@@ -73,7 +74,7 @@ services:
 
     pim_user.controller.role:
         public: true
-        class: 'Akeneo\UserManagement\Bundle\Controller\RoleController'
+        class: '%pim_user.controller.user_role.class%'
         arguments:
             - '@pim_user.repository.role'
             - '@pim_user.remover.role'
@@ -81,6 +82,7 @@ services:
             - '@pim_user.form.handler.acl_role'
             - '@translator'
             - '@Akeneo\UserManagement\Domain\Permissions\Query\EditRolePermissionsRoleQuery'
+            - '@pim_user.factory.role'
         calls:
             - [ 'setContainer', [ '@service_container' ] ]
 
