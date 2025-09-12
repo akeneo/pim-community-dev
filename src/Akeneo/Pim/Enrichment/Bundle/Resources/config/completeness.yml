@@ -1,3 +1,6 @@
+parameters:
+    pim_enrich.product.completeness_calculation.batch_size: 1000
+
 services:
     pim_catalog.completeness.calculator:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator'
@@ -16,6 +19,7 @@ services:
             - '@Akeneo\Pim\Enrichment\Product\Domain\Clock'
             - '@security.token_storage'
             - '@logger'
+            - '%pim_enrich.product.completeness_calculation.batch_size%'
 
     pim_catalog.completeness.missing_required_attributes_calculator:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Completeness\MissingRequiredAttributesCalculator'

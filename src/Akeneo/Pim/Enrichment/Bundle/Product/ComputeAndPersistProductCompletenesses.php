@@ -23,7 +23,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class ComputeAndPersistProductCompletenesses
 {
-    private const CHUNK_SIZE = 1000;
+    private const DEFAULT_CHUNK_SIZE = 1000;
 
     public function __construct(
         private CompletenessCalculator $completenessCalculator,
@@ -32,7 +32,8 @@ class ComputeAndPersistProductCompletenesses
         private EventDispatcherInterface $eventDispatcher,
         private Clock $clock,
         private TokenStorageInterface $tokenStorage,
-        private readonly LoggerInterface $logger
+        private readonly LoggerInterface $logger,
+        private readonly int $chunkSize = self::DEFAULT_CHUNK_SIZE,
     ) {
     }
 
@@ -41,7 +42,7 @@ class ComputeAndPersistProductCompletenesses
      */
     public function fromProductUuids(array $productUuids): void
     {
-        foreach (array_chunk($productUuids, self::CHUNK_SIZE) as $uuidsChunk) {
+        foreach (array_chunk($productUuids, $this->chunkSize) as $uuidsChunk) {
             $previousCompletenessCollections = $this->getProductCompletenesses->fromProductUuids($uuidsChunk);
             $completenessCollections = $this->completenessCalculator->fromProductUuids($uuidsChunk);
             $this->saveProductCompletenesses->saveAll($completenessCollections);
