@@ -114,10 +114,8 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
             }
 
             if ($batchCount >= $this->batchSize) {
-                if (!empty($itemsToWrite)) {
-                    $this->write($itemsToWrite);
-                    $itemsToWrite = [];
-                }
+                $this->write($itemsToWrite);
+                $itemsToWrite = [];
 
                 $this->updateProcessedItems($batchCount);
                 $this->dispatchStepExecutionEvent(EventInterface::ITEM_STEP_AFTER_BATCH, $stepExecution);
@@ -137,9 +135,7 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
             }
         }
 
-        if (!empty($itemsToWrite)) {
-            $this->write($itemsToWrite);
-        }
+        $this->write($itemsToWrite);
 
         if ($batchCount > 0) {
             $this->updateProcessedItems($batchCount);
@@ -228,6 +224,10 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
      */
     protected function write($processedItems)
     {
+        if (empty($processedItems)) {
+            return;
+        }
+
         try {
             $this->writer->write($processedItems);
         } catch (InvalidItemException $e) {
