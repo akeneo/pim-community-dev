@@ -109,7 +109,7 @@
         "symfony/property-access": "4.4.25",
         "symfony/proxy-manager-bridge": "4.4.25",
         "symfony/requirements-checker": "^1.1",
-        "symfony/routing": "4.4.25",
+        "symfony/routing": "4.4.44",
         "symfony/security-acl": "3.0.2",
         "symfony/security-bundle": "4.4.25",
         "symfony/security-core": "4.4.25",
