@@ -113,7 +113,7 @@
         "symfony/security-acl": "3.0.2",
         "symfony/security-bundle": "4.4.25",
         "symfony/security-core": "4.4.25",
-        "symfony/security-csrf": "4.4.25",
+        "symfony/security-csrf": "4.4.37",
         "symfony/security-http": "4.4.25",
         "symfony/swiftmailer-bundle": "^3.2",
         "symfony/templating": "4.4.25",
