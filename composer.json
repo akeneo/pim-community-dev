@@ -72,7 +72,7 @@
         "elasticsearch/elasticsearch": "7.9.1",
         "friendsofsymfony/jsrouting-bundle": "2.1.1",
         "friendsofsymfony/oauth-server-bundle": "1.6.2",
-        "friendsofsymfony/rest-bundle": "2.8.0",
+        "friendsofsymfony/rest-bundle": "2.8.6",
         "gedmo/doctrine-extensions":"v2.4.37",
         "google/cloud-pubsub": "1.29.1",
         "guzzlehttp/guzzle": "^6.5.8",
