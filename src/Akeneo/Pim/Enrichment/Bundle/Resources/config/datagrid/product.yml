@@ -144,7 +144,6 @@ datagrid:
                 type: mass_delete
                 label: pim_common.delete
                 entity_name: product
-                acl_resource: pim_enrich_product_remove
                 handler: product_mass_delete
                 className: 'AknButton AknButton--important AknButtonList-item'
                 messages:
