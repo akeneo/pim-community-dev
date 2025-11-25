@@ -148,7 +148,7 @@
         "symfony/twig-bundle": "^5.4.0",
         "symfony/validator": "^5.4.0",
         "symfony/yaml": "^5.4.0",
-        "twig/twig": "^3.3.3",
+        "twig/twig": "^3.11.0",
         "webmozart/assert": "^1.11.0"
     },
     "require-dev": {
