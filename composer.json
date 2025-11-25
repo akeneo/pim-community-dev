@@ -133,7 +133,7 @@
         "symfony/monolog-bundle": "^3.8.0",
         "symfony/options-resolver": "^5.4.0",
         "symfony/polyfill-apcu": "^1.23.0",
-        "symfony/process": "^5.4.0",
+        "symfony/process": "^5.4.46",
         "symfony/property-access": "^5.4.0",
         "symfony/proxy-manager-bridge": "^5.4.0",
         "symfony/requirements-checker": "^2.0.0",
