@@ -146,7 +146,7 @@
         "symfony/templating": "^5.4.0",
         "symfony/translation": "^5.4.0",
         "symfony/twig-bundle": "^5.4.0",
-        "symfony/validator": "^5.4.0",
+        "symfony/validator": "^5.4.43",
         "symfony/yaml": "^5.4.0",
         "twig/twig": "^3.11.0",
         "webmozart/assert": "^1.11.0"
