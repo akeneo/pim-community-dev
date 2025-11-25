@@ -108,7 +108,7 @@
         "openspout/openspout": "4.15.1",
         "opis/json-schema": "^2.3",
         "php-http/discovery": "~1.14.3",
-        "phpseclib/phpseclib": "^3.0",
+        "phpseclib/phpseclib": "^3.0.36",
         "psr/event-dispatcher": "^1.0.0",
         "ramsey/uuid": "4.7.1",
         "ramsey/uuid-doctrine": "^1.8",
