@@ -1,4 +1,0 @@
-parameters:
-    run-database-tests:
-        type: boolean
-        default: false

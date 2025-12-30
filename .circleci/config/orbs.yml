@@ -1,2 +1,0 @@
-orbs:
-    slack-app: circleci/slack@4.8.3

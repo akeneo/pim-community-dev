@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Usage:
-#   run_phpunit.sh path/to/phpunit.xml .circleci/find_phpunit.php PIM_Integration_Test
+#   run_phpunit.sh path/to/phpunit.xml tests/scripts/find_phpunit.php PIM_Integration_Test
 #
 
 set -eo pipefail
@@ -10,7 +10,8 @@ CONFIG_DIRECTORY=$1
 FIND_PHPUNIT_SCRIPT=$2
 TEST_SUITES=$3
 
-TEST_FILES=$(docker-compose run --rm -T php php $FIND_PHPUNIT_SCRIPT -c $CONFIG_DIRECTORY --testsuite $TEST_SUITES | circleci tests split --split-by=timings)
+# Removed CircleCI splitting. Now running all matching tests.
+TEST_FILES=$(docker-compose run --rm -T php php $FIND_PHPUNIT_SCRIPT -c $CONFIG_DIRECTORY --testsuite $TEST_SUITES)
 
 fail=0
 for TEST_FILE in $TEST_FILES; do

@@ -1,0 +1,167 @@
+name: Pull Request (CE)
+
+on:
+  push:
+    branches:
+      - master
+      - '7.0'
+  pull_request:
+
+jobs:
+  test_database:
+    name: Database Tests
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Docker Compose Override
+        run: cp docker/docker-compose.override.yml.dist docker-compose.override.yml
+
+      - name: Setup Dependencies
+        run: make dependencies
+
+      - name: Build Assets
+        run: |
+          make assets
+          make css
+          make front-packages
+
+      - name: Start Containers
+        run: |
+          # We don't load the tarball here, relying on docker-compose pull/build
+          APP_ENV=test make up
+          docker/wait_docker_up.sh
+
+      - name: Install Database
+        run: APP_ENV=test make database
+
+      - name: Run Tests
+        run: APP_ENV=test make test-database-structure
+
+  test_back_static_acceptance:
+    name: Back Static & Acceptance
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Docker Compose Override
+        run: cp docker/docker-compose.override.yml.dist docker-compose.override.yml
+
+      - name: Setup Dependencies
+        run: make dependencies
+
+      - name: Build Assets
+        run: |
+          make assets
+          make css
+          make front-packages
+
+      # Note: Static tests might not strictly need full container stack, but acceptance tests do.
+      - name: Start Containers
+        run: |
+          APP_ENV=test make up
+          docker/wait_docker_up.sh
+
+      - name: Run Tests
+        run: |
+          PIM_CONTEXT=test make static-back
+          PIM_CONTEXT=test make deprecation-back
+          PIM_CONTEXT=test make lint-back
+          PIM_CONTEXT=test make coupling-back
+          PIM_CONTEXT=test make unit-back
+          PIM_CONTEXT=test make acceptance-back
+
+  test_front_static_integration:
+    name: Front Static & Integration
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Docker Compose Override
+        run: cp docker/docker-compose.override.yml.dist docker-compose.override.yml
+
+      - name: Setup Dependencies
+        run: make dependencies
+
+      - name: Build Assets
+        run: |
+          make assets
+          make css
+          make front-packages
+
+      - name: Start Containers
+        run: |
+          APP_ENV=test make up
+          docker/wait_docker_up.sh
+
+      - name: Run Tests
+        run: |
+          make javascript-dev-strict
+          PIM_CONTEXT=test make lint-front
+          PIM_CONTEXT=test make unit-front
+
+  test_back_phpunit:
+    name: Back PHPUnit
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Docker Compose Override
+        run: cp docker/docker-compose.override.yml.dist docker-compose.override.yml
+
+      - name: Setup Dependencies
+        run: make dependencies
+
+      - name: Build Assets
+        run: |
+          make assets
+          make css
+          make front-packages
+
+      - name: Start Containers
+        run: |
+          APP_ENV=test make up
+          docker/wait_docker_up.sh
+
+      - name: Install Database
+        run: APP_ENV=test make database
+
+      - name: Run Tests
+        run: |
+          PIM_CONTEXT=test make pim-integration-back
+          PIM_CONTEXT=test make end-to-end-back
+
+  cypress_sanity_checks:
+    name: Cypress Sanity Checks
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Docker Compose Override
+        run: cp docker/docker-compose.override.yml.dist docker-compose.override.yml
+
+      - name: Setup Dependencies
+        run: make dependencies
+
+      - name: Build Assets
+        run: |
+          make assets
+          make css
+          make front-packages
+
+      - name: Start Containers
+        run: |
+          APP_ENV=prod make up
+          docker/wait_docker_up.sh
+
+      - name: Install Database
+        run: APP_ENV=prod O="--catalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev" make database
+
+      - name: Run Cypress
+        run: |
+          CYPRESS_defaultCommandTimeout=10000 CYPRESS_requestTimeout=15000 CYPRESS_responseTimeout=50000 make end-to-end-front

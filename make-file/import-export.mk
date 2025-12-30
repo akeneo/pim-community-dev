@@ -19,7 +19,7 @@ import-export-unit-back: #Doc: launch PHPSpec for ImportExport bounded context
 .PHONY: import-export-integration-back
 import-export-integration-back: #Doc: launch PHPUnit integration tests for ImportExport bounded context
 ifeq ($(CI),true)
-	.circleci/run_phpunit.sh src/Akeneo/Platform/Bundle/ImportExportBundle/Test .circleci/find_phpunit.php ImportExport_Integration_Test
+	tests/scripts/run_phpunit.sh src/Akeneo/Platform/Bundle/ImportExportBundle/Test tests/scripts/find_phpunit.php ImportExport_Integration_Test
 else
 	APP_ENV=test $(PHP_RUN) vendor/bin/phpunit -c src/Akeneo/Platform/Bundle/ImportExportBundle/Test --testsuite ImportExport_Integration_Test $(O)
 endif

@@ -84,7 +84,7 @@ connectivity-connection-lint-back_fix:
 connectivity-connection-unit-back:
 ifeq ($(CI),true)
 	$(DOCKER_COMPOSE) run -T --rm php php vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
-	.circleci/find_non_executed_phpspec.sh
+	tests/scripts/find_non_executed_phpspec.sh
 endif
 	$(PHP_RUN) vendor/bin/phpspec run src/Akeneo/Connectivity/Connection/back/tests/Unit/spec/
 	# Scope Mapper unit tests
@@ -98,14 +98,14 @@ connectivity-connection-critical-e2e: var/tests/behat/connectivity/connection
 
 connectivity-connection-integration-back:
 ifeq ($(CI),true)
-	.circleci/run_phpunit.sh . .circleci/find_phpunit.php Akeneo_Connectivity_Connection_Integration
+	tests/scripts/run_phpunit.sh . tests/scripts/find_phpunit.php Akeneo_Connectivity_Connection_Integration
 else
 	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit -c . --testsuite Akeneo_Connectivity_Connection_Integration --log-junit var/tests/phpunit/phpunit_connectivity_integration.xml $(0)
 endif
 
 connectivity-connection-e2e-back:
 ifeq ($(CI),true)
-	.circleci/run_phpunit.sh . .circleci/find_phpunit.php Akeneo_Connectivity_Connection_EndToEnd
+	tests/scripts/run_phpunit.sh . tests/scripts/find_phpunit.php Akeneo_Connectivity_Connection_EndToEnd
 else
 	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit -c . --testsuite Akeneo_Connectivity_Connection_EndToEnd --log-junit var/tests/phpunit/phpunit_connectivity_e2e.xml $(0)
 endif

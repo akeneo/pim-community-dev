@@ -1,7 +1,0 @@
-# More info here: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
-
-# Octopus features
-/src/Akeneo/Connectivity @akeneo/squad-octopus
-/components/catalogs @akeneo/squad-octopus
-.circleci/workflows/squads/octopus @akeneo/squad-octopus
-.circleci/jobs/features/catalogs @akeneo/squad-octopus

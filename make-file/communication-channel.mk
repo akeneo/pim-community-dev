@@ -69,7 +69,7 @@ communication-channel-unit-back:
 
 communication-channel-integration-back:
 ifeq ($(CI),true)
-	.circleci/run_phpunit.sh . .circleci/find_phpunit.php Akeneo_Communication_Channel_Integration
+	tests/scripts/run_phpunit.sh . tests/scripts/find_phpunit.php Akeneo_Communication_Channel_Integration
 else
 	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit -c . --testsuite Akeneo_Communication_Channel_Integration $(0)
 endif

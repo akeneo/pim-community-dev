@@ -3,7 +3,7 @@ var/tests/%:
 
 .PHONY: find-legacy-translations
 find-legacy-translations:
-	.circleci/find_legacy_translations.sh
+	tests/scripts/find_legacy_translations.sh
 
 .PHONY: coupling-back
 coupling-back: structure-coupling-back user-management-coupling-back channel-coupling-back enrichment-coupling-back connectivity-connection-coupling-back communication-channel-coupling-back import-export-coupling-back job-coupling-back data-quality-insights-coupling-back enrichment-product-coupling-back migration-coupling-back identifier-generator-coupling-back
@@ -66,7 +66,7 @@ lint-front:
 unit-back: var/tests/phpspec
 ifeq ($(CI),true)
 	$(DOCKER_COMPOSE) run -T --rm php php vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
-	.circleci/find_non_executed_phpspec.sh
+	tests/scripts/find_non_executed_phpspec.sh
 else
 	${PHP_RUN} vendor/bin/phpspec run
 endif
@@ -98,7 +98,7 @@ integration-front:
 .PHONY: pim-integration-back
 pim-integration-back: var/tests/phpunit connectivity-connection-integration-back communication-channel-integration-back job-integration-back channel-integration-back identifier-generator-phpunit-back
 ifeq ($(CI),true)
-	.circleci/run_phpunit.sh . .circleci/find_phpunit.php PIM_Integration_Test
+	tests/scripts/run_phpunit.sh . tests/scripts/find_phpunit.php PIM_Integration_Test
 else
 	@echo Run integration test locally is too long, please use the target defined for your bounded context (ex: bounded-context-integration-back)
 endif
@@ -107,7 +107,7 @@ endif
 .PHONY: migration-back
 migration-back: var/tests/phpunit
 ifeq ($(CI),true)
-	.circleci/run_phpunit.sh . .circleci/find_phpunit.php PIM_Migration_Test
+	tests/scripts/run_phpunit.sh . tests/scripts/find_phpunit.php PIM_Migration_Test
 else
 	APP_ENV=test $(PHP_RUN) ./vendor/bin/phpunit -c . --testsuite PIM_Migration_Test
 endif
@@ -116,7 +116,7 @@ endif
 .PHONY: end-to-end-back
 end-to-end-back: var/tests/phpunit
 ifeq ($(CI),true)
-	.circleci/run_phpunit.sh . .circleci/find_phpunit.php End_to_End
+	tests/scripts/run_phpunit.sh . tests/scripts/find_phpunit.php End_to_End
 else
 	@echo Run end to end test locally is too long, please use the target defined for your bounded context (ex: bounded-context-end-to-end-back)
 endif
@@ -136,8 +136,8 @@ end-to-end-front:
 .PHONY: end-to-end-legacy
 end-to-end-legacy: var/tests/behat
 ifeq ($(CI),true)
-	.circleci/run_behat.sh $(SUITE)
-	.circleci/run_behat.sh critical
+	tests/scripts/run_behat.sh $(SUITE)
+	tests/scripts/run_behat.sh critical
 else
 	${PHP_RUN} vendor/bin/behat -p legacy -s all ${O}
 endif
