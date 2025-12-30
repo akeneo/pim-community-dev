@@ -18,7 +18,7 @@ use Ramsey\Uuid\UuidInterface;
  */
 class GetProductCompletenessesIntegration extends TestCase
 {
-    public function test_that_it_returns_completenesseses_given_a_product_id()
+    public function test_that_it_returns_completenesses_given_a_product_id()
     {
         $this->createProduct(
             'productA',
@@ -264,7 +264,7 @@ class GetProductCompletenessesIntegration extends TestCase
 
         throw new ExpectationFailedException(
             sprintf(
-                'Failed assering that completenesses contain an element with channel "%s" and locale "%s"',
+                'Failed asserting that completenesses contain an element with channel "%s" and locale "%s"',
                 $channelCode,
                 $localeCode
             )
