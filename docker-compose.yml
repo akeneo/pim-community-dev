@@ -104,11 +104,13 @@ services:
       - 'pim'
 
   object-storage:
-    image: 'minio/minio:RELEASE.2021-09-15T04-54-25Z'
-    entrypoint: '/bin/sh -c "mkdir -p /data/archive /data/catalog /data/jobs /data/category /data/catalogs_mapping && minio server --console-address :9091 /data"'
+    image: 'minio/minio:RELEASE.2025-09-07T16-13-09Z'
+    entrypoint: >
+      /bin/sh -c "mkdir -p /data/asset /data/catalog /data/jobs /data/archive /data/category /data/catalogsmapping
+      && minio server --console-address :9091 /data"
     environment:
-      MINIO_ACCESS_KEY: 'AKENEO_OBJECT_STORAGE_ACCESS_KEY'
-      MINIO_SECRET_KEY: 'AKENEO_OBJECT_STORAGE_SECRET_KEY'
+      MINIO_ROOT_USER: 'AKENEO_OBJECT_STORAGE_ACCESS_KEY'
+      MINIO_ROOT_PASSWORD: 'AKENEO_OBJECT_STORAGE_SECRET_KEY'
     ports:
       - '${DOCKER_PORT_OBJECT_STORAGE:-9090}:9000'
       - '${DOCKER_PORT_OBJECT_STORAGE_CONSOLE:-9091}:9091'

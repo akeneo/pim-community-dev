@@ -22,4 +22,4 @@ oneup_flysystem:
         catalogs_mapping_adapter:
             awss3v3:
                 client: 'Aws\S3\S3Client'
-                bucket: 'catalogs_mapping'
+                bucket: 'catalogsmapping'
