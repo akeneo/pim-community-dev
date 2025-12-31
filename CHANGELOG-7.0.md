@@ -1,5 +1,7 @@
 # 7.0.x
 
+# 7.0.84 (2025-12-31)
+
 ## Bug fixes
 
 - CEQIF-661: Immprove performance of product completeness fetching for catalogs with many channels and locales
