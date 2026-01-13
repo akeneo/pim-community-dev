@@ -1,0 +1,131 @@
+# Version Dependencies Matrix
+
+Date: 2026-01-XX
+Project: Akeneo PIM Community Dev
+
+## Critical Version Dependencies
+
+This document outlines all version dependencies that must be respected during the migration.
+
+## PHP and Symfony Dependencies
+
+| Symfony Version | Minimum PHP Required | Maximum PHP Supported | Notes |
+|----------------|----------------------|------------------------|-------|
+| 5.4 | 7.2.5+ | 8.3.x | Current version |
+| 6.0 | 8.1.0+ | 8.5.x | Requires PHP 8.1+ |
+| 6.4 | 8.1.0+ | 8.5.x | LTS version, requires PHP 8.1+ |
+| 7.0 | 8.2.0+ | 8.5.x | Requires PHP 8.2+ |
+| 8.0 | **8.4.0+** | 8.5.x | **Requires PHP 8.4.0+** |
+
+## Migration Phases Based on Dependencies
+
+### Phase 1: PHP 8.1 → 8.4 (BEFORE Symfony 8.0)
+**Goal**: Reach PHP 8.4.0+ required for Symfony 8.0
+
+**Steps**:
+1. PHP 8.1 → 8.2 (no Symfony dependency)
+2. PHP 8.2 → 8.3 (no Symfony dependency)
+3. PHP 8.3 → 8.4 (no Symfony dependency)
+
+**Prerequisites**: None
+**Can be done in parallel with**: TypeScript, React migrations
+
+**⚠️ CRITICAL**: Must complete PHP 8.4 before starting Symfony 8.0 migration
+
+### Phase 2: Symfony 5.4 → 8.0 (REQUIRES PHP 8.4+)
+**Goal**: Migrate to Symfony 8.0
+
+**Steps**:
+1. Symfony 5.4 → 6.0 (requires PHP 8.1+)
+2. Symfony 6.0 → 6.4 (requires PHP 8.1+)
+3. Symfony 6.4 → 7.0 (requires PHP 8.2+)
+4. Symfony 7.0 → 8.0 (requires PHP 8.4.0+)
+
+**Prerequisites**: PHP 8.4.0+ MUST be completed (Phase 1)
+**Can be done in parallel with**: TypeScript, React migrations (if not already done)
+
+**⚠️ CRITICAL**: Cannot start until PHP 8.4.0+ is verified
+
+### Phase 3: PHP 8.4 → 8.5 (AFTER Symfony 8.0)
+**Goal**: Migrate to PHP 8.5
+
+**Steps**:
+1. PHP 8.4 → 8.5
+
+**Prerequisites**: Symfony 8.0 MUST be completed and stable (Phase 2)
+**Can be done in parallel with**: Development tools migration
+
+**⚠️ CRITICAL**: Must wait until Symfony 8.0 is stable
+
+## Other Dependencies
+
+### PHPUnit
+- **PHPUnit 9**: Requires PHP 7.3+
+- **PHPUnit 10**: Requires PHP 8.1+
+- **Migration**: Can be done after PHP 8.1+ is reached
+
+### React/TypeScript
+- **No PHP dependency**: Can be migrated at any time
+- **Can be done in parallel** with PHP/Symfony migrations
+- **Recommended**: Do during Phase 1 (PHP 8.1 → 8.4) to save time
+
+### Development Tools
+- **Jest**: No PHP dependency
+- **ESLint**: No PHP dependency
+- **Prettier**: No PHP dependency
+- **Can be migrated at any time** after main migrations
+
+## Dependency Graph
+
+```
+PHP 8.1 (current)
+  ↓
+PHP 8.2
+  ↓
+PHP 8.3
+  ↓
+PHP 8.4 ──────┐
+  │            │
+  │            ↓
+  │      Symfony 6.0 (requires PHP 8.1+)
+  │            ↓
+  │      Symfony 6.4 (requires PHP 8.1+)
+  │            ↓
+  │      Symfony 7.0 (requires PHP 8.2+)
+  │            ↓
+  │      Symfony 8.0 (requires PHP 8.4.0+)
+  │            │
+  │            ↓
+  └────────────┘
+         ↓
+    PHP 8.5 (requires Symfony 8.0 to be stable)
+```
+
+## Verification Checklist
+
+Before starting each phase, verify:
+
+### Before Phase 1 (PHP 8.1 → 8.4)
+- [ ] Current PHP version in `composer.json`: 8.1.*
+- [ ] Docker stack is running
+- [ ] All tests passing
+
+### Before Phase 2 (Symfony 5.4 → 8.0)
+- [ ] PHP version in `composer.json`: ^8.4
+- [ ] PHP 8.4 migration completed
+- [ ] All PHP 8.4 tests passing
+- [ ] Docker stack configured for PHP 8.4+
+
+### Before Phase 3 (PHP 8.4 → 8.5)
+- [ ] Symfony 8.0 migration completed
+- [ ] Symfony 8.0 is stable
+- [ ] All Symfony 8.0 tests passing
+- [ ] No critical issues with Symfony 8.0
+
+## Important Notes
+
+1. **Never skip phases** - the order is critical
+2. **Always verify prerequisites** before starting a phase
+3. **Use Docker** - system PHP versions are irrelevant
+4. **Check composer.json** - this is the source of truth for PHP version
+5. **Test thoroughly** after each phase before proceeding
