@@ -6,14 +6,14 @@
 - **Phase 6**: PHP 8.4 → 8.5 (MUST be done after Symfony 8.0 is stable)
   - **Git branch**: `feature/upgrade-2026-01-php-8.5`
 
-Start date: [To be completed]
+Start date: 2026-01-14
 End date: [To be completed]
 
 ## Git Flow Branch Information
 
 ### Phase 2 Branch: feature/upgrade-2026-01-php-8.4
-- [ ] Branch created: [To be completed]
-- [ ] Branch merged to develop: [To be completed]
+- [x] Branch created: 2026-01-14 10:56:33 CET
+- [ ] Branch merged to master: [To be completed]
 - [ ] Merge date: [To be completed]
 - [ ] Pull request URL: [To be completed]
 
