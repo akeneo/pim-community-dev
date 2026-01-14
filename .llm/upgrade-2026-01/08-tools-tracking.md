@@ -1,7 +1,19 @@
 # Development Tools Migration Tracking
 
+**Git Flow Branch**: Can be done in Phase 6 branch or separate branch `feature/upgrade-2026-01-tools`
+
 Start date: [To be completed]
 End date: [To be completed]
+
+## Git Flow Branch Information
+
+### Branch Strategy
+- [ ] Done in Phase 6 branch: `feature/upgrade-2026-01-php-8.5` (recommended)
+- [ ] OR separate branch: `feature/upgrade-2026-01-tools`
+- [ ] Branch created: [To be completed]
+- [ ] Branch merged to develop: [To be completed]
+- [ ] Merge date: [To be completed]
+- [ ] Pull request URL: [To be completed]
 
 ## PHPUnit 9 → 10 Migration
 

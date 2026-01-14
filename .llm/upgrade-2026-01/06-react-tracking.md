@@ -1,13 +1,26 @@
 # React Migration Tracking 17 → 19
 
+**Git Flow Branch**: Can be done in `feature/upgrade-2026-01-php-8.4` or separate branch `feature/upgrade-2026-01-react-19`
+
 Start date: [To be completed]
 End date: [To be completed]
+
+## Git Flow Branch Information
+
+### Branch Strategy
+- [ ] Done in Phase 2 branch: `feature/upgrade-2026-01-php-8.4` (recommended)
+- [ ] OR separate branch: `feature/upgrade-2026-01-react-19`
+- [ ] Branch created: [To be completed]
+- [ ] Branch merged to develop: [To be completed]
+- [ ] Merge date: [To be completed]
+- [ ] Pull request URL: [To be completed]
 
 ## Current State
 - Current React version: ^17.0.2
 - Current React-DOM version: ^17.0.2
 - Target React version: ^19.2.0 (latest stable version)
 - Target React-DOM version: ^19.2.0
+- **Note**: No PHP/Symfony dependency - can be done in parallel with Phase 2
 
 ## React 17 → 18 Migration
 

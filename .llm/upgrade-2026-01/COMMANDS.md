@@ -58,14 +58,15 @@ vendor/bin/rector process --set=SYMFONY_80
 
 ### PHP Tests
 ```bash
-# PHPUnit
+# PHP Tests (execute in this order: static analysis first, then runtime tests)
+# 1. PHPStan - Static analysis (validates code before runtime tests)
+vendor/bin/phpstan analyse
+
+# 2. PHPUnit - Unit tests
 vendor/bin/phpunit
 
-# Behat
+# 3. Behat - Functional tests
 vendor/bin/behat
-
-# PHPStan
-vendor/bin/phpstan analyse
 
 # PHP-CS-Fixer (dry-run)
 vendor/bin/php-cs-fixer fix --dry-run
@@ -177,11 +178,8 @@ vendor/bin/rector process --set=PHP_83 --dry-run
 # 3. Apply
 vendor/bin/rector process --set=PHP_83
 
-# 4. Tests
-vendor/bin/phpunit && vendor/bin/behat
-
-# 5. Static analysis
-vendor/bin/phpstan analyse
+# 4. Tests (PHPStan first, then runtime tests)
+vendor/bin/phpstan analyse && vendor/bin/phpunit && vendor/bin/behat
 
 # 6. Formatting
 vendor/bin/php-cs-fixer fix
@@ -227,16 +225,16 @@ yarn webpack-dev
 
 ### Before Starting
 ```bash
-# Verify everything works
-vendor/bin/phpunit
+# Verify everything works (PHPStan first, then runtime tests)
+vendor/bin/phpstan analyse && vendor/bin/phpunit
 yarn unit
 yarn integration
 ```
 
 ### After Each Major Migration
 ```bash
-# Complete PHP tests
-vendor/bin/phpunit && vendor/bin/behat
+# Complete PHP tests (PHPStan first, then runtime tests)
+vendor/bin/phpstan analyse && vendor/bin/phpunit && vendor/bin/behat
 
 # Complete JS/TS tests
 yarn test
@@ -291,21 +289,126 @@ yarn lint
 yarn prettier:check
 ```
 
-## Useful Git Commands
+## Git Flow Commands
 
+### Phase 2: PHP 8.1 → 8.4
 ```bash
-# Create migration branch
-git checkout -b upgrade-2026-01
+# Create Phase 2 branch from develop
+git checkout develop
+git pull origin develop
+git checkout -b feature/upgrade-2026-01-php-8.4
 
-# Commit after each successful rule
-git add .
-git commit -m "feat: apply PHP_83 rule X"
+# Commit after each smallest successful change (atomic commits)
+# Step 1: Run validations
+vendor/bin/phpstan analyse && vendor/bin/phpunit && vendor/bin/behat
+
+# Step 2: If all pass, commit with Conventional Commits format
+git add src/
+git commit -m "feat(php): apply PHP_83 rule for typed constants
+
+Apply Rector PHP_83 rule to add typed class constants.
+All validations passing: PHPStan → PHPUnit → Behat"
+
+# If validations fail, fix issues one at a time:
+# Fix PHPStan error
+git add src/FixedFile.php
+git commit -m "fix(php): resolve PHPStan error after PHP_83 rule
+
+Fix type hint issue detected by PHPStan."
+
+# Fix test failure
+git add tests/Unit/SomeTest.php
+git commit -m "fix(test): update test for PHP_83 typed constants
+
+Update test expectations for new typed constant behavior."
+
+# When phase is complete, merge to develop
+git checkout develop
+git merge feature/upgrade-2026-01-php-8.4
+git branch -d feature/upgrade-2026-01-php-8.4
+```
+
+### Phase 5: Symfony 5.4 → 8.0
+```bash
+# Create Phase 5 branch from develop (after Phase 2 merge)
+git checkout develop
+git pull origin develop
+git checkout -b feature/upgrade-2026-01-symfony-8.0
+
+# Commit after each smallest successful change (atomic commits)
+# Example: Migrating Symfony 6.0 → 6.4
+# Step 1: Update composer.json
+git add composer.json
+git commit -m "chore(deps): update Symfony components to 6.4
+
+Update all Symfony components to version 6.4 in composer.json."
+
+# Step 2: Update composer.lock
+composer update symfony/* --with-all-dependencies
+git add composer.lock
+git commit -m "chore(deps): update composer.lock for Symfony 6.4
+
+Regenerate composer.lock with Symfony 6.4 dependencies."
+
+# Step 3: Apply Rector rules (if any)
+vendor/bin/rector process --set=SYMFONY_64
+# Fix issues one by one, commit each fix separately
+git add src/
+git commit -m "feat(symfony): apply Symfony 6.4 migration rules
+
+Apply Rector Symfony 6.4 migration rules.
+All validations passing: PHPStan → PHPUnit → Behat"
+
+# When phase is complete, merge to develop
+git checkout develop
+git merge feature/upgrade-2026-01-symfony-8.0
+git branch -d feature/upgrade-2026-01-symfony-8.0
+```
+
+### Phase 6: PHP 8.4 → 8.5
+```bash
+# Create Phase 6 branch from develop (after Phase 5 merge)
+git checkout develop
+git pull origin develop
+git checkout -b feature/upgrade-2026-01-php-8.5
+
+# Commit after each smallest successful change (atomic commits)
+# Example: Applying PHP_85 rule
+vendor/bin/rector process --set=PHP_85 --dry-run
+# Review changes
+
+vendor/bin/rector process --set=PHP_85
+vendor/bin/phpstan analyse && vendor/bin/phpunit && vendor/bin/behat
+
+# If all pass, commit
+git add src/
+git commit -m "feat(php): apply PHP_85 rule
+
+Apply Rector PHP_85 rule.
+All validations passing: PHPStan → PHPUnit → Behat"
+
+# When phase is complete, merge to develop
+git checkout develop
+git merge feature/upgrade-2026-01-php-8.5
+git branch -d feature/upgrade-2026-01-php-8.5
+```
+
+### General Git Commands
+```bash
+# View current branch
+git branch
 
 # View changes
 git diff
 
 # View history
 git log --oneline
+
+# View commits for current branch
+git log --oneline develop..feature/upgrade-2026-01-php-8.4
+
+# Check if branch is merged
+git branch --merged develop
 ```
 
 ## Important Notes

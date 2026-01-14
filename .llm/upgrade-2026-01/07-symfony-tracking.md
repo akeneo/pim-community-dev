@@ -1,13 +1,25 @@
 # Symfony Migration Tracking 5.4 → 8.0
 
+**Git Flow Branch**: `feature/upgrade-2026-01-symfony-8.0`
+
 Start date: [To be completed]
 End date: [To be completed]
+
+## Git Flow Branch Information
+
+### Branch: feature/upgrade-2026-01-symfony-8.0
+- [ ] Branch created: [To be completed]
+- [ ] Created from: develop (after Phase 2 merge)
+- [ ] Branch merged to develop: [To be completed]
+- [ ] Merge date: [To be completed]
+- [ ] Pull request URL: [To be completed]
 
 ## Current State
 - Current Symfony version: 5.4.*
 - Target Symfony version: 8.0.* (latest stable version, published November 2025)
 - **⚠️ CRITICAL PREREQUISITE**: Symfony 8.0 requires PHP 8.4.0 or higher
 - **⚠️ IMPORTANT**: PHP 8.4 migration (Phase 2) MUST be completed before starting this migration
+- **⚠️ IMPORTANT**: Phase 2 branch (`feature/upgrade-2026-01-php-8.4`) MUST be merged to develop before creating this branch
 - **Note**: Docker stack is used - system PHP version is irrelevant, check composer.json
 
 ## Symfony 5.4 → 6.0 Migration
@@ -145,7 +157,12 @@ End date: [To be completed]
 
 ## Tests
 
-### PHPUnit
+### PHPStan (Static Analysis - Execute First)
+- [ ] Date: [To be completed]
+- [ ] Result: [To be completed]
+- [ ] Errors: [To be completed]
+
+### PHPUnit (Unit Tests - Execute After PHPStan)
 - [ ] Date: [To be completed]
 - [ ] Result: [To be completed]
 - [ ] Errors: [To be completed]

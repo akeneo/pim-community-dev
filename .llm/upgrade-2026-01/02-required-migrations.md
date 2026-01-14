@@ -23,9 +23,9 @@ Project: Akeneo PIM Community Dev
 8. `DynamicClassConstantFetchRector` - Dynamic constants support
 
 ### Tests to Run After Each Rule
-- PHPUnit: `vendor/bin/phpunit`
-- Behat: `vendor/bin/behat`
-- PHPStan: `vendor/bin/phpstan analyse`
+- PHPStan: `vendor/bin/phpstan analyse` (static analysis - validates code before runtime tests)
+- PHPUnit: `vendor/bin/phpunit` (unit tests)
+- Behat: `vendor/bin/behat` (functional tests)
 
 ## 2. Symfony 5.4 → 8.0 Migration
 
@@ -80,9 +80,9 @@ Project: Akeneo PIM Community Dev
 - `ReplaceDoctrineRepositoryInheritanceRector` - Doctrine migration
 
 ### Tests to Run After Each Rule
-- PHPUnit: `vendor/bin/phpunit`
-- Behat: `vendor/bin/behat`
-- PHPStan: `vendor/bin/phpstan analyse`
+- PHPStan: `vendor/bin/phpstan analyse` (static analysis - validates code before runtime tests)
+- PHPUnit: `vendor/bin/phpunit` (unit tests)
+- Behat: `vendor/bin/behat` (functional tests)
 - PHP-CS-Fixer: `vendor/bin/php-cs-fixer fix --dry-run`
 
 ## 3. React 17 → 19 Migration

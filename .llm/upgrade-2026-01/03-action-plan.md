@@ -5,15 +5,18 @@ Project: Akeneo PIM Community Dev
 
 ## Phase 1: Preparation
 
-### 1.1 Backup and Branch
-- [ ] Create dedicated Git branch: `git checkout -b upgrade-2026-01`
-- [ ] Verify all tests pass on main branch
-- [ ] Document initial state in `00-initial-state.md`
+### 1.1 Git Flow Setup
+- [ ] Verify you are on `develop` branch: `git checkout develop`
+- [ ] Pull latest changes: `git pull origin develop`
+- [ ] Verify all tests pass on develop branch
+- [ ] Document initial state in tracking files
+- [ ] **Create Phase 2 branch**: `git checkout -b feature/upgrade-2026-01-php-8.4`
+- [ ] Document branch creation in `04-php-tracking.md`
 
 ### 1.2 Dependency Installation
 - [ ] Install Composer dependencies: `composer install`
 - [ ] Install Yarn dependencies: `yarn install`
-- [ ] Verify everything works: `yarn test && vendor/bin/phpunit`
+- [ ] Verify everything works: `yarn test && vendor/bin/phpstan analyse && vendor/bin/phpunit`
 
 ### 1.3 Rector Configuration
 - [ ] Create `rector.php` file at project root
@@ -35,21 +38,27 @@ Project: Akeneo PIM Community Dev
 - [ ] Apply: `vendor/bin/rector process --set=PHP_82 --dry-run`
 - [ ] Review proposed changes
 - [ ] Apply: `vendor/bin/rector process --set=PHP_82`
-- [ ] Run tests: `vendor/bin/phpunit && vendor/bin/behat`
+- [ ] Run tests: `vendor/bin/phpstan analyse && vendor/bin/phpunit && vendor/bin/behat`
 - [ ] Document in `04-php-tracking.md`
 
 **Rule 2: PHP_83 - Typed class constants**
 - [ ] Apply: `vendor/bin/rector process --set=PHP_83 --dry-run`
 - [ ] Review proposed changes
 - [ ] Apply: `vendor/bin/rector process --set=PHP_83`
-- [ ] Run tests: `vendor/bin/phpunit && vendor/bin/behat`
+- [ ] Run validations: `vendor/bin/phpstan analyse && vendor/bin/phpunit && vendor/bin/behat`
+- [ ] **If PHPStan fails**: Fix errors one by one, commit each fix separately
+- [ ] **If tests fail**: Fix tests one by one, commit each fix separately
+- [ ] **When all pass**: Commit Rector changes atomically
 - [ ] Document in `04-php-tracking.md`
 
 **Rule 3: PHP_84 - PHP 8.4 (REQUIRED before Symfony 8.0)**
 - [ ] Apply: `vendor/bin/rector process --set=PHP_84 --dry-run`
 - [ ] Review proposed changes
 - [ ] Apply: `vendor/bin/rector process --set=PHP_84`
-- [ ] Run tests: `vendor/bin/phpunit && vendor/bin/behat`
+- [ ] Run validations: `vendor/bin/phpstan analyse && vendor/bin/phpunit && vendor/bin/behat`
+- [ ] **If PHPStan fails**: Fix errors one by one, commit each fix separately
+- [ ] **If tests fail**: Fix tests one by one, commit each fix separately
+- [ ] **When all pass**: Commit Rector changes atomically
 - [ ] Document in `04-php-tracking.md`
 - [ ] **Verify PHP 8.4.0+ is working**: Check `composer.json` and Docker configuration
 
@@ -57,16 +66,26 @@ Project: Akeneo PIM Community Dev
 - [ ] Run: `composer update`
 - [ ] Check breaking changes in dependencies
 - [ ] Verify all dependencies are compatible with PHP 8.4
-- [ ] Run tests: `vendor/bin/phpunit && vendor/bin/behat`
+- [ ] Run tests: `vendor/bin/phpstan analyse && vendor/bin/phpunit && vendor/bin/behat`
 - [ ] Document in `04-php-tracking.md`
 
 ### 2.4 Final PHP 8.4 Verification
-- [ ] Run PHPStan: `vendor/bin/phpstan analyse`
+- [ ] Run PHPStan: `vendor/bin/phpstan analyse` (static analysis - validates code before runtime tests)
 - [ ] Run PHP-CS-Fixer: `vendor/bin/php-cs-fixer fix`
-- [ ] Run all tests: `vendor/bin/phpunit && vendor/bin/behat`
+- [ ] Run all tests: `vendor/bin/phpunit && vendor/bin/behat` (after PHPStan passes)
 - [ ] **Verify PHP version**: Confirm PHP 8.4.0+ in `composer.json`
 - [ ] Document in `04-php-tracking.md`
 - [ ] **Ready for Symfony 8.0 migration**: PHP 8.4.0+ requirement met
+
+### 2.5 Phase 2 Branch Completion
+- [ ] **Verify all commits are atomic**: Each commit should pass validations independently
+- [ ] **No uncommitted changes**: All changes should be committed atomically
+- [ ] Create pull request: `feature/upgrade-2026-01-php-8.4` → `develop`
+- [ ] **Note**: Do NOT create a "complete migration" commit - all changes should already be committed atomically
+- [ ] Code review and approval
+- [ ] Merge to develop: `git checkout develop && git merge feature/upgrade-2026-01-php-8.4`
+- [ ] Delete Phase 2 branch: `git branch -d feature/upgrade-2026-01-php-8.4`
+- [ ] Document merge completion in `04-php-tracking.md`
 
 ## Phase 3: TypeScript 4.0 → 5.6 Migration
 
@@ -140,7 +159,17 @@ Project: Akeneo PIM Community Dev
 
 ## Phase 5: Symfony 5.4 → 8.0 Migration
 
-**⚠️ CRITICAL PREREQUISITE**: PHP 8.4.0+ MUST be completed (Phase 2). Verify PHP version in `composer.json` is `^8.4` before starting.
+**⚠️ CRITICAL PREREQUISITE**: 
+- PHP 8.4.0+ MUST be completed (Phase 2)
+- Phase 2 branch (`feature/upgrade-2026-01-php-8.4`) MUST be merged to develop
+- Verify PHP version in `composer.json` is `^8.4` before starting
+
+### 5.0 Git Flow Branch Setup
+- [ ] Verify you are on `develop` branch: `git checkout develop`
+- [ ] Verify Phase 2 branch is merged: Check git log for Phase 2 commits
+- [ ] Pull latest changes: `git pull origin develop`
+- [ ] **Create Phase 5 branch**: `git checkout -b feature/upgrade-2026-01-symfony-8.0`
+- [ ] Document branch creation in `07-symfony-tracking.md`
 
 **Migration order**: 5.4 → 6.0 → 6.4 → 7.0 → 8.0 (sequential, each step requires specific PHP version)
 
@@ -149,60 +178,60 @@ Project: Akeneo PIM Community Dev
 - [ ] Apply: `vendor/bin/rector process --set=SYMFONY_60 --dry-run`
 - [ ] Review proposed changes
 - [ ] Apply: `vendor/bin/rector process --set=SYMFONY_60`
-- [ ] Run tests: `vendor/bin/phpunit && vendor/bin/behat`
+- [ ] Run tests: `vendor/bin/phpstan analyse && vendor/bin/phpunit && vendor/bin/behat`
 - [ ] Document in `07-symfony-tracking.md`
 
 **Rule 2: SYMFONY_60 - Route migration**
 - [ ] Apply route migration rules
-- [ ] Run tests: `vendor/bin/phpunit && vendor/bin/behat`
+- [ ] Run tests: `vendor/bin/phpstan analyse && vendor/bin/phpunit && vendor/bin/behat`
 - [ ] Document in `07-symfony-tracking.md`
 
 **Rule 3: SYMFONY_60 - Event migration**
 - [ ] Apply event migration rules
-- [ ] Run tests: `vendor/bin/phpunit && vendor/bin/behat`
+- [ ] Run tests: `vendor/bin/phpstan analyse && vendor/bin/phpunit && vendor/bin/behat`
 - [ ] Document in `07-symfony-tracking.md`
 
 **Rule 4: SYMFONY_60 - Service migration**
 - [ ] Apply service migration rules
-- [ ] Run tests: `vendor/bin/phpunit && vendor/bin/behat`
+- [ ] Run tests: `vendor/bin/phpstan analyse && vendor/bin/phpunit && vendor/bin/behat`
 - [ ] Document in `07-symfony-tracking.md`
 
 **Rule 5: SYMFONY_60 - Doctrine migration**
 - [ ] Apply Doctrine migration rules
-- [ ] Run tests: `vendor/bin/phpunit && vendor/bin/behat`
+- [ ] Run tests: `vendor/bin/phpstan analyse && vendor/bin/phpunit && vendor/bin/behat`
 - [ ] Document in `07-symfony-tracking.md`
 
 ### 5.2 Symfony 6.0 Dependencies Update
 - [ ] Modify `composer.json`: Update all Symfony dependencies to ^6.0
 - [ ] Run: `composer update symfony/* --with-all-dependencies`
 - [ ] Check breaking changes
-- [ ] Run tests: `vendor/bin/phpunit && vendor/bin/behat`
+- [ ] Run tests: `vendor/bin/phpstan analyse && vendor/bin/phpunit && vendor/bin/behat`
 - [ ] Document in `07-symfony-tracking.md`
 
 ### 5.3 Symfony 6.0 → 6.4 Migration
 - [ ] Apply: `vendor/bin/rector process --set=SYMFONY_64`
-- [ ] Run tests: `vendor/bin/phpunit && vendor/bin/behat`
+- [ ] Run tests: `vendor/bin/phpstan analyse && vendor/bin/phpunit && vendor/bin/behat`
 - [ ] Modify `composer.json`: Update to ^6.4
 - [ ] Run: `composer update symfony/* --with-all-dependencies`
-- [ ] Run tests: `vendor/bin/phpunit && vendor/bin/behat`
+- [ ] Run tests: `vendor/bin/phpstan analyse && vendor/bin/phpunit && vendor/bin/behat`
 - [ ] Document in `07-symfony-tracking.md`
 
 ### 5.4 Symfony 6.4 → 7.0 Migration
 - [ ] Apply: `vendor/bin/rector process --set=SYMFONY_70`
-- [ ] Run tests: `vendor/bin/phpunit && vendor/bin/behat`
+- [ ] Run tests: `vendor/bin/phpstan analyse && vendor/bin/phpunit && vendor/bin/behat`
 - [ ] Modify `composer.json`: Update to ^7.0
 - [ ] Run: `composer update symfony/* --with-all-dependencies`
-- [ ] Run tests: `vendor/bin/phpunit && vendor/bin/behat`
+- [ ] Run tests: `vendor/bin/phpstan analyse && vendor/bin/phpunit && vendor/bin/behat`
 - [ ] Document in `07-symfony-tracking.md`
 
 ### 5.5 Symfony 7.0 → 8.0 Migration
 - [ ] **Verify PHP 8.4+**: Check `composer.json` shows `"php": "^8.4"` (Docker handles version, not system)
 - [ ] **Verify PHP 8.4.0+ requirement**: Confirm in Docker container
 - [ ] Apply: `vendor/bin/rector process --set=SYMFONY_80` (if available)
-- [ ] Run tests: `vendor/bin/phpunit && vendor/bin/behat`
+- [ ] Run tests: `vendor/bin/phpstan analyse && vendor/bin/phpunit && vendor/bin/behat`
 - [ ] Modify `composer.json`: Update to ^8.0
 - [ ] Run: `composer update symfony/* --with-all-dependencies`
-- [ ] Run tests: `vendor/bin/phpunit && vendor/bin/behat`
+- [ ] Run tests: `vendor/bin/phpstan analyse && vendor/bin/phpunit && vendor/bin/behat`
 - [ ] Document in `07-symfony-tracking.md`
 - [ ] **Symfony 8.0 migration complete** - Ready for PHP 8.5 migration (Phase 6)
 
@@ -212,18 +241,37 @@ Project: Akeneo PIM Community Dev
 - [ ] Check friendsofsymfony/rest-bundle compatibility with Symfony 8.0
 - [ ] Check liip/imagine-bundle compatibility with Symfony 8.0
 - [ ] Update bundles if necessary
-- [ ] Run tests: `vendor/bin/phpunit && vendor/bin/behat`
+- [ ] Run tests: `vendor/bin/phpstan analyse && vendor/bin/phpunit && vendor/bin/behat`
 - [ ] Document in `07-symfony-tracking.md`
 
 ### 5.7 Final Symfony Verification
 - [ ] Run PHPStan: `vendor/bin/phpstan analyse`
 - [ ] Run PHP-CS-Fixer: `vendor/bin/php-cs-fixer fix`
-- [ ] Run all tests: `vendor/bin/phpunit && vendor/bin/behat`
+- [ ] Run all tests: `vendor/bin/phpstan analyse && vendor/bin/phpunit && vendor/bin/behat`
 - [ ] Document in `07-symfony-tracking.md`
+
+### 5.8 Phase 5 Branch Completion
+- [ ] Commit all changes: `git add . && git commit -m "feat(upgrade): complete Symfony 5.4 → 8.0 migration"`
+- [ ] Create pull request: `feature/upgrade-2026-01-symfony-8.0` → `develop`
+- [ ] Code review and approval
+- [ ] Merge to develop: `git checkout develop && git merge feature/upgrade-2026-01-symfony-8.0`
+- [ ] Delete Phase 5 branch: `git branch -d feature/upgrade-2026-01-symfony-8.0`
+- [ ] Document merge completion in `07-symfony-tracking.md`
+- [ ] **Symfony 8.0 migration complete** - Ready for PHP 8.5 migration (Phase 6)
 
 ## Phase 6: PHP 8.4 → 8.5 Migration (AFTER Symfony 8.0)
 
-**⚠️ CRITICAL PREREQUISITE**: Symfony 8.0 MUST be completed and stable (Phase 5). Only proceed after Symfony 8.0 is fully working.
+**⚠️ CRITICAL PREREQUISITE**: 
+- Symfony 8.0 MUST be completed and stable (Phase 5)
+- Phase 5 branch (`feature/upgrade-2026-01-symfony-8.0`) MUST be merged to develop
+- Only proceed after Symfony 8.0 is fully working
+
+### 6.0 Git Flow Branch Setup
+- [ ] Verify you are on `develop` branch: `git checkout develop`
+- [ ] Verify Phase 5 branch is merged: Check git log for Phase 5 commits
+- [ ] Pull latest changes: `git pull origin develop`
+- [ ] **Create Phase 6 branch**: `git checkout -b feature/upgrade-2026-01-php-8.5`
+- [ ] Document branch creation in `04-php-tracking.md`
 
 ### 6.1 Verify Symfony 8.0 Stability
 - [ ] Confirm Symfony 8.0 is stable and all tests pass
@@ -240,7 +288,7 @@ Project: Akeneo PIM Community Dev
 - [ ] Apply: `vendor/bin/rector process --set=PHP_85 --dry-run`
 - [ ] Review proposed changes
 - [ ] Apply: `vendor/bin/rector process --set=PHP_85`
-- [ ] Run tests: `vendor/bin/phpunit && vendor/bin/behat`
+- [ ] Run tests: `vendor/bin/phpstan analyse && vendor/bin/phpunit && vendor/bin/behat`
 - [ ] Document in `04-php-tracking.md`
 
 ### 6.4 Verify Symfony 8.0 Compatibility with PHP 8.5
@@ -252,7 +300,7 @@ Project: Akeneo PIM Community Dev
 ### 6.5 Final PHP 8.5 Verification
 - [ ] Run PHPStan: `vendor/bin/phpstan analyse`
 - [ ] Run PHP-CS-Fixer: `vendor/bin/php-cs-fixer fix`
-- [ ] Run all tests: `vendor/bin/phpunit && vendor/bin/behat`
+- [ ] Run all tests: `vendor/bin/phpstan analyse && vendor/bin/phpunit && vendor/bin/behat`
 - [ ] Verify PHP version: Confirm PHP 8.5 in `composer.json`
 - [ ] Document in `04-php-tracking.md`
 
@@ -262,7 +310,7 @@ Project: Akeneo PIM Community Dev
 - [ ] Modify `composer.json`: `"phpunit/phpunit": "^10.0"`
 - [ ] Run: `composer update phpunit/phpunit --with-all-dependencies`
 - [ ] Adapt `phpunit.xml.dist` if necessary
-- [ ] Run tests: `vendor/bin/phpunit`
+- [ ] Run tests: `vendor/bin/phpstan analyse && vendor/bin/phpunit`
 - [ ] Document in `08-tools-tracking.md`
 
 ### 7.2 Jest 26 → 29+ Migration
@@ -284,13 +332,13 @@ Project: Akeneo PIM Community Dev
 - [ ] Update Prettier if necessary
 - [ ] Update Cypress if necessary
 - [ ] Update other development tools
-- [ ] Run tests: `yarn test && vendor/bin/phpunit`
+- [ ] Run tests: `yarn test && vendor/bin/phpstan analyse && vendor/bin/phpunit`
 - [ ] Document in `08-tools-tracking.md`
 
 ## Phase 8: Final Tests and Validation
 
 ### 8.1 Complete Tests
-- [ ] Run all PHP tests: `vendor/bin/phpunit && vendor/bin/behat`
+- [ ] Run all PHP tests: `vendor/bin/phpstan analyse && vendor/bin/phpunit && vendor/bin/behat`
 - [ ] Run all JS/TS tests: `yarn test`
 - [ ] Run E2E tests: `yarn test:e2e:run`
 - [ ] Verify build: `yarn webpack-dev`

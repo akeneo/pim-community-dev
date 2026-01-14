@@ -1,11 +1,24 @@
 # TypeScript Migration Tracking 4.0 → 5.6
 
+**Git Flow Branch**: Can be done in `feature/upgrade-2026-01-php-8.4` or separate branch `feature/upgrade-2026-01-typescript-5.6`
+
 Start date: [To be completed]
 End date: [To be completed]
+
+## Git Flow Branch Information
+
+### Branch Strategy
+- [ ] Done in Phase 2 branch: `feature/upgrade-2026-01-php-8.4` (recommended)
+- [ ] OR separate branch: `feature/upgrade-2026-01-typescript-5.6`
+- [ ] Branch created: [To be completed]
+- [ ] Branch merged to develop: [To be completed]
+- [ ] Merge date: [To be completed]
+- [ ] Pull request URL: [To be completed]
 
 ## Current State
 - Current TypeScript version: ^4.0.3
 - Target TypeScript version: ^5.6.0
+- **Note**: No PHP/Symfony dependency - can be done in parallel with Phase 2
 
 ## Migration Steps
 

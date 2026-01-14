@@ -1,16 +1,32 @@
 # PHP Migration Tracking 8.1 → 8.4 → 8.5
 
-**⚠️ IMPORTANT**: This migration is split into 2 phases:
-- **Phase 1**: PHP 8.1 → 8.4 (MUST complete before Symfony 8.0)
-- **Phase 2**: PHP 8.4 → 8.5 (MUST be done after Symfony 8.0 is stable)
+**⚠️ IMPORTANT**: This migration is split into 2 phases with separate Git Flow branches:
+- **Phase 2**: PHP 8.1 → 8.4 (MUST complete before Symfony 8.0)
+  - **Git branch**: `feature/upgrade-2026-01-php-8.4`
+- **Phase 6**: PHP 8.4 → 8.5 (MUST be done after Symfony 8.0 is stable)
+  - **Git branch**: `feature/upgrade-2026-01-php-8.5`
 
 Start date: [To be completed]
 End date: [To be completed]
 
+## Git Flow Branch Information
+
+### Phase 2 Branch: feature/upgrade-2026-01-php-8.4
+- [ ] Branch created: [To be completed]
+- [ ] Branch merged to develop: [To be completed]
+- [ ] Merge date: [To be completed]
+- [ ] Pull request URL: [To be completed]
+
+### Phase 6 Branch: feature/upgrade-2026-01-php-8.5
+- [ ] Branch created: [To be completed]
+- [ ] Branch merged to develop: [To be completed]
+- [ ] Merge date: [To be completed]
+- [ ] Pull request URL: [To be completed]
+
 ## Current State
 - Required PHP version: 8.1.* (from composer.json)
-- Target PHP version Phase 1: 8.4.* (required for Symfony 8.0)
-- Target PHP version Phase 2: 8.5.* (latest stable version, after Symfony 8.0)
+- Target PHP version Phase 2: 8.4.* (required for Symfony 8.0)
+- Target PHP version Phase 6: 8.5.* (latest stable version, after Symfony 8.0)
 - **Note**: Docker stack is used - system PHP version is irrelevant
 
 ## Applied Rector Rules
@@ -91,7 +107,12 @@ End date: [To be completed]
 
 ## Tests
 
-### PHPUnit
+### PHPStan (Static Analysis - Execute First)
+- [ ] Date: [To be completed]
+- [ ] Result: [To be completed]
+- [ ] Errors: [To be completed]
+
+### PHPUnit (Unit Tests - Execute After PHPStan)
 - [ ] Date: [To be completed]
 - [ ] Result: [To be completed]
 - [ ] Errors: [To be completed]
