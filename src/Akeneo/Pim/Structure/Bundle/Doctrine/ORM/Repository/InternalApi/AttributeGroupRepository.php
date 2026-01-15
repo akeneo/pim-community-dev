@@ -42,7 +42,7 @@ class AttributeGroupRepository extends EntityRepository implements TranslatedLab
             $label = $code['label'];
 
             if (isset($choices[$label])) {
-                $label = "${code['label']} [${code['code']}]";
+                $label = "{$code['label']} [{$code['code']}]";
             }
             $choices[$label] = $code['code'];
         }

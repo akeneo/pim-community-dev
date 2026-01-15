@@ -81,7 +81,7 @@ final class SqlUpdateIdentifierPrefixesQuery implements UpdateIdentifierPrefixes
         $placeholders = \implode(',', \array_fill(0, \count($newPrefixes), '(?,?,?,?)'));
 
         $insertSql = <<<SQL
-INSERT INTO pim_catalog_identifier_generator_prefixes (`product_uuid`, `attribute_id`, `prefix`, `number`) VALUES ${placeholders}
+INSERT INTO pim_catalog_identifier_generator_prefixes (`product_uuid`, `attribute_id`, `prefix`, `number`) VALUES {$placeholders}
 SQL;
 
         $placeholderIndex = 1;
