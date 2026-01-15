@@ -26,8 +26,8 @@ class DataArrayConversionException extends ArrayConversionException
     public function __construct(
         $message,
         $code = 0,
-        \Throwable $previous = null,
-        ConstraintViolationListInterface $violations = null
+        ?\Throwable $previous = null,
+        ?ConstraintViolationListInterface $violations = null
     ) {
         $this->violations = $violations;
 

@@ -20,7 +20,7 @@ final class UnknownAttributeException extends PropertyException implements
     /** @var TemplatedErrorMessage */
     private $templatedErrorMessage;
 
-    public function __construct(string $attributeCode, \Exception $previous = null)
+    public function __construct(string $attributeCode, ?\Exception $previous = null)
     {
         $this->templatedErrorMessage = new TemplatedErrorMessage(
             'The {attribute_code} attribute does not exist in your PIM.',

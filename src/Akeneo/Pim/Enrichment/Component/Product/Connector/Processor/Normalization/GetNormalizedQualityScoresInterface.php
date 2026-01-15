@@ -8,5 +8,5 @@ use Ramsey\Uuid\UuidInterface;
 
 interface GetNormalizedQualityScoresInterface
 {
-    public function __invoke(string|UuidInterface $identifierOrUuid, string $channel = null, array $locales = []): array;
+    public function __invoke(string|UuidInterface $identifierOrUuid, ?string $channel = null, array $locales = []): array;
 }

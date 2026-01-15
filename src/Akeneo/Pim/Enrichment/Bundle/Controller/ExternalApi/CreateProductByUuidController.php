@@ -168,7 +168,7 @@ class CreateProductByUuidController
         return null !== $this->productRepository->find($uuid);
     }
 
-    private function throwDocumentedHttpException(string $message, \Exception $previousException = null)
+    private function throwDocumentedHttpException(string $message, ?\Exception $previousException = null)
     {
         throw new DocumentedHttpException(
             Documentation::URL . 'post_products_uuid',

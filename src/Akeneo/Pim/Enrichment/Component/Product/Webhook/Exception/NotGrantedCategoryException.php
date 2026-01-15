@@ -14,7 +14,7 @@ class NotGrantedCategoryException extends \Exception implements EventBuildingExc
 {
     public function __construct(
         string $message,
-        \Throwable $previous = null
+        ?\Throwable $previous = null
     ) {
         parent::__construct(
             $message,

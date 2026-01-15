@@ -84,7 +84,7 @@ class ProductModelNormalizer implements NormalizerInterface, NormalizerAwareInte
      *
      * @return string
      */
-    private function normalizeParent(ProductModelInterface $parent = null): string
+    private function normalizeParent(?ProductModelInterface $parent = null): string
     {
         return $parent ? $parent->getCode() : '';
     }

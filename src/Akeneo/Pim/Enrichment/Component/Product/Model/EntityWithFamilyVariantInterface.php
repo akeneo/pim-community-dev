@@ -45,7 +45,7 @@ interface EntityWithFamilyVariantInterface extends EntityWithFamilyInterface
     /**
      * @param ProductModelInterface $parent
      */
-    public function setParent(ProductModelInterface $parent = null): void;
+    public function setParent(?ProductModelInterface $parent = null): void;
 
     /**
      * @return WriteValueCollection

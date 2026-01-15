@@ -20,8 +20,8 @@ abstract class Event implements EventInterface
     public function __construct(
         Author $author,
         array $data,
-        int $timestamp = null,
-        string $uuid = null
+        ?int $timestamp = null,
+        ?string $uuid = null
     ) {
         $this->author = $author;
         $this->data = $data;

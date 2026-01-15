@@ -33,7 +33,7 @@ class InvalidItemFromViolationsException extends BaseInvalidItemException
         InvalidItemInterface $item,
         array $messageParameters = [],
         $code = 0,
-        \Exception $previous = null
+        ?\Exception $previous = null
     ) {
         $this->violations = $violations;
 

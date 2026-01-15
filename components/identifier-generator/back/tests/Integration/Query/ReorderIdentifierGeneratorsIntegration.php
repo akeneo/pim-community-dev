@@ -67,7 +67,7 @@ final class ReorderIdentifierGeneratorsIntegration extends TestCase
         return $this->catalog->useMinimalCatalog();
     }
 
-    private function createIdentifierGenerator(string $code = null): void
+    private function createIdentifierGenerator(?string $code = null): void
     {
         ($this->getCreateHandler())(new CreateGeneratorCommand(
             $code,

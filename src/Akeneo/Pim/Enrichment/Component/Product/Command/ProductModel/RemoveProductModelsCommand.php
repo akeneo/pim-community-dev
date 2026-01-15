@@ -27,7 +27,7 @@ final class RemoveProductModelsCommand
      * @param RemoveProductModelCommand[] $removeProductModelCommands
      * @param ProductModelInterface[]|null $productModels
      */
-    private function __construct(array $removeProductModelCommands, array $productModels = null)
+    private function __construct(array $removeProductModelCommands, ?array $productModels = null)
     {
         Assert::allIsInstanceOf($removeProductModelCommands, RemoveProductModelCommand::class);
         if (null !== $productModels) {

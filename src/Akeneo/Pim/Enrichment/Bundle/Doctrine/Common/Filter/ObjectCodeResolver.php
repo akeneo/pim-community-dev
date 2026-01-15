@@ -39,7 +39,7 @@ class ObjectCodeResolver
      * @throws ObjectNotFoundException
      * @return array
      */
-    public function getCodesFromIds($entityName, array $ids, AttributeInterface $attribute = null)
+    public function getCodesFromIds($entityName, array $ids, ?AttributeInterface $attribute = null)
     {
         if (!isset($this->fieldMapping[$entityName])) {
             throw new \InvalidArgumentException(sprintf('The class %s cannot be found', $entityName));

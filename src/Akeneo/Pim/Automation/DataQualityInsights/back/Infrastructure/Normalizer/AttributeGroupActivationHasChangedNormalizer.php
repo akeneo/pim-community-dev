@@ -18,7 +18,7 @@ final class AttributeGroupActivationHasChangedNormalizer implements NormalizerIn
     /**
      * {@inheritDoc}
      */
-    public function denormalize($data, string $type, string $format = null, array $context = []): AttributeGroupActivationHasChanged
+    public function denormalize($data, string $type, ?string $format = null, array $context = []): AttributeGroupActivationHasChanged
     {
         return AttributeGroupActivationHasChanged::denormalize($data);
     }
@@ -26,7 +26,7 @@ final class AttributeGroupActivationHasChangedNormalizer implements NormalizerIn
     /**
      * {@inheritDoc}
      */
-    public function supportsDenormalization($data, string $type, string $format = null): bool
+    public function supportsDenormalization($data, string $type, ?string $format = null): bool
     {
         return AttributeGroupActivationHasChanged::class === $type;
     }
@@ -34,7 +34,7 @@ final class AttributeGroupActivationHasChangedNormalizer implements NormalizerIn
     /**
      * {@inheritDoc}
      */
-    public function normalize($object, string $format = null, array $context = []): array
+    public function normalize($object, ?string $format = null, array $context = []): array
     {
         Assert::isInstanceOf($object, AttributeGroupActivationHasChanged::class);
 
@@ -44,7 +44,7 @@ final class AttributeGroupActivationHasChangedNormalizer implements NormalizerIn
     /**
      * {@inheritDoc}
      */
-    public function supportsNormalization($data, string $format = null): bool
+    public function supportsNormalization($data, ?string $format = null): bool
     {
         return $data instanceof AttributeGroupActivationHasChanged;
     }

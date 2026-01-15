@@ -58,7 +58,7 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
 
     public function __construct(
         QuantifiedAssociationsNormalizer $quantifiedAssociationsNormalized,
-        CollectionFilterInterface $filter = null
+        ?CollectionFilterInterface $filter = null
     ) {
         $this->quantifiedAssociationsNormalized = $quantifiedAssociationsNormalized;
         $this->filter = $filter;
@@ -186,7 +186,7 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
      *
      * @return string
      */
-    protected function normalizeFamily(FamilyInterface $family = null): string
+    protected function normalizeFamily(?FamilyInterface $family = null): string
     {
         return $family ? $family->getCode() : '';
     }
@@ -222,7 +222,7 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
      *
      * @return string
      */
-    protected function normalizeParent(ProductModelInterface $parent = null): string
+    protected function normalizeParent(?ProductModelInterface $parent = null): string
     {
         return $parent ? $parent->getCode() : '';
     }

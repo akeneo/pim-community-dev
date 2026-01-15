@@ -34,7 +34,7 @@ class ActionMetadataProvider
      */
     public function __construct(
         AclAnnotationProvider $annotationProvider,
-        CacheProvider $cache = null
+        ?CacheProvider $cache = null
     ) {
         $this->annotationProvider = $annotationProvider;
         $this->cache = $cache;

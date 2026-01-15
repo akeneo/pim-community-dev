@@ -249,7 +249,7 @@ interface UserInterface extends LegacyPasswordAuthenticatedUserInterface, BaseUs
      *
      * @return UserInterface
      */
-    public function setPasswordRequestedAt(\DateTime $time = null);
+    public function setPasswordRequestedAt(?\DateTime $time = null);
 
     /**
      * @param  \DateTime $time New login time

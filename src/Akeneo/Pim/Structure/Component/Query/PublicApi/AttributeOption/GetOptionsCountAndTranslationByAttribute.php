@@ -11,5 +11,5 @@ namespace Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption;
  */
 interface GetOptionsCountAndTranslationByAttribute
 {
-    public function search(string $localeCode, int $limit = 10, int $offset = 0, string $search = null): array;
+    public function search(string $localeCode, int $limit = 10, int $offset = 0, ?string $search = null): array;
 }

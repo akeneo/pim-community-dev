@@ -16,7 +16,7 @@ class BusinessArrayConversionException extends ArrayConversionException
     /** @var  array */
     private $messageParameters;
 
-    public function __construct($message, string $messageKey, array  $messageParameters, \Throwable $previous = null, $code = 0)
+    public function __construct($message, string $messageKey, array  $messageParameters, ?\Throwable $previous = null, $code = 0)
     {
         parent::__construct($message, $code, $previous);
         $this->messageKey = $messageKey;

@@ -25,7 +25,7 @@ class AuditLoader
 
     public function insert(
         HourlyEventCount $hourlyEventCount,
-        \DateTimeInterface $updated = null
+        ?\DateTimeInterface $updated = null
     ): void {
         $this->bulkInsertEventCountsQuery->execute([
             $hourlyEventCount

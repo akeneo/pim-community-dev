@@ -202,7 +202,7 @@ class ProductModelNormalizer implements NormalizerInterface, CacheableSupportsMe
      *
      * @return array
      */
-    private function getLabels(ProductModelInterface $productModel, string $scopeCode = null): array
+    private function getLabels(ProductModelInterface $productModel, ?string $scopeCode = null): array
     {
         $labels = [];
 

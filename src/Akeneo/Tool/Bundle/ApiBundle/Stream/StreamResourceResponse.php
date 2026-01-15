@@ -51,7 +51,7 @@ final class StreamResourceResponse
      *
      * @return StreamedResponse
      */
-    public function streamResponse($resource, array $uriParameters = [], callable $postResponseCallable = null)
+    public function streamResponse($resource, array $uriParameters = [], ?callable $postResponseCallable = null)
     {
         $response = new StreamedResponse();
         $response->headers->set('Content-Type', static::CONTENT_TYPE);

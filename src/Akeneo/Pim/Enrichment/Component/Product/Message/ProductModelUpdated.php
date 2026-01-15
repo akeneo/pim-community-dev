@@ -17,7 +17,7 @@ class ProductModelUpdated extends Event
     /**
      * @param array{code: string} $data
      */
-    public function __construct(Author $author, array $data, int $timestamp = null, string $uuid = null)
+    public function __construct(Author $author, array $data, ?int $timestamp = null, ?string $uuid = null)
     {
         Assert::keyExists($data, 'code');
         Assert::stringNotEmpty($data['code']);

@@ -26,8 +26,8 @@ return static function (RectorConfig $rectorConfig): void {
         '*Spec.php',
     ]);
 
-    // Start with PHP 8.2 preparation (safe for current 8.1)
+    // PHP 8.3 preparation
     $rectorConfig->sets([
-        LevelSetList::UP_TO_PHP_82,
+        LevelSetList::UP_TO_PHP_83,
     ]);
 };

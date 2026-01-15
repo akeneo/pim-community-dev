@@ -145,7 +145,7 @@ interface ProductInterface extends
      *
      * @return ProductInterface
      */
-    public function setFamily(FamilyInterface $family = null);
+    public function setFamily(?FamilyInterface $family = null);
 
     /**
      * Get family id

@@ -47,7 +47,7 @@ class QueryParametersChecker implements QueryParametersCheckerInterface
     /**
      * {@inheritdoc}
      */
-    public function checkLocalesParameters(array $localeCodes, ChannelInterface $channel = null)
+    public function checkLocalesParameters(array $localeCodes, ?ChannelInterface $channel = null)
     {
         $localeCodes = array_map('trim', $localeCodes);
         $errors = [];

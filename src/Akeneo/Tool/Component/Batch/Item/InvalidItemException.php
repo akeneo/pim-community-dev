@@ -31,7 +31,7 @@ class InvalidItemException extends \Exception
         InvalidItemInterface $item,
         array $messageParameters = [],
         $code = 0,
-        \Throwable $previous = null
+        ?\Throwable $previous = null
     ) {
         parent::__construct($message, $code, $previous);
 

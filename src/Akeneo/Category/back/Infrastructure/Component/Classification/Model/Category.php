@@ -144,7 +144,7 @@ class Category implements CategoryInterface
     /**
      * {@inheritdoc}
      */
-    public function setParent(CategoryInterface $parent = null)
+    public function setParent(?CategoryInterface $parent = null)
     {
         $this->parent = $parent;
 

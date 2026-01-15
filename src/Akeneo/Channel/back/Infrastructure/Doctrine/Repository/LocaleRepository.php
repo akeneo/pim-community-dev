@@ -20,7 +20,7 @@ class LocaleRepository extends EntityRepository implements LocaleRepositoryInter
     /**
      * {@inheritdoc}
      */
-    public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+    public function findBy(array $criteria, ?array $orderBy = null, $limit = null, $offset = null)
     {
         if (null === $orderBy) {
             $orderBy = ['code' => 'ASC'];
@@ -32,7 +32,7 @@ class LocaleRepository extends EntityRepository implements LocaleRepositoryInter
     /**
      * {@inheritdoc}
      */
-    public function findOneBy(array $criteria, array $orderBy = null)
+    public function findOneBy(array $criteria, ?array $orderBy = null)
     {
         if (null === $orderBy) {
             $orderBy = ['code' => 'ASC'];

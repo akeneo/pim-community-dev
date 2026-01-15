@@ -225,7 +225,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function setFamily(FamilyInterface $family = null)
+    public function setFamily(?FamilyInterface $family = null)
     {
         $formerFamilyCode = $this->family ? $this->family->getCode() : null;
         $newFamilyCode = $family ? $family->getCode() : null;
@@ -826,7 +826,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function setParent(ProductModelInterface $parent = null): void
+    public function setParent(?ProductModelInterface $parent = null): void
     {
         $formerParentCode = $this->parent ? $this->parent->getCode() : null;
         $newParentCode = $parent ? $parent->getCode() : null;

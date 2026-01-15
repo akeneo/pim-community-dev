@@ -48,7 +48,7 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
     /**
      * {@inheritdoc}
      */
-    public function getWithVariants(string $search = null, array $options = [], int $limit = null): array
+    public function getWithVariants(?string $search = null, array $options = [], ?int $limit = null): array
     {
         $qb = $this->createQueryBuilder('f')->where('f.familyVariants IS NOT EMPTY');
 
@@ -79,7 +79,7 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
     /**
      * {@inheritdoc}
      */
-    public function getFullFamilies(FamilyInterface $family = null, ChannelInterface $channel = null)
+    public function getFullFamilies(?FamilyInterface $family = null, ?ChannelInterface $channel = null)
     {
         $qb = $this->createQueryBuilder('f')
             ->select('f')

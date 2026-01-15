@@ -241,7 +241,7 @@ interface AttributeInterface extends
      *
      * @return AttributeInterface
      */
-    public function setGroup(AttributeGroupInterface $group = null);
+    public function setGroup(?AttributeGroupInterface $group = null);
 
     /**
      * Get allowedExtensions

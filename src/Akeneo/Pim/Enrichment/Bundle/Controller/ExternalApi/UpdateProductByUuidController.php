@@ -212,7 +212,7 @@ class UpdateProductByUuidController
         }
     }
 
-    private function throwDocumentedHttpException(string $message, \Exception $previousException = null)
+    private function throwDocumentedHttpException(string $message, ?\Exception $previousException = null)
     {
         throw new DocumentedHttpException(
             Documentation::URL . 'patch_products_uuid__uuid_',

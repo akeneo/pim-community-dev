@@ -38,7 +38,7 @@ class OrmSelectorExtension extends AbstractExtension
      *
      * @param RequestParameters $requestParams
      */
-    public function __construct(RequestParameters $requestParams = null)
+    public function __construct(?RequestParameters $requestParams = null)
     {
         $this->requestParams = $requestParams;
     }

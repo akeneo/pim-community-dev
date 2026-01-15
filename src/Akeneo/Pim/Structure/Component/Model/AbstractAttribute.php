@@ -487,7 +487,7 @@ abstract class AbstractAttribute implements AttributeInterface
     /**
      * {@inheritdoc}
      */
-    public function setGroup(AttributeGroupInterface $group = null)
+    public function setGroup(?AttributeGroupInterface $group = null)
     {
         $this->group = $group;
 

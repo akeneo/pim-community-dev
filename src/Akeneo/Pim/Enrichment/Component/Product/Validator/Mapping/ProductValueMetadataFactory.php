@@ -37,7 +37,7 @@ class ProductValueMetadataFactory implements MetadataFactoryInterface
     public function __construct(
         ConstraintGuesserInterface $guesser,
         IdentifiableObjectRepositoryInterface $attributeRepository,
-        ClassMetadataFactory $factory = null
+        ?ClassMetadataFactory $factory = null
     ) {
         $this->guesser = $guesser;
         $this->attributeRepository = $attributeRepository;

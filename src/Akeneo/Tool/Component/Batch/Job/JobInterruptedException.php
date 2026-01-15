@@ -24,7 +24,7 @@ class JobInterruptedException extends \Exception
      * @param \Exception  $previous Exception causing this one
      * @param BatchStatus $status   Status of the batch when the execption occurred
      */
-    public function __construct($message = "", $code = 0, \Exception $previous = null, BatchStatus $status = null)
+    public function __construct($message = "", $code = 0, ?\Exception $previous = null, ?BatchStatus $status = null)
     {
         parent::__construct($message, $code, $previous);
 

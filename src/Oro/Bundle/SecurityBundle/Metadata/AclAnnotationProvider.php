@@ -31,7 +31,7 @@ class AclAnnotationProvider
      *
      * @param CacheProvider $cache
      */
-    public function __construct(CacheProvider $cache = null)
+    public function __construct(?CacheProvider $cache = null)
     {
         $this->cache = $cache;
         if ($this->cache !== null && $this->cache->getNamespace() === '') {

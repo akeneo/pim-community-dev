@@ -18,7 +18,7 @@ class ViolationListNormalizer implements NormalizerInterface
      * {@inheritdoc}
      * @return array<int, array{message: string, property_path: string}>
      */
-    public function normalize($object, string $format = null, array $context = []): array
+    public function normalize($object, ?string $format = null, array $context = []): array
     {
         if (!$object instanceof ConstraintViolationListInterface) {
             throw new \InvalidArgumentException();
@@ -40,7 +40,7 @@ class ViolationListNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, string $format = null): bool
+    public function supportsNormalization($data, ?string $format = null): bool
     {
         return $data instanceof ConstraintViolationListInterface;
     }

@@ -16,7 +16,7 @@ class Pager extends AbstractPager implements PagerInterface
     /** @var array */
     protected $parameters = [];
 
-    public function __construct($maxPerPage = 10, QueryBuilder $qb = null)
+    public function __construct($maxPerPage = 10, ?QueryBuilder $qb = null)
     {
         $this->qb = $qb;
         parent::__construct($maxPerPage);

@@ -26,7 +26,7 @@ class ViolationHttpException extends UnprocessableEntityHttpException
     public function __construct(
         ConstraintViolationListInterface $violations,
         $message = 'Validation failed.',
-        \Exception $previous = null,
+        ?\Exception $previous = null,
         $code = 0
     ) {
         parent::__construct($message, $previous, $code);

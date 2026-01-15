@@ -15,24 +15,24 @@ use Webmozart\Assert\Assert;
  */
 final class FamilyWasCreatedNormalizer implements NormalizerInterface, DenormalizerInterface
 {
-    public function denormalize(mixed $data, string $type, string $format = null, array $context = []): FamilyWasCreated
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): FamilyWasCreated
     {
         return FamilyWasCreated::denormalize($data);
     }
 
-    public function supportsDenormalization(mixed $data, string $type, string $format = null): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null): bool
     {
         return FamilyWasCreated::class === $type;
     }
 
-    public function normalize(mixed $object, string $format = null, array $context = []): array
+    public function normalize(mixed $object, ?string $format = null, array $context = []): array
     {
         Assert::isInstanceOf($object, FamilyWasCreated::class);
 
         return $object->normalize();
     }
 
-    public function supportsNormalization(mixed $data, string $format = null): bool
+    public function supportsNormalization(mixed $data, ?string $format = null): bool
     {
         return $data instanceof FamilyWasCreated;
     }

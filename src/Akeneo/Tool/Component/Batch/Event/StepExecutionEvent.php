@@ -24,7 +24,7 @@ class StepExecutionEvent extends Event implements EventInterface
         return $this->exception;
     }
 
-    public function __construct(StepExecution $stepExecution, \Exception $exception=null)
+    public function __construct(StepExecution $stepExecution, ?\Exception $exception=null)
     {
         $this->stepExecution = $stepExecution;
         $this->exception = $exception;

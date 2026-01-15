@@ -283,7 +283,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
         $this->detacher->detach($product);
     }
 
-    private function skipItemAndReturnException(array $item, $message, \Exception $previousException = null): InvalidItemException
+    private function skipItemAndReturnException(array $item, $message, ?\Exception $previousException = null): InvalidItemException
     {
         if ($this->stepExecution) {
             $this->stepExecution->incrementSummaryInfo('skip');

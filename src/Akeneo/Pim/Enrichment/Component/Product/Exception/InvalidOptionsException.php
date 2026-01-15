@@ -33,7 +33,7 @@ class InvalidOptionsException extends InvalidPropertyException
         string $className,
         string $message = '',
         int $code = 0,
-        \Exception $previous = null
+        ?\Exception $previous = null
     ) {
         parent::__construct($propertyName, implode(', ', $propertyValues), $className, $message, $code, $previous);
 

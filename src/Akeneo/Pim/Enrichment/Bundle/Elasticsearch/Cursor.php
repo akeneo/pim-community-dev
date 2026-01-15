@@ -67,7 +67,7 @@ class Cursor extends AbstractCursor implements CursorInterface, ResultAwareInter
      *
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/5.x/search-request-search-after.html
      */
-    protected function getNextIdentifiers(array $esQuery, int $size = null): IdentifierResults
+    protected function getNextIdentifiers(array $esQuery, ?int $size = null): IdentifierResults
     {
         $esQuery['size'] = $size ?? $this->pageSize;
         $identifiers = new IdentifierResults();

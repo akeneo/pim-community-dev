@@ -13,5 +13,5 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Manager;
  */
 interface AttributeValuesResolverInterface
 {
-    public function resolveEligibleValues(array $attributes, array $channels = null, array $locales = null) : array;
+    public function resolveEligibleValues(array $attributes, ?array $channels = null, ?array $locales = null) : array;
 }

@@ -15,7 +15,7 @@ abstract class AbstractExtension implements ExtensionVisitorInterface
     /** @var RequestParameters */
     protected $requestParams;
 
-    public function __construct(RequestParameters $requestParams = null)
+    public function __construct(?RequestParameters $requestParams = null)
     {
         $this->requestParams = $requestParams;
     }

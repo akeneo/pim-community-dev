@@ -22,7 +22,7 @@ interface QueryParametersCheckerInterface
      *
      * @throws UnprocessableEntityHttpException
      */
-    public function checkLocalesParameters(array $localeCodes, ChannelInterface $channel = null);
+    public function checkLocalesParameters(array $localeCodes, ?ChannelInterface $channel = null);
 
     /**
      * Checks $attributeCodes if they exist. Thrown an exception if one of them does not exist.

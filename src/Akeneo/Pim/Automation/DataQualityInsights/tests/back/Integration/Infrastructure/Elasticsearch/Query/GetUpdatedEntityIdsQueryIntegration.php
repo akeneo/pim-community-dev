@@ -112,7 +112,7 @@ final class GetUpdatedEntityIdsQueryIntegration extends TestCase
         $this->assertExpectedEntityId($expectedSubProductModel2, $productIds);
     }
 
-    private function createProduct(string $identifier = null, array $userIntents = []): ProductInterface
+    private function createProduct(?string $identifier = null, array $userIntents = []): ProductInterface
     {
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product afterwards
         $identifier = $identifier?: strval(Uuid::uuid4());

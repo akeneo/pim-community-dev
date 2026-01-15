@@ -19,5 +19,5 @@ interface SelectLastConnectionBusinessErrorsQueryInterface
      *
      * @return BusinessError[]
      */
-    public function execute(string $connectionCode, string $endDate = null, int $limit = 100): array;
+    public function execute(string $connectionCode, ?string $endDate = null, int $limit = 100): array;
 }

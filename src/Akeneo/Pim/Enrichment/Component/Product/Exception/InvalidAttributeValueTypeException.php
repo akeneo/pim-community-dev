@@ -26,7 +26,7 @@ class InvalidAttributeValueTypeException extends InvalidPropertyTypeException im
         string $className,
         TemplatedErrorMessage $templatedErrorMessage,
         int $code = 0,
-        \Exception $previous = null
+        ?\Exception $previous = null
     ) {
         $this->templatedErrorMessage = $templatedErrorMessage;
 

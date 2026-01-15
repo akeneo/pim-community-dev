@@ -19,7 +19,7 @@ class GetNormalizedProductQualityScores implements GetNormalizedQualityScoresInt
     ) {
     }
 
-    public function __invoke(string|UuidInterface $productUuid, string $channel = null, array $locales = []): array
+    public function __invoke(string|UuidInterface $productUuid, ?string $channel = null, array $locales = []): array
     {
         if (!$this->dataQualityInsightsFeature->isEnabled()) {
             return [];

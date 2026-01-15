@@ -34,7 +34,7 @@ class AccessDeniedException extends BaseAccessDeniedException
      * @param string     $message
      * @param \Exception $previous
      */
-    public function __construct($controllerClass, $method, $message, \Exception $previous = null)
+    public function __construct($controllerClass, $method, $message, ?\Exception $previous = null)
     {
         parent::__construct($message, $previous);
 

@@ -121,7 +121,7 @@ interface FileInfoInterface
      *
      * @return FileInfoInterface|null
      */
-    public function setUploadedFile(UploadedFile $uploadedFile = null);
+    public function setUploadedFile(?UploadedFile $uploadedFile = null);
 
     /**
      * @param bool $removed

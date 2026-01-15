@@ -48,7 +48,7 @@ class InvalidPropertyTypeException extends PropertyException
         $className,
         $message = '',
         $code = 0,
-        \Exception $previous = null
+        ?\Exception $previous = null
     ) {
         parent::__construct($message, $code, $previous);
         $this->propertyName = $propertyName;

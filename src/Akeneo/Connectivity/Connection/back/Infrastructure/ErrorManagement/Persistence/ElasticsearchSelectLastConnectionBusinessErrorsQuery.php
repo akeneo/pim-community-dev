@@ -19,7 +19,7 @@ class ElasticsearchSelectLastConnectionBusinessErrorsQuery implements SelectLast
     {
     }
 
-    public function execute(string $connectionCode, string $endDate = null, int $limit = 100): array
+    public function execute(string $connectionCode, ?string $endDate = null, int $limit = 100): array
     {
         [$from, $to] = $this->getDateTimeInterval($endDate);
 
@@ -71,7 +71,7 @@ class ElasticsearchSelectLastConnectionBusinessErrorsQuery implements SelectLast
     /**
      * @return array{\DateTimeImmutable, \DateTimeImmutable}
      */
-    private function getDateTimeInterval(string $endDate = null): array
+    private function getDateTimeInterval(?string $endDate = null): array
     {
         $utc = new \DateTimeZone('UTC');
         $to = new \DateTimeImmutable('now', $utc);

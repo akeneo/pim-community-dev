@@ -43,7 +43,7 @@ class VersionBuilder
      *
      * @return Version
      */
-    public function buildVersion($versionable, $author, Version $previousVersion = null, $context = null)
+    public function buildVersion($versionable, $author, ?Version $previousVersion = null, $context = null)
     {
         $resourceName = ClassUtils::getClass($versionable);
         $resourceId = method_exists($versionable, 'getUuid') ? null : $versionable->getId();
@@ -99,7 +99,7 @@ class VersionBuilder
      *
      * @return Version
      */
-    public function buildPendingVersion(Version $pending, Version $previousVersion = null)
+    public function buildPendingVersion(Version $pending, ?Version $previousVersion = null)
     {
         $versionNumber = $previousVersion ? $previousVersion->getVersion() + 1 : 1;
         $oldSnapshot = $previousVersion ? $previousVersion->getSnapshot() : [];

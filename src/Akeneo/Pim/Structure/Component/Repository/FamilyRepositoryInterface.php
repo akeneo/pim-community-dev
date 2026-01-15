@@ -37,7 +37,7 @@ interface FamilyRepositoryInterface extends
      *
      * @return FamilyInterface[]
      */
-    public function getFullFamilies(FamilyInterface $family = null, ChannelInterface $channel = null);
+    public function getFullFamilies(?FamilyInterface $family = null, ?ChannelInterface $channel = null);
 
     /**
      * @param array $familyIds
@@ -61,5 +61,5 @@ interface FamilyRepositoryInterface extends
     /**
      * Get families with family variants
      */
-    public function getWithVariants(string $search = null, array $options = [], int $limit = null): array;
+    public function getWithVariants(?string $search = null, array $options = [], ?int $limit = null): array;
 }

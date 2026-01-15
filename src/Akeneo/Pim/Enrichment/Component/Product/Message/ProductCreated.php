@@ -19,7 +19,7 @@ class ProductCreated extends Event
     /**
      * @param  array{identifier: string} $data
      */
-    public function __construct(Author $author, array $data, int $timestamp = null, string $uuid = null)
+    public function __construct(Author $author, array $data, ?int $timestamp = null, ?string $uuid = null)
     {
         Assert::keyExists($data, 'identifier');
         Assert::nullOrString($data['identifier']);

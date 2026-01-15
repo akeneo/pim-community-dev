@@ -53,7 +53,7 @@ class AttributeValuesResolver implements AttributeValuesResolverInterface
      *
      * @return array:array
      */
-    public function resolveEligibleValues(array $attributes, array $channels = null, array $locales = null) : array
+    public function resolveEligibleValues(array $attributes, ?array $channels = null, ?array $locales = null) : array
     {
         $this->channels = $channels;
         $this->locales  = $locales;

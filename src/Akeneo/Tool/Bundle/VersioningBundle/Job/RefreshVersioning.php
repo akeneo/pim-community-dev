@@ -76,7 +76,7 @@ class RefreshVersioning implements TaskletInterface
         $this->logger->info(sprintf('<info>%d created versions.</info>', $totalPendings));
     }
 
-    protected function createVersion(Version $version, Version $previousVersion = null): ?Version
+    protected function createVersion(Version $version, ?Version $previousVersion = null): ?Version
     {
         $version = $this->versionManager->buildPendingVersion($version, $previousVersion);
 

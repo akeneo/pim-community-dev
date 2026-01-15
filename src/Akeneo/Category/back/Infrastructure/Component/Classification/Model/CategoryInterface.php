@@ -83,7 +83,7 @@ interface CategoryInterface
      *
      * @return CategoryInterface
      */
-    public function setParent(CategoryInterface $parent = null);
+    public function setParent(?CategoryInterface $parent = null);
 
     /**
      * @return CategoryInterface|null

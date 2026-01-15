@@ -187,7 +187,7 @@ class ProductAndProductModelReader implements
      *
      * @return CursorInterface
      */
-    private function getCursor(array $filters, ChannelInterface $channel = null): CursorInterface
+    private function getCursor(array $filters, ?ChannelInterface $channel = null): CursorInterface
     {
         $options = ['filters' => $filters];
 

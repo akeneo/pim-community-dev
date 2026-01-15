@@ -63,7 +63,7 @@ class OAuth2 extends BaseOAuth2
      *
      * @throws OAuth2ServerException
      */
-    public function grantAccessToken(Request $request = null): Response
+    public function grantAccessToken(?Request $request = null): Response
     {
         $response = parent::grantAccessToken($request);
 

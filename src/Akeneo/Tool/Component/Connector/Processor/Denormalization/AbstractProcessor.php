@@ -100,7 +100,7 @@ abstract class AbstractProcessor implements StepExecutionAwareInterface
      *
      * @throws InvalidItemException
      */
-    protected function skipItemWithMessage(array $item, $message, \Exception $previousException = null)
+    protected function skipItemWithMessage(array $item, $message, ?\Exception $previousException = null)
     {
         if ($this->stepExecution) {
             $this->stepExecution->incrementSummaryInfo('skip');
@@ -125,7 +125,7 @@ abstract class AbstractProcessor implements StepExecutionAwareInterface
     protected function skipItemWithConstraintViolations(
         array $item,
         ConstraintViolationListInterface $violations,
-        \Exception $previousException = null
+        ?\Exception $previousException = null
     ) {
         if ($this->stepExecution) {
             $this->stepExecution->incrementSummaryInfo('skip');

@@ -14,7 +14,7 @@ class ConnectionWebhookNotFoundException extends \DomainException
     public function __construct(
         string $message = 'akeneo_connectivity.connection.webhook.error.not_found',
         int $code = 0,
-        \Throwable $previous = null
+        ?\Throwable $previous = null
     ) {
         parent::__construct($message, $code, $previous);
     }

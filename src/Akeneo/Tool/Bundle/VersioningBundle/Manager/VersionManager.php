@@ -260,7 +260,7 @@ class VersionManager
      *
      * @return Version
      */
-    public function buildPendingVersion(Version $pending, Version $previousVersion = null)
+    public function buildPendingVersion(Version $pending, ?Version $previousVersion = null)
     {
         if (null === $previousVersion) {
             $previousVersion = $this->getVersionRepository()

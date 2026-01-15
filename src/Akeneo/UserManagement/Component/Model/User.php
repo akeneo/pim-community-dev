@@ -602,7 +602,7 @@ class User implements UserInterface, EquatableInterface
     /**
      * {@inheritdoc}
      */
-    public function setPasswordRequestedAt(\DateTime $time = null)
+    public function setPasswordRequestedAt(?\DateTime $time = null)
     {
         $this->passwordRequestedAt = $time;
 

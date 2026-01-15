@@ -16,7 +16,7 @@ class ResourceNotFoundException extends \RuntimeException
      * @param int             $code
      * @param \Exception|null $previous
      */
-    public function __construct($objectClassName, $code = 0, \Exception $previous = null)
+    public function __construct($objectClassName, $code = 0, ?\Exception $previous = null)
     {
         $message = sprintf("Can't find resource of type %s", $objectClassName);
 

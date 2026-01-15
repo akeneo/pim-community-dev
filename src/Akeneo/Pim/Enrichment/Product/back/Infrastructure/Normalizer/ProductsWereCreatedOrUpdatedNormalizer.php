@@ -23,7 +23,7 @@ final class ProductsWereCreatedOrUpdatedNormalizer implements NormalizerInterfac
      *
      * @param array<string, mixed> $context
      */
-    public function denormalize($data, string $type, string $format = null, array $context = []): ProductsWereCreatedOrUpdated
+    public function denormalize($data, string $type, ?string $format = null, array $context = []): ProductsWereCreatedOrUpdated
     {
         Assert::keyExists($data, 'events', 'Normalized ProductsWereUpdatedMessage must contains a key "events"');
         Assert::isArray($data['events'], 'Normalized ProductsWereUpdatedMessage events property must be an array');
@@ -52,7 +52,7 @@ final class ProductsWereCreatedOrUpdatedNormalizer implements NormalizerInterfac
     /**
      * {@inheritDoc}
      */
-    public function supportsDenormalization($data, string $type, string $format = null): bool
+    public function supportsDenormalization($data, string $type, ?string $format = null): bool
     {
         return $type === ProductsWereCreatedOrUpdated::class;
     }
@@ -63,7 +63,7 @@ final class ProductsWereCreatedOrUpdatedNormalizer implements NormalizerInterfac
      * @param array<string, mixed> $context
      * @return array<string, array<int, mixed>>
      */
-    public function normalize($object, string $format = null, array $context = []): array
+    public function normalize($object, ?string $format = null, array $context = []): array
     {
         Assert::isInstanceOf($object, ProductsWereCreatedOrUpdated::class);
 
@@ -84,7 +84,7 @@ final class ProductsWereCreatedOrUpdatedNormalizer implements NormalizerInterfac
     /**
      * {@inheritDoc}
      */
-    public function supportsNormalization($data, string $format = null): bool
+    public function supportsNormalization($data, ?string $format = null): bool
     {
         return $data instanceof ProductsWereCreatedOrUpdated;
     }

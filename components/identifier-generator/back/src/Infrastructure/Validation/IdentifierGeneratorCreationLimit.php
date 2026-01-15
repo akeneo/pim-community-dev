@@ -15,7 +15,7 @@ final class IdentifierGeneratorCreationLimit extends Constraint
     public string $message = 'validation.create.identifier_limit_reached';
     public int $limit = 1;
 
-    public function __construct($options = null, array $groups = null, $payload = null)
+    public function __construct($options = null, ?array $groups = null, $payload = null)
     {
         if (null === $options || (\is_array($options) && !isset($options['limit']))) {
             $options['limit'] = $this->limit;

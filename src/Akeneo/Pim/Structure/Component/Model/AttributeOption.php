@@ -52,7 +52,7 @@ class AttributeOption implements AttributeOptionInterface
         return $this->attribute;
     }
 
-    public function setAttribute(AttributeInterface $attribute = null): static
+    public function setAttribute(?AttributeInterface $attribute = null): static
     {
         $this->attribute = $attribute;
 
