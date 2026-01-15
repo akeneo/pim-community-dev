@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   php:
-    image: 'akeneo/pim-php-dev:8.1'
+    image: 'akeneo/pim-php-dev:8.2'
     environment:
       APP_ENV: '${APP_ENV:-prod}'
       COMPOSER_HOME: '/var/www/.composer'
@@ -23,7 +23,7 @@ services:
       - 'pim'
 
   httpd:
-    image: 'akeneo/pim-php-dev:8.1'
+    image: 'akeneo/pim-php-dev:8.2'
     environment:
       APP_ENV: '${APP_ENV:-prod}'
       BEHAT_TMPDIR: '/srv/pim/var/cache/tmp'
