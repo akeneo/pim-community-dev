@@ -107,7 +107,7 @@
         "symfony/polyfill-apcu": "1.12.0",
         "symfony/process": "4.4.25",
         "symfony/property-access": "4.4.25",
-        "symfony/proxy-manager-bridge": "4.4.25",
+        "symfony/proxy-manager-bridge": "4.4.39",
         "symfony/requirements-checker": "^1.1",
         "symfony/routing": "4.4.25",
         "symfony/security-acl": "3.0.2",
