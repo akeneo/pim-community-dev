@@ -117,7 +117,7 @@
         "symfony/security-http": "4.4.25",
         "symfony/swiftmailer-bundle": "^3.2",
         "symfony/templating": "4.4.25",
-        "symfony/translation": "4.4.25",
+        "symfony/translation": "4.4.47",
         "symfony/twig-bundle": "4.4.25",
         "symfony/validator": "4.4.25",
         "symfony/yaml": "4.4.25",
