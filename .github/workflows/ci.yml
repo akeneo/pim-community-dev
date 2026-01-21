@@ -1,0 +1,458 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+env:
+  CACHE_VERSION: v1
+  YARN_REGISTRY: https://registry.yarnpkg.com
+  COMPOSER_MEMORY_LIMIT: -1
+  DOCKER_BUILDKIT: 1
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Ensure docker-compose is available
+        run: |
+          if ! command -v docker-compose >/dev/null; then
+            sudo apt-get update
+            sudo apt-get install -y docker-compose-plugin
+            sudo ln -sf /usr/libexec/docker/cli-plugins/docker-compose /usr/local/bin/docker-compose || sudo ln -sf /usr/lib/docker/cli-plugins/docker-compose /usr/local/bin/docker-compose
+          fi
+          docker-compose version
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: yarn
+          cache-dependency-path: yarn.lock
+
+      - name: Restore composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: composer-${{ runner.os }}-${{ hashFiles('composer.lock') }}
+
+      - name: Restore front caches
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            front-packages/akeneo-design-system/lib
+            front-packages/shared/lib
+          key: yarn-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+
+      - name: Prepare filesystem permissions
+        run: |
+          mkdir -p ~/.cache/yarn ~/.cache/Cypress ~/.composer
+          sudo chmod -R a+rwX ~/.cache ~/.composer
+          sudo chmod -R a+rwX .
+
+      - name: Copy docker-compose override
+        run: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
+
+      - name: Build PHP image
+        run: docker build -t akeneo/pim-php-dev:8.1 .
+
+      - name: Install dependencies
+        run: make dependencies
+
+      - name: Build frontend assets
+        run: |
+          make assets
+          make css
+          make front-packages
+          make javascript-dev
+
+      - name: Save PHP image
+        run: docker save -o php-pim-image.tar akeneo/pim-php-dev:8.1
+
+      - name: Upload PHP image artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: php-pim-image
+          path: php-pim-image.tar
+
+  front:
+    runs-on: ubuntu-latest
+    needs: prepare
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Ensure docker-compose is available
+        run: |
+          if ! command -v docker-compose >/dev/null; then
+            sudo apt-get update
+            sudo apt-get install -y docker-compose-plugin
+            sudo ln -sf /usr/libexec/docker/cli-plugins/docker-compose /usr/local/bin/docker-compose || sudo ln -sf /usr/lib/docker/cli-plugins/docker-compose /usr/local/bin/docker-compose
+          fi
+          docker-compose version
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: yarn
+          cache-dependency-path: yarn.lock
+
+      - name: Restore composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: composer-${{ runner.os }}-${{ hashFiles('composer.lock') }}
+
+      - name: Restore front caches
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            front-packages/akeneo-design-system/lib
+            front-packages/shared/lib
+          key: yarn-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+
+      - name: Prepare filesystem permissions
+        run: |
+          mkdir -p ~/.cache/yarn ~/.cache/Cypress ~/.composer
+          sudo chmod -R a+rwX ~/.cache ~/.composer
+          sudo chmod -R a+rwX .
+
+      - name: Copy docker-compose override
+        run: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
+
+      - name: Front checks
+        run: |
+          make javascript-dev-strict
+          PIM_CONTEXT=test make lint-front
+          PIM_CONTEXT=test make unit-front
+
+  back-static:
+    runs-on: ubuntu-latest
+    needs: prepare
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Ensure docker-compose is available
+        run: |
+          if ! command -v docker-compose >/dev/null; then
+            sudo apt-get update
+            sudo apt-get install -y docker-compose-plugin
+            sudo ln -sf /usr/libexec/docker/cli-plugins/docker-compose /usr/local/bin/docker-compose || sudo ln -sf /usr/lib/docker/cli-plugins/docker-compose /usr/local/bin/docker-compose
+          fi
+          docker-compose version
+
+      - name: Restore composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: composer-${{ runner.os }}-${{ hashFiles('composer.lock') }}
+
+      - name: Restore front caches
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            front-packages/akeneo-design-system/lib
+            front-packages/shared/lib
+          key: yarn-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+
+      - name: Download PHP image
+        uses: actions/download-artifact@v4
+        with:
+          name: php-pim-image
+
+      - name: Load PHP image
+        run: docker load -i php-pim-image.tar
+
+      - name: Prepare filesystem permissions
+        run: |
+          mkdir -p ~/.cache/yarn ~/.cache/Cypress ~/.composer
+          sudo chmod -R a+rwX ~/.cache ~/.composer
+          sudo chmod -R a+rwX .
+
+      - name: Copy docker-compose override
+        run: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
+
+      - name: Back static, lint, and acceptance
+        run: |
+          PIM_CONTEXT=test make find-legacy-translations
+          PIM_CONTEXT=test make static-back
+          PIM_CONTEXT=test make deprecation-back
+          PIM_CONTEXT=test make lint-back
+          PIM_CONTEXT=test make coupling-back
+          PIM_CONTEXT=test make unit-back
+          PIM_CONTEXT=test make acceptance-back
+
+      - name: Upload back static artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: back-static-artifacts
+          path: |
+            var/tests
+            var/logs
+
+  phpunit:
+    runs-on: ubuntu-latest
+    needs: prepare
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Ensure docker-compose is available
+        run: |
+          if ! command -v docker-compose >/dev/null; then
+            sudo apt-get update
+            sudo apt-get install -y docker-compose-plugin
+            sudo ln -sf /usr/libexec/docker/cli-plugins/docker-compose /usr/local/bin/docker-compose || sudo ln -sf /usr/lib/docker/cli-plugins/docker-compose /usr/local/bin/docker-compose
+          fi
+          docker-compose version
+
+      - name: Restore composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: composer-${{ runner.os }}-${{ hashFiles('composer.lock') }}
+
+      - name: Download PHP image
+        uses: actions/download-artifact@v4
+        with:
+          name: php-pim-image
+
+      - name: Load PHP image
+        run: docker load -i php-pim-image.tar
+
+      - name: Prepare filesystem permissions
+        run: |
+          mkdir -p ~/.cache/yarn ~/.cache/Cypress ~/.composer
+          sudo chmod -R a+rwX ~/.cache ~/.composer
+          sudo chmod -R a+rwX .
+
+      - name: Copy docker-compose override
+        run: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
+
+      - name: PhpUnit integration and end-to-end
+        run: |
+          APP_ENV=test C='httpd mysql elasticsearch object-storage pubsub-emulator gcs-emulator' make up
+          docker/wait_docker_up.sh
+          APP_ENV=test make database
+          PIM_CONTEXT=test make pim-integration-back
+          PIM_CONTEXT=test make end-to-end-back
+
+      - name: Upload phpunit artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phpunit-artifacts
+          path: |
+            var/tests/phpunit
+            var/logs
+
+  data-migrations:
+    runs-on: ubuntu-latest
+    needs: prepare
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Ensure docker-compose is available
+        run: |
+          if ! command -v docker-compose >/dev/null; then
+            sudo apt-get update
+            sudo apt-get install -y docker-compose-plugin
+            sudo ln -sf /usr/libexec/docker/cli-plugins/docker-compose /usr/local/bin/docker-compose || sudo ln -sf /usr/lib/docker/cli-plugins/docker-compose /usr/local/bin/docker-compose
+          fi
+          docker-compose version
+
+      - name: Restore composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: composer-${{ runner.os }}-${{ hashFiles('composer.lock') }}
+
+      - name: Download PHP image
+        uses: actions/download-artifact@v4
+        with:
+          name: php-pim-image
+
+      - name: Load PHP image
+        run: docker load -i php-pim-image.tar
+
+      - name: Prepare filesystem permissions
+        run: |
+          mkdir -p ~/.cache/yarn ~/.cache/Cypress ~/.composer
+          sudo chmod -R a+rwX ~/.cache ~/.composer
+          sudo chmod -R a+rwX .
+
+      - name: Copy docker-compose override
+        run: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
+
+      - name: Data migrations
+        run: |
+          APP_ENV=test C='httpd mysql elasticsearch object-storage pubsub-emulator' make up
+          docker/wait_docker_up.sh
+          APP_ENV=test make database
+          PIM_CONTEXT=test make migration-back
+
+      - name: Upload migration artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: migration-artifacts
+          path: |
+            var/tests/phpunit
+            var/logs
+
+  behat-legacy:
+    runs-on: ubuntu-latest
+    needs: prepare
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Ensure docker-compose is available
+        run: |
+          if ! command -v docker-compose >/dev/null; then
+            sudo apt-get update
+            sudo apt-get install -y docker-compose-plugin
+            sudo ln -sf /usr/libexec/docker/cli-plugins/docker-compose /usr/local/bin/docker-compose || sudo ln -sf /usr/lib/docker/cli-plugins/docker-compose /usr/local/bin/docker-compose
+          fi
+          docker-compose version
+
+      - name: Restore composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: composer-${{ runner.os }}-${{ hashFiles('composer.lock') }}
+
+      - name: Download PHP image
+        uses: actions/download-artifact@v4
+        with:
+          name: php-pim-image
+
+      - name: Load PHP image
+        run: docker load -i php-pim-image.tar
+
+      - name: Prepare filesystem permissions
+        run: |
+          mkdir -p ~/.cache/yarn ~/.cache/Cypress ~/.composer
+          sudo chmod -R a+rwX ~/.cache ~/.composer
+          sudo chmod -R a+rwX .
+
+      - name: Copy docker-compose override
+        run: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
+
+      - name: Compute Behat suite
+        run: |
+          BRANCH_NAME="${GITHUB_HEAD_REF:-${GITHUB_REF##*/}}"
+          TESTSUITE=$(echo "${BRANCH_NAME}" | sed -e 's/^.*-\([^-]*\)$/\1/g')
+          if ! [[ "${TESTSUITE}" =~ ^(weasel|chipmunk|raccoon)$ ]]; then
+            TESTSUITE="all"
+          fi
+          echo "TESTSUITE=${TESTSUITE}" | tee -a "$GITHUB_ENV"
+
+      - name: Behat legacy end-to-end
+        env:
+          TESTSUITE: ${{ env.TESTSUITE }}
+        run: |
+          APP_ENV=behat C='httpd mysql elasticsearch object-storage selenium pubsub-emulator' make up
+          docker/wait_docker_up.sh
+          APP_ENV=behat make database
+          PIM_CONTEXT=test make end-to-end-legacy SUITE=${TESTSUITE}
+
+      - name: Upload behat artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: behat-artifacts
+          path: |
+            var/tests/behat
+            var/tests/screenshots
+            var/logs
+
+  cypress:
+    runs-on: ubuntu-latest
+    needs: prepare
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Ensure docker-compose is available
+        run: |
+          if ! command -v docker-compose >/dev/null; then
+            sudo apt-get update
+            sudo apt-get install -y docker-compose-plugin
+            sudo ln -sf /usr/libexec/docker/cli-plugins/docker-compose /usr/local/bin/docker-compose || sudo ln -sf /usr/lib/docker/cli-plugins/docker-compose /usr/local/bin/docker-compose
+          fi
+          docker-compose version
+
+      - name: Restore composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: composer-${{ runner.os }}-${{ hashFiles('composer.lock') }}
+
+      - name: Restore front caches
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            front-packages/akeneo-design-system/lib
+            front-packages/shared/lib
+          key: yarn-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+
+      - name: Download PHP image
+        uses: actions/download-artifact@v4
+        with:
+          name: php-pim-image
+
+      - name: Load PHP image
+        run: docker load -i php-pim-image.tar
+
+      - name: Prepare filesystem permissions
+        run: |
+          mkdir -p ~/.cache/yarn ~/.cache/Cypress ~/.composer
+          sudo chmod -R a+rwX ~/.cache ~/.composer
+          sudo chmod -R a+rwX .
+
+      - name: Copy docker-compose override
+        run: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
+
+      - name: Cypress sanity checks
+        env:
+          CYPRESS_defaultCommandTimeout: 10000
+          CYPRESS_requestTimeout: 15000
+          CYPRESS_responseTimeout: 50000
+        run: |
+          APP_ENV=prod C='httpd mysql elasticsearch object-storage pubsub-emulator' make up
+          docker/wait_docker_up.sh
+          APP_ENV=prod O="--catalog src/Akeneo/Platform/Installer/back/src/Infrastructure/Symfony/Resources/fixtures/icecat_demo_dev" make database
+          make end-to-end-front
+
+      - name: Upload cypress artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-artifacts
+          path: |
+            cypress/screenshots
+            cypress/videos
+
+  ci-success:
+    runs-on: ubuntu-latest
+    needs:
+      - front
+      - back-static
+      - phpunit
+      - data-migrations
+      - behat-legacy
+      - cypress
+    steps:
+      - run: echo "All CI jobs passed"
