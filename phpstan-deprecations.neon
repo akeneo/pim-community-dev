@@ -63,3 +63,7 @@ parameters:
         - %currentWorkingDirectory%/src/Oro/Bundle/DataGridBundle/Extension/Pager/DummyPager.php
         # PHP 8.1
         - %currentWorkingDirectory%/src/Oro/Bundle/PimDataGridBundle/EventListener/AddParametersToProductGridListener.php
+        # EE-only files that should not be analyzed in CE context
+        - %currentWorkingDirectory%/src/Akeneo/Platform/Component/Tenant/Infrastructure/FirestoreContextStore.php
+        - %currentWorkingDirectory%/src/Akeneo/Pim/Structure/FamilyTemplate/back/tests/Integration/Infrastructure/Controller/GetFamilyTemplatesActionTest.php
+        - %currentWorkingDirectory%/src/Akeneo/Pim/Enrichment/Product/back/Infrastructure/Query/Elasticsearch/ProductQueryBuilderAdapter.php

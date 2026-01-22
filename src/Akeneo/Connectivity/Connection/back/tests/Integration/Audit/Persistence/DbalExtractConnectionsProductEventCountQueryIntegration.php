@@ -33,6 +33,9 @@ class DbalExtractConnectionsProductEventCountQueryIntegration extends TestCase
     private ?ExtractConnectionsProductEventCountQueryInterface $extractConnectionsProductEventCountQuery;
     private ?DbalConnection $dbalConnection;
     private ?string $productClass;
+    private $client;
+    private $productMessageBus;
+    private $productRepository;
 
     protected function setUp(): void
     {

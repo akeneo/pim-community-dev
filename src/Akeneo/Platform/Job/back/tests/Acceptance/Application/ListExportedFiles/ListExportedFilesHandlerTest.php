@@ -19,6 +19,13 @@ class ListExportedFilesHandlerTest extends TestCase
 {
     const JOB_INSTANCE_CODE = 'csv_product_export';
 
+    private $handler;
+    private $jobInstanceRepository;
+    private $jobRepository;
+    private $createJobExecutionHandler;
+    private $executeJobExecutionHandler;
+    private $adminId;
+
     protected function setUp(): void
     {
         parent::setUp();
