@@ -13,6 +13,19 @@ aliases:
 
 workflows:
     version: 2
+    test_docker_build:
+        when:
+            not:
+                equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+        jobs:
+            - checkout_ce:
+                  filters:
+                      branches:
+                          only: fix-circleci-deprecated-ubuntu-image
+            - build_docker_images:
+                  requires:
+                      - checkout_ce
+
     nightly_docker:
         when:
             and:
