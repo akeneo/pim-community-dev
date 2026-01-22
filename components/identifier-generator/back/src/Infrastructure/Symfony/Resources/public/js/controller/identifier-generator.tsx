@@ -4,7 +4,7 @@ import {ReactController} from '@akeneo-pim-community/legacy-bridge/src/bridge/re
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {IdentifierGeneratorApp, IdentifierGeneratorContext} from '@akeneo-pim-community/identifier-generator';
 import {ThemeProvider} from 'styled-components';
-import {identifierGeneratorDependencies} from "../dependencies";
+import {identifierGeneratorDependencies} from '../dependencies';
 
 const mediator = require('oro/mediator');
 const __ = require('oro/translator');
@@ -15,11 +15,11 @@ class IdentifierGeneratorController extends ReactController {
   reactElementToMount() {
     return (
       <ThemeProvider theme={pimTheme}>
-          <DependenciesProvider>
-            <IdentifierGeneratorContext.Provider value={identifierGeneratorDependencies}>
-              <IdentifierGeneratorApp />
-            </IdentifierGeneratorContext.Provider>
-          </DependenciesProvider>
+        <DependenciesProvider>
+          <IdentifierGeneratorContext.Provider value={identifierGeneratorDependencies}>
+            <IdentifierGeneratorApp />
+          </IdentifierGeneratorContext.Provider>
+        </DependenciesProvider>
       </ThemeProvider>
     );
   }
@@ -40,7 +40,9 @@ class IdentifierGeneratorController extends ReactController {
   }
 
   canLeave() {
-    return !identifierGeneratorDependencies.unsavedChanges.hasUnsavedChanges || confirm(__('pim_ui.flash.unsaved_changes'));
+    return (
+      !identifierGeneratorDependencies.unsavedChanges.hasUnsavedChanges || confirm(__('pim_ui.flash.unsaved_changes'))
+    );
   }
 }
 

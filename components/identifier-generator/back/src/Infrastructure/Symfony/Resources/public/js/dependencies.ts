@@ -1,11 +1,11 @@
 const identifierGeneratorDependencies = {
-    unsavedChanges: {
-        hasUnsavedChanges: false,
-        setHasUnsavedChanges: (newValue: boolean) => {
-            identifierGeneratorDependencies.unsavedChanges.hasUnsavedChanges = newValue;
-        },
+  unsavedChanges: {
+    hasUnsavedChanges: false,
+    setHasUnsavedChanges: (newValue: boolean) => {
+      identifierGeneratorDependencies.unsavedChanges.hasUnsavedChanges = newValue;
     },
-    isManageIdentifierGeneratorAclGranted: true
+  },
+  isManageIdentifierGeneratorAclGranted: true,
 };
 
 export {identifierGeneratorDependencies};

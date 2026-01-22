@@ -7,3 +7,4 @@ src/Akeneo/Platform/Job/front/process-tracker/coverage/**/*
 src/Akeneo/Platform/Job/front/process-tracker/lib/**/*
 src/Akeneo/Tool/Bundle/MeasureBundle/front/lib/**/*
 src/Oro/Bundle/ConfigBundle/front/**/*
+components/**/lib/**/*
