@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Job\Infrastructure\Query;
 
-use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Akeneo\Platform\Job\ServiceApi\JobInstance\FindJobInstanceInterface;
 use Akeneo\Platform\Job\ServiceApi\JobInstance\JobInstance;
 use Akeneo\Platform\Job\ServiceApi\JobInstance\JobInstanceQuery;
 use Akeneo\Platform\Job\ServiceApi\JobInstance\JobInstanceQueryPagination;
 use Doctrine\DBAL\Connection;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)

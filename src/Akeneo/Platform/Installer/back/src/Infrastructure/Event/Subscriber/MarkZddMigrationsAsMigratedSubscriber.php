@@ -21,11 +21,11 @@ use Webmozart\Assert\Assert;
 class MarkZddMigrationsAsMigratedSubscriber implements EventSubscriberInterface
 {
     /** @var ZddMigration[] */
-    private array $zddMigrations;
+    private readonly array $zddMigrations;
 
     public function __construct(
-        private Connection $connection,
-        iterable $zddMigrations
+        private readonly Connection $connection,
+        iterable $zddMigrations,
     ) {
         Assert::allIsInstanceOf($zddMigrations, ZddMigration::class);
         $zddMigrations = $zddMigrations instanceof \Traversable ? \iterator_to_array($zddMigrations) : $zddMigrations;
@@ -37,7 +37,7 @@ class MarkZddMigrationsAsMigratedSubscriber implements EventSubscriberInterface
         return [
             InstallerEvents::POST_DB_CREATE => [
                 ['markMigrations', 0],
-            ]
+            ],
         ];
     }
 
@@ -51,7 +51,7 @@ class MarkZddMigrationsAsMigratedSubscriber implements EventSubscriberInterface
         SQL, [
                 'code' => $this->getZddMigrationCode($zddMigration),
                 'status' => 'finished',
-                'values' => \json_encode((object) []),
+                'values' => \json_encode((object) [], JSON_THROW_ON_ERROR),
             ]);
         }
     }

@@ -24,16 +24,16 @@ final class MigrateZddCommand extends Command
     private array $zddMigrations;
 
     public function __construct(
-        private Connection $connection,
-        private LoggerInterface $logger,
-        \Traversable $zddMigrations
+        private readonly Connection $connection,
+        private readonly LoggerInterface $logger,
+        \Traversable $zddMigrations,
     ) {
         $this->zddMigrations = iterator_to_array($zddMigrations);
 
         Assert::allIsInstanceOf($this->zddMigrations, ZddMigration::class);
         usort($this->zddMigrations, fn ($a, $b) => \strcmp(
             (new \ReflectionClass($a))->getShortName(),
-            (new \ReflectionClass($b))->getShortName()
+            (new \ReflectionClass($b))->getShortName(),
         ));
 
         parent::__construct();
@@ -49,14 +49,14 @@ final class MigrateZddCommand extends Command
         if (!$this->tableExists('pim_one_time_task')) {
             $this->logger->warning(
                 sprintf('%s - skip - Table pim_one_time_task does not exist', self::$defaultName),
-                ['action' => 'skip']
+                ['action' => 'skip'],
             );
 
             return Command::SUCCESS;
         }
 
         $this->logger->notice(sprintf('%s - start_command', self::$defaultName), [
-            'action' => 'start_command'
+            'action' => 'start_command',
         ]);
 
         $migrationCount = 0;
@@ -69,7 +69,7 @@ final class MigrateZddCommand extends Command
                         [
                             'action' => 'start_migration',
                             'migration_name' => $zddMigration->getName(),
-                        ]
+                        ],
                     );
                     $startMigrationTime = \time();
                     $zddMigration->migrate();
@@ -80,10 +80,10 @@ final class MigrateZddCommand extends Command
                             'action' => 'end_migration',
                             'migration_name' => $zddMigration->getName(),
                             'migration_duration_in_second' => $duration,
-                        ]
+                        ],
                     );
                     $this->markAsMigrated($zddMigration);
-                    $migrationCount++;
+                    ++$migrationCount;
                 } catch (UcsOnlyMigrationException $e) {
                     // @todo: Catch to remove when all flexibility clients will be migrated to the UCS platform (see JEL-359)
                     $this->logger->notice(sprintf('The migration %s will be done on UCS platform', $zddMigration->getName()));
@@ -94,7 +94,7 @@ final class MigrateZddCommand extends Command
                             'action' => 'errored_migration',
                             'migration_name' => $zddMigration->getName(),
                             'exception' => $e,
-                        ]
+                        ],
                     );
 
                     $output->write($e->getMessage());
@@ -136,7 +136,7 @@ final class MigrateZddCommand extends Command
             <<<SQL
                 SHOW TABLES LIKE :tableName
             SQL,
-            ['tableName' => $tableName]
+            ['tableName' => $tableName],
         );
 
         return count($rows) >= 1;
@@ -151,7 +151,7 @@ final class MigrateZddCommand extends Command
         SQL, [
             'code' => $this->getZddMigrationCode($zddMigration),
             'status' => 'finished',
-            'values' => \json_encode((object) []),
+            'values' => \json_encode((object) [], JSON_THROW_ON_ERROR),
         ]);
     }
 

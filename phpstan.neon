@@ -7,6 +7,8 @@ parameters:
         container_xml_path: %rootDir%/../../../var/cache/dev/KernelDevDebugContainer.xml
     ignoreErrors:
         - '#Unsafe usage of new static\(\)\.#'
+        # EE-only class, not available in Community Edition
+        - '#Akeneo\\Pim\\Permission\\Bundle\\Enrichment\\Storage\\Sql\\Category\\GetGrantedCategoryCodes#'
     excludePaths:
         - %currentWorkingDirectory%/src/Akeneo/Pim/Automation/DataQualityInsights/tests
         - %currentWorkingDirectory%/src/Akeneo/Pim/Enrichment/Bundle/Resources/fonts
@@ -14,3 +16,5 @@ parameters:
         - %currentWorkingDirectory%/src/Akeneo/Pim/Enrichment/Product/back/Test/Specification
         - %currentWorkingDirectory%/src/Akeneo/Pim/Enrichment/Product/back/Test/Acceptance/Specification
         - %currentWorkingDirectory%/src/Akeneo/Pim/Enrichment/Category/back/Test/Acceptance/Specification
+        # EE-only test base class (TailoredImport)
+        - %currentWorkingDirectory%/src/Akeneo/Pim/Structure/FamilyTemplate/back/tests

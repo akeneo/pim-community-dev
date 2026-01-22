@@ -59,8 +59,8 @@ class MaintenanceModeSubscriber implements EventSubscriberInterface
             $event->setResponse(
                 new Response(
                     'Undergoing maintenance.',
-                    Response::HTTP_SERVICE_UNAVAILABLE
-                )
+                    Response::HTTP_SERVICE_UNAVAILABLE,
+                ),
             );
 
             return;

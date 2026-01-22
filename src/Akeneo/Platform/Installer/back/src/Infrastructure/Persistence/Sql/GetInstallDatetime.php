@@ -29,7 +29,7 @@ final class GetInstallDatetime
             return null;
         }
 
-        $decoded = \json_decode($values, true);
+        $decoded = \json_decode((string) $values, true, 512, JSON_THROW_ON_ERROR);
 
         return new \DateTime($decoded['database_installed_at']);
     }

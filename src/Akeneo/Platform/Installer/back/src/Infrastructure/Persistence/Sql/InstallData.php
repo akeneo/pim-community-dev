@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Installer\Infrastructure\Persistence\Sql;
 
-use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -18,7 +17,7 @@ final class InstallData
     {
     }
 
-    public function withDatetime(DateTimeImmutable $installDatetime): void
+    public function withDatetime(\DateTimeImmutable $installDatetime): void
     {
         $installData = [
             'database_installed_at' => $installDatetime->format('c'),
@@ -28,7 +27,7 @@ final class InstallData
 
         $this->connection->executeStatement(
             $sql,
-            ['install_data', \json_encode($installData)]
+            ['install_data', \json_encode($installData, JSON_THROW_ON_ERROR)],
         );
     }
 }

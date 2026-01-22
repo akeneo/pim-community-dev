@@ -131,6 +131,7 @@ $rules = [
 
         // Category Bounded Context
         'Akeneo\Category\Api', // legit
+        'Akeneo\Category\Infrastructure\Bus\CommandBus',
         'Akeneo\Category\Application\Command\DeleteCategoryCommand\DeleteCategoryCommand',
         'Akeneo\Category\Infrastructure\Component\Model\CategoryInterface',
         'Akeneo\Category\Infrastructure\Component\Model\Category',

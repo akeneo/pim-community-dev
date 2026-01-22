@@ -12,15 +12,11 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class InstallerEvent extends GenericEvent
 {
-    protected ?CommandExecutor $commandExecutor;
-
     public function __construct(
-        ?CommandExecutor $commandExecutor = null,
+        protected ?CommandExecutor $commandExecutor = null,
         ?string $subject = null,
-        array $arguments = []
+        array $arguments = [],
     ) {
-        $this->commandExecutor = $commandExecutor;
-
         parent::__construct($subject, $arguments);
     }
 

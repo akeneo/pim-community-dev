@@ -7,6 +7,10 @@ parameters:
     reportUnmatchedIgnoredErrors: false
     ignoreErrors:
         - '#Unsafe usage of new static\(\)\.#'
+        # EE-only class, not available in Community Edition
+        - '#Akeneo\\Pim\\Permission\\Bundle\\Enrichment\\Storage\\Sql\\Category\\GetGrantedCategoryCodes#'
+        # Optional cloud dependency (Google Cloud Firestore)
+        - '#Google\\Cloud\\Firestore#'
         # Internal deprecation
         - '#Call to deprecated method useTechnicalSqlCatalog\(\) of class Akeneo\\Test\\IntegrationTestsBundle\\Configuration\\CatalogInterface#'
         - '#Call to deprecated method fromProductIdentifiers\(\) of class Akeneo\\Pim\\Enrichment\\Product\\Domain\\Query\\GetCategoryCodes.#'
@@ -53,6 +57,8 @@ parameters:
     excludePaths:
         - %currentWorkingDirectory%/*Spec.php
         - %currentWorkingDirectory%/src/Akeneo/Pim/Enrichment/Bundle/Resources/fonts/dompdf_font_family_cache.php
+        # EE-only test base class (TailoredImport)
+        - %currentWorkingDirectory%/src/Akeneo/Pim/Structure/FamilyTemplate/back/tests
         # Class to remove (validate that they are not used anymore RAB-1161)
         - %currentWorkingDirectory%/src/Akeneo/Platform/Bundle/UIBundle/Twig/Node/PlaceholderNode.php
         - %currentWorkingDirectory%/src/Akeneo/Platform/Bundle/UIBundle/Twig/Parser/PlaceholderTokenParser.php

@@ -26,7 +26,9 @@ $rules = [
         'Oro\Bundle\FilterBundle\Form\Type\Filter\TextFilterType',
         'Oro\Bundle\PimFilterBundle\Datasource\FilterDatasourceAdapterInterface',
         'Psr\Log\LoggerInterface',
+        'Psr\Clock\ClockInterface',
         'Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface',
+        'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
         'Akeneo\Channel\API',
         'Akeneo\Pim\Automation\DataQualityInsights\PublicApi',
 
@@ -77,6 +79,9 @@ $rules = [
         // TIP-909: PIM/Structure should not be linked to Locale
         'Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface',
         'Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface',
+
+        // Channel API for locale queries
+        'Akeneo\Channel\API',
 
         //TIP-906: Functionnal problem -> used to check if we can remove a family / family variant
         'Akeneo\Pim\Enrichment\Component\Product\ProductAndProductModel\Query\CountProductsWithFamilyInterface',

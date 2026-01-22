@@ -28,7 +28,7 @@ class ListExportedFilesHandler implements ListExportedFilesHandlerInterface
         $jobExecution = $this->jobExecutionRepository->find($jobExecutionId);
         $jobInstance = $jobExecution->getJobInstance();
 
-        if ($jobInstance->getType() !== JobInstance::TYPE_EXPORT) {
+        if (JobInstance::TYPE_EXPORT !== $jobInstance->getType()) {
             throw new \Exception('Job Instance must be of type export.');
         }
 

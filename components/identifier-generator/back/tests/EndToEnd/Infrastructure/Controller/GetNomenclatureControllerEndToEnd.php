@@ -63,7 +63,8 @@ final class GetNomenclatureControllerEndToEnd extends ControllerEndToEndTestCase
         );
         $response = $this->client->getResponse();
         Assert::assertSame(Response::HTTP_OK, $response->getStatusCode());
-        Assert::assertJsonStringEqualsJsonString(<<<JSON
+        Assert::assertJsonStringEqualsJsonString(
+            <<<JSON
             {
               "operator": null,
               "value": null,

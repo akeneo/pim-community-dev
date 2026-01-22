@@ -13,7 +13,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
- * Assets dump command
+ * Assets dump command.
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -26,30 +26,13 @@ class AssetsCommand extends Command
     /** @var CommandExecutor */
     protected $commandExecutor;
 
-    /** @var Filesystem */
-    private $filesystem;
-
-    /** @var EventDispatcherInterface */
-    private $eventDispatcher;
-
-    /** @var array */
-    private $defaultLocales;
-
-    /** @var string */
-    private $rootDir;
-
     public function __construct(
-        Filesystem $filesystem,
-        EventDispatcherInterface $eventDispatcher,
-        array $localeCodes,
-        string $rootDir
+        private readonly Filesystem $filesystem,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly array $defaultLocales,
+        private readonly string $rootDir,
     ) {
         parent::__construct();
-
-        $this->filesystem = $filesystem;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->defaultLocales = $localeCodes;
-        $this->rootDir = $rootDir;
     }
 
     /**
@@ -71,7 +54,7 @@ class AssetsCommand extends Command
         $this->commandExecutor = new CommandExecutor(
             $input,
             $output,
-            $this->getApplication()
+            $this->getApplication(),
         );
     }
 
@@ -84,8 +67,8 @@ class AssetsCommand extends Command
 
         $event = new GenericEvent();
         $event->setArguments([
-            'clean'   => $input->getOption('clean'),
-            'symlink' => $input->getOption('symlink')
+            'clean' => $input->getOption('clean'),
+            'symlink' => $input->getOption('symlink'),
         ]);
 
         $this->eventDispatcher->dispatch($event, InstallerEvents::PRE_ASSETS_DUMP);

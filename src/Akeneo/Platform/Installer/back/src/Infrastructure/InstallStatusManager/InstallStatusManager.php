@@ -9,7 +9,7 @@ use Akeneo\Platform\Installer\Infrastructure\Persistence\Sql\GetResetEvents;
 use Doctrine\DBAL\Exception\TableNotFoundException;
 
 /**
- * Checks whether the PIM has already been installed
+ * Checks whether the PIM has already been installed.
  *
  * @author    Vincent Berruchon <vincent.berruchon@akeneo.com>
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>
@@ -28,13 +28,13 @@ class InstallStatusManager
      * Returns null if the PIM not installed or returns the timestamp of creation of the 'pim_user' table.
      * Definition of PIM not installed:
      * - no 'install_data' value in pim_configuration table
-     * - no pim_configuration table at all (happens at first install)
+     * - no pim_configuration table at all (happens at first install).
      */
     public function getPimInstallDateTime(): ?\DateTime
     {
         try {
             $installDatetime = ($this->installDatetimeQuery)();
-        } catch (TableNotFoundException $e) {
+        } catch (TableNotFoundException) {
             return null;
         }
 
@@ -45,7 +45,7 @@ class InstallStatusManager
     {
         try {
             $resetEvents = ($this->getResetEvents)();
-        } catch (TableNotFoundException $e) {
+        } catch (TableNotFoundException) {
             return [];
         }
 

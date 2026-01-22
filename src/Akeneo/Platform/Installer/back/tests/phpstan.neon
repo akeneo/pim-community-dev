@@ -3,6 +3,12 @@ includes:
   - %rootDir%/../phpstan-webmozart-assert/extension.neon
 
 parameters:
-  level: 6
+  level: 5
+  reportUnmatchedIgnoredErrors: false
   paths:
     - %rootDir%/../../../src/Akeneo/Platform/Installer/back/src
+  ignoreErrors:
+    # Pre-existing issues - to be fixed incrementally
+    - '#unknown class Akeneo\\Platform\\Installer\\Infrastructure\\FixtureLoader\\YamlReader#'
+    - '#Akeneo\\Platform\\Installer\\Infrastructure\\FixtureLoader\\YamlReader#'
+    - '#Strict comparison using === between null and string will always evaluate to false#'

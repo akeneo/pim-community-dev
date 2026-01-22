@@ -5,5 +5,8 @@ parameters:
     excludePaths:
         analyse:
             - %rootDir%/../../../src/Akeneo/Pim/Enrichment/Product/back/Test
+    ignoreErrors:
+        # EE-only class, not available in Community Edition
+        - '#Akeneo\\Pim\\Permission\\Bundle\\Enrichment\\Storage\\Sql\\Category\\GetGrantedCategoryCodes#'
 includes:
     - %rootDir%/../../../vendor/phpstan/phpstan-webmozart-assert/extension.neon

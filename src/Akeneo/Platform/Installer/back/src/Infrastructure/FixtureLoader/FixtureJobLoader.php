@@ -6,11 +6,10 @@ use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Doctrine\Persistence\ObjectRepository;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Load in database the job instances that can be used to install the PIM, once install, these job instance can be
- * removed
+ * removed.
  *
  * @author    Julien Janvier <julien.janvier@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -19,41 +18,14 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class FixtureJobLoader
 {
     /** @staticvar */
-    const JOB_TYPE = 'fixtures';
+    final public const JOB_TYPE = 'fixtures';
 
-    /** @var JobInstancesBuilder */
-    private $jobInstancesBuilder;
-
-    /** @var JobInstancesConfigurator */
-    private $jobInstancesConfigurator;
-
-    /** @var BulkSaverInterface */
-    private $jobInstanceSaver;
-
-    /** @var BulkRemoverInterface */
-    private $jobInstanceRemover;
-
-    /** @var ObjectRepository */
-    private $jobInstanceRepository;
-
-    public function __construct(
-        JobInstancesBuilder $jobInstancesBuilder,
-        JobInstancesConfigurator $jobInstancesConfigurator,
-        BulkSaverInterface $jobInstanceSaver,
-        BulkRemoverInterface $jobInstanceRemover,
-        ObjectRepository $jobInstanceRepository
-    ) {
-        $this->jobInstancesBuilder = $jobInstancesBuilder;
-        $this->jobInstancesConfigurator = $jobInstancesConfigurator;
-        $this->jobInstanceSaver = $jobInstanceSaver;
-        $this->jobInstanceRemover = $jobInstanceRemover;
-        $this->jobInstanceRepository = $jobInstanceRepository;
+    public function __construct(private readonly JobInstancesBuilder $jobInstancesBuilder, private readonly JobInstancesConfigurator $jobInstancesConfigurator, private readonly BulkSaverInterface $jobInstanceSaver, private readonly BulkRemoverInterface $jobInstanceRemover, private readonly ObjectRepository $jobInstanceRepository)
+    {
     }
 
     /**
-     * Load the fixture jobs in database
-     *
-     * @param array $replacePaths
+     * Load the fixture jobs in database.
      *
      * @throws \Exception
      */
@@ -65,7 +37,7 @@ class FixtureJobLoader
     }
 
     /**
-     * Deletes all the fixtures job
+     * Deletes all the fixtures job.
      */
     public function deleteJobInstances()
     {
@@ -74,31 +46,30 @@ class FixtureJobLoader
     }
 
     /**
-     * Get the list of stored jobs
+     * Get the list of stored jobs.
      *
      * @return JobInstance[]
      */
     public function getLoadedJobInstances()
     {
-        $jobs = $this->jobInstanceRepository->findBy(['type' => self::JOB_TYPE]);
-
-        return $jobs;
+        return $this->jobInstanceRepository->findBy(['type' => self::JOB_TYPE]);
     }
 
     /**
      * @param JobInstance[] $jobInstances
-     * @param array         $replacePaths
-     * @throws \Exception
+     *
      * @return JobInstance[]
+     *
+     * @throws \Exception
      */
     protected function configureJobInstances(string $catalogPath, array $jobInstances, array $replacePaths)
     {
-        if (0 === count($replacePaths)) {
+        if ([] === $replacePaths) {
             return $this->jobInstancesConfigurator->configureJobInstancesWithInstallerData($catalogPath, $jobInstances);
         } else {
             return $this->jobInstancesConfigurator->configureJobInstancesWithReplacementPaths(
                 $jobInstances,
-                $replacePaths
+                $replacePaths,
             );
         }
     }

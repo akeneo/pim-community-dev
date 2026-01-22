@@ -14,18 +14,8 @@ use Symfony\Component\Finder\Finder;
  */
 class AssetsInstaller
 {
-    private Filesystem $filesystem;
-    private string $originDir;
-    private string $targetDir;
-
-    public function __construct(
-        Filesystem $filesystem,
-        string $originDir,
-        string $targetDir
-    ) {
-        $this->filesystem = $filesystem;
-        $this->originDir = $originDir;
-        $this->targetDir = $targetDir;
+    public function __construct(private readonly Filesystem $filesystem, private readonly string $originDir, private readonly string $targetDir)
+    {
     }
 
     public function installAssets(bool $shouldSymlink): void
@@ -46,7 +36,7 @@ class AssetsInstaller
     {
         try {
             $this->symlink(true);
-        } catch (IOException $e) {
+        } catch (IOException) {
             $this->absoluteSymlinkWithFallback();
         }
     }
@@ -60,7 +50,7 @@ class AssetsInstaller
     {
         try {
             $this->symlink();
-        } catch (IOException $e) {
+        } catch (IOException) {
             // fall back to copy
             $this->hardCopy();
         }
@@ -68,8 +58,6 @@ class AssetsInstaller
 
     /**
      * Creates symbolic link.
-     *
-     * @param bool   $relative
      *
      * @throws IOException if link can not be created
      */
@@ -82,12 +70,7 @@ class AssetsInstaller
         }
         $this->filesystem->symlink($originDir, $this->targetDir);
         if (!file_exists($this->targetDir)) {
-            throw new IOException(
-                sprintf('Symbolic link "%s" was created but appears to be broken.', $this->targetDir),
-                0,
-                null,
-                $this->targetDir
-            );
+            throw new IOException(sprintf('Symbolic link "%s" was created but appears to be broken.', $this->targetDir), 0, null, $this->targetDir);
         }
     }
 

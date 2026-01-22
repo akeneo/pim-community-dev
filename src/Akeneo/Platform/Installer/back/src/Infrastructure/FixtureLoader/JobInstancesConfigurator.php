@@ -20,19 +20,17 @@ class JobInstancesConfigurator
     /** @var FixturePathProvider */
     protected $pathProvider;
 
-    /**
-     * @param FixturePathProvider $pathProvider
-     */
     public function __construct(FixturePathProvider $pathProvider)
     {
         $this->pathProvider = $pathProvider;
     }
 
     /**
-     * The standard method to configure job instances with files provided in an install fixtures set
+     * The standard method to configure job instances with files provided in an install fixtures set.
+     *
+     * @return JobInstance[]
      *
      * @throws \Exception
-     * @return JobInstance[]
      */
     public function configureJobInstancesWithInstallerData(string $catalogPath, array $jobInstances)
     {
@@ -47,13 +45,7 @@ class JobInstancesConfigurator
 
             $configuration['storage']['file_path'] = sprintf('%s%s', $installerDataPath, $configuration['storage']['file_path']);
             if (!is_readable($configuration['storage']['file_path'])) {
-                throw new \Exception(
-                    sprintf(
-                        'The job "%s" can\'t be processed because the file "%s" is not readable',
-                        $jobInstance->getCode(),
-                        $configuration['storage']['file_path']
-                    )
-                );
+                throw new \Exception(sprintf('The job "%s" can\'t be processed because the file "%s" is not readable', $jobInstance->getCode(), $configuration['storage']['file_path']));
             }
             $jobInstance->setRawParameters($configuration);
             $configuredJobInstances[] = $jobInstance;
@@ -65,12 +57,13 @@ class JobInstancesConfigurator
     /**
      * An alternative methods with configure job instance with replacement paths, please note that we can configure
      * here several job instances for a same job, for instance loading users.csv with a Community Edition file and
-     * with an Enterprise Edition file
+     * with an Enterprise Edition file.
      *
      * @param JobInstance[] $jobInstances
-     * @param array $replacePaths
-     * @throws \Exception
+     *
      * @return JobInstance[]
+     *
+     * @throws \Exception
      */
     public function configureJobInstancesWithReplacementPaths(array $jobInstances, array $replacePaths)
     {
@@ -88,13 +81,7 @@ class JobInstancesConfigurator
                 $configuredJobInstance->setCode($configuredJobInstance->getCode().''.$counter++);
                 $configuration['storage']['file_path'] = $replacePath;
                 if (!is_readable($configuration['storage']['file_path'])) {
-                    throw new \Exception(
-                        sprintf(
-                            'The job "%s" can\'t be processed because the file "%s" is not readable',
-                            $configuredJobInstance->getCode(),
-                            $configuration['storage']['file_path']
-                        )
-                    );
+                    throw new \Exception(sprintf('The job "%s" can\'t be processed because the file "%s" is not readable', $configuredJobInstance->getCode(), $configuration['storage']['file_path']));
                 }
                 $configuredJobInstance->setRawParameters($configuration);
                 $configuredJobInstances[] = $configuredJobInstance;
