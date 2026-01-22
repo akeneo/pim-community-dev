@@ -11,11 +11,12 @@ RUN echo 'path-exclude=/usr/share/man/*' > /etc/dpkg/dpkg.cfg.d/path_exclusions 
     apt-get clean && apt-get --yes --quiet autoremove --purge && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# NodeJS 18 and Yarn
-RUN sh -c 'wget -q -O - https://deb.nodesource.com/gpgkey/nodesource.gpg.key | APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=DontWarn apt-key add -' && \
-    sh -c 'echo "deb https://deb.nodesource.com/node_18.x bullseye main" > /etc/apt/sources.list.d/nodesource.list' && \
-    sh -c 'wget -q -O - https://dl.yarnpkg.com/debian/pubkey.gpg | APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=DontWarn apt-key add -' && \
-    sh -c 'echo "deb https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list' && \
+# NodeJS 18 and Yarn (using new NodeSource signing key)
+RUN mkdir -p /etc/apt/keyrings && \
+    wget -qO- https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg && \
+    echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_18.x nodistro main" > /etc/apt/sources.list.d/nodesource.list && \
+    wget -qO- https://dl.yarnpkg.com/debian/pubkey.gpg | gpg --dearmor -o /etc/apt/keyrings/yarn.gpg && \
+    echo "deb [signed-by=/etc/apt/keyrings/yarn.gpg] https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list && \
     apt-get update && \
     apt-get install -y nodejs yarn \
     && apt-get clean && apt-get -y -q autoremove --purge \
