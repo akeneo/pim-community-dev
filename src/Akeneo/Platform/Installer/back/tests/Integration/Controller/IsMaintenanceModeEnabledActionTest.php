@@ -21,6 +21,7 @@ class IsMaintenanceModeEnabledActionTest extends ControllerIntegrationTestCase
     {
         parent::setUp();
         $this->connection = $this->get('database_connection');
+        $this->featureFlags->enable('reset_pim');
 
         $this->logAs('julia');
     }
