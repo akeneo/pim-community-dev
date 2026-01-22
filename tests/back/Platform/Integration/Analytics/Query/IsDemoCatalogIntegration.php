@@ -45,7 +45,7 @@ final class IsDemoCatalogIntegration extends TestCase
         // test both CE and EE fixtures as the path is the same
         $this->featureFlags->enable('import_export_local_storage');
         $this->fixtureJobLoader->loadJobInstances($this->getParameter('kernel.project_dir') . '/src/Akeneo/Platform/Installer/back/src/Infrastructure/Symfony/Resources/fixtures/minimal');
-        $fixturePath = $this->getParameter('kernel.project_dir') . 'src/Akeneo/Platform/Installer/back/src/Infrastructure/Symfony/Resources/fixtures/icecat_demo_dev/';
+        $fixturePath = $this->getParameter('kernel.project_dir') . '/src/Akeneo/Platform/Installer/back/src/Infrastructure/Symfony/Resources/fixtures/icecat_demo_dev/';
 
         $this->jobLauncher->launchImport('fixtures_channel_csv', file_get_contents($fixturePath . 'channels.csv'));
         $this->jobLauncher->launchImport('fixtures_user_csv', file_get_contents($fixturePath . 'users.csv'));
