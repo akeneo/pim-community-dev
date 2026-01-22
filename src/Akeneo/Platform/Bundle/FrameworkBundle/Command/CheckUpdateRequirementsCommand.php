@@ -3,8 +3,8 @@
 namespace Akeneo\Platform\Bundle\FrameworkBundle\Command;
 
 use Akeneo\Tool\Bundle\ElasticsearchBundle\ClientRegistry;
-use Elasticsearch\Client;
-use Elasticsearch\ClientBuilder;
+use Elastic\Elasticsearch\Client;
+use Elastic\Elasticsearch\ClientBuilder;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
@@ -52,7 +52,7 @@ class CheckUpdateRequirementsCommand extends Command
         $firstElasticsearchHost = current($this->elasticsearchHosts);
         $registeredAlias = $this->getAliasUsedByThePIM();
 
-        $indexConfigurations = $this->client->indices()->get(['index' => '*']);
+        $indexConfigurations = $this->client->indices()->get(['index' => '*'])->asArray();
         foreach ($indexConfigurations as $indexName => $indexConfiguration) {
             $aliasName = $indexName;
             if (!empty($indexConfiguration['aliases'])) {

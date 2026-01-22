@@ -8,9 +8,10 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\DualIndexationClient;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration\Loader;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
-use Elasticsearch\Client as NativeClient;
-use Elasticsearch\ClientBuilder;
-use Elasticsearch\Namespaces\IndicesNamespace;
+use Elastic\Elasticsearch\Client as NativeClient;
+use Elastic\Elasticsearch\ClientBuilder;
+use Elastic\Elasticsearch\Endpoints\Indices;
+use Elastic\Elasticsearch\Response\Elasticsearch as ElasticsearchResponse;
 use PhpSpec\ObjectBehavior;
 
 class DualIndexationClientSpec extends ObjectBehavior
@@ -40,7 +41,7 @@ class DualIndexationClientSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(Client::class);
     }
 
-    function it_indexes_on_both_clients(NativeClient $nativeClient, Client $dualClient)
+    function it_indexes_on_both_clients(NativeClient $nativeClient, Client $dualClient, ElasticsearchResponse $response)
     {
         $nativeClient->index(
             [
@@ -49,14 +50,15 @@ class DualIndexationClientSpec extends ObjectBehavior
                 'body' => ['a key' => 'a value'],
                 'refresh' => 'wait_for',
             ]
-        )->willReturn(['errors' => false]);
+        )->willReturn($response);
+        $response->asArray()->willReturn(['errors' => false]);
         $dualClient->index('identifier', ['a key' => 'a value'], Refresh::waitFor())->shouldBeCalled();
 
         $this->index('identifier', ['a key' => 'a value'], Refresh::waitFor())
             ->shouldReturn(['errors' => false]);
     }
 
-    function it_bulk_indexes_on_both_clients(NativeClient $nativeClient, Client $dualClient)
+    function it_bulk_indexes_on_both_clients(NativeClient $nativeClient, Client $dualClient, ElasticsearchResponse $response)
     {
         $expectedResponse = [
             'took' => 1,
@@ -81,7 +83,8 @@ class DualIndexationClientSpec extends ObjectBehavior
                 ['identifier' => 'bar', 'name' => 'a name'],
             ],
             'refresh' => 'wait_for',
-        ])->shouldBeCalled()->willReturn($expectedResponse);;
+        ])->shouldBeCalled()->willReturn($response);
+        $response->asArray()->willReturn($expectedResponse);
 
         $documents = [
             ['identifier' => 'foo', 'name' => 'a name'],
@@ -93,23 +96,25 @@ class DualIndexationClientSpec extends ObjectBehavior
         $this->bulkIndexes($documents, 'identifier', Refresh::waitFor())->shouldReturn($expectedResponse);
     }
 
-    function it_deletes_by_query_on_both_clients(NativeClient $nativeClient, Client $dualClient)
+    function it_deletes_by_query_on_both_clients(NativeClient $nativeClient, Client $dualClient, ElasticsearchResponse $response)
     {
         $query = ['foo' => 'bar'];
 
         $nativeClient->deleteByQuery([
             'index' => 'an_index_name',
             'body' => $query,
-        ])->shouldBeCalled();
+        ])->shouldBeCalled()->willReturn($response);
+        $response->asArray()->willReturn(['deleted' => 1]);
         $dualClient->deleteByQuery($query)->shouldBeCalled();
 
         $this->deleteByQuery($query);
     }
 
-    function it_refreshes_both_indexes(NativeClient $nativeClient, Client $dualClient, IndicesNamespace $indices)
+    function it_refreshes_both_indexes(NativeClient $nativeClient, Client $dualClient, Indices $indices, ElasticsearchResponse $response)
     {
         $nativeClient->indices()->willReturn($indices);
-        $indices->refresh(['index' => 'an_index_name'])->willReturn(['errors' => false]);
+        $indices->refresh(['index' => 'an_index_name'])->willReturn($response);
+        $response->asArray()->willReturn(['errors' => false]);
 
         $dualClient->refreshIndex()->shouldBeCalled();
 

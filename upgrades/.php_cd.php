@@ -16,8 +16,8 @@ $rules = [
             'Doctrine\DBAL',
             'Doctrine\Migrations',
             // Expected dependencies for ES:
-            'Elasticsearch\ClientBuilder',
-            'Elasticsearch\Client',
+            'Elastic\Elasticsearch\ClientBuilder',
+            'Elastic\Elasticsearch\Client',
             'Akeneo\Tool\Bundle\ElasticsearchBundle\Client',
             // Required for accessing DBAL & ES services:
             'Symfony\Component\DependencyInjection\ContainerAwareInterface',

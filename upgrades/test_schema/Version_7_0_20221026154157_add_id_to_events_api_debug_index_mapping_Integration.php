@@ -8,7 +8,7 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Model\EventsApiDebugLogLevels;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration\Loader;
-use Elasticsearch\Client as NativeClient;
+use Elastic\Elasticsearch\Client as NativeClient;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Yaml\Yaml;
@@ -78,7 +78,7 @@ class Version_7_0_20221026154157_add_id_to_events_api_debug_index_mapping_Integr
 
         $documents = $this->nativeClient->search([
             'index' => self::getContainer()->getParameter('events_api_debug_index_name'),
-        ]);
+        ])->asArray();
         self::assertSame([
             'id' => 'aa63292c-a06c-4c50-afb9-c98c97dc8a13',
             'timestamp' => '1667946703',
@@ -121,7 +121,7 @@ class Version_7_0_20221026154157_add_id_to_events_api_debug_index_mapping_Integr
     {
         $mapping = current($this->nativeClient->indices()->getMapping(
             ['index' => $this->eventsApiDebugClient->getIndexName()]
-        ));
+        )->asArray());
 
         return $mapping['mappings']['properties'] ?? [];
     }

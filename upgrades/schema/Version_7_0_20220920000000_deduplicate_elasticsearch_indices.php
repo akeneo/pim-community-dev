@@ -6,7 +6,7 @@ namespace Pim\Upgrade\Schema;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
-use Elasticsearch\Client;
+use Elastic\Elasticsearch\Client;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -35,7 +35,7 @@ final class Version_7_0_20220920000000_deduplicate_elasticsearch_indices extends
     private function removeDuplicatedIndices(string $alias): void
     {
         $esClient = $this->getEsClient();
-        $indices = $esClient->indices()->getAlias(['name' => $alias]);
+        $indices = $esClient->indices()->getAlias(['name' => $alias])->asArray();
 
         if (\count($indices) <= 1) {
             return;

@@ -15,8 +15,8 @@ namespace Akeneo\Tool\Bundle\ElasticsearchBundle\tests\integration;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Elasticsearch\Client;
-use Elasticsearch\ClientBuilder;
+use Elastic\Elasticsearch\Client;
+use Elastic\Elasticsearch\ClientBuilder;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -91,7 +91,7 @@ class UpdateIndexVersionIntegration extends TestCase
         $clientBuilder->setHosts([$this->getParameter('index_hosts')]);
         $client = $clientBuilder->build();
 
-        $aliasConfiguration = $client->indices()->get(['index' => $this->productAndProductModelIndexName]);
+        $aliasConfiguration = $client->indices()->get(['index' => $this->productAndProductModelIndexName])->asArray();
         $indexNames = array_keys($aliasConfiguration);
 
         if (count($indexNames) !== 1) {
@@ -103,14 +103,14 @@ class UpdateIndexVersionIntegration extends TestCase
 
     private function getNumberOfIndexedProductAndProductModel(): int
     {
-        $response = $this->getClient()->count(['index' => $this->productAndProductModelIndexName]);
+        $response = $this->getClient()->count(['index' => $this->productAndProductModelIndexName])->asArray();
 
         return $response['count'];
     }
 
     private function getFirstProductAndProductModel()
     {
-        $response = $this->getClient()->search(['index' => $this->productAndProductModelIndexName, "size" => 1]);
+        $response = $this->getClient()->search(['index' => $this->productAndProductModelIndexName, "size" => 1])->asArray();
 
         return $response['hits']['hits'][0]['_source'];
     }

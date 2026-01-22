@@ -92,7 +92,7 @@
         "doctrine/orm": "^2.9.0",
         "doctrine/persistence": "^2.2.3",
         "dompdf/dompdf": "2.0.3",
-        "elasticsearch/elasticsearch": "7.11.0",
+        "elasticsearch/elasticsearch": "^8.15",
         "friendsofsymfony/jsrouting-bundle": "3.2.1",
         "friendsofsymfony/rest-bundle": "^3.4.0",
         "gedmo/doctrine-extensions": "^3.2.0",
@@ -156,6 +156,7 @@
         "akeneo/php-coupling-detector": "^0.8.1",
         "behat/mink-selenium2-driver": "^1.7",
         "blackfire/php-sdk": "^1.25",
+        "dg/bypass-finals": "^1.5",
         "behat/mink": "^1.12",
         "behat/mink-browserkit-driver": "^2.3",
         "friends-of-behat/mink-extension": "^2.5.0",
@@ -205,9 +206,10 @@
     "config": {
         "sort-packages": true,
         "allow-plugins": {
-            "symfony/flex": true,
+            "composer/package-versions-deprecated": true,
             "dealerdirect/phpcodesniffer-composer-installer": true,
-            "composer/package-versions-deprecated": true
+            "php-http/discovery": true,
+            "symfony/flex": true
         },
         "audit": {
             "block-insecure": false

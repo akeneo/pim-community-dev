@@ -4,7 +4,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Bundle\Command;
 
 use Akeneo\Pim\Enrichment\Bundle\Command\BackoffElasticSearchStateHandler;
 use Akeneo\Pim\Enrichment\Bundle\Command\BulkEsHandlerInterface;
-use Elasticsearch\Common\Exceptions\BadRequest400Exception;
+use Elastic\Elasticsearch\Exception\ClientResponseException;
 use PhpSpec\ObjectBehavior;
 use PHPStan\Type\Php\ArgumentBasedFunctionReturnTypeExtension;
 use Prophecy\Argument;
@@ -25,14 +25,14 @@ class BackoffElasticSearchStateHandlerSpec extends ObjectBehavior
     public function it_will_stop_after_a_403_response(BulkEsHandlerInterface $bulkEsHandler)
     {
         $codes = range(1, 17);
-        $bulkEsHandler->bulkExecute(Argument::any())->willThrow(new BadRequest400Exception("", Response::HTTP_FORBIDDEN));
-        $this->shouldThrow(BadRequest400Exception::class)->during('bulkExecute', [$codes,$bulkEsHandler]);
+        $bulkEsHandler->bulkExecute(Argument::any())->willThrow(new ClientResponseException("", Response::HTTP_FORBIDDEN));
+        $this->shouldThrow(ClientResponseException::class)->during('bulkExecute', [$codes,$bulkEsHandler]);
         $bulkEsHandler->bulkExecute(Argument::any())->shouldHaveBeenCalledOnce();
     }
 
     public function it_will_make_several_attempts_reducing_batch_size(BulkEsHandlerInterface $bulkEsHandler) {
         $codes = range(1, 17);
-        $badRequest400Exception = new BadRequest400Exception("", Response::HTTP_TOO_MANY_REQUESTS);
+        $badRequest400Exception = new ClientResponseException("", Response::HTTP_TOO_MANY_REQUESTS);
         $bulkEsHandler->bulkExecute(Argument::any())->willThrow($badRequest400Exception);
         $this->shouldThrow($badRequest400Exception)->during('bulkExecute', [$codes,$bulkEsHandler]);
         $bulkEsHandler->bulkExecute(Argument::any())->shouldHaveBeenCalledTimes(3);
@@ -43,7 +43,7 @@ class BackoffElasticSearchStateHandlerSpec extends ObjectBehavior
 
     public function it_will_reset_decrease_batch_size_after_error_and_reset_after_success(BulkEsHandlerInterface $bulkEsHandler) {
         $codes = range(1, 17);
-        $badRequest400Exception = new BadRequest400Exception("", Response::HTTP_TOO_MANY_REQUESTS);
+        $badRequest400Exception = new ClientResponseException("", Response::HTTP_TOO_MANY_REQUESTS);
         $bulkEsHandler->bulkExecute($codes)->willThrow($badRequest400Exception);
         $bulkEsHandler->bulkExecute(range(1,8))->willReturn(8);
         $bulkEsHandler->bulkExecute(range(9,16))->willReturn(8);

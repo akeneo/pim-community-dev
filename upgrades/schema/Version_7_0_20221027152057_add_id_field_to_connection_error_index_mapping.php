@@ -6,7 +6,7 @@ namespace Pim\Upgrade\Schema;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
-use Elasticsearch\ClientBuilder;
+use Elastic\Elasticsearch\ClientBuilder;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Yaml\Yaml;
@@ -29,7 +29,7 @@ final class Version_7_0_20221027152057_add_id_field_to_connection_error_index_ma
 
         $client = $builder->setHosts([$indexHosts])->build()->indices();
 
-        $existingMapping = $client->getMapping(['index' => $connectionErrorIndexName]);
+        $existingMapping = $client->getMapping(['index' => $connectionErrorIndexName])->asArray();
         if (!\is_array($existingMapping) || !isset(current($existingMapping)['mappings']['properties'])) {
             throw new \RuntimeException('Unable to retrieve existing mapping.');
         }
@@ -53,11 +53,11 @@ final class Version_7_0_20221027152057_add_id_field_to_connection_error_index_ma
     {
         $builder = $this->container->get('akeneo_elasticsearch.client_builder');
         $builder->setHosts([$this->container->getParameter('index_hosts')]);
-        /** @var \Elasticsearch\Client $client */
+        /** @var \Elastic\Elasticsearch\Client $client */
         $client = $builder->build();
         $alias = $this->container->getParameter('connection_error_index_name');
         $copy = sprintf('%s_copy', $alias);
-        $indice = array_keys($client->indices()->getAlias(['name' => $alias]))[0];
+        $indice = array_keys($client->indices()->getAlias(['name' => $alias])->asArray())[0];
 
         $mapping = $this->getMappingConfiguration();
 

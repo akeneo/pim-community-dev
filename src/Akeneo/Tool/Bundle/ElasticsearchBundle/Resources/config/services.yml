@@ -1,5 +1,5 @@
 parameters:
-    akeneo_elasticsearch.client_builder.class: 'Elasticsearch\ClientBuilder'
+    akeneo_elasticsearch.client_builder.class: 'Elastic\Elasticsearch\ClientBuilder'
     akeneo_elasticsearch.registry.clients.class: 'Akeneo\Tool\Bundle\ElasticsearchBundle\ClientRegistry'
     env(APP_ELASTICSEARCH_TOTAL_FIELDS_LIMIT): '0'
     env(APP_ELASTICSEARCH_MAX_CHUNK_SIZE_CHARACTERS): '100000000'

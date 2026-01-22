@@ -12,7 +12,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\CommandLauncher;
-use Elasticsearch\Common\Exceptions\Missing404Exception;
+use Elastic\Elasticsearch\Exception\ClientResponseException;
 use PHPUnit\Framework\Assert;
 use Ramsey\Uuid\UuidInterface;
 
@@ -168,8 +168,11 @@ class CalculateCompletenessCommandIntegration extends TestCase
             $this->get('akeneo_elasticsearch.client.product_and_product_model')->get(
                 sprintf('product_model_%d', $productModelId)
             );
-        } catch (Missing404Exception $e) {
-            return false;
+        } catch (ClientResponseException $e) {
+            if ($e->getCode() === 404) {
+                return false;
+            }
+            throw $e;
         }
 
         return true;

@@ -7,8 +7,8 @@ namespace Akeneo\Tool\Bundle\ElasticsearchBundle\Command;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\ClientRegistry;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\GetTotalFieldsLimit;
-use Elasticsearch\ClientBuilder;
-use Elasticsearch\Namespaces\IndicesNamespace;
+use Elastic\Elasticsearch\Client as NativeClient;
+use Elastic\Elasticsearch\ClientBuilder;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -65,16 +65,16 @@ class UpdateTotalFieldsLimitCommand extends Command
         return Command::SUCCESS;
     }
 
-    private function getIndexCurrentTotalFieldsLimit(\Elasticsearch\Client $client, string $indexName): int
+    private function getIndexCurrentTotalFieldsLimit(NativeClient $client, string $indexName): int
     {
         $indices = $client->indices();
-        $indexSettingsWithAlias = $indices->getSettings(['index' => $indexName]);
+        $indexSettingsWithAlias = $indices->getSettings(['index' => $indexName])->asArray();
         $indexSettings = array_shift($indexSettingsWithAlias)['settings'];
 
         return (int) $indexSettings['index']['mapping']['total_fields']['limit'];
     }
 
-    private function updateIndexTotalFieldsLimit(\Elasticsearch\Client $client, string $indexName, int $newLimit): void
+    private function updateIndexTotalFieldsLimit(NativeClient $client, string $indexName, int $newLimit): void
     {
         $indices = $client->indices();
         $indices->putSettings([

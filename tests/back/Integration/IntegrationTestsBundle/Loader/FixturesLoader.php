@@ -20,7 +20,7 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\ClientRegistry;
 use Akeneo\Tool\Bundle\MeasureBundle\Installer\MeasurementInstaller;
 use Doctrine\DBAL\Connection;
-use Elasticsearch\ClientBuilder;
+use Elastic\Elasticsearch\ClientBuilder;
 use League\Flysystem\DirectoryAttributes;
 use League\Flysystem\FilesystemOperator;
 use League\Flysystem\StorageAttributes;
@@ -60,7 +60,7 @@ class FixturesLoader implements FixturesLoaderInterface
     private string $databaseUser;
     private string $databasePassword;
     private string $sqlDumpDirectory;
-    private \Elasticsearch\Client $nativeElasticsearchClient;
+    private \Elastic\Elasticsearch\Client $nativeElasticsearchClient;
     private MeasurementInstaller $measurementInstaller;
     private TransportInterface $transport;
     private EventDispatcherInterface $eventDispatcher;

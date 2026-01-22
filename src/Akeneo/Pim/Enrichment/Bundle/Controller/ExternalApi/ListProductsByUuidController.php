@@ -15,8 +15,8 @@ use Akeneo\Tool\Component\Api\Exception\InvalidQueryException;
 use Akeneo\Tool\Component\Api\Pagination\PaginationTypes;
 use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use Elasticsearch\Common\Exceptions\BadRequest400Exception;
-use Elasticsearch\Common\Exceptions\ServerErrorResponseException;
+use Elastic\Elasticsearch\Exception\ClientResponseException;
+use Elastic\Elasticsearch\Exception\ServerResponseException;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -86,21 +86,23 @@ class ListProductsByUuidController
             $products = $this->listProductsByUuidQueryHandler->handle($query); // in try block as PQB is doing validation also
         } catch (InvalidQueryException $e) {
             throw new UnprocessableEntityHttpException($e->getMessage(), $e);
-        } catch (BadRequest400Exception $e) {
-            $message = json_decode($e->getMessage(), true);
-            if (
-                null !== $message && isset($message['error']['root_cause'][0]['type'])
-                && 'illegal_argument_exception' === $message['error']['root_cause'][0]['type']
-                && 0 === strpos($message['error']['root_cause'][0]['reason'], 'Result window is too large, from + size must be less than or equal to:')
-            ) {
-                throw new DocumentedHttpException(
-                    Documentation::URL_DOCUMENTATION . 'pagination.html#the-search-after-method',
-                    'You have reached the maximum number of pages you can retrieve with the "page" pagination type. Please use the search after pagination type instead',
-                    $e
-                );
+        } catch (ClientResponseException $e) {
+            if ($e->getCode() === 400) {
+                $message = json_decode($e->getMessage(), true);
+                if (
+                    null !== $message && isset($message['error']['root_cause'][0]['type'])
+                    && 'illegal_argument_exception' === $message['error']['root_cause'][0]['type']
+                    && 0 === strpos($message['error']['root_cause'][0]['reason'], 'Result window is too large, from + size must be less than or equal to:')
+                ) {
+                    throw new DocumentedHttpException(
+                        Documentation::URL_DOCUMENTATION . 'pagination.html#the-search-after-method',
+                        'You have reached the maximum number of pages you can retrieve with the "page" pagination type. Please use the search after pagination type instead',
+                        $e
+                    );
+                }
             }
 
-            throw new ServerErrorResponseException($e->getMessage(), $e->getCode(), $e);
+            throw new ServerResponseException($e->getResponse(), $e);
         }
 
         return new JsonResponse($this->normalizeProductsList($products, $query));

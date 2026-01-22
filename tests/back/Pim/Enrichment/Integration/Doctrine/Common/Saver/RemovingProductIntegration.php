@@ -6,7 +6,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
-use Elasticsearch\Common\Exceptions\Missing404Exception;
+use Elastic\Elasticsearch\Exception\ClientResponseException;
 use Ramsey\Uuid\UuidInterface;
 
 /**
@@ -75,8 +75,12 @@ class RemovingProductIntegration extends TestCase
         $found = true;
         try {
             $this->esProductAndProductModelClient->get(self::DOCUMENT_TYPE, 'product_' . $productUuid->toString());
-        } catch (Missing404Exception) {
-            $found = false;
+        } catch (ClientResponseException $e) {
+            if ($e->getCode() === 404) {
+                $found = false;
+            } else {
+                throw $e;
+            }
         }
         $this->assertFalse($found);
     }

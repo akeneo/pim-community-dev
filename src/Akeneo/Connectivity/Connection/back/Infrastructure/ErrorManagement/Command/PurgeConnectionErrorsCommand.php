@@ -7,7 +7,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\Command;
 use Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\Persistence\PurgeConnectionErrorsQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\Persistence\SelectAllAuditableConnectionCodeQuery;
 use Doctrine\DBAL\Exception\TableNotFoundException;
-use Elasticsearch\Common\Exceptions\Missing404Exception;
+use Elastic\Elasticsearch\Exception\ClientResponseException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -56,9 +56,12 @@ class PurgeConnectionErrorsCommand extends Command
             }
 
             throw $exception;
-        } catch (Missing404Exception $exception) {
-            $this->logger->warning('Elasticsearch is unavailable', ['exception' => $exception]);
-            return Command::FAILURE;
+        } catch (ClientResponseException $exception) {
+            if ($exception->getCode() === 404) {
+                $this->logger->warning('Elasticsearch index not found', ['exception' => $exception]);
+                return Command::FAILURE;
+            }
+            throw $exception;
         }
 
         return Command::SUCCESS;

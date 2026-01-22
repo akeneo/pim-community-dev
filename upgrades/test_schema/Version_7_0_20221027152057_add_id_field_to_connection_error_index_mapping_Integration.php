@@ -7,7 +7,7 @@ namespace Pim\Upgrade\Schema\Tests;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration\Loader;
-use Elasticsearch\Client as NativeClient;
+use Elastic\Elasticsearch\Client as NativeClient;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Yaml\Yaml;
 
@@ -74,7 +74,7 @@ class Version_7_0_20221027152057_add_id_field_to_connection_error_index_mapping_
 
         $documents = $this->nativeClient->search([
             'index' => self::getContainer()->getParameter('connection_error_index_name'),
-        ]);
+        ])->asArray();
         self::assertSame([
             'id' => 'aa63292c-a06c-4c50-afb9-c98c97dc8a13',
             'connection_code' => 'foo',
@@ -115,7 +115,7 @@ class Version_7_0_20221027152057_add_id_field_to_connection_error_index_mapping_
     {
         $mapping = current($this->nativeClient->indices()->getMapping(
             ['index' => $this->connectionErrorClient->getIndexName()]
-        ));
+        )->asArray());
 
         return $mapping['mappings']['properties'] ?? [];
     }

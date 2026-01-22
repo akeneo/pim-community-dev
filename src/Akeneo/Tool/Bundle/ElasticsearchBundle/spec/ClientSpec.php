@@ -8,10 +8,11 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Exception\MissingIdentifierException;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration\IndexConfiguration;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration\Loader;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
-use Elasticsearch\Client as NativeClient;
-use Elasticsearch\ClientBuilder;
-use Elasticsearch\Common\Exceptions\BadRequest400Exception;
-use Elasticsearch\Namespaces\IndicesNamespace;
+use Elastic\Elasticsearch\Client as NativeClient;
+use Elastic\Elasticsearch\ClientBuilder;
+use Elastic\Elasticsearch\Exception\ClientResponseException;
+use Elastic\Elasticsearch\Endpoints\Indices;
+use Elastic\Elasticsearch\Response\Elasticsearch as ElasticsearchResponse;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -29,7 +30,7 @@ class ClientSpec extends ObjectBehavior
         $clientBuilder->build()->willReturn($client);
     }
 
-    public function it_indexes_a_document($client)
+    public function it_indexes_a_document($client, ElasticsearchResponse $response)
     {
         $client->index(
             [
@@ -38,7 +39,8 @@ class ClientSpec extends ObjectBehavior
                 'body' => ['a key' => 'a value'],
                 'refresh' => 'wait_for',
             ]
-        )->willReturn(['errors' => false]);
+        )->willReturn($response);
+        $response->asArray()->willReturn(['errors' => false]);
 
         $this->index('identifier', ['a key' => 'a value'], Refresh::waitFor());
     }
@@ -53,9 +55,10 @@ class ClientSpec extends ObjectBehavior
         );
     }
 
-    public function it_triggers_an_exception_if_the_indexation_of_a_document_has_failed($client)
+    public function it_triggers_an_exception_if_the_indexation_of_a_document_has_failed($client, ElasticsearchResponse $response)
     {
-        $client->index(Argument::type('array'))->willReturn(
+        $client->index(Argument::type('array'))->willReturn($response);
+        $response->asArray()->willReturn(
             [
                 'errors' => true,
                 'items' => [
@@ -70,44 +73,68 @@ class ClientSpec extends ObjectBehavior
         );
     }
 
-    public function it_gets_a_document($client)
+    public function it_gets_a_document($client, ElasticsearchResponse $response)
     {
         $client->get(
             [
                 'index' => 'an_index_name',
                 'id' => 'identifier',
             ]
-        )->shouldBeCalled();
+        )->shouldBeCalled()->willReturn($response);
+        $response->asArray()->willReturn(['_source' => []]);
 
         $this->get('identifier');
     }
 
-    public function it_searches_documents($client)
+    public function it_searches_documents($client, ElasticsearchResponse $response)
     {
         $client->search(
             [
                 'index' => 'an_index_name',
                 'body' => ['a key' => 'a value'],
             ]
-        )->shouldBeCalled();
+        )->shouldBeCalled()->willReturn($response);
+        $response->asArray()->willReturn(['hits' => []]);
 
         $this->search(['a key' => 'a value']);
     }
 
-    function it_counts_documents($client)
+    function it_counts_documents($client, ElasticsearchResponse $response)
     {
         $client->count(
             [
                 'index' => 'an_index_name',
                 'body' => ['query' => 'some_query']
             ]
-        )->shouldBeCalled()->willReturn(['count' => 42]);
+        )->shouldBeCalled()->willReturn($response);
+        $response->asArray()->willReturn(['count' => 42]);
 
         $this->count(['query' => 'some_query'])->shouldReturn(['count' => 42]);
     }
 
-    public function it_multi_searches_documents($client)
+    public function it_multi_searches_documents($client, ElasticsearchResponse $response)
     {
+        $expectedResult = [
+            [
+                'took' => 51,
+                'timed_out' => false,
+                '_shards' => [
+                    'total' => 5,
+                    'successful' => 5,
+                    'failed' => 0,
+                ],
+                [
+                    'took' => 53,
+                    'timed_out' => false,
+                    '_shards' => [
+                        'total' => 7,
+                        'successful' => 5,
+                        'failed' => 0,
+                    ],
+                ],
+            ],
+        ];
+
         $client->msearch(
             [
                 'index' => 'an_index_name',
@@ -118,67 +145,31 @@ class ClientSpec extends ObjectBehavior
                     ['size' => 0, 'query' => ['match_all' => (object) []]],
                 ],
             ]
-        )->willReturn([
-            [
-                'took' => 51,
-                'timed_out' => false,
-                '_shards' => [
-                    'total' => 5,
-                    'successful' => 5,
-                    'failed' => 0,
-                ],
-                [
-                    'took' => 53,
-                    'timed_out' => false,
-                    '_shards' => [
-                        'total' => 7,
-                        'successful' => 5,
-                        'failed' => 0,
-                    ],
-                ],
-            ],
-        ]);
+        )->willReturn($response);
+        $response->asArray()->willReturn($expectedResult);
 
         $this->msearch([
             ['index' => 'another_index_name'],
             ['size' => 0, 'query' => ['match_all' => (object) []]],
             [],
             ['size' => 0, 'query' => ['match_all' => (object) []]],
-        ])->shouldReturn([
-            [
-                'took' => 51,
-                'timed_out' => false,
-                '_shards' => [
-                    'total' => 5,
-                    'successful' => 5,
-                    'failed' => 0,
-                ],
-                [
-                    'took' => 53,
-                    'timed_out' => false,
-                    '_shards' => [
-                        'total' => 7,
-                        'successful' => 5,
-                        'failed' => 0,
-                    ],
-                ],
-            ],
-        ]);
+        ])->shouldReturn($expectedResult);
     }
 
-    public function it_deletes_a_document($client)
+    public function it_deletes_a_document($client, ElasticsearchResponse $response)
     {
         $client->delete(
             [
                 'index' => 'an_index_name',
                 'id' => 'identifier',
             ]
-        )->shouldBeCalled();
+        )->shouldBeCalled()->willReturn($response);
+        $response->asArray()->willReturn(['result' => 'deleted']);
 
         $this->delete('identifier');
     }
 
-    public function it_bulk_deletes_documents($client)
+    public function it_bulk_deletes_documents($client, ElasticsearchResponse $response)
     {
         $client->bulk(
             [
@@ -197,12 +188,13 @@ class ClientSpec extends ObjectBehavior
                     ],
                 ],
             ]
-        )->shouldBeCalled();
+        )->shouldBeCalled()->willReturn($response);
+        $response->asArray()->willReturn(['errors' => false]);
 
         $this->bulkDelete([40, 33]);
     }
 
-    public function it_bulk_updates_documents($client)
+    public function it_bulk_updates_documents($client, ElasticsearchResponse $response)
     {
         $client->bulk(
             [
@@ -223,60 +215,69 @@ class ClientSpec extends ObjectBehavior
                     'params_of_id_33',
                 ],
             ]
-        )->shouldBeCalled();
+        )->shouldBeCalled()->willReturn($response);
+        $response->asArray()->willReturn(['errors' => false]);
 
         $this->bulkUpdate(['40', '33'], ['40' => 'params_of_id_40', '33' => 'params_of_id_33']);
     }
 
-    public function it_deletes_an_index_without_alias($client, IndicesNamespace $indices)
+    public function it_deletes_an_index_without_alias($client, Indices $indices, ElasticsearchResponse $aliasResponse, ElasticsearchResponse $deleteResponse)
     {
         $client->indices()->willReturn($indices);
-        $indices->existsAlias(['name' => 'an_index_name'])->willReturn(false);
-        $indices->delete(['index' => 'an_index_name'])->shouldBeCalled();
+        $indices->existsAlias(['name' => 'an_index_name'])->willReturn($aliasResponse);
+        $aliasResponse->asBool()->willReturn(false);
+        $indices->delete(['index' => 'an_index_name'])->shouldBeCalled()->willReturn($deleteResponse);
+        $deleteResponse->asArray()->willReturn(['acknowledged' => true]);
 
         $this->deleteIndex();
     }
 
-    public function it_deletes_an_index_with_alias($client, IndicesNamespace $indices)
+    public function it_deletes_an_index_with_alias($client, Indices $indices, ElasticsearchResponse $aliasResponse, ElasticsearchResponse $getAliasResponse, ElasticsearchResponse $deleteResponse)
     {
         $client->indices()->willReturn($indices);
-        $indices->existsAlias(['name' => 'an_index_name'])->willReturn(true);
+        $indices->existsAlias(['name' => 'an_index_name'])->willReturn($aliasResponse);
+        $aliasResponse->asBool()->willReturn(true);
         $expectedAlias = [
             'an_index_name_foo_20190514' => [
                 'an_index_name' => ['index_data']
             ]
         ];
-        $indices->getAlias(['name' => 'an_index_name'])->willReturn($expectedAlias);
-        $indices->delete(['index' => 'an_index_name_foo_20190514'])->shouldBeCalled();
+        $indices->getAlias(['name' => 'an_index_name'])->willReturn($getAliasResponse);
+        $getAliasResponse->asArray()->willReturn($expectedAlias);
+        $indices->delete(['index' => 'an_index_name_foo_20190514'])->shouldBeCalled()->willReturn($deleteResponse);
+        $deleteResponse->asArray()->willReturn(['acknowledged' => true]);
 
         $this->deleteIndex();
     }
 
-    function it_checks_if_an_index_exists($client, IndicesNamespace $indices)
+    function it_checks_if_an_index_exists($client, Indices $indices, ElasticsearchResponse $response)
     {
         $client->indices()->willReturn($indices);
-        $indices->exists(['index' => 'an_index_name'])->willReturn(true);
+        $indices->exists(['index' => 'an_index_name'])->willReturn($response);
+        $response->asBool()->willReturn(true);
 
         $this->hasIndex()->shouldReturn(true);
     }
 
-    function it_checks_if_an_alias_exists($client, IndicesNamespace $indices)
+    function it_checks_if_an_alias_exists($client, Indices $indices, ElasticsearchResponse $response)
     {
         $client->indices()->willReturn($indices);
-        $indices->existsAlias(['name' => 'an_index_name'])->willReturn(true);
+        $indices->existsAlias(['name' => 'an_index_name'])->willReturn($response);
+        $response->asBool()->willReturn(true);
 
         $this->hasIndexForAlias()->shouldReturn(true);
     }
 
-    function it_refreshes_an_index($client, IndicesNamespace $indices)
+    function it_refreshes_an_index($client, Indices $indices, ElasticsearchResponse $response)
     {
         $client->indices()->willReturn($indices);
-        $indices->refresh(['index' => 'an_index_name'])->shouldBeCalled();
+        $indices->refresh(['index' => 'an_index_name'])->shouldBeCalled()->willReturn($response);
+        $response->asArray()->willReturn(['_shards' => ['total' => 1, 'successful' => 1, 'failed' => 0]]);
 
         $this->refreshIndex();
     }
 
-    function it_indexes_with_bulk_several_documents($client)
+    function it_indexes_with_bulk_several_documents($client, ElasticsearchResponse $response)
     {
         $expectedResponse = [
             'took' => 1,
@@ -303,7 +304,8 @@ class ClientSpec extends ObjectBehavior
                 ],
                 'refresh' => 'wait_for',
             ]
-        )->shouldBeCalledOnce()->willReturn($expectedResponse);;
+        )->shouldBeCalledOnce()->willReturn($response);
+        $response->asArray()->willReturn($expectedResponse);
 
         $documents = [
             ['identifier' => 'foo', 'name' => 'a name'],
@@ -316,7 +318,10 @@ class ClientSpec extends ObjectBehavior
     function it_split_bulk_index_when_size_is_more_than_max_batch_size(
         NativeClient $client,
         ClientBuilder $clientBuilder,
-        Loader $indexConfigurationLoader
+        Loader $indexConfigurationLoader,
+        ElasticsearchResponse $response1,
+        ElasticsearchResponse $response2,
+        ElasticsearchResponse $response3
     ) {
         $this->beConstructedWith($clientBuilder, $indexConfigurationLoader, ['localhost:9200'], 'an_index_name', '', 200);
 
@@ -328,7 +333,8 @@ class ClientSpec extends ObjectBehavior
                 ['identifier' => 'value2', 'name' => 'name2'],
             ],
             'refresh' => 'wait_for',
-        ])->shouldBeCalledTimes(1)->willReturn([
+        ])->shouldBeCalledTimes(1)->willReturn($response1);
+        $response1->asArray()->willReturn([
             'took' => 1,
             'errors' => false,
             'items' => [
@@ -345,7 +351,8 @@ class ClientSpec extends ObjectBehavior
                 ['identifier' => 'value4', 'name' => 'name4'],
             ],
             'refresh' => 'wait_for',
-        ])->shouldBeCalledTimes(1)->willReturn([
+        ])->shouldBeCalledTimes(1)->willReturn($response2);
+        $response2->asArray()->willReturn([
             'took' => 1,
             'errors' => false,
             'items' => [
@@ -360,7 +367,8 @@ class ClientSpec extends ObjectBehavior
                 ['identifier' => 'value5', 'name' => 'name5'],
             ],
             'refresh' => 'wait_for',
-        ])->shouldBeCalledTimes(1)->willReturn([
+        ])->shouldBeCalledTimes(1)->willReturn($response3);
+        $response3->asArray()->willReturn([
             'took' => 1,
             'errors' => false,
             'items' => [
@@ -391,6 +399,13 @@ class ClientSpec extends ObjectBehavior
 
     function it_retries_bulk_index_request_when_an_error_occurred(NativeClient $client)
     {
+        $expectedResponse = ['took' => 1, 'errors' => false, 'items' => [['item_value1']]];
+        $mockResponse = new class($expectedResponse) {
+            private array $data;
+            public function __construct(array $data) { $this->data = $data; }
+            public function asArray(): array { return $this->data; }
+        };
+
         $isFirstCall = true;
         $client->bulk([
             'body' => [
@@ -400,13 +415,13 @@ class ClientSpec extends ObjectBehavior
             'refresh' => 'wait_for',
         ])
         ->shouldBeCalledTimes(2)
-        ->will(function () use (&$isFirstCall) {
+        ->will(function () use (&$isFirstCall, $mockResponse) {
             if ($isFirstCall) {
                 $isFirstCall = false;
-                throw new BadRequest400Exception();
+                throw new ClientResponseException('Bad Request', 400);
             }
 
-            return ['took' => 1, 'errors' => false, 'items' => [['item_value1']]];
+            return $mockResponse;
         });
 
         $documents = [['identifier' => 'value1', 'name' => 'name1']];
@@ -420,7 +435,7 @@ class ClientSpec extends ObjectBehavior
         ]);
     }
 
-    function it_retries_bulk_index_request_by_splitting_body_when_an_error_occurred(NativeClient $client)
+    function it_retries_bulk_index_request_by_splitting_body_when_an_error_occurred(NativeClient $client, ElasticsearchResponse $response1, ElasticsearchResponse $response2)
     {
         $client->bulk([
             'body' => [
@@ -432,7 +447,7 @@ class ClientSpec extends ObjectBehavior
                 ['identifier' => 'value3', 'name' => 'name3'],
             ],
             'refresh' => 'wait_for',
-        ])->willThrow(BadRequest400Exception::class);
+        ])->willThrow(new ClientResponseException('Bad Request', 400));
 
         $client->bulk([
             'body' => [
@@ -442,7 +457,8 @@ class ClientSpec extends ObjectBehavior
                 ['identifier' => 'value2', 'name' => 'name2'],
             ],
             'refresh' => 'wait_for',
-        ])->shouldBeCalledTimes(1)->willReturn([
+        ])->shouldBeCalledTimes(1)->willReturn($response1);
+        $response1->asArray()->willReturn([
             'took' => 1,
             'errors' => false,
             'items' => [
@@ -457,7 +473,8 @@ class ClientSpec extends ObjectBehavior
                 ['identifier' => 'value3', 'name' => 'name3'],
             ],
             'refresh' => 'wait_for',
-        ])->shouldBeCalledTimes(1)->willReturn([
+        ])->shouldBeCalledTimes(1)->willReturn($response2);
+        $response2->asArray()->willReturn([
             'took' => 1,
             'errors' => false,
             'items' => [
@@ -497,9 +514,10 @@ class ClientSpec extends ObjectBehavior
         );
     }
 
-    public function it_triggers_an_exception_if_the_indexation_of_one_document_among_several_has_failed($client)
+    public function it_triggers_an_exception_if_the_indexation_of_one_document_among_several_has_failed($client, ElasticsearchResponse $response)
     {
-        $client->bulk(Argument::any())->willReturn(
+        $client->bulk(Argument::any())->willReturn($response);
+        $response->asArray()->willReturn(
             [
                 'errors' => true,
                 'items' => [

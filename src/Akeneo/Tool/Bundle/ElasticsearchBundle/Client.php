@@ -8,10 +8,9 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Domain\Model\ElasticsearchProjection;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Exception\IndexationException;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Exception\MissingIdentifierException;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration\Loader;
-use Elasticsearch\Client as NativeClient;
-use Elasticsearch\ClientBuilder;
-use Elasticsearch\Common\Exceptions\BadRequest400Exception;
-use Elasticsearch\Common\Exceptions\Conflict409Exception;
+use Elastic\Elasticsearch\Client as NativeClient;
+use Elastic\Elasticsearch\ClientBuilder;
+use Elastic\Elasticsearch\Exception\ClientResponseException;
 use Ramsey\Uuid\Uuid;
 
 /**
@@ -87,7 +86,7 @@ class Client
         }
 
         try {
-            $response = $this->client->index($params);
+            $response = $this->client->index($params)->asArray();
         } catch (\Exception $e) {
             throw new IndexationException($e->getMessage(), $e->getCode(), $e);
         }
@@ -162,11 +161,15 @@ class Client
         $length = count($params['body']);
         try {
             $mergedResponse = $this->doChunkedBulkIndex($params, $mergedResponse, $length);
-        } catch (BadRequest400Exception) {
-            $chunkLength = intdiv($length, self::NUMBER_OF_BATCHES_ON_RETRY);
-            $chunkLength = $chunkLength % 2 == 0 ? $chunkLength : $chunkLength + 1;
+        } catch (ClientResponseException $e) {
+            if ($e->getCode() === 400) {
+                $chunkLength = intdiv($length, self::NUMBER_OF_BATCHES_ON_RETRY);
+                $chunkLength = $chunkLength % 2 == 0 ? $chunkLength : $chunkLength + 1;
 
-            $mergedResponse = $this->doChunkedBulkIndex($params, $mergedResponse, $chunkLength);
+                $mergedResponse = $this->doChunkedBulkIndex($params, $mergedResponse, $chunkLength);
+            } else {
+                throw new IndexationException($e->getMessage(), $e->getCode(), $e);
+            }
         } catch (\Exception $e) {
             throw new IndexationException($e->getMessage(), $e->getCode(), $e);
         }
@@ -184,7 +187,7 @@ class Client
         $chunkedBody = array_chunk($params['body'], $chunkLength);
         foreach ($chunkedBody as $chunk) {
             $bulkRequest['body'] = $chunk;
-            $response = $this->client->bulk($bulkRequest);
+            $response = $this->client->bulk($bulkRequest)->asArray();
 
             if (isset($response['errors']) && true === $response['errors']) {
                 $mergedResponse['errors'] = true;
@@ -212,7 +215,7 @@ class Client
             'id' => $this->idPrefix.$id,
         ];
 
-        return $this->client->get($params);
+        return $this->client->get($params)->asArray();
     }
 
     /**
@@ -227,7 +230,7 @@ class Client
             'body' => $body,
         ];
 
-        return $this->client->search($params);
+        return $this->client->search($params)->asArray();
     }
 
     /**
@@ -242,7 +245,7 @@ class Client
             'body' => $body,
         ];
 
-        return $this->client->msearch($params);
+        return $this->client->msearch($params)->asArray();
     }
 
     /**
@@ -257,7 +260,7 @@ class Client
             'body' => $body,
         ];
 
-        return $this->client->count($params);
+        return $this->client->count($params)->asArray();
     }
 
     /**
@@ -272,7 +275,7 @@ class Client
             'id' => $this->idPrefix.$id,
         ];
 
-        return $this->client->delete($params);
+        return $this->client->delete($params)->asArray();
     }
 
     /**
@@ -293,7 +296,7 @@ class Client
             ];
         }
 
-        return $this->client->bulk($params);
+        return $this->client->bulk($params)->asArray();
     }
 
     public function bulkUpdate($documentIds, $params)
@@ -311,7 +314,7 @@ class Client
             $queries['body'][] = $params[$identifier];
         }
 
-        return $this->client->bulk($queries);
+        return $this->client->bulk($queries)->asArray();
     }
 
     /**
@@ -321,12 +324,12 @@ class Client
     {
         $indices = $this->client->indices();
         $indexName = $this->indexName;
-        if ($indices->existsAlias(['name' => $indexName])) {
-            $aliases = $indices->getAlias(['name' => $indexName]);
+        if ($indices->existsAlias(['name' => $indexName])->asBool()) {
+            $aliases = $indices->getAlias(['name' => $indexName])->asArray();
             $indexName = array_keys($aliases)[0];
         }
 
-        return $indices->delete(['index' => $indexName]);
+        return $indices->delete(['index' => $indexName])->asArray();
     }
 
     /**
@@ -347,7 +350,7 @@ class Client
             'body' => $body,
         ];
 
-        return $this->client->indices()->create($params);
+        return $this->client->indices()->create($params)->asArray();
     }
 
     /**
@@ -357,12 +360,12 @@ class Client
      */
     public function hasIndex(): bool
     {
-        return $this->client->indices()->exists(['index' => $this->indexName]);
+        return $this->client->indices()->exists(['index' => $this->indexName])->asBool();
     }
 
     public function hasIndexForAlias(): bool
     {
-        return $this->client->indices()->existsAlias(['name' => $this->indexName]);
+        return $this->client->indices()->existsAlias(['name' => $this->indexName])->asBool();
     }
 
     /**
@@ -370,7 +373,7 @@ class Client
      */
     public function refreshIndex()
     {
-        return $this->client->indices()->refresh(['index' => $this->indexName]);
+        return $this->client->indices()->refresh(['index' => $this->indexName])->asArray();
     }
 
     /**
@@ -414,7 +417,7 @@ class Client
 
     /**
      * @param array $body an array containing a query compatible with https://www.elastic.co/guide/en/elasticsearch/reference/5.5/docs-delete-by-query.html
-     * @throws Conflict409Exception
+     * @throws ClientResponseException
      */
     public function deleteByQuery(array $body): void
     {
@@ -428,10 +431,13 @@ class Client
                     'body' => $body,
                 ]);
                 return;
-            } catch (Conflict409Exception $e) {
-                $exception = $e;
-                usleep($this->maxExpectedIndexationLatencyInMicroseconds);
-                continue;
+            } catch (ClientResponseException $e) {
+                if ($e->getCode() === 409) {
+                    $exception = $e;
+                    usleep($this->maxExpectedIndexationLatencyInMicroseconds);
+                    continue;
+                }
+                throw $e;
             }
         } while ($attempts < $this->maxNumberOfRetries);
         throw $exception;

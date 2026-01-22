@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration;
 
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
-use Elasticsearch\Client as NativeClient;
-use Elasticsearch\ClientBuilder;
+use Elastic\Elasticsearch\Client as NativeClient;
+use Elastic\Elasticsearch\ClientBuilder;
 
 /**
  * The UpdateIndexMapping class needs some private services to work, we cannot use it for a migration for instance.

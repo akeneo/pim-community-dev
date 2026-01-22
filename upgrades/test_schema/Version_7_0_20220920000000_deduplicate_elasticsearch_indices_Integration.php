@@ -7,7 +7,7 @@ namespace Pim\Upgrade\Schema\Tests;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration\Loader;
-use Elasticsearch\Client;
+use Elastic\Elasticsearch\Client;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 
@@ -47,7 +47,7 @@ final class Version_7_0_20220920000000_deduplicate_elasticsearch_indices_Integra
         $esClient = $this->getEsClient();
 
         $alias = self::getContainer()->getParameter('events_api_debug_index_name');
-        $indices = $esClient->indices()->getAlias(['name' => $alias]);
+        $indices = $esClient->indices()->getAlias(['name' => $alias])->asArray();
 
         foreach (\array_keys($indices) as $indice) {
             $esClient->indices()->delete(['index' => $indice]);
@@ -82,7 +82,7 @@ final class Version_7_0_20220920000000_deduplicate_elasticsearch_indices_Integra
 
         $alias = self::getContainer()->getParameter('events_api_debug_index_name');
 
-        return $esClient->indices()->getAlias(['name' => $alias]);
+        return $esClient->indices()->getAlias(['name' => $alias])->asArray();
     }
 
     private function getEsClient(): Client

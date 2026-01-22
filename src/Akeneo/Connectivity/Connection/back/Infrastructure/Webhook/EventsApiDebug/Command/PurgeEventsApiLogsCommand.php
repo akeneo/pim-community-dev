@@ -6,8 +6,8 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\C
 
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence\PurgeEventsApiErrorLogsQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence\PurgeEventsApiSuccessLogsQuery;
-use Elasticsearch\Common\Exceptions\Missing404Exception;
-use Elasticsearch\Common\Exceptions\NoNodesAvailableException;
+use Elastic\Elasticsearch\Exception\ClientResponseException;
+use Elastic\Transport\Exception\NoNodeAvailableException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -39,7 +39,13 @@ class PurgeEventsApiLogsCommand extends Command
             $this->purgeSuccessLogsQuery->execute();
             $this->purgeErrorLogsQuery->execute((new \DateTimeImmutable('now', new \DateTimeZone('UTC')))
                 ->sub(new \DateInterval('PT72H')));
-        } catch (Missing404Exception | NoNodesAvailableException $ex) {
+        } catch (ClientResponseException $ex) {
+            if ($ex->getCode() === 404) {
+                $this->logger->warning('Elasticsearch index not found', ['exception' => $ex]);
+                return Command::FAILURE;
+            }
+            throw $ex;
+        } catch (NoNodeAvailableException $ex) {
             $this->logger->warning('Elasticsearch is unavailable', ['exception' => $ex]);
 
             return Command::FAILURE;
