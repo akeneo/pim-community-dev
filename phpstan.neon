@@ -14,3 +14,6 @@ parameters:
         - %currentWorkingDirectory%/src/Akeneo/Pim/Enrichment/Product/back/Test/Specification
         - %currentWorkingDirectory%/src/Akeneo/Pim/Enrichment/Product/back/Test/Acceptance/Specification
         - %currentWorkingDirectory%/src/Akeneo/Pim/Enrichment/Category/back/Test/Acceptance/Specification
+        # EE-only files that should not be analyzed in CE context
+        - %currentWorkingDirectory%/src/Akeneo/Pim/Enrichment/Product/back/Infrastructure/Query/Elasticsearch/ProductQueryBuilderAdapter.php
+        - %currentWorkingDirectory%/src/Akeneo/Pim/Structure/FamilyTemplate/back/tests/Integration/Infrastructure/Controller/GetFamilyTemplatesActionTest.php
