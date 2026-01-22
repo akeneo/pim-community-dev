@@ -1,4 +1,4 @@
-executor-machine: &executor-machine 'ubuntu-2004:2022.04.1'
+executor-machine: &executor-machine 'ubuntu-2204:2024.01.1'
 
 jobs:
     test_back_static_and_acceptance:
@@ -380,7 +380,7 @@ jobs:
 
     test_job_declaration:
       machine:
-        image: ubuntu-2004:2022.04.1
+        image: ubuntu-2204:2024.01.1
       resource_class: medium
       parallelism: 1
       steps:
