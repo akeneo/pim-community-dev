@@ -28,10 +28,10 @@ define(['underscore', 'oro/translator', 'oro/datafilter/choice-filter'], functio
      */
     _getOperatorChoices() {
       return {
-        '1': __('pim_datagrid.filters.common.contains'),
-        '2': __('pim_datagrid.filters.common.does_not_contain'),
-        '3': __('pim_datagrid.filters.common.equal'),
-        '4': __('pim_datagrid.filters.common.start_with'),
+        1: __('pim_datagrid.filters.common.contains'),
+        2: __('pim_datagrid.filters.common.does_not_contain'),
+        3: __('pim_datagrid.filters.common.equal'),
+        4: __('pim_datagrid.filters.common.start_with'),
         in: __('pim_datagrid.filters.common.in_list'),
         empty: __('pim_datagrid.filters.common.empty'),
         'not empty': __('pim_datagrid.filters.common.not_empty'),
