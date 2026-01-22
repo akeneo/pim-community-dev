@@ -13,6 +13,11 @@ use AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubQueueStatus;
 /**
  * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @group skip
+ *
+ * This test requires EE-only service 'dqi_launch_product_evaluations_consumer'.
+ * It should only run in EE context.
  */
 final class EvaluateAfterAttributeGroupActivateEndToEnd extends MessengerTestCase
 {
