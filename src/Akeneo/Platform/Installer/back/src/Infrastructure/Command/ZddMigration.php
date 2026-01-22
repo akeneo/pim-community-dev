@@ -9,7 +9,7 @@ namespace Akeneo\Platform\Installer\Infrastructure\Command;
  * - is too long to be executed as a standard Doctrine migration
  * - should not lock any table when running
  * - can be executed in background
- * - can be executed or not, and the code should continue to work
+ * - can be executed or not, and the code should continue to work.
  *
  * Any change in a ZDD Migration have to be reflected in the database schema. For example, if you add a column in a ZDD
  * Migration, you have to add this column in the Doctrine configuration files, to ensure the new installations doesn't

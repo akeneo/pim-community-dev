@@ -20,7 +20,7 @@ class InstallerEvent extends GenericEvent
     public function __construct(
         ?CommandExecutor $commandExecutor = null,
         ?string $subject = null,
-        array $arguments = []
+        array $arguments = [],
     ) {
         $this->commandExecutor = $commandExecutor;
 

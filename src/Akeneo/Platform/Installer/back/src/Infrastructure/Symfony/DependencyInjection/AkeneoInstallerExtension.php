@@ -30,6 +30,5 @@ class AkeneoInstallerExtension extends Extension
         $loader->load('jobs.yml');
         $loader->load('steps.yml');
         $loader->load('subscribers.yml');
-
     }
 }

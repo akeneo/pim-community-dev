@@ -22,7 +22,7 @@ final class IsMaintenanceModeEnabledHandler
 
     public function handle(): bool
     {
-        if (getenv('MAINTENANCE_MODE_ENABLED') === '1') {
+        if ('1' === getenv('MAINTENANCE_MODE_ENABLED')) {
             return true;
         }
 
