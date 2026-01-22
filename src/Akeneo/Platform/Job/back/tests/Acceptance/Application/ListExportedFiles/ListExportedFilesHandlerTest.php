@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Job\Test\Acceptance\Application\ListExportedFiles;
 
+use Akeneo\Tool\Bundle\BatchBundle\JobExecution\ExecuteJobExecutionHandlerInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFileValue;
@@ -17,14 +18,14 @@ use Ramsey\Uuid\Uuid;
 
 class ListExportedFilesHandlerTest extends TestCase
 {
-    const JOB_INSTANCE_CODE = 'csv_product_export';
+    public const JOB_INSTANCE_CODE = 'csv_product_export';
 
     private $handler;
     private $jobInstanceRepository;
     private $jobRepository;
     private $createJobExecutionHandler;
     private $executeJobExecutionHandler;
-    private $adminId;
+    private int $adminId;
 
     protected function setUp(): void
     {
@@ -33,7 +34,7 @@ class ListExportedFilesHandlerTest extends TestCase
         $this->jobInstanceRepository = $this->get('pim_enrich.repository.job_instance');
         $this->jobRepository = $this->get('akeneo_batch.job_repository');
         $this->createJobExecutionHandler = $this->get(CreateJobExecutionHandlerInterface::class);
-        $this->executeJobExecutionHandler = $this->get('Akeneo\Tool\Bundle\BatchBundle\JobExecution\ExecuteJobExecutionHandlerInterface');
+        $this->executeJobExecutionHandler = $this->get(ExecuteJobExecutionHandlerInterface::class);
 
         $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
         $this->adminId = $this->getUserId('admin');
