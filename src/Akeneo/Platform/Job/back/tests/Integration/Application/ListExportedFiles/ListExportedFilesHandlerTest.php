@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Platform\Job\Test\Acceptance\Application\ListExportedFiles;
+namespace Akeneo\Platform\Job\Test\Integration\Application\ListExportedFiles;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;

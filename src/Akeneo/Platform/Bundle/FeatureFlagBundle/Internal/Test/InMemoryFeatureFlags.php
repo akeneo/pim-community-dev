@@ -54,6 +54,15 @@ class InMemoryFeatureFlags implements FeatureFlags
         return $this->flags;
     }
 
+    /**
+     * No-op for compatibility with TestCase base class.
+     * In-memory flags don't persist to file, so nothing to delete.
+     */
+    public function deleteFile(): void
+    {
+        // No-op: in-memory flags have no file to delete
+    }
+
     private function throwExceptionIfFlagDoesNotExist(string $feature): void
     {
         $this->registry->get($feature);
