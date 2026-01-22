@@ -21,7 +21,9 @@ workflows:
             - checkout_ce:
                   filters:
                       branches:
-                          only: fix-circleci-deprecated-ubuntu-image
+                          only:
+                              - fix-circleci-deprecated-ubuntu-image
+                              - upgrade-php84
             - build_docker_images:
                   requires:
                       - checkout_ce
