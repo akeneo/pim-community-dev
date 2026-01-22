@@ -33,14 +33,14 @@ final class GetFamilyTemplatesActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_family_templates()
+    public function itReturnsFamilyTemplates()
     {
         $this->webClientHelper->callApiRoute(
             $this->client,
             self::ROUTE,
             [],
             'GET',
-            []
+            [],
         );
 
         $response = $this->client->getResponse();

@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 final class GetFamilyTemplatesAction
 {
     public function __construct(
-        private readonly FetchFamilyTemplates $fetchFamilyTemplates
+        private readonly FetchFamilyTemplates $fetchFamilyTemplates,
     ) {
     }
 

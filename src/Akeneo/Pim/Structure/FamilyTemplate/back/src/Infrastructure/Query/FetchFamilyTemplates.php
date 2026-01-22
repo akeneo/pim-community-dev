@@ -26,7 +26,7 @@ class FetchFamilyTemplates implements FetchFamilyTemplatesInterface
             'headers' => [
                 'Authorization' => 'Bearer '.$readToken,
                 'Accept' => 'application/vnd.github+json',
-            ]
+            ],
         ]);
     }
 
