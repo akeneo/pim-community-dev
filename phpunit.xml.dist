@@ -30,6 +30,7 @@
         <testsuite name="PIM_Integration_Test">
             <directory suffix="Integration.php">src</directory>
             <directory suffix="Integration.php">tests</directory>
+            <exclude>tests/enterprise</exclude>
         </testsuite>
 
         <testsuite name="PIM_Migration_Test">
