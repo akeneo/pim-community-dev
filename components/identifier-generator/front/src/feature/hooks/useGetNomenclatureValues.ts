@@ -148,53 +148,55 @@ const useGetNomenclatureValues = (
     }
   }, [selectedProperty, families, options, records]);
 
-  const data = useMemo(() => {
-    if (items.length === 0 && !records?.total_count) return [];
+  const data = useMemo(
+    () => {
+      if (items.length === 0 && !records?.total_count) return [];
 
-    let filteredButNotDisplayedDataCount = 0;
-    let filteredValuesCount = 0;
-    let hasNomenclatureValueInvalid = false;
-    const filteredData: NomenclatureLineEditProps[] = [];
-    const firstIndexToDisplay = (page - 1) * itemsPerPage;
+      let filteredButNotDisplayedDataCount = 0;
+      let filteredValuesCount = 0;
+      let hasNomenclatureValueInvalid = false;
+      const filteredData: NomenclatureLineEditProps[] = [];
+      const firstIndexToDisplay = (page - 1) * itemsPerPage;
 
-    const addFilteredData = (entity: Family | SimpleSelect) => {
-      filteredValuesCount++;
-      const currentIndex = filteredButNotDisplayedDataCount + filteredData.length;
+      const addFilteredData = (entity: Family | SimpleSelect) => {
+        filteredValuesCount++;
+        const currentIndex = filteredButNotDisplayedDataCount + filteredData.length;
 
-      if (currentIndex >= firstIndexToDisplay && currentIndex < firstIndexToDisplay + itemsPerPage) {
-        filteredData.push(getLineValue(entity));
-      } else {
-        filteredButNotDisplayedDataCount++;
+        if (currentIndex >= firstIndexToDisplay && currentIndex < firstIndexToDisplay + itemsPerPage) {
+          filteredData.push(getLineValue(entity));
+        } else {
+          filteredButNotDisplayedDataCount++;
+        }
+      };
+
+      for (const item of items) {
+        hasNomenclatureValueInvalid =
+          hasNomenclatureValueInvalid || !isValid(getValueAfterUserUpdateOrPlaceholder(item.code));
+
+        if (entityMatchSearch(item) && matchFilter(item.code)) {
+          addFilteredData(item);
+        }
       }
-    };
 
-    for (const item of items) {
-      hasNomenclatureValueInvalid =
-        hasNomenclatureValueInvalid || !isValid(getValueAfterUserUpdateOrPlaceholder(item.code));
+      setFilteredValuesCount(filteredValuesCount);
+      setHasValueInvalid(hasNomenclatureValueInvalid);
 
-      if (entityMatchSearch(item) && matchFilter(item.code)) {
-        addFilteredData(item);
-      }
-    }
-
-    setFilteredValuesCount(filteredValuesCount);
-    setHasValueInvalid(hasNomenclatureValueInvalid);
-
-    return filteredData;
-  },
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  [
-    items,
-    page,
-    itemsPerPage,
-    getLineValue,
-    isValid,
-    getValueAfterUserUpdateOrPlaceholder,
-    entityMatchSearch,
-    matchFilter,
-    typeSelectedProperty,
-    records,
-  ]);
+      return filteredData;
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [
+      items,
+      page,
+      itemsPerPage,
+      getLineValue,
+      isValid,
+      getValueAfterUserUpdateOrPlaceholder,
+      entityMatchSearch,
+      matchFilter,
+      typeSelectedProperty,
+      records,
+    ]
+  );
 
   const innerSetSearch = (search: string) => {
     setPage(1);
