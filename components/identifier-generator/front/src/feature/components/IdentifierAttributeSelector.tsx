@@ -13,7 +13,7 @@ enum Status {
 type IdentifierAttributeSelector = {
   code: AttributeCode;
   onChange: (attributeCode: AttributeCode) => void;
-}
+};
 
 const IdentifierAttributeSelector: React.FC<IdentifierAttributeSelector> = ({code, onChange}) => {
   const translate = useTranslate();
