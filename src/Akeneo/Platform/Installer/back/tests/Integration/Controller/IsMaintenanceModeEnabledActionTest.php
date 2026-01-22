@@ -23,7 +23,6 @@ class IsMaintenanceModeEnabledActionTest extends ControllerIntegrationTestCase
         $this->connection = $this->get('database_connection');
 
         $this->logAs('julia');
-        $this->featureFlags->enable('reset_pim');
     }
 
     public function test_it_returns_true_when_maintenance_mode_is_enabled(): void
