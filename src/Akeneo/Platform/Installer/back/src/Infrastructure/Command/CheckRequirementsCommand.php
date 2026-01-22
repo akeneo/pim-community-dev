@@ -4,6 +4,7 @@ namespace Akeneo\Platform\Installer\Infrastructure\Command;
 
 use Akeneo\Platform\Requirements;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Requirements\Requirement;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -56,7 +57,7 @@ class CheckRequirementsCommand extends Command
     }
 
     /**
-     * @param array<\Requirement> $collection
+     * @param array<Requirement> $collection
      */
     protected function renderTable(array $collection, string $header, OutputInterface $output): void
     {
