@@ -17,6 +17,9 @@ final class GetResetEvents
     ) {
     }
 
+    /**
+     * @return array<array{time: \DateTimeImmutable}>
+     */
     public function __invoke(): array
     {
         $sql = <<< SQL

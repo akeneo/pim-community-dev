@@ -31,6 +31,7 @@ class JobInstancesConfigurator
     /**
      * The standard method to configure job instances with files provided in an install fixtures set
      *
+     * @param JobInstance[] $jobInstances
      * @throws \Exception
      * @return JobInstance[]
      */
@@ -68,7 +69,7 @@ class JobInstancesConfigurator
      * with an Enterprise Edition file
      *
      * @param JobInstance[] $jobInstances
-     * @param array $replacePaths
+     * @param array<string, array<string>> $replacePaths
      * @throws \Exception
      * @return JobInstance[]
      */

@@ -11,9 +11,12 @@ namespace Akeneo\Platform\Installer\Infrastructure\FixtureLoader;
  */
 class FixturePathProvider
 {
-    /** @var array */
+    /** @var array<string, class-string> */
     protected $bundles;
 
+    /**
+     * @param array<string, class-string> $bundles
+     */
     public function __construct(array $bundles)
     {
         $this->bundles = $bundles;
@@ -26,8 +29,6 @@ class FixturePathProvider
      */
     public function getFixturesPath(string $catalogPath)
     {
-        $installerDataDir = null;
-
         if (preg_match('/^(?P<bundle>\w+):(?P<directory>\w+)$/', $catalogPath, $matches)) {
             $reflection = new \ReflectionClass($this->bundles[$matches['bundle']]);
             $installerDataDir = dirname($reflection->getFilename()) . '/Resources/fixtures/' . $matches['directory'];
@@ -35,7 +36,7 @@ class FixturePathProvider
             $installerDataDir = $catalogPath;
         }
 
-        if (null === $installerDataDir || !is_dir($installerDataDir)) {
+        if (!is_dir($installerDataDir)) {
             throw new \RuntimeException('Installer data directory cannot be found.');
         }
 

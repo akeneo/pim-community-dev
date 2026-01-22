@@ -30,10 +30,7 @@ class InstallCommand extends Command
         parent::__construct();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addOption('force', null, InputOption::VALUE_NONE, 'Force installation')
@@ -47,10 +44,7 @@ class InstallCommand extends Command
             );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->commandExecutor = new CommandExecutor(
             $input,
@@ -106,6 +100,8 @@ class InstallCommand extends Command
 
     /**
      * Step where the database is built, the fixtures loaded and some command scripts launched
+     *
+     * @param array<string, mixed> $arguments
      */
     protected function databaseStep(array $arguments = []): self
     {

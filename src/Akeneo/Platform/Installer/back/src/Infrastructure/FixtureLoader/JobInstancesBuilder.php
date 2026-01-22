@@ -29,14 +29,14 @@ class JobInstancesBuilder
     /** @var ItemProcessorInterface */
     protected $jobInstanceProcessor;
 
-    /** @var array */
+    /** @var array<string> */
     protected $jobsFilePaths;
 
     /**
      * @param FileLocator            $locator
      * @param Reader                 $reader
      * @param ItemProcessorInterface $processor
-     * @param array                  $jobsFilePaths
+     * @param array<string>          $jobsFilePaths
      */
     public function __construct(
         FileLocator $locator,
@@ -64,9 +64,9 @@ class JobInstancesBuilder
     }
 
     /**
-     * @return array
+     * @return array<array<string, mixed>>
      */
-    protected function readOrderedRawJobData()
+    protected function readOrderedRawJobData(): array
     {
         $rawJobs = [];
         $fileLocator = $this->getFileLocator();
@@ -99,7 +99,7 @@ class JobInstancesBuilder
     }
 
     /**
-     * @param array $rawJobs
+     * @param array<array<string, mixed>> $rawJobs
      *
      * @return JobInstance[]
      */
@@ -125,9 +125,9 @@ class JobInstancesBuilder
     }
 
     /**
-     * @return YamlReader
+     * @return Reader
      */
-    protected function getYamlReader()
+    protected function getYamlReader(): Reader
     {
         return $this->yamlReader;
     }

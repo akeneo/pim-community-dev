@@ -33,9 +33,12 @@ class FixtureJobLoader
     /** @var BulkRemoverInterface */
     private $jobInstanceRemover;
 
-    /** @var ObjectRepository */
-    private $jobInstanceRepository;
+    /** @var ObjectRepository<JobInstance> */
+    private ObjectRepository $jobInstanceRepository;
 
+    /**
+     * @param ObjectRepository<JobInstance> $jobInstanceRepository
+     */
     public function __construct(
         JobInstancesBuilder $jobInstancesBuilder,
         JobInstancesConfigurator $jobInstancesConfigurator,
@@ -53,11 +56,11 @@ class FixtureJobLoader
     /**
      * Load the fixture jobs in database
      *
-     * @param array $replacePaths
+     * @param array<string, array<string>> $replacePaths
      *
      * @throws \Exception
      */
-    public function loadJobInstances(string $catalogPath, array $replacePaths = [])
+    public function loadJobInstances(string $catalogPath, array $replacePaths = []): void
     {
         $jobInstances = $this->jobInstancesBuilder->build();
         $configuredJobInstances = $this->configureJobInstances($catalogPath, $jobInstances, $replacePaths);
@@ -67,7 +70,7 @@ class FixtureJobLoader
     /**
      * Deletes all the fixtures job
      */
-    public function deleteJobInstances()
+    public function deleteJobInstances(): void
     {
         $jobInstances = $this->jobInstanceRepository->findBy(['type' => static::JOB_TYPE]);
         $this->jobInstanceRemover->removeAll($jobInstances);
@@ -87,7 +90,7 @@ class FixtureJobLoader
 
     /**
      * @param JobInstance[] $jobInstances
-     * @param array         $replacePaths
+     * @param array<string, array<string>> $replacePaths
      * @throws \Exception
      * @return JobInstance[]
      */

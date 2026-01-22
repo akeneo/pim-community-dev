@@ -23,6 +23,9 @@ class MarkZddMigrationsAsMigratedSubscriber implements EventSubscriberInterface
     /** @var ZddMigration[] */
     private array $zddMigrations;
 
+    /**
+     * @param iterable<ZddMigration> $zddMigrations
+     */
     public function __construct(
         private Connection $connection,
         iterable $zddMigrations

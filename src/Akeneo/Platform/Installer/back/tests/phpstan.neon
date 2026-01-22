@@ -6,7 +6,3 @@ parameters:
   level: 6
   paths:
     - %rootDir%/../../../src/Akeneo/Platform/Installer/back/src
-  reportUnmatchedIgnoredErrors: false
-  ignoreErrors:
-    # Pre-existing issues - missing type hints for parameters
-    - '#has parameter .* with no value type specified in iterable type#'

@@ -41,6 +41,9 @@ class InstallStatusManager
         return $installDatetime;
     }
 
+    /**
+     * @return array<array{time: \DateTimeImmutable}>
+     */
     public function getPimResetEvents(): array
     {
         try {

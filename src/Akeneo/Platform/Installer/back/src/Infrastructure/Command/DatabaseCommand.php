@@ -50,10 +50,7 @@ class DatabaseCommand extends Command
         parent::__construct();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addOption(
@@ -87,10 +84,7 @@ class DatabaseCommand extends Command
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->commandExecutor = new CommandExecutor(
             $input,
@@ -164,7 +158,7 @@ class DatabaseCommand extends Command
      * TODO: TIP-613: This should be done with a command.
      * TODO: TIP-613: This command should be able to drop/create indexes, and/or re-index products.
      */
-    protected function resetElasticsearchIndex(OutputInterface $output)
+    protected function resetElasticsearchIndex(OutputInterface $output): void
     {
         $this->logger->info('Reset elasticsearch indexes');
 

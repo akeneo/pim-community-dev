@@ -23,6 +23,9 @@ final class MigrateZddCommand extends Command
     /** @var ZddMigration[] */
     private array $zddMigrations;
 
+    /**
+     * @param \Traversable<ZddMigration> $zddMigrations
+     */
     public function __construct(
         private Connection $connection,
         private LoggerInterface $logger,
@@ -39,7 +42,7 @@ final class MigrateZddCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('Execute ZDD Migrations');
     }
