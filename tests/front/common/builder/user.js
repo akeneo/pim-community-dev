@@ -21,13 +21,13 @@ class UserBuilder {
       display_proposals_to_review_notification: null,
       proposals_to_review_notification: null,
       avatar: {
-        filePath: ''
+        filePath: '',
       },
       meta: {
-          id: 1
+        id: 1,
       },
-      ui_locale_decimal_separator: '.'
-    }
+      ui_locale_decimal_separator: '.',
+    };
   }
 
   withUsername(username) {

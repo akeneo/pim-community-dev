@@ -1,3 +1,3 @@
 define(['routing', 'require-polyfill'], function (routing) {
-    routing.setBaseUrl('http://pim.com')
+  routing.setBaseUrl('http://pim.com');
 });

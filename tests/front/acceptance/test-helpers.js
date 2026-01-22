@@ -5,13 +5,13 @@ const createDecoratorFile = path.resolve(__dirname, './cucumber/decorators/commo
 const decorators = {};
 
 const requireDecorator = loadedDecorators => file => {
-    const decorator = require(file);
-    loadedDecorators[Object.keys(decorator)[0] || decorator.name] = decorator;
+  const decorator = require(file);
+  loadedDecorators[Object.keys(decorator)[0] || decorator.name] = decorator;
 };
 
 localeDecoratorFiles.forEach(requireDecorator(decorators));
 
 module.exports = {
   decorators: Object.assign(decorators, {createElementDecorator: require(createDecoratorFile)}),
-  tools: require(path.resolve(__dirname, './cucumber/tools.js'))
+  tools: require(path.resolve(__dirname, './cucumber/tools.js')),
 };
