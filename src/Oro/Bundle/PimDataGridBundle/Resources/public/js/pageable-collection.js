@@ -42,7 +42,7 @@ define(['underscore', 'backbone', 'backbone/pageable-collection', 'oro/app'], fu
     queryParams: _.extend({}, BackbonePageableCollection.prototype.queryParams, {
       directions: {
         '-1': 'ASC',
-        '1': 'DESC',
+        1: 'DESC',
       },
       totalRecords: undefined,
       totalPages: undefined,

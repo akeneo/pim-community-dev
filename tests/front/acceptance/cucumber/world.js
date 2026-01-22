@@ -6,10 +6,10 @@ const path = require('path');
 const htmlTemplate = fs.readFileSync(process.cwd() + '/public/test_dist/index.html', 'utf-8');
 const translations = fs.readFileSync(path.join(process.cwd(), './public/js/translation/en_US.js'), 'utf-8');
 const userBuilder = new UserBuilder();
-module.exports = function(cucumber) {
+module.exports = function (cucumber) {
   const {Before, After, Status} = cucumber;
 
-  Before({timeout: 10 * 1000}, async function() {
+  Before({timeout: 10 * 1000}, async function () {
     this.baseUrl = 'http://pim.com';
     this.browser = await puppeteer.launch({
       devtools: this.parameters.debug,
@@ -66,7 +66,7 @@ module.exports = function(cucumber) {
     await this.page.evaluate(async () => await require('pim/init-translator').fetch());
   });
 
-  After(async function(scenario) {
+  After(async function (scenario) {
     this.consoleLogs = this.consoleLogs || [];
     if (Status.FAILED === scenario.result.status) {
       if (0 < this.consoleLogs.length) {
