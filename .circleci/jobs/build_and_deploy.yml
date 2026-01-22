@@ -541,11 +541,11 @@ jobs:
                   at: ~/
             - run:
                   name: Build Akeneo PHP image
-                  command: docker build -t akeneo/pim-php-dev:8.1 .
+                  command: docker build -t akeneo/pim-php-dev:8.4 .
             - run:
                   name: Display PHP version
                   command: |
-                      docker run --rm akeneo/pim-php-dev:8.1 php -v
+                      docker run --rm akeneo/pim-php-dev:8.4 php -v
             - run:
                   name: Build Akeneo Node image
                   command: docker build -t akeneo/node:18 -f docker/Dockerfile_node .
@@ -558,5 +558,5 @@ jobs:
                   name: Push images to Dockerhub
                   command: |
                       docker login -u="$DOCKERHUB_USER" -p="$DOCKERHUB_PWD"
-                      docker push akeneo/pim-php-dev:8.1
+                      docker push akeneo/pim-php-dev:8.4
                       docker push akeneo/node:18
