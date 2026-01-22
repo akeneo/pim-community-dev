@@ -6,13 +6,7 @@ parameters:
   level: 6
   paths:
     - %rootDir%/../../../src/Akeneo/Platform/Installer/back/src
+  reportUnmatchedIgnoredErrors: false
   ignoreErrors:
-    # Pre-existing issues - missing type hints
-    - '#has no return type specified#'
-    - '#has no value type specified in iterable type#'
-    - '#does not specify its types#'
-    - '#with generic interface .* does not specify its types#'
-    - '#should return .* but returns#'
-    - '#Call to method .* on an unknown class#'
-    - '#has invalid return type#'
-    - '#Strict comparison using === between null and string will always evaluate to false#'
+    # Pre-existing issues - missing type hints for parameters
+    - '#has parameter .* with no value type specified in iterable type#'
