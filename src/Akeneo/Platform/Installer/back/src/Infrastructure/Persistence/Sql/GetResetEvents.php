@@ -32,7 +32,7 @@ final class GetResetEvents
             return [];
         }
 
-        $normalizedResetEvents = \json_decode($values, true);
+        $normalizedResetEvents = \json_decode((string) $values, true, 512, JSON_THROW_ON_ERROR);
 
         return array_map(
             static fn (array $resetEvent): array => ['time' => new \DateTimeImmutable($resetEvent['time'])],

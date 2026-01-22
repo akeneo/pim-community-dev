@@ -26,33 +26,16 @@ class AssetsCommand extends Command
     /** @var CommandExecutor */
     protected $commandExecutor;
 
-    /** @var Filesystem */
-    private $filesystem;
-
-    /** @var EventDispatcherInterface */
-    private $eventDispatcher;
-
-    /** @var array<string> */
-    private array $defaultLocales;
-
-    /** @var string */
-    private $rootDir;
-
     /**
-     * @param array<string> $localeCodes
+     * @param array<string> $defaultLocales
      */
     public function __construct(
-        Filesystem $filesystem,
-        EventDispatcherInterface $eventDispatcher,
-        array $localeCodes,
-        string $rootDir,
+        private readonly Filesystem $filesystem,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly array $defaultLocales,
+        private readonly string $rootDir,
     ) {
         parent::__construct();
-
-        $this->filesystem = $filesystem;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->defaultLocales = $localeCodes;
-        $this->rootDir = $rootDir;
     }
 
     protected function configure(): void

@@ -47,7 +47,7 @@ class CheckRequirementsCommand extends Command
         $this->renderTable($collection->getPimRequirements(), 'Pim requirements', $output);
         $this->renderTable($collection->getRecommendations(), 'Recommendations', $output);
 
-        if (count($collection->getFailedRequirements())) {
+        if ([] !== $collection->getFailedRequirements()) {
             $this->renderTable($collection->getFailedRequirements(), 'Errors', $output);
 
             throw new \RuntimeException('Some system requirements are not fulfilled. Please check output messages and fix them');

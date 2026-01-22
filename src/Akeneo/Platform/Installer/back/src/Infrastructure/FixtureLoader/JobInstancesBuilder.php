@@ -55,9 +55,8 @@ class JobInstancesBuilder
     public function build()
     {
         $rawJobs = $this->readOrderedRawJobData();
-        $jobInstances = $this->buildJobInstances($rawJobs);
 
-        return $jobInstances;
+        return $this->buildJobInstances($rawJobs);
     }
 
     /**
@@ -82,13 +81,7 @@ class JobInstancesBuilder
 
             usort(
                 $rawJobs,
-                function ($item1, $item2) {
-                    if ($item1['order'] === $item2['order']) {
-                        return 0;
-                    }
-
-                    return ($item1['order'] < $item2['order']) ? -1 : 1;
-                },
+                fn ($item1, $item2) => $item1['order'] <=> $item2['order'],
             );
         }
 

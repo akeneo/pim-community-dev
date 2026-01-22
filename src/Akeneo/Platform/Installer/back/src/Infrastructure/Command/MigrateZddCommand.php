@@ -27,8 +27,8 @@ final class MigrateZddCommand extends Command
      * @param \Traversable<ZddMigration> $zddMigrations
      */
     public function __construct(
-        private Connection $connection,
-        private LoggerInterface $logger,
+        private readonly Connection $connection,
+        private readonly LoggerInterface $logger,
         \Traversable $zddMigrations,
     ) {
         $this->zddMigrations = iterator_to_array($zddMigrations);
@@ -154,7 +154,7 @@ final class MigrateZddCommand extends Command
         SQL, [
             'code' => $this->getZddMigrationCode($zddMigration),
             'status' => 'finished',
-            'values' => \json_encode((object) []),
+            'values' => \json_encode((object) [], JSON_THROW_ON_ERROR),
         ]);
     }
 

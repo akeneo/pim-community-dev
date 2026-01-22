@@ -34,7 +34,7 @@ class InstallStatusManager
     {
         try {
             $installDatetime = ($this->installDatetimeQuery)();
-        } catch (TableNotFoundException $e) {
+        } catch (TableNotFoundException) {
             return null;
         }
 
@@ -48,7 +48,7 @@ class InstallStatusManager
     {
         try {
             $resetEvents = ($this->getResetEvents)();
-        } catch (TableNotFoundException $e) {
+        } catch (TableNotFoundException) {
             return [];
         }
 

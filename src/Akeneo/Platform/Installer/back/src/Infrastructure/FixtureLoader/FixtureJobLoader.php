@@ -18,38 +18,13 @@ use Doctrine\Persistence\ObjectRepository;
 class FixtureJobLoader
 {
     /** @staticvar */
-    public const JOB_TYPE = 'fixtures';
-
-    /** @var JobInstancesBuilder */
-    private $jobInstancesBuilder;
-
-    /** @var JobInstancesConfigurator */
-    private $jobInstancesConfigurator;
-
-    /** @var BulkSaverInterface */
-    private $jobInstanceSaver;
-
-    /** @var BulkRemoverInterface */
-    private $jobInstanceRemover;
-
-    /** @var ObjectRepository<JobInstance> */
-    private ObjectRepository $jobInstanceRepository;
+    final public const JOB_TYPE = 'fixtures';
 
     /**
      * @param ObjectRepository<JobInstance> $jobInstanceRepository
      */
-    public function __construct(
-        JobInstancesBuilder $jobInstancesBuilder,
-        JobInstancesConfigurator $jobInstancesConfigurator,
-        BulkSaverInterface $jobInstanceSaver,
-        BulkRemoverInterface $jobInstanceRemover,
-        ObjectRepository $jobInstanceRepository,
-    ) {
-        $this->jobInstancesBuilder = $jobInstancesBuilder;
-        $this->jobInstancesConfigurator = $jobInstancesConfigurator;
-        $this->jobInstanceSaver = $jobInstanceSaver;
-        $this->jobInstanceRemover = $jobInstanceRemover;
-        $this->jobInstanceRepository = $jobInstanceRepository;
+    public function __construct(private readonly JobInstancesBuilder $jobInstancesBuilder, private readonly JobInstancesConfigurator $jobInstancesConfigurator, private readonly BulkSaverInterface $jobInstanceSaver, private readonly BulkRemoverInterface $jobInstanceRemover, private readonly ObjectRepository $jobInstanceRepository)
+    {
     }
 
     /**
@@ -82,9 +57,7 @@ class FixtureJobLoader
      */
     public function getLoadedJobInstances()
     {
-        $jobs = $this->jobInstanceRepository->findBy(['type' => self::JOB_TYPE]);
-
-        return $jobs;
+        return $this->jobInstanceRepository->findBy(['type' => self::JOB_TYPE]);
     }
 
     /**
@@ -97,7 +70,7 @@ class FixtureJobLoader
      */
     protected function configureJobInstances(string $catalogPath, array $jobInstances, array $replacePaths)
     {
-        if (0 === count($replacePaths)) {
+        if ([] === $replacePaths) {
             return $this->jobInstancesConfigurator->configureJobInstancesWithInstallerData($catalogPath, $jobInstances);
         } else {
             return $this->jobInstancesConfigurator->configureJobInstancesWithReplacementPaths(

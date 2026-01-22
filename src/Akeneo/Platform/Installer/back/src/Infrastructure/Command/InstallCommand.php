@@ -25,7 +25,7 @@ class InstallCommand extends Command
 
     private CommandExecutor $commandExecutor;
 
-    public function __construct(private InstallStatusManager $installStatusManager)
+    public function __construct(private readonly InstallStatusManager $installStatusManager)
     {
         parent::__construct();
     }
