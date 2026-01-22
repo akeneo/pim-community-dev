@@ -95,13 +95,7 @@ export const ConnectedAppCatalogContainer: FC<Props> = ({connectedApp, catalog})
             </PageHeader>
 
             <PageContent pageHeaderHeight={202}>
-                {form && (
-                    <CatalogEdit
-                        id={catalog.id}
-                        form={form}
-                        headerContextContainer={headerContextContainer}
-                    />
-                )}
+                {form && <CatalogEdit id={catalog.id} form={form} headerContextContainer={headerContextContainer} />}
             </PageContent>
         </>
     );
