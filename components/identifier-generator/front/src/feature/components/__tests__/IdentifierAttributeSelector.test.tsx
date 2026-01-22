@@ -47,7 +47,10 @@ describe('IdentifierAttributeSelector', () => {
     const onChange = jest.fn();
     mockResponse('akeneo_identifier_generator_get_identifier_attributes', 'GET', {
       ok: true,
-      json: [{code: 'sku', label: 'Sku'}, {code: 'ean', label: 'EAN'}],
+      json: [
+        {code: 'sku', label: 'Sku'},
+        {code: 'ean', label: 'EAN'},
+      ],
     });
 
     render(<IdentifierAttributeSelector code="sku" onChange={onChange} />);
