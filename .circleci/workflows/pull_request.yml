@@ -32,6 +32,9 @@ workflows:
             - test_back_phpunit:
                   requires:
                       - build_dev
+            - test_onboarder_bundle:
+                  requires:
+                      - build_dev
             - test_back_data_migrations:
                   requires:
                       - test_back_static_and_acceptance
@@ -93,6 +96,7 @@ workflows:
                   requires:
                       - test_back_behat_legacy
                       - test_back_data_migrations
+                      - test_onboarder_bundle
                       - test_database
                       - test_back_behat_legacy_ce
                       - test_back_catalogs_ee
