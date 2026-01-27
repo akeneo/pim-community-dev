@@ -138,9 +138,9 @@ jobs:
                   condition: << parameters.is_ee_built >>
                   steps:
                       - run:
-                            name: Save the CE image as a tar
+                            name: Build the CE Docker image from Dockerfile
                             command: |
-                                docker pull akeneo/pim-php-dev:8.2
+                                docker build -t akeneo/pim-php-dev:8.2 --target dev .
                                 docker save -o php-pim-image.tar akeneo/pim-php-dev:8.2
             - run:
                   name: Setup tests results folder and log folder
