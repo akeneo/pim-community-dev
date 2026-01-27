@@ -7,50 +7,6 @@ workflows:
             not:
                 equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
         jobs:
-            - ready_to_build?:
-                  type: approval
-                  filters:
-                      branches:
-                          ignore:
-                              - "7.0"
-            - checkout_ee:
-                  requires:
-                      - ready_to_build?
-            - build_dev:
-                  path_to_front_packages: vendor/akeneo/pim-community-dev/front-packages
-                  requires:
-                      - checkout_ee
-            - test_database:
-                  requires:
-                      - build_dev
-            - test_back_static_and_acceptance:
-                  requires:
-                      - build_dev
-            - test_front_static_acceptance_and_integration:
-                  requires:
-                      - build_dev
-            - test_back_phpunit:
-                  requires:
-                      - build_dev
-            - test_onboarder_bundle:
-                  requires:
-                      - build_dev
-            - test_back_data_migrations:
-                  requires:
-                      - test_back_static_and_acceptance
-                      - test_front_static_acceptance_and_integration
-                      - test_back_phpunit
-            - test_back_behat_legacy:
-                  requires:
-                      - test_back_static_and_acceptance
-                      - test_front_static_acceptance_and_integration
-                      - test_back_phpunit
-            - test_back_catalogs_ee:
-                  requires:
-                      - build_dev
-                  notify: true
-                  context:
-                      - octopus-slack
             - ready_to_build_only_ce?:
                   type: approval
                   filters:
@@ -94,9 +50,6 @@ workflows:
 
             - pull_request_success:
                   requires:
-                      - test_back_behat_legacy
-                      - test_back_data_migrations
-                      - test_onboarder_bundle
-                      - test_database
                       - test_back_behat_legacy_ce
-                      - test_back_catalogs_ee
+                      - test_back_data_migrations_ce
+                      - cypress_sanity_checks_ce
