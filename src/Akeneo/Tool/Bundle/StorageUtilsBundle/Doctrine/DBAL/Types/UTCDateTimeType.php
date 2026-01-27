@@ -56,8 +56,7 @@ class UTCDateTimeType extends DateTimeType
 
         $errors = $val->getLastErrors();
 
-        // date was parsed to completely not valid value
-        if ($errors['warning_count'] > 0 && (int) $val->format('Y') < 0) {
+        if (false !== $errors && $errors['warning_count'] > 0 && (int) $val->format('Y') < 0) {
             return null;
         }
 
