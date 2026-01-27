@@ -160,6 +160,7 @@
         "friends-of-behat/symfony-extension": "^2.4.0",
         "friends-of-phpspec/phpspec-code-coverage": "^6.1.0",
         "friendsofphp/php-cs-fixer": "^3.13.0",
+        "lcobucci/clock": "^3.0",
         "league/flysystem-aws-s3-v3": "^3.10.3",
         "league/flysystem-memory": "^3.10.3",
         "liuggio/fastest": "^1.10.0",
