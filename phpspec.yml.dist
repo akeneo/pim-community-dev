@@ -1,4 +1,6 @@
 ## Rename this file in phpspec.yml to customize the phpspec configuration
+bootstrap: .phpspec/bootstrap.php
+
 suites:
     ## Category context
     LegacyCategory:
