@@ -78,7 +78,7 @@ services:
 
   mysql:
     image: 'mysql:8.0.34'
-    command: '--default-authentication-plugin=mysql_native_password --log_bin_trust_function_creators=1'
+    command: '--log_bin_trust_function_creators=1'
     environment:
       MYSQL_ROOT_PASSWORD: 'root'
       MYSQL_USER: '${APP_DATABASE_USER}'
