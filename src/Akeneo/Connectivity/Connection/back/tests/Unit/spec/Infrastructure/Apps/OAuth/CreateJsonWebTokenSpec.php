@@ -69,36 +69,32 @@ class CreateJsonWebTokenSpec extends ObjectBehavior
         $this->assertToken($token->getWrappedObject());
     }
 
-    /**
-     * @todo Fix this test for lcobucci/jwt 5.x compatibility
-     * The validation constraint handling changed in JWT 5.x
-     */
     public function it_creates_jwt_token_with_scope_profile(): void
     {
-        $this->create(
+        $token = $this->create(
             $this->clientId,
             $this->ppid,
             ScopeList::fromScopes([AuthenticationScope::SCOPE_OPENID, AuthenticationScope::SCOPE_PROFILE]),
             $this->firstname,
             $this->lastname,
             $this->email
-        )->shouldBeString();
+        );
+
+        $this->assertToken($token->getWrappedObject(), [AuthenticationScope::SCOPE_PROFILE]);
     }
 
-    /**
-     * @todo Fix this test for lcobucci/jwt 5.x compatibility
-     * The validation constraint handling changed in JWT 5.x
-     */
     public function it_creates_jwt_token_with_scope_email(): void
     {
-        $this->create(
+        $token = $this->create(
             $this->clientId,
             $this->ppid,
             ScopeList::fromScopes([AuthenticationScope::SCOPE_OPENID, AuthenticationScope::SCOPE_EMAIL]),
             $this->firstname,
             $this->lastname,
             $this->email
-        )->shouldBeString();
+        );
+
+        $this->assertToken($token->getWrappedObject(), [AuthenticationScope::SCOPE_EMAIL]);
     }
 
     public function it_throws_exception_because_openid_scope_has_not_been_consented(): void
@@ -122,11 +118,11 @@ class CreateJsonWebTokenSpec extends ObjectBehavior
 
         Assert::assertInstanceOf(UnencryptedToken::class, $token);
 
-        $configuration->setValidationConstraints(new IssuedBy($this->pimUrl));
-        $configuration->setValidationConstraints(new RelatedTo($this->ppid));
-        $configuration->setValidationConstraints(new PermittedFor($this->clientId));
-        $configuration->setValidationConstraints(new LooseValidAt(new FrozenClock($this->now)));
         $configuration->setValidationConstraints(
+            new IssuedBy($this->pimUrl),
+            new RelatedTo($this->ppid),
+            new PermittedFor($this->clientId),
+            new LooseValidAt(new FrozenClock($this->now)),
             new SignedWith($configuration->signer(), $configuration->verificationKey())
         );
 
