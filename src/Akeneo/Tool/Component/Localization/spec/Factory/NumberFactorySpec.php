@@ -9,7 +9,7 @@ class NumberFactorySpec extends ObjectBehavior
     function let()
     {
         $this->beConstructedWith([
-            'zz_ZZ' => '#,##0.00-test-¤;(#,##0.00¤)'
+            'en_TEST' => '#,##0.00-test-¤;(#,##0.00¤)'
         ]);
     }
 
@@ -24,11 +24,11 @@ class NumberFactorySpec extends ObjectBehavior
     function it_creates_a_defined_currency_formatter()
     {
         $this
-            ->create(['locale' => 'zz_ZZ', 'type' => \NumberFormatter::CURRENCY])
+            ->create(['locale' => 'en_TEST', 'type' => \NumberFormatter::CURRENCY])
             ->formatCurrency(12.34, 'EUR')
             ->shouldReturn('12.34-test-€');
         $this
-            ->create(['locale' => 'zz_ZZ', 'type' => \NumberFormatter::CURRENCY])
+            ->create(['locale' => 'en_TEST', 'type' => \NumberFormatter::CURRENCY])
             ->formatCurrency(-12.34, 'EUR')
             ->shouldReturn('(12.34€)');
     }
