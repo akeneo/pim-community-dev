@@ -65,7 +65,7 @@ lint-front:
 .PHONY: unit-back
 unit-back: var/tests/phpspec
 ifeq ($(CI),true)
-	$(DOCKER_COMPOSE) run -T --rm php php -d error_reporting="E_ALL & ~E_DEPRECATED" vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
+	$(DOCKER_COMPOSE) run -T --rm php php -d error_reporting=22527 vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
 	.circleci/find_non_executed_phpspec.sh
 else
 	${PHP_RUN} vendor/bin/phpspec run
