@@ -92,7 +92,7 @@ services:
       - 'pim'
 
   elasticsearch:
-    image: 'elastic/elasticsearch:8.4.2'
+    image: 'elastic/elasticsearch:8.17.0'
     environment:
       ES_JAVA_OPTS: '${ES_JAVA_OPTS:--Xms1g -Xmx1g}'
       discovery.type: 'single-node'
