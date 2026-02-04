@@ -65,12 +65,12 @@ class CreateJsonWebToken
             throw new \LogicException('OpenID must be consented to create a JWT');
         }
         if ($consentedAuthenticationScopes->hasScope(AuthenticationScope::SCOPE_PROFILE)) {
-            $jwtTokenBuilder
+            $jwtTokenBuilder = $jwtTokenBuilder
                 ->withClaim('firstname', $firstName)
                 ->withClaim('lastname', $lastName);
         }
         if ($consentedAuthenticationScopes->hasScope(AuthenticationScope::SCOPE_EMAIL)) {
-            $jwtTokenBuilder
+            $jwtTokenBuilder = $jwtTokenBuilder
                 ->withClaim('email', $email);
         }
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Webhook\MessageHandler;
 
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Command\SendBusinessEventToWebhooks;
+use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\ProcessFactoryInterface;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 use Akeneo\Platform\Component\EventQueue\BulkEventNormalizer;
 use Psr\Log\LoggerInterface;
@@ -16,7 +17,8 @@ class BusinessEventHandler implements MessageSubscriberInterface
     public function __construct(
         private string $projectDir,
         private LoggerInterface $logger,
-        private BulkEventNormalizer $normalizer
+        private BulkEventNormalizer $normalizer,
+        private ProcessFactoryInterface $processFactory
     ) {
     }
 
@@ -40,7 +42,7 @@ class BusinessEventHandler implements MessageSubscriberInterface
                 $env['APP_TENANT_ID'] = $event->getTenantId();
             }
 
-            $process = new Process($processArguments, null, $env);
+            $process = $this->processFactory->create($processArguments, null, $env);
             $process->setTimeout(null);
 
             $this->logger->debug(\sprintf('Command line: "%s"', $process->getCommandLine()));

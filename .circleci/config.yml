@@ -25,7 +25,7 @@ jobs:
                       yq eval-all '. as $item ireduce ({}; . *+ $item )' .circleci/settings.yml .circleci/*/*.yml .circleci/*/*/*.yml .circleci/*/*/*/*.yml > .circleci/merged_config.yml
                       cat .circleci/merged_config.yml
             -   path-filtering/set-parameters:
-                    base-revision: master
+                    base-revision: main
                     mapping: |
                         upgrades/.* run-database-tests true
                     output-path: /tmp/pipeline-parameters.json
