@@ -118,11 +118,11 @@ class CreateJsonWebTokenSpec extends ObjectBehavior
 
         Assert::assertInstanceOf(UnencryptedToken::class, $token);
 
-        $configuration->setValidationConstraints(new IssuedBy($this->pimUrl));
-        $configuration->setValidationConstraints(new RelatedTo($this->ppid));
-        $configuration->setValidationConstraints(new PermittedFor($this->clientId));
-        $configuration->setValidationConstraints(new LooseValidAt(new FrozenClock($this->now)));
         $configuration->setValidationConstraints(
+            new IssuedBy($this->pimUrl),
+            new RelatedTo($this->ppid),
+            new PermittedFor($this->clientId),
+            new LooseValidAt(new FrozenClock($this->now)),
             new SignedWith($configuration->signer(), $configuration->verificationKey())
         );
 

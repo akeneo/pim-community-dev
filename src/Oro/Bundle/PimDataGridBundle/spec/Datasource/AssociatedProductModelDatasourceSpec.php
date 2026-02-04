@@ -182,7 +182,7 @@ class AssociatedProductModelDatasourceSpec extends ObjectBehavior
             ->addFilter(
                 'id',
                 Operators::IN_LIST,
-                ["product_${associatedProduct1Uuid}", "product_${associatedProduct2Uuid}"]
+                ["product_{$associatedProduct1Uuid}", "product_{$associatedProduct2Uuid}"]
             )->shouldBeCalled();
         $pqbAsso
             ->addFilter(

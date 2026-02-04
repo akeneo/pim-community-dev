@@ -109,7 +109,7 @@ commands:
                     command: |
                         [ ! -f ~/project/php-pim-image.tar ] || docker load -i php-pim-image.tar
                         [ -f ~/project/php-pim-image.tar ] || make php-image-dev
-                        [ -f ~/project/php-pim-image.tar ] || docker save -o php-pim-image.tar akeneo/pim-dev/php:8.2
+                        [ -f ~/project/php-pim-image.tar ] || docker save -o php-pim-image.tar akeneo/pim-dev/php:8.3
             -   save_cache:
                     name: Save PHP docker image cache
                     key: php-docker-image-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/php-docker-image.hash" }}

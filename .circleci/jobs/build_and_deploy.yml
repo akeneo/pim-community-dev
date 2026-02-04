@@ -128,7 +128,7 @@ jobs:
                             command: |
                                 ls php-pim-image.tar && docker load -i php-pim-image.tar
                                 ls php-pim-image.tar || make php-image-dev
-                                ls php-pim-image.tar || docker save -o php-pim-image.tar akeneo/pim-dev/php:8.2
+                                ls php-pim-image.tar || docker save -o php-pim-image.tar akeneo/pim-dev/php:8.3
                       - save_cache:
                             name: Save PHP docker image cache
                             key: php-docker-image-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/php-docker-image.hash" }}
@@ -140,8 +140,8 @@ jobs:
                       - run:
                             name: Build the CE Docker image from Dockerfile
                             command: |
-                                docker build -t akeneo/pim-php-dev:8.2 --target dev .
-                                docker save -o php-pim-image.tar akeneo/pim-php-dev:8.2
+                                docker build -t akeneo/pim-php-dev:8.3 --target dev .
+                                docker save -o php-pim-image.tar akeneo/pim-php-dev:8.3
             - run:
                   name: Setup tests results folder and log folder
                   command: mkdir -p var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.cache/yarn ~/.cache/Cypress ~/.composer
