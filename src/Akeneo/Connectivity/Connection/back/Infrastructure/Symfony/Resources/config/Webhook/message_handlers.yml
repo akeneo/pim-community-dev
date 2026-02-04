@@ -1,7 +1,13 @@
 services:
+    Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\ProcessFactory: ~
+
+    Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\ProcessFactoryInterface:
+        alias: Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\ProcessFactory
+
     Akeneo\Connectivity\Connection\Infrastructure\Webhook\MessageHandler\BusinessEventHandler:
         arguments:
             - '%kernel.project_dir%'
             - '@logger'
             - '@Akeneo\Platform\Component\EventQueue\BulkEventNormalizer'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\ProcessFactoryInterface'
         tags: [messenger.message_handler]
