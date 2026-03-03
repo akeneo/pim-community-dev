@@ -7,29 +7,24 @@ namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\ErrorManagement;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\ErrorTypes;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\ProductLoader;
+use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Structure\AttributeLoader;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Structure\FamilyLoader;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\FetchMode;
 use Doctrine\DBAL\Types\Types;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
 class CollectApiErrorsCountEndToEnd extends ApiTestCase
 {
-    /** @var AttributeLoader */
-    private $attributeLoader;
-
-    /** @var FamilyLoader */
-    private $familyLoader;
-
-    /** @var ProductLoader */
-    private $productLoader;
-
-    /** @var Connection */
-    private $dbalConnection;
+    private AttributeLoader $attributeLoader;
+    private FamilyLoader $familyLoader;
+    private ProductLoader $productLoader;
+    private Connection $dbalConnection;
 
     protected function setUp(): void
     {
@@ -108,7 +103,7 @@ JSON;
         $this->errorCountMustBe('erp', 1, ErrorTypes::BUSINESS);
     }
 
-    public function test_it_collects_the_error_count_from_a_product_partial_update()
+    public function test_it_collects_the_error_count_from_a_product_partial_update(): void
     {
         $this->attributeLoader->create([
             'code' => 'name',
@@ -177,10 +172,8 @@ JSON;
             'attributes' => ['sku', 'name']
         ]);
         $this->productLoader->create('high-top_sneakers', [
-            'family' => 'shoes',
-            'values' => [
-                'name' => [['data' => 'High-Top Sneakers', 'locale' => null, 'scope' => null]]
-            ]
+            new SetFamily('shoes'),
+            new SetTextValue('name', null, null, 'High-Top Sneakers')
         ]);
 
         $connection = $this->createConnection('erp', 'ERP', FlowType::DATA_SOURCE, true);
@@ -195,7 +188,7 @@ JSON;
 
         $content = '';
         // Error: unknown attribute "description"
-        $content .= json_encode([
+        $content .= \json_encode([
             'identifier' => 'high-top_sneakers',
             'family' => 'shoes',
             'values' => [
@@ -208,7 +201,7 @@ JSON;
         ]);
         $content .= PHP_EOL;
         // Success
-        $content .= json_encode([
+        $content .= \json_encode([
             'identifier' => 'high-top_sneakers',
             'values' => [
                 'name' => [[
@@ -219,7 +212,7 @@ JSON;
             ]
         ]);
         $streamedContent = '';
-        ob_start(function ($buffer) use (&$streamedContent) {
+        \ob_start(function ($buffer) use (&$streamedContent): string {
             $streamedContent .= $buffer;
             return '';
         });
@@ -231,7 +224,7 @@ JSON;
             ['HTTP_content_type' => StreamResourceResponse::CONTENT_TYPE],
             $content
         );
-        ob_end_flush();
+        \ob_end_flush();
 
         Assert::assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
@@ -258,7 +251,7 @@ SQL;
                 'count' => Types::INTEGER,
                 'type' => Types::STRING,
             ]
-        )->fetchAll(FetchMode::COLUMN);
+        )->fetchFirstColumn();
 
         Assert::assertCount(1, $result);
         Assert::assertEquals('1', $result[0]);

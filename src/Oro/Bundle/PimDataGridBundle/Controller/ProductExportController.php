@@ -2,6 +2,9 @@
 
 namespace Oro\Bundle\PimDataGridBundle\Controller;
 
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\LocalStorage;
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\NoneStorage;
+use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager as DataGridManager;
@@ -9,7 +12,6 @@ use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Oro\Bundle\PimDataGridBundle\Adapter\GridFilterAdapterInterface;
 use Oro\Bundle\PimDataGridBundle\Datasource\ProductAndProductModelDatasource;
 use Oro\Bundle\PimDataGridBundle\Datasource\ProductDatasource;
-use Oro\Bundle\PimDataGridBundle\Extension\MassAction\MassActionDispatcher;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -26,35 +28,18 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class ProductExportController
 {
     const DATETIME_FORMAT = 'Y-m-d_H:i:s';
-    private const FILE_PATH_KEYS = ['filePath', 'filePathProduct', 'filePathProductModel'];
-
-    protected RequestStack $requestStack;
-    protected MassActionDispatcher $massActionDispatcher;
-    protected GridFilterAdapterInterface $gridFilterAdapter;
-    protected IdentifiableObjectRepositoryInterface $jobInstanceRepo;
-    protected TokenStorageInterface $tokenStorage;
-    protected JobLauncherInterface $jobLauncher;
-    protected DataGridManager $datagridManager;
-    protected MassActionParametersParser $parameterParser;
+    private const FILE_PATH_KEYS = ['filePathProduct', 'filePathProductModel'];
 
     public function __construct(
-        RequestStack $requestStack,
-        MassActionDispatcher $massActionDispatcher,
-        GridFilterAdapterInterface $gridFilterAdapter,
-        IdentifiableObjectRepositoryInterface $jobInstanceRepo,
-        TokenStorageInterface $tokenStorage,
-        JobLauncherInterface $jobLauncher,
-        DataGridManager $datagridManager,
-        MassActionParametersParser $parameterParser
+        private RequestStack $requestStack,
+        private GridFilterAdapterInterface $gridFilterAdapter,
+        private IdentifiableObjectRepositoryInterface $jobInstanceRepo,
+        private TokenStorageInterface $tokenStorage,
+        private JobLauncherInterface $jobLauncher,
+        private DataGridManager $datagridManager,
+        private MassActionParametersParser $parameterParser,
+        private VersionProviderInterface $versionProvider
     ) {
-        $this->requestStack = $requestStack;
-        $this->massActionDispatcher = $massActionDispatcher;
-        $this->gridFilterAdapter = $gridFilterAdapter;
-        $this->jobInstanceRepo = $jobInstanceRepo;
-        $this->tokenStorage = $tokenStorage;
-        $this->jobLauncher = $jobLauncher;
-        $this->datagridManager = $datagridManager;
-        $this->parameterParser = $parameterParser;
     }
 
     /**
@@ -67,6 +52,7 @@ class ProductExportController
         $withGridContext = (bool) $request->get('_displayedColumnsOnly');
         $withLabels = (bool) $request->get('_withLabels');
         $withMedia = (bool) $request->get('_withMedia', true);
+        $withUuid = (bool) $request->get('_withUuid', true);
         $fileLocale = $request->get('_fileLocale');
         $jobCode = $request->get('_jobCode');
         $jobInstance = $this->jobInstanceRepo->findOneByIdentifier(['code' => $jobCode]);
@@ -79,12 +65,17 @@ class ProductExportController
         $filters = $this->gridFilterAdapter->adapt($parameters);
         $rawParameters = $jobInstance->getRawParameters();
         $contextParameters = $this->getContextParameters($request);
-        $dynamicConfiguration = $contextParameters + ['filters' => $filters, 'with_media' => $withMedia];
+        $dynamicConfiguration = $contextParameters + ['filters' => $filters, 'with_media' => $withMedia, 'with_uuid' => $withUuid];
 
         foreach (self::FILE_PATH_KEYS as $filePathKey) {
             if (isset($rawParameters[$filePathKey])) {
-                $rawParameters[$filePathKey] = $this->buildFilePath($rawParameters[$filePathKey], $contextParameters);
+                $rawParameters['storage']['type'] = NoneStorage::TYPE;
+                $rawParameters['storage'][$filePathKey] = $this->buildFilePath($rawParameters[$filePathKey], $contextParameters);
             }
+        }
+
+        if (isset($rawParameters['storage']['file_path'])) {
+            $rawParameters['storage']['file_path'] = $this->buildFilePath($rawParameters['storage']['file_path'], $contextParameters);
         }
 
         if ($withGridContext) {
@@ -115,7 +106,7 @@ class ProductExportController
         }
 
         $configuration = array_merge($rawParameters, $dynamicConfiguration);
-        $configuration['user_to_notify'] = $this->getUser()->getUsername();
+        $configuration['users_to_notify'][] = $this->getUser()->getUserIdentifier();
 
         $jobExecution = $this->jobLauncher->launch($jobInstance, $this->getUser(), $configuration);
 

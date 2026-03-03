@@ -1,0 +1,11 @@
+pim_analytics:
+  new_patch_available: Bản vá mới sẵn sàng
+  system_config:
+    group:
+      notification.title: Thông báo
+      version_update.title: Phiên bản cập nhật
+    form:
+      version_update.label: Thông báo phiên bản mới
+      version_update.tooltip: Gửi yêu cầu đến server để lấy thông tin bản vá mới
+  info_type:
+    pim_version: Phiên bản

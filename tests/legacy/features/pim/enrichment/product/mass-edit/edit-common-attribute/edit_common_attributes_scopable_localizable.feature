@@ -14,12 +14,12 @@ Feature: Edit common attributes of many products at once
     And I am on the products grid
 
   @critical
-  @info https://akeneo.atlassian.net/browse/PIM-5351
+  # @info https://akeneo.atlassian.net/browse/PIM-5351
   Scenario: Successfully mass edit scoped product values
     Given I switch the scope to "Print"
     And I select rows black_jacket and white_jacket
     And I press the "Bulk actions" button
-    And I choose the "Edit attributes values" operation
+    And I choose the "Edit attribute values" operation
     Then I should see the text "Only the attributes belonging to the families of the selected products will be edited with the following data for the English (United States) locale and the Print channel."
     When I display the Customer rating attribute
     And I change the "Customer rating" to "5"
@@ -30,14 +30,14 @@ Feature: Edit common attributes of many products at once
     And the unlocalized print customer_rating of "black_jacket" should be "5"
     And the unlocalized print customer_rating of "white_jacket" should be "5"
 
+  # @info https://akeneo.atlassian.net/browse/PIM-5351
   @critical
-  @info https://akeneo.atlassian.net/browse/PIM-5351
   Scenario: Successfully mass edit localized product values
     Given I switch the locale to "de_DE"
     When I switch the scope to "Ecommerce"
     And I select rows black_jacket and white_jacket
     And I press the "Bulk actions" button
-    And I choose the "Edit attributes values" operation
+    And I choose the "Edit attribute values" operation
     Then I should see the text "Only the attributes belonging to the families of the selected products will be edited with the following data for the German (Germany) locale and the Ecommerce channel."
     When I display the Name attribute
     And I change the "Name" to "Une veste"

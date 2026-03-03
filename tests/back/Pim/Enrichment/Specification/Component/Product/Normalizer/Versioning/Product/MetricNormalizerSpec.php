@@ -30,7 +30,7 @@ class MetricNormalizerSpec extends ObjectBehavior
 
         $this
             ->normalize($metric, null, ['field_name' => 'weight'])
-            ->shouldReturn(['weight' => '72.1000', 'weight-unit' => 'KILOGRAM']);
+            ->shouldReturn(['weight' => 72.1, 'weight-unit' => 'KILOGRAM']);
     }
 
     function it_normalizes_metric_in_many_fields(MetricInterface $metric)
@@ -40,7 +40,7 @@ class MetricNormalizerSpec extends ObjectBehavior
 
         $this
             ->normalize($metric, null, ['field_name' => 'weight', 'metric_format' => 'multiple_fields'])
-            ->shouldReturn(['weight' => '72.1000', 'weight-unit' => 'KILOGRAM']);
+            ->shouldReturn(['weight' => 72.1, 'weight-unit' => 'KILOGRAM']);
     }
 
     function it_normalizes_null_metric_in_many_fields(MetricInterface $metric)
@@ -70,7 +70,7 @@ class MetricNormalizerSpec extends ObjectBehavior
 
         $this
             ->normalize($metric, null, ['field_name' => 'weight', 'metric_format' => 'single_field'])
-            ->shouldReturn(['weight' => '72.1000 KILOGRAM']);
+            ->shouldReturn(['weight' => '72.1 KILOGRAM']);
     }
 
     function it_normalizes_null_metric_in_one_fields(MetricInterface $metric)
@@ -100,7 +100,7 @@ class MetricNormalizerSpec extends ObjectBehavior
 
         $this
             ->normalize($metric, null, ['field_name' => 'weight'])
-            ->shouldReturn(['weight' => '72.1000', 'weight-unit' => 'KILOGRAM']);
+            ->shouldReturn(['weight' => 72.1, 'weight-unit' => 'KILOGRAM']);
     }
 
     function it_normalizes_metric_with_float_data_with_decimals_allowed(MetricInterface $metric)
@@ -110,7 +110,7 @@ class MetricNormalizerSpec extends ObjectBehavior
 
         $this
             ->normalize($metric, null, ['field_name' => 'weight', 'decimals_allowed' => true])
-            ->shouldReturn(['weight' => '72.1000', 'weight-unit' => 'KILOGRAM']);
+            ->shouldReturn(['weight' => 72.1, 'weight-unit' => 'KILOGRAM']);
     }
 
     function it_normalizes_metric_with_float_data_with_decimals_not_allowed(MetricInterface $metric)
@@ -120,7 +120,27 @@ class MetricNormalizerSpec extends ObjectBehavior
 
         $this
             ->normalize($metric, null, ['field_name' => 'weight', 'decimals_allowed' => false])
-            ->shouldReturn(['weight' => '72', 'weight-unit' => 'KILOGRAM']);
+            ->shouldReturn(['weight' => 72, 'weight-unit' => 'KILOGRAM']);
+    }
+
+    function it_normalizes_metric_with_integer_data(MetricInterface $metric)
+    {
+        $metric->getData()->willReturn(72);
+        $metric->getUnit()->willReturn('KILOGRAM');
+
+        $this
+            ->normalize($metric, null, ['field_name' => 'weight'])
+            ->shouldReturn(['weight' => 72, 'weight-unit' => 'KILOGRAM']);
+    }
+
+    function it_normalizes_metric_without_truncated_data(MetricInterface $metric)
+    {
+        $metric->getData()->willReturn('12.1234567');
+        $metric->getUnit()->willReturn('KILOGRAM');
+
+        $this
+            ->normalize($metric, null, ['field_name' => 'weight'])
+            ->shouldReturn(['weight' => 12.1234567, 'weight-unit' => 'KILOGRAM']);
     }
 
     function it_throws_exception_when_the_context_field_name_key_is_not_provided(MetricInterface $metric)

@@ -57,6 +57,11 @@ final class LRUCachedGetAttributes implements GetAttributes, CachedQueryInterfac
         return $this->cache->getForKey($attributeCode, $fetchNonFoundAttributeCodes);
     }
 
+    public function forType(string $attributeType): array
+    {
+        return $this->getAttributes->forType($attributeType);
+    }
+
     public function clearCache(): void
     {
         $this->cache = new LRUCache(1000);

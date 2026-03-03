@@ -3,7 +3,7 @@ pim_datagrid:
   no_entities: "No {{ entityHint }} found"
   no_results: "Sorry, there is no {{ entityHint }} for your search."
   no_results_subtitle: "Try again with new search criteria."
-  search: "Search on {{ label }}"
+  search: "Search by {{ label }}"
 
   select:
     title: Select
@@ -36,7 +36,6 @@ pim_datagrid:
     create_view: Create view
     placeholder: Name of new view
     choose_label: Choose a label for the view
-    choose_type: I want to create a private view
     remove: Delete this view
     save_changes: Save this view
     default_view: Default view
@@ -97,8 +96,12 @@ pim_datagrid:
       label: Currency
     metric_filter:
       label: Unit
+    uuid:
+      label: Uuid
 
   cells:
     credientials:
       client_id: Client ID
       secret: Secret
+    attribute-type:
+      main: Main

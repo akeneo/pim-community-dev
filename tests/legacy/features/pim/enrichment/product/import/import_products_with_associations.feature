@@ -20,7 +20,7 @@ Feature: Execute a job
       """
     And I am logged in as "Julia"
     And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
@@ -40,7 +40,7 @@ Feature: Execute a job
       """
     And I am logged in as "Julia"
     And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
@@ -56,12 +56,12 @@ Feature: Execute a job
       """
     And I am logged in as "Julia"
     And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 1 product
-    And I should see the text "Property \"associations\" expects a valid product identifier. The product does not exist, \"SKU-002\" given."
+    And I should see the text "The “associations” property expects a valid product identifier. The SKU-002 product does not exist or your connection does not have permission to access it."
 
   @javascript
   Scenario: Successfully import a csv file with associations between invalid but existing products
@@ -79,7 +79,7 @@ Feature: Execute a job
       SKU-003;sneakers;;unknown;;;After
       """
     And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
@@ -109,7 +109,7 @@ Feature: Execute a job
       SKU-001;SKU-002
       """
     And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
@@ -135,7 +135,7 @@ Feature: Execute a job
       SKU-001
       """
     And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
@@ -161,7 +161,7 @@ Feature: Execute a job
       SKU-001;
       """
     And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
@@ -195,7 +195,7 @@ Feature: Execute a job
       SKU-001;
       """
     And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
@@ -207,7 +207,7 @@ Feature: Execute a job
     And I visit the "Upsell (0)" association type
     Then I should see the text "0 product(s), 0 product model(s) and 0 group(s)"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-6019
+  # @jira https://akeneo.atlassian.net/browse/PIM-6019
   @javascript
   Scenario: Successfully import product without remove already existing associations when option "compare values" is set to false
     Given the following product:
@@ -227,14 +227,14 @@ Feature: Execute a job
       SKU-001
       """
     And the following job "csv_footwear_product_import" configuration:
-      | filePath          | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
       | enabledComparison | no               |
     And I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
     Then I should see the text "skipped product (no associations detected)"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-6042
+  # @jira https://akeneo.atlassian.net/browse/PIM-6042
   Scenario: Successfully import product associations without removing already existing associations when option "compare values" is set to true
     Given the following product:
       | sku     | name-en_US |
@@ -257,7 +257,7 @@ Feature: Execute a job
       | X_SELL | SKU-002  |
       | UPSELL | SKU-003  |
 
-  @jira https://akeneo.atlassian.net/browse/PIM-6071
+  # @jira https://akeneo.atlassian.net/browse/PIM-6071
   Scenario: Successfully import product associations with an attribute having the same code
     Given the following product:
       | sku     | name-en_US |

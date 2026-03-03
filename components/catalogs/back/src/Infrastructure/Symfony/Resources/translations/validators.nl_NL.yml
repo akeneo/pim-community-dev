@@ -1,0 +1,62 @@
+akeneo_catalogs:
+  validation:
+    max_number_of_catalogs_per_user_message: U kunt tot 15 catalogi aanmaken
+    product_selection:
+      criteria:
+        channel:
+          not_empty: 'Dit kanaal moet leeg zijn.'
+          empty: 'Dit kanaal mag niet leeg zijn.'
+          unknown: 'Dit kanaal is gedeactiveerd. Controleer uw kanaalinstellingen of verwijder dit criterium.'
+        locale:
+          not_empty: 'Deze taal moet leeg zijn.'
+          empty: 'Deze taal mag niet leeg zijn.'
+          unknown: 'Deze taal bestaat niet.'
+          disabled: 'Deze taal is uitgeschakeld voor dit kanaal. Controleer uw kanaalinstellingen of verwijder dit criterium.'
+        value:
+          not_empty: 'Deze waarde moet leeg zijn.'
+          empty: 'Deze waarde mag niet leeg zijn.'
+        family:
+          unknown: 'Tenminste één geselecteerde familie bestaat niet.'
+        completeness:
+          value: 'De waarde voor volledigheid moet tussen 0 en 100 procent liggen.'
+        attribute_option:
+          unknown: 'Tenminste één geselecteerde optie bestaat niet.'
+        category:
+          value: 'De volgende categorieën bestaan niet meer: {{ codes }}. Verwijder ze uit de waarde van het criterium.'
+        date:
+          between_is_empty: 'Deze waarden mogen niet leeg zijn.'
+        measurement:
+          unit:
+            not_exist: 'De eenheid van het veld "{{ field }}" bestaat niet.'
+            not_empty: 'De eenheid mag niet leeg zijn.'
+    product_value_filters:
+      channel:
+        unknown: 'Het kanaal "{{ channel_name }}" is gedeactiveerd. Controleer uw kanaalinstellingen of verwijder dit filter.'
+      currencies:
+        unknown: 'De valuta "{{ currency_name }}" is gedeactiveerd. Controleer uw valuta-instellingen of verwijder dit filter.'
+      locale:
+        unknown: 'De taal "{{ locale_name }}" is gedeactiveerd. Controleer uw taalinstellingen of verwijder dit filter.'
+    product_mapping:
+      schema:
+        missing_targets: 'De mapping is onvolledig, de volgende doelen ontbreken: {{ targets }}.'
+        additional_targets: "De mapping is onjuist, de volgende doelen bestaan niet: {{ targets }}."
+        incorrect_type: 'Het geselecteerde brontype komt niet overeen met de vereisten: {{ expected_type }} verwacht.'
+      source:
+        invalid: 'Dit attribuut is verwijderd.'
+        unknown: 'Onbekende bronwaarde'
+        channel:
+          not_empty: 'Dit kanaal moet leeg zijn.'
+          empty: 'Dit kanaal mag niet leeg zijn.'
+          unknown: 'Dit kanaal is verwijderd. Controleer uw kanaalinstellingen of werk deze waarde bij.'
+        locale:
+          not_empty: 'Deze taal moet leeg zijn.'
+          empty: 'Deze taal mag niet leeg zijn.'
+          unknown: 'Deze taal is uitgeschakeld of bestaat niet meer. Controleer uw kanaal- en taalinstellingen.'
+          disabled: 'Deze taal is uitgeschakeld. Controleer uw kanaal- en taalinstellingen of werk deze waarde bij.'
+        required: 'Bron is vereist.'
+        currency:
+          disabled: 'Deze valuta is niet geactiveerd. Controleer uw kanalen en valuta instellingen of update deze waarde.'
+        measurement:
+          unit:
+            not_exist: 'De eenheid van het veld "{{ field }}" bestaat niet.'
+            not_empty: 'De eenheid mag niet leeg zijn.'

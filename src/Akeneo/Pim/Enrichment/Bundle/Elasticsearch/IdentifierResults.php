@@ -20,15 +20,11 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 class IdentifierResults
 {
     /** @var IdentifierResult[] */
-    private $identifierResults = [];
+    private array $identifierResults = [];
 
-    /**
-     * @param string $identifier
-     * @param string $type
-     */
-    public function add(string $identifier, string $type)
+    public function add(?string $identifier, string $type, string $id): void
     {
-        $this->identifierResults[] = new IdentifierResult($identifier, $type);
+        $this->identifierResults[] = new IdentifierResult($identifier, $type, $id);
     }
 
     /**
@@ -39,6 +35,19 @@ class IdentifierResults
     public function getProductIdentifiers(): array
     {
         return $this->getIdentifiersByType(ProductInterface::class);
+    }
+
+    public function getProductUuids(): array
+    {
+        return \array_values(
+            \array_map(
+                static fn (IdentifierResult $result): string => \preg_replace('/^product_/', '', $result->getId()),
+                \array_filter(
+                    $this->identifierResults,
+                    static fn (IdentifierResult $result): bool => ProductInterface::class === $result->getType()
+                )
+            )
+        );
     }
 
     /**

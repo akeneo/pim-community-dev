@@ -1,4 +1,8 @@
 pim_menu:
+  tab:
+    connect: 连接
+  navigation:
+    connect: 连接导航
   navigation_back:
     connection: 返回连接
   navigation_block:
@@ -7,16 +11,312 @@ pim_menu:
     connection_audit: 连接仪表板
     connection_settings: 连接
     connection_settings_edit: 连接设置
-    connection_monitoring: 监测
+    connection_monitoring: 错误监测
+    connection_webhook_edit: 事件订阅
+    connection_webhook_event_logs: 事件日志
+    data_flows: 数据流
+    connect_connection_settings: 连接设置
+    marketplace: Арр Store
+    connected_apps: 已连接的应用
 pim_title:
-  akeneo_connectivity_connection_settings_index: 连接
+  akeneo_connectivity_connection_connect_marketplace: Арр Store
+  akeneo_connectivity_connection_connect_marketplace_profile: App Store
+  akeneo_connectivity_connection_connect_apps_activate: 连接
+  akeneo_connectivity_connection_connect_apps_authorize: 连接
+  akeneo_connectivity_connection_connect_apps_authenticate: 连接
+  akeneo_connectivity_connection_settings_index: 连接设置
   akeneo_connectivity_connection_settings_edit: 连接设置
   akeneo_connectivity_connection_settings_any: 连接设置
   akeneo_connectivity_connection_audit_index: 连接仪表板
   akeneo_connectivity_connection_audit_any: 连接仪表板
   akeneo_connectivity_connection_error_management_dashboard: 连接仪表板
   akeneo_connectivity_connection_error_management_connection_monitoring: 连接监测
+  akeneo_connectivity_connection_webhook_edit: 事件订阅
+  akeneo_connectivity_connection_webhook_regenerate_secret: 事件订阅
+  akeneo_connectivity_connection_webhook_event_logs: 事件日志
+  akeneo_connectivity_connection_settings_redirect: 连接
+  akeneo_connectivity_connection_connect_connected_apps: 已连接的应用
+  akeneo_connectivity_connection_connect_connected_apps_edit: 应用设置
+  akeneo_connectivity_connection_connect_connected_apps_delete: 删除应用
+  akeneo_connectivity_connection_connect_connected_apps_regenerate_secret: 重新生成凭据
+  akeneo_connectivity_connection_connect_custom_apps_create: 创建自定义应用
+  akeneo_connectivity_connection_connect_custom_apps_delete: 删除自定义应用
+  akeneo_connectivity_connection_connect_connected_apps_open: 打开应用
+  akeneo_connectivity_connection_connect_connected_apps_catalogs_edit: 编辑目录
 akeneo_connectivity.connection:
+  connect:
+    marketplace:
+      title: 想要将您的 PIM 连接到另一个应用程序？🤟
+      sub_title: 请检查我们的 App Store 以查看哪些应用程序可以与 Akeneo PIM 连接。
+      link: 访问 App Store
+      helper:
+        title: '{0} 没有与您的 PIM 版本兼容的应用或连接器。{1} 有 {{ count }} 个应用或连接器与您的 PIM 版本兼容。[2,Inf] 有 {{ count }} 个应用和连接器与您的 PIM 版本兼容。'
+        title_without_apps: '{0} 没有与您的 PIM 版本兼容的连接器。|{1} 有 {{ count }} 个连接器与您的 PIM 版本兼容。[2,Inf] 有 {{ count }} 个连接器与您的 PIM 版本兼容。'
+        description: 这只是概览，还有更多内容，请探索 Akeneo App Store。
+        link: 前往 Akeneo App Store
+      search:
+        placeholder: 按名称搜索
+        total: '{0} 无结果|{1} 1 个结果|[2,Inf] {{ total }} 个结果'
+      card:
+        developed_by: '开发者：{{ author }}'
+        read_more: 阅读更多
+        more_info: 更多信息
+        connect: 连接
+        connected: 已连接
+        pending: 待定…
+      extensions:
+        title: 连接器
+        total: '{0} 无连接器 |{1} 1 个连接器 | [2,Inf] {{ total }} 个连接器'
+        empty: 没有与您的版本兼容的连接器
+      apps:
+        title: 应用
+        total: '{0} 没有应用 |{1} 1 个应用 |[2,Inf] {{ total }} 个应用'
+        empty: 没有与您的版本兼容的应用
+      unreachable: 无法访问 App Store，请稍后再试。
+      scroll_to_top: 滚动到顶部
+      custom_apps:
+        title: 我的自定义应用
+        removed_user: 已移除用户
+    connected_apps:
+      list:
+        apps:
+          title: 已连接的应用
+          total: '{0} 没有应用 |{1} 1 个应用 |[2,Inf] {{ total }} 个应用'
+          empty: 尚未连接任何应用。
+          check_marketplace: '检查 {{ marketplaceLink }} 以浏览所有可用的内容并安装您的第一个应用。'
+          marketplace_link_anchor: Арр Store
+          at_least_one_is_not_listed_on_the_appstore: 您已连接的一些应用与您的 PIM 版本不兼容，或者在 Akeneo App Store 上已不存在。请联系我们以获取更多信息。
+          pending_apps: 您的一些应用没有连接到 PIM。
+        custom_apps:
+          title: 我的已连接自定义应用
+          removed_user: 已移除用户
+        helper:
+          title: '[0,1] 您的 PIM 已与 {{ count }} 个应用连接。|[2,Inf] 您的 PIM 已与 {{ count }} 个应用连接。'
+          description_1: 我们定期开发新的应用，请随时关注并查看我们的 App Store 页面以探索如何连接您的 PIM。
+          description_2: 想了解更多关于应用的信息？
+          link: 查看我们的“帮助中心”获取更多信息。
+        card:
+          developed_by: '开发者：{{ author }}'
+          new_access_authorization_required: 需要新的访问授权。
+          not_listed_on_the_appstore: 应用不再在 Akeneo App Store 上提供。请联系应用支持人员。
+          manage_app: 管理应用
+          open_app: 打开应用
+          pending: 应用未连接。打开应用后应该会修复该连接问题。
+        flash:
+          error: 抱歉，获取已连接应用的列表时出现错误。
+      edit:
+        header:
+          open_app_button:
+            label: 转到应用
+            icon_alt: 转到应用图标
+        not_found: 未找到应用
+        tabs:
+          settings: 设置 
+          permissions: 权限
+          catalogs: 目录
+          error_monitoring: 错误监测
+        settings:
+          monitoring:
+            title: 常规设置
+          authorizations:
+            title: 授权
+            information: '要了解更多有关应用授权的信息，请查阅我们的 {{ link }}。'
+            no_access_to_product_information: '该连接应用无法访问您的产品信息。'
+            information_link_anchor: 帮助中心文章
+            no_scope: 未请求特定的授权。
+          authentication:
+            title: 验证
+            information: '要了解更多有关应用验证的信息，请查阅我们的 {{ link }}。'
+            information_link_anchor: 帮助中心文章
+            openid_only: 该应用使用 Akeneo 应用验证，而不使用您的个人数据。
+          pending: 该应用未连接到您的 PIM。打开应用后应该会修复该连接问题。如果该问题仍然存在，请联系应用支持人员。
+          credentials:
+            title: 凭据
+            client_id: 客戶端 ID
+            client_secret: 客户端密钥
+            regenerate_button: 重新生成
+            regenerate_secret:
+              flash_error: 抱歉，重新生成连接密钥时出错。
+              confirm:
+                title: 确认重新生成
+                description: 重新生成密钥会影响您的自定义应用与 PIM 的连接。确定要继续吗？
+                regenerate_button: 重新生成
+                cancel_button: 取消 
+              new_credentials:
+                title: 新凭据
+                subtitle: 重新生成凭据
+                done_button: 完成
+        error_monitoring:
+          error: 哎呀，出错了!
+          helper:
+            description: 在这里，您可以看到过去 7 天内此应用的每个错误的详细信息。错误数限制为 100 个。
+          not_data_source: 目前，监测页面仅对源应用可用。
+          not_auditable:
+            title: 未受监测的应用
+            description:
+              1: 要跟踪此应用上的错误，
+              2: 请在设置中
+              3: 激活监测。
+        catalogs:
+          edit:
+            flash:
+              success: 目录设置已成功更新。
+              error: 无法保存目录。请解决显示的错误，然后再次保存。
+              unknown_error: 保存目录时出错。
+            not_found: 找不到目录
+        flash:
+          load_permissions_error.title: '无法加载 {{ entity }} 上保存的权限。'
+          load_permissions_error.description: 请稍后重试。
+          save_permissions_error.title: '无法更新 {{ entity }} 上的权限。'
+          save_permissions_error.description: 请检查应用权限设置。
+          success: 应用设置已成功更新。
+          monitoring_settings_error.description: 抱歉，编辑应用时出现错误。
+      delete:
+        subtitle: 应用
+        title: 确认删除 
+        description: 您确定要删除这个应用吗？知道会有什么影响吗？
+        link: 此处可查看产生的影响。
+        flash:
+          success: 应用已成功删除。
+          error: 抱歉，删除应用时出现错误。
+      open:
+        flash:
+          error: 抱歉，打开应用时发生错误。
+    apps:
+      loader:
+        message: 载入中...
+      flash:
+        permissions_error.title: '无法保存 {{ entity }} 上的权限。'
+        permissions_error.description: 请检查应用权限设置。
+      wizard:
+        title: 连接
+        action:
+          confirm: 确认
+          cancel: 取消 
+          previous: 上一步
+          next: 下一步
+          allow_and_next: 允许并进入下一步
+        progress:
+          authentication: 验证
+          authorizations: 授权
+          permissions: 权限
+          summary: 做得好！
+        authentication:
+          title: '{{ app_name }} 需要'
+          helper: 要了解更多关于应用验证的信息，请查阅我们的文章
+          helper_link: 如何将我的 PIM 与 App 进行连接？
+          scope_profile: '查看您的 {{ firstname }} 和 {{ lastname }}'
+          scope_email: '查看您的 {{ email }} 地址'
+          consent:
+            label: '我同意该应用的隐私政策和使用条款（可在 {{ app_marketplace_page }} 上查看）。'
+            app_marketplace_page: App Store 页面
+            subtext: '您确认知晓并同意您将被重定向到第三方应用。Akeneo 对该应用的内容不负责也无法负责。如果您在访问 Akeneo App Store 时遇到任何问题，请{{ contact_us }}。'
+            contact_us: 联系我们
+          firstname: 名字
+          lastname: 姓氏
+          email: 电子邮件
+        authorize:
+          title: '{{ app_name }} 需要'
+          no_scope_title: '{{ app_name }} 想要访问您的 PIM。'
+          no_scope: 未请求特定的授权。
+          helper: 要了解更多关于应用授权的信息，
+          helper_link: 请查看我们的“帮助中心”文章。
+          is_allowed_to: '已允许：'
+          certification_consent:
+            label: '我已阅读并接受以下关于证书的免责声明。'
+            subtext: 'Akeneo 对客户使用本应用及其功能不担负任何责任。本证书不能保证应用的互操作性，也不能保证其在客户环境中正常工作。'
+        flash:
+          success: 应用配置成功。
+          error: 抱歉，连接应用时出现错误。
+        permission:
+          helper: 如果您需要帮助，请查阅我们的文章
+          helper_link: 如何设置应用权限？
+      title: 连接
+      activate:
+        flash:
+          error: 抱歉，连接应用时发生错误。
+      scope:
+        type:
+          view: '查看 {{ entity }}'
+          edit: '查看和编辑 {{ entities }}'
+          delete: '查看、编辑和删除 {{ entities }}'
+        entities:
+          catalog_structure: 属性、属性组、品类和品类变型
+          attribute_options: 属性选项
+          categories: 类别
+          channel_localization: 区域和货币
+          channel_settings: 渠道
+          association_types: 关联类型
+          products: 产品和产品模型
+          reference_entity: 参考实体
+          reference_entity_record: 参考实体记录
+          asset_families: 资产品类
+          assets: 资产
+          catalogs: 目录
+        new: 新
+      error:
+        sub_text: 请联系应用支持。
+        app_not_found: client_id 与任何现有的应用都不匹配。
+      constraint:
+        client_id:
+          not_blank: client_id 为必填项。
+          must_be_valid: client_id 与任何已知的客户不匹配。
+          must_have_ongoing_authorization: client_id 目前没有任何正在进行的授权
+        response_type:
+          not_blank: response_type 为必填项。
+          must_be_code: response_type 必须为“代码”。
+        redirect_uri:
+          not_blank: redirect_uri 为必填项。
+          must_be_url: redirect_uri 不是有效的 URL。
+        scope:
+          must_be_a_string: 范围列表必须为空格分隔的字符串。
+          too_long: 该范围列表包含的字符不得超过 1000 个。
+    custom_apps:
+      creation_limit_reached: 您已达到上限，最多只能有 20 个自定义应用。
+      create_button: 创建应用
+      create_modal:
+        subtitle: 创建自定义应用
+        app_information:
+          title: 应用信息
+          description: 如果您需要帮助，请查阅我们的文章
+          link: 如何在发布之前测试我的应用？
+          fields:
+            name: 名称
+            activate_url: 激活 URL
+            callback_url: 回调 URL
+          field_placeholder:
+            name: 定义应用名称
+            activate_url: 填写激活 URL
+            callback_url: 填写回调 URL
+        credentials:
+          title: 凭据
+          client_id: 客戶端 ID
+          client_secret: 客户端密钥
+        errors:
+          limit_reached: 您最多可以创建 20 个自定义应用。
+          name:
+            min_length: 应用的名称太短。其必须包含至少 3 个字符。
+            max_length: 应用的名称太长。其不得超过 255 个字符。
+            not_blank: 应用的名称为必填项。
+          client_id:
+            max_length: 应用的客户端 ID 太长。其不得超过 36 个字符。
+            not_blank: 客户端 ID 为必填项。
+          activate_url:
+            max_length: 应用的激活 URL 太长。其不得超过 255 个字符。
+            must_be_url: 激活 URL 必须为有效的 URL。
+            not_blank: 激活 URL 为必填项。
+          callback_url:
+            max_length: 应用的回调 URL 太长。其不得超过 255 个字符。
+            must_be_url: 回调 URL 必须为有效的 URL。
+            not_blank: 回调 URL 为必填项。
+      delete_modal:
+        subtitle: 删除自定义应用
+        title: 确认删除 
+        description: 您将要从该 PIM 中删除您的应用。
+        warning: 确认删除后，App Store 页面上的应用以及相关的连接应用都将被删除。
+        flash:
+          success: 自定义应用已成功删除。
+          error: 抱歉，删除自定义应用时出现错误。
   connections: 连接
   secondary_actions:
     title: 其他操作
@@ -25,7 +325,7 @@ akeneo_connectivity.connection:
     label: 标签
     flow_type: 流类型
     image: 图像
-    auditable: 在仪表盘中跟踪此连接
+    auditable: 跟踪数据流仪表板
     client_id: 客户 ID
     secret: 密钥
     username: 用户名
@@ -33,6 +333,7 @@ akeneo_connectivity.connection:
     user_role_id: 角色
     user_group_id: 分组
     constraint:
+      connections_number_limit_reached: 您已达到连接和连接应用的上限数目 50。
       code:
         required: 连接码必填。
         invalid: 连接码只能包含字母、数字和下划线。
@@ -47,6 +348,11 @@ akeneo_connectivity.connection:
         invalid: 连接流类型只能是“数据源”、“数据目标”或“其它”。
       image:
         must_exist: 找不到图像。请重试。
+      type:
+        required: 连接类型是必填的。
+        too_long: 连接类型太长。连接类型最多只能有30个字符。
+      user_group:
+        must_exist: 找不到用户组。请确保指定的用户组存在。
   flow_type:
     data_source: 数据源 | 数据源
     data_destination: 数据目标 | 数据目标
@@ -58,7 +364,7 @@ akeneo_connectivity.connection:
     message_link: 点击此处。
   create_connection:
     title: 创建新连接
-    description: 您可以创建最多 50 个连接。
+    description: 您最多可以连接 50 个第三方连接或应用。
     flash:
       success: 已成功创建连接。
       error: 抱歉，创建连接时发生错误。
@@ -128,9 +434,9 @@ akeneo_connectivity.connection:
     flash:
       success: 已成功删除连接。
   helper:
-    title: '👋 欢迎使用能够正确连接您的 PIM 的功能！'
+    title: '{0} 目前，您没有将 PIM 链接到第三方应用程序的连接。{1} 您有 1 个将 PIM 链接到第三方应用程序的连接。很好，这样您的 PIM 将很好地集成到其生态系统。|]1，Inf] 您有 {{ count }} 个将 PIM 链接到第三方应用程序的连接。很好，这样您的 PIM 将很好地集成到其生态系统。'
     description: 没有任何第三方整合的 PIM 是没有用处的。通过连接，您可以声明所有导入和推出 PIM 的数据流。
-    link: 想知道更多？您可以在这里了解什么是连接，以及如何充分利用它！
+    link: 要了解更多关于连接的信息，请查看此页面
   flow_type_helper:
     message: 想知道什么是流类型？
     link: 我们可以在这里帮助您！
@@ -146,17 +452,17 @@ akeneo_connectivity.connection:
   grid.wrong_credentials_combination_helper: 下面的一些连接没有使用其连接用户名，已用黄色警告标志加以识别。
   dashboard:
     helper:
-      title: '👋 欢迎来到连接仪表板！'
-      description: 在这里，您将能够通过连接跟踪收集到您的 PIM 的所有数据流，以及通过连接发送到您渠道的所有数据流。
-      link: 想了解更多？看这里！
+      title: '👋 欢迎使用数据流！'
+      description: 在这里，您可以跟踪您的 PIM 和第三方之间的数据流。
+      link: 想要了解更多关于“连接”菜单和数据流方面的信息？这里为您提供！
     user_survey:
       title: 想要在此仪表板上获得更多数据吗？
       content: 您的反馈对我们非常宝贵。恳请您参与此简短调查，帮助我们选择下一个小部件！
       button: 开始吧！
     connection_selector:
       title:
-        source: 源连接
-        destination: 目的地连接
+        source: 数据连接
+        destination: 目的地
       all: 所有
     charts:
       inbound: 入站
@@ -170,12 +476,12 @@ akeneo_connectivity.connection:
     error_management:
       data_source_error_chart:
         section:
-          title: 源连接错误
+          title: 数据源错误
           helper: 在这里可以查看错误总数，包括业务错误。
         chart:
           title: 每天的错误数
       widget:
-        title: 每个源连接的业务错误
+        title: 每个数据源的业务错误
         over_the_last_seven_days: 过去 7 天
         business_errors: 业务错误
     no_connection:
@@ -190,23 +496,86 @@ akeneo_connectivity.connection:
         message: 向您的管理员请求以创建一个连接。
         link: 在此处了解更多关于连接的信息...
   webhook:
+    title: 事件订阅
+    event_subscription: 事件订阅
+    download_logs: 下载日志
+    helper:
+      message: 对于与已连接的 PIM 同步的产品，PIM 会将发生的事件通知您。您只需定义一个 URL。
+      link: 了解有关事件订阅配置的更多信息…
+      url.test_disabled: 请点击“保存”按钮以便能够测试 URL。
     form:
+      url: 链接
       secret: 密钥
+      enabled: 事件订阅激活
+      is_using_uuid: 使用产品 UUID 而非产品标识符？
+      test: 测试
+    error:
+      wrong_url: 网址无效。
+      required: 必填项。
+      not_found: 您正在尝试更新一个不存在的连接。
+      limit_reached: 您已达到活动事件订阅的上限。
+      not_allowed_url: 不允许使用此 URL。
+    flash:
+      success: 已成功更新事件订阅。
+      error: 抱歉，编辑事件订阅时发生错误。
     regenerate_secret:
       title: 确认重新生成
+      description: 确定要重新生成事件订阅密钥吗？
       action:
         regenerate: 重新生成
       link: 此处可查看产生的影响。
+      flash:
+        success: 已成功重新生成 Webhook 密钥。
+        error: 抱歉，重新生成 webhook 密钥时出错。
+    active_event_subscriptions_limit_reached:
+      message: 您最多可将 {{ limit }} 个连接与事件订阅功能相连接。您已达到该上限。
+      link: 了解有关事件订阅配置的更多信息。
+    event_logs:
+      title: 事件日志
+      event_subscription_disabled:
+        title: 此连接未启用事件订阅。
+        link: 启用事件订阅
+      no_event_logs:
+        title: 目前没有日志。
+      no_event_logs_with_those_filters:
+        title: 抱歉，找不到与搜索相符的日志。
+        caption: 请用新的搜索条件再进行搜索。
+      level:
+        info: 信息
+        notice: 通知
+        warning: 警告
+        error: 错误
+      list:
+        search:
+          placeholder: 搜索消息
+          total: '{0} 无结果|{1} 1 个结果|[2,Inf] {{ total }} 个结果'
+          level: 等级
+          all: 所有
+          none: 无
+        date_range_filter:
+          label: 日期时间
+          reset: 重置
+          from: 从
+          to: 至
+          all: 所有
+        info:
+          title: 这里是与发送到此连接的所有事件请求相关的日志。
+          content: 此页面显示过去 72 小时的错误和警告日志以及最近 100 条信息和通知日志。
+          link: 有关事件日志的更多信息
+        headers:
+          datetime: 日期时间
+          level: 等级
+          message: 消息
   error_management:
     connection_monitoring:
-      title: 监测
+      title: 错误监测
       helper:
         title: '{0} 您有 {{ count }} 个错误 |[1,Inf] 您有 {{ count }} 个错误'
         description: 在这里，您可以看到过去 7 天内此连接的每个错误的详细信息。错误数限制为 100 个。
         link: 要了解如何解决，请访问 API 帮助中心。
       search_filter:
         placeholder: 搜索错误消息
-        result_count: '{0} 无结果 |[1,Inf] {{ count }} 个结果'
+        result_count: '{0} 无结果|{1} 1 个结果|[2,Inf] {{ count }} 个结果'
       error_list:
         date_time_column:
           title: 日期和时间
@@ -233,3 +602,24 @@ akeneo_connectivity.connection:
     error_message: 哎呀！发生错误...
     reload_helper: 请重新加载页面并重试。
     reload_button: 重新加载
+pim_permissions:
+  widget:
+    action:
+      all: 所有
+      clear: 清除
+    level:
+      own: 拥有
+      edit: 编辑
+      view: 查看
+    all: 所有
+pim_notification:
+  types:
+    connected_app_authorizations: 已连接的应用授权
+    disabled_catalog: 应用目录已禁用
+    attribute_removed: 受影响的应用目录
+  connected_app_authorizations:
+    button_label: 打开应用
+  disabled_catalog:
+    button_label: 目录设置 
+  attribute_removed:
+    button_label: 目录设置 

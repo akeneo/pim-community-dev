@@ -28,6 +28,14 @@ class ActionMetadata implements AclClassInfo, \Serializable
      */
     protected $isEnabledAtCreation;
 
+    protected int $order = 0;
+
+    /**
+     * true if the ACL must be visible in the UI. eg: the edit role permissions screen
+     * ACL that are not visible still exist and can be managed by the code.
+     */
+    protected bool $visible = true;
+
     /**
      * Gets an action name
      *
@@ -63,12 +71,30 @@ class ActionMetadata implements AclClassInfo, \Serializable
         return $this->isEnabledAtCreation;
     }
 
-    public function __construct($name = '', $group = '', $label = '', bool $isEnabledAtCreation = true)
-    {
+    public function __construct(
+        $name = '',
+        $group = '',
+        $label = '',
+        bool $isEnabledAtCreation = true,
+        int $order = 0,
+        bool $visible = true
+    ) {
         $this->name = $name;
         $this->group = $group;
         $this->label = $label;
         $this->isEnabledAtCreation = $isEnabledAtCreation;
+        $this->order = $order;
+        $this->visible = $visible;
+    }
+
+    public function getOrder(): int
+    {
+        return $this->order;
+    }
+
+    public function isVisible(): bool
+    {
+        return $this->visible;
     }
 
     /**
@@ -82,6 +108,8 @@ class ActionMetadata implements AclClassInfo, \Serializable
                 $this->group,
                 $this->label,
                 $this->isEnabledAtCreation,
+                $this->order,
+                $this->visible,
             ]
         );
     }
@@ -95,7 +123,9 @@ class ActionMetadata implements AclClassInfo, \Serializable
             $this->name,
             $this->group,
             $this->label,
-            $this->isEnabledAtCreation
-            ) = unserialize($serialized);
+            $this->isEnabledAtCreation,
+            $this->order,
+            $this->visible,
+        ) = unserialize($serialized);
     }
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\UserManagement\Bundle\Command;
 
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -107,7 +107,8 @@ class CreateUserCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setDescription(<<<DESC
+            ->setDescription(
+                <<<DESC
 Creates a PIM user. This command can be launched interactively or non interactively (with the "-n" option). 
 When launched non interactively you have to provide arguments to the command. For instance:
 
@@ -129,7 +130,7 @@ DESC
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (!$input->isInteractive()) {
             $this->gatherArgumentsForNonInteractiveMode($input);
@@ -172,6 +173,8 @@ DESC
         $this->userSaver->save($user);
 
         $output->writeln(sprintf("<info>User %s has been created.</info>", $this->username));
+
+        return Command::SUCCESS;
     }
 
     protected function interact(InputInterface $input, OutputInterface $output)

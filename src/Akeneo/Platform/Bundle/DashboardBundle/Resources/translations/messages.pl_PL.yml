@@ -6,5 +6,3 @@ pim_dashboard:
       title: Kompletność dla poszczególnych kanałów oraz ustawień regionalnych
     last_operations:
       title: Ostatnie operacje
-      status: Status
-      type: Typ

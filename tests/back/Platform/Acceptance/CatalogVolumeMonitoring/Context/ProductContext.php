@@ -37,16 +37,6 @@ final class ProductContext implements Context
     }
 
     /**
-     * @Given the limit of the number of products is set to :limit
-     *
-     * @param int $limit
-     */
-    public function theLimitOfTheNumberOfProductsIsSetTo(int $limit): void
-    {
-        $this->inMemoryQuery->setLimit($limit);
-    }
-
-    /**
      * @Then the report returns that the number of products is :numberOfProducts
      *
      * @param int $numberOfProducts
@@ -56,25 +46,5 @@ final class ProductContext implements Context
         $volumes = $this->reportContext->getVolumes();
 
         Assert::eq($numberOfProducts, $volumes['count_products']['value']);
-    }
-
-    /**
-     * @Then the report warns the users that the number of products is high
-     */
-    public function theReportWarnsTheUsersThatTheNumberIsHigh(): void
-    {
-        $volumes = $this->reportContext->getVolumes();
-
-        Assert::true($volumes['count_products']['has_warning']);
-    }
-
-    /**
-     * @Then the report does not warn the users that the number of products is high
-     */
-    public function theReportDoesNotWarnTheUsersThatTheNumberIsHigh(): void
-    {
-        $volumes = $this->reportContext->getVolumes();
-
-        Assert::false($volumes['count_products']['has_warning']);
     }
 }

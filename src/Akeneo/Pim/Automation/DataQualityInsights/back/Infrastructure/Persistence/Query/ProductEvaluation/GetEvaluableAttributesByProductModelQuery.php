@@ -8,7 +8,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Attribute;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetEvaluableAttributesByProductQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeType;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Structure\EditableAttributeFilter;
 use Doctrine\DBAL\Connection;
 
@@ -26,7 +26,7 @@ class GetEvaluableAttributesByProductModelQuery implements GetEvaluableAttribute
         $this->dbConnection = $dbConnection;
     }
 
-    public function execute(ProductId $productId): array
+    public function execute(ProductEntityIdInterface $productModelId): array
     {
         $query = <<<SQL
 SELECT
@@ -55,9 +55,10 @@ WHERE product_model.id = :product_model_id
     );
 SQL;
 
-        $statement = $this->dbConnection->executeQuery($query,
+        $statement = $this->dbConnection->executeQuery(
+            $query,
             [
-                'product_model_id' => $productId->toInt(),
+                'product_model_id' => (int)(string)$productModelId,
                 'attribute_types' => AttributeType::EVALUABLE_ATTRIBUTE_TYPES,
             ],
             [
@@ -68,11 +69,11 @@ SQL;
 
 
         $attributes = [];
-        foreach (new EditableAttributeFilter($statement->fetchAll()) as $attribute) {
+        foreach (new EditableAttributeFilter($statement->fetchAllAssociative()) as $attribute) {
             $attributes[] = new Attribute(
                 new AttributeCode($attribute['code']),
                 new AttributeType($attribute['type']),
-                (bool) $attribute['is_localizable']
+                (bool)$attribute['is_localizable']
             );
         }
 

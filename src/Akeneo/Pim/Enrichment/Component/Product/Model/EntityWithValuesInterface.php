@@ -57,7 +57,7 @@ interface EntityWithValuesInterface
      * @param string $localeCode
      * @param string $scopeCode
      *
-     * @return ValueInterface
+     * @return ValueInterface|null
      */
     public function getValue($attributeCode, $localeCode = null, $scopeCode = null);
 
@@ -88,4 +88,6 @@ interface EntityWithValuesInterface
      * Get the list of used attribute codes from the indexed values
      */
     public function getUsedAttributeCodes(): array;
+
+    public function isNew(): bool;
 }

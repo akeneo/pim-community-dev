@@ -254,7 +254,7 @@ class ExportProfilesContext extends ImportExportContext
     public function exportDirectoryOfShouldContainTheFollowingFile($code, TableNode $table)
     {
         $jobInstance = $this->getFixturesContext()->getJobInstance($code);
-        $path = dirname($jobInstance->getRawParameters()['filePath']);
+        $path = dirname($jobInstance->getRawParameters()['storage']['file_path']);
 
         $this->checkExportDirectoryFiles(true, $table, $path);
     }
@@ -269,8 +269,12 @@ class ExportProfilesContext extends ImportExportContext
      */
     public function exportDirectoryOfShouldContainTheFollowingMedia($code, TableNode $table)
     {
+        // In Saas versions we do not fetch media files to the export directory anymore
+        if ($this->getService('pim_catalog.version_provider')->isSaasVersion()) {
+            return;
+        }
         $jobInstance = $this->getFixturesContext()->getJobInstance($code);
-        $path = dirname($jobInstance->getRawParameters()['filePath']);
+        $path = dirname($jobInstance->getRawParameters()['storage']['file_path']);
 
         $this->checkExportDirectoryFiles(true, $table, $path);
     }
@@ -286,9 +290,33 @@ class ExportProfilesContext extends ImportExportContext
     public function exportDirectoryOfShouldNotContainTheFollowingMedia($code, TableNode $table)
     {
         $jobInstance = $this->getFixturesContext()->getJobInstance($code);
-        $path = dirname($jobInstance->getRawParameters()['filePath']);
+        $path = dirname($jobInstance->getRawParameters()['storage']['file_path']);
 
         $this->checkExportDirectoryFiles(false, $table, $path);
+    }
+
+    /**
+     * @Then /^directory "([^"]*)" should contain the following media:$/
+     *
+     * @throws ExpectationException
+     */
+    public function directoryOfShouldContainTheFollowingMedia(string $directory, TableNode $table)
+    {
+        if ($this->getService('pim_catalog.version_provider')->isSaasVersion()) {
+            return;
+        }
+
+        $this->checkExportDirectoryFiles(true, $table, $directory);
+    }
+
+    /**
+     * @Then /^directory "([^"]*)" should not contain the following media:$/
+     *
+     * @throws ExpectationException
+     */
+    public function directoryOfShouldNotContainTheFollowingMedia(string $directory, TableNode $table)
+    {
+        $this->checkExportDirectoryFiles(false, $table, $directory);
     }
 
     /**
@@ -339,7 +367,7 @@ class ExportProfilesContext extends ImportExportContext
 
         $archivistFilesystem = $this->getMainContext()->getContainer()->get('oneup_flysystem.archivist_filesystem');
 
-        if (!$archivistFilesystem->has($archivePath)) {
+        if (!$archivistFilesystem->fileExists($archivePath)) {
             throw $this->getMainContext()->createExpectationException(
                 sprintf('Archived File "%s" doesn\'t exist', $archivePath)
             );

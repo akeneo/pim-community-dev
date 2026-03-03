@@ -1,7 +1,4 @@
 config:
     paths:
-        pim/dashboard/completeness-widget: akeneopimenrichment/js/completeness-widget
-        pim/dashboard/template/completeness-widget: akeneopimenrichment/templates/completeness-widget.html
-
         pim/reference-simple-select-field: akeneopimenrichment/js/product/field/reference-simple-select-field
         pim/reference-multi-select-field:  akeneopimenrichment/js/product/field/reference-multi-select-field

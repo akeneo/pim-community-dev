@@ -1,0 +1,78 @@
+services:
+    Akeneo\Pim\Enrichment\Product\Domain\UserIntent\UserIntentFactoryRegistry:
+        arguments:
+            - !tagged_iterator 'pim.enrichment.product.user_intent_factory'
+            - ['uuid', 'identifier', 'created', 'updated', 'parent_associations', 'metadata', 'quality_scores', 'completenesses']
+
+    Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\ValueUserIntentFactoryRegistry:
+        arguments:
+            - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetAttributeTypes'
+            - !tagged_iterator 'pim.enrichment.product.value_user_intent_factory'
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_factory' }
+
+    Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\FamilyUserIntentFactory:
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_factory' }
+
+    Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\AssociationsUserIntentFactory:
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_factory' }
+
+    Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\CategoriesUserIntentFactory:
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_factory' }
+
+    Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\EnabledUserIntentFactory:
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_factory' }
+
+    Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\GroupsUserIntentFactory:
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_factory' }
+
+    Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\ParentUserIntentFactory:
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_factory' }
+
+    Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\QuantifiedAssociationUserIntentFactory:
+        arguments:
+            - '@Akeneo\Pim\Enrichment\Product\Domain\StandardFormat\Validator\QuantifiedAssociationsStructureValidator'
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_factory' }
+
+    Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\Value\BooleanValueUserIntentFactory:
+        tags:
+            - { name: 'pim.enrichment.product.value_user_intent_factory' }
+
+    Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\Value\DateValueUserIntentFactory:
+        tags:
+            - { name: 'pim.enrichment.product.value_user_intent_factory' }
+
+    Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\Value\IdentifierValueUserIntentFactory:
+        tags:
+            - { name: 'pim.enrichment.product.value_user_intent_factory' }
+
+    Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\Value\StringValueUserIntentFactory:
+        tags:
+            - { name: 'pim.enrichment.product.value_user_intent_factory' }
+
+    Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\Value\TableValueUserIntentFactory:
+        tags:
+            - { name: 'pim.enrichment.product.value_user_intent_factory' }
+
+    Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\Value\MeasurementValueUserIntentFactory:
+        tags:
+            - { name: 'pim.enrichment.product.value_user_intent_factory' }
+
+    Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\Value\NumberValueUserIntentFactory:
+        tags:
+            - { name: 'pim.enrichment.product.value_user_intent_factory' }
+
+    Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\Value\MultiStringValueUserIntentFactory:
+        tags:
+            - { name: 'pim.enrichment.product.value_user_intent_factory' }
+
+    Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\Value\PriceCollectionValueUserIntentFactory:
+        tags:
+            - { name: 'pim.enrichment.product.value_user_intent_factory' }

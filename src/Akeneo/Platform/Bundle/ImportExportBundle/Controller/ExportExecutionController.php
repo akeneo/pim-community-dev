@@ -5,7 +5,7 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Controller;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 /**
- * Export execution controller
+ * Export execution controller.
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)

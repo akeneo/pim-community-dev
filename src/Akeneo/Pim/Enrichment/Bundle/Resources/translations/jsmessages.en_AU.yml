@@ -61,7 +61,6 @@ pim_enrich.entity.product:
     history:
       version: Version
       author: Author
-      logged_at: Logged at
       from: From
       modified: Modified
       old_value: Old value
@@ -109,7 +108,6 @@ pim_enrich.entity.product:
         quantity: Quantity
       search:
         placeholder: Search on label or identifier
-      no_result: Sorry, there is no result for your search.
       no_data: There are no associated products.
       remove: Remove association
       edit: Edit product
@@ -171,6 +169,7 @@ pim_enrich.entity.product_model:
     variant_axis:
       label: 'variant axis'
       create: Add new
+      title_create_label: "]-Inf, 1]Add a new {{ axes }}|]1, Inf[Add a new {{ axes }}"
       required_label: '(variant axis)'
     completeness:
       variant_product: "]-Inf, 1]{{ complete }} / {{ total }} variant product|]1, Inf[{{ complete }} / {{ total }} variant products"
@@ -281,16 +280,20 @@ pim_enrich.export.product:
       operators:
         BETWEEN: Between
         NOT BETWEEN: Not between
+    quality-score:
+      title: Quality Score
+      operator_choice_title: Export Quality Score(s) for
+      empty_selection: No condition on Quality Score
+      operators:
+        IN AT LEAST ONE LOCALE: At least one locale
+        IN ALL LOCALES: All selected locales
   global_settings:
     title: Global settings
 pim_enrich.mass_edit.product:
-  title: Products bulk action
-  confirm: "{0}You are about to update some products with the following information, please confirm.|{1}You are about to update a product with the following information, please confirm.|]1, Inf[You are about to update {{ itemsCount }} products with the following information, please confirm."
   step:
     select:
       label: Choose products
     choose:
-      title: Products bulk actions
       label_count: "]0, Inf[Select your action"
     configure:
       label: Configure
@@ -309,14 +312,7 @@ pim_enrich.mass_edit.product:
       description: The selected products will be enabled or disabled.
       field: To enable
     edit_common:
-      label: Edit attributes values
-      label_count: "{0}Edit attributes values of some <span class=\"AknFullPage-title--highlight\">products</span>|{1}Edit attributes values of <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Edit attributes values of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
-      description: Only the attributes belonging to the families of the selected products will be edited with the following data for the {{ locale }} locale and the {{ scope }} channel.
       no_update: Please select at least one field to update
-    add_attribute_value:
-      label: Add attributes values
-      label_count: "{0}Add attributes values for some <span class=\"AknFullPage-title--highlight\">products</span>|{1}Add attributes values for <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Add attributes values for <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
-      description: Only the multivalued attributes belonging to the families of the products will be edited with the following data for the {{ locale }} locale and the {{ scope }} channel. The attributes values are added, the previous values are kept.
     change_family:
       label: Change family
       label_count: "{0}Change the family of some <span class=\"AknFullPage-title--highlight\">products</span>|{1}Change the family of <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Change the family of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
@@ -335,6 +331,7 @@ pim_enrich.mass_edit.product:
       label: Move between categories
       label_count: "{0}Move some <span class=\"AknFullPage-title--highlight\">products</span> between categories|{1}Move <span class=\"AknFullPage-title--highlight\">1 product</span> between categories|]1, Inf[Move <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> between categories"
       description: The products will be classified into following categories, the existing classification is lost.
+      no_update: Please select a category.
     remove_from_category:
       label: Remove from categories
       label_count: "{0}Remove some <span class=\"AknFullPage-title--highlight\">products</span> from categories|{1}Remove <span class=\"AknFullPage-title--highlight\">1 product</span> from categories|]1, Inf[Remove <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> from categories"
@@ -350,7 +347,6 @@ pim_enrich.mass_edit.product:
       label_count: "{0}Convert some <span class=\"AknFullPage-title--highlight\">products</span> to simple products|{1}Convert <span class=\"AknFullPage-title--highlight\">1 product</span> to a simple product|]1, Inf[Convert <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to simple products"
       description: All of the former values, categories and associations will be saved.
     associate_to_product_and_product_model:
-      label: Associate
       label_count: "{0}Associate some <span class=\"AknFullPage-title--highlight\">products</span> to products or product models|{1}Associate <span class=\"AknFullPage-title--highlight\">1 product</span> to products or product models|]1, Inf[Associate <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to products or product models"
       description: The products selected in the grid will be associated to the selected products and product models for the chosen association type
       validate: Please add association before going to the next step
@@ -360,6 +356,9 @@ pim_enrich.mass_edit.product:
       description: The parent of the variant products or sub-product models selected in the grid will be changed to the chosen product model.
 pim_datagrid:
   no_entities: "No {{ entityHint }} found"
+  no_entities.product: "No product found" #Custom translation for product grid
+  no_results: "Sorry, there is no {{ entityHint }} for your search."
+  no_results.product: "Sorry, there is no product for your search." #Custom translation for product grid
   mass_action_group:
     bulk_actions:
       label: Bulk Actions
@@ -396,6 +395,7 @@ pim_datagrid:
       product: "]-Inf, 1]{{ count }} result selected|]1, Inf[{{ count }} results selected"
   view_selector:
     view: Views
+    choose_type: I want to create a private view
   actions:
     edit_product_attributes: Edit attributes of the product
     classify_product: Classify the product
@@ -438,7 +438,6 @@ pim_datagrid:
       label: Parent
     identifier:
       label: Identifier
-  search: Search on {{ label }}
 batch_jobs:
   add_association:
     label: Associate
@@ -500,6 +499,8 @@ batch_jobs:
     quick_export.label: XLSX product quick export
     quick_export_product_model.label: XLSX product model quick export
     perform.label: XLSX product quick export
+  default_steps:
+    delete_products_and_product_models: Delete products and product models
 error:
   removing:
     group: Impossible to remove group

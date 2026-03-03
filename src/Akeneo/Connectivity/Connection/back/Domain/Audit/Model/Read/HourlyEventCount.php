@@ -11,16 +11,8 @@ namespace Akeneo\Connectivity\Connection\Domain\Audit\Model\Read;
  */
 final class HourlyEventCount
 {
-    /** @var \DateTimeImmutable */
-    private $dateTime;
-
-    /** @var int */
-    private $count;
-
-    public function __construct(\DateTimeImmutable $dateTime, int $count)
+    public function __construct(private \DateTimeImmutable $dateTime, private int $count)
     {
-        $this->dateTime = $dateTime;
-        $this->count = $count;
     }
 
     public function dateTime(): \DateTimeImmutable

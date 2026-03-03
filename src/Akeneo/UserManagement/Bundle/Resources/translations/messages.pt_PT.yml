@@ -1,107 +1,101 @@
 pim_user:
   user:
-    tab:
-      general.title: Geral
-      additional.title: Adicional
+    title: Utilizador
+    fields:
+      name_prefix: Prefixo do nome
+      email: E-mail
+      username: Nome do Utilizador
+      first_name: Primeiro nome
+      middle_name: Nome do meio
+      last_name: Último nome
+      name_suffix: Sufixo do nome
+      date_of_birth: Data de nascimento
+      avatar: Avatar
+      timezone: Fuso horário
+      roles: Funções
+      groups: Grupos
+      password: Senha
+      password_again: Digite a senha novamente
+      product_grid_filters: Filtros da grelha de produtos
+      catalog_locale: Linguagem do catálogo
+      catalog_scope: Âmbito do catálogo
+      default_tree: Árvore padrão
+      current_password: Senha atual
+      new_password: Nova senha
+      new_password_again: Nova senha (repetir)
+      default_grid_view:
+        none: Nenhum
+      default_product_grid_view:
+        label: Vista da grelha de produtos por defeito
+      ui_locale: Linguagem do UI
+      last_logged_in: Último registo de ínicio de sessão
+      login_count: Contagem de logins
+      created: Criado
+      updated: Atualizado
+      status: Estado
+      capabilities: Funcionalidades
+      has_role: Tem função
+      has_group: Tem grupo
+      active: Ativo
+      inactive: Inativo
+    tabs:
+      general:
+        title: Geral
+        contact_information: Informações de contacto
+      additional:
+        title: Adicional
+      interfaces:
+        title: Interfaces
       group_and_role.title: Grupos e Funções
       password.title: Senha
       business_unit.title: Unidades de negócios
       email_synchronization.title: Configurações de sincronização de e-mail
-      interfaces.title: Interfaces
+    removed_user: Utilizador removido
+    login:
+      username_or_email: Nome de Utilizador ou E-mail
+      remember_me: Lembrar-me neste computador
+      password_forgotten: Esqueceu-se da sua senha?
+      forgot_password: Esqueci-me da Password
+      request: Pedido
+      reset: Reset / Restaurar
   group:
     tab:
       general.title: Geral
       users.title: Utilizadores
-oro.user.controller:
-  group.message.saved: "Grupo gravado"
-  role.message.saved: "Função guardada"
-  user.message.saved: "Utilizador gravado"
-  status.message.saved: "Estado gravado"
-oro.user.grid.users:
+  roles:
+    title: Função
+    tab:
+      general: Geral
+      action: Permissões
+      users: Utilizadores
+  controller:
+    group:
+      message:
+        saved: "Grupo gravado"
+    role:
+      message:
+        saved: "Função guardada"
+    user:
+      message:
+        saved: "Utilizador gravado"
+pim_datagrid:
   columns:
-    username: "Nome do Utilizador"
-    email: "Email"
-    firstName: "Primeiro nome"
-    lastName: "Último nome"
-    createdAt: "Criado em"
-    updatedAt: "Atualizado em"
-    enabled: "Estado"
-oro.user.grid.roles:
-  columns:
-    label: "Rótulo"
-oro.user.grid.groups:
-  columns:
-    name: "Nome"
-pim_title:
-  user.index: Utilizadores
-  user_role.index: Funções
-  user_group.index: Grupos
-  system_configuration.index: Configuração
-user.title: Utilizador
-user.overview: Utilizador
-Users Management: Gestão de Utilizadores
-Create user: Criar utilizador
-btn.create.user: Criar utilizador
-New user: Novo utilizador
-Additional: Adicional
-Groups and Roles: Grupos e Funções
-Username: Nome do Utilizador
-Password: Senha
-Re-enter password: Digite a senha novamente
-Name prefix: Prefixo do nome
-First name: Primeiro nome
-Middle name: Nome do meio
-Last name: Último nome
-Name suffix: Sufixo do nome
-Date of birth: Data de nascimento
-Avatar: Avatar
-Additional emails: E-mails adicionais
-Add another email: Adicionar outro e-mail
-Catalog locale: Linguagem do catálogo
-Catalog scope: Âmbito do catálogo
-Default tree: Árvore padrão
-Business Units: Unidades de negócios
-Email synchronization settings: Configurações de sincronização de e-mail
-Host: Servidor
-Port: Porta
-Last logged in: Último registo de ínicio de sessão
-Login count: Contagem de logins
-Additional Information: Informação Adicional
-Interfaces: Interfaces
-Basic Information: Informação básica
-Contact Information: Informações de contacto
-User name: Nome de utilizador
-Birthday: Aniversário
-API key: Chave de API
-Ui locale: Linguagem do UI
-UI locale: Linguagem do UI
-Current password: Senha atual
-New password: Nova senha
-Repeat new password: Nova senha (repetir)
-Generate key: Gerar chave
-Primary: primário
-Removed user: Utilizador removido
-user:
-  product_grid_filters: Filtros da grelha de produtos
-  default_product_grid_view:
-    label: Vista da grelha de produtos por defeito
-  default_grid_view:
-    none: Nenhum
-Role: Função
-Owner: Dono
-General: Geral
-Entity: Entidade
-Capabilities: Funcionalidades
-Save and close: Gravar e Fechar
-Has role: Tem função
-role:
-  title: função
-  overview: função
-  edit: Editar um função
-  create: Criar função
-btn.create.role: Criar função
-rights:
-  action: Permissões
+    user:
+      createdAt: "Criado em"
+      updatedAt: "Atualizado em"
+    roles:
+      label: "Rótulo"
+    groups:
+      name: "Nome"
+confirmation:
+  remove:
+    role: Tem certeza que deseja eliminar esta função?
+    user: Tem a certeza que deseja eliminar este utilizador?
+flash:
+  role:
+    removed: Função removida com sucesso
+  user:
+    removed: Utilizador removido com sucesso
 oro_security:
   acl_group:
     user: Utilizadores
@@ -123,6 +117,7 @@ oro_security:
       create: Criar grupo de utilizadores
       edit: Editar grupo de utilizadores
       delete: Remover grupo de utilizadores
+#Security
 (default): Permissão padrão nas entidades
 VIEW: Ver
 CREATE: Criar
@@ -130,25 +125,3 @@ EDIT: Editar
 DELETE: Eliminar
 ASSIGN: Atribuir
 SHARE: Partilhar
-oro:
-  security:
-    access-level:
-      BASIC: Utilizador
-      LOCAL: Unidade de negócios
-      DEEP: Divisão
-      GLOBAL: Organização
-      SYSTEM: Sistema
-      NONE: Nenhum
-Create group: Criar grupo
-btn.create.user-group: Criar grupo
-Has group: Tem grupo
-Save and Close: Gravar e Fechar
-user-group.overview: Grupos
-Log in: Iniciar a sessão
-Remember me on this computer: Lembrar-me neste computador
-Forgot your password?: Esqueceu-se da sua senha?
-Username or Email: Nome de Utilizador ou E-mail
-Forgot Password: Esqueci-me da Password
-Request: Pedido
-Check Email: Verificar E-mail
-Go to homepage: Ir para a página inicial

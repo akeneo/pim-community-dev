@@ -48,28 +48,36 @@ pim_ui.system_config:
     loading_message.title: Cargando mensajes
 other_actions: Otras acciones
 pim_common:
+  association_types: Tipos de asociaciones
   cancel: Cancelar
-  save: Guardar
-  delete: Borrar
-  update: Actualizar
-  view: Visualizar
-  edit: Editar
-  created: creado
-  updated: actualizado
-  create: Crear
-  permissions: Permisiones
-  properties: Propiedades
-  name: Nombre
-  remove: Eliminar
-  code: Código
-  products: Productos
-  product_models: Modelos de producto
   categories: Categorías
+  code: Código
+  create: Crear
+  created: creado
+  delete: Borrar
+  edit: Editar
   enabled: Habilitado
+  family_variant: Variantes de familia
   family: Familia
   groups: Grupos
-  yes: "Sí"
+  label: Etiqueta
+  name: Nombre
   no: "No"
+  parent: Padre
+  permissions: Permisiones
+  product_models: Modelos de producto
+  products: Productos
+  properties: Propiedades
+  quality_score: Puntuación de calidad
+  quantity: Cantidad
+  remove: Eliminar
+  save: Guardar
+  unit: Unidad
+  update: Actualizar
+  updated: actualizado
+  view: Visualizar
+  yes: "Sí"
+  uuid: UUID
 pim_enrich:
   #ACLs
   acl:
@@ -95,21 +103,13 @@ pim_enrich:
       comment: Comentario de Productos
       download: Descargar el producto en formato PDF
       history: Ver historial de producto
+      convert_variant_to_simple: Convierta un producto variante en un producto simple
     product_model:
       create: Cree un modelo de producto
       edit_attributes: Editar atributos de un modelo del producto
       categories_view: Consultar las categorías de un modelo del producto
       history: Ver el historial del modelo del producto
-      remove: Remover un modelo del producto
-    category:
-      list: Lista de categorías
-      create: Crear una categoría
-      edit: Editar una categoría
-      remove: Eliminar una categoría
-      move: Mover Categoría
-      children: Ver subcategorías
-      products: Ver productos de la categoría
-      history: Ver historial de categoría
+      remove: Eliminar un modelo de producto (incluidos secundarios)
     channel:
       index: Lista de canales
       create: Crear un canal
@@ -131,6 +131,7 @@ pim_enrich:
       create: Crear un grupo de atributos
       edit: Editar un atributos del grupo
       remove: Eliminar un atributos del grupo
+      mass_delete: Eliminación en masa de grupos de atributos
       sort: Ordenar atributos del grupo
       add_attribute: Agregar atributos a un grupo
       remove_attribute: Eliminar atributo de un grupo
@@ -140,6 +141,7 @@ pim_enrich:
       create: Crear un atributo
       edit: Editar un atributo
       remove: Eliminar un atributo
+      mass_delete: Eliminar atributos en masa
       sort: Ordenar atributos dentro del grupo de atributos
       history: Ver historial del atributo
     group:
@@ -163,6 +165,8 @@ pim_enrich:
       remove: Remover las asociaciones de un producto
     job_tracker:
       index: Visualizar los procesos ejecutados
+      view_all_jobs: Ver todos los trabajos en el rastreador de procesos
+      stop_job: Detener un trabajo en curso
   acl_group:
     association_type: Tipos de asociaciones
     attribute: Atributos
@@ -210,6 +214,8 @@ flash:
   attribute:
     identifier_not_removable: El identificador de atributo no puede ser eliminado
     used_as_conversion_unit: Este atributo no puede eliminarse porque se utiliza como unidad de conversión en el(los) canal(es) %channelCodes%.
+    cant_remove_attributes_used_as_label: Los atributos usados como etiquetas en una familia no se pueden eliminar.
+    cant_remove_attribute_used_as_axis: No se puede quitar este atributo utilizado como eje variante en una variante familiar
   category:
     removed: Categoría eliminada correctamente
   tree:
@@ -429,6 +435,8 @@ Disabled: Inhabilitado
 Status: Estado
 pim_datagrid:
   filters:
+    product_typology:
+      label: Tipología de producto
     entity_type:
       label: Variante
     family:
@@ -437,10 +445,23 @@ pim_datagrid:
       label: Grupos
     enabled:
       label: Estado
+    scope:
+      label: Canal
     completeness:
       label: Completo
+    created:
+      label: creado
+    updated:
+      label: actualizado
+    label_or_identifier:
+      label: Etiqueta o identificador
+      label_with_uuid: Etiqueta, identificador o UUID
+    parent:
+      label: Principal
     identifier:
       label: Identificador
+    uuid:
+      label: Uuid
 #Versioning / history
 Change History: Historial de cambios
 Data Audit: Auditoría de datos
@@ -505,7 +526,6 @@ pim_mass_edit:
       success: Eliminación en masa <strong>%label%</strong> finalizada
 job_execution.summary:
   mass_edited: Editado en masa
-  skip: Omitido
   skipped_products: Productos omitidos
   skipped_attributes: Atributos omitidos
   skipped_families: Familias omitidas
@@ -526,3 +546,9 @@ job_tracker:
     title: Seguimiento de procesos
   filter:
     started_at: Ejecutado el
+pim_login:
+  logo_title: Akeneo PIM
+  footer:
+    powered: Creado con
+    powered_image_title: logo de Akeneo
+pim_system.acl_group.connect: Conectar

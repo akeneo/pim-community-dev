@@ -9,7 +9,7 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\UserManagement\Component\Model\RoleInterface;
 use Akeneo\UserManagement\Component\Repository\RoleRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 
 /**
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
@@ -18,8 +18,7 @@ use Doctrine\Common\Persistence\ObjectRepository;
  */
 class InMemoryRoleRepository implements RoleRepositoryInterface, SaverInterface, ObjectRepository
 {
-    /** @var RoleInterface[] */
-    private $roles;
+    private ArrayCollection $roles;
 
     public function __construct()
     {
@@ -64,7 +63,7 @@ class InMemoryRoleRepository implements RoleRepositoryInterface, SaverInterface,
      */
     public function findAll()
     {
-        throw new NotImplementedException();
+        return $this->roles->toArray();
     }
 
     /**

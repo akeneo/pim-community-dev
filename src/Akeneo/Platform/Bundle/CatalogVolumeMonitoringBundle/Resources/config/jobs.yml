@@ -1,0 +1,40 @@
+services:
+    Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Job\AggregateVolumeQueries:
+        arguments:
+            - '@pim_volume_monitoring.volume.aggregation'
+        public: false
+
+    pim_volume_monitoring.step.aggregate_volume_queries:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'aggregate_volume_queries'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Job\AggregateVolumeQueries'
+        public: false
+
+    pim_volume_monitoring.job.aggregate_volume_queries:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'aggregate_volume_queries'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@Akeneo\Tool\Component\Connector\Step\CheckJobUniqueStep'
+                - '@pim_volume_monitoring.step.aggregate_volume_queries'
+            - false
+            - false
+        public: false
+        tags:
+            -
+                name: akeneo_batch.job
+                connector: 'internal'
+                type: 'scheduled_job'
+
+    pim_volume_monitoring.job.job_parameters.default_values_provider.aggregate_volume_queries:
+        class: 'Akeneo\Tool\Component\Batch\Job\JobParameters\EmptyConstraintAndDefaultValuesProvider'
+        arguments:
+            - 'aggregate_volume_queries'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }

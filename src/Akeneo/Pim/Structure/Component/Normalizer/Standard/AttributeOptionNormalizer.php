@@ -14,12 +14,8 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class AttributeOptionNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $localeRepository;
-
-    public function __construct(IdentifiableObjectRepositoryInterface $localeRepository)
+    public function __construct(private readonly IdentifiableObjectRepositoryInterface $localeRepository)
     {
-        $this->localeRepository = $localeRepository;
     }
 
     /**
@@ -39,7 +35,7 @@ class AttributeOptionNormalizer implements NormalizerInterface, CacheableSupport
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof AttributeOptionInterface && 'standard' === $format;
     }
@@ -63,13 +59,12 @@ class AttributeOptionNormalizer implements NormalizerInterface, CacheableSupport
         $labels = array_fill_keys($locales, null);
 
         foreach ($attributeOption->getOptionValues() as $translation) {
-            if (empty($locales) || in_array($translation->getLocale(), $locales)) {
-                $locale = $this->localeRepository->findOneByIdentifier($translation->getLocale());
-                if (null === $locale || !$locale->isActivated()) {
-                    continue;
-                }
-
-                $labels[$translation->getLocale()] = $translation->getValue();
+            $locale = $this->localeRepository->findOneByIdentifier($translation->getLocale());
+            if (null === $locale || !$locale->isActivated() || null === $translation->getValue()) {
+                continue;
+            }
+            if (empty($locales) || in_array($locale->getCode(), $locales)) {
+                $labels[$locale->getCode()] = $translation->getValue();
             }
         }
 

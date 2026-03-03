@@ -16,17 +16,18 @@ class Configuration implements ConfigurationInterface
     /**
      * {@inheritDoc}
      */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
-        $builder = new TreeBuilder();
+        $builder = new TreeBuilder('sorters');
 
-        $builder->root('sorters')
+        $builder->getRootNode()
             ->children()
                 ->arrayNode('columns')
                     ->prototype('array')
                         ->children()
                             ->scalarNode(PropertyInterface::DATA_NAME_KEY)->isRequired()->end()
                             ->variableNode('apply_callback')->end()
+                            ->scalarNode('feature_flag')->end()
                         ->end()
                     ->end()
                 ->end()

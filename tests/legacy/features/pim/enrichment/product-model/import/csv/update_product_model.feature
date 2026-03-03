@@ -8,7 +8,7 @@ Feature: Update product models through CSV import
     Given the "catalog_modeling" catalog configuration
     And I am logged in as "Julia"
 
-  @critical
+  @critical @purge-messenger
   Scenario: Julia successfully updates an exiting root product model through CSV import
     Given the following root product model:
       | code     | parent | family_variant      | categories | collection | description-en_US-ecommerce | erp_name-en_US | price   | color | variation_name-en_US | composition |
@@ -19,7 +19,7 @@ Feature: Update product models through CSV import
       code-001;;clothing_color_size;master_men;Spring2017;A new description;Blazers_1654;50 EUR;;;;;;;
       """
     And the following job "csv_catalog_modeling_product_model_import" configuration:
-      | filePath          | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
       | enabledComparison | no               |
     When I am on the "csv_catalog_modeling_product_model_import" import job page
     And I launch the import job
@@ -27,8 +27,9 @@ Feature: Update product models through CSV import
     Then there should be the following root product model:
       | code     | categories | family_variant      | collection   | description-en_US-ecommerce | erp_name-en_US | price     |
       | code-001 | master_men | clothing_color_size | [Spring2017] | A new description           | Blazers_1654   | 50.00 EUR |
+    And 1 event of type "product_model.updated" should have been raised
 
-  @critical
+  @critical @purge-messenger
   Scenario: Julia successfully updates an exiting product sub product model through CSV import
     Given the following root product model:
       | code     | parent   | family_variant      | categories         | collection | description-en_US-ecommerce | erp_name-en_US | price   |
@@ -42,7 +43,7 @@ Feature: Update product models through CSV import
       code-002;code-001;clothing_color_size;master_men_blazers;;A new description for a sub model;;;blue;Beautiful blazers;composition;;;;
       """
     And the following job "csv_catalog_modeling_product_model_import" configuration:
-      | filePath          | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
       | enabledComparison | no               |
     When I am on the "csv_catalog_modeling_product_model_import" import job page
     And I launch the import job
@@ -53,3 +54,4 @@ Feature: Update product models through CSV import
     And there should be the following product model:
       | code     | color  | variation_name-en_US | composition |
       | code-002 | [blue] | Beautiful blazers    | composition |
+    And 1 event of type "product_model.updated" should have been raised

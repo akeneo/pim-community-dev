@@ -14,9 +14,6 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class AttributeGroup implements AttributeGroupInterface
 {
-    /** @staticvar string */
-    const DEFAULT_GROUP_CODE = 'other';
-
     /**
      * @var int
      */
@@ -242,12 +239,12 @@ class AttributeGroup implements AttributeGroupInterface
      */
     public function getTranslation(?string $locale = null): ?AttributeGroupTranslationInterface
     {
-        $locale = ($locale) ? $locale : $this->locale;
+        $locale = $locale ?: $this->locale;
         if (null === $locale) {
             return null;
         }
         foreach ($this->getTranslations() as $translation) {
-            if ($translation->getLocale() === $locale) {
+            if (\strtolower($translation->getLocale()) === \strtolower($locale)) {
                 return $translation;
             }
         }

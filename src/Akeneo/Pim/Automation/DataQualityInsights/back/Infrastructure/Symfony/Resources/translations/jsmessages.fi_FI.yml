@@ -1,0 +1,155 @@
+akeneo_data_quality_insights:
+  title: Tuotetiedon laadun analytiikka
+  dqi_dashboard:
+    menu: Tuotetiedon laadun analytiikka
+    helper:
+      title: Esittelyssä tiedon laatu Akeneossa
+      description: Tuotetiedon laadun yhteenvedon avulla voit seurata tuotevalikoiman tietojen laatua. Voit myös keskittyä tiettyihin kategorioihin tai perheisiin.
+      help_center: Katso lisätietoja ohjekeskuksestamme.
+    no_data_title: Valitettavasti meillä ei ole vielä tarpeeksi dataa tietojen laadun yleiskatsauksen näyttämiseksi.
+    no_data_subtitle: Ole hyvä ja tule takaisin myöhemmin.
+    time_period:
+      label: Ajanjakso
+      daily: Päivittäin
+      weekly: Viikoittain
+      monthly: Kuukausittain
+    legend:
+      excellent: Erinomainen
+      good: Hyvä
+      average: Keskinkertainen
+      below_average: Keskinkertaista heikompi
+      to_improve: Kehitettävä
+    average_grade: Keskiverto
+    category_modal_filter:
+      subtitle: Suodata kategorioittain
+      message: Valitse kategoriat, jotka haluat lisätä yhteenvetoon
+    widgets:
+      family_modal:
+        subtitle: Lisää attribuuttiperheitä
+        message: Valitse attribuuttiperheet, jotka haluat lisätä yhteenvetoon
+        max_families_msg: Valitettavasti et voi lisätä enempää kuin {{ count }} attribuuttiperhettä yhteenvetoon
+      category_modal:
+        subtitle: Lisää kategorioita
+        message: Valitse kategoriat, jotka haluat lisätä yhteenvetoon
+        max_categories_msg: Valitettavasti et voi lisätä enempää kuin {{ count }} kategoriaa yhteenvetoon
+      add_families: Lisää attribuuttiperheitä
+      add_categories: Lisää kategorioita
+      title: Otsikko
+      score: Tulos
+      no_family_helper_msg: Valitse ne attribuuttiperheet, joiden tuotetietojen laatua haluat mitata
+      no_category_helper_msg: Valitse ne kategoriat, joiden tuotetietojen laatua haluat mitata
+      see_in_grid: Näytä tuotehaussa
+    time_axis:
+      day: päivä
+    key_indicators:
+      title: Avainmittarit
+      list:
+        has_image:
+          title: Tuotteet, joilla on kuva
+          no_data: Kuva-attribuuttisi näyttäisivät olevan tyhjillään. Sinun tulisi lisätä tuotekuvia korostaaksesi tuotteidesi laatua.
+          messages:
+            first_step:
+              message1: Ilman tuotekuvia tuotteesi eivät näytä niin hyviltä kuin ne ansaitsisivat
+              message2: Ensivaikutelmalla on pitkäkestoinen vaikutus. Pidä huolta medialiitteistäsi, asiakkaat kyllä huomaavat.
+              message3: Kokemuksemme mukaan kuvat todella tekevät eron. Saatat joutua omistamaan hieman enemmän aikaa medialiitteille.
+            second_step:
+              message1: Vielä hieman töitä tuotekuvien kanssa, ja sitten olet valmis!
+              message2: Kuva kertoo enemmän kuin tuhat sanaa. Lisää se nyt, ja nauti myöhemmin!
+              message3: Tuotteesi näyttäisivät paremmilta, jos käyttäisit vielä vähän aikaa tuotekuviesi parissa.
+            third_step:
+              message1: Aika hyvä, vain muutamia tuotekuvia puuttuu.
+              message2: Hienoa, olet jo lähellä!
+              message3: Vielä viimeiset viilaukset, ja sitten olet valmis.
+            perfect_score_step:
+              message1: Hyvää työtä! Olet valmiina lähtöön!
+              message2: Mahtavaa! Tuotteesi suorastaan loistavat.
+              message3: Täydellistä!
+        good_enrichment:
+          title: Tuotteet, joiden rikastusaste on hyvä
+          no_data: Tuotteesi näyttävät hieman tyhjiltä. Sinun kannattaisi lisätä niille attribuutteja, jotta voit korostaa tuotteidesi laatua tuotetietojen avulla.
+          messages:
+            first_step:
+              message1: Yksi tapa parantaa rikastusastetta on huolellisesti määrittää kaikkein relevanteimmat attribuutit. <a href="{{ link }}" target="_blank">Lue lisää Help Centeristämme</a>.
+              message2: Onko PIM edelleen hieman mysteeri sinulle?  <a href="{{ link }}" target="_blank">Lue, kuinka saada siitä paras hyöty irti</a>.
+              message3: Me kehitimme Akeneon, sinä herätät sen eloon!
+              message4: Laadukkaan tuotetiedon avulla erottaudut kilpailijoistasi asiakkaiden silmissä. Voit olla suunnannäyttäjä!
+            second_step:
+              message1: Yritetään tähdätä hieman korkeammalle! Asiakkaasti kiittävät.
+              message2: Olet jo puoleksi perillä! Jatka samaan malliin, ja tuotteesi ovat pian rikastettu.
+              message3: Yksityiskohdilla on merkitystä, myös sinun toimialallasi!
+              message4: "Tarvitsetko apua tuotteidesi rikastamiseen? Lue täältä, kuinka valitset relevanteimmat attribuutit <a href=\"{{ link }}\" target=\"_blank\">.\n\n\n\nTarvitsetko käden kiillottamalla tuotteesi rikastus? Opi valitsemaan huolellisesti tärkeimmät attribuutit "
+            third_step:
+              message1: Toistaiseksi kaikki hyvin. Nyt voit kurkottaa taas hieman korkeammalle!
+              message2: Rikastusaste näyttää todella hyvältä, mutta eikö 100% näyttäisi vielä paremmalta?
+              message3: Osa tuotteista kaipaa vielä hieman huolenpitoasi, jotta ne olisivat valmiita! Loppukirin aika!
+              message4: Vielä muutama piste i:n päälle ja tästä tulee täydellistä.
+            perfect_score_step:
+              message1: Tuotteesi suorastaan myyvät itse itsensä! Loistavaa työtä!
+              message2: Mikä seikkailu! Voit olla ylpeä työstäsi.
+              message3: Olet todellinen mestari pitämään tuotekatalogisi ajantasaisena!
+              message4: Onnittelut, virheetöntä tekemistä!
+      no_data: Valitettavasti meillä ei ole vielä tarpeeksi dataa tietojen laadun yleiskatsauksen näyttämiseksi.
+      no_data_subtitle: Ole hyvä ja tule takaisin myöhemmin.
+    score_distribution:
+      title: Laatupisteiden jakauma
+    quality_score_evolution:
+      title: Laatupisteiden kehitys
+      current_score: on nykyinen katalogin laatuarvosana tälle kanavalle.
+      current_month_label: Tässä kuussa
+      no_catalog_score: Emme voineet laskea nykyisiä laatupisteitäsi.
+  product_evaluation:
+    criteria:
+      completeness_of_required_attributes:
+        recommendation: Vaaditut attribuutit, joilta puuttuu arvoja
+      completeness_of_non_required_attributes:
+        recommendation: Ei-vaaditut attribuutit, joilta puuttuu arvoja
+      enrichment_image:
+        recommendation: Puuttuva kuva
+    axis:
+      enrichment:
+        title: Rikastaminen
+        attributes_link: Näytä kaikki puuttuvat attribuutit
+        success: Tuotetietojesi rikastus on valmis. Onneksi olkoon!
+    messages:
+      error:
+        axis_error: Virheen vuoksi arvosanaa ei voitu laskea täysin. Yritä myöhemmin uudelleen.
+        criterion_error: Arvosanaa ei voitu laskea
+      success:
+        criterion: Kaikki näyttää hyvältä.
+      grading_in_progress: Arvostelu käynnissä.
+      axis_grading_in_progress: Arvostelu käynnissä. Ole hyvä ja palaa myöhemmin.
+      too_many_attributes: Sinulla on {{ count }} attribuuttia, joita voit vielä parantaa.
+      no_attribute_groups:
+        title: Valitettavasti emme pystyneet laskemaan laatupisteitäsi.
+        subtitle: "Laatupisteitä ei voida laskea: mikään tämän tuotteen attribuuttiryhmistä ei ole aktivoitu laatupisteiden laskentaan."
+        help_center_link: Lue lisää Help Centeristämme, miten tuotetiedon laadun analytiikka voi auttaa sinua parantamaan tiedon laatua.
+      add_image_attribute_recommendation: Kuva kertoo enemmän kuin tuhat sanaa. Lisää kuva-attribuutti parantaaksesi tämän tuotteen tuotetiedon laatua.
+      fill_image_attribute_recommendation: Kokemuksemme mukaan kuvilla on todellakin merkitystä. Sinun pitäisi lisätä vähintään yksi kuva parantaaksesi tämän tuotteen tietojen laatua.
+      not_applicable:
+        message: Tätä kriteeriä ei voida soveltaa kontekstissasi.
+        help_center_link: Lue lisää Help Centeristämme.
+  product_edit_form:
+    attribute_filter:
+      all_missing_attributes: Kaikki puuttuvat attribuutit
+    back_to_products: Takaisin tuotteisiin
+  attribute_group:
+    helper_dqi_info: Laatupisteiden laskennassa otetaan huomioon vain ne attribuutit, jotka kuuluvat laadun analysointiin aktivoituihin attribuuttiryhmiin.
+    helper_dqi_link: Lisätietoa Help Centerissämme.
+    activation: Käytössä
+    dqi_status: Tuotetiedon laadun analytiikan tilanne
+    activated: Käytössä
+    disabled: Ei käytössä
+    used_groups_helper: "Seuraavat attribuuttiryhmät huomioidaan tuotetiedon laadun arvioinnissa:"
+    all_groups_evaluated: Kaikki tämän tuotteen attribuuttiryhmät on otettu huomioon laskettaessa laatupisteytystä. Saadaksesi osuvimman laatupisteytyksen, <a href="{{ link }}" target="_blank">lue ohjekeskuksestamme, miten attribuuttiryhmiä on mahdollista deaktivoida.</a>
+  product_grid:
+    filter_label:
+      quality_score: Laatupisteytys
+      enrichment_quality: Rikastamisen laatu
+      images_quality: Tuotekuva
+    filter_value:
+      good: Hyvä
+      to_improve: Kehitettävä
+      "yes": "Kyllä"
+      "no": "Ei"
+pim_title:
+  akeneo_data_quality_insights_dashboard: Tuotetiedon laadun analytiikka

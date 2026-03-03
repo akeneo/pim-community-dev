@@ -2,9 +2,11 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 
 /**
  * @author    Julien Janvier <j.janvier@gmail.com>
@@ -13,47 +15,22 @@ use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
  */
 class CursorFactory implements CursorFactoryInterface
 {
-    /** @var Client */
-    protected $searchEngine;
-
-    /** @var CursorableRepositoryInterface */
-    private $productRepository;
-
-    /** @var CursorableRepositoryInterface */
-    private $productModelRepository;
-
-    /** @var string */
-    protected $cursorClassName;
-
-    /** @var int */
-    protected $pageSize;
-
-    /**
-     * @param Client                        $searchEngine
-     * @param CursorableRepositoryInterface $productRepository
-     * @param CursorableRepositoryInterface $productModelRepository
-     * @param int                           $pageSize
-     */
     public function __construct(
-        Client $searchEngine,
-        CursorableRepositoryInterface $productRepository,
-        CursorableRepositoryInterface $productModelRepository,
-        int $pageSize
+        protected Client $searchEngine,
+        private ProductRepositoryInterface $productRepository,
+        private ProductModelRepositoryInterface $productModelRepository,
+        protected int $pageSize
     ) {
-        $this->searchEngine = $searchEngine;
-        $this->productRepository = $productRepository;
-        $this->productModelRepository = $productModelRepository;
-        $this->pageSize = $pageSize;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function createCursor($queryBuilder, array $options = [])
+    public function createCursor($queryBuilder, array $options = []): CursorInterface
     {
         $pageSize = !isset($options['page_size']) ? $this->pageSize : $options['page_size'];
 
-        $queryBuilder['_source'] = array_merge($queryBuilder['_source'], ['document_type']);
+        $queryBuilder['_source'] = array_merge($queryBuilder['_source'], ['document_type', 'id']);
 
         return new Cursor(
             $this->searchEngine,

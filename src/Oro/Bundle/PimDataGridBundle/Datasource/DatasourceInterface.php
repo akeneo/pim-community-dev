@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\PimDataGridBundle\Datasource;
 
+use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface as OroDatasourceInterface;
 use Oro\Bundle\PimDataGridBundle\Datasource\ResultRecord\HydratorInterface;
 use Oro\Bundle\PimDataGridBundle\Doctrine\ORM\Repository\MassActionRepositoryInterface;
@@ -18,7 +19,7 @@ interface DatasourceInterface extends OroDatasourceInterface
     /**
      * Get the query builder
      *
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return QueryBuilder
      *
      * @deprecated you should avoid this method, it's a design flaw, still used by,
      *  `Oro\Bundle\PimDataGridBundle\Extension\MassAction\MassActionDispatcher`,

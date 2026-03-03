@@ -10,8 +10,8 @@ Feature: Edit a boolean value
     And I am on the products grid
     And I create a product
     And I fill in the following information in the popin:
-      | SKU    | gladiator |
       | Family | T-shirts  |
+      | SKU    | gladiator |
     And I press the "Save" button in the popin
     And I wait to be on the "gladiator" product page
     And I visit the "Additional information" group

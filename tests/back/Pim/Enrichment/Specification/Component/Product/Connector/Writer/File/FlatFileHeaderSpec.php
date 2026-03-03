@@ -89,7 +89,6 @@ class FlatFileHeaderSpec extends ObjectBehavior
                 $usesUnit = false,
                 $usesCurrencies = false,
                 $channelCurrencies = null,
-                $allCurrencies = null,
                 $isLocaleSpecific = true
             ]
         );
@@ -124,7 +123,6 @@ class FlatFileHeaderSpec extends ObjectBehavior
             $usesUnit = false,
             $usesCurrencies = false,
             $channelCurrencies = null,
-            $allCurrencies = null,
             $isLocaleSpecific = true,
             $specificToLocales = ['de_DE']
         );
@@ -144,7 +142,6 @@ class FlatFileHeaderSpec extends ObjectBehavior
             $usesUnit = false,
             $usesCurrencies = false,
             $channelCurrencies = null,
-            $allCurrencies = null,
             $isLocaleSpecific = true,
             $specificToLocales = ['en_US']
         );
@@ -164,7 +161,6 @@ class FlatFileHeaderSpec extends ObjectBehavior
             $usesUnit = false,
             $usesCurrencies = false,
             $channelCurrencies = null,
-            $allCurrencies = null,
             $isLocaleSpecific = true,
             $specificToLocales = ['en_US', 'de_DE', 'fr_BE']
         );
@@ -187,7 +183,6 @@ class FlatFileHeaderSpec extends ObjectBehavior
             $usesUnit = true,
             $usesCurrencies = false,
             $channelCurrencies = null,
-            $allCurrencies = null,
             $isLocaleSpecific = true,
             $specificToLocales = ['en_US']
         );
@@ -210,7 +205,6 @@ class FlatFileHeaderSpec extends ObjectBehavior
             $usesUnit = false,
             $usesCurrencies = true,
             $channelCurrencies = ['USD', 'EUR'],
-            $allCurrencies = ['USD', 'EUR', 'GBP'],
             $isLocaleSpecific = true,
             $specificToLocales = ['en_US']
         );
@@ -218,7 +212,6 @@ class FlatFileHeaderSpec extends ObjectBehavior
         $this->generateHeaderStrings()->shouldReturn([
             'my_code-USD',
             'my_code-EUR',
-            'my_code-GBP'
         ]);
     }
 
@@ -259,13 +252,11 @@ class FlatFileHeaderSpec extends ObjectBehavior
             $usesUnit = false,
             $usesCurrencies = true,
             $channelCurrencies = ['USD', 'EUR'],
-            $allCurrencies = ['USD', 'EUR', 'GBP']
         );
 
         $this->generateHeaderStrings()->shouldReturn([
             'my_code-USD',
             'my_code-EUR',
-            'my_code-GBP'
         ]);
     }
 
@@ -310,7 +301,6 @@ class FlatFileHeaderSpec extends ObjectBehavior
             $usesUnit = false,
             $usesCurrencies = true,
             $channelCurrencies = ['USD', 'EUR'],
-            $allCurrencies = ['USD', 'EUR', 'GBP']
         );
 
         $this->generateHeaderStrings()->shouldReturn([
@@ -367,16 +357,13 @@ class FlatFileHeaderSpec extends ObjectBehavior
             $usesUnit = false,
             $usesCurrencies = true,
             $channelCurrencies = ['USD', 'EUR'],
-            $allCurrencies = ['USD', 'EUR', 'GBP']
         );
 
         $this->generateHeaderStrings()->shouldReturn([
             'my_code-en_US-USD',
             'my_code-en_US-EUR',
-            'my_code-en_US-GBP',
             'my_code-fr_FR-USD',
             'my_code-fr_FR-EUR',
-            'my_code-fr_FR-GBP'
         ]);
     }
 
@@ -428,7 +415,6 @@ class FlatFileHeaderSpec extends ObjectBehavior
             $usesUnit = false,
             $usesCurrencies = true,
             $channelCurrencies = ['USD', 'EUR'],
-            $allCurrencies = ['USD', 'EUR', 'GBP']
         );
 
         $this->generateHeaderStrings()->shouldReturn([

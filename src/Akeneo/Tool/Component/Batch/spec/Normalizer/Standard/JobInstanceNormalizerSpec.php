@@ -39,6 +39,8 @@ class JobInstanceNormalizerSpec extends ObjectBehavior
                 'delimiter' => ';'
             ]
         );
+        $jobinstance->isScheduled()->willReturn(false);
+        $jobinstance->getAutomation()->willReturn(null);
 
         $this->normalize($jobinstance)->shouldReturn(
             [
@@ -47,7 +49,9 @@ class JobInstanceNormalizerSpec extends ObjectBehavior
                 'label'         => 'Product export',
                 'connector'     => 'myconnector',
                 'type'          => 'EXPORT',
-                'configuration' => ['delimiter' => ';']
+                'configuration' => ['delimiter' => ';'],
+                'automation'    => null,
+                'scheduled'     => false
             ]
         );
     }

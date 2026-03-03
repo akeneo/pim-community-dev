@@ -1,0 +1,31 @@
+Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand:
+    group_sequence:
+        - User
+        - IsOwner
+        - UpsertProductCommand
+    properties:
+        userId:
+            - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\UserShouldExist:
+                  groups: [User]
+        familyUserIntent:
+            - Valid: ~
+        categoryUserIntent:
+            - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\CategoriesShouldBeViewable: ~
+            - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\ShouldStayOwnerOfTheProduct: ~
+        valueUserIntents:
+            - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleAndChannelShouldBeConsistent: ~
+            - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\UserIntentsShouldBeUnique: ~
+            - Valid:
+                  traverse: true
+            - All:
+                - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\AttributeGroupShouldBeEditable: ~
+                - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleShouldBeEditableByUser: ~
+    constraints:
+        - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\IsUserOwnerOfTheProduct:
+              groups: [IsOwner]
+
+Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily:
+    properties:
+        familyCode:
+            - NotBlank:
+                  message: pim_enrich.product.validation.upsert.family_code_empty

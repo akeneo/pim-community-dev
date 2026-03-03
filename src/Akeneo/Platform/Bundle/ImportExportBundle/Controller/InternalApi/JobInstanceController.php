@@ -4,8 +4,11 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Controller\InternalApi;
 
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\ManualUploadStorage;
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\NoneStorage;
 use Akeneo\Platform\Bundle\ImportExportBundle\Event\JobInstanceEvents;
 use Akeneo\Platform\Bundle\ImportExportBundle\Exception\JobInstanceCannotBeUpdatedException;
+use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Security\CredentialsEncrypterRegistry;
 use Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceFactory;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
@@ -19,11 +22,12 @@ use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -34,12 +38,13 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * JobInstance rest controller
+ * JobInstance rest controller.
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
@@ -47,171 +52,51 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class JobInstanceController
 {
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $repository;
-
-    /** @var JobRegistry */
-    protected $jobRegistry;
-
-    /** @var NormalizerInterface */
-    protected $jobInstanceNormalizer;
-
-    /** @var ObjectUpdaterInterface */
-    protected $updater;
-
-    /** @var SaverInterface */
-    protected $saver;
-
-    /** @var RemoverInterface */
-    protected $remover;
-
-    /** @var ValidatorInterface */
-    protected $validator;
-
-    /** @var JobParametersValidator */
-    protected $jobParameterValidator;
-
-    /** @var JobParametersFactory */
-    protected $jobParamsFactory;
-
-    /** @var JobLauncherInterface */
-    protected $jobLauncher;
-
-    /** @var TokenStorageInterface */
-    protected $tokenStorage;
-
-    /** @var RouterInterface */
-    protected $router;
-
-    /** @var FormProviderInterface */
-    protected $formProvider;
-
-    /** @var ObjectFilterInterface */
-    protected $objectFilter;
-
-    /** @var NormalizerInterface */
-    protected $constraintViolationNormalizer;
-
-    /** @var JobInstanceFactory */
-    protected $jobInstanceFactory;
-
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
-
-    /** @var CollectionFilterInterface */
-    protected $inputFilter;
-
-    /** @var FilesystemInterface */
-    protected $filesystem;
-
-    /** @var SecurityFacade */
-    protected $securityFacade;
-
-    /**
-     * @param IdentifiableObjectRepositoryInterface $repository
-     * @param JobRegistry                           $jobRegistry
-     * @param NormalizerInterface                   $jobInstanceNormalizer
-     * @param ObjectUpdaterInterface                $updater
-     * @param SaverInterface                        $saver
-     * @param RemoverInterface                      $remover
-     * @param ValidatorInterface                    $validator
-     * @param JobParametersValidator                $jobParameterValidator
-     * @param JobParametersFactory                  $jobParamsFactory
-     * @param JobLauncherInterface                  $jobLauncher
-     * @param TokenStorageInterface                 $tokenStorage
-     * @param RouterInterface                       $router
-     * @param FormProviderInterface                 $formProvider
-     * @param ObjectFilterInterface                 $objectFilter
-     * @param NormalizerInterface                   $constraintViolationNormalizer
-     * @param JobInstanceFactory                    $jobInstanceFactory
-     * @param EventDispatcherInterface              $eventDispatcher
-     * @param CollectionFilterInterface             $inputFilter
-     * @param string                                $uploadTmpDir
-     * @param SecurityFacade                        $securityFacade
-     */
     public function __construct(
-        IdentifiableObjectRepositoryInterface $repository,
-        JobRegistry $jobRegistry,
-        NormalizerInterface $jobInstanceNormalizer,
-        ObjectUpdaterInterface $updater,
-        SaverInterface $saver,
-        RemoverInterface $remover,
-        ValidatorInterface $validator,
-        JobParametersValidator $jobParameterValidator,
-        JobParametersFactory $jobParamsFactory,
-        JobLauncherInterface $jobLauncher,
-        TokenStorageInterface $tokenStorage,
-        RouterInterface $router,
-        FormProviderInterface $formProvider,
-        ObjectFilterInterface $objectFilter,
-        NormalizerInterface $constraintViolationNormalizer,
-        JobInstanceFactory $jobInstanceFactory,
-        EventDispatcherInterface $eventDispatcher,
-        CollectionFilterInterface $inputFilter,
-        FilesystemInterface $filesystem,
-        SecurityFacade $securityFacade
+        private IdentifiableObjectRepositoryInterface $repository,
+        private JobRegistry $jobRegistry,
+        private NormalizerInterface $jobInstanceNormalizer,
+        private ObjectUpdaterInterface $updater,
+        private SaverInterface $saver,
+        private RemoverInterface $remover,
+        private ValidatorInterface $validator,
+        private JobParametersValidator $jobParameterValidator,
+        private JobParametersFactory $jobParamsFactory,
+        private JobLauncherInterface $jobLauncher,
+        private TokenStorageInterface $tokenStorage,
+        private RouterInterface $router,
+        private FormProviderInterface $formProvider,
+        private ObjectFilterInterface $objectFilter,
+        private NormalizerInterface $constraintViolationNormalizer,
+        private JobInstanceFactory $jobInstanceFactory,
+        private EventDispatcherInterface $eventDispatcher,
+        private CollectionFilterInterface $inputFilter,
+        private FilesystemOperator $filesystem,
+        private SecurityFacade $securityFacade,
+        private CredentialsEncrypterRegistry $credentialsEncrypterRegistry,
     ) {
-        $this->repository            = $repository;
-        $this->jobRegistry           = $jobRegistry;
-        $this->jobInstanceNormalizer = $jobInstanceNormalizer;
-        $this->updater               = $updater;
-        $this->saver                 = $saver;
-        $this->remover               = $remover;
-        $this->validator             = $validator;
-        $this->jobParameterValidator = $jobParameterValidator;
-        $this->jobParamsFactory      = $jobParamsFactory;
-        $this->jobLauncher           = $jobLauncher;
-        $this->tokenStorage          = $tokenStorage;
-        $this->router                = $router;
-        $this->formProvider          = $formProvider;
-        $this->objectFilter          = $objectFilter;
-        $this->constraintViolationNormalizer = $constraintViolationNormalizer;
-        $this->jobInstanceFactory    = $jobInstanceFactory;
-        $this->eventDispatcher       = $eventDispatcher;
-        $this->inputFilter           = $inputFilter;
-        $this->filesystem            = $filesystem;
-        $this->securityFacade        = $securityFacade;
     }
 
     /**
-     * Get an import job profile
-     *
-     * @param string $identifier
-     *
      * @AclAncestor("pim_importexport_import_profile_show")
-     *
-     * @return JsonResponse
      */
-    public function getImportAction($identifier)
+    public function getImportAction(string $identifier): JsonResponse
     {
         return $this->getAction($identifier);
     }
 
     /**
-     * Get an export job profile
-     *
-     * @param string $identifier
-     *
      * @AclAncestor("pim_importexport_export_profile_show")
-     *
-     * @return JsonResponse
      */
-    public function getExportAction($identifier)
+    public function getExportAction(string $identifier): JsonResponse
     {
         return $this->getAction($identifier);
     }
 
     /**
-     * Edit an import job profile
-     *
-     * @param Request $request
-     * @param string  $identifier
-     *
      * @AclAncestor("pim_importexport_import_profile_edit")
-     *
-     * @return Response
      */
-    public function putImportAction(Request $request, $identifier)
+    public function putImportAction(Request $request, string $identifier): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -221,16 +106,9 @@ class JobInstanceController
     }
 
     /**
-     * Edit an export job profile
-     *
-     * @param Request $request
-     * @param string  $identifier
-     *
      * @AclAncestor("pim_importexport_export_profile_edit")
-     *
-     * @return Response
      */
-    public function putExportAction(Request $request, $identifier)
+    public function putExportAction(Request $request, string $identifier): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -240,15 +118,9 @@ class JobInstanceController
     }
 
     /**
-     * Delete an export job profile
-     *
-     * @param string $code
-     *
      * @AclAncestor("pim_importexport_import_profile_remove")
-     *
-     * @return Response
      */
-    public function deleteImportAction(Request $request, $code)
+    public function deleteImportAction(Request $request, string $code): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -258,28 +130,21 @@ class JobInstanceController
     }
 
     /**
-     * Delete an export job profile
+     * @AclAncestor("pim_importexport_export_profile_remove")
+     */
+    public function deleteExportAction(Request $request, string $code): Response
+    {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
+        return $this->deleteAction($code);
+    }
+
+    /**
+     * Launch an import job.
      *
      * @param string $code
-     *
-     * @AclAncestor("pim_importexport_export_profile_remove")
-     *
-     * @return Response
-     */
-    public function deleteExportAction(Request $request, $code)
-    {
-        if (!$request->isXmlHttpRequest()) {
-            return new RedirectResponse('/');
-        }
-
-        return $this->deleteAction($code);
-    }
-
-    /**
-     * Launch an import job
-     *
-     * @param Request $request
-     * @param string  $code
      *
      * @AclAncestor("pim_importexport_import_profile_launch")
      *
@@ -295,10 +160,9 @@ class JobInstanceController
     }
 
     /**
-     * Launch an export job
+     * Launch an export job.
      *
-     * @param Request $request
-     * @param string  $code
+     * @param string $code
      *
      * @AclAncestor("pim_importexport_export_profile_launch")
      *
@@ -314,7 +178,7 @@ class JobInstanceController
     }
 
     /**
-     * Get a job profile
+     * Get a job profile.
      *
      * @param string $identifier
      *
@@ -327,14 +191,19 @@ class JobInstanceController
             throw new AccessDeniedHttpException();
         }
 
-        return new JsonResponse($this->normalizeJobInstance($jobInstance));
+        $normalizedJobInstance = $this->normalizeJobInstance($jobInstance);
+
+        if (isset($normalizedJobInstance['configuration']['storage'])) {
+            $normalizedJobInstance['configuration']['storage'] = $this->credentialsEncrypterRegistry->obfuscateCredentials($normalizedJobInstance['configuration']['storage']);
+        }
+
+        return new JsonResponse($normalizedJobInstance);
     }
 
     /**
-     * Edit a job profile
+     * Edit a job profile.
      *
-     * @param Request $request
-     * @param string  $identifier
+     * @param string $identifier
      *
      * @return Response
      */
@@ -345,51 +214,58 @@ class JobInstanceController
         }
 
         $jobInstance = $this->getJobInstance($identifier);
+        $previousJobInstanceParameters = $jobInstance->getRawParameters();
         if ($this->objectFilter->filterObject($jobInstance, 'pim.internal_api.job_instance.edit')) {
             throw new AccessDeniedHttpException();
         }
 
         $data = json_decode($request->getContent(), true);
 
-        try {
-            $this->eventDispatcher->dispatch(
-                JobInstanceEvents::PRE_SAVE,
-                new GenericEvent($jobInstance, ['data' => $data])
-            );
-        } catch (JobInstanceCannotBeUpdatedException $e) {
-            return new JsonResponse(['message' => $e->getMessage()], 400);
-        }
-
         $filteredData = $this->inputFilter->filterCollection(
             $data,
             'pim.internal_api.job_instance.edit',
             ['preserve_keys' => true]
         );
+
         $this->updater->update($jobInstance, $filteredData);
 
         $errors = $this->getValidationErrors($jobInstance);
-        if (count($errors) > 0) {
+        if (0 < count($errors)) {
             return new JsonResponse($errors, 400);
+        }
+
+        if (isset($data['configuration']['storage'])) {
+            $previousStorageData = $previousJobInstanceParameters['storage'];
+            $data['configuration']['storage'] = $this->credentialsEncrypterRegistry->encryptCredentials($previousStorageData, $data['configuration']['storage']);
+        }
+        $this->updater->update($jobInstance, $data);
+
+        try {
+            $this->eventDispatcher->dispatch(
+                new GenericEvent($jobInstance, ['data' => $data]),
+                JobInstanceEvents::PRE_SAVE
+            );
+        } catch (JobInstanceCannotBeUpdatedException $e) {
+            return new JsonResponse(['message' => $e->getMessage()], 400);
         }
 
         $this->saver->save($jobInstance);
 
         $this->eventDispatcher->dispatch(
-            JobInstanceEvents::POST_SAVE,
-            new GenericEvent($jobInstance, ['data' => $data])
+            new GenericEvent($jobInstance, ['data' => $data]),
+            JobInstanceEvents::POST_SAVE
         );
 
-        return new JsonResponse($this->normalizeJobInstance($jobInstance));
+        $normalizedJobInstance = $this->normalizeJobInstance($jobInstance);
+
+        if (isset($normalizedJobInstance['configuration']['storage'])) {
+            $normalizedJobInstance['configuration']['storage'] = $this->credentialsEncrypterRegistry->obfuscateCredentials($normalizedJobInstance['configuration']['storage']);
+        }
+
+        return new JsonResponse($normalizedJobInstance);
     }
 
-    /**
-     * Delete a job profile
-     *
-     * @param string $code
-     *
-     * @return Response
-     */
-    protected function deleteAction($code): Response
+    protected function deleteAction(string $code): Response
     {
         $jobInstance = $this->getJobInstance($code);
         if ($this->objectFilter->filterObject($jobInstance, 'pim.internal_api.job_instance.delete')) {
@@ -402,14 +278,7 @@ class JobInstanceController
     }
 
     /**
-     * Launch a job
-     *
-     * @param Request $request
-     * @param string  $code
-     *
      * @throws AccessDeniedHttpException
-     *
-     * @return Response
      */
     protected function launchAction(Request $request, string $code): Response
     {
@@ -427,7 +296,7 @@ class JobInstanceController
             return new JsonResponse(['message' => 'pim_import_export.entity.import_profile.flash.upload.error'], 400);
         }
 
-        if (null !== $file) {
+        if ($file instanceof UploadedFile) {
             if (UPLOAD_ERR_OK !== $file->getError()) {
                 return new JsonResponse(['message' => 'pim_import_export.entity.import_profile.flash.upload.error'], 400);
             }
@@ -439,16 +308,17 @@ class JobInstanceController
                 foreach ($violations as $violation) {
                     $errors[$violation->getPropertyPath()] = [
                         'message' => $violation->getMessage(),
-                        'invalid_value' => $violation->getInvalidValue()
+                        'invalid_value' => $violation->getInvalidValue(),
                     ];
                 }
 
                 return new JsonResponse($errors, 400);
             }
 
-            $jobFileLocation = new JobFileLocation($code.DIRECTORY_SEPARATOR. $file->getClientOriginalName(), true);
+            $fileName = $this->getSanitizedClientFileName($file);
+            $jobFileLocation = new JobFileLocation($code.DIRECTORY_SEPARATOR.$fileName, true);
 
-            if ($this->filesystem->has($jobFileLocation->path())) {
+            if ($this->filesystem->fileExists($jobFileLocation->path())) {
                 $this->filesystem->delete($jobFileLocation->path());
             }
 
@@ -459,8 +329,18 @@ class JobInstanceController
             }
 
             $rawParameters = $jobInstance->getRawParameters();
-            $rawParameters['filePath'] = $jobFileLocation->url();
+            $filePath = $jobFileLocation->path();
+            $rawParameters['storage'] = [
+                'type' => ManualUploadStorage::TYPE,
+                'file_path' => $filePath,
+            ];
+
             $jobInstance->setRawParameters($rawParameters);
+        }
+
+        $rawParameters = $jobInstance->getRawParameters();
+        if (NoneStorage::TYPE === $rawParameters['storage']['type'] && JobInstance::TYPE_IMPORT === $jobInstance->getType()) {
+            throw new BadRequestException();
         }
 
         $validationGroups = null !== $file ? ['Default', 'Execution', 'UploadExecution'] : ['Default', 'Execution'];
@@ -476,59 +356,41 @@ class JobInstanceController
         }
 
         return new JsonResponse([
-            'redirectUrl' => '#' . $this->router->generate(
-                'pim_enrich_job_tracker_show',
+            'redirectUrl' => '#'.$this->router->generate(
+                'akeneo_job_process_tracker_details',
                 ['id' => $jobExecution->getId()]
-            )
+            ),
         ], 200);
     }
 
     /**
-     * Get a job instance
-     *
-     * @param string $code
-     *
      * @throws NotFoundHttpException
-     *
-     * @return JobInstance
      */
-    protected function getJobInstance($code)
+    protected function getJobInstance(string $code): JobInstance
     {
         $jobInstance = $this->repository->findOneByIdentifier($code);
         if (null === $jobInstance) {
             throw new NotFoundHttpException(sprintf('%s entity not found', JobInstance::class));
         }
 
-        $job = $this->jobRegistry->get($jobInstance->getJobName());
-
-        if (null === $job) {
-            throw new NotFoundHttpException(
-                sprintf(
-                    'The following %s does not exist anymore. Please check configuration:<br />' .
-                    'Connector: %s<br />' .
-                    'Type: %s<br />' .
-                    'Alias: %s',
-                    $jobInstance->getType(),
-                    $jobInstance->getConnector(),
-                    $jobInstance->getType(),
-                    $jobInstance->getJobName()
-                )
+        if (!$this->jobRegistry->has($jobInstance->getJobName())) {
+            $message = sprintf(
+                'The following %s does not exist anymore. Please check configuration:<br />Connector: %s<br />Type: %s<br />Alias: %s',
+                $jobInstance->getType(),
+                $jobInstance->getConnector(),
+                $jobInstance->getType(),
+                $jobInstance->getJobName()
             );
+            throw new NotFoundHttpException($message);
         }
 
         return $jobInstance;
     }
 
     /**
-     * Get an array of job names
-     *
-     * @param Request $request
-     *
      * @throws NotFoundHttpException
-     *
-     * @return JsonResponse
      */
-    public function getJobNamesAction(Request $request)
+    public function getJobNamesAction(Request $request): JsonResponse
     {
         $jobType = $request->query->get('jobType');
         $choices = [];
@@ -541,15 +403,7 @@ class JobInstanceController
         return new JsonResponse($choices);
     }
 
-    /**
-     * Aggregate validation errors
-     *
-     * @param JobInstance $jobInstance
-     * @param array|null  $groups
-     *
-     * @return array
-     */
-    protected function getValidationErrors(JobInstance $jobInstance, $groups = null)
+    protected function getValidationErrors(JobInstance $jobInstance, ?array $groups = null): array
     {
         $rawParameters = $jobInstance->getRawParameters();
         $parametersViolations = [];
@@ -563,7 +417,14 @@ class JobInstanceController
         $accessor = PropertyAccess::createPropertyAccessorBuilder()->getPropertyAccessor();
         if (count($parametersViolations) > 0) {
             foreach ($parametersViolations as $error) {
-                $accessor->setValue($errors, '[configuration]' . $error->getPropertyPath(), $error->getMessage());
+                $accessor->setValue($errors, '[configuration]'.$error->getPropertyPath(), $error->getMessage());
+                $errors['normalized_errors'][] = $this->constraintViolationNormalizer->normalize(
+                    $error,
+                    'internal_api',
+                    [
+                        'translate' => false,
+                    ]
+                );
             }
         }
 
@@ -571,86 +432,107 @@ class JobInstanceController
         if ($globalViolations->count() > 0) {
             foreach ($globalViolations as $error) {
                 $errors[$error->getPropertyPath()] = $error->getMessage();
+                $errors['normalized_errors'][] = $this->constraintViolationNormalizer->normalize(
+                    $error,
+                    'internal_api',
+                    [
+                        'translate' => false,
+                    ]
+                );
             }
         }
 
         return $errors;
     }
 
-    /**
-     * Normalize the job errors
-     *
-     * @param JobInstance $jobInstance
-     *
-     * @return array
-     */
-    protected function normalizeJobInstance(JobInstance $jobInstance)
+    protected function normalizeJobInstance(JobInstance $jobInstance): array
     {
         $normalizedJobInstance = $this->jobInstanceNormalizer->normalize($jobInstance, 'standard');
 
         return array_merge($normalizedJobInstance, [
             'meta' => [
                 'form' => $this->formProvider->getForm($jobInstance),
-                'id'   => $jobInstance->getId()
-            ]
+                'id' => $jobInstance->getId(),
+            ],
         ]);
     }
 
     /**
-     * Allow to validate and run the job
-     *
-     * @param JobInstance $jobInstance
-     *
-     * @return JobExecution
+     * Allow to validate and run the job.
      */
-    protected function launchJob(JobInstance $jobInstance) : JobExecution
+    protected function launchJob(JobInstance $jobInstance): JobExecution
     {
         $user = $this->tokenStorage->getToken()->getUser();
 
         $configuration = $jobInstance->getRawParameters();
         $configuration['send_email'] = true;
-        $configuration['user_to_notify'] = $user->getUsername();
+        $configuration['users_to_notify'][] = $user->getUserIdentifier();
 
         return $this->jobLauncher->launch($jobInstance, $user, $configuration);
     }
 
     /**
-     * Create an import profile
-     *
      * @AclAncestor("pim_importexport_import_profile_create")
-     *
-     * @param Request $request
-     *
-     * @return JsonResponse
      */
-    public function createImportAction(Request $request)
+    public function createImportAction(Request $request): Response
     {
         return $this->createAction($request, 'import');
     }
 
     /**
-     * Create an export profile
-     *
      * @AclAncestor("pim_importexport_export_profile_create")
-     *
-     * @param Request $request
-     *
-     * @return JsonResponse
      */
-    public function createExportAction(Request $request)
+    public function createExportAction(Request $request): Response
     {
         return $this->createAction($request, 'export');
     }
 
-    /**
-     * Create a job profile with a given type
-     *
-     * @param Request $request
-     * @param string  $type
-     *
-     * @return Response
-     */
-    protected function createAction(Request $request, string $type)
+    public function duplicateAction(Request $request, $code): Response
+    {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
+        $jobToDuplicate = $this->getJobInstance($code);
+        if (!$this->securityFacade->isGranted(sprintf('pim_importexport_%s_profile_create', $jobToDuplicate->getType()))) {
+            throw new AccessDeniedException();
+        }
+
+        $duplicatedJobInstance = $this->jobInstanceFactory->createJobInstance($jobToDuplicate->getType());
+        $duplicatedJobInstance->setJobName($jobToDuplicate->getJobName());
+
+        $data = json_decode($request->getContent(), true);
+
+        $normalizedJobToDuplicate = $this->normalizeJobInstance($jobToDuplicate);
+        $normalizedJobToDuplicate['code'] = $data['code'] ?? '';
+        $normalizedJobToDuplicate['label'] = $data['label'] ?? '';
+        $this->updater->update($duplicatedJobInstance, $normalizedJobToDuplicate);
+
+        $violations = $this->validator->validate($duplicatedJobInstance);
+        $normalizedViolations = [];
+        foreach ($violations as $violation) {
+            $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
+                $violation,
+                'internal_api',
+                ['jobInstance' => $duplicatedJobInstance, 'translate' => false],
+            );
+        }
+
+        if (count($normalizedViolations) > 0) {
+            return new JsonResponse(['values' => $normalizedViolations], 400);
+        }
+
+        $this->saver->save($duplicatedJobInstance);
+
+        $this->eventDispatcher->dispatch(
+            new GenericEvent($duplicatedJobInstance, ['data' => $this->normalizeJobInstance($jobToDuplicate)]),
+            JobInstanceEvents::POST_SAVE,
+        );
+
+        return new JsonResponse(['code' => $data['code']]);
+    }
+
+    protected function createAction(Request $request, string $type): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -680,11 +562,13 @@ class JobInstanceController
         $this->saver->save($jobInstance);
 
         $this->eventDispatcher->dispatch(
-            JobInstanceEvents::POST_SAVE,
-            new GenericEvent($jobInstance, ['data' => $data])
+            new GenericEvent($jobInstance, ['data' => $data]),
+            JobInstanceEvents::POST_SAVE
         );
 
-        return new JsonResponse($this->normalizeJobInstance($jobInstance));
+        $normalizedJobInstance = $this->normalizeJobInstance($jobInstance);
+
+        return new JsonResponse($normalizedJobInstance);
     }
 
     /**
@@ -697,5 +581,10 @@ class JobInstanceController
     private function isFileUpload(Request $request): bool
     {
         return $request->server->get('CONTENT_LENGTH') > 0;
+    }
+
+    private function getSanitizedClientFileName(UploadedFile $file): string
+    {
+        return preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $file->getClientOriginalName());
     }
 }

@@ -52,9 +52,10 @@ define(['jquery', 'underscore', 'backbone', 'pim/form', 'pim/template/form/form-
      */
     configure: function () {
       this.onExtensions('tab:register', this.registerTab.bind(this));
+      this.onExtensions('tab:refresh', this.refreshTab.bind(this));
       this.listenTo(this.getRoot(), 'pim_enrich:form:form-tabs:change', this.setCurrentTab);
-      this.listenTo(this.getRoot(), 'pim_enrich:form:form-tabs:add-error', this.addError);
-      this.listenTo(this.getRoot(), 'pim_enrich:form:form-tabs:remove-error', this.removeError);
+      this.listenTo(this.getRoot(), 'pim_enrich:form:form-tabs:add-errors', this.addError);
+      this.listenTo(this.getRoot(), 'pim_enrich:form:form-tabs:remove-errors', this.removeError);
 
       return BaseForm.prototype.configure.apply(this, arguments);
     },
@@ -72,14 +73,22 @@ define(['jquery', 'underscore', 'backbone', 'pim/form', 'pim/template/form/form-
           code: event.code,
           isVisible: event.isVisible,
           label: event.label,
-          fieldErrorCount: 0,
+          fieldErrors: [],
         });
+        this.render();
       } else {
         existingTab.label = event.label;
         existingTab.isVisible = event.isVisible;
       }
+    },
 
-      this.render();
+    refreshTab: function (event) {
+      const existingTab = this.tabs.find(currentTab => currentTab.code === event.code);
+
+      if (existingTab) {
+        existingTab.label = event.label;
+        this.render();
+      }
     },
 
     /**
@@ -156,18 +165,23 @@ define(['jquery', 'underscore', 'backbone', 'pim/form', 'pim/template/form/form-
       return this;
     },
 
-    addError: function (tabCode) {
+    addError: function ({tabCode, errors}) {
       const tab = this.tabs.find(currentTab => currentTab.code === tabCode);
       if (tab) {
-        tab.fieldErrorCount++;
+        tab.fieldErrors.push(errors);
         this.render();
       }
     },
 
-    removeError: function (tabCode) {
-      const tab = this.tabs.find(currentTab => currentTab.code === tabCode);
-      if (tab) {
-        tab.fieldErrorCount = Math.max(0, tab.fieldErrorCount - 1);
+    removeError: function () {
+      let dirty = false;
+      this.tabs.forEach(tab => {
+        if (tab.fieldErrors.length) {
+          tab.fieldErrors = [];
+          dirty = true;
+        }
+      });
+      if (dirty) {
         this.render();
       }
     },

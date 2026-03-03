@@ -32,6 +32,6 @@ SQL;
 
         return array_map(function ($row) {
             return new FamilyCode($row['code']);
-        }, $statement->fetchAll(\PDO::FETCH_ASSOC));
+        }, $statement->fetchAllAssociative());
     }
 }

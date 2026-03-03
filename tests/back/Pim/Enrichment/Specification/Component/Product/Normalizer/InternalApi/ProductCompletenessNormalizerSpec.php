@@ -4,8 +4,8 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Inter
 
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodes;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 
 class ProductCompletenessNormalizerSpec extends ObjectBehavior
 {

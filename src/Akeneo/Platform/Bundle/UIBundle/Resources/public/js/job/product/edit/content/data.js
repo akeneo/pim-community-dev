@@ -87,6 +87,10 @@ define([
         .then(this.buildFilterView.bind(this))
         .then(
           function (filterView) {
+            //condition to avoid adding the same filter twice
+            if (this.filterViews.some(filterView => filterView.filterCode === fieldCode)) {
+              return;
+            }
             this.listenTo(filterView, 'pim_enrich:form:entity:post_update', this.updateModel.bind(this));
             this.listenTo(filterView, 'filter:remove', this.removeFilter.bind(this));
             this.listenTo(
@@ -100,6 +104,9 @@ define([
             this.filterViews.push(filterView);
           }.bind(this)
         )
+        .catch(function (error) {
+          console.error(error);
+        })
         .always(function () {
           deferred.resolve();
         });
@@ -172,17 +179,22 @@ define([
         return this;
       }
 
-      this.$el.html(this.template({__: __}));
+      this.$el.html(
+        this.template({
+          sectionTitle: __(this.config.sectionTitle ?? 'pim_enrich.export.product.data.title'),
+        })
+      );
 
-      $.when(fetcherRegistry.getFetcher('attribute').getIdentifierAttribute(), this.addExistingFilters()).then(
+      $.when(fetcherRegistry.getFetcher('attribute').getIdentifierAttribute(), this.addExistingFilters()).always(
         function (identifier) {
           var filtersContainer = this.$('.filters').empty();
-
           var configuredFieldCodes = _.pluck(this.config.filters, 'field');
           var savedFieldCodes = _.pluck(this.filterViews, 'filterCode').sort();
-          var fieldCodes = _.union(configuredFieldCodes, _.without(savedFieldCodes, identifier.code), [
-            identifier.code,
-          ]);
+          var fieldCodes = _.union(configuredFieldCodes, _.without(savedFieldCodes));
+
+          if (identifier) {
+            fieldCodes = _.union(configuredFieldCodes, _.without(savedFieldCodes, identifier.code), [identifier.code]);
+          }
 
           var filterViews = _.map(
             fieldCodes,
@@ -355,6 +367,12 @@ define([
      */
     getFilters: function () {
       return this.getFormData().configuration.filters;
+    },
+
+    shutdown() {
+      this.doShutdown();
+
+      Object.values(this.filterViews).forEach(filterView => filterView.shutdown());
     },
   });
 });

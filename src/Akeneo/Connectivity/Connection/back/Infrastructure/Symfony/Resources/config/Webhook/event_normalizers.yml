@@ -1,0 +1,8 @@
+services:
+    Akeneo\Connectivity\Connection\Domain\Webhook\EventNormalizer\ProductEventNormalizer:
+        tags:
+            - { name: akeneo_connectivity.connection.webhook.event_normalizer }
+
+    Akeneo\Connectivity\Connection\Domain\Webhook\EventNormalizer\ProductModelEventNormalizer:
+        tags:
+            - { name: akeneo_connectivity.connection.webhook.event_normalizer }

@@ -2,8 +2,8 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\MassEdit;
 
-use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\MassEdit\FilteredProductReader;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
@@ -102,6 +102,7 @@ class FilteredProductReaderSpec extends ObjectBehavior
         );
         $cursor->current()->will(new ReturnPromise($products));
         $cursor->next()->shouldBeCalled();
+        $cursor->rewind()->shouldBeCalled();
 
         $stepExecution->incrementSummaryInfo('read')->shouldBeCalledTimes(3);
         $metricConverter->convert(Argument::any(), $channel)->shouldBeCalledTimes(3);
@@ -167,6 +168,7 @@ class FilteredProductReaderSpec extends ObjectBehavior
 
         $expectedTotalItems = 10;
         $cursor->count()->willReturn($expectedTotalItems);
+        $cursor->rewind()->shouldBeCalled();
 
         $this->initialize();
         $this->totalItems()->shouldReturn($expectedTotalItems);

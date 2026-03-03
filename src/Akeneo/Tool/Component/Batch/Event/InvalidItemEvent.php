@@ -3,7 +3,7 @@
 namespace Akeneo\Tool\Component\Batch\Event;
 
 use Akeneo\Tool\Component\Batch\Item\InvalidItemInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Invalid Item Event

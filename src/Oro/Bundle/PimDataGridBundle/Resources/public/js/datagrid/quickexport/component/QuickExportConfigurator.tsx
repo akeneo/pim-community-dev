@@ -1,14 +1,14 @@
 import React from 'react';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {useToggleState, useStorageState} from '@akeneo-pim-community/shared';
+import {useTranslate, useStorageState} from '@akeneo-pim-community/shared';
 import {Form, FormValue} from './Form';
 import {Select} from './Select';
 import {Option} from './Option';
-import {FileXlsxIcon, FileCsvIcon, Modal, Button} from 'akeneo-design-system';
+import {FileXlsxIcon, FileCsvIcon, Modal, Button, useBooleanState} from 'akeneo-design-system';
 
 type QuickExportConfiguratorProps = {
   showWithLabelsSelect: boolean;
   showWithMediaSelect: boolean;
+  showWithUuidSelect: boolean;
   onActionLaunch: (formValue: FormValue) => void;
   getProductCount: () => number;
 };
@@ -16,10 +16,11 @@ type QuickExportConfiguratorProps = {
 const QuickExportConfigurator = ({
   showWithLabelsSelect,
   showWithMediaSelect,
+  showWithUuidSelect,
   onActionLaunch,
   getProductCount,
 }: QuickExportConfiguratorProps) => {
-  const [isModalOpen, openModal, closeModal] = useToggleState(false);
+  const [isModalOpen, openModal, closeModal] = useBooleanState(false);
   const translate = useTranslate();
   const [formValue, setFormValue] = useStorageState<FormValue>({}, 'quick_export_configuration');
 
@@ -28,7 +29,8 @@ const QuickExportConfigurator = ({
     undefined !== formValue.type &&
     undefined !== formValue.context &&
     (undefined !== formValue.with_media || !showWithMediaSelect) &&
-    (undefined !== formValue['with-labels'] || !showWithLabelsSelect);
+    (undefined !== formValue['with-labels'] || !showWithLabelsSelect) &&
+    (undefined !== formValue.with_uuid || !showWithUuidSelect);
 
   return (
     <>
@@ -109,6 +111,19 @@ const QuickExportConfigurator = ({
                 </Option>
                 <Option value="true" title={translate('pim_datagrid.mass_action.quick_export.configurator.with_media')}>
                   {translate('pim_datagrid.mass_action.quick_export.configurator.with_media')}
+                </Option>
+              </Select>
+            )}
+            {showWithMediaSelect && (
+              <Select name="with_uuid">
+                <Option
+                  value="false"
+                  title={translate('pim_datagrid.mass_action.quick_export.configurator.without_uuid')}
+                >
+                  {translate('pim_datagrid.mass_action.quick_export.configurator.without_uuid')}
+                </Option>
+                <Option value="true" title={translate('pim_datagrid.mass_action.quick_export.configurator.with_uuid')}>
+                  {translate('pim_datagrid.mass_action.quick_export.configurator.with_uuid')}
                 </Option>
               </Select>
             )}

@@ -42,6 +42,6 @@ describe('testing RegenerateConnectionPassword page', () => {
             method: 'POST',
         });
 
-        expect(history.location.pathname).toBe('/connections/franklin/edit');
+        expect(history.location.pathname).toBe('/connect/connection-settings/franklin/edit');
     });
 });

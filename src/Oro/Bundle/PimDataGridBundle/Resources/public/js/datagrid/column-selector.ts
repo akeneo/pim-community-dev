@@ -11,6 +11,7 @@ const columnsTemplate = require('pim/template/datagrid/column-selector/columns')
 const innerModalTemplate = require('pim/template/datagrid/column-selector/modal');
 const selectedTemplate = require('pim/template/datagrid/column-selector/selected');
 const modalTemplate = require('pim/template/common/modal-centered');
+const analytics = require('pim/analytics');
 
 interface AttributeGroup {
   code: string;
@@ -88,7 +89,7 @@ class ColumnSelector extends BaseView {
   getLocale(): string {
     const url = (<string>this.datagridCollection.url).split('?')[1];
     const urlParams = this.datagridCollection.decodeStateData(url);
-    const datagridParams = urlParams['product-grid'] || {};
+    const datagridParams = urlParams[this.config.gridName] || {};
 
     return urlParams['dataLocale'] || datagridParams['dataLocale'];
   }
@@ -268,8 +269,8 @@ class ColumnSelector extends BaseView {
     this.listenToListScroll();
 
     const scrollColumn = this.modal.$el.find('[data-columns]');
-    const scrollHeight = scrollColumn.get(0).scrollHeight;
-    const columnHeight = scrollColumn.outerHeight();
+    const scrollHeight = Math.floor(scrollColumn.get(0).scrollHeight);
+    const columnHeight = Math.floor(scrollColumn.outerHeight());
 
     if (scrollHeight === columnHeight) {
       this.fetchNextColumns(true);
@@ -298,7 +299,8 @@ class ColumnSelector extends BaseView {
     const list: any = this.modal.$el.find('[data-columns]').get(0);
     const scrollPosition = Math.max(0, list.scrollTop);
     const bottomPosition = list.scrollHeight - list.offsetHeight;
-    const isBottom = bottomPosition === scrollPosition;
+    const limitForLoadingInPx = 5;
+    const isBottom = Math.abs(bottomPosition - scrollPosition) < limitForLoadingInPx;
 
     if (isBottom || true === loadNextPage) {
       this.page = this.page + 1;
@@ -476,7 +478,12 @@ class ColumnSelector extends BaseView {
       return;
     }
 
-    DatagridState.set('product-grid', 'columns', selected);
+    analytics.appcuesTrack('product-grid:column:selected', {
+      gridName: this.config.gridName,
+      column: selected,
+    });
+
+    DatagridState.set(this.config.gridName, 'columns', selected);
     this.modal.close();
 
     var url = window.location.hash;

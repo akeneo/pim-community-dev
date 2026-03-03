@@ -13,6 +13,7 @@ use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\ReadModel\CountVolu
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Repository\AggregatedVolumeRepositoryInterface;
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Service\VolumeAggregation;
 use Prophecy\Argument;
+use Psr\Log\LoggerInterface;
 
 class VolumeAggregationSpec extends ObjectBehavior
 {
@@ -20,12 +21,14 @@ class VolumeAggregationSpec extends ObjectBehavior
         AggregatedVolumeRepositoryInterface $aggregatedVolumeRepository,
         CountQuery $countQuery1,
         CountQuery $countQuery2,
-        AverageMaxQuery $averageMaxQuery
+        AverageMaxQuery $averageMaxQuery,
+        LoggerInterface $logger
     ) {
         $this->beConstructedWith(
             $aggregatedVolumeRepository,
             [$countQuery1, $countQuery2],
-            [$averageMaxQuery]
+            [$averageMaxQuery],
+            $logger
         );
     }
 
@@ -40,9 +43,9 @@ class VolumeAggregationSpec extends ObjectBehavior
         $countQuery2,
         $averageMaxQuery
     ) {
-        $countQuery1->fetch()->willReturn(new CountVolume(11, 20, 'count_volume_1'));
-        $countQuery2->fetch()->willReturn(new CountVolume(7, 10, 'count_volume_2'));
-        $averageMaxQuery->fetch()->willReturn(new AverageMaxVolumes(42, 34, -1, 'average_max_volume'));
+        $countQuery1->fetch()->willReturn(new CountVolume(11, 'count_volume_1'));
+        $countQuery2->fetch()->willReturn(new CountVolume(7, 'count_volume_2'));
+        $averageMaxQuery->fetch()->willReturn(new AverageMaxVolumes(42, 34, 'average_max_volume'));
 
         $aggregatedVolumeRepository->add(Argument::that(function (AggregatedVolume $aggregatedVolume) {
             return 'count_volume_1' === $aggregatedVolume->getVolumeName()

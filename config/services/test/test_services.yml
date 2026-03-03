@@ -7,12 +7,21 @@ parameters:
     akeneo_integration_tests.security.system_user_authenticator.class: Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator
     akeneo_integration_tests.launcher.job_launcher.class: Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher
     akeneo_integration_tests.launcher.job_execution_observer.class: Akeneo\Test\IntegrationTestsBundle\Jobs\JobExecutionObserver
+    pim_user.account_lock.max_consecutive_failures: 1
+    env(EXPERIMENTAL_TEST_DATABASE): false
 
 imports:
     # Akeneo/Connectivity/Connection
     - { resource: ../../../src/Akeneo/Connectivity/Connection/back/tests/CatalogBuilder/Resources/config/loaders.yml }
+    - { resource: ../../../src/Akeneo/Connectivity/Connection/back/tests/Integration/Resources/config/services.yml }
     # Akeneo/Platform/CommunicationChannel
     - { resource: ../../../src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests/Integration/Resources/config/in_memory.yml }
+    # AkeneoJobBundle
+    - { resource: ../../../src/Akeneo/Platform/Job/back/tests/Integration/Resources/config/services.yml }
+    # FeatureFlag
+    - { resource: ../../../src/Akeneo/Platform/Bundle/FeatureFlagBundle/Resources/config/test_services.yml }
+    # MessengerBundle
+    - { resource: ../../../src/Akeneo/Tool/Bundle/MessengerBundle/Resources/config/test_services.yml }
 
 services:
 
@@ -22,7 +31,7 @@ services:
     akeneo_integration_tests.migration_command_launcher:
         class: 'Akeneo\Tool\Component\Console\CommandLauncher'
         arguments:
-            - '%kernel.root_dir%'
+            - '%kernel.project_dir%/src'
             - 'test'
             - '%kernel.logs_dir%'
 
@@ -49,15 +58,19 @@ services:
             - '@pim_catalog.elasticsearch.indexer.product'
             - '@pim_catalog.elasticsearch.indexer.product_model'
             - '@akeneo_elasticsearch.registry.clients'
-            - '@akeneo_elasticsearch.client.product_and_product_model'
             - '@database_connection'
             - '@akeneo_measure.installer.measurement_installer'
+            - '@messenger.transport.business_event'
+            - '@event_dispatcher'
+            - '@akeneo_integration_tests.launcher.job_launcher'
             - '%env(APP_DATABASE_HOST)%'
             - '%env(APP_DATABASE_NAME)%'
             - '%env(APP_DATABASE_USER)%'
             - '%env(APP_DATABASE_PASSWORD)%'
             - '%kernel.cache_dir%/sql-dump/'
             - '%index_hosts%'
+            - '@Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysHandler'
+            - '@Akeneo\Test\IntegrationTestsBundle\Helper\ExperimentalTransactionHelper'
 
     akeneo_integration_tests.loader.category_tree_loader:
         class: 'AkeneoTest\Pim\Enrichment\Integration\Storage\ElasticsearchAndSql\CategoryTree\CategoryTreeFixturesLoader'
@@ -153,8 +166,66 @@ services:
         arguments:
             - '@kernel'
             - '@database_connection'
-            - '@akeneo_batch_queue.queue.job_execution_message_repository'
+            - !tagged akeneo.pim.tests.pub_sub_queue_status.job
+            - '@logger'
+            - '@feature_flags'
 
+    akeneo_integration_tests.pub_sub_queue_status.ui_job:
+        class: AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubQueueStatus
+        arguments:
+            - '@Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory'
+            - '%env(GOOGLE_CLOUD_PROJECT)%'
+            - '%env(PUBSUB_TOPIC_JOB_QUEUE_UI)%'
+            - '%env(PUBSUB_SUBSCRIPTION_JOB_QUEUE_UI)%'
+        tags:
+            - { name: 'akeneo.pim.tests.pub_sub_queue_status.job' }
+
+    akeneo_integration_tests.pub_sub_queue_status.import_export_job:
+        class: AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubQueueStatus
+        arguments:
+            - '@Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory'
+            - '%env(GOOGLE_CLOUD_PROJECT)%'
+            - '%env(PUBSUB_TOPIC_JOB_QUEUE_IMPORT_EXPORT)%'
+            - '%env(PUBSUB_SUBSCRIPTION_JOB_QUEUE_IMPORT_EXPORT)%'
+        tags:
+            - { name: 'akeneo.pim.tests.pub_sub_queue_status.job' }
+
+    akeneo_integration_tests.pub_sub_queue_status.data_maintenance_job:
+        class: AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubQueueStatus
+        arguments:
+            - '@Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory'
+            - '%env(GOOGLE_CLOUD_PROJECT)%'
+            - '%env(PUBSUB_TOPIC_JOB_QUEUE_DATA_MAINTENANCE)%'
+            - '%env(PUBSUB_SUBSCRIPTION_JOB_QUEUE_DATA_MAINTENANCE)%'
+        tags:
+            - { name: 'akeneo.pim.tests.pub_sub_queue_status.job' }
+
+    akeneo_integration_tests.pub_sub_queue_status.scheduled_job:
+        class: AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubQueueStatus
+        arguments:
+            - '@Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory'
+            - '%env(GOOGLE_CLOUD_PROJECT)%'
+            - '%env(PUBSUB_TOPIC_JOB_QUEUE_SCHEDULED_JOB)%'
+            - '%env(PUBSUB_SUBSCRIPTION_JOB_QUEUE_SCHEDULED_JOB)%'
+        tags:
+            - { name: 'akeneo.pim.tests.pub_sub_queue_status.job' }
+
+    akeneo_integration_tests.pub_sub_queue_status.dqi_product_score_compute_on_upsert:
+        class: AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubQueueStatus
+        arguments:
+            - '@Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory'
+            - '%env(GOOGLE_CLOUD_PROJECT)%'
+            - '%env(PUBSUB_TOPIC_PRODUCTS_WERE_UPSERT)%'
+            - '%env(PUBSUB_SUBSCRIPTION_DQI_PRODUCT_SCORE_COMPUTE)%'
+
+    akeneo_integration_tests.pub_sub_queue_status.dqi_product_model_score_compute_on_upsert:
+      class: AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubQueueStatus
+      arguments:
+        - '@Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory'
+        - '%env(GOOGLE_CLOUD_PROJECT)%'
+        - '%env(PUBSUB_TOPIC_PRODUCT_MODELS_WERE_UPSERT)%'
+        - '%env(PUBSUB_SUBSCRIPTION_DQI_PRODUCT_MODEL_SCORE_COMPUTE)%'
+  
     akeneo_integration_tests.launcher.job_execution_observer:
         class: '%akeneo_integration_tests.launcher.job_execution_observer.class%'
         arguments:
@@ -242,3 +313,40 @@ services:
             $attributeRemover: '@pim_catalog.remover.attribute'
             $entityValidator: '@validator'
             $productAndProductModelEsClient: '@akeneo_elasticsearch.client.product_and_product_model'
+
+    akeneo_integration_tests.message_bus_observer:
+        class: Symfony\Component\Messenger\TraceableMessageBus
+        decorates: messenger.default_bus
+        decoration_inner_name: messenger.default_bus.inner
+        arguments:
+            - '@messenger.default_bus.inner'
+
+    akeneo_integration_tests.helper.authenticator:
+        class: 'Akeneo\Test\IntegrationTestsBundle\Helper\AuthenticatorHelper'
+        arguments:
+            - '@pim_user.repository.user'
+            - '@pim_user.factory.user'
+            - '@pim_user.saver.user'
+            - '@pim_user.repository.group'
+            - '@pim_user.repository.role'
+            - '@security.token_storage'
+            - '@session'
+
+    akeneo_integration_tests.helper.web_client:
+        class: 'Akeneo\Test\IntegrationTestsBundle\Helper\WebClientHelper'
+        arguments:
+            - '@router'
+
+    Akeneo\Test\IntegrationTestsBundle\Helper\ExperimentalTransactionHelper:
+        arguments:
+            - '@doctrine'
+            - '@akeneo_integration_tests.loader.database_schema_handler'
+            - '%env(bool:EXPERIMENTAL_TEST_DATABASE)%'
+
+    akeneo_integration_tests.pub_sub_queue_status.dqi_attribute_group_activate_consumer:
+        class: AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubQueueStatus
+        arguments:
+            - '@Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory'
+            - '%env(GOOGLE_CLOUD_PROJECT)%'
+            - '%env(PUBSUB_TOPIC_DQI_ATTRIBUTE_GROUP_ACTIVATE)%'
+            - '%env(PUBSUB_SUBSCRIPTION_DQI_ATTRIBUTE_GROUP_ACTIVATE)%'

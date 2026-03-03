@@ -1,0 +1,3 @@
+pim_installer:
+  acl:
+    reset: 重置 PIM 实例

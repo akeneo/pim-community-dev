@@ -8,6 +8,7 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Psr\Log\LoggerInterface;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @author    Anael Chardan <anael.chardan@akeneo.com>
@@ -35,17 +36,18 @@ class ReadValueCollectionFactory
 
     public function createFromStorageFormat(array $rawValues): ReadValueCollection
     {
-        $notUsedIdentifier = 'not_used_identifier';
+        $notUsedUuid = Uuid::uuid4()->toString();
 
-        return $this->createMultipleFromStorageFormat([$notUsedIdentifier => $rawValues])[$notUsedIdentifier];
+        return $this->createMultipleFromStorageFormat([$notUsedUuid => $rawValues])[$notUsedUuid];
     }
 
     public function createMultipleFromStorageFormat(array $rawValueCollections): array
     {
         $filteredRawValuesCollection = $this->chainedNonExistentValuesFilter->filterAll($rawValueCollections);
-        $valueCollections = $this->createValues($filteredRawValuesCollection);
+        $attributes = $this->getAttributesUsedByProducts($rawValueCollections);
+        $filteredRawValuesCollection = CleanLineBreaksInTextAttributes::cleanFromRawValuesFormat($filteredRawValuesCollection, $attributes);
 
-        return $valueCollections;
+        return $this->createValues($filteredRawValuesCollection, $attributes);
     }
 
     private function getAttributesUsedByProducts(array $rawValueCollections): array
@@ -63,12 +65,10 @@ class ReadValueCollectionFactory
         return $attributes;
     }
 
-    private function createValues(array $rawValueCollections): array
+    private function createValues(array $rawValueCollections, array $attributes): array
     {
         $entities = [];
-        $attributes = $this->getAttributesUsedByProducts($rawValueCollections);
-
-        foreach ($rawValueCollections as $productIdentifier => $valueCollection) {
+        foreach ($rawValueCollections as $productUuid => $valueCollection) {
             $values = [];
 
             foreach ($valueCollection as $attributeCode => $channelRawValue) {
@@ -104,7 +104,7 @@ class ReadValueCollectionFactory
                 }
             }
 
-            $entities[$productIdentifier] = new ReadValueCollection($values);
+            $entities[$productUuid] = new ReadValueCollection($values);
         }
 
         return $entities;

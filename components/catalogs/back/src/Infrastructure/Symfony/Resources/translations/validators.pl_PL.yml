@@ -1,0 +1,62 @@
+akeneo_catalogs:
+  validation:
+    max_number_of_catalogs_per_user_message: Możesz utworzyć maksymalnie 15 katalogów.
+    product_selection:
+      criteria:
+        channel:
+          not_empty: 'Ten kanał musi być pusty.'
+          empty: 'Ten kanał nie może być pusty.'
+          unknown: 'Ten kanał został zdezaktyowany. Sprawdź ustawienia kanału lub usuń to kryterium.'
+        locale:
+          not_empty: 'Ta wersja językowa musi być pusta.'
+          empty: 'Ta wersja językowa nie może być pusta.'
+          unknown: 'Ta wersja językowa nie istnieje.'
+          disabled: 'Ta wersja językowa jest wyłączona w tym kanale. Sprawdź ustawienia kanału lub usuń to kryterium.'
+        value:
+          not_empty: 'Ta wartość musi być pusta.'
+          empty: 'Ta wartość nie może być pusta.'
+        family:
+          unknown: 'Co najmniej jedna wybrana rodzina nie istnieje.'
+        completeness:
+          value: 'Wartość kompletności musi się mieścić w zakresie od 0 do 100 procent.'
+        attribute_option:
+          unknown: 'Co najmniej jedna wybrana opcja nie istnieje.'
+        category:
+          value: 'Następujące kategorie nie istnieją: {{ codes }}. Usuń je z wartości kryterium.'
+        date:
+          between_is_empty: 'Te wartości nie mogą być puste.'
+        measurement:
+          unit:
+            not_exist: 'Jednostka pola „{{ field }}” nie istnieje.'
+            not_empty: 'Jednostka nie może być pusta.'
+    product_value_filters:
+      channel:
+        unknown: 'Kanał „{{ channel_name }}” został zdezaktywowany. Sprawdź ustawienia kanału lub usuń ten filtr.'
+      currencies:
+        unknown: 'Waluta „{{ currency_name }}” została zdezaktywowana. Sprawdź ustawienia walut lub usuń ten filtr.'
+      locale:
+        unknown: 'Wersja językowa „{{ locale_name }}” została zdezaktywowana. Sprawdź ustawienia wersji językowej lub usuń ten filtr.'
+    product_mapping:
+      schema:
+        missing_targets: 'Mapowanie nie zostało ukończone. Brak następujących celów: {{ targets }}.'
+        additional_targets: "Mapowanie nie może zostać ukończone poprawnie. Następujące cele nie istnieją: {{ targets }}."
+        incorrect_type: 'Wybrany typ źródła nie pasuje do wymagań: potrzebne jest źródło typu {{ expected_type }}.'
+      source:
+        invalid: 'Ten atrybut został usunięty.'
+        unknown: 'Nieznana wartość źródłowa'
+        channel:
+          not_empty: 'Ten kanał musi być pusty.'
+          empty: 'Ten kanał nie może być pusty.'
+          unknown: 'Ten kanał został usunięty. Sprawdź ustawienia kanału lub zaktualizuj tę wartość.'
+        locale:
+          not_empty: 'Ta wersja językowa musi być pusta.'
+          empty: 'Ta wersja językowa nie może być pusta.'
+          unknown: 'Ta wersja językowa jest wyłączona lub już nie istnieje. Sprawdź ustawienia kanałów i wersji językowych.'
+          disabled: 'Ta wersja językowa jest wyłączona. Sprawdź ustawienia kanałów i wersji językowych lub zaktualizuj tę wartość.'
+        required: 'Źródło jest wymagane.'
+        currency:
+          disabled: 'Ta waluta nie została aktywowana. Sprawdź swoje kanały i ustawienia walut lub zaktualizuj tę wartość.'
+        measurement:
+          unit:
+            not_exist: 'Jednostka pola „{{ field }}” nie istnieje.'
+            not_empty: 'Jednostka nie może być pusta.'

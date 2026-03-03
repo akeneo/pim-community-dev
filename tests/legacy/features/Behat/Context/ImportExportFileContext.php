@@ -6,6 +6,7 @@ namespace Pim\Behat\Context;
 
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Gherkin\Node\TableNode;
 use Context\Spin\SpinCapableTrait;
@@ -30,11 +31,8 @@ final class ImportExportFileContext extends PimContext implements SnippetAccepti
 {
     use SpinCapableTrait;
 
-    /** @var JobInstance */
-    private $jobInstance;
-
-    /** @var JobExecution */
-    private $jobExecution;
+    private ?JobInstance $jobInstance;
+    private ?JobExecution $jobExecution;
 
     private const USERNAME_FOR_JOB_LAUNCH = 'admin';
 
@@ -52,7 +50,10 @@ final class ImportExportFileContext extends PimContext implements SnippetAccepti
     public function entitiesAreImportedViaTheJobWithOptions(string $entities, string $jobName, TableNode $jobOptions)
     {
         $newJobOptions = new TableNode(
-            array_merge($jobOptions->getTable(), [['filePath', self::$placeholderValues['%file to import%']]])
+            array_merge(
+                $jobOptions->getTable(),
+                [['storage', json_encode(['type' => 'local', 'file_path' => self::$placeholderValues['%file to import%']])]]
+            )
         );
 
         $this->launchJob($jobName, $newJobOptions);
@@ -71,11 +72,12 @@ final class ImportExportFileContext extends PimContext implements SnippetAccepti
      */
     public function thereShouldBeProductSkippedBecauseThereIsNoDifference(string $number)
     {
-        $productsSkipped = array_map(function ($stepExecution) {
-            return $stepExecution->getSummaryInfo('product_skipped_no_diff');
-        }, $this->jobExecution->getStepExecutions()->toArray());
+        $importStep = current(array_filter(
+            $this->jobExecution->getStepExecutions()->toArray(),
+            static fn (StepExecution $stepExecution) => 'import' === $stepExecution->getStepName(),
+        ));
 
-        Assert::assertEquals($productsSkipped[1], $number);
+        Assert::assertEquals($number, $importStep->getSummaryInfo('product_skipped_no_diff'));
     }
 
     /**
@@ -110,16 +112,20 @@ final class ImportExportFileContext extends PimContext implements SnippetAccepti
 
     private function waitForJobToFinish(JobInstance $jobInstance): JobExecution
     {
-        $jobInstance->getJobExecutions()->setInitialized(false);
-        $this->getFixturesContext()->refresh($jobInstance);
-        $jobExecution = $jobInstance->getJobExecutions()->last();
-
-        $this->spin(function () use ($jobExecution) {
-            $this->getFixturesContext()->refresh($jobExecution);
+        $jobExecutionRepository = $this->getService('pim_enrich.repository.job_execution');
+        $this->spin(function () use ($jobInstance, $jobExecutionRepository) {
+            $jobExecutionRepository->clear();
+            $jobExecution = $jobExecutionRepository->findOneBy(
+                ['jobInstance' => $jobInstance],
+                ['createTime' => 'desc']
+            );
 
             return $jobExecution && !$jobExecution->isRunning();
         }, sprintf('The job execution of "%s" was too long', $jobInstance->getJobName()));
 
-        return $jobExecution;
+        return $jobExecutionRepository->findOneBy(
+            ['jobInstance' => $jobInstance],
+            ['createTime' => 'desc']
+        );
     }
 }

@@ -1,0 +1,29 @@
+# Rename this file into docker-compose.override.yml:
+# mv docker-compose.override-osx.yml docker-compose.override.yml
+
+version: '3.7'
+
+services:
+  php:
+    environment:
+      XDEBUG_CONFIG: 'client_host=docker.for.mac.localhost'
+    volumes:
+      - 'nfsmount:/srv/pim'
+
+  httpd:
+    environment:
+      XDEBUG_CONFIG: 'client_host=docker.for.mac.localhost client_port=9003'
+    volumes:
+      - 'nfsmount:/srv/pim'
+
+  node:
+    volumes:
+      - 'nfsmount:/srv/pim'
+
+volumes:
+  nfsmount:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=host.docker.internal,rw,nolock,hard,nointr,nfsvers=3
+      device: ':$PWD'

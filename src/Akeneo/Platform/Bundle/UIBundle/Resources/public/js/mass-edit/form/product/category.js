@@ -35,7 +35,7 @@ define([
     template: _.template(template),
     currentTree: null,
     categoryCache: {},
-    selectedCategories: [],
+    selectedCategories: {},
     treePromise: null,
     view: null,
     trees: [],
@@ -61,7 +61,7 @@ define([
 
       this.treePromise = null;
       this.currentTree = null;
-      this.selectedCategories = [];
+      this.selectedCategories = {};
     },
 
     /**
@@ -95,7 +95,7 @@ define([
               this.toggleContentCache();
 
               return {
-                treeAssociate: new TreeAssociate('#trees', '#hidden-tree-input', {
+                treeAssociate: new TreeAssociate({
                   list_categories: this.config.listRoute,
                   children: this.config.childrenRoute,
                 }),
@@ -130,11 +130,12 @@ define([
      * @param {Event} event
      */
     updateModel: function (event) {
-      this.selectedCategories = event.target.value.split(',');
-      const selectedCategories = this.selectedCategories
-        .filter(category => '' !== category)
-        .map(this.getCategoryCode.bind(this));
-      this.setValue(selectedCategories);
+      const selectedCategoryCodesByTreeId = JSON.parse(event.currentTarget.value);
+      let allTreesCategoryCodes = [];
+      Object.values(selectedCategoryCodesByTreeId).forEach(categoryCodes => {
+        allTreesCategoryCodes = allTreesCategoryCodes.concat(categoryCodes);
+      });
+      this.setValue(allTreesCategoryCodes);
     },
 
     /**
@@ -179,6 +180,8 @@ define([
           const tree = _.findWhere(elements.trees, {code: this.currentTree});
 
           elements.treeAssociate.switchTree(tree.id);
+          $('.tree-selector').removeClass('active').removeClass('AknHorizontalNavtab-item--active');
+          $(`.tree-selector[data-tree=${tree.code}]`).addClass('active').addClass('AknHorizontalNavtab-item--active');
 
           this.delegateEvents();
         }.bind(this)

@@ -27,22 +27,36 @@ class SqlGetAllButLastVersionIdsByIdsQuery
         }
 
         $query = <<<SQL
-SELECT current.id 
-FROM pim_versioning_version AS current
-WHERE current.id IN (:version_ids)
-AND EXISTS(
-    SELECT 1 FROM pim_versioning_version AS latest 
-    WHERE latest.resource_name = current.resource_name
-        AND latest.resource_id = current.resource_id
-        AND latest.version > current.version
-)
-SQL;
+            SELECT current.id
+            FROM pim_versioning_version AS current
+            WHERE 
+                current.id IN (:version_ids)
+                AND resource_uuid is not null
+            AND EXISTS(
+                SELECT 1 FROM pim_versioning_version AS latest 
+                WHERE latest.resource_name = current.resource_name
+                    AND latest.resource_uuid = current.resource_uuid
+                    AND latest.version > current.version
+            )
+            UNION
+            SELECT current.id
+            FROM pim_versioning_version AS current
+            WHERE
+                current.id IN (:version_ids)
+                AND resource_uuid is null
+            AND EXISTS(
+                SELECT 1 FROM pim_versioning_version AS latest 
+                WHERE latest.resource_name = current.resource_name
+                    AND latest.resource_id = current.resource_id
+                    AND latest.version > current.version
+            );
+        SQL;
 
         $results = $this->dbConnection->executeQuery(
             $query,
             ['version_ids' => $versionIds],
             ['version_ids' => Connection::PARAM_INT_ARRAY]
-        )->fetchAll(\PDO::FETCH_COLUMN);
+        )->fetchFirstColumn();
 
         return array_map('intval', $results);
     }

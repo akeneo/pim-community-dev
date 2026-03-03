@@ -3,6 +3,8 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Date;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
@@ -36,29 +38,21 @@ class LocalizableScopableFilterIntegration extends AbstractProductQueryBuilderTe
         ]);
 
         $this->createProduct('product_one', [
-            'family' => 'a_family',
-            'values' => [
-                'a_localizable_scopable_date' => [
-                    ['data' => '2016-04-23', 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                    ['data' => '2016-04-23', 'locale' => 'en_US', 'scope' => 'tablet'],
-                    ['data' => '2016-05-23', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
-                    ['data' => '2016-05-23', 'locale' => 'fr_FR', 'scope' => 'tablet'],
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetDateValue('a_localizable_scopable_date', 'ecommerce', 'en_US', new \DateTime('2016-04-23')),
+            new SetDateValue('a_localizable_scopable_date', 'tablet', 'en_US', new \DateTime('2016-04-23')),
+            new SetDateValue('a_localizable_scopable_date', 'ecommerce', 'fr_FR', new \DateTime('2016-05-23')),
+            new SetDateValue('a_localizable_scopable_date', 'tablet', 'fr_FR', new \DateTime('2016-05-23')),
         ]);
 
         $this->createProduct('product_two', [
-            'family' => 'a_family',
-            'values' => [
-                'a_localizable_scopable_date' => [
-                    ['data' => '2016-09-23', 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                    ['data' => '2016-09-23', 'locale' => 'en_US', 'scope' => 'tablet'],
-                    ['data' => '2016-09-23', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetDateValue('a_localizable_scopable_date', 'ecommerce', 'en_US', new \DateTime('2016-09-23')),
+            new SetDateValue('a_localizable_scopable_date', 'tablet', 'en_US', new \DateTime('2016-09-23')),
+            new SetDateValue('a_localizable_scopable_date', 'ecommerce', 'fr_FR', new \DateTime('2016-09-23')),
         ]);
 
-        $this->createProduct('empty_product', ['family' => 'a_family']);
+        $this->createProduct('empty_product', [new SetFamily('a_family')]);
     }
 
     public function testOperatorInferior()

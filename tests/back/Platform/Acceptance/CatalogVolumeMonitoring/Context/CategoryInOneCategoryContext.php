@@ -37,16 +37,6 @@ final class CategoryInOneCategoryContext implements Context
     }
 
     /**
-     * @Given the limit of the number of category in one category is set to :limit
-     *
-     * @param int $limit
-     */
-    public function theLimitOfTheNumberOfCategoryInOneCategoryIsSetTo(int $limit): void
-    {
-        $this->inMemoryQuery->setLimit($limit);
-    }
-
-    /**
      * @Then the report returns that the maximum of category in one category is :maxOfCategoryInOneCategory
      *
      * @param int $maxOfCategoryInOneCategory

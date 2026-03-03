@@ -41,7 +41,7 @@ class FamilyVariant extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'pim_family_variant';
     }
@@ -49,7 +49,7 @@ class FamilyVariant extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return Constraint::CLASS_CONSTRAINT;
     }

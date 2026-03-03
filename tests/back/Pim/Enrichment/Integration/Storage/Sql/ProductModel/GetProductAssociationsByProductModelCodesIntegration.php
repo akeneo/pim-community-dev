@@ -61,10 +61,7 @@ class GetProductAssociationsByProductModelCodesIntegration extends TestCase
             'sub_product_model' => $this->getAssociationsFormattedAfterFetch(['productD', 'productF'], ['productC', 'productA'], ['productB'])
         ];
 
-        PHPUnitAssert::assertEqualsCanonicalizing(
-            $this->recursiveSort($expected),
-            $this->recursiveSort($result)
-        );
+        PHPUnitAssert::assertEqualsCanonicalizing($expected,$result);
     }
 
     public function setUp(): void
@@ -100,7 +97,7 @@ class GetProductAssociationsByProductModelCodesIntegration extends TestCase
         $entityBuilder->createProductModel('product_model_with_one_association', 'familyVariant', null, $this->getAssociationsFormatted(['productA']));
         $entityBuilder->createProductModel('product_model_with_multiple_associations', 'familyVariant', null, $this->getAssociationsFormatted(['productB'], ['productA', 'productF']));
         $rootProductModel = $entityBuilder->createProductModel('root_product_model', 'familyVariant', null, $this->getAssociationsFormatted(['productF'], ['productA', 'productC']));
-        $entityBuilder->createProductModel('sub_product_model', 'familyVariant', $rootProductModel, $this->getAssociationsFormatted(['productD'], [], ['productB']));
+        $entityBuilder->createProductModel('sub_product_model', 'familyVariant', $rootProductModel, $this->getAssociationsFormatted(['productD', 'productF'], [], ['productB']));
     }
 
     private function getQuery(): GetProductAssociationsByProductModelCodes
@@ -158,16 +155,6 @@ class GetProductAssociationsByProductModelCodesIntegration extends TestCase
             'SUBSTITUTION' => ['products' => $substitutions],
             'UPSELL' => ['products' => $upsell],
         ]];
-    }
-
-
-    private function recursiveSort(&$array): bool
-    {
-        foreach ($array as &$value) {
-            if (is_array($value)) $this->recursiveSort($value);
-        }
-
-        return sort($array);
     }
 
     private function getAssociationsFormattedAfterFetch(array $crossSell = [], array $pack = [], array $substitutions = [], array $upsell = []): array

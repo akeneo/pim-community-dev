@@ -2,9 +2,9 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard;
 
-use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface;
+use PhpSpec\ObjectBehavior;
 
 class AssociationColumnsResolverSpec extends ObjectBehavior
 {
@@ -27,9 +27,11 @@ class AssociationColumnsResolverSpec extends ObjectBehavior
             [
                 "ASSOC_TYPE_1-groups",
                 "ASSOC_TYPE_1-products",
+                "ASSOC_TYPE_1-product_uuids",
                 "ASSOC_TYPE_1-product_models",
                 "ASSOC_TYPE_2-groups",
                 "ASSOC_TYPE_2-products",
+                "ASSOC_TYPE_2-product_uuids",
                 "ASSOC_TYPE_2-product_models",
             ]
         );

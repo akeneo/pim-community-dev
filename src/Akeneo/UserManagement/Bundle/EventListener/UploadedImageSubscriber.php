@@ -49,7 +49,7 @@ class UploadedImageSubscriber implements EventSubscriber
     public function postRemove(LifecycleEventArgs $args)
     {
         /** @var EntityUploadedImageInterface $entity */
-        $entity = $args->getEntity();
+        $entity = $args->getObject();
         $this->removeImage($entity);
     }
 
@@ -61,13 +61,13 @@ class UploadedImageSubscriber implements EventSubscriber
     public function preUpdate(LifecycleEventArgs $args)
     {
         /** @var EntityUploadedImageInterface $entity */
-        $entity = $args->getEntity();
+        $entity = $args->getObject();
         if ($this->hasUploadedImage($entity)) {
             $this->removeImage($entity);
 
             $this->updateImageName($args);
 
-            $em = $args->getEntityManager();
+            $em = $args->getObjectManager();
             $uow = $em->getUnitOfWork();
             $uow->recomputeSingleEntityChangeSet(
                 $em->getClassMetadata(get_class($entity)),
@@ -113,7 +113,7 @@ class UploadedImageSubscriber implements EventSubscriber
      */
     protected function handleImageUpload(LifecycleEventArgs $args)
     {
-        $entity = $args->getEntity();
+        $entity = $args->getObject();
         if ($this->isExpectedEntity($entity)) {
             if (!$this->hasUploadedImage($entity)) {
                 return;
@@ -137,7 +137,7 @@ class UploadedImageSubscriber implements EventSubscriber
     protected function updateImageName(LifecycleEventArgs $args)
     {
         /** @var EntityUploadedImageInterface $entity */
-        $entity = $args->getEntity();
+        $entity = $args->getObject();
         if ($this->hasUploadedImage($entity)) {
             $filename = sha1(uniqid(mt_rand(), true));
             $entity->setImage($filename . '.' . $entity->getImageFile()->guessExtension());

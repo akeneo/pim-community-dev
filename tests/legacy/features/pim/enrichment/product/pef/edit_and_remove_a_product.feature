@@ -13,8 +13,8 @@ Feature: Edit and remove a product
     And I am on the products grid
     And I create a product
     And I fill in the following information in the popin:
-      | SKU    | boots |
       | Family | Boots |
+      | SKU    | boots |
     And I press the "Save" button in the popin
     And I wait to be on the "boots" product page
     And I visit the "Sizes" group
@@ -23,8 +23,10 @@ Feature: Edit and remove a product
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes."
 
+  @purge-messenger
   Scenario: Successfully delete a product from the edit form
     Given I press the secondary action "Delete"
     Then I should see the text "Confirm deletion"
     When I confirm the removal
     Then I should not see product boots
+    And 1 event of type "product.removed" should have been raised

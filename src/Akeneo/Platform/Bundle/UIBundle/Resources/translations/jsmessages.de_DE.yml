@@ -102,18 +102,34 @@ oro_config:
       tab:
         system:
           title: System
+      save_ok: Konfiguration erfolgreich gespeichert
+      save_error: Die Konfiguration konnte nicht gespeichert werden ({{ reason }})
       group:
         localization:
-          title: Lokalisierung
-          system_locale: Sprache
+          title: Einstellungen der Anmeldeseite
+          fields:
+            system_locale:
+              label: Sprache
         notification:
-          title: Benachrichtigungen
-          system_notification: Benachrichtigungen über neue Versionen
+          title: Benachrichtigungen über neue Versionen
+          helper: Wenn aktiviert, erhalten Sie eine Benachrichtigung, wenn eine neue Version für Sie verfügbar ist.
+          fields:
+            enabler:
+              label: Aktiviert
+        environment:
+          title: Umgebungseinstellungen
+          fields:
+            sandbox_banner:
+              label: Sandbox-Alarm-Banner anzeigen
         loading_message:
-          title: Nachrichten werden geladen
-          label: Nachrichten laden aktivieren
-        loading_messages:
-          label: Nachrichten laden aktivieren
+          title: Angepasste Lademeldungen
+          helper: Unterhalten Sie Ihre Benutzer mit angepassten Ladebildschirm-Meldungen.
+          placeholder: Bitte schreiben Sie Ihre eigene Nachricht, die auf Ihrem Ladebildschirm angezeigt werden soll
+          fields:
+            enabler:
+              label: Nachrichten laden aktivieren
+            messages:
+              label: Füge deine eigenen Lademeldungen hinzu
 pim_ui:
   flash:
     unsaved_changes: 'Sie haben ungespeicherte Änderungen, sind Sie sicher, dass Sie gehen wollen?'
@@ -159,6 +175,7 @@ pim_common:
   before: Vor
   by: von
   cancel: Abbrechen
+  characters_left: ']-Inf, 1]{{ count }} Zeichen übrig|]1, Inf[{{ count }} Zeichen übrig'
   clear_value: Wert leeren
   close: Schließen
   code: Code
@@ -170,6 +187,7 @@ pim_common:
   created: Erstellt
   delete: Löschen
   done: Fertig
+  duplicate: Duplizieren
   edit: Bearbeiten
   entity_updated: Es gibt ungespeicherte Änderungen.
   export: Export
@@ -181,9 +199,14 @@ pim_common:
   label: Bezeichnung
   label_translations: Feldbezeichner-Übersetzungen
   Label or identifier: Label oder Identifikator
+  Label or main identifier: Etikett oder Hauptidentifikator
+  code_or_label: code oder label
   less_than: Weniger als
   loading: Lädt...
   media_upload: Upload per Drag & Drop oder hier klicken
+  media_uploading: Lädt hoch…
+  media_upload_error: Beim Hochladen ist ein Fehler aufgetreten
+  more_actions: Weitere Aktionen
   more_than: Mehr als
   next: Vor
   "no": "Nein"
@@ -191,10 +214,14 @@ pim_common:
   not_available: N/A
   now: Jetzt
   ok: OK
+  open: Öffnen
+  no_result: Kein Ergebnis gefunden
+  no_search_result: Für Ihre Suche wurden leider keine passenden Treffer gefunden.
   other_actions: Weitere Aktionen
   permissions: Berechtigungen
   previous: Zurück
   properties: Eigenschaften
+  quality_score: Qualitätspunktzahl
   remove: Entfernen
   required_label: (erforderlich)
   result_count: "{0}0 Ergebnisse|{1}1 Ergebnis|]1, Inf[{{ itemsCount }} Ergebnisse"
@@ -204,6 +231,7 @@ pim_common:
     search: Suche...
     no_match: Keine Treffer gefunden
     load_more: Weitere Ergebnisse werden geladen...
+  selected: "{0}Keine ausgewählt|{1}Eins ausgewählt|]1, Inf [{{ itemsCount }} ausgewählt"
   status: Status
   to: An
   type: Typ
@@ -224,9 +252,25 @@ pim_common:
     DOES NOT CONTAIN: Enthält nicht
     STARTS WITH: Beginnt mit
     ENDS WITH: Endet mit
+    IN: In Liste
+    "NOT IN": Nicht in der Liste
   read_more: Mehr lesen
+  channel: Kanal
+  locale: Gebietsschema
+  categories: Kategorien
+  family_variant: Varianten der Produktfamilien
+  enabled: Aktiviert
+  family: Produktfamilie
+  parent: Eltern
+  groups: Gruppen
+  products: Produkte
+  product_uuids: Produkte
+  product_models: Produktmodelle
+  more: Mehr
+  public_view: Öffentliche Ansicht
+  view: Ansehen
 error:
-  exception: Oh nein! Ein {{ status_code }} Fehler ist aufgetreten...
+  exception: Ein {{ status_code }} Fehler ist aufgetreten...
   forbidden: Sie haben keine Berechtigung, diese Seite anzuzeigen
 alert:
   attribute_option:
@@ -239,6 +283,7 @@ pim_enrich.entity.fallback:
     generic_error: Es ist ein Fehler aufgetreten
     update:
       fail: Update fehlgeschlagen
+      fail_session_expired: Ihre Benutzersitzung ist abgelaufen. Bitte melden Sie sich erneut an.
       success: Update erfolgreich
     delete:
       fail: Dieses Element kann nicht gelöscht werden
@@ -255,14 +300,15 @@ pim_enrich.entity.fallback:
       discard_changes_title: Wirklich ganz sicher?
 pim_enrich.entity.job_execution:
   page_title:
-    index: "]-Inf, 1]{{ count }} Operation|]1, Inf[{{ count }} Operationen"
+    index: "]-Inf, 1]{{ count }} Job|]1, Inf[{{ count }} Jobs"
   module:
     create:
       upload: Upload {{ type }}-Datei per Drag & Drop oder hier klicken
     download:
+      dropdown_title: "]-Inf, 1]generierte Dateien herunterladen|]1, Inf[generierte Dateien herunterladen"
       archive: Generiertes Archiv herunterladen
       output: Generierte Datei herunterladen
-      input: Eingelesene Datei herunterladen
+      input: Hinweisdatei herunterladen
       invalid_xlsx: Ungültige Daten herunterladen
       invalid_csv: Ungültige Daten herunterladen
 pim_title:
@@ -273,8 +319,9 @@ pim_title:
   pim_enrich_catalog_volume_index: Überwachung Katalogumfang
   pim_enrich_categorytree_index: Kategorie-Strukturbäume
   pim_enrich_categorytree_create: Kategorie-Strukturbäume | Anlegen
-  pim_enrich_categorytree_edit: Kategoriebaum {{ category.label }} | Bearbeiten
+  pim_enrich_categorytree_edit: Kategorie {{ category.label }} | Bearbeiten
   pim_enrich_categorytree_create_tree: Kategorie-Strukturbäume | Anlegen
+  pim_enrich_categorytree_tree: Kategoriebaum {{ category.label }} | Bearbeiten
   pim_enrich_attribute_index: Attribute
   pim_enrich_attribute_create: Attribute | Anlegen
   pim_enrich_attribute_edit: Attribute {{ attribute.label }} | Bearbeiten
@@ -301,7 +348,10 @@ pim_title:
   pim_enrich_job_tracker_show: Prozess-Tracker | Job anzeigen
   pim_enrich_mass_edit_action: Massenbearbeitung
   pim_analytics_system_info_index: Systeminformationen
+  pim_settings_index: Einstellungen
+  pim_system_index: System
 pim_menu:
+  tag.new: Neu
   tab:
     activity: Übersicht
     imports: Importe
@@ -311,12 +361,16 @@ pim_menu:
     help:
       title: Hilfe
       helper: Akeneo Help-Center
+      new: NEU
+      news: Was ist neu?
+      help_center: Hilfe-Zentrum
+      akademy_training: Akademie Ausbildung
   item:
     association_type: Verbindungstypen
     attribute_group: Attributgruppen
     channel: Ausgabekanäle
     currency: Währungen
-    dashboard: Dashboard
+    dashboard: Aktivitäts-Dashboard
     family: Produktfamilien
     group: Gruppen
     group_type: Gruppentypen
@@ -337,7 +391,11 @@ pim_menu:
     activity: Navigation Übersicht
     system: Navigation System
     user: Navigation Benutzerverwaltung
-    settings: Navigation Einstellung
+    settings:
+      product: Artikel Einstellungen
+      catalog: Katalogeinstellungen
+      collapsed_label: Navigation Einstellung
+      automation: Automatisierung
     product: Navigation Produkte
     product_infos: Produktinformationen
   user:
@@ -349,3 +407,71 @@ pim_notification:
     export: Export
     quick_export: Schnellexport
     mass_edit: Massenbearbeitung
+pim_settings:
+  settings_menu: Konfigurationsmenü
+  catalog_settings: Katalogeinstellungen
+  product_settings: Artikel Einstellungen
+  automation_settings: Automatisierung
+  count:
+    category_trees: '{0}Du hast 0 Bäume |{1}Du hast 1 Baum |]1, Inf[Du hast {{ count }} Bäume '
+    categories: '{0}und 0 Kategorien|{1}und 1 Kategorie|]1, Inf[und {{ count }} Kategorien'
+    channels: '{0}Du hast 0 Kanäle|{1}Du hast 1 Kanal|]1, Inf[Du hast {{ count }} Kanäle'
+    locales: '{0}Sie haben 0 Sprachen aktiviert|{1}Sie haben 1 Gebietsschema aktiviert|]1, Inf[Sie haben {{ count }} Gebietsschema aktiviert'
+    currencies: '{0}Sie haben 0 Währungen aktiviert|{1}Sie haben 1 Währung aktiviert|]1, Inf[Sie haben {{ count }} Währungen aktiviert'
+    attribute_groups: '{0}Sie haben 0 Attributgruppen|{1}Sie haben 1 Attributgruppe |]1, Inf[Sie haben {{ count }} Attributgruppen'
+    attributes: '{0}Sie haben 0 Attribute|{1}Sie haben 1 Attribut|]1, Inf[Sie haben {{ count }} Attribute'
+    families: '{0}Sie haben 0 Familien|{1}Sie haben 1 Familie|]1, Inf[Sie haben {{ count }} Familien'
+    measurements: '{0}Sie haben 0 Messungen|{1}Sie haben 1 Messung|]1, Inf[Sie haben {{ count }} Messungen'
+    association_types: '{0}Sie haben 0 Verbindungstypen|{1}Sie haben 1 Verbindungstyp|]1, Inf[Sie haben {{ count }} Verbindungstypen'
+    group_types: '{0}Sie haben 0 Gruppentypen|{1}Sie haben 1 Gruppentyp|]1, Inf[Sie haben {{ count }} Gruppentypen'
+    groups: '{0}Sie haben 0 Gruppen|{1}Sie haben 1 Gruppe|]1, Inf[Sie haben {{ count }} Gruppen'
+    rules: '{0}Sie haben 0 Regeln aktiviert|{1}Sie haben 1 aktivierte Regel|]1, Inf[Sie haben {{ count }} aktivierte Regeln'
+    identifier_generators: '{0}Sie haben 0 Identifikatorengeneratoren{1}[Sie haben 1 Identifikatorgenerator]1, Inf[Sie haben {{ count }} Identifikatorgeneratoren]'
+pim_system:
+  system_menu: Systemmenü
+  system_navigation: Navigation System
+  users_management_navigation: Navigation Benutzerverwaltung
+  count:
+    product_values: '{0}Sie haben 0 Produktwerte|{1}Sie haben 1 Produktwert|]1, Inf[Sie haben {{ count }} Produktwerte'
+    users: '{0}Sie haben 0 Benutzer|{1}Sie haben 1 Benutzer|]1, Inf[Sie haben {{ count }} Benutzer'
+    user_groups: '{0}Sie haben 0 Benutzergruppen|{1}Sie haben 1 Benutzergruppe|]1, Inf[Sie haben {{ count }} Benutzergruppen'
+    roles: '{0}Sie haben 0 Rollen|{1}Sie haben 1 Rolle|]1, Inf[Sie haben {{ count }} Rollen'
+  sso:
+    enabled: SSO aktiviert
+    disabled: SSO deaktiviert
+    title: SAML-basiertes Single Sign-On
+  reset_pim:
+    modal:
+      summary:
+        name: Zusammenfassung
+        title: 'Warnung: Das Zurücksetzen Ihres PIM kann nicht rückgängig gemacht werden'
+        text: 'Es wird zur Löschung aller Elemente führen, außer folgendes:'
+        users:
+          name: Benutzer
+          tooltip: Benutzer sind Personen, die Sie erlauben in Ihrem PIM zu arbeiten.
+        user_groups:
+          name: Benutzergruppen
+          tooltip: Benutzergruppen definieren Teams, die unterschiedliche Aktionen innerhalb Ihrer PIM durchführen.
+        roles:
+          name: Rollen
+          tooltip: Rollen definieren Zugriffe und Aktionen, die Benutzer und Benutzergruppen innerhalb Ihrer PIM durchführen können.
+      confirm:
+        name: Bestätigen
+        title: Bestätigen Sie das Zurücksetzen Ihres PIM
+        helper:
+          emphasis: Sobald Sie Ihre PIM zurückgesetzt haben, gibt es kein Zurück mehr.
+          text: Durch Anklicken des Reset-Buttons werden Sie abgemeldet und zur Login-Seite zurückgebracht.
+      confirmation_phrase: Bitte geben Sie "{{ confirmation_word }}" ein
+      confirmation_word: zurücksetzen
+    button:
+      label: Zurücksetzen der Instanz
+      confirm: Zurücksetzen und Ausloggen
+    error_notification: Beim Zurücksetzen der Instanz ist ein Fehler aufgetreten. Bitte kontaktieren Sie Ihren Systemadministrator.
+    jobs_running: Sie können Ihre Instanz im Moment nicht zurücksetzen, da einige Prozesse noch in der Warteschlange stehen oder laufen.
+  sandbox:
+    helper:
+      text: Dies ist eine Sandbox-Umgebung, Ihre Änderungen wird Ihre Produktionsumgebung nicht beeinflussen.
+pim_datagrid:
+  mass_action:
+    default:
+      select_action: Aktion auswählen

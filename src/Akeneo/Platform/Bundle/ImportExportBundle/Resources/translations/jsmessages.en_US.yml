@@ -16,6 +16,8 @@ pim_connector:
                 not_blank: One locale must be selected, please choose a locale to export.
 
 pim_import_export:
+    validation:
+        max_length_reached: This value is too long. It should contain {{ limit }} characters or less.
     entity:
         job_instance:
             label: job profile
@@ -25,7 +27,10 @@ pim_import_export:
                     fail: The job profile could not be updated.
                 delete:
                     success: Job instance successfully removed
-
+            duplicate:
+                title: Duplicate profile {{ job_code }}
+                success: The job profile has been successfully duplicated.
+                fail: The job profile could not be duplicated.
         import_profile:
             uppercase_label: Import profile
             flash:
@@ -150,44 +155,106 @@ pim_import_export:
                     file_locale:
                         title: File locale
                         help: Define the locale in which labels are displayed
+                    with_uuid:
+                        title: With product UUID
+                        help: Export the product's and associated prodtucts UUID
+                    with_uuid_for_models:
+                        title: With product UUID
+                        help: Export associated product UUID instead of their identifier
             file_path: File path
-    widget:
-        last_operations:
-            empty: No operations found
-            date: Date
-            profile_name: Profile name
-            details: Details
-            warning_count: Warnings
-            username: Username
-            job_type:
-                import: Import
-                export: Export
-                mass_edit: Mass edit
-                mass_edit_rule: Rules Settings
-                quick_export: Quick export
-                compute_family_variant_structure_changes: Compute family variant structure changes
-                compute_completeness_of_products_family: Compute completeness of products family
-                mass_delete: Mass delete products
-                clean_removed_attribute_job: Cleaning removed attribute values
-            header.view_all: View all
+            storage_form:
+                title: Storage
+                connection:
+                    label: Type
+                    local: Local
+                    sftp: SFTP
+                    amazon_s3: Amazon S3
+                    microsoft_azure: Microsoft Azure
+                    google_cloud_storage: Google Cloud Storage
+                    none: No storage configured
+                file_path:
+                    label: File path
+                    placeholder: myfile.{{ file_extension }}
+                host:
+                    label: Host
+                    placeholder: example.com
+                fingerprint:
+                    label: Host fingerprint (optional)
+                    placeholder: "c1:91:5e:42:55:5c:74:65:b6:12:32:7e:1f:6d:80:3e"
+                    helper: We require a SHA-512 or MD5 hashed checksum with colon notation for the host fingerprint.
+                port:
+                    label: Port
+                    placeholder: 22
+                username:
+                    label: Login
+                    placeholder: Enter your login
+                password:
+                    label: Password
+                    placeholder: Enter your password
+                public_key:
+                    label: Public key
+                    button_title: Copy to clipboard
+                    copy_notification_success: Public key copied to clipboard
+                login_type:
+                    label: Authentication method
+                    password: Login & password
+                    private_key: Private key
+                region:
+                    label: Region
+                    placeholder: Enter your region
+                bucket:
+                    label: Bucket name
+                    placeholder: Enter your region name
+                key:
+                    label: Key
+                    placeholder: Enter your key
+                secret:
+                    label: Secret
+                    placeholder: Enter your secret
+                connection_string:
+                    label: Connection string
+                    placeholder: Enter your connection string
+                container_name:
+                    label: Container name
+                    placeholder: Enter your container name
+                project_id:
+                    label: Project ID
+                    placeholder: Enter your project ID
+                service_account:
+                    label: Service Account
+                    placeholder: Enter your service account
+            validation:
+                storage:
+                    unavailable_type: This storage is not available, only {{ available_types }} are available.
+                file_path:
+                    unsupported_extension: Unsupported file extension
+                fingerprint:
+                    invalid_encoding: Host fingerprint should be a valid SHA-512 or MD5 checksum hash with colon notation.
+            connection_checker:
+                label: Test connection settings
+                exception: Connection can't be established, please check your settings.
     batch_status:
         1: Completed
         2: Starting
-        3: Started
+        3: In progress
         4: Stopping
         5: Stopped
         6: Failed
         7: Abandoned
         8: Unknown
+        9: Pausing
+        10: Paused
     job_status:
         COMPLETED: Completed
         STARTING: Starting
-        STARTED: Started
+        STARTED: In progress
         STOPPING: Stopping
         STOPPED: Stopped
         FAILED:  Failed
         ABANDONED: Abandoned
         UNKNOWN: Unknown
+        PAUSING: Pausing
+        PAUSED: Paused
     tracking:
         completed: "Time spent: {{ duration }}"
         in_progress: "Estimated time left: {{ duration }}"
@@ -230,3 +297,4 @@ pim_title:
     pim_importexport_import_profile_show:    Import profile {{ job.label }} | Show
     pim_importexport_import_execution_index: Import executions history
     pim_importexport_import_execution_show:  Import executions | Details
+

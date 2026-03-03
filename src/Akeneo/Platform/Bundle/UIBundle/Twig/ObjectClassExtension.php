@@ -3,6 +3,8 @@
 namespace Akeneo\Platform\Bundle\UIBundle\Twig;
 
 use Doctrine\Common\Util\ClassUtils;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 
 /**
  * Twig filter to get entity FQCN
@@ -11,7 +13,7 @@ use Doctrine\Common\Util\ClassUtils;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ObjectClassExtension extends \Twig_Extension
+class ObjectClassExtension extends AbstractExtension
 {
     /**
      * {@inheritdoc}
@@ -19,7 +21,7 @@ class ObjectClassExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('class', array($this, 'getClass')),
+            new TwigFilter('class', array($this, 'getClass')),
         ];
     }
 

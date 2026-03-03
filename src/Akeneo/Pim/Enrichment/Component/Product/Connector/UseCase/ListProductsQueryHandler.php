@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase;
 
-use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Pim\Enrichment\Component\Product\Event\Connector\ReadProductsEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Component\Product\Query\FindId;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
 use Akeneo\Tool\Component\Api\Exception\InvalidQueryException;
 use Akeneo\Tool\Component\Api\Pagination\PaginationTypes;
-use Akeneo\Tool\Component\Api\Security\PrimaryKeyEncrypter;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -39,9 +39,6 @@ final class ListProductsQueryHandler
     /** @var ProductQueryBuilderFactoryInterface */
     private $searchAfterPqbFactory;
 
-    /** @var PrimaryKeyEncrypter */
-    private $primaryKeyEncrypter;
-
     /** @var GetConnectorProducts */
     private $getConnectorProductsQuery;
 
@@ -56,26 +53,28 @@ final class ListProductsQueryHandler
 
     private GetProductsWithQualityScoresInterface $getProductsWithQualityScores;
 
+    private GetProductsWithCompletenessesInterface $getProductsWithCompletenesses;
+
     public function __construct(
         IdentifiableObjectRepositoryInterface $channelRepository,
         ApplyProductSearchQueryParametersToPQB $applyProductSearchQueryParametersToPQB,
         ProductQueryBuilderFactoryInterface $fromSizePqbFactory,
         ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
-        PrimaryKeyEncrypter $primaryKeyEncrypter,
         GetConnectorProducts $getConnectorProductsQuery,
         GetConnectorProducts $getConnectorProductsQuerywithOptions,
         EventDispatcherInterface $eventDispatcher,
-        GetProductsWithQualityScoresInterface $getProductsWithQualityScores
+        GetProductsWithQualityScoresInterface $getProductsWithQualityScores,
+        GetProductsWithCompletenessesInterface $getProductsWithCompletenesses,
     ) {
         $this->channelRepository = $channelRepository;
         $this->applyProductSearchQueryParametersToPQB = $applyProductSearchQueryParametersToPQB;
         $this->fromSizePqbFactory = $fromSizePqbFactory;
         $this->searchAfterPqbFactory = $searchAfterPqbFactory;
-        $this->primaryKeyEncrypter = $primaryKeyEncrypter;
         $this->getConnectorProductsQuery = $getConnectorProductsQuery;
         $this->getConnectorProductsQuerywithOptions = $getConnectorProductsQuerywithOptions;
         $this->eventDispatcher = $eventDispatcher;
         $this->getProductsWithQualityScores = $getProductsWithQualityScores;
+        $this->getProductsWithCompletenesses = $getProductsWithCompletenesses;
     }
 
     /**
@@ -86,6 +85,8 @@ final class ListProductsQueryHandler
     {
         $pqb = $this->getSearchPQB($query);
 
+        $pqb->addFilter('identifier', Operators::IS_NOT_EMPTY, null);
+
         try {
             $this->applyProductSearchQueryParametersToPQB->apply(
                 $pqb,
@@ -95,16 +96,16 @@ final class ListProductsQueryHandler
                 $query->searchChannelCode
             );
         } catch (
-        UnsupportedFilterException
-        | PropertyException
-        | InvalidOperatorException
-        | ObjectNotFoundException
-        $e
+            UnsupportedFilterException
+            | PropertyException
+            | InvalidOperatorException
+            | ObjectNotFoundException
+            $e
         ) {
             throw new InvalidQueryException($e->getMessage(), $e->getCode(), $e);
         }
 
-        $pqb->addSorter('id', Directions::ASCENDING);
+        $pqb->addSorter('identifier', Directions::ASCENDING);
 
         $connectorProductsQuery = $query->withAttributeOptionsAsBoolean() ?
             $this->getConnectorProductsQuerywithOptions :
@@ -120,13 +121,17 @@ final class ListProductsQueryHandler
             $queryLocales,
         );
 
-        $productIds = array_map(function (ConnectorProduct $connectorProduct) {
-            return $connectorProduct->id();
-        }, $connectorProductList->connectorProducts());
-        $this->eventDispatcher->dispatch(new ReadProductsEvent($productIds));
+        $this->eventDispatcher->dispatch(new ReadProductsEvent(count($connectorProductList->connectorProducts())));
 
         if ($query->withQualityScores()) {
             $connectorProductList = $this->getProductsWithQualityScores->fromConnectorProductList(
+                $connectorProductList,
+                $query->channelCode,
+                $queryLocales ?? []
+            );
+        }
+        if ($query->withCompletenesses()) {
+            $connectorProductList = $this->getProductsWithCompletenesses->fromConnectorProductList(
                 $connectorProductList,
                 $query->channelCode,
                 $queryLocales ?? []
@@ -147,9 +152,10 @@ final class ListProductsQueryHandler
         $pqbOptions = ['limit' => (int)$query->limit];
 
         if (null !== $query->searchAfter) {
-            $searchParameterDecrypted = $this->primaryKeyEncrypter->decrypt($query->searchAfter);
-            $pqbOptions['search_after_unique_key'] = 'product_' . $searchParameterDecrypted;
-            $pqbOptions['search_after'] = ['product_' . $searchParameterDecrypted];
+            // @TODO CPM-596: use product_<uuid> once the uuid migration will be done
+            // Today we cannot use it, because during the migration some products are indexed with id, and others by uuid
+            $pqbOptions['search_after_unique_key'] = 'product_z';
+            $pqbOptions['search_after'] = [\mb_strtolower($query->searchAfter)];
         }
 
         return $this->searchAfterPqbFactory->create($pqbOptions);

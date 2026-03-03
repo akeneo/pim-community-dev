@@ -5,7 +5,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\Event\ParentHasBeenAddedToProduct;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class ParentHasBeenAddedToProductSpec extends ObjectBehavior
 {

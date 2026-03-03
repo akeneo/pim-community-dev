@@ -74,12 +74,12 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
             column: date_max
         metricFamily:
             type: string
-            length: 30
+            length: 100
             nullable: true
             column: metric_family
         defaultMetricUnit:
             type: string
-            length: 30
+            length: 100
             nullable: true
             column: default_metric_unit
         maxFileSize:
@@ -131,6 +131,17 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
             type: datetime
         updated:
             type: datetime
+        guidelines:
+            type: json
+            columnDefinition: JSON NOT NULL DEFAULT (JSON_OBJECT())
+        mainIdentifier:
+            type: boolean
+            nullable: false
+            insertable: false
+            updatable: false
+            column: main_identifier
+            options:
+                default: false
     oneToMany:
         options:
             targetEntity: Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface
@@ -158,7 +169,7 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                     onDelete: 'SET NULL'
     manyToMany:
         availableLocales:
-            targetEntity: Akeneo\Channel\Component\Model\LocaleInterface
+            targetEntity: Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface
             joinTable:
                 name: pim_catalog_attribute_locale
                 joinColumns:

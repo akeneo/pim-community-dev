@@ -48,30 +48,36 @@ pim_ui.system_config:
     loading_message.title: 加载消息
 other_actions: 其他操作
 pim_common:
+  association_types: 关联类型
   cancel: 取消
-  save: 保存
-  delete: 删除
-  update: 更新
-  view: 查看
-  edit: 编辑
-  created: 已创建
-  updated: 已更新
-  create: 创建
-  permissions: 权限
-  properties: 属性
-  name: 名称
-  remove: 移除
-  code: 代码
-  products: 产品
-  product_models: 产品模型
   categories: 类别
+  code: 代码
+  create: 创建
+  created: 已创建
+  delete: 删除
+  edit: 编辑
   enabled: 已启用
+  family_variant: 品类变型
   family: 品类
-  parent: '父目录:'
   groups: 分组
-  unit: 单位
-  yes: "是"
+  label: 标签
+  name: 名称
   no: "否　"
+  parent: '父目录:'
+  permissions: 权限
+  product_models: 产品模型
+  products: 产品
+  properties: 属性
+  quality_score: 质量评分
+  quantity: 数量
+  remove: 移除
+  save: 保存
+  unit: 单位
+  update: 更新
+  updated: 已更新
+  view: 查看
+  yes: "是"
+  uuid: UUID
 pim_enrich:
   #ACLs
   acl:
@@ -97,20 +103,13 @@ pim_enrich:
       comment: 评论产品
       download: 下载 PDF 格式的产品
       history: 查看产品历史记录
+      convert_variant_to_simple: 将变型产品转换为简单产品
     product_model:
       create: 创建产品模型
       edit_attributes: 编辑产品模型的属性
       categories_view: 查阅产品模型的类别
       history: 查看产品模型的历史记录
-    category:
-      list: 列出类别
-      create: 创建类别
-      edit: 编辑类别
-      remove: 移除类别
-      move: 移动类别
-      children: 查看子类别
-      products: 查看类别的产品
-      history: 查看类别历史记录
+      remove: 移除产品模型（包括子产品）
     channel:
       index: 列出渠道
       create: 创建渠道
@@ -132,6 +131,7 @@ pim_enrich:
       create: 创建属性组
       edit: 编辑属性组
       remove: 移除属性组
+      mass_delete: 批量移除属性组
       sort: 排序属性组
       add_attribute: 将属性添加到组
       remove_attribute: 从组中移除属性
@@ -141,6 +141,7 @@ pim_enrich:
       create: 创建属性
       edit: 编辑属性
       remove: 移除属性
+      mass_delete: 批量删除属性
       sort: 在属性组内对属性排序
       history: 查看属性历史记录
     group:
@@ -165,6 +166,7 @@ pim_enrich:
     job_tracker:
       index: 查看进程跟踪器
       view_all_jobs: 查看进程跟踪器中的所有作业
+      stop_job: 停止正在进行的作业
   acl_group:
     association_type: 关联类型
     attribute: 属性
@@ -212,6 +214,8 @@ flash:
   attribute:
     identifier_not_removable: 标识符属性无法移除
     used_as_conversion_unit: 此属性不能移除，因为其在渠道 %channelCodes% 中用作转换单位。
+    cant_remove_attributes_used_as_label: 无法移除产品类中用作标签的属性。
+    cant_remove_attribute_used_as_axis: 无法移除此属性，其被用作品类变型中的变量轴
   category:
     removed: 类别已成功移除
   tree:
@@ -431,6 +435,8 @@ Disabled: 已禁用
 Status: 状态
 pim_datagrid:
   filters:
+    product_typology:
+      label: 产品类型
     entity_type:
       label: 变量
     family:
@@ -439,18 +445,23 @@ pim_datagrid:
       label: 分组
     enabled:
       label: 状态
+    scope:
+      label: 渠道
     completeness:
       label: 完成
     created:
-      label: 创建于
+      label: 已创建
     updated:
-      label: 更新于
+      label: 已更新
     label_or_identifier:
       label: 标签或标识符
+      label_with_uuid: 标签、标识符或 UUID
     parent:
       label: 父级
     identifier:
       label: 标识符
+    uuid:
+      label: Uuid
 #Versioning / history
 Change History: 更改历史记录
 Data Audit: 数据审计
@@ -515,7 +526,6 @@ pim_mass_edit:
       success: 批量删除 <strong>%label%</strong> 已完成
 job_execution.summary:
   mass_edited: 已批量编辑
-  skip: 已跳过
   skipped_products: 已跳过产品
   skipped_attributes: 已跳过属性
   skipped_families: 已跳过品类
@@ -536,3 +546,9 @@ job_tracker:
     title: 进程跟踪器
   filter:
     started_at: 开始于
+pim_login:
+  logo_title: Akeneo PIM
+  footer:
+    powered: 提供者
+    powered_image_title: Logo Akeneo
+pim_system.acl_group.connect: 连接

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter;
@@ -10,15 +11,15 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption\GetExistingAt
  * @author    Anael Chardan <anael.chardan@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * This class is responsible for:
+ * - filters options that do not exist anymore
+ * - in case options were imported with the wrong case, puts back the right case for the option codes
  */
 class NonExistentMultiSelectValuesFilter implements NonExistentValuesFilter
 {
-    /** @var GetExistingAttributeOptionCodes */
-    private $getExistingAttributeOptionCodes;
-
-    public function __construct(GetExistingAttributeOptionCodes $getExistingAttributeOptionCodes)
+    public function __construct(private readonly GetExistingAttributeOptionCodes $getExistingAttributeOptionCodes)
     {
-        $this->getExistingAttributeOptionCodes = $getExistingAttributeOptionCodes;
     }
 
     public function filter(OnGoingFilteredRawValues $onGoingFilteredRawValues): OnGoingFilteredRawValues
@@ -32,7 +33,6 @@ class NonExistentMultiSelectValuesFilter implements NonExistentValuesFilter
         $optionCodes = $this->getExistingCaseInsensitiveOptionCodes($selectValues);
 
         $filteredValues = [];
-
         foreach ($selectValues as $attributeCode => $productValueCollection) {
             foreach ($productValueCollection as $productValues) {
                 $multiSelectValues = [];
@@ -91,7 +91,7 @@ class NonExistentMultiSelectValuesFilter implements NonExistentValuesFilter
 
         $uniqueOptionCodes = [];
         foreach ($optionCodes as $attributeCode => $optionCodeForThisAttribute) {
-            $uniqueOptionCodes[$attributeCode] = \array_unique($optionCodeForThisAttribute);
+            $uniqueOptionCodes[$attributeCode] = \array_values(\array_unique($optionCodeForThisAttribute));
         }
 
         return $uniqueOptionCodes;

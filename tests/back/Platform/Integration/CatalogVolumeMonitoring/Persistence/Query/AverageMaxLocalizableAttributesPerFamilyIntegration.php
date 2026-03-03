@@ -21,7 +21,6 @@ class AverageMaxLocalizableAttributesPerFamilyIntegration extends QueryTestCase
         Assert::assertEquals(30, $volume->getMaxVolume());
         Assert::assertEquals(17, $volume->getAverageVolume());
         Assert::assertEquals('average_max_localizable_attributes_per_family', $volume->getVolumeName());
-        Assert::assertEquals(false, $volume->hasWarning());
     }
 
     /**

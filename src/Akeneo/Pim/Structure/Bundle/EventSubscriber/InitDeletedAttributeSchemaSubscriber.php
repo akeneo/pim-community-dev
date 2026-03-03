@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Bundle\EventSubscriber;
 
-use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
+use Akeneo\Platform\Installer\Infrastructure\Event\InstallerEvents;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -22,7 +22,7 @@ class InitDeletedAttributeSchemaSubscriber implements EventSubscriberInterface
         $this->connection = $dbalConnection;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             InstallerEvents::POST_DB_CREATE => 'createBlacklistTable',

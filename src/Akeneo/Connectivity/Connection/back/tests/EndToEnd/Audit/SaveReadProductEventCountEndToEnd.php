@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\Audit;
 
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Doctrine\DBAL\Connection;
@@ -18,23 +18,22 @@ use PHPUnit\Framework\Assert;
  */
 class SaveReadProductEventCountEndToEnd extends ApiTestCase
 {
-    /** @var Connection */
-    private $dbalConnection;
+    private Connection $dbalConnection;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->dbalConnection = $this->get('database_connection');
     }
 
-    public function test_it_save_read_product_event_count()
+    public function test_it_save_read_product_event_count(): void
     {
         $this->createProduct('product1');
         $this->createProduct('product2');
         $this->createProduct('product3');
 
-        sleep(1); // we have to wait for ES indexation
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
         $apiConnection = $this->createConnection('ecommerce', 'Ecommerce', FlowType::DATA_DESTINATION);
 
@@ -53,12 +52,12 @@ class SaveReadProductEventCountEndToEnd extends ApiTestCase
         Assert::assertEquals(3, (int) $this->getEventCount('ecommerce'));
     }
 
-    public function test_it_save_and_increment_read_product_event_count()
+    public function test_it_save_and_increment_read_product_event_count(): void
     {
         $this->createProduct('product1');
         $this->createProduct('product2');
 
-        sleep(1); // we have to wait for ES indexation
+        \sleep(1); // we have to wait for ES indexation
 
         $apiConnectionEcommerce = $this->createConnection('ecommerce', 'Ecommerce', FlowType::DATA_DESTINATION);
         $this->createConnection('magento', 'Magento', FlowType::DATA_DESTINATION);
@@ -90,13 +89,12 @@ class SaveReadProductEventCountEndToEnd extends ApiTestCase
         return $this->catalog->useMinimalCatalog();
     }
 
-    private function createProduct(string $identifier, array $data = []): ProductInterface
+    private function createProduct(string $identifier) : void
     {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
-        $this->get('pim_catalog.updater.product')->update($product, $data);
-        $this->get('pim_catalog.saver.product')->save($product);
-
-        return $product;
+        $this->get('pim_enrich.product.message_bus')->dispatch(UpsertProductCommand::createWithIdentifierSystemUser(
+            productIdentifier: $identifier,
+            userIntents: []
+        ));
     }
 
     private function getEventCount(string $connectionCode)
@@ -108,7 +106,7 @@ WHERE connection_code = :connection_code
 AND event_type = 'product_read'
 SQL;
 
-        return $this->dbalConnection->fetchColumn($sql, [
+        return $this->dbalConnection->fetchOne($sql, [
             'connection_code' => $connectionCode,
         ]);
     }

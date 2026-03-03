@@ -4,7 +4,7 @@ Feature: Validate scopable values of a product
   I need to be able to see validation errors for scopable values
 
   Background:
-    Given an authentified user
+    Given an authenticated user
     And the following locales "en_US"
     And the following "ecommerce" channel with locales "en_US"
     And the following attributes:
@@ -24,4 +24,4 @@ Feature: Validate scopable values of a product
     When a product is created with values:
       | attribute   | data    | scope   |
       | description | my desc | unknown |
-    Then the error 'Attribute "description" expects an existing scope, "unknown" given.' is raised
+    Then the error 'The description attribute requires a value per channel. The unknown channel (scope) must exist in your PIM' is raised

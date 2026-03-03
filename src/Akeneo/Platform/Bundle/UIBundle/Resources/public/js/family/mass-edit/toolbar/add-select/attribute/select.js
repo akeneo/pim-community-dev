@@ -38,24 +38,5 @@ define([
           });
       });
     },
-
-    /**
-     * {@inheritdoc}
-     */
-    getItemsToExclude: function () {
-      return FetcherRegistry.getFetcher(this.mainFetcher)
-        .getIdentifierAttribute()
-        .then(
-          function (identifier) {
-            var existingAttributes = _.pluck(this.getFormData().attributes, 'code');
-
-            if (!_.contains(existingAttributes, identifier.code)) {
-              existingAttributes.push(identifier.code);
-            }
-
-            return existingAttributes;
-          }.bind(this)
-        );
-    },
   });
 });

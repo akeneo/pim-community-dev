@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\ConstraintCollectionProvider;
 
-use Akeneo\Channel\Component\Validator\Constraint\ActivatedLocale;
+use Akeneo\Channel\Infrastructure\Component\Validator\Constraint\ActivatedLocale;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Channel;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\FilterStructureLocale;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
@@ -73,6 +73,12 @@ class ProductCsvExport implements ConstraintCollectionProviderInterface
             })
         ];
         $constraintFields['with_media'] = new Type(
+            [
+                'type'   => 'bool',
+                'groups' => ['Default', 'FileConfiguration'],
+            ]
+        );
+        $constraintFields['with_uuid'] = new Type(
             [
                 'type'   => 'bool',
                 'groups' => ['Default', 'FileConfiguration'],

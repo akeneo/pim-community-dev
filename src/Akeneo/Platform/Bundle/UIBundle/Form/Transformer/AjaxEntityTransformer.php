@@ -92,10 +92,10 @@ class AjaxEntityTransformer implements DataTransformerInterface
 
             return $options;
         } elseif ($value) {
-            return $value
-                ? $this->getOption($value)
-                : null;
+            return $this->getOption($value);
         }
+
+        return null;
     }
 
     /**

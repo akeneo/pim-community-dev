@@ -39,7 +39,7 @@ final class ChannelLocaleCollection implements \Iterator
     /**
      * @inheritDoc
      */
-    public function current()
+    public function current(): mixed
     {
         return $this->iterator->current();
     }
@@ -47,7 +47,7 @@ final class ChannelLocaleCollection implements \Iterator
     /**
      * @inheritDoc
      */
-    public function next()
+    public function next(): void
     {
         $this->iterator->next();
     }
@@ -55,7 +55,7 @@ final class ChannelLocaleCollection implements \Iterator
     /**
      * @inheritDoc
      */
-    public function key()
+    public function key(): mixed
     {
         return $this->channelCodes[$this->iterator->key()] ?? null;
     }
@@ -63,7 +63,7 @@ final class ChannelLocaleCollection implements \Iterator
     /**
      * @inheritDoc
      */
-    public function valid()
+    public function valid(): bool
     {
         return $this->iterator->valid();
     }
@@ -71,7 +71,7 @@ final class ChannelLocaleCollection implements \Iterator
     /**
      * @inheritDoc
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->iterator->rewind();
     }

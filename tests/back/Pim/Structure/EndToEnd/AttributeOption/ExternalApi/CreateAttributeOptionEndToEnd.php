@@ -2,7 +2,6 @@
 
 namespace AkeneoTest\Pim\Structure\EndToEnd\AttributeOption\ExternalApi;
 
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -91,6 +90,42 @@ JSON;
             'sort_order' => 30,
             'labels'     => [
                 'en_US' => 'Option E',
+            ],
+        ];
+        $normalizer = $this->get('pim_catalog.normalizer.standard.attribute_option');
+
+        $response = $client->getResponse();
+
+        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+        $this->assertSame($attributeOptionStandard, $normalizer->normalize($attributeOption));
+    }
+
+    public function testLocalesWithWrongCase()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+<<<JSON
+    {
+        "code":"optionL",
+        "attribute":"a_multi_select",
+        "sort_order":30,
+        "labels":{"en_uS":"Option L", "FR_fr":"L option"}
+    }
+JSON;
+
+        $client->request('POST', 'api/rest/v1/attributes/a_multi_select/options', [], [], [], $data);
+
+        $attributeOption = $this->get('pim_catalog.repository.attribute_option')
+            ->findOneByIdentifier('a_multi_select.optionL');
+
+        $attributeOptionStandard = [
+            'code'       => 'optionL',
+            'attribute'  => 'a_multi_select',
+            'sort_order' => 30,
+            'labels'     => [
+                'en_US' => 'Option L',
+                'fr_FR' => 'L option',
             ],
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.attribute_option');
@@ -363,6 +398,39 @@ JSON;
     {
         "code": 422,
         "message": "Property \"labels\" expects an array as data, \"NULL\" given. Check the expected format on the API documentation.",
+        "_links": {
+            "documentation": {
+                 "href": "http://api.akeneo.com/api-reference.html#post_attributes__attribute_code__options"
+            }
+        }
+    }
+JSON;
+
+        $client->request('POST', 'api/rest/v1/attributes/a_multi_select/options', [], [], [], $data);
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
+    }
+
+    public function testResponseWhenSortOrderIsNotAnInteger()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+            <<<JSON
+    {
+        "attribute":"a_multi_select",
+        "code": "my_brand_new_attribute_option",
+        "sort_order": "123"
+    }
+JSON;
+
+        $expectedContent =
+            <<<JSON
+    {
+        "code": 422,
+        "message": "Property \"sort_order\" expects an integer as data, \"string\" given. Check the expected format on the API documentation.",
         "_links": {
             "documentation": {
                  "href": "http://api.akeneo.com/api-reference.html#post_attributes__attribute_code__options"

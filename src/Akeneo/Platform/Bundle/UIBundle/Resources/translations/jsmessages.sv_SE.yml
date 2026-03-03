@@ -1,8 +1,8 @@
+#ORO messages
 "Yes, I Agree": "Ja, jag godkänner"
 "Yes, do it": "Ja, gör det"
 "Ok, got it.": "Ok, jag förstår."
-"Edit": "Redigera"
-"Unexpected error occurred. Please contact system administrator.": "Oväntat fel uppstod. Vänligen kontakta systemadministratören."
+"Edit": "Ändra"
 Prev: Föregående
 Today: Idag
 Wk: V.
@@ -18,9 +18,11 @@ Second: Sekund
 Millisecond: Millisekund
 Microsecond: Mikrosekund
 "Time Zone": "Tidszon"
+#PIM messages
 Localized value: Språkberoende värde
 Columns: Kolumner
 Datagrid Configuration: Tabellkonfigurering
+#Filters
 Action: Åtgärd
 Unit: Enhet
 Currency: Valuta
@@ -32,6 +34,7 @@ jstree:
     unclassified: Oklassificerade produkter
   no_tree: Inga träd är tillgängliga
   include_sub: Inkludera underkategorier
+#Datetimepicker
 datetimepicker:
   days:
     Sunday: Söndag
@@ -58,8 +61,8 @@ datetimepicker:
     Fr: Fr
     Sa: Lö
   months:
-    January: January
-    February: Februrari
+    January: Januari
+    February: Februari
     March: Mars
     April: April
     May: Maj
@@ -83,6 +86,7 @@ datetimepicker:
     Oct: Okt
     Nov: Nov
     Dec: Dec
+#ORO
 oro_config:
   form:
     config:
@@ -109,24 +113,54 @@ pim_ui:
 "Your local changes will be lost. Are you sure you want to refresh the page?": "Dina lokala ändringar går förlorade. Är du säker på att du vill uppdatera sidan?"
 "navigation.message.content.outdated": "Innehållet på sidan {{ title }} är föråldrad. Vänligen <a href='#' data-action='page-refresh'>uppdatera sidan</a>"
 "Content of pinned page is outdated": "Innehållet på fäst sida är föråldrad"
+#Global structure of translation files
+#pim_bundle_name:
+#entity:
+#entity_name:
+#label: entity
+#uppercase_label: Entity
+#plural_label: Entities
+#flash:
+#update:
+#fail: Update failed
+#success: Entity Successfully updated
+#delete:
+#fail: Cannot delete this entity
+#success: Entity successfully removed
+#create:
+#fail: Can not create this entity
+#success: Entity successfully created
+#page_title:
+#index: "]-Inf, 1]1 entity|]1, Inf[{{ count }} entities"
+#property:
+#field_name: Field name
+#complex_field:
+#label: Field name
+#choose: Choose a field name
+#module:
+#module_name:
+#key: message
 pim_common:
   actions: Åtgärder
   add: Lägg tilll
   add_attributes: Lägg till attribut
+  after: Efter
   all: Alla
   and: och
   apply: Tillämpa
+  before: Före
   by: av
   cancel: Avbryt
   code: Kod
   confirm: Bekräfta
   confirm_deletion: Bekräfta radering
   create: Skapa
-  created: Skapat
-  delete: Ta bort
+  created: Skapad
+  delete: Radera
   done: Slutförd
-  edit: Redigera
-  entity_updated: Det finns ändringar som inte sparats.
+  edit: Ändra
+  entity_updated: Det finns osparade ändringar.
+  export: Export
   from: Från
   general_properties: Allmänna egenskaper
   history: Historik
@@ -138,8 +172,8 @@ pim_common:
   more_than: Mer än
   next: Nästa
   "no": "Nej"
-  none: Ingen
-  not_available: '-'
+  none: Inga
+  not_available: N/A
   now: Nu
   ok: OK
   permissions: Behörigheter
@@ -166,23 +200,19 @@ pim_common:
     ">": Större än
     "<=": Lägre än eller lika
     "<": Lägre än
-    EMPTY: Är tomt
+    EMPTY: Är tom
     NOT EMPTY: Är inte tom
     CONTAINS: Innehåller
     DOES NOT CONTAIN: Innehåller inte
     STARTS WITH: Börjar med
     ENDS WITH: Slutar med
-error:
-  exception: Oh snap! Ett {{ status_code }} fel uppstod...
 alert:
   attribute_option:
-    error_occurred_during_submission: Ett fel uppstod på servern när formuläret skulle skickas
     save_before_edit_other: Vänligen registrera dina ändringar på andra rader innan du redigerar denna
   session_storage:
     not_available: Din webbläsare inte verkar kompatibel med 'sessionStorage'. Vänligen kontakta administratören
 pim_enrich.entity.fallback:
   flash:
-    generic_error: Ett fel uppstod
     update:
       fail: Uppdateringen misslyckades
       success: Uppdatering gick bra
@@ -193,13 +223,11 @@ pim_enrich.entity.fallback:
     delete:
       title: Ta bort {{ itemName }}
       item: Är du säker på att du vill radera det här objektet?
+      item_placeholder: Är du säker på att du vill ta bort {{ itemName }}? Det går inte att ångra denna åtgärd.
     edit:
       leave: Är det säkert att du vill lämna den här sidan?
       discard_changes: Du kommer att förlora ändringar av {{ entity }} om du lämnar sidan.
-pim_enrich.entity.api_connection:
-  flash:
-    delete:
-      success: API-anslutningen har återkallas
+      discard_changes_title: Är du säker?
 pim_enrich.entity.job_execution:
   module:
     download:
@@ -212,26 +240,36 @@ pim_title:
   oro_default: Instrumentpanel
   pim_enrich_attributegroup_index: Attributgrupper
   pim_enrich_attributegroup_create: Attributgrupp | Skapa
+  pim_enrich_attributegroup_edit: Attributgrupp {{ group.label }} | Redigera
+  pim_enrich_catalog_volume_index: Övervaka katalogvolym
   pim_enrich_categorytree_index: Kategoriträd
   pim_enrich_categorytree_create: Kategori träd | Skapa
+  pim_enrich_categorytree_edit: Kategoriträd {{ category.label }} | Redigera
   pim_enrich_categorytree_create_tree: Kategori träd | Skapa
-  pim_enrich_attribute_index: Attribut
+  pim_enrich_attribute_index: Attributer
   pim_enrich_attribute_create: Attribut | Skapa
-  pim_enrich_product_index: Products
+  pim_enrich_attribute_edit: Attribut {{ attribute.label }} | Redigera
+  pim_enrich_product_index: Produkter
+  pim_enrich_product_edit: Produkt {{ product.label }} | Redigera
+  pim_enrich_product_model_edit: Produktmodell {{ product.label }} | Redigera
   pim_enrich_family_index: Familjer
+  pim_enrich_family_edit: Familj {{ family.label }} | Redigera
   pim_enrich_channel_index: Kanaler
   pim_enrich_channel_create: Kanaler | Skapa
+  pim_enrich_channel_edit: Kanal {{ channel.label }} | Redigera
   pim_enrich_currency_index: Valutor
   pim_enrich_locale_index: Språk
   pim_enrich_group_index: Grupper
-  pim_enrich_associationtype_index: Associationstyp
+  pim_enrich_group_edit: Grupp {{ group.label }} | Redigera
+  pim_enrich_associationtype_index: Förbindelse typer
+  pim_enrich_associationtype_edit: Associationstyp {{ association type.label }} | Redigera
   pim_enrich_grouptype_index: Grupptyper
+  pim_enrich_grouptype_edit: Grupptyper {{ group type.label }} | Redigera
   pim_enrich_mass_edit_action_choose: Mass redigera | Välj
   pim_enrich_mass_edit_action_configure: Mass redigera | Konfigurera
   pim_enrich_mass_edit_action_perform: Mass redigera | Utföra
   pim_enrich_job_tracker_index: Spåra process
   pim_enrich_job_tracker_show: Spåra process | Visa jobb
-  pim_enrich_api_connection_index: API-anslutning
   pim_enrich_mass_edit_action: Massredigera
   pim_analytics_system_info_index: Systeminformation
 pim_menu:
@@ -244,7 +282,7 @@ pim_menu:
     help:
       title: Hjälp
   item:
-    association_type: Associationstyp
+    association_type: Associationstyper
     attribute_group: Attributgrupper
     channel: Kanaler
     currency: Valutor
@@ -252,6 +290,7 @@ pim_menu:
     family: Familjer
     group: Grupper
     group_type: Grupptyper
+    product_model: Produktmodeller
     export_history: Exporthistorik
     export_profile: Exportprofiler
     import_history: Importhistorik
@@ -262,10 +301,13 @@ pim_menu:
     user_group: Användargrupper
     user_role: Roller
     info: Systeminformation
-    job_tracker: Spåra process
-    api_connection: API-anslutning
+    job_tracker: Process spårare
+    catalog_volume: Övervaka katalogvolym
   navigation:
-    system: System navigering
+    activity: Aktivitet - meny
+    system: Systemnavigering
+    user: Användarhantering - meny
+    settings: Inställningar - meny
     product: Produkt navigering
     product_infos: Produkt information
   user:

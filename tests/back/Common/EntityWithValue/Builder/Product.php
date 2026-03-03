@@ -21,6 +21,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 final class Product
 {
     /** @var Code */
+    private $uuid;
+
+    /** @var Code */
     private $identifier;
 
     /** @var Code */
@@ -96,7 +99,7 @@ final class Product
             $productStandardFormat['parent'] = $this->parent->toStandardFormat();
         }
 
-        $product = $this->productBuilder->createProduct((string) $this->identifier, (string) $this->family);
+        $product = $this->productBuilder->createProduct((string) $this->identifier, (string) $this->family, $this->uuid?->toStandardFormat());
         $this->productUpdater->update($product, $productStandardFormat);
 
         if ($dataValidation) {
@@ -111,6 +114,7 @@ final class Product
 
     public function init(): Product
     {
+        $this->uuid = null;
         $this->identifier = Code::fromString('my-product');
         $this->family = Code::emptyCode();
         $this->parent = null;
@@ -119,6 +123,13 @@ final class Product
         $this->associations = ListOfCodes::initialize();
         $this->groups = ListOfCodes::initialize();
         $this->status = Status::enabled();
+
+        return $this;
+    }
+
+    public function withUuid(string $uuid): Product
+    {
+        $this->uuid = Code::fromString($uuid);
 
         return $this;
     }

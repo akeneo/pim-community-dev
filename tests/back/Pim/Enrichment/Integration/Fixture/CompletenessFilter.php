@@ -56,14 +56,6 @@ class CompletenessFilter
      * | variant_product_4 |  100%     |  100%  | 75%   |  75%  |  100%  |  100%  | root_product_model_one_level |              -               |
      * | simple_product    |  100%     |  75%   | 75 %  |  75%  |  100%  |  100%  |              -               |              -               |
      * +--------------------------------------------------------------------------+------------------------------+------------------------------+
-     *
-     * To check that that numbers are right, here is a SQL query:
-     *
-     * SELECT p.identifier, ch.code, lo.code, FLOOR(100 * (co.required_count - co.missing_count) / co.required_count) AS ratio
-     * FROM pim_catalog_completeness AS co
-     * INNER JOIN pim_catalog_product AS p ON co.product_id = p.id
-     * INNER JOIN pim_catalog_channel AS ch ON ch.id = co.channel_id
-     * INNER JOIN pim_catalog_locale AS lo ON lo.id = co.locale_id
      */
     public function loadProductModelTree(): void
     {

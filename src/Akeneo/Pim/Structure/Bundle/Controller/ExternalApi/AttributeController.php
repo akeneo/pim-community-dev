@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Structure\Bundle\Controller\ExternalApi;
 
+use Akeneo\Pim\Structure\Bundle\EventSubscriber\ApiAggregatorForAttributePostSaveEventSubscriber;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;
@@ -16,6 +17,7 @@ use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -68,19 +70,10 @@ class AttributeController
     /** @var array */
     protected $apiConfiguration;
 
-    /**
-     * @param AttributeRepositoryInterface $repository
-     * @param NormalizerInterface          $normalizer
-     * @param SimpleFactoryInterface       $factory
-     * @param ObjectUpdaterInterface       $updater
-     * @param ValidatorInterface           $validator
-     * @param SaverInterface               $saver
-     * @param RouterInterface              $router
-     * @param PaginatorInterface           $paginator
-     * @param ParameterValidatorInterface  $parameterValidator
-     * @param StreamResourceResponse       $partialUpdateStreamResource
-     * @param array                        $apiConfiguration
-     */
+    private ApiAggregatorForAttributePostSaveEventSubscriber $apiAggregatorForAttributePostSave;
+
+    private LoggerInterface $logger;
+
     public function __construct(
         AttributeRepositoryInterface $repository,
         NormalizerInterface $normalizer,
@@ -92,7 +85,9 @@ class AttributeController
         PaginatorInterface $paginator,
         ParameterValidatorInterface $parameterValidator,
         StreamResourceResponse $partialUpdateStreamResource,
-        array $apiConfiguration
+        array $apiConfiguration,
+        ApiAggregatorForAttributePostSaveEventSubscriber $apiAggregatorForAttributePostSave,
+        LoggerInterface $logger
     ) {
         $this->repository = $repository;
         $this->normalizer = $normalizer;
@@ -105,38 +100,33 @@ class AttributeController
         $this->paginator = $paginator;
         $this->partialUpdateStreamResource = $partialUpdateStreamResource;
         $this->apiConfiguration = $apiConfiguration;
+        $this->apiAggregatorForAttributePostSave = $apiAggregatorForAttributePostSave;
+        $this->logger = $logger;
     }
 
     /**
-     * @param Request $request
-     * @param string  $code
-     *
      * @throws NotFoundHttpException
-     *
-     * @return JsonResponse
      *
      * @AclAncestor("pim_api_attribute_list")
      */
-    public function getAction(Request $request, $code)
+    public function getAction(Request $request, string $code): JsonResponse
     {
         $attribute = $this->repository->findOneByIdentifier($code);
         if (null === $attribute) {
             throw new NotFoundHttpException(sprintf('Attribute "%s" does not exist.', $code));
         }
 
-        $attributeApi = $this->normalizer->normalize($attribute, 'external_api');
+        $attributeApi = $this->normalizer->normalize($attribute, 'external_api', [
+            'with_table_select_options' => (bool) $request->query->get('with_table_select_options', false),
+        ]);
 
         return new JsonResponse($attributeApi);
     }
 
     /**
-     * @param Request $request
-     *
-     * @return JsonResponse
-     *
      * @AclAncestor("pim_api_attribute_list")
      */
-    public function listAction(Request $request)
+    public function listAction(Request $request): JsonResponse
     {
         try {
             $this->parameterValidator->validate($request->query->all());
@@ -171,7 +161,9 @@ class AttributeController
 
         $count = true === $request->query->getBoolean('with_count') ? $this->repository->count($searchFilters) : null;
         $paginatedAttributes = $this->paginator->paginate(
-            $this->normalizer->normalize($attributes, 'external_api'),
+            $this->normalizer->normalize($attributes, 'external_api', [
+                'with_table_select_options' => (bool) $request->query->get('with_table_select_options', false),
+            ]),
             $parameters,
             $count
         );
@@ -216,7 +208,18 @@ class AttributeController
     public function partialUpdateListAction(Request $request)
     {
         $resource = $request->getContent(true);
-        $response = $this->partialUpdateStreamResource->streamResponse($resource);
+        $this->apiAggregatorForAttributePostSave->activate();
+
+        $response = $this->partialUpdateStreamResource->streamResponse($resource, [], function () {
+            try {
+                $this->apiAggregatorForAttributePostSave->dispatchAllEvents();
+            } catch (\Throwable $exception) {
+                $this->logger->warning('An exception has been thrown in the post-save events', [
+                    'exception' => $exception,
+                ]);
+            }
+            $this->apiAggregatorForAttributePostSave->deactivate();
+        });
 
         return $response;
     }

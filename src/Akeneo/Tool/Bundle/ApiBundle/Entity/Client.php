@@ -14,6 +14,8 @@ class Client extends BaseClient
     /** @var string */
     protected $label;
 
+    protected ?string $marketplacePublicAppId = null;
+
     /**
      * @param string $label
      */
@@ -28,5 +30,15 @@ class Client extends BaseClient
     public function getLabel()
     {
         return $this->label;
+    }
+
+    public function getMarketplacePublicAppId(): ?string
+    {
+        return $this->marketplacePublicAppId;
+    }
+
+    public function setMarketplacePublicAppId(string $marketplacePublicAppId): void
+    {
+        $this->marketplacePublicAppId = $marketplacePublicAppId;
     }
 }

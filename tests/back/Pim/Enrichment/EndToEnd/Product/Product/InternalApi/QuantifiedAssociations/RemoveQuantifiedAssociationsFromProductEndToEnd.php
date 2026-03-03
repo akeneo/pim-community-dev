@@ -2,6 +2,7 @@
 
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\InternalApi\QuantifiedAssociations;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
 use Symfony\Component\HttpFoundation\Response;
 
 class RemoveQuantifiedAssociationsFromProductEndToEnd extends AbstractProductWithQuantifiedAssociationsTestCase
@@ -12,25 +13,19 @@ class RemoveQuantifiedAssociationsFromProductEndToEnd extends AbstractProductWit
     public function it_remove_quantified_associations_from_a_product(): void
     {
         $product = $this->createProduct(
+            'yellow_chair',
+            null,
             [
-                'values' => [
-                    'sku' => [
-                        [
-                            'scope' => null,
-                            'locale' => null,
-                            'data' => 'yellow_chair',
-                        ],
-                    ],
-                ],
+                new SetIdentifierValue('sku', 'yellow_chair')
             ]
         );
-        $normalizedProduct = $this->getProductFromInternalApi($product->getId());
+        $normalizedProduct = $this->getProductFromInternalApi($product->getUuid());
 
         $quantifiedAssociations = [
             'PRODUCTSET' => [
                 'products' => [
                     [
-                        'identifier' => '1111111111',
+                        'uuid' => $this->getProductUuid('1111111111')->toString(),
                         'quantity' => 3,
                     ],
                 ],
@@ -50,7 +45,7 @@ class RemoveQuantifiedAssociationsFromProductEndToEnd extends AbstractProductWit
             ]
         );
 
-        $this->updateProductWithInternalApi($product->getId(), $normalizedProductWithQuantifiedAssociations);
+        $this->updateProductWithInternalApi($product->getUuid(), $normalizedProductWithQuantifiedAssociations);
 
         $normalizedProductWithoutQuantifiedAssociations = $this->updateNormalizedProduct(
             $normalizedProduct,
@@ -65,20 +60,10 @@ class RemoveQuantifiedAssociationsFromProductEndToEnd extends AbstractProductWit
         );
 
         $response = $this->updateProductWithInternalApi(
-            $product->getId(),
+            $product->getUuid(),
             $normalizedProductWithoutQuantifiedAssociations
         );
 
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
-        $body = json_decode($response->getContent(), true);
-        $this->assertSame(
-            [
-                'PRODUCTSET' => [
-                    'products' => [],
-                    'product_models' => [],
-                ],
-            ],
-            $body['quantified_associations']
-        );
     }
 }

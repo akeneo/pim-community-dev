@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oro\Bundle\PimDataGridBundle\Adapter;
 
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid\CountImpactedProducts;
+use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\AttributeSearchableRepository;
 
 /**
  * Counts the number of items selected in the grid.
@@ -13,25 +16,23 @@ use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid\CountImpactedProducts;
  */
 class ItemsCounter
 {
-    /** @var CountImpactedProducts */
-    private $countImpactedProducts;
-
-    public function __construct(CountImpactedProducts $countImpactedProducts)
-    {
-        $this->countImpactedProducts = $countImpactedProducts;
+    public function __construct(
+        private readonly CountImpactedProducts $countImpactedProducts,
+        private readonly AttributeSearchableRepository $attributeRepository,
+    ) {
     }
 
     /**
-     * @param string $gridName
-     * @param array  $filters
-     *
-     * @return int
      * @throws \Exception
      */
     public function count(string $gridName, array $filters): int
     {
         if ($gridName === OroToPimGridFilterAdapter::PRODUCT_GRID_NAME) {
             return $this->countImpactedProducts->count($filters);
+        }
+
+        if ($gridName === OroToPimGridFilterAdapter::ATTRIBUTE_GRID_NAME) {
+            return $this->attributeRepository->count($filters['search'], $filters['options']);
         }
 
         if (!isset($filters[0]['value'])) {

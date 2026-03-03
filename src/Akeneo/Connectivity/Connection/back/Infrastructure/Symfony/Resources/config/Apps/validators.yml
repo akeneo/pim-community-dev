@@ -1,0 +1,38 @@
+services:
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation\ClientIdMustBeValidValidator:
+        arguments:
+            - '@fos_oauth_server.client_manager.default'
+        tags:
+            - { name: validator.constraint_validator }
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation\AuthorizationCodeMustBeValidValidator:
+        arguments:
+            - '@fos_oauth_server.storage.default'
+        tags:
+            - { name: validator.constraint_validator }
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation\AuthorizationCodeMustNotBeExpiredValidator:
+        arguments:
+            - '@fos_oauth_server.storage.default'
+        tags:
+            - { name: validator.constraint_validator }
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation\ClientIdMustHaveOngoingAuthorizationValidator:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession'
+        tags:
+            - { name: validator.constraint_validator }
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation\CodeChallengeMustBeValidValidator:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Persistence\GetCustomAppSecretQuery'
+            - '@akeneo_connectivity.connection.marketplace_fake_apps.feature'
+        tags:
+            - { name: validator.constraint_validator }
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation\UserIdMustBeValidValidator:
+        arguments:
+            - '@pim_user.repository.user'
+        tags:
+            - { name: validator.constraint_validator }

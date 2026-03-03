@@ -2,27 +2,30 @@
 
 namespace spec\Akeneo\Tool\Component\Connector\Writer\File\Xlsx;
 
-use Akeneo\Tool\Component\Connector\Writer\File\Xlsx\Writer;
-use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Buffer\BufferFactory;
-use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Akeneo\Tool\Component\Connector\Job\JobFileBackuper;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBuffer;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher;
+use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
+use Akeneo\Tool\Component\Connector\Writer\File\Xlsx\Writer;
+use PhpSpec\ObjectBehavior;
 
 class WriterSpec extends ObjectBehavior
 {
     function let(
         ArrayConverterInterface $arrayConverter,
         BufferFactory $bufferFactory,
-        FlatItemBufferFlusher $flusher
+        FlatItemBufferFlusher $flusher,
+        JobFileBackuper $jobFileBackuper,
     ) {
-        $this->beConstructedWith($arrayConverter, $bufferFactory, $flusher);
+        $this->beConstructedWith($arrayConverter, $bufferFactory, $flusher, $jobFileBackuper);
     }
 
     function it_is_initializable()
@@ -56,7 +59,8 @@ class WriterSpec extends ObjectBehavior
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobInstance->getLabel()->willReturn('XLSX Group export');
         $jobParameters->get('withHeader')->willReturn(true);
-        $jobParameters->get('filePath')->willReturn(sys_get_temp_dir() . '/my/file/path/%job_label%_%datetime%.xlsx');
+        $jobParameters->has('storage')->willReturn(true);
+        $jobParameters->get('storage')->willReturn(['type' => 'local', 'file_path' => sys_get_temp_dir() . '/my/file/path/%job_label%_%datetime%.xlsx']);
         $jobParameters->has('ui_locale')->willReturn(false);
 
         $groups = [
@@ -94,7 +98,7 @@ class WriterSpec extends ObjectBehavior
             'label-de_DE' => 'Verbunden'
         ]);
 
-        $bufferFactory->create()->willReturn($flatRowBuffer);
+        $bufferFactory->create(null)->willReturn($flatRowBuffer);
         $flatRowBuffer->write(
             [
                 [
@@ -136,10 +140,11 @@ class WriterSpec extends ObjectBehavior
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobInstance->getLabel()->willReturn('XLSX Group export');
         $jobParameters->get('linesPerFile')->willReturn(1);
-        $jobParameters->get('filePath')->willReturn(sys_get_temp_dir() . '/my/file/path/%job_label%_%datetime%.xlsx');
+        $jobParameters->has('storage')->willReturn(true);
+        $jobParameters->get('storage')->willReturn(['type' => 'local', 'file_path' => sys_get_temp_dir() . '/my/file/path/%job_label%_%datetime%.xlsx']);
         $jobParameters->has('ui_locale')->willReturn(false);
 
-        $bufferFactory->create()->willReturn($flatRowBuffer);
+        $bufferFactory->create(null)->willReturn($flatRowBuffer);
 
         $this->initialize();
         $flusher->flush(
@@ -156,10 +161,16 @@ class WriterSpec extends ObjectBehavior
 
         $this->flush();
 
-        $this->getWrittenFiles()->shouldReturn(
+        $this->getWrittenFiles()->shouldBeLike(
             [
-                sys_get_temp_dir() . '/my/file/path/XLSX_Group_export_1967-08-05_15-15-00_1.xlsx' => 'XLSX_Group_export_1967-08-05_15-15-00_1.xlsx',
-                sys_get_temp_dir() . '/my/file/path/XLSX_Group_export_1967-08-05_15-15-00_2.xlsx' => 'XLSX_Group_export_1967-08-05_15-15-00_2.xlsx',
+                WrittenFileInfo::fromLocalFile(
+                    sys_get_temp_dir() . '/my/file/path/XLSX_Group_export_1967-08-05_15-15-00_1.xlsx',
+                    'XLSX_Group_export_1967-08-05_15-15-00_1.xlsx'
+                ),
+                WrittenFileInfo::fromLocalFile(
+                    sys_get_temp_dir() . '/my/file/path/XLSX_Group_export_1967-08-05_15-15-00_2.xlsx',
+                    'XLSX_Group_export_1967-08-05_15-15-00_2.xlsx'
+                ),
             ]
         );
     }

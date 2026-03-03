@@ -66,6 +66,7 @@ class AkeneoPimEnrichmentExtension extends Extension
         $loader->load('managers.yml');
         $loader->load('models.yml');
         $loader->load('product_grid_category_tree.yml');
+        $loader->load('product_model_handlers.yml');
         $loader->load('product_models.yml');
         $loader->load('product_values.yml');
         $loader->load('query_builders.yml');
@@ -78,7 +79,6 @@ class AkeneoPimEnrichmentExtension extends Extension
         $loader->load('updaters.yml');
         $loader->load('validators.yml');
         $loader->load('values_fillers.yml');
-        $loader->load('versions.yml');
         $loader->load('serializers.yml');
         $loader->load('serializers_indexing.yml');
         $loader->load('serializers_standard.yml');
@@ -106,13 +106,15 @@ class AkeneoPimEnrichmentExtension extends Extension
         $loader->load('files.yml');
         $loader->load('category_counters.yml');
         $loader->load('structure_version.yml');
-        $loader->load('view_elements/category.yml');
         $loader->load('command.yml');
         $loader->load('cli_command.yml');
         $loader->load('quantified_associations.yml');
         $loader->load('messenger.yml');
         $loader->load('webhook.yml');
         $loader->load('lock.yml');
+        $loader->load('scope_mappers.yml');
+        $loader->load('command_handlers.yml');
+        $loader->load('html_formatter.yml');
 
         if (!$container->hasParameter('pim_pdf_generator_font')) {
             $container->setParameter('pim_pdf_generator_font', null);

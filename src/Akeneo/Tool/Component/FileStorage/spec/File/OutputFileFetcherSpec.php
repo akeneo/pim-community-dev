@@ -3,10 +3,11 @@
 namespace spec\Akeneo\Tool\Component\FileStorage\File;
 
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
-use League\Flysystem\Filesystem;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemReader;
+use League\Flysystem\UnableToReadFile;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Exception\Prediction\FailedPredictionException;
+use Symfony\Component\Filesystem\Filesystem;
 
 class OutputFileFetcherSpec extends ObjectBehavior
 {
@@ -20,7 +21,7 @@ class OutputFileFetcherSpec extends ObjectBehavior
     {
         $this->directory = sys_get_temp_dir() . '/spec/';
 
-        $this->filesystem = new \Symfony\Component\Filesystem\Filesystem();
+        $this->filesystem = new Filesystem();
         $this->filesystem->mkdir($this->directory);
     }
 
@@ -29,7 +30,7 @@ class OutputFileFetcherSpec extends ObjectBehavior
         $this->filesystem->remove($this->directory);
     }
 
-    function it_fetches_a_file(FilesystemInterface $filesystem)
+    function it_fetches_a_file(FilesystemReader $filesystem)
     {
         $virtualFilesystemPath = 'virtual/path/file.txt';
         $localFilesystemPath = [
@@ -37,10 +38,10 @@ class OutputFileFetcherSpec extends ObjectBehavior
             'filename' => 'filename.txt'
         ];
 
-        $filesystem->has($virtualFilesystemPath)->willReturn(true);
+        $filesystem->fileExists($virtualFilesystemPath)->willReturn(true);
         $filesystem->readStream($virtualFilesystemPath)->shouldBeCalled();
 
-        $this->fetch($filesystem, $virtualFilesystemPath, $localFilesystemPath)->shouldBeAnInstanceOf('\SplFileInfo');
+        $this->fetch($filesystem, $virtualFilesystemPath, $localFilesystemPath)->shouldBeAnInstanceOf(\SplFileInfo::class);
 
         if (!file_exists($localFilesystemPath['filePath'] . $localFilesystemPath['filename'])) {
             throw new FailedPredictionException(
@@ -49,14 +50,14 @@ class OutputFileFetcherSpec extends ObjectBehavior
         }
     }
 
-    function it_fetches_a_file_with_the_same_filename(FilesystemInterface $filesystem)
+    function it_fetches_a_file_with_the_same_filename(FilesystemReader $filesystem)
     {
         $virtualFilesystemPath = 'virtual/path/file.txt';
         $localFilesystemPath = [
             'filePath' => $this->directory . 'locale/path/'
         ];
 
-        $filesystem->has($virtualFilesystemPath)->willReturn(true);
+        $filesystem->fileExists($virtualFilesystemPath)->willReturn(true);
         $filesystem->readStream($virtualFilesystemPath)->shouldBeCalled();
 
         $this->fetch($filesystem, $virtualFilesystemPath, $localFilesystemPath)->shouldBeAnInstanceOf('\SplFileInfo');
@@ -66,7 +67,7 @@ class OutputFileFetcherSpec extends ObjectBehavior
         }
     }
 
-    function it_throws_an_exception_if_options_directory_or_filename_are_not_filled(FilesystemInterface $filesystem)
+    function it_throws_an_exception_if_options_directory_or_filename_are_not_filled(FilesystemReader $filesystem)
     {
         $this->shouldThrow(
             new \LogicException('Options "filePath" has to be filled')
@@ -85,9 +86,9 @@ class OutputFileFetcherSpec extends ObjectBehavior
         ]]);
     }
 
-    function it_throws_an_exception_when_the_file_is_not_on_the_filesystem(FilesystemInterface $filesystem)
+    function it_throws_an_exception_when_the_file_is_not_on_the_filesystem(FilesystemReader $filesystem)
     {
-        $filesystem->has('path/to/file.txt')->willReturn(false);
+        $filesystem->fileExists('path/to/file.txt')->willReturn(false);
 
         $this->shouldThrow(
             new \LogicException('The file "path/to/file.txt" is not present on the filesystem.')
@@ -96,10 +97,12 @@ class OutputFileFetcherSpec extends ObjectBehavior
         ]]);
     }
 
-    function it_throws_an_exception_when_the_file_can_not_be_read_on_the_filesystem(FilesystemInterface $filesystem)
+    function it_throws_an_exception_when_the_file_can_not_be_read_on_the_filesystem(FilesystemReader $filesystem)
     {
-        $filesystem->has('path/to/file.txt')->willReturn(true);
-        $filesystem->readStream('path/to/file.txt')->willReturn(false);
+        $filesystem->fileExists('path/to/file.txt')->willReturn(true);
+        $filesystem->readStream('path/to/file.txt')->willThrow(
+            UnableToReadFile::fromLocation('path/to/file.txt', 'Directory is not readable')
+        );
 
         $this->shouldThrow(
             new FileTransferException('Unable to fetch the file "path/to/file.txt" from the filesystem.')

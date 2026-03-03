@@ -2,22 +2,24 @@
 
 namespace Akeneo\UserManagement\Component\Model;
 
-use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Channel\Component\Model\LocaleInterface;
-use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Inflector\Inflector;
 use Doctrine\Inflector\NoopWordInflector;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Security\Core\User\EquatableInterface;
+use Symfony\Component\Security\Core\User\UserInterface as SymfonyUserInterface;
 
 /**
  * @author    Nicolas Dupont <nicalas@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class User implements UserInterface
+class User implements UserInterface, EquatableInterface
 {
     const ROLE_DEFAULT = 'ROLE_USER';
     const GROUP_DEFAULT = 'All';
@@ -25,6 +27,7 @@ class User implements UserInterface
     const DEFAULT_TIMEZONE = 'UTC';
     const TYPE_USER = 'user';
     const TYPE_API = 'api';
+    const TYPE_JOB = 'job';
 
     /** @var int|string */
     protected $id;
@@ -152,7 +155,13 @@ class User implements UserInterface
     /** @var array $property bag for properties extension */
     private $properties = [];
 
+    private int $consecutiveAuthenticationFailureCounter = 0;
+
+    private ?\DateTime $authenticationFailureResetDate = null;
+
     protected $type = self::TYPE_USER;
+
+    private ?string $profile = null;
 
     public function __construct()
     {
@@ -224,6 +233,14 @@ class User implements UserInterface
      */
     public function getUsername()
     {
+        return $this->getUserIdentifier();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getUserIdentifier()
+    {
         return $this->username;
     }
 
@@ -280,13 +297,13 @@ class User implements UserInterface
      */
     public function getFullName()
     {
-        return implode(' ', [
+        return \trim(\implode(' ', array_filter([
             $this->namePrefix,
             $this->firstName,
             $this->middleName,
             $this->lastName,
             $this->nameSuffix
-        ]);
+        ])));
     }
 
     /**
@@ -324,7 +341,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getSalt()
+    public function getSalt(): ?string
     {
         return $this->salt;
     }
@@ -332,7 +349,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getPassword()
+    public function getPassword(): ?string
     {
         return $this->password;
     }
@@ -396,7 +413,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function isEnabled()
+    public function isEnabled(): bool
     {
         return $this->enabled;
     }
@@ -404,7 +421,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function isAccountNonExpired()
+    public function isAccountNonExpired(): bool
     {
         return true;
     }
@@ -412,7 +429,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function isAccountNonLocked()
+    public function isAccountNonLocked(): bool
     {
         return $this->isEnabled();
     }
@@ -423,7 +440,7 @@ class User implements UserInterface
     public function isPasswordRequestNonExpired($ttl)
     {
         return $this->getPasswordRequestedAt() instanceof \DateTime &&
-               $this->getPasswordRequestedAt()->getTimestamp() + $ttl > time();
+            $this->getPasswordRequestedAt()->getTimestamp() + $ttl > time();
     }
 
     /**
@@ -537,7 +554,7 @@ class User implements UserInterface
      */
     public function setEnabled($enabled)
     {
-        $this->enabled = (boolean) $enabled;
+        $this->enabled = (bool) $enabled;
 
         return $this;
     }
@@ -635,16 +652,9 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getRoles()
+    public function getRoles(): array
     {
-        $roles = $this->roles->toArray();
-
-        /** @var GroupInterface $group */
-        foreach ($this->getGroups() as $group) {
-            $roles = array_merge($roles, $group->getRoles()->toArray());
-        }
-
-        return array_unique($roles);
+        return $this->roles->map(fn (RoleInterface $role): string => $role->getRole())->getValues();
     }
 
     /**
@@ -661,7 +671,7 @@ class User implements UserInterface
     public function getRole($roleName)
     {
         /** @var Role $item */
-        foreach ($this->getRoles() as $item) {
+        foreach ($this->roles as $item) {
             if ($roleName == $item->getRole()) {
                 return $item;
             }
@@ -861,7 +871,7 @@ class User implements UserInterface
      */
     public function __toString()
     {
-        return (string) $this->getUsername();
+        return (string) $this->getUserIdentifier();
     }
 
     /**
@@ -1093,6 +1103,16 @@ class User implements UserInterface
         return $this;
     }
 
+    public function isUiUser(): bool
+    {
+        return self::TYPE_USER === $this->type;
+    }
+
+    public function defineAsUiUser(): void
+    {
+        $this->type = self::TYPE_USER;
+    }
+
     public function isApiUser(): bool
     {
         return self::TYPE_API === $this->type;
@@ -1101,6 +1121,21 @@ class User implements UserInterface
     public function defineAsApiUser(): void
     {
         $this->type = self::TYPE_API;
+    }
+
+    public function isJobUser(): bool
+    {
+        return self::TYPE_JOB === $this->type;
+    }
+
+    public function defineAsJobUser(): void
+    {
+        $this->type = self::TYPE_JOB;
+    }
+
+    public function getType(): string
+    {
+        return $this->type;
     }
 
     /**
@@ -1121,6 +1156,38 @@ class User implements UserInterface
         $propertyName = $this->getInflector()->tableize($propertyName);
 
         return $this->properties[$propertyName] ?? null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getConsecutiveAuthenticationFailureCounter(): int
+    {
+        return $this->consecutiveAuthenticationFailureCounter;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setConsecutiveAuthenticationFailureCounter(int $consecutiveAuthenticationFailureCounter): void
+    {
+        $this->consecutiveAuthenticationFailureCounter = $consecutiveAuthenticationFailureCounter;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAuthenticationFailureResetDate(): ?\DateTime
+    {
+        return $this->authenticationFailureResetDate;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setAuthenticationFailureResetDate(?\DateTime $authenticationFailureResetDate): void
+    {
+        $this->authenticationFailureResetDate = $authenticationFailureResetDate;
     }
 
     public function duplicate(): UserInterface
@@ -1151,6 +1218,7 @@ class User implements UserInterface
 
         $duplicated->setRoles($this->roles);
         $duplicated->setGroups($this->groups->toArray());
+        $duplicated->setProductGridFilters($this->productGridFilters);
         foreach ($this->defaultGridViews as $datagridView) {
             if ($datagridView->isPublic()) {
                 $duplicated->setDefaultGridView($datagridView->getDatagridAlias(), $datagridView);
@@ -1171,5 +1239,53 @@ class User implements UserInterface
     private function getInflector(): Inflector
     {
         return new Inflector(new NoopWordInflector(), new NoopWordInflector());
+    }
+
+    public function getProfile(): ?string
+    {
+        return $this->profile;
+    }
+
+    public function setProfile(?string $profile): void
+    {
+        $this->profile = '' === $profile ? null : $profile;
+    }
+
+    /**
+     * Please note this function is inspired by User::isEqualTo
+     * But using Akeneo custom implementations roles are into token not User, and there are a few structural/implementation differences between Akeneo and Symfonu User ...
+     * isAccountNonExpired isAccountNotLocked
+     * @see \Symfony\Component\Security\Core\User\User::isEqualTo()
+     * {@inheritdoc}
+     */
+    public function isEqualTo(SymfonyUserInterface $user): bool
+    {
+        if (!$user instanceof self) {
+            return false;
+        }
+
+        if ($this->getPassword() !== $user->getPassword()) {
+            return false;
+        }
+
+        if ($this->getSalt() !== $user->getSalt()) {
+            return false;
+        }
+
+        if ($this->getUserIdentifier() !== $user->getUserIdentifier()) {
+            return false;
+        }
+
+        if (self::class === static::class) {
+            if ($this->isAccountNonLocked() !== $user->isAccountNonLocked()) {
+                return false;
+            }
+        }
+
+        if ($this->isEnabled() !== $user->isEnabled()) {
+            return false;
+        }
+
+        return true;
     }
 }

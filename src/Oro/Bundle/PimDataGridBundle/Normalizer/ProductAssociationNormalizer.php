@@ -66,7 +66,7 @@ class ProductAssociationNormalizer implements NormalizerInterface, SerializerAwa
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof ProductInterface && 'datagrid' === $format;
     }
@@ -104,7 +104,7 @@ class ProductAssociationNormalizer implements NormalizerInterface, SerializerAwa
      */
     protected function getCompletenessRatio(ProductInterface $product, array $context): ?int
     {
-        $completenesses = $this->getProductCompletenesses->fromProductId($product->getId());
+        $completenesses = $this->getProductCompletenesses->fromProductUuid($product->getUuid());
         $channel = current($context['channels']);
         $locale = current($context['locales']);
         $completeness = $completenesses->getCompletenessForChannelAndLocale($channel, $locale);

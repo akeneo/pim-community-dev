@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Channel\Integration\Channel\Storage\Orm;
 
-use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
-use Akeneo\Channel\Component\Saver\ChannelSaverInterface;
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Saver\ChannelSaverInterface;
+use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -62,14 +62,14 @@ final class ChannelSaverIntegration extends TestCase
 
         // @see https://github.com/akeneo/pim-community-dev/issues/10828
         // kill background process because you can have a race condition:
-        // - this test triggers the asynchronous job pim:catalog:remove-completeness-for-channel-and-locale and then the test finishes (but not the job)
+        // - this test triggers the asynchronous job remove_completeness_for_channel_and_locale and then the test finishes (but not the job)
         // - then table are cleaned in the next test with the fixture loader
-        // - then the pim:catalog:remove-completeness-for-channel-and-locale insert data into a table
+        // - then the job remove_completeness_for_channel_and_locale insert data into a table
         // - then the dump is loaded to load the fixtures of the next test
-        // - INSERT INTO of this dump fails because the data inserted by "pim:catalog:remove-completeness-for-channel-and-locale" already exists
+        // - INSERT INTO of this dump fails because the data inserted by the job "remove_completeness_for_channel_and_locale" already exists
         //
         // ideally, we should not trigger this asynchronous job and test it differently
-        exec('pkill -f "pim:catalog:remove-completeness-for-channel-and-locale"');
+        exec('pkill -f "remove_completeness_for_channel_and_locale"');
     }
 
     public function test_it_updates_job_instances_when_a_channel_as_a_changed_category_tree(): void

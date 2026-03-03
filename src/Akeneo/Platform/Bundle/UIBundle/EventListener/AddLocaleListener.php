@@ -50,7 +50,7 @@ class AddLocaleListener implements EventSubscriber
      */
     public function postLoad(LifecycleEventArgs $args)
     {
-        $entity = $args->getEntity();
+        $entity = $args->getObject();
 
         if ($entity instanceof TranslatableInterface) {
             $entity->setLocale($this->locale);

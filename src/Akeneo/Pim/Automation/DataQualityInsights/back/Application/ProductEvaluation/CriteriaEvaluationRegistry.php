@@ -34,17 +34,6 @@ class CriteriaEvaluationRegistry
         return $this->criterionEvaluationServices[strval($code)];
     }
 
-    /**
-     * @return CriterionCode[]
-     */
-    public function getCriterionCodes(): array
-    {
-        return array_values(array_map(
-            fn (EvaluateCriterionInterface $evaluateCriterion) => $evaluateCriterion->getCode(),
-            $this->criterionEvaluationServices
-        ));
-    }
-
     public function getCriterionCoefficient(CriterionCode $code): int
     {
         return $this->get($code)->getCoefficient();

@@ -1,0 +1,42 @@
+services:
+  Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\Job\PurgeConnectionErrorsTasklet:
+    arguments:
+      - '@Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\Persistence\SelectAllAuditableConnectionCodeQuery'
+      - '@Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\Persistence\PurgeConnectionErrorsQuery'
+      - '@logger'
+    public: false
+
+  akeneo_connectivity_connection.step.purge_connection_error:
+    class: '%pim_connector.step.tasklet.class%'
+    arguments:
+      - 'purge_connection_error'
+      - '@event_dispatcher'
+      - '@akeneo_batch.job_repository'
+      - '@Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\Job\PurgeConnectionErrorsTasklet'
+    public: false
+
+  akeneo_connectivity_connection.job.purge_connection_error:
+    class: '%pim_connector.job.simple_job.class%'
+    arguments:
+      - 'purge_connection_error'
+      - '@event_dispatcher'
+      - '@akeneo_batch.job_repository'
+      -
+        - '@Akeneo\Tool\Component\Connector\Step\CheckJobUniqueStep'
+        - '@akeneo_connectivity_connection.step.purge_connection_error'
+      - false
+      - false
+    public: false
+    tags:
+      -
+        name: akeneo_batch.job
+        connector: 'internal'
+        type: 'scheduled_job'
+
+  akeneo_connectivity_connection.job.job_parameters.default_values_provider.purge_connection_error:
+    class: 'Akeneo\Tool\Component\Batch\Job\JobParameters\EmptyConstraintAndDefaultValuesProvider'
+    arguments:
+      - 'purge_connection_error'
+    tags:
+      - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+      - { name: akeneo_batch.job.job_parameters.default_values_provider }

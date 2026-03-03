@@ -1,0 +1,6 @@
+services:
+    Akeneo\Connectivity\Connection\Infrastructure\Webhook\Install\InstallSubscriber:
+        arguments:
+            - '@database_connection'
+        tags:
+            - {name: kernel.event_subscriber}

@@ -48,28 +48,31 @@ pim_ui.system_config:
     loading_message.title: Loading messages
 other_actions: Other actions
 pim_common:
+  association_types: Association types
   cancel: Cancel
-  save: Save
-  delete: Delete
-  update: Update
-  view: View
-  edit: Edit
-  created: Created
-  updated: Updated
-  create: Create
-  permissions: Permissions
-  properties: Properties
-  name: Name
-  remove: Remove
-  code: Code
-  products: Products
-  product_models: Product models
   categories: Categories
+  code: Code
+  create: Create
+  created: Created
+  delete: Delete
+  edit: Edit
   enabled: Enabled
   family: Family
   groups: Groups
-  yes: "Yes"
+  label: Label
+  name: Name
   no: "No"
+  permissions: Permissions
+  product_models: Product models
+  products: Products
+  properties: Properties
+  quantity: Quantity
+  remove: Remove
+  save: Save
+  update: Update
+  updated: Updated
+  view: View
+  yes: "Yes"
 pim_enrich:
   #ACLs
   acl:
@@ -433,8 +436,14 @@ pim_datagrid:
       label: Groups
     enabled:
       label: Status
+    scope:
+      label: Channel
     completeness:
       label: Complete
+    created:
+      label: Created
+    updated:
+      label: Updated
     identifier:
       label: Identifier
 #Versioning / history
@@ -501,7 +510,6 @@ pim_mass_edit:
       success: Mass delete <strong>%label%</strong> finished
 job_execution.summary:
   mass_edited: Mass edited
-  skip: Skipped
   skipped_products: Skipped products
   skipped_attributes: Skipped attributes
   skipped_families: Skipped families

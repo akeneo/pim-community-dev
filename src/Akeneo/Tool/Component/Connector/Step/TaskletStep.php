@@ -16,45 +16,30 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class TaskletStep extends AbstractStep implements TrackableStepInterface
 {
-    protected TaskletInterface $tasklet;
-
-    /**
-     * @param string                   $name
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param JobRepositoryInterface   $jobRepository
-     * @param TaskletInterface         $tasklet
-     */
     public function __construct(
-        $name,
+        string $name,
         EventDispatcherInterface $eventDispatcher,
         JobRepositoryInterface $jobRepository,
-        TaskletInterface $tasklet
+        protected TaskletInterface $tasklet
     ) {
         parent::__construct($name, $eventDispatcher, $jobRepository);
-        $this->tasklet = $tasklet;
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function doExecute(StepExecution $stepExecution)
+    protected function doExecute(StepExecution $stepExecution): void
     {
         $this->tasklet->setStepExecution($stepExecution);
         $this->tasklet->execute();
     }
 
-    /**
-     * @return TaskletInterface
-     */
-    public function getTasklet()
+    public function getTasklet(): TaskletInterface
     {
         return $this->tasklet;
     }
 
-    /**
-     * @param TaskletInterface $tasklet
-     */
-    public function setTasklet($tasklet)
+    public function setTasklet(TaskletInterface $tasklet): void
     {
         $this->tasklet = $tasklet;
     }

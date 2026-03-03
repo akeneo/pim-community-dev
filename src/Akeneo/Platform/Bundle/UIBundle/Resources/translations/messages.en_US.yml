@@ -51,32 +51,36 @@ pim_ui.system_config:
 other_actions: Other actions
 
 pim_common:
+    association_types: Association types
     cancel: Cancel
-    save: Save
-    delete: Delete
-    update: Update
-    view: View
-    edit: Edit
-    created: Created
-    updated: Updated
-    create: Create
-    permissions: Permissions
-    properties: Properties
-    name: Name
-    remove: Remove
-    code: Code
-    quantity: Quantity
-    products: Products
-    product_models: Product models
     categories: Categories
-    family_variant: Family variant
+    code: Code
+    create: Create
+    created: Created
+    delete: Delete
+    edit: Edit
     enabled: Enabled
+    family_variant: Family variant
     family: Family
-    parent: Parent
     groups: Groups
-    unit: Unit
-    yes: "Yes"
+    label: Label
+    name: Name
     no: "No"
+    parent: Parent
+    permissions: Permissions
+    product_models: Product models
+    products: Products
+    properties: Properties
+    quality_score: Quality score
+    quantity: Quantity
+    remove: Remove
+    save: Save
+    unit: Unit
+    update: Update
+    updated: Updated
+    view: View
+    yes: "Yes"
+    uuid: UUID
 
 pim_enrich:
     # ACLs
@@ -110,15 +114,6 @@ pim_enrich:
             categories_view: Consult the categories of a product model
             history: View product model history
             remove: Remove a product model (including children)
-        category:
-            list: List categories
-            create: Create a category
-            edit: Edit a category
-            remove: Remove a category
-            move: Move category
-            children: See category children
-            products: See category's products
-            history: View category history
         channel:
             index: List channels
             create: Create a channel
@@ -140,6 +135,7 @@ pim_enrich:
             create: Create an attribute group
             edit: Edit an attribute group
             remove: Remove an attribute group
+            mass_delete: Bulk remove attribute groups
             sort: Sort attribute groups
             add_attribute: Add attribute to a group
             remove_attribute: Remove attribute from a group
@@ -149,6 +145,7 @@ pim_enrich:
             create: Create an attribute
             edit: Edit an attribute
             remove: Remove an attribute
+            mass_delete: Bulk delete attributes
             sort: Sort attributes inside attribute groups
             history: View attribute history
         group:
@@ -223,8 +220,10 @@ flash:
     entity:
         removed: Item was deleted
     attribute:
-        identifier_not_removable: Identifier attribute can not be removed
+        main_identifier_not_removable: The main identifier attribute can not be removed
         used_as_conversion_unit:  This attribute can not be removed because it is used as conversion unit in the channel(s) %channelCodes%.
+        cant_remove_attributes_used_as_label: Attributes used as labels in a family cannot be removed.
+        cant_remove_attribute_used_as_axis: Cannot remove this attribute used as a variant axis in a family variant
     category:
         removed: Category successfully removed
     tree:
@@ -476,19 +475,22 @@ pim_datagrid:
         enabled:
             label: Status
         scope:
-            label: Scope
+            label: Channel
         completeness:
             label: Complete
         created:
-            label: Created At
+            label: Created
         updated:
-            label: Updated At
+            label: Updated
         label_or_identifier:
             label: Label or identifier
+            label_with_uuid: Label, identifier or UUID
         parent:
             label: Parent
         identifier:
             label: Identifier
+        uuid:
+            label: Uuid
 
 # Versioning / history
 Change History: Change history
@@ -556,10 +558,8 @@ pim_mass_edit:
             error:   Mass delete <strong>%label%</strong> failed
             warning: Mass delete <strong>%label%</strong> finished with some warnings
             success: Mass delete <strong>%label%</strong> finished
-
 job_execution.summary:
     mass_edited: Mass edited
-    skip: Skipped
     skipped_products: Skipped products
     skipped_attributes: Skipped attributes
     skipped_families: Skipped families
@@ -591,3 +591,5 @@ pim_login:
   footer:
     powered: Powered by
     powered_image_title: logo Akeneo
+
+pim_system.acl_group.connect: Connect

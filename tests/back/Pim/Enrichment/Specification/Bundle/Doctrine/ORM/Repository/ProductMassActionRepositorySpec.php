@@ -17,9 +17,9 @@ class ProductMassActionRepositorySpec extends ObjectBehavior
         $this->beConstructedWith($em, $name);
     }
 
-    function it_throws_an_exception_when_trying_to_delete_without_product_ids()
+    function it_throws_an_exception_when_trying_to_delete_using_product_ids()
     {
-        $this->shouldThrow(new \LogicException('No products to remove'))->duringDeleteFromIds(array());
+        $this->shouldThrow(new \LogicException('Products should not be removed using this method'))->duringDeleteFromIds([42]);
     }
 
     function it_applies_mass_action_parameters_with_product_models_to_exclude(ProductQueryBuilder $queryBuilder)

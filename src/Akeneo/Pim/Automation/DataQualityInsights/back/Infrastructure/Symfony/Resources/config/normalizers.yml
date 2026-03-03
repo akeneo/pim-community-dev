@@ -1,0 +1,4 @@
+services:
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Normalizer\AttributeGroupActivationHasChangedNormalizer:
+        tags:
+            - { name: akeneo_messenger.message.normalizer }

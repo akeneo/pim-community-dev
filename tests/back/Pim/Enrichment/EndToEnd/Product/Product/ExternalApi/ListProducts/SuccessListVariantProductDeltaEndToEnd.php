@@ -1,10 +1,17 @@
 <?php
+
 declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\ListProducts;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetImageValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\AbstractProductTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -13,12 +20,18 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class SuccessListVariantProductDeltaEndToEnd extends AbstractProductTestCase
 {
+    const PRODUCT_UUIDS = [
+        'apollon_optiona_true' => '4cfd82f2-def8-4869-8008-eabdf658f57c',
+        'apollon_optionb_false' => '7fc4fada-9ab0-4093-a183-5296a88b00ea',
+        'apollon_optionb_true' => '5e83d930-4bdf-48b0-930a-92ef4fe75f54',
+    ];
+
     public function testListVariantProductDeltaWhenUpdatingProductModel()
     {
         $discriminantDatetime = $this->getDiscriminantDatetime();
         $clientPatch = $this->createAuthenticatedClient();
         $updates =
-<<<JSON
+            <<<JSON
 {
     "values": {
         "a_text": [
@@ -34,7 +47,7 @@ JSON;
         $clientPatch->request('PATCH', 'api/rest/v1/product-models/prod_mod_optB', [], [], [], $updates);
         $this->assertSame(Response::HTTP_NO_CONTENT, $clientPatch->getResponse()->getStatusCode());
 
-        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+        $this->getEsIndex()->refreshIndex();
 
         $client = $this->createAuthenticatedClient();
         $search = sprintf('{"updated":[{"operator":">","value":"%s"}]}', $discriminantDatetime->format('Y-m-d H:i:s'));
@@ -42,6 +55,8 @@ JSON;
 
         $client->request('GET', 'api/rest/v1/products?search=' . $search);
         $response = $client->getResponse();
+
+        $uuids = self::PRODUCT_UUIDS;
 
         $expected = <<<JSON
 {
@@ -62,6 +77,7 @@ JSON;
                         "href":"http:\/\/localhost\/api\/rest\/v1\/products\/apollon_optionb_false"
                     }
                 },
+                "uuid": "{$uuids['apollon_optionb_false']}",
                 "identifier":"apollon_optionb_false",
                 "family":"familyA",
                 "parent":"prod_mod_optB",
@@ -119,7 +135,14 @@ JSON;
                             "scope":"ecommerce",
                             "data":"my pink tshirt"
                         }
-                    ]
+                    ],
+		            "sku": [
+		                {
+		                    "locale": null,
+		                    "scope": null,
+		                    "data": "apollon_optionb_false"
+		                }
+		            ]
                 },
                 "created":"2018-01-11T14:49:20+01:00",
                 "updated":"2018-01-11T14:49:20+01:00",
@@ -153,6 +176,7 @@ JSON;
                         "href":"http:\/\/localhost\/api\/rest\/v1\/products\/apollon_optionb_true"
                     }
                 },
+                "uuid": "{$uuids['apollon_optionb_true']}",
                 "identifier":"apollon_optionb_true",
                 "family":"familyA",
                 "parent":"prod_mod_optB",
@@ -210,7 +234,14 @@ JSON;
                             "scope":"ecommerce",
                             "data":"my pink tshirt"
                         }
-                    ]
+                    ],
+		            "sku": [
+		                {
+		                    "locale": null,
+		                    "scope": null,
+		                    "data": "apollon_optionb_true"
+		                }
+		            ]
                 },
                 "created":"2018-01-11T14:49:20+01:00",
                 "updated":"2018-01-11T14:49:20+01:00",
@@ -253,25 +284,15 @@ JSON;
     {
         parent::setUp();
         $this->createProduct('product1', [
-            'categories' => ['master'],
-            'values'     => [
-                'a_metric' => [
-                    ['data' => ['amount' => 10, 'unit' => 'KILOWATT'], 'locale' => null, 'scope' => null]
-                ],
-                'a_text' => [
-                    ['data' => 'Text', 'locale' => null, 'scope' => null]
-                ]
-            ]
+            new SetCategories(['master']),
+            new SetMeasurementValue('a_metric', null, null, 10, 'KILOWATT'),
+            new SetTextValue('a_text', null, null, 'Text')
         ]);
         $this->createProduct('product2', [
-            'categories' => ['categoryB'],
-            'values'     => [
-                'a_localizable_image' => [
-                    ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')), 'locale' => 'en_US', 'scope' => null],
-                    ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')), 'locale' => 'fr_FR', 'scope' => null],
-                    ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')), 'locale' => 'zh_CN', 'scope' => null]
-                ]
-            ]
+            new SetCategories(['categoryB']),
+            new SetImageValue('a_localizable_image', null, 'en_US',  $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))),
+            new SetImageValue('a_localizable_image', null, 'fr_FR',  $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))),
+            new SetImageValue('a_localizable_image', null, 'zh_CN',  $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))),
         ]);
         $this->createProductModel(
             [
@@ -313,47 +334,28 @@ JSON;
             ]
         );
 
-        $this->createVariantProduct('apollon_optionb_false', [
-            'categories' => ['master'],
-            'parent' => 'prod_mod_optB',
-            'values' => [
-                'a_yes_no' => [
-                    [
-                        'locale' => null,
-                        'scope' => null,
-                        'data' => false,
-                    ]
-                ]
-            ]
+        $this->createProductWithUuid(self::PRODUCT_UUIDS['apollon_optionb_false'], [
+            new SetIdentifierValue('sku', 'apollon_optionb_false'),
+            new SetCategories(['master']),
+            new ChangeParent('prod_mod_optB'),
+            new SetBooleanValue('a_yes_no', null, null, false)
         ]);
 
-        $this->createVariantProduct('apollon_optionb_true', [
-            'categories' => ['master'],
-            'parent' => 'prod_mod_optB',
-            'values' => [
-                'a_yes_no' => [
-                    [
-                        'locale' => null,
-                        'scope' => null,
-                        'data' => true,
-                    ]
-                ]
-            ]
+        $this->createProductWithUuid(self::PRODUCT_UUIDS['apollon_optionb_true'], [
+            new SetIdentifierValue('sku', 'apollon_optionb_true'),
+            new SetCategories(['master']),
+            new ChangeParent('prod_mod_optB'),
+            new SetBooleanValue('a_yes_no', null, null, true)
         ]);
 
-        $this->createVariantProduct('apollon_optiona_true', [
-            'categories' => ['master'],
-            'parent' => 'prod_mod_optA',
-            'values' => [
-                'a_yes_no' => [
-                    [
-                        'locale' => null,
-                        'scope' => null,
-                        'data' => true,
-                    ]
-                ]
-            ]
+        $this->createProductWithUuid(self::PRODUCT_UUIDS['apollon_optiona_true'], [
+            new SetIdentifierValue('sku', 'apollon_optiona_true'),
+            new SetCategories(['master']),
+            new ChangeParent('prod_mod_optA'),
+            new SetBooleanValue('a_yes_no', null, null, true)
         ]);
+
+        $this->clearAllCache();
     }
 
     private function getDiscriminantDatetime(): \Datetime

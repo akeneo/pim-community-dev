@@ -1,9 +1,10 @@
 import '@testing-library/jest-dom';
 import React from 'react';
 import {fireEvent, screen, act} from '@testing-library/react';
-import {dependencies} from '@akeneo-pim-community/legacy-bridge/src/provider/dependencies';
+import {dependencies} from '@akeneo-pim-community/legacy-bridge';
 import {DeleteModal} from 'pimui/js/attribute/form/delete/DeleteModal';
-import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
+import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
+jest.mock('../../../../../../Resources/public/js/attribute/form/hooks/useMainIdentifierCode');
 
 declare global {
   namespace NodeJS {
@@ -36,15 +37,27 @@ test('it renders a confirm modal delete', async () => {
 
   expect(dependencies.translate).toHaveBeenCalledWith(
     'pim_enrich.entity.attribute.module.delete.product_count',
-    {count: '3'},
+    {count: 3},
     3
   );
   expect(dependencies.translate).toHaveBeenCalledWith(
     'pim_enrich.entity.attribute.module.delete.product_model_count',
-    {count: '5'},
+    {count: 5},
     5
   );
   expect(screen.getByText('pim_common.confirm_deletion')).toBeInTheDocument();
+});
+
+test('it displays helper when attribute is the main identifier', async () => {
+  await act(async () => {
+    renderWithProviders(<DeleteModal onCancel={jest.fn()} onSuccess={jest.fn()} attributeCode="sku" />);
+  });
+
+  expect(dependencies.translate).toHaveBeenCalledWith(
+    'pim_enrich.entity.attribute.module.delete.cannot_delete',
+    undefined,
+    undefined
+  );
 });
 
 test('it does not allow confirmation until the attributeCodeConfirm field is valid', async () => {

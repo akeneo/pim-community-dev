@@ -2,14 +2,15 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product;
 
-use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\PropertiesNormalizer;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class PropertiesNormalizerSpec extends ObjectBehavior
@@ -48,6 +49,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $values->getIterator()->willReturn($iterator);
 
         $family->getCode()->willReturn('my_family');
+        $product->getUuid()->willReturn(Uuid::fromString('d8e4d37b-152b-47bc-9e56-4dbf79ef7687'));
         $product->isVariant()->willReturn(false);
         $product->getFamily()->willReturn($family);
         $product->getGroupCodes()->willReturn([]);
@@ -75,6 +77,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $normalizer->normalize($updated, 'standard')->willReturn('2010-06-23T23:00:00+01:00');
 
         $this->normalize($product, 'standard', $context)->shouldReturn([
+            'uuid'          => 'd8e4d37b-152b-47bc-9e56-4dbf79ef7687',
             'identifier'    => 'my_code',
             'family'        => 'my_family',
             'parent'        => null,
@@ -107,6 +110,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $values->getIterator()->willReturn($iterator);
 
         $family->getCode()->willReturn('my_family');
+        $product->getUuid()->willReturn(Uuid::fromString('fb725476-f079-4ea0-b250-30fc09a13a40'));
         $product->isVariant()->willReturn(true);
         $product->getFamily()->willReturn($family);
         $product->getGroupCodes()->willReturn([]);
@@ -136,6 +140,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $normalizer->normalize($updated, 'standard')->willReturn('2010-06-23T23:00:00+01:00');
 
         $this->normalize($product, 'standard', $context)->shouldReturn([
+            'uuid'          => 'fb725476-f079-4ea0-b250-30fc09a13a40',
             'identifier'    => 'my_code',
             'family'        => 'my_family',
             'parent'        => 'parent_code',

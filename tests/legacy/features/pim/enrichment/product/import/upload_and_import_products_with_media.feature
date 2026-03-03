@@ -35,13 +35,13 @@ Feature: Upload and import products with media
     And the product "CAT-003" should have the following values:
       | side_view | cat_003.png |
 
-  @info https://akeneo.atlassian.net/browse/PIM-2090
+  # @info https://akeneo.atlassian.net/browse/PIM-2090
   Scenario: Fail to launch an import through file upload when no file was selected
     Given I am on the "csv_footwear_product_import" import job page
     Then I should see the text "Import now"
     But I should not see the text "Import and launch now"
 
-  @info https://akeneo.atlassian.net/browse/PIM-6491
+  # @info https://akeneo.atlassian.net/browse/PIM-6491
   Scenario: Fail to launch an import through file upload when the file extension is invalid
     Given the following CSV file to import:
       """

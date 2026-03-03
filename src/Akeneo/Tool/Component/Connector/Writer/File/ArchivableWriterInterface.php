@@ -12,12 +12,12 @@ namespace Akeneo\Tool\Component\Connector\Writer\File;
 interface ArchivableWriterInterface
 {
     /**
-     * Return an array of files written by the writer in the following format:
-     * array(
-     *     '/full/path/to/the/file' => 'path/relative/to/the/export/directory'
-     * )
-     *
-     * @return array
+     * @return WrittenFileInfo[]
      */
-    public function getWrittenFiles();
+    public function getWrittenFiles(): array;
+
+    /**
+     * @return string
+     */
+    public function getPath(): string;
 }

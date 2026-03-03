@@ -6,9 +6,9 @@ namespace Akeneo\Connectivity\Connection\Infrastructure;
 
 use Akeneo\Connectivity\Connection\Application\ConnectionContextInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
-use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository;
-use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Query\AreCredentialsValidCombinationQuery;
-use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Query\SelectConnectionCodeByClientIdQuery;
+use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepositoryInterface;
+use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Query\AreCredentialsValidCombinationQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Query\SelectConnectionCodeByClientIdQueryInterface;
 
 /**
  * @author Pierre Jolly <pierre.jolly@akeneo.com>
@@ -17,38 +17,18 @@ use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence
  */
 class ConnectionContext implements ConnectionContextInterface
 {
-    /** @var AreCredentialsValidCombinationQuery */
-    private $areCredentialsValidCombinationQuery;
+    private ?string $clientId = null;
 
-    /** @var SelectConnectionCodeByClientIdQuery */
-    private $selectConnectionCodeByClientIdQuery;
+    private ?string $username = null;
 
-    /** @var ConnectionRepository */
-    private $connectionRepository;
+    private ?Connection $connection = null;
 
-    /** @var string */
-    private $clientId;
+    private ?bool $collectable = null;
 
-    /** @var string */
-    private $username;
+    private ?bool $areCredentialsValidCombination = null;
 
-    /** @var Connection */
-    private $connection;
-
-    /** @var bool */
-    private $collectable;
-
-    /** @var bool */
-    private $areCredentialsValidCombination;
-
-    public function __construct(
-        AreCredentialsValidCombinationQuery $areCredentialsValidCombinationQuery,
-        SelectConnectionCodeByClientIdQuery $selectConnectionCodeByClientIdQuery,
-        ConnectionRepository $connectionRepository
-    ) {
-        $this->areCredentialsValidCombinationQuery = $areCredentialsValidCombinationQuery;
-        $this->selectConnectionCodeByClientIdQuery = $selectConnectionCodeByClientIdQuery;
-        $this->connectionRepository = $connectionRepository;
+    public function __construct(private AreCredentialsValidCombinationQueryInterface $areCredentialsValidCombinationQuery, private SelectConnectionCodeByClientIdQueryInterface $selectConnectionCodeByClientIdQuery, private ConnectionRepositoryInterface $connectionRepository)
+    {
     }
 
     public function setClientId(string $clientId): void

@@ -16,7 +16,8 @@ define([
   'pim/fetcher-registry',
   'pim/template/export/product/edit/content/structure/attributes-selector',
   'pim/template/export/product/edit/content/structure/attribute-list',
-], function ($, _, __, Backbone, i18n, userContext, fetcherRegistry, template, attributeListTemplate) {
+  'pim/analytics',
+], function ($, _, __, Backbone, i18n, userContext, fetcherRegistry, template, attributeListTemplate, analytics) {
   return Backbone.View.extend({
     events: {
       'click .attribute-groups li': 'changeAttributeGroup',
@@ -108,7 +109,12 @@ define([
     setSelected: function (selected) {
       this.selected = selected;
 
+      analytics.appcuesTrack('export-profile:product:attribute-added', {
+        column: this.selected.join(','),
+      });
+
       this.trigger('selected:update:after', this.selected);
+      this.updateAttributeList();
     },
 
     /**
@@ -189,10 +195,6 @@ define([
           .search(searchOptions)
           .then(
             function (attributes) {
-              attributes = _.filter(attributes, function (attribute) {
-                return attribute.type !== 'pim_catalog_identifier';
-              });
-
               if (fetchId !== this.curentFetchId) {
                 return;
               }

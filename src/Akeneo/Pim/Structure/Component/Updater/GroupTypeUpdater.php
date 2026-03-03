@@ -52,16 +52,16 @@ class GroupTypeUpdater implements ObjectUpdaterInterface
     protected function setData(GroupTypeInterface $groupType, $field, $data)
     {
         switch ($field) {
-          case 'code':
-            $groupType->setCode($data);
-            break;
-          case 'labels':
-          case 'label':
-            foreach ($data as $locale => $label) {
-                $groupType->setLocale($locale);
-                $groupType->setLabel($label);
-            }
-            break;
+            case 'code':
+                $groupType->setCode($data);
+                break;
+            case 'labels':
+            case 'label':
+                foreach ($data as $locale => $label) {
+                    $groupType->setLocale($locale);
+                    $groupType->setLabel($label);
+                }
+                break;
         }
     }
 }

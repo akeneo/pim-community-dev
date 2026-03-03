@@ -15,7 +15,6 @@ class ConfigValueRepository extends EntityRepository
      *
      * @param integer $configId
      * @param array   $removed
-     * @return array
      */
     public function removeValues($configId, $removed)
     {

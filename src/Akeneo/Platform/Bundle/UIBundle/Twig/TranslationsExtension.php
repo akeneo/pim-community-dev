@@ -4,6 +4,8 @@ namespace Akeneo\Platform\Bundle\UIBundle\Twig;
 
 use Akeneo\Tool\Component\Console\CommandLauncher;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
 /**
  * Translations twig extension.
@@ -15,7 +17,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class TranslationsExtension extends \Twig_Extension
+class TranslationsExtension extends AbstractExtension
 {
     /** @var CommandLauncher */
     protected $commandLauncher;
@@ -41,7 +43,7 @@ class TranslationsExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('get_translations_file', [$this, 'getTranslationsFile'])
+            new TwigFunction('get_translations_file', [$this, 'getTranslationsFile'])
         ];
     }
 
@@ -79,7 +81,7 @@ class TranslationsExtension extends \Twig_Extension
      */
     protected function getLocale()
     {
-        $request = $this->requestStack->getMasterRequest();
+        $request = $this->requestStack->getMainRequest();
         if (null === $request) {
             return 'en';
         }

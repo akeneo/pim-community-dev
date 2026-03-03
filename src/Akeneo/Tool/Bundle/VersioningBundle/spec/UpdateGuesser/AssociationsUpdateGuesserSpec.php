@@ -2,7 +2,7 @@
 
 namespace spec\Akeneo\Tool\Bundle\VersioningBundle\UpdateGuesser;
 
-use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;

@@ -19,7 +19,7 @@ class ReferenceDataCollectionValue extends AbstractValue implements
     /** @var ReferenceDataInterface[] */
     protected $data;
 
-    protected function __construct(string $attributeCode, ?array $data = [], ?string $scopeCode, ?string $localeCode)
+    protected function __construct(string $attributeCode, ?array $data, ?string $scopeCode, ?string $localeCode)
     {
         if (null === $data) {
             $data = [];

@@ -1,6 +1,6 @@
 import React, {useRef, useEffect, useCallback} from 'react';
 import styled from 'styled-components';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 import {AnnouncementComponent, EmptyAnnouncementList} from './announcement';
 import {Announcement} from '../../models/announcement';
 import {useInfiniteScroll} from '../../hooks/useInfiniteScroll';
@@ -25,10 +25,6 @@ const AnnouncementList = ({campaign, panelIsClosed}: ListAnnouncementProps) => {
   const handleHasNewAnnouncements = useHasNewAnnouncements();
   const handleAddViewedAnnouncements = useAddViewedAnnouncements();
 
-  useEffect(() => {
-    handleHasNewAnnouncements();
-  }, []);
-
   const updateNewAnnouncements = useCallback(async () => {
     const newAnnouncements = announcementResponse.items.filter((item: Announcement) => item.tags.includes('new'));
     if (newAnnouncements.length > 0) {
@@ -50,6 +46,10 @@ const AnnouncementList = ({campaign, panelIsClosed}: ListAnnouncementProps) => {
 
   if (announcementResponse.hasError) {
     return <EmptyAnnouncementList text={__('akeneo_communication_channel.panel.list.error')} />;
+  }
+
+  if (announcementResponse.isFetching && announcementResponse.items.length === 0) {
+    return null;
   }
 
   if (announcementResponse.items.length === 0) {

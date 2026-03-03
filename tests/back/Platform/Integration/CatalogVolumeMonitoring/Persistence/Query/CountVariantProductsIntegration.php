@@ -18,7 +18,6 @@ class CountVariantProductsIntegration extends QueryTestCase
 
         Assert::assertEquals(8, $volume->getVolume());
         Assert::assertEquals('count_variant_products', $volume->getVolumeName());
-        Assert::assertEquals(false, $volume->hasWarning());
     }
 
     private function createVariantProducts(int $numberOfVariantProducts) : void

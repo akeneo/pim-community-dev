@@ -20,7 +20,9 @@ class ProductAndProductModelQuickExportSpec extends ObjectBehavior
         ConstraintCollectionProviderInterface $simpleConstraint
     ) {
         $this->beConstructedWith(
-            $simpleConstraint, ['csv_product_quick_export']
+            $simpleConstraint,
+            ['csv_product_quick_export'],
+            '.csv'
         );
     }
 

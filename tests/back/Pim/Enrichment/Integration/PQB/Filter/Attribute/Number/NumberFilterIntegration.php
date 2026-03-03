@@ -4,6 +4,8 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Number;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
@@ -27,24 +29,16 @@ class NumberFilterIntegration extends AbstractProductQueryBuilderTestCase
         ]);
 
         $this->createProduct('product_one', [
-            'family' => 'a_family',
-            'values' => [
-                'a_number_float_negative' => [
-                    ['data' => -15.5, 'locale' => null, 'scope' => null]
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetNumberValue('a_number_float_negative', null, null, -15.5),
         ]);
 
         $this->createProduct('product_two', [
-            'family' => 'a_family',
-            'values' => [
-                'a_number_float_negative' => [
-                    ['data' => 19.0, 'locale' => null, 'scope' => null]
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetNumberValue('a_number_float_negative', null, null, 19.0),
         ]);
 
-        $this->createProduct('empty_product', ['family' => 'a_family']);
+        $this->createProduct('empty_product', [new SetFamily('a_family')]);
     }
 
     public function testOperatorInferior()

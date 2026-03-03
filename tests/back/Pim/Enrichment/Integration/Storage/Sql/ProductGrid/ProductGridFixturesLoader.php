@@ -16,89 +16,24 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class ProductGridFixturesLoader
 {
-    /** @var SimpleFactoryInterface */
-    private $productModelFactory;
-
-    /** @var ObjectUpdaterInterface */
-    private $productModelUpdater;
-
-    /** @var ValidatorInterface */
-    private $productValidator;
-
-    /** @var SaverInterface */
-    private $productModelSaver;
-
-    /** @var ProductBuilderInterface */
-    private $productBuilder;
-
-    /** @var ObjectUpdaterInterface */
-    private $productUpdater;
-
-    /** @var SaverInterface */
-    private $productSaver;
-
-    /** @var SaverInterface */
-    private $productsSaver;
-
-    /** @var SimpleFactoryInterface */
-    private $familyFactory;
-
-    /** @var ObjectUpdaterInterface */
-    private $familyUpdater;
-
-    /** @var ValidatorInterface */
-    private $validator;
-
-    /** @var SaverInterface */
-    private $familySaver;
-
-    /** @var SimpleFactoryInterface */
-    private $familyVariantFactory;
-
-    /** @var ObjectUpdaterInterface */
-    private $familyVariantUpdater;
-
-    /** @var SaverInterface */
-    private $familyVariantSaver;
-
-    /** @var Client */
-    private $esClient;
-
     public function __construct(
-        SimpleFactoryInterface $productModelFactory,
-        ObjectUpdaterInterface $productModelUpdater,
-        ValidatorInterface $productValidator,
-        SaverInterface $productModelSaver,
-        ProductBuilderInterface $productBuilder,
-        ObjectUpdaterInterface $productUpdater,
-        SaverInterface $productSaver,
-        BulkSaverInterface $productsSaver,
-        SimpleFactoryInterface $familyFactory,
-        ObjectUpdaterInterface $familyUpdater,
-        SaverInterface $familySaver,
-        ValidatorInterface $validator,
-        SimpleFactoryInterface $familyVariantFactory,
-        ObjectUpdaterInterface $familyVariantUpdater,
-        SaverInterface $familyVariantSaver,
-        Client $esClient
+        private readonly SimpleFactoryInterface $productModelFactory,
+        private readonly ObjectUpdaterInterface $productModelUpdater,
+        private readonly ValidatorInterface $productValidator,
+        private readonly SaverInterface $productModelSaver,
+        private readonly ProductBuilderInterface $productBuilder,
+        private readonly ObjectUpdaterInterface $productUpdater,
+        private readonly SaverInterface $productSaver,
+        private readonly BulkSaverInterface $productsSaver,
+        private readonly SimpleFactoryInterface $familyFactory,
+        private readonly ObjectUpdaterInterface $familyUpdater,
+        private readonly SaverInterface $familySaver,
+        private readonly ValidatorInterface $validator,
+        private readonly SimpleFactoryInterface $familyVariantFactory,
+        private readonly ObjectUpdaterInterface $familyVariantUpdater,
+        private readonly SaverInterface $familyVariantSaver,
+        private readonly Client $esClient
     ) {
-        $this->productModelFactory = $productModelFactory;
-        $this->productModelUpdater = $productModelUpdater;
-
-        $this->productValidator = $productValidator;
-        $this->productModelSaver = $productModelSaver;
-        $this->productBuilder = $productBuilder;
-        $this->productUpdater = $productUpdater;
-        $this->productSaver = $productSaver;
-        $this->productsSaver = $productsSaver;
-        $this->familyFactory = $familyFactory;
-        $this->familyUpdater = $familyUpdater;
-        $this->validator = $validator;
-        $this->familySaver = $familySaver;
-        $this->familyVariantFactory = $familyVariantFactory;
-        $this->familyVariantUpdater = $familyVariantUpdater;
-        $this->familyVariantSaver = $familyVariantSaver;
-        $this->esClient = $esClient;
     }
 
     public function createProductModelsWithLabelInProduct(string $akeneoImagePath): ProductModelInterface
@@ -304,14 +239,26 @@ final class ProductGridFixturesLoader
             ]
         ]);
 
+
+        $product3 = $this->productBuilder->createProduct(null, null, '2c29af3c-625b-4ee0-9ba4-c2783c300b92');
+        $this->productUpdater->update($product3, [
+            'values' => [
+                'a_yes_no' => [
+                    ['data' => true, 'locale' => null, 'scope' => null]
+                ]
+            ]
+        ]);
+
         $errors = $this->productValidator->validate($product1);
         Assert::assertCount(0, $errors);
         $errors = $this->productValidator->validate($product2);
         Assert::assertCount(0, $errors);
+        $errors = $this->productValidator->validate($product3);
+        Assert::assertCount(0, $errors);
 
-        $this->productsSaver->saveAll([$product1, $product2]);
+        $this->productsSaver->saveAll([$product1, $product2, $product3]);
 
-        return [$product1, $product2];
+        return [$product1, $product2, $product3];
     }
 
     private function createFamilyVariant(): void

@@ -9,12 +9,17 @@ use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\StreamedFileResponse;
+use League\MimeTypeDetection\FinfoMimeTypeDetector;
 use Liip\ImagineBundle\Controller\ImagineController;
-use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
+use Liip\ImagineBundle\Exception\LogicException;
+use Liip\ImagineBundle\Imagine\Cache\Helper\PathHelper;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Mime\MimeTypes;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -24,57 +29,20 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class FileController
 {
     const DEFAULT_IMAGE_KEY = '__default_image__';
+    const SVG_MIME_TYPES = ['image/svg', 'image/svg+xml'];
 
-    /** @var ImagineController */
-    protected $imagineController;
-
-    /** @var FilesystemProvider */
-    protected $filesystemProvider;
-
-    /** @var FileInfoRepositoryInterface */
-    protected $fileInfoRepository;
-
-    /** @var FileTypeGuesserInterface */
-    protected $fileTypeGuesser;
-
-    /** @var DefaultImageProviderInterface */
-    protected $defaultImageProvider;
-
-    /** @var array */
-    protected $filesystemAliases;
-
-    /**
-     * @param ImagineController             $imagineController
-     * @param FilesystemProvider            $filesystemProvider
-     * @param FileInfoRepositoryInterface   $fileInfoRepository
-     * @param FileTypeGuesserInterface      $fileTypeGuesser
-     * @param DefaultImageProviderInterface $defaultImageProvider
-     * @param array                         $filesystemAliases
-     */
     public function __construct(
-        ImagineController $imagineController,
-        FilesystemProvider $filesystemProvider,
-        FileInfoRepositoryInterface $fileInfoRepository,
-        FileTypeGuesserInterface $fileTypeGuesser,
-        DefaultImageProviderInterface $defaultImageProvider,
-        array $filesystemAliases
+        protected ImagineController $imagineController,
+        protected FilesystemProvider $filesystemProvider,
+        protected FileInfoRepositoryInterface $fileInfoRepository,
+        protected FileTypeGuesserInterface $fileTypeGuesser,
+        protected DefaultImageProviderInterface $defaultImageProvider,
+        protected array $filesystemAliases,
+        protected array $supportedImageTypes,
     ) {
-        $this->imagineController = $imagineController;
-        $this->filesystemProvider = $filesystemProvider;
-        $this->fileInfoRepository = $fileInfoRepository;
-        $this->fileTypeGuesser = $fileTypeGuesser;
-        $this->defaultImageProvider = $defaultImageProvider;
-        $this->filesystemAliases = $filesystemAliases;
     }
 
-    /**
-     * @param Request $request
-     * @param string  $filename
-     * @param string  $filter
-     *
-     * @return RedirectResponse
-     */
-    public function showAction(Request $request, $filename, $filter = null)
+    public function showAction(Request $request, string $filename, ?string $filter = null): Response
     {
         $filename = urldecode($filename);
         $fileInfo = $this->fileInfoRepository->findOneByIdentifier($filename);
@@ -82,23 +50,38 @@ class FileController
             return $this->renderDefaultImage(FileTypes::MISC, $filter);
         }
 
-        $fileType = $this->fileTypeGuesser->guess($fileInfo->getMimeType());
-        $result = $this->renderDefaultImage($fileType, $filter);
+        $mimeType = $this->getMimeType($filename);
+        $fileType = $this->fileTypeGuesser->guess($mimeType);
 
-        if (self::DEFAULT_IMAGE_KEY !== $filename) {
-            $fileType = $this->fileTypeGuesser->guess($this->getMimeType($filename));
-
-            $result = $this->renderDefaultImage($fileType, $filter);
-            if (FileTypes::IMAGE === $fileType) {
-                try {
-                    $result = $this->imagineController->filterAction($request, $filename, $filter);
-                } catch (NotFoundHttpException|\RuntimeException $exception) {
-                    $result = $this->renderDefaultImage(FileTypes::IMAGE, $filter);
-                }
-            }
+        if (self::DEFAULT_IMAGE_KEY === $filename || FileTypes::IMAGE !== $fileType) {
+            return $this->renderDefaultImage($fileType, $filter);
         }
 
-        return $result;
+        if (in_array($mimeType, self::SVG_MIME_TYPES)) {
+            return $this->getFileResponse($filename, 'image/svg+xml');
+        }
+
+        try {
+            return $this->imagineController->filterAction($request, $filename, $filter);
+        } catch (NotFoundHttpException | LogicException | \RuntimeException) {
+            return $this->renderDefaultImage(FileTypes::IMAGE, $filter);
+        }
+    }
+
+    private function getFileResponse(string $filename, string $mimeType): Response
+    {
+        foreach ($this->filesystemAliases as $alias) {
+            $fs = $this->filesystemProvider->getFilesystem($alias);
+
+            $response = new Response($fs->read($filename));
+            $response->headers->set('Content-Type', $mimeType);
+
+            return $response;
+        }
+
+        throw new NotFoundHttpException(
+            sprintf('File with key "%s" could not be found.', $filename)
+        );
     }
 
     /**
@@ -117,6 +100,15 @@ class FileController
      */
     public function cacheAction(Request $request, $path, $filter)
     {
+        $filename = urldecode($path);
+
+        /** @var FileInfoInterface $fileInfo */
+        $fileInfo = $this->fileInfoRepository->findOneByIdentifier($filename);
+
+        if (null === $fileInfo || !$this->isValidImage($fileInfo, $path)) {
+            return $this->renderDefaultImage(FileTypes::IMAGE, $filter);
+        }
+
         return $this->imagineController->filterAction($request, $path, $filter);
     }
 
@@ -133,7 +125,7 @@ class FileController
 
         foreach ($this->filesystemAliases as $alias) {
             $fs = $this->filesystemProvider->getFilesystem($alias);
-            if ($fs->has($filename)) {
+            if ($fs->fileExists($filename)) {
                 $stream = $fs->readStream($filename);
                 $headers = [];
 
@@ -183,12 +175,8 @@ class FileController
     /**
      * Returns the Mime type of a file.
      * If the file is linked to a FileInfo, returns its Mime type.
-     *
-     * @param string $filename
-     *
-     * @return string
      */
-    protected function getMimeType($filename)
+    protected function getMimeType(string $filename): ?string
     {
         $mimeType = null;
 
@@ -197,9 +185,43 @@ class FileController
             $mimeType = $file->getMimeType();
         }
         if (null === $mimeType && file_exists($filename)) {
-            $mimeType = MimeTypeGuesser::getInstance()->guess($filename);
+            $mimeType = (new MimeTypes())->guessMimeType($filename);
         }
 
         return $mimeType;
+    }
+
+    protected function isValidImage(FileInfoInterface $fileInfo, string $path): bool
+    {
+        $supportedMimeTypes = \array_merge(...\array_values($this->supportedImageTypes));
+
+        $guessedExtension = strtolower($fileInfo->getExtension() ?? '');
+        $originalExtension = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+
+        $guessedMimeType = strtolower($fileInfo->getMimeType() ?? '');
+        $detector = new FinfoMimeTypeDetector();
+        $originalMimeType = strtolower($detector->detectMimeTypeFromPath($path));
+
+        if (!array_key_exists($originalExtension, $this->supportedImageTypes)) {
+            return false;
+        }
+
+        if (!in_array($originalMimeType, $supportedMimeTypes, true)) {
+            return false;
+        }
+
+        if ($guessedExtension !== $originalExtension) {
+            return false;
+        }
+
+        if ($guessedMimeType !== $originalMimeType) {
+            return false;
+        }
+
+        if (!in_array($originalMimeType, $this->supportedImageTypes[$originalExtension], true)) {
+            return false;
+        }
+
+        return true;
     }
 }

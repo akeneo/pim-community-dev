@@ -16,6 +16,8 @@ pim_import_export:
     6: Fehlgeschlagen
     7: Abgebrochen
     8: Unbekannt
+    9: Pausieren
+    10: Pausiert
   download_archive:
     archive: generiertes Archiv herunterladen|generierte Archive herunterladen
     output: generierte Datei herunterladen|generierte Dateien herunterladen
@@ -27,10 +29,15 @@ pim_import_export:
       error: Export <strong>%label%</strong> fehlgeschlagen
       warning: Export <strong>%label%</strong> mit Warnmeldungen fertiggestellt
       success: Export <strong>%label%</strong> fertiggestellt
+      warnings:
+        xlsx_cell_conversion_error: Ausnahme während der Umwandlung der Spalte "{0}" in den PIM-Produkt-Attributtyp (bitte überprüfen Sie das Excel-Zellenformat)
+        xlsx_cell_date_to_text_conversion_error: Kann Zelle  {0} mit Datumsformat nicht in Textribut umwandeln
     import:
       error: Import <strong>%label%</strong> fehlgeschlagen
       warning: Import <strong>%label%</strong> mit Warnmeldungen fertiggestellt
       success: Import <strong>%label%</strong> fertiggestellt
+      warnings:
+        xlsx_cell_date_conversion_error: Kann Zelle "{cellName}" nicht mit Datumsformat in Attribut des Typs {attributeType} konvertieren
   list: Wählen Sie einen Auftrag
   job_profile:
     tab:

@@ -1,0 +1,6 @@
+pim_api.acl_group.catalog: Catalogues
+akeneo_catalogs:
+  acl:
+    catalog_list: Lister les catalogues
+    catalog_edit: Créer et mettre à jour les catalogues
+    catalog_remove: Supprimer les catalogues

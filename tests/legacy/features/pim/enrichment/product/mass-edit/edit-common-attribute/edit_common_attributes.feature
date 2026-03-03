@@ -26,24 +26,24 @@ Feature: Edit common attributes of many products at once
       | blue_highheels | high_heels | blue  | 12 CENTIMETER |        |
     And I am logged in as "Julia"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-6273
+  # @jira https://akeneo.atlassian.net/browse/PIM-6273
   Scenario: Successfully remove product attribute fields
     Given I am on the products grid
     And I select rows boots, sandals and sneakers
     When I press the "Bulk actions" button
-    And I choose the "Edit attributes values" operation
+    And I choose the "Edit attribute values" operation
     And I display the Name attribute
     Then I should see a remove link next to the "Name" field
     When I remove the "Name" attribute
     Then I should not see the "Name" field
     And I should not see a remove link next to the "Name" field
 
-  @critical
+  @critical @purge-messenger
   Scenario: Successfully update many text values at once
     Given I am on the products grid
     And I select rows boots, sandals and sneakers
     And I press the "Bulk actions" button
-    And I choose the "Edit attributes values" operation
+    And I choose the "Edit attribute values" operation
     And I display the Name attribute
     And I change the "Name" to "boots"
     Then I should see a remove link next to the "Name" field
@@ -52,13 +52,14 @@ Feature: Edit common attributes of many products at once
     Then the english localizable value name of "boots" should be "boots"
     And the english localizable value name of "sandals" should be "boots"
     And the english localizable value name of "sneakers" should be "boots"
+    And 3 events of type "product.updated" should have been raised
 
   @critical
   Scenario: Successfully update many multi-valued values at once
     Given I am on the products grid
     And I select rows boots and sneakers
     And I press the "Bulk actions" button
-    And I choose the "Edit attributes values" operation
+    And I choose the "Edit attribute values" operation
     And I display the Weather conditions attribute
     And I change the "Weather conditions" to "Dry, Hot"
     And I confirm mass edit

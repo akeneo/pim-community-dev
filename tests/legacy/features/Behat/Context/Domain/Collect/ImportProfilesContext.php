@@ -3,11 +3,11 @@
 namespace Pim\Behat\Context\Domain\Collect;
 
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
+use Akeneo\Tool\Component\Connector\Writer\File\SpoutWriterFactory;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
-use Box\Spout\Common\Type;
-use Box\Spout\Writer\WriterFactory;
 use Context\Spin\SpinCapableTrait;
+use OpenSpout\Common\Entity\Row;
 use Pim\Behat\Context\Domain\ImportExportContext;
 
 class ImportProfilesContext extends ImportExportContext
@@ -22,6 +22,7 @@ class ImportProfilesContext extends ImportExportContext
      */
     public function theFollowingFileToImport($extension, PyStringNode $string)
     {
+        $this->getService('feature_flags')->enable('import_export_local_storage');
         $extension = strtolower($extension);
 
         $string = $this->replacePlaceholders($string);
@@ -36,8 +37,8 @@ class ImportProfilesContext extends ImportExportContext
         @rmdir(dirname($filename));
         @mkdir(dirname($filename), 0777, true);
 
-        if (Type::XLSX === $extension) {
-            $writer = WriterFactory::create($extension);
+        if (SpoutWriterFactory::XLSX === $extension) {
+            $writer = SpoutWriterFactory::create(SpoutWriterFactory::XLSX);
             $writer->openToFile($filename);
             foreach (explode(PHP_EOL, $string) as $row) {
                 $rowCells = explode(";", $row);
@@ -47,7 +48,7 @@ class ImportProfilesContext extends ImportExportContext
                     }
                 }
 
-                $writer->addRow($rowCells);
+                $writer->addRow(Row::fromValues($rowCells));
             }
             $writer->close();
         } else {
@@ -157,9 +158,9 @@ class ImportProfilesContext extends ImportExportContext
 
         $config = [];
 
-        if (Type::CSV === $fileType) {
+        if (SpoutWriterFactory::CSV === $fileType) {
             $config = $this->getCsvJobConfiguration($code);
-        } elseif (Type::XLSX === $fileType) {
+        } elseif (SpoutWriterFactory::XLSX === $fileType) {
             $config = $this->getXlsxJobConfiguration($code);
         }
 

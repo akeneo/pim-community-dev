@@ -1,0 +1,15 @@
+Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateNomenclatureCommand:
+    properties:
+        value:
+            - NotBlank: ~
+            - Type: numeric
+            - GreaterThanOrEqual:
+                  value: 1
+            - LessThanOrEqual:
+                  value: 5
+        operator:
+            - NotBlank: ~
+            - Choice:
+                choices: ['<=', '=']
+        generateIfEmpty:
+            - Type: bool

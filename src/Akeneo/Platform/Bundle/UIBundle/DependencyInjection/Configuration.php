@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Platform\Bundle\UIBundle\DependencyInjection;
 
 use Oro\Bundle\ConfigBundle\DependencyInjection\SettingsBuilder;
@@ -17,12 +19,11 @@ class Configuration implements ConfigurationInterface
     /**
      * {@inheritDoc}
      */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder();
+        $treeBuilder = new TreeBuilder('pim_ui');
 
-        $rootNode = $treeBuilder
-            ->root('pim_ui');
+        $rootNode = $treeBuilder->getRootNode();
 
         SettingsBuilder::append(
             $rootNode,
@@ -32,6 +33,7 @@ class Configuration implements ConfigurationInterface
                 'loading_messages' => [
                     'value' => null,
                 ],
+                'sandbox_banner' => ['value' => '1'],
             ]
         );
 

@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Sorter\Option;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
 /**
@@ -33,19 +34,11 @@ class OptionSorterIntegration extends AbstractProductQueryBuilderTestCase
         ]);
 
         $this->createProduct('product_one', [
-            'values' => [
-                'a_simple_select' => [
-                    ['data' => 'black', 'locale' => null, 'scope' => null]
-                ]
-            ]
+            new SetSimpleSelectValue('a_simple_select', null, null, 'black'),
         ]);
 
         $this->createProduct('product_two', [
-            'values' => [
-                'a_simple_select' => [
-                    ['data' => 'orange', 'locale' => null, 'scope' => null]
-                ]
-            ]
+            new SetSimpleSelectValue('a_simple_select', null, null, 'orange'),
         ]);
 
         $this->createProduct('empty_product', []);

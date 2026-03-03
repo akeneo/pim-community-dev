@@ -1,0 +1,26 @@
+pim_menu:
+  navigation_back:
+    connection: Voltar para todas as conexões
+  navigation_block:
+    connection: Navegação do conteúdo
+  item:
+    connection_settings_edit: Configurações de conexão
+    connection_monitoring: Monitoramento
+pim_title:
+  akeneo_connectivity_connection_settings_edit: Configurações de conexão
+  akeneo_connectivity_connection_settings_any: Configurações de conexão
+  akeneo_connectivity_connection_error_management_connection_monitoring: Monitoramento de conexão
+akeneo_connectivity.connection:
+  connection:
+    auditable: Rastrear esta conexão no painel de controle
+  edit_connection:
+    credentials:
+      wrong_credentials_combinations:
+        single: Percebemos que você está usando o nome de usuário {{ wrong_username }} para esta conexão (última utilização em {{ date }} em {{ time }}). Em vez disso, recomendamos usar o nome de usuário {{ good_username }}.
+        link: Descubra porque você deveria usá-lo.
+        link_list: Descubra porque recomendamos o uso deste nome de usuário.
+        several: Notamos que você não está usando o nome de usuário {{ good_username }} para esta conexão.
+        list: 'Aqui está a lista de nomes de usuário que foram usados nos últimos 7 dias:'
+        username_date: '{{ wrong_username }} - {{ date }} às {{ time }}'
+  auditable_helper:
+    message: Você só pode rastrear conexões de "Origem" e "Destino".

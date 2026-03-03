@@ -4,18 +4,42 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\ListProducts;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\PriceValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetImageValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetPriceCollectionValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Test\Integration\Configuration;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\AbstractProductTestCase;
-use Doctrine\Common\Collections\Collection;
+use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @group ce
  */
 class SuccessListProductEndToEnd extends AbstractProductTestCase
 {
-    /** @var Collection */
-    private $products;
+    public const PRODUCT_UUIDS = [
+        'simple' => '4cfd82f2-def8-4869-8008-eabdf658f57c',
+        'simple_with_family_and_values' => 'a1a0956a-8d89-4737-a9ae-35b756245eb1',
+        'simple_with_no_family' => '9d16f37a-6e0e-43ff-ab2b-85969c1cd4ef',
+        'simple_with_no_values' => 'f0f4ffe6-ae7c-4586-82db-e5f5360d1d0c',
+        'localizable' => 'e7dd6e7f-9801-48f9-b4d6-57620754b4bc',
+        'scopable' => '612859a6-3378-4c10-a58d-8e12931bc965',
+        'localizable_and_scopable' => '015df514-b2ec-43d3-b297-e81980c017fe',
+        'product_china' => '3947031d-6554-4586-85f0-2a3e89636dad',
+        'product_without_category' => '6d2fd8b3-734f-4141-9503-8af8d7e2e959',
+        'product_with_parent' => 'f9d366dc-631b-429b-ae81-dd5c1efedb5d',
+    ];
 
     /**
      * {@inheritdoc}
@@ -25,81 +49,58 @@ class SuccessListProductEndToEnd extends AbstractProductTestCase
         parent::setUp();
 
         // no locale, no scope, 1 category
-        $this->createProduct('simple', [
-            'categories' => ['master'],
-            'values' => [
-                'a_metric' => [
-                    ['data' => ['amount' => 10, 'unit' => 'KILOWATT'], 'locale' => null, 'scope' => null]
-                ],
-                'a_text' => [
-                    ['data' => 'Text', 'locale' => null, 'scope' => null]
-                ]
-            ]
+        $this->createProductWithUuid(self::PRODUCT_UUIDS['simple'], [
+            new SetIdentifierValue('sku', 'simple'),
+            new SetCategories(['master']),
+            new SetMeasurementValue('a_metric', null, null, 10, 'KILOWATT'),
+            new SetTextValue('a_text', null, null, 'Text')
         ]);
 
         // localizable, categorized in 1 tree (master)
-        $this->createProduct('localizable', [
-            'categories' => ['categoryB'],
-            'values' => [
-                'a_localizable_image' => [
-                    ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')), 'locale' => 'en_US', 'scope' => null],
-                    ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')), 'locale' => 'fr_FR', 'scope' => null],
-                    ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')), 'locale' => 'zh_CN', 'scope' => null]
-                ]
-            ]
+        $path = $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'));
+        $this->createProductWithUuid(self::PRODUCT_UUIDS['localizable'], [
+            new SetIdentifierValue('sku', 'localizable'),
+            new SetCategories(['categoryB']),
+            new SetImageValue('a_localizable_image', null, 'en_US', $path),
+            new SetImageValue('a_localizable_image', null, 'fr_FR', $path),
+            new SetImageValue('a_localizable_image', null, 'zh_CN', $path),
         ]);
 
         // scopable, categorized in 1 tree (master)
-        $this->createProduct('scopable', [
-            'categories' => ['categoryA1', 'categoryA2'],
-            'values' => [
-                'a_scopable_price' => [
-                    [
-                        'locale' => null,
-                        'scope' => 'ecommerce',
-                        'data' => [
-                            ['amount' => '78.77', 'currency' => 'CNY'],
-                            ['amount' => '10.50', 'currency' => 'EUR'],
-                            ['amount' => '11.50', 'currency' => 'USD'],
-                        ]
-                    ],
-                    [
-                        'locale' => null,
-                        'scope' => 'tablet',
-                        'data' => [
-                            ['amount' => '78.77', 'currency' => 'CNY'],
-                            ['amount' => '10.50', 'currency' => 'EUR'],
-                            ['amount' => '11.50', 'currency' => 'USD'],
-                        ]
-                    ]
-                ]
-            ]
+        $this->createProductWithUuid(self::PRODUCT_UUIDS['scopable'], [
+            new SetIdentifierValue('sku', 'scopable'),
+            new SetCategories(['categoryA1', 'categoryA2']),
+            new SetPriceCollectionValue('a_scopable_price', 'ecommerce', null, [
+                new PriceValue('78.77', 'CNY'),
+                new PriceValue('10.50', 'EUR'),
+                new PriceValue('11.50', 'USD'),
+            ]),
+            new SetPriceCollectionValue('a_scopable_price', 'tablet', null, [
+                new PriceValue('78.77', 'CNY'),
+                new PriceValue('10.50', 'EUR'),
+                new PriceValue('11.50', 'USD'),
+            ]),
         ]);
 
         // localizable & scopable, categorized in 2 trees (master and master_china)
-        $this->createProduct('localizable_and_scopable', [
-            'categories' => ['categoryA', 'master_china'],
-            'values' => [
-                'a_localized_and_scopable_text_area' => [
-                    ['data' => 'Big description', 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                    ['data' => 'Medium description', 'locale' => 'en_US', 'scope' => 'tablet'],
-                    ['data' => 'Great description', 'locale' => 'en_US', 'scope' => 'ecommerce_china'],
-                    ['data' => 'Description moyenne', 'locale' => 'fr_FR', 'scope' => 'tablet'],
-                    ['data' => 'hum...', 'locale' => 'zh_CN', 'scope' => 'ecommerce_china'],
-                ]
-            ]
+        $this->createProductWithUuid(self::PRODUCT_UUIDS['localizable_and_scopable'], [
+            new SetIdentifierValue('sku', 'localizable_and_scopable'),
+            new SetCategories(['categoryA', 'master_china']),
+            new SetTextareaValue('a_localized_and_scopable_text_area', 'ecommerce', 'en_US', 'Big description'),
+            new SetTextareaValue('a_localized_and_scopable_text_area', 'tablet', 'en_US', 'Medium description'),
+            new SetTextareaValue('a_localized_and_scopable_text_area', 'ecommerce_china', 'en_US', 'Great description'),
+            new SetTextareaValue('a_localized_and_scopable_text_area', 'tablet', 'fr_FR', 'Description moyenne'),
+            new SetTextareaValue('a_localized_and_scopable_text_area', 'ecommerce_china', 'zh_CN', 'hum...'),
         ]);
 
-        $this->createProduct('product_china', [
-            'categories' => ['master_china']
+        $this->createProductWithUuid(self::PRODUCT_UUIDS['product_china'], [
+            new SetIdentifierValue('sku', 'product_china'),
+            new SetCategories(['master_china'])
         ]);
 
-        $this->createProduct('product_without_category', [
-            'values' => [
-                'a_yes_no' => [
-                    ['data' => true, 'locale' => null, 'scope' => null]
-                ]
-            ]
+        $this->createProductWithUuid(self::PRODUCT_UUIDS['product_without_category'], [
+            new SetIdentifierValue('sku', 'product_without_category'),
+            new SetBooleanValue('a_yes_no', null, null, true)
         ]);
 
         $this->createProductModel(
@@ -129,21 +130,15 @@ class SuccessListProductEndToEnd extends AbstractProductTestCase
             ]
         );
 
-        $this->createVariantProduct('product_with_parent', [
-            'categories' => ['master'],
-            'parent' => 'prod_mod_optA',
-            'values' => [
-                'a_yes_no' => [
-                    [
-                        'locale' => null,
-                        'scope' => null,
-                        'data' => true,
-                    ]
-                ]
-            ]
+        $this->createProductWithUuid(self::PRODUCT_UUIDS['product_with_parent'], [
+            new SetIdentifierValue('sku', 'product_with_parent'),
+            new SetCategories(['master']),
+            new ChangeParent('prod_mod_optA'),
+            new SetBooleanValue('a_yes_no', null, null, true)
         ]);
-
-        $this->products = $this->get('pim_catalog.repository.product')->findAll();
+        $this->clearAllCache();
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
+        $this->get('pim_connector.doctrine.cache_clearer')->clear();
     }
 
     public function testDefaultPaginationFirstPageListProductsWithCount()
@@ -163,9 +158,9 @@ class SuccessListProductEndToEnd extends AbstractProductTestCase
     "items_count"  : 7,
     "_embedded"    : {
 		"items": [
-            {$standardizedProducts['simple']},
             {$standardizedProducts['localizable']},
-            {$standardizedProducts['scopable']}
+            {$standardizedProducts['localizable_and_scopable']},
+            {$standardizedProducts['product_china']}
 		]
     }
 }
@@ -176,10 +171,11 @@ JSON;
 
     public function testOffsetPaginationListProductsWithChannelLocalesAndAttributesParams()
     {
-        $standardizedProducts = $this->getStandardizedProducts();
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/products?scope=tablet&locales=fr_FR&attributes=a_scopable_price,a_metric,a_localized_and_scopable_text_area&pagination_type=page');
+
+        $uuids = self::PRODUCT_UUIDS;
         $expected = <<<JSON
 {
     "_links"       : {
@@ -191,24 +187,40 @@ JSON;
         "items" : [
             {
                 "_links" : {
-                    "self" : {"href" : "http://localhost/api/rest/v1/products/simple"}
+                    "self" : {"href" : "http://localhost/api/rest/v1/products/localizable"}
                 },
-                "identifier"    : "simple",
+                "uuid"          : "{$uuids['localizable']}",
+                "identifier"    : "localizable",
                 "family"        : null,
                 "parent"        : null,
                 "groups"        : [],
-                "categories"    : ["master"],
+                "categories"    : ["categoryB"],
+                "enabled"       : true,
+                "values"        : {},
+                "created"       : "2017-01-23T11:44:25+01:00",
+                "updated"       : "2017-01-23T11:44:25+01:00",
+                "associations"  : {
+                    "PACK": { "products" : [], "product_models": [], "groups": [] },
+                    "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
+                    "UPSELL": { "products" : [], "product_models": [], "groups": [] },
+                    "X_SELL": { "products" : [], "product_models": [], "groups": [] }
+                },
+                "quantified_associations": {}
+            },
+            {
+                "_links" : {
+                    "self" : {"href" : "http://localhost/api/rest/v1/products/localizable_and_scopable"}
+                },
+                "uuid"          : "{$uuids['localizable_and_scopable']}",
+                "identifier"    : "localizable_and_scopable",
+                "family"        : null,
+                "parent"        : null,
+                "groups"        : [],
+                "categories"    : ["categoryA", "master_china"],
                 "enabled"       : true,
                 "values"        : {
-                    "a_metric" : [
-                        {
-                            "locale" : null,
-                            "scope"  : null,
-                            "data"   : {
-                                "amount" : "10.0000",
-                                "unit"   : "KILOWATT"
-                            }
-                        }
+                    "a_localized_and_scopable_text_area" : [
+                        {"locale" : "fr_FR", "scope" : "tablet", "data" : "Description moyenne"}
                     ]
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
@@ -222,23 +234,24 @@ JSON;
                 "quantified_associations": {}
             },
             {
-                "_links" : {
-                    "self" : {"href" : "http://localhost/api/rest/v1/products/localizable"}
+                "_links": {
+                    "self": { "href": "http:\/\/localhost\/api\/rest\/v1\/products\/product_with_parent" }
                 },
-                "identifier"    : "localizable",
-                "family"        : null,
-                "parent"        : null,
-                "groups"        : [],
-                "categories"    : ["categoryB"],
-                "enabled"       : true,
-                "values"        : [],
-                "created"       : "2017-01-23T11:44:25+01:00",
-                "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {
-                    "PACK": { "products" : [], "product_models": [], "groups": [] },
-                    "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
-                    "UPSELL": { "products" : [], "product_models": [], "groups": [] },
-                    "X_SELL": { "products" : [], "product_models": [], "groups": [] }
+                "uuid": "{$uuids['product_with_parent']}",
+                "identifier": "product_with_parent",
+                "enabled": true,
+                "family": "familyA",
+                "categories": ["master"],
+                "groups": [],
+                "parent": "prod_mod_optA",
+                "values": {},
+                "created": "2019-06-10T12:37:47+02:00",
+                "updated": "2019-06-10T12:37:47+02:00",
+                "associations": {
+                    "PACK": { "products": [], "product_models": [], "groups": [] },
+                    "UPSELL": { "products": [], "product_models": [], "groups": [] },
+                    "X_SELL": { "products": [], "product_models": [], "groups": [] },
+                    "SUBSTITUTION": { "products": [], "product_models": [], "groups": [] }
                 },
                 "quantified_associations": {}
             },
@@ -246,6 +259,7 @@ JSON;
                 "_links" : {
                     "self" : {"href" : "http://localhost/api/rest/v1/products/scopable"}
                 },
+                "uuid"          : "{$uuids['scopable']}",
                 "identifier"    : "scopable",
                 "family"        : null,
                 "parent"        : null,
@@ -276,17 +290,25 @@ JSON;
             },
             {
                 "_links" : {
-                    "self" : {"href" : "http://localhost/api/rest/v1/products/localizable_and_scopable"}
+                    "self" : {"href" : "http://localhost/api/rest/v1/products/simple"}
                 },
-                "identifier"    : "localizable_and_scopable",
+                "uuid"          : "{$uuids['simple']}",
+                "identifier"    : "simple",
                 "family"        : null,
                 "parent"        : null,
                 "groups"        : [],
-                "categories"    : ["categoryA", "master_china"],
+                "categories"    : ["master"],
                 "enabled"       : true,
                 "values"        : {
-                    "a_localized_and_scopable_text_area" : [
-                        {"locale" : "fr_FR", "scope" : "tablet", "data" : "Description moyenne"}
+                    "a_metric" : [
+                        {
+                            "locale" : null,
+                            "scope"  : null,
+                            "data"   : {
+                                "amount" : "10.0000",
+                                "unit"   : "KILOWATT"
+                            }
+                        }
                     ]
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
@@ -296,27 +318,6 @@ JSON;
                     "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
                     "UPSELL": { "products" : [], "product_models": [], "groups": [] },
                     "X_SELL": { "products" : [], "product_models": [], "groups": [] }
-                },
-                "quantified_associations": {}
-            },
-            {
-                "_links": {
-                    "self": { "href": "http:\/\/localhost\/api\/rest\/v1\/products\/product_with_parent" }
-                },
-                "identifier": "product_with_parent",
-                "enabled": true,
-                "family": "familyA",
-                "categories": ["master"],
-                "groups": [],
-                "parent": "prod_mod_optA",
-                "values": { },
-                "created": "2019-06-10T12:37:47+02:00",
-                "updated": "2019-06-10T12:37:47+02:00",
-                "associations": {
-                    "PACK": { "products": [], "product_models": [], "groups": [] },
-                    "UPSELL": { "products": [], "product_models": [], "groups": [] },
-                    "X_SELL": { "products": [], "product_models": [], "groups": [] },
-                    "SUBSTITUTION": { "products": [], "product_models": [], "groups": [] }
                 },
                 "quantified_associations": {}
             }
@@ -335,6 +336,8 @@ JSON;
         $search = '{"a_metric":[{"operator":">","value":{"amount":"9","unit":"KILOWATT"}}],"enabled":[{"operator":"=","value":true}]}';
         $client->request('GET', 'api/rest/v1/products?pagination_type=page&search=' . $search);
         $searchEncoded = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($search);
+
+        $uuids = self::PRODUCT_UUIDS;
         $expected = <<<JSON
 {
     "_links"       : {
@@ -348,6 +351,7 @@ JSON;
                 "_links" : {
                     "self" : {"href" : "http://localhost/api/rest/v1/products/simple"}
                 },
+                "uuid"          : "{$uuids['simple']}",
                 "identifier"    : "simple",
                 "family"        : null,
                 "parent"        : null,
@@ -370,6 +374,13 @@ JSON;
                             "locale" : null,
                             "scope"  : null,
                             "data"   : "Text"
+                        }
+                    ],
+                    "sku": [
+                        {
+                            "locale" : null,
+                            "scope"  : null,
+                            "data"   : "simple"
                         }
                     ]
                 },
@@ -411,14 +422,14 @@ JSON;
     },
     "current_page" : 1,
     "_embedded"    : {
-        "items" : [            
-            {$standardizedProducts['simple']},
+        "items" : [
             {$standardizedProducts['localizable']},
-            {$standardizedProducts['scopable']},
             {$standardizedProducts['localizable_and_scopable']},
             {$standardizedProducts['product_china']},
+            {$standardizedProducts['product_with_parent']},
             {$standardizedProducts['product_without_category']},
-            {$standardizedProducts['product_with_parent']}
+            {$standardizedProducts['scopable']},
+            {$standardizedProducts['simple']}
         ]
     }
 }
@@ -448,14 +459,14 @@ JSON;
     },
     "current_page" : 1,
     "_embedded"    : {
-        "items" : [            
-            {$standardizedProducts['simple']},
+        "items" : [
             {$standardizedProducts['localizable']},
-            {$standardizedProducts['scopable']},
             {$standardizedProducts['localizable_and_scopable']},
             {$standardizedProducts['product_china']},
+            {$standardizedProducts['product_with_parent']},
             {$standardizedProducts['product_without_category']},
-            {$standardizedProducts['product_with_parent']}
+            {$standardizedProducts['scopable']},
+            {$standardizedProducts['simple']}
         ]
     }
 }
@@ -473,19 +484,19 @@ JSON;
         $expected = <<<JSON
 {
     "_links"       : {
-        "self"  : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10"},
-        "first" : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10"}
+        "self"  : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&with_attribute_options=true"},
+        "first" : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&with_attribute_options=true"}
     },
     "current_page" : 1,
     "_embedded"    : {
-        "items" : [            
-            {$standardizedProducts['simple']},
+        "items" : [
             {$standardizedProducts['localizable']},
-            {$standardizedProducts['scopable']},
             {$standardizedProducts['localizable_and_scopable']},
             {$standardizedProducts['product_china']},
+            {$standardizedProducts['product_with_parent']},
             {$standardizedProducts['product_without_category']},
-            {$standardizedProducts['product_with_parent']}
+            {$standardizedProducts['scopable']},
+            {$standardizedProducts['simple']}
         ]
     }
 }
@@ -496,36 +507,37 @@ JSON;
 
     public function testListProductsWithQualityScores()
     {
-        $this->createProduct('simple_with_family_and_values', [
-            'categories' => ['master'],
-            'family' => 'familyA',
-            'values' => [
-                'a_text' => [
-                    ['data' => 'Text', 'locale' => null, 'scope' => null]
-                ]
-            ],
+        $product1 = $this->createProductWithUuid(self::PRODUCT_UUIDS['simple_with_family_and_values'], [
+            new SetIdentifierValue('sku', 'simple_with_family_and_values'),
+            new SetCategories(['master']),
+            new SetFamily('familyA'),
+            new SetTextValue('a_text', null, null, 'Text')
         ]);
-        $this->createProduct('simple_with_no_family', [
-            'categories' => ['master'],
-            'values' => [
-                'a_text' => [
-                    ['data' => 'Text', 'locale' => null, 'scope' => null]
-                ]
-            ],
+        $product2 = $this->createProductWithUuid(self::PRODUCT_UUIDS['simple_with_no_family'], [
+            new SetIdentifierValue('sku', 'simple_with_no_family'),
+            new SetCategories(['master']),
+            new SetTextValue('a_text', null, null, 'Text')
         ]);
-        $this->createProduct('simple_with_no_values', [
-            'categories' => ['master'],
-            'family' => 'familyA',
-            'values' => [],
+        $product3 = $this->createProductWithUuid(self::PRODUCT_UUIDS['simple_with_no_values'], [
+            new SetIdentifierValue('sku', 'simple_with_no_values'),
+            new SetCategories(['master']),
+            new SetFamily('familyA'),
         ]);
 
-        $values = '{
-            "a_text": [{
-                "locale": null,
-                "scope": null,
-                "data": "Text"
-            }]
-        }';
+        $this->getEsIndex()->refreshIndex();
+
+        ($this->get('Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts'))(
+            $this->get(ProductUuidFactory::class)->createCollection([
+                (string) $product1->getUuid(),
+                (string) $product2->getUuid(),
+                (string) $product3->getUuid(),
+            ])
+        );
+
+        $values = [
+            'a_text' => [['locale' => null, 'scope' => null, 'data' => 'Text']]
+        ];
+
         $qualityScores = '[
             {"scope": "tablet", "locale": "de_DE", "data": "E"},
             {"scope": "tablet", "locale": "en_US", "data": "E"},
@@ -534,9 +546,27 @@ JSON;
             {"scope": "ecommerce_china", "locale": "en_US", "data": "E"},
             {"scope": "ecommerce_china", "locale": "zh_CN", "data": "E"}
         ]';
-        $standardizedProducts['simple_with_family_and_values'] = $this->getStandardizedProductsForQualityScore('simple_with_family_and_values', '"familyA"', $values, $qualityScores);
-        $standardizedProducts['simple_with_no_family'] = $this->getStandardizedProductsForQualityScore('simple_with_no_family', 'null', $values, '[]');
-        $standardizedProducts['simple_with_no_values'] = $this->getStandardizedProductsForQualityScore('simple_with_no_values', '"familyA"', '{}', $qualityScores);
+        $standardizedProducts['simple_with_family_and_values'] = $this->getStandardizedProductsForQualityScore(
+            self::PRODUCT_UUIDS['simple_with_family_and_values'],
+            'simple_with_family_and_values',
+            '"familyA"',
+            \json_encode($values + ['sku' => [['locale' => null, 'scope' => null, 'data' => 'simple_with_family_and_values']]]),
+            $qualityScores
+        );
+        $standardizedProducts['simple_with_no_family'] = $this->getStandardizedProductsForQualityScore(
+            self::PRODUCT_UUIDS['simple_with_no_family'],
+            'simple_with_no_family',
+            'null',
+            \json_encode($values + ['sku' => [['locale' => null, 'scope' => null, 'data' => 'simple_with_no_family']]]),
+            '[]'
+        );
+        $standardizedProducts['simple_with_no_values'] = $this->getStandardizedProductsForQualityScore(
+            self::PRODUCT_UUIDS['simple_with_no_values'],
+            'simple_with_no_values',
+            '"familyA"',
+            \json_encode(['sku' => [['locale' => null, 'scope' => null, 'data' => 'simple_with_no_values']]]),
+            $qualityScores
+        );
 
         $client = $this->createAuthenticatedClient();
         $search = '{"sku":[{"operator":"IN","value":["simple_with_family_and_values","simple_with_no_family","simple_with_no_values"]}]}';
@@ -546,15 +576,102 @@ JSON;
         $expected = <<<JSON
 {
     "_links"       : {
-        "self"  : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&search=$searchEncoded"},
-        "first" : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&search=$searchEncoded"}
+        "self"  : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&search=$searchEncoded&with_quality_scores=true"},
+        "first" : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&search=$searchEncoded&with_quality_scores=true"}
     },
     "current_page" : 1,
     "_embedded"    : {
-        "items" : [            
-            {$standardizedProducts['simple_with_no_values']},
+        "items" : [
             {$standardizedProducts['simple_with_family_and_values']},
-            {$standardizedProducts['simple_with_no_family']}
+            {$standardizedProducts['simple_with_no_family']},
+            {$standardizedProducts['simple_with_no_values']}
+        ]
+    }
+}
+JSON;
+
+        $this->assertListResponse($client->getResponse(), $expected);
+    }
+
+    public function testListProductsWithCompletenesses()
+    {
+        $this->createProductWithUuid(self::PRODUCT_UUIDS['simple_with_family_and_values'], [
+            new SetIdentifierValue('sku', 'simple_with_family_and_values'),
+            new SetCategories(['master']),
+            new SetFamily('familyA'),
+            new SetTextValue('a_text', null, null, 'Text'),
+        ]);
+        $this->createProductWithUuid(self::PRODUCT_UUIDS['simple_with_no_family'], [
+            new SetIdentifierValue('sku', 'simple_with_no_family'),
+            new SetCategories(['master']),
+            new SetTextValue('a_text', null, null, 'Text'),
+        ]);
+        $this->createProductWithUuid(self::PRODUCT_UUIDS['simple_with_no_values'], [
+            new SetIdentifierValue('sku', 'simple_with_no_values'),
+            new SetCategories(['master']),
+            new SetFamily('familyA')
+        ]);
+        $this->getEsIndex()->refreshIndex();
+
+        $values = [
+            'a_text' => [['locale' => null, 'scope' => null, 'data' => 'Text']]
+        ];
+
+        $completenessesFamVal = '[
+            {"scope":"ecommerce","locale":"en_US","data":10},
+            {"scope":"ecommerce_china","locale":"en_US","data":100},
+            {"scope":"ecommerce_china","locale":"zh_CN","data":100},
+            {"scope":"tablet","locale":"de_DE","data":10},
+            {"scope":"tablet","locale":"en_US","data":10},
+            {"scope":"tablet","locale":"fr_FR","data":10}
+        ]';
+        $completenessesNoVal = '[
+            {"scope":"ecommerce","locale":"en_US","data":5},
+            {"scope":"ecommerce_china","locale":"en_US","data":100},
+            {"scope":"ecommerce_china","locale":"zh_CN","data":100},
+            {"scope":"tablet","locale":"de_DE","data":5},
+            {"scope":"tablet","locale":"en_US","data":5},
+            {"scope":"tablet","locale":"fr_FR","data":5}
+        ]';
+        $standardizedProducts['simple_with_family_and_values'] = $this->getStandardizedProductsForCompletenesses(
+            self::PRODUCT_UUIDS['simple_with_family_and_values'],
+            'simple_with_family_and_values',
+            '"familyA"',
+            \json_encode($values + ['sku' => [['locale' => null, 'scope' => null, 'data' => 'simple_with_family_and_values']]]),
+            $completenessesFamVal
+        );
+        $standardizedProducts['simple_with_no_family'] = $this->getStandardizedProductsForCompletenesses(
+            self::PRODUCT_UUIDS['simple_with_no_family'],
+            'simple_with_no_family',
+            'null',
+            \json_encode($values + ['sku' => [['locale' => null, 'scope' => null, 'data' => 'simple_with_no_family']]]),
+            '[]'
+        );
+        $standardizedProducts['simple_with_no_values'] = $this->getStandardizedProductsForCompletenesses(
+            self::PRODUCT_UUIDS['simple_with_no_values'],
+            'simple_with_no_values',
+            '"familyA"',
+            \json_encode(['sku' => [['locale' => null, 'scope' => null, 'data' => 'simple_with_no_values']]]),
+            $completenessesNoVal
+        );
+
+        $client = $this->createAuthenticatedClient();
+        $search = '{"sku":[{"operator":"IN","value":["simple_with_family_and_values","simple_with_no_family","simple_with_no_values"]}]}';
+        $searchEncoded = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($search);
+        $client->request('GET', "/api/rest/v1/products?with_completenesses=true&search=$searchEncoded");
+
+        $expected = <<<JSON
+{
+    "_links"       : {
+        "self"  : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&search=$searchEncoded&with_completenesses=true"},
+        "first" : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&search=$searchEncoded&with_completenesses=true"}
+    },
+    "current_page" : 1,
+    "_embedded"    : {
+        "items" : [
+            {$standardizedProducts['simple_with_family_and_values']},
+            {$standardizedProducts['simple_with_no_family']},
+            {$standardizedProducts['simple_with_no_values']}
         ]
     }
 }
@@ -583,14 +700,14 @@ JSON;
     },
     "current_page" : 1,
     "_embedded"    : {
-        "items" : [            
-            {$standardizedProducts['simple']},
+        "items" : [
             {$standardizedProducts['localizable']},
-            {$standardizedProducts['scopable']},
             {$standardizedProducts['localizable_and_scopable']},
             {$standardizedProducts['product_china']},
+            {$standardizedProducts['product_with_parent']},
             {$standardizedProducts['product_without_category']},
-            {$standardizedProducts['product_with_parent']}
+            {$standardizedProducts['scopable']},
+            {$standardizedProducts['simple']}
         ]
     }
 }
@@ -615,14 +732,14 @@ JSON;
     },
     "current_page" : 1,
     "_embedded"    : {
-        "items" : [            
-            {$standardizedProducts['simple']},
+        "items" : [
             {$standardizedProducts['localizable']},
-            {$standardizedProducts['scopable']},
             {$standardizedProducts['localizable_and_scopable']},
             {$standardizedProducts['product_china']},
+            {$standardizedProducts['product_with_parent']},
             {$standardizedProducts['product_without_category']},
-            {$standardizedProducts['product_with_parent']}
+            {$standardizedProducts['scopable']},
+            {$standardizedProducts['simple']}
         ]
     }
 }
@@ -696,13 +813,13 @@ JSON;
     },
     "_embedded" : {
         "items" : [
-            {$standardizedProducts['simple']},
             {$standardizedProducts['localizable']},
-            {$standardizedProducts['scopable']},
             {$standardizedProducts['localizable_and_scopable']},
             {$standardizedProducts['product_china']},
+            {$standardizedProducts['product_with_parent']},
             {$standardizedProducts['product_without_category']},
-            {$standardizedProducts['product_with_parent']}
+            {$standardizedProducts['scopable']},
+            {$standardizedProducts['simple']}
         ]
     }
 }
@@ -721,25 +838,82 @@ JSON;
         $standardizedProducts = $this->getStandardizedProducts();
         $client = $this->createAuthenticatedClient();
 
-        $id = [
-            'simple' => $this->encodeStringWithSymfonyUrlGeneratorCompatibility($this->getEncryptedId('simple')),
-            'localizable' => $this->encodeStringWithSymfonyUrlGeneratorCompatibility($this->getEncryptedId('localizable')),
-            'localizable_and_scopable' => $this->encodeStringWithSymfonyUrlGeneratorCompatibility($this->getEncryptedId('localizable_and_scopable')),
-        ];
-
-        $client->request('GET', sprintf('api/rest/v1/products?pagination_type=search_after&limit=3&search_after=%s', $id['simple']));
+        $client->request('GET', sprintf('api/rest/v1/products?pagination_type=search_after&limit=3&search_after=%s', 'product_china'));
         $expected = <<<JSON
 {
     "_links": {
-        "self"  : {"href": "http://localhost/api/rest/v1/products?with_count=false&pagination_type=search_after&limit=3&search_after={$id['simple']}"},
+        "self"  : {"href": "http://localhost/api/rest/v1/products?with_count=false&pagination_type=search_after&limit=3&search_after=product_china"},
         "first" : {"href": "http://localhost/api/rest/v1/products?with_count=false&pagination_type=search_after&limit=3"},
-        "next"  : {"href": "http://localhost/api/rest/v1/products?with_count=false&pagination_type=search_after&limit=3&search_after={$id['localizable_and_scopable']}"}
+        "next"  : {"href": "http://localhost/api/rest/v1/products?with_count=false&pagination_type=search_after&limit=3&search_after=scopable"}
+    },
+    "_embedded"    : {
+        "items" : [
+            {$standardizedProducts['product_with_parent']},
+            {$standardizedProducts['product_without_category']},
+            {$standardizedProducts['scopable']}
+        ]
+    }
+}
+JSON;
+
+        $this->assertListResponse($client->getResponse(), $expected);
+    }
+
+    public function testSearchAfterPaginationWithUppercaseIdentifier(): void
+    {
+        $anUppercaseUuid = 'bbf0d0f8-de9c-4d3d-8623-ccbe2b93ca5c';
+        $myOtherUppercaseUuid = 'fbc049ec-1594-4e79-adf3-c95215a7029a';
+
+        $this->createProductWithUuid($anUppercaseUuid, [
+            new SetIdentifierValue('sku', 'AN_UPPERCASE_IDENTIFIER'),
+        ]);
+        $this->createProductWithUuid($myOtherUppercaseUuid, [
+            new SetIdentifierValue('sku', 'MY_OTHER_UPPERCASE_IDENTIFIER'),
+        ]);
+        $this->getEsIndex()->refreshIndex();
+
+        $standardizedProducts = $this->getStandardizedProducts();
+        $client = $this->createAuthenticatedClient();
+
+        $client->request(
+            'GET',
+            sprintf('api/rest/v1/products?pagination_type=search_after&limit=3&search_after=%s', 'AN_UPPERCASE_IDENTIFIER')
+        );
+        $expected = <<<JSON
+{
+    "_links": {
+        "self"  : {"href": "http://localhost/api/rest/v1/products?with_count=false&pagination_type=search_after&limit=3&search_after=AN_UPPERCASE_IDENTIFIER"},
+        "first" : {"href": "http://localhost/api/rest/v1/products?with_count=false&pagination_type=search_after&limit=3"},
+        "next"  : {"href": "http://localhost/api/rest/v1/products?with_count=false&pagination_type=search_after&limit=3&search_after=MY_OTHER_UPPERCASE_IDENTIFIER"}
     },
     "_embedded"    : {
         "items" : [
             {$standardizedProducts['localizable']},
-            {$standardizedProducts['scopable']},
-            {$standardizedProducts['localizable_and_scopable']}
+            {$standardizedProducts['localizable_and_scopable']},
+            {
+                "_links": {
+                    "self": {
+                        "href": "http://localhost/api/rest/v1/products/MY_OTHER_UPPERCASE_IDENTIFIER"
+                    }
+                },
+                "uuid": "$myOtherUppercaseUuid",
+                "identifier": "MY_OTHER_UPPERCASE_IDENTIFIER",
+                "family": null,
+                "parent": null,
+                "groups": [],
+                "categories": [],
+                "enabled": true,
+                "values": {"sku":  [{"locale": null, "scope":  null, "data": "MY_OTHER_UPPERCASE_IDENTIFIER"}]},
+                "created": "2017-03-11T10:39:38+01:00",
+                "updated": "2017-03-11T10:39:38+01:00",
+                "associations": {
+                    "PACK": { "products" : [], "product_models": [], "groups": [] },
+                    "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
+                    "UPSELL": { "products" : [], "product_models": [], "groups": [] },
+                    "X_SELL": { "products" : [], "product_models": [], "groups": [] }
+                },
+                "quantified_associations": {}
+            }
         ]
     }
 }
@@ -753,21 +927,19 @@ JSON;
         $standardizedProducts = $this->getStandardizedProducts();
         $client = $this->createAuthenticatedClient();
 
-        $scopableEncryptedId = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($this->getEncryptedId('scopable'));
-
-        $client->request('GET', sprintf('api/rest/v1/products?pagination_type=search_after&limit=5&search_after=%s', $scopableEncryptedId));
+        $client->request('GET', sprintf('api/rest/v1/products?pagination_type=search_after&limit=5&search_after=%s', 'product_china'));
         $expected = <<<JSON
 {
     "_links": {
-        "self"  : {"href": "http://localhost/api/rest/v1/products?with_count=false&pagination_type=search_after&limit=5&search_after={$scopableEncryptedId}"},
+        "self"  : {"href": "http://localhost/api/rest/v1/products?with_count=false&pagination_type=search_after&limit=5&search_after=product_china"},
         "first" : {"href": "http://localhost/api/rest/v1/products?with_count=false&pagination_type=search_after&limit=5"}
     },
     "_embedded"    : {
         "items" : [
-            {$standardizedProducts['localizable_and_scopable']},
-            {$standardizedProducts['product_china']},
+            {$standardizedProducts['product_with_parent']},
             {$standardizedProducts['product_without_category']},
-            {$standardizedProducts['product_with_parent']}
+            {$standardizedProducts['scopable']},
+            {$standardizedProducts['simple']}
         ]
     }
 }
@@ -779,12 +951,18 @@ JSON;
     public function testListProductsWithParent()
     {
         $standardizedProducts = $this->getStandardizedProducts();
-        $client = $this->createAuthenticatedClient();
 
-        $search = '{"parent":[{"operator":"=","value":"prod_mod_optA"}]}';
-        $client->request('GET', 'api/rest/v1/products?search=' . $search);
-        $searchEncoded = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($search);
-        $expected = <<<JSON
+        $searchFilters = [
+            '{"parent":[{"operator":"=","value":"prod_mod_optA"}]}',
+            '{"parent":[{"operator":"NOT EMPTY","value":null}]}',
+            '{"parent":[{"operator":"IN","value":["prod_mod_optA"]}]}',
+        ];
+
+        foreach ($searchFilters as $search) {
+            $client = $this->createAuthenticatedClient();
+            $client->request('GET', 'api/rest/v1/products?search=' . $search);
+            $searchEncoded = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($search);
+            $expected = <<<JSON
 {
     "_links": {
         "self"  : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&search=${searchEncoded}"},
@@ -799,22 +977,149 @@ JSON;
 }
 JSON;
 
+            $this->assertListResponse($client->getResponse(), $expected);
+        }
+    }
+
+    public function testListProductsWithUuidFilter(): void
+    {
+        $standardizedProducts = $this->getStandardizedProducts();
+
+        $search = \json_encode([
+            'uuid' => [
+                [
+                    'operator' => 'IN',
+                    'value' => [
+                        self::PRODUCT_UUIDS['simple'],
+                        self::PRODUCT_UUIDS['localizable'],
+                        Uuid::uuid4()->toString(),
+                        self::PRODUCT_UUIDS['product_with_parent'],
+                    ],
+                ],
+            ],
+        ]);
+        $client = $this->createAuthenticatedClient();
+        $client->request('GET', 'api/rest/v1/products?search=' . $search);
+        $searchEncoded = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($search);
+        $expected = <<<JSON
+{
+    "_links": {
+        "self"  : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&search=${searchEncoded}"},
+        "first" : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&search=${searchEncoded}"}
+    },
+    "current_page" : 1,
+    "_embedded"    : {
+        "items" : [
+            {$standardizedProducts['localizable']},
+            {$standardizedProducts['product_with_parent']},
+            {$standardizedProducts['simple']}
+        ]
+    }
+}
+JSON;
+
         $this->assertListResponse($client->getResponse(), $expected);
     }
 
-    /**
-     * @param string $productIdentifier
-     *
-     * @return string
-     */
-    private function getEncryptedId(string $productIdentifier): string
+    public function testListProductsWithUuidNotInFilter(): void
     {
-        $encrypter = $this->get('pim_api.security.primary_key_encrypter');
-        $productRepository = $this->get('pim_catalog.repository.product');
+        $standardizedProducts = $this->getStandardizedProducts();
 
-        $product = $productRepository->findOneByIdentifier($productIdentifier);
+        $search = \json_encode([
+            'uuid' => [
+                [
+                    'operator' => 'NOT IN',
+                    'value' => [
+                        self::PRODUCT_UUIDS['simple'],
+                        self::PRODUCT_UUIDS['localizable'],
+                        self::PRODUCT_UUIDS['product_with_parent'],
+                    ],
+                ],
+            ],
+        ]);
+        $client = $this->createAuthenticatedClient();
+        $client->request('GET', 'api/rest/v1/products?search=' . $search);
+        $searchEncoded = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($search);
+        $expected = <<<JSON
+{
+    "_links": {
+        "self"  : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&search=${searchEncoded}"},
+        "first" : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&search=${searchEncoded}"}
+    },
+    "current_page" : 1,
+    "_embedded"    : {
+        "items" : [
+            {$standardizedProducts['localizable_and_scopable']},
+            {$standardizedProducts['product_china']},
+            {$standardizedProducts['product_without_category']},
+            {$standardizedProducts['scopable']}
+        ]
+    }
+}
+JSON;
 
-        return $encrypter->encrypt($product->getId());
+        $this->assertListResponse($client->getResponse(), $expected);
+    }
+
+    public function testListProductsWithoutParent()
+    {
+        $standardizedProducts = $this->getStandardizedProducts();
+        $client = $this->createAuthenticatedClient();
+
+        $search = '{"parent":[{"operator":"EMPTY","value":null}]}';
+        $client->request('GET', 'api/rest/v1/products?search=' . $search);
+        $searchEncoded = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($search);
+        $expected = <<<JSON
+{
+    "_links": {
+        "self"  : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&search=${searchEncoded}"},
+        "first" : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&search=${searchEncoded}"}
+    },
+    "current_page" : 1,
+    "_embedded"    : {
+        "items" : [
+            {$standardizedProducts['localizable']},
+            {$standardizedProducts['localizable_and_scopable']},
+            {$standardizedProducts['product_china']},
+            {$standardizedProducts['product_without_category']},
+            {$standardizedProducts['scopable']},
+            {$standardizedProducts['simple']}
+        ]
+    }
+}
+JSON;
+
+        $this->assertListResponse($client->getResponse(), $expected);
+    }
+
+    public function testAccessDeniedWhenRetrievingProductsWithoutTheAcl()
+    {
+        $client = $this->createAuthenticatedClient();
+        $this->removeAclFromRole('action:pim_api_product_list');
+
+        $client->request('GET', 'api/rest/v1/products');
+        $response = $client->getResponse();
+
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+    }
+
+    public function testDoesntShowProductsWithoutIdentifier()
+    {
+        $uuid = $this->createProductWithoutIdentifier([
+            new SetTextValue('a_text', null, null, 'My product without identifier')
+        ])->getUuid();
+
+        $client = $this->createAuthenticatedClient();
+        $client->request('GET', 'api/rest/v1/products?with_count=true&limit=10&pagination_type=search_after');
+        $result = json_decode($client->getResponse()->getContent(), true);
+
+        Assert::assertArrayHasKey('_embedded', $result);
+        Assert::assertArrayNotHasKey('next', $result['_links']);
+
+        foreach ($result['_embedded']['items'] as $index => $product) {
+            Assert::assertIsString($product['uuid'] ?? null);
+            Assert::assertNotEquals($uuid->toString(), $product['uuid']);
+        }
     }
 
     /**
@@ -822,6 +1127,8 @@ JSON;
      */
     private function getStandardizedProducts(bool $withAttributeOptions = false): array
     {
+        $uuids = self::PRODUCT_UUIDS;
+
         $standardizedProducts['simple'] = <<<JSON
 {
     "_links": {
@@ -829,6 +1136,7 @@ JSON;
             "href": "http://localhost/api/rest/v1/products/simple"
         }
     },
+    "uuid": "{$uuids['simple']}",
     "identifier": "simple",
     "family": null,
     "parent": null,
@@ -848,6 +1156,11 @@ JSON;
             "locale": null,
             "scope": null,
             "data": "Text"
+        }],
+        "sku": [{
+            "locale": null,
+            "scope": null,
+            "data": "simple"
         }]
     },
     "created": "2017-03-11T10:39:38+01:00",
@@ -869,6 +1182,7 @@ JSON;
             "href": "http://localhost/api/rest/v1/products/localizable"
         }
     },
+    "uuid": "{$uuids['localizable']}",
     "identifier": "localizable",
     "family": null,
     "parent": null,
@@ -903,6 +1217,11 @@ JSON;
                     "href": "http://localhost/api/rest/v1/media-files/5/d/c/a/5dcac0871503e513d5be25807794a09ad9080341_akeneo.jpg/download"
                 }
             }
+        }],
+        "sku": [{
+            "locale": null,
+            "scope": null,
+            "data": "localizable"
         }]
     },
     "created": "2017-03-11T10:39:38+01:00",
@@ -924,6 +1243,7 @@ JSON;
             "href": "http://localhost/api/rest/v1/products/scopable"
         }
     },
+    "uuid": "{$uuids['scopable']}",
     "identifier": "scopable",
     "family": null,
     "parent": null,
@@ -951,6 +1271,11 @@ JSON;
                 "amount": "11.50",
                 "currency": "USD"
             }]
+        }],
+        "sku": [{
+            "locale": null,
+            "scope": null,
+            "data": "scopable"
         }]
     },
     "created": "2017-03-11T10:39:38+01:00",
@@ -972,6 +1297,7 @@ JSON;
             "href": "http://localhost/api/rest/v1/products/localizable_and_scopable"
         }
     },
+    "uuid": "{$uuids['localizable_and_scopable']}",
     "identifier": "localizable_and_scopable",
     "family": null,
     "parent": null,
@@ -999,6 +1325,11 @@ JSON;
             "locale": "zh_CN",
             "scope": "ecommerce_china",
             "data": "hum..."
+        }],
+        "sku": [{
+            "locale": null,
+            "scope": null,
+            "data": "localizable_and_scopable"
         }]
     },
     "created": "2017-03-11T10:39:38+01:00",
@@ -1020,13 +1351,20 @@ JSON;
            "href": "http://localhost/api/rest/v1/products/product_china"
        }
    },
+   "uuid": "{$uuids['product_china']}",
    "identifier": "product_china",
    "family": null,
    "parent": null,
    "groups": [],
    "categories": ["master_china"],
    "enabled": true,
-   "values": {},
+   "values": {
+        "sku": [{
+            "locale": null,
+            "scope": null,
+            "data": "product_china"
+        }]
+   },
    "created": "2017-03-11T10:39:38+01:00",
    "updated": "2017-03-11T10:39:38+01:00",
    "associations": {
@@ -1046,6 +1384,7 @@ JSON;
             "href": "http://localhost/api/rest/v1/products/product_without_category"
         }
     },
+    "uuid": "{$uuids['product_without_category']}",
     "identifier": "product_without_category",
     "family": null,
     "parent": null,
@@ -1057,6 +1396,11 @@ JSON;
             "locale": null,
             "scope": null,
             "data": true
+        }],
+        "sku": [{
+            "locale": null,
+            "scope": null,
+            "data": "product_without_category"
         }]
     },
     "created": "2017-03-11T10:39:38+01:00",
@@ -1079,6 +1423,7 @@ JSON;
             "href": "http:\/\/localhost\/api\/rest\/v1\/products\/product_with_parent"
         }
 	},
+    "uuid": "{$uuids['product_with_parent']}",
     "identifier": "product_with_parent",
     "enabled": true,
     "family": "familyA",
@@ -1103,7 +1448,8 @@ JSON;
         "a_price": [{ "locale": null, "scope": null, "data": [{ "amount": "50.00", "currency": "EUR" }] }],
         "a_yes_no": [{ "locale": null, "scope": null, "data": true }],
         "a_number_float": [{ "locale": null, "scope": null, "data": "12.5000" }],
-        "a_localized_and_scopable_text_area": [{ "locale": "en_US", "scope": "ecommerce", "data": "my pink tshirt" }]
+        "a_localized_and_scopable_text_area": [{ "locale": "en_US", "scope": "ecommerce", "data": "my pink tshirt" }],
+        "sku": [{ "locale": null, "scope": null, "data": "product_with_parent" }]
     },
     "created": "2019-06-10T12:37:47+02:00",
     "updated": "2019-06-10T12:37:47+02:00",
@@ -1116,7 +1462,6 @@ JSON;
     "quantified_associations": {}
 }
 JSON;
-
         } else {
             $standardizedProducts['product_with_parent'] = <<<JSON
 {
@@ -1125,6 +1470,7 @@ JSON;
             "href": "http:\/\/localhost\/api\/rest\/v1\/products\/product_with_parent"
         }
 	},
+    "uuid": "{$uuids['product_with_parent']}",
     "identifier": "product_with_parent",
     "enabled": true,
     "family": "familyA",
@@ -1136,7 +1482,8 @@ JSON;
         "a_price": [{ "locale": null, "scope": null, "data": [{ "amount": "50.00", "currency": "EUR" }] }],
         "a_yes_no": [{ "locale": null, "scope": null, "data": true }],
         "a_number_float": [{ "locale": null, "scope": null, "data": "12.5000" }],
-        "a_localized_and_scopable_text_area": [{ "locale": "en_US", "scope": "ecommerce", "data": "my pink tshirt" }]
+        "a_localized_and_scopable_text_area": [{ "locale": "en_US", "scope": "ecommerce", "data": "my pink tshirt" }],
+        "sku": [{ "locale": null, "scope": null, "data": "product_with_parent" }]
     },
     "created": "2019-06-10T12:37:47+02:00",
     "updated": "2019-06-10T12:37:47+02:00",
@@ -1162,7 +1509,7 @@ JSON;
         return $this->catalog->useTechnicalCatalog();
     }
 
-    private function getStandardizedProductsForQualityScore(string $identifier, string $family, string $values, string $qualityScores)
+    private function getStandardizedProductsForQualityScore(string $uuid, string $identifier, string $family, string $values, string $qualityScores)
     {
         return <<<JSON
 {
@@ -1171,6 +1518,7 @@ JSON;
             "href": "http://localhost/api/rest/v1/products/$identifier"
         }
     },
+    "uuid": "$uuid",
     "identifier": "$identifier",
     "family": $family,
     "parent": null,
@@ -1188,6 +1536,37 @@ JSON;
     },
     "quantified_associations": {},
     "quality_scores": $qualityScores
+}
+JSON;
+    }
+
+    private function getStandardizedProductsForCompletenesses(string $uuid, string $identifier, string $family, string $values, string $completenesses)
+    {
+        return <<<JSON
+{
+    "_links": {
+        "self": {
+            "href": "http://localhost/api/rest/v1/products/$identifier"
+        }
+    },
+    "uuid": "$uuid",
+    "identifier": "$identifier",
+    "family": $family,
+    "parent": null,
+    "groups": [],
+    "categories": ["master"],
+    "enabled": true,
+    "values": $values,
+    "created": "2017-03-11T10:39:38+01:00",
+    "updated": "2017-03-11T10:39:38+01:00",
+    "associations": {
+        "PACK": { "products" : [], "product_models": [], "groups": [] },
+        "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
+        "UPSELL": { "products" : [], "product_models": [], "groups": [] },
+        "X_SELL": { "products" : [], "product_models": [], "groups": [] }
+    },
+    "quantified_associations": {},
+    "completenesses": $completenesses
 }
 JSON;
     }

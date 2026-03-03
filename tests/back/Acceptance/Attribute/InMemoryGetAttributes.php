@@ -44,7 +44,10 @@ class InMemoryGetAttributes implements GetAttributes
                     $attribute->getDefaultMetricUnit(),
                     $attribute->isDecimalsAllowed(),
                     $attribute->getBackendType(),
-                    $attribute->getAvailableLocaleCodes()
+                    $attribute->getAvailableLocaleCodes(),
+                    null,
+                    [],
+                    $attribute->isMainIdentifier()
                 );
             }
         }
@@ -55,5 +58,29 @@ class InMemoryGetAttributes implements GetAttributes
     public function forCode(string $attributeCode): ?Attribute
     {
         return $this->forCodes([$attributeCode])[$attributeCode] ?? null;
+    }
+
+    public function forType(string $attributeType): array
+    {
+        $rawAttributes = $this->attributeRepository->findBy(['type' => $attributeType]);
+        $attributes = [];
+
+        /** @var $attribute AttributeInterface*/
+        foreach ($rawAttributes as $attribute) {
+            $attributes[$attribute->getCode()] = new Attribute(
+                $attribute->getCode(),
+                $attribute->getType(),
+                $attribute->getProperties(),
+                (bool) $attribute->isLocalizable(),
+                (bool) $attribute->isScopable(),
+                $attribute->getMetricFamily(),
+                $attribute->getDefaultMetricUnit(),
+                $attribute->isDecimalsAllowed(),
+                $attribute->getBackendType(),
+                $attribute->getAvailableLocaleCodes(),
+            );
+        }
+
+        return $attributes;
     }
 }

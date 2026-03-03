@@ -94,6 +94,17 @@ final class OptionsValueFactorySpec extends ObjectBehavior
             ]);
     }
 
+    public function it_throws_an_exception_if_one_of_the_options_is_empty()
+    {
+        $this->shouldThrow(InvalidPropertyTypeException::class)
+            ->during('createByCheckingData', [
+                $this->getAttribute(true, true),
+                null,
+                null,
+                [""]
+            ]);
+    }
+
     private function getAttribute(bool $isLocalizable, bool $isScopable): Attribute
     {
         return new Attribute('an_attribute', AttributeTypes::OPTION_MULTI_SELECT, [], $isLocalizable, $isScopable, null, null, false, 'options', []);

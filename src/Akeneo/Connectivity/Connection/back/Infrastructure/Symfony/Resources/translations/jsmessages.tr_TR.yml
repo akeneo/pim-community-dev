@@ -1,0 +1,116 @@
+pim_menu:
+  navigation_back:
+    connection: Bağlantılara dön
+  navigation_block:
+    connection: Bağlantı navigasyonu
+  item:
+    connection_settings_edit: Bağlantı ayarları
+    connection_monitoring: İzleme
+pim_title:
+  akeneo_connectivity_connection_settings_edit: Bağlantı ayarları
+  akeneo_connectivity_connection_settings_any: Bağlantı ayarları
+  akeneo_connectivity_connection_error_management_connection_monitoring: Bağlantı izleme
+  akeneo_connectivity_connection_webhook_edit: Etkinlik aboneliği (BETA)
+  akeneo_connectivity_connection_webhook_regenerate_secret: Etkinlik aboneliği (BETA)
+akeneo_connectivity.connection:
+  connection:
+    auditable: Bu bağlantıyı gösterge panelinde takip et
+  edit_connection:
+    credentials:
+      wrong_credentials_combinations:
+        single: Fark ettik ki bu bağlantı için (son kullanım {{ date }}, {{ time }}) {{ wrong_username }} kullanıcı adını kullanıyorsun. Yerine {{ good_username }} kullanıcı adını kullanmanı öneririz.
+        link: Neden kullanmanız gerektiğini keşfedin.
+        link_list: Neden bu kullanıcı adını kullanmanızı önerdiğimizi keşfedin.
+        several: Fark ettik ki bu bağlantı için {{ good_username }} kullanıcı adını kullanmıyorsunuz.
+        list: 'İşte son 7 gün içinde kullanılan kullanıcı adlarının listesi:'
+        username_date: '{{ wrong_username }} ''(e) ile {{ date }}, {{ time }} zamanında'
+  auditable_helper:
+    message: Yalnızca "Kaynak" ve "Hedef" bağlantılarını takip edebilirsiniz.
+  grid.wrong_credentials_combination_helper: Aşağıdaki bağlantılardan bazıları bağlantı kullanıcı adlarını kullanmıyor. Sarı bir uyarı işaretiyle tanımlanmıştırlar.
+  dashboard:
+    connection_selector:
+      title:
+        destination: Hedef bağlantılar
+    charts:
+      inbound: Gelen Kutusu
+      outbound: Giden Kutusu
+      number_of_products_created: Ürünler oluşturuldu
+      number_of_products_updated: Ürünler güncellendi
+      number_of_products_sent: Ürünler gönderildi
+      legend:
+        during_the_last_seven_days: 'Son 7 günün toplamı:'
+    error_management:
+      data_source_error_chart:
+        section:
+          title: Kaynak bağlantılarında hatalar
+          helper: İş hataları da dahil olmak üzere toplam hataları burada görebilirsiniz.
+        chart:
+          title: Günlük hata sayısı
+      widget:
+        title: Her kaynak bağlantısı için iş hataları
+        over_the_last_seven_days: Son 7 gün içinde
+        business_errors: iş hataları
+    no_connection:
+      title:
+        data_source: Kaynak bağlantılarınızla ilgili bazı süslü grafikler görmek ister misiniz?
+        data_destination: Hedef bağlantılarınızla ilgili bazı süslü grafikler görmek ister misiniz?
+      message_with_permission:
+        message: Oluştur ve ilkini takip etmeye başla
+  webhook:
+    title: Etkinlik aboneliği (BETA)
+    event_subscription: Etkinlik aboneliği (bêta)
+    helper:
+      message: Bu bağlı uygulama ile senkronize edilen ürünler için PIM'de meydana gelen olaylardan haberdar olabilirsiniz. Sadece takip etmek istediğiniz  URL ve olay tür(lerini)ünü tanımlamanız gerekir.
+      link: Etkinlik aboneliği yapılandırması hakkında daha fazla bilgi edinin...
+    form:
+      url: URL
+      enabled: Etkinlik aboneliği aktivasyonu
+      test: Test
+    error:
+      wrong_url: Bu değer geçerli bir URL değildir.
+      required: Bu alan gereklidir.
+      not_found: Var olmayan bağlantıyı güncellemeye çalışıyorsunuz.
+      limit_reached: Aktif etkinlik abonelikleri sınırına ulaştınız.
+    flash:
+      success: Etkinlik aboneliği başarıyla güncellendi.
+      error: Üzgünüz, etkinlik aboneliği düzenlenirken bir hata oluştu.
+    regenerate_secret:
+      description: Etkinlik aboneliği parolasını yeniden oluşturmak istediğinizden emin misiniz?
+      flash:
+        success: Kurtarma parolası başarıyla yeniden oluşturuldu
+        error: Üzgünüz, kurtarma parolası yeniden oluşturulurken bir hata oluştu
+    active_event_subscriptions_limit_reached:
+      message: Etkinlik aboneliği özelliğine en fazla {{ limit }} bağlantı bağlayabilirsiniz.
+      link: Etkinlik aboneliği yapılandırması ile ilgili daha fazla bilgi edinin...
+  error_management:
+    connection_monitoring:
+      title: İzleme
+      helper:
+        title: '{{ count }} Hata var {0} |[1,Inf] {{ count }} Hatalar var'
+        description: Burada, bu bağlantı için son 7 gün içindeki her hatanın ayrıntılarını görebilirsiniz. Hata sayısı 100 hata ile sınırlıdır.
+        link: Nasıl çözeceğinizi anlamak için lütfen API yardım merkezini ziyaret ediniz.
+      search_filter:
+        placeholder: Hata mesajlarında ara
+        result_count: '{0} Sonuç yok |[1,Inf] {{ count }} sonuçlar'
+      error_list:
+        date_time_column:
+          title: Gün ve zaman
+        content_column:
+          title: İş hata mesajı
+          product_name: Ürün adı
+          with_id: Kullanıcı adı ile
+        details_column:
+          title: Ayrıntılar
+          locale: Yerel
+          channel: Kanal
+          family: Aile
+      no_error:
+        title: Harika! Hata bulunamadı
+      not_auditable:
+        title: İzlenmeyen bağlantı
+        description:
+          1: Bu bağlantının hatalarını takip etmek için,
+          2: İzlemeyi aktifleştir
+          3: Ayarlarda.
+      not_data_source:
+        title: Şimdilik, izleme sayfası sadece kaynak bağlantı için ulaşılabilir.

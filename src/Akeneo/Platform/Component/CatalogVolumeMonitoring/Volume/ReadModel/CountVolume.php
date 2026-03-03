@@ -16,21 +16,16 @@ class CountVolume
     /** @var int */
     private $volume;
 
-    /** @var int*/
-    private $limit;
-
     /** @var string */
     private $volumeName;
 
     /**
      * @param int    $volume
-     * @param int    $limit
      * @param string $volumeName
      */
-    public function __construct(int $volume, int $limit, string $volumeName)
+    public function __construct(int $volume, string $volumeName)
     {
         $this->volume = $volume;
-        $this->limit = $limit;
         $this->volumeName = $volumeName;
     }
 
@@ -42,10 +37,5 @@ class CountVolume
     public function getVolumeName(): string
     {
         return $this->volumeName;
-    }
-
-    public function hasWarning(): bool
-    {
-        return $this->limit >= 0 && $this->volume > $this->limit;
     }
 }

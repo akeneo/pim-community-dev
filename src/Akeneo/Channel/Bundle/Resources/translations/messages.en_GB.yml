@@ -1,9 +1,0 @@
-pim_enrich:
-  #Locale
-  locale:
-    tab:
-      property.title: Properties
-  channel:
-    flash:
-      delete:
-        error: You can not remove the "%channelCode%" channel because your PIM must contain at least one channel.

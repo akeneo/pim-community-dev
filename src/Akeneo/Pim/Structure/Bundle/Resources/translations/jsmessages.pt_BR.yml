@@ -5,6 +5,7 @@ pim_enrich.entity.family:
   flash:
     update:
       success: Família atualizada com sucesso.
+      fail: Ocorreu um erro durante a atualização da família.
       cant_remove_attribute_as_label: O atributo usado como rótulo não pode ser excluído
       cant_remove_attribute_as_image: Não é possível remover o atributo usado como a imagem principal
       cant_remove_attribute_used_as_axis: Não é possível remover este atributo usado como um eixo de variante em uma variante de família
@@ -66,6 +67,7 @@ pim_enrich.entity.attribute_option:
   flash:
     create:
       success: Opção de atributo criada com sucesso
+      fail: "61 / 5.000\nResultados de tradução\nOcorreu um erro ao tentar criar a opção de atributo"
     update:
       fail: Opções de Atributos não pode ser salva
     delete:
@@ -133,7 +135,6 @@ pim_enrich.entity.attribute:
     date_min: Data mínima
     decimals_allowed: Valores decimais permitidos
     default_metric_unit:
-      label: Unidade métrica padrão
       choose: Escolha uma unidade
     group:
       label: Grupo de atributos
@@ -143,7 +144,6 @@ pim_enrich.entity.attribute:
     max_characters: Limite máximo de caracteres
     max_file_size: Tamanho máximo do arquivo (MB)
     metric_family:
-      label: Unidades métricas
       choose: Escolher uma família
     minimum_input_length: Tamanho mínimo para preenchimento automático
     name: Nome
@@ -167,7 +167,6 @@ pim_enrich.entity.attribute:
       pim_catalog_image: Imagem
       pim_catalog_boolean: "Sim/Não"
       pim_catalog_date: Data
-      pim_catalog_metric: Métrico
       pim_reference_data_simpleselect: Seleção simples de dados de referência
       pim_reference_data_multiselect: Seleção múltipla de dados de referência
     unique: Valor exclusivo

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace AkeneoTest\UserManagement\Integration\Bundle;
@@ -23,7 +24,7 @@ abstract class ControllerIntegrationTestCase extends WebTestCase
 {
     protected KernelBrowser $client;
     protected CatalogInterface $catalog;
-    private RouterInterface $router;
+    protected RouterInterface $router;
 
     abstract protected function getConfiguration(): Configuration;
 
@@ -43,7 +44,7 @@ abstract class ControllerIntegrationTestCase extends WebTestCase
 
     protected function get(string $service)
     {
-        return self::$container->get($service);
+        return self::getContainer()->get($service);
     }
 
     /**
@@ -96,7 +97,7 @@ abstract class ControllerIntegrationTestCase extends WebTestCase
             $user = $this->createUser($username);
         }
 
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $token = new UsernamePasswordToken($user, 'main', $user->getRoles());
         $this->get('security.token_storage')->setToken($token);
 
         $session->set('_security_main', serialize($token));
@@ -106,13 +107,14 @@ abstract class ControllerIntegrationTestCase extends WebTestCase
         $this->client->getCookieJar()->set($cookie);
     }
 
-    private function createUser(string $username): User
+    protected function createUser(string $username, string $password = 'fake'): User
     {
         $user = $this->get('pim_user.factory.user')->create();
         $user->setId(uniqid());
         $user->setUsername($username);
         $user->setEmail(sprintf('%s@example.com', uniqid()));
-        $user->setPassword('fake');
+        $user->setPlainPassword($password);
+        $this->get('pim_user.manager')->updatePassword($user);
 
         $groups = $this->get('pim_user.repository.group')->findAll();
         foreach ($groups as $group) {

@@ -48,7 +48,7 @@ final class PurgeOutdatedDataTasklet implements TaskletInterface
             $jobParameters = $this->stepExecution->getJobParameters();
             $purgeDate = \DateTimeImmutable::createFromFormat(PeriodicTasksParameters::DATE_FORMAT, $jobParameters->get(PeriodicTasksParameters::DATE_FIELD));
 
-            $this->purgeOutdatedData->purgeDashboardProjectionRatesFrom($purgeDate);
+            $this->purgeOutdatedData->purgeAllFrom($purgeDate);
         } catch (\Exception $exception) {
             $this->stepExecution->addFailureException($exception);
             $this->logger->error('Purge Data-Quality-Insights outdated data failed.', [

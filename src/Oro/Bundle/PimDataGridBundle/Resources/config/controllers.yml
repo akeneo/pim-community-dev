@@ -26,13 +26,13 @@ services:
         class: '%pim_datagrid.controller.product_export.class%'
         arguments:
             - '@request_stack'
-            - '@pim_datagrid.extension.mass_action.dispatcher'
             - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
             - '@akeneo_batch.job.job_instance_repository'
             - '@security.token_storage'
             - '@pim_connector.launcher.authenticated_job_launcher'
             - '@oro_datagrid.datagrid.manager'
             - '@oro_datagrid.mass_action.parameters_parser'
+            - '@pim_catalog.version_provider'
 
     pim_datagrid.controller.mass_action:
         public: true

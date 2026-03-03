@@ -1,6 +1,5 @@
 import React, {memo, useEffect} from 'react';
 import {Helper, HelperLink, HelperTitle, PageContent, PageHeader} from '../../common';
-import {PimView} from '../../infrastructure/pim-view/PimView';
 import {AuditEventType} from '../../model/audit-event-type.enum';
 import {useRoute} from '../../shared/router';
 import {Translate} from '../../shared/translate';
@@ -10,6 +9,8 @@ import {useDashboardDispatch} from '../dashboard-context';
 import {useConnections} from '../hooks/api/use-connections';
 import {useFetchConnectionsAuditData} from '../hooks/api/use-fetch-connections-audit-data';
 import {Breadcrumb} from 'akeneo-design-system';
+import {UserButtons} from '../../shared/user';
+import {useFeatureFlags} from '../../shared/feature-flags';
 
 export const Dashboard = memo(() => {
     const {connections} = useConnections();
@@ -27,45 +28,44 @@ export const Dashboard = memo(() => {
     useFetchConnectionsAuditData(AuditEventType.PRODUCT_UPDATED);
     useFetchConnectionsAuditData(AuditEventType.PRODUCT_READ);
 
-    const dashboardHref = `#${useRoute('pim_dashboard_index')}`;
+    const dashboardHref = `#${useRoute('akeneo_connectivity_connection_audit_index')}`;
+
+    const featureFlags = useFeatureFlags();
 
     const breadcrumb = (
         <Breadcrumb>
             <Breadcrumb.Step href={dashboardHref}>
-                <Translate id='pim_menu.tab.activity' />
+                <Translate id='pim_menu.tab.connect' />
             </Breadcrumb.Step>
             <Breadcrumb.Step>
-                <Translate id='pim_menu.item.connection_audit' />
+                <Translate id='pim_menu.item.data_flows' />
             </Breadcrumb.Step>
         </Breadcrumb>
     );
 
-    const userButtons = (
-        <PimView
-            className='AknTitleContainer-userMenuContainer AknTitleContainer-userMenu'
-            viewName='pim-connectivity-connection-user-navigation'
-        />
-    );
-
     return (
         <>
-            <PageHeader breadcrumb={breadcrumb} userButtons={userButtons}>
-                <Translate id='pim_menu.item.connection_audit' />
+            <PageHeader breadcrumb={breadcrumb} userButtons={<UserButtons />}>
+                <Translate id='pim_menu.item.data_flows' />
             </PageHeader>
 
             <PageContent>
-                <Helper>
-                    <HelperTitle>
-                        <Translate id='akeneo_connectivity.connection.dashboard.helper.title' />
-                    </HelperTitle>
-                    <p>
-                        <Translate id='akeneo_connectivity.connection.dashboard.helper.description' />
-                    </p>
-                    <HelperLink href='https://help.akeneo.com/pim/articles/connection-dashboard.html' target='_blank'>
-                        <Translate id='akeneo_connectivity.connection.dashboard.helper.link' />
-                    </HelperLink>
-                </Helper>
-
+                {!featureFlags.isEnabled('free_trial') && (
+                    <Helper>
+                        <HelperTitle>
+                            <Translate id='akeneo_connectivity.connection.dashboard.helper.title' />
+                        </HelperTitle>
+                        <p>
+                            <Translate id='akeneo_connectivity.connection.dashboard.helper.description' />
+                        </p>
+                        <HelperLink
+                            href='https://help.akeneo.com/pim/articles/connection-dashboard.html'
+                            target='_blank'
+                        >
+                            <Translate id='akeneo_connectivity.connection.dashboard.helper.link' />
+                        </HelperLink>
+                    </Helper>
+                )}
                 <DashboardContent />
             </PageContent>
         </>

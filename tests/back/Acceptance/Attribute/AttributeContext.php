@@ -11,17 +11,10 @@ use Behat\Gherkin\Node\TableNode;
 
 class AttributeContext implements Context
 {
-    /** @var InMemoryAttributeRepository */
-    private $attributeRepository;
-
-    /** @var EntityBuilder */
-    private $attributeBuilder;
-
-    /** @var InMemoryAttributeGroupRepository */
-    private $attributeGroupRepository;
-
-    /** @var EntityBuilder */
-    private $attributeGroupBuilder;
+    private InMemoryAttributeRepository $attributeRepository;
+    private EntityBuilder $attributeBuilder;
+    private InMemoryAttributeGroupRepository $attributeGroupRepository;
+    private EntityBuilder $attributeGroupBuilder;
 
     public function __construct(
         InMemoryAttributeRepository $attributeRepository,
@@ -53,6 +46,14 @@ class AttributeContext implements Context
 
             if (isset($attributeData['available_locales'])) {
                 $attributeData['available_locales'] = array_filter(explode(',', $attributeData['available_locales']));
+            }
+
+            if (isset($attributeData['table_configuration'])) {
+                if ('' === $attributeData['table_configuration']) {
+                    unset($attributeData['table_configuration']);
+                } else {
+                    $attributeData['table_configuration'] = \json_decode($attributeData['table_configuration'], true);
+                }
             }
 
             $attribute = $this->attributeBuilder->build($attributeData);

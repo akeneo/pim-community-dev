@@ -10,6 +10,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterfac
 use Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Doctrine\Common\Util\ClassUtils;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -32,87 +33,36 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ProductCommentController
 {
-    /** @var TokenStorageInterface */
-    protected $tokenStorage;
-
-    /** @var FormFactoryInterface */
-    protected $formFactory;
-
-    /** @var ProductRepositoryInterface */
-    protected $productRepository;
-
-    /** @var CommentRepositoryInterface */
-    protected $commentRepository;
-
-    /** @var SaverInterface */
-    protected $commentSaver;
-
-    /** @var CommentBuilder */
-    protected $commentBuilder;
-
-    /** @var NormalizerInterface */
-    protected $normalizer;
-
-    /** @var ValidatorInterface */
-    protected $validator;
-
-    /** @var PresenterInterface */
-    protected $datetimePresenter;
-
-    /** @var LocaleResolver */
-    protected $localeResolver;
-
-    /**
-     * @param TokenStorageInterface      $tokenStorage
-     * @param FormFactoryInterface       $formFactory
-     * @param ProductRepositoryInterface $productRepository
-     * @param CommentRepositoryInterface $commentRepository
-     * @param SaverInterface             $commentSaver
-     * @param CommentBuilder             $commentBuilder
-     * @param NormalizerInterface        $normalizer
-     * @param ValidatorInterface         $validator
-     * @param PresenterInterface         $datetimePresenter
-     * @param LocaleResolver             $localeResolver
-     */
     public function __construct(
-        TokenStorageInterface $tokenStorage,
-        FormFactoryInterface $formFactory,
-        ProductRepositoryInterface $productRepository,
-        CommentRepositoryInterface $commentRepository,
-        SaverInterface $commentSaver,
-        CommentBuilder $commentBuilder,
-        NormalizerInterface $normalizer,
-        ValidatorInterface $validator,
-        PresenterInterface $datetimePresenter,
-        LocaleResolver $localeResolver
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly FormFactoryInterface $formFactory,
+        private readonly ProductRepositoryInterface $productRepository,
+        private readonly CommentRepositoryInterface $commentRepository,
+        private readonly SaverInterface $commentSaver,
+        private readonly CommentBuilder $commentBuilder,
+        private readonly NormalizerInterface $normalizer,
+        private readonly ValidatorInterface $validator,
+        private readonly PresenterInterface $datetimePresenter,
+        private readonly LocaleResolver $localeResolver,
+        private readonly UserContext $userContext,
     ) {
-        $this->tokenStorage = $tokenStorage;
-        $this->formFactory = $formFactory;
-        $this->productRepository = $productRepository;
-        $this->commentRepository = $commentRepository;
-        $this->commentSaver = $commentSaver;
-        $this->commentBuilder = $commentBuilder;
-        $this->normalizer = $normalizer;
-        $this->validator = $validator;
-        $this->datetimePresenter = $datetimePresenter;
-        $this->localeResolver = $localeResolver;
     }
 
     /**
      * List comments made on a product
      *
-     * @param int|string $id
+     * @param string $uuid
      *
      * @AclAncestor("pim_enrich_product_comment")
      *
      * @return JsonResponse
      */
-    public function getAction($id)
+    public function getAction($uuid)
     {
-        $product = $this->findProductOr404($id);
-        $comments = $this->commentRepository->getComments(
+        $product = $this->findProductOr404($uuid);
+        $comments = $this->commentRepository->getCommentsByUuid(
             ClassUtils::getClass($product),
-            $product->getId()
+            $product->getUuid()
         );
 
         $comments = $this->normalizer->normalize($comments, 'standard');
@@ -132,19 +82,14 @@ class ProductCommentController
 
     /**
      * Create a comment on a product
-     *
-     * @param Request $request
-     * @param string  $id
-     *
-     * @return Response
      */
-    public function postAction(Request $request, $id)
+    public function postAction(Request $request, string $uuid): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
 
-        $product = $this->findProductOr404($id);
+        $product = $this->findProductOr404($uuid);
         $data = json_decode($request->getContent(), true);
         $comment = $this->commentBuilder->buildComment($product, $this->getUser());
         $form = $this->formFactory->create(CommentType::class, $comment, ['csrf_protection' => false]);
@@ -172,19 +117,15 @@ class ProductCommentController
     /**
      * Reply to a product comment
      *
-     * @param Request $request
-     * @param string  $id
-     * @param string  $commentId
-     *
-     * @return Response
+     * @param string $commentId
      */
-    public function postReplyAction(Request $request, $id, $commentId)
+    public function postReplyAction(Request $request, string $uuid, $commentId): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
 
-        $product = $this->findProductOr404($id);
+        $product = $this->findProductOr404($uuid);
 
         $data = json_decode($request->getContent(), true);
         $data['parent'] = $commentId;
@@ -225,19 +166,15 @@ class ProductCommentController
     /**
      * Find a product by its id or return a 404 response
      *
-     * @param int $id the product id
-     *
      * @throws NotFoundHttpException
-     *
-     * @return ProductInterface
      */
-    protected function findProductOr404($id)
+    protected function findProductOr404(string $uuid): ProductInterface
     {
-        $product = $this->productRepository->find($id);
+        $product = $this->productRepository->find($uuid);
 
         if (!$product) {
             throw new NotFoundHttpException(
-                sprintf('Product with id %s could not be found.', (string) $id)
+                sprintf('Product with uuid %s could not be found.', $uuid)
             );
         }
 
@@ -269,8 +206,12 @@ class ProductCommentController
      */
     protected function presentDate($date)
     {
-        $context = ['locale' => $this->localeResolver->getCurrentLocale()];
+        $context = [
+            'locale' => $this->localeResolver->getCurrentLocale(),
+            'timezone' => $this->userContext->getUserTimezone(),
+        ];
+        $dateTime = new \DateTime($date);
 
-        return $this->datetimePresenter->present($date, $context);
+        return $this->datetimePresenter->present($dateTime, $context);
     }
 }

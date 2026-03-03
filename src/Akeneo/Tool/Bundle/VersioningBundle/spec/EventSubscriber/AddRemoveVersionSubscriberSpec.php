@@ -37,7 +37,7 @@ class AddRemoveVersionSubscriberSpec extends ObjectBehavior
     function it_subscribes_to_post_remove_events()
     {
         $this->getSubscribedEvents()->shouldReturn([
-            StorageEvents::PRE_REMOVE => 'addRemoveVersion',
+            StorageEvents::POST_REMOVE => 'addRemoveVersion',
         ]);
     }
 
@@ -56,14 +56,14 @@ class AddRemoveVersionSubscriberSpec extends ObjectBehavior
     ) {
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($admin);
-        $admin->getUsername()->willReturn('admin');
+        $admin->getUserIdentifier()->willReturn('admin');
         $authorizationChecker->isGranted('IS_AUTHENTICATED_REMEMBERED')->willReturn(true);
 
-        $versionRepository->getNewestLogEntry(Argument::any(), 12)->willReturn($previousVersion);
+        $versionRepository->getNewestLogEntry(Argument::any(), 12, null)->willReturn($previousVersion);
         $previousVersion->getVersion()->willReturn(11);
         $previousVersion->getSnapshot()->willReturn(['foo' => 'bar']);
 
-        $versionFactory->create(Argument::Any(), 12, 'admin', 'Deleted')->willReturn($removeVersion);
+        $versionFactory->create(Argument::Any(), 12, null, 'admin', 'Deleted')->willReturn($removeVersion);
         $removeVersion->setVersion(12)->willReturn($removeVersion);
         $removeVersion->setSnapshot(['foo' => 'bar'])->willReturn($removeVersion);
         $removeVersion->setChangeset([])->willReturn($removeVersion);
@@ -72,6 +72,7 @@ class AddRemoveVersionSubscriberSpec extends ObjectBehavior
 
         $versionSaver->save($removeVersion, $saveOptions)->shouldBeCalled();
 
+        $price->getId()->willReturn(12);
         $event->getSubject()->willReturn($price);
         $event->getSubjectId()->willReturn(12);
         $event->getArguments()->willReturn($saveOptions);
@@ -91,7 +92,7 @@ class AddRemoveVersionSubscriberSpec extends ObjectBehavior
     ) {
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($admin);
-        $admin->getUsername()->willReturn('admin');
+        $admin->getUserIdentifier()->willReturn('admin');
         $authorizationChecker->isGranted('IS_AUTHENTICATED_REMEMBERED')->willReturn(true);
 
         $versionSaver->save($removeVersion, Argument::any())->shouldNotBeCalled();

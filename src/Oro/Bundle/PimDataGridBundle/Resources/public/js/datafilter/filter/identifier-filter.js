@@ -15,6 +15,8 @@ define(['underscore', 'oro/translator', 'oro/datafilter/choice-filter'], functio
         {label: __('pim_datagrid.filters.common.equal'), value: '3'},
         {label: __('pim_datagrid.filters.common.start_with'), value: '4'},
         {label: __('pim_datagrid.filters.common.in_list'), value: 'in'},
+        {label: __('pim_datagrid.filters.common.empty'), value: 'empty'},
+        {label: __('pim_datagrid.filters.common.not_empty'), value: 'not empty'},
       ];
       this.emptyValue = {type: 'in', value: ''};
 
@@ -31,6 +33,8 @@ define(['underscore', 'oro/translator', 'oro/datafilter/choice-filter'], functio
         '3': __('pim_datagrid.filters.common.equal'),
         '4': __('pim_datagrid.filters.common.start_with'),
         in: __('pim_datagrid.filters.common.in_list'),
+        empty: __('pim_datagrid.filters.common.empty'),
+        'not empty': __('pim_datagrid.filters.common.not_empty'),
       };
     },
   });

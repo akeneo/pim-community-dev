@@ -1,0 +1,78 @@
+services:
+
+    pim_enrich.controller.rest.locale:
+        public: true
+        class: 'Akeneo\Channel\Infrastructure\Controller\InternalApi\LocaleController'
+        arguments:
+            - '@pim_catalog.repository.locale'
+            - '@pim_internal_api_serializer'
+            - '@pim_catalog.filter.chained'
+
+    pim_api.controller.locale:
+        public: true
+        class: 'Akeneo\Channel\Infrastructure\Controller\ExternalApi\LocaleController'
+        arguments:
+            - '@pim_api.repository.locale'
+            - '@pim_external_api_serializer'
+            - '@pim_api.pagination.offset_hal_paginator'
+            - '@pim_api.pagination.parameter_validator'
+            - '@pim_api.checker.query_parameters_locale'
+            - '%pim_api.configuration%'
+            - '@oro_security.security_facade'
+            - '@translator'
+
+    pim_api.controller.channel:
+        public: true
+        class: 'Akeneo\Channel\Infrastructure\Controller\ExternalApi\ChannelController'
+        arguments:
+            - '@pim_api.repository.channel'
+            - '@pim_external_api_serializer'
+            - '@pim_api.pagination.offset_hal_paginator'
+            - '@pim_api.pagination.parameter_validator'
+            - '@pim_catalog.factory.channel'
+            - '@pim_catalog.updater.channel'
+            - '@validator'
+            - '@router'
+            - '@pim_catalog.saver.channel'
+            - '@pim_api.stream.channel_partial_update_stream'
+            - '%pim_api.configuration%'
+            - '@oro_security.security_facade'
+
+    pim_enrich.controller.rest.channel:
+        public: true
+        class: 'Akeneo\Channel\Infrastructure\Controller\InternalApi\ChannelController'
+        arguments:
+            - '@pim_catalog.repository.channel'
+            - '@pim_internal_api_serializer'
+            - '@pim_catalog.updater.channel'
+            - '@pim_catalog.saver.channel'
+            - '@pim_catalog.remover.channel'
+            - '@pim_catalog.factory.channel'
+            - '@validator'
+            - '@oro_security.security_facade'
+            - '@akeneo.enrichment.public_api.find_category_trees'
+
+    pim_api.controller.currency:
+        public: true
+        class: 'Akeneo\Channel\Infrastructure\Controller\ExternalApi\CurrencyController'
+        arguments:
+            - '@pim_api.repository.currency'
+            - '@pim_external_api_serializer'
+            - '@pim_api.pagination.parameter_validator'
+            - '@pim_api.pagination.offset_hal_paginator'
+            - '%pim_api.configuration%'
+            - '@oro_security.security_facade'
+
+    pim_enrich.controller.rest.currency:
+        public: true
+        class: 'Akeneo\Channel\Infrastructure\Controller\InternalApi\CurrencyController'
+        arguments:
+            - '@pim_catalog.repository.currency'
+
+    pim_enrich.controller.currency:
+        public: true
+        class: 'Akeneo\Channel\Infrastructure\Controller\UI\CurrencyController'
+        arguments:
+            - '@pim_catalog.saver.currency'
+            - '@oro_security.security_facade'
+            - '@pim_catalog.repository.currency'

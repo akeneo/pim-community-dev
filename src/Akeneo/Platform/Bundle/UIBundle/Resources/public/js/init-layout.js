@@ -73,7 +73,7 @@ define([
     };
 
     if (!anchor.length) {
-      anchor = $('<div id="bottom-anchor"/>')
+      anchor = $('<div id="bottom-anchor"></div>')
         .css({
           position: 'fixed',
           bottom: '0',

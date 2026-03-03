@@ -3,9 +3,12 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;
+use Akeneo\Tool\Component\Connector\Exception\BusinessArrayConversionException;
+use Ramsey\Uuid\Uuid;
 
 /**
- * Merge columns for single value that can be provided in many columns like prices and metric
+ * Merge columns for single value that can be provided in many columns like prices and metric.
  *
  * These two values supports two different formats, we standardize here to the one column format
  *
@@ -45,7 +48,7 @@ class ColumnsMerger
      *
      * @return array merged $row
      */
-    public function merge(array $row)
+    public function merge(array $row, array $options)
     {
         $resultRow = [];
         $collectedMetrics = [];
@@ -58,7 +61,12 @@ class ColumnsMerger
                 if (AttributeTypes::BACKEND_TYPE_METRIC === $attribute->getBackendType()) {
                     $collectedMetrics = $this->collectMetricData($collectedMetrics, $attributeInfos, $fieldValue);
                 } elseif (AttributeTypes::BACKEND_TYPE_PRICE === $attribute->getBackendType()) {
-                    $collectedPrices = $this->collectPriceData($collectedPrices, $attributeInfos, $fieldValue);
+                    // For XLSX import, the value could be already converted to a DateTime object (cf PIM-10167)
+                    if ($fieldValue instanceof \DateTimeInterface) {
+                        throw new BusinessArrayConversionException("Can not convert cell {$fieldName} with date format to attribute of type date", 'pim_import_export.notification.import.warnings.xlsx_cell_date_conversion_error', ['{cellName}' => $fieldName, '{attributeType}' => 'price']);
+                    }
+
+                    $collectedPrices = $this->collectPriceData($collectedPrices, $attributeInfos, $fieldValue, $options);
                 } else {
                     $resultRow[$fieldName] = $fieldValue;
                 }
@@ -73,7 +81,7 @@ class ColumnsMerger
             }
         }
 
-        $resultRow = $this->mergeMetricData($resultRow, $collectedMetrics);
+        $resultRow = $this->mergeMetricData($resultRow, $collectedMetrics, $options);
         $resultRow = $this->mergePriceData($resultRow, $collectedPrices);
         $resultRow = $this->mergeQuantifiedAssociationData($resultRow, $collectedQuantifiedAssociations);
 
@@ -81,9 +89,7 @@ class ColumnsMerger
     }
 
     /**
-     * Returns a clean field name with code, locale and scope (without unit, currency, etc in the field)
-     *
-     * @param array $attributeInfos
+     * Returns a clean field name with code, locale and scope (without unit, currency, etc in the field).
      *
      * @return string
      */
@@ -100,10 +106,8 @@ class ColumnsMerger
     }
 
     /**
-     * Collect metric data exploded in different columns
+     * Collect metric data exploded in different columns.
      *
-     * @param array  $collectedMetrics
-     * @param array  $attributeInfos
      * @param string $fieldValue
      *
      * @return array collected metrics
@@ -118,27 +122,39 @@ class ColumnsMerger
         if ('unit' === $attributeInfos['metric_unit']) {
             $collectedMetrics[$cleanField]['unit'] = $fieldValue;
         } else {
-            $collectedMetrics[$cleanField]['data'] = $fieldValue;
+            if (is_string($fieldValue)) {
+                $collectedMetrics[$cleanField]['data'] = trim($fieldValue);
+            } else {
+                $collectedMetrics[$cleanField]['data'] = $fieldValue;
+            }
         }
 
         return $collectedMetrics;
     }
 
     /**
-     * Merge collected metric in result rows
-     *
-     * @param array $resultRow
-     * @param array $collectedMetrics
+     * Merge collected metric in result rows.
      *
      * @return array
      */
-    protected function mergeMetricData(array $resultRow, array $collectedMetrics)
+    protected function mergeMetricData(array $resultRow, array $collectedMetrics, array $options): array
     {
         foreach ($collectedMetrics as $fieldName => $metricData) {
+            $metricValue = $metricData['data'];
+
+            if (is_float($metricValue)) {
+                $metricValue = number_format(
+                    $metricValue,
+                    decimals: MeasureConverter::SCALE,
+                    decimal_separator: $options['decimal_separator'] ?? '.',
+                    thousands_separator: ''
+                );
+            }
+
             $resultRow[$fieldName] = trim(
                 sprintf(
                     '%s%s%s',
-                    $metricData['data'],
+                    $metricValue,
                     AttributeColumnInfoExtractor::UNIT_SEPARATOR,
                     $metricData['unit']
                 )
@@ -149,22 +165,25 @@ class ColumnsMerger
     }
 
     /**
-     * Collect price data exploded in different columns
+     * Collect price data exploded in different columns.
      *
-     * @param array  $collectedPrices
-     * @param array  $attributeInfos
      * @param string $fieldValue
      *
      * @return array collected metrics
      */
-    protected function collectPriceData(array $collectedPrices, array $attributeInfos, $fieldValue)
+    protected function collectPriceData(array $collectedPrices, array $attributeInfos, mixed $fieldValue, array $options)
     {
         $cleanField = $this->getCleanFieldName($attributeInfos);
         if (null !== $attributeInfos['price_currency']) {
             $collectedPrices[$cleanField] = $collectedPrices[$cleanField] ?? [];
-            if (trim($fieldValue) === '') {
+            if ('' === trim($fieldValue)) {
                 return $collectedPrices;
             }
+
+            if (is_float($fieldValue)) {
+                $fieldValue = str_replace('.', $options['decimal_separator'] ?? '.', $fieldValue);
+            }
+
             $collectedPrices[$cleanField][] = sprintf(
                 '%s%s%s',
                 $fieldValue,
@@ -208,19 +227,24 @@ class ColumnsMerger
             return $collectedQuantifiedAssociations;
         }
 
+        $values = explode(ProductAssociation::IDENTIFIER_SEPARATOR, $fieldValue);
+        $isUuids = \count(\array_filter($values, fn ($value) => !Uuid::isValid($value))) === 0;
+
+        if ($isUuids) {
+            $newQuantifiedAssociations = ['uuids' => $values];
+        } else {
+            $newQuantifiedAssociations = ['identifiers' => $values];
+        }
         $collectedQuantifiedAssociations[$associationTypeCode][$productType] = array_merge(
             $collectedQuantifiedAssociations[$associationTypeCode][$productType] ?? [],
-            ['identifiers' => explode(ProductAssociation::IDENTIFIER_SEPARATOR, $fieldValue)]
+            $newQuantifiedAssociations
         );
 
         return $collectedQuantifiedAssociations;
     }
 
     /**
-     * Merge collected price in result rows
-     *
-     * @param array $resultRow
-     * @param array $collectedPrices
+     * Merge collected price in result rows.
      *
      * @return array
      */
@@ -243,17 +267,29 @@ class ColumnsMerger
                     continue;
                 }
 
-                if (
-                    count($quantifiedAssociation[$entityType]['identifiers']) !==
-                    count($quantifiedAssociation[$entityType]['quantities'])
-                ) {
-                    throw new \LogicException('Inconsistency detected: the count of identifiers and quantities is not the same');
+                if (!array_key_exists('quantities', $quantifiedAssociation[$entityType])) {
+                    throw new \LogicException(sprintf('A "%s-%s" column is missing for quantified association', $associationTypeCode, $entityType.$this->associationColumnResolver::QUANTITY_SUFFIX));
+                }
+
+                $isUuids = \array_key_exists('uuids', $quantifiedAssociation[$entityType]);
+                $uuidsOrIdentifiers = $isUuids ? $quantifiedAssociation[$entityType]['uuids'] : $quantifiedAssociation[$entityType]['identifiers'];
+
+                if (count($uuidsOrIdentifiers) !== count($quantifiedAssociation[$entityType]['quantities'])) {
+                    throw new \LogicException('Inconsistency detected: the count of uuids and quantities is not the same');
                 }
 
                 $resultRow[sprintf('%s%s%s', $associationTypeCode, AttributeColumnInfoExtractor::FIELD_SEPARATOR, $entityType)] =
-                array_map(function ($identifier, $quantity) {
-                    return ['identifier' => $identifier, 'quantity' => (int) $quantity];
-                }, $quantifiedAssociation[$entityType]['identifiers'], $quantifiedAssociation[$entityType]['quantities']);
+                array_map(
+                    function ($uuid, $quantity) use ($isUuids) {
+                        if ($isUuids) {
+                            return ['uuid' => $uuid, 'quantity' => (int)$quantity];
+                        } else {
+                            return ['identifier' => $uuid, 'quantity' => (int)$quantity];
+                        }
+                    },
+                    $uuidsOrIdentifiers,
+                    $quantifiedAssociation[$entityType]['quantities']
+                );
             }
         }
 

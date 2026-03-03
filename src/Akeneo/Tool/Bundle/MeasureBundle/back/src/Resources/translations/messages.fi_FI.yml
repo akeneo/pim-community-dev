@@ -1,0 +1,13 @@
+pim_enrich.acl_group.measurements: Mitat
+measurements:
+  acl:
+    manage_settings: Listaa mitat
+    family:
+      create: Luo mittaperhe
+      edit:
+        properties: Muokkaa mittaperheen ominaisuuksia
+      delete: Poista mittaperhe ja yksiköt
+    unit:
+      add: Lisää yksikkö mittaperheeseen
+      edit: Muokkaa mittaperheen yksiköitä
+      delete: Poista yksikkö mittaperheestä

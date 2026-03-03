@@ -1,10 +1,9 @@
-import React, {PropsWithChildren} from 'react';
+import React from 'react';
 import {act, renderHook} from '@testing-library/react-hooks';
 import {useDataGridState, useInitialDataGridState} from '@akeneo-pim-community/settings-ui/src/hooks/shared';
 import {
   AfterMoveRowHandler,
   CompareRowDataHandler,
-  DataGridStateProvider,
 } from '@akeneo-pim-community/settings-ui/src/components/shared/providers';
 import {aDragEvent, aListOfData} from '../../../utils/provideDataGridHelper';
 

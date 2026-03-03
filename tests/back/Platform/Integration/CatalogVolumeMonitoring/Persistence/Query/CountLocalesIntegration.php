@@ -22,7 +22,6 @@ class CountLocalesIntegration extends QueryTestCase
 
         Assert::assertEquals(3, $volume->getVolume());
         Assert::assertEquals('count_locales', $volume->getVolumeName());
-        Assert::assertEquals(false, $volume->hasWarning());
     }
 
     /**

@@ -1,0 +1,81 @@
+pim_title:
+  akeneo_job_process_tracker_index: 프로세스 트래커
+  akeneo_job_process_tracker_details: 프로세스 트래커 | 작업 표시
+akeneo_job:
+  job_status:
+    COMPLETED: 완료
+    STARTED: 진행 중
+    STARTING: 시작 중
+    STOPPING: 중지 중
+    STOPPED: 중지됨
+    FAILED: 실패
+    ABANDONED: 중단됨
+    UNKNOWN: 알 수 없음
+    IN_PROGRESS: 진행 중
+    PAUSING: 일시 중지 중
+    PAUSED: 일시 중지됨
+akeneo_job_process_tracker:
+  tooltip:
+    paused: 이 작업은 인스턴스의 내부 유지 관리로 인해 일시 중지되었습니다. 완료되면 자동으로 다시 시작됩니다.
+  last_operations:
+    title: 마지막 작업
+    view_all: 모두 보기
+    details: 세부 정보
+    no_result: 현재 표시할 작업이 없습니다.
+  last_executions:
+    title: 마지막 실행
+  job_execution_list:
+    search_placeholder: 작업 이름별 검색
+    table:
+      headers:
+        job_name: 작업 이름
+        type: 유형
+        started_at: '시작:'
+        username: 사용자 이름
+        progress: 진행률
+        status: 상태
+        warning_count: 경고
+  type_filter:
+    label: 유형
+    all: 모두
+    quick_export: 빠른 내보내기
+    import: 가져오기
+    export: 내보내기
+    mass_edit: 대량 편집
+    mass_delete: 제품 대량 삭제
+    attribute_mass_delete: 특성 일괄 삭제
+    compute_family_variant_structure_changes: 패밀리 변형 구조 변경 사항 계산
+    compute_completeness_of_products_family: 제품 패밀리 완성도 계산
+    clean_removed_attribute_job: 제거된 특성 값 정리 중
+    execute_rules: 규칙 실행
+    scheduled_job: 예약된 작업
+  user_filter:
+    label: 사용자
+    all: 모두
+    search: 검색
+  status_filter:
+    label: 상태
+    all: 모두
+    abandoned: 중단됨
+    completed: 완료
+    failed: 실패
+    starting: 시작 중
+    stopped: 중지됨
+    stopping: 중지 중
+    unknown: 알 수 없음
+    in_progress: 진행 중
+    pausing: 일시 중지 중
+    paused: 일시 중지됨
+  automation_filter:
+    all: 모두
+    yes: Yes
+    no: No
+    label: 자동화
+  max_page_without_filter_helper:
+    - 가장 관련성이 높은 결과를 표시하려면 검색 범위를 좁히십시오.
+  tracking:
+    completed: "경과 시간: {{ duration }}"
+    in_progress: "현재 단계의 남은 예상 시간: {{ duration }}"
+    not_started: 대기 중
+    untrackable: 추적 불가능한 단계
+    estimating: 남은 시간 예상 중...

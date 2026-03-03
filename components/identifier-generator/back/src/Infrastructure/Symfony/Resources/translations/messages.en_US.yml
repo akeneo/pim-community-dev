@@ -1,0 +1,20 @@
+pim_catalog_identifier_generator:
+  acl:
+    view: 'View identifier generators'
+    manage: 'Manage identifier generators'
+  acl_group:
+    identifier_generator: 'Identifier Generator'
+  condition:
+    fields:
+      family: Family
+      enabled: Status
+      categories: Categories
+    field_groups:
+      system: System
+  structure:
+    fields:
+      free_text: Free text
+      auto_number: Auto Number
+      family: Family
+    field_groups:
+      system: System

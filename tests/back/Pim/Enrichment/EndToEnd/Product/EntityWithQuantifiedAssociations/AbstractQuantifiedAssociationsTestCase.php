@@ -30,6 +30,6 @@ abstract class AbstractQuantifiedAssociationsTestCase extends InternalApiTestCas
 
     protected function getAdminUser(): UserInterface
     {
-        return self::$container->get('pim_user.repository.user')->findOneByIdentifier('admin');
+        return self::getContainer()->get('pim_user.repository.user')->findOneByIdentifier('admin');
     }
 }

@@ -25,11 +25,6 @@ services:
         tags:
             - { name: pim_versioning.update_guesser }
 
-    pim_versioning.update_guesser.contains_products:
-        class: '%pim_versioning.update_guesser.contains_products.class%'
-        tags:
-            - { name: pim_versioning.update_guesser }
-
     pim_versioning.update_guesser.association:
         class: '%pim_versioning.update_guesser.association.class%'
         tags:

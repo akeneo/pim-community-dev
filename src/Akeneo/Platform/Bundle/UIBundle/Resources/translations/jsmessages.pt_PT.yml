@@ -1,22 +1,11 @@
-Close: Fechar
-Update: Atualizar
-Selected Rows: Linhas Selecionadas
-"Yes": "Sim"
-"Yes, Delete": "Sim, Eliminar"
+#ORO messages
 "Yes, I Agree": "Sim, Eu Concordo"
 "Yes, do it": "Sim, avançar"
-"No": "Não"
 "Ok, got it.": "Ok, entendi."
-"Cancel": "Cancelar"
-"Delete Confirmation": "Confirmar Eliminação"
 "Edit": "Editar"
-"Unexpected error occurred. Please contact system administrator.": "Ocorreu um erro inesperado. Por favor, contate o administrador do sistema."
-Now: Agora
 Prev: Anterior
-Next: Seguinte
 Today: Hoje
 Wk: WK
-Done: Terminado
 AM: AM
 A: A
 PM: PM
@@ -29,10 +18,11 @@ Second: Segundo
 Millisecond: Milissegundo
 Microsecond: Microssegundo
 "Time Zone": "Fuso Horário"
+#PIM messages
 Localized value: Valor multi-linguagem
 Columns: Colunas
 Datagrid Configuration: Configuração da grelha de dados
-Apply: Aplicar
+#Filters
 Action: Ação
 Unit: Unidade
 Currency: Moeda
@@ -44,7 +34,7 @@ jstree:
     unclassified: Produtos não classificados
   no_tree: Nenhuma árvore disponível
   include_sub: Incluir subcategorias
-  loading: A carregar ...
+#Datetimepicker
 datetimepicker:
   days:
     Sunday: Domingo
@@ -75,7 +65,7 @@ datetimepicker:
     February: Fevereiro
     March: Março
     April: Abril
-    May: Maio
+    May: Mai
     June: Junho
     July: Julho
     August: Agosto
@@ -88,7 +78,7 @@ datetimepicker:
     Feb: Fev
     Mar: Mar
     Apr: Abr
-    May: Maio
+    May: Mai
     Jun: Jun
     Jul: Jul
     Aug: Ago
@@ -96,6 +86,7 @@ datetimepicker:
     Oct: Out
     Nov: Nov
     Dec: Dez
+#ORO
 oro_config:
   form:
     config:
@@ -105,8 +96,183 @@ oro_config:
           title: Sistema
       group:
         localization:
-          title: Localização
-          system_locale: Idioma
-        notification:
-          title: Notificações
-          system_notification: Notificações de novas versões
+          fields:
+            system_locale:
+              label: Idioma
+"Sorry, page was not loaded correctly": "Desculpe, a página não foi carregada corretamente"
+"Your local changes will be lost. Are you sure you want to refresh the page?": "As suas alterações locais serão perdidas. Tem a certeza de que deseja atualizar a página?"
+"navigation.message.content.outdated": "O conteúdo da página {{ title }} está desatualizado, por favor, <a href='#' data-action='page-refresh'> atualize a página</a>"
+"Content of pinned page is outdated": "O conteúdo da página afixada está desatualizado"
+#Global structure of translation files
+#pim_bundle_name:
+#entity:
+#entity_name:
+#label: entity
+#uppercase_label: Entity
+#plural_label: Entities
+#flash:
+#update:
+#fail: Update failed
+#success: Entity Successfully updated
+#delete:
+#fail: Cannot delete this entity
+#success: Entity successfully removed
+#create:
+#fail: Can not create this entity
+#success: Entity successfully created
+#page_title:
+#index: "]-Inf, 1]1 entity|]1, Inf[{{ count }} entities"
+#property:
+#field_name: Field name
+#complex_field:
+#label: Field name
+#choose: Choose a field name
+#module:
+#module_name:
+#key: message
+pim_common:
+  actions: Ações
+  add: Adicionar
+  add_attributes: Adicionar atributos
+  all: Tudo
+  and: e
+  apply: Aplicar
+  by: por
+  cancel: Cancelar
+  code: Código
+  confirm: Confirmar
+  confirm_deletion: Confirmar eliminação
+  create: Criar
+  created: Criado
+  delete: Eliminar
+  done: Terminado
+  edit: Editar
+  entity_updated: Existem alterações não guardadas.
+  export: Exportação
+  from: De
+  general_properties: Propriedades gerais
+  history: Histórico
+  label: Rótulo
+  label_translations: Traduções de rótulo
+  less_than: Menos que
+  loading: A carregar...
+  media_upload: Arraste e solte para fazer o envio ou clique aqui
+  more_than: Mais do que
+  next: Seguinte
+  "no": "Não"
+  none: Nenhum
+  not_available: N/A
+  now: Agora
+  ok: OK
+  permissions: Permissões
+  previous: Anterior
+  properties: Propriedades
+  remove: Remover
+  required_label: (obrigatório)
+  save: Guardar
+  search: Pesquisar
+  select2:
+    search: Pesquisar...
+    no_match: Nenhuma correspondência encontrada
+    load_more: A carregar mais resultados...
+  status: Estado
+  to: até
+  type: Tipo
+  update: Atualizar
+  "yes": "Sim"
+  operators:
+    "=": É igual a
+    "!=": Diferente de
+    ">=": Maior que ou igual
+    ">": Maior que
+    "<=": Inferior ou igual
+    "<": Menor do que
+    EMPTY: Está vazio
+    NOT EMPTY: Não é vazio
+    CONTAINS: Contêm
+    DOES NOT CONTAIN: Não contêm
+    STARTS WITH: Começa por
+    ENDS WITH: Termina com
+  groups: Grupos
+  products: Produtos
+  product_uuids: Produtos
+error:
+  forbidden: Proibida. Você não tem permissão para visualizar esta página
+alert:
+  attribute_option:
+    save_before_edit_other: Por favor, registe as suas modificações noutras linhas antes de editar esta
+  session_storage:
+    not_available: O seu navegador não parece ser compatível com sessionStorage. Por favor, contate o administrador do sistema
+pim_enrich.entity.fallback:
+  flash:
+    update:
+      fail: A atualização falhou
+      success: Atualizado com sucesso
+    delete:
+      fail: Não é possível eliminar este item
+      success: Item removido com sucesso
+  module:
+    delete:
+      title: Eliminar este {{ itemName }}
+      item: Tem a certeza que pretende eliminar este item?
+    edit:
+      leave: Tem certeza que deseja sair desta página?
+      discard_changes: Irá perderá as alterações para {{ entity }}, se abandonar a página.
+pim_title:
+  oro_default: Painel
+  pim_enrich_attributegroup_index: Grupos de atributos
+  pim_enrich_attributegroup_create: Grupos de atributos | Criar
+  pim_enrich_categorytree_index: Árvores de categorias
+  pim_enrich_categorytree_create: Árvores de categorias | Criar
+  pim_enrich_categorytree_create_tree: Árvores de categorias | Criar
+  pim_enrich_attribute_index: Atributos
+  pim_enrich_attribute_create: Atributos | Criar
+  pim_enrich_product_index: Produtos
+  pim_enrich_family_index: Famílias
+  pim_enrich_channel_index: Canais
+  pim_enrich_channel_create: Canais | Criar
+  pim_enrich_currency_index: Moedas
+  pim_enrich_locale_index: Linguagens
+  pim_enrich_group_index: Grupos
+  pim_enrich_associationtype_index: Tipos de associação
+  pim_enrich_grouptype_index: Tipos de grupo
+  pim_enrich_mass_edit_action_choose: Editar em massa | Escolher
+  pim_enrich_mass_edit_action_configure: Editar em massa | Configurar
+  pim_enrich_job_tracker_index: Visualizador de processos
+  pim_enrich_job_tracker_show: Visualizador de processos | Mostrar tarefa
+  pim_enrich_mass_edit_action: Editar em massa
+  pim_analytics_system_info_index: Informações do Sistema
+  pim_settings_index: Preferências
+  pim_system_index: Sistema
+pim_menu:
+  tab:
+    settings: Preferências
+    system: Sistema
+  item:
+    association_type: Tipos de associação
+    attribute_group: Grupos de atributos
+    channel: Canais
+    currency: Moedas
+    family: Famílias
+    group: Grupos
+    group_type: Tipos de grupo
+    export_history: Histórico de exportações
+    export_profile: Perfis de exportação
+    import_history: Histórico de importações
+    import_profile: Perfis de importação
+    configuration: Configuração
+    user_management: Gestão de Utilizadores
+    user: Utilizadores
+    user_group: Grupos de utilizadores
+    user_role: Funções
+    info: Informações do Sistema
+    job_tracker: Visualizador de processos
+  user:
+    logout: Terminar sessão
+    user_account: A minha conta
+pim_notification:
+  types:
+    import: Importação
+    export: Exportação
+    quick_export: Exportação rápida
+    mass_edit: Editar em massa

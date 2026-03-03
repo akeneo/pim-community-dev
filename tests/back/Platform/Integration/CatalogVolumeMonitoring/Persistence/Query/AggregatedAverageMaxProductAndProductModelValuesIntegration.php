@@ -49,6 +49,5 @@ class AggregatedAverageMaxProductAndProductModelValuesIntegration extends TestCa
         $this->assertEquals('average_max_product_and_product_model_values', $volume->getVolumeName());
         $this->assertEquals(23, $volume->getMaxVolume());
         $this->assertEquals(14, $volume->getAverageVolume());
-        $this->assertFalse($volume->hasWarning());
     }
 }

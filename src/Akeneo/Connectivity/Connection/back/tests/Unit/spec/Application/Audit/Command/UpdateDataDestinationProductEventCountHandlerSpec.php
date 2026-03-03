@@ -7,9 +7,9 @@ namespace spec\Akeneo\Connectivity\Connection\Application\Audit\Command;
 use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataDestinationProductEventCountCommand;
 use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataDestinationProductEventCountHandler;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\EventTypes;
-use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Write\HourlyEventCount;
-use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Repository\EventCountRepository;
+use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\UpsertEventCountQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -19,17 +19,17 @@ use PhpSpec\ObjectBehavior;
  */
 class UpdateDataDestinationProductEventCountHandlerSpec extends ObjectBehavior
 {
-    function let(EventCountRepository $eventCountRepository)
+    public function let(UpsertEventCountQueryInterface $upsertEventCountQuery): void
     {
-        $this->beConstructedWith($eventCountRepository);
+        $this->beConstructedWith($upsertEventCountQuery);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldBeAnInstanceOf(UpdateDataDestinationProductEventCountHandler::class);
     }
 
-    function it_save_data_destination_product_event_count($eventCountRepository)
+    public function it_saves_data_destination_product_event_count(UpsertEventCountQueryInterface $upsertEventCountQuery): void
     {
         $command = new UpdateDataDestinationProductEventCountCommand(
             'ecommerce',
@@ -44,7 +44,7 @@ class UpdateDataDestinationProductEventCountHandlerSpec extends ObjectBehavior
             EventTypes::PRODUCT_READ
         );
 
-        $eventCountRepository->upsert($hourlyEventCount)->shouldBeCalled();
+        $upsertEventCountQuery->execute($hourlyEventCount)->shouldBeCalled();
 
         $this->handle($command);
     }

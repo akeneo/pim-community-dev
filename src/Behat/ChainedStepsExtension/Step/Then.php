@@ -25,6 +25,6 @@ class Then extends SubStep
         $arguments = func_get_args();
         $text = array_shift($arguments);
 
-        parent::__construct('Then', $text, $arguments);
+        parent::__construct($text, $arguments);
     }
 }

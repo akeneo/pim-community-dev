@@ -6,8 +6,8 @@ use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ObjectRepository;
 
 /**
  * Repository interface for attribute
@@ -77,18 +77,24 @@ interface AttributeRepositoryInterface extends
 
     /**
      * Get the identifier attribute
-     * Only one identifier attribute can exists
-     *
-     * @return AttributeInterface
      */
-    public function getIdentifier();
+    public function getIdentifier(): AttributeInterface;
+
+    /**
+     * Get the main identifier attribute
+     * Only one main identifier attribute can exist
+     */
+    public function getMainIdentifier(): AttributeInterface;
 
     /**
      * Get the identifier code
-     *
-     * @return string
      */
-    public function getIdentifierCode();
+    public function getIdentifierCode(): string;
+
+    /**
+     * Get the main identifier code
+     */
+    public function getMainIdentifierCode(): string;
 
     /**
      * Get attribute type by code attributes
@@ -116,6 +122,17 @@ interface AttributeRepositoryInterface extends
      * @return string[]
      */
     public function getAttributeCodesByGroup(AttributeGroupInterface $group);
+
+    /**
+     * Get attributes by group codes
+     *
+     * @param string[] $groupCodes
+     * @param int $limit
+     * @param string|null $searchAfter
+     *
+     * @return AttributeInterface[]
+     */
+    public function getAttributesByGroups(array $groupCodes, int $limit, ?string $searchAfter);
 
     /**
      * Get attributes by family

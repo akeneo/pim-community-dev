@@ -112,19 +112,15 @@ class BatchStatusSpec extends ObjectBehavior
         $this->isUnsuccessful()->shouldReturn(false);
     }
 
-    function it_provides_status_labels()
+    function it_is_pausing_when_pausing()
     {
-        $this::getAllLabels()->shouldReturn(
-            [
-                'COMPLETED' => BatchStatus::COMPLETED,
-                'STARTING' => BatchStatus::STARTING,
-                'STARTED' => BatchStatus::STARTED,
-                'STOPPING' => BatchStatus::STOPPING,
-                'STOPPED' => BatchStatus::STOPPED,
-                'FAILED' => BatchStatus::FAILED,
-                'ABANDONED' => BatchStatus::ABANDONED,
-                'UNKNOWN' => BatchStatus::UNKNOWN
-            ]
-        );
+        $this->beConstructedWith(BatchStatus::PAUSING);
+        $this->isPausing()->shouldReturn(true);
+    }
+
+    function it_is_paused_when_paused()
+    {
+        $this->beConstructedWith(BatchStatus::PAUSED);
+        $this->isPaused()->shouldReturn(true);
     }
 }

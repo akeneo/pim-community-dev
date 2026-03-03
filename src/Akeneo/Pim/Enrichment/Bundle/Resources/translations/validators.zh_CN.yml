@@ -9,16 +9,17 @@ This attribute type must be required: 此属性类型为必填项
 This attribute type can't be required: 此属性类型非必填项
 This attribute type can't have unique value: 此属性类型的值非唯一
 No default value may be specified for this attribute type: 此属性类型没有指定的默认值
-This value should be Yes or No: 该值应是 Yes 或 No
+This value should be Yes or No: 此值应为 Yes 或 No
 This value should not be blank: 该值不应为空
 Option code may contain only letters, numbers and underscores: 选项代码仅可包含字母、数字和下划线
-Option code may contain only letters (at least one), numbers and underscores: 选项代码仅可包含字母（至少1个）、数字和下划线
+Option code may contain only letters (at least one), numbers and underscores: 选项代码仅可包含字母（至少 1 个）、数字和下划线
 This value should not be a decimal.: 该值不应为小数。
 "The %attribute% attribute requires a non-decimal value, and %value% is not a valid value.": 属性 %attribute% 必须为非小数值， %value% 不是有效值。
 'The file extension is not allowed (allowed extensions: %extensions%).': '不允许的文件扩展名 (允许的扩展名︰ %extensions%)。'
 "The {{ attribute_code }} attribute can not have the same value more than once. The {{ value }} value is already set on another product.": 属性 {{ attribute_code }} 的同一个值不能出现超过一次。已在其他产品上设置了 {{ value }} 值。
 The same identifier is already set on another product: 已在另一产品上设置了同一标识符
 regex.comma_or_semicolon_or_surrounding_space.message: 此字段不应包含任何逗号、分号或前/后空格
+regex.line_break.message: 此字段不应包含任何换行符
 file.extensions.message: '不允许的文件扩展名 (允许的扩展名︰ %extensions%)。'
 "This type of value expects the use of {{ decimal_separator }} to separate decimals.": 此类型的值需要使用 {{ decimal_separator }} 来分隔小数。
 "This type of value expects the use of dot (.) to separate decimals.": 此类型的值需要使用点（.）来分隔小数。
@@ -37,9 +38,23 @@ product_model.family_variant.not_blank.message: 产品模型品类变型不能�
 "The {{ attribute_code }} attribute requires a date that should be {{ limit }} or after.": 属性 {{ attribute_code }} 必须为 {{ limit }} 或更晚的日期。
 "The {{ attribute_code }} attribute requires a date that should be {{ limit }} or before.": 属性 {{ attribute_code }} 必须为 {{ limit }} 或更早的日期。
 "The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.": 属性 {{ attribute }} 必须为数字，而提交的值 {{ value }} 不是。
+"The {{ attribute }} attribute requires a value which does not contain space, and the submitted \"{{ value }}\" has at least one.": 属性 {{ attribute }} 的值必须不含空格，而提交的值"{{ value }}"至少含有一个空格。
 "The %attribute% attribute must not contain more than %limit% characters. The submitted value is too long.": 属性 %attribute% 不能超过 %limit% 个字符。提交的值太长。
+"The %type% file extension is not allowed for the %attribute% attribute. Allowed extensions are %extensions%.": 属性 %attribute% 不允许使用 %type% 文件扩展名。允许的扩展名为 %extensions%。
+"The %attribute% attribute requires a url link.": 属性 %attribute% 需要 URL 链接。
+"The %attribute% attribute requires a valid date. Please use the following format %date_format% for dates.": 属性 %attribute% 要求有效的日期。请使用以下日期格式：%date_format%。
+"The %locale% locale is not available on the %attribute% attribute.": 区域 %locale% 在属性 %attribute% 上不可用。
 'The {{ attribute_code }} attribute must match the following regular expression: {{ pattern }}.': '属性 {{ attribute_code }} 必须符合以下正则表达式： {{ pattern }}。'
 'The {{ attribute_code }} attribute cannot be empty.': '属性 {{ attribute_code }} 不能为空。'
+'The file %file_name% is too large (%file_size% %suffix%). The %attribute% attribute can not exceed %max_file_size% %suffix%.': 文件 %file_name% 太大 (%file_size% %suffix%)。属性 %attribute% 不能超过 %max_file_size% %suffix%。
+'The %attribute_code% attribute requires a valid locale. The %invalid_locale% locale does not exist.': '属性 %attribute_code% 要求有效的区域。区域 %invalid_locale% 不存在。'
+'The %attribute_code% attribute requires a valid locale. The %invalid_locale% locale is not bound to the %channel_code% channel.': '属性 %attribute_code% 要求有效的区域。区域 %invalid_locale% 没有绑定到渠道 %channel_code%。'
+"The %attribute% attribute requires an e-mail address.": '属性 %attribute% 需要电子邮件地址。'
+'The %attribute% attribute requires an equal or greater than %min_value% value.': '属性 %attribute% 要求等于或大于值 %min_value%。'
+'The %attribute% attribute requires an equal or lesser than %max_value% value.': '属性 %attribute% 要求等于或小于值 %max_value%。'
+"The %attribute_code% attribute requires a value per channel. The %channel% channel (scope) must exist in your PIM": '属性 %attribute_code% 每个渠道都需要一个值。渠道 %channel%  (范围) 必须存在于您的 PIM 中'
+"The %identifier% identifier is already used for another product.": '标识符 %identifier% 已用于另一个产品。'
+'Please specify a valid currency for the %attribute_code% attribute, the %currency_code% code was sent.': '请为属性 %attribute_code% 指定有效的货币，已发送代码 %currency_code%。'
 pim_catalog:
   constraint:
     can_have_family_variant_empty_axis_value: ' 属性"%attribute%"不能为空，因为其被定义为该实体的轴'
@@ -52,8 +67,8 @@ pim_catalog:
     variant_product_invalid_family: '变型产品品类必须与其父类相同'
     php_int_max_reached: '最大数值必须小于 %php_int_max%。'
     not_null_family: 品类不能为“空 (null)”，因为具有标识符"%sku%"的产品是变型产品。
-    variant_product_has_parent: '变型产品"%variant_product%"必须有父产品'
-    invalid_variant_product_parent: '变型产品"%variant_product%"不能以产品模型"%product_model%"作为父模型， (此产品模型只能有其他产品模型作为子模型)'
+    variant_product_has_parent: '变型产品必须有父产品'
+    invalid_variant_product_parent: '变型产品不能以产品模型"%product_model%"作为父模型， (此产品模型只能有其他产品模型作为子模型)'
     modified_variant_axis_value: '变型轴"%variant_axis%"不能修改，"%provided_value%" 已给定'
     family_variant_attributes_unique: 属性必须是唯一的，"%attributes%" 在变型属性集中多次使用
     family_variant_axes_unique: 变型轴必须是唯一的，"%attributes%" 在变型属性集中多次使用
@@ -70,6 +85,9 @@ pim_catalog:
     family_variant_maximum_number_of_level: 品类变型的级别不能超过"%level%"个
     family_variant_unique_attributes_in_last_level: 唯一的属性“%attribute%”必须在产品级别上设置
     product_identifier: 这些标识符"%s"不存在。
+    blacklisted_attribute_code: 完成正在进行的清理作业之前，临时阻止代码。
+    blacklisted_attribute_code_with_link: "完成正在进行的清理作业之前，临时阻止代码。要查找更多信息，请查看<a href='{{ link }}' target='_blank'>作业详情</a>。"
+    duplicate_options: '{1}下列选项被多次使用：“{{ duplicate_options }}”。请再次检查您的选项列表。]1, +Inf] 下列选项被多次使用：“{{ duplicate_options }}”。请再次检查您的选项列表。'
     0: 发生意外错误。
     100: 非预期的值
     101: 此字段需要填入布尔值。
@@ -89,7 +107,6 @@ pim_catalog:
     301: 此字段需要填入有效的范围和区域。
     302: 此字段需要填入有效的范围。
     303: 此字段需要填入有效的关联格式。
-    pim_immutable_product_validator: 已在另一产品上设置了同一标识符
     pim_immutable_product_model_validator: 另一产品模型上已经设置了同一代码。
     quantified_associations:
       unexpected_link_type: 链接类型"{{ value }}"不存在。您只能关联产品或产品模型。
@@ -100,6 +117,13 @@ pim_catalog:
       association_type_does_not_exist: 此关联类型不存在。请确保在此期间其未被删除。
       association_type_is_not_quantified: '“{{ association_type }}”不能用于关联数量。请选择其他关联类型用于关联数量，或设置“关联”属性。'
       association_type_should_not_be_quantified: '"{{ association_type }}"只能用于关联数量。请选择其他关联类型或使用“quantified_associations”属性。'
+    boolean:
+      boolean_value_is_required: 属性 {{ attribute_code }} 的数据要求为布尔值（true 或 false），而检测到的是 {{ given_type }}。
+      boolean_value_is_required_in_import: 属性 {{ attribute_code }} 的数据要求为布尔值（1 或 0），而检测到的是 {{ given_type }}。
 mass_edit:
   edit_common_attributes:
     invalid_values: 属性表单中存在错误
+pim_datagrid:
+  column_configurator:
+    label:
+      unique_message: 标签必须是唯一的

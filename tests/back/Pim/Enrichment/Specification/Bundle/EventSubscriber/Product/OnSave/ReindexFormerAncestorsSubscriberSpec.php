@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductModelIndexerInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -46,6 +47,7 @@ class ReindexFormerAncestorsSubscriberSpec extends ObjectBehavior
         ProductModelIndexerInterface $productModelIndexer,
         ProductInterface $product
     ) {
+        $product->getUuid()->willReturn(Uuid::uuid4());
         $getAncestorAndDescendantProductModelCodes->fromProductModelCodes(Argument::any())->shouldNotBeCalled();
         $productModelIndexer->indexFromProductModelCodes(Argument::any())->shouldNotBeCalled();
 
@@ -58,7 +60,7 @@ class ReindexFormerAncestorsSubscriberSpec extends ObjectBehavior
         ProductModelIndexerInterface $productModelIndexer,
         ProductInterface $product
     ) {
-        $product->getId()->willReturn(42);
+        $product->getUuid()->willReturn(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'));
         $this->store(new ParentHasBeenRemovedFromVariantProduct($product->getWrappedObject(), 'parent_model_code'));
 
         $getAncestorAndDescendantProductModelCodes
@@ -78,9 +80,9 @@ class ReindexFormerAncestorsSubscriberSpec extends ObjectBehavior
         ProductInterface $ignoredProduct,
         ProductInterface $otherProductToReindex
     ) {
-        $productToReindex->getId()->willReturn(42);
-        $ignoredProduct->getId()->willReturn(75);
-        $otherProductToReindex->getId()->willReturn(56);
+        $productToReindex->getUuid()->willReturn(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'));
+        $ignoredProduct->getUuid()->willReturn(Uuid::fromString('df31ba3f-508d-424c-8bc4-446c6e2966e5'));
+        $otherProductToReindex->getUuid()->willReturn(Uuid::fromString('fdf6f091-3f75-418f-98af-8c19db8b0000'));
 
         $this->store(
             new ParentHasBeenRemovedFromVariantProduct(

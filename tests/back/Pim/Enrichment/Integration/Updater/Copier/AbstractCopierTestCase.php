@@ -3,6 +3,8 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\Updater\Copier;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Test\Integration\TestCase;
 
 /**
@@ -21,34 +23,19 @@ class AbstractCopierTestCase extends TestCase
     }
 
     /**
-     * Creates a product.
-     *
-     * @param string $sku
-     * @param array  $data
-     *
-     * @throws \Exception
-     *
-     * @return ProductInterface
+     * @param UserIntent[] $userIntents
      */
-    protected function createProduct($sku, array $data)
+    protected function createProduct(string $identifier, array $userIntents): ProductInterface
     {
-        $productUpdater = $this->get('pim_catalog.updater.product');
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
+        $command = UpsertProductCommand::createFromCollection(
+            userId: $this->getUserId('admin'),
+            productIdentifier: $identifier,
+            userIntents: $userIntents
+        );
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
 
-        $product = $this->get('pim_catalog.builder.product')->createProduct($sku);
-        $productUpdater->update($product, $data);
-
-        $errors = $this->get('pim_catalog.validator.product')->validate($product);
-        if (0 !== $errors->count()) {
-            throw new \Exception(sprintf(
-                'Impossible to setup test in %s: %s',
-                static::class,
-                $errors->get(0)->getMessage()
-            ));
-        }
-
-        $this->get('pim_catalog.saver.product')->save($product);
-        $this->get('pim_catalog.validator.unique_value_set')->reset();
-
-        return $product;
+        return $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
     }
 }

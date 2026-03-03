@@ -20,7 +20,7 @@ class OptionsNormalizer extends AbstractProductValueNormalizer implements Normal
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof OptionsValueInterface && (
             $format === ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX

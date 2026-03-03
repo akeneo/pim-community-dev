@@ -1,0 +1,80 @@
+batch_jobs:
+  csv_currency_export:
+    label: Экспорт валют в CSV
+    export.label: Экспорт валют
+  csv_currency_import:
+    label: Импорт валют из CSV
+    import.label: Импорт валют
+  xlsx_currency_export:
+    label: Экспорт валют в XLSX
+    export.label: Экспорт валют
+  xlsx_currency_import:
+    label: Импорт валют из XLSX
+    import.label: Импорт валют
+  csv_locale_export:
+    label: Экспорт локалей в CSV
+    export.label: Экспорт локалей
+  csv_locale_import:
+    label: Импорт локалей из CSV
+    import.label: Импорт локалей
+  xlsx_locale_export:
+    label: Экспорт локали в XLSX
+    export.label: Экспорт локалей
+  xlsx_locale_import:
+    label: Импорт локали в XLSX
+    import.label: Импорт локалей
+  csv_channel_export:
+    label: Экспорт каналов в CSV
+    export.label: Экспорт каналов
+  csv_channel_import:
+    label: Импорт каналов из CSV
+    import.label: Импорт каналов
+  xlsx_channel_export:
+    label: Экспорт каналов в XLSX
+    export.label: Экспорт каналов
+  xlsx_channel_import:
+    label: Импорт каналов из XLSX
+    import.label: Импорт каналов
+pim_enrich.entity.channel:
+  label: канал
+  uppercase_label: Канал
+  flash:
+    update:
+      success: Канал успешно обновлён.
+      fail: Не удалось обновить канал.
+    create:
+      success: Канал успешно создан.
+      fail: Не удалось создать канал.
+    delete:
+      success: Канал успешно удален
+      fail: Не удается удалить этот канал
+  property:
+    category_tree: Дерево категорий
+    do_not_convert: Не преобразовывать
+    measurement: Настройки единиц измерений
+    label_conversion_units: Выберите единицу преобразования для каждого атрибута измерения, который будет использоваться во время экспорта продукции
+  module:
+    create:
+      button: Создать канал
+    delete:
+      confirm: Вы действительно хотите удалить этот канал?
+pim_enrich.entity.locale:
+  label: локаль
+  uppercase_label: Локаль
+  plural_label: Локали
+  page_title:
+    index: "]-Inf, 1]{{ count }} активированная локаль|]1, Inf[{{ count }} активированных локали"
+  helper: "Чтобы активировать или деактивировать локаль, перейдите к одному из <a href={{ href }}>ваших каналов</a> и добавьте или удалите локаль."
+  grid:
+    columns:
+      code: Включены локали
+    filters:
+      search_placeholder: Поиск по активированной локали
+    no_search_result: К сожалению, для вашего поиска нет результатов.
+pim_enrich.entity.currency:
+  plural_label: Валюты
+flash:
+  currency:
+    error:
+      linked_to_channel: Вы не можете отключить валюту, связанную с каналом
+    updated: Валюта успешно обновлена

@@ -15,8 +15,7 @@ class BooleanSpec extends ObjectBehavior
 
     function it_has_message()
     {
-        $this->message
-            ->shouldBe('The {{ attribute_code }} attribute requires a boolean value (true or false) as data, a {{ given_type }} was detected.');
+        $this->message->shouldBe('pim_catalog.constraint.boolean.boolean_value_is_required');
     }
 
     function it_is_a_validator_constraint()

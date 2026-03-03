@@ -42,11 +42,14 @@ pim_user:
       inactive: Nieaktywny
     fields_errors:
       new_password:
-        minimum_length: Hasło musi zawierać co najmniej 2 znaki
+        minimum_length: Hasło musi zawierać co najmniej 8 znaków
+        maximum_length: Hasło musi zawierać mniej niż 4096 znaków
       new_password_repeat:
-        not_match: Hasła nie zgadzają się
+        not_match: Różne hasła
       current_password:
         wrong: Błędne hasło
+      roles:
+        last_user_with_edit_role_permissions: To ostatni użytkownik z uprawnieniami do edycji roli.
     tabs:
       general:
         title: Ogólne
@@ -73,7 +76,7 @@ pim_user:
       password_reset: Resetowanie hasła
       reset: Resetuj
       password_reset_email_sent: Wiadomość email została wysłana do użytkownika. Zawiera ona link do resetowania hasła.
-      homepage: Przejdź do strony głównej
+      homepage: Powrót do strony głównej
   group:
     tab:
       general.title: Ogólne
@@ -91,6 +94,8 @@ pim_user:
     role:
       message:
         saved: "Rola zapisana"
+        cannot_delete_last_edit_role_permission: Nie możesz usunąć uprawnień do edycji roli ostatniemu użytkownikowi z tą rolą.
+        cannot_remove_last_edit_role_permission: Nie możesz usunąć uprawnień do edycji roli ostatniemu użytkownikowi z tą rolą.
     user:
       message:
         saved: "Użytkownik zapisany"

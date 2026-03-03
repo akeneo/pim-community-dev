@@ -27,6 +27,8 @@ pim_enrich.entity.family:
       required_label: Verplicht
     create:
       button: Familie aanmaken
+      from_scratch: Creëer vanuit een lege sjabloon
+      browse_templates: Familiesjablonen bekijken
     delete:
       confirm: Weet u zeker dat u deze familie wilt verwijderen?
 pim_enrich.entity.family_variant:
@@ -74,6 +76,8 @@ pim_enrich.entity.attribute_option:
       fail: Kan attribuut-optie niet opslaan
     delete:
       fail: Fout tijdens verwijderen van de attribuut-optie
+  page_title:
+    index: "]-Inf, 1]{{ count }} optie|]1, Inf[{{ count }} opties"
   module:
     edit:
       cancel_title: Wijziging annuleren
@@ -87,6 +91,11 @@ pim_enrich.entity.attribute_option:
       add_option: Klik hier om er één toe te voegen
       delete_confirmation_title_msg: Verwijder "{{ optionCode }}" uit uw opties?
       delete_confirmation_subtitle_msg: Weet u zeker dat u deze optie wilt verwijderen? U kunt deze actie niet ongedaan maken.
+      display_options_limit: Alleen de eerste 500 opties worden hier weergegeven. Als u meer opties wilt zien, voer dan een zoekopdracht uit of exporteer de set. 
+      search:
+        placeholder: Zoek op naam of code
+        no_result:
+          title: Uw zoekopdracht heeft geen resultaten opgeleverd.
 pim_enrich.entity.association_type:
   label: koppelingstype
   property:
@@ -115,6 +124,9 @@ pim_enrich.entity.association_type:
     delete:
       confirm: Weet u zeker dat u dit associatietype wilt verwijderen?
   hint: <a href="{{link}}" target="_blank">In dit artikel</a>vind je alles wat je nodig hebt om je eigen koppelingstype te maken.
+  no_association_types:
+    title: U heeft geen associatietypes
+    hint: Maak uw eerste associatietype aan
 pim_enrich.entity.group_type:
   label: groepstype
   flash:
@@ -157,6 +169,7 @@ pim_enrich.entity.attribute:
     default_metric_unit:
       label: Standaard meeteenheid
       choose: Kies een eenheid
+    guidelines: Richtlijnen voor attributen
     group:
       label: Attribuutgroep
       choose: Kies een attribuutgroep
@@ -201,6 +214,23 @@ pim_enrich.entity.attribute:
       regexp: Reguliere expressie
       url: URL
     wysiwyg_enabled: Rich text editor ingeschakeld
+    default_value: Standaardwaarde
+    code:
+      must_be_filled: De code moet worden ingevuld
+      invalid: De code is ongeldig
+      not_available: Deze code is niet beschikbaar
+      is_duplicate: Deze code is al in gebruik.
+    identifier_limit_reached_title: Maximum van 10 identifiers bereikt. 
+    identifier_limit_reached: Je kunt geen andere identifier aanmaken omdat je al het maximum van 10 hebt bereikt.
+    identifier_limit_reached_url: '→ Meer informatie in het Helpcentrum'
+    identifiers_limit: U kunt maximaal 10 identifier attributen maken. Leer meer over meerdere identifiers in de
+    identifiers_limit_link: help center
+    unique_value_helper: Moet de waarde in dit attribuut uniek zijn? U kunt deze instelling later niet aanpassen.
+    scopable_helper: Moet de waarde in dit attribuut per kanaal verschillen (scopeable)? U kunt deze instelling later niet aanpassen.
+    localizable_helper: Moet de waarde in dit attribuut per locale verschillen (localizable)? U kunt deze instelling later niet aanpassen.
+    attribute_creation_type: Attribuuttype
+    attribute_creation_template: Sjabloon
+    attribute_creation_settings: Attribuut instellingen
   module:
     add_attribute:
       no_available_attributes: Er zijn geen attributen meer om toe te voegen
@@ -210,29 +240,86 @@ pim_enrich.entity.attribute:
     edit:
       common: Algemene parameters
       type_specific: Type specifieke parameters
+      attribute_setup:
+        section_title: Attribuut instellingen
+        warning: Acties die hier worden uitgevoerd kunnen grote invloed hebben op uw productinformatie.
+        type: Dit attribuuttype is <em>{{ attributeType }}</em>
+        type_helper: Het attribuuttype kan niet worden gewijzigd aangezien dit zou leiden tot het verwijderen van ingevulde attribuutwaarden in uw producten. 
+        unique_attribute_title: De waarde van dit attribuut is <em>uniek</em>
+        non_unique_attribute_title: De waarde van dit attribuut is <em>niet uniek</em>
+        unique_helper: De waarde van het attribuut is verschillend voor elk product. Dit kan niet worden gewijzigd.
+        non_unique_helper: Dezelfde waarde kan worden gebruikt voor dit attribuut voor verschillende producten. Dit kan niet worden gewijzigd.
+        main_identifier_title: Dit attribuut is <em>hoofd identifier</em>
+        non_main_identifier_title: Dit attribuut is niet de <em>hoofd identifier</em>
+        main_identifier_helper: U kunt maximaal {{ maxIdentifiersCount }} identifiers voor uw producten hebben met één ingesteld als de hoofd identifier. De huidige hoofd identifier is {{ mainIdentifierLabel }}. <link>Leer meer</link>
+        scopable_attribute_title: Dit attribuut is <em>scopable</em>
+        non_scopable_attribute_title: Dit attribuut is <em>niet scopeable</em>
+        scopable_helper: Waarde per kanaal bepaalt of een attribuut per kanaal een andere waarde kan bevatten (scopeable) of niet (niet scopeable) <link>Leer meer</link>
+        localizable_attribute_title: Dit attribuut is <em>lokaliseerbaar</em>
+        non_localizable_attribute_title: Dit attribuut is <em>niet lokaliseerbaar</em>
+        localizable_helper: Waarde per lokale bepaalt of een attribuut per lokale een andere waarde kan bevatten (localizable) of niet (niet localizable) <link>Leer meer</link>
+        set_as_main_identifier:
+          button: Instellen als hoofd identifier
+          confirm: Typ alstublieft "{{ attributeCode }}"
+          confirm_title: Het wijzigen van de hoofd identifier heeft invloed op alle producten
+          are_you_sure: Weet u zeker dat u het {{ attributeLabel }} attribuut als hoofd identifier wilt instellen? <link>Leer meer in het helpcentrum.</link>
+          warning: "{{ attributeLabel }} is momenteel ingesteld als de hoofd identifier. Deze wijziging heeft invloed op alle producten."
+          onboarder_warning: U kunt geen ander identifier attribuut instellen als hoofd identifier omdat deze functie niet compatibel is met Akeneo Onboarder.
+          flash:
+            success: Hoofd identifier is succesvol bijgewerkt.
+            fail: Fout opgetreden tijdens het bijwerken van de hoofd identifier.
+            fail_published_product: Als u uw hoofd identifier wilt wijzigen, zorg er dan voor dat u eerst de publicatie van uw producten ongedaan maakt (gepubliceerde producten) en daarna uw hoofd identifier wijzigt.
+            fail_published_product_link: Navigeer naar gepubliceerde producten
       validation: Validatieparameters
+      select_locale: Selecteer uw taal
     delete:
       confirm: Weet u zeker dat u attribuut wilt verwijderen?
+      attribute_removal: Het attribuut zal worden verwijderd uit alle producten.
+      product_count: ']-Inf, 1]{{ count }} product|]1, Inf[{{ count }} producten'
+      product_model_count: ']-Inf, 1]{{ count }} productmodel|]1, Inf[{{ count }} productmodellen'
+      used: ']-Inf,1]heeft momenteel waarden ingesteld voor dit attribuut. ]1, Inf[heeft momenteel waarden ingesteld voor dit attribuut.'
+      helper:
+        content: Als u uw attribuuttype wilt wijzigen, om het lokaliseerbaar of per kanaal instelbaar te maken, terwijl de toegang tot uw bestaande attribuutwaarden behouden blijft
+        link: Kijk in ons helpcenter voor meer informatie.
+      type: Typ alstublieft "{{ attributeCode }}"
       confirm_from_family: Weet u zeker dat u dit attribuut uit de familie wilt verwijderen?
       confirm_from_group: Weet u zeker dat u het attribuut {{ attribute }} van deze attribuutgroep wilt verwijderen?
       confirm_from_product: Bent u zeker dat u dit attribuut wil verwijderen van het product?
+      cannot_delete: De hoofd identifier kan niet worden verwijderd. Om dit attribuut te verwijderen, moet u eerst een andere identifier instellen als de hoofd identifier. <link>Leer meer in het help centrum.</link>
+    mass_delete:
+      modal:
+        title: Attributen
+        subtitle: '{1}}Bevestig de verwijdering van {{ count }} attribuut|]1, Inf[}Bevestig de verwijdering van {{ count }} attributen'
+        label: Typ "{{ textToCheck }}"
+        confirm: Weet u zeker dat u deze attributen wilt verwijderen?
+      message_bar:
+        success: Het verwijderen is gestart. U krijgt een melding zodra de taak is voltooid. In de tussentijd kunt u de voortgang van het proces volgen in de procestracker.
+        fail: Er is een fout opgetreden tijdens het starten van de verwijdering
 pim_enrich.entity.attribute_group:
   label: attribuutgroep
   uppercase_label: Attribuutgroep
   plural_label: Attribuutgroepen
   result_count: '{0}0 attribuutgroepen|{1}1 attribuutgroep|]1, Inf[{{ count }} attribuutgroepen'
+  limit_reached: U heeft de limiet van {{ max }} attribuutgroepen bereikt.
   show_more_attribute:
     title: Het is hier een beetje vol, we laten je {{ attributeCount }}/{{ totalAttributeCount }} attributen zien.
     subtitle: Om alle attributen van deze groep te ontdekken, klik hieronder!
     button: Bekijk alle attributen
+  dropdown:
+    label: Selecteren
+    all: Alle attribuutgroepen
+    none: Geen attribuutgroepen
   flash:
     update:
       success: Attribuutgroep succesvol bijgewerkt
       fail: De attribuut groep kon niet geüpdatet worden
       fields_not_ready: "De attribuutgroep kan niet worden opgeslagen. De volgende velden zijn niet klaar: {{ fields }}"
     delete:
-      success: Attribuutgroep succesvol verwijderd
-      fail: Kan deze attribuutgroep niet verwijderen
+      success: Het verwijderen is gestart. U krijgt een melding zodra de taak is voltooid. In de tussentijd kunt u de voortgang van het proces volgen in de procestracker.
+      fail: Er is een fout opgetreden tijdens het starten van de verwijdering
+    mass_delete:
+      success: Het verwijderen is gestart. U krijgt een melding zodra de taak is voltooid. In de tussentijd kunt u de voortgang van het proces volgen in de procestracker.
+      fail: Er is een fout opgetreden tijdens het starten van de verwijdering
   module:
     add_attribute_group:
       label: Toevoegen via groepen
@@ -242,8 +329,31 @@ pim_enrich.entity.attribute_group:
       confirm: Weet u zeker dat u deze attribuut groep wilt verwijderen?
   grid:
     columns:
-      name: Attribuutgroep naam
-    no_search_result: Sorry, er is geen resultaat voor uw zoekopdracht.
+      attribute_count: Aantal gerelateerde attributen
+  selected: '{0}0 attribuutgroepen geselecteerd|{1}1 attribuutgroep geselecteerd|]1, Inf[{{ count }} attribuutgroepen geselecteerd'
+  mass_delete:
+    confirm: '{1}Weet u zeker dat u deze attribuutgroep wilt verwijderen?|]1, Inf[Weet u zeker dat u deze {{ count }} attribuutgroepen wilt verwijderen?'
+    confirmation_phrase: 'Typ "{{ confirmation_word }}"'
+    confirmation_word: verwijderen
+    attribute_warning: '{1}Het verwijderen van deze attribuutgroepen heeft invloed op {{ number_of_attribute }} gerelateerd attribuut. U moet dit gerelateerde attribuut verplaatsen naar een nieuwe attribuutgroep.|]1, Inf[Het verwijderen van deze attribuutgroepen heeft invloed op {{ number_of_attribute }} gerelateerde attributen. U moet deze gerelateerde attributen verplaatsen naar een nieuwe attribuutgroep.'
+    select_attribute_group: '{1}Selecteer de attribuutgroep waarnaar het gerelateerde attribuut wordt verplaatst|]1, Inf[Selecteer de attribuutgroep waarnaar de {{ number_of_attribute }} gerelateerde attributen worden verplaatst'
+    empty_result_label: 'Geen attribuutgroep gevonden'
+    placeholder: 'Attribuutgroep selecteren'
+    open_label: 'lijst met attribuutgroepen'
+  delete:
+    confirm: 'Weet u zeker dat u deze attribuutgroep wilt verwijderen?'
+    attribute_warning: 'Het verwijderen van deze attribuutgroep heeft invloed op {{ number_of_attribute }} gerelateerd attribuut. U moet dit gerelateerde attribuut verplaatsen naar een nieuwe attribuutgroep.'
+    select_attribute_group: '{1}Selecteer de attribuutgroep waarnaar het gerelateerde attribuut wordt verplaatst:|]1, Inf[Selecteer de attribuutgroep waarnaar de {{ number_of_attribute }} gerelateerde attributen worden verplaatst:'
+  batch_jobs:
+    delete_attribute_groups:
+      delete_attribute_groups:
+        label: Attribuutgroepen verwijderen
+pim_import_export:
+  notification:
+    mass_delete_attribute_groups:
+      error: In bulk verwijderen van attribuutgroepen mislukt
+      warning: In bulk verwijderen van attribuutgroepen afgerond met enkele waarschuwingen
+      success: In bulk verwijderen van attribuutgroepen afgerond
 pim_enrich.mass_edit.family:
   title: Gezamenlijke actie voor families
   confirm: "{1}U staat op het punt een familie te updaten met de volgende informatie, bevestig alstublieft.|]1, Inf[U staat op het punt om {{ itemsCount }} families te updaten met de volgende informatie, bevestig alstublieft."
@@ -251,7 +361,7 @@ pim_enrich.mass_edit.family:
     select:
       label: Kies families
     choose:
-      title: Families Bulk acties
+      title: Bulkacties voor families
       label_count: "]0, Inf[Selecteer uw actie"
     configure:
       label: Configureer
@@ -264,3 +374,19 @@ pim_enrich.mass_edit.family:
       label: Instellen Attribuut vereisten
       description: De volgende attribuutvereisten zullen worden toegepast op de geselecteerde families
       label_count: "{1}stelt attributen vereisten van <span class=\"AknFullPage-title--highlight\">familie</span>|]1, Inf[Stel attributen vereisten in van <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} families</span>"
+batch_jobs:
+  default_steps:
+    delete_attribute_groups: Attribuutgroepen verwijderen
+    move_child_attributes: Onderliggende attributen verplaatsen
+  delete_attributes:
+    delete_attributes:
+      label: Attributen verwijderen
+job_execution:
+  summary:
+    deleted_attributes: Verwijderde attributen
+akeneo_job_process_tracker:
+  type_filter:
+    attribute_group_mass_delete: Attribuutgroepen verwijderen
+pim_notification:
+  types:
+    attribute_group_mass_delete: Verwijdering

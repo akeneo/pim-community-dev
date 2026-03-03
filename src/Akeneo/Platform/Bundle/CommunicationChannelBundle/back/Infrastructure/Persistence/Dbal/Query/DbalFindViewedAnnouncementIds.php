@@ -40,7 +40,7 @@ class DbalFindViewedAnnouncementIds implements FindViewedAnnouncementIdsInterfac
                 'user_id' => $userId
             ]
         );
-        $results = $statement->fetchAll(FetchMode::COLUMN);
+        $results = $statement->fetchFirstColumn();
         $statement->closeCursor();
 
         if (!$results) {

@@ -1,0 +1,64 @@
+pim_analytics:
+  new_patch_available: Nuova patch disponibile
+  system_info:
+    title: Informazioni di sistema
+    download: Scarica
+  info_header:
+    property: Proprietà
+    information: Informazioni
+  info_type:
+    pim_edition: Edizione
+    pim_version: Versione
+    pim_storage_driver: Storage
+    pim_environment: Ambiente
+    pim_install_time: Ora di installazione
+    registered_bundles: Bundle registrati
+    nb_channels: Numero di canali
+    nb_products: Numero di prodotti
+    nb_product_models: Numero di modelli prodotto
+    nb_variant_products: Numero di prodotti variante
+    nb_family_variants: Numero di varianti di famiglia
+    nb_attributes: Numero di attributi
+    nb_scopable_attributes: Numero di attributi customizzabili
+    nb_localizable_attributes: Numero di attributi localizzabili
+    nb_scopable_localizable_attributes: Numero di attributi localizzabili e customizzabili
+    nb_useable_as_grid_filter_attributes: Numero di attributi usabili come filtri griglia
+    avg_percentage_scopable_attributes_per_family: Percentuale media di attributi customizzabili per famiglia (%)
+    avg_percentage_localizable_attributes_per_family: Percentuale media di attributi localizzabili per famiglia (%)
+    avg_percentage_scopable_localizable_attributes_per_family: Percentuale media di attributi localizzabili e customizzabili per famiglia (%)
+    avg_number_attributes_per_family: Numero medio di attributi per famiglia
+    nb_locales: Numero di impostazioni locali
+    nb_families: Numero di famiglie
+    nb_users: Numero di utenti
+    nb_categories: Numero di categorie
+    nb_category_trees: Numero di alberi di categorie
+    max_category_in_one_category: Numero massimo di categorie in un'unica categoria
+    max_category_levels: Numero massimo di livelli di categoria
+    nb_product_values: Numero di valori di prodotto
+    avg_product_values_by_product: Numero medio di valori di prodotto per prodotto
+    avg_product_values_by_family: Numero medio di valori di prodotto potenziali per famiglia
+    max_product_values_by_family: Numero massimo di valori di prodotto potenziali per famiglia
+    pim_storage_version: Versione storage
+    os_version: Versione OS
+    php_version: Versione PHP
+    mysql_version: Versione MySQL
+    mariadb_version: Versione MariaDB
+    mongodb_version: Versione MongoDB
+    server_version: Versione server
+    php_extensions: Estensioni PHP
+    email_domains: Domini e-mail associati
+    api_connection: Connessioni API
+    nb_media_files_in_products: Numero di file multimediali nei prodotti
+    nb_media_images_in_products: Numero di immagini multimediali nei prodotti
+    is_demo_catalog: Catalogo demo installato
+    nb_active_event_subscription: Numero di webhook attivati
+    activated_app_ids: App connesse
+    nb_activated_apps: Numero di app connesse
+    data_source.tracked: Numero di connessioni a origine API tracciate
+    data_source.untracked: Numero di connessioni a origine API non tracciate
+    data_destination.tracked: Numero di connessioni a destinazione API tracciate
+    data_destination.untracked: Numero di connessioni a destinazione API non tracciate
+    other.tracked: Numero di altre connessioni ad API tracciate
+    other.untracked: Numero di altre connessioni ad API non tracciate
+    reset_event_count: Numero di reimpostazioni dell'istanza
+    last_reset_time: Ora dell'ultima reimpostazione

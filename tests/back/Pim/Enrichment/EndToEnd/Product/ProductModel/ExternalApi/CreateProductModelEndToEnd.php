@@ -2,11 +2,16 @@
 
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\ProductModel\ExternalApi;
 
+use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelCreated;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
+use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateProductModelEndToEnd extends AbstractProductModelTestCase
 {
+    use AssertEventCountTrait;
+
     public function testSubProductModelCreation()
     {
         $client = $this->createAuthenticatedClient();
@@ -185,7 +190,7 @@ JSON;
   "message": "The parent is not a product model of the family variant \"familyVariantA2\" but belongs to the family \"familyVariantA1\". Check the expected format on the API documentation.",
   "_links": {
     "documentation": {
-      "href": "http://api.akeneo.com/api-reference.html#post_product_model"
+      "href": "http://api.akeneo.com/api-reference.html#post_product_models"
     }
   }
 }
@@ -227,7 +232,7 @@ JSON;
   "message": "Property \"family_variant\" does not expect an empty value. Check the expected format on the API documentation.",
   "_links": {
     "documentation": {
-      "href": "http://api.akeneo.com/api-reference.html#post_product_model"
+      "href": "http://api.akeneo.com/api-reference.html#post_product_models"
     }
   }
 }
@@ -270,7 +275,7 @@ JSON;
   "message": "Property \"family_variant\" does not expect an empty value. Check the expected format on the API documentation.",
   "_links": {
     "documentation": {
-      "href": "http://api.akeneo.com/api-reference.html#post_product_model"
+      "href": "http://api.akeneo.com/api-reference.html#post_product_models"
     }
   }
 }
@@ -376,7 +381,7 @@ JSON;
     "message": "Property \"parent\" expects a valid parent code. The new parent of the product model must be a root product model, \"tshirt_sub_product_model\" given. Check the expected format on the API documentation.",
     "_links": {
         "documentation": {
-            "href": "http:\/\/api.akeneo.com\/api-reference.html#post_product_model"
+            "href": "http:\/\/api.akeneo.com\/api-reference.html#post_product_models"
         }
     }
 }
@@ -480,7 +485,7 @@ JSON;
   "message": "The parent is not a product model of the family variant \"familyVariantA2\" but belongs to the family \"familyVariantA1\". Check the expected format on the API documentation.",
   "_links": {
     "documentation": {
-      "href": "http://api.akeneo.com/api-reference.html#post_product_model"
+      "href": "http://api.akeneo.com/api-reference.html#post_product_models"
     }
   }
 }
@@ -610,7 +615,7 @@ JSON;
   "message": "Property \"a_simple_select\" expects an array with the key \"scope\". Check the expected format on the API documentation.",
   "_links": {
     "documentation": {
-      "href": "http://api.akeneo.com/api-reference.html#post_product_model"
+      "href": "http://api.akeneo.com/api-reference.html#post_product_models"
     }
   }
 }
@@ -670,6 +675,8 @@ JSON;
         $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
         $this->assertSameProductModels($expectedProductModel, 'root_product_model');
+
+        $this->assertEventCount(1, ProductModelCreated::class);
     }
 
     public function testRootProductModelCreationImportWithNoVariantFamily()
@@ -745,7 +752,7 @@ JSON;
         "errors": [
             {
                 "property": "values",
-                "message": "The file extension is not allowed (allowed extensions: pdf, doc, docx, txt).",
+                "message": "The jpg file extension is not allowed for the a_file attribute. Allowed extensions are pdf, doc, docx, txt.",
                 "attribute": "a_file",
                 "locale": null,
                 "scope": null
@@ -774,7 +781,7 @@ JSON;
             'values'  => [],
         ]);
 
-        $this->createProduct('simple', ['enabled' => false]);
+        $simpleProduct = $this->createProduct('simple', [new SetEnabled(false)]);
 
         $client = $this->createAuthenticatedClient();
 
@@ -807,22 +814,22 @@ JSON;
             'associations'   => [
                 "PACK"         => [
                     "groups"   => [],
-                    "products" => [],
+                    "product_uuids" => [],
                     "product_models" => [],
                 ],
                 "SUBSTITUTION" => [
                     "groups"   => [],
-                    "products" => [],
+                    "product_uuids" => [],
                     "product_models" => [],
                 ],
                 "UPSELL"       => [
                     "groups"   => [],
-                    "products" => [],
+                    "product_uuids" => [],
                     "product_models" => ["a_product_model"],
                 ],
                 "X_SELL"       => [
                     "groups"   => ["groupA"],
-                    "products" => ["simple"],
+                    "product_uuids" => [$simpleProduct->getUuid()->toString()],
                     "product_models" => [],
                 ],
             ],
@@ -857,7 +864,7 @@ JSON;
     "message": "Property \"associations\" expects a valid product model identifier. The product model does not exist, \"a_non_exiting_product_model\" given. Check the expected format on the API documentation.",
     "_links": {
         "documentation": {
-            "href": "http:\/\/api.akeneo.com\/api-reference.html#post_product_model"
+            "href": "http:\/\/api.akeneo.com\/api-reference.html#post_product_models"
         }
     }
 }
@@ -890,7 +897,7 @@ JSON;
     "message": "The family \"non_matching_family\" does not match the family of the variant \"familyVariantA1\". Check the expected format on the API documentation.",
     "_links": {
         "documentation": {
-            "href": "http:\/\/api.akeneo.com\/api-reference.html#post_product_model"
+            "href": "http:\/\/api.akeneo.com\/api-reference.html#post_product_models"
         }
     }
 }
@@ -922,10 +929,10 @@ JSON;
         $expected = <<<JSON
 {
     "code": 422,
-    "message": "Property \"associations\" expects a valid product identifier. The product does not exist, \"a_non_exiting_product\" given. Check the expected format on the API documentation.",
+    "message": "The “associations” property expects a valid product identifier. The a_non_exiting_product product does not exist or your connection does not have permission to access it. Check the expected format on the API documentation.",
     "_links": {
         "documentation": {
-            "href": "http:\/\/api.akeneo.com\/api-reference.html#post_product_model"
+            "href": "http:\/\/api.akeneo.com\/api-reference.html#post_product_models"
         }
     }
 }
@@ -937,6 +944,35 @@ JSON;
 
         $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+    }
+
+    public function testAccessDeniedWhenCreatingProductModelWithoutTheAcl()
+    {
+        $client = $this->createAuthenticatedClient();
+        $this->removeAclFromRole('action:pim_api_product_edit');
+
+        $data =
+            <<<JSON
+    {
+        "code": "foo",
+        "family_variant": "familyVariantA1",
+        "parent": "sweat",
+        "values": {
+          "a_simple_select": [
+            {
+              "locale": null,
+              "scope": null,
+              "data": "optionB"
+            }
+          ]
+        }
+    }
+JSON;
+
+        $client->request('POST', 'api/rest/v1/product-models', [], [], [], $data);
+        $response = $client->getResponse();
+
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }
 
     /**

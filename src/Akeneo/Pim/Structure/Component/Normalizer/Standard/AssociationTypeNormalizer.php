@@ -38,7 +38,7 @@ class AssociationTypeNormalizer implements NormalizerInterface, CacheableSupport
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof AssociationTypeInterface && 'standard' === $format;
     }

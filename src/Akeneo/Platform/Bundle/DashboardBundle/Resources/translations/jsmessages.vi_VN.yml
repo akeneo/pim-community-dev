@@ -1,0 +1,6 @@
+pim_dashboard:
+  widget:
+    completeness:
+      load_more: 'Tải thêm...'
+pim_title:
+  pim_dashboard_index: Bảng điều khiển

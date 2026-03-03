@@ -81,6 +81,34 @@
             .attributes.pim_catalog_textarea.han-text .right-column {
                 font-family: 'fireflysung', "DejaVu Sans", monospace;
             }
+
+            table {
+                table-layout: fixed;
+                border-spacing : 0;
+                border-collapse : collapse;
+                margin-left: -250px;
+                margin-top: 30px;
+                width: 450px;
+            }
+            table > thead > tr > th,
+            table > tbody > tr > td {
+                font-size: 9px;
+                height: 29px;
+                padding: 0 10px;
+                text-align: left;
+            }
+            table > thead > tr > th {
+                background: #f0f1f3;
+                border: 1px solid #e8ebee;
+                font-weight: bold;
+            }
+            table > tbody > tr > td {
+                border: 1px solid #e8ebee;
+            }
+            table > tbody > tr:nth-child(2n+1) > td {
+                background: #f6f7fb;
+            }
+
         </style>
     </head>
     <body>
@@ -110,10 +138,7 @@
                                 {% set manualHeight = true %}
 
                                 {% if 'pim_catalog_image' == attribute.type and content.data is defined and content.data is not null %}
-                                    {% set content = content.data.originalFilename %}
                                     {% set manualHeight = false %}
-                                {% elseif ('pim_catalog_simpleselect' == attribute.type or 'pim_catalog_multiselect' == attribute.type) and attribute.code in optionLabels|keys %}
-                                    {% set content = optionLabels[attribute.code] %}
                                 {% endif %}
 
                                 {% if content != null and manualHeight == true %}
@@ -126,14 +151,7 @@
                                         {{ attribute.label }}
                                     </div>
                                     <div class="right-column">
-                                        {% if 'pim_catalog_textarea' == attribute.type and attribute.isWysiwygEnabled %}
-                                            {{ content|raw }}
-                                        {% elseif 'pim_catalog_boolean' == attribute.type %}
-                                            {# @todo @merge: refactor on master - use new translation keys #}
-                                            {{ (content.data ? 'Yes' : 'No')|trans([], null, locale) }}
-                                        {% else %}
-                                            {{ content }}
-                                        {% endif %}
+                                        {{ render_attribute_value(attribute, content, locale)|raw }}
                                     </div>
                                 </div>
                             {% endblock %}

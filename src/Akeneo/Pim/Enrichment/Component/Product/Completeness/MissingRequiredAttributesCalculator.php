@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Completeness;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodesCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetCompletenessProductMasks;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\GetRequiredAttributesMasks;
 
 /**
@@ -17,13 +18,10 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\GetRequiredAttributesM
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MissingRequiredAttributesCalculator
+class MissingRequiredAttributesCalculator implements MissingRequiredAttributesCalculatorInterface
 {
-    /** @var GetCompletenessProductMasks */
-    private $getCompletenessProductMasks;
-
-    /** @var GetRequiredAttributesMasks */
-    private $getRequiredAttributesMasks;
+    private GetCompletenessProductMasks $getCompletenessProductMasks;
+    private GetRequiredAttributesMasks $getRequiredAttributesMasks;
 
     public function __construct(
         GetCompletenessProductMasks $getCompletenessProductMasks,
@@ -40,15 +38,18 @@ class MissingRequiredAttributesCalculator
     public function fromEntityWithFamily(
         EntityWithFamilyInterface $entityWithFamily
     ): ProductCompletenessWithMissingAttributeCodesCollection {
+        $entityId = \method_exists($entityWithFamily, 'getUuid')
+            ?  $entityWithFamily->getUuid()->toString()
+            : (string) $entityWithFamily->getId();
+
         if (null === $entityWithFamily->getFamily()) {
-            return new ProductCompletenessWithMissingAttributeCodesCollection($entityWithFamily->getId(), []);
+            return new ProductCompletenessWithMissingAttributeCodesCollection($entityId, []);
         }
         $familyCode = $entityWithFamily->getFamily()->getCode();
         $requiredAttributesMasks = $this->getRequiredAttributesMasks->fromFamilyCodes([$familyCode]);
 
         $productMask = $this->getCompletenessProductMasks->fromValueCollection(
-            $entityWithFamily->getId(),
-            $entityWithFamily->getIdentifier(),
+            $entityId,
             $familyCode,
             $entityWithFamily->getValues()
         );

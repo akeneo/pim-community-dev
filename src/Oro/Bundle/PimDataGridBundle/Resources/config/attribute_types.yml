@@ -9,6 +9,7 @@ parameters:
                 field_options:
                     attr:
                         choice_list: true
+                        empty_choice: true
         sorter:          product_value
     pim_datagrid.product.attribute_type.pim_catalog_text:
         column:

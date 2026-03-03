@@ -26,7 +26,7 @@ const composeEnhancers = composeWithDevTools({
   name: 'Akeneo PIM / Product Edit Form / Data Quality Insights / Store',
 });
 
-export const createStoreWithInitialState = (initialState = {}) =>
+export const createStoreWithInitialState = (initialState = undefined) =>
   createStore(
     combineReducers({
       catalogContext: catalogContextReducer,

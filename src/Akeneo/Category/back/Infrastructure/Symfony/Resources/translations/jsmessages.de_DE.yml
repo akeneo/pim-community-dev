@@ -1,0 +1,145 @@
+pim_title:
+  pim_category_template_edit: Kategorievorlage bearbeiten
+akeneo.category:
+  unknown_error:
+    title: Ein unbekannter Fehler ist aufgetreten.
+    message: Bitte laden Sie die Seite neu und versuchen Sie es erneut.
+  tree_list:
+    column:
+      category_templates: Kategorievorlagen
+  attributes: Attribute
+  edition_form:
+    error:
+      unhandled_attribute_type: Attributfeld-Builder für Attributtyp "{{ type }}" konnte nicht gefunden werden.
+    template:
+      title: Vorlage
+      no_attribute_title: Es gibt kein Attribut in dieser Vorlage
+      no_attribute_instructions: Die Vorlage in Bezug zu dieser Kategorie ist leer, Sie können Attribute zu dieser Vorlage über die Kategoriebaum-Seite hinzufügen.
+      fetching_failed: Ein Fehler ist während dem Abrufen der Vorlage aufgetreten
+    unsaved_changes: Sie verlieren ungespeicherten Fortschritt, wenn Sie die Seite verlassen.
+  tree:
+    create: Strukturbaum erstellen
+    delete: Strukturbaum löschen
+  template:
+    learn_more: Erfahren Sie mehr über Kategorievorlage
+    create: Template erstellen
+    create_confirmation_modal:
+      title: Neue Kategorievorlage erstellen
+      helper: Kategorievorlage erstellen um Attribute zu definieren und Anreicherung auf allen Kategorien dieses Strukturbaumes aktivieren.
+      category_tree: Kategoriebaum
+      link: Erfahren Sie mehr über Kategorievorlagen
+    edit: Vorlage bearbeiten
+    notification_success: Kategorievorlage erfolgreich erstellt
+    notification_error: Kategorievorlage konnte nicht erstellt werden
+    not_found: Es gibt keine aktives Template für diese Kategorie
+    properties:
+      general_properties: Allgemeine Eigenschaften
+      label_translations_in_ui_locales: Label-Übersetzungen in UI-Gebietsschema
+    attribute:
+      description_title: Beschreibungseinstellungen
+      type:
+        text: Text
+        textarea: Textbereich
+        richtext: Rich Text
+        image: Bild
+      delete_button: Attribute löschen
+      settings:
+        title: Einstellungen
+        options:
+          title: Optionen
+          value_per_channel: Wert pro Kanal
+          value_per_locale: Wert pro Sprache
+          rich_text: Rich Text Editor
+        translations:
+          title: Labelübersetzungen
+        error_message: Es gibt ungültige Werte auf der Seite.
+        unsaved_changes: Sie haben ungespeicherte Änderungen. Sind Sie sicher, dass die Seite verlassen wollen?
+    add_attribute:
+      no_attribute_title: Erstelle dein erstes Attribut
+      no_attribute_instructions: Definieren Sie den Inhalt, den Sie mit Ihren Kategorien verknüpfen möchten, indem Sie Text-Bereich oder Bild-Attribute zu dieser Vorlage hinzufügen.
+      add_button: Attribut hinzufügen
+      create_button: Attribut erstellen
+      confirmation_modal:
+        section_title: Attribut hinzufügen
+        title: Neues Kategorie-Attribut erstellen
+        head_helper: Kategorie-Attribute sind einer Vorlage zugeordnet. Sie können in anderen Vorlagen nicht auf sie zugreifen.
+        tail_helper: Der Wert pro Kanal und Wert pro Gebietsschema kann nicht geändert werden, sobald das Attribut erstellt wurde.
+        link: Erfahren Sie mehr über Kategorievorlagen.
+        create: Erstellen
+        input:
+          label: Label
+          code: Code
+          type:
+            label: Attributtyp
+            empty: Kein Attributtyp verfügbar
+            option_title:
+              text: Text
+              textarea: Textbereich
+              image: Bild
+      success:
+        notification: Attribut erfolgreich erstellt
+      error:
+        failed: Template Attribut hinzufügen fehlgeschlagen
+        limit_reached:
+          title: Sie können nicht mehr als 50 Attribute hinzufügen
+          message: Kategorievorlagen sind auf 50 Attribute pro Vorlage beschränkt.
+    delete_attribute:
+      delete: Kategorie-Attribut löschen
+      confirmation_modal:
+        title: Dieses Kategorieattribut löschen
+        message: Sind Sie sicher, dass Sie das Kategorie-Attribut {{ attribute }} löschen möchten?
+        helper: Das Löschen dieses Attributs wird das Attribut und die Werte der zugehörigen Kategorien dauerhaft löschen.
+      notification_success:
+        title: '{{ attribute }} -Attribut erfolgreich gelöscht'
+    deactivate:
+      deactivate_template: Vorlage löschen
+      confirmation_modal:
+        title: Kategorievorlage löschen
+        message: Sind Sie sich sicher, dass sie die Kategorievorlage namens {{ template }} löschen wollen?
+        helper: Diese Vorlage zu löschen wird permanent die Attribute und Werte von den zugewiesenen Kategorien entfernen.
+        deactivate: Löschen
+      notification_success:
+        title: '{{ template }} Template gelöscht'
+        message: '{{ template }} wurde gelöscht. Der Inhalt der zugehörigen Kategorien wurde gelöscht.'
+    auto-save:
+      saved: Gespeichert
+      saving: Speichern
+      editing: Bearbeitung
+      errors: Fehler nicht gespeichert
+    initialize:
+      title: Kategorie-Attribute hinzufügen
+      message: Definieren Sie den Inhalt Ihrer Kategorien, indem Sie Text-Bereich oder Bild-Attribute hinzufügen.
+      choice_message: Beginnen Sie mit der Erstellung eines ersten Attributs nach Ihren Bedürfnissen oder laden Sie ein Set von 13 vorgeschlagenen Attributen.
+      button:
+        load: Eine Set von Attributen laden
+        create: Erstelle erstes Attribut
+    load_attribute_set:
+      section_title: Attribut-Set laden
+      title: Lade ein Set von vorgeschlagenen Attributen
+      description: Starten Sie einfach die Konfiguration von angereicherten Kategorien, indem Sie eine Reihe von vorgeschlagenen Attributen laden.
+      content_description: 'Dieses Set enthält 13 Attribute:'
+      content:
+        description_attributes: 2 Text Bereichsattribute für lange und kurze Kategoriebeschreibungen
+        url_attributes: 1 Text-Attribut für URL-Informationen
+        image_attributes: 3 Bilder und 3 Text-Attribute für das Bild und deren Alt-Text Informationen
+        seo_attributes: 2 Text- und 2 Textbereichsattribute für SEO-Informationen
+      confirmation_message: Sind Sie sicher, dass Sie dieses Set von Attributen laden möchten?
+      button:
+        load: Attribut-Set laden
+      notification:
+        success: Attribute erfolgreich erstellt
+  template_list:
+    columns:
+      header: Label
+      code: Code
+      type: Typ
+  tag:
+    new: Neu
+  discover_enriched_categories_information:
+    title: Entdecke angereicherte Kategorien
+    content:
+      enrich_attribute_values: Reichern Sie alle Ebenen Ihrer Kategoriebäume mit Text-Bereichen und Bild-Attributen an.
+      customizable_templates: Bieten Sie die Produkterfahrung an, die Sie wünschen dank der anpassbaren Vorlagen.
+    survey_link_label: Sagen Sie uns, was Sie denken
+    learn_more_link_label: Erfahren Sie mehr über angereicherte Kategorien
+  other_actions: Weitere Aktionen

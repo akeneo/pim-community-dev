@@ -18,6 +18,7 @@ define(['jquery', 'underscore', 'oro/translator', 'pim/form', 'pim/template/form
     dialog: null,
     events: {
       'keyup input': 'updateModel',
+      'change input': 'updateModel',
     },
 
     /**

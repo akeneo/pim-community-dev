@@ -13,21 +13,14 @@ use Akeneo\Tool\Component\Batch\Job\JobInterface;
  */
 class EmptyDefaultValuesProvider implements DefaultValuesProviderInterface
 {
-    /** @var array */
-    protected $supportedJobNames;
-
-    /**
-     * @param array $supportedJobNames
-     */
-    public function __construct(array $supportedJobNames)
+    public function __construct(protected array $supportedJobNames)
     {
-        $this->supportedJobNames = $supportedJobNames;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDefaultValues()
+    public function getDefaultValues(): array
     {
         return [];
     }
@@ -35,7 +28,7 @@ class EmptyDefaultValuesProvider implements DefaultValuesProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function supports(JobInterface $job)
+    public function supports(JobInterface $job): bool
     {
         return in_array($job->getName(), $this->supportedJobNames);
     }

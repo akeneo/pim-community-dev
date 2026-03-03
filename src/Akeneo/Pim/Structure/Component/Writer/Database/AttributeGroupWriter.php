@@ -37,7 +37,6 @@ class AttributeGroupWriter implements ItemWriterInterface, StepExecutionAwareInt
         BulkSaverInterface $bulkSaver,
         BulkObjectDetacherInterface $bulkDetacher,
         AttributeGroupRepositoryInterface $attributeGroupRepository
-
     ) {
         $this->bulkSaver = $bulkSaver;
         $this->bulkDetacher = $bulkDetacher;
@@ -79,7 +78,7 @@ class AttributeGroupWriter implements ItemWriterInterface, StepExecutionAwareInt
     {
         foreach ($objects as $object) {
             if ($object->getId()) {
-                $this->stepExecution->incrementSummaryInfo('process');
+                $this->stepExecution->incrementSummaryInfo('update');
             } else {
                 $this->stepExecution->incrementSummaryInfo('create');
             }

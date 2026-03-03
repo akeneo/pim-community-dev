@@ -41,7 +41,7 @@ class EvaluateImageEnrichment implements EvaluateCriterionInterface
     public function evaluate(Write\CriterionEvaluation $criterionEvaluation, ProductValuesCollection $productValues): Write\CriterionEvaluationResult
     {
         $localesByChannel = $this->localesByChannelQuery->getChannelLocaleCollection();
-        $completenessResult = $this->completenessCalculator->calculate($criterionEvaluation->getProductId());
+        $completenessResult = $this->completenessCalculator->calculate($criterionEvaluation->getEntityId());
 
         $evaluationResult = new Write\CriterionEvaluationResult();
         foreach ($localesByChannel as $channelCode => $localeCodes) {

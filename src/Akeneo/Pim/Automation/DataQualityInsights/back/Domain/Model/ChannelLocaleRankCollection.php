@@ -37,7 +37,8 @@ final class ChannelLocaleRankCollection
             $normalizedRanks,
             function ($normalizedRank) use ($getNormalizedRankValue) {
                 return Rank::fromInt(intval($getNormalizedRankValue($normalizedRank)));
-            });
+            }
+        );
 
         return $rankCollection;
     }

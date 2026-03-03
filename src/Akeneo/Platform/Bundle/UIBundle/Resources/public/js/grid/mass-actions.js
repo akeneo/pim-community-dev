@@ -7,14 +7,15 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-define(['jquery', 'underscore', 'oro/translator', 'backbone', 'pim/form', 'pim/template/grid/mass-actions'], function (
-  $,
-  _,
-  __,
-  Backbone,
-  BaseForm,
-  template
-) {
+define([
+  'jquery',
+  'underscore',
+  'oro/translator',
+  'backbone',
+  'pim/form',
+  'pim/template/grid/mass-actions',
+  'pim/analytics',
+], function ($, _, __, Backbone, BaseForm, template, analytics) {
   return BaseForm.extend({
     template: _.template(template),
     className: 'AknDefault-bottomPanel AknDefault-bottomPanel--hidden AknMassActions mass-actions',
@@ -86,6 +87,11 @@ define(['jquery', 'underscore', 'oro/translator', 'backbone', 'pim/form', 'pim/t
         this.count = Math.max(this.count - 1, 0);
       }
 
+      analytics.appcuesTrack('grid:item:number-selected', {
+        inputName: this.collection.inputName,
+        count: this.count,
+      });
+
       this.updateView();
     },
 
@@ -95,6 +101,10 @@ define(['jquery', 'underscore', 'oro/translator', 'backbone', 'pim/form', 'pim/t
     selectAll() {
       this.count = this.collection.state.totalRecords;
       this.collection.trigger('backgrid:selectAll');
+
+      analytics.appcuesTrack('grid:item:all-selected', {
+        inputName: this.collection.inputName,
+      });
 
       this.updateView();
     },
@@ -140,13 +150,7 @@ define(['jquery', 'underscore', 'oro/translator', 'backbone', 'pim/form', 'pim/t
      * - The events of the sub extensions are lost after re-render.
      */
     updateView() {
-      let count = this.count;
-      if (this.datagrid) {
-        const selectionState = this.datagrid.getSelectionState();
-        if (!selectionState.inset) {
-          count = this.collection.state.totalRecords - Object.keys(selectionState.selectedModels).length;
-        }
-      }
+      const count = this.countEntities();
 
       if (count > 0) {
         this.$el.removeClass('AknDefault-bottomPanel--hidden');
@@ -172,6 +176,18 @@ define(['jquery', 'underscore', 'oro/translator', 'backbone', 'pim/form', 'pim/t
       }
 
       this.$el.find('.count').text(__(this.config.label, {count: count}, count));
+    },
+
+    countEntities() {
+      let count = this.count;
+      if (this.datagrid) {
+        const selectionState = this.datagrid.getSelectionState();
+        if (!selectionState.inset) {
+          count = this.collection.state.totalRecords - Object.keys(selectionState.selectedModels).length;
+        }
+      }
+
+      return count;
     },
   });
 });

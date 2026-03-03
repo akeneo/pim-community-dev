@@ -1,7 +1,6 @@
 'use strict';
 
 define([
-  'underscore',
   'oro/translator',
   'pim/controller/front',
   'pim/form-builder',
@@ -10,7 +9,7 @@ define([
   'pim/dialog',
   'pim/page-title',
   'pim/i18n',
-], function (_, __, BaseController, FormBuilder, FetcherRegistry, UserContext, Dialog, PageTitle, i18n) {
+], function (__, BaseController, FormBuilder, FetcherRegistry, UserContext, Dialog, PageTitle, i18n) {
   return BaseController.extend({
     /**
      * {@inheritdoc}
@@ -39,14 +38,14 @@ define([
         return FetcherRegistry.getFetcher('channel')
           .fetch(route.params.code, {cached: false, filter_locales: 0})
           .then(channel => {
-            const label = _.escape(i18n.getLabel(channel.labels, UserContext.get('catalogLocale'), channel.code));
+            const label = i18n.getLabel(channel.labels, UserContext.get('catalogLocale'), channel.code);
 
             return createForm.call(this, this.$el, channel, label, channel.meta.form);
           });
       }
 
       function createForm(domElement, channel, label, formExtension) {
-        PageTitle.set({'channel.label': _.escape(label)});
+        PageTitle.set({'channel.label': label});
 
         return FormBuilder.build(formExtension).then(form => {
           this.on('pim:controller:can-leave', function (event) {

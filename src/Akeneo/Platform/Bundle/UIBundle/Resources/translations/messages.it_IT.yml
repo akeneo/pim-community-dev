@@ -48,19 +48,36 @@ pim_ui.system_config:
     loading_message.title: Messaggi per "caricamento in corso"
 other_actions: Altre azioni
 pim_common:
+  association_types: Tipi di associazione
   cancel: Annulla
-  save: Salva
-  delete: Elimina
-  update: Carica
-  view: Visualizzazione
-  edit: Modifica
-  created: Creato
-  updated: Caricato
+  categories: Categorie
+  code: Codice
   create: Creare
-  permissions: Autorizzazioni
-  properties: Proprietà
+  created: Creato
+  delete: Elimina
+  edit: Modifica
+  enabled: Attivato
+  family_variant: Famiglia variante
+  family: Famiglia
+  groups: Gruppi
+  label: Etichetta
   name: Nome
+  no: "No"
+  parent: Parente
+  permissions: Autorizzazioni
+  product_models: Modelli di prodotto
+  products: Prodotti
+  properties: Proprietà
+  quality_score: Punteggio qualità
+  quantity: Quantità
   remove: Rimuovere
+  save: Salva
+  unit: Unità
+  update: Carica
+  updated: Caricato
+  view: Visualizzazione
+  yes: "Sì"
+  uuid: UUID
 pim_enrich:
   #ACLs
   acl:
@@ -86,21 +103,13 @@ pim_enrich:
       comment: Commenta i prodotti
       download: Scarica il prodotto in formato PDF
       history: Visualizza la storia del prodotto
+      convert_variant_to_simple: Converti un prodotto variante in un prodotto semplice
     product_model:
       create: Crea un modello di prodotto
       edit_attributes: Modifica gli attributi di modello di prodotto
       categories_view: Consulta le categorie di un modello di prodotto
       history: Visualizza la cronologia del modello di prodotto
-      remove: Rimuovi un modello di prodotto
-    category:
-      list: Elenco categorie
-      create: Creare una categoria
-      edit: Modificare una categoria
-      remove: Rimuovere una categoria
-      move: Sposta la categoria
-      children: Visualizza categoria bambini
-      products: Visualizza i prodotti della categoria
-      history: Visualizza lo storico della categoria
+      remove: Rimuovi un modello prodotto (compresi figli)
     channel:
       index: Elenco canali
       create: Creare un canale
@@ -122,6 +131,7 @@ pim_enrich:
       create: Crea un gruppo attributi
       edit: Modifica un gruppo attributi
       remove: Rimuovi un gruppo attributi
+      mass_delete: Rimuovi in blocco gruppi di attributi
       sort: Ordina attributi di gruppo
       add_attribute: Aggiungere l'attributo a un gruppo
       remove_attribute: Rimuovere l'attributo da un gruppo
@@ -131,6 +141,7 @@ pim_enrich:
       create: Creare un attributo
       edit: Modificare un attributo
       remove: Rimuovere un attributo
+      mass_delete: Elimina attributi in blocco
       sort: Ordinare gli attributi all'interno degli attributi di gruppo
       history: Visualizza lo storico dell'attributo
     group:
@@ -154,11 +165,11 @@ pim_enrich:
       remove: Rimuovi associazioni da un prodotto
     job_tracker:
       index: Visualizza il tracker di processo
-    api_connection:
-      manage: Gestisci le connessioni API
+      view_all_jobs: Visualizza tutti i job nel tracker di processo
+      stop_job: Arresta un job in corso
   acl_group:
     association_type: Tipi di associazione
-    attribute: Atributi
+    attribute: Attributi
     attribute_group: Gruppi di attributi
     category: Categorie
     channel: Canali
@@ -203,6 +214,8 @@ flash:
   attribute:
     identifier_not_removable: L'dentificatore attributo non può essere rimosso
     used_as_conversion_unit: Questo attributo non può essere rimosso perché è usato come unità di conversione nel canale(i) %channelCodes%.
+    cant_remove_attributes_used_as_label: Impossibile rimuovere gli attributi usati come etichette in una famiglia.
+    cant_remove_attribute_used_as_axis: Impossibile rimuovere questo attributo usato come asse variante in una famiglia variante
   category:
     removed: Categoria rimossa con successo
   tree:
@@ -347,8 +360,8 @@ Decimals allowed: Consentire i decimali
 Negative allowed: Consentire valori negativi
 Date min: Data minima
 Date max: Data massima
-Metric family: Famiglia metrica
-Default metric unit: Unità metrica di default
+Metric family: Famiglia di unità di misura
+Default metric unit: Unità di misura predefinita
 Max file size: Dimensione massima del file (MB)
 Allowed extensions: Estensioni consentite
 None: Nessuno
@@ -373,7 +386,7 @@ pim_catalog_file: File
 pim_catalog_image: Immagine
 pim_catalog_boolean: "Sì/No"
 pim_catalog_date: Data
-pim_catalog_metric: Metrico
+pim_catalog_metric: Misurazione
 pim_reference_data_simpleselect: Seleziona un singolo riferimento dati
 pim_reference_data_multiselect: Seleziona un riferimento dati multiplo
 #Locales
@@ -420,6 +433,35 @@ Updated At: Aggiornato il
 Enabled: Attivato
 Disabled: Disattivato
 Status: Stato
+pim_datagrid:
+  filters:
+    product_typology:
+      label: Tipologia prodotto
+    entity_type:
+      label: Variante
+    family:
+      label: Famiglia
+    groups:
+      label: Gruppi
+    enabled:
+      label: Stato
+    scope:
+      label: Canale
+    completeness:
+      label: Completo
+    created:
+      label: Creato
+    updated:
+      label: Caricato
+    label_or_identifier:
+      label: Etichetta o identificatore
+      label_with_uuid: Etichetta, identificatore o UUID
+    parent:
+      label: Parente
+    identifier:
+      label: Identificatore
+    uuid:
+      label: Uuid
 #Versioning / history
 Change History: Cambia la cronologia
 Data Audit: Revisione dei dati
@@ -484,7 +526,6 @@ pim_mass_edit:
       success: Eliminazione di massa di <strong>%label%</strong> completata
 job_execution.summary:
   mass_edited: Azione di massa modificata
-  skip: Saltato
   skipped_products: Prodotti saltati
   skipped_attributes: Attributi saltati
   skipped_families: Famiglie saltate
@@ -505,3 +546,9 @@ job_tracker:
     title: Tracker di processo
   filter:
     started_at: Iniziato alle
+pim_login:
+  logo_title: Akeneo PIM
+  footer:
+    powered: Con tecnologia
+    powered_image_title: logo Akeneo
+pim_system.acl_group.connect: Connetti

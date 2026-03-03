@@ -9,26 +9,20 @@ use Akeneo\Platform\Bundle\ImportExportBundle\Model\StepExecutionTracking;
 use Akeneo\Platform\Bundle\ImportExportBundle\Query\GetJobExecutionTracking;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use AkeneoTest\Platform\Integration\ImportExport\Utils\FrozenClock;
 use Doctrine\DBAL\Connection;
 
 class GetJobExecutionTrackingIntegration extends TestCase
 {
-    /** @var Connection */
-    private $sqlConnection;
-
-    /** @var GetJobExecutionTracking */
-    private $getJobExecutionTracking;
-
-    /** @var FrozenClock */
-    private $clock;
+    private Connection $sqlConnection;
+    private GetJobExecutionTracking $getJobExecutionTracking;
+    private FrozenClock $clock;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        self::$container->set('pim_import_export.clock', new FrozenClock());
+        self::getContainer()->set('pim_import_export.clock', new FrozenClock());
 
         $this->sqlConnection = $this->get('database_connection');
         $this->getJobExecutionTracking = $this->get('pim_import_export.query.get_job_execution_tracking');
@@ -100,7 +94,7 @@ class GetJobExecutionTrackingIntegration extends TestCase
 
     private function thereIsAJobNotStarted(): int
     {
-        $JobInstanceId = $this->sqlConnection->executeQuery('SELECT id FROM akeneo_batch_job_instance WHERE code = "csv_product_import";')->fetchColumn();
+        $JobInstanceId = $this->sqlConnection->executeQuery('SELECT id FROM akeneo_batch_job_instance WHERE code = "csv_product_import";')->fetchOne();
         $insertJobExecution = <<<SQL
 INSERT INTO `akeneo_batch_job_execution` (job_instance_id, pid, user, status, start_time, end_time, create_time, updated_time, health_check_time, exit_code, exit_description, failure_exceptions, log_file, raw_parameters)
 VALUES (:job_instance_id, null, 'admin', 2, null, null, '2020-10-16 09:38:16', null, null, 'UNKNOWN', '', 'a:0:{}', null, '{}');
@@ -114,7 +108,7 @@ SQL;
     {
         $this->clock->setDateTime(new \DateTime('2020-10-13 14:06:02', new \DateTimeZone('UTC')));
 
-        $JobInstanceId = $this->sqlConnection->executeQuery('SELECT id FROM akeneo_batch_job_instance WHERE code = "csv_product_import";')->fetchColumn();
+        $JobInstanceId = $this->sqlConnection->executeQuery('SELECT id FROM akeneo_batch_job_instance WHERE code = "csv_product_import";')->fetchOne();
         $insertJobExecution = <<<SQL
 INSERT INTO `akeneo_batch_job_execution` (`job_instance_id`, `pid`, `user`, `status`, `start_time`, `end_time`, `create_time`, `updated_time`, `health_check_time`, `exit_code`, `exit_description`, `failure_exceptions`, `log_file`, `raw_parameters`)
 VALUES
@@ -140,7 +134,7 @@ SQL;
     {
         $this->clock->setDateTime(new \DateTime('2020-10-13 13:06:02', new \DateTimeZone('UTC')));
 
-        $JobInstanceId = $this->sqlConnection->executeQuery('SELECT id FROM akeneo_batch_job_instance WHERE code = "csv_product_import";')->fetchColumn();
+        $JobInstanceId = $this->sqlConnection->executeQuery('SELECT id FROM akeneo_batch_job_instance WHERE code = "csv_product_import";')->fetchOne();
         $insertJobExecution = <<<SQL
 INSERT INTO `akeneo_batch_job_execution` (`job_instance_id`, `pid`, `user`, `status`, `start_time`, `end_time`, `create_time`, `updated_time`, `health_check_time`, `exit_code`, `exit_description`, `failure_exceptions`, `log_file`, `raw_parameters`)
 VALUES
@@ -174,7 +168,7 @@ SQL;
     {
         $this->clock->setDateTime(new \DateTime('2020-10-13 13:06:02', new \DateTimeZone('UTC')));
 
-        $JobInstanceId = $this->sqlConnection->executeQuery('SELECT id FROM akeneo_batch_job_instance WHERE code = "csv_product_import";')->fetchColumn();
+        $JobInstanceId = $this->sqlConnection->executeQuery('SELECT id FROM akeneo_batch_job_instance WHERE code = "csv_product_import";')->fetchOne();
         $insertJobExecution = <<<SQL
 INSERT INTO akeneo_batch_job_execution (job_instance_id, pid, user, status, start_time, end_time, create_time, updated_time, health_check_time, exit_code, exit_description, failure_exceptions, log_file, raw_parameters)
 VALUES (:job_instance_id, 55, 'admin', 6, '2020-10-16 09:50:28', '2020-10-16 09:50:29', '2020-10-16 09:50:26', '2020-10-16 09:50:28', '2020-10-16 09:50:28', 'FAILED', 'une backtrace', 'a:0:{}', '/srv/pim/var/logs/batch/26/batch_753d665999a008628d64a94e0ae83a52cc8f7d87.log', '{}');
@@ -227,9 +221,10 @@ SQL;
         $expectedJobExecutionTracking = new JobExecutionTracking();
         $expectedJobExecutionTracking->status = 'STARTING';
         $expectedJobExecutionTracking->currentStep = 0;
-        $expectedJobExecutionTracking->totalSteps = 3;
+        $expectedJobExecutionTracking->totalSteps = 4;
 
         $expectedJobExecutionTracking->steps = [
+            $this->getDownloadStepExecutionTracking(),
             $this->getValidationStepExecutionTracking(),
             $this->getImportStepExecutionTracking(),
             $this->getImportAssociationsStepExecutionTracking()
@@ -241,9 +236,9 @@ SQL;
     private function expectedJobExecutionTrackingInProgress(): JobExecutionTracking
     {
         $expectedJobExecutionTracking = new JobExecutionTracking();
-        $expectedJobExecutionTracking->status = 'STARTED';
+        $expectedJobExecutionTracking->status = 'IN_PROGRESS';
         $expectedJobExecutionTracking->currentStep = 2;
-        $expectedJobExecutionTracking->totalSteps = 3;
+        $expectedJobExecutionTracking->totalSteps = 4;
 
         $expectedStepExecutionTracking1 = $this->getValidationStepExecutionTracking();
         $expectedStepExecutionTracking1->status = 'COMPLETED';
@@ -251,7 +246,7 @@ SQL;
         $expectedStepExecutionTracking1->hasWarning = true;
 
         $expectedStepExecutionTracking2 = $this->getImportStepExecutionTracking();
-        $expectedStepExecutionTracking2->status = 'STARTED';
+        $expectedStepExecutionTracking2->status = 'IN_PROGRESS';
         $expectedStepExecutionTracking2->duration = 7;
         $expectedStepExecutionTracking2->processedItems = 10;
         $expectedStepExecutionTracking2->totalItems = 100;
@@ -259,6 +254,7 @@ SQL;
         $expectedStepExecutionTracking3 = $this->getImportAssociationsStepExecutionTracking();
 
         $expectedJobExecutionTracking->steps = [
+            $this->getDownloadStepExecutionTracking(),
             $expectedStepExecutionTracking1,
             $expectedStepExecutionTracking2,
             $expectedStepExecutionTracking3
@@ -272,7 +268,7 @@ SQL;
         $expectedJobExecutionTracking = new JobExecutionTracking();
         $expectedJobExecutionTracking->status = 'COMPLETED';
         $expectedJobExecutionTracking->currentStep = 3;
-        $expectedJobExecutionTracking->totalSteps = 3;
+        $expectedJobExecutionTracking->totalSteps = 4;
 
         $expectedStepExecutionTracking1 = $this->getValidationStepExecutionTracking();
         $expectedStepExecutionTracking1->status = 'COMPLETED';
@@ -289,6 +285,7 @@ SQL;
         $expectedStepExecutionTracking3->duration = 1;
 
         $expectedJobExecutionTracking->steps = [
+            $this->getDownloadStepExecutionTracking(),
             $expectedStepExecutionTracking1,
             $expectedStepExecutionTracking2,
             $expectedStepExecutionTracking3
@@ -302,7 +299,7 @@ SQL;
         $expectedJobExecutionTracking = new JobExecutionTracking();
         $expectedJobExecutionTracking->status = 'FAILED';
         $expectedJobExecutionTracking->currentStep = 2;
-        $expectedJobExecutionTracking->totalSteps = 3;
+        $expectedJobExecutionTracking->totalSteps = 4;
 
         $expectedStepExecutionTracking1 = $this->getValidationStepExecutionTracking();
         $expectedStepExecutionTracking1->status = 'COMPLETED';
@@ -320,6 +317,7 @@ SQL;
         $expectedStepExecutionTracking3->duration = 0;
 
         $expectedJobExecutionTracking->steps = [
+            $this->getDownloadStepExecutionTracking(),
             $expectedStepExecutionTracking1,
             $expectedStepExecutionTracking2,
             $expectedStepExecutionTracking3
@@ -355,6 +353,22 @@ SQL;
         ];
 
         return $expectedJobExecutionTracking;
+    }
+
+    private function getDownloadStepExecutionTracking(): StepExecutionTracking
+    {
+        $stepExecutionTracking = new StepExecutionTracking();
+        $stepExecutionTracking->isTrackable = false;
+        $stepExecutionTracking->jobName = 'csv_product_import';
+        $stepExecutionTracking->stepName = 'download_files';
+        $stepExecutionTracking->status = 'STARTING';
+        $stepExecutionTracking->duration = 0;
+        $stepExecutionTracking->hasError = false;
+        $stepExecutionTracking->hasWarning = false;
+        $stepExecutionTracking->processedItems = 0;
+        $stepExecutionTracking->totalItems = 0;
+
+        return $stepExecutionTracking;
     }
 
     private function getValidationStepExecutionTracking(): StepExecutionTracking

@@ -53,7 +53,6 @@ pim_import_export:
         show_profile.title: Vis profil
         download_log.title: Nedlastingslogg
         download_file.title: Last ned generert fil
-        download_archive.title: Last ned generert arkiv
       summary:
         fetching: Samler data for utførelse av jobb...
         warning: Advarsel
@@ -99,9 +98,6 @@ pim_import_export:
           with_header:
             title: Med hode
             help: Velg å ikke skrive ut kolonnenavnet
-          with_media:
-            title: Eksporter filer og bilder
-            help: Hvorvidt du skal, eller ikke skal, eksportere produktfiler og bilder
           lines_per_file:
             title: Antall linjer per fil
             help: Definer antall linjer per fil
@@ -145,7 +141,6 @@ pim_import_export:
         mass_edit: Masseredigering
         mass_edit_rule: Regelinstillinger
         quick_export: Rask eksport
-        compute_product_models_descendants: Kalkuler produkt model etterfølgere
         compute_family_variant_structure_changes: Kalkuler familie variant struktur endringer
         compute_completeness_of_products_family: Kalkuler fullstendighet av produkt familier
         mass_delete: Bulk sletting av produkter
@@ -159,6 +154,15 @@ pim_import_export:
     6: Mislyktes
     7: Overgitt
     8: Ukjent
+  job_status:
+    COMPLETED: Fullført
+    STARTING: Starter
+    STARTED: Startet
+    STOPPING: Stopper
+    STOPPED: Stoppet
+    FAILED: Mislyktes
+    ABANDONED: Overgitt
+    UNKNOWN: Ukjent
 confirmation:
   remove:
     import_profile: Er du sikker på at du vil slette denne import profilen?

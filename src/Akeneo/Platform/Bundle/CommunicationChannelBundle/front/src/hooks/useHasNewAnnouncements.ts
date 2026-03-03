@@ -1,7 +1,6 @@
 import {useState, useCallback, useEffect} from 'react';
-import {baseFetcher, useIsMounted} from '@akeneo-pim-community/shared';
 import {validateHasNewAnnouncements} from '../validator/hasNewAnnouncements';
-import {useMediator} from '@akeneo-pim-community/legacy-bridge';
+import {useIsMounted, useMediator} from '@akeneo-pim-community/shared';
 
 const useHasNewAnnouncements = (): (() => void) => {
   const mediator = useMediator();
@@ -10,7 +9,8 @@ const useHasNewAnnouncements = (): (() => void) => {
   const isMounted = useIsMounted();
 
   const handleHasNewAnnouncements = useCallback(async () => {
-    const data = await baseFetcher(route);
+    const response = await fetch(route);
+    const data = await response.json();
     validateHasNewAnnouncements(data);
 
     if (isMounted()) {

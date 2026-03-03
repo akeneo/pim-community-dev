@@ -17,15 +17,9 @@ class AttributeRepository extends EntityRepository implements
     TranslatedLabelsProviderInterface,
     DatagridRepositoryInterface
 {
-    /** @var UserContext */
-    protected $userContext;
+    protected UserContext $userContext;
 
-    /**
-     * @param UserContext   $userContext
-     * @param EntityManager $em
-     * @param string        $class
-     */
-    public function __construct(UserContext $userContext, EntityManager $em, $class)
+    public function __construct(UserContext $userContext, EntityManager $em, string $class)
     {
         parent::__construct($em, $em->getClassMetadata($class));
 
@@ -73,7 +67,7 @@ class AttributeRepository extends EntityRepository implements
     public function createDatagridQueryBuilder()
     {
         $qb = $this->createQueryBuilder('a');
-        $rootAlias = $qb->getRootAlias();
+        $rootAlias = $qb->getRootAliases()[0];
 
         $labelExpr = sprintf(
             '(CASE WHEN translation.label IS NULL THEN %s.code ELSE translation.label END)',

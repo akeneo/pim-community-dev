@@ -2,7 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine;
 
-use Doctrine\Common\Persistence\Mapping\ClassMetadata;
+use Doctrine\Persistence\Mapping\ClassMetadata;
 
 /**
  * Configure the mappings of the metadata classes that are override.

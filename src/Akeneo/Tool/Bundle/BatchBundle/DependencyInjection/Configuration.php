@@ -17,11 +17,11 @@ class Configuration implements ConfigurationInterface
     /**
      * {@inheritdoc}
      */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder();
+        $treeBuilder = new TreeBuilder('akeneo_batch');
 
-        $root = $treeBuilder->root('akeneo_batch');
+        $root = $treeBuilder->getRootNode();
 
         $root
             ->children()

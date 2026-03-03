@@ -36,7 +36,7 @@ class FileNormalizer extends AbstractValueDataNormalizer implements CacheableSup
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof FileInfoInterface && in_array($format, $this->supportedFormats);
     }

@@ -4,40 +4,23 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Domain\Settings\Model\Read;
 
+use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionType;
+
 /**
- * @author Romain Monceau <romain@akeneo.com>
+ * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
- * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 class Connection
 {
-    /** @var string */
-    private $code;
-
-    /** @var string */
-    private $label;
-
-    /** @var string */
-    private $flowType;
-
-    /** @var string|null */
-    private $image;
-
-    /** @var boolean */
-    private $auditable;
-
     public function __construct(
-        string $code,
-        string $label,
-        string $flowType,
-        ?string $image = null,
-        bool $auditable = false
+        private string $code,
+        private string $label,
+        private string $flowType,
+        private ?string $image = null,
+        private bool $auditable = false,
+        private string $type = ConnectionType::DEFAULT_TYPE
     ) {
-        $this->code = $code;
-        $this->label = $label;
-        $this->flowType = $flowType;
-        $this->image = $image;
-        $this->auditable = $auditable;
     }
 
     public function code(): string
@@ -65,13 +48,19 @@ class Connection
         return $this->auditable;
     }
 
+    public function type(): string
+    {
+        return $this->type;
+    }
+
     /**
      * @return array{
      *  code: string,
      *  label: string,
      *  flowType: string,
      *  image: ?string,
-     *  auditable: bool
+     *  auditable: bool,
+     *  type: string,
      * }
      */
     public function normalize(): array
@@ -82,6 +71,7 @@ class Connection
             'flowType' => $this->flowType,
             'image' => $this->image,
             'auditable' => $this->auditable,
+            'type' => $this->type,
         ];
     }
 }

@@ -3,9 +3,7 @@
 namespace spec\Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber;
 
 use Akeneo\Tool\Component\Versioning\Model\Version;
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ORM\EntityManager;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata as ORMClassMetadata;
 use Doctrine\ORM\Mapping\ClassMetadata;

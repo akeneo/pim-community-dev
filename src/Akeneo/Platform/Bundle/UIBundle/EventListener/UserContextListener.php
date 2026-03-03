@@ -64,7 +64,7 @@ class UserContextListener implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::REQUEST => 'onKernelRequest'
@@ -73,7 +73,7 @@ class UserContextListener implements EventSubscriberInterface
 
     public function onKernelRequest(RequestEvent $event)
     {
-        if (HttpKernel::MASTER_REQUEST !== $event->getRequestType() || null === $this->tokenStorage->getToken()) {
+        if (HttpKernel::MAIN_REQUEST !== $event->getRequestType() || null === $this->tokenStorage->getToken()) {
             return;
         }
 

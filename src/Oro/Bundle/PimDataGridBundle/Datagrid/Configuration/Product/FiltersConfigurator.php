@@ -60,7 +60,7 @@ class FiltersConfigurator implements ConfiguratorInterface
             $filterConfig = $filterConfig + [
                 ProductFilterUtility::DATA_NAME_KEY => $attributeCode,
                 'label'                             => $attribute['label'],
-                'enabled'                           => (AttributeTypes::IDENTIFIER === $attributeType),
+                'enabled'                           => false,
                 'order'                             => $attribute['sortOrder'],
                 'group'                             => $attribute['group'],
                 'groupOrder'                        => $attribute['groupOrder']

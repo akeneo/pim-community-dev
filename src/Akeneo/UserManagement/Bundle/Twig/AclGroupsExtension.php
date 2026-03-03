@@ -2,7 +2,10 @@
 
 namespace Akeneo\UserManagement\Bundle\Twig;
 
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Symfony\Component\Yaml\Yaml;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
 /**
  * Twig extension to provide acl groups
@@ -11,17 +14,12 @@ use Symfony\Component\Yaml\Yaml;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AclGroupsExtension extends \Twig_Extension
+class AclGroupsExtension extends AbstractExtension
 {
-    /** @var array */
-    protected $bundles;
-
-    /**
-     * @param array $bundles
-     */
-    public function __construct($bundles)
-    {
-        $this->bundles = $bundles;
+    public function __construct(
+        protected array $bundles,
+        private FeatureFlags $featureFlags,
+    ) {
     }
 
     /**
@@ -30,8 +28,8 @@ class AclGroupsExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('acl_groups', [$this, 'getAclGroups']),
-            new \Twig_SimpleFunction('acl_group_names', [$this, 'getAclGroupNames']),
+            new TwigFunction('acl_groups', [$this, 'getAclGroups']),
+            new TwigFunction('acl_group_names', [$this, 'getAclGroupNames']),
         ];
     }
 
@@ -72,6 +70,8 @@ class AclGroupsExtension extends \Twig_Extension
                 $config = Yaml::parse(file_get_contents($path)) + $config;
             }
         }
+
+        $config = $this->filterGroupsDisabledByFeatureFlag($config);
 
         return $config;
     }
@@ -137,5 +137,16 @@ class AclGroupsExtension extends \Twig_Extension
         }
 
         return $groups;
+    }
+
+    protected function filterGroupsDisabledByFeatureFlag(array $config): array
+    {
+        return array_filter($config, function ($group) {
+            if (!array_key_exists('feature', $group)) {
+                return true;
+            }
+
+            return $this->featureFlags->isEnabled($group['feature']);
+        });
     }
 }

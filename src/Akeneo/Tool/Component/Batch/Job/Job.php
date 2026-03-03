@@ -6,11 +6,12 @@ namespace Akeneo\Tool\Component\Batch\Job;
 
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
+use Akeneo\Tool\Component\Batch\Item\ExecutionContext;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepInterface;
 use Akeneo\Tool\Component\Batch\Step\StoppableStepInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Akeneo\Tool\Component\Batch\Step\TrackableStepInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
@@ -24,47 +25,37 @@ use Symfony\Component\Filesystem\Filesystem;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  */
-class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface
+class Job implements JobInterface, StoppableJobInterface, PausableJobInterface, JobWithStepsInterface, VisibleJobInterface
 {
-    /** @var string */
-    protected $name;
-
-    /* @var EventDispatcherInterface */
-    protected $eventDispatcher;
-
-    /* @var JobRepositoryInterface */
-    protected $jobRepository;
-
-    /** @var array */
-    protected $steps;
-
-    /** @var bool */
-    protected $stoppable;
-
-    /** @var Filesystem */
-    protected $filesystem;
+    protected string $name;
+    protected EventDispatcherInterface $eventDispatcher;
+    protected JobRepositoryInterface $jobRepository;
+    protected array $steps;
+    protected bool $isStoppable;
+    protected bool $isVisible;
+    protected bool $isPausable;
+    protected Filesystem $filesystem;
 
     public function __construct(
         string $name,
         EventDispatcherInterface $eventDispatcher,
         JobRepositoryInterface $jobRepository,
         array $steps = [],
-        bool $stoppable = false
+        bool $isStoppable = false,
+        bool $isVisible = true,
+        bool $isPausable = false
     ) {
         $this->name = $name;
         $this->eventDispatcher = $eventDispatcher;
         $this->jobRepository = $jobRepository;
         $this->steps = $steps;
-        $this->stoppable = $stoppable;
+        $this->isStoppable = $isStoppable;
+        $this->isVisible = $isVisible;
+        $this->isPausable = $isPausable;
         $this->filesystem = new Filesystem();
     }
 
-    /**
-     * Get the job's name
-     *
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -77,12 +68,8 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface
     /**
      * Retrieve the step with the given name. If there is no Step with the given
      * name, then return null.
-     *
-     * @param string $stepName
-     *
-     * @return StepInterface the Step
      */
-    public function getStep($stepName)
+    public function getStep(string $stepName): ?StepInterface
     {
         foreach ($this->steps as $step) {
             if ($step->getName() == $stepName) {
@@ -94,11 +81,9 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface
     }
 
     /**
-     * Retrieve the step names.
-     *
-     * @return array the step names
+     * @return string[]
      */
-    public function getStepNames()
+    public function getStepNames(): array
     {
         $names = [];
         foreach ($this->steps as $step) {
@@ -108,24 +93,12 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface
         return $names;
     }
 
-    /**
-     * Public getter for the {@link JobRepositoryInterface} that is needed to manage the
-     * state of the batch meta domain (jobs, steps, executions) during the life
-     * of a job.
-     *
-     * @return JobRepositoryInterface
-     */
-    public function getJobRepository()
+    public function getJobRepository(): JobRepositoryInterface
     {
         return $this->jobRepository;
     }
 
-    /**
-     * To string
-     *
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return get_class($this) . ': [name=' . $this->name . ']';
     }
@@ -141,7 +114,7 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface
      * The working directory is created in the temporary filesystem. Its pathname is placed in the JobExecutionContext
      * via the key {@link \Akeneo\Tool\Component\Batch\Job\JobInterface::WORKING_DIRECTORY_PARAMETER}
      */
-    final public function execute(JobExecution $jobExecution)
+    final public function execute(JobExecution $jobExecution): void
     {
         try {
             $workingDirectory = $this->createWorkingDirectory();
@@ -149,8 +122,11 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface
 
             $this->dispatchJobExecutionEvent(EventInterface::BEFORE_JOB_EXECUTION, $jobExecution);
 
-            if ($jobExecution->getStatus()->getValue() !== BatchStatus::STOPPING) {
+            if ($jobExecution->getStatus()->isStarting()) {
                 $jobExecution->setStartTime(new \DateTime());
+            }
+
+            if ($jobExecution->getStatus()->getValue() !== BatchStatus::STOPPING) {
                 $this->updateStatus($jobExecution, BatchStatus::STARTED);
                 $this->jobRepository->updateJobExecution($jobExecution);
 
@@ -177,7 +153,9 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface
 
             $this->dispatchJobExecutionEvent(EventInterface::AFTER_JOB_EXECUTION, $jobExecution);
 
-            $jobExecution->setEndTime(new \DateTime());
+            if (!$jobExecution->getStatus()->isPaused()) {
+                $jobExecution->setEndTime(new \DateTime());
+            }
             $this->jobRepository->updateJobExecution($jobExecution);
         } catch (JobInterruptedException $e) {
             $jobExecution->setExitStatus($this->getDefaultExitStatusForFailure($e));
@@ -207,7 +185,17 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface
 
     public function isStoppable(): bool
     {
-        return $this->stoppable;
+        return $this->isStoppable;
+    }
+
+    public function isVisible(): bool
+    {
+        return $this->isVisible;
+    }
+
+    public function isPausable(): bool
+    {
+        return $this->isPausable;
     }
 
     /**
@@ -224,8 +212,14 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface
         /* @var StepExecution $stepExecution */
         $stepExecution = null;
 
-        foreach ($this->steps as $step) {
-            $stepExecution = $this->handleStep($step, $jobExecution);
+        foreach ($this->steps as $index => $step) {
+            $stepExecution = $this->getStepExecution($jobExecution, $index);
+
+            if (!$this->isRunnable($stepExecution)) {
+                continue;
+            }
+
+            $stepExecution = $this->handleStep($step, $jobExecution, $stepExecution);
             $this->jobRepository->updateStepExecution($stepExecution);
 
             if ($stepExecution->getStatus()->getValue() !== BatchStatus::COMPLETED) {
@@ -254,24 +248,28 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface
 
     /**
      * Handle a step and return the execution for it.
-     * @param StepInterface $step         Step
-     * @param JobExecution  $jobExecution Job execution
      *
      * @throws JobInterruptedException
-     *
-     * @return StepExecution
      */
-    protected function handleStep(StepInterface $step, JobExecution $jobExecution)
+    protected function handleStep(StepInterface $step, JobExecution $jobExecution, ?StepExecution $stepExecution): StepExecution
     {
         if ($jobExecution->isStopping()) {
             throw new JobInterruptedException("JobExecution interrupted.");
         }
 
-        $stepExecution = $jobExecution->createStepExecution($step->getName());
+        if ($stepExecution === null) {
+            $stepExecution = $jobExecution->createStepExecution($step->getName());
+            $stepExecution->setStartTime(new \DateTime());
+        }
 
         try {
             if ($step instanceof StoppableStepInterface) {
-                $step->setStoppable($this->stoppable);
+                $step->setStoppable($this->isStoppable);
+            }
+
+            if ($step instanceof TrackableStepInterface) {
+                $stepExecution->setIsTrackable(true);
+                $this->jobRepository->updateStepExecution($stepExecution);
             }
 
             $step->execute($stepExecution);
@@ -318,12 +316,8 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface
     /**
      * Default mapping from throwable to {@link ExitStatus}. Clients can modify the exit code using a
      * {@link StepExecutionListener}.
-     *
-     * @param \Exception $e the cause of the failure
-     *
-     * @return ExitStatus an {@link ExitStatus}
      */
-    private function getDefaultExitStatusForFailure(\Exception $e)
+    private function getDefaultExitStatusForFailure(\Exception $e): ExitStatus
     {
         if ($e instanceof JobInterruptedException || $e->getPrevious() instanceof JobInterruptedException) {
             $exitStatus = new ExitStatus(ExitStatus::STOPPED);
@@ -339,23 +333,16 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface
     /**
      * Default mapping from throwable to {@link ExitStatus}. Clients can modify the exit code using a
      * {@link StepExecutionListener}.
-     *
-     * @param JobExecution $jobExecution Execution of the job
-     * @param string       $status       Status of the execution
-     *
-     * @return an {@link ExitStatus}
      */
-    private function updateStatus(JobExecution $jobExecution, $status)
+    private function updateStatus(JobExecution $jobExecution, int $status): void
     {
         $jobExecution->setStatus(new BatchStatus($status));
     }
 
     /**
      * Create a unique working directory
-     *
-     * @return string the working directory path
      */
-    private function createWorkingDirectory()
+    private function createWorkingDirectory(): string
     {
         $path = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid('akeneo_batch_') . DIRECTORY_SEPARATOR;
         try {
@@ -368,15 +355,32 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface
         return $path;
     }
 
-    /**
-     * Delete the working directory
-     *
-     * @param string $directory
-     */
-    private function deleteWorkingDirectory($directory)
+    private function deleteWorkingDirectory(string $directory)
     {
         if ($this->filesystem->exists($directory)) {
             $this->filesystem->remove($directory);
         }
+    }
+
+    private function isRunnable(?StepExecution $stepExecution): bool
+    {
+        return null === $stepExecution || in_array($stepExecution->getStatus()->getValue(), [BatchStatus::STARTING, BatchStatus::PAUSED]);
+    }
+
+    private function getStepExecution(JobExecution $jobExecution, int $index): ?StepExecution
+    {
+        $stepExecution = $jobExecution->getStepExecutions()[$index] ?? null;
+
+        if (null === $stepExecution) {
+            return null;
+        }
+
+        if ($stepExecution->getStepName() !== $this->steps[$index]->getName()) {
+            throw new \RuntimeException("Can't resume the job because steps configuration has changed during pause.");
+        }
+
+        $stepExecution->setExecutionContext(new ExecutionContext());
+
+        return $stepExecution;
     }
 }

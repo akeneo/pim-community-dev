@@ -1,0 +1,8 @@
+pim_structure:
+  validation:
+    association_type:
+      cannot_be_quantified_and_two_way: El tipus d'associació pot ser quantificat o de dos vies
+    available_locales:
+      is_variant_axis_without_available_locales: Un atribut no es pot convertir en específic de la configuració regional si ja s'utilitza com a eix en una família de variants.
+    attribute_groups:
+      max: Heu assolit el límit de {{ max }} grups d'atributs

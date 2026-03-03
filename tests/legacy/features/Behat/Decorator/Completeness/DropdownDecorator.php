@@ -20,7 +20,7 @@ class DropdownDecorator extends ElementDecorator
     /** @var array Selectors to ease find */
     protected $selectors = [
         'Header stats' => ['css' => '.AknCompletenessPanel-headerStats'],
-        'Channel completeness' => ['css' => '.AknCompletenessPanel-channel']
+        'Channel completeness' => ['css' => '.locale-completeness-block']
     ];
 
     /**
@@ -43,26 +43,21 @@ class DropdownDecorator extends ElementDecorator
         $channelCompletenesses = $this->findAll('css', $this->selectors['Channel completeness']['css']);
 
         foreach ($channelCompletenesses as $position => $channelCompleteness) {
-            $missing = $channelCompleteness->find('css', '.missing');
+            $missingCount = $channelCompleteness->getAttribute('data-missing-count');
 
             $completeness = [
                 'locale' => $channelCompleteness->getAttribute('data-locale'),
                 'position' => $position + 1,
-                'ratio' => $channelCompleteness->find('css', '.AknCompletenessPanel-progressRatio')->getText(),
-                'state' => 'warning',
-                'label' => $channelCompleteness->find('css', '.AknCompletenessPanel-channelTitle')->getText(),
-                'missing_values' => (string) ((null !== $missing) ? intval($missing->getText()) : 0),
+                'ratio' => $channelCompleteness->getAttribute('data-progress'),
+                'state' => $channelCompleteness->getAttribute('data-progress') == 100 ? 'success' : 'warning',
+                'label' => $channelCompleteness->getAttribute('data-label'),
+                'missing_values' => (string) ((null !== $missingCount) ? intval($missingCount) : 0),
                 'missing_required_attributes' => [],
             ];
 
             $missingAttributes = $channelCompleteness->findAll('css', '.missing-attribute');
             foreach ($missingAttributes as $missingAttribute) {
                 $completeness['missing_required_attributes'][] = $missingAttribute->getText();
-            }
-
-            $bar = $channelCompleteness->find('css', '.AknCompletenessPanel-progress');
-            if ($bar->hasClass('AknProgress--success')) {
-                $completeness['state'] = 'success';
             }
 
             $completenesses[] = $completeness;

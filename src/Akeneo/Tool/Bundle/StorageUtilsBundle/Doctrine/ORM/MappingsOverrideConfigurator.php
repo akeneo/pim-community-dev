@@ -3,10 +3,10 @@
 namespace Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\ORM;
 
 use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\MappingsOverrideConfiguratorInterface;
-use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\Mapping\ClassMetadata as OrmClassMetadata;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Doctrine\Persistence\Mapping\ClassMetadata;
 
 /**
  * Configure the ORM mappings of the metadata classes.

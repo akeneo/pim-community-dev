@@ -1,0 +1,81 @@
+pim_title:
+  akeneo_job_process_tracker_index: Traqueur de processus
+  akeneo_job_process_tracker_details: Traqueur de processus | Voir la tâche
+akeneo_job:
+  job_status:
+    COMPLETED: Terminé
+    STARTED: En cours
+    STARTING: En attente de démarrage
+    STOPPING: En cours d'arrêt
+    STOPPED: Arrêté
+    FAILED: Echoué
+    ABANDONED: Abandonné
+    UNKNOWN: Inconnu
+    IN_PROGRESS: En cours
+    PAUSING: En cours de mise en pause
+    PAUSED: En pause
+akeneo_job_process_tracker:
+  tooltip:
+    paused: Cette tâche a été mise en pause en raison d'une maintenance interne sur votre instance. Elle sera reprise automatiquement une fois celle dernière terminée.
+  last_operations:
+    title: Dernières opérations
+    view_all: Tout afficher
+    details: Détails
+    no_result: Il n'y a aucune opération à afficher pour le moment.
+  last_executions:
+    title: Dernières exécutions
+  job_execution_list:
+    search_placeholder: Recherche par nom de tâche
+    table:
+      headers:
+        job_name: Nom de la tâche
+        type: Type
+        started_at: Démarré à
+        username: Nom d'utilisateur
+        progress: Progression
+        status: État
+        warning_count: Avertissements
+  type_filter:
+    label: Type
+    all: Tous
+    quick_export: Export rapide
+    import: Import
+    export: Export
+    mass_edit: Edition en masse
+    mass_delete: Suppression massive de produits
+    attribute_mass_delete: Supprimer en masse des attributs
+    compute_family_variant_structure_changes: Calcul des changements de structure de la variante de famille
+    compute_completeness_of_products_family: Calcul de la complétude de la famille de produits
+    clean_removed_attribute_job: Traitement des valeurs de l'attribut supprimé
+    execute_rules: Exécution de règles
+    scheduled_job: Tâche planifiée
+  user_filter:
+    label: Utilisateur
+    all: Tous
+    search: Recherche
+  status_filter:
+    label: État
+    all: Tous
+    abandoned: Abandonné
+    completed: Terminé
+    failed: Echoué
+    starting: En attente de démarrage
+    stopped: Arrêté
+    stopping: En cours d'arrêt
+    unknown: Inconnu
+    in_progress: En cours
+    pausing: En cours de mise en pause
+    paused: En pause
+  automation_filter:
+    all: Tous
+    yes: Yes
+    no: No
+    label: Automatisation
+  max_page_without_filter_helper:
+    - Afin de vous montrer les résultats les plus pertinents, veuillez raffiner votre recherche.
+  tracking:
+    completed: "Temps écoulé : {{ duration }}"
+    in_progress: "Temps restant estimé pour l'étape actuelle : {{ duration }}"
+    not_started: En attente
+    untrackable: Temps restant inconnu
+    estimating: Estimation du temps restant...

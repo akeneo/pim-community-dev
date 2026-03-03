@@ -8,7 +8,7 @@ use Akeneo\Connectivity\Connection\Application\Settings\Query\FindAConnectionHan
 use Akeneo\Connectivity\Connection\Application\Settings\Query\FindAConnectionQuery;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
-use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\SelectConnectionWithCredentialsByCodeQuery;
+use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\SelectConnectionWithCredentialsByCodeQueryInterface;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -18,17 +18,17 @@ use PhpSpec\ObjectBehavior;
  */
 class FindAConnectionHandlerSpec extends ObjectBehavior
 {
-    public function let(SelectConnectionWithCredentialsByCodeQuery $selectConnectionWithCredentialsByCodeQuery)
+    public function let(SelectConnectionWithCredentialsByCodeQueryInterface $selectConnectionWithCredentialsByCodeQuery): void
     {
         $this->beConstructedWith($selectConnectionWithCredentialsByCodeQuery);
     }
 
-    public function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(FindAConnectionHandler::class);
     }
 
-    public function it_returns_a_connection($selectConnectionWithCredentialsByCodeQuery)
+    public function it_returns_a_connection($selectConnectionWithCredentialsByCodeQuery): void
     {
         $connection = new ConnectionWithCredentials(
             'bynder',
@@ -40,7 +40,8 @@ class FindAConnectionHandlerSpec extends ObjectBehavior
             'username',
             'user_role_id',
             'user_group_id',
-            true
+            true,
+            'default'
         );
 
         $selectConnectionWithCredentialsByCodeQuery->execute('bynder')->willReturn($connection);
@@ -49,7 +50,7 @@ class FindAConnectionHandlerSpec extends ObjectBehavior
         $this->handle($query)->shouldReturn($connection);
     }
 
-    public function it_returns_null_when_the_connection_does_not_exists($selectConnectionWithCredentialsByCodeQuery)
+    public function it_returns_null_when_the_connection_does_not_exists($selectConnectionWithCredentialsByCodeQuery): void
     {
         $selectConnectionWithCredentialsByCodeQuery->execute('bynder')->willReturn(null);
 

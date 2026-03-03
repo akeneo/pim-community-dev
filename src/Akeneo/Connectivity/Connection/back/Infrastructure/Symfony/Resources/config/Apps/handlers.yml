@@ -1,0 +1,74 @@
+services:
+    Akeneo\Connectivity\Connection\Application\Apps\Command\CreateConnectedAppWithAuthorizationHandler:
+        arguments:
+            - '@validator'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAppQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\User\CreateUser'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\User\CreateUserGroup'
+            - '@Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnection'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\AppRoleWithScopesFactory'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProvider'
+            - '@Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectedApp'
+            - '@event_dispatcher'
+
+    Akeneo\Connectivity\Connection\Application\Apps\Command\UpdateConnectedAppScopesWithAuthorizationHandler:
+        arguments:
+            - '@validator'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\UpdateConnectedAppScopesQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Service\UpdateConnectedAppRoleWithScopes'
+
+    Akeneo\Connectivity\Connection\Application\Apps\Command\ConsentAppAuthenticationHandler:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetAppConfirmationQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\CreateUserConsentQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\SystemClock'
+            - '@validator'
+
+    Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationHandler:
+        arguments:
+            - '@validator'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAppQuery'
+
+    Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysHandler:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\AsymmetricKeysGenerator'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\SaveAsymmetricKeysQuery'
+
+    Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthenticationHandler:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetUserConsentedAuthenticationScopesQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\CreateUserConsentQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\SystemClock'
+            - '@validator'
+
+    Akeneo\Connectivity\Connection\Application\Apps\Command\DeleteAppHandler:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetAppDeletionQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DeleteConnectedAppQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\DbalConnectionRepository'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Service\User\DeleteUser'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Client\Fos\DeleteClient'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Service\User\DeleteUserGroup'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Service\User\DeleteUserRole'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\SaveRevokedAccessTokensOfDisconnectedAppQuery'
+
+    Akeneo\Connectivity\Connection\Application\Apps\Command\RefreshConnectedAppHandler:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\UpdateConnectedAppDescriptionQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByIdQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAppQuery'
+            - '@pim_user.repository.user'
+            - '@pim_user.updater.user'
+            - '@pim_user.saver.user'
+
+    Akeneo\Connectivity\Connection\Application\Apps\Command\FlagAppContainingOutdatedScopesHandler:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\SaveConnectedAppOutdatedScopesFlagQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Notifier\AuthorizationRequestNotifier'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\ScopeListComparator'

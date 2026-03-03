@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Akeneo\Pim\Enrichment\Component\Product\Query;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
@@ -8,8 +7,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterfac
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterHelper;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FilterRegistryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\AttributeSorterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\FieldSorterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\SorterRegistryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -21,29 +20,16 @@ class AbstractEntityWithValuesQueryBuilder implements ProductQueryBuilderInterfa
     public const DOCUMENT_TYPE_FACET_NAME = 'document_type_facet';
     private const DOCUMENT_TYPE_FIELD = 'document_type';
 
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
-
     /** @var mixed */
     protected $qb;
 
-    /** @var FilterRegistryInterface */
-    protected $filterRegistry;
-
-    /** @var SorterRegistryInterface */
-    protected $sorterRegistry;
-
-    /** @var array */
-    protected $defaultContext;
-
-    /** CursorFactoryInterface */
-    protected $cursorFactory;
-
-    /** @var ProductQueryBuilderOptionsResolverInterface */
-    protected $optionResolver;
-
-    /** @var array */
-    protected $rawFilters = [];
+    protected AttributeRepositoryInterface $attributeRepository;
+    protected FilterRegistryInterface $filterRegistry;
+    protected SorterRegistryInterface $sorterRegistry;
+    protected array $defaultContext;
+    protected CursorFactoryInterface $cursorFactory;
+    protected ProductQueryBuilderOptionsResolverInterface $optionResolver;
+    protected array $rawFilters = [];
 
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
@@ -80,6 +66,11 @@ class AbstractEntityWithValuesQueryBuilder implements ProductQueryBuilderInterfa
             ARRAY_FILTER_USE_KEY
         );
 
+        // Since we can't rely on product id anymore, we add a sort on the identifier
+        if (!$this->getQueryBuilder()->hasSort('identifier') && !$this->getQueryBuilder()->hasSort('id')) {
+            $this->addSorter('identifier', Directions::ASCENDING);
+        }
+
         return $this->cursorFactory->createCursor($this->getQueryBuilder()->getQuery(), $cursorOptions);
     }
 
@@ -110,22 +101,16 @@ class AbstractEntityWithValuesQueryBuilder implements ProductQueryBuilderInterfa
      */
     public function addFilter($field, $operator, $value, array $context = [])
     {
-        $code = FieldFilterHelper::getCode($field);
-        $attribute = $this->attributeRepository->findOneByIdentifier($code);
-
-        // In case of non case sensitive database configuration you can have attributes with code matching a field.
-        // For example "id" would match an attribute named "ID" so we double check here that we are adding the desired
-        // filter (ref PIM-6064)
-        if (null !== $attribute && $attribute->getCode() !== $code) {
-            $attribute = null;
-        }
-
-        if (null !== $attribute) {
-            $filterType = 'attribute';
-            $filter = $this->filterRegistry->getAttributeFilter($attribute, $operator);
-        } else {
-            $filterType = 'field';
-            $filter = $this->filterRegistry->getFieldFilter($field, $operator);
+        $attribute = null;
+        $filterType = 'field';
+        $filter = $this->filterRegistry->getFieldFilter($field, $operator);
+        if (null === $filter) {
+            $code = FieldFilterHelper::getCode($field);
+            $attribute = $this->attributeRepository->findOneByIdentifier($code);
+            if (null !== $attribute) {
+                $filterType = 'attribute';
+                $filter = $this->filterRegistry->getAttributeFilter($attribute, $operator);
+            }
         }
 
         if (null === $filter) {
@@ -233,14 +218,6 @@ class AbstractEntityWithValuesQueryBuilder implements ProductQueryBuilderInterfa
 
         $filter->setQueryBuilder($this->getQueryBuilder());
         $filter->addAttributeFilter($attribute, $operator, $value, $locale, $scope, $context);
-
-        // The products without family should not be returned when filtering on an empty value,
-        // as empty optional values are considered inexistant
-        if (Operators::IS_EMPTY === $operator
-            || Operators::IS_EMPTY_FOR_CURRENCY === $operator
-            || Operators::IS_EMPTY_ON_ALL_CURRENCIES === $operator) {
-            $this->addFilter('family', Operators::IS_NOT_EMPTY, null);
-        }
 
         return $this;
     }

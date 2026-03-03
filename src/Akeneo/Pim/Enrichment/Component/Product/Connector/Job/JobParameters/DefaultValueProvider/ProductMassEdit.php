@@ -14,35 +14,32 @@ use Akeneo\Tool\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface
  */
 class ProductMassEdit implements DefaultValuesProviderInterface
 {
-    /** @var string[] */
-    protected $supportedJobNames;
-
     /**
-     * @param string[] $supportedJobNames
+     * @param array<string> $supportedJobNames
      */
-    public function __construct(array $supportedJobNames)
-    {
-        $this->supportedJobNames = $supportedJobNames;
+    public function __construct(
+        private array $supportedJobNames,
+    ) {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDefaultValues()
+    public function getDefaultValues(): array
     {
         return [
-            'filters'               => [],
-            'actions'               => [],
-            'realTimeVersioning'    => true,
-            'user_to_notify'        => null,
-            'is_user_authenticated' => false
+            'filters' => [],
+            'actions' => [],
+            'realTimeVersioning' => true,
+            'users_to_notify' => [],
+            'is_user_authenticated' => false,
         ];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function supports(JobInterface $job)
+    public function supports(JobInterface $job): bool
     {
         return in_array($job->getName(), $this->supportedJobNames);
     }

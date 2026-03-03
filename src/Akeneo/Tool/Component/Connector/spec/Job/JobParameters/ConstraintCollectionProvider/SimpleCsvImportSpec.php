@@ -8,34 +8,34 @@ use PhpSpec\ObjectBehavior;
 
 class SimpleCsvImportSpec extends ObjectBehavior
 {
-    function let()
+    public function let(): void
     {
         $this->beConstructedWith(['my_supported_job_name']);
     }
 
-    function it_is_a_provider()
+    public function it_is_a_provider(): void
     {
         $this->shouldImplement(ConstraintCollectionProviderInterface::class);
     }
 
-    function it_provides_constraints_collection()
+    public function it_provides_constraints_collection(): void
     {
         $collection = $this->getConstraintCollection();
         $collection->shouldReturnAnInstanceOf('Symfony\Component\Validator\Constraints\Collection');
         $fields = $collection->fields;
         $fields->shouldHaveCount(9);
-        $fields->shouldHaveKey('filePath');
+        $fields->shouldHaveKey('storage');
         $fields->shouldHaveKey('delimiter');
         $fields->shouldHaveKey('enclosure');
         $fields->shouldHaveKey('withHeader');
         $fields->shouldHaveKey('escape');
         $fields->shouldHaveKey('uploadAllowed');
         $fields->shouldHaveKey('invalid_items_file_format');
-        $fields->shouldHaveKey('user_to_notify');
+        $fields->shouldHaveKey('users_to_notify');
         $fields->shouldHaveKey('is_user_authenticated');
     }
 
-    function it_supports_a_job(JobInterface $job)
+    public function it_supports_a_job(JobInterface $job): void
     {
         $job->getName()->willReturn('my_supported_job_name');
         $this->supports($job)->shouldReturn(true);

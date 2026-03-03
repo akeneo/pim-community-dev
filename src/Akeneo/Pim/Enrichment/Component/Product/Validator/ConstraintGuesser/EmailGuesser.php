@@ -3,9 +3,9 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser;
 
 use Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesserInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Email;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Guesser
@@ -32,7 +32,7 @@ class EmailGuesser implements ConstraintGuesserInterface
         $constraints = [];
 
         if ('email' === $attribute->getValidationRule()) {
-            $constraints[] = new Assert\Email();
+            $constraints[] = new Email(['attributeCode' => $attribute->getCode()]);
         }
 
         return $constraints;

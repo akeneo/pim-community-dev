@@ -2,8 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\StructureVersion\EventListener;
 
-use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Akeneo\Platform\Installer\Infrastructure\Event\InstallerEvents;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -15,13 +15,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class TableCreator implements EventSubscriberInterface
 {
-    /** @var RegistryInterface */
-    protected $doctrine;
+    protected ManagerRegistry $doctrine;
 
-    /**
-     * @param RegistryInterface $doctrine
-     */
-    public function __construct(RegistryInterface $doctrine)
+    public function __construct(ManagerRegistry $doctrine)
     {
         $this->doctrine = $doctrine;
     }
@@ -29,7 +25,7 @@ class TableCreator implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             InstallerEvents::POST_DB_CREATE => 'onPostDBCreate'

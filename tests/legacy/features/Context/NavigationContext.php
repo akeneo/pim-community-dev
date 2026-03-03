@@ -2,7 +2,7 @@
 
 namespace Context;
 
-use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
+use Akeneo\Category\Infrastructure\Component\Model\Category;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
@@ -11,6 +11,7 @@ use Akeneo\Pim\Structure\Component\Model\GroupTypeInterface;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\UserManagement\Component\Model\Role;
 use PHPUnit\Framework\Assert;
+use Pim\Behat\Context\FixturesContext;
 use Pim\Behat\Context\NavigationContext as BaseNavigationContext;
 
 /**
@@ -99,7 +100,7 @@ class NavigationContext extends BaseNavigationContext
             Assert::assertTrue($result, sprintf('Expecting to be on page "%s", not "%s"', $url, $actualFullUrl));
 
             return true;
-        }, "Expected to be redirected to channel '%s'", $url);
+        }, sprintf("Expected to be redirected to channel '%s'", $url));
     }
 
     /**
@@ -110,6 +111,18 @@ class NavigationContext extends BaseNavigationContext
     public function iAmOnTheCategoryNodeCreationPage(Category $category)
     {
         $this->openPage('Category node creation', ['id' => $category->getId()]);
+    }
+
+    /**
+     * @param Category $category
+     *
+     * @Given /^I am on the category tree "([^"]*)" page$/
+     * @When /^I go to the category tree "([^"]*)" page$/
+     */
+    public function iAmOnTheCategoryTreePage(string $code)
+    {
+        $category = $this->getFixturesContext()->getEntity('Category', ['code' => $code]);
+        $this->openPage('Category tree', ['id' => $category->getId()]);
     }
 
     /**
@@ -330,7 +343,7 @@ class NavigationContext extends BaseNavigationContext
      */
     public function iShouldBeOnTheProductEditPage(ProductInterface $product)
     {
-        $this->assertAddress($this->getPage('Product edit')->getUrl(['id' => $product->getId()]));
+        $this->assertAddress($this->getPage('Product edit')->getUrl(['uuid' => $product->getUuid()->toString()]));
 
         $this->getMainContext()->spin(function () {
             return $this->getCurrentPage()->find('css', '.AknTitleContainer-title');
@@ -355,10 +368,7 @@ class NavigationContext extends BaseNavigationContext
         $this->currentPage = 'ProductModel edit';
     }
 
-    /**
-     * @return FixturesContext
-     */
-    protected function getFixturesContext()
+    protected function getFixturesContext(): FixturesContext
     {
         return $this->getMainContext()->getSubcontext('fixtures');
     }

@@ -45,6 +45,7 @@ class ProductQuickExport implements DefaultValuesProviderInterface
         $parameters['with_label'] = false;
         $parameters['header_with_label'] = false;
         $parameters['file_locale'] = null;
+        $parameters['with_uuid'] = false;
 
         return $parameters;
     }

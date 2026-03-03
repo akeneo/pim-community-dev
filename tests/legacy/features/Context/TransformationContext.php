@@ -4,6 +4,7 @@ namespace Context;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
+use Pim\Behat\Context\FixturesContext;
 use Pim\Behat\Context\PimContext;
 
 /**
@@ -159,10 +160,7 @@ class TransformationContext extends PimContext
         return $this->getFixturesContext()->getUserGroup($label);
     }
 
-    /**
-     * @return FixturesContext
-     */
-    protected function getFixturesContext()
+    protected function getFixturesContext(): FixturesContext
     {
         return $this->getMainContext()->getSubcontext('fixtures');
     }

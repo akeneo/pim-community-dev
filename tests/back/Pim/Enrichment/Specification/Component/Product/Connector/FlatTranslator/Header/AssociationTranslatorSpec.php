@@ -22,9 +22,11 @@ class AssociationTranslatorSpec extends ObjectBehavior
         $associationColumnsResolver->resolveAssociationColumns()->willReturn([
             'ASSOC_TYPE_1-groups',
             'ASSOC_TYPE_1-products',
+            'ASSOC_TYPE_1-product_uuids',
             'ASSOC_TYPE_1-product_models',
             'ASSOC_TYPE_2-groups',
             'ASSOC_TYPE_2-products',
+            'ASSOC_TYPE_2-product_uuids',
             'ASSOC_TYPE_2-product_models',
         ]);
         $associationColumnsResolver->resolveQuantifiedAssociationColumns()->willReturn([
@@ -41,6 +43,7 @@ class AssociationTranslatorSpec extends ObjectBehavior
         $this->supports('ASSOC_TYPE_1-groups')->shouldReturn(true);
         $this->supports('ASSOC_TYPE_1-product_models')->shouldReturn(true);
         $this->supports('ASSOC_TYPE_2-products')->shouldReturn(true);
+        $this->supports('ASSOC_TYPE_2-product_uuids')->shouldReturn(true);
         $this->supports('QUANTIFIED_ASSOC_TYPE_1-products')->shouldReturn(true);
         $this->supports('QUANTIFIED_ASSOC_TYPE_1-products-quantity')->shouldReturn(true);
         $this->supports('QUANTIFIED_ASSOC_TYPE_2-product_models')->shouldReturn(true);
@@ -57,6 +60,7 @@ class AssociationTranslatorSpec extends ObjectBehavior
         $associationColumnsResolver->resolveAssociationColumns()->willReturn([
             'ASSOC_TYPE_1-groups',
             'ASSOC_TYPE_2-products',
+            'ASSOC_TYPE_2-product_uuids',
             'ASSOC_TYPE_2-product_models',
         ]);
         $associationColumnsResolver->resolveQuantifiedAssociationColumns()->willReturn([
@@ -84,6 +88,7 @@ class AssociationTranslatorSpec extends ObjectBehavior
 
         $labelTranslator->translate('pim_common.groups', 'fr_FR', '[groups]')->willReturn('Groupes');
         $labelTranslator->translate('pim_common.products', 'fr_FR', '[products]')->willReturn('Produits');
+        $labelTranslator->translate('pim_common.product_uuids', 'fr_FR', '[product_uuids]')->willReturn('Produits');
         $labelTranslator->translate('pim_common.product_models', 'fr_FR', '[product_models]')->willReturn('Modèles de produits');
         $labelTranslator->translate('pim_common.quantity', 'fr_FR', '[quantity]')->willReturn('Quantité');
 
@@ -100,6 +105,7 @@ class AssociationTranslatorSpec extends ObjectBehavior
         $this->warmup([
             'ASSOC_TYPE_1-groups',
             'ASSOC_TYPE_2-products',
+            'ASSOC_TYPE_2-product_uuids',
             'ASSOC_TYPE_2-product_models',
             'QUANTIFIED_ASSOC_TYPE_1-products',
             'QUANTIFIED_ASSOC_TYPE_1-product_models'
@@ -107,6 +113,7 @@ class AssociationTranslatorSpec extends ObjectBehavior
 
         $this->translate('ASSOC_TYPE_1-groups', 'fr_FR')->shouldReturn('premiere association Groupes');
         $this->translate('ASSOC_TYPE_2-products', 'fr_FR')->shouldReturn('deuxieme association Produits');
+        $this->translate('ASSOC_TYPE_2-product_uuids', 'fr_FR')->shouldReturn('deuxieme association Produits');
         $this->translate('ASSOC_TYPE_2-product_models', 'fr_FR')->shouldReturn('deuxieme association Modèles de produits');
         $this->translate('QUANTIFIED_ASSOC_TYPE_1-products', 'fr_FR')->shouldReturn('association quantifiée Produits');
         $this->translate('QUANTIFIED_ASSOC_TYPE_1-products-quantity', 'fr_FR')->shouldReturn('association quantifiée Produits Quantité');

@@ -12,7 +12,7 @@ Feature: Import media with products
       | Warranty    | pim_catalog_file  | txt, pdf           | 1             | other | warranty   |
     And the following family:
       | code         | attributes                         |
-      | media_family | frontView,name,userManual,warranty |
+      | media_family | sku,frontView,name,userManual,warranty |
 
   Scenario: Successfully import media
     Given the following CSV file to import:
@@ -22,7 +22,7 @@ Feature: Import media with products
       fanatic-freewave-76;media_family;;fanatic-freewave-76.gif;"Fanatic Freewave 76";fanatic-freewave-76.txt;2014_collection
       """
     And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     And import directory of "csv_footwear_product_import" contains the following media:
       | bic-core-148.gif        |
       | bic-core-148.txt        |
@@ -45,7 +45,7 @@ Feature: Import media with products
       fanatic-freewave-76;media_family;;;"Fanatic Freewave 76";;2014_collection
       """
     And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     And import directory of "csv_footwear_product_import" contains the following media:
       | bic-core-148.gif |
       | bic-core-148.txt |
@@ -71,7 +71,7 @@ Feature: Import media with products
       | filename            | size |
       | sneakers-manual.txt | 3    |
     And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     And import directory of "csv_footwear_product_import" contains the following media:
       | sneakers-manual.txt |
       | bic-core-148.txt    |
@@ -80,8 +80,8 @@ Feature: Import media with products
     And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 0 products
     And I should see the text "skipped 2"
-    And I should see the text "values[frontView].data: The file extension is not allowed (allowed extensions: gif, jpg)"
-    And I should see the text "values[userManual].data: The file is too large (3.15 MB). Allowed maximum size is 1 MB"
+    And I should see the text "values[frontView].data: The txt file extension is not allowed for the frontView attribute. Allowed extensions are gif, jpg."
+    And I should see the text "values[userManual].data: The file sneakers-manual.txt is too large (3.15 MB). The userManual attribute can not exceed 1 MB."
 
   Scenario: Import several times the same media
     Given the following CSV file to import:
@@ -94,7 +94,7 @@ Feature: Import media with products
       | filename            | size |
       | sneakers-manual.txt | 3    |
     And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     And import directory of "csv_footwear_product_import" contains the following media:
       | fanatic-freewave-76.txt |
       | warranty.txt            |
@@ -125,7 +125,7 @@ Feature: Import media with products
       fanatic-freewave-37;Fanatic Freewave 37;
       """
     And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     And import directory of "csv_footwear_product_import" contains the following media:
       | bic-core-148.txt        |
       | fanatic-freewave-76.txt |
@@ -133,7 +133,7 @@ Feature: Import media with products
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 4 products
-    And I should see the text "processed 3"
+    And I should see the text "updated 3"
     And I should see the text "skipped product (no differences) 1"
     And the product "bic-core-148" should have the following values:
       | userManual | bic-core-148.txt |

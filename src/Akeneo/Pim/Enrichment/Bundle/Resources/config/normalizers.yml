@@ -18,6 +18,12 @@ services:
         arguments:
             - '@pim_api.normalizer.values'
             - '@pim_catalog.normalizer.standard.datetime'
+            - '@pim_catalog.repository.attribute'
+
+    Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductWithUuidNormalizer:
+        arguments:
+            - '@pim_api.normalizer.values'
+            - '@pim_catalog.normalizer.standard.datetime'
 
     pim_api.normalizer.connector_product_models:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductModelNormalizer'
@@ -40,28 +46,11 @@ services:
         tags:
             - { name: pim_external_api_serializer.normalizer, priority: 90 }
 
-    pim_api.normalizer.category:
-        class: 'Akeneo\Pim\Enrichment\Component\Category\Normalizer\ExternalApi\CategoryNormalizer'
-        arguments:
-            - '@pim_catalog.normalizer.standard.category'
-        tags:
-            - { name: pim_external_api_serializer.normalizer, priority: 90 }
-
-    pim_enrich.normalizer.category:
-        class: 'Akeneo\Pim\Enrichment\Component\Category\Normalizer\InternalApi\CategoryNormalizer'
-        arguments:
-            - '@pim_standard_format_serializer'
-        tags:
-            - { name: pim_internal_api_serializer.normalizer }
-
     pim_enrich.normalizer.group:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\GroupNormalizer'
         arguments:
             - '@pim_catalog.normalizer.standard.group'
-            - '@pim_structure_version.provider.structure_version.group'
-            - '@pim_versioning.manager.version'
-            - '@pim_enrich.normalizer.version'
-            - '@akeneo.pim.enrichment.group.query.get_group_product_identifiers'
+            - '@Akeneo\Pim\Enrichment\Component\Product\Query\FindProductUuidsInGroup'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
@@ -106,12 +95,14 @@ services:
         arguments:
             - '@pim_catalog.normalizer.standard.product.metric'
             - '@pim_catalog.localization.localizer.metric'
-            - '@akeneo_measurement.public_api.get_unit_translations'
+            - '@akeneo_measurement.service_api.get_unit_translations'
         tags:
             - { name: pim_axis_value_label_normalizer }
 
     pim_enrich.normalizer.entity_with_family_variant.boolean.label.normalizer:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\AxisValueLabelsNormalizer\BooleanNormalizer'
+        arguments:
+            - '@pim_catalog.localization.translator.label'
         tags:
             - { name: pim_axis_value_label_normalizer }
 
@@ -224,3 +215,7 @@ services:
             - '@pim_enrich.error.documentation_builder_registry'
         tags:
             - { name: pim_domain_error_serializer.normalizer, priority: 100 }
+    
+    Akeneo\Pim\Enrichment\Bundle\Normalizer\ProductModelsWereCreatedOrUpdatedNormalizer:
+      tags:
+        - { name: akeneo_messenger.message.normalizer }

@@ -4,6 +4,8 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Text;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
@@ -27,49 +29,33 @@ class TextFilterIntegration extends AbstractProductQueryBuilderTestCase
         ]);
 
         $this->createProduct('cat', [
-            'family' => 'a_family',
-            'values' => [
-                'a_text' => [['data' => 'cat', 'locale' => null, 'scope' => null]],
-            ],
+            new SetFamily('a_family'),
+            new SetTextValue('a_text', null, null, 'cat'),
         ]);
 
         $this->createProduct('cattle', [
-            'family' => 'a_family',
-            'values' => [
-                'a_text' => [['data' => 'cattle', 'locale' => null, 'scope' => null]],
-            ],
+            new SetFamily('a_family'),
+            new SetTextValue('a_text', null, null, 'cattle'),
         ]);
 
         $this->createProduct('dog', [
-            'family' => 'a_family',
-            'values' => [
-                'a_text' => [['data' => 'dog', 'locale' => null, 'scope' => null]],
-            ],
+            new SetFamily('a_family'),
+            new SetTextValue('a_text', null, null, 'dog'),
         ]);
 
         $this->createProduct('best_dog', [
-            'family' => 'a_family',
-            'values' => [
-                'a_text' => [['data' => 'my dog is the most beautiful', 'locale' => null, 'scope' => null]],
-            ],
+            new SetFamily('a_family'),
+            new SetTextValue('a_text', null, null, 'my dog is the most beautiful'),
         ]);
 
         // There is no html tags in TEXT attributes usually set in the PIM.
         // This tests shows that if it's the case they are stored as is and not stripped.
         $this->createProduct('best_cat', [
-            'family' => 'a_family',
-            'values' => [
-                'a_text' => [
-                    [
-                        'data'   => 'my <bold>cat</bold> is the most <i>beautiful</i><br/>',
-                        'locale' => null,
-                        'scope'  => null,
-                    ],
-                ],
-            ],
+            new SetFamily('a_family'),
+            new SetTextValue('a_text', null, null, 'my <bold>cat</bold> is the most <i>beautiful</i><br/>'),
         ]);
 
-        $this->createProduct('empty_product', ['family' => 'a_family']);
+        $this->createProduct('empty_product', [new SetFamily('a_family')]);
     }
 
     public function testOperatorStartsWith()

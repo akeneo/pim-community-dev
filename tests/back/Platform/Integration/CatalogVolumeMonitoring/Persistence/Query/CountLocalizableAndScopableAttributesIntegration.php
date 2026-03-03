@@ -20,6 +20,5 @@ class CountLocalizableAndScopableAttributesIntegration extends QueryTestCase
 
         Assert::assertEquals(3, $volume->getVolume());
         Assert::assertEquals('count_localizable_and_scopable_attributes', $volume->getVolumeName());
-        Assert::assertEquals(false, $volume->hasWarning());
     }
 }

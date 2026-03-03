@@ -49,6 +49,8 @@ class ListProductModelsQuery
     /** @var int */
     public $userId;
 
+    public string $withQualityScores = 'false';
+
     /**
      * Returns the parameter 'with_count' typed as a boolean
      *
@@ -57,5 +59,10 @@ class ListProductModelsQuery
     public function withCountAsBoolean(): bool
     {
         return $this->withCount === 'true';
+    }
+
+    public function withQualityScores(): bool
+    {
+        return $this->withQualityScores === 'true';
     }
 }

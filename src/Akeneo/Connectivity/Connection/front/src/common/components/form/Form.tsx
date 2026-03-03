@@ -3,7 +3,7 @@ import React, {forwardRef, PropsWithChildren, Ref, DetailedHTMLProps, FormHTMLAt
 type Props = PropsWithChildren<DetailedHTMLProps<FormHTMLAttributes<HTMLFormElement>, HTMLFormElement>>;
 
 export const Form = forwardRef<HTMLFormElement, Props>(({children, ...props}: Props, ref: Ref<HTMLFormElement>) => (
-    <form ref={ref} className='AknFormContainer' {...props}>
+    <form ref={ref} className='AknFormContainer' {...(props as any)}>
         {children}
     </form>
 ));

@@ -151,7 +151,7 @@ SQL;
                 'parent_category_id' => $parentCategoryId,
                 'locale' => $translationLocaleCode
             ]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         $categories = [];
         foreach ($rows as $row) {
@@ -272,7 +272,7 @@ SQL;
                 'category_to_expand' => $fromCategoryId,
                 'category_to_filter_with' => $toCategoryId,
             ]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         $ids = array_map(function ($row) {
             return (int) $row['id'];

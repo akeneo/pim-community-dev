@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Validator;
 
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Ramsey\Uuid\Uuid;
 
 class QuantifiedAssociationsStructureValidator implements QuantifiedAssociationsStructureValidatorInterface
 {
@@ -19,15 +20,6 @@ class QuantifiedAssociationsStructureValidator implements QuantifiedAssociations
         }
 
         foreach ($data as $associationTypeCode => $associationTypeValues) {
-            if (!is_string($associationTypeCode)) {
-                throw InvalidPropertyTypeException::validArrayStructureExpected(
-                    $field,
-                    'association type code should be a string',
-                    static::class,
-                    $data
-                );
-            }
-
             if (!is_array($associationTypeValues)) {
                 throw InvalidPropertyTypeException::validArrayStructureExpected(
                     $field,
@@ -57,21 +49,37 @@ class QuantifiedAssociationsStructureValidator implements QuantifiedAssociations
                 }
 
                 foreach ($quantifiedLinks as $quantifiedLink) {
-                    foreach (['identifier', 'quantity'] as $requiredKey) {
-                        if (!isset($quantifiedLink[$requiredKey])) {
-                            throw InvalidPropertyTypeException::validArrayStructureExpected(
-                                $field,
-                                sprintf('a quantified association should contain the key "%s"', $requiredKey),
-                                static::class,
-                                $data
-                            );
-                        }
+                    if (!isset($quantifiedLink['quantity'])) {
+                        throw InvalidPropertyTypeException::validArrayStructureExpected(
+                            $field,
+                            'a quantified association should contain the key "quantity"',
+                            static::class,
+                            $data
+                        );
                     }
 
-                    if (!is_string($quantifiedLink['identifier'])) {
+                    if (!isset($quantifiedLink['identifier']) && !isset($quantifiedLink['uuid'])) {
+                        throw InvalidPropertyTypeException::validArrayStructureExpected(
+                            $field,
+                            'a quantified association should contain one of these keys: "identifier" or "uuid"',
+                            static::class,
+                            $data
+                        );
+                    }
+
+                    if (isset($quantifiedLink['identifier']) && !is_string($quantifiedLink['identifier'])) {
                         throw InvalidPropertyTypeException::validArrayStructureExpected(
                             $field,
                             'a quantified association should contain a valid identifier',
+                            static::class,
+                            $data
+                        );
+                    }
+
+                    if (isset($quantifiedLink['uuid']) && (!is_string($quantifiedLink['uuid']) || !Uuid::isValid($quantifiedLink['uuid']))) {
+                        throw InvalidPropertyTypeException::validArrayStructureExpected(
+                            $field,
+                            'a quantified association should contain a valid uuid',
                             static::class,
                             $data
                         );

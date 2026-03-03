@@ -6,9 +6,6 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * @group ce
- */
 class CreateAttributeEndToEnd extends ApiTestCase
 {
     public function testHttpHeadersInResponseWhenAnAttributeIsCreated()
@@ -78,6 +75,7 @@ JSON;
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -123,7 +121,8 @@ JSON;
         "scopable":false,
         "labels":[],
         "auto_option_sorting":null,
-        "default_value":null
+        "default_value":null,
+        "guidelines": {"en_US": "the guidelines", "fr_FR": "les indications", "de_DE": ""}
     }
 JSON;
 
@@ -158,6 +157,7 @@ JSON;
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
+            'guidelines'             => ['en_US' => 'the guidelines', 'fr_FR' => 'les indications'],
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -217,6 +217,7 @@ JSON;
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => null,
             'default_value'          => null,
         ];
@@ -273,6 +274,7 @@ JSON;
             'localizable' => false,
             'scopable' => false,
             'labels' => [],
+            'guidelines' => [],
             'auto_option_sorting' => null,
             'default_value' => false,
         ];

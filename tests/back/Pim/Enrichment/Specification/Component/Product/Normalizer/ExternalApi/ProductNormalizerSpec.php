@@ -65,7 +65,17 @@ class ProductNormalizerSpec extends ObjectBehavior
                     'groups' => ['bar'],
                     'products' => ['foo']
                 ]
-            ]
+            ],
+            'quantified_associations' => [
+                'set' => [
+                    'products' => [
+                        ['uuid' => '79fc4791-86d6-4d3b-93c5-76b787af9497', 'identifier' => 'a_product', 'quantity' => 3],
+                    ],
+                    'product_models' => [
+                        ['identifier' => 'a_product_model', 'quantity' => 10],
+                    ],
+                ],
+            ],
         ];
 
         $stdNormalizer->normalize($product, 'standard', [])->willReturn($productStandard);
@@ -77,6 +87,17 @@ class ProductNormalizerSpec extends ObjectBehavior
             'download' => [
                 'href' => 'http://localhost/api/rest/v1/a/b/c/artyui_file.txt/download'
             ]
+        ];
+
+        $productExternal['quantified_associations'] = [
+            'set' => [
+                'products' => [
+                    ['identifier' => 'a_product', 'quantity' => 3],
+                ],
+                'product_models' => [
+                    ['identifier' => 'a_product_model', 'quantity' => 10],
+                ],
+            ],
         ];
 
         $attributeRepository->getMediaAttributeCodes()->willReturn(['file']);
@@ -129,7 +150,8 @@ class ProductNormalizerSpec extends ObjectBehavior
                     'groups' => ['foo'],
                     'products' => ['bar']
                 ]
-            ]
+            ],
+            'quantified_associations' => [],
         ];
 
         $context = ['attributes' => ['number']];
@@ -140,11 +162,12 @@ class ProductNormalizerSpec extends ObjectBehavior
         unset($productExternal['values']['sku']);
         unset($productExternal['values']['text']);
         unset($productExternal['values']['file']);
+        $productExternal['quantified_associations'] = (object) [];
 
         $attributeRepository->getMediaAttributeCodes()->willReturn(['file']);
         $router->generate(Argument::any(), ['code' => 'a/b/c/artyui_file.txt'], Argument::any())->shouldNotBeCalled();
 
-        $this->normalize($product, 'external_api', $context)->shouldReturn($productExternal);
+        $this->normalize($product, 'external_api', $context)->shouldBeLike($productExternal);
     }
 
     function it_normalizes_empty_values_and_associations(
@@ -155,7 +178,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         $productStandard = [
             'identifier'   => 'foo',
             'values'       => [],
-            'associations' => []
+            'associations' => [],
+            'quantified_associations' => [],
         ];
 
         $stdNormalizer->normalize($product, 'standard', [])->willReturn($productStandard);

@@ -56,6 +56,7 @@ services:
             - '@?security.acl.dbal.provider'
             - '@oro_security.acl.ace_provider'
             - '%oro_security.acl.privilege_repository.class%'
+            - '@event_dispatcher'
 
     oro_security.acl.sid_manager:
         class: '%oro_security.acl.sid_manager.class%'
@@ -156,6 +157,7 @@ services:
         class: '%oro_security.acl.annotation_provider.class%'
         arguments:
           - '@oro_security.acl.annotation_provider.cache'
+          - '@oro_security.acl.acl_feature_flags'
 
     oro_security.acl.annotation_provider.cache:
         public: false
@@ -238,3 +240,19 @@ services:
         class: Oro\Bundle\SecurityBundle\Acl\Extension\ActionMaskBuilder
         tags:
             - { name: oro_security.acl.action_mask_builder }
+
+    oro_security.normalizer.acl_privilege:
+        class: Oro\Bundle\SecurityBundle\Normalizer\AclPrivilegeNormalizer
+        tags:
+            - { name: pim_standard_format_serializer.normalizer }
+
+    oro_security.acl.acl_feature_flags:
+        class: Oro\Bundle\SecurityBundle\Model\AclFeatureFlags
+        arguments:
+            - '@feature_flags'
+
+    Oro\Bundle\SecurityBundle\EventSubscriber\FeatureFlagAclPrivilegesEventSubscriber:
+        arguments:
+            - '@oro_security.acl.acl_feature_flags'
+        tags:
+            - { name: kernel.event_subscriber }

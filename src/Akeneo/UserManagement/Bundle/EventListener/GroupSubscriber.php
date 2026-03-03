@@ -20,7 +20,7 @@ class GroupSubscriber implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             UserEvents::PRE_DELETE_GROUP => 'preDeleteGroup',

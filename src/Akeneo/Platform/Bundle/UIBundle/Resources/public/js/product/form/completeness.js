@@ -16,7 +16,18 @@ define([
   'pim/fetcher-registry',
   'pim/i18n',
   'pim/user-context',
-], function ($, _, __, BaseForm, template, FetcherRegistry, i18n, UserContext) {
+  '@akeneo-pim-community/enrichment',
+], function (
+  $,
+  _,
+  __,
+  BaseForm,
+  template,
+  FetcherRegistry,
+  i18n,
+  UserContext,
+  {ChannelsLocalesCompleteness, formatProductCompleteness}
+) {
   return BaseForm.extend({
     template: _.template(template),
     className: 'panel-pane completeness-panel AknCompletenessPanel',
@@ -55,33 +66,11 @@ define([
       }
 
       if (this.getFormData().meta) {
-        $.when(
-          FetcherRegistry.getFetcher('channel').fetchAll(),
-          FetcherRegistry.getFetcher('locale').fetchActivated()
-        ).then(
-          function (channels, locales) {
-            if (null === this.initialFamily) {
-              this.initialFamily = this.getFormData().family;
-            }
+        const catalogLocale = UserContext.get('catalogLocale');
+        const sortedCompleteness = this.sortCompleteness(this.getFormData().meta.completenesses);
+        const channelsLocalesRatios = formatProductCompleteness(sortedCompleteness, catalogLocale);
 
-            this.$el.html(
-              this.template({
-                __: __,
-                hasFamily: this.getFormData().family !== null,
-                completenesses: this.sortCompleteness(this.getFormData().meta.completenesses),
-                i18n: i18n,
-                channels: channels,
-                locales: locales,
-                catalogLocale: UserContext.get('catalogLocale'),
-                hasFamilyChanged: this.getFormData().family !== this.initialFamily,
-                missingValuesKey: 'pim_enrich.entity.product.module.completeness.missing_values',
-                noFamilyLabel: __('pim_enrich.entity.product.module.completeness.no_family'),
-                noCompletenessLabel: __('pim_enrich.entity.product.module.completeness.no_completeness'),
-              })
-            );
-            this.delegateEvents();
-          }.bind(this)
-        );
+        this.renderReact(ChannelsLocalesCompleteness, {channelsLocalesRatios}, this.el);
       }
 
       return this;

@@ -56,7 +56,7 @@ class FiltersConfiguratorSpec extends ObjectBehavior
                 0            => 'identifier_config',
                 'data_name'  => 'sku',
                 'label'      => 'Sku',
-                'enabled'    => true,
+                'enabled'    => false,
                 'order'      => 1,
                 'group'      => 'General',
                 'groupOrder' => 1

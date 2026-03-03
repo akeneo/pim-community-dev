@@ -3,12 +3,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter;
 
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 
 /**
  * Filter data according to attributes defined on the family (for the products)
@@ -25,34 +26,12 @@ use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
  */
 class ProductAttributeFilter implements AttributeFilterInterface
 {
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $productModelRepository;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $familyRepository;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $productRepository;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $attributeRepository;
-
-    /**
-     * @param IdentifiableObjectRepositoryInterface $productModelRepository
-     * @param IdentifiableObjectRepositoryInterface $familyRepository
-     * @param IdentifiableObjectRepositoryInterface $productRepository
-     * @param IdentifiableObjectRepositoryInterface $attributeRepository
-     */
     public function __construct(
-        IdentifiableObjectRepositoryInterface $productModelRepository,
-        IdentifiableObjectRepositoryInterface $familyRepository,
-        IdentifiableObjectRepositoryInterface $productRepository,
-        IdentifiableObjectRepositoryInterface $attributeRepository
+        private ProductModelRepositoryInterface $productModelRepository,
+        private IdentifiableObjectRepositoryInterface $familyRepository,
+        private ProductRepositoryInterface $productRepository,
+        private IdentifiableObjectRepositoryInterface $attributeRepository
     ) {
-        $this->productModelRepository = $productModelRepository;
-        $this->familyRepository = $familyRepository;
-        $this->productRepository = $productRepository;
-        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -60,10 +39,6 @@ class ProductAttributeFilter implements AttributeFilterInterface
      */
     public function filter(array $standardProduct): array
     {
-        if (!array_key_exists('identifier', $standardProduct)) {
-            throw new MissingOptionsException('The "identifier" key is missing');
-        }
-
         if (array_key_exists('values', $standardProduct) && is_array($standardProduct['values'])) {
             foreach ($standardProduct['values'] as $code => $value) {
                 if (null === $this->attributeRepository->findOneByIdentifier($code)) {
@@ -73,7 +48,13 @@ class ProductAttributeFilter implements AttributeFilterInterface
         }
 
         $parentProperty = $standardProduct['parent'] ?? null;
-        $product = $this->productRepository->findOneByIdentifier($standardProduct['identifier']);
+        $product = null;
+        if (isset($standardProduct['uuid'])) {
+            $product = $this->productRepository->find($standardProduct['uuid']);
+        } elseif (isset($standardProduct['identifier'])) {
+            $product = $this->productRepository->findOneByIdentifier($standardProduct['identifier']);
+        }
+
         if (null !== $product) {
             if ($product->isVariant() && null === $parentProperty) {
                 $standardProduct['parent'] = $product->getParent()->getCode();

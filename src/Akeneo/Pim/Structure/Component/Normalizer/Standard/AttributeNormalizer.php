@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Structure\Component\Normalizer\Standard;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -15,28 +16,11 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
-    /** @var NormalizerInterface */
-    private $translationNormalizer;
-
-    /** @var NormalizerInterface */
-    private $dateTimeNormalizer;
-
-    /** @var array */
-    private $properties;
-
-    /**
-     * @param NormalizerInterface $translationNormalizer
-     * @param NormalizerInterface $dateTimeNormalizer
-     * @param array               $properties
-     */
     public function __construct(
-        NormalizerInterface $translationNormalizer,
-        NormalizerInterface $dateTimeNormalizer,
-        array $properties
+        private NormalizerInterface $translationNormalizer,
+        private NormalizerInterface $dateTimeNormalizer,
+        private FeatureFlags $featureFlags
     ) {
-        $this->translationNormalizer = $translationNormalizer;
-        $this->dateTimeNormalizer = $dateTimeNormalizer;
-        $this->properties = $properties;
     }
 
     /**
@@ -46,11 +30,6 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
      */
     public function normalize($attribute, $format = null, array $context = [])
     {
-        $normalizedProperties = [];
-        foreach ($this->properties as $property) {
-            $normalizedProperties[$property] = $attribute->getProperty($property);
-        }
-
         $normalizedAttribute = [
             'code'                   => $attribute->getCode(),
             'type'                   => $attribute->getType(),
@@ -85,15 +64,22 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
             'localizable'            => (bool) $attribute->isLocalizable(),
             'scopable'               => (bool) $attribute->isScopable(),
             'labels'                 => $this->translationNormalizer->normalize($attribute, $format, $context),
+            'guidelines' => $attribute->getGuidelines(),
+            'auto_option_sorting' => $attribute->getProperty('auto_option_sorting'),
+            'default_value' => $attribute->getProperty('default_value'),
         ];
 
-        return $normalizedAttribute + $normalizedProperties;
+        if ($this->isReadOnlyFeatureAvailableAndEnabled()) {
+            $normalizedAttribute['is_read_only'] = $attribute->getProperty('is_read_only');
+        }
+
+        return $normalizedAttribute;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof AttributeInterface && 'standard' === $format;
     }
@@ -101,5 +87,14 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
     public function hasCacheableSupportsMethod(): bool
     {
         return true;
+    }
+
+    private function isReadOnlyFeatureAvailableAndEnabled(): bool
+    {
+        try {
+            return $this->featureFlags->isEnabled('read_only_product_attribute');
+        } catch (\InvalidArgumentException $notAvailableFeatureFlagException) {
+            return false;
+        }
     }
 }

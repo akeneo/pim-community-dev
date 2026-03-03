@@ -62,7 +62,7 @@ Feature: Edit a product with localized attributes
     And I fill in the following information:
       | Langue de l'interface | anglais (États-Unis) |
     And I save the user
-    And I should see the text "System Navigation"
+    And I should not see the text "Langue de l'interface"
+    And I should see the text "UI locale"
     And I am on the "foo" product page
-    And I wait 3 seconds
     Then the field Date should contain "05/28/2015"

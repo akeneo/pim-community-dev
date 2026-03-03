@@ -16,8 +16,18 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class StepExecutionNormalizerSpec extends ObjectBehavior
 {
-    function let(TranslatorInterface $translator, PresenterInterface $presenter)
-    {
+    function let(
+        JobInstance $jobInstance,
+        JobExecution $jobExecution,
+        StepExecution $stepExecution,
+        TranslatorInterface $translator,
+        PresenterInterface $presenter
+    ) {
+        $jobExecution->getJobInstance()->willReturn($jobInstance);
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $stepExecution->getStepName()->willReturn('such_step');
+        $jobInstance->getJobName()->willReturn('wow_job');
+
         $this->beConstructedWith($translator, $presenter);
     }
 
@@ -34,23 +44,17 @@ class StepExecutionNormalizerSpec extends ObjectBehavior
     function it_normalizes_a_step_execution(
         $translator,
         $presenter,
-        JobInstance $jobInstance,
-        JobExecution $jobExecution,
         StepExecution $stepExecution,
         BatchStatus $status
     ) {
-        $jobExecution->getJobInstance()->willReturn($jobInstance);
-        $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $stepExecution->getStepName()->willReturn('such_step');
-        $jobInstance->getJobName()->willReturn('wow_job');
-
         $stepExecution->getSummary()->willReturn(['read' => 12, 'write' => 50]);
         $translator->trans('job_execution.summary.read')->willReturn('Read');
         $translator->trans('job_execution.summary.write')->willReturn('Write');
 
         $stepExecution->getStatus()->willReturn($status);
-        $status->getValue()->willReturn(9);
-        $translator->trans('pim_import_export.batch_status.9')->willReturn('PENDING');
+        $status->getValue()->willReturn(1);
+        $status->__toString()->willReturn('COMPLETED');
+        $translator->trans('pim_import_export.batch_status.1')->willReturn('Completed');
 
         $stepExecution->getErrors()->willReturn([
             'first error message',
@@ -96,7 +100,8 @@ class StepExecutionNormalizerSpec extends ObjectBehavior
             [
                 'label'     => 'such_step',
                 'job'       => 'wow_job',
-                'status'    => 'PENDING',
+                'status'    => 'Completed',
+                'status_code' => 'COMPLETED',
                 'summary'   => ['Read' => 12, 'Write' => 50],
                 'startedAt' => '22-09-2014',
                 'endedAt'   => null,
@@ -111,6 +116,52 @@ class StepExecutionNormalizerSpec extends ObjectBehavior
                     'second error message',
                 ],
                 'failures'  => ['FAIL!'],
+            ]
+        );
+    }
+
+    function it_normalizes_a_step_execution_with_an_array_summary(
+        $translator,
+        $presenter,
+        StepExecution $stepExecution,
+        BatchStatus $status
+    ) {
+        $stepExecution->getSummary()->willReturn(['read' => [
+            'product' => 10,
+            'product_model' => 20,
+        ]]);
+
+        $translator->trans('job_execution.summary.read')->willReturn('Read');
+
+        $stepExecution->getStatus()->willReturn($status);
+        $status->getValue()->willReturn(1);
+        $status->__toString()->willReturn('COMPLETED');
+        $translator->trans('pim_import_export.batch_status.1')->willReturn('Completed');
+
+        $stepExecution->getErrors()->willReturn([]);
+
+        $date = new \DateTime();
+        $stepExecution->getStartTime()->willReturn($date);
+        $stepExecution->getEndTime()->willReturn(null);
+
+        $stepExecution->getWarnings()->willReturn(new ArrayCollection([]));
+        $stepExecution->getFailureExceptions()->willReturn([]);
+
+        $presenter->present($date, Argument::any())->willReturn('22-09-2014');
+        $presenter->present(null, Argument::any())->willReturn(null);
+
+        $this->normalize($stepExecution, 'any')->shouldReturn(
+            [
+                'label'     => 'such_step',
+                'job'       => 'wow_job',
+                'status'    => 'Completed',
+                'status_code' => 'COMPLETED',
+                'summary'   => ['Read' => ['product' => 10, 'product_model' => 20]],
+                'startedAt' => '22-09-2014',
+                'endedAt'   => null,
+                'warnings'  => [],
+                'errors' => [],
+                'failures'  => [],
             ]
         );
     }

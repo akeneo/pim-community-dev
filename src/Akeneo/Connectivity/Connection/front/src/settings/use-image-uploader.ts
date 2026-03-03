@@ -26,7 +26,7 @@ const allowedExtensions = [
 ];
 
 export const useImageUploader = (handleOnUpload: (e: {loaded: number; total: number}) => void) => {
-    const url = useRoute('pim_enrich_media_rest_post');
+    const url = useRoute('akeneo_file_storage_upload_image');
 
     return async (file: File): Promise<Result<UploadedImage, UploadError>> => {
         if (!allowedExtensions.includes(file.type)) {
@@ -60,8 +60,8 @@ export const useImageUploader = (handleOnUpload: (e: {loaded: number; total: num
             });
 
             return ok<UploadedImage>(result);
-        } catch (e) {
-            return err(e.responseJSON);
+        } catch (error: any) {
+            return err(error.responseJSON);
         }
     };
 };

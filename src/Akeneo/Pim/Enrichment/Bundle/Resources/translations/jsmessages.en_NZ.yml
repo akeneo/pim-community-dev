@@ -1,6 +1,7 @@
 pim_notification:
   types:
     settings: Settings
+    mass_delete: Deletion
 flash:
   comment:
     create:
@@ -52,7 +53,6 @@ pim_enrich.entity.product:
     history:
       version: Version
       author: Author
-      logged_at: Logged at
       from: From
       modified: Modified
       old_value: Old value
@@ -259,12 +259,10 @@ pim_enrich.export.product:
   global_settings:
     title: Global settings
 pim_enrich.mass_edit.product:
-  title: Products bulk action
   step:
     select:
       label: Choose products
     choose:
-      title: Products bulk actions
       label_count: "]0, Inf[Select your action"
     configure:
       label: Configure
@@ -282,12 +280,7 @@ pim_enrich.mass_edit.product:
       description: The selected products will be enabled or disabled.
       field: To enable
     edit_common:
-      label: Edit attributes values
-      description: Only the attributes belonging to the families of the selected products will be edited with the following data for the {{ locale }} locale and the {{ scope }} channel.
       no_update: Please select at least one field to update
-    add_attribute_value:
-      label: Add attributes values
-      description: Only the multivalued attributes belonging to the families of the products will be edited with the following data for the {{ locale }} locale and the {{ scope }} channel. The attributes values are added, the previous values are kept.
     change_family:
       label: Change family
       description: The family of the selected products will be changed to the chosen family
@@ -302,6 +295,7 @@ pim_enrich.mass_edit.product:
     move_to_category:
       label: Move between categories
       description: The products will be classified into following categories, the existing classification is lost.
+      no_update: Please select a category.
     remove_from_category:
       label: Remove from categories
       description: The products will be removed from the following categories.
@@ -311,7 +305,6 @@ pim_enrich.mass_edit.product:
       description: The product model selected will gather the products and allows the enrichment of their common properties.
       no_update: Please select a product model before to continue
     associate_to_product_and_product_model:
-      label: Associate
       description: The products selected in the grid will be associated to the selected products and product models for the chosen association type
       validate: Please add association before going to the next step
     change_parent_product_model:
@@ -428,3 +421,5 @@ batch_jobs:
     quick_export.label: XLSX product quick export
     quick_export_product_model.label: XLSX product model quick export
     perform.label: XLSX product quick export
+  default_steps:
+    delete_products_and_product_models: Delete products and product models

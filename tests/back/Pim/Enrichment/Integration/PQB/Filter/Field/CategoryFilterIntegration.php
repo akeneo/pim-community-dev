@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
 /**
@@ -20,7 +21,7 @@ class CategoryFilterIntegration extends AbstractProductQueryBuilderTestCase
     {
         parent::setUp();
 
-        $this->createProduct('foo', ['categories' => ['categoryA1', 'categoryB']]);
+        $this->createProduct('foo', [new SetCategories(['categoryA1', 'categoryB'])]);
         $this->createProduct('bar', []);
         $this->createProduct('baz', []);
     }
@@ -60,7 +61,7 @@ class CategoryFilterIntegration extends AbstractProductQueryBuilderTestCase
 
     public function testOperatorInOrUnclassifiedInTwoDifferentFilters()
     {
-        $this->createProduct('qux', ['categories' => ['categoryA1']]);
+        $this->createProduct('qux', [new SetCategories(['categoryA1'])]);
 
         $result = $this->executeFilter([
             ['categories', Operators::IN_LIST_OR_UNCLASSIFIED, ['categoryB']],
@@ -90,5 +91,11 @@ class CategoryFilterIntegration extends AbstractProductQueryBuilderTestCase
         $this->expectExceptionMessage('Filter on property "categories" is not supported or does not support operator ">="');
 
         $this->executeFilter([['categories', Operators::GREATER_OR_EQUAL_THAN, ['categoryA1']]]);
+    }
+
+    public function testOperatorNotEmpty()
+    {
+        $result = $this->executeFilter([['categories', Operators::IS_NOT_EMPTY, '']]);
+        $this->assert($result, ['foo']);
     }
 }

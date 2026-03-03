@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dashboard;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\KeyIndicatorCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -12,10 +13,23 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
  */
 interface ComputeProductsKeyIndicator
 {
-    public function getName(): string;
+    public function getCode(): KeyIndicatorCode;
 
     /**
-     * @param ProductId[] $productIds
+     * @return array<string, array<string, array<string, bool>>> Enrichment status by product/product-model channel and locale
+     *
+     * Example of return:
+     * [
+     *      '42' => [
+     *          'ecommerce' => [
+     *              'en_US' => true,
+     *              'fr_FR' => false,
+     *          ],
+     *          'mobile' => [
+     *              'en_US' => true,
+     *          ],
+     *      ],
+     * ]
      */
-    public function compute(array $productIds): array;
+    public function compute(ProductEntityIdCollection $entityIdCollection): array;
 }

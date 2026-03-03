@@ -4,46 +4,90 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Doctrine\ORM\Repository;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
-use Akeneo\Pim\Structure\Component\Repository\FamilyVariantRepositoryInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use AkeneoTest\Pim\Enrichment\Integration\Fixture\EntityBuilder;
+use PHPUnit\Framework\Assert;
 
-/**
- * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
- * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- */
-final class ProductModelRepositoryIntegration extends TestCase
+class ProductModelRepositoryIntegration extends TestCase
 {
-    /** @var FamilyVariantRepositoryInterface */
-    private $familyVariantRepository;
-
-    /** @var ProductModelRepositoryInterface */
-    private $productModelRepository;
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp(): void
+    public function testCanFindFirstCreatedVariantProductModel()
     {
-        parent::setUp();
+        $productModel = $this->createProductModel();
+        $this->createVariantProductModels($productModel);
 
-        $this->familyVariantRepository = $this->get('pim_catalog.repository.family_variant');
-        $this->productModelRepository = $this->get('pim_catalog.repository.product_model');
+        $productModelChild = $this->get('pim_catalog.repository.product_model')->findFirstCreatedVariantProductModel($productModel);
+        $this->assertInstanceOf(ProductModelInterface::class, $productModelChild);
+        $this->assertEquals('a_variant_product_model', $productModelChild->getCode());
+    }
+
+    public function testItReturnNullWhenProductModelDoesNotHaveChildren()
+    {
+        $productModel = $this->createProductModel();
+
+        $productModelChild = $this->getProductModelRepository()->findFirstCreatedVariantProductModel($productModel);
+        $this->assertNull($productModelChild);
     }
 
     /** @test */
-    public function it_returns_product_models_for_a_given_family_variant(): void
+    public function findProductModelsForFamilyVariantWithSearchAndPagination(): void
     {
-        $familyVariant = $this->familyVariantRepository->findOneByIdentifier('clothing_color_size');
-        self::assertNotNull($familyVariant);
+        $productModel = $this->createProductModel();
+        $this->createVariantProductModels($productModel);
 
-        $productModels = $this->productModelRepository->findProductModelsForFamilyVariant($familyVariant);
-        self::assertNotEmpty($productModels);
+        $familyVariant = $this->get('pim_catalog.repository.family_variant')->findOneByCode('familyVariantA2');
 
-        $productModel = $productModels[0];
-        self::assertSame($familyVariant->getCode(), $productModel->getFamilyVariant()->getCode());
+        $productModels = $this->getProductModelRepository()->findProductModelsForFamilyVariant(
+            $familyVariant,
+            null,
+            3,
+            1
+        );
+        Assert::assertCount(3, $productModels);
+        $productModelCodes = array_map(
+            fn (ProductModelInterface $productModel): string => $productModel->getCode(),
+            $productModels
+        );
+        Assert::assertEqualsCanonicalizing(
+            ['a_product_model', 'a_variant_product_model', 'another_variant_product_model'],
+            $productModelCodes
+        );
+
+        $productModels = $this->getProductModelRepository()->findProductModelsForFamilyVariant(
+            $familyVariant,
+            'another',
+            3,
+            1
+        );
+        Assert::assertCount(1, $productModels);
+        $productModelCodes = array_map(
+            fn (ProductModelInterface $productModel): string => $productModel->getCode(),
+            $productModels
+        );
+        Assert::assertEqualsCanonicalizing(['another_variant_product_model'], $productModelCodes);
+
+        $productModels = $this->getProductModelRepository()->findProductModelsForFamilyVariant(
+            $familyVariant,
+            null,
+            1,
+            1
+        );
+        Assert::assertCount(1, $productModels);
+
+        $productModels = $this->getProductModelRepository()->findProductModelsForFamilyVariant(
+            $familyVariant,
+            null,
+            1,
+            5
+        );
+        Assert::assertCount(0, $productModels);
+    }
+
+    public function getProductModelRepository(): ProductModelRepositoryInterface
+    {
+        return $this->get('pim_catalog.repository.product_model');
     }
 
     /**
@@ -51,6 +95,68 @@ final class ProductModelRepositoryIntegration extends TestCase
      */
     protected function getConfiguration(): Configuration
     {
-        return $this->catalog->useFunctionalCatalog('catalog_modeling');
+        return $this->catalog->useTechnicalCatalog();
+    }
+
+    private function createProductModel(): ProductModelInterface
+    {
+        $entityBuilder = $this->get('akeneo_integration_tests.catalog.fixture.build_entity');
+
+        return $entityBuilder->createProductModel('a_product_model', 'familyVariantA2', null, []);
+    }
+
+    private function createVariantProductModels(ProductModelInterface $productModel): void
+    {
+        /** @var EntityBuilder $entityBuilder */
+        $entityBuilder = $this->get('akeneo_integration_tests.catalog.fixture.build_entity');
+        $entityBuilder->createProductModel(
+            'a_variant_product_model',
+            'familyVariantA2',
+            $productModel,
+            [
+                'values' => [
+                    'a_simple_select' => [
+                        [
+                            'locale' => null,
+                            'scope' => null,
+                            'data' => 'optionA',
+                        ],
+                    ],
+                    'a_yes_no' =>  [
+                        [
+                            'locale' => null,
+                            'scope' => null,
+                            'data' => true,
+                        ],
+                    ],
+                ],
+                'categories' => ['categoryA1'],
+            ]
+        );
+
+        $entityBuilder->createProductModel(
+            'another_variant_product_model',
+            'familyVariantA2',
+            $productModel,
+            [
+                'values' => [
+                    'a_simple_select' => [
+                        [
+                            'locale' => null,
+                            'scope' => null,
+                            'data' => 'optionA',
+                        ],
+                    ],
+                    'a_yes_no' =>  [
+                        [
+                            'locale' => null,
+                            'scope' => null,
+                            'data' => true,
+                        ],
+                    ],
+                ],
+                'categories' => ['categoryB'],
+            ]
+        );
     }
 }

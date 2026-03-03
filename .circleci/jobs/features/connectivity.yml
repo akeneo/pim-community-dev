@@ -1,0 +1,181 @@
+executor-machine: &executor-machine 'ubuntu-2004:2022.04.1'
+
+jobs:
+    test_front_lint_connectivity:
+        machine:
+            image: *executor-machine
+            docker_layer_caching: true
+        steps:
+            -   attach_workspace:
+                    at: ~/
+            -   run:
+                    name: Create yarn cache folder
+                    command: mkdir -p  ~/.cache/yarn
+            -   run:
+                    name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
+                    command: sudo chown -R 1000:1000 ../project ~/.cache/yarn
+            -   run:
+                    name: Pull docker image for node
+                    command: docker-compose pull node
+            -   run:
+                    name: Build other front libraries
+                    command: docker-compose run -u node --rm node yarn catalogs:build
+            -   run:
+                    name: Lint front
+                    command: make connectivity-connection-lint-front
+
+    test_front_build_connectivity:
+        machine:
+            image: *executor-machine
+            docker_layer_caching: true
+        steps:
+            -   attach_workspace:
+                    at: ~/
+            -   run:
+                    name: Create yarn cache folder
+                    command: mkdir -p  ~/.cache/yarn
+            -   run:
+                    name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
+                    command: sudo chown -R 1000:1000 ../project ~/.cache/yarn
+            -   run:
+                    name: Build front in strict mode
+                    command: make javascript-dev-strict
+
+    test_front_unit_connectivity:
+        machine:
+            image: *executor-machine
+            docker_layer_caching: true
+        steps:
+            -   attach_workspace:
+                    at: ~/
+            -   run:
+                    name: Create yarn cache folder
+                    command: mkdir -p  ~/.cache/yarn
+            -   run:
+                    name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
+                    command: sudo chown -R 1000:1000 ../project ~/.cache/yarn
+            -   run:
+                    name: Pull docker image for node
+                    command: docker-compose pull node
+            -   run:
+                    name: Build other front libraries
+                    command: docker-compose run -u node --rm node yarn catalogs:build
+            -   run:
+                    name: Unit front
+                    command: make connectivity-connection-unit-front
+
+    test_back_unit_connectivity:
+        machine:
+            image: *executor-machine
+            docker_layer_caching: true
+        steps:
+            -   attach_workspace:
+                    at: ~/
+            -   run:
+                    name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
+                    command: sudo chown -R 1000:1000 ../project
+            -   run:
+                    name: Pull docker image for php
+                    command: docker-compose pull php
+            -   run:
+                    name: Coupling back
+                    command: make connectivity-connection-coupling-back
+            -   run:
+                    name: Lint back
+                    command: make connectivity-connection-lint-back
+            -   run:
+                    name: Unit back
+                    command: make connectivity-connection-unit-back
+
+    test_back_integration_connectivity:
+        machine:
+            image: *executor-machine
+            docker_layer_caching: true
+        steps:
+            -   attach_workspace:
+                    at: ~/
+            -   run:
+                    name: Copy docker-compose.override.yml.dist
+                    command: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
+            -   run:
+                    name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
+                    command: sudo chown -R 1000:1000 ../project
+            -   run:
+                    name: Pull docker images
+                    command: docker-compose pull php httpd mysql elasticsearch object-storage pubsub-emulator
+            -   run:
+                    name: Start containers
+                    command: |
+                        APP_ENV=test C='httpd mysql elasticsearch object-storage pubsub-emulator' make up
+                        docker/wait_docker_up.sh
+            -   run:
+                    name: Install database
+                    command: APP_ENV=test O="--withoutFixtures" make database
+            -   run:
+                    name: Integration back
+                    command: CI=false EXPERIMENTAL_TEST_DATABASE=1 make connectivity-connection-integration-back
+            -   store_test_results:
+                    path: var/tests/phpunit
+
+    test_back_e2e_connectivity:
+        machine:
+            image: *executor-machine
+            docker_layer_caching: true
+        steps:
+            -   attach_workspace:
+                    at: ~/
+            -   run:
+                    name: Copy docker-compose.override.yml.dist
+                    command: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
+            -   run:
+                    name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
+                    command: sudo chown -R 1000:1000 ../project
+            -   run:
+                    name: Pull docker images
+                    command: docker-compose pull php httpd mysql elasticsearch object-storage pubsub-emulator
+            -   run:
+                    name: Start containers
+                    command: |
+                        APP_ENV=test C='httpd mysql elasticsearch object-storage pubsub-emulator' make up
+                        docker/wait_docker_up.sh
+            -   run:
+                    name: Install database
+                    command: APP_ENV=test O="--withoutFixtures" make database
+            -   run:
+                    name: End to end back
+                    command: CI=false make connectivity-connection-e2e-back
+            -   store_test_results:
+                    path: var/tests/phpunit
+
+    test_back_behat_connectivity:
+        machine:
+            image: *executor-machine
+        steps:
+            -   attach_workspace:
+                    at: ~/
+            -   run:
+                    name: Copy docker-compose.override.yml.dist
+                    command: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
+            -   run:
+                    name: Change owner on project dir in order to archive the project into the workspace
+                    command: sudo chown -R 1000:1000 ../project
+            -   run:
+                    name: Start containers
+                    command: |
+                        docker load -i php-pim-image.tar
+                        APP_ENV=behat docker-compose -f docker-compose.yml -f src/Akeneo/Connectivity/Connection/tests/docker-compose.yml up -d --remove-orphans httpd mysql elasticsearch httpd object-storage selenium pubsub-emulator
+                        docker/wait_docker_up.sh
+            -   run:
+                    name: Install database
+                    command: APP_ENV=behat make database
+            -   run:
+                    name: End to end Behat tests
+                    command: PIM_CONTEXT=test make connectivity-connection-critical-e2e
+            -   store_test_results:
+                    path: var/tests/behat
+            -   store_artifacts:
+                    path: var/tests/behat
+            -   store_artifacts:
+                    path: var/logs
+            -   store_artifacts:
+                    path: var/tests/screenshots

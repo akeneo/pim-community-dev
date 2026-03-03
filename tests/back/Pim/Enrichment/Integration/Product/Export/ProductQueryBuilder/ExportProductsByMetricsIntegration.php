@@ -2,6 +2,7 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Product\Export\ProductQueryBuilder;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
 use AkeneoTest\Pim\Enrichment\Integration\Product\Export\AbstractExportTestCase;
 
 class ExportProductsByMetricsIntegration extends AbstractExportTestCase
@@ -12,29 +13,22 @@ class ExportProductsByMetricsIntegration extends AbstractExportTestCase
     protected function loadFixtures() : void
     {
         $this->createProduct('product_1', [
-            'values'     => [
-                'a_metric_without_decimal_negative' => [
-                    ['data' => ['amount' => -10, 'unit' => 'CELSIUS'], 'locale' => null, 'scope' => null]
-                ]
-            ]
+            new SetMeasurementValue('a_metric_without_decimal_negative', null, null, -10, 'CELSIUS'),
         ]);
 
         $this->createProduct('product_2', [
-            'values' => [
-                'a_metric_without_decimal_negative' => [
-                    ['data' => ['amount' => 20, 'unit' => 'CELSIUS'], 'locale' => null, 'scope' => null]
-                ]
-            ],
+            new SetMeasurementValue('a_metric_without_decimal_negative', null, null, 20, 'CELSIUS'),
         ]);
 
         $this->createProduct('product_3');
     }
 
-    public function testProductExportByFilteringOnMetric()
+    public function testProductExportByFilteringOnMetric(): void
     {
+        $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_1');
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;a_metric_without_decimal_negative;a_metric_without_decimal_negative-unit
-product_1;;1;;;-10;CELSIUS
+uuid;sku;categories;enabled;family;groups;a_metric_without_decimal_negative;a_metric_without_decimal_negative-unit
+{$product1->getUuid()->toString()};product_1;;1;;;-10;CELSIUS
 
 CSV;
 
@@ -52,6 +46,7 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);

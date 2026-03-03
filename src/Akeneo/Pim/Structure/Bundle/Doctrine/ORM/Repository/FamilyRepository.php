@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository;
 
-use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeRequirement;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRequirementRepositoryInterface;
@@ -60,7 +60,7 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
 
         if (isset($options['identifiers'])) {
             $qb->andWhere('f.code IN (:identifiers)')
-               ->setParameter('identifiers', $options['identifiers']);
+                ->setParameter('identifiers', $options['identifiers']);
         }
 
         if ($limit) {
@@ -69,6 +69,8 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
                 $qb->setFirstResult((int) $limit * ((int) $options['page'] - 1));
             }
         }
+
+        $qb->distinct();
         $qb->orderBy('f.code');
 
         return $qb->getQuery()->getResult();

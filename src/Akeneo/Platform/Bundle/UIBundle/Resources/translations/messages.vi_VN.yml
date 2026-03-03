@@ -1,0 +1,282 @@
+User: Người dùng
+Run demo: Chạy demo
+Product: Sản phẩm
+Attribute list: Danh sách thuộc tính
+Attribute Group list: Danh sách nhóm thuộc tính
+Users: Người dùng
+Roles: Vai trò
+Groups: Nhóm
+Configuration: Cấu hình
+Currency list: Danh sách tiền tệ
+Locale list: Danh sách locale
+Logged in as: Đăng nhập bằng
+Logout: Đăng xuất
+Login: Đăng nhập
+Previous: Trước
+Next: Tiếp theo
+Channel list: Danh sách kênh
+Select file: Chọn tập tin
+Change file: Thay đổi tập tin
+Remove file: Loại bỏ tập tin
+Delete: Xóa
+Save: Lưu
+Get help: Nhận trợ giúp
+My User: Tài khoản của tôi
+oro.form.choose_value: Chọn một giá trị...
+Read more: Tìm hiểu thêm
+oro.form.click_here_to_select: Click vào đây để chọn...
+Add: Thêm
+"Learn how to use this space": "Tìm hiểu làm thế nào để sử dụng không gian này"
+"How To Use Pinbar": "Làm thế nào để sử dụng Pinbar"
+Pinbar: Pinbar
+Favorites: Yêu thích
+Most Viewed: Được xem nhiều nhất
+"Add this page to favorites": "Thêm Trang này vào mục yêu thích"
+"Minimize the window to the pinbar": "Thu nhỏ cửa sổ vào Pinbar"
+"Loading ...": "Đang tải ..."
+"Yes": "Đồng ý"
+"No": "Không"
+pim_common:
+  cancel: Hủy bỏ
+  save: Lưu
+  delete: Xóa
+  update: Cập Nhật
+  view: Xem
+  edit: Chỉnh sửa
+  created: Đã tạo
+  updated: Đã cập nhật
+  create: Tạo
+  properties: Thuộc tính
+  name: Tên
+  remove: Gỡ bỏ
+  code: Mã
+  products: Sản phẩm
+  enabled: Đã kích hoạt
+  family: Chủng loại
+  groups: Nhóm
+  yes: "Đồng ý"
+  no: "Không"
+pim_enrich:
+  acl_group:
+    association_type: Các kiểu kết hợp
+    attribute: Thuộc tính
+    channel: Kênh
+    currency: Tiền tệ
+    family: Các chủng loại
+    group: Nhóm
+    group_type: Các kiểu nhóm
+    locale: Locale
+    product: Sản phẩm
+  create:
+    attribute: Tạo thuộc tính
+    attribute group: Tạo nhóm thuộc tính
+    category: Tạo phân loại
+    tree: Tạo cây phân loại
+    channel: Tạo kênh
+    currency: Tạo loại tiền tệ
+    family: Tạo chủng loại
+    locale: Tạo locale
+    product: Tạo sản phẩm
+    group: Tạo nhóm
+    association type: Tạo kiểu kết hợp
+    group type: Tạo một kiểu nhóm
+#Confirmation messages
+confirmation:
+  leave: Bạn có chắc chắn muốn rời khỏi trang này không?
+  discard changes: Những thay đổi của %entity% sẽ bị huỷ bỏ nếu bạn rời khỏi trang này.
+  remove:
+    category: Bạn có chắc chắn muốn xoá phân loại %name% không?
+    user: Bạn có chắc bạn muốn xóa bỏ người dùng %name%  không?
+#Flash messages
+flash:
+  entity:
+    removed: Đối tượng đã được xoá
+  attribute:
+    identifier_not_removable: Không thể gở bỏ định danh thuộc tính
+  category:
+    removed: Phân loại đã được gỡ bỏ thành công
+  tree:
+    removed: Cây phân loại đã được xoá thành công
+  currency:
+    updated: Tiền tệ đã được cập nhật thành công
+  group type:
+    created: Kiểu nhóm đã được tạo thành công
+  user:
+    removed: Người dùng đã được gỡ bỏ thành công
+  error occurred: Hành động không thành công. Xin vui lòng thử lại.
+#Info messages
+info:
+  updated: Có một số thay đổi chưa được lưu.
+  category:
+    remove children: Tất cả các danh mục con sẽ bị xoá.
+    keep products: Các sản phẩm trong các danh mục sẽ không bị xoá.
+  product:
+    no available attributes: Không có thuộc tính nào để thêm
+    change family: Thay đổi chủng loại sản phẩm
+    change family to: Thay đổi chủng loại sản phẩm thành
+    merge attributes: Thuộc tính hiện tại sẽ được sáp nhập với những thuộc tính trong chủng loại mới này.
+    keep attributes: Không thuộc tính nào sẽ bị gỡ bỏ.
+    number of associations: '%productCount% sản phẩm và %groupCount% nhóm'
+    enable: Kích hoạt
+    enabled: Đã kích hoạt
+    disable: Vô hiệu
+    disabled: Đã vô hiệu
+  group:
+    axis: 'Biến thể trục: %attributes%'
+    select products: Vui lòng chọn sản phẩm thuộc về nhóm này.
+    selectable products: Các sản phẩm có thể lựa chọn sau đây có một giá trị đã được đinh nghĩa cho mỗi trục.
+    no group types: Không có kiểu nhóm nào tồn tại, nhấn vào đây để tạo mới
+  association type:
+    show products: Hiển thị sản phẩm
+    show groups: Hiển thị nhóm
+    remove from products: Xoá kiểu kết hợp sẽ xoá nó khỏi %count% sản phẩm.
+    none exist: Không có kiểu kết hợp nào tồn tại.
+    create one: Nhấn vào đây để tạo
+#Form elements
+Created: Đã tạo
+Updated: Đã cập nhật
+Last update: Cập nhật sau cùng
+by: Bởi
+N/A: N/A
+Manage products: Quản lý sản phẩm
+Manage groups: Quản lý nhóm
+Code: Mã
+Name: Tên
+Type: Kiểu
+Scope: Kênh
+Required: Bắt buộc
+Unique: Duy nhất
+Not required: Không bắt buộc
+Translatable: Có thể dịch
+Scopable: Scopable
+Localizable: Localizable
+Unique value: Giá trị duy nhất
+Attribute group: Nhóm thuộc tính
+Other: Khác
+Variants behavior when edited: Hành vi của biến thể khi được cập nhật
+Remove: Gỡ bỏ
+Parameters: Tham số
+System: Hệ thống
+Values: Giá trị
+General parameters: Tham số chung
+Backend parameters: Tham số backend
+Label: Nhãn
+Default label: Nhãn mặc định
+Default value: Giá trị mặc định
+Attributetype: Kiểu thuộc tính
+Attribute type: Kiểu thuộc tính
+Defaultvalue: Giá trị mặc định
+Variant: Biến thể
+Smart: Thông minh
+Useable as grid column: Có thể sử dụng như là cột cho grid
+Family: Chủng loại
+Image: Hình ảnh
+Available locales: Locale sẵn có
+Locale specific: Locale cụ thể
+default: Mặc định
+Axis: Trục
+Add attributes: Thêm thuộc tính
+switch_on: "Đồng ý"
+switch_off: "Không"
+Close: Đóng
+Search: Tìm kiếm
+Choose the attribute type: Chọn loại thuộc tính
+Drop an image or click here: Kéo thả hình ảnh hoặc nhấn vào đây
+Create: Tạo
+Choose a family: Chọn một chủng loại
+Choose a unit: Chọn một đơn vị
+No matches found: Không tìm thấy
+Category tree: Cây danh mục
+Completeness: Hoàn thành
+Attribute used as label: Thuộc tính được sử dụng như nhãn
+#Scopes
+Global: Toàn cục
+Channel: Kênh
+#Variants
+Always override: Luôn luôn ghi đè
+Ask: Hỏi
+#Attribute group
+General Properties: Thuộc tính chung
+Group values: Nhóm giá trị
+New group: Nhóm mới
+Groups overview: Tổng quan các nhóm
+'Y-m-d h:i:s': 'Y-m-d h:i:s'
+#Attribute properties
+Max characters: Số ký tự tối đa
+Validation rule: Quy tắc kiểm tra
+Validation regexp: Qui tắc regexp
+Wysiwyg enabled: Kích hoạt WYSIWYG
+Number min: Số nhỏ nhất
+Number max: Số lớn nhất
+Decimals allowed: Cho phép số thập phân
+Negative allowed: Cho phép giá trị âm
+Date min: Ngày nhỏ nhất
+Date max: Ngày lớn nhất
+Max file size: Kích thước tập tin tối đa (MB)
+Allowed extensions: Đuôi tập tin cho phép
+None: Không có
+E-mail: Thư điện tử
+URL: URL
+Regular expression: Biểu thức chính quy
+Minimum input length: Chiều dài tối thiểu
+Default: Mặc định
+#Family
+Attributes: Thuộc tính
+#Category
+Title: Tiêu đề
+#Page titles
+pim_catalog_identifier: Định danh
+pim_catalog_text: Văn bản
+pim_catalog_textarea: Khung văn bản
+pim_catalog_number: Số
+pim_catalog_price_collection: Giá
+pim_catalog_multiselect: Chọn nhiều mục
+pim_catalog_simpleselect: Lựa chọn đơn
+pim_catalog_file: Tập tin
+pim_catalog_image: Hình ảnh
+pim_catalog_boolean: "Yes/No"
+pim_catalog_date: Ngày tháng năm
+#Locales
+Activated: Đã kích hoạt
+Edit: Chỉnh sửa
+Disable: Vô hiệu
+To enable: Để kích hoạt
+Select attributes: Chọn thuộc tính
+Select: Chọn
+Remove this attribute: Gỡ bỏ thuộc tính này
+Translate from: Dịch từ
+#Product view
+Group: Nhóm
+Products: Sản phẩm
+#Tabs
+Properties: Thuộc tính
+History: Lịch sử
+pane.accordion:
+  general_properties: Thuộc tính tổng quan
+  backend_parameters: Tham số backend
+  general_parameters: Tham số chung
+  options: Tùy chọn
+  group_values: Nhóm giá trị
+Created At: Ngày tạo
+Updated At: Ngày cập nhật
+Enabled: Đã kích hoạt
+Disabled: Đã vô hiệu
+Status: Trạng thái
+pim_datagrid:
+  filters:
+    entity_type:
+      label: Biến thể
+    family:
+      label: Chủng loại
+    groups:
+      label: Nhóm
+    enabled:
+      label: Trạng thái
+    identifier:
+      label: Định danh
+Action: Hành động
+Version: Phiên bản
+Author: Tác giả
+Currency: Tiền tệ
+edit_common_attributes.steps.edit_common_attributes_processor.title: Chỉnh sửa thuộc tính
+edit_common_attributes: Chỉnh sửa thuộc tính

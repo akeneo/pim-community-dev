@@ -34,7 +34,7 @@ class UnitOfWorkAndRepositoriesClearer implements EntityManagerClearerInterface
         $this->entityManager = $entityManager;
     }
 
-    public function clear()
+    public function clear(): void
     {
         foreach ($this->cachedRepositoriesToClear as $repository) {
             $repository->clear();

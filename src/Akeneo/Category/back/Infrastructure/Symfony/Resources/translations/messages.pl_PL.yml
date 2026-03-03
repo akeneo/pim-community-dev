@@ -1,0 +1,14 @@
+pim_enrich:
+  acl:
+    category:
+      list: Przeglądanie kategorii
+      create: Utwórz kategorię
+      edit: Edytuj kategorię
+      remove: Usuń kategorię
+      move: Przenieś kategorię
+      children: Przeglądanie podkategorii
+      products: Przeglądanie produktów w kategorii
+      history: Przeglądanie historii kategorii
+      template: Zarządzaj szablonem kategorii
+      edit_attributes: Edytuj atrybuty kategorii
+      order_trees: Uporządkuj / zmień kolejność kategorii

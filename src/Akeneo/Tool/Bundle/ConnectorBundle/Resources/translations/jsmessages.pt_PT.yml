@@ -1,0 +1,93 @@
+#Job labels
+batch_jobs:
+  default_steps:
+    download_files: Transferir ficheiro(s)
+    upload_files: Carregar ficheiro(s)
+    validation: Validação do ficheiro
+    import_associations: Importar associação
+    import_model_associations: Importar associação
+    ensure_attribute_group_order: Verificar ordenação do grupo de atributos
+  csv_product_export:
+    label: Exportar produto para o CSV
+    export.label: Exportar produto
+  csv_category_export:
+    label: Exportar categoria para o CSV
+    export.label: Exportar categoria
+  csv_attribute_export:
+    label: Exportar atributo para o CSV
+    export.label: Exportar atributo
+  csv_attribute_option_export:
+    label: Exportar opção de atributo para o CSV
+    export.label: Exportar opção de atributo
+  csv_association_type_export:
+    label: Exportar tipo de associação para o CSV
+    export.label: Exportar tipo de associação
+  csv_group_export:
+    label: Exportar grupo para o CSV
+    export.label: Exportar grupo
+  csv_family_export:
+    label: Exportação de famílias em CSV
+    export.label: Exportação de famílias
+  csv_product_import:
+    label: Importar produto para o CSV
+    import.label: Importar produto
+  csv_category_import:
+    label: Importar categoria para o CSV
+    import.label: Importar categoria
+  csv_attribute_import:
+    label: Importar atributo para o CSV
+    import.label: Importar atributo
+  csv_attribute_option_import:
+    label: Importar opção de atributo para o CSV
+    import.label: Importar opção de atributo
+  csv_association_type_import:
+    label: Importar tipo de associação para o CSV
+    import.label: Importar tipo de associação
+  csv_family_import:
+    label: Importação de famílias por CSV
+    import.label: Importação de famílias
+  csv_group_import:
+    label: Importar grupo para o CSV
+    import.label: Importar grupo
+  xlsx_category_import:
+    label: Importação de categorias por XLSX
+    import.label: Importar categoria
+  xlsx_association_type_import:
+    label: Importação de tipos de associação por XLSX
+    import.label: Importar tipo de associação
+  xlsx_attribute_import:
+    label: Importação de atributos por XLSX
+    import.label: Importar atributo
+  xlsx_attribute_option_import:
+    label: Importação de opções de atributos por XLSX
+    import.label: Importar opção de atributo
+  xlsx_family_import:
+    label: Importação de famílias por XLSX
+    import.label: Importação de famílias
+  xlsx_product_export:
+    label: Exportação de produtos em XLSX
+    export.label: Exportar produto
+  xlsx_product_import:
+    label: Importação de produtos por XLSX
+    import.label: Importar produto
+  xlsx_group_export:
+    label: Exportação de grupos em XLSX
+    export.label: Exportar grupo
+  xlsx_group_import:
+    label: Importação de grupos por XLSX
+    import.label: Importar grupo
+  xlsx_family_export:
+    label: Exportação de famílias em XLSX
+    export.label: Exportação de famílias
+  xlsx_category_export:
+    label: Exportação de categorias em XLSX
+    export.label: Exportar categoria
+  xlsx_attribute_export:
+    label: Exportação de atributos em XLSX
+    export.label: Exportação de atributos em XLSX
+  xlsx_attribute_option_export:
+    label: Exportação de opções de atributos em XLSX
+    export.label: Exportação de opções de atributos em XLSX
+  xlsx_association_type_export:
+    label: Exportação de tipos de associação em XLSX
+    export.label: Exportação de tipos de associação em XLSX

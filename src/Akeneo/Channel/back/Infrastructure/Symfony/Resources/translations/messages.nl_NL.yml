@@ -1,0 +1,10 @@
+pim_enrich:
+  #Locale
+  locale:
+    tab:
+      property.title: Eigenschappen
+  channel:
+    flash:
+      delete:
+        error: U kunt het kanaal "%channelCode%" niet verwijderen, omdat uw PIM ten minste één kanaal moet bevatten.
+        linked_to_export_profile: Kan een kanaal dat is gekoppeld aan een exportprofiel niet verwijderen.

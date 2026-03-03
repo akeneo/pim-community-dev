@@ -1,22 +1,35 @@
 import React from 'react';
-import {KeyIndicator, KeyIndicators} from '../../../../../../../front/src/application/component/Dashboard';
+import {KeyIndicators} from '../../../../../../../front/src/application/component/Dashboard';
 import {useFetchKeyIndicators} from '@akeneo-pim-community/data-quality-insights/src/infrastructure/hooks';
 import {keyIndicatorsTips} from '@akeneo-pim-community/data-quality-insights/src/application/helper/Dashboard/KeyIndicatorsTips';
 import {KeyIndicatorsProvider} from '@akeneo-pim-community/data-quality-insights/src/application/context/KeyIndicatorsContext';
 import {renderDashboardWithProvider} from '../../../../../utils/render/renderDashboardWithProvider';
 import '@testing-library/jest-dom/extend-expect';
+import {keyIndicatorDescriptorsCE} from '@akeneo-pim-community/data-quality-insights/src/application/component/Dashboard/keyIndicatorDescriptorsCE';
 
 jest.mock('@akeneo-pim-community/data-quality-insights/src/infrastructure/hooks');
 
 test('It displays 2 key indicators', async () => {
-  useFetchKeyIndicators.mockReturnValueOnce({
+  (useFetchKeyIndicators as jest.Mock).mockReturnValueOnce({
     has_image: {
-      ratioGood: 25.65,
-      totalToImprove: 5000,
+      products: {
+        totalGood: 25,
+        totalToImprove: 5000,
+      },
+      product_models: {
+        totalGood: 30,
+        totalToImprove: 3000,
+      },
     },
     good_enrichment: {
-      ratioGood: 25.65,
-      totalToImprove: 5000,
+      products: {
+        totalGood: 25,
+        totalToImprove: 5000,
+      },
+      product_models: {
+        totalGood: 30,
+        totalToImprove: 3000,
+      },
     },
   });
 
@@ -32,7 +45,7 @@ test('It displays 2 key indicators', async () => {
 });
 
 test('It displays a loading when key indicators have not been loaded yet', async () => {
-  useFetchKeyIndicators.mockReturnValueOnce(null);
+  (useFetchKeyIndicators as jest.Mock).mockReturnValueOnce(null);
 
   const {queryByText, queryByTestId} = renderComponent();
 
@@ -46,17 +59,13 @@ test('It displays a loading when key indicators have not been loaded yet', async
 function renderComponent() {
   return renderDashboardWithProvider(
     <KeyIndicatorsProvider tips={keyIndicatorsTips}>
-      <KeyIndicators channel={'ecommerce'} locale={'en_US'} category={null} family={null}>
-        <KeyIndicator
-          type={'has_image'}
-          title={'akeneo_data_quality_insights.dqi_dashboard.key_indicators.list.has_image.title'}
-        />
-        <KeyIndicator
-          type={'good_enrichment'}
-          title={'akeneo_data_quality_insights.dqi_dashboard.key_indicators.list.good_enrichment.title'}
-          resultsMessage={'akeneo_data_quality_insights.dqi_dashboard.key_indicators.products_to_work_on'}
-        />
-      </KeyIndicators>
+      <KeyIndicators
+        channel={'ecommerce'}
+        locale={'en_US'}
+        category={null}
+        family={null}
+        keyIndicatorDescriptors={keyIndicatorDescriptorsCE}
+      />
     </KeyIndicatorsProvider>
   );
 }

@@ -16,6 +16,8 @@ pim_import_export:
     6: 失败
     7: 已放弃
     8: 未知
+    9: 正在暂停
+    10: 已暂停
   download_archive:
     archive: 下载生成的存档文件 | 下载生成的存档文件
     output: 下载生成的文件 | 下载生成的文件
@@ -27,10 +29,15 @@ pim_import_export:
       error: 导出 <strong>%label%</strong> 失败
       warning: 导出 <strong>%label%</strong> 完成，但有一些警告
       success: 导出 <strong>%label%</strong> 完成
+      warnings:
+        xlsx_cell_conversion_error: 将"{0}"列转换为目标 PIM 产品属性类型时出现异常（请检查 Excel 单元格格式）
+        xlsx_cell_date_to_text_conversion_error: 无法将具有日期格式的单元格 {0} 转换为文本类型的属性
     import:
       error: 导入 <strong>%label%</strong> 失败
       warning: 导入 <strong>%label%</strong> 完成，但有一些警告
       success: 导入 <strong>%label%</strong> 完成
+      warnings:
+        xlsx_cell_date_conversion_error: 无法将具有日期格式的单元格 "{cellName}" 转换为 {attributeType} 类型的属性
   list: 选择作业
   job_profile:
     tab:

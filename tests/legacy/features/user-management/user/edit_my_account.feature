@@ -8,7 +8,7 @@ Feature: Change my profile
     Given the "apparel" catalog configuration
     And I am logged in as "Peter"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-8286
+  # @jira https://akeneo.atlassian.net/browse/PIM-8286
   Scenario: I can edit my own profile even if I don't have the permission to edit users
     Given I am on the "Administrator" role page
     And I visit the "Permissions" tab
@@ -24,7 +24,7 @@ Feature: Change my profile
     Then I should not see the text "There are unsaved changes"
     And the "Middle name" field should contain "James"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-6914
+  # @jira https://akeneo.atlassian.net/browse/PIM-6914
   Scenario: Successfully display the UI locale of the user
     Given I edit the "Peter" user
     When I visit the "Interfaces" tab

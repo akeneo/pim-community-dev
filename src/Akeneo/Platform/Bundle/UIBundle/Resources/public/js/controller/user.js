@@ -1,7 +1,6 @@
 'use strict';
 
-define(['underscore', 'pim/controller/front', 'pim/fetcher-registry', 'pim/page-title', 'pim/form-builder'], function (
-  _,
+define(['pim/controller/front', 'pim/fetcher-registry', 'pim/page-title', 'pim/form-builder'], function (
   BaseController,
   FetcherRegistry,
   PageTitle,
@@ -19,7 +18,7 @@ define(['underscore', 'pim/controller/front', 'pim/fetcher-registry', 'pim/page-
             return;
           }
 
-          PageTitle.set({username: _.escape(user.username)});
+          PageTitle.set({username: user.username});
 
           return FormBuilder.build(user.meta.form).then(form => {
             this.on('pim:controller:can-leave', function (event) {

@@ -1,0 +1,55 @@
+import {useState, createElement} from 'react';
+import styled from 'styled-components';
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
+import {action} from '@storybook/addon-actions';
+import {Placeholder} from './Placeholder.tsx';
+import {UsersIllustration} from '../../illustrations';
+import * as Illustrations from '../../illustrations';
+
+<Meta
+  title="Components/Placeholder"
+  component={Placeholder}
+  argTypes={{
+    illustration: {control: {type: 'select'}, options: Object.keys(Illustrations)},
+    title: {control: {type: 'text'}},
+    children: {control: {type: 'text'}},
+  }}
+  args={{
+    illustration: 'UsersIllustration',
+    title: 'Placeholder title',
+    children: 'Placeholder children text',
+  }}
+/>
+
+# Placeholder
+
+## Usage
+
+Placeholder is used when there is no data to display.
+_Example: when the search doesn't return any result._
+
+Placeholder requires a title and an illustration and can contain anything in its children.
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      const IllustrationComponent = createElement(Illustrations[args.illustration]);
+      return <Placeholder {...args} illustration={IllustrationComponent} />;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on `size`
+
+<Canvas>
+  <Story name="Size">
+    {args => {
+      const IllustrationComponent = createElement(Illustrations.AttributesIllustration);
+      return <Placeholder {...args} title="Large placeholder" illustration={IllustrationComponent} size="large" />;
+    }}
+  </Story>
+</Canvas>

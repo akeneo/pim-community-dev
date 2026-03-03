@@ -214,15 +214,17 @@ define([
      * @return {Object}
      */
     prepareChoices: function (items) {
-      return _.chain(
-        _.sortBy(items, function (item) {
-          return item.sort_order;
-        })
-      )
-        .map(function (item) {
-          return ChoicesFormatter.formatOne(item);
-        })
-        .value();
+      return 0 === Object.keys(items).length
+        ? items
+        : _.chain(
+            _.sortBy(items, function (item) {
+              return item.sort_order;
+            })
+          )
+            .map(function (item) {
+              return ChoicesFormatter.formatOne(item);
+            })
+            .value();
     },
 
     /**
@@ -251,6 +253,13 @@ define([
     },
 
     /**
+     * Optionally filters items fetched from the server
+     *
+     * @param {Object} items
+     */
+    filterItems: items => items,
+
+    /**
      * Creates request according to recieved options
      *
      * @param {Object} options
@@ -267,11 +276,11 @@ define([
 
           this.fetchItems(searchParameters).then(
             function (items) {
-              var choices = this.prepareChoices(items);
+              var choices = this.prepareChoices(this.filterItems(items));
 
               options.callback({
                 results: choices,
-                more: choices.length === this.resultsPerPage,
+                more: Object.keys(items).length === this.resultsPerPage,
                 context: {
                   page: page + 1,
                 },

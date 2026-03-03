@@ -6,6 +6,7 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Webmozart\Assert\Assert;
 
 /**
  * Family entity
@@ -168,10 +169,6 @@ class Family implements FamilyInterface
      */
     public function removeAttribute(AttributeInterface $attribute)
     {
-        if (AttributeTypes::IDENTIFIER === $attribute->getType()) {
-            throw new \InvalidArgumentException('Identifier cannot be removed from a family.');
-        }
-
         $this->attributes->removeElement($attribute);
 
         return $this;
@@ -301,12 +298,14 @@ class Family implements FamilyInterface
      */
     public function getTranslation(?string $locale = null): ?FamilyTranslationInterface
     {
-        $locale = ($locale) ? $locale : $this->locale;
+        $locale = $locale ?: $this->locale;
         if (null === $locale) {
             return null;
         }
-        if ($this->translations->containsKey($locale)) {
-            return $this->translations->get($locale);
+        foreach ($this->getTranslations() as $translation) {
+            if (\strtolower($translation->getLocale()) === \strtolower($locale)) {
+                return $translation;
+            }
         }
 
         $translationClass = $this->getTranslationFQCN();
@@ -458,5 +457,52 @@ class Family implements FamilyInterface
     public function setFamilyVariants(Collection $familyVariants): void
     {
         $this->familyVariants = $familyVariants;
+    }
+
+    /**
+     * @param AttributeInterface[] $attributes
+     * @return void
+     */
+    public function updateAttributes(array $attributes = []): void
+    {
+        Assert::allIsInstanceOf($attributes, AttributeInterface::class);
+
+        $formerAttributeCodes = $this->getAttributeCodes();
+        $newAttributeCodes = \array_map(
+            fn (AttributeInterface $attribute): string => $attribute->getCode(),
+            $attributes
+        );
+
+        sort($formerAttributeCodes);
+        sort($newAttributeCodes);
+
+        if ($formerAttributeCodes !== $newAttributeCodes) {
+            $attributeCodesToRemove = array_diff($formerAttributeCodes, $newAttributeCodes);
+            $attributeCodesToAdd = array_diff($newAttributeCodes, $formerAttributeCodes);
+
+            if (\count($attributeCodesToRemove) > 0) {
+                $familyVariants = $this->getFamilyVariants();
+                /** @var FamilyVariant $familyVariant */
+                foreach ($familyVariants as $familyVariant) {
+                    // for every family variants, we want to inform subscribers that the levels of product variants
+                    // and product models have been updated
+                    $familyVariant->addEvent(FamilyVariantInterface::ATTRIBUTES_WERE_UPDATED_ON_LEVEL);
+                }
+            }
+
+            // removes attributes only from former attributes list
+            foreach ($this->getAttributes() as $attribute) {
+                if (\in_array($attribute->getCode(), $attributeCodesToRemove)) {
+                    $this->removeAttribute($attribute);
+                }
+            }
+
+            // adds attributes only from new attributes list
+            foreach ($attributes as $attribute) {
+                if (\in_array($attribute->getCode(), $attributeCodesToAdd)) {
+                    $this->addAttribute($attribute);
+                }
+            }
+        }
     }
 }

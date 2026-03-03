@@ -3,12 +3,11 @@
 namespace Akeneo\UserManagement\Component\Updater;
 
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Component\Model\RoleInterface;
-use Akeneo\UserManagement\Component\Model\User;
 use Doctrine\Common\Util\ClassUtils;
-use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
-use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 
 /**
  * Updates a role
@@ -19,17 +18,6 @@ use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
  */
 class RoleUpdater implements ObjectUpdaterInterface
 {
-    /** @var AclManager */
-    protected $aclManager;
-
-    /**
-     * @param AclManager $aclManager
-     */
-    public function __construct(AclManager $aclManager)
-    {
-        $this->aclManager = $aclManager;
-    }
-
     /**
      * {@inheritdoc}
      *
@@ -37,9 +25,10 @@ class RoleUpdater implements ObjectUpdaterInterface
      * {
      *     'role': 'ROLE_ADMINISTRATOR',
      *     'label': 'Administrator',
+     *     'type': 'default',
      * }
      */
-    public function update($role, array $data, array $options = [])
+    public function update($role, array $data, array $options = []): self
     {
         if (!$role instanceof RoleInterface) {
             throw InvalidObjectException::objectExpected(
@@ -49,11 +38,9 @@ class RoleUpdater implements ObjectUpdaterInterface
         }
 
         foreach ($data as $field => $value) {
+            $this->checkDataType($field, $value);
             $this->setData($role, $field, $value);
         }
-
-        $this->loadAcls($role);
-        $this->aclManager->flush();
 
         return $this;
     }
@@ -63,50 +50,33 @@ class RoleUpdater implements ObjectUpdaterInterface
      * @param string        $field
      * @param mixed         $data
      *
-     * @throws \InvalidArgumentException
+     * @throws UnknownPropertyException
      */
-    protected function setData(RoleInterface $role, $field, $data)
+    protected function setData(RoleInterface $role, string $field, $data)
     {
         switch ($field) {
             case 'role':
-                if (empty($role->getRole())) {
-                    $role->setRole($data);
-                }
+                $role->setRole($data);
                 break;
             case 'label':
                 $role->setLabel($data);
                 break;
+            case 'type':
+                $role->setType($data);
+                break;
+            default:
+                throw UnknownPropertyException::unknownProperty($field);
         }
     }
 
-    /**
-     * Load the ACL per role
-     *
-     * @param RoleInterface $role
-     */
-    protected function loadAcls(RoleInterface $role)
+    protected function checkDataType(string $field, $data): void
     {
-        if (User::ROLE_ANONYMOUS === $role->getRole()) {
-            return;
-        }
+        $isRoleDataTypeInvalid = $field === 'role' && null !== $data &&  !\is_string($data);
+        $isLabelDataTypeInvalid = $field === 'label' && null !== $data && !\is_string($data);
+        $isTypeDataTypeInvalid = $field === 'type' && !\is_string($data);
 
-        $sid = $this->aclManager->getSid($role);
-
-        foreach ($this->aclManager->getAllExtensions() as $extension) {
-            $rootOid = $this->aclManager->getRootOid($extension->getExtensionKey());
-            foreach ($extension->getAllMaskBuilders() as $maskBuilder) {
-                $fullAccessMask = $maskBuilder->hasConst('GROUP_SYSTEM')
-                    ? $maskBuilder->getConst('GROUP_SYSTEM')
-                    : $maskBuilder->getConst('GROUP_ALL');
-                $this->aclManager->setPermission($sid, $rootOid, $fullAccessMask, true);
-            }
-
-            foreach ($extension->getClasses() as $class) {
-                if (!$class->isEnabledAtCreation()) {
-                    $oid = new ObjectIdentity($extension->getExtensionKey(), $class->getClassName());
-                    $this->aclManager->setPermission($sid, $oid, 0, true);
-                }
-            }
+        if ($isRoleDataTypeInvalid || $isTypeDataTypeInvalid || $isLabelDataTypeInvalid) {
+            throw InvalidPropertyTypeException::stringExpected($field, static::class, $data);
         }
     }
 }

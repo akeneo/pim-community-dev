@@ -1,31 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AkeneoTest\Platform\EndToEnd\ImportExport\InternalApi;
 
+use Akeneo\Test\Integration\Configuration;
 use AkeneoTest\Platform\EndToEnd\InternalApiTestCase;
 use Doctrine\DBAL\Connection;
+use League\Flysystem\FilesystemWriter;
 use Symfony\Component\HttpFoundation\Response;
 
 class GetJobExecutionEndToEnd extends InternalApiTestCase
 {
-    /** @var Connection */
-    private $sqlConnection;
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getConfiguration()
-    {
-        return $this->catalog->useTechnicalCatalog();
-    }
-
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        $this->sqlConnection = $this->get('database_connection');
-        $this->authenticate($this->getAdminUser());
-    }
+    private Connection $sqlConnection;
+    private FilesystemWriter $archivistFilesystem;
 
     public function testGetJobExecution()
     {
@@ -46,13 +34,13 @@ class GetJobExecutionEndToEnd extends InternalApiTestCase
         $this->assertSame($this->getExpectedContent($jobExecutionId), json_decode($response->getContent(), true));
     }
 
-    private function thereIsAJobTerminated()
+    private function thereIsAJobTerminated(): int
     {
-        $JobInstanceId = $this->sqlConnection->executeQuery('SELECT id FROM akeneo_batch_job_instance WHERE code = "csv_product_import";')->fetchColumn();
+        $JobInstanceId = $this->sqlConnection->executeQuery('SELECT id FROM akeneo_batch_job_instance WHERE code = "csv_product_import";')->fetchOne();
         $insertJobExecution = <<<SQL
 INSERT INTO `akeneo_batch_job_execution` (`job_instance_id`, `pid`, `user`, `status`, `start_time`, `end_time`, `create_time`, `updated_time`, `health_check_time`, `exit_code`, `exit_description`, `failure_exceptions`, `log_file`, `raw_parameters`)
 VALUES
-	(:job_instance_id, 86472, 'admin', 1, '2020-10-13 13:05:49', '2020-10-13 13:06:10', '2020-10-13 13:05:45', '2020-10-13 13:06:09', '2020-10-13 13:06:09', 'COMPLETED', '', 'a:0:{}', '', '{}');
+	(:job_instance_id, 86472, 'admin', 1, '2020-10-13 13:05:49', '2020-10-13 13:06:10', '2020-10-13 13:05:45', '2020-10-13 13:06:09', '2020-10-13 13:06:09', 'COMPLETED', '', 'a:0:{}', '/srv/pim/var/logs/batch/19/batch_b2b74e2d3bc04a1918954dae504009718a46a874.log', '{}');
 SQL;
         $this->sqlConnection->executeUpdate($insertJobExecution, ['job_instance_id' => $JobInstanceId]);
         $jobExecutionId = (int)$this->sqlConnection->lastInsertId();
@@ -67,7 +55,26 @@ VALUES
 SQL;
         $this->sqlConnection->executeUpdate($insertStepExecutions, ['job_execution_id' => $jobExecutionId]);
 
+        $this->archivistFilesystem->write("import/csv_product_import/$jobExecutionId/log/batch_b2b74e2d3bc04a1918954dae504009718a46a874.log", 'content');
+
         return $jobExecutionId;
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->archivistFilesystem = $this->get('oneup_flysystem.archivist_filesystem');
+        $this->sqlConnection = $this->get('database_connection');
+        $this->authenticate($this->getAdminUser());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getConfiguration(): Configuration
+    {
+        return $this->catalog->useTechnicalCatalog();
     }
 
     private function getExpectedContent($jobExecutionId): array
@@ -79,6 +86,7 @@ SQL;
                     'label' => 'validation',
                     'job' => 'csv_product_import',
                     'status' => 'Completed',
+                    'status_code' => 'COMPLETED',
                     'summary' => [
                         'File encoding:' => 'UTF-8 OK',
                     ],
@@ -92,10 +100,11 @@ SQL;
                     'label' => 'import',
                     'job' => 'csv_product_import',
                     'status' => 'Completed',
+                    'status_code' => 'COMPLETED',
                     'summary' => [
-                        'read lines' => '38',
-                        'skipped product (no differences)' => '37',
-                        'Skipped' => '1',
+                        'read lines' => 38,
+                        'skipped product (no differences)' => 37,
+                        'skipped' => 1,
                     ],
                     'startedAt' => '10/13/2020 01:05 PM',
                     'endedAt' => '10/13/2020 01:06 PM',
@@ -107,6 +116,7 @@ SQL;
                     'label' => 'import_associations',
                     'job' => 'csv_product_import',
                     'status' => 'Completed',
+                    'status_code' => 'COMPLETED',
                     'summary' => [],
                     'startedAt' => '10/13/2020 01:06 PM',
                     'endedAt' => '10/13/2020 01:06 PM',
@@ -125,34 +135,50 @@ SQL;
                 'connector' => 'Akeneo CSV Connector',
                 'type' => 'import',
                 'configuration' =>
-                    [
-                        'filePath' => '/tmp/footwear_products.csv',
-                        'delimiter' => ';',
-                        'enclosure' => '"',
-                        'escape' => '\\',
-                        'withHeader' => true,
-                        'uploadAllowed' => true,
-                        'invalid_items_file_format' => 'csv',
-                        'user_to_notify' => null,
-                        'is_user_authenticated' => false,
-                        'decimalSeparator' => '.',
-                        'dateFormat' => 'yyyy-MM-dd',
-                        'enabled' => true,
-                        'categoriesColumn' => 'categories',
-                        'familyColumn' => 'family',
-                        'groupsColumn' => 'groups',
-                        'enabledComparison' => true,
-                        'realTimeVersioning' => true,
-                        'convertVariantToSimple' => false,
+                [
+                    'storage' => [
+                        'type' => 'local',
+                        'file_path' => '/tmp/footwear_products.csv',
                     ],
+                    'delimiter' => ';',
+                    'enclosure' => '"',
+                    'escape' => '\\',
+                    'withHeader' => true,
+                    'uploadAllowed' => true,
+                    'invalid_items_file_format' => 'csv',
+                    'users_to_notify' => [],
+                    'is_user_authenticated' => false,
+                    'decimalSeparator' => '.',
+                    'dateFormat' => 'yyyy-MM-dd',
+                    'enabled' => true,
+                    'categoriesColumn' => 'categories',
+                    'familyColumn' => 'family',
+                    'groupsColumn' => 'groups',
+                    'enabledComparison' => true,
+                    'realTimeVersioning' => true,
+                    'convertVariantToSimple' => false,
+                ],
+                'automation' => null,
+                'scheduled' => false,
             ],
             'tracking' => [
                 'error'   => false,
                 'warning' => false,
                 'status'  => 'COMPLETED',
                 'currentStep' => 3,
-                'totalSteps' => 3,
+                'totalSteps' => 4,
                 'steps' => [
+                    [
+                        'jobName' => 'csv_product_import',
+                        'stepName' => 'download_files',
+                        'status' => 'STARTING',
+                        'isTrackable' => false,
+                        'hasWarning' => false,
+                        'hasError' => false,
+                        'duration' => 0,
+                        'processedItems' => 0,
+                        'totalItems' => 0,
+                    ],
                     [
                         'jobName' => 'csv_product_import',
                         'stepName' => 'validation',
@@ -189,8 +215,9 @@ SQL;
                 ],
             ],
             'meta' => [
-                'logExists' => false,
+                'logExists' => true,
                 'archives' => [],
+                'generateZipArchive' => false,
                 'id' => (string)$jobExecutionId,
             ],
         ];

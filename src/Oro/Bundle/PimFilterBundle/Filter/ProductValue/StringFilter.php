@@ -85,7 +85,7 @@ class StringFilter extends OroStringFilter
     /**
      * {@inheritdoc}
      */
-    protected function parseData($data)
+    protected function parseData($data): false|array
     {
         if (!is_array($data) || !array_key_exists('value', $data) || !$data['value']) {
             return false;

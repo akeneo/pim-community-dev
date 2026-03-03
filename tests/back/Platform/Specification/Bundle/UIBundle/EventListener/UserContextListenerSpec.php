@@ -21,7 +21,7 @@ class UserContextListenerSpec extends ObjectBehavior
         RequestEvent $event
     ) {
         $tokenStorage->getToken()->willReturn(true);
-        $event->getRequestType()->willReturn(HttpKernel::MASTER_REQUEST);
+        $event->getRequestType()->willReturn(HttpKernel::MAIN_REQUEST);
 
         $userContext->getCurrentLocaleCode()->willReturn('de_DE');
         $userContext->getUserChannelCode()->willReturn('schmetterling');
@@ -34,7 +34,7 @@ class UserContextListenerSpec extends ObjectBehavior
         $this->getSubscribedEvents()->shouldReturn([KernelEvents::REQUEST => 'onKernelRequest']);
     }
 
-    function it_does_nothing_if_request_type_is_not_master_request($event, $listener, $catalogContext)
+    function it_does_nothing_if_request_type_is_not_main_request($event, $listener, $catalogContext)
     {
         $event->getRequestType()->willReturn('foo');
 

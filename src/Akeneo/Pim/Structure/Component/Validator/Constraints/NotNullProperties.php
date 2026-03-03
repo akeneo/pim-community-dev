@@ -22,7 +22,7 @@ class NotNullProperties extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }
@@ -30,7 +30,7 @@ class NotNullProperties extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function getDefaultOption()
+    public function getDefaultOption(): ?string
     {
         return 'properties';
     }
@@ -38,7 +38,7 @@ class NotNullProperties extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function getRequiredOptions()
+    public function getRequiredOptions(): array
     {
         return ['properties'];
     }
@@ -46,7 +46,7 @@ class NotNullProperties extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'pim_not_null_properties_validator';
     }

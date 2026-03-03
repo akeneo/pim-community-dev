@@ -29,6 +29,7 @@ final class AttributeTypes
     const REFERENCE_ENTITY_COLLECTION = 'akeneo_reference_entity_collection';
     const ASSET_COLLECTION = 'pim_catalog_asset_collection';
     const LEGACY_ASSET_COLLECTION = 'pim_assets_collection';
+    const TABLE = 'pim_catalog_table';
 
     const BACKEND_TYPE_BOOLEAN = 'boolean';
     const BACKEND_TYPE_COLLECTION = 'collections';
@@ -46,4 +47,5 @@ final class AttributeTypes
     const BACKEND_TYPE_REF_DATA_OPTIONS = 'reference_data_options';
     const BACKEND_TYPE_TEXTAREA = 'textarea';
     const BACKEND_TYPE_TEXT = 'text';
+    const BACKEND_TYPE_TABLE = 'table';
 }

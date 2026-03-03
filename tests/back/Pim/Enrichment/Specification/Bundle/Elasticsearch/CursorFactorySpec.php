@@ -2,19 +2,20 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\CursorFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\CursorFactory;
 
 class CursorFactorySpec extends ObjectBehavior
 {
     function let(
         Client $searchEngine,
-        CursorableRepositoryInterface $productRepository,
-        CursorableRepositoryInterface $productModelRepository
+        ProductRepositoryInterface $productRepository,
+        ProductModelRepositoryInterface $productModelRepository,
     ) {
         $this->beConstructedWith(
             $searchEngine,
@@ -33,7 +34,7 @@ class CursorFactorySpec extends ObjectBehavior
     function it_creates_a_cursor($searchEngine)
     {
         $searchEngine->search(
-            ['size' => 100, 'sort' => ['_id' => 'asc']]
+            ['size' => 100, 'sort' => ['id' => 'asc']]
         )->willReturn(
             [
                 'hits' => [

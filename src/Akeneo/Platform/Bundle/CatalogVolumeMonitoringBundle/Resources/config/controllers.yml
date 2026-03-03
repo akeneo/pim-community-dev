@@ -7,3 +7,4 @@ services:
         class: '%pim_volume_monitoring.controller.volume_monitoring.class%'
         arguments:
             - '@pim_volume_monitoring.volume.normalizer.volumes'
+            - '@oro_security.security_facade'

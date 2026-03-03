@@ -1,0 +1,17 @@
+services:
+    Akeneo\Pim\Enrichment\Product\Domain\PQB\ProductUuidQueryFetcher:
+        class: Akeneo\Pim\Enrichment\Product\Infrastructure\Query\Elasticsearch\ElasticsearchProductUuidQueryFetcher
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+            - 5000
+
+    Akeneo\Pim\Enrichment\Product\Domain\PQB\ProductQueryBuilderInterface:
+        class: Akeneo\Pim\Enrichment\Product\Infrastructure\Query\Elasticsearch\ProductQueryBuilderAdapter
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.filter.product_registry'
+            - '@pim_catalog.query.sorter.registry'
+            - '@pim_catalog.query.product_query_builder_resolver'
+            - '@feature_flags'
+            - '@pim_user.repository.user'
+            - '@?akeneo.pim.enrichment.category.get_viewable_category_codes'

@@ -1,0 +1,32 @@
+pim_measurements:
+  validation:
+    common:
+      code:
+        pattern: 'Это поле может содержать только буквы, цифры и знаки подчеркивания.'
+        limit_reached: 'Вы не можете создать группу единиц измерений "%measurement_family_code%", т. к. вы достигли предела кол-ва групп единиц измерений: %limit%'
+    measurement_family:
+      standard_unit_code:
+        is_required: 'Требуется стандартная единица.'
+        should_be_in_the_list_of_units: 'Код стандарта "%standard_unit_code%" не существует в списке единиц измерения "%measurement_family_code%".'
+        cannot_be_changed: 'Стандартный код семейства "%measurement_family_code%" невозможно изменить'
+        operation_should_be_multiply_by_one: 'Стандартный код семейства%measurement_family_code%" должен быть мультипликационной операцией'
+      should_contain_max_elements: 'Достигнут лимит семейства единиц измерений %limit%.'
+      code:
+        must_be_unique: 'Этот код семейства единиц измерений уже существует.'
+      convert:
+        value_should_be_a_number_in_a_string: 'Значение должно быть валидным'
+        should_contain_min_elements: 'Требуется как минимум одна операция по пересчету на единицу.'
+        should_contain_max_elements: 'Вы достигли лимита в %limit% операций по конвертации на единицу.'
+      measurement_family_units_is_locked_for_updates: 'Атрибут продукта связан с этой системой единиц. Вы можете редактировать только переведенные этикетки и символы.'
+      measurement_family_unit_operations_locked_for_updates: 'Атрибут продукта связан с этой системой единиц. Вы можете редактировать только переведенные этикетки и символы.'
+      units:
+        should_contain_min_elements: 'Требуется как минимум одна операция по пересчету на единицу.'
+        should_contain_max_elements: 'Вы достигли лимита в %limit% операций по конвертации на единицу.'
+        operation:
+          invalid_operator: 'Оператор {{ value }} неверен, пожалуйста, используйте {{ choices }}.'
+        should_contain_at_least_one_unit: 'В семействе единиц измерений должно быть как минимум %limit% единиц.'
+        should_not_contain_duplicates: 'Мы обнаружили несколько дублирующихся свойств в семействе единиц измерений. Семейство должно содержать только уникальные атрибуты.'
+        must_be_indexed_by_code: 'Индекс не соответствует коду единицы.'
+    unit:
+      code:
+        must_be_unique: 'Код единицы уже существует.'

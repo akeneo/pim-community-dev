@@ -2,11 +2,11 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
 use Akeneo\Pim\Enrichment\Component\Category\Query\AscendantCategoriesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
-use Akeneo\Pim\Enrichment\Component\Product\Completeness\MissingRequiredAttributesCalculator;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\MissingRequiredAttributesCalculatorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodesCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
@@ -32,70 +32,28 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     /** @var string[] */
-    protected $supportedFormat = ['internal_api'];
-
-    /** @var NormalizerInterface */
-    protected $normalizer;
-
-    /** @var NormalizerInterface */
-    protected $versionNormalizer;
-
-    /** @var VersionManager */
-    protected $versionManager;
-
-    /** @var ImageNormalizer */
-    protected $imageNormalizer;
-
-    /** @var LocaleRepositoryInterface */
-    protected $localeRepository;
-
-    /** @var StructureVersionProviderInterface */
-    protected $structureVersionProvider;
-
-    /** @var FormProviderInterface */
-    protected $formProvider;
-
-    /** @var AttributeConverterInterface */
-    protected $localizedConverter;
-
-    /** @var ConverterInterface */
-    protected $productValueConverter;
-
-    /** @var ProductCompletenessWithMissingAttributeCodesCollectionNormalizer */
-    protected $completenessCollectionNormalizer;
-
-    /** @var UserContext */
-    protected $userContext;
-
-    /** @var FillMissingValuesInterface */
-    protected $fillMissingProductValues;
-
-    /** @var EntityWithFamilyVariantAttributesProvider */
-    protected $attributesProvider;
-
-    /** @var VariantNavigationNormalizer */
-    protected $navigationNormalizer;
-
-    /** @var AscendantCategoriesInterface */
-    protected $ascendantCategoriesQuery;
-
-    /** @var NormalizerInterface */
-    private $parentAssociationsNormalizer;
-
-    /** @var MissingAssociationAdder */
-    private $missingAssociationAdder;
-
-    /** @var CatalogContext */
-    protected $catalogContext;
-
-    /** @var MissingRequiredAttributesNormalizerInterface */
-    private $missingRequiredAttributesNormalizer;
-
-    /** @var QuantifiedAssociationsNormalizer */
-    private $quantifiedAssociationsNormalizer;
-
-    /** @var MissingRequiredAttributesCalculator */
-    private $missingRequiredAttributesCalculator;
+    protected array $supportedFormat = ['internal_api'];
+    protected NormalizerInterface $normalizer;
+    protected NormalizerInterface $versionNormalizer;
+    protected VersionManager $versionManager;
+    protected ImageNormalizer $imageNormalizer;
+    protected LocaleRepositoryInterface $localeRepository;
+    protected StructureVersionProviderInterface $structureVersionProvider;
+    protected FormProviderInterface $formProvider;
+    protected AttributeConverterInterface $localizedConverter;
+    protected ConverterInterface $productValueConverter;
+    protected ProductCompletenessWithMissingAttributeCodesCollectionNormalizer $completenessCollectionNormalizer;
+    protected UserContext $userContext;
+    protected FillMissingValuesInterface $fillMissingProductValues;
+    protected EntityWithFamilyVariantAttributesProvider $attributesProvider;
+    protected VariantNavigationNormalizer $navigationNormalizer;
+    protected AscendantCategoriesInterface $ascendantCategoriesQuery;
+    private NormalizerInterface $parentAssociationsNormalizer;
+    private MissingAssociationAdder $missingAssociationAdder;
+    protected CatalogContext $catalogContext;
+    private MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer;
+    private QuantifiedAssociationsNormalizer $quantifiedAssociationsNormalizer;
+    private MissingRequiredAttributesCalculatorInterface $missingRequiredAttributesCalculator;
 
     public function __construct(
         NormalizerInterface $normalizer,
@@ -118,7 +76,7 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
         CatalogContext $catalogContext,
         MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer,
         QuantifiedAssociationsNormalizer $quantifiedAssociationsNormalizer,
-        MissingRequiredAttributesCalculator $missingRequiredAttributesCalculator
+        MissingRequiredAttributesCalculatorInterface $missingRequiredAttributesCalculator
     ) {
         $this->normalizer                       = $normalizer;
         $this->versionNormalizer                = $versionNormalizer;
@@ -178,23 +136,26 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
 
         $scopeCode = $context['channel'] ?? null;
         $normalizedProduct['parent_associations'] = $this->parentAssociationsNormalizer->normalize($product, $format, $context);
+        $normalizedProduct['quantified_associations'] = $this->formatQuantifiedAssociations($normalizedProduct['quantified_associations']);
+
         $completenesses = $this->getCompletenesses($product);
 
         $productImageScope = $context['catalogScope'] ?? $this->catalogContext->getScopeCode();
         $productImageLocale = $context['catalogLocale'] ?? $this->catalogContext->getLocaleCode();
 
         $normalizedProduct['meta'] = [
-            'form'              => $this->formProvider->getForm($product),
-            'id'                => $product->getId(),
-            'created'           => $created,
-            'updated'           => $updated,
-            'model_type'        => 'product',
+            'form' => $this->formProvider->getForm($product),
+            'id' => $product->getUuid()->toString(),
+            'uuid' => $product->getUuid()->toString(),
+            'created' => $created,
+            'updated' => $updated,
+            'model_type' => 'product',
             'structure_version' => $this->structureVersionProvider->getStructureVersion(),
-            'completenesses'    => $this->completenessCollectionNormalizer->normalize($completenesses),
+            'completenesses' => $this->completenessCollectionNormalizer->normalize($completenesses),
             'required_missing_attributes' => $this->missingRequiredAttributesNormalizer->normalize($completenesses),
-            'image'             => $this->normalizeImage($product->getImage(), $productImageScope, $productImageLocale),
-            'quantified_associations_for_this_level' => $this->quantifiedAssociationsNormalizer->normalizeWithoutParentsAssociations($product, 'standard', $context),
-            'parent_quantified_associations' => $this->quantifiedAssociationsNormalizer->normalizeOnlyParentsAssociations($product, 'standard', $context),
+            'image' => $this->normalizeImage($product->getImage(), $productImageScope, $productImageLocale),
+            'quantified_associations_for_this_level' => $this->formatQuantifiedAssociations($this->quantifiedAssociationsNormalizer->normalizeWithoutParentsAssociations($product, 'standard', $context)),
+            'parent_quantified_associations' => $this->formatQuantifiedAssociations($this->quantifiedAssociationsNormalizer->normalizeOnlyParentsAssociations($product, 'standard', $context)),
         ] + $this->getLabels($product, $scopeCode) + $this->getAssociationMeta($product);
 
         $normalizedProduct['meta']['ascendant_category_ids'] = $product->isVariant() ?
@@ -208,7 +169,7 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof ProductInterface && in_array($format, $this->supportedFormat);
     }
@@ -275,7 +236,7 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
         $completenessCollection = $this->missingRequiredAttributesCalculator->fromEntityWithFamily($product);
 
         if (null === $completenessCollection) {
-            $completenessCollection = new ProductCompletenessWithMissingAttributeCodesCollection($product->getId(), []);
+            $completenessCollection = new ProductCompletenessWithMissingAttributeCodesCollection($product->getUuid(), []);
         }
 
         return $completenessCollection;
@@ -338,5 +299,18 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
         }
 
         return $meta;
+    }
+
+    private function formatQuantifiedAssociations(array $quantifiedAssociations): array
+    {
+        return array_map(static function (array $quantifiedAssociation) {
+            $quantifiedAssociation['products'] = array_map(static fn (array $productLink) => array_filter(
+                $productLink,
+                fn (string $key): bool => in_array($key, ['uuid', 'quantity']),
+                ARRAY_FILTER_USE_KEY
+            ), $quantifiedAssociation['products']);
+
+            return $quantifiedAssociation;
+        }, $quantifiedAssociations);
     }
 }

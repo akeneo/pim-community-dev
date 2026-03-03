@@ -3,8 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\ErrorManagement\Command;
 
-use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\HourlyErrorCount;
-use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Persistence\Repository\ErrorCountRepository;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Persistence\Repository\ErrorCountRepositoryInterface;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
@@ -13,12 +12,8 @@ use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Persistence\Repository
  */
 class UpdateConnectionErrorCountHandler
 {
-    /** @var ErrorCountRepository */
-    private $errorCountRepository;
-
-    public function __construct(ErrorCountRepository $errorCountRepository)
+    public function __construct(private ErrorCountRepositoryInterface $errorCountRepository)
     {
-        $this->errorCountRepository = $errorCountRepository;
     }
 
     public function handle(UpdateConnectionErrorCountCommand $command): void

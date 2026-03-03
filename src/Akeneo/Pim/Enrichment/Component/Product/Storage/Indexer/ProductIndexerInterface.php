@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
@@ -14,28 +15,15 @@ use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 interface ProductIndexerInterface
 {
     /**
-     * @param string $productIdentifier
-     * @param array  $options
-     *
-     * @throws ObjectNotFoundException if the identifier is unknown
-     */
-    public function indexFromProductIdentifier(string $productIdentifier, array $options = []): void;
-
-    /**
-     * @param string[] $productIdentifiers
-     * @param array    $options
+     * @param UuidInterface[] $productUuids
+     * @param array $options
      *
      * @throws ObjectNotFoundException if one of the identifier is unknown
      */
-    public function indexFromProductIdentifiers(array $productIdentifiers, array $options = []): void;
+    public function indexFromProductUuids(array $productUuids, array $options = []): void;
 
     /**
-     * @param int   $productId
+     * @param UuidInterface[] $productUuids
      */
-    public function removeFromProductId(int $productId): void;
-
-    /**
-     * @param int[] $productIds
-     */
-    public function removeFromProductIds(array $productIds): void;
+    public function removeFromProductUuids(array $productUuids): void;
 }

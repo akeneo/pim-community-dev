@@ -6,151 +6,48 @@ namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\Webhook;
 
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
-use Akeneo\Connectivity\Connection\Infrastructure\MessageHandler\BusinessEventHandler;
+use Akeneo\Connectivity\Connection\Infrastructure\Webhook\MessageHandler\BusinessEventHandler;
+use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\ProductLoader;
+use Akeneo\Connectivity\Connection\Tests\EndToEnd\GuzzleJsonHistoryContainer;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
-use GuzzleHttp\Handler\MockHandler;
-use GuzzleHttp\HandlerStack;
-use GuzzleHttp\Middleware;
+use Doctrine\DBAL\Connection as DbalConnection;
+use GuzzleHttp\Psr7\Message;
 use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\Assert;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
- * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 class ConsumeProductEventEndToEnd extends ApiTestCase
 {
-    private ProductInterface $referenceProduct;
+    private ProductInterface $tshirtProduct;
+    private ProductInterface $pantProduct;
     private Author $referenceAuthor;
+    private DbalConnection $dbalConnection;
+    private ProductLoader $productLoader;
+    private GuzzleJsonHistoryContainer $historyContainer;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->referenceProduct = $this->loadReferenceProduct();
-        $this->referenceAuthor = Author::fromNameAndType('julia', Author::TYPE_UI);
-        $connection = $this->loadConnection();
-
-        $this->get('akeneo_connectivity.connection.fixtures.webhook_loader')->initWebhook($connection->code());
-    }
-
-    public function test_it_sends_a_product_created_webhook_event()
-    {
-        $container = [];
-        /** @var HandlerStack $handlerStack */
-        $handlerStack = $this->get('akeneo_connectivity.connection.webhook.guzzle_handler');
-        $handlerStack->setHandler(new MockHandler([new Response(200)]));
-        $history = Middleware::history($container);
-        $handlerStack->push($history);
-
-        $message = new BulkEvent(
-            [
-                new ProductCreated(
-                    $this->referenceAuthor,
-                    ['identifier' => $this->referenceProduct->getIdentifier()],
-                    1607094167,
-                    '0d931d13-8eae-4f4a-bf37-33d3a932b8c9'
-                ),
-            ]
-        );
-
-        /** @var $businessEventHandler BusinessEventHandler */
-        $businessEventHandler = $this->get(BusinessEventHandler::class);
-        $businessEventHandler->__invoke($message);
-
-        Assert::assertCount(1, $container);
-
-        /** @var Request $request */
-        $request = $container[0]['request'];
-        $requestContent = json_decode($request->getBody()->getContents(), true)['events'][0];
-        $requestContent = $this->cleanRequestContent($requestContent);
-
-        $this->assertEquals($this->expectedProductCreatedPayload(), $requestContent);
-    }
-
-    public function test_it_sends_a_product_updated_webhook_event()
-    {
-        $container = [];
-        /** @var HandlerStack $handlerStack */
-        $handlerStack = $this->get('akeneo_connectivity.connection.webhook.guzzle_handler');
-        $handlerStack->setHandler(new MockHandler([new Response(200)]));
-        $history = Middleware::history($container);
-        $handlerStack->push($history);
-
-        $message = new BulkEvent(
-            [
-                new ProductUpdated(
-                    $this->referenceAuthor,
-                    ['identifier' => $this->referenceProduct->getIdentifier()],
-                    1607094167,
-                    '0d931d13-8eae-4f4a-bf37-33d3a932b8c9'
-                ),
-            ]
-        );
-
-        /** @var $businessEventHandler BusinessEventHandler */
-        $businessEventHandler = $this->get(BusinessEventHandler::class);
-        $businessEventHandler->__invoke($message);
-
-        Assert::assertCount(1, $container);
-
-        /** @var Request $request */
-        $request = $container[0]['request'];
-        $requestContent = json_decode($request->getBody()->getContents(), true)['events'][0];
-        $requestContent = $this->cleanRequestContent($requestContent);
-
-        $this->assertEquals($this->expectedProductUpdatedPayload(), $requestContent);
-    }
-
-    public function test_it_sends_a_product_removed_webhook_event()
-    {
-        $container = [];
-        /** @var HandlerStack $handlerStack */
-        $handlerStack = $this->get('akeneo_connectivity.connection.webhook.guzzle_handler');
-        $handlerStack->setHandler(new MockHandler([new Response(200)]));
-        $history = Middleware::history($container);
-        $handlerStack->push($history);
-
-        $message = new BulkEvent(
-            [
-                new ProductRemoved(
-                    $this->referenceAuthor,
-                    [
-                        'identifier' => $this->referenceProduct->getIdentifier(),
-                        'category_codes' => $this->referenceProduct->getCategoryCodes(),
-                    ],
-                    1607094167,
-                    '0d931d13-8eae-4f4a-bf37-33d3a932b8c9'
-                ),
-            ]
-        );
-
-        /** @var $businessEventHandler BusinessEventHandler */
-        $businessEventHandler = $this->get(BusinessEventHandler::class);
-        $businessEventHandler->__invoke($message);
-
-        $this->assertCount(1, $container);
-
-        /** @var Request $request */
-        $request = $container[0]['request'];
-        $requestContent = json_decode($request->getBody()->getContents(), true)['events'][0];
-
-        $this->assertEquals($this->expectedProductRemovedPayload(), $requestContent);
-    }
-
-    private function loadReferenceProduct(): ProductInterface
-    {
         $this->get('akeneo_connectivity.connection.fixtures.enrichment.category')
-            ->create(['code' => 'category']);
+            ->create(['code' => 'sea']);
+        $this->get('akeneo_connectivity.connection.fixtures.enrichment.category')
+            ->create(['code' => 'fiesta']);
         $this->get('akeneo_connectivity.connection.fixtures.structure.attribute')
             ->create(['code' => 'boolean_attribute', 'type' => 'pim_catalog_boolean']);
         $this->get('akeneo_connectivity.connection.fixtures.structure.attribute')
@@ -158,22 +55,135 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
         $this->get('akeneo_connectivity.connection.fixtures.structure.attribute')
             ->create(['code' => 'another_text_attribute', 'type' => 'pim_catalog_text']);
         $this->get('akeneo_connectivity.connection.fixtures.structure.family')
-            ->create(['code' => 'family', 'attributes' => ['boolean_attribute', 'text_attribute']]);
+            ->create(['code' => 'tshirt', 'attributes' => ['boolean_attribute', 'text_attribute']]);
+        $this->get('akeneo_connectivity.connection.fixtures.structure.family')
+            ->create(['code' => 'pant', 'attributes' => ['boolean_attribute', 'text_attribute']]);
 
-        return $this->get('akeneo_connectivity.connection.fixtures.enrichment.product')->create(
-            'product',
+        $this->referenceAuthor = Author::fromNameAndType('julia', Author::TYPE_UI);
+        $this->dbalConnection = static::getContainer()->get('database_connection');
+        $this->productLoader = static::getContainer()->get(
+            'akeneo_connectivity.connection.fixtures.enrichment.product'
+        );
+        $this->historyContainer = $this->get(GuzzleJsonHistoryContainer::class);
+
+        $this->tshirtProduct = $this->productLoader->create('blue-t-shirt', [
+            new SetFamily('tshirt'),
+            new SetEnabled(true),
+            new SetCategories(['sea']),
+            new SetTextValue('another_text_attribute', null, null, 'text attribute')
+        ]);
+        $this->pantProduct = $this->productLoader->create('red-pant', [
+            new SetFamily('pant'),
+            new SetEnabled(true),
+            new SetCategories(['fiesta']),
+            new SetTextValue('another_text_attribute', null, null, 'text attribute')
+        ]);
+
+        $connection = $this->loadConnection();
+
+        $this->get('akeneo_connectivity.connection.fixtures.webhook_loader')->initWebhook($connection->code());
+    }
+
+    public function test_it_sends_a_product_created_webhook_event(): void
+    {
+        $message = new BulkEvent(
             [
-                'family' => 'family',
-                'enabled' => true,
-                'categories' => ['category'],
-                'groups' => [],
-                'values' => [
-                    'another_text_attribute' => [
-                        ['data' => 'text attribute', 'locale' => null, 'scope' => null],
+                new ProductCreated(
+                    $this->referenceAuthor,
+                    [
+                        'identifier' => $this->tshirtProduct->getIdentifier(),
+                        'uuid' => $this->tshirtProduct->getUuid(),
                     ],
-                ],
+                    1607094167,
+                    '0d931d13-8eae-4f4a-bf37-33d3a932b8c9'
+                ),
+                new ProductCreated(
+                    $this->referenceAuthor,
+                    [
+                        'identifier' => $this->pantProduct->getIdentifier(),
+                        'uuid' => $this->pantProduct->getUuid(),
+                    ],
+                    1607094167,
+                    '0d932313-8eae-4f4a-bf37-33d3a932b8c9'
+                ),
             ]
         );
+
+        /** @var $businessEventHandler BusinessEventHandler */
+        $businessEventHandler = $this->get(BusinessEventHandler::class);
+        $businessEventHandler->__invoke($message);
+
+        Assert::assertCount(1, $this->historyContainer);
+
+        /** @var Request $requestObject */
+        $request = $this->historyContainer[0]['request'];
+        $requestObject = Message::parseRequest($request);
+        $requestContent = \json_decode($requestObject->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR)['events'][0];
+        $requestContent = $this->cleanRequestContent($requestContent);
+
+        Assert::assertEquals(2, (int)$this->getEventCount('ecommerce'));
+        $this->assertEquals($this->expectedProductCreatedPayload($this->tshirtProduct), $requestContent);
+    }
+
+    public function test_it_sends_a_product_updated_webhook_event(): void
+    {
+        $message = new BulkEvent(
+            [
+                new ProductUpdated(
+                    $this->referenceAuthor,
+                    [
+                        'identifier' => $this->tshirtProduct->getIdentifier(),
+                        'uuid' => $this->tshirtProduct->getUuid(),
+                    ],
+                    1607094167,
+                    '0d931d13-8eae-4f4a-bf37-33d3a932b8c9'
+                ),
+            ]
+        );
+
+        /** @var $businessEventHandler BusinessEventHandler */
+        $businessEventHandler = $this->get(BusinessEventHandler::class);
+        $businessEventHandler->__invoke($message);
+
+        Assert::assertCount(1, $this->historyContainer);
+
+        $request = $this->historyContainer[0]['request'];
+        $requestObject = Message::parseRequest($request);
+        $requestContent = \json_decode($requestObject->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR)['events'][0];
+        $requestContent = $this->cleanRequestContent($requestContent);
+
+        Assert::assertEquals(1, (int)$this->getEventCount('ecommerce'));
+        $this->assertEquals($this->expectedProductUpdatedPayload($this->tshirtProduct), $requestContent);
+    }
+
+    public function test_it_sends_a_product_removed_webhook_event(): void
+    {
+        $message = new BulkEvent(
+            [
+                new ProductRemoved(
+                    $this->referenceAuthor,
+                    [
+                        'identifier' => $this->tshirtProduct->getIdentifier(),
+                        'uuid' => $this->tshirtProduct->getUuid(),
+                        'category_codes' => $this->tshirtProduct->getCategoryCodes(),
+                    ],
+                    1607094167,
+                    '0d931d13-8eae-4f4a-bf37-33d3a932b8c9'
+                ),
+            ]
+        );
+
+        /** @var $businessEventHandler BusinessEventHandler */
+        $businessEventHandler = $this->get(BusinessEventHandler::class);
+        $businessEventHandler->__invoke($message);
+
+        $this->assertCount(1, $this->historyContainer);
+
+        $request = Message::parseRequest($this->historyContainer[0]['request']);
+        $requestContent = \json_decode($request->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR)['events'][0];
+
+        Assert::assertEquals(1, (int)$this->getEventCount('ecommerce'));
+        $this->assertEquals($this->expectedProductRemovedPayload($this->tshirtProduct), $requestContent);
     }
 
     private function loadConnection(): ConnectionWithCredentials
@@ -183,7 +193,7 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
                 'ecommerce',
                 'Ecommerce',
                 FlowType::DATA_DESTINATION,
-                false
+                true
             );
         $this->get('akeneo_connectivity.connection.fixtures.connection_loader')->update(
             $connection->code(),
@@ -191,7 +201,7 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
             $connection->flowType(),
             $connection->image(),
             $connection->userRoleId(),
-            (string) $this->get('pim_user.repository.group')->findOneByIdentifier('IT support')->getId(),
+            (string)$this->get('pim_user.repository.group')->findOneByIdentifier('IT support')->getId(),
             $connection->auditable(),
         );
 
@@ -210,63 +220,72 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
         return $requestContent;
     }
 
-    private function expectedProductCreatedPayload(): array
+    private function expectedProductCreatedPayload(ProductInterface $productCreated): array
     {
         return [
             'action' => 'product.created',
             'event_id' => '0d931d13-8eae-4f4a-bf37-33d3a932b8c9',
-            'event_datetime' => '2020-12-04T16:02:47+01:00',
+            'event_datetime' => '2020-12-04T15:02:47+00:00',
             'author' => 'julia',
             'author_type' => 'ui',
             'pim_source' => 'http://localhost:8080',
-            'data' => $this->expectedData(),
+            'data' => $this->expectedData($productCreated),
         ];
     }
 
-    private function expectedProductUpdatedPayload(): array
+    private function expectedProductUpdatedPayload(ProductInterface $productUpdated): array
     {
         return [
             'action' => 'product.updated',
             'event_id' => '0d931d13-8eae-4f4a-bf37-33d3a932b8c9',
-            'event_datetime' => '2020-12-04T16:02:47+01:00',
+            'event_datetime' => '2020-12-04T15:02:47+00:00',
             'author' => 'julia',
             'author_type' => 'ui',
             'pim_source' => 'http://localhost:8080',
-            'data' => $this->expectedData(),
+            'data' => $this->expectedData($productUpdated),
         ];
     }
 
-    private function expectedProductRemovedPayload(): array
+    private function expectedProductRemovedPayload(ProductInterface $product): array
     {
         return [
             'action' => 'product.removed',
             'event_id' => '0d931d13-8eae-4f4a-bf37-33d3a932b8c9',
-            'event_datetime' => '2020-12-04T16:02:47+01:00',
+            'event_datetime' => '2020-12-04T15:02:47+00:00',
             'author' => 'julia',
             'author_type' => 'ui',
             'pim_source' => 'http://localhost:8080',
             'data' => [
                 'resource' => [
-                    'identifier' => 'product',
+                    'identifier' => $product->getIdentifier(),
+                    'uuid' => $product->getUuid(),
                 ],
             ],
         ];
     }
 
-    private function expectedData(): array
+    private function expectedData(ProductInterface $product): array
     {
         return [
             'resource' => [
-                'identifier' => 'product',
+                'uuid' => $product->getUuid()->toString(),
+                'identifier' => $product->getIdentifier(),
                 'enabled' => true,
-                'family' => 'family',
+                'family' => $product->getFamily()->getCode(),
                 'groups' => [],
                 'parent' => null,
-                'categories' => ['category'],
+                'categories' => $product->getCategoryCodes(),
                 'values' => [
                     'another_text_attribute' => [
                         [
                             'data' => 'text attribute',
+                            'locale' => null,
+                            'scope' => null,
+                        ],
+                    ],
+                    'sku' => [
+                        [
+                            'data' => $product->getIdentifier(),
                             'locale' => null,
                             'scope' => null,
                         ],
@@ -299,6 +318,20 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
                 'quantified_associations' => [],
             ],
         ];
+    }
+
+    private function getEventCount(string $connectionCode)
+    {
+        $sql = <<<SQL
+        SELECT event_count
+        FROM akeneo_connectivity_connection_audit_product
+        WHERE connection_code = :connection_code
+        AND event_type = 'product_read'
+        SQL;
+
+        return $this->dbalConnection->fetchOne($sql, [
+            'connection_code' => $connectionCode,
+        ]);
     }
 
     protected function getConfiguration(): Configuration

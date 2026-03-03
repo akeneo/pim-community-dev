@@ -1,0 +1,24 @@
+services:
+    Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Command\PurgeEventsApiLogsCommand:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence\PurgeEventsApiSuccessLogsQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence\PurgeEventsApiErrorLogsQuery'
+            - '@logger'
+        tags:
+            - { name: 'console.command' }
+            - { name: 'akeneo.command.authenticated_as_admin_user' }
+
+    Akeneo\Connectivity\Connection\Infrastructure\Webhook\Command\SendBusinessEventToWebhooks:
+        arguments:
+            - '@Akeneo\Platform\Component\EventQueue\BulkEventNormalizer'
+            - '@Akeneo\Connectivity\Connection\Application\Webhook\Command\SendBusinessEventToWebhooksHandler'
+            - '@event_dispatcher'
+            - '@logger'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\GetDelayUntilNextRequest'
+            - '%webhook_requests_limit%'
+            - '@Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\ReachRequestLimitLogger'
+            - '@Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiDebugLogger'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence\ElasticsearchEventsApiDebugRepository'
+        tags:
+            - { name: console.command }
+            - { name: 'akeneo.command.authenticated_as_admin_user' }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Webhook\Exception;
 
 use Akeneo\Platform\Component\Webhook\EventBuildingExceptionInterface;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -12,8 +13,8 @@ use Akeneo\Platform\Component\Webhook\EventBuildingExceptionInterface;
  */
 class ProductNotFoundException extends \RuntimeException implements EventBuildingExceptionInterface
 {
-    public function __construct(string $identifier)
+    public function __construct(UuidInterface $uuid)
     {
-        parent::__construct(sprintf('Product "%s" not found', $identifier));
+        parent::__construct(sprintf('Product "%s" not found', $uuid->toString()));
     }
 }

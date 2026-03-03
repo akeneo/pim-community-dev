@@ -88,7 +88,8 @@ final class UserValidation implements Context
         if (!$isFoundMessage) {
             throw new \Exception(
                 sprintf(
-                    'Expected error message "%s" was not found, %s given', $errorMessage,
+                    'Expected error message "%s" was not found, %s given',
+                    $errorMessage,
                     implode(',', $messages)
                 )
             );

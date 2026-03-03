@@ -1,0 +1,113 @@
+import {useState} from 'react';
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
+import {action} from '@storybook/addon-actions';
+import {IconButton} from '../IconButton/IconButton';
+import {SpaceContainer} from '../../storybook';
+import {RefreshIcon} from '../../icons';
+import {Preview} from './Preview.tsx';
+
+<Meta
+  title="Components/Preview"
+  component={Preview}
+  subcomponents={{
+    'Preview.Highlight': Preview.Highlight,
+    'Preview.Row': Preview.Row,
+  }}
+  args={{title: 'Preview', children: 'Preview text'}}
+/>
+
+# Preview
+
+## Usage
+
+Preview component is used to put emphasis on some content.
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return <Preview {...args} />;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## With highlighted content
+
+Preview component exposes a `<Preview.Highlight>` subcomponent which can be used to highlight some content.
+
+<Canvas>
+  <Story name="Highlight">
+    {args => {
+      return (
+        <Preview {...args}>
+          <Preview.Highlight>Name</Preview.Highlight> x <Preview.Highlight>Description</Preview.Highlight>
+        </Preview>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## With rows
+
+Preview component exposes a `<Preview.Row>` subcomponent which can be used to list content.
+
+The `<Preview.Row>` subcomponent has an `action` prop that accepts an `IconButton` component to add row behaviour.
+
+<Canvas>
+  <Story name="Row">
+    {args => {
+      return (
+        <SpaceContainer height={200}>
+          <Preview {...args}>
+            <Preview.Row>First row</Preview.Row>
+            <Preview.Row>Second row</Preview.Row>
+            <Preview.Row
+              action={<IconButton icon={<RefreshIcon />} title="Reload third" onClick={action('Reload third row')} />}
+            >
+              Third row
+            </Preview.Row>
+            <Preview.Row
+              action={<IconButton icon={<RefreshIcon />} title="Reload long" onClick={action('Reload long row')} />}
+            >
+              Logoden biniou degemer mat an penn ar bed werenn, baradoz hed c’haod moged gar galleg pakañ goañv merenn,
+              hevelep Gwaien gegin gleb warnañ, Remengol morzhol.
+            </Preview.Row>
+            <Preview.Row>Fifth row</Preview.Row>
+          </Preview>
+        </SpaceContainer>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Collapsable
+
+<Canvas>
+  <Story name="Collapsable">
+    {args => {
+      const [isOpen, setOpen] = useState(false);
+      return (
+        <SpaceContainer height={200}>
+          <Preview {...args} isOpen={isOpen} onCollapse={setOpen} collapseButtonLabel="Collapse">
+            <Preview.Row>First row</Preview.Row>
+            <Preview.Row>Second row</Preview.Row>
+            <Preview.Row
+              action={<IconButton icon={<RefreshIcon />} title="Reload third" onClick={action('Reload third row')} />}
+            >
+              Third row
+            </Preview.Row>
+            <Preview.Row>Fourth row</Preview.Row>
+            <Preview.Row
+              action={<IconButton icon={<RefreshIcon />} title="Reload long" onClick={action('Reload long row')} />}
+            >
+              Another one
+            </Preview.Row>
+          </Preview>
+        </SpaceContainer>
+      );
+    }}
+  </Story>
+</Canvas>

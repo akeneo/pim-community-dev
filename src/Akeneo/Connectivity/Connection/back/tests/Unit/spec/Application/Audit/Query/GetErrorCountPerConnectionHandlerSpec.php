@@ -7,9 +7,9 @@ namespace spec\Akeneo\Connectivity\Connection\Application\Audit\Query;
 use Akeneo\Connectivity\Connection\Application\Audit\Query\GetErrorCountPerConnectionHandler;
 use Akeneo\Connectivity\Connection\Application\Audit\Query\GetErrorCountPerConnectionQuery;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\ErrorCount;
-use Akeneo\Connectivity\Connection\Domain\ErrorManagement\ErrorTypes;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\ErrorCountPerConnection;
-use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectErrorCountPerConnectionQuery;
+use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\SelectErrorCountPerConnectionQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\ErrorTypes;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -19,7 +19,7 @@ use PhpSpec\ObjectBehavior;
  */
 class GetErrorCountPerConnectionHandlerSpec extends ObjectBehavior
 {
-    public function let(SelectErrorCountPerConnectionQuery $selectErrorCountPerConnectionQuery): void
+    public function let(SelectErrorCountPerConnectionQueryInterface $selectErrorCountPerConnectionQuery): void
     {
         $this->beConstructedWith($selectErrorCountPerConnectionQuery);
     }

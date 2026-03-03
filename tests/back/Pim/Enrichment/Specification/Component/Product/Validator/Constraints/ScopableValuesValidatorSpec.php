@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints;
 
-use Akeneo\Channel\Component\Model\Channel;
-use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\Channel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ScopableValues;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ScopableValuesValidator;
 use Akeneo\Pim\Enrichment\Component\Product\Value\DateValue;
+use Akeneo\Pim\Enrichment\Component\Product\Value\IdentifierValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
@@ -47,7 +47,7 @@ class ScopableValuesValidatorSpec extends ObjectBehavior
     ) {
         $channelRepository->findOneByIdentifier('ecommerce')->willReturn(new Channel());
         $collection = new WriteValueCollection([
-            ScalarValue::value('sku', 'my_identifier'),
+            IdentifierValue::value('sku', true, 'my_identifier'),
             ScalarValue::scopableValue('description', 'An awesome description', 'ecommerce'),
             DateValue::value('release_date', new \DateTime()),
         ]);
@@ -66,7 +66,7 @@ class ScopableValuesValidatorSpec extends ObjectBehavior
 
         $constraint = new ScopableValues();
         $collection = new WriteValueCollection([
-            ScalarValue::value('sku', 'my_identifier'),
+            IdentifierValue::value('sku', true, 'my_identifier'),
             ScalarValue::scopableValue('description', 'An awesome description', 'unknown'),
             DateValue::value('release_date', new \DateTime()),
         ]);
@@ -76,6 +76,7 @@ class ScopableValuesValidatorSpec extends ObjectBehavior
             '%channel%' => 'unknown'
         ])->willReturn($violationBuilder);
         $violationBuilder->atPath('[description-unknown-<all_locales>]')->willReturn($violationBuilder);
+        $violationBuilder->setCode(Argument::type('string'))->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate($collection, $constraint);

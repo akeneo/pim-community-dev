@@ -1,0 +1,12 @@
+services:
+    Akeneo\UserManagement\Application\Command\UpdateUserCommand\UpdateUserCommandHandler:
+        arguments:
+          - '@pim_user.updater.user'
+          - '@validator'
+          - '@doctrine.orm.entity_manager'
+          - '@pim_user.saver.user'
+          - '@Akeneo\UserManagement\Domain\PasswordCheckerInterface'
+          - '@event_dispatcher'
+          - '@session'
+          - '@pim_user.repository.user'
+          - '@security.token_storage'

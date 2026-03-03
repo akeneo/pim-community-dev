@@ -13,9 +13,15 @@ interface GetAttributes
      * It returns an array of attributes indexed by the code.
      * If an attribute is not found, it returns a NULL value for this key.
      *
+     * @param string[] $attributeCodes
      * @return Attribute[]
      */
     public function forCodes(array $attributeCodes): array;
 
     public function forCode(string $attributeCode): ?Attribute;
+
+    /**
+     * @return Attribute[]
+     */
+    public function forType(string $attributeType): array;
 }

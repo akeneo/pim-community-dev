@@ -16,12 +16,12 @@ define([
     },
 
     run: function () {
-      $.get(this.action.getLinkWithParameters())
+      $.post(this.action.getLink(), this.action.getActionParameters())
         .done(function (data) {
           const title = __('pim_datagrid.mass_action.quick_export.success');
           const link = React.createElement(
             Link,
-            {key: data.job_id, href: `#${Routing.generate('pim_enrich_job_tracker_show', {id: data.job_id})}`},
+            {key: data.job_id, href: `#${Routing.generate('akeneo_job_process_tracker_details', {id: data.job_id})}`},
             __('pim_datagrid.mass_action.quick_export.flash.message')
           );
 

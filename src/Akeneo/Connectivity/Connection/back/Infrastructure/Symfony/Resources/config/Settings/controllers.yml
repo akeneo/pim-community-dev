@@ -1,0 +1,5 @@
+services:
+    Akeneo\Connectivity\Connection\Infrastructure\Settings\Controller\Internal\IsConnectionsNumberLimitReachedAction:
+        public: true
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\IsConnectionsNumberLimitReachedQuery'

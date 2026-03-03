@@ -1,0 +1,24 @@
+akeneo.category:
+    validation:
+        upsert:
+            category_code:
+                wrong_format: Category code may contain only letters, numbers and underscores
+                line_feed: Category code may not contain line-feed characters
+            duplicated_value_user_intents: The value for attribute {{ attributeCode }} is being updated multiple times
+            value_user_intents_on_deactivated_template: There is no activated template linked to the category attributes you want to edit
+            value:
+                text_too_long: The value cannot be longer than {{ limit }} characters
+                textarea_too_long: The value cannot be longer than {{ limit }} characters
+                richtext_too_long: The value cannot be longer than {{ limit }} characters
+        template:
+            code:
+                not_blank: This value should not be blank.
+                unique: 'Template code: {{ templateCode }} already exists.'
+                wrong_format: This field can only contain letters, numbers and underscores.
+        attribute:
+            limit:
+                title: You cannot add more than 50 attributes
+                message: Category templates are limited to 50 attributes per template.
+            code:
+                wrong_format: Attribute code may contain only lowercase letters, numbers and underscores
+                unique_in_the_template: Attribute code {{ attributeCode }} must be unique in the template

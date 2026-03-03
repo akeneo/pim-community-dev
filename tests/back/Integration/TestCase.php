@@ -4,12 +4,17 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Integration;
 
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\FileStorage;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\FilePersistedFeatureFlags;
 use Akeneo\Test\IntegrationTestsBundle\Configuration\CatalogInterface;
+use Akeneo\Test\IntegrationTestsBundle\Helper\ExperimentalTransactionHelper;
 use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Model\UserInterface;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\HttpKernel\HttpKernelBrowser;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
@@ -35,10 +40,20 @@ abstract class TestCase extends KernelTestCase
      */
     protected function setUp(): void
     {
-        $this->testKernel = static::bootKernel(['debug' => false]);
+        $this->testKernel = static::bootKernel(['debug' => (bool)($_SERVER['APP_DEBUG'] ?? false)]);
+
+        /** @var FilePersistedFeatureFlags $featureFlags*/
+        $featureFlags = $this->get('feature_flags');
+        $featureFlags->deleteFile();
+
         $this->catalog = $this->get('akeneo_integration_tests.catalogs');
 
+        self::getContainer()->get(ExperimentalTransactionHelper::class)->beginTransactions();
+
         if (null !== $this->getConfiguration()) {
+            foreach ($this->getConfiguration()->getFeatureFlagsBeforeInstall() as $featureFlag) {
+                $featureFlags->enable($featureFlag);
+            }
             $fixturesLoader = $this->get('akeneo_integration_tests.loader.fixtures_loader');
             $fixturesLoader->load($this->getConfiguration());
         }
@@ -48,6 +63,9 @@ abstract class TestCase extends KernelTestCase
         $authenticator->createSystemUser();
 
         $this->get('pim_connector.doctrine.cache_clearer')->clear();
+
+        // Some messages can be in the queue after a failing test. To prevent error we remove then before each tests.
+        $this->get('akeneo_integration_tests.launcher.job_launcher')->flushJobQueue();
     }
 
     /**
@@ -57,7 +75,7 @@ abstract class TestCase extends KernelTestCase
      */
     protected function get(string $service)
     {
-        return self::$container->get($service);
+        return static::getContainer()->get($service);
     }
 
     /**
@@ -67,7 +85,7 @@ abstract class TestCase extends KernelTestCase
      */
     protected function getParameter(string $parameter)
     {
-        return self::$container->getParameter($parameter);
+        return static::getContainer()->getParameter($parameter);
     }
 
     /**
@@ -77,7 +95,7 @@ abstract class TestCase extends KernelTestCase
      */
     protected function hasParameter(string $parameter)
     {
-        return self::$container->hasParameter($parameter);
+        return static::getContainer()->hasParameter($parameter);
     }
 
     /**
@@ -85,6 +103,8 @@ abstract class TestCase extends KernelTestCase
      */
     protected function tearDown(): void
     {
+        self::getContainer()->get(ExperimentalTransactionHelper::class)->closeTransactions();
+
         $connectionCloser = $this->get('akeneo_integration_tests.doctrine.connection.connection_closer');
         $connectionCloser->closeConnections();
 
@@ -172,5 +192,61 @@ abstract class TestCase extends KernelTestCase
         $this->get('pim_user.saver.user')->save($user);
 
         return $user;
+    }
+
+    protected function getProductUuid(string $productIdentifier): ?UuidInterface
+    {
+        $productUuid = $this->get('database_connection')->executeQuery(<<<SQL
+SELECT BIN_TO_UUID(product_uuid) AS uuid
+FROM pim_catalog_product_unique_data
+INNER JOIN pim_catalog_attribute ON pim_catalog_product_unique_data.attribute_id = pim_catalog_attribute.id
+WHERE raw_data = :identifier
+AND pim_catalog_attribute.main_identifier = 1
+SQL,
+            ['identifier' => $productIdentifier]
+        )->fetchOne();
+
+        return $productUuid ? Uuid::fromString($productUuid) : null;
+    }
+
+    protected function getProductIdentifier(UuidInterface $uuid): ?string
+    {
+        return $this->get('database_connection')->executeQuery(<<<SQL
+WITH main_identifier AS (
+    SELECT id
+    FROM pim_catalog_attribute
+    WHERE main_identifier = 1
+    LIMIT 1
+)
+SELECT raw_data AS identifier
+FROM pim_catalog_product
+LEFT JOIN pim_catalog_product_unique_data pcpud
+    ON pcpud.product_uuid = pim_catalog_product.uuid 
+    AND pcpud.attribute_id = (SELECT id FROM main_identifier)
+WHERE uuid = :uuid
+SQL,
+            ['uuid' => $uuid->getBytes()]
+        )->fetchOne();
+    }
+
+    protected function getUserId(string $username): int
+    {
+        $query = <<<SQL
+            SELECT id FROM oro_user WHERE username = :username
+        SQL;
+        $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
+        $id = $stmt->fetchOne();
+        if (null === $id) {
+            throw new \InvalidArgumentException(\sprintf('No user exists with username "%s"', $username));
+        }
+
+        return \intval($id);
+    }
+
+    protected function loginAs(string $username, ?HttpKernelBrowser $client = null): int
+    {
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn($username, $client);
+
+        return $this->getUserId($username);
     }
 }

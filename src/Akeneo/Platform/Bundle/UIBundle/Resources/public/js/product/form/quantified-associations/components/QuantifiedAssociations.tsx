@@ -1,69 +1,51 @@
-import React, {useState, useEffect, useCallback} from 'react';
-import styled from 'styled-components';
-import {useTranslate, useNotify, NotificationLevel} from '@akeneo-pim-community/legacy-bridge';
-import {BrokenLinkIcon, AssociationTypesIllustration, Helper, Button} from 'akeneo-design-system';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
-  SearchBar,
-  NoDataSection,
-  NoDataTitle,
-  ValidationError,
-  getErrorsForPath,
+  AssociationTypesIllustration,
+  BrokenLinkIcon,
+  Button,
+  Helper,
+  Placeholder,
+  Search,
+  Table,
+  useAutoFocus,
+} from 'akeneo-design-system';
+import {
   formatParameters,
+  getErrorsForPath,
+  NotificationLevel,
+  useNotify,
+  useSecurity,
+  useTranslate,
+  ValidationError,
 } from '@akeneo-pim-community/shared';
 import {
-  Row,
-  filterOnLabelOrIdentifier,
   addProductToRows,
-  getAssociationIdentifiers,
-  updateRowInCollection,
-  quantifiedAssociationToRowCollection,
-  rowCollectionToQuantifiedAssociation,
   addRowsToCollection,
-  removeRowFromCollection,
-  QuantifiedAssociation,
+  filterOnLabelOrIdentifier,
+  getAssociationIdentifiers,
   getProductsType,
-  newAndUpdatedQuantifiedAssociationsCount,
+  getQuantifiedLinkIdentifier,
   hasUpdatedQuantifiedAssociations,
   isQuantifiedAssociationEmpty,
+  newAndUpdatedQuantifiedAssociationsCount,
   ProductsType,
+  QuantifiedAssociation,
+  quantifiedAssociationToRowCollection,
+  removeRowFromCollection,
+  Row,
+  rowCollectionToQuantifiedAssociation,
+  updateRowInCollection,
 } from '../models';
 import {QuantifiedAssociationRow} from '../components';
 import {useProducts} from '../hooks';
 
 const MAX_LIMIT = 100;
 
-const HeaderCell = styled.th`
-  text-align: left;
-  font-weight: normal;
-  position: sticky;
-  top: 44px;
-  height: 44px;
-  box-shadow: 0 1px 0 ${({theme}) => theme.color.grey120};
-  background-color: ${({theme}) => theme.color.white};
-  padding-right: 20px;
-  white-space: nowrap;
-
-  :first-child {
-    padding-left: 20px;
-  }
-`;
-
-const TableContainer = styled.table`
-  width: 100%;
-  color: ${({theme}) => theme.color.grey140};
-  border-collapse: collapse;
-`;
-
-const Buttons = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  padding: 10px 0;
-`;
-
 type QuantifiedAssociationsProps = {
   quantifiedAssociations: QuantifiedAssociation;
   parentQuantifiedAssociations: QuantifiedAssociation;
   errors: ValidationError[];
+  isUserOwner?: boolean;
   isCompact?: boolean;
   onAssociationsChange: (quantifiedAssociations: QuantifiedAssociation) => void;
   onOpenPicker: () => Promise<Row[]>;
@@ -74,17 +56,19 @@ const QuantifiedAssociations = ({
   parentQuantifiedAssociations,
   errors,
   isCompact = false,
+  isUserOwner = true,
   onOpenPicker,
   onAssociationsChange,
 }: QuantifiedAssociationsProps) => {
   const translate = useTranslate();
+  const {isGranted} = useSecurity();
   const notify = useNotify();
   const [rowCollection, setRowCollection] = useState<Row[]>(
     quantifiedAssociationToRowCollection(quantifiedAssociations, errors)
   );
   const [searchValue, setSearchValue] = useState('');
   const products = useProducts(getAssociationIdentifiers(rowCollection));
-  const collectionWithProducts = addProductToRows(rowCollection, null === products ? [] : products);
+  const collectionWithProducts = addProductToRows(rowCollection, products);
   const newAndUpdatedCount = newAndUpdatedQuantifiedAssociationsCount(
     parentQuantifiedAssociations,
     rowCollectionToQuantifiedAssociation(rowCollection)
@@ -94,6 +78,10 @@ const QuantifiedAssociations = ({
     rowCollectionToQuantifiedAssociation(rowCollection)
   );
   const filteredCollectionWithProducts = collectionWithProducts.filter(filterOnLabelOrIdentifier(searchValue));
+  const inputRef = useRef<HTMLInputElement>(null);
+  const canAddAssociation = isGranted('pim_enrich_associations_edit') && isUserOwner;
+
+  useAutoFocus(inputRef);
 
   useEffect(() => {
     formatParameters(getErrorsForPath(errors, '')).forEach(error =>
@@ -150,60 +138,79 @@ const QuantifiedAssociations = ({
           {translate('pim_enrich.entity.product.module.associations.variant_updated')}
         </Helper>
       )}
-      <SearchBar
+      <Search
         placeholder={translate('pim_enrich.entity.product.module.associations.search.placeholder')}
-        count={filteredCollectionWithProducts.length || 0}
         searchValue={searchValue}
         onSearchChange={setSearchValue}
-      />
-      {!isCompact && (
-        <Buttons>
-          <Button level="secondary" onClick={handleAdd}>
-            {translate('pim_enrich.entity.product.module.associations.add_associations')}
-          </Button>
-        </Buttons>
-      )}
+        inputRef={inputRef}
+      >
+        <Search.ResultCount>
+          {translate(
+            'pim_common.result_count',
+            {itemsCount: filteredCollectionWithProducts.length || 0},
+            filteredCollectionWithProducts.length || 0
+          )}
+        </Search.ResultCount>
+        {canAddAssociation && (
+          <>
+            <Search.Separator />
+            <Button level="secondary" onClick={handleAdd}>
+              {translate('pim_enrich.entity.product.module.associations.add_associations')}
+            </Button>
+          </>
+        )}
+      </Search>
       {null === products ? null : 0 === filteredCollectionWithProducts.length ? (
-        <NoDataSection>
-          <AssociationTypesIllustration size={256} />
-          <NoDataTitle>
-            {translate(
-              '' === searchValue
-                ? 'pim_enrich.entity.product.module.associations.no_data'
-                : 'pim_enrich.entity.product.module.associations.no_result'
-            )}
-          </NoDataTitle>
-        </NoDataSection>
+        <Placeholder
+          illustration={<AssociationTypesIllustration />}
+          size="large"
+          title={translate(
+            '' === searchValue ? 'pim_enrich.entity.product.module.associations.no_data' : 'pim_common.no_search_result'
+          )}
+        />
       ) : (
-        <TableContainer>
-          <thead>
-            <tr>
-              <HeaderCell>{translate('pim_common.image')}</HeaderCell>
-              <HeaderCell>{translate('pim_common.label')}</HeaderCell>
-              <HeaderCell>{translate('pim_common.identifier')}</HeaderCell>
-              {!isCompact && <HeaderCell>{translate('pim_common.completeness')}</HeaderCell>}
-              {!isCompact && (
-                <HeaderCell>{translate('pim_enrich.entity.product.module.associations.variant_products')}</HeaderCell>
-              )}
-              <HeaderCell>{translate('pim_enrich.entity.product.module.associations.quantified.quantity')}</HeaderCell>
-              <HeaderCell />
-            </tr>
-          </thead>
-          <tbody>
+        <Table>
+          <Table.Header>
+            <Table.HeaderCell>{translate('pim_common.image')}</Table.HeaderCell>
+            <Table.HeaderCell>{translate('pim_common.label')}</Table.HeaderCell>
+            <Table.HeaderCell>{translate('pim_common.identifier')}</Table.HeaderCell>
+            {!isCompact && <Table.HeaderCell>{translate('pim_common.completeness')}</Table.HeaderCell>}
+            {!isCompact && (
+              <Table.HeaderCell>
+                {translate('pim_enrich.entity.product.module.associations.variant_products')}
+              </Table.HeaderCell>
+            )}
+            <Table.HeaderCell>
+              {translate('pim_enrich.entity.product.module.associations.quantified.quantity')}
+            </Table.HeaderCell>
+            <Table.HeaderCell>{translate('pim_common.actions')}</Table.HeaderCell>
+          </Table.Header>
+          <Table.Body>
             {filteredCollectionWithProducts.map((row, index) => (
               <QuantifiedAssociationRow
                 key={index}
                 row={row}
+                isUserOwner={isUserOwner}
                 isCompact={isCompact}
-                parentQuantifiedLink={parentQuantifiedAssociations[getProductsType(row.productType)].find(
-                  quantifiedAssociation => quantifiedAssociation.identifier === row.quantifiedLink.identifier
-                )}
+                parentQuantifiedLink={
+                  getProductsType(row.productType) === ProductsType.Products
+                    ? parentQuantifiedAssociations.products.find(
+                        quantifiedLink =>
+                          getQuantifiedLinkIdentifier(quantifiedLink) ===
+                          getQuantifiedLinkIdentifier(row.quantifiedLink)
+                      )
+                    : parentQuantifiedAssociations.product_models.find(
+                        quantifiedLink =>
+                          getQuantifiedLinkIdentifier(quantifiedLink) ===
+                          getQuantifiedLinkIdentifier(row.quantifiedLink)
+                      )
+                }
                 onRemove={handleRemove}
                 onChange={handleChange}
               />
             ))}
-          </tbody>
-        </TableContainer>
+          </Table.Body>
+        </Table>
       )}
     </>
   );

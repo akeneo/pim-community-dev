@@ -210,7 +210,7 @@ class FiltersColumn extends BaseView {
     for (let groupName in groupedFilters) {
       const group: GridFilter[] = groupedFilters[groupName];
       const groupElement = this.renderFilterGroup(group, groupName);
-      list.appendChild($(groupElement).get(0));
+      list.appendChild($(groupElement).get(0) as any);
     }
 
     filterColumn.append(list);
@@ -224,7 +224,7 @@ class FiltersColumn extends BaseView {
   loadFilterList(gridCollection: any, gridElement: JQuery<HTMLElement>): void {
     const metadata = gridElement.data('metadata') || {};
 
-    this.defaultFilters = metadata.filters;
+    this.defaultFilters = 'filters' in metadata ? Object.values(metadata.filters) : [];
     this.gridCollection = gridCollection;
     this.showLoading();
 

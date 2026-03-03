@@ -4,9 +4,20 @@ extensions:
         config:
             template: pim/template/common/drop-zone
 
+    pim-attribute-price-form-type-specific-params:
+        module: pim/common/simple-view
+        parent: pim-attribute-form-price
+        targetZone: content
+        position: 100
+        config:
+            template: pim/template/form/tab/section
+            templateParams:
+                sectionTitle: pim_enrich.entity.attribute.module.edit.type_specific
+                dropZone: content
+
     pim-attribute-price-form-properties-common-usable-as-grid-filter:
         module: pim/form/common/fields/boolean
-        parent: pim-attribute-form-price
+        parent: pim-attribute-price-form-type-specific-params
         targetZone: content
         position: 70
         config:
@@ -15,7 +26,7 @@ extensions:
 
     pim-attribute-edit-form-price-is-locale-specific:
         module: pim/attribute-edit-form/properties/is-locale-specific
-        parent: pim-attribute-form-price
+        parent: pim-attribute-price-form-type-specific-params
         targetZone: content
         position: 80
         config:
@@ -24,7 +35,7 @@ extensions:
 
     pim-attribute-edit-form-price-available-locales:
         module: pim/attribute-edit-form/properties/available-locales
-        parent: pim-attribute-form-price
+        parent: pim-attribute-price-form-type-specific-params
         targetZone: content
         position: 90
         config:

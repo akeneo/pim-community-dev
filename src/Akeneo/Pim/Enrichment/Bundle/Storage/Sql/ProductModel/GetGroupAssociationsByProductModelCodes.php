@@ -41,6 +41,7 @@ final class GetGroupAssociationsByProductModelCodes
 
         $query = <<<SQL
 SELECT
+    /*+ SET_VAR(sort_buffer_size = 1000000) */
     product_model_code,
     JSON_OBJECTAGG(association_type_code, group_associations_by_type) as associations
 FROM (
@@ -58,7 +59,7 @@ FROM (
                   LEFT JOIN pim_catalog_group associated_group ON product_model_to_group.group_id = associated_group.id
                   WHERE product_model.code IN (:productModelCodes)
                   AND association_type.is_quantified = false
-                  UNION ALL
+                  UNION DISTINCT 
                   SELECT child_product_model.code as product_model_code,
                          association_type.code as association_type_code,
                          associated_group.code as associated_group_code
@@ -80,7 +81,7 @@ SQL;
             $query,
             ['productModelCodes' => $productModelCodes],
             ['productModelCodes' => Connection::PARAM_STR_ARRAY]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         $results = [];
 

@@ -1,0 +1,259 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
+import {TableInput} from './TableInput.tsx';
+import {Dropdown} from '../../Dropdown/Dropdown.tsx';
+import {useFakeTableInput} from '../../../storybook/hooks/useFakeTableInput';
+import {Image} from '../../Image/Image';
+import {Badge} from '../../Badge/Badge';
+import {IconButton} from '../../IconButton/IconButton';
+import {LinkIcon} from '../../../icons';
+
+<Meta
+  title="Components/Inputs/Table input"
+  component={TableInput}
+  argTypes={{
+    readOnly: {control: {type: 'boolean'}},
+  }}
+  args={{children: []}}
+/>
+
+# TableInput
+
+## Usage
+
+Table input allows the user to input content in a table.
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      const {getValue, setValue, searchValue, setSearchValue, match, lengthUnits} = useFakeTableInput(6);
+      return <TableInput {...args}>
+        <TableInput.Header>
+          <TableInput.HeaderCell>Ingredient</TableInput.HeaderCell>
+          <TableInput.HeaderCell>Nutrition Score</TableInput.HeaderCell>
+          <TableInput.HeaderCell>For 1 part</TableInput.HeaderCell>
+          <TableInput.HeaderCell>Quantity</TableInput.HeaderCell>
+          <TableInput.HeaderCell>Is allergenic</TableInput.HeaderCell>
+          <TableInput.HeaderCell>Length</TableInput.HeaderCell>
+          <TableInput.HeaderCell>Origin</TableInput.HeaderCell>
+        </TableInput.Header>
+        <TableInput.Body>
+          {['Sugar', 'Salt', 'Pepper', 'Eggs', 'Flour', 'Yeast'].map((row, index) => <TableInput.Row key={row}>
+            <TableInput.Cell><TableInput.CellContent rowTitle={true}>{row}</TableInput.CellContent></TableInput.Cell>
+            <TableInput.Cell>
+              <TableInput.Select
+                clearLabel="Remove"
+                openDropdownLabel="Open"
+                value={{'1': 'A', '2': 'B', '3': 'C'}[getValue(index, 'nutritionScore')]}
+                onClear={() => setValue(index, 'nutritionScore', null)}
+                searchPlaceholder={'Search on Nutrition'}
+                searchValue={searchValue}
+                onSearchChange={setSearchValue}
+                searchTitle={'Search'}
+              >
+                {match('A') && <Dropdown.Item onClick={() => setValue(index, 'nutritionScore', '1')}>A</Dropdown.Item>}
+                {match('B') && <Dropdown.Item onClick={() => setValue(index, 'nutritionScore', '2')}>B</Dropdown.Item>}
+                {match('C') && <Dropdown.Item onClick={() => setValue(index, 'nutritionScore', '3')}>C</Dropdown.Item>}
+              </TableInput.Select>
+            </TableInput.Cell>
+            <TableInput.Cell><TableInput.Text value={getValue(index, 'part')} onChange={(value) => setValue(index, 'part', value)}/></TableInput.Cell>
+            <TableInput.Cell><TableInput.Number value={getValue(index, 'quantity')} onChange={(value) => setValue(index, 'quantity', value)}/></TableInput.Cell>
+            <TableInput.Cell><TableInput.Boolean yesLabel="Yes" noLabel="No" value={getValue(index, 'is_allergenic')} onChange={(value) => setValue(index, 'is_allergenic', value)}/></TableInput.Cell>
+            <TableInput.Cell>
+              <TableInput.Measurement
+                amount={getValue(index, 'length').amount}
+                unit={getValue(index, 'length').unit}
+                units={lengthUnits}
+                onChange={(amount, unit) => setValue(index, 'length', {unit, amount})}
+              />
+            </TableInput.Cell>
+            <TableInput.Cell>
+              <TableInput.Select
+                clearLabel="Remove"
+                openDropdownLabel="Open"
+                value={{'french': 'French (France)', 'german': 'German (Germany)', 'english': 'English (United States)'}[getValue(index, 'origin')]}
+                onClear={() => setValue(index, 'origin', null)}
+                searchPlaceholder={'Search on Origin'}
+                searchValue={searchValue}
+                onSearchChange={setSearchValue}
+                searchTitle={'Search'}
+              >
+                {match('French (France)') && <Dropdown.Item onClick={() => setValue(index, 'origin', 'french')}>
+                  <Image src="https://picsum.photos/seed/akeneo/200/140" alt="The alt" />
+                  <Dropdown.Surtitle label="France">
+                    French (France)
+                  </Dropdown.Surtitle>
+                  <Badge>100%</Badge>
+                  <IconButton icon={<LinkIcon/>} ghost="borderless" level="tertiary"/>
+                </Dropdown.Item>
+                }
+                {match('German (Germany)') && <Dropdown.Item onClick={() => setValue(index, 'origin', 'german')}>
+                  <Image src="https://picsum.photos/seed/akenep/200/140" alt="The alt" />
+                  <Dropdown.Surtitle label="Germany">
+                    German (Germany)
+                  </Dropdown.Surtitle>
+                  <Badge>100%</Badge>
+                  <IconButton icon={<LinkIcon/>} ghost="borderless" level="tertiary"/>
+                </Dropdown.Item>
+                }
+                {match('English (United States)') && <Dropdown.Item onClick={() => setValue(index, 'origin', 'english')}>
+                  <Image src="https://picsum.photos/seed/akener/200/140" alt="The alt" />
+                  <Dropdown.Surtitle label="English">
+                    English (United States)
+                  </Dropdown.Surtitle>
+                  <Badge>100%</Badge>
+                  <IconButton icon={<LinkIcon/>} ghost="borderless" level="tertiary"/>
+                </Dropdown.Item>
+                }
+              </TableInput.Select>
+            </TableInput.Cell>
+          </TableInput.Row>
+        )}
+        </TableInput.Body>
+      </TableInput>;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Highlight cells
+
+<Canvas>
+  <Story name="Highlight cells">
+    {args => {
+      const linesCount = 7;
+      return (
+        <TableInput {...args}>
+          <TableInput.Header>
+            <TableInput.HeaderCell>Title cell</TableInput.HeaderCell>
+            <TableInput.HeaderCell>Empty cell</TableInput.HeaderCell>
+            <TableInput.HeaderCell>Select cell</TableInput.HeaderCell>
+            <TableInput.HeaderCell>Text cell</TableInput.HeaderCell>
+            <TableInput.HeaderCell>Number cell</TableInput.HeaderCell>
+            <TableInput.HeaderCell>Boolean cell</TableInput.HeaderCell>
+            <TableInput.HeaderCell>Measurement cell</TableInput.HeaderCell>
+          </TableInput.Header>
+          <TableInput.Body>
+            {[...Array(linesCount).keys()].map((_,r) => {
+              return <TableInput.Row key={r}>
+                <TableInput.Cell><TableInput.CellContent rowTitle={true} highlighted={r === 0} inError={r === 1}>Value</TableInput.CellContent></TableInput.Cell>
+                <TableInput.Cell><TableInput.CellContent highlighted={r === 1} inError={r === 2}>Value</TableInput.CellContent></TableInput.Cell>
+                <TableInput.Cell><TableInput.Select onSearchChange={() => {}} value={'Select value'} highlighted={r === 2} inError={r === 3}/></TableInput.Cell>
+                <TableInput.Cell><TableInput.Text value={'Text value'} highlighted={r === 3} inError={r === 4}/></TableInput.Cell>
+                <TableInput.Cell><TableInput.Number value={42} highlighted={r === 4} inError={r === 5}/></TableInput.Cell>
+                <TableInput.Cell><TableInput.Boolean value={true} yesLabel={"Yes"} noLabel={"No"} highlighted={r === 5} inError={r === 6}/></TableInput.Cell>
+                <TableInput.Cell><TableInput.Measurement amount={42} unit={'METER'} units={[{value: 'METER', symbol: 'm', label: 'Meter'}]} highlighted={r === 6} inError={r === 0}/></TableInput.Cell>
+              </TableInput.Row>
+            })}
+          </TableInput.Body>
+        </TableInput>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Readonly
+
+<Canvas>
+  <Story name="Readonly">
+    {args => {
+      const linesCount = 5;
+      return (
+        <TableInput {...args} readOnly={true}>
+          <TableInput.Header>
+            <TableInput.HeaderCell>Title cell</TableInput.HeaderCell>
+            <TableInput.HeaderCell>Select cell</TableInput.HeaderCell>
+            <TableInput.HeaderCell>Text cell</TableInput.HeaderCell>
+            <TableInput.HeaderCell>Number cell</TableInput.HeaderCell>
+            <TableInput.HeaderCell>Boolean cell</TableInput.HeaderCell>
+          </TableInput.Header>
+          <TableInput.Body>
+            {[...Array(linesCount).keys()].map((_,r) => {
+              return <TableInput.Row key={r}>
+                <TableInput.Cell><TableInput.CellContent rowTitle={true}>Value</TableInput.CellContent></TableInput.Cell>
+                <TableInput.Cell><TableInput.Select onSearchChange={() => {}} value={'Cell with a select value having a big text'}/></TableInput.Cell>
+                <TableInput.Cell><TableInput.Text value={'Cell with a text value having a big text'}/></TableInput.Cell>
+                <TableInput.Cell><TableInput.Number value={Math.pow(4212345967, r)}/></TableInput.Cell>
+                <TableInput.Cell><TableInput.Boolean value={true} yesLabel={"Yes"} noLabel={"No"}/></TableInput.Cell>
+              </TableInput.Row>
+            })}
+          </TableInput.Body>
+        </TableInput>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Draggable
+
+<Canvas>
+  <Story name="Draggable">
+    {args => {
+      const columnCount = 10;
+      const rows = [0, 1, 2, 3, 4];
+      const [orderedRows, setOrderedRows] = React.useState(rows);
+      return (
+        <TableInput {...args} isDragAndDroppable={true} onReorder={newIndices => {
+          setOrderedRows(rows => newIndices.map(index => rows[index]));
+        }}>
+          <TableInput.Header>
+            {[...Array(columnCount).keys()].map((_, i) => {
+              return <TableInput.HeaderCell key={i}>Column label</TableInput.HeaderCell>
+            })}
+          </TableInput.Header>
+          <TableInput.Body>
+            {orderedRows.map((row,r) => {
+              return <TableInput.Row key={r}>
+                {[...Array(columnCount).keys()].map((_, i) => {
+                  return i === 0 ? <TableInput.Cell key={i}><TableInput.CellContent rowTitle={true}>Row {row + 1}</TableInput.CellContent></TableInput.Cell> :
+                    <TableInput.Cell key={i}>
+                      <TableInput.Text value={'A value'}></TableInput.Text>
+                    </TableInput.Cell>
+                })}
+              </TableInput.Row>
+            })}
+          </TableInput.Body>
+        </TableInput>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Highlighted rows
+
+<Canvas>
+  <Story name="Highlighted rows">
+    {args => {
+      const columnCount = 10;
+      const linesCount = 6;
+      const [highlighted, setHighlighted] = React.useState([true, false, false, true, false, false]);
+      return (
+        <TableInput {...args}>
+          <TableInput.Header>
+            {[...Array(columnCount).keys()].map((_, i) => {
+              return <TableInput.HeaderCell key={i}>Column label</TableInput.HeaderCell>
+            })}
+          </TableInput.Header>
+          <TableInput.Body>
+            {[...Array(linesCount).keys()].map((_,r) => {
+              return <TableInput.Row key={r} highlighted={highlighted[r]}>
+                <TableInput.Cell><TableInput.CellContent rowTitle={true}>Value</TableInput.CellContent></TableInput.Cell>
+                {[...Array(columnCount - 1).keys()].map((_, i) => {
+                  return <TableInput.Cell key={i} onClick={() => {
+                    highlighted[r] = !highlighted[r];
+                    setHighlighted([...highlighted]);
+                  }}>
+                    <TableInput.Text value={'Value'} onChange={() => {}} />
+                  </TableInput.Cell>
+                })}
+              </TableInput.Row>
+            })
+            }
+          </TableInput.Body>
+        </TableInput>
+      );
+    }}
+  </Story>
+</Canvas>

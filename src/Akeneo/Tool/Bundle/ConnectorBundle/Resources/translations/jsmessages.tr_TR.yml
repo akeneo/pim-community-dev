@@ -1,0 +1,145 @@
+#Job labels
+batch_jobs:
+  default_steps:
+    validation: Dosya validasyonu
+    import_associations: İlişkilendirmeyi içe aktar
+    import_root_product_model: Ana ürün modeli içe aktar
+    import_sub_product_model: Alt ürün modeli içe aktar
+    compute_data_related_to_family_root_product_models: Kök ürün modellerinin verisini hesapla
+    compute_data_related_to_family_sub_product_models: Yan ürün modellerinin verisini hesapla
+    compute_data_related_to_family_products: Ürün verilerini hesapla
+    compute_family_variant_structure_changes: Ailenin varyant yapısı değişikliklerini hesapla
+    compute_completeness_of_products_family: Ürün ailesinin bütünlüğünü hesapla
+  csv_product_export:
+    label: Ürünleri CSV olarak dışa aktar
+    export.label: Ürünleri dışa aktar
+  csv_product_model_export:
+    label: Ürün modelini CSV olarak dışa aktar
+    export.label: Ürün modelini dışa aktar
+  csv_category_export:
+    label: Kategorileri CSV olarak dışa aktar
+    export.label: Kategorileri dışa aktar
+  csv_attribute_export:
+    label: Özellikleri CSV olarak dışa aktar
+    export.label: Özellikleri dışa aktar
+  csv_attribute_option_export:
+    label: Özellik seçeneklerini CSV olarak dışa aktar
+    export.label: Özellik seçeneklerini dışa aktar
+  csv_association_type_export:
+    label: CSV'de ilişki türü dışa aktarıldı
+    export.label: İlişki türünü dışa aktar
+  csv_group_export:
+    label: Grupları CSV olarak dışa aktar
+    export.label: Grupları dışa aktar
+  csv_family_export:
+    label: Aileyi CSV olarak dışa aktar
+    export.label: Aileyi dışa aktar
+  csv_family_variant_export:
+    label: Aile biçimini CSV olarak dışa aktar
+    export.label: Aile biçimi dışa aktar
+  csv_product_import:
+    label: Ürünleri CSV olarak içe aktar
+    import.label: Ürünleri içe aktar
+  csv_product_model_import:
+    label: Ürün modelini CSV olarak içe aktar
+    import_product_model_descendants.label: Ürün modeli nesillerini hesapla
+  csv_category_import:
+    label: Kategorileri CSV olarak içe aktar
+    import.label: Kategorileri içe aktar
+  csv_attribute_import:
+    label: Özellikleri CSV olarak içe aktar
+    import.label: Özellikleri içe aktar
+  csv_attribute_option_import:
+    label: Özellik seçeneklerini CSV olarak içe aktar
+    import.label: Özellik seçeneklerini içe aktar
+  csv_association_type_import:
+    label: CSV'de ilişki türünü içe aktar
+    import.label: İlişki türünü içe aktar
+  csv_family_import:
+    label: Aileyi CSV olarak içe aktar
+    import.label: Aileyi içe aktar
+    compute_data_related_to_family_variants.label: Ürün verilerini hesaplama
+  csv_family_variant_import:
+    label: Aile biçimini CSV olarak içe aktar
+    import.label: Aile biçimi içe aktar
+  csv_group_import:
+    label: Grupları CSV olarak içe aktar
+    import.label: Grupları içe aktar
+  csv_attribute_group_export:
+    label: CSV'de grup özelliklerini dışa aktar
+    export.label: Özellik gruplarını dışa aktar
+  csv_group_type_export:
+    label: CSV de grup tipini dışa aktar
+    export.label: Grup türlerini dışa aktar
+  csv_attribute_group_import:
+    label: CSv de özellik grubunu içe aktar
+    import.label: Grup özelliğini içe aktar
+  csv_group_type_import:
+    label: CSV'de grup türü içe aktarma
+    import.label: Grup türünü içe aktar
+  xlsx_category_import:
+    label: XLSX'de kategoriyi içe aktar
+    import.label: Kategorileri içe aktar
+  xlsx_association_type_import:
+    label: XLSX'de ilişkilendirme türünü içe aktar 
+    import.label: İlişki türünü içe aktar
+  xlsx_attribute_import:
+    label: XLSX'de özelliği içe aktar
+    import.label: Özellikleri içe aktar
+  xlsx_attribute_option_import:
+    label: XLSX'de özellik seçeneğini içe aktar
+    import.label: Özellik seçeneklerini içe aktar
+  xlsx_family_import:
+    label: XLSX'de sınıfı içe aktar
+    import.label: Aileyi içe aktar
+  xlsx_family_variant_import:
+    label: Aile biçimini XLSX olarak içe aktar
+    import.label: Aile biçimini içe aktar
+  xlsx_product_export:
+    label: Ürünü XLSX olarak dışa aktar
+    export.label: Ürünleri dışa aktar
+  xlsx_product_model_export:
+    label: Ürün modelini XLSX olarak dışa aktar
+    export.label: Ürün modelini dışa aktarma
+  xlsx_product_import:
+    label: Ürünü XLSX olarak içe aktar
+    import.label: Ürünleri içe aktar
+  xlsx_product_model_import:
+    label: Ürün modelini XLSX olarak içe aktar
+    import_product_model_descendants.label: Ürün modeli nesillerini hesapla
+  xlsx_group_export:
+    label: Grubu XLSX olarak dışa aktar
+    export.label: Grupları dışa aktar
+  xlsx_group_import:
+    label: Grubu XLSX olarak içe aktar
+    import.label: Grupları içe aktar
+  xlsx_family_export:
+    label: XLSX'de sınıfı dışa aktar
+    export.label: Aileyi dışa aktar
+  xlsx_family_variant_export:
+    label: Aile birimini XLSX olarak dışa aktarma
+    export.label: Aile biçimi dışa aktarma
+  xlsx_category_export:
+    label: XLSX'de kategoriyi dışa aktar
+    export.label: Kategorileri dışa aktar
+  xlsx_attribute_export:
+    label: XLSX'de özelliği dışa aktar
+    export.label: XLSX'de özelliği dışa aktar
+  xlsx_attribute_option_export:
+    label: XLSX'de özellik seçeneğini dışa aktar
+    export.label: XLSX'de özellik seçeneğini dışa aktar
+  xlsx_association_type_export:
+    label: XLSX'de ilişkilendirme türünü dışa aktar
+    export.label: XLSX de ilişki türünü dışa aktar
+  xlsx_attribute_group_export:
+    label: XLSX'de özellik grubunu dışa aktar
+    export.label: Özellik gruplarını dışa aktar
+  xlsx_group_type_export:
+    label: XLSX de grup türünü dışa aktar
+    export.label: Grup türünü dışa aktar
+  xlsx_attribute_group_import:
+    label: XLSX özellik grubunu içe aktar
+    import.label: Özellik grubu içe aktar
+  xlsx_group_type_import:
+    label: XLSX de grup türünü içe aktar
+    import.label: Grup türünü içe aktar

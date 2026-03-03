@@ -47,19 +47,35 @@ pim_ui.system_config:
     loading_message.title: Latausviestit
 other_actions: Muut toiminnot
 pim_common:
+  association_types: Assosiaatiotyypit
   cancel: Peruuta
-  save: Tallenna
-  delete: Poista
-  update: Päivitä
-  view: Näytä
-  edit: Muokkaa
-  created: Luotu
-  updated: Päivitetty
+  categories: Kategoriat
+  code: Koodi
   create: Luo
-  permissions: Käyttöoikeudet
-  properties: Ominaisuudet
+  created: Luotu
+  delete: Poista
+  edit: Muokkaa
+  enabled: Otettu käyttöön
+  family_variant: Varianttiperhe
+  family: Perhe
+  groups: Ryhmät
+  label: Nimike
   name: Nimi
+  no: "Ei"
+  parent: Ylätaso
+  permissions: Käyttöoikeudet
+  product_models: Tuotemallit
+  products: Tuotteet
+  properties: Ominaisuudet
+  quality_score: Laatupisteytys
+  quantity: Määrä
   remove: Poista
+  save: Tallenna
+  unit: Yksikkö
+  update: Päivitä
+  updated: Päivitetty
+  view: Näytä
+  yes: "Kyllä"
 pim_enrich:
   #ACLs
   acl:
@@ -85,21 +101,13 @@ pim_enrich:
       comment: Kommentoi tuotteita
       download: Lataa tuote PDF:nä
       history: Näytä tuotehistoria
+      convert_variant_to_simple: Muunna variantti yksittäituotteeksi
     product_model:
       create: Luo tuotemalli
       edit_attributes: Muokkaa tuotemallin attribuutteja
       categories_view: Tarkastele tuotemallin kategorioita
       history: Näytä tuotemallin muutoshistoria
-      remove: Poista tuotemalli
-    category:
-      list: Listaa kategoriat
-      create: Luo kategoria
-      edit: Muokkaa kategoriaa
-      remove: Poista kategoria
-      move: Siirrä kategoriaa
-      children: Katso kategorian alikategorioita
-      products: Katso kategorian tuotteet
-      history: Katso kategorian historia
+      remove: Poista tuotemalli (mukaan lukien variantit)
     channel:
       index: Listaa kanavat
       create: Luo kanava
@@ -109,7 +117,7 @@ pim_enrich:
     family:
       index: Listaa perheet
       create: Luo perhe
-      edit_properties: Muokkaa perheen attribuutteja
+      edit_properties: Muokkaa perheen ominaisuuksia
       edit_attributes: Muokkaa perheen attribuutteja
       edit_variants: Muokkaa varianttiperhettä
       remove: Poista perhe
@@ -141,7 +149,7 @@ pim_enrich:
     group_type:
       index: Listaa ryhmätyypit
       create: Luo ryhmätyyppi
-      edit: Editoi ryhmätyyppiä
+      edit: Muokkaa ryhmätyyppiä
       remove: Poista ryhmätyyppi
     association_type:
       index: Listaa assosiaatiotyypit
@@ -153,8 +161,8 @@ pim_enrich:
       remove: Poista tuotteen assosiaatiot
     job_tracker:
       index: Näytä prosessien seuraaja
-    api_connection:
-      manage: Hallinnoi API -yhteyksiä
+      view_all_jobs: Näytä kaikki työt prosessiselaimessa
+      stop_job: Pysäytä käynnissä oleva työ
   acl_group:
     association_type: Assosiaatiotyypit
     attribute: Attribuutit
@@ -238,7 +246,7 @@ info:
     disable: Poista käytöstä
     disabled: Poistettu käytöstä
   group:
-    axis: 'Variaatioakseli: %attributes%'
+    axis: 'Varianttiulottuvuus: %attributes%'
     select products: Valitse tuotteet joiden tulisi kuulua tähän ryhmään.
     selectable products: Seuraavilla valittavilla tuotteilla on määritelty arvo jokaiselle akselille.
     no group types: Mitään ryhmätyyppekä ei ole, aloita luomalla sellainen
@@ -346,8 +354,8 @@ Decimals allowed: Salli desimaalit
 Negative allowed: Salli negatiiviset arvot
 Date min: Min päivämäärä
 Date max: Max päivämäärä
-Metric family: Metrinen perhe
-Default metric unit: Metrinen oletusyksikkö
+Metric family: Mittaperhe
+Default metric unit: Oletusarvoinen mittayksikkö
 Max file size: Suurin tiedostokoko (Mt)
 Allowed extensions: Sallitut laajennukset
 None: Ei yhtään
@@ -372,9 +380,9 @@ pim_catalog_file: Tiedosto
 pim_catalog_image: Kuva
 pim_catalog_boolean: "Kyllä/ei"
 pim_catalog_date: Päivämäärä
-pim_catalog_metric: Metriikka
-pim_reference_data_simpleselect: Viitetiedot yksinkertainen valinta
-pim_reference_data_multiselect: Viitetiedot monivalinta
+pim_catalog_metric: Mitta
+pim_reference_data_simpleselect: Viitetiedot (kustomoitu) yksinkertainen valinta
+pim_reference_data_multiselect: Viitetiedot (kustomoitu) monivalinta
 #Locales
 Activated: Aktivoitu
 Edit: Muokkaa
@@ -401,7 +409,7 @@ pane.accordion:
   general_parameters: Yleiset parametrit
   validation_parameters: Validaatioparametrit
   label_translations: Nimikkeiden käännökset
-  options: Vaihtoehdot
+  options: Valintalistan arvot
   group_values: Ryhmän arvot
 #Popin titles
 popin.create:
@@ -419,6 +427,32 @@ Updated At: Päivitysaika
 Enabled: Otettu käyttöön
 Disabled: Poistettu käytöstä
 Status: Status
+pim_datagrid:
+  filters:
+    product_typology:
+      label: Tuoterakenne
+    entity_type:
+      label: Variantti
+    family:
+      label: Perhe
+    groups:
+      label: Ryhmät
+    enabled:
+      label: Status
+    scope:
+      label: Kanava
+    completeness:
+      label: Valmis
+    created:
+      label: Luotu
+    updated:
+      label: Päivitetty
+    label_or_identifier:
+      label: Otsikko tai tunniste
+    parent:
+      label: Ylätaso
+    identifier:
+      label: Tunniste
 #Versioning / history
 Change History: Muutoshistoria
 Data Audit: Tietojen audit
@@ -483,7 +517,6 @@ pim_mass_edit:
       success: Massapoisto <strong>%label%</strong> päättyi
 job_execution.summary:
   mass_edited: Massamuokattu
-  skip: Ohitettu
   skipped_products: Ohitetut tuotteet
   skipped_attributes: Ohitetut attribuutit
   skipped_families: Ohitetut perheet
@@ -504,3 +537,9 @@ job_tracker:
     title: Prosessiseurain
   filter:
     started_at: Alkoi
+pim_login:
+  logo_title: Akeneo PIM
+  footer:
+    powered: Powered by
+    powered_image_title: logo Akeneo
+pim_system.acl_group.developer_mode: Kehittäjätila

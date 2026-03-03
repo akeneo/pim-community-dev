@@ -3,7 +3,7 @@
 namespace Akeneo\Tool\Component\Batch\Event;
 
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Event triggered during job execution
@@ -14,21 +14,11 @@ use Symfony\Component\EventDispatcher\Event;
  */
 class JobExecutionEvent extends Event implements EventInterface
 {
-    /** @var JobExecution */
-    protected $jobExecution;
-
-    /**
-     * @param JobExecution $jobExecution
-     */
-    public function __construct(JobExecution $jobExecution)
+    public function __construct(private JobExecution $jobExecution)
     {
-        $this->jobExecution = $jobExecution;
     }
 
-    /**
-     * @return JobExecution
-     */
-    public function getJobExecution()
+    public function getJobExecution(): JobExecution
     {
         return $this->jobExecution;
     }

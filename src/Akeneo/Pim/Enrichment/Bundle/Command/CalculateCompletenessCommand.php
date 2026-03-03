@@ -5,10 +5,13 @@ namespace Akeneo\Pim\Enrichment\Bundle\Command;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductAndAncestorsIndexer;
 use Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses;
 use Doctrine\DBAL\Connection;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Command\LockableTrait;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -22,7 +25,7 @@ class CalculateCompletenessCommand extends Command
 {
     use LockableTrait;
 
-    private const BATCH_SIZE = 1000;
+    private const DEFAULT_BATCH_SIZE = 1000;
 
     protected static $defaultName = 'pim:completeness:calculate';
 
@@ -51,13 +54,22 @@ class CalculateCompletenessCommand extends Command
      */
     protected function configure()
     {
-        $this->setDescription('Launch the product completeness calculation');
+        $this
+            ->setDescription('Launch the product completeness calculation')
+            ->addOption(
+                'batch-size',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'The number of product completeness calculated in one cycle.',
+                self::DEFAULT_BATCH_SIZE
+            )
+        ;
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (!$this->lock()) {
             $output->writeln(sprintf('The command "%s" is still running in another process.', self::$defaultName));
@@ -65,14 +77,16 @@ class CalculateCompletenessCommand extends Command
             return 0;
         }
 
+        $batchSize = (int) $input->getOption('batch-size') ?: self::DEFAULT_BATCH_SIZE;
+
         $progressBar = new ProgressBar($output, $this->getTotalNumberOfProducts());
 
         $output->writeln('<info>Computing product completenesses...</info>');
         $progressBar->start();
-        foreach ($this->getProductIdentifiers() as $productIdentifiers) {
-            $this->computeAndPersistProductCompleteness->fromProductIdentifiers($productIdentifiers);
-            $this->productAndAncestorsIndexer->indexFromProductIdentifiers($productIdentifiers);
-            $progressBar->advance(count($productIdentifiers));
+        foreach ($this->getProductUuids($batchSize) as $productUuids) {
+            $this->computeAndPersistProductCompleteness->fromProductUuids($productUuids);
+            $this->productAndAncestorsIndexer->indexFromProductUuids($productUuids);
+            $progressBar->advance(count($productUuids));
         }
         $progressBar->finish();
         $output->writeln('');
@@ -83,38 +97,39 @@ class CalculateCompletenessCommand extends Command
 
     private function getTotalNumberOfProducts(): int
     {
-        return $this->connection->executeQuery('SELECT COUNT(0) FROM pim_catalog_product')->fetchColumn();
+        return $this->connection->executeQuery('SELECT COUNT(0) FROM pim_catalog_product')->fetchOne();
     }
 
-    private function getProductIdentifiers(): iterable
+    private function getProductUuids(int $batchSize): iterable
     {
-        $formerId = 0;
+        $lastUuidAsBytes = '';
         $sql = <<<SQL
-SELECT id, identifier
+SELECT uuid
 FROM pim_catalog_product
-WHERE id > :formerId
-ORDER BY id ASC
+WHERE uuid > :lastUuid
+ORDER BY uuid ASC
 LIMIT :limit
 SQL;
         while (true) {
-            $rows = $this->connection->executeQuery(
+            $rows = $this->connection->fetchFirstColumn(
                 $sql,
                 [
-                    'formerId' => $formerId,
-                    'limit' => self::BATCH_SIZE,
+                    'lastUuid' => $lastUuidAsBytes,
+                    'limit' => $batchSize,
                 ],
                 [
-                    'formerId' => \PDO::PARAM_INT,
+                    'lastUuid' => \PDO::PARAM_STR,
                     'limit' => \PDO::PARAM_INT,
                 ]
-            )->fetchAll();
+            );
 
             if (empty($rows)) {
                 return;
             }
 
-            $formerId = end($rows)['id'];
-            yield array_column($rows, 'identifier');
+            $lastUuidAsBytes = end($rows);
+
+            yield array_map(fn (string $uuidAsBytes): UuidInterface => Uuid::fromBytes($uuidAsBytes), $rows);
         }
     }
 }

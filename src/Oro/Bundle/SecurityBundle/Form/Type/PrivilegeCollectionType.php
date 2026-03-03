@@ -24,7 +24,7 @@ class PrivilegeCollectionType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'oro_acl_collection';
     }
@@ -32,7 +32,7 @@ class PrivilegeCollectionType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): ?string
     {
         return CollectionType::class;
     }

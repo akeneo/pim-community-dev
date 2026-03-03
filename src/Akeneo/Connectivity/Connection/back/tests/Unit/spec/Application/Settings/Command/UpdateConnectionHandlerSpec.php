@@ -10,7 +10,7 @@ use Akeneo\Connectivity\Connection\Application\Settings\Service\UpdateUserPermis
 use Akeneo\Connectivity\Connection\Domain\Settings\Exception\ConstraintViolationListException;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
-use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository;
+use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolationInterface;
@@ -21,7 +21,7 @@ class UpdateConnectionHandlerSpec extends ObjectBehavior
 {
     public function let(
         ValidatorInterface $validator,
-        ConnectionRepository $repository,
+        ConnectionRepositoryInterface $repository,
         UpdateUserPermissionsInterface $updateUserPermissions
     ): void {
         $this->beConstructedWith($validator, $repository, $updateUserPermissions);

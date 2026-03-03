@@ -1,0 +1,4 @@
+services:
+  Akeneo\Category\Infrastructure\Builder\CategoryVersionBuilder:
+    arguments:
+      - '@Akeneo\Category\Domain\Query\GetCategoryInterface'

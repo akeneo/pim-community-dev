@@ -5,12 +5,13 @@
  */
 'use strict';
 
-define(['underscore', 'pim/controller/front', 'pim/form-builder', 'pim/fetcher-registry'], function (
-  _,
-  BaseController,
-  FormBuilder,
-  fetcherRegistry
-) {
+define([
+  'underscore',
+  'pim/controller/front',
+  'pim/form-builder',
+  'pim/fetcher-registry',
+  'pim/user-context',
+], function (_, BaseController, FormBuilder, fetcherRegistry, UserContext) {
   return BaseController.extend({
     /**
      * {@inheritdoc}
@@ -24,8 +25,16 @@ define(['underscore', 'pim/controller/front', 'pim/form-builder', 'pim/fetcher-r
       fetcherRegistry.getFetcher('locale').clear();
       fetcherRegistry.getFetcher('measure').clear();
 
-      var code = this.getQueryParam(location.href, 'code');
-      var type = this.getQueryParam(location.href, 'attribute_type');
+      const code = this.getQueryParam(location.href, 'code');
+      const type = this.getQueryParam(location.href, 'attribute_type');
+      const label = this.getQueryParam(location.href, 'label');
+      const localizable = this.getQueryParam(location.href, 'localizable');
+      const scopable = this.getQueryParam(location.href, 'scopable');
+      const unique = this.getQueryParam(location.href, 'unique');
+      const labels = {};
+      if (label) {
+        labels[UserContext.get('catalogLocale')] = label;
+      }
 
       return FormBuilder.getFormMeta('pim-attribute-create-form')
         .then(FormBuilder.buildForm)
@@ -34,6 +43,21 @@ define(['underscore', 'pim/controller/front', 'pim/form-builder', 'pim/fetcher-r
             form.setCode(code);
           }
           form.setType(type);
+          if (label) {
+            form.setLabels(labels);
+          }
+
+          if (localizable) {
+            form.setLocalizable(localizable);
+          }
+
+          if (scopable) {
+            form.setScopable(scopable);
+          }
+
+          if (unique) {
+            form.setUnique(unique);
+          }
 
           return form.configure().then(() => {
             return form;
@@ -44,7 +68,7 @@ define(['underscore', 'pim/controller/front', 'pim/form-builder', 'pim/fetcher-r
             form.trigger('pim_enrich:form:can-leave', event);
           });
 
-          form.setData(this.getNewAttribute(type, code));
+          form.setData(this.getNewAttribute(type, code, labels, localizable, scopable, unique));
 
           form.setElement(this.$el).render();
 
@@ -61,24 +85,9 @@ define(['underscore', 'pim/controller/front', 'pim/form-builder', 'pim/fetcher-r
      * @return  {String}
      */
     getQueryParam: function (url, paramName) {
-      if (-1 === url.lastIndexOf('?')) {
-        return '';
-      }
-      var params = url.substring(url.lastIndexOf('?') + 1);
-      if (!params) {
-        return null;
-      }
+      const searchParams = new URL(url.replace('/#/', '/'))?.searchParams;
 
-      var stringParams = params.split('&');
-      var objectParams = {};
-      stringParams.forEach(function (stringParam) {
-        var tab = stringParam.split('=');
-        if (tab.length === 2) {
-          objectParams[tab[0]] = tab[1];
-        }
-      });
-
-      return objectParams[paramName] ?? '';
+      return searchParams?.get(paramName);
     },
 
     /**
@@ -86,11 +95,14 @@ define(['underscore', 'pim/controller/front', 'pim/form-builder', 'pim/fetcher-r
      *
      * @return {Object}
      */
-    getNewAttribute: function (type, code) {
+    getNewAttribute: function (type, code, labels, localizable, scopable, unique) {
       return {
         code: code ?? '',
-        labels: {},
+        labels: labels,
         type: type,
+        localizable: localizable === 'true',
+        scopable: scopable === 'true',
+        unique: unique === 'true',
         available_locales: [],
       };
     },

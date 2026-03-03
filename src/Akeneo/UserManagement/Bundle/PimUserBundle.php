@@ -2,6 +2,7 @@
 
 namespace Akeneo\UserManagement\Bundle;
 
+use Akeneo\UserManagement\Bundle\DependencyInjection\Compiler\RegisterCommandsThatNeedUserSystemPass;
 use Akeneo\UserManagement\Bundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -32,5 +33,7 @@ class PimUserBundle extends Bundle
                 false
             )
         );
+
+        $container->addCompilerPass(new RegisterCommandsThatNeedUserSystemPass());
     }
 }

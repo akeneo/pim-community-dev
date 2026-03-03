@@ -17,12 +17,15 @@ extensions:
             userAccount: pim_menu.user.user_account
             logout: pim_menu.user.logout
 
+    pim-job-instance-xlsx-base-import-show-sandbox-helper:
+        module: pim/sandbox-helper
+        parent: pim-job-instance-xlsx-base-import-show
+        targetZone: helper
+
     pim-job-instance-xlsx-base-import-show-breadcrumbs:
-        module: pim/common/breadcrumbs
+        module: pim/job/common/breadcrumb/breadcrumb
         parent: pim-job-instance-xlsx-base-import-show
         targetZone: breadcrumbs
-        config:
-            tab: pim-menu-imports
 
     pim-job-instance-xlsx-base-import-show-switcher:
         module: pim/job-instance/import/switcher
@@ -85,22 +88,11 @@ extensions:
                 path: code
                 name: code
 
-    pim-job-instance-xlsx-base-import-show-subsection:
-        module: pim/form/common/subsection
+    pim-job-instance-xlsx-base-import-show-last-executions:
+        module: akeneojob/controller/job-instance
         parent: pim-job-instance-xlsx-base-import-show
+        position: 100
         targetZone: content
-        config:
-            title: pim_import_export.form.job_instance.subsection.last_executions
-
-    pim-job-instance-xlsx-base-import-show-grid:
-        module: pim/job/common/grid
-        parent: pim-job-instance-xlsx-base-import-show-subsection
-        position: 1000
-        targetZone: content
-        config:
-            alias: last-import-executions-grid
-            metadata:
-                jobType: import
 
     pim-job-instance-xlsx-base-import-show-label:
         module: pim/job/common/edit/label
@@ -109,7 +101,7 @@ extensions:
         position: 100
 
     pim-job-instance-xlsx-base-import-show-edit:
-        module: pim/common/redirect
+        module: pim/job/common/edit-button
         parent: pim-job-instance-xlsx-base-import-show
         targetZone: buttons
         position: 100

@@ -15,7 +15,7 @@ use PhpSpec\ObjectBehavior;
  */
 class UpdateConnectionCommandSpec extends ObjectBehavior
 {
-    public function let()
+    public function let(): void
     {
         $this->beConstructedWith(
             'magento',
@@ -28,32 +28,32 @@ class UpdateConnectionCommandSpec extends ObjectBehavior
         );
     }
 
-    public function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(UpdateConnectionCommand::class);
     }
 
-    public function it_returns_the_code()
+    public function it_returns_the_code(): void
     {
         $this->code()->shouldReturn('magento');
     }
 
-    public function it_returns_the_label()
+    public function it_returns_the_label(): void
     {
         $this->label()->shouldReturn('Magento Connector');
     }
 
-    public function it_returns_the_flow_type()
+    public function it_returns_the_flow_type(): void
     {
         $this->flowType()->shouldReturn(FlowType::DATA_DESTINATION);
     }
 
-    public function it_returns_null_if_there_is_no_image()
+    public function it_returns_null_if_there_is_no_image(): void
     {
         $this->image()->shouldReturn(null);
     }
 
-    public function it_returns_the_image()
+    public function it_returns_the_image(): void
     {
         $this->beConstructedWith(
             'magento',
@@ -67,17 +67,17 @@ class UpdateConnectionCommandSpec extends ObjectBehavior
         $this->image()->shouldReturn('a/b/c/the_path.jpg');
     }
 
-    public function it_returns_the_user_role_id()
+    public function it_returns_the_user_role_id(): void
     {
         $this->userRoleId()->shouldReturn('1');
     }
 
-    public function it_returns_the_user_group_id()
+    public function it_returns_the_user_group_id(): void
     {
         $this->userGroupId()->shouldReturn('2');
     }
 
-    public function it_returns_the_auditable()
+    public function it_returns_the_auditable(): void
     {
         $this->auditable()->shouldReturn(true);
     }

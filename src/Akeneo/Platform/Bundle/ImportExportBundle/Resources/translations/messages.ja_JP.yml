@@ -16,6 +16,8 @@ pim_import_export:
     6: 失敗
     7: 破棄された
     8: 不明
+    9: 一時停止中
+    10: 一時停止
   download_archive:
     archive: 生成したアーカイブをダウンロード | 生成したアーカイブをダウンロード
     output: 生成したファイルをダウンロード | 生成したファイルをダウンロード
@@ -27,10 +29,15 @@ pim_import_export:
       error: <strong>%label%</strong>のエクスポートが失敗しました
       warning: <strong>%label%</strong> のエクスポートがいくつかのエラーにより終了しました
       success: <strong>%label%</strong>のエクスポートが完了しました
+      warnings:
+        xlsx_cell_conversion_error: '"{0}" 列をターゲット PIM 商品属性タイプに変換中に例外が発生しました (Excel セルの書式を確認してください)'
+        xlsx_cell_date_to_text_conversion_error: 日付フォーマットのセル {0} をテキスト型の属性に変換できません
     import:
       error: <strong>%label%</strong> のインポートが失敗しました
       warning: <strong>%label%</strong> のインポートがいくつかのエラーにより終了しました
       success: <strong>%label%</strong> のインポートが完了しました
+      warnings:
+        xlsx_cell_date_conversion_error: 日付フォーマットのセル "{cellName}" を{attributeType}型の属性に変換できません
   list: ジョブを選択
   job_profile:
     tab:
@@ -164,3 +171,4 @@ FAILED: 失敗
 ABANDONED: 破棄された
 UNKNOWN: 不明
 warning.label: 警告
+pim_datagrid.column.username: ユーザー名

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Tests\EndToEnd\Context\Page\Connections;
 
+use Akeneo\Connectivity\Connection\Tests\EndToEnd\Decorator\Settings\EditForm;
 use Context\Page\Base\Base;
 
 /**
@@ -13,7 +14,7 @@ use Context\Page\Base\Base;
 class Index extends Base
 {
     /** @var string */
-    protected $path = '#/connections/';
+    protected $path = '#/connect/connection-settings/';
 
     /**
      * {@inheritdoc}
@@ -28,6 +29,10 @@ class Index extends Base
                 'Data source connections list' => ['css' => '[data-testid="data_source"]'],
                 'Data destination connections list' => ['css' => '[data-testid="data_destination"]'],
                 'Other connections list' => ['css' => '[data-testid="data_other"]'],
+                'Edit form' => [
+                    'css'        => '.AknConnectivityConnection-view',
+                    'decorators' => [EditForm::class]
+                ],
             ]
         );
     }

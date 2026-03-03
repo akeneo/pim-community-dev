@@ -2,20 +2,21 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Model;
 
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Group;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociation;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Value\IdentifierValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
-use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AssociationType;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -23,9 +24,28 @@ use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\UuidInterface;
 
 class ProductSpec extends ObjectBehavior
 {
+    function it_can_be_instantiated_with_a_specific_uuid()
+    {
+        $this->beConstructedWith('af568ead-fa2a-4336-bc72-613ece4e4340');
+        $this->getUuid()->toString()->shouldBe('af568ead-fa2a-4336-bc72-613ece4e4340');
+    }
+
+    function it_cannot_be_instantiated_with_an_invalid_uuid()
+    {
+        $this->beConstructedWith('invalid_uuid');
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
+
+    function it_generates_a_uuid()
+    {
+        $this->beConstructedWith(null);
+        $this->getUuid()->shouldBeAnInstanceOf(UuidInterface::class);
+    }
+
     function it_has_family(FamilyInterface $family)
     {
         $family->getId()->willReturn(42);
@@ -90,14 +110,6 @@ class ProductSpec extends ObjectBehavior
         $this->isAttributeEditable($attribute)->shouldReturn(true);
     }
 
-    function it_is_not_attribute_removable_if_attribute_is_an_identifier(
-        AttributeInterface $attribute
-    ) {
-        $attribute->getType()->willReturn(AttributeTypes::IDENTIFIER);
-
-        $this->isAttributeRemovable($attribute)->shouldReturn(false);
-    }
-
     function it_is_not_attribute_removable_with_family_containing_attribute(
         AttributeInterface $attribute,
         FamilyInterface $family,
@@ -128,14 +140,13 @@ class ProductSpec extends ObjectBehavior
 
         $values = new WriteValueCollection(
             [
-                ScalarValue::value('sku', 'shovel'),
+                IdentifierValue::value('sku', true, 'shovel'),
                 ScalarValue::localizableValue('name', 'Petit outil agricole authentique', 'fr_FR'),
             ]
         );
 
         $this->setFamily($family);
         $this->setValues($values);
-        $this->setIdentifier('shovel');
 
         $this->getLabel('fr_FR', 'mobile')->shouldReturn('Petit outil agricole authentique');
     }
@@ -152,14 +163,13 @@ class ProductSpec extends ObjectBehavior
 
         $values = new WriteValueCollection(
             [
-                ScalarValue::value('sku', 'shovel'),
+                IdentifierValue::value('sku', true, 'shovel'),
                 ScalarValue::scopableLocalizableValue('name', 'Petite pelle', 'mobile', 'fr_FR'),
             ]
         );
 
         $this->setFamily($family);
         $this->setValues($values);
-        $this->setIdentifier('shovel');
 
         $this->getLabel('fr_FR', 'mobile')->shouldReturn('Petite pelle');
     }
@@ -174,8 +184,9 @@ class ProductSpec extends ObjectBehavior
         $attributeAsLabel->getCode()->willReturn('name');
 
         $this->setFamily(null);
-        $this->setValues(new WriteValueCollection());
-        $this->setIdentifier('shovel');
+        $this->setValues(new WriteValueCollection([
+            IdentifierValue::value('sku', true, 'shovel')
+        ]));
 
         $this->getLabel('fr_FR')->shouldReturn('shovel');
     }
@@ -194,8 +205,9 @@ class ProductSpec extends ObjectBehavior
         $attributeAsLabel->getCode()->willReturn('name');
 
         $this->setFamily($family);
-        $this->setValues(new WriteValueCollection());
-        $this->setIdentifier('shovel');
+        $this->setValues(new WriteValueCollection([
+            IdentifierValue::value('sku', true, 'shovel')
+        ]));
 
         $this->getLabel('fr_FR')->shouldReturn('shovel');
     }
@@ -211,7 +223,9 @@ class ProductSpec extends ObjectBehavior
         $attributeAsLabel->isScopable()->willReturn(false);
 
         $this->setFamily($family);
-        $this->setIdentifier('shovel');
+        $this->setValues(new WriteValueCollection([
+            IdentifierValue::value('sku', true, 'shovel')
+        ]));
 
         $this->getLabel('fr_FR')->shouldReturn('shovel');
     }
@@ -1381,7 +1395,7 @@ class ProductSpec extends ObjectBehavior
         );
         $this->cleanup();
 
-        $this->filterQuantifiedAssociations(['my_product'], ['model_tshirt_2']);
+        $this->filterQuantifiedAssociations(['my_product'], [], ['model_tshirt_2']);
         $this->isDirty()->shouldBe(true);
     }
 
@@ -1414,8 +1428,107 @@ class ProductSpec extends ObjectBehavior
 
         $this->filterQuantifiedAssociations(
             ['my_product', 'my_other_product'],
+            [],
             ['model_tshirt_1', 'model_tshirt_2']
         );
         $this->isDirty()->shouldBe(false);
+    }
+
+    function it_does_not_associate_a_product_already_associated_to_an_ancestor()
+    {
+        $associationType = new AssociationType();
+        $associationType->setCode('X_SELL');
+        $productAssociation = new ProductAssociation();
+        $productAssociation->setAssociationType($associationType);
+        $this->addAssociation($productAssociation);
+
+        $associatedProduct = new Product();
+        $productModelAssociation = new ProductModelAssociation();
+        $productModelAssociation->setAssociationType($associationType);
+        $productModelAssociation->addProduct($associatedProduct);
+        $parent = new ProductModel();
+        $parent->addAssociation($productModelAssociation);
+        $this->setParent($parent);
+
+        $this->addAssociatedProduct($associatedProduct, 'X_SELL');
+        $this->getAssociatedProducts('X_SELL')->shouldBeLike(new ArrayCollection());
+    }
+
+    function it_does_not_update_level_specific_associations_when_calling_get_all_associations()
+    {
+        $associationType = new AssociationType();
+        $associationType->setCode('X_SELL');
+        $productAssociation = new ProductAssociation();
+        $productAssociation->setAssociationType($associationType);
+        $this->addAssociation($productAssociation);
+
+        $associatedProduct = new Product();
+        $productModelAssociation = new ProductModelAssociation();
+        $productModelAssociation->setAssociationType($associationType);
+        $productModelAssociation->addProduct($associatedProduct);
+        $parent = new ProductModel();
+        $parent->addAssociation($productModelAssociation);
+        $this->setParent($parent);
+
+        $this->getAllAssociations()->filter(
+            static fn (AssociationInterface $asso): bool => 'X_SELL' === $asso->getAssociationType()->getCode()
+        )->first()?->getProducts()->shouldBeLike(new ArrayCollection([$associatedProduct]));
+
+        $this->getAssociations()->filter(
+            static fn (AssociationInterface $asso): bool => 'X_SELL' === $asso->getAssociationType()->getCode()
+        )->first()?->getProducts()->shouldBeLike(new ArrayCollection());
+    }
+
+    function it_does_not_associate_a_product_model_already_associated_to_an_ancestor()
+    {
+        $associationType = new AssociationType();
+        $associationType->setCode('X_SELL');
+        $productAssociation = new ProductAssociation();
+        $productAssociation->setAssociationType($associationType);
+        $this->addAssociation($productAssociation);
+
+        $associatedProductModel = new ProductModel();
+        $productModelAssociation = new ProductModelAssociation();
+        $productModelAssociation->setAssociationType($associationType);
+        $productModelAssociation->addProductModel($associatedProductModel);
+        $parent = new ProductModel();
+        $parent->addAssociation($productModelAssociation);
+        $this->setParent($parent);
+
+        $this->addAssociatedProductModel($associatedProductModel, 'X_SELL');
+        $this->getAssociatedProductModels('X_SELL')->shouldBeLike(new ArrayCollection());
+    }
+
+    function it_does_not_associate_a_group_already_associated_to_an_ancestor()
+    {
+        $associationType = new AssociationType();
+        $associationType->setCode('X_SELL');
+        $productAssociation = new ProductAssociation();
+        $productAssociation->setAssociationType($associationType);
+        $this->addAssociation($productAssociation);
+
+        $associatedGroup = new Group();
+        $groupAssociation = new ProductModelAssociation();
+        $groupAssociation->setAssociationType($associationType);
+        $groupAssociation->addGroup($associatedGroup);
+        $parent = new ProductModel();
+        $parent->addAssociation($groupAssociation);
+        $this->setParent($parent);
+
+        $this->addAssociatedGroup($associatedGroup, 'X_SELL');
+        $this->getAssociatedGroups('X_SELL')->shouldBeLike(new ArrayCollection());
+    }
+
+    function it_updates_main_identifier(): void
+    {
+        $this->getIdentifier()->shouldReturn(null);
+        $this->setValues(new WriteValueCollection(
+            [
+                IdentifierValue::value('sku', true, 'shovel'),
+                ScalarValue::localizableValue('name', 'a name', 'fr_FR'),
+            ]
+        ));
+
+        $this->getIdentifier()->shouldReturn('shovel');
     }
 }

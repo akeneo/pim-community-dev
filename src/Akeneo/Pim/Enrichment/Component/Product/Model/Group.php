@@ -117,12 +117,12 @@ class Group implements GroupInterface
      */
     public function getTranslation(?string $locale = null): ?GroupTranslationInterface
     {
-        $locale = ($locale) ? $locale : $this->locale;
+        $locale = $locale ?: $this->locale;
         if (null === $locale) {
             return null;
         }
         foreach ($this->getTranslations() as $translation) {
-            if ($translation->getLocale() === $locale) {
+            if (\strtolower($translation->getLocale()) === \strtolower($locale)) {
                 return $translation;
             }
         }
@@ -187,52 +187,10 @@ class Group implements GroupInterface
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function addProduct(ProductInterface $product)
-    {
-        if (!$this->products->contains($product)) {
-            $this->products->add($product);
-            $product->addGroup($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function removeProduct(ProductInterface $product)
-    {
-        $this->products->removeElement($product);
-        $product->removeGroup($this);
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getProducts()
-    {
-        return $this->products;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setProducts(array $products)
-    {
-        $this->products = new ArrayCollection($products);
-
-        return $this;
-    }
-
-    /**
-     * Return the identifier-based validation group for validation of properties
-     *
-     * @return string[]
-     */
+      * Return the identifier-based validation group for validation of properties
+      *
+      * @return string[]
+      */
     public function getGroupSequence()
     {
         return ['Group', strtolower($this->getType()->getCode())];

@@ -1,0 +1,205 @@
+pim_enrich.entity.family:
+  label: Aile
+  uppercase_label: Aile
+  plural_label: Aileler
+  flash:
+    update:
+      success: Aile başarıyla güncellendi.
+      cant_remove_attribute_as_label: Etiket olarak kullanılan özellik kaldırılamıyor
+      cant_remove_attribute_as_image: Ana resim olarak kullanılan özellik kaldırılamıyor
+      cant_remove_attribute_used_as_axis: Bir aile değişkeninde değişken ekseni olarak kullanılan bu özellik kaldırılamıyor
+    create:
+      success: Aile başarıyla oluşturuldu
+    delete:
+      success: Aile başarıyla kaldırıldı
+      fail: Bu aileyi silemezsiniz
+  property:
+    attribute_as_label: Etiket olarak kullanılan özellik
+    attribute_as_image: Ana resim olarak kullanılan özellik
+    empty_attribute_as_image: Seçili değil
+  module:
+    attributes:
+      not_required_label: Gerekli değil
+      required_label: Gerekli
+    create:
+      button: Aile oluştur
+    delete:
+      confirm: Bu aileyi silmek istediğinizden emin misiniz?
+pim_enrich.entity.family_variant:
+  short_plural_label: Biçimler
+  short_label: Çeşit
+  flash:
+    update:
+      success: Aile değişkeni başarıyla güncellendi. Ürünlerin değişkenleri yapılan değişiklik ile güncellendi.
+    create:
+      success: Aile biçimi başarıyla oluşturuldu
+  module:
+    edit:
+      common_attributes: Ortak özellikler
+      no_common_attributes: Ortak özellik yok
+      variant_axis_label: Değişken eksen
+      level_1: Birinci seviye değişken özellik
+      level_2: İkinci seviye değişken özellik
+      description: Bu özelliklerin değişken seviyesinde yönetilmesi için özellikleri seçilmiş değişkenleri sürükleyip bırakın.
+      confirm_attribute_removal_title: Özellikleri kaldırmayı onayla
+      confirm_attribute_removal_message: Bu özellikleri kaldırarak onları aile değişkenlerinin ortak özelliklerine geri döndürür ve değerleri değişken ürünlerden çıkarırsınız
+    create:
+      label: Değişken ekle
+      title: Yeni bir aile biçimi oluştur
+      description: Bir aile değişkenindei değişkenler ile ürünler için bir yapı tanımlayabilirsiniz. Yönetilen değişkenlerinin seviyelerinin sayısını ve her seviye için değişken ekseni olan özellikleri seçiniz, ve sonra özelliklerin nasıl dağıtıldığını tanımlayınız.
+      variant_levels: Biçim levelleri
+pim_enrich.entity.attribute_option:
+  short_uppercase_label: Seçenekler
+  flash:
+    create:
+      success: Özellik seçeneği başarılı bir şekilde yaratıldı
+    update:
+      fail: Özellik seçeneği kayıt edilemiyor
+    delete:
+      fail: Özellik seçeneğinin silinmesi sırasında hata oluştu
+  module:
+    edit:
+      cancel_title: Değişikliği iptal et
+pim_enrich.entity.association_type:
+  label: İlişki türü
+  flash:
+    update:
+      success: İlişkilendirme türü başarılı bir şekilde güncellendi.
+      fail: İlişkilendirme türü güncellenemedi.
+      fields_not_ready: "İlişki türü şu an kaydedilemiyor. Aşağıdaki alanlar hazır değil: {{ fields }}"
+    create:
+      success: İlişki tipleri başarılı bir şekilde yaratıldı
+    delete:
+      success: İlişki tipleri başarılı bir şekilde silindi
+      fail: Bu ilişki türünü silemezsiniz
+  module:
+    create:
+      button: İlişki türü oluştur
+    delete:
+      confirm: Bu ilişki şeklini silmek istediğinizden emin misiniz?
+pim_enrich.entity.group_type:
+  label: grup türü
+  flash:
+    update:
+      success: Grup türü başarıyla güncellendi.
+      fail: Grup türü güncellenemedi.
+      fields_not_ready: "Grup türü şu an kaydedilemiyor. Aşağıdaki alanlar hazır değil: {{ fields }}"
+    create:
+      success: Grup türü başarılı bir şekilde oluşturuldu
+    delete:
+      success: Grup türü başarılı bir şekilde kaldırıldı
+      fail: Bu grup türü silinemiyor
+  module:
+    create:
+      button: Grup türünü oluştur
+    delete:
+      confirm: Bu grup türünü silmek istediğinizden emin misiniz?
+pim_enrich.entity.attribute:
+  label: özellik
+  plural_label: Özellikler
+  flash:
+    update:
+      success: Özellik başarıyla güncellendi.
+      fail: Özellik güncellenemedi.
+      fields_not_ready: "Özellik şu an kaydedilemiyor. Aşağıdaki alanlar hazır değil: {{ fields }}"
+    delete:
+      success: Özellik başarı ile silindi
+      fail: Bu özellik silinemiyor
+  property:
+    allowed_extensions: İzin verilen dosya uzantıları
+    auto_option_sorting: Seçenekleri otomatik olarak alfabeye göre sıralama
+    available_locales: Kullanılabilir yerel ayarlar
+    date_max: En yüksek tarih
+    date_min: En az tarih
+    decimals_allowed: Ondalık değerler izinli
+    default_metric_unit:
+      choose: Bir birim seç
+    group:
+      label: Özellik grubu
+      choose: Seçilmiş özellik grubu
+    is_locale_specific: Özel yerel ayar
+    localizable: Yerel ayar başına değer
+    max_characters: En yüksek karakter sayısı
+    max_file_size: En büyük dosya boyutu (MB)
+    metric_family:
+      choose: Bir sınıf seçin
+    minimum_input_length: Otomatik tamamlama için gereken en az uzunluk
+    name: Ad
+    negative_allowed: Negatif değerler izinli
+    number_max: En yüksek sayı
+    number_min: En az sayı
+    reference_data_name:
+      label: Referans veri türü
+      choose: Referans veri türünü seçin
+    scopable: Kanal başına değer
+    type:
+      choose: Seçilmiş özellik türü
+      pim_catalog_identifier: Tanımlayıcı
+      pim_catalog_text: Metin
+      pim_catalog_textarea: Metin Alanı
+      pim_catalog_number: Numara
+      pim_catalog_price_collection: Ücret
+      pim_catalog_multiselect: Çoklu seçim
+      pim_catalog_simpleselect: Basit seçim
+      pim_catalog_file: Dosya
+      pim_catalog_image: Resim
+      pim_catalog_boolean: "Evet/Hayır"
+      pim_catalog_date: Tarih
+      pim_reference_data_simpleselect: Referans verisi basit seçim
+      pim_reference_data_multiselect: Toplu referans verisi seçimi
+    unique: Nadir değer
+    useable_as_grid_filter: Izgara olarak kullanılabilir
+    validation_regexp: Düzenli ifade
+    validation_rule:
+      label: Geçerlilik kuralı
+      email: E-posta
+      regexp: Düzenli ifade
+      url: URL
+    wysiwyg_enabled: Zengin metin düzenleyicisi etkin
+  module:
+    add_attribute:
+      no_available_attributes: Daha fazla eklenecek başka özellikler yok
+      attributes_selected: "{{ itemsCount }} özellik seçildi"
+    create:
+      button: Özellik oluştur
+    edit:
+      common: Genel parametreler
+      type_specific: Belirli parametre türleri
+      validation: Onaylama parametreleri
+    delete:
+      confirm: Bu özelliği silmek istediğinizden emin misiniz?
+      confirm_from_group: Özellik grubundan {{ attribute }} özelliğini kaldırmak istediğinize emin misiniz?
+      confirm_from_product: Üründen bu özelliği silmek istediğinize emin misiniz?
+pim_enrich.entity.attribute_group:
+  label: özellik grubu
+  uppercase_label: Özellik grubu
+  plural_label: Özellik grupları
+  flash:
+    update:
+      success: Özellik grubu başarı ile güncellendi
+      fail: Özellik grubu güncellenemedi
+    delete:
+      success: Özellik grubu başarı ile silindi
+  module:
+    add_attribute_group:
+      label: Gruplara ekle
+      attributes_groups_selected: '{{ itemsCount }} grup(lar) seçildi'
+    delete:
+      confirm: Bu özellik grubunu silmek istediğinizden emin misiniz?
+pim_enrich.mass_edit.family:
+  title: Toplu aile işlemleri
+  step:
+    select:
+      label: Aileleri seçin
+    choose:
+      title: Toplu aile işlemleri
+    configure:
+      label: Yapılandırma
+    confirm:
+      label: Doğrula
+    launched:
+      label: Toplu eylem"{{operasyonu}} " başlatıldı. Bittiğinde size bildirilecektir.
+  operation:
+    set_requirements:
+      label: Özellik gereksinimlerini ayarla
+      description: Aşağıdaki özellik gereksinimleri, seçilen ailelere uygulanacaktır

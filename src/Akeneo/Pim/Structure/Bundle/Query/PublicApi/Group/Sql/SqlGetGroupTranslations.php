@@ -39,11 +39,11 @@ SQL;
                 'locale' => $locale
             ],
             ['groupCodes' => Connection::PARAM_STR_ARRAY]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         $groupTranslations = [];
         foreach ($rows as $row) {
-            $groupTranslations[$row['code']] = $row['label'];
+            $groupTranslations[$row['code']] = '' === $row['label'] ? null : $row['label'];
         }
 
         return $groupTranslations;

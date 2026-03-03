@@ -1,12 +1,13 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Webhook\Command;
 
 use Akeneo\Connectivity\Connection\Domain\Settings\Exception\ConstraintViolationListException;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Write\ConnectionWebhook;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectWebhookSecretQuery;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\ConnectionWebhookRepository;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectWebhookSecretQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\UpdateConnectionWebhookQueryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -16,44 +17,34 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class UpdateWebhookHandler
 {
-    /** @var ConnectionWebhookRepository */
-    private $repository;
-
-    /** @var ValidatorInterface */
-    private $validator;
-
-    /** @var SelectWebhookSecretQuery */
-    private $selectWehbookSecretQuery;
-
-    /** @var GenerateWebhookSecretHandler */
-    private $generateWebhookSecretHandler;
-
     public function __construct(
-        ConnectionWebhookRepository $repository,
-        ValidatorInterface $validator,
-        SelectWebhookSecretQuery $selectWehbookSecretQuery,
-        GenerateWebhookSecretHandler $generateWebhookSecretHandler
+        private UpdateConnectionWebhookQueryInterface $updateConnectionWebhookQuery,
+        private ValidatorInterface $validator,
+        private SelectWebhookSecretQueryInterface $selectWebhookSecretQuery,
+        private GenerateWebhookSecretHandler $generateWebhookSecretHandler
     ) {
-        $this->repository = $repository;
-        $this->validator = $validator;
-        $this->selectWehbookSecretQuery = $selectWehbookSecretQuery;
-        $this->generateWebhookSecretHandler = $generateWebhookSecretHandler;
     }
 
     public function handle(UpdateWebhookCommand $command): void
     {
         $connectionCode = $command->code();
 
-        $webhook = new ConnectionWebhook($connectionCode, $command->enabled(), $command->url());
+        $webhook = new ConnectionWebhook(
+            $connectionCode,
+            $command->enabled(),
+            $command->url(),
+            $command->isUsingUuid()
+        );
 
         $violations = $this->validator->validate($webhook);
         if (0 !== $violations->count()) {
             throw new ConstraintViolationListException($violations);
         }
 
-        $this->repository->update($webhook);
+        $this->updateConnectionWebhookQuery->execute($webhook);
 
-        if (null === $this->selectWehbookSecretQuery->execute($connectionCode)) {
+        $secret = $this->selectWebhookSecretQuery->execute($connectionCode);
+        if (null === $secret) {
             $this->generateWebhookSecretHandler->handle(
                 new GenerateWebhookSecretCommand($connectionCode),
             );

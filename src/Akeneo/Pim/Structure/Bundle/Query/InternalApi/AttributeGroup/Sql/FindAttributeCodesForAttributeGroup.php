@@ -32,6 +32,6 @@ SQL;
             ->executeQuery($query, [
                 'group_code' => $attributeGroupCode
             ])
-            ->fetchAll(\PDO::FETCH_COLUMN);
+            ->fetchFirstColumn();
     }
 }

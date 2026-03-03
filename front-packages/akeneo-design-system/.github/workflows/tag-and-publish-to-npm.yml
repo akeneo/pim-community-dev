@@ -1,0 +1,31 @@
+name: Tag & Publish to npm
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - package.json
+jobs:
+  master:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current branch
+        uses: actions/checkout@v2
+      - name: Create tag
+        run: |
+          git config --global user.email "contact@akeneo.com" && \
+          git config --global user.name "Github Actions" && \
+          git tag -a v$(node .github/workflows/get-version.js) -m "Version $(node .github/workflows/get-version.js)"
+      - name: Push tag
+        run: git push origin v$(node .github/workflows/get-version.js)
+      - name: Prepare node to Publish
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+          registry-url: 'https://registry.npmjs.org'
+      - name: Install node modules
+        run: yarn install
+      - name: Publish package to NPM
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -10,7 +10,6 @@ pim_title:
   pim_user_security_login: Iniciar Sessió
   pim_user_reset_reset: Reiniciar contrasenya
   pim_user_reset_request: He oblidat la contrasenya
-  pim_user_reset_check_email: Reiniciar contrasenya | Revisar el correu electrònic
   pim_user_group_create: 'Grups | Crear'
   pim_user_group_update: 'Grup {{ group }} | Editar'
 confirmation:
@@ -27,6 +26,20 @@ pim_enrich:
       module:
         delete:
           confirm: Esteu segur que voleu eliminar aquest usuari?
+pim_user.profile:
+  caption: En primer lloc, explica'ns quina és la teva missió principal, per tal que t'ajudem amb el contingut més rellevant.
+  why_is_it_needed: Per què necessitem aquesta informació?
+  save_button: Desa i accedeix a l'App Store
+  selector:
+    placeholder: Escull una opció
+    not_found: No s'han trobat resultats
+  product_manager: Gestiono catàlegs de productes.
+  redactor: Enriqueixo les dades del producte.
+  pim_integrator: Integro Akeneo PIM al nostre ecosistema informàtic.
+  pim_administrator: Administro Akeneo PIM.
+  asset_manager: Gestiono actius al PIM.
+  translator: Tradueixo dades de producte, actiu i/o entitat de referència.
+  third_party_developer: Desenvolupo solucions relacionades amb Akeneo PIM.
 pim_user_management:
   entity:
     user:
@@ -42,6 +55,7 @@ pim_user_management:
         index: "]-Inf, 1] {{ count }} usuari|]1, Inf [{{ count }} usuaris"
       properties:
         username: Nom d’usuari
+        profile: Quina és la teva missió principal?
         name_prefix: Prefix del nom
         first_name: Nom
         middle_name: Primer cognom
@@ -68,6 +82,8 @@ pim_user_management:
         default_published_product_grid_view: Vista de graella de productes publicats per defecte #EE Only
         proposals_to_review_notification: Quan hi hagi una nova proposta per revisar #EE Only
         proposals_state_notifications: Quan la proposta sigui acceptada o rebutjada #EE Only
+        not_fully_supported_locale: 'La configuració regional de la IU seleccionada [{{ code }}] actualment no és totalment compatible. És possible que trobeu traduccions de text que falten o estan incompletes. Ajudeu a millorar la cobertura local:'
+        link_to_crowdin_label: contribuir a Crowdin.
       meta:
         created: Creat
         updated: Actualitzat
@@ -98,3 +114,13 @@ pim_user_management:
       module:
         create:
           button: Crear grup
+  form:
+    error:
+      required: Aquest camp és obligatori.
+      should_not_contain_space: El nom d'usuari no ha de contenir espais.
+      too_short_value: "Aquest valor és massa curt. Hauria de tenir {{ count }} caràcters o més."
+    duplication:
+      title: 'Usuari duplicat "{{ username }}".'
+      notification:
+        success: L'usuari s'ha duplicat correctament
+        failure: Error de duplicació de l'usuari

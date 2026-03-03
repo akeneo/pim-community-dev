@@ -2,6 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\ApiBundle\Controller;
 
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Router;
@@ -15,15 +16,8 @@ use Symfony\Component\Routing\Router;
  */
 class RootEndpointController
 {
-    /** @var Router */
-    protected $router;
-
-    /**
-     * @param Router $router
-     */
-    public function __construct(Router $router)
+    public function __construct(private Router $router, private FeatureFlags $featureFlags)
     {
-        $this->router = $router;
     }
 
     /**
@@ -45,6 +39,16 @@ class RootEndpointController
 
         foreach ($routes as $key => $route) {
             if (0 === strpos($route->getPath(), '/api')) {
+                $feature = $route->getDefault('_feature');
+                if ($feature !== null  && !$this->featureFlags->isEnabled($feature)) {
+                    continue;
+                }
+
+                $shouldBelisted = $route->getDefault('_list_in_root_endpoint');
+                if (false === $shouldBelisted) {
+                    continue;
+                }
+
                 $type = 0 === strpos($route->getPath(), '/api/oauth') ? 'authentication' : 'routes';
 
                 $apiRoutes[$type][$key] = [

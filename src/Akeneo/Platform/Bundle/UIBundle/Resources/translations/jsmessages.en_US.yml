@@ -108,18 +108,36 @@ oro_config:
             tab:
                 system:
                     title: System
+            save_ok: Successfully saved configuration
+            save_error: Sorry, could not save the configuration ({{ reason }})
             group:
                 localization:
-                    title: Localization
-                    system_locale: Language
+                    title: Login page setting
+                    fields:
+                        system_locale:
+                            label: Language
                 notification:
-                    title: Notifications
-                    system_notification: New versions notifications
+                    title: New version notifications
+                    helper: When enabled, you receive a notification when new version is available for you.
+                    fields:
+                        enabler:
+                            label: Enabled
+                environment:
+                    title: Environment settings
+                    fields:
+                        sandbox_banner:
+                            label: Display sandbox alert banner
+
                 loading_message:
-                    title: Loading messages
-                    label: Enable loading messages
-                loading_messages:
-                    label: Available loading messages
+                    title: Customized loading messages
+                    helper: Entertain your users with customized messages for loading screens.
+                    placeholder: Please write your own message to be displayed on your loading screen
+                    fields:
+                        enabler:
+                            label: Enable loading messages
+                        messages:
+                            label: Add your own loading messages
+
 
 pim_ui:
   flash:
@@ -170,6 +188,7 @@ pim_common:
     before: Before
     by: by
     cancel: Cancel
+    characters_left: ]-Inf, 1]{{ count }} character left|]1, Inf[{{ count }} characters left
     clear_value: Clear value
     close: Close
     code: Code
@@ -181,6 +200,7 @@ pim_common:
     created: Created
     delete: Delete
     done: Done
+    duplicate: Duplicate
     edit: Edit
     entity_updated: There are unsaved changes.
     export: Export
@@ -192,9 +212,14 @@ pim_common:
     label: Label
     label_translations: Label translations
     Label or identifier: label or identifier
+    Label or main identifier: label or main identifier
+    code_or_label: code or label
     less_than: Less than
     loading: Loading...
     media_upload: Drag and drop to upload or click here
+    media_uploading: Uploading…
+    media_upload_error: An error occurred during upload
+    more_actions: More actions
     more_than: More than
     next: Next
     "no": "No"
@@ -202,10 +227,14 @@ pim_common:
     not_available: N/A
     now: Now
     ok: OK
+    open: Open
+    no_result: No result found
+    no_search_result: Sorry, there is no result for your search.
     other_actions: Other actions
     permissions: Permissions
     previous: Previous
     properties: Properties
+    quality_score: Quality score
     remove: Remove
     required_label: (required)
     result_count: "{0}0 results|{1}1 result|]1, Inf[{{ itemsCount }} results"
@@ -215,6 +244,7 @@ pim_common:
         search: Search...
         no_match: No matches found
         load_more: Loading more results...
+    selected: "{0}None selected|{1}One selected|]1, Inf[{{ itemsCount }} selected"
     status: Status
     to: to
     type: Type
@@ -235,10 +265,26 @@ pim_common:
         DOES NOT CONTAIN: Does not contain
         STARTS WITH: Starts with
         ENDS WITH: Ends with
+        IN: In list
+        "NOT IN": Not in list
     read_more: Read more
+    channel: Channel
+    locale: Locale
+    categories: Categories
+    family_variant: Family variant
+    enabled: Enabled
+    family: Family
+    parent: Parent
+    groups: Groups
+    products: Products
+    product_uuids: Products
+    product_models: Product models
+    more: More
+    public_view: Public view
+    view: View
 
 error:
-    exception: Oh snap! A {{ status_code }} error occurred...
+    exception: A {{ status_code }} error occurred...
     forbidden: Forbidden. You are not allowed to access this page
 
 alert:
@@ -253,6 +299,7 @@ pim_enrich.entity.fallback:
         generic_error: An error occurred
         update:
             fail: Update failed
+            fail_session_expired: Your user session has expired. Please log in again.
             success: Successfully updated
         delete:
             fail: Cannot delete this item
@@ -270,14 +317,15 @@ pim_enrich.entity.fallback:
 
 pim_enrich.entity.job_execution:
     page_title:
-        index: "]-Inf, 1]{{ count }} operation|]1, Inf[{{ count }} operations"
+        index: "]-Inf, 1]{{ count }} job|]1, Inf[{{ count }} jobs"
     module:
         create:
             upload: Drop your {{ type }} file here, or click to browse disk
         download:
+            dropdown_title: "]-Inf, 1]Download generated files|]1, Inf[Download generated files"
             archive: Download generated archive
-            output: Download generated files
-            input: Download read files
+            output: Download generated file
+            input: Download read file
             invalid_xlsx: Download invalid data
             invalid_csv: Download invalid data
 
@@ -289,8 +337,9 @@ pim_title:
     pim_enrich_catalog_volume_index:       Catalog volume monitoring
     pim_enrich_categorytree_index:         Category trees
     pim_enrich_categorytree_create:        Category trees | Create
-    pim_enrich_categorytree_edit:          Category tree {{ category.label }} | Edit
+    pim_enrich_categorytree_edit:          Category {{ category.label }} | Edit
     pim_enrich_categorytree_create_tree:   Category trees | Create
+    pim_enrich_categorytree_tree:          Category tree {{ category.label }} | Edit
     pim_enrich_attribute_index:            Attributes
     pim_enrich_attribute_create:           Attributes | Create
     pim_enrich_attribute_edit:             Attribute {{ attribute.label }} | Edit
@@ -317,8 +366,11 @@ pim_title:
     pim_enrich_job_tracker_show:           Process tracker | Show job
     pim_enrich_mass_edit_action:           Mass Edit
     pim_analytics_system_info_index:       System information
+    pim_settings_index:                    Settings
+    pim_system_index:                      System
 
 pim_menu:
+    tag.new: New
     tab:
         activity: Activity
         imports: Imports
@@ -328,12 +380,16 @@ pim_menu:
         help:
             title: Help
             helper: Akeneo Help center
+            new: NEW
+            news: What’s new?
+            help_center: Help Center
+            akademy_training: Akademy training
     item:
         association_type: Association types
         attribute_group: Attribute groups
         channel: Channels
         currency: Currencies
-        dashboard: Dashboard
+        dashboard: Activity dashboard
         family: Families
         group: Groups
         group_type: Group types
@@ -355,7 +411,11 @@ pim_menu:
         activity: Activity navigation
         system: System navigation
         user: Users management navigation
-        settings: Settings navigation
+        settings:
+          product: Product settings
+          catalog: Catalog settings
+          collapsed_label: Settings navigation
+          automation: Automation
         product: Product navigation
         product_infos: Product infos
 
@@ -369,3 +429,74 @@ pim_notification:
         export: Export
         quick_export: Quick Export
         mass_edit: Mass Edit
+
+pim_settings:
+  settings_menu: Settings menu
+  catalog_settings: Catalog settings
+  product_settings: Product settings
+  automation_settings: Automation
+  count:
+    category_trees: '{0}You have 0 trees |{1}You have 1 tree |]1, Inf[You have {{ count }} trees '
+    categories: '{0}and 0 categories|{1}and 1 category|]1, Inf[and {{ count }} categories'
+    channels: '{0}You have 0 channels|{1}You have 1 channel|]1, Inf[You have {{ count }} channels'
+    locales: '{0}You have 0 enabled locales|{1}You have 1 enabled locale|]1, Inf[You have {{ count }} enabled locales'
+    currencies: '{0}You have 0 enabled currencies|{1}You have 1 enabled currency|]1, Inf[You have {{ count }} enabled currencies'
+    attribute_groups: '{0}You have 0 attribute groups|{1}You have 1 attribute group|]1, Inf[You have {{ count }} attribute groups'
+    attributes: '{0}You have 0 attributes|{1}You have 1 attribute|]1, Inf[You have {{ count }} attributes'
+    families: '{0}You have 0 families|{1}You have 1 family|]1, Inf[You have {{ count }} families'
+    measurements: '{0}You have 0 measurements|{1}You have 1 measurement|]1, Inf[You have {{ count }} measurements'
+    association_types: '{0}You have 0 association types|{1}You have 1 association type|]1, Inf[You have {{ count }} association types'
+    group_types: '{0}You have 0 group types|{1}You have 1 group type|]1, Inf[You have {{ count }} group types'
+    groups: '{0}You have 0 groups|{1}You have 1 group|]1, Inf[You have {{ count }} groups'
+    rules: '{0}You have 0 enabled rules|{1}You have 1 enabled rule|]1, Inf[You have {{ count }} enabled rules'
+    identifier_generators: '{0}You have 0 identifier generator|{1}You have 1 identifier generator|]1, Inf[You have {{ count }} identifier generators'
+
+pim_system:
+  system_menu: System menu
+  system_navigation: System navigation
+  users_management_navigation: Users management navigation
+  count:
+    product_values: '{0}You have 0 product values|{1}You have 1 product value|]1, Inf[You have {{ count }} product values'
+    users: '{0}You have 0 users|{1}You have 1 user|]1, Inf[You have {{ count }} users'
+    user_groups: '{0}You have 0 user groups|{1}You have 1 user group|]1, Inf[You have {{ count }} user groups'
+    roles: '{0}You have 0 roles|{1}You have 1 role|]1, Inf[You have {{ count }} roles'
+  sso:
+    enabled: SSO enabled
+    disabled: SSO disabled
+    title: SAML-based Single Sign-On
+  reset_pim:
+    modal:
+      summary:
+        name: Summary
+        title: 'Warning: resetting your PIM is irreversible'
+        text: 'It will lead to the deletion of all elements except the following:'
+        users:
+          name: Users
+          tooltip: Users are persons you allow to collaborate within your PIM.
+        user_groups:
+          name: User Groups
+          tooltip: User Groups define teams that will perform different actions within your PIM.
+        roles:
+          name: Roles
+          tooltip: Roles define accesses and actions users and user groups can take within your PIM.
+      confirm:
+        name: Confirm
+        title: Confirm reset of your PIM
+        helper:
+          emphasis: There is no going back once you reset your PIM.
+          text: By clicking the reset button, you will be logged out and will be brought back to the login page.
+      confirmation_phrase: Please type "{{ confirmation_word }}"
+      confirmation_word: reset
+    button:
+      label: Reset instance
+      confirm: Reset and log out
+    error_notification: An error occurred during instance reset, please contact your system administrator.
+    jobs_running: You cannot reset your instance at the moment, as some processes are still queued or running.
+  sandbox:
+    helper:
+      text: This is a sandbox environment; your changes will not impact your production.
+
+pim_datagrid:
+  mass_action:
+    default:
+      select_action: Select Action

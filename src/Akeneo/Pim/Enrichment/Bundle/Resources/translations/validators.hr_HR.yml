@@ -13,8 +13,6 @@ Option code may contain only letters, numbers and underscores: Opcija šifre mo�
 Option code may contain only letters (at least one), numbers and underscores: Opcija šifre može sadržavati samo slova (barem jedno), brojke i donju crtu
 This value should not be a decimal.: Ta vrijednost ne smije biti decimalna.
 'The file extension is not allowed (allowed extensions: %extensions%).': 'Ekstenzija datoteke nije dozvoljena (dozvoljene ekstenzije: %extensions%).'
-"The value %value% is already set on another product for the unique attribute %attribute%": Vrijednost %value% je već postavljena za neki drugi proizvod za jedinstveni atribut %attribute%
-regex.comma_or_semicolon.message: Ovo polje ne smije sadržavati niti zarez niti točku-zarez.
 file.extensions.message: 'Ekstenzija datoteke nije dozvoljena (dozvoljene ekstenzije: %extensions%).'
 "This type of value expects the use of {{ decimal_separator }} to separate decimals.": Ovaj tip vrijednosti očekuje korištenje {{ decimal_separator }} za razdvajanje decimala.
 "This type of value expects the use of dot (.) to separate decimals.": Ovj tip vrijednosti očekuje korištenje točke (.) za razdvajanje decimala.
@@ -43,4 +41,6 @@ pim_catalog:
     301: U ovom se polju očekuje valjan opseg i lokacija.
     302: U ovom se polju očekuje valjan opseg.
     303: U ovom se polju očekuje valjan format pridruživanja.
-
+mass_edit:
+  edit_common_attributes:
+    invalid_values: Postoje pogreške u obliku atributa

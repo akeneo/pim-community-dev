@@ -20,12 +20,12 @@ use Symfony\Requirements\Requirement;
  */
 class PimRequirements
 {
-    const REQUIRED_PHP_VERSION = '7.4.0';
+    const REQUIRED_PHP_VERSION = '8.1.0';
     const REQUIRED_GD_VERSION = '2.0';
-    const REQUIRED_GHOSTSCRIPT_VERSION = '9.27';
-    const REQUIRED_CURL_VERSION = '7.0';
-    const REQUIRED_ICU_VERSION = '4.2';
-    const LOWEST_REQUIRED_MYSQL_VERSION = '8.0.18';
+    const REQUIRED_GHOSTSCRIPT_VERSION = '9.53';
+    const REQUIRED_CURL_VERSION = '7.74';
+    const REQUIRED_ICU_VERSION = '67.1';
+    const LOWEST_REQUIRED_MYSQL_VERSION = '8.0.30';
     const GREATEST_REQUIRED_MYSQL_VERSION = '8.1.0';
 
     const REQUIRED_EXTENSIONS = [
@@ -43,14 +43,6 @@ class PimRequirements
         'mbstring',
         'openssl',
     ];
-
-    /** @var string */
-    private $baseDir;
-
-    public function __construct(string $baseDir)
-    {
-        $this->baseDir = $baseDir;
-    }
 
     /**
      * Generate the requirements by executing test and providing the result and the
@@ -70,9 +62,12 @@ class PimRequirements
         $requirements[] = new Requirement(
             version_compare($phpVersion, self::REQUIRED_PHP_VERSION, '>='),
             sprintf('PHP version must be at least %s (%s installed)', self::REQUIRED_PHP_VERSION, $phpVersion),
-            sprintf('You are running PHP version "<strong>%s</strong>", but needs at least PHP "<strong>%s</strong>" to run.
+            sprintf(
+                'You are running PHP version "<strong>%s</strong>", but needs at least PHP "<strong>%s</strong>" to run.
                 Before using, upgrade your PHP installation, preferably to the latest version.',
-                $phpVersion, self::REQUIRED_PHP_VERSION)
+                $phpVersion,
+                self::REQUIRED_PHP_VERSION
+            )
         );
 
         foreach (self::REQUIRED_EXTENSIONS as $requiredExtension) {
@@ -176,10 +171,8 @@ class PimRequirements
     /**
      * Returns a global MySQL configuration variable value
      */
-    protected function getMySQLVariableValue(string $variableName) : ?string
+    protected function getMySQLVariableValue(string $variableName) : string|int|null
     {
-        $variableValue = null;
-
         $stmt = $this->getConnection()->query(
             sprintf("SELECT @@GLOBAL.%s", $variableName)
         );
@@ -212,7 +205,7 @@ class PimRequirements
      * If it exits, an attempt to connect is done, and can result in an exception
      * if no connection is reached.
      */
-    protected function getConnection() : PDO
+    protected function getConnection(): PDO
     {
         return new PDO(
             sprintf(
@@ -241,11 +234,11 @@ class PimRequirements
             case 'g':
             case 'gb':
                 $val *= 1024;
-            // no break
+                // no break
             case 'm':
             case 'mb':
                 $val *= 1024;
-            // no break
+                // no break
             case 'k':
             case 'kb':
                 $val *= 1024;

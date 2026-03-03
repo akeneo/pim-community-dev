@@ -27,11 +27,16 @@ final class AkeneoDataQualityInsightsExtension extends Extension
         $loader->load('elasticsearch.yml');
         $loader->load('jobs.yml');
         $loader->load('feature_flags.yml');
+        $loader->load('messenger_handlers.yml');
+        $loader->load('normalizers.yml');
         $loader->load('productgrid.yml');
         $loader->load('queries.yml');
         $loader->load('repositories.yml');
         $loader->load('services.yml');
         $loader->load('subscribers.yml');
         $loader->load('transformation.yml');
+        $loader->load('factories.yml');
+
+        $loader->load('public_api/queries.yml');
     }
 }

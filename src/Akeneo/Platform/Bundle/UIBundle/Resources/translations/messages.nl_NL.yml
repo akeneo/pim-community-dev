@@ -48,32 +48,36 @@ pim_ui.system_config:
     loading_message.title: Laadberichten
 other_actions: Andere acties
 pim_common:
+  association_types: Associatietypes
   cancel: Annuleer
-  save: Opslaan
-  delete: Verwijderen
-  update: Bijwerken
-  view: Bekijk
-  edit: Wijzig
-  created: Aangemaakt
-  updated: Bijgewerkt
-  create: Aanmaken
-  permissions: Machtigingen
-  properties: Eigenschappen
-  name: Naam
-  remove: Verwijder
-  code: Code
-  quantity: Aantal
-  products: Producten
-  product_models: Productmodels
   categories: Categorieën
-  family_variant: Familie variant
+  code: Code
+  create: Aanmaken
+  created: Aangemaakt
+  delete: Verwijderen
+  edit: Wijzig
   enabled: Ingeschakeld
+  family_variant: Familie variant
   family: Familie
-  parent: Bovenliggende
   groups: Groepen
-  unit: Eenheid
-  yes: "Ja"
+  label: Label
+  name: Naam
   no: "Nee"
+  parent: Bovenliggende
+  permissions: Machtigingen
+  product_models: Productmodels
+  products: Producten
+  properties: Eigenschappen
+  quality_score: Kwaliteitsscore
+  quantity: Aantal
+  remove: Verwijder
+  save: Opslaan
+  unit: Eenheid
+  update: Bijwerken
+  updated: Bijgewerkt
+  view: Bekijk
+  yes: "Ja"
+  uuid: UUID
 pim_enrich:
   #ACLs
   acl:
@@ -99,21 +103,13 @@ pim_enrich:
       comment: Geef commentaar op producten
       download: Download het product als PDF
       history: Bekijk productgeschiedenis
+      convert_variant_to_simple: Converteer een variant product naar een eenvoudig product
     product_model:
       create: Een product model aanmaken
       edit_attributes: Wijzig attributen van een productmodel
       categories_view: Raadpleeg de categorieën van een productmodel
       history: Bekijk productmodel-geschiedenis
       remove: Verwijder een productmodel (inclusief varianten)
-    category:
-      list: Categorieën oplijsten
-      create: Categorie aanmaken
-      edit: Categorie wijzigen
-      remove: Categorie verwijderen
-      move: Categorie verplaatsen
-      children: Kinderen van categorie weergeven
-      products: Producten van categorie weergeven
-      history: Bekijk categoriegeschiedenis
     channel:
       index: Kanalen weergeven
       create: Kanaal aanmaken
@@ -135,6 +131,7 @@ pim_enrich:
       create: Attribuutgroep aanmaken
       edit: Attribuutgroep wijzigen
       remove: Attribuutgroep verwijderen
+      mass_delete: Attribuutgroepen in bulk verwijderen
       sort: Attribuutgroepen sorteren
       add_attribute: Attribuut toevoegen aan een groep
       remove_attribute: Attribuut verwijderen van een groep
@@ -144,6 +141,7 @@ pim_enrich:
       create: Attribuut aanmaken
       edit: Attribuut bewerken
       remove: Attribuut verwijderen
+      mass_delete: Attributen in bulk verwijderen
       sort: Sorteer attributen binnen attribuutgroepen
       history: Bekijk attribuutgeschiedenis
     group:
@@ -214,8 +212,10 @@ flash:
   entity:
     removed: Object is verwijderd
   attribute:
-    identifier_not_removable: Id-attribuut kan niet worden verwijderd
+    main_identifier_not_removable: Het hoofd identifier attribuut kan niet worden verwijderd. 
     used_as_conversion_unit: Dit attribuut kan niet worden verwijderd omdat het wordt gebruikt als conversie eenheid in het kanaal(en) %channelCodes%.
+    cant_remove_attributes_used_as_label: Attributen die worden gebruikt als labels in een familie kunnen niet worden verwijderd.
+    cant_remove_attribute_used_as_axis: Kan dit attribuut niet verwijderen. Het wordt gebruikt als variantas in een familievariant
   category:
     removed: Categorie succesvol verwijderd
   tree:
@@ -446,19 +446,22 @@ pim_datagrid:
     enabled:
       label: Status
     scope:
-      label: Bereik
+      label: Kanaal
     completeness:
       label: Voltooien
     created:
-      label: Aangemaakt op
+      label: Aangemaakt
     updated:
-      label: Bijgewerkt op
+      label: Bijgewerkt
     label_or_identifier:
       label: Label of identifier
+      label_with_uuid: Label, ID of UUID
     parent:
       label: Bovenliggende
     identifier:
       label: Id
+    uuid:
+      label: Uuid
 #Versioning / history
 Change History: Geschiedenis van wijzigingen
 Data Audit: Gegevens audit
@@ -523,7 +526,6 @@ pim_mass_edit:
       success: Groepsgewijs verwijderen <strong>%label%</strong> beëindigd
 job_execution.summary:
   mass_edited: Groepsgewijs bewerken
-  skip: Overgeslagen
   skipped_products: Overgeslagen producten
   skipped_attributes: Overgeslagen attributen
   skipped_families: Overgeslagen families
@@ -544,3 +546,9 @@ job_tracker:
     title: Procesopvolger
   filter:
     started_at: Begonnen om
+pim_login:
+  logo_title: Akeneo PIM
+  footer:
+    powered: Mogelijk gemaakt door
+    powered_image_title: logo Akeneo
+pim_system.acl_group.connect: Verbinden

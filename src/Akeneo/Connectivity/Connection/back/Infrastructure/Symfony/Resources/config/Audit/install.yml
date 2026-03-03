@@ -1,0 +1,6 @@
+services:
+    Akeneo\Connectivity\Connection\Infrastructure\Audit\Install\InstallSubscriber:
+        arguments:
+            - '@database_connection'
+        tags:
+            - {name: kernel.event_subscriber}

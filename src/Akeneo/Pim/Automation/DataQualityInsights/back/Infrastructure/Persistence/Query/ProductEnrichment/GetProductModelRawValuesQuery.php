@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEnrichment;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetProductRawValuesQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
 use Doctrine\DBAL\Connection;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -22,8 +24,10 @@ class GetProductModelRawValuesQuery implements GetProductRawValuesQueryInterface
         $this->dbConnection = $dbConnection;
     }
 
-    public function execute(ProductId $productId): array
+    public function execute(ProductEntityIdInterface $productModelId): array
     {
+        Assert::isInstanceOf($productModelId, ProductModelId::class);
+
         $query = <<<SQL
 SELECT
     JSON_MERGE(
@@ -35,16 +39,17 @@ SELECT
 WHERE product_model.id = :product_model_id;
 SQL;
 
-        $statement = $this->dbConnection->executeQuery($query,
+        $statement = $this->dbConnection->executeQuery(
+            $query,
             [
-                'product_model_id' => $productId->toInt(),
+                'product_model_id' => (int)(string)$productModelId,
             ],
             [
                 'product_model_id' => \PDO::PARAM_INT,
             ]
         );
 
-        $result = $statement->fetchColumn();
+        $result = $statement->fetchOne();
 
         return false === $result ? [] : json_decode($result, true);
     }

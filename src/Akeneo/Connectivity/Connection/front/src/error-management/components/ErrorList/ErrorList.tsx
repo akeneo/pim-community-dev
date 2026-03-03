@@ -37,7 +37,7 @@ export const ErrorList: FC<Props> = ({errors}) => {
         .sort(sortingByTimestamp(sortOrder))
         .filter(filteringBySearchValue(searchValue));
 
-    const userLocale = useContext(UserContext).get('uiLocale');
+    const userLocale = useContext(UserContext).get<string>('uiLocale');
     const {locales} = useLocale();
     const {families} = useFamily(userLocale);
     const {channels} = useChannel(userLocale);

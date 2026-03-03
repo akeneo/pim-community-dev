@@ -4,7 +4,6 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\Stand
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ProductValueConverter;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\QualityScoreConverter;
-use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithQualityScoresInterface;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\ArrayConverter\StandardToFlat\AbstractSimpleArrayConverter;
 
@@ -17,21 +16,16 @@ use Akeneo\Tool\Component\Connector\ArrayConverter\StandardToFlat\AbstractSimple
  */
 class Product extends AbstractSimpleArrayConverter implements ArrayConverterInterface
 {
-    /** @var ProductValueConverter */
-    protected $valueConverter;
-
-    /**
-     * @param ProductValueConverter $valueConverter
-     */
-    public function __construct(ProductValueConverter $valueConverter)
-    {
-        $this->valueConverter = $valueConverter;
+    public function __construct(
+        protected ProductValueConverter $valueConverter,
+        private QualityScoreConverter $qualityScoreConverter
+    ) {
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function convertProperty($property, $data, array $convertedItem, array $options)
+    protected function convertProperty($property, $data, array $convertedItem, array $options): array
     {
         switch ($property) {
             case 'associations':
@@ -42,6 +36,9 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
                 break;
             case 'categories':
                 $convertedItem[$property] = implode(',', $data);
+                break;
+            case 'uuid':
+                $convertedItem = $this->convertUuid($data, $convertedItem, $options['with_uuid'] ?? true);
                 break;
             case 'enabled':
                 $convertedItem[$property] = false === $data || null === $data ? '0' : '1';
@@ -64,7 +61,7 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
                 break;
             case 'quality_scores':
                 if (is_array($data)) {
-                    $convertedItem = $this->convertQualityScores($data, $convertedItem);
+                    $convertedItem = $convertedItem + $this->qualityScoreConverter->convert($data);
                 }
                 break;
             case 'identifier':
@@ -193,12 +190,10 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
         return $convertedItem;
     }
 
-    private function convertQualityScores(array $scores, array $convertedItem): array
+    protected function convertUuid($data, array $convertedItem, bool $exportUuid): array
     {
-        foreach ($scores as $channel => $localeScores) {
-            foreach ($localeScores as $locale => $score) {
-                $convertedItem[sprintf('%s-%s-%s', GetProductsWithQualityScoresInterface::FLAT_FIELD_PREFIX, $locale, $channel)] = $score;
-            }
+        if ($exportUuid) {
+            return $convertedItem + ['uuid' => (string) $data];
         }
 
         return $convertedItem;

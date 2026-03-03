@@ -21,11 +21,11 @@ export const DeleteConnection = () => {
         if (isOk(result)) {
             dispatch(connectionDeleted(code));
 
-            history.push('/connections');
+            history.push('/connect/connection-settings');
         }
     };
 
-    const handleCancel = () => history.push(`/connections/${code}/edit`);
+    const handleCancel = () => history.push(`/connect/connection-settings/${code}/edit`);
 
     const description = (
         <>

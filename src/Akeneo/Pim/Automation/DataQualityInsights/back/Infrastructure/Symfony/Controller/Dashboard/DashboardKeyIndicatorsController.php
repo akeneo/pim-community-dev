@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\Dashboard;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\GetKeyIndicatorsInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\KeyIndicator\GetKeyIndicatorsInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CategoryCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\FamilyCode;

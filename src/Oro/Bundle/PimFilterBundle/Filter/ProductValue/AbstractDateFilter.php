@@ -49,8 +49,14 @@ abstract class AbstractDateFilter extends OroAbstractDateFilter
     protected function isValidData($data)
     {
         // Empty operator does not need any value
-        if (is_array($data) && isset($data['type']) && in_array($data['type'], [FilterType::TYPE_EMPTY, FilterType::TYPE_NOT_EMPTY])) {
-            return true;
+        if (is_array($data) && isset($data['type'])) {
+            if ($data['type'] === DateRangeFilterType::TYPE_MORE_THAN && null === $data['value']['start']
+                || $data['type'] === DateRangeFilterType::TYPE_LESS_THAN && null === $data['value']['end']) {
+                return false;
+            }
+            if (in_array($data['type'], [FilterType::TYPE_EMPTY, FilterType::TYPE_NOT_EMPTY])) {
+                return true;
+            }
         }
 
         return parent::isValidData($data);

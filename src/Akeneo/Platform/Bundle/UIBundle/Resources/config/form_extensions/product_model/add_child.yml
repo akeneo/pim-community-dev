@@ -50,8 +50,6 @@ extensions:
 
     pim-product-model-add-child-field-text:
         module: pim/form/common/fields/values/text
-        config:
-            required: true
 
     pim-product-model-add-child-field-code:
         module: pim/form/common/fields/text

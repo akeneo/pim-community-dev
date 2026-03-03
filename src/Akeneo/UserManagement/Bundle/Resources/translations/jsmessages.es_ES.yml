@@ -10,7 +10,6 @@ pim_title:
   pim_user_security_login: Ingresar
   pim_user_reset_reset: Reiniciar contraseña
   pim_user_reset_request: Contraseña olvidada
-  pim_user_reset_check_email: Reiniciar contraseña | Verificar correo electrónico
   pim_user_group_create: 'Grupos | Crear'
   pim_user_group_update: 'Grupo {{ group }} | Editar'
 confirmation:
@@ -27,6 +26,20 @@ pim_enrich:
       module:
         delete:
           confirm: '¿Seguro que desea eliminar este usuario?'
+pim_user.profile:
+  caption: Primero, díganos cuál es su principal misión, para que podamos ayudarle con el contenido más relevante.
+  why_is_it_needed: '¿Por qué necesitamos esta información?'
+  save_button: Guardar y acceder a la App Store
+  selector:
+    placeholder: Seleccione una opción
+    not_found: No se encontraron resultados
+  product_manager: Yo gestiono los catálogos de productos.
+  redactor: Yo enriquezco los datos de los productos.
+  pim_integrator: Yo integro Akeneo PIM en nuestro ecosistema informático.
+  pim_administrator: Yo administro el PIM de Akeneo.
+  asset_manager: Yo gestiono los activos en el PIM.
+  translator: Yo traduzco los datos de productos, activos y/o entidades de referencia.
+  third_party_developer: Yo desarrollo soluciones relacionadas con el PIM de Akeneo.
 pim_user_management:
   entity:
     user:
@@ -42,6 +55,7 @@ pim_user_management:
         index: "]-Inf, 1] {{ count }} usuario|]1, Inf [{{ count }} usuarios"
       properties:
         username: Nombre de usuario
+        profile: '¿Cuál es su misión principal?'
         name_prefix: Prefijo del nombre
         first_name: Primer nombre
         middle_name: Segundo nombre
@@ -68,6 +82,8 @@ pim_user_management:
         default_published_product_grid_view: Vista por defecto de cuadrícula de productos publicados #EE Only
         proposals_to_review_notification: Si hay nuevas propuestas a revisar #EE Only
         proposals_state_notifications: Cuando una nueva propuesta es aceptada o rachazada #EE Only
+        not_fully_supported_locale: 'La interfaz local de usuario seleccionada [{{ code }}] no está totalmente soportada. Puede encontrarse con traducciones de texto incompletas o faltantes. Ayuda a mejorar la cobertura local:'
+        link_to_crowdin_label: contribuir a Crowdin.
       meta:
         created: Creado
         updated: actualizado
@@ -98,3 +114,13 @@ pim_user_management:
       module:
         create:
           button: Crear grupo
+  form:
+    error:
+      required: Este campo es obligatorio.
+      should_not_contain_space: El nombre de usuario no debe contener un carácter de espacio.
+      too_short_value: "Este valor es demasiado corto. Debe tener {{ count }} caracteres o más."
+    duplication:
+      title: 'Duplicar usuario «{{ username }}»'
+      notification:
+        success: El usuario se duplicó con éxito
+        failure: Error de duplicación del usuario

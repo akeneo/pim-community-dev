@@ -20,6 +20,7 @@ extensions:
         config:
             title: pim_menu.tab.activity
             iconModifier: iconCard
+            icon: CardIcon
 
     pim-menu-activity-column:
         module: pim/menu/column
@@ -47,23 +48,6 @@ extensions:
             title: pim_menu.item.dashboard
             to: pim_dashboard_index
 
-    pim-menu-activity-catalog-volume:
-        module: pim/menu/item
-        parent: pim-menu-activity-navigation-block
-        position: 101
-        config:
-            title: pim_menu.item.catalog_volume
-            to: pim_enrich_catalog_volume_index
-
-    pim-menu-activity-job-tracker:
-        module: pim/menu/item
-        parent: pim-menu-activity-navigation-block
-        aclResourceId: pim_enrich_job_tracker_index
-        position: 110
-        config:
-            title: pim_menu.item.job_tracker
-            to: pim_enrich_job_tracker_index
-
     # Imports
     pim-menu-imports:
         module: pim/menu/tab
@@ -75,6 +59,7 @@ extensions:
             title: pim_menu.tab.imports
             iconModifier: iconDownload
             to: pim_importexport_import_profile_index
+            icon: DownloadIcon
 
     # Products
     pim-menu-products:
@@ -87,6 +72,7 @@ extensions:
             title: pim_enrich.entity.product.plural_label
             iconModifier: iconProduct
             to: pim_enrich_product_index
+            icon: ProductIcon
 
     # Exports
     pim-menu-exports:
@@ -99,6 +85,7 @@ extensions:
             title: pim_menu.tab.exports
             iconModifier: iconUpload
             to: pim_importexport_export_profile_index
+            icon: UploadIcon
 
     # Settings
     pim-menu-settings:
@@ -109,6 +96,9 @@ extensions:
         config:
             title: pim_menu.tab.settings
             iconModifier: iconSettings
+            to: pim_settings_index
+            isLandingSectionPage: true
+            icon: SettingsIcon
 
     pim-menu-settings-column:
         module: pim/menu/column
@@ -118,106 +108,124 @@ extensions:
         config:
             stateCode: pim-menu-settings
             tab: pim-menu-settings
-            navigationTitle: pim_menu.navigation.settings
+            navigationTitle: pim_menu.navigation.settings.collapsed_label
 
-    pim-menu-settings-navigation-block:
+    # Settings > catalog settings
+    pim-menu-catalog-settings-block:
         module: pim/menu/navigation-block
         parent: pim-menu-settings-column
+        position: 50
         targetZone: navigation
         config:
-            title: pim_menu.navigation.settings
+            title: pim_menu.navigation.settings.catalog
+
+    pim-menu-settings-product-category:
+        module: pim/menu/item
+        parent: pim-menu-catalog-settings-block
+        aclResourceId: pim_enrich_product_category_list
+        position: 10
+        config:
+            title: pim_enrich.entity.category.plural_label
+            to: pim_enrich_categorytree_index
+            new: true
+
+    pim-menu-settings-channel:
+        module: pim/menu/item
+        parent: pim-menu-catalog-settings-block
+        aclResourceId: pim_enrich_channel_index
+        position: 20
+        config:
+            title: pim_menu.item.channel
+            to: pim_enrich_channel_index
+
+    pim-menu-settings-locale:
+        module: pim/menu/item
+        parent: pim-menu-catalog-settings-block
+        aclResourceId: pim_enrich_locale_index
+        position: 30
+        config:
+            title: pim_enrich.entity.locale.plural_label
+            to: pim_enrich_locale_index
+
+    pim-menu-settings-currency:
+        module: pim/menu/item
+        parent: pim-menu-catalog-settings-block
+        aclResourceId: pim_enrich_currency_index
+        position: 40
+        config:
+            title: pim_menu.item.currency
+            to: pim_enrich_currency_index
+
+    # Settings > Product settings
+    pim-menu-product-settings-block:
+        module: pim/menu/navigation-block
+        parent: pim-menu-settings-column
+        position: 100
+        targetZone: navigation
+        config:
+            title: pim_menu.navigation.settings.product
 
     pim-menu-settings-attribute-group:
         module: pim/menu/item
-        parent: pim-menu-settings-navigation-block
+        parent: pim-menu-product-settings-block
         aclResourceId: pim_enrich_attributegroup_index
-        position: 100
+        position: 10
         config:
             title: pim_enrich.entity.attribute_group.plural_label
             to: pim_enrich_attributegroup_index
 
     pim-menu-settings-attribute:
         module: pim/menu/item
-        parent: pim-menu-settings-navigation-block
+        parent: pim-menu-product-settings-block
         aclResourceId: pim_enrich_attribute_index
-        # TODO Set this position back to origin when all the screens will be PEFized
-        # position: 110
-        position: 0
+        position: 20
         config:
             title: pim_enrich.entity.attribute.plural_label
             to: pim_enrich_attribute_index
 
-    pim-menu-settings-product-category:
-        module: pim/menu/item
-        parent: pim-menu-settings-navigation-block
-        aclResourceId: pim_enrich_product_category_list
-        position: 120
-        config:
-            title: pim_enrich.entity.category.plural_label
-            to: pim_enrich_categorytree_index
-
     pim-menu-settings-family:
         module: pim/menu/item
-        parent: pim-menu-settings-navigation-block
+        parent: pim-menu-product-settings-block
         aclResourceId: pim_enrich_family_index
-        position: 130
+        position: 30
         config:
             title: pim_menu.item.family
             to: pim_enrich_family_index
 
+    pim-menu-settings-association-type:
+        module: pim/menu/item
+        parent: pim-menu-product-settings-block
+        aclResourceId: pim_enrich_associationtype_index
+        position: 50
+        config:
+            title: pim_menu.item.association_type
+            to: pim_enrich_associationtype_index
+
     pim-menu-settings-group-type:
         module: pim/menu/item
-        parent: pim-menu-settings-navigation-block
+        parent: pim-menu-product-settings-block
         aclResourceId: pim_enrich_grouptype_index
-        position: 140
+        position: 60
         config:
             title: pim_menu.item.group_type
             to: pim_enrich_grouptype_index
 
     pim-menu-settings-group:
         module: pim/menu/item
-        parent: pim-menu-settings-navigation-block
+        parent: pim-menu-product-settings-block
         aclResourceId: pim_enrich_group_index
-        position: 150
+        position: 70
         config:
             title: pim_menu.item.group
             to: pim_enrich_group_index
 
-    pim-menu-settings-association-type:
-        module: pim/menu/item
-        parent: pim-menu-settings-navigation-block
-        aclResourceId: pim_enrich_associationtype_index
-        position: 170
+    pim-menu-automation-settings-block:
+        module: pim/menu/navigation-block
+        parent: pim-menu-settings-column
+        position: 110
+        targetZone: navigation
         config:
-            title: pim_menu.item.association_type
-            to: pim_enrich_associationtype_index
-
-    pim-menu-settings-currency:
-        module: pim/menu/item
-        parent: pim-menu-settings-navigation-block
-        aclResourceId: pim_enrich_currency_index
-        position: 180
-        config:
-            title: pim_menu.item.currency
-            to: pim_enrich_currency_index
-
-    pim-menu-settings-locale:
-        module: pim/menu/item
-        parent: pim-menu-settings-navigation-block
-        aclResourceId: pim_enrich_locale_index
-        position: 190
-        config:
-            title: pim_enrich.entity.locale.plural_label
-            to: pim_enrich_locale_index
-
-    pim-menu-settings-channel:
-        module: pim/menu/item
-        parent: pim-menu-settings-navigation-block
-        aclResourceId: pim_enrich_channel_index
-        position: 200
-        config:
-            title: pim_menu.item.channel
-            to: pim_enrich_channel_index
+            title: pim_menu.navigation.settings.automation
 
     # System
     pim-menu-system:
@@ -228,6 +236,9 @@ extensions:
         config:
             title: pim_menu.tab.system
             iconModifier: iconSystem
+            icon: SystemIcon
+            to: pim_system_index
+            isLandingSectionPage: true
 
     pim-menu-system-column:
         module: pim/menu/column
@@ -246,6 +257,15 @@ extensions:
         targetZone: navigation
         config:
             title: pim_menu.navigation.system
+
+    pim-menu-system-catalog-volume:
+        module: pim/menu/item
+        parent: pim-menu-system-navigation-block
+        aclResourceId: view_catalog_volume_monitoring
+        position: 90
+        config:
+            title: pim_menu.item.catalog_volume
+            to: pim_enrich_catalog_volume_index
 
     pim-menu-system-configuration:
         module: pim/menu/item

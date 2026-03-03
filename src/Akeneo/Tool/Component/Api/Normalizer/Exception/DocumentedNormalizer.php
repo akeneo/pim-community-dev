@@ -35,7 +35,7 @@ class DocumentedNormalizer implements NormalizerInterface, CacheableSupportsMeth
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($exception, $format = null)
+    public function supportsNormalization($exception, $format = null): bool
     {
         return $exception instanceof DocumentedHttpException;
     }

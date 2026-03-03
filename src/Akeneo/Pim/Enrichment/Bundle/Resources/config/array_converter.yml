@@ -37,7 +37,6 @@ services:
             - '@pim_connector.array_converter.flat_to_standard.product.field_converter'
             - '@pim_connector.array_converter.flat_to_standard.product.columns_merger'
             - '@pim_connector.array_converter.flat_to_standard.product.columns_mapper'
-            - '@pim_connector.array_convertor.checker.fields_requirement'
             - '@pim_catalog.repository.attribute'
             - '@pim_connector.array_converter.flat_to_standard.product_value'
 
@@ -55,11 +54,11 @@ services:
             - '@pim_connector.array_converter.flat_to_standard.product'
             - '@pim_catalog.localization.localizer.converter'
 
-
     pim_connector.array_converter.standard_to_flat.product:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product'
         arguments:
             - '@pim_connector.array_converter.standard_to_flat.product.product_value_converter'
+            - '@pim_connector.array_converter.standard_to_flat.quality_score_converter'
 
     pim_connector.array_converter.standard_to_flat.product_localized:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\ProductLocalized'
@@ -71,6 +70,7 @@ services:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\ProductModel'
         arguments:
             - '@pim_connector.array_converter.standard_to_flat.product.product_value_converter'
+            - '@pim_connector.array_converter.standard_to_flat.quality_score_converter'
 
     pim_connector.array_converter.standard_to_flat.product_model_localized:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\ProductLocalized'
@@ -84,6 +84,9 @@ services:
             - '@pim_connector.array_converter.standard_to_flat.product.value_converter.registry'
             - '@pim_catalog.repository.cached_attribute'
 
+    pim_connector.array_converter.standard_to_flat.quality_score_converter:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\QualityScoreConverter'
+
     ### Group
     pim_connector.array_converter.flat_to_standard.group:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\Group'
@@ -96,10 +99,10 @@ services:
 
     ### Category
     pim_connector.array_converter.standard_to_flat.category:
-        class: 'Akeneo\Pim\Enrichment\Component\Category\Connector\ArrayConverter\StandardToFlat\Category'
+        class: 'Akeneo\Category\Infrastructure\Component\Connector\ArrayConverter\StandardToFlat\Category'
 
     pim_connector.array_converter.flat_to_standard.category:
-        class: 'Akeneo\Pim\Enrichment\Component\Category\Connector\ArrayConverter\FlatToStandard\Category'
+        class: 'Akeneo\Category\Infrastructure\Component\Connector\ArrayConverter\FlatToStandard\Category'
         arguments:
             - '@pim_connector.array_convertor.checker.fields_requirement'
 
@@ -210,6 +213,7 @@ services:
         parent: pim_connector.array_converter.flat_to_standard.product.value_converter.abstract
         arguments:
             - ['pim_catalog_boolean']
+            - '@translator'
         tags:
             - { name: 'pim_connector.array_converter.flat_to_standard.product.value_converter' }
 
@@ -280,7 +284,7 @@ services:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnsResolver'
         arguments:
             - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.repository.currency'
+            - '@pim_catalog.query.find_activated_currencies'
             - '@pim_catalog.resolver.attribute_values'
 
     pim_connector.array_converter.flat_to_standard.product.association_columns_resolver:

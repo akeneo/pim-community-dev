@@ -1,0 +1,26 @@
+akeneo_job_process_tracker_index:
+  path: /job
+
+akeneo_job_process_tracker_details:
+  path: /job/show/{id}
+  requirements:
+    id: \d+
+
+# Used for onboarder compatibility
+pim_enrich_job_tracker_index:
+  path: /job
+
+akeneo_job_index_action:
+  path: /rest/process-tracker
+  defaults: { _controller: akeneo.job.controller.get_job_execution_action }
+  methods: [POST]
+
+akeneo_job_get_job_type_action:
+  path: /rest/process-tracker/job-type
+  defaults: { _controller: akeneo.job.controller.get_job_type_action }
+  methods: [GET]
+
+akeneo_job_get_job_user_action:
+  path: /rest/process-tracker/job-user
+  defaults: { _controller: akeneo.job.controller.get_job_user_action }
+  methods: [GET]

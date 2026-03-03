@@ -1,0 +1,22 @@
+# Internal API
+akeneo_connectivity_connection_rest_connections_max_limit_reached:
+    path: '/rest/connections/max-limit-reached'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Settings\Controller\Internal\IsConnectionsNumberLimitReachedAction
+    methods: [GET]
+
+# Front API
+akeneo_connectivity_connection_settings_redirect:
+    path: '/connections'
+
+akeneo_connectivity_connection_settings_index:
+    path: '/connect/connection-settings'
+
+akeneo_connectivity_connection_settings_edit:
+    path: '/connect/connection-settings/{code}/edit'
+    requirements:
+        code: '[a-zA-Z0-9_]+'
+
+akeneo_connectivity_connection_settings_any:
+    path: '/connect/connection-settings/{any}'
+    requirements:
+        any: .*

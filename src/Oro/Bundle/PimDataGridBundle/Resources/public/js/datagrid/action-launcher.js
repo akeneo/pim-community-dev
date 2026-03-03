@@ -64,6 +64,9 @@ define([
       click: 'onClick',
     },
 
+    /** @property {Boolean} */
+    noHref: false,
+
     /**
      * Initialize
      *
@@ -123,6 +126,10 @@ define([
         this.enabled = options.enabled;
       }
 
+      if (_.has(options, 'noHref')) {
+        this.noHref = options.noHref;
+      }
+
       this.action = options.action;
       Backbone.View.prototype.initialize.apply(this, arguments);
     },
@@ -148,6 +155,7 @@ define([
           attributes: this.attributes,
           enabled: this.enabled,
           tagName: this.tagName,
+          noHref: this.noHref,
         })
       );
 

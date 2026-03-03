@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\ValuesFiller;
 
-use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Channel\Component\Model\CurrencyInterface;
-use Akeneo\Channel\Component\Model\LocaleInterface;
-use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\CurrencyInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -21,29 +21,17 @@ use Webmozart\Assert\Assert;
  */
 final class FillMissingProductModelValues implements FillMissingValuesInterface
 {
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $familyVariantRepository;
-
-    /** @var ChannelRepositoryInterface */
-    private $channelRepository;
-
-    /** @var LocaleRepositoryInterface */
-    private $localeRepository;
-
     /** @var ChannelInterface[] */
-    private $channels;
+    private ?array $channels = null;
 
     /** @var LocaleInterface[] */
-    private $locales;
+    private ?array $locales = null;
 
     public function __construct(
-        IdentifiableObjectRepositoryInterface $familyVariantRepository,
-        ChannelRepositoryInterface $channelRepository,
-        LocaleRepositoryInterface $localeRepository
+        private readonly IdentifiableObjectRepositoryInterface $familyVariantRepository,
+        private readonly ChannelRepositoryInterface $channelRepository,
+        private readonly LocaleRepositoryInterface $localeRepository
     ) {
-        $this->familyVariantRepository = $familyVariantRepository;
-        $this->channelRepository = $channelRepository;
-        $this->localeRepository = $localeRepository;
     }
 
     /**
@@ -123,12 +111,16 @@ final class FillMissingProductModelValues implements FillMissingValuesInterface
                     $nullValues[$attribute->getCode()][$channel->getCode()]['<all_locales>'] = $nullValue;
                 }
             } elseif (!$attribute->isScopable() && $attribute->isLocalizable()) {
-                foreach ($this->getLocales() as $locale) {
+                $locales = $attribute->isLocaleSpecific() ? $attribute->getAvailableLocales() : $this->getLocales();
+                foreach ($locales as $locale) {
                     $nullValues[$attribute->getCode()]['<all_channels>'][$locale->getCode()] = $nullValue;
                 }
             } elseif ($attribute->isScopable() && $attribute->isLocalizable()) {
                 foreach ($this->getChannels() as $channel) {
                     foreach ($channel->getLocales() as $locale) {
+                        if ($attribute->isLocaleSpecific() && !$attribute->hasLocaleSpecific($locale)) {
+                            continue;
+                        }
                         $nullValues[$attribute->getCode()][$channel->getCode()][$locale->getCode()] = $nullValue;
                     }
                 }
@@ -224,23 +216,24 @@ final class FillMissingProductModelValues implements FillMissingValuesInterface
             } elseif ($attribute->isScopable() && !$attribute->isLocalizable()) {
                 foreach ($this->getChannels() as $channel) {
                     foreach ($this->sortCurrenciesByCode($channel->getCurrencies()->toArray()) as $currency) {
-                        $nullValues[$attribute->getCode()][$channel->getCode()]['<all_locales>'][$currency->getCode(
-                        )] = null;
+                        $nullValues[$attribute->getCode()][$channel->getCode()]['<all_locales>'][$currency->getCode()] = null;
                     }
                 }
             } elseif (!$attribute->isScopable() && $attribute->isLocalizable()) {
-                foreach ($this->getLocales() as $locale) {
+                $locales = $attribute->isLocaleSpecific() ? $attribute->getAvailableLocales() : $this->getLocales();
+                foreach ($locales as $locale) {
                     foreach ($this->getCurrencies() as $currency) {
-                        $nullValues[$attribute->getCode()]['<all_channels>'][$locale->getCode()][$currency->getCode(
-                        )] = null;
+                        $nullValues[$attribute->getCode()]['<all_channels>'][$locale->getCode()][$currency->getCode()] = null;
                     }
                 }
             } elseif ($attribute->isScopable() && $attribute->isLocalizable()) {
                 foreach ($this->getChannels() as $channel) {
                     foreach ($channel->getLocales() as $locale) {
+                        if ($attribute->isLocaleSpecific() && !$attribute->hasLocaleSpecific($locale)) {
+                            continue;
+                        }
                         foreach ($this->sortCurrenciesByCode($channel->getCurrencies()->toArray()) as $currency) {
-                            $nullValues[$attribute->getCode()][$channel->getCode()][$locale->getCode(
-                            )][$currency->getCode()] = null;
+                            $nullValues[$attribute->getCode()][$channel->getCode()][$locale->getCode()][$currency->getCode()] = null;
                         }
                     }
                 }

@@ -2,14 +2,16 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer;
 
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\ElasticsearchProductProjection;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetElasticsearchProductProjectionInterface;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductIndexer;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\ElasticsearchProductProjection;
+use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
-use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductIndexer;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 class ProductIndexerSpec extends ObjectBehavior
 {
@@ -17,7 +19,10 @@ class ProductIndexerSpec extends ObjectBehavior
         Client $productAndProductModelIndexClient,
         GetElasticsearchProductProjectionInterface $getElasticsearchProductProjection
     ) {
-        $this->beConstructedWith($productAndProductModelIndexClient, $getElasticsearchProductProjection);
+        $this->beConstructedWith(
+            $productAndProductModelIndexClient,
+            $getElasticsearchProductProjection
+        );
     }
 
     function it_is_initializable()
@@ -30,148 +35,163 @@ class ProductIndexerSpec extends ObjectBehavior
         $this->shouldImplement(ProductIndexerInterface::class);
     }
 
-    function it_indexes_a_single_product_from_identifier(
+    function it_bulk_indexes_products_from_uuids(
         Client $productAndProductModelIndexClient,
         GetElasticsearchProductProjectionInterface $getElasticsearchProductProjection
     ) {
-        $identifier = 'foobar';
-        $getElasticsearchProductProjection->fromProductIdentifiers([$identifier])->willReturn([$this->getElasticSearchProjection('identifier_1')]);
-        $productAndProductModelIndexClient
-            ->bulkIndexes([$this->getElasticSearchProjection('identifier_1')->toArray()], 'id', Refresh::disable())
-            ->shouldBeCalled();
+        $uuids = [Uuid::uuid4(), Uuid::uuid4()];
 
-        $this->indexFromProductIdentifier($identifier);
-    }
+        $iterable = [
+            $this->getElasticSearchProjection('identifier_1', $uuids[0]),
+            $this->getElasticSearchProjection('identifier_2', $uuids[1])
+        ];
 
-    function it_bulk_indexes_products_from_identifiers(
-        Client $productAndProductModelIndexClient,
-        GetElasticsearchProductProjectionInterface $getElasticsearchProductProjection
-    ) {
-        $identifiers = ['foo', 'bar', 'unknown'];
+        $getElasticsearchProductProjection
+            ->fromProductUuids($uuids)
+            ->shouldBeCalled()
+            ->willReturn($iterable);
 
-        $getElasticsearchProductProjection->fromProductIdentifiers($identifiers)
-            ->willReturn([$this->getElasticSearchProjection('identifier_1'), $this->getElasticSearchProjection('identifier_2')]);
+        $productAndProductModelIndexClient->bulkIndexes(
+            $iterable,
+            'id',
+            Refresh::disable()
+        )->shouldBeCalled();
 
-        $productAndProductModelIndexClient->bulkIndexes([
-            $this->getElasticSearchProjection('identifier_1')->toArray(),
-            $this->getElasticSearchProjection('identifier_2')->toArray(),
-        ], 'id', Refresh::disable())->shouldBeCalled();
-
-        $this->indexFromProductIdentifiers($identifiers);
+        $this->indexFromProductUuids($uuids);
     }
 
     function it_bulk_indexes_products_from_identifiers_using_batch(
         Client $productAndProductModelIndexClient,
         GetElasticsearchProductProjectionInterface $getElasticsearchProductProjection
     ) {
-        $identifiers = $this->getRangeIdentifiers(1, 3002);
+        $uuids = $this->getRangeUuids(1, 1002);
 
-        $getElasticsearchProductProjection->fromProductIdentifiers($this->getRangeIdentifiers(1, 1000))
+        $getElasticsearchProductProjection
+            ->fromProductUuids(array_slice($uuids, 0, 500))
+            ->shouldBeCalled()
             ->willReturn([$this->getElasticSearchProjection('identifier_1')]);
-        $getElasticsearchProductProjection->fromProductIdentifiers($this->getRangeIdentifiers(1001, 2000))
+        $getElasticsearchProductProjection
+            ->fromProductUuids(array_slice($uuids, 500, 500))
+            ->shouldBeCalled()
             ->willReturn([$this->getElasticSearchProjection('identifier_2')]);
-        $getElasticsearchProductProjection->fromProductIdentifiers($this->getRangeIdentifiers(2001, 3000))
+        $getElasticsearchProductProjection
+            ->fromProductUuids(array_slice($uuids, 1000, 2))
+            ->shouldBeCalled()
             ->willReturn([$this->getElasticSearchProjection('identifier_3')]);
-        $getElasticsearchProductProjection->fromProductIdentifiers($this->getRangeIdentifiers(3001, 3002))
-            ->willReturn([$this->getElasticSearchProjection('identifier_4')]);
 
-        $productAndProductModelIndexClient->bulkIndexes([
-            $this->getElasticSearchProjection('identifier_1')->toArray(),
-        ], 'id', Refresh::disable())->shouldBeCalled();
-        $productAndProductModelIndexClient->bulkIndexes([
-            $this->getElasticSearchProjection('identifier_2')->toArray(),
-        ], 'id', Refresh::disable())->shouldBeCalled();
-        $productAndProductModelIndexClient->bulkIndexes([
-            $this->getElasticSearchProjection('identifier_3')->toArray(),
-        ], 'id', Refresh::disable())->shouldBeCalled();
-        $productAndProductModelIndexClient->bulkIndexes([
-            $this->getElasticSearchProjection('identifier_4')->toArray(),
-        ], 'id', Refresh::disable())->shouldBeCalled();
+        $productAndProductModelIndexClient->bulkIndexes(
+            Argument::any(),
+            'id',
+            Refresh::disable()
+        )->shouldBeCalledTimes(3);
 
-        $this->indexFromProductIdentifiers($identifiers);
+        $this->indexFromProductUuids($uuids);
     }
 
     function it_does_not_bulk_index_empty_arrays_of_identifiers(
         Client $productAndProductModelIndexClient,
         GetElasticsearchProductProjectionInterface $getElasticsearchProductProjection
     ) {
-        $getElasticsearchProductProjection->fromProductIdentifiers(Argument::cetera())->shouldNotBeCalled();
+        $getElasticsearchProductProjection->fromProductUuids(Argument::cetera())->shouldNotBeCalled();
         $productAndProductModelIndexClient->bulkIndexes(Argument::cetera())->shouldNotBeCalled();
 
-        $this->indexFromProductIdentifiers([]);
-    }
-
-    function it_deletes_products_from_elasticsearch_index(Client $productAndProductModelIndexClient)
-    {
-        $productAndProductModelIndexClient->delete('product_40')->shouldBeCalled();
-
-        $this->removeFromProductId(40)->shouldReturn(null);
+        $this->indexFromProductUuids([]);
     }
 
     function it_bulk_deletes_products_from_elasticsearch_index(Client $productAndProductModelIndexClient)
     {
-        $productAndProductModelIndexClient->bulkDelete(['product_40', 'product_33'])
-            ->shouldBeCalled();
+        $productAndProductModelIndexClient->bulkDelete([
+            'product_54162e35-ff81-48f1-96d5-5febd3f00fd5',
+            'product_d9f573cc-8905-4949-8151-baf9d5328f26'
+        ])->shouldBeCalled();
 
-        $this->removeFromProductIds([40, 33])->shouldReturn(null);
+        $this->removeFromProductUuids([
+            Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'),
+            Uuid::fromString('d9f573cc-8905-4949-8151-baf9d5328f26')
+        ])->shouldReturn(null);
     }
 
     function it_indexes_products_from_identifiers_and_waits_for_index_refresh(
         Client $productAndProductModelIndexClient,
         GetElasticsearchProductProjectionInterface $getElasticsearchProductProjection
     ) {
+        $uuids = [Uuid::uuid4(), Uuid::uuid4()];
+
+        $iterable = [
+            $this->getElasticSearchProjection('identifier_1', $uuids[0]),
+            $this->getElasticSearchProjection('identifier_2', $uuids[1])
+        ];
+
         $getElasticsearchProductProjection
-            ->fromProductIdentifiers(['identifier_1'])
-            ->willReturn([$this->getElasticSearchProjection('identifier_1')]);
+            ->fromProductUuids($uuids)
+            ->shouldBeCalled()
+            ->willReturn($iterable);
 
         $productAndProductModelIndexClient->bulkIndexes(
-            [$this->getElasticSearchProjection('identifier_1')->toArray()],
+            $iterable,
             'id',
             Refresh::waitFor()
         )->shouldBeCalled();
 
-        $this->indexFromProductIdentifiers(['identifier_1'], ['index_refresh' => Refresh::waitFor()]);
+        $this->indexFromProductUuids($uuids, ['index_refresh' => Refresh::waitFor()]);
     }
 
     function it_indexes_products_from_identifiers_and_disables_index_refresh_by_default(
         Client $productAndProductModelIndexClient,
         GetElasticsearchProductProjectionInterface $getElasticsearchProductProjection
     ) {
-        $identifiers = ['foo', 'bar', 'unknown'];
+        $uuids = [Uuid::uuid4(), Uuid::uuid4()];
 
-        $getElasticsearchProductProjection->fromProductIdentifiers($identifiers)
-            ->willReturn([$this->getElasticSearchProjection('identifier_1'), $this->getElasticSearchProjection('identifier_2')]);
+        $iterable = [
+            $this->getElasticSearchProjection('identifier_1', $uuids[0]),
+            $this->getElasticSearchProjection('identifier_2', $uuids[1])
+        ];
 
-        $productAndProductModelIndexClient->bulkIndexes([
-            $this->getElasticSearchProjection('identifier_1')->toArray(),
-            $this->getElasticSearchProjection('identifier_2')->toArray(),
-        ], 'id', Refresh::disable())->shouldBeCalled();
+        $getElasticsearchProductProjection
+            ->fromProductUuids($uuids)
+            ->shouldBeCalled()
+            ->willReturn($iterable);
 
-        $this->indexFromProductIdentifiers($identifiers, ['index_refresh' => Refresh::disable()]);
+        $productAndProductModelIndexClient->bulkIndexes(
+            $iterable,
+            'id',
+            Refresh::disable()
+        )->shouldBeCalled();
+
+        $this->indexFromProductUuids($uuids, ['index_refresh' => Refresh::disable()]);
     }
 
     function it_indexes_products_from_identifiers_and_enable_index_refresh_without_waiting_for_it(
         Client $productAndProductModelIndexClient,
         GetElasticsearchProductProjectionInterface $getElasticsearchProductProjection
     ) {
-        $identifiers = ['foo', 'bar', 'unknown'];
+        $uuids = [Uuid::uuid4(), Uuid::uuid4()];
 
-        $getElasticsearchProductProjection->fromProductIdentifiers($identifiers)
-            ->willReturn([$this->getElasticSearchProjection('identifier_1'), $this->getElasticSearchProjection('identifier_2')]);
+        $iterable = [
+            $this->getElasticSearchProjection('identifier_1', $uuids[0]),
+            $this->getElasticSearchProjection('identifier_2', $uuids[1])
+        ];
 
-        $productAndProductModelIndexClient->bulkIndexes([
-            $this->getElasticSearchProjection('identifier_1')->toArray(),
-            $this->getElasticSearchProjection('identifier_2')->toArray(),
-        ], 'id', Refresh::enable())->shouldBeCalled();
+        $getElasticsearchProductProjection
+            ->fromProductUuids($uuids)
+            ->shouldBeCalled()
+            ->willReturn($iterable);
 
-        $this->indexFromProductIdentifiers($identifiers, ['index_refresh' => Refresh::enable()]);
+        $productAndProductModelIndexClient->bulkIndexes(
+            $iterable,
+            'id',
+            Refresh::enable()
+        )->shouldBeCalled();
+
+        $this->indexFromProductUuids($uuids, ['index_refresh' => Refresh::enable()]);
     }
 
-    private function getElasticSearchProjection(string $identifier): ElasticsearchProductProjection
+    private function getElasticSearchProjection(string $identifier, $uuid = null): ElasticsearchProductProjection
     {
         return new ElasticsearchProductProjection(
-            '1',
+            $uuid ?? Uuid::fromString('3bf35583-c54e-4f8a-8bd9-5693c142a1cf'),
             $identifier,
+            new \DateTimeImmutable('2019-03-16 12:03:00', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2019-03-16 12:03:00', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2019-03-16 12:03:00', new \DateTimeZone('UTC')),
             true,
@@ -193,8 +213,8 @@ class ProductIndexerSpec extends ObjectBehavior
         );
     }
 
-    private function getRangeIdentifiers(int $start, int $end): array
+    private function getRangeUuids(int $start, int $end): array
     {
-        return preg_filter('/^/', 'p_', range($start, $end));
+        return array_map(fn (): UuidInterface => Uuid::uuid4(), range($start, $end));
     }
 }

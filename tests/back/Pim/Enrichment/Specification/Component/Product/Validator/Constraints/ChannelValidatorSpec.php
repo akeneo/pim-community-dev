@@ -4,7 +4,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Validator\Constr
 
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ChannelValidator;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Channel;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraint;

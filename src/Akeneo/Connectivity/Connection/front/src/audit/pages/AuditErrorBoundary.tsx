@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {PageContent, PageHeader, RuntimeError} from '../../common/components';
-import {PimView} from '../../infrastructure/pim-view/PimView';
 import {useRoute} from '../../shared/router';
 import {Translate} from '../../shared/translate';
 import {Breadcrumb} from 'akeneo-design-system';
+import {UserButtons} from '../../shared/user';
 
 const AuditBreadcrumb = () => {
     const dashboardHref = `#${useRoute('pim_dashboard_index')}`;
@@ -34,15 +34,7 @@ export class AuditErrorBoundary extends Component<unknown, {hasError: boolean}> 
         if (this.state.hasError) {
             return (
                 <>
-                    <PageHeader
-                        breadcrumb={<AuditBreadcrumb />}
-                        userButtons={
-                            <PimView
-                                className='AknTitleContainer-userMenuContainer AknTitleContainer-userMenu'
-                                viewName='pim-connectivity-connection-user-navigation'
-                            />
-                        }
-                    />
+                    <PageHeader breadcrumb={<AuditBreadcrumb />} userButtons={<UserButtons />} />
 
                     <PageContent>
                         <RuntimeError />

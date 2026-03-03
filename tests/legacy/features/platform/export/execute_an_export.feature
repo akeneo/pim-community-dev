@@ -10,7 +10,7 @@ Feature: Execute a job
 
   Scenario: Fail to launch a job with validation errors
     Given the following job "csv_footwear_product_export" configuration:
-      | filePath |  |
+      | storage | {"type": "none"} |
     And I am on the "csv_footwear_product_export" export job page
     When I launch the "csv_footwear_product_export" export job
     Then I should not see the text "The export is running."

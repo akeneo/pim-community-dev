@@ -8,3 +8,10 @@ services:
         arguments:
             - '@pim_dashboard.widget.registry'
             - '@twig'
+
+    Akeneo\Platform\Bundle\DashboardBundle\Controller\VersionController:
+        public: true
+        arguments:
+            - '@pim_catalog.version_provider'
+            - '@oro_config.global'
+            - '%pim_analytics_update_server_url%'

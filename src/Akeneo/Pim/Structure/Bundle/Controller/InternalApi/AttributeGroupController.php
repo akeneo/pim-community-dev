@@ -7,14 +7,16 @@ use Akeneo\Pim\Structure\Bundle\Event\AttributeGroupEvents;
 use Akeneo\Pim\Structure\Bundle\Query\InternalApi\AttributeGroup\Sql\FindAttributeCodesForAttributeGroup;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeGroupRepositoryInterface;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
+use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -23,6 +25,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -36,88 +39,26 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class AttributeGroupController
 {
-    /** @var AttributeGroupRepositoryInterface */
-    protected $attributeGroupRepo;
-
-    /** @var SearchableRepositoryInterface */
-    protected $attributeGroupSearchableRepository;
-
-    /** @var NormalizerInterface */
-    protected $normalizer;
-
-    /** @var CollectionFilterInterface */
-    protected $collectionFilter;
-
-    /** @var ObjectUpdaterInterface */
-    protected $updater;
-
-    /** @var ValidatorInterface */
-    protected $validator;
-
-    /** @var SaverInterface */
-    protected $saver;
-
-    /** @var RemoverInterface */
-    protected $remover;
-
-    /** @var EntityRepository */
-    protected $attributeRepository;
-
-    /** @var ObjectUpdaterInterface */
-    protected $attributeUpdater;
-
-    /** @var SaverInterface */
-    protected $attributeSaver;
-
-    /** @var SecurityFacade */
-    protected $securityFacade;
-
-    /** @var SimpleFactoryInterface */
-    protected $attributeGroupFactory;
-
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
-
-    /** @var CollectionFilterInterface */
-    protected $inputFilter;
-
-    /** @var FindAttributeCodesForAttributeGroup */
-    private $findAttributeCodesForAttributeGroup;
-
     public function __construct(
-        AttributeGroupRepositoryInterface $attributeGroupRepo,
-        SearchableRepositoryInterface $attributeGroupSearchableRepository,
-        NormalizerInterface $normalizer,
-        CollectionFilterInterface $collectionFilter,
-        ObjectUpdaterInterface $updater,
-        ValidatorInterface $validator,
-        SaverInterface $saver,
-        RemoverInterface $remover,
-        EntityRepository $attributeRepository,
-        ObjectUpdaterInterface $attributeUpdater,
-        SaverInterface $attributeSaver,
-        SecurityFacade $securityFacade,
-        SimpleFactoryInterface $attributeGroupFactory,
-        EventDispatcherInterface $eventDispatcher,
-        CollectionFilterInterface $inputFilter,
-        FindAttributeCodesForAttributeGroup $findAttributeCodesForAttributeGroup
+        private AttributeGroupRepositoryInterface $attributeGroupRepo,
+        private SearchableRepositoryInterface $attributeGroupSearchableRepository,
+        private NormalizerInterface $normalizer,
+        private CollectionFilterInterface $collectionFilter,
+        private ObjectUpdaterInterface $updater,
+        private ValidatorInterface $validator,
+        private SaverInterface $saver,
+        private EntityRepository $attributeRepository,
+        private ObjectUpdaterInterface $attributeUpdater,
+        private SaverInterface $attributeSaver,
+        private SecurityFacadeInterface $securityFacade,
+        private SimpleFactoryInterface $attributeGroupFactory,
+        private EventDispatcherInterface $eventDispatcher,
+        private CollectionFilterInterface $inputFilter,
+        private FindAttributeCodesForAttributeGroup $findAttributeCodesForAttributeGroup,
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly JobLauncherInterface $jobLauncher,
+        private readonly IdentifiableObjectRepositoryInterface $jobInstanceRepository,
     ) {
-        $this->attributeGroupRepo                 = $attributeGroupRepo;
-        $this->attributeGroupSearchableRepository = $attributeGroupSearchableRepository;
-        $this->normalizer                         = $normalizer;
-        $this->collectionFilter                   = $collectionFilter;
-        $this->updater                            = $updater;
-        $this->validator                          = $validator;
-        $this->saver                              = $saver;
-        $this->remover                            = $remover;
-        $this->attributeRepository                = $attributeRepository;
-        $this->attributeUpdater                   = $attributeUpdater;
-        $this->attributeSaver                     = $attributeSaver;
-        $this->securityFacade                     = $securityFacade;
-        $this->attributeGroupFactory              = $attributeGroupFactory;
-        $this->eventDispatcher                    = $eventDispatcher;
-        $this->inputFilter                        = $inputFilter;
-        $this->findAttributeCodesForAttributeGroup = $findAttributeCodesForAttributeGroup;
     }
 
     /**
@@ -156,7 +97,7 @@ class AttributeGroupController
 
     /**
      * Get attribute group collection.
-     * We should spilt the search and index action in two controllers to handle rights properly.
+     * We should split the search and index action in two controllers to handle rights properly.
      *
      * @return JsonResponse
      */
@@ -339,35 +280,30 @@ class AttributeGroupController
      */
     public function removeAction(Request $request, $identifier)
     {
+        $jobInstance = $this->jobInstanceRepository->findOneByIdentifier('delete_attribute_groups');
+        $user = $this->tokenStorage->getToken()->getUser();
+
         if (!$request->isXmlHttpRequest()) {
-            return new JsonResponse(
-                [
-                    'message' => 'An error occurred.',
-                    'global' => true,
-                ],
-                Response::HTTP_BAD_REQUEST
-            );
+            return new JsonResponse(status: Response::HTTP_BAD_REQUEST);
         }
 
-        $attributeGroup = $this->getAttributeGroupOr404($identifier);
-
-        if ('other' === $attributeGroup->getCode()) {
-            return new JsonResponse(
-                [
-                    'message' => 'Attribute group "other" cannot be removed.',
-                ],
-                Response::HTTP_UNPROCESSABLE_ENTITY
-            );
+        if (!$user instanceof UserInterface) {
+            return new JsonResponse(status: Response::HTTP_UNAUTHORIZED);
         }
 
-        if (0 < $attributeGroup->getAttributes()->count()) {
-            return new JsonResponse(
-                ['message' => 'Attribute group containing attributes cannot be removed. Please remove its attributes prior to delete it.'],
-                Response::HTTP_UNPROCESSABLE_ENTITY
-            );
-        }
+        $attributeGroupCodes = [$identifier];
+        $replacementAttributeGroupCode = $request->get('replacement_attribute_group_code', AttributeGroupInterface::DEFAULT_CODE);
 
-        $this->remover->remove($attributeGroup);
+        $configuration = [
+            'filters' => [
+                'codes' => $attributeGroupCodes,
+            ],
+            'replacement_attribute_group_code' => $replacementAttributeGroupCode,
+            'users_to_notify' => [$user->getUserIdentifier()],
+            'send_email' => false,
+        ];
+
+        $this->jobLauncher->launch($jobInstance, $user, $configuration);
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }

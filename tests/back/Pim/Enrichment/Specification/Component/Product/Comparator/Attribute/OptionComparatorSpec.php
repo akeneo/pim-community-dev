@@ -54,4 +54,34 @@ class OptionComparatorSpec extends ObjectBehavior
 
         $this->compare($changes, $originals)->shouldReturn(null);
     }
+
+    function it_compares_in_a_case_insensitive_way(): void
+    {
+        $changes = ['data' => 'UPPER_CASE', 'locale' => 'en_US', 'scope' => 'ecommerce'];
+        $originals = ['data' => 'upper_case', 'locale' => 'en_US', 'scope' => 'ecommerce'];
+
+        $this->compare($changes, $originals)->shouldReturn(null);
+    }
+
+    function it_returns_a_change_when_data_is_not_a_string(): void
+    {
+        $changes = ['data' => ['toto'], 'locale' => 'en_US', 'scope' => 'ecommerce'];
+        // Originals cannot be anything other than a string, but this is for the purpose of the test
+        $originals = ['data' => ['toto']];
+
+        $this->compare($changes, $originals)->shouldReturn([
+            'data'  => ['toto'],
+            'locale' => 'en_US',
+            'scope'  => 'ecommerce',
+        ]);
+
+        $changes = ['data' => 42, 'locale' => 'en_US', 'scope' => 'ecommerce'];
+        $originals = ['data' => 42];
+
+        $this->compare($changes, $originals)->shouldReturn([
+            'data'  => 42,
+            'locale' => 'en_US',
+            'scope'  => 'ecommerce',
+        ]);
+    }
 }

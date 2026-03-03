@@ -15,9 +15,14 @@ const fetchKeyIndicators = async (
     category: categoryCode,
   };
 
-  const response = await fetch(Routing.generate(ROUTE_NAME, routeParams));
+  const url = Routing.generate(ROUTE_NAME, routeParams);
+  try {
+    const response = await fetch(url);
 
-  return await response.json();
+    return await response.json();
+  } catch (error) {
+    return null;
+  }
 };
 
 export {fetchKeyIndicators};

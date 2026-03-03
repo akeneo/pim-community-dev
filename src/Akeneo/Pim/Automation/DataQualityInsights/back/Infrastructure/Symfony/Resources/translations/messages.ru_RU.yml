@@ -1,0 +1,14 @@
+akeneo_data_quality_insights:
+  axis:
+    enrichment: Обогащение
+  acl:
+    activation_attribute_group:
+      edit: Редактировать панель анализа качества данных
+  acl_group:
+    dqi: Инсайты качества данных
+  product_grid:
+    filter_label:
+      quality_score: Оценка качества
+      enrichment_quality: Качество обогащения
+Enrichment: Обогащение
+Quality Score: Оценка качества

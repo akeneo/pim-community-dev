@@ -11,10 +11,12 @@ use Context\Spin\SpinCapableTrait;
 use Context\Spin\TimeoutException;
 use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
 use PHPUnit\Framework\Assert;
+use Pim\Behat\Context\FixturesContext;
 use Pim\Behat\Context\PimContext;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAware;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Factory as PageObjectFactory;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+use SensioLabs\Behat\PageObjectExtension\PageObject\PageObject;
 
 /**
  * Feature context for the datagrid related steps
@@ -508,7 +510,7 @@ class DataGridContext extends PimContext implements PageObjectAware
     public function iClickOnTheActionOfTheRowWhichContains($actionName, $element)
     {
         //Wait for the JS action to be linked to the button because it will do the default action of the row otherwise
-        $this->getSession()->wait(6000, false);
+        $this->getSession()->wait(6000);
         $action = ucfirst(strtolower($actionName));
         $this->getDatagrid()->clickOnAction($element, $action);
     }
@@ -631,7 +633,9 @@ class DataGridContext extends PimContext implements PageObjectAware
                     && null !== $filterBox
                     && null !== $manageFilters
                 ;
-            }, 'Loading mask is still visible');
+            },
+            'Loading mask is still visible'
+        );
 
         $this->spin(
             function () {
@@ -696,7 +700,9 @@ class DataGridContext extends PimContext implements PageObjectAware
                 $loadingWrapper = $this->getDatagrid()->getElement('Grid container')->find('css', '.loading-mask');
 
                 return (null === $loadingWrapper || !$loadingWrapper->isVisible());
-            }, 'Loading mask is still visible');
+            },
+            'Loading mask is still visible'
+        );
 
 
         return true;
@@ -757,7 +763,6 @@ class DataGridContext extends PimContext implements PageObjectAware
      * @Then /^I should see (?:import|export) profiles? (.*)$/
      * @Then /^I should see (?:(?:entit|currenc)(?:y|ies)) (.*)$/
      * @Then /^I should see groups? (?:types )?(.*)$/
-     * @Then /^I should see association (?:types? )?(.*)$/
      * @Then /^I should see users? (.*)$/
      * @Then /^I should see famil(?:y|ies) (.*)$/
      * @Then /^I should see client(?:|s) (.*)$/
@@ -787,7 +792,6 @@ class DataGridContext extends PimContext implements PageObjectAware
      * @Then /^I should not see (?:import|export) profiles? (.*)$/
      * @Then /^I should not see (?:(?:entit|currenc)(?:y|ies)) (.*)$/
      * @Then /^I should not see group(?: type)?s? (.*)$/
-     * @Then /^I should not see association (?:types? )?(.*)$/
      * @Then /^I should not see users? (.*)$/
      * @Then /^I should not see famil(?:y|ies) (.*)$/
      * @Then /^I should not see client(?:|s) (.*)$/
@@ -1209,7 +1213,7 @@ class DataGridContext extends PimContext implements PageObjectAware
      *
      * @When /^I create the (private|public)?\s?view:$/
      */
-    public function iCreateTheView(string $viewType = '', TableNode $table): array
+    public function iCreateTheView(TableNode $table, string $viewType = ''): array
     {
         $this->getCurrentPage()->clickOnCreateViewButton();
 
@@ -1260,8 +1264,8 @@ class DataGridContext extends PimContext implements PageObjectAware
         );
 
         if (
-                ('' !== $not && in_array($viewLabel, $availableViews)) ||
-                ('' === $not && !in_array($viewLabel, $availableViews))
+            ('' !== $not && in_array($viewLabel, $availableViews)) ||
+            ('' === $not && !in_array($viewLabel, $availableViews))
         ) {
             throw $this->createExpectationException(
                 sprintf(
@@ -1283,9 +1287,10 @@ class DataGridContext extends PimContext implements PageObjectAware
     public function iShouldSeeTheDisplayInTheDatagrid($typeLabel)
     {
         return $this->spin(function () use ($typeLabel) {
-            return $this->getCurrentPage()->find('css',
-                 sprintf('.AknGrid--%s', strtolower($typeLabel))
-             );
+            return $this->getCurrentPage()->find(
+                'css',
+                sprintf('.AknGrid--%s', strtolower($typeLabel))
+            );
         }, sprintf('Display type %s is not shown in the datagrid', $typeLabel));
     }
 
@@ -1335,9 +1340,9 @@ class DataGridContext extends PimContext implements PageObjectAware
     /**
      * Wait
      *
-     * @param string $condition
+     * @param string|null $condition
      */
-    protected function wait($condition = null)
+    protected function wait(string $condition = null)
     {
         $this->getMainContext()->wait($condition);
     }
@@ -1345,15 +1350,12 @@ class DataGridContext extends PimContext implements PageObjectAware
     /**
      * @return \Behat\Behat\Context\ExtendedContextInterface
      */
-    protected function getNavigationContext()
+    protected function getNavigationContext(): NavigationContext
     {
         return $this->getMainContext()->getSubcontext('navigation');
     }
 
-    /**
-     * @return \Behat\Behat\Context\ExtendedContextInterface
-     */
-    protected function getFixturesContext()
+    protected function getFixturesContext(): FixturesContext
     {
         return $this->getMainContext()->getSubcontext('fixtures');
     }
@@ -1370,10 +1372,7 @@ class DataGridContext extends PimContext implements PageObjectAware
         return $this->datagrid;
     }
 
-    /**
-     * @return \SensioLabs\Behat\PageObjectExtension\PageObject\Page
-     */
-    public function getCurrentPage()
+    public function getCurrentPage(): PageObject
     {
         return $this->getNavigationContext()->getCurrentPage();
     }

@@ -16,13 +16,14 @@ Feature: Quick export products according to the product grid context
 
   Scenario: Successfully quick export products from grid context as a XLSX file
     Given I am on the products grid
-    And I display the columns SKU, Name, Label, Family, Color, Complete, Groups, Price, Size, Created at, Updated at, Description and Weight
+    And I display the columns SKU, Name, Label, Family, Color, Complete, Groups, Price, Size, Created, Updated, Description and Weight
     And I select rows boots, sneakers, pump
     When I press the "Quick Export" button
     And I press the "XLSX" button
     And I press the "Grid context" button
     And I press the "With codes" button
     And I press the "With media" button
+    And I press the "Without UUID" button
     And I press the "Export" button
     And I wait for the "xlsx_product_grid_context_quick_export" quick export to finish
     And I am on the dashboard page
@@ -32,8 +33,8 @@ Feature: Quick export products according to the product grid context
       | success | Quick export XLSX product quick export grid context finished |
     When I go on the last executed job resume of "xlsx_product_grid_context_quick_export"
     Then I should see the text "COMPLETED"
-    And the names of the exported files of "xlsx_product_grid_context_quick_export" should be "1_products_export_grid_context_en_US_tablet.xlsx,2_product_models_export_grid_context_en_US_tablet.xlsx"
-    And exported xlsx file 1 of "xlsx_product_grid_context_quick_export" should contain:
+    And the names of the exported files of "xlsx_product_grid_context_quick_export" should be "1_products_export_grid_context_en_US_tablet.xlsx"
+    And exported xlsx file of "xlsx_product_grid_context_quick_export" should contain:
       | sku      | color | description-en_US-tablet | family   | groups | name-en_US    | price-EUR | price-USD | size | weight | weight-unit |
       | boots    | black | Mob                      | boots    |        | Amazing boots | 20        | 25        | 40   |        |             |
       | sneakers | white | ylette                   | sneakers |        | Sneakers      | 50        | 60        | 42   |        |             |

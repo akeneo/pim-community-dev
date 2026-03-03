@@ -156,7 +156,7 @@ define(['underscore', 'oro/translator', 'oro/datafilter/abstract-filter', 'oro/m
         return option;
       });
       options.sort((a, b) => {
-        return a.__translation.localeCompare(b.__translation);
+        return a.__translation.toString().localeCompare(b.__translation);
       });
 
       this.$el.empty();

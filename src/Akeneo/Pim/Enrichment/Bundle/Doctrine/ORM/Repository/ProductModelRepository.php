@@ -20,6 +20,10 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
      */
     public function getItemsFromIdentifiers(array $identifiers): array
     {
+        if ([] === $identifiers) {
+            return [];
+        }
+
         $qb = $this
             ->createQueryBuilder('pm')
             ->where('pm.code IN (:codes)')
@@ -87,6 +91,28 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
             ->setParameter('parent', $productModel);
 
         return $qb->getQuery()->execute();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findFirstCreatedVariantProductModel(ProductModelInterface $productModel): ?ProductModelInterface
+    {
+        $qb = $this->createQueryBuilder('pm')
+            ->select('pm.code')
+            ->where('pm.parent = :parent')
+            ->setParameter('parent', $productModel->getId())
+            ->orderBy('pm.created', 'ASC')
+            ->addOrderBy('pm.code', 'ASC')
+            ->setMaxResults(1);
+
+        $results = $qb->getQuery()->getOneOrNullResult();
+
+        if (null === $results || !isset($results['code'])) {
+            return null;
+        }
+
+        return $this->findOneByIdentifier($results['code']);
     }
 
     /**
@@ -180,13 +206,19 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
         return $qb->getQuery()->execute();
     }
 
-    public function findProductModelsForFamilyVariant(FamilyVariantInterface $familyVariant, ?string $search = null): array
-    {
+    public function findProductModelsForFamilyVariant(
+        FamilyVariantInterface $familyVariant,
+        ?string $search = null,
+        int $limit = 20,
+        int $page = 1
+    ): array {
         $qb = $this
             ->createQueryBuilder('pm')
             ->where('pm.familyVariant = :familyVariant')
             ->setParameter('familyVariant', $familyVariant->getId())
             ->addOrderBy('pm.parent', 'ASC')
+            ->setFirstResult(($page -1) * $limit)
+            ->setMaxResults($limit)
         ;
 
         if (! empty($search)) {

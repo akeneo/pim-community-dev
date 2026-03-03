@@ -6,5 +6,3 @@ pim_dashboard:
       title: Kanavien ja lokaatioiden valmiusaste
     last_operations:
       title: Viimeiset toiminnot
-      status: Status
-      type: Tyyppi

@@ -19,6 +19,7 @@ define([
   'pim/form-builder',
   'require-context',
   'oro/messenger',
+  'pim/analytics',
 ], function (
   _,
   __,
@@ -30,7 +31,8 @@ define([
   FieldManager,
   formBuilder,
   RequireContext,
-  messenger
+  messenger,
+  analytics
 ) {
   return BaseForm.extend({
     template: _.template(template),
@@ -104,6 +106,11 @@ define([
 
       this.getRoot().trigger('pim_enrich:form:render:after');
       this.getRoot().trigger('pim_enrich:form:extension:render:after');
+
+      analytics.appcuesTrack('form:edit:opened', {
+        code: this.code,
+        model: this.model,
+      });
     },
 
     /**
@@ -152,11 +159,15 @@ define([
      * @param {Event} event
      */
     displayError: function (event) {
-      _.each(event.response, function (error) {
-        if (error.global) {
-          messenger.notify('error', error.message);
-        }
-      });
+      if (!Array.isArray(event.response) && event.response.global) {
+        messenger.notify('error', event.response.message);
+      } else {
+        _.each(event.response, function (error) {
+          if (error.global) {
+            messenger.notify('error', error.message);
+          }
+        });
+      }
     },
 
     /**

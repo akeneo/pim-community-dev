@@ -74,6 +74,8 @@ pim_enrich.entity.attribute_option:
       fail: Attributoption kann nicht gespeichert werden
     delete:
       fail: Fehler beim Löschen der Attributoption
+  page_title:
+    index: "]-Inf, 1]{{ count }} Option|]1, Inf[{{ count }} Optionen"
   module:
     edit:
       cancel_title: Änderung abbrechen
@@ -87,6 +89,11 @@ pim_enrich.entity.attribute_option:
       add_option: Hier klicken, um eins hinzuzufügen.
       delete_confirmation_title_msg: '"{{ optionCode }}" aus Ihren Optionen löschen?'
       delete_confirmation_subtitle_msg: Sind Sie sicher, dass Sie diese Option löschen möchten? Sie können diese Aktion nicht rückgängig machen.
+      display_options_limit: Hier sind nur die ersten 500 Optionen aufgelistet. Wenn Sie weitere Optionen sehen möchten, führen Sie eine Suche oder einen Export durch.
+      search:
+        placeholder: Auf Label oder Code suchen
+        no_result:
+          title: Es gibt kein Ergebnis für Ihre Suche.
 pim_enrich.entity.association_type:
   label: Verbindungstyp
   property:
@@ -115,6 +122,9 @@ pim_enrich.entity.association_type:
     delete:
       confirm: Möchten Sie diesen Verbindungstyp wirklich löschen?
   hint: <a href="{{link}}" target="_blank">In diesem Artikel</a>findest du alles, was du brauchst, um deinen eigenen Verbindungstyp zu erstellen.
+  no_association_types:
+    title: Du hast keine Verbindungstypen
+    hint: Erstelle deinen ersten
 pim_enrich.entity.group_type:
   label: Gruppentyp
   flash:
@@ -157,6 +167,7 @@ pim_enrich.entity.attribute:
     default_metric_unit:
       label: Standardmesseinheit
       choose: Wählen Sie eine Einheit
+    guidelines: Attribut-Richtlinien
     group:
       label: Attributgruppe
       choose: Wählen Sie die Attributgruppe
@@ -166,7 +177,7 @@ pim_enrich.entity.attribute:
     max_file_size: Maximale Dateigröße (MB)
     metric_family:
       label: Messfamilie
-      choose: Wählen Sie eine Produktfamilie
+      choose: Wählen Sie eine Messfamilie
     minimum_input_length: Mindestlänge für Auto-Vervollständigung
     name: Name
     negative_allowed: Negativwerte erlaubt
@@ -202,6 +213,11 @@ pim_enrich.entity.attribute:
       url: URL
     wysiwyg_enabled: Rich-Text-Editor aktiviert
     default_value: Standardwert
+    code:
+      must_be_filled: Der Code muss ausgefüllt werden
+      invalid: Der Code ist ungültig
+      not_available: Dieser Code ist nicht verfügbar
+      is_duplicate: Dieser Code wird bereits verwendet
   module:
     add_attribute:
       no_available_attributes: Es gibt keine weiteren Attribute zum Hinzufügen
@@ -212,35 +228,48 @@ pim_enrich.entity.attribute:
       common: Allgemeine Parameter
       type_specific: Spezifische Parameter
       validation: Validierungsparameter
+      select_locale: Gebietsschema auswählen
     delete:
       confirm: Möchten Sie dieses Attribut wirklich löschen?
+      attribute_removal: Das Attribut wird von allen Produkten entfernt.
       product_count: '{0}0 Produkte|{1}1 Produkt|]1, Inf[{{ count }} Produkte'
       product_model_count: '{0}0 Produktmodelle|{1}1 Produktmodell|]1, Inf[{{ count }} Produktmodelle'
-      used: zur Zeit haben Werte für dieses Attribut gesetzt, sie werden entfernt.
+      used: ']-Inf,1]hat derzeit Werte für dieses Attribut gesetzt.|]1, Inf[Derzeit haben Werte für dieses Attribut gesetzt.'
       helper:
         content: Wenn Sie Ihren Attributtyp ändern müssen, um ihn lokalisierbar oder skalierbar zu machen, während Sie den Zugriff auf Ihre vorhandenen Attributwerte behalten
-        link: wir gehen hier mit Ihnen durch die verschiedenen Schritte.
+        link: prüfe unser Hilfe-Center für weitere Informationen.
       type: Bitte geben Sie "{{ attributeCode }} " ein
       confirm_from_family: Sind Sie sicher, dass Sie dieses Attribut aus der Familie löschen möchten?
       confirm_from_group: Soll das Attribut {{ attribute }} wirklich aus dieser Attributgruppe entfernt werden?
       confirm_from_product: Sind Sie sicher, dass Sie dieses Attribut vom Produkt löschen möchten?
+    mass_delete:
+      modal:
+        title: Attribute
+        subtitle: '{1}Löschen von {{ count }} Attribut bestätigen|]1, Inf[Löschen von {{ count }} Attributen bestätigen'
+        label: Bitte geben Sie "{{ textToCheck }}" ein
+        confirm: Möchten Sie diese Attribute wirklich löschen?
 pim_enrich.entity.attribute_group:
   label: Attributgruppe
   uppercase_label: Attributgruppe
   plural_label: Attributgruppen
   result_count: '{0}0 Attributgruppen|{1}1 Attributgruppe |]1, Inf [{{ count }} Attributgruppen'
+  limit_reached: Sie haben das Limit von {{ max }} Attributgruppen erreicht.
   show_more_attribute:
     title: Es ist ein bisschen überfüllt hier, wir zeigen dir {{ attributeCount }}/{{ totalAttributeCount }} Attribute.
     subtitle: Um alle Attribute dieser Gruppe zu entdecken, klicken Sie einfach unten!
     button: Alle Attribute anzeigen
+  dropdown:
+    label: Auswählen
+    all: Alle Attributgruppen
+    none: Keine Attributgruppen
   flash:
     update:
       success: Attributgruppe erfolgreich aktualisiert
       fail: Die Attributgruppe konnte nicht aktualisiert werden
       fields_not_ready: "Die Attributgruppe kann zur Zeit nicht gespeichert werden. Die folgenden Felder sind nicht vollständig ausgefüllt: {{ fields }}"
-    delete:
-      success: Attributgruppe erfolgreich entfernt
-      fail: Diese Attributgruppe kann nicht gelöscht werden.
+    mass_delete:
+      success: Die Löschung wurde gestartet. Sie erhalten eine Benachrichtigung, sobald der Job abgeschlossen ist. In der Zwischenzeit können Sie den Fortschritt des Prozess-Trackers im Auge behalten.
+      fail: Bei der Massenbearbeitung ist ein Fehler aufgetreten
   module:
     add_attribute_group:
       label: Nach Gruppen hinzufügen
@@ -250,8 +279,24 @@ pim_enrich.entity.attribute_group:
       confirm: Möchten Sie diese Attributgruppe wirklich löschen?
   grid:
     columns:
-      name: Attributgruppen
-    no_search_result: Für Ihre Suche wurden leider keine passenden Treffer gefunden.
+      attribute_count: Anzahl verknüpfter Attribute
+  selected: '{0}0 Attributgruppe ausgewählt|{1}1 Attributgruppe ausgewählt|]1, Inf [{{ count }} Attributgruppen ausgewählt'
+  mass_delete:
+    confirm: '{1}Sind Sie sicher, dass Sie diese Attributgruppe löschen wollen?|]1, Inf[Sind Sie sicher, dass Sie diese {{ count }} Attributgruppen löschen möchten?'
+    confirmation_phrase: 'Bitte geben Sie "{{ confirmation_word }}" ein'
+    confirmation_word: löschen
+    select_attribute_group: '{1}Bitte wählen Sie die Attributgruppe um das zugehörige Attribut zu verschieben|]1, Inf[Bitte wählen Sie die Attributgruppe aus, um die zugehörigen {{ number_of_attribute }} Attribute zu verschieben'
+    empty_result_label: 'Keine Attributgruppe gefunden'
+    placeholder: 'Attributgruppe auswählen'
+    open_label: 'Attributgruppen-Liste'
+  delete:
+    confirm: 'Möchten Sie diese Attributgruppe wirklich löschen?'
+    attribute_warning: 'Das Löschen dieser Attributgruppe wirkt sich auf das zugehörige Attribut von {{ number_of_attribute }} aus. Sie müssen dieses zugehörige Attribut in eine neue Attributgruppe verschieben.'
+    select_attribute_group: '{1}Bitte wählen Sie die Attributgruppe aus, um das zugehörige Attribut zu verschieben:|]1, Inf[Bitte wählen Sie die Attributgruppe aus, um die {{ number_of_attribute }} zugehörigen Attribute zu verschieben auf:'
+  batch_jobs:
+    delete_attribute_groups:
+      delete_attribute_groups:
+        label: Attributgruppen löschen
 pim_enrich.mass_edit.family:
   title: Massenbearbeitung Produktfamilien
   confirm: "{1}Sie sind im Begriff, eine Familie mit den folgenden Informationen zu aktualisieren, bitte bestätigen Sie.|]1, Inf[Sie sind im Begriff, {{ itemsCount }} Familien mit den folgenden Informationen zu aktualisieren, bitte bestätigen."
@@ -259,7 +304,7 @@ pim_enrich.mass_edit.family:
     select:
       label: Produktfamilien auswählen
     choose:
-      title: Massenbearbeitung Produktfamilien
+      title: Familien-Massenaktionen
       label_count: "]0, Inf[Wählen Sie Ihre Aktion aus"
     configure:
       label: Konfigurieren
@@ -272,3 +317,18 @@ pim_enrich.mass_edit.family:
       label: Benötigte Attribute auswählen
       description: Die folgenden benötigten Attribute werden den ausgewählten Produktfamilien zugeordnet
       label_count: "{1}Setze Attribut-Bedingungen für <span class=\"AknFullPage-title--highlight\">1 Familie</span>|] 1, Inf [Setze Attribut-Bedingungen für <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Familie</span>"
+batch_jobs:
+  default_steps:
+    delete_attribute_groups: Attributgruppen löschen
+  delete_attributes:
+    delete_attributes:
+      label: Attribute löschen
+job_execution:
+  summary:
+    deleted_attributes: Gelöschte Attribute
+akeneo_job_process_tracker:
+  type_filter:
+    attribute_group_mass_delete: Attributgruppen löschen
+pim_notification:
+  types:
+    attribute_group_mass_delete: Löschung

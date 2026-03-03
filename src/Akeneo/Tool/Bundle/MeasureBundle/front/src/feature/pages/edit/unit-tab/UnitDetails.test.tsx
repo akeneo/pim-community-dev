@@ -1,0 +1,241 @@
+import React from 'react';
+import {act, fireEvent, screen, waitFor} from '@testing-library/react';
+import {UnitDetails} from './UnitDetails';
+import {renderWithProviders} from '@akeneo-pim-community/shared';
+
+declare global {
+  namespace NodeJS {
+    interface Global {
+      fetch: any;
+    }
+  }
+}
+
+const measurementFamily = {
+  code: 'AREA',
+  labels: {
+    en_US: 'Area',
+  },
+  standard_unit_code: 'SQUARE_METER',
+  units: [
+    {
+      code: 'SQUARE_METER',
+      labels: {
+        en_US: 'Square Meter',
+      },
+      symbol: 'sqm',
+      convert_from_standard: [
+        {
+          operator: 'mul',
+          value: '1',
+        },
+      ],
+    },
+    {
+      code: 'SQUARE_FEET',
+      labels: {
+        en_US: 'Square feet',
+      },
+      symbol: 'sqm',
+      convert_from_standard: [
+        {
+          operator: 'mul',
+          value: '1',
+        },
+      ],
+    },
+  ],
+  is_locked: false,
+};
+
+beforeEach(() => {
+  const mockFetch = jest.fn().mockImplementationOnce(route => {
+    switch (route) {
+      case 'pim_localization_locale_index':
+        return Promise.resolve({
+          json: () =>
+            Promise.resolve([
+              {
+                code: 'en_US',
+              },
+              {
+                code: 'fr_FR',
+              },
+            ]),
+        });
+      default:
+        return Promise.resolve({json: () => Promise.resolve([])});
+    }
+  });
+
+  global.fetch = mockFetch;
+});
+
+afterEach(() => {
+  global.fetch && global.fetch.mockClear();
+  delete global.fetch;
+});
+
+test('It displays a details edit form', async () => {
+  let selectedUnitCode = 'SQUARE_METER';
+  const onMeasurementFamilyChange = () => {};
+  const selectUnitCode = newSelectedUnitCode => {
+    selectedUnitCode = newSelectedUnitCode;
+  };
+  const errors = [];
+
+  renderWithProviders(
+    <UnitDetails
+      measurementFamily={measurementFamily}
+      selectedUnitCode={selectedUnitCode}
+      onMeasurementFamilyChange={onMeasurementFamilyChange}
+      selectUnitCode={selectUnitCode}
+      errors={errors}
+    />
+  );
+
+  await waitFor(() => {
+    expect(screen.getByText('measurements.unit.title')).toBeInTheDocument();
+    expect(screen.getByText('🇺🇸')).toBeInTheDocument();
+    expect(screen.getByDisplayValue('Square Meter')).toBeInTheDocument();
+  });
+});
+
+test('It allows symbol edition', async () => {
+  let selectedUnitCode = 'SQUARE_METER';
+  let updatedMeasurementFamily = measurementFamily;
+  const onMeasurementFamilyChange = newMeasurementFamily => {
+    updatedMeasurementFamily = newMeasurementFamily;
+  };
+  const selectUnitCode = newSelectedUnitCode => {
+    selectedUnitCode = newSelectedUnitCode;
+  };
+  const errors = [];
+
+  renderWithProviders(
+    <UnitDetails
+      measurementFamily={measurementFamily}
+      selectedUnitCode={selectedUnitCode}
+      onMeasurementFamilyChange={onMeasurementFamilyChange}
+      selectUnitCode={selectUnitCode}
+      errors={errors}
+    />
+  );
+
+  await act(async () => {
+    const symbolInput = screen.getByLabelText('measurements.unit.symbol');
+    fireEvent.change(symbolInput, {target: {value: 'm^2'}});
+  });
+
+  expect(updatedMeasurementFamily.units[0].symbol).toEqual('m^2');
+});
+
+test('It allows convertion value edition', async () => {
+  let selectedUnitCode = 'SQUARE_FEET';
+  let updatedMeasurementFamily = measurementFamily;
+  const onMeasurementFamilyChange = newMeasurementFamily => {
+    updatedMeasurementFamily = newMeasurementFamily;
+  };
+  const selectUnitCode = newSelectedUnitCode => {
+    selectedUnitCode = newSelectedUnitCode;
+  };
+  const errors = [];
+
+  renderWithProviders(
+    <UnitDetails
+      measurementFamily={measurementFamily}
+      selectedUnitCode={selectedUnitCode}
+      onMeasurementFamilyChange={onMeasurementFamilyChange}
+      selectUnitCode={selectUnitCode}
+      errors={errors}
+    />
+  );
+
+  await act(async () => {
+    const operationValueInput = screen.getByPlaceholderText('measurements.unit.operation.placeholder');
+    fireEvent.change(operationValueInput, {target: {value: '2'}});
+  });
+
+  expect(updatedMeasurementFamily.units[1].convert_from_standard[0].value).toEqual('2');
+});
+
+test('It allows label edition', async () => {
+  let selectedUnitCode = 'SQUARE_METER';
+  let updatedMeasurementFamily = measurementFamily;
+  const onMeasurementFamilyChange = newMeasurementFamily => {
+    updatedMeasurementFamily = newMeasurementFamily;
+  };
+  const selectUnitCode = newSelectedUnitCode => {
+    selectedUnitCode = newSelectedUnitCode;
+  };
+  const errors = [];
+
+  renderWithProviders(
+    <UnitDetails
+      measurementFamily={measurementFamily}
+      selectedUnitCode={selectedUnitCode}
+      onMeasurementFamilyChange={onMeasurementFamilyChange}
+      selectUnitCode={selectUnitCode}
+      errors={errors}
+    />
+  );
+
+  await waitFor(() => screen.getByText('🇺🇸'));
+
+  act(() => {
+    const labelInput = screen.getByDisplayValue('Square Meter');
+    fireEvent.change(labelInput, {target: {value: 'real square meter'}});
+  });
+
+  await waitFor(() => {
+    expect(updatedMeasurementFamily.units[0].labels['en_US']).toEqual('real square meter');
+  });
+});
+
+test('It allows to delete the unit', async () => {
+  let selectedUnitCode = 'SQUARE_FEET';
+  let updatedMeasurementFamily = measurementFamily;
+  const onMeasurementFamilyChange = newMeasurementFamily => {
+    updatedMeasurementFamily = newMeasurementFamily;
+  };
+  const selectUnitCode = newSelectedUnitCode => {
+    selectedUnitCode = newSelectedUnitCode;
+  };
+  const errors = [];
+
+  renderWithProviders(
+    <UnitDetails
+      measurementFamily={measurementFamily}
+      selectedUnitCode={selectedUnitCode}
+      onMeasurementFamilyChange={onMeasurementFamilyChange}
+      selectUnitCode={selectUnitCode}
+      errors={errors}
+    />
+  );
+
+  const deleteButton = screen.getByText('measurements.unit.delete.button');
+  fireEvent.click(deleteButton);
+
+  const confirmButton = await waitFor(() => screen.getByText('pim_common.delete'));
+  fireEvent.click(confirmButton);
+
+  expect(updatedMeasurementFamily.units.length).toEqual(1);
+});
+
+test('It does not render if the selected unit is not found', async () => {
+  const selectedUnitCode = 'NOT_FOUND';
+
+  renderWithProviders(
+    <UnitDetails
+      measurementFamily={measurementFamily}
+      selectedUnitCode={selectedUnitCode}
+      onMeasurementFamilyChange={jest.fn()}
+      selectUnitCode={jest.fn()}
+      errors={[]}
+    />
+  );
+
+  await waitFor(() => {
+    expect(screen.queryByText('measurements.unit.title')).not.toBeInTheDocument();
+  });
+});

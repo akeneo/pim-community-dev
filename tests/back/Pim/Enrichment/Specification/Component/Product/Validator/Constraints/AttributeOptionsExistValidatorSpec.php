@@ -7,6 +7,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\AttributeOptio
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\AttributeOptionsExistValidator;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\IsString;
 use Akeneo\Pim\Enrichment\Component\Product\Value\DateValue;
+use Akeneo\Pim\Enrichment\Component\Product\Value\IdentifierValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
@@ -62,7 +63,7 @@ class AttributeOptionsExistValidatorSpec extends ObjectBehavior
 
         $values = new WriteValueCollection(
             [
-                ScalarValue::value('sku', 'my_identifier'),
+                IdentifierValue::value('sku', true, 'my_identifier'),
                 ScalarValue::localizableValue('description', 'en_US', 'An awesome description'),
                 DateValue::value('release_date', new \DateTime()),
             ]
@@ -192,6 +193,41 @@ class AttributeOptionsExistValidatorSpec extends ObjectBehavior
                 ]
             ),
             new AttributeOptionsExist()
+        );
+    }
+
+    function it_strictly_compares_numeric_option_codes(
+        GetExistingAttributeOptionCodes $getExistingAttributeOptionCodes,
+        ExecutionContextInterface $context,
+        ConstraintViolationBuilderInterface $violationBuilder
+    ) {
+        $getExistingAttributeOptionCodes->fromOptionCodesByAttributeCode(
+            [
+                'color' => ['1.000', '1'],
+            ]
+        )->shouldBeCalled()->willReturn(
+            [
+                'color' => ['1'],
+            ]
+        );
+
+        $constraint = new AttributeOptionsExist();
+        $context->buildViolation($constraint->message, [
+            '%attribute_code%' => 'color',
+            '%invalid_option%' => '1.000'
+        ])->willReturn($violationBuilder);
+        $violationBuilder->atPath('[color-<all_channels>-en_US]')->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->setCode(AttributeOptionsExist::ATTRIBUTE_OPTION_DOES_NOT_EXIST)->willReturn($violationBuilder);
+        $violationBuilder->addViolation()->shouldBeCalled();
+
+        $this->validate(
+            new WriteValueCollection(
+                [
+                    OptionValue::localizableValue('color', '1.000', 'en_US'),
+                    OptionValue::localizableValue('color', '1', 'fr_FR'),
+                ]
+            ),
+            $constraint
         );
     }
 }

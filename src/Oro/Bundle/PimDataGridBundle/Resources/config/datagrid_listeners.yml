@@ -75,14 +75,6 @@ services:
         tags:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.product-group-grid, method: onBuildAfter }
 
-    pim_enrich.event_listener.add_job_code_to_grid_listener:
-        class: '%pim_datagrid.event_listener.add_job_code_to_grid_listener.class%'
-        arguments:
-            - '@oro_datagrid.datagrid.request_params'
-        tags:
-            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.last-import-executions-grid, method: onBuildAfter }
-            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.last-export-executions-grid, method: onBuildAfter }
-
     pim_enrich.event_listener.group_grid_listener:
         class: '%pim_datagrid.event_listener.add_parameters_to_grid.class%'
         arguments:
@@ -164,22 +156,3 @@ services:
         tags:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.history-grid, method: onBuildBefore }
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.product-history-grid, method: onBuildBefore }
-
-    pim_enrich.event_listener.add_username_to_grid_listener:
-        class: '%pim_datagrid.event_listener.add_username_to_grid_listener.class%'
-        arguments:
-            - '@security.token_storage'
-            - '@oro_security.security_facade'
-        tags:
-            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.job-tracker-grid, method: onBuildAfter }
-            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.last-import-executions-grid, method: onBuildAfter }
-            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.last-export-executions-grid, method: onBuildAfter }
-
-    pim_enrich.event_listener.black_list_job_codes_from_grid_listener:
-        class: 'Oro\Bundle\PimDataGridBundle\EventListener\BlackListJobsFromGridListener'
-        arguments:
-            - '@pim_import_export.registry.not_visible_jobs'
-        tags:
-            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.job-tracker-grid, method: onBuildAfter }
-            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.last-import-executions-grid, method: onBuildAfter }
-            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.last-export-executions-grid, method: onBuildAfter }

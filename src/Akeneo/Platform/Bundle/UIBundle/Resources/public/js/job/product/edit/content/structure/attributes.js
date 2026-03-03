@@ -18,6 +18,10 @@ define([
   'pim/fetcher-registry',
   'pim/user-context',
   'pim/job/product/edit/content/structure/attributes-selector',
+  'pim/analytics',
+  'react',
+  'akeneo-design-system',
+  './HelperListProps',
 ], function (
   $,
   _,
@@ -29,7 +33,11 @@ define([
   LoadingMask,
   fetcherRegistry,
   UserContext,
-  AttributeSelector
+  AttributeSelector,
+  analytics,
+  React,
+  {Helper, Link},
+  {HelperList}
 ) {
   return BaseForm.extend({
     className: 'AknFieldContainer attributes',
@@ -118,6 +126,8 @@ define([
       modal.open();
       attributeSelector.setElement('.modal-body').render();
 
+      this.renderModalHelper(modal.$el.find('.header-helper').get(0));
+
       modal.on(
         'ok',
         function () {
@@ -129,8 +139,47 @@ define([
           this.setData(data);
           modal.close();
           this.render();
+
+          analytics.appcuesTrack('export-profile:product:attribute-applied');
         }.bind(this)
       );
+    },
+
+    getChildHelper: function (helper) {
+      return helper.link
+        ? [
+            __(helper.text),
+            ' ',
+            React.createElement(Link, {key: 'link', target: '_blank', href: helper.link.href}, __(helper.link.text)),
+          ]
+        : __(helper.text);
+    },
+
+    renderModalHelper: function (nodeElement) {
+      if (this.config.helper) {
+        if (Array.isArray(this.config.helper)) {
+          const elements = this.config.helper.map(helper => {
+            return this.getChildHelper(helper);
+          });
+          this.renderReact(
+            HelperList,
+            {
+              style: {margin: '0 20px 20px'},
+              elements,
+            },
+            nodeElement
+          );
+        } else {
+          this.renderReact(
+            Helper,
+            {
+              style: {margin: '0 20px 20px'},
+              children: this.getChildHelper(this.config.helper),
+            },
+            nodeElement
+          );
+        }
+      }
     },
 
     /**

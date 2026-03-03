@@ -48,32 +48,34 @@ pim_ui.system_config:
     loading_message.title: Loading messages
 other_actions: Other actions
 pim_common:
+  association_types: Association types
   cancel: Cancel
-  save: Save
-  delete: Delete
-  update: Update
-  view: View
-  edit: Edit
-  created: Created
-  updated: Updated
-  create: Create
-  permissions: Permissions
-  properties: Properties
-  name: Name
-  remove: Remove
-  code: Code
-  quantity: Quantity
-  products: Products
-  product_models: Product models
   categories: Categories
-  family_variant: Family variant
+  code: Code
+  create: Create
+  created: Created
+  delete: Delete
+  edit: Edit
   enabled: Enabled
+  family_variant: Family variant
   family: Family
-  parent: Parent
   groups: Groups
-  unit: Unit
-  yes: "Yes"
+  label: Label
+  name: Name
   no: "No"
+  parent: Parent
+  permissions: Permissions
+  product_models: Product models
+  products: Products
+  properties: Properties
+  quantity: Quantity
+  remove: Remove
+  save: Save
+  unit: Unit
+  update: Update
+  updated: Updated
+  view: View
+  yes: "Yes"
 pim_enrich:
   #ACLs
   acl:
@@ -106,15 +108,6 @@ pim_enrich:
       categories_view: Consult the categories of a product model
       history: View product model history
       remove: Remove a product model (including children)
-    category:
-      list: List categories
-      create: Create a category
-      edit: Edit a category
-      remove: Remove a category
-      move: Move category
-      children: See category children
-      products: See category's products
-      history: View category history
     channel:
       index: List channels
       create: Create a channel
@@ -447,13 +440,13 @@ pim_datagrid:
     enabled:
       label: Status
     scope:
-      label: Scope
+      label: Channel
     completeness:
       label: Complete
     created:
-      label: Created At
+      label: Created
     updated:
-      label: Updated At
+      label: Updated
     label_or_identifier:
       label: Label or identifier
     parent:
@@ -524,7 +517,6 @@ pim_mass_edit:
       success: Mass delete <strong>%label%</strong> finished
 job_execution.summary:
   mass_edited: Mass edited
-  skip: Skipped
   skipped_products: Skipped products
   skipped_attributes: Skipped attributes
   skipped_families: Skipped families

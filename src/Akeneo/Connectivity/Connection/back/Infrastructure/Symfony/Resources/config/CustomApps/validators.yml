@@ -1,0 +1,6 @@
+services:
+  Akeneo\Connectivity\Connection\Application\CustomApps\Validation\IsCustomAppsNumberLimitReachedValidator:
+    arguments:
+      - '@Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Persistence\IsCustomAppsNumberLimitReachedQuery'
+    tags:
+      - { name: validator.constraint_validator }

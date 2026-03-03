@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver;
 
+use Akeneo\Pim\Enrichment\Component\Product\Value\IdentifierValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Test\Common\Structure\Attribute\Builder;
 use Doctrine\Common\Collections\Collection;
@@ -40,8 +41,8 @@ class ProductUniqueDataSynchronizerSpec extends ObjectBehavior
         $product->getUniqueData()->willReturn($uniqueDataCollectionToUpdate);
         $uniqueDataCollectionToUpdate->toArray()->willReturn([$skuUniqueData, $eanUniqueData]);
 
-        $product->getValues()->willReturn([ScalarValue::value('sku', 'sku-01'), ScalarValue::value('name', 'my_name')]);
-        $product->getValue('sku')->willReturn(ScalarValue::value('sku', 'sku-01'));
+        $product->getValues()->willReturn([IdentifierValue::value('sku', true, 'sku-01'), ScalarValue::value('name', 'my_name')]);
+        $product->getValue('sku')->willReturn(IdentifierValue::value('sku', true, 'sku-01'));
 
         $skuAttribute = (new Builder())->withCode('sku')->aIdentifier()->build();
         $nameAttribute = (new Builder())->withCode('name')->aUniqueAttribute()->build();
@@ -83,8 +84,8 @@ class ProductUniqueDataSynchronizerSpec extends ObjectBehavior
         $product->getUniqueData()->willReturn($uniqueDataCollectionToUpdate);
         $uniqueDataCollectionToUpdate->toArray()->willReturn([$skuUniqueData, $eanUniqueData]);
 
-        $product->getValues()->willReturn([ScalarValue::value('sku', 'sku-01'), ScalarValue::value('name', 'my_name'), ScalarValue::value('ean', null)]);
-        $product->getValue('sku')->willReturn(ScalarValue::value('sku', 'sku-01'));
+        $product->getValues()->willReturn([IdentifierValue::value('sku', true, 'sku-01'), ScalarValue::value('name', 'my_name'), ScalarValue::value('ean', null)]);
+        $product->getValue('sku')->willReturn(IdentifierValue::value('sku', true, 'sku-01'));
 
         $skuAttribute = (new Builder())->withCode('sku')->aIdentifier()->build();
         $nameAttribute = (new Builder())->withCode('name')->aUniqueAttribute()->build();

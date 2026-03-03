@@ -1,9 +1,0 @@
-parameters:
-    pim_installer.install_status_manager.class:       Akeneo\Platform\Bundle\InstallerBundle\InstallStatusManager\InstallStatusManager
-
-services:
-    pim_installer.install_status_manager:
-            class: '%pim_installer.install_status_manager.class%'
-            arguments:
-                - '@doctrine'
-                - '%env(APP_DATABASE_NAME)%'

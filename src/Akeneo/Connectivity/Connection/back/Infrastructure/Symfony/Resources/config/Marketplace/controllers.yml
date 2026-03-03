@@ -1,0 +1,25 @@
+services:
+    ## INTERNAL
+    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Controller\Internal\GetWebMarketplaceUrlAction:
+        public: true
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Application\Marketplace\MarketplaceUrlGenerator'
+            - '@pim_user.context.user'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Controller\Internal\GetAllExtensionsAction:
+        public: true
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAllExtensionsQuery'
+            - '@Akeneo\Connectivity\Connection\Application\Marketplace\MarketplaceAnalyticsGenerator'
+            - '@pim_user.context.user'
+            - '@logger'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Controller\Internal\GetAllAppsAction:
+        public: true
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Application\Marketplace\AppUrlGenerator'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAllAppsQuery'
+            - '@Akeneo\Connectivity\Connection\Application\Marketplace\MarketplaceAnalyticsGenerator'
+            - '@pim_user.context.user'
+            - '@logger'
+            - '@akeneo_connectivity.connection.marketplace_activate.feature'

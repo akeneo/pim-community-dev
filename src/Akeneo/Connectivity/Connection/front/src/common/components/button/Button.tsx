@@ -13,7 +13,7 @@ export const Button = forwardRef(({children, count, classNames = [], ...props}: 
     }
 
     return (
-        <button type='button' {...props} ref={ref} className={`${props.className} ${classNames.join(' ')}`}>
+        <button type='button' {...(props as any)} ref={ref} className={`${props.className} ${classNames.join(' ')}`}>
             {children}
             {undefined !== count && <span className='AknButton--withSuffix'>{count}</span>}
         </button>

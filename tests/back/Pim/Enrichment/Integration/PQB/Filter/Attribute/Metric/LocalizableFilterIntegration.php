@@ -3,6 +3,8 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Metric;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
@@ -37,26 +39,18 @@ class LocalizableFilterIntegration extends AbstractProductQueryBuilderTestCase
         ]);
 
         $this->createProduct('product_one', [
-            'family' => 'a_family',
-            'values' => [
-                'a_localizable_metric' => [
-                    ['data' => ['amount' => 20, 'unit' => 'METER'], 'locale' => 'en_US', 'scope' => null],
-                    ['data' => ['amount' => 21, 'unit' => 'METER'], 'locale' => 'fr_FR', 'scope' => null]
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetMeasurementValue('a_localizable_metric', null, 'en_US', 20, 'METER'),
+            new SetMeasurementValue('a_localizable_metric', null, 'fr_FR', 21, 'METER'),
         ]);
 
         $this->createProduct('product_two', [
-            'family' => 'a_family',
-            'values' => [
-                'a_localizable_metric' => [
-                    ['data' => ['amount' => 10, 'unit' => 'METER'], 'locale' => 'en_US', 'scope' => null],
-                    ['data' => ['amount' => 1, 'unit' => 'METER'], 'locale' => 'fr_FR', 'scope' => null]
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetMeasurementValue('a_localizable_metric', null, 'en_US', 10, 'METER'),
+            new SetMeasurementValue('a_localizable_metric', null, 'fr_FR', 1, 'METER'),
         ]);
 
-        $this->createProduct('empty_product', ['family' => 'a_family']);
+        $this->createProduct('empty_product', [new SetFamily('a_family')]);
     }
 
     public function testOperatorInferior()

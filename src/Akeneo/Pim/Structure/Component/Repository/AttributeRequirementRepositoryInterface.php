@@ -3,7 +3,7 @@
 namespace Akeneo\Pim\Structure\Component\Repository;
 
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 
 /**
  * Repository interface for attribute requirements

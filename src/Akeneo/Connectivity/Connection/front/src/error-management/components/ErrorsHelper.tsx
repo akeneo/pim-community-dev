@@ -5,9 +5,10 @@ import {Translate, useTranslate} from '../../shared/translate';
 
 type Props = {
     errorCount: number;
+    description: string;
 };
 
-const ErrorsHelper: FC<Props> = ({errorCount}) => {
+const ErrorsHelper: FC<Props> = ({errorCount, description}) => {
     const translate = useTranslate();
 
     return (
@@ -24,7 +25,7 @@ const ErrorsHelper: FC<Props> = ({errorCount}) => {
                 />
             </HelperTitle>
 
-            <Translate id='akeneo_connectivity.connection.error_management.connection_monitoring.helper.description' />
+            <Translate id={description} />
             <br />
 
             <HelperLink href='https://api.akeneo.com/documentation/responses.html#422-error'>

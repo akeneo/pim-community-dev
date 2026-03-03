@@ -20,7 +20,7 @@ class OrmFilterDatasourceAdapter implements FilterDatasourceAdapterInterface
     /**
      * @var OrmExpressionBuilder
      */
-    private $expressionBuilder;
+    protected $expressionBuilder;
 
     /**
      * Constructor

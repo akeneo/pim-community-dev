@@ -6,14 +6,14 @@ namespace Specification\Akeneo\Pim\Enrichment\Bundle\StructureVersion\EventListe
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Doctrine\DBAL\Connection;
+use Doctrine\Persistence\ManagerRegistry;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 class StructureVersionUpdaterSpec extends ObjectBehavior
 {
-    function let(RegistryInterface $registry, Connection $connection)
+    function let(ManagerRegistry $registry, Connection $connection)
     {
         $registry->getConnection()->willReturn($connection);
         $this->beConstructedWith($registry);

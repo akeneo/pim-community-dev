@@ -37,16 +37,6 @@ final class CategoryLevelContext implements Context
     }
 
     /**
-     * @Given the limit of the number of category levels is set to :limit
-     *
-     * @param int $limit
-     */
-    public function theLimitOfTheNumberOfCategoryLevelsIsSetTo(int $limit): void
-    {
-        $this->inMemoryQuery->setLimit($limit);
-    }
-
-    /**
      * @Then the report returns that the maximum of category levels is :maxOfCategoryLevels
      *
      * @param int $maxOfCategoryLevels

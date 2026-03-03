@@ -15,11 +15,10 @@ class Configuration implements ConfigurationInterface
     /**
      * {@inheritDoc}
      */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder
-            ->root('pim_api')
+        $treeBuilder = new TreeBuilder('pim_api');
+        $rootNode = $treeBuilder->getRootNode()
             ->children()
                 ->arrayNode('pagination')
                     ->children()

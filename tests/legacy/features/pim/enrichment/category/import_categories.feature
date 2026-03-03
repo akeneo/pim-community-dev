@@ -19,7 +19,7 @@ Feature: Import categories
       pc;computers;PC
       """
     And the following job "csv_footwear_category_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     When I am on the "csv_footwear_category_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_category_import" job to finish

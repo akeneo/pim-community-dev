@@ -5,79 +5,91 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Akeneo\Platform\Bundle\FrameworkBundle\Service\ResilientDeadlockConnection;
 use Akeneo\Tool\Bundle\ConnectorBundle\Doctrine\UnitOfWorkAndRepositoriesClearer;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Exception\DeadlockException;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 class RemoveValuesFromProducts
 {
-    private ProductRepositoryInterface $productRepository;
-    private Connection $connection;
-    private EventDispatcherInterface $eventDispatcher;
-    private UnitOfWorkAndRepositoriesClearer $clearer;
-
     public function __construct(
-        ProductRepositoryInterface $productRepository,
-        Connection $connection,
-        EventDispatcherInterface $eventDispatcher,
-        UnitOfWorkAndRepositoriesClearer $clearer
+        private readonly ProductRepositoryInterface $productRepository,
+        private readonly Connection $connection,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly UnitOfWorkAndRepositoriesClearer $clearer,
+        private readonly ResilientDeadlockConnection $resilientDeadlockConnection,
     ) {
-        $this->productRepository = $productRepository;
-        $this->connection = $connection;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->clearer = $clearer;
     }
 
-    public function forAttributeCodes(array $attributeCodes, array $productIdentifiers): void
+    /**
+     * @param string[] $attributeCodes
+     * @param string[] $productUuids
+     */
+    public function forAttributeCodes(array $attributeCodes, array $productUuids): void
     {
-        $this->removeValuesForAttributeCodes($attributeCodes, $productIdentifiers);
-        $this->dispatchProductSaveEvents($productIdentifiers);
+        $this->removeValuesForAttributeCodes($attributeCodes, $productUuids);
+        $this->dispatchProductSaveEvents($productUuids);
 
         $this->clearer->clear();
     }
 
-    private function removeValuesForAttributeCodes(array $attributeCodes, array $productIdentifiers): void
+    /**
+     * @param string[] $attributeCodes
+     * @param string[] $productUuids
+     *
+     * @throws DeadlockException|Exception
+     */
+    private function removeValuesForAttributeCodes(array $attributeCodes, array $productUuids): void
     {
         $paths = implode(
             ',',
             array_map(fn ($attributeCode) => $this->connection->quote(sprintf('$."%s"', $attributeCode)), $attributeCodes)
         );
 
-        $this->connection->executeQuery(
+        $uuidsAsBytes = \array_map(fn ($productUuid) => Uuid::fromString($productUuid)->getBytes(), $productUuids);
+
+        $this->resilientDeadlockConnection->executeQuery(
             <<<SQL
     UPDATE pim_catalog_product
     SET raw_values = JSON_REMOVE(raw_values, $paths)
-    WHERE identifier IN (:identifiers)
+    WHERE uuid IN (:uuids)
     SQL,
             [
-                'identifiers' => $productIdentifiers,
+                'uuids' => $uuidsAsBytes,
             ],
             [
-                'identifiers' => Connection::PARAM_STR_ARRAY,
-            ]
+                'uuids' => Connection::PARAM_STR_ARRAY,
+            ],
+            sprintf('%s:%s', self::class, 'removeValuesForAttributeCodes'),
         );
     }
 
-    private function dispatchProductSaveEvents(array $productIdentifiers): void
+    /**
+     * @param string[] $productUuids
+     */
+    private function dispatchProductSaveEvents(array $productUuids): void
     {
-        $products = $this->productRepository->findBy(['identifier' => $productIdentifiers]);
+        $products = $this->productRepository->getItemsFromUuids($productUuids);
 
         foreach ($products as $product) {
             $this->eventDispatcher->dispatch(
-                StorageEvents::POST_SAVE,
                 new GenericEvent($product, [
                     'unitary' => false,
-                ])
+                ]),
+                StorageEvents::POST_SAVE
             );
         }
 
         $this->eventDispatcher->dispatch(
-            StorageEvents::POST_SAVE_ALL,
             new GenericEvent($products, [
                 'unitary' => false,
-            ])
+            ]),
+            StorageEvents::POST_SAVE_ALL
         );
     }
 }

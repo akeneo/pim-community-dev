@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Webhook;
 
-use Doctrine\Common\Persistence\ObjectRepository;
+use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -15,16 +15,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class WebhookUserAuthenticator
 {
-    /** @var ObjectRepository */
-    private $userRepository;
-
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
-
-    public function __construct(ObjectRepository $userRepository, TokenStorageInterface $tokenStorage)
+    public function __construct(private UserRepositoryInterface $userRepository, private TokenStorageInterface $tokenStorage)
     {
-        $this->userRepository = $userRepository;
-        $this->tokenStorage = $tokenStorage;
     }
 
     public function authenticate(int $userId): UserInterface
@@ -32,12 +24,12 @@ class WebhookUserAuthenticator
         /** @var ?UserInterface $user */
         $user = $this->userRepository->find($userId);
         if (null === $user) {
-            throw new \RuntimeException(sprintf('User "%s" not found', $userId));
+            throw new \RuntimeException(\sprintf('User "%s" not found', $userId));
         }
 
-        $roles = array_map('strval', $user->getRoles());
+        $roles = \array_map('strval', $user->getRoles());
 
-        $this->tokenStorage->setToken(new UsernamePasswordToken($user, null, 'main', $roles));
+        $this->tokenStorage->setToken(new UsernamePasswordToken($user, 'main', $roles));
 
         return $user;
     }

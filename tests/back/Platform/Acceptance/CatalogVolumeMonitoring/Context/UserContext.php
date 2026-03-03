@@ -37,16 +37,6 @@ final class UserContext implements Context
     }
 
     /**
-     * @Given the limit of the number of users is set to :limit
-     *
-     * @param int $limit
-     */
-    public function theLimitOfTheNumberOfUsersIsSetTo(int $limit): void
-    {
-        $this->inMemoryQuery->setLimit($limit);
-    }
-
-    /**
      * @Then the report returns that the number of users is :numberOfUsers
      *
      * @param int $numberOfUsers

@@ -6,6 +6,8 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Model;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\IdMapping;
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\UuidMapping;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Interface to implement for any entity that should be aware of any quantified associations it is holding.
@@ -38,10 +40,15 @@ interface EntityWithQuantifiedAssociationsInterface
     /**
      * Remove quantified association with product/product model not present in parameter
      *
-     * @param array $productIdentifiersToKeep
-     * @param array $productModelCodesToKeep
+     * @param string[] $productIdentifiersToKeep
+     * @param UuidInterface[] $productUuidsToKeep
+     * @param string[] $productModelCodesToKeep
      */
-    public function filterQuantifiedAssociations(array $productIdentifiersToKeep, array $productModelCodesToKeep): void;
+    public function filterQuantifiedAssociations(
+        array $productIdentifiersToKeep,
+        array $productUuidsToKeep,
+        array $productModelCodesToKeep
+    ): void;
 
     /**
      * Remove all quantified associations
@@ -51,12 +58,12 @@ interface EntityWithQuantifiedAssociationsInterface
     /**
      * Hydrates quantified associations from raw quantified associations
      *
-     * @param IdMapping $mappedProductIds
+     * @param UuidMapping $mappedProductIds
      * @param IdMapping $mappedProductModelIds
      * @param array $associationTypeCodes
      */
     public function hydrateQuantifiedAssociations(
-        IdMapping $mappedProductIds,
+        UuidMapping $mappedProductIds,
         IdMapping $mappedProductModelIds,
         array $associationTypeCodes
     ): void;
@@ -69,6 +76,13 @@ interface EntityWithQuantifiedAssociationsInterface
     public function getQuantifiedAssociationsProductIdentifiers(): array;
 
     /**
+     * Get all associated product uuids
+     *
+     * @return UuidInterface[]
+     */
+    public function getQuantifiedAssociationsProductUuids(): array;
+
+    /**
      * Get all associated product model codes
      *
      * @return string[]
@@ -78,11 +92,11 @@ interface EntityWithQuantifiedAssociationsInterface
     /**
      * Update raw quantified associations from quantified associations
      *
-     * @param IdMapping $mappedProductIdentifiers
+     * @param UuidMapping $uuidMappedProductIdentifiers
      * @param IdMapping $mappedProductModelIdentifiers
      */
     public function updateRawQuantifiedAssociations(
-        IdMapping $mappedProductIdentifiers,
+        UuidMapping $uuidMappedProductIdentifiers,
         IdMapping $mappedProductModelIdentifiers
     ): void;
 

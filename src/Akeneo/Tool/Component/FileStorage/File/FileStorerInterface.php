@@ -2,6 +2,7 @@
 
 namespace Akeneo\Tool\Component\FileStorage\File;
 
+use Akeneo\Tool\Component\FileStorage\Exception\FileAlreadyExistsException;
 use Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException;
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Tool\Component\FileStorage\Exception\InvalidFile;
@@ -31,8 +32,9 @@ interface FileStorerInterface
      * @throws FileRemovalException
      * @throws InvalidFile
      * @throws \Exception
+     * @throws FileAlreadyExistsException
      *
      * @return FileInfoInterface
      */
-    public function store(\SplFileInfo $rawFile, $destFsAlias, $deleteRawFile = false);
+    public function store(\SplFileInfo $rawFile, string $destFsAlias, bool $deleteRawFile = false): FileInfoInterface;
 }

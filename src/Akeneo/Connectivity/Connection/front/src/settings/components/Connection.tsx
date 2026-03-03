@@ -16,7 +16,7 @@ export const Connection = ({code, label, hasWrongCombination, image}: Props) => 
     const generateMediaUrl = useMediaUrlGenerator();
 
     return (
-        <Figure onClick={() => history.push(`/connections/${code}/edit`)}>
+        <Figure onClick={() => history.push(`/connect/connection-settings/${code}/edit`)}>
             <FigureImage
                 className='AknImage-display'
                 src={null === image ? imgUrl : generateMediaUrl(image, 'thumbnail')}

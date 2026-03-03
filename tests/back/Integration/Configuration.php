@@ -4,7 +4,7 @@ namespace Akeneo\Test\Integration;
 
 /**
  * Configuration of a TestCase.
- * Here is defined the catalog that has to be loaded and the directories of the fixtures.
+ * Here is defined the catalog that has to be loaded and the directories of the fixtures, and the feature flags to activate before installation.
  *
  * @author    Julien Janvier <j.janvier@gmail.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -12,19 +12,18 @@ namespace Akeneo\Test\Integration;
  */
 class Configuration
 {
-    /** @var array */
-    protected $catalogDirectories;
-
-    /** @var array */
-    protected $fixtureDirectories;
+    private array $catalogDirectories;
+    private array $fixtureDirectories;
+    private array $featureFlagsBeforeInstall;
 
     /**
      * @param array $catalogDirectories The catalog directories to load
      * @param array $fixtureDirectories The fixtures directories. Will look at least in "test/fixtures/".
+     * @param array $featureFlagsBeforeInstall Feature flags to activate before installation, because it impacts the loading of the data, such as the permission
      *
      * @throws \Exception
      */
-    public function __construct(array $catalogDirectories, array $fixtureDirectories = [])
+    public function __construct(array $catalogDirectories, array $fixtureDirectories = [], array $featureFlagsBeforeInstall = [])
     {
         $this->catalogDirectories = $catalogDirectories;
         foreach ($this->catalogDirectories as $catalogDirectory) {
@@ -39,21 +38,21 @@ class Configuration
                 throw new \Exception(sprintf('The fixture directory "%s" does not exist.', $fixtureDirectory));
             }
         }
+
+        $this->featureFlagsBeforeInstall = $featureFlagsBeforeInstall;
     }
 
-    /**
-     * @return array
-     */
-    public function getCatalogDirectories()
+    public function getCatalogDirectories(): array
     {
         return $this->catalogDirectories;
     }
 
-    /**
-     * @return array
-     */
-    public function getFixtureDirectories()
+    public function getFixtureDirectories(): array
     {
         return $this->fixtureDirectories;
+    }
+
+    public function getFeatureFlagsBeforeInstall(): array {
+        return $this->featureFlagsBeforeInstall;
     }
 }

@@ -16,6 +16,7 @@ window.dispatchEvent = jest.fn();
 describe('Dashboard > change time period', () => {
   test('time period can be changed to weekly on the dashboard', async () => {
     const {getByText} = renderDashboardWithProvider(<TimePeriodFilter timePeriod={'daily'} />);
+    fireEvent.click(getByText('akeneo_data_quality_insights.dqi_dashboard.time_period.daily'));
     const filter = await waitFor(() => getByText('akeneo_data_quality_insights.dqi_dashboard.time_period.weekly'));
     fireEvent.click(filter);
     assertTimePeriodFilterEventHasBeenDispatched();

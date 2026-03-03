@@ -2,12 +2,12 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field;
 
+use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterHelper;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
-use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 
 /**
  * Product category filter.
@@ -45,7 +45,7 @@ class CategoryFilter extends AbstractFieldFilter implements FieldFilterInterface
             throw new \LogicException('The search query builder is not initialized in the filter.');
         }
 
-        if ($operator !== Operators::UNCLASSIFIED) {
+        if ($operator !== Operators::UNCLASSIFIED && $operator !== Operators::IS_NOT_EMPTY) {
             if (!isset($options['type_checking']) || $options['type_checking']) {
                 $this->checkValue($field, $value);
             }
@@ -99,6 +99,14 @@ class CategoryFilter extends AbstractFieldFilter implements FieldFilterInterface
                     'exists' => ['field' => 'categories']
                 ];
                 $this->searchQueryBuilder->addMustNot($clause);
+                break;
+
+            case Operators::IS_NOT_EMPTY:
+                $clause = [
+                    'exists' => ['field' => 'categories'],
+                ];
+
+                $this->searchQueryBuilder->addFilter($clause);
                 break;
 
             case Operators::IN_LIST_OR_UNCLASSIFIED:

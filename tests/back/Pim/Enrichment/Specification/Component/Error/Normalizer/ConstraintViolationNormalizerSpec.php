@@ -12,6 +12,7 @@ use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 
@@ -82,7 +83,7 @@ class ConstraintViolationNormalizerSpec extends ObjectBehavior
     {
         $constraintViolation = new ConstraintViolation('', '', [], '', '', '');
 
-        $product->getId()->willReturn(1);
+        $product->getUuid()->willReturn(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'));
         $product->getIdentifier()->willReturn('product_identifier');
         $product->getFamily()->willReturn(null);
         $product->getLabel()->willReturn('Akeneo T-Shirt black and purple with short sleeve');
@@ -94,7 +95,7 @@ class ConstraintViolationNormalizerSpec extends ObjectBehavior
             'message_template' => '',
             'message_parameters' => [],
             'product' => [
-                'id' => 1,
+                'uuid' => '54162e35-ff81-48f1-96d5-5febd3f00fd5',
                 'identifier' => 'product_identifier',
                 'label' => 'Akeneo T-Shirt black and purple with short sleeve',
                 'family' => null,
@@ -106,7 +107,7 @@ class ConstraintViolationNormalizerSpec extends ObjectBehavior
     {
         $constraintViolation = new ConstraintViolation('', '', [], '', '', '');
 
-        $product->getId()->willReturn(1);
+        $product->getUuid()->willReturn(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'));
         $product->getIdentifier()->willReturn('product_identifier');
         $product->getFamily()->willReturn($family);
         $family->getCode()->willReturn('tshirts');
@@ -119,7 +120,7 @@ class ConstraintViolationNormalizerSpec extends ObjectBehavior
             'message_template' => '',
             'message_parameters' => [],
             'product' => [
-                'id' => 1,
+                'uuid' => '54162e35-ff81-48f1-96d5-5febd3f00fd5',
                 'identifier' => 'product_identifier',
                 'label' => 'Akeneo T-Shirt black and purple with short sleeve',
                 'family' => 'tshirts',

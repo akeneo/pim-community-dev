@@ -78,7 +78,7 @@ class ProductModel implements ArrayConverterInterface
         $filteredItem = $this->filterFields($mappedFlatProductModel, isset($options['with_associations']) ? $options['with_associations'] : true);
         $this->validateItem($filteredItem);
 
-        $mergedFlatProductModel = $this->columnsMerger->merge($filteredItem);
+        $mergedFlatProductModel = $this->columnsMerger->merge($filteredItem, $options);
         $convertedProductModel = $this->convertItem($mergedFlatProductModel);
 
         return $convertedProductModel;
@@ -93,6 +93,7 @@ class ProductModel implements ArrayConverterInterface
             $isProductAssociationQuantityPattern = sprintf('/^\w+%s%s$/', AssociationColumnsResolver::PRODUCT_ASSOCIATION_SUFFIX, AssociationColumnsResolver::QUANTITY_SUFFIX);
             $isProductModelAssociationQuantityPattern = sprintf('/^\w+%s%s$/', AssociationColumnsResolver::PRODUCT_MODEL_ASSOCIATION_SUFFIX, AssociationColumnsResolver::QUANTITY_SUFFIX);
             foreach (array_keys($mappedItem) as $field) {
+                $field = is_int($field) ? strval($field) : $field;
                 $isGroup = (1 === preg_match($isGroupAssociationPattern, $field));
                 $isProduct = (1 === preg_match($isProductAssociationPattern, $field));
                 $isProductModel = (1 === preg_match($isProductModelAssociationPattern, $field));

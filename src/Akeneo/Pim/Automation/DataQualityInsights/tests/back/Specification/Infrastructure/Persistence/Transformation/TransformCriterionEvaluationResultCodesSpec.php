@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationResultStatus;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\Attributes;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\Channels;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\Attributes\SqlAttributes;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\Channels\ChannelsInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\CriterionEvaluationResultTransformationFailedException;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\Locales;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\Locales\LocalesInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\TransformCriterionEvaluationResultCodes;
 use PhpSpec\ObjectBehavior;
 
@@ -18,7 +18,7 @@ use PhpSpec\ObjectBehavior;
  */
 final class TransformCriterionEvaluationResultCodesSpec extends ObjectBehavior
 {
-    public function let(Attributes $attributes, Channels $channels, Locales $locales)
+    public function let(SqlAttributes $attributes, ChannelsInterface $channels, LocalesInterface $locales)
     {
         $this->beConstructedWith($attributes, $channels, $locales);
 
@@ -49,6 +49,12 @@ final class TransformCriterionEvaluationResultCodesSpec extends ObjectBehavior
                     'ecommerce' => [
                         'en_US' => 4,
                         'fr_FR' => 5,
+                    ],
+                ],
+                'number_of_improvable_attributes' => [
+                    'ecommerce' => [
+                        'en_US' => 2,
+                        'fr_FR' => 1,
                     ],
                 ],
             ],
@@ -176,6 +182,12 @@ final class TransformCriterionEvaluationResultCodesSpec extends ObjectBehavior
                         'en_US' => 3,
                     ],
                 ],
+                'number_of_improvable_attributes' => [
+                    'ecommerce' => [
+                        'en_US' => 2,
+                        'fr_FR' => 1,
+                    ],
+                ],
             ],
             'rates' => [
                 'ecommerce' => [
@@ -227,6 +239,13 @@ final class TransformCriterionEvaluationResultCodesSpec extends ObjectBehavior
                         'fo_FO' => 3,
                     ],
                 ],
+                'number_of_improvable_attributes' => [
+                    'ecommerce' => [
+                        'en_US' => 2,
+                        'fr_FR' => 1,
+                        'fo_FO' => 1,
+                    ],
+                ],
             ],
             'rates' => [
                 'ecommerce' => [
@@ -266,6 +285,12 @@ final class TransformCriterionEvaluationResultCodesSpec extends ObjectBehavior
                     1 => [
                         58 => 4,
                         90 => 5,
+                    ],
+                ],
+                3 => [
+                    1 => [
+                        58 => 2,
+                        90 => 1,
                     ],
                 ],
             ],

@@ -2,12 +2,16 @@
 
 namespace AkeneoTest\Pim\Structure\EndToEnd\Family\ExternalApi;
 
+use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
 use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
 class PartialUpdateFamilyEndToEnd extends ApiTestCase
 {
+    use AssertEventCountTrait;
+
     public function testHttpHeadersInResponseWhenAFamilyIsUpdated()
     {
         $client = $this->createAuthenticatedClient();
@@ -117,7 +121,7 @@ JSON;
 <<<JSON
     {
         "code": "complete_family_creation_code",
-        "attributes": ["an_image", "a_metric", "a_price", "an_image"],
+        "attributes": ["sku", "an_image", "a_metric", "a_price", "an_image"],
         "attribute_as_label": "sku",
         "attribute_as_image": "an_image",
         "attribute_requirements": {
@@ -163,7 +167,7 @@ JSON;
         $data =
 <<<JSON
     {
-        "attributes": ["an_image", "a_metric", "a_price"],
+        "attributes": ["sku", "an_image", "a_metric", "a_price"],
         "attribute_as_label": "sku",
         "attribute_as_image": "an_image",
         "attribute_requirements": {
@@ -374,7 +378,7 @@ JSON;
         $data =
 <<<JSON
     {
-        "attributes": [ ],
+        "attributes": ["sku"],
         "attribute_as_label": "sku",
         "attribute_as_image": null,
         "attribute_requirements": {
@@ -394,9 +398,7 @@ JSON;
             'attribute_as_label'     => 'sku',
             'attribute_as_image'     => null,
             'attribute_requirements' => [
-                'ecommerce'          => [ 'sku' ],
-                'ecommerce_china'    => [ 'sku' ],
-                'tablet'             => [ 'sku' ],
+                'ecommerce_china'    => ['sku'],
             ],
             'labels'                 => [
                 'en_US' => 'A family A1'
@@ -407,6 +409,7 @@ JSON;
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         $this->assertSame($familyStandard, $normalizer->normalize($family));
+        $this->assertEventCount(0, ProductUpdated::class);
     }
 
     public function testResponseWhenContentIsEmpty()

@@ -8,6 +8,13 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterfa
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
 
@@ -48,17 +55,17 @@ class SqlGetValuesOfSiblingsIntegration extends TestCase
     public function test_that_it_gets_the_siblings_values_of_a_new_variant_product()
     {
         $variantProduct = $this->createProduct(
-            'new_identifier',
+            'apollon_optionb_false',
             [
-                'parent' => 'sub_sweat_option_a',
-            ],
-            false
+                new SetCategories(['master']),
+                new ChangeParent('sub_sweat_option_b'),
+                new SetBooleanValue('a_yes_no', null, null, false)
+            ]
         );
 
         $valuesOfSiblings = $this->getValuesOfSiblings($variantProduct);
-        Assert::assertCount(2, $valuesOfSiblings);
-        Assert::assertArrayHasKey('apollon_optiona_true', $valuesOfSiblings);
-        Assert::assertArrayHasKey('apollon_optiona_false', $valuesOfSiblings);
+        Assert::assertCount(1, $valuesOfSiblings);
+        Assert::assertArrayHasKey('apollon_optionb_true', $valuesOfSiblings);
     }
 
     public function test_that_it_gets_the_siblings_values_of_an_existing_variant_product()
@@ -82,6 +89,24 @@ class SqlGetValuesOfSiblingsIntegration extends TestCase
             ValueInterface::class,
             $valuesOfSiblings['sub_sweat_option_b']->getByCodes('a_simple_select')
         );
+    }
+
+    public function test_that_it_gets_the_siblings_values_of_an_existing_variant_product_without_identifier()
+    {
+        $apollonATrue = $this->get('pim_catalog.repository.product')->findOneByIdentifier('apollon_optiona_true');
+        $apollonAFalse = $this->get('pim_catalog.repository.product')->findOneByIdentifier('apollon_optiona_false');
+        $command = UpsertProductCommand::createWithUuid(
+            userId: $this->getUserId('admin'),
+            productUuid: ProductUuid::fromUuid($apollonATrue->getUuid()),
+            userIntents: [
+                new ClearValue('sku', null, null),
+            ],
+        );
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
+
+        $valuesOfSiblings = $this->getValuesOfSiblings($apollonAFalse);
+        Assert::assertCount(1, $valuesOfSiblings);
+        Assert::assertArrayHasKey($apollonATrue->getUuid()->toString(), $valuesOfSiblings);
     }
 
     // - sweat
@@ -149,33 +174,25 @@ class SqlGetValuesOfSiblingsIntegration extends TestCase
         $this->createProduct(
             'apollon_optiona_true',
             [
-                'categories' => ['master'],
-                'parent' => 'sub_sweat_option_a',
-                'values' => [
-                    'a_yes_no' => [
-                        [
-                            'locale' => null,
-                            'scope' => null,
-                            'data' => true,
-                        ],
-                    ],
-                ],
+                new SetCategories(['master']),
+                new ChangeParent('sub_sweat_option_a'),
+                new SetBooleanValue('a_yes_no', null, null, true)
             ]
         );
         $this->createProduct(
             'apollon_optiona_false',
             [
-                'categories' => ['master'],
-                'parent' => 'sub_sweat_option_a',
-                'values' => [
-                    'a_yes_no' => [
-                        [
-                            'locale' => null,
-                            'scope' => null,
-                            'data' => false,
-                        ],
-                    ],
-                ],
+                new SetCategories(['master']),
+                new ChangeParent('sub_sweat_option_a'),
+                new SetBooleanValue('a_yes_no', null, null, false)
+            ]
+        );
+        $this->createProduct(
+            'apollon_optionb_true',
+            [
+                new SetCategories(['master']),
+                new ChangeParent('sub_sweat_option_b'),
+                new SetBooleanValue('a_yes_no', null, null, true)
             ]
         );
     }
@@ -185,27 +202,20 @@ class SqlGetValuesOfSiblingsIntegration extends TestCase
         return $this->catalog->useTechnicalCatalog();
     }
 
-    private function createProduct($identifier, array $data = [], bool $save = true): ProductInterface
+    /**
+     * @param UserIntent[] $userIntents
+     */
+    private function createProduct($identifier, array $userIntents = []): ProductInterface
     {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
-        $this->get('pim_catalog.updater.product')->update($product, $data);
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
+        $command = UpsertProductCommand::createFromCollection(
+            userId: $this->getUserId('admin'),
+            productIdentifier: $identifier,
+            userIntents: $userIntents
+        );
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
 
-        if (true === $save) {
-            $errors = $this->get('pim_catalog.validator.product')->validate($product);
-            if (0 !== $errors->count()) {
-                throw new \Exception(
-                    sprintf(
-                        'Impossible to setup test in %s: %s',
-                        static::class,
-                        $errors->get(0)->getMessage()
-                    )
-                );
-            }
-
-            $this->get('pim_catalog.saver.product')->save($product);
-        }
-
-        return $product;
+        return $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
     }
 
     private function createProductModel(array $data = [], bool $save = true): ProductModelInterface

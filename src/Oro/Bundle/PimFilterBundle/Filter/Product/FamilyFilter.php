@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oro\Bundle\PimFilterBundle\Filter\Product;
 
+use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
@@ -22,13 +25,19 @@ class FamilyFilter extends AjaxChoiceFilter
     public function apply(FilterDatasourceAdapterInterface $dataSource, $data)
     {
         $data = $this->parseData($data);
+
         if (!$data) {
             return false;
         }
-        if (in_array(strtoupper($data['type']), [Operators::IS_EMPTY, Operators::IS_NOT_EMPTY])) {
-            $this->util->applyFilter($dataSource, 'family', strtoupper($data['type']), null);
-        } else {
-            $this->util->applyFilter($dataSource, 'family', Operators::IN_LIST, $data['value']);
+
+        try {
+            if (in_array(strtoupper($data['type']), [Operators::IS_EMPTY, Operators::IS_NOT_EMPTY])) {
+                $this->util->applyFilter($dataSource, 'family', strtoupper($data['type']), null);
+            } else {
+                $this->util->applyFilter($dataSource, 'family', Operators::IN_LIST, $data['value']);
+            }
+        } catch (ObjectNotFoundException $exception) {
+            return false;
         }
 
         return true;

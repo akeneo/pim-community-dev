@@ -1,6 +1,11 @@
 extensions:
     pim-user-edit-form:
-        module: pim/form/common/edit-form
+        module: pim/user-edit-form/edit-form
+
+    pim-user-edit-form-sandbox-helper:
+        module: pim/sandbox-helper
+        parent: pim-user-edit-form
+        targetZone: helper
 
     pim-user-edit-form-breadcrumbs:
         module: pim/common/breadcrumbs
@@ -83,7 +88,15 @@ extensions:
                 content: pim_common.confirm_deletion
                 success: pim_enrich.entity.user.flash.delete.success
                 fail: pim_enrich.entity.user.flash.delete.fail
+                buttonText: pim_common.delete
             redirect: pim_user_index
+
+    pim-user-edit-form-duplicate:
+        module: pim/user-edit-form/duplicate
+        parent: pim-user-edit-form-secondary-actions
+        targetZone: secondary-actions
+        aclResourceId: pim_user_user_create
+        position: 95
 
     pim-user-edit-form-state:
         module: pim/form/common/state
@@ -109,7 +122,7 @@ extensions:
             label: pim_common.general_properties
 
     pim-user-edit-form-general-tab-content:
-        module: pim/common/simple-view
+        module: pim/user/form/user-profile-tab-content
         parent: pim-user-edit-form-general-tab
         position: 10
         config:
@@ -137,6 +150,18 @@ extensions:
             fieldName: username
             label: pim_user_management.entity.user.properties.username
             required: true
+
+    pim-user-edit-form-profile:
+        module: pim/user/form/fields/select-profile
+        parent: pim-user-edit-form-general-tab-content
+        position: 25
+        targetZone: content
+        config:
+            fieldName: profile
+            label: pim_user_management.entity.user.properties.profile
+            allowClear: true
+            templateParams:
+                linkLabel: pim_user.profile.why_is_it_needed
 
     pim-user-edit-form-name-prefix:
         module: pim/form/common/fields/text
@@ -195,7 +220,7 @@ extensions:
             label: pim_user_management.entity.user.properties.phone
 
     pim-user-edit-form-avatar:
-        module: pim/form/common/fields/media
+        module: pim/form/common/fields/image-media
         parent: pim-user-edit-form-general-tab-content
         position: 100
         targetZone: content
@@ -336,7 +361,7 @@ extensions:
             label: pim_user_management.entity.user.module.update.password
 
     pim-user-edit-form-password-tab-content:
-        module: pim/common/simple-view
+        module: pim/user/form/user-profile-tab-content
         parent: pim-user-edit-form-password-tab
         position: 10
         config:
@@ -403,10 +428,16 @@ extensions:
             isMultiple: false
             allowClear: false
 
+    pim-user-edit-form-unsupported-ui-locale-warning-view:
+        module: pim/user/form/unsupported-ui-locale-warning-view
+        parent: pim-user-edit-form-interfaces-tab-content
+        position: 20
+        targetZone: content
+
     pim-user-edit-form-timezone:
         module: pim/user/fields/timezone
         parent: pim-user-edit-form-interfaces-tab-content
-        position: 20
+        position: 30
         targetZone: content
         config:
             fieldName: timezone

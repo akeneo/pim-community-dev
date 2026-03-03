@@ -10,8 +10,7 @@ namespace Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject;
  */
 class UserId
 {
-    /** @var int */
-    private $id;
+    private int $id;
 
     public function __construct(int $id)
     {

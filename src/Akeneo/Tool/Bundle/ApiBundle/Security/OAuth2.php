@@ -3,12 +3,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\ApiBundle\Security;
 
-use Akeneo\Tool\Bundle\ApiBundle\EventSubscriber\ApiAuthenticationEvent;
+use Akeneo\Tool\Component\Api\Event\ApiAuthenticationEvent;
+use Akeneo\Tool\Component\Api\Event\ApiAuthenticationFailedEvent;
 use Akeneo\UserManagement\Component\Model\User;
 use OAuth2\IOAuth2Storage;
 use OAuth2\Model\IOAuth2AccessToken;
 use OAuth2\OAuth2 as BaseOAuth2;
 use OAuth2\OAuth2AuthenticateException;
+use OAuth2\OAuth2ServerException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,7 +42,7 @@ class OAuth2 extends BaseOAuth2
             if ($data instanceof User) {
                 $this->eventDispatcher->dispatch(
                     new ApiAuthenticationEvent(
-                        $data->getUsername(),
+                        $data->getUserIdentifier(),
                         $this->getClientIdFromPublicId($accessToken->getClientId())
                     )
                 );
@@ -48,6 +50,8 @@ class OAuth2 extends BaseOAuth2
 
             return $accessToken;
         } catch (OAuth2AuthenticateException $e) {
+            $this->eventDispatcher->dispatch(new ApiAuthenticationFailedEvent($e, $tokenParam));
+
             throw new HttpException(Response::HTTP_UNAUTHORIZED, $e->getDescription(), $e);
         }
     }
@@ -57,7 +61,7 @@ class OAuth2 extends BaseOAuth2
      *
      * @return Response
      *
-     * @throws \OAuth2\OAuth2ServerException
+     * @throws OAuth2ServerException
      */
     public function grantAccessToken(Request $request = null): Response
     {

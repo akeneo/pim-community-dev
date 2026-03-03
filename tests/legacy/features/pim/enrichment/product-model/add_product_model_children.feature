@@ -75,18 +75,19 @@ Feature: Add children to product model
     And I confirm the child creation
     Then I should be on the product model "apollon_black" edit page
 
-  @critical
+  @critical @purge-messenger
   Scenario: Successfully add a variant product to a root product model
     Given I am on the "amor" product model page
     When I open the variant navigation children selector for level 1
     And I press the "Add new" button and wait for modal
     Then I should see the text "Add a new Color, Size"
     When I fill in the following child information:
-      | SKU (required)       | amor_black_xl |
+      | SKU                  | amor_black_xl |
       | Color (variant axis) | Black         |
       | Size (variant axis)  | XL            |
     And I confirm the child creation
     Then I should be on the product "amor_black_xl" edit page
+    And 1 event of type "product.created" should have been raised
 
   @critical
   Scenario: Successfully add a variant product to a sub product model
@@ -95,7 +96,7 @@ Feature: Add children to product model
     And I press the "Add new" button and wait for modal
     Then I should see the text "Add a new Size"
     When I fill in the following child information:
-      | SKU (required)      | apollon_blue_xl |
+      | SKU                 | apollon_blue_xl |
       | Size (variant axis) | XL              |
     And I confirm the child creation
     Then I should be on the product "apollon_blue_xl" edit page
@@ -106,7 +107,7 @@ Feature: Add children to product model
     And I press the "Add new" button and wait for modal
     Then I should see the text "Add a new Size"
     When I fill in the following child information:
-      | SKU (required)      | apollon_blue_xl |
+      | SKU                 | apollon_blue_xl |
       | Size (variant axis) | XL              |
     And I confirm the child creation
     Then I should be on the product "apollon_blue_xl" edit page
@@ -132,7 +133,7 @@ Feature: Add children to product model
     And I press the "Add new" button and wait for modal
     Then I should see the text "Add a new Handmade, Material, Reference color, Size, Weight"
     When I fill in the following child information:
-      | SKU (required)                 | tshirt_with_five_axes |
+      | SKU                            | tshirt_with_five_axes |
       | Material (variant axis)        | leather               |
       | Reference color (variant axis) | Red                   |
       | Size (variant axis)            | XL                    |
@@ -151,16 +152,6 @@ Feature: Add children to product model
     And I confirm the child creation
     Then I should see the text "The product model code must not be empty."
 
-  Scenario: I cannot add a variant product without identifier
-    Given I am on the "apollon_blue" product model page
-    When I open the variant navigation children selector for level 2
-    And I press the "Add new" button and wait for modal
-    Then I should see the text "Add a new size"
-    When I fill in the following child information:
-      | Size (variant axis) | XL |
-    And I confirm the child creation
-    Then I should see the text "The identifier attribute cannot be empty."
-
   Scenario: I cannot add a sub product model without axis value
     Given I am on the "apollon" product model page
     When I open the variant navigation children selector for level 1
@@ -177,7 +168,7 @@ Feature: Add children to product model
     And I press the "Add new" button and wait for modal
     Then I should see the text "Add a new size"
     When I fill in the following child information:
-      | SKU (required) | apollon_black_xl |
+      | SKU | apollon_black_xl |
     And I confirm the child creation
     Then I should see the text "Attribute \"size\" cannot be empty, as it is defined as an axis for this entity"
 
@@ -198,7 +189,7 @@ Feature: Add children to product model
     And I press the "Add new" button and wait for modal
     Then I should see the text "Add a new Color, Size"
     When I fill in the following child information:
-      | SKU (required)       | apollon_new_blue_m |
+      | SKU                  | apollon_new_blue_m |
       | Color (variant axis) | Blue               |
       | Size (variant axis)  | M                  |
     And I confirm the child creation

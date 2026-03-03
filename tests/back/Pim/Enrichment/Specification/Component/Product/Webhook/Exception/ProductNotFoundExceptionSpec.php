@@ -6,6 +6,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Webhook\Exceptio
 use Akeneo\Pim\Enrichment\Component\Product\Webhook\Exception\ProductNotFoundException;
 use Akeneo\Platform\Component\Webhook\EventBuildingExceptionInterface;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @author    Thomas Galvaing <thomas.galvaing@akeneo.com>
@@ -16,7 +17,7 @@ class ProductNotFoundExceptionSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith("identifier");
+        $this->beConstructedWith(Uuid::fromString('f496b00a-7d44-4fb0-9e0b-a77b7fdea342'));
     }
 
     function it_is_initializable()
@@ -36,6 +37,6 @@ class ProductNotFoundExceptionSpec extends ObjectBehavior
 
     function it_returns_a_message()
     {
-        $this->getMessage()->shouldReturn('Product "identifier" not found');
+        $this->getMessage()->shouldReturn('Product "f496b00a-7d44-4fb0-9e0b-a77b7fdea342" not found');
     }
 }

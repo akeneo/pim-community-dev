@@ -39,4 +39,3 @@ class CheckWebhookReachabilityHandlerSpec extends ObjectBehavior
         Assert::assertEquals($expectedUrlReachabilityStatus, $handleResult->getWrappedObject());
     }
 }
-

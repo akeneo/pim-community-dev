@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Structure\Bundle\EventSubscriber;
 
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
-use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -23,28 +21,10 @@ use Webmozart\Assert\Assert;
  */
 class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterface
 {
-    /** @var ValidatorInterface */
-    private $validator;
-
-    /** @var SaverInterface */
-    private $familyVariantSaver;
-
-    /** @var BulkSaverInterface */
-    private $bulkfamilyVariantSaver;
-
-    /**
-     * @param ValidatorInterface          $validator
-     * @param SaverInterface              $familyVariantSaver
-     * @param BulkSaverInterface          $bulkFamilyVariantSaver
-     */
     public function __construct(
-        ValidatorInterface $validator,
-        SaverInterface $familyVariantSaver,
-        BulkSaverInterface $bulkFamilyVariantSaver
+        private ValidatorInterface $validator,
+        private BulkSaverInterface $bulkFamilyVariantSaver
     ) {
-        $this->validator = $validator;
-        $this->familyVariantSaver = $familyVariantSaver;
-        $this->bulkfamilyVariantSaver = $bulkFamilyVariantSaver;
     }
 
     /**
@@ -61,12 +41,10 @@ class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterf
     /**
      * Validates and saves the family variants belonging to a family whenever it is updated.
      *
-     * By explicitly calling the `FamilyVariantSaver::save` function we ensure that the
-     * `compute_family_variant_structure_changes` job will run.
+     * When the family variant are saved, we disable the launch of the 'compute_family_variant_structure_changes' job
+     * because the compute is already done by the ComputeCompletenessOfProductsFamilyTasklet job
      *
      * hence, updating the catalog asynchronously.
-     *
-     * @param GenericEvent $event
      *
      * @throws \LogicException
      */
@@ -81,14 +59,17 @@ class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterf
             return;
         }
 
-        $validationResponse = $this->validateFamilyVariants($subject);
+        $validationResponse = $this->validateFamilyVariants([$subject]);
         $validFamilyVariants = $validationResponse['valid_family_variants'];
         $allViolations = $validationResponse['violations'];
 
         Assert::isArray($validFamilyVariants);
-        foreach ($validFamilyVariants as $familyVariant) {
-            $this->familyVariantSaver->save($familyVariant);
-        }
+        // This is an optimization to not trigger two times the jobs. Yet, it's not an ideal design because it means the
+        // caller know who are the listener. It means it introduced accidental coupling between the two components that
+        // should not know each other.
+        $this->bulkFamilyVariantSaver->saveAll($validFamilyVariants, [
+            ComputeFamilyVariantStructureChangesSubscriber::DISABLE_JOB_LAUNCHING => false,
+        ]);
 
         if (!empty($allViolations)) {
             $errorMessage = $this->getErrorMessage($allViolations);
@@ -99,8 +80,8 @@ class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterf
     /**
      * Validates and saves the family variants belonging to a family whenever it is updated.
      *
-     * By explicitly calling the `FamilyVariantSaver::saveAll` function we ensure there will be no background job run to
-     * update the variant product and product model related to the family variant (for scalability reasons).
+     * When the family variant are saved, we disable the launch of the 'compute_family_variant_structure_changes' job
+     * because the compute is already done in a dedicated job of the import.
      *
      * The update of the product models and variant products should be done in a dedicated component such as an import
      * step.
@@ -109,8 +90,14 @@ class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterf
      */
     public function onBulkSave(GenericEvent $event): void
     {
-        $subject = $event->getSubject();
-        if (!$subject instanceof FamilyInterface) {
+        $subjects = $event->getSubject();
+        if (!\is_array($subjects)) {
+            return;
+        }
+
+        $families = \array_filter($subjects, static fn ($subject): bool => $subject instanceof FamilyInterface);
+
+        if (\count($families) === 0) {
             return;
         }
 
@@ -118,11 +105,17 @@ class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterf
             return;
         }
 
-        $validationResponse = $this->validateFamilyVariants($subject);
+        $validationResponse = $this->validateFamilyVariants($subjects);
         $validFamilyVariants = $validationResponse['valid_family_variants'];
         $allViolations = $validationResponse['violations'];
 
-        $this->bulkfamilyVariantSaver->saveAll($validFamilyVariants);
+        // This is an optimization to not trigger two times the jobs. Yet, it's not an ideal design because it means the
+        // caller knows who are the listeners. It means it introduced accidental coupling between the two components that
+        // should not know each other.
+        $this->bulkFamilyVariantSaver->saveAll(
+            $validFamilyVariants,
+            [ComputeFamilyVariantStructureChangesSubscriber::DISABLE_JOB_LAUNCHING => true]
+        );
 
         if (!empty($allViolations)) {
             $errorMessage = $this->getErrorMessage($allViolations);
@@ -150,18 +143,24 @@ class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterf
         return $errorMessage;
     }
 
-    private function validateFamilyVariants(FamilyInterface $family): array
+    /**
+     * @param FamilyInterface[] $families
+     * @return array
+     */
+    private function validateFamilyVariants(array $families): array
     {
         $validFamilyVariants = [];
         $allViolations = [];
 
-        foreach ($family->getFamilyVariants() as $familyVariant) {
-            $violations = $this->validator->validate($familyVariant);
+        foreach ($families as $family) {
+            foreach ($family->getFamilyVariants() as $familyVariant) {
+                $violations = $this->validator->validate($familyVariant);
 
-            if (0 === $violations->count()) {
-                $validFamilyVariants[] = $familyVariant;
-            } else {
-                $allViolations[$familyVariant->getCode()] = $violations;
+                if (0 === $violations->count()) {
+                    $validFamilyVariants[] = $familyVariant;
+                } else {
+                    $allViolations[$familyVariant->getCode()] = $violations;
+                }
             }
         }
 

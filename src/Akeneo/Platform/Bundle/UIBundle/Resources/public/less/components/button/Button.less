@@ -34,7 +34,7 @@
     margin: -4px -4px -7px 0;
   }
 
-  &--disabled {
+  &--disabled, &:disabled {
     color: lighten(@AknDefaultFontColor, @lighten);
     border-color: lighten(@AknBorderColor, @lighten);
     cursor: not-allowed;
@@ -78,7 +78,8 @@
     color: white;
   }
 
-  &--apply&--disabled {
+  &--apply&--disabled, &--apply:disabled {
+    color: white;
     background-color: lighten(@AknGreen, @lighten);
     border-color: lighten(@AknGreen, @lighten);
     cursor: not-allowed;
@@ -106,7 +107,8 @@
     color: white;
   }
 
-  &--grey&--disabled {
+  &--grey&--disabled, &--grey:disabled {
+    color: white;
     background-color: lighten(@AknGrey, @lighten);
     border-color: lighten(@AknGrey, @lighten);
     cursor: not-allowed;
@@ -126,7 +128,7 @@
     color: darken(@AknGrey, 20%);
   }
 
-  &--greyLight&--disabled {
+  &--greyLight&--disabled, &--greyLight:disabled {
     background-color: white;
     border-color: lighten(@AknGrey, 20%);
     color: lighten(@AknGrey, 20%);
@@ -147,7 +149,8 @@
     color: white;
   }
 
-  &--slateGrey&--disabled {
+  &--slateGrey&--disabled, &--slateGrey:disabled {
+    color: white;
     background-color: lighten(@AknSlateGrey, @lighten);
     border-color: lighten(@AknSlateGrey, @lighten);
     cursor: not-allowed;
@@ -167,7 +170,8 @@
     color: white;
   }
 
-  &--important&--disabled {
+  &--important&--disabled, &--important:disabled {
+    color: white;
     background-color: lighten(@AknRed, @lighten);
     border-color: lighten(@AknRed, @lighten);
     cursor: not-allowed;
@@ -187,7 +191,8 @@
     color: white;
   }
 
-  &--action&--disabled {
+  &--action&--disabled, &--action:disabled {
+    color: white;
     background-color: lighten(@AknBlue, @lighten);
     border-color: lighten(@AknBlue, @lighten);
     cursor: not-allowed;
@@ -224,7 +229,7 @@
     display: none;
   }
 
-  &--disabled:focus {
+  &--disabled:focus, &:disabled:focus {
     outline: -webkit-focus-ring-color auto 0;
   }
 

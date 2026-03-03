@@ -1,0 +1,38 @@
+No products to remove: Không có sản phẩm để loại bỏ
+"dot (.)": dấu chấm (.)
+"comma (,)": dấu phẩy (,)
+pim_enrich:
+  #Category
+  category:
+    tab:
+      property.title: Thuộc tính
+      history.title: Lịch sử
+  #Mass edit operations
+  mass_edit_action:
+    product:
+      page_title: Sản phẩm
+      page_subtitle: Chỉnh sửa hàng loạt (1 sản phẩm)|Chỉnh sửa hàng loạt (%count% sản phẩm)
+      title: Chọn thao tác
+      subtitle: Chọn thao tác bạn muốn thực hiện trên sản phẩm|Chọn thao tác bạn muốn thực hiện trên %count% sản phẩm đã chọn
+      confirm: Bạn đang cập nhật một sản phẩm với những thông tin sau, hãy xác nhận|Bạn đang cập nhật %count% sản phẩm với những thôgn tin sau, hãy xác nhận.
+      steps:
+        first: Chọn sản phẩm
+        second: Chọn thao tác
+        third: Cấu hình
+        fourth: Xác nhận
+    change-status:
+      description: Các sản phẩm được lựa chọn sẽ được kích hoạt hoặc vô hiệu hoá.
+      success_flash: Trạng thái của sản phẩm đã được thay đổi
+    edit-common-attributes:
+      label: Chỉnh sửa thuộc tính
+      empty: Vui lòng chọn thuộc tính bạn muốn chỉnh sửa
+    classify-add:
+      description: Các sản phẩm sẽ được bố trí vào các danh mục sau, những vị trí đã tồn tại sẽ được giữ nguyên.
+      success_flash: Sản phẩm đã được phân loại vào danh mục được chọn
+    change-family:
+      description: Chủng loại của những sản phẩm được chọn sẽ thay đổi theo chủng loại được chọn
+      success_flash: Chủng loại của các sản phẩm được chọn đã được thay đổi thành công
+    add-to-groups:
+      label: Thêm vào nhóm
+      description: Chọn nhóm để thêm các sản phẩm đã chọn
+      success_flash: Sản phẩm đã được thêm vào các nhóm đã chọn

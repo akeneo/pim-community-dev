@@ -6,5 +6,3 @@ pim_dashboard:
       title: Integridad por Canales y Locales
     last_operations:
       title: Últimas operaciones
-      status: Estado
-      type: Tipo

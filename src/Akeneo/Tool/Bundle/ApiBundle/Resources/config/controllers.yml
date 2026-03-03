@@ -14,3 +14,4 @@ services:
         class: '%pim_api.controller.root_endpoint.class%'
         arguments:
             - '@router'
+            - '@feature_flags'

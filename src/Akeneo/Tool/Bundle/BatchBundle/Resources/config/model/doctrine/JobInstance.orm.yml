@@ -1,8 +1,7 @@
 Akeneo\Tool\Component\Batch\Model\JobInstance:
     type: entity
     table: akeneo_batch_job_instance
-    # TODO: should be like other entities
-    #changeTrackingPolicy: DEFERRED_EXPLICIT
+    changeTrackingPolicy: DEFERRED_EXPLICIT
     uniqueConstraints:
         searchunique_idx:
             columns:
@@ -29,7 +28,6 @@ Akeneo\Tool\Component\Batch\Model\JobInstance:
             column: job_name
         status:
             type: integer
-            lenght: 11
             column: status
         connector:
             type: string
@@ -38,14 +36,26 @@ Akeneo\Tool\Component\Batch\Model\JobInstance:
         rawParameters:
             type: array
             column: raw_parameters
+        scheduled:
+            type: boolean
+            column: scheduled
+            options:
+                default: false
+        automation:
+            type: json
+            column: automation
+            nullable: true
         type:
             type: string
             length: 255
             column: type
+        isVisible:
+            type: boolean
+            column: is_visible
+            options:
+                default: true
     oneToMany:
         jobExecutions:
             targetEntity: Akeneo\Tool\Component\Batch\Model\JobExecution
             mappedBy: jobInstance
-            cascade:
-                - remove
             orphanRemoval: true

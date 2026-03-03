@@ -43,13 +43,6 @@ final class KeyIndicator
         return $this->totalToImprove;
     }
 
-    public function getRatioGood(): int
-    {
-        $total = $this->totalGood + $this->totalToImprove;
-
-        return $total === 0 ? 0 : intval(round($this->totalGood / $total * 100));
-    }
-
     public function isEmpty(): bool
     {
         return $this->totalToImprove === 0 && $this->totalGood === 0;
@@ -63,9 +56,8 @@ final class KeyIndicator
     public function toArray(): array
     {
         return [
-            'ratioGood' => $this->getRatioGood(),
-            'totalGood' => $this->totalGood,
-            'totalToImprove' => $this->totalToImprove,
+            'totalGood' => $this->totalGood ?? 0,
+            'totalToImprove' => $this->totalToImprove ?? 0,
             'extraData' => $this->extraData,
         ];
     }

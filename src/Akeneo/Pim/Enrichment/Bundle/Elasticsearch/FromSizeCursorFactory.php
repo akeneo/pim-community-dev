@@ -2,9 +2,11 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -14,44 +16,22 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class FromSizeCursorFactory implements CursorFactoryInterface
 {
-    /** @var Client */
-    private $searchEngine;
-
-    /** @var int */
-    private $pageSize;
-
-    /** @var CursorableRepositoryInterface */
-    private $productRepository;
-
-    /** @var CursorableRepositoryInterface */
-    private $productModelRepository;
-
-    /**
-     * @param Client                        $searchEngine
-     * @param CursorableRepositoryInterface $productRepository
-     * @param CursorableRepositoryInterface $productModelRepository
-     * @param int                           $pageSize
-     */
     public function __construct(
-        Client $searchEngine,
-        CursorableRepositoryInterface $productRepository,
-        CursorableRepositoryInterface $productModelRepository,
-        $pageSize
+        private Client $searchEngine,
+        private ProductRepositoryInterface $productRepository,
+        private ProductModelRepositoryInterface $productModelRepository,
+        private int $pageSize
     ) {
-        $this->searchEngine = $searchEngine;
-        $this->productRepository = $productRepository;
-        $this->productModelRepository = $productModelRepository;
-        $this->pageSize = $pageSize;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function createCursor($queryBuilder, array $options = [])
+    public function createCursor($queryBuilder, array $options = []): CursorInterface
     {
         $options = $this->resolveOptions($options);
 
-        $queryBuilder['_source'] = array_merge($queryBuilder['_source'], ['document_type']);
+        $queryBuilder['_source'] = array_merge($queryBuilder['_source'], ['document_type', 'id']);
 
         return new FromSizeCursor(
             $this->searchEngine,
@@ -64,12 +44,7 @@ class FromSizeCursorFactory implements CursorFactoryInterface
         );
     }
 
-    /**
-     * @param array $options
-     *
-     * @return array
-     */
-    protected function resolveOptions(array $options)
+    protected function resolveOptions(array $options): array
     {
         $resolver = new OptionsResolver();
         $resolver->setDefined(

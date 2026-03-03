@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Test\Integration\integration\BatchBundle\Command;
 
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Driver\Connection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -42,6 +41,8 @@ class BatchCommandIntegration extends TestCase
         $this->assertNotNull(json_decode($jobExecution['raw_parameters'], true));
         $this->assertNull($jobExecution['user']);
         $this->assertEquals('Export csv_product_export has been successfully executed.' . PHP_EOL, $output->fetch());
+        $this->assertTrue((bool) $jobExecution['is_stoppable']);
+        $this->assertEquals(2, $jobExecution['step_count']);
     }
 
     public function testJobExecutionStateWithUsername()
@@ -62,12 +63,13 @@ class BatchCommandIntegration extends TestCase
 
     public function testLaunchJobWithConfigOverridden()
     {
-        $filePath= sys_get_temp_dir() . DIRECTORY_SEPARATOR . self::EXPORT_DIRECTORY . DIRECTORY_SEPARATOR . 'new_export.csv';
+        $this->get('feature_flags')->enable('import_export_local_storage');
+        $filePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . self::EXPORT_DIRECTORY . DIRECTORY_SEPARATOR . 'new_export.csv';
         if (file_exists($filePath)) {
             unlink($filePath);
         }
 
-        $output = $this->launchJob(['--config' => ['filePath' => $filePath]]);
+        $output = $this->launchJob(['--config' => ['storage' => ['type' => 'local', 'file_path' => $filePath]]]);
         $this->assertEquals('Export csv_product_export has been successfully executed.' . PHP_EOL, $output->fetch());
         $this->assertTrue(file_exists($filePath));
     }
@@ -94,8 +96,8 @@ class BatchCommandIntegration extends TestCase
 
     public function testLaunchJobWithValidEmail()
     {
-        $output = $this->launchJob(['--email' => 'ziggy@akeneo.com']);
-        $this->assertEquals('Export csv_product_export has been successfully executed.' . PHP_EOL, $output->fetch());
+        $output = $this->launchJob(['--email' => ['ziggy@akeneo.com']]);
+        $this->assertStringContainsString('Export csv_product_export has been successfully executed.', $output->fetch());
     }
 
     public function testLaunchJobWithInvalidJobInstance()
@@ -106,8 +108,8 @@ class BatchCommandIntegration extends TestCase
 
     public function testLaunchJobWithInvalidEmail()
     {
-        $output = $this->launchJob(['--email' => 'email']);
-        $this->assertStringContainsString('Email "email" is invalid', $output->fetch());
+        $output = $this->launchJob(['--email' => ['email']]);
+        $this->assertStringContainsString('Emails "email" are invalid', $output->fetch());
     }
 
     public function testLaunchJobWithInvalidJobExecutionCode()
@@ -129,7 +131,7 @@ class BatchCommandIntegration extends TestCase
 
     public function testLaunchJobExecutionWithConfigOverridden()
     {
-        $output = $this->launchJob(['execution' => '1', '--config' => ['filePath' => '/tmp/foo']]);
+        $output = $this->launchJob(['execution' => '1', '--config' => ['storage' => ['type' => 'local', 'file_path' => '/tmp/foo']]]);
         $this->assertStringContainsString('Configuration option cannot be specified when launching a job execution.', $output->fetch());
     }
 
@@ -139,12 +141,7 @@ class BatchCommandIntegration extends TestCase
         $this->assertStringContainsString('Username option cannot be specified when launching a job execution', $output->fetch());
     }
 
-    /**
-     * @param array $arrayInput
-     *
-     * @return BufferedOutput
-     */
-    protected function launchJob(array $arrayInput = [])
+    private function launchJob(array $arrayInput = []): BufferedOutput
     {
         $this->resetShellVerbosity();
         $application = new Application(static::$kernel);

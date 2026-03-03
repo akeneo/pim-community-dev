@@ -14,14 +14,10 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 interface ProductBuilderInterface extends EntityWithValuesBuilderInterface
 {
     /**
-     * Create product with its identifier value,
+     * Create product
      *  - sets the identifier data if provided
      *  - sets family if provided
-     *
-     * @param string $identifier
-     * @param string $familyCode
-     *
-     * @return ProductInterface
+     *  - sets uuid if provided
      */
-    public function createProduct($identifier = null, $familyCode = null);
+    public function createProduct(?string $identifier = null, ?string $familyCode = null, ?string $uuid = null): ProductInterface;
 }

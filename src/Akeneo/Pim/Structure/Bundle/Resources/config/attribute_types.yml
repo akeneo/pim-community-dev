@@ -16,6 +16,8 @@ services:
     pim_catalog.registry.attribute_type:
         public: true
         class: 'Akeneo\Pim\Structure\Component\AttributeTypeRegistry'
+        arguments:
+            - '@feature_flags'
 
     pim_catalog.attributetype.identifier:
         class: '%pim_catalog.attribute_type.identifier.class%'

@@ -9,13 +9,14 @@ Feature: Associate many products at once
     And I am logged in as "Julia"
     And I am on the products grid
 
+  @purge-messenger
   Scenario: Mass associate products to products
     When I sort by "ID" value ascending
     Given I select rows Bag, Belt and Hat
     And I press the "Bulk actions" button
-    And I choose the "Associate" operation
+    And I choose the "Associate products" operation
     And I move on to the choose step
-    And I choose the "Associate" operation
+    And I choose the "Associate products" operation
     Given I add associations
     And I check the row "Scarf"
     And the item picker basket should contain Scarf
@@ -41,14 +42,15 @@ Feature: Associate many products at once
     And I should see history:
       | version | property        | before | value                 | date |
       | 2       | X_SELL-products |        | 1111111292,1111111304 | now  |
+    And 3 events of type "product.updated" should have been raised
 
   Scenario: Mass associate products to product models
     When I sort by "ID" value ascending
     Given I select rows Bag, Belt and Hat
     And I press the "Bulk actions" button
-    And I choose the "Associate" operation
+    And I choose the "Associate products" operation
     And I move on to the choose step
-    And I choose the "Associate" operation
+    And I choose the "Associate products" operation
     Given I add associations
     And I search "juno"
     And I check the row "juno"
@@ -71,13 +73,14 @@ Feature: Associate many products at once
       | type   | product_models |
       | X_SELL | amor,juno      |
 
+  @purge-messenger
   Scenario: Mass associate product model children to products
     When I sort by "ID" value ascending
     Given I select rows amor
     And I press the "Bulk actions" button
-    And I choose the "Associate" operation
+    And I choose the "Associate products" operation
     And I move on to the choose step
-    And I choose the "Associate" operation
+    And I choose the "Associate products" operation
     Given I add associations
     And I check the row "Scarf"
     And the item picker basket should contain Scarf
@@ -100,3 +103,4 @@ Feature: Associate many products at once
     Then the product model "amor" should have the following associations:
       | type   | products              |
       | X_SELL | 1111111292,1111111304 |
+    And 1 event of type "product_model.updated" should have been raised

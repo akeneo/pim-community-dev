@@ -62,7 +62,7 @@ class Utf8mb4SupportIntegrationTest extends TestCase
 
         $this->assertEquals(1, $insertCount);
 
-        $resultFromDb = $this->connection->fetchColumn(
+        $resultFromDb = $this->connection->fetchOne(
             "SELECT name FROM ".self::TEST_TABLE_NAME." WHERE name = ?",
             ["𝌆"]
         );

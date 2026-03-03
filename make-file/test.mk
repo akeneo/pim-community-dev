@@ -1,15 +1,20 @@
 var/tests/%:
-	$(DOCKER_COMPOSE) run -u www-data --rm php mkdir -p $@
+	$(DOCKER_COMPOSE) run --rm php mkdir -p $@
 
 .PHONY: find-legacy-translations
 find-legacy-translations:
 	.circleci/find_legacy_translations.sh
 
 .PHONY: coupling-back
-coupling-back: structure-coupling-back user-management-coupling-back channel-coupling-back enrichment-coupling-back connectivity-connection-coupling-back communication-channel-coupling-back
+coupling-back: structure-coupling-back user-management-coupling-back channel-coupling-back enrichment-coupling-back connectivity-connection-coupling-back communication-channel-coupling-back import-export-coupling-back job-coupling-back data-quality-insights-coupling-back enrichment-product-coupling-back migration-coupling-back identifier-generator-coupling-back installer-coupling-back
+
+.PHONY: migration-coupling-back
+migration-coupling-back:
+	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=upgrades/.php_cd.php upgrades/schema
+	$(PHP_RUN) vendor/bin/php-coupling-detector list-unused-requirements --config-file=upgrades/.php_cd.php upgrades/schema
 
 ### Static tests
-static-back: check-pullup check-sf-services
+static-back: check-pullup check-sf-services enrichment-product-static-back
 	echo "Job done! Nothing more to do here..."
 
 .PHONY: check-pullup
@@ -18,20 +23,40 @@ check-pullup:
 
 .PHONY: check-sf-services
 check-sf-services:
-	$(PHP_RUN) bin/check-services-instantiability
+	$(PHP_RUN) bin/console lint:container
 
 ### Lint tests
 .PHONY: lint-back
 lint-back:
-	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache/dev
-	APP_ENV=dev $(DOCKER_COMPOSE) run -e APP_DEBUG=1 -u www-data --rm php bin/console cache:warmup
-	$(DOCKER_COMPOSE) run -u www-data --rm php php -d memory_limit=1G vendor/bin/phpstan analyse src/Akeneo/Pim --level 2
-	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache/dev
+	$(DOCKER_COMPOSE) run --rm php rm -rf var/cache/dev
+	APP_ENV=dev $(DOCKER_COMPOSE) run -e APP_DEBUG=1 --rm php bin/console cache:warmup
+	$(DOCKER_COMPOSE) run --rm php php -d memory_limit=1G vendor/bin/phpstan analyse src/Akeneo/Pim --level 2
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
-	$(MAKE) connectivity-connection-lint-back
+	$(MAKE) category-lint-back
+	$(MAKE) channel-lint-back
 	$(MAKE) communication-channel-lint-back
+	$(MAKE) connectivity-connection-lint-back
 	$(MAKE) data-quality-insights-lint-back
 	$(MAKE) data-quality-insights-phpstan
+	$(MAKE) enrichment-product-lint-back
+	$(MAKE) identifier-generator-lint-back
+	$(MAKE) import-export-lint-back
+	$(MAKE) installer-lint-back
+	$(MAKE) job-lint-back
+	$(MAKE) measurement-lint-back
+	$(MAKE) migration-lint-back
+	# Cache was created with debug enabled, removing it allows a faster one to be created for upcoming tests
+	$(DOCKER_COMPOSE) run --rm php rm -rf var/cache/dev
+
+.PHONY: deprecation-back
+deprecation-back:
+	APP_ENV=dev $(DOCKER_COMPOSE) run -e APP_DEBUG=1 --rm php bin/console cache:warmup
+	${PHP_RUN} -d memory_limit=2G vendor/bin/phpstan analyse -c phpstan-deprecations.neon --level 1
+	$(DOCKER_COMPOSE) run --rm php rm -rf var/cache/dev
+
+.PHONY: migration-lint-back
+migration-lint-back:
+	$(DOCKER_COMPOSE) run --rm php php vendor/bin/phpstan analyse -c upgrades/phpstan.neon
 
 .PHONY: lint-front
 lint-front:
@@ -42,7 +67,7 @@ lint-front:
 .PHONY: unit-back
 unit-back: var/tests/phpspec
 ifeq ($(CI),true)
-	$(DOCKER_COMPOSE) run -T -u www-data --rm php php vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
+	$(DOCKER_COMPOSE) run -T --rm php php vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
 	.circleci/find_non_executed_phpspec.sh
 else
 	${PHP_RUN} vendor/bin/phpspec run
@@ -57,7 +82,12 @@ unit-front:
 .PHONY: acceptance-back
 acceptance-back:
 	APP_ENV=behat ${PHP_RUN} vendor/bin/behat -p acceptance --format pim --out var/tests/behat --format progress --out std --colors
-	$(MAKE) connectivity-connection-acceptance-back
+	$(MAKE) import-export-acceptance-back
+	$(MAKE) job-acceptance-back
+	$(MAKE) channel-acceptance-back
+	$(MAKE) measurement-acceptance-back
+	$(MAKE) identifier-generator-acceptance-back
+	$(MAKE) installer-acceptance-back
 
 .PHONY: acceptance-front
 acceptance-front:
@@ -69,11 +99,11 @@ integration-front:
 	$(YARN_RUN) integration
 
 .PHONY: pim-integration-back
-pim-integration-back: var/tests/phpunit connectivity-connection-integration-back communication-channel-integration-back
+pim-integration-back: var/tests/phpunit connectivity-connection-integration-back communication-channel-integration-back job-integration-back channel-integration-back identifier-generator-phpunit-back installer-integration-back
 ifeq ($(CI),true)
 	.circleci/run_phpunit.sh . .circleci/find_phpunit.php PIM_Integration_Test
 else
-	@echo Run integration test locally is too long, please use the target defined for your bounded context (ex: bounded-context-integration-back)
+	@echo "Run integration test locally is too long, please use the target defined for your bounded context (ex: bounded-context-integration-back)"
 endif
 
 ### Migration tests
@@ -91,8 +121,11 @@ end-to-end-back: var/tests/phpunit
 ifeq ($(CI),true)
 	.circleci/run_phpunit.sh . .circleci/find_phpunit.php End_to_End
 else
-	@echo Run end to end test locally is too long, please use the target defined for your bounded context (ex: bounded-context-end-to-end-back)
+	@echo "Run end to end test locally is too long, please use the target defined for your bounded context (ex: bounded-context-end-to-end-back)"
 endif
+
+end-to-end-front:
+	$(DOCKER_COMPOSE) -f docker-compose-cypress.yml run --rm cypress
 
 # How to debug a behat locally?
 # -----------------------------

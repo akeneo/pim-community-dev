@@ -1,0 +1,6 @@
+services:
+    Akeneo\Pim\Enrichment\Product\Domain\Query\GetAttributeTypes:
+        class: Akeneo\Pim\Enrichment\Product\Infrastructure\AntiCorruptionLayer\ACLGetAttributeTypes
+        arguments:
+            - '@pim_catalog.repository.attribute'
+    

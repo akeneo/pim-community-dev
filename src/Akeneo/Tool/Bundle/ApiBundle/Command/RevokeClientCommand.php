@@ -48,7 +48,7 @@ class RevokeClientCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $client = $this->clientManager->findClientByPublicId($input->getArgument('client_id'));
 

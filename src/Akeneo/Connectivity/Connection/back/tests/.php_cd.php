@@ -11,143 +11,320 @@ $finder->notPath('tests');
 $builder = new RuleBuilder();
 
 $rules = [
+    // Domain should only use classes from Domain
     $builder->only(
         [
             'Akeneo\Connectivity\Connection\Domain',
 
-            // Dependency on Symfony Validator to ease validation
-            'Symfony\Component\Validator',
-            'Symfony\Component\Security',
+            // Exceptions
+            'Symfony\Component\Validator\Context\ExecutionContextInterface',
+            'Symfony\Component\Validator\ConstraintViolationInterface',
+            'Symfony\Component\Validator\ConstraintViolationListInterface',
+
+            'Akeneo\Platform\Component\EventQueue\EventInterface',
+            'Akeneo\Platform\Component\EventQueue\Author',
+            'Akeneo\Platform\Component\Webhook\EventBuildingExceptionInterface',
+
+            'Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelCreated',
+            'Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelRemoved',
+            'Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelUpdated',
+            'Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated',
+            'Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved',
+            'Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated',
+
+            'Webmozart\Assert\Assert',
+            'Ramsey\Uuid\Uuid',
+        ]
+    )->in('Akeneo\Connectivity\Connection\Domain'),
+
+    // Domain should only use classes from same Domain
+    $builder->only(
+        [
+            'Akeneo\Connectivity\Connection\Domain\Apps',
+
+            // Exceptions
+            'Symfony\Component\Validator\ConstraintViolationInterface',
+            'Symfony\Component\Validator\ConstraintViolationListInterface',
+        ]
+    )->in('Akeneo\Connectivity\Connection\Domain\Apps'),
+
+    $builder->only(
+        [
+            'Akeneo\Connectivity\Connection\Domain\Audit',
+
+            // Exceptions
+            'Akeneo\Connectivity\Connection\Domain\ValueObject',
+            'Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\ErrorType',
+        ]
+    )->in('Akeneo\Connectivity\Connection\Domain\Audit'),
+
+    $builder->only(
+        [
+            'Akeneo\Connectivity\Connection\Domain\ErrorManagement',
+
+            // Exceptions
+            'Akeneo\Connectivity\Connection\Domain\ValueObject',
+            'Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionCode',
+            'Ramsey\Uuid\Uuid'
+        ]
+    )->in('Akeneo\Connectivity\Connection\Domain\ErrorManagement'),
+
+    $builder->only(
+        [
+            'Akeneo\Connectivity\Connection\Domain\Settings',
+
+            // Exceptions
+            'Symfony\Component\Validator\ConstraintViolationInterface',
+            'Symfony\Component\Validator\ConstraintViolationListInterface',
+            'Symfony\Component\Validator\Context\ExecutionContextInterface',
+        ]
+    )->in('Akeneo\Connectivity\Connection\Domain\Settings'),
+
+    $builder->only(
+        [
+            'Akeneo\Connectivity\Connection\Domain\ValueObject',
+        ]
+    )->in('Akeneo\Connectivity\Connection\Domain\ValueObject'),
+
+    $builder->only(
+        [
+            'Akeneo\Connectivity\Connection\Domain\Webhook',
+
+            // Exceptions
+            'Akeneo\Connectivity\Connection\Domain\ValueObject',
+
+            'Akeneo\Platform\Component\EventQueue\EventInterface',
+            'Akeneo\Platform\Component\EventQueue\Author',
+            'Akeneo\Platform\Component\Webhook\EventBuildingExceptionInterface',
+
+            'Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelCreated',
+            'Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelRemoved',
+            'Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelUpdated',
+            'Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated',
+            'Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved',
+            'Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated',
+
+            'Webmozart\Assert\Assert',
+
+        ]
+    )->in('Akeneo\Connectivity\Connection\Domain\Webhook'),
+
+    $builder->only(
+        [
+            'Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection',
+        ]
+    )->in('Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection'),
+
+    // Application should only use classes from Domain or Application
+    $builder->only(
+        [
+            'Akeneo\Connectivity\Connection\Domain',
+            'Akeneo\Connectivity\Connection\Application',
+
+            // Exceptions
+            'Symfony\Component\EventDispatcher\EventDispatcherInterface',
+            'Symfony\Component\Validator\Validator\ValidatorInterface',
+            'Symfony\Component\Validator\Constraint',
+            'Symfony\Component\Validator\ConstraintValidator',
+            'Symfony\Component\Validator\ConstraintViolationInterface',
+            'Symfony\Component\Validator\ConstraintViolationListInterface',
+            'Symfony\Component\Validator\Exception\UnexpectedTypeException',
+            'Symfony\Component\Validator\Exception\UnexpectedValueException',
             'Symfony\Component\OptionsResolver\OptionsResolver',
+            'Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface',
+            'Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken',
+            'Symfony\Component\Security\Core\User\UserInterface',
 
-            'Doctrine\Common\Persistence\ObjectRepository',
+            'Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry',
+            'Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProviderInterface',
 
-            'Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface',
-            'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
-
+            'Akeneo\UserManagement\Component\Model\GroupInterface',
             'Akeneo\UserManagement\Component\Model\UserInterface',
+            'Akeneo\UserManagement\Component\Model\RoleInterface',
+            'Akeneo\UserManagement\Component\Repository\UserRepositoryInterface',
+            'Akeneo\UserManagement\Component\Repository\GroupRepositoryInterface',
 
-            // TODO: Fix serializer usage to not depends on FOSRestBundle inside Application.
+            'Akeneo\Platform\Bundle\FrameworkBundle\Service\PimUrl',
+            'Akeneo\Platform\Component\EventQueue\BulkEventInterface',
+            'Akeneo\Platform\Component\EventQueue\EventInterface',
+            'Akeneo\Platform\Component\Webhook\Context',
+            'Akeneo\Platform\Component\Webhook\EventDataBuilderInterface',
+            'Akeneo\Platform\Component\Webhook\EventDataCollection',
+            'Akeneo\Platform\Component\EventQueue\BulkEvent',
+            'Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface',
+
+            'Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface',
+            'Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface',
+
+            'Psr\Log\LoggerInterface',
+            'Psr\Http\Message\ResponseInterface',
+
             'FOS\RestBundle\Context\Context',
             'FOS\RestBundle\Serializer\Serializer',
 
-            'Psr\Http\Message\ResponseInterface',
-            'Psr\Log\LoggerInterface',
+            'Ramsey\Uuid\Uuid',
 
-            'Akeneo\Platform\Component\EventQueue',
-            'Akeneo\Platform\Component\Webhook',
-
-            //CXP-462
-            'Akeneo\UserManagement\Component\Model\UserInterface',
+            'Generator',
         ]
     )->in('Akeneo\Connectivity\Connection\Application'),
 
+    // Application should only use classes from same context in Domain or Application
     $builder->only(
         [
-            'Akeneo\Connectivity\Connection\Application',
-            'Akeneo\Connectivity\Connection\Domain',
+            'Akeneo\Connectivity\Connection\Domain\Apps',
+            'Akeneo\Connectivity\Connection\Application\Apps',
 
-            'Akeneo\Tool\Bundle\ApiBundle\Entity\Client',
+            // Exceptions
+            'Symfony\Component\Validator\Validator\ValidatorInterface',
 
-            'Doctrine\DBAL\Driver\Connection',
+            'Akeneo\Connectivity\Connection\Domain\ClockInterface',
 
-            // OAuth server authentication
-            'FOS\OAuthServerBundle\Model\ClientManagerInterface',
-            'FOS\OAuthServerBundle\Util\Random',
-            'OAuth2\OAuth2',
+            'Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials',
+            'Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection',
+            'Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType',
+            'Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\SelectConnectionWithCredentialsByCodeQueryInterface',
+            'Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepositoryInterface',
 
-            // For acceptance tests purpose
-            'Akeneo\Connectivity\Connection\Infrastructure\Persistence\InMemory\Repository\InMemoryConnectionRepository',
-        ]
-    )->in('Akeneo\Connectivity\Connection\Infrastructure\Client'),
+            'Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App',
+            'Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface',
 
-    $builder->only(
-        [
-            'Akeneo\Connectivity\Connection\Application',
-            'Akeneo\Connectivity\Connection\Domain',
-            'Akeneo\Tool\Component\StorageUtils',
+            'Akeneo\Connectivity\Connection\Application\Settings\Service\DeleteClientInterface',
+            'Akeneo\Connectivity\Connection\Application\Settings\Service\DeleteUserInterface',
+            'Akeneo\Connectivity\Connection\Application\User\CreateUserGroupInterface',
 
-            'Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\GroupRepository',
-            'Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleRepository',
-            'Akeneo\UserManagement\Bundle\Manager\UserManager',
-            'Akeneo\UserManagement\Component\Model\GroupInterface',
+            'Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProviderInterface',
+            'Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry',
+
+            'Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface',
+            'Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface',
+
             'Akeneo\UserManagement\Component\Model\RoleInterface',
-            'Akeneo\UserManagement\Component\Model\User',
             'Akeneo\UserManagement\Component\Model\UserInterface',
             'Akeneo\UserManagement\Component\Repository\UserRepositoryInterface',
 
-            // For acceptance tests purpose
-            'Akeneo\Connectivity\Connection\Infrastructure\Persistence\InMemory\Repository\InMemoryConnectionRepository',
-            'Akeneo\Connectivity\Connection\Infrastructure\Persistence\InMemory\Repository\InMemoryUserPermissionsRepository',
-
-            'Doctrine\DBAL\Driver\Connection',
-
-            'Symfony\Component\Validator\Validator\ValidatorInterface',
+            'Symfony\Component\EventDispatcher\EventDispatcherInterface',
         ]
-    )->in('Akeneo\Connectivity\Connection\Infrastructure\User'),
+    )->in('Akeneo\Connectivity\Connection\Application\Apps'),
 
     $builder->only(
         [
-            'Akeneo\Connectivity\Connection\Application',
-            'Akeneo\Connectivity\Connection\Domain',
-            'Akeneo\Pim\Enrichment\Component\FileStorage',
-            'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent',
-            'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
-            'Akeneo\Tool\Component\FileStorage\File\FileStorerInterface',
-            'Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface',
-            'Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface',
-            'Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface',
-            'Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface',
-            'Akeneo\UserManagement\Component\Model\GroupInterface',
-            'Akeneo\UserManagement\Component\Model\RoleInterface',
-            'Akeneo\UserManagement\Component\Model\UserInterface',
-            'Doctrine\DBAL\Connection',
-            'Doctrine\DBAL\Types\Types',
-            'OAuth2\OAuth2',
-            'Symfony\Component',
+            'Akeneo\Connectivity\Connection\Domain\Audit',
+            'Akeneo\Connectivity\Connection\Application\Audit',
+
+            // Exceptions
+            'Akeneo\Connectivity\Connection\Domain\ValueObject\DateTimePeriod',
+            'Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval',
+
+            'Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\ErrorType',
         ]
-    )->in('Akeneo\Connectivity\Connection\Infrastructure\Install'),
+    )->in('Akeneo\Connectivity\Connection\Application\Audit'),
 
     $builder->only(
         [
-            'Akeneo\Connectivity\Connection\Application',
-            'Akeneo\Connectivity\Connection\Domain',
-            'Akeneo\Connectivity\Connection\Infrastructure\Audit\AggregateAuditData',
+            'Akeneo\Connectivity\Connection\Domain\ErrorManagement',
+            'Akeneo\Connectivity\Connection\Application\ErrorManagement',
 
-            // Dependency on HTTP foundation for Request/Response
-            'Symfony\Component\HttpFoundation',
-            // Dependency on constraint violations to correctly display errors on frontend
+            // Exceptions
+            'Symfony\Component\Validator\ConstraintViolationInterface',
             'Symfony\Component\Validator\ConstraintViolationListInterface',
-            // ACL dependency
-            'Symfony\Component\Security\Core\Exception\AccessDeniedException',
-            'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
-            'Oro\Bundle\SecurityBundle\SecurityFacade',
-            // Dependency to retrieve the current User (and his timezone).
-            'Akeneo\UserManagement\Bundle\Context\UserContext',
+
+            'Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType',
+            'Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval',
+
+            'Akeneo\Connectivity\Connection\Application\ConnectionContextInterface',
+
+            'FOS\RestBundle\Context\Context',
+            'FOS\RestBundle\Serializer\Serializer',
         ]
-    )->in('Akeneo\Connectivity\Connection\Infrastructure\InternalApi'),
+    )->in('Akeneo\Connectivity\Connection\Application\ErrorManagement'),
 
     $builder->only(
         [
-            'Akeneo\Connectivity\Connection\Domain',
-            'Akeneo\UserManagement\Component\Model\User',
+            'Akeneo\Connectivity\Connection\Domain\Marketplace',
+            'Akeneo\Connectivity\Connection\Application\Marketplace',
 
-            // Dependency for uuid generation
+            // Exceptions
+
+            'Akeneo\Platform\Bundle\FrameworkBundle\Service\PimUrl',
+            'Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface',
+        ]
+    )->in('Akeneo\Connectivity\Connection\Application\Marketplace'),
+
+    $builder->only(
+        [
+            'Akeneo\Connectivity\Connection\Domain\CustomApps',
+            'Akeneo\Connectivity\Connection\Application\CustomApps',
+
+            // Exceptions
+            'Akeneo\Connectivity\Connection\Application\RandomCodeGeneratorInterface',
+            'Symfony\Component\Validator\Constraint',
+            'Symfony\Component\Validator\Exception\UnexpectedTypeException',
+        ]
+    )->in('Akeneo\Connectivity\Connection\Application\CustomApps'),
+
+    $builder->only(
+        [
+            'Akeneo\Connectivity\Connection\Domain\Settings',
+            'Akeneo\Connectivity\Connection\Application\Settings',
+            'Akeneo\UserManagement\Component\Repository\GroupRepositoryInterface',
+
+            // Exceptions
+            'Symfony\Component\Validator\Validator\ValidatorInterface',
+            'Symfony\Component\Validator\Constraint',
+            'Symfony\Component\Validator\ConstraintValidator',
+            'Symfony\Component\Validator\Exception\UnexpectedTypeException',
+        ]
+    )->in('Akeneo\Connectivity\Connection\Application\Settings'),
+
+    $builder->only(
+        [
+            'Akeneo\Connectivity\Connection\Application\User',
+
+            // Exceptions
+            'Akeneo\UserManagement\Component\Model\GroupInterface',
+        ]
+    )->in('Akeneo\Connectivity\Connection\Application\User'),
+
+    $builder->only(
+        [
+            'Akeneo\Connectivity\Connection\Domain\Webhook',
+            'Akeneo\Connectivity\Connection\Application\Webhook',
+
+            // Exceptions
+            'Symfony\Component\OptionsResolver\OptionsResolver',
+            'Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface',
+            'Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken',
+            'Symfony\Component\Security\Core\User\UserInterface',
+            'Symfony\Component\Validator\Constraint',
+            'Symfony\Component\Validator\ConstraintValidator',
+            'Symfony\Component\Validator\Exception\UnexpectedTypeException',
+            'Symfony\Component\Validator\Exception\UnexpectedValueException',
+            'Symfony\Component\Validator\Validator\ValidatorInterface',
+
+            'Akeneo\Connectivity\Connection\Domain\Settings\Exception\ConstraintViolationListException',
+            'Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepositoryInterface',
+            'Akeneo\Connectivity\Connection\Domain\ClockInterface',
+
+            'Akeneo\Platform\Component\EventQueue\BulkEventInterface',
+            'Akeneo\Platform\Component\EventQueue\EventInterface',
+            'Akeneo\Platform\Component\EventQueue\BulkEvent',
+            'Akeneo\Platform\Component\Webhook\Context',
+            'Akeneo\Platform\Component\Webhook\EventDataBuilderInterface',
+            'Akeneo\Platform\Component\Webhook\EventDataCollection',
+
+            'Akeneo\UserManagement\Component\Model\UserInterface',
+            'Akeneo\UserManagement\Component\Repository\UserRepositoryInterface',
+
+            'Psr\Log\LoggerInterface',
+            'Psr\Http\Message\ResponseInterface',
+
             'Ramsey\Uuid\Uuid',
 
-            // Dependency on Doctrine DBAL for persistence layer
-            'Doctrine\DBAL',
-
-            // Dependency on Elasticsearch
-            'Akeneo\Tool\Bundle\ElasticsearchBundle\Client',
+            'Generator',
         ]
-    )->in('Akeneo\Connectivity\Connection\Infrastructure\Persistence'),
+    )->in('Akeneo\Connectivity\Connection\Application\Webhook'),
 
-    $builder->only(
-        [
-            'Symfony\Component',
-        ]
-    )->in('Akeneo\Connectivity\Connection\Infrastructure\Symfony'),
+    // Infrastructure can use anything, no coupling rules implemented
 ];
 
 $config = new Configuration($rules, $finder);

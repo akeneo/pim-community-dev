@@ -2,11 +2,13 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractValue;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\FileValidator;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\File;
 use Prophecy\Argument;
+use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
@@ -26,6 +28,11 @@ class FileValidatorSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldHaveType(FileValidator::class);
+    }
+
+    function it_is_a_validator_constraint()
+    {
+        $this->beAnInstanceOf(ConstraintValidator::class);
     }
 
     function it_validates_extensions_and_mimetype(
@@ -70,22 +77,31 @@ class FileValidatorSpec extends ObjectBehavior
         $context,
         File $constraint,
         FileInfoInterface $fileInfo,
-        ConstraintViolationBuilderInterface $violation
+        ConstraintViolationBuilderInterface $violationBuilder
     ) {
+        $extension = 'jpg';
         $constraint->allowedExtensions = ['pdf', 'docx'];
+        $constraint->attributeCode = 'a_code';
         $fileInfo->getId()->willReturn(12);
         $fileInfo->getUploadedFile()->willReturn(null);
-        $fileInfo->getExtension()->willReturn('jpg');
+        $fileInfo->getExtension()->willReturn($extension);
         $fileInfo->getSize()->willReturn(100);
         $fileInfo->getMimeType()->willReturn('image/jpeg');
 
         $context
             ->buildViolation(
                 $constraint->extensionsMessage,
-                ['%extensions%' => implode(', ', $constraint->allowedExtensions)]
+                [
+                '%extensions%' => implode(', ', $constraint->allowedExtensions),
+                    '%type%' => $extension,
+                    '%attribute%' => $constraint->attributeCode,
+                ]
             )
-            ->shouldBeCalled()
-            ->willReturn($violation);
+            ->shouldBeCalledTimes(1)
+            ->willReturn($violationBuilder);
+        $violationBuilder->setCode(File::EXTENSION_NOT_ALLOWED_ERROR)
+            ->shouldBeCalledTimes(1)->willReturn($violationBuilder);
+        $violationBuilder->addViolation()->shouldBeCalledTimes(1)->willReturn($violationBuilder);
 
         $this->validate($fileInfo, $constraint);
     }
@@ -94,7 +110,8 @@ class FileValidatorSpec extends ObjectBehavior
         $context,
         File $constraint,
         FileInfoInterface $fileInfo,
-        ConstraintViolationBuilderInterface $violation
+        ConstraintViolationBuilderInterface $violation,
+        AbstractValue $abstractValue
     ) {
         $constraint->maxSize = '1M';
         $fileInfo->getId()->willReturn(12);
@@ -102,15 +119,19 @@ class FileValidatorSpec extends ObjectBehavior
         $fileInfo->getExtension()->willReturn('jpg');
         $fileInfo->getSize()->willReturn(1075200);
         $fileInfo->getOriginalFilename()->willReturn('my file.jpg');
+        $abstractValue->getAttributeCode()->willReturn('a_attribute_code');
+
+        $context->getObject()->willReturn($abstractValue);
 
         $context
             ->buildViolation($constraint->maxSizeMessage)
             ->shouldBeCalled()
             ->willReturn($violation);
-        $violation->setParameter('{{ file }}', Argument::any())->shouldBeCalled()->willReturn($violation);
-        $violation->setParameter('{{ size }}', Argument::any())->shouldBeCalled()->willReturn($violation);
-        $violation->setParameter('{{ limit }}', Argument::any())->shouldBeCalled()->willReturn($violation);
-        $violation->setParameter('{{ suffix }}', Argument::any())->shouldBeCalled()->willReturn($violation);
+        $violation->setParameter('%file_name%', Argument::any())->shouldBeCalled()->willReturn($violation);
+        $violation->setParameter('%file_size%', Argument::any())->shouldBeCalled()->willReturn($violation);
+        $violation->setParameter('%max_file_size%', Argument::any())->shouldBeCalled()->willReturn($violation);
+        $violation->setParameter('%suffix%', Argument::any())->shouldBeCalled()->willReturn($violation);
+        $violation->setParameter('%attribute%', Argument::any())->shouldBeCalled()->willReturn($violation);
         $violation->setCode(Argument::any())->shouldBeCalled()->willReturn($violation);
         $violation->addViolation()->shouldBeCalled();
 

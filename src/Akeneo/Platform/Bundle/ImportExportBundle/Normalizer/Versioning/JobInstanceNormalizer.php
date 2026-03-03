@@ -2,12 +2,13 @@
 
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Normalizer\Versioning;
 
+use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Security\CredentialsEncrypterRegistry;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * A normalizer to transform a job instance entity into a array
+ * A normalizer to transform a job instance entity into a array.
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -15,8 +16,13 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class JobInstanceNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
-    /**  @var string[] */
-    protected $supportedFormats = ['flat'];
+    /** @var string[] */
+    protected array $supportedFormats = ['flat'];
+
+    public function __construct(
+        private CredentialsEncrypterRegistry $credentialsEncrypterRegistry
+    ) {
+    }
 
     /**
      * {@inheritdoc}
@@ -27,22 +33,25 @@ class JobInstanceNormalizer implements NormalizerInterface, CacheableSupportsMet
      */
     public function normalize($jobInstance, $format = null, array $context = [])
     {
-        $results = [
-            'code'          => $jobInstance->getCode(),
-            'job_name'      => $jobInstance->getJobName(),
-            'label'         => $jobInstance->getLabel(),
-            'connector'     => $jobInstance->getConnector(),
-            'type'          => $jobInstance->getType(),
-            'configuration' => json_encode($jobInstance->getRawParameters()),
-        ];
+        $parameters = $jobInstance->getRawParameters();
+        if (isset($parameters['storage'])) {
+            $parameters['storage'] = $this->credentialsEncrypterRegistry->obfuscateCredentials($parameters['storage']);
+        }
 
-        return $results;
+        return [
+            'code' => $jobInstance->getCode(),
+            'job_name' => $jobInstance->getJobName(),
+            'label' => $jobInstance->getLabel(),
+            'connector' => $jobInstance->getConnector(),
+            'type' => $jobInstance->getType(),
+            'configuration' => json_encode($parameters),
+        ];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof JobInstance && in_array($format, $this->supportedFormats);
     }

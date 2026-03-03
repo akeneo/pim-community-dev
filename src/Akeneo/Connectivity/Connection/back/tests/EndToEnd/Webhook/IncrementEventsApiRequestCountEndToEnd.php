@@ -5,22 +5,23 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\Webhook;
 
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
-use Akeneo\Connectivity\Connection\Infrastructure\MessageHandler\BusinessEventHandler;
+use Akeneo\Connectivity\Connection\Infrastructure\Webhook\MessageHandler\BusinessEventHandler;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\CategoryLoader;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\ProductLoader;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Structure\AttributeLoader;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Structure\FamilyLoader;
+use Akeneo\Connectivity\Connection\Tests\EndToEnd\GuzzleJsonHistoryContainer;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Doctrine\DBAL\Connection as DbalConnection;
-use GuzzleHttp\Handler\MockHandler;
-use GuzzleHttp\HandlerStack;
-use GuzzleHttp\Middleware;
-use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -37,6 +38,7 @@ class IncrementEventsApiRequestCountEndToEnd extends ApiTestCase
     private ProductInterface $referenceProduct;
     private Author $referenceAuthor;
     private DbalConnection $dbalConnection;
+    private GuzzleJsonHistoryContainer $historyContainer;
 
     protected function setUp(): void
     {
@@ -47,6 +49,7 @@ class IncrementEventsApiRequestCountEndToEnd extends ApiTestCase
         $this->familyLoader = $this->get('akeneo_connectivity.connection.fixtures.structure.family');
         $this->attributeLoader = $this->get('akeneo_connectivity.connection.fixtures.structure.attribute');
         $this->dbalConnection = $this->get('database_connection');
+        $this->historyContainer = $this->get(GuzzleJsonHistoryContainer::class);
 
         $this->referenceProduct = $this->loadReferenceProduct();
         $this->referenceAuthor = Author::fromNameAndType('julia', Author::TYPE_UI);
@@ -55,26 +58,22 @@ class IncrementEventsApiRequestCountEndToEnd extends ApiTestCase
             'ecommerce',
             'Ecommerce',
             FlowType::DATA_DESTINATION,
-            false,
+            true
         );
 
         $this->get('akeneo_connectivity.connection.fixtures.webhook_loader')->initWebhook($connection->code());
     }
 
-    public function test_it_increments_events_api_request_count()
+    public function test_it_increments_events_api_request_count(): void
     {
-        $container = [];
-        /** @var HandlerStack $handlerStack */
-        $handlerStack = $this->get('akeneo_connectivity.connection.webhook.guzzle_handler');
-        $handlerStack->setHandler(new MockHandler([new Response(200)]));
-        $history = Middleware::history($container);
-        $handlerStack->push($history);
-
         $message = new BulkEvent(
             [
                 new ProductCreated(
                     $this->referenceAuthor,
-                    ['identifier' => $this->referenceProduct->getIdentifier()],
+                    [
+                        'identifier' => $this->referenceProduct->getIdentifier(),
+                        'uuid' => $this->referenceProduct->getUuid(),
+                    ],
                     1607094167,
                     '0d931d13-8eae-4f4a-bf37-33d3a932b8c9'
                 ),
@@ -85,7 +84,7 @@ class IncrementEventsApiRequestCountEndToEnd extends ApiTestCase
         $businessEventHandler = $this->get(BusinessEventHandler::class);
         $businessEventHandler->__invoke($message);
 
-        Assert::assertCount(1, $container);
+        Assert::assertCount(1, $this->historyContainer);
 
         $eventsApiRequestCount = $this->getEventsApiRequestCount();
 
@@ -101,30 +100,22 @@ class IncrementEventsApiRequestCountEndToEnd extends ApiTestCase
         $this->attributeLoader->create(['code' => 'another_text_attribute', 'type' => 'pim_catalog_text']);
         $this->familyLoader->create(['code' => 'family', 'attributes' => ['boolean_attribute', 'text_attribute']]);
 
-        return $this->productLoader->create(
-            'product',
-            [
-                'family' => 'family',
-                'enabled' => true,
-                'categories' => ['category'],
-                'groups' => [],
-                'values' => [
-                    'another_text_attribute' => [
-                        ['data' => 'text attribute', 'locale' => null, 'scope' => null],
-                    ],
-                ],
-            ]
-        );
+        return $this->productLoader->create('product', [
+            new SetFamily('family'),
+            new SetEnabled(true),
+            new SetCategories(['category']),
+            new SetTextValue('another_text_attribute', null, null, 'text attribute')
+        ]);
     }
 
     private function getEventsApiRequestCount(): array
     {
         $sql = <<<SQL
-SELECT event_minute, event_count, updated
-FROM akeneo_connectivity_connection_events_api_request_count
-SQL;
+        SELECT event_minute, event_count, updated
+        FROM akeneo_connectivity_connection_events_api_request_count
+        SQL;
 
-        return $this->dbalConnection->executeQuery($sql)->fetchAll();
+        return $this->dbalConnection->executeQuery($sql)->fetchAllAssociative();
     }
 
     protected function getConfiguration(): Configuration

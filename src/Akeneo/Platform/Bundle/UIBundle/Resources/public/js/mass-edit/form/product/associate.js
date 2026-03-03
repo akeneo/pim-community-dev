@@ -109,13 +109,13 @@ define([
             this.isQuantifiedAssociation(associationTypes, currentAssociationTypeCode)
           ) {
             this.renderQuantifiedAssociations({
-              products: value.products.map(identifier => ({identifier, quantity: 1})),
+              products: value.product_uuids.map(uuid => ({uuid, quantity: 1})),
               product_models: value.product_models.map(identifier => ({identifier, quantity: 1})),
             });
           } else {
             $.when(
               FetcherRegistry.getFetcher('product-model').fetchByIdentifiers(value.product_models),
-              FetcherRegistry.getFetcher('product').fetchByIdentifiers(value.products)
+              FetcherRegistry.getFetcher('product').fetchByUuids(value.product_uuids)
             )
               .then((productModels, products) => {
                 const items = products.concat(productModels);
@@ -161,6 +161,7 @@ define([
         parentQuantifiedAssociations: {products: [], product_models: []},
         errors: [],
         isCompact: true,
+        isUserOwner: true,
         onAssociationsChange: updatedAssociations => {
           const currentAssociationTypeCode = this.getCurrentAssociationTypeCode();
           this.setValue({[currentAssociationTypeCode]: updatedAssociations}, true);
@@ -257,16 +258,14 @@ define([
      * Opens the panel to select new products to associate
      */
     addAssociations: function () {
-      this.manageProducts().then(productAndProductModelIdentifiers => {
-        let productIds = [];
+      this.manageProducts().then(items => {
+        let productUuids = [];
         let productModelIds = [];
-        productAndProductModelIdentifiers.forEach(item => {
-          const matchProductModel = item.match(/^product_model;(.*)$/);
-          if (matchProductModel) {
-            productModelIds.push(matchProductModel[1]);
-          } else {
-            const matchProduct = item.match(/^product;(.*)$/);
-            productIds.push(matchProduct[1]);
+        items.forEach(item => {
+          if ('product' === item.document_type) {
+            productUuids.push(item.technical_id);
+          } else if ('product_model' === item.document_type) {
+            productModelIds.push(item.id);
           }
         });
 
@@ -274,7 +273,7 @@ define([
 
         const associations = {};
         associations[assocType] = {
-          products: productIds,
+          product_uuids: productUuids,
           product_models: productModelIds,
           groups: [],
         };
@@ -292,7 +291,7 @@ define([
     manageProducts: function () {
       const deferred = $.Deferred();
 
-      FormBuilder.build('pim-associations-product-picker-form').then(form => {
+      FormBuilder.build('pim-associations-product-and-product-model-picker-modal').then(form => {
         FetcherRegistry.getFetcher('association-type')
           .fetch(this.getCurrentAssociationTypeCode())
           .then(associationType => {

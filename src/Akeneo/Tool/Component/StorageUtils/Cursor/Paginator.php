@@ -66,7 +66,7 @@ class Paginator implements PaginatorInterface
     /**
      * {@inheritdoc}
      */
-    public function current()
+    public function current(): mixed
     {
         return $this->pageData;
     }
@@ -74,7 +74,7 @@ class Paginator implements PaginatorInterface
     /**
      * {@inheritdoc}
      */
-    public function next()
+    public function next(): void
     {
         if ($this->valid()) {
             $this->pageNumber++;
@@ -87,7 +87,7 @@ class Paginator implements PaginatorInterface
     /**
      * {@inheritdoc}
      */
-    public function key()
+    public function key(): ?int
     {
         if ($this->valid()) {
             return $this->pageNumber;
@@ -99,7 +99,7 @@ class Paginator implements PaginatorInterface
     /**
      * {@inheritdoc}
      */
-    public function valid()
+    public function valid(): bool
     {
         return $this->pageNumber < $this->count();
     }
@@ -107,7 +107,7 @@ class Paginator implements PaginatorInterface
     /**
      * {@inheritdoc}
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->cursor->rewind();
         $this->pageNumber = 0;
@@ -117,7 +117,7 @@ class Paginator implements PaginatorInterface
     /**
      * {@inheritdoc}
      */
-    public function count()
+    public function count(): int
     {
         return intval(ceil($this->cursor->count() / $this->pageSize));
     }

@@ -4,13 +4,21 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration;
 
-use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\AttributeGroupActivation;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeGroupCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\AttributeGroupActivationRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
+use Akeneo\Pim\Enrichment\Product\API\Query\GetProductUuidsQuery;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -18,6 +26,8 @@ use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Test\Integration\TestCase;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Messenger\Stamp\HandledStamp;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Webmozart\Assert\Assert;
 
@@ -40,11 +50,11 @@ class DataQualityInsightsTestCase extends TestCase
         return Uuid::uuid4()->toString();
     }
 
-    protected function deleteProductCriterionEvaluations(int $productId): void
+    protected function deleteProductCriterionEvaluations(UuidInterface $productUuid): void
     {
         $this->get('database_connection')->executeQuery(
-            'DELETE FROM pim_data_quality_insights_product_criteria_evaluation WHERE product_id = :productId',
-            ['productId' => $productId]
+            'DELETE FROM pim_data_quality_insights_product_criteria_evaluation WHERE product_uuid = :productUuid',
+            ['productUuid' => $productUuid->getBytes()]
         );
     }
 
@@ -61,44 +71,61 @@ class DataQualityInsightsTestCase extends TestCase
     protected function deleteProductModelCriterionEvaluations(int $productModelId): void
     {
         $this->get('database_connection')->executeQuery(
-            'DELETE FROM pim_data_quality_insights_product_model_criteria_evaluation WHERE product_id = :productId',
-            ['productId' => $productModelId]
+            'DELETE FROM pim_data_quality_insights_product_model_criteria_evaluation WHERE product_id = :productModelId',
+            ['productModelId' => $productModelId]
         );
     }
 
-    protected function createProduct(string $identifier, array $data = []): ProductInterface
+    protected function createProduct(string $identifier, array $userIntents = []): ProductInterface
     {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
+        $this->upsertProduct($identifier, $userIntents);
 
-        if (!empty($data)) {
-            $this->get('pim_catalog.updater.product')->update($product, $data);
-            $errors = $this->get('pim_catalog.validator.product')->validate($product);
-            Assert::count($errors, 0, $this->formatValidationErrorMessage('Invalid product', $errors));
-        }
+        return $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
+    }
 
-        $this->get('pim_catalog.saver.product')->save($product);
+    protected function upsertProduct(string $identifier, array $userIntents): void
+    {
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product afterward
+        $command = UpsertProductCommand::createWithIdentifierSystemUser($identifier, $userIntents);
+
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
+    }
+
+    protected function getProductUuidFromIdentifier(string $identifier): ?UuidInterface
+    {
+        $envelope = $this->get('pim_enrich.product.query_message_bus')->dispatch(new GetProductUuidsQuery([
+            'identifier' => [
+                [
+                    'operator' => Operators::EQUALS,
+                    'value' => $identifier,
+                ],
+            ],
+        ], -1));
+
+        $handledStamp = $envelope->last(HandledStamp::class);
+        Assert::notNull($handledStamp, 'The query bus does not return any result when searching product uuid');
+
+        $uuids = \iterator_to_array($handledStamp->getResult());
+
+        return $uuids[0] ?? null;
+    }
+
+    protected function createProductWithoutEvaluations(string $identifier, array $userIntents = []): ProductInterface
+    {
+        $product = $this->createProduct($identifier, $userIntents);
+        $this->deleteProductCriterionEvaluations($product->getUuid());
 
         return $product;
     }
 
-    protected function createProductWithoutEvaluations(string $identifier, array $data = []): ProductInterface
-    {
-        $product = $this->createProduct($identifier, $data);
-        $this->deleteProductCriterionEvaluations($product->getId());
-
-        return $product;
-    }
-
-    protected function createMinimalProductVariant(string $identifier, string $parent, string $axisOption, array $data = []): ProductInterface
+    protected function createMinimalProductVariant(string $identifier, string $parent, string $axisOption, array $userIntents = []): ProductInterface
     {
         Assert::oneOf($axisOption, self::MINIMAL_VARIANT_OPTIONS, 'Unknown minimal variant option');
 
-        $data['parent'] = $parent;
-        $data['values'][self::MINIMAL_VARIANT_AXIS_CODE] = [
-            ['data' => $axisOption, 'scope' => null, 'locale' => null],
-        ];
+        $userIntents[] = new ChangeParent($parent);
+        $userIntents[] = new SetSimpleSelectValue(self::MINIMAL_VARIANT_AXIS_CODE, null, null, $axisOption);
 
-        return $this->createProduct($identifier, $data);
+        return $this->createProduct($identifier, $userIntents);
     }
 
     protected function createProductModel(string $code, string $familyVariant, array $data = []): ProductModelInterface
@@ -108,6 +135,27 @@ class DataQualityInsightsTestCase extends TestCase
             ->withFamilyVariant($familyVariant)
             ->build();
 
+        return $this->updateProductModel($productModel, $data);
+    }
+
+    /**
+     * @return ProductModelInterface[]
+     */
+    protected function createProductModels(array $codes, string $familyVariant, array $data = []): array
+    {
+        $productModels = [];
+        foreach ($codes as $code) {
+            $productModels[] = $this->get('akeneo_integration_tests.catalog.product_model.builder')
+                ->withCode($code)
+                ->withFamilyVariant($familyVariant)
+                ->build();
+        }
+
+        return $this->updateProductModels($productModels, $data);
+    }
+
+    protected function updateProductModel(ProductModelInterface $productModel, array $data = []): ProductModelInterface
+    {
         if (!empty($data)) {
             $this->get('pim_catalog.updater.product_model')->update($productModel, $data);
             $errors = $this->get('pim_catalog.validator.product_model')->validate($productModel);
@@ -117,6 +165,25 @@ class DataQualityInsightsTestCase extends TestCase
         $this->get('pim_catalog.saver.product_model')->save($productModel);
 
         return $productModel;
+    }
+
+    /**
+     * @param ProductModelInterface[] $productModels
+     * @return ProductModelInterface[]
+     */
+    protected function updateProductModels(array $productModels, array $data = []): array
+    {
+        foreach ($productModels as $productModel) {
+            if (!empty($data)) {
+                $this->get('pim_catalog.updater.product_model')->update($productModel, $data);
+                $errors = $this->get('pim_catalog.validator.product_model')->validate($productModel);
+                Assert::count($errors, 0, $this->formatValidationErrorMessage('Invalid product model', $errors));
+            }
+        }
+
+        $this->get('pim_catalog.saver.product_model')->saveAll($productModels);
+
+        return $productModels;
     }
 
     protected function createProductModelWithoutEvaluations(string $code, string $familyVariant, array $data = []): ProductModelInterface
@@ -149,6 +216,7 @@ class DataQualityInsightsTestCase extends TestCase
     protected function createFamily(string $code, array $data = []): FamilyInterface
     {
         $data = array_merge(['code' => $code], $data);
+        $data['attributes'] = array_merge(['sku'], $data['attributes'] ?? []);
 
         $family = $this->get('akeneo_integration_tests.base.family.builder')->build($data);
 
@@ -268,28 +336,45 @@ class DataQualityInsightsTestCase extends TestCase
 UPDATE pim_data_quality_insights_attribute_group_activation
 SET updated_at = :updatedAt WHERE attribute_group_code = :attributeGroupCode
 SQL
-            , [
+                ,
+                [
                 'updatedAt' => $updatedAt->format(Clock::TIME_FORMAT),
                 'attributeGroupCode' => $code,
-            ]);
+            ]
+            );
         }
 
         return $attributeGroupActivation;
     }
 
-    protected function updateProductEvaluationsAt(int $productId, string $status, \DateTimeImmutable $evaluatedAt): void
+    protected function updateProductEvaluationsAt(UuidInterface $uuid, string $status, \DateTimeImmutable $evaluatedAt): void
     {
         $query = <<<SQL
-UPDATE pim_data_quality_insights_product_criteria_evaluation 
-SET status = :status, evaluated_at = :evaluatedAt
-WHERE product_id = :productId;
+UPDATE pim_data_quality_insights_product_criteria_evaluation e, pim_catalog_product p
+SET e.status = :status, e.evaluated_at = :evaluatedAt
+WHERE p.uuid = :productUuid AND e.product_uuid = p.uuid;
 SQL;
 
         $this->get('database_connection')->executeQuery($query, [
             'status' => $status,
             'evaluatedAt' => $evaluatedAt->format(Clock::TIME_FORMAT),
-            'productId' => $productId,
+            'productUuid' => $uuid->getBytes(),
+        ], [
+            'productUuid' => \PDO::PARAM_STR,
         ]);
+    }
+
+    protected function simulateAttributeSpellcheckEvaluationOnProduct(UuidInterface $uuid): void
+    {
+        $query = <<<SQL
+INSERT INTO pim_data_quality_insights_product_criteria_evaluation (product_uuid, criterion_code, evaluated_at, status, result)
+VALUES (:uuid, 'consistency_attribute_spelling', now(), 'done', '{}') AS product_score_values
+ON DUPLICATE KEY UPDATE
+    evaluated_at = product_score_values.evaluated_at,
+    status = product_score_values.status,
+    result = product_score_values.result;
+SQL;
+        $this->get('database_connection')->executeQuery($query, ['uuid' => $uuid->getBytes()]);
     }
 
     protected function updateProductModelEvaluationsAt(int $productModelId, string $status, \DateTimeImmutable $evaluatedAt): void
@@ -305,6 +390,19 @@ SQL;
             'evaluatedAt' => $evaluatedAt->format(Clock::TIME_FORMAT),
             'productModelId' => $productModelId,
         ]);
+    }
+
+    protected function simulateAttributeEvaluationOnProductModel(int $productModelId): void
+    {
+        $query = <<<SQL
+INSERT INTO pim_data_quality_insights_product_model_criteria_evaluation (product_id, criterion_code, evaluated_at, status, result)
+VALUES (:id, 'consistency_attribute_spelling', now(), 'done', '{}') AS score_values
+ON DUPLICATE KEY UPDATE
+    evaluated_at = score_values.evaluated_at,
+    status = score_values.status,
+    result = score_values.result;
+SQL;
+        $this->get('database_connection')->executeQuery($query, ['id' => $productModelId]);
     }
 
     protected function createChannel(string $code, array $data = []): ChannelInterface
@@ -337,7 +435,7 @@ SQL;
 
         // Kill background process to avoid a race condition during loading fixtures for the next integration test.
         // @see DAPI-1477
-        exec('pkill -f "pim:catalog:remove-completeness-for-channel-and-locale"');
+        exec('pkill -f "remove_completeness_for_channel_and_locale"');
     }
 
     protected function getLocaleId(string $code): int
@@ -345,16 +443,108 @@ SQL;
         $localeId = $this->get('database_connection')->executeQuery(
             'SELECT id FROM pim_catalog_locale WHERE code = :code',
             ['code' => $code]
-        )->fetchColumn();
+        )->fetchOne();
 
         return intval($localeId);
     }
 
     protected function resetProductsScores(): void
     {
-        $this->get('database_connection')->executeQuery(<<<SQL
+        $this->get('database_connection')->executeQuery(
+            <<<SQL
 TRUNCATE TABLE pim_data_quality_insights_product_score;
 SQL
+        );
+    }
+
+    protected function resetProductModelsScores(): void
+    {
+        $this->get('database_connection')->executeQuery(
+            <<<SQL
+TRUNCATE TABLE pim_data_quality_insights_product_model_score;
+SQL
+        );
+    }
+
+    protected function isProductScoreComputed(
+        ProductUuid $productUuid,
+        \DateTimeImmutable $evaluatedAt = new \DateTimeImmutable('now')
+    ): bool {
+        return (bool) $this->get('database_connection')->executeQuery(
+            <<<SQL
+                SELECT product_uuid
+                FROM pim_data_quality_insights_product_score
+                WHERE product_uuid = :product_uuid AND evaluated_at = :evaluated_at
+            SQL,
+            ['product_uuid' => $productUuid->toBytes(), 'evaluated_at' => $evaluatedAt->format('Y-m-d')]
+        )->fetchOne();
+    }
+
+    protected function assertProductScoreIsComputed(
+        ProductUuid $productUuid,
+        \DateTimeImmutable $evaluatedAt = new \DateTimeImmutable('now')
+    ): void {
+        self::assertTrue(
+            $this->isProductScoreComputed($productUuid, $evaluatedAt),
+            \sprintf('Product evaluation does not exist. Product uuid: %s', $productUuid->__toString())
+        );
+    }
+
+    protected function assertProductScoreIsNotComputed(
+        ProductUuid $productUuid,
+        \DateTimeImmutable $evaluatedAt = new \DateTimeImmutable('now')
+    ): void {
+        self::assertFalse(
+            $this->isProductScoreComputed($productUuid, $evaluatedAt),
+            \sprintf('Product evaluation exists, it should not. Product uuid: %s', $productUuid->__toString())
+        );
+    }
+
+    protected function isProductModelScoreComputed(
+        ProductModelId $productModelId,
+        \DateTimeImmutable $evaluatedAt = new \DateTimeImmutable('now')
+    ): bool {
+        return (bool) $this->get('database_connection')->executeQuery(
+            <<<SQL
+                SELECT product_model_id
+                FROM pim_data_quality_insights_product_model_score
+                WHERE product_model_id = :product_model_id AND evaluated_at = :evaluated_at
+            SQL,
+            ['product_model_id' => $productModelId->toInt(), 'evaluated_at' => $evaluatedAt->format('Y-m-d')]
+        )->fetchOne();
+    }
+
+    protected function assertProductModelScoreIsComputed(
+        ProductModelId $productModelId,
+        \DateTimeImmutable $evaluatedAt = new \DateTimeImmutable('now')
+    ): void {
+        self::assertTrue(
+            $this->isProductModelScoreComputed($productModelId, $evaluatedAt),
+            \sprintf('Product model evaluation does not exist. Product model id: %s', $productModelId->__toString())
+        );
+    }
+
+    protected function assertProductModelScoreIsNotComputed(
+        ProductModelId $productModelId,
+        \DateTimeImmutable $evaluatedAt = new \DateTimeImmutable('now')
+    ): void {
+        self::assertFalse(
+            $this->isProductModelScoreComputed($productModelId, $evaluatedAt),
+            \sprintf('Product model evaluation exists, it should not. Product model id: %s', $productModelId->__toString())
+        );
+    }
+
+    protected function simulateOldProductScoreCompute(): void
+    {
+        $this->get('database_connection')->executeQuery(
+            'UPDATE pim_data_quality_insights_product_score SET evaluated_at = "1980-01-01"'
+        );
+    }
+
+    protected function simulateOldProductModelScoreCompute(): void
+    {
+        $this->get('database_connection')->executeQuery(
+            'UPDATE pim_data_quality_insights_product_model_score SET evaluated_at = "1980-01-01"'
         );
     }
 

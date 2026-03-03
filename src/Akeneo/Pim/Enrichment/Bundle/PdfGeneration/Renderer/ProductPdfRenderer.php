@@ -4,8 +4,6 @@ namespace Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer;
 
 use Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Builder\PdfBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValue;
-use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -35,7 +33,6 @@ class ProductPdfRenderer implements RendererInterface
     protected IdentifiableObjectRepositoryInterface $attributeRepository;
     protected string $template;
     protected ?string $customFont;
-    private IdentifiableObjectRepositoryInterface $attributeOptionRepository;
 
     public function __construct(
         Environment $templating,
@@ -45,7 +42,6 @@ class ProductPdfRenderer implements RendererInterface
         FilterManager $filterManager,
         IdentifiableObjectRepositoryInterface $attributeRepository,
         string $template,
-        IdentifiableObjectRepositoryInterface $attributeOptionRepository,
         ?string $customFont = null
     ) {
         $this->templating = $templating;
@@ -55,9 +51,7 @@ class ProductPdfRenderer implements RendererInterface
         $this->filterManager = $filterManager;
         $this->attributeRepository = $attributeRepository;
         $this->template = $template;
-        $this->attributeOptionRepository = $attributeOptionRepository;
         $this->customFont = $customFont;
-        $this->attributeOptionRepository = $attributeOptionRepository;
     }
 
     /**
@@ -69,7 +63,6 @@ class ProductPdfRenderer implements RendererInterface
         $this->configureOptions($resolver);
 
         $imagePaths = $this->getImagePaths($object, $context['locale'], $context['scope']);
-        $optionLabels = $this->getOptionLabels($object, $context['locale'], $context['scope']);
 
         $params = array_merge(
             $context,
@@ -78,7 +71,6 @@ class ProductPdfRenderer implements RendererInterface
                 'groupedAttributes' => $this->getGroupedAttributes($object),
                 'imagePaths' => $imagePaths,
                 'customFont' => $this->customFont,
-                'optionLabels' => $optionLabels,
             ]
         );
 
@@ -173,59 +165,6 @@ class ProductPdfRenderer implements RendererInterface
     }
 
     /**
-     * Get all option labels
-     */
-    protected function getOptionLabels(
-        ProductInterface $product,
-        ?string $localeCode = null,
-        ?string $scopeCode = null
-    ): array {
-        $options = [];
-
-        foreach ($this->getAttributeCodes($product) as $attributeCode) {
-            $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
-
-            $locale = $attribute->isLocalizable() ? $localeCode : null;
-            $scope = $attribute->isScopable() ? $scopeCode : null;
-
-            if (null !== $attribute && AttributeTypes::OPTION_SIMPLE_SELECT === $attribute->getType()) {
-                $optionValue = $product->getValue($attributeCode, $locale, $scope);
-                if ($optionValue instanceof OptionValue) {
-                    $optionCode = $optionValue->getData();
-                    $options[$attributeCode] = $this->getOptionLabel($attributeCode, $optionCode, $localeCode);
-                }
-            }
-            if (null !== $attribute && AttributeTypes::OPTION_MULTI_SELECT === $attribute->getType()) {
-                $optionValue = $product->getValue($attributeCode, $locale, $scope);
-                if ($optionValue instanceof OptionsValue) {
-                    $optionCodes = $optionValue->getData();
-                    $labels = [];
-                    foreach ($optionCodes as $optionCode) {
-                        $labels[] = $this->getOptionLabel($attributeCode, $optionCode, $localeCode);
-                    }
-                    $options[$attributeCode] = implode(', ', $labels);
-                }
-            }
-        }
-
-        return $options;
-    }
-
-    protected function getOptionLabel($attributeCode, $optionCode, $localeCode): string
-    {
-        $option = $this->attributeOptionRepository->findOneByIdentifier($attributeCode . '.' . $optionCode);
-
-        if (null === $option) {
-            return sprintf('[%s]', $optionCode);
-        }
-
-        $option->setLocale($localeCode);
-        $translation = $option->getTranslation();
-
-        return null !== $translation->getValue() ? $translation->getValue() : sprintf('[%s]', $option->getCode());
-    }
-
-    /**
      * Generate media thumbnails cache used by the PDF document
      *
      * @param string[] $imagePaths
@@ -258,6 +197,6 @@ class ProductPdfRenderer implements RendererInterface
                     'filter' => static::THUMBNAIL_FILTER,
                 ]
             )
-            ->setDefined(['groupedAttributes', 'imagePaths', 'customFont', 'optionLabels']);
+            ->setDefined(['groupedAttributes', 'imagePaths', 'customFont']);
     }
 }

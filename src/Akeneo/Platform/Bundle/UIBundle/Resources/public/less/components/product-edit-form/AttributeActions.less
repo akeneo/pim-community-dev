@@ -14,9 +14,8 @@
   &-copyActions {
     flex-basis: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     margin-top: 16px;
-    padding-left: @AknMaxFormWidth;
   }
 
   &-editActions {
@@ -24,7 +23,11 @@
   }
 
   &-contextSelectors {
-    border-left: 1px solid @AknBorderColor;
     padding-left: 10px;
+    margin-right: 0;
+  }
+
+  &-otherActions {
+    margin-left: 0;
   }
 }

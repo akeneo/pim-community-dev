@@ -16,7 +16,8 @@ define([
   'oro/mediator',
   'pim/fetcher-registry',
   'pim/template/form/group-selector',
-], function ($, _, __, UserContext, BaseForm, mediator, fetcherRegistry, template) {
+  'pim/analytics',
+], function ($, _, __, UserContext, BaseForm, mediator, fetcherRegistry, template, analytics) {
   return BaseForm.extend({
     tagName: 'ul',
     className: 'AknVerticalNavtab nav nav-tabs group-selector',
@@ -124,6 +125,10 @@ define([
           this.getRoot().trigger('group:change');
         }
 
+        analytics.appcuesTrack('product-grid:attribute-group:selected', {
+          code: current,
+        });
+
         this.render();
       }
     },
@@ -132,7 +137,7 @@ define([
      * Ensure default values for the current attribute group
      */
     ensureDefault: function () {
-      if (_.isUndefined(this.getCurrent()) || !this.getElements()[this.getCurrent()]) {
+      if (_.isUndefined(this.getCurrent()) || !Object.keys(this.getElements()).includes(this.getCurrent())) {
         if (!this.elements[this.all.code]) {
           this.elements[this.all.code] = this.all;
         }

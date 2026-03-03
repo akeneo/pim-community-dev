@@ -18,6 +18,7 @@ define(['oro/translator', 'pim/form', 'oro/mediator', 'oro/loading-mask', 'oro/m
     loadingMask: null,
     updateFailureMessage: __('pim_enrich.entity.fallback.flash.update.fail'),
     updateSuccessMessage: __('pim_enrich.entity.fallback.flash.update.success'),
+    sessionExpiredMessage: __('pim_enrich.entity.fallback.flash.update.fail_session_expired'),
     isFlash: true,
     label: __('pim_common.save'),
 
@@ -32,6 +33,9 @@ define(['oro/translator', 'pim/form', 'oro/mediator', 'oro/loading-mask', 'oro/m
       }
       if (this.config.hasOwnProperty('updateFailureMessage')) {
         this.updateFailureMessage = __(this.config.updateFailureMessage);
+      }
+      if (this.config.hasOwnProperty('sessionExpiredMessage')) {
+        this.sessionExpiredMessage = __(this.config.sessionExpiredMessage);
       }
 
       BaseForm.prototype.initialize.apply(this, arguments);
@@ -92,12 +96,17 @@ define(['oro/translator', 'pim/form', 'oro/mediator', 'oro/loading-mask', 'oro/m
      * @param {Object} response
      */
     fail: function (response) {
+      let errorMessage = this.updateFailureMessage;
       switch (response.status) {
+        case 422:
         case 400:
           this.getRoot().trigger('pim_enrich:form:entity:bad_request', {
             sentData: this.getFormData(),
             response: response.responseJSON,
           });
+          break;
+        case 401:
+          errorMessage = this.sessionExpiredMessage;
           break;
         case 500:
           /* global console */
@@ -109,7 +118,7 @@ define(['oro/translator', 'pim/form', 'oro/mediator', 'oro/loading-mask', 'oro/m
         default:
       }
 
-      messenger.notify('error', this.updateFailureMessage);
+      messenger.notify('error', errorMessage);
     },
   });
 });

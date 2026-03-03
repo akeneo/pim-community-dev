@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\AttributeGroupActivation;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\AttributeGroupActivationRepositoryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeGroupCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\Command\UpdateAttributeGroupActivationCommand;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\Command\UpdateAttributeGroupActivationHandler;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,18 +17,10 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  */
 final class UpdateAttributeGroupActivationController
 {
-    /** @var AttributeGroupActivationRepositoryInterface */
-    private $attributeGroupActivationRepository;
-
-    /** @var SecurityFacade */
-    private $securityFacade;
-
     public function __construct(
-        AttributeGroupActivationRepositoryInterface $attributeGroupActivationRepository,
-        SecurityFacade $securityFacade
+        private readonly SecurityFacade $securityFacade,
+        private readonly UpdateAttributeGroupActivationHandler $attributeGroupActivationHandler
     ) {
-        $this->attributeGroupActivationRepository = $attributeGroupActivationRepository;
-        $this->securityFacade = $securityFacade;
     }
 
     public function __invoke(Request $request)
@@ -39,14 +30,15 @@ final class UpdateAttributeGroupActivationController
         }
 
         try {
-            $attributeGroupCode = new AttributeGroupCode($request->request->get('attribute_group_code'));
-            $activated = $request->request->getBoolean('activated');
-            $attributeGroupActivation = new AttributeGroupActivation($attributeGroupCode, $activated);
-        } catch (\Throwable $e) {
+            $command = new UpdateAttributeGroupActivationCommand(
+                $request->request->get('attribute_group_code'),
+                $request->request->getBoolean('activated')
+            );
+        } catch (\Throwable) {
             return new Response(null, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        $this->attributeGroupActivationRepository->save($attributeGroupActivation);
+        ($this->attributeGroupActivationHandler)($command);
 
         return new Response(null, Response::HTTP_NO_CONTENT);
     }

@@ -7,7 +7,7 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
 use Akeneo\Test\Acceptance\Family\InMemoryFamilyRepository;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Channel\Component\Model\Channel;
+use Akeneo\Channel\Infrastructure\Component\Model\Channel;
 use Akeneo\Pim\Structure\Component\Model\Family;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;

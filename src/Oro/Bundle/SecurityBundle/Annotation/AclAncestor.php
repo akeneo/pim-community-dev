@@ -56,6 +56,6 @@ class AclAncestor implements \Serializable
     {
         list(
             $this->id
-            ) = unserialize($serialized);
+        ) = unserialize($serialized);
     }
 }

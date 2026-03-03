@@ -1,0 +1,55 @@
+pim_menu:
+  navigation_back:
+    connection: Quay lại kết nối
+  navigation_block:
+    connection: Điều hướng kết nối
+  item:
+    connection_settings_edit: Thiết lập kết nối
+    connection_monitoring: Giám sát
+pim_title:
+  akeneo_connectivity_connection_settings_edit: Thiết lập kết nối
+  akeneo_connectivity_connection_settings_any: Thiết lập kết nối
+  akeneo_connectivity_connection_error_management_connection_monitoring: Giám sát kết nối
+akeneo_connectivity.connection:
+  connection:
+    auditable: Theo dõi kết nối này trong bảng điều khiển
+  edit_connection:
+    credentials:
+      wrong_credentials_combinations:
+        single: Chúng tôi nhận thấy rằng bạn đang sử dụng tên người dùng {{ wrong_username }} cho kết nối này (lần sử dụng cuối cùng vào ngày {{date}} lúc {{time}}). Chúng tôi khuyên bạn nên sử dụng tên người dùng {{good_username}}.
+        link: Khám phá lý do tại sao bạn nên sử dụng nó.
+        link_list: Khám phá lý do tại sao chúng tôi khuyên bạn nên sử dụng tên người dùng này.
+        several: Chúng tôi nhận thấy rằng bạn không sử dụng tên người dùng {{good_username}} cho kết nối này.
+        list: 'Dưới đây là danh sách tên người dùng đã được sử dụng trong 7 ngày qua:'
+        username_date: '{{ wrong_username }} ngày {{ date }} lúc {{ time }}'
+  auditable_helper:
+    message: Bạn chỉ có thể theo dõi các kết nối "Nguồn" và "Đích".
+  grid.wrong_credentials_combination_helper: Một số kết nối bên dưới không sử dụng tên người dùng kết nối của họ. Chúng được xác định bởi một dấu hiệu cảnh báo màu vàng.
+  dashboard:
+    connection_selector:
+      title:
+        destination: Kết nối đích
+    charts:
+      number_of_products_created: Đã tạo sản phẩm
+      number_of_products_updated: Đã cập nhật sản phẩm
+      number_of_products_sent: Đã gửi sản phẩm
+      legend:
+        during_the_last_seven_days: 'Tổng cộng trong 7 ngày qua:'
+    no_connection:
+      title:
+        data_source: Bạn muốn xem một số biểu đồ ưa thích về các kết nối nguồn của bạn?
+        data_destination: Bạn muốn xem một số biểu đồ ưa thích về kết nối đích của bạn?
+      message_with_permission:
+        message: Tạo và bắt đầu theo dõi cái đầu tiên của bạn
+  error_management:
+    connection_monitoring:
+      title: Giám sát
+      helper:
+        title: '{0} Bạn có {{ count }} lỗi |[1,Inf] Bạn có {{ count }} lỗi'
+        description: Tại đây, bạn có thể xem chi tiết từng lỗi cho kết nối này trong 7 ngày qua. Số lỗi được giới hạn ở 100 lỗi.
+        link: Để biết cách giải quyết vấn đề này, vui lòng truy cập trung tâm trợ giúp API.
+      search_filter:
+        placeholder: Tìm kiếm trong các thông báo lỗi
+        result_count: '{0} Không thấy kết quả |[1,Inf] {{ count }} kết quả'
+      no_error:
+        title: Tuyệt vời! Không tìm thấy lỗi!

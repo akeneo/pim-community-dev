@@ -2,26 +2,28 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\ProductAttributeFilter;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
+use Akeneo\Pim\Structure\Component\Model\VariantAttributeSetInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Structure\Component\Model\VariantAttributeSetInterface;
 use Prophecy\Argument;
 
 class ProductAttributeFilterSpec extends ObjectBehavior
 {
     function let(
-        IdentifiableObjectRepositoryInterface $productModelRepository,
+        ProductModelRepositoryInterface $productModelRepository,
         IdentifiableObjectRepositoryInterface $familyRepository,
-        IdentifiableObjectRepositoryInterface $productRepository,
+        ProductRepositoryInterface $productRepository,
         IdentifiableObjectRepositoryInterface $attributeRepository
     ) {
         $this->beConstructedWith($productModelRepository, $familyRepository, $productRepository, $attributeRepository);
@@ -38,9 +40,9 @@ class ProductAttributeFilterSpec extends ObjectBehavior
     }
 
     function it_filters_the_attributes_that_does_not_belong_the_family(
-        $familyRepository,
-        $productRepository,
-        $attributeRepository,
+        IdentifiableObjectRepositoryInterface $familyRepository,
+        ProductRepositoryInterface $productRepository,
+        IdentifiableObjectRepositoryInterface $attributeRepository,
         FamilyInterface $family,
         ProductInterface $product,
         Collection $familyAttributes,
@@ -121,9 +123,9 @@ class ProductAttributeFilterSpec extends ObjectBehavior
     }
 
     function it_sets_to_null_an_empty_parent_attribute_value(
-        $familyRepository,
-        $productRepository,
-        $attributeRepository,
+        IdentifiableObjectRepositoryInterface $familyRepository,
+        ProductRepositoryInterface $productRepository,
+        IdentifiableObjectRepositoryInterface $attributeRepository,
         FamilyInterface $family,
         ProductInterface $product,
         Collection $familyAttributes,
@@ -190,9 +192,9 @@ class ProductAttributeFilterSpec extends ObjectBehavior
     }
 
     function it_filters_the_attributes_that_do_not_belong_to_a_family_variant(
-        $productModelRepository,
-        $productRepository,
-        $attributeRepository,
+        ProductModelRepositoryInterface $productModelRepository,
+        ProductRepositoryInterface $productRepository,
+        IdentifiableObjectRepositoryInterface $attributeRepository,
         ProductModelInterface $productModel,
         ProductInterface $product,
         FamilyVariantInterface $familyVariant,
@@ -317,9 +319,9 @@ class ProductAttributeFilterSpec extends ObjectBehavior
     }
 
     function it_keeps_attributes_and_axes_coming_from_family_variant(
-        $productRepository,
-        $productModelRepository,
-        $attributeRepository,
+        ProductRepositoryInterface $productRepository,
+        ProductModelRepositoryInterface $productModelRepository,
+        IdentifiableObjectRepositoryInterface $attributeRepository,
         ProductModelInterface $productModel,
         ProductInterface $product,
         FamilyVariantInterface $familyVariant,
@@ -334,7 +336,7 @@ class ProductAttributeFilterSpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier('eu_shoes_size')->willReturn($euShoesSize);
         $attributeRepository->findOneByIdentifier('weight')->willReturn($weight);
 
-        $productRepository->findOneByIdentifier('shoes')->willReturn($product);
+        $productRepository->find('007209e8-433a-4ffe-a2eb-18869325ec16')->willReturn($product);
         $productModelRepository->findOneByIdentifier('brooksblue')->willReturn($productModel);
 
         $productModel->getFamilyVariant()->willreturn($familyVariant);
@@ -353,7 +355,7 @@ class ProductAttributeFilterSpec extends ObjectBehavior
         $euShoesSize->getCode()->willReturn('eu_shoes_size');
 
         $this->filter([
-            'identifier' => 'shoes',
+            'uuid' => '007209e8-433a-4ffe-a2eb-18869325ec16',
             'parent' => 'brooksblue',
             'family' => 'shoes',
             'values' => [
@@ -383,7 +385,7 @@ class ProductAttributeFilterSpec extends ObjectBehavior
                 ]
             ]
         ])->shouldReturn([
-            'identifier' => 'shoes',
+            'uuid' => '007209e8-433a-4ffe-a2eb-18869325ec16',
             'parent' => 'brooksblue',
             'family' => 'shoes',
             'values' => [

@@ -71,13 +71,21 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
             $productStandard['associations'] = (object) $productStandard['associations'];
         }
 
+        $productStandard['quantified_associations'] = $this->formatQuantifiedAssociations(
+            $productStandard['quantified_associations']
+        );
+
+        if (empty($productStandard['quantified_associations'])) {
+            $productStandard['quantified_associations'] = (object) $productStandard['quantified_associations'];
+        }
+
         return $productStandard;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof ProductInterface && 'external_api' === $format;
     }
@@ -107,5 +115,18 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
         }
 
         return $values;
+    }
+
+    private function formatQuantifiedAssociations(array $quantifiedAssociations): array
+    {
+        return array_map(static function (array $quantifiedAssociation) {
+            $quantifiedAssociation['products'] = array_map(static fn (array $productLink) => array_filter(
+                $productLink,
+                fn (string $key): bool => in_array($key, ['identifier', 'quantity']),
+                ARRAY_FILTER_USE_KEY
+            ), $quantifiedAssociation['products']);
+
+            return $quantifiedAssociation;
+        }, $quantifiedAssociations);
     }
 }

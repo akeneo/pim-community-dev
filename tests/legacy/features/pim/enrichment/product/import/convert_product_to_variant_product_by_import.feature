@@ -18,6 +18,7 @@ Feature: Import variant products that were previously products
       | col-white-xl | clothing | white | xl   | Cult of Luna tee            | 100% cotton | 478 GRAM | tshirts    |
       | nin-s        | clothing |       | s    | Nine Inch Nails tee         | 100% cotton |          | tshirts    |
 
+  @purge-messenger
   Scenario: Converting a product to a variant product inside a family variant with 2 levels of hierarchy
     Given the following CSV file to import:
       """
@@ -26,6 +27,7 @@ Feature: Import variant products that were previously products
       """
     When the products are imported via the job csv_catalog_modeling_product_import
     Then the parent of the product "col-white-m" should be "model-col-white"
+    And 1 event of type "product.updated" should have been raised
 
   Scenario: Converting a product to a variant product inside a family variant with 1 levels of hierarchy
     Given the following CSV file to import:

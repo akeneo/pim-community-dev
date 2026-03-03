@@ -16,6 +16,8 @@ pim_import_export:
     6: Fallido
     7: Abandonado
     8: Desconocido
+    9: Pausando
+    10: Pausada
   download_archive:
     archive: descargar fichero generado|descargar ficheros generados
     output: descargar ficher generado |descargar ficheros generados
@@ -27,10 +29,15 @@ pim_import_export:
       error: Exportación <strong>%label%</strong> fallida
       warning: Exportación <strong>%label%</strong> terminó con algunas advertencias
       success: Exportación <strong>%label%</strong> finalizada
+      warnings:
+        xlsx_cell_conversion_error: Excepción al convertir la columna "{0}" al tipo de atributo de atributo PIM de destino (compruebe el formato de celda Excel)
+        xlsx_cell_date_to_text_conversion_error: No se puede convertir la celda  {0} con formato de fecha en atributo de tipo texto
     import:
       error: Importación <strong>%label%</strong> fallida
       warning: Importación <strong>%label%</strong> terminó con algunas advertencias
       success: Importación <strong>%label%</strong> finalizada
+      warnings:
+        xlsx_cell_date_conversion_error: No se puede convertir la celda «{cellName}» con formato de fecha a atributo de tipo {attributeType}
   list: Seleccionar un trabajo
   job_profile:
     tab:

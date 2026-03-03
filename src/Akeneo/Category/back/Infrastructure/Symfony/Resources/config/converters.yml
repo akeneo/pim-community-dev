@@ -1,0 +1,22 @@
+services:
+  Akeneo\Category\Application\Converter\ConverterInterface:
+    class: Akeneo\Category\Infrastructure\Converter\InternalApi\InternalApiToStd
+    arguments:
+      - '@Akeneo\Category\Application\Converter\Checker\RequirementChecker'
+
+  Akeneo\Category\Application\Converter\StandardFormatToUserIntentsInterface:
+    class: Akeneo\Category\Application\Converter\StandardFormatToUserIntents
+    arguments:
+      - '@Akeneo\Category\Domain\UserIntent\UserIntentFactoryRegistry'
+
+  Akeneo\Category\Application\Converter\Checker\RequirementChecker:
+    class: Akeneo\Category\Application\Converter\Checker\InternalApiRequirementChecker
+    arguments:
+      - '@Akeneo\Category\Application\Converter\Checker\FieldsRequirementChecker'
+      - '@Akeneo\Category\Application\Converter\Checker\AttributeApiRequirementChecker'
+
+  Akeneo\Category\Application\Converter\Checker\FieldsRequirementChecker: ~
+
+  Akeneo\Category\Application\Converter\Checker\AttributeApiRequirementChecker: ~
+
+  Akeneo\Category\Application\Converter\Checker\ValueCollectionRequirementChecker: ~

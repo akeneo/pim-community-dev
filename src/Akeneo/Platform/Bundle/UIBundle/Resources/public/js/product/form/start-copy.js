@@ -6,13 +6,15 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(['jquery', 'underscore', 'oro/translator', 'pim/form', 'pim/template/product/start-copy'], function (
-  $,
-  _,
-  __,
-  BaseForm,
-  template
-) {
+define([
+  'jquery',
+  'underscore',
+  'oro/translator',
+  'pim/form',
+  'pim/template/product/start-copy',
+  'pim/analytics',
+  'pim/feature-flags',
+], function ($, _, __, BaseForm, template, analytics, FeatureFlags) {
   return BaseForm.extend({
     template: _.template(template),
     className: 'AknDropdown-menuLink start-copying',
@@ -34,13 +36,15 @@ define(['jquery', 'underscore', 'oro/translator', 'pim/form', 'pim/template/prod
      * {@inheritdoc}
      */
     render() {
-      this.$el.html('');
-      if (!this.isCopying) {
-        this.$el.html(
-          this.template({
-            label: __('pim_enrich.entity.product.module.copy.label'),
-          })
-        );
+      if (!FeatureFlags.isEnabled('free_trial')) {
+        this.$el.html('');
+        if (!this.isCopying) {
+          this.$el.html(
+            this.template({
+              label: __('pim_enrich.entity.product.module.copy.label'),
+            })
+          );
+        }
       }
     },
 
@@ -50,6 +54,8 @@ define(['jquery', 'underscore', 'oro/translator', 'pim/form', 'pim/template/prod
     startCopy() {
       this.isCopying = true;
       this.getRoot().trigger('pim_enrich:form:start_copy');
+
+      analytics.appcuesTrack('product:form:compare-clicked');
       this.render();
     },
 

@@ -2,11 +2,11 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\ValuesFiller;
 
-use Akeneo\Channel\Component\Model\Channel;
-use Akeneo\Channel\Component\Model\Currency;
-use Akeneo\Channel\Component\Model\Locale;
-use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\Channel;
+use Akeneo\Channel\Infrastructure\Component\Model\Currency;
+use Akeneo\Channel\Infrastructure\Component\Model\Locale;
+use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingProductModelValues;
 use Akeneo\Pim\Structure\Component\Model\Family;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariant;
@@ -22,21 +22,26 @@ class FillMissingProductModelValuesSpec extends ObjectBehavior
         ChannelRepositoryInterface $channelRepository,
         LocaleRepositoryInterface $localeRepository
     ) {
+        $deDe = (new Locale())->setCode('de_DE');
+        $enUs = (new Locale())->setCode('en_US');
+        $frFR = (new Locale())->setCode('fr_FR');
+
         $sku = (new Builder())->aIdentifier()->withCode('sku')->build();
         $name = (new Builder())->aTextAttribute()->withCode('name')->build();
         $localizableName = (new Builder())->aTextAttribute()->withCode('localizable_name')->localizable()->build();
         $scopableName = (new Builder())->aTextAttribute()->withCode('scopable_name')->scopable()->build();
         $scopableLocalizableName = (new Builder())->aTextAttribute()->withCode('scopable_localizable_name')->scopable()
-                                                  ->localizable()->build();
+            ->localizable()->build();
         $attributeWithNumericCode = (new Builder())->withCode('123')->aTextAttribute()->build();
         $price = (new Builder())->aPriceCollectionAttribute()->withCode('price')->build();
         $localizablePrice = (new Builder())->aPriceCollectionAttribute()->withCode('localizable_price')->localizable()
-                                           ->build();
+            ->build();
         $scopablePrice = (new Builder())->aPriceCollectionAttribute()->withCode('scopable_price')->scopable()->build();
         $scopableLocalizablePrice = (new Builder())->aPriceCollectionAttribute()->withCode('scopable_localizable_price')
-                                                   ->scopable()->localizable()->build();
+            ->scopable()->localizable()->build();
 
         $family = new Family();
+        $specificLocalizableName = (new Builder())->aTextAttribute()->withCode('specific_localizable_name')->localeSpecific([$frFR])->build();
         $family
             ->addAttribute($sku)
             ->addAttribute($name)
@@ -47,7 +52,15 @@ class FillMissingProductModelValuesSpec extends ObjectBehavior
             ->addAttribute($price)
             ->addAttribute($localizablePrice)
             ->addAttribute($scopablePrice)
-            ->addAttribute($scopableLocalizablePrice);
+            ->addAttribute($scopableLocalizablePrice)
+            ->addAttribute($specificLocalizableName)
+            ->addAttribute(
+                (new Builder())
+                    ->aTextAttribute()
+                    ->withCode('scopable_localizable_locale_specific_name')->localizable()->scopable()->localeSpecific([$frFR, $enUs])
+                    ->build()
+            );
+
 
         // common attributes: name, scopable_localizable_name, 123
         // level 1 attributes: localizable_name, scopable_name
@@ -75,10 +88,6 @@ class FillMissingProductModelValuesSpec extends ObjectBehavior
         $attributeSet->setAttributes([$sku, $name, $localizableName, $scopableName, $scopableLocalizableName, $attributeWithNumericCode]);
         $familyVariantWithPrices->addVariantAttributeSet($attributeSet);
         $familyVariantRepository->findOneByIdentifier('with_prices')->willReturn($familyVariantWithPrices);
-
-        $deDe = (new Locale())->setCode('de_DE');
-        $enUs = (new Locale())->setCode('en_US');
-        $frFR = (new Locale())->setCode('fr_FR');
 
         $USD = (new Currency())->setCode('USD');
         $EUR = (new Currency())->setCode('EUR');
@@ -128,6 +137,28 @@ class FillMissingProductModelValuesSpec extends ObjectBehavior
                     '123' => [
                         ['scope' => null, 'locale' => null, 'data' => null],
                     ],
+                    'specific_localizable_name' => [[
+                        'scope' => null,
+                        'locale' => null,
+                        'data' => null,
+                    ]],
+                    'scopable_localizable_locale_specific_name' => [
+                        [
+                            'scope' => 'tablet',
+                            'locale' => 'en_US',
+                            'data' => null
+                        ],
+                        [
+                            'scope' => 'tablet',
+                            'locale' => 'fr_FR',
+                            'data' => null
+                        ],
+                        [
+                            'scope' => 'ecommerce',
+                            'locale' => 'fr_FR',
+                            'data' => null
+                        ],
+                    ],
                 ],
             ]
         );
@@ -159,14 +190,36 @@ class FillMissingProductModelValuesSpec extends ObjectBehavior
                     '123' => [
                         ['scope' => null, 'locale' => null, 'data' => null],
                     ],
+                    'scopable_name' => [
+                        ['scope' => 'tablet', 'locale' => null, 'data' => null],
+                        ['scope' => 'ecommerce', 'locale' => null, 'data' => null],
+                    ],
                     'localizable_name' => [
                         ['scope' => null, 'locale' => 'en_US', 'data' => null],
                         ['scope' => null, 'locale' => 'fr_FR', 'data' => null],
                         ['scope' => null, 'locale' => 'de_DE', 'data' => null],
                     ],
-                    'scopable_name' => [
-                        ['scope' => 'tablet', 'locale' => null, 'data' => null],
-                        ['scope' => 'ecommerce', 'locale' => null, 'data' => null],
+                    'specific_localizable_name' => [[
+                        'scope' => null,
+                        'locale' => null,
+                        'data' => null,
+                    ]],
+                    'scopable_localizable_locale_specific_name' => [
+                        [
+                            'scope' => 'tablet',
+                            'locale' => 'en_US',
+                            'data' => null
+                        ],
+                        [
+                            'scope' => 'tablet',
+                            'locale' => 'fr_FR',
+                            'data' => null
+                        ],
+                        [
+                            'scope' => 'ecommerce',
+                            'locale' => 'fr_FR',
+                            'data' => null
+                        ],
                     ],
                 ],
             ]
@@ -222,6 +275,28 @@ class FillMissingProductModelValuesSpec extends ObjectBehavior
                     'scopable_name' => [
                         ['scope' => 'tablet', 'locale' => null, 'data' => 'foo'],
                         ['scope' => 'ecommerce', 'locale' => null, 'data' => null],
+                    ],
+                    'specific_localizable_name' => [[
+                        'scope' => null,
+                        'locale' => null,
+                        'data' => null,
+                    ]],
+                    'scopable_localizable_locale_specific_name' => [
+                        [
+                            'scope' => 'tablet',
+                            'locale' => 'en_US',
+                            'data' => null
+                        ],
+                        [
+                            'scope' => 'tablet',
+                            'locale' => 'fr_FR',
+                            'data' => null
+                        ],
+                        [
+                            'scope' => 'ecommerce',
+                            'locale' => 'fr_FR',
+                            'data' => null
+                        ],
                     ],
                 ],
             ]
@@ -331,6 +406,28 @@ class FillMissingProductModelValuesSpec extends ObjectBehavior
                                 ['currency' => 'EUR', 'amount' => null],
                                 ['currency' => 'USD', 'amount' => null],
                             ],
+                        ],
+                    ],
+                    'specific_localizable_name' => [[
+                        'scope' => null,
+                        'locale' => null,
+                        'data' => null,
+                    ]],
+                    'scopable_localizable_locale_specific_name' => [
+                        [
+                            'scope' => 'tablet',
+                            'locale' => 'en_US',
+                            'data' => null
+                        ],
+                        [
+                            'scope' => 'tablet',
+                            'locale' => 'fr_FR',
+                            'data' => null
+                        ],
+                        [
+                            'scope' => 'ecommerce',
+                            'locale' => 'fr_FR',
+                            'data' => null
                         ],
                     ],
                 ],
@@ -503,6 +600,28 @@ class FillMissingProductModelValuesSpec extends ObjectBehavior
                                 ['currency' => 'EUR', 'amount' => '10.00'],
                                 ['currency' => 'USD', 'amount' => null],
                             ],
+                        ],
+                    ],
+                    'specific_localizable_name' => [[
+                        'scope' => null,
+                        'locale' => null,
+                        'data' => null,
+                    ]],
+                    'scopable_localizable_locale_specific_name' => [
+                        [
+                            'scope' => 'tablet',
+                            'locale' => 'en_US',
+                            'data' => null
+                        ],
+                        [
+                            'scope' => 'tablet',
+                            'locale' => 'fr_FR',
+                            'data' => null
+                        ],
+                        [
+                            'scope' => 'ecommerce',
+                            'locale' => 'fr_FR',
+                            'data' => null
                         ],
                     ],
                 ],

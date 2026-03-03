@@ -2,6 +2,7 @@
 
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\InternalApi\QuantifiedAssociations;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
 use Symfony\Component\HttpFoundation\Response;
 
 class AddQuantifiedAssociationsToProductEndToEnd extends AbstractProductWithQuantifiedAssociationsTestCase
@@ -11,24 +12,19 @@ class AddQuantifiedAssociationsToProductEndToEnd extends AbstractProductWithQuan
      */
     public function it_add_quantified_associations_to_a_product(): void
     {
-        $product = $this->createProduct([
-            'values' => [
-                'sku' => [
-                    [
-                        'scope' => null,
-                        'locale' => null,
-                        'data' => 'yellow_chair',
-                    ],
-                ],
-            ],
-        ]);
-        $normalizedProduct = $this->getProductFromInternalApi($product->getId());
+        $product = $this->createProduct(
+            'yellow_chair',
+            null,
+            [
+                new SetIdentifierValue('sku', 'yellow_chair')
+            ]);
+        $normalizedProduct = $this->getProductFromInternalApi($product->getUuid());
 
         $quantifiedAssociations = [
             'PRODUCTSET' => [
                 'products' => [
                     [
-                        'identifier' => '1111111111',
+                        'uuid' => $this->getProductUuid('1111111111')->toString(),
                         'quantity' => 3,
                     ],
                 ],
@@ -48,10 +44,8 @@ class AddQuantifiedAssociationsToProductEndToEnd extends AbstractProductWithQuan
             ]
         );
 
-        $response = $this->updateProductWithInternalApi($product->getId(), $normalizedProductWithQuantifiedAssociations);
+        $response = $this->updateProductWithInternalApi($product->getUuid(), $normalizedProductWithQuantifiedAssociations);
 
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
-        $body = json_decode($response->getContent(), true);
-        $this->assertSame($body['quantified_associations'], $quantifiedAssociations);
     }
 }

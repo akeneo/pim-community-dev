@@ -1,0 +1,3 @@
+services:
+    akeneo_connectivity.connection.marketplace_activate.feature:
+        class: Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeFeatureFlag

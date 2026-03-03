@@ -6,4 +6,5 @@ export type Connection = {
     flowType: FlowType;
     image: string | null;
     auditable: boolean;
+    type?: string;
 };

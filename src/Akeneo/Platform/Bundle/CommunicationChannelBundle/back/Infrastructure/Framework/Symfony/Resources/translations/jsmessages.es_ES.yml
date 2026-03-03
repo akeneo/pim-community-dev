@@ -2,7 +2,7 @@ akeneo_communication_channel:
   link:
     title: Anuncios
   panel:
-    title: '¿Qué novedades hay?'
+    title: Anuncios
     list:
       empty: No hay noticias por el momento. ¡Estate atento!
       error: No pudimos recuperar las noticias. Por favor, inténtalo de nuevo más tarde.

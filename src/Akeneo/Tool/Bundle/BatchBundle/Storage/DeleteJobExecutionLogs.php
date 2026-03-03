@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Bundle\BatchBundle\Storage;
 
 use Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\GetJobExecutionIds;
+use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Doctrine\DBAL\FetchMode;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -14,37 +15,33 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 final class DeleteJobExecutionLogs
 {
-    /** @var GetJobExecutionIds */
-    private $getJobExecutionIds;
-
-    /** @var Filesystem */
-    private $filesystem;
-
-    /** @var string */
-    private $logDir;
-
     public function __construct(
-        GetJobExecutionIds $getJobExecutionIds,
-        Filesystem $filesystem,
-        string $logDir
+        private GetJobExecutionIds $getJobExecutionIds,
+        private Filesystem $filesystem,
+        private string $logDir
     ) {
-        $this->getJobExecutionIds = $getJobExecutionIds;
-        $this->filesystem = $filesystem;
-        $this->logDir = $logDir;
     }
 
-    public function olderThanDays(int $days): void
+    public function olderThanDays(int $days, array $jobInstanceCodes, ?BatchStatus $jobExecutionStatus): void
     {
-        $statement = $this->getJobExecutionIds->olderThanDays($days);
-        while ($id = $statement->fetch(FetchMode::COLUMN)) {
+        $statement = $this->getJobExecutionIds->olderThanDays($days, $jobInstanceCodes, $jobExecutionStatus);
+        while ($id = $statement->fetchOne()) {
             $this->filesystem->remove($this->getJobExecutionLogDirectory($id));
         }
     }
 
-    public function all(): void
+    public function olderThanHours(int $hours, array $jobInstanceCodes, ?BatchStatus $jobExecutionStatus): void
     {
-        $statement = $this->getJobExecutionIds->all();
-        while ($id = $statement->fetch(FetchMode::COLUMN)) {
+        $statement = $this->getJobExecutionIds->olderThanHours($hours, $jobInstanceCodes, $jobExecutionStatus);
+        while ($id = $statement->fetchOne()) {
+            $this->filesystem->remove($this->getJobExecutionLogDirectory($id));
+        }
+    }
+
+    public function all(array $jobInstanceCodes, ?BatchStatus $jobExecutionStatus): void
+    {
+        $statement = $this->getJobExecutionIds->all($jobInstanceCodes, $jobExecutionStatus);
+        while ($id = $statement->fetchOne()) {
             $this->filesystem->remove($this->getJobExecutionLogDirectory($id));
         }
     }

@@ -3,11 +3,11 @@
         <li class="AknHorizontalNavtab-item<% if (tree.code === state.currentTree) { %> AknHorizontalNavtab-item--active active<% } %>" data-tree="<%- tree.code %>" data-tree-id="<%- tree.id %>">
             <div class="
                 AknHorizontalNavtab-link
-                <%- _.result(categoriesCount, tree.code, 0) > 0 ? 'tree-has-item' : '' %>
+                <%- _.result(categoriesCount, tree.id, 0) > 0 ? 'tree-has-item' : '' %>
                 " id="<%- treeLinkSelector + tree.id %>">
                 <span class="tree-label label"><%- tree.label %></span>
-                <span class="AknBadge <%- _.result(categoriesCount, tree.code, 0) > 0 ? 'AknBadge--enabled' : '' %>" data-tree-id="<%- tree.code %>">
-                    <%- _.result(categoriesCount, tree.code, 0) %>
+                <span class="AknBadge <%- _.result(categoriesCount, tree.id, 0) > 0 ? 'AknBadge--enabled' : '' %>" data-tree-id="<%- tree.code %>">
+                    <%- _.result(categoriesCount, tree.id, 0) %>
                 </span>
             </div>
         </li>

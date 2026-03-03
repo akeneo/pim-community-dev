@@ -1,0 +1,5 @@
+test.acl_group.no_feature_flag:
+    order: 10
+test.acl_group.with_feature_flag:
+    order: 20
+    feature: foo

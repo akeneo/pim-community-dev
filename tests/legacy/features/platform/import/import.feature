@@ -12,7 +12,7 @@ Feature: Import profiles
       my-jacket;red;jacket
       """
     And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     Then I am logged in as "Peter"
 
   Scenario: Go to the job execution page for an "import" and then check buttons status on the header and "Show profile" button redirection
@@ -22,7 +22,7 @@ Feature: Import profiles
     Then I should see the text "COMPLETED"
     And I should see the text "CSV footwear product import"
     And I should see "Download invalid data" on the "Download generated files" dropdown button
-    And I should see "Download read files" on the "Download generated files" dropdown button
+    And I should see "Download read file" on the "Download generated files" dropdown button
     And I should see the secondary action "Show profile"
     When I press the secondary action "Show profile"
     Then I should be redirected on the import page of "csv_footwear_product_import"

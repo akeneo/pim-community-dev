@@ -1,0 +1,24 @@
+akeneo.category:
+  validation:
+    upsert:
+      category_code:
+        wrong_format: El código de la categoría solo puede contener letras, números y guiones bajos
+        line_feed: El código de la categoría no puede contener caracteres de salto de línea
+      duplicated_value_user_intents: El valor del atributo {{ attributeCode }} se está actualizando varias veces
+      value_user_intents_on_deactivated_template: No hay ninguna plantilla activada vinculada a los atributos de la categoría que desea editar
+      value:
+        text_too_long: El valor no puede tener más de {{ limit }} caracteres
+        textarea_too_long: El valor no puede tener más de {{ limit }} caracteres
+        richtext_too_long: El valor no puede tener más de {{ limit }} caracteres
+    template:
+      code:
+        not_blank: Este valor no debe estar vacío.
+        unique: 'El código de plantilla: {{ templateCode }} ya existe.'
+        wrong_format: Este campo solo puede contener letras, números y guiones bajos.
+    attribute:
+      limit:
+        title: No puede añadir más de 50 atributos
+        message: Las plantillas de categorías están limitadas a 50 atributos por plantilla.
+      code:
+        wrong_format: El código del atributo solo puede contener letras minúsculas, números y guiones bajos
+        unique_in_the_template: El código del atributo {{ attributeCode }} debe ser único en la plantilla

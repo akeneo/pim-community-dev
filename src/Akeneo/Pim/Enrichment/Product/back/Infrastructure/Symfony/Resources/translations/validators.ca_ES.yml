@@ -1,0 +1,21 @@
+pim_enrich.product:
+  validation:
+    upsert:
+      unknown_user: 'L''usuari "{{ user_id }}" no existeix'
+      category_no_access_to_products: No teniu accés a productes de qualsevol dels arbres, contacteu amb l'administrador
+      should_keep_one_owned_category: Com a mínim hauríeu de mantenir el vostre producte en una categoria sobre la qual tingueu un permís propi
+      locale_no_access_to_products: No teniu accés a les dades de producte en cap de les configuracions regionals activades, contacteu amb l'administrador
+      attribute_group_no_access_to_attributes: No teniu accés a l'atribut {{ attributeCode }} d'aquest producte. Poseu-vos en contacte amb el vostre administrador.
+      product_identifier_empty: L'identificador del producte requereix una cadena no buida
+      duplicated_user_intents: El valor de l'atribut {{ attributeCode }} s'està actualitzant diverses vegades
+      family_code_empty: El codi familiar requereix una cadena no buida
+      category_does_not_exist: '{1}La categoria "{{ categoryCodes }}" no existeix|]1, Inf[ Les categories "{{ categoryCodes }}" no existeixen'
+      set_value:
+        no_channel_code_provided_for_scopable_attribute: 'L''atribut {{ attributeCode }} requereix un canal'
+        channel_code_provided_for_non_scopable_attribute: 'L''atribut {{ attributeCode }} no requereix cap canal, s''ha detectat "{{ channelCode }}"'
+        no_locale_code_provided_for_localizable_attribute: 'L''atribut {{ attributeCode }} requereix una configuració regional'
+        locale_code_provided_for_non_localizable_attribute: 'L''atribut {{ attributeCode }} no requereix cap localització, s''ha detectat "{{ localeCode }}"'
+        invalid_locale_code_for_locale_specific_attribute: 'El {{ attributeCode }} requereix una de les configuracions regionals següents: {{ availableLocales }}; S''ha detectat "{{ localeCode }}".'
+        channel_does_not_exist: 'El canal {{ channelCode }} no existeix'
+        locale_is_not_active: 'La configuració regional {{ localeCode }} no existeix o no està activa'
+        locale_not_activated_for_channel: 'La configuració regional {{ localeCode }} no està activada per al canal {{ channelCode }}'

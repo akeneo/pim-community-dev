@@ -6,6 +6,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\ProductGrid;
 
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\UuidInterface;
 
 final class AssertRows
 {
@@ -48,7 +49,11 @@ final class AssertRows
         Assert::assertSame($expectedRow->checked(), $row->checked());
         Assert::assertSame(sort($expectedGroups), sort($groups));
         Assert::assertSame($expectedRow->familyCode(), $row->familyCode());
-        Assert::assertSame($expectedRow->technicalId(), $row->technicalId());
+        if ($expectedRow->technicalId() instanceof UuidInterface) {
+            Assert::assertTrue($expectedRow->technicalId()->equals($row->technicalId()));
+        } else {
+            Assert::assertSame($expectedRow->technicalId(), $row->technicalId());
+        }
         Assert::assertSame($expectedRow->searchId(), $row->searchId());
         Assert::assertSame($expectedRow->documentType(), $row->documentType());
         Assert::assertNotNull($row->updated());

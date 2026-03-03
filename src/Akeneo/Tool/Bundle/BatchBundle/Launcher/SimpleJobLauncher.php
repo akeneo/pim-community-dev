@@ -83,10 +83,10 @@ class SimpleJobLauncher implements JobLauncherInterface
     /**
      * {@inheritdoc}
      */
-    public function launch(JobInstance $jobInstance, UserInterface $user, array $configuration = []) : JobExecution
+    public function launch(JobInstance $jobInstance, ?UserInterface $user, array $configuration = []) : JobExecution
     {
         $emailParameter = '';
-        if (isset($configuration['send_email']) && method_exists($user, 'getEmail')) {
+        if (isset($configuration['send_email']) && $user && method_exists($user, 'getEmail')) {
             $emailParameter = sprintf('--email=%s', escapeshellarg($user->getEmail()));
             unset($configuration['send_email']);
         }
@@ -128,17 +128,9 @@ class SimpleJobLauncher implements JobLauncherInterface
     }
 
     /**
-     * Create a jobExecution
-     *
-     * @param JobInstance   $jobInstance
-     * @param UserInterface $user
-     * @param array         $configuration
-     *
      * @throws \RuntimeException
-     *
-     * @return JobExecution
      */
-    protected function createJobExecution(JobInstance $jobInstance, UserInterface $user, array $configuration) : JobExecution
+    protected function createJobExecution(JobInstance $jobInstance, ?UserInterface $user, array $configuration) : JobExecution
     {
         $job = $this->jobRegistry->get($jobInstance->getJobName());
         $configuration = array_merge($jobInstance->getRawParameters(), $configuration);
@@ -153,14 +145,16 @@ class SimpleJobLauncher implements JobLauncherInterface
                     'Job instance "%s" running the job "%s" with parameters "%s" is invalid because of "%s"',
                     $jobInstance->getCode(),
                     $job->getName(),
-                    print_r($jobParameters->all(), true),
+                    json_encode($jobParameters->all()),
                     $this->getErrorMessages($errors)
                 )
             );
         }
 
-        $jobExecution = $this->jobRepository->createJobExecution($jobInstance, $jobParameters);
-        $jobExecution->setUser($user->getUsername());
+        $jobExecution = $this->jobRepository->createJobExecution($job, $jobInstance, $jobParameters);
+        if ($user) {
+            $jobExecution->setUser($user->getUserIdentifier());
+        }
         $this->jobRepository->updateJobExecution($jobExecution);
 
         $this->dispatchJobExecutionEvent(EventInterface::JOB_EXECUTION_CREATED, $jobExecution);

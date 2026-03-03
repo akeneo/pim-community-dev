@@ -58,6 +58,18 @@ final class OptionsValueFactory implements ValueFactory
             );
         }
 
+        try {
+            Assert::allStringNotEmpty($data);
+        } catch (\Exception $exception) {
+            throw InvalidPropertyTypeException::validArrayStructureExpected(
+                $attribute->code(),
+                'one of the options is an empty string',
+                static::class,
+                $data
+            );
+        }
+
+
         return $this->createWithoutCheckingData($attribute, $channelCode, $localeCode, $data);
     }
 

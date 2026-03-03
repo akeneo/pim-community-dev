@@ -2,8 +2,8 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Category\CategoryTree\UseCase;
 
-use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\UseCase\ListRootCategoriesWithCount;
+use PhpSpec\ObjectBehavior;
 
 class ListRootCategoriesWithCountSpec extends ObjectBehavior
 {
@@ -35,5 +35,11 @@ class ListRootCategoriesWithCountSpec extends ObjectBehavior
     function it_has_the_locale_code_to_translate_the_label_of_the_categories($locale)
     {
         $this->translationLocaleCode()->shouldReturn('en_US');
+    }
+
+    function it_has_the_category_tree_id_of_the_category_tree_selected_as_filter_in_the_product_datagrid()
+    {
+        $this->beConstructedWith(1, true, 1, 'en_US', 42);
+        $this->categoryTreeIdSelectedAsFilter()->shouldReturn(42);
     }
 }

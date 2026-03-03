@@ -6,7 +6,7 @@ namespace spec\Akeneo\Connectivity\Connection\Application\ErrorManagement\Query;
 
 use Akeneo\Connectivity\Connection\Application\ErrorManagement\Query\GetConnectionBusinessErrorsHandler;
 use Akeneo\Connectivity\Connection\Application\ErrorManagement\Query\GetConnectionBusinessErrorsQuery;
-use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Persistence\Query\SelectLastConnectionBusinessErrorsQuery;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Persistence\Query\SelectLastConnectionBusinessErrorsQueryInterface;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -15,7 +15,7 @@ use PhpSpec\ObjectBehavior;
  */
 class GetConnectionBusinessErrorsHandlerSpec extends ObjectBehavior
 {
-    public function let(SelectLastConnectionBusinessErrorsQuery $selectLastConnectionBusinessErrorsQuery): void
+    public function let(SelectLastConnectionBusinessErrorsQueryInterface $selectLastConnectionBusinessErrorsQuery): void
     {
         $this->beConstructedWith($selectLastConnectionBusinessErrorsQuery);
     }

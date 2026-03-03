@@ -17,7 +17,7 @@ class DateRangeType extends AbstractType
     /**
      * {@inheritDoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return self::NAME;
     }

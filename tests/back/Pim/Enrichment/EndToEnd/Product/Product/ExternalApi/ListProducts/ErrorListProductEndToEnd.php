@@ -6,7 +6,7 @@ namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\ListPro
 
 use Akeneo\Test\Integration\Configuration;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\AbstractProductTestCase;
-use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpFoundation\Response;
 
 class ErrorListProductEndToEnd extends AbstractProductTestCase
@@ -226,7 +226,7 @@ class ErrorListProductEndToEnd extends AbstractProductTestCase
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
 
         $client->request('GET', 'api/rest/v1/products?search={"wrong_attribute":[{"operator":"EMPTY"}]}');
-        $this->assert($client, 'Filter on property "wrong_attribute" is not supported or does not support operator "EMPTY"', Response::HTTP_UNPROCESSABLE_ENTITY);
+        $this->assert($client, '"wrong_attribute" does not exist or you do not have permission to access it.', Response::HTTP_NOT_FOUND);
     }
 
     public function testMaxPageWithOffsetPaginationType()
@@ -242,7 +242,7 @@ class ErrorListProductEndToEnd extends AbstractProductTestCase
     "message":"${message}",
     "_links":{
         "documentation":{
-            "href": "http:\/\/api.akeneo.com\/documentation\/pagination.html#search-after-type"
+            "href": "http:\/\/api.akeneo.com\/documentation\/pagination.html#the-search-after-method"
         }
     }
 }
@@ -252,12 +252,7 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expected, $client->getResponse()->getContent());
     }
 
-    /**
-     * @param Client $client
-     * @param string $message
-     * @param int    $code
-     */
-    private function assert(Client $client, $message, int $code)
+    private function assert(KernelBrowser $client, string $message, int $code)
     {
         $response = $client->getResponse();
 

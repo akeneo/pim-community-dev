@@ -47,7 +47,7 @@ final class ComputeFamilyVariantStructureChangesTaskletIntegration extends TestC
     /**
      * @test
      */
-    public function it_compute_product_values_when_family_variant_structure_changes()
+    public function it_computes_product_values_when_family_variant_structure_changes(): void
     {
         $rootProductModel = $this->createRootProductModel('familyVariantA1');
         $subProductModel = $this->createSubProductModel();
@@ -131,7 +131,7 @@ final class ComputeFamilyVariantStructureChangesTaskletIntegration extends TestC
     private function authenticateUserAdmin(): void
     {
         $user = $this->get('pim_user.provider.user')->loadUserByUsername('admin');
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $token = new UsernamePasswordToken($user, 'main', $user->getRoles());
         $this->get('security.token_storage')->setToken($token);
     }
 }

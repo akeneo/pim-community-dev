@@ -19,12 +19,6 @@ interface JobLauncherInterface
 {
     /**
      * Launch a job with command
-     *
-     * @param JobInstance   $jobInstance
-     * @param UserInterface $user
-     * @param array         $configuration
-     *
-     * @return JobExecution
      */
-    public function launch(JobInstance $jobInstance, UserInterface $user, array $configuration = []) : JobExecution;
+    public function launch(JobInstance $jobInstance, ?UserInterface $user, array $configuration = []) : JobExecution;
 }

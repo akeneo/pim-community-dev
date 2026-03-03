@@ -49,7 +49,7 @@ class QueryCountCalculator
             $sqlParameters,
             $parameterTypes
         );
-        $result = $statement->fetchColumn();
+        $result = $statement->fetchOne();
 
         return $result ? (int) $result : 0;
     }
@@ -92,7 +92,7 @@ class QueryCountCalculator
         }
 
         if (count($sqlParams) != count($types)) {
-            throw QueryException::parameterTypeMissmatch();
+            throw QueryException::parameterTypeMismatch();
         }
 
         if ($sqlParams) {

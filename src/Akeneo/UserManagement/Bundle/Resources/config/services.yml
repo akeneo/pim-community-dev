@@ -1,7 +1,15 @@
+parameters:
+    pim_user.account_lock.duration: 5
+    pim_user.account_lock.max_consecutive_failures: 5
+
 services:
     pim_user.manager:
         class: 'Akeneo\UserManagement\Bundle\Manager\UserManager'
-        arguments: ['%pim_user.entity.user.class%', "@doctrine.orm.entity_manager", "@security.encoder_factory"]
+        arguments:
+            - '%pim_user.entity.user.class%'
+            - "@doctrine.orm.entity_manager"
+            - "@security.password_hasher_factory"
+            - "@pim_user.saver.user"
 
     pim_user.security.login:
         class: 'Akeneo\UserManagement\Bundle\EventListener\LoginSubscriber'
@@ -18,6 +26,35 @@ services:
     pim_user.entity_with_image.subscriber:
         class: 'Akeneo\UserManagement\Bundle\EventListener\UploadedImageSubscriber'
         arguments:
-            - '%kernel.root_dir%'
+            - '%kernel.project_dir%/src'
         tags:
             - { name: doctrine.event_subscriber }
+
+    Akeneo\UserManagement\Bundle\Notification\MailResetNotifier:
+        arguments:
+            - '@logger'
+            - '@twig'
+            - '@pim_notification.email.email_notifier'
+
+    Akeneo\UserManagement\Application\RestoreAdminRolePermissions:
+        arguments:
+            - '@oro_security.acl.manager'
+            - '@pim_user.factory.role_with_permissions'
+            - '@pim_user.repository.role_with_permissions'
+            - '@pim_user.saver.role_with_permissions'
+
+    Akeneo\UserManagement\Domain\PasswordCheckerInterface:
+        class: Akeneo\UserManagement\Infrastructure\PasswordChecker
+        arguments:
+            - '@security.password_hasher'
+            - '@translator'
+
+    Akeneo\UserManagement\Domain\Permissions\Query\EditRolePermissionsRoleQuery:
+        arguments:
+            - '@pim_user.repository.role_with_permissions'
+            - '@pim_user.repository.role'
+
+    Akeneo\UserManagement\Domain\Permissions\Query\EditRolePermissionsUserQuery:
+        arguments:
+            - '@pim_user.repository.role'
+            - '@Akeneo\UserManagement\Domain\Permissions\Query\EditRolePermissionsRoleQuery'

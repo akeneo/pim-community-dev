@@ -21,6 +21,7 @@ class NotEmptyFamilyValidatorSpec extends ObjectBehavior
     ) {
         $this->initialize($context);
     }
+
     function it_is_initializable()
     {
         $this->shouldHaveType(NotEmptyFamilyValidator::class);
@@ -66,12 +67,14 @@ class NotEmptyFamilyValidatorSpec extends ObjectBehavior
 
         $context
             ->buildViolation(
-                NotEmptyFamily::MESSAGE, [
-                    '%sku%' => 'product_sku'
+                $constraint->message,
+                [
+                    '%sku%' => 'product_sku',
                 ]
             )
             ->willReturn($violation);
         $violation->atPath('family')->willReturn($violation);
+        $violation->setCode(NotEmptyFamily::NOT_EMPTY_FAMILY)->willReturn($violation);
         $violation->addViolation()->shouldBeCalled();
 
         $this->validate($entity, $constraint);

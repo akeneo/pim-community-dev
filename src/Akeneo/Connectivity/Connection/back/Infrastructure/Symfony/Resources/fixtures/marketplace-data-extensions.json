@@ -1,0 +1,1567 @@
+{
+    "total": 120,
+    "offset": 0,
+    "limit": 120,
+    "items": [
+        {
+            "id": "90741597-54c5-48a1-98da-a68e7ee0a715",
+            "name": "Akeneo Shopware 6 Connector by EIKONA Media",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N",
+            "author": "EIKONA Media GmbH",
+            "partner": "Akeneo Preferred Partner",
+            "description": "With the new \"Akeneo-Shopware-6-Connector\" from EIKONA Media, you can smoothly export all your product data from Akeneo to Shopware. The connector uses the standard interfaces provided for data exchange. Benefit from up-to-date product data in all your e-commerce channels and be faster on the market.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-shopware-6-connector-eikona-media",
+            "categories": [
+                "E-commerce"
+            ],
+            "certified": false
+        },
+        {
+            "id": "b18561ff-378e-41a5-babb-ca0ec0af569a",
+            "name": "Akeneo PIM Connector for Shopify",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/shopify-connector-logo-1200x.png?itok=mASOVlwC",
+            "author": "StrikeTru",
+            "partner": "Akeneo Partner",
+            "description": "SaaS software from StrikeTru that seamlessly connects Akeneo PIM to the Shopify platform. It allows Shopify users to quickly setup a link to Akeneo PIM and sync all product catalog data to Shopify within minutes. It eliminates a lot of manual and repetitive work involved in updating the product catalog of a Shopify store. You can send and receive products, variations, modifiers, categories, standard and custom attributes, images and more from Akeneo PIM into your Shopify store. Compatible with all Akeneo PIM editions \u2013 Community, Growth, Enterprise (On-Premise, Cloud Flexibility, and Cloud Serenity) and StrikeTru's smallPIM.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-pim-connector-shopify",
+            "categories": [
+                "E-commerce"
+            ],
+            "certified": false
+        },
+        {
+            "id": "cf58a543-fbfd-470d-8356-339426f6da75",
+            "name": "Shopify connector",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/Image%20from%20iOS.jpg?itok=1OF5jl0j",
+            "author": "Ideatarmac",
+            "partner": "Akeneo Partner",
+            "description": "Our Shopify Akeneo Connector eases your business by refining, transforming, and publishing relevant products, images, videos, and attributes between Akeneo and Shopify.Ideatarmac\u2019s Shopify connector is a cloud based technology and has compatibility to the widest and latest range of Akeneo editions from Community to Enterprise to Growth Edition. Our aim is to make your integration the simplest possible and reduce the routine data management effort up to 70%.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/shopify-connector",
+            "categories": [
+                "E-commerce"
+            ],
+            "certified": false
+        },
+        {
+            "id": "c8c64fed-d772-4b7e-a640-aa3fe72e7251",
+            "name": "MediaValet DAM Connector for Akeneo PIM",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/MediaValet%20DAM%20Connector%20for%20Akeneo%20PIM_1.png?itok=0Wd4czxL",
+            "author": "StrikeTru",
+            "partner": "Akeneo Partner",
+            "description": "StrikeTru\u2019s fully integrated MediaValet connector, compatible with all versions of Akeneo PIM, bridges the gap between product data and rich media by creating an automatic sync between PIM and DAM solutions. This professional, enterprise grade connector streamlines the management of rich media and branded content across all channels at scale, enabling your businesses to go to market faster while delivering high quality product experiences for your customers",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/mediavalet-dam-connector-akeneo-pim",
+            "categories": [
+                "DAM"
+            ],
+            "certified": false
+        },
+        {
+            "id": "c3bb5171-e182-46aa-ad32-d4cd2d9a0d69",
+            "name": "Akeneo Mobile App",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/akeneo-mobile-app-webkul_0.png?itok=Am-x4vph",
+            "author": "Webkul Software Private Limited",
+            "partner": "Akeneo Community",
+            "description": "This mobile app consists of the Home page that Showcase featured products, categories, and banner in a carousel format. You can click on any particular category to visit the category page and to view the products available in it. You can even use the multi-language and multi-currency support feature to view the product details in the available desired language and currency. This is the best app for the better visualization of PIM products in the mobile app.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-mobile-app",
+            "categories": [
+                "Advertising"
+            ],
+            "certified": false
+        },
+        {
+            "id": "b48804f3-a8df-4a44-acf9-075438e9f728",
+            "name": "Akeneo x ContentSide Semantic Platform",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/csp-logo.png?itok=4B5QhjH6",
+            "author": "ContentSide",
+            "partner": "Akeneo Community",
+            "description": "On many online shops, more than 10% of products are misorganized! Our connector automatically classifies your products in the right categories.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-x-contentside-semantic-platform",
+            "categories": [
+                "Enrichment"
+            ],
+            "certified": false
+        },
+        {
+            "id": "f4031c8f-4b5d-4291-ab67-e546be6747a1",
+            "name": "Akeneo Print powered by InBetween \u2013 Free of Charge",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/Logo_Connector_fertig.png?itok=i_QvHlWj",
+            "author": "InBetween Deutschland GmbH",
+            "partner": "Akeneo Partner",
+            "description": "Yes, you read correctly! To Akeneo and InBetween customers we provide the Akeneo Print connector free of charge! Use your Akeneo-PIM efficiently and make your print channel as agile as your e-commerce channels.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-print-powered-inbetween-free-charge",
+            "categories": [
+                "Print"
+            ],
+            "certified": false
+        },
+        {
+            "id": "4c210fc0-ae86-4987-995d-624cd7416eeb",
+            "name": "Akeneo Print powered by InBetween - Quick Datasheet Generation",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/Logo_0.png?itok=ynv5y64g",
+            "author": "InBetween Deutschland GmbH",
+            "partner": "Akeneo Partner",
+            "description": "Do you need to produce thousands of publications in a similar layout in bulk? And you rely on all publications to be up to date at any time? With the practical solution of InBetween you have an easy game when it comes to speed and topicality.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-print-powered-inbetween-quick-datasheet-generation",
+            "categories": [
+                "Print"
+            ],
+            "certified": false
+        },
+        {
+            "id": "3717e0ad-6a4d-44fa-864f-16c133435c43",
+            "name": "Akeneo Print powered by InBetween - Publishing for Teams",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/Logo_Team_fertig.png?itok=tATbHqh_",
+            "author": "InBetween Deutschland GmbH",
+            "partner": "Akeneo Partner",
+            "description": "Do several departments plan and build publications at the same time and prepare it optimally for the market? Control and efficiency in short order - that works. InBetween's simple online solutions create the basis for successful collaboration.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-print-powered-inbetween-publishing-teams",
+            "categories": [
+                "Print"
+            ],
+            "certified": false
+        },
+        {
+            "id": "51e52fba-be10-4c72-b0ac-f0b2f553cc58",
+            "name": "Akeneo Print powered by InBetween - Publishing for Creatives",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/%C3%9Cbersicht%20Rakete%20mit%20Feuer.png?itok=uyPT5VaH",
+            "author": "InBetween Deutschland GmbH",
+            "partner": "Akeneo Partner",
+            "description": "Would you like to add finishing touches to your publication and still save on manual editing? Combining creativity with speed is possible. Using the flexible solution of InBetween you can supplement your editorial content with content created automatically from your data. Even when your data are updated shortly before printing our solution takes care of refreshing your publication \u2013 and the design still fits. What is holding you back? Start your efficiency drive today!",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-print-powered-inbetween-publishing-creatives",
+            "categories": [
+                "Print"
+            ],
+            "certified": false
+        },
+        {
+            "id": "5e711f10-110c-4142-b07a-52e909983a0d",
+            "name": "Akeneo Shopware 6 Connector by EIKONA Media",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N",
+            "author": "EIKONA Media GmbH",
+            "partner": "Akeneo Preferred Partner",
+            "description": "With the new \"Akeneo-Shopware-6-Connector\" from EIKONA Media, you can smoothly export all your product data from Akeneo to Shopware. The connector uses the standard interfaces provided for data exchange. Benefit from up-to-date product data in all your e-commerce channels and be faster on the market.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-shopware-6-connector-eikona-media",
+            "categories": [
+                "E-commerce"
+            ],
+            "certified": false
+        },
+        {
+            "id": "f120a9b1-208c-4890-bb95-fba592d5f761",
+            "name": "Akeneo PIM Connector for Shopify",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/shopify-connector-logo-1200x.png?itok=mASOVlwC",
+            "author": "StrikeTru",
+            "partner": "Akeneo Partner",
+            "description": "SaaS software from StrikeTru that seamlessly connects Akeneo PIM to the Shopify platform. It allows Shopify users to quickly setup a link to Akeneo PIM and sync all product catalog data to Shopify within minutes. It eliminates a lot of manual and repetitive work involved in updating the product catalog of a Shopify store. You can send and receive products, variations, modifiers, categories, standard and custom attributes, images and more from Akeneo PIM into your Shopify store. Compatible with all Akeneo PIM editions \u2013 Community, Growth, Enterprise (On-Premise, Cloud Flexibility, and Cloud Serenity) and StrikeTru's smallPIM.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-pim-connector-shopify",
+            "categories": [
+                "E-commerce"
+            ],
+            "certified": false
+        },
+        {
+            "id": "6a521659-9994-4c2b-8b26-c5ffb588a2c0",
+            "name": "Shopify connector",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/Image%20from%20iOS.jpg?itok=1OF5jl0j",
+            "author": "Ideatarmac",
+            "partner": "Akeneo Partner",
+            "description": "Our Shopify Akeneo Connector eases your business by refining, transforming, and publishing relevant products, images, videos, and attributes between Akeneo and Shopify.Ideatarmac\u2019s Shopify connector is a cloud based technology and has compatibility to the widest and latest range of Akeneo editions from Community to Enterprise to Growth Edition. Our aim is to make your integration the simplest possible and reduce the routine data management effort up to 70%.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/shopify-connector",
+            "categories": [
+                "E-commerce"
+            ],
+            "certified": false
+        },
+        {
+            "id": "5384bc7d-843c-428c-b4b6-49df88f3968d",
+            "name": "MediaValet DAM Connector for Akeneo PIM",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/MediaValet%20DAM%20Connector%20for%20Akeneo%20PIM_1.png?itok=0Wd4czxL",
+            "author": "StrikeTru",
+            "partner": "Akeneo Partner",
+            "description": "StrikeTru\u2019s fully integrated MediaValet connector, compatible with all versions of Akeneo PIM, bridges the gap between product data and rich media by creating an automatic sync between PIM and DAM solutions. This professional, enterprise grade connector streamlines the management of rich media and branded content across all channels at scale, enabling your businesses to go to market faster while delivering high quality product experiences for your customers",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/mediavalet-dam-connector-akeneo-pim",
+            "categories": [
+                "DAM"
+            ],
+            "certified": false
+        },
+        {
+            "id": "328ff87d-c6f5-466a-bb73-866586c8481f",
+            "name": "Akeneo Mobile App",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/akeneo-mobile-app-webkul_0.png?itok=Am-x4vph",
+            "author": "Webkul Software Private Limited",
+            "partner": "Akeneo Community",
+            "description": "This mobile app consists of the Home page that Showcase featured products, categories, and banner in a carousel format. You can click on any particular category to visit the category page and to view the products available in it. You can even use the multi-language and multi-currency support feature to view the product details in the available desired language and currency. This is the best app for the better visualization of PIM products in the mobile app.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-mobile-app",
+            "categories": [
+                "Advertising"
+            ],
+            "certified": false
+        },
+        {
+            "id": "61443590-9176-4308-b1bf-7a2075f3fbe9",
+            "name": "Akeneo x ContentSide Semantic Platform",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/csp-logo.png?itok=4B5QhjH6",
+            "author": "ContentSide",
+            "partner": "Akeneo Community",
+            "description": "On many online shops, more than 10% of products are misorganized! Our connector automatically classifies your products in the right categories.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-x-contentside-semantic-platform",
+            "categories": [
+                "Enrichment"
+            ],
+            "certified": false
+        },
+        {
+            "id": "fd3f8242-9ab5-4fde-983c-61214b9f3752",
+            "name": "Akeneo Print powered by InBetween \u2013 Free of Charge",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/Logo_Connector_fertig.png?itok=i_QvHlWj",
+            "author": "InBetween Deutschland GmbH",
+            "partner": "Akeneo Partner",
+            "description": "Yes, you read correctly! To Akeneo and InBetween customers we provide the Akeneo Print connector free of charge! Use your Akeneo-PIM efficiently and make your print channel as agile as your e-commerce channels.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-print-powered-inbetween-free-charge",
+            "categories": [
+                "Print"
+            ],
+            "certified": false
+        },
+        {
+            "id": "d7ea280d-1175-486a-b76e-1d03b628af35",
+            "name": "Akeneo Print powered by InBetween - Quick Datasheet Generation",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/Logo_0.png?itok=ynv5y64g",
+            "author": "InBetween Deutschland GmbH",
+            "partner": "Akeneo Partner",
+            "description": "Do you need to produce thousands of publications in a similar layout in bulk? And you rely on all publications to be up to date at any time? With the practical solution of InBetween you have an easy game when it comes to speed and topicality.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-print-powered-inbetween-quick-datasheet-generation",
+            "categories": [
+                "Print"
+            ],
+            "certified": false
+        },
+        {
+            "id": "f7d6a566-10d7-41f2-a3f9-0a380293fd6a",
+            "name": "Akeneo Print powered by InBetween - Publishing for Teams",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/Logo_Team_fertig.png?itok=tATbHqh_",
+            "author": "InBetween Deutschland GmbH",
+            "partner": "Akeneo Partner",
+            "description": "Do several departments plan and build publications at the same time and prepare it optimally for the market? Control and efficiency in short order - that works. InBetween's simple online solutions create the basis for successful collaboration.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-print-powered-inbetween-publishing-teams",
+            "categories": [
+                "Print"
+            ],
+            "certified": false
+        },
+        {
+            "id": "aa49d99e-c98e-44ab-a71c-9710c73be139",
+            "name": "Akeneo Print powered by InBetween - Publishing for Creatives",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/%C3%9Cbersicht%20Rakete%20mit%20Feuer.png?itok=uyPT5VaH",
+            "author": "InBetween Deutschland GmbH",
+            "partner": "Akeneo Partner",
+            "description": "Would you like to add finishing touches to your publication and still save on manual editing? Combining creativity with speed is possible. Using the flexible solution of InBetween you can supplement your editorial content with content created automatically from your data. Even when your data are updated shortly before printing our solution takes care of refreshing your publication \u2013 and the design still fits. What is holding you back? Start your efficiency drive today!",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-print-powered-inbetween-publishing-creatives",
+            "categories": [
+                "Print"
+            ],
+            "certified": false
+        },
+        {
+            "id": "412fc36d-ca9e-4aaf-a887-5a7ccf3e8d65",
+            "name": "Akeneo Shopware 6 Connector by EIKONA Media",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N",
+            "author": "EIKONA Media GmbH",
+            "partner": "Akeneo Preferred Partner",
+            "description": "With the new \"Akeneo-Shopware-6-Connector\" from EIKONA Media, you can smoothly export all your product data from Akeneo to Shopware. The connector uses the standard interfaces provided for data exchange. Benefit from up-to-date product data in all your e-commerce channels and be faster on the market.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-shopware-6-connector-eikona-media",
+            "categories": [
+                "E-commerce"
+            ],
+            "certified": false
+        },
+        {
+            "id": "df9b7acf-6f3e-4ad6-bd79-93cebe1077e0",
+            "name": "Akeneo PIM Connector for Shopify",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/shopify-connector-logo-1200x.png?itok=mASOVlwC",
+            "author": "StrikeTru",
+            "partner": "Akeneo Partner",
+            "description": "SaaS software from StrikeTru that seamlessly connects Akeneo PIM to the Shopify platform. It allows Shopify users to quickly setup a link to Akeneo PIM and sync all product catalog data to Shopify within minutes. It eliminates a lot of manual and repetitive work involved in updating the product catalog of a Shopify store. You can send and receive products, variations, modifiers, categories, standard and custom attributes, images and more from Akeneo PIM into your Shopify store. Compatible with all Akeneo PIM editions \u2013 Community, Growth, Enterprise (On-Premise, Cloud Flexibility, and Cloud Serenity) and StrikeTru's smallPIM.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-pim-connector-shopify",
+            "categories": [
+                "E-commerce"
+            ],
+            "certified": false
+        },
+        {
+            "id": "4819dd95-6210-47ff-a62d-dd9aa70ce5bb",
+            "name": "Shopify connector",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/Image%20from%20iOS.jpg?itok=1OF5jl0j",
+            "author": "Ideatarmac",
+            "partner": "Akeneo Partner",
+            "description": "Our Shopify Akeneo Connector eases your business by refining, transforming, and publishing relevant products, images, videos, and attributes between Akeneo and Shopify.Ideatarmac\u2019s Shopify connector is a cloud based technology and has compatibility to the widest and latest range of Akeneo editions from Community to Enterprise to Growth Edition. Our aim is to make your integration the simplest possible and reduce the routine data management effort up to 70%.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/shopify-connector",
+            "categories": [
+                "E-commerce"
+            ],
+            "certified": false
+        },
+        {
+            "id": "44fc39fd-a00d-4137-8ec0-69ef5ca8b5f5",
+            "name": "MediaValet DAM Connector for Akeneo PIM",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/MediaValet%20DAM%20Connector%20for%20Akeneo%20PIM_1.png?itok=0Wd4czxL",
+            "author": "StrikeTru",
+            "partner": "Akeneo Partner",
+            "description": "StrikeTru\u2019s fully integrated MediaValet connector, compatible with all versions of Akeneo PIM, bridges the gap between product data and rich media by creating an automatic sync between PIM and DAM solutions. This professional, enterprise grade connector streamlines the management of rich media and branded content across all channels at scale, enabling your businesses to go to market faster while delivering high quality product experiences for your customers",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/mediavalet-dam-connector-akeneo-pim",
+            "categories": [
+                "DAM"
+            ],
+            "certified": false
+        },
+        {
+            "id": "676424b0-5315-4e96-9e75-c46436970402",
+            "name": "Akeneo Mobile App",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/akeneo-mobile-app-webkul_0.png?itok=Am-x4vph",
+            "author": "Webkul Software Private Limited",
+            "partner": "Akeneo Community",
+            "description": "This mobile app consists of the Home page that Showcase featured products, categories, and banner in a carousel format. You can click on any particular category to visit the category page and to view the products available in it. You can even use the multi-language and multi-currency support feature to view the product details in the available desired language and currency. This is the best app for the better visualization of PIM products in the mobile app.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-mobile-app",
+            "categories": [
+                "Advertising"
+            ],
+            "certified": false
+        },
+        {
+            "id": "b2c6eea4-6b7d-4463-bebc-4af7d3ad748b",
+            "name": "Akeneo x ContentSide Semantic Platform",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/csp-logo.png?itok=4B5QhjH6",
+            "author": "ContentSide",
+            "partner": "Akeneo Community",
+            "description": "On many online shops, more than 10% of products are misorganized! Our connector automatically classifies your products in the right categories.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-x-contentside-semantic-platform",
+            "categories": [
+                "Enrichment"
+            ],
+            "certified": false
+        },
+        {
+            "id": "8f9e2742-33a0-4b84-9bb3-ec3d6dff29be",
+            "name": "Akeneo Print powered by InBetween \u2013 Free of Charge",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/Logo_Connector_fertig.png?itok=i_QvHlWj",
+            "author": "InBetween Deutschland GmbH",
+            "partner": "Akeneo Partner",
+            "description": "Yes, you read correctly! To Akeneo and InBetween customers we provide the Akeneo Print connector free of charge! Use your Akeneo-PIM efficiently and make your print channel as agile as your e-commerce channels.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-print-powered-inbetween-free-charge",
+            "categories": [
+                "Print"
+            ],
+            "certified": false
+        },
+        {
+            "id": "46513761-a0f6-4252-bfd4-fa6d20e497c2",
+            "name": "Akeneo Print powered by InBetween - Quick Datasheet Generation",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/Logo_0.png?itok=ynv5y64g",
+            "author": "InBetween Deutschland GmbH",
+            "partner": "Akeneo Partner",
+            "description": "Do you need to produce thousands of publications in a similar layout in bulk? And you rely on all publications to be up to date at any time? With the practical solution of InBetween you have an easy game when it comes to speed and topicality.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-print-powered-inbetween-quick-datasheet-generation",
+            "categories": [
+                "Print"
+            ],
+            "certified": false
+        },
+        {
+            "id": "ed0f6452-2b14-46c0-a039-adff9805712f",
+            "name": "Akeneo Print powered by InBetween - Publishing for Teams",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/Logo_Team_fertig.png?itok=tATbHqh_",
+            "author": "InBetween Deutschland GmbH",
+            "partner": "Akeneo Partner",
+            "description": "Do several departments plan and build publications at the same time and prepare it optimally for the market? Control and efficiency in short order - that works. InBetween's simple online solutions create the basis for successful collaboration.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-print-powered-inbetween-publishing-teams",
+            "categories": [
+                "Print"
+            ],
+            "certified": false
+        },
+        {
+            "id": "ea59c543-8e4a-439c-873b-5b73cc34b293",
+            "name": "Akeneo Print powered by InBetween - Publishing for Creatives",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/%C3%9Cbersicht%20Rakete%20mit%20Feuer.png?itok=uyPT5VaH",
+            "author": "InBetween Deutschland GmbH",
+            "partner": "Akeneo Partner",
+            "description": "Would you like to add finishing touches to your publication and still save on manual editing? Combining creativity with speed is possible. Using the flexible solution of InBetween you can supplement your editorial content with content created automatically from your data. Even when your data are updated shortly before printing our solution takes care of refreshing your publication \u2013 and the design still fits. What is holding you back? Start your efficiency drive today!",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-print-powered-inbetween-publishing-creatives",
+            "categories": [
+                "Print"
+            ],
+            "certified": false
+        },
+        {
+            "id": "3ec07238-c927-4ed3-993b-a828d3632d2e",
+            "name": "Akeneo Shopware 6 Connector by EIKONA Media",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N",
+            "author": "EIKONA Media GmbH",
+            "partner": "Akeneo Preferred Partner",
+            "description": "With the new \"Akeneo-Shopware-6-Connector\" from EIKONA Media, you can smoothly export all your product data from Akeneo to Shopware. The connector uses the standard interfaces provided for data exchange. Benefit from up-to-date product data in all your e-commerce channels and be faster on the market.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-shopware-6-connector-eikona-media",
+            "categories": [
+                "E-commerce"
+            ],
+            "certified": false
+        },
+        {
+            "id": "6a6264af-9d63-4e7f-bec2-70e8a4a4fcbe",
+            "name": "Akeneo PIM Connector for Shopify",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/shopify-connector-logo-1200x.png?itok=mASOVlwC",
+            "author": "StrikeTru",
+            "partner": "Akeneo Partner",
+            "description": "SaaS software from StrikeTru that seamlessly connects Akeneo PIM to the Shopify platform. It allows Shopify users to quickly setup a link to Akeneo PIM and sync all product catalog data to Shopify within minutes. It eliminates a lot of manual and repetitive work involved in updating the product catalog of a Shopify store. You can send and receive products, variations, modifiers, categories, standard and custom attributes, images and more from Akeneo PIM into your Shopify store. Compatible with all Akeneo PIM editions \u2013 Community, Growth, Enterprise (On-Premise, Cloud Flexibility, and Cloud Serenity) and StrikeTru's smallPIM.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-pim-connector-shopify",
+            "categories": [
+                "E-commerce"
+            ],
+            "certified": false
+        },
+        {
+            "id": "0917e292-e468-48ea-94d3-f239e47f6f6e",
+            "name": "Shopify connector",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/Image%20from%20iOS.jpg?itok=1OF5jl0j",
+            "author": "Ideatarmac",
+            "partner": "Akeneo Partner",
+            "description": "Our Shopify Akeneo Connector eases your business by refining, transforming, and publishing relevant products, images, videos, and attributes between Akeneo and Shopify.Ideatarmac\u2019s Shopify connector is a cloud based technology and has compatibility to the widest and latest range of Akeneo editions from Community to Enterprise to Growth Edition. Our aim is to make your integration the simplest possible and reduce the routine data management effort up to 70%.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/shopify-connector",
+            "categories": [
+                "E-commerce"
+            ],
+            "certified": false
+        },
+        {
+            "id": "bd6c8e20-e43f-45dd-8b7d-bc9043a88c84",
+            "name": "MediaValet DAM Connector for Akeneo PIM",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/MediaValet%20DAM%20Connector%20for%20Akeneo%20PIM_1.png?itok=0Wd4czxL",
+            "author": "StrikeTru",
+            "partner": "Akeneo Partner",
+            "description": "StrikeTru\u2019s fully integrated MediaValet connector, compatible with all versions of Akeneo PIM, bridges the gap between product data and rich media by creating an automatic sync between PIM and DAM solutions. This professional, enterprise grade connector streamlines the management of rich media and branded content across all channels at scale, enabling your businesses to go to market faster while delivering high quality product experiences for your customers",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/mediavalet-dam-connector-akeneo-pim",
+            "categories": [
+                "DAM"
+            ],
+            "certified": false
+        },
+        {
+            "id": "e7b6ea98-8998-49fe-9728-876656ebb6f5",
+            "name": "Akeneo Mobile App",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/akeneo-mobile-app-webkul_0.png?itok=Am-x4vph",
+            "author": "Webkul Software Private Limited",
+            "partner": "Akeneo Community",
+            "description": "This mobile app consists of the Home page that Showcase featured products, categories, and banner in a carousel format. You can click on any particular category to visit the category page and to view the products available in it. You can even use the multi-language and multi-currency support feature to view the product details in the available desired language and currency. This is the best app for the better visualization of PIM products in the mobile app.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-mobile-app",
+            "categories": [
+                "Advertising"
+            ],
+            "certified": false
+        },
+        {
+            "id": "7aa68702-63a4-4f98-b18f-15007f42d8ce",
+            "name": "Akeneo x ContentSide Semantic Platform",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/csp-logo.png?itok=4B5QhjH6",
+            "author": "ContentSide",
+            "partner": "Akeneo Community",
+            "description": "On many online shops, more than 10% of products are misorganized! Our connector automatically classifies your products in the right categories.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-x-contentside-semantic-platform",
+            "categories": [
+                "Enrichment"
+            ],
+            "certified": false
+        },
+        {
+            "id": "b4f5a48c-5624-4cd7-97c1-d3cf5436206b",
+            "name": "Akeneo Print powered by InBetween \u2013 Free of Charge",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/Logo_Connector_fertig.png?itok=i_QvHlWj",
+            "author": "InBetween Deutschland GmbH",
+            "partner": "Akeneo Partner",
+            "description": "Yes, you read correctly! To Akeneo and InBetween customers we provide the Akeneo Print connector free of charge! Use your Akeneo-PIM efficiently and make your print channel as agile as your e-commerce channels.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-print-powered-inbetween-free-charge",
+            "categories": [
+                "Print"
+            ],
+            "certified": false
+        },
+        {
+            "id": "de179c47-e50f-46cb-a37a-05d24df7fb7a",
+            "name": "Akeneo Print powered by InBetween - Quick Datasheet Generation",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/Logo_0.png?itok=ynv5y64g",
+            "author": "InBetween Deutschland GmbH",
+            "partner": "Akeneo Partner",
+            "description": "Do you need to produce thousands of publications in a similar layout in bulk? And you rely on all publications to be up to date at any time? With the practical solution of InBetween you have an easy game when it comes to speed and topicality.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-print-powered-inbetween-quick-datasheet-generation",
+            "categories": [
+                "Print"
+            ],
+            "certified": false
+        },
+        {
+            "id": "603a2bdb-f68a-4812-af9b-72a9d7058fc8",
+            "name": "Akeneo Print powered by InBetween - Publishing for Teams",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/Logo_Team_fertig.png?itok=tATbHqh_",
+            "author": "InBetween Deutschland GmbH",
+            "partner": "Akeneo Partner",
+            "description": "Do several departments plan and build publications at the same time and prepare it optimally for the market? Control and efficiency in short order - that works. InBetween's simple online solutions create the basis for successful collaboration.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-print-powered-inbetween-publishing-teams",
+            "categories": [
+                "Print"
+            ],
+            "certified": false
+        },
+        {
+            "id": "e72e6dbb-f4e6-4123-862c-67382fdd706e",
+            "name": "Akeneo Print powered by InBetween - Publishing for Creatives",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/%C3%9Cbersicht%20Rakete%20mit%20Feuer.png?itok=uyPT5VaH",
+            "author": "InBetween Deutschland GmbH",
+            "partner": "Akeneo Partner",
+            "description": "Would you like to add finishing touches to your publication and still save on manual editing? Combining creativity with speed is possible. Using the flexible solution of InBetween you can supplement your editorial content with content created automatically from your data. Even when your data are updated shortly before printing our solution takes care of refreshing your publication \u2013 and the design still fits. What is holding you back? Start your efficiency drive today!",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-print-powered-inbetween-publishing-creatives",
+            "categories": [
+                "Print"
+            ],
+            "certified": false
+        },
+        {
+            "id": "9fcda49b-b97d-4773-930a-c5426f646322",
+            "name": "Akeneo Shopware 6 Connector by EIKONA Media",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N",
+            "author": "EIKONA Media GmbH",
+            "partner": "Akeneo Preferred Partner",
+            "description": "With the new \"Akeneo-Shopware-6-Connector\" from EIKONA Media, you can smoothly export all your product data from Akeneo to Shopware. The connector uses the standard interfaces provided for data exchange. Benefit from up-to-date product data in all your e-commerce channels and be faster on the market.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-shopware-6-connector-eikona-media",
+            "categories": [
+                "E-commerce"
+            ],
+            "certified": false
+        },
+        {
+            "id": "dfcfdae6-86f3-4a0e-b4a3-435ce0777602",
+            "name": "Akeneo PIM Connector for Shopify",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/shopify-connector-logo-1200x.png?itok=mASOVlwC",
+            "author": "StrikeTru",
+            "partner": "Akeneo Partner",
+            "description": "SaaS software from StrikeTru that seamlessly connects Akeneo PIM to the Shopify platform. It allows Shopify users to quickly setup a link to Akeneo PIM and sync all product catalog data to Shopify within minutes. It eliminates a lot of manual and repetitive work involved in updating the product catalog of a Shopify store. You can send and receive products, variations, modifiers, categories, standard and custom attributes, images and more from Akeneo PIM into your Shopify store. Compatible with all Akeneo PIM editions \u2013 Community, Growth, Enterprise (On-Premise, Cloud Flexibility, and Cloud Serenity) and StrikeTru's smallPIM.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-pim-connector-shopify",
+            "categories": [
+                "E-commerce"
+            ],
+            "certified": false
+        },
+        {
+            "id": "ddc7dd31-3b70-4fcd-88c3-69d02eb8e520",
+            "name": "Shopify connector",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/Image%20from%20iOS.jpg?itok=1OF5jl0j",
+            "author": "Ideatarmac",
+            "partner": "Akeneo Partner",
+            "description": "Our Shopify Akeneo Connector eases your business by refining, transforming, and publishing relevant products, images, videos, and attributes between Akeneo and Shopify.Ideatarmac\u2019s Shopify connector is a cloud based technology and has compatibility to the widest and latest range of Akeneo editions from Community to Enterprise to Growth Edition. Our aim is to make your integration the simplest possible and reduce the routine data management effort up to 70%.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/shopify-connector",
+            "categories": [
+                "E-commerce"
+            ],
+            "certified": false
+        },
+        {
+            "id": "2fe7aa96-ca19-46f8-8b74-bfcad7be75cf",
+            "name": "MediaValet DAM Connector for Akeneo PIM",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/MediaValet%20DAM%20Connector%20for%20Akeneo%20PIM_1.png?itok=0Wd4czxL",
+            "author": "StrikeTru",
+            "partner": "Akeneo Partner",
+            "description": "StrikeTru\u2019s fully integrated MediaValet connector, compatible with all versions of Akeneo PIM, bridges the gap between product data and rich media by creating an automatic sync between PIM and DAM solutions. This professional, enterprise grade connector streamlines the management of rich media and branded content across all channels at scale, enabling your businesses to go to market faster while delivering high quality product experiences for your customers",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/mediavalet-dam-connector-akeneo-pim",
+            "categories": [
+                "DAM"
+            ],
+            "certified": false
+        },
+        {
+            "id": "1bc068e2-8d95-4b3c-ac93-6734768b17da",
+            "name": "Akeneo Mobile App",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/akeneo-mobile-app-webkul_0.png?itok=Am-x4vph",
+            "author": "Webkul Software Private Limited",
+            "partner": "Akeneo Community",
+            "description": "This mobile app consists of the Home page that Showcase featured products, categories, and banner in a carousel format. You can click on any particular category to visit the category page and to view the products available in it. You can even use the multi-language and multi-currency support feature to view the product details in the available desired language and currency. This is the best app for the better visualization of PIM products in the mobile app.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-mobile-app",
+            "categories": [
+                "Advertising"
+            ],
+            "certified": false
+        },
+        {
+            "id": "88e143bd-e8b5-434e-91dd-2c45e1199a20",
+            "name": "Akeneo x ContentSide Semantic Platform",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/csp-logo.png?itok=4B5QhjH6",
+            "author": "ContentSide",
+            "partner": "Akeneo Community",
+            "description": "On many online shops, more than 10% of products are misorganized! Our connector automatically classifies your products in the right categories.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-x-contentside-semantic-platform",
+            "categories": [
+                "Enrichment"
+            ],
+            "certified": false
+        },
+        {
+            "id": "62074a52-8160-462f-8ae8-70e0dbc84937",
+            "name": "Akeneo Print powered by InBetween \u2013 Free of Charge",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/Logo_Connector_fertig.png?itok=i_QvHlWj",
+            "author": "InBetween Deutschland GmbH",
+            "partner": "Akeneo Partner",
+            "description": "Yes, you read correctly! To Akeneo and InBetween customers we provide the Akeneo Print connector free of charge! Use your Akeneo-PIM efficiently and make your print channel as agile as your e-commerce channels.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-print-powered-inbetween-free-charge",
+            "categories": [
+                "Print"
+            ],
+            "certified": false
+        },
+        {
+            "id": "331dabf9-872d-40c2-b49a-3831a3a41775",
+            "name": "Akeneo Print powered by InBetween - Quick Datasheet Generation",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/Logo_0.png?itok=ynv5y64g",
+            "author": "InBetween Deutschland GmbH",
+            "partner": "Akeneo Partner",
+            "description": "Do you need to produce thousands of publications in a similar layout in bulk? And you rely on all publications to be up to date at any time? With the practical solution of InBetween you have an easy game when it comes to speed and topicality.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-print-powered-inbetween-quick-datasheet-generation",
+            "categories": [
+                "Print"
+            ],
+            "certified": false
+        },
+        {
+            "id": "63cc2908-6eaa-4b7e-ad6f-dce9231ceea3",
+            "name": "Akeneo Print powered by InBetween - Publishing for Teams",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/Logo_Team_fertig.png?itok=tATbHqh_",
+            "author": "InBetween Deutschland GmbH",
+            "partner": "Akeneo Partner",
+            "description": "Do several departments plan and build publications at the same time and prepare it optimally for the market? Control and efficiency in short order - that works. InBetween's simple online solutions create the basis for successful collaboration.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-print-powered-inbetween-publishing-teams",
+            "categories": [
+                "Print"
+            ],
+            "certified": false
+        },
+        {
+            "id": "62b88381-730b-4eec-b63a-2e5d99a969fb",
+            "name": "Akeneo Print powered by InBetween - Publishing for Creatives",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/%C3%9Cbersicht%20Rakete%20mit%20Feuer.png?itok=uyPT5VaH",
+            "author": "InBetween Deutschland GmbH",
+            "partner": "Akeneo Partner",
+            "description": "Would you like to add finishing touches to your publication and still save on manual editing? Combining creativity with speed is possible. Using the flexible solution of InBetween you can supplement your editorial content with content created automatically from your data. Even when your data are updated shortly before printing our solution takes care of refreshing your publication \u2013 and the design still fits. What is holding you back? Start your efficiency drive today!",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-print-powered-inbetween-publishing-creatives",
+            "categories": [
+                "Print"
+            ],
+            "certified": false
+        },
+        {
+            "id": "0a7f6bac-523c-4449-986f-68cbbb92c980",
+            "name": "Akeneo Shopware 6 Connector by EIKONA Media",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N",
+            "author": "EIKONA Media GmbH",
+            "partner": "Akeneo Preferred Partner",
+            "description": "With the new \"Akeneo-Shopware-6-Connector\" from EIKONA Media, you can smoothly export all your product data from Akeneo to Shopware. The connector uses the standard interfaces provided for data exchange. Benefit from up-to-date product data in all your e-commerce channels and be faster on the market.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-shopware-6-connector-eikona-media",
+            "categories": [
+                "E-commerce"
+            ],
+            "certified": false
+        },
+        {
+            "id": "f506d9dd-7cdc-4793-ba18-19d37a0876eb",
+            "name": "Akeneo PIM Connector for Shopify",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/shopify-connector-logo-1200x.png?itok=mASOVlwC",
+            "author": "StrikeTru",
+            "partner": "Akeneo Partner",
+            "description": "SaaS software from StrikeTru that seamlessly connects Akeneo PIM to the Shopify platform. It allows Shopify users to quickly setup a link to Akeneo PIM and sync all product catalog data to Shopify within minutes. It eliminates a lot of manual and repetitive work involved in updating the product catalog of a Shopify store. You can send and receive products, variations, modifiers, categories, standard and custom attributes, images and more from Akeneo PIM into your Shopify store. Compatible with all Akeneo PIM editions \u2013 Community, Growth, Enterprise (On-Premise, Cloud Flexibility, and Cloud Serenity) and StrikeTru's smallPIM.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-pim-connector-shopify",
+            "categories": [
+                "E-commerce"
+            ],
+            "certified": false
+        },
+        {
+            "id": "4fc52021-9c92-4ff4-a730-d2d22dab0153",
+            "name": "Shopify connector",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/Image%20from%20iOS.jpg?itok=1OF5jl0j",
+            "author": "Ideatarmac",
+            "partner": "Akeneo Partner",
+            "description": "Our Shopify Akeneo Connector eases your business by refining, transforming, and publishing relevant products, images, videos, and attributes between Akeneo and Shopify.Ideatarmac\u2019s Shopify connector is a cloud based technology and has compatibility to the widest and latest range of Akeneo editions from Community to Enterprise to Growth Edition. Our aim is to make your integration the simplest possible and reduce the routine data management effort up to 70%.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/shopify-connector",
+            "categories": [
+                "E-commerce"
+            ],
+            "certified": false
+        },
+        {
+            "id": "e413b260-3f4b-457b-863f-b2f20611195a",
+            "name": "MediaValet DAM Connector for Akeneo PIM",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/MediaValet%20DAM%20Connector%20for%20Akeneo%20PIM_1.png?itok=0Wd4czxL",
+            "author": "StrikeTru",
+            "partner": "Akeneo Partner",
+            "description": "StrikeTru\u2019s fully integrated MediaValet connector, compatible with all versions of Akeneo PIM, bridges the gap between product data and rich media by creating an automatic sync between PIM and DAM solutions. This professional, enterprise grade connector streamlines the management of rich media and branded content across all channels at scale, enabling your businesses to go to market faster while delivering high quality product experiences for your customers",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/mediavalet-dam-connector-akeneo-pim",
+            "categories": [
+                "DAM"
+            ],
+            "certified": false
+        },
+        {
+            "id": "1efa319e-475c-46ad-9960-a6779a9b95d6",
+            "name": "Akeneo Mobile App",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/akeneo-mobile-app-webkul_0.png?itok=Am-x4vph",
+            "author": "Webkul Software Private Limited",
+            "partner": "Akeneo Community",
+            "description": "This mobile app consists of the Home page that Showcase featured products, categories, and banner in a carousel format. You can click on any particular category to visit the category page and to view the products available in it. You can even use the multi-language and multi-currency support feature to view the product details in the available desired language and currency. This is the best app for the better visualization of PIM products in the mobile app.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-mobile-app",
+            "categories": [
+                "Advertising"
+            ],
+            "certified": false
+        },
+        {
+            "id": "c6282f45-79b0-43d7-a34c-e2d620238f78",
+            "name": "Akeneo x ContentSide Semantic Platform",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/csp-logo.png?itok=4B5QhjH6",
+            "author": "ContentSide",
+            "partner": "Akeneo Community",
+            "description": "On many online shops, more than 10% of products are misorganized! Our connector automatically classifies your products in the right categories.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-x-contentside-semantic-platform",
+            "categories": [
+                "Enrichment"
+            ],
+            "certified": false
+        },
+        {
+            "id": "ed98fad2-abc9-423e-afb6-6e72d7e4b7e6",
+            "name": "Akeneo Print powered by InBetween \u2013 Free of Charge",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/Logo_Connector_fertig.png?itok=i_QvHlWj",
+            "author": "InBetween Deutschland GmbH",
+            "partner": "Akeneo Partner",
+            "description": "Yes, you read correctly! To Akeneo and InBetween customers we provide the Akeneo Print connector free of charge! Use your Akeneo-PIM efficiently and make your print channel as agile as your e-commerce channels.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-print-powered-inbetween-free-charge",
+            "categories": [
+                "Print"
+            ],
+            "certified": false
+        },
+        {
+            "id": "e615f55b-9cff-4c10-ba61-0ebed11523fc",
+            "name": "Akeneo Print powered by InBetween - Quick Datasheet Generation",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/Logo_0.png?itok=ynv5y64g",
+            "author": "InBetween Deutschland GmbH",
+            "partner": "Akeneo Partner",
+            "description": "Do you need to produce thousands of publications in a similar layout in bulk? And you rely on all publications to be up to date at any time? With the practical solution of InBetween you have an easy game when it comes to speed and topicality.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-print-powered-inbetween-quick-datasheet-generation",
+            "categories": [
+                "Print"
+            ],
+            "certified": false
+        },
+        {
+            "id": "1d8e9692-ca38-4c9e-ad5d-ad9df39ad586",
+            "name": "Akeneo Print powered by InBetween - Publishing for Teams",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/Logo_Team_fertig.png?itok=tATbHqh_",
+            "author": "InBetween Deutschland GmbH",
+            "partner": "Akeneo Partner",
+            "description": "Do several departments plan and build publications at the same time and prepare it optimally for the market? Control and efficiency in short order - that works. InBetween's simple online solutions create the basis for successful collaboration.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-print-powered-inbetween-publishing-teams",
+            "categories": [
+                "Print"
+            ],
+            "certified": false
+        },
+        {
+            "id": "8efab0e6-a071-465a-9f7e-9d881483a447",
+            "name": "Akeneo Print powered by InBetween - Publishing for Creatives",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/%C3%9Cbersicht%20Rakete%20mit%20Feuer.png?itok=uyPT5VaH",
+            "author": "InBetween Deutschland GmbH",
+            "partner": "Akeneo Partner",
+            "description": "Would you like to add finishing touches to your publication and still save on manual editing? Combining creativity with speed is possible. Using the flexible solution of InBetween you can supplement your editorial content with content created automatically from your data. Even when your data are updated shortly before printing our solution takes care of refreshing your publication \u2013 and the design still fits. What is holding you back? Start your efficiency drive today!",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-print-powered-inbetween-publishing-creatives",
+            "categories": [
+                "Print"
+            ],
+            "certified": false
+        },
+        {
+            "id": "e8a2ec28-097f-4c96-890d-b90a789a47d5",
+            "name": "Akeneo Shopware 6 Connector by EIKONA Media",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N",
+            "author": "EIKONA Media GmbH",
+            "partner": "Akeneo Preferred Partner",
+            "description": "With the new \"Akeneo-Shopware-6-Connector\" from EIKONA Media, you can smoothly export all your product data from Akeneo to Shopware. The connector uses the standard interfaces provided for data exchange. Benefit from up-to-date product data in all your e-commerce channels and be faster on the market.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-shopware-6-connector-eikona-media",
+            "categories": [
+                "E-commerce"
+            ],
+            "certified": false
+        },
+        {
+            "id": "5e24c901-ccbd-45ae-905f-e764fd922597",
+            "name": "Akeneo PIM Connector for Shopify",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/shopify-connector-logo-1200x.png?itok=mASOVlwC",
+            "author": "StrikeTru",
+            "partner": "Akeneo Partner",
+            "description": "SaaS software from StrikeTru that seamlessly connects Akeneo PIM to the Shopify platform. It allows Shopify users to quickly setup a link to Akeneo PIM and sync all product catalog data to Shopify within minutes. It eliminates a lot of manual and repetitive work involved in updating the product catalog of a Shopify store. You can send and receive products, variations, modifiers, categories, standard and custom attributes, images and more from Akeneo PIM into your Shopify store. Compatible with all Akeneo PIM editions \u2013 Community, Growth, Enterprise (On-Premise, Cloud Flexibility, and Cloud Serenity) and StrikeTru's smallPIM.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-pim-connector-shopify",
+            "categories": [
+                "E-commerce"
+            ],
+            "certified": false
+        },
+        {
+            "id": "e21a96e7-edc4-4d7c-8985-9c6fecd1ce9b",
+            "name": "Shopify connector",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/Image%20from%20iOS.jpg?itok=1OF5jl0j",
+            "author": "Ideatarmac",
+            "partner": "Akeneo Partner",
+            "description": "Our Shopify Akeneo Connector eases your business by refining, transforming, and publishing relevant products, images, videos, and attributes between Akeneo and Shopify.Ideatarmac\u2019s Shopify connector is a cloud based technology and has compatibility to the widest and latest range of Akeneo editions from Community to Enterprise to Growth Edition. Our aim is to make your integration the simplest possible and reduce the routine data management effort up to 70%.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/shopify-connector",
+            "categories": [
+                "E-commerce"
+            ],
+            "certified": false
+        },
+        {
+            "id": "55a0dde0-72ed-4131-b53f-e4ca7c7f19e8",
+            "name": "MediaValet DAM Connector for Akeneo PIM",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/MediaValet%20DAM%20Connector%20for%20Akeneo%20PIM_1.png?itok=0Wd4czxL",
+            "author": "StrikeTru",
+            "partner": "Akeneo Partner",
+            "description": "StrikeTru\u2019s fully integrated MediaValet connector, compatible with all versions of Akeneo PIM, bridges the gap between product data and rich media by creating an automatic sync between PIM and DAM solutions. This professional, enterprise grade connector streamlines the management of rich media and branded content across all channels at scale, enabling your businesses to go to market faster while delivering high quality product experiences for your customers",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/mediavalet-dam-connector-akeneo-pim",
+            "categories": [
+                "DAM"
+            ],
+            "certified": false
+        },
+        {
+            "id": "688cb28f-6d0f-460c-8477-8ed7d933d266",
+            "name": "Akeneo Mobile App",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/akeneo-mobile-app-webkul_0.png?itok=Am-x4vph",
+            "author": "Webkul Software Private Limited",
+            "partner": "Akeneo Community",
+            "description": "This mobile app consists of the Home page that Showcase featured products, categories, and banner in a carousel format. You can click on any particular category to visit the category page and to view the products available in it. You can even use the multi-language and multi-currency support feature to view the product details in the available desired language and currency. This is the best app for the better visualization of PIM products in the mobile app.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-mobile-app",
+            "categories": [
+                "Advertising"
+            ],
+            "certified": false
+        },
+        {
+            "id": "0f8c7796-46bc-45be-824e-ceb633dd283f",
+            "name": "Akeneo x ContentSide Semantic Platform",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/csp-logo.png?itok=4B5QhjH6",
+            "author": "ContentSide",
+            "partner": "Akeneo Community",
+            "description": "On many online shops, more than 10% of products are misorganized! Our connector automatically classifies your products in the right categories.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-x-contentside-semantic-platform",
+            "categories": [
+                "Enrichment"
+            ],
+            "certified": false
+        },
+        {
+            "id": "0fd63e83-9ed8-455e-b445-55fad38c6e51",
+            "name": "Akeneo Print powered by InBetween \u2013 Free of Charge",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/Logo_Connector_fertig.png?itok=i_QvHlWj",
+            "author": "InBetween Deutschland GmbH",
+            "partner": "Akeneo Partner",
+            "description": "Yes, you read correctly! To Akeneo and InBetween customers we provide the Akeneo Print connector free of charge! Use your Akeneo-PIM efficiently and make your print channel as agile as your e-commerce channels.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-print-powered-inbetween-free-charge",
+            "categories": [
+                "Print"
+            ],
+            "certified": false
+        },
+        {
+            "id": "343b6d8d-deef-4c59-aa85-73fa4b22a2f6",
+            "name": "Akeneo Print powered by InBetween - Quick Datasheet Generation",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/Logo_0.png?itok=ynv5y64g",
+            "author": "InBetween Deutschland GmbH",
+            "partner": "Akeneo Partner",
+            "description": "Do you need to produce thousands of publications in a similar layout in bulk? And you rely on all publications to be up to date at any time? With the practical solution of InBetween you have an easy game when it comes to speed and topicality.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-print-powered-inbetween-quick-datasheet-generation",
+            "categories": [
+                "Print"
+            ],
+            "certified": false
+        },
+        {
+            "id": "b67c3ac8-9260-4623-aaec-776116bcdf5e",
+            "name": "Akeneo Print powered by InBetween - Publishing for Teams",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/Logo_Team_fertig.png?itok=tATbHqh_",
+            "author": "InBetween Deutschland GmbH",
+            "partner": "Akeneo Partner",
+            "description": "Do several departments plan and build publications at the same time and prepare it optimally for the market? Control and efficiency in short order - that works. InBetween's simple online solutions create the basis for successful collaboration.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-print-powered-inbetween-publishing-teams",
+            "categories": [
+                "Print"
+            ],
+            "certified": false
+        },
+        {
+            "id": "d397c0e6-4eda-4be2-b70c-5c3c8fd3e45e",
+            "name": "Akeneo Print powered by InBetween - Publishing for Creatives",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/%C3%9Cbersicht%20Rakete%20mit%20Feuer.png?itok=uyPT5VaH",
+            "author": "InBetween Deutschland GmbH",
+            "partner": "Akeneo Partner",
+            "description": "Would you like to add finishing touches to your publication and still save on manual editing? Combining creativity with speed is possible. Using the flexible solution of InBetween you can supplement your editorial content with content created automatically from your data. Even when your data are updated shortly before printing our solution takes care of refreshing your publication \u2013 and the design still fits. What is holding you back? Start your efficiency drive today!",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-print-powered-inbetween-publishing-creatives",
+            "categories": [
+                "Print"
+            ],
+            "certified": false
+        },
+        {
+            "id": "0ba8a223-f13d-431b-926b-effe8d1793de",
+            "name": "Akeneo Shopware 6 Connector by EIKONA Media",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N",
+            "author": "EIKONA Media GmbH",
+            "partner": "Akeneo Preferred Partner",
+            "description": "With the new \"Akeneo-Shopware-6-Connector\" from EIKONA Media, you can smoothly export all your product data from Akeneo to Shopware. The connector uses the standard interfaces provided for data exchange. Benefit from up-to-date product data in all your e-commerce channels and be faster on the market.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-shopware-6-connector-eikona-media",
+            "categories": [
+                "E-commerce"
+            ],
+            "certified": false
+        },
+        {
+            "id": "8ebbfdb1-03f5-4790-9b70-af535c9cf4e8",
+            "name": "Akeneo PIM Connector for Shopify",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/shopify-connector-logo-1200x.png?itok=mASOVlwC",
+            "author": "StrikeTru",
+            "partner": "Akeneo Partner",
+            "description": "SaaS software from StrikeTru that seamlessly connects Akeneo PIM to the Shopify platform. It allows Shopify users to quickly setup a link to Akeneo PIM and sync all product catalog data to Shopify within minutes. It eliminates a lot of manual and repetitive work involved in updating the product catalog of a Shopify store. You can send and receive products, variations, modifiers, categories, standard and custom attributes, images and more from Akeneo PIM into your Shopify store. Compatible with all Akeneo PIM editions \u2013 Community, Growth, Enterprise (On-Premise, Cloud Flexibility, and Cloud Serenity) and StrikeTru's smallPIM.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-pim-connector-shopify",
+            "categories": [
+                "E-commerce"
+            ],
+            "certified": false
+        },
+        {
+            "id": "290d6175-cde0-4271-80b2-5cfc8db9b3da",
+            "name": "Shopify connector",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/Image%20from%20iOS.jpg?itok=1OF5jl0j",
+            "author": "Ideatarmac",
+            "partner": "Akeneo Partner",
+            "description": "Our Shopify Akeneo Connector eases your business by refining, transforming, and publishing relevant products, images, videos, and attributes between Akeneo and Shopify.Ideatarmac\u2019s Shopify connector is a cloud based technology and has compatibility to the widest and latest range of Akeneo editions from Community to Enterprise to Growth Edition. Our aim is to make your integration the simplest possible and reduce the routine data management effort up to 70%.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/shopify-connector",
+            "categories": [
+                "E-commerce"
+            ],
+            "certified": false
+        },
+        {
+            "id": "a52bb801-d5af-483f-9cca-dd17c5549fac",
+            "name": "MediaValet DAM Connector for Akeneo PIM",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/MediaValet%20DAM%20Connector%20for%20Akeneo%20PIM_1.png?itok=0Wd4czxL",
+            "author": "StrikeTru",
+            "partner": "Akeneo Partner",
+            "description": "StrikeTru\u2019s fully integrated MediaValet connector, compatible with all versions of Akeneo PIM, bridges the gap between product data and rich media by creating an automatic sync between PIM and DAM solutions. This professional, enterprise grade connector streamlines the management of rich media and branded content across all channels at scale, enabling your businesses to go to market faster while delivering high quality product experiences for your customers",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/mediavalet-dam-connector-akeneo-pim",
+            "categories": [
+                "DAM"
+            ],
+            "certified": false
+        },
+        {
+            "id": "ddfd5c57-cf1a-429a-b167-c880fb9527a0",
+            "name": "Akeneo Mobile App",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/akeneo-mobile-app-webkul_0.png?itok=Am-x4vph",
+            "author": "Webkul Software Private Limited",
+            "partner": "Akeneo Community",
+            "description": "This mobile app consists of the Home page that Showcase featured products, categories, and banner in a carousel format. You can click on any particular category to visit the category page and to view the products available in it. You can even use the multi-language and multi-currency support feature to view the product details in the available desired language and currency. This is the best app for the better visualization of PIM products in the mobile app.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-mobile-app",
+            "categories": [
+                "Advertising"
+            ],
+            "certified": false
+        },
+        {
+            "id": "edda0cb6-c545-418e-8259-b3478e263174",
+            "name": "Akeneo x ContentSide Semantic Platform",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/csp-logo.png?itok=4B5QhjH6",
+            "author": "ContentSide",
+            "partner": "Akeneo Community",
+            "description": "On many online shops, more than 10% of products are misorganized! Our connector automatically classifies your products in the right categories.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-x-contentside-semantic-platform",
+            "categories": [
+                "Enrichment"
+            ],
+            "certified": false
+        },
+        {
+            "id": "5a5eed38-adce-4243-9b9d-c4fd11af98f9",
+            "name": "Akeneo Print powered by InBetween \u2013 Free of Charge",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/Logo_Connector_fertig.png?itok=i_QvHlWj",
+            "author": "InBetween Deutschland GmbH",
+            "partner": "Akeneo Partner",
+            "description": "Yes, you read correctly! To Akeneo and InBetween customers we provide the Akeneo Print connector free of charge! Use your Akeneo-PIM efficiently and make your print channel as agile as your e-commerce channels.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-print-powered-inbetween-free-charge",
+            "categories": [
+                "Print"
+            ],
+            "certified": false
+        },
+        {
+            "id": "5f13881f-477a-40f9-8cad-1da80c923b64",
+            "name": "Akeneo Print powered by InBetween - Quick Datasheet Generation",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/Logo_0.png?itok=ynv5y64g",
+            "author": "InBetween Deutschland GmbH",
+            "partner": "Akeneo Partner",
+            "description": "Do you need to produce thousands of publications in a similar layout in bulk? And you rely on all publications to be up to date at any time? With the practical solution of InBetween you have an easy game when it comes to speed and topicality.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-print-powered-inbetween-quick-datasheet-generation",
+            "categories": [
+                "Print"
+            ],
+            "certified": false
+        },
+        {
+            "id": "b3b38ffd-3c24-4dd1-9235-c100782eb099",
+            "name": "Akeneo Print powered by InBetween - Publishing for Teams",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/Logo_Team_fertig.png?itok=tATbHqh_",
+            "author": "InBetween Deutschland GmbH",
+            "partner": "Akeneo Partner",
+            "description": "Do several departments plan and build publications at the same time and prepare it optimally for the market? Control and efficiency in short order - that works. InBetween's simple online solutions create the basis for successful collaboration.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-print-powered-inbetween-publishing-teams",
+            "categories": [
+                "Print"
+            ],
+            "certified": false
+        },
+        {
+            "id": "d710eb9f-a068-4654-a61f-19c6ce37cab7",
+            "name": "Akeneo Print powered by InBetween - Publishing for Creatives",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/%C3%9Cbersicht%20Rakete%20mit%20Feuer.png?itok=uyPT5VaH",
+            "author": "InBetween Deutschland GmbH",
+            "partner": "Akeneo Partner",
+            "description": "Would you like to add finishing touches to your publication and still save on manual editing? Combining creativity with speed is possible. Using the flexible solution of InBetween you can supplement your editorial content with content created automatically from your data. Even when your data are updated shortly before printing our solution takes care of refreshing your publication \u2013 and the design still fits. What is holding you back? Start your efficiency drive today!",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-print-powered-inbetween-publishing-creatives",
+            "categories": [
+                "Print"
+            ],
+            "certified": false
+        },
+        {
+            "id": "80582bb0-3787-447a-b648-84da7e59ce49",
+            "name": "Akeneo Shopware 6 Connector by EIKONA Media",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N",
+            "author": "EIKONA Media GmbH",
+            "partner": "Akeneo Preferred Partner",
+            "description": "With the new \"Akeneo-Shopware-6-Connector\" from EIKONA Media, you can smoothly export all your product data from Akeneo to Shopware. The connector uses the standard interfaces provided for data exchange. Benefit from up-to-date product data in all your e-commerce channels and be faster on the market.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-shopware-6-connector-eikona-media",
+            "categories": [
+                "E-commerce"
+            ],
+            "certified": false
+        },
+        {
+            "id": "33196357-c386-4b60-ba62-7e162891f499",
+            "name": "Akeneo PIM Connector for Shopify",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/shopify-connector-logo-1200x.png?itok=mASOVlwC",
+            "author": "StrikeTru",
+            "partner": "Akeneo Partner",
+            "description": "SaaS software from StrikeTru that seamlessly connects Akeneo PIM to the Shopify platform. It allows Shopify users to quickly setup a link to Akeneo PIM and sync all product catalog data to Shopify within minutes. It eliminates a lot of manual and repetitive work involved in updating the product catalog of a Shopify store. You can send and receive products, variations, modifiers, categories, standard and custom attributes, images and more from Akeneo PIM into your Shopify store. Compatible with all Akeneo PIM editions \u2013 Community, Growth, Enterprise (On-Premise, Cloud Flexibility, and Cloud Serenity) and StrikeTru's smallPIM.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-pim-connector-shopify",
+            "categories": [
+                "E-commerce"
+            ],
+            "certified": false
+        },
+        {
+            "id": "4192ef07-4664-4907-be05-cfaaa1cb4da7",
+            "name": "Shopify connector",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/Image%20from%20iOS.jpg?itok=1OF5jl0j",
+            "author": "Ideatarmac",
+            "partner": "Akeneo Partner",
+            "description": "Our Shopify Akeneo Connector eases your business by refining, transforming, and publishing relevant products, images, videos, and attributes between Akeneo and Shopify.Ideatarmac\u2019s Shopify connector is a cloud based technology and has compatibility to the widest and latest range of Akeneo editions from Community to Enterprise to Growth Edition. Our aim is to make your integration the simplest possible and reduce the routine data management effort up to 70%.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/shopify-connector",
+            "categories": [
+                "E-commerce"
+            ],
+            "certified": false
+        },
+        {
+            "id": "230751bb-c8ae-49b2-83e5-fbc20639ffa8",
+            "name": "MediaValet DAM Connector for Akeneo PIM",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/MediaValet%20DAM%20Connector%20for%20Akeneo%20PIM_1.png?itok=0Wd4czxL",
+            "author": "StrikeTru",
+            "partner": "Akeneo Partner",
+            "description": "StrikeTru\u2019s fully integrated MediaValet connector, compatible with all versions of Akeneo PIM, bridges the gap between product data and rich media by creating an automatic sync between PIM and DAM solutions. This professional, enterprise grade connector streamlines the management of rich media and branded content across all channels at scale, enabling your businesses to go to market faster while delivering high quality product experiences for your customers",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/mediavalet-dam-connector-akeneo-pim",
+            "categories": [
+                "DAM"
+            ],
+            "certified": false
+        },
+        {
+            "id": "e80fb379-3942-4747-9e43-91d72aaaec82",
+            "name": "Akeneo Mobile App",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/akeneo-mobile-app-webkul_0.png?itok=Am-x4vph",
+            "author": "Webkul Software Private Limited",
+            "partner": "Akeneo Community",
+            "description": "This mobile app consists of the Home page that Showcase featured products, categories, and banner in a carousel format. You can click on any particular category to visit the category page and to view the products available in it. You can even use the multi-language and multi-currency support feature to view the product details in the available desired language and currency. This is the best app for the better visualization of PIM products in the mobile app.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-mobile-app",
+            "categories": [
+                "Advertising"
+            ],
+            "certified": false
+        },
+        {
+            "id": "9e8cffef-6fab-4006-a7d2-24116709db0b",
+            "name": "Akeneo x ContentSide Semantic Platform",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/csp-logo.png?itok=4B5QhjH6",
+            "author": "ContentSide",
+            "partner": "Akeneo Community",
+            "description": "On many online shops, more than 10% of products are misorganized! Our connector automatically classifies your products in the right categories.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-x-contentside-semantic-platform",
+            "categories": [
+                "Enrichment"
+            ],
+            "certified": false
+        },
+        {
+            "id": "552bafd1-a336-4658-b5d8-8ff6793424a2",
+            "name": "Akeneo Print powered by InBetween \u2013 Free of Charge",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/Logo_Connector_fertig.png?itok=i_QvHlWj",
+            "author": "InBetween Deutschland GmbH",
+            "partner": "Akeneo Partner",
+            "description": "Yes, you read correctly! To Akeneo and InBetween customers we provide the Akeneo Print connector free of charge! Use your Akeneo-PIM efficiently and make your print channel as agile as your e-commerce channels.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-print-powered-inbetween-free-charge",
+            "categories": [
+                "Print"
+            ],
+            "certified": false
+        },
+        {
+            "id": "4155070d-f673-4fdc-be33-baae1a648110",
+            "name": "Akeneo Print powered by InBetween - Quick Datasheet Generation",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/Logo_0.png?itok=ynv5y64g",
+            "author": "InBetween Deutschland GmbH",
+            "partner": "Akeneo Partner",
+            "description": "Do you need to produce thousands of publications in a similar layout in bulk? And you rely on all publications to be up to date at any time? With the practical solution of InBetween you have an easy game when it comes to speed and topicality.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-print-powered-inbetween-quick-datasheet-generation",
+            "categories": [
+                "Print"
+            ],
+            "certified": false
+        },
+        {
+            "id": "4edc62ea-ead0-4ca4-aff4-1b744d4ed666",
+            "name": "Akeneo Print powered by InBetween - Publishing for Teams",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/Logo_Team_fertig.png?itok=tATbHqh_",
+            "author": "InBetween Deutschland GmbH",
+            "partner": "Akeneo Partner",
+            "description": "Do several departments plan and build publications at the same time and prepare it optimally for the market? Control and efficiency in short order - that works. InBetween's simple online solutions create the basis for successful collaboration.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-print-powered-inbetween-publishing-teams",
+            "categories": [
+                "Print"
+            ],
+            "certified": false
+        },
+        {
+            "id": "faaa0e91-78a1-4147-bd77-f4b025880eac",
+            "name": "Akeneo Print powered by InBetween - Publishing for Creatives",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/%C3%9Cbersicht%20Rakete%20mit%20Feuer.png?itok=uyPT5VaH",
+            "author": "InBetween Deutschland GmbH",
+            "partner": "Akeneo Partner",
+            "description": "Would you like to add finishing touches to your publication and still save on manual editing? Combining creativity with speed is possible. Using the flexible solution of InBetween you can supplement your editorial content with content created automatically from your data. Even when your data are updated shortly before printing our solution takes care of refreshing your publication \u2013 and the design still fits. What is holding you back? Start your efficiency drive today!",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-print-powered-inbetween-publishing-creatives",
+            "categories": [
+                "Print"
+            ],
+            "certified": false
+        },
+        {
+            "id": "294bca79-2874-4e18-aea9-dad322cf4db7",
+            "name": "Akeneo Shopware 6 Connector by EIKONA Media",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N",
+            "author": "EIKONA Media GmbH",
+            "partner": "Akeneo Preferred Partner",
+            "description": "With the new \"Akeneo-Shopware-6-Connector\" from EIKONA Media, you can smoothly export all your product data from Akeneo to Shopware. The connector uses the standard interfaces provided for data exchange. Benefit from up-to-date product data in all your e-commerce channels and be faster on the market.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-shopware-6-connector-eikona-media",
+            "categories": [
+                "E-commerce"
+            ],
+            "certified": false
+        },
+        {
+            "id": "d8d9d66e-d34b-4a94-8712-c715e52e6a1c",
+            "name": "Akeneo PIM Connector for Shopify",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/shopify-connector-logo-1200x.png?itok=mASOVlwC",
+            "author": "StrikeTru",
+            "partner": "Akeneo Partner",
+            "description": "SaaS software from StrikeTru that seamlessly connects Akeneo PIM to the Shopify platform. It allows Shopify users to quickly setup a link to Akeneo PIM and sync all product catalog data to Shopify within minutes. It eliminates a lot of manual and repetitive work involved in updating the product catalog of a Shopify store. You can send and receive products, variations, modifiers, categories, standard and custom attributes, images and more from Akeneo PIM into your Shopify store. Compatible with all Akeneo PIM editions \u2013 Community, Growth, Enterprise (On-Premise, Cloud Flexibility, and Cloud Serenity) and StrikeTru's smallPIM.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-pim-connector-shopify",
+            "categories": [
+                "E-commerce"
+            ],
+            "certified": false
+        },
+        {
+            "id": "3e6a13a3-97c2-41ea-91bf-d7fdc4889957",
+            "name": "Shopify connector",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/Image%20from%20iOS.jpg?itok=1OF5jl0j",
+            "author": "Ideatarmac",
+            "partner": "Akeneo Partner",
+            "description": "Our Shopify Akeneo Connector eases your business by refining, transforming, and publishing relevant products, images, videos, and attributes between Akeneo and Shopify.Ideatarmac\u2019s Shopify connector is a cloud based technology and has compatibility to the widest and latest range of Akeneo editions from Community to Enterprise to Growth Edition. Our aim is to make your integration the simplest possible and reduce the routine data management effort up to 70%.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/shopify-connector",
+            "categories": [
+                "E-commerce"
+            ],
+            "certified": false
+        },
+        {
+            "id": "21c766e7-4b4f-49f3-9a2d-714f0f466398",
+            "name": "MediaValet DAM Connector for Akeneo PIM",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/MediaValet%20DAM%20Connector%20for%20Akeneo%20PIM_1.png?itok=0Wd4czxL",
+            "author": "StrikeTru",
+            "partner": "Akeneo Partner",
+            "description": "StrikeTru\u2019s fully integrated MediaValet connector, compatible with all versions of Akeneo PIM, bridges the gap between product data and rich media by creating an automatic sync between PIM and DAM solutions. This professional, enterprise grade connector streamlines the management of rich media and branded content across all channels at scale, enabling your businesses to go to market faster while delivering high quality product experiences for your customers",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/mediavalet-dam-connector-akeneo-pim",
+            "categories": [
+                "DAM"
+            ],
+            "certified": false
+        },
+        {
+            "id": "2e4336a5-26d2-47a1-bc56-a1c27816c33b",
+            "name": "Akeneo Mobile App",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/akeneo-mobile-app-webkul_0.png?itok=Am-x4vph",
+            "author": "Webkul Software Private Limited",
+            "partner": "Akeneo Community",
+            "description": "This mobile app consists of the Home page that Showcase featured products, categories, and banner in a carousel format. You can click on any particular category to visit the category page and to view the products available in it. You can even use the multi-language and multi-currency support feature to view the product details in the available desired language and currency. This is the best app for the better visualization of PIM products in the mobile app.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-mobile-app",
+            "categories": [
+                "Advertising"
+            ],
+            "certified": false
+        },
+        {
+            "id": "e6469a5b-0c55-454b-a246-05dfd383fb0f",
+            "name": "Akeneo x ContentSide Semantic Platform",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/csp-logo.png?itok=4B5QhjH6",
+            "author": "ContentSide",
+            "partner": "Akeneo Community",
+            "description": "On many online shops, more than 10% of products are misorganized! Our connector automatically classifies your products in the right categories.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-x-contentside-semantic-platform",
+            "categories": [
+                "Enrichment"
+            ],
+            "certified": false
+        },
+        {
+            "id": "03a06d62-6ff5-4d7f-82ad-81f8651c6c8a",
+            "name": "Akeneo Print powered by InBetween \u2013 Free of Charge",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/Logo_Connector_fertig.png?itok=i_QvHlWj",
+            "author": "InBetween Deutschland GmbH",
+            "partner": "Akeneo Partner",
+            "description": "Yes, you read correctly! To Akeneo and InBetween customers we provide the Akeneo Print connector free of charge! Use your Akeneo-PIM efficiently and make your print channel as agile as your e-commerce channels.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-print-powered-inbetween-free-charge",
+            "categories": [
+                "Print"
+            ],
+            "certified": false
+        },
+        {
+            "id": "7f760ff8-0078-4751-9b91-3e6f0d2705a0",
+            "name": "Akeneo Print powered by InBetween - Quick Datasheet Generation",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/Logo_0.png?itok=ynv5y64g",
+            "author": "InBetween Deutschland GmbH",
+            "partner": "Akeneo Partner",
+            "description": "Do you need to produce thousands of publications in a similar layout in bulk? And you rely on all publications to be up to date at any time? With the practical solution of InBetween you have an easy game when it comes to speed and topicality.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-print-powered-inbetween-quick-datasheet-generation",
+            "categories": [
+                "Print"
+            ],
+            "certified": false
+        },
+        {
+            "id": "066a9781-73c3-462c-b145-f009d4482b22",
+            "name": "Akeneo Print powered by InBetween - Publishing for Teams",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/Logo_Team_fertig.png?itok=tATbHqh_",
+            "author": "InBetween Deutschland GmbH",
+            "partner": "Akeneo Partner",
+            "description": "Do several departments plan and build publications at the same time and prepare it optimally for the market? Control and efficiency in short order - that works. InBetween's simple online solutions create the basis for successful collaboration.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-print-powered-inbetween-publishing-teams",
+            "categories": [
+                "Print"
+            ],
+            "certified": false
+        },
+        {
+            "id": "7bde5565-9e9a-42b7-a3a2-1f6eb7d1ff48",
+            "name": "Akeneo Print powered by InBetween - Publishing for Creatives",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/%C3%9Cbersicht%20Rakete%20mit%20Feuer.png?itok=uyPT5VaH",
+            "author": "InBetween Deutschland GmbH",
+            "partner": "Akeneo Partner",
+            "description": "Would you like to add finishing touches to your publication and still save on manual editing? Combining creativity with speed is possible. Using the flexible solution of InBetween you can supplement your editorial content with content created automatically from your data. Even when your data are updated shortly before printing our solution takes care of refreshing your publication \u2013 and the design still fits. What is holding you back? Start your efficiency drive today!",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-print-powered-inbetween-publishing-creatives",
+            "categories": [
+                "Print"
+            ],
+            "certified": false
+        },
+        {
+            "id": "94c48424-4dd8-4d99-ae45-6d55f84562d2",
+            "name": "Akeneo Shopware 6 Connector by EIKONA Media",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N",
+            "author": "EIKONA Media GmbH",
+            "partner": "Akeneo Preferred Partner",
+            "description": "With the new \"Akeneo-Shopware-6-Connector\" from EIKONA Media, you can smoothly export all your product data from Akeneo to Shopware. The connector uses the standard interfaces provided for data exchange. Benefit from up-to-date product data in all your e-commerce channels and be faster on the market.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-shopware-6-connector-eikona-media",
+            "categories": [
+                "E-commerce"
+            ],
+            "certified": false
+        },
+        {
+            "id": "b9a6c710-294c-4195-95d4-35340f88f6af",
+            "name": "Akeneo PIM Connector for Shopify",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/shopify-connector-logo-1200x.png?itok=mASOVlwC",
+            "author": "StrikeTru",
+            "partner": "Akeneo Partner",
+            "description": "SaaS software from StrikeTru that seamlessly connects Akeneo PIM to the Shopify platform. It allows Shopify users to quickly setup a link to Akeneo PIM and sync all product catalog data to Shopify within minutes. It eliminates a lot of manual and repetitive work involved in updating the product catalog of a Shopify store. You can send and receive products, variations, modifiers, categories, standard and custom attributes, images and more from Akeneo PIM into your Shopify store. Compatible with all Akeneo PIM editions \u2013 Community, Growth, Enterprise (On-Premise, Cloud Flexibility, and Cloud Serenity) and StrikeTru's smallPIM.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-pim-connector-shopify",
+            "categories": [
+                "E-commerce"
+            ],
+            "certified": false
+        },
+        {
+            "id": "eb343f19-cf0f-4e36-8f7e-1b82e5b683b0",
+            "name": "Shopify connector",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/Image%20from%20iOS.jpg?itok=1OF5jl0j",
+            "author": "Ideatarmac",
+            "partner": "Akeneo Partner",
+            "description": "Our Shopify Akeneo Connector eases your business by refining, transforming, and publishing relevant products, images, videos, and attributes between Akeneo and Shopify.Ideatarmac\u2019s Shopify connector is a cloud based technology and has compatibility to the widest and latest range of Akeneo editions from Community to Enterprise to Growth Edition. Our aim is to make your integration the simplest possible and reduce the routine data management effort up to 70%.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/shopify-connector",
+            "categories": [
+                "E-commerce"
+            ],
+            "certified": false
+        },
+        {
+            "id": "07e8963c-5641-4131-9445-26da8e27fdf0",
+            "name": "MediaValet DAM Connector for Akeneo PIM",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/MediaValet%20DAM%20Connector%20for%20Akeneo%20PIM_1.png?itok=0Wd4czxL",
+            "author": "StrikeTru",
+            "partner": "Akeneo Partner",
+            "description": "StrikeTru\u2019s fully integrated MediaValet connector, compatible with all versions of Akeneo PIM, bridges the gap between product data and rich media by creating an automatic sync between PIM and DAM solutions. This professional, enterprise grade connector streamlines the management of rich media and branded content across all channels at scale, enabling your businesses to go to market faster while delivering high quality product experiences for your customers",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/mediavalet-dam-connector-akeneo-pim",
+            "categories": [
+                "DAM"
+            ],
+            "certified": false
+        },
+        {
+            "id": "40c2d536-130e-411c-80d5-c2f5601e4a20",
+            "name": "Akeneo Mobile App",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/akeneo-mobile-app-webkul_0.png?itok=Am-x4vph",
+            "author": "Webkul Software Private Limited",
+            "partner": "Akeneo Community",
+            "description": "This mobile app consists of the Home page that Showcase featured products, categories, and banner in a carousel format. You can click on any particular category to visit the category page and to view the products available in it. You can even use the multi-language and multi-currency support feature to view the product details in the available desired language and currency. This is the best app for the better visualization of PIM products in the mobile app.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-mobile-app",
+            "categories": [
+                "Advertising"
+            ],
+            "certified": false
+        },
+        {
+            "id": "0eaf43ea-caed-4a5c-a363-383fbcb28c89",
+            "name": "Akeneo x ContentSide Semantic Platform",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/csp-logo.png?itok=4B5QhjH6",
+            "author": "ContentSide",
+            "partner": "Akeneo Community",
+            "description": "On many online shops, more than 10% of products are misorganized! Our connector automatically classifies your products in the right categories.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-x-contentside-semantic-platform",
+            "categories": [
+                "Enrichment"
+            ],
+            "certified": false
+        },
+        {
+            "id": "c9614f87-a0c0-4710-bad0-73d83a8ddaee",
+            "name": "Akeneo Print powered by InBetween \u2013 Free of Charge",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/Logo_Connector_fertig.png?itok=i_QvHlWj",
+            "author": "InBetween Deutschland GmbH",
+            "partner": "Akeneo Partner",
+            "description": "Yes, you read correctly! To Akeneo and InBetween customers we provide the Akeneo Print connector free of charge! Use your Akeneo-PIM efficiently and make your print channel as agile as your e-commerce channels.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-print-powered-inbetween-free-charge",
+            "categories": [
+                "Print"
+            ],
+            "certified": false
+        },
+        {
+            "id": "fcb7f8a7-5a30-4fe4-bb7d-e4891ae3a9e9",
+            "name": "Akeneo Print powered by InBetween - Quick Datasheet Generation",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/Logo_0.png?itok=ynv5y64g",
+            "author": "InBetween Deutschland GmbH",
+            "partner": "Akeneo Partner",
+            "description": "Do you need to produce thousands of publications in a similar layout in bulk? And you rely on all publications to be up to date at any time? With the practical solution of InBetween you have an easy game when it comes to speed and topicality.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-print-powered-inbetween-quick-datasheet-generation",
+            "categories": [
+                "Print"
+            ],
+            "certified": false
+        },
+        {
+            "id": "d3ee38ff-7e7e-4e70-b989-7c3a9e21a062",
+            "name": "Akeneo Print powered by InBetween - Publishing for Teams",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/Logo_Team_fertig.png?itok=tATbHqh_",
+            "author": "InBetween Deutschland GmbH",
+            "partner": "Akeneo Partner",
+            "description": "Do several departments plan and build publications at the same time and prepare it optimally for the market? Control and efficiency in short order - that works. InBetween's simple online solutions create the basis for successful collaboration.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-print-powered-inbetween-publishing-teams",
+            "categories": [
+                "Print"
+            ],
+            "certified": false
+        },
+        {
+            "id": "bcd1b8a8-9064-4c5e-97f9-dcbe5face9a6",
+            "name": "Akeneo Print powered by InBetween - Publishing for Creatives",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/%C3%9Cbersicht%20Rakete%20mit%20Feuer.png?itok=uyPT5VaH",
+            "author": "InBetween Deutschland GmbH",
+            "partner": "Akeneo Partner",
+            "description": "Would you like to add finishing touches to your publication and still save on manual editing? Combining creativity with speed is possible. Using the flexible solution of InBetween you can supplement your editorial content with content created automatically from your data. Even when your data are updated shortly before printing our solution takes care of refreshing your publication \u2013 and the design still fits. What is holding you back? Start your efficiency drive today!",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-print-powered-inbetween-publishing-creatives",
+            "categories": [
+                "Print"
+            ],
+            "certified": false
+        },
+        {
+            "id": "2033079d-f668-44e5-a33f-904433708455",
+            "name": "Akeneo Shopware 6 Connector by EIKONA Media",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N",
+            "author": "EIKONA Media GmbH",
+            "partner": "Akeneo Preferred Partner",
+            "description": "With the new \"Akeneo-Shopware-6-Connector\" from EIKONA Media, you can smoothly export all your product data from Akeneo to Shopware. The connector uses the standard interfaces provided for data exchange. Benefit from up-to-date product data in all your e-commerce channels and be faster on the market.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-shopware-6-connector-eikona-media",
+            "categories": [
+                "E-commerce"
+            ],
+            "certified": false
+        },
+        {
+            "id": "65820d3b-e818-436b-8235-0c472fd37813",
+            "name": "Akeneo PIM Connector for Shopify",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/shopify-connector-logo-1200x.png?itok=mASOVlwC",
+            "author": "StrikeTru",
+            "partner": "Akeneo Partner",
+            "description": "SaaS software from StrikeTru that seamlessly connects Akeneo PIM to the Shopify platform. It allows Shopify users to quickly setup a link to Akeneo PIM and sync all product catalog data to Shopify within minutes. It eliminates a lot of manual and repetitive work involved in updating the product catalog of a Shopify store. You can send and receive products, variations, modifiers, categories, standard and custom attributes, images and more from Akeneo PIM into your Shopify store. Compatible with all Akeneo PIM editions \u2013 Community, Growth, Enterprise (On-Premise, Cloud Flexibility, and Cloud Serenity) and StrikeTru's smallPIM.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-pim-connector-shopify",
+            "categories": [
+                "E-commerce"
+            ],
+            "certified": false
+        },
+        {
+            "id": "3881aefa-16a3-4b4f-94c3-0d6e858b60b8",
+            "name": "Shopify connector",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/Image%20from%20iOS.jpg?itok=1OF5jl0j",
+            "author": "Ideatarmac",
+            "partner": "Akeneo Partner",
+            "description": "Our Shopify Akeneo Connector eases your business by refining, transforming, and publishing relevant products, images, videos, and attributes between Akeneo and Shopify.Ideatarmac\u2019s Shopify connector is a cloud based technology and has compatibility to the widest and latest range of Akeneo editions from Community to Enterprise to Growth Edition. Our aim is to make your integration the simplest possible and reduce the routine data management effort up to 70%.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/shopify-connector",
+            "categories": [
+                "E-commerce"
+            ],
+            "certified": false
+        },
+        {
+            "id": "e1bf11f7-7e87-4ec6-bab3-240ecf1ad6ce",
+            "name": "MediaValet DAM Connector for Akeneo PIM",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/MediaValet%20DAM%20Connector%20for%20Akeneo%20PIM_1.png?itok=0Wd4czxL",
+            "author": "StrikeTru",
+            "partner": "Akeneo Partner",
+            "description": "StrikeTru\u2019s fully integrated MediaValet connector, compatible with all versions of Akeneo PIM, bridges the gap between product data and rich media by creating an automatic sync between PIM and DAM solutions. This professional, enterprise grade connector streamlines the management of rich media and branded content across all channels at scale, enabling your businesses to go to market faster while delivering high quality product experiences for your customers",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/mediavalet-dam-connector-akeneo-pim",
+            "categories": [
+                "DAM"
+            ],
+            "certified": false
+        },
+        {
+            "id": "e5119932-b14f-4c0a-8bb6-f02917b23ea1",
+            "name": "Akeneo Mobile App",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/akeneo-mobile-app-webkul_0.png?itok=Am-x4vph",
+            "author": "Webkul Software Private Limited",
+            "partner": "Akeneo Community",
+            "description": "This mobile app consists of the Home page that Showcase featured products, categories, and banner in a carousel format. You can click on any particular category to visit the category page and to view the products available in it. You can even use the multi-language and multi-currency support feature to view the product details in the available desired language and currency. This is the best app for the better visualization of PIM products in the mobile app.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-mobile-app",
+            "categories": [
+                "Advertising"
+            ],
+            "certified": false
+        },
+        {
+            "id": "95f1ca33-cc88-4934-80f7-fd33cfbae58f",
+            "name": "Akeneo x ContentSide Semantic Platform",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/csp-logo.png?itok=4B5QhjH6",
+            "author": "ContentSide",
+            "partner": "Akeneo Community",
+            "description": "On many online shops, more than 10% of products are misorganized! Our connector automatically classifies your products in the right categories.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-x-contentside-semantic-platform",
+            "categories": [
+                "Enrichment"
+            ],
+            "certified": false
+        },
+        {
+            "id": "e4c35a40-0b37-401a-9a24-5b021cc385fa",
+            "name": "Akeneo Print powered by InBetween \u2013 Free of Charge",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/Logo_Connector_fertig.png?itok=i_QvHlWj",
+            "author": "InBetween Deutschland GmbH",
+            "partner": "Akeneo Partner",
+            "description": "Yes, you read correctly! To Akeneo and InBetween customers we provide the Akeneo Print connector free of charge! Use your Akeneo-PIM efficiently and make your print channel as agile as your e-commerce channels.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-print-powered-inbetween-free-charge",
+            "categories": [
+                "Print"
+            ],
+            "certified": false
+        },
+        {
+            "id": "f3b274bf-735d-4354-9595-3180607eead6",
+            "name": "Akeneo Print powered by InBetween - Quick Datasheet Generation",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/Logo_0.png?itok=ynv5y64g",
+            "author": "InBetween Deutschland GmbH",
+            "partner": "Akeneo Partner",
+            "description": "Do you need to produce thousands of publications in a similar layout in bulk? And you rely on all publications to be up to date at any time? With the practical solution of InBetween you have an easy game when it comes to speed and topicality.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-print-powered-inbetween-quick-datasheet-generation",
+            "categories": [
+                "Print"
+            ],
+            "certified": false
+        },
+        {
+            "id": "8f1636ff-77a6-4e59-a84d-3c419074eb97",
+            "name": "Akeneo Print powered by InBetween - Publishing for Teams",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/Logo_Team_fertig.png?itok=tATbHqh_",
+            "author": "InBetween Deutschland GmbH",
+            "partner": "Akeneo Partner",
+            "description": "Do several departments plan and build publications at the same time and prepare it optimally for the market? Control and efficiency in short order - that works. InBetween's simple online solutions create the basis for successful collaboration.",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-print-powered-inbetween-publishing-teams",
+            "categories": [
+                "Print"
+            ],
+            "certified": false
+        },
+        {
+            "id": "aa405075-e9ee-4fdb-8666-c8081f4835b2",
+            "name": "Akeneo Print powered by InBetween - Publishing for Creatives",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/%C3%9Cbersicht%20Rakete%20mit%20Feuer.png?itok=uyPT5VaH",
+            "author": "InBetween Deutschland GmbH",
+            "partner": "Akeneo Partner",
+            "description": "Would you like to add finishing touches to your publication and still save on manual editing? Combining creativity with speed is possible. Using the flexible solution of InBetween you can supplement your editorial content with content created automatically from your data. Even when your data are updated shortly before printing our solution takes care of refreshing your publication \u2013 and the design still fits. What is holding you back? Start your efficiency drive today!",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-print-powered-inbetween-publishing-creatives",
+            "categories": [
+                "Print"
+            ],
+            "certified": false
+        }
+    ]
+}

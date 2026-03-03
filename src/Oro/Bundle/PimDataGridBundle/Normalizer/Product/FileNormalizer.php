@@ -38,7 +38,7 @@ class FileNormalizer implements NormalizerInterface, CacheableSupportsMethodInte
      *
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return 'datagrid' === $format && $data instanceof MediaValueInterface;
     }

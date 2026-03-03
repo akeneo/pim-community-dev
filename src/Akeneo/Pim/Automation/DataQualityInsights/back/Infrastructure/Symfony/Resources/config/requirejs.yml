@@ -30,7 +30,6 @@ config:
         akeneo/data-quality-insights/infrastructure/product-edit-form/data-quality-insights-tab-content: akeneodataqualityinsights/js/infrastructure/product-edit-form/data-quality-insights-tab-content.tsx
         akeneo/data-quality-insights/infrastructure/product-edit-form/attributes-tab-content: akeneodataqualityinsights/js/infrastructure/product-edit-form/attributes-tab-content.tsx
         akeneo/data-quality-insights/infrastructure/product-edit-form/product-quality-score: akeneodataqualityinsights/js/infrastructure/product-edit-form/product-quality-score.tsx
-        akeneo/data-quality-insights/infrastructure/product-edit-form/product-model-quality-score: akeneodataqualityinsights/js/infrastructure/product-edit-form/product-model-quality-score.tsx
 
         # Components
         ## Product Edit Form

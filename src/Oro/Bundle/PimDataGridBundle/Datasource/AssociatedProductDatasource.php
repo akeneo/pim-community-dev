@@ -9,9 +9,10 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Oro\Bundle\PimDataGridBundle\EventSubscriber\FilterEntityWithValuesSubscriber;
 use Oro\Bundle\PimDataGridBundle\Extension\Pager\PagerExtension;
@@ -105,6 +106,7 @@ class AssociatedProductDatasource extends ProductDatasource
             $locale,
             $scope
         );
+        $associatedProductModels = null;
 
         $normalizedAssociatedProducts = $this->normalizeProductsAndProductModels(
             $associatedProducts,
@@ -133,7 +135,7 @@ class AssociatedProductDatasource extends ProductDatasource
             );
         }
 
-        $rows = ['totalRecords' => count($associatedProductsIds) + count($associatedProductModelsIds)];
+        $rows = ['totalRecords' => $associatedProducts->count() + ($associatedProductModels?->count() ?? 0)];
         $rows['data'] = array_merge($normalizedAssociatedProducts, $normalizedAssociatedProductModels);
         $rows['meta']['source'] = $this->getNormalizedSource($sourceProduct, $locale, $scope);
 
@@ -185,7 +187,7 @@ class AssociatedProductDatasource extends ProductDatasource
     {
         $ids = [];
         foreach ($association->getProducts() as $associatedProduct) {
-            $ids[] = IdEncoder::encode(IdEncoder::PRODUCT_TYPE, $associatedProduct->getId());
+            $ids[] = IdEncoder::encode(IdEncoder::PRODUCT_TYPE, $associatedProduct->getUuid()->toString());
         }
 
         return $ids;
@@ -225,6 +227,7 @@ class AssociatedProductDatasource extends ProductDatasource
         $pqb = $this->createQueryBuilder($limit, $from, $locale, $scope);
         $pqb->addFilter('id', Operators::IN_LIST, $associatedProductsIds);
         $pqb->addFilter('entity_type', Operators::EQUALS, ProductInterface::class);
+        $pqb->addSorter('id', Directions::ASCENDING);
 
         return $pqb->execute();
     }
@@ -248,6 +251,7 @@ class AssociatedProductDatasource extends ProductDatasource
         $pqb = $this->createQueryBuilder($limit, $from, $locale, $scope);
         $pqb->addFilter('id', Operators::IN_LIST, $associatedProductModelsIds);
         $pqb->addFilter('entity_type', Operators::EQUALS, ProductModelInterface::class);
+        $pqb->addSorter('id', Directions::ASCENDING);
 
         return $pqb->execute();
     }
@@ -278,24 +282,24 @@ class AssociatedProductDatasource extends ProductDatasource
         ];
 
         $data = [];
-        foreach ($products as $product) {
+        foreach ($products as $entity) {
             $normalized = array_merge(
-                $this->normalizer->normalize($product, 'datagrid', $context),
+                $this->normalizer->normalize($entity, 'datagrid', $context),
                 [
-                    'id'         => sprintf(
+                    'id' => sprintf(
                         '%s-%s',
-                        $product instanceof ProductModelInterface ? 'product-model' : 'product',
-                        $product->getId()
+                        $entity instanceof ProductModelInterface ? 'product-model' : 'product',
+                        $entity instanceof ProductInterface ? $entity->getUuid()->toString(): $entity->getId()
                     ),
                     'dataLocale' => $dataLocale,
                     'is_associated' => true,
                 ]
             );
 
-            if ($product instanceof ProductModelInterface) {
-                $identifier = IdEncoder::encode(IdEncoder::PRODUCT_MODEL_TYPE, $product->getId());
+            if ($entity instanceof ProductInterface) {
+                $identifier = IdEncoder::encode(IdEncoder::PRODUCT_TYPE, $entity->getUuid()->toString());
             } else {
-                $identifier = IdEncoder::encode(IdEncoder::PRODUCT_TYPE, $product->getId());
+                $identifier = IdEncoder::encode(IdEncoder::PRODUCT_MODEL_TYPE, $entity->getId());
             }
 
             $normalized['from_inheritance'] = in_array($identifier, $identifiersFromInheritance);

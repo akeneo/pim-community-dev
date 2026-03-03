@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\DashboardPurgeDateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\DashboardScoresProjectionRepositoryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\ProductScoreRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ConsolidationDate;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\TimePeriod;
 
@@ -18,14 +19,17 @@ final class PurgeOutdatedData
     public const CONSOLIDATION_RETENTION_MONTHS = 15;
     public const CONSOLIDATION_RETENTION_YEARS = 3;
 
-    private DashboardScoresProjectionRepositoryInterface $dashboardScoresProjectionRepository;
-
-    public function __construct(DashboardScoresProjectionRepositoryInterface $dashboardScoresProjectionRepository)
-    {
-        $this->dashboardScoresProjectionRepository = $dashboardScoresProjectionRepository;
+    public function __construct(
+        private DashboardScoresProjectionRepositoryInterface $dashboardScoresProjectionRepository
+    ) {
     }
 
-    public function purgeDashboardProjectionRatesFrom(\DateTimeImmutable $date): void
+    public function purgeAllFrom(\DateTimeImmutable $date)
+    {
+        $this->purgeDashboardProjectionRatesFrom($date);
+    }
+
+    private function purgeDashboardProjectionRatesFrom(\DateTimeImmutable $date): void
     {
         $purgeDate = new ConsolidationDate($date);
         $purgeDates = new DashboardPurgeDateCollection();

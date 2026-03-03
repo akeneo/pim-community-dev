@@ -2,15 +2,19 @@
 
 namespace Akeneo\UserManagement\Bundle\Context;
 
-use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Channel\Component\Model\LocaleInterface;
-use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
-use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
-use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
+use Symfony\Bundle\SecurityBundle\Security\FirewallConfig;
+use Symfony\Bundle\SecurityBundle\Security\FirewallMap;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Http\FirewallMapInterface;
 
 /**
  * User context that provides access to user locale, channel and default category tree
@@ -51,6 +55,8 @@ class UserContext
     /** @var string */
     protected $defaultLocale;
 
+    protected FirewallMapInterface $firewall;
+
     /**
      * @param TokenStorageInterface       $tokenStorage
      * @param LocaleRepositoryInterface   $localeRepository
@@ -65,7 +71,8 @@ class UserContext
         ChannelRepositoryInterface $channelRepository,
         CategoryRepositoryInterface $categoryRepository,
         RequestStack $requestStack,
-        $defaultLocale
+        $defaultLocale,
+        FirewallMapInterface $firewall
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->localeRepository = $localeRepository;
@@ -73,6 +80,7 @@ class UserContext
         $this->categoryRepository= $categoryRepository;
         $this->requestStack = $requestStack;
         $this->defaultLocale = $defaultLocale;
+        $this->firewall = $firewall;
     }
 
     /**
@@ -112,7 +120,7 @@ class UserContext
             throw new \LogicException('There are no activated locales');
         }
 
-        if (null !== $this->getCurrentRequest() && $this->getCurrentRequest()->hasSession()) {
+        if ($this->hasActiveSession($this->getCurrentRequest())) {
             $this->getCurrentRequest()->getSession()->set('dataLocale', $locale->getCode());
             $this->getCurrentRequest()->getSession()->save();
         }
@@ -120,6 +128,27 @@ class UserContext
         $this->currentLocale = $locale;
 
         return $locale;
+    }
+
+    private function hasActiveSession(?Request $request): bool
+    {
+        if (null === $request) {
+            return false;
+        }
+
+        // The method getFirewallConfig is only part of Symfony\Bundle\SecurityBundle\Security\FirewallMap,
+        // not in the FirewallMapInterface.
+        // In EE, we override the "@security.firewall.map" service with another class that is not extending
+        // Symfony\Bundle\SecurityBundle\Security\FirewallMap but still provide getFirewallConfig.
+        if ($this->firewall instanceof FirewallMap || method_exists($this->firewall, 'getFirewallConfig')) {
+            $firewallConfig = $this->firewall->getFirewallConfig($request);
+
+            if ($firewallConfig instanceof FirewallConfig && $firewallConfig->isStateless()) {
+                return false;
+            }
+        }
+
+        return $request->hasSession();
     }
 
     /**
@@ -281,7 +310,7 @@ class UserContext
     /**
      * Get authenticated user
      *
-     * @return \Akeneo\UserManagement\Component\Model\UserInterface|null
+     * @return UserInterface|null
      */
     public function getUser()
     {
@@ -313,7 +342,7 @@ class UserContext
             'channel'  => $this->getUserChannelCode()
         ];
     }
-    
+
     /**
      * @return CategoryInterface
      */
@@ -351,7 +380,7 @@ class UserContext
     protected function getSessionLocale()
     {
         $request = $this->getCurrentRequest();
-        if (null !== $request && $request->hasSession()) {
+        if ($this->hasActiveSession($request)) {
             $localeCode = $request->getSession()->get('dataLocale');
             if (null !== $localeCode) {
                 $locale = $this->localeRepository->findOneByIdentifier($localeCode);
@@ -411,6 +440,10 @@ class UserContext
 
         if ($token !== null) {
             $user = $token->getUser();
+            if (!$user instanceof UserInterface) {
+                return null;
+            }
+
             $method = sprintf('get%s', ucfirst($optionName));
 
             if (null === $user || !is_object($user)) {

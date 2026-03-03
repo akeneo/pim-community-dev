@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category\OnDelete;
 
+use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category\GetDescendentCategoryCodes;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
-use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -47,7 +47,7 @@ final class UpdateIndexesOnCategoryDeletion implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             StorageEvents::PRE_REMOVE  => 'storeCategoryCodesToRemove',
@@ -79,8 +79,7 @@ final class UpdateIndexesOnCategoryDeletion implements EventSubscriberInterface
                 'terms' => ['categories' => $this->categoryCodesToRemove],
             ],
             'script' => [
-                // WARNING: "inline" will need to be changed to "source" when we'll switch to Elasticsearch 5.6
-                'inline' => 'ctx._source.categories.removeAll(params.categories); if (0 == ctx._source.categories.size()) { ctx._source.remove("categories"); }',
+                'source' => 'ctx._source.categories.removeAll(params.categories); if (0 == ctx._source.categories.size()) { ctx._source.remove("categories"); }',
                 'lang'   => 'painless',
                 'params' => ['categories' => $this->categoryCodesToRemove],
             ],

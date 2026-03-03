@@ -11,6 +11,7 @@ use Context\Spin\SpinCapableTrait;
 use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+use SensioLabs\Behat\PageObjectExtension\PageObject\PageObject;
 
 /**
  * Context for assertions
@@ -66,12 +67,15 @@ class AssertionContext extends PimContext
      */
     public function iShouldSeeTheTitle($expectedTitle)
     {
-        $this->spin(function () use ($expectedTitle) {
-            return trim($this->getCurrentPage()->getHeadTitle()) === trim($expectedTitle);
-        }, sprintf(
-            'Incorrect title. Expected "%s", found "%s"',
-            $expectedTitle,
-            $this->getCurrentPage()->getHeadTitle())
+        $this->spin(
+            function () use ($expectedTitle) {
+                return trim($this->getCurrentPage()->getHeadTitle()) === trim($expectedTitle);
+            },
+            sprintf(
+                'Incorrect title. Expected "%s", found "%s"',
+                $expectedTitle,
+                $this->getCurrentPage()->getHeadTitle()
+            )
         );
     }
 
@@ -525,24 +529,27 @@ class AssertionContext extends PimContext
      */
     public function iShouldHaveNewNotification($count)
     {
-        $this->spin(function () use ($count) {
-            $countContainer = $this->getCurrentPage()->find('css', '.AknNotificationMenu-countContainer');
+        $this->spin(
+            function () use ($count) {
+                $countContainer = $this->getCurrentPage()->find('css', '.AknNotificationMenu-countContainer');
 
-            if (!$countContainer) {
-                return false;
-            }
-            $actualCount = (int) $countContainer->getText();
+                if (!$countContainer) {
+                    return false;
+                }
+                $actualCount = (int) $countContainer->getText();
 
-            Assert::assertEquals(
-                $actualCount,
-                $count,
-                sprintf('Expecting to see %d new notifications, saw %d', $count, $actualCount)
-            );
+                Assert::assertEquals(
+                    $actualCount,
+                    $count,
+                    sprintf('Expecting to see %d new notifications, saw %d', $count, $actualCount)
+                );
 
-            return true;
-        }, sprintf(
-            'Expecting to see %d new notifications',
-            $count)
+                return true;
+            },
+            sprintf(
+                'Expecting to see %d new notifications',
+                $count
+            )
         );
     }
 
@@ -708,10 +715,7 @@ class AssertionContext extends PimContext
         }, 'Avatar image not found or not default one');
     }
 
-    /**
-     * @return Page
-     */
-    protected function getCurrentPage()
+    protected function getCurrentPage(): PageObject
     {
         return $this->getMainContext()->getSubcontext('navigation')->getCurrentPage();
     }

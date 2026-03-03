@@ -1,0 +1,7 @@
+parameters:
+    akeneo_connectivity.custom_apps.max_limit: 20
+
+services:
+    Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Service\GetCustomAppsNumberLimit:
+        arguments:
+            - '%akeneo_connectivity.custom_apps.max_limit%'

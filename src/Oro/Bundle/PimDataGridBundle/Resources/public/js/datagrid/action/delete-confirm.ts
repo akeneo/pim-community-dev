@@ -21,7 +21,8 @@ class DeleteConfirm {
       __(`pim_enrich.entity.${entityCode}.module.delete.confirm`),
       __('pim_common.confirm_deletion'),
       callback,
-      entityHint
+      entityHint,
+      'pim_common.delete'
     );
   }
 }

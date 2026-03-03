@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Common\Structure\Attribute;
 
+use Akeneo\Channel\Infrastructure\Component\Model\Locale;
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 use Akeneo\Test\Common\EntityWithValue\Code;
 use Akeneo\Pim\Structure\Component\Model;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
@@ -23,11 +25,17 @@ class Builder
     /** @var string */
     private $type;
 
+    /** @var string */
+    private $groupCode;
+
     /** @var bool */
     private $isUnique;
 
     /** @var bool */
     private $localizable;
+
+    /** @var LocaleInterface[]  */
+    private $availableLocales = [];
 
     /** @var bool */
     private $scopable;
@@ -35,12 +43,16 @@ class Builder
     /** @var string */
     private $backendType;
 
+    /** @var string[] */
+    private array $guidelines = [];
+
     public function __construct()
     {
         $this->code = Code::fromString('code');
         $this->type = new Type(AttributeTypes::IDENTIFIER);
         $this->isUnique = false;
         $this->localizable = false;
+        $this->specificlocalizable = false;
         $this->scopable = false;
         $this->backendType = AttributeTypes::BACKEND_TYPE_TEXT;
     }
@@ -56,8 +68,19 @@ class Builder
         $attribute->setUnique($this->isUnique);
         $attribute->setScopable($this->scopable);
         $attribute->setLocalizable($this->localizable);
+        foreach ($this->availableLocales as $availableLocale) {
+            $attribute->addAvailableLocale($availableLocale);
+        }
         $attribute->setDecimalsAllowed(false);
         $attribute->setBackendType($this->backendType);
+        if (null !== $this->groupCode) {
+            $group = new Model\AttributeGroup();
+            $group->setCode($this->groupCode);
+            $attribute->setGroup($group);
+        }
+        foreach ($this->guidelines as $localeCode => $localeGuidelines) {
+            $attribute->addGuidelines($localeCode, $localeGuidelines);
+        }
 
         return $attribute;
     }
@@ -70,6 +93,20 @@ class Builder
     public function withCode(string $code): Builder
     {
         $this->code = $code;
+
+        return $this;
+    }
+
+    public function withType(string $type): Builder
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function withGroupCode(string $groupCode): Builder
+    {
+        $this->groupCode = $groupCode;
 
         return $this;
     }
@@ -112,6 +149,7 @@ class Builder
         $this->scopable = false;
         $this->isUnique = true;
         $this->backendType = AttributeTypes::BACKEND_TYPE_TEXT;
+        $this->guidelines = ['en_US' => 'guidelines'];
 
         return $this;
     }
@@ -119,6 +157,13 @@ class Builder
     public function localizable(): Builder
     {
         $this->localizable = true;
+
+        return $this;
+    }
+
+    public function localeSpecific(array $locales): Builder
+    {
+        $this->availableLocales = $locales;
 
         return $this;
     }

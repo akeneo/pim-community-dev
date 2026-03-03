@@ -17,7 +17,7 @@ export const RegenerateWebhookSecret = () => {
     const url = useRoute('akeneo_connectivity_connection_webhook_rest_regenerate_secret', {code});
 
     const handleRedirect = () => {
-        history.push(`/connections/${code}/event-subscription`);
+        history.push(`/connect/connection-settings/${code}/event-subscription`);
     };
 
     const handleClick = async () => {

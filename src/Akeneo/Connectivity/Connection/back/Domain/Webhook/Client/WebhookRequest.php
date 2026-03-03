@@ -14,18 +14,11 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
  */
 class WebhookRequest
 {
-    private ActiveWebhook $webhook;
-
-    /** @var array<WebhookEvent> */
-    private array $apiEvents;
-
     /**
      * @param array<WebhookEvent> $apiEvents
      */
-    public function __construct(ActiveWebhook $webhook, array $apiEvents)
+    public function __construct(private ActiveWebhook $webhook, private array $apiEvents)
     {
-        $this->webhook = $webhook;
-        $this->apiEvents = $apiEvents;
     }
 
     /**
@@ -53,7 +46,7 @@ class WebhookRequest
      *      author: string,
      *      author_type: string,
      *      pim_source: string,
-     *      data: array
+     *      data: mixed[]
      *  }>
      * }
      */
@@ -61,17 +54,15 @@ class WebhookRequest
     {
         return [
             'events' => \array_map(
-                function (WebhookEvent $apiEvent) {
-                    return [
-                        'action' => $apiEvent->action(),
-                        'event_id' => $apiEvent->eventId(),
-                        'event_datetime' => $apiEvent->eventDateTime(),
-                        'author' => $apiEvent->author()->name(),
-                        'author_type' => $apiEvent->author()->type(),
-                        'pim_source' => $apiEvent->pimSource(),
-                        'data' => $apiEvent->data(),
-                    ];
-                },
+                fn (WebhookEvent $apiEvent): array => [
+                    'action' => $apiEvent->action(),
+                    'event_id' => $apiEvent->eventId(),
+                    'event_datetime' => $apiEvent->eventDateTime(),
+                    'author' => $apiEvent->author()->name(),
+                    'author_type' => $apiEvent->author()->type(),
+                    'pim_source' => $apiEvent->pimSource(),
+                    'data' => $apiEvent->data(),
+                ],
                 $this->apiEvents
             ),
         ];

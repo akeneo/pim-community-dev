@@ -2,6 +2,15 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Completeness;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\PriceValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetPriceCollectionValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
+
 /**
  * Checks that the completeness has been well calculated for localisable and scopable attributes.
  *
@@ -15,15 +24,17 @@ class CompletenessForScopableAndLocalisableAttributeIntegration extends Abstract
 {
     public function testProductIncomplete()
     {
-        $sandalsFamily = $this->get('pim_catalog.repository.family')->findOneByIdentifier('sandals');
+        $this->get('pim_catalog.repository.family')->findOneByIdentifier('sandals');
 
         $sandals = $this->createProductWithStandardValues(
-            $sandalsFamily,
             'sandals',
-            ['values' => $this->getSandalStandardValues()]
+            \array_merge(
+                [new SetFamily('sandals')],
+                $this->getSandalStandardValues()
+            )
         );
 
-        $completenesses = $this->getProductCompletenesses()->fromProductId($sandals->getId());
+        $completenesses = $this->getProductCompletenesses()->fromProductUuid($sandals->getUuid());
         $this->assertCount(4, $completenesses);
 
         $completeness = $completenesses->getCompletenessForChannelAndLocale('mobile', 'en_US');
@@ -57,15 +68,17 @@ class CompletenessForScopableAndLocalisableAttributeIntegration extends Abstract
 
     public function testProductCompleteOnOneChannel()
     {
-        $sneakersFamily = $this->get('pim_catalog.repository.family')->findOneByIdentifier('sneakers');
+        $this->get('pim_catalog.repository.family')->findOneByIdentifier('sneakers');
 
         $sandals = $this->createProductWithStandardValues(
-            $sneakersFamily,
             'sneakers',
-            ['values' => $this->getSneakerStandardValues()]
+            \array_merge(
+                [new SetFamily('sneakers')],
+                $this->getSneakerStandardValues()
+            )
         );
 
-        $completenesses = $this->getProductCompletenesses()->fromProductId($sandals->getId());
+        $completenesses = $this->getProductCompletenesses()->fromProductUuid($sandals->getUuid());
         $this->assertCount(4, $completenesses);
 
         $completeness = $completenesses->getCompletenessForChannelAndLocale('mobile', 'en_US');
@@ -126,123 +139,34 @@ class CompletenessForScopableAndLocalisableAttributeIntegration extends Abstract
     private function getSandalStandardValues()
     {
         return [
-            'color' => [
-                [
-                    'locale' => null,
-                    'scope'  => null,
-                    'data'   => 'white'
-                ],
-            ],
-            'name' => [
-                [
-                    'locale' => 'fr_FR',
-                    'scope'  => null,
-                    'data'   => 'Sandales'
-                ],
-            ],
-            'description' => [
-                [
-                    'locale' => 'fr_FR',
-                    'scope'  => 'mobile',
-                    'data'   => 'Super sandales !'
-                ],
-                [
-                    'locale' => 'fr_FR',
-                    'scope'  => 'tablet',
-                    'data'   => 'Des sandales magiques !'
-                ],
-            ],
+            new SetSimpleSelectValue('color', null, null, 'white'),
+            new SetTextValue('name', null, 'fr_FR', 'Sandales'),
+            new SetTextareaValue('description', 'mobile', 'fr_FR', 'Super sandales !'),
+            new SetTextareaValue('description', 'tablet', 'fr_FR', 'Des sandales magiques !'),
         ];
     }
 
     /**
-     * @return array
+     * @return UserIntent[]
      */
-    private function getSneakerStandardValues()
+    private function getSneakerStandardValues(): array
     {
         return [
-            'manufacturer' => [
-                [
-                    'locale' => null,
-                    'scope'  => null,
-                    'data'   => 'Converse'
-                ],
-            ],
-            'weather_conditions' => [
-                [
-                    'locale' => null,
-                    'scope'  => null,
-                    'data'   => ['hot']
-                ],
-            ],
-            'color' => [
-                [
-                    'locale' => null,
-                    'scope'  => null,
-                    'data'   => 'blue'
-                ],
-            ],
-            'name' => [
-                [
-                    'locale' => 'en_US',
-                    'scope'  => null,
-                    'data'   => 'Sneakers'
-                ],
-                [
-                    'locale' => 'fr_FR',
-                    'scope'  => null,
-                    'data'   => 'Espadrilles'
-                ],
-            ],
-            'price' => [
-                [
-                    'locale' => null,
-                    'scope'  => null,
-                    'data'   => [
-                        ['amount' => 69, 'currency' => 'EUR'],
-                        ['amount' => 99, 'currency' => 'USD'],
-                    ]
-
-                ],
-            ],
-            'rating' => [
-                [
-                    'locale' => null,
-                    'scope'  => null,
-                    'data'   => "4"
-                ],
-            ],
-            'size' => [
-                [
-                    'locale' => null,
-                    'scope'  => null,
-                    'data'   => "43"
-                ],
-            ],
-            'lace_color' => [
-                [
-                    'locale' => null,
-                    'scope'  => null,
-                    'data'   => 'laces_white'
-                ],
-            ],
-            'description' => [
-                [
-                    'locale' => 'en_US',
-                    'scope'  => 'mobile',
-                    'data'   => 'Great sneakers'
-                ],
-                [
-                    'locale' => 'en_US',
-                    'scope'  => 'tablet',
-                    'data'   => 'Really great sneakers'
-                ],
-                [
-                    'locale' => 'fr_FR',
-                    'scope'  => 'mobile',
-                    'data'   => 'Grandes espadrilles'
-                ],
-            ],
+            new SetSimpleSelectValue('manufacturer', null, null, 'Converse'),
+            new SetMultiSelectValue('weather_conditions', null, null, ['hot']),
+            new SetSimpleSelectValue('color', null, null, 'blue'),
+            new SetTextValue('name', null, 'en_US', 'Sneakers'),
+            new SetTextValue('name', null, 'fr_FR', 'Espadrilles'),
+            new SetPriceCollectionValue('price', null, null, [
+                new PriceValue('69', 'EUR'),
+                new PriceValue('99', 'USD'),
+            ]),
+            new SetSimpleSelectValue('rating', null, null, '4'),
+            new SetSimpleSelectValue('size', null, null, '43'),
+            new SetSimpleSelectValue('lace_color', null, null, 'laces_white'),
+            new SetTextareaValue('description', 'mobile', 'en_US', 'Great sneakers'),
+            new SetTextareaValue('description', 'tablet', 'en_US', 'Really great sneakers'),
+            new SetTextareaValue('description', 'mobile', 'fr_FR', 'Grandes espadrilles'),
         ];
     }
 }

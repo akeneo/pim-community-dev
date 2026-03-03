@@ -26,9 +26,10 @@ final class DualIndexationClient extends Client
         array $hosts,
         string $aliasName,
         string $idPrefix,
+        int $maxChunkSize,
         Client $dualClient
     ) {
-        parent::__construct($builder, $configurationLoader, $hosts, $aliasName, $idPrefix);
+        parent::__construct($builder, $configurationLoader, $hosts, $aliasName, $idPrefix, $maxChunkSize);
         $this->dualClient = $dualClient;
     }
 

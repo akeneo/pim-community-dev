@@ -61,13 +61,26 @@ Akeneo\Tool\Component\Batch\Model\StepExecution:
             type: json
             column: tracking_data
             nullable: true
+        warningCount:
+            type: integer
+            column: warning_count
+            options:
+                default: 0
+        isTrackable:
+            type: boolean
+            column: is_trackable
+            options:
+                default: false
+        currentState:
+            type: json
+            column: current_state
+            nullable: true
     oneToMany:
         warnings:
             targetEntity: Akeneo\Tool\Component\Batch\Model\Warning
             mappedBy: stepExecution
             cascade:
                 - persist
-                - remove
             orphanRemoval: true
             fetch: EXTRA_LAZY
             orderBy:

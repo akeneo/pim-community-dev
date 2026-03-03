@@ -8,16 +8,23 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationResultStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 abstract class EvaluationProvider
 {
-    public static function aWritableCriterionEvaluation(string $code = 'a_criterion', string $status = CriterionEvaluationStatus::DONE, int $productId = 1234, Write\CriterionEvaluationResult $result = null): Write\CriterionEvaluation
-    {
+    public static function aWritableCriterionEvaluation(
+        string $code = 'a_criterion',
+        string $status = CriterionEvaluationStatus::DONE,
+        UuidInterface $productUuid = null,
+        Write\CriterionEvaluationResult $result = null
+    ): Write\CriterionEvaluation {
+        $productUuid = $productUuid ?? Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed');
         $evaluation = new Write\CriterionEvaluation(
             new CriterionCode($code),
-            new ProductId($productId),
+            ProductUuid::fromUuid($productUuid),
             new CriterionEvaluationStatus($status)
         );
 

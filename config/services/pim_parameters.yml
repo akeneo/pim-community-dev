@@ -3,9 +3,6 @@
 parameters:
     database_unix_socket: ~
 
-    mailer_url: '%env(MAILER_URL)%'
-    mailer_from_name:     Akeneo Admin
-
     # WebSocket server config
     websocket_host:       "127.0.0.1"
     websocket_port:       8080
@@ -15,7 +12,7 @@ parameters:
     pim_catalog_image_allowed_extensions: [gif, jfif, jif, jpeg, jpg, pdf, png, psd, tif, tiff]
     pim_catalog_file_allowed_extensions: [csv, doc, docx, mp3, pdf, ppt, pptx, rtf, svg, txt, wav]
 
-    doctrine_migrations_dir: '%kernel.root_dir%/../upgrades/schema'
+    doctrine_migrations_dir: '%kernel.project_dir%/upgrades/schema'
 
     pim_analytics_update_server_url: https://updates.akeneo.com
 
@@ -41,36 +38,11 @@ parameters:
     connection_error_elasticsearch_index_configuration_file:
         - '%pim_ce_dev_src_folder_location%/src/Akeneo/Connectivity/Connection/back/Infrastructure/Symfony/Resources/elasticsearch/connection_error_mapping.yml'
 
-    # these parameters indicate the advisable limitations of the PIM in term of volume
-    # if your volume of data exceeds these limits, it can impact the performance
-    average_max_attributes_per_family_limit: 125
-    average_max_localizable_attributes_per_family_limit: -1
-    average_max_scopable_attributes_per_family_limit: -1
-    average_max_localizable_and_scopable_attributes_per_family_limit: -1
-    average_max_product_values_per_family_limit: -1
-    average_max_options_per_attribute_limit: 145
-    average_max_product_values_limit: -1
-    average_max_product_model_values_limit: -1
-    average_max_categories_in_one_category_limit: 120
-    average_max_category_levels_limit: 5
-    count_attributes_limit: 600
-    count_useable_as_grid_filter_attributes_limit: -1
-    count_categories_limit: 5000
-    count_category_trees_limit: 4
-    count_channels_limit: 3
-    count_families_limit: 120
-    count_locales_limit: 9
-    count_localizable_and_scopable_attributes_limit: 65
-    count_localizable_attributes_limit: 125
-    count_scopable_attributes_limit: 65
-    count_products_limit: 180000
-    count_product_models_limit: -1
-    count_variant_products_limit: -1
-    count_product_values_limit: -1
-    count_product_model_values_limit: -1
-    count_product_and_product_model_values_limit: -1
-    count_users_limit: -1
+    events_api_debug_elasticsearch_index_configuration_file:
+        - "%pim_ce_dev_src_folder_location%/src/Akeneo/Connectivity/Connection/back/Infrastructure/Symfony/Resources/elasticsearch/events_api_debug_mapping.yml"
 
+    index_list_changed_total_field_limit:
+        - '%env(APP_PRODUCT_AND_PRODUCT_MODEL_INDEX_NAME)%'
     # url to request to fetch announcements in the communication panel
     comm_panel_api_url: '%env(COMM_PANEL_API_URL)%'
 
@@ -79,3 +51,7 @@ parameters:
     webhook_max_bulk_size: 10
     webhook_active_event_subscriptions_limit: 3
     webhook_requests_limit: 4000
+
+    openssl_config_path: '%pim_ce_dev_src_folder_location%/config/openssl.cnf'
+
+    local_storage_root: '/'

@@ -1,0 +1,20 @@
+services:
+    Akeneo\Platform\Job\Test\Integration\Loader\FixturesLoader:
+        arguments:
+            - '@database_connection'
+            - '@Akeneo\Platform\Job\Test\Integration\Loader\FixturesJobHelper'
+            - '@Akeneo\Platform\Job\Test\Integration\Loader\FixturesUserHelper'
+
+    Akeneo\Platform\Job\Test\Integration\Loader\FixturesJobHelper:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Platform\Job\Test\Integration\Loader\FixturesUserHelper:
+        arguments:
+            - '@pim_user.factory.user'
+            - '@pim_user.saver.user'
+            - '@pim_user.repository.role'
+            - '@pim_user.factory.role_with_permissions'
+            - '@pim_user.saver.role_with_permissions'
+            - '@oro_security.acl.manager'
+            - '@pim_catalog.repository.locale'

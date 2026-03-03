@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace spec\Akeneo\Connectivity\Connection\Application\Audit\Command;
 
 use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataSourceProductEventCountHandler;
-use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\ExtractConnectionsProductEventCountQuery;
-use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Repository\EventCountRepository;
+use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\BulkInsertEventCountsQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\ExtractConnectionsProductEventCountQueryInterface;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -16,12 +16,14 @@ use PhpSpec\ObjectBehavior;
  */
 class UpdateDataSourceProductEventCountHandlerSpec extends ObjectBehavior
 {
-    function let(ExtractConnectionsProductEventCountQuery $extractConnectionsEventCountQuery, EventCountRepository $eventCountRepository)
-    {
-        $this->beConstructedWith($extractConnectionsEventCountQuery, $eventCountRepository);
+    public function let(
+        ExtractConnectionsProductEventCountQueryInterface $extractConnectionsEventCountQuery,
+        BulkInsertEventCountsQueryInterface $bulkInsertEventCountsQuery,
+    ): void {
+        $this->beConstructedWith($extractConnectionsEventCountQuery, $bulkInsertEventCountsQuery);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldBeAnInstanceOf(UpdateDataSourceProductEventCountHandler::class);
     }

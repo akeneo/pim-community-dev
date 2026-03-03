@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Pim\Structure\Component\Normalizer\ExternalApi;
 
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -13,20 +16,10 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
-    /** @var NormalizerInterface */
-    protected $stdNormalizer;
-
-    /** @var NormalizerInterface */
-    private $translationNormalizer;
-
-    /**
-     * @param NormalizerInterface $stdNormalizer
-     * @param NormalizerInterface $translationNormalizer
-     */
-    public function __construct(NormalizerInterface $stdNormalizer, NormalizerInterface $translationNormalizer)
-    {
-        $this->stdNormalizer = $stdNormalizer;
-        $this->translationNormalizer = $translationNormalizer;
+    public function __construct(
+        protected NormalizerInterface $stdNormalizer,
+        private NormalizerInterface $translationNormalizer
+    ) {
     }
 
     /**
@@ -36,12 +29,20 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
     {
         $normalizedAttribute = $this->stdNormalizer->normalize($attribute, 'standard', $context);
 
-        if (empty($normalizedAttribute['labels'])) {
-            $normalizedAttribute['labels'] = (object) $normalizedAttribute['labels'];
+        // Add read-only attribute group labels inside attribute
+        $normalizedAttribute['group_labels'] = ($attribute->getGroup()) ?
+            $this->translationNormalizer->normalize($attribute->getGroup(), $format, $context) :
+            null;
+
+        foreach (['labels', 'guidelines', 'group_labels'] as $field) {
+            if (\array_key_exists($field, $normalizedAttribute) && [] === $normalizedAttribute[$field]) {
+                $normalizedAttribute[$field] = (object)[];
+            }
         }
 
-        // Add read-only attribute group labels inside attribute
-        $normalizedAttribute['group_labels'] = ($attribute->getGroup()) ? $this->translationNormalizer->normalize($attribute->getGroup(), $format, $context) : null;
+        if (AttributeTypes::IDENTIFIER === $attribute->getType()) {
+            $normalizedAttribute['is_main_identifier'] = $attribute->isMainIdentifier();
+        }
 
         return $normalizedAttribute;
     }
@@ -49,7 +50,7 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof AttributeInterface && 'external_api' === $format;
     }

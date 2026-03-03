@@ -1,0 +1,14 @@
+services:
+  Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage\TransferFilesToStorageHandler:
+    public: true
+    arguments:
+      - '@Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Hydrator\StorageHydrator'
+      - '@Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\TransferFilesToStorage'
+      - '@feature_flags'
+
+  Akeneo\Platform\Bundle\ImportExportBundle\Application\DownloadFileFromStorage\DownloadFileFromStorageHandler:
+    public: true
+    arguments:
+      - '@Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Hydrator\StorageHydrator'
+      - '@Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\DownloadFileFromStorage'
+      - '@feature_flags'

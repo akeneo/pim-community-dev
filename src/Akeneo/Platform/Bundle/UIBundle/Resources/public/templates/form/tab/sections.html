@@ -1,1 +1,9 @@
-<div class="tabsections" data-drop-zone="accordion"></div>
+<% if (typeof twoColumns !== 'undefined' && twoColumns) { %>
+    <%
+    // The 2 columns are not displayed for now as it imply lot of work on style, but elements are already divided in 2 containers.
+    %>
+    <div class="tabsections AknTabContainer-column" data-drop-zone="accordion"></div>
+    <div class="tabsections AknTabContainer-column" data-drop-zone="secondColumn"></div>
+<% } else { %>
+    <div class="tabsections" data-drop-zone="accordion"></div>
+<% } %>

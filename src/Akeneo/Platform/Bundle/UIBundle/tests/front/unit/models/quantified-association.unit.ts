@@ -1,25 +1,25 @@
 import {
+  ProductType,
   quantifiedAssociationToRowCollection,
   rowCollectionToQuantifiedAssociation,
   isQuantifiedAssociationEmpty,
   newAndUpdatedQuantifiedAssociationsCount,
   hasUpdatedQuantifiedAssociations,
-} from '../../../../Resources/public/js/product/form/quantified-associations/models/quantified-association';
-import {ProductType} from '../../../../Resources/public/js/product/form/quantified-associations/models';
+} from '../../../../Resources/public/js/product/form/quantified-associations/models';
 
 const quantifiedAssociation = {
-  products: [{identifier: 'bag', quantity: 4}],
+  products: [{uuid: '3fa79b52-5900-49e8-a197-1181f58ec3cb', quantity: 4}],
   product_models: [{identifier: 'braided-hat', quantity: 12}],
 };
 
 const parentQuantifiedAssociation = {
-  products: [{identifier: 'bag', quantity: 6}],
+  products: [{uuid: '3fa79b52-5900-49e8-a197-1181f58ec3cb', quantity: 6}],
   product_models: [{identifier: 'braided-hat', quantity: 8}],
 };
 
 const rowCollection = [
   {
-    quantifiedLink: {identifier: 'bag', quantity: 4},
+    quantifiedLink: {uuid: '3fa79b52-5900-49e8-a197-1181f58ec3cb', quantity: 4},
     productType: ProductType.Product,
     product: null,
     errors: [],
@@ -33,7 +33,7 @@ const rowCollection = [
 ];
 const rowCollectionWithError = [
   {
-    quantifiedLink: {identifier: 'bag', quantity: 4},
+    quantifiedLink: {uuid: '3fa79b52-5900-49e8-a197-1181f58ec3cb', quantity: 4},
     productType: ProductType.Product,
     product: null,
     errors: [

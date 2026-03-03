@@ -3,6 +3,7 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Boolean;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
@@ -29,21 +30,13 @@ class LocalizableFilterIntegration extends AbstractProductQueryBuilderTestCase
         ]);
 
         $this->createProduct('product_one', [
-            'values' => [
-                'a_localizable_yes_no' => [
-                    ['data' => true, 'locale' => 'en_US', 'scope' => null],
-                    ['data' => false, 'locale' => 'fr_FR', 'scope' => null],
-                ]
-            ]
+            new SetBooleanValue('a_localizable_yes_no', null, 'en_US', true),
+            new SetBooleanValue('a_localizable_yes_no', null, 'fr_FR', false)
         ]);
 
         $this->createProduct('product_two', [
-            'values' => [
-                'a_localizable_yes_no' => [
-                    ['data' => true, 'locale' => 'en_US', 'scope' => null],
-                    ['data' => true, 'locale' => 'fr_FR', 'scope' => null]
-                ]
-            ]
+            new SetBooleanValue('a_localizable_yes_no', null, 'en_US', true),
+            new SetBooleanValue('a_localizable_yes_no', null, 'fr_FR', true)
         ]);
     }
 

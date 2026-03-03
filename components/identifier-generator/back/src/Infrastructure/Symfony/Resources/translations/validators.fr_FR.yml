@@ -1,0 +1,28 @@
+validation:
+  create:
+    identifier_limit_reached: 'La limite de "{{limit}}" générateurs d''identifiants a été atteinte. '
+    code_already_used: 'Ce code est déjà utilisé'
+  update:
+    identifier_generator_code_not_found: 'Le générateur d''identifiants "{{code}}" n''existe pas ou vous n''avez pas la permission d''y accéder.'
+  identifier_generator:
+    attribute_does_not_exist: 'L''attribut {{ attributeCode }} n''existe pas.'
+    attribute_should_have_type: 'Le code d''attribut "{{ code }}" est de type "{{ type }}" et doit être de type "{{ expected }}".'
+    free_text_string_field_required: 'Le texte doit contenir la clé "string".'
+    enabled_value_field_required: 'Le statut activé doit contenir la clé "value".'
+    enabled_boolean_value: 'Cette valeur doit être un booléen.'
+    auto_number_fields_required: 'Les champs "{{field}}" sont requis pour le type "auto_number"'
+    structure_auto_number_limit_reached: 'ne doit contenir que {{limit}} nombre incrémental.'
+    conditions_limit_reached: 'ne doit contenir que {{limit}} {{type}} de condition'
+    unknown_operator: 'L''opérateur {{ value }} ne peut être que l''un des suivants : {{ choices }}.'
+    families_do_not_exist: 'Les familles suivantes ont été supprimées de votre catalogue : {{ familyCodes }}. Vous pouvez les supprimer de votre sélection de produits.'
+    options_do_not_exist: 'Les options d''attribut suivantes n''existent pas pour l''attribut "{{ attributeCode }}" : {{ optionCodes }}.'
+    unknown_scope: 'Le canal "{{ scopeCode }}" n''existe pas.'
+    unknown_locale: 'La locale "{{ localeCode }}" n''existe pas ou n''est pas activée.'
+    inactive_locale: 'La locale "{{ localeCode }}" n''est pas activée pour le canal "{{ channelCode }}"'
+    family_property_fields_required: 'Le champ "{{ field }}" est requis pour le type "famille".'
+    simple_select_property_fields_required: 'Le champ "{{ field }}" est requis pour le type "simple_select".'
+    reference_entity_property_fields_required: 'Le champ "{{ field }}" est requis pour le type "reference_entity".'
+    process_unknown_operator: 'L''opérateur {{ value }} ne peut être que l''un des suivants : {{ choices }}.'
+    locale_required: 'Une locale est requise pour l''attribut {{ attributeLabel }}'
+    scope_required: 'Un canal est requis pour l''attribut {{ attributeLabel }}.'
+    categories_do_not_exist: 'Les catégories suivantes ont été supprimées de votre catalogue : {{ categoryCodes }}. Vous pouvez les supprimer de votre sélection de produits.'

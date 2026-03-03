@@ -15,23 +15,12 @@ class ScalarValueSpec extends ObjectBehavior
         $this->getData()->shouldReturn('A nice text');
     }
 
-    function it_returns_data_as_string()
-    {
-        $this->beConstructedThrough('scopableLocalizableValue', ['my_text', 123, 'ecommerce', 'en_US']);
+    function it_compares_itself_to_the_same_scalar_value_with_identical_string_data() {
+        $this->beConstructedThrough('scopableLocalizableValue', ['my_text', '005.02', 'ecommerce', 'en_US']);
 
-        $this->__toString()->shouldReturn('123');
-    }
+        $otherValue = ScalarValue::scopableLocalizableValue('my_text', '005.02', 'ecommerce', 'en_US');
 
-    function it_compares_itself_to_the_same_scalar_value(
-        ScalarValue $sameScalarValue
-    ) {
-        $this->beConstructedThrough('scopableLocalizableValue', ['my_text', 123, 'ecommerce', 'en_US']);
-
-        $sameScalarValue->getData()->willReturn(123);
-        $sameScalarValue->getLocaleCode()->willReturn('en_US');
-        $sameScalarValue->getScopeCode()->willReturn('ecommerce');
-
-        $this->isEqual($sameScalarValue)->shouldReturn(true);
+        $this->isEqual($otherValue)->shouldReturn(true);
     }
 
     function it_compares_itself_with_null_data_to_the_same_scalar_value_with_null_data(

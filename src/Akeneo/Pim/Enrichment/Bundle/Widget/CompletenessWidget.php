@@ -15,7 +15,6 @@ use Akeneo\UserManagement\Bundle\Context\UserContext;
  */
 class CompletenessWidget implements WidgetInterface
 {
-
     /** @var UserContext */
     protected $userContext;
 
@@ -47,7 +46,7 @@ class CompletenessWidget implements WidgetInterface
      */
     public function getTemplate(): string
     {
-        return 'AkeneoPimEnrichmentBundle:Widget:completeness.html.twig';
+        return '';
     }
 
     /**

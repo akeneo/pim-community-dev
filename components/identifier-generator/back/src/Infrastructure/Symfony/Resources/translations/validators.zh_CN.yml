@@ -1,0 +1,28 @@
+validation:
+  create:
+    identifier_limit_reached: '已达到标识符生成器上限数目 "{{limit}}" '
+    code_already_used: '此代码已被使用'
+  update:
+    identifier_generator_code_not_found: '标识符生成器 "{{code}}" 不存在或您没有访问权限。'
+  identifier_generator:
+    attribute_does_not_exist: '属性"{{ code }}"不存在。'
+    attribute_should_have_type: '属性代码 "{{ code }}" 的类型为 "{{ type }}" ，而应为 "{{ expected }}"。'
+    free_text_string_field_required: '自由文本应包含 "string" 关键字段'
+    enabled_value_field_required: '已启用产品应包含“value”关键字段'
+    enabled_boolean_value: '此值应是布尔值。'
+    auto_number_fields_required: '"{{field}}"字段对于类型 "auto_number" 是必填项'
+    structure_auto_number_limit_reached: '应仅包含 {{limit}} 位自动编号'
+    conditions_limit_reached: '应仅包含 {{limit}} {{type}} 条件'
+    unknown_operator: '运算符 {{ value }} 只能为下列其中一项：{{ choices }}。'
+    families_do_not_exist: '已从您的目录中删除下列品类：{{ familyCodes }}。您可以将它们从您的产品选择中移除。'
+    options_do_not_exist: '属性"{{ attributeCode }}"不存在以下属性选项：{{ optionCodes }}。'
+    unknown_scope: '范围 "{{ scopeCode }}" 不存在。'
+    unknown_locale: '区域 "{{ localeCode }}" 不存在或未被激活。'
+    inactive_locale: '区域 "{{ localeCode }}" 对于渠道 "{{ scopeCode }}" 未激活。'
+    family_property_fields_required: '字段 "{{ field }}" 对于类型“品类”是必填项。'
+    simple_select_property_fields_required: '字段 "{{ field }}" 对于类型 "simple_select" 是必填项。'
+    reference_entity_property_fields_required: '字段 "{{ field }}" 对于类型 "reference_entity" 是必填项。'
+    process_unknown_operator: '运算符 {{ value }} 只能为下列其中一项：{{ choices }}。'
+    locale_required: '属性 "{{ attributeCode }}" 需要区域设置。'
+    scope_required: '属性 "{{ attributeCode }}" 需要渠道设置。'
+    categories_do_not_exist: '已从您的目录中删除下列类别：{{ categoryCodes }}。您可以将它们从您的产品选择中移除。'

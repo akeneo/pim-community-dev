@@ -24,19 +24,19 @@ final class EmptyValuesCleanerSpec extends ObjectBehavior
             'productA' => [
                 'color' => [
                     'ecommerce' => [
-                        '<all_locales>' => ''
+                        '<all_locales>' => '',
                     ],
                     'tablet' => [
-                        '<all_locales>' => 'red'
-                    ]
+                        '<all_locales>' => 'red',
+                    ],
                 ],
                 'colors' => [
                     'ecommerce' => [
-                        '<all_locales>' => []
+                        '<all_locales>' => [],
                     ],
                     'tablet' => [
-                        '<all_locales>' => ['blue']
-                    ]
+                        '<all_locales>' => ['blue'],
+                    ],
                 ],
                 'a_metric' => [
                     '<all_channels>' => [
@@ -54,7 +54,7 @@ final class EmptyValuesCleanerSpec extends ObjectBehavior
                             'base_unit' => 'GRAM',
                             'family' => 'Weight',
                         ],
-                    ]
+                    ],
                 ],
             ],
             'productB' => [
@@ -62,23 +62,30 @@ final class EmptyValuesCleanerSpec extends ObjectBehavior
                     '<all_channels>' => [
                         'en_US' => null,
                         'fr_FR' => 'a_value',
-                        'be_BE' => ''
-                    ]
+                        'be_BE' => '',
+                    ],
                 ],
-            ]
+            ],
+            'productC' => [
+                'an_attribute' => [
+                    '<all_channels>' => [
+                        'en_US' => null,
+                    ],
+                ],
+            ],
         ];
 
         $expected = [
             'productA' => [
                 'color' => [
                     'tablet' => [
-                        '<all_locales>' => 'red'
-                    ]
+                        '<all_locales>' => 'red',
+                    ],
                 ],
                 'colors' => [
                     'tablet' => [
-                        '<all_locales>' => ['blue']
-                    ]
+                        '<all_locales>' => ['blue'],
+                    ],
                 ],
                 'a_metric' => [
                     '<all_channels>' => [
@@ -89,16 +96,16 @@ final class EmptyValuesCleanerSpec extends ObjectBehavior
                             'base_unit' => 'GRAM',
                             'family' => 'Weight',
                         ],
-                    ]
+                    ],
                 ],
             ],
             'productB' => [
                 'an_attribute' => [
                     '<all_channels>' => [
                         'fr_FR' => 'a_value',
-                    ]
+                    ],
                 ],
-            ]
+            ],
         ];
 
         $this->cleanAllValues($rawValues)->shouldBeLike($expected);

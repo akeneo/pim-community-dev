@@ -10,16 +10,8 @@ namespace Akeneo\Connectivity\Connection\Domain\ValueObject;
  */
 final class HourlyInterval
 {
-    /** @var \DateTimeInterface */
-    private $fromDateTime;
-
-    /** @var \DateTimeInterface */
-    private $upToDateTime;
-
-    private function __construct(\DateTimeInterface $fromDateTime, \DateTimeInterface $upToDateTime)
+    private function __construct(private \DateTimeInterface $fromDateTime, private \DateTimeInterface $upToDateTime)
     {
-        $this->fromDateTime = $fromDateTime;
-        $this->upToDateTime = $upToDateTime;
     }
 
     public function fromDateTime(): \DateTimeInterface
@@ -42,7 +34,7 @@ final class HourlyInterval
     {
         if ('UTC' !== $dateTime->getTimezone()->getName() && '+00:00' !== $dateTime->getTimezone()->getName()) {
             throw new \InvalidArgumentException(
-                sprintf(
+                \sprintf(
                     'Parameter `$dateTime` "%s" with timezone "%s" must have a timezone "UTC".',
                     $dateTime->format(\DateTimeInterface::ATOM),
                     $dateTime->getTimezone()->getName()

@@ -20,11 +20,10 @@ use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
  */
 final class GpsReceiver implements ReceiverInterface
 {
-    /** @var SerializerInterface */
-    private $serializer;
+    private const ACKNOWLEDGE_DEADLINE_IN_SECONDS = 600;
 
-    /** @var Subscription */
-    private $subscription;
+    private SerializerInterface $serializer;
+    private Subscription $subscription;
 
     public function __construct(Subscription $subscription, SerializerInterface $serializer)
     {
@@ -69,6 +68,18 @@ final class GpsReceiver implements ReceiverInterface
         }
     }
 
+    public function modifyAckDeadline(Envelope $envelope): void
+    {
+        try {
+            $this->subscription->modifyAckDeadline(
+                $this->getNativeMessage($envelope),
+                self::ACKNOWLEDGE_DEADLINE_IN_SECONDS
+            );
+        } catch (GoogleException $e) {
+            throw new TransportException($e->getMessage(), 0, $e);
+        }
+    }
+
     public function reject(Envelope $envelope): void
     {
         try {
@@ -80,7 +91,7 @@ final class GpsReceiver implements ReceiverInterface
 
     private function getNativeMessage(Envelope $envelope): Message
     {
-        /** @var NativeMessageStamp */
+        /** @var NativeMessageStamp|null $nativeMessageStamp */
         if (null === $nativeMessageStamp = $envelope->last(NativeMessageStamp::class)) {
             throw new \LogicException('NativeMessageStamp should be present on the Envelope.');
         }

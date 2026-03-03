@@ -8,6 +8,7 @@ use Akeneo\Tool\Component\Analytics\ActiveEventSubscriptionCountQuery;
 use Akeneo\Tool\Component\Analytics\ApiConnectionCountQuery;
 use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
 use Akeneo\Tool\Component\Analytics\EmailDomainsQuery;
+use Akeneo\Tool\Component\Analytics\GetConnectedAppsIdentifiersQueryInterface;
 use Akeneo\Tool\Component\Analytics\IsDemoCatalogQuery;
 use Akeneo\Tool\Component\Analytics\MediaCountQuery;
 
@@ -60,6 +61,8 @@ class DBDataCollector implements DataCollectorInterface
 
     private ActiveEventSubscriptionCountQuery $activeEventSubscriptionCountQuery;
 
+    private GetConnectedAppsIdentifiersQueryInterface $getConnectedAppsIdentifiersQuery;
+
     public function __construct(
         CountQuery $channelCountQuery,
         CountQuery $productCountQuery,
@@ -80,7 +83,8 @@ class DBDataCollector implements DataCollectorInterface
         ApiConnectionCountQuery $apiConnectionCountQuery,
         MediaCountQuery $mediaCountQuery,
         IsDemoCatalogQuery $isDemoCatalogQuery,
-        ActiveEventSubscriptionCountQuery $activeEventSubscriptionCountQuery
+        ActiveEventSubscriptionCountQuery $activeEventSubscriptionCountQuery,
+        GetConnectedAppsIdentifiersQueryInterface $getConnectedAppsIdentifiersQuery,
     ) {
         $this->channelCountQuery = $channelCountQuery;
         $this->productCountQuery = $productCountQuery;
@@ -102,6 +106,7 @@ class DBDataCollector implements DataCollectorInterface
         $this->mediaCountQuery = $mediaCountQuery;
         $this->isDemoCatalogQuery = $isDemoCatalogQuery;
         $this->activeEventSubscriptionCountQuery = $activeEventSubscriptionCountQuery;
+        $this->getConnectedAppsIdentifiersQuery = $getConnectedAppsIdentifiersQuery;
     }
 
     /**
@@ -109,6 +114,8 @@ class DBDataCollector implements DataCollectorInterface
      */
     public function collect()
     {
+        $activatedAppIds = $this->getConnectedAppsIdentifiersQuery->execute();
+
         return [
             'nb_channels' => $this->channelCountQuery->fetch()->getVolume(),
             'nb_locales' => $this->localeCountQuery->fetch()->getVolume(),
@@ -132,6 +139,8 @@ class DBDataCollector implements DataCollectorInterface
             'nb_media_images_in_products' => $this->mediaCountQuery->countImages(),
             'is_demo_catalog' => $this->isDemoCatalogQuery->fetch(),
             'nb_active_event_subscription' => $this->activeEventSubscriptionCountQuery->fetch(),
+            'activated_app_ids' => $activatedAppIds,
+            'nb_activated_apps' => count($activatedAppIds),
         ];
     }
 }

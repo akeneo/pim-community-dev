@@ -2,21 +2,15 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\QuickExport;
 
-use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\FilterValues;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit\AbstractProcessor;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
-use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingProductModelValues;
-use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingProductValues;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingValuesInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
-use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
-use Akeneo\Tool\Component\Connector\Processor\BulkMediaFetcher;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -59,9 +53,6 @@ class ProductAndProductModelProcessor extends AbstractProcessor
     /** @var TokenStorageInterface */
     protected $tokenStorage;
 
-    /** @var BulkMediaFetcher */
-    protected $mediaFetcher;
-
     public function __construct(
         NormalizerInterface $normalizer,
         ChannelRepositoryInterface $channelRepository,
@@ -70,8 +61,7 @@ class ProductAndProductModelProcessor extends AbstractProcessor
         FillMissingValuesInterface $fillMissingProductValues,
         ObjectDetacherInterface $detacher,
         UserProviderInterface $userProvider,
-        TokenStorageInterface $tokenStorage,
-        BulkMediaFetcher $mediaFetcher
+        TokenStorageInterface $tokenStorage
     ) {
         $this->normalizer = $normalizer;
         $this->channelRepository = $channelRepository;
@@ -81,7 +71,6 @@ class ProductAndProductModelProcessor extends AbstractProcessor
         $this->detacher = $detacher;
         $this->userProvider = $userProvider;
         $this->tokenStorage = $tokenStorage;
-        $this->mediaFetcher = $mediaFetcher;
     }
 
     /**
@@ -93,7 +82,13 @@ class ProductAndProductModelProcessor extends AbstractProcessor
 
         $parameters = $this->stepExecution->getJobParameters();
         $normalizerContext = $this->getNormalizerContext($parameters);
-        $productStandard = $this->normalizer->normalize($entityWithValues, 'standard', $normalizerContext);
+        $withUuids = $parameters->has('with_uuid') ? $parameters->get('with_uuid') : false;
+
+        $productStandard = $this->normalizer->normalize(
+            $entityWithValues,
+            'standard',
+            array_merge($normalizerContext, ['with_association_uuids' => $withUuids])
+        );
 
         if ($entityWithValues instanceof ProductInterface) {
             $productStandard = $this->fillMissingProductValues->fromStandardFormat($productStandard);
@@ -124,25 +119,6 @@ class ProductAndProductModelProcessor extends AbstractProcessor
             $productStandard = $this->filterProperties($productStandard, $selectedProperties);
         }
 
-        if ($parameters->has('with_media') && $parameters->get('with_media')) {
-            $directory = $this->stepExecution->getJobExecution()->getExecutionContext()
-                ->get(JobInterface::WORKING_DIRECTORY_PARAMETER);
-
-            $identifier = ($entityWithValues instanceof ProductInterface)
-                ? $entityWithValues->getIdentifier()
-                : $entityWithValues->getCode();
-
-            $entityValues = $this->areAttributesToFilter($parameters)
-                ? $this->filterValues($entityWithValues->getValues(), $selectedProperties)
-                : $entityWithValues->getValues();
-
-            $this->mediaFetcher->fetchAll($entityValues, $directory, $identifier);
-
-            foreach ($this->mediaFetcher->getErrors() as $error) {
-                $this->stepExecution->addWarning($error['message'], [], new DataInvalidItem($error['media']));
-            }
-        }
-
         $this->detacher->detach($entityWithValues);
 
         return $productStandard;
@@ -165,10 +141,13 @@ class ProductAndProductModelProcessor extends AbstractProcessor
                     $property,
                     function ($attributeCode) use ($selectedProperties) {
                         return in_array($attributeCode, $selectedProperties);
-                    }, ARRAY_FILTER_USE_KEY
+                    },
+                    ARRAY_FILTER_USE_KEY
                 );
-            } elseif (in_array($codeProperty, $selectedProperties) || 'identifier' === $codeProperty) {
+            } elseif (in_array($codeProperty, $selectedProperties) || 'identifier' === $codeProperty || 'uuid' === $codeProperty) {
                 $propertiesToExport[$codeProperty] = $property;
+            } elseif ('code' === $codeProperty) {
+                $propertiesToExport['identifier'] = $property;
             }
         }
 
@@ -236,26 +215,9 @@ class ProductAndProductModelProcessor extends AbstractProcessor
     protected function initSecurityContext(StepExecution $stepExecution)
     {
         $username = $stepExecution->getJobExecution()->getUser();
-        $user = $this->userProvider->loadUserByUsername($username);
+        $user = $this->userProvider->loadUserByIdentifier($username);
 
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $token = new UsernamePasswordToken($user, 'main', $user->getRoles());
         $this->tokenStorage->setToken($token);
-    }
-
-    /**
-     * Filter values to keep only those that are defined by the context.
-     *
-     * @param WriteValueCollection $values
-     * @param array                    $selectedAttributes
-     *
-     * @return WriteValueCollection
-     */
-    protected function filterValues(WriteValueCollection $values, array $selectedAttributes)
-    {
-        return $values->filter(function ($productValue) use ($selectedAttributes) {
-            $attributeCode = $productValue->getAttributeCode();
-
-            return in_array($attributeCode, $selectedAttributes);
-        });
     }
 }

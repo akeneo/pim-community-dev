@@ -4,8 +4,8 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Validator;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper;
 
 class AttributeValidatorHelperSpec extends ObjectBehavior
@@ -80,6 +80,21 @@ class AttributeValidatorHelperSpec extends ObjectBehavior
 
         $this->validateScope($description, 'ecommerce');
         $this->validateScope($name, null);
+    }
+
+    function it_throws_an_exception_when_attribute_localizable_is_not_in_locale_specific(
+        AttributeInterface $description,
+        AttributeInterface $name
+    ) {
+        $description->getCode()->willReturn('description');
+        $description->isLocalizable()->willReturn(true);
+        $description->isLocaleSpecific()->willReturn(true);
+        $description->getAvailableLocaleCodes()->willReturn(['en_US', 'de_DE']);
+        $name->isLocalizable()->willReturn(false);
+        $name->getCode()->willReturn('name');
+
+        $this->shouldThrow(new \LogicException('Attribute "description" is locale specific and expects one of these locales: en_US, de_DE, "fr_FR" given.'))
+            ->during('validateLocale', [$description, 'fr_FR']);
     }
 
     function it_throws_an_exception_when_attribute_scopable_requirement_is_not_respected(

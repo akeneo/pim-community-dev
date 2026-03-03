@@ -48,7 +48,7 @@ SQL;
             $sql,
             ['attributeCodes' => $attributeCodes],
             ['attributeCodes' => Connection::PARAM_STR_ARRAY]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         $result = [];
         foreach ($rows as $row) {

@@ -11,8 +11,8 @@ use Akeneo\Tool\Component\Batch\Job\ExitStatus;
 use Akeneo\Tool\Component\Batch\Job\JobInterruptedException;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
-use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * A Step implementation that provides common behavior to subclasses, including registering and calling
@@ -26,28 +26,11 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 abstract class AbstractStep implements StepInterface
 {
-    /** @var string */
-    protected $name;
-
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
-
-    /** @var JobRepositoryInterface */
-    protected $jobRepository;
-
-    /**
-     * @param string                   $name
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param JobRepositoryInterface   $jobRepository
-     */
     public function __construct(
-        $name,
-        EventDispatcherInterface $eventDispatcher,
-        JobRepositoryInterface $jobRepository
+        protected string $name,
+        protected EventDispatcherInterface $eventDispatcher,
+        protected JobRepositoryInterface $jobRepository,
     ) {
-        $this->name = $name;
-        $this->jobRepository = $jobRepository;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -72,8 +55,6 @@ abstract class AbstractStep implements StepInterface
      *
      * Do not catch exception here. It will be correctly handled by the execute() method.
      *
-     * @param StepExecution $stepExecution the current step context
-     *
      * @throws \Exception
      */
     abstract protected function doExecute(StepExecution $stepExecution);
@@ -81,15 +62,15 @@ abstract class AbstractStep implements StepInterface
     /**
      * Template method for step execution logic
      *
-     * @param StepExecution $stepExecution
-     *
      * @throws JobInterruptedException
      */
     final public function execute(StepExecution $stepExecution)
     {
         $this->dispatchStepExecutionEvent(EventInterface::BEFORE_STEP_EXECUTION, $stepExecution);
+        if ($stepExecution->getStatus()->getValue() === BatchStatus::PAUSED) {
+            $this->dispatchStepExecutionEvent(EventInterface::BEFORE_STEP_EXECUTION_RESUME, $stepExecution);
+        }
 
-        $stepExecution->setStartTime(new \DateTime());
         $stepExecution->setStatus(new BatchStatus(BatchStatus::STARTED));
         $this->jobRepository->updateStepExecution($stepExecution);
 
@@ -100,7 +81,7 @@ abstract class AbstractStep implements StepInterface
             $this->doExecute($stepExecution);
 
             $exitStatus = new ExitStatus(ExitStatus::COMPLETED);
-            $exitStatus->logicalAnd($stepExecution->getExitStatus());
+            $exitStatus->logicalAnd($stepExecution->getExitStatus() ?? $exitStatus);
 
             $this->jobRepository->updateStepExecution($stepExecution);
 
@@ -109,38 +90,37 @@ abstract class AbstractStep implements StepInterface
                 throw new JobInterruptedException("JobExecution interrupted.");
             }
 
-            // Need to upgrade here not set, in case the execution was stopped
-            $stepExecution->upgradeStatus(BatchStatus::COMPLETED);
-            $this->dispatchStepExecutionEvent(EventInterface::STEP_EXECUTION_SUCCEEDED, $stepExecution);
+            if ($stepExecution->getStatus()->isPaused()) {
+                $this->dispatchStepExecutionEvent(EventInterface::BEFORE_STEP_EXECUTION_PAUSED, $stepExecution);
+            } else {
+                // Need to upgrade here not set, in case the execution was stopped
+                $stepExecution->upgradeStatus(BatchStatus::COMPLETED);
+                $this->dispatchStepExecutionEvent(EventInterface::STEP_EXECUTION_SUCCEEDED, $stepExecution);
+            }
         } catch (\Exception $e) {
             $stepExecution->upgradeStatus($this->determineBatchStatus($e));
 
             $exitStatus = $exitStatus->logicalAnd($this->getDefaultExitStatusForFailure($e));
-
             $stepExecution->addFailureException($e);
             $this->jobRepository->updateStepExecution($stepExecution);
 
             if ($stepExecution->getStatus()->getValue() == BatchStatus::STOPPED) {
-                $this->dispatchStepExecutionEvent(EventInterface::STEP_EXECUTION_INTERRUPTED, $stepExecution);
+                $this->dispatchStepExecutionEvent(EventInterface::STEP_EXECUTION_INTERRUPTED, $stepExecution, $e);
             } else {
-                $this->dispatchStepExecutionEvent(EventInterface::STEP_EXECUTION_ERRORED, $stepExecution);
+                $this->dispatchStepExecutionEvent(EventInterface::STEP_EXECUTION_ERRORED, $stepExecution, $e);
             }
         }
 
         $this->dispatchStepExecutionEvent(EventInterface::STEP_EXECUTION_COMPLETED, $stepExecution);
 
-        $stepExecution->setEndTime(new \DateTime());
+        if (!$stepExecution->getStatus()->isPaused()) {
+            $stepExecution->setEndTime(new \DateTime());
+        }
         $stepExecution->setExitStatus($exitStatus);
         $this->jobRepository->updateStepExecution($stepExecution);
     }
 
-    /**
-     * Determine the step status based on the exception.
-     * @param \Exception $e
-     *
-     * @return int
-     */
-    private static function determineBatchStatus(\Exception $e)
+    private static function determineBatchStatus(\Exception $e): int
     {
         if ($e instanceof JobInterruptedException || $e->getPrevious() instanceof JobInterruptedException) {
             return BatchStatus::STOPPED;
@@ -152,12 +132,8 @@ abstract class AbstractStep implements StepInterface
     /**
      * Default mapping from throwable to {@link ExitStatus}. Clients can modify the exit code using a
      * {@link StepExecutionListener}.
-     *
-     * @param \Exception $e the cause of the failure
-     *
-     * @return ExitStatus {@link ExitStatus}
      */
-    private function getDefaultExitStatusForFailure(\Exception $e)
+    private function getDefaultExitStatusForFailure(\Exception $e): ExitStatus
     {
         if ($e instanceof JobInterruptedException || $e->getPrevious() instanceof JobInterruptedException) {
             $exitStatus = new ExitStatus(ExitStatus::STOPPED);
@@ -176,9 +152,9 @@ abstract class AbstractStep implements StepInterface
      * @param string        $eventName     Name of the event
      * @param StepExecution $stepExecution Step object
      */
-    protected function dispatchStepExecutionEvent($eventName, StepExecution $stepExecution)
+    protected function dispatchStepExecutionEvent($eventName, StepExecution $stepExecution, \Exception $exception = null)
     {
-        $event = new StepExecutionEvent($stepExecution);
+        $event = new StepExecutionEvent($stepExecution, $exception);
         $this->dispatch($event, $eventName);
     }
 
@@ -196,7 +172,7 @@ abstract class AbstractStep implements StepInterface
         $this->dispatch($event, EventInterface::INVALID_ITEM);
     }
 
-    private function dispatch(Event $event, $eventName)
+    private function dispatch(Event $event, $eventName): void
     {
         $this->eventDispatcher->dispatch($event, $eventName);
     }

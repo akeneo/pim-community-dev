@@ -16,6 +16,8 @@ pim_import_export:
     6: Failed
     7: Abandoned
     8: Unknown
+    9: Pause requested
+    10: Paused
   download_archive:
     archive: download generated archive|download generated archives
     output: download generated file|download generated files
@@ -27,10 +29,15 @@ pim_import_export:
       error: Export <strong>%label%</strong> failed
       warning: Export <strong>%label%</strong> finished with some warnings
       success: Export <strong>%label%</strong> finished
+      warnings:
+        xlsx_cell_conversion_error: Please change values format in column {0} to match the targeted attribute type.
+        xlsx_cell_date_to_text_conversion_error: Impossible to import a date type format in a text attribute type. Please check column {0}.
     import:
       error: Import <strong>%label%</strong> failed
       warning: Import <strong>%label%</strong> finished with some warnings
       success: Import <strong>%label%</strong> finished
+      warnings:
+        xlsx_cell_date_conversion_error: Can not convert cell "{cellName}" with date format to attribute of type {attributeType}
   list: Select a job
   job_profile:
     tab:

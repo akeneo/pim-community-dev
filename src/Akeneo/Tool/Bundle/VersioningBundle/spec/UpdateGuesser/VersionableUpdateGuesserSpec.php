@@ -7,7 +7,7 @@ use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 
 class VersionableUpdateGuesserSpec extends ObjectBehavior
 {

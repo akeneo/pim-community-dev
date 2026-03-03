@@ -5,11 +5,15 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi;
 
 use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ProductModel\OnSave\ApiAggregatorForProductModelPostSaveEventSubscriber;
+use Akeneo\Pim\Enrichment\Component\Product\Command\ProductModel\RemoveProductModelCommand;
+use Akeneo\Pim\Enrichment\Component\Product\Command\ProductModel\RemoveProductModelHandler;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModelList;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductModelsWithQualityScoresInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductModelsQuery;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductModelsQueryHandler;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ListProductModelsQueryValidator;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\TwoWayAssociationWithTheSameProductException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductModelNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
@@ -23,7 +27,6 @@ use Akeneo\Tool\Component\Api\Exception\InvalidQueryException;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Tool\Component\Api\Pagination\PaginationTypes;
 use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
-use Akeneo\Tool\Component\Api\Security\PrimaryKeyEncrypter;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -32,6 +35,8 @@ use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Elasticsearch\Common\Exceptions\BadRequest400Exception;
 use Elasticsearch\Common\Exceptions\ServerErrorResponseException;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -44,6 +49,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Webmozart\Assert\Assert;
 
@@ -54,74 +60,33 @@ use Webmozart\Assert\Assert;
  */
 class ProductModelController
 {
-    /** @var ProductQueryBuilderFactoryInterface */
-    protected $pqbFactory;
-
-    /** @var ProductQueryBuilderFactoryInterface */
-    protected $pqbSearchAfterFactory;
-
-    /** @var NormalizerInterface */
-    protected $normalizer;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $channelRepository;
-
-    /** @var PaginatorInterface */
-    protected $offsetPaginator;
-
-    /** @var PaginatorInterface */
-    protected $searchAfterPaginator;
-
-    /** @var PrimaryKeyEncrypter */
-    protected $primaryKeyEncrypter;
-
-    /** @var array */
-    protected $apiConfiguration;
-
-    /** @var ObjectUpdaterInterface */
-    protected $updater;
-
-    /** @var SimpleFactoryInterface */
-    protected $factory;
-
-    /** @var SaverInterface */
-    protected $saver;
-
-    /** @var UrlGeneratorInterface */
-    protected $router;
-
-    /** @var ValidatorInterface */
-    protected $productModelValidator;
-
-    /** @var AttributeFilterInterface */
-    protected $productModelAttributeFilter;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $productModelRepository;
-
-    /** @var StreamResourceResponse */
-    protected $partialUpdateStreamResource;
-
-    /** @var ListProductModelsQueryValidator */
-    private $listProductModelsQueryValidator;
-
-    /** @var ListProductModelsQueryHandler */
-    private $listProductModelsQueryHandler;
-
-    /** @var ConnectorProductModelNormalizer */
-    private $connectorProductModelNormalizer;
-
-    /** @var GetConnectorProductModels */
-    private $getConnectorProductModels;
-
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
-
-    /** @var ApiAggregatorForProductModelPostSaveEventSubscriber */
-    private $apiAggregatorForProductModelPostSave;
-
-    /** @var WarmupQueryCache */
-    private $warmupQueryCache;
+    protected ProductQueryBuilderFactoryInterface $pqbFactory;
+    protected ProductQueryBuilderFactoryInterface $pqbSearchAfterFactory;
+    protected NormalizerInterface $normalizer;
+    protected IdentifiableObjectRepositoryInterface $channelRepository;
+    protected PaginatorInterface $offsetPaginator;
+    protected PaginatorInterface $searchAfterPaginator;
+    protected array $apiConfiguration;
+    protected ObjectUpdaterInterface $updater;
+    protected SimpleFactoryInterface $factory;
+    protected SaverInterface $saver;
+    protected UrlGeneratorInterface $router;
+    protected ValidatorInterface $productModelValidator;
+    protected AttributeFilterInterface $productModelAttributeFilter;
+    protected IdentifiableObjectRepositoryInterface $productModelRepository;
+    protected StreamResourceResponse $partialUpdateStreamResource;
+    private ListProductModelsQueryValidator $listProductModelsQueryValidator;
+    private ListProductModelsQueryHandler $listProductModelsQueryHandler;
+    private ConnectorProductModelNormalizer $connectorProductModelNormalizer;
+    private GetConnectorProductModels $getConnectorProductModels;
+    private TokenStorageInterface $tokenStorage;
+    private ApiAggregatorForProductModelPostSaveEventSubscriber $apiAggregatorForProductModelPostSave;
+    private WarmupQueryCache $warmupQueryCache;
+    private LoggerInterface $logger;
+    private SecurityFacade $security;
+    private RemoveProductModelHandler $removeProductModelHandler;
+    private ValidatorInterface $validator;
+    private GetProductModelsWithQualityScoresInterface $getProductModelsWithQualityScores;
 
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
@@ -130,7 +95,6 @@ class ProductModelController
         IdentifiableObjectRepositoryInterface $channelRepository,
         PaginatorInterface $offsetPaginator,
         PaginatorInterface $searchAfterPaginator,
-        PrimaryKeyEncrypter $primaryKeyEncrypter,
         ObjectUpdaterInterface $updater,
         SimpleFactoryInterface $factory,
         SaverInterface $saver,
@@ -146,7 +110,12 @@ class ProductModelController
         TokenStorageInterface $tokenStorage,
         ApiAggregatorForProductModelPostSaveEventSubscriber $apiAggregatorForProductModelPostSave,
         WarmupQueryCache $warmupQueryCache,
-        array $apiConfiguration
+        LoggerInterface $logger,
+        array $apiConfiguration,
+        SecurityFacade $security,
+        RemoveProductModelHandler $removeProductModelHandler,
+        ValidatorInterface $validator,
+        GetProductModelsWithQualityScoresInterface $getProductModelsWithQualityScores
     ) {
         $this->pqbFactory = $pqbFactory;
         $this->pqbSearchAfterFactory = $pqbSearchAfterFactory;
@@ -154,7 +123,6 @@ class ProductModelController
         $this->channelRepository = $channelRepository;
         $this->offsetPaginator = $offsetPaginator;
         $this->searchAfterPaginator = $searchAfterPaginator;
-        $this->primaryKeyEncrypter = $primaryKeyEncrypter;
         $this->updater = $updater;
         $this->factory = $factory;
         $this->saver = $saver;
@@ -170,23 +138,35 @@ class ProductModelController
         $this->tokenStorage = $tokenStorage;
         $this->apiAggregatorForProductModelPostSave = $apiAggregatorForProductModelPostSave;
         $this->warmupQueryCache = $warmupQueryCache;
+        $this->logger = $logger;
         $this->apiConfiguration = $apiConfiguration;
+        $this->security = $security;
+        $this->removeProductModelHandler = $removeProductModelHandler;
+        $this->validator = $validator;
+        $this->getProductModelsWithQualityScores = $getProductModelsWithQualityScores;
     }
 
     /**
+     * @param Request $request
      * @param string $code
      *
      * @throws NotFoundHttpException
      *
      * @return JsonResponse
      */
-    public function getAction(string $code): JsonResponse
+    public function getAction(Request $request, string $code): JsonResponse
     {
+        $this->denyAccessUnlessAclIsGranted('pim_api_product_list');
+
         try {
             $user = $this->tokenStorage->getToken()->getUser();
             Assert::isInstanceOf($user, UserInterface::class);
 
             $productModel = $this->getConnectorProductModels->fromProductModelCode($code, $user->getId());
+
+            if ($request->query->getAlpha('with_quality_scores', 'false') === 'true') {
+                $productModel = $this->getProductModelsWithQualityScores->fromConnectorProductModel($productModel);
+            }
         } catch (ObjectNotFoundException $e) {
             throw new NotFoundHttpException(sprintf('Product model "%s" does not exist or you do not have permission to access it.', $code));
         }
@@ -205,10 +185,20 @@ class ProductModelController
      */
     public function createAction(Request $request): Response
     {
+        $this->denyAccessUnlessAclIsGranted('pim_api_product_edit');
+
         $data = $this->getDecodedContent($request->getContent());
+        if (isset($data['code']) && !\is_string($data['code'])) {
+            $message = 'The code field requires a string.';
+            throw new DocumentedHttpException(
+                Documentation::URL . 'post_product_models',
+                sprintf('%s Check the expected format on the API documentation.', $message)
+            );
+        }
+
         $productModel = $this->factory->create();
 
-        $this->updateProductModel($productModel, $data, 'post_product_model');
+        $this->updateProductModel($productModel, $data, 'post_product_models');
         $this->validateProductModel($productModel);
         $this->saver->save($productModel);
 
@@ -227,8 +217,18 @@ class ProductModelController
      */
     public function partialUpdateAction(Request $request, $code): Response
     {
+        $this->denyAccessUnlessAclIsGranted('pim_api_product_edit');
+
         $data = $this->getDecodedContent($request->getContent());
         $data['code'] = array_key_exists('code', $data) ? $data['code'] : $code;
+
+        if (!\is_string($data['code'])) {
+            $message = 'The code field requires a string.';
+            throw new DocumentedHttpException(
+                Documentation::URL . 'patch_product_models__code_',
+                sprintf('%s Check the expected format on the API documentation.', $message)
+            );
+        }
 
         $productModel = $this->productModelRepository->findOneByIdentifier($code);
         $isCreation = null === $productModel;
@@ -249,6 +249,37 @@ class ProductModelController
     }
 
     /**
+     * @throws NotFoundHttpException
+     */
+    public function deleteAction(string $code): JsonResponse
+    {
+        $this->denyAccessUnlessAclIsGranted('pim_api_product_remove');
+
+        $productModel = $this->productModelRepository->findOneByIdentifier($code);
+
+        if (null === $productModel) {
+            throw new NotFoundHttpException(\sprintf('Product model "%s" does not exist or you do not have permission to access it.', $code));
+        }
+
+        $command = new RemoveProductModelCommand($productModel->getCode());
+        $violations = $this->validator->validate($command);
+        if (0 < \count($violations)) {
+            return new JsonResponse([
+                'code' => Response::HTTP_UNPROCESSABLE_ENTITY,
+                'messages' => \array_map(
+                    fn (ConstraintViolationInterface $violation): string => $violation->getMessage(),
+                    \iterator_to_array($violations)
+                ),
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        ($this->removeProductModelHandler)($command);
+
+
+        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
+    }
+
+    /**
      * @param Request $request
      *
      * @throws UnprocessableEntityHttpException
@@ -258,6 +289,8 @@ class ProductModelController
      */
     public function listAction(Request $request): JsonResponse
     {
+        $this->denyAccessUnlessAclIsGranted('pim_api_product_list');
+
         $user = $this->tokenStorage->getToken()->getUser();
         Assert::isInstanceOf($user, UserInterface::class);
 
@@ -284,11 +317,15 @@ class ProductModelController
         $query->searchChannelCode = $request->query->get('search_scope', null);
         $query->searchAfter = $request->query->get('search_after', null);
         $query->userId = $user->getId();
+        $query->withQualityScores = $request->query->getAlpha('with_quality_scores', 'false');
 
         try {
             $this->listProductModelsQueryValidator->validate($query);
             $productModels = $this->listProductModelsQueryHandler->handle($query); // in try block as PQB is doing validation also
         } catch (InvalidQueryException $e) {
+            if ($e->getCode() === 404) {
+                throw new NotFoundHttpException($e->getMessage(), $e);
+            }
             throw new UnprocessableEntityHttpException($e->getMessage(), $e);
         } catch (BadRequest400Exception $e) {
             $message = json_decode($e->getMessage(), true);
@@ -297,7 +334,7 @@ class ProductModelController
                 && 'illegal_argument_exception' === $message['error']['root_cause'][0]['type']
                 && 0 === strpos($message['error']['root_cause'][0]['reason'], 'Result window is too large, from + size must be less than or equal to:')) {
                 throw new DocumentedHttpException(
-                    Documentation::URL_DOCUMENTATION . 'pagination.html#search-after-type',
+                    Documentation::URL_DOCUMENTATION . 'pagination.html#the-search-after-method',
                     'You have reached the maximum number of pages you can retrieve with the "page" pagination type. Please use the search after pagination type instead',
                     $e
                 );
@@ -318,11 +355,19 @@ class ProductModelController
      */
     public function partialUpdateListAction(Request $request): Response
     {
+        $this->denyAccessUnlessAclIsGranted('pim_api_product_edit');
+
         $this->warmupQueryCache->fromRequest($request);
         $resource = $request->getContent(true);
         $this->apiAggregatorForProductModelPostSave->activate();
         $response = $this->partialUpdateStreamResource->streamResponse($resource, [], function () {
-            $this->apiAggregatorForProductModelPostSave->dispatchAllEvents();
+            try {
+                $this->apiAggregatorForProductModelPostSave->dispatchAllEvents();
+            } catch (\Throwable $exception) {
+                $this->logger->warning('An exception has been thrown in the post-save events', [
+                    'exception' => $exception,
+                ]);
+            }
             $this->apiAggregatorForProductModelPostSave->deactivate();
         });
 
@@ -417,7 +462,7 @@ class ProductModelController
     }
 
     /**
-     * Updates product with the provided request data
+     * Updates product model with the provided request data
      *
      * @param ProductModelInterface $productModel
      * @param array                 $data
@@ -437,6 +482,12 @@ class ProductModelController
             throw new DocumentedHttpException(
                 Documentation::URL . $anchor,
                 sprintf('%s Check the expected format on the API documentation.', $exception->getMessage()),
+                $exception
+            );
+        } catch (TwoWayAssociationWithTheSameProductException $exception) {
+            throw new DocumentedHttpException(
+                TwoWayAssociationWithTheSameProductException::TWO_WAY_ASSOCIATIONS_HELP_URL,
+                TwoWayAssociationWithTheSameProductException::TWO_WAY_ASSOCIATIONS_ERROR_MESSAGE,
                 $exception
             );
         } catch (InvalidArgumentException $exception) {
@@ -508,7 +559,7 @@ class ProductModelController
             $parameters = [
                 'query_parameters'    => $queryParameters,
                 'search_after'        => [
-                    'next' => false !== $lastProductModel ? $this->primaryKeyEncrypter->encrypt($lastProductModel->id()) : null,
+                    'next' => false !== $lastProductModel ? $lastProductModel->code() : null,
                     'self' => $query->searchAfter,
                 ],
                 'list_route_name'     => 'pim_api_product_model_list',
@@ -521,6 +572,27 @@ class ProductModelController
                 $parameters,
                 null
             );
+        }
+    }
+
+    private function denyAccessUnlessAclIsGranted(string $acl): void
+    {
+        if (!$this->security->isGranted($acl)) {
+            throw new AccessDeniedHttpException($this->deniedAccessMessage($acl));
+        }
+    }
+
+    private function deniedAccessMessage(string $acl): string
+    {
+        switch ($acl) {
+            case 'pim_api_product_list':
+                return 'Access forbidden. You are not allowed to list products.';
+            case 'pim_api_product_edit':
+                return 'Access forbidden. You are not allowed to create or update products.';
+            case 'pim_api_product_remove':
+                return 'Access forbidden. You are not allowed to delete products.';
+            default:
+                return 'Access forbidden.';
         }
     }
 }

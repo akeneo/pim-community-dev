@@ -16,6 +16,7 @@ interface FilterModule extends Backbone.View<any> {
   setValue: (value: FilterValue | number) => FilterModule;
   extend: (filterDefinition: FilterDefinition) => any;
   moveFilter?: (collection: any, element: any) => void;
+  setDatagrid?: (datagridName: string) => void;
 }
 
 interface FilterDefinition {
@@ -106,6 +107,9 @@ class FiltersSelector extends BaseView {
       const filterModule: FilterModule = this.getFilterModule(filter);
 
       if (true === filter.enabled || state[filter.name]) {
+        if (typeof filterModule.setDatagrid === 'function') {
+          filterModule.setDatagrid(this.datagridCollection.inputName);
+        }
         filterModule.render();
         filterModule.off();
 

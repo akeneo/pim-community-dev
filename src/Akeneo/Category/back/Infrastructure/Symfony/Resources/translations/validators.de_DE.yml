@@ -1,0 +1,24 @@
+akeneo.category:
+  validation:
+    upsert:
+      category_code:
+        wrong_format: Kategorie-Code darf nur Buchstaben, Zahlen und Unterstriche enthalten
+        line_feed: Kategorie-Code darf keine Zeilenvorschubzeichen enthalten
+      duplicated_value_user_intents: Der Wert für das Attribut {{ attributeCode }} wird mehrfach aktualisiert
+      value_user_intents_on_deactivated_template: Es ist kein aktiviertes Template mit den Kategorieattributen verknüpft, die Sie bearbeiten möchten
+      value:
+        text_too_long: Der Wert darf nicht länger als {{ limit }} Zeichen sein
+        textarea_too_long: Der Wert darf nicht länger als {{ limit }} Zeichen sein
+        richtext_too_long: Der Wert darf nicht länger als {{ limit }} Zeichen sein
+    template:
+      code:
+        not_blank: Dieser Wert sollte nicht leer sein.
+        unique: 'Vorlagencode: {{ templateCode }} existiert bereits.'
+        wrong_format: Dieses Feld darf nur Buchstaben, Zahlen und Unterstriche enthalten.
+    attribute:
+      limit:
+        title: Sie können nicht mehr als 50 Attribute hinzufügen
+        message: Kategorievorlagen sind auf 50 Attribute pro Vorlage beschränkt.
+      code:
+        wrong_format: Attributcode darf nur Kleinbuchstaben, Zahlen und Unterstriche enthalten
+        unique_in_the_template: Attributcode {{ attributeCode }} muss in der Vorlage eindeutig sein

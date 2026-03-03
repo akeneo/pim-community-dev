@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace AkeneoTest\UserManagement\Integration\Bundle;
 
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\UserManagement\Component\Repository\RoleRepositoryInterface;
@@ -54,7 +54,7 @@ final class DuplicateUserIntegration extends ControllerIntegrationTestCase
         $duplicatedUser = $this->userRepository->findOneByIdentifier('test2');
         self::assertNotNull($duplicatedUser);
         self::assertNotSame($user->getId(), $duplicatedUser->getId());
-        self::assertSame('test2', $duplicatedUser->getUsername());
+        self::assertSame('test2', $duplicatedUser->getUserIdentifier());
         self::assertSame('first', $duplicatedUser->getFirstName());
         self::assertSame('last', $duplicatedUser->getLastName());
         self::assertSame('new@example.com', $duplicatedUser->getEmail());

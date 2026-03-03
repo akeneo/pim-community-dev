@@ -18,7 +18,10 @@ class AkeneoMessengerExtension extends Extension
     public function load(array $configs, ContainerBuilder $container): void
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
-        $loader->load('transport.yml');
+        $loader->load('command.yml');
+        $loader->load('normalizer.yml');
         $loader->load('purge.yml');
+        $loader->load('registry.yml');
+        $loader->load('transport.yml');
     }
 }

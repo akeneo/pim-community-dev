@@ -4,13 +4,21 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\VariantProduct\ExternalApi;
 
+use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\SetGroups;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\AbstractProductTestCase;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\HttpFoundation\Response;
 
 class PartialUpdateVariantProductEndToEnd extends AbstractProductTestCase
 {
+    use AssertEventCountTrait;
+
     /** @var Collection */
     private $products;
 
@@ -63,17 +71,10 @@ class PartialUpdateVariantProductEndToEnd extends AbstractProductTestCase
 
         // apollon_blue_m & apollon_blue_l, categorized in 2 trees (master and categoryA1)
         $this->createVariantProduct('apollon_optionb_false', [
-            'categories' => ['master'],
-            'parent' => 'amor',
-            'values' => [
-                'a_yes_no' => [
-                    [
-                        'locale' => null,
-                        'scope' => null,
-                        'data' => false,
-                    ],
-                ],
-            ],
+            new SetCategories(['master']),
+            new ChangeParent('amor'),
+            new SetGroups(['groupA']),
+            new SetBooleanValue('a_yes_no', null, null, false)
         ]);
 
         $this->products = $this->get('pim_catalog.repository.product')->findAll();
@@ -94,7 +95,7 @@ class PartialUpdateVariantProductEndToEnd extends AbstractProductTestCase
             {
               "locale": null,
               "scope": null,
-              "data": false
+              "data": true
             }
           ]
         }
@@ -144,7 +145,7 @@ JSON;
                     [
                         "locale" => null,
                         "scope"  => null,
-                        "data"   => false,
+                        "data"   => true,
                     ],
                 ],
             ],
@@ -254,12 +255,11 @@ JSON;
 
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Validation failed.',
-            'errors'  => [
-                [
-                    'property' => 'identifier',
-                    'message'  => 'The identifier attribute cannot be empty.',
-                ],
+            'message' => 'Validation failed. The identifier field is required for this endpoint. If you want to manipulate products without identifiers, please use products-uuid endpoints.',
+            '_links' => [
+                'documentation' => [
+                    'href' => 'http://api.akeneo.com/api-reference.html#patch_products_uuid__uuid_'
+                ]
             ],
         ];
 
@@ -340,7 +340,7 @@ JSON;
             'errors'  => [
                 [
                     'property' => 'family',
-                    'message'  => 'The family can\'t be "null" because your product with the identifier "apollon_optionb_false" is a variant product.',
+                    'message'  => 'The family cannot be "null" because your product with the apollon_optionb_false identifier is a variant product.',
                 ],
             ],
         ];
@@ -381,7 +381,7 @@ JSON;
             'errors'  => [
                 [
                     'property' => 'family',
-                    'message'  => 'The family can\'t be "null" because your product with the identifier "apollon_optionb_false" is a variant product.',
+                    'message'  => 'The family cannot be "null" because your product with the apollon_optionb_false identifier is a variant product.',
                 ],
             ],
         ];
@@ -475,6 +475,7 @@ JSON;
         $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         $this->assertSameProducts($expectedProduct, 'apollon_optionb_false');
+        $this->assertEventCount(1, ProductUpdated::class);
     }
 
     public function testProductVariantPartialUpdateWithTheGroupsDeleted(): void
@@ -560,6 +561,7 @@ JSON;
         $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         $this->assertSameProducts($expectedProduct, 'apollon_optionb_false');
+        $this->assertEventCount(1, ProductUpdated::class);
     }
 
     public function testProductVariantPartialUpdateWithTheCategoriesUpdated(): void
@@ -646,6 +648,7 @@ JSON;
         $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         $this->assertSameProducts($expectedProduct, 'apollon_optionb_false');
+        $this->assertEventCount(1, ProductUpdated::class);
     }
 
     public function testProductVariantPartialUpdateWithTheCategoriesDeleted(): void
@@ -732,6 +735,7 @@ JSON;
         $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         $this->assertSameProducts($expectedProduct, 'apollon_optionb_false');
+        $this->assertEventCount(1, ProductUpdated::class);
     }
 
     public function testProductVariantPartialUpdateWithTheAssociationsUpdated(): void
@@ -821,22 +825,22 @@ JSON;
             'associations' => [
                 'PACK' => [
                     'groups' => ['groupA'],
-                    'products' => ['apollon_optionb_false'],
+                    'product_uuids' => [$this->getProductUuid('apollon_optionb_false')->toString()],
                     'product_models' => [],
                 ],
                 'SUBSTITUTION' => [
                     'groups' => [],
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => ['amor'],
                 ],
                 'UPSELL' => [
                     'groups' => [],
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                 ],
                 'X_SELL' => [
                     'groups' => [],
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                 ],
             ],
@@ -848,6 +852,7 @@ JSON;
         $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         $this->assertSameProducts($expectedProduct, 'apollon_optionb_false');
+        $this->assertEventCount(1, ProductUpdated::class);
     }
 
     public function testProductVariantPartialUpdateWithTheAssociationsDeletedOnGroups(): void
@@ -931,10 +936,10 @@ JSON;
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [
-                'PACK'         => ['groups' => [], 'products' => [], 'product_models' => []],
-                'SUBSTITUTION' => ['groups' => [], 'products' => [], 'product_models' => []],
-                'UPSELL'       => ['groups' => [], 'products' => [], 'product_models' => []],
-                'X_SELL'       => ['groups' => [], 'products' => [], 'product_models' => []],
+                'PACK'         => ['groups' => [], 'product_uuids' => [], 'product_models' => []],
+                'SUBSTITUTION' => ['groups' => [], 'product_uuids' => [], 'product_models' => []],
+                'UPSELL'       => ['groups' => [], 'product_uuids' => [], 'product_models' => []],
+                'X_SELL'       => ['groups' => [], 'product_uuids' => [], 'product_models' => []],
             ],
             'quantified_associations' => [],
         ];
@@ -1028,10 +1033,10 @@ JSON;
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [
-                'PACK'         => ['groups' => [], 'products' => [], 'product_models' => []],
-                'SUBSTITUTION' => ['groups' => [], 'products' => [], 'product_models' => []],
-                'UPSELL'       => ['groups' => [], 'products' => [], 'product_models' => []],
-                'X_SELL'       => ['groups' => [], 'products' => [], 'product_models' => []],
+                'PACK'         => ['groups' => [], 'product_uuids' => [], 'product_models' => []],
+                'SUBSTITUTION' => ['groups' => [], 'product_uuids' => [], 'product_models' => []],
+                'UPSELL'       => ['groups' => [], 'product_uuids' => [], 'product_models' => []],
+                'X_SELL'       => ['groups' => [], 'product_uuids' => [], 'product_models' => []],
             ],
             'quantified_associations' => [],
         ];
@@ -1041,6 +1046,7 @@ JSON;
         $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         $this->assertSameProducts($expectedProduct, 'apollon_optionb_false');
+        $this->assertEventCount(1, ProductUpdated::class);
     }
 
     public function testProductVariantPartialUpdateWithProductDisable(): void
@@ -1128,6 +1134,7 @@ JSON;
         $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         $this->assertSameProducts($expectedProduct, 'apollon_optionb_false');
+        $this->assertEventCount(1, ProductUpdated::class);
     }
 
     public function testProductVariantPartialUpdateWhenProductValueAddedOnAttribute(): void
@@ -1221,6 +1228,7 @@ JSON;
         $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         $this->assertSameProducts($expectedProduct, 'apollon_optionb_false');
+        $this->assertEventCount(1, ProductUpdated::class);
     }
 
     public function testProductVariantPartialUpdateWhenProductValueDeletedOnAttribute(): void
@@ -1609,7 +1617,7 @@ JSON;
             'identifier'    => 'apollon_optionb_false',
             'family'        => "familyA",
             'parent'        => "amor",
-            'groups'        => [],
+            'groups'        => ['groupA'],
             'categories'    => ['master'],
             'enabled'       => true,
             'values'        => [
@@ -1739,7 +1747,7 @@ JSON;
             'identifier'    => 'apollon_optionb_false',
             'family'        => "familyA",
             'parent'        => "apollon",
-            'groups'        => [],
+            'groups'        => ['groupA'],
             'categories'    => ['master'],
             'enabled'       => true,
             'values'        => [
@@ -1800,6 +1808,7 @@ JSON;
             'http://localhost/api/rest/v1/products/apollon_optionb_false',
             $response->headers->get('location')
         );
+        $this->assertEventCount(1, ProductUpdated::class);
     }
 
     public function testPartialUpdateResponseWhenMissingIdentifierPropertyAndProvidedIdentifierInValues(): void

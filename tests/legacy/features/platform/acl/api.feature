@@ -4,8 +4,8 @@ Feature: Define user rights on the web API
   As an administrator
   I need to be able to assign/remove rights
 
-  @info here we check only if ACLs on "Web API permissions" are saved. Check on access resources are done in integration tests
-    Scenario: Successfully edit and apply user rights on web API
+  # @info here we check only if ACLs on "Web API permissions" are saved. Check on access resources are done in integration tests
+  Scenario: Successfully edit and apply user rights on web API
     Given a "default" catalog configuration
     And I am logged in as "Peter"
     When I am on the "Administrator" role page

@@ -2636,7 +2636,6 @@ abstract class AbstractPimCatalogProductModel extends AbstractPimCatalogTestCase
                 'attributes_of_ancestors' => ['description', 'material', 'color'],
                 'attributes_for_this_level' => ['size'],
                 'parent'                    => 'model-biker-jacket-polyester',
-                'parent'                    => 'model-biker-jacket-polyester',
                 'ancestors'                 => [
                     'codes' => ['model-biker-jacket', 'model-biker-jacket-polyester'],
                     'ids'   => ['product_model_12', 'product_model_14'],

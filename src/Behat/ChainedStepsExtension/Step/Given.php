@@ -25,6 +25,6 @@ class Given extends SubStep
         $arguments = func_get_args();
         $text = array_shift($arguments);
 
-        parent::__construct('Given', $text, $arguments);
+        parent::__construct($text, $arguments);
     }
 }

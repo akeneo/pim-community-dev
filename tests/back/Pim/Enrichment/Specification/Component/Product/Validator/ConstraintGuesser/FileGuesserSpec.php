@@ -10,6 +10,11 @@ use Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser\FileGues
 
 class FileGuesserSpec extends ObjectBehavior
 {
+    function it_is_initializable()
+    {
+        $this->shouldHaveType(FileGuesser::class);
+    }
+
     function it_is_an_attribute_constraint_guesser()
     {
         $this->shouldImplement(ConstraintGuesserInterface::class);
@@ -35,6 +40,7 @@ class FileGuesserSpec extends ObjectBehavior
         $attribute->getAllowedExtensions()
             ->willReturn(null)
             ->shouldBeCalled();
+        $attribute->getCode()->willReturn('a_code')->shouldBeCalled();
         $constraints = $this->guessConstraints($attribute);
 
         $constraints->shouldHaveCount(1);
@@ -42,6 +48,7 @@ class FileGuesserSpec extends ObjectBehavior
         $constraint = $constraints[0];
         $constraint->shouldBeAnInstanceOf(File::class);
 
+        $constraint->attributeCode->shouldBe('a_code');
         $constraint->binaryFormat->shouldBe(false);
         $constraint->maxSize
             ->shouldBe(15000000);
@@ -59,12 +66,14 @@ class FileGuesserSpec extends ObjectBehavior
         $attribute->getAllowedExtensions()
             ->willReturn(null)
             ->shouldBeCalled();
+        $attribute->getCode()->willReturn('a_code')->shouldBeCalled();
         $constraints = $this->guessConstraints($attribute);
 
         $constraints->shouldHaveCount(1);
 
         $constraint = $constraints[0];
         $constraint->shouldBeAnInstanceOf(File::class);
+        $constraint->attributeCode->shouldBe('a_code');
 
         $constraint->maxSize
             ->shouldBe((int) ($maxSize * FileGuesser::KILOBYTE_MULTIPLIER * 1000));
@@ -82,11 +91,13 @@ class FileGuesserSpec extends ObjectBehavior
         $attribute->getAllowedExtensions()
             ->willReturn(null)
             ->shouldBeCalled();
+        $attribute->getCode()->willReturn('a_code')->shouldBeCalled();
         $constraints = $this->guessConstraints($attribute);
 
         $constraints->shouldHaveCount(1);
 
         $constraint = $constraints[0];
+        $constraint->attributeCode->shouldBe('a_code');
         $constraint->shouldBeAnInstanceOf(File::class);
 
         $constraint->maxSize
@@ -118,11 +129,13 @@ class FileGuesserSpec extends ObjectBehavior
         $attribute->getAllowedExtensions()
             ->willReturn($allowedExtensions)
             ->shouldBeCalled();
+        $attribute->getCode()->willReturn('a_code')->shouldBeCalled();
         $constraints = $this->guessConstraints($attribute);
 
         $constraints->shouldHaveCount(1);
 
         $constraint = $constraints[0];
+        $constraint->attributeCode->shouldBe('a_code');
         $constraint->shouldBeAnInstanceOf(File::class);
         $constraint->maxSize
             ->shouldBe(null);
@@ -138,11 +151,13 @@ class FileGuesserSpec extends ObjectBehavior
         $attribute->getAllowedExtensions()
             ->willReturn(['jpg', 'png'])
             ->shouldBeCalled();
+        $attribute->getCode()->willReturn('a_code')->shouldBeCalled();
         $constraints = $this->guessConstraints($attribute);
 
         $constraints->shouldHaveCount(1);
 
         $constraint = $constraints[0];
+        $constraint->attributeCode->shouldBe('a_code');
         $constraint->shouldBeAnInstanceOf(File::class);
 
         $constraint->maxSize

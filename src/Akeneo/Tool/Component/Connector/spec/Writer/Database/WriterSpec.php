@@ -8,7 +8,7 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 
 class WriterSpec extends ObjectBehavior
 {
@@ -41,7 +41,7 @@ class WriterSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('create')->shouldBeCalled();
 
         $object2->getId()->willReturn(42);
-        $stepExecution->incrementSummaryInfo('process')->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('update')->shouldBeCalled();
 
         $this->write([$object1, $object2]);
     }

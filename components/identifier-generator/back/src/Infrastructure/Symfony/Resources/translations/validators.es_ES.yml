@@ -1,0 +1,28 @@
+validation:
+  create:
+    identifier_limit_reached: 'Se ha alcanzado el límite de generadores de identificadores «{{limit}}».'
+    code_already_used: 'Este código ya está en uso'
+  update:
+    identifier_generator_code_not_found: 'El generador de identificadores «{{code}}» no existe o no tiene permiso para acceder a él.'
+  identifier_generator:
+    attribute_does_not_exist: 'El atributo «{{code}}» no existe.'
+    attribute_should_have_type: 'El código del atributo «{{ code }}» es del tipo «{{ type }}» y debería ser del tipo «{{ expected }}».'
+    free_text_string_field_required: 'El texto libre debe contener la clave «string»'
+    enabled_value_field_required: 'Habilitado debe contener la clave «value»'
+    enabled_boolean_value: 'Este valor debe ser booleano.'
+    auto_number_fields_required: '"Los campos «{{field}}» son obligatorios para el tipo «auto_number»'
+    structure_auto_number_limit_reached: 'debe contener sólo {{limit}} número automático'
+    conditions_limit_reached: 'debe contener solo {{limit}} condición {{type}}'
+    unknown_operator: 'El operador {{ value }} solo puede ser uno de los siguientes: {{ choices }}.'
+    families_do_not_exist: 'Las siguientes familias han sido eliminadas de su catálogo: {{ familyCodes }}. Puede eliminarlas de su selección de productos.'
+    options_do_not_exist: 'Las siguientes opciones de atributo no existen para el atributo «{{ attributeCode }}»: {{ optionCodes }}.'
+    unknown_scope: 'El objetivo «{{ scopeCode }}» no existe.'
+    unknown_locale: 'La configuración regional «{{ localeCode }}» no existe o no está activada.'
+    inactive_locale: 'La configuración regional «{{ localeCode }}» no está activa para el canal «{{ scopeCode }}».'
+    family_property_fields_required: 'El campo «{{ field }}» es obligatorio para el tipo «familia».'
+    simple_select_property_fields_required: 'El campo «{{ campo }}» es obligatorio para el tipo «simple_select».'
+    reference_entity_property_fields_required: 'El campo »{{ field }}» es obligatorio para el tipo «reference_entity».'
+    process_unknown_operator: 'El operador {{ value }} solo puede ser uno de los siguientes: {{ choices }}.'
+    locale_required: 'Se requiere una configuración regional para el atributo «{{ attributeCode }}».'
+    scope_required: 'Se requiere un canal para el atributo «{{ attributeCode }}».'
+    categories_do_not_exist: 'Las siguientes categorías han sido eliminadas de su catálogo: {{ categoryCodes }}. Puede eliminarlas de su selección de productos.'

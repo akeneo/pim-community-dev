@@ -3,7 +3,8 @@ import {CriterionEvaluationResult, Family, Product} from '../../domain';
 type FollowCriterionRecommendationHandler = (
   criterionEvaluation: CriterionEvaluationResult,
   family: Family | null,
-  product: Product
+  product: Product,
+  locale: string
 ) => void;
 
 type AllowFollowingCriterionRecommendation = (

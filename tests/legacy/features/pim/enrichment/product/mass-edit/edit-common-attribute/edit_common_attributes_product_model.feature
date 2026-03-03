@@ -42,7 +42,7 @@ Feature: Edit common attributes of many products and product models at once
     Given I am on the products grid
     And I select rows model-col
     And I press the "Bulk actions" button
-    And I choose the "Edit attributes values" operation
+    And I choose the "Edit attribute values" operation
     And I display the Brand attribute
     And I change the "Brand" to "Nyke"
     And I display the Composition attribute
@@ -61,7 +61,7 @@ Feature: Edit common attributes of many products and product models at once
     When I go on the last executed job resume of "edit_common_attributes"
     Then I should see the text "COMPLETED"
     And I should see the text "read 3"
-    And I should see the text "processed 3"
+    And I should see the text "updated 3"
 
   @critical
   Scenario: Mass edit attributes of a sub product model inside a family variant with 2 levels of hierarchy
@@ -70,7 +70,7 @@ Feature: Edit common attributes of many products and product models at once
     And I filter by "color" with operator "IN LIST" and value "white"
     And I select rows model-col-white
     And I press the "Bulk actions" button
-    And I choose the "Edit attributes values" operation
+    And I choose the "Edit attribute values" operation
     And I display the Composition attribute
     And I change the "Composition" to "100% cotton"
     And I display the Weight attribute
@@ -84,14 +84,14 @@ Feature: Edit common attributes of many products and product models at once
     When I go on the last executed job resume of "edit_common_attributes"
     Then I should see the text "COMPLETED"
     And I should see the text "read 2"
-    And I should see the text "processed 2"
+    And I should see the text "updated 2"
 
   @critical
   Scenario: Mass edit attributes of a product model inside a family variant with 1 levels of hierarchy
     Given I am on the products grid
     And I select rows model-nin
     And I press the "Bulk actions" button
-    And I choose the "Edit attributes values" operation
+    And I choose the "Edit attribute values" operation
     And I display the Brand attribute
     And I change the "Brand" to "Nyke"
     And I display the Composition attribute
@@ -104,14 +104,14 @@ Feature: Edit common attributes of many products and product models at once
     When I go on the last executed job resume of "edit_common_attributes"
     Then I should see the text "COMPLETED"
     And I should see the text "read 2"
-    And I should see the text "processed 2"
+    And I should see the text "updated 2"
 
   @critical
   Scenario: Mass edit attributes of a product model and a non variant product at the same time
     Given I am on the products grid
     And I select rows model-col and tool-tee
     And I press the "Bulk actions" button
-    And I choose the "Edit attributes values" operation
+    And I choose the "Edit attribute values" operation
     And I display the Brand attribute
     And I change the "Brand" to "Nyke"
     And I display the Composition attribute
@@ -131,7 +131,7 @@ Feature: Edit common attributes of many products and product models at once
     When I go on the last executed job resume of "edit_common_attributes"
     Then I should see the text "COMPLETED"
     And I should see the text "read 4"
-    And I should see the text "processed 4"
+    And I should see the text "updated 4"
 
   @critical
   Scenario: Mass edit attributes of all selected products and product models
@@ -139,7 +139,7 @@ Feature: Edit common attributes of many products and product models at once
     And I select rows model-col
     And I select all entities
     And I press the "Bulk actions" button
-    And I choose the "Edit attributes values" operation
+    And I choose the "Edit attribute values" operation
     And I display the Brand attribute
     And I change the "Brand" to "Nyke"
     And I display the Composition attribute
@@ -166,4 +166,4 @@ Feature: Edit common attributes of many products and product models at once
     When I go on the last executed job resume of "edit_common_attributes"
     Then I should see the text "COMPLETED"
     And I should see the text "read 6"
-    And I should see the text "processed 6"
+    And I should see the text "updated 6"

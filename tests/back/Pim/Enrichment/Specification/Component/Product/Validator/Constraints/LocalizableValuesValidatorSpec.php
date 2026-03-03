@@ -2,8 +2,8 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints;
 
-use Akeneo\Channel\Component\Model\Channel;
-use Akeneo\Channel\Component\Model\Locale;
+use Akeneo\Channel\Infrastructure\Component\Model\Channel;
+use Akeneo\Channel\Infrastructure\Component\Model\Locale;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\IsString;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\LocalizableValues;
@@ -98,6 +98,7 @@ class LocalizableValuesValidatorSpec extends ObjectBehavior
             '%invalid_locale%' => 'non_EXISTING',
         ])->willReturn($violationBuilder);
         $violationBuilder->atPath('[localizable_text-<all_channels>-non_EXISTING]')->willReturn($violationBuilder);
+        $violationBuilder->setCode(LocalizableValues::NON_ACTIVE_LOCALE)->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate($values, $constraint);
@@ -136,6 +137,7 @@ class LocalizableValuesValidatorSpec extends ObjectBehavior
             ]
         )->willReturn($violationBuilder);
         $violationBuilder->atPath('[localizable_text-<all_channels>-es_DO]')->willReturn($violationBuilder);
+        $violationBuilder->setCode(LocalizableValues::NON_ACTIVE_LOCALE)->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate($values, $constraint);
@@ -176,6 +178,7 @@ class LocalizableValuesValidatorSpec extends ObjectBehavior
             ]
         )->willReturn($violationBuilder);
         $violationBuilder->atPath('[scopable_localizable_text-mobile-fr_FR]')->willReturn($violationBuilder);
+        $violationBuilder->setCode(LocalizableValues::INVALID_LOCALE_FOR_CHANNEL)->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate($values, $constraint);
@@ -212,11 +215,12 @@ class LocalizableValuesValidatorSpec extends ObjectBehavior
         $context->buildViolation(
             $constraint->invalidLocaleSpecificMessage,
             [
-                '%attribute_code%' => 'name',
-                '%invalid_locale%' => 'fr_FR',
+                '%attribute%' => 'name',
+                '%locale%' => 'fr_FR',
             ]
         )->willReturn($violationBuilder);
         $violationBuilder->atPath('[name-<all_channels>-fr_FR]')->willReturn($violationBuilder);
+        $violationBuilder->setCode(LocalizableValues::NOT_AVAILABLE_LOCALE_ERROR)->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate($values, $constraint);

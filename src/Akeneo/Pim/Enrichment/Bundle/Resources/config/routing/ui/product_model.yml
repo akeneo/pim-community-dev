@@ -2,6 +2,10 @@ pim_enrich_product_model_edit:
     path: /{id}
     methods: [GET, POST]
 
+pim_enrich_product_model_edit_categories:
+    path: /categories/{id}
+    methods: [GET]
+
 pim_enrich_product_model_rest_create:
     path: /rest/create
     defaults: { _controller: pim_enrich.controller.rest.product_model:createAction }

@@ -3,6 +3,8 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\TextArea;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
@@ -34,36 +36,24 @@ class ScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
         ]);
 
         $this->createProduct('cat', [
-            'family' => 'a_family',
-            'values' => [
-                'a_scopable_text_area' => [
-                    ['data' => 'black cat', 'locale' => null, 'scope' => 'ecommerce'],
-                    ['data' => 'cat', 'locale' => null, 'scope' => 'tablet'],
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetTextareaValue('a_scopable_text_area', 'ecommerce', null, 'black cat'),
+            new SetTextareaValue('a_scopable_text_area', 'tablet', null, 'cat'),
         ]);
 
         $this->createProduct('cattle', [
-            'family' => 'a_family',
-            'values' => [
-                'a_scopable_text_area' => [
-                    ['data' => 'cattle', 'locale' => null, 'scope' => 'ecommerce'],
-                    ['data' => 'cattle', 'locale' => null, 'scope' => 'tablet']
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetTextareaValue('a_scopable_text_area', 'ecommerce', null, 'cattle'),
+            new SetTextareaValue('a_scopable_text_area', 'tablet', null, 'cattle'),
         ]);
 
         $this->createProduct('dog', [
-            'family' => 'a_family',
-            'values' => [
-                'a_scopable_text_area' => [
-                    ['data' => 'just a dog...', 'locale' => null, 'scope' => 'ecommerce'],
-                    ['data' => 'dog', 'locale' => null, 'scope' => 'tablet']
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetTextareaValue('a_scopable_text_area', 'ecommerce', null, 'just a dog...'),
+            new SetTextareaValue('a_scopable_text_area', 'tablet', null, 'dog'),
         ]);
 
-        $this->createProduct('empty_product', ['family' => 'a_family']);
+        $this->createProduct('empty_product', [new SetFamily('a_family')]);
     }
 
     public function testOperatorStartsWith()

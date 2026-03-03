@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductCompleten
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductCompletenessCollectionNormalizerSpec extends ObjectBehavior
@@ -27,7 +28,7 @@ class ProductCompletenessCollectionNormalizerSpec extends ObjectBehavior
 
     function it_supports_completenesses_for_indexing_formats()
     {
-        $completenesses = new ProductCompletenessCollection(42, []);
+        $completenesses = new ProductCompletenessCollection(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'), []);
         $this->supportsNormalization($completenesses, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
              ->shouldReturn(true);
     }
@@ -35,7 +36,7 @@ class ProductCompletenessCollectionNormalizerSpec extends ObjectBehavior
     function it_normalizes_completenesses()
     {
         $completenesses = new ProductCompletenessCollection(
-            42,
+            Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'),
             [
                 new ProductCompleteness('ecommerce', 'en_US', 0, 0),
                 new ProductCompleteness('ecommerce', 'fr_FR', 1, 0),

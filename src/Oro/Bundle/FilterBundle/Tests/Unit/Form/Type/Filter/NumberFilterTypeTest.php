@@ -38,7 +38,7 @@ class NumberFilterTypeTest extends AbstractTypeTestCase
 
     public function testGetName()
     {
-        $this->assertEquals(NumberFilterType::NAME, $this->type->getName());
+        $this->assertEquals(NumberFilterType::NAME, $this->type->getBlockPrefix());
     }
 
     /**

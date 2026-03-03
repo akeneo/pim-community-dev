@@ -2,7 +2,7 @@
 
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\InternalApi\QuantifiedAssociations;
 
-use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\InternalApi\QuantifiedAssociations\AbstractProductWithQuantifiedAssociationsTestCase;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
 use Symfony\Component\HttpFoundation\Response;
 
 class ValidateQuantifiedAssociationsInProductEndToEnd extends AbstractProductWithQuantifiedAssociationsTestCase
@@ -12,24 +12,19 @@ class ValidateQuantifiedAssociationsInProductEndToEnd extends AbstractProductWit
      */
     public function it_add_quantified_associations_to_a_product(): void
     {
-        $product = $this->createProduct([
-            'values' => [
-                'sku' => [
-                    [
-                        'scope' => null,
-                        'locale' => null,
-                        'data' => 'yellow_chair',
-                    ],
-                ],
+        $product = $this->createProduct(
+            'yellow_chair',
+            'shoes',[
+                new SetIdentifierValue('sku', 'yellow_chair')
             ],
-        ]);
-        $normalizedProduct = $this->getProductFromInternalApi($product->getId());
+        );
+        $normalizedProduct = $this->getProductFromInternalApi($product->getUuid());
 
         $quantifiedAssociations = [
             'PRODUCTSET' => [
                 'products' => [
                     [
-                        'identifier' => 'THIS_PRODUCT_DOES_NOT_EXISTS',
+                        'uuid' => 'd215e419-a59d-4e75-8483-a1962c18ed4b',
                         'quantity' => 3,
                     ],
                 ],
@@ -43,7 +38,7 @@ class ValidateQuantifiedAssociationsInProductEndToEnd extends AbstractProductWit
             ]
         );
 
-        $response = $this->updateProductWithInternalApi($product->getId(), $normalizedProductWithQuantifiedAssociations);
+        $response = $this->updateProductWithInternalApi($product->getUuid(), $normalizedProductWithQuantifiedAssociations);
 
         $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
         $body = json_decode($response->getContent(), true);

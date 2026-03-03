@@ -4,7 +4,7 @@
 namespace Akeneo\Pim\Structure\Component\Repository;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 
 /**
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>

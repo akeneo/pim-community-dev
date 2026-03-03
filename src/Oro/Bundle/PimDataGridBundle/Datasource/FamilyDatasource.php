@@ -122,5 +122,7 @@ class FamilyDatasource implements DatasourceInterface, ParameterizableInterface
     public function setHydrator(HydratorInterface $hydrator)
     {
         $this->hydrator = $hydrator;
+
+        return $this;
     }
 }

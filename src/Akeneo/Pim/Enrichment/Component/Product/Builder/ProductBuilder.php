@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Builder;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductEvents;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -10,6 +11,7 @@ use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Webmozart\Assert\Assert;
 
 /**
  * Product builder
@@ -20,41 +22,30 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class ProductBuilder implements ProductBuilderInterface
 {
-    /** @var EntityWithValuesBuilderInterface */
-    protected $entityWithValuesBuilder;
+    /** @var class-string */
+    protected string $productClass;
 
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
-
-    /** @var FamilyRepositoryInterface */
-    protected $familyRepository;
-
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
-
-    /** @var string */
-    protected $productClass;
-
+    /**
+     * @param array<string, class-string> $classes
+     */
     public function __construct(
-        AttributeRepositoryInterface $attributeRepository,
-        FamilyRepositoryInterface $familyRepository,
-        EventDispatcherInterface $eventDispatcher,
-        EntityWithValuesBuilderInterface $entityWithValuesBuilder,
+        protected AttributeRepositoryInterface $attributeRepository,
+        protected FamilyRepositoryInterface $familyRepository,
+        protected EventDispatcherInterface $eventDispatcher,
+        protected EntityWithValuesBuilderInterface $entityWithValuesBuilder,
         array $classes
     ) {
-        $this->attributeRepository = $attributeRepository;
-        $this->familyRepository = $familyRepository;
-        $this->eventDispatcher = $eventDispatcher;
+        Assert::classExists($classes['product'] ?? '');
+        Assert::implementsInterface($classes['product'], ProductInterface::class);
         $this->productClass = $classes['product'];
-        $this->entityWithValuesBuilder = $entityWithValuesBuilder;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function createProduct($identifier = null, $familyCode = null)
+    public function createProduct(?string $identifier = null, ?string $familyCode = null, ?string $uuid = null): ProductInterface
     {
-        $product = new $this->productClass();
+        $product = new $this->productClass($uuid);
 
         if (null !== $identifier) {
             $identifierAttribute = $this->attributeRepository->getIdentifier();
@@ -76,12 +67,12 @@ class ProductBuilder implements ProductBuilderInterface
      * {@inheritdoc}
      */
     public function addOrReplaceValue(
-        EntityWithValuesInterface $values,
+        EntityWithValuesInterface $entityWithValues,
         AttributeInterface $attribute,
         ?string $localeCode,
         ?string $scopeCode,
         $data
     ): ?ValueInterface {
-        return $this->entityWithValuesBuilder->addOrReplaceValue($values, $attribute, $localeCode, $scopeCode, $data);
+        return $this->entityWithValuesBuilder->addOrReplaceValue($entityWithValues, $attribute, $localeCode, $scopeCode, $data);
     }
 }

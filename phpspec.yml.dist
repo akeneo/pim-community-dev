@@ -1,11 +1,40 @@
 ## Rename this file in phpspec.yml to customize the phpspec configuration
 suites:
+    ## Category context
+    LegacyCategory:
+        namespace: Akeneo\Test\Category\Acceptance
+        psr4_prefix: Akeneo\Test\Category\Acceptance
+        spec_path: tests/back/Category/Acceptance
+        src_path: tests/back/Category/Acceptance
+        spec_prefix: Specification
+
+    Category:
+        namespace: Akeneo\Category
+        psr4_prefix: Akeneo\Category
+        src_path: src/Akeneo/Category/back
+        spec_path: src/Akeneo/Category/back/tests
+        spec_prefix: Specification
+
     ## Channel context
-    Channel:
+    LegacyChannel:
         namespace: Akeneo\Channel
         psr4_prefix: Akeneo\Channel
         spec_path: tests/back/Channel
-        src_path: src/Akeneo/Channel
+        src_path: src/Akeneo/Channel/back
+        spec_prefix: Specification
+
+    ChannelAcceptance:
+        namespace: Akeneo\Test\Channel\Acceptance
+        psr4_prefix: Akeneo\Test\Channel\Acceptance
+        spec_path: src/Akeneo/Channel/back/tests/Acceptance
+        src_path: src/Akeneo/Channel/back/tests/Acceptance
+        spec_prefix: Specification
+
+    Channel:
+        namespace: Akeneo\Channel
+        psr4_prefix: Akeneo\Channel
+        spec_path: src/Akeneo/Channel/back/tests
+        src_path: src/Akeneo/Channel/back
         spec_prefix: Specification
 
     ## Structure context
@@ -17,12 +46,34 @@ suites:
         spec_prefix: Specification
 
     ## Enrichment context
+    EnrichmentProductAcceptance:
+        namespace: Akeneo\Pim\Enrichment\Product\Test\Acceptance
+        psr4_prefix: Akeneo\Pim\Enrichment\Product\Test\Acceptance
+        src_path: src/Akeneo/Pim/Enrichment/Product/back/Test/Acceptance
+        spec_path: src/Akeneo/Pim/Enrichment/Product/back/Test/Acceptance
+        spec_prefix: Specification
+
+    EnrichmentProduct:
+        namespace: Akeneo\Pim\Enrichment\Product
+        psr4_prefix: Akeneo\Pim\Enrichment\Product
+        src_path: src/Akeneo/Pim/Enrichment/Product/back
+        spec_path: src/Akeneo/Pim/Enrichment/Product/back/Test
+        spec_prefix: Specification
+
+    EnrichmentCategoryAcceptance:
+        namespace: Akeneo\Pim\Enrichment\Category\Test\Acceptance
+        psr4_prefix: Akeneo\Pim\Enrichment\Category\Test\Acceptance
+        src_path: src/Akeneo/Pim/Enrichment/Category/back/Test/Acceptance
+        spec_path: src/Akeneo/Pim/Enrichment/Category/back/Test/Acceptance
+        spec_prefix: Specification
+
     Enrichment:
         namespace: Akeneo\Pim\Enrichment
         psr4_prefix: Akeneo\Pim\Enrichment
         src_path: src/Akeneo/Pim/Enrichment
         spec_path: tests/back/Pim/Enrichment
         spec_prefix: Specification
+
 
     ## Platform context
     Platform:
@@ -51,6 +102,13 @@ suites:
         psr4_prefix: Akeneo\Pim\Automation\DataQualityInsights
         spec_path: src/Akeneo/Pim/Automation/DataQualityInsights/tests/back/
         src_path: src/Akeneo/Pim/Automation/DataQualityInsights
+        spec_prefix: Specification
+
+    IdentifierGenerator:
+        namespace: Akeneo\Pim\Automation\IdentifierGenerator
+        psr4_prefix: Akeneo\Pim\Automation\IdentifierGenerator
+        spec_path: components/identifier-generator/back/tests
+        src_path: components/identifier-generator
         spec_prefix: Specification
 
     ## Akeneo Components
@@ -141,11 +199,23 @@ suites:
         psr4_prefix: Akeneo\Tool\Bundle\StorageUtilsBundle
         spec_path: src/Akeneo/Tool/Bundle/StorageUtilsBundle
         src_path: src/Akeneo/Tool/Bundle/StorageUtilsBundle
+    Job:
+        namespace: Akeneo\Platform\Job
+        psr4_prefix: Akeneo\Platform\Job
+        spec_path: src/Akeneo/Platform/Job/back/tests
+        src_path: src/Akeneo/Platform/Job/back
+        spec_prefix: Specification
+    FileStorageBundle:
+        namespace: Akeneo\Tool\Bundle\FileStorageBundle
+        psr4_prefix: Akeneo\Tool\Bundle\FileStorageBundle
+        spec_path: src/Akeneo/Tool/Bundle/FileStorageBundle
+        src_path: src/Akeneo/Tool/Bundle/FileStorageBundle
     MeasureBundle:
         namespace: Akeneo\Tool\Bundle\MeasureBundle
         psr4_prefix: Akeneo\Tool\Bundle\MeasureBundle
-        spec_path: src/Akeneo/Tool/Bundle/MeasureBundle
-        src_path: src/Akeneo/Tool/Bundle/MeasureBundle
+        spec_path: src/Akeneo/Tool/Bundle/MeasureBundle/back/tests
+        src_path: src/Akeneo/Tool/Bundle/MeasureBundle/back
+        spec_prefix: spec
     MessengerBundle:
         namespace: Akeneo\Tool\Bundle\MessengerBundle
         psr4_prefix: Akeneo\Tool\Bundle\MessengerBundle
@@ -178,11 +248,17 @@ suites:
         psr4_prefix: Akeneo\Tool\Bundle\ConnectorBundle
         spec_path: src/Akeneo/Tool/Bundle/ConnectorBundle
         src_path: src/Akeneo/Tool/Bundle/ConnectorBundle
-    User:
+    LegacyUser:
         namespace: Akeneo\UserManagement
         psr4_prefix: Akeneo\UserManagement
         spec_path: tests/back/UserManagement
         src_path: src/Akeneo/UserManagement
+        spec_prefix: Specification
+    User:
+        namespace: Akeneo\UserManagement
+        psr4_prefix: Akeneo\UserManagement
+        spec_path: src/Akeneo/UserManagement/back/tests
+        src_path: src/Akeneo/UserManagement/back
         spec_prefix: Specification
     ## Oro bundles
     OroFilterBundle:
@@ -220,3 +296,10 @@ suites:
         psr4_prefix: Oro\Bundle\PimFilterBundle
         spec_path: src/Oro/Bundle/PimFilterBundle
         src_path: src/Oro/Bundle/PimFilterBundle
+
+    Installer:
+        namespace: Akeneo\Platform\Installer
+        psr4_prefix: Akeneo\Platform\Installer
+        spec_path: src/Akeneo/Platform/Installer/back/tests
+        src_path: src/Akeneo/Platform/Installer/back/src
+        spec_prefix: Specification

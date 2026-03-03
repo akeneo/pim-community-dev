@@ -1,0 +1,5 @@
+akeneo_connectivity.connection:
+  acl.manage_settings: Hallitse yhteysasetuksia
+  acl.manage_apps: Hallinnoi sovelluksia
+  acl.manage_test_apps: Hallinnoi testisovelluksia
+  acl.open_apps: Avaa sovellukset

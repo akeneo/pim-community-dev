@@ -1,0 +1,7 @@
+services:
+    pim_catalog.saver.category:
+        class: Akeneo\Category\Infrastructure\Doctrine\ORM\Saver\CategorySaver
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '@akeneo.enrichment.lock.factory'

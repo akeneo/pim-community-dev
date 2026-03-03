@@ -39,7 +39,7 @@ class GetGroupAssociationsByProductModelCodesIntegration extends TestCase
                 'sub_product_models' => [
                     'sub_product_model_1_1' => [
                         'associations' => [
-                            'X_SELL' => ['groups' => ['groupD']],
+                            'X_SELL' => ['groups' => ['groupD', 'groupF']],
                             'SUBSTITUTION' => ['groups' => ['groupB']],
                         ],
                     ],

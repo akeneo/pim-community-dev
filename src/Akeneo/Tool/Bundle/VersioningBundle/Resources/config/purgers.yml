@@ -11,6 +11,7 @@ services:
             - '@pim_versioning.query.delete_versions_by_ids'
             - '@pim_versioning.query.get_all_resource_names'
             - '@pim_versioning.query.get_purgeable_version_list'
+            - '@logger'
 
    # advisors
     pim_versioning.purger.advisor.skip_first_version:

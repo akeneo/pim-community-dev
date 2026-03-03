@@ -10,7 +10,7 @@ use Oro\Bundle\SecurityBundle\DependencyInjection\Utils\ServiceLink;
 class RoleListener
 {
     /**
-     * @var \Oro\Bundle\SecurityBundle\DependencyInjection\Utils\ServiceLink
+     * @var ServiceLink
      */
     protected $aclSidManagerLink;
 
@@ -21,7 +21,7 @@ class RoleListener
 
     public function preUpdate(PreUpdateEventArgs $eventArgs)
     {
-        if ($eventArgs->getEntity() instanceof Role && $eventArgs->hasChangedField('role')) {
+        if ($eventArgs->getObject() instanceof Role && $eventArgs->hasChangedField('role')) {
             $oldRoleName = $eventArgs->getOldValue('role');
             $newRoleName = $eventArgs->getNewValue('role');
             /** @var $aclSidManager AclSidManager */

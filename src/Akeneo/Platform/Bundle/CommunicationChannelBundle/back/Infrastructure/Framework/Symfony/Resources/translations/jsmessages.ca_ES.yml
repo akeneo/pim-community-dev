@@ -1,0 +1,8 @@
+akeneo_communication_channel:
+  link:
+    title: Anuncis
+  panel:
+    title: Anuncis
+    list:
+      empty: De moment no hi ha noticies. Estigues atent!
+      error: No hem pogut recuperar les noticies. Si us plau, prova més tard.

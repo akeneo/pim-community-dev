@@ -5,7 +5,7 @@ import CategoryModal from '../CategoryModal/CategoryModal';
 import {uniqBy as _uniqBy, xorBy as _xorBy} from 'lodash';
 import Category from '../../../../domain/Category.interface';
 import {redirectToProductGridFilteredByCategory} from '../../../../infrastructure/ProductGridRouter';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 import {SeeInGrid} from './SeeInGrid';
 import {RemoveItem} from './RemoveItem';
 import {AddItem} from './AddItem';

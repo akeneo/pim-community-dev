@@ -18,23 +18,15 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
  */
 final class CriterionEvaluationResult
 {
-    /** @var CriterionRateCollection */
-    private $rates;
-
-    /** @var CriterionEvaluationResultStatusCollection */
-    private $statusCollection;
-
-    /** @var ChannelLocaleDataCollection */
-    private $improvableAttributes;
-
+    private CriterionRateCollection $rates;
+    private CriterionEvaluationResultStatusCollection $statusCollection;
     /** @var ChannelLocaleDataCollection[] */
-    private $data;
+    private array $data;
 
     public function __construct()
     {
         $this->rates = new CriterionRateCollection();
         $this->statusCollection = new CriterionEvaluationResultStatusCollection();
-        $this->improvableAttributes = new ChannelLocaleDataCollection();
         $this->data = [];
     }
 

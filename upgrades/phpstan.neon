@@ -1,0 +1,11 @@
+includes:
+    - baseline.neon
+
+parameters:
+    level: 5
+    reportUnmatchedIgnoredErrors: false
+    paths:
+        - schema
+
+rules:
+    - Pim\Upgrade\MigrationCoveredByIntegrationTestRule

@@ -13,12 +13,13 @@ use Symfony\Component\Validator\Constraint;
  */
 class CreateUser extends Constraint
 {
-    public $errorSpaceInUsername = 'The username should not contain space character.';
+    public string $errorSpaceInUsername = 'The username should not contain space character.';
+    public const RESERVED_PREFIX_USERNAME = 'pim_user.reserved_prefix_username';
 
     /**
      * {@inheritdoc}
      */
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }

@@ -4,12 +4,13 @@ namespace Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\ExternalApi;
 
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface as CatalogAttributeRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Validator\Constraints\Type;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\UnexpectedResultException;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Validation;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Attribute repository for the API
@@ -20,22 +21,13 @@ use Symfony\Component\Validator\Validation;
  */
 class AttributeRepository extends EntityRepository implements AttributeRepositoryInterface
 {
-    /** @var CatalogAttributeRepositoryInterface */
-    protected $attributeRepository;
-
-    /**
-     * @param EntityManager                       $em
-     * @param string                              $className
-     * @param CatalogAttributeRepositoryInterface $attributeRepository
-     */
     public function __construct(
-        EntityManager $em,
-        $className,
-        CatalogAttributeRepositoryInterface $attributeRepository
+        protected EntityManager $em,
+        protected string $className,
+        protected CatalogAttributeRepositoryInterface $attributeRepository,
+        private ValidatorInterface $validator
     ) {
         parent::__construct($em, $em->getClassMetadata($className));
-
-        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -131,6 +123,12 @@ class AttributeRepository extends EntityRepository implements AttributeRepositor
                     case '>':
                         $qb->andWhere($qb->expr()->gt($field, $parameter));
                         break;
+                    case '=':
+                        if ('is_main_identifier' !== $property) {
+                            throw new \InvalidArgumentException('Invalid operator for search query.');
+                        }
+                        $qb->andWhere($qb->expr()->eq('r.mainIdentifier', $parameter));
+                        break;
                     default:
                         throw new \InvalidArgumentException('Invalid operator for search query.');
                 }
@@ -147,7 +145,6 @@ class AttributeRepository extends EntityRepository implements AttributeRepositor
             return;
         }
 
-        $validator = Validation::createValidator();
         $constraints = [
             'code' => new Assert\All([
                 new Assert\Collection([
@@ -156,9 +153,9 @@ class AttributeRepository extends EntityRepository implements AttributeRepositor
                         'message' => 'In order to search on attribute codes you must use "IN" operator, {{ compared_value }} given.',
                     ]),
                     'value' => [
-                        new Assert\Type([
+                        new Type([
                             'type' => 'array',
-                            'message' => 'In order to search on attribute codes you must send an array of attribute codes as value, {{ type }} given.'
+                            'message' => 'In order to search on attribute codes you must send an array of attribute codes as value, {{ givenType }} given.'
                         ]),
                         new Assert\All([
                             new Assert\Type('string')
@@ -192,10 +189,24 @@ class AttributeRepository extends EntityRepository implements AttributeRepositor
                     ],
                 ])
             ),
+            'is_main_identifier' => new Assert\All([
+                new Assert\Collection([
+                    'operator' => new Assert\IdenticalTo([
+                        'value' => '=',
+                        'message' => 'In order to search on attribute is_main_identifier you must use "=" operator, {{ value }} given.',
+                    ]),
+                    'value' => [
+                        new Assert\Type([
+                            'type' => 'bool',
+                            'message' => 'The "is_main_identifier" filter requires a boolean value, and the submitted value is not.',
+                        ]),
+                    ],
+                ]),
+            ]),
         ];
         $availableSearchFilters = array_keys($constraints);
 
-        $exceptionMessage = '';
+        $exceptionMessages = [];
         foreach ($searchFilters as $property => $searchFilter) {
             if (!in_array($property, $availableSearchFilters)) {
                 throw new \InvalidArgumentException(sprintf(
@@ -204,15 +215,13 @@ class AttributeRepository extends EntityRepository implements AttributeRepositor
                     $property
                 ));
             }
-            $violations = $validator->validate($searchFilter, $constraints[$property]);
-            if (0 !== $violations->count()) {
-                foreach ($violations as $violation) {
-                    $exceptionMessage .= $violation->getMessage();
-                }
+            $violations = $this->validator->validate($searchFilter, $constraints[$property]);
+            foreach ($violations as $violation) {
+                $exceptionMessages[] = $violation->getMessage();
             }
         }
-        if ('' !== $exceptionMessage) {
-            throw new \InvalidArgumentException($exceptionMessage);
+        if (!empty($exceptionMessages)) {
+            throw new \InvalidArgumentException(implode(' ', $exceptionMessages));
         }
     }
 }

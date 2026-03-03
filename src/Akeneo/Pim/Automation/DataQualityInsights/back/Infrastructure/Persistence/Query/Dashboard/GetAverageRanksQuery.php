@@ -59,13 +59,13 @@ SQL;
         );
 
         $averageRanks = [];
-        while ($rawAverageRanks = $stmt->fetch(\PDO::FETCH_ASSOC)) {
-            $averageRanks[$rawAverageRanks['code']] = null !== $rawAverageRanks['average_rank'] ? Rank::fromString($rawAverageRanks['average_rank']) : null;
+        while ($rawAverageRanks = $stmt->fetchAssociative()) {
+            $averageRanks[strtolower($rawAverageRanks['code'])] = null !== $rawAverageRanks['average_rank'] ? Rank::fromString($rawAverageRanks['average_rank']) : null;
         }
 
         $entityAverageRanks = [];
         foreach ($entityCodes as $entityCode) {
-            $entityCode = strval($entityCode);
+            $entityCode = strtolower(strval($entityCode));
             $entityAverageRanks[$entityCode] = $averageRanks[$entityCode] ?? null;
         }
 

@@ -85,16 +85,23 @@ class DatagridViewController
 
         $options = $request->query->get('options', []);
         $options = array_merge(['limit' => 20, 'page' => 1], $options);
+
         $term = $request->query->get('search', '');
 
-        $views = $this->datagridViewRepo->findDatagridViewBySearch($user, $alias, $term, $options);
-        $moreResults = (count($views) === (int)$options['limit']);
-        $views = $this->datagridViewFilter->filterCollection($views, 'pim.internal_api.datagrid_view.view');
+        $views = $this->datagridViewRepo->findAllDatagridViewsBySearch($user, $alias, $term);
 
-        $normalizedViews = $this->normalizer->normalize($views, 'internal_api');
+        $filteredViews = $this->datagridViewFilter->filterCollection($views, 'pim.internal_api.datagrid_view.view');
+
+        $viewsInPage = array_slice(
+            $filteredViews,
+            ($options['page']-1)*$options['limit'],
+            $options['limit']
+        );
+
+        $moreResults = count($filteredViews) > $options['page']*$options['limit'];
 
         return new JsonResponse([
-            'results' => $normalizedViews,
+            'results' => $this->normalizer->normalize($viewsInPage, 'internal_api'),
             'more' => $moreResults,
         ]);
     }
@@ -149,7 +156,7 @@ class DatagridViewController
             throw new BadRequestHttpException('Parameter "view" needed in the request.');
         }
 
-        $loggedUsername = $this->tokenStorage->getToken()->getUser()->getUsername();
+        $loggedUsername = $this->tokenStorage->getToken()->getUser()->getUserIdentifier();
         if (isset($view['id'])) {
             $creation = false;
             $datagridView = $this->datagridViewRepo->findOneBy(['id' => $view['id'], 'datagridAlias' => $alias]);
@@ -158,7 +165,7 @@ class DatagridViewController
             }
 
             $owner = $datagridView->getOwner();
-            if (!$owner instanceof UserInterface || $owner->getUsername() !== $loggedUsername) {
+            if (!$owner instanceof UserInterface || $owner->getUserIdentifier() !== $loggedUsername) {
                 throw new AccessDeniedException();
             }
 

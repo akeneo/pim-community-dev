@@ -2,13 +2,18 @@ extensions:
     pim-product-edit-form:
         module: pim/form/common/edit-form
 
+    pim-product-edit-form-sandbox-helper:
+        module: pim/sandbox-helper
+        parent: pim-product-edit-form
+        targetZone: helper
+
     pim-product-edit-form-breadcrumbs:
         module: pim/common/breadcrumbs
         parent: pim-product-edit-form
         targetZone: breadcrumbs
         config:
             tab: pim-menu-products
-            itemPath: identifier
+            itemPath: [identifier, "meta.id"]
 
     pim-product-edit-form-user-navigation:
         module: pim/menu/user-navigation
@@ -19,7 +24,7 @@ extensions:
             logout: pim_menu.user.logout
 
     pim-product-edit-form-main-image:
-        module: pim/form/common/product/product-main-image
+        module: pim/product-edit-form/main-image
         parent: pim-product-edit-form
         targetZone: main-image
 
@@ -41,7 +46,7 @@ extensions:
         position: 100
 
     pim-product-edit-form-left-column:
-        module: pim/form/common/column
+        module: pim/product-edit-form/sub-navigation
         parent: pim-product-edit-form
         position: 5
         targetZone: column
@@ -108,6 +113,7 @@ extensions:
                 content: pim_common.confirm_deletion
                 success: pim_enrich.entity.product.flash.delete.success
                 fail: pim_enrich.entity.product.flash.delete.fail
+                buttonText: pim_common.delete
             redirect: pim_enrich_product_index
 
     pim-product-edit-form-download-pdf:
@@ -123,6 +129,14 @@ extensions:
         targetZone: secondary-actions
         aclResourceId: pim_enrich_product_edit_attributes
         position: 80
+
+    pim-free-trial-product-edit-form-start-copy:
+        module: pim/product-edit-form/free-trial-start-copy
+        parent: pim-product-edit-form
+        targetZone: buttons
+        aclResourceId: pim_enrich_product_edit_attributes
+        position: 60
+        feature: free_trial
 
     pim-product-edit-form-convert-to-simple-product:
         module: pim/product-edit-form/convert-to-simple-product
@@ -152,6 +166,14 @@ extensions:
         position: 900
         config:
             entity: pim_enrich.entity.product.label
+
+    pim-product-edit-form-uuid:
+        module: pim/product-edit-form/meta/uuid
+        parent: pim-product-edit-form-meta
+        targetZone: meta
+        position: 60
+        config:
+            label: pim_enrich.entity.product.module.meta.uuid
 
     pim-product-edit-form-family:
         module: pim/product-edit-form/meta/family
@@ -361,6 +383,7 @@ attribute_fields:
     akeneo-switch-field:           pim/boolean-field
     akeneo-datepicker-field:       pim/date-field
     akeneo-media-uploader-field:   pim/media-field
+    akeneo-image-uploader-field:   pim/image-field
     akeneo-metric-field:           pim/metric-field
     akeneo-multi-select-field:     pim/multi-select-field
     akeneo-number-field:           pim/number-field

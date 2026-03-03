@@ -46,8 +46,8 @@ class InvalidDataItemConverter implements ArrayConverterInterface
             $convertedData = implode(',', $data);
         } elseif (is_object($data) && !method_exists($data, '__toString')) {
             throw new DataArrayConversionException(
-                    sprintf('The property "%s" could not be converted into string.', $property)
-                );
+                sprintf('The property "%s" could not be converted into string.', $property)
+            );
         } else {
             $convertedData = (string) $data;
         }

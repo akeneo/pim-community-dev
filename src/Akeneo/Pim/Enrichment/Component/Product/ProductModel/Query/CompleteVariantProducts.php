@@ -71,7 +71,7 @@ class CompleteVariantProducts
     {
         return count(
             array_unique(
-                array_column($this->completenesses, 'product_identifier')
+                array_column($this->completenesses, 'product_uuid')
             )
         );
     }

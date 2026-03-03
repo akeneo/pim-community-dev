@@ -1,0 +1,4 @@
+pim_notification:
+  report: Rapor et
+  mark_all_as_read: Tümünü okundu olarak işaretle
+  no_notifications: Bildirim yok

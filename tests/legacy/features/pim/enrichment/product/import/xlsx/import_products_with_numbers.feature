@@ -8,10 +8,10 @@ Feature: Import XLSX products with numbers
     Given the "footwear" catalog configuration
     And the following family:
       | code          | attributes                |
-      | number_family | number_in_stock,rate_sale |
+      | number_family | sku,number_in_stock,rate_sale |
     And I am logged in as "Julia"
 
-  @info If Excel opens a file containing numeric strings that match its locale config it will be transformed into real numbers
+  # @info If Excel opens a file containing numeric strings that match its locale config it will be transformed into real numbers
   Scenario: Successfully import an XLSX file of products with real integers
     Given I am on the "xlsx_footwear_product_import_fr" import job page
     When I upload and import the file "products_with_integers.xlsx"

@@ -21,7 +21,7 @@ interface ExpressionBuilderInterface
      * @param mixed $_ Expressions
      * @return mixed
      */
-    public function orX($_);
+    public function orX(...$_);
 
     /**
      * Creates an comparison expression with the given arguments.

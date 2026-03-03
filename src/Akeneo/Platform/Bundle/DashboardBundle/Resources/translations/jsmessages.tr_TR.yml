@@ -1,0 +1,6 @@
+pim_dashboard:
+  widget:
+    completeness:
+      load_more: 'Daha fazla yükle...'
+pim_title:
+  pim_dashboard_index: Gösterge paneli

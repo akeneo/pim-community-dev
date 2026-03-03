@@ -1,0 +1,73 @@
+pim_menu.item:
+  measurements: Medidas
+pim_title:
+  akeneo_measurements_settings_index: Medidas
+  akeneo_measurements_settings_any: Medidas
+measurements:
+  label_translations: Etiquetar traducciones en la configuración regional de la IU
+  search:
+    placeholder: Buscar en etiqueta o código
+  family:
+    result_count: "{0}0 familias de medición |{1}1 familia de medición |]1, Inf[{{ itemsCount }} familias de medición"
+    not_found: Familia de medición no encontrada
+    no_data:
+      title: Lo sentimos, no hay ninguna familia de medición!
+      link: Haga clic aquí para añadir
+    standard_unit: Unidad estándar
+    standard_unit_is_not_editable_after_creation: Esta unidad estándar se establece de una vez por todas. Se utilizará para convertir las otras unidades.
+    add_new_measurement_family: Añadir una nueva familia de medidas
+    tab:
+      units: Unidades
+      properties: Propiedades
+    delete:
+      button: Eliminar familia de medición
+      confirm: '¿Está seguro que desea eliminar esta familia de medidas con todas sus unidades?'
+      flash:
+        success: Familia de medición eliminada correctamente.
+        error: Lo sentimos, se ha producido un error al eliminar la familia de mediciones.
+    save:
+      flash:
+        success: Familia de medición se ha guardado correctamente.
+        error: Lo sentimos, se ha producido un error al guardar la familia de medición.
+    is_locked: Un atributo de producto está vinculado a esta familia de medición. Sólo puede añadir unidades o cambiar las etiquetas traducidas y el símbolo de unidades existentes.
+  unit:
+    title: Editar {{ unitLabel }}
+    symbol: Símbolo
+    delete:
+      button: Eliminar unidad
+      confirm: '¿Está seguro que desea eliminar esta unidad de medida?'
+    add: Añadir unidad
+    add_new: Añadir una nueva unidad
+    operation:
+      add: Añadir nueva operación
+      placeholder: Valor de la operación
+    operator:
+      add: Añadir
+      sub: Sustraer
+      mul: Multiplicar
+      div: Dividir
+      select: Seleccione su operador
+    convert_from_standard: Operación de conversión
+    create_another: Crear otra unidad
+    will_be_read_only: Un atributo de producto está vinculado a esta familia de medición. Una vez creada la unidad, solo podrá editar sus etiquetas traducidas y su símbolo.
+  list:
+    header:
+      standard_unit: Unidad estándar
+      unit_count: Número de unidades
+  form:
+    input:
+      symbol: "Símbolo (ex: km)"
+  validation:
+    unit:
+      code:
+        must_be_unique: 'Este código de unidad ya existe.'
+  create_family:
+    flash:
+      success: Familia de medición creada correctamente.
+      error: Lo sentimos, se ha producido un error al crear la familia de medición.
+  title:
+    measurement: Medida
+  add_unit:
+    flash:
+      success: Unidad añadida correctamente.
+      error: Lo sentimos, ha ocurrido un error al añadir la unidad.

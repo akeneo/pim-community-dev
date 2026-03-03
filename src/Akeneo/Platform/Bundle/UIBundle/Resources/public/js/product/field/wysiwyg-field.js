@@ -43,6 +43,7 @@ define(['jquery', 'pim/field', 'underscore', 'pim/template/product/field/textare
             ['view', ['codeview']],
           ],
           prettifyHtml: false,
+          direction: 'auto',
         })
         .on('summernote.blur', this.updateModel.bind(this))
         .on('summernote.keyup', this.removeEmptyTags.bind(this));
@@ -71,8 +72,8 @@ define(['jquery', 'pim/field', 'underscore', 'pim/template/product/field/textare
      */
     updateModel: function () {
       var data = this.$('.field-input:first textarea:first').code();
-      data = '<p><br></p>' === data ? this.attribute.empty_value : data;
-      data = '' === data ? this.attribute.empty_value : data;
+      data = '<p><br></p>' === data?.trim() ? this.attribute.empty_value : data;
+      data = '' === data || null === data ? this.attribute.empty_value : data;
 
       this.setCurrentValue(data);
     },
@@ -107,7 +108,7 @@ define(['jquery', 'pim/field', 'underscore', 'pim/template/product/field/textare
 
       const source = jqueryEvent.originalEvent.path
         ? $(jqueryEvent.originalEvent.path[0])
-        : $(jqueryEvent.originalEvent.originalTarget);
+        : $(jqueryEvent.originalEvent.target);
 
       if (
         source.hasClass('icon-link') ||

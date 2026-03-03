@@ -1,0 +1,9 @@
+parameters:
+    env(FLAG_CONNECT_APP_WITH_PERMISSIONS_ENABLED): 0
+
+services:
+    akeneo_connectivity.connection.connect_app_with_permissions.feature:
+        class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag
+        arguments:
+            - '%env(bool:FLAG_CONNECT_APP_WITH_PERMISSIONS_ENABLED)%'
+        public: true

@@ -25,7 +25,7 @@ class SearchQueryBuilderSpec extends ObjectBehavior
 
         $this->getQuery()->shouldReturn(
             [
-                '_source' => ['identifier'],
+                '_source' => ['id', 'identifier', 'document_type'],
                 'query'   => [
                     'constant_score' => [
                         'filter' => [
@@ -55,7 +55,7 @@ class SearchQueryBuilderSpec extends ObjectBehavior
 
         $this->getQuery()->shouldReturn(
             [
-                '_source' => ['identifier'],
+                '_source' => ['id', 'identifier', 'document_type'],
                 'query'   => [
                     'constant_score' => [
                         'filter' => [
@@ -85,7 +85,7 @@ class SearchQueryBuilderSpec extends ObjectBehavior
         ]);
         $this->getQuery()->shouldReturn(
             [
-                '_source' => ['identifier'],
+                '_source' => ['id', 'identifier', 'document_type'],
                 'query'   => [
                     'constant_score' => [
                         'filter' => [
@@ -115,7 +115,7 @@ class SearchQueryBuilderSpec extends ObjectBehavior
 
         $this->getQuery()->shouldReturn(
             [
-                '_source' => ['identifier'],
+                '_source' => ['id', 'identifier', 'document_type'],
                 'query'   => [
                     'constant_score' => [
                         'filter' => [
@@ -145,7 +145,7 @@ class SearchQueryBuilderSpec extends ObjectBehavior
         ]);
         $this->getQuery()->shouldReturn(
             [
-                '_source' => ['identifier'],
+                '_source' => ['id', 'identifier', 'document_type'],
                 'query'   => [
                     'constant_score' => [
                         'filter' => [
@@ -176,7 +176,7 @@ class SearchQueryBuilderSpec extends ObjectBehavior
 
         $this->getQuery()->shouldReturn(
             [
-                '_source' => ['identifier'],
+                '_source' => ['id', 'identifier', 'document_type'],
                 'query'   => [
                     'constant_score' => [
                         'filter' => [
@@ -234,7 +234,7 @@ class SearchQueryBuilderSpec extends ObjectBehavior
 
         $this->getQuery()->shouldReturn(
             [
-                '_source' => ['identifier'],
+                '_source' => ['id', 'identifier', 'document_type'],
                 'query'   => [
                     'constant_score' => [
                         'filter' => [
@@ -315,7 +315,7 @@ class SearchQueryBuilderSpec extends ObjectBehavior
 
         $this->getQuery()->shouldReturn(
             [
-                '_source' => ['identifier'],
+                '_source' => ['id', 'identifier', 'document_type'],
                 'query'   => [
                     'constant_score' => [
                         'filter' => [
@@ -384,23 +384,18 @@ class SearchQueryBuilderSpec extends ObjectBehavior
         return [
             'beAnEmptyQuery' => function ($subject) {
                 return
-                    is_array($subject) &&
-                    isset($subject['_source']) &&
-                    ['identifier'] === $subject['_source'];
+                    \is_array($subject) &&
+                    ['id', 'identifier', 'document_type'] === ($subject['_source'] ?? null) &&
+                    [] === ($subject['query'] ?? []) &&
+                    [] === ($subject['sort'] ?? []);
             },
             'beASimpleSortQuery' => function ($subject, $attribute, $order, $missing) {
                 return
-                    is_array($subject) &&
-                    isset($subject['_source']) &&
-                    ['identifier'] === $subject['_source'] &&
-                    isset($subject['sort']) &&
-                    isset($subject['sort'][$attribute]) &&
-                    isset($subject['sort'][$attribute]['order']) &&
-                    $subject['sort'][$attribute]['order'] === $order &&
-                    $subject['sort'][$attribute]['missing'] === $missing;
+                    \is_array($subject) &&
+                    ['id', 'identifier', 'document_type'] === ($subject['_source'] ?? null) &&
+                    ($subject['sort'][$attribute]['order'] ?? null) === $order &&
+                    ($subject['sort'][$attribute]['missing'] ?? null) === $missing;
             },
-
-
         ];
     }
 }

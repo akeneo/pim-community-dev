@@ -38,8 +38,9 @@ class Select2Decorator extends ElementDecorator
                 $result = $widget->find('css', sprintf('.select2-result-label:contains("%s")', $value));
 
                 if (null !== $result && $result->isVisible()) {
-                    $result->click();
-
+                    $this->getSession()->executeScript(
+                        sprintf('$(\'.select2-result-label:contains("%s")\').mouseup();', $value)
+                    );
                     return true;
                 }
 
@@ -90,10 +91,9 @@ class Select2Decorator extends ElementDecorator
      */
     public function open()
     {
-        $openerElement = $this->find('css', '.select2-arrow');
-        if (null === $openerElement) {
-            $openerElement = $this->find('css', '.select2-search-field');
-        }
+        $openerElement = $this->spin(function () {
+            return $this->find('css', '.select2-arrow') ?? $this->find('css', '.select2-search-field');
+        }, 'Could not find opener element');
 
         if (!$this->element->hasClass('select2-dropdown-open')) {
             $openerElement->click();
@@ -193,23 +193,25 @@ class Select2Decorator extends ElementDecorator
     public function getAvailableValues()
     {
         $widget = $this->getWidget();
-        $results = [];
 
-        $resultElements = $this->spin(function () use ($widget) {
-            return $widget->findAll('css', '.select2-result-label, .select2-no-results');
+        $results = $this->spin(function () use ($widget) {
+            $results = [];
+            $resultElements = $widget->findAll('css', '.select2-result-label, .select2-no-results');
+
+            // Maybe a "No matches found"
+            $firstResult = $resultElements[0];
+            $noMatchesFound = $firstResult->hasClass('select2-no-results');
+
+            if ($noMatchesFound) {
+                return ['results' => []];
+            }
+
+            foreach ($resultElements as $element) {
+                $results[] = $element->getText();
+            }
+
+            return ['results' => $results];
         }, 'Cannot find any .select2-result-label nor select2-no-results element.');
-
-        // Maybe a "No matches found"
-        $firstResult = $resultElements[0];
-        $noMatchesFound = $firstResult->hasClass('select2-no-results');
-
-        if ($noMatchesFound) {
-            return $results;
-        }
-
-        foreach ($resultElements as $element) {
-            $results[] = $element->getText();
-        }
 
         $this->spin(function () {
             $this->close();
@@ -217,7 +219,7 @@ class Select2Decorator extends ElementDecorator
             return true;
         }, 'Cannot close the select2 field');
 
-        return $results;
+        return $results['results'];
     }
 
     /**

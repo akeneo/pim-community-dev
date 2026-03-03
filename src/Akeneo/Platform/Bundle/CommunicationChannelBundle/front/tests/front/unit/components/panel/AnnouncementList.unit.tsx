@@ -2,7 +2,7 @@ import React from 'react';
 import {act, getByText, getAllByText} from '@testing-library/react';
 import {AnnouncementList} from '@akeneo-pim-community/communication-channel/src/components/panel/AnnouncementList';
 import {formatCampaign} from '@akeneo-pim-community/communication-channel/src/tools/formatCampaign';
-import {renderDOMWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
+import {renderDOMWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {getExpectedAnnouncements, getExpectedPimAnalyticsData} from '../../__mocks__/dataProvider';
 import {useHasNewAnnouncements} from '@akeneo-pim-community/communication-channel/src/hooks/useHasNewAnnouncements';
 import {useInfiniteScroll} from '@akeneo-pim-community/communication-channel/src/hooks/useInfiniteScroll';
@@ -26,27 +26,6 @@ beforeEach(() => {
 afterEach(() => {
   document.body.removeChild(container);
   container = null;
-});
-
-test('it check if it has new announcements when the component is mounted', async () => {
-  const campaign = formatCampaign(expectedPimAnalyticsData.pim_edition, expectedPimAnalyticsData.pim_version);
-  const handleHasNewAnnouncements = jest.fn();
-  useHasNewAnnouncements.mockReturnValue(handleHasNewAnnouncements);
-
-  useInfiniteScroll.mockReturnValue([
-    {
-      items: [],
-      isFetching: false,
-      hasError: false,
-    },
-    jest.fn(),
-  ]);
-
-  await act(async () =>
-    renderDOMWithProviders(<AnnouncementList campaign={campaign} panelIsOpened={true} />, container as HTMLElement)
-  );
-
-  expect(handleHasNewAnnouncements).toBeCalledTimes(1);
 });
 
 test('it shows the announcements when we open the panel', async () => {
@@ -193,5 +172,5 @@ test('it updates the new announcements when closing the panel', async () => {
   );
 
   expect(handleAddViewedAnnouncements).toBeCalledWith([expectedAnnouncements[0]]);
-  expect(handleHasNewAnnouncements).toBeCalledTimes(2);
+  expect(handleHasNewAnnouncements).toBeCalledTimes(1);
 });

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category;
 
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -40,7 +40,7 @@ SQL;
                 'parent_category_right' => $parentCategory->getRight(),
                 'parent_category_root'  => $parentCategory->getRoot(),
             ]
-        )->fetchAll(\PDO::FETCH_COLUMN);
+        )->fetchFirstColumn();
 
         return $rows;
     }

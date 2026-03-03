@@ -27,6 +27,7 @@ class DualIndexationClientSpec extends ObjectBehavior
             ['localhost:9200'],
             'an_index_name',
             '',
+            100000000,
             $dualClient
         );
         $clientBuilder->setHosts(['localhost:9200'])->willReturn($clientBuilder);

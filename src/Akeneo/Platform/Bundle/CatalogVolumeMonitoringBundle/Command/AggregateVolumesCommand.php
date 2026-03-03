@@ -19,35 +19,24 @@ use Symfony\Component\Console\Output\OutputInterface;
 class AggregateVolumesCommand extends Command
 {
     protected static $defaultName = 'pim:volume:aggregate';
+    protected static $defaultDescription = 'Aggregate the result of all the volume queries that should not be executed live';
 
-    /** @var VolumeAggregation */
-    private $volumeAggregation;
-
-    public function __construct(VolumeAggregation $volumeAggregation)
+    public function __construct(private VolumeAggregation $volumeAggregation)
     {
         parent::__construct();
-
-        $this->volumeAggregation = $volumeAggregation;
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function configure()
-    {
-        $this
-            ->setDescription('Aggregate the result of all the volume queries that should not be executed live');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('Aggregation in progress. It can take minutes or hours depending on the size of the catalog.');
 
         $this->volumeAggregation->aggregate();
 
         $output->writeln('Catalog volumes aggregation done.');
+
+        return Command::SUCCESS;
     }
 }

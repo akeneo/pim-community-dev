@@ -1,0 +1,63 @@
+pim_title:
+  pim_user_index: Utilizatori
+  pim_user_role_index: Roluri
+  pim_user_group_index: Grupuri de utilizatori
+  oro_config_configuration_system: Configurație
+  pim_user_security_login: Autentifică-te
+  pim_user_reset_request: Ați uitat parola
+confirmation:
+  remove:
+    user: Sunteți sigur că vreți să ștergeți acest utilizator?
+    group: Sunteți sigur că vreți să ștergeți acest grup?
+pim_enrich:
+  entity:
+    user:
+      module:
+        delete:
+          confirm: Sunteți sigur că vreți să ștergeți acest utilizator?
+pim_user_management:
+  entity:
+    user:
+      properties:
+        username: Nume de utilizator
+        name_prefix: Prefixul numelui
+        first_name: Prenume
+        middle_name: Numele mijlociu
+        last_name: Nume
+        name_suffix: Sufixul numelui
+        avatar: Avatar
+        email: E-mail
+        catalog_locale: Catalog local
+        default_tree: Arbore implicit
+        default_asset_tree: Arbore active implicit
+        product_grid_filters: Filtre grilă produse
+        current_password: Parola actuală
+        new_password: Parolă nouă
+        new_password_repeat: Repetă parola nouă
+        password: Parolă
+        ui_locale: UI local
+        timezone: Fus orar
+        proposals_to_review_notification: Când va fi o nouă propunere de revizuit #EE Only
+        proposals_state_notifications: Când propunerea este acceptată sau refuzată #EE Only
+      module:
+        create:
+          button: Creează utilizator
+        delete:
+          confirm: Sunteți sigur că vreți să ștergeți acest utilizator?
+        update:
+          additional: Adițional
+          password: Parolă
+          interfaces: Interfețe
+          notifications: Notificări #TODO EE Only
+    role:
+      plural_label: Roluri
+      module:
+        create:
+          button: Creează rol
+        delete:
+          confirm: Sunteți sigur că vreți să ștergeți acest rol?
+    group:
+      plural_label: Grupuri de utilizatori
+      module:
+        create:
+          button: Creează grup

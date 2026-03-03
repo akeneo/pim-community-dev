@@ -4,7 +4,6 @@ define([
   'jquery',
   'underscore',
   'backgrid',
-  'translator-lib',
   'oro/translator',
   'oro/mediator',
   'oro/loading-mask',
@@ -15,11 +14,11 @@ define([
   'oro/datagrid/select-all-header-cell',
   'pim/template/common/no-data',
   'pim/template/common/grid',
+  'pim/analytics',
 ], function (
   $,
   _,
   Backgrid,
-  Translator,
   __,
   mediator,
   LoadingMask,
@@ -29,7 +28,8 @@ define([
   SelectRowCell,
   SelectAllHeaderCell,
   noDataTemplate,
-  template
+  template,
+  analytics
 ) {
   'use strict';
 
@@ -285,6 +285,12 @@ define([
           actionConfiguration = row.model.get('action_configuration');
         if (!actionConfiguration || actionConfiguration[action.name] !== false) {
           action.run();
+
+          analytics.appcuesTrack('grid:item:selected', {
+            name: this.name,
+            entityHint: this.entityHint,
+            model: action.model,
+          });
         }
       }
     },
@@ -378,13 +384,12 @@ define([
      * @returns {{hint, subHint: *, imageClass: string}}
      */
     getDefaultNoDataOptions() {
-      const entityHint = (this.entityHint
-        ? this.entityHint.replace(/_/, ' ')
-        : __('pim_datagrid.entity_hint')
+      const entityHint = (
+        this.entityHint ? this.entityHint.replace(/_/, ' ') : __('pim_datagrid.entity_hint')
       ).toLowerCase();
       let key = _.isEmpty(this.collection.state.filters) ? 'pim_datagrid.no_entities' : 'pim_datagrid.no_results';
 
-      if (Translator.has('jsmessages:' + key + '.' + entityHint)) {
+      if (__(key + '.' + entityHint) !== key + '.' + entityHint) {
         key += '.' + entityHint;
       }
 

@@ -11,12 +11,12 @@ use Akeneo\Connectivity\Connection\Application\Settings\Query\FindAConnectionQue
 use Akeneo\Connectivity\Connection\Application\Settings\Service\CreateClientInterface;
 use Akeneo\Connectivity\Connection\Application\Settings\Service\CreateUserInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Exception\ConstraintViolationListException;
-use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\Client;
+use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\User;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
-use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository;
+use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolationInterface;
@@ -27,7 +27,7 @@ class CreateConnectionHandlerSpec extends ObjectBehavior
 {
     public function let(
         ValidatorInterface $validator,
-        ConnectionRepository $repository,
+        ConnectionRepositoryInterface $repository,
         CreateClientInterface $createClient,
         CreateUserInterface $createUser,
         FindAConnectionHandler $findAConnectionHandler
@@ -57,7 +57,7 @@ class CreateConnectionHandlerSpec extends ObjectBehavior
         $createClient->execute('Magento Connector')->shouldBeCalled()->willReturn($client);
 
         $user = new User(42, 'magento_app', 'my_client_pwd');
-        $createUser->execute(Argument::type('string'), 'Magento Connector', ' ')->willReturn($user);
+        $createUser->execute(Argument::type('string'), 'Magento Connector', ' ', null)->willReturn($user);
 
         $repository->create(Argument::type(Connection::class))->shouldBeCalled();
 
@@ -77,7 +77,7 @@ class CreateConnectionHandlerSpec extends ObjectBehavior
         $createUser,
         $findAConnectionHandler
     ): void {
-        $command = new CreateConnectionCommand('magento', 'Magento Connector', FlowType::DATA_DESTINATION, true);
+        $command = new CreateConnectionCommand('magento', 'Magento Connector', FlowType::DATA_DESTINATION, true, null, 'All');
 
         $violations = new ConstraintViolationList([]);
         $validator->validate($command)->willReturn($violations);
@@ -86,7 +86,7 @@ class CreateConnectionHandlerSpec extends ObjectBehavior
         $createClient->execute('Magento Connector')->shouldBeCalled()->willReturn($client);
 
         $user = new User(42, 'magento_app', 'my_client_pwd');
-        $createUser->execute(Argument::type('string'), 'Magento Connector', ' ')->willReturn($user);
+        $createUser->execute(Argument::type('string'), 'Magento Connector', ' ', ['All'])->willReturn($user);
 
         $repository->create(Argument::type(Connection::class))->shouldBeCalled();
 
@@ -100,7 +100,8 @@ class CreateConnectionHandlerSpec extends ObjectBehavior
             'magento_app',
             'user_role_id',
             'user_group_id',
-            false
+            false,
+            'default'
         );
         $findAConnectionHandler
             ->handle(Argument::type(FindAConnectionQuery::class))

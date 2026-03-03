@@ -43,7 +43,6 @@ define([
     collapsedClass: 'AknGrid-bodyContainer--collapsed',
     requiredLabel: __('pim_enrich.entity.family.module.attributes.required_label'),
     notRequiredLabel: __('pim_enrich.entity.family.module.attributes.not_required_label'),
-    identifierAttributeType: 'pim_catalog_identifier',
     template: _.template(template),
     errors: [],
     catalogLocale: UserContext.get('catalogLocale'),
@@ -200,14 +199,13 @@ define([
      */
     toggleAttribute(event) {
       const attributeCode = event.currentTarget.dataset.attribute;
-      const attributeType = event.currentTarget.dataset.type;
       const channelCode = event.currentTarget.dataset.channel;
 
       if (!SecurityContext.isGranted('pim_enrich_family_edit_attributes')) {
         return;
       }
 
-      if (!this.isAttributeEditable(channelCode, attributeCode, attributeType)) {
+      if (!this.isAttributeEditable()) {
         return;
       }
 
@@ -222,15 +220,10 @@ define([
 
     /**
      * Checks if attribute is editable
-     *
-     * @param {string} channelCode
-     * @param {string} attributeCode
-     * @param {string} attributeType
-     *
      * @returns {boolean}
      */
-    isAttributeEditable(channelCode, attributeCode, attributeType) {
-      return !this.readOnly && this.identifierAttributeType !== attributeType;
+    isAttributeEditable() {
+      return !this.readOnly;
     },
 
     /**
@@ -358,12 +351,7 @@ define([
             return !_.contains(existingAttributes, attribute) && attribute !== identifier.code;
           });
 
-          return FetcherRegistry.getFetcher('attribute').search({
-            options: {
-              identifiers: attributesToAdd,
-              limit: attributesToAdd.length,
-            },
-          });
+          return this.getPaginatedAttributes(attributesToAdd);
         })
         .then(attributes => {
           _.each(attributes, attribute => {
@@ -375,6 +363,23 @@ define([
         .always(() => {
           loadingMask.hide().$el.remove();
         });
+    },
+
+    async getPaginatedAttributes(attributesToAdd) {
+      const chunkSize = 200;
+      let result = [];
+      for (let i = 0; i < attributesToAdd.length; i += chunkSize) {
+        const chunk = attributesToAdd.slice(i, i + chunkSize);
+        const attributes = await FetcherRegistry.getFetcher('attribute').search({
+          options: {
+            identifiers: chunk,
+            limit: chunk.length,
+          },
+        });
+        result = result.concat(attributes);
+      }
+
+      return result;
     },
 
     /**

@@ -1,0 +1,159 @@
+#parameters:
+#    pim_enrich.controller.category_tree.class: Akeneo\Pim\Enrichment\Bundle\Controller\Ui\CategoryTreeController
+
+services:
+    pim_api.controller.category:
+        public: true
+        class: 'Akeneo\Category\Infrastructure\Controller\ExternalApi\CategoryController'
+        arguments:
+            - '@oro_security.security_facade'
+            - '@pim_api.repository.category'
+            - '@pim_catalog.factory.category'
+            - '@pim_catalog.updater.category'
+            - '@validator'
+            - '@pim_catalog.saver.category'
+            - '@router'
+            - '@pim_api.stream.category_partial_update_stream'
+
+    pim_enrich.controller.rest.category:
+        public: true
+        class: 'Akeneo\Category\Infrastructure\Controller\InternalApi\CategoryController'
+        arguments:
+            - '@pim_catalog.repository.category'
+            - '@Akeneo\Category\Infrastructure\Twig\CategoryExtension'
+            - '@pim_internal_api_serializer'
+            - '@pim_catalog.filter.chained'
+            - '@Akeneo\Category\Application\Query\GetCategoryChildrenIds'
+
+    Akeneo\Category\Infrastructure\Controller\InternalApi\UpdateCategoryController:
+        public: true
+        arguments:
+            - '@category.command.message_bus'
+            - '@oro_security.security_facade'
+            - '@event_dispatcher'
+            - '@Akeneo\Category\Application\Converter\ConverterInterface'
+            - '@Akeneo\Category\Application\Filter\CategoryEditAclFilter'
+            - '@Akeneo\Category\Application\Converter\StandardFormatToUserIntentsInterface'
+            - '@Akeneo\Category\Application\Filter\CategoryEditUserIntentFilter'
+            - '@Akeneo\Category\Domain\Query\GetCategoryInterface'
+            - '@Akeneo\Category\Infrastructure\Registry\FindCategoryAdditionalPropertiesRegistry'
+
+    Akeneo\Category\Infrastructure\Controller\InternalApi\UpdateAttributeController:
+        public: true
+        arguments:
+            - '@oro_security.security_facade'
+            - '@category.command.message_bus'
+
+    Akeneo\Category\Infrastructure\Controller\InternalApi\GetCategoryController:
+        public: true
+        arguments:
+            - '@oro_security.security_facade'
+            - '@Akeneo\Category\Domain\Query\GetCategoryInterface'
+            - '@Akeneo\Category\Infrastructure\Registry\FindCategoryAdditionalPropertiesRegistry'
+
+    Akeneo\Category\Infrastructure\Controller\InternalApi\GetTemplateController:
+        public: true
+        arguments:
+            - '@oro_security.security_facade'
+            - '@Akeneo\Category\Domain\Query\GetTemplate'
+            - '@Akeneo\Category\Application\Query\GetAttribute'
+
+    Akeneo\Category\Infrastructure\Controller\InternalApi\CreateTemplateController:
+        public: true
+        arguments:
+            - '@oro_security.security_facade'
+            - '@Akeneo\Category\Application\Command\CreateTemplate\CreateTemplateCommandHandler'
+
+    Akeneo\Category\Infrastructure\Controller\InternalApi\UpdateTemplateController:
+        public: true
+        arguments:
+            - '@oro_security.security_facade'
+            - '@category.command.message_bus'
+
+    Akeneo\Category\Infrastructure\Controller\InternalApi\UploadController:
+        public: true
+        arguments:
+            - '@validator'
+            - '@pim_category.serializer'
+            - '@akeneo_file_storage.file_storage.file.file_storer'
+            - '%supported_category_image_mime_types%'
+
+    Akeneo\Category\Infrastructure\Controller\InternalApi\ImagePreviewController:
+        public: true
+        arguments:
+            - '@Akeneo\Category\Application\Query\GetAttribute'
+            - '@pim_category.infrastructure.registry.preview_generator'
+            - '@Akeneo\Category\Infrastructure\FileSystem\Loader\ImageLoader'
+
+    Akeneo\Category\Infrastructure\Controller\InternalApi\UserGroupController:
+        public: true
+        arguments:
+            - '@Akeneo\UserManagement\ServiceApi\UserGroup\ListUserGroupInterface'
+
+    Akeneo\Category\Infrastructure\Controller\InternalApi\DeactivateTemplateController:
+        public: true
+        arguments:
+            - '@oro_security.security_facade'
+            - '@category.command.message_bus'
+
+    Akeneo\Category\Infrastructure\Controller\ExternalApi\ListCategoriesController:
+        public: true
+        arguments:
+            - '@oro_security.security_facade'
+            - '@pim_api.pagination.offset_hal_paginator'
+            - '@pim_api.pagination.parameter_validator'
+            - '@Akeneo\Category\Application\Query\GetCategoriesParametersBuilder'
+            - '@Akeneo\Category\Application\Query\GetCategoriesInterface'
+            - '%pim_api.configuration%'
+
+    Akeneo\Category\Infrastructure\Controller\ExternalApi\GetCategoryController:
+        public: true
+        arguments:
+            - '@oro_security.security_facade'
+            - '@Akeneo\Category\Application\Query\GetCategoriesParametersBuilder'
+            - '@Akeneo\Category\Application\Query\GetCategoriesInterface'
+
+
+    Akeneo\Category\Infrastructure\Controller\ExternalApi\DownloadCategoryMediaFileController:
+        public: true
+        arguments:
+            - '@oro_security.security_facade'
+            - '@pim_api.repository.media_file'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
+            - '@akeneo_file_storage.file_storage.file.streamed_file_fetcher'
+
+    Akeneo\Category\Infrastructure\Controller\InternalApi\LoadAttributeSetController:
+        public: true
+        arguments:
+            - '@oro_security.security_facade'
+            - '@category.command.message_bus'
+
+    Akeneo\Category\Infrastructure\Controller\InternalApi\AddAttributeController:
+        public: true
+        arguments:
+            - '@oro_security.security_facade'
+            - '@category.command.message_bus'
+
+    Akeneo\Category\Infrastructure\Controller\InternalApi\DeactivateAttributeController:
+        public: true
+        arguments:
+            - '@oro_security.security_facade'
+            - '@category.command.message_bus'
+
+    Akeneo\Category\Infrastructure\Controller\InternalApi\GetActivatedLocalesController:
+        public: true
+        arguments:
+            - '@Akeneo\Channel\Infrastructure\Query\Cache\CachedFindLocales'
+
+    Akeneo\Category\Infrastructure\Controller\InternalApi\TrackUsageOfLoadPredefinedAttributesController:
+        public: true
+        arguments:
+            - '@oro_security.security_facade'
+            - '@Akeneo\Category\Domain\Query\GetTemplate'
+            - '@logger'
+
+    Akeneo\Category\Infrastructure\Controller\InternalApi\ReorderTemplateAttributesController:
+        public: true
+        arguments:
+            - '@oro_security.security_facade'
+            - '@category.command.message_bus'

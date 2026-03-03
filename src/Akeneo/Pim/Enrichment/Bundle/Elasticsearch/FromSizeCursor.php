@@ -2,9 +2,10 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 
 /**
  * Bounded cursor to iterate over items where a start and a limit are defined.
@@ -20,52 +21,22 @@ use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
  */
 class FromSizeCursor extends AbstractCursor implements CursorInterface
 {
-    /** @var array */
-    protected $esQuery;
+    private int $initialFrom;
+    private int $to;
 
-    /** @var int */
-    protected $pageSize;
-
-    /** @var int */
-    protected $initialFrom;
-
-    /** @var int */
-    protected $from;
-
-    /** @var int */
-    protected $limit;
-
-    /** @var int */
-    protected $to;
-
-    /** @var int */
-    protected $fetchedItemsCount;
-
-    /**
-     * @param Client                        $esClient
-     * @param CursorableRepositoryInterface $productRepository
-     * @param CursorableRepositoryInterface $productModelRepository
-     * @param array                         $esQuery
-     * @param int                           $pageSize
-     * @param int                           $limit
-     * @param int                           $from
-     */
     public function __construct(
         Client $esClient,
-        CursorableRepositoryInterface $productRepository,
-        CursorableRepositoryInterface $productModelRepository,
+        ProductRepositoryInterface $productRepository,
+        ProductModelRepositoryInterface $productModelRepository,
         array $esQuery,
-        $pageSize,
-        $limit,
-        $from = 0
+        private int $pageSize,
+        private int $limit,
+        private int $from = 0
     ) {
         $this->esClient = $esClient;
         $this->productRepository = $productRepository;
         $this->productModelRepository = $productModelRepository;
         $this->esQuery = $esQuery;
-        $this->pageSize = $pageSize;
-        $this->limit = $limit;
-        $this->from = $from;
         $this->initialFrom = $from;
         $this->to = $this->from + $this->limit;
     }
@@ -73,7 +44,7 @@ class FromSizeCursor extends AbstractCursor implements CursorInterface
     /**
      * {@inheritdoc}
      */
-    public function next()
+    public function next(): void
     {
         if (false === next($this->items)) {
             $this->from += count($this->items);
@@ -85,7 +56,7 @@ class FromSizeCursor extends AbstractCursor implements CursorInterface
     /**
      * {@inheritdoc}
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->from = $this->initialFrom;
         $this->to = $this->from + $this->limit;
@@ -100,7 +71,7 @@ class FromSizeCursor extends AbstractCursor implements CursorInterface
      */
     protected function getNextIdentifiers(array $esQuery): IdentifierResults
     {
-        $size = ($this->to - $this->from) > $this->pageSize ? $this->pageSize : ($this->to - $this->from);
+        $size = min(($this->to - $this->from), $this->pageSize);
         $esQuery['size'] = $size;
         $identifiers = new IdentifierResults();
 
@@ -108,7 +79,7 @@ class FromSizeCursor extends AbstractCursor implements CursorInterface
             return $identifiers;
         }
 
-        $sort = ['_id' => 'asc'];
+        $sort = ['id' => 'asc'];
 
         if (isset($esQuery['sort'])) {
             $sort = array_merge($esQuery['sort'], $sort);
@@ -116,13 +87,11 @@ class FromSizeCursor extends AbstractCursor implements CursorInterface
 
         $esQuery['sort'] = $sort;
         $esQuery['from'] = $this->from;
-        $esQuery['track_total_hits'] = true;
 
         $response = $this->esClient->search($esQuery);
-        $this->count = $response['hits']['total']['value'];
 
         foreach ($response['hits']['hits'] as $hit) {
-            $identifiers->add($hit['_source']['identifier'], $hit['_source']['document_type']);
+            $identifiers->add($hit['_source']['identifier'], $hit['_source']['document_type'], $hit['_source']['id']);
         }
 
         return $identifiers;

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)

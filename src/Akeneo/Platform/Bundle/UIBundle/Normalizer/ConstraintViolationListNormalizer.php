@@ -35,7 +35,7 @@ class ConstraintViolationListNormalizer implements NormalizerInterface, Cacheabl
     /**
      * @inheritDoc
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof ConstraintViolationListInterface;
     }

@@ -12,3 +12,4 @@ services:
             - '@pim_catalog.repository.category'
             - '@request_stack'
             - '%env(APP_DEFAULT_LOCALE)%'
+            - '@security.firewall.map'

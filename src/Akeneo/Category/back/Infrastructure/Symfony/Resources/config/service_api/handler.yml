@@ -1,0 +1,6 @@
+services:
+    Akeneo\Category\ServiceApi\CategoryQueryInterface:
+        public: true
+        class: Akeneo\Category\Application\Handler\CategoryQueryHandler
+        arguments:
+            $getCategory: '@Akeneo\Category\Domain\Query\GetCategoryInterface'

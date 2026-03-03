@@ -1,0 +1,146 @@
+pim_title:
+  akeneo_identifier_generator_index: "Generador de identificadores"
+  akeneo_identifier_generator_edit: "Editar generador de identificadores"
+pim_error:
+  unauthorized_list_attributes: "No puede listar atributos. Póngase en contacto con su administrador para modificar sus derechos."
+  unauthorized_list_properties: "Usted no tiene permiso para listar esta propiedad. Póngase en contacto con su administrador."
+  unauthorized_list_families: "No puede listar familias. Póngase en contacto con su administrador para modificar sus derechos."
+  general: "Se ha producido un error durante la visualización de esta página. Póngase en contacto con su administrador."
+  unexpected: "Se ha producido un error inesperado. Póngase en contacto con el administrador del sistema."
+  404: 'Se ha producido un error 404...'
+  identifier_generator_not_found: 'Generador de identificadores no encontrado'
+  selection_attribute_not_found: 'Se ha eliminado de su catálogo un atributo de su selección. Elimine esta propiedad de su selección.'
+pim_identifier_generator:
+  create:
+    form:
+      title: "Crear un nuevo generador de identificadores"
+      select_identifier_attribute: "Seleccione su atributo identificador"
+  tabs:
+    general: "General"
+    product_selection: "Selección de productos"
+    identifier_structure: "Estructura del identificador"
+  general:
+    title: "Propiedades generales"
+    label_translations_in_ui_locale: "Traducciones de etiquetas en la configuración regional de la IU"
+    text_transformation:
+      label: 'Transformación del texto'
+      no: 'Sin transformación de texto'
+      lowercase: 'Minúsculas'
+      uppercase: 'Mayúsculas'
+  flash:
+    create:
+      success: 'El generador de identificadores «{{ code }}» se ha creado correctamente'
+      error: 'No se ha podido crear el generador de identificadores'
+    update:
+      success: 'El generador de identificadores «{{ code }}» se ha actualizado correctamente'
+      error: 'No se ha podido actualizar el generador de identificadores'
+    delete:
+      success: 'El generador de identificadores «{{ code }}» se ha eliminado correctamente'
+      error: 'No se ha podido eliminar el generador de identificadores'
+  list:
+    identifier: 'Identificador'
+    first_generator: 'Cree su primer generador de identificadores'
+    read_only_list: 'Póngase en contacto con su administrador para tener acceso a esta función.'
+    helper:
+      title: 'Automatizar la generación de identificadores.'
+      info: 'Una vez creado un generador de identificadores, se asignará automáticamente un identificador a cada nuevo producto que cree.'
+    check_help_center: 'Consulte nuestro centro de ayuda para obtener más información.'
+    max_generator:
+      title: 'Ha alcanzado el límite de {{ count }} generadores de identificadores.'
+    confirmation: '¿Seguro que quiere eliminar esta propiedad?'
+  operators:
+    'NOT IN CHILDREN': 'No en elementos secundarios'
+    'IN CHILDREN': 'En elementos secundarios'
+    UNCLASSIFIED: 'Sin clasificar'
+    CLASSIFIED: 'Clasificado'
+  selection:
+    limit_reached: 'Ha alcanzado el límite de {{ count }} condiciones'
+    helper:
+      title: 'Añada condiciones a su selección de productos, si desea:'
+      automate: 'automatizar la creación de identificadores para una selección específica de productos'
+      multiple: 'disponer de múltiples estructuras de identificadores para diferentes selecciones de productos'
+    empty:
+      title: 'Cree su selección de productos'
+      text: 'Todos sus productos con un identificador vacío se verán afectados.'
+      info: 'Si desea dirigirse a productos específicos, añada nuevas condiciones.'
+    settings:
+      enabled:
+        disabled: 'Deshabilitado'
+        placeholder: 'Elija un estado'
+      family:
+        placeholder: 'Seleccione al menos una familia'
+      select_option:
+        placeholder: 'Seleccione al menos una opción'
+      categories:
+        tree: Árbol
+  structure:
+    helper: 'Defina la estructura de los identificadores de producto que desea generar. Si necesita ayuda para configurar las propiedades, {{link}}.'
+    helper_link: 'consulte nuestro centro de ayuda para más información'
+    title: 'Estructura del identificador'
+    add_element: 'Añadir nueva propiedad'
+    limit_reached: 'Ha alcanzado el límite de {{ count }} propiedades'
+    property_type:
+      sections:
+        system: 'Sistema'
+      free_text: 'Texto libre'
+      auto_number: 'Número automático'
+      family: 'Familia'
+    settings:
+      free_text:
+        title: 'Ajustes de texto libre'
+        string_label: 'Defina su texto'
+      auto_number:
+        title: 'Número automático'
+        digitsMin_label: 'Dígitos mínimos'
+        numberMin_label: 'Número mínimo'
+      family:
+        title: 'Familia'
+      code_format:
+        type:
+          truncate: 'Usar los primeros caracteres'
+          code: 'Usar todo el código'
+          nomenclature: 'Usar su propia nomenclatura'
+      operator:
+        title: 'Operador'
+        placeholder: 'Seleccione el operador'
+      simple_select:
+        title: 'Atributo'
+      abbrev_type: 'Defina el formato de esta propiedad'
+      abbrev_type_empty_label: 'Seleccione el formato'
+      chars_number: 'Número de caracteres'
+    empty:
+      title: 'Cree su estructura de identificadores'
+      text: 'Haga clic en «Añadir nueva propiedad» en la parte superior derecha'
+      link_text: 'Consulte nuestro Centro de ayuda para obtener más información.'
+    delimiters:
+      title: 'Delimitadores'
+      helper: 'Obtenga más información sobre cómo añadir delimitadores predeterminados o personalizados en {{link}}.'
+      helper_link: 'nuestro centro de ayuda'
+      checkbox_label: 'Usar delimitadores entre cada propiedad'
+      input_label: 'Defina sus delimitadores'
+  deletion:
+    operations: 'Operaciones'
+    confirmation: '¿Seguro que quiere eliminar este generador de identificadores?'
+    type: 'Escriba «{{ code }}»'
+  nomenclature:
+    edit: 'Editar nomenclatura'
+    section_title: 'Generando mis identificadores para {{ property }}'
+    title: 'Gestionar la nomenclatura'
+    helper: 'Tenga en cuenta que sus nomenclaturas son compartidas por todos sus generadores de identificadores.'
+    characters_number: 'Número de caracteres'
+    operator_placeholder: 'Elija su operador'
+    value_placeholder: 'Elija sus caracteres'
+    nomenclature: 'Nomenclatura'
+    generate_if_empty: 'Generar nomenclatura automáticamente'
+    display: 'Mostrar'
+    filters:
+      all: 'Todos'
+      error: 'Error'
+      empty: 'Vacío'
+      filled: 'Relleno'
+    empty:
+      title: 'No se han encontrado nomenclaturas'
+    flash:
+      success: 'Su nomenclatura se ha guardado correctamente'
+      error: 'Su nomenclatura no puede guardarse'
+      warning: 'Su nomenclatura se ha guardado correctamente, pero algunos valores no se generarán. Edite su nomenclatura para modificar los valores erróneos.'

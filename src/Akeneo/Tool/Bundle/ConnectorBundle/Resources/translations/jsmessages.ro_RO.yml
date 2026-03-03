@@ -1,0 +1,115 @@
+#Job labels
+batch_jobs:
+  default_steps:
+    validation: Validarea fișierului
+    import_associations: Import asociație
+    import_sub_product_model: Impor model de subprodus
+    compute_data_related_to_family_root_product_models: Calculează datele ale modelelor de produse
+    compute_family_variant_structure_changes: Calculează schimbarile structurii de variantă de familie
+    compute_completeness_of_products_family: Calculează completitudinea familiei de produse
+  csv_product_export:
+    label: Export produs în CSV
+    export.label: Export produs
+  csv_product_model_export:
+    label: Export model de produs în CSV
+    export.label: Export model de produs
+  csv_category_export:
+    label: Export categorie în CSV
+    export.label: Export categorie
+  csv_attribute_export:
+    label: Export atribut în CSV
+    export.label: Export atribut
+  csv_attribute_option_export:
+    label: Export opziuni de atribut în CSV
+    export.label: Export opziuni de atribut
+  csv_association_type_export:
+    label: Export tip de atribut în CSV
+    export.label: Export tip de asociere
+  csv_group_export:
+    label: Export grup în CSV
+    export.label: Export grup
+  csv_family_export:
+    label: Export familie în CSV
+    export.label: Export familie
+  csv_family_variant_export:
+    label: Export variantă de familie în CSV
+    export.label: Export varianta de familie
+  csv_product_import:
+    label: Import de produs în CSV
+    import.label: Import produs
+  csv_category_import:
+    import.label: Import categorie
+  csv_attribute_import:
+    import.label: Import atribut
+  csv_attribute_option_import:
+    label: Import de opțiune a atributului în CSV
+    import.label: Import de opțiune a atributului
+  csv_association_type_import:
+    label: Import de tipul asociației în CSV
+    import.label: Import tip de asociație
+  csv_family_import:
+    label: Import familie în CSV
+    import.label: Import familie
+    compute_data_related_to_family_variants.label: Calculează datele ale modelelor de produse
+  csv_family_variant_import:
+    label: Import varianta de familie în CSV
+    import.label: Export varianta de familie
+  csv_group_import:
+    label: Import de grup în CSV
+    import.label: Import grup
+  csv_attribute_group_export:
+    label: Export grup de atribut în CSV
+    export.label: Export grup de atribut
+  csv_group_type_export:
+    label: Export tip de grup În CSV
+  csv_attribute_group_import:
+    label: Import grup de atribut în CSV
+    import.label: Import grup de atribut
+  csv_group_type_import:
+    label: Import dip de grup în CSV
+    import.label: Import tip de grup
+  xlsx_category_import:
+    label: Import categorie în XLSX
+    import.label: Import categorie
+  xlsx_association_type_import:
+    label: Import tip de asociere în XLSX
+    import.label: Import tip de asociere
+  xlsx_attribute_import:
+    label: Import atribut în XLSX
+    import.label: Import atribut
+  xlsx_attribute_option_import:
+    label: Import opțiuni de atribut în XLSX
+    import.label: Import opțiuni de atribut
+  xlsx_family_import:
+    label: Import familie în XLSX
+    import.label: Import familie
+  xlsx_family_variant_import:
+    label: Import variantă familie în XLSX
+    import.label: Import variantă familie
+  xlsx_product_export:
+    label: Export produs în XLSX
+    export.label: Exportare produse
+  xlsx_product_model_export:
+    export.label: Export model de produs
+  xlsx_product_import:
+    import.label: Import produs
+  xlsx_group_export:
+    label: Export grup în XLSX
+    export.label: Export grup
+  xlsx_group_import:
+    label: Import grup în XLSX
+    import.label: Import grup
+  xlsx_family_export:
+    export.label: Export familie
+  xlsx_family_variant_export:
+    export.label: Export varianta de familie
+  xlsx_category_export:
+    export.label: Export categorie
+  xlsx_attribute_group_export:
+    export.label: Export grup de atribut
+  xlsx_attribute_group_import:
+    label: Import grup de atribut în XLSX
+    import.label: Import grup de atribut
+  xlsx_group_type_import:
+    label: Import tip de grup în XLSX
+    import.label: Import tip de grup

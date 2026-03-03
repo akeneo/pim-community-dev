@@ -11,19 +11,23 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Event\Connector;
  */
 final class ReadProductsEvent
 {
-    /** @var int[] */
-    private $productIds;
+    private int $count;
 
-    public function __construct(array $productIds)
+    private ?string $connectionCode;
+
+    public function __construct(int $count, ?string $connectionCode = null)
     {
-        $this->productIds = $productIds;
+        $this->count = $count;
+        $this->connectionCode = $connectionCode;
     }
 
-    /**
-     * @return int[]
-     */
-    public function productIds(): array
+    public function getCount(): int
     {
-        return $this->productIds;
+        return $this->count;
+    }
+
+    public function getConnectionCode(): ?string
+    {
+        return $this->connectionCode;
     }
 }

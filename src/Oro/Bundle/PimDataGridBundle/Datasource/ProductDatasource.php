@@ -3,9 +3,10 @@
 namespace Oro\Bundle\PimDataGridBundle\Datasource;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Oro\Bundle\PimDataGridBundle\EventSubscriber\FilterEntityWithValuesSubscriber;
 use Oro\Bundle\PimDataGridBundle\EventSubscriber\FilterEntityWithValuesSubscriberConfiguration;
@@ -123,7 +124,9 @@ class ProductDatasource extends Datasource
     private function normalizeEntityWithValues(EntityWithValuesInterface $item, array $context): array
     {
         $defaultNormalizedItem = [
-            'id'               => $item->getId(),
+            'id'               => $item instanceof ProductInterface && get_class($item) !== 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct'
+                ? $item->getUuid()->toString()
+                : $item->getId(),
             'dataLocale'       => $this->getParameters()['dataLocale'],
             'family'           => null,
             'values'           => [],
@@ -156,7 +159,7 @@ class ProductDatasource extends Datasource
     {
         $attributeCodes = [];
         foreach ($attributes as $attribute) {
-            if (in_array($attribute['id'], $attributeIdsToDisplay)) {
+            if ((in_array($attribute['id'], $attributeIdsToDisplay) || (isset($attribute['mainIdentifier'])) && $attribute['mainIdentifier'])) {
                 $attributeCodes[] = $attribute['code'];
             }
         }

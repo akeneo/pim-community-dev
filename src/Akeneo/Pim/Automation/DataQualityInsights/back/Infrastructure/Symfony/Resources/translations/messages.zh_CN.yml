@@ -1,0 +1,15 @@
+akeneo_data_quality_insights:
+  axis:
+    enrichment: 丰富度
+  acl:
+    activation_attribute_group:
+      edit: 編輯数据质量洞察激活
+  acl_group:
+    dqi: 数据质量洞察
+  product_grid:
+    filter_label:
+      quality_score: 质量评分
+      enrichment_quality: 丰富质量
+      images_quality: 产品图像
+Enrichment: 丰富度
+Quality Score: 质量评分

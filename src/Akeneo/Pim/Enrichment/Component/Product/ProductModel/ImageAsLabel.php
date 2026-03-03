@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\ProductModel;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
@@ -54,31 +56,16 @@ class ImageAsLabel
             }
         }
 
-        if ($levelContainingAttribute <= $this->getLevel($productModel)) {
+        if ($levelContainingAttribute <= $productModel->getVariationLevel()) {
             return $productModel->getImage();
         }
 
-        $currentLevel = $this->getLevel($productModel);
+        $currentLevel = $productModel->getVariationLevel();
         $entity = $productModel;
 
         do {
-            $modelChild = current($this->productModelRepository->findBy(
-                ['parent' => $entity],
-                ['created' => 'ASC', 'code' => 'ASC'],
-                1
-            ));
-
-            $productChild = $this->productRepository->findLastCreatedByParent($entity);
-
-            if (false !== $modelChild) {
-                $entity = $modelChild;
-            }
-
-            if (null !== $productChild) {
-                $entity = $productChild;
-            }
-
-            if (false === $modelChild && null === $productChild) {
+            $entity = $this->findFirstCreatedEntityWithFamilyVariantByParent($entity);
+            if (null === $entity) {
                 return null;
             }
 
@@ -88,8 +75,16 @@ class ImageAsLabel
         return $entity->getImage();
     }
 
-    private function getLevel(ProductModelInterface $productModel): int
+    /**
+     * @return ProductModelInterface | ProductInterface | null
+     */
+    private function findFirstCreatedEntityWithFamilyVariantByParent(ProductModelInterface $productModel)
     {
-        return $productModel->isRoot() ? 0 : 1;
+        $productChild = $this->productRepository->findLastCreatedByParent($productModel);
+        if (null !== $productChild) {
+            return $productChild;
+        }
+
+        return $this->productModelRepository->findFirstCreatedVariantProductModel($productModel);
     }
 }

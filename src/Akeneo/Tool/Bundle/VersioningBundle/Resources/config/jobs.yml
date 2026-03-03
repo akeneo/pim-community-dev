@@ -1,0 +1,78 @@
+services:
+    Akeneo\Tool\Bundle\VersioningBundle\Job\RefreshVersioning:
+        arguments:
+            - '@logger'
+            - '@pim_versioning.manager.version'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+            - '@doctrine.orm.default_entity_manager'
+        public: false
+
+    pim_versioning.step.refresh_versioning:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'versioning_refresh'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@Akeneo\Tool\Bundle\VersioningBundle\Job\RefreshVersioning'
+        public: false
+
+    pim_versioning.job.refresh_versioning:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'versioning_refresh'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_versioning.step.refresh_versioning'
+            - false
+            - false
+        public: false
+        tags:
+            -
+                name: akeneo_batch.job
+                connector: 'internal'
+                type: 'scheduled_job'
+
+    pim_versioning.job.job_parameters.default_values_provider.versioning_refresh:
+        class: 'Akeneo\Tool\Bundle\VersioningBundle\Job\JobParameters\RefreshVersioning'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+
+    Akeneo\Tool\Bundle\VersioningBundle\Job\PurgeVersioning:
+        arguments:
+            - '@pim_versioning.purger.version'
+
+    pim_versioning.job.versioning_purge:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'versioning_purge'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@Akeneo\Tool\Component\Connector\Step\CheckJobUniqueStep'
+                - '@pim_versioning.step.versioning_purge'
+            - false
+            - false
+        public: false
+        tags:
+            -
+                name: akeneo_batch.job
+                connector: 'internal'
+                type: 'scheduled_job'
+
+    pim_versioning.step.versioning_purge:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'versioning_purge'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@Akeneo\Tool\Bundle\VersioningBundle\Job\PurgeVersioning'
+        public: false
+
+    pim_versioning.job.job_parameters.default_values_provider.versioning_purge:
+        class: 'Akeneo\Tool\Bundle\VersioningBundle\Job\JobParameters\PurgeVersioning'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }

@@ -3,6 +3,7 @@
 namespace Context\Page\ProductGroup;
 
 use Context\Page\Base\Form;
+use Pim\Behat\Decorator\ReactContextSwitcherDecorator;
 
 /**
  * Group edit page
@@ -30,6 +31,9 @@ class Edit extends Form
             [
                 'Main context selector' => [
                     'css'        => '.tab-container .object-attributes .attribute-edit-actions',
+                    'decorators' => [
+                        ReactContextSwitcherDecorator::class
+                    ]
                 ],
                 'Save' => ['css' => 'button.save'],
             ]

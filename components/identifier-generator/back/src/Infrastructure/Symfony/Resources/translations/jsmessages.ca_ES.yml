@@ -1,0 +1,146 @@
+pim_title:
+  akeneo_identifier_generator_index: "Generador d'identificadors"
+  akeneo_identifier_generator_edit: "Edita Generador d'identificadors"
+pim_error:
+  unauthorized_list_attributes: "No podeu llistar atributs. Poseu-vos en contacte amb el vostre administrador per canviar permisos."
+  unauthorized_list_properties: "No teniu permís per llistar aquesta propietat. Poseu-vos en contacte amb l'administrador."
+  unauthorized_list_families: "No podeu llistar famílies. Poseu-vos en contacte amb l'administrador per canviar els permisos."
+  general: "S'ha produït un error al mostrar la pàgina. Poseu-vos en contacte amb l'administrador."
+  unexpected: "Error inesperat. Contacti amb el seu administrador de sistemes."
+  404: 'Error 404...'
+  identifier_generator_not_found: 'No s''ha trobat el generador d''identificadors'
+  selection_attribute_not_found: 'S''ha suprimit un atribut de la selecció de productes del vostre catàleg. Si us plau, elimineu aquesta propietat de la vostra selecció de productes.'
+pim_identifier_generator:
+  create:
+    form:
+      title: "Crea un nou generador d'identificador"
+      select_identifier_attribute: "Seleccioneu l'identificador d'atribut"
+  tabs:
+    general: "General"
+    product_selection: "Selecció de productes"
+    identifier_structure: "Estructura d'identificació"
+  general:
+    title: "Propietats generals"
+    label_translations_in_ui_locale: "Etiquetar traduccions a la configuració regional de la IU"
+    text_transformation:
+      label: 'Transformació del text'
+      no: 'Sense transformació de text'
+      lowercase: 'Minúscula'
+      uppercase: 'Majúscula'
+  flash:
+    create:
+      success: 'El generador d''identificadors "{{ code }}" s''ha creat correctament'
+      error: 'El generador d''identificadors no s''ha pogut crear'
+    update:
+      success: 'El generador d''identificadors "{{ code }}" s''ha actualitzat correctament'
+      error: 'El generador d''identificadors no s''ha pogut actualitzar'
+    delete:
+      success: 'El generador d''identificadors "{{ code }}" s''ha eliminat correctament'
+      error: 'El generador d''identificadors no s''ha pogut eliminar'
+  list:
+    identifier: 'Identificador'
+    first_generator: 'Crea el teu primer generador d''identificador!'
+    read_only_list: 'Poseu-vos en contacte amb el vostre administrador per tenir accés a aquesta funció.'
+    helper:
+      title: 'Automatitzar la generació d''identificadors.'
+      info: 'Un cop creat un generador d''identificadors, s''assignarà automàticament un identificador a cada producte nou que creeu.'
+    check_help_center: 'Consulteu el nostre centre d''ajuda per obtenir més informació.'
+    max_generator:
+      title: 'Heu arribat al límit de {{ count }} generadors d''identificadors.'
+    confirmation: 'Està segur que vol suprimir aquesta propietat?'
+  operators:
+    'NOT IN CHILDREN': 'No als fills'
+    'IN CHILDREN': 'Als fills'
+    UNCLASSIFIED: 'Sense classificar'
+    CLASSIFIED: 'Classificat'
+  selection:
+    limit_reached: 'Heu assolit el límit de {{ count }} condicions'
+    helper:
+      title: 'Afegiu condicions a la vostra selecció de productes, si voleu:'
+      automate: 'automatitzar la creació d''identificadors per a una selecció específica de productes'
+      multiple: 'tenen múltiples estructures d''identificadors per a diferents selecció de productes'
+    empty:
+      title: 'Creeu la vostra selecció de productes'
+      text: 'Tots els vostres productes amb un identificador buit es veuran afectats.'
+      info: 'Si voleu orientar productes específics, afegiu condicions noves.'
+    settings:
+      enabled:
+        disabled: 'Deshabilitat'
+        placeholder: 'Trieu un estat'
+      family:
+        placeholder: 'Seleccioneu almenys una família'
+      select_option:
+        placeholder: 'Seleccioneu almenys una opció'
+      categories:
+        tree: Arbre
+  structure:
+    helper: 'Definiu l''estructura dels identificadors de producte que voleu generar. Si necessiteu ajuda per configurar la configuració de la propietat, {{link}}.'
+    helper_link: 'consulteu el nostre centre d''ajuda per obtenir més informació'
+    title: 'Estructura d''identificació'
+    add_element: 'Afegeix una nova propietat'
+    limit_reached: 'Heu assolit el límit de {{ count }} propietats'
+    property_type:
+      sections:
+        system: 'Sistema'
+      free_text: 'Text lliure'
+      auto_number: 'Número automàtic'
+      family: 'Família'
+    settings:
+      free_text:
+        title: 'Configuració de text lliure'
+        string_label: 'Defineix el teu text'
+      auto_number:
+        title: 'Número automàtic'
+        digitsMin_label: 'Mínim dígits'
+        numberMin_label: 'Nombre mínim'
+      family:
+        title: 'Família'
+      code_format:
+        type:
+          truncate: 'Utilitza els primers caràcters'
+          code: 'Utilitzeu tot el codi'
+          nomenclature: 'Utilitza la teva pròpia nomenclatura'
+      operator:
+        title: 'Operador'
+        placeholder: 'Selecciona l''operador'
+      simple_select:
+        title: 'Atribut'
+      abbrev_type: 'Definiu el format d''aquesta propietat'
+      abbrev_type_empty_label: 'Seleccioneu el format'
+      chars_number: 'Nombre de caràcters'
+    empty:
+      title: 'Creeu la vostra estructura d''identificador'
+      text: 'Feu clic a "Afegeix una nova propietat" a la part superior dreta'
+      link_text: 'Consulteu el nostre Centre d''ajuda per obtenir més informació.'
+    delimiters:
+      title: 'Delimitadors'
+      helper: 'Més informació sobre com afegir delimitadors predeterminats o personalitzats a {{link}}.'
+      helper_link: 'el nostre centre d''ajuda'
+      checkbox_label: 'Utilitzeu delimitadors entre cada propietat'
+      input_label: 'Defineix els teus delimitadors'
+  deletion:
+    operations: 'Operacions'
+    confirmation: 'Esteu segur que voleu eliminar aquest generador d''identificador?'
+    type: 'Si us plau, escriu "{{ code }}"'
+  nomenclature:
+    edit: 'Edita la nomenclatura'
+    section_title: 'Generant identificadors per a {{ property }}'
+    title: 'Gestiona la nomenclatura'
+    helper: 'Tots els vostres generadors d''identificadors comparteixen les vostres nomenclatures.'
+    characters_number: 'Nombre de caràcters'
+    operator_placeholder: 'Tria el teu operador'
+    value_placeholder: 'Tria els teus caràcters'
+    nomenclature: 'Nomenclatura'
+    generate_if_empty: 'Genera nomenclatura automàticament'
+    display: 'Mostra'
+    filters:
+      all: 'Tot'
+      error: 'Error'
+      empty: 'Buit'
+      filled: 'Emplenat'
+    empty:
+      title: 'No s''han trobat nomenclatures'
+    flash:
+      success: 'La nomenclatura s''ha desat correctament'
+      error: 'La nomenclatura no s''ha desat'
+      warning: 'La vostra nomenclatura s''ha desat correctament, però alguns valors no es generaran. Editeu la vostra nomenclatura per modificar els valors per error.'

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace AkeneoTest\Pim\Structure\Integration\Family;
+namespace AkeneoTest\Pim\Structure\Integration\Attribute\Query;
 
 use Akeneo\Pim\Structure\Bundle\Manager\AttributeCodeBlacklister;
-use Akeneo\Pim\Structure\Bundle\Query\InternalApi\Attribute\GetAllBlacklistedAttributeCodes;
+use Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Sql\GetAllBlacklistedAttributeCodes;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
@@ -24,8 +24,7 @@ final class GetAllBlacklistedAttributeCodesIntegration extends TestCase
     public function test_it_returns_an_array_of_blacklisted_attributes(): void
     {
         $blacklister = $this->getBlacklister();
-        $blacklister->blacklist('description');
-        $blacklister->blacklist('name');
+        $blacklister->blacklist(['description', 'name']);
 
         $query = $this->getQuery();
         $result = $query->execute();

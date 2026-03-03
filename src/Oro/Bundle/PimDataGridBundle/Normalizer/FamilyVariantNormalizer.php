@@ -53,7 +53,7 @@ class FamilyVariantNormalizer implements NormalizerInterface, CacheableSupportsM
                 return $attribute->getLabel();
             }, $attributeSet->getAxes()->toArray());
 
-            $normalizedFamilyVariant['level_' . $attributeSet->getLevel()] = implode($axesLabels, ', ');
+            $normalizedFamilyVariant['level_' . $attributeSet->getLevel()] = implode(', ', $axesLabels);
         }
 
         return $normalizedFamilyVariant;

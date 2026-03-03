@@ -3,7 +3,7 @@
 namespace Context\Page\ProductModel;
 
 use Context\Page\Base\ProductEditForm;
-use Pim\Behat\Decorator\ContextSwitcherDecorator;
+use Pim\Behat\Decorator\ReactContextSwitcherDecorator;
 
 /**
  * Product model edit page
@@ -30,7 +30,7 @@ class Edit extends ProductEditForm
                 'Main context selector' => [
                     'css'        => '.AknTitleContainer-context',
                     'decorators' => [
-                        ContextSwitcherDecorator::class
+                        ReactContextSwitcherDecorator::class
                     ]
                 ]
             ]

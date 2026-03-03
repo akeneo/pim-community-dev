@@ -48,19 +48,36 @@ pim_ui.system_config:
     loading_message.title: S'estan carregant els missatges
 other_actions: Altres accions
 pim_common:
+  association_types: Tipus d'associació
   cancel: Cancel·lar
-  save: Desar
-  delete: Suprimir
-  update: Actualitzar
-  view: Vista
-  edit: Editar
-  created: Creat
-  updated: Actualitzat
+  categories: Categories
+  code: Codi
   create: Crear
-  permissions: Permisos
-  properties: Propietats
+  created: Creat
+  delete: Suprimir
+  edit: Editar
+  enabled: Habilitat
+  family_variant: Variants familiars
+  family: Família
+  groups: Grups
+  label: Etiqueta
   name: Nom
+  no: "No"
+  parent: Pare
+  permissions: Permisos
+  product_models: Models de producte
+  products: Productes
+  properties: Propietats
+  quality_score: Puntuació de qualitat
+  quantity: Quantitat
   remove: Eliminar
+  save: Desar
+  unit: Unitat
+  update: Actualitzar
+  updated: Actualitzat
+  view: Vista
+  yes: "Sí"
+  uuid: UUID
 pim_enrich:
   #ACLs
   acl:
@@ -86,21 +103,13 @@ pim_enrich:
       comment: Comentar productes
       download: Descarregar el producte en format PDF
       history: Veure l'històric del producte
+      convert_variant_to_simple: Convertir un producte variant en un producte simple
     product_model:
       create: Crear un model de producte
       edit_attributes: Editar els atributs d'un model de producte
       categories_view: Consultar les categories d'un model de producte
       history: Veure l'històric del model de producte
-      remove: Eliminar un model de producte
-    category:
-      list: Llistar categories
-      create: Crear una categoria
-      edit: Editar una categoria
-      remove: Eliminar una categoria
-      move: Moure categoria
-      children: Veure subcategories
-      products: Veure productes de la categoria
-      history: Veure l'històric de la categoria
+      remove: Eliminar un model de producte (inclosos els fills)
     channel:
       index: Llistar canals
       create: Crear un canal
@@ -122,6 +131,7 @@ pim_enrich:
       create: Crear un grup d'atributs
       edit: Editar un grup d'atributs
       remove: Suprimir un grup d'atributs
+      mass_delete: Eliminació massiva de grups d'atributs
       sort: Ordenar grups d'atribut
       add_attribute: Afegir l'atribut a un grup
       remove_attribute: Suprimir l'atribut d'un grup
@@ -131,6 +141,7 @@ pim_enrich:
       create: Crear un atribut
       edit: Editar un atribut
       remove: Eliminar un atribut
+      mass_delete: Supressió massiva d'atributs
       sort: Ordena els atributs dins els grups d'atributs
       history: Veure l'històric dels atributs
     group:
@@ -154,8 +165,8 @@ pim_enrich:
       remove: Eliminar associacions d'un producte
     job_tracker:
       index: Veure seguiment del procés
-    api_connection:
-      manage: Gestionar les connexions de l'API
+      view_all_jobs: Veure totes les feines en seguiment de processos
+      stop_job: Aturar una feina en curs
   acl_group:
     association_type: Tipus d'associació
     attribute: Atributs
@@ -203,6 +214,8 @@ flash:
   attribute:
     identifier_not_removable: L'atribut identificador no es pot suprimir
     used_as_conversion_unit: Aquest atribut no es pot eliminar perquè s'utilitza com a unitat de conversió al canal(s) %channelCodes%.
+    cant_remove_attributes_used_as_label: Els atributs utilitzats com a etiquetes en una família no es poden eliminar.
+    cant_remove_attribute_used_as_axis: No podeu suprimir aquest atribut utilitzat com un eix variant en una variant familiar
   category:
     removed: Categoria suprimida correctament
   tree:
@@ -347,8 +360,8 @@ Decimals allowed: Permetre decimals
 Negative allowed: Permetre valors negatius
 Date min: Data mínima
 Date max: Data màxima
-Metric family: Família mètrica
-Default metric unit: Unitat mètrica per defecte
+Metric family: Família de mètrica
+Default metric unit: Unitat de mesura per defecte
 Max file size: Mida màxima de l'arxiu (MB)
 Allowed extensions: Extensions permeses
 None: Cap
@@ -420,6 +433,35 @@ Updated At: Actualitzat el
 Enabled: Habilitat
 Disabled: Deshabilitat
 Status: Estat
+pim_datagrid:
+  filters:
+    product_typology:
+      label: Tipologia de producte
+    entity_type:
+      label: Variant
+    family:
+      label: Família
+    groups:
+      label: Grups
+    enabled:
+      label: Estat
+    scope:
+      label: Canal
+    completeness:
+      label: Complet
+    created:
+      label: Creat
+    updated:
+      label: Actualitzat
+    label_or_identifier:
+      label: Etiqueta o identificador
+      label_with_uuid: Etiqueta, identificador o UUID
+    parent:
+      label: Pare
+    identifier:
+      label: Identificador
+    uuid:
+      label: Uuid
 #Versioning / history
 Change History: Historial de canvis
 Data Audit: Auditoria de dades
@@ -484,7 +526,6 @@ pim_mass_edit:
       success: Esborrat massiu <strong>%label%</strong> ha acabat
 job_execution.summary:
   mass_edited: Editat en massa
-  skip: Omès
   skipped_products: Productes omesos
   skipped_attributes: Atributs omesos
   skipped_families: Famílies omeses
@@ -505,3 +546,9 @@ job_tracker:
     title: Seguiment del procés
   filter:
     started_at: Va començar a
+pim_login:
+  logo_title: Akeneo PIM
+  footer:
+    powered: Funciona amb
+    powered_image_title: logotip Akeneo
+pim_system.acl_group.connect: Connecta

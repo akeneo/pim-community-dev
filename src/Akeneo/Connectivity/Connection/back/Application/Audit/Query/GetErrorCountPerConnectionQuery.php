@@ -11,22 +11,15 @@ namespace Akeneo\Connectivity\Connection\Application\Audit\Query;
  */
 class GetErrorCountPerConnectionQuery
 {
-    /** @var string */
-    private $errorType;
+    private \DateTimeImmutable $fromDateTime;
 
-    /** @var \DateTimeImmutable */
-    private $fromDateTime;
-
-    /** @var \DateTimeImmutable */
-    private $upToDateTime;
+    private \DateTimeImmutable $upToDateTime;
 
     public function __construct(
-        string $errorType,
+        private string $errorType,
         \DateTimeImmutable $fromDateTime,
         \DateTimeImmutable $upToDateTime
     ) {
-        $this->errorType = $errorType;
-
         $this->checkTimezoneIsUtc($fromDateTime);
         $this->fromDateTime = $fromDateTime;
 
@@ -53,7 +46,7 @@ class GetErrorCountPerConnectionQuery
     {
         if ('UTC' !== $dateTime->getTimezone()->getName()) {
             throw new \InvalidArgumentException(
-                sprintf(
+                \sprintf(
                     'Parameter `$dateTime` "%s" with timezone "%s" must have a timezone "UTC".',
                     $dateTime->format(\DateTimeInterface::ATOM),
                     $dateTime->getTimezone()->getName()

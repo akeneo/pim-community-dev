@@ -1,0 +1,4 @@
+services:
+  Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Presenter\UnableToSetIdentifierExceptionPresenter:
+    arguments:
+      - '@translator'

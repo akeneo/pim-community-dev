@@ -2,15 +2,16 @@
 
 namespace Specification\Akeneo\UserManagement\Component\Model;
 
-use Akeneo\Channel\Component\Model\Channel;
-use Akeneo\Channel\Component\Model\Locale;
-use Akeneo\Tool\Component\Classification\Model\Category;
+use Akeneo\Channel\Infrastructure\Component\Model\Channel;
+use Akeneo\Channel\Infrastructure\Component\Model\Locale;
+use Akeneo\Category\Infrastructure\Component\Classification\Model\Category;
 use Akeneo\UserManagement\Component\Model\Group;
 use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Model\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
 use PhpSpec\ObjectBehavior;
+use Symfony\Component\Security\Core\User\InMemoryUser;
 
 class UserSpec extends ObjectBehavior
 {
@@ -37,13 +38,27 @@ class UserSpec extends ObjectBehavior
         $this->isApiUser()->shouldReturn(true);
     }
 
+    function it_provides_a_profile()
+    {
+        $this->getProfile()->shouldReturn(null);
+        $this->setProfile('manager');
+        $this->getProfile()->shouldReturn('manager');
+    }
+
+    function it_set_an_empty_profile_as_null()
+    {
+        $this->getProfile()->shouldReturn(null);
+        $this->setProfile('');
+        $this->getProfile()->shouldReturn(null);
+    }
+
     function it_can_be_duplicated()
     {
         $duplicated = $this->duplicate();
         $duplicated->getUsername()->shouldBeNull();
         $duplicated->isEnabled()->shouldBe(true);
 
-        $role = new Role();
+        $role = new Role('ROLE_USER');
         $group = new Group();
         $this->setId(10);
         $this->setUsername('test username');
@@ -85,6 +100,7 @@ class UserSpec extends ObjectBehavior
         $this->setDefaultGridView('alias2', $privateView);
         $this->setPassword('encrypted');
         $this->setPlainPassword('password');
+        $this->setProductGridFilters(['name', 'label']);
 
         $duplicated = $this->duplicate();
         $duplicated->getId()->shouldBeNull();
@@ -95,7 +111,8 @@ class UserSpec extends ObjectBehavior
         $duplicated->getMiddleName()->shouldBeNull();
         $duplicated->getNamePrefix()->shouldBeNull();
         $duplicated->getNameSuffix()->shouldBeNull();
-        $duplicated->getRoles()->shouldBe([$role]);
+        $duplicated->getRoles()->shouldBe(['ROLE_USER']);
+        $duplicated->getRolesCollection()->getValues()->shouldBe([$role]);
         $duplicated->getGroups()->shouldBeAnInstanceOf(ArrayCollection::class);
         $duplicated->getGroups()->toArray()->shouldBe([$group]);
         $duplicated->isApiUser()->shouldBe(true);
@@ -115,5 +132,66 @@ class UserSpec extends ObjectBehavior
         $duplicated->getPlainPassword()->shouldBe(null);
         $duplicated->getLastLogin()->shouldBe(null);
         $duplicated->getLoginCount()->shouldBe(0);
+        $duplicated->getProductGridFilters()->shouldBe(['name', 'label']);
+    }
+
+    function it_trims_fullname()
+    {
+        $this->setFirstName('Mary');
+        $this->setLastName('Smith');
+        $this->getFullName()->shouldEqual('Mary Smith');
+    }
+
+    function it_is_not_equal_if_not_same_class()
+    {
+        $this->isEqualTo(new InMemoryUser('user','password'))->shouldEqual(false);
+    }
+
+    function it_is_equal_if_duplicated()
+    {
+        $this->setRoles([new Role('role')]);
+        $duplicate = $this->duplicate();
+        $duplicate->setRoles([new Role('role')]);
+        $this->isEqualTo($duplicate);
+    }
+
+    function it_is_not_equal_if_not_same_password()
+    {
+        $this->setPassword('p1');
+        $duplicate = $this->duplicate();
+        $duplicate->setPassword('p2');
+        $this->isEqualTo($duplicate)->shouldEqual(false);
+    }
+
+    function it_is_not_equal_if_not_same_salt()
+    {
+        $this->setSalt('s1');
+        $duplicate = $this->duplicate();
+        $duplicate->setSalt('s2');
+        $this->isEqualTo($duplicate)->shouldEqual(false);
+    }
+
+    function it_is_not_equal_if_changed_identifier()
+    {
+        $this->setUserName('i1');
+        $duplicate = $this->duplicate();
+        $duplicate->setUserName('i2');
+        $this->isEqualTo($duplicate)->shouldEqual(false);
+    }
+
+    function it_is_not_equal_if_account_locked()
+    {
+        $this->setEnabled(true);
+        $duplicate = $this->duplicate();
+        $duplicate->setEnabled(false);
+        $this->isEqualTo($duplicate)->shouldEqual(false);
+    }
+
+    function it_is_not_equal_if_account_disabled()
+    {
+        $this->setEnabled(true);
+        $duplicate = $this->duplicate();
+        $duplicate->setEnabled(false);
+        $this->isEqualTo($duplicate)->shouldEqual(false);
     }
 }

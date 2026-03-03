@@ -2,7 +2,7 @@
 
 namespace Akeneo\Tool\Component\Localization\Provider;
 
-use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 
 /**
  * Interface LocaleProviderInterface

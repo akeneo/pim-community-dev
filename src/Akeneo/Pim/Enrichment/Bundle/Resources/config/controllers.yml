@@ -42,7 +42,7 @@ services:
             - '@pim_external_api_serializer'
             - '@pim_api.repository.channel'
             - '@pim_api.repository.attribute'
-            - '@pim_api.repository.product'
+            - '@pim_catalog.repository.product'
             - '@pim_api.pagination.offset_hal_paginator'
             - '@pim_api.pagination.search_after_hal_paginator'
             - '@pim_catalog.validator.product'
@@ -53,7 +53,6 @@ services:
             - '@router'
             - '@pim_catalog.comparator.filter.product'
             - '@pim_api.stream.product_partial_update_stream'
-            - '@pim_api.security.primary_key_encrypter'
             - '@pim_catalog.query.product_query_builder_from_size_factory'
             - '@pim_catalog.builder.product'
             - '@pim_api.filter.product_attribute_filter'
@@ -63,8 +62,8 @@ services:
             - '@pim_enrich.connector.use_cases.handler.list_products'
             - '@pim_api.normalizer.connector_products'
             - '@security.token_storage'
-            - '@akeneo.pim.enrichment.product.connector.get_product_from_identifiers'
-            - '@akeneo.pim.enrichment.product.connector.get_product_from_identifiers_with_options'
+            - '@akeneo.pim.enrichment.product.connector.get_product_from_uuids'
+            - '@akeneo.pim.enrichment.product.connector.get_product_from_uuids_with_options'
             - '@pim_catalog.event_subscriber.product.on_save.api_aggregator_event_subscriber'
             - '@pim_api.warmup_query_cache.dummy'
             - '@event_dispatcher'
@@ -72,6 +71,83 @@ services:
             - '@logger'
             - '@akeneo.pim.enrichment.use_cases.get_products_with_quality_scores'
             - '@pim_catalog.entity_with_family_variant.remove_parent_from_product'
+            - '@akeneo.pim.enrichment.use_cases.get_products_with_completenesses'
+            - '@oro_security.security_facade'
+            - '@validator'
+            - '@Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlFindProductUuids'
+
+    Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\GetProductByUuidController:
+        public: true
+        arguments:
+            - '@Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductWithUuidNormalizer'
+            - '@security.token_storage'
+            - '@akeneo.pim.enrichment.product.connector.get_product_from_uuids'
+            - '@akeneo.pim.enrichment.product.connector.get_product_from_uuids_with_options'
+            - '@event_dispatcher'
+            - '@akeneo.pim.enrichment.use_cases.get_products_with_quality_scores'
+            - '@akeneo.pim.enrichment.use_cases.get_products_with_completenesses'
+            - '@oro_security.security_facade'
+
+    Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\ListProductsByUuidController:
+        public: true
+        arguments:
+            - '@pim_api.pagination.offset_hal_paginator'
+            - '@pim_api.pagination.search_after_hal_paginator'
+            - '@pim_enrich.connector.use_cases.validator.list_products'
+            - '%pim_api.configuration%'
+            - '@Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductsByUuidQueryHandler'
+            - '@Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductWithUuidNormalizer'
+            - '@security.token_storage'
+            - '@oro_security.security_facade'
+
+    Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\CreateProductByUuidController:
+        public: true
+        arguments:
+            - '@router'
+            - '@event_dispatcher'
+            - '@pim_api.checker.duplicate_value'
+            - '@oro_security.security_facade'
+            - '@pim_catalog.validator.product'
+            - '@pim_catalog.updater.product'
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.saver.product'
+            - '@pim_api.filter.product_attribute_filter'
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.attribute'
+
+    Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\UpdateProductByUuidController:
+        public: true
+        arguments:
+            - '@Akeneo\Pim\Enrichment\Component\Product\Query\FindProduct'
+            - '@router'
+            - '@pim_catalog.comparator.filter.product'
+            - '@event_dispatcher'
+            - '@pim_api.checker.duplicate_value'
+            - '@oro_security.security_facade'
+            - '@pim_catalog.validator.product'
+            - '@pim_catalog.updater.product'
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.saver.product'
+            - '@pim_api.filter.product_attribute_filter'
+            - '@pim_catalog.validator.product'
+            - '@pim_catalog.entity_with_family_variant.remove_parent_from_product'
+
+    Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\DeleteProductByUuidController:
+        public: true
+        arguments:
+            - '@pim_catalog.repository.product'
+            - '@event_dispatcher'
+            - '@oro_security.security_facade'
+            - '@pim_catalog.remover.product'
+
+    Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\PartialUpdateListProductsByUuidController:
+        public: true
+        arguments:
+            - '@oro_security.security_facade'
+            - '@pim_api.warmup_query_cache.dummy'
+            - '@pim_catalog.event_subscriber.product.on_save.api_aggregator_event_subscriber'
+            - '@pim_api.stream.product_uuid_partial_update_stream'
+            - '@logger'
 
     pim_api.controller.product_model:
         public: true
@@ -83,7 +159,6 @@ services:
             - '@pim_api.repository.channel'
             - '@pim_api.pagination.offset_hal_paginator'
             - '@pim_api.pagination.search_after_hal_paginator'
-            - '@pim_api.security.primary_key_encrypter'
             - '@pim_api.updater.product_model'
             - '@pim_catalog.factory.product_model'
             - '@pim_catalog.saver.product_model'
@@ -99,32 +174,12 @@ services:
             - '@security.token_storage'
             - '@pim_catalog.event_subscriber.product_model.on_save.api_aggregator_event_subscriber'
             - '@pim_api.warmup_query_cache.dummy'
+            - '@logger'
             - '%pim_api.configuration%'
-
-    pim_api.controller.category:
-        public: true
-        class: 'Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\CategoryController'
-        arguments:
-            - '@pim_api.repository.category'
-            - '@pim_external_api_serializer'
-            - '@pim_catalog.factory.category'
-            - '@pim_catalog.updater.category'
+            - '@oro_security.security_facade'
+            - '@Akeneo\Pim\Enrichment\Component\Product\Command\ProductModel\RemoveProductModelHandler'
             - '@validator'
-            - '@pim_catalog.saver.category'
-            - '@router'
-            - '@pim_api.pagination.offset_hal_paginator'
-            - '@pim_api.pagination.parameter_validator'
-            - '@pim_api.stream.category_partial_update_stream'
-            - '%pim_api.configuration%'
-
-    pim_enrich.controller.rest.category:
-        public: true
-        class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\CategoryController'
-        arguments:
-            - '@pim_catalog.repository.category'
-            - '@pim_enrich.twig.category_extension'
-            - '@pim_internal_api_serializer'
-            - '@pim_catalog.filter.chained'
+            - '@akeneo.pim.enrichment.use_cases.get_product_models_with_quality_scores'
 
     pim_enrich.controller.rest.product_category:
         public: true
@@ -134,12 +189,10 @@ services:
             - '@pim_catalog.repository.product_category'
             - '@pim_catalog.filter.chained'
 
-
     pim_enrich.controller.rest.product:
         public: true
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductController'
         arguments:
-            - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.updater.product'
@@ -157,8 +210,11 @@ services:
             - '@pim_enrich.normalizer.product_violation'
             - '@pim_catalog.builder.product'
             - '@pim_enrich.filter.product_attribute_filter'
-            - '@pim_catalog.entity_with_family_variant.remove_parent_from_product'
             - '@akeneo_elasticsearch.client.product_and_product_model'
+            - '@pim_enrich.product.message_bus'
+            - '@Akeneo\Pim\Enrichment\Component\Product\Query\FindIdentifier'
+            - '@Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Subscriber\UnableToSetIdentifiersSubscriber'
+            - '@Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Presenter\UnableToSetIdentifierExceptionPresenter'
 
     pim_enrich.controller.rest.product_comment:
         public: true
@@ -174,6 +230,7 @@ services:
             - '@validator'
             - '@pim_catalog.localization.presenter.datetime'
             - '@pim_enrich.resolver.locale'
+            - '@pim_user.context.user'
 
     pim_enrich.controller.rest.product_model_category:
         public: true
@@ -196,7 +253,6 @@ services:
             - '@pim_catalog.comparator.filter.product_model'
             - '@pim_enrich.converter.enrich_to_standard.product_value'
             - '@pim_catalog.updater.product_model'
-            - '@pim_catalog.remover.product_model'
             - '@pim_catalog.validator.product'
             - '@pim_catalog.saver.product_model'
             - '@pim_enrich.normalizer.product_violation'
@@ -207,6 +263,8 @@ services:
             - '@pim_enrich.filter.product_model_attribute_filter'
             - '@akeneo_elasticsearch.client.product_and_product_model'
             - '@pim_enrich.filter.product_edit_data'
+            - '@Akeneo\Pim\Enrichment\Component\Product\Command\ProductModel\RemoveProductModelHandler'
+            - '@validator'
 
     pim_enrich.controller.rest.group:
         public: true
@@ -223,6 +281,7 @@ services:
             - '@pim_catalog.remover.group'
             - '@pim_catalog.factory.group'
             - '@pim_enrich.normalizer.violation'
+            - '@Akeneo\Pim\Enrichment\Component\Product\Command\GroupProductsHandler'
 
     pim_enrich.controller.rest.sequential_edit:
         public: true
@@ -231,6 +290,7 @@ services:
             - '@oro_datagrid.mass_action.parameters_parser'
             - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
             - '@pim_enrich.query.product_and_product_model_query_sequential_edit_builder_factory'
+            - '@pim_user.context.user'
 
     pim_enrich.controller.rest.value:
         public: true
@@ -268,8 +328,8 @@ services:
         public: true
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductAndProductModel\GetFromIdentifiersAction'
         arguments:
+            - '@akeneo.pim.enrichment.query.product_query_builder_from_size_factory.with_product_identifier_cursor'
             - '@akeneo.pim.enrichment.query.product_and_product_model_query_builder_from_size_factory.with_product_identifier_cursor'
-            - '@pim_catalog.query.product_model_query_builder_factory'
             - '@pim_enrich.normalizer.linked_product_normalizer'
             - '@akeneo.pim.enrichment.product.grid.query.fetch_product_and_product_model_rows'
             - '@validator'
@@ -281,7 +341,6 @@ services:
             - '@pim_versioning.repository.version'
             - '@pim_catalog.resolver.fqcn'
             - '@pim_internal_api_serializer'
-            - '@pim_user.context.user'
 
     pim_enrich.controller.rest.count_impacted_items_by_attribute_deletion:
         public: true
@@ -294,15 +353,22 @@ services:
         public: true
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\Ui\CategoryTreeController'
         arguments:
-            - '@event_dispatcher'
             - '@pim_user.context.user'
             - '@pim_catalog.saver.category'
-            - '@pim_catalog.remover.category'
             - '@pim_catalog.factory.category'
             - '@pim_catalog.repository.category'
             - '@oro_security.security_facade'
-            - '@translator'
-            - { related_entity: product, form_type: 'Akeneo\Pim\Enrichment\Bundle\Form\Type\CategoryType', acl: pim_enrich_product, route: pim_enrich }
+            - '@pim_internal_api_serializer'
+            - '@pim_catalog.updater.category'
+            - '@validator'
+            - '@pim_enrich.normalizer.violation'
+            - '@pim_enrich.doctrine.counter.category_product'
+            - '@Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category\CountTreesChildren'
+            - '@Akeneo\Category\Infrastructure\Symfony\Form\CategoryFormViewNormalizer'
+            - '@Akeneo\Category\Domain\Query\GetCategoryInterface'
+            - '@Akeneo\Category\Domain\Query\GetCategoryTreesInterface'
+            - '@category.command.message_bus'
+            - { related_entity: product, form_type: 'Akeneo\Category\Infrastructure\Symfony\Form\Type\CategoryType', acl: pim_enrich_product, route: pim_enrich }
         calls:
             - [ setContainer, [ '@service_container' ] ]
 
@@ -315,7 +381,8 @@ services:
             - '@akeneo_file_storage.repository.file_info'
             - '@pim_enrich.guesser.file_type'
             - '@pim_enrich.provider.default_image'
-            - ['catalogStorage']
+            - ['catalogStorage', 'categoryStorage']
+            - '%supported_image_types%'
 
     pim_enrich.controller.product_model:
         public: true
@@ -327,6 +394,8 @@ services:
             - '%pim_catalog.entity.category.class%'
             - 'pim_enrich_product_model_categories_view'
             - '@@AkeneoPimEnrichment/ProductModel/listCategories.json.twig'
+        calls:
+            - [ 'setContainer', [ '@service_container' ] ]
 
     pim_enrich.controller.product:
         public: true
@@ -340,6 +409,8 @@ services:
             - '@oro_security.security_facade'
             - 'pim_enrich_product_categories_view'
             - '@@AkeneoPimEnrichment/Product/listCategories.json.twig'
+        calls:
+            - [ 'setContainer', [ '@service_container' ] ]
 
     pim_api.controller.media_file:
         public: true
@@ -351,7 +422,7 @@ services:
         - '@pim_api.pagination.offset_hal_paginator'
         - '@akeneo_file_storage.file_storage.filesystem_provider'
         - '@akeneo_file_storage.file_storage.file.streamed_file_fetcher'
-        - '@pim_api.repository.product'
+        - '@pim_catalog.repository.product'
         - '@pim_catalog.updater.product'
         - '@pim_catalog.saver.product'
         - '@pim_catalog.validator.product'
@@ -362,4 +433,25 @@ services:
         - '@pim_catalog.repository.product_model'
         - '@pim_api.updater.product_model'
         - '@pim_catalog.saver.product_model'
+        - '@event_dispatcher'
         - '%pim_api.configuration%'
+
+    Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\Product\UpdateProductController:
+        public: true
+        arguments:
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.updater.product'
+            - '@pim_catalog.saver.product'
+            - '@pim_internal_api_serializer'
+            - '@pim_catalog.validator.product'
+            - '@pim_user.context.user'
+            - '@pim_enrich.filter.product_edit_data'
+            - '@pim_catalog.localization.localizer.converter'
+            - '@pim_catalog.comparator.filter.product'
+            - '@pim_enrich.converter.enrich_to_standard.product_value'
+            - '@pim_enrich.normalizer.product_violation'
+            - '@pim_enrich.filter.product_attribute_filter'
+            - '@pim_enrich.product.message_bus'
+            - '@pim_enrich.product.query_message_bus'
+            - '@Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Subscriber\UnableToSetIdentifiersSubscriber'
+            - '@Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Presenter\UnableToSetIdentifierExceptionPresenter'

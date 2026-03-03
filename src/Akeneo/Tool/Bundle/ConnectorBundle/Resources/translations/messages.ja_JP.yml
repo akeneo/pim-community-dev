@@ -8,6 +8,7 @@ job_execution.summary:
   skip: スキップ済
   create: 作成済
   process: 処理済
+  update: 更新済み
   update_products: 更新済商品
   process_products: 処理済商品
   skip_products: スキップされた製品

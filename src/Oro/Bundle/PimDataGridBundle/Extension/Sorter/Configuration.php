@@ -18,11 +18,11 @@ class Configuration extends OroConfiguration
     /**
      * {@inheritdoc}
      */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
-        $builder = new TreeBuilder();
+        $builder = new TreeBuilder('sorters');
 
-        $builder->root('sorters')
+        $builder->getRootNode()
             ->children()
                 ->arrayNode('columns')
                     ->prototype('array')
@@ -30,6 +30,7 @@ class Configuration extends OroConfiguration
                             ->scalarNode(PropertyInterface::DATA_NAME_KEY)->isRequired()->end()
                             ->variableNode('apply_callback')->end()
                             ->variableNode('sorter')->end()
+                            ->scalarNode('feature_flag')->end()
                         ->end()
                     ->end()
                 ->end()

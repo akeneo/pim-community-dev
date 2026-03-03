@@ -71,6 +71,7 @@ services:
         class: '%pim_connector.writer.file.yaml.class%'
         arguments:
             - '@pim_connector.array_converter.dummy'
+            - '@pim_connector.job.file_backuper'
 
     pim_connector.writer.file.flat_item_buffer_flusher:
         class: '%pim_connector.writer.file.flat_item_buffer_flusher.class%'
@@ -90,6 +91,7 @@ services:
             - '@pim_connector.array_converter.dummy'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
+            - '@pim_connector.job.file_backuper'
 
     pim_connector.writer.file.invalid_items_csv:
         class: '%pim_connector.writer.file.csv.class%'
@@ -97,6 +99,7 @@ services:
             - '@pim_connector.array_converter.dummy'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_invalid_item_buffer_flusher'
+            - '@pim_connector.job.file_backuper'
 
     pim_connector.writer.file.csv_category:
         class: '%pim_connector.writer.file.csv.class%'
@@ -104,6 +107,7 @@ services:
             - '@pim_connector.array_converter.standard_to_flat.category'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
+            - '@pim_connector.job.file_backuper'
 
     pim_connector.writer.file.csv_association_type:
         class: '%pim_connector.writer.file.csv.class%'
@@ -111,6 +115,7 @@ services:
             - '@pim_connector.array_converter.standard_to_flat.association_type'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
+            - '@pim_connector.job.file_backuper'
 
     pim_connector.writer.file.csv_group:
         class: '%pim_connector.writer.file.csv.class%'
@@ -118,6 +123,7 @@ services:
             - '@pim_connector.array_converter.standard_to_flat.group'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
+            - '@pim_connector.job.file_backuper'
 
     pim_connector.writer.file.csv_group_type:
         class: '%pim_connector.writer.file.csv.class%'
@@ -125,6 +131,7 @@ services:
             - '@pim_connector.array_converter.standard_to_flat.group_type'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
+            - '@pim_connector.job.file_backuper'
 
     # XLSX
     pim_connector.writer.file.invalid_items_xlsx:
@@ -133,6 +140,7 @@ services:
             - '@pim_connector.array_converter.invalid_data_item'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_invalid_item_buffer_flusher'
+            - '@pim_connector.job.file_backuper'
 
     pim_connector.writer.file.xlsx_group:
         class: '%pim_connector.writer.file.xlsx.class%'
@@ -140,6 +148,7 @@ services:
             - '@pim_connector.array_converter.standard_to_flat.group'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
+            - '@pim_connector.job.file_backuper'
 
     pim_connector.writer.file.xlsx_category:
         class: '%pim_connector.writer.file.xlsx.class%'
@@ -147,6 +156,7 @@ services:
             - '@pim_connector.array_converter.standard_to_flat.category'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
+            - '@pim_connector.job.file_backuper'
 
     pim_connector.writer.file.xlsx_association_type:
         class: '%pim_connector.writer.file.xlsx.class%'
@@ -154,6 +164,7 @@ services:
             - '@pim_connector.array_converter.standard_to_flat.association_type'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
+            - '@pim_connector.job.file_backuper'
 
     pim_connector.writer.file.xlsx_group_type:
         class: '%pim_connector.writer.file.xlsx.class%'
@@ -161,6 +172,7 @@ services:
             - '@pim_connector.array_converter.standard_to_flat.group_type'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
+            - '@pim_connector.job.file_backuper'
 
     # Column sorter
     pim_connector.writer.file.default.column_sorter:

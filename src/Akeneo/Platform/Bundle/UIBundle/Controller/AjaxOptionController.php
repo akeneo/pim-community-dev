@@ -5,7 +5,7 @@ namespace Akeneo\Platform\Bundle\UIBundle\Controller;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryInterface;
 use Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -18,17 +18,10 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class AjaxOptionController
 {
-    /** @var RegistryInterface */
-    protected $doctrine;
+    protected ManagerRegistry $doctrine;
+    protected ConfigurationRegistryInterface $registry;
 
-    /** @var ConfigurationRegistryInterface */
-    protected $registry;
-
-    /**
-     * @param RegistryInterface              $doctrine
-     * @param ConfigurationRegistryInterface $registry
-     */
-    public function __construct(RegistryInterface $doctrine, ConfigurationRegistryInterface $registry)
+    public function __construct(ManagerRegistry $doctrine, ConfigurationRegistryInterface $registry)
     {
         $this->doctrine = $doctrine;
         $this->registry = $registry;
@@ -43,10 +36,9 @@ class AjaxOptionController
      */
     public function listAction(Request $request)
     {
-        $query = $request->query;
-        $search = $query->get('search');
-        $referenceDataName = $query->get('referenceDataName');
-        $class = $query->get('class');
+        $search = $request->get('search');
+        $referenceDataName = $request->get('referenceDataName');
+        $class = $request->get('class');
 
         if (null !== $referenceDataName) {
             $class = $this->registry->get($referenceDataName)->getClass();
@@ -57,31 +49,31 @@ class AjaxOptionController
         if ($repository instanceof ReferenceDataRepositoryInterface) {
             $choices['results'] = $repository->findBySearch(
                 $search,
-                $query->get('options', [])
+                $request->get('options', [])
             );
         } elseif ($repository instanceof SearchableRepositoryInterface) {
             $choices['results'] = $repository->findBySearch(
                 $search,
-                $query->get('options', [])
+                $request->get('options', [])
             );
         } elseif (method_exists($repository, 'getOptions')) {
             $choices = $repository->getOptions(
-                $query->get('dataLocale'),
-                $query->get('collectionId'),
+                $request->get('dataLocale'),
+                $request->get('collectionId'),
                 $search,
-                $query->get('options', [])
+                $request->get('options', [])
             );
         } else {
             throw new \LogicException(
                 sprintf(
                     'The repository of the class "%s" can not retrieve options via Ajax.',
-                    $query->get('class')
+                    $request->get('class')
                 )
             );
         }
 
         if (
-            $query->get('isCreatable') &&
+            $request->get('isCreatable') &&
             !empty($search) &&
             !in_array(['id' => $search, 'text' => $search], $choices['results'])
         ) {

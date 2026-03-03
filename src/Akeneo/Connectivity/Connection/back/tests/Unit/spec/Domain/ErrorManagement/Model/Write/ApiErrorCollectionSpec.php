@@ -103,12 +103,12 @@ class ApiErrorCollectionSpec extends ObjectBehavior
         );
     }
 
-    public function it_accepts_only_api_errors_as_initial_parameters()
+    public function it_accepts_only_api_errors_as_initial_parameters(): void
     {
         $this->beConstructedWith([new \DateTime()]);
         $this->shouldThrow(
             new \InvalidArgumentException(
-                sprintf(
+                \sprintf(
                     'Class "%s" accepts only "%s" in the collection.',
                     ApiErrorCollection::class,
                     ApiErrorInterface::class
@@ -127,12 +127,13 @@ class ApiErrorCollectionSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->during('count', ['any_type']);
     }
 
+    /**
+     * @return array{matchErrorTypes: Closure(mixed):bool}
+     */
     public function getMatchers(): array
     {
         return [
-            'matchErrorTypes' => function ($types) {
-                return array_keys($types) === ErrorTypes::getAll();
-            },
+            'matchErrorTypes' => fn ($types): bool => \array_keys($types) === ErrorTypes::getAll(),
         ];
     }
 }

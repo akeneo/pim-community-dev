@@ -84,7 +84,7 @@ Akeneo\UserManagement\Component\Model\User:
                 timestampable:
                     on: update
         productGridFilters:
-            type: json_array
+            type: json
             nullable: true
             column: product_grid_filters
         emailNotifications:
@@ -107,7 +107,23 @@ Akeneo\UserManagement\Component\Model\User:
             options:
                 default: user
         properties:
-            type: json_array
+            type: json
+        consecutiveAuthenticationFailureCounter:
+            type: integer
+            nullable: false
+            column: consecutive_authentication_failure_counter
+            options:
+                default: 0
+                unsigned: true
+        authenticationFailureResetDate:
+            type: datetime
+            nullable: true
+            column: authentication_failure_reset_date
+        profile:
+            type: string
+            nullable: true
+            length: 255
+
     manyToMany:
         roles:
             targetEntity: Akeneo\UserManagement\Component\Model\Role
@@ -147,18 +163,18 @@ Akeneo\UserManagement\Component\Model\User:
                         onDelete: CASCADE
     manyToOne:
         catalogLocale:
-            targetEntity: Akeneo\Channel\Component\Model\LocaleInterface
+            targetEntity: Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface
             nullable: false
         uiLocale:
-            targetEntity: Akeneo\Channel\Component\Model\LocaleInterface
+            targetEntity: Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface
             joinColumn:
               name: ui_locale_id
               nullable: false
         catalogScope:
-            targetEntity: Akeneo\Channel\Component\Model\ChannelInterface
+            targetEntity: Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface
             nullable: false
         defaultTree:
-            targetEntity: Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface
+            targetEntity: Akeneo\Category\Infrastructure\Component\Model\CategoryInterface
             nullable: false
     oneToOne:
         avatar:

@@ -1,0 +1,24 @@
+akeneo.category:
+  validation:
+    upsert:
+      category_code:
+        wrong_format: Il codice della categoria può contenere solo lettere, numeri e caratteri di sottolineatura
+        line_feed: Il codice della categoria non può contenere caratteri di ritorno a capo
+      duplicated_value_user_intents: Il valore dell'attributo {{ attributeCode }} viene aggiornato più volte
+      value_user_intents_on_deactivated_template: Non ci sono modelli attivi collegati agli attributi di categoria che vuoi modificare
+      value:
+        text_too_long: Il valore non può essere più lungo di {{ limit }} caratteri
+        textarea_too_long: Il valore non può essere più lungo di {{ limit }} caratteri
+        richtext_too_long: Il valore non può essere più lungo di {{ limit }} caratteri
+    template:
+      code:
+        not_blank: Questo valore non può essere vuoto.
+        unique: 'Il codice di modello: {{ templateCode }} esiste già.'
+        wrong_format: Questo campo può contenere solo lettere, numeri e underscore.
+    attribute:
+      limit:
+        title: Non puoi aggiungere più di 50 attributi
+        message: I modelli di categoria hanno il limite di 50 attributi per modello.
+      code:
+        wrong_format: Il codice attributo può contenere solo lettere minuscole, numeri e il carattere underscore
+        unique_in_the_template: Il codice attributo {{ attributeCode }} deve essere unico nel modello

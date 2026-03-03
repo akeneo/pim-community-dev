@@ -32,6 +32,7 @@ class NumberFormatValidatorSpec extends ObjectBehavior
             ->shouldNotBeCalled();
 
         $constraint->decimalSeparator = ',';
+        $constraint->path = 'constraint_path';
         $this->validate('12,45', $constraint);
 
         $constraint->decimalSeparator = '.';
@@ -48,6 +49,7 @@ class NumberFormatValidatorSpec extends ObjectBehavior
     ) {
         $decimalSeparator = '.';
         $constraint->decimalSeparator = $decimalSeparator;
+        $constraint->path = 'constraint_path';
 
         $context
             ->buildViolation(

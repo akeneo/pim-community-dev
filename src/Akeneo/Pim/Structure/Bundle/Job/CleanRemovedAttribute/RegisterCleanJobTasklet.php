@@ -36,7 +36,7 @@ class RegisterCleanJobTasklet implements TaskletInterface
 
         foreach ($attributeCodes as $attributeCode) {
             $this->attributeCodeBlacklister->registerJob(
-                $attributeCode,
+                [$attributeCode],
                 $this->stepExecution->getJobExecution()->getId()
             );
         }

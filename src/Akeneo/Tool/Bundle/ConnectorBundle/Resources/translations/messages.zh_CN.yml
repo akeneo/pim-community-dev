@@ -8,6 +8,7 @@ job_execution.summary:
   skip: 已跳过
   create: 已创建
   process: 已处理
+  update: 已更新
   update_products: 已更新产品
   process_products: 已处理产品
   skip_products: 已跳过产品

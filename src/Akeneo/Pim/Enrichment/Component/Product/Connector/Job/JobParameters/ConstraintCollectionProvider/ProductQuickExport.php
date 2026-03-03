@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\ConstraintCollectionProvider;
 
-use Akeneo\Channel\Component\Validator\Constraint\ActivatedLocale;
+use Akeneo\Channel\Infrastructure\Component\Validator\Constraint\ActivatedLocale;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Symfony\Component\Validator\Constraints\Callback;
@@ -21,20 +21,11 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  */
 class ProductQuickExport implements ConstraintCollectionProviderInterface
 {
-    /** @var ConstraintCollectionProviderInterface */
-    protected $simpleConstraint;
-
-    /** @var array */
-    protected $supportedJobNames;
-
-    /**
-     * @param ConstraintCollectionProviderInterface $simple
-     * @param array                $supportedJobNames
-     */
-    public function __construct(ConstraintCollectionProviderInterface $simple, array $supportedJobNames)
-    {
-        $this->simpleConstraint = $simple;
-        $this->supportedJobNames = $supportedJobNames;
+    public function __construct(
+        private ConstraintCollectionProviderInterface $simpleConstraint,
+        private array $supportedJobNames,
+        private string $filePathExtension
+    ) {
     }
 
     /**
@@ -52,6 +43,12 @@ class ProductQuickExport implements ConstraintCollectionProviderInterface
         $constraintFields['scope'] = new NotBlank(['groups' => 'Execution']);
         $constraintFields['ui_locale'] = new NotBlank(['groups' => 'Execution']);
         $constraintFields['with_label'] = new Type(
+            [
+                'type'   => 'bool',
+                'groups' => ['Default', 'FileConfiguration'],
+            ]
+        );
+        $constraintFields['with_uuid'] = new Type(
             [
                 'type'   => 'bool',
                 'groups' => ['Default', 'FileConfiguration'],

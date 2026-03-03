@@ -15,6 +15,8 @@ services:
             - '@pim_api.pagination.parameter_validator'
             - '@pim_api.stream.attribute_partial_update_stream'
             - '%pim_api.configuration%'
+            - '@Akeneo\Pim\Structure\Bundle\EventSubscriber\ApiAggregatorForAttributePostSaveEventSubscriber'
+            - '@logger'
 
     pim_api.controller.attribute_group:
         public: true
@@ -47,6 +49,8 @@ services:
             - '@pim_api.pagination.offset_hal_paginator'
             - '@pim_api.pagination.parameter_validator'
             - '@pim_api.stream.attribute_option_partial_update_stream'
+            - '@Akeneo\Pim\Structure\Bundle\EventSubscriber\ApiAggregatorForAttributeOptionPostSaveEventSubscriber'
+            - '@logger'
             - '%pim_api.configuration%'
             - ['pim_catalog_simpleselect', 'pim_catalog_multiselect']
 
@@ -121,6 +125,13 @@ services:
             - '@akeneo.pim.structure.query.attribute_is_an_family_variant_axis'
             - '@pim_catalog.repository.channel'
 
+    Akeneo\Pim\Structure\Bundle\Controller\InternalApi\GetMainIdentifierAttributeController:
+        public: true
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@pim_enrich.normalizer.attribute'
+            - '@pim_user.context.user'
+
     pim_enrich.controller.rest.attribute_group:
         public: true
         class: 'Akeneo\Pim\Structure\Bundle\Controller\InternalApi\AttributeGroupController'
@@ -132,7 +143,6 @@ services:
             - '@pim_catalog.updater.attribute_group'
             - '@validator'
             - '@pim_catalog.saver.attribute_group'
-            - '@pim_catalog.remover.attribute_group'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.updater.attribute'
             - '@pim_catalog.saver.attribute'
@@ -141,6 +151,9 @@ services:
             - '@event_dispatcher'
             - '@pim_catalog.filter.chained'
             - '@akeneo.pim.structure.query.find_attribute_codes_for_attribute_groups'
+            - '@security.token_storage'
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
+            - '@akeneo_batch.job.job_instance_repository'
 
     pim_enrich.controller.rest.family:
         public: true
@@ -176,9 +189,7 @@ services:
         class: 'Akeneo\Pim\Structure\Bundle\Controller\InternalApi\AttributeOptionController'
         arguments:
             - '@pim_internal_api_serializer'
-            - '@doctrine.orm.entity_manager'
             - '@form.factory'
-            - '@fos_rest.view_handler'
             - '@pim_catalog.manager.attribute_options_sorter'
             - '@pim_catalog.factory.attribute_option'
             - '@pim_catalog.saver.attribute_option'
@@ -227,3 +238,32 @@ services:
         arguments:
             - '@pim_reference_data.registry'
             - '@pim_internal_api_serializer'
+
+    Akeneo\Pim\Structure\Bundle\Infrastructure\Controller\GetAttributeGroupsController:
+        public: true
+        arguments:
+            - '@oro_security.security_facade'
+            - '@Akeneo\Pim\Structure\Bundle\Application\GetAttributesGroup\GetAttributeGroupsHandler'
+
+    Akeneo\Pim\Structure\Bundle\Infrastructure\Controller\MassDeleteAttributeGroupsController:
+        public: true
+        arguments:
+            - '@security.token_storage'
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@oro_security.security_facade'
+
+    Akeneo\Pim\Structure\Bundle\Controller\InternalApi\MassDeleteAttributeController:
+        arguments:
+            - '@security.token_storage'
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@oro_security.security_facade'
+        tags: ['controller.service_arguments']
+
+    Akeneo\Pim\Structure\Bundle\Controller\InternalApi\SwitchMainIdentifierController:
+        public: true
+        arguments:
+            - '@Akeneo\Pim\Structure\Bundle\Application\SwitchMainIdentifier\SwitchMainIdentifierHandler'
+            - '@Akeneo\Pim\Structure\Bundle\Application\SwitchMainIdentifier\SwitchMainIdentifierValidator'
+            - '@oro_security.security_facade'

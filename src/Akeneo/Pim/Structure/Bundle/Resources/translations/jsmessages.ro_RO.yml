@@ -1,0 +1,189 @@
+pim_enrich.entity.family:
+  label: familie
+  uppercase_label: Familie
+  plural_label: Familii
+  flash:
+    update:
+      success: Familia a fost actualizată.
+      cant_remove_attribute_as_label: Nu se poate şterge atributul folosit ca etichetă
+      cant_remove_attribute_as_image: Nu se poate şterge atributul folosit ca imagine principală
+      cant_remove_attribute_used_as_axis: Nu se poate şterge acest atribut folosit ca variantă axis într-o variantă de familie
+    create:
+      success: Familia a fost creeată cu succes
+    delete:
+      success: Familia a fost ștearsă cu succes
+      fail: Nu puteți şterge această familie
+  property:
+    attribute_as_label: Atribut folosit ca etichetă
+    empty_attribute_as_image: Neselectat
+  module:
+    attributes:
+      not_required_label: Nu este necesar
+      required_label: Necesar
+    delete:
+      confirm: Sunteți sigur că doriți să ştergeți această familie?
+pim_enrich.entity.family_variant:
+  short_plural_label: Variante
+  short_label: Variantă
+  flash:
+    update:
+      success: Varianta de familie actualizată cu succes. Produsele cu variante vor fi actualizate cu modificările dvs.
+    create:
+      success: Varianta de familie a fost creată cu succes
+  module:
+    edit:
+      common_attributes: Atributele comune
+      no_common_attributes: Nu există atribute comune
+      variant_axis_label: Varianta axis
+      level_1: Atribute de variantă de nivelul unu
+      level_2: Atribute de variantă de nivelul doi
+      description: Trageti si lasati atributele pe nivelul de varianta selectat pentru a gestiona aceste atribute la nivel de varianta.
+      confirm_attribute_removal_title: Confirmează eliminarea atributelor
+      confirm_attribute_removal_message: Prin eliminare acestor atribute le veți pune înapoi în atributele comune ale familiei variante și elimina valorile din produsele variante
+    create:
+      label: Adaugă variantă
+      title: Creează o nouă variantă de familie
+      description: Intr-o varianta familie, poti defini o structura pentru produse cu variante. Alege numarul de niveluri de varianta gestionate, atributele folosite ca varaianta axa pentru fiecare nivel, si apoi definiti modul in care v-or fi distribuite atributele.
+      variant_levels: Niveluri variante
+pim_enrich.entity.attribute_option:
+  short_uppercase_label: Opţiuni
+  flash:
+    create:
+      success: Opțiune de atribut a fost creat cu succes
+    update:
+      fail: Opțiunea de atribut nu poate fi salvată
+    delete:
+      fail: A avut loc o eroare la ştergerea opțiunii de atribut
+  module:
+    edit:
+      cancel_title: Anulează modificarea
+pim_enrich.entity.association_type:
+  label: tip de asociere
+  flash:
+    update:
+      success: Tipul de asociere a fost actualizat.
+      fail: Tipul de asociere nu a putut fi actualizat.
+      fields_not_ready: "Momentan tipul de asociere nu a putut fi salvat .\nUrmătoarele câmpuri nu sunt gata: {{ fields }}"
+    create:
+      success: Tipul de asociație a fost creeat cu succes
+    delete:
+      success: Tipul de asociație a fost șters cu succes
+      fail: Nu puteți şterge acest tip de asociere
+  module:
+    delete:
+      confirm: Sunteți sigur că doriți să ştergeți acest tip de asociere?
+pim_enrich.entity.group_type:
+  label: tipul grupului
+  flash:
+    update:
+      success: Tipul de grup a fost actualizat.
+      fail: Tipul de grup nu a putut fi actualizat.
+      fields_not_ready: "Momentan tipul de grup nu poate fi salvat.\nUrmătoarele câmpuri nu sunt gata: {{ fields }}"
+    create:
+      success: Tipul de grup a fost creat cu succes
+    delete:
+      success: Tipul de grup a fost şters cu succes
+      fail: Nu puteți şterge acest tip de grup
+  module:
+    delete:
+      confirm: Sunteți sigur că vreți să ștergeți acest tip de grup?
+pim_enrich.entity.attribute:
+  label: atribut
+  plural_label: Atribute
+  flash:
+    update:
+      success: Atributul a fost actualizat cu succes.
+      fail: Atributul nu s-a putut actualiza.
+      fields_not_ready: "Atributul nu s-a putut salva acum. Următoarele câmpuri nu sunt gata: {{ fields }}"
+    delete:
+      success: Atributul a fost şters
+      fail: Nu puteți şterge acest atribut
+  property:
+    allowed_extensions: Extensii permise
+    auto_option_sorting: Sortați automat opțiunile în ordine alfabetică
+    available_locales: Locale disponibile
+    date_max: Data max
+    date_min: Data min
+    decimals_allowed: Valorile zecimale permise
+    default_metric_unit:
+      choose: Alegeți o unitate
+    group:
+      label: Grup de atribut
+      choose: Alegeți un grup de atribut
+    is_locale_specific: Specific local
+    localizable: Valoare pe local
+    max_characters: Caractere maxime
+    max_file_size: Mărimea maximă a fișierului (MB)
+    metric_family:
+      choose: Alegeți o familie
+    minimum_input_length: Lungimea minimă pentru autocompletare
+    name: Nume
+    negative_allowed: Valorile negative permise
+    number_max: Număr maxim
+    number_min: Număr minim
+    reference_data_name:
+      choose: Alege tipul datelor de referință
+    scopable: Valoare pe canal
+    type:
+      choose: Alegeți un tip de atribut
+      pim_catalog_identifier: Identificator
+      pim_catalog_text: Text
+      pim_catalog_textarea: Zonă text
+      pim_catalog_number: Număr
+      pim_catalog_price_collection: Preţ
+      pim_catalog_multiselect: Selecție multiplă
+      pim_catalog_simpleselect: Selectaţi simplu
+      pim_catalog_file: Fișier
+      pim_catalog_image: Imagine
+      pim_catalog_boolean: "Da/Nu"
+      pim_catalog_date: Data
+      pim_reference_data_simpleselect: Selectarea simplă a datei de referințe
+      pim_reference_data_multiselect: Selectarea multi a datei de referință
+    unique: Valoare unică
+    useable_as_grid_filter: Utilizabil în grilă
+    validation_regexp: Expresie regulară
+    validation_rule:
+      label: Regulă de validare
+      email: Adresa de e-mail
+      regexp: Expresie regulară
+      url: URL
+  module:
+    add_attribute:
+      no_available_attributes: Nu mai există atribute de adăugat
+      attributes_selected: "{{ itemsCount }} atribut(e) selectate"
+    create:
+      button: Creează atribut
+    edit:
+      common: Parametrii generali
+      validation: Parametrii de validare
+    delete:
+      confirm: Sunteți sigur că doriți să ştergeți acest atribut?
+      confirm_from_group: Sunteți sigur că doriți să eliminați atributul {{ attribute }} din acest grup de atribute?
+      confirm_from_product: Sunteți sigur că doriți să ștergeți acest atribut din produs?
+pim_enrich.entity.attribute_group:
+  label: grup de atribut
+  uppercase_label: Grup de atribut
+  plural_label: Grupuri atribute
+  flash:
+    update:
+      success: Grupul de atribute a fost actualizat cu succes
+      fail: Grupul de atribut nu s-a putut actualiza
+    delete:
+      success: Grupul de atribute a fost sters
+  module:
+    add_attribute_group:
+      label: Adăugați pe grupuri
+      attributes_groups_selected: '{{ itemsCount }} grup(uri) selectate'
+    delete:
+      confirm: Sunteți sigur că doriți să ştergeți acest grup de atribute?
+pim_enrich.mass_edit.family:
+  step:
+    select:
+      label: Alege familiile
+    configure:
+      label: Configurare
+    confirm:
+      label: Confirmă
+  operation:
+    set_requirements:
+      label: Setează cerințele atributelor

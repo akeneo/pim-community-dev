@@ -1,0 +1,120 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
+import {IconCardGrid, IconCard} from './IconCard';
+import * as Icons from '../../icons';
+
+<Meta
+    title="Components/IconCard"
+    component={IconCard}
+    argTypes={{
+        icon: {
+            control: {type: 'select'}, options: Object.keys(Icons),
+            table: {type: {summary: 'ReactElement<IconProps>'}},
+        },
+        onClick: {action: 'Click on the Card'},
+    }}
+    args={{
+        icon: 'ComponentIcon',
+        label: 'Label',
+        content: 'This is the content',
+        disabled: false,
+        onClick: () => console.log('click'),
+    }}
+/>
+
+# Icon card
+
+## Usage
+
+
+
+## Playground
+
+<Canvas>
+    <Story name="Standard">
+        {args => {
+            return (
+                <IconCardGrid>
+                    <IconCard
+                        {...args}
+                        icon={React.createElement(Icons[args.icon])}
+                    />
+                </IconCardGrid>
+            );
+        }}
+    </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on readonly
+
+<Canvas>
+    <Story name="Readonly">
+        {args => {
+            return (
+                <IconCardGrid>
+                    <IconCard
+                        {...args}
+                        icon={React.createElement(Icons[args.icon])}
+                        disabled={true}
+                    />
+                </IconCardGrid>
+            );
+        }}
+    </Story>
+</Canvas>
+
+## With no content
+
+<Canvas>
+    <Story name="With no content">
+        {args => {
+            return (
+                <IconCardGrid>
+                    <IconCard
+                        icon={React.createElement(Icons[args.icon])}
+                        label={'Label'}
+                    />
+                </IconCardGrid>
+            );
+        }}
+    </Story>
+</Canvas>
+
+## IconCard grid
+
+<Canvas>
+    <Story name="IconCard grid">
+        {args => {
+            return (
+                <IconCardGrid>
+                    <IconCard
+                        icon={React.createElement(Icons[args.icon])}
+                        label={'Label'}
+                        content={'Content'}
+                    />
+                    <IconCard
+                        icon={React.createElement(Icons[args.icon])}
+                        label={'Label Label Label Label Label Label Label Label Label'}
+                        content={'Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content Content '}
+                    />
+                    <IconCard
+                        icon={React.createElement(Icons[args.icon])}
+                        label={'Label'}
+                        content={'Content'}
+                    />
+                    <IconCard
+                        icon={React.createElement(Icons[args.icon])}
+                        label={'Label'}
+                        content={'Content'}
+                    />
+                    <IconCard
+                        icon={React.createElement(Icons[args.icon])}
+                        label={'Label'}
+                        content={'Content'}
+                    />
+                </IconCardGrid>
+            );
+        }}
+    </Story>
+</Canvas>

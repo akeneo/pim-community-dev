@@ -82,6 +82,11 @@ define([
         paramName: 'itemCodes',
       };
 
+      mediator.clear('datagrid:selectModel:' + this.datagrid.name);
+      mediator.clear('datagrid:unselectModel:' + this.datagrid.name);
+      mediator.clear('datagrid_collection_set_after');
+      mediator.clear('grid_load:complete');
+
       mediator.on('datagrid:selectModel:' + this.datagrid.name, this.selectModel.bind(this));
       mediator.on('datagrid:unselectModel:' + this.datagrid.name, this.unselectModel.bind(this));
       mediator.on('datagrid_collection_set_after', this.updateChecked.bind(this));

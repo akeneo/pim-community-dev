@@ -17,7 +17,7 @@ export const DropdownLink = ({
     children,
     ...props
 }: DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>) => (
-    <button type='button' className='AknDropdown-menuLink' {...props}>
+    <button type='button' className='AknDropdown-menuLink' {...(props as any)}>
         {children}
     </button>
 );

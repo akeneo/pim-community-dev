@@ -7,7 +7,7 @@ namespace Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Repos
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Model\AggregatedVolume;
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Repository\AggregatedVolumeRepositoryInterface;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author    Laurent Petard <laurent.petard@akeneo.com>
@@ -38,9 +38,9 @@ VALUES (:volumeName, :volume, :aggregatedAt)
 SQL;
 
         $stmt = $this->connection->prepare($sql);
-        $stmt->bindValue('volumeName', $aggregatedVolume->getVolumeName(), Type::STRING);
-        $stmt->bindValue('volume', $aggregatedVolume->getVolume(), Type::JSON_ARRAY);
-        $stmt->bindValue('aggregatedAt', $aggregatedVolume->aggregatedAt(), Type::DATETIME);
+        $stmt->bindValue('volumeName', $aggregatedVolume->getVolumeName(), Types::STRING);
+        $stmt->bindValue('volume', $aggregatedVolume->getVolume(), Types::JSON);
+        $stmt->bindValue('aggregatedAt', $aggregatedVolume->aggregatedAt(), Types::DATETIME_MUTABLE);
 
         $stmt->execute();
     }

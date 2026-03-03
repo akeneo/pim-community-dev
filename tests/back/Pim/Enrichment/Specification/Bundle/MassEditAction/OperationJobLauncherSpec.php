@@ -15,22 +15,22 @@ use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 class OperationJobLauncherSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         SimpleJobLauncher $jobLauncher,
         IdentifiableObjectRepositoryInterface $jobInstanceRepo,
         TokenStorageInterface $tokenStorage
-    ) {
+    ): void {
         $this->beConstructedWith($jobLauncher, $jobInstanceRepo, $tokenStorage);
     }
 
-    function it_launches_a_background_process_from_an_operation(
+    public function it_launches_a_background_process_from_an_operation(
         $jobLauncher,
         $jobInstanceRepo,
         $tokenStorage,
         TokenInterface $token,
         BatchableOperationInterface $operation,
         JobInstance $jobInstance
-    ) {
+    ): void {
         $user = new User();
         $user->setUsername('julia');
 
@@ -51,17 +51,17 @@ class OperationJobLauncherSpec extends ObjectBehavior
             [
                 'foo'  => 'bar',
                 'pomf' => 'thud',
-                'user_to_notify' => 'julia'
+                'users_to_notify' => ['julia']
             ]
         );
 
         $this->launch($operation);
     }
 
-    function it_throws_an_exception_if_no_job_instance_is_found(
+    public function it_throws_an_exception_if_no_job_instance_is_found(
         $jobInstanceRepo,
         BatchableOperationInterface $operation
-    ) {
+    ): void {
         $operation->getJobInstanceCode()->willReturn('mass_colorize');
         $jobInstanceRepo->findOneByIdentifier('mass_colorize')->willReturn(null);
 

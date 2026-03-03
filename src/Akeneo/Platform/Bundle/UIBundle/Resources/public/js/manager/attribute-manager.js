@@ -13,9 +13,7 @@ define(['jquery', 'underscore', 'pim/fetcher-registry'], function ($, _, Fetcher
     isOptional: function (attribute, product) {
       var promise = new $.Deferred();
 
-      if ('pim_catalog_identifier' === attribute.type) {
-        promise.resolve(false);
-      } else if (undefined !== product.family && null !== product.family) {
+      if (undefined !== product.family && null !== product.family) {
         promise = FetcherRegistry.getFetcher('family')
           .fetch(product.family)
           .then(function (family) {

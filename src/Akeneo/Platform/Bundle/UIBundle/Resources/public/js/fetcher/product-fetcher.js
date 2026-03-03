@@ -1,25 +1,28 @@
 'use strict';
 
-define(['jquery', 'backbone', 'pim/base-fetcher', 'routing', 'oro/mediator', 'pim/cache-invalidator'], function (
-  $,
-  Backbone,
-  BaseFetcher,
-  Routing,
-  mediator,
-  CacheInvalidator
-) {
+define([
+  'jquery',
+  'underscore',
+  'backbone',
+  'pim/base-fetcher',
+  'routing',
+  'oro/mediator',
+  'pim/cache-invalidator',
+], function ($, _, Backbone, BaseFetcher, Routing, mediator, CacheInvalidator) {
   return BaseFetcher.extend({
     /**
-     * Fetch an element based on its identifier
+     * Fetch a product or a product_model based on its id or uuid
      *
-     * @param {string} identifier
+     * @param {string} idOrUuid
      *
      * @return {Promise}
      */
-    fetch: function (identifier, options = {}) {
+    fetch: function (idOrUuid, options = {}) {
       const {silent = false, ...routeParams} = options;
 
-      return $.getJSON(Routing.generate(this.options.urls.get, {...routeParams, id: identifier}))
+      const params = (idOrUuid + '').match(/^\d+$/) ? {id: idOrUuid} : {uuid: idOrUuid};
+
+      return $.getJSON(Routing.generate(this.options.urls.get, {...routeParams, ...params}))
         .then(function (product) {
           const cacheInvalidator = new CacheInvalidator();
           cacheInvalidator.checkStructureVersion(product);
@@ -30,6 +33,17 @@ define(['jquery', 'backbone', 'pim/base-fetcher', 'routing', 'oro/mediator', 'pi
 
           return product;
         })
+        .promise();
+    },
+
+    fetchByUuids: function (uuids, options) {
+      options = options || {};
+      if (0 === uuids.length) {
+        return Promise.resolve([]);
+      }
+
+      return this.getJSON(this.options.urls.list, _.extend({uuids: uuids.join(',')}, options))
+        .then(_.identity)
         .promise();
     },
 

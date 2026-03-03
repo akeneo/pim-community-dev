@@ -1,0 +1,20 @@
+version: '3.7'
+
+services:
+  cypress:
+    build:
+      context: ./docker/cypress
+    environment:
+      CYPRESS_baseUrl: '${CYPRESS_baseUrl:-http://httpd}'
+      CYPRESS_defaultCommandTimeout: '${CYPRESS_defaultCommandTimeout:-4000}'
+      CYPRESS_requestTimeout: '${CYPRESS_requestTimeout:-5000}'
+    volumes:
+      - ./cypress:/cypress
+      - ./cypress.json:/cypress.json
+      - ./tests/front/e2e:/tests/front/e2e
+    ipc: host
+    networks:
+      - 'pim'
+
+networks:
+  pim:

@@ -211,8 +211,9 @@ pim_common:
     DOES NOT CONTAIN: Does not contain
     STARTS WITH: Starts with
     ENDS WITH: Ends with
+  groups: Groups
+  products: Products
 error:
-  exception: Oh snap! A {{ status_code }} error occurred...
   forbidden: Forbidden. You are not allowed to access this page
 alert:
   attribute_option:
@@ -240,8 +241,6 @@ pim_enrich.entity.fallback:
       discard_changes: You will lose changes to the {{ entity }} if you leave the page.
       discard_changes_title: Are you sure?
 pim_enrich.entity.job_execution:
-  page_title:
-    index: "]-Inf, 1]{{ count }} operation|]1, Inf[{{ count }} operations"
   module:
     create:
       upload: Drop your {{ type }} file here, or click to browse disk
@@ -259,8 +258,8 @@ pim_title:
   pim_enrich_catalog_volume_index: Catalog volume monitoring
   pim_enrich_categorytree_index: Category trees
   pim_enrich_categorytree_create: Category trees | Create
-  pim_enrich_categorytree_edit: Category tree {{ category.label }} | Edit
   pim_enrich_categorytree_create_tree: Category trees | Create
+  pim_enrich_categorytree_tree: Category tree {{ category.label }} | Edit
   pim_enrich_attribute_index: Attributes
   pim_enrich_attribute_create: Attributes | Create
   pim_enrich_attribute_edit: Attribute {{ attribute.label }} | Edit
@@ -287,6 +286,8 @@ pim_title:
   pim_enrich_job_tracker_show: Process tracker | Show job
   pim_enrich_mass_edit_action: Mass Edit
   pim_analytics_system_info_index: System information
+  pim_settings_index: Settings
+  pim_system_index: System
 pim_menu:
   tab:
     activity: Activity
@@ -302,7 +303,6 @@ pim_menu:
     attribute_group: Attribute groups
     channel: Channels
     currency: Currencies
-    dashboard: Dashboard
     family: Families
     group: Groups
     group_type: Group types
@@ -323,7 +323,8 @@ pim_menu:
     activity: Activity navigation
     system: System navigation
     user: Users management navigation
-    settings: Settings navigation
+    settings:
+      collapsed_label: Settings navigation
     product: Product navigation
     product_infos: Product infos
   user:
@@ -335,3 +336,6 @@ pim_notification:
     export: Export
     quick_export: Quick Export
     mass_edit: Mass Edit
+pim_system:
+  system_navigation: System navigation
+  users_management_navigation: Users management navigation

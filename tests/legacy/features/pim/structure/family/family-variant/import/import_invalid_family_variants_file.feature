@@ -15,7 +15,7 @@ Feature: Validate imported files of family variant
       clothing;Clothing by color and size;color,size;color,name,image,variation_image,composition,size,ean,sku,weight
       """
     And the following job "csv_catalog_modeling_family_variant_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     When I am on the "csv_catalog_modeling_family_variant_import" import job page
     And I launch the import job
     And I wait for the "csv_catalog_modeling_family_variant_import" job to finish

@@ -1,0 +1,180 @@
+akeneo_catalogs:
+  common:
+    select:
+      open: 開く
+      remove: 削除
+      no_matches: 一致するものが見つかりません
+  catalog_list:
+    catalogs_name: カタログ名
+    status: ステータス
+    enabled: 有効
+    disabled: 無効
+    empty: カタログがありません
+    more_information: 詳細についてはヘルプセンターをご確認ください。
+  catalog_edit:
+    tabs:
+      settings: カタログ設定
+      product_selection: 商品の選択
+      more: その他
+      product_value_filters: 値をフィルタ
+      product_mapping: マッピング
+  catalog_status_widget:
+    fields:
+      enable_catalog: カタログを有効化
+    helper: 既定では、新しいカタログは無効になっています。アプリで商品データを取得できるようにするには、カタログを有効化してください。
+    inputs:
+      yes: Yes
+      no: No
+  product_value_filters:
+    action:
+      open: 開く
+      remove: 削除
+    filters:
+      channel:
+        label: チャンネル
+        no_matches: 一致するものが見つかりません
+        placeholder: チャンネルを選択
+      locale:
+        label: ロケール
+        no_matches: 一致するものが見つかりません
+        placeholder: ロケールを選択
+      currency:
+        label: 通貨
+        no_matches: 一致するものが見つかりません
+        placeholder: 通貨を選択
+  product_selection:
+    empty: 検索基準を追加して、商品選択を作成します
+    count:
+      products: '{0} 商品がありません|{1} 1 個の商品|[2,Inf[ {{ count }} 個の商品'
+      error: 商品数を計算できません
+    more_information: 詳細についてはヘルプセンターをご確認ください。
+    add_criteria:
+      label: 選択基準を追加
+      search: 検索基準
+      no_results: 一致するものが見つかりません
+      section_system: システム
+      section_attributes: 属性
+    action:
+      open: 開く
+      remove: 削除
+    locale:
+      label: ロケール
+      empty: ロケールが見つかりません
+    channel:
+      label: チャンネル
+      empty: チャンネルが見つかりません
+    criteria:
+      unknown: この属性は削除されました。
+      max_reached: '{{ maxCount }} 件の選択基準の上限に達しました。'
+      status:
+        label: ステータス
+        enabled: 有効
+        disabled: 無効
+      family:
+        label: ファミリー
+        no_matches: 一致するものが見つかりません
+        placeholder: ファミリーを選択
+      completeness:
+        label: 完全性
+      attribute_option:
+        no_matches: 一致するものが見つかりません
+        placeholder: オプションを選択
+      category:
+        label: カテゴリ
+        remove: カテゴリーを削除
+        category_tree: カテゴリツリー
+      measurement:
+        search: ユニット
+        no_results: 一致するものが見つかりません
+      boolean:
+        yes: Yes
+        no: No
+    operators:
+      "STARTS WITH": 次で始まる
+      "ENDS WITH": 次で終わる
+      "CONTAINS": 次を含む
+      "DOES NOT CONTAIN": 次を含まない
+      "EMPTY": 空である
+      "NOT EMPTY": 空ではない
+      "IN": 次に含まれる
+      "NOT IN": 次に含まれない
+      "IN CHILDREN": 下位に含まれる
+      "NOT IN CHILDREN": 下位に含まれない
+      "UNCLASSIFIED": 未分類
+      "IN OR UNCLASSIFIED": 未分類か、次に含まれる
+      "BETWEEN": 次の範囲内
+      "NOT BETWEEN": 次の範囲内でない
+      "=": 次に等しい
+      "!=": 次に等しくない
+      ">": 次より大きい
+      ">=": 次以上
+      "<": 次より小さい
+      "<=": 次以下
+  product_mapping:
+    target:
+      title: ターゲットリスト
+      filter:
+        label: フィルタ
+        option:
+          all: すべて
+      table:
+        target: カタログのターゲット
+        source: PIMソース
+        placeholder: コンテンツソースを定義
+      placeholder:
+        illustration_title: 使用できるカタログのターゲットがありません
+    source:
+      title: ソースを選択
+      parameters:
+        placeholder: 属性を選択
+        title: ソースパラメータ
+        channel:
+          placeholder: チャンネルを選択してください
+        locale:
+          placeholder: ロケールを選択してください
+        label_locale:
+          label: 値の翻訳
+          placeholder: 翻訳を選択
+          helper: 送信する値の言語を選択します。
+        currency:
+          label: 通貨
+          placeholder: 通貨を選択
+          helper: 送信する値の通貨を選択します。
+        default_value:
+          label: 空の場合の既定値
+          placeholder: 既定値を定義
+        no_parameters_message: このソースのパラメータはありません。
+        unit:
+          label: ユニット
+          placeholder: 単位を選択
+          helper: 値の送信ユニットを選択します。
+      select_source:
+        label: PIMソース
+        search: 検索条件
+        no_results: 一致するものが見つかりません
+        section_system: システム
+        section_attributes: 属性
+      placeholder:
+        title: ソースを選択
+        illustration_title: 右パネルのターゲットをクリックして、カタログのマッピングを構成します。
+        subtitle: そうすると、PIM属性を選択したターゲットに一致させることができます。
+        link: 詳細についてはヘルプセンターをご確認ください。
+      uuid_placeholder:
+        illustration_title: UUID は技術的な商品識別子です。
+        subtitle: ターゲットとしてすべてのアプリで必要です。Akeneo 商品 UUID に自動的にマッピングされるため、このターゲットには何も構成する必要はありません。
+        link: UUID に関する詳細について。
+      requirements:
+        title: アプリの要件
+        help: ヘルプ
+        constraints:
+          minLength: '{0,1} このターゲットには少なくとも{{ value }}文字必要です。|[2,Inf[ このターゲットには少なくとも{{ value }}文字必要です。'
+          maxLength: '{0,1} このターゲットは{{ value }}文字を超えられません。|[2,Inf[ このターゲットは{{ value }}文字を超えられません。'
+          pattern: '[0,Inf[ パターン: このターゲットは次の正規表現に一致する必要があります: "{{ value }}"。'
+          minimum: '[0,Inf[ このターゲットは{{ value }}以上である必要があります。'
+          maximum: '[0,Inf[ このターゲットは{{ value }}以下である必要があります。'
+          enum: '[0,Inf[ 列挙: このターゲットは次の値しか受け入れません: {{ value }}。'
+      system_attributes:
+        categories:
+          label: カテゴリ
+        family:
+          label: ファミリー

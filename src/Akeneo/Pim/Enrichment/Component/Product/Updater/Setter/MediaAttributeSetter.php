@@ -21,7 +21,6 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
  */
 class MediaAttributeSetter extends AbstractAttributeSetter
 {
-
     /** @var FileInfoRepositoryInterface */
     protected $repository;
 

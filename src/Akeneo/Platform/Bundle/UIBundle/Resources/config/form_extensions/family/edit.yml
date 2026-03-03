@@ -2,6 +2,11 @@ extensions:
     pim-family-edit-form:
         module: pim/form/common/edit-form
 
+    pim-family-edit-form-sandbox-helper:
+        module: pim/sandbox-helper
+        parent: pim-family-edit-form
+        targetZone: helper
+
     pim-family-edit-form-breadcrumbs:
         module: pim/common/breadcrumbs
         parent: pim-family-edit-form
@@ -54,6 +59,7 @@ extensions:
                 content: pim_common.confirm_deletion
                 success: pim_enrich.entity.family.flash.delete.success
                 fail: pim_enrich.entity.family.flash.delete.fail
+                buttonText: pim_common.delete
             redirect: pim_enrich_family_index
 
     pim-family-edit-form-save-buttons:

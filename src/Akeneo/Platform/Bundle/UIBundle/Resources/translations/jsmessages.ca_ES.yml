@@ -21,6 +21,11 @@ Second: Segon
 Millisecond: Mil·lisegon
 Microsecond: Microsegon
 "Time Zone": "Zona horària"
+duration:
+  days: "{0}0 dies|{1}1 dia|]1, Inf[{{ count }} dies"
+  hours: "{0}0 hores|{1}1 hora|]1, Inf[{{ count }} hores"
+  minutes: "{0}0 minuts|{1}1 minut|]1, Inf[{{ count }} minuts"
+  seconds: "{0}0 segons|{1}1 segon|]1, Inf[{{ count }} segons"
 #PIM messages
 Localized value: Valor amb configuració regional
 Columns: Columnes
@@ -97,18 +102,34 @@ oro_config:
       tab:
         system:
           title: Sistema
+      save_ok: Configuració desada correctament
+      save_error: Ho sentim, no s'ha pogut desar la configuració ({{ reason }})
       group:
         localization:
-          title: Configuració regional
-          system_locale: Idioma
+          title: Configuració de la pàgina d'accés
+          fields:
+            system_locale:
+              label: Idioma
         notification:
-          title: Notificacions
-          system_notification: Notificacions de noves versions
+          title: Notificació de noves versions
+          helper: Quan està activat, rebràs una notificació quan hi hagi una versió nova disponible per a tu.
+          fields:
+            enabler:
+              label: Activat
+        environment:
+          title: Configuració de l'entorn
+          fields:
+            sandbox_banner:
+              label: Mostra el bàner d'alerta de sandbox
         loading_message:
-          title: S'estan carregant els missatges
-          label: Permetre els missatges que s'estan carregant
-        loading_messages:
-          label: Missatges de càrrega disponibles
+          title: Missatges de càrrega personalitzats
+          helper: Entreteniu els vostres usuaris amb missatges personalitzats per a les pantalles de càrrega.
+          placeholder: Si us plau, escriviu el vostre propi missatge perquè es mostri a la pantalla de càrrega
+          fields:
+            enabler:
+              label: Permetre els missatges que s'estan carregant
+            messages:
+              label: Afegeix els teus propis missatges de càrrega
 pim_ui:
   flash:
     unsaved_changes: 'Té canvis no desats. Segur que voleu sortir?'
@@ -154,7 +175,11 @@ pim_common:
   before: Abans
   by: per
   cancel: Cancel·lar
+  characters_left: ']-Inf, 1]{{ count }} caràcters restants|]1, Inf[{{ count }} caràcters restants'
+  clear_value: Esborra el valor
+  close: Tancar
   code: Codi
+  completeness: Integritat
   confirm: Confirmar
   confirm_deletion: Confirmar l'eliminació
   confirm_revocation: Confirmar la revocació
@@ -162,17 +187,25 @@ pim_common:
   created: Creat
   delete: Suprimir
   done: Fet
+  duplicate: Duplicat
   edit: Editar
   entity_updated: Hi ha canvis sense guardar.
+  export: Exportació
   from: Des de
   general_properties: Propietats generals
   history: Històric
+  identifier: Identificador
+  image: Imatge
   label: Etiqueta
   label_translations: Traduccions d'etiquetes
   Label or identifier: etiqueta o identificador
+  code_or_label: codi o etiqueta
   less_than: Menys de
   loading: Carregant...
   media_upload: Arrossegar i deixar per carrgar o feu clic aquí
+  media_uploading: S'està pujant…
+  media_upload_error: S'ha produït un error durant la càrrega
+  more_actions: Més accions
   more_than: Més de
   next: Següent
   "no": "No"
@@ -180,21 +213,29 @@ pim_common:
   not_available: N/D
   now: Ara
   ok: OK
+  open: Obre
+  no_result: No s'han trobat resultats
+  no_search_result: Ho sentim, no hi ha cap resultat de la cerca.
+  other_actions: Altres accions
   permissions: Permisos
   previous: Anterior
   properties: Propietats
+  quality_score: Puntuació de qualitat
   remove: Eliminar
   required_label: (obligatori)
+  result_count: "{0}0 resultats|{1}1 resultat|]1, Inf[{{ itemsCount }} resultats"
   save: Desar
   search: Cercar
   select2:
     search: Cercar...
     no_match: No s’han trobat coincidències
     load_more: Carregant més resultats...
+  selected: "{0}Cap seleccionat|{1}Un seleccionat|]1, Inf[{{ itemsCount }} seleccionat"
   status: Estat
   to: fins a
   type: Tipus
   update: Actualitzar
+  updated: Actualitzat
   "yes": "Sí"
   operator: Operador
   operators:
@@ -210,8 +251,25 @@ pim_common:
     DOES NOT CONTAIN: No conté
     STARTS WITH: S'inicia amb
     ENDS WITH: Acaba amb
+    IN: A la llista
+    "NOT IN": Fora de llista
+  read_more: Llegiu-ne més
+  channel: Canal
+  locale: Local
+  categories: Categories
+  family_variant: Variants familiars
+  enabled: Activat
+  family: Família
+  parent: Pare
+  groups: Grups
+  products: Productes
+  product_uuids: Productes
+  product_models: Models de producte
+  more: Més
+  public_view: Vista pública
+  view: Vista
 error:
-  exception: Oh no! S'ha produït un error de {{ status_code }}...
+  exception: S'ha produït un error de {{ status_code }}...
   forbidden: Prohibit. No té permís per accedir a aquesta pàgina
 alert:
   attribute_option:
@@ -224,6 +282,7 @@ pim_enrich.entity.fallback:
     generic_error: S'ha produït un error
     update:
       fail: Actualització fallida
+      fail_session_expired: La vostra sessió d'usuari ha caducat. Si us plau, torneu a iniciar sessió.
       success: Actualització completada
     delete:
       fail: No podeu eliminar aquest element
@@ -238,28 +297,14 @@ pim_enrich.entity.fallback:
       leave: Esteu segur que voleu sortir d'aquesta pàgina?
       discard_changes: Perdreu els canvis a la {{ entity }} si sortiu de la pàgina.
       discard_changes_title: Estàs segur?
-pim_enrich.entity.api_connection:
-  flash:
-    create:
-      success: Connexió API creada correctament
-    delete:
-      success: Connexió d'API revocada amb èxit
-      fail: No pot revocar aquesta connexió API
-  page_title:
-    index: "]-Inf, 1]{{ count }} connexió API|]1, Inf[{{ count }} connexions API"
-  module:
-    revoke:
-      confirm: Està segur que vol revocar aquesta connexió d'API?
 pim_enrich.entity.job_execution:
   page_title:
-    index: "]-Inf, 1]{{ count }} operació|]1, Inf[{{ count }} operacions"
+    index: "]-Inf, 1]{{ count }} feines|]1, Inf[{{ count }} feines"
   module:
     create:
       upload: Deixeu anar el fitxer {{ type }} aquí, o clic per buscar en el disc
     download:
       archive: Descarregar arxiu generat
-      output: Descarregar arxiu generat
-      input: Descarregar arxius llegits
       invalid_xlsx: Descarregar dades no vàlides
       invalid_csv: Descarregar dades no vàlides
 pim_title:
@@ -270,8 +315,9 @@ pim_title:
   pim_enrich_catalog_volume_index: Seguiment del volum del catàleg
   pim_enrich_categorytree_index: Arbres de categories
   pim_enrich_categorytree_create: Arbres de categories | Crear
-  pim_enrich_categorytree_edit: Arbre de categoria {{ category.label }} | Editar
+  pim_enrich_categorytree_edit: Categoria {{ category.label }} | Editar
   pim_enrich_categorytree_create_tree: Arbres de categories | Crear
+  pim_enrich_categorytree_tree: Arbre de categoria {{ category.label }} | Editar
   pim_enrich_attribute_index: Atributs
   pim_enrich_attribute_create: Atributs | Crear
   pim_enrich_attribute_edit: Atribut {{ attribute.label }} | Editar
@@ -296,11 +342,12 @@ pim_title:
   pim_enrich_mass_edit_action_perform: Editar en massa | Realitzar
   pim_enrich_job_tracker_index: Seguiment del procés
   pim_enrich_job_tracker_show: Seguiment del procés | Mostrar tasca
-  pim_enrich_api_connection_index: Connexions d'API
-  pim_enrich_api_connection_create: Connexions d'API | Crear
   pim_enrich_mass_edit_action: Edició massiva
   pim_analytics_system_info_index: Informació del sistema
+  pim_settings_index: Preferències
+  pim_system_index: Sistema
 pim_menu:
+  tag.new: Nou
   tab:
     activity: Activitat
     imports: Importacions
@@ -310,12 +357,16 @@ pim_menu:
     help:
       title: Ajuda
       helper: Centre d'ajuda d'Akeneo
+      new: NOU
+      news: Què hi ha de nou?
+      help_center: Centre d'Ajuda
+      akademy_training: Formació de l'Akademy
   item:
     association_type: Tipus d'associació
     attribute_group: Grups d'atribut
     channel: Canals
     currency: Monedes
-    dashboard: Panell de contol
+    dashboard: Activitat del panell de control
     family: Famílies
     group: Grups
     group_type: Tipus de grup
@@ -331,13 +382,16 @@ pim_menu:
     user_role: Rols
     info: Informació del sistema
     job_tracker: Seguiment del procés
-    api_connection: Connexions d'API
     catalog_volume: Seguiment del volum del catàleg
   navigation:
     activity: Activitat de navegació
     system: Sistema de navegació
     user: Navegació de gestió d'usuaris
-    settings: Navegació de configuració
+    settings:
+      product: Configuració de producte
+      catalog: Configuració del catàleg
+      collapsed_label: Navegació de configuració
+      automation: Automatització
     product: Navegació de producte
     product_infos: Informació del Producte
   user:
@@ -349,8 +403,71 @@ pim_notification:
     export: Exportació
     quick_export: Exportació ràpida
     mass_edit: Edició massiva
-akeneo_communication_channel:
-  link:
-    title: Anuncis
-  panel:
-    title: Anuncis
+pim_settings:
+  settings_menu: Menú de configuració
+  catalog_settings: Configuració del catàleg
+  product_settings: Configuració de producte
+  automation_settings: Automatització
+  count:
+    category_trees: '{0}Tens 0 arbres |{1}Tens 1 arbre |]1, Inf[Tens {{ count }} arbres'
+    categories: '{0}i 0 categories|{1}i 1 categoria|]1, Inf[i {{ count }} categories'
+    channels: '{0}Tens 0 canals|{1}Tens 1 canal|]1, Inf[Tens {{ count }} canals'
+    locales: '{0}Tens 0 configuracions regionals activades|{1}Tens 1 configuració regional activada|]1, Inf[Teniu {{ count }} configuracions regionals activades'
+    currencies: '{0}Tens 0 monedes activades|{1}Tens 1 moneda activada|]1, Inf[Teniu {{ count }} monedes activades'
+    attribute_groups: '{0}Tens 0 grups d''atributs|{1}Tens 1 grup d''atributs|]1, Inf[Tens {{ count }} grups d''atributs'
+    attributes: '{0}Tens 0 atributs|{1}Tens 1 atribut|]1, Inf[Teniu {{ count }} atributs'
+    families: '{0}Tens 0 famílies|{1}Tens 1 família|]1, Inf[Tens {{ count }} famílies'
+    measurements: '{0}Tens 0 mesures|{1}Tens 1 mesura|]1, Inf[Teniu {{ count }} mesures'
+    association_types: '{0}Tens 0 tipus d''associació|{1}Teniu 1 tipus d''associació|]1, Inf[Teniu {{ count }} tipus d''associació'
+    group_types: '{0}Tens 0 tipus de grup|{1}Tens 1 tipus de grup|]1, Inf[Teniu {{ count }} tipus de grup'
+    groups: '{0}Tens 0 grups|{1}Tens 1 grup|]1, Inf[Tens {{ count }} grups'
+    rules: '{0}Tens 0 regles activades|{1}Teniu 1 regla activada|]1, Inf[Teniu {{ count }} regles activades'
+    identifier_generators: '{0}Tens 0 generador d''identificadors|{1}Tens 1 generador d''identificadors|]1, Inf[Teniu {{ count }} generadors d''identificadors'
+pim_system:
+  system_menu: Menú del sistema
+  system_navigation: Sistema de navegació
+  users_management_navigation: Navegació de gestió d'usuaris
+  count:
+    product_values: '{0}Tens 0 valors de producte|{1}Tens 1 valor de producte|]1, Inf[Tens {{ count }} valors de producte'
+    users: '{0}Tens 0 usuaris|{1}Tens 1 usuari|]1, Inf[Tens {{ count }} usuaris'
+    user_groups: '{0}Tens 0 grups d''usuaris|{1}Tens 1 grup d''usuaris|]1, Inf[Tens {{ count }} grups d''usuaris'
+    roles: '{0}Tens 0 rols|{1}Tens 1 rol|]1, Inf[Teniu {{ count }} rols'
+  sso:
+    enabled: Activat SSO
+    disabled: Desactivat SSO
+    title: SAML-basat en l'inici de sessió únic
+  reset_pim:
+    modal:
+      summary:
+        name: Resum
+        title: 'Avís: el reinici del vostre PIM és irreversible'
+        text: 'Això comportarà la supressió de tots els elements excepte els següents:'
+        users:
+          name: Usuaris
+          tooltip: Els usuaris són persones que permeteu col·laborar dins del vostre PIM.
+        user_groups:
+          name: Grup d'usuaris
+          tooltip: Els grups d'usuaris defineixen equips que realitzaran diferents accions dins del vostre PIM.
+        roles:
+          name: Rols
+          tooltip: Els rols defineixen els accessos i les accions que els usuaris i els grups d'usuaris poden dur a terme dins del vostre PIM.
+      confirm:
+        name: Confirmar
+        title: Confirma el reinici del PIM
+        helper:
+          emphasis: Si reinicies el PIM, no podràs tornar enrere.
+          text: En fer clic al botó de restabliment, se us tancarà la sessió i tornareu a la pàgina d'inici de sessió.
+      confirmation_phrase: Si us plau, escriu "{{ confirmation_word }}"
+      confirmation_word: reiniciar
+    button:
+      label: Restableix la instància
+      confirm: Reinicieu i tanqueu la sessió
+    error_notification: S'ha produït un error durant el restabliment de la instància; poseu-vos en contacte amb l'administrador del vostre sistema.
+    jobs_running: No podeu restablir la vostra instància en aquest moment, ja que alguns processos encara estan a la cua o en execució.
+  sandbox:
+    helper:
+      text: Aquest és un entorn sandbox; els vostres canvis no afectaran la vostra producció.
+pim_datagrid:
+  mass_action:
+    default:
+      select_action: Selecciona acció

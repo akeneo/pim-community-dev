@@ -1,0 +1,48 @@
+version: 2.1
+
+workflows:
+    version: 2
+    pull_request:
+        when:
+            not:
+                equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+        jobs:
+            - ready_to_build?:
+                  type: approval
+                  filters:
+                      branches:
+                          ignore:
+                              - master
+            - checkout_ce:
+                  requires:
+                      - ready_to_build?
+            - build_dev:
+                  is_ee_built: false
+                  requires:
+                      - checkout_ce
+            - cypress_sanity_checks:
+                  requires:
+                      - build_dev
+            - test_back_static_and_acceptance:
+                  requires:
+                      - build_dev
+            - test_front_static_acceptance_and_integration:
+                  requires:
+                      - build_dev
+            - test_back_phpunit:
+                  requires:
+                      - build_dev
+            - test_back_data_migrations:
+                  requires:
+                      - build_dev
+            - test_back_behat_legacy:
+                  requires:
+                      - build_dev
+            - pull_request_success:
+                  requires:
+                      - cypress_sanity_checks
+                      - test_back_phpunit
+                      - test_back_static_and_acceptance
+                      - test_front_static_acceptance_and_integration
+                      - test_back_behat_legacy
+                      - test_back_data_migrations

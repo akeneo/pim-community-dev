@@ -3,19 +3,15 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2018 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ * @copyright 2021 Akeneo SAS (https://www.akeneo.com)
+ * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\EventSubscriber;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\InitializeJobs;
-use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
-use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
+use Akeneo\Platform\Installer\Infrastructure\Event\InstallerEvent;
+use Akeneo\Platform\Installer\Infrastructure\Event\InstallerEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class InitDataQualityInsightsJobsSubscriber implements EventSubscriberInterface
@@ -31,7 +27,7 @@ class InitDataQualityInsightsJobsSubscriber implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             InstallerEvents::PRE_LOAD_FIXTURES => 'initJobs',

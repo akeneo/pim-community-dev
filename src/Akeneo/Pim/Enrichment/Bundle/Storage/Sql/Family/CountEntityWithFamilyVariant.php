@@ -43,7 +43,7 @@ final class CountEntityWithFamilyVariant implements CountEntityWithFamilyVariant
         return (int) $this->connection->executeQuery(
             'SELECT COUNT(id) FROM pim_catalog_product_model WHERE family_variant_id = :family_variant_id',
             ['family_variant_id' => $familyVariant->getId()]
-        )->fetchColumn();
+        )->fetchOne();
     }
 
     /**
@@ -57,6 +57,6 @@ final class CountEntityWithFamilyVariant implements CountEntityWithFamilyVariant
         return (int) $this->connection->executeQuery(
             'SELECT COUNT(id) FROM pim_catalog_product WHERE family_variant_id = :family_variant_id',
             ['family_variant_id' => $familyVariant->getId()]
-        )->fetchColumn();
+        )->fetchOne();
     }
 }

@@ -34,7 +34,7 @@ test('renders the connection monitoring page', async () => {
     fetchMockResponseOnce('pim_enrich_locale_rest_index', JSON.stringify([]));
     fetchMockResponseOnce('pim_enrich_family_rest_index', JSON.stringify({}));
 
-    const history = createMemoryHistory({initialEntries: ['/connections/erp/monitoring']});
+    const history = createMemoryHistory({initialEntries: ['/connect/connection-settings/erp/monitoring']});
 
     const {findByText} = renderWithProviders(
         <Router history={history}>
@@ -68,7 +68,7 @@ test('renders the connection monitoring page with no error', async () => {
         JSON.stringify([])
     );
 
-    const history = createMemoryHistory({initialEntries: ['/connections/erp/monitoring']});
+    const history = createMemoryHistory({initialEntries: ['/connect/connection-settings/erp/monitoring']});
 
     const {findByText} = renderWithProviders(
         <Router history={history}>

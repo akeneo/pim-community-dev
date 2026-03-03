@@ -2,27 +2,29 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Model;
 
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Model\Category;
+use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Group;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociation;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\IdMapping;
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\UuidMapping;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MediaValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\Model\AssociationType;
-use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
-use Akeneo\Tool\Component\Classification\CategoryAwareInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\CategoryAwareInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\Versioning\Model\TimestampableInterface;
 use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;
@@ -31,6 +33,9 @@ use PhpSpec\ObjectBehavior;
 
 class ProductModelSpec extends ObjectBehavior
 {
+    private const UUID1 = '2ad984c7-8aa0-4ecf-95ce-e670fb8b7593';
+    private const UUID2 = '17c9248c-566d-49c5-b5a6-1b63dd07a9c3';
+
     function it_is_a_product_model()
     {
         $this->shouldHaveType(ProductModel::class);
@@ -332,6 +337,7 @@ class ProductModelSpec extends ObjectBehavior
     function it_hydrates_quantified_associations()
     {
         $idMapping = $this->idMapping();
+        $uuidMapping = $this->uuidMapping();
         $this->rawQuantifiedAssociations = [
             'PACK' => [
                 'products'       => [
@@ -344,12 +350,12 @@ class ProductModelSpec extends ObjectBehavior
                 ],
             ]
         ];
-        $this->hydrateQuantifiedAssociations($idMapping, $idMapping, ['PACK']);
+        $this->hydrateQuantifiedAssociations($uuidMapping, $idMapping, ['PACK']);
         $this->normalizeQuantifiedAssociations()->shouldReturn([
             'PACK' => [
                 'products'       => [
-                    ['identifier' => 'entity_1', 'quantity' => 1],
-                    ['identifier' => 'entity_2', 'quantity' => 2]
+                    ['uuid' => self::UUID1, 'identifier' => 'entity_1', 'quantity' => 1],
+                    ['uuid' => self::UUID2, 'identifier' => 'entity_2', 'quantity' => 2]
                 ],
                 'product_models' => [
                     ['identifier' => 'entity_1', 'quantity' => 1],
@@ -362,6 +368,7 @@ class ProductModelSpec extends ObjectBehavior
     function it_saves_a_quantified_associations()
     {
         $idMapping = $this->idMapping();
+        $uuidMapping = $this->uuidMapping();
         $this->rawQuantifiedAssociations = [
             'PACK' => [
                 'products'       => [
@@ -374,12 +381,12 @@ class ProductModelSpec extends ObjectBehavior
                 ],
             ]
         ];
-        $this->hydrateQuantifiedAssociations($idMapping, $idMapping, ['PACK']);
+        $this->hydrateQuantifiedAssociations($uuidMapping, $idMapping, ['PACK']);
         $this->normalizeQuantifiedAssociations()->shouldReturn([
             'PACK' => [
                 'products'       => [
-                    ['identifier' => 'entity_1', 'quantity' => 1],
-                    ['identifier' => 'entity_2', 'quantity' => 2]
+                    ['uuid' => self::UUID1, 'identifier' => 'entity_1', 'quantity' => 1],
+                    ['uuid' => self::UUID2, 'identifier' => 'entity_2', 'quantity' => 2]
                 ],
                 'product_models' => [
                     ['identifier' => 'entity_1', 'quantity' => 1],
@@ -389,9 +396,10 @@ class ProductModelSpec extends ObjectBehavior
         ]);
     }
 
-    function it_filter_quantified_associations_during_hydration()
+    function it_filters_quantified_associations_during_hydration()
     {
         $idMapping = $this->idMapping();
+        $uuidMapping = $this->uuidMapping();
         $this->rawQuantifiedAssociations = [
             'PACK' => [
                 'products'       => [
@@ -415,12 +423,12 @@ class ProductModelSpec extends ObjectBehavior
             ],
         ];
 
-        $this->hydrateQuantifiedAssociations($idMapping, $idMapping, ['PACK']);
+        $this->hydrateQuantifiedAssociations($uuidMapping, $idMapping, ['PACK']);
         $this->normalizeQuantifiedAssociations()->shouldReturn([
             'PACK' => [
                 'products'       => [
-                    ['identifier' => 'entity_1', 'quantity' => 1],
-                    ['identifier' => 'entity_2', 'quantity' => 2]
+                    ['uuid' => self::UUID1, 'identifier' => 'entity_1', 'quantity' => 1],
+                    ['uuid' => self::UUID2, 'identifier' => 'entity_2', 'quantity' => 2]
                 ],
                 'product_models' => [
                     ['identifier' => 'entity_1', 'quantity' => 1],
@@ -922,7 +930,7 @@ class ProductModelSpec extends ObjectBehavior
         );
         $this->cleanup();
 
-        $this->filterQuantifiedAssociations(['my_product'], ['model_tshirt_2']);
+        $this->filterQuantifiedAssociations(['my_product'], [], ['model_tshirt_2']);
         $this->isDirty()->shouldBe(true);
     }
 
@@ -955,6 +963,7 @@ class ProductModelSpec extends ObjectBehavior
 
         $this->filterQuantifiedAssociations(
             ['my_product', 'my_other_product'],
+            [],
             ['model_tshirt_1', 'model_tshirt_2']
         );
         $this->isDirty()->shouldBe(false);
@@ -1315,6 +1324,112 @@ class ProductModelSpec extends ObjectBehavior
         $this->getAssociatedGroups('another_association_type')->shouldReturn(null);
     }
 
+    function it_returns_categories_for_the_current_level()
+    {
+        $categoryA = new Category();
+        $categoryA->setCode('A');
+        $categoryB = new Category();
+        $categoryB->setCode('B');
+        $categoryC = new Category();
+        $categoryC->setCode('C');
+        $rootProductModel = new ProductModel();
+        $rootProductModel->addCategory($categoryA);
+
+        $this->setParent($rootProductModel);
+        $this->addCategory($categoryB);
+        $this->addCategory($categoryC);
+
+        $categories = $this->getCategoriesForCurrentLevel();
+        $categories->shouldBeAnInstanceOf(ArrayCollection::class);
+        $categories->toArray()->shouldBe([$categoryB, $categoryC]);
+    }
+
+    function it_does_not_associate_a_product_already_associated_to_an_ancestor()
+    {
+        $associationType = new AssociationType();
+        $associationType->setCode('X_SELL');
+        $productAssociation = new ProductAssociation();
+        $productAssociation->setAssociationType($associationType);
+        $this->addAssociation($productAssociation);
+
+        $associatedProduct = new Product();
+        $productModelAssociation = new ProductModelAssociation();
+        $productModelAssociation->setAssociationType($associationType);
+        $productModelAssociation->addProduct($associatedProduct);
+        $parent = new ProductModel();
+        $parent->addAssociation($productModelAssociation);
+        $this->setParent($parent);
+
+        $this->addAssociatedProduct($associatedProduct, 'X_SELL');
+        $this->getAssociatedProducts('X_SELL')->shouldBeLike(new ArrayCollection());
+    }
+
+    function it_does_not_associate_a_product_model_already_associated_to_an_ancestor()
+    {
+        $associationType = new AssociationType();
+        $associationType->setCode('X_SELL');
+        $productAssociation = new ProductAssociation();
+        $productAssociation->setAssociationType($associationType);
+        $this->addAssociation($productAssociation);
+
+        $associatedProductModel = new ProductModel();
+        $productModelAssociation = new ProductModelAssociation();
+        $productModelAssociation->setAssociationType($associationType);
+        $productModelAssociation->addProductModel($associatedProductModel);
+        $parent = new ProductModel();
+        $parent->addAssociation($productModelAssociation);
+        $this->setParent($parent);
+
+        $this->addAssociatedProductModel($associatedProductModel, 'X_SELL');
+        $this->getAssociatedProductModels('X_SELL')->shouldBeLike(new ArrayCollection());
+    }
+
+    function it_does_not_associate_a_group_already_associated_to_an_ancestor()
+    {
+        $associationType = new AssociationType();
+        $associationType->setCode('X_SELL');
+        $productAssociation = new ProductAssociation();
+        $productAssociation->setAssociationType($associationType);
+        $this->addAssociation($productAssociation);
+
+        $associatedGroup = new Group();
+        $groupAssociation = new ProductModelAssociation();
+        $groupAssociation->setAssociationType($associationType);
+        $groupAssociation->addGroup($associatedGroup);
+        $parent = new ProductModel();
+        $parent->addAssociation($groupAssociation);
+        $this->setParent($parent);
+
+        $this->addAssociatedGroup($associatedGroup, 'X_SELL');
+        $this->getAssociatedGroups('X_SELL')->shouldBeLike(new ArrayCollection());
+    }
+
+    function it_does_not_update_level_specific_associations_when_calling_get_all_associations()
+    {
+        $associationType = new AssociationType();
+        $associationType->setCode('X_SELL');
+        $productAssociation = new ProductAssociation();
+        $productAssociation->setAssociationType($associationType);
+        $this->addAssociation($productAssociation);
+
+        $associatedProduct = new Product();
+        $productModelAssociation = new ProductModelAssociation();
+        $productModelAssociation->setAssociationType($associationType);
+        $productModelAssociation->addProduct($associatedProduct);
+        $parent = new ProductModel();
+        $parent->addAssociation($productModelAssociation);
+        $this->setParent($parent);
+
+        $this->getAllAssociations()->filter(
+            static fn (AssociationInterface $asso): bool => 'X_SELL' === $asso->getAssociationType()->getCode()
+        )->first()?->getProducts()->shouldBeLike(new ArrayCollection([$associatedProduct]));
+
+        $this->getAssociations()->filter(
+            static fn (AssociationInterface $asso): bool => 'X_SELL' === $asso->getAssociationType()->getCode()
+        )->first()?->getProducts()->shouldBeLike(new ArrayCollection());
+    }
+
+
     private function someRawQuantifiedAssociations(): array
     {
         return [
@@ -1334,5 +1449,13 @@ class ProductModelSpec extends ObjectBehavior
     private function idMapping(): IdMapping
     {
         return IdMapping::createFromMapping([1 => 'entity_1', 2 => 'entity_2']);
+    }
+
+    private function uuidMapping(): UuidMapping
+    {
+        return UuidMapping::createFromMapping([
+            ['uuid' => self::UUID1, 'id' => 1, 'identifier' => 'entity_1'],
+            ['uuid' => self::UUID2, 'id' => 2, 'identifier' => 'entity_2'],
+        ]);
     }
 }

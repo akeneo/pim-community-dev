@@ -26,6 +26,6 @@ class SqlGetAllResourceNamesQuery
 SELECT DISTINCT resource_name FROM pim_versioning_version;
 SQL;
 
-        return $this->dbConnection->executeQuery($query)->fetchAll(\PDO::FETCH_COLUMN);
+        return $this->dbConnection->executeQuery($query)->fetchFirstColumn();
     }
 }

@@ -21,7 +21,7 @@ Feature: Update product models through XLSX import
       code-002;code-001;clothing_color_size;master_men_blazers;;A new description for a sub model;;;blue;Beautiful blazers;composition;;;;
       """
     And the following job "xlsx_catalog_modeling_product_model_import" configuration:
-      | filePath          | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
       | enabledComparison | no               |
     When I am on the "xlsx_catalog_modeling_product_model_import" import job page
     And I launch the import job

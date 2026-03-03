@@ -1,0 +1,10 @@
+pim_dashboard:
+  title: Gösterge paneli
+  version: Sürüm
+  widget:
+    completeness:
+      title: Kanallar ve Lokaller Üzerindeki Bütünlük
+    last_operations:
+      title: Son işlemler
+      status: Durum
+      type: Tür

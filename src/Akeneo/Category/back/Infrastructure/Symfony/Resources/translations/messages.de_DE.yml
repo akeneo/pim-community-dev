@@ -1,0 +1,14 @@
+pim_enrich:
+  acl:
+    category:
+      list: Kategorien auflisten
+      create: Eine Kategorie anlegen
+      edit: Eine Kategorie bearbeiten
+      remove: Eine Kategorie löschen
+      move: Kategorie verschieben
+      children: Kategorie-Kindelemente sehen
+      products: Produkte von Kategorien ansehen
+      history: Kategoriehistorie ansehen
+      template: Kategorievorlage verwalten
+      edit_attributes: Kategorie-Attribute bearbeiten
+      order_trees: Kategorien sortieren/neu ordnen

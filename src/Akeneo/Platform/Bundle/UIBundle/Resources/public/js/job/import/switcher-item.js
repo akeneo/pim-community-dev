@@ -8,7 +8,7 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(['oro/translator', 'pim/form'], function (__, BaseForm) {
+define(['oro/translator', 'pim/edition', 'pim/form'], function (__, pimEdition, BaseForm) {
   return BaseForm.extend({
     visible: false,
 
@@ -27,13 +27,6 @@ define(['oro/translator', 'pim/form'], function (__, BaseForm) {
     configure: function () {
       this.listenTo(this.getRoot(), 'switcher:switch', this.switch);
 
-      this.getRoot().trigger('switcher:register', {
-        label: __(this.config.label),
-        code: this.code,
-        hideForCloudEdition: this.config.hideForCloudEdition,
-        allowedKey: this.config.allowedKey,
-      });
-
       return BaseForm.prototype.configure.apply(this, arguments);
     },
 
@@ -42,6 +35,17 @@ define(['oro/translator', 'pim/form'], function (__, BaseForm) {
      */
     render: function () {
       this.$el.empty();
+      const {configuration} = this.getRoot().getFormData();
+      const storageType = configuration.storage?.type ?? 'none';
+      if (pimEdition.isCloudEdition() && this.config.hideForCloudEdition && storageType === 'none') {
+        return;
+      }
+
+      this.getRoot().trigger('switcher:register', {
+        label: __(this.config.label),
+        code: this.code,
+        allowedKey: this.config.allowedKey,
+      });
 
       if (this.visible) {
         return BaseForm.prototype.render.apply(this, arguments);

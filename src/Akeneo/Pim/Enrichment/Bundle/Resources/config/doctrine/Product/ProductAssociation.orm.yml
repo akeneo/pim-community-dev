@@ -10,9 +10,9 @@ Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation:
             generator:
                 strategy: AUTO
     uniqueConstraints:
-        locale_foreign_key_idx:
+        owner_uuid_association_type_id_idx:
             columns:
-                - owner_id
+                - owner_uuid
                 - association_type_id
     manyToOne:
         associationType:
@@ -28,8 +28,8 @@ Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation:
             cascade:
                 - detach
             joinColumns:
-                owner_id:
-                    referencedColumnName: id
+                owner_uuid:
+                    referencedColumnName: uuid
                     nullable: false
                     onDelete: CASCADE
     manyToMany:
@@ -54,8 +54,8 @@ Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation:
                         onDelete: CASCADE
                         referencedColumnName: id
                 inverseJoinColumns:
-                    product_id:
-                        referencedColumnName: id
+                    product_uuid:
+                        referencedColumnName: uuid
                         onDelete: CASCADE
 
         productModels:

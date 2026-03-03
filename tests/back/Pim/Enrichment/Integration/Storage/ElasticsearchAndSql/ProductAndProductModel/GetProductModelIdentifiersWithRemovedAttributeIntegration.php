@@ -22,7 +22,7 @@ class GetProductModelIdentifiersWithRemovedAttributeIntegration extends TestCase
         $batchCount = 0;
         foreach ($result as $batch) {
             $batchCount++;
-            self::assertEquals(['a_product_model', 'a_sub_product_model'], $batch);
+            self::assertEquals(['a_product_model', 'a_second_sub_product_model', 'a_sub_product_model'], $batch);
         }
         self::assertEquals(1, $batchCount);
     }

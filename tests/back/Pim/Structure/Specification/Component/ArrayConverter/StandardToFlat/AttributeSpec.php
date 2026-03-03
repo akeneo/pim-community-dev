@@ -47,6 +47,8 @@ class AttributeSpec extends ObjectBehavior
             'wysiwyg_enabled'        => '0',
             'decimals_allowed'       => '1',
             'negative_allowed'       => '1',
+            'guidelines-en_US'       => 'the guidelines',
+            'guidelines-fr_FR'       => 'les indications',
         ];
 
         $item = [
@@ -78,6 +80,10 @@ class AttributeSpec extends ObjectBehavior
             'wysiwyg_enabled'        => false,
             'decimals_allowed'       => true,
             'negative_allowed'       => true,
+            'guidelines'             => [
+                'en_US' => 'the guidelines',
+                'fr_FR' => 'les indications',
+            ],
         ];
 
         $this->convert($item)->shouldReturn($expected);
@@ -95,6 +101,22 @@ class AttributeSpec extends ObjectBehavior
             'wysiwyg_enabled'  => null,
             'decimals_allowed' => null,
             'negative_allowed' => null,
+        ];
+
+        $this->convert($item)->shouldReturn($expected);
+    }
+
+    function it_converts_raw_table_configuration_to_a_json_string()
+    {
+        $item = [
+            'table_configuration' => [
+                [
+                    'code' => 'ingredients',
+                ],
+            ],
+        ];
+        $expected = [
+            'table_configuration' => '[{"code":"ingredients"}]',
         ];
 
         $this->convert($item)->shouldReturn($expected);

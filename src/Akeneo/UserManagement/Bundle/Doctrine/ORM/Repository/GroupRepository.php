@@ -57,7 +57,7 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
     /**
      * Create a QB to find all groups but the default one
      *
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return QueryBuilder
      */
     public function getAllButDefaultQB()
     {
@@ -81,5 +81,10 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
             ->join('u.groups', 'groups')
             ->where('groups = :group')
             ->setParameter('group', $group);
+    }
+
+    public function findOneById(int $id): ?GroupInterface
+    {
+        return $this->find($id);
     }
 }

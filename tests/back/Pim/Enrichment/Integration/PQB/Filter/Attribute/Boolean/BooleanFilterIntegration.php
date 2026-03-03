@@ -4,6 +4,8 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Boolean;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
@@ -22,18 +24,14 @@ class BooleanFilterIntegration extends AbstractProductQueryBuilderTestCase
         parent::setUp();
 
         $this->createProduct('yes', [
-            'values' => [
-                'a_yes_no' => [['data' => true, 'locale' => null, 'scope' => null]]
-            ]
+            new SetBooleanValue('a_yes_no', null, null, true)
         ]);
 
         $this->createProduct('no', [
-            'values' => [
-                'a_yes_no' => [['data' => false, 'locale' => null, 'scope' => null]]
-            ]
+            new SetBooleanValue('a_yes_no', null, null, false)
         ]);
 
-        $this->createProduct('empty', ['family' => 'familyA']);
+        $this->createProduct('empty', [new SetFamily('familyA')]);
     }
 
     public function testOperatorEquals()

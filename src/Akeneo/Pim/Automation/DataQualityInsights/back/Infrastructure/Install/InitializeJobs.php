@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install;
 
-use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\DBAL\Connection;
+use Doctrine\Persistence\ObjectRepository;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -37,6 +37,10 @@ final class InitializeJobs
 
         if (!$this->isJobInstanceAlreadyCreated('data_quality_insights_prepare_evaluations')) {
             $this->createJobInstance('data_quality_insights_prepare_evaluations');
+        }
+
+        if (!$this->isJobInstanceAlreadyCreated('data_quality_insights_recompute_products_scores')) {
+            $this->createJobInstance('data_quality_insights_recompute_products_scores');
         }
     }
 

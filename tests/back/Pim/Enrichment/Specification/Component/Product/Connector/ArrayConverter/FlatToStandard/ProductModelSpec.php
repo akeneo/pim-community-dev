@@ -70,16 +70,20 @@ class ProductModelSpec extends ObjectBehavior
             'categories' => 'tshirt,pull',
             'name-en_US' => 'name',
             'description-en_US-ecommerce' => 'description',
+            123456 => 'numerical as field code',
+            '0123456' => 'numerical with trailing zero as field code',
+            '12.33' => 'string float as field code',
+            '1234567' => 'numerical as field code',
         ];
 
         $columnsMapper->map($flatProductModel, [
             'family' => 'family_variant',
         ])->willReturn($flatProductModel);
 
-        $columnsMerger->merge($flatProductModel)->willReturn($flatProductModel);
+        $columnsMerger->merge($flatProductModel, ['with_associations' => false, 'mapping' => ['family' => 'family_variant']])->willReturn($flatProductModel);
 
         $fieldsRequirementChecker->checkFieldsPresence($flatProductModel, ['code'])->shouldBeCalled();
-        $attributeColumnsResolver->resolveAttributeColumns()->willReturn(['name-en_US', 'description-en_US-ecommerce']);
+        $attributeColumnsResolver->resolveAttributeColumns()->willReturn(['name-en_US', 'description-en_US-ecommerce', '123456', '0123456', '12.33', '1234567']);
 
         $fieldConverter->supportsColumn('code')->willreturn(true);
         $fieldConverter->convert('code', 'code')->willreturn($identifierConverter);
@@ -119,27 +123,65 @@ class ProductModelSpec extends ObjectBehavior
             ],
         ]);
 
+        $fieldConverter->supportsColumn('123456')->willreturn(false);
+        $fieldConverter->supportsColumn('0123456')->willreturn(false);
+        $fieldConverter->supportsColumn('12.33')->willreturn(false);
+        $fieldConverter->supportsColumn('1234567')->willreturn(false);
+
         $fieldConverter->supportsColumn('name-en_US')->willreturn(false);
         $fieldConverter->supportsColumn('description-en_US-ecommerce')->willreturn(false);
 
-        $productValueConverter->convert(["name-en_US" => "name", "description-en_US-ecommerce" => "description"])
-            ->willReturn([
-                    'name' => [
-                        [
-                            'locale' => 'en_US',
-                            'scope' => null,
-                            'data' => 'name',
-                        ],
-                    ],
-                    'description' => [
-                        [
-                            'locale' => 'en_US',
-                            'scope' => 'ecommerce',
-                            'data' => 'description',
-                        ],
-                    ],
-                ]
-            );
+        $productValueConverter->convert([
+            "name-en_US" => "name",
+            "description-en_US-ecommerce" => "description",
+            123456 => 'numerical as field code',
+            '0123456' => 'numerical with trailing zero as field code',
+            '12.33' => 'string float as field code',
+            '1234567' => 'numerical as field code',
+        ])->willReturn([
+            'name' => [
+                [
+                    'locale' => 'en_US',
+                    'scope' => null,
+                    'data' => 'name',
+                ],
+            ],
+            'description' => [
+                [
+                    'locale' => 'en_US',
+                    'scope' => 'ecommerce',
+                    'data' => 'description',
+                ],
+            ],
+            123456 => [
+                [
+                    'locale' => null,
+                    'scope' => null,
+                    'data' => 'numerical as field code',
+                ],
+            ],
+            '0123456' => [
+                [
+                    'locale' => null,
+                    'scope' => null,
+                    'data' => 'numerical with trailing zero as field code',
+                ],
+            ],
+            '12.33' => [
+                [
+                    'locale' => null,
+                    'scope' => null,
+                    'data' => 'string float as field code',
+                ],
+            ],
+            '1234567' => [
+                [
+                    'locale' => null,
+                    'scope' => null,
+                    'data' => 'numerical as field code',
+                ],
+            ],
+        ]);
 
         $this->convert($flatProductModel, [
             'mapping' => [
@@ -167,6 +209,34 @@ class ProductModelSpec extends ObjectBehavior
                         'locale' => 'en_US',
                         'scope' => 'ecommerce',
                         'data' => 'description',
+                    ],
+                ],
+                123456 => [
+                    [
+                        'locale' => null,
+                        'scope' => null,
+                        'data' => 'numerical as field code',
+                    ],
+                ],
+                '0123456' => [
+                    [
+                        'locale' => null,
+                        'scope' => null,
+                        'data' => 'numerical with trailing zero as field code',
+                    ],
+                ],
+                '12.33' => [
+                    [
+                        'locale' => null,
+                        'scope' => null,
+                        'data' => 'string float as field code',
+                    ],
+                ],
+                '1234567' => [
+                    [
+                        'locale' => null,
+                        'scope' => null,
+                        'data' => 'numerical as field code',
                     ],
                 ],
             ],
@@ -207,7 +277,7 @@ class ProductModelSpec extends ObjectBehavior
             'family' => 'family_variant',
         ])->willReturn($flatProductModel);
 
-        $columnsMerger->merge($flatProductModel)->willReturn($flatProductModel);
+        $columnsMerger->merge($flatProductModel, ['with_associations' => false, 'mapping' => ['family' => 'family_variant']])->willReturn($flatProductModel);
 
         $fieldsRequirementChecker->checkFieldsPresence($flatProductModel, ['code'])->shouldBeCalled();
         $attributeColumnsResolver->resolveAttributeColumns()->willReturn(['name', 'description-en_US-ecommerce']);

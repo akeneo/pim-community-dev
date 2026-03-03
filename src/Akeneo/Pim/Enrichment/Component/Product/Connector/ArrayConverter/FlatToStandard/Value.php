@@ -3,7 +3,13 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter\ValueConverterRegistryInterface;
+use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
+use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Akeneo\Tool\Component\Connector\Exception\BusinessArrayConversionException;
+use Akeneo\Tool\Component\Connector\Exception\DataArrayConversionException;
+use Symfony\Component\Validator\ConstraintViolation;
+use Symfony\Component\Validator\ConstraintViolationList;
 
 /**
  * Convert Product value from Flat to Standard structure.
@@ -23,11 +29,6 @@ class Value implements ArrayConverterInterface
     /** @var ColumnsMerger */
     protected $columnsMerger;
 
-    /**
-     * @param AttributeColumnInfoExtractor    $attrFieldExtractor
-     * @param ValueConverterRegistryInterface $converterRegistry
-     * @param ColumnsMerger                   $columnsMerger
-     */
     public function __construct(
         AttributeColumnInfoExtractor $attrFieldExtractor,
         ValueConverterRegistryInterface $converterRegistry,
@@ -113,7 +114,7 @@ class Value implements ArrayConverterInterface
      */
     public function convert(array $values, array $options = [])
     {
-        $mergedValues = $this->columnsMerger->merge($values);
+        $mergedValues = $this->columnsMerger->merge($values, $options);
         $convertedValues = [];
 
         foreach ($mergedValues as $column => $value) {
@@ -128,9 +129,9 @@ class Value implements ArrayConverterInterface
      * @param string $column
      * @param string $value
      *
+     * @return array
      * @throws \LogicException
      *
-     * @return array
      */
     protected function convertValue($column, $value)
     {
@@ -148,7 +149,16 @@ class Value implements ArrayConverterInterface
                 );
             }
 
-            return $converter->convert($attributeFieldInfo, $value);
+            try {
+                return $converter->convert($attributeFieldInfo, $value);
+            } catch (\Error $e) {
+                throw new BusinessArrayConversionException(
+                    "Exception while converting column \"{$column}\": bad input format.",
+                    "pim_import_export.notification.export.warnings.xlsx_cell_conversion_error",
+                    [$column],
+                    $e
+                );
+            }
         }
 
         throw new \LogicException(
@@ -159,8 +169,8 @@ class Value implements ArrayConverterInterface
     /**
      * Merge the structured value inside the passed item
      *
-     * @param array $item   The item in which we add the element
-     * @param array $value  The structured value to add to the item
+     * @param array $item The item in which we add the element
+     * @param array $value The structured value to add to the item
      *
      * @return array
      */

@@ -1,0 +1,6 @@
+includes:
+    - '%rootDir%/../phpstan-deprecation-rules/rules.neon'
+parameters:
+    reportUnmatchedIgnoredErrors: false
+    excludePaths:
+        - %currentWorkingDirectory%/*Spec.php

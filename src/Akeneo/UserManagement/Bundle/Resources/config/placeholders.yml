@@ -6,4 +6,4 @@ placeholders:
 
 items:
    menu_user:
-        template: PimUserBundle:Menu:menuProfile.html.twig
+        template: '@PimUser/Menu/menuProfile.html.twig'

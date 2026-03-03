@@ -14,12 +14,8 @@ use Doctrine\DBAL\Connection;
  */
 final class SqlCreateJobInstance implements CreateJobInstanceInterface
 {
-    /** @var Connection */
-    private $connection;
-
-    public function __construct(Connection $connection)
+    public function __construct(private Connection $connection)
     {
-        $this->connection = $connection;
     }
 
     public function createJobInstance(array $params): int
@@ -28,12 +24,12 @@ final class SqlCreateJobInstance implements CreateJobInstanceInterface
             (code, label, job_name, status, connector, raw_parameters, type)
         VALUES (:code, :label, :job_name, :status, :connector, :raw_parameters, :type);';
 
-        $defaultParams =[
+        $defaultParams = [
             'status' => 0,
             'connector' => 'internal',
             'raw_parameters' => 'a:0:{}',
         ];
 
-        return $this->connection->executeUpdate($sql, array_merge($defaultParams, $params));
+        return $this->connection->executeStatement($sql, array_merge($defaultParams, $params));
     }
 }

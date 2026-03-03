@@ -1,0 +1,64 @@
+pim_title:
+  pim_user_index: Utilizadores
+  pim_user_role_index: Funções
+  pim_user_group_index: Grupos de utilizadores
+  oro_config_configuration_system: Configuração
+  pim_user_security_login: Início de sessão
+  pim_user_reset_request: Esqueci-me da Password
+confirmation:
+  remove:
+    user: Tem a certeza que deseja eliminar este utilizador?
+    group: Tem certeza que deseja eliminar este grupo?
+pim_enrich:
+  entity:
+    user:
+      module:
+        delete:
+          confirm: Tem a certeza que deseja eliminar este utilizador?
+pim_user.profile:
+  save_button: Guardar e ir para a App Store
+pim_user_management:
+  entity:
+    user:
+      properties:
+        username: Nome do Utilizador
+        name_prefix: Prefixo do nome
+        first_name: Primeiro nome
+        middle_name: Nome do meio
+        last_name: Último nome
+        name_suffix: Sufixo do nome
+        avatar: Avatar
+        email: Email
+        catalog_locale: Linguagem do catálogo
+        catalog_scope: Âmbito do catálogo
+        default_tree: Árvore padrão
+        product_grid_filters: Filtros da grelha de produtos
+        current_password: Senha atual
+        new_password: Nova senha
+        new_password_repeat: Nova senha (repetir)
+        password: Senha
+        ui_locale: Linguagem do UI
+        timezone: Fuso horário
+        default_product_grid_view: Vista da grelha de produtos por defeito
+      module:
+        create:
+          button: Criar utilizador
+        delete:
+          confirm: Tem a certeza que deseja eliminar este utilizador?
+        update:
+          additional: Adicional
+          password: Senha
+          interfaces: Interfaces
+          notifications: Notificações #TODO EE Only
+    role:
+      plural_label: Funções
+      module:
+        create:
+          button: Criar função
+        delete:
+          confirm: Tem certeza que deseja eliminar esta função?
+    group:
+      plural_label: Grupos de utilizadores
+      module:
+        create:
+          button: Criar grupo

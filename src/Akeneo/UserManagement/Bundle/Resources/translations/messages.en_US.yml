@@ -42,11 +42,14 @@ pim_user:
             inactive: Inactive
         fields_errors:
             new_password:
-                minimum_length: Password must contains at least 2 characters
+                minimum_length: Password must contain at least 8 characters
+                maximum_length: Password must contain less than 4096 characters
             new_password_repeat:
-                not_match: Password does not match
+                not_match: Passwords do not match
             current_password:
                 wrong: Wrong password
+            roles:
+                last_user_with_edit_role_permissions: This user is the last with edit role permissions.
         tabs:
             general:
                 title: General
@@ -91,6 +94,8 @@ pim_user:
         role:
             message:
                 saved: "Role saved"
+                cannot_delete_last_edit_role_permission: You cannot delete edit role permissions on the last role.
+                cannot_remove_last_edit_role_permission: You cannot remove edit role permissions on the last role.
         user:
             message:
                 saved: "User saved"

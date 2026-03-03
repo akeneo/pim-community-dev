@@ -1,0 +1,84 @@
+batch_jobs:
+  csv_currency_export:
+    label: Exportació de moneda en CSV
+    export.label: Exportació de moneda
+  csv_currency_import:
+    label: Importació de moneda en CSV
+    import.label: Importació de moneda
+  xlsx_currency_export:
+    label: Exportació de moneda en XLSX
+    export.label: Exportació de moneda
+  xlsx_currency_import:
+    label: Importació de moneda en XLSX
+    import.label: Importació de moneda
+  csv_locale_export:
+    label: Exportació de configuració regional en CSV
+    export.label: Exportació de configuració regional
+  csv_locale_import:
+    label: Importació de configuració regional en CSV
+    import.label: Importació de configuració regional
+  xlsx_locale_export:
+    label: Exportació de configuració regional en XLSX
+    export.label: Exportació de configuració regional
+  xlsx_locale_import:
+    label: Importació de configuració regional en XLSX
+    import.label: Importació de configuració regional
+  csv_channel_export:
+    label: Canal d'exportació en CSV
+    export.label: Exportació de canal
+  csv_channel_import:
+    label: Importació de canal en CSV
+    import.label: Importació de canal
+  xlsx_channel_export:
+    label: Exportació de canal en XLSX
+    export.label: Exportació de canal
+  xlsx_channel_import:
+    label: Importació de canal de XLSX
+    import.label: Importació de canal
+pim_enrich.entity.channel:
+  label: canal
+  uppercase_label: Canal
+  flash:
+    update:
+      success: Canal actualitzat correctament.
+      fail: El canal no s'ha pogut actualitzar.
+    create:
+      success: Canal creat correctament.
+      fail: El canal no s'ha pogut crear.
+    delete:
+      success: Canal suprimit correctament
+      fail: No podeu eliminar aquest canal
+  page_title:
+    index: "]-Inf, 1]{{ count }} canal|]1, Inf[{{ count }} canales"
+  property:
+    category_tree: Arbre de categories
+    do_not_convert: No convertir
+    measurement: Configuració de mesures
+    label_conversion_units: Tria una unitat de conversió per cada atribut mètric qu
+  module:
+    create:
+      button: Crear canal
+    delete:
+      confirm: Esteu segur que voleu suprimir aquest canal?
+pim_enrich.entity.locale:
+  label: configuració regional
+  uppercase_label: Configuració Regional
+  plural_label: Configuracions regionals
+  page_title:
+    index: "]-Inf, 1]{{ count }} configuració regional habilitada|]1"
+  helper: "Per habilitar o deshabilitar un local, vagi a un dels <"
+  grid:
+    columns:
+      code: Locals activats
+    filters:
+      search_placeholder: Cercar una configuració regional habilitada
+    no_search_result: Ho sentim, no hi ha cap resultat de la cerca.
+pim_enrich.entity.currency:
+  plural_label: Monedes
+  page_title:
+    index: "]-Inf, 1]{{ count }} moneda|]1, Inf[{{ count }} monedes"
+flash:
+  currency:
+    error:
+      linked_to_channel: No podeu inhabilitar una moneda vinculada a un canal
+    updated: Moneda actualitzada correctament

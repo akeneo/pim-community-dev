@@ -6,14 +6,13 @@
 'use strict';
 
 define([
-  'underscore',
   'pim/controller/front',
   'pim/form-builder',
   'pim/fetcher-registry',
   'pim/user-context',
   'pim/page-title',
   'pim/i18n',
-], function (_, BaseController, FormBuilder, fetcherRegistry, UserContext, PageTitle, i18n) {
+], function (BaseController, FormBuilder, fetcherRegistry, UserContext, PageTitle, i18n) {
   return BaseController.extend({
     /**
      * {@inheritdoc}
@@ -34,7 +33,7 @@ define([
           apply_filters: false,
         })
         .then(attribute => {
-          var label = _.escape(i18n.getLabel(attribute.labels, UserContext.get('catalogLocale'), attribute.code));
+          var label = i18n.getLabel(attribute.labels, UserContext.get('catalogLocale'), attribute.code);
 
           PageTitle.set({'attribute.label': label});
 

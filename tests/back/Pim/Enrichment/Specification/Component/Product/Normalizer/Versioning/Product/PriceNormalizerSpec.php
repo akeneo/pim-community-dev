@@ -31,6 +31,14 @@ class PriceNormalizerSpec extends ObjectBehavior
         $this->normalize($price, null, ['field_name' => 'price'])->shouldReturn(['price-EUR' => '25.30']);
     }
 
+    function it_normalizes_price_with_3_decimals(ProductPriceInterface $price)
+    {
+        $price->getData()->willReturn(25.336);
+        $price->getCurrency()->willReturn('EUR');
+
+        $this->normalize($price, null, ['field_name' => 'price'])->shouldReturn(['price-EUR' => '25.34']);
+    }
+
     function it_normalizes_null_price(ProductPriceInterface $price)
     {
         $price->getData()->willReturn(null);

@@ -16,6 +16,7 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * "Light" version of the EntityWithFamilyVariantNormalizer, it only returns the needed information
@@ -80,15 +81,20 @@ final class LightEntityWithFamilyVariantNormalizer implements NormalizerInterfac
         }
 
         if ($entity instanceof ProductModelInterface) {
+            $result = [
+                'id' => $entity->getId(),
+            ];
             $image = $this->imageAsLabel->value($entity);
             $completeness = $this->getProductModelCompleteness($entity, $channelCode, $localeCode);
         } else {
+            $result = [
+                'uuid' => $entity->getUuid()->toString(),
+            ];
             $image = $entity->getImage();
             $completeness = $this->getProductCompleteness($entity, $channelCode, $localeCode);
         }
 
-        return [
-            'id' => $entity->getId(),
+        return array_merge($result, [
             'identifier' => $entity->getIdentifier(),
             'labels' => [$localeCode => $entity->getLabel($localeCode, $channelCode)],
             'axes_values_labels' => $this->getAxesLabel($entity, $localeCode),
@@ -96,7 +102,7 @@ final class LightEntityWithFamilyVariantNormalizer implements NormalizerInterfac
             'image' => $this->imageNormalizer->normalize($image),
             'model_type' => $entity instanceof ProductModelInterface ? 'product_model' : 'product',
             'completeness' => $completeness,
-        ];
+        ]);
     }
 
     public function supportsNormalization($data, $format = null): bool
@@ -112,6 +118,15 @@ final class LightEntityWithFamilyVariantNormalizer implements NormalizerInterfac
         $valuesForLocale = [];
         foreach ($this->attributesProvider->getAxes($entity) as $axisAttribute) {
             $value = $entity->getValue($axisAttribute->getCode());
+            Assert::notNull(
+                $value,
+                \sprintf(
+                    'No value found for %s attribute (type: %s, code: %s)',
+                    $axisAttribute->getCode(),
+                    $axisAttribute->getType(),
+                    $axisAttribute->getCode()
+                )
+            );
             $normalizedValue = (string)$value;
 
             $attributeNormalizer = $this->getAttributeLabelsNormalizer($axisAttribute);
@@ -199,7 +214,7 @@ final class LightEntityWithFamilyVariantNormalizer implements NormalizerInterfac
                     $localeCode => [
                         'completeness' => [
                             'ratio' => $this->getCompletenessRatio->forChannelCodeAndLocaleCode(
-                                $entity->getId(),
+                                $entity->getUuid(),
                                 $channelCode,
                                 $localeCode
                             ),

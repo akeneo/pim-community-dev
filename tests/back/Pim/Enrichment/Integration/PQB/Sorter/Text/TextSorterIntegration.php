@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Sorter\Text;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
 /**
@@ -23,29 +24,17 @@ class TextSorterIntegration extends AbstractProductQueryBuilderTestCase
         parent::setUp();
 
         $this->createProduct('cat', [
-            'values' => [
-                'a_text' => [['data' => 'cat is beautiful', 'locale' => null, 'scope' => null]],
-            ],
+            new SetTextValue('a_text', null, null, 'cat is beautiful'),
         ]);
 
         $this->createProduct('dog', [
-            'values' => [
-                'a_text' => [['data' => 'dog is wonderful', 'locale' => null, 'scope' => null]],
-            ],
+            new SetTextValue('a_text', null, null, 'dog is wonderful'),
         ]);
 
         // There is no html tags in TEXT attributes usually set in the PIM.
         // This tests shows that if it's the case they are stored as is and not stripped.
         $this->createProduct('best_cat', [
-            'values' => [
-                'a_text' => [
-                    [
-                        'data'   => '<bold>dog</bold> is the most <i>beautiful</i><br/>',
-                        'locale' => null,
-                        'scope'  => null,
-                    ],
-                ],
-            ],
+            new SetTextValue('a_text', null, null, '<bold>dog</bold> is the most <i>beautiful</i><br/>'),
         ]);
 
         $this->createProduct('empty_product', []);

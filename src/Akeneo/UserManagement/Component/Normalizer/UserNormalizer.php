@@ -2,6 +2,7 @@
 
 namespace Akeneo\UserManagement\Component\Normalizer;
 
+use Akeneo\UserManagement\Component\Model\Group;
 use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepositoryInterface;
@@ -20,39 +21,17 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class UserNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
-    /** @var DateTimeNormalizer */
-    private $dateTimeNormalizer;
-
-    /** @var NormalizerInterface */
-    private $fileNormalizer;
-
-    /** @var SecurityFacade */
-    private $securityFacade;
-
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
-
-    /** @var DatagridViewRepositoryInterface */
-    private $datagridViewRepo;
+    private DateTimeNormalizer $dateTimeNormalizer;
+    private NormalizerInterface $fileNormalizer;
+    private SecurityFacade $securityFacade;
+    private TokenStorageInterface $tokenStorage;
+    private DatagridViewRepositoryInterface $datagridViewRepo;
 
     /** @var array */
     private $properties;
+    protected array $supportedFormats = ['internal_api'];
+    private array $userNormalizers;
 
-    /** @var array */
-    protected $supportedFormats = ['array', 'standard', 'internal_api'];
-
-    /** @var array */
-    private $userNormalizers;
-
-    /**
-     * @param DateTimeNormalizer $dateTimeNormalizer
-     * @param NormalizerInterface $fileNormalizer
-     * @param SecurityFacade $securityFacade
-     * @param TokenStorageInterface $tokenStorage
-     * @param DatagridViewRepositoryInterface $datagridViewRepo
-     * @param array $userNormalizers
-     * @param string[] $properties
-     */
     public function __construct(
         DateTimeNormalizer $dateTimeNormalizer,
         NormalizerInterface $fileNormalizer,
@@ -73,13 +52,15 @@ class UserNormalizer implements NormalizerInterface, CacheableSupportsMethodInte
 
     /**
      * {@inheritdoc}
+     *
+     * @var UserInterface $user
      */
     public function normalize($user, $format = null, array $context = [])
     {
         $result = [
-            'code'                      => $user->getUsername(), # Every Form Extension requires 'code' field.
+            'code'                      => $user->getUserIdentifier(), # Every Form Extension requires 'code' field.
             'enabled'                   => $user->isEnabled(),
-            'username'                  => $user->getUsername(),
+            'username'                  => $user->getUserIdentifier(),
             'email'                     => $user->getEmail(),
             'name_prefix'               => $user->getNamePrefix(),
             'first_name'                => $user->getFirstName(),
@@ -97,8 +78,10 @@ class UserNormalizer implements NormalizerInterface, CacheableSupportsMethodInte
             'email_notifications'       => $user->isEmailNotifications(),
             'timezone'                  => $user->getTimezone(),
             'groups'                    => $user->getGroupNames(),
+            'visible_group_ids'         => $this->getVisibleGroupIds($user),
             'roles'                     => $this->getRoleNames($user),
             'product_grid_filters'      => $user->getProductGridFilters(),
+            'profile'                   => $user->getProfile(),
             'avatar'                    => null === $user->getAvatar() ? [
                 'filePath'         => null,
                 'originalFilename' => null,
@@ -140,7 +123,7 @@ class UserNormalizer implements NormalizerInterface, CacheableSupportsMethodInte
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof UserInterface && in_array($format, $this->supportedFormats);
     }
@@ -181,5 +164,16 @@ class UserNormalizer implements NormalizerInterface, CacheableSupportsMethodInte
         }
 
         return 'pim-user-show';
+    }
+
+    /** @return int[] */
+    private function getVisibleGroupIds(UserInterface $user): array
+    {
+        $visibleGroups = array_values(array_filter(
+            $user->getGroups()->toArray(),
+            static fn (Group $group) => $group->getName() !== 'All',
+        ));
+
+        return array_map(static fn (Group $group) => $group->getId(), $visibleGroups);
     }
 }

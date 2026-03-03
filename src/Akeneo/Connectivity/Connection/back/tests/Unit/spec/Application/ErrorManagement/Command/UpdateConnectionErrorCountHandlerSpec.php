@@ -7,13 +7,13 @@ use Akeneo\Connectivity\Connection\Application\ErrorManagement\Command\UpdateCon
 use Akeneo\Connectivity\Connection\Application\ErrorManagement\Command\UpdateConnectionErrorCountHandler;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\ErrorTypes;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\HourlyErrorCount;
-use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Persistence\Repository\ErrorCountRepository;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Persistence\Repository\ErrorCountRepositoryInterface;
 use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
 use PhpSpec\ObjectBehavior;
 
 class UpdateConnectionErrorCountHandlerSpec extends ObjectBehavior
 {
-    public function let(ErrorCountRepository $errorCountRepository): void
+    public function let(ErrorCountRepositoryInterface $errorCountRepository): void
     {
         $this->beConstructedWith($errorCountRepository);
     }
@@ -45,7 +45,7 @@ class UpdateConnectionErrorCountHandlerSpec extends ObjectBehavior
         $this->handle($command);
     }
 
-    public function it_does_not_update_a_0_count($errorCountRepository)
+    public function it_does_not_update_a_0_count($errorCountRepository): void
     {
         $firstCount = new HourlyErrorCount(
             'erp',

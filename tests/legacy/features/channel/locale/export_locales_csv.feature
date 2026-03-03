@@ -7,7 +7,7 @@ Feature: Export locales
   Scenario: Successfully export locales
     Given a "footwear" catalog configuration
     And the following job "csv_footwear_locale_export" configuration:
-      | filePath | %tmp%/locale_export/locale_export.csv |
+      | storage | {"type": "local", "file_path": "%tmp%/locale_export/locale_export.csv"} |
     And I am logged in as "Julia"
     And I am on the "csv_footwear_locale_export" export job page
     When I launch the export job

@@ -16,34 +16,18 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class FamilyLoader
 {
-    /** @var SimpleFactoryInterface */
-    private $factory;
-
-    /** @var ObjectUpdaterInterface */
-    private $updater;
-
-    /** @var SaverInterface */
-    private $saver;
-
-    /** @var ValidatorInterface */
-    private $validator;
-
     public function __construct(
-        SimpleFactoryInterface $factory,
-        ObjectUpdaterInterface $updater,
-        SaverInterface $saver,
-        ValidatorInterface $validator
+        private SimpleFactoryInterface $factory,
+        private ObjectUpdaterInterface $updater,
+        private SaverInterface $saver,
+        private ValidatorInterface $validator
     ) {
-        $this->factory = $factory;
-        $this->updater = $updater;
-        $this->saver = $saver;
-        $this->validator = $validator;
     }
 
     public function create(array $data): void
     {
         $family = $this->factory->create();
-
+        $data['attributes'] = \array_merge(['sku'], $data['attributes']);
         $this->updater->update($family, $data);
 
         $constraints = $this->validator->validate($family);

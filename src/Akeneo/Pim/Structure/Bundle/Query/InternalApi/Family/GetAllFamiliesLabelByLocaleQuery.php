@@ -31,7 +31,7 @@ LEFT JOIN pim_catalog_family_translation ft ON family.id = ft.foreign_key AND ft
 ORDER BY label
 SQL;
 
-        $families = $this->connection->executeQuery($query, ['locale' => $localeCode])->fetchAll(\PDO::FETCH_ASSOC);
+        $families = $this->connection->executeQuery($query, ['locale' => $localeCode])->fetchAllAssociative();
 
         $result = [];
         foreach ($families as $family) {

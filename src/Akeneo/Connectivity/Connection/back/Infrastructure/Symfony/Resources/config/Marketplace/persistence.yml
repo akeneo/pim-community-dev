@@ -1,0 +1,21 @@
+services:
+    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetUserProfileQuery:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAllExtensionsQuery:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi'
+            - '%akeneo_pim_marketplace_api_pagination_size%'
+            -
+    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAllAppsQuery:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetAllConnectedAppsPublicIdsQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetAllPendingAppsPublicIdsQuery'
+            - '%akeneo_pim_marketplace_api_pagination_size%'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAppQuery:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Persistence\GetCustomAppQuery'

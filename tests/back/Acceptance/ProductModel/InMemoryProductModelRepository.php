@@ -41,6 +41,11 @@ class InMemoryProductModelRepository implements IdentifiableObjectRepositoryInte
         $this->productModels->set($object->getCode(), $object);
     }
 
+    public function findFirstCreatedVariantProductModel(ProductModelInterface $productModel): ?ProductModelInterface
+    {
+        throw new NotImplementedException(__METHOD__);
+    }
+
     public function getItemsFromIdentifiers(array $identifiers)
     {
         throw new NotImplementedException(__METHOD__);
@@ -116,8 +121,12 @@ class InMemoryProductModelRepository implements IdentifiableObjectRepositoryInte
         throw new NotImplementedException(__METHOD__);
     }
 
-    public function findProductModelsForFamilyVariant(FamilyVariantInterface $familyVariant, ?string $search = null): array
-    {
+    public function findProductModelsForFamilyVariant(
+        FamilyVariantInterface $familyVariant,
+        ?string $search = null,
+        int $limit = 20,
+        int $page = 1
+    ): array {
         throw new NotImplementedException(__METHOD__);
     }
 

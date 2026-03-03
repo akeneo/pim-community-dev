@@ -16,6 +16,8 @@ pim_import_export:
     6: Echoué
     7: Abandonné
     8: Inconnu
+    9: En cours de mise en pause
+    10: En pause
   download_archive:
     archive: Télécharger l'archive générée|Télécharger les archives générées
     output: Télécharger le fichier généré|Télécharger les fichiers générés
@@ -27,10 +29,15 @@ pim_import_export:
       error: L'export de <strong>%label%</strong> a échoué
       warning: L'export de <strong>%label%</strong> est terminé mais il y a des avertissements
       success: L'export de <strong>%label%</strong> est terminé
+      warnings:
+        xlsx_cell_conversion_error: Merci de modifier le format des valeurs de la colonne {0} afin qu'elles correspondent au type d'attribut souhaité.
+        xlsx_cell_date_to_text_conversion_error: Impossible d'importer un format de type date dans un attribut de type texte. Merci de vérifier la cellule {0}.
     import:
       error: L'import de <strong>%label%</strong> a échoué
       warning: L'import de <strong>%label%</strong> est terminé mais il y a des avertissements
       success: L'import de <strong>%label%</strong> est terminé
+      warnings:
+        xlsx_cell_date_conversion_error: Impossible de convertir depuis un format de date la cellule "{cellName}" en attribut de type {attributeType}
   list: Sélectionner une tâche
   job_profile:
     tab:
@@ -139,9 +146,9 @@ job_execution.summary:
   read: lu(s)
   write: écrit(s)
   skip: ignoré(s)
-  create: créé(s)
-  update: mis à jour
-  update_products: produits mis à jour
+  create: Créé(s)
+  update: Mis à jour
+  update_products: Produits mis à jour
   skip_products: produits ignorés
   displayed: premiers avertissements affichés
   charset_validator:

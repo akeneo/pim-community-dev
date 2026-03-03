@@ -1,0 +1,91 @@
+services:
+    Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\AttributeShouldExistValidator:
+        arguments:
+            - '@akeneo.pim.structure.query.get_attributes'
+        tags:
+            - { name: validator.constraint_validator }
+    Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\AttributeShouldHaveTypeValidator:
+        arguments:
+            - '@akeneo.pim.structure.query.get_attributes'
+        tags:
+            - { name: validator.constraint_validator }
+    Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\IdentifierGeneratorCreationLimitValidator:
+        arguments:
+            - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'
+        tags:
+            - { name: validator.constraint_validator }
+    Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\IdentifierGeneratorShouldExistValidator:
+        arguments:
+            - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'
+        tags:
+            - { name: validator.constraint_validator }
+    Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\CreateGeneratorCommandValidator:
+        arguments:
+            - '@validator'
+    Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\UpdateGeneratorCommandValidator:
+        arguments:
+            - '@validator'
+    Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\UpdateNomenclatureCommandValidator:
+        arguments:
+            - '@validator'
+    Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\FamilyShouldBeValidValidator:
+        arguments:
+            - '@validator'
+        tags:
+            - { name: validator.constraint_validator }
+    Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\SimpleOrMultiSelectShouldBeValidValidator:
+        arguments:
+            - '@validator'
+        tags:
+            - { name: validator.constraint_validator }
+    Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\FamilyCodesShouldExistValidator:
+        arguments:
+            - '@Akeneo\Pim\Structure\Family\ServiceAPI\Query\FindFamilyCodes'
+        tags:
+            - { name: validator.constraint_validator }
+    Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\SelectOptionShouldExistValidator:
+        arguments:
+            - '@akeneo.pim.structure.query.get_existing_attribute_options_with_values'
+        tags:
+            - { name: validator.constraint_validator }
+    Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\ScopeAndLocaleShouldBeValidValidator:
+        arguments:
+            - '@akeneo.pim.structure.query.get_attributes'
+            - '@pim_channel.query.sql.get_channel_code_with_locale_codes'
+        tags:
+            - { name: validator.constraint_validator }
+    Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\FamilyPropertyShouldBeValidValidator:
+        arguments:
+            - '@validator'
+        tags:
+            - { name: validator.constraint_validator }
+    Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\PropertyProcessShouldBeValidValidator:
+        arguments:
+            - '@validator'
+        tags:
+            - { name: validator.constraint_validator }
+    Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\SimpleSelectPropertyShouldBeValidValidator:
+        arguments:
+            - '@validator'
+        tags:
+            - { name: validator.constraint_validator }
+    Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\UniqueIdentifierGeneratorCodeValidator:
+        arguments:
+            - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'
+        tags:
+            - { name: validator.constraint_validator }
+    Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\CategoryShouldBeValidValidator:
+        arguments:
+            - '@validator'
+        tags:
+            - { name: validator.constraint_validator }
+    Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\CategoryCodesShouldExistValidator:
+        arguments:
+            - '@Akeneo\Category\ServiceApi\CategoryQueryInterface'
+        tags:
+            - { name: validator.constraint_validator }
+    Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\ReferenceEntityPropertyShouldBeValidValidator:
+        arguments:
+            - '@validator'
+        tags:
+            - { name: validator.constraint_validator }

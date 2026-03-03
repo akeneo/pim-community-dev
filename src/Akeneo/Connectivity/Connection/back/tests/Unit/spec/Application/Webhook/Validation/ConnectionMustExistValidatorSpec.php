@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Application\Webhook\Validation;
 
-use Akeneo\Connectivity\Connection\Application\Settings\Validation\Connection\CodeMustBeUnique;
-use Akeneo\Connectivity\Connection\Application\Settings\Validation\Connection\CodeMustBeUniqueValidator;
 use Akeneo\Connectivity\Connection\Application\Webhook\Validation\ConnectionMustExist;
 use Akeneo\Connectivity\Connection\Application\Webhook\Validation\ConnectionMustExistValidator;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
-use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository;
+use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
@@ -19,7 +17,7 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class ConnectionMustExistValidatorSpec extends ObjectBehavior
 {
-    public function let(ConnectionRepository $repository, ExecutionContextInterface $context): void
+    public function let(ConnectionRepositoryInterface $repository, ExecutionContextInterface $context): void
     {
         $this->beConstructedWith($repository);
         $this->initialize($context);

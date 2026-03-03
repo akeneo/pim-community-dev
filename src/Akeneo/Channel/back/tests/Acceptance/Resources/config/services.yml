@@ -1,0 +1,5 @@
+services:
+    Akeneo\Channel\API\Query\IsLocaleEditable:
+        class: Akeneo\Test\Channel\Acceptance\InMemory\InMemoryIsLocaleEditable
+        arguments:
+            - '@pim_user.repository.user'

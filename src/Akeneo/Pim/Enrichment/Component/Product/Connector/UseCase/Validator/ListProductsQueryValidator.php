@@ -55,6 +55,8 @@ final class ListProductsQueryValidator
     /** @var ValidateGrantedLocalesInterface */
     private $validateGrantedLocales;
 
+    private ValidateIdentifiersLimit $validateIdentifiersLimit;
+
     public function __construct(
         ValidateAttributes $validateAttributes,
         ValidateChannel $validateChannel,
@@ -68,7 +70,8 @@ final class ListProductsQueryValidator
         ValidateGrantedCategoriesInterface $validateGrantedCategories,
         ValidateGrantedPropertiesInterface $validateGrantedProperties,
         ValidateGrantedAttributesInterface $validateGrantedAttributes,
-        ValidateGrantedLocalesInterface $validateGrantedLocales
+        ValidateGrantedLocalesInterface $validateGrantedLocales,
+        ValidateIdentifiersLimit $validateIdentifiersLimit
     ) {
         $this->validateAttributes = $validateAttributes;
         $this->validateChannel = $validateChannel;
@@ -83,6 +86,7 @@ final class ListProductsQueryValidator
         $this->validateGrantedProperties = $validateGrantedProperties;
         $this->validateGrantedAttributes = $validateGrantedAttributes;
         $this->validateGrantedLocales = $validateGrantedLocales;
+        $this->validateIdentifiersLimit = $validateIdentifiersLimit;
     }
 
     /**
@@ -106,6 +110,7 @@ final class ListProductsQueryValidator
         $this->validateCategories->validate($query->search);
         $this->validateGrantedCategories->validate($query->search);
         $this->validateProperties->validate($query->search);
+        $this->validateIdentifiersLimit->validate($query->search);
         $this->validateGrantedProperties->validate($query->search);
         $this->validateSearchLocales->validate($query->search, $query->searchLocaleCode);
         $this->validateGrantedLocales->validateForLocaleCodes($query->localeCodes);

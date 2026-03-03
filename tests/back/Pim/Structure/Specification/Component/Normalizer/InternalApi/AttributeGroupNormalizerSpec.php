@@ -3,7 +3,7 @@
 namespace Specification\Akeneo\Pim\Structure\Component\Normalizer\InternalApi;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Normalizer\InternalAPI\AttributeGroupNormalizer;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;

@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Job;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\KeepOnlyValuesForVariation;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
@@ -20,6 +23,7 @@ use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * For each line of the file of families to import we will:
@@ -36,35 +40,16 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, InitializableInterface, TrackableTaskletInterface
 {
-    /** @var StepExecution */
-    private $stepExecution;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $familyRepository;
-
-    /** @var ProductQueryBuilderFactoryInterface */
-    private $productQueryBuilderFactory;
-
-    /** @var ItemReaderInterface */
-    private $familyReader;
-
-    /** @var KeepOnlyValuesForVariation */
-    private $keepOnlyValuesForVariation;
-
-    /** @var ValidatorInterface */
-    private $validator;
-
-    /** @var BulkSaverInterface */
-    private $productSaver;
-
-    /** @var JobRepositoryInterface */
-    private $jobRepository;
-
-    /** @var EntityManagerClearerInterface */
-    private $cacheClearer;
-
-    /** @var int */
-    private $batchSize;
+    private ?StepExecution $stepExecution = null;
+    private IdentifiableObjectRepositoryInterface $familyRepository;
+    private ProductQueryBuilderFactoryInterface $productQueryBuilderFactory;
+    private ItemReaderInterface $familyReader;
+    private KeepOnlyValuesForVariation $keepOnlyValuesForVariation;
+    private ValidatorInterface $validator;
+    private BulkSaverInterface $productSaver;
+    private JobRepositoryInterface $jobRepository;
+    private EntityManagerClearerInterface $cacheClearer;
+    private int $batchSize;
 
     public function __construct(
         IdentifiableObjectRepositoryInterface $familyRepository,
@@ -75,6 +60,7 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
         JobRepositoryInterface $jobRepository,
         KeepOnlyValuesForVariation $keepOnlyValuesForVariation,
         ValidatorInterface $validator,
+        private ProductRepositoryInterface $productRepository,
         int $batchSize
     ) {
         $this->familyRepository = $familyRepository;
@@ -112,10 +98,31 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
             return;
         }
 
-        $products = $this->getProductsForFamilies($familyCodes);
-        $this->stepExecution->setTotalItems($products->count());
+        $productIdentifiers = $this->getProductIdentifiersForFamilies($familyCodes);
+        $this->stepExecution->setTotalItems($productIdentifiers->count());
 
-        $skippedProducts = [];
+        $batchedProductUuids = [];
+        /** @var IdentifierResult $productIdentifier */
+        foreach ($productIdentifiers as $productIdentifier) {
+            Assert::same($productIdentifier->getType(), ProductInterface::class);
+            $batchedProductUuids[] = \preg_replace('/^product_/', '', $productIdentifier->getId());
+            if (count($batchedProductUuids) >= $this->batchSize) {
+                $products = $this->productRepository->getItemsFromUuids($batchedProductUuids);
+                $this->updateAndSaveProducts($products);
+                $batchedProductUuids = [];
+                $this->cacheClearer->clear();
+            }
+        }
+
+        if (count($batchedProductUuids) > 0) {
+            $products = $this->productRepository->getItemsFromUuids($batchedProductUuids);
+            $this->updateAndSaveProducts($products);
+            $this->cacheClearer->clear();
+        }
+    }
+
+    private function updateAndSaveProducts(array $products): void
+    {
         $productsToSave = [];
         foreach ($products as $product) {
             if ($product->isVariant()) {
@@ -124,26 +131,15 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
                 if (!$this->isValid($product)) {
                     $this->stepExecution->incrementSummaryInfo('skip');
                     $this->stepExecution->incrementProcessedItems(1);
-
-                    $skippedProducts[] = $product;
                 } else {
                     $productsToSave[] = $product;
                 }
             } else {
                 $productsToSave[] = $product;
             }
-
-            if (0 === (count($productsToSave) + count($skippedProducts)) % $this->batchSize) {
-                $this->saveProducts($productsToSave);
-                $productsToSave = [];
-                $skippedProducts = [];
-                $this->cacheClearer->clear();
-            }
         }
 
         $this->saveProducts($productsToSave);
-
-        $this->cacheClearer->clear();
     }
 
     /**
@@ -152,13 +148,12 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
     public function initialize()
     {
         $this->cacheClearer->clear();
+
+        if ($this->familyReader instanceof InitializableInterface) {
+            $this->familyReader->initialize();
+        }
     }
 
-    /**
-     * @param EntityWithFamilyVariantInterface $entityWithFamilyVariant
-     *
-     * @return bool
-     */
     private function isValid(EntityWithFamilyVariantInterface $entityWithFamilyVariant): bool
     {
         $violations = $this->validator->validate($entityWithFamilyVariant);
@@ -166,22 +161,21 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
         return $violations->count() === 0;
     }
 
-    /**
-     * @param array $products
-     */
     private function saveProducts(array $products): void
     {
         if (empty($products)) {
             return;
         }
 
-        $this->productSaver->saveAll($products);
+        // PIM-9798: Force save the products. For example if the required attributes are updated on the family,
+        // the product has not changed but completeness does => Need to update it.
+        $this->productSaver->saveAll($products, ['force_save' => true]);
         $this->stepExecution->incrementSummaryInfo('process', count($products));
         $this->stepExecution->incrementProcessedItems(count($products));
         $this->jobRepository->updateStepExecution($this->stepExecution);
     }
 
-    private function getProductsForFamilies(array $familyCodes): CursorInterface
+    private function getProductIdentifiersForFamilies(array $familyCodes): CursorInterface
     {
         $pqb = $this->productQueryBuilderFactory->create();
         $pqb->addFilter('family', Operators::IN_LIST, $familyCodes);
@@ -192,6 +186,7 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
     private function extractFamilyCodes(): array
     {
         $familyCodes = [];
+
         while (true) {
             try {
                 $familyItem = $this->familyReader->read();

@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 import {fetchKeyIndicators} from '../../fetcher';
-import {keyIndicatorMap} from '../../../domain';
+import {KeyIndicatorMap} from '../../../domain';
 
 const useFetchKeyIndicators = (
   channel: string,
@@ -8,7 +8,7 @@ const useFetchKeyIndicators = (
   familyCode: string | null,
   categoryCode: string | null
 ) => {
-  const [keyIndicators, setKeyIndicators] = useState<keyIndicatorMap | null>(null);
+  const [keyIndicators, setKeyIndicators] = useState<KeyIndicatorMap | null>(null);
 
   useEffect(() => {
     setKeyIndicators(null);

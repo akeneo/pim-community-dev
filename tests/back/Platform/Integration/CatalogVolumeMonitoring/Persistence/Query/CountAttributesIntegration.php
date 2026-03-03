@@ -18,7 +18,6 @@ class CountAttributesIntegration extends QueryTestCase
 
         Assert::assertEquals(8, $volume->getVolume());
         Assert::assertEquals('count_attributes', $volume->getVolumeName());
-        Assert::assertEquals(false, $volume->hasWarning());
     }
 
     /**

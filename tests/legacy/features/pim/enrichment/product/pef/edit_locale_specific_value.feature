@@ -8,13 +8,13 @@ Feature: Edit a locale specific value
     Given the "apparel" catalog configuration
     And the following family:
       | code          | attributes                     |
-      | super_tshirts | customs_tax,under_european_law |
+      | super_tshirts | sku,customs_tax,under_european_law |
     And the following products:
       | sku    | family        |
       | tshirt | super_tshirts |
     And I am logged in as "Mary"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3298
+  # @jira https://akeneo.atlassian.net/browse/PIM-3298
   Scenario: Display the custom tax on the available locale
     Given I am on the "tshirt" product page
     And I visit the "Internal" group

@@ -6,5 +6,3 @@ pim_dashboard:
       title: 在渠道与区域上的完成度
     last_operations:
       title: 最近的一些操作
-      status: 状态
-      type: 类型

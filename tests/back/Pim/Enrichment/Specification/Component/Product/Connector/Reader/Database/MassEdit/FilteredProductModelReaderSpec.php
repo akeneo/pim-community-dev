@@ -7,12 +7,12 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\MassEdit\FilteredProductModelReader;
-use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
-use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Converter\MetricConverter;
 use Prophecy\Argument;
 use Prophecy\Promise\ReturnPromise;
@@ -104,6 +104,7 @@ class FilteredProductModelReaderSpec extends ObjectBehavior
         );
         $cursor->current()->will(new ReturnPromise($products));
         $cursor->next()->shouldBeCalled();
+        $cursor->rewind()->shouldBeCalled();
 
         $stepExecution->incrementSummaryInfo('read')->shouldBeCalledTimes(3);
         $metricConverter->convert(Argument::any(), $channel)->shouldBeCalledTimes(3);
@@ -164,6 +165,7 @@ class FilteredProductModelReaderSpec extends ObjectBehavior
 
         $expectedTotalItems = 10;
         $cursor->count()->willReturn($expectedTotalItems);
+        $cursor->rewind()->shouldBeCalled();
 
         $this->initialize();
         $this->totalItems()->shouldReturn($expectedTotalItems);

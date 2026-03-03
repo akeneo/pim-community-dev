@@ -4,8 +4,8 @@ import {UserContext} from '../user';
 export const useDateFormatter = () => {
     const user = useContext(UserContext);
 
-    const locale = user.get('uiLocale').replace('_', '-');
-    const timeZone = user.get('timezone');
+    const locale = user.get<string>('uiLocale').replace('_', '-');
+    const timeZone = user.get<string>('timezone');
 
     return useCallback(
         (date: string | number, options?: Intl.DateTimeFormatOptions) => {

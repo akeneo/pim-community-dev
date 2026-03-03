@@ -8,14 +8,14 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductNormalizer;
-use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductWithUuidNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
-use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Webhook\Exception\ProductNotFoundException;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
+use Akeneo\Platform\Component\Webhook\Context;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
 use Akeneo\Platform\Component\Webhook\EventDataCollection;
-use Akeneo\UserManagement\Component\Model\UserInterface;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
@@ -24,21 +24,14 @@ use Akeneo\UserManagement\Component\Model\UserInterface;
  */
 class ProductCreatedAndUpdatedEventDataBuilder implements EventDataBuilderInterface
 {
-    private ProductQueryBuilderFactoryInterface $pqbFactory;
-    private GetConnectorProducts $getConnectorProductsQuery;
-    private ConnectorProductNormalizer $connectorProductNormalizer;
-
     public function __construct(
-        ProductQueryBuilderFactoryInterface $pqbFactory,
-        GetConnectorProducts $getConnectorProductsQuery,
-        ConnectorProductNormalizer $connectorProductNormalizer
+        private GetConnectorProducts $getConnectorProductsQuery,
+        private ConnectorProductNormalizer $connectorProductNormalizer,
+        private ConnectorProductWithUuidNormalizer $connectorProductWithUuidNormalizer,
     ) {
-        $this->pqbFactory = $pqbFactory;
-        $this->getConnectorProductsQuery = $getConnectorProductsQuery;
-        $this->connectorProductNormalizer = $connectorProductNormalizer;
     }
 
-    public function supports(object $event): bool
+    public function supports(BulkEventInterface $event): bool
     {
         if (false === $event instanceof BulkEventInterface) {
             return false;
@@ -53,27 +46,34 @@ class ProductCreatedAndUpdatedEventDataBuilder implements EventDataBuilderInterf
         return true;
     }
 
-    /**
-     * @param BulkEventInterface $bulkEvent
-     */
-    public function build(object $bulkEvent, UserInterface $user): EventDataCollection
+    public function build(BulkEventInterface $bulkEvent, Context $context): EventDataCollection
     {
-        $products = $this->getConnectorProducts($this->getProductIdentifiers($bulkEvent->getEvents()), $user->getId());
+        $products = $this->getConnectorProducts(
+            \array_map(
+                static fn (ProductCreated|ProductUpdated $event): UuidInterface => $event->getProductUuid(),
+                $bulkEvent->getEvents()
+            ),
+            $context->getUserId()
+        );
 
         $collection = new EventDataCollection();
 
         /** @var ProductCreated|ProductUpdated $event */
         foreach ($bulkEvent->getEvents() as $event) {
-            $product = $products[$event->getIdentifier()] ?? null;
+            $product = $products[$event->getProductUuid()->toString()] ?? null;
 
             if (null === $product) {
-                $collection->setEventDataError($event, new ProductNotFoundException($event->getIdentifier()));
+                $collection->setEventDataError($event, new ProductNotFoundException($event->getProductUuid()));
 
                 continue;
             }
 
+            $normalizer = $context->isUsingUuid()
+                ? $this->connectorProductWithUuidNormalizer
+                : $this->connectorProductNormalizer;
+
             $data = [
-                'resource' => $this->connectorProductNormalizer->normalizeConnectorProduct($product),
+                'resource' => $normalizer->normalizeConnectorProduct($product),
             ];
             $collection->setEventData($event, $data);
         }
@@ -82,38 +82,19 @@ class ProductCreatedAndUpdatedEventDataBuilder implements EventDataBuilderInterf
     }
 
     /**
-     * @param (ProductCreated|ProductUpdated)[] $events
+     * @param UuidInterface[] $uuids
      *
-     * @return string[]
+     * @return array<string, ConnectorProduct>
      */
-    private function getProductIdentifiers(array $events): array
+    private function getConnectorProducts(array $uuids, int $userId): array
     {
-        $identifiers = [];
-        foreach ($events as $event) {
-            $identifiers[] = $event->getIdentifier();
-        }
-
-        return $identifiers;
-    }
-
-    /**
-     * @param string[] $identifiers
-     *
-     * @return array<string, (ConnectorProduct|null)>
-     */
-    private function getConnectorProducts(array $identifiers, int $userId): array
-    {
-        $pqb = $this->pqbFactory
-            ->create(['limit' => count($identifiers)])
-            ->addFilter('identifier', Operators::IN_LIST, $identifiers);
-
         $result = $this->getConnectorProductsQuery
-            ->fromProductQueryBuilder($pqb, $userId, null, null, null)
+            ->fromProductUuids($uuids, $userId, null, null, null)
             ->connectorProducts();
 
-        $products = array_fill_keys($identifiers, null);
+        $products = [];
         foreach ($result as $product) {
-            $products[$product->identifier()] = $product;
+            $products[$product->uuid()->toString()] = $product;
         }
 
         return $products;

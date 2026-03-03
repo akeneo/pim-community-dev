@@ -14,6 +14,8 @@ pim_connector:
       validation:
         not_blank: Un local debe ser seleccionado, por favor seleccione un local para exportar.
 pim_import_export:
+  validation:
+    max_length_reached: Este valor es demasiado largo. Debe contener {{ limit }} caracteres o menos.
   entity:
     job_instance:
       label: Perfil de trabajo
@@ -23,6 +25,10 @@ pim_import_export:
           fail: No se ha podido actualizar el perfil de trabajo.
         delete:
           success: Instancia de trabajo removida con éxito
+      duplicate:
+        title: Duplicar perfil {{ job_code }}
+        success: El perfil de trabajo se ha duplicado correctamente.
+        fail: El perfil de trabajo no se puede duplicar.
     import_profile:
       uppercase_label: Perfil de importación
       flash:
@@ -48,12 +54,13 @@ pim_import_export:
   form:
     job_execution:
       title.details: Detalles de la ejecución
+      refreshing: Actualizando detalles de ejecución
       refreshBtn.title: Actualizar
       button:
         show_profile.title: Ver perfil
         download_log.title: Descargar registro de log
         download_file.title: Descargar archivo generado
-        download_archive.title: Descargar archivo generado
+        download_archive.title: Descargar archivo ZIP generado
       summary:
         fetching: Colectando datos sobre la ejecución del trabajo...
         warning: '¡Advertencia!'
@@ -100,8 +107,8 @@ pim_import_export:
             title: Con encabezado
             help: Imprimir o no el nombre de columnas
           with_media:
-            title: Exportar archivos e imágenes
-            help: Exportar o no archivos de productos e imágenes
+            title: Exportar medios
+            help: Exportar o no medios
           lines_per_file:
             title: Número de líneas por archivo
             help: Definir la cantidad límite de líneas por archivo
@@ -129,36 +136,126 @@ pim_import_export:
           real_time_versioning:
             title: Actualización del historial en tiempo real
             help: Significa que el historial del producto es actualizada automáticamente, puede ser desactivada para mejorar el desempeño
+          convert_variant_to_simple:
+            title: Convertir productos variantes en productos simples
+            help: Trate de convertir los productos variantes en productos simples cuando la columna «principal» esté vacía. Si se ajusta a «No», se ignorará una columna «principal» vacía
           family_variant_column:
             title: Columna de la variante de familia
+          with_label:
+            title: Con etiquetas
+            help: Defina si el archivo de exportación muestra las etiquetas de los valores en lugar de los códigos de los mismos
+          header_with_label:
+            title: Encabezados con etiquetas
+            help: Definir si el archivo de exportación muestra las etiquetas de los encabezados en lugar de los códigos de los encabezados
+          file_locale:
+            title: Local de archivo
+            help: Definir la configuración regional en la que se muestran las etiquetas
+          with_uuid:
+            title: Con UUID de producto
+            help: Exportar el UUID del producto y de los productos asociados
+          with_uuid_for_models:
+            title: Con UUID de producto
+            help: Exportar el UUID del producto asociado en lugar de su identificador
       file_path: Camino del fichero
-  widget:
-    last_operations:
-      empty: Ninguna operacione encontrada
-      date: Fecha
-      profile_name: Nombre del perfil
-      details: Detalles
-      warning_count: Advertencias
-      username: Nombre de usuario
-      job_type:
-        import: Importación
-        export: Export
-        mass_edit: Edición en masa
-        mass_edit_rule: Configuración de reglas
-        quick_export: Exportación rápida
-        compute_family_variant_structure_changes: Calcular los cambios de estructura de las variantes de la familia
-        compute_completeness_of_products_family: Calcular la completitud de la familia de productos
-        mass_delete: Eliminación masiva de prodcutos
-      header.view_all: Ver todo
+      storage_form:
+        title: Almacenamiento
+        connection:
+          label: Tipo
+          local: Local
+          sftp: SFTP
+          amazon_s3: Amazon S3
+          microsoft_azure: Microsoft Azure
+          google_cloud_storage: Google Cloud Storage
+          none: No hay almacenamiento configurado
+        file_path:
+          label: Camino del fichero
+          placeholder: miarchivo.{{ file_extension }}
+        host:
+          label: Host
+          placeholder: ejemplo.com
+        fingerprint:
+          label: Huella digital del host (opcional)
+          placeholder: "c1:91:5e:42:55:5c:74:65:b6:12:32:7e:1f:6d:80:3e"
+          helper: Requerimos una suma de comprobación hash SHA-512 o MD5 con notación de dos puntos para la huella digital del host.
+        port:
+          label: Puerto
+          placeholder: 22
+        username:
+          label: Iniciar sesión
+          placeholder: Introduzca su nombre de usuario
+        password:
+          label: Contraseña
+          placeholder: Introduzca su contraseña
+        public_key:
+          label: Clave pública
+          button_title: Copiar en el portapapeles
+          copy_notification_success: Clave pública copiada al portapapeles
+        login_type:
+          label: Método de autenticación
+          password: Usuario y contraseña
+          private_key: Clave privada
+        region:
+          label: Región
+          placeholder: Introduzca su región
+        bucket:
+          label: Nombre del bucket
+          placeholder: Introduzca el nombre de su región
+        key:
+          label: Clave
+          placeholder: Introduzca su clave
+        secret:
+          label: Secreto
+          placeholder: Introduzca su secreto
+        connection_string:
+          label: Cadena de conexión
+          placeholder: Introduzca su cadena de conexión
+        container_name:
+          label: Nombre del contenedor
+          placeholder: Introduzca el nombre del contenedor
+        project_id:
+          label: ID del proyecto
+          placeholder: Introduzca su ID de proyecto
+        service_account:
+          label: Cuentas de servicio
+          placeholder: Introduzca su cuenta de servicio
+      validation:
+        storage:
+          unavailable_type: Este almacenamiento no está disponible, solo lo está {{ available_types }}.
+        file_path:
+          unsupported_extension: Extensión de archivo no admitida
+        fingerprint:
+          invalid_encoding: La huella digital del host debe ser un hash válido SHA-512 o MD5 con notación de dos puntos.
+      connection_checker:
+        label: Probar ajustes de conexión
+        exception: No se puede establecer la conexión, comprueba tu configuración.
   batch_status:
     1: Finalizado
     2: Iniciando
-    3: Iniciado
+    3: En curso
     4: Suspendiendo
     5: Suspendido
     6: Fallido
     7: Abandonado
     8: Desconocido
+    9: Pausando
+    10: Pausada
+  job_status:
+    COMPLETED: Finalizado
+    STARTING: Iniciando
+    STARTED: En curso
+    STOPPING: Suspendiendo
+    STOPPED: Suspendido
+    FAILED: Fallido
+    ABANDONED: Abandonado
+    UNKNOWN: Desconocido
+    PAUSING: Pausando
+    PAUSED: Pausada
+  tracking:
+    completed: "Tiempo empleado: {{ duration }}"
+    in_progress: "Tiempo restante estimado: {{ duration }}"
+    not_started: "Pendiente"
+    untrackable: Paso no rastreable
+    estimating: "Tiempo restante estimando..."
 confirmation:
   remove:
     import_profile: '¿Está seguro que desea eliminar este perfil de importación?'
@@ -191,3 +288,4 @@ pim_title:
   pim_importexport_import_profile_show: Importar perfil {{ job.label }} | Mostrar
   pim_importexport_import_execution_index: Historia de las ejecuciones de importación
   pim_importexport_import_execution_show: Ejecuciones de importación | Detalles
+

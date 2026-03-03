@@ -1,0 +1,239 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
+import {Button} from './Button';
+import {ArrowDownIcon} from '../../icons';
+
+<Meta
+  title="Components/Buttons/Button"
+  component={Button}
+  argTypes={{
+    level: {control: {type: 'select'}, options: ['primary', 'secondary', 'tertiary', 'warning', 'danger']},
+    ghost: {control: {type: 'boolean'}},
+    disabled: {control: {type: 'boolean'}},
+    active: {control: {type: 'boolean'}},
+    size: {control: {type: 'select'}, options: ['default', 'small']},
+    onClick: {action: 'Click on the button'},
+    children: {control: {type: 'text'}},
+  }}
+  args={{
+    level: 'primary',
+    children: 'Primary',
+  }}
+/>
+
+# Button
+
+## Usage
+
+Buttons express what action will occur when the users clicks. Buttons are used to initialize an action, either in the background or foreground of an experience.
+
+### General guidance
+
+Buttons are used primarily on action items. Some examples include Add, Save, Delete, and Sign up. Each page can have one or two primary buttons. Any remaining calls-to-action should be represented as secondary buttons.
+
+Do not use buttons as navigational elements. Instead, use links to take the users to a new page.
+
+### Labels
+
+Button labels should clearly indicate the action of the button. Use active verbs, such as Add or Delete. Use no more than three words for button labels.
+
+For sets of buttons, use specific labels, such as Save or Discard, instead of using OK and Cancel. This is particularly helpful when the user is confirming an action.
+
+### IconButton
+
+If you only need to display an Icon as your button, check out the <LinkTo kind="Components/Buttons/IconButton" story="Standard">IconButton component</LinkTo>.
+
+## Playground
+
+Use this playground to test the button component
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return <Button {...args} />;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on level
+
+<Canvas>
+  <Story name="Level">
+    {args => {
+      return (
+        <>
+          <Button {...args} level="primary">
+            Primary
+          </Button>
+          <Button {...args} level="secondary">
+            Secondary
+          </Button>
+          <Button {...args} level="tertiary">
+            Tertiary
+          </Button>
+          <Button {...args} level="warning">
+            Warning
+          </Button>
+          <Button {...args} level="danger">
+            Danger
+          </Button>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on ghost
+
+<Canvas>
+  <Story name="Ghost">
+    {args => {
+      return (
+        <>
+          <Button {...args} ghost={true} level="primary">
+            Primary
+          </Button>
+          <Button {...args} ghost={true} level="secondary">
+            Secondary
+          </Button>
+          <Button {...args} ghost={true} level="tertiary">
+            Tertiary
+          </Button>
+          <Button {...args} ghost={true} level="warning">
+            Warning
+          </Button>
+          <Button {...args} ghost={true} level="danger">
+            Danger
+          </Button>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on active
+
+<Canvas>
+  <Story name="Active">
+    {args => {
+      return (
+        <>
+          <Button {...args} active={true} level="primary">
+            Primary
+          </Button>
+          <Button {...args} active={true} level="secondary">
+            Secondary
+          </Button>
+          <Button {...args} active={true} level="tertiary">
+            Tertiary
+          </Button>
+          <Button {...args} active={true} level="warning">
+            Warning
+          </Button>
+          <Button {...args} active={true} level="danger">
+            Danger
+          </Button>
+          <br />
+          <Button {...args} active={true} ghost={true} level="primary">
+            Primary
+          </Button>
+          <Button {...args} active={true} ghost={true} level="secondary">
+            Secondary
+          </Button>
+          <Button {...args} active={true} ghost={true} level="tertiary">
+            Tertiary
+          </Button>
+          <Button {...args} active={true} ghost={true} level="warning">
+            Warning
+          </Button>
+          <Button {...args} active={true} ghost={true} level="danger">
+            Danger
+          </Button>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on disabled
+
+<Canvas>
+  <Story name="Disabled">
+    {args => {
+      return (
+        <>
+          <Button {...args} disabled={false}>
+            Default
+          </Button>
+          <Button {...args} disabled={true}>
+            Disabled
+          </Button>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on size
+
+<Canvas>
+  <Story name="Size">
+    {args => {
+      return (
+        <>
+          <Button {...args} size="default">
+            Default
+          </Button>
+          <Button {...args} size="small">
+            Small
+          </Button>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Usage with `href` prop
+
+If you want your button to act like a <LinkTo kind="Components/Link" story="Standard">Link</LinkTo> (with "open in a new tab" feature of cmd/ctrl + click), use the `href` prop to specify your link.
+
+<Canvas>
+  <Story name="Link">
+    {args => {
+      delete args.onClick;
+      return (
+        <>
+          <Button {...args} href="https://google.com" target="_blank">
+            I am a Link
+          </Button>
+          <Button {...args} disabled={true} href="https://google.com" target="_blank">
+            I am a disabled Link
+          </Button>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## With an Icon
+
+<Canvas>
+  <Story name="With an Icon">
+    {() => {
+      return (
+        <>
+          <Button ghost={false}>
+            Dropdown button <ArrowDownIcon />
+          </Button>
+          <Button ghost={true}>
+            Ghost <ArrowDownIcon />
+          </Button>
+          <Button level="secondary" size="small">
+            Small <ArrowDownIcon />
+          </Button>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>

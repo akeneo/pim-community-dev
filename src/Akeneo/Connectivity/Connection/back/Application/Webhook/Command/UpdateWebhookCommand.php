@@ -10,20 +10,12 @@ namespace Akeneo\Connectivity\Connection\Application\Webhook\Command;
  */
 class UpdateWebhookCommand
 {
-    /** @var string */
-    private $code;
-
-    /** @var bool */
-    private $enabled;
-
-    /** @var ?string */
-    private $url;
-
-    public function __construct(string $code, bool $enabled, ?string $url = null)
-    {
-        $this->code = $code;
-        $this->enabled = $enabled;
-        $this->url = $url;
+    public function __construct(
+        private string $code,
+        private bool $enabled,
+        private ?string $url = null,
+        private bool $isUsingUuid = false,
+    ) {
     }
 
     public function code(): string
@@ -39,5 +31,10 @@ class UpdateWebhookCommand
     public function url(): ?string
     {
         return $this->url;
+    }
+
+    public function isUsingUuid(): bool
+    {
+        return $this->isUsingUuid;
     }
 }

@@ -22,13 +22,13 @@ Feature: Import groups
       AKENEO_NEW;US;XSELL
       """
     And the following job "csv_footwear_group_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     When I am on the "csv_footwear_group_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_group_import" job to finish
     Then I should see the text "read lines 4"
     And I should see the text "Created 2"
-    And I should see the text "Processed 2"
+    And I should see the text "Updated 2"
     And I should not see the text "Skip"
     Then there should be the following groups:
       | code          | label-en_US    | label-fr_FR | type    | axis       |

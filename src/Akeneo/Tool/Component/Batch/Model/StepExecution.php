@@ -51,10 +51,12 @@ class StepExecution
     /** @var integer */
     private $filterCount = 0;
 
+    private int $warningCount = 0;
+
     /** @var \DateTime */
     private $startTime;
 
-    /** @var \DateTime */
+    /** @var \DateTime | null */
     private $endTime;
 
     /* @var ExecutionContext $executionContext */
@@ -87,6 +89,9 @@ class StepExecution
     /** @var array */
     private $trackingData = self::TRACKING_DATA_DEFAULT;
 
+    private bool $isTrackable;
+    private ?array $currentState;
+
     /**
      * Constructor with mandatory properties.
      *
@@ -105,6 +110,7 @@ class StepExecution
 
         $this->failureExceptions = [];
         $this->errors = [];
+        $this->isTrackable = false;
 
         $this->startTime = new \DateTime();
     }
@@ -153,7 +159,7 @@ class StepExecution
     /**
      * Returns the time that this execution ended
      *
-     * @return \DateTime time that this execution ended
+     * @return \DateTime | null time that this execution ended
      */
     public function getEndTime()
     {
@@ -467,9 +473,18 @@ class StepExecution
         }
 
         if (is_object($data)) {
+            $id = '[unknown]';
+            if (\method_exists($data, 'getUuid')
+                && get_class($data) !== 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct'
+            ) {
+                $id = $data->getUuid()->toString();
+            } elseif (\method_exists($data, 'getId')) {
+                $id = $data->getId();
+            }
+
             $data = [
                 'class'  => ClassUtils::getClass($data),
-                'id'     => method_exists($data, 'getId') ? $data->getId() : '[unknown]',
+                'id'     => $id,
                 'string' => method_exists($data, '__toString') ? (string) $data : '[unknown]',
             ];
         }
@@ -482,6 +497,8 @@ class StepExecution
                 $data
             )
         );
+
+        $this->warningCount++;
     }
 
     /**
@@ -492,6 +509,11 @@ class StepExecution
     public function getWarnings()
     {
         return $this->warnings;
+    }
+
+    public function getWarningCount(): int
+    {
+        return $this->warningCount;
     }
 
     /**
@@ -527,9 +549,9 @@ class StepExecution
      *
      * @return mixed
      */
-    public function getSummaryInfo($key)
+    public function getSummaryInfo($key, mixed $defaultValue = '')
     {
-        return isset($this->summary[$key]) ? $this->summary[$key] : '';
+        return isset($this->summary[$key]) ? $this->summary[$key] : $defaultValue;
     }
 
     /**
@@ -595,6 +617,26 @@ class StepExecution
     public function setTrackingData(array $trackingData): void
     {
         $this->trackingData = $trackingData;
+    }
+
+    public function isTrackable(): bool
+    {
+        return $this->isTrackable;
+    }
+
+    public function setIsTrackable(bool $trackable): void
+    {
+        $this->isTrackable = $trackable;
+    }
+
+    public function setCurrentState(array $currentState): void
+    {
+        $this->currentState = $currentState;
+    }
+
+    public function getCurrentState(): array
+    {
+        return $this->currentState ?? [];
     }
 
     /**

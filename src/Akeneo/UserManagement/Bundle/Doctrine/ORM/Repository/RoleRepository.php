@@ -2,6 +2,7 @@
 
 namespace Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository;
 
+use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Model\RoleInterface;
 use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Model\UserInterface;
@@ -43,7 +44,11 @@ class RoleRepository extends EntityRepository implements RoleRepositoryInterface
     {
         return $this->createQueryBuilder('r')
             ->where('r.role <> :anon')
-            ->setParameter('anon', User::ROLE_ANONYMOUS);
+            ->andWhere('r.type = :defaultType')
+            ->setParameters([
+                'anon' => User::ROLE_ANONYMOUS,
+                'defaultType' => Role::TYPE_DEFAULT,
+            ]);
     }
 
     /**
@@ -61,5 +66,22 @@ class RoleRepository extends EntityRepository implements RoleRepositoryInterface
             ->join('u.roles', 'role')
             ->where('role = :role')
             ->setParameter('role', $role);
+    }
+
+    /**
+     * @param array<RoleInterface> $roles
+     */
+    public function getUiUserEnabledByRoles(array $roles): QueryBuilder
+    {
+        return $this->_em->createQueryBuilder()
+            ->select('u')
+            ->from(UserInterface::class, 'u')
+            ->join('u.roles', 'role')
+            ->andWhere('u.enabled = :enabled')
+            ->andWhere('u.type = :user_type')
+            ->andWhere('role IN (:roles)')
+            ->setParameter('enabled', 1)
+            ->setParameter('user_type', User::TYPE_USER)
+            ->setParameter('roles', $roles);
     }
 }

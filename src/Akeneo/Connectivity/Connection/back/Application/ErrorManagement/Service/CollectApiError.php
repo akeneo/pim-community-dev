@@ -12,11 +12,9 @@ use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\ApiErrorCo
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\BusinessError;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\HourlyErrorCount;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\TechnicalError;
-use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Persistence\Repository\BusinessErrorRepository;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Persistence\Repository\BusinessErrorRepositoryInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
-use Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use FOS\RestBundle\Context\Context;
 use FOS\RestBundle\Serializer\Serializer;
 use Symfony\Component\Validator\ConstraintViolationInterface;
@@ -28,43 +26,24 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
  */
 class CollectApiError
 {
-    /** @var BusinessErrorRepository */
-    private $repository;
-
-    /** @var ConnectionContextInterface */
-    private $connectionContext;
-
-    /** @var UpdateConnectionErrorCountHandler */
-    private $updateErrorCountHandler;
-
-    /** @var Serializer */
-    private $serializer;
-
-    /** @var ApiErrorCollection */
-    private $errors;
+    private ApiErrorCollection $errors;
 
     public function __construct(
-        ConnectionContextInterface $connectionContext,
-        BusinessErrorRepository $repository,
-        UpdateConnectionErrorCountHandler $updateErrorCountHandler,
-        Serializer $serializer
+        private ConnectionContextInterface $connectionContext,
+        private BusinessErrorRepositoryInterface $repository,
+        private UpdateConnectionErrorCountHandler $updateErrorCountHandler,
+        private Serializer $serializer
     ) {
-        $this->connectionContext = $connectionContext;
-        $this->repository = $repository;
-        $this->updateErrorCountHandler = $updateErrorCountHandler;
-        $this->serializer = $serializer;
         $this->errors = new ApiErrorCollection();
     }
 
     public function collectFromProductDomainError(
-        DomainErrorInterface $error,
-        ?ProductInterface $product
+        \Throwable $error,
+        Context $context
     ): void {
-        if (false === $this->isConnectionCollectable()) {
+        if (!$this->isConnectionCollectable()) {
             return;
         }
-
-        $context = (new Context())->setAttribute('product', $product);
         $json = $this->serializer->serialize($error, 'json', $context);
         $this->errors->add(new BusinessError($json));
     }
@@ -74,13 +53,12 @@ class CollectApiError
      */
     public function collectFromProductValidationError(
         ConstraintViolationListInterface $constraintViolationList,
-        ProductInterface $product
+        Context $context
     ): void {
-        if (false === $this->isConnectionCollectable()) {
+        if (!$this->isConnectionCollectable()) {
             return;
         }
 
-        $context = (new Context())->setAttribute('product', $product);
         foreach ($constraintViolationList as $constraintViolation) {
             $json = $this->serializer->serialize($constraintViolation, 'json', $context);
             $this->errors->add(new BusinessError($json));
@@ -89,7 +67,7 @@ class CollectApiError
 
     public function collectFromTechnicalError(\Throwable $error): void
     {
-        if (false === $this->isConnectionCollectable()) {
+        if (!$this->isConnectionCollectable()) {
             return;
         }
 
@@ -118,7 +96,7 @@ class CollectApiError
             $errorCounts[] = new HourlyErrorCount(
                 (string) $connection->code(),
                 HourlyInterval::createFromDateTime($now),
-                count($errors),
+                \count($errors),
                 $errorType
             );
         }
@@ -139,7 +117,7 @@ class CollectApiError
         }
 
         if (
-            false === $this->connectionContext->isCollectable() ||
+            !$this->connectionContext->isCollectable() ||
             FlowType::DATA_SOURCE !== (string) $connection->flowType()
         ) {
             return false;

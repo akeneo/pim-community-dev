@@ -11,12 +11,8 @@ namespace Akeneo\Connectivity\Connection\Application\Settings\Command;
  */
 class DeleteConnectionCommand
 {
-    /** @var string */
-    private $code;
-
-    public function __construct(string $code)
+    public function __construct(private string $code)
     {
-        $this->code = $code;
     }
 
     public function code(): string

@@ -7,6 +7,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\RangeValidator as BaseRangeValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -40,7 +41,11 @@ class RangeValidator extends BaseRangeValidator
                 $this->validateData($value->getData(), $constraint);
                 break;
 
-            case !is_numeric($value) && !$value instanceof \DateTimeInterface:
+            case is_numeric($value):
+                $this->validateNumeric($value, $constraint);
+                break;
+
+            default:
                 $this->context->buildViolation(
                     $constraint->invalidMessage,
                     [
@@ -50,16 +55,6 @@ class RangeValidator extends BaseRangeValidator
                 )
                     ->setCode(Range::INVALID_CHARACTERS_ERROR)
                     ->addViolation();
-                break;
-
-            default:
-                // it allows to have a proper message when the value is superior to the technical maximum value allowed by PHP
-                // we don't put it by default, as otherwise the message is quite weird for the user (between 0 and 9.22E18)
-                if ((null === $constraint->max && is_numeric($value) && $value > PHP_INT_MAX) || PHP_INT_MAX < $constraint->max) {
-                    $constraint->max = PHP_INT_MAX;
-                }
-
-                parent::validate($value, $constraint);
                 break;
         }
     }
@@ -71,36 +66,17 @@ class RangeValidator extends BaseRangeValidator
      * @param mixed $value
      * @param Range $constraint
      */
-    protected function validateData($value, Range $constraint)
+    protected function validateData($value, Range $constraint): void
     {
-        if (null === $value) {
-            return;
-        }
+        $violation = $this->buildRangeViolation($value, $constraint);
 
-        if (null !== $constraint->min && $value < $constraint->min) {
-            $this->context->buildViolation($constraint->minMessage, [
-                '{{ value }}' => $value,
-                '{{ limit }}' => $constraint->min,
-            ])
-                ->atPath('data')
-                ->setCode(Range::TOO_LOW_ERROR)
-                ->addViolation();
-        }
-
-        if (null !== $constraint->max && $value > $constraint->max) {
-            $this->context->buildViolation($constraint->maxMessage, [
-                '{{ value }}' => $value,
-                '{{ limit }}' => $constraint->max,
-            ])
-                ->atPath('data')
-                ->setCode(Range::TOO_HIGH_ERROR)
-                ->addViolation();
+        if ($violation instanceof ConstraintViolationBuilderInterface) {
+            $violation->atPath('data')->addViolation();
         }
     }
 
-    private function validateDateTime(\DateTimeInterface $dateTime, Constraint $constraint): void
+    private function validateDateTime(\DateTimeInterface $dateTime, Range $constraint): void
     {
-        Assert::isInstanceOf($constraint, Range::class);
         if ($constraint->min && $dateTime < $constraint->min) {
             $this->context->buildViolation(
                 $constraint->minDateMessage,
@@ -124,5 +100,52 @@ class RangeValidator extends BaseRangeValidator
                 ->setCode(Range::TOO_HIGH_ERROR)
                 ->addViolation();
         }
+    }
+
+    private function validateNumeric($value, Range $constraint): void
+    {
+        $violation = $this->buildRangeViolation($value, $constraint);
+
+        if ($violation instanceof ConstraintViolationBuilderInterface) {
+            $violation->addViolation();
+        }
+    }
+
+    private function buildRangeViolation($value, Range $constraint): ?ConstraintViolationBuilderInterface
+    {
+        if (null === $value) {
+            return null;
+        }
+
+        // it allows to have a proper message when the value is superior to the technical maximum value allowed by PHP
+        // we don't put it by default, as otherwise the message is quite weird for the user (between 0 and 9.22E18)
+        if ((null === $constraint->max && is_numeric($value) && $value > PHP_INT_MAX)
+            || PHP_INT_MAX < $constraint->max) {
+            $constraint->max = PHP_INT_MAX;
+        }
+
+        if (null !== $constraint->min && $value < $constraint->min) {
+            return $this->context->buildViolation(
+                $constraint->minMessage,
+                [
+                    '%attribute%' => $constraint->attributeCode,
+                    '%min_value%' => $constraint->min,
+                ]
+            )
+                ->setCode(Range::TOO_LOW_ERROR);
+        }
+
+        if (null !== $constraint->max && $value > $constraint->max) {
+            return $this->context->buildViolation(
+                $constraint->maxMessage,
+                [
+                    '%attribute%' => $constraint->attributeCode,
+                    '%max_value%' => $constraint->max,
+                ]
+            )
+                ->setCode(Range::TOO_HIGH_ERROR);
+        }
+
+        return null;
     }
 }

@@ -54,4 +54,16 @@ class InMemoryGroupRepositorySpec extends ObjectBehavior
     {
         $this->getIdentifierProperties()->shouldReturn(['name']);
     }
+
+    function it_returns_all_groups()
+    {
+        $group1 = new Group();
+        $group1->setName('group_name');
+        $this->save($group1);
+        $group2 = new Group();
+        $group2->setName('group_name2');
+        $this->save($group2);
+
+        $this->findAll()->shouldReturn(['group_name' => $group1, 'group_name2' => $group2]);
+    }
 }

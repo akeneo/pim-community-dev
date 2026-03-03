@@ -8,6 +8,7 @@ use Akeneo\Platform\Bundle\AnalyticsBundle\Query\Sql\ApiConnectionCount;
 use Akeneo\Tool\Component\Analytics\ActiveEventSubscriptionCountQuery;
 use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
 use Akeneo\Tool\Component\Analytics\EmailDomainsQuery;
+use Akeneo\Tool\Component\Analytics\GetConnectedAppsIdentifiersQueryInterface;
 use Akeneo\Tool\Component\Analytics\IsDemoCatalogQuery;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Platform\Bundle\AnalyticsBundle\DataCollector\DBDataCollector;
@@ -38,7 +39,8 @@ class DBDataCollectorSpec extends ObjectBehavior
         ApiConnectionCount $apiConnectionCount,
         MediaCount $mediaCount,
         IsDemoCatalogQuery $isDemoCatalogQuery,
-        ActiveEventSubscriptionCountQuery $activeEventSubscriptionCountQuery
+        ActiveEventSubscriptionCountQuery $activeEventSubscriptionCountQuery,
+        GetConnectedAppsIdentifiersQueryInterface $getConnectedAppsIdentifiersQuery,
     ) {
         $this->beConstructedWith(
             $channelCountQuery,
@@ -60,7 +62,8 @@ class DBDataCollectorSpec extends ObjectBehavior
             $apiConnectionCount,
             $mediaCount,
             $isDemoCatalogQuery,
-            $activeEventSubscriptionCountQuery
+            $activeEventSubscriptionCountQuery,
+            $getConnectedAppsIdentifiersQuery,
         );
     }
 
@@ -90,23 +93,24 @@ class DBDataCollectorSpec extends ObjectBehavior
         ApiConnectionCount $apiConnectionCount,
         MediaCount $mediaCount,
         IsDemoCatalogQuery $isDemoCatalogQuery,
-        ActiveEventSubscriptionCountQuery $activeEventSubscriptionCountQuery
+        ActiveEventSubscriptionCountQuery $activeEventSubscriptionCountQuery,
+        GetConnectedAppsIdentifiersQueryInterface $getConnectedAppsIdentifiersQuery,
     ) {
-        $channelCountQuery->fetch()->willReturn(new CountVolume(3, -1, 'count_channels'));
-        $productCountQuery->fetch()->willReturn(new CountVolume(1121, -1, 'count_products'));
-        $localeCountQuery->fetch()->willReturn(new CountVolume(3, -1, 'count_locales'));
-        $familyCountQuery->fetch()->willReturn(new CountVolume(14, -1, 'count_families'));
-        $attributeCountQuery->fetch()->willReturn(new CountVolume(110, -1, 'count_attributes'));
-        $userCountQuery->fetch()->willReturn(new CountVolume(5, -1, 'count_users'));
-        $productModelCountQuery->fetch()->willReturn(new CountVolume(123, -1, 'count_product_models'));
-        $variantProductCountQuery->fetch()->willReturn(new CountVolume(89, -1, 'count_variant_products'));
-        $categoryCountQuery->fetch()->willReturn(new CountVolume(250, -1, 'count_categories'));
-        $categoryTreeCountQuery->fetch()->willReturn(new CountVolume(3, -1, 'count_category_trees'));
-        $categoriesInOneCategoryAverageMax->fetch()->willReturn(new AverageMaxVolumes(25,2, -1, 'average_max_categories_in_one_category'));
-        $categoryLevelsAverageMax->fetch()->willReturn(new AverageMaxVolumes(6, 4, -1, 'average_max_category_levels'));
-        $productValueCountQuery->fetch()->willReturn(new CountVolume(254897, -1, 'count_product_values'));
-        $productValueAverageMaxQuery->fetch()->willReturn(new AverageMaxVolumes(8,7, -1, 'average_max_product_values'));
-        $productValuePerFamilyAverageMaxQuery->fetch()->willReturn(new AverageMaxVolumes(12,10, -1, 'average_max_product_values_per_family'));
+        $channelCountQuery->fetch()->willReturn(new CountVolume(3, 'count_channels'));
+        $productCountQuery->fetch()->willReturn(new CountVolume(1121, 'count_products'));
+        $localeCountQuery->fetch()->willReturn(new CountVolume(3, 'count_locales'));
+        $familyCountQuery->fetch()->willReturn(new CountVolume(14, 'count_families'));
+        $attributeCountQuery->fetch()->willReturn(new CountVolume(110, 'count_attributes'));
+        $userCountQuery->fetch()->willReturn(new CountVolume(5, 'count_users'));
+        $productModelCountQuery->fetch()->willReturn(new CountVolume(123, 'count_product_models'));
+        $variantProductCountQuery->fetch()->willReturn(new CountVolume(89, 'count_variant_products'));
+        $categoryCountQuery->fetch()->willReturn(new CountVolume(250, 'count_categories'));
+        $categoryTreeCountQuery->fetch()->willReturn(new CountVolume(3, 'count_category_trees'));
+        $categoriesInOneCategoryAverageMax->fetch()->willReturn(new AverageMaxVolumes(25,2, 'average_max_categories_in_one_category'));
+        $categoryLevelsAverageMax->fetch()->willReturn(new AverageMaxVolumes(6, 4, 'average_max_category_levels'));
+        $productValueCountQuery->fetch()->willReturn(new CountVolume(254897, 'count_product_values'));
+        $productValueAverageMaxQuery->fetch()->willReturn(new AverageMaxVolumes(8,7, 'average_max_product_values'));
+        $productValuePerFamilyAverageMaxQuery->fetch()->willReturn(new AverageMaxVolumes(12,10, 'average_max_product_values_per_family'));
         $emailDomains->fetch()->willReturn('example.com,other-example.com');
         $apiConnectionCount->fetch()->willReturn([
             'data_source' => ['tracked' => 0, 'untracked' => 0],
@@ -117,6 +121,7 @@ class DBDataCollectorSpec extends ObjectBehavior
         $mediaCount->countImages()->willReturn(1);
         $isDemoCatalogQuery->fetch()->willreturn(true);
         $activeEventSubscriptionCountQuery->fetch()->willReturn(42);
+        $getConnectedAppsIdentifiersQuery->execute()->willReturn(['00528c5a-9aef-4f9a-8a04-cdebf34176db']);
 
         $this->collect()->shouldReturn(
             [
@@ -146,6 +151,8 @@ class DBDataCollectorSpec extends ObjectBehavior
                 'nb_media_images_in_products' => 1,
                 'is_demo_catalog' => true,
                 'nb_active_event_subscription' => 42,
+                'activated_app_ids' => ['00528c5a-9aef-4f9a-8a04-cdebf34176db'],
+                'nb_activated_apps' => 1,
             ]
         );
     }

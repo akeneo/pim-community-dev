@@ -1,0 +1,55 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
+import {MyComponent} from './MyComponent.tsx';
+
+<Meta
+  title="Components/MyComponent"
+  component={MyComponent}
+  argTypes={{
+    level: {control: {type: 'select', options: ['primary', 'warning', 'danger']}},
+  }}
+  args={{level: 'primary', children: 'MyComponent text'}}
+/>
+
+# MyComponent
+
+## Usage
+
+TODO
+
+### TODO
+
+TODO
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return <MyComponent {...args} />;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on level
+
+<Canvas>
+  <Story name="Level">
+    {args => {
+      return (
+        <>
+          <MyComponent {...args} level="primary">
+            Primary
+          </MyComponent>
+          <MyComponent {...args} level="warning">
+            Warning
+          </MyComponent>
+          <MyComponent {...args} level="danger">
+            Danger
+          </MyComponent>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>

@@ -19,11 +19,11 @@ class PriceCollectionNormalizer extends AbstractProductValueNormalizer implement
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof PriceCollectionValue && (
-                $format === ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
-            );
+            $format === ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
+        );
     }
 
     public function hasCacheableSupportsMethod(): bool

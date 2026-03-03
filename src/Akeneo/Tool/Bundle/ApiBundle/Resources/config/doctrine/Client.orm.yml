@@ -11,3 +11,8 @@ Akeneo\Tool\Bundle\ApiBundle\Entity\Client:
             type: string
             length: 255
             nullable: true
+        marketplacePublicAppId:
+            column: marketplace_public_app_id
+            type: string
+            length: 255
+            nullable: true

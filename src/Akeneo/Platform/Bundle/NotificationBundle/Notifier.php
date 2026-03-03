@@ -7,7 +7,7 @@ use Akeneo\Platform\Bundle\NotificationBundle\Factory\UserNotificationFactory;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 /**
@@ -59,9 +59,9 @@ class Notifier implements NotifierInterface
 
         foreach ($users as $user) {
             try {
-                $user = is_object($user) ? $user : $this->userProvider->loadUserByUsername($user);
+                $user = is_object($user) ? $user : $this->userProvider->loadUserByIdentifier($user);
                 $userNotifications[] = $this->userNotifFactory->createUserNotification($notification, $user);
-            } catch (UsernameNotFoundException $e) {
+            } catch (UserNotFoundException $e) {
                 continue;
             }
         }
@@ -87,7 +87,7 @@ class Notifier implements NotifierInterface
                 if (is_string($user) && UserInterface::SYSTEM_USER_NAME === $user) {
                     return false;
                 }
-                if (is_object($user) && UserInterface::SYSTEM_USER_NAME === $user->getUsername()) {
+                if (is_object($user) && UserInterface::SYSTEM_USER_NAME === $user->getUserIdentifier()) {
                     return false;
                 }
 

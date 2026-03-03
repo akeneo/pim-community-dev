@@ -1,9 +1,12 @@
+parameters:
+    max_attribute_groups: 1000
+    identifier_attribute_creation_limit: 10
+
 services:
     pim_catalog.validator.constraint.family_requirements:
         class: 'Akeneo\Pim\Structure\Component\Validator\Constraints\FamilyRequirementsValidator'
         arguments:
             - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.repository.channel'
         tags:
             - { name: validator.constraint_validator, alias: pim_family_requirements_validator }
 
@@ -80,13 +83,6 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: pim_metric_validator }
 
-    pim_catalog.validator.constraint.single_identifier:
-        class: 'Akeneo\Pim\Structure\Component\Validator\Constraints\SingleIdentifierAttributeValidator'
-        arguments:
-            - '@pim_catalog.repository.attribute'
-        tags:
-            - { name: validator.constraint_validator, alias: pim_single_identifier_attribute_validator }
-
     pim_catalog.validator.constraint.blacklisted_attribute_code:
         class: 'Akeneo\Pim\Structure\Component\Validator\Constraints\BlacklistedAttributeCodeValidator'
         arguments:
@@ -106,3 +102,47 @@ services:
         class: 'Akeneo\Pim\Structure\Component\Validator\Constraints\AttributePropertyTypeValidator'
         tags:
             - { name: 'validator.constraint_validator', alias: 'pim_structure_attribute_property_type_validator' }
+
+    pim_catalog.validator.constraint.is_variant_axis_without_available_locales:
+        class: 'Akeneo\Pim\Structure\Component\Validator\Constraints\IsVariantAxisWithoutAvailableLocalesValidator'
+        arguments:
+            - '@akeneo.pim.structure.query.attribute_is_an_family_variant_axis'
+        tags:
+            - { name: validator.constraint_validator, alias: 'pim_structure.validator.constraint.available_locales.is_variant_axis_without_available_locales' }
+
+    pim_structure.validator.constraint.type:
+        class: 'Akeneo\Pim\Structure\Component\Validator\Constraints\TypeValidator'
+        arguments:
+            - '@validator'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_structure_type_validator }
+
+    pim_enrichment.validator.constraint.type:
+        class: 'Akeneo\Pim\Enrichment\Component\Validator\Constraints\TypeValidator'
+        arguments:
+            - '@validator'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_enrichment_type_validator }
+
+    Akeneo\Pim\Structure\Component\Validator\Constraints\AttributeGroups\MaxAttributeGroupCountValidator:
+        arguments:
+            - '@pim_catalog.repository.attribute_group'
+            - '%max_attribute_groups%'
+        tags:
+            - { name: validator.constraint_validator }
+
+    Akeneo\Pim\Structure\Component\Validator\Constraints\IdentifierAttributeCreationLimitValidator:
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '%identifier_attribute_creation_limit%'
+        tags:
+            - { name: validator.constraint_validator }
+
+    Akeneo\Pim\Structure\Bundle\Application\SwitchMainIdentifier\SwitchMainIdentifierValidator:
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@feature_flags'
+            - '@Akeneo\Pim\Structure\Bundle\Application\SwitchMainIdentifier\PublishedProductExists'
+
+    Akeneo\Pim\Structure\Bundle\Application\SwitchMainIdentifier\PublishedProductExists:
+        class: Akeneo\Pim\Structure\Bundle\Application\SwitchMainIdentifier\CommunityPublishedProductExists

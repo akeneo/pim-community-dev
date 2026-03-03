@@ -10,12 +10,12 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 class MetricGuesserSpec extends ObjectBehavior
 {
-    function it_is_an_attribute_constraint_guesser()
+    public function it_is_an_attribute_constraint_guesser(): void
     {
         $this->shouldImplement(ConstraintGuesserInterface::class);
     }
 
-    function it_enforces_attribute_type(AttributeInterface $attribute)
+    public function it_enforces_attribute_type(AttributeInterface $attribute): void
     {
         $attribute->getType()
             ->willReturn('pim_catalog_metric');
@@ -33,8 +33,9 @@ class MetricGuesserSpec extends ObjectBehavior
             ->shouldReturn(false);
     }
 
-    function it_always_guess(AttributeInterface $attribute)
+    public function it_always_guess(AttributeInterface $attribute): void
     {
+        $attribute->getCode()->willReturn('');
         $constraints = $this->guessConstraints($attribute);
 
         $constraints->shouldHaveCount(2);

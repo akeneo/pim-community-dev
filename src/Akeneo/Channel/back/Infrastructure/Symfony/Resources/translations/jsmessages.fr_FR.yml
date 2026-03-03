@@ -1,0 +1,84 @@
+batch_jobs:
+  csv_currency_export:
+    label: Export des devises en CSV
+    export.label: Export des devises
+  csv_currency_import:
+    label: Import des devises en CSV
+    import.label: Import des devises
+  xlsx_currency_export:
+    label: Export des devises en XLSX
+    export.label: Export des devises
+  xlsx_currency_import:
+    label: Import des devises en XLSX
+    import.label: Import des devises
+  csv_locale_export:
+    label: Export des locales en CSV
+    export.label: Export des locales
+  csv_locale_import:
+    label: Import des locales en CSV
+    import.label: Import des locales
+  xlsx_locale_export:
+    label: Export des locales en XLSX
+    export.label: Export des locales
+  xlsx_locale_import:
+    label: Import des locales en XLSX
+    import.label: Import des locales
+  csv_channel_export:
+    label: Export des canaux en CSV
+    export.label: Export des canaux
+  csv_channel_import:
+    label: Import des canaux en CSV
+    import.label: Import des canaux
+  xlsx_channel_export:
+    label: Export des canaux en XLSX
+    export.label: Export des canaux
+  xlsx_channel_import:
+    label: Import des canaux en XLSX
+    import.label: Import des canaux
+pim_enrich.entity.channel:
+  label: canal
+  uppercase_label: Canal
+  flash:
+    update:
+      success: Le canal a bien été mis à jour.
+      fail: Le canal n'a pas pu être mis à jour.
+    create:
+      success: Canal créé avec succès.
+      fail: Le canal n'a pas pu être créé.
+    delete:
+      success: Le canal a bien été supprimé
+      fail: Impossible de supprimer ce canal
+  page_title:
+    index: "]-Inf, 1]{{ count }} canal|]1, Inf[{{ count }} canaux"
+  property:
+    category_tree: Arbre de catégories
+    do_not_convert: Ne pas convertir
+    measurement: Paramètres des mesures
+    label_conversion_units: Choisissez une unité de conversion pour chaque unité d
+  module:
+    create:
+      button: Créer un canal
+    delete:
+      confirm: Êtes-vous sûr(e) de que vouloir supprimer ce canal ?
+pim_enrich.entity.locale:
+  label: locale
+  uppercase_label: Locale
+  plural_label: Locales
+  page_title:
+    index: "]-Inf, 1]{{ count }} locale activée|]1, Inf[{{ count }"
+  helper: "Pour activer ou désactiver une locale, rendez-vous sur l'u"
+  grid:
+    columns:
+      code: Locales activées
+    filters:
+      search_placeholder: Rechercher une locale activée
+    no_search_result: Désolé, il n’y a aucun résultat pour votre recherche.
+pim_enrich.entity.currency:
+  plural_label: Devises
+  page_title:
+    index: "]-Inf, 1]{{ count }} devise|]1, Inf[{{ count }} devises"
+flash:
+  currency:
+    error:
+      linked_to_channel: Vous ne pouvez pas désactiver une devise liée à un canal
+    updated: Devise mise à jour avec succès

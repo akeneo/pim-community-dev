@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Structure\Component\Updater;
 
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypeRegistry;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -42,22 +42,27 @@ class AttributeUpdater implements ObjectUpdaterInterface
     /** @var TranslatableUpdater */
     protected $translatableUpdater;
 
-    /** @var array */
+    /** @var array<string> */
     private $properties;
+
+    /** @var array<string> */
+    protected $ignoredFields = [];
 
     /**
      * @param AttributeGroupRepositoryInterface $attrGroupRepo
      * @param LocaleRepositoryInterface         $localeRepository
      * @param AttributeTypeRegistry             $registry
      * @param TranslatableUpdater               $translatableUpdater
-     * @param array                             $properties
+     * @param array<string>                     $properties
+     * @param array<string>                     $ignoredFields
      */
     public function __construct(
         AttributeGroupRepositoryInterface $attrGroupRepo,
         LocaleRepositoryInterface $localeRepository,
         AttributeTypeRegistry $registry,
         TranslatableUpdater $translatableUpdater,
-        array $properties
+        array $properties,
+        array $ignoredFields
     ) {
         $this->attrGroupRepo = $attrGroupRepo;
         $this->localeRepository = $localeRepository;
@@ -65,6 +70,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
         $this->accessor = PropertyAccess::createPropertyAccessor();
         $this->translatableUpdater = $translatableUpdater;
         $this->properties = $properties;
+        $this->ignoredFields = $ignoredFields;
     }
 
     /**
@@ -80,6 +86,9 @@ class AttributeUpdater implements ObjectUpdaterInterface
         }
 
         foreach ($data as $field => $value) {
+            if ($this->isFieldIgnored($field)) {
+                continue;
+            }
             $this->validateDataType($field, $value);
             $this->setData($attribute, $field, $value);
         }
@@ -98,12 +107,12 @@ class AttributeUpdater implements ObjectUpdaterInterface
      */
     protected function validateDataType($field, $data)
     {
-        if (in_array($field, ['labels', 'available_locales', 'allowed_extensions'])) {
+        if (in_array($field, ['labels', 'available_locales', 'allowed_extensions', 'guidelines'])) {
             if (!is_array($data)) {
                 throw InvalidPropertyTypeException::arrayExpected($field, static::class, $data);
             }
 
-            foreach ($this->filterReadOnlyFields($data) as $key => $value) {
+            foreach ($data as $value) {
                 if (null !== $value && !is_scalar($value)) {
                     throw InvalidPropertyTypeException::validArrayStructureExpected(
                         $field,
@@ -145,6 +154,10 @@ class AttributeUpdater implements ObjectUpdaterInterface
             if (null !== $data && !is_scalar($data)) {
                 throw InvalidPropertyTypeException::scalarExpected($field, static::class, $data);
             }
+        } elseif ('table_configuration' === $field) {
+            if (!is_array($data)) {
+                throw InvalidPropertyTypeException::arrayExpected($field, static::class, $data);
+            }
         } else {
             throw UnknownPropertyException::unknownProperty($field);
         }
@@ -185,6 +198,18 @@ class AttributeUpdater implements ObjectUpdaterInterface
                 break;
             case 'allowed_extensions':
                 $attribute->setAllowedExtensions(implode(',', $data));
+                break;
+            case 'guidelines':
+                foreach ($data as $localeCode => $localeGuidelines) {
+                    if (null === $localeGuidelines || '' === $localeGuidelines) {
+                        $attribute->removeGuidelines($localeCode);
+                    } else {
+                        $attribute->addGuidelines($localeCode, $localeGuidelines);
+                    }
+                }
+                break;
+            case 'table_configuration':
+                $attribute->setRawTableConfiguration($data);
                 break;
             default:
                 if (in_array($field, $this->properties)) {
@@ -351,12 +376,8 @@ class AttributeUpdater implements ObjectUpdaterInterface
         return new \DateTime($date);
     }
 
-    private function filterReadOnlyFields(array $dataToFilter) : array
+    private function isFieldIgnored(string $field): bool
     {
-        $readOnlyFields = ['group_labels'];
-
-        return array_filter($dataToFilter, function ($key) use ($readOnlyFields) {
-            return !in_array($key, $readOnlyFields);
-        }, ARRAY_FILTER_USE_KEY);
+        return in_array($field, $this->ignoredFields);
     }
 }

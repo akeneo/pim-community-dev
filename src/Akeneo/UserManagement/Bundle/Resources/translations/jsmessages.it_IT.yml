@@ -10,7 +10,6 @@ pim_title:
   pim_user_security_login: Login
   pim_user_reset_reset: Reimposta password
   pim_user_reset_request: Password Dimenticata
-  pim_user_reset_check_email: Reimpostazione password | Controllo Email
   pim_user_group_create: 'Gruppi | Crea'
   pim_user_group_update: 'Gruppo {{ group }} | Modifica'
 confirmation:
@@ -27,6 +26,20 @@ pim_enrich:
       module:
         delete:
           confirm: Sei sicuro di voler eliminare questo utente?
+pim_user.profile:
+  caption: Come prima cosa, dicci qual è la tua missione principale, così potremo aiutarti con i contenuti più rilevanti.
+  why_is_it_needed: Perché abbiamo bisogno di queste informazioni?
+  save_button: Salva e accedi all'App Store
+  selector:
+    placeholder: Scegli un'opzione 
+    not_found: Nessun risultato trovato
+  product_manager: Gestisco i cataloghi dei prodotti.
+  redactor: Arricchisco i dati di prodotto.
+  pim_integrator: Integro Akeneo PIM nel nostro ecosistema IT.
+  pim_administrator: Amministro Akeneo PIM.
+  asset_manager: Gestisco gli asset nel PIM.
+  translator: Traduco i dati di prodotto, asset e/o entità di riferimento.
+  third_party_developer: Sviluppo soluzioni connesse con Akeneo PIM.
 pim_user_management:
   entity:
     user:
@@ -42,6 +55,7 @@ pim_user_management:
         index: "]-Inf, 1] {{ count }} utente|]1, Inf [{{ count }} utenti"
       properties:
         username: Nome utente
+        profile: Qual è la tua missione principale?
         name_prefix: Prefisso del nome
         first_name: Nome
         middle_name: Secondo nome
@@ -60,12 +74,19 @@ pim_user_management:
         new_password_repeat: Nuova password (di nuovo)
         password: Password
         password_repeat: Password (Ripeti)
+        last_logged_in: Ultimo accesso
+        login_count: Numero accessi
         ui_locale: Impostazioni locali dell'interfaccia utente
         timezone: Fuso orario
         default_product_grid_view: Visualizzazione predefinita griglia prodotti
         default_published_product_grid_view: Griglia di visualizzazione predefinita dei prodotti pubblicati #EE Only
         proposals_to_review_notification: Quando una nuova proposta è da revisionare #EE Only
         proposals_state_notifications: Quando una proposta è accettata o rifiutata #EE Only
+        not_fully_supported_locale: 'L''impostazione locale selezionata per l''interfaccia [{{ code }}] attualmente non è supporta in modo completo. Alcune traduzioni potrebbero essere incomplete o assenti. Aiutaci a migliorare la localizzazione:'
+        link_to_crowdin_label: contribuisci su Crowdin.
+      meta:
+        created: Creato
+        updated: Aggiornato
       module:
         create:
           button: Crea utente
@@ -93,3 +114,13 @@ pim_user_management:
       module:
         create:
           button: Crea gruppo
+  form:
+    error:
+      required: Questo campo è obbligatorio.
+      should_not_contain_space: Il nome utente non deve contenere spazi.
+      too_short_value: "Questo valore è troppo corto. Dovrebbe avere {{ count }} caratteri o più."
+    duplication:
+      title: 'Duplica utente "{{ username }}"'
+      notification:
+        success: L'utente è stato duplicato con successo
+        failure: Errore duplicazione utente

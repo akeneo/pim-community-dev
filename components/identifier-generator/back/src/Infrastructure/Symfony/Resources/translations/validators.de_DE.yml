@@ -1,0 +1,15 @@
+validation:
+  create:
+    code_already_used: 'Dieser Code wird bereits verwendet'
+  identifier_generator:
+    attribute_does_not_exist: 'Das Attribut "{{code}}" existiert nicht.'
+    attribute_should_have_type: 'Der "{{ code }}" Attributcode ist "{{ type }}" Typ und sollte vom Typ "{{ expected }} " sein.'
+    free_text_string_field_required: 'Freitext sollte "String" Schlüssel enthalten'
+    enabled_value_field_required: 'Aktiviert sollte "Wert"-Schlüssel enthalten'
+    enabled_boolean_value: 'Dieser Wert sollte ein boolscher Wert sein.'
+    conditions_limit_reached: 'sollte nur {{limit}} {{type}} Bedingung enthalten'
+    unknown_operator: 'Operator {{ value }} kann nur einer der folgenden sein: {{ choices }}.'
+    families_do_not_exist: 'Die folgenden Produktfamilien wurden aus Ihrem Katalog {{ familyCodes }} gelöscht. Sie können sie aus Ihrer Produktauswahl entfernen.'
+    options_do_not_exist: 'Die folgenden Attributoptionen existieren nicht für das Attribut "{{ attributeCode }}": {{ optionCodes }}.'
+    family_property_fields_required: '"{{ field }}" Feld ist erforderlich für den Typ "Familie".'
+    process_unknown_operator: 'Operator {{ value }} kann nur einer der folgenden sein: {{ choices }}.'

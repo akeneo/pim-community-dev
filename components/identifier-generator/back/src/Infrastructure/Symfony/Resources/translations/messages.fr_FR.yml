@@ -1,0 +1,20 @@
+pim_catalog_identifier_generator:
+  acl:
+    view: 'Afficher le générateur d''identifiants'
+    manage: 'Éditer le générateur d''identifiants'
+  acl_group:
+    identifier_generator: 'Générateur d''identifiants'
+  condition:
+    fields:
+      family: Famille
+      enabled: Statut
+      categories: Catégories
+    field_groups:
+      system: Système
+  structure:
+    fields:
+      free_text: Texte
+      auto_number: Nombre incrémental
+      family: Famille
+    field_groups:
+      system: Système

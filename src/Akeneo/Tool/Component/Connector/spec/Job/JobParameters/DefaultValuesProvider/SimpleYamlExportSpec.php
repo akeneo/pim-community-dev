@@ -8,28 +8,31 @@ use PhpSpec\ObjectBehavior;
 
 class SimpleYamlExportSpec extends ObjectBehavior
 {
-    function let()
+    public function let(): void
     {
         $this->beConstructedWith(['my_supported_job_name']);
     }
 
-    function it_is_a_provider()
+    public function it_is_a_provider(): void
     {
         $this->shouldImplement(DefaultValuesProviderInterface::class);
     }
 
-    function it_provides_default_values()
+    public function it_provides_default_values(): void
     {
         $this->getDefaultValues()->shouldReturn(
             [
-                'filePath' => sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'export_%job_label%_%datetime%.yml',
-                'user_to_notify' => null,
+                'storage' => [
+                    'type' => 'none',
+                    'file_path' => sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'export_%job_label%_%datetime%.yml',
+                ],
+                'users_to_notify' => [],
                 'is_user_authenticated' => false,
             ]
         );
     }
 
-    function it_supports_a_job(JobInterface $job)
+    public function it_supports_a_job(JobInterface $job): void
     {
         $job->getName()->willReturn('my_supported_job_name');
         $this->supports($job)->shouldReturn(true);

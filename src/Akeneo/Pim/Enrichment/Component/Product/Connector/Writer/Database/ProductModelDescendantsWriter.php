@@ -40,7 +40,7 @@ class ProductModelDescendantsWriter implements ItemWriterInterface, StepExecutio
         foreach ($productModels as $productModel) {
             $this->descendantsSaver->save($productModel);
             if (null !== $this->stepExecution) {
-                $this->stepExecution->incrementSummaryInfo('process');
+                $this->stepExecution->incrementSummaryInfo('update');
             }
         }
     }

@@ -1,0 +1,58 @@
+# Internal API
+akeneo_connectivity_connection_custom_apps_rest_get_all:
+    path: '/rest/custom-apps'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controller\Internal\GetAllCustomAppsAction
+    methods: [GET]
+
+akeneo_connectivity_connection_custom_apps_rest_create:
+    path: '/rest/custom-apps'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controller\Internal\CreateCustomAppAction
+    methods: [POST]
+
+akeneo_connectivity_connection_custom_apps_rest_delete:
+    path: '/rest/custom-apps/{customAppId}'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controller\Internal\DeleteCustomAppAction
+    methods: [DELETE]
+
+akeneo_connectivity_connection_custom_apps_rest_get_secret:
+    path: '/rest/custom-apps/{customAppId}/secret'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controller\Internal\GetCustomAppSecretAction
+    methods: [GET]
+
+akeneo_connectivity_connection_custom_apps_rest_regenerate_secret:
+    path: '/rest/custom-apps/{customAppId}/secret'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controller\Internal\RegenerateCustomAppSecretAction
+    methods: [ POST ]
+
+akeneo_connectivity_connection_custom_apps_rest_max_limit_reached:
+    path: '/rest/custom-apps/max-limit-reached'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controller\Internal\IsCustomAppsNumberLimitReachedAction
+    methods: [ GET ]
+
+# External API
+akeneo_connectivity_connection_custom_apps_api_list:
+    path: '/api/rest/v1/test-apps'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controller\External\GetCustomAppsAction
+    methods: [GET]
+    defaults: { _list_in_root_endpoint: false }
+
+akeneo_connectivity_connection_custom_apps_api_create:
+    path: '/api/rest/v1/test-apps'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controller\External\CreateCustomAppAction
+    methods: [POST]
+    defaults: { _list_in_root_endpoint: false }
+
+akeneo_connectivity_connection_custom_apps_api_delete:
+    path: '/api/rest/v1/test-apps/{clientId}'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controller\External\DeleteCustomAppAction
+    methods: [DELETE]
+    defaults: { _list_in_root_endpoint: false }
+
+# Front API
+akeneo_connectivity_connection_connect_custom_apps_create:
+    path: '/connect/custom-apps/create'
+
+akeneo_connectivity_connection_connect_custom_apps_delete:
+    path: '/connect/custom-apps/{customAppId}/delete'
+    requirements:
+        customAppId: '[a-zA-Z0-9_-]+'

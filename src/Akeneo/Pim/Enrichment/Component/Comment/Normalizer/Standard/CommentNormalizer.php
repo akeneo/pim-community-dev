@@ -28,6 +28,7 @@ class CommentNormalizer implements NormalizerInterface, NormalizerAwareInterface
             'id'           => $comment->getId(),
             'resourceName' => $comment->getResourceName(),
             'resourceId'   => $comment->getResourceId(),
+            'resourceUuid' => $comment->getResourceUuid()?->toString(),
             'author'       => $this->normalizeAuthor($comment),
             'body'         => $comment->getBody(),
             'created'      => $this->normalizer->normalize($comment->getCreatedAt(), 'standard', $context),
@@ -41,7 +42,7 @@ class CommentNormalizer implements NormalizerInterface, NormalizerAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof CommentInterface && $format === 'standard';
     }
@@ -81,7 +82,7 @@ class CommentNormalizer implements NormalizerInterface, NormalizerAwareInterface
 
         return [
 
-            'username' => $comment->getAuthor()->getUsername(),
+            'username' => $comment->getAuthor()->getUserIdentifier(),
             'fullName' => sprintf(
                 '%s %s',
                 $comment->getAuthor()->getFirstName(),

@@ -102,18 +102,29 @@ oro_config:
       tab:
         system:
           title: System
+      save_ok: Successfully saved configuration
+      save_error: Sorry, could not save the configuration ({{ reason }})
       group:
         localization:
-          title: Localisation
-          system_locale: Language
+          title: Login page setting
+          fields:
+            system_locale:
+              label: Language
         notification:
-          title: Notifications
-          system_notification: New version notifications
+          title: New version notifications
+          helper: When enabled, you receive a notification when new version is available for you.
+          fields:
+            enabler:
+              label: Enabled
         loading_message:
-          title: Loading messages
-          label: Enable loading messages
-        loading_messages:
-          label: Available loading messages
+          title: Customized loading messages
+          helper: Entertain your users with customized messages for loading screens.
+          placeholder: Please write your own message to be displayed on your loading screen
+          fields:
+            enabler:
+              label: Enable loading messages
+            messages:
+              label: Add your own loading messages
 pim_ui:
   flash:
     unsaved_changes: 'You have unsaved changes. Are you sure that you want to leave?'
@@ -159,6 +170,7 @@ pim_common:
   before: Before
   by: by
   cancel: Cancel
+  characters_left: ']-Inf, 1]{{ count }} character left|]1, Inf[{{ count }} characters left'
   clear_value: Clear value
   close: Close
   code: Code
@@ -170,6 +182,7 @@ pim_common:
   created: Created
   delete: Delete
   done: Done
+  duplicate: Duplicate
   edit: Edit
   entity_updated: There are unsaved changes.
   export: Export
@@ -184,6 +197,7 @@ pim_common:
   less_than: Less than
   loading: Loading...
   media_upload: Drag and drop to upload or click here
+  more_actions: More actions
   more_than: More than
   next: Next
   "no": "No"
@@ -191,10 +205,14 @@ pim_common:
   not_available: N/A
   now: Now
   ok: OK
+  open: Open
+  no_result: No result found
+  no_search_result: Sorry, there is no result for your search.
   other_actions: Other actions
   permissions: Permissions
   previous: Previous
   properties: Properties
+  quality_score: Quality score
   remove: Remove
   required_label: (required)
   result_count: "{0}0 results|{1}1 result|]1, Inf[{{ itemsCount }} results"
@@ -204,6 +222,7 @@ pim_common:
     search: Search...
     no_match: No matches found
     load_more: Loading more results...
+  selected: "{0}None selected|{1}One selected|]1, Inf[{{ itemsCount }} selected"
   status: Status
   to: to
   type: Type
@@ -224,7 +243,22 @@ pim_common:
     DOES NOT CONTAIN: Does not contain
     STARTS WITH: Starts with
     ENDS WITH: Ends with
+    IN: In list
+    "NOT IN": Not in list
   read_more: Read more
+  channel: Channel
+  locale: Locale
+  categories: Categories
+  family_variant: Family variant
+  enabled: Enabled
+  family: Family
+  parent: Parent
+  groups: Groups
+  products: Products
+  product_uuids: Products
+  product_models: Product models
+  more: More
+  public_view: Public view
 error:
   exception: Oh snap! A {{ status_code }} error occurred...
   forbidden: Forbidden. You are not allowed to access this page
@@ -255,14 +289,12 @@ pim_enrich.entity.fallback:
       discard_changes_title: Are you sure?
 pim_enrich.entity.job_execution:
   page_title:
-    index: "]-Inf, 1]{{ count }} operation|]1, Inf[{{ count }} operations"
+    index: "]-Inf, 1]{{ count }} job|]1, Inf[{{ count }} jobs"
   module:
     create:
       upload: Drop your {{ type }} file here, or click to browse disk
     download:
       archive: Download generated archive
-      output: Download generated files
-      input: Download read files
       invalid_xlsx: Download invalid data
       invalid_csv: Download invalid data
 pim_title:
@@ -273,8 +305,9 @@ pim_title:
   pim_enrich_catalog_volume_index: Catalog volume monitoring
   pim_enrich_categorytree_index: Category trees
   pim_enrich_categorytree_create: Category trees | Create
-  pim_enrich_categorytree_edit: Category tree {{ category.label }} | Edit
+  pim_enrich_categorytree_edit: Category {{ category.label }} | Edit
   pim_enrich_categorytree_create_tree: Category trees | Create
+  pim_enrich_categorytree_tree: Category tree {{ category.label }} | Edit
   pim_enrich_attribute_index: Attributes
   pim_enrich_attribute_create: Attributes | Create
   pim_enrich_attribute_edit: Attribute {{ attribute.label }} | Edit
@@ -301,6 +334,8 @@ pim_title:
   pim_enrich_job_tracker_show: Process tracker | Show job
   pim_enrich_mass_edit_action: Mass Edit
   pim_analytics_system_info_index: System information
+  pim_settings_index: Settings
+  pim_system_index: System
 pim_menu:
   tab:
     activity: Activity
@@ -316,7 +351,7 @@ pim_menu:
     attribute_group: Attribute groups
     channel: Channels
     currency: Currencies
-    dashboard: Dashboard
+    dashboard: Activity dashboard
     family: Families
     group: Groups
     group_type: Group types
@@ -337,7 +372,10 @@ pim_menu:
     activity: Activity navigation
     system: System navigation
     user: Users management navigation
-    settings: Settings navigation
+    settings:
+      product: Product settings
+      catalog: Catalog settings
+      collapsed_label: Settings navigation
     product: Product navigation
     product_infos: Product info
   user:
@@ -349,3 +387,47 @@ pim_notification:
     export: Export
     quick_export: Quick Export
     mass_edit: Mass Edit
+pim_settings:
+  settings_menu: Settings menu
+  catalog_settings: Catalog settings
+  product_settings: Product settings
+  count:
+    category_trees: '{0}You have 0 trees |{1}You have 1 tree |]1, Inf[You have {{ count }} trees '
+    categories: '{0}and 0 categories|{1}and 1 category|]1, Inf[and {{ count }} categories'
+    channels: '{0}You have 0 channels|{1}You have 1 channel|]1, Inf[You have {{ count }} channels'
+    locales: '{0}You have 0 enabled locales|{1}You have 1 enabled locale|]1, Inf[You have {{ count }} enabled locales'
+    currencies: '{0}You have 0 enabled currencies|{1}You have 1 enabled currency|]1, Inf[You have {{ count }} enabled currencies'
+    attribute_groups: '{0}You have 0 attribute groups|{1}You have 1 attribute group|]1, Inf[You have {{ count }} attribute groups'
+    attributes: '{0}You have 0 attributes|{1}You have 1 attribute|]1, Inf[You have {{ count }} attributes'
+    families: '{0}You have 0 families|{1}You have 1 family|]1, Inf[You have {{ count }} families'
+    measurements: '{0}You have 0 measurements|{1}You have 1 measurement|]1, Inf[You have {{ count }} measurements'
+    association_types: '{0}You have 0 association types|{1}You have 1 association type|]1, Inf[You have {{ count }} association types'
+    group_types: '{0}You have 0 group types|{1}You have 1 group type|]1, Inf[You have {{ count }} group types'
+    groups: '{0}You have 0 groups|{1}You have 1 group|]1, Inf[You have {{ count }} groups'
+    rules: '{0}You have 0 enabled rules|{1}You have 1 enabled rule|]1, Inf[You have {{ count }} enabled rules'
+pim_system:
+  system_menu: System menu
+  system_navigation: System navigation
+  users_management_navigation: Users management navigation
+  count:
+    product_values: '{0}You have 0 product values|{1}You have 1 product value|]1, Inf[You have {{ count }} product values'
+    users: '{0}You have 0 users|{1}You have 1 user|]1, Inf[You have {{ count }} users'
+    user_groups: '{0}You have 0 user groups|{1}You have 1 user group|]1, Inf[You have {{ count }} user groups'
+    roles: '{0}You have 0 roles|{1}You have 1 role|]1, Inf[You have {{ count }} roles'
+  sso:
+    enabled: SSO enabled
+    disabled: SSO disabled
+    title: SAML-based Single Sign-On
+  reset_pim:
+    modal:
+      summary:
+        users:
+          name: Users
+        roles:
+          name: Roles
+      confirm:
+        name: Confirm
+pim_datagrid:
+  mass_action:
+    default:
+      select_action: Select Action

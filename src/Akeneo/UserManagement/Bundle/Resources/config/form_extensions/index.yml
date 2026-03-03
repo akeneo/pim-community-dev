@@ -26,6 +26,11 @@ extensions:
         config:
             title: pim_user_management.entity.user.page_title.index
 
+    pim-user-index-sandbox-helper:
+        module: pim/sandbox-helper
+        parent: pim-user-index
+        targetZone: helper
+
     pim-user-index-breadcrumbs:
         module: pim/common/breadcrumbs
         parent: pim-user-index
@@ -59,7 +64,7 @@ extensions:
             alias: pim-user-grid
 
     pim-user-index-create-button:
-        module: pim/form/common/index/create-button
+        module: pim/user/form/create-user-button
         parent: pim-user-index
         targetZone: buttons
         position: 100

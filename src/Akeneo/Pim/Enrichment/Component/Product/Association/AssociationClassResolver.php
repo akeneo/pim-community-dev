@@ -42,7 +42,8 @@ class AssociationClassResolver
         $entityClass = get_class($entity);
 
         throw new \InvalidArgumentException(sprintf(
-            'Cannot find any association class for entity of type "%s"', $entityClass
+            'Cannot find any association class for entity of type "%s"',
+            $entityClass
         ));
     }
 }

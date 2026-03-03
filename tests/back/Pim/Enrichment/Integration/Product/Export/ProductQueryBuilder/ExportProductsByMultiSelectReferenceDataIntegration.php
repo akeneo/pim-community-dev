@@ -2,6 +2,9 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Product\Export\ProductQueryBuilder;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiReferenceEntityValue;
 use AkeneoTest\Pim\Enrichment\Integration\Product\Export\AbstractExportTestCase;
 
 class ExportProductsByMultiSelectReferenceDataIntegration extends AbstractExportTestCase
@@ -17,50 +20,36 @@ class ExportProductsByMultiSelectReferenceDataIntegration extends AbstractExport
         ]);
 
         $this->createProduct('product_airguard', [
-            'family' => 'a_family',
-            'values'     => [
-                'a_ref_data_multi_select' => [
-                    ['data' => ['airguard'], 'locale' => null, 'scope' => null]
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetMultiReferenceEntityValue('a_ref_data_multi_select', null, null, ['airguard'])
         ]);
 
         $this->createProduct('product_braid', [
-            'family' => 'a_family',
-            'values'     => [
-                'a_ref_data_multi_select' => [
-                    ['data' => ['braid'], 'locale' => null, 'scope' => null]
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetMultiReferenceEntityValue('a_ref_data_multi_select', null, null, ['braid'])
         ]);
 
         $this->createProduct('product_airguard_braid', [
-            'family' => 'a_family',
-            'values'     => [
-                'a_ref_data_multi_select' => [
-                    ['data' => ['airguard', 'braid'], 'locale' => null, 'scope' => null]
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetMultiReferenceEntityValue('a_ref_data_multi_select', null, null, ['airguard', 'braid'])
         ]);
 
         $this->createProduct('product_without_option', [
-            'family' => 'a_family',
-            'values'     => [
-                'a_ref_data_multi_select' => [
-                    ['data' => [], 'locale' => null, 'scope' => null]
-                ]
-            ]
+            new SetFamily('a_family'),
+            new ClearValue('a_ref_data_multi_select', null, null)
         ]);
 
-        $this->createProduct('product_without_option_attribute', ['family' => 'a_family']);
+        $this->createProduct('product_without_option_attribute', [new SetFamily('a_family')]);
     }
 
-    public function testProductExportByFilteringOnOneOption()
+    public function testProductExportByFilteringOnOneOption(): void
     {
+        $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_airguard');
+        $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_airguard_braid');
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;a_ref_data_multi_select
-product_airguard;;1;a_family;;airguard
-product_airguard_braid;;1;a_family;;airguard,braid
+uuid;sku;categories;enabled;family;groups;a_ref_data_multi_select
+{$product1->getUuid()->toString()};product_airguard;;1;a_family;;airguard
+{$product2->getUuid()->toString()};product_airguard_braid;;1;a_family;;airguard,braid
 
 CSV;
 
@@ -78,18 +67,22 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);
     }
 
-    public function testProductExportByFilteringOnTwoOptions()
+    public function testProductExportByFilteringOnTwoOptions(): void
     {
+        $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_airguard');
+        $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_airguard_braid');
+        $product3 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_braid');
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;a_ref_data_multi_select
-product_airguard;;1;a_family;;airguard
-product_braid;;1;a_family;;braid
-product_airguard_braid;;1;a_family;;airguard,braid
+uuid;sku;categories;enabled;family;groups;a_ref_data_multi_select
+{$product1->getUuid()->toString()};product_airguard;;1;a_family;;airguard
+{$product2->getUuid()->toString()};product_airguard_braid;;1;a_family;;airguard,braid
+{$product3->getUuid()->toString()};product_braid;;1;a_family;;braid
 
 CSV;
 
@@ -107,17 +100,20 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);
     }
 
-    public function testProductExportByFilteringWithEmpty()
+    public function testProductExportByFilteringWithEmpty(): void
     {
+        $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_without_option');
+        $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_without_option_attribute');
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;a_ref_data_multi_select
-product_without_option;;1;a_family;;
-product_without_option_attribute;;1;a_family;;
+uuid;sku;categories;enabled;family;groups;a_ref_data_multi_select
+{$product1->getUuid()->toString()};product_without_option;;1;a_family;;
+{$product2->getUuid()->toString()};product_without_option_attribute;;1;a_family;;
 
 CSV;
 
@@ -135,16 +131,15 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);
     }
 
-    public function testProductExportByFilteringWithAnEmptyList()
+    public function testProductExportByFilteringWithAnEmptyList(): void
     {
-        $expectedCsv = <<<CSV
-
-CSV;
+        $expectedCsv = '';
 
         $config = [
             'filters' => [
@@ -160,6 +155,7 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);

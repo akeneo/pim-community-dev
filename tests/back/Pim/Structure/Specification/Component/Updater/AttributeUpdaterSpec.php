@@ -15,7 +15,7 @@ use Akeneo\Pim\Structure\Component\AttributeTypeRegistry;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeGroupRepositoryInterface;
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
@@ -32,7 +32,8 @@ class AttributeUpdaterSpec extends ObjectBehavior
             $localeRepository,
             $registry,
             $translatableUpdater,
-            ['auto_option_sorting']
+            ['auto_option_sorting'],
+            ['group_labels']
         );
     }
 
@@ -81,7 +82,12 @@ class AttributeUpdaterSpec extends ObjectBehavior
             'labels' => ['en_US' => 'Test1', 'fr_FR' => 'Test2'],
             'group' => 'marketing',
             'type' => 'pim_catalog_text',
-            'date_min' => '2016-12-12T00:00:00+01:00'
+            'date_min' => '2016-12-12T00:00:00+01:00',
+            'guidelines' => [
+                'en_US' => 'new guidelines',
+                'fr_FR' => 'nouvelles indications',
+            ],
+            'table_configuration' => ['config'],
         ];
 
         $translatableUpdater->update($attribute, ['en_US' => 'Test1', 'fr_FR' => 'Test2']);
@@ -92,6 +98,9 @@ class AttributeUpdaterSpec extends ObjectBehavior
         $attribute->setBackendType('backend')->shouldBeCalled();
         $attribute->setUnique(true)->shouldBeCalled();
         $attribute->setDateMin(new \DateTime('2016-12-12T00:00:00+01:00'))->shouldBeCalled();
+        $attribute->addGuidelines('en_US', 'new guidelines')->shouldBeCalled();
+        $attribute->addGuidelines('fr_FR', 'nouvelles indications')->shouldBeCalled();
+        $attribute->setRawTableConfiguration(['config'])->shouldBeCalled();
 
         $registry->get('pim_catalog_text')->willReturn($attributeType);
         $attributeType->getName()->willReturn('pim_catalog_text');
@@ -101,6 +110,24 @@ class AttributeUpdaterSpec extends ObjectBehavior
         $accessor->setValue($attribute, 'type', 'pim_catalog_text');
 
         $this->update($attribute, $data);
+    }
+
+    function it_ignores_fields_when_updating_an_attribute(AttributeInterface $attribute, PropertyAccessor $accessor)
+    {
+        $updates = [
+            'number_min' => 1,
+            'group_labels' => ['label1', 'label2'],
+        ];
+
+        $attribute
+            ->setNumberMin(1)
+            ->shouldBeCalled();
+
+        $accessor
+            ->setValue($attribute, 'group_labels', ['label1', 'label2'])
+            ->shouldNotBeCalled();
+
+        $this->update($attribute, $updates, []);
     }
 
     function it_throws_an_exception_if_no_groups_found(
@@ -298,6 +325,19 @@ class AttributeUpdaterSpec extends ObjectBehavior
                     AttributeUpdater::class, 'not_an_array')
             )
             ->during('update', [$attribute, $values, []]);
+    }
+
+    function it_throws_an_exception_when_table_configuration_is_not_an_array(AttributeInterface $attribute)
+    {
+        $data = [
+            'table_configuration' => 'config',
+        ];
+
+        $this
+            ->shouldThrow(
+                InvalidPropertyTypeException::arrayExpected('table_configuration', AttributeUpdater::class, 'config')
+            )
+            ->during('update', [$attribute, $data, []]);
     }
 
     function it_sets_the_default_unique_property_when_setting_an_attribute_type(

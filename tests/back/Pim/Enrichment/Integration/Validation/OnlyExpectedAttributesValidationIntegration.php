@@ -24,7 +24,7 @@ class OnlyExpectedAttributesValidationIntegration extends TestCase
         $this->get('pim_catalog.updater.product')->update($variantProduct, $data);
         $violations = $this->get('pim_catalog.validator.product')->validate($variantProduct);
 
-        $this->assertCount(1, $violations);
+        $this->assertCount(1, $violations, (string) $violations);
         $this->assertSame('Attribute "care_instructions" does not belong to the family "shoes"', $violations->get(0)->getMessage());
         $this->assertSame('attribute', $violations->get(0)->getPropertyPath());
     }
@@ -42,7 +42,7 @@ class OnlyExpectedAttributesValidationIntegration extends TestCase
         $this->get('pim_catalog.updater.product')->update($variantProduct, $data);
         $violations = $this->get('pim_catalog.validator.product')->validate($variantProduct);
 
-        $this->assertCount(1, $violations);
+        $this->assertCount(1, $violations, (string) $violations);
         $this->assertSame('Cannot set the property "variation_name" to this entity as it is not in the attribute set', $violations->get(0)->getMessage());
         $this->assertSame('attribute', $violations->get(0)->getPropertyPath());
     }

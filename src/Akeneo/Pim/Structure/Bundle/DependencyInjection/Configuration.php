@@ -17,10 +17,10 @@ class Configuration implements ConfigurationInterface
     /**
      * {@inheritDoc}
      */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('akeneo_pim_structure');
+        $treeBuilder = new TreeBuilder('akeneo_pim_structure');
+        $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->children()

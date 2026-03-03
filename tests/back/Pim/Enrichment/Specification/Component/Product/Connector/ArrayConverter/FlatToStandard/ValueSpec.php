@@ -2,6 +2,10 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard;
 
+use Akeneo\Pim\Structure\Component\Model\AbstractAttribute;
+use Akeneo\Pim\Structure\Component\Model\Attribute;
+use Akeneo\Tool\Component\Connector\Exception\BusinessArrayConversionException;
+use Akeneo\Tool\Component\Connector\Exception\DataArrayConversionException;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter\ValueConverterInterface;
@@ -52,7 +56,7 @@ class ValueSpec extends ObjectBehavior
             'price'                  => '15 EUR, 10 USD',
         ];
 
-        $columnsMerger->merge($item)->willReturn($itemMerged);
+        $columnsMerger->merge($item, [])->willReturn($itemMerged);
 
         $converterRegistry->getConverter(Argument::any())->willReturn($converter);
 
@@ -203,7 +207,7 @@ class ValueSpec extends ObjectBehavior
     ) {
         $item = ['sku' => '1069978', 'enabled' => true];
 
-        $columnsMerger->merge($item)->willReturn($item);
+        $columnsMerger->merge($item, [])->willReturn($item);
 
         $fieldExtractor->extractColumnInfo('sku')->willReturn(['attribute' => $attribute]);
         $attribute->getType()->willReturn('sku');
@@ -220,11 +224,31 @@ class ValueSpec extends ObjectBehavior
     {
         $item = ['sku' => '1069978', 'enabled' => true];
 
-        $columnsMerger->merge($item)->willReturn($item);
+        $columnsMerger->merge($item, [])->willReturn($item);
 
         $this->shouldThrow(new \LogicException('Unable to convert the given column "sku"'))->during(
             'convert',
-            [$item]
+            [$item],
         );
+    }
+
+    function it_throws_an_exception_if_value_cant_be_converted(ValueConverterRegistryInterface $converterRegistry, AttributeColumnInfoExtractor $fieldExtractor, ValueConverterInterface $converter, ColumnsMerger $columnsMerger) {
+        $column="test_column";
+        $attributeType="pim_catalog_text";
+        $e = new \Error("");
+        $dateTime  = new \DateTime('2000-01-01');
+        $attribute = new Attribute();
+        $attribute->setType($attributeType);
+        $values = [$column => $dateTime];
+        $attributeFieldInfo = ['attribute' => $attribute];
+
+        $converterRegistry->getConverter($attributeType)->willReturn($converter);
+        $columnsMerger->merge($values, [])->willReturn($values);
+        $fieldExtractor->extractColumnInfo($column)->willReturn($attributeFieldInfo);
+        $converter->convert($attributeFieldInfo,$dateTime)->willThrow($e);
+
+        $this->shouldThrow(new BusinessArrayConversionException("Exception while converting column \"{$column}\": bad input format.",
+            "pim_import_export.notification.export.warnings.xlsx_cell_conversion_error", [$column]))
+            ->during('convert',[$values]);
     }
 }

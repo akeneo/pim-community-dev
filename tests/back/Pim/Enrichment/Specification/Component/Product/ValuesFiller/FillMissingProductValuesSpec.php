@@ -2,11 +2,11 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\ValuesFiller;
 
-use Akeneo\Channel\Component\Model\Channel;
-use Akeneo\Channel\Component\Model\Currency;
-use Akeneo\Channel\Component\Model\Locale;
-use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\Channel;
+use Akeneo\Channel\Infrastructure\Component\Model\Currency;
+use Akeneo\Channel\Infrastructure\Component\Model\Locale;
+use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingProductValues;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\Family;
@@ -24,6 +24,30 @@ class FillMissingProductValuesSpec extends ObjectBehavior
         LocaleRepositoryInterface $localeRepository,
         GetAttributes $getAttributes
     ) {
+        $deDe = new Locale();
+        $enUs = new Locale();
+        $frFR = new Locale();
+        $deDe->setCode('de_DE');
+        $enUs->setCode('en_US');
+        $frFR->setCode('fr_FR');
+
+        $USD = new Currency();
+        $EUR = new Currency();
+        $AED = new Currency();
+        $USD->setCode('USD');
+        $EUR->setCode('EUR');
+        $AED->setCode('AED');
+
+        $tablet = new Channel();
+        $tablet->setCode('tablet');
+        $tablet->setLocales([$enUs, $frFR]);
+        $tablet->setCurrencies([$AED, $EUR]);
+
+        $ecommerce = new Channel();
+        $ecommerce->setCode('ecommerce');
+        $ecommerce->setLocales([$frFR, $deDe]);
+        $ecommerce->setCurrencies([$USD, $EUR]);
+
         $family = new Family();
 
         $family->addAttribute(
@@ -32,6 +56,16 @@ class FillMissingProductValuesSpec extends ObjectBehavior
         $family->addAttribute(
             (new Builder())->aTextAttribute()->withCode('localizable_name')->localizable()->build()
         );
+        $family->addAttribute(
+            (new Builder())->aTextAttribute()->withCode('specific_localizable_name')->localeSpecific([$frFR])->build()
+        );
+        $family->addAttribute(
+            (new Builder())
+                ->aTextAttribute()
+                ->withCode('scopable_localizable_locale_specific_name')->localizable()->scopable()->localeSpecific([$frFR])
+                ->build()
+        );
+
         $family->addAttribute(
             (new Builder())->aTextAttribute()->withCode('scopable_name')->scopable()->build()
         );
@@ -59,30 +93,6 @@ class FillMissingProductValuesSpec extends ObjectBehavior
 
         $familyRepository->findOneByIdentifier('shoes')->willReturn($family);
         $familyRepository->findOneByIdentifier('family_with_price')->willReturn($familyWithPrice);
-
-        $deDe = new Locale();
-        $enUs = new Locale();
-        $frFR = new Locale();
-        $deDe->setCode('de_DE');
-        $enUs->setCode('en_US');
-        $frFR->setCode('fr_FR');
-
-        $USD = new Currency();
-        $EUR = new Currency();
-        $AED = new Currency();
-        $USD->setCode('USD');
-        $EUR->setCode('EUR');
-        $AED->setCode('AED');
-
-        $tablet = new Channel();
-        $tablet->setCode('tablet');
-        $tablet->setLocales([$enUs, $frFR]);
-        $tablet->setCurrencies([$AED, $EUR]);
-
-        $ecommerce = new Channel();
-        $ecommerce->setCode('ecommerce');
-        $ecommerce->setLocales([$frFR, $deDe]);
-        $ecommerce->setCurrencies([$USD, $EUR]);
 
         $channelRepository->findAll()->willReturn([$tablet, $ecommerce]);
         $localeRepository->getActivatedLocales()->willReturn([$enUs, $frFR, $deDe]);
@@ -130,6 +140,23 @@ class FillMissingProductValuesSpec extends ObjectBehavior
                             'data' => null
                         ],
 
+                    ],
+                    'specific_localizable_name' => [[
+                        'scope' => null,
+                        'locale' => null,
+                        'data' => null,
+                    ]],
+                    'scopable_localizable_locale_specific_name' => [
+                        [
+                            'scope' => 'tablet',
+                            'locale' => 'fr_FR',
+                            'data' => null
+                        ],
+                        [
+                            'scope' => 'ecommerce',
+                            'locale' => 'fr_FR',
+                            'data' => null
+                        ],
                     ],
                     'scopable_name' => [
                         [
@@ -256,6 +283,23 @@ class FillMissingProductValuesSpec extends ObjectBehavior
                         [
                             'scope' => null,
                             'locale' => 'de_DE',
+                            'data' => null
+                        ],
+                    ],
+                    'specific_localizable_name' => [[
+                        'scope' => null,
+                        'locale' => null,
+                        'data' => null,
+                    ]],
+                    'scopable_localizable_locale_specific_name' => [
+                        [
+                            'scope' => 'tablet',
+                            'locale' => 'fr_FR',
+                            'data' => null
+                        ],
+                        [
+                            'scope' => 'ecommerce',
+                            'locale' => 'fr_FR',
                             'data' => null
                         ],
                     ],

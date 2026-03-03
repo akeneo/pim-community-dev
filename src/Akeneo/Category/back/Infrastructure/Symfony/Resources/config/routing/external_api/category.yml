@@ -1,0 +1,36 @@
+pim_api_category_list:
+    path: /categories
+    defaults:
+        _controller: Akeneo\Category\Infrastructure\Controller\ExternalApi\ListCategoriesController
+        _format: json
+    methods: [GET]
+
+pim_api_category_get:
+    path: /categories/{code}
+    defaults:
+        _controller: Akeneo\Category\Infrastructure\Controller\ExternalApi\GetCategoryController
+        _format: json
+    methods: [GET]
+
+pim_api_category_create:
+    path: /categories
+    defaults: { _controller: pim_api.controller.category:createAction, _format: json}
+    methods: [POST]
+
+pim_api_category_partial_update:
+    path: /categories/{code}
+    defaults: { _controller: pim_api.controller.category:partialUpdateAction, _format: json}
+    methods: [PATCH]
+
+pim_api_category_partial_update_list:
+    path: /categories
+    defaults: { _controller: pim_api.controller.category:partialUpdateListAction, _format: json }
+    methods: [PATCH]
+
+pim_api_category_media_file_download:
+    path: /category-media-files/{code}/download
+    defaults:
+        _controller: Akeneo\Category\Infrastructure\Controller\ExternalApi\DownloadCategoryMediaFileController
+    methods: [GET]
+    requirements:
+        code: ([a-zA-Z0-9_./]+)

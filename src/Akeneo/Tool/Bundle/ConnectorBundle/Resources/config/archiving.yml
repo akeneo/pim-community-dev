@@ -1,10 +1,8 @@
 parameters:
-    pim_connector.event_listener.archivist.class:                 Akeneo\Tool\Bundle\ConnectorBundle\EventListener\JobExecutionArchivist
+    pim_connector.event_listener.archivist.class:                 Akeneo\Tool\Bundle\ConnectorBundle\EventListener\StepExecutionArchivist
     pim_connector.event_listener.invalid_items_collector.class:   Akeneo\Tool\Bundle\ConnectorBundle\EventListener\InvalidItemsCollector
-    pim_connector.factory.zip_filesystem.class:                   Akeneo\Tool\Component\Connector\Archiver\ZipFilesystemFactory
     pim_connector.archiver.file_reader_archiver.class:            Akeneo\Tool\Component\Connector\Archiver\FileReaderArchiver
     pim_connector.archiver.file_writer_archiver.class:            Akeneo\Tool\Component\Connector\Archiver\FileWriterArchiver
-    pim_connector.archiver.archivable_file_writer_archiver.class: Akeneo\Tool\Component\Connector\Archiver\ArchivableFileWriterArchiver
 
 services:
     pim_connector.event_listener.archivist:
@@ -17,12 +15,10 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    pim_connector.factory.zip_filesystem:
-        class: '%pim_connector.factory.zip_filesystem.class%'
-
     pim_connector.archiver.file_reader_archiver:
         class: '%pim_connector.archiver.file_reader_archiver.class%'
         arguments:
+            - '@oneup_flysystem.local_storage_filesystem'
             - '@oneup_flysystem.archivist_filesystem'
             - '@akeneo_batch.job.job_registry'
         tags:
@@ -33,15 +29,8 @@ services:
         arguments:
             - '@oneup_flysystem.archivist_filesystem'
             - '@akeneo_batch.job.job_registry'
-        tags:
-            - { name: pim_connector.archiver }
-
-    pim_connector.archiver.archivable_file_writer_archiver:
-        class: '%pim_connector.archiver.archivable_file_writer_archiver.class%'
-        arguments:
-            - '@pim_connector.factory.zip_filesystem'
-            - '@oneup_flysystem.archivist_filesystem'
-            - '@akeneo_batch.job.job_registry'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
+            - '@logger'
         tags:
             - { name: pim_connector.archiver }
 

@@ -1,5 +1,5 @@
 import {Helper, Link} from 'akeneo-design-system';
-import React, {FC, useContext, useState} from 'react';
+import React, {FC, useContext, useState, SyntheticEvent} from 'react';
 import {useFormContext} from 'react-hook-form';
 import {useHistory} from 'react-router';
 import styled from 'styled-components';
@@ -32,7 +32,8 @@ export const EditForm: FC<Props> = ({webhook, activeEventSubscriptionsLimit}: Pr
         checking: false,
     });
 
-    const handleTestUrl = async () => {
+    const handleTestUrl = async (e: SyntheticEvent) => {
+        e.preventDefault();
         clearError('url');
         setTestUrl({checking: true});
 
@@ -53,6 +54,8 @@ export const EditForm: FC<Props> = ({webhook, activeEventSubscriptionsLimit}: Pr
 
     const isActiveEventSubscriptionsLimitReached = () =>
         activeEventSubscriptionsLimit.current >= activeEventSubscriptionsLimit.limit;
+
+    const connectCode = webhook.connectionCode;
 
     return (
         <>
@@ -81,6 +84,9 @@ export const EditForm: FC<Props> = ({webhook, activeEventSubscriptionsLimit}: Pr
                     defaultChecked={webhook.enabled}
                     disabled={false === webhook.enabled && isActiveEventSubscriptionsLimitReached()}
                 />
+            </FormGroup>
+            <FormGroup label='akeneo_connectivity.connection.webhook.form.is_using_uuid'>
+                <ToggleButton name='isUsingUuid' ref={register} defaultChecked={webhook.isUsingUuid} />
             </FormGroup>
 
             <FormGroup
@@ -114,7 +120,7 @@ export const EditForm: FC<Props> = ({webhook, activeEventSubscriptionsLimit}: Pr
                                 message: 'akeneo_connectivity.connection.webhook.error.required',
                             },
                         })}
-                        onKeyDown={event => 'enter' === event.key && handleTestUrl()}
+                        onKeyDown={event => 'enter' === event.key && handleTestUrl(event)}
                     />
                     <TestUrlButton
                         onClick={handleTestUrl}
@@ -130,7 +136,7 @@ export const EditForm: FC<Props> = ({webhook, activeEventSubscriptionsLimit}: Pr
                         <RegenerateButton
                             onClick={() =>
                                 history.push(
-                                    `/connections/${webhook.connectionCode}/event-subscription/regenerate-secret`
+                                    `/connect/connection-settings/${connectCode}/event-subscription/regenerate-secret`
                                 )
                             }
                         />

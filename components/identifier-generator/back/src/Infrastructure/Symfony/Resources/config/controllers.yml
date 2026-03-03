@@ -1,0 +1,90 @@
+services:
+  Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\GetIdentifierAttributesController:
+    public: true
+    arguments:
+      - '@akeneo.pim.structure.query.find_flatten_attributes'
+      - '@pim_user.context.user'
+      - '@oro_security.security_facade'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\CreateIdentifierGeneratorController:
+    public: true
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorHandler'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Get\GetGeneratorHandler'
+      - '@oro_security.security_facade'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\ListIdentifierGeneratorController:
+    public: true
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Get\GetGeneratorsHandler'
+      - '@oro_security.security_facade'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\DeleteIdentifierGeneratorController:
+    public: true
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Delete\DeleteGeneratorHandler'
+      - '@oro_security.security_facade'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\GetIdentifierGeneratorController:
+    public: true
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Get\GetGeneratorHandler'
+      - '@oro_security.security_facade'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\UpdateIdentifierGeneratorController:
+    public: true
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorHandler'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Get\GetGeneratorHandler'
+      - '@oro_security.security_facade'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\GetFamiliesController:
+    public: true
+    arguments:
+      - '@Akeneo\Pim\Structure\Family\ServiceAPI\Query\FindFamiliesWithLabels'
+      - '@pim_user.context.user'
+      - '@oro_security.security_facade'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\GetAttributeOptionsController:
+    public: true
+    arguments:
+      - '@Akeneo\Pim\Structure\Bundle\Query\InternalApi\AttributeOption\FindAttributeOptions'
+      - '@oro_security.security_facade'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\GetAvailableConditionsController:
+    public: true
+    arguments:
+      - '@Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\GetGroupedAttributes'
+      - '@pim_user.context.user'
+      - '@translator'
+      - '@oro_security.security_facade'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\GetAvailablePropertiesController:
+    public: true
+    arguments:
+      - '@Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\GetGroupedAttributes'
+      - '@pim_user.context.user'
+      - '@translator'
+      - '@oro_security.security_facade'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\UpdateNomenclatureController:
+    public: true
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateNomenclatureHandler'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\GetNomenclatureController:
+    public: true
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Get\GetNomenclatureHandler'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\ReorderIdentifierGeneratorsController:
+    public: true
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\ReorderGeneratorsHandler'
+      - '@oro_security.security_facade'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\GetCategoryLabelsController:
+    public: true
+    arguments:
+      - '@Akeneo\Category\ServiceApi\CategoryQueryInterface'
+      - '@pim_user.context.user'

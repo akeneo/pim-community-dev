@@ -7,7 +7,7 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Purge;
 use Akeneo\Platform\Bundle\ImportExportBundle\Persistence\Filesystem\DeleteOrphanJobExecutionDirectories;
 use Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\DeleteJobExecution;
 use Akeneo\Tool\Bundle\BatchBundle\Storage\DeleteJobExecutionLogs;
-use Akeneo\Tool\Component\BatchQueue\Query\DeleteJobExecutionMessageOrphansQueryInterface;
+use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 
 /**
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
@@ -15,45 +15,44 @@ use Akeneo\Tool\Component\BatchQueue\Query\DeleteJobExecutionMessageOrphansQuery
  */
 final class PurgeJobExecution
 {
-    /** @var DeleteJobExecution */
-    private $deleteJobExecution;
-
-    /** @var DeleteJobExecutionMessageOrphansQueryInterface */
-    private $deleteOrphanJobExecutionMessages;
-
-    /** @var DeleteOrphanJobExecutionDirectories */
-    private $deleteOrphansJobExecutionDirectories;
-
-    /** @var DeleteJobExecutionLogs */
-    private $deleteJobExecutionLogs;
+    private DeleteJobExecution $deleteJobExecution;
+    private DeleteOrphanJobExecutionDirectories $deleteOrphansJobExecutionDirectories;
+    private DeleteJobExecutionLogs $deleteJobExecutionLogs;
 
     public function __construct(
         DeleteJobExecution $deleteJobExecution,
-        DeleteJobExecutionMessageOrphansQueryInterface $deleteOrphanJobExecutionMessages,
         DeleteOrphanJobExecutionDirectories $deleteOrphansJobExecutionDirectories,
         DeleteJobExecutionLogs $deleteJobExecutionLogs
     ) {
         $this->deleteJobExecution = $deleteJobExecution;
-        $this->deleteOrphanJobExecutionMessages = $deleteOrphanJobExecutionMessages;
         $this->deleteOrphansJobExecutionDirectories = $deleteOrphansJobExecutionDirectories;
         $this->deleteJobExecutionLogs = $deleteJobExecutionLogs;
     }
 
-    public function olderThanDays(int $days): int
+    public function olderThanDays(int $days, array $jobInstanceCodes, ?BatchStatus $status): int
     {
-        $this->deleteJobExecutionLogs->olderThanDays($days);
-        $numberOfDeletedJobExecutions = $this->deleteJobExecution->olderThanDays($days);
-        $this->deleteOrphanJobExecutionMessages->execute();
+        $this->deleteJobExecutionLogs->olderThanDays($days, $jobInstanceCodes, $status);
+        $numberOfDeletedJobExecutions = $this->deleteJobExecution->olderThanDays($days, $jobInstanceCodes, $status);
         $this->deleteOrphansJobExecutionDirectories->execute();
 
         return $numberOfDeletedJobExecutions;
     }
 
-    public function all(): void
+    public function olderThanHours(int $hours, array $jobInstanceCodes, ?BatchStatus $status): int
     {
-        $this->deleteJobExecutionLogs->all();
-        $this->deleteJobExecution->all();
-        $this->deleteOrphanJobExecutionMessages->execute();
+        $this->deleteJobExecutionLogs->olderThanHours($hours, $jobInstanceCodes, $status);
+        $numberOfDeletedJobExecutions = $this->deleteJobExecution->olderThanHours($hours, $jobInstanceCodes, $status);
         $this->deleteOrphansJobExecutionDirectories->execute();
+
+        return $numberOfDeletedJobExecutions;
+    }
+
+    public function all(array $jobInstanceCodes, ?BatchStatus $status): int
+    {
+        $this->deleteJobExecutionLogs->all($jobInstanceCodes, $status);
+        $numberOfDeletedJobExecutions = $this->deleteJobExecution->all($jobInstanceCodes, $status);
+        $this->deleteOrphansJobExecutionDirectories->execute();
+
+        return $numberOfDeletedJobExecutions;
     }
 }

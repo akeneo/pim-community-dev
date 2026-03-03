@@ -303,7 +303,7 @@ class ProductModelUpdater implements ObjectUpdaterInterface
         }
 
         if (null !== $productModel->getFamilyVariant() &&
-            $familyVariantCode !== $productModel->getFamilyVariant()->getCode()
+            strtolower($familyVariantCode) !== strtolower($productModel->getFamilyVariant()->getCode())
         ) {
             throw ImmutablePropertyException::immutableProperty(
                 'family_variant',

@@ -4,6 +4,8 @@ namespace Akeneo\Platform\Bundle\UIBundle\Twig;
 
 use Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 
 /**
  * Twig extension to present localized data
@@ -12,7 +14,7 @@ use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeExtension extends \Twig_Extension
+class AttributeExtension extends AbstractExtension
 {
     /** @var PresenterInterface */
     protected $datePresenter;
@@ -44,8 +46,8 @@ class AttributeExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('datetime_presenter', [$this, 'datetimePresenter'], ['is_safe' => ['html']]),
-            new \Twig_SimpleFilter('date_presenter', [$this, 'datePresenter'], ['is_safe' => ['html']]),
+            new TwigFilter('datetime_presenter', [$this, 'datetimePresenter'], ['is_safe' => ['html']]),
+            new TwigFilter('date_presenter', [$this, 'datePresenter'], ['is_safe' => ['html']]),
         ];
     }
 

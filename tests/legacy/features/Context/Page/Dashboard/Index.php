@@ -19,24 +19,6 @@ class Index extends Base
     protected $path = '#/';
 
     /**
-     * {@inheritdoc}
-     */
-    public function __construct($session, $pageFactory, $parameters = [])
-    {
-        parent::__construct($session, $pageFactory, $parameters);
-
-        $this->elements = array_merge(
-            $this->elements,
-            [
-                'Proposal widget' => [
-                    'css'        => '#proposal-widget',
-                    'decorators' => ['PimEnterprise\Behat\Decorator\Widget\ProposalWidgetDecorator']
-                ],
-            ]
-        );
-    }
-
-    /**
      * Get the channel completeness ratio inside the completeness widget
      *
      * @param string $channel

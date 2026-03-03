@@ -1,0 +1,17 @@
+services:
+    Akeneo\Category\Domain\UserIntent\UserIntentFactoryRegistry:
+        arguments:
+            - !tagged_iterator 'pim.category.user_intent_factory'
+            - ['id', 'identifier', 'code', 'created', 'updated']
+
+    Akeneo\Category\Domain\UserIntent\Factory\LabelUserIntentFactory:
+        tags:
+            - { name: 'pim.category.user_intent_factory' }
+
+    Akeneo\Category\Domain\UserIntent\Factory\ValueUserIntentFactory:
+        arguments:
+            - '@Akeneo\Category\Application\Query\GetAttribute'
+        tags:
+            - { name: 'pim.category.user_intent_factory' }
+
+    Akeneo\Category\Domain\AttributeSetFactory: ~

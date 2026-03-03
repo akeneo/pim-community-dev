@@ -3,6 +3,8 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Number;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
@@ -38,29 +40,21 @@ class LocalizableScopableFilterIntegration extends AbstractProductQueryBuilderTe
         ]);
 
         $this->createProduct('product_one', [
-            'family' => 'a_family',
-            'values' => [
-                'a_localizable_scopable_number' => [
-                    ['data' => -15, 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                    ['data' => -15, 'locale' => 'en_US', 'scope' => 'tablet'],
-                    ['data' => -14, 'locale' => 'fr_FR', 'scope' => 'tablet']
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetNumberValue('a_localizable_scopable_number', 'ecommerce', 'en_US', -15),
+            new SetNumberValue('a_localizable_scopable_number', 'tablet', 'en_US', -15),
+            new SetNumberValue('a_localizable_scopable_number', 'tablet', 'fr_FR', -14),
         ]);
 
         $this->createProduct('product_two', [
-            'family' => 'a_family',
-            'values' => [
-                'a_localizable_scopable_number' => [
-                    ['data' => 19, 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                    ['data' => 19, 'locale' => 'en_US', 'scope' => 'tablet'],
-                    ['data' => 19, 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
-                    ['data' => 19, 'locale' => 'fr_FR', 'scope' => 'tablet']
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetNumberValue('a_localizable_scopable_number', 'ecommerce', 'en_US', 19),
+            new SetNumberValue('a_localizable_scopable_number', 'tablet', 'en_US', 19),
+            new SetNumberValue('a_localizable_scopable_number', 'ecommerce', 'fr_FR', 19),
+            new SetNumberValue('a_localizable_scopable_number', 'tablet', 'fr_FR', 19),
         ]);
 
-        $this->createProduct('empty_product', ['family' => 'a_family']);
+        $this->createProduct('empty_product', [new SetFamily('a_family')]);
     }
 
     public function testOperatorInferior()

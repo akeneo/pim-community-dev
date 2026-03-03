@@ -9,6 +9,7 @@ use Oro\Bundle\DataGridBundle\Extension\Acceptor;
 use Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator;
 use PhpSpec\ObjectBehavior;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Extension\AbstractExtension;
 
 class FilterExtensionSpec extends ObjectBehavior
 {
@@ -22,7 +23,7 @@ class FilterExtensionSpec extends ObjectBehavior
 
     function it_is_a_twig_extension()
     {
-        $this->shouldBeAnInstanceOf('Twig_Extension');
+        $this->shouldBeAnInstanceOf(AbstractExtension::class);
     }
 
     function it_throws_an_exception_when_i_try_to_get_the_label_of_an_unknown_filter(

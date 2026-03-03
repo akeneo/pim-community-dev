@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Structure\Component\Model;
 
-use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -159,9 +159,13 @@ abstract class AbstractAttribute implements AttributeInterface
     /** @var ArrayCollection */
     protected $translations;
 
-    /**
-     * Constructor
-     */
+    /** @var string[] */
+    protected array $guidelines = [];
+
+    protected ?array $rawTableConfiguration = null;
+
+    protected bool $mainIdentifier;
+
     public function __construct()
     {
         $this->options = new ArrayCollection();
@@ -175,6 +179,7 @@ abstract class AbstractAttribute implements AttributeInterface
         $this->translations = new ArrayCollection();
         $this->validationRule = null;
         $this->properties = [];
+        $this->mainIdentifier = false;
     }
 
     /**
@@ -530,14 +535,6 @@ abstract class AbstractAttribute implements AttributeInterface
     /**
      * {@inheritdoc}
      */
-    public function getLocaleSpecificCodes()
-    {
-        return $this->getAvailableLocaleCodes();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getAvailableLocales()
     {
         return $this->availableLocales;
@@ -546,7 +543,7 @@ abstract class AbstractAttribute implements AttributeInterface
     /**
      * {@inheritdoc}
      */
-    public function getAvailableLocaleCodes()
+    public function getAvailableLocaleCodes(): array
     {
         $codes = [];
         foreach ($this->getAvailableLocales() as $locale) {
@@ -561,7 +558,7 @@ abstract class AbstractAttribute implements AttributeInterface
      */
     public function hasLocaleSpecific(LocaleInterface $locale)
     {
-        return in_array($locale->getCode(), $this->getLocaleSpecificCodes());
+        return in_array($locale->getCode(), $this->getAvailableLocaleCodes());
     }
 
     /**
@@ -923,12 +920,12 @@ abstract class AbstractAttribute implements AttributeInterface
      */
     public function getTranslation(?string $locale = null): ?AttributeTranslationInterface
     {
-        $locale = ($locale) ? $locale : $this->locale;
+        $locale = $locale ?: $this->locale;
         if (null === $locale) {
             return null;
         }
         foreach ($this->getTranslations() as $translation) {
-            if ($translation->getLocale() === $locale) {
+            if (\strtolower($translation->getLocale()) === \strtolower($locale)) {
                 return $translation;
             }
         }
@@ -1072,5 +1069,44 @@ abstract class AbstractAttribute implements AttributeInterface
             AttributeTypes::BACKEND_TYPE_REF_DATA_OPTION,
             AttributeTypes::BACKEND_TYPE_REF_DATA_OPTIONS
         ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getGuidelines(): array
+    {
+        return $this->guidelines;
+    }
+
+    public function addGuidelines(string $locale, string $localeGuidelines): void
+    {
+        $this->guidelines[$locale] = $localeGuidelines;
+    }
+
+
+    public function removeGuidelines(string $locale): void
+    {
+        unset($this->guidelines[$locale]);
+    }
+
+    public function getGuidelinesLocaleCodes(): array
+    {
+        return array_keys($this->guidelines);
+    }
+
+    public function getRawTableConfiguration(): ?array
+    {
+        return $this->rawTableConfiguration;
+    }
+
+    public function setRawTableConfiguration(?array $rawTableConfiguration): void
+    {
+        $this->rawTableConfiguration = $rawTableConfiguration;
+    }
+
+    public function isMainIdentifier(): bool
+    {
+        return $this->mainIdentifier;
     }
 }

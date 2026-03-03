@@ -2,17 +2,19 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Model;
 
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface as BaseCategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\EntityWithQuantifiedAssociationTrait;
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
-use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Value\IdentifierValueInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
-use Akeneo\Tool\Component\Classification\Model\CategoryInterface as BaseCategoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Abstract product
@@ -27,6 +29,8 @@ abstract class AbstractProduct implements ProductInterface
 
     /** @var int|string */
     protected $id;
+
+    protected UuidInterface $uuid;
 
     protected array $rawValues;
 
@@ -66,8 +70,10 @@ abstract class AbstractProduct implements ProductInterface
 
     protected bool $dirty = false;
 
-    public function __construct()
+    public function __construct(?string $uuid = null)
     {
+        Assert::nullOrUuid($uuid);
+        $this->uuid = $uuid ? Uuid::fromString($uuid) : Uuid::uuid4();
         $this->values = new WriteValueCollection();
         $this->categories = new ArrayCollection();
         $this->completenesses = new ArrayCollection();
@@ -75,6 +81,7 @@ abstract class AbstractProduct implements ProductInterface
         $this->associations = new ArrayCollection();
         $this->uniqueData = new ArrayCollection();
         $this->quantifiedAssociationCollection = QuantifiedAssociationCollection::createFromNormalized([]);
+        $this->dirty = true;
     }
 
     /**
@@ -82,17 +89,12 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getId()
     {
-        return $this->id;
+        throw new \LogicException('Product getId() should not be called');
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setId($id)
+    public function getUuid(): UuidInterface
     {
-        $this->id = $id;
-
-        return $this;
+        return $this->uuid;
     }
 
     /**
@@ -136,6 +138,9 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function addValue(ValueInterface $value)
     {
+        if ($value instanceof IdentifierValueInterface && $value->isMainIdentifier()) {
+            $this->identifier = $value->getData();
+        }
         if (true === $this->values->add($value)) {
             $this->dirty = true;
         }
@@ -148,6 +153,9 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function removeValue(ValueInterface $value)
     {
+        if ($value instanceof IdentifierValueInterface && $value->isMainIdentifier()) {
+            $this->identifier = null;
+        }
         if (true === $this->values->remove($value)) {
             $this->dirty = true;
         }
@@ -242,6 +250,15 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getIdentifier()
     {
+        if (null === $this->identifier) {
+            /** @var IdentifierValueInterface | null $identifierValue */
+            $identifierValue = $this->values->filter(
+                static fn (ValueInterface $value): bool => $value instanceof IdentifierValueInterface && $value->isMainIdentifier()
+            )->first() ?: null;
+
+            $this->identifier = $identifierValue?->getData();
+        }
+
         return $this->identifier;
     }
 
@@ -291,6 +308,11 @@ abstract class AbstractProduct implements ProductInterface
                     $this->dirty = true;
                     break;
                 }
+            }
+        }
+        foreach ($values as $value) {
+            if ($value instanceof IdentifierValueInterface && $value->isMainIdentifier()) {
+                $this->identifier = $value->getData();
             }
         }
         $this->values = $values;
@@ -489,10 +511,6 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function isAttributeRemovable(AttributeInterface $attribute)
     {
-        if (AttributeTypes::IDENTIFIER === $attribute->getType()) {
-            return false;
-        }
-
         if ($this->hasAttributeInFamily($attribute)) {
             return false;
         }
@@ -567,7 +585,11 @@ abstract class AbstractProduct implements ProductInterface
             );
         }
 
-        if (!$association->hasProduct($product)) {
+        $mergedAssociation = $this->getAllAssociations()->filter(
+            static fn (AssociationInterface $asso): bool => $associationTypeCode === $asso->getAssociationType()->getCode()
+        )->first();
+
+        if (!$mergedAssociation->hasProduct($product)) {
             $association->addProduct($product);
             $this->dirty = true;
         }
@@ -598,7 +620,11 @@ abstract class AbstractProduct implements ProductInterface
             );
         }
 
-        if (!$association->getProductModels()->contains($productModel)) {
+        $mergedAssociation = $this->getAllAssociations()->filter(
+            static fn (AssociationInterface $asso): bool => $associationTypeCode === $asso->getAssociationType()->getCode()
+        )->first();
+
+        if (!$mergedAssociation->getProductModels()->contains($productModel)) {
             $association->addProductModel($productModel);
             $this->dirty = true;
         }
@@ -628,7 +654,12 @@ abstract class AbstractProduct implements ProductInterface
                 \sprintf('This product has no association for the "%s" association type', $associationTypeCode)
             );
         }
-        if (!$association->getGroups()->contains($group)) {
+
+        $mergedAssociation = $this->getAllAssociations()->filter(
+            static fn (AssociationInterface $asso): bool => $associationTypeCode === $asso->getAssociationType()->getCode()
+        )->first();
+
+        if (!$mergedAssociation->getGroups()->contains($group)) {
             $association->addGroup($group);
             $this->dirty = true;
         }
@@ -713,8 +744,37 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getAllAssociations()
     {
-        $associations = new ArrayCollection($this->associations->toArray());
-        $allAssociations = $this->getAncestryAssociations($this, $associations);
+        $clonedAssociations = [];
+        foreach ($this->associations as $association) {
+            $clonedAssociations[] = clone $association;
+        }
+        $allAssociations = new ArrayCollection($clonedAssociations);
+
+        $parent = $this->getParent();
+        while (null !== $parent) {
+            foreach ($parent->getAssociations() as $parentAssociation) {
+                $matchingAssociation = $allAssociations->filter(
+                    static fn (AssociationInterface $clonedAsso): bool => $parentAssociation->getAssociationType()->getCode() === $clonedAsso->getAssociationType()->getCode()
+                )->first();
+
+                if (!$matchingAssociation) {
+                    $allAssociations->add(clone $parentAssociation);
+                } else {
+                    foreach ($parentAssociation->getProducts() as $product) {
+                        $matchingAssociation->addProduct($product);
+                    }
+                    foreach ($parentAssociation->getProductModels() as $productModel) {
+                        $matchingAssociation->addProductModel($productModel);
+                    }
+                    foreach ($parentAssociation->getGroups() as $group) {
+                        $matchingAssociation->addGroup($group);
+                    }
+                }
+            }
+
+            $parent = $parent->getParent();
+        }
+
 
         return $allAssociations;
     }
@@ -805,7 +865,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getVariationLevel(): int
     {
-        return $this->getParent()->getVariationLevel() + 1;
+        return $this->getParent() !== null ? $this->getParent()->getVariationLevel() + 1 : self::ROOT_VARIATION_LEVEL;
     }
 
     /**
@@ -843,8 +903,11 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function filterQuantifiedAssociations(array $productIdentifiersToKeep, array $productModelCodesToKeep): void
-    {
+    public function filterQuantifiedAssociations(
+        array $productIdentifiersToKeep,
+        array $productUuidsToKeep,
+        array $productModelCodesToKeep
+    ): void {
         if (null === $this->quantifiedAssociationCollection) {
             return;
         }
@@ -852,6 +915,7 @@ abstract class AbstractProduct implements ProductInterface
         $initialCollection = $this->getQuantifiedAssociations();
         $this->quantifiedAssociationCollection = $this->quantifiedAssociationCollection
             ->filterProductIdentifiers($productIdentifiersToKeep)
+            ->filterProductUuids($productUuidsToKeep)
             ->filterProductModelCodes($productModelCodesToKeep);
         if (!$this->quantifiedAssociationCollection->equals($initialCollection)) {
             $this->dirty = true;
@@ -1020,66 +1084,10 @@ abstract class AbstractProduct implements ProductInterface
     }
 
     /**
-     * @param EntityWithFamilyVariantInterface $entity
-     * @param Collection                       $associationsCollection
-     *
-     * @return Collection
+     * {@inheritDoc}
      */
-    private function getAncestryAssociations(
-        EntityWithFamilyVariantInterface $entity,
-        Collection $associationsCollection
-    ): Collection {
-        $parent = $entity->getParent();
-
-        if (null === $parent) {
-            return $associationsCollection;
-        }
-
-        foreach ($parent->getAllAssociations() as $association) {
-            $associationsCollection = $this->mergeAssociation($association, $associationsCollection);
-        }
-
-        return $associationsCollection;
-    }
-
-    /**
-     * Merges one association in an association collection.
-     * It first merge the product existing association
-     * And then merges the association into the collection
-     *
-     * Merging an association means merging all the products, product models and groups
-     * into the collection associations or adding it if it doesn't exist
-     *
-     * @param AssociationInterface $association
-     * @param Collection           $associationsCollection
-     *
-     * @return Collection
-     */
-    private function mergeAssociation(
-        AssociationInterface $association,
-        Collection $associationsCollection
-    ): Collection {
-        $foundInCollection = null;
-        foreach ($associationsCollection as $associationInCollection) {
-            if ($associationInCollection->getAssociationType()->getCode() ===
-                $association->getAssociationType()->getCode()) {
-                $foundInCollection = $associationInCollection;
-            }
-        }
-
-        if (null !== $foundInCollection) {
-            foreach ($association->getProducts() as $product) {
-                $foundInCollection->addProduct($product);
-            }
-            foreach ($association->getProductModels() as $productModel) {
-                $foundInCollection->addProductModel($productModel);
-            }
-            foreach ($association->getGroups() as $group) {
-                $foundInCollection->addGroup($group);
-            }
-        }
-        $associationsCollection->add($association);
-
-        return $associationsCollection;
+    public function isNew(): bool
+    {
+        return null === $this->created;
     }
 }

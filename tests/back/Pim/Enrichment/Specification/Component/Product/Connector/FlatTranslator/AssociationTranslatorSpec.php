@@ -17,7 +17,12 @@ class AssociationTranslatorSpec extends ObjectBehavior
         GetProductLabelsInterface $getProductLabels,
         GetGroupTranslations $getGroupTranslations
     ) {
-        $this->beConstructedWith($associationColumnsResolver, $getProductModelLabels, $getProductLabels, $getGroupTranslations);
+        $this->beConstructedWith(
+            $associationColumnsResolver,
+            $getProductModelLabels,
+            $getProductLabels,
+            $getGroupTranslations
+        );
     }
 
     function it_is_initializable()
@@ -28,13 +33,16 @@ class AssociationTranslatorSpec extends ObjectBehavior
     function it_only_supports_associations_property(AssociationColumnsResolver $associationColumnsResolver)
     {
         $associationColumnsResolver->resolveAssociationColumns()->willReturn(
-            ['X_SELL-products', 'X_SELL-product_models']
+            ['X_SELL-products', 'X_SELL-product_uuids', 'X_SELL-product_models', 'X_SELL-groups']
         );
         $associationColumnsResolver->resolveQuantifiedIdentifierAssociationColumns()->willReturn(
             ['X_SELL_quantified-products', 'X_SELL_quantified-product_models']
         );
 
         $this->supports('X_SELL-products')->shouldReturn(true);
+        $this->supports('X_SELL-product_uuids')->shouldReturn(true);
+        $this->supports('X_SELL-product_models')->shouldReturn(true);
+        $this->supports('X_SELL-groups')->shouldReturn(true);
         $this->supports('X_SELL_quantified-product_models')->shouldReturn(true);
         $this->supports('X_SELL_quantified-product_models-quantity')->shouldReturn(false);
         $this->supports('other')->shouldReturn(false);
@@ -48,9 +56,9 @@ class AssociationTranslatorSpec extends ObjectBehavior
             'ecommerce'
         )->willReturn(
             [
-                'hat-m-red'             => 'Chapeau rouge (taille M)',
-                'hat-xs-red'            => 'Chapeau rouge (taille XS)',
-                'tshirt-l'              => 'T-shirt simple (taille L)',
+                'hat-m-red' => 'Chapeau rouge (taille M)',
+                'hat-xs-red' => 'Chapeau rouge (taille XS)',
+                'tshirt-l' => 'T-shirt simple (taille L)',
                 'product-with-no-label' => null,
             ]
         );
@@ -63,7 +71,43 @@ class AssociationTranslatorSpec extends ObjectBehavior
             [
                 'Chapeau rouge (taille M),Chapeau rouge (taille XS)',
                 'T-shirt simple (taille L)',
-                '[product-with-no-label]'
+                '[product-with-no-label]',
+            ]
+        );
+    }
+
+    function it_translates_product_uuids_to_labels(GetProductLabelsInterface $getProductLabels)
+    {
+        $getProductLabels->byUuidsAndLocaleAndScope(
+            [
+                '8683f602-78d7-4979-b7d4-7273f07b7f84',
+                '4e952a8e-01fa-41ee-ae74-1340024a5ff3',
+                '8af42065-0e08-499f-9928-c7b1b54b282a',
+                'd8428720-838e-4de9-a575-195342a2b052',
+            ],
+            'fr_FR',
+            'ecommerce'
+        )->willReturn(
+            [
+                '8683f602-78d7-4979-b7d4-7273f07b7f84' => 'Chapeau rouge (taille M)',
+                '4e952a8e-01fa-41ee-ae74-1340024a5ff3' => 'T-shirt simple (taille L)',
+                '8af42065-0e08-499f-9928-c7b1b54b282a' => null,
+            ]
+        );
+        $this->translate(
+            'X_SELL-product_uuids',
+            [
+                '8683f602-78d7-4979-b7d4-7273f07b7f84',
+                '4e952a8e-01fa-41ee-ae74-1340024a5ff3,8af42065-0e08-499f-9928-c7b1b54b282a',
+                'd8428720-838e-4de9-a575-195342a2b052',
+            ],
+            'fr_FR',
+            'ecommerce'
+        )->shouldReturn(
+            [
+                'Chapeau rouge (taille M)',
+                'T-shirt simple (taille L),[8af42065-0e08-499f-9928-c7b1b54b282a]',
+                '[d8428720-838e-4de9-a575-195342a2b052]',
             ]
         );
     }
@@ -76,9 +120,9 @@ class AssociationTranslatorSpec extends ObjectBehavior
             'ecommerce'
         )->willReturn(
             [
-                'braided-hat-m'    => 'Chapeau gris (taille M)',
-                'braided-hat-xs'   => 'Chapeau gris (taille XS)',
-                'tshirt'           => 'T-shirt simple',
+                'braided-hat-m' => 'Chapeau gris (taille M)',
+                'braided-hat-xs' => 'Chapeau gris (taille XS)',
+                'tshirt' => 'T-shirt simple',
                 'pm-with-no-label' => null,
             ]
         );
@@ -97,9 +141,9 @@ class AssociationTranslatorSpec extends ObjectBehavior
             'fr_FR'
         )->willReturn(
             [
-                'summer'                => 'Été',
-                'winter'                => 'Hivers',
-                'autumn'                => 'Automne',
+                'summer' => 'Été',
+                'winter' => 'Hivers',
+                'autumn' => 'Automne',
                 'product-with-no-label' => null,
             ]
         );
@@ -112,7 +156,7 @@ class AssociationTranslatorSpec extends ObjectBehavior
             [
                 'Été,Hivers',
                 'Automne',
-                '[group-with-no-label]'
+                '[group-with-no-label]',
             ]
         );
     }
@@ -120,11 +164,11 @@ class AssociationTranslatorSpec extends ObjectBehavior
     function it_throws_if_it_is_not_a_supported_association()
     {
         $this->shouldThrow(\LogicException::class)
-            ->during('translate', [
-                'unsupported',
-                [],
-                'fr_FR',
-                'ecommerce'
-            ]);
+             ->during('translate', [
+                 'unsupported',
+                 [],
+                 'fr_FR',
+                 'ecommerce',
+             ]);
     }
 }

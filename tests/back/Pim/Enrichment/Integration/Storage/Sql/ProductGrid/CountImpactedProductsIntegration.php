@@ -6,6 +6,8 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\ProductGrid;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -20,7 +22,11 @@ class CountImpactedProductsIntegration extends TestCase
             [
                 'field' => 'id',
                 'operator' => 'IN',
-                'value' => ['product_1', 'product_2', 'product_3'],
+                'value' => [
+                    'product_' . $this->getProductUuidFromId(1),
+                    'product_' . $this->getProductUuidFromId(2),
+                    'product_' . $this->getProductUuidFromId(3),
+                ],
                 'context' => ['locale' => 'en_US', 'scope' => 'ecommerce'],
             ],
         ];
@@ -59,7 +65,12 @@ class CountImpactedProductsIntegration extends TestCase
             [
                 'field' => 'id',
                 'operator' => 'IN',
-                'value' => ['product_model_3', 'product_model_2', 'product_3', 'product_4'],
+                'value' => [
+                    'product_model_3',
+                    'product_model_2',
+                    'product_' . $this->getProductUuidFromId(3),
+                    'product_' . $this->getProductUuidFromId(4),
+                ],
                 'context' => ['locale' => 'en_US', 'scope' => 'ecommerce'],
             ],
         ];
@@ -102,7 +113,12 @@ class CountImpactedProductsIntegration extends TestCase
             [
                 'field'    => 'id',
                 'operator' => 'NOT IN',
-                'value'    => ['product_1', 'product_2', 'product_3', 'product_4'],
+                'value'    => [
+                    'product_' . $this->getProductUuidFromId(1),
+                    'product_' . $this->getProductUuidFromId(2),
+                    'product_' . $this->getProductUuidFromId(3),
+                    'product_' . $this->getProductUuidFromId(4),
+                ],
                 'context'  => ['locale' => 'en_US', 'scope' => 'ecommerce', 'limit' => 25, 'from' => 0],
                 'type'     => 'field',
             ],
@@ -130,7 +146,10 @@ class CountImpactedProductsIntegration extends TestCase
             [
                 'field'    => 'id',
                 'operator' => 'NOT IN',
-                'value'    => ['product_1', 'product_model_2'],
+                'value'    => [
+                    'product_' . $this->getProductUuidFromId(1),
+                    'product_model_2',
+                ],
                 'context'  => ['locale' => 'en_US', 'scope' => 'ecommerce', 'limit' => 25, 'from' => 0],
                 'type'     => 'field',
             ],
@@ -145,11 +164,11 @@ class CountImpactedProductsIntegration extends TestCase
                 'field' => 'id',
                 'operator' => 'IN',
                 'value' => [
-                    'product_1',
-                    'product_2',
-                    'product_3',
-                    'product_4',
-                    'product_5',
+                    'product_' . $this->getProductUuidFromId(1),
+                    'product_' . $this->getProductUuidFromId(2),
+                    'product_' . $this->getProductUuidFromId(3),
+                    'product_' . $this->getProductUuidFromId(4),
+                    'product_' . $this->getProductUuidFromId(5),
                     'product_model_1',
                     'product_model_2',
                     'product_model_3',
@@ -231,5 +250,12 @@ class CountImpactedProductsIntegration extends TestCase
         $productsCount = $this->get('pim_enrich.doctrine.query.count_impacted_products')
             ->count($pqbFilters);
         $this->assertEquals($expectedProductsCount, $productsCount);
+    }
+
+    private function getProductUuidFromId(int $productId): string
+    {
+        return $this->get('database_connection')->fetchOne(
+            'SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE id = ?', [$productId]
+        );
     }
 }

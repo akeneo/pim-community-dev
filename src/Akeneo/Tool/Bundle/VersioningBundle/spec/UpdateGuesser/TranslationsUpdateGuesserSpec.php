@@ -5,11 +5,11 @@ namespace spec\Akeneo\Tool\Bundle\VersioningBundle\UpdateGuesser;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\UnitOfWork;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryTranslation;
 use Akeneo\Tool\Bundle\VersioningBundle\UpdateGuesser\TranslationsUpdateGuesser;
 use Akeneo\Tool\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
-use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
+use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
+use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;
 
 class TranslationsUpdateGuesserSpec extends ObjectBehavior
 {
@@ -41,44 +41,48 @@ class TranslationsUpdateGuesserSpec extends ObjectBehavior
     }
 
     function it_guesses_translatable_entity_updates(
-        Category $category,
-        CategoryTranslation $translation,
         EntityManager $em,
-        UnitOfWork $uow
+        UnitOfWork $uow,
+        TranslatableEntity $entity,
+        TranslationInterface $translation
     ) {
-        $translation->getForeignKey()->willReturn($category);
+        $translation->getForeignKey()->willReturn($entity);
 
         $em->getUnitOfWork()->willReturn($uow);
-        $uow->getEntityState($category)->willReturn(UnitOfWork::STATE_MANAGED);
+        $uow->getEntityState($entity)->willReturn(UnitOfWork::STATE_MANAGED);
 
         $this->guessUpdates($em, $translation, UpdateGuesserInterface::ACTION_UPDATE_ENTITY)
-            ->shouldReturn([$category]);
+            ->shouldReturn([$entity]);
     }
 
     function it_returns_no_pending_updates_if_entity_state_is_removed(
         EntityManager $em,
         UnitOfWork $uow,
-        Category $category
+        TranslatableEntity $entity
     ) {
         $em->getUnitOfWork()->willReturn($uow);
-        $uow->getEntityState($category)->willReturn(UnitOfWork::STATE_REMOVED);
+        $uow->getEntityState($entity)->willReturn(UnitOfWork::STATE_REMOVED);
 
         $this->guessUpdates($em, new \stdClass(), UpdateGuesserInterface::ACTION_UPDATE_ENTITY)
             ->shouldReturn([]);
     }
 
     function it_returns_no_pending_updates_if_not_given_versionable_class(
-        CategoryTranslation $translation,
         EntityManager $em,
         UnitOfWork $uow,
-        LocaleInterface $locale
+        TranslationInterface $translation
     ) {
-        $translation->getForeignKey()->willReturn($locale);
+        $entity = new \stdClass();
+        $translation->getForeignKey()->willReturn($entity);
 
         $em->getUnitOfWork()->willReturn($uow);
-        $uow->getEntityState($locale)->willReturn(UnitOfWork::STATE_REMOVED);
+        $uow->getEntityState($entity)->willReturn(UnitOfWork::STATE_REMOVED);
 
         $this->guessUpdates($em, $translation, UpdateGuesserInterface::ACTION_UPDATE_ENTITY)
             ->shouldReturn([]);
     }
+}
+
+abstract class TranslatableEntity implements TranslatableInterface, VersionableInterface
+{
 }

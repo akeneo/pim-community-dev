@@ -33,7 +33,7 @@ class FamilyRequirements extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'pim_family_requirements_validator';
     }
@@ -41,7 +41,7 @@ class FamilyRequirements extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }

@@ -8,7 +8,7 @@ use Akeneo\Connectivity\Connection\Application\Webhook\Validation\EventSubscript
 use Akeneo\Connectivity\Connection\Application\Webhook\Validation\EventSubscriptionsLimitValidator;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Write\ConnectionWebhook;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectActiveWebhooksQuery;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectActiveWebhooksQueryInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
@@ -19,9 +19,9 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class EventSubscriptionsLimitValidatorSpec extends ObjectBehavior
 {
-    const ACTIVE_EVENT_SUBSCRIPTIONS_LIMIT = 3;
+    public const ACTIVE_EVENT_SUBSCRIPTIONS_LIMIT = 3;
 
-    public function let(SelectActiveWebhooksQuery $selectActiveWebhooksQuery, ExecutionContextInterface $context): void
+    public function let(SelectActiveWebhooksQueryInterface $selectActiveWebhooksQuery, ExecutionContextInterface $context): void
     {
         $this->beConstructedWith($selectActiveWebhooksQuery, self::ACTIVE_EVENT_SUBSCRIPTIONS_LIMIT);
         $this->initialize($context);
@@ -96,9 +96,9 @@ class EventSubscriptionsLimitValidatorSpec extends ObjectBehavior
         ConstraintViolationBuilderInterface $constraintViolationBuilder
     ): void {
         $selectActiveWebhooksQuery->execute()->willReturn([
-            new ActiveWebhook('dam', 1, 'secret', 'http://localhost'),
-            new ActiveWebhook('ecommerce', 1, 'secret', 'http://localhost'),
-            new ActiveWebhook('translations', 1, 'secret', 'http://localhost'),
+            new ActiveWebhook('dam', 1, 'secret', 'http://localhost', false),
+            new ActiveWebhook('ecommerce', 1, 'secret', 'http://localhost', false),
+            new ActiveWebhook('translations', 1, 'secret', 'http://localhost', false),
         ]);
 
         $eventSubscription = new ConnectionWebhook('erp', true, 'http://localhost');
@@ -114,9 +114,9 @@ class EventSubscriptionsLimitValidatorSpec extends ObjectBehavior
     public function it_does_not_count_itself_in_the_limit_check($selectActiveWebhooksQuery, $context): void
     {
         $selectActiveWebhooksQuery->execute()->willReturn([
-            new ActiveWebhook('dam', 1, 'secret', 'http://localhost'),
-            new ActiveWebhook('ecommerce', 1, 'secret', 'http://localhost'),
-            new ActiveWebhook('erp', 1, 'secret', 'http://localhost'),
+            new ActiveWebhook('dam', 1, 'secret', 'http://localhost', false),
+            new ActiveWebhook('ecommerce', 1, 'secret', 'http://localhost', false),
+            new ActiveWebhook('erp', 1, 'secret', 'http://localhost', false),
         ]);
 
         $eventSubscription = new ConnectionWebhook('erp', true, 'http://localhost');

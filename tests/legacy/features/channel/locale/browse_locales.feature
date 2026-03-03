@@ -1,6 +1,6 @@
 @javascript
 Feature: Browse locales
-  In order to check wether or not a locale is available is the catalog
+  In order to check whether or not a locale is available in the catalog
   As an administrator
   I need to be able to see active locales in the catalog
 

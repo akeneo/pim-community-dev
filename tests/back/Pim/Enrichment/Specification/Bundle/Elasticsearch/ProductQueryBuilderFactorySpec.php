@@ -23,6 +23,7 @@ class ProductQueryBuilderFactorySpec extends ObjectBehavior
         CursorFactoryInterface $cursorFactory,
         ProductQueryBuilderOptionsResolverInterface $optionsResolver
     ) {
+        $optionsResolver->resolve(Argument::any())->willReturn([]);
         $this->beConstructedWith(
             ProductQueryBuilder::class,
             $attRepository,

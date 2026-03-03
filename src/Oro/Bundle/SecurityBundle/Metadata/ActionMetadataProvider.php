@@ -104,7 +104,9 @@ class ActionMetadataProvider
                         $annotation->getId(),
                         $annotation->getGroup(),
                         $annotation->getLabel(),
-                        $annotation->isEnabledAtCreation()
+                        $annotation->isEnabledAtCreation(),
+                        $annotation->getOrder(),
+                        $annotation->isVisible(),
                     );
                 }
 

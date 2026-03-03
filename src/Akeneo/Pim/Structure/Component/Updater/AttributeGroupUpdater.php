@@ -2,7 +2,6 @@
 
 namespace Akeneo\Pim\Structure\Component\Updater;
 
-use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeGroupRepositoryInterface;
@@ -147,7 +146,7 @@ class AttributeGroupUpdater implements ObjectUpdaterInterface
      */
     protected function setAttributes(AttributeGroupInterface $attributeGroup, array $data)
     {
-        if (AttributeGroup::DEFAULT_GROUP_CODE === $attributeGroup->getCode()) {
+        if (AttributeGroupInterface::DEFAULT_CODE === $attributeGroup->getCode()) {
             return;
         }
 

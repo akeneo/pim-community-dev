@@ -164,6 +164,7 @@ pim_common:
   done: Ferdig
   edit: Rediger
   entity_updated: Det er ulagrede endringer.
+  export: Eksporter
   from: Fra
   general_properties: Generelle egenskaper
   history: Historie
@@ -238,18 +239,6 @@ pim_enrich.entity.fallback:
       leave: Er du sikker på at du vil forlate denne siden?
       discard_changes: Du vil miste endringer for{{ entity }} hvis du forlater siden.
       discard_changes_title: Er du sikker?
-pim_enrich.entity.api_connection:
-  flash:
-    create:
-      success: API forbindelse opprettet
-    delete:
-      success: API forbindelse tilbakekalt
-      fail: Kan ikke tilbakekalle denne API forbindelsen
-  page_title:
-    index: "]-Inf, 1]{{ count }} API-forbindelse|]1, Inf[{{ count }} API-forbindelser"
-  module:
-    revoke:
-      confirm: Er du sikker på at du vil tilbakekalle denne API forbindelsen?
 pim_enrich.entity.job_execution:
   page_title:
     index: "] -Inf, 1] {{ count }} operasjon|] 1, Inf [{{ count }} operasjoner"
@@ -296,8 +285,6 @@ pim_title:
   pim_enrich_mass_edit_action_perform: Masserediger | Utfør
   pim_enrich_job_tracker_index: Spor prosess
   pim_enrich_job_tracker_show: Spor prosess | Vis jobb
-  pim_enrich_api_connection_index: API forbindelser
-  pim_enrich_api_connection_create: API forbindelser | Opprett
   pim_enrich_mass_edit_action: Masseredigering
   pim_analytics_system_info_index: Systeminformasjon
 pim_menu:
@@ -331,7 +318,6 @@ pim_menu:
     user_role: Roller
     info: Systeminformasjon
     job_tracker: Prosessovervåkning
-    api_connection: API forbindelser
     catalog_volume: Katalogvolum overvåking
   navigation:
     activity: Aktivitet navigasjon

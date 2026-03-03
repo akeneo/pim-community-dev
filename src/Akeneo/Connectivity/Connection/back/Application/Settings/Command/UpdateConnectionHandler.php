@@ -9,33 +9,21 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Exception\ConstraintViolation
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionImage;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionLabel;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
-use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository;
+use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepositoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * @author Romain Monceau <romain@akeneo.com>
+ * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
- * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-final class UpdateConnectionHandler
+class UpdateConnectionHandler
 {
-    /** @var ValidatorInterface */
-    private $validator;
-
-    /** @var ConnectionRepository */
-    private $repository;
-
-    /** @var UpdateUserPermissionsInterface */
-    private $updateUserPermissions;
-
     public function __construct(
-        ValidatorInterface $validator,
-        ConnectionRepository $repository,
-        UpdateUserPermissionsInterface $updateUserPermissions
+        private ValidatorInterface $validator,
+        private ConnectionRepositoryInterface $repository,
+        private UpdateUserPermissionsInterface $updateUserPermissions
     ) {
-        $this->validator = $validator;
-        $this->repository = $repository;
-        $this->updateUserPermissions = $updateUserPermissions;
     }
 
     public function handle(UpdateConnectionCommand $command): void
@@ -48,7 +36,7 @@ final class UpdateConnectionHandler
         $connection = $this->repository->findOneByCode($command->code());
         if (null === $connection) {
             throw new \InvalidArgumentException(
-                sprintf('Connection with code "%s" does not exist', $command->code())
+                \sprintf('Connection with code "%s" does not exist', $command->code())
             );
         }
 

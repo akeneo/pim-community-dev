@@ -12,7 +12,7 @@ Feature: Edit a product model
     And I edit the "amor" product model
     Then I should see the text "Clothing by color/size"
 
-  @critical
+  @critical @purge-messenger
   Scenario: Successfully edit and save a root product model
     Given I am logged in as "Mary"
     And I edit the "amor" product model
@@ -22,8 +22,10 @@ Feature: Edit a product model
     When I press the "Save" button
     Then I should not see the text "There are unsaved changes."
     And the product Model name should be "Heritage jacket navy chilly tiki"
+    And 0 event of type "product.updated" should have been raised
+    And 1 event of type "product_model.updated" should have been raised
 
-  @critical
+  @critical @purge-messenger
   Scenario: Successfully edit and save a sub product model
     Given I am logged in as "Mary"
     And I edit the "apollon_blue" product model
@@ -33,6 +35,8 @@ Feature: Edit a product model
     When I press the "Save" button
     Then I should not see the text "There are unsaved changes."
     And the product Variation Name should be "Apollonito blue"
+    And 0 event of type "product.updated" should have been raised
+    And 1 event of type "product_model.updated" should have been raised
 
   @critical
   Scenario: Parent attributes of a sub product model are read only
@@ -45,7 +49,7 @@ Feature: Edit a product model
     Then the field Notice should be read only
     And I should see the text "This attribute can be updated in the common attributes."
 
-  @jira https://akeneo.atlassian.net/browse/PIM-6861
+  # @jira https://akeneo.atlassian.net/browse/PIM-6861
   Scenario: Display a product model without any children
     Given I am logged in as "Mary"
     When I am on the "1111111113" product page
@@ -64,7 +68,7 @@ Feature: Edit a product model
     And I visit the "Marketing" group
     Then the product Model name should be "Heritage jacket navy"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-6816
+  # @jira https://akeneo.atlassian.net/browse/PIM-6816
   Scenario: Successfully display a validation error message
     Given I am logged in as "Mary"
     And I am on the "amor" product model page
@@ -88,7 +92,7 @@ Feature: Edit a product model
     And I visit the "All" group
     Then the Care instructions, Collection, Model picture fields should be highlighted
 
-  @jira https://akeneo.atlassian.net/browse/PIM-7382
+  # @jira https://akeneo.atlassian.net/browse/PIM-7382
   Scenario: Successfully display a product model's scopable value after editing it
     Given I am logged in as "Mary"
     And I am on the "bacchus" product model page

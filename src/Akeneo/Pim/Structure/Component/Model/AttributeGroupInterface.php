@@ -21,6 +21,8 @@ interface AttributeGroupInterface extends
     ReferableInterface,
     VersionableInterface
 {
+    public const DEFAULT_CODE = 'other';
+
     /**
      * Get id
      *

@@ -2,6 +2,7 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductAndAncestorsIndexer;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
@@ -89,7 +90,7 @@ class DateTimeFilterIntegration extends AbstractProductQueryBuilderTestCase
 
     public function testOperatorDifferent()
     {
-        $barProduct = $this->get('pim_api.repository.product')->findOneByIdentifier('bar');
+        $barProduct = $this->get('pim_catalog.repository.product')->findOneByIdentifier('bar');
         $updatedAt = $barProduct->getUpdated();
         $updatedAt->setTimezone(new \DateTimeZone('UTC'));
 
@@ -217,20 +218,25 @@ class DateTimeFilterIntegration extends AbstractProductQueryBuilderTestCase
         $sql = <<<SQL
 UPDATE pim_catalog_product
 SET updated = :updated_date
-WHERE identifier = :identifier
+WHERE uuid = :uuid
 SQL;
+        $uuid = $this->getProductUuid($identifier);
 
         $this->get('database_connection')->executeQuery(
             $sql,
             [
-                'identifier' => $identifier,
+                'uuid' => $uuid->getBytes(),
                 'updated_date' => $updatedDate,
             ],
             [
                 'updated_date' => Type::DATETIME
             ]);
 
-        $this->get('akeneo.pim.enrichment.elasticsearch.indexer.product_and_ancestors')->indexFromProductIdentifiers([$identifier]);
+        $this->getProductAndAncestorsIndexer()->indexFromProductUuids([$uuid]);
+    }
 
+    private function getProductAndAncestorsIndexer(): ProductAndAncestorsIndexer
+    {
+        return $this->get('akeneo.pim.enrichment.elasticsearch.indexer.product_and_ancestors');
     }
 }

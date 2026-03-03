@@ -17,10 +17,7 @@ class ContextSwitcherDecorator extends ElementDecorator
         'Channel dropdown' => '.scope-switcher',
     ];
 
-    /**
-     * @param string $localeCode
-     */
-    public function switchLocale($localeCode)
+    public function switchLocale(string $localeCode): void
     {
         $this->spin(function () use ($localeCode) {
             $dropdown = $this->find('css', $this->selectors['Locales dropdown']);

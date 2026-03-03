@@ -15,116 +15,29 @@ final class Row
     private const PRODUCT_TYPE = 'product';
     private const PRODUCT_MODEL_TYPE = 'product_model';
 
-    /** @var string */
-    private $identifier;
-
-    /** @var string */
-    private $familyCode;
-
-    /** @var string[] */
-    private $groupCodes;
-
-    /** @var boolean */
-    private $enabled;
-
-    /** @var \DateTimeInterface */
-    private $created;
-
-    /** @var \DateTimeInterface */
-    private $updated;
-
-    /** @var string */
-    private $label;
-
-    /** @var null|object  */
-    private $image;
-
-    /** @var null|int */
-    private $completeness;
-
-    /** @var string */
-    private $documentType;
-
-    /** @var integer */
-    private $technicalId;
-
-    /** @var string */
-    private $searchId;
-
-    /** @var bool */
-    private $checked;
-
-    /** @var array */
-    private $childrenCompleteness;
-
-    /** @var null|string */
-    private $parent;
-
-    /** @var WriteValueCollection */
-    private $values;
-
-    /** @var AdditionalProperties */
-    private $additionalProperties;
-
-    /**
-     * @param string                   $identifier
-     * @param null|string              $family
-     * @param string[]                 $groupCodes
-     * @param bool|null                $enabled
-     * @param \DateTimeInterface       $created
-     * @param \DateTimeInterface       $updated
-     * @param string                   $label
-     * @param null|object              $image
-     * @param null|int                 $completeness
-     * @param string                   $documentType
-     * @param int                      $technicalId
-     * @param string                   $searchId
-     * @param bool                     $checked
-     * @param array                    $childrenCompleteness
-     * @param null|string              $parentCode
-     * @param WriteValueCollection $values
-     * @param AdditionalProperties     $additionalProperties
-     */
     private function __construct(
-        string $identifier,
-        ?string $family,
-        array $groupCodes,
-        ?bool $enabled,
-        \DateTimeInterface $created,
-        \DateTimeInterface $updated,
-        ?string $label,
-        ?object $image,
-        ?int $completeness,
-        string $documentType,
-        int $technicalId,
-        string $searchId,
-        ?bool $checked,
-        array $childrenCompleteness,
-        ?string $parentCode,
-        WriteValueCollection $values,
-        AdditionalProperties $additionalProperties
+        private ?string $identifier,
+        private ?string $familyCode,
+        private array $groupCodes,
+        private ?bool $enabled,
+        private \DateTimeInterface $created,
+        private \DateTimeInterface $updated,
+        private ?string $label,
+        private ?object $image,
+        private ?int $completeness,
+        private string $documentType,
+        private int|string $technicalId,
+        private string $searchId,
+        private ?bool $checked,
+        private array $childrenCompleteness,
+        private ?string $parentCode,
+        private WriteValueCollection $values,
+        private AdditionalProperties $additionalProperties
     ) {
-        $this->identifier = $identifier;
-        $this->familyCode = $family;
-        $this->groupCodes = $groupCodes;
-        $this->enabled = $enabled;
-        $this->created = $created;
-        $this->updated = $updated;
-        $this->label = $label;
-        $this->image = $image;
-        $this->completeness = $completeness;
-        $this->documentType = $documentType;
-        $this->technicalId = $technicalId;
-        $this->searchId = $searchId;
-        $this->checked = $checked;
-        $this->childrenCompleteness = $childrenCompleteness;
-        $this->parent = $parentCode;
-        $this->values = $values;
-        $this->additionalProperties = $additionalProperties;
     }
 
     public static function fromProduct(
-        string $identifier,
+        ?string $identifier,
         ?string $familyCode,
         array $groupCodes,
         ?bool $enabled,
@@ -133,7 +46,7 @@ final class Row
         string $label,
         ?object $image,
         ?int $completeness,
-        int $technicalId,
+        string $technicalId,
         ?string $parentCode,
         WriteValueCollection $values
     ):self {
@@ -167,7 +80,7 @@ final class Row
         ?object $image,
         int $technicalId,
         array $childrenCompleteness,
-        ?string $parent,
+        ?string $parentCode,
         WriteValueCollection $values
     ):self {
         return new self(
@@ -185,7 +98,7 @@ final class Row
             sprintf('%s_%s', self::PRODUCT_MODEL_TYPE, $technicalId),
             true,
             $childrenCompleteness,
-            $parent,
+            $parentCode,
             $values,
             new AdditionalProperties()
         );
@@ -210,23 +123,17 @@ final class Row
             $this->searchId,
             $this->checked,
             $this->childrenCompleteness,
-            $this->parent,
+            $this->parentCode,
             $this->values,
             $properties
         );
     }
 
-    /**
-     * @return string
-     */
-    public function identifier(): string
+    public function identifier(): ?string
     {
         return $this->identifier;
     }
 
-    /**
-     * @return null|string
-     */
     public function familyCode(): ?string
     {
         return $this->familyCode;
@@ -240,33 +147,21 @@ final class Row
         return $this->groupCodes;
     }
 
-    /**
-     * @return bool|null
-     */
     public function enabled(): ?bool
     {
         return $this->enabled;
     }
 
-    /**
-     * @return \DateTimeInterface
-     */
     public function created(): \DateTimeInterface
     {
         return $this->created;
     }
 
-    /**
-     * @return \DateTimeInterface
-     */
     public function updated(): \DateTimeInterface
     {
         return $this->updated;
     }
 
-    /**
-     * @return string
-     */
     public function label(): string
     {
         return $this->label;
@@ -283,41 +178,26 @@ final class Row
         return $this->image;
     }
 
-    /**
-     * @return null|int
-     */
     public function completeness(): ?int
     {
         return $this->completeness;
     }
 
-    /**
-     * @return string
-     */
     public function documentType(): string
     {
         return $this->documentType;
     }
 
-    /**
-     * @return int
-     */
-    public function technicalId(): int
+    public function technicalId(): int|string
     {
         return $this->technicalId;
     }
 
-    /**
-     * @return string
-     */
     public function searchId(): string
     {
         return $this->searchId;
     }
 
-    /**
-     * @return bool
-     */
     public function checked(): bool
     {
         return $this->checked;
@@ -331,25 +211,16 @@ final class Row
         return $this->childrenCompleteness;
     }
 
-    /**
-     * @return null|string
-     */
     public function parentCode(): ?string
     {
-        return $this->parent;
+        return $this->parentCode;
     }
 
-    /**
-     * @return WriteValueCollection
-     */
     public function values(): WriteValueCollection
     {
         return $this->values;
     }
 
-    /**
-     * @return AdditionalProperties
-     */
     public function additionalProperties(): AdditionalProperties
     {
         return $this->additionalProperties;

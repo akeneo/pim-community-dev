@@ -72,7 +72,7 @@ JSON;
         $expectedContent =
 <<<JSON
 {"line":1,"code":"foo","status_code":422,"message":"Property \"type\" does not exist. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_channels__code_"}}}
-{"line":2,"code":"baz,","status_code":422,"message":"Validation failed.","errors":[{"property":"code","message":"Channel code may contain only letters, numbers and underscores"}]}
+{"line":2,"code":"baz,","status_code":422,"message":"Validation failed.","errors":[{"property":"code","message":"Channel code may contain only letters, numbers and underscores and should contain at least one letter"}]}
 JSON;
 
         $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/channels', [], [], [], $data);

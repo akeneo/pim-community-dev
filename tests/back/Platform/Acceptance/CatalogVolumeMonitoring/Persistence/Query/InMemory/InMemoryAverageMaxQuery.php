@@ -14,9 +14,6 @@ use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\ReadModel\AverageMa
  */
 class InMemoryAverageMaxQuery implements AverageMaxQuery
 {
-    /** @var int */
-    private $limit;
-
     /** @var string */
     private $volumeName;
 
@@ -29,7 +26,6 @@ class InMemoryAverageMaxQuery implements AverageMaxQuery
     public function __construct(string $volumeName)
     {
         $this->volumeName = $volumeName;
-        $this->limit = -1;
     }
 
     /**
@@ -40,7 +36,7 @@ class InMemoryAverageMaxQuery implements AverageMaxQuery
         $averageVolume = empty($this->values) ? 0 : intval(array_sum($this->values) / count($this->values));
         $maxVolume =  empty($this->values) ? 0 : max($this->values);
 
-        return new AverageMaxVolumes($maxVolume, $averageVolume, $this->limit, $this->volumeName);
+        return new AverageMaxVolumes($maxVolume, $averageVolume, $this->volumeName);
     }
 
     /**

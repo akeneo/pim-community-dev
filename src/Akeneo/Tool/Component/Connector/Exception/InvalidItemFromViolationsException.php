@@ -46,13 +46,17 @@ class InvalidItemFromViolationsException extends BaseInvalidItemException
             $propertyPath = str_replace('-<all_channels>', '', $violation->getPropertyPath());
             $propertyPath = str_replace('-<all_locales>', '', $propertyPath);
 
-            if (null === $invalidValue) {
-                $error = sprintf('%s: %s', $propertyPath, $violation->getMessage());
-            } else {
-                $error = sprintf('%s: %s: %s', $propertyPath, $violation->getMessage(), $invalidValue);
+            $errorMessage = '';
+            if (!empty($propertyPath)) {
+                $errorMessage = sprintf('%s: ', $propertyPath);
             }
 
-            $errors[] = $error . PHP_EOL;
+            $errorMessage .= $violation->getMessage();
+            if (null !== $invalidValue) {
+                $errorMessage .= sprintf(": %s", $invalidValue);
+            }
+
+            $errors[] = $errorMessage . PHP_EOL;
         }
 
         parent::__construct(implode("\n", $errors), $item, $messageParameters, $code, $previous);

@@ -1,0 +1,8 @@
+parameters:
+  level: 7
+  paths:
+    - %rootDir%/../../../src/Akeneo/Pim/Structure/FamilyTemplate/back
+  excludePaths:
+    - %rootDir%/../../../src/Akeneo/Pim/Structure/FamilyTemplate/back/tests
+  checkMissingIterableValueType: false
+  treatPhpDocTypesAsCertain: false

@@ -9,6 +9,7 @@ use Akeneo\Pim\Structure\Component\Model\Family;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariant;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantTranslation;
 use Akeneo\Pim\Structure\Component\Model\VariantAttributeSet;
 use Akeneo\Pim\Structure\Component\Model\VariantAttributeSetInterface;
 use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
@@ -45,8 +46,8 @@ class FamilyVariantSpec extends ObjectBehavior
         Collection $axes2,
         Collection $attribute1,
         Collection $attribute2,
-        \Iterator $iterator
     ) {
+        $iterator = new \ArrayIterator();
         $this->addVariantAttributeSet($variantAttributeSet1);
         $this->addVariantAttributeSet($variantAttributeSet2);
         $this->setFamily($family);
@@ -205,5 +206,111 @@ class FamilyVariantSpec extends ObjectBehavior
         $this->addVariantAttributeSet($variantAttributeSet);
 
         $this->getLevelForAttributeCode('name')->shouldReturn(0);
+    }
+
+    function it_updates_axes_for_level()
+    {
+        $this->getVariantAttributeSet(1)->shouldReturn(null);
+
+        $color = new Attribute();
+        $color->setId(1);
+        $size = new Attribute();
+        $size->setId(2);
+        $this->updateAxesForLevel(1, [$color, $size]);
+
+        $variantAttributeSet = $this->getVariantAttributeSet(1);
+        $variantAttributeSet->shouldHaveType(VariantAttributeSet::class);
+        $variantAttributeSet->getLevel()->shouldBe(1);
+        $variantAttributeSet->getAxes()->toArray()->shouldBe([$color, $size]);
+
+        $other = new Attribute();
+        $other->setId(1);
+        $this->updateAxesForLevel(1, [$other]);
+        $variantAttributeSet = $this->getVariantAttributeSet(1);
+        $variantAttributeSet->shouldHaveType(VariantAttributeSet::class);
+        $variantAttributeSet->getLevel()->shouldBe(1);
+        $variantAttributeSet->getAxes()->toArray()->shouldBe([$other]);
+    }
+
+    function it_can_updates_axes_for_level_only_with_attributes()
+    {
+        $this->shouldThrow(\InvalidArgumentException::class)->during('updateAxesForLevel', [1, ['color']]);
+    }
+
+    function it_updates_attributes_for_level()
+    {
+        $this->getVariantAttributeSet(1)->shouldReturn(null);
+
+        $color = new Attribute();
+        $color->setId(1);
+        $size = new Attribute();
+        $size->setId(2);
+        $this->updateAttributesForLevel(1, [$color, $size]);
+
+        $variantAttributeSet = $this->getVariantAttributeSet(1);
+        $variantAttributeSet->shouldHaveType(VariantAttributeSet::class);
+        $variantAttributeSet->getLevel()->shouldBe(1);
+        $variantAttributeSet->getAttributes()->toArray()->shouldBe([$color, $size]);
+
+        $other = new Attribute();
+        $other->setId(1);
+        $this->updateAttributesForLevel(1, [$other]);
+        $variantAttributeSet = $this->getVariantAttributeSet(1);
+        $variantAttributeSet->shouldHaveType(VariantAttributeSet::class);
+        $variantAttributeSet->getLevel()->shouldBe(1);
+        $variantAttributeSet->getAttributes()->toArray()->shouldBe([$other]);
+    }
+
+    function it_can_updates_attributes_for_level_only_with_attributes()
+    {
+        $this->shouldThrow(\InvalidArgumentException::class)->during('updateAttributesForLevel', [1, ['color']]);
+    }
+
+    function it_returns_events_when_axes_are_updated()
+    {
+        $this->releaseEvents()->shouldReturn([]);
+
+        $color = new Attribute();
+        $color->setId(1);
+        $this->updateAxesForLevel(1, [$color]);
+        $this->releaseEvents()->shouldReturn([FamilyVariantInterface::AXES_WERE_UPDATED_ON_LEVEL]);
+        $this->releaseEvents()->shouldReturn([]);
+
+        $this->updateAxesForLevel(1, [$color]);
+        $this->releaseEvents()->shouldReturn([]);
+
+        $size = new Attribute();
+        $size->setId(2);
+        $this->updateAxesForLevel(1, [$size]);
+        $this->releaseEvents()->shouldReturn([FamilyVariantInterface::AXES_WERE_UPDATED_ON_LEVEL]);
+    }
+
+    function it_returns_events_when_attributes_of_level_are_updated()
+    {
+        $this->releaseEvents()->shouldReturn([]);
+
+        $color = new Attribute();
+        $color->setId(1);
+        $this->updateAttributesForLevel(1, [$color]);
+        $this->releaseEvents()->shouldReturn([FamilyVariantInterface::ATTRIBUTES_WERE_UPDATED_ON_LEVEL]);
+        $this->releaseEvents()->shouldReturn([]);
+
+        $this->updateAttributesForLevel(1, [$color]);
+        $this->releaseEvents()->shouldReturn([]);
+
+        $size = new Attribute();
+        $size->setId(2);
+        $this->updateAttributesForLevel(1, [$size]);
+        $this->releaseEvents()->shouldReturn([FamilyVariantInterface::ATTRIBUTES_WERE_UPDATED_ON_LEVEL]);
+    }
+
+    public function it_gets_a_translation_even_if_the_locale_case_is_wrong(
+        FamilyVariantTranslation $translationEn,
+    )
+    {
+        $translationEn->getLocale()->willReturn('EN_US');
+        $this->addTranslation($translationEn);
+
+        $this->getTranslation('en_US')->shouldReturn($translationEn);
     }
 }

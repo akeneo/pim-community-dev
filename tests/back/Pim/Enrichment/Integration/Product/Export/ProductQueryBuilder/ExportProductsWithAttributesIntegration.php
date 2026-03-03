@@ -2,6 +2,9 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Product\Export\ProductQueryBuilder;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use AkeneoTest\Pim\Enrichment\Integration\Product\Export\AbstractExportTestCase;
 
 class ExportProductsWithAttributesIntegration extends AbstractExportTestCase
@@ -21,36 +24,29 @@ class ExportProductsWithAttributesIntegration extends AbstractExportTestCase
         ]);
 
         $this->createProduct('product_1', [
-            'family'     => 'my_family',
-            'values'     => [
-                'a_text' => [
-                    ['data' => 'Awesome', 'locale' => null, 'scope' => null]
-                ],
-                'a_text_area' => [
-                    ['data' => 'Amazing', 'locale' => null, 'scope' => null]
-                ],
-            ]
+            new SetFamily('my_family'),
+            new SetTextValue('a_text', null, null, 'Awesome'),
+            new SetTextareaValue('a_text_area', null, null, 'Amazing')
         ]);
 
         $this->createProduct('product_2', [
-            'family'     => 'my_family',
-            'values'     => [
-                'a_text' => [
-                    ['data' => 'Awesome product', 'locale' => null, 'scope' => null]
-                ]
-            ]
+            new SetFamily('my_family'),
+            new SetTextValue('a_text', null, null, 'Awesome product'),
         ]);
 
         $this->createProduct('product_4');
     }
 
-    public function testProductExportBySelectingOnlyOneAttribute()
+    public function testProductExportBySelectingOnlyOneAttribute(): void
     {
+        $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_1');
+        $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_2');
+        $product3 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_4');
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;a_text_area
-product_1;;1;my_family;;Amazing
-product_2;;1;my_family;;
-product_4;;1;;;
+uuid;sku;categories;enabled;family;groups;a_text_area
+{$product1->getUuid()->toString()};product_1;;1;my_family;;Amazing
+{$product2->getUuid()->toString()};product_2;;1;my_family;;
+{$product3->getUuid()->toString()};product_4;;1;;;
 
 CSV;
 
@@ -63,18 +59,22 @@ CSV;
                     'attributes'=> ['a_text_area'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
-        $this->assertProductExport($expectedCsv, $config);
+        $this->assertProductExport($expectedCsv,$config);
     }
 
-    public function testProductExportWithAttributesInTheSameOrderAsTheFilter()
+    public function testProductExportWithAttributesInTheSameOrderAsTheFilter(): void
     {
+        $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_1');
+        $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_2');
+        $product3 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_4');
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;a_text_area;a_text
-product_1;;1;my_family;;Amazing;Awesome
-product_2;;1;my_family;;;"Awesome product"
-product_4;;1;;;;
+uuid;sku;categories;enabled;family;groups;a_text_area;a_text
+{$product1->getUuid()->toString()};product_1;;1;my_family;;Amazing;Awesome
+{$product2->getUuid()->toString()};product_2;;1;my_family;;;"Awesome product"
+{$product3->getUuid()->toString()};product_4;;1;;;;
 
 CSV;
 
@@ -87,15 +87,16 @@ CSV;
                     'attributes'=> ['a_text_area', 'a_text'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);
 
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;a_text;a_text_area
-product_1;;1;my_family;;Awesome;Amazing
-product_2;;1;my_family;;"Awesome product";
-product_4;;1;;;;
+uuid;sku;categories;enabled;family;groups;a_text;a_text_area
+{$product1->getUuid()->toString()};product_1;;1;my_family;;Awesome;Amazing
+{$product2->getUuid()->toString()};product_2;;1;my_family;;"Awesome product";
+{$product3->getUuid()->toString()};product_4;;1;;;;
 
 CSV;
 
@@ -108,6 +109,7 @@ CSV;
                     'attributes'=> ['a_text', 'a_text_area'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $csv = $this->jobLauncher->launchSubProcessExport('csv_product_export', null, $config);
@@ -118,12 +120,14 @@ CSV;
     /**
      * @jira https://akeneo.atlassian.net/browse/PIM-5994
      */
-    public function testProductExportByExportingTheAttributesOnlyOnce()
+    public function testProductExportByExportingTheAttributesOnlyOnce(): void
     {
+        $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_1');
+        $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_2');
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;a_text_area;a_text
-product_1;;1;my_family;;Amazing;Awesome
-product_2;;1;my_family;;;"Awesome product"
+uuid;sku;categories;enabled;family;groups;a_text_area;a_text
+{$product1->getUuid()->toString()};product_1;;1;my_family;;Amazing;Awesome
+{$product2->getUuid()->toString()};product_2;;1;my_family;;;"Awesome product"
 
 CSV;
 
@@ -142,6 +146,7 @@ CSV;
                     'attributes'=> ['a_text_area', 'a_text'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);

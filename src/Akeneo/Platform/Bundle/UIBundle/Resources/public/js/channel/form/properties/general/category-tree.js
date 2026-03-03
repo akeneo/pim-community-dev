@@ -42,8 +42,8 @@ define([
         return this;
       }
 
-      FetcherRegistry.getFetcher('category')
-        .fetchAll()
+      FetcherRegistry.getFetcher('channel')
+        .fetchCategoryTree()
         .then(
           function (categories) {
             if (0 === this.getFormData().category_tree.length) {

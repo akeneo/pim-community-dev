@@ -12,18 +12,11 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class UserContext implements Context
 {
-    /** @var UserFactory */
-    private $userFactory;
-
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
-
     public function __construct(
-        UserFactory $userFactory,
-        TokenStorageInterface $tokenStorage
+        private readonly UserFactory $userFactory,
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly InMemoryUserRepository $userRepository,
     ) {
-        $this->userFactory = $userFactory;
-        $this->tokenStorage = $tokenStorage;
     }
 
     /**
@@ -34,21 +27,22 @@ class UserContext implements Context
         /** @var UserInterface $user */
         $user = $this->userFactory->create();
         $user->setUsername('admin');
+        $this->userRepository->save($user);
 
-        $token = new UsernamePasswordToken($user, null, 'main', ['ROLE_ADMINISTRATOR']);
+        $token = new UsernamePasswordToken($user, 'main', ['ROLE_ADMINISTRATOR']);
         $this->tokenStorage->setToken($token);
     }
 
     /**
-     * @Given /^an authentified user$/
+     * @Given /^an authenticated user$/
      */
-    public function anAuthenifiedUser()
+    public function anAuthenticatedUser()
     {
         /** @var UserInterface $user */
         $user = $this->userFactory->create();
         $user->setUsername('julia');
 
-        $token = new UsernamePasswordToken($user, null, 'main', ['ROLE_USER']);
+        $token = new UsernamePasswordToken($user, 'main', ['ROLE_USER']);
         $this->tokenStorage->setToken($token);
     }
 }

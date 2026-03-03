@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter\PresenterRegistryInterface;
@@ -37,7 +39,7 @@ class VersionNormalizer implements NormalizerInterface, CacheableSupportsMethodI
     protected AttributeRepositoryInterface $attributeRepository;
     protected UserContext $userContext;
 
-    const ATTRIBUTE_HEADER_SEPARATOR = "-";
+    private const ATTRIBUTE_HEADER_SEPARATOR = '-';
 
     public function __construct(
         UserManager $userManager,
@@ -87,7 +89,7 @@ class VersionNormalizer implements NormalizerInterface, CacheableSupportsMethodI
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof Version && in_array($format, $this->supportedFormats);
     }
@@ -132,7 +134,7 @@ class VersionNormalizer implements NormalizerInterface, CacheableSupportsMethodI
     {
         $attributeCodes = [];
         foreach (array_keys($changeset) as $valueHeader) {
-            $attributeCode = $this->extractAttributeCode($valueHeader);
+            $attributeCode = $this->extractAttributeCode((string) $valueHeader);
 
             $attributeCodes[$attributeCode] = true;
         }
@@ -141,14 +143,14 @@ class VersionNormalizer implements NormalizerInterface, CacheableSupportsMethodI
 
         foreach ($changeset as $valueHeader => $valueChanges) {
             $context['versioned_attribute'] = $valueHeader;
-            $attributeCode = $this->extractAttributeCode($valueHeader);
+            $attributeCode = $this->extractAttributeCode((string) $valueHeader);
             $context['attribute'] = $attributeCode;
 
-            if (!isset($attributeTypes[$attributeCode])) {
-                continue;
+            if (isset($attributeTypes[$attributeCode])) {
+                $presenter = $this->presenterRegistry->getPresenterByAttributeType($attributeTypes[$attributeCode]);
+            } else {
+                $presenter = $this->presenterRegistry->getPresenterByFieldCode($valueHeader);
             }
-
-            $presenter = $this->presenterRegistry->getPresenterByAttributeType($attributeTypes[$attributeCode]);
             if (null === $presenter) {
                 continue;
             }
@@ -166,10 +168,10 @@ class VersionNormalizer implements NormalizerInterface, CacheableSupportsMethodI
      * For example, in "price-EUR", the attribute code is "price".
      * For "desc-ecom-en_US", this is "desc".
      */
-    protected function extractAttributeCode($valueHeader)
+    protected function extractAttributeCode(string $valueHeader): string
     {
-        if (($separatorPos = strpos($valueHeader, self::ATTRIBUTE_HEADER_SEPARATOR)) !== false) {
-            return substr($valueHeader, 0, $separatorPos);
+        if (($separatorPos = \strpos($valueHeader, self::ATTRIBUTE_HEADER_SEPARATOR)) !== false) {
+            return \substr($valueHeader, 0, $separatorPos);
         }
 
         return $valueHeader;

@@ -48,32 +48,36 @@ pim_ui.system_config:
     loading_message.title: Messages de chargement
 other_actions: Autres actions
 pim_common:
+  association_types: Types d'association
   cancel: Annuler
-  save: Enregistrer
-  delete: Supprimer
-  update: Mettre à jour
-  view: Afficher
-  edit: Modifier
-  created: Créé
-  updated: Mis à jour
-  create: Créer
-  permissions: Autorisations
-  properties: Propriétés
-  name: Nom
-  remove: Supprimer
-  code: Code
-  quantity: Quantité
-  products: Produits
-  product_models: Modèles de produits
   categories: Catégories
-  family_variant: Variante de famille
+  code: Code
+  create: Créer
+  created: Créé
+  delete: Supprimer
+  edit: Modifier
   enabled: Activé
+  family_variant: Variante de famille
   family: Famille
-  parent: Parent
   groups: Groupes
-  unit: Unité
-  yes: "Oui"
+  label: Libellé
+  name: Nom
   no: "Non"
+  parent: Parent
+  permissions: Autorisations
+  product_models: Modèles de produits
+  products: Produits
+  properties: Propriétés
+  quality_score: Score de qualité
+  quantity: Quantité
+  remove: Supprimer
+  save: Enregistrer
+  unit: Unité
+  update: Mettre à jour
+  updated: Mis à jour
+  view: Afficher
+  yes: "Oui"
+  uuid: UUID
 pim_enrich:
   #ACLs
   acl:
@@ -106,15 +110,6 @@ pim_enrich:
       categories_view: Afficher les catégories d'un modèle de produit
       history: Afficher l'historique d'un modèle de produit
       remove: Supprimer un modèle de produit (y compris les enfants)
-    category:
-      list: Liste des catégories
-      create: Créer une catégorie
-      edit: Modifier une catégorie
-      remove: Supprimer une catégorie
-      move: Déplacer la catégorie
-      children: Voir les catégories enfants
-      products: Voir les produits de la catégorie
-      history: Afficher l'historique de la catégorie
     channel:
       index: Liste des canaux
       create: Créer un canal
@@ -136,6 +131,7 @@ pim_enrich:
       create: Créer un groupe d'attributs
       edit: Modifier un groupe d'attributs
       remove: Supprimer un groupe d'attributs
+      mass_delete: Supprimer en masse les groupes d'attributs
       sort: Trier les groupes d'attributs
       add_attribute: Ajouter l'attribut à un groupe
       remove_attribute: Supprimer l'attribut d'un groupe
@@ -145,6 +141,7 @@ pim_enrich:
       create: Créer un attribut
       edit: Modifier un attribut
       remove: Supprimer un attribut
+      mass_delete: Supprimer en masse des attributs
       sort: Trier les attributs au sein d'un groupe d'attributs
       history: Afficher l'historique de l'attribut
     group:
@@ -215,8 +212,10 @@ flash:
   entity:
     removed: L'entité a été supprimée
   attribute:
-    identifier_not_removable: Un attribut de type identifiant ne peut pas être supprimé
+    main_identifier_not_removable: L'attribut utilisé en tant qu'identifiant principal ne peut pas être supprimé
     used_as_conversion_unit: Cet attribut ne peut pas être supprimé car il est utilisé comme unité de conversion dans le(s) canal(aux) %channelCodes%.
+    cant_remove_attributes_used_as_label: Les attributs utilisés comme libellés dans une famille ne peuvent pas être supprimés.
+    cant_remove_attribute_used_as_axis: Impossible d'enlever cet attribut car il est utilisé comme axe de variation d'une famille.
   category:
     removed: Catégorie supprimée avec succès
   tree:
@@ -334,7 +333,7 @@ Choose a unit: Choisir une unité
 No matches found: Aucune correspondance trouvée
 Category tree: Arborescence
 Completeness: Complétude
-Attribute used as label: Attribut utilisé comme étiquette
+Attribute used as label: Attribut utilisé comme libellé
 Credentials: Certificats
 #Scopes
 Global: Général
@@ -451,15 +450,18 @@ pim_datagrid:
     completeness:
       label: Complet
     created:
-      label: Crée le
+      label: Créé
     updated:
-      label: Mis à jour le
+      label: Mis à jour
     label_or_identifier:
       label: Libellé ou identifiant
+      label_with_uuid: Libellé, identifiant ou UUID
     parent:
       label: Parent
     identifier:
       label: Identifiant
+    uuid:
+      label: UUID
 #Versioning / history
 Change History: Historique des modifications
 Data Audit: Historique des données
@@ -524,7 +526,6 @@ pim_mass_edit:
       success: La suppression massive <strong>%label%</strong> est terminée
 job_execution.summary:
   mass_edited: Édition en masse
-  skip: Ignoré
   skipped_products: Produits ignorés
   skipped_attributes: Attributs ignorés
   skipped_families: Familles ignorées
@@ -547,3 +548,7 @@ job_tracker:
     started_at: Démarré à
 pim_login:
   logo_title: Akeneo PIM
+  footer:
+    powered: Powered by
+    powered_image_title: logo Akeneo
+pim_system.acl_group.connect: Connect

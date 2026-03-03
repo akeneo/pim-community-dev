@@ -2,6 +2,11 @@ extensions:
     pim-group-type-edit-form:
         module: pim/form/common/edit-form
 
+    pim-group-type-edit-form-sandbox-helper:
+        module: pim/sandbox-helper
+        parent: pim-group-type-edit-form
+        targetZone: helper
+
     pim-group-type-edit-form-breadcrumbs:
         module: pim/common/breadcrumbs
         parent: pim-group-type-edit-form
@@ -54,6 +59,7 @@ extensions:
                 content: pim_common.confirm_deletion
                 success: pim_enrich.entity.group_type.flash.delete.success
                 fail: pim_enrich.entity.group_type.flash.delete.fail
+                buttonText: pim_common.delete
             redirect: pim_enrich_grouptype_index
 
     pim-group-type-edit-form-save-buttons:

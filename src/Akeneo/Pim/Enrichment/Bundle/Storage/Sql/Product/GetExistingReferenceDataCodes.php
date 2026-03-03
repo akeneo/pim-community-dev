@@ -48,6 +48,6 @@ final class GetExistingReferenceDataCodes implements GetExistingReferenceDataCod
             $sql,
             ['codes' => $codes],
             ['codes' => Connection::PARAM_STR_ARRAY]
-        )->fetchAll(FetchMode::COLUMN);
+        )->fetchFirstColumn();
     }
 }

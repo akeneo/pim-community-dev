@@ -61,7 +61,7 @@ final class LRUCache
         $valuesNotFoundKeysInCache = [];
 
         foreach ($keys as $key) {
-            $value = $this->get($key);
+            $value = $this->get((string) $key);
             if ($this->defaultValue === $value) {
                 $valuesNotFoundKeysInCache[] = $key;
             } else {

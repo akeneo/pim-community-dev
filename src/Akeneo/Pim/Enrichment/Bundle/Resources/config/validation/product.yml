@@ -1,12 +1,13 @@
 Akeneo\Pim\Enrichment\Component\Product\Model\Product:
     group_sequence:
         - Product
+        - identifiers
         - VariantProduct
         - UniqueAxis
         - api
     constraints:
         - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product\UniqueProductEntity:
-            message: pim_catalog.constraint.pim_immutable_product_validator
+              groups: ['identifiers']
         - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\NotEmptyFamily:
             groups:
               - api
@@ -18,15 +19,18 @@ Akeneo\Pim\Enrichment\Component\Product\Model\Product:
         - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\OnlyExpectedAttributes: ~
 
     properties:
+        uuid:
+            - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\IsUuid4: ~
         identifier:
-            - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\NotBlank:
-                attributeCode: 'identifier'
             - Regex:
                 pattern: '/^(?!\s)[^,;]+(?<!\s)$/'
                 message: 'regex.comma_or_semicolon_or_surrounding_space.message'
-            - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Length:
-                max: 255
-                attributeCode: 'identifier'
+                groups: ['identifiers']
+            - Regex:
+                pattern: '/[\r\n]/'
+                message: 'regex.line_break.message'
+                match: false
+                groups: ['identifiers']
         associations:
             - Symfony\Component\Validator\Constraints\All:
                 - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\AssociationTypeIsNotQuantified: ~

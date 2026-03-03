@@ -82,7 +82,7 @@ class GroupType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'pim_user_group';
     }

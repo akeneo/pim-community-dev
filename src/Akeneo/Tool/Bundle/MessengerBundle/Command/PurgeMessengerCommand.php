@@ -19,14 +19,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 class PurgeMessengerCommand extends Command
 {
     protected static $defaultName = 'akeneo:messenger:doctrine:purge-messages';
+    protected static $defaultDescription = 'Purges the messenger SQL table in terms of the given retention time (default is 7200 seconds)';
 
-    private PurgeDoctrineQueueQuery $purgeDoctrineQueue;
-
-    public function __construct(PurgeDoctrineQueueQuery $purgeDoctrineQueue)
+    public function __construct(private PurgeDoctrineQueueQuery $purgeDoctrineQueue)
     {
         parent::__construct();
-
-        $this->purgeDoctrineQueue = $purgeDoctrineQueue;
     }
 
     /**
@@ -35,9 +32,6 @@ class PurgeMessengerCommand extends Command
     protected function configure()
     {
         $this
-            ->setDescription(
-                'Purges the messenger SQL table in terms of the given retention time (default is 7200 seconds)'
-            )
             ->addArgument(
                 'table-name',
                 InputArgument::REQUIRED,
@@ -57,7 +51,7 @@ class PurgeMessengerCommand extends Command
             );
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): ?int
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $retentionTime = $input->getOption('retention-time');
         $tableName = $input->getArgument('table-name');
@@ -66,13 +60,13 @@ class PurgeMessengerCommand extends Command
 
         try {
             $this->purgeDoctrineQueue->execute($tableName, $queueName, $olderThan);
-        } catch (DBALException $dbalException) {
-            $output->writeln($dbalException->getMessage());
+        } catch (\Exception $exception) {
+            $output->writeln($exception->getMessage());
 
-            return -1;
+            return Command::FAILURE;
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     private function computeOlderThanDateTime(int $retentionTime): \DateTimeImmutable

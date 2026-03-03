@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Application\Settings\Query;
 
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials;
-use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\SelectConnectionWithCredentialsByCodeQuery;
+use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\SelectConnectionWithCredentialsByCodeQueryInterface;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -14,12 +14,8 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\SelectConne
  */
 class FindAConnectionHandler
 {
-    /** @var SelectConnectionWithCredentialsByCodeQuery */
-    private $selectConnectionWithCredentialsByCodeQuery;
-
-    public function __construct(SelectConnectionWithCredentialsByCodeQuery $selectConnectionWithCredentialsByCodeQuery)
+    public function __construct(private SelectConnectionWithCredentialsByCodeQueryInterface $selectConnectionWithCredentialsByCodeQuery)
     {
-        $this->selectConnectionWithCredentialsByCodeQuery = $selectConnectionWithCredentialsByCodeQuery;
     }
 
     public function handle(FindAConnectionQuery $query): ?ConnectionWithCredentials

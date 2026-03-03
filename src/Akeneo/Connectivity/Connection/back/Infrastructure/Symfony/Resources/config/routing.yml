@@ -1,68 +1,24 @@
+akeneo_connectivity_connection_apps:
+    resource: ./Apps/routing.yml
 
-# Internal API
+akeneo_connectivity_connection_audit:
+    resource: ./Audit/routing.yml
 
-akeneo_connectivity_connection_error_management_rest:
-    resource: ./routing/error-management.yml
-    name_prefix: akeneo_connectivity_connection_error_management_rest_
-    prefix: /rest/connections
+akeneo_connectivity_connection:
+    resource: ./Connections/routing.yml
 
-akeneo_connectivity_connection_audit_rest:
-    resource: ./routing/audit.yml
-    name_prefix: akeneo_connectivity_connection_audit_rest_
-    prefix: /rest/connections/audit
+akeneo_connectivity_connection_error_management:
+    resource: ./ErrorManagement/routing.yml
 
-akeneo_connectivity_connection_rest:
-    resource: ./routing/connection.yml
-    name_prefix: akeneo_connectivity_connection_rest_
-    prefix: /rest/connections
-    trailing_slash_on_root: false
+akeneo_connectivity_connection_marketplace:
+    resource: ./Marketplace/routing.yml
 
-akeneo_connectivity_connection_webhook_rest:
-  resource: ./routing/webhook.yml
-  name_prefix: akeneo_connectivity_connection_webhook_rest_
-  prefix: /rest/connections
+akeneo_connectivity_connection_custom_apps:
+    resource: ./CustomApps/routing.yml
 
-# Frontend
+akeneo_connectivity_connection_webhook:
+    resource: ./Webhook/routing.yml
 
-## Error Management
-akeneo_connectivity_connection_error_management_dashboard:
-   path: '/connection/dashboard/business-errors'
-
-akeneo_connectivity_connection_error_management_connection_monitoring:
-   path: '/connections/{code}/monitoring'
-   requirements:
-        code: '[a-zA-Z0-9_]+'
-
-## Audit
-akeneo_connectivity_connection_audit_index:
-    path: '/connection/dashboard'
-
-akeneo_connectivity_connection_audit_any:
-    path: '/connection/dashboard/{any}'
-    requirements:
-        any: .*
-
-## Webhook
-akeneo_connectivity_connection_webhook_regenerate_secret:
-    path: '/connections/{code}/event-subscription/regenerate-secret'
-    requirements:
-        code: '[a-zA-Z0-9_]+'
-
-akeneo_connectivity_connection_webhook_edit:
-    path: '/connections/{code}/event-subscription'
-    requirements:
-        code: '[a-zA-Z0-9_]+'
-
-## Settings
-akeneo_connectivity_connection_settings_index:
-    path: '/connections'
-
-akeneo_connectivity_connection_settings_edit:
-    path: '/connections/{code}/edit'
-    requirements:
-        code: '[a-zA-Z0-9_]+'
-
-akeneo_connectivity_connection_settings_any:
-    path: '/connections/{any}'
-    requirements:
-        any: .*
+# connection_settings must be imported at the end because of the order of the front routes is important
+akeneo_connectivity_connection_settings:
+    resource: ./Settings/routing.yml

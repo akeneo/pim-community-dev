@@ -2,10 +2,12 @@
 
 namespace Oro\Bundle\SecurityBundle\DependencyInjection\Compiler;
 
-use Oro\Bundle\SecurityBundle\Acl\Cache\AclCache;
+use Oro\Bundle\ConfigBundle\DependencyInjection\SystemConfiguration\ProcessorDecorator;
+use Oro\Bundle\SecurityBundle\Annotation\Acl as AclAnnotation;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\Yaml\Yaml;
 
 class AclConfigurationPass implements CompilerPassInterface
 {
@@ -24,8 +26,6 @@ class AclConfigurationPass implements CompilerPassInterface
     const ACL_EXTENSION_SELECTOR = 'oro_security.acl.extension_selector';
     const ACL_EXTENSION_TAG = 'oro_security.acl.extension';
 
-    const DEFAULT_ACL_CACHE_CLASS = AclCache::class;
-
     const DOCTRINE_CONVERTER = 'sensio_framework_extra.converter.doctrine.orm';
     const DOCTRINE_CONVERTER_CLASS = 'Oro\Bundle\SecurityBundle\Request\ParamConverter\DoctrineParamConverter';
     const SECURITY_FACADE_SERVICE = 'oro_security.security_facade';
@@ -39,6 +39,7 @@ class AclConfigurationPass implements CompilerPassInterface
         $this->configureDefaultAclProvider($container);
         $this->configureDefaultAclCache($container);
         $this->configureDefaultAclVoter($container);
+        $this->loadAclFeatureFlagRegistry($container);
     }
 
     /**
@@ -80,8 +81,7 @@ class AclConfigurationPass implements CompilerPassInterface
     {
         if ($container->hasDefinition(self::DEFAULT_ACL_CACHE)) {
             $cacheDef = $container->getDefinition(self::DEFAULT_ACL_CACHE);
-            //change cache class
-            $cacheDef->setClass(self::DEFAULT_ACL_CACHE_CLASS);
+
             // substitute the ACL Permission Granting Strategy
             if ($container->hasDefinition(self::NEW_ACL_PERMISSION_GRANTING_STRATEGY)) {
                 $cacheDef->replaceArgument(1, new Reference(self::NEW_ACL_PERMISSION_GRANTING_STRATEGY));
@@ -155,7 +155,7 @@ class AclConfigurationPass implements CompilerPassInterface
             function ($a, $b) {
                 return $a['priority'] == $b['priority']
                     ? 0
-                    : ($a['priority'] < $b['priority']) ? -1 : 1;
+                    : (($a['priority'] < $b['priority']) ? -1 : 1);
             }
         );
 
@@ -165,5 +165,26 @@ class AclConfigurationPass implements CompilerPassInterface
             },
             $extensions
         );
+    }
+
+    protected function loadAclFeatureFlagRegistry(ContainerBuilder $container)
+    {
+        $config = [];
+        $aclFeatureFlagRegistry = $container->getDefinition('oro_security.acl.acl_feature_flags');
+
+        foreach ($container->getParameter('kernel.bundles') as $bundle) {
+            $reflection = new \ReflectionClass($bundle);
+            $file = dirname($reflection->getFilename()) .'/Resources/config/acl.yml';
+
+            if (!is_file($file)) {
+                continue;
+            }
+
+            $config = Yaml::parse(file_get_contents(realpath($file)));
+            foreach ($config as $aclName => $aclConfig) {
+                $feature = $aclConfig['feature'] ?? null;
+                $aclFeatureFlagRegistry->addMethodCall('add', [$aclName, $feature]);
+            }
+        }
     }
 }

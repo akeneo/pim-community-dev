@@ -4,7 +4,7 @@ namespace Specification\Akeneo\Platform\Bundle\UIBundle\Form\Subscriber;
 
 use Akeneo\Platform\Bundle\UIBundle\Form\Subscriber\DisableFieldSubscriber;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Channel\Component\Model\Channel;
+use Akeneo\Channel\Infrastructure\Component\Model\Channel;
 use Prophecy\Argument;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormConfigInterface;

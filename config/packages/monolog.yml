@@ -1,9 +1,2 @@
 monolog:
-  handlers:
-    event_api:
-      type: stream
-      path:  "php://stderr"
-      level: info
-      channels: ['event_api']
-      formatter: 'monolog.formatter.json'
-  channels: ['event_api']
+    channels: ['event_api', 'business_event', 'pim_api_acl', 'api_requests']

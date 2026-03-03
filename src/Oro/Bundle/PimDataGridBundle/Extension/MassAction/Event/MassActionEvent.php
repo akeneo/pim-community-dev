@@ -4,7 +4,7 @@ namespace Oro\Bundle\PimDataGridBundle\Extension\MassAction\Event;
 
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Mass action event allows to do add easily some extra code

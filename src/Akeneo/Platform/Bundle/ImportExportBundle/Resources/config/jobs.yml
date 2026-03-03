@@ -1,0 +1,38 @@
+services:
+    Akeneo\Platform\Bundle\ImportExportBundle\Job\PurgeJobExecutions:
+        arguments:
+            - '@akeneo.platform.import_export.purge_job_execution'
+            - '@logger'
+
+    pim_platform.job.job_executions_purge:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'job_executions_purge'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@Akeneo\Tool\Component\Connector\Step\CheckJobUniqueStep'
+                - '@pim_versioning.step.job_executions_purge'
+            - false
+            - false
+        public: false
+        tags:
+            -
+                name: akeneo_batch.job
+                connector: 'internal'
+                type: 'scheduled_job'
+
+    pim_versioning.step.job_executions_purge:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'job_executions_purge'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@Akeneo\Platform\Bundle\ImportExportBundle\Job\PurgeJobExecutions'
+        public: false
+
+    pim_versioning.job.job_parameters.default_values_provider.job_executions_purge:
+        class: 'Akeneo\Platform\Bundle\ImportExportBundle\Job\JobParameters\PurgeJobExecutions'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }

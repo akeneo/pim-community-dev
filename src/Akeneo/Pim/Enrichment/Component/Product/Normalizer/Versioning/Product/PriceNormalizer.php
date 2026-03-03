@@ -14,13 +14,14 @@ use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
  */
 class PriceNormalizer extends AbstractValueDataNormalizer implements CacheableSupportsMethodInterface
 {
+    const DECIMAL_PRECISION = 2;
     /** @var string[] */
     protected $supportedFormats = ['flat'];
 
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof ProductPriceInterface && in_array($format, $this->supportedFormats);
     }
@@ -37,7 +38,7 @@ class PriceNormalizer extends AbstractValueDataNormalizer implements CacheableSu
     {
         $data = $object->getData();
         if (null !== $data && '' !== $data) {
-            $data = sprintf('%.2F', $data);
+            $data = number_format($data, static::DECIMAL_PRECISION, '.', '');
         }
 
         return (string) $data;

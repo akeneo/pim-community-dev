@@ -43,7 +43,6 @@ akeneo_data_quality_insights:
       day: day
     key_indicators:
       title: Key Indicators
-      products_to_work_on: '{1}You have <button>1 product</button> to work on.|]1, 200[You have <button>{{ count }} products</button> to work on.|[200, Inf[You have <button>more than {{ count }} products</button> to work on.'
       list:
         has_image:
           title: Products with an image
@@ -134,21 +133,26 @@ akeneo_data_quality_insights:
       all_missing_attributes: All missing attributes
     back_to_products: Back to products
   attribute_group:
-    helper_dqi_info: The quality score calculation will only take into account attributes belonging to attribute groups activated on data quality.
-    helper_dqi_link: More info on our helpcenter.
-    activation: Activation
+    helper_dqi_info: The quality score calculation will only take into account attributes belonging to attribute groups enabled on data quality.
+    helper_dqi_link: More info on our Help Center.
+    activation: Enabled
     dqi_status: Data Quality Insights status
-    activated: Activated
+    activated: Enabled
     disabled: Disabled
     used_groups_helper: "The following attributes groups are taken into account in the Data Quality Insights calculation:"
-    all_groups_evaluated: All the attribute groups of this product are taken into account for the calculation of the quality score. To get the most relevant quality score, <a href="{{ link }}" target="_blank">learn how to deactivate attribute groups to in our help center.</a>
+    all_groups_evaluated: All the attribute groups of this product are taken into account for the calculation of the quality score. To get the most relevant quality score, <a href="{{ link }}" target="_blank">learn how to disable attribute groups in our Help Center.</a>
   product_grid:
     filter_label:
       quality_score: Quality score
       enrichment_quality: Enrichment quality
-      images_quality: Images quality
+      images_quality: Product image
     filter_value:
       good: Good
       to_improve: To improve
+      "yes": "Yes"
+      "no": "No"
+  quality_score:
+    pending: In progress
+    title: "Quality score:"
 pim_title:
   akeneo_data_quality_insights_dashboard: Data Quality Insights

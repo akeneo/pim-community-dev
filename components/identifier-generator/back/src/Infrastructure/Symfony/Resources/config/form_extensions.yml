@@ -1,0 +1,17 @@
+extensions:
+  pim-menu-settings-identifier-generator:
+    module: pim/menu/item
+    parent: pim-menu-automation-settings-block
+    aclResourceId: "pim_identifier_generator_view || pim_identifier_generator_manage"
+    position: 20
+    config:
+      title: pim_title.akeneo_identifier_generator_index
+      to: akeneo_identifier_generator_index
+      new: true
+    feature: identifier_generator
+
+  pim-identifier-generator-user-navigation:
+    module: pim/menu/user-navigation
+    config:
+      userAccount: pim_menu.user.user_account
+      logout: pim_menu.user.logout

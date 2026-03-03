@@ -13,7 +13,7 @@ Feature: Import media with products
       | Warranty    | pim_catalog_file  | txt, pdf           | 1             | other | warranty   |
     And the following family:
       | code         | attributes                         |
-      | media_family | frontView,name,userManual,warranty |
+      | media_family | sku,frontView,name,userManual,warranty |
     And I am logged in as "Julia"
 
   Scenario: Successfully import media
@@ -24,7 +24,7 @@ Feature: Import media with products
       fanatic-freewave-76;media_family;;fanatic-freewave-76.gif;"Fanatic Freewave 76";fanatic-freewave-76.txt;2014_collection
       """
     And the following job "xlsx_footwear_product_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     And import directory of "xlsx_footwear_product_import" contains the following media:
       | bic-core-148.gif        |
       | bic-core-148.txt        |

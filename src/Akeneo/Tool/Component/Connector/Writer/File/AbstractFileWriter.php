@@ -2,7 +2,9 @@
 
 namespace Akeneo\Tool\Component\Connector\Writer\File;
 
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\LocalStorage;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Tool\Component\Batch\Item\StatefulInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -15,7 +17,7 @@ use Symfony\Component\Filesystem\Filesystem;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class AbstractFileWriter implements ItemWriterInterface, StepExecutionAwareInterface
+abstract class AbstractFileWriter implements ItemWriterInterface, StepExecutionAwareInterface, ArchivableWriterInterface, StatefulInterface
 {
     /** @var StepExecution */
     protected $stepExecution;
@@ -25,6 +27,8 @@ abstract class AbstractFileWriter implements ItemWriterInterface, StepExecutionA
 
     /** @var string DateTime format for the file path placeholder */
     protected $datetimeFormat = 'Y-m-d_H-i-s';
+
+    protected array $writtenFiles = [];
 
     public function __construct()
     {
@@ -38,15 +42,18 @@ abstract class AbstractFileWriter implements ItemWriterInterface, StepExecutionA
      *
      * @return string
      */
-    public function getPath(array $placeholders = [])
+    public function getPath(array $placeholders = []): string
     {
         $parameters = $this->stepExecution->getJobParameters();
-        $filePath = $parameters->get('filePath');
+        $jobExecution = $this->stepExecution->getJobExecution();
+        $storage = $parameters->get('storage');
+        $filePath = LocalStorage::TYPE === $storage['type']
+            ? $storage['file_path']
+            : sprintf('%s%s%s', sys_get_temp_dir(), DIRECTORY_SEPARATOR, $storage['file_path']);
 
         if (false !== strpos($filePath, '%')) {
             $datetime = $this->stepExecution->getStartTime()->format($this->datetimeFormat);
             $defaultPlaceholders = ['%datetime%' => $datetime, '%job_label%' => ''];
-            $jobExecution = $this->stepExecution->getJobExecution();
 
             if (isset($placeholders['%job_label%'])) {
                 $placeholders['%job_label%'] = $this->sanitize($placeholders['%job_label%']);
@@ -66,6 +73,14 @@ abstract class AbstractFileWriter implements ItemWriterInterface, StepExecutionA
     public function setStepExecution(StepExecution $stepExecution)
     {
         $this->stepExecution = $stepExecution;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getWrittenFiles(): array
+    {
+        return $this->writtenFiles;
     }
 
     /**

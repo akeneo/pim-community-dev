@@ -46,6 +46,13 @@ class FlatItemBufferFlusherSpec extends ObjectBehavior
         $this->filesystem->remove($this->directory);
     }
 
+    function it_should_not_create_file_if_buffer_is_empty(FlatItemBuffer $buffer)
+    {
+        $buffer->count()->willReturn(0);
+
+        $this->flush($buffer, ['type' => 'csv'], $this->directory . 'output')->shouldReturn([]);
+    }
+
     function it_flushes_a_buffer_without_a_max_number_of_lines($columnSorter, FlatItemBuffer $buffer, StepExecution $stepExecution, JobParameters $parameters)
     {
         $columnSorter->sort(Argument::any(), [])->willReturn(['colA', 'colB']);
@@ -54,10 +61,11 @@ class FlatItemBufferFlusherSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('write')->shouldBeCalled();
         $parameters->all()->willReturn([]);
 
+        $buffer->count()->willReturn(3);
         $buffer->key()->willReturn(0);
-        $buffer->rewind()->willReturn();
+        $buffer->rewind();
         $buffer->valid()->willReturn(true, false);
-        $buffer->next()->willReturn();
+        $buffer->next();
         $buffer->current()->willReturn(['fooA', 'fooB']);
 
         $buffer->getHeaders()->willReturn(['colA', 'colB']);
@@ -79,10 +87,10 @@ class FlatItemBufferFlusherSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('write')->shouldBeCalled();
         $parameters->all()->willReturn([]);
 
-        $buffer->rewind()->willReturn();
+        $buffer->rewind();
         $buffer->count()->willReturn(3);
         $buffer->valid()->willReturn(true, true, true, false);
-        $buffer->next()->willReturn();
+        $buffer->next();
         $buffer->current()->willReturn([
             'colA' => 'fooA',
             'colB' => 'fooB'
@@ -114,10 +122,10 @@ class FlatItemBufferFlusherSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('write')->shouldBeCalled();
         $parameters->all()->willReturn([]);
 
-        $buffer->rewind()->willReturn();
+        $buffer->rewind();
         $buffer->count()->willReturn(3);
         $buffer->valid()->willReturn(true, true, true, false);
-        $buffer->next()->willReturn();
+        $buffer->next();
         $buffer->current()->willReturn([
             'colA' => 'fooA',
             'colB' => 'fooB'
@@ -144,6 +152,7 @@ class FlatItemBufferFlusherSpec extends ObjectBehavior
     function it_throws_an_exception_if_type_is_not_defined($columnSorter, FlatItemBuffer $buffer, StepExecution $stepExecution, JobParameters $parameters)
     {
         $columnSorter->sort(Argument::any(), [])->willReturn(['colA', 'colB']);
+        $buffer->count()->willReturn(1);
 
         $stepExecution->getJobParameters()->willReturn($parameters);
         $parameters->all()->willReturn([]);
@@ -157,13 +166,14 @@ class FlatItemBufferFlusherSpec extends ObjectBehavior
     function it_throws_an_exception_if_type_is_not_recognized($columnSorter, FlatItemBuffer $buffer, StepExecution $stepExecution, JobParameters $parameters)
     {
         $columnSorter->sort(Argument::any(), [])->willReturn(['colA', 'colB']);
+        $buffer->count()->willReturn(1);
 
         $stepExecution->getJobParameters()->willReturn($parameters);
         $parameters->all()->willReturn([]);
 
         $buffer->getHeaders()->willReturn(['colA', 'colB']);
 
-        $this->shouldThrow('Box\Spout\Common\Exception\UnsupportedTypeException')
+        $this->shouldThrow('\InvalidArgumentException')
             ->during('flush', [$buffer, ['type' => 'undefined'], Argument::any()]);
     }
 }

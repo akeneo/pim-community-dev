@@ -2,7 +2,7 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql;
 
-use Akeneo\Channel\Component\Model\Channel;
+use Akeneo\Channel\Infrastructure\Component\Model\Channel;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
 
@@ -43,6 +43,24 @@ class FindActivatedCurrenciesIntegration extends TestCase
         $this->assertSameWithoutOrder(
             $this->get('pim_catalog.query.find_activated_currencies')->forAllChannels('ecommerce'),
             ['USD', 'EUR', 'ADP', 'AFA']
+        );
+    }
+
+    public function testThatItReturnsActivatedCurrenciesIndexedByChannelCode()
+    {
+        $this->addAdditionalCurrenciesToMobile();
+        $actual = $this->get('pim_catalog.query.find_activated_currencies')->forAllChannelsIndexedByChannelCode();
+        \ksort($actual);
+        foreach ($actual as $channelCode => $currencies) {
+            \sort($actual[$channelCode]);
+        }
+
+        Assert::assertSame(
+            [
+                'ecommerce' => ['USD'],
+                'mobile' => ['ADP', 'AFA', 'EUR'],
+            ],
+            $actual
         );
     }
 

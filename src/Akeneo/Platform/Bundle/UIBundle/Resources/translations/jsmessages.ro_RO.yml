@@ -1,0 +1,303 @@
+#ORO messages
+"Yes, I Agree": "Da, sunt de acord"
+"Yes, do it": "Da, fă acest lucru"
+"Ok, got it.": "Bine, am înțeles."
+"Edit": "Modifică"
+"Yes, revoke": "Da, revocă"
+"Revoke Confirmation": "Revocă confirmare"
+Prev: Prec
+Today: Astăzi
+Wk: Sapt
+AM: AM
+A: A
+PM: PM
+P: P
+"Choose Time": "Alege data"
+Time: Timp
+Hour: Oră
+Minute: Minut
+Second: Secundă
+Millisecond: Milisecundă
+Microsecond: Microsecundă
+"Time Zone": "Fus orar"
+#PIM messages
+Localized value: Valoare localizată
+Columns: Coloane
+#Filters
+Action: Acțiune
+Unit: Unitate
+Currency: Monedă
+jstree:
+  all: Toate produsele
+  unclassified: Produse neclasificate
+  product:
+    all: Toate produsele
+    unclassified: Produse neclasificate
+  no_tree: Niciun arbore disponibil
+  include_sub: Include subcategorii
+#Datetimepicker
+datetimepicker:
+  days:
+    Sunday: Duminică
+    Monday: Luni
+    Tuesday: Marți
+    Wednesday: Miercuri
+    Thursday: Joi
+    Friday: Vineri
+    Saturday: Sâmbătă
+  daysShort:
+    Sun: Dum
+    Mon: Lun
+    Tue: Mar
+    Wed: Mie
+    Thu: Joi
+    Fri: Vin
+    Sat: Sâm
+  daysMin:
+    Su: Du
+    Mo: Lu
+    Tu: Ma
+    We: Mi
+    Th: Jo
+    Fr: Vi
+    Sa: Sâ
+  months:
+    January: Ianuarie
+    February: Februarie
+    March: Martie
+    April: Aprilie
+    May: Mai
+    June: Iunie
+    July: Iulie
+    August: August
+    September: Septembrie
+    October: Octombrie
+    November: Noiembrie
+    December: Decembrie
+  monthsShort:
+    Jan: Ian
+    Feb: Feb
+    Mar: Mar
+    Apr: Apr
+    May: Mai
+    Jun: Iun
+    Jul: Iul
+    Aug: Aug
+    Sep: Sep
+    Oct: Oct
+    Nov: Noi
+    Dec: Dec
+#ORO
+oro_config:
+  form:
+    config:
+      title: Configurarea sistemului
+      tab:
+        system:
+          title: Sistem
+      group:
+        localization:
+          title: Localizare
+          system_locale: Limbă
+        notification:
+          title: Notificări
+          system_notification: Noi versiuni notificări
+        loading_message:
+          title: Mesajele se incarcă
+          label: Permite mesaje de incărcare
+        loading_messages:
+          label: Mesaje de incărcare disponibile
+"Sorry, page was not loaded correctly": "Ne pare rău, pagina nu a fost încărcată corect"
+"Your local changes will be lost. Are you sure you want to refresh the page?": "Schimbările locale vor fi pierdute. Sunteţi sigur că doriți să actualizați pagina?"
+"navigation.message.content.outdated": "Conținutul paginii {{ title }} este neactualizat, vă rugăm <a href='#' data-action='page-refresh'>reîmprospătați pagina</a>"
+"Content of pinned page is outdated": "Conținutului paginei fixată este expirat"
+#Global structure of translation files
+#pim_bundle_name:
+#entity:
+#entity_name:
+#label: entity
+#uppercase_label: Entity
+#plural_label: Entities
+#flash:
+#update:
+#fail: Update failed
+#success: Entity Successfully updated
+#delete:
+#fail: Cannot delete this entity
+#success: Entity successfully removed
+#create:
+#fail: Can not create this entity
+#success: Entity successfully created
+#page_title:
+#index: "]-Inf, 1]1 entity|]1, Inf[{{ count }} entities"
+#property:
+#field_name: Field name
+#complex_field:
+#label: Field name
+#choose: Choose a field name
+#module:
+#module_name:
+#key: message
+pim_common:
+  actions: Acțiuni
+  add: Adaugă
+  add_attributes: Adaugă atribut
+  all: Toate
+  and: și
+  apply: Aplică
+  by: de
+  cancel: Anulează
+  code: Cod
+  confirm: Confirmă
+  confirm_deletion: Confirmă ștergerea
+  create: Creează
+  created: Creat
+  delete: Şterge
+  done: Efectuat
+  edit: Modifică
+  entity_updated: Există schimbări nesalvate.
+  export: Exportă
+  from: De la
+  general_properties: Proprietăți generale
+  history: Istoric
+  label: Etichetă
+  label_translations: Traduceri de etichetă
+  less_than: Mai puţin de
+  loading: Se incarcă...
+  media_upload: Trageți și lasăți pentru încărcare sau apasăți aici
+  more_than: Mai mult de
+  next: Următorul
+  "no": "Nu"
+  none: Niciunul
+  not_available: Indisponibil
+  now: Acum
+  ok: OK
+  permissions: Permisiuni
+  previous: Anterior
+  properties: Propietati
+  remove: Elimină
+  required_label: (necesar)
+  save: Salvează
+  search: Cautare
+  select2:
+    search: Caută...
+    no_match: Nicio potrivire găsită
+    load_more: Se încarcă mai multe rezultate...
+  status: Stare
+  to: la
+  type: Tip
+  update: Actualizează
+  "yes": "Da"
+  operator: Operstor
+  operators:
+    "=": Este egal cu
+    "!=": Nu este egal cu
+    ">=": Mai mare sau egal cu
+    ">": Mai mare de
+    "<=": Mai mic sau egal cu
+    "<": Mai mic de
+    EMPTY: Este gol
+    NOT EMPTY: Nu este gol
+    CONTAINS: Conține
+    DOES NOT CONTAIN: Nu conține
+    STARTS WITH: Începe cu
+    ENDS WITH: Se termină cu
+error:
+  forbidden: Interzis. Nu sunteți permiși să accesați această pagină
+alert:
+  attribute_option:
+    save_before_edit_other: Vă rugăm să înregistrați modificările dumneavoastră pe alte rânduri inainte de a edita acest rând
+  session_storage:
+    not_available: Browserul web al dumneavoastră nu pare a fi compatibil cu sessionStorage. Vă rugăm să contactați administratorul
+pim_enrich.entity.fallback:
+  flash:
+    update:
+      fail: Actualizarea a eșuat
+      success: Actualizat cu succes
+    delete:
+      fail: Nu puteți şterge acest element
+      success: Elementul a fost șters
+  module:
+    delete:
+      title: Șterge {{ itemName }}
+      alternative_title: Confirmă eliminarea
+      item: Ești sigur că vrei să ștergi acest element?
+    edit:
+      leave: Ești sigur că vrei să părăsești această pagină?
+      discard_changes: Veți pierde modificările în {{ entity }} dacă ieșiți din pagina asta.
+pim_enrich.entity.job_execution:
+  module:
+    download:
+      archive: Descarcă arhiva generată
+      output: Descarcă fișierele generate
+pim_title:
+  oro_default: Tablou de bord
+  pim_enrich_attributegroup_index: Grupuri atribute
+  pim_enrich_attributegroup_create: Grupe de atribute | Creează
+  pim_enrich_categorytree_index: Mulțimea de categorii
+  pim_enrich_categorytree_create: Mulțimi de categorii | Creează
+  pim_enrich_categorytree_create_tree: Mulțimi de categorii | Creează
+  pim_enrich_attribute_index: Atribute
+  pim_enrich_attribute_create: Atribute | Creează
+  pim_enrich_product_index: Produse
+  pim_enrich_family_index: Familii
+  pim_enrich_channel_index: Canale
+  pim_enrich_channel_create: Canale | Creează
+  pim_enrich_channel_edit: Canlalul {{ channel.label }} | Editare
+  pim_enrich_currency_index: Valute
+  pim_enrich_locale_index: Locale
+  pim_enrich_group_index: Grupuri
+  pim_enrich_group_edit: Grupul {{ group.label }} | Editare
+  pim_enrich_associationtype_index: Tipurile asociației
+  pim_enrich_associationtype_edit: Tip de asociație {{ association type.label }} | Editare
+  pim_enrich_grouptype_index: Tipuri de grup
+  pim_enrich_grouptype_edit: Tip de grup {{ group type.label }} | Editare
+  pim_enrich_mass_edit_action_choose: Editare în masă | Alege
+  pim_enrich_mass_edit_action_configure: Editare în masă | Configurează
+  pim_enrich_job_tracker_index: Monitorizare procese
+  pim_enrich_job_tracker_show: Monitorizare procese | Arată sarcină
+  pim_enrich_mass_edit_action: Editare în masă
+  pim_analytics_system_info_index: Informații despre sistem
+pim_menu:
+  tab:
+    activity: Activitate
+    imports: Importuri
+    exports: Exporturi
+    settings: Setări
+    system: Sistem
+    help:
+      title: Ajutor
+      helper: Centru de Ajutor Akeneo
+  item:
+    association_type: Tipuri de asociații
+    attribute_group: Grupuri de atribute
+    channel: Canale
+    currency: Valute
+    dashboard: Tablou de bord
+    family: Familii
+    group: Grupuri
+    group_type: Tipuri de grup
+    product_model: Modele de Produse
+    export_history: Istoricul exporturilor
+    export_profile: Exportă profile
+    import_history: Istoricul importurilor
+    import_profile: Importă profile
+    configuration: Configurație
+    user_management: Gestionarea Utilizatorilor
+    user: Utilizatori
+    user_group: Grupuri de utilizatori
+    user_role: Roluri
+    info: Informație despre sistem
+    job_tracker: Monitorizare procese
+  navigation:
+    product: Navigarea produsului
+    product_infos: Infornații despre produs
+  user:
+    logout: Deconectează-te
+    user_account: Contul meu
+pim_notification:
+  types:
+    import: Importă
+    export: Exportă
+    quick_export: Exportare rapidă
+    mass_edit: Editare în masă

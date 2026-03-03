@@ -107,7 +107,9 @@ class InMemoryAttributeRepositorySpec extends ObjectBehavior
 
     function it_gets_the_identifier_attribute()
     {
-        $identifier = (new Attribute())->setType(AttributeTypes::IDENTIFIER);
+        $identifier = (new Attribute())
+            ->setType(AttributeTypes::IDENTIFIER)
+            ->setCode('sku');
 
         $this->save($identifier);
         $this->save((new Attribute())->setCode('name'));
@@ -174,6 +176,24 @@ class InMemoryAttributeRepositorySpec extends ObjectBehavior
             'attribute_3' => $attribute3,
             'attribute_4' => $attribute4,
         ]);
+    }
+
+    function it_finds_the_attribute_codes_by_type()
+    {
+        $attribute1 = $this->createAttribute('attribute_1', AttributeTypes::BOOLEAN);
+        $attribute2 = $this->createAttribute('attribute_2', AttributeTypes::FILE);
+        $attribute3 = $this->createAttribute('attribute_3', AttributeTypes::NUMBER);
+        $attribute4 = $this->createAttribute('attribute_4', AttributeTypes::FILE);
+        $this->beConstructedWith([
+            $attribute1->getCode() => $attribute1,
+            $attribute2->getCode() => $attribute2,
+            $attribute3->getCode() => $attribute3,
+            $attribute4->getCode() => $attribute4,
+        ]);
+
+        $this->getAttributeCodesByType(AttributeTypes::FILE)->shouldReturn(['attribute_2', 'attribute_4']);
+        $this->getAttributeCodesByType(AttributeTypes::BOOLEAN)->shouldReturn(['attribute_1']);
+        $this->getAttributeCodesByType(AttributeTypes::DATE)->shouldReturn([]);
     }
 
     private function createAttribute(string $code, string $type = null, string $backendType = null): AttributeInterface

@@ -14,6 +14,8 @@ pim_connector:
       validation:
         not_blank: Une locale doit être sélectionnée, veuillez choisir une locale à exporter.
 pim_import_export:
+  validation:
+    max_length_reached: Cette valeur est trop longue. Elle doit contenir {{ max }} caractères ou moins.
   entity:
     job_instance:
       label: profil
@@ -23,6 +25,10 @@ pim_import_export:
           fail: Le profil n'a pas pu être mis à jour.
         delete:
           success: La tâche a bien été supprimée
+      duplicate:
+        title: Dupliquer le profil {{ job_code }}
+        success: Le profil a été dupliqué avec succès.
+        fail: Le profil n'a pas pu être dupliqué.
     import_profile:
       uppercase_label: Profil d'import
       flash:
@@ -48,6 +54,7 @@ pim_import_export:
   form:
     job_execution:
       title.details: Détails d'exécution
+      refreshing: Actualisation des détails d'exécution
       refreshBtn.title: Mettre à jour
       button:
         show_profile.title: Afficher le profil
@@ -143,44 +150,106 @@ pim_import_export:
           file_locale:
             title: Locale du fichier
             help: Définit la langue dans laquelle les libellés vont être affichés.
+          with_uuid:
+            title: Avec UUID du produit
+            help: Exporter les UUID des produits et des produits associés
+          with_uuid_for_models:
+            title: Avec UUID du produit
+            help: Exporter l'UUID du produit associé au lieu de son identifiant
       file_path: Chemin du fichier
-  widget:
-    last_operations:
-      empty: Aucune opération trouvée
-      date: Date
-      profile_name: Nom du profil
-      details: Détails
-      warning_count: Avertissements
-      username: Nom d'utilisateur
-      job_type:
-        import: Import
-        export: Export
-        mass_edit: Edition de masse
-        mass_edit_rule: Paramètres des règles
-        quick_export: Export rapide
-        compute_family_variant_structure_changes: Calcul des changements de structure des familles variantes
-        compute_completeness_of_products_family: Calcul de la complétude des familles variantes
-        mass_delete: Suppression massive de produits
-        clean_removed_attribute_job: Traitement des valeurs de l'attribut supprimé
-      header.view_all: Afficher tout
+      storage_form:
+        title: Stockage
+        connection:
+          label: Type
+          local: Local
+          sftp: SFTP
+          amazon_s3: Amazon S3
+          microsoft_azure: Microsoft Azure
+          google_cloud_storage: Google Cloud Storage
+          none: Aucun stockage configuré
+        file_path:
+          label: Chemin du fichier
+          placeholder: mon-fichier.{{ file_extension }}
+        host:
+          label: Hôte
+          placeholder: exemple.fr
+        fingerprint:
+          label: Empreinte digitale de l'hôte (facultatif)
+          placeholder: "c1:91:5e:42:55:5c:74:65:b6:12:32:7e:1f:6d:80:3e"
+          helper: L'empreinte du serveur nécessite un format SHA512 ou MD5 séparé par ":"
+        port:
+          label: Port
+          placeholder: 22
+        username:
+          label: Identifiant
+          placeholder: Saisissez votre identifiant
+        password:
+          label: Mot de passe
+          placeholder: Saisissez votre mot de passe
+        public_key:
+          label: Clé publique
+          button_title: Copier dans le presse-papiers
+          copy_notification_success: Clé publique copiée dans le presse-papiers
+        login_type:
+          label: Méthode d'authentification
+          password: Identifiant et mot de passe
+          private_key: Clé privée
+        region:
+          label: Région
+          placeholder: Saisissez la région
+        bucket:
+          label: Nom du compartiment
+          placeholder: Saisissez le nom de la région
+        key:
+          label: Clé
+          placeholder: Saisissez la clé
+        secret:
+          label: Secret 
+          placeholder: Saisissez le secret
+        connection_string:
+          label: Chaîne de connexion
+          placeholder: Entrez votre chaîne de connexion
+        container_name:
+          label: Nom du conteneur
+          placeholder: Entrez le nom de votre conteneur
+        project_id:
+          label: ID du projet
+          placeholder: Entrez l'ID de votre projet
+        service_account:
+          label: Compte de service
+          placeholder: Entrez votre compte de service
+      validation:
+        storage:
+          unavailable_type: 'Ce stockage n''est pas disponible, seuls les types suivants sont disponibles: {{ available_types }}.'
+        file_path:
+          unsupported_extension: Extension de fichier non prise en charge
+        fingerprint:
+          invalid_encoding: L'empreinte du serveur doit être au format SHA512 ou MD5 séparé par ":"
+      connection_checker:
+        label: Tester les paramètres de connexion
+        exception: La connexion ne peut pas être établie, veuillez vérifier vos paramètres.
   batch_status:
     1: Terminé
     2: Démarrage
-    3: Démarré
+    3: En cours
     4: En cours d'arrêt
     5: Arrêté
     6: Echoué
     7: Abandonné
     8: Inconnu
+    9: En cours de mise en pause
+    10: En pause
   job_status:
     COMPLETED: Terminé
     STARTING: Démarrage
-    STARTED: Démarré
+    STARTED: En cours
     STOPPING: En cours d'arrêt
     STOPPED: Arrêté
     FAILED: Echoué
     ABANDONED: Abandonné
     UNKNOWN: Inconnu
+    PAUSING: En cours de mise en pause
+    PAUSED: En pause
   tracking:
     completed: "Temps écoulé : {{ duration }}"
     in_progress: "Temps restant estimé : {{ duration }}"
@@ -219,3 +288,4 @@ pim_title:
   pim_importexport_import_profile_show: Profil d'import {{ job.label }} | Visualisation
   pim_importexport_import_execution_index: Historique d'exécution des imports
   pim_importexport_import_execution_show: Executions d'imports | Détails
+

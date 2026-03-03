@@ -83,7 +83,7 @@ class SearchQueryBuilder
      *
      * Warning: in the context of the PIM, a request containing a should clause is subject to a lot of side effects.
      * For instance, in one filter you want to filter on the property A with 2 possible values: A = 1 || A = 2
-     * you could do the folowing:
+     * you could do the following:
      * `sqb->addShould([
      *  [
      *   'terms' => [
@@ -92,7 +92,7 @@ class SearchQueryBuilder
      *  ],
      *  [
      *   'terms' => [
-     *      'A' => 1
+     *      'A' => 2
      *    ]
      *  ]);`
      *
@@ -101,12 +101,12 @@ class SearchQueryBuilder
      * `sqb->addShould([
      *  [
      *   'terms' => [
-     *      'A' => 1
+     *      'B' => 1
      *    ]
      *  ],
      *  [
      *   'terms' => [
-     *      'A' => 1
+     *      'B' => 2
      *    ]
      *  ]);`
      *
@@ -139,6 +139,11 @@ class SearchQueryBuilder
         return $this;
     }
 
+    public function hasSort(string $field): bool
+    {
+        return \array_key_exists($field, $this->sortClauses);
+    }
+
     public function addFacet(string $name, string $field): self
     {
         $this->aggsClauses[$name] = ['terms' => ['field' => $field]];
@@ -153,10 +158,10 @@ class SearchQueryBuilder
      *
      * @return array
      */
-    public function getQuery(array $source = [])
+    public function getQuery(array $source = []): array
     {
         if (empty($source)) {
-            $source = ['identifier'];
+            $source = ['id', 'identifier', 'document_type'];
         }
 
         $searchQuery = [

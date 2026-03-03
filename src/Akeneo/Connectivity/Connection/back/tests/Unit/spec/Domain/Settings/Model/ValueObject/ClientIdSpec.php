@@ -9,13 +9,13 @@ use PhpSpec\ObjectBehavior;
 
 class ClientIdSpec extends ObjectBehavior
 {
-    public function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->beConstructedWith(42);
         $this->shouldBeAnInstanceOf(ClientId::class);
     }
 
-    public function it_must_be_positive()
+    public function it_must_be_positive(): void
     {
         $this->beConstructedWith(-1);
         $this->shouldThrow(
@@ -23,7 +23,7 @@ class ClientIdSpec extends ObjectBehavior
         )->duringInstantiation();
     }
 
-    public function it_provides_the_client_id()
+    public function it_provides_the_client_id(): void
     {
         $this->beConstructedWith(42);
         $this->id()->shouldReturn(42);

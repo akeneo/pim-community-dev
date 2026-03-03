@@ -11,12 +11,8 @@ namespace Akeneo\Connectivity\Connection\Application\Settings\Query;
  */
 class FindAConnectionQuery
 {
-    /** @var string */
-    private $connectionCode;
-
-    public function __construct(string $connectionCode)
+    public function __construct(private string $connectionCode)
     {
-        $this->connectionCode = $connectionCode;
     }
 
     public function connectionCode(): string

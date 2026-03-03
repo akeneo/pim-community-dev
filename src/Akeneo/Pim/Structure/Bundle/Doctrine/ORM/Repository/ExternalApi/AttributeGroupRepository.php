@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\ExternalApi;
 
 use Akeneo\Pim\Structure\Component\Repository\AttributeGroupRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Validator\Constraints\Type;
 use Akeneo\Tool\Component\Api\Repository\ApiResourceRepositoryInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
@@ -11,6 +12,7 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\UnexpectedResultException;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validation;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
@@ -19,17 +21,13 @@ use Symfony\Component\Validator\Validation;
  */
 class AttributeGroupRepository extends EntityRepository implements ApiResourceRepositoryInterface
 {
-    /** @var AttributeGroupRepositoryInterface */
-    private $attributeGroupRepository;
-
     public function __construct(
-        EntityManager $entityManager,
-        $className,
-        AttributeGroupRepositoryInterface $attributeGroupRepository
+        protected EntityManager $entityManager,
+        protected string $className,
+        protected AttributeGroupRepositoryInterface $attributeGroupRepository,
+        private ValidatorInterface $validator
     ) {
         parent::__construct($entityManager, $entityManager->getClassMetadata($className));
-
-        $this->attributeGroupRepository = $attributeGroupRepository;
     }
 
     public function getIdentifierProperties(): array
@@ -106,7 +104,6 @@ class AttributeGroupRepository extends EntityRepository implements ApiResourceRe
             return;
         }
 
-        $validator = Validation::createValidator();
         $constraints = [
             'code' => new Assert\All([
                 new Assert\Collection([
@@ -115,9 +112,9 @@ class AttributeGroupRepository extends EntityRepository implements ApiResourceRe
                         'message' => 'In order to search on attribute group codes you must use "IN" operator, {{ compared_value }} given.',
                     ]),
                     'value' => [
-                        new Assert\Type([
+                        new Type([
                             'type' => 'array',
-                            'message' => 'In order to search on attribute group codes you must send an array of attribute group codes as value, {{ type }} given.'
+                            'message' => 'In order to search on attribute group codes you must send an array of attribute group codes as value, {{ givenType }} given.'
                         ]),
                         new Assert\All([
                             new Assert\Type('string')
@@ -137,7 +134,7 @@ class AttributeGroupRepository extends EntityRepository implements ApiResourceRe
         ];
         $availableSearchFilters = array_keys($constraints);
 
-        $exceptionMessage = '';
+        $exceptionMessages = [];
         foreach ($searchFilters as $property => $searchFilter) {
             if (!in_array($property, $availableSearchFilters)) {
                 throw new \InvalidArgumentException(sprintf(
@@ -146,15 +143,13 @@ class AttributeGroupRepository extends EntityRepository implements ApiResourceRe
                     $property
                 ));
             }
-            $violations = $validator->validate($searchFilter, $constraints[$property]);
-            if (0 !== $violations->count()) {
-                foreach ($violations as $violation) {
-                    $exceptionMessage .= $violation->getMessage();
-                }
+            $violations = $this->validator->validate($searchFilter, $constraints[$property]);
+            foreach ($violations as $violation) {
+                $exceptionMessages[] = $violation->getMessage();
             }
         }
-        if ('' !== $exceptionMessage) {
-            throw new \InvalidArgumentException($exceptionMessage);
+        if (!empty($exceptionMessages)) {
+            throw new \InvalidArgumentException(implode(' ', $exceptionMessages));
         }
     }
 }

@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent;
 
+use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchBufferedPimEventSubscriberInterface;
 use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchProductRemovedEventSubscriber;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
+use Akeneo\Pim\Enrichment\Component\Product\Value\IdentifierValue;
 use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
@@ -28,20 +30,21 @@ class DispatchProductRemovedEventSubscriberSpec extends ObjectBehavior
         Security $security,
         MessageBusInterface $messageBus
     ) {
-        $this->beConstructedWith($security, $messageBus, 10, new NullLogger());
+        $this->beConstructedWith($security, $messageBus, 10, new NullLogger(), new NullLogger());
     }
 
     function it_is_initializable(): void
     {
         $this->shouldHaveType(DispatchProductRemovedEventSubscriber::class);
+        $this->shouldImplement(DispatchBufferedPimEventSubscriberInterface::class);
     }
 
     function it_returns_subscribed_events(): void
     {
         $this->getSubscribedEvents()->shouldReturn(
             [
-                StorageEvents::POST_REMOVE => 'createAndDispatchProductEvents',
-                StorageEvents::POST_SAVE_ALL => 'dispatchBufferedProductEvents',
+                StorageEvents::POST_REMOVE => 'createAndDispatchPimEvents',
+                StorageEvents::POST_REMOVE_ALL => 'dispatchBufferedPimEvents',
             ]
         );
     }
@@ -54,12 +57,12 @@ class DispatchProductRemovedEventSubscriberSpec extends ObjectBehavior
         $security->getUser()->willReturn($user);
 
         $messageBus = $this->getMessageBus();
-        $this->beConstructedWith($security, $messageBus, 10, new NullLogger());
+        $this->beConstructedWith($security, $messageBus, 10, new NullLogger(), new NullLogger());
 
         $product = new Product();
-        $product->setIdentifier('blue_jean');
+        $product->addValue(IdentifierValue::value('sku', true, 'blue_jean'));
 
-        $this->createAndDispatchProductEvents(new GenericEvent($product, ['unitary' => true]));
+        $this->createAndDispatchPimEvents(new GenericEvent($product, ['unitary' => true]));
 
         Assert::assertCount(1, $messageBus->messages);
         Assert::assertContainsOnlyInstancesOf(BulkEventInterface::class, $messageBus->messages);
@@ -74,7 +77,8 @@ class DispatchProductRemovedEventSubscriberSpec extends ObjectBehavior
         Assert::assertEquals(
             [
                 'identifier' => 'blue_jean',
-                'category_codes' => []
+                'uuid' => $product->getUuid(),
+                'category_codes' => [],
             ],
             $event->getData()
         );
@@ -88,16 +92,16 @@ class DispatchProductRemovedEventSubscriberSpec extends ObjectBehavior
         $security->getUser()->willReturn($user);
 
         $messageBus = $this->getMessageBus();
-        $this->beConstructedWith($security, $messageBus, 10, new NullLogger());
+        $this->beConstructedWith($security, $messageBus, 10, new NullLogger(), new NullLogger());
 
         $product1 = new Product();
-        $product1->setIdentifier('product_identifier_1');
+        $product1->addValue(IdentifierValue::value('sku', true, 'product_identifier_1'));
         $product2 = new Product();
-        $product2->setIdentifier('product_identifier_2');
+        $product2->addValue(IdentifierValue::value('sku', true, 'product_identifier_2'));
 
-        $this->createAndDispatchProductEvents(new GenericEvent($product1, ['unitary' => false]));
-        $this->createAndDispatchProductEvents(new GenericEvent($product2, ['unitary' => false]));
-        $this->dispatchBufferedProductEvents(new GenericEvent());
+        $this->createAndDispatchPimEvents(new GenericEvent($product1, ['unitary' => false]));
+        $this->createAndDispatchPimEvents(new GenericEvent($product2, ['unitary' => false]));
+        $this->dispatchBufferedPimEvents(new GenericEvent());
 
         Assert::assertCount(1, $messageBus->messages);
         Assert::assertContainsOnlyInstancesOf(BulkEventInterface::class, $messageBus->messages);
@@ -112,7 +116,8 @@ class DispatchProductRemovedEventSubscriberSpec extends ObjectBehavior
         Assert::assertEquals(
             [
                 'identifier' => 'product_identifier_1',
-                'category_codes' => []
+                'uuid' => $product1->getUuid(),
+                'category_codes' => [],
             ],
             $event->getData()
         );
@@ -123,7 +128,8 @@ class DispatchProductRemovedEventSubscriberSpec extends ObjectBehavior
         Assert::assertEquals(
             [
                 'identifier' => 'product_identifier_2',
-                'category_codes' => []
+                'uuid' => $product2->getUuid(),
+                'category_codes' => [],
             ],
             $event->getData()
         );
@@ -132,9 +138,9 @@ class DispatchProductRemovedEventSubscriberSpec extends ObjectBehavior
     function it_only_supports_product_removed_event($security)
     {
         $messageBus = $this->getMessageBus();
-        $this->beConstructedWith($security, $messageBus, 10, new NullLogger());
+        $this->beConstructedWith($security, $messageBus, 10, new NullLogger(), new NullLogger());
 
-        $this->createAndDispatchProductEvents(new GenericEvent(
+        $this->createAndDispatchPimEvents(new GenericEvent(
             new \stdClass(),
             ['unitary' => true]
         ));
@@ -145,14 +151,14 @@ class DispatchProductRemovedEventSubscriberSpec extends ObjectBehavior
     function it_does_nothing_if_the_user_is_not_defined($security)
     {
         $messageBus = $this->getMessageBus();
-        $this->beConstructedWith($security, $messageBus, 10, new NullLogger());
+        $this->beConstructedWith($security, $messageBus, 10, new NullLogger(), new NullLogger());
 
         $product = new Product();
-        $product->setIdentifier('product_identifier');
+        $product->addValue(IdentifierValue::value('sku', true, 'product_identifier'));
 
         $security->getUser()->willReturn(null);
 
-        $this->createAndDispatchProductEvents(new GenericEvent(
+        $this->createAndDispatchPimEvents(new GenericEvent(
             $product,
             ['unitary' => true]
         ));
@@ -169,16 +175,16 @@ class DispatchProductRemovedEventSubscriberSpec extends ObjectBehavior
                 throw new TransportException('An error occured');
             }
         };
-        $this->beConstructedWith($security, $messageBus, 10, $logger);
+        $this->beConstructedWith($security, $messageBus, 10, $logger, new NullLogger());
 
         $user = new User();
         $user->setUsername('julia');
         $security->getUser()->willReturn($user);
 
         $product = new Product();
-        $product->setIdentifier('product_identifier');
+        $product->addValue(IdentifierValue::value('sku', true, 'product_identifier'));
 
-        $this->createAndDispatchProductEvents(new GenericEvent(
+        $this->createAndDispatchPimEvents(new GenericEvent(
             $product,
             ['unitary' => true]
         ));

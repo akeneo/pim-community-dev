@@ -12,9 +12,9 @@ use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAware;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageException;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Factory as PageObjectFactory;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
-use Symfony\Bundle\FrameworkBundle\Client;
-use Symfony\Component\BrowserKit\Cookie;
+use SensioLabs\Behat\PageObjectExtension\PageObject\PageObject;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
@@ -66,6 +66,7 @@ class NavigationContext extends PimContext implements PageObjectAware
         'dashboard'                => 'Dashboard index',
         'search'                   => 'Search index',
         'job tracker'              => 'JobTracker index',
+        'marketplace'              => 'Marketplace index',
     ];
 
     /** @var array */
@@ -81,9 +82,9 @@ class NavigationContext extends PimContext implements PageObjectAware
      * @param string $mainContextClass
      * @param string $baseUrl
      */
-    public function __construct(string $mainContextClass, string $baseUrl)
+    public function __construct(string $mainContextClass, string $baseUrl, KernelInterface $kernel)
     {
-        parent::__construct($mainContextClass);
+        parent::__construct($mainContextClass, $kernel);
         $this->baseUrl = $baseUrl;
     }
 
@@ -122,7 +123,7 @@ class NavigationContext extends PimContext implements PageObjectAware
             ->getService('pim_user.repository.user')
             ->findOneBy(['username' => $username]);
 
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $token = new UsernamePasswordToken($user, 'main', $user->getRoles());
         $session->set('_security_main', serialize($token));
 
         $this->getSession()->setCookie($session->getName(), $session->getId());
@@ -157,10 +158,6 @@ class NavigationContext extends PimContext implements PageObjectAware
 
             return $signInButton;
         }, sprintf('Cannot log in as %s', $username));
-
-        $this->spin(function () {
-            return $this->getSession()->getPage()->find('css', '.AknWidget');
-        }, 'Can not reach Dashboard after login');
     }
 
     /**
@@ -250,8 +247,6 @@ class NavigationContext extends PimContext implements PageObjectAware
 
                 return true;
             }
-
-            return false;
         }, sprintf('Can access to the page "%s"', $page));
     }
 
@@ -301,8 +296,8 @@ class NavigationContext extends PimContext implements PageObjectAware
      *
      * @throws \Context\Spin\TimeoutException
      *
-     * @Given /^I edit the "([^"]*)" ((?!user)\w+)$/
-     * @Given /^I am on the "([^"]*)" ((?!channel)(?!family)(?!attribute)(?!user)\w+) page$/
+     * @Given /^I edit the "([^"]*)" ((?!user)(?!product)\w+)$/
+     * @Given /^I am on the "([^"]*)" ((?!channel)(?!family)(?!attribute)(?!user)(?!product)\w+) page$/
      */
     public function iAmOnTheEntityEditPage($identifier, $page)
     {
@@ -313,6 +308,33 @@ class NavigationContext extends PimContext implements PageObjectAware
         $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
 
         $expectedFullUrl = $this->getPage(sprintf('%s edit', $page))->getUrl(['id' => $entity->getId()]);
+
+        $actualFullUrl = $this->getSession()->getCurrentUrl();
+        $actualUrl     = $this->sanitizeUrl($actualFullUrl);
+        $expectedUrl   = $this->sanitizeUrl($expectedFullUrl);
+        $result        = $expectedUrl === $actualUrl;
+
+        return true === $result;
+    }
+
+    /**
+     * @param string $identifier
+     * @param string $page
+     *
+     * @throws \Context\Spin\TimeoutException
+     *
+     * @Given /^I edit the "([^"]*)" product$/
+     * @Given /^I am on the "([^"]*)" product page$/
+     */
+    public function iAmOnTheProductEditPage($identifier)
+    {
+        $page   = 'Product';
+        $getter = sprintf('get%s', $page);
+        $entity = $this->getFixturesContext()->$getter($identifier);
+
+        $this->openPage(sprintf('%s edit', $page), ['uuid' => $entity->getUuid()->toString()]);
+
+        $expectedFullUrl = $this->getPage(sprintf('%s edit', $page))->getUrl(['uuid' => $entity->getUuid()->toString()]);
 
         $actualFullUrl = $this->getSession()->getCurrentUrl();
         $actualUrl     = $this->sanitizeUrl($actualFullUrl);
@@ -354,7 +376,7 @@ class NavigationContext extends PimContext implements PageObjectAware
      * @param string $identifier
      * @param string $page
      *
-     * @Given /^I wait to be on the "([^"]*)" (\w+) page$/
+     * @Given /^I wait to be on the "([^"]*)" ((?!product)\w+) page$/
      */
     public function iWaitForTheEntityEditPage($identifier, $page)
     {
@@ -370,8 +392,24 @@ class NavigationContext extends PimContext implements PageObjectAware
      * @param string $identifier
      * @param string $page
      *
-     * @Given /^I show the "([^"]*)" ([\w ]+)$/
-     * @Given /^I am on the "([^"]*)" ([\w ]+) show page$/
+     * @Given /^I wait to be on the "([^"]*)" product page$/
+     */
+    public function iWaitForTheProductEditPage($identifier)
+    {
+        $page   = 'Product';
+        $getter = sprintf('get%s', $page);
+        $entity = $this->getFixturesContext()->$getter($identifier);
+        $this->setCurrentPage(sprintf('%s edit', $page), ['uuid' => $entity->getUuid()->toString()]);
+
+        $this->wait();
+    }
+
+    /**
+     * @param string $identifier
+     * @param string $page
+     *
+     * @Given /^I show the "([^"]*)" ((?!product)[\w ]+)$/
+     * @Given /^I am on the "([^"]*)" ((?!product)[\w ]+) show page$/
      */
     public function iAmOnTheEntityShowPage($identifier, $page)
     {
@@ -384,19 +422,34 @@ class NavigationContext extends PimContext implements PageObjectAware
     }
 
     /**
-     * @param string $name
+     * @param string $identifier
+     * @param string $page
+     *
+     * @Given /^I show the "([^"]*)" product$/
+     * @Given /^I am on the "([^"]*)" product show page$/
+     */
+    public function iAmOnTheProductShowPage($identifier)
+    {
+        $page = 'Product';
+        $getter = sprintf('get%s', $page);
+        $entity = $this->getFixturesContext()->$getter($identifier);
+        $this->openPage(sprintf('%s show', $page), ['uuid' => $entity->getUuid()->toString()]);
+    }
+
+    /**
+     * @param string $page
      *
      * @return Page
      */
-    public function getPage($name)
+    public function getPage(string $page): Page
     {
         if (null === $this->pageFactory) {
             throw new \RuntimeException('To create pages you need to pass a factory with setPageFactory()');
         }
 
-        $name = implode('\\', array_map('ucfirst', explode(' ', $name)));
+        $page = implode('\\', array_map('ucfirst', explode(' ', $page)));
 
-        return $this->pageFactory->createPage($name);
+        return $this->pageFactory->createPage($page);
     }
 
     /**
@@ -501,7 +554,7 @@ class NavigationContext extends PimContext implements PageObjectAware
     /**
      * @return Page
      */
-    public function getCurrentPage()
+    public function getCurrentPage(): PageObject
     {
         $page = $this->getPage($this->currentPage);
 
@@ -566,13 +619,13 @@ class NavigationContext extends PimContext implements PageObjectAware
     }
 
     /**
-     * @deprecated This method is deprecated and should be removed avoid its use
-     * @see For more information regarding to deprecation see TIP-442
+     * @param string|null $condition
+     *@see For more information regarding to deprecation see TIP-442
      * @todo Delete method
      *
-     * @param string $condition
+     * @deprecated This method is deprecated and should be removed avoid its use
      */
-    protected function wait($condition = null)
+    protected function wait(string $condition = null)
     {
         $this->getMainContext()->wait($condition);
     }

@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Comma
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\PurgeOutdatedData;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -17,6 +18,9 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
  */
 final class PurgeOutdatedDataCommand extends Command
 {
+    protected static $defaultName = 'pim:data-quality-insights:purge-outdated-data';
+    protected static $defaultDescription = 'Purge the outdated data persisted for Data-Quality-Insights.';
+
     private PurgeOutdatedData $purgeOutdatedData;
 
     public function __construct(PurgeOutdatedData $purgeOutdatedData)
@@ -28,13 +32,16 @@ final class PurgeOutdatedDataCommand extends Command
 
     protected function configure()
     {
-        $this
-            ->setName('pim:data-quality-insights:purge-outdated-data')
-            ->setDescription('Purge the outdated data persisted for Data-Quality-Insights.')
-            ->addOption('date', 'd', InputOption::VALUE_REQUIRED, 'Date from which the purge will be launched (Y-m-d)', date('Y-m-d'));
+        $this->addOption(
+            'date',
+            'd',
+            InputOption::VALUE_REQUIRED,
+            'Date from which the purge will be launched (Y-m-d)',
+            date('Y-m-d')
+        );
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $purgeDate = \DateTimeImmutable::createFromFormat('Y-m-d', $input->getOption('date'));
 
@@ -47,18 +54,18 @@ final class PurgeOutdatedDataCommand extends Command
         }
 
         if (!$this->confirmPurge($input, $output)) {
-            return 0;
+            return Command::SUCCESS;
         }
 
-        $this->purgeDashboardProjectionRates($purgeDate, $output);
+        $this->purgeOutdatedData($purgeDate, $output);
 
-        return 0;
+        return Command::SUCCESS;
     }
 
-    private function purgeDashboardProjectionRates(\DateTimeImmutable $purgeDate, OutputInterface $output)
+    private function purgeOutdatedData(\DateTimeImmutable $purgeDate, OutputInterface $output)
     {
-        $output->writeln('Start to purge dashboard projection rates.');
-        $this->purgeOutdatedData->purgeDashboardProjectionRatesFrom($purgeDate);
+        $output->writeln('Start to purge dashboard projection rates and product scores.');
+        $this->purgeOutdatedData->purgeAllFrom($purgeDate);
         $output->writeln('Purge done.');
     }
 
@@ -69,12 +76,17 @@ final class PurgeOutdatedDataCommand extends Command
             false
         );
 
-        if (!$this->getHelper('question')->ask($input, $output, $question)) {
+        if (!$this->getQuestionHelper()->ask($input, $output, $question)) {
             $output->writeln('Purge aborted');
 
             return false;
         };
 
         return true;
+    }
+
+    private function getQuestionHelper(): QuestionHelper
+    {
+        return $this->getHelper('question');
     }
 }

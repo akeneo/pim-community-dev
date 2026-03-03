@@ -9,7 +9,7 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Akeneo\UserManagement\Component\Repository\GroupRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 
 /**
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
@@ -18,8 +18,8 @@ use Doctrine\Common\Persistence\ObjectRepository;
  */
 class InMemoryGroupRepository implements GroupRepositoryInterface, SaverInterface, ObjectRepository
 {
-    /** @var GroupInterface[] */
-    private $groups;
+    /** @var ArrayCollection<GroupInterface> */
+    private ArrayCollection $groups;
 
     public function __construct()
     {
@@ -63,7 +63,7 @@ class InMemoryGroupRepository implements GroupRepositoryInterface, SaverInterfac
      */
     public function findAll()
     {
-        throw new NotImplementedException();
+        return $this->groups->toArray();
     }
 
     /**
@@ -94,6 +94,11 @@ class InMemoryGroupRepository implements GroupRepositoryInterface, SaverInterfac
      * {@inheritdoc}
      */
     public function getDefaultUserGroup()
+    {
+        throw new NotImplementedException();
+    }
+
+    public function findOneById(int $id): ?GroupInterface
     {
         throw new NotImplementedException();
     }

@@ -48,32 +48,36 @@ pim_ui.system_config:
     loading_message.title: Nachrichten werden geladen
 other_actions: Weitere Aktionen
 pim_common:
+  association_types: Verbindungstypen
   cancel: Abbrechen
-  save: Speichern
-  delete: Löschen
-  update: Aktualisieren
-  view: Ansehen
-  edit: Bearbeiten
-  created: Erstellt
-  updated: Aktualisiert
-  create: Anlegen
-  permissions: Berechtigungen
-  properties: Eigenschaften
-  name: Name
-  remove: Entfernen
-  code: Code
-  quantity: Quantität
-  products: Produkte
-  product_models: Produktmodelle
   categories: Kategorien
-  family_variant: Varianten der Produktfamilien
+  code: Code
+  create: Anlegen
+  created: Erstellt
+  delete: Löschen
+  edit: Bearbeiten
   enabled: Aktiviert
+  family_variant: Varianten der Produktfamilien
   family: Produktfamilie
-  parent: Eltern
   groups: Gruppen
-  unit: Einheit
-  yes: "Ja"
+  label: Bezeichnung
+  name: Name
   no: "Nein"
+  parent: Eltern
+  permissions: Berechtigungen
+  product_models: Produktmodelle
+  products: Produkte
+  properties: Eigenschaften
+  quality_score: Qualitätspunktzahl
+  quantity: Quantität
+  remove: Entfernen
+  save: Speichern
+  unit: Einheit
+  update: Aktualisieren
+  updated: Aktualisiert
+  view: Ansehen
+  yes: "Ja"
+  uuid: UUID
 pim_enrich:
   #ACLs
   acl:
@@ -106,15 +110,6 @@ pim_enrich:
       categories_view: Die Kategorien eines Produktmodells anzeigen
       history: Produkthistorie ansehen
       remove: Entfernen eines Produktmodells (einschließlich Kinder)
-    category:
-      list: Kategorien auflisten
-      create: Eine Kategorie anlegen
-      edit: Eine Kategorie bearbeiten
-      remove: Eine Kategorie löschen
-      move: Kategorie verschieben
-      children: Kategorie-Kindelemente sehen
-      products: Produkte von Kategorien sehen
-      history: Kategoriehistorie ansehen
     channel:
       index: Ausgabekanäle auflisten
       create: Einen Ausgabekanal anlegen
@@ -136,6 +131,7 @@ pim_enrich:
       create: Eine Attributgruppe anlegen
       edit: Eine Attributgruppe bearbeiten
       remove: Eine Attributgruppe löschen
+      mass_delete: Attributgruppen entfernen
       sort: Attributgruppen sortieren
       add_attribute: Attribut zu einer Gruppe hinzufügen
       remove_attribute: Attribut aus einer Gruppe löschen
@@ -145,6 +141,7 @@ pim_enrich:
       create: Ein Attribut anlegen
       edit: Ein Attribut bearbeiten
       remove: Ein Attribut löschen
+      mass_delete: Mehrere Attribute löschen
       sort: Attribute innerhalb von Attributgruppen sortieren
       history: Attributhistorie ansehen
     group:
@@ -215,8 +212,10 @@ flash:
   entity:
     removed: Element wurde gelöscht
   attribute:
-    identifier_not_removable: Ein Attribut zur eindeutigen Identifizierung kann nicht entfernt werden
+    main_identifier_not_removable: Die Hauptidentifikator Attribute kann nicht entfernt werden
     used_as_conversion_unit: Dieses Attribut kann nicht entfernt werden, da es als Konvertierungseinheit im Kanal %channelCodes% verwendet wird.
+    cant_remove_attributes_used_as_label: Attribute, die als Label in einer Familie verwendet werden, können nicht entfernt werden.
+    cant_remove_attribute_used_as_axis: Dieses Attribut, das als Variantenachse in einer Variante der Produktfamilie verwendet wird, kann nicht entfernt werden
   category:
     removed: Kategorie erfolgreich entfernt
   tree:
@@ -447,19 +446,22 @@ pim_datagrid:
     enabled:
       label: Status
     scope:
-      label: Gültigkeitsbereich
+      label: Ausgabekanal
     completeness:
       label: Vollständig
     created:
-      label: Erstellt am
+      label: Erstellt
     updated:
-      label: Aktualisiert am
+      label: Aktualisiert
     label_or_identifier:
       label: Label oder Identifikator
+      label_with_uuid: Label, Bezeichner oder UUID
     parent:
       label: Eltern
     identifier:
       label: Kennung
+    uuid:
+      label: UUID
 #Versioning / history
 Change History: Änderungshistorie
 Data Audit: Datenhistorie
@@ -524,7 +526,6 @@ pim_mass_edit:
       success: Massenlöschen <strong>%label%</strong> abgeschlossen
 job_execution.summary:
   mass_edited: Massenbearbeitet
-  skip: Übersprungen
   skipped_products: Übersprungene Produkte
   skipped_attributes: Übersprungene Attribute
   skipped_families: Übersprungene Produktfamilien
@@ -550,3 +551,4 @@ pim_login:
   footer:
     powered: Powered by
     powered_image_title: logo Akeneo
+pim_system.acl_group.connect: Verbinde

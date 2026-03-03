@@ -53,9 +53,9 @@ class TranslationNormalizer implements NormalizerInterface, CacheableSupportsMet
                 );
             }
 
-            if (empty($context['locales']) || in_array($translation->getLocale(), $context['locales'])) {
-                $translations[$translation->getLocale()] = '' === $translation->$method() ?
-                    null : $translation->$method();
+            $contextLocalesLowercase = \array_map('strtolower', $context['locales']);
+            if (empty($context['locales']) || in_array(\strtolower($locale->getCode()), $contextLocalesLowercase)) {
+                $translations[$locale->getCode()] = '' === $translation->$method() ? null : $translation->$method();
             }
         }
 
@@ -65,7 +65,7 @@ class TranslationNormalizer implements NormalizerInterface, CacheableSupportsMet
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof TranslatableInterface && 'standard' === $format;
     }

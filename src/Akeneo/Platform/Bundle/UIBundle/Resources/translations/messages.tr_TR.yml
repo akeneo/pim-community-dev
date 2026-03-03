@@ -1,0 +1,521 @@
+User: Kullanıcı
+Run demo: Demoyu başlat
+Product: Ürün
+Attribute list: Özellik listesi
+Attribute Group list: Özellik grubu listesi
+Users: Kullanıcılar
+Roles: Roller
+Groups: Gruplar
+Configuration: Yapılandırma
+Currency list: Para birimi listesi
+Locale list: Yerel ayarlar listesi
+Logged in as: Olarak giriş yapıldı
+Logout: Çıkış yap
+Login: Oturum aç
+Previous: Önceki
+Next: Sonraki
+Channel list: Kanal listesi
+Select file: Dosyayı seç
+Change file: Dosya değiştir
+Remove file: Dosya kaldır
+Delete: Sil
+Save: Kaydet
+Get help: Yardım al
+My User: Hesabım
+oro.form.choose_value: Bir değer seç...
+Read more: Daha fazlasını oku
+oro.form.click_here_to_select: Seçmek için buraya tıklayın...
+Add: Ekle
+"Learn how to use this space": "Bu alanın nasıl kullanıldığını öğrenin"
+"How To Use Pinbar": "Görev çubuğu nasıl kullanılır "
+Pinbar: Çubuk
+Favorites: Favoriler
+Most Viewed: En çok görüntülenenler
+"Add this page to favorites": "Bu sayfayı favorilere gekle"
+"Minimize the window to the pinbar": "Pencereyi, simge durumuna alıp görev çubuğuna alın"
+"Loading ...": "Yükleniyor..."
+"Yes": "Evet"
+"No": "Hayır"
+required: (gerekli)
+pim_ui.system_config:
+  form:
+    loading_message_enabled.label: Yükleme mesajlarını etkinleştir
+    loading_message_enabled.tooltip: Sayfanın yüklenmesini beklerken kullanıcı dostu mesajları görüntüleyin
+    loading_messages.label: Kullanılabilir yükleme mesajları
+    loading_messages.tooltip: Satır sonları ile ayrılmış kullanılabilir yükleme iletileri
+  group:
+    loading_message.title: İletiler yükleniyor
+other_actions: Diğer eylemler
+pim_common:
+  cancel: İptal
+  save: Kaydet
+  delete: Sil
+  update: Güncelle
+  view: Görünüm
+  edit: Düzenle
+  created: Oluşturuldu
+  updated: Güncellendi
+  create: Oluştur
+  permissions: İzinler
+  properties: Özellikler
+  name: Ad
+  remove: Kaldır
+  code: Kod
+  products: Ürünler
+  product_models: Ürün modelleri
+  categories: Kategoriler
+  enabled: Etkinleştirildi
+  family: Aile
+  groups: Gruplar
+  yes: "Evet"
+  no: "Hayır"
+pim_enrich:
+  #ACLs
+  acl:
+    locale:
+      index: Yerel ayarları listele
+    currency:
+      index: Para birimleri listesi
+      toggle: Para birimleri geçişi
+    product:
+      index: Ürünleri listele
+      create: Ürün oluştur
+      edit_attributes: Bir ürünün özelliklerini düzenleyin
+      remove: Bir ürünü kaldır
+      add_attribute: Ürüne bir Özellik Ekle
+      remove_attribute: Üründen bir Özellik Çıkar
+      categories_view: Bir ürünün kategorilerine göz at
+      associations_view: Ürün ilişkilerini göster
+      associations_edit: Ürüne ilişki ekle
+      change_family: Ürün ailesini değiştir
+      add_to_groups: Gruplara ürün ekle
+      mass_edit: Toplu ürün düzenleme işlemleri
+      comment: Ürünlere gelen yorum
+      download: Ürünü PDF olarak indirin
+      history: Ürün geçmişini görüntüle
+    product_model:
+      create: Ürün modeli oluştur
+      edit_attributes: Ürün modelinin özelliklerini düzenle
+      categories_view: Bir ürün modelinin kategorilerine bakınız
+      history: Ürün modeli geçmişi görüntüle
+    category:
+      list: Kategorileri listele
+      create: Kategori oluştur
+      edit: Kategoriyi düzenle
+      remove: Kategoriyi kaldır
+      move: Kategoriye taşı
+      children: Çocuk kategorisini gör
+      products: Kategorinin ürünlerini görün
+      history: Kategori geçmişini görüntüle
+    channel:
+      index: Kanalları listele
+      create: Kanal oluştur
+      edit: Kanalı düzenle
+      remove: Kanalı kaldır
+      history: Kanal geçmişini görüntüle
+    family:
+      index: Ailelerin listesi
+      create: Aile oluştur
+      edit_properties: Ailenin mal varlıklarını düzenle
+      edit_attributes: Ailenin Özelliklerini Düzenle
+      edit_variants: Bir sınıf varyantını düzenle
+      remove: Bir sınıfı sil
+      history: Aile geçmişini Görüntüle
+    family_variant:
+      remove: Bir aile değişkenini kaldır
+    attribute_group:
+      index: Özellik Gruplarını Listele
+      create: Bir Özellik Grubu Oluştur
+      edit: Bir Özellik Grubunu Değiştir
+      remove: Bir özellik grubunu Kaldır
+      sort: Özellik gruplarını sırala
+      add_attribute: Bir gruba özellik ekle
+      remove_attribute: Bir gruptan özellik çıkar
+      history: Grubun özellik geçmişini görüntüle
+    attribute:
+      index: Özellikleri Listele
+      create: Özellik oluştur
+      edit: Bir özelliği düzenle
+      remove: Özelliği kaldır
+      sort: Özellik grupları içinde özellikleri sırala
+      history: Özellik geçmişini görüntüle
+    group:
+      index: Grupları listele
+      create: Bir grup oluştur
+      edit: Grubu düzenle
+      remove: Gurubu kaldır
+      history: Grup geçmişini görüntüle
+    group_type:
+      index: Grup türlerini listele
+      create: Bir grup türü oluşturun
+      edit: Bir grubun türünü düzenleyin
+      remove: Grup türünü kaldır
+    association_type:
+      index: İlişki türlerini listele
+      create: Bir ilişki türü oluşturun
+      edit: Birleştirme türünü düzenle
+      remove: Bir ilişki türünü kaldır
+      history: İlişki türü geçmişini görüntüle
+    association:
+      remove: Ürünün ilişkilerini kaldır
+    job_tracker:
+      index: Süreç gözlemleyicisini görüntüle
+  acl_group:
+    association_type: İlişki tipleri
+    attribute: Özellikler
+    attribute_group: Özellik grupları
+    category: Kategoriler
+    channel: Kanallar
+    currency: Para birimleri
+    family: Aileler
+    group: Gruplar
+    group_type: Grup türleri
+    locale: Yerel Ayarlar
+    product: Ürünler
+    product_model: Ürün modelleri
+  notification:
+    settings:
+      remove_completeness_for_channel_and_locale:
+        start: Yerel ayarlar kanaldan kaldırıldı. Şu anda onlarla bağlantılı olan bütün her şeyi temizliyoruz.
+        done: Bir kanaldaki yerel ayar kaldırma tamamlandı.
+  create:
+    attribute: özellikle oluştur
+    attribute group: özel grup oluştur
+    category: kategoriyi oluştur
+    tree: ağaç oluştur
+    channel: kanal oluştur
+    currency: para birimi oluşturun
+    family: bir sınıf oluşturun
+    locale: bölge oluştur
+    product: ürün oluştur
+    group: grup oluştur
+    association type: ilişki türü oluşturun
+    group type: Grup türü oluştur
+    drag_or_upload: Yüklemek için sürükle ve bırak veya buraya tıkla
+#Confirmation messages
+confirmation:
+  delete: Silmeyi Onayla
+  leave: Bu sayfadan ayrılmak istediğinize eminmisiniz?
+  discard changes: Sayfadan ayrılırsanız %entity% için yapılan değişiklikler kaybedilecektir.
+  remove:
+    category: Bu kategoriyi silmek istediğinizden emin misiniz %name%?
+    user: Bu kullanıcıyı silmek istediğinizden emin misiniz %name%?
+#Flash messages
+flash:
+  entity:
+    removed: Öğe silindi
+  attribute:
+    identifier_not_removable: Tanımlayıcı özellik silinemez
+  category:
+    removed: Kategori Başarı ile Silindi
+  tree:
+    removed: Ağaç başarı ile silindi
+    not removable: Kanallar ile alakalı ağaçlar kaldırılamaz.
+  currency:
+    updated: Para birimi başarılı bir şekilde güncellendi
+    error.linked_to_channel: Bir kanala bağlı para birimini devre dışı bırakamazsınız.
+  product:
+    enabled: Ürün aktif edildi
+    disabled: Ürün engellendi
+  group type:
+    created: Grup türü başarılı bir şekilde oluşturuldu
+  user:
+    removed: Kullanıcı başarılı bir şekilde silindi
+  error occurred: Eylem başarısız. Lütfen tekrar deneyin.
+#Info messages
+info:
+  updated: Kaydedilmemiş değişiklikler var.
+  category:
+    remove children: Bütün alt kategoriler silinecek.
+    keep products: Bu kategorideki ürünler silinemez
+    products limit exceeded: Bu kategori, bu işlem için izin verilenlerden daha fazla ürün içeriyor (%limit% ürünlerin en yüksek değeri)
+  product:
+    no available attributes: Daha fazla eklenecek başka özellikler yok
+    no family defined: Tanımlı bir sınıf yok
+    change family: Ürün sınıfını değiştirin
+    change family to: Aileyi şuna değiştir
+    merge attributes: Geçerli özellikler yeni ailedekilere aktarılacak.
+    keep attributes: Hiç bir özellik silinmeyecek.
+    number of associations: '%productCount% ürün ve %groupCount% grupları'
+    enable: Etkinleştir
+    enabled: Etkinleştirildi
+    disable: Devre dışı
+    disabled: Devre dışı
+  group:
+    axis: 'Varyasyon ekseni: %attributes%'
+    select products: Lütfen bu gruba ait olan ürünleri seçiniz.
+    selectable products: Aşağıdaki seçilebilir ürünleri her eksen için tanımlanmış bir değere sahip.
+    no group types: Hiç bir grup tipi bulunmuyor , yaratmak için buraya tıklayın
+    more products: '%count% daha fazla ürün...'
+  association type:
+    show products: Ürünleri göster
+    show groups: Grupları göster
+    remove from products: İlişki türünün silinmesi %count% ürününden de silecek.
+    none exist: Hiç bir ilişki türü yok.
+    create one: Yeni oluşturmak için buraya tıklayın
+  attribute:
+    auto option sorting: Etiketlendiği zaman, özellikler otomatik olarak yerel etiketlerine göre sıralandırılacaktır
+  completeness:
+    not calculated: Henüz hesaplanmadı
+#Form elements
+Created: Oluşturuldu
+Updated: Güncellendi
+Last update: Son güncelleme
+by: Yapan
+N/A: N/A
+Manage products: Ürünleri yönet
+Manage groups: Grupları düzenle
+Code: Kod
+Name: Ad
+Type: Tür
+Scope: Kanal
+Required: Gerekli
+Unique: Benzersiz
+Not required: Gerekli değil
+Translatable: Çevirilebilir
+Scopable: Ölçeklendirilebilir
+Localizable: Yerelleştirilebilir
+Unique value: Nadir değer
+Attribute group: Özellik grubu
+Other: Diğer
+Variants behavior when edited: Düzenlendiğinide zaman davranışı
+Remove: Kaldır
+Parameters: Parametreler
+System: Sistem
+Values: Değerler
+General parameters: Genel parametreler
+Backend parameters: Arka plan parametreleri
+Label: Etiket
+Default label: Varsayılan etiket
+Default value: Varsayılan değer
+Attributetype: Özellik türü
+Attribute type: Özellik türü
+Defaultvalue: Varsayılan değer
+Variant: Çeşit
+Smart: Akıllı
+Useable as grid column: Kılavuz filtre olarak kullanılabilir
+Useable as grid filter: Izgara olarak kullanılabilir
+Family: Aile
+Image: Resim
+Variant products: Varyant ürünleri
+Available locales: Kullanılabilir yerel ayarlar
+Locale specific: Özel yerel ayar
+default: Varsayılan
+Axis: Eksen
+Add attributes: Özellikleri ekle
+switch_on: "Evet"
+switch_off: "Hayır"
+Close: Kapat
+Search: Arama
+Choose the attribute type: Seçilmiş özellik türü
+Choose the attribute group: Seçilmiş özellik grubu
+Drag and drop a file or click here: Bir dosyayı sürükle ve bırak veya buraya tıkla
+Drop an image or click here: Bir görüntüyü sürükle veya buraya tıkla
+Automatic option sorting: Seçenekleri otomatik olarak sırala
+save_attribute_before_manage_option: Ayarları yönetmek için, lütfen ilk özelliği kaydedin
+Please select: Lütfen seçin
+Active: Etkin
+Inactive: Aktif Değil
+Do not convert: Dönüştürmeyin
+Create: Oluştur
+Choose a family: Bir sınıf seçin
+Choose a unit: Bir birim seç
+No matches found: Eşleşme bulunamadı
+Category tree: Bağlantı kategorisi
+Completeness: Bütünlük
+Attribute used as label: Etiket olarak kullanılan özellik
+Credentials: Kimlik bilgileri
+#Scopes
+Global: Küresel
+Channel: Kanal
+Expand all channels: Tüm kanalları genişlet
+Collapse all channels: Tüm kanalları daralt
+#Variants
+Always override: Her zaman geçersiz kıl
+Ask: Sor
+#Attribute group
+General Properties: "\nGenel özellikler"
+Group values: Grup değerleri
+New group: Yeni grup
+Groups overview: Gruplara genel bakış
+'Y-m-d h:i:s': "Y-m-d h:i:s\n"
+#Attribute properties
+Max characters: En yüksek karakter sayısı
+Validation rule: Geçerlilik kuralı
+Validation regexp: Doğrulama kuralı
+Wysiwyg enabled: WYSIWYG  etkinleştirildi
+Number min: En az sayı
+Number max: En yüksek sayı
+Decimals allowed: Ondalık sayılara izin ver
+Negative allowed: Negatif değerlere izin ver
+Date min: En az tarih
+Date max: En yüksek tarih
+Max file size: En büyük dosya boyutu (MB)
+Allowed extensions: İzin verilen dosya uzantıları
+None: Hiçbiri
+E-mail: E-posta
+URL: URL
+Regular expression: Düzenli ifade
+Minimum input length: Minimum giriş uzunluğu
+Default: Varsayılan
+#Family
+Attributes: Özellikler
+#Category
+Title: Başlık
+#Page titles
+pim_catalog_identifier: Tanımlayıcı
+pim_catalog_text: Metin
+pim_catalog_textarea: Metin Alanı
+pim_catalog_number: Numara
+pim_catalog_price_collection: Ücret
+pim_catalog_multiselect: Çoklu seçim
+pim_catalog_simpleselect: Basit seçim
+pim_catalog_file: Dosya
+pim_catalog_image: Resim
+pim_catalog_boolean: "Evet/Hayır"
+pim_catalog_date: Tarih
+pim_reference_data_simpleselect: Referans verisi basit seçim
+pim_reference_data_multiselect: Toplu referans verisi seçimi
+#Locales
+Activated: Etkinleştirildi
+Edit: Düzenle
+Disable: Devre dışı
+To enable: Etkinleştirmek için
+Select attributes: Özellikleri seç
+Select: Seç
+Remove this attribute: Bu özelliği sil
+Copy: Kopyala
+Translate from: Den çevir
+Current tab: Güncel sekme
+#Product view
+Group: Grup
+View group: Grubu görüntüle
+Products: Ürünler
+#Tabs
+Properties: Özellikler
+History: Geçmiş
+pane.accordion:
+  node_values: Nod değerleri
+  general_properties: Genel özellikler
+  locale_values: Local değerler
+  backend_parameters: Arka plan parametreleri
+  general_parameters: Genel parametreler
+  validation_parameters: Onaylama parametreleri
+  label_translations: Etiket çevirileri
+  options: Seçenekler
+  group_values: Grup değerleri
+#Popin titles
+popin.create:
+  association_type.title: Yeni bir ilişki türü oluştur
+  group.title: Yeni grup oluştur
+  product.title: Yeni bir ürün oluşturun
+  option.title: Yeni bir opsiyon oluştur
+#Datagrid contents
+In group: Grupta
+Attribute as label: Etiket olan özellik
+Is associated: İlişkili
+Complete: Tamamla
+Created At: Oluşturulma zamanı
+Updated At: Güncelleme tarihi
+Enabled: Etkinleştirildi
+Disabled: Devre dışı
+Status: Durum
+pim_datagrid:
+  filters:
+    entity_type:
+      label: Çeşit
+    family:
+      label: Aile
+    groups:
+      label: Gruplar
+    enabled:
+      label: Durum
+    completeness:
+      label: Tamamla
+    identifier:
+      label: Tanımlayıcı
+#Versioning / history
+Change History: Geçmişi değiştir
+Data Audit: Veri denetimi
+Data Audit - System: 'Veri denetimi - sistem'
+Action: İşlem
+Version: Sürüm
+Entity type: Varlık türü
+Entity name: Varlık adı
+Entity id: Varlık adı
+Data: Veri
+Author: Sahibi
+Logged at: Giriş zamanı
+Deleted: Silindi
+Old values: Eski değerler
+New values: Yeni değerler
+#Configuration
+System configuration: System konfigirasyonu
+General setup: Genel yükleme
+Localization: Yerelleştirme
+Localization options: Yerelleştirme seçenekleri
+Locale: Yerel Ayar
+Location: Konum
+Format address by address country: Ülke adresini biçimlendir
+Language: Dil
+Timezone: Zaman dilimi
+Currency: Para birimi
+oro.locale:
+  address_format:
+    region_name_type:
+      parish: "mahalle"
+      state: "devlet"
+      island: "ada"
+      county: "ülke"
+      area: "alan"
+      prefecture: "idari bölge"
+      department: "departman"
+      district: "bölge"
+      province: "il"
+  form:
+    tooltip:
+      locale: "Numaraları, adresleri, isimler ve tarihler biçimlendirmek için kullanılan yerel ayar seçeneği belirleyin"
+      location: "'Adresini ülkeye göre biçimlendirme' seçeneği devre dışı bırakıldığında, adres biçimlendirmek için konum kullanılacaktır"
+      format_address_by_address_country: "Bu seçeneğin seçilmesi, adreslerin bulundukları ülke tarafından biçimlendirilmesini etkinleştirir. Bu seçeneğin devreden çıkartılması, adreslerin konum adres formatında biçimlendirilmesine neden olur"
+      language: "Kullanmak istediğiniz sistem dilini seçin"
+      timezone: "Tarih ve saati görüntülemek için saat dilimini seçin"
+      currency: "Varsayılan para birimini seçin"
+#Datagrid
+Selected products successfully deleted: Seçilen ürünler başarıyla silindi
+pim_mass_edit:
+  notification:
+    mass_edit:
+      error: Mass edit <strong>%label%</strong> başarısız
+      warning: Toplu düzenle<strong>%label%</strong>bağzı uyarılarla bitti
+      success: Toplu düzenle<strong>%label%</strong>bitti
+    quick_export:
+      error: Hızlı dışa aktarma<strong>%label%</strong>başarısız
+      warning: Hızlı dışa aktarma<strong>%label%</strong>bağzı hatalar ile tamamlandı.
+      success: Hızlı dışa aktarma<strong>%label%</strong>bitti
+    mass_delete:
+      error: <strong>%label%</strong> için toplu silme başarısız
+      warning: <strong>%label%</strong> silinmesi bazı uyarılar ile tamamlandı
+      success: Toplu silme<strong>%label%</strong>bitti
+job_execution.summary:
+  mass_edited: Toplu düzendi
+  skip: Atlandı
+  skipped_products: Atlanan ürünler
+  skipped_attributes: Atlanan özellikler
+  skipped_families: Atlanan aileler
+  deleted_products: Silinmiş ürünler
+  deleted_product_models: Silinmiş ürün modelleri
+pim_mass_edit_execution_show: Toplu düzenleme uygulaması | Detaylar
+edit_common_attributes.steps.edit_common_attributes_processor.title: Özellikleri düzenle
+update_product_value.steps.update_product_value_processor.title: Ürün değerini güncelleme
+remove_product_value.steps.update_product_value_processor.title: Ürün değerini kaldırma
+edit_common_attributes: Özellikleri düzenle
+edit_common_attributes_clean: Özellikler için temiz dosyalar
+perform.steps.duplicated.title: Tekrarlanmış eksen
+perform.steps.excluded.title: Harici ürün
+mass_edit report:
+  overview: Toplu düzenleme raporları
+job_tracker:
+  tab:
+    title: İşlem izleyicisi
+  filter:
+    started_at: Başlangıç tarihi

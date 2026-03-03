@@ -1,0 +1,257 @@
+pim_notification:
+  types:
+    settings: Postavke
+flash:
+  comment:
+    create:
+      success: Tvoj komentar je uspješno kreiran.
+    delete:
+      success: Tvoj komentar je uspješno izbrisan.
+    reply:
+      success: Tvoj odgovor je uspješno kreiran.
+pim_enrich.entity.product:
+  label: proizvod
+  uppercase_label: Proizvod
+  plural_label: Proizvodi
+  flash:
+    update:
+      success: Proizvod je uspješno ažuriran.
+      fail: Proizvod ne može se ažurirati.
+      already_in_upload: Datoteka je već procesu prijenosa za ovaj atribut u lokalizaciji "{{ locale }}" i opsegu "{{ scope }}"
+    delete:
+      success: Proizvod je uspješno izbrisan.
+      fail: Proizvod se ne može izbrisati.
+    create:
+      success: Proizvod je uspješno kreiran
+  module:
+    create:
+      choose_family: Odaberi obitelj
+    status:
+      enabled: Omogućeno
+      disabled: Onemogućeno
+    download_pdf:
+      label: PDF
+    copy:
+      label: Usporedi / prevedi
+      select: Odaberi
+      all_visible: Sve vidljive
+      copy: Kopiraj
+    history:
+      version: Verzija
+      author: Autor
+      logged_at: Prijavljen u
+      from: Od
+      modified: Promjenjeno
+    meta:
+      updated: Posljednje Ažuriranje
+      groups: Grupe
+    show_group:
+      title: Grupa {{ group }}
+      view_group: Prikaz grupe
+      more_products: '{{ count }} više proizvoda...'
+    attribute:
+      remove_optional: Ukloni ovaj atribut
+      locale_specific_unavailable: Ovo specifično polje lokalizacije nije dostupno za ovu lokalizaciju
+      locale_unavailable: Ovo polje lokalizacije nije dostupno za lokalizaciju '{{ locale }}' i kanal '{{ channel }}'
+      add_attribute_option: Dodaj opciju atributa
+    completeness:
+      title: Potpunost
+      complete: Potpunost
+      no_family: Nijedna obitelj nije definirana. Definirajte obitelj kako bi se izračunala potpunost ovog proizvoda.
+      no_completeness: Promijenili ste obitelj proizvoda. Prvo sačuvajte promjene da se izračuna potpunost za novu obitelj.
+    sequential_edit:
+      save_and_next: Spremi i dalje
+      save_and_finish: Spremi i završi
+    associations:
+      none_exist: Ne postoji tip pridruživanja.
+    change_family:
+      title: Promjeni obitelj proizvoda
+      merge_attributes: Trenutni atributi će se spojiti se s onima u novoj obitelji.
+      keep_attributes: Niti jedan atribut neće biti uklonjen.
+      change_family_to: Promjeni obitelji na
+      empty_selection: Odaberi obitelj
+    basket:
+      title: Košarica
+      empty_basket: Košarica je prazna
+    delete:
+      confirm: Jeste li sigurni da želite izbrisati ovaj proizvod?
+    comment:
+      post: Dodaj novi komentar
+      reply: Odgovor
+      title: Komentari
+      empty: Trenutno bez komentara
+      delete_confirm: Da li sigurno želite izbrisati ovaj komentar?
+      removed_author: Uklonjen korisnik
+pim_enrich.entity.product_model:
+  property:
+    family_variant: Varijanta
+  module:
+    completeness:
+      label: Varijanta
+pim_enrich.entity.group:
+  label: Grupa
+  flash:
+    update:
+      success: Grupa je uspješno ažurirana.
+      fail: Grupa se ne može ažurirati.
+    create:
+      success: Grupa je uspješno kreirana
+    delete:
+      success: Grupa je uspješno uklonjena
+      fail: Ne možete izbrisati ovu grupu
+  module:
+    create:
+      button: Kreiraj grupu
+    delete:
+      confirm: Jeste li sigurni da želite izbrisati ovu grupu?
+pim_enrich.entity.category:
+  label: kategorija
+  uppercase_label: Kategorija
+  plural_label: Kategorije
+pim_enrich.export.product:
+  data:
+    title: Filtriranje proizvoda
+  structure:
+    title: Filtriranje podataka
+  filter:
+    channel:
+      help: Kanal definira opseg za vrijednosti proizvoda, lokal se koristi za odabir podataka, a stabla se koriste za odabir proizvoda.
+    locales:
+      help: "Lokal definira lokalizirane vrijednosti proizvoda za izvoz. Npr: samo informacije o proizvodu na francuskom."
+    attributes:
+      help: "Odaberite informacije o proizvodima za izvoz. Npr: samo tehnički atributi."
+      empty: Svi atributi će se izvesti
+      modal:
+        title: Odabir atributa
+    attributes_selector:
+      selected: "Odabrani atributi"
+      clear: Obriši
+      all_group: Sve grupe
+      empty_selection: Svi atributi će se izvesti
+    family:
+      title: Obitelj
+      help: "Odaberite proizvode za izvoz u odnosu na njihovu obitelji. Ex: Izvoz samo za cipele i haljine."
+      operators:
+        IN: U popisu
+        "NOT IN": Nije na popisu
+        EMPTY: Proizvodi koji nemaju obitelj
+        "NOT EMPTY": Proizvodi koji imaju obitelj
+      empty_selection: Nema stanja o obitelji
+    updated:
+      title: Uvjeti vremena
+      operators:
+        ALL: Ne postoji datum stanja
+        "SINCE LAST N DAYS": Ažurirani proizvodi tijekom posljednjih n dana (npr. 6)
+        ">": Ažurirani proizvodi od ovog datuma
+        "SINCE LAST JOB": Ažurirani proizvodi od zadnjeg exporta
+    enabled:
+      title: Status
+      help: "Odaberite proizvode za izvoz preko njihovog statusa. Ex: Izvoz proizvoda neovisno o njihovom statusu."
+      value:
+        enabled: Omogućeno
+        disabled: Onemogućeno
+    completeness:
+      title: Potpunost
+      help: Odaberite proizvode za izvoz po njihovoj cjelovitosti.
+      operators:
+        ALL: Nema stanja o potpunosti podataka
+        ">=": Kompletiraj barem jedan selektirani lokalni parametar
+        "GREATER OR EQUALS THAN ON ALL LOCALES": Kompletiraj sve selektirane lokalne parametre
+        "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": Kompletiraj barem jedan selektirani lokalni parametar
+        LOWER THAN ON ALL LOCALES: Nisu kompletirani svi odabrani lokalni parametri
+      empty_selection: Odaberite obitelj
+    category:
+      title: Kategorija
+      help: Koristite kategorije proizvoda u stablu (definiran za kanal prikazan gore) za odabir proizvoda za izvoz
+    identifier:
+      title: Identifikator
+    string:
+      operators:
+        ALL: Sve
+    select:
+      operators:
+        IN: U popisu
+    date:
+      operators:
+        BETWEEN: Između
+        NOT BETWEEN: Nije između
+  global_settings:
+    title: Globalne postavke
+pim_enrich.mass_edit.product:
+  step:
+    select:
+      label: Odaberi proizvode
+    configure:
+      label: Konfiguriraj
+    confirm:
+      label: Potvrdi
+  operation:
+    common:
+      select_attributes: Odaberi atribute
+    change_status:
+      label: Promjena statusa
+      description: Odabrani proizvodi će biti omogućeni ili onemogućeni.
+      field: Da se omogući
+    change_family:
+      description: Obitelj odabranih proizvoda će se promijeniti u odabranu obitelj
+    add_to_group:
+      label: Dodaj u grupe
+      description: Odaberi grupe u koju se dodaju odabrani proizvodi
+      field: Grupe
+    remove_from_category:
+      description: Proizvodi će biti uklonjeni iz sljedećih kategorija.
+pim_datagrid:
+  mass_action_group:
+    bulk_actions:
+      label: Masovne Radnje
+    quick_export:
+      label: Brzi izvoz
+  mass_action:
+    delete:
+      success: Odabrani proizvodi su uspješno izbrisani.
+    quick_export:
+      csv_all: CSV (Svi atributi)
+      csv_grid_context: CSV (Grid kontekst)
+      xlsx_all: Excel (Svi atributi)
+      xlsx_grid_context: Excel (Grid kontekst)
+  view_selector:
+    view: Pregledi
+  actions:
+    edit_product_attributes: Uređivanje atributa proizvoda
+    classify_product: Klasifikacija proizvoda
+    delete_product: Brisanje proizvoda
+    change_status: Promjena statusa
+    toggle_status: Uključivanje/isključivanje statusa
+  filters:
+    label: Filteri
+    system: Sustav
+    product_typology:
+      variant: 'Varijanta'
+    entity_type:
+      label: 'Varijanta'
+    family:
+      label: Obitelj
+    groups:
+      label: Grupe
+    enabled:
+      label: Status
+    completeness:
+      label: Kompletan
+    identifier:
+      label: Identifikator
+batch_jobs:
+  add_product_value:
+    label: Dodaj vrijednosti proizvoda
+    perform.label: Dodaj vrijednosti proizvoda
+  csv_product_grid_context_quick_export:
+    quick_export.label: Brzi izvoz pregleda proizvoda u Csv
+    perform.label: Brzi izvoz pregleda proizvoda u Csv
+  csv_product_quick_export:
+    quick_export.label: Brzi izvoz proizvoda u Csv
+    perform.label: Brzi izvoz proizvoda u Csv
+  edit_common_attributes:
+    label: Uredi atribute
+    perform.label: Uredi atribute
+  update_product_value:
+    label: Ažuriraj vrijednosti proizvoda
+    perform.label: Ažuriraj vrijednosti proizvoda

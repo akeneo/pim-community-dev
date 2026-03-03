@@ -27,28 +27,29 @@ final class SqlGetAttributesIntegration extends TestCase
                 'type' => AttributeTypes::BOOLEAN,
                 'localizable' => false,
                 'scopable' => false,
-                'group' => 'other'
+                'group' => 'other',
+                'labels' => ['en_US' => 'a boolean', 'fr_FR' => 'Un booléen'],
             ],
             [
                 'code' => 'a_textarea',
                 'type' => AttributeTypes::TEXTAREA,
                 'localizable' => false,
                 'scopable' => false,
-                'group' => 'other'
+                'group' => 'other',
             ],
             [
                 'code' => 'a_text',
                 'type' => AttributeTypes::TEXT,
                 'localizable' => false,
                 'scopable' => false,
-                'group' => 'other'
+                'group' => 'other',
             ],
             [
                 'code' => '123',
                 'type' => AttributeTypes::TEXT,
                 'localizable' => false,
                 'scopable' => false,
-                'group' => 'other'
+                'group' => 'other',
             ],
             [
                 'code' => 'a_locale_specific_attribute',
@@ -74,30 +75,46 @@ final class SqlGetAttributesIntegration extends TestCase
 
     public function test_it_gets_attributes_by_giving_attribute_codes(): void
     {
-        $expected = $this->getExpected();
+        $expected = $this->getExpectedByAttributeCodes();
         $query = $this->getQuery();
-        $actual = $query->forCodes(['a_text', 'a_boolean', 'a_textarea', 'unknown_attribute_code', '123', 'a_locale_specific_attribute', 'a_metric']);
+        $actual = $query->forCodes(['sku', 'a_text', 'a_boolean', 'a_textarea', 'unknown_attribute_code', '123', 'a_locale_specific_attribute', 'a_metric']);
         $this->assertEqualsCanonicalizing($expected, $actual);
     }
 
     public function test_it_gets_attributes_by_giving_attribute_codes_with_cache(): void
     {
-        $expected = $this->getExpected();
+        $expected = $this->getExpectedByAttributeCodes();
         $query = $this->getCachedQuery();
-        $actual = $query->forCodes(['a_text', 'a_boolean', 'a_textarea', 'unknown_attribute_code', '123', 'a_locale_specific_attribute', 'a_metric']);
+        $actual = $query->forCodes(['sku', 'a_text', 'a_boolean', 'a_textarea', 'unknown_attribute_code', '123', 'a_locale_specific_attribute', 'a_metric']);
         $this->assertEqualsCanonicalizing($expected, $actual);
     }
 
-    public function getExpected(): array
+    public function test_it_gets_attributes_by_given_attribute_type(): void
+    {
+        $expected = $this->getExpectedByType();
+        $actual = $this->getQuery()->forType('pim_catalog_text');
+        $this->assertEqualsCanonicalizing($expected, $actual);
+    }
+
+    private function getExpectedByAttributeCodes(): array
     {
         return [
+            'sku' => new Attribute('sku', AttributeTypes::IDENTIFIER, ['reference_data_name' => null], false, false, null, null, false, 'text', [], true, ['en_US' => 'SKU'], true),
             'a_text' => new Attribute('a_text', AttributeTypes::TEXT, [], false, false, null, null, false, 'text', []),
             'a_textarea' => new Attribute('a_textarea', AttributeTypes::TEXTAREA, [], false, false, null, null, false, 'textarea', []),
-            'a_boolean' => new Attribute('a_boolean', AttributeTypes::BOOLEAN, [], false, false, null, null, false, 'boolean', []),
+            'a_boolean' => new Attribute('a_boolean', AttributeTypes::BOOLEAN, [], false, false, null, null, false, 'boolean', [], null, ['en_US' => 'a boolean', 'fr_FR' => 'Un booléen']),
             'unknown_attribute_code' => null,
             '123' => new Attribute('123', AttributeTypes::TEXT, [], false, false, null, null, false, 'text', []),
             'a_locale_specific_attribute' => new Attribute('a_locale_specific_attribute', AttributeTypes::BOOLEAN, [], true, false, null, null, false, 'boolean', ['en_US']),
             'a_metric' => new Attribute('a_metric', AttributeTypes::METRIC, [], false, false, 'Length', 'CENTIMETER', true, 'metric', []),
+        ];
+    }
+
+    private function getExpectedByType(): array
+    {
+        return [
+            'a_text' => new Attribute('a_text', AttributeTypes::TEXT, [], false, false, null, null, false, 'text', []),
+            '123' => new Attribute('123', AttributeTypes::TEXT, [], false, false, null, null, false, 'text', []),
         ];
     }
 
@@ -124,9 +141,9 @@ final class SqlGetAttributesIntegration extends TestCase
         $attributes = array_map(function (array $attributeData) {
             $attribute = $this->get('pim_catalog.factory.attribute')->create();
             $this->get('pim_catalog.updater.attribute')->update($attribute, $attributeData);
-            $constraintViolationss = $this->get('validator')->validate($attribute);
+            $constraintViolations = $this->get('validator')->validate($attribute);
 
-            Assert::count($constraintViolationss, 0);
+            Assert::count($constraintViolations, 0);
 
             return $attribute;
         }, $attributes);

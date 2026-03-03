@@ -1,0 +1,67 @@
+workflows:
+    octopus_connectivity_pull_request:
+        when:
+            not:
+                equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+        jobs:
+            -   start_connectivity?:
+                    type: approval
+                    filters:
+                        branches:
+                            only:
+                                - /^(?i)(CXP|OCT)-.*/
+            -   checkout_ce:
+                    name: checkout_connectivity
+                    requires:
+                        - start_connectivity?
+            -   install_front_dependencies:
+                    edition: ce
+                    requires:
+                        - checkout_connectivity
+            -   install_back_dependencies:
+                    edition: ce
+                    requires:
+                        - checkout_connectivity
+            -   build_dev:
+                    name: build
+                    is_ee_built: false
+                    requires:
+                        - install_back_dependencies
+                        - install_front_dependencies
+            -   test_front_unit_connectivity:
+                    name: test_cxp_front_unit
+                    requires:
+                        - install_front_dependencies
+            -   test_front_lint_connectivity:
+                    name: test_cxp_front_lint
+                    requires:
+                        - install_front_dependencies
+            -   test_front_build_connectivity:
+                    name: text_cxp_front_build
+                    requires:
+                        - build
+            -   test_back_unit_connectivity:
+                    name: test_cxp_back_unit
+                    requires:
+                        - install_back_dependencies
+            -   test_back_integration_connectivity:
+                    name: test_cxp_back_integration
+                    requires:
+                        - install_back_dependencies
+            -   test_back_e2e_connectivity:
+                    name: test_cxp_back_e2e
+                    requires:
+                        - install_back_dependencies
+            -   test_back_behat_connectivity:
+                    name: test_cxp_back_behat
+                    requires:
+                        - build
+            -   pull_request_success:
+                    requires:
+                        - test_cxp_front_lint
+                        - test_cxp_front_unit
+                        - text_cxp_front_build
+                        - test_cxp_back_unit
+                        - test_cxp_back_integration
+                        - test_cxp_back_e2e
+                        - test_cxp_back_behat

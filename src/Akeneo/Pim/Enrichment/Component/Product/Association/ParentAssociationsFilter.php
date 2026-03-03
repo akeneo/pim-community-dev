@@ -26,7 +26,8 @@ class ParentAssociationsFilter
             $filtered[$associationTypeCode] = $associationTypeValues;
             if (isset($parentAssociations[$associationTypeCode])) {
                 $filtered[$associationTypeCode] = $this->filterParentAssociationType(
-                    $associationTypeValues, $parentAssociations[$associationTypeCode]
+                    $associationTypeValues,
+                    $parentAssociations[$associationTypeCode]
                 );
             }
         }

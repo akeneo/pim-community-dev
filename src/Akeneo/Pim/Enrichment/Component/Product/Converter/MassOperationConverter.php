@@ -92,19 +92,19 @@ class MassOperationConverter implements ConverterInterface
             switch ($action['field']) {
                 case 'enabled':
                     return $this->checkAclForType('enabled');
-                break;
+                    break;
                 case 'family':
                     return $this->checkAclForType('family');
-                break;
+                    break;
                 case 'categories':
                     return $this->checkAclForType('categories');
-                break;
+                    break;
                 case 'groups':
                     return $this->checkAclForType('groups');
-                break;
+                    break;
                 default:
                     return true;
-                break;
+                    break;
             }
         });
 

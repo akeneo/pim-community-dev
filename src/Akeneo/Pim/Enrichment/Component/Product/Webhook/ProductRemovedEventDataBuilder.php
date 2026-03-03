@@ -6,9 +6,9 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Webhook;
 
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
+use Akeneo\Platform\Component\Webhook\Context;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
 use Akeneo\Platform\Component\Webhook\EventDataCollection;
-use Akeneo\UserManagement\Component\Model\UserInterface;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -16,7 +16,7 @@ use Akeneo\UserManagement\Component\Model\UserInterface;
  */
 class ProductRemovedEventDataBuilder implements EventDataBuilderInterface
 {
-    public function supports(object $event): bool
+    public function supports(BulkEventInterface $event): bool
     {
         if (false === $event instanceof BulkEventInterface) {
             return false;
@@ -31,10 +31,7 @@ class ProductRemovedEventDataBuilder implements EventDataBuilderInterface
         return true;
     }
 
-    /**
-     * @param BulkEventInterface $bulkEvent
-     */
-    public function build(object $bulkEvent, UserInterface $user): EventDataCollection
+    public function build(BulkEventInterface $bulkEvent, Context $context): EventDataCollection
     {
         $collection = new EventDataCollection();
 
@@ -42,7 +39,8 @@ class ProductRemovedEventDataBuilder implements EventDataBuilderInterface
         foreach ($bulkEvent->getEvents() as $event) {
             $data = [
                 'resource' => [
-                    'identifier' => $event->getIdentifier()
+                    'identifier' => $event->getIdentifier(),
+                    'uuid' => $event->getProductUuid(),
                 ],
             ];
             $collection->setEventData($event, $data);

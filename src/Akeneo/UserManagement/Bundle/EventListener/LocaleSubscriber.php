@@ -3,6 +3,7 @@
 namespace Akeneo\UserManagement\Bundle\EventListener;
 
 use Akeneo\UserManagement\Component\Event\UserEvent;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -11,6 +12,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
+use Symfony\Component\Security\Http\FirewallMapInterface;
 use Symfony\Component\Security\Http\SecurityEvents;
 use Symfony\Contracts\Translation\LocaleAwareInterface;
 
@@ -26,12 +28,18 @@ class LocaleSubscriber implements EventSubscriberInterface
     protected RequestStack $requestStack;
     protected LocaleAwareInterface $localeAware;
     protected EntityManager $em;
+    protected FirewallMapInterface $firewall;
 
-    public function __construct(RequestStack $requestStack, LocaleAwareInterface $localeAware, EntityManager $em)
-    {
+    public function __construct(
+        RequestStack $requestStack,
+        LocaleAwareInterface $localeAware,
+        EntityManager $em,
+        FirewallMapInterface $firewall
+    ) {
         $this->requestStack = $requestStack;
         $this->localeAware = $localeAware;
         $this->em = $em;
+        $this->firewall = $firewall;
     }
 
     /**
@@ -42,7 +50,7 @@ class LocaleSubscriber implements EventSubscriberInterface
         $user = $event->getSubject();
 
         if ($user === $event->getArgument('current_user')) {
-            $request = $this->requestStack->getMasterRequest();
+            $request = $this->requestStack->getMainRequest();
             $request->getSession()->set('_locale', $user->getUiLocale()->getCode());
             $this->localeAware->setLocale($user->getUiLocale()->getCode());
         }
@@ -65,6 +73,10 @@ class LocaleSubscriber implements EventSubscriberInterface
     {
         $user = $event->getAuthenticationToken()->getUser();
 
+        if (!$user instanceof UserInterface) {
+            return;
+        }
+
         $event->getRequest()->getSession()->remove('dataLocale');
         $event->getRequest()->getSession()->set('_locale', $user->getUiLocale()->getCode());
     }
@@ -72,7 +84,7 @@ class LocaleSubscriber implements EventSubscriberInterface
     /**
      * @return array
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             UserEvent::POST_UPDATE => [['onPostUpdate']],
@@ -88,7 +100,11 @@ class LocaleSubscriber implements EventSubscriberInterface
      */
     protected function getLocale(Request $request)
     {
-        return null !== $request->getSession() && null !== $request->getSession()->get('_locale') ?
+        if (in_array($this->firewall->getFirewallConfig($request)->getName(), ['api', 'oauth_token'], true)) {
+            return 'en_US';
+        }
+
+        return $request->hasSession() && null !== $request->getSession()->get('_locale') ?
             $request->getSession()->get('_locale') : $this->getLocaleFromOroConfigValue();
     }
 
@@ -99,7 +115,7 @@ class LocaleSubscriber implements EventSubscriberInterface
     {
         $sql = 'SELECT value FROM oro_config_value WHERE name = "language" AND section = "pim_ui" LIMIT 1';
         $statement = $this->em->getConnection()->executeQuery($sql);
-        $locale = $statement->fetchColumn(0);
+        $locale = $statement->fetchOne();
 
         if (!$locale) {
             return null;

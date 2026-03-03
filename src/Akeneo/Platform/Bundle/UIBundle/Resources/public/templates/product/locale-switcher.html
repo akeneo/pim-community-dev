@@ -1,13 +1,13 @@
 <a class="AknActionButton <% if (displayInline) { %> AknActionButton--big AknActionButton--noLeftBorder<% } else { %>AknActionButton--withoutBorder<% } %>" data-toggle="dropdown">
     <% if (!displayInline && displayLabel) { %><%- label %>: <% } %>
-    <span class="AknActionButton-highlight"><%= i18n.getFlag(currentLocale.code, false) %> <%- currentLocale.language %></span>
+    <span class="AknActionButton-highlight"><%= i18n.getFlag(currentLocale.code, false) %> <%- currentLocale.label %></span>
     <span class="AknActionButton-caret"></span>
 </a>
 <ul class="AknDropdown-menu">
     <div class="AknDropdown-menuTitle"><%- label %></div>
     <% _.each(locales, function (locale) { %>
         <li>
-            <span class="AknDropdown-menuLink<% if (currentLocale.code === locale.code) { %> AknDropdown-menuLink--active<% } %>" data-locale="<%- locale.code %>"><%= i18n.getFlag(locale.code, false) %> <%- locale.language %></span>
+            <span class="AknDropdown-menuLink<% if (currentLocale.code === locale.code) { %> AknDropdown-menuLink--active<% } %>" data-locale="<%- locale.code %>"><%= i18n.getFlag(locale.code, false) %> <%- locale.label %></span>
         </li>
     <% }); %>
 </ul>

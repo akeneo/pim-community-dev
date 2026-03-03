@@ -20,6 +20,7 @@ class InvalidPropertyTypeException extends PropertyException
     const INTEGER_EXPECTED_CODE = 104;
     const NUMERIC_EXPECTED_CODE = 105;
     const STRING_EXPECTED_CODE = 106;
+    const DECIMAL_EXPECTED_CODE = 107;
 
     const ARRAY_EXPECTED_CODE = 200;
     const VALID_ARRAY_STRUCTURE_EXPECTED_CODE = 201;
@@ -166,11 +167,33 @@ class InvalidPropertyTypeException extends PropertyException
     }
 
     /**
+     * Build an exception when the data is not a decimal value.
+     *
+     * @param string $propertyName
+     * @param string $className
+     * @param mixed  $propertyValue a value that is not a numeric
+     *
+     * @return InvalidPropertyTypeException
+     */
+    public static function decimalExpected($propertyName, $className, $propertyValue)
+    {
+        $message = 'Property "%s" expects a decimal as data, "%s" given.';
+
+        return new static(
+            $propertyName,
+            $propertyValue,
+            $className,
+            sprintf($message, $propertyName, $propertyValue),
+            self::DECIMAL_EXPECTED_CODE
+        );
+    }
+
+    /**
      * Build an exception when the data is not a string value.
      *
      * @param string $propertyName
      * @param string $className
-     * @param string $propertyValue a value that is not a string
+     * @param mixed $propertyValue a value that is not a string
      *
      * @return InvalidPropertyTypeException
      */
@@ -267,6 +290,19 @@ class InvalidPropertyTypeException extends PropertyException
     public static function arrayOfObjectsExpected($propertyName, $className, $propertyValue)
     {
         $message = 'Property "%s" expects an array of objects as data.';
+
+        return new static(
+            $propertyName,
+            $propertyValue,
+            $className,
+            sprintf($message, $propertyName),
+            self::ARRAY_OF_OBJECTS_EXPECTED_CODE
+        );
+    }
+
+    public static function arrayOfStringsExpected($propertyName, $className, $propertyValue)
+    {
+        $message = 'Property "%s" expects an array of strings as data.';
 
         return new static(
             $propertyName,

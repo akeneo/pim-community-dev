@@ -4,31 +4,27 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\GetScoresByCriteriaStrategy;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\ProductEvaluation;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetCriteriaEvaluationsByProductIdQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetLatestProductScoresQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetCriteriaEvaluationsByEntityIdQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductEvaluationQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductScoresQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 
 final class GetUpToDateProductEvaluationQuery implements GetProductEvaluationQueryInterface
 {
-    private GetCriteriaEvaluationsByProductIdQueryInterface $getCriteriaEvaluationsByProductIdQuery;
-
-    private GetLatestProductScoresQueryInterface $getLatestProductScoresQuery;
-
     public function __construct(
-        GetCriteriaEvaluationsByProductIdQueryInterface $getCriteriaEvaluationsByProductIdQuery,
-        GetLatestProductScoresQueryInterface $getLatestProductScoresQuery
+        private GetCriteriaEvaluationsByEntityIdQueryInterface $getCriteriaEvaluationsByProductIdQuery,
+        private GetProductScoresQueryInterface                  $getProductScoresQuery,
+        private GetScoresByCriteriaStrategy                     $getScoresByCriteria,
     ) {
-        $this->getCriteriaEvaluationsByProductIdQuery = $getCriteriaEvaluationsByProductIdQuery;
-        $this->getLatestProductScoresQuery = $getLatestProductScoresQuery;
     }
 
-    public function execute(ProductId $productId): ProductEvaluation
+    public function execute(ProductUuid $productUuid): ProductEvaluation
     {
-        $productScores = $this->getLatestProductScoresQuery->byProductId($productId);
-        $productCriteriaEvaluations = $this->getCriteriaEvaluationsByProductIdQuery->execute($productId);
+        $productScores = ($this->getScoresByCriteria)($this->getProductScoresQuery->byProductUuid($productUuid));
+        $productCriteriaEvaluations = $this->getCriteriaEvaluationsByProductIdQuery->execute($productUuid);
 
-        return new ProductEvaluation($productId, $productScores, $productCriteriaEvaluations);
+        return new ProductEvaluation($productUuid, $productScores, $productCriteriaEvaluations);
     }
 }

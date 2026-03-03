@@ -5,67 +5,27 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Domain\Settings\Model\Read;
 
 /**
- * @author Romain Monceau <romain@akeneo.com>
+ * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
- * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 class ConnectionWithCredentials
 {
-    /** @var string */
-    private $code;
-
-    /** @var string */
-    private $label;
-
-    /** @var string */
-    private $flowType;
-
-    /** @var string */
-    private $clientId;
-
-    /** @var string */
-    private $secret;
-
-    /** @var string */
-    private $username;
-
-    /** @var ?string */
-    private $password;
-
-    /** @var ?string */
-    private $image;
-
-    /** @var string */
-    private $userRoleId;
-
-    /** @var ?string */
-    private $userGroupId;
-
-    /** @var boolean */
-    private $auditable;
+    private ?string $password = null;
 
     public function __construct(
-        string $code,
-        string $label,
-        string $flowType,
-        ?string $image,
-        string $clientId,
-        string $secret,
-        string $username,
-        string $userRoleId,
-        ?string $userGroupId,
-        bool $auditable
+        private string $code,
+        private string $label,
+        private string $flowType,
+        private ?string $image,
+        private string $clientId,
+        private string $secret,
+        private string $username,
+        private string $userRoleId,
+        private ?string $userGroupId,
+        private bool $auditable,
+        private string $type
     ) {
-        $this->code = $code;
-        $this->label = $label;
-        $this->flowType = $flowType;
-        $this->clientId = $clientId;
-        $this->secret = $secret;
-        $this->image = $image;
-        $this->username = $username;
-        $this->userRoleId = $userRoleId;
-        $this->userGroupId = $userGroupId;
-        $this->auditable = $auditable;
     }
 
     public function code(): string
@@ -128,6 +88,11 @@ class ConnectionWithCredentials
         return $this->auditable;
     }
 
+    public function type(): string
+    {
+        return $this->type;
+    }
+
     /**
      * @return array{
      *  code: string,
@@ -140,7 +105,8 @@ class ConnectionWithCredentials
      *  password: ?string,
      *  user_role_id: string,
      *  user_group_id: ?string,
-     *  auditable: bool
+     *  auditable: bool,
+     *  type: string
      * }
      */
     public function normalize(): array
@@ -157,6 +123,7 @@ class ConnectionWithCredentials
             'user_role_id' => $this->userRoleId,
             'user_group_id' => $this->userGroupId,
             'auditable' => $this->auditable,
+            'type' => $this->type,
         ];
     }
 }

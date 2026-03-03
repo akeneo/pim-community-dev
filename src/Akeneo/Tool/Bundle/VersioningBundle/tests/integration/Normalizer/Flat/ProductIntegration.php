@@ -42,7 +42,7 @@ class ProductIntegration extends TestCase
             'PACK-groups' => '',
             'PACK-products' => 'bar,baz',
             'PACK-product_models' => '',
-            'PRODUCT_SET-products' => 'bar',
+            'PRODUCT_SET-products' => 'bb2cd2b4-05c1-4b02-b97d-e5ef7b4312af',
             'PRODUCT_SET-products-quantity' => 3,
             'PRODUCT_SET-product_models' => 'baz',
             'PRODUCT_SET-product_models-quantity' => 2,
@@ -86,6 +86,9 @@ class ProductIntegration extends TestCase
 
         $expected = $this->sanitizeMediaAttributeData($expected, $mediaAttributes);
 
+        $this->assertTrue($flatProduct['PACK-products'] === 'baz,bar' || $flatProduct['PACK-products'] === 'bar,baz');
+        unset($expected['PACK-products']);
+        unset($flatProduct['PACK-products']);
         $this->assertEquals($expected, $flatProduct);
 
         $this->assertEquals(

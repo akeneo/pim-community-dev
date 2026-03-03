@@ -1,4 +1,4 @@
-import {useRoute} from '@akeneo-pim-community/legacy-bridge';
+import {useRoute} from '@akeneo-pim-community/shared';
 import {useAttributeContext} from '../contexts';
 
 const useCreateAttributeOption = () => {

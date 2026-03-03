@@ -29,11 +29,11 @@ akeneo_data_quality_insights:
         message: Selecteer de families om op het dashboard te tonen.
         max_families_msg: Sorry, u kunt niet meer dan {{ count }} families toevoegen om te volgen op uw dashboard
       category_modal:
-        subtitle: Categorieën toevoegen
+        subtitle: Categoriën toevoegen
         message: Selecteer de categorieën om op je dashboard weer te geven.
         max_categories_msg: Sorry, u kunt niet meer dan {{ count }} categorieën toevoegen om te volgen op uw dashboard
       add_families: Families toevoegen
-      add_categories: Categorieën toevoegen
+      add_categories: Categoriën toevoegen
       title: Titel
       score: Score
       no_family_helper_msg: Selecteer de families waarvoor u de gegevenskwaliteit wilt meten
@@ -43,7 +43,10 @@ akeneo_data_quality_insights:
       day: dag
     key_indicators:
       title: Belangrijkste indicatoren
-      products_to_work_on: '{1}Je hebt <button>1 product</button> om aan te werken.| ]1, 200[Je hebt <button>{{ count }} producten</button> om aan te werken. |[200, Inf[U heeft <button>meer dan {{ count }} producten</button> om aan te werken.'
+      products: '{1}1 product ]1, 200[{{ count }} producten [200, Inf[meer dan {{ count }} producten'
+      product_models: '{1}1 productmodel|]1, 200[{{ count }} productmodellen|[200, Inf[meer dan {{ count }} productmodellen'
+      entities_to_work_on: 'U heeft <improvable_products_count_link/> om aan te werken.'
+      entities_to_work_on_2_kinds: 'U heeft <improvable_products_count_link/> en <improvable_product_models_count_link/> om aan te werken.'
       list:
         has_image:
           title: Producten met een afbeelding
@@ -134,21 +137,26 @@ akeneo_data_quality_insights:
       all_missing_attributes: Alle ontbrekende attributen
     back_to_products: Terug naar producten
   attribute_group:
-    helper_dqi_info: De berekening van de kwaliteitsscore houdt alleen rekening met attributen die behoren tot attribuutgroepen die geactiveerd zijn voor kwaliteitsberekening.
+    helper_dqi_info: De berekening van de kwaliteitsscore houdt alleen rekening met attributen die behoren tot attribuutgroepen waarvoor gegevenskwaliteit is ingeschakeld.
     helper_dqi_link: Meer informatie over ons helpcenter.
-    activation: Activeren
+    activation: Ingeschakeld
     dqi_status: Datakwaliteit inzichten
-    activated: Geactiveerd
+    activated: Ingeschakeld
     disabled: Uitgeschakeld
     used_groups_helper: "De volgende attribuutgroepen worden meegenomen in de berekening van de datakwaliteitsscore:"
-    all_groups_evaluated: Alle attribuutgroepen van dit product worden meegenomen bij de berekening van de kwaliteitsscore. Om de meest relevante kwaliteitsscore te krijgen, <a href="{{ link }}" target="_blank">leer hoe attribuutgroepen te deactiveren in ons help center.</a>
+    all_groups_evaluated: Alle attribuutgroepen van dit product worden meegenomen bij de berekening van de kwaliteitsscore. Ga naar <a href="{{ link }}" target="_blank">  in ons help centervoor meer informatie over het uitschakelen va
   product_grid:
     filter_label:
       quality_score: Kwaliteitsscore
       enrichment_quality: Verrijkingskwaliteit
-      images_quality: Afbeeldingskwaliteit
+      images_quality: Productafbeelding
     filter_value:
       good: Goed
       to_improve: Te verbeteren
+      "yes": "Ja"
+      "no": "Nee"
+  quality_score:
+    pending: In uitvoering
+    title: "Kwaliteitsscore:"
 pim_title:
   akeneo_data_quality_insights_dashboard: Datakwaliteit inzichten

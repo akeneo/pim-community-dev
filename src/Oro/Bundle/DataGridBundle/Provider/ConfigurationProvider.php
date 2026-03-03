@@ -2,25 +2,15 @@
 
 namespace Oro\Bundle\DataGridBundle\Provider;
 
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 
 class ConfigurationProvider implements ConfigurationProviderInterface
 {
-    /** @var array */
-    protected $rawConfiguration;
+    protected array $rawConfiguration;
+    protected SystemAwareResolver $resolver;
+    protected array $processedConfiguration = [];
 
-    /** @var SystemAwareResolver */
-    protected $resolver;
-
-    /** @var array */
-    protected $processedConfiguration = [];
-
-    /**
-     * Constructor
-     *
-     * @param array               $rawConfiguration
-     * @param SystemAwareResolver $resolver
-     */
     public function __construct(array $rawConfiguration, SystemAwareResolver $resolver)
     {
         $this->rawConfiguration = $rawConfiguration;
@@ -46,7 +36,6 @@ class ConfigurationProvider implements ConfigurationProviderInterface
 
         if (!isset($this->processedConfiguration[$gridName])) {
             $config = $this->resolver->resolve($gridName, $this->rawConfiguration[$gridName]);
-
             $this->processedConfiguration[$gridName] = $config;
         }
 

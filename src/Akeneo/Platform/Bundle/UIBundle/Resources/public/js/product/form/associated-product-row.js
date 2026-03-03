@@ -38,18 +38,19 @@ define([
      */
     getTemplateOptions() {
       const isProductModel = this.isProductModel();
-      const label = this.model.get('label');
+      const id = this.model.id.replace(/product-model-|product-/g, '');
+      const label = this.model.get('label') || `[${id}]`;
       const canRemoveAssociation = this.canRemoveAssociation();
 
       return {
         useLayerStyle: isProductModel,
         label,
-        identifier: this.model.get('identifier'),
+        identifier: this.model.get('identifier') ?? `[${id}]`,
         imagePath: this.getThumbnailImagePath(),
         canRemoveAssociation,
         redirectUrl: router.generate(
           this.isProductModel() ? 'pim_enrich_product_model_edit' : 'pim_enrich_product_edit',
-          {id: this.model.id.replace(/product-model-|product-/g, '')}
+          this.isProductModel() ? {id} : {uuid: id}
         ),
       };
     },

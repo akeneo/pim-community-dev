@@ -8,6 +8,7 @@ job_execution.summary:
   skip: overgeslagen
   create: gecreëerd
   process: verwerkt
+  update: bijgewerkt
   update_products: geüpdatete producten
   process_products: verwerkte producten
   skip_products: overgeslagen producten

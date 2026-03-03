@@ -1,0 +1,39 @@
+services:
+    Akeneo\Connectivity\Connection\Infrastructure\Audit\Job\UpdateAuditDataTasklet:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Audit\UpdateAuditData'
+
+    akeneo_connectivity_connection_audit.step.update_audit_data:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'update_connectivity_audit_data'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Audit\Job\UpdateAuditDataTasklet'
+        public: false
+
+    akeneo_connectivity_connection_audit.job.update_audit_data:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'update_connectivity_audit_data'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@Akeneo\Tool\Component\Connector\Step\CheckJobUniqueStep'
+                - '@akeneo_connectivity_connection_audit.step.update_audit_data'
+            - false
+            - false
+        public: false
+        tags:
+            -
+                name: akeneo_batch.job
+                connector: 'internal'
+                type: 'scheduled_job'
+
+    akeneo_connectivity_connection_audit.job.job_parameters.default_values_provider.update_audit_data:
+        class: 'Akeneo\Tool\Component\Batch\Job\JobParameters\EmptyConstraintAndDefaultValuesProvider'
+        arguments:
+            - 'update_connectivity_audit_data'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }

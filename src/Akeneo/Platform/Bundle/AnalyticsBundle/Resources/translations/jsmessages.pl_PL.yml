@@ -1,0 +1,64 @@
+pim_analytics:
+  new_patch_available: Dostępna jest nowa aktualizacja
+  system_info:
+    title: Informacje o systemie
+    download: Pobierz
+  info_header:
+    property: Właściwość
+    information: Informacja
+  info_type:
+    pim_edition: Edycja
+    pim_version: Wersja
+    pim_storage_driver: Pamięć
+    pim_environment: Środowisko
+    pim_install_time: Czas instalacji
+    registered_bundles: Zarejestrowane moduły
+    nb_channels: Liczba kanałów
+    nb_products: Liczba produktów
+    nb_product_models: Liczba modeli produktów
+    nb_variant_products: Liczba produktów z wariantami
+    nb_family_variants: Liczba wariantów rodzin
+    nb_attributes: Liczba atrybutów
+    nb_scopable_attributes: Liczba zmiennych atrybutów
+    nb_localizable_attributes: Liczba tłumaczonych atrybutów
+    nb_scopable_localizable_attributes: Liczba tłumaczonych i zmiennych atrybutów
+    nb_useable_as_grid_filter_attributes: Liczba atrybutów, które można wykorzystać jako filtr tabeli
+    avg_percentage_scopable_attributes_per_family: Średni procent zmiennych atrybutów na rodzinę (%)
+    avg_percentage_localizable_attributes_per_family: Średni procent tłumaczonych atrybutów na rodzinę (%)
+    avg_percentage_scopable_localizable_attributes_per_family: Średni procent tłumaczonych i zmiennych atrybutów na rodzinę (%)
+    avg_number_attributes_per_family: Średnia liczba atrybutów na rodzinę
+    nb_locales: Liczba wersji językowych
+    nb_families: Liczba rodzin
+    nb_users: Liczba użytkowników
+    nb_categories: Liczba kategorii
+    nb_category_trees: Liczba drzew kategorii
+    max_category_in_one_category: Maksymalna liczba kategorii w jednej kategorii
+    max_category_levels: Maksymalna liczba poziomów kategorii
+    nb_product_values: Liczba wartości produktów
+    avg_product_values_by_product: Średnia liczba wartości produktów na produkt
+    avg_product_values_by_family: Średnia liczba potencjalnych wartości produktów na rodzinę
+    max_product_values_by_family: Maksymalna liczba potencjalnych wartości produktów na rodzinę
+    pim_storage_version: Wersja pamięci
+    os_version: Wersja systemu
+    php_version: Wersja PHP
+    mysql_version: Wersja MySQL
+    mariadb_version: Wersja MariaDB
+    mongodb_version: Wersja MongoDB
+    server_version: Wersja serwera
+    php_extensions: Rozszerzenia PHP
+    email_domains: Powiązane domeny e-mail
+    api_connection: Połączenia API
+    nb_media_files_in_products: Liczba plików multimedialnych w produktach
+    nb_media_images_in_products: Liczba obrazów multimedialnych w produktach
+    is_demo_catalog: Katalog demonstracyjny zainstalowany
+    nb_active_event_subscription: Liczba aktywnych webhooków
+    activated_app_ids: Połączone aplikacje
+    nb_activated_apps: Liczba połączonych aplikacji
+    data_source.tracked: Liczba śledzonych połączeń źródłowych API
+    data_source.untracked: Liczba nieśledzonych połączeń źródłowych API
+    data_destination.tracked: Liczba śledzonych połączeń docelowych API
+    data_destination.untracked: Liczba nieśledzonych połączeń docelowych API
+    other.tracked: Liczba innych śledzonych połączeń API
+    other.untracked: Liczba innych nieśledzonych połączeń API
+    reset_event_count: Liczba resetów instancji
+    last_reset_time: Czas ostatniego resetowania

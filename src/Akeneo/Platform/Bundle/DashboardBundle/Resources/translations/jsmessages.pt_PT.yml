@@ -1,18 +1,2 @@
-pim_dashboard:
-  widget:
-    last_operations:
-      empty: Nenhuma operação encontrada
-      status: Estado
-      date: Data
-      type: Tipo
-      profile_name: Nome do Perfil
-      details: Detalhes
-      job_type:
-        import: Importação
-        export: Exportação
-        mass_edit: Edição em massa
-        quick_export: Exportação rápida
-    header:
-      view_all: Ver tudo
-page_title:
+pim_title:
   pim_dashboard_index: Painel

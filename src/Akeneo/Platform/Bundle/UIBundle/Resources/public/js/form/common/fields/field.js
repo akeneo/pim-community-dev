@@ -15,7 +15,8 @@ define([
   'pim/common/property',
   'pim/common/tab',
   'pim/template/form/common/fields/field',
-], function ($, _, __, BaseForm, propertyAccessor, Tab, template) {
+  'pim/analytics',
+], function ($, _, __, BaseForm, propertyAccessor, Tab, template, analytics) {
   return BaseForm.extend({
     className: 'AknFieldContainer',
     containerTemplate: _.template(template),
@@ -62,7 +63,10 @@ define([
       this.render();
 
       if (this.errors.length) {
-        this.getRoot().trigger('pim_enrich:form:form-tabs:add-error', this.getTabCode());
+        this.getRoot().trigger('pim_enrich:form:form-tabs:add-errors', {
+          tabCode: this.getTabCode(),
+          errors: this.errors,
+        });
         this.getRoot().trigger('pim_enrich:form:form-tabs:change', this.getTabCode());
       }
     },
@@ -225,6 +229,11 @@ define([
     updateModel(value) {
       const data = this.getFormData();
       propertyAccessor.updateProperty(data, this.fieldName, value);
+
+      analytics.appcuesTrack('common:form:value-changed', {
+        code: this.code,
+        name: this.fieldName,
+      });
 
       this.setData(data);
     },

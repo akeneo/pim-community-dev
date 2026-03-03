@@ -44,4 +44,38 @@ final class RequiredAttributesMaskSpec extends ObjectBehavior
     {
         $this->shouldThrow(\InvalidArgumentException::class)->during('requiredAttributesMaskForChannelAndLocale', ['test', 'en_US']);
     }
+
+    public function it_merges_with_another_mask()
+    {
+        $other = new RequiredAttributesMask('family_code', [
+            new RequiredAttributesMaskForChannelAndLocale(
+                'ecommerce',
+                'fr_FR',
+                ['image-ecommerce-fr_FR']
+            ),
+            new RequiredAttributesMaskForChannelAndLocale(
+                '<all_channels>',
+                '<all_locales>',
+                ['desc-<all_channels>-<all_locales>', 'color-<all_channels>-<all_locales>']
+            ),
+        ]);
+
+        $this->merge($other)->shouldBeLike(new RequiredAttributesMask('family_code', [
+            new RequiredAttributesMaskForChannelAndLocale(
+                'ecommerce',
+                'en_US',
+                ['name-ecommerce-en_US', 'view-ecommerce-en_US']
+            ),
+            new RequiredAttributesMaskForChannelAndLocale(
+                '<all_channels>',
+                '<all_locales>',
+                ['desc-<all_channels>-<all_locales>', 'color-<all_channels>-<all_locales>']
+            ),
+            new RequiredAttributesMaskForChannelAndLocale(
+                'ecommerce',
+                'fr_FR',
+                ['image-ecommerce-fr_FR']
+            ),
+        ]));
+    }
 }

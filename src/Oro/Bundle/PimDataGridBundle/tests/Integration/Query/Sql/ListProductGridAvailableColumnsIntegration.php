@@ -234,12 +234,12 @@ class ListProductGridAvailableColumnsIntegration extends TestCase
             'created' =>
                 [
                     'code' => 'created',
-                    'label' => 'Created At',
+                    'label' => 'Created',
                 ],
             'updated' =>
                 [
                     'code' => 'updated',
-                    'label' => 'Updated At',
+                    'label' => 'Updated',
                 ],
             'complete_variant_products' =>
                 [

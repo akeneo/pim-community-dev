@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Maintenance</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
+        <link rel="stylesheet" href="{{asset ('css/pim.css', 'frontend') }}"/>
+        <style>
+            .AknMaintenanceContainer {
+                height: 100%;
+                padding: 0;
+                margin: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+            }
+            .AknMaintenanceImage {
+                background-image: url("/bundles/pimui/images/illustrations/ServerError.svg");
+                background-repeat: no-repeat;
+                background-position: center;
+                height: 250px;
+                width: 500px;
+                background-size: 100% auto;
+                margin:auto auto 30px auto;
+            }
+            .AknMaintenanceTitle {
+                font-size: 30px;
+                color: #11324D;
+                margin-bottom: 20px;
+            }
+            .AknMaintenanceSubtitle {
+                max-width: 600px;
+                margin-bottom: 20px;
+                color: #67768A;
+                font-size: 17px;
+                line-height: 24px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="AknMaintenanceContainer">
+            <div>
+                <div class="AknMaintenanceImage"></div>
+                <div class="AknMaintenanceTitle">{{ 'pim_installer.maintenance.title'|trans }}</div>
+                <div class="AknMaintenanceSubtitle">{{ 'pim_installer.maintenance.body'|trans|nl2br }}</div>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript" nonce="{{ js_nonce() }}">
+        setTimeout(() => {
+            window.location = '/'
+        }, 6000);
+    </script>
+</html>

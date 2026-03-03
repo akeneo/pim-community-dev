@@ -11,7 +11,7 @@ Feature: Execute a job
       | CROSS | Bag Cross   | RELATED |
     And I am logged in as "Julia"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3266
+  # @jira https://akeneo.atlassian.net/browse/PIM-3266
   Scenario: Skip existing products with invalid prices during an import
     Given the following products:
       | sku     | price  |
@@ -36,7 +36,7 @@ Feature: Execute a job
       SKU-008; EUR
       """
     And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
@@ -60,7 +60,7 @@ Feature: Execute a job
       | price |  |
     And I should see the text "The price attribute requires a number, and the submitted gruik value is not.: gruik EUR"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3266
+  # @jira https://akeneo.atlassian.net/browse/PIM-3266
   Scenario: Skip existing products with invalid metrics during an import
     Given the following products:
       | sku     | length        |
@@ -73,7 +73,7 @@ Feature: Execute a job
       SKU-002;12 invalid
       """
     And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
@@ -84,7 +84,7 @@ Feature: Execute a job
     And the product "SKU-002" should have the following value:
       | length | 2.0000 KILOMETER |
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3266
+  # @jira https://akeneo.atlassian.net/browse/PIM-3266
   Scenario: Skip existing products with invalid number during an import
     Given the following products:
       | sku     | number_in_stock |
@@ -97,7 +97,7 @@ Feature: Execute a job
       SKU-002;100
       """
     And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
@@ -108,7 +108,7 @@ Feature: Execute a job
     And the product "SKU-002" should have the following value:
       | number_in_stock | 100 |
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3266
+  # @jira https://akeneo.atlassian.net/browse/PIM-3266
   Scenario: Skip new products with non-existing media attributes during an import
     Given the following attributes:
       | label-en_US | type              | allowed_extensions | group | code       |
@@ -116,7 +116,7 @@ Feature: Execute a job
       | User manual | pim_catalog_file  | txt, pdf           | other | userManual |
     And the following family:
       | code         | attributes                |
-      | media_family | frontView,name,userManual |
+      | media_family | sku,frontView,name,userManual |
     And the following CSV file to import:
       """
       sku;family;groups;frontView;name-en_US;userManual;categories
@@ -124,7 +124,7 @@ Feature: Execute a job
       fanatic-freewave-76;media_family;;fanatic-freewave-76.gif;"Fanatic Freewave 76";fanatic-freewave-76.txt;2014_collection
       """
     And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     And import directory of "csv_footwear_product_import" contains the following media:
       | fanatic-freewave-76.gif |
       | fanatic-freewave-76.txt |
@@ -138,7 +138,7 @@ Feature: Execute a job
       | frontView  | fanatic-freewave-76.gif |
       | userManual | fanatic-freewave-76.txt |
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3311
+  # @jira https://akeneo.atlassian.net/browse/PIM-3311
   Scenario: Skip products with a SKU that has just been created
     Given the following CSV file to import:
       """
@@ -147,12 +147,12 @@ Feature: Execute a job
       SKU-001;invalid high heels
       """
     And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 1 product
-    And I should see the text "The same identifier is already set on another product: SKU-001"
+    And I should see the text "The SKU-001 identifier is already used for another product.: SKU-001"
     And the product "SKU-001" should have the following value:
       | name-en_US | high heels |
 
@@ -168,7 +168,7 @@ Feature: Execute a job
       SKU-006;patapouet
       """
     And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
@@ -194,7 +194,7 @@ Feature: Execute a job
       fiat-uno;12
       """
     And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
@@ -217,7 +217,7 @@ Feature: Execute a job
       fiat-500;;
       """
     And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish

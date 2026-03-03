@@ -1,0 +1,84 @@
+batch_jobs:
+  csv_currency_export:
+    label: Eksport waluty do CSV
+    export.label: Eksport waluty
+  csv_currency_import:
+    label: Import waluty z CSV
+    import.label: Import waluty
+  xlsx_currency_export:
+    label: Eksport waluty do XLSX
+    export.label: Eksport waluty
+  xlsx_currency_import:
+    label: Import waluty z XLSX
+    import.label: Import waluty
+  csv_locale_export:
+    label: Eksport wersji językowej do CSV
+    export.label: Eksport wersji językowej
+  csv_locale_import:
+    label: Import wersji językowej z CSV
+    import.label: Import wersji językowej
+  xlsx_locale_export:
+    label: Eksport wersji językowej do XLSX
+    export.label: Eksport wersji językowej
+  xlsx_locale_import:
+    label: Import wersji językowej z XLSX
+    import.label: Import wersji językowej
+  csv_channel_export:
+    label: Eksport kanału do CSV
+    export.label: Eksport kanału
+  csv_channel_import:
+    label: Import kanału z CSV
+    import.label: Import kanału
+  xlsx_channel_export:
+    label: Eksport kanału do XLSX
+    export.label: Eksport kanału
+  xlsx_channel_import:
+    label: Import kanału z XLSX
+    import.label: Import kanału
+pim_enrich.entity.channel:
+  label: kanał
+  uppercase_label: Kanał
+  flash:
+    update:
+      success: Kanał zaktualizowany pomyślnie.
+      fail: Nie można zaktualizować kanału.
+    create:
+      success: Kanał utworzony pomyślnie.
+      fail: Nie można utworzyć kanału.
+    delete:
+      success: Kanał usunięty pomyślnie
+      fail: Nie można usunąć tego kanału
+  page_title:
+    index: "one: 1 kanał|few: {{ count }} kanały|many: {{ count }"
+  property:
+    category_tree: Drzewo kategorii
+    do_not_convert: Nie konwertuj
+    measurement: Ustawienia pomiaru
+    label_conversion_units: Wybierz jednostkę konwersji dla każdego atrybutu pomiaru
+  module:
+    create:
+      button: Utwórz kanał
+    delete:
+      confirm: Na pewno chcesz usunąć ten kanał?
+pim_enrich.entity.locale:
+  label: wersja językowa
+  uppercase_label: Wersja językowa
+  plural_label: Wersje językowe
+  page_title:
+    index: "one: 1 włączona wersja językowa|few: {{ count }} włączon"
+  helper: "Aby włączyć lub wyłączyć wersję językową, przejdź do jedneg"
+  grid:
+    columns:
+      code: Włączone wersje językowe
+    filters:
+      search_placeholder: Wyszukaj włączoną wersję językową
+    no_search_result: Brak wyników wyszukiwania.
+pim_enrich.entity.currency:
+  plural_label: Waluty
+  page_title:
+    index: "one: 1 waluta|few: {{ count }} waluty|many: {{ count }"
+flash:
+  currency:
+    error:
+      linked_to_channel: Nie można wyłączyć waluty powiązanej z kanałem
+    updated: Waluta zaktualizowana pomyślnie

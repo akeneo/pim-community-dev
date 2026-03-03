@@ -3,6 +3,7 @@
 namespace Context\Page\Base;
 
 use Behat\Mink\Element\NodeElement;
+use Behat\Mink\Exception\DriverException;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Context\FeatureContext;
@@ -137,27 +138,48 @@ class Base extends Page
      */
     public function toggleSwitch($locator, $on = true)
     {
-        $field = $this->findField($locator);
+        $this->spin(function () use ($locator, $on) {
+            $field = $this->findField($locator);
+            if ($field->getAttribute('role') === 'switch') {
+                // BooleanInput.tsx from DSM
+                $field->find('css', sprintf('*[title=%s]', $on ? 'Yes' : 'No'))->click();
 
-        if ($field->getAttribute('role') === 'switch') {
-            // BooleanInput.tsx from DSM
-            $field->find('css', sprintf('*[title=%s]', $on ? 'Yes' : 'No'))->click();
+                return true;
+            }
 
-            return;
-        }
-
-        $this->spin(function () use ($field, $on) {
             // Legacy boolean
             if ($on !== $field->isChecked()) {
                 $switch = $this->getClosest($field, 'switch');
                 if (null === $switch) {
                     return false;
                 }
+
                 $switch->click();
             }
 
             return $on === $field->isChecked();
         }, sprintf('Switch label "%s" not found.', $locator));
+    }
+
+    public function switchBooleanToValue($locator, $value)
+    {
+        $labelNode = $this->spin(function () use ($locator) {
+            $labels = $this->findAll('css', 'label');
+
+            foreach ($labels as $labelContainer) {
+                if ($labelContainer->getText() === $locator) {
+                    return $labelContainer;
+                }
+            }
+
+            return false;
+        }, sprintf('Cannot find the field label of "%s"', $locator));
+
+        $field = $this->findById($labelNode->getAttribute('for'));
+
+        if ($field->getAttribute('role') === 'switch') {
+            $field->find('css', sprintf('*[title=%s]', $value === 'yes' ? 'Yes' : 'No'))->click();
+        }
     }
 
     /**
@@ -452,7 +474,7 @@ class Base extends Page
     public function getDropdownButtonItem($item, $button)
     {
         $dropdownToggle = $this->getDropdownButton($button);
-        $dropdownMenu = $dropdownToggle->getParent();
+        $dropdownMenu = $this->findById('dropdown-root') ?? $dropdownToggle->getParent();
 
         return $this->spin(function () use ($dropdownMenu, $item) {
             return $dropdownMenu->find('css', sprintf('a:contains("%s")', $item));

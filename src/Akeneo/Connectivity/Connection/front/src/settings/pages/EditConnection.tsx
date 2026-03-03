@@ -4,7 +4,6 @@ import {useHistory, useParams} from 'react-router';
 import styled from 'styled-components';
 import {ApplyButton, DropdownLink, PageContent, PageHeader, SecondaryActionsDropdownButton} from '../../common';
 import defaultImageUrl from '../../common/assets/illustrations/NewAPI.svg';
-import {PimView} from '../../infrastructure/pim-view/PimView';
 import {Connection} from '../../model/connection';
 import {FlowType} from '../../model/flow-type.enum';
 import {WrongCredentialsCombinations} from '../../model/wrong-credentials-combinations';
@@ -26,6 +25,8 @@ import {
     useWrongCredentialsCombinationsState,
 } from '../wrong-credentials-combinations-context';
 import {Breadcrumb} from 'akeneo-design-system';
+import {UserButtons} from '../../shared/user';
+import {useRouter} from '../../shared/router/use-router';
 
 export type FormValues = {
     label: string;
@@ -77,7 +78,7 @@ export const EditConnection = () => {
         let cancelled = false;
         fetchConnection().then(result => {
             if (isErr(result)) {
-                history.push('/connections');
+                history.push('/connect/connection-settings');
                 return;
             }
 
@@ -163,35 +164,32 @@ const HeaderContent = ({connection}: {connection: Connection}) => {
     const history = useHistory();
     const formik = useFormikContext<FormValues>();
     const generateMediaUrl = useMediaUrlGenerator();
-    const systemHref = `#${useRoute('oro_config_configuration_system')}`;
+    const generateUrl = useRouter();
 
     return (
         <PageHeader
             breadcrumb={
                 <Breadcrumb>
-                    <Breadcrumb.Step href={systemHref}>
-                        <Translate id='pim_menu.tab.system' />
+                    <Breadcrumb.Step href={`#${generateUrl('akeneo_connectivity_connection_audit_index')}`}>
+                        <Translate id='pim_menu.tab.connect' />
                     </Breadcrumb.Step>
-                    <Breadcrumb.Step href={history.createHref({pathname: '/connections'})}>
-                        <Translate id='pim_menu.item.connection_settings' />
+                    <Breadcrumb.Step href={history.createHref({pathname: '/connect/connection-settings'})}>
+                        <Translate id='pim_menu.item.connect_connection_settings' />
                     </Breadcrumb.Step>
                     <Breadcrumb.Step>{connection.label}</Breadcrumb.Step>
                 </Breadcrumb>
             }
             buttons={[
                 <SecondaryActionsDropdownButton key={0}>
-                    <DropdownLink onClick={() => history.push(`/connections/${connection.code}/delete`)}>
+                    <DropdownLink
+                        onClick={() => history.push(`/connect/connection-settings/${connection.code}/delete`)}
+                    >
                         <Translate id='pim_common.delete' />
                     </DropdownLink>
                 </SecondaryActionsDropdownButton>,
                 <SaveButton key={1} />,
             ]}
-            userButtons={
-                <PimView
-                    className='AknTitleContainer-userMenuContainer AknTitleContainer-userMenu'
-                    viewName='pim-connectivity-connection-user-navigation'
-                />
-            }
+            userButtons={<UserButtons />}
             state={<FormState />}
             imageSrc={
                 null === formik.values.image ? defaultImageUrl : generateMediaUrl(formik.values.image, 'thumbnail')

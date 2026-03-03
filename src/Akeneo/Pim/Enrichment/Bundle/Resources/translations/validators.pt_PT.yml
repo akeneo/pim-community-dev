@@ -13,11 +13,39 @@ Option code may contain only letters, numbers and underscores: O código da opç
 Option code may contain only letters (at least one), numbers and underscores: O código da opção só pode conter letras (pelo menos uma), números e sublinhados
 This value should not be a decimal.: Este valor não deve ser um número decimal.
 'The file extension is not allowed (allowed extensions: %extensions%).': 'Extensão de ficheiro não permitida (extensões permitidas: %extensions%).'
-"The value %value% is already set on another product for the unique attribute %attribute%": O valor %value% já está definido noutro produto para o atributo único %attribute%
-regex.comma_or_semicolon.message: Este campo não deve conter qualquer vírgula ou ponto e vírgula.
+The same identifier is already set on another product: O mesmo identificador já existe em outros produtos
 file.extensions.message: 'Extensão de ficheiro não permitida (extensões permitidas: %extensions%).'
 "This type of value expects the use of {{ decimal_separator }} to separate decimals.": Neste tipo de valor deve utilizar {{ decimal_separator }} para separar as casas decimais.
 "This type of value expects the use of dot (.) to separate decimals.": Neste tipo de valor deve utilizar o ponto (.) para separar as casas decimais.
 "This type of value expects the use of comma (,) to separate decimals.": Neste tipo de valor deve utilizar a vírgula (,) para separar as casas decimais.
 "This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Neste tipo de valor deve utilizar o separador decimal árabe (٫) para separar as casas decimais.
 "This type of value expects the use of the format {{ date_format }} for dates.": Neste tipo de valor deve utilizar o formato {{ date_format }} para datas.
+product_model.code.not_blank.message: O código do modelo do produto não pode estar vazio.
+product_model.code.unique.message: O mesmo código já foi atribuído a outro modelo de produto.
+pim_catalog:
+  constraint:
+    family_variant_axes_immutable: 'O eixo variante não pode ser alterado para o nível "%level%"'
+    product_identifier: Estes identificadores "%s" não existem.
+    0: Um erro inesperado ocorreu.
+    100: Non-expected value
+    101: É necessário um valor booleano para este campo.
+    102: É necessário um valor de flutuação para este campo.
+    103: Valores inteiros são necessários para este campo.
+    104: Valores numéricos são necessários para este campo.
+    105: Este campo espera um valor de seqüência de caracteres.
+    106: É necessário um valor de matriz para este campo.
+    107: This field expects an array of arrays as value.
+    200: Ocorreu um erro interno
+    201: Ocorreu um erro interno
+    202: Valores numéricos são necessários para este campo.
+    203: Este campo espera um valor de seqüência de caracteres.
+    204: Este campo espera um valor de seqüência de caracteres.
+    205: Ocorreu um erro interno
+    300: This field expects a valid entity code.
+    301: This field expects a valid scope and locale.
+    302: This field expects a valid scope.
+    303: This field expects a valid association format.
+    pim_immutable_product_model_validator: O mesmo código já foi atribuído a outro modelo de produto.
+mass_edit:
+  edit_common_attributes:
+    invalid_values: Existem erros no formulário dos atributos

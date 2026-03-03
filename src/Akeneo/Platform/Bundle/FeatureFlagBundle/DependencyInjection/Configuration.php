@@ -15,19 +15,14 @@ class Configuration implements ConfigurationInterface
     /**
      * {@inheritDoc}
      */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('akeneo_feature_flag');
 
         $treeBuilder->getRootNode()
             ->children()
                 ->arrayNode('feature_flags')
-                    ->arrayPrototype()
-                        ->children()
-                            ->scalarNode('feature')->isRequired()->cannotBeEmpty()->end()
-                            ->scalarNode('service')->isRequired()->cannotBeEmpty()->end()
-                        ->end()
-                    ->end()
+                    ->scalarPrototype()->end()
                 ->end()
             ->end()
         ;

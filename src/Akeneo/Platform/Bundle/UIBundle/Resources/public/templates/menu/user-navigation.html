@@ -1,3 +1,8 @@
+<% if (freeTrialEnabled) { %>
+    <div id="appcues-launchpad-btn" style="margin-right: 10px;"></div>
+    <div id="invite-user-btn"></div>
+<% } %>
+
 <div class="AknDropdown">
     <div class="AknTitleContainer-userIcon"
         data-toggle="dropdown"
@@ -8,9 +13,14 @@
         <div class="AknDropdown-menuTitle"><%- firstName %> <%- lastName %></div>
         <div class="AknDropdown-menuLink user-account"><%- userAccountLabel %></div>
         <div class="AknDropdown-menuLink logout"><%- logoutLabel %></div>
+        <% if (segmentIntegrationEnabled) { %>
+            <div id="cookie-preferences-btn" class="AknDropdown-menuLink"></div>
+        <% } %>
     </div>
 </div>
 
-<div class="AknCommunicationChannelMenu communication-channel"></div>
+<% if (!freeTrialEnabled) { %>
+    <div class="AknCommunicationChannelMenu communication-channel"></div>
+<% } %>
 
 <div class="AknNotificationMenu AknDropdown dropdown notification"></div>

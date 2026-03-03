@@ -1,0 +1,15 @@
+# More info here: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Octopus features
+/src/Akeneo/Connectivity @akeneo/squad-octopus
+/components/catalogs @akeneo/squad-octopus
+.circleci/workflows/squads/octopus @akeneo/squad-octopus
+
+# Chipmunks
+/src/Akeneo/Pim/Enrichment @akeneo/squad-chipmunks
+/src/Akeneo/Pim/Structure @akeneo/squad-chipmunks
+/components/identifier-generator @akeneo/squad-chipmunks
+
+# Griffins
+/src/Akeneo/Category @akeneo/squad-griffins
+/src/Akeneo/UserManagement @akeneo/squad-griffins

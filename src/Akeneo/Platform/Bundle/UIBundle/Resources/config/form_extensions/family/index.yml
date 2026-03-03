@@ -29,6 +29,11 @@ extensions:
         config:
             title: pim_enrich.entity.family.page_title.index
 
+    pim-family-index-sandbox-helper:
+        module: pim/sandbox-helper
+        parent: pim-family-index
+        targetZone: helper
+
     pim-family-breadcrumbs:
         module: pim/common/breadcrumbs
         parent: pim-family-index
@@ -48,7 +53,7 @@ extensions:
         targetZone: filters
 
     pim-family-index-mass-actions:
-        module: pim/grid/mass-actions
+        module: pim/family/grid/mass-actions
         parent: pim-family-index
         targetZone: bottom-panel
         config:
@@ -74,12 +79,8 @@ extensions:
             alias: family-grid
 
     pim-family-index-create-button:
-        module: pim/form/common/index/create-button
+        module: pim/family-edit-form/create-button
         parent: pim-family-index
         targetZone: buttons
         position: 100
         aclResourceId: pim_enrich_family_create
-        config:
-           iconName:  plus
-           title:     pim_enrich.entity.family.module.create.button
-           modalForm: pim-family-create-modal

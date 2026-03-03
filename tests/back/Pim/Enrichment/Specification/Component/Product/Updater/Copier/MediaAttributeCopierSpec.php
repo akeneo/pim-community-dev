@@ -2,20 +2,20 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Updater\Copier;
 
+use Akeneo\Pim\Enrichment\Component\FileStorage;
+use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\CopierInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\MediaAttributeCopier;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\FileStorage\File\FileFetcherInterface;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
-use Akeneo\Pim\Enrichment\Component\FileStorage;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
 class MediaAttributeCopierSpec extends ObjectBehavior
@@ -82,7 +82,7 @@ class MediaAttributeCopierSpec extends ObjectBehavior
         ValueInterface $toValue,
         FileStorerInterface $fileStorer,
         FileFetcherInterface $fileFetcher,
-        FilesystemInterface $fileSystem
+        FilesystemOperator $fileSystem
     ) {
         $fromLocale = 'fr_FR';
         $toLocale = 'fr_FR';
@@ -188,7 +188,7 @@ class MediaAttributeCopierSpec extends ObjectBehavior
         FileStorerInterface $fileStorer,
         ValueInterface $toValue,
         FileFetcherInterface $fileFetcher,
-        FilesystemInterface $fileSystem
+        FilesystemOperator $fileSystem
     ) {
         $fromLocale = 'fr_FR';
         $toLocale = 'fr_FR';

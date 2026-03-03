@@ -16,6 +16,6 @@ placeholders:
 
 items:
     logo:
-        template: PimUIBundle:Default:logo.html.twig
+        template: '@PimUI/Default/logo.html.twig'
     help:
-        template: PimUIBundle:Default:help.html.twig
+        template: '@PimUI/Default/help.html.twig'

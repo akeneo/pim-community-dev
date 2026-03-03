@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductScores;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -18,14 +18,14 @@ final class GetProductQualityScoreController
         $this->getProductScores = $getProductScores;
     }
 
-    public function __invoke(string $productId): JsonResponse
+    public function __invoke(string $productUuid): JsonResponse
     {
         try {
-            $productId = new ProductId(intval($productId));
+            $productUuid = ProductUuid::fromString($productUuid);
         } catch (\InvalidArgumentException $exception) {
             return new JsonResponse(['message' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
         }
 
-        return new JsonResponse($this->getProductScores->get($productId));
+        return new JsonResponse($this->getProductScores->get($productUuid));
     }
 }

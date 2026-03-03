@@ -3,7 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Bundle\StructureVersion\Provider;
 
 use Akeneo\Platform\Bundle\UIBundle\Provider\StructureVersion\StructureVersionProviderInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * Structure version provider
@@ -16,14 +16,9 @@ class StructureVersion implements StructureVersionProviderInterface
 {
     /** @var array */
     protected $resourceNames = [];
+    protected ManagerRegistry $doctrine;
 
-    /** @var RegistryInterface */
-    protected $doctrine;
-
-    /**
-     * @param RegistryInterface $doctrine
-     */
-    public function __construct(RegistryInterface $doctrine)
+    public function __construct(ManagerRegistry $doctrine)
     {
         $this->doctrine = $doctrine;
     }
@@ -48,7 +43,7 @@ SQL;
             ['resource_names' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
         );
 
-        $loggedAt = $stmt->fetch(\PDO::FETCH_ASSOC)['last_update'];
+        $loggedAt = $stmt->fetchAssociative()['last_update'];
 
         if (null === $loggedAt) {
             return 0;

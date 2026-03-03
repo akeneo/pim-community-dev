@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi;
 
+use Akeneo\Pim\Enrichment\Bundle\Event\ProductValidationErrorEvent;
 use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
@@ -10,8 +11,6 @@ use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
 use Akeneo\Tool\Component\Api\Pagination\ParameterValidatorInterface;
 use Akeneo\Tool\Component\Api\Repository\ApiResourceRepositoryInterface;
-use Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException;
-use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Tool\Component\FileStorage\File\FileFetcherInterface;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
@@ -22,6 +21,7 @@ use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\FileBag;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -97,6 +97,8 @@ class MediaFileController
     /** @var array */
     protected $apiConfiguration;
 
+    protected EventDispatcherInterface $eventDispatcher;
+
     public function __construct(
         ApiResourceRepositoryInterface $mediaRepository,
         NormalizerInterface $normalizer,
@@ -115,6 +117,7 @@ class MediaFileController
         IdentifiableObjectRepositoryInterface $productModelRepository,
         ObjectUpdaterInterface $productModelUpdater,
         SaverInterface $productModelSaver,
+        EventDispatcherInterface $eventDispatcher,
         array $apiConfiguration
     ) {
         $this->mediaRepository = $mediaRepository;
@@ -135,6 +138,7 @@ class MediaFileController
         $this->productModelRepository = $productModelRepository;
         $this->productModelUpdater = $productModelUpdater;
         $this->productModelSaver = $productModelSaver;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -232,8 +236,6 @@ class MediaFileController
 
         try {
             return $this->fileFetcher->fetch($fs, $filename, $options);
-        } catch (FileTransferException $e) {
-            throw new UnprocessableEntityHttpException($e->getMessage(), $e);
         } catch (FileNotFoundException $e) {
             throw new NotFoundHttpException(sprintf('Media file "%s" is not present on the filesystem.', $filename), $e);
         }
@@ -313,6 +315,7 @@ class MediaFileController
         }
 
         $fileInfo = $this->storeFile($request->files);
+
         $this->linkFileToProduct($fileInfo, $product, $productInfos);
 
         $response = new Response(null, Response::HTTP_CREATED);
@@ -355,14 +358,13 @@ class MediaFileController
             $this->productUpdater->update($product, $productValues);
         } catch (PropertyException $e) {
             $this->remover->remove($fileInfo);
-
             throw new UnprocessableEntityHttpException($e->getMessage(), $e);
         }
 
         $violations = $this->validator->validate($product);
         if ($violations->count() > 0) {
             $this->remover->remove($fileInfo);
-
+            $this->eventDispatcher->dispatch(new ProductValidationErrorEvent($violations, $product));
             throw new ViolationHttpException($violations);
         }
 
@@ -428,14 +430,7 @@ class MediaFileController
             throw new UnprocessableEntityHttpException('Property "file" is required.');
         }
 
-        try {
-            $fileInfo = $this->fileStorer->store($files->get('file'), FileStorage::CATALOG_STORAGE_ALIAS, true);
-        } catch (FileTransferException $e) {
-            throw new UnprocessableEntityHttpException($e->getMessage(), $e);
-        } catch (FileRemovalException $e) {
-            throw new UnprocessableEntityHttpException($e->getMessage(), $e);
-        }
-
+        $fileInfo = $this->fileStorer->store($files->get('file'), FileStorage::CATALOG_STORAGE_ALIAS, true);
         $violations = $this->validator->validate($fileInfo);
         if ($violations->count() > 0) {
             throw new ViolationHttpException($violations);

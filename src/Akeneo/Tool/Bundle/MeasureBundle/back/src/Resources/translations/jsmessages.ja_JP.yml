@@ -1,0 +1,73 @@
+pim_menu.item:
+  measurements: 測定
+pim_title:
+  akeneo_measurements_settings_index: 測定
+  akeneo_measurements_settings_any: 測定
+measurements:
+  label_translations: UIロケールのラベル翻訳
+  search:
+    placeholder: ラベルもしくはコードでの検索
+  family:
+    result_count: "{0}0 測定ファミリー|{1}1 測定ファミリー|]1, Inf[{{ itemsCount }} 測定ファミリー"
+    not_found: 測定ファミリーは見つかりません
+    no_data:
+      title: 測定ファミリーがありません！
+      link: ここをクリックして追加してください
+    standard_unit: スタンダードユニット
+    standard_unit_is_not_editable_after_creation: 最後にスタンダードユニットがに設定されました。 他のユニットを変換する場合に使用されます。
+    add_new_measurement_family: 新規測定ファミリーを追加
+    tab:
+      units: ユニット
+      properties: プロパティ
+    delete:
+      button: 測定ファミリーを削除
+      confirm: 測定ファミリーとそのユニット全てを本当に削除しますか？
+      flash:
+        success: 測定ファミリーが正常に削除済されました。
+        error: 測定ファミリーの作成中にエラーが発生。
+    save:
+      flash:
+        success: 測定ファミリーが正常に保存されました。
+        error: 測定ファミリーの保存中にエラーが発生。
+    is_locked: 商品属性が測定ファミリーにリンクされています。ユニット追加もしくは変更できるのは翻訳済ラベルおよび既存ユニットの記号のみです。
+  unit:
+    title: 編集{{ unitLabel }}
+    symbol: 記号
+    delete:
+      button: ユニットを削除
+      confirm: この測定ユニットを本当に削除してよろしいですか？
+    add: ユニットを追加
+    add_new: ユニットを新規追加
+    operation:
+      add: 操作を新規追加
+      placeholder: 操作値
+    operator:
+      add: 追加
+      sub: 減算
+      mul: 乗算
+      div: 除算
+      select: オペレータを選択
+    convert_from_standard: 変換操作
+    create_another: 他のユニットを作成
+    will_be_read_only: 商品属性が測定ファミリーにリンクされています。ユニットは一度作成されると、編集できるのが翻訳済みのラベルと記号のみになります。
+  list:
+    header:
+      standard_unit: スタンダードユニット
+      unit_count: ユニット数
+  form:
+    input:
+      symbol: "記号 (例: km)"
+  validation:
+    unit:
+      code:
+        must_be_unique: 'このユニットコードは既に存在します。'
+  create_family:
+    flash:
+      success: 測定ファミリーが正常に作成されました。
+      error: 測定ファミリーの作成中にエラーが発生。
+  title:
+    measurement: 測定
+  add_unit:
+    flash:
+      success: ユニットが正常に追加されました
+      error: 申し訳ございません、ユニットの追加中にエラーが発生しました。

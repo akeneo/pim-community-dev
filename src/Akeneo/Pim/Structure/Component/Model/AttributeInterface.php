@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Structure\Component\Model;
 
-use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
 use Akeneo\Tool\Component\StorageUtils\Model\ReferableInterface;
 use Akeneo\Tool\Component\Versioning\Model\TimestampableInterface;
@@ -114,15 +114,6 @@ interface AttributeInterface extends
     public function addOption(AttributeOptionInterface $option);
 
     /**
-     * Get available locale codes
-     *
-     * @deprecated Will be removed in 1.8. Please use getAvailableLocaleCodes() instead.
-     *
-     * @return array
-     */
-    public function getLocaleSpecificCodes();
-
-    /**
      * Get available locale
      *
      * @return array
@@ -131,10 +122,8 @@ interface AttributeInterface extends
 
     /**
      * Get available locale codes
-     *
-     * @return array
      */
-    public function getAvailableLocaleCodes();
+    public function getAvailableLocaleCodes(): array;
 
     /**
      * Test if the attribute have the given locale specific available
@@ -672,4 +661,19 @@ interface AttributeInterface extends
      * @return bool
      */
     public function isBackendTypeReferenceData();
+
+    /**
+     * @return array    ["en_US" => "US guideline", "fr_FR" => "..."]
+     */
+    public function getGuidelines(): array;
+
+    public function addGuidelines(string $locale, string $localeGuidelines): void;
+
+    public function removeGuidelines(string $locale): void;
+
+    public function getRawTableConfiguration(): ?array;
+
+    public function setRawTableConfiguration(?array $rawTableConfiguration): void;
+
+    public function isMainIdentifier(): bool;
 }

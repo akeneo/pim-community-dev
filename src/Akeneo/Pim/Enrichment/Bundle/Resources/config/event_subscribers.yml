@@ -42,7 +42,7 @@ services:
     pim_catalog.event_subscriber.quantified_associations.compute_entity:
         class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithQuantifiedAssociations\ComputeEntitySubscriber'
         arguments:
-            - '@akeneo.pim.enrichment.product.query.quantified_association.get_id_mapping_from_product_identifiers_query'
+            - '@akeneo.pim.enrichment.product.query.quantified_association.get_uuid_mapping_query'
             - '@akeneo.pim.enrichment.product.query.quantified_association.get_id_mapping_from_product_model_codes_query'
         tags:
             - { name: kernel.event_subscriber }
@@ -57,7 +57,7 @@ services:
     pim_catalog.event_subscriber.load_product_quantified_associations:
         class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithQuantifiedAssociations\LoadEntitySubscriber'
         arguments:
-            - '@akeneo.pim.enrichment.product.query.quantified_association.get_id_mapping_from_product_ids_query'
+            - '@akeneo.pim.enrichment.product.query.quantified_association.get_uuid_mapping_query'
             - '@akeneo.pim.enrichment.product.query.quantified_association.get_id_mapping_from_product_model_ids_query'
             - '@akeneo.pim.enrichment.product.query.find_quantified_association_codes'
         tags:
@@ -67,6 +67,7 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\OnDelete\ComputeProductsAndAncestorsSubscriber'
         arguments:
             - '@akeneo.pim.enrichment.elasticsearch.indexer.product_and_ancestors'
+            - '@akeneo_elasticsearch.client.product_and_product_model'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -107,11 +108,21 @@ services:
             -
                 - 'csv_product_export'
                 - 'xlsx_product_export'
+                - 'csv_product_model_export'
+                - 'xlsx_product_model_export'
+                - 'csv_published_product_export'
+                - 'xlsx_published_product_export'
+                - 'akeneo_shared_catalog'
         tags:
             - { name: kernel.event_subscriber }
 
-    pim_catalog.event_subscriber.init_completeness_db_schema:
-        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Db\InitCompletenessDbSchemaSubscriber'
+    pim_catalog.event_subscriber.category.save.set_updated_property_on_translation_update_subscriber:
+        class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category\OnSave\SetUpdatedPropertyOnTranslationUpdateSubscriber
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    pim_catalog.event_subscriber.init_product_completeness_db_schema:
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Db\InitProductCompletenessDbSchemaSubscriber'
         arguments:
             - '@database_connection'
         tags:
@@ -123,6 +134,13 @@ services:
             - '@database_connection'
         tags:
             - { name: 'kernel.event_subscriber' }
+
+#   TODO CPM-1102: Re-enable when table can be created again
+#    Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Db\CreateIdentifiersTableSubscriber:
+#        arguments:
+#            - '@database_connection'
+#        tags:
+#            - { name: 'kernel.event_subscriber' }
 
     pim_catalog.event_subscriber.attribute_option_set_sort_order:
         class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\AttributeOption\SetAttributeOptionSortOrderSubscriber'
@@ -144,7 +162,7 @@ services:
         arguments:
             - '@pim_catalog.completeness.product.compute_and_persist'
             - '@pim_catalog.elasticsearch.indexer.product_model_descendants_and_ancestors'
-            - '@akeneo.pim.enrichment.product.query.get_descendant_variant_product_identifiers'
+            - '@akeneo.pim.enrichment.product.query.get_descendant_variant_product_uuids'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -152,13 +170,7 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ProductModel\OnDelete\ComputeProductAndAncestorsSubscriber'
         arguments:
             - '@pim_catalog.elasticsearch.indexer.product_model_descendants_and_ancestors'
-        tags:
-            - { name: kernel.event_subscriber }
-
-    pim_catalog.event_subscriber.product.on_delete.clear_completeness_subscriber:
-        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\OnDelete\DeleteCompletenessSubscriber'
-        arguments:
-            - '@pim_catalog.completeness.remover'
+            - '@akeneo_elasticsearch.client.product_and_product_model'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -180,42 +192,48 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithAssociations\PersistTwoWayAssociationSubscriber'
         arguments:
             - '@doctrine'
+            - '@pim_catalog.elasticsearch.indexer.product'
+            - '@pim_catalog.elasticsearch.indexer.product_model'
         tags:
             - { name: kernel.event_subscriber }
 
     Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchProductCreatedAndUpdatedEventSubscriber:
         arguments:
             - '@security.helper'
-            - '@Symfony\Component\Messenger\MessageBusInterface'
+            - '@messenger.default_bus'
             - '%webhook_max_bulk_size%'
             - '@logger'
+            - '@monolog.logger.business_event'
         tags:
             - { name: kernel.event_subscriber }
 
     Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchProductRemovedEventSubscriber:
         arguments:
             - '@security.helper'
-            - '@Symfony\Component\Messenger\MessageBusInterface'
+            - '@messenger.default_bus'
             - '%webhook_max_bulk_size%'
             - '@logger'
+            - '@monolog.logger.business_event'
         tags:
             - { name: kernel.event_subscriber }
 
     Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchProductModelCreatedAndUpdatedEventSubscriber:
         arguments:
             - '@security.helper'
-            - '@Symfony\Component\Messenger\MessageBusInterface'
+            - '@messenger.default_bus'
             - '%webhook_max_bulk_size%'
             - '@logger'
+            - '@monolog.logger.business_event'
         tags:
             - { name: kernel.event_subscriber }
 
     Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchProductModelRemovedEventSubscriber:
         arguments:
             - '@security.helper'
-            - '@Symfony\Component\Messenger\MessageBusInterface'
+            - '@messenger.default_bus'
             - '%webhook_max_bulk_size%'
             - '@logger'
+            - '@monolog.logger.business_event'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -227,9 +245,32 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EventsApi\DispatchReadProductEventFromEventsApiSubscriber:
+        arguments:
+            - '@event_dispatcher'
+        tags:
+            - { name: kernel.event_subscriber }
+
     Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\OnSave\ReindexFormerAncestorsSubscriber:
         arguments:
             - '@akeneo.pim.enrichment.product.query.get_ancestor_and_descendant_product_model_codes'
             - '@pim_catalog.elasticsearch.indexer.product_model'
         tags:
             - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Family\FamilyAttributeAsLabelChangedSubscriber:
+        arguments:
+          - '@pim_catalog.doctrine.query.find_attribute_code_as_label_for_family'
+          - '@akeneo_elasticsearch.client.product_and_product_model'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ProductModel\OnSave\ProductModelWasCreatedOrUpdatedSubscriber:
+      arguments:
+        - '@messenger.bus.default'
+        - '@logger'
+        - '%env(default::string:APP_TENANT_ID)%'
+        - '%env(APP_ENV)%'
+        - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsUcsEventFeature'
+      tags:
+        - { name: kernel.event_subscriber }

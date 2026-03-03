@@ -10,7 +10,6 @@ pim_title:
   pim_user_security_login: Aanmelden
   pim_user_reset_reset: Wachtwoord resetten
   pim_user_reset_request: Wachtwoord vergeten
-  pim_user_reset_check_email: Wachtwoord opnieuw instellen - Bekijk E-mail
   pim_user_group_create: 'Groepen | Aanmaken'
   pim_user_group_update: 'Groep {{ group }} | Bewerken'
 confirmation:
@@ -27,6 +26,20 @@ pim_enrich:
       module:
         delete:
           confirm: Weet u zeker dat u deze gebruiker wilt verwijderen?
+pim_user.profile:
+  caption: Vertel ons eerst wat uw belangrijkste missie is, zodat wij u kunnen helpen met de meest relevante inhoud.
+  why_is_it_needed: Waarom hebben we deze informatie nodig?
+  save_button: Opslaan en App Store openen
+  selector:
+    placeholder: Kies een optie
+    not_found: Geen resultaten gevonden
+  product_manager: Ik beheer productcatalogi
+  redactor: Ik verrijk productgegevens.
+  pim_integrator: Ik integreer Akeneo PIM in ons IT-ecosysteem.
+  pim_administrator: Ik beheer Akeneo PIM.
+  asset_manager: Ik beheer assets in de PIM.
+  translator: Ik vertaal gegevens voor producten, assets en/of referentie-entiteiten.
+  third_party_developer: Ik ontwikkel oplossingen die verband houden met Akeneo PIM.
 pim_user_management:
   entity:
     user:
@@ -42,6 +55,7 @@ pim_user_management:
         index: "]-Inf, 1] {{ count }} gebruiker|]1, Inf [{{ count }} gebruikers"
       properties:
         username: Gebruikersnaam
+        profile: Wat is uw belangrijkste missie?
         name_prefix: Voorvoegsel
         first_name: Voornaam
         middle_name: Tussenvoegsel
@@ -68,6 +82,8 @@ pim_user_management:
         default_published_product_grid_view: Standaard gepubliceerde product rasterweergave #EE Only
         proposals_to_review_notification: Wanneer nieuw voorstel tot nakijken #EE Only
         proposals_state_notifications: Wanneer voorstel is goedgekeurd of geweigerd #EE Only
+        not_fully_supported_locale: 'De geselecteerde taal van de UI [{{ code }}] wordt momenteel niet volledig ondersteund. Daardoor kunnen vertalingen ontbreken of onvolledig zijn. Help met het verbeteren van de lokale dekking:'
+        link_to_crowdin_label: werk mee aan Crowdin.
       meta:
         created: Aangemaakt
         updated: Bijgewerkt
@@ -98,3 +114,13 @@ pim_user_management:
       module:
         create:
           button: Groep aanmaken
+  form:
+    error:
+      required: Dit veld is verplicht.
+      should_not_contain_space: De gebruikersnaam mag geen spatie bevatten.
+      too_short_value: "Deze waarde is te kort. Hij moet {{ count }} tekens of meer bevatten."
+    duplication:
+      title: 'Dupliceer "{{ username }}" gebruiker'
+      notification:
+        success: De gebruiker wordt met succes gedupliceerd
+        failure: Fout tijdens dupliceren van de gebruiker.

@@ -56,6 +56,8 @@ final class ListProductsQuery
 
     public string $withQualityScores = 'false';
 
+    public string $withCompletenesses = 'false';
+
     /**
      * Returns the parameter 'with_count' typed as a boolean
      *
@@ -79,5 +81,10 @@ final class ListProductsQuery
     public function withQualityScores(): bool
     {
         return $this->withQualityScores === 'true';
+    }
+
+    public function withCompletenesses(): bool
+    {
+        return $this->withCompletenesses === 'true';
     }
 }

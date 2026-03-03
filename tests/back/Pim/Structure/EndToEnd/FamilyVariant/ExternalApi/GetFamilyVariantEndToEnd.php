@@ -74,6 +74,46 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
     }
 
+    public function testGetAFamilyVariantWithWrongCase()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $client->request('GET', 'api/rest/v1/families/FAMIlyA/variants/familyVariantA1');
+        $expected = <<<JSON
+{
+    "code" : "familyVariantA1",
+    "variant_attribute_sets" : [
+        {
+            "level" : 1,
+            "attributes" : [
+                "a_simple_select",
+                "a_text"
+            ],
+            "axes" : [
+                "a_simple_select"
+            ]
+        },
+        {
+            "level" : 2,
+            "attributes" : [
+                "sku",
+                "a_text_area",
+                "a_yes_no"
+            ],
+            "axes" : [
+                "a_yes_no"
+            ]
+        }
+    ],
+    "labels" : {}
+}
+JSON;
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
+    }
+
     public function testNotFoundFamily()
     {
         $client = $this->createAuthenticatedClient();

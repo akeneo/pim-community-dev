@@ -2,28 +2,19 @@
 
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\Media;
 
-use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
-use League\Flysystem\FilesystemInterface;
+use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Akeneo\Tool\Component\Api\Repository\ApiResourceRepositoryInterface;
-use Akeneo\Pim\Enrichment\Component\FileStorage;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
+use League\Flysystem\FilesystemOperator;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateProductModelMediaFileEndToEnd extends ApiTestCase
 {
-    /** @var ApiResourceRepositoryInterface */
-    private $fileRepository;
-
-    /** @var ProductModelRepositoryInterface */
-    private $productModelRepository;
-
-    /** @var array */
-    private $files = [];
-
-    /*** @var FilesystemInterface */
-    private $fileSystem;
+    private ApiResourceRepositoryInterface $fileRepository;
+    private FilesystemOperator $fileSystem;
+    private array $files = [];
 
     /**
      * @group critical
@@ -310,7 +301,7 @@ JSON;
     "errors": [
         {
             "property": "values",
-            "message": "Attribute \"a_localizable_scopable_image\" expects an existing scope, \"Oumuamua\" given.",
+            "message": "The a_localizable_scopable_image attribute requires a value per channel. The Oumuamua channel (scope) must exist in your PIM",
             "attribute": "a_localizable_scopable_image",
             "locale": "en_US",
             "scope": "Oumuamua"
@@ -348,7 +339,7 @@ JSON;
     "errors": [
         {
             "property": "values",
-            "message": "Attribute \"a_localizable_scopable_image\" expects an existing and activated locale, \"Esperanto\" given.",
+            "message": "The a_localizable_scopable_image attribute requires a valid locale. The Esperanto locale does not exist.",
             "attribute": "a_localizable_scopable_image",
             "locale": "Esperanto",
             "scope": "tablet"
@@ -401,7 +392,7 @@ JSON;
      */
     protected function doesFileExist($pathFile)
     {
-        return $this->fileSystem->has($pathFile);
+        return $this->fileSystem->fileExists($pathFile);
     }
 
     /**
@@ -411,7 +402,7 @@ JSON;
      */
     protected function unlinkFile($pathFile)
     {
-        if ($this->fileSystem->has($pathFile)) {
+        if ($this->fileSystem->fileExists($pathFile)) {
             $this->fileSystem->delete($pathFile);
         }
     }
@@ -428,6 +419,7 @@ JSON;
             $familyA,
             [
                 'attributes' => [
+                    'sku',
                     'a_date',
                     'a_file',
                     'a_localizable_image',
@@ -447,8 +439,9 @@ JSON;
                     'a_yes_no',
                     'an_image',
                     'a_localizable_scopable_image'
+                ]
             ]
-        ]);
+        );
         $this->assertCount(0, $this->get('validator')->validate($familyA));
         $this->get('pim_catalog.saver.family')->save($familyA);
 
@@ -518,13 +511,12 @@ JSON;
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
         $this->fileRepository = $this->get('pim_api.repository.media_file');
-        $this->productModelRepository = $this->get('pim_catalog.repository.product_model');
 
         $this->files['image'] = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'akeneo.jpg';
         copy($this->getFixturePath('akeneo.jpg'), $this->files['image']);
 
-        $mountManager = $this->get('oneup_flysystem.mount_manager');
-        $this->fileSystem = $mountManager->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS);
+        $this->fileSystem = $this->get('akeneo_file_storage.file_storage.filesystem_provider')
+                                 ->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS);
 
         $this->get('doctrine.orm.default_entity_manager')->clear();
     }

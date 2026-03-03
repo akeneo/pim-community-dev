@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent;
 
+use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchBufferedPimEventSubscriberInterface;
 use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchProductModelCreatedAndUpdatedEventSubscriber;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelUpdated;
@@ -27,20 +28,21 @@ class DispatchProductModelCreatedAndUpdatedEventSubscriberSpec extends ObjectBeh
 {
     function let(Security $security, MessageBusInterface $messageBus)
     {
-        $this->beConstructedWith($security, $messageBus, 10, new NullLogger());
+        $this->beConstructedWith($security, $messageBus, 10, new NullLogger(), new NullLogger());
     }
 
     function it_is_initializable(): void
     {
         $this->shouldHaveType(DispatchProductModelCreatedAndUpdatedEventSubscriber::class);
+        $this->shouldImplement(DispatchBufferedPimEventSubscriberInterface::class);
     }
 
     function it_returns_subscribed_tech_events(): void
     {
         $this->getSubscribedEvents()->shouldReturn(
             [
-                StorageEvents::POST_SAVE => 'createAndDispatchProductModelEvents',
-                StorageEvents::POST_SAVE_ALL => 'dispatchBufferedProductModelEvents',
+                StorageEvents::POST_SAVE => ['createAndDispatchPimEvents', -10],
+                StorageEvents::POST_SAVE_ALL => ['dispatchBufferedPimEvents', -10],
             ]
         );
     }
@@ -53,12 +55,12 @@ class DispatchProductModelCreatedAndUpdatedEventSubscriberSpec extends ObjectBeh
         $security->getUser()->willReturn($user);
 
         $messageBus = $this->getMessageBus();
-        $this->beConstructedWith($security, $messageBus, 10, new NullLogger());
+        $this->beConstructedWith($security, $messageBus, 10, new NullLogger(), new NullLogger());
 
         $productModel = new ProductModel();
         $productModel->setCode('polo_col_mao');
 
-        $this->createAndDispatchProductModelEvents(new GenericEvent($productModel, ['is_new' => true, 'unitary' => true]));
+        $this->createAndDispatchPimEvents(new GenericEvent($productModel, ['is_new' => true, 'unitary' => true]));
 
         Assert::assertCount(1, $messageBus->messages);
         Assert::assertContainsOnlyInstancesOf(BulkEventInterface::class, $messageBus->messages);
@@ -81,12 +83,12 @@ class DispatchProductModelCreatedAndUpdatedEventSubscriberSpec extends ObjectBeh
         $security->getUser()->willReturn($user);
 
         $messageBus = $this->getMessageBus();
-        $this->beConstructedWith($security, $messageBus, 10, new NullLogger());
+        $this->beConstructedWith($security, $messageBus, 10, new NullLogger(), new NullLogger());
 
         $productModel = new ProductModel();
         $productModel->setCode('polo_col_mao');
 
-        $this->createAndDispatchProductModelEvents(new GenericEvent($productModel, ['is_new' => false, 'unitary' => true]));
+        $this->createAndDispatchPimEvents(new GenericEvent($productModel, ['is_new' => false, 'unitary' => true]));
 
         Assert::assertCount(1, $messageBus->messages);
         Assert::assertContainsOnlyInstancesOf(BulkEventInterface::class, $messageBus->messages);
@@ -109,16 +111,16 @@ class DispatchProductModelCreatedAndUpdatedEventSubscriberSpec extends ObjectBeh
         $security->getUser()->willReturn($user);
 
         $messageBus = $this->getMessageBus();
-        $this->beConstructedWith($security, $messageBus, 10, new NullLogger());
+        $this->beConstructedWith($security, $messageBus, 10, new NullLogger(), new NullLogger());
 
         $productModel1 = new ProductModel();
         $productModel1->setCode('product_model_code_1');
         $productModel2 = new ProductModel();
         $productModel2->setCode('product_model_code_2');
 
-        $this->createAndDispatchProductModelEvents(new GenericEvent($productModel1, ['is_new' => true, 'unitary' => false]));
-        $this->createAndDispatchProductModelEvents(new GenericEvent($productModel2, ['is_new' => false, 'unitary' => false]));
-        $this->dispatchBufferedProductModelEvents(new GenericEvent());
+        $this->createAndDispatchPimEvents(new GenericEvent($productModel1, ['is_new' => true, 'unitary' => false]));
+        $this->createAndDispatchPimEvents(new GenericEvent($productModel2, ['is_new' => false, 'unitary' => false]));
+        $this->dispatchBufferedPimEvents(new GenericEvent());
 
         Assert::assertCount(1, $messageBus->messages);
         Assert::assertContainsOnlyInstancesOf(BulkEventInterface::class, $messageBus->messages);
@@ -146,7 +148,7 @@ class DispatchProductModelCreatedAndUpdatedEventSubscriberSpec extends ObjectBeh
         $security->getUser()->willReturn($user);
 
         $messageBus = $this->getMessageBus();
-        $this->beConstructedWith($security, $messageBus, 2, new NullLogger()); // Bulk size of 2
+        $this->beConstructedWith($security, $messageBus, 2, new NullLogger(), new NullLogger()); // Bulk size of 2
 
         $productModel1 = new ProductModel();
         $productModel1->setCode('product_model_code_1');
@@ -155,10 +157,10 @@ class DispatchProductModelCreatedAndUpdatedEventSubscriberSpec extends ObjectBeh
         $productModel3 = new ProductModel();
         $productModel3->setCode('product_model_code_3');
 
-        $this->createAndDispatchProductModelEvents(new GenericEvent($productModel1, ['is_new' => true, 'unitary' => false]));
-        $this->createAndDispatchProductModelEvents(new GenericEvent($productModel2, ['is_new' => false, 'unitary' => false]));
-        $this->createAndDispatchProductModelEvents(new GenericEvent($productModel3, ['is_new' => true, 'unitary' => false]));
-        $this->dispatchBufferedProductModelEvents(new GenericEvent());
+        $this->createAndDispatchPimEvents(new GenericEvent($productModel1, ['is_new' => true, 'unitary' => false]));
+        $this->createAndDispatchPimEvents(new GenericEvent($productModel2, ['is_new' => false, 'unitary' => false]));
+        $this->createAndDispatchPimEvents(new GenericEvent($productModel3, ['is_new' => true, 'unitary' => false]));
+        $this->dispatchBufferedPimEvents(new GenericEvent());
 
         Assert::assertCount(2, $messageBus->messages);
         Assert::assertContainsOnlyInstancesOf(BulkEventInterface::class, $messageBus->messages);
@@ -190,9 +192,9 @@ class DispatchProductModelCreatedAndUpdatedEventSubscriberSpec extends ObjectBeh
     function it_only_supports_product_model_event($security)
     {
         $messageBus = $this->getMessageBus();
-        $this->beConstructedWith($security, $messageBus, 10, new NullLogger());
+        $this->beConstructedWith($security, $messageBus, 10, new NullLogger(), new NullLogger());
 
-        $this->createAndDispatchProductModelEvents(new GenericEvent(
+        $this->createAndDispatchPimEvents(new GenericEvent(
             new \stdClass(),
             ['is_new' => false, 'unitary' => true]
         ));
@@ -203,15 +205,30 @@ class DispatchProductModelCreatedAndUpdatedEventSubscriberSpec extends ObjectBeh
     function it_does_nothing_if_the_user_is_not_defined($security)
     {
         $messageBus = $this->getMessageBus();
-        $this->beConstructedWith($security, $messageBus, 10, new NullLogger());
+        $this->beConstructedWith($security, $messageBus, 10, new NullLogger(), new NullLogger());
 
         $productModel = new ProductModel();
         $productModel->setCode('product_model_code');
 
         $security->getUser()->willReturn(null);
 
-        $this->createAndDispatchProductModelEvents(new GenericEvent($productModel, ['is_new' => false, 'unitary' => true]));
+        $this->createAndDispatchPimEvents(new GenericEvent($productModel, ['is_new' => false, 'unitary' => true]));
 
+        Assert::assertCount(0, $messageBus->messages);
+    }
+
+    function it_does_nothing_if_the_save_has_been_forced($security)
+    {
+        $messageBus = $this->getMessageBus();
+        $this->beConstructedWith($security, $messageBus, 10, new NullLogger(), new NullLogger());
+
+        $productModel = new ProductModel();
+        $productModel->setCode('product_model_code');
+
+        $this->createAndDispatchPimEvents(new GenericEvent(
+            $productModel,
+            ['is_new' => false, 'force_save' => true]
+        ));
         Assert::assertCount(0, $messageBus->messages);
     }
 
@@ -224,7 +241,7 @@ class DispatchProductModelCreatedAndUpdatedEventSubscriberSpec extends ObjectBeh
                 throw new TransportException('An error occured');
             }
         };
-        $this->beConstructedWith($security, $messageBus, 10, $logger);
+        $this->beConstructedWith($security, $messageBus, 10, $logger, new NullLogger(), new NullLogger());
 
         $user = new User();
         $user->setUsername('julia');
@@ -233,7 +250,7 @@ class DispatchProductModelCreatedAndUpdatedEventSubscriberSpec extends ObjectBeh
         $productModel = new ProductModel();
         $productModel->setCode('product_model_code');
 
-        $this->createAndDispatchProductModelEvents(new GenericEvent(
+        $this->createAndDispatchPimEvents(new GenericEvent(
             $productModel,
             ['is_new' => false, 'unitary' => true]
         ));

@@ -5,7 +5,7 @@ import {ApplyButton, Form, FormGroup, FormInput} from '../../common';
 import {FlowType} from '../../model/flow-type.enum';
 import {isErr} from '../../shared/fetch-result/result';
 import {sanitize} from '../../shared/sanitize';
-import {Translate} from '../../shared/translate';
+import {Translate, useTranslate} from '../../shared/translate';
 import {connectionFetched} from '../actions/connections-actions';
 import {
     codeGenerated,
@@ -20,6 +20,7 @@ import {useConnectionsDispatch} from '../connections-context';
 import {connectionFormReducer, CreateFormState} from '../reducers/connection-form-reducer';
 import {FlowTypeHelper} from './FlowTypeHelper';
 import {FlowTypeSelect} from './FlowTypeSelect';
+import {NotificationLevel, useNotify} from '../../shared/notify';
 
 const initialState: CreateFormState = {
     controls: {
@@ -80,6 +81,8 @@ const useFormValidation = (
 
 export const ConnectionCreateForm = () => {
     const history = useHistory();
+    const translate = useTranslate();
+    const notify = useNotify();
     const connectionsDispatch = useConnectionsDispatch();
 
     const [state, dispatch] = useReducer(connectionFormReducer, initialState);
@@ -113,14 +116,20 @@ export const ConnectionCreateForm = () => {
             flow_type: state.controls.flow_type.value as FlowType,
         });
         if (isErr(result)) {
-            result.error.errors.forEach(({name, reason}) => dispatch(setError(name, reason)));
+            result.error.errors.forEach(({name, reason}) => {
+                if ('' === name) {
+                    notify(NotificationLevel.ERROR, translate(reason));
+                } else {
+                    dispatch(setError(name, reason));
+                }
+            });
 
             return;
         }
 
         connectionsDispatch(connectionFetched(result.value));
 
-        history.push(`/connections/${state.controls.code.value}/edit`);
+        history.push(`/connect/connection-settings/${state.controls.code.value}/edit`);
     };
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -189,7 +198,11 @@ export const ConnectionCreateForm = () => {
                 ]}
                 required
             >
-                <FlowTypeSelect value={state.controls.flow_type.value as FlowType} onChange={handleFlowTypeSelect} />
+                <FlowTypeSelect
+                    value={state.controls.flow_type.value as FlowType}
+                    onChange={handleFlowTypeSelect}
+                    id='flow_type'
+                />
             </FormGroup>
 
             <ApplyButton onClick={handleSave} disabled={false === state.valid}>

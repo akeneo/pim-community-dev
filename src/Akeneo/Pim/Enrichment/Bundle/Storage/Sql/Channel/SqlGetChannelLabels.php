@@ -48,7 +48,7 @@ SQL;
             $sql,
             ['channelCodes' => $channelCodes],
             ['channelCodes' => Connection::PARAM_STR_ARRAY]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         $result = [];
         foreach ($rows as $row) {

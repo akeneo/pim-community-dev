@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category\OnSave;
 
-use Akeneo\Channel\Component\Event\ChannelCategoryHasBeenUpdated;
+use Akeneo\Channel\Infrastructure\Component\Event\ChannelCategoryHasBeenUpdated;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**

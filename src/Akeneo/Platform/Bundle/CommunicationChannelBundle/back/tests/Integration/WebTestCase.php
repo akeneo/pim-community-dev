@@ -24,7 +24,7 @@ abstract class WebTestCase extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->client = self::$container->get('test.client');
+        $this->client = self::getContainer()->get('test.client');
     }
 
     protected function authenticateAsAdmin(): UserInterface
@@ -41,7 +41,7 @@ abstract class WebTestCase extends TestCase
         $firewallName = 'main';
         $firewallContext = 'main';
 
-        $token = new UsernamePasswordToken($user, null, $firewallName, $user->getRoles());
+        $token = new UsernamePasswordToken($user, $firewallName, $user->getRoles());
         $session = $this->getSession();
         $session->set('_security_' . $firewallContext, serialize($token));
         $session->save();

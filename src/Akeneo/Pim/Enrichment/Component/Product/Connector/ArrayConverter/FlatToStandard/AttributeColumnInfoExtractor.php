@@ -18,30 +18,13 @@ class AttributeColumnInfoExtractor
     const FIELD_SEPARATOR = '-';
     const UNIT_SEPARATOR = ' ';
 
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $attributeRepository;
+    protected IdentifiableObjectRepositoryInterface $attributeRepository;
+    protected IdentifiableObjectRepositoryInterface $channelRepository;
+    protected IdentifiableObjectRepositoryInterface $localeRepository;
+    protected AssociationColumnsResolver $assoColumnResolver;
+    protected array $fieldNameInfoCache;
+    protected array $excludedFieldNames;
 
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $channelRepository;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $localeRepository;
-
-    /** @var AssociationColumnsResolver */
-    protected $assoColumnResolver;
-
-    /** @var array */
-    protected $fieldNameInfoCache;
-
-    /** @var array */
-    protected $excludedFieldNames;
-
-    /**
-     * @param IdentifiableObjectRepositoryInterface $attributeRepository
-     * @param IdentifiableObjectRepositoryInterface $channelRepository
-     * @param IdentifiableObjectRepositoryInterface $localeRepository
-     * @param AssociationColumnsResolver            $assoColumnResolver
-     */
     public function __construct(
         IdentifiableObjectRepositoryInterface $attributeRepository,
         IdentifiableObjectRepositoryInterface $channelRepository,
@@ -71,10 +54,8 @@ class AttributeColumnInfoExtractor
      * Return null if the field name does not match an attribute.
      *
      * @param string $fieldName
-     *
-     * @return array|null
      */
-    public function extractColumnInfo($fieldName)
+    public function extractColumnInfo($fieldName): ?array
     {
         if (
             in_array($fieldName, $this->assoColumnResolver->resolveAssociationColumns()) ||
@@ -98,19 +79,14 @@ class AttributeColumnInfoExtractor
             }
         }
 
-        return isset($this->fieldNameInfoCache[$fieldName]) ? $this->fieldNameInfoCache[$fieldName] : null;
+        return $this->fieldNameInfoCache[$fieldName] ?? null;
     }
 
     /**
      * Extract information from an attribute and exploded field name
      * This method is used from extractColumnInfo and can be redefine to add new rules
-     *
-     * @param AttributeInterface $attribute
-     * @param array              $explodedFieldName
-     *
-     * @return array
      */
-    protected function extractAttributeInfo(AttributeInterface $attribute, array $explodedFieldName)
+    protected function extractAttributeInfo(AttributeInterface $attribute, array $explodedFieldName): array
     {
         array_shift($explodedFieldName);
 
@@ -132,13 +108,9 @@ class AttributeColumnInfoExtractor
     /**
      * Check the consistency of the field with the attribute and it properties locale, scope, currency
      *
-     * @param AttributeInterface $attribute
-     * @param string             $fieldName
-     * @param array              $explodedFieldName
-     *
      * @throws \InvalidArgumentException
      */
-    protected function checkFieldNameTokens(AttributeInterface $attribute, $fieldName, array $explodedFieldName)
+    protected function checkFieldNameTokens(AttributeInterface $attribute, string $fieldName, array $explodedFieldName)
     {
         $isLocalizable = $attribute->isLocalizable();
         $isScopable = $attribute->isScopable();
@@ -172,11 +144,9 @@ class AttributeColumnInfoExtractor
     /**
      * Calculates the expected size of the field with the attribute and its properties locale, scope, etc.
      *
-     * @param AttributeInterface $attribute
-     *
-     * @return int
+     * @return int[]
      */
-    protected function calculateExpectedSize(AttributeInterface $attribute)
+    protected function calculateExpectedSize(AttributeInterface $attribute): array
     {
         // the expected number of tokens in a field may vary,
         //  - with the current price import, the currency can be optionally present in the header,
@@ -205,13 +175,9 @@ class AttributeColumnInfoExtractor
     /**
      * Check the consistency of the field with channel associated
      *
-     * @param AttributeInterface $attribute
-     * @param string             $fieldName
-     * @param array              $attributeInfo
-     *
      * @throws \InvalidArgumentException
      */
-    protected function checkFieldNameLocaleByChannel(AttributeInterface $attribute, $fieldName, array $attributeInfo)
+    protected function checkFieldNameLocaleByChannel(AttributeInterface $attribute, string $fieldName, array $attributeInfo)
     {
         if ($attribute->isScopable() &&
             $attribute->isLocalizable() &&
@@ -236,15 +202,12 @@ class AttributeColumnInfoExtractor
 
     /**
      * Check if provided locales for an locale specific attribute exist
-     *
-     * @param AttributeInterface $attribute
-     * @param array              $explodedFieldNames
      */
-    protected function checkForLocaleSpecificValue(AttributeInterface $attribute, array $explodedFieldNames)
+    protected function checkForLocaleSpecificValue(AttributeInterface $attribute, array $explodedFieldNames): void
     {
         if ($attribute->isLocaleSpecific()) {
             $attributeInfo = $this->extractAttributeInfo($attribute, $explodedFieldNames);
-            $availableLocales = $attribute->getLocaleSpecificCodes();
+            $availableLocales = $attribute->getAvailableLocaleCodes();
             if (!in_array($explodedFieldNames[1], $availableLocales)) {
                 throw new \LogicException(
                     sprintf(

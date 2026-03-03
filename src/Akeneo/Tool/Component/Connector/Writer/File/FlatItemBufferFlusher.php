@@ -4,9 +4,9 @@ namespace Akeneo\Tool\Component\Connector\Writer\File;
 
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
-use Box\Spout\Common\Exception\UnsupportedTypeException;
-use Box\Spout\Writer\WriterFactory;
-use Box\Spout\Writer\WriterInterface;
+use OpenSpout\Common\Entity\Row;
+use OpenSpout\Common\Exception\UnsupportedTypeException;
+use OpenSpout\Writer\WriterInterface;
 
 /**
  * Flushes the flat item buffer into one or multiple output files.
@@ -48,19 +48,25 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
      */
     public function flush(
         FlatItemBuffer $buffer,
-        array $writerOptions = [],
+        array $writerOptions,
         $basePathname,
-        $maxLinesPerFile = -1
+        $maxLinesPerFile = -1,
+        bool $withHeaders = true,
     ) {
+        if (0 === $buffer->count()) {
+            return [];
+        }
+
         if ($this->areSeveralFilesNeeded($buffer, $maxLinesPerFile)) {
             $writtenFiles = $this->writeIntoSeveralFiles(
                 $buffer,
                 $writerOptions,
                 $maxLinesPerFile,
-                $basePathname
+                $basePathname,
+                $withHeaders
             );
         } else {
-            $writtenFiles = $this->writeIntoSingleFile($buffer, $writerOptions, $basePathname);
+            $writtenFiles = $this->writeIntoSingleFile($buffer, $writerOptions, $basePathname, $withHeaders);
         }
 
         return $writtenFiles;
@@ -73,28 +79,29 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
      *
      * @return array
      */
-    protected function writeIntoSingleFile(FlatItemBuffer $buffer, array $writerOptions, $filePath)
+    protected function writeIntoSingleFile(FlatItemBuffer $buffer, array $writerOptions, $filePath, bool $withHeaders)
     {
         $writtenFiles = [];
 
         $headers = $this->sortHeaders($buffer->getHeaders());
         $headers = $this->columnPresenter->present($headers, $this->stepExecution->getJobParameters()->all());
 
-        $hollowItem = array_fill_keys($headers, '');
-
         $writer = $this->getWriter($filePath, $writerOptions);
-        $writer->addRow($headers);
+        if ($withHeaders) {
+            $writer->addRow(Row::fromValues($headers));
+        }
 
         foreach ($buffer as $incompleteItem) {
-            $incompleteKeys = $this->columnPresenter->present(
-                array_keys($incompleteItem),
-                $this->stepExecution->getJobParameters()->all()
-            );
+            $item = array_fill_keys($headers, '');
+            foreach ($incompleteItem as $key => $value) {
+                $headerName = $headers[$key] ?? null;
+                if (null === $headerName) {
+                    continue;
+                }
+                $item[$headerName] = $value;
+            }
 
-            $incompleteItem = array_combine($incompleteKeys, $incompleteItem);
-
-            $item = array_replace($hollowItem, $incompleteItem);
-            $writer->addRow($item);
+            $writer->addRow(Row::fromValues($item));
 
             if (null !== $this->stepExecution) {
                 $this->stepExecution->incrementSummaryInfo('write');
@@ -119,7 +126,8 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
         FlatItemBuffer $buffer,
         array $writerOptions,
         $maxLinesPerFile,
-        $basePathname
+        $basePathname,
+        bool $withHeaders
     ) {
         $writtenFiles = [];
         $basePathPattern = $this->getNumberedPathname($basePathname);
@@ -129,8 +137,8 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
         $headers = $this->sortHeaders($buffer->getHeaders());
         $headers = $this->columnPresenter->present($headers, $this->stepExecution->getJobParameters()->all());
 
-        $hollowItem = array_fill_keys($headers, '');
-
+        $writer = null;
+        $filePath = '';
         foreach ($buffer as $count => $incompleteItem) {
             if (0 === $writtenLinesCount % $maxLinesPerFile) {
                 $filePath = $this->resolveFilePath(
@@ -141,18 +149,20 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
                 );
                 $writtenLinesCount = 0;
                 $writer = $this->getWriter($filePath, $writerOptions);
-                $writer->addRow($headers);
+                if ($withHeaders) {
+                    $writer->addRow(Row::fromValues($headers));
+                }
             }
 
-            $incompleteKeys = $this->columnPresenter->present(
-                array_keys($incompleteItem),
-                $this->stepExecution->getJobParameters()->all()
-            );
-
-            $incompleteItem = array_combine($incompleteKeys, $incompleteItem);
-
-            $item = array_replace($hollowItem, $incompleteItem);
-            $writer->addRow($item);
+            $item = array_fill_keys($headers, '');
+            foreach ($incompleteItem as $key => $value) {
+                $headerName = $headers[$key] ?? null;
+                if (null === $headerName) {
+                    continue;
+                }
+                $item[$headerName] = $value;
+            }
+            $writer->addRow(Row::fromValues($item));
             $writtenLinesCount++;
 
             if (null !== $this->stepExecution) {
@@ -268,18 +278,7 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
             throw new \InvalidArgumentException('Option "type" have to be defined');
         }
 
-        $writer = WriterFactory::create($options['type']);
-        unset($options['type']);
-
-        foreach ($options as $name => $option) {
-            $setter = 'set' . ucfirst($name);
-            if (method_exists($writer, $setter)) {
-                $writer->$setter($option);
-            } else {
-                $message = sprintf('Option "%s" does not exist in writer "%s"', $setter, get_class($writer));
-                throw new \InvalidArgumentException($message);
-            }
-        }
+        $writer = SpoutWriterFactory::create($options['type'], $options);
 
         $writer->openToFile($filePath);
 

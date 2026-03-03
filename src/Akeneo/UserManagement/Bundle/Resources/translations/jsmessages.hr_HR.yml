@@ -1,0 +1,66 @@
+pim_title:
+  pim_user_index: Korisnici
+  pim_user_role_index: Role
+  pim_user_group_index: Korisničke grupe
+  oro_config_configuration_system: Konfiguracija
+  pim_user_security_login: Prijava
+  pim_user_reset_request: Zaboravio/la si lozinku
+confirmation:
+  remove:
+    user: Jeste li sigurni da želite izbrisati ovog korisnika?
+    group: Jeste li sigurni da želite izbrisati ovu grupu?
+pim_enrich:
+  entity:
+    user:
+      module:
+        delete:
+          confirm: Jeste li sigurni da želite izbrisati ovog korisnika?
+pim_user_management:
+  entity:
+    user:
+      properties:
+        username: Korisničko ime
+        name_prefix: Prefiks imena
+        first_name: Ime
+        middle_name: Srednje ime
+        last_name: Prezime
+        name_suffix: Sufiks imena
+        avatar: Avatar
+        email: Email
+        catalog_locale: Katalog regionalnih postavki
+        catalog_scope: Katalog opsega
+        default_tree: Zadano stablo
+        default_asset_tree: Zadano stablo imovine
+        product_grid_filters: Filtri tablice proizvoda
+        current_password: Trenutna lozinka
+        new_password: Nova lozinka
+        new_password_repeat: Nova lozinka (ponovi)
+        password: Lozinka
+        ui_locale: Regionalne postavke UI sučelja
+        timezone: Vremenska zona
+        default_product_grid_view: Zadani prikaz tablice proizvoda
+        default_published_product_grid_view: Zadani prikaz prikaza tablice objavljenih proizvoda #EE Only
+        proposals_to_review_notification: Kada recenzirati novi prijedlog #EE Only
+        proposals_state_notifications: Kada se prijedlog prihvaća ili odbacuje #EE Only
+      module:
+        create:
+          button: Kreiraj korisnika
+        delete:
+          confirm: Jeste li sigurni da želite izbrisati ovog korisnika?
+        update:
+          additional: Dodatno
+          password: Lozinka
+          interfaces: Sučelja
+          notifications: Obavijesti #TODO EE Only
+    role:
+      plural_label: Role
+      module:
+        create:
+          button: Kreiraj rolu
+        delete:
+          confirm: Jeste li sigurni da želite izbrisati ovu rolu?
+    group:
+      plural_label: Korisničke grupe
+      module:
+        create:
+          button: Kreiraj grupu

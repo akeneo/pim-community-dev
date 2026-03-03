@@ -11,9 +11,11 @@ use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Tool\Component\Batch\Item\NonBlockingWarningAggregatorInterface;
+use Akeneo\Tool\Component\Batch\Item\StatefulInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
-use Akeneo\Tool\Component\Batch\Job\JobStopper;
+use Akeneo\Tool\Component\Batch\Job\JobStopperInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Model\Warning;
 use Psr\Log\LoggerAwareInterface;
@@ -31,59 +33,37 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
 {
     use LoggerAwareTrait;
 
-    protected ?ItemReaderInterface $reader = null;
-    protected ?ItemProcessorInterface $processor = null;
-    protected ?ItemWriterInterface $writer = null;
-    protected int $batchSize;
+    private const READER_KEY = 'reader';
+    private const WRITER_KEY = 'writer';
+    private const PROCESSOR_KEY = 'processor';
+
     protected ?StepExecution $stepExecution = null;
     private bool $stoppable = false;
-    private ?JobStopper $jobStopper = null;
 
     public function __construct(
         string $name,
-        EventDispatcherInterface $eventDispatcher,
-        JobRepositoryInterface $jobRepository,
-        ItemReaderInterface $reader,
-        ItemProcessorInterface $processor,
-        ItemWriterInterface $writer,
-        int $batchSize = 100,
-        JobStopper $jobStopper = null
+        protected EventDispatcherInterface $eventDispatcher,
+        protected JobRepositoryInterface $jobRepository,
+        protected ItemReaderInterface $reader,
+        protected ItemProcessorInterface $processor,
+        protected ItemWriterInterface $writer,
+        protected int $batchSize = 100,
+        private ?JobStopperInterface $jobStopper = null,
     ) {
         parent::__construct($name, $eventDispatcher, $jobRepository);
-
-        $this->reader = $reader;
-        $this->processor = $processor;
-        $this->writer = $writer;
-        $this->batchSize = $batchSize;
-        $this->jobStopper = $jobStopper;
     }
 
-    /**
-     * Get reader
-     *
-     * @return ItemReaderInterface
-     */
-    public function getReader()
+    public function getReader(): ?ItemReaderInterface
     {
         return $this->reader;
     }
 
-    /**
-     * Get processor
-     *
-     * @return ItemProcessorInterface
-     */
-    public function getProcessor()
+    public function getProcessor(): ?ItemProcessorInterface
     {
         return $this->processor;
     }
 
-    /**
-     * Get writer
-     *
-     * @return ItemWriterInterface
-     */
-    public function getWriter()
+    public function getWriter(): ?ItemWriterInterface
     {
         return $this->writer;
     }
@@ -105,6 +85,7 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
     {
         $itemsToWrite = [];
         $batchCount = 0;
+        $allItemsHaveBeenRead = false;
 
         $this->initializeStepElements($stepExecution);
 
@@ -116,6 +97,7 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
             try {
                 $readItem = $this->reader->read();
                 if (null === $readItem) {
+                    $allItemsHaveBeenRead = true;
                     break;
                 }
             } catch (InvalidItemException $e) {
@@ -140,10 +122,17 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
                 $this->updateProcessedItems($batchCount);
                 $this->dispatchStepExecutionEvent(EventInterface::ITEM_STEP_AFTER_BATCH, $stepExecution);
                 $batchCount = 0;
-                if ($this->jobStopper->isStopping($stepExecution)) {
-                    $this->jobStopper->stop($stepExecution);
 
-                    break;
+                if (null !== $this->jobStopper) {
+                    if ($this->jobStopper->isPausing($stepExecution)) {
+                        $this->pause($stepExecution);
+                        break;
+                    }
+
+                    if ($this->jobStopper->isStopping($stepExecution)) {
+                        $this->jobStopper->stop($stepExecution);
+                        break;
+                    }
                 }
             }
         }
@@ -157,22 +146,42 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
             $this->dispatchStepExecutionEvent(EventInterface::ITEM_STEP_AFTER_BATCH, $stepExecution);
         }
 
-        if ($this->jobStopper->isStopping($stepExecution)) {
-            $this->jobStopper->stop($stepExecution);
+        if (null !== $this->jobStopper) {
+            if ($this->jobStopper->isStopping($stepExecution)) {
+                $this->jobStopper->stop($stepExecution);
+            }
+
+            if ($this->jobStopper->isPausing($this->stepExecution) && !$allItemsHaveBeenRead) {
+                return;
+            }
         }
 
         $this->flushStepElements();
     }
 
-    /**
-     * @param StepExecution $stepExecution
-     */
+    private function pause(StepExecution $stepExecution): void
+    {
+        $currentState = [];
+
+        foreach ($this->getStepElements() as $key => $element) {
+            if ($element instanceof StatefulInterface) {
+                $currentState[$key] = $element->getState();
+            }
+        }
+
+        $this->jobStopper->pause($stepExecution, $currentState);
+    }
+
     protected function initializeStepElements(StepExecution $stepExecution)
     {
         $this->stepExecution = $stepExecution;
-        foreach ($this->getStepElements() as $element) {
+        foreach ($this->getStepElements() as $key => $element) {
             if ($element instanceof StepExecutionAwareInterface) {
                 $element->setStepExecution($stepExecution);
+            }
+            if ($element instanceof StatefulInterface) {
+                $state = $stepExecution->getCurrentState()[$key] ?? [];
+                $element->setState($state);
             }
             if ($element instanceof InitializableInterface) {
                 $element->initialize();
@@ -180,9 +189,6 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
         }
     }
 
-    /**
-     * Flushes step elements
-     */
     public function flushStepElements()
     {
         foreach ($this->getStepElements() as $element) {
@@ -200,12 +206,21 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
     protected function process($readItem)
     {
         try {
-            return $this->processor->process($readItem);
+            $processedItem = $this->processor->process($readItem);
         } catch (InvalidItemException $e) {
             $this->handleStepExecutionWarning($this->stepExecution, $this->processor, $e);
 
             return null;
         }
+
+        if ($this->processor instanceof NonBlockingWarningAggregatorInterface) {
+            $nonBlockingWarnings = $this->processor->flushNonBlockingWarnings();
+            foreach ($nonBlockingWarnings as $nonBlockingWarning) {
+                $this->jobRepository->addWarning($nonBlockingWarning);
+            }
+        }
+
+        return $processedItem;
     }
 
     /**
@@ -249,17 +264,12 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
         );
     }
 
-    /**
-     * Get the configurable step elements
-     *
-     * @return array
-     */
-    protected function getStepElements()
+    protected function getStepElements(): array
     {
         return [
-            'reader'    => $this->reader,
-            'processor' => $this->processor,
-            'writer'    => $this->writer
+            self::READER_KEY => $this->reader,
+            self::PROCESSOR_KEY => $this->processor,
+            self::WRITER_KEY => $this->writer,
         ];
     }
 

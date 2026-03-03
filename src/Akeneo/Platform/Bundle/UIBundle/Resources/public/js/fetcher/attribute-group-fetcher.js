@@ -39,5 +39,46 @@ define(['jquery', 'underscore', 'pim/base-fetcher', 'routing'], function ($, _, 
 
       return this.entityListPromise;
     },
+
+    /**
+     * Fetch all entities for the given identifiers
+     *
+     * @param {Array} identifiers
+     *
+     * @return {Promise}
+     */
+    fetchByIdentifiers: function (identifiers, options) {
+      options = options || {};
+
+      if (0 === identifiers.length) {
+        return $.Deferred().resolve([]).promise();
+      }
+
+      const uncachedIdentifiers = _.difference(identifiers, _.keys(this.entityPromises));
+      if (0 === uncachedIdentifiers.length) {
+        return this.getObjects(_.pick(this.entityPromises, identifiers));
+      }
+
+      options.options = options.options || {};
+      options.options.limit = uncachedIdentifiers.length;
+
+      return $.when(
+        this.getJSON(this.options.urls.list, _.extend({identifiers: uncachedIdentifiers.join(',')}, options)).then(
+          _.identity
+        ),
+        this.getIdentifierField()
+      ).then(
+        function (entities, identifierCode) {
+          _.each(
+            entities,
+            function (entity) {
+              this.entityPromises[entity[identifierCode]] = $.Deferred().resolve(entity).promise();
+            }.bind(this)
+          );
+
+          return this.getObjects(_.pick(this.entityPromises, identifiers));
+        }.bind(this)
+      );
+    },
   });
 });

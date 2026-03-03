@@ -3,6 +3,8 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Options;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
@@ -51,30 +53,22 @@ class LocalizableScopableFilterIntegration extends AbstractProductQueryBuilderTe
         ]);
 
         $this->createProduct('product_one', [
-            'family' => 'a_family',
-            'values' => [
-                'a_localizable_scopable_multi_select' => [
-                    ['data' => ['orange'], 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                    ['data' => ['orange'], 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
-                    ['data' => ['black'], 'locale' => 'en_US', 'scope' => 'tablet'],
-                    ['data' => ['black'], 'locale' => 'fr_FR', 'scope' => 'tablet'],
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetMultiSelectValue('a_localizable_scopable_multi_select', 'ecommerce', 'en_US', ['orange']),
+            new SetMultiSelectValue('a_localizable_scopable_multi_select', 'ecommerce', 'fr_FR', ['orange']),
+            new SetMultiSelectValue('a_localizable_scopable_multi_select', 'tablet', 'en_US', ['black']),
+            new SetMultiSelectValue('a_localizable_scopable_multi_select', 'tablet', 'fr_FR', ['black']),
         ]);
 
         $this->createProduct('product_two', [
-            'family' => 'a_family',
-            'values' => [
-                'a_localizable_scopable_multi_select' => [
-                    ['data' => ['black', 'purple'], 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                    ['data' => ['black', 'purple'], 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
-                    ['data' => ['black', 'purple'], 'locale' => 'en_US', 'scope' => 'tablet'],
-                    ['data' => ['black', 'purple'], 'locale' => 'fr_FR', 'scope' => 'tablet'],
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetMultiSelectValue('a_localizable_scopable_multi_select', 'ecommerce', 'en_US', ['black', 'purple']),
+            new SetMultiSelectValue('a_localizable_scopable_multi_select', 'ecommerce', 'fr_FR', ['black', 'purple']),
+            new SetMultiSelectValue('a_localizable_scopable_multi_select', 'tablet', 'en_US', ['black', 'purple']),
+            new SetMultiSelectValue('a_localizable_scopable_multi_select', 'tablet', 'fr_FR', ['black', 'purple']),
         ]);
 
-        $this->createProduct('empty_product', ['family' => 'a_family']);
+        $this->createProduct('empty_product', [new SetFamily('a_family')]);
     }
 
     public function testOperatorIn()

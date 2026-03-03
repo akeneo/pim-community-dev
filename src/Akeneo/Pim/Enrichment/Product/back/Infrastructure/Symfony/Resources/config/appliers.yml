@@ -1,0 +1,202 @@
+services:
+    Akeneo\Pim\Enrichment\Product\Application\Applier\UserIntentApplierRegistry:
+        arguments:
+            - !tagged_iterator 'pim.enrichment.product.user_intent_applier'
+
+    Akeneo\Pim\Enrichment\Product\Application\Applier\SetEnabledApplier:
+        arguments:
+            - '@pim_catalog.updater.product'
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_applier' }
+
+    Akeneo\Pim\Enrichment\Product\Application\Applier\SetAssetValueApplier:
+        arguments:
+            - '@pim_catalog.updater.product'
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_applier' }
+
+    Akeneo\Pim\Enrichment\Product\Application\Applier\AddAssetValueApplier:
+        arguments:
+            - '@pim_catalog.updater.product'
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_applier' }
+
+    Akeneo\Pim\Enrichment\Product\Application\Applier\RemoveAssetValueApplier:
+        arguments:
+            - '@pim_catalog.updater.product'
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_applier' }
+
+    Akeneo\Pim\Enrichment\Product\Application\Applier\SetSingleValueApplier:
+        arguments:
+            - '@pim_catalog.updater.product'
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_applier' }
+
+    Akeneo\Pim\Enrichment\Product\Application\Applier\SetMeasurementValueApplier:
+        arguments:
+            - '@pim_catalog.updater.product'
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_applier' }
+
+    Akeneo\Pim\Enrichment\Product\Application\Applier\SetMultipleValuesApplier:
+        arguments:
+            - '@pim_catalog.updater.product'
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_applier' }
+
+    Akeneo\Pim\Enrichment\Product\Application\Applier\ClearValueApplier:
+        arguments:
+            - '@pim_catalog.updater.product'
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_applier' }
+
+    Akeneo\Pim\Enrichment\Product\Application\Applier\ClearPriceValueApplier:
+        arguments:
+            - '@pim_catalog.updater.product'
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_applier' }
+
+    Akeneo\Pim\Enrichment\Product\Application\Applier\SetDateValueApplier:
+        arguments:
+            - '@pim_catalog.updater.product'
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_applier' }
+
+    Akeneo\Pim\Enrichment\Product\Application\Applier\AddMultipleValuesApplier:
+        arguments:
+            - '@pim_catalog.updater.product'
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_applier' }
+
+    Akeneo\Pim\Enrichment\Product\Application\Applier\SetFamilyApplier:
+        arguments:
+            - '@pim_catalog.updater.product'
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_applier' }
+
+    Akeneo\Pim\Enrichment\Product\Application\Applier\RemoveFamilyApplier:
+        arguments:
+            - '@pim_catalog.updater.product'
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_applier' }
+
+    Akeneo\Pim\Enrichment\Product\Application\Applier\SetCategoriesApplier:
+        arguments:
+            - '@pim_catalog.updater.product'
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_applier' }
+
+    Akeneo\Pim\Enrichment\Product\Application\Applier\AddCategoriesApplier:
+        arguments:
+            - '@pim_catalog.updater.product'
+            - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes'
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_applier' }
+
+    Akeneo\Pim\Enrichment\Product\Application\Applier\RemoveCategoriesApplier:
+        arguments:
+            - '@pim_catalog.updater.product'
+            - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes'
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_applier' }
+
+    Akeneo\Pim\Enrichment\Product\Application\Applier\SetSimpleReferenceEntityValueApplier:
+        arguments:
+            - '@pim_catalog.updater.product'
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_applier' }
+
+    Akeneo\Pim\Enrichment\Product\Application\Applier\SetMultiReferenceEntityValueApplier:
+        arguments:
+            - '@pim_catalog.updater.product'
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_applier' }
+
+    Akeneo\Pim\Enrichment\Product\Application\Applier\AddMultiReferenceEntityValueApplier:
+        arguments:
+            - '@pim_catalog.updater.product'
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_applier' }
+
+    Akeneo\Pim\Enrichment\Product\Application\Applier\RemoveMultiReferenceEntityValueApplier:
+        arguments:
+            - '@pim_catalog.updater.product'
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_applier' }
+
+    Akeneo\Pim\Enrichment\Product\Application\Applier\SetTableValueApplier:
+        arguments:
+            - '@pim_catalog.updater.product'
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_applier' }
+
+    Akeneo\Pim\Enrichment\Product\Application\Applier\Groups\SetGroupsApplier:
+        arguments:
+            - '@pim_catalog.updater.product'
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_applier' }
+
+    Akeneo\Pim\Enrichment\Product\Application\Applier\Groups\AddToGroupsApplier:
+        arguments:
+            - '@pim_catalog.updater.product'
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_applier' }
+
+    Akeneo\Pim\Enrichment\Product\Application\Applier\Groups\RemoveFromGroupsApplier:
+        arguments:
+            - '@pim_catalog.updater.product'
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_applier' }
+
+    Akeneo\Pim\Enrichment\Product\Application\Applier\ConvertToSimpleProductApplier:
+        arguments:
+            - '@pim_catalog.entity_with_family_variant.remove_parent_from_product'
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_applier' }
+
+    Akeneo\Pim\Enrichment\Product\Application\Applier\ChangeParentApplier:
+        arguments:
+            - '@pim_catalog.updater.product'
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_applier' }
+
+    Akeneo\Pim\Enrichment\Product\Application\Applier\AssociationUserIntentCollectionApplier:
+        arguments:
+            - '@pim_catalog.updater.product'
+            - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetViewableProducts'
+            - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetViewableProductModels'
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_applier' }
+
+    Akeneo\Pim\Enrichment\Product\Application\Applier\QuantifiedAssociationUserIntentCollectionApplier:
+        arguments:
+            - '@pim_catalog.updater.product'
+            - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetViewableProducts'
+            - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetViewableProductModels'
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_applier' }
+
+    Akeneo\Pim\Enrichment\Product\Application\Applier\SetPriceCollectionValueApplier:
+        arguments:
+            - '@pim_catalog.updater.product'
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_applier' }
+
+    Akeneo\Pim\Enrichment\Product\Application\Applier\SetPriceValueApplier:
+        arguments:
+            - '@pim_catalog.updater.product'
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_applier' }
+
+    Akeneo\Pim\Enrichment\Product\Application\Applier\SetSimpleReferenceDataValueApplier:
+        arguments:
+            - '@pim_catalog.updater.product'
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_applier' }
+
+    Akeneo\Pim\Enrichment\Product\Application\Applier\SetMultiReferenceDataValueApplier:
+        arguments:
+            - '@pim_catalog.updater.product'
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_applier' }

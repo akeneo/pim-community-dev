@@ -3,11 +3,16 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
@@ -38,31 +43,31 @@ abstract class AbstractProductQueryBuilderTestCase extends TestCase
     }
 
     /**
-     * @param string $identifier
-     * @param array  $data
-     *
-     * @return ProductInterface
+     * @param UserIntent[] $userIntents
      */
-    protected function createProduct($identifier, array $data)
+    protected function createProduct(?string $identifier, array $userIntents): ProductInterface
     {
-        $family = isset($data['family']) ? $data['family'] : null;
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
 
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier, $family);
-        $this->updateProduct($product, $data);
+        if (null !== $identifier) {
+            $command = UpsertProductCommand::createWithIdentifier(
+                userId: $this->getUserId('admin'),
+                productIdentifier: ProductIdentifier::fromIdentifier($identifier),
+                userIntents: $userIntents
+            );
+        } else {
+            $uuid = Uuid::uuid4();
+            $command = UpsertProductCommand::createWithUuid(
+                userId: $this->getUserId('admin'),
+                productUuid: ProductUuid::fromUuid($uuid),
+                userIntents: $userIntents
+            );
+        }
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
-        return $product;
-    }
-
-    /**
-     * @param ProductInterface $product
-     * @param array            $data
-     */
-    protected function updateProduct(ProductInterface $product, array $data)
-    {
-        $this->get('pim_catalog.updater.product')->update($product, $data);
-        $this->get('pim_catalog.saver.product')->save($product);
-
-        $this->esProductClient->refreshIndex();
+        return null !== $identifier ? $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier) :
+            $this->get('pim_catalog.repository.product')->find($uuid);
     }
 
     /**
@@ -119,10 +124,10 @@ abstract class AbstractProductQueryBuilderTestCase extends TestCase
      */
     protected function executeFilter(array $filters)
     {
-        $pqb = $this->get('pim_catalog.query.product_query_builder_factory')->create();
+        $pqb = $this->get('pim_catalog.query.product_query_builder_factory_for_reading_purpose')->create();
 
         foreach ($filters as $filter) {
-            $context = isset($filter[3]) ? $filter[3] : [];
+            $context = $filter[3] ?? [];
             $pqb->addFilter($filter[0], $filter[1], $filter[2], $context);
         }
 
@@ -137,10 +142,10 @@ abstract class AbstractProductQueryBuilderTestCase extends TestCase
      */
     protected function executeSorter(array $sorters, $options = [])
     {
-        $pqb = $this->get('pim_catalog.query.product_query_builder_factory')->create($options);
+        $pqb = $this->get('pim_catalog.query.product_query_builder_factory_for_reading_purpose')->create($options);
 
         foreach ($sorters as $sorter) {
-            $context = isset($sorter[2]) ? $sorter[2] : [];
+            $context = $sorter[2] ?? [];
             $pqb->addSorter($sorter[0], $sorter[1], $context);
         }
 

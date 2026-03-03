@@ -13,6 +13,7 @@ use Akeneo\Pim\Structure\Component\Model\FamilyTranslationInterface;
 use Oro\Bundle\PimDataGridBundle\Normalizer\ProductAssociationNormalizer;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -52,7 +53,7 @@ class ProductAssociationNormalizerSpec extends ObjectBehavior
     function it_normalizes_a_product_with_label(
         $serializer,
         $imageNormalizer,
-        $getProductCompletenesses,
+        GetProductCompletenesses $getProductCompletenesses,
         ProductInterface $product,
         FamilyInterface $family,
         FamilyTranslationInterface $familyEN,
@@ -72,7 +73,7 @@ class ProductAssociationNormalizerSpec extends ObjectBehavior
         $currentProduct->getAssociations()->willReturn([]);
 
         $product->getFamily()->willReturn($family);
-        $product->getId()->willReturn(42);
+        $product->getUuid()->willReturn(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'));
 
         $family->getCode()->willReturn('tshirt');
         $family->getTranslation('en_US')->willReturn($familyEN);
@@ -89,9 +90,12 @@ class ProductAssociationNormalizerSpec extends ObjectBehavior
         $serializer->normalize($updated, 'datagrid', $context)->willReturn('2017-01-01T01:04:34+01:00');
         $product->getLabel('en_US', 'ecommerce')->willReturn('Purple tshirt');
 
-        $getProductCompletenesses->fromProductId(42)->willReturn(new ProductCompletenessCollection(42, [
-            new ProductCompleteness('ecommerce', 'en_US', 10, 1)
-        ]));
+        $getProductCompletenesses
+            ->fromProductUuid(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'))
+            ->willReturn(new ProductCompletenessCollection(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'), [
+                new ProductCompleteness('ecommerce', 'en_US', 10, 1)
+            ]
+        ));
 
         $product->getImage()->willReturn($image);
         $imageNormalizer->normalize($image, 'en_US', 'ecommerce')->willReturn([
@@ -121,7 +125,7 @@ class ProductAssociationNormalizerSpec extends ObjectBehavior
     function it_normalizes_a_product_without_label(
         $serializer,
         $imageNormalizer,
-        $getProductCompletenesses,
+        GetProductCompletenesses $getProductCompletenesses,
         ProductInterface $product,
         FamilyInterface $family,
         FamilyTranslationInterface $familyEN,
@@ -141,7 +145,7 @@ class ProductAssociationNormalizerSpec extends ObjectBehavior
         $currentProduct->getAssociations()->willReturn([]);
 
         $product->getFamily()->willReturn($family);
-        $product->getId()->willReturn(42);
+        $product->getUuid()->willReturn(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'));
         $family->getCode()->willReturn('tshirt');
         $family->getTranslation('en_US')->willReturn($familyEN);
         $familyEN->getLabel()->willReturn(null);
@@ -157,9 +161,12 @@ class ProductAssociationNormalizerSpec extends ObjectBehavior
         $serializer->normalize($updated, 'datagrid', $context)->willReturn('2017-01-01T01:04:34+01:00');
         $product->getLabel('en_US', 'ecommerce')->willReturn('Purple tshirt');
 
-        $getProductCompletenesses->fromProductId(42)->willReturn(new ProductCompletenessCollection(42, [
-            new ProductCompleteness('ecommerce', 'en_US', 10, 1)
-        ]));
+        $getProductCompletenesses
+            ->fromProductUuid(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'))
+            ->willReturn(new ProductCompletenessCollection(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'), [
+                new ProductCompleteness('ecommerce', 'en_US', 10, 1)
+            ]
+        ));
 
         $product->getImage()->willReturn($image);
         $imageNormalizer->normalize($image, 'en_US', 'ecommerce')->willReturn([

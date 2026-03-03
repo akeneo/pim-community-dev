@@ -28,3 +28,10 @@ services:
             - '%akeneo_storage_utils.mapping_overrides%'
         tags:
             - { name: doctrine.event_subscriber, priority: 100 }
+
+    Akeneo\Tool\Component\StorageUtils\Migration\V20230622175500OptimizeTableWithInstantColsMigration:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: 'akeneo.pim.zdd_migration' }
+        public: true

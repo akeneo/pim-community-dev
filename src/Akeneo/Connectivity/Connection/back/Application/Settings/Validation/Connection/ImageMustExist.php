@@ -13,18 +13,14 @@ use Symfony\Component\Validator\Constraint;
  */
 class ImageMustExist extends Constraint
 {
-    /** @var string */
-    public $message = 'akeneo_connectivity.connection.connection.constraint.image.must_exist';
+    public string $message = 'akeneo_connectivity.connection.connection.constraint.image.must_exist';
 
-    /**
-     * @return self::PROPERTY_CONSTRAINT
-     */
-    public function getTargets()
+    public function getTargets(): string
     {
         return self::PROPERTY_CONSTRAINT;
     }
 
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'connection_image_must_exist';
     }

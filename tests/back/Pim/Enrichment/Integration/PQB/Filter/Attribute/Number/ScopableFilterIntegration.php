@@ -3,6 +3,8 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Number;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
@@ -36,25 +38,17 @@ class ScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
         ]);
 
         $this->createProduct('product_one', [
-            'family' => 'a_family',
-            'values' => [
-                'a_scopable_number' => [
-                    ['data' => -15, 'locale' => null, 'scope' => 'ecommerce'],
-                    ['data' => -14, 'locale' => null, 'scope' => 'tablet']
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetNumberValue('a_scopable_number', 'ecommerce', null, -15),
+            new SetNumberValue('a_scopable_number', 'tablet', null, -14),
         ]);
 
         $this->createProduct('product_two', [
-            'family' => 'a_family',
-            'values' => [
-                'a_scopable_number' => [
-                    ['data' => 19, 'locale' => null, 'scope' => 'tablet']
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetNumberValue('a_scopable_number', 'tablet', null, 19),
         ]);
 
-        $this->createProduct('empty_product', ['family' => 'a_family']);
+        $this->createProduct('empty_product', [new SetFamily('a_family')]);
     }
 
     public function testOperatorInferior()

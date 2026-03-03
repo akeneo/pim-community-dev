@@ -4,13 +4,22 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\VariantProduct\ExternalApi;
 
+use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Test\Integration\Configuration;
-use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
+use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\AbstractProductTestCase;
+use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 use Symfony\Component\HttpFoundation\Response;
 
 class PartialUpdateProductToVariantEndToEnd extends AbstractProductTestCase
 {
+    use AssertEventCountTrait;
+
+    private string $productUuid;
+
     public function testUpdateProductToVariant()
     {
         $client = $this->createAuthenticatedClient();
@@ -24,10 +33,12 @@ JSON;
         $response = $client->getResponse();
 
         $expectedProduct = [
+            'uuid' => $this->productUuid,
             'identifier' => 'product_family_variant',
             'family' => 'familyA',
             'parent' => 'amor',
             'groups' => [],
+            'categories' => ['categoryA2', 'master'],
             'enabled' => true,
             'values' => [
                 'a_localized_and_scopable_text_area' => [['locale' => 'en_US', 'scope' => 'ecommerce', 'data' => 'my pink tshirt']],
@@ -47,13 +58,9 @@ JSON;
 
         $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+        $this->assertEventCount(1, ProductUpdated::class);
 
-        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_family_variant');
-        $standardizedProduct = $this->get('pim_standard_format_serializer')->normalize($product, 'standard');
-        unset($standardizedProduct['categories']);
-        NormalizedProductCleaner::clean($expectedProduct);
-        NormalizedProductCleaner::clean($standardizedProduct);
-        $this->assertEquals($standardizedProduct, $expectedProduct);
+       $this->assertSameProducts($expectedProduct, 'product_family_variant');
 
         $this->assertArrayHasKey('location', $response->headers->all());
         $this->assertSame(
@@ -109,7 +116,7 @@ JSON;
                     ],
                     [
                         'property' => 'parent',
-                        'message' => 'The variant product "product_family_variant" cannot have product model ' .
+                        'message' => 'The variant product cannot have product model ' .
                             '"test" as parent, (this product model can only have other product models as children)'
                     ],
                     [
@@ -127,11 +134,9 @@ JSON;
         $this->get('pim_connector.doctrine.cache_clearer')->clear();
 
         $this->createProduct('product_familyA3', [
-            'family' => 'familyA3',
-            'categories' => ['master'],
-            'values' => [
-                'a_yes_no' => [['data' => true, 'locale' => null, 'scope' => null]]
-            ]
+            new SetFamily('familyA3'),
+            new SetCategories(['master']),
+            new SetBooleanValue('a_yes_no', null, null, true)
         ]);
         $client = $this->createAuthenticatedClient();
         $data =
@@ -173,9 +178,8 @@ JSON;
         );
 
         $this->createProduct('product_no_value', [
-            'family' => 'familyA',
-            'categories' => ['categoryA2'],
-            'values' => []
+            new SetFamily('familyA'),
+            new SetCategories(['categoryA2']),
         ]);
         $client = $this->createAuthenticatedClient();
         $data =
@@ -233,13 +237,11 @@ JSON;
                 'a_simple_select' => [['locale' => null, 'scope' => null, 'data' => 'optionB']]
             ],
         ]);
-        $this->createProduct('product_family_variant', [
-            'family' => 'familyA',
-            'categories' => ['categoryA2'],
-            'values' => [
-                'a_yes_no' => [['data' => true, 'locale' => null, 'scope' => null]]
-            ]
-        ]);
+        $this->productUuid = $this->createProduct('product_family_variant', [
+            new SetFamily('familyA'),
+            new SetCategories(['categoryA2']),
+            new SetBooleanValue('a_yes_no', null, null, true)
+        ])->getUuid()->toString();
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
         $this->get('doctrine.orm.default_entity_manager')->clear();
     }

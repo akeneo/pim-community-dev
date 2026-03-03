@@ -27,11 +27,11 @@ class Configuration implements ConfigurationInterface
     /**
      * {@inheritDoc}
      */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
-        $builder = new TreeBuilder();
+        $builder = new TreeBuilder('filters');
 
-        $builder->root('filters')
+        $builder->getRootNode()
             ->children()
                 ->arrayNode('columns')
                     ->prototype('array')
@@ -50,6 +50,7 @@ class Configuration implements ConfigurationInterface
                             ->end()
                             ->booleanNode(FilterUtility::BY_HAVING_KEY)->end()
                             ->booleanNode(FilterUtility::ENABLED_KEY)->end()
+                            ->scalarNode('feature_flag')->end()
                         ->end()
                     ->end()
                 ->end()

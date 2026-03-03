@@ -12,18 +12,18 @@ class ApiErrorCollection
     /**
      * @var array<ErrorTypes::*, ApiErrorInterface[]>
      */
-    private $apiErrors;
+    private array $apiErrors;
 
     /**
      * @param ApiErrorInterface[] $apiErrors
      */
     public function __construct(array $apiErrors = [])
     {
-        $this->apiErrors = array_fill_keys(ErrorTypes::getAll(), []);
+        $this->apiErrors = \array_fill_keys(ErrorTypes::getAll(), []);
         foreach ($apiErrors as $apiError) {
             if (!$apiError instanceof ApiErrorInterface) {
                 throw new \InvalidArgumentException(
-                    sprintf(
+                    \sprintf(
                         'Class "%s" accepts only "%s" in the collection.',
                         self::class,
                         ApiErrorInterface::class
@@ -36,7 +36,10 @@ class ApiErrorCollection
 
     public function add(ApiErrorInterface $error): void
     {
-        $this->apiErrors[(string) $error->type()][] = $error;
+        /** @phpstan-var ErrorTypes::* $errorType */
+        $errorType = (string) $error->type();
+
+        $this->apiErrors[$errorType][] = $error;
     }
 
     public function count(?string $errorType = null): int
@@ -44,19 +47,17 @@ class ApiErrorCollection
         if (null === $errorType) {
             $count = 0;
             foreach ($this->apiErrors as $errors) {
-                $count += count($errors);
+                $count += \count($errors);
             }
 
             return $count;
         }
         $type = new ErrorType($errorType);
 
-        return count($this->apiErrors[(string) $type]);
+        return \count($this->apiErrors[(string) $type]);
     }
 
     /**
-     * @param string $errorType
-     *
      * @return ApiErrorInterface[]
      */
     public function getByType(string $errorType): array

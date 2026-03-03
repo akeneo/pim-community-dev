@@ -12,7 +12,7 @@ use PhpSpec\ObjectBehavior;
 class CompletenessProductMaskSpec extends ObjectBehavior
 {
     function let() {
-        $this->beConstructedWith(1, 'identifier', 'family_code', [
+        $this->beConstructedWith(1, 'family_code', [
             'name-ecommerce-en_US',
             'name-ecommerce-fr_FR',
             'desc-<all_channels>-<all_locales>',
@@ -43,7 +43,7 @@ class CompletenessProductMaskSpec extends ObjectBehavior
 
     function it_returns_an_empty_product_completeness_collection_when_there_is_no_attribute_requirement_mask_because_the_product_is_not_in_a_family()
     {
-        $this->beConstructedWith(1, 'identifier', null, []);
+        $this->beConstructedWith(1, null, []);
 
         $this->completenessCollectionForProduct(null)->shouldBeLike(
             new ProductCompletenessWithMissingAttributeCodesCollection(1, [])
@@ -58,7 +58,7 @@ class CompletenessProductMaskSpec extends ObjectBehavior
 
     function it_throws_an_exception_when_there_is_an_attribute_requirement_mask_but_the_product_is_not_in_a_family()
     {
-        $this->beConstructedWith(1, 'identifier', null, []);
+        $this->beConstructedWith(1, null, []);
 
         $attributeRequirementMask = new RequiredAttributesMask('family_code', [
             new RequiredAttributesMaskForChannelAndLocale('ecommerce', 'en_US', ['name-ecommerce-en_US', 'view-ecommerce-en_US', 'desc-<all_channels>-<all_locales>']),

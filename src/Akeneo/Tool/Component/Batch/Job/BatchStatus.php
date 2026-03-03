@@ -45,28 +45,21 @@ class BatchStatus
     const FAILED = 6;
     const ABANDONED = 7;
     const UNKNOWN = 8;
+    const PAUSING = 9;
+    const PAUSED = 10;
 
-    protected static $statusLabels = [
+    protected static array $statusLabels = [
         self::COMPLETED => 'COMPLETED',
         self::STARTING  => 'STARTING',
-        self::STARTED   => 'STARTED',
+        self::STARTED   => 'IN_PROGRESS',
         self::STOPPING  => 'STOPPING',
         self::STOPPED   => 'STOPPED',
         self::FAILED    => 'FAILED',
         self::ABANDONED => 'ABANDONED',
-        self::UNKNOWN   => 'UNKNOWN'
+        self::UNKNOWN   => 'UNKNOWN',
+        self::PAUSING   => 'PAUSING',
+        self::PAUSED    => 'PAUSED',
     ];
-
-    /**
-     * Get all labels associative array
-     * @static
-     *
-     * @return array
-     */
-    public static function getAllLabels()
-    {
-        return array_flip(self::$statusLabels);
-    }
 
     /**
      * Set the current status
@@ -115,6 +108,16 @@ class BatchStatus
     public function isStopping(): bool
     {
         return $this->value === self::STOPPING;
+    }
+
+    public function isPausing(): bool
+    {
+        return self::PAUSING === $this->value;
+    }
+
+    public function isPaused(): bool
+    {
+        return self::PAUSED === $this->value;
     }
 
     /**

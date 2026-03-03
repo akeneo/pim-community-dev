@@ -16,8 +16,10 @@ use Context\Spin\SpinException;
 use Context\Spin\TimeoutException;
 use Context\Traits\ClosestTrait;
 use PHPUnit\Framework\Assert;
+use Pim\Behat\Context\FixturesContext;
 use Pim\Behat\Context\PimContext;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+use SensioLabs\Behat\PageObjectExtension\PageObject\PageObject;
 
 /**
  * Context of the website
@@ -34,13 +36,13 @@ class WebUser extends PimContext
     /* -------------------- Page-related methods -------------------- */
 
     /**
-     * @param string $name
+     * @param string $page
      *
      * @return Page
      */
-    public function getPage($name)
+    public function getPage(string $page): Page
     {
-        return $this->getNavigationContext()->getPage($name);
+        return $this->getNavigationContext()->getPage($page);
     }
 
     /**
@@ -52,7 +54,7 @@ class WebUser extends PimContext
     {
         $entity = implode('', array_map('ucfirst', explode(' ', $entity)));
         $this->spin(function () use ($entity) {
-            if (null !== $this->getCurrentPage()->find('css', '.modal, .ui-dialog')) {
+            if (null !== $this->getCurrentPage()->find('css', '.modal, .ui-dialog, [role=dialog]')) {
                 return true;
             }
 
@@ -106,17 +108,19 @@ class WebUser extends PimContext
 
     /**
      * @param string $type
+     * @param string $code
      *
      * @return Then[]
      *
-     * @Given /^I create a(?:n)? "([^"]*)" attribute$/
+     * @Given /^I create a(?:n)? "([^"]*)" attribute with code "([^"]*)"?$/
      */
-    public function iCreateAnAttribute($type)
+    public function iCreateAnAttribute($type, $code = '')
     {
-        return [
-            new Step\Then('I create a new attribute'),
-            new Step\Then(sprintf('I choose the "%s" attribute type', $type))
-        ];
+        $this->iCreateANew('attribute');
+        $this->iChooseTheAttributeType($type);
+        $field = $this->getCurrentPage()->findField('Code');
+        $field->setValue($code);
+        $this->getCurrentPage()->findButton('Confirm')->click();
     }
 
     /**
@@ -784,12 +788,14 @@ class WebUser extends PimContext
      */
     public function theFieldShouldContain($label, $expected)
     {
-        $page  = $this->getCurrentPage();
-        $field = $this->spin(function () use ($page, $label) {
-            return $page->findField($label);
-        }, sprintf('Field "%s" not found.', $label));
+        $this->spin(function () use ($label, $expected) {
+            $page  = $this->getCurrentPage();
+            $field = $page->findField($label);
+            if (null === $field) {
+                throw new ElementNotFoundException($this->getSession());
+            }
 
-        $this->spin(function () use ($field, $label, $expected) {
+
             if ($field->hasClass('select2-focusser')) {
                 for ($i = 0; $i < 2; ++$i) {
                     $parent = $field->getParent();
@@ -999,6 +1005,16 @@ class WebUser extends PimContext
 
             $this->getCurrentPage()->fillField($field, $value);
 
+            $this->spin(function () use ($field, $value) {
+                try {
+                    $this->getCurrentPage()->assertFieldIsFilled($field, $value);
+                } catch (\BadMethodCallException $e) {
+                    return true;
+                }
+
+                return true;
+            }, sprintf('Cannot assert that the field "%s" was correctly filled', $field));
+
             return true;
         }, sprintf('Cannot fill the field "%s"', $field));
     }
@@ -1124,28 +1140,6 @@ class WebUser extends PimContext
     {
         $this->getCurrentPage()
             ->addAttributesByGroup($this->listToArray($groups));
-    }
-
-    /**
-     * @param string $groups
-     *
-     * @Then /^the order of groups should be "([^"]*)"$/
-     */
-    public function orderOfGroupsShouldBe($groups)
-    {
-        $actualGroups = $this->getCurrentPage()->getGroups();
-        Assert::assertEquals($groups, implode($actualGroups, ', '));
-    }
-
-    /**
-     * @param string $attributeGroups
-     *
-     * @Then /^the order of attribute groups should be "([^"]*)"$/
-     */
-    public function orderOfAttributeGroupsShouldBe($attributeGroups)
-    {
-        $actualAttributeGroups = $this->getCurrentPage()->getAttributeGroups();
-        Assert::assertEquals($attributeGroups, implode($actualAttributeGroups, ', '));
     }
 
     /**
@@ -1424,20 +1418,22 @@ class WebUser extends PimContext
      */
     public function eligibleAttributesAsLabelShouldBe($attributes)
     {
-        $this->spin(function () use ($attributes) {
-            $expectedAttributes = $this->listToArray($attributes);
-            $options = $this->getPage('Family edit')->getAttributeAsLabelOptions();
+        $this->spin(
+            function () use ($attributes) {
+                $expectedAttributes = $this->listToArray($attributes);
+                $options = $this->getPage('Family edit')->getAttributeAsLabelOptions();
 
-            if (count($expectedAttributes) !== $actual = count($options)) {
-                return false;
-            }
+                if (count($expectedAttributes) !== $actual = count($options)) {
+                    return false;
+                }
 
-            if ($expectedAttributes !== $options) {
-                return false;
-            }
+                if ($expectedAttributes !== $options) {
+                    return false;
+                }
 
-            return true;
-        }, sprintf(
+                return true;
+            },
+            sprintf(
                 'Expected to see eligible attributes as label %s, actually saw %s',
                 json_encode($this->listToArray($attributes)),
                 json_encode($this->getPage('Family edit')->getAttributeAsLabelOptions())
@@ -1465,8 +1461,8 @@ class WebUser extends PimContext
     {
         $element = null;
         if ($popin) {
-            $element = $this->spin(function () {
-                return $this->getCurrentPage()->find('css', '.modal, .ui-dialog');
+            $element = $this->spin(function () use ($element) {
+                return $this->getCurrentPage()->find('css', '.modal, .ui-dialog, [role="dialog"]');
             }, 'Modal not found.');
         }
 
@@ -1737,9 +1733,10 @@ class WebUser extends PimContext
         $this->spin(function () use ($buttonLabel) {
             $buttons = $this->getCurrentPage()->findAll('css', '.mass-actions-panel a');
             foreach ($buttons as $button) {
-                if ((strtolower(trim($button->getText())) === $buttonLabel ||
+                if ((
+                    strtolower(trim($button->getText())) === $buttonLabel ||
                         $button->getAttribute('title') === $buttonLabel
-                    ) && $button->isVisible()
+                ) && $button->isVisible()
                 ) {
                     $button->click();
 
@@ -1767,18 +1764,16 @@ class WebUser extends PimContext
     }
 
     /**
-     * @param string $label
-     * @param string $value
-     *
      * @When /^I fill the input labelled '(.*)' with '(.*)'$/
      */
-    public function iFillTheInputLabelledWith($label, $value)
+    public function iFillTheInputLabelledWith(string $label, string $value): void
     {
         $page = $this->getCurrentPage();
 
-        $label = $this->spin(function () use ($page, $label) {
-            return $page->find('css', sprintf('label:contains(%s)', $label));
-        }, sprintf("Can not find any label with content '%s'", $label));
+        $label = $this->spin(
+            static fn () => $page->find('css', sprintf('label:contains("%s")', $label)),
+            sprintf("Can not find any label with content '%s'", $label),
+        );
 
         $input = $page->findByID($label->getAttribute('for'));
         $input->setValue($value);
@@ -1864,10 +1859,40 @@ class WebUser extends PimContext
     public function iPressTheButtonInThePopin($buttonLabel)
     {
         $buttonElement = $this->spin(function () use ($buttonLabel) {
+            $selectors = [
+                '.ui-dialog button:contains("%1$s")',
+                '.modal a:contains("%1$s")',
+                '.modal button:contains("%1$s")',
+                '.modal .AknButton:contains("%1$s")',
+                '#modal-root button:contains("%1$s")',
+            ];
+
             return $this
                 ->getCurrentPage()
-                ->find('css', sprintf('.ui-dialog button:contains("%1$s"), .modal a:contains("%1$s"), .modal button:contains("%1$s"), .modal .AknButton:contains("%1$s")', $buttonLabel));
+                ->find('css', sprintf(join(',', $selectors), $buttonLabel));
         }, sprintf('Cannot find "%s" button label in modal', $buttonLabel));
+
+        $buttonElement->press();
+
+        $this->wait();
+    }
+
+    /**
+     * @Given /^I press the "([^"]*)" button in the bulk actions panel$/
+     */
+    public function iPressTheButtonInTheBulkActionsPanel(string $buttonLabel)
+    {
+        $buttonElement = $this->spin(function () use ($buttonLabel) {
+            $selectors = [
+                '.mass-actions-panel a:contains("%1$s")',
+                '.mass-actions-panel button:contains("%1$s")',
+                '.mass-actions-panel .AknButton:contains("%1$s")',
+            ];
+
+            return $this
+                ->getCurrentPage()
+                ->find('css', sprintf(join(',', $selectors), $buttonLabel));
+        }, sprintf('Cannot find "%s" button in bulk actions panel', $buttonLabel));
 
         $buttonElement->press();
 
@@ -1974,6 +1999,14 @@ class WebUser extends PimContext
     public function iCheckTheSwitch($status, $locator)
     {
         $this->getCurrentPage()->toggleSwitch($locator, $status === '');
+    }
+
+    /**
+     * @When /^I switch the "([^"]*)" to "(yes|no)"$/
+     */
+    public function iSwitchTheBooleanInputToValue($locator, $value)
+    {
+        $this->getCurrentPage()->switchBooleanToValue($locator, $value);
     }
 
     /**
@@ -2328,24 +2361,6 @@ class WebUser extends PimContext
     }
 
     /**
-     * @param string $email
-     *
-     * @Given /^an email to "([^"]*)" should have been sent$/
-     */
-    public function anEmailToShouldHaveBeenSent($email)
-    {
-        $recorder = $this->getMainContext()->getMailRecorder();
-        if (0 === count($recorder->getMailsSentTo($email))) {
-            throw $this->createExpectationException(
-                sprintf(
-                    'No emails were sent to %s.',
-                    $email
-                )
-            );
-        }
-    }
-
-    /**
      * @param int $seconds
      *
      * @Then /^I wait (\d+) seconds$/
@@ -2449,11 +2464,29 @@ class WebUser extends PimContext
      */
     public function iSelectLanguage($language)
     {
-        $this->spin(function () use ($language) {
-            $this->getCurrentPage()->selectFieldOption('system-locale', $language);
+        $selectInput = $this->spin(function () {
+            $field =  $this->getCurrentPage()->find('named', array('id','system-locale'));
 
-            return true;
+            if (null === $field) {
+                throw new ElementNotFoundException($this->getCurrentPage()->getDriver());
+            }
+
+            return $field;
         }, 'System locale field was not found');
+
+        $selectInput->click();
+
+        $optionElt =  $this->spin(function () use ($language) {
+            $elt  =$this->getCurrentPage()->find('css', "[title~=\"$language\"]");
+
+            if (null === $elt) {
+                throw new ElementNotFoundException($this->getCurrentPage()->getDriver());
+            }
+
+            return  $elt;
+        }, 'Language option was not found');
+
+        $optionElt->click();
     }
 
     /**
@@ -2689,10 +2722,7 @@ class WebUser extends PimContext
         return $page;
     }
 
-    /**
-     * @return Page
-     */
-    protected function getCurrentPage()
+    protected function getCurrentPage(): PageObject
     {
         return $this->getNavigationContext()->getCurrentPage();
     }
@@ -2745,25 +2775,19 @@ class WebUser extends PimContext
     }
 
     /**
-     * @param string $condition
+     * @param string|null $condition
      */
-    protected function wait($condition = null)
+    protected function wait(string $condition = null)
     {
         $this->getMainContext()->wait($condition);
     }
 
-    /**
-     * @return FixturesContext
-     */
-    protected function getFixturesContext()
+    protected function getFixturesContext(): FixturesContext
     {
         return $this->getMainContext()->getSubcontext('fixtures');
     }
 
-    /**
-     * @return NavigationContext
-     */
-    protected function getNavigationContext()
+    protected function getNavigationContext(): NavigationContext
     {
         return $this->getMainContext()->getSubcontext('navigation');
     }

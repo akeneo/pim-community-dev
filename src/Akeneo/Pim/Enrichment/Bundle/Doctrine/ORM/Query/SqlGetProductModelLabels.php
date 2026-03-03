@@ -38,7 +38,7 @@ SQL;
             $query,
             ['codes' => $codes],
             ['codes' => Connection::PARAM_STR_ARRAY]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         $labels = [];
         foreach ($results as $result) {

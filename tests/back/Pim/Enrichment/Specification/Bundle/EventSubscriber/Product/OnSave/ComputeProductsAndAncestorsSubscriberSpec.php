@@ -41,8 +41,8 @@ class ComputeProductsAndAncestorsSubscriberSpec extends ObjectBehavior
         ComputeAndPersistProductCompletenesses $computeAndPersistProductCompletenesses,
         ProductAndAncestorsIndexer $productAndAncestorsIndexer
     ) {
-        $computeAndPersistProductCompletenesses->fromProductIdentifiers(Argument::any())->shouldNotBeCalled();
-        $productAndAncestorsIndexer->indexFromProductIdentifiers(Argument::any())->shouldNotBeCalled();
+        $computeAndPersistProductCompletenesses->fromProductUuids(Argument::any())->shouldNotBeCalled();
+        $productAndAncestorsIndexer->indexFromProductUuids(Argument::any())->shouldNotBeCalled();
 
         $this->handleSingleProduct(new GenericEvent(new \stdClass(), ['unitary' => true]));
         $this->handleMultipleProducts(new GenericEvent([new \stdClass()]));
@@ -52,8 +52,8 @@ class ComputeProductsAndAncestorsSubscriberSpec extends ObjectBehavior
         ComputeAndPersistProductCompletenesses $computeAndPersistProductCompletenesses,
         ProductAndAncestorsIndexer $productAndAncestorsIndexer
     ) {
-        $computeAndPersistProductCompletenesses->fromProductIdentifiers(Argument::any())->shouldNotBeCalled();
-        $productAndAncestorsIndexer->indexFromProductIdentifiers(Argument::any())->shouldNotBeCalled();
+        $computeAndPersistProductCompletenesses->fromProductUuids(Argument::any())->shouldNotBeCalled();
+        $productAndAncestorsIndexer->indexFromProductUuids(Argument::any())->shouldNotBeCalled();
 
         $this->handleSingleProduct(new GenericEvent(new \stdClass(), ['unitary' => false]));
         $this->handleSingleProduct(new GenericEvent([new \stdClass()]));
@@ -63,11 +63,10 @@ class ComputeProductsAndAncestorsSubscriberSpec extends ObjectBehavior
         ComputeAndPersistProductCompletenesses $computeAndPersistProductCompletenesses,
         ProductAndAncestorsIndexer $productAndAncestorsIndexer
     ) {
-        $computeAndPersistProductCompletenesses->fromProductIdentifiers(['foo'])->shouldBeCalled();
-        $productAndAncestorsIndexer->indexFromProductIdentifiers(['foo'])->shouldBeCalled();
-
         $product = new Product();
-        $product->setIdentifier('foo');
+        $computeAndPersistProductCompletenesses->fromProductUuids([$product->getUuid()])->shouldBeCalled();
+        $productAndAncestorsIndexer->indexFromProductUuids([$product->getUuid()])->shouldBeCalled();
+
         $this->handleSingleProduct(new GenericEvent($product, ['unitary' => true]));
     }
 
@@ -75,13 +74,11 @@ class ComputeProductsAndAncestorsSubscriberSpec extends ObjectBehavior
         ComputeAndPersistProductCompletenesses $computeAndPersistProductCompletenesses,
         ProductAndAncestorsIndexer $productAndAncestorsIndexer
     ) {
-        $computeAndPersistProductCompletenesses->fromProductIdentifiers(['foo', 'bar'])->shouldBeCalled();
-        $productAndAncestorsIndexer->indexFromProductIdentifiers(['foo', 'bar'])->shouldBeCalled();
-
         $product = new Product();
-        $product->setIdentifier('foo');
         $otherProduct = new Product();
-        $otherProduct->setIdentifier('bar');
+
+        $computeAndPersistProductCompletenesses->fromProductUuids([$product->getUuid(), $otherProduct->getUuid()])->shouldBeCalled();
+        $productAndAncestorsIndexer->indexFromProductUuids([$product->getUuid(), $otherProduct->getUuid()])->shouldBeCalled();
 
         $this->handleMultipleProducts(new GenericEvent([$product, $otherProduct], ['unitary' => false]));
     }

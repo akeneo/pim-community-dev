@@ -14,7 +14,6 @@ pim_title:
 
     pim_user_reset_reset: Password Reset
     pim_user_reset_request: Forgot Password
-    pim_user_reset_check_email: Password Reset | Check Email
 
     pim_user_group_create: 'Groups | Create'
     pim_user_group_update: 'Group {{ group }} | Edit'
@@ -35,6 +34,21 @@ pim_enrich:
                 delete:
                     confirm: Are you sure you want to delete this user?
 
+pim_user.profile:
+    caption: First, tell us what your main mission is, in order for us to help you with the most relevant content.
+    why_is_it_needed: Why do we need this information?
+    save_button: Save and access the App Store
+    selector:
+        placeholder: Choose an option
+        not_found: No result found
+    product_manager: I manage product catalogs.
+    redactor: I enrich product data.
+    pim_integrator: I integrate Akeneo PIM into our IT ecosystem.
+    pim_administrator: I administrate Akeneo PIM.
+    asset_manager: I manage assets in the PIM.
+    translator: I translate product, asset, and/or reference entity data.
+    third_party_developer: I develop solutions connected with Akeneo PIM.
+
 pim_user_management:
     entity:
         user:
@@ -50,6 +64,7 @@ pim_user_management:
                 index: "]-Inf, 1] {{ count }} user|]1, Inf [{{ count }} users"
             properties:
                 username: Username
+                profile: What is your main mission?
                 name_prefix: Name prefix
                 first_name: First name
                 middle_name: Middle name
@@ -76,6 +91,8 @@ pim_user_management:
                 default_published_product_grid_view: Default published product grid view # EE Only
                 proposals_to_review_notification: When new proposal to review # EE Only
                 proposals_state_notifications: When proposal is accepted or rejected # EE Only
+                not_fully_supported_locale: 'The selected UI locale [{{ code }}] is currently not fully supported. You may encounter missing or incomplete text translations.  Help improve locale coverage:'
+                link_to_crowdin_label: contribute to Crowdin.
             meta:
                 created: Created
                 updated: Updated
@@ -108,3 +125,13 @@ pim_user_management:
             module:
                 create:
                     button: Create group
+    form:
+        error:
+            required: This field is required.
+            should_not_contain_space: The username should not contain space character.
+            too_short_value: "This value is too short. It should have {{ count }} characters or more."
+        duplication:
+            title: 'Duplicate "{{ username }}" user'
+            notification:
+                success: The user is duplicated successfully
+                failure: User duplication failure

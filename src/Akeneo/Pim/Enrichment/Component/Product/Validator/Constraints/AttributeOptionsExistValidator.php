@@ -54,7 +54,7 @@ class AttributeOptionsExistValidator extends ConstraintValidator
 
         foreach ($optionValues as $key => $value) {
             if ($value instanceof OptionValueInterface) {
-                if (!in_array(strtolower($value->getData()), ($existingOptionCodes[$value->getAttributeCode()] ?? []))) {
+                if (!in_array(strtolower($value->getData()), ($existingOptionCodes[$value->getAttributeCode()] ?? []), true)) {
                     $this->context->buildViolation(
                         $constraint->message,
                         [

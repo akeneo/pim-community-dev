@@ -121,7 +121,8 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
     {
         $hasAttributeFilters = $this->hasRawFilter('type', 'attribute');
         $hasParentFilter = $this->hasRawFilter('field', 'parent');
-        $hasIdFilter = $this->hasRawFilter('field', 'id');
+        $hasIdFilter = $this->hasRawFilter('field', 'id') ||
+            $this->hasRawFilter('field', 'uuid');
         $hasIdentifierFilter = $this->hasRawFilter('field', 'identifier');
         $hasEntityTypeFilter = $this->hasRawFilter('field', 'entity_type');
         $hasAncestorsIdsFilter = $this->hasRawFilter('field', 'ancestor.id');
@@ -148,7 +149,7 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
     }
 
     /**
-     * Checks whether the raw filters contains a filter on a particular field.
+     * Checks whether the raw filters contain a filter on a particular field.
      *
      * @param string $filterProperty
      * @param string $value
@@ -203,11 +204,13 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
         $hasIdField = $this->hasRawFilter('field', 'id');
         $hasEntityTypeField = $this->hasRawFilter('field', 'entity_type');
         $hasLabelOrIdentifierField = $this->hasRawFilter('field', 'label_or_identifier');
+        $hasIdentifierField = $this->hasRawFilter('field', 'identifier');
 
         return
             !$hasParentField &&
             !$hasIdField &&
             !$hasEntityTypeField &&
-            !$hasLabelOrIdentifierField;
+            !$hasLabelOrIdentifierField &&
+            !$hasIdentifierField;
     }
 }

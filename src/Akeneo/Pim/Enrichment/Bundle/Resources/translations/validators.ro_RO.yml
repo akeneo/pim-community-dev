@@ -1,0 +1,79 @@
+An identifier attribute already exists.: Un atribut identificativ există deja.
+Attribute code may contain only letters, numbers and underscore: Codul atributului poate conține doar litere, numere și underscore
+Attribute code may contain only letters (at least one), numbers and underscores: Codul atributului poate conține doar litere (cel puțin una), numere și underscore
+This attribute type can't be used as a grid filter: Acest tip de atribut nu poate fi folosit ca un filtru de grilă
+This code is not available: Acest cod nu este valabil
+This attribute type must be required: Acest tip de atribut trebuie sa fie necesar
+This attribute type can't be required: Acest tip de atribut nu poate fi necesar
+This attribute type can't have unique value: Acest tip de atribut nu poate avea o valoare unică
+No default value may be specified for this attribute type: Nicio valoare implicită nu poate fi specificată pentru acest tip de atribut
+This value should be Yes or No: Valoarea trebuie să fie Da sau Nu
+This value should not be blank: Această valoare ar trebui să nu fie goală
+Option code may contain only letters, numbers and underscores: Codul de opțiuni poate conține doar litere, numere și underscore
+Option code may contain only letters (at least one), numbers and underscores: Codul de opțiuni poate conține doar litere (cel puțin una), numere și underscore
+This value should not be a decimal.: Această valoare ar trebui să nu fie una zecimală.
+'The file extension is not allowed (allowed extensions: %extensions%).': 'Extensia fișierului nu este permisă (extensiile permise: %extensions%).'
+The same identifier is already set on another product: Acelaşi identificator este deja setat pe alt produs
+regex.comma_or_semicolon_or_surrounding_space.message: Acest câmp nu trebuie să conțină nici un virgulă sau punct și nici spațiu la inceput sau la sfarsit
+file.extensions.message: 'Extensia fișierului nu este permisă (extensiile permise: %extensions%).'
+"This type of value expects the use of {{ decimal_separator }} to separate decimals.": Acest tip de valoare se asteaptă la folosirea {{ decimal_separator }} pentru a separa zecimele.
+"This type of value expects the use of dot (.) to separate decimals.": Acest tip de valoare se aşteaptă la folosirea unui punct (.) pentru a separa zecimalele.
+"This type of value expects the use of comma (,) to separate decimals.": Acest tip de valoare se aşteaptă la folosirea unei virgule (,) pentru a separa zecimalele.
+"This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Acest tip de valoare se aşteaptă la folosirea unui separator zecimal arabic (٫) pentru a separa zecimalele.
+"This type of value expects the use of the format {{ date_format }} for dates.": Acest tip de valoare se aşteaptă la folosirea formatului {{ date_format }} pentru date.
+"The category \"%category%\" has to be a root category.": Categoria %category% trebuie să fie o categorie arbore.
+"The attribute \"%attributeCode%\" does not exist.": Atributul %attributeCode% nu există.
+"The currency \"%currency%\" has to be activated.": Valuta %currency% trebuie să fie activată.
+product_model.code.not_blank.message: Codul modelului de produs nu trebuie să fie gol.
+product_model.code.unique.message: Acelaşi cod este deja setat pe un alt model de produs.
+product_model.family_variant.not_blank.message: Varianta de familie a modelului de produs trebuie să nu fie goală.
+pim_catalog:
+  constraint:
+    can_have_family_variant_empty_axis_value: 'Atributul %attribute% nu poate să fie goală, aşa cum este definit ca o axă pentru această entitate'
+    can_have_family_variant_unexpected_attribute: 'Nu se poate seta propritatea %attribute% pe această entitate deoarece nu ĕ în setul de atribute'
+    cannot_have_product_model_as_parent: 'Modelul de produs %product_model% nu poate să aibă modelul de produs %parent_product_model% ca rudă'
+    cannot_have_parent: 'Modelul de produs %product_model% nu poate să aibă o rudă'
+    attribute_does_not_belong_to_family: 'Atributul %attribute% nu aparține familiei %family%'
+    variant_product_invalid_family: 'Familia variantei produsului trebuie să fie aceeaşi ca şi rudele ei'
+    not_null_family: Familia nu poate fi null, deoarece produsul cu identificativ %sku% este o variantă de produs.
+    variant_product_has_parent: 'Varianta de produs %variant_product% trebuie să aibă o rudă'
+    invalid_variant_product_parent: 'Varianta de produs %variant_product% nu poate să aibă %product_model% ca mamă (acest model de produs poate avea doar alte modele de produs ca copii)'
+    modified_variant_axis_value: 'Varianta axa %variant_axis% nu poate fi modificată, %provided_value% dată'
+    family_variant_attributes_unique: Atributele trebuie să fie unice, %attributes% sunt folosite de mai multe ori în setul de variante de atribut
+    family_variant_axes_unique: Variantele axes trebuie să fie unice, %attributes% sunt folosite de mai multe ori în setul de variante de atribut
+    family_variant_axes_immutable: 'Varianta axes nu poate fi modificată pentru nivelul %level%'
+    family_variant_axes_attribute_type_unique: Varianta axes %axis% nu poate fi unică sau un identificator
+    family_variant_axes_wrong_type: Axele variante ”%axis%” nu pot fi localizabile, scopabile și nu specific locale
+    family_variant_axes_number_of_axes: 'Un set de atribute variante nu poate avea mai mult de %max_axes_number% axes'
+    family_variant_no_axis: Ar trebui să fie măcar un atribut definit ca axă pentru setul de atribute pentru nivelul %level%
+    family_variant_axis_level: Atributul %axis% trebuie să fie setat ca atribut în acelaşi set de variante de atribut a fost setat ca axis
+    family_variant_has_family_attribute: 'Atributul %attribute% nu poate fi adăugat la familia de variante %family_variant%, deoarece nu este un atribut al familiei %family%'
+    family_variant_level_do_not_exist: Nu există nici un set de variantă de atribut pentru nivelul %level%
+    family_variant_no_level: Ar trebui să fie macar un nivel definit în varianta de familie
+    family_variant_maximum_number_of_level: Varianta de familie nu poate avea mai mult de %level% nivele
+    family_variant_unique_attributes_in_last_level: Atributul unic %attribute% trebuie să fie setat la nivelul de produs
+    product_identifier: Acești identificatori "%s" nu există.
+    0: A intervenit o eroare neaşteptată.
+    100: Valoare neașteptată
+    101: Acest câmp se asteaptă la o valoare booleană.
+    102: Acest câmp se asteaptă la o valoare reală.
+    103: Acest câmp se asteaptă la o valoare întreagă.
+    104: Acest câmp se aşteaptă la o valoare numerică.
+    105: Acest câmp se aşteaptă la o valoare string.
+    106: Acest câmp se aşteaptă la o mulțime.
+    107: Acest câmp se asteaptă la o mulțime ca o valoare.
+    200: A apărut o eroare internă
+    201: A apărut o eroare internă
+    202: Acest câmp se aşteapta la o valoare numerică.
+    203: Acest câmp se aşteaptă la o valoare string.
+    204: Acest câmp se aşteaptă la o valoare string.
+    205: A avut loc o eroare internă
+    300: Acest câmp se așteaptă la un cod valid de entitate.
+    301: This field expects a valid scope and locale.
+    302: This field expects a valid scope.
+    303: This field expects a valid association format.
+    pim_immutable_product_validator: Acelaşi identificator este deja folosit pe un alt produs
+    pim_immutable_product_model_validator: Acelaşi cod este deja folosit pe un alt model de produs.
+mass_edit:
+  edit_common_attributes:
+    invalid_values: Există erori în modul de atribute

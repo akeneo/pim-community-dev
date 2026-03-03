@@ -5,25 +5,31 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductIdsImpactedByAttributeGroupActivationQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetEntityIdsImpactedByAttributeGroupActivationQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetFamilyIds;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeGroupCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\FamilyId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 use Doctrine\DBAL\Connection;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class GetProductIdsImpactedByAttributeGroupActivationQuery implements GetProductIdsImpactedByAttributeGroupActivationQueryInterface
+final class GetProductIdsImpactedByAttributeGroupActivationQuery implements GetEntityIdsImpactedByAttributeGroupActivationQueryInterface
 {
-    /** @var Connection */
-    private $dbConnection;
-
-    public function __construct(Connection $dbConnection)
-    {
-        $this->dbConnection = $dbConnection;
+    public function __construct(
+        private readonly Connection $dbConnection,
+        private readonly ProductEntityIdFactoryInterface $idFactory,
+        private readonly GetFamilyIds $getFamilyIds,
+    ) {
     }
 
-    public function updatedSince(\DateTimeImmutable $updatedSince, int $bulkSize): \Iterator
+    /**
+     * @return \Generator<int, ProductEntityIdCollection>
+     */
+    public function updatedSince(\DateTimeImmutable $updatedSince, int $bulkSize): \Generator
     {
         $impactedFamilies = $this->retrieveFamiliesWithAttributeGroupActivationUpdatedSince($updatedSince);
 
@@ -32,7 +38,7 @@ final class GetProductIdsImpactedByAttributeGroupActivationQuery implements GetP
         }
 
         $query = <<<SQL
-SELECT product.id FROM pim_catalog_product AS product WHERE product.family_id IN (:families)
+SELECT BIN_TO_UUID(product.uuid) FROM pim_catalog_product AS product WHERE product.family_id IN (:families)
 SQL;
 
         $stmt = $this->dbConnection->executeQuery(
@@ -41,18 +47,18 @@ SQL;
             ['families' => Connection::PARAM_INT_ARRAY,]
         );
 
-        $productIds = [];
-        while ($productId = $stmt->fetchColumn()) {
-            $productIds[] = new ProductId(intval($productId));
+        $productUuids = [];
+        while ($productUuid = $stmt->fetchOne()) {
+            $productUuids[] = $productUuid;
 
-            if (count($productIds) >= $bulkSize) {
-                yield $productIds;
-                $productIds = [];
+            if (count($productUuids) >= $bulkSize) {
+                yield $this->idFactory->createCollection($productUuids);
+                $productUuids = [];
             }
         }
 
-        if (!empty($productIds)) {
-            yield $productIds;
+        if (!empty($productUuids)) {
+            yield $this->idFactory->createCollection($productUuids);
         }
     }
 
@@ -69,6 +75,37 @@ SQL;
 
         $stmt = $this->dbConnection->executeQuery($query, ['updatedSince' => $updatedSince->format(Clock::TIME_FORMAT)]);
 
-        return $stmt->fetchAll(\PDO::FETCH_COLUMN);
+        return $stmt->fetchFirstColumn();
+    }
+
+    /**
+     * @return \Generator<int, ProductEntityIdCollection>
+     */
+    public function forAttributeGroup(AttributeGroupCode $attributeGroupCode, int $bulkSize): \Generator
+    {
+        $impactedFamilies = \iterator_to_array($this->getFamilyIds->fromAttributeGroupCode($attributeGroupCode));
+        if ([] === $impactedFamilies) {
+            return;
+        }
+
+        $stmt = $this->dbConnection->executeQuery(
+            'SELECT BIN_TO_UUID(product.uuid) FROM pim_catalog_product AS product WHERE product.family_id IN (:families)',
+            ['families' => \array_map(fn (FamilyId $familyId) => $familyId->toInt(), $impactedFamilies)],
+            ['families' => Connection::PARAM_INT_ARRAY,]
+        );
+
+        $productUuids = [];
+        while ($productUuid = $stmt->fetchOne()) {
+            $productUuids[] = $productUuid;
+
+            if (count($productUuids) >= $bulkSize) {
+                yield $this->idFactory->createCollection($productUuids);
+                $productUuids = [];
+            }
+        }
+
+        if (count($productUuids) > 0) {
+            yield $this->idFactory->createCollection($productUuids);
+        }
     }
 }

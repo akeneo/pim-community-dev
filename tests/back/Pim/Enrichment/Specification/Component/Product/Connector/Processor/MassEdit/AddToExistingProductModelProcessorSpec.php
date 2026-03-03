@@ -9,6 +9,7 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\AddParent;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Prophecy\Argument;
+use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -31,7 +32,6 @@ class AddToExistingProductModelProcessorSpec extends ObjectBehavior
         ProductInterface $updatedProduct,
         StepExecution $stepExecution,
         JobParameters $jobParameters,
-        ConstraintViolationListInterface $violations
     ) {
         $product->isVariant()->willReturn(false);
 
@@ -39,10 +39,7 @@ class AddToExistingProductModelProcessorSpec extends ObjectBehavior
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('actions')->willReturn([['value' => '42']]);
         $addParent->to($product, '42')->willReturn($updatedProduct);
-        $validator->validate($updatedProduct)->willReturn($violations);
-        $violations->count()->willReturn(0);
-        $violations->rewind()->willReturn(null);
-        $violations->valid()->willReturn(null);
+        $validator->validate($updatedProduct)->willReturn(new ConstraintViolationList());
 
         $this->process($product);
     }

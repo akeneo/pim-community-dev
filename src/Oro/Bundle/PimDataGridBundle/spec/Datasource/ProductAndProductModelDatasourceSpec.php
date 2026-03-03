@@ -8,7 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Rows;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\DataGridBundle\Datagrid\Datagrid;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Oro\Bundle\PimDataGridBundle\Datasource\DatasourceInterface;
@@ -103,7 +103,7 @@ class ProductAndProductModelDatasourceSpec extends ObjectBehavior
             'label',
             null,
             90,
-            1,
+             '54162e35-ff81-48f1-96d5-5febd3f00fd5',
             'parent_code',
             new WriteValueCollection()
         );

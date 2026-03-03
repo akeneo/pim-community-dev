@@ -457,17 +457,25 @@ class DateTimeFilterSpec extends ObjectBehavior
         )->during('addFieldFilter', ['created', Operators::SINCE_LAST_JOB, false]);
     }
 
-    function it_throws_an_exception_when_the_given_value_is_not_a_numeric(SearchQueryBuilder $sqb)
+    function it_throws_an_exception_when_the_given_value_is_not_a_integer(SearchQueryBuilder $sqb)
     {
         $this->setQueryBuilder($sqb);
 
         $this->shouldThrow(
-            InvalidPropertyTypeException::numericExpected(
+            InvalidPropertyTypeException::integerExpected(
                 'created',
                 DateTimeFilter::class,
                 false
             )
         )->during('addFieldFilter', ['created', Operators::SINCE_LAST_N_DAYS, false]);
+
+        $this->shouldThrow(
+            InvalidPropertyTypeException::integerExpected(
+                'updated',
+                DateTimeFilter::class,
+                0.25
+            )
+        )->during('addFieldFilter', ['updated', Operators::SINCE_LAST_N_DAYS, 0.25]);
     }
 
     function it_throws_an_exception_when_it_filters_on_an_unsupported_operator(SearchQueryBuilder $sqb)

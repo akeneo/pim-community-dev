@@ -5,7 +5,9 @@ namespace Akeneo\Tool\Bundle\ApiBundle\DependencyInjection\Compiler;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\HttpFoundation\RequestMatcher;
 
 /**
  * Compiler pass to add rules to the content type negotiator.
@@ -64,9 +66,7 @@ class ContentTypeNegotiatorPass implements CompilerPassInterface
         $id = 'pim_api.content_type_negotiator.request_matcher.'.md5($serialized).sha1($serialized);
 
         if (!$container->hasDefinition($id)) {
-            $container
-                ->setDefinition($id, new ChildDefinition('fos_rest.format_request_matcher'))
-                ->setArguments($arguments);
+            $container->setDefinition($id, new Definition(RequestMatcher::class, $arguments));
         }
 
         return new Reference($id);

@@ -14,7 +14,7 @@ use PhpSpec\ObjectBehavior;
  */
 class UserSpec extends ObjectBehavior
 {
-    public function let()
+    public function let(): void
     {
         $this->beConstructedWith(
             42,
@@ -23,22 +23,22 @@ class UserSpec extends ObjectBehavior
         );
     }
 
-    public function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(User::class);
     }
 
-    public function it_returns_the_id()
+    public function it_returns_the_id(): void
     {
         $this->id()->shouldReturn(42);
     }
 
-    public function it_returns_the_username()
+    public function it_returns_the_username(): void
     {
         $this->username()->shouldReturn('magento');
     }
 
-    public function it_returns_the_password()
+    public function it_returns_the_password(): void
     {
         $this->password()->shouldReturn('my_password');
     }

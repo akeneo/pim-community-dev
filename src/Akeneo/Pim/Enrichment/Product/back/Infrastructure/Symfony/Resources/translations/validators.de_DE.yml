@@ -1,0 +1,21 @@
+pim_enrich.product:
+  validation:
+    upsert:
+      unknown_user: 'Der Benutzer "{{ user_id }}" existiert nicht'
+      category_no_access_to_products: Sie haben keinen Zugriff auf Produkte in einem Strukturbaum. Bitte kontaktieren Sie Ihren Administrator.
+      should_keep_one_owned_category: Sie sollten Ihr Produkt mindestens einer Kategorie zuweisen, in der Sie Rechte haben
+      locale_no_access_to_products: Sie haben keinen Zugriff auf Produktinformationen in ausgewählten Gebietsschemata. Bitte kontaktieren Sie Ihren Administrator.
+      attribute_group_no_access_to_attributes: Sie haben keinen Zugriff auf das {{ attributeCode }} -Attribut dieses Artikels. Bitte kontaktieren Sie Ihren Administrator.
+      product_identifier_empty: Der Produkt-Bezeichner benötigt eine nicht leere Zeichenkette
+      duplicated_user_intents: Der Wert für das Attribut {{ attributeCode }} wird mehrfach aktualisiert
+      family_code_empty: Der Familien-Code erfordert eine nicht leere Zeichenkette
+      category_does_not_exist: '{1}Die "{{ categoryCodes }}" Kategorie existiert nicht|]1, Inf[ Die "{{ categoryCodes }}" Kategorien existieren nicht'
+      set_value:
+        no_channel_code_provided_for_scopable_attribute: 'Das {{ attributeCode }} -Attribut benötigt einen Kanal'
+        channel_code_provided_for_non_scopable_attribute: 'Das {{ attributeCode }} -Attribut benötigt keinen Kanal, "{{ channelCode }}" wurde erkannt'
+        no_locale_code_provided_for_localizable_attribute: 'Das {{ attributeCode }} -Attribut erfordert ein Gebietsschema'
+        locale_code_provided_for_non_localizable_attribute: 'Das {{ attributeCode }} -Attribut benötigt keine Gebietsschema, "{{ localeCode }}" wurde erkannt'
+        invalid_locale_code_for_locale_specific_attribute: 'Die {{ attributeCode }} benötigt eine der folgenden Gebietsschemen: {{ availableLocales }}; "{{ localeCode }}" wurde erkannt'
+        channel_does_not_exist: 'Der {{ channelCode }} Kanal existiert nicht'
+        locale_is_not_active: 'Die Sprache {{ localeCode }} existiert nicht oder ist nicht aktiv'
+        locale_not_activated_for_channel: 'Die Gebietsschema {{ localeCode }} ist für den Kanal {{ channelCode }} nicht aktiviert'

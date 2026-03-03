@@ -8,6 +8,7 @@ use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved;
 use Akeneo\Platform\Component\EventQueue\Event;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -19,7 +20,11 @@ class ProductRemovedSpec extends ObjectBehavior
     {
         $this->beConstructedWith(
             Author::fromNameAndType('julia', Author::TYPE_UI),
-            ['identifier' => 'product_identifier', 'category_codes' => ['category_code_1', 'category_code_2']],
+            [
+                'identifier' => 'product_identifier',
+                'uuid' => Uuid::fromString('5dd9eb8b-261f-4e76-bf1d-f407063f931d'),
+                'category_codes' => ['category_code_1', 'category_code_2'],
+            ],
             1598968800,
             '523e4557-e89b-12d3-a456-426614174000',
         );
@@ -49,11 +54,31 @@ class ProductRemovedSpec extends ObjectBehavior
         )->duringInstantiation();
     }
 
+    public function it_validates_the_product_uuid(): void
+    {
+        $this->beConstructedWith(
+            Author::fromNameAndType('julia', Author::TYPE_UI),
+            [
+                'identifier' => 'product_identifier',
+                'category_codes' => ['category_code_1', 'category_code_2'],
+            ],
+            1598968800,
+            '523e4557-e89b-12d3-a456-426614174000',
+        );
+
+        $this->shouldThrow(
+            new \InvalidArgumentException('Expected the key "uuid" to exist.'),
+        )->duringInstantiation();
+    }
+
     public function it_validates_the_category_codes(): void
     {
         $this->beConstructedWith(
             Author::fromNameAndType('julia', Author::TYPE_UI),
-            ['identifier' => 'product_identifier'],
+            [
+                'identifier' => 'product_identifier',
+                'uuid' => Uuid::uuid4(),
+            ],
             1598968800,
             '523e4557-e89b-12d3-a456-426614174000',
         );
@@ -75,8 +100,9 @@ class ProductRemovedSpec extends ObjectBehavior
 
     public function it_returns_the_data(): void
     {
-        $this->getData()->shouldReturn([
+        $this->getData()->shouldBeLike([
             'identifier' => 'product_identifier',
+            'uuid' => Uuid::fromString('5dd9eb8b-261f-4e76-bf1d-f407063f931d'),
             'category_codes' => ['category_code_1', 'category_code_2'],
         ]);
     }
@@ -89,6 +115,11 @@ class ProductRemovedSpec extends ObjectBehavior
     public function it_returns_the_uuid(): void
     {
         $this->getUuid()->shouldReturn('523e4557-e89b-12d3-a456-426614174000');
+    }
+
+    public function it_returns_the_product_uuid(): void
+    {
+        $this->getProductUuid()->shouldBeLike(Uuid::fromString('5dd9eb8b-261f-4e76-bf1d-f407063f931d'));
     }
 
     public function it_returns_the_product_identifier(): void

@@ -14,7 +14,7 @@ use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
-use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage;
+use Akeneo\Tool\Component\BatchQueue\Factory\JobExecutionMessageFactory;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionQueueInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -24,51 +24,28 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
  * Publish job execution into a queue in order to be launched asynchronously.
  *
  * @author    Alexandre Hocquard <alexandre.hocquard@akeneo.com>
- * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @copyright 2017 Akeneo SAS (https://www.akeneo.com)
+ * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class QueueJobLauncher implements JobLauncherInterface
 {
-    /** @var JobRepositoryInterface */
-    private $jobRepository;
+    private JobRepositoryInterface $jobRepository;
+    private JobParametersFactory $jobParametersFactory;
+    private JobRegistry $jobRegistry;
+    private JobParametersValidator $jobParametersValidator;
+    private JobExecutionQueueInterface $queue;
+    private JobExecutionMessageFactory $jobExecutionMessageFactory;
+    private string $environment;
+    private EventDispatcherInterface $eventDispatcher;
+    private BatchLogHandler $batchLogHandler;
 
-    /** @var JobParametersFactory */
-    private $jobParametersFactory;
-
-    /** @var JobRegistry */
-    private $jobRegistry;
-
-    /** @var JobParametersValidator */
-    private $jobParametersValidator;
-
-    /** @var JobExecutionQueueInterface */
-    private $queue;
-
-    /** @var string */
-    private $environment;
-
-    /** @var EventDispatcherInterface */
-    private $eventDispatcher;
-
-    /** @var BatchLogHandler */
-    private $batchLogHandler;
-
-    /**
-     * @param JobRepositoryInterface     $jobRepository
-     * @param JobParametersFactory       $jobParametersFactory
-     * @param JobRegistry                $jobRegistry
-     * @param JobParametersValidator     $jobParametersValidator
-     * @param JobExecutionQueueInterface $queue
-     * @param EventDispatcherInterface   $eventDispatcher
-     * @param BatchLogHandler            $batchLogHandler
-     * @param string                     $environment
-     */
     public function __construct(
         JobRepositoryInterface $jobRepository,
         JobParametersFactory $jobParametersFactory,
         JobRegistry $jobRegistry,
         JobParametersValidator $jobParametersValidator,
         JobExecutionQueueInterface $queue,
+        JobExecutionMessageFactory $jobExecutionMessageFactory,
         EventDispatcherInterface $eventDispatcher,
         BatchLogHandler $batchLogHandler,
         string $environment
@@ -77,6 +54,7 @@ class QueueJobLauncher implements JobLauncherInterface
         $this->jobParametersFactory = $jobParametersFactory;
         $this->jobRegistry = $jobRegistry;
         $this->jobParametersValidator = $jobParametersValidator;
+        $this->jobExecutionMessageFactory = $jobExecutionMessageFactory;
         $this->queue = $queue;
         $this->eventDispatcher = $eventDispatcher;
         $this->batchLogHandler = $batchLogHandler;
@@ -86,16 +64,20 @@ class QueueJobLauncher implements JobLauncherInterface
     /**
      * {@inheritdoc}
      */
-    public function launch(JobInstance $jobInstance, UserInterface $user, array $configuration = []) : JobExecution
+    public function launch(JobInstance $jobInstance, ?UserInterface $user, array $configuration = []): JobExecution
     {
         $options = ['env' => $this->environment];
-        if (isset($configuration['send_email']) && method_exists($user, 'getEmail')) {
-            $options['email'] = $user->getEmail();
+        if (isset($configuration['send_email']) && $user && method_exists($user, 'getEmail')) {
+            $options['email'] = [$user->getEmail()];
             unset($configuration['send_email']);
         }
 
         $jobExecution = $this->createJobExecution($jobInstance, $user, $configuration);
-        $jobExecutionMessage = JobExecutionMessage::createJobExecutionMessage($jobExecution->getId(), $options);
+        $jobExecutionMessage = $this->jobExecutionMessageFactory->buildFromJobInstance(
+            $jobInstance,
+            $jobExecution->getId(),
+            $options
+        );
 
         $this->queue->publish($jobExecutionMessage);
 
@@ -113,7 +95,7 @@ class QueueJobLauncher implements JobLauncherInterface
      *
      * @return JobExecution
      */
-    private function createJobExecution(JobInstance $jobInstance, UserInterface $user, array $configuration) : JobExecution
+    private function createJobExecution(JobInstance $jobInstance, ?UserInterface $user, array $configuration): JobExecution
     {
         $job = $this->jobRegistry->get($jobInstance->getJobName());
         $configuration = array_merge($jobInstance->getRawParameters(), $configuration);
@@ -128,14 +110,17 @@ class QueueJobLauncher implements JobLauncherInterface
                     'Job instance "%s" running the job "%s" with parameters "%s" is invalid because of "%s"',
                     $jobInstance->getCode(),
                     $job->getName(),
-                    print_r($jobParameters->all(), true),
+                    json_encode($jobParameters->all()),
                     $this->getErrorMessages($errors)
                 )
             );
         }
 
-        $jobExecution = $this->jobRepository->createJobExecution($jobInstance, $jobParameters);
-        $jobExecution->setUser($user->getUsername());
+        $jobExecution = $this->jobRepository->createJobExecution($job, $jobInstance, $jobParameters);
+        if ($user) {
+            $jobExecution->setUser($user->getUserIdentifier());
+        }
+
         $this->jobRepository->updateJobExecution($jobExecution);
 
         $this->batchLogHandler->setSubDirectory($jobExecution->getId());

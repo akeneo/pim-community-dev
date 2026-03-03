@@ -88,14 +88,16 @@ final class SqlGetConnectorProductModels implements Query\GetConnectorProductMod
             iterator_to_array($result)
         );
 
-        $connectorProductModels = $this->fromProductModelCodes(
+        $productModels = $this->fromProductModelCodes(
             $productModelCodes,
+            $userId,
             $attributesToFilterOn,
             $channelToFilterOn,
             $localesToFilterOn
         );
 
-        return new ConnectorProductModelList($result->count(), $connectorProductModels);
+        // We use the pqb result count in order to keep paginated research working
+        return new ConnectorProductModelList($result->count(), $productModels->connectorProductModels());
     }
 
     /**
@@ -103,21 +105,22 @@ final class SqlGetConnectorProductModels implements Query\GetConnectorProductMod
      */
     public function fromProductModelCode(string $productModelCode, int $userId): ConnectorProductModel
     {
-        $connectorProductModels = $this->fromProductModelCodes([$productModelCode], null, null, null);
+        $connectorProductModels = $this->fromProductModelCodes([$productModelCode], $userId, null, null, null);
 
-        if (empty($connectorProductModels)) {
+        if ($connectorProductModels->totalNumberOfProductModels() === 0) {
             throw new ObjectNotFoundException(sprintf('Product model "%s" was not found', $productModelCode));
         }
 
-        return $connectorProductModels[0];
+        return $connectorProductModels->connectorProductModels()[0];
     }
 
-    private function fromProductModelCodes(
+    public function fromProductModelCodes(
         array $productModelCodes,
+        int $userId,
         ?array $attributesToFilterOn,
         ?string $channelToFilterOn,
         ?array $localesToFilterOn
-    ): array {
+    ): ConnectorProductModelList {
         $rows = array_replace_recursive(
             $this->getValuesAndPropertiesFromProductModelCodes->fromProductModelCodes($productModelCodes),
             $this->fetchAssociationsIndexedByProductModelCode($productModelCodes),
@@ -169,11 +172,12 @@ final class SqlGetConnectorProductModels implements Query\GetConnectorProductMod
                 $row['associations'] ?? [],
                 $row['quantified_associations'] ?? [],
                 $row['category_codes'],
-                $filteredValuesIndexedByProductModelCode[$productModelCode]
+                $filteredValuesIndexedByProductModelCode[$productModelCode],
+                null
             );
         }
 
-        return $productModels;
+        return new ConnectorProductModelList(count($productModels), $productModels);
     }
 
     private function fetchCategoryCodesIndexedByProductModelCode(array $productModelCodes): array
@@ -213,11 +217,18 @@ final class SqlGetConnectorProductModels implements Query\GetConnectorProductMod
 
         $quantifiedAssociationsIndexedByCode = [];
         foreach ($quantifiedAssociations as $productModelCode => $quantifiedAssociation) {
-            $associationTypes = array_keys($quantifiedAssociation);
-            $quantifiedAssociationsWithoutEntities = array_fill_keys($associationTypes, ['products' => [], 'product_models' => []]);
-            $quantifiedAssociation = array_merge_recursive($quantifiedAssociationsWithoutEntities, $quantifiedAssociation);
+            $associationTypes = array_map('strval', array_keys($quantifiedAssociation));
 
-            $quantifiedAssociationsIndexedByCode[$productModelCode]['quantified_associations'] = $quantifiedAssociation;
+            $filledAssociations = [];
+            foreach ($associationTypes as $associationType) {
+                $filledAssociations[$associationType] = ['product_models' => [], 'products' => []];
+                if (\array_key_exists($associationType, $quantifiedAssociation)) {
+                    $filledAssociations[$associationType]['products'] = $quantifiedAssociation[$associationType]['products'] ?? [];
+                    $filledAssociations[$associationType]['product_models'] = $quantifiedAssociation[$associationType]['product_models'] ?? [];
+                }
+            }
+
+            $quantifiedAssociationsIndexedByCode[$productModelCode]['quantified_associations'] = $filledAssociations;
         }
 
         return $quantifiedAssociationsIndexedByCode;

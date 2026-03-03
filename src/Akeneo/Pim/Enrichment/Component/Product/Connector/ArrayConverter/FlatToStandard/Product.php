@@ -41,9 +41,6 @@ class Product implements ArrayConverterInterface
     /** @var ColumnsMapper */
     protected $columnsMapper;
 
-    /** @var FieldsRequirementChecker */
-    protected $fieldChecker;
-
     /** @var array */
     protected $optionalAssocFields;
 
@@ -59,7 +56,6 @@ class Product implements ArrayConverterInterface
      * @param FieldConverter                  $fieldConverter
      * @param ColumnsMerger                   $columnsMerger
      * @param ColumnsMapper                   $columnsMapper
-     * @param FieldsRequirementChecker        $fieldChecker
      * @param AttributeRepositoryInterface    $attributeRepository
      * @param ArrayConverterInterface         $productValueConverter
      */
@@ -69,7 +65,6 @@ class Product implements ArrayConverterInterface
         FieldConverter $fieldConverter,
         ColumnsMerger $columnsMerger,
         ColumnsMapper $columnsMapper,
-        FieldsRequirementChecker $fieldChecker,
         AttributeRepositoryInterface $attributeRepository,
         ArrayConverterInterface $productValueConverter
     ) {
@@ -78,7 +73,6 @@ class Product implements ArrayConverterInterface
         $this->fieldConverter = $fieldConverter;
         $this->columnsMerger = $columnsMerger;
         $this->columnsMapper = $columnsMapper;
-        $this->fieldChecker = $fieldChecker;
         $this->optionalAssocFields = [];
         $this->attributeRepository = $attributeRepository;
         $this->productValueConverter = $productValueConverter;
@@ -180,7 +174,7 @@ class Product implements ArrayConverterInterface
         $filteredItem = $this->filterFields($mappedItem, $options['with_associations']);
         $this->validateItem($filteredItem);
 
-        $mergedItem = $this->columnsMerger->merge($filteredItem);
+        $mergedItem = $this->columnsMerger->merge($filteredItem, $options);
         $convertedItem = $this->convertItem($mergedItem);
 
         return $convertedItem;
@@ -244,18 +238,11 @@ class Product implements ArrayConverterInterface
 
         $convertedValues = $this->productValueConverter->convert($convertedValues);
 
-        if (empty($convertedValues)) {
-            throw new \LogicException('Cannot find any values. There should be at least one identifier attribute');
-        }
-
         $convertedItem['values'] = $convertedValues;
 
         $identifierCode = $this->attributeRepository->getIdentifierCode();
-        if (!isset($convertedItem['values'][$identifierCode])) {
-            throw new \LogicException(sprintf('Unable to find the column "%s"', $identifierCode));
-        }
 
-        $convertedItem['identifier'] = $convertedItem['values'][$identifierCode][0]['data'];
+        $convertedItem['identifier'] = $convertedItem['values'][$identifierCode][0]['data'] ?? null;
 
         return $convertedItem;
     }
@@ -265,8 +252,6 @@ class Product implements ArrayConverterInterface
      */
     protected function validateItem(array $item): void
     {
-        $requiredField = $this->attrColumnsResolver->resolveIdentifierField();
-        $this->fieldChecker->checkFieldsPresence($item, [$requiredField]);
         $this->validateOptionalFields($item);
         $this->validateFieldValueTypes($item);
     }
@@ -279,7 +264,7 @@ class Product implements ArrayConverterInterface
     protected function validateOptionalFields(array $item): void
     {
         $optionalFields = array_merge(
-            ['family', 'enabled', 'categories', 'groups', 'parent'],
+            ['uuid', 'family', 'enabled', 'categories', 'groups', 'parent'],
             $this->attrColumnsResolver->resolveAttributeColumns(),
             $this->getOptionalAssociationFields()
         );
@@ -388,6 +373,7 @@ class Product implements ArrayConverterInterface
     {
         $isGroupAssociationPattern = sprintf('/^\w+%s$/', AssociationColumnsResolver::GROUP_ASSOCIATION_SUFFIX);
         $isProductAssociationPattern = sprintf('/^\w+%s$/', AssociationColumnsResolver::PRODUCT_ASSOCIATION_SUFFIX);
+        $isProductUuidAssociationPattern = sprintf('/^\w+%s$/', AssociationColumnsResolver::PRODUCT_UUID_ASSOCIATION_SUFFIX);
         $isProductModelAssociationPattern = sprintf('/^\w+%s$/', AssociationColumnsResolver::PRODUCT_MODEL_ASSOCIATION_SUFFIX);
         $isProductAssociationQuantityPattern = sprintf('/^\w+%s%s$/', AssociationColumnsResolver::PRODUCT_ASSOCIATION_SUFFIX, AssociationColumnsResolver::QUANTITY_SUFFIX);
         $isProductModelAssociationQuantityPattern = sprintf('/^\w+%s%s$/', AssociationColumnsResolver::PRODUCT_MODEL_ASSOCIATION_SUFFIX, AssociationColumnsResolver::QUANTITY_SUFFIX);
@@ -395,10 +381,11 @@ class Product implements ArrayConverterInterface
         foreach (array_keys($mappedItem) as $field) {
             $isGroup = (1 === preg_match($isGroupAssociationPattern, $field));
             $isProduct = (1 === preg_match($isProductAssociationPattern, $field));
+            $isProductUuid = (1 === preg_match($isProductUuidAssociationPattern, $field));
             $isProductModel = (1 === preg_match($isProductModelAssociationPattern, $field));
             $isProductQuantity = (1 === preg_match($isProductAssociationQuantityPattern, $field));
             $isProductModelQuantity = (1 === preg_match($isProductModelAssociationQuantityPattern, $field));
-            if ($isGroup || $isProduct || $isProductModel || $isProductQuantity || $isProductModelQuantity) {
+            if ($isGroup || $isProduct || $isProductUuid || $isProductModel || $isProductQuantity || $isProductModelQuantity) {
                 unset($mappedItem[$field]);
             }
         }

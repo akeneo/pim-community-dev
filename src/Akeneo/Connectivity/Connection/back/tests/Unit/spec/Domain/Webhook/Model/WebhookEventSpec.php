@@ -6,6 +6,8 @@ namespace spec\Akeneo\Connectivity\Connection\Domain\Webhook\Model;
 
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
 use Akeneo\Platform\Component\EventQueue\Author;
+use Akeneo\Platform\Component\EventQueue\Event;
+use Akeneo\Platform\Component\EventQueue\EventInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use PhpSpec\ObjectBehavior;
 
@@ -17,7 +19,7 @@ class WebhookEventSpec extends ObjectBehavior
 {
     public function let(UserInterface $user): void
     {
-        $user->getUsername()->willReturn('julia');
+        $user->getUserIdentifier()->willReturn('julia');
         $user->getFirstName()->willReturn('Julia');
         $user->getLastName()->willReturn('Doe');
         $user->isApiUser()->willReturn(false);
@@ -29,7 +31,8 @@ class WebhookEventSpec extends ObjectBehavior
             '2020-01-01T00:00:00+00:00',
             $author,
             'staging.akeneo.com',
-            ['data']
+            ['data'],
+            $this->createEvent($author, ['data'])
         );
     }
 
@@ -72,5 +75,18 @@ class WebhookEventSpec extends ObjectBehavior
     public function it_returns_data(): void
     {
         $this->data()->shouldReturn(['data']);
+    }
+
+    private function createEvent(Author $author, array $data): EventInterface
+    {
+        $timestamp = 1577836800;
+        $uuid = '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c';
+
+        return new class($author, $data, $timestamp, $uuid) extends Event {
+            public function getName(): string
+            {
+                return 'product.created';
+            }
+        };
     }
 }

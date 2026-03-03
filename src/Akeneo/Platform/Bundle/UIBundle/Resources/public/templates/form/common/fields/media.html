@@ -2,7 +2,7 @@
     <% if (media.filePath === null) { %>
         <input class="AknMediaField-fileUploaderInput<%- readOnly ? ' AknMediaField-fileUploaderInput--disabled' : '' %>" type="file" />
         <div class="AknMediaField-emptyContainer">
-            <span title="upload icon" class="AknMediaField-uploadIcon"/>
+            <span title="upload icon" class="AknMediaField-uploadIcon"></span>
             <span><%- uploadLabel %></span>
         </div>
     <% } else { %>
@@ -14,7 +14,7 @@
                 <div class="AknMediaField-thumb file"><img src="<%- mediaThumbnailUrl %>" class="AknMediaField-image"/></div>
             <% } else { %>
                 <div class="AknMediaField-thumb file">
-                    <span title="upload icon" class="AknMediaField-uploadIcon"/>
+                    <span title="upload icon" class="AknMediaField-uploadIcon"></span>
                 </div>
             <% } %>
             <div class="AknMediaField-info info">

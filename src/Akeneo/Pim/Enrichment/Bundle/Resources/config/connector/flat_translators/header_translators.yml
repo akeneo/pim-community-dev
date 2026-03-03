@@ -23,5 +23,5 @@ services:
     class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\Header\PropertyTranslator
     arguments:
       - '@pim_catalog.localization.translator.label'
-      - ['categories', 'family_variant', 'enabled', 'family', 'parent', 'groups']
+      - ['uuid', 'categories', 'family_variant', 'enabled', 'family', 'parent', 'groups']
     tags: [{ name: pim_enrich.connector.flat_translators.header }]

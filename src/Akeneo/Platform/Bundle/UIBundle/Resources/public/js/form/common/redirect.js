@@ -45,6 +45,7 @@ define([
             this.template({
               label: __(this.config.label),
               buttonClass: this.config.buttonClass || 'AknButton--action',
+              title: this.config.title ? __(this.config.title) : '',
             })
           );
         }.bind(this)

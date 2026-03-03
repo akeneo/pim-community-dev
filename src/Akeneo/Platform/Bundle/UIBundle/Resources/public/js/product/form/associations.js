@@ -98,7 +98,9 @@ define([
             return _.findWhere(state.associationTypes, {code: associationType}).meta.id;
           }.bind(this),
           getModelIdentifier: function (model) {
-            return model.get('identifier');
+            return model.get('document_type') === 'product_model'
+              ? model.get('identifier')
+              : model.get('id').replace('product-', '');
           },
         },
         groups: {
@@ -114,7 +116,12 @@ define([
           getParamValue: function (associationType) {
             const associationsMeta = this.getFormData().meta.associations;
 
-            return associationsMeta[associationType] ? associationsMeta[associationType].groupIds : [];
+            const associations = associationsMeta[associationType] ? associationsMeta[associationType].groupIds : [];
+            if (associations.length === 0) {
+              return ['emptyAssociations'];
+            }
+
+            return associations;
           }.bind(this),
           getModelIdentifier: function (model) {
             return model.get('code');
@@ -221,7 +228,7 @@ define([
           );
           this.renderPanes();
 
-          if (0 !== associationTypes.length) {
+          if (0 !== associationTypes.length && !isQuantifiedAssociation) {
             const currentGrid = this.datagrids[this.getCurrentAssociationTarget()];
             this.renderGrid(currentGrid.name, currentGrid.getInitialParams(this.getCurrentAssociationType()));
             this.setListenerSelectors();
@@ -315,11 +322,13 @@ define([
         `quantifiedAssociations.${associationTypeCode}`
       );
 
+      const isUserOwner = this.getFormData().meta.is_owner ?? true;
       const props = {
         quantifiedAssociations,
         parentQuantifiedAssociations,
         errors,
         isCompact: false,
+        isUserOwner,
         onAssociationsChange: updatedAssociations => {
           const formData = this.getFormData();
           formData.quantified_associations = {
@@ -331,16 +340,16 @@ define([
           this.getRoot().trigger('pim_enrich:form:entity:update_state');
         },
         onOpenPicker: () =>
-          this.launchProductPicker().then(identifiers =>
-            identifiers.map(item => {
-              const matchProductModel = item.match(/^product_model;(.*)$/);
+          this.launchProductAndProductModelPicker().then(items =>
+            items.map(item => {
+              const quantifiedLink =
+                'product_model' === item.document_type
+                  ? {identifier: item.id, quantity: 1}
+                  : {uuid: item.technical_id, quantity: 1};
 
               return {
-                quantifiedLink: {
-                  identifier: matchProductModel ? matchProductModel[1] : item.match(/^product;(.*)$/)[1],
-                  quantity: 1,
-                },
-                productType: matchProductModel ? 'product_model' : 'product',
+                quantifiedLink: quantifiedLink,
+                productType: item.document_type,
                 errors: [],
                 product: null,
               };
@@ -420,7 +429,12 @@ define([
       _.each(associationTypes, function (assocType) {
         const association = quantified_associations[assocType.code] || associations[assocType.code];
 
-        assocType.productCount = association && association.products ? association.products.length : 0;
+        assocType.productCount =
+          association && association.products
+            ? association.products.length
+            : association && association.product_uuids
+            ? association.product_uuids.length
+            : 0;
 
         assocType.productModelCount = association && association.product_models ? association.product_models.length : 0;
 
@@ -443,7 +457,11 @@ define([
         this.$('.association-grid-container').addClass('hide');
         this.$('#product-quantified-associations').removeClass('hide');
       } else {
-        this.$('.association-grid-container').removeClass('hide');
+        if (this.getCurrentAssociationTarget() === 'products') {
+          this.$('.association-product-grid').removeClass('hide');
+        } else {
+          this.$('.association-group-grid').removeClass('hide');
+        }
         this.$('#product-quantified-associations').addClass('hide');
       }
 
@@ -458,6 +476,12 @@ define([
       this.updateListenerSelectors();
 
       const currentGrid = this.datagrids[this.getCurrentAssociationTarget()];
+
+      if (!this.isGridRendered(currentGrid) && !isQuantifiedAssociation) {
+        this.renderGrid(currentGrid.name, currentGrid.getInitialParams(this.getCurrentAssociationType()));
+        this.setListenerSelectors();
+      }
+
       mediator
         .trigger(
           'datagrid:setParam:' + currentGrid.name,
@@ -502,7 +526,7 @@ define([
       this.updateListenerSelectors();
 
       const currentGrid = this.datagrids[this.getCurrentAssociationTarget()];
-      if (!this.isGridRendered(currentGrid)) {
+      if (!this.isGridRendered(currentGrid) && !isQuantifiedAssociation) {
         this.renderGrid(currentGrid.name, currentGrid.getInitialParams(this.getCurrentAssociationType()));
         this.setListenerSelectors();
       }
@@ -544,33 +568,9 @@ define([
 
       $.get(Routing.generate('pim_datagrid_load', urlParams)).then(
         function (response) {
-          let metadata = response.metadata;
-          /* Next lines are related to PIM-6113 and need some comments.
-           *
-           * When you just saved a datagrid from the Product Edit Form, you will have an URL like
-           * '/association-group-grid?...&associatedIds[]=1&associatedIds[]=2', in reference of the last
-           * checked groups in the datagrid.
-           *
-           * The fact is that there is 2 places where these parameters are set: in the URL, and in the
-           * datagrid state (state.parameters.associatedIds).
-           *
-           * If you do not drop the params of the URL (containing associatedIds array), you will have
-           * a mix of 2 times the same variable, defined at 2 different places. This leads to a refreshed
-           * datagrid with wrong checkboxes.
-           *
-           * To prevent this behavior, we removed the parameters passed in the URL before rendering the
-           * grid, to only allow datagrid state parameters.
-           */
-          const queryParts = metadata.options.url.split('?');
-          const url = queryParts[0];
-          const queryString = decodeURIComponent(queryParts[1])
-            .replace(/&?association-group-grid\[associatedIds\]\[\d+\]=\d+/g, '')
-            .replace(/^&/, '');
-          metadata.options.url = url + '?' + queryString;
+          this.$('#grid-' + gridName).data({metadata: response.metadata, data: JSON.parse(response.data)});
 
-          this.$('#grid-' + gridName).data({metadata: metadata, data: JSON.parse(response.data)});
-
-          let gridModules = metadata.requireJSModules;
+          let gridModules = response.metadata.requireJSModules;
           gridModules.push('pim/datagrid/state-listener');
           gridModules.push('oro/datafilter-builder');
           gridModules.push('oro/datagrid/pagination-input');
@@ -662,7 +662,7 @@ define([
       let assocSubTarget = assocTarget;
       if (assocTarget === 'products') {
         // We check from what association target we have to remove model (products or product_models)
-        assocSubTarget = model.attributes.document_type === 'product' ? 'products' : 'product_models';
+        assocSubTarget = model.attributes.document_type === 'product' ? 'product_uuids' : 'product_models';
       }
 
       const associationsField = this.getFormData().associations;
@@ -782,24 +782,23 @@ define([
      * Opens the panel to select new products to associate
      */
     addAssociations: function () {
-      this.launchProductPicker().then(productAndProductModelIdentifiers => {
-        let productIds = [];
+      this.launchProductPicker().then(items => {
+        let productUuids = [];
         let productModelIds = [];
-        productAndProductModelIdentifiers.forEach(item => {
-          const matchProductModel = item.match(/^product_model;(.*)$/);
-          if (matchProductModel) {
-            productModelIds.push(matchProductModel[1]);
-          } else {
-            const matchProduct = item.match(/^product;(.*)$/);
-            productIds.push(matchProduct[1]);
+
+        items.forEach(item => {
+          if ('product' === item.document_type) {
+            productUuids.push(item.technical_id);
+          } else if ('product_model' === item.document_type) {
+            productModelIds.push(item.id);
           }
         });
 
         const assocType = this.getCurrentAssociationType();
-        const previousProductIds = this.getFormData().associations[assocType].products;
+        const previousProductUuids = this.getFormData().associations[assocType].product_uuids;
         const previousProductModelIds = this.getFormData().associations[assocType].product_models;
 
-        this.updateFormDataAssociations(previousProductIds.concat(productIds), assocType, 'products');
+        this.updateFormDataAssociations(previousProductUuids.concat(productUuids), assocType, 'product_uuids');
 
         this.updateFormDataAssociations(previousProductModelIds.concat(productModelIds), assocType, 'product_models');
 
@@ -808,6 +807,7 @@ define([
     },
 
     /**
+     * @TODO CPM-739: Do not use this function anymore
      * Launch the association product picker
      *
      * @return {Promise}
@@ -815,7 +815,7 @@ define([
     launchProductPicker: function () {
       const deferred = $.Deferred();
 
-      FormBuilder.build('pim-associations-product-picker-form').then(form => {
+      FormBuilder.build('pim-associations-product-and-product-model-picker-modal').then(form => {
         FetcherRegistry.getFetcher('association-type')
           .fetch(this.getCurrentAssociationType())
           .then(associationType => {
@@ -859,7 +859,50 @@ define([
 
       return deferred.promise();
     },
+    launchProductAndProductModelPicker: function () {
+      const deferred = $.Deferred();
 
+      FormBuilder.build('pim-associations-product-and-product-model-picker-modal').then(form => {
+        FetcherRegistry.getFetcher('association-type')
+          .fetch(this.getCurrentAssociationType())
+          .then(associationType => {
+            const formData = this.getFormData();
+            const locale = UserContext.get('catalogLocale');
+            const productLabel = getLabel(formData.meta.label, locale, formData.code || formData.identifier);
+
+            let modal = new Backbone.BootstrapModal({
+              modalOptions: {
+                backdrop: 'static',
+                keyboard: false,
+              },
+              okCloses: false,
+              title: __('pim_enrich.entity.product.module.associations.manage', {
+                associationType: getLabel(associationType.labels, locale, associationType.code),
+              }),
+              innerDescription: __('pim_enrich.entity.product.module.associations.manage_description', {productLabel}),
+              content: '',
+              okText: __('pim_common.confirm'),
+              template: this.modalTemplate,
+              innerClassName: 'AknFullPage--full',
+            });
+
+            modal.open();
+            form.setElement(modal.$('.modal-body')).render();
+
+            modal.on('cancel', deferred.reject);
+            modal.on('ok', () => {
+              const productsAndProductModels = form.getItems().sort((a, b) => {
+                return a.code < b.code;
+              });
+              modal.close();
+
+              deferred.resolve(productsAndProductModels);
+            });
+          });
+      });
+
+      return deferred.promise();
+    },
     getAssociationCount: function () {
       const {associations, quantified_associations} = this.getFormData();
 

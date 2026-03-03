@@ -1,4 +1,4 @@
-import {renderHookWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
+import {renderHookWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {useActivatedLocales} from '../../../../../src/hooks/locales';
 import {aListOfLocales} from '../../../utils/provideLocaleHelper';
 import {fetchActivatedLocales} from '../../../../../src/infrastructure/fetchers';

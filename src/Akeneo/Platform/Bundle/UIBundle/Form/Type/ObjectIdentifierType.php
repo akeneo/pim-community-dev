@@ -3,7 +3,7 @@
 namespace Akeneo\Platform\Bundle\UIBundle\Form\Type;
 
 use Akeneo\Platform\Bundle\UIBundle\Form\Transformer\EntityToIdentifierTransformer;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -22,7 +22,7 @@ class ObjectIdentifierType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): ?string
     {
         return HiddenType::class;
     }
@@ -30,7 +30,7 @@ class ObjectIdentifierType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'pim_object_identifier';
     }

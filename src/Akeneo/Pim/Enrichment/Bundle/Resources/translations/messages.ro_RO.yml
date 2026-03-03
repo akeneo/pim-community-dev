@@ -1,0 +1,77 @@
+No products to remove: Niciun produs de eliminat
+"dot (.)": dot (.)
+"comma (,)": virgulă (,)
+pim_enrich:
+  #Category
+  category:
+    tab:
+      property.title: Proprietăți
+      history.title: Istoric
+    suggest_selection: Vă rugăm să selectați o categorie din stânga
+    or: sau
+    create_new: Creează nouă o categorie
+  #Mass edit operations
+  mass_edit_action:
+    limit_exceeded: Vă rugăm să alegeţi mai puţin de %limit% elemente pentru a modifica
+    product:
+      page_title: Produse
+      page_subtitle: Editarea in masa (1 produs) | Editare in masă (%count% produse)
+      title: Alege operațiune
+      subtitle: Alegeți operația pe care doriți să o efectuați cu produsul selectat | Alegeți operația pe care doriți să o efectuați pe produsele %count% selectate
+      confirm: Sunteți pe cale de a actualiza un produs cu următoarele informații, vă rugăm să confirmați.|Sunteți pe cale de a actualiza %count% produse cu următoarele informații, vă rugăm să confirmați.
+      steps:
+        first: Alege produse
+        second: Alege operațiune
+        third: Configurați
+        fourth: Confirmă
+    change-status:
+      label: Schimbă status
+      description: Produsele selectate vor fi activate sau dezactivate.
+      success_flash: Statusul produsului/produselor a fost schimbat
+      launched_flash: Acțiunea în masă "schimbă status" a fost lansată. Vei fi notificat când este gata.
+    edit-common-attributes:
+      label: Modifică atribute
+      empty: Selectează atributul/atributele pe care dorești să le modifici
+      success_flash: Sarcina de actualizare a produsului/produselor se execută
+      message:
+        warning: Nu există atribute în comun pentru produsele selectate. Vă rugăm să vă schimbați selecția.
+        invalid_attribute: Atributul cu codul "attribute_code nu este comun produselor selectate, se sare peste atribut.
+        no_valid_attribute: Niciunul dintre atributele selectate nu poate fi aplicat acestui produs.
+    classify-add:
+      label: Adăugați la categorii
+      description: Produsele vor fi poziționate în următoarele categorii, poziționarea actuală este păstrată.
+      success_flash: Produsul/produsele au fost clasificate în categoriile selectate
+      launched_flash: Acțiunea în masă "adaugă la categorii" a fost lansată. Vei fi notificat când este gata.
+    classify-move:
+      label: Mută între categorii
+      description: Produsele vor fi poziționate în următoarele categorii, poziționarea actuală este pierdută.
+      success_flash: Produsul/produsele au fost mutate în categoriile selectate
+      launched_flash: Acțiunea în masă "mută la categorii" a fost lansată. Vei fi notificat când este gata.
+    classify-remove:
+      label: Eliminați din categorii
+      description: Produsele vor fi eliminate din categoriile următoare.
+      success_flash: Produsul/produsele au fost eliminate din categoriile selectate
+      launched_flash: Acțiunea în masă "elimină din categorii" a fost lansată. Vei fi notificat când este gata.
+    change-family:
+      label: Schimbați familia
+      description: Familia produselor selectate va fi schimbată la familia aleasă
+      success_flash: Familia produsului/produselor selectate a fost schimbată cu succes
+      launched_flash: Acțiunea în masă "schimbă familia" a fost lansată. Vei fi notificat când este gata.
+    add-to-groups:
+      label: Adaugă la grupuri
+      description: Selectează grupurile în care să adaugi produsele selectate
+      success_flash: Produsele au fost adăugate cu sucess în grupurile selectate
+      launched_flash: Acțiunea în masă "adaugă la grupuri" a fost lansată. Vei fi notificat când este gata.
+      no_group: Niciun grup. Începeți prin a creea un grup.
+    set-attribute-requirements:
+      label: Setează cerințele atributelor
+      description: Următoarele cerințe de atribute vor fi aplicate familiilor selectate
+      success_flash: Cerințele de atribute au fost aplicate familiilor selectate
+      launched_flash: Acțiunea în masă "setează cerințe atribut" a fost lansată. Vei fi notificat când este gata.
+    mass_action:
+      quick_export:
+        launched_flash: Sarcina de exportare produse se execută
+category:
+  overview: Categorii
+tree:
+  create: Creează un arbore de categorii

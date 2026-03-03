@@ -1,0 +1,28 @@
+validation:
+  create:
+    identifier_limit_reached: '"{{limit}}" 식별자 생성기 제한에 도달했습니다.'
+    code_already_used: '이 코드는 이미 사용 중입니다'
+  update:
+    identifier_generator_code_not_found: '식별자 생성기 "{{code}}"이(가) 존재하지 않거나 액세스 권한이 없습니다.'
+  identifier_generator:
+    attribute_does_not_exist: '"{{code}}" 특성이 없습니다.'
+    attribute_should_have_type: '"{{ code }}" 특성 코드가 "{{ type }}" 유형인데 "{{ expected }}" 유형이어야 합니다.'
+    free_text_string_field_required: '자유 텍스트에는 "string" 키가 포함되어야 합니다.'
+    enabled_value_field_required: '활성화된 경우 "value" 키가 포함되어야 합니다.'
+    enabled_boolean_value: '이 값은 부울이어야 합니다.'
+    auto_number_fields_required: '"auto_number" 유형에는 "{{field}}" 필드가 필요합니다.'
+    structure_auto_number_limit_reached: '{{limit}}개 자동 번호만 포함해야 함'
+    conditions_limit_reached: '{{limit}} {{type}} 조건만 포함해야 함'
+    unknown_operator: '연산자 {{ value }}에는 다음 중 하나만 사용할 수 있습니다: {{ choices }}.'
+    families_do_not_exist: '다음 패밀리가 카탈로그에서 삭제되었습니다: {{ familyCodes }}. 제품 선택에서 이러한 항목을 삭제할 수 있습니다.'
+    options_do_not_exist: '특성 "{{ attributeCode }}"에 대해 다음 특성 옵션이 존재하지 않습니다: {{ optionCodes }}.'
+    unknown_scope: '"{{ scopeCode }}" 범위가 없습니다.'
+    unknown_locale: '"{{ localeCode }}" 로케일이 없거나 활성화되지 않았습니다.'
+    inactive_locale: '"{{ localeCode }}" 로케일이 "{{ scopeCode }}" 채널에서 활성화되지 않았습니다.'
+    family_property_fields_required: '"family" 유형에는 "{{ field }}}" 필드가 필요합니다.'
+    simple_select_property_fields_required: '"simple_select" 유형에는 "{{ field }}}" 필드가 필요합니다.'
+    reference_entity_property_fields_required: '"reference_entity" 유형에는 "{{ field }}}" 필드가 필요합니다.'
+    process_unknown_operator: '연산자 {{ value }}에는 다음 중 하나만 사용할 수 있습니다: {{ choices }}.'
+    locale_required: '"{{ attributeCode }}" 특성에 로케일이 필요합니다.'
+    scope_required: '"{{ attributeCode }}" 특성에 채널이 필요합니다.'
+    categories_do_not_exist: '다음 카테고리가 카탈로그에서 삭제되었습니다: {{ categoryCodes }}. 제품 선택에서 이러한 항목을 삭제할 수 있습니다.'

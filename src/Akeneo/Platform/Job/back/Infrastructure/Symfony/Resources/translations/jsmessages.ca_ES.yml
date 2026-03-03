@@ -1,0 +1,80 @@
+pim_title:
+  akeneo_job_process_tracker_index: Seguiment del procés
+  akeneo_job_process_tracker_details: Seguiment del procés | Mostrar tasca
+akeneo_job:
+  job_status:
+    COMPLETED: Completat
+    STARTED: En procés
+    STARTING: Començant
+    STOPPING: Aturant
+    STOPPED: Aturat
+    FAILED: Fallit
+    ABANDONED: Abandonat
+    UNKNOWN: Desconegut
+    IN_PROGRESS: En procés
+    PAUSING: Aturant
+    PAUSED: Aturat
+akeneo_job_process_tracker:
+  tooltip:
+    paused: Aquesta tasca s'ha posat en pausa a causa del manteniment intern de la vostra instància. Es reprendrà automàticament quan s'hagi acabat.
+  last_operations:
+    title: Últimes operacions
+    view_all: Veure tots
+    details: Detalls
+    no_result: No hi ha cap operació per mostrar de moment.
+  last_executions:
+    title: Últimes execucions
+  job_execution_list:
+    search_placeholder: Cerca pel nom de la feina
+    table:
+      headers:
+        job_name: Nom del treball
+        type: Tipus
+        started_at: Va començar a
+        username: Nom d’usuari
+        progress: Progrés
+        status: Estat
+        warning_count: Avisos
+  type_filter:
+    label: Tipus
+    all: Tot
+    quick_export: Exportació ràpida
+    import: Importar
+    export: Exportar
+    mass_edit: Edició massiva
+    mass_delete: Esborrat massiu de productes
+    attribute_mass_delete: Supressió massiva d'atributs
+    compute_family_variant_structure_changes: Calcular els canvis d'estructura de la variant familiar
+    compute_completeness_of_products_family: Calcular la completesa de la família de productes
+    clean_removed_attribute_job: Netejant els valors dels atributs eliminats
+    execute_rules: Executar regles
+  user_filter:
+    label: Usuari
+    all: Tot
+    search: Cercar
+  status_filter:
+    label: Estat
+    all: Tot
+    abandoned: Abandonat
+    completed: Acabat
+    failed: Fallit
+    starting: Començant
+    stopped: Aturat
+    stopping: Aturant
+    unknown: Desconegut
+    in_progress: En procés
+    pausing: Aturant
+    paused: Aturat
+  automation_filter:
+    all: Tot
+    yes: Yes
+    no: No
+    label: Automatització
+  max_page_without_filter_helper:
+    - Per mostrar-vos els resultats més rellevants, milloreu la cerca.
+  tracking:
+    completed: "Temps emprat: {{ duration }}"
+    in_progress: "Temps estimat que queda per al pas actual: {{ duration }}"
+    not_started: Pendent
+    untrackable: Pas no rastrejable
+    estimating: Calculant el temps restant...

@@ -1,12 +1,12 @@
 <?php
 
-return PhpCsFixer\Config::create()
+return (new PhpCsFixer\Config())
     ->setRules(array(
         '@PSR2' => true,
         'linebreak_after_opening_tag' => true,
         'ordered_imports' => true,
         'method_argument_space' => [
-            'ensure_fully_multiline' => false
+            'on_multiline' => 'ensure_fully_multiline'
         ],
     ))
     ->setCacheFile('var/php_cs.cache')
@@ -19,4 +19,5 @@ return PhpCsFixer\Config::create()
             ->in(__DIR__ . '/tests/features')
             ->in(__DIR__ . '/tests/back/Acceptance')
             ->in(__DIR__ . '/src')
+            ->exclude('Akeneo/Platform/Installer')
     );

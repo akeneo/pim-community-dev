@@ -14,8 +14,8 @@ class GenerateSecret implements GenerateSecretInterface
 {
     public function generate(): string
     {
-        $bytes = random_bytes(32);
+        $bytes = \random_bytes(32);
 
-        return base_convert(bin2hex($bytes), 16, 36);
+        return \base_convert(\bin2hex($bytes), 16, 36);
     }
 }

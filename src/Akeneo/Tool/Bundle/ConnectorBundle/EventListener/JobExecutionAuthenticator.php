@@ -7,7 +7,7 @@ use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 /**
@@ -19,26 +19,22 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
  */
 class JobExecutionAuthenticator implements EventSubscriberInterface
 {
-    /** @var UserProviderInterface */
-    protected $userProvider;
-
-    /** @var TokenStorageInterface */
-    protected $tokenStorage;
-
     /**
-     * @param UserProviderInterface $userProvider
+     * @param UserProviderInterface $jobUserProvider
+     * @param UserProviderInterface $uiUserProvider
      * @param TokenStorageInterface $tokenStorage
      */
-    public function __construct(UserProviderInterface $userProvider, TokenStorageInterface $tokenStorage)
-    {
-        $this->userProvider = $userProvider;
-        $this->tokenStorage = $tokenStorage;
+    public function __construct(
+        protected UserProviderInterface $jobUserProvider,
+        protected UserProviderInterface $uiUserProvider,
+        protected TokenStorageInterface $tokenStorage
+    ) {
     }
 
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             EventInterface::BEFORE_JOB_EXECUTION => 'authenticate'
@@ -49,7 +45,7 @@ class JobExecutionAuthenticator implements EventSubscriberInterface
      * Authenticate or not the job execution with the user that launched the job,
      * according to the parameters of the job execution.
      *
-     * @throws UsernameNotFoundException
+     * @throws UserNotFoundException
      *
      * @param JobExecutionEvent $event
      */
@@ -67,9 +63,14 @@ class JobExecutionAuthenticator implements EventSubscriberInterface
             return;
         }
 
-        $user = $this->userProvider->loadUserByUsername($username);
+        try {
+            $user = $this->jobUserProvider->loadUserByIdentifier($username);
+        } catch (UserNotFoundException) {
+            // Fallback to UI user for retro-compatibility
+            $user = $this->uiUserProvider->loadUserByIdentifier($username);
+        }
 
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $token = new UsernamePasswordToken($user, 'main', $user->getRoles());
         $this->tokenStorage->setToken($token);
     }
 }

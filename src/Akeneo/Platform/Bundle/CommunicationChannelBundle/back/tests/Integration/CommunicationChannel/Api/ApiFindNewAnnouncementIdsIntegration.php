@@ -24,7 +24,7 @@ class ApiFindNewAnnouncementIdsIntegration extends KernelTestCase
         static::bootKernel(['debug' => false]);
 
         $configDir = __DIR__;
-        $this->process = new Process("./vendor/bin/phiremock --config-path '$configDir'");
+        $this->process = Process::fromShellCommandline("./vendor/bin/phiremock --config-path '$configDir'");
         $this->process->start();
         $this->waitServerUp();
     }
@@ -38,7 +38,7 @@ class ApiFindNewAnnouncementIdsIntegration extends KernelTestCase
 
     public function test_it_finds_new_announcement_ids()
     {
-        $query = self::$container->get('akeneo_communication_channel.query.api.find_new_announcement_ids');
+        $query = self::getContainer()->get('akeneo_communication_channel.query.api.find_new_announcement_ids');
         $result = $query->find('Serenity', '2020105', 'en_US');
         Assert::assertCount(4, $result);
         Assert::assertEquals(
@@ -57,7 +57,7 @@ class ApiFindNewAnnouncementIdsIntegration extends KernelTestCase
         $attempt = 0;
         do {
             try {
-                $httpClient = new Client(['base_uri' => self::$container->getParameter('comm_panel_api_url')]);
+                $httpClient = new Client(['base_uri' => self::getContainer()->getParameter('comm_panel_api_url')]);
                 $httpClient->get('/');
             } catch (ConnectException $e) {
                 usleep(100000);

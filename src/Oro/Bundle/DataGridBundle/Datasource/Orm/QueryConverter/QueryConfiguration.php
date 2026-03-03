@@ -12,11 +12,11 @@ class QueryConfiguration implements ConfigurationInterface
     /**
      * {@inheritDoc}
      */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
-        $builder = new TreeBuilder();
+        $builder = new TreeBuilder('query');
 
-        $builder->root('query')
+        $builder->getRootNode()
             ->addDefaultsIfNotSet()
             ->children()
                 ->booleanNode('distinct')
@@ -68,8 +68,8 @@ class QueryConfiguration implements ConfigurationInterface
     /**
      * @param  string $name Join type ('left', 'inner')
      *
-     * @throws \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
-     * @return \Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition
+     * @throws InvalidConfigurationException
+     * @return ArrayNodeDefinition
      */
     protected function addJoinNode($name)
     {
@@ -77,9 +77,9 @@ class QueryConfiguration implements ConfigurationInterface
             throw new InvalidConfigurationException(sprintf('Invalid join type "%s"', $name));
         }
 
-        $builder = new TreeBuilder();
+        $builder = new TreeBuilder($name);
 
-        return $builder->root($name)
+        return $builder->getRootNode()
             ->requiresAtLeastOneElement()
             ->prototype('array')
                 ->children()
@@ -106,9 +106,9 @@ class QueryConfiguration implements ConfigurationInterface
             throw new InvalidConfigurationException(sprintf('Invalid where type "%s"', $name));
         }
 
-        $builder = new TreeBuilder();
+        $builder = new TreeBuilder($name);
 
-        return $builder->root($name)
+        return $builder->getRootNode()
             ->requiresAtLeastOneElement()
             ->prototype('scalar')->end();
     }

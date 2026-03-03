@@ -11,7 +11,7 @@ type DesciptionProps = {
 
 const Description = (props: DesciptionProps & any): JSX.Element => (
   <StyledDescription {...props}>
-    <ReactMarkdown source={props.description} />
+    <ReactMarkdown>{props.description}</ReactMarkdown>
   </StyledDescription>
 );
 

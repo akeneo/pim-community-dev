@@ -48,7 +48,7 @@ class AddAdditionalProductPropertiesRegistrySpec extends ObjectBehavior
                 'data',
                 null,
                 90,
-                1,
+                '54162e35-ff81-48f1-96d5-5febd3f00fd5',
                 'parent_code',
                 new WriteValueCollection([])
             ),
@@ -62,7 +62,7 @@ class AddAdditionalProductPropertiesRegistrySpec extends ObjectBehavior
                 'data',
                 null,
                 90,
-                1,
+                'd9f573cc-8905-4949-8151-baf9d5328f26',
                 'parent_code',
                 new WriteValueCollection([])
             ),

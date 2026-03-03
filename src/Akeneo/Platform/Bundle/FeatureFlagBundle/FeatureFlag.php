@@ -11,5 +11,5 @@ namespace Akeneo\Platform\Bundle\FeatureFlagBundle;
  */
 interface FeatureFlag
 {
-    public function isEnabled(): bool;
+    public function isEnabled(?string $feature = null): bool;
 }

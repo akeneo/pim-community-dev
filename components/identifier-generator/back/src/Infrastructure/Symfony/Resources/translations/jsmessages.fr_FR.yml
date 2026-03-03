@@ -1,0 +1,146 @@
+pim_title:
+  akeneo_identifier_generator_index: "Générateur d'identifiants"
+  akeneo_identifier_generator_edit: "Editer le générateur d'identifiants"
+pim_error:
+  unauthorized_list_attributes: "Vous ne pouvez pas lister les attributs. Veuillez contacter votre administrateur pour mettre à jour vos permissions."
+  unauthorized_list_properties: "Vous n'avez pas les droits suffisants pour visualiser cet élément. Veuillez contacter votre administrateur."
+  unauthorized_list_families: "Vous n'avez pas les droits suffisants pour visualiser les familles. Veuillez contacter votre administrateur."
+  general: "Une erreur s'est produite lors de l'affichage de cette page. Veuillez contacter votre administrateur."
+  unexpected: "Une erreur s'est produite lors de l'affichage de cette page. Veuillez contacter votre administrateur."
+  404: 'Une erreur 404 s''est produite...'
+  identifier_generator_not_found: 'Générateur d''identifiants introuvable'
+  selection_attribute_not_found: 'Un attribut de votre sélection de produits a été supprimé de votre catalogue. Veuillez supprimer cette propriété de votre sélection de produits.'
+pim_identifier_generator:
+  create:
+    form:
+      title: "Créer un nouveau générateur d'identifiants"
+      select_identifier_attribute: "Sélectionnez votre attribut d'identifiant"
+  tabs:
+    general: "Général"
+    product_selection: "Sélection produit"
+    identifier_structure: "Structure de l'identifiant"
+  general:
+    title: "Propriétés générales"
+    label_translations_in_ui_locale: "Traductions des libellés dans la locale de l'interface"
+    text_transformation:
+      label: 'Transformation de texte'
+      no: 'Sans transformation de texte'
+      lowercase: 'Minuscule'
+      uppercase: 'Majuscule'
+  flash:
+    create:
+      success: 'Le générateur d''identifiant "{{ code }}" a été créé avec succès'
+      error: 'Le générateur d''identifiant n''a pas pu être créé'
+    update:
+      success: 'Le générateur d''identifiant "{{ code }}" a été mis à jour avec succès'
+      error: 'Le générateur d''identifiant n''a pas pu être mis à jour'
+    delete:
+      success: 'Le générateur d''identifiant "{{ code }}" a été supprimé'
+      error: 'Le générateur d''identifiant n''a pas pu être supprimé'
+  list:
+    identifier: 'Identifiant'
+    first_generator: 'Créez votre premier générateur d''identifiant !'
+    read_only_list: 'Veuillez contacter votre administrateur pour avoir accès à cette fonctionnalité.'
+    helper:
+      title: 'Automatisez la création d''identifiants.'
+      info: 'Lorsque votre générateur d''identifiant sera créé, un identifiant sera automatiquement assigné à chaque nouveau produit. '
+    check_help_center: 'Consultez notre Help Center pour plus d''informations.'
+    max_generator:
+      title: 'Vous avez atteint la limite de {{ count }} générateurs d''identifiants.'
+    confirmation: 'Confirmez-vous la suppression de cette propriété ?'
+  operators:
+    'NOT IN CHILDREN': 'N''est pas dans les enfants'
+    'IN CHILDREN': 'Dans les enfants'
+    UNCLASSIFIED: 'N''est pas catégorisé'
+    CLASSIFIED: 'Catégorisé'
+  selection:
+    limit_reached: 'Vous avez atteint la limite de {{ %limit%}} conditions.'
+    helper:
+      title: 'Ajoutez des conditions à votre sélection de produits, si vous voulez :'
+      automate: 'automatiser la création d''identifiants pour une sélection de produits'
+      multiple: 'avoir plusieurs structures d''identifiants pour différentes sélections de produits'
+    empty:
+      title: 'Créez votre sélection produit'
+      text: 'Tous les produits qui ont un identifiant vide seront impactés.'
+      info: 'Ajoutez de nouvelles conditions si vous souhaitez cibler des produits spécifiques.'
+    settings:
+      enabled:
+        disabled: 'Désactivé'
+        placeholder: 'Choisir un statut'
+      family:
+        placeholder: 'Veuillez sélectionner au moins une famille'
+      select_option:
+        placeholder: 'Veuillez sélectionner au moins une option'
+      categories:
+        tree: Arborescence
+  structure:
+    helper: 'Définissez la structure des identifiants produits que vous souhaitez générer. Si vous avez besoin d''aide pour configurer les paramètres des priorités, {{link}}.'
+    helper_link: 'Consultez notre Help Center pour plus d''informations.'
+    title: 'Structure de l''identifiant'
+    add_element: 'Ajouter une nouvelle propriété '
+    limit_reached: 'Vous avez atteint la limite de {{ %limit%}} propriétés.'
+    property_type:
+      sections:
+        system: 'Système'
+      free_text: 'Texte'
+      auto_number: 'Nombre incrémental'
+      family: 'Famille'
+    settings:
+      free_text:
+        title: 'Paramètres du texte'
+        string_label: 'Définir le texte'
+      auto_number:
+        title: 'Nombre incrémental'
+        digitsMin_label: 'Nb de chiffres'
+        numberMin_label: 'Nombre min.'
+      family:
+        title: 'Famille'
+      code_format:
+        type:
+          truncate: 'Utiliser les premiers caractères'
+          code: 'Utiliser le code entier'
+          nomenclature: 'Utilisez votre nomenclature'
+      operator:
+        title: 'Opérateur'
+        placeholder: 'Sélectionner un opérateur'
+      simple_select:
+        title: 'Attribut'
+      abbrev_type: 'Définir le format de la propriété'
+      abbrev_type_empty_label: 'Sélectionner le format'
+      chars_number: 'Nombre de caractères'
+    empty:
+      title: 'Créer votre structure d''identifiant'
+      text: 'Sélectionnez ''Ajouter une nouvelle propriété'' en haut à droite de l''écran'
+      link_text: 'Consultez notre Help Center pour plus d''informations.'
+    delimiters:
+      title: 'Délimiteur'
+      helper: 'Consultez l''article de notre {{link}} pour apprendre à customiser vos délimiteurs.'
+      helper_link: 'notre Help center'
+      checkbox_label: 'Utiliser des délimiteurs entre chaque propriété'
+      input_label: 'Définir les délimiteurs'
+  deletion:
+    operations: 'Opérations'
+    confirmation: 'Êtes-vous sûr(e) de vouloir supprimer ce générateur d''identifiant ?'
+    type: 'Veuillez saisir "{{ code }}"'
+  nomenclature:
+    edit: 'Editer la nomenclature'
+    section_title: 'Générer mes identifiants pour {{ property }}'
+    title: 'Gérer la nomenclature'
+    helper: 'La nomenclature de vos familles sera partagée par tous vos générateurs d''identifiants.'
+    characters_number: 'Nombre de caractères'
+    operator_placeholder: 'Choisissez un opérateur'
+    value_placeholder: 'Nombre de caractères'
+    nomenclature: 'Nomenclature'
+    generate_if_empty: 'Générer automatiquement la nomenclature'
+    display: 'Affichage'
+    filters:
+      all: 'Tous les éléments'
+      error: 'Erreurs'
+      empty: 'Vides'
+      filled: 'Complétés'
+    empty:
+      title: 'Aucune nomenclature n''a été trouvée'
+    flash:
+      success: 'Votre nomenclature a été sauvegardée !'
+      error: 'Votre nomenclature n''a pas pu être sauvegardée.'
+      warning: 'Votre nomenclature a été sauvegardée, mais certaines valeurs n''ont pas pu être générées. Éditez votre nomenclature pour modifier les valeurs en erreur.'

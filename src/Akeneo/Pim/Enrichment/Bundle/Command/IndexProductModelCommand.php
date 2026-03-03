@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Command;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelDescendantsAndAncestorsIndexer;
+use Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\GetAllRootProductModelCodes;
+use Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\GetExistingProductModelCodes;
+use Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\GetProductModelCodesNotSynchronisedBetweenEsAndMysql;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\FetchMode;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
@@ -26,28 +27,21 @@ class IndexProductModelCommand extends Command
 {
     protected static $defaultName = 'pim:product-model:index';
 
-    private const BATCH_SIZE = 1000;
+    private const DEFAULT_BATCH_SIZE = 1000;
 
     private const ERROR_CODE_USAGE = 1;
 
-    /** @var Client */
-    private $productAndProductModelClient;
-
-    /** @var ProductModelDescendantsAndAncestorsIndexer */
-    private $productModelDescendantAndAncestorsIndexer;
-
-    /** @var Connection */
-    private $connection;
+    private BackoffElasticSearchStateHandler $batchEsStateHandler;
 
     public function __construct(
-        Client $productAndProductModelClient,
-        ProductModelDescendantsAndAncestorsIndexer $productModelDescendantAndAncestorsIndexer,
-        Connection $connection
+        private readonly Client $productAndProductModelClient,
+        private readonly ProductModelDescendantsAndAncestorsIndexer $productModelDescendantAndAncestorsIndexer,
+        private readonly GetAllRootProductModelCodes $getAllRootProductModel,
+        private readonly GetExistingProductModelCodes $getProductModelExistingAmong,
+        private readonly GetProductModelCodesNotSynchronisedBetweenEsAndMysql $getProductModelNotSynchronisedBetweenEsAndMysql,
     ) {
         parent::__construct();
-        $this->productAndProductModelClient = $productAndProductModelClient;
-        $this->productModelDescendantAndAncestorsIndexer = $productModelDescendantAndAncestorsIndexer;
-        $this->connection = $connection;
+        $this->batchEsStateHandler = new BackoffElasticSearchStateHandler();
     }
 
     /**
@@ -68,22 +62,40 @@ class IndexProductModelCommand extends Command
                 InputOption::VALUE_NONE,
                 'Index all existing product models into Elasticsearch'
             )
+            ->addOption(
+                'diff',
+                'd',
+                InputOption::VALUE_NONE,
+                'Index both missing product models present in Mysql and not in ES and outdated product model documents in ES. It does not remove product model documents present in ES but not in Mysql. See pim:product-model:clean-removed-products for that. This option does not work with "all" option. '
+            )
+            ->addOption(
+                'batch-size',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'Number of product models to index per batch',
+                self::DEFAULT_BATCH_SIZE
+            )
             ->setDescription('Index all or some product models into Elasticsearch');
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->checkIndexExists();
 
+        $batchSize = (int) $input->getOption('batch-size') ?: self::DEFAULT_BATCH_SIZE;
+
         if (true === $input->getOption('all')) {
-            $chunkedProductModelCodes = $this->getAllRootProductModelCodes();
-            $productModelCount = $this->getTotalNumberOfRootProductModels();
+            $chunkedProductModelCodes = $this->getAllRootProductModel->byBatchesOf($batchSize);
+            $productModelCount = 0;
+        } elseif (true === $input->getOption('diff')) {
+            $chunkedProductModelCodes = $this->getProductModelNotSynchronisedBetweenEsAndMysql->byBatchesOf($batchSize);
+            $productModelCount = 0;
         } elseif (!empty($input->getArgument('codes'))) {
             $requestedCodes = $input->getArgument('codes');
-            $existingroductModelCodes = $this->getExistingProductModelCodes($requestedCodes);
+            $existingroductModelCodes = $this->getProductModelExistingAmong->among($requestedCodes);
             $nonExistingCodes = array_diff($requestedCodes, $existingroductModelCodes);
             if (!empty($nonExistingCodes)) {
                 $output->writeln(
@@ -93,7 +105,7 @@ class IndexProductModelCommand extends Command
                     )
                 );
             }
-            $chunkedProductModelCodes = array_chunk($existingroductModelCodes, self::BATCH_SIZE);
+            $chunkedProductModelCodes = array_chunk($existingroductModelCodes, $batchSize);
             $productModelCount = count($existingroductModelCodes);
         } else {
             $output->writeln(
@@ -103,85 +115,40 @@ class IndexProductModelCommand extends Command
             return self::ERROR_CODE_USAGE;
         }
 
-        $numberOfIndexedProducts = $this->doIndex($chunkedProductModelCodes, new ProgressBar($output, $productModelCount));
+        $bulkESHandler = new class($this->productModelDescendantAndAncestorsIndexer) implements BulkEsHandlerInterface {
+            private ProductModelDescendantsAndAncestorsIndexer $productModelDescendantsAndAncestorsIndexer;
 
-        $output->writeln('');
+            public function __construct(ProductModelDescendantsAndAncestorsIndexer $productModelDescendantsAndAncestorsIndexer)
+            {
+                $this->productModelDescendantsAndAncestorsIndexer = $productModelDescendantsAndAncestorsIndexer;
+            }
+            public function bulkExecute(array $codes): int
+            {
+                $this->productModelDescendantsAndAncestorsIndexer->indexFromProductModelCodes($codes);
+                return count($codes);
+            }
+        };
+
+        $numberOfIndexedProducts = $this->doIndex($chunkedProductModelCodes, new ProgressBar($output, $productModelCount), $bulkESHandler, $output);
+
         $output->writeln(sprintf('<info>%d product models indexed</info>', $numberOfIndexedProducts));
 
         return 0;
     }
 
-    private function doIndex(iterable $chunkedProductModelCodes, ProgressBar $progressBar): int
+    private function doIndex(iterable $chunkedCodes, ProgressBar $progressBar, BulkEsHandlerInterface $codesEsHandler, OutputInterface $output): int
     {
-        $indexedProductModelCount = 0;
+        $indexedCount = 0;
 
         $progressBar->start();
-        foreach ($chunkedProductModelCodes as $productModelCodes) {
-            $this->productModelDescendantAndAncestorsIndexer->indexFromProductModelCodes($productModelCodes);
-            $indexedProductModelCount += count($productModelCodes);
-            $progressBar->advance(count($productModelCodes));
+        foreach ($chunkedCodes as $codes) {
+            $treatedBachSize = $this->batchEsStateHandler->bulkExecute($codes, $codesEsHandler);
+            $indexedCount+=$treatedBachSize;
+            $progressBar->advance($treatedBachSize);
         }
         $progressBar->finish();
 
-        return $indexedProductModelCount;
-    }
-
-    private function getAllRootProductModelCodes(): iterable
-    {
-        $formerId = 0;
-        $sql = <<< SQL
-SELECT id, code
-FROM pim_catalog_product_model
-WHERE id > :formerId
-AND parent_id IS NULL
-ORDER BY id ASC
-LIMIT :limit
-SQL;
-        while (true) {
-            $rows = $this->connection->executeQuery(
-                $sql,
-                [
-                    'formerId' => $formerId,
-                    'limit' => self::BATCH_SIZE,
-                ],
-                [
-                    'formerId' => \PDO::PARAM_INT,
-                    'limit' => \PDO::PARAM_INT,
-                ]
-            )->fetchAll();
-
-            if (empty($rows)) {
-                return;
-            }
-
-            $formerId = (int)end($rows)['id'];
-            yield array_column($rows, 'code');
-        }
-    }
-
-    private function getExistingproductModelCodes(array $productModelCodes): array
-    {
-        $sql = <<<SQL
-SELECT code FROM pim_catalog_product_model
-WHERE code IN (:codes);
-SQL;
-
-        return $this->connection->executeQuery(
-            $sql,
-            [
-                'codes' => $productModelCodes,
-            ],
-            [
-                'codes' => Connection::PARAM_STR_ARRAY,
-            ]
-        )->fetchAll(FetchMode::COLUMN, 0);
-    }
-
-    private function getTotalNumberOfRootProductModels(): int
-    {
-        return (int)$this->connection->executeQuery(
-            'SELECT COUNT(0) FROM pim_catalog_product_model WHERE parent_id IS NULL'
-        )->fetchColumn(0);
+        return $indexedCount;
     }
 
     /**

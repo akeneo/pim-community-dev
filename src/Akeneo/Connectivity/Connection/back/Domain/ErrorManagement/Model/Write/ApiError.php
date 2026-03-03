@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write;
 
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\ErrorType;
-use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionCode;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
@@ -13,16 +13,14 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionC
  */
 abstract class ApiError implements ApiErrorInterface
 {
-    /** @var string */
-    private $content;
-
-    /** @var \DateTimeImmutable */
-    private $dateTime;
+    private string $id;
+    private string $content;
+    private \DateTimeImmutable $dateTime;
 
     public function __construct(string $content, \DateTimeImmutable $dateTime = null)
     {
         try {
-            $decoded = json_decode($content, true, 512, JSON_THROW_ON_ERROR);
+            $decoded = \json_decode($content, true, 512, JSON_THROW_ON_ERROR);
         } catch (\JsonException $jsonException) {
             throw new \InvalidArgumentException(
                 'The content of the API error must be in JSON format.',
@@ -40,8 +38,14 @@ abstract class ApiError implements ApiErrorInterface
             $dateTime = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
         }
 
+        $this->id = Uuid::uuid4()->toString();
         $this->content = $content;
         $this->dateTime = $dateTime;
+    }
+
+    public function id(): string
+    {
+        return  $this->id;
     }
 
     public function content(): string
@@ -51,10 +55,14 @@ abstract class ApiError implements ApiErrorInterface
 
     abstract public function type(): ErrorType;
 
+    /**
+     * @return array{id: string, content: mixed, error_datetime: string}
+     */
     public function normalize(): array
     {
         return [
-            'content' => json_decode($this->content(), true),
+            'id' => $this->id(),
+            'content' => \json_decode($this->content(), true, 512, JSON_THROW_ON_ERROR),
             'error_datetime' => $this->dateTime->format(\DateTimeInterface::ATOM),
         ];
     }

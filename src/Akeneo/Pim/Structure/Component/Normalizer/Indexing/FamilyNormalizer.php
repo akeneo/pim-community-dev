@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Structure\Component\Normalizer\Indexing;
 
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
@@ -60,11 +60,11 @@ class FamilyNormalizer implements NormalizerInterface, CacheableSupportsMethodIn
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return (
-                ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX === $format
-            ) && $data instanceof FamilyInterface;
+            ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX === $format
+        ) && $data instanceof FamilyInterface;
     }
 
     public function hasCacheableSupportsMethod(): bool

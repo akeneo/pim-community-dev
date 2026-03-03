@@ -1,5 +1,8 @@
 akeneo_elasticsearch:
     hosts: "%index_hosts%"
+    max_chunk_size: "%env(int:APP_ELASTICSEARCH_MAX_CHUNK_SIZE_CHARACTERS)%"
+    max_expected_indexation_latency_in_milliseconds: 1000
+    max_number_of_retries: 3
     indexes:
         -
             service_name: "akeneo_elasticsearch.client.product_and_product_model"
@@ -9,3 +12,7 @@ akeneo_elasticsearch:
             service_name: "akeneo_connectivity.client.connection_error"
             index_name: "%connection_error_index_name%"
             configuration_files: "%connection_error_elasticsearch_index_configuration_file%"
+        -
+            service_name: "akeneo_connectivity.client.events_api_debug"
+            index_name: "%events_api_debug_index_name%"
+            configuration_files: "%events_api_debug_elasticsearch_index_configuration_file%"

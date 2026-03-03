@@ -6,7 +6,7 @@ namespace Akeneo\Connectivity\Connection\Application\Webhook\Validation;
 
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Write\ConnectionWebhook;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectActiveWebhooksQuery;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectActiveWebhooksQueryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -18,15 +18,8 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
  */
 class EventSubscriptionsLimitValidator extends ConstraintValidator
 {
-    private SelectActiveWebhooksQuery $selectActiveWebhooksQuery;
-    private int $activeEventSubscriptionsLimit;
-
-    public function __construct(
-        SelectActiveWebhooksQuery $selectActiveWebhooksQuery,
-        int $activeEventSubscriptionsLimit
-    ) {
-        $this->selectActiveWebhooksQuery = $selectActiveWebhooksQuery;
-        $this->activeEventSubscriptionsLimit = $activeEventSubscriptionsLimit;
+    public function __construct(private SelectActiveWebhooksQueryInterface $selectActiveWebhooksQuery, private int $activeEventSubscriptionsLimit)
+    {
     }
 
     public function validate($eventSubscription, Constraint $constraint): void
@@ -40,15 +33,15 @@ class EventSubscriptionsLimitValidator extends ConstraintValidator
         }
 
         // Skip the limit check if the event subscription is disabled.
-        if (false === $eventSubscription->enabled()) {
+        if (!$eventSubscription->enabled()) {
             return;
         }
 
         // Count the number of active event subscriptions but ignore the current one if it is already enabled.
-        $activeEventSubscriptionsCount = count(
-            array_filter(
+        $activeEventSubscriptionsCount = \count(
+            \array_filter(
                 $this->selectActiveWebhooksQuery->execute(),
-                fn (ActiveWebhook $activeEventSubscription) => $activeEventSubscription->connectionCode() !== $eventSubscription->code(),
+                fn (ActiveWebhook $activeEventSubscription): bool => $activeEventSubscription->connectionCode() !== $eventSubscription->code(),
             ),
         );
 

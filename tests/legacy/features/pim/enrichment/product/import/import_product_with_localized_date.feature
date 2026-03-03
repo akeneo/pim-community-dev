@@ -16,7 +16,7 @@ Feature: Import product information with date
       SKU-002;;sku
       """
     And the following job "csv_footwear_product_import" configuration:
-      | filePath   | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
       | dateFormat | dd/MM/yyyy       |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
@@ -38,7 +38,7 @@ Feature: Import product information with date
       SKU-005;;sku
       """
     And the following job "csv_footwear_product_import" configuration:
-      | filePath   | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
       | dateFormat | yyyy-MM-dd       |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job

@@ -1,0 +1,14 @@
+pim_enrich:
+  acl:
+    category:
+      list: 列出类别
+      create: 创建类别
+      edit: 编辑类别
+      remove: 移除类别
+      move: 移动类别
+      children: 查看子类别
+      products: 查看类别的产品
+      history: 查看类别历史记录
+      template: 管理类别模板
+      edit_attributes: 编辑类别属性
+      order_trees: 对类别进行排序/重新排序

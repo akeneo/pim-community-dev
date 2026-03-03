@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\SecurityBundle\Acl\Extension;
 
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * This class allows to get the real class name of an entity by its name
@@ -13,17 +13,9 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class EntityClassResolver
 {
-    /**
-     * @var RegistryInterface
-     */
-    protected $doctrine;
+    protected ManagerRegistry $doctrine;
 
-    /**
-     * Constructor
-     *
-     * @param RegistryInterface $doctrine
-     */
-    public function __construct(RegistryInterface $doctrine)
+    public function __construct(ManagerRegistry $doctrine)
     {
         $this->doctrine = $doctrine;
     }

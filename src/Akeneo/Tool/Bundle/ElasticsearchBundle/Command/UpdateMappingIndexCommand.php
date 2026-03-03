@@ -44,15 +44,15 @@ class UpdateMappingIndexCommand extends Command
     {
         $this
             ->addArgument(
-            'indices',
-            InputArgument::IS_ARRAY,
-            'Elasticsearch indices name to reindex, separated by spaces'
-        );
+                'indices',
+                InputArgument::IS_ARRAY,
+                'Elasticsearch indices name to reindex, separated by spaces'
+            );
 
         $this->addOption('all', 'a', InputOption::VALUE_NONE, "Use --all if you want to update all mappings of all indices", null);
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $indices = $input->getOption('all') ? [] : $input->getArgument('indices');
 
@@ -70,7 +70,7 @@ TXT;
         if (!$io->confirm('Are you sure to continue?', true)) {
             $output->writeln("<info>You decided to abort your Elasticearch mapping update</info>");
 
-            return;
+            return 0;
         }
 
         $clients = $this->esClients($indices);
@@ -89,6 +89,8 @@ TXT;
         }
 
         $io->success("All the indices listed above have been migrated");
+
+        return 0;
     }
 
     private function buildNativeClient(Client $client): array

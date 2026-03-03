@@ -1,0 +1,7 @@
+version: '3.7'
+
+services:
+  node:
+    ports:
+      - '3000:3000'
+    command: yarn workspace @akeneo-pim-community/category app:start

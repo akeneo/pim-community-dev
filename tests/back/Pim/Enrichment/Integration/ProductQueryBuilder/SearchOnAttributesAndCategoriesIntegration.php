@@ -7,6 +7,10 @@ namespace AkeneoTest\Pim\Enrichment\Integration\ProductQueryBuilder;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
@@ -264,6 +268,7 @@ class SearchOnAttributesAndCategoriesIntegration extends AbstractProductQueryBui
      */
     protected function createDataset(): void
     {
+        $this->createAdminUser();
         $this->createProductModel([
             'code'           => 'model-shoe',
             'family_variant' => 'shoe_size_color',
@@ -284,38 +289,34 @@ class SearchOnAttributesAndCategoriesIntegration extends AbstractProductQueryBui
             'family_variant' => 'shoe_size_color',
             'values'         => ['size' => [['data' => 'm', 'locale' => null, 'scope' => null]]],
         ]);
-        $this->createVariantProduct('red-s', [
-            'parent'     => 'model-s',
-            'categories' => ['women'],
-            'values'     => ['color' => [['data' => 'red', 'locale' => null, 'scope' => null]]],
+        $this->createProduct('red-s', [
+            new ChangeParent('model-s'),
+            new SetCategories(['women']),
+            new SetSimpleSelectValue('color', null, null, 'red'),
         ]);
-        $this->createVariantProduct('blue-s', [
-            'parent'     => 'model-s',
-            'categories' => ['men'],
-            'values'     => ['color' => [['data' => 'blue', 'locale' => null, 'scope' => null]]],
+        $this->createProduct('blue-s', [
+            new ChangeParent('model-s'),
+            new SetCategories(['men']),
+            new SetSimpleSelectValue('color', null, null, 'blue'),
         ]);
-        $this->createVariantProduct('red-m', [
-            'parent'     => 'model-m',
-            'categories' => ['women'],
-            'values'     => ['color' => [['data' => 'red', 'locale' => null, 'scope' => null]]],
+        $this->createProduct('red-m', [
+            new ChangeParent('model-m'),
+            new SetCategories(['women']),
+            new SetSimpleSelectValue('color', null, null, 'red'),
         ]);
-        $this->createVariantProduct('blue-m', [
-            'parent'     => 'model-m',
-            'categories' => ['men'],
-            'values'     => ['color' => [['data' => 'blue', 'locale' => null, 'scope' => null]]],
+        $this->createProduct('blue-m', [
+            new ChangeParent('model-m'),
+            new SetCategories(['men']),
+            new SetSimpleSelectValue('color', null, null, 'blue'),
         ]);
         $this->createProduct('another-shoe', [
-            'categories' => ['women', 'winter-2018'],
-            'values' => [
-                'color'       => [['data' => 'blue', 'locale' => null, 'scope' => null]],
-                'description' => [['data' => 'Superb other shoe!', 'locale' => null, 'scope' => null]],
-                'brand' => [['data' => 'nyke', 'locale' => null, 'scope' => null]],
-            ],
+            new SetCategories(['women', 'winter-2018']),
+            new SetSimpleSelectValue('color', null, null, 'blue'),
+            new SetTextValue('description', null, null, 'Superb other shoe!'),
+            new SetTextValue('brand', null, null, 'nyke!'),
         ]);
         $this->createProduct('unclassified-product', [
-            'values' => [
-                'description' => [['data' => 'quantum mechanics', 'locale' => null, 'scope' => null]],
-            ],
+            new SetTextValue('description', null, null, 'quantum mechanics'),
         ]);
     }
 
@@ -414,20 +415,6 @@ class SearchOnAttributesAndCategoriesIntegration extends AbstractProductQueryBui
 
         $this->get('pim_catalog.saver.product_model')->save($productModel);
 
-        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
-    }
-
-    /**
-     * @param string $identifier
-     * @param array  $data
-     */
-    protected function createVariantProduct(string $identifier, array $data = [])
-    {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
-        $this->get('pim_catalog.updater.product')->update($product, $data);
-        $constraintList = $this->get('pim_catalog.validator.product')->validate($product);
-        $this->assertEquals(0, $constraintList->count());
-        $this->get('pim_catalog.saver.product')->save($product);
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
     }
 

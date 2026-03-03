@@ -61,6 +61,71 @@ class SimpleSelectTranslatorSpec extends ObjectBehavior
         )->shouldReturn([$redTranslation, $yellowTranslation, $optionWithoutTranslation]);
     }
 
+    function it_is_case_insensitive_to_find_option_labels(
+        GetExistingAttributeOptionsWithValues $getExistingAttributeOptionsWithValues
+    ) {
+        $locale = 'fr_FR';
+        $getExistingAttributeOptionsWithValues
+            ->fromAttributeCodeAndOptionCodes([
+                $this->optionKey('color', 'red'),
+                $this->optionKey('color', 'yellow'),
+                $this->optionKey('color', 'purple')
+            ])
+            ->willReturn([
+                $this->optionKey('color', 'red')    => [$locale => 'rouge'],
+                $this->optionKey('color', 'yellow') => [$locale => 'jaune'],
+                $this->optionKey('color', 'purple') => [$locale => 'purple']
+            ]);
+
+        $this->translate('color', [], ['ReD', 'YeLLoW', 'PURPle', ''], $locale)
+            ->shouldReturn(['rouge', 'jaune', 'purple', '']);
+    }
+
+    function it_is_attribute_code_case_insensitive_to_find_option_labels(
+        GetExistingAttributeOptionsWithValues $getExistingAttributeOptionsWithValues
+    ) {
+        $getExistingAttributeOptionsWithValues
+            ->fromAttributeCodeAndOptionCodes([
+                'color.red',
+                'color.yellow',
+                'color.purple'
+            ])
+            ->willReturn([
+                'Color.red' => ['fr_FR' => 'rouge'],
+                'Color.yellow' => ['fr_FR' => 'jaune'],
+                'Color.purple' => ['fr_FR' => 'purple']
+            ]);
+
+        $this->translate('Color', [], ['ReD', 'YeLLoW', 'PURPle', ''], 'fr_FR')
+            ->shouldReturn(['rouge', 'jaune', 'purple', '']);
+    }
+
+    function it_translates_simple_select_value_with_numeric_label(
+        GetExistingAttributeOptionsWithValues $getExistingAttributeOptionsWithValues
+    ) {
+        $locale = 'fr_FR';
+        $attributeCode = 'color';
+
+        $redOptionCode = '0';
+        $redOptionKey = $this->optionKey($attributeCode, $redOptionCode);
+        $redTranslation = 'zero';
+
+        $getExistingAttributeOptionsWithValues->fromAttributeCodeAndOptionCodes(
+            [$redOptionKey]
+        )->willReturn(
+            [
+                $redOptionKey => [$locale => $redTranslation],
+            ]
+        );
+
+        $this->translate(
+            $attributeCode,
+            [],
+            [$redOptionCode],
+            $locale
+        )->shouldReturn([$redTranslation]);
+    }
+
     function it_puts_the_option_code_between_brackets_when_the_option_does_have_a_translation(
         GetExistingAttributeOptionsWithValues $getExistingAttributeOptionsWithValues
     ) {

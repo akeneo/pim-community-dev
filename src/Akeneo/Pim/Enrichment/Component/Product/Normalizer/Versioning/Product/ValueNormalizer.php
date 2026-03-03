@@ -66,7 +66,6 @@ class ValueNormalizer implements NormalizerInterface, NormalizerAwareInterface, 
             $data = new ArrayCollection($data);
         }
 
-
         $type = $attribute->getType();
         $backendType = $attribute->getBackendType();
 
@@ -77,11 +76,10 @@ class ValueNormalizer implements NormalizerInterface, NormalizerAwareInterface, 
             if ('metric' === $backendType) {
                 $result[$fieldName . '-unit'] = '';
             }
-        } elseif (is_int($data)) {
-            $result = [$fieldName => (string) $data];
-        } elseif (is_float($data) || 'decimal' === $attribute->getBackendType()) {
-            $pattern = $attribute->isDecimalsAllowed() ? sprintf('%%.%sF', $this->precision) : '%d';
-            $result = [$fieldName => sprintf($pattern, $data)];
+        } elseif ('decimal' === $attribute->getBackendType() && !$attribute->isDecimalsAllowed()) {
+            $result = [$fieldName => sprintf('%d', $data)];
+        } elseif ('decimal' === $attribute->getBackendType() && $attribute->isDecimalsAllowed()) {
+            $result = [$fieldName => floatval($data) . ''];
         } elseif (is_string($data)) {
             $result = [$fieldName => $data];
         } elseif (is_object($data)) {
@@ -121,7 +119,7 @@ class ValueNormalizer implements NormalizerInterface, NormalizerAwareInterface, 
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof ValueInterface && in_array($format, $this->supportedFormats);
     }
@@ -191,7 +189,7 @@ class ValueNormalizer implements NormalizerInterface, NormalizerAwareInterface, 
             function ($first, $second) {
                 $sort = $first->getSortOrder() - $second->getSortOrder();
 
-                return $sort !== 0 ?? $first->getCode() - $second->getCode();
+                return (int) ($sort !== 0 ?? $first->getCode() - $second->getCode());
             }
         );
         $sortedCollection = new ArrayCollection($options);

@@ -1,0 +1,9 @@
+Akeneo\Connectivity\Connection\Application\Apps\Command\ConsentAppAuthenticationCommand:
+    properties:
+        clientId:
+            -   NotBlank:
+                    message: akeneo_connectivity.connection.connect.apps.constraint.client_id.not_blank
+            -   Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation\ClientIdMustBeValid:
+                    message: akeneo_connectivity.connection.connect.apps.constraint.client_id.must_be_valid
+        pimUserId:
+            -   Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation\UserIdMustBeValid: ~

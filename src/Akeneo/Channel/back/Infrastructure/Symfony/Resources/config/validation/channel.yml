@@ -1,0 +1,43 @@
+Akeneo\Channel\Infrastructure\Component\Model\Channel:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
+        - Akeneo\Tool\Component\StorageUtils\Validator\Constraints\Immutable:
+            properties:
+                - code
+    properties:
+        code:
+            - NotBlank: ~
+            - Regex:
+                pattern: /^[a-zA-Z0-9_]*[a-zA-Z]+[a-zA-Z0-9_]*$/
+                message: Channel code may contain only letters, numbers and underscores and should contain at least one letter
+            - Length:
+                max: 100
+        category:
+            - NotBlank:
+                payload:
+                    standardPropertyName: tree
+            - Akeneo\Channel\Infrastructure\Component\Validator\Constraint\IsRootCategory:
+                payload:
+                    standardPropertyName: tree
+        currencies:
+            - Count: { min: 1 }
+            - All:
+                - Akeneo\Channel\Infrastructure\Component\Validator\Constraint\IsCurrencyActivated:
+                    payload:
+                      standardPropertyName: currencies
+        locales:
+            - Count: { min: 1 }
+        translations:
+            - Valid: ~
+        conversionUnits:
+            - Akeneo\Channel\Infrastructure\Component\Validator\Constraint\ConversionUnits: ~
+
+Akeneo\Channel\Infrastructure\Component\Model\ChannelTranslation:
+    properties:
+        label:
+            - Length:
+                max: 100
+        locale:
+            - Akeneo\Channel\Infrastructure\Component\Validator\Constraint\Locale:
+                payload:
+                    standardPropertyName: labels

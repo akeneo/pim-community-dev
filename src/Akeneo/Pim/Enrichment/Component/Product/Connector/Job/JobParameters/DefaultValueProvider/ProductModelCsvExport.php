@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider;
 
-use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
@@ -62,6 +62,7 @@ class ProductModelCsvExport implements DefaultValuesProviderInterface
         $parameters['with_label'] = false;
         $parameters['header_with_label'] = false;
         $parameters['file_locale'] = null;
+        $parameters['with_uuid'] = false;
 
         $channels = $this->channelRepository->getFullChannels();
         $defaultChannelCode = (0 !== count($channels)) ? $channels[0]->getCode() : null;

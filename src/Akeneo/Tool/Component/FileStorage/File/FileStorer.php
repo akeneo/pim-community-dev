@@ -2,13 +2,17 @@
 
 namespace Akeneo\Tool\Component\FileStorage\File;
 
+use Akeneo\Tool\Component\FileStorage\Exception\FileAlreadyExistsException;
 use Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException;
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Tool\Component\FileStorage\Exception\InvalidFile;
 use Akeneo\Tool\Component\FileStorage\FileInfoFactoryInterface;
+use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\DuplicateObjectException;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use League\Flysystem\FileExistsException;
-use League\Flysystem\MountManager;
+use League\Flysystem\FilesystemException;
+use League\Flysystem\UnableToWriteFile;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -18,45 +22,28 @@ use Symfony\Component\Filesystem\Filesystem;
  * and save it to the database.
  *
  * @author    Julien Janvier <jjanvier@akeneo.com>
- * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @copyright 2015 Akeneo SAS (https://www.akeneo.com)
+ * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class FileStorer implements FileStorerInterface
 {
-    /** @var SaverInterface */
-    protected $saver;
-
-    /** @var MountManager */
-    protected $mountManager;
-
-    /** @var FileInfoFactoryInterface */
-    protected $factory;
-
-    /**
-     * @param MountManager             $mountManager
-     * @param SaverInterface           $saver
-     * @param FileInfoFactoryInterface $factory
-     */
     public function __construct(
-        MountManager $mountManager,
-        SaverInterface $saver,
-        FileInfoFactoryInterface $factory
+        private FilesystemProvider $filesystemProvider,
+        private SaverInterface $saver,
+        private FileInfoFactoryInterface $factory
     ) {
-        $this->mountManager = $mountManager;
-        $this->saver = $saver;
-        $this->factory = $factory;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function store(\SplFileInfo $localFile, $destFsAlias, $deleteRawFile = false)
+    public function store(\SplFileInfo $localFile, string $destFsAlias, bool $deleteRawFile = false): FileInfoInterface
     {
         if (!is_file($localFile->getPathname())) {
             throw new InvalidFile(sprintf('The file "%s" does not exist.', $localFile->getPathname()));
         }
 
-        $filesystem = $this->mountManager->getFilesystem($destFsAlias);
+        $filesystem = $this->filesystemProvider->getFilesystem($destFsAlias);
         $file = $this->factory->createFromRawFile($localFile, $destFsAlias);
 
         $error = sprintf(
@@ -80,16 +67,19 @@ class FileStorer implements FileStorerInterface
                 $options['ContentType'] = $mimeType; // AWS S3
                 $options['metadata']['contentType'] = $mimeType; // Google Cloud Storage
             }
-            $isFileWritten = $filesystem->writeStream($file->getKey(), $resource, $options);
-        } catch (FileExistsException $e) {
+            if ($filesystem->fileExists($file->getKey())) {
+                throw UnableToWriteFile::atLocation($file->getKey(), 'The file already exists');
+            }
+            $filesystem->writeStream($file->getKey(), $resource, $options);
+        } catch (FilesystemException $e) {
             throw new FileTransferException($error, $e->getCode(), $e);
         }
 
-        if (false === $isFileWritten) {
-            throw new FileTransferException($error);
+        try {
+            $this->saver->save($file);
+        } catch (DuplicateObjectException $e) {
+            throw new FileAlreadyExistsException($e->getMessage());
         }
-
-        $this->saver->save($file);
 
         if (true === $deleteRawFile) {
             $this->deleteRawFile($localFile);
@@ -103,7 +93,7 @@ class FileStorer implements FileStorerInterface
      *
      * @throws FileRemovalException
      */
-    protected function deleteRawFile(\SplFileInfo $file)
+    private function deleteRawFile(\SplFileInfo $file): void
     {
         $filesystem = new Filesystem();
 

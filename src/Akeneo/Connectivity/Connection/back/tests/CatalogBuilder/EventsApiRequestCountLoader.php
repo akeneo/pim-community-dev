@@ -13,21 +13,18 @@ use Doctrine\DBAL\Types\Types;
  */
 class EventsApiRequestCountLoader
 {
-    private DbalConnection $dbalConnection;
-
-    public function __construct(DbalConnection $dbalConnection)
+    public function __construct(private DbalConnection $dbalConnection)
     {
-        $this->dbalConnection = $dbalConnection;
     }
 
-    public function createEventsApiRequestCount(\DateTimeImmutable $eventDateTime, int $eventCount)
+    public function createEventsApiRequestCount(\DateTimeImmutable $eventDateTime, int $eventCount): void
     {
         $query = <<<SQL
 INSERT INTO akeneo_connectivity_connection_events_api_request_count(event_minute, event_count, updated) 	
 VALUES (:event_minute,:event_count,:updated)	
 SQL;
 
-        $this->dbalConnection->executeUpdate(
+        $this->dbalConnection->executeStatement(
             $query,
             [
                 'event_minute' => (int)$eventDateTime->format('i'),

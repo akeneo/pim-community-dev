@@ -20,6 +20,8 @@ interface UpdateAttributeToImproveContextAction extends Action {
   };
 }
 
+interface ProductEvaluationContextAction extends Action {}
+
 export const CHANGE_PRODUCT_TAB = 'CHANGE_PRODUCT_TAB';
 export const changeProductTabAction = (tabName: string): UpdateTabContextAction => {
   return {
@@ -56,10 +58,25 @@ export const showDataQualityInsightsAttributeToImproveAction = (
   };
 };
 
+export const START_PRODUCT_EVALUATION = 'START_PRODUCT_EVALUATION';
+export const startProductEvaluationAction = (): ProductEvaluationContextAction => {
+  return {
+    type: START_PRODUCT_EVALUATION,
+  };
+};
+
+export const END_PRODUCT_EVALUATION = 'END_PRODUCT_EVALUATION';
+export const endProductEvaluationAction = (): ProductEvaluationContextAction => {
+  return {
+    type: END_PRODUCT_EVALUATION,
+  };
+};
+
 const initialState: ProductEditFormPageContextState = {
   currentTab: PRODUCT_ATTRIBUTES_TAB_NAME,
   attributesTabIsLoading: false,
   attributeToImprove: null,
+  isProductEvaluating: false,
 };
 
 const pageContextReducer: Reducer<ProductEditFormPageContextState, UpdatePageContextAction> = (
@@ -86,6 +103,16 @@ const pageContextReducer: Reducer<ProductEditFormPageContextState, UpdatePageCon
       return {
         ...previousState,
         attributeToImprove: payload.attributeToImprove,
+      };
+    case START_PRODUCT_EVALUATION:
+      return {
+        ...previousState,
+        isProductEvaluating: true,
+      };
+    case END_PRODUCT_EVALUATION:
+      return {
+        ...previousState,
+        isProductEvaluating: false,
       };
     default:
       return previousState;

@@ -4,9 +4,10 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Factory\Value;
 
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ValueFactory;
-use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
+use Akeneo\Pim\Enrichment\Component\Product\Value\IdentifierValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 
@@ -17,17 +18,17 @@ use PhpSpec\ObjectBehavior;
  */
 final class IdentifierValueFactorySpec extends ObjectBehavior
 {
-    public function it_is_a_read_value_factory()
+    public function it_is_a_read_value_factory(): void
     {
         $this->shouldBeAnInstanceOf(ValueFactory::class);
     }
 
-    public function it_supports_identifier_attribute_type()
+    public function it_supports_identifier_attribute_type(): void
     {
         $this->supportedAttributeType()->shouldReturn(AttributeTypes::IDENTIFIER);
     }
 
-    public function it_does_not_support_null()
+    public function it_does_not_support_null(): void
     {
         $this->shouldThrow(InvalidPropertyTypeException::class)->during('createByCheckingData', [
             $this->getAttribute(true, true),
@@ -37,40 +38,57 @@ final class IdentifierValueFactorySpec extends ObjectBehavior
         ]);
     }
 
-    public function it_creates_a_localizable_and_scopable_value()
+    public function it_cannot_create_a_localizable_and_scopable_value(): void
     {
         $attribute = $this->getAttribute(true, true);
-        /** @var ScalarValue $value */
-        $value = $this->createByCheckingData($attribute, 'ecommerce', 'fr_FR', 1234);
-        $value->shouldBeLike(ScalarValue::scopableLocalizableValue('an_attribute', 1234, 'ecommerce', 'fr_FR'));
 
+        $this->shouldThrow(\InvalidArgumentException::class)->during(
+            'createByCheckingData',
+            [$attribute, 'ecommerce', 'fr_FR', 'my_identifier']
+        );
     }
 
-    public function it_creates_a_localizable_value()
+    public function it_cannot_create_a_localizable_value(): void
     {
         $attribute = $this->getAttribute(true, false);
-        /** @var ScalarValue $value */
-        $value = $this->createByCheckingData($attribute, null, 'fr_FR', 1234);
-        $value->shouldBeLike(ScalarValue::localizableValue('an_attribute', 1234, 'fr_FR'));
+
+        $this->shouldThrow(\InvalidArgumentException::class)->during(
+            'createByCheckingData',
+            [$attribute, null, 'fr_FR', 'my_identifier']
+        );
     }
 
-    public function it_creates_a_scopable_value()
+    public function it_cannot_create_a_scopable_value(): void
     {
         $attribute = $this->getAttribute(false, true);
-        /** @var ScalarValue $value */
-        $value = $this->createByCheckingData($attribute, 'ecommerce', null, 1234);
-        $value->shouldBeLike(ScalarValue::scopableValue('an_attribute', 1234, 'ecommerce'));
+
+        $this->shouldThrow(\InvalidArgumentException::class)->during(
+            'createByCheckingData',
+            [$attribute, 'ecommerce', null, 'my_identifier']
+        );
     }
 
-    public function it_creates_a_non_localizable_and_non_scopable_value()
+    public function it_cannot_create_a_value_with_a_non_string_value(): void
     {
         $attribute = $this->getAttribute(false, false);
-        /** @var ScalarValue $value */
-        $value = $this->createByCheckingData($attribute, null, null, 1234);
-        $value->shouldBeLike(ScalarValue::value('an_attribute', 1234));
+
+        $this->shouldThrow(InvalidPropertyTypeException::class)->during(
+            'createByCheckingData',
+            [$attribute, null, null, 42]
+        );
     }
 
-    public function it_throws_an_exception_if_it_is_not_a_scalar()
+    public function it_cannot_create_a_value_with_an_empty_string_value(): void
+    {
+        $attribute = $this->getAttribute(false, false);
+
+        $this->shouldThrow(InvalidPropertyException::class)->during(
+            'createByCheckingData',
+            [$attribute, null, null, '']
+        );
+    }
+
+    public function it_throws_an_exception_if_it_is_not_a_string(): void
     {
         $this->shouldThrow(InvalidPropertyTypeException::class)->during('createByCheckingData', [
             $this->getAttribute(true, true),
@@ -80,8 +98,38 @@ final class IdentifierValueFactorySpec extends ObjectBehavior
         ]);
     }
 
-    private function getAttribute(bool $isLocalizable, bool $isScopable): Attribute
+    public function it_creates_a_value_for_the_main_identifier_attribute(): void
     {
-        return new Attribute('an_attribute', AttributeTypes::IDENTIFIER, [], $isLocalizable, $isScopable, null, null, false, 'text', []);
+        $attribute = $this->getAttribute(false, false);
+        $value = $this->createByCheckingData($attribute, null, null, 'my_identifier');
+
+        $value->shouldBeLike(IdentifierValue::value('an_attribute', true, 'my_identifier'));
+    }
+
+    public function it_creates_a_value_for_another_identifier_attribute(): void
+    {
+        $attribute = $this->getAttribute(false, false, false);
+        $value = $this->createByCheckingData($attribute, null, null, 'my_identifier');
+
+        $value->shouldBeLike(IdentifierValue::value('an_attribute', false, 'my_identifier'));
+    }
+
+    private function getAttribute(bool $isLocalizable, bool $isScopable, bool $isMainIdentifier = true): Attribute
+    {
+        return new Attribute(
+            'an_attribute',
+            AttributeTypes::IDENTIFIER,
+            [],
+            $isLocalizable,
+            $isScopable,
+            null,
+            null,
+            false,
+            'text',
+            [],
+            null,
+            [],
+            $isMainIdentifier
+        );
     }
 }

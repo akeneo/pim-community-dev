@@ -1,0 +1,625 @@
+pim_menu:
+  tab:
+    connect: 연결
+  navigation:
+    connect: 연결 탐색
+  navigation_back:
+    connection: 연결로 돌아가기
+  navigation_block:
+    connection: 연결 탐색
+  item:
+    connection_audit: 연결 대시보드
+    connection_settings: 연결
+    connection_settings_edit: 연결 설정
+    connection_monitoring: 오류 모니터링
+    connection_webhook_edit: 이벤트 구독
+    connection_webhook_event_logs: 이벤트 로그
+    data_flows: 데이터 흐름
+    connect_connection_settings: 연결 설정
+    marketplace: App Store
+    connected_apps: 연결된 앱
+pim_title:
+  akeneo_connectivity_connection_connect_marketplace: App Store
+  akeneo_connectivity_connection_connect_marketplace_profile: App Store
+  akeneo_connectivity_connection_connect_apps_activate: 연결
+  akeneo_connectivity_connection_connect_apps_authorize: 연결
+  akeneo_connectivity_connection_connect_apps_authenticate: 연결
+  akeneo_connectivity_connection_settings_index: 연결 설정
+  akeneo_connectivity_connection_settings_edit: 연결 설정
+  akeneo_connectivity_connection_settings_any: 연결 설정
+  akeneo_connectivity_connection_audit_index: 연결 대시보드
+  akeneo_connectivity_connection_audit_any: 연결 대시보드
+  akeneo_connectivity_connection_error_management_dashboard: 연결 대시보드
+  akeneo_connectivity_connection_error_management_connection_monitoring: 연결 모니터링
+  akeneo_connectivity_connection_webhook_edit: 이벤트 구독
+  akeneo_connectivity_connection_webhook_regenerate_secret: 이벤트 구독
+  akeneo_connectivity_connection_webhook_event_logs: 이벤트 로그
+  akeneo_connectivity_connection_settings_redirect: 연결
+  akeneo_connectivity_connection_connect_connected_apps: 연결된 앱
+  akeneo_connectivity_connection_connect_connected_apps_edit: 앱 설정
+  akeneo_connectivity_connection_connect_connected_apps_delete: 앱 삭제
+  akeneo_connectivity_connection_connect_connected_apps_regenerate_secret: 자격 증명 다시 생성
+  akeneo_connectivity_connection_connect_custom_apps_create: 사용자 지정 앱 만들기
+  akeneo_connectivity_connection_connect_custom_apps_delete: 사용자 지정 앱 삭제
+  akeneo_connectivity_connection_connect_connected_apps_open: 앱 열기
+  akeneo_connectivity_connection_connect_connected_apps_catalogs_edit: 카탈로그 편집
+akeneo_connectivity.connection:
+  connect:
+    marketplace:
+      title: PIM을 다른 애플리케이션과 연결하시겠습니까? 🤟
+      sub_title: Akeneo App Store에서 Akeneo PIM에 연결 가능한 애플리케이션을 확인해보십시오.
+      link: App Store 액세스
+      helper:
+        title: '{0} 사용 중인 PIM 버전과 호환되는 앱 또는 커넥터가 없습니다.|{1} 사용 중인 PIM 버전과 호환되는 앱 또는 커넥터가 {{ count }}개 있습니다.|[2,Inf] 사용 중인 PIM 버전과 호환되는 앱 및 커넥터가 {{ count }}개 있습니다.'
+        title_without_apps: '{0} 사용 중인 PIM 버전과 호환되는 커넥터가 없습니다.|{1} 사용 중인 PIM 버전과 호환되는 커넥터가 {{ count }}개 있습니다.|[2,Inf] 사용 중인 PIM 버전과 호환되는 커넥터가 {{ count }}개 있습니다.'
+        description: 이는 간단한 개요입니다. 자세한 정보는 Akeneo App Store에서 살펴보십시오.
+        link: Akeneo App Store로 이동
+      search:
+        placeholder: 이름으로 검색
+        total: '{0} 결과 없음|{1} 1개 결과|[2,Inf] {{ total }}개 결과'
+      card:
+        developed_by: '개발자: {{ author }}'
+        read_more: 더보기
+        more_info: 자세한 정보
+        connect: 연결
+        connected: 연결됨
+        pending: 대기 중…
+      extensions:
+        title: 커넥터
+        total: '{0} 커넥터 없음|{1} 1개 커넥터|[2,Inf] {{ total }}개 커넥터'
+        empty: 사용 중인 버전과 호환되는 커넥터가 없습니다
+      apps:
+        title: 앱
+        total: '{0} 앱 없음|{1} 1개 앱|[2,Inf] {{ total }}개 앱'
+        empty: 사용 중인 버전과 호환되는 앱이 없습니다
+      unreachable: App Store에 연결할 수 없습니다. 잠시 후 다시 시도하십시오.
+      scroll_to_top: 맨 위로 스크롤
+      custom_apps:
+        title: 내 사용자 지정 앱
+        removed_user: 제거된 사용자
+    connected_apps:
+      list:
+        apps:
+          title: 연결된 앱
+          total: '{0} 앱 없음|{1} 1개 앱|[2,Inf] {{ total }}개 앱'
+          empty: 아직 연결된 앱이 없습니다.
+          check_marketplace: '{{ marketplaceLink }}에서 제공되는 모든 콘텐츠를 살펴보고 첫 앱을 설치해보십시오.'
+          marketplace_link_anchor: App Store
+          at_least_one_is_not_listed_on_the_appstore: 연결된 앱 중 일부가 PIM 버전과 호환되지 않거나 Akeneo App Store에 더 이상 없습니다. 자세한 정보를 확인하려면 문의해주십시오.
+          pending_apps: 앱 중 일부가 PIM에 연결되어 있지 않습니다.
+        custom_apps:
+          title: 연결된 내 사용자 지정 앱
+          removed_user: 제거된 사용자
+        helper:
+          title: '[0,1] PIM이 {{ count }}개 앱에 연결되어 있습니다.|[2,Inf] PIM이 {{ count }}개 앱에 연결되어 있습니다'
+          description_1: 새로운 앱이 꾸준히 개발되고 있으므로 계속 지켜봐주시고 App Store 페이지를 자주 확인하여 PIM을 연결하는 방법을 알아보십시오.
+          description_2: 앱에 대해 더 알아보고 싶으십니까?
+          link: 자세한 내용은 도움말 센터를 확인하십시오.
+        card:
+          developed_by: '개발자: {{ author }}'
+          new_access_authorization_required: 새로운 액세스 권한 부여가 필요합니다.
+          not_listed_on_the_appstore: 앱이 Akeneo App Store 목록에 더 이상 없습니다. App 지원 팀에 문의해주십시오.
+          manage_app: 앱 관리
+          open_app: 앱 열기
+          pending: 앱이 연결되어 있지 않습니다. 앱을 열면 연결 문제를 해결할 수 있습니다.
+        flash:
+          error: 죄송합니다. 연결된 앱 목록을 가져오는 동안 오류가 발생했습니다.
+      edit:
+        header:
+          open_app_button:
+            label: 앱으로 이동
+            icon_alt: 앱으로 이동 아이콘
+        not_found: 앱을 찾을 수 없음
+        tabs:
+          settings: 설정
+          permissions: 권한
+          catalogs: 카탈로그
+          error_monitoring: 오류 모니터링
+        settings:
+          monitoring:
+            title: 일반 설정
+          authorizations:
+            title: 권한 부여
+            information: '앱 권한 부여에 관한 자세한 내용은 {{ link }}을(를) 확인하십시오.'
+            no_access_to_product_information: '이 연결된 앱은 제품 정보에 액세스하지 않습니다.'
+            information_link_anchor: 도움말 문서
+            no_scope: 특정 권한 부여 요청이 없습니다.
+          authentication:
+            title: 권한 부여
+            information: '앱 권한 부여에 관한 자세한 내용은 {{ link }}을(를) 확인하십시오.'
+            information_link_anchor: 도움말 문서
+            openid_only: 이 앱은 사용자의 개인 데이터가 아닌 Akeneo 앱 권한 부여를 사용합니다.
+          pending: 이 앱은 PIM에 연결되어 있지 않습니다. 앱을 열면 연결 문제를 해결할 수 있습니다. 그래도 문제가 지속되면 App 지원 팀에 문의해주십시오.
+          credentials:
+            title: 자격 증명
+            client_id: 클라이언트 ID
+            client_secret: 클라이언트 비밀번호
+            regenerate_button: 다시 생성
+            regenerate_secret:
+              flash_error: 죄송합니다. 연결 비밀번호를 다시 생성하는 동안 오류가 발생했습니다. 
+              confirm:
+                title: 다시 생성 확인
+                description: 비밀번호를 다시 생성하면 PIM과의 사용자 지정 앱 연결에 영향을 미칩니다. 계속하시겠습니까?
+                regenerate_button: 다시 생성
+                cancel_button: 취소
+              new_credentials:
+                title: 새 자격 증명
+                subtitle: 자격 증명 다시 생성
+                done_button: 완료
+        error_monitoring:
+          error: 이런, 문제가 발생했습니다!
+          helper:
+            description: 지난 7일간 이 앱에 대한 각 오류의 세부 정보를 여기서 볼 수 있습니다. 오류 개수는 100개 오류로 제한됩니다.
+          not_data_source: 현재 모니터링 페이지는 소스 앱에만 사용할 수 있습니다.
+          not_auditable:
+            title: 모니터링되지 않는 앱
+            description:
+              1: 이 앱에서 오류를 추적하려면
+              2: 설정에서
+              3: 모니터링을 활성화하십시오.
+        catalogs:
+          edit:
+            flash:
+              success: 카탈로그 설정이 업데이트되었습니다.
+              error: 카탈로그를 저장할 수 없습니다. 표시된 오류를 해결한 다음 다시 저장해주십시오.
+              unknown_error: 카탈로그를 저장하는 동안 오류가 발생했습니다.
+            not_found: 카탈로그를 찾을 수 없습니다
+        flash:
+          load_permissions_error.title: '{{ entity }}에 저장된 권한을 로드할 수 없습니다.'
+          load_permissions_error.description: 나중에 다시 시도하십시오.
+          save_permissions_error.title: '{{ entity }}에 있는 권한을 업데이트할 수 없습니다.'
+          save_permissions_error.description: 앱 권한 설정을 확인해주십시오.
+          success: 앱 설정이 업데이트되었습니다.
+          monitoring_settings_error.description: 죄송합니다. 앱을 편집하는 동안 오류가 발생했습니다.
+      delete:
+        subtitle: 앱
+        title: 삭제 확인
+        description: 앱을 삭제하시겠습니까? 그 영향에 대해 잘 모르시겠습니까?
+        link: 다음과 같이 진행됩니다.
+        flash:
+          success: 앱이 삭제되었습니다.
+          error: 죄송합니다. 앱을 삭제하는 동안 오류가 발생했습니다.
+      open:
+        flash:
+          error: 죄송합니다. 앱을 여는 동안 오류가 발생했습니다.
+    apps:
+      loader:
+        message: 로드 중...
+      flash:
+        permissions_error.title: '{{ entity }}에 있는 권한을 저장할 수 없습니다.'
+        permissions_error.description: 앱 권한 설정을 확인해주십시오.
+      wizard:
+        title: 연결
+        action:
+          confirm: 확인
+          cancel: 취소
+          previous: 이전
+          next: 다음
+          allow_and_next: 허용 후 다음
+        progress:
+          authentication: 권한 부여
+          authorizations: 권한 부여
+          permissions: 권한
+          summary: 잘하셨습니다!
+        authentication:
+          title: '{{ app_name }}에서 다음을 요청'
+          helper: 앱 권한 부여에 관한 자세한 내용은 문서를 확인하십시오.
+          helper_link: PIM을 앱에 연결하는 방법
+          scope_profile: '{{ firstname }} 및 {{ lastname }} 확인'
+          scope_email: '{{ email }} 주소 확인'
+          consent:
+            label: '{{ app_marketplace_page }}에 나온 이 앱의 개인정보보호 및 이용약관에 동의합니다.'
+            app_marketplace_page: App Store 페이지
+            subtext: '본인이 타사 앱으로 리디렉션된다는 사실을 확인하고 이에 동의합니다. Akeneo는 이 앱의 콘텐츠에 대해 어떠한 책임도 지지 않습니다. Akeneo App Store를 방문하는 동안 문제가 발생한 경우 {{ contact_us }}에 문의하십시오.'
+            contact_us: 문의하기
+          firstname: 이름
+          lastname: 성
+          email: 이메일
+        authorize:
+          title: '{{ app_name }}에서 다음을 요청'
+          no_scope_title: '{{ app_name }}에서 PIM에 액세스하려고 합니다.'
+          no_scope: 특정 권한 부여 요청이 없습니다.
+          helper: 앱 권한 부여에 관해 자세히 알아보려면
+          helper_link: 도움말 문서를 확인하십시오.
+          is_allowed_to: '다음 권한이 허용됨:'
+          certification_consent:
+            label: '인증에 대한 다음 면책 조항을 읽었으며 이에 동의합니다.'
+            subtext: 'Akeneo는 고객의 앱 사용뿐만 아니라 앱의 기능에 대한 모든 책임을 포기합니다. 인증은 앱의 상호 운용성이나 고객 환경에서 제대로 작동할 것임을 보장하지 않습니다.'
+        flash:
+          success: 앱이 구성되었습니다.
+          error: 죄송합니다. 앱에 연결하는 동안 오류가 발생했습니다.
+        permission:
+          helper: 도움이 필요한 경우, 문서를 확인하십시오
+          helper_link: 앱 권한을 설정하는 방법
+      title: 연결
+      activate:
+        flash:
+          error: 죄송합니다. 앱에 연결하는 동안 오류가 발생했습니다.
+      scope:
+        type:
+          view: '{{ entities }} 보기'
+          edit: '{{ entities }} 보기 및 편집'
+          delete: '{{ entities }} 보기, 편집 및 삭제'
+        entities:
+          catalog_structure: 특성, 특성 그룹, 패밀리 및 패밀리 변형
+          attribute_options: 특성 옵션
+          categories: 카테고리
+          channel_localization: 로케일 및 통화
+          channel_settings: 채널
+          association_types: 연결 유형
+          products: 제품 및 제품 모델
+          reference_entity: 참조 엔터티
+          reference_entity_record: 참조 엔터티 레코드
+          asset_families: 애셋 패밀리
+          assets: 애셋
+          catalogs: 카탈로그
+        new: 신규
+      error:
+        sub_text: 앱 지원 팀에 문의해주십시오.
+        app_not_found: 기존 앱 중 이 client_id와 일치하는 것이 없습니다.
+      constraint:
+        client_id:
+          not_blank: client_id가 필요합니다.
+          must_be_valid: 알려진 클라이언트 중 이 client_id와 일치하는 것이 없습니다.
+          must_have_ongoing_authorization: 현재 진행 중인 권한 부여 프로세스가 client_id에 없습니다.
+        response_type:
+          not_blank: response_type이 필요합니다.
+          must_be_code: response_type은 '코드'여야 합니다.
+        redirect_uri:
+          not_blank: redirect_uri가 필요합니다.
+          must_be_url: redirect_uri는 유효한 URL이 아닙니다.
+        scope:
+          must_be_a_string: 범위 목록은 공백으로 구분된 문자열이어야 합니다.
+          too_long: 범위 목록은 1,000자 이하여야 합니다.
+    custom_apps:
+      creation_limit_reached: 사용자 지정 앱 20개 한도에 도달했습니다.
+      create_button: 앱 만들기
+      create_modal:
+        subtitle: 사용자 지정 앱 만들기
+        app_information:
+          title: 앱 정보
+          description: 도움이 필요한 경우 문서를 확인하십시오
+          link: 앱을 게시하기 전에 테스트하는 방법
+          fields:
+            name: 이름
+            activate_url: 활성화 URL
+            callback_url: 콜백 URL
+          field_placeholder:
+            name: 앱 이름 정의
+            activate_url: 활성화 URL 입력
+            callback_url: 콜백 URL 입력
+        credentials:
+          title: 자격 증명
+          client_id: 클라이언트 ID
+          client_secret: 클라이언트 비밀번호
+        errors:
+          limit_reached: 최대 20개 사용자 지정 앱을 만들 수 있습니다.
+          name:
+            min_length: 앱 이름이 너무 짧습니다. 3자 이상이어야 합니다.
+            max_length: 앱 이름이 너무 깁니다. 255자 이하여야 합니다.
+            not_blank: 앱 이름이 필요합니다.
+          client_id:
+            max_length: 앱의 클라이언트 ID가 너무 깁니다. 36자 이하여야 합니다.
+            not_blank: 클라이언트 ID가 필요합니다.
+          activate_url:
+            max_length: 앱의 활성화 URL이 너무 깁니다. 255자 이하여야 합니다.
+            must_be_url: 활성화 URL이 유효한 URL이어야 합니다.
+            not_blank: 활성화 URL이 필요합니다.
+          callback_url:
+            max_length: 앱의 콜백 URL이 너무 깁니다. 255자 이하여야 합니다.
+            must_be_url: 콜백 URL이 유효한 URL이어야 합니다.
+            not_blank: 콜백 URL이 필요합니다.
+      delete_modal:
+        subtitle: 사용자 지정 앱 삭제
+        title: 삭제 확인
+        description: 이 PIM에서 앱을 삭제하려고 합니다.
+        warning: 삭제를 확인하면 App Store 페이지 및 관련된 연결 앱에서 앱이 삭제됩니다.
+        flash:
+          success: 사용자 지정 앱이 삭제되었습니다.
+          error: 죄송합니다. 사용자 지정 앱을 삭제하는 동안 오류가 발생했습니다.
+  connections: 연결
+  secondary_actions:
+    title: 기타 작업
+  connection:
+    code: 코드
+    label: 레이블
+    flow_type: 흐름 유형
+    image: 이미지
+    auditable: 데이터 흐름 추적 대시보드 
+    client_id: 클라이언트 ID
+    secret: 비밀번호
+    username: 사용자 이름
+    password: 암호
+    user_role_id: 역할
+    user_group_id: 그룹
+    constraint:
+      connections_number_limit_reached: 연결 및 연결된 앱의 개수 제한인 50개에 도달했습니다.
+      code:
+        required: 연결 코드는 필수입니다.
+        invalid: 연결 코드는 문자, 숫자 및 밑줄만 포함할 수 있습니다.
+        too_short: 연결 코드가 너무 짧습니다. 3자 이상이어야 합니다.
+        too_long: 연결 코드가 너무 깁니다. 100자 이하여야 합니다.
+        must_be_unique: 연결 코드는 고유해야 합니다.
+      label:
+        required: 연결 레이블은 필수입니다.
+        too_short: 연결 레이블이 너무 짧습니다. 3자 이상이어야 합니다.
+        too_long: 연결 레이블이 너무 깁니다. 100자 이하여야 합니다.
+      flow_type:
+        invalid: 연결 흐름 유형은 'data_source', 'data_destination' 또는 '기타'여야만 합니다.
+      image:
+        must_exist: 이미지를 찾을 수 없습니다. 다시 시도하십시오.
+      type:
+        required: 연결 유형이 필요합니다.
+        too_long: 연결 유형이 너무 깁니다. 30자 이하여야 합니다.
+      user_group:
+        must_exist: 사용자 그룹을 찾을 수 없습니다. 지정한 사용자 그룹이 있는지 확인하십시오.
+  flow_type:
+    data_source: 데이터 소스 | 데이터 소스
+    data_destination: 데이터 대상 | 데이터 대상
+    other: 기타 | 기타
+  connection_count: '{{ count }} 연결 | {{ count }} 연결'
+  no_connection:
+    title: 아직 선언된 연결이 없습니다.
+    message: 첫 번째 연결을 추가하려면 위의 '만들기' 버튼을 클릭하거나
+    message_link: 여기를 클릭하십시오.
+  create_connection:
+    title: 새 연결 만들기
+    description: 최대 50개의 타사 앱 및 앱에 연결할 수 있습니다.
+    flash:
+      success: 연결이 생성되었습니다.
+      error: 죄송합니다. 연결을 생성하는 동안 오류가 발생했습니다.
+  edit_connection:
+    subtitle: 설정
+    flash:
+      success: 연결이 업데이트되었습니다.
+      error: 죄송합니다. 연결을 편집하는 동안 오류가 발생했습니다.
+    image_uploader:
+      extension_not_allowed: 죄송합니다. 업로드하려는 파일의 확장명은 허용되지 않습니다.
+    credentials:
+      title: 자격 증명
+      helper:
+        message: '해당 {{ label }} 커넥터를 사용하기 위한 자격 증명입니다.'
+        link: 여기서 자세히 알아보기...
+      wrong_credentials_combinations:
+        single: '이 연결에서 {{ wrong_username }} 사용자 이름을 사용하고 있는 것으로 확인되었습니다.(마지막 사용: {{ date }}, {{ time }}). 대신 {{ good_username }} 사용자 이름을 사용하는 것이 좋습니다.'
+        link: 이것을 사용해야 하는 이유 알아보기
+        link_list: 이 사용자 이름 사용이 권장되는 이유를 알아보십시오.
+        several: 이 연결에서 {{ good_username }} 사용자 이름을 사용하지 않고 있는 것으로 확인되었습니다.
+        list: '지난 7일간 사용된 사용자 이름 목록:'
+        username_date: '{{ wrong_username }}: {{ date }}, {{ time }}'
+      password_helper:
+        message: 암호를 잊어버린 경우, 여기서 새 암호를 생성할 수 있습니다. 
+        link: 추가 정보...
+      clear_password_helper:
+        message: 이 암호는 두 번 표시되지 않으므로 이 암호를 따로 저장해 두십시오.
+        link: 추가 정보...
+      action:
+        copy: 클립보드에 복사
+        regenerate: 다시 생성
+      flash:
+        copied: '{{ name }}이(가) 클립보드에 복사됨'
+    permissions:
+      title: 권한
+      helper:
+        message: '이 섹션에서 해당 {{ label }} 연결에 대한 권한을 정의할 수 있습니다.'
+        link: 연결 권한에 대해 자세히 알아보기...
+      user_role_helper:
+        message: 기본 `{{ role }}` 역할은 해당 연결에 가장 적합한 선택이 아닙니다. 해당 연결 요구 사항에 맞는 역할을 선택하는 것이 좋습니다.
+        link: 추가 정보...
+      user_group_helper:
+        message: 해당 연결 요구 사항에 맞는 그룹을 선택하는 것이 좋습니다.
+        link: 추가 정보...
+  regenerate_secret:
+    title: 다시 생성 확인
+    description: 연결 비밀번호를 다시 생성하시겠습니까? 그 영향에 대해 잘 모르십니까?
+    link: 다음과 같이 진행됩니다.
+    action:
+      regenerate: 다시 생성
+    flash:
+      success: 연결 비밀번호가 다시 생성되었습니다.
+      error: 죄송합니다. 연결 비밀번호를 다시 생성하는 동안 오류가 발생했습니다. 
+  regenerate_password:
+    title: 다시 생성 확인
+    description: 연결 암호를 다시 생성하시겠습니까? 그 영향에 대해 잘 모르십니까?
+    link: 다음과 같이 진행됩니다.
+    action:
+      regenerate: 다시 생성
+    flash:
+      success: 연결 암호가 다시 생성되었습니다.
+      error: 죄송합니다. 연결 암호를 다시 생성하는 동안 오류가 발생했습니다. 
+  delete_connection:
+    title: 삭제 확인
+    description: 연결을 삭제하시겠습니까? 그 영향에 대해 잘 모르십니까?
+    link: 다음과 같이 진행됩니다.
+    flash:
+      success: 연결이 삭제되었습니다.
+  helper:
+    title: '{0} 현재 PIM이 타사 애플리케이션에 연결되어 있지 않습니다. |{1} PIM이 타사 애플리케이션에 연결된 건이 1개 있습니다. 잘하셨습니다. 이렇게 하면 PIM이 에코시스템에 긴밀하게 통합됩니다.|]1,Inf] PIM이 타사 애플리케이션에 연결된 건이 {{ count }}개 있습니다. 잘하셨습니다. 이렇게 하면 PIM이 에코시스템에 긴밀하게 통합됩니다.'
+    description: 타사 통합이 없는 PIM은 이용 가치가 없습니다., 그렇지 않나요? 연결 덕분에, 해당 PIM의 내부에서 밀어내고 외부에서 가져오는 모든 데이터 흐름을 선언할 수 있습니다.
+    link: 연결에 관한 자세한 내용은 이 페이지를 확인하십시오.
+  flow_type_helper:
+    message: 흐름 유형이란 무엇인지 궁금하신가요?
+    link: 바로 여기서 도움을 드릴 수 있습니다!
+  auditable_helper:
+    message: '''소스'' 및 ''대상'' 연결만 추적할 수 있습니다.'
+    link: 추가 정보...
+  edit_image:
+    upload_helper: 이미지를 변경하거나, 끌어다 놓거나
+    remove_helper: 이미지 제거
+    click_here: 여기를 클릭
+    flash:
+      extension_not_allowed: 죄송합니다. 업로드하려는 파일의 확장명은 허용되지 않습니다.
+  grid.wrong_credentials_combination_helper: 아래 연결 중 일부는 해당 연결 사용자 이름을 사용하지 않고 있습니다. 이러한 연결은 노란색 경고 기호로 확인할 수 있습니다.
+  dashboard:
+    helper:
+      title: '👋 데이터 흐름에 오신 것을 환영합니다!'
+      description: 여기에서는 PIM과 타사 애플리케이션 간 데이터 흐름을 추적할 수 있습니다.
+      link: 연결 메뉴 및 데이터 흐름에 관해 자세히 알고 싶으십니까? 여기를 확인하십시오!
+    user_survey:
+      title: 이 대시보드에서 더 많은 데이터를 원하시나요?
+      content: 여러분의 피드백은 매우 중요합니다. 질문 하나가 나오는 이 설문조사에 답하여 다음 위젯을 선택하는 데 도움을 주시기 바랍니다.
+      button: 시작!
+    connection_selector:
+      title:
+        source: 데이터 연결
+        destination: 대상
+      all: 모두
+    charts:
+      inbound: 인바운드
+      outbound: 아웃바운드
+      number_of_products_created: 제품 생성됨
+      number_of_products_updated: 제품 업데이트됨
+      number_of_products_sent: 제품 전송됨
+      legend:
+        during_the_last_seven_days: '지난 7일간 합계:'
+        today: 오늘
+    error_management:
+      data_source_error_chart:
+        section:
+          title: 데이터 소스 오류
+          helper: 여기에서 비즈니스 오류를 포함한 총 오류 개수를 확인할 수 있습니다.
+        chart:
+          title: 1일 오류 개수
+      widget:
+        title: 데이터 소스별 비즈니스 오류
+        over_the_last_seven_days: 지난 7일간
+        business_errors: 비즈니스 오류
+    no_connection:
+      title:
+        default: 해당 연결에 대한 유용한 차트를 보고 싶으십니까?
+        data_source: 해당 소스 연결에 대한 유용한 차트를 보고 싶으십니까?
+        data_destination: 해당 대상 연결에 대한 유용한 차트를 보고 싶으십니까?
+      message_with_permission:
+        message: 첫 번째 연결을 만들어 추적을 시작하십시오.
+        link: 바로 여기서 가능합니다.
+      message_without_permission:
+        message: 관리자에게 요청하여 연결을 생성하십시오.
+        link: 연결에 대해 자세히 알아보기...
+  webhook:
+    title: 이벤트 구독
+    event_subscription: 이벤트 구독
+    download_logs: 로그 다운로드
+    helper:
+      message: 이 연결된 앱과 동기화된 제품의 PIM에서 발생하는 이벤트를 알림으로 받을 수 있습니다. 간단히 URL만 정의하면 됩니다.
+      link: 이벤트 구독 구성에 관해 자세히 알아보기...
+      url.test_disabled: URL을 테스트하려면 저장 버튼을 클릭하십시오.
+    form:
+      url: URL
+      secret: 비밀번호
+      enabled: 이벤트 구독 활성화
+      is_using_uuid: 제품 식별자 대신 제품 UUID를 사용하시겠습니까?
+      test: 테스트
+    error:
+      wrong_url: 이 값은 유효한 URL이 아닙니다.
+      required: 필수 기재 항목입니다.
+      not_found: 없는 연결을 업데이트하려 하고 있습니다.
+      limit_reached: 활성화된 이벤트 구독의 제한에 도달했습니다.
+      not_allowed_url: 이 URL은 허용되지 않습니다.
+    flash:
+      success: 이벤트 구독이 업데이트되었습니다.
+      error: 죄송합니다. 이벤트 구독을 편집하는 동안 오류가 발생했습니다.
+    regenerate_secret:
+      title: 다시 생성 확인
+      description: 이벤트 구독 비밀번호를 다시 생성하시겠습니까?
+      action:
+        regenerate: 다시 생성
+      link: 다음과 같이 진행됩니다.
+      flash:
+        success: 웹훅 비밀번호가 다시 생성되었습니다.
+        error: 죄송합니다. 웹훅 비밀번호를 다시 생성하는 동안 오류가 발생했습니다. 
+    active_event_subscriptions_limit_reached:
+      message: 연결할 수 있는 이벤트 구독 기능은 최대 {{ limit }}개입니다. 현재 이 제한에 도달했습니다.
+      link: 이벤트 구독 구성에 관해 자세히 알아보십시오.
+    event_logs:
+      title: 이벤트 로그
+      event_subscription_disabled:
+        title: 이 연결의 이벤트 구독이 활성화되지 않았습니다.
+        link: 이벤트 구독 활성화
+      no_event_logs:
+        title: 현재 로그가 없습니다.
+      no_event_logs_with_those_filters:
+        title: 죄송합니다. 검색 로그가 없습니다.
+        caption: 새 검색 조건으로 다시 시도하십시오.
+      level:
+        info: 정보
+        notice: 알림
+        warning: 경고
+        error: 오류
+      list:
+        search:
+          placeholder: 메시지에서 검색
+          total: '{0} 결과 없음|{1} 1개 결과|[2,Inf] {{ total }}개 결과'
+          level: 레벨
+          all: 모두
+          none: 없음
+        date_range_filter:
+          label: 날짜/시간
+          reset: 재설정
+          from: 시작
+          to: 끝
+          all: 모두
+        info:
+          title: 여기에는 이 연결로 전송된 모든 이벤트 요청과 관련된 로그가 있습니다.
+          content: 이 페이지는 지난 72시간 동안의 오류와 경고 로그 및 지난 100개의 정보와 알림 로그를 표시합니다.
+          link: 이벤트 로그 관련 정보 더보기
+        headers:
+          datetime: 날짜/시간
+          level: 레벨
+          message: 메시지
+  error_management:
+    connection_monitoring:
+      title: 오류 모니터링
+      helper:
+        title: '{0} {{ count }}개 오류가 있습니다. |[1,Inf] {{ count }}개 오류가 있습니다.'
+        description: 지난 7일간 이 연결에 대한 각 오류의 세부 정보를 여기서 볼 수 있습니다. 오류 개수는 100개 오류로 제한됩니다.
+        link: 이를 해결하는 방법을 알아보려면 API 헬프 센터를 방문하십시오.
+      search_filter:
+        placeholder: 오류 메시지에서 검색
+        result_count: '{0} 결과 없음|{1} 1개 결과|[2,Inf] {{ count }}개 결과'
+      error_list:
+        date_time_column:
+          title: 요일과 시간
+        content_column:
+          title: 비즈니스 오류 메시지
+          product_name: 제품명
+          with_id: ID 관련
+        details_column:
+          title: 세부 정보
+          locale: 로케일
+          channel: 채널
+          family: 패밀리
+      no_error:
+        title: 대단합니다! 오류가 없습니다!
+      not_auditable:
+        title: 모니터링되지 않은 연결
+        description:
+          1: 이 연결에서 오류를 추적하려면
+          2: 설정에서
+          3: 모니터링을 활성화하십시오.
+      not_data_source:
+        title: 현재 모니터링 페이지는 소스 연결에만 사용할 수 있습니다.
+  runtime_error:
+    error_message: 죄송합니다! 오류가 발생했습니다...
+    reload_helper: 페이지를 다시 로드하고 다시 시도하십시오.
+    reload_button: 다시 로드
+pim_permissions:
+  widget:
+    action:
+      all: 모두
+      clear: 지우기
+    level:
+      own: 고유
+      edit: 편집
+      view: 보기
+    all: 모두
+pim_notification:
+  types:
+    connected_app_authorizations: 연결된 앱 권한 부여
+    disabled_catalog: 앱 카탈로그 비활성화됨
+    attribute_removed: 앱 카탈로그가 영향을 받음
+  connected_app_authorizations:
+    button_label: 앱 열기
+  disabled_catalog:
+    button_label: 카탈로그 설정
+  attribute_removed:
+    button_label: 카탈로그 설정

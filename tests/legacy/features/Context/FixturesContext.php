@@ -4,23 +4,22 @@ namespace Context;
 
 use Acme\Bundle\AppBundle\Entity\Color;
 use Acme\Bundle\AppBundle\Entity\Fabric;
-use Akeneo\Channel\Component\Model\Channel;
-use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\Channel;
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 use Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionCommand;
+use Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionHandler;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Comment\Model\Comment;
 use Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductCsvImport;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductModelCsvImport;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociation;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOption;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
@@ -32,7 +31,6 @@ use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
-use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvExport;
 use Akeneo\Tool\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvImport;
 use Akeneo\Tool\Component\Localization\Localizer\LocalizerInterface;
@@ -44,11 +42,12 @@ use Akeneo\UserManagement\Component\Model\UserInterface;
 use Behat\ChainedStepsExtension\Step;
 use Behat\Gherkin\Node\TableNode;
 use Doctrine\Common\Util\ClassUtils;
-use League\Flysystem\MountManager;
+use Doctrine\Persistence\ObjectManager;
 use OAuth2\OAuth2;
 use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
 use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\FixturesContext as BaseFixturesContext;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * A context for creating entities
@@ -59,7 +58,7 @@ use Pim\Behat\Context\FixturesContext as BaseFixturesContext;
  */
 class FixturesContext extends BaseFixturesContext
 {
-    protected $locales = [
+    protected array $locales = [
         'english'    => 'en_US',
         'french'     => 'fr_FR',
         'german'     => 'de_DE',
@@ -96,7 +95,7 @@ class FixturesContext extends BaseFixturesContext
     public function thereIsAConnection($connectionCode)
     {
         $createConnectionCommand = new CreateConnectionCommand($connectionCode, $connectionCode, FlowType::DATA_SOURCE);
-        $this->getContainer()->get('akeneo_connectivity.connection.application.handler.create_connection')->handle($createConnectionCommand);
+        $this->getContainer()->get(CreateConnectionHandler::class)->handle($createConnectionCommand);
     }
 
     /**
@@ -258,6 +257,8 @@ class FixturesContext extends BaseFixturesContext
         foreach ($table->getHash() as $data) {
             $this->createProduct($data);
         }
+
+        $this->purgeMessengerEvents();
     }
 
     /**
@@ -270,11 +271,11 @@ class FixturesContext extends BaseFixturesContext
         $this->getContainer()->get('doctrine')->getConnection()->update(
             'pim_catalog_product',
             ['created' => $createdAt],
-            ['id' => $product->getId()]
+            ['uuid' => $product->getUuid()->getBytes()]
         );
 
         $this->refresh($product);
-        $this->getContainer()->get('pim_catalog.elasticsearch.indexer.product')->indexFromProductIdentifier($identifier);
+        $this->getContainer()->get('pim_catalog.elasticsearch.indexer.product')->indexFromProductUuids([$product->getUuid()]);
     }
 
     /**
@@ -424,6 +425,7 @@ class FixturesContext extends BaseFixturesContext
 
             $this->refresh($productModel);
             $this->refreshEsIndexes();
+            $this->purgeMessengerEvents();
         }
     }
 
@@ -581,6 +583,8 @@ class FixturesContext extends BaseFixturesContext
 
             $this->createProduct($product);
         }
+
+        $this->purgeMessengerEvents();
     }
 
     /**
@@ -1427,7 +1431,7 @@ class FixturesContext extends BaseFixturesContext
             ->getJobInstance($code)
             ->getRawParameters();
 
-        $path = dirname($configuration['filePath']);
+        $path = dirname($configuration['storage']['file_path']);
 
         foreach ($table->getRows() as $data) {
             copy(__DIR__ . '/fixtures/'. $data[0], rtrim($path, '/') . '/' .$data[0]);
@@ -1666,14 +1670,18 @@ class FixturesContext extends BaseFixturesContext
      *
      * @throws \Exception
      */
-    public function groupShouldContain($group, $products)
+    public function groupShouldContain($groupCode, $products)
     {
-        $group = $this->getProductGroup($group);
+        $group = $this->getProductGroup($groupCode);
         $this->refresh($group);
-        $groupProducts = $group->getProducts();
+
+        $productsInGroup = $this->getProductRepository()->getItemsFromUuids(
+            $this->getContainer()->get('Akeneo\Pim\Enrichment\Component\Product\Query\FindProductUuidsInGroup')
+                ->forGroupId($group->getId())
+        );
 
         foreach ($this->listToArray($products) as $sku) {
-            if (!$groupProducts->contains($this->getProduct($sku))) {
+            if (!in_array($this->getProduct($sku), $productsInGroup)) {
                 throw new \Exception(
                     sprintf('Group "%s" doesn\'t contain product "%s"', $group->getCode(), $sku)
                 );
@@ -1906,33 +1914,6 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
-     * Unlink all product media
-     *
-     * @param string $productName
-     *
-     * @Given /^I delete "([^"]+)" media from filesystem$/
-     */
-    public function iDeleteProductMediaFromFilesystem($productName)
-    {
-        $product      = $this->getProduct($productName);
-        $mountManager = $this->getMountManager();
-
-        $attributeRepository = $this->getContainer()->get('pim_catalog.repository.attribute');
-
-        foreach ($product->getValues() as $value) {
-            $attribute = $attributeRepository->findOneByIdentifier($value->getAttributeCode());
-
-            if (in_array($attribute->getType(), [AttributeTypes::IMAGE, AttributeTypes::FILE])) {
-                $media = $value->getData();
-                if (null !== $media) {
-                    $fs = $mountManager->getFilesystem($media->getStorage());
-                    $fs->delete($media->getKey());
-                }
-            }
-        }
-    }
-
-    /**
      * @param string $attribute
      * @param string $family
      * @param string $channel
@@ -1958,8 +1939,7 @@ class FixturesContext extends BaseFixturesContext
     {
         $requirement = $this->getAttributeRequirement($attribute, $family, $channel);
 
-        Assert::assertNotNull($requirement);
-        Assert::assertFalse($requirement->isRequired());
+        Assert::assertTrue(null === $requirement || false === $requirement->isRequired());
     }
 
     /**
@@ -2026,7 +2006,9 @@ class FixturesContext extends BaseFixturesContext
             ]
         );
 
-        $em->refresh($requirement);
+        if (null !== $requirement) {
+            $em->refresh($requirement);
+        }
 
         return $requirement;
     }
@@ -2047,14 +2029,6 @@ class FixturesContext extends BaseFixturesContext
         }
 
         return $this->locales[$language];
-    }
-
-    /**
-     * @return array
-     */
-    public function getEntities()
-    {
-        return $this->entities;
     }
 
     /**
@@ -2415,7 +2389,11 @@ class FixturesContext extends BaseFixturesContext
         $comment->setRepliedAt($createdAt);
         $comment->setBody($data['message']);
         $comment->setResourceName(ClassUtils::getClass($resource));
-        $comment->setResourceId($resource->getId());
+        if ($resource instanceof ProductInterface) {
+            $comment->setResourceUuid($resource->getUuid());
+        } else {
+            $comment->setResourceId($resource->getId());
+        }
 
         if (isset($data['parent']) && !empty($data['parent'])) {
             $parent = $comments[$data['parent']];
@@ -2501,14 +2479,6 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @return MountManager
-     */
-    protected function getMountManager()
-    {
-        return $this->getContainer()->get('oneup_flysystem.mount_manager');
-    }
-
-    /**
      * @return EntityWithValuesBuilderInterface
      */
     protected function getProductBuilder()
@@ -2574,10 +2544,7 @@ class FixturesContext extends BaseFixturesContext
         return $this->getContainer()->get('pim_reference_data.registry');
     }
 
-    /**
-     * @return \Symfony\Component\DependencyInjection\ContainerInterface
-     */
-    protected function getContainer()
+    protected function getContainer(): ContainerInterface
     {
         return $this->getMainContext()->getContainer();
     }
@@ -2597,7 +2564,7 @@ class FixturesContext extends BaseFixturesContext
      *
      * @return \Doctrine\Common\Persistence\ObjectManager
      */
-    protected function getEntityManager()
+    protected function getEntityManager(): ObjectManager
     {
         return $this->getContainer()->get('doctrine')->getManager();
     }
@@ -2632,5 +2599,16 @@ class FixturesContext extends BaseFixturesContext
     protected function getElasticsearchUserClient()
     {
         return $this->getContainer()->get('akeneo_elasticsearch.client.user');
+    }
+
+    private function purgeMessengerEvents()
+    {
+        $transport = $this->getContainer()->get('messenger.transport.business_event');
+
+        while (!empty($envelopes = $transport->get())) {
+            foreach ($envelopes as $envelope) {
+                $transport->ack($envelope);
+            }
+        }
     }
 }

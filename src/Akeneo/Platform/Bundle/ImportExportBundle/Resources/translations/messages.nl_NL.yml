@@ -16,6 +16,8 @@ pim_import_export:
     6: Mislukt
     7: Afgebroken
     8: Onbekend
+    9: Pauze aangevraagd
+    10: Gepauzeerd
   download_archive:
     archive: download gegenereerd archief | download gegenereerde archieven
     output: download gegenereerd bestand | download gegenereerde bestanden
@@ -27,10 +29,15 @@ pim_import_export:
       error: Export <strong>%label%</strong> mislukt
       warning: Export <strong>%label%</strong> met enkele waarschuwingen beëindigd
       success: Export <strong>%label%</strong> beëindigd
+      warnings:
+        xlsx_cell_conversion_error: Uitzondering tijdens het converteren van de kolom "{0}" naar het attribuuttype van het PIM-doelproduct (controleer de celindeling in Excel)
+        xlsx_cell_date_to_text_conversion_error: Kan cel {0} niet converteren met datumindeling naar attribuuttype 'tekst'
     import:
       error: Import <strong>%label%</strong> mislukt
       warning: Import <strong>%label%</strong> met enkele waarschuwingen beëindigd
       success: Import <strong>%label%</strong> beëindigd
+      warnings:
+        xlsx_cell_date_conversion_error: Kan cel "{cellName}" niet converteren met datumformaat naar attribuut van type {attributeType}
   list: Selecteer een taak
   job_profile:
     tab:

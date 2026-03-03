@@ -31,7 +31,7 @@ class AttributeOptionUpdaterSpec extends ObjectBehavior
         $this->shouldImplement(ObjectUpdaterInterface::class);
     }
 
-    function it_throw_an_exception_when_trying_to_update_anything_else_than_an_attribute_option()
+    function it_throws_an_exception_when_trying_to_update_anything_else_than_an_attribute_option()
     {
         $this->shouldThrow(
             InvalidObjectException::objectExpected(
@@ -50,7 +50,7 @@ class AttributeOptionUpdaterSpec extends ObjectBehavior
         AttributeInterface $attribute,
         AttributeOptionValueInterface $attributeOptionValue
     ) {
-        $attributeOption->getId()->willReturn(null);
+        $attributeOption->getCode()->willReturn(null);
         $attributeOption->getAttribute()->willReturn(null);
 
         $attributeOption->setCode('mycode')->shouldBeCalled();
@@ -116,7 +116,7 @@ class AttributeOptionUpdaterSpec extends ObjectBehavior
         $attributeRepository,
         AttributeOptionInterface $attributeOption
     ) {
-        $attributeOption->getId()->willReturn(null);
+        $attributeOption->getCode()->willReturn(null);
         $attributeOption->getAttribute()->willReturn(null);
 
         $attributeOption->setCode('mycode')->shouldBeCalled();
@@ -178,5 +178,35 @@ class AttributeOptionUpdaterSpec extends ObjectBehavior
                 )
             )
             ->during('update', [$attributeOption, $values, []]);
+    }
+
+    function it_throws_an_exception_when_sort_order_id_not_an_int(AttributeOptionInterface $attributeOption)
+    {
+        $this
+            ->shouldThrow(
+                InvalidPropertyTypeException::integerExpected(
+                    'sort_order',
+                    AttributeOptionUpdater::class,
+                    '15'
+                )
+            )
+            ->during('update', [$attributeOption, ['sort_order' => '15'], []]);
+    }
+
+    function it_does_not_fail_when_using_numeric_code(
+        AttributeOptionInterface $attributeOption
+    )
+    {
+        $values = [
+            'code' => 12345,
+        ];
+
+        $attributeOption->setCode($values['code'])->willReturn($attributeOption);
+        $attributeOption->getCode()->willReturn($values['code']);
+
+        $this->update(
+            $attributeOption,
+            $values
+        );
     }
 }

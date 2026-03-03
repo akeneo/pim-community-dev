@@ -1,9 +1,9 @@
 parameters:
-    pim_user.view_element.user.tab.general.template:        'PimUserBundle:User:Tab/general.html.twig'
-    pim_user.view_element.user.tab.additional.template:     'PimUserBundle:User:Tab/additional.html.twig'
-    pim_user.view_element.user.tab.group_and_role.template: 'PimUserBundle:User:Tab/group_and_role.html.twig'
-    pim_user.view_element.user.tab.password.template:       'PimUserBundle:User:Tab/password.html.twig'
-    pim_user.view_element.user.tab.interfaces.template:     'PimUserBundle:User:Tab/interfaces.html.twig'
+    pim_user.view_element.user.tab.general.template:        '@@PimUser/User/Tab/general.html.twig'
+    pim_user.view_element.user.tab.additional.template:     '@@PimUser/User/Tab/additional.html.twig'
+    pim_user.view_element.user.tab.group_and_role.template: '@@PimUser/User/Tab/group_and_role.html.twig'
+    pim_user.view_element.user.tab.password.template:       '@@PimUser/User/Tab/password.html.twig'
+    pim_user.view_element.user.tab.interfaces.template:     '@@PimUser/User/Tab/interfaces.html.twig'
 
 services:
     pim_user.view_element.user.tab.general:

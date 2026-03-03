@@ -35,8 +35,8 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\UpdateAttributeGroupActivationController:
         public: true
         arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\AttributeGroupActivationRepository'
             - '@oro_security.security_facade'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Command\UpdateAttributeGroupActivationHandler'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetAttributeGroupActivationController:
         public: true
@@ -53,7 +53,28 @@ services:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductScores'
 
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetProductModelQualityScoreController:
+        public: true
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductModelScores'
+
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\Dashboard\DashboardQualityScoreEvolutionController:
         public: true
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Dashboard\GetCatalogProductScoreEvolutionQuery'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\EvaluateProductController:
+        public: true
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateOutdatedProduct'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\EvaluateProductModelController:
+        public: true
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateOutdatedProductModel'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\Dashboard\FindFamiliesController:
+        public: true
+        arguments:
+            - '@pim_enrich.repository.family.search'
+            - '@pim_internal_api_serializer'

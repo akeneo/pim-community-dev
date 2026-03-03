@@ -1,4 +1,4 @@
-import React, {ReactNode, PropsWithChildren, useEffect} from 'react';
+import React, {FC, ReactNode, useEffect} from 'react';
 
 interface Props {
     subTitle: ReactNode;
@@ -7,7 +7,7 @@ interface Props {
     onCancel: () => void;
 }
 
-export const Modal = ({subTitle, title, description, children, onCancel}: PropsWithChildren<Props>) => {
+export const Modal: FC<Props> = ({subTitle, title, description, children, onCancel}) => {
     useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent) => 'Escape' === event.code && onCancel();
         document.addEventListener('keydown', handleKeyDown, true);
@@ -18,7 +18,10 @@ export const Modal = ({subTitle, title, description, children, onCancel}: PropsW
     return (
         <>
             <div className='AknFullPage'>
-                <div className='AknFullPage-content AknFullPage-content--withIllustration'>
+                <div
+                    className='AknFullPage-content AknFullPage-content--withIllustration'
+                    style={{overflowX: 'initial'}}
+                >
                     <div>
                         <div className='AknFullPage-image AknFullPage-illustration AknFullPage-illustration--api' />
                     </div>

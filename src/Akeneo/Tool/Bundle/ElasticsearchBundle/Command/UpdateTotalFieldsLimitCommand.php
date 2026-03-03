@@ -39,11 +39,11 @@ class UpdateTotalFieldsLimitCommand extends Command
         $this->indexesToUpdate = $indexesToUpdate;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $newIndexLimit = $this->getTotalFieldsLimit->getLimit();
         if ($newIndexLimit === 0) {
-            return;
+            return Command::FAILURE;
         }
 
         foreach ($this->getEsClients() as $client) {
@@ -61,6 +61,8 @@ class UpdateTotalFieldsLimitCommand extends Command
                 $this->updateIndexTotalFieldsLimit($nativeClient['client'], $nativeClient['indexName'], $newIndexLimit);
             }
         }
+
+        return Command::SUCCESS;
     }
 
     private function getIndexCurrentTotalFieldsLimit(\Elasticsearch\Client $client, string $indexName): int

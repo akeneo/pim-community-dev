@@ -6,7 +6,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Job\CleanRemovedAttribute;
 
 use Akeneo\Pim\Enrichment\Bundle\Product\RemoveValuesFromProducts;
 use Akeneo\Pim\Enrichment\Component\Product\Query\CountProductsWithRemovedAttributeInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductIdentifiersWithRemovedAttributeInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductUuidsWithRemovedAttributeInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -17,21 +17,13 @@ class CleanProductTasklet implements TaskletInterface, TrackableTaskletInterface
     private const BATCH_SIZE = 100;
 
     private StepExecution $stepExecution;
-    private GetProductIdentifiersWithRemovedAttributeInterface $getProductIdentifiersWithRemovedAttribute;
-    private CountProductsWithRemovedAttributeInterface $countProductsWithRemovedAttribute;
-    private RemoveValuesFromProducts $removeValuesFromProducts;
-    private JobRepositoryInterface $jobRepository;
 
     public function __construct(
-        GetProductIdentifiersWithRemovedAttributeInterface $getProductIdentifiersWithRemovedAttribute,
-        CountProductsWithRemovedAttributeInterface $countProductsWithRemovedAttribute,
-        RemoveValuesFromProducts $removeValuesFromProducts,
-        JobRepositoryInterface $jobRepository
+        private readonly GetProductUuidsWithRemovedAttributeInterface $getProductUuidsWithRemovedAttribute,
+        private readonly CountProductsWithRemovedAttributeInterface $countProductsWithRemovedAttribute,
+        private readonly RemoveValuesFromProducts $removeValuesFromProducts,
+        private readonly JobRepositoryInterface $jobRepository
     ) {
-        $this->getProductIdentifiersWithRemovedAttribute = $getProductIdentifiersWithRemovedAttribute;
-        $this->countProductsWithRemovedAttribute = $countProductsWithRemovedAttribute;
-        $this->removeValuesFromProducts = $removeValuesFromProducts;
-        $this->jobRepository = $jobRepository;
     }
 
     public function setStepExecution(StepExecution $stepExecution)
@@ -55,12 +47,12 @@ class CleanProductTasklet implements TaskletInterface, TrackableTaskletInterface
         $this->stepExecution->setTotalItems($totalProductCount);
         $this->stepExecution->incrementSummaryInfo('read', $totalProductCount);
 
-        foreach ($this->getProductIdentifiersWithRemovedAttribute->nextBatch(
+        foreach ($this->getProductUuidsWithRemovedAttribute->nextBatch(
             $attributeCodes,
             self::BATCH_SIZE
-        ) as $identifiers) {
-            $this->removeValuesFromProducts->forAttributeCodes($attributeCodes, $identifiers);
-            $productCount = count($identifiers);
+        ) as $uuids) {
+            $this->removeValuesFromProducts->forAttributeCodes($attributeCodes, $uuids);
+            $productCount = count($uuids);
             $this->stepExecution->incrementSummaryInfo('process', $productCount);
             $this->stepExecution->incrementProcessedItems($productCount);
             $this->jobRepository->updateStepExecution($this->stepExecution);

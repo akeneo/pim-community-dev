@@ -2,81 +2,43 @@
 
 namespace Akeneo\UserManagement\Bundle\Controller;
 
-use Akeneo\Tool\Component\Email\SenderAddress;
 use Akeneo\UserManagement\Bundle\Form\Handler\ResetHandler;
 use Akeneo\UserManagement\Bundle\Manager\UserManager;
-use Akeneo\UserManagement\Component\Model\UserInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Swift_Mailer;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Akeneo\UserManagement\Bundle\Notification\MailResetNotifier;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class ResetController extends Controller
+class ResetController extends AbstractController
 {
-    const SESSION_EMAIL = 'pim_user_reset_email';
-
-    /** @var UserManager */
-    private $userManager;
-
-    /** @var Swift_Mailer */
-    private $mailer;
-
-    /** @var SessionInterface */
-    private $session;
-
-    /** @var ResetHandler */
-    private $resetHandler;
-
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
-
-    /** @var FormInterface */
-    private $form;
-
-    /** @var string */
-    private $mailerUrl;
-
     public function __construct(
-        UserManager $userManager,
-        Swift_Mailer $mailer,
-        SessionInterface $session,
-        ResetHandler $resetHandler,
-        TokenStorageInterface $tokenStorage,
-        FormInterface $form,
-        string $mailerUrl
+        private readonly UserManager $userManager,
+        private readonly SessionInterface $session,
+        private readonly ResetHandler $resetHandler,
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly FormInterface $form,
+        private readonly MailResetNotifier $mailer,
     ) {
-        $this->userManager = $userManager;
-        $this->mailer = $mailer;
-        $this->session = $session;
-        $this->resetHandler = $resetHandler;
-        $this->tokenStorage = $tokenStorage;
-        $this->form = $form;
-        $this->mailerUrl = $mailerUrl;
     }
 
-    /**
-     * @Template("PimUserBundle:Reset:request.html.twig")
-     */
-    public function request()
+    public function request(): Response
     {
-        return [];
+        return $this->render('@PimUser/Reset/request.html.twig');
     }
 
     /**
      * Request reset user password
-     *
-     * @Template("PimUserBundle:Reset:sendEmail.html.twig")
      */
-    public function sendEmail(Request $request)
+    public function sendEmail(Request $request): Response
     {
         $username = $request->request->get('username');
         $user = $this->userManager->findUserByUsernameOrEmail($username);
 
-        if (null === $user) {
-            return [];
+        if (null === $user || false === $user->isEnabled()) {
+            return $this->render('@PimUser/Reset/sendEmail.html.twig');
         }
 
         if ($user->isPasswordRequestNonExpired($this->container->getParameter('pim_user.reset.ttl'))) {
@@ -85,65 +47,29 @@ class ResetController extends Controller
                 'The password for this user has already been requested within the last 24 hours.'
             );
 
-            return $this->redirect($this->generateUrl('pim_user_reset_request'));
+            return $this->redirectToRoute('pim_user_reset_request');
         }
 
         if (null === $user->getConfirmationToken()) {
             $user->setConfirmationToken($user->generateToken());
         }
 
-        $this->session->set(static::SESSION_EMAIL, $this->getObfuscatedEmail($user));
-
-        /**
-         * @todo Move to postUpdate lifecycle event handler as service
-         */
-        $message = (new \Swift_Message('Reset password'))
-            ->setFrom((string) SenderAddress::fromMailerUrl($this->mailerUrl))
-            ->setTo($user->getEmail())
-            ->setBody(
-                $this->renderView('PimUserBundle:Mail:reset.html.twig', ['user' => $user]),
-                'text/html'
-            );
-
         $user->setPasswordRequestedAt(new \DateTime('now', new \DateTimeZone('UTC')));
-
-        $this->mailer->send($message);
         $this->userManager->updateUser($user);
 
-        return [];
-    }
+        $this->mailer->notify($user);
 
-    /**
-     * Tell the user to check his email provider
-     *
-     * @Template
-     */
-    public function checkEmail()
-    {
-        $email = $this->session->get(static::SESSION_EMAIL);
-
-        $this->session->remove(static::SESSION_EMAIL);
-
-        if (empty($email)) {
-            // the user does not come from the sendEmail action
-            return $this->redirect($this->generateUrl('pim_user_reset_request'));
-        }
-
-        return [
-            'email' => $email,
-        ];
+        return $this->render('@PimUser/Reset/sendEmail.html.twig');
     }
 
     /**
      * Reset user password
-     *
-     * @Template("PimUserBundle:Reset:reset.html.twig")
      */
-    public function reset($token)
+    public function reset(string $token): Response
     {
         $user = $this->userManager->findUserByConfirmationToken($token);
 
-        if (null === $user) {
+        if (null === $user || false === $user->isEnabled()) {
             throw $this->createNotFoundException(
                 sprintf('The user with "confirmation token" does not exist for value "%s"', $token)
             );
@@ -155,7 +81,7 @@ class ResetController extends Controller
                 'The password for this user has already been requested within the last 24 hours.'
             );
 
-            return $this->redirect($this->generateUrl('pim_user_reset_request'));
+            return $this->redirectToRoute('pim_user_reset_request');
         }
 
         if ($this->resetHandler->process($user)) {
@@ -165,31 +91,12 @@ class ResetController extends Controller
             $this->session->invalidate();
             $this->tokenStorage->setToken(null);
 
-            return $this->redirect($this->generateUrl('pim_user_security_login'));
+            return $this->redirectToRoute('pim_user_security_login');
         }
 
-        return [
+        return $this->render('@PimUser/Reset/reset.html.twig', [
             'token' => $token,
-            'form'  => $this->form->createView(),
-        ];
-    }
-
-    /**
-     * Get the truncated email displayed when requesting the resetting.
-     * The default implementation only keeps the part following @ in the address.
-     *
-     * @param \Akeneo\UserManagement\Component\Model\UserInterface $user
-     *
-     * @return string
-     */
-    protected function getObfuscatedEmail(UserInterface $user)
-    {
-        $email = $user->getEmail();
-
-        if (false !== $pos = strpos($email, '@')) {
-            $email = '...' . substr($email, $pos);
-        }
-
-        return $email;
+            'form' => $this->form->createView(),
+        ]);
     }
 }

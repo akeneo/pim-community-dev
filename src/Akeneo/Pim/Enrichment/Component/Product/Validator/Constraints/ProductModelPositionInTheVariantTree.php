@@ -23,7 +23,7 @@ class ProductModelPositionInTheVariantTree extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'pim_has_a_root_product_model_as_parent';
     }
@@ -31,7 +31,7 @@ class ProductModelPositionInTheVariantTree extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }

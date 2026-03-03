@@ -17,12 +17,17 @@ extensions:
             userAccount: pim_menu.user.user_account
             logout: pim_menu.user.logout
 
+    pim-job-instance-csv-product-model-export-edit-sandbox-helper:
+        module: pim/sandbox-helper
+        parent: pim-job-instance-csv-product-model-export-edit
+        targetZone: helper
+
     pim-job-instance-csv-product-model-export-edit-breadcrumbs:
-        module: pim/common/breadcrumbs
+        module: pim/job/common/breadcrumb/breadcrumb
         parent: pim-job-instance-csv-product-model-export-edit
         targetZone: breadcrumbs
         config:
-            tab: pim-menu-exports
+            isEdit: true
 
     pim-job-instance-csv-product-model-export-edit-cache-invalidator:
         module: pim/cache-invalidator
@@ -96,27 +101,15 @@ extensions:
             label: pim_common.label
             readOnly: false
 
-    pim-job-instance-csv-product-model-export-edit-properties-file-path:
-        module: pim/job/common/edit/field/file-path
-        parent: pim-job-instance-csv-product-model-export-edit-global
+    pim-job-instance-csv-product-model-export-edit-properties-storage:
+        module: pimimportexport/js/job/common/edit/storage-form
+        parent: pim-job-instance-csv-product-model-export-edit-properties
         position: 120
-        targetZone: properties
+        targetZone: additional-properties
         config:
-            fieldCode: configuration.filePath
-            readOnly: false
-            label: pim_import_export.form.job_instance.tab.properties.file_path.title
-            tooltip: pim_import_export.form.job_instance.tab.properties.file_path.help
-
-    pim-job-instance-csv-product-model-export-edit-properties-decimal-separator:
-        module: pim/job/common/edit/field/decimal-separator
-        parent: pim-job-instance-csv-product-model-export-edit-global
-        position: 130
-        targetZone: properties
-        config:
-            fieldCode: configuration.decimalSeparator
-            readOnly: false
-            label: pim_import_export.form.job_instance.tab.properties.decimal_separator.title
-            tooltip: pim_import_export.form.job_instance.tab.properties.decimal_separator.help
+            tabCode: pim-job-instance-properties
+            jobType: export
+            fileExtension: csv
 
     pim-job-instance-csv-product-model-export-edit-properties-date-format:
         module: pim/job/product/edit/field/date-format
@@ -206,6 +199,17 @@ extensions:
             label: pim_import_export.form.job_instance.tab.properties.file_locale.title
             tooltip: pim_import_export.form.job_instance.tab.properties.file_locale.help
 
+    pim-job-instance-csv-product-model-export-edit-properties-header-with-uuid:
+        module: pim/job/common/edit/field/switch
+        parent: pim-job-instance-csv-product-model-export-edit-global
+        position: 220
+        targetZone: properties
+        config:
+            fieldCode: configuration.with_uuid
+            readOnly: false
+            label: pim_import_export.form.job_instance.tab.properties.with_uuid_for_models.title
+            tooltip: pim_import_export.form.job_instance.tab.properties.with_uuid_for_models.help
+
     pim-job-instance-csv-product-model-export-edit-content-structure:
         module: pim/job/product/edit/content/structure
         parent: pim-job-instance-csv-product-model-export-edit-content
@@ -244,6 +248,16 @@ extensions:
                 success: pim_import_export.entity.job_instance.flash.delete.success
                 failed: error.removing.job_instance
             redirect: pim_importexport_export_profile_index
+
+    pim-job-instance-csv-product-model-export-edit-duplicate:
+        module: pim/job/common/duplicate/duplicate
+        parent: pim-job-instance-csv-product-model-export-edit-secondary-actions
+        targetZone: secondary-actions
+        aclResourceId: pim_importexport_export_profile_create
+        position: 80
+        config:
+            subTitle: pim_menu.tab.exports
+            editRoute: pim_importexport_export_profile_edit
 
     pim-job-instance-csv-product-model-export-edit-save-buttons:
         module: pim/form/common/save-buttons
@@ -304,6 +318,9 @@ extensions:
                 -
                     field: categories
                     view: akeneo-product-category-filter
+                -
+                    field: quality_score_multi_locales
+                    view: akeneo-product-model-quality-score-filter
                 -
                     field: completeness
                     view: akeneo-product-model-completeness-filter

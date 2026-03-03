@@ -1,6 +1,6 @@
 import {fetchAnnouncements} from '../../../../src/fetcher/announcementFetcher';
 import {getExpectedAnnouncements} from '../__mocks__/dataProvider';
-import {fetchMockResponseOnce} from '@akeneo-pim-community/shared/tests/front/unit/utils';
+import {fetchMockResponseOnce} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 
 afterEach(() => {
   fetchMock.resetMocks();

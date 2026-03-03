@@ -1,0 +1,145 @@
+pim_title:
+  pim_category_template_edit: Modifica modello categoria
+akeneo.category:
+  unknown_error:
+    title: Spiacenti, si è verificato un errore sconosciuto.
+    message: Ricarica la pagina e riprova.
+  tree_list:
+    column:
+      category_templates: Modelli di categoria
+  attributes: Atributi
+  edition_form:
+    error:
+      unhandled_attribute_type: Impossibile trovare il generatore del campo attributo per il tipo di attributo "{{ type }}"
+    template:
+      title: Modello
+      no_attribute_title: In questo modello non ci sono attributi
+      no_attribute_instructions: Il modello associato a questa categoria è vuoto. Puoi aggiungere attributi a questo modello dalla pagina dell'albero delle categorie.
+      fetching_failed: Si è verificato un errore durante il recupero del modello
+    unsaved_changes: Se lasci la pagina, perderai le modifiche alla categoria.
+  tree:
+    create: Crea struttura
+    delete: Elimina struttura
+  template:
+    learn_more: Scopri di più sui modelli di categoria
+    create: Crea modello
+    create_confirmation_modal:
+      title: Crea un nuovo modello di categoria
+      helper: Crea un modello di categoria per definire attributi e attivare l'arricchimento su tutte le categorie di questo albero.
+      category_tree: Albero delle categorie
+      link: Scopri di più sui modelli di categoria.
+    edit: Modifica modello
+    notification_success: Modello di categoria creato correttamente
+    notification_error: Non è stato possibile creare il modello di categoria
+    not_found: Per questa categoria non c'è un modello attivo
+    properties:
+      general_properties: Proprietà generali
+      label_translations_in_ui_locales: Traduzione delle etichette nelle lingue dell'interfaccia
+    attribute:
+      description_title: Impostazioni descrizione
+      type:
+        text: Testo
+        textarea: Area di testo
+        richtext: Testo formattato
+        image: Immagine
+      delete_button: Elimina attributo
+      settings:
+        title: Impostazioni
+        options:
+          title: Opzioni
+          value_per_channel: Valore per canale
+          value_per_locale: Valore per impostazione locale
+          rich_text: Editor di Testi Avanzato
+        translations:
+          title: Traduzioni etichette
+        error_message: La pagina contiene valori non validi.
+        unsaved_changes: Hai delle modifiche non salvate, confermi di voler uscire?
+    add_attribute:
+      no_attribute_title: Crea il tuo primo attributo
+      no_attribute_instructions: Definisci il contenuto che vuoi associare alle tue categorie aggiungendo attributi Testo, Area di Testo o Immagine a questo modello.
+      add_button: Aggiungi attributo
+      create_button: Crea attributo
+      confirmation_modal:
+        section_title: Aggiungi attributo
+        title: Crea un nuovo attributo di categoria
+        head_helper: Gli attributi di categoria sono associati a un unico modello. Non sono accessibili in altri modelli.
+        tail_helper: Valore per il canale e Valore per l'impostazione locale non possono essere modificati dopo la creazione dell'attributo.
+        link: Scopri di più sui modelli di categoria.
+        create: Crea
+        input:
+          label: Etichetta
+          code: Codice
+          type:
+            label: Tipo di attributo
+            empty: Nessun tipo di attributo disponibile
+            option_title:
+              text: Testo
+              textarea: Area di testo
+              image: Immagine
+      success:
+        notification: Attributo creato correttamente
+      error:
+        failed: Aggiunta dell'attributo al modello non riuscita
+        limit_reached:
+          title: Non puoi aggiungere più di 50 attributi
+          message: I modelli di categoria hanno il limite di 50 attributi per modello.
+    delete_attribute:
+      delete: Elimina attributo categoria
+      confirmation_modal:
+        title: Elimina questo attributo di categoria
+        message: Confermi di voler eliminare l'attributo di categoria denominato {{ template }}?
+        helper: L'eliminazione di questo attributo eliminerà definitivamente l'attributo e i valori delle categorie associate.
+      notification_success:
+        title: 'Attributo {{ attribute }} eliminato correttamente'
+    deactivate:
+      deactivate_template: Elimina modello
+      confirmation_modal:
+        title: Elimina il modello di categoria
+        message: Confermi di voler eliminare il modello di categoria denominato {{ template }}?
+        helper: Eliminando questo modello si eliminano definitivamente gli attributi e i valori delle categorie associate.
+        deactivate: Elimina
+      notification_success:
+        title: 'Modello {{ template }} eliminato'
+        message: '{{ template }} è stato eliminato. Il contenuto delle categorie associate è stato eliminato.'
+    auto-save:
+      saved: Salvato
+      saving: Salvataggio
+      editing: Modifica
+      errors: Errori non salvati
+    initialize:
+      title: Aggiungi attributi alla categoria
+      message: Definisci il contenuto delle categorie aggiungendo attributi Testo, Area di testo o Immagine.
+      choice_message: Inizia a creare gli attributi in base alle tue esigenze oppure carica un insieme di 13 attributi suggeriti.
+      button:
+        load: Carica un insieme di attributi
+        create: Crea il primo attributo
+    load_attribute_set:
+      section_title: Carica un insieme di attributi
+      title: Carica un insieme di attributi suggeriti
+      description: Inizia con facilità la configurazione delle categorie arricchite caricando un insieme di attributi suggeriti.
+      content_description: 'Questo insieme contiene 13 attributi:'
+      content:
+        description_attributes: 2 attributi Area di testo per le descrizioni lunghe e brevi della categoria
+        url_attributes: 1 attributo Testo per l'URL
+        image_attributes: 3 attributi Immagine e 3 Testo, per le immagini e per i rispettivi testi alternativi
+        seo_attributes: 2 attributi Testo e 2 Area di testo per le informazioni SEO
+      confirmation_message: Confermi di voler caricare questo insieme di attributi?
+      button:
+        load: Carica l'insieme di attributi
+      notification:
+        success: Attributi caricati correttamente
+  template_list:
+    columns:
+      header: Etichetta
+      code: Codice
+      type: Tipo
+  tag:
+    new: Nuovo
+  discover_enriched_categories_information:
+    title: Scopri le categorie arricchite
+    content:
+      enrich_attribute_values: Arricchisci qualsiasi livello degli alberi di categorie con gli attributi Testo, Area di Testo e Immagine
+      customizable_templates: Offri l'esperienza di prodotto che desideri grazie a modelli personalizzabili
+    survey_link_label: Dicci cosa ne pensi
+    learn_more_link_label: Scopri di più sulle Categorie arricchite
+  other_actions: Altre azioni

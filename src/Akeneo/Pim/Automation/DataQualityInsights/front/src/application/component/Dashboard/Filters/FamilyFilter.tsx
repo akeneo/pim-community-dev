@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import useFetchFamilies from '../../../../infrastructure/hooks/Dashboard/useFetchFamilies';
 import {debounce} from 'lodash';
 import {useDashboardContext} from '../../../context/DashboardContext';
-import {useTranslate, useUserContext} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {ArrowDownIcon} from 'akeneo-design-system';
 
 type Labels = {
@@ -83,11 +83,12 @@ const FamilyFilter: FC<Props> = ({familyCode}) => {
       return;
     }
     setFilteredFamilies(
-      // @ts-ignore
-      Object.values(families).filter((family: any) =>
+      Object.values(families).filter((family: any) => {
+        const textToCompare = family.labels[uiLocale] ?? family.code;
+
         // @ts-ignore
-        family.labels[uiLocale].toLowerCase().includes(searchString.toLowerCase())
-      )
+        return textToCompare.toLowerCase().includes(searchString.toLowerCase());
+      })
     );
   }, [families, searchString]);
 

@@ -6,9 +6,11 @@ define([
   'oro/translator',
   'pim/controller/front',
   'pim/form-builder',
-  'pim/page-title',
   'routing',
-], function ($, _, __, BaseController, FormBuilder, PageTitle, Routing) {
+  'pim/analytics',
+], function ($, _, __, BaseController, FormBuilder, Routing, analytics) {
+  const ACTION_PRODUCT_GRID = 'product-edit';
+
   return BaseController.extend({
     /**
      * {@inheritdoc}
@@ -38,20 +40,22 @@ define([
         return 'actionName' === parameter.key;
       }).value.replace(new RegExp('_', 'g'), '-');
 
-      /*
-                 The `values` parameter can raise a 414 Too Long URI when we select more than 650 products in
-                 the grid. We use POST request to send the values to the backend to avoid these exceptions.
-                 */
       const values = _.find(parameters, function (parameter) {
         return 'values' === parameter.key;
-      }).value.split('%2C'); // %2C = ,
+      }).value.split(',');
       const queryWithoutValues = query.replace(/&values=[^&]+/, '');
 
-      return $.ajax({
-        url: Routing.generate(this.config.route) + queryWithoutValues,
-        method: 'POST',
-        data: {values},
-      }).then(response => {
+      analytics.appcuesTrack('grid:mass-edit:clicked', {
+        name: actionName,
+      });
+
+      const url =
+        actionName === ACTION_PRODUCT_GRID
+          ? Routing.generate(this.config.route)
+          : Routing.generate(this.config.route) + queryWithoutValues;
+      const data = actionName === ACTION_PRODUCT_GRID ? query : {values};
+
+      return $.post(url, data).then(response => {
         const filters = response.filters;
         const itemsCount = response.itemsCount;
 

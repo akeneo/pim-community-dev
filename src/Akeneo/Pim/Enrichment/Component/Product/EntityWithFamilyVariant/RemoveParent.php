@@ -36,7 +36,7 @@ class RemoveParent implements RemoveParentInterface
     {
         Assert::true($product->isVariant(), 'Cannot remove parent from a non variant product');
 
-        if (null === $product->getId()) {
+        if (null === $product->getCreated()) {
             // irrelevant at product creation
             return;
         }

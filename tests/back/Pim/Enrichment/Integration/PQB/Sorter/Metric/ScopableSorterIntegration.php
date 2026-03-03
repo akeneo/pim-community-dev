@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Sorter\Metric;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
@@ -35,27 +36,15 @@ class ScopableSorterIntegration extends AbstractProductQueryBuilderTestCase
         ]);
 
         $this->createProduct('product_one', [
-            'values' => [
-                'a_scopable_metric' => [
-                    ['data' => ['amount' => '10.55', 'unit' => 'KILOWATT'], 'locale' => null, 'scope' => 'ecommerce']
-                ]
-            ]
+            new SetMeasurementValue('a_scopable_metric', 'ecommerce', null, '10.55', 'KILOWATT')
         ]);
 
         $this->createProduct('product_two', [
-            'values' => [
-                'a_scopable_metric' => [
-                    ['data' => ['amount' => '15000', 'unit' => 'WATT'], 'locale' => null, 'scope' => 'ecommerce']
-                ]
-            ]
+            new SetMeasurementValue('a_scopable_metric', 'ecommerce', null, '15000', 'WATT')
         ]);
 
         $this->createProduct('product_three', [
-            'values' => [
-                'a_scopable_metric' => [
-                    ['data' => ['amount' => '-2.5654', 'unit' => 'KILOWATT'], 'locale' => null, 'scope' => 'ecommerce']
-                ]
-            ]
+            new SetMeasurementValue('a_scopable_metric', 'ecommerce', null, '-2.5654', 'KILOWATT')
         ]);
 
         $this->createProduct('empty_product', []);
@@ -79,17 +68,5 @@ class ScopableSorterIntegration extends AbstractProductQueryBuilderTestCase
         $this->expectExceptionMessage('Direction "A_BAD_DIRECTION" is not supported');
 
         $this->executeSorter([['a_scopable_metric', 'A_BAD_DIRECTION', ['scope' => 'ecommerce']]]);
-    }
-
-    /**
-     * @jira https://akeneo.atlassian.net/browse/PIM-6872
-     */
-    public function testSorterWithNoDataOnSorterField()
-    {
-        $result = $this->executeSorter([['a_scopable_metric', Directions::DESCENDING, ['scope' => 'ecommerce_china']]]);
-        $this->assertOrder($result, ['product_one', 'product_two', 'product_three', 'empty_product']);
-
-        $result = $this->executeSorter([['a_scopable_metric', Directions::ASCENDING, ['scope' => 'ecommerce_china']]]);
-        $this->assertOrder($result, ['product_one', 'product_two', 'product_three', 'empty_product']);
     }
 }

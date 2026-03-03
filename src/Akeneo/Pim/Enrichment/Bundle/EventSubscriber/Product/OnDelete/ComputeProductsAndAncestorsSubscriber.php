@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\OnDelete;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductAndAncestorsIndexer;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -19,12 +20,10 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 final class ComputeProductsAndAncestorsSubscriber implements EventSubscriberInterface
 {
-    /** @var ProductAndAncestorsIndexer */
-    private $productAndAncestorsIndexer;
-
-    public function __construct(ProductAndAncestorsIndexer $productAndAncestorsIndexer)
-    {
-        $this->productAndAncestorsIndexer = $productAndAncestorsIndexer;
+    public function __construct(
+        private ProductAndAncestorsIndexer $productAndAncestorsIndexer,
+        private Client $esClient
+    ) {
     }
 
     /**
@@ -33,12 +32,12 @@ final class ComputeProductsAndAncestorsSubscriber implements EventSubscriberInte
     public static function getSubscribedEvents() : array
     {
         return [
-            StorageEvents::POST_REMOVE   => ['deleteProduct'],
+            StorageEvents::POST_REMOVE => ['deleteProduct'],
             StorageEvents::POST_REMOVE_ALL => ['deleteProducts'],
         ];
     }
 
-    public function deleteProduct(RemoveEvent $event) : void
+    public function deleteProduct(RemoveEvent $event): void
     {
         $product = $event->getSubject();
         if (!$product instanceof ProductInterface) {
@@ -52,7 +51,11 @@ final class ComputeProductsAndAncestorsSubscriber implements EventSubscriberInte
             return;
         }
 
-        $this->productAndAncestorsIndexer->removeFromProductIdsAndReindexAncestors(
+        if ($this->elasticsearchShouldBeRefreshed([$product])) {
+            $this->esClient->refreshIndex();
+        }
+
+        $this->productAndAncestorsIndexer->removeFromProductUuidsAndReindexAncestors(
             [$event->getSubjectId()],
             $this->getAncestorCodes([$product])
         );
@@ -70,8 +73,12 @@ final class ComputeProductsAndAncestorsSubscriber implements EventSubscriberInte
                 && get_class($product) !== 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct';
         });
 
+        if ($this->elasticsearchShouldBeRefreshed($products)) {
+            $this->esClient->refreshIndex();
+        }
+
         if (!empty($products)) {
-            $this->productAndAncestorsIndexer->removeFromProductIdsAndReindexAncestors(
+            $this->productAndAncestorsIndexer->removeFromProductUuidsAndReindexAncestors(
                 $event->getSubjectId(),
                 $this->getAncestorCodes($products)
             );
@@ -90,5 +97,23 @@ final class ComputeProductsAndAncestorsSubscriber implements EventSubscriberInte
         }
 
         return array_unique($ancestorCodes, SORT_STRING);
+    }
+
+    /**
+     * PIM-10467: If a product is created then deleted very quickly, ES can not have the product yet because
+     * it is refreshed every second. We take 10 seconds by security in case of overload.
+     *
+     * @param ProductInterface[] $products
+     * @return bool
+     */
+    private function elasticsearchShouldBeRefreshed(array $products): bool
+    {
+        foreach ($products as $product) {
+            if (null !== $product->getCreated() && 10 > time() - $product->getCreated()->getTimestamp()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

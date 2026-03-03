@@ -8,3 +8,7 @@ services:
         class: 'Akeneo\Pim\Structure\Bundle\Manager\AttributeCodeBlacklister'
         arguments:
             - '@database_connection'
+
+    pim_catalog.structure.clock:
+        class: 'Lcobucci\Clock\SystemClock'
+        factory: ['Lcobucci\Clock\SystemClock', 'fromUTC']

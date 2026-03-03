@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\VariantProduct\ExternalApi;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\AbstractProductTestCase;
 use PHPUnit\Framework\Assert;
@@ -63,22 +68,22 @@ class PartialUpdateVariantToSimpleEndToEnd extends AbstractProductTestCase
             'updated' => '2016-06-14T13:12:50+02:00',
             'associations' => [
                 'PACK' => [
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                     'groups' => [],
                 ],
                 'SUBSTITUTION' => [
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                     'groups' => [],
                 ],
                 'UPSELL' => [
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                     'groups' => [],
                 ],
                 'X_SELL' => [
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                     'groups' => [],
                 ],
@@ -155,22 +160,22 @@ class PartialUpdateVariantToSimpleEndToEnd extends AbstractProductTestCase
             'updated' => '2016-06-14T13:12:50+02:00',
             'associations' => [
                 'PACK' => [
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                     'groups' => [],
                 ],
                 'SUBSTITUTION' => [
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                     'groups' => [],
                 ],
                 'UPSELL' => [
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                     'groups' => [],
                 ],
                 'X_SELL' => [
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                     'groups' => [],
                 ],
@@ -275,6 +280,7 @@ JSON;
     {
         parent::setUp();
 
+        $this->removeJobsUsingTabletChannel();
         $tablet = $this->get('pim_catalog.repository.channel')->findOneByIdentifier('tablet');
         $this->get('pim_catalog.remover.channel')->remove($tablet);
 
@@ -342,24 +348,20 @@ JSON;
         $this->createProduct(
             'product_family_variant_yes',
             [
-                'family' => 'familyA',
-                'parent' => 'sub',
-                'categories' => ['categoryA2'],
-                'values' => [
-                    'a_yes_no' => [['data' => true, 'locale' => null, 'scope' => null]],
-                ],
+                new SetFamily('familyA'),
+                new ChangeParent('sub'),
+                new SetCategories(['categoryA2']),
+                new SetBooleanValue('a_yes_no', null, null, true),
             ]
         );
         $this->createProduct(
             'product_family_variant_no',
             [
-                'family' => 'familyA',
-                'parent' => 'sub',
-                'categories' => ['categoryA2'],
-                'values' => [
-                    'a_yes_no' => [['data' => false, 'locale' => null, 'scope' => null]],
-                    'a_text_area' => [['data' => 'Lorem ipsum dolor sit amet', 'locale' => null, 'scope' => null]],
-                ],
+                new SetFamily('familyA'),
+                new ChangeParent('sub'),
+                new SetCategories(['categoryA2']),
+                new SetBooleanValue('a_yes_no', null, null, false),
+                new SetTextareaValue('a_text_area', null, null, 'Lorem ipsum dolor sit amet'),
             ]
         );
 
@@ -396,9 +398,19 @@ JSON;
         array $expectedAllIncomplete
     ): void {
         $indexedProductModel = $this->get('akeneo_elasticsearch.client.product_and_product_model')
-                                    ->get(sprintf('product_model_%d', $productModelId));
+            ->get(sprintf('product_model_%d', $productModelId));
 
         Assert::assertEqualsCanonicalizing($expectedAllComplete, $indexedProductModel['_source']['all_complete']);
         Assert::assertEqualsCanonicalizing($expectedAllIncomplete, $indexedProductModel['_source']['all_incomplete']);
+    }
+
+    private function removeJobsUsingTabletChannel(): void
+    {
+        $query = <<<SQL
+DELETE FROM akeneo_batch_job_instance
+WHERE raw_parameters REGEXP 'scope[{";:as0-9]+tablet';
+SQL;
+
+        $this->get('database_connection')->executeQuery($query);
     }
 }

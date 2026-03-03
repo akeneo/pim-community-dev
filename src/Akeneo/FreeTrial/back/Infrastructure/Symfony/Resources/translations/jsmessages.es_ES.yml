@@ -1,0 +1,15 @@
+free_trial:
+  menu:
+    assets: Activos
+    entities: Entidades
+    proposals: Propuestas
+    sso: Inicio de sesión único con SAML
+    rules: Reglas
+    feature_ee_only: Esta característica es solo para la Enterprise Edition
+  dqi:
+    dashboard:
+      helper: Akeneo PIM Enterprise Edition ofrece potentes capacidades adicionales a la funcionalidad existente de Data Quality Insights. Usted tiene acceso a capacidades extendidas de comprobación ortográfica, cobertura más amplia del lenguaje e indicadores clave adicionales para ayudar a ofrecer inmaculadas experiencias de productos en cualquier lugar en el que se vende.
+  activity:
+    dashboard:
+      projects: Proyectos
+      helper: Los proyectos en Akeneo PIM Enterprise Edition le ayudan a organizar y seguir el trabajo de los grupos de colaboradores que participan en el enriquecimiento de los datos del producto. Generan tareas y las asignan al usuario adecuado, lo que permite a todos desempeñar su papel en la creación de experiencias de producto atractivas. Crean proyectos para estructurar los flujos de trabajo de enriquecimiento y supervisar el estado del proyecto. Simplifican la comunicación entre los miembros del equipo que trabajan en el enriquecimiento del producto.

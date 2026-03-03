@@ -37,8 +37,8 @@ class UTCDateTimeType extends DateTimeType
      */
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
-        if (null === $value) {
-            return null;
+        if (null === $value || $value instanceof \DateTimeInterface) {
+            return $value;
         }
 
         $val = \DateTime::createFromFormat(

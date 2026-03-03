@@ -21,6 +21,11 @@ Second: 秒
 Millisecond: ミリ秒
 Microsecond: マイクロ秒
 "Time Zone": "タイムゾーン"
+duration:
+  days: "{0}0 日|{1}1 日|]1, Inf[{{ count }} 日"
+  hours: "{0}0 時間|{1}1 時間|]1, Inf[{{ count }} 時間"
+  minutes: "{0}0 分|{1}1 分|]1, Inf[{{ count }} 分"
+  seconds: "{0}0 秒|{1}1 秒|]1, Inf[{{ count }} 秒"
 #PIM messages
 Localized value: ローカライズ値
 Columns: 列
@@ -97,18 +102,34 @@ oro_config:
       tab:
         system:
           title: システム
+      save_ok: 構成が正常に保存されました
+      save_error: 申し訳ありませんが、構成を保存できませんでした ({{ reason }})
       group:
         localization:
-          title: ローカライズ
-          system_locale: 言語
+          title: ログインページの設定
+          fields:
+            system_locale:
+              label: 言語
         notification:
-          title: お知らせ
-          system_notification: 新しいバージョンの通知
+          title: 新しいバージョンの通知
+          helper: 有効にすると、新しいバージョンが利用可能な場合に通知が届きます。
+          fields:
+            enabler:
+              label: 有効
+        environment:
+          title: 環境設定
+          fields:
+            sandbox_banner:
+              label: サンドボックス警告バナーを表示する
         loading_message:
-          title: メッセージを読み込み中...
-          label: メッセージの読み込みを有効にする
-        loading_messages:
-          label: メッセージの読み込み有効
+          title: カスタマイズされた読み込み中のメッセージ
+          helper: 画面を読み込むためのカスタマイズされたメッセージでユーザーを楽しませます。
+          placeholder: 読み込み画面で表示される独自のメッセージを書いてください
+          fields:
+            enabler:
+              label: メッセージの読み込みを有効にする
+            messages:
+              label: 独自の読み込みメッセージを追加
 pim_ui:
   flash:
     unsaved_changes: '保存していない変更内容があります。このページから移動しますか?'
@@ -154,8 +175,11 @@ pim_common:
   before: 前
   by: by
   cancel: キャンセル
+  characters_left: ']-Inf, 1]残り {{ count }} 文字|]1, Inf[残り {{ count }} 文字'
+  clear_value: 値の削除
   close: 閉じる
   code: コード
+  completeness: 完全性
   confirm: 確認
   confirm_deletion: 削除を確認する
   confirm_revocation: 取消を確認
@@ -163,18 +187,25 @@ pim_common:
   created: '作成:'
   delete: 削除
   done: 完了
+  duplicate: 複製
   edit: 編集
   entity_updated: 保存されていない変更があります。
   export: エクスポート
   from: 開始
   general_properties: プロパティ全般
   history: 履歴
+  identifier: 識別子
+  image: 画像
   label: ラベル
   label_translations: ラベルの翻訳
   Label or identifier: ラベルもしくは識別子
+  code_or_label: コードまたはラベル
   less_than: <
   loading: 読み込み中…
   media_upload: ドラッグ＆ドロップでアップロードするか、こちらをクリック
+  media_uploading: アップロード中…
+  media_upload_error: アップロード中にエラーが発生しました
+  more_actions: その他の操作
   more_than: '>'
   next: 次
   "no": "いいえ"
@@ -182,22 +213,29 @@ pim_common:
   not_available: N/A
   now: 今
   ok: OK
+  open: 開く
+  no_result: 結果はありません
+  no_search_result: 検索結果がありません。
   other_actions: その他の操作
   permissions: 許可
   previous: 前
   properties: プロパティ
+  quality_score: 品質スコア
   remove: 削除
   required_label: (必須)
+  result_count: "{0}0 結果|{1}1 結果|]1, Inf[{{ itemsCount }} 結果"
   save: 保存
   search: 検索
   select2:
     search: 検索...
     no_match: 一致が見つかりません
     load_more: 他の結果を読み込み中です…
+  selected: "{0}選択なし|{1}1個を選択済み|]1, Inf[{{ itemsCount }}個を選択済み"
   status: ステータス
   to: 終了
   type: タイプ
   update: 更新
+  updated: 更新
   "yes": "はい"
   operator: オペレータ
   operators:
@@ -213,9 +251,25 @@ pim_common:
     DOES NOT CONTAIN: '次を含まない:'
     STARTS WITH: で始まる
     ENDS WITH: 終了部分：
+    IN: リスト内
+    "NOT IN": リスト外
   read_more: 続きを読む
+  channel: チャンネル
+  locale: ロケール
+  categories: カテゴリ
+  family_variant: ファミリーバリエーション
+  enabled: 有効
+  family: ファミリー
+  parent: 上位
+  groups: グループ
+  products: 商品
+  product_uuids: 商品
+  product_models: 商品モデル
+  more: 詳細
+  public_view: パブリックビュー
+  view: 表示
 error:
-  exception: 申し訳ありません！ エラー{{ status_code }} が発生しました
+  exception: '{{ status_code }}エラーが発生しました...'
   forbidden: このページにアクセスすることはできません
 alert:
   attribute_option:
@@ -228,6 +282,7 @@ pim_enrich.entity.fallback:
     generic_error: エラーが発生しました。
     update:
       fail: 更新に失敗しました
+      fail_session_expired: ユーザーセッションの期限が切れました。もう一度ログインしてください。
       success: 正常に更新されました
     delete:
       fail: このアイテムを削除できません
@@ -244,14 +299,12 @@ pim_enrich.entity.fallback:
       discard_changes_title: よろしいですか?
 pim_enrich.entity.job_execution:
   page_title:
-    index: "]-Inf, 1]{{ count }} 操作|]1, Inf[{{ count }} 操作"
+    index: "]-Inf, 1]ジョブ {{ count }} 件|]1, Inf[ジョブ {{ count }} 件"
   module:
     create:
       upload: '{{ type }} ファイルをここにドロップするか、ディスクを参照するをクリックしてください'
     download:
       archive: 生成されたアーカイブをダウンロード
-      output: 生成されたファイルをダウンロード
-      input: 読み取りファイルをダウンロード
       invalid_xlsx: 無効なデータをダウンロード
       invalid_csv: 無効なデータをダウンロード
 pim_title:
@@ -262,8 +315,9 @@ pim_title:
   pim_enrich_catalog_volume_index: カタログボリュームのモニタリング
   pim_enrich_categorytree_index: カテゴリツリー
   pim_enrich_categorytree_create: カテゴリ ツリー |作成
-  pim_enrich_categorytree_edit: カテゴリツリー {{ category.label }} |編集
+  pim_enrich_categorytree_edit: カテゴリ {{ category.label }} |編集
   pim_enrich_categorytree_create_tree: カテゴリ ツリー |作成
+  pim_enrich_categorytree_tree: カテゴリツリー {{ category.label }} |編集
   pim_enrich_attribute_index: 属性
   pim_enrich_attribute_create: 属性 |作成
   pim_enrich_attribute_edit: 属性 {{ attribute.label }} |編集
@@ -290,7 +344,10 @@ pim_title:
   pim_enrich_job_tracker_show: プロセストラッカー |ジョブの表示
   pim_enrich_mass_edit_action: 一括編集
   pim_analytics_system_info_index: システム情報
+  pim_settings_index: 設定
+  pim_system_index: システム
 pim_menu:
+  tag.new: 新規
   tab:
     activity: アクティビティ
     imports: インポート
@@ -300,12 +357,16 @@ pim_menu:
     help:
       title: ヘルプ
       helper: Akeneoヘルプセンター
+      new: 新規
+      news: 新着情報
+      help_center: ヘルプセンター
+      akademy_training: Akademy トレーニング
   item:
     association_type: 関連タイプ
     attribute_group: 属性グループ
     channel: チャンネル
     currency: 通貨
-    dashboard: ダッシュボード
+    dashboard: アクティビティダッシュボード
     family: ファミリー
     group: グループ
     group_type: グループタイプ
@@ -326,7 +387,11 @@ pim_menu:
     activity: アクティビティナビゲーション
     system: システムナビゲーション
     user: ユーザー管理ナビゲーション
-    settings: 設定ナビゲーション
+    settings:
+      product: 商品設定
+      catalog: カタログ設定
+      collapsed_label: 設定ナビゲーション
+      automation: 自動化
     product: 商品ナビゲーション
     product_infos: 商品情報
   user:
@@ -338,8 +403,71 @@ pim_notification:
     export: エクスポート
     quick_export: クイック エクスポート
     mass_edit: 一括編集
-akeneo_communication_channel:
-  link:
-    title: お知らせ
-  panel:
-    title: お知らせ
+pim_settings:
+  settings_menu: 設定メニュー
+  catalog_settings: カタログ設定
+  product_settings: 商品設定
+  automation_settings: 自動化
+  count:
+    category_trees: '{0}0 個のツリーがあります |{1}1 個のツリーがあります |]1, Inf[{{ count }} 個のツリーがあります'
+    categories: '{0}と 0 個のカテゴリ|{1}と 1 個のカテゴリ|]1, Inf[と {{ count }} 個のカテゴリ'
+    channels: '{0}0 個のチャンネルがあります|{1}1 個のチャンネルがあります|]1, Inf[{{ count }} 個のチャンネルがあります'
+    locales: '{0}0 個の有効なロケールがあります|{1}1 個の有効なロケールがあります|]1, Inf[{{ count }} 個の有効なロケールがあります'
+    currencies: '{0}0 個の有効な通貨があります|{1}1 個の有効な通貨があります|]1, Inf[{{ count }} 個の有効な通貨があります'
+    attribute_groups: '{0}0 個の属性グループがあります|{1}1 個の属性グループがあります|]1, Inf[{{ count }} 個の属性グループがあります'
+    attributes: '{0}0 個の属性があります|{1}1 個の属性があります|]1, Inf[{{ count }} 個の属性があります'
+    families: '{0}0 個のファミリーがあります|{1}1 個のファミリーがあります|]1, Inf[{{ count }} 個のファミリーがあります'
+    measurements: '{0}0 件の測定があります |{1}1 件の測定があります |]1, Inf[{{ count }} 件の測定があります'
+    association_types: '{0}0 個の関連タイプがあります|{1}1 個の関連タイプがあります|]1, Inf[{{ count }} 個の関連タイプがあります'
+    group_types: '{0}0 個のグループタイプがあります|{1}1 個のグループタイプがあります|]1, Inf[{{ count }} 個のグループタイプがあります'
+    groups: '{0}0 個のグループがあります|{1}1 個のグループがあります|]1, Inf[{{ count }} 個のグループがあります'
+    rules: '{0}0 項目の有効なルールがあります|{1}1 項目の有効なルールがあります|]1, Inf[{{ count }} 項目の有効なルールがあります'
+    identifier_generators: '{0}識別子ジェネレーターがありません|{1}1個の識別子ジェネレーターがあります|]1, Inf[{{ count }}個の識別子ジェネレーターがあります'
+pim_system:
+  system_menu: システムメニュー
+  system_navigation: システムナビゲーション
+  users_management_navigation: ユーザー管理ナビゲーション
+  count:
+    product_values: '{0}0 個の商品値があります|{1}1 個の商品値があります|]1, Inf[{{ count }} 個の商品値があります'
+    users: '{0}0 人のユーザーがいます|{1}1 人のユーザーがいます|]1, Inf[{{ count }} 人のユーザーがいます'
+    user_groups: '{0}0 組のユーザーグループがあります|{1}1 組のユーザーグループがあります|]1, Inf[{{ count }} 組のユーザーグループがあります'
+    roles: '{0}0 個の権限があります|{1}1 個の権限があります|]1, Inf[{{ count }} 個の権限があります'
+  sso:
+    enabled: SSO有効
+    disabled: SSO無効
+    title: SAMLベースのシングルサインオン
+  reset_pim:
+    modal:
+      summary:
+        name: 概要
+        title: '警告: PIM のリセットは元に戻せません'
+        text: '以下を除くすべての要素が削除されます:'
+        users:
+          name: ユーザー
+          tooltip: ユーザーとは、PIM 内で共同作業できる人です。
+        user_groups:
+          name: ユーザーグループ
+          tooltip: ユーザーグループは、PIM 内で様々な操作を実行するチームを定義します。
+        roles:
+          name: 権限
+          tooltip: 権限は、PIM でユーザーとユーザーグループが実行できるアクセスと操作を定義します。
+      confirm:
+        name: 確認
+        title: PIM のリセットを確認する
+        helper:
+          emphasis: PIM を一度リセットすると、元に戻せません。
+          text: リセットボタンをクリックするとログアウトされ、ログインページに戻ります。
+      confirmation_phrase: '"{{ confirmation_word }}" と入力してください'
+      confirmation_word: リセット
+    button:
+      label: インスタンスをリセット
+      confirm: リセットしてログアウト
+    error_notification: インスタンスのリセット中にエラーが発生しました。システム管理者にお問い合わせください。
+    jobs_running: 一部のプロセスがキューに入っているか実行中であるため、現在インスタンスをリセットできません。
+  sandbox:
+    helper:
+      text: これはサンドボックス環境です。変更による本番環境への影響はありません。
+pim_datagrid:
+  mass_action:
+    default:
+      select_action: アクションを選択

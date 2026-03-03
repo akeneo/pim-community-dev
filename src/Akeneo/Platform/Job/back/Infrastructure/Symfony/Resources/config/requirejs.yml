@@ -1,0 +1,14 @@
+config:
+  config:
+    pim/controller-registry:
+      controllers:
+        akeneo_job_process_tracker_index:
+          module: akeneojob/controller/process-tracker
+          aclResourceId: pim_enrich_job_tracker_index
+        akeneo_job_process_tracker_details:
+          module: akeneojob/controller/process-tracker
+          aclResourceId: pim_enrich_job_tracker_index
+
+  paths:
+    akeneojob/controller/process-tracker: akeneojob/js/bridge/controller/process-tracker.tsx
+    akeneojob/controller/job-instance: akeneojob/js/bridge/controller/job-instance.tsx

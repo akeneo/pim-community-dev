@@ -30,7 +30,6 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    font-size: @AknFontSizeSmall;
     position: absolute;
     right: 0;
     overflow-x: auto;
@@ -156,13 +155,15 @@
   }
 
   &-navigationLink {
-    display: block;
+    display: flex;
     font-size: @AknFontSizeBig;
-    margin: 0 0 20px 0;
+    margin: 0 0 13px 0;
     color: @AknDarkBlue;
     cursor: pointer;
     opacity: 0.85;
     transition: opacity 0.2s ease-in;
+    line-height: 21px;
+    align-items: baseline;
 
     &:hover {
       opacity: 1;

@@ -1,0 +1,15 @@
+free_trial:
+  menu:
+    assets: Zasoby
+    entities: Obiekty
+    proposals: Propozycje
+    sso: Pojedyncze logowanie oparte na protokole SAML
+    rules: Reguły
+    feature_ee_only: Ta funkcja jest dostępna tylko w wersji Enterprise.
+  dqi:
+    dashboard:
+      helper: Oprogramowanie Akeneo PIM w wersji Enterprise poszerza istniejące możliwości w zakresie wglądu w jakość danych o dodatkowe funkcje. Zyskujesz dostęp do rozszerzonych możliwości sprawdzania pisowni, obsługi większej liczby języków oraz dodatkowych kluczowych wskaźników, dzięki którym zapewnisz klientom wysoki poziom satysfakcji z użytkowania wszystkich sprzedawanych produktów.
+  activity:
+    dashboard:
+      projects: Projekty
+      helper: Projekty w oprogramowaniu Akeneo PIM w wersji Enterprise ułatwiają organizację i śledzenie pracy dzielonej między grupami współtwórców zaangażowanych we wzbogacanie danych produktów. Tworzą one zadania i przypisują je właściwemu użytkownikowi, dzięki czemu każdy może odegrać swoją rolę w budowaniu atrakcyjnych doświadczeń związanych z produktami. Możesz przygotowywać projekty mające na celu ustrukturyzowanie procesów wzbogacania i monitorowanie statusu projektu. Uproszczają one komunikację między członkami zespołu pracującymi nad wzbogacaniem produktu.

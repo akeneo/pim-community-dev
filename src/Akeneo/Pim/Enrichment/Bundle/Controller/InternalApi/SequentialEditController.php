@@ -3,11 +3,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Oro\Bundle\PimDataGridBundle\Adapter\GridFilterAdapterInterface;
-use Oro\Bundle\PimDataGridBundle\Normalizer\IdEncoder;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -22,28 +23,12 @@ class SequentialEditController
 {
     private const MAX_PRODUCT_COUNT = 1000;
 
-    /** @var MassActionParametersParser */
-    protected $parameterParser;
-
-    /** @var GridFilterAdapterInterface */
-    protected $filterAdapter;
-
-    /** @var ProductQueryBuilderFactoryInterface */
-    protected $pqbFactory;
-
-    /**
-     * @param MassActionParametersParser          $parameterParser
-     * @param GridFilterAdapterInterface          $filterAdapter
-     * @param ProductQueryBuilderFactoryInterface $pqbFactory
-     */
     public function __construct(
-        MassActionParametersParser $parameterParser,
-        GridFilterAdapterInterface $filterAdapter,
-        ProductQueryBuilderFactoryInterface $pqbFactory
+        protected MassActionParametersParser $parameterParser,
+        protected GridFilterAdapterInterface $filterAdapter,
+        protected ProductQueryBuilderFactoryInterface $pqbFactory,
+        protected UserContext $userContext
     ) {
-        $this->parameterParser      = $parameterParser;
-        $this->filterAdapter        = $filterAdapter;
-        $this->pqbFactory           = $pqbFactory;
     }
 
     /**
@@ -60,14 +45,21 @@ class SequentialEditController
 
         $products = [];
 
-        $cursor = $this->getProductsCursor($filters, [
-            'locale' => $parameters['dataLocale'],
-            'scope'  => $parameters['dataScope']['value'],
-            'sort'   => $parameters['sort']
-        ]);
+        $cursor = $this->getProductsCursor(
+            $filters,
+            $this->initEmptyParameterWithDefault($parameters)
+        );
 
         while ($cursor->valid() && $cursor->key() < self::MAX_PRODUCT_COUNT) {
-            $products[] = IdEncoder::decode($cursor->current());
+            $item = $cursor->current();
+            $products[] = $item instanceof ProductModelInterface ?
+                [
+                    'id' => $item->getId(),
+                    'type' => 'product_model'
+                ] : [
+                    'id' => $item->getUuid()->toString(),
+                    'type' => 'product'
+                ];
             $cursor->next();
         }
 
@@ -89,5 +81,17 @@ class SequentialEditController
         }
 
         return $productQueryBuilder->execute();
+    }
+
+    protected function initEmptyParameterWithDefault(array $parameters): array
+    {
+        return [
+            'locale' => $parameters['dataLocale']
+                ?: $this->userContext->getCurrentLocaleCode(),
+            'scope' => isset($parameters['dataScope']) ?
+                $parameters['dataScope']['value']
+                : $this->userContext->getUserChannelCode(),
+            'sort' => $parameters['sort']
+        ];
     }
 }

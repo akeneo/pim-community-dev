@@ -1,0 +1,115 @@
+services:
+  Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorHandler:
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\CreateGeneratorCommandValidator'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorHandler:
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\UpdateGeneratorCommandValidator'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Application\Get\GetGeneratorHandler:
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Application\Get\GetGeneratorsHandler:
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Application\Delete\DeleteGeneratorHandler:
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property\PropertyProcessApplier:
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\FamilyNomenclatureRepository'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\SimpleSelectNomenclatureRepository'
+      - '@akeneo.pim.structure.query.get_attributes'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\ReferenceEntityNomenclatureRepository'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property\GenerateAutoNumberHandler:
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Query\GetNextIdentifierQuery'
+    tags:
+      - { name: 'akeneo.pim.automation.identifier_generator.generate_property' }
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property\GenerateFreeTextHandler:
+    tags:
+      - { name: 'akeneo.pim.automation.identifier_generator.generate_property' }
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property\GenerateFamilyHandler:
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property\PropertyProcessApplier'
+    tags:
+      - { name: 'akeneo.pim.automation.identifier_generator.generate_property' }
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property\GenerateSimpleSelectHandler:
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property\PropertyProcessApplier'
+    tags:
+      - { name: 'akeneo.pim.automation.identifier_generator.generate_property' }
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property\GenerateReferenceEntityHandler:
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property\PropertyProcessApplier'
+    tags:
+      - { name: 'akeneo.pim.automation.identifier_generator.generate_property' }
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\GenerateIdentifierHandler:
+    arguments:
+      - !tagged_iterator { tag: 'akeneo.pim.automation.identifier_generator.generate_property' }
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateNomenclatureHandler:
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\FamilyNomenclatureRepository'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\SimpleSelectNomenclatureRepository'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\UpdateNomenclatureCommandValidator'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Get\GetNomenclatureHandler'
+      - '@akeneo.pim.structure.query.get_attributes'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\ReferenceEntityNomenclatureRepository'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Application\Get\GetNomenclatureHandler:
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\FamilyNomenclatureRepository'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\SimpleSelectNomenclatureRepository'
+      - '@akeneo.pim.structure.query.get_attributes'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\ReferenceEntityNomenclatureRepository'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\ReorderGeneratorsHandler:
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Query\ReorderIdentifierGenerators'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Application\Match\Condition\MatchEmptyIdentifierHandler:
+    tags:
+      - { name: 'akeneo.pim.automation.identifier_generator.match_condition' }
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Application\Match\Condition\MatchEnabledHandler:
+    tags:
+      - { name: 'akeneo.pim.automation.identifier_generator.match_condition' }
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Application\Match\Condition\MatchFamilyHandler:
+    tags:
+      - { name: 'akeneo.pim.automation.identifier_generator.match_condition' }
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Application\Match\Condition\MatchMultiSelectHandler:
+    tags:
+      - { name: 'akeneo.pim.automation.identifier_generator.match_condition' }
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Application\Match\Condition\MatchSimpleSelectHandler:
+    tags:
+      - { name: 'akeneo.pim.automation.identifier_generator.match_condition' }
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Application\Match\Condition\MatchCategoryHandler:
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\AntiCorruptionLayer\CategoriesHaveAtLeastOneChild'
+    tags:
+      - { name: 'akeneo.pim.automation.identifier_generator.match_condition' }
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Application\Match\Condition\MatchReferenceEntityHandler:
+    tags:
+      - { name: 'akeneo.pim.automation.identifier_generator.match_condition' }
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Application\Match\MatchIdentifierGeneratorHandler:
+    arguments:
+      - !tagged_iterator { tag: 'akeneo.pim.automation.identifier_generator.match_condition' }

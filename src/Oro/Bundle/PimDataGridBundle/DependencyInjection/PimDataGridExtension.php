@@ -5,6 +5,7 @@ namespace Oro\Bundle\PimDataGridBundle\DependencyInjection;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
@@ -19,7 +20,7 @@ class PimDataGridExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('actions.yml');
         $loader->load('adapters.yml');
         $loader->load('attribute_types.yml');
@@ -47,5 +48,6 @@ class PimDataGridExtension extends Extension
         $loader->load('updaters.yml');
         $loader->load('datagrid_listeners.yml');
         $loader->load('queries.yml');
+        $loader->load('validators.yml');
     }
 }

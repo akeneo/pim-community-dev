@@ -37,16 +37,6 @@ final class ChannelContext implements Context
     }
 
     /**
-     * @Given the limit of the number of channels is set to :limit
-     *
-     * @param int $limit
-     */
-    public function theLimitOfTheNumberOfChannelsIsSetTo(int $limit): void
-    {
-        $this->inMemoryQuery->setLimit($limit);
-    }
-
-    /**
      * @Then the report returns that the number of channels is :numberOfChannels
      *
      * @param int $numberOfChannels
@@ -56,25 +46,5 @@ final class ChannelContext implements Context
         $volumes = $this->reportContext->getVolumes();
 
         Assert::eq($numberOfChannels, $volumes['count_channels']['value']);
-    }
-
-    /**
-     * @Then the report warns the users that the number of channels is high
-     */
-    public function theReportWarnsTheUsersThatTheNumberOfChannelsIsHigh(): void
-    {
-        $volumes = $this->reportContext->getVolumes();
-
-        Assert::true($volumes['count_channels']['has_warning']);
-    }
-
-    /**
-     * @Then the report does not warn the users that the number of channels is high
-     */
-    public function theReportDoesNotWarnTheUsersThatTheNumberOfChannelsIsHigh(): void
-    {
-        $volumes = $this->reportContext->getVolumes();
-
-        Assert::false($volumes['count_channels']['has_warning']);
     }
 }

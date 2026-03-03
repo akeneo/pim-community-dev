@@ -2,11 +2,11 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\Ui;
 
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
-use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Doctrine\Common\Collections\Collection;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -19,30 +19,14 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class AbstractListCategoryController extends Controller
+abstract class AbstractListCategoryController extends AbstractController
 {
-    /** @var CategoryRepositoryInterface */
-    protected $categoryRepository;
+    protected CategoryRepositoryInterface $categoryRepository;
+    protected SecurityFacade $securityFacade;
+    protected string $categoryClass;
+    protected string $acl;
+    protected string $template;
 
-    /** @var SecurityFacade */
-    protected $securityFacade;
-
-    /** @var string */
-    protected $categoryClass;
-
-    /** @var string */
-    protected $acl;
-
-    /** @var string */
-    protected $template;
-
-    /**
-     * @param CategoryRepositoryInterface $categoryRepository
-     * @param SecurityFacade              $securityFacade
-     * @param string                      $categoryClass
-     * @param string                      $acl
-     * @param string                      $template
-     */
     public function __construct(
         CategoryRepositoryInterface $categoryRepository,
         SecurityFacade $securityFacade,
@@ -57,19 +41,7 @@ abstract class AbstractListCategoryController extends Controller
         $this->template = $template;
     }
 
-    /**
-     * List categories associated with the provided product and descending from the category
-     * defined by the parent parameter.
-     *
-     * @param Request    $request    The request object
-     * @param string     $id         Product id
-     * @param int        $categoryId The parent category id
-     *
-     * httpparam include_category if true, will include the parentCategory in the response
-     *
-     * @return Response
-     */
-    public function listCategoriesAction(Request $request, $id, $categoryId)
+    protected function doListCategoriesAction(Request $request, string $id, string $categoryId): Response
     {
         if (!$this->securityFacade->isGranted($this->acl)) {
             throw new AccessDeniedException();
@@ -83,9 +55,9 @@ abstract class AbstractListCategoryController extends Controller
         }
 
         $categories = null;
-        $selectedCategoryIds = $request->get('selected', null);
-        if (null !== $selectedCategoryIds) {
-            $categories = $this->categoryRepository->getCategoriesByIds($selectedCategoryIds);
+        $selectedCategoryCodes = $request->get('selected', null);
+        if (null !== $selectedCategoryCodes) {
+            $categories = $this->categoryRepository->getCategoriesByCodes($selectedCategoryCodes);
         } elseif (null !== $entityWithCategories) {
             $categories = $entityWithCategories->getCategories();
         }

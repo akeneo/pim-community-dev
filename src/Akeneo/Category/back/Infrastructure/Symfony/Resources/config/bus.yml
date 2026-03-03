@@ -1,0 +1,5 @@
+services:
+    category.command.message_bus:
+        class: Akeneo\Category\Infrastructure\Bus\CommandBus
+        arguments:
+            $messageBus: '@category.command.bus'

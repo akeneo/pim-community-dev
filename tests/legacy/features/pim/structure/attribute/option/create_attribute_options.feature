@@ -11,9 +11,8 @@ Feature: Create attribute options
   @critical
   Scenario: Successfully create some attribute options
     Given I am on the attributes page
-    And I create a "Simple select" attribute
+    And I create a "Simple select" attribute with code "size"
     And I fill in the following information:
-      | Code            | size  |
       | Attribute group | Other |
     When I save the attribute
     And I visit the "Options" tab
@@ -23,7 +22,7 @@ Feature: Create attribute options
       | red   |
       | blue  |
       | green |
-    When I check the "Sort automatically options by alphabetical order" switch
+    When I switch the "Sort automatically options by alphabetical order" to "yes"
     Then I should see the text "green"
     When I save the attribute
     Then I should see the flash message "Attribute successfully updated"

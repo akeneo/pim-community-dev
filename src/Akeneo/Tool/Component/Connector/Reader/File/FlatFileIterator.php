@@ -3,10 +3,11 @@
 namespace Akeneo\Tool\Component\Connector\Reader\File;
 
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
-use Box\Spout\Common\Exception\UnsupportedTypeException;
-use Box\Spout\Common\Type;
-use Box\Spout\Reader\IteratorInterface;
-use Box\Spout\Reader\ReaderFactory;
+use OpenSpout\Common\Entity\Row;
+use OpenSpout\Common\Exception\IOException;
+use OpenSpout\Common\Exception\UnsupportedTypeException;
+use OpenSpout\Reader\ReaderInterface;
+use OpenSpout\Reader\RowIteratorInterface;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -22,26 +23,13 @@ use Symfony\Component\Finder\Finder;
  */
 class FlatFileIterator implements FileIteratorInterface
 {
-    /** @var string */
-    protected $type;
-
-    /** @var string */
-    protected $filePath;
-
-    /** @var FileReaderInterface */
-    protected $reader;
-
-    /** @var \SplFileInfo */
-    protected $fileInfo;
-
-    /** @var string */
-    protected $archivePath;
-
-    /** @var IteratorInterface */
-    protected $rows;
-
-    /** @var array */
-    protected $headers;
+    protected string $type;
+    protected string $filePath;
+    protected ?ReaderInterface $reader = null;
+    protected \SplFileInfo $fileInfo;
+    protected ?string $archivePath = null;
+    protected RowIteratorInterface $rows;
+    protected array $headers;
 
     /**
      * @param string $type
@@ -62,28 +50,32 @@ class FlatFileIterator implements FileIteratorInterface
         }
 
         $mimeType = finfo_file(finfo_open(FILEINFO_MIME_TYPE), $this->filePath);
-        if ('application/zip' === $mimeType && Type::XLSX !== $this->fileInfo->getExtension()) {
+        if ('application/zip' === $mimeType && SpoutReaderFactory::XLSX !== $this->fileInfo->getExtension()) {
             $this->extractZipArchive();
         }
 
-        $this->reader = ReaderFactory::create($type);
-        if (isset($options['reader_options'])) {
-            $this->setReaderOptions($options['reader_options']);
+        $this->reader = SpoutReaderFactory::create($type, $options['reader_options'] ?? []);
+
+        try {
+            $this->reader->open($this->filePath);
+        } catch (IOException) {
+            throw new \RuntimeException('File is not readable.');
         }
-        $this->reader->open($this->filePath);
+
         $this->reader->getSheetIterator()->rewind();
 
         $sheet = $this->reader->getSheetIterator()->current();
         $sheet->getRowIterator()->rewind();
 
-        $this->headers = $sheet->getRowIterator()->current();
+        $headers = $sheet->getRowIterator()->current();
+        $this->headers = $headers ? $headers->toArray() : [];
         $this->rows = $sheet->getRowIterator();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->rows->rewind();
     }
@@ -93,14 +85,18 @@ class FlatFileIterator implements FileIteratorInterface
      *
      * @throws InvalidItemException
      */
-    public function current()
+    public function current(): mixed
     {
         $data = $this->rows->current();
 
-        if (!$this->valid() || null === $data || empty($data)) {
+        if (!$this->valid() || empty($data)) {
             $this->rewind();
 
             return null;
+        }
+
+        if ($data instanceof Row) {
+            return $data->toArray();
         }
 
         return $data;
@@ -109,7 +105,7 @@ class FlatFileIterator implements FileIteratorInterface
     /**
      * {@inheritdoc}
      */
-    public function next()
+    public function next(): void
     {
         $this->rows->next();
     }
@@ -117,7 +113,7 @@ class FlatFileIterator implements FileIteratorInterface
     /**
      * {@inheritdoc}
      */
-    public function key()
+    public function key(): string|int|bool|null|float
     {
         return $this->rows->key();
     }
@@ -125,7 +121,7 @@ class FlatFileIterator implements FileIteratorInterface
     /**
      * {@inheritdoc}
      */
-    public function valid()
+    public function valid(): bool
     {
         return $this->rows->valid();
     }
@@ -207,25 +203,5 @@ class FlatFileIterator implements FileIteratorInterface
         $filesIterator->rewind();
 
         $this->filePath = $filesIterator->current()->getPathname();
-    }
-
-    /**
-     * Add options to Spout reader
-     *
-     * @param array $readerOptions
-     *
-     * @throws \InvalidArgumentException
-     */
-    protected function setReaderOptions(array $readerOptions = [])
-    {
-        foreach ($readerOptions as $name => $option) {
-            $setter = 'set' . ucfirst($name);
-            if (method_exists($this->reader, $setter)) {
-                $this->reader->$setter($option);
-            } else {
-                $message = sprintf('Option "%s" does not exist in reader "%s"', $setter, get_class($this->reader));
-                throw new \InvalidArgumentException($message);
-            }
-        }
     }
 }

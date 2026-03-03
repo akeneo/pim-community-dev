@@ -33,16 +33,18 @@ interface RoleInterface
     /**
      * Set role name only for newly created role
      *
-     * @param  string            $role Role name
-     *
-     * @throws \RuntimeException
+     * @param string|null $role Role name
      */
-    public function setRole($role): void;
+    public function setRole(?string $role): void;
 
     /**
      * Set the new label for role
      *
-     * @param  string $label New label
+     * @param string|null $label New label
      */
-    public function setLabel($label): void;
+    public function setLabel(?string $label): void;
+
+    public function getType(): string;
+
+    public function setType(string $type): void;
 }

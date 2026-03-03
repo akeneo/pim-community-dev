@@ -27,7 +27,7 @@ define(['underscore', 'pim/form', 'pim/template/menu/menu'], function (_, BaseFo
     renderExtension: function (extension) {
       if (
         !_.isEmpty(extension.options.config) &&
-        !extension.options.config.to &&
+        (!extension.options.config.to || extension.options.config.isLandingSectionPage) &&
         _.isFunction(extension.hasChildren) &&
         !extension.hasChildren()
       ) {

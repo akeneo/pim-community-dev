@@ -1,0 +1,73 @@
+pim_menu.item:
+  measurements: Maßeinheiten
+pim_title:
+  akeneo_measurements_settings_index: Maßeinheiten
+  akeneo_measurements_settings_any: Maßeinheiten
+measurements:
+  label_translations: Label-Übersetzungen in UI-Gebietsschema
+  search:
+    placeholder: Auf Label oder Code suchen
+  family:
+    result_count: "{0}0 Messfamilien |{1}1 Messfamilie |]1, Inf[{{ itemsCount }} Messfamilien"
+    not_found: Messfamilie nicht gefunden
+    no_data:
+      title: Leider gibt es keine Messfamilie!
+      link: Hier klicken, um eins hinzuzufügen.
+    standard_unit: Standardeinheit
+    standard_unit_is_not_editable_after_creation: Diese Standardeinheit wird ein für alle Mal eingestellt, um die anderen Einheiten umzuwandeln.
+    add_new_measurement_family: Neue Messfamilie hinzufügen
+    tab:
+      units: Einheiten
+      properties: Eigenschaften
+    delete:
+      button: Messfamilie löschen
+      confirm: Sind Sie sicher, dass Sie diese Messfamilie mit allen Einheiten löschen möchten?
+      flash:
+        success: Messfamilie erfolgreich gelöscht.
+        error: Beim Löschen der Messfamilie ist ein Fehler aufgetreten.
+    save:
+      flash:
+        success: Messfamilie erfolgreich gespeichert.
+        error: Beim Speichern der Messfamilie ist ein Fehler aufgetreten.
+    is_locked: Ein Produkt-Attribut ist mit dieser Messfamilie verbunden. Sie können nur Einheiten hinzufügen oder die übersetzten Etiketten und das Symbol der vorhandenen Einheiten ändern.
+  unit:
+    title: '{{ unitLabel }} bearbeiten'
+    symbol: Symbol
+    delete:
+      button: Einheit löschen
+      confirm: Sind Sie sicher, dass Sie diese Maßeinheit löschen möchten?
+    add: Einheit hinzufügen
+    add_new: Neue Einheit hinzufügen
+    operation:
+      add: Neue Operation hinzufügen
+      placeholder: Operationswert
+    operator:
+      add: Hinzufügen
+      sub: Subtrahieren
+      mul: Multiplizieren
+      div: Teilen
+      select: Operator auswählen
+    convert_from_standard: Umrechnungsvorgang
+    create_another: Erstelle eine weitere Einheit
+    will_be_read_only: Ein Produkt-Attribut ist mit dieser Messfamilie verknüpft. Sobald die Einheit erstellt wurde, kann nur die übersetzten Label und das Symbol bearbeitet werden.
+  list:
+    header:
+      standard_unit: Standardeinheit
+      unit_count: Anzahl der Einheiten
+  form:
+    input:
+      symbol: "Symbol (z.B. km)"
+  validation:
+    unit:
+      code:
+        must_be_unique: 'Dieser Einheitskode existiert bereits.'
+  create_family:
+    flash:
+      success: Messfamilie erfolgreich erstellt.
+      error: Beim Erstellen der Messfamilie ist ein Fehler aufgetreten.
+  title:
+    measurement: Messung
+  add_unit:
+    flash:
+      success: Einheit erfolgreich hinzugefügt.
+      error: Beim Hinzufügen der Einheit ist ein Fehler aufgetreten.

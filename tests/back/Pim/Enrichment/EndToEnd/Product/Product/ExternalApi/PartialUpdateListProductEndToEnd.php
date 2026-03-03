@@ -7,6 +7,7 @@ namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use PHPUnit\Framework\Assert;
+use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Response;
 
 class PartialUpdateListProductEndToEnd extends AbstractProductTestCase
@@ -30,13 +31,13 @@ class PartialUpdateListProductEndToEnd extends AbstractProductTestCase
     public function testCreateAndUpdateAListOfProducts()
     {
         $data =
-<<<JSON
+            <<<JSON
     {"identifier": "product_family", "family": "familyA1"}
     {"identifier": "my_identifier", "family": "familyA2"}
 JSON;
 
         $expectedContent =
-<<<JSON
+            <<<JSON
 {"line":1,"identifier":"product_family","status_code":204}
 {"line":2,"identifier":"my_identifier","status_code":201}
 JSON;
@@ -103,13 +104,13 @@ JSON;
     public function testCreateAndUpdateSameProduct()
     {
         $data =
-<<<JSON
+            <<<JSON
     {"identifier": "my_identifier"}
     {"identifier": "my_identifier"}
 JSON;
 
         $expectedContent =
-<<<JSON
+            <<<JSON
 {"line":1,"identifier":"my_identifier","status_code":201}
 {"line":2,"identifier":"my_identifier","status_code":204}
 JSON;
@@ -156,7 +157,7 @@ JSON;
         $data = implode(PHP_EOL, $data);
 
         $expectedContent =
-<<<JSON
+            <<<JSON
     {
         "code": 413,
         "message": "Too many resources to process, ${maxNumberResources} is the maximum allowed."
@@ -183,10 +184,11 @@ JSON;
             'line_too_long_5' => str_repeat('a', $this->getBufferSize() * 2),
             'line_too_long_6' => str_repeat('a', $this->getBufferSize() * 5),
             'invalid_json_4'  => str_repeat('a', $this->getBufferSize()),
+            'invalid_identifier_datatype' => '{"identifier":123456}'
         ];
 
         $data =
-<<<JSON
+            <<<JSON
 ${line['invalid_json_1']}
 ${line['invalid_json_2']}
 ${line['invalid_json_3']}
@@ -197,10 +199,11 @@ ${line['line_too_long_4']}
 ${line['line_too_long_5']}
 ${line['line_too_long_6']}
 ${line['invalid_json_4']}
+${line['invalid_identifier_datatype']}
 JSON;
 
         $expectedContent =
-<<<JSON
+            <<<JSON
 {"line":1,"status_code":400,"message":"Invalid json message received"}
 {"line":2,"status_code":400,"message":"Invalid json message received"}
 {"line":3,"status_code":400,"message":"Invalid json message received"}
@@ -211,6 +214,7 @@ JSON;
 {"line":8,"status_code":413,"message":"Line is too long."}
 {"line":9,"status_code":413,"message":"Line is too long."}
 {"line":10,"status_code":400,"message":"Invalid json message received"}
+{"line":11,"status_code":422,"message":"identifier must be of type string."}
 JSON;
 
         $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/products', [], [], [], $data);
@@ -224,7 +228,7 @@ JSON;
     public function testErrorWhenIdentifierIsMissing()
     {
         $data =
-<<<JSON
+            <<<JSON
     {"code": "my_identifier"}
     {"identifier": null}
     {"identifier": ""}
@@ -233,7 +237,7 @@ JSON;
 JSON;
 
         $expectedContent =
-<<<JSON
+            <<<JSON
 {"line":1,"status_code":422,"message":"Identifier is missing."}
 {"line":2,"status_code":422,"message":"Identifier is missing."}
 {"line":3,"status_code":422,"message":"Identifier is missing."}
@@ -248,15 +252,36 @@ JSON;
         $this->assertSame($expectedContent, $response['content']);
     }
 
+    public function testErrorWhenIdentifierIsWrongType()
+    {
+        $data =
+            <<<JSON
+    {"identifier": []}
+    {"identifier": true}
+JSON;
+
+        $expectedContent =
+            <<<JSON
+{"line":1,"status_code":422,"message":"identifier must be of type string."}
+{"line":2,"status_code":422,"message":"identifier must be of type string."}
+JSON;
+
+        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/products', [], [], [], $data);
+        $httpResponse = $response['http_response'];
+
+        $this->assertSame(Response::HTTP_OK, $httpResponse->getStatusCode());
+        $this->assertSame($expectedContent, $response['content']);
+    }
+
     public function testUpdateWhenUpdaterFailed()
     {
         $data =
-<<<JSON
+            <<<JSON
     {"identifier": "foo", "group":"bar"}
 JSON;
 
         $expectedContent =
-<<<JSON
+            <<<JSON
 {"line":1,"identifier":"foo","status_code":422,"message":"Property \"group\" does not exist. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products__code_"}}}
 JSON;
 
@@ -270,12 +295,12 @@ JSON;
     public function testUpdateWhenValidationFailed()
     {
         $data =
-<<<JSON
+            <<<JSON
     {"identifier": "foo,"}
 JSON;
 
         $expectedContent =
-<<<JSON
+            <<<JSON
 {"line":1,"identifier":"foo,","status_code":422,"message":"Validation failed.","errors":[{"property":"identifier","message":"This field should not contain any comma or semicolon or leading\/trailing space"}]}
 JSON;
 
@@ -290,12 +315,12 @@ JSON;
     public function testPartialUpdateListWithBadContentType()
     {
         $data =
-<<<JSON
+            <<<JSON
     {"identifier": "my_identifier"}
 JSON;
 
         $expectedContent =
-<<<JSON
+            <<<JSON
     {
         "code": 415,
         "message": "\"application\/json\" in \"Content-Type\" header is not valid. Only \"application\/vnd.akeneo.collection+json\" is allowed."
@@ -309,6 +334,21 @@ JSON;
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_UNSUPPORTED_MEDIA_TYPE, $response->getStatusCode());
         $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
+    }
+
+    public function testAccessDeniedWhenPartialUpdateOnProductsWithoutTheAcl()
+    {
+        $this->removeAclFromRole('action:pim_api_product_edit');
+
+        $data =
+            <<<JSON
+{"identifier": "foo"}
+JSON;
+
+        $result = $this->executeStreamRequest('PATCH', 'api/rest/v1/products', [], [], [], $data);
+        $response = $result['http_response'];
+
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }
 
     protected function getBufferSize()
@@ -339,7 +379,7 @@ JSON;
 
             $completenesses = $this
                 ->get('akeneo.pim.enrichment.product.query.get_product_completenesses')
-                ->fromProductId($product->getId());
+                ->fromProductUuid($product->getUuid());
             Assert::assertCount(6, $completenesses); // 3 channels * 2 locales
         }
     }

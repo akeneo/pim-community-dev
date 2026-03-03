@@ -23,14 +23,27 @@ services:
         arguments:
             - '@pim_catalog.repository.channel'
 
+    Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\IsAttributeEditable:
+        class: Akeneo\Test\Acceptance\Attribute\InMemoryIsAttributeEditable
+
     ### Catalog
-    akeneo.pim.enrichment.product.query.find_non_existing_product_identifiers_query:
-        class: 'Akeneo\Test\Acceptance\Product\InMemoryFindNonExistingProductIdentifiersQuery'
+    akeneo.pim.enrichment.product.query.find_non_existing_products_query:
+        class: 'Akeneo\Test\Acceptance\Product\InMemoryFindNonExistingProductsQuery'
         arguments:
             - '@pim_catalog.repository.product'
 
     akeneo.pim.enrichment.product.query.find_non_existing_product_model_codes_query:
         class: 'Akeneo\Test\Acceptance\ProductModel\InMemoryFindNonExistingProductModelCodesQuery'
+        arguments:
+            - '@pim_catalog.repository.product_model'
+
+    akeneo.pim.enrichment.product.query.find_id:
+        class: 'AkeneoTest\Acceptance\Product\InMemoryFindProductId'
+        arguments:
+            - '@pim_catalog.repository.product'
+
+    akeneo.pim.enrichment.product_model.query.find_id:
+        class: 'AkeneoTest\Acceptance\ProductModel\InMemoryFindProductModelId'
         arguments:
             - '@pim_catalog.repository.product_model'
 
@@ -43,3 +56,17 @@ services:
         class: Akeneo\Test\Acceptance\FamilyVariant\InMemoryFamilyVariantsByAttributeAxes
         arguments:
             - '@pim_catalog.repository.family_variant'
+
+    akeneo.pim.enrichment.product.query.get_existing_reference_data_codes:
+        class: Akeneo\Test\Acceptance\Attribute\InMemoryGetExistingReferenceDataCodes
+
+    akeneo.pim.structure.query.is_attribute_code_blacklisted:
+        class: AkeneoTest\Acceptance\Attribute\InMemoryIsAttributeCodeBlacklisted
+
+    akeneo.pim.structure.query.attribute_is_an_family_variant_axis:
+        class: 'Akeneo\Test\Acceptance\Attribute\InMemoryAttributeIsAFamilyVariantAxis'
+
+    pim_catalog.query.find_activated_currencies:
+        class: Akeneo\Test\Acceptance\Channel\InMemoryFindActivatedCurrencies
+        arguments:
+            - '@pim_catalog.repository.channel'

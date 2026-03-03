@@ -12,7 +12,7 @@ Feature: Edit a variant product
     And I edit the "1111111119" product
     Then I should see the text "Clothing by color and size"
 
-  @critical
+  @critical @purge-messenger
   Scenario: Successfully edit and save a variant product
     Given I am logged in as "Mary"
     And I edit the "1111111119" product
@@ -22,6 +22,7 @@ Feature: Edit a variant product
     When I press the "Save" button
     Then I should not see the text "There are unsaved changes."
     And the product Weight should be "8000 Gram"
+    And 1 event of type "product.updated" should have been raised
 
   @critical
   Scenario: Attributes coming from parent are read only

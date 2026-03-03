@@ -47,6 +47,47 @@ class MultiSelectTranslatorSpec extends ObjectBehavior
             ->shouldReturn(['rouge,jaune', 'purple', '']);
     }
 
+    function it_is_attribute_code_case_insensitive_to_find_option_labels(
+        GetExistingAttributeOptionsWithValues $getExistingAttributeOptionsWithValues
+    ) {
+        $getExistingAttributeOptionsWithValues
+            ->fromAttributeCodeAndOptionCodes([
+                'color.red',
+                'color.yellow',
+                'color.purple'
+            ])
+            ->willReturn([
+                'Color.red' => ['fr_FR' => 'rouge'],
+                'Color.yellow' => ['fr_FR' => 'jaune'],
+                'Color.purple' => ['fr_FR' => 'purple']
+            ]);
+
+        $this->translate('Color', [], ['ReD', 'YeLLoW', 'PURPle', ''], 'fr_FR')
+            ->shouldReturn(['rouge', 'jaune', 'purple', '']);
+    }
+
+    function it_translates_multi_select_value_with_numeric_label(
+        GetExistingAttributeOptionsWithValues $getExistingAttributeOptionsWithValues
+    ) {
+        $locale = 'fr_FR';
+        $getExistingAttributeOptionsWithValues
+            ->fromAttributeCodeAndOptionCodes([
+                $this->optionKey('color', 'red'),
+                $this->optionKey('color', 'yellow'),
+                $this->optionKey('color', '0'),
+            ])
+            ->willReturn(
+                [
+                    $this->optionKey('color', 'red') => [$locale => 'rouge'],
+                    $this->optionKey('color', 'yellow') => [$locale => 'jaune'],
+                    $this->optionKey('color', '0') => [$locale => 'zero'],
+                ]
+            );
+
+        $this->translate('color', [], ['red,yellow', '0', ''], $locale)
+            ->shouldReturn(['rouge,jaune', 'zero', '']);
+    }
+
     function it_puts_the_option_code_between_brackets_when_the_option_does_have_a_translation(
         GetExistingAttributeOptionsWithValues $getExistingAttributeOptionsWithValues
     ) {
@@ -65,6 +106,26 @@ class MultiSelectTranslatorSpec extends ObjectBehavior
 
         $this->translate('color', [], ['purple,green', 'red'], 'fr_FR')
             ->shouldReturn(['[purple],[green]', '[red]']);
+    }
+
+    public function it_is_case_insensitive_to_find_options_labels(
+        GetExistingAttributeOptionsWithValues $getExistingAttributeOptionsWithValues
+    ) {
+        $locale = 'fr_FR';
+        $getExistingAttributeOptionsWithValues
+            ->fromAttributeCodeAndOptionCodes([
+                $this->optionKey('color', 'red'),
+                $this->optionKey('color', 'yellow'),
+                $this->optionKey('color', 'purple')
+            ])
+            ->willReturn([
+                $this->optionKey('color', 'red')    => [$locale => 'rouge'],
+                $this->optionKey('color', 'yellow') => [$locale => 'jaune'],
+                $this->optionKey('color', 'purple') => [$locale => 'purple']
+            ]);
+
+        $this->translate('color', [], ['ReD,YeLLoW', 'PURPle', ''], $locale)
+            ->shouldReturn(['rouge,jaune', 'purple', '']);
     }
 
     private function optionKey(string $attributeCode, string $optionCode): string

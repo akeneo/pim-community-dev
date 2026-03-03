@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Job;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Pim\Enrichment\Bundle\ProductQueryBuilder\ProductAndProductModelQueryBuilder;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Job\ComputeDataRelatedToFamilyProductsTasklet;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\KeepOnlyValuesForVariation;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
@@ -22,6 +24,7 @@ use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -35,7 +38,8 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
         EntityManagerClearerInterface $cacheClearer,
         JobRepositoryInterface $jobRepository,
         KeepOnlyValuesForVariation $keepOnlyValuesForVariation,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        ProductRepositoryInterface $productRepository
     ) {
         $this->beConstructedWith(
             $familyRepository,
@@ -46,6 +50,7 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
             $jobRepository,
             $keepOnlyValuesForVariation,
             $validator,
+            $productRepository,
             2
         );
     }
@@ -68,6 +73,7 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
         $productQueryBuilderFactory,
         $jobRepository,
         $cacheClearer,
+        ProductRepositoryInterface $productRepository,
         FamilyInterface $family,
         ProductInterface $product1,
         ProductInterface $product2,
@@ -76,6 +82,10 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
         ProductAndProductModelQueryBuilder $pqb,
         CursorInterface $cursor
     ) {
+        $product1Uuid = Uuid::uuid4();
+        $product2Uuid = Uuid::uuid4();
+        $product3Uuid = Uuid::uuid4();
+
         $product1->isVariant()->willReturn(false);
         $product2->isVariant()->willReturn(false);
         $product3->isVariant()->willReturn(false);
@@ -91,12 +101,18 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
 
         $cursor->rewind()->shouldBeCalled();
         $cursor->valid()->willReturn(true, true, true, false);
-        $cursor->current()->willReturn($product1, $product2, $product3);
+        $cursor->current()->willReturn(
+            new IdentifierResult('id1', ProductInterface::class, 'product_' . $product1Uuid->toString()),
+            new IdentifierResult('id2', ProductInterface::class, 'product_' . $product2Uuid->toString()),
+            new IdentifierResult('id3', ProductInterface::class, 'product_' . $product3Uuid->toString())
+        );
         $cursor->next()->shouldBeCalled();
         $cursor->count()->shouldBeCalled()->willReturn(3);
 
-        $productSaver->saveAll([$product1, $product2])->shouldBeCalled();
-        $productSaver->saveAll([$product3])->shouldBeCalled();
+        $productRepository->getItemsFromUuids([$product1Uuid->toString(), $product2Uuid->toString()])->willReturn([$product1, $product2]);
+        $productRepository->getItemsFromUuids([$product3Uuid->toString()])->willReturn([$product3]);
+        $productSaver->saveAll([$product1, $product2], ['force_save' => true])->shouldBeCalled();
+        $productSaver->saveAll([$product3], ['force_save' => true])->shouldBeCalled();
 
         $stepExecution->setTotalItems(3)->shouldBeCalledOnce();
         $stepExecution->incrementSummaryInfo(Argument::cetera())->shouldBeCalledTimes(2);
@@ -122,6 +138,7 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
         $cacheClearer,
         $keepOnlyValuesForVariation,
         $validator,
+        ProductRepositoryInterface $productRepository,
         FamilyInterface $family,
         ProductInterface $variantProduct1,
         ProductInterface $variantProduct2,
@@ -133,6 +150,10 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
         ConstraintViolationListInterface $violationList2,
         ConstraintViolationListInterface $violationList3
     ) {
+        $product1Uuid = Uuid::uuid4();
+        $product2Uuid = Uuid::uuid4();
+        $product3Uuid = Uuid::uuid4();
+
         $variantProduct1->isVariant()->willReturn(true);
         $variantProduct2->isVariant()->willReturn(true);
         $variantProduct3->isVariant()->willReturn(true);
@@ -148,9 +169,16 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
 
         $cursor->rewind()->shouldBeCalled();
         $cursor->valid()->willReturn(true, true, true, false);
-        $cursor->current()->willReturn($variantProduct1, $variantProduct2, $variantProduct3);
+        $cursor->current()->willReturn(
+            new IdentifierResult('id1', ProductInterface::class, $product1Uuid->toString()),
+            new IdentifierResult('id2', ProductInterface::class, $product2Uuid->toString()),
+            new IdentifierResult('id3', ProductInterface::class, $product3Uuid->toString())
+        );
         $cursor->next()->shouldBeCalled();
         $cursor->count()->shouldBeCalled()->willReturn(3);
+
+        $productRepository->getItemsFromUuids([$product1Uuid->toString(), $product2Uuid->toString()])->willReturn([$variantProduct1, $variantProduct2]);
+        $productRepository->getItemsFromUuids([$product3Uuid->toString()])->willReturn([$variantProduct3]);
 
         $keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$variantProduct1])->shouldBeCalled();
         $keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$variantProduct2])->shouldBeCalled();
@@ -163,8 +191,8 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
         $validator->validate($variantProduct3)->willReturn($violationList3);
         $violationList3->count()->willReturn(0);
 
-        $productSaver->saveAll([$variantProduct1, $variantProduct2])->shouldBeCalled();
-        $productSaver->saveAll([$variantProduct3])->shouldBeCalled();
+        $productSaver->saveAll([$variantProduct1, $variantProduct2], ['force_save' => true])->shouldBeCalled();
+        $productSaver->saveAll([$variantProduct3], ['force_save' => true])->shouldBeCalled();
 
         $stepExecution->setTotalItems(3)->shouldBeCalledOnce();
         $stepExecution->incrementSummaryInfo(Argument::cetera())->shouldBeCalledTimes(2);
@@ -190,6 +218,7 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
         $cacheClearer,
         $keepOnlyValuesForVariation,
         $validator,
+        ProductRepositoryInterface $productRepository,
         FamilyInterface $family,
         ProductInterface $variantProduct1,
         ProductInterface $variantProduct2,
@@ -201,6 +230,10 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
         ConstraintViolationListInterface $violationList2,
         ConstraintViolationListInterface $violationList3
     ) {
+        $product1Uuid = Uuid::uuid4();
+        $product2Uuid = Uuid::uuid4();
+        $product3Uuid = Uuid::uuid4();
+
         $variantProduct1->isVariant()->willReturn(true);
         $variantProduct2->isVariant()->willReturn(true);
         $variantProduct3->isVariant()->willReturn(true);
@@ -216,9 +249,16 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
 
         $cursor->rewind()->shouldBeCalled();
         $cursor->valid()->willReturn(true, true, true, false);
-        $cursor->current()->willReturn($variantProduct1, $variantProduct2, $variantProduct3);
+        $cursor->current()->willReturn(
+            new IdentifierResult('id1', ProductInterface::class, 'product_' . $product1Uuid->toString()),
+            new IdentifierResult('id2', ProductInterface::class, 'product_' . $product2Uuid->toString()),
+            new IdentifierResult('id3', ProductInterface::class, 'product_' . $product3Uuid->toString())
+        );
         $cursor->next()->shouldBeCalled();
         $cursor->count()->shouldBeCalled()->willReturn(3);
+
+        $productRepository->getItemsFromUuids([$product1Uuid->toString(), $product2Uuid->toString()])->willReturn([$variantProduct1, $variantProduct2]);
+        $productRepository->getItemsFromUuids([$product3Uuid->toString()])->willReturn([$variantProduct3]);
 
         $keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$variantProduct1])->shouldBeCalled();
         $keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$variantProduct2])->shouldBeCalled();
@@ -231,7 +271,7 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
         $validator->validate($variantProduct3)->willReturn($violationList3);
         $violationList3->count()->willReturn(0);
 
-        $productSaver->saveAll([$variantProduct3])->shouldBeCalled();
+        $productSaver->saveAll([$variantProduct3], ['force_save' => true])->shouldBeCalled();
 
         $stepExecution->setTotalItems(3)->shouldBeCalledOnce();
         $stepExecution->incrementSummaryInfo('process', 1)->shouldBeCalled();
@@ -259,7 +299,7 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
 
         $productQueryBuilderFactory->create()->shouldNotBeCalled();
-        $productSaver->saveAll(Argument::any())->shouldNotBeCalled();
+        $productSaver->saveAll(Argument::any(), Argument::any())->shouldNotBeCalled();
 
         $jobRepository->updateStepExecution($stepExecution)->shouldNotBeCalled();
 
@@ -280,7 +320,7 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
 
         $familyRepository->findOneByIdentifier(Argument::any())->shouldNotBeCalled();
         $productQueryBuilderFactory->create()->shouldNotBeCalled();
-        $productSaver->saveAll(Argument::any())->shouldNotBeCalled();
+        $productSaver->saveAll(Argument::any(), Argument::any())->shouldNotBeCalled();
 
         $jobRepository->updateStepExecution($stepExecution)->shouldNotBeCalled();
 

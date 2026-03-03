@@ -44,7 +44,8 @@ class ProductReaderSpec extends ObjectBehavior
     ) {
         $filePath = __DIR__ . '/../../../../../../tests/legacy/features/Context/fixtures/with_media.csv';
         $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('filePath')->willReturn($filePath);
+        $jobParameters->has('storage')->willReturn(true);
+        $jobParameters->get('storage')->willReturn(['type' => 'local', 'file_path' => $filePath]);
         $jobParameters->get('enclosure')->willReturn('"');
         $jobParameters->get('delimiter')->willReturn(';');
         $jobParameters->get('familyColumn')->willReturn('family');
@@ -97,6 +98,7 @@ class ProductReaderSpec extends ObjectBehavior
             'date_format'       => 'YYYY-mm-dd',
         ])->willReturn($absolutePath);
 
+        $this->initialize();
         $this->read()->shouldReturn($absolutePath);
     }
 }

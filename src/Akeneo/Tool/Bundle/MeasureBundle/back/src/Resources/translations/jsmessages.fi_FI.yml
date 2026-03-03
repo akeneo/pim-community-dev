@@ -1,0 +1,73 @@
+pim_menu.item:
+  measurements: Mitat
+pim_title:
+  akeneo_measurements_settings_index: Mitat
+  akeneo_measurements_settings_any: Mitat
+measurements:
+  label_translations: Lokalisoidut nimet
+  search:
+    placeholder: Etsi nimellä tai koodilla
+  family:
+    result_count: "{0}0 Mittaperhettä{1}1 Mittaperhe]1, Inf[{{ itemsCount }} Mittaperhettä"
+    not_found: Mittaperhettä ei löytynyt
+    no_data:
+      title: Pahoittelut, ei yhtään mittaperhettä!
+      link: Klikkaa tästä luodaksesi sellainen
+    standard_unit: Perusyksikkö
+    standard_unit_is_not_editable_after_creation: Tämä perusyksikkö asetetaan lopullisesti. Sitä käytetään yksikkömuunnoksissa.
+    add_new_measurement_family: Lisää uusi mittaperhe
+    tab:
+      units: Yksiköt
+      properties: Ominaisuudet
+    delete:
+      button: Poista mittaperhe
+      confirm: Oletko varma, että haluat poistaa tämän mittaperheen ja kaikki sen yksiköt?
+      flash:
+        success: Mittaperhe poistettu onnistuneesti.
+        error: Pahoittelut, mittaperheen poistossa tapahtui virhe.
+    save:
+      flash:
+        success: Mittaperhe tallennettu onnistuneesti.
+        error: Pahoittelut, mittaperheen tallentamisessa tapahtui virhe.
+    is_locked: Tuoteattribuutti käyttää tätä mittaperhettä. Voit vain lisätä uusia yksiköitä sekä muuttaa olemassa olevien yksiköiden lokalisoituja nimiä ja symboleita.
+  unit:
+    title: Muokkaa {{ unitLabel }}
+    symbol: Symboli
+    delete:
+      button: Poista yksikkö
+      confirm: Oletko varma, että haluat poistaa tämän yksikön?
+    add: Lisää yksikkö
+    add_new: Lisää uusi yksikkö
+    operation:
+      add: Lisää uusi yksikkömuunnos
+      placeholder: Kerroin
+    operator:
+      add: Yhteenlasku
+      sub: Vähennyslasku
+      mul: Kertolasku
+      div: Jakolasku
+      select: Valitse operaattori
+    convert_from_standard: Yksikkömuunnos
+    create_another: Luo toinen yksikkö
+    will_be_read_only: Tuoteattribuutti käyttää tätä mittaperhettä. Kun yksikkö on luotu, voit vain muokata lokalisoituja nimiä ja symboleita.
+  list:
+    header:
+      standard_unit: Perusyksikkö
+      unit_count: Yksiköiden lukumäärä
+  form:
+    input:
+      symbol: "Symboli (esim. km)"
+  validation:
+    unit:
+      code:
+        must_be_unique: 'Yksikön koodi on jo olemassa.'
+  create_family:
+    flash:
+      success: Mittaperhe luotu onnistuneesti.
+      error: Pahoittelut, mittaperhettä luotaessa tapahtui virhe.
+  title:
+    measurement: Mitta
+  add_unit:
+    flash:
+      success: Yksikkö lisätty onnistuneesti.
+      error: Pahoittelut, yksikköä luotaessa tapahtui virhe.

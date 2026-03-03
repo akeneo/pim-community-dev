@@ -14,17 +14,17 @@ use PhpSpec\ObjectBehavior;
  */
 class RegenerateConnectionPasswordCommandSpec extends ObjectBehavior
 {
-    public function let()
+    public function let(): void
     {
         $this->beConstructedWith('Magento');
     }
 
-    public function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(RegenerateConnectionPasswordCommand::class);
     }
 
-    public function it_returns_the_connection_code()
+    public function it_returns_the_connection_code(): void
     {
         $this->code()->shouldReturn('Magento');
     }

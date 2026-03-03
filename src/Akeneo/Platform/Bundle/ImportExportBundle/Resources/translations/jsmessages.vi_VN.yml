@@ -1,0 +1,63 @@
+job_execution:
+  summary:
+    display_item: Hiển thị mục
+    hide_item: Ẫn mục
+pim_import_export:
+  form:
+    job_execution:
+      refreshBtn.title: Làm mới
+      summary:
+        fetching: Đang thu thập dữ liệu về tiến trình thực thi...
+        header.warnings: Cảnh báo
+    job_instance:
+      meta:
+        job: Job
+        connector: Kết nối
+      tab:
+        content:
+          title: Nội dung
+        properties:
+          upload_allowed:
+            title: Cho phép tải file lên
+  widget:
+    last_operations:
+      empty: Không có hoạt động được tìm thấy
+      date: Ngày tháng năm
+      profile_name: Tên hồ sơ
+      details: Chi tiết
+      warning_count: Cảnh báo
+      job_type:
+        import: Nhập khẩu
+        export: Xuất khẩu
+        mass_edit: Chỉnh sửa hàng loạt
+        quick_export: Xuất khẩu nhanh
+        compute_family_variant_structure_changes: Tính toán sự thay đổi cấu trúc của gia đình biến thể
+        compute_completeness_of_products_family: Tính toán sự đầy đủ của các sản phẩm gia đình
+      header.view_all: Xem tất cả
+confirmation:
+  remove:
+    import_profile: Bạn có chắc bạn muốn xóa hồ sơ nhập này không?
+    export_profile: Bạn có chắc bạn muốn xóa hồ sơ xuất này không?
+pim_enrich:
+  entity:
+    import_profile:
+      module:
+        delete:
+          confirm: Bạn có chắc bạn muốn xóa hồ sơ nhập này không?
+      flash:
+        delete:
+          success: Hồ sơ nhập đã được gỡ bỏ thành công
+    export_profile:
+      module:
+        delete:
+          confirm: Bạn có chắc bạn muốn xóa hồ sơ xuất này không?
+      flash:
+        delete:
+          success: Hồ sơ xuất đã được gỡ bỏ thành công
+pim_title:
+  pim_importexport_export_profile_index: Quản lý hồ sơ xuất dữ liệu
+  pim_importexport_export_execution_index: Lịch sử thực thi xuất dữ liệu
+  pim_importexport_export_execution_show: Thực thi xuất dữ liệu | Chi tiết
+  pim_importexport_import_profile_index: Quản lý hồ sơ nhập dữ liệu
+  pim_importexport_import_execution_index: Lịch sử thực thi nhập dữ liệu
+  pim_importexport_import_execution_show: Thực thi nhập dữ liệu | Chi tiết

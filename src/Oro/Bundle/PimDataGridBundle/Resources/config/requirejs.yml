@@ -7,6 +7,7 @@ config:
             launchErrorLabel: pim_enrich.mass_edit.product.step.launch_error.label
             launchedLabel: pim_enrich.mass_edit.product.step.launched.label
             confirmLabel: pim_enrich.entity.product_model.module.delete.confirm_for_products_and_product_models
+            buttonText: pim_common.delete
         pim/fetcher-registry:
             fetchers:
                 datagrid-view:
@@ -39,8 +40,6 @@ config:
     paths:
         oro/datagrid/tab-redirect-action:       pimdatagrid/js/datagrid/action/tab-redirect-action
 
-        # Deprecated (published products grid only)
-        pim/datagrid/configure-columns-action:  pimdatagrid/js/datagrid/action/configure-columns-action
         pim/datagrid/column-selector:           pimdatagrid/js/datagrid/column-selector
 
         pim/datagrid/display-selector:          pimdatagrid/js/datagrid/display-selector
@@ -55,6 +54,7 @@ config:
         oro/datagrid/delete-confirm:            pimdatagrid/js/datagrid/action/delete-confirm.ts
         oro/datagrid/sequential_edit-action:    pimdatagrid/js/datagrid/action/sequential-edit-action
         oro/datagrid/mass_delete-action:        pimdatagrid/js/datagrid/action/mass-delete-action
+        oro/datagrid/attribute_mass_delete-action: pimdatagrid/js/datagrid/action/attribute-mass-delete-action
         oro/datagrid/revoke-action:             pimdatagrid/js/datagrid/action/revoke-action
         oro/datagrid/ajax-action:               pimdatagrid/js/datagrid/action/ajax-action
         oro/datagrid/mass-action:               pimdatagrid/js/datagrid/action/mass-action
@@ -76,6 +76,7 @@ config:
         oro/datagrid/select-cell:               pimdatagrid/js/datagrid/cell/select-cell
         oro/datagrid/select-row-cell:           pimdatagrid/js/datagrid/cell/select-row-cell
         oro/datagrid/string-cell:               pimdatagrid/js/datagrid/cell/string-cell
+        oro/datagrid/attribute-type-cell:       pimdatagrid/js/datagrid/cell/attribute-type-cell
         oro/datagrid/completeness-cell:         pimdatagrid/js/datagrid/cell/completeness-cell
         oro/datagrid/expand-history-cell:       pimdatagrid/js/datagrid/cell/expand-history-cell
         oro/datagrid/enabled-cell:              pimdatagrid/js/datagrid/cell/enabled-cell
@@ -120,6 +121,7 @@ config:
         oro/multiselect-decorator:                  pimdatagrid/js/multiselect-decorator
 
         oro/datafilter/search-filter:               pimdatagrid/js/datafilter/filter/search-filter
+        oro/datafilter/attribute_search-filter:     pimdatagrid/js/datafilter/filter/search-filter
         oro/datafilter/label_or_identifier-filter:  pimdatagrid/js/datafilter/filter/label_or_identifier-filter
         oro/datafilter/price-filter:                pimdatagrid/js/datafilter/filter/price-filter
         oro/datafilter/metric-filter:               pimdatagrid/js/datafilter/filter/metric-filter
@@ -149,6 +151,7 @@ config:
         oro/datafilter/text-filter:                 pimdatagrid/js/datafilter/filter/text-filter
         oro/datafilter/parent-filter:               pimdatagrid/js/datafilter/filter/parent-filter
         oro/datafilter/identifier-filter:           pimdatagrid/js/datafilter/filter/identifier-filter
+        oro/datafilter/uuid-filter:                 pimdatagrid/js/datafilter/filter/uuid-filter
         pim/filter/text:                            pimdatagrid/js/datafilter/filter/text-filter
         oro/datafilter/abstract-formatter:          pimdatagrid/js/datafilter/formatter/abstract-formatter
         oro/datafilter/filters-manager:             pimdatagrid/js/datafilter/filters-manager
@@ -174,7 +177,6 @@ config:
         pim/template/datagrid/done-container:            pimdatagrid/templates/datagrid/done-container.html
         pim/template/datagrid/done-button:               pimdatagrid/templates/datagrid/done-button.html
         pim/template/datagrid/pagination:                pimdatagrid/templates/datagrid/pagination.html
-        pim/template/datagrid/configure-columns-action:  pimdatagrid/templates/configure-columns-action.html
         pim/template/datagrid/display-selector:          pimdatagrid/templates/datagrid/display-selector.html
         pim/template/datagrid/filter/text-filter:        pimdatagrid/templates/filter/text-filter.html
         pim/template/datagrid/filter/price-filter:       pimdatagrid/templates/filter/price-filter.html

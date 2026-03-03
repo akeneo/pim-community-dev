@@ -1,0 +1,170 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
+import {SubNavigationPanel} from './SubNavigationPanel.tsx';
+import {SpaceContainer} from '../../../storybook/PreviewGallery';
+import {useBooleanState} from '../../../hooks';
+import {MoreVerticalIcon} from '../../../icons';
+import {Dropdown} from '../../Dropdown/Dropdown';
+import {Link} from '../../Link/Link';
+import {useState} from 'react';
+import {Collapse} from '../../Collapse/Collapse';
+
+<Meta
+  title="Components/Navigation/SubNavigationPanel"
+  subcomponents={{
+    SubNavigationPanel: SubNavigationPanel,
+    'SubNavigationPanel.Collapsed': SubNavigationPanel.Collapsed,
+  }}
+  args={{children: 'Some content', isOpen: true, closeTitle: 'Close', openTitle: 'Open'}}
+/>
+
+# SubNavigationPanel
+
+## Usage
+
+SubNavigationPanel is used to display a collapsable panel on the left side of the screen.
+
+This panel can contain navigation links or other type of content.
+
+### Interaction
+
+The panel is open by default and can be collapsed with the dedicated button.
+When the panel is collapsed the content is hidden.
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      const [isOpen, open, close] = useBooleanState(true);
+      return (
+        <SpaceContainer height={200}>
+          <SubNavigationPanel {...args} isOpen={isOpen} open={open} close={close} />
+        </SpaceContainer>
+      );
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Panel with scrollable content
+
+<Canvas>
+  <Story name="ScrollableContent">
+    {args => {
+      const [isOpen, open, close] = useBooleanState(true);
+      return (
+        <SpaceContainer height={200}>
+          <SubNavigationPanel {...args} isOpen={isOpen} open={open} close={close}>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            <br />
+            Fusce sed quam pharetra, lacinia nisl at, luctus ex.
+            <br />
+            Donec pretium est a augue dapibus, at semper ipsum vestibulum.
+            <br />
+            Aenean blandit metus a nibh blandit porta.
+            <br />
+            Phasellus placerat ligula sit amet vestibulum tristique.
+          </SubNavigationPanel>
+        </SpaceContainer>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Panel with collapsed content using Dropdown component
+
+<Canvas>
+  <Story name="CollapsedExpandedContent">
+    {args => {
+      const [isOpen, open, close] = useBooleanState(false);
+      const [isDropdownOpen, openDropDown, closeDropDown] = useBooleanState(false);
+      return (
+        <SpaceContainer height={200}>
+          <SubNavigationPanel {...args} isOpen={isOpen} open={open} close={close}>
+            <SubNavigationPanel.Collapsed>
+              <Dropdown>
+                <MoreVerticalIcon title="More" onClick={openDropDown} />
+                {isDropdownOpen && (
+                  <Dropdown.Overlay onClose={closeDropDown}>
+                    <Dropdown.ItemCollection>
+                      <Dropdown.Item>Collapsed Content</Dropdown.Item>
+                    </Dropdown.ItemCollection>
+                  </Dropdown.Overlay>
+                )}
+              </Dropdown>
+            </SubNavigationPanel.Collapsed>
+            Some content
+          </SubNavigationPanel>
+        </SpaceContainer>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Panel without padding
+
+<Canvas>
+  <Story name="ContentWithoutPadding">
+    {args => {
+      const [isOpen, open, close] = useBooleanState(true);
+      const [collapse, setCollapse] = useState(1);
+      return (
+        <SpaceContainer height={200}>
+          <SubNavigationPanel {...args} isOpen={isOpen} open={open} close={close} noPadding>
+            Some content
+          </SubNavigationPanel>
+        </SpaceContainer>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Panel using Collapse components
+
+<Canvas>
+  <Story name="ContentWithCollapseComponent">
+    {args => {
+      const [isOpen, open, close] = useBooleanState(true);
+      const [collapse, setCollapse] = useState(1);
+      return (
+        <SpaceContainer height={200}>
+          <SubNavigationPanel {...args} isOpen={isOpen} open={open} close={close} noPadding>
+            <Collapse
+              label="First Collapse"
+              collapseButtonLabel="Collapse"
+              isOpen={collapse === 1}
+              onCollapse={() => setCollapse(1)}
+            >
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              <br />
+              Fusce sed quam pharetra, lacinia nisl at, luctus ex.
+              <br />
+              Donec pretium est a augue dapibus, at semper ipsum vestibulum.
+              <br />
+              Aenean blandit metus a nibh blandit porta.
+              <br />
+              Phasellus placerat ligula sit amet vestibulum tristique.
+            </Collapse>
+            <Collapse
+              label="Second Collapse"
+              collapseButtonLabel="Collapse"
+              isOpen={collapse === 2}
+              onCollapse={() => setCollapse(2)}
+            >
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              <br />
+              Fusce sed quam pharetra, lacinia nisl at, luctus ex.
+              <br />
+              Donec pretium est a augue dapibus, at semper ipsum vestibulum.
+              <br />
+              Aenean blandit metus a nibh blandit porta.
+              <br />
+              Phasellus placerat ligula sit amet vestibulum tristique.
+            </Collapse>
+          </SubNavigationPanel>
+        </SpaceContainer>
+      );
+    }}
+  </Story>
+</Canvas>

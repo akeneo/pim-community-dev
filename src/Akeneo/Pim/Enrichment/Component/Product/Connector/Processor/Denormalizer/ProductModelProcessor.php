@@ -4,10 +4,13 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormaliz
 
 use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\CleanLineBreaksInTextAttributes;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
+use Akeneo\Tool\Component\Batch\Item\NonBlockingWarningAggregatorInterface;
+use Akeneo\Tool\Component\Batch\Model\Warning;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Connector\Processor\Denormalization\AbstractProcessor;
 use Akeneo\Tool\Component\FileStorage\File\FileStorer;
@@ -17,6 +20,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -31,7 +35,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductModelProcessor extends AbstractProcessor implements ItemProcessorInterface, StepExecutionAwareInterface
+class ProductModelProcessor extends AbstractProcessor implements ItemProcessorInterface, StepExecutionAwareInterface, NonBlockingWarningAggregatorInterface
 {
     private const SUB_PRODUCT_MODEL = 'sub_product_model';
     private const ROOT_PRODUCT_MODEL = 'root_product_model';
@@ -63,6 +67,11 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
     /** @var MediaStorer */
     private $mediaStorer;
 
+    private CleanLineBreaksInTextAttributes $cleanLineBreaksInTextAttributes;
+
+    /** @var Warning[] */
+    private array $nonBlockingWarnings = [];
+
     public function __construct(
         SimpleFactoryInterface $productModelFactory,
         ObjectUpdaterInterface $productModelUpdater,
@@ -72,6 +81,7 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
         ObjectDetacherInterface $objectDetacher,
         AttributeFilterInterface $productModelAttributeFilter,
         MediaStorer $mediaStorer,
+        CleanLineBreaksInTextAttributes $cleanLineBreaksInTextAttributes,
         string $importType
     ) {
         parent::__construct($productModelRepository);
@@ -85,6 +95,7 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
         $this->productModelAttributeFilter = $productModelAttributeFilter;
         $this->importType = $importType;
         $this->mediaStorer = $mediaStorer;
+        $this->cleanLineBreaksInTextAttributes = $cleanLineBreaksInTextAttributes;
     }
 
     /**
@@ -92,6 +103,7 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
      */
     public function process($standardProductModel): ?ProductModelInterface
     {
+        $baseStandardProductModel = $standardProductModel;
         $parent = $standardProductModel['parent'] ?? '';
         if ($this->importType === self::ROOT_PRODUCT_MODEL && !empty($parent) ||
             $this->importType === self::SUB_PRODUCT_MODEL && empty($parent)
@@ -133,6 +145,20 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
                 $this->objectDetacher->detach($productModel);
                 $this->skipItemWithMessage($standardProductModel, $e->getMessage(), $e);
             }
+
+            $cleanedStandardProductModel = $this->cleanLineBreaksInTextAttributes->cleanStandardFormat($standardProductModel);
+            foreach ($cleanedStandardProductModel['values'] as $field => $values) {
+                if ($values !== $standardProductModel['values'][$field]) {
+                    $this->nonBlockingWarnings[] = new Warning(
+                        $this->stepExecution,
+                        'The value for the "%attribute_code%" attribute contains at least one line break. It or they have been replaced by a space during the import.',
+                        ['%attribute_code%' => $field],
+                        $baseStandardProductModel
+                    );
+                }
+            }
+
+            $standardProductModel = $cleanedStandardProductModel;
         }
 
         try {
@@ -141,6 +167,9 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
             $this->objectDetacher->detach($productModel);
             $message = sprintf('%s: %s', $exception->getPropertyName(), $exception->getMessage());
             $this->skipItemWithMessage($standardProductModel, $message, $exception);
+        } catch (AccessDeniedException $exception) {
+            $this->objectDetacher->detach($productModel);
+            $this->skipItemWithMessage($standardProductModel, $exception->getMessage(), $exception);
         }
 
         $violations = $this->validator->validate($productModel);
@@ -182,5 +211,16 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
         unset($item['quantified_associations']);
 
         return $item;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function flushNonBlockingWarnings(): array
+    {
+        $nonBlockingWarnings = $this->nonBlockingWarnings;
+        $this->nonBlockingWarnings = [];
+
+        return $nonBlockingWarnings;
     }
 }

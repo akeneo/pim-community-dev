@@ -2,7 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints;
 
-use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\FindActivatedCurrenciesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractValue;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -17,18 +18,12 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class CurrencyValidator extends ConstraintValidator
 {
-    /** @var CurrencyRepositoryInterface */
-    protected $currencyRepository;
+    protected FindActivatedCurrenciesInterface $findActivatedCurrencies;
+    protected array $currencyCodes;
 
-    /** @var array */
-    protected $currencyCodes;
-
-    /**
-     * @param CurrencyRepositoryInterface $currencyRepository
-     */
-    public function __construct(CurrencyRepositoryInterface $currencyRepository)
+    public function __construct(FindActivatedCurrenciesInterface $findActivatedCurrencies)
     {
-        $this->currencyRepository = $currencyRepository;
+        $this->findActivatedCurrencies = $findActivatedCurrencies;
         $this->currencyCodes = [];
     }
 
@@ -38,7 +33,7 @@ class CurrencyValidator extends ConstraintValidator
      * @param mixed      $object
      * @param Constraint $constraint
      */
-    public function validate($object, Constraint $constraint)
+    public function validate($object, Constraint $constraint): void
     {
         if (!$constraint instanceof Currency) {
             throw new UnexpectedTypeException($constraint, Currency::class);
@@ -46,8 +41,16 @@ class CurrencyValidator extends ConstraintValidator
 
         if ($object instanceof ProductPriceInterface) {
             if (!in_array($object->getCurrency(), $this->getCurrencyCodes())) {
-                $this->context->buildViolation($constraint->unitMessage)
+                $attributeCode = $this->context->getObject() instanceof AbstractValue ?
+                    $this->context->getObject()->getAttributeCode()
+                    : '';
+
+                $this->context->buildViolation($constraint->message, [
+                    '%attribute_code%' => $attributeCode,
+                    '%currency_code%' => $object->getCurrency(),
+                ])
                     ->atPath('currency')
+                    ->setCode(Currency::CURRENCY)
                     ->addViolation();
             }
         }
@@ -56,10 +59,10 @@ class CurrencyValidator extends ConstraintValidator
     /**
      * @return array
      */
-    protected function getCurrencyCodes()
+    protected function getCurrencyCodes(): array
     {
         if (empty($this->currencyCodes)) {
-            $this->currencyCodes = $this->currencyRepository->getActivatedCurrencyCodes();
+            $this->currencyCodes = $this->findActivatedCurrencies->forAllChannels();
         }
 
         return $this->currencyCodes;

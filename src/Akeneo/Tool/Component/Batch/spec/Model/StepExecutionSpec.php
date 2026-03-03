@@ -47,9 +47,9 @@ class StepExecutionSpec extends ObjectBehavior
         $this->getStatus()->getValue()->shouldReturn(BatchStatus::COMPLETED);
     }
 
-    function it_sets_exist_status(ExitStatus $exitStatus)
+    function it_sets_exist_status()
     {
-        $this->setExitStatus($exitStatus)->shouldReturn($this);
+        $this->setExitStatus(new ExitStatus(ExitStatus::NOOP, "foo"))->shouldReturn($this);
     }
 
     function it_adds_a_failure_exception()
@@ -61,12 +61,15 @@ class StepExecutionSpec extends ObjectBehavior
 
     function it_adds_warning(InvalidItemInterface $invalidItem)
     {
+        $this->getWarningCount()->shouldBe(0);
+
         $this->addWarning(
             'my reason',
             [],
             $invalidItem
         );
         $this->getWarnings()->shouldHaveCount(1);
+        $this->getWarningCount()->shouldBe(1);
     }
 
     function it_increments_summary_info()
@@ -75,6 +78,14 @@ class StepExecutionSpec extends ObjectBehavior
         $this->getSummaryInfo('counter')->shouldReturn(1);
         $this->incrementSummaryInfo('counter', 3);
         $this->getSummaryInfo('counter')->shouldReturn(4);
+    }
+
+    public function it_gives_summary_info()
+    {
+        $this->getSummaryInfo('counter')->shouldReturn('');
+        $this->getSummaryInfo('counter', 0)->shouldReturn(0);
+        $this->incrementSummaryInfo('counter');
+        $this->getSummaryInfo('counter', 90)->shouldReturn(1);
     }
 
     function it_is_displayable()

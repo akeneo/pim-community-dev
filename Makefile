@@ -1,8 +1,8 @@
 DOCKER_COMPOSE = docker-compose
-NODE_RUN = $(DOCKER_COMPOSE) run -u node --rm -e YARN_REGISTRY -e PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 -e PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome node
-YARN_RUN = $(NODE_RUN) yarn
-PHP_RUN = $(DOCKER_COMPOSE) run -u www-data --rm php php
-PHP_EXEC = $(DOCKER_COMPOSE) exec -u www-data fpm php
+NODE_RUN ?= $(DOCKER_COMPOSE) run -u node --rm -e YARN_REGISTRY -e PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 -e PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome node
+YARN_RUN ?= $(NODE_RUN) yarn
+PHP_RUN ?= $(DOCKER_COMPOSE) run --rm php php
+PHP_EXEC ?= $(DOCKER_COMPOSE) exec -u www-data httpd php
 
 .DEFAULT_GOAL := help
 
@@ -28,19 +28,22 @@ node_modules:
 javascript-extensions:
 	$(YARN_RUN) run update-extensions
 
+.PHONY: front-packages
+front-packages:
+	$(YARN_RUN) packages:build
+
 .PHONY: dsm
 dsm:
-	$(YARN_RUN) --cwd=akeneo-design-system install --frozen-lockfile
-	$(YARN_RUN) --cwd=akeneo-design-system run lib:build
+	$(YARN_RUN) dsm:build
 
 .PHONY: assets
 assets:
-	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf public/bundles public/js
+	$(DOCKER_COMPOSE) run --rm php rm -rf public/bundles public/js
 	$(PHP_RUN) bin/console --env=prod pim:installer:assets --symlink --clean
 
 .PHONY: css
 css:
-	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf public/css
+	$(DOCKER_COMPOSE) run --rm php rm -rf public/css
 	$(YARN_RUN) run less
 
 .PHONY: javascript-prod
@@ -56,7 +59,7 @@ javascript-dev: javascript-extensions
 .PHONY: javascript-dev-strict
 javascript-dev-strict: javascript-extensions
 	$(NODE_RUN) rm -rf public/dist
-	$(YARN_RUN) run webpack-dev --strict
+	$(YARN_RUN) run webpack-dev-strict
 
 .PHONY: javascript-test
 javascript-test: javascript-extensions
@@ -64,7 +67,7 @@ javascript-test: javascript-extensions
 	$(YARN_RUN) run webpack-test
 
 .PHONY: front
-front: assets css dsm javascript-dev
+front: assets css front-packages javascript-dev
 
 ##
 ## Back
@@ -79,7 +82,7 @@ var/cache/dev:
 
 .PHONY: cache
 cache:
-	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache && $(PHP_RUN) bin/console cache:warmup
+	$(DOCKER_COMPOSE) run --rm php rm -rf var/cache && $(PHP_RUN) bin/console cache:warmup
 
 .PHONY: vendor
 vendor:
@@ -93,7 +96,17 @@ check-requirements:
 
 .PHONY: database
 database:
+	$(PHP_RUN) bin/console doctrine:database:drop --force --if-exists
+	$(PHP_RUN) bin/console doctrine:database:create --if-not-exists
 	$(PHP_RUN) bin/console pim:installer:db ${O}
+
+.PHONY: start-job-worker
+start-job-worker:
+	$(PHP_RUN) bin/console messenger:consume ui_job import_export_job data_maintenance_job ${O}
+
+.PHONY: stop-workers
+stop-workers:
+	$(PHP_RUN) bin/console messenger:stop-workers
 
 ##
 ## PIM install
@@ -119,7 +132,7 @@ pim-behat:
 	APP_ENV=behat $(MAKE) cache
 	$(MAKE) assets
 	$(MAKE) css
-	$(MAKE) dsm
+	$(MAKE) front-packages
 	$(MAKE) javascript-dev
 	docker/wait_docker_up.sh
 	APP_ENV=behat $(MAKE) database
@@ -138,10 +151,10 @@ pim-dev:
 	APP_ENV=dev $(MAKE) cache
 	$(MAKE) assets
 	$(MAKE) css
-	$(MAKE) dsm
+	$(MAKE) front-packages
 	$(MAKE) javascript-dev
 	docker/wait_docker_up.sh
-	APP_ENV=dev O="--catalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev" $(MAKE) database
+	APP_ENV=dev O="--catalog src/Akeneo/Platform/Installer/back/src/Infrastructure/Symfony/Resources/fixtures/icecat_demo_dev" $(MAKE) database
 
 .PHONY: pim-prod
 pim-prod:
@@ -149,15 +162,25 @@ pim-prod:
 	APP_ENV=prod $(MAKE) cache
 	$(MAKE) assets
 	$(MAKE) css
-	$(MAKE) dsm
+	$(MAKE) front-packages
 	$(MAKE) javascript-prod
 	docker/wait_docker_up.sh
 	APP_ENV=prod $(MAKE) database
 
 .PHONY: up
 up:
-	$(DOCKER_COMPOSE) up -d --remove-orphan ${C}
+	$(DOCKER_COMPOSE) up -d --remove-orphans ${C}
 
 .PHONY: down
 down:
 	$(DOCKER_COMPOSE) down -v
+
+.PHONY: upgrade-front
+upgrade-front:
+	$(MAKE) node_modules
+	$(MAKE) cache
+	$(MAKE) assets
+	$(MAKE) front-packages
+	$(MAKE) javascript-prod
+	$(MAKE) css
+	$(MAKE) javascript-extensions

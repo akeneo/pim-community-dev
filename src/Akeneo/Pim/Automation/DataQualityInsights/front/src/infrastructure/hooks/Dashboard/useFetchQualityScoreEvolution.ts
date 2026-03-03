@@ -1,11 +1,12 @@
 import {useEffect, useState} from 'react';
+import {QualityScoreValue} from '../../../domain';
 import {fetchQualityScoreEvolution} from '../../fetcher';
 
 type RawScoreEvolutionData = {
   data: {
     [date: string]: string | null;
   };
-  average_rank: string;
+  average_rank: QualityScoreValue;
 };
 
 const useFetchQualityScoreEvolution = (

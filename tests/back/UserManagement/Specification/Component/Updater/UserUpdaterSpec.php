@@ -10,8 +10,9 @@ use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Akeneo\UserManagement\Component\Model\Group;
 use Akeneo\UserManagement\Component\Model\User;
+use Akeneo\UserManagement\Component\Repository\GroupRepositoryInterface;
 use Akeneo\UserManagement\Component\Updater\UserUpdater;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Webmozart\Assert\Assert;
 
@@ -23,7 +24,7 @@ class UserUpdaterSpec extends ObjectBehavior
         IdentifiableObjectRepositoryInterface $localeRepository,
         IdentifiableObjectRepositoryInterface $channelRepository,
         IdentifiableObjectRepositoryInterface $roleRepository,
-        IdentifiableObjectRepositoryInterface $groupRepository,
+        GroupRepositoryInterface $groupRepository,
         ObjectRepository $gridViewRepository,
         FileInfoRepositoryInterface $fileInfoRepository,
         FileStorerInterface $fileStorer
@@ -84,6 +85,20 @@ class UserUpdaterSpec extends ObjectBehavior
         )->shouldReturn($this);
 
         Assert::eq( 'value', $user->getProperty('property_name'));
+    }
+
+    function it_updates_user_profile() {
+        $user = new User();
+        $user->addGroup(new Group('all'));
+
+        $this->update(
+            $user,
+            [
+                'profile' => 'manager'
+            ]
+        )->shouldReturn($this);
+
+        Assert::eq('manager', $user->getProfile());
     }
 
     function it_throws_an_exception_if_it_is_not_a_whitelisted_property()

@@ -2,6 +2,8 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Product\Export\ProductQueryBuilder;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use AkeneoTest\Pim\Enrichment\Integration\Product\Export\AbstractExportTestCase;
 
 class ExportProductsByCompletenessIntegration extends AbstractExportTestCase
@@ -29,43 +31,34 @@ class ExportProductsByCompletenessIntegration extends AbstractExportTestCase
         ]);
 
         $this->createProduct('french', [
-            'family' => 'localized',
-            'values'     => [
-                'name' => [
-                    ['data' => 'French name', 'locale' => 'fr_FR', 'scope' => null]
-                ]
-            ]
+            new SetFamily('localized'),
+            new SetTextValue('name', null, 'fr_FR', 'French name')
         ]);
 
         $this->createProduct('english', [
-            'family' => 'localized',
-            'values'     => [
-                'name' => [
-                    ['data' => 'English name', 'locale' => 'en_US', 'scope' => null]
-                ]
-            ]
+            new SetFamily('localized'),
+            new SetTextValue('name', null, 'en_US', 'English name')
         ]);
 
         $this->createProduct('complete', [
-            'family' => 'localized',
-            'values'     => [
-                'name' => [
-                    ['data' => 'French complete', 'locale' => 'fr_FR', 'scope' => null],
-                    ['data' => 'English complete', 'locale' => 'en_US', 'scope' => null],
-                ]
-            ]
+            new SetFamily('localized'),
+            new SetTextValue('name', null, 'fr_FR', 'French complete'),
+            new SetTextValue('name', null, 'en_US', 'English complete')
         ]);
 
-        $this->createProduct('empty', ['family' => 'localized']);
+        $this->createProduct('empty', [new SetFamily('localized')]);
     }
 
-    public function testProductExportWithCompleteProductsOnAtLeastOneLocale()
+    public function testProductExportWithCompleteProductsOnAtLeastOneLocale(): void
     {
+        $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('complete');
+        $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('english');
+        $product3 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('french');
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;name-en_US
-french;;1;localized;;
-english;;1;localized;;"English name"
-complete;;1;localized;;"English complete"
+uuid;sku;categories;enabled;family;groups;name-en_US
+{$product1->getUuid()->toString()};complete;;1;localized;;"English complete"
+{$product2->getUuid()->toString()};english;;1;localized;;"English name"
+{$product3->getUuid()->toString()};french;;1;localized;;
 
 CSV;
 
@@ -86,16 +79,18 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);
     }
 
-    public function testProductExportWithCompleteProductsOnAllLocales()
+    public function testProductExportWithCompleteProductsOnAllLocales(): void
     {
+        $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('complete');
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;name-en_US
-complete;;1;localized;;"English complete"
+uuid;sku;categories;enabled;family;groups;name-en_US
+{$product1->getUuid()->toString()};complete;;1;localized;;"English complete"
 
 CSV;
 
@@ -116,16 +111,18 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);
     }
 
-    public function testProductExportWithIncompleteProductsOnAllLocales()
+    public function testProductExportWithIncompleteProductsOnAllLocales(): void
     {
+        $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('empty');
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;name-en_US
-empty;;1;localized;;
+uuid;sku;categories;enabled;family;groups;name-en_US
+{$product1->getUuid()->toString()};empty;;1;localized;;
 
 CSV;
 
@@ -146,19 +143,24 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);
     }
 
-    public function testProductExportWithoutFilterOnCompleteness()
+    public function testProductExportWithoutFilterOnCompleteness(): void
     {
+        $product1 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('complete');
+        $product2 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('empty');
+        $product3 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('english');
+        $product4 = $this->get('pim_catalog.repository.product')->findOneByIdentifier('french');
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;name-en_US
-french;;1;localized;;
-english;;1;localized;;"English name"
-complete;;1;localized;;"English complete"
-empty;;1;localized;;
+uuid;sku;categories;enabled;family;groups;name-en_US
+{$product1->getUuid()->toString()};complete;;1;localized;;"English complete"
+{$product2->getUuid()->toString()};empty;;1;localized;;
+{$product3->getUuid()->toString()};english;;1;localized;;"English name"
+{$product4->getUuid()->toString()};french;;1;localized;;
 
 CSV;
 
@@ -170,6 +172,7 @@ CSV;
                     'locales' => ['en_US'],
                 ],
             ],
+            'with_uuid' => true,
         ];
 
         $this->assertProductExport($expectedCsv, $config);

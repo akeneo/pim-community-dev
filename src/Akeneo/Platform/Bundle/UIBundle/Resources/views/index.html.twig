@@ -1,3 +1,4 @@
+{%- use "@AkeneoCommunityFreeTrial/adblocker.html.twig" with styles as free_trial_styles, content as free_trial_content -%}
 <!DOCTYPE html>
 <html>
     <head>
@@ -7,11 +8,18 @@
 
         <link rel="stylesheet" href="{{asset('css/pim.css', 'frontend')}}"/>
 
+        {% if feature_is_enabled('free_trial') %}
+            {{ block('free_trial_styles') }}
+        {% endif %}
+
         {{ external_javascript_dependencies() }}
         <script type="text/javascript" src="{{asset('dist/vendor.min.js', 'frontend')}} "></script>
         <script type="text/javascript" src="{{asset('dist/main.min.js', 'frontend')}} "></script>
     </head>
     <body>
+        {% if feature_is_enabled('segment_integration') %}
+            <div id="cookie-consent"></div>
+        {% endif %}
         <div class="app">
             <div class="AknDefault-progressContainer">
                 <h3>
@@ -26,5 +34,9 @@
             </div>
         </div>
         <div class="hash-loading-mask"></div>
+
+        {% if feature_is_enabled('free_trial') %}
+            {{ block('free_trial_content') }}
+        {% endif %}
     </body>
 </html>

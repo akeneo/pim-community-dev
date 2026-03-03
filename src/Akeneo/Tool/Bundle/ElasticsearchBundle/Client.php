@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\ElasticsearchBundle;
 
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Domain\Model\ElasticsearchProjection;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Exception\IndexationException;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Exception\MissingIdentifierException;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration\Loader;
 use Elasticsearch\Client as NativeClient;
 use Elasticsearch\ClientBuilder;
+use Elasticsearch\Common\Exceptions\BadRequest400Exception;
+use Elasticsearch\Common\Exceptions\Conflict409Exception;
 use Ramsey\Uuid\Uuid;
 
 /**
@@ -21,47 +24,42 @@ use Ramsey\Uuid\Uuid;
  */
 class Client
 {
-    /** @var int ElasticSearch max query size */
-    private const PARAMS_MAX_SIZE = 100000000;
+    /** Number of split requests when retrying bulk index */
+    private const NUMBER_OF_BATCHES_ON_RETRY = 2;
 
-    /** @var ClientBuilder */
-    private $builder;
+    private ClientBuilder $builder;
+    private Loader $configurationLoader;
+    private array $hosts;
+    private string $indexName;
+    private NativeClient $client;
+    private string $idPrefix;
+    private int $maxChunkSize;
+    private int $maxExpectedIndexationLatencyInMicroseconds;
+    private int $maxNumberOfRetries;
 
-    /** @var Loader */
-    private $configurationLoader;
-
-    /** @var array */
-    private $hosts;
-
-    /** @var string */
-    private $indexName;
-
-    /** @var NativeClient */
-    private $client;
-
-    private $idPrefix;
 
     /**
      * Configure the PHP Elasticsearch client.
      * To learn more, please see {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_configuration.html}
-     *
-     * @param ClientBuilder $builder
-     * @param Loader        $configurationLoader
-     * @param array         $hosts
-     * @param string        $indexName
      */
     public function __construct(
         ClientBuilder $builder,
         Loader $configurationLoader,
         array $hosts,
-        $indexName,
-        string $idPrefix = ''
+        string $indexName,
+        string $idPrefix = '',
+        int $maxChunkSize = 100000000,
+        int $maxExpectedIndexationLatencyInMilliseconds=0,
+        int $maxNumberOfRetries=3
     ) {
         $this->builder = $builder;
         $this->configurationLoader = $configurationLoader;
         $this->hosts = $hosts;
         $this->indexName = $indexName;
         $this->idPrefix = $idPrefix;
+        $this->maxChunkSize = $maxChunkSize;
+        $this->maxExpectedIndexationLatencyInMicroseconds = $maxExpectedIndexationLatencyInMilliseconds*1000;
+        $this->maxNumberOfRetries = $maxNumberOfRetries;
 
         $builder->setHosts($hosts);
         $this->client = $builder->build();
@@ -102,8 +100,8 @@ class Client
     }
 
     /**
-     * @param array        $documents
-     * @param ?string      $keyAsId
+     * @param iterable $documents
+     * @param ?string $keyAsId
      * @param Refresh|null $refresh
      *
      * @throws MissingIdentifierException
@@ -120,32 +118,36 @@ class Client
             'errors' => false,
             'items' => [],
         ];
-
         foreach ($documents as $document) {
             $action = ['index' => ['_index' => $this->indexName]];
+            if ($document instanceof ElasticsearchProjection) {
+                $document = $document->toArray();
+            }
 
             if (null !== $keyAsId) {
                 if (!isset($document[$keyAsId])) {
                     throw new MissingIdentifierException(sprintf('Missing "%s" key in document', $keyAsId));
                 }
 
-                if (($paramsComputedSize + strlen(json_encode($document))) >= self::PARAMS_MAX_SIZE) {
-                    $mergedResponse = $this->doBulkIndex($params, $mergedResponse);
-                    $params = [];
-                }
-
                 $action['index']['_id'] = $this->idPrefix . $document[$keyAsId];
+            }
+
+            $estimatedAddedSize = strlen(json_encode([$action, $document]));
+            if ($paramsComputedSize + $estimatedAddedSize >= $this->maxChunkSize) {
+                $mergedResponse = $this->doBulkIndex($params, $mergedResponse);
+                $paramsComputedSize = 0;
+                $params = [];
             }
 
             $params['body'][] = $action;
             $params['body'][] = $document;
-            $paramsComputedSize += strlen(json_encode($document));
+
+            $paramsComputedSize += $estimatedAddedSize;
 
             if (null !== $refresh) {
                 $params['refresh'] = $refresh->getType();
             }
         }
-
         $mergedResponse = $this->doBulkIndex($params, $mergedResponse);
 
         if (isset($mergedResponse['errors']) && true === $mergedResponse['errors']) {
@@ -157,20 +159,42 @@ class Client
 
     private function doBulkIndex(array $params, array $mergedResponse): array
     {
+        $length = count($params['body']);
         try {
-            $response = $this->client->bulk($params);
+            $mergedResponse = $this->doChunkedBulkIndex($params, $mergedResponse, $length);
+        } catch (BadRequest400Exception) {
+            $chunkLength = intdiv($length, self::NUMBER_OF_BATCHES_ON_RETRY);
+            $chunkLength = $chunkLength % 2 == 0 ? $chunkLength : $chunkLength + 1;
+
+            $mergedResponse = $this->doChunkedBulkIndex($params, $mergedResponse, $chunkLength);
         } catch (\Exception $e) {
             throw new IndexationException($e->getMessage(), $e->getCode(), $e);
         }
 
-        if (isset($response['errors']) && true === $response['errors']) {
-            $mergedResponse['errors'] = true;
+        return $mergedResponse;
+    }
+
+    private function doChunkedBulkIndex(array $params, array $mergedResponse, int $chunkLength): array
+    {
+        $bulkRequest = [];
+        if (isset($params['refresh'])) {
+            $bulkRequest['refresh'] = $params['refresh'];
         }
 
-        $mergedResponse['items'] = array_merge($response['items'], $mergedResponse['items']);
+        $chunkedBody = array_chunk($params['body'], $chunkLength);
+        foreach ($chunkedBody as $chunk) {
+            $bulkRequest['body'] = $chunk;
+            $response = $this->client->bulk($bulkRequest);
 
-        if (isset($response['took'])) {
-            $mergedResponse['took'] += $response['took'];
+            if (isset($response['errors']) && true === $response['errors']) {
+                $mergedResponse['errors'] = true;
+            }
+
+            $mergedResponse['items'] = array_merge($mergedResponse['items'], $response['items']);
+
+            if (isset($response['took'])) {
+                $mergedResponse['took'] += $response['took'];
+            }
         }
 
         return $mergedResponse;
@@ -272,6 +296,24 @@ class Client
         return $this->client->bulk($params);
     }
 
+    public function bulkUpdate($documentIds, $params)
+    {
+        $queries = [];
+
+        foreach ($documentIds as $identifier) {
+            $queries['body'][] = [
+                'update' => [
+                    '_index' => $this->indexName,
+                    '_id' => $this->idPrefix.$identifier,
+                ],
+            ];
+
+            $queries['body'][] = $params[$identifier];
+        }
+
+        return $this->client->bulk($queries);
+    }
+
     /**
      * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_quickstart.html#_delete_an_index}
      */
@@ -292,6 +334,10 @@ class Client
      */
     public function createIndex()
     {
+        if ($this->hasIndexForAlias()) {
+            throw new \LogicException(sprintf('Index %s already exists', $this->indexName));
+        }
+
         $configuration = $this->configurationLoader->load();
         $body = $configuration->buildAggregated();
         $body['aliases'] = [$this->indexName => (object) []];
@@ -368,13 +414,27 @@ class Client
 
     /**
      * @param array $body an array containing a query compatible with https://www.elastic.co/guide/en/elasticsearch/reference/5.5/docs-delete-by-query.html
+     * @throws Conflict409Exception
      */
     public function deleteByQuery(array $body): void
     {
-        $this->client->deleteByQuery([
-            'index' => $this->indexName,
-            'body' => $body,
-        ]);
+        $attempts = 0;
+        $exception = null;
+        do {
+            $attempts++;
+            try {
+                $this->client->deleteByQuery([
+                    'index' => $this->indexName,
+                    'body' => $body,
+                ]);
+                return;
+            } catch (Conflict409Exception $e) {
+                $exception = $e;
+                usleep($this->maxExpectedIndexationLatencyInMicroseconds);
+                continue;
+            }
+        } while ($attempts < $this->maxNumberOfRetries);
+        throw $exception;
     }
 
     /**

@@ -25,25 +25,29 @@ use Symfony\Component\HttpFoundation\Session\Session;
  */
 class ScriptNonceGenerator
 {
-    /** @var RequestStack */
-    private $request;
-    /** @var string */
-    private $kernelSecret;
-
-    public function __construct(RequestStack $request, string $kernelSecret)
+    public function __construct(private RequestStack $request, private readonly string $kernelSecret)
     {
-        $this->request = $request;
-        $this->kernelSecret = $kernelSecret;
     }
 
     /**
-    * For XML http requests, the nonce is read from session to ensure it is the same than the original request.
+    * For XML http requests, the nonce is read from session to ensure it is the same as the original request.
     */
     public function getGeneratedNonce(): string
     {
         $request = $this->request->getCurrentRequest();
-        $bapId = $request->cookies->get('BAPID');
 
-        return hash_hmac('ripemd160', $bapId, $this->kernelSecret);
+        if (null === $request) {
+            if ('cli' !== \PHP_SAPI) {
+                throw new \LogicException("Nonce generator failed, no session was found while not in CLI mode.");
+            }
+
+            return '';
+        } elseif (isset($request->cookies)) {
+            $bapId = $request->cookies->get('BAPID');
+
+            return hash_hmac('ripemd160', $bapId, $this->kernelSecret);
+        } else {
+            throw new \LogicException("Nonce generator failed: no cookies found.");
+        }
     }
 }

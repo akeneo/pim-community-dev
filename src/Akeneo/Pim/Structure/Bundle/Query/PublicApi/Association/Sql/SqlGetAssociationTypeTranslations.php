@@ -39,7 +39,7 @@ SQL;
                 'locale' => $locale
             ],
             ['associationTypeCodes' => Connection::PARAM_STR_ARRAY]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         $associationTypeTranslations = [];
         foreach ($rows as $row) {

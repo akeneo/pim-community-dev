@@ -1,0 +1,152 @@
+pim_enrich.entity.family:
+  label: família
+  uppercase_label: Família
+  plural_label: Famílias
+  flash:
+    update:
+      cant_remove_attribute_as_label: O atributo usado como rótulo não pode ser excluído
+    create:
+      success: Família criada com sucesso
+    delete:
+      success: Família removida com sucesso
+      fail: Não é possível eliminar esta família
+  property:
+    attribute_as_label: Atributo usado como rótulo
+    empty_attribute_as_image: Não selecionado
+  module:
+    attributes:
+      not_required_label: Não obrigatório
+      required_label: Obrigatório
+    delete:
+      confirm: Tem certeza que deseja eliminar esta família?
+pim_enrich.entity.family_variant:
+  short_label: Variante
+  module:
+    edit:
+      common_attributes: Atributos comuns
+      no_common_attributes: Atributos comuns não estão disponíveis
+      description: Arraste e solte os atributos para o nível da variante selecionada para que esses atributos sejam gerenciados no nível da variante.
+      confirm_attribute_removal_title: Confirme a eliminação dos atributos
+    create:
+      label: Adicionar variante
+      description: Na variante familiar, você pode definir uma estrutura para produtos com variantes. Selecione o número de níveis variantes gerenciados, os atributos são usados como variantes axiais para cada nível e, em seguida, especifique como os atributos são separados.
+      variant_levels: Nível de variante
+pim_enrich.entity.attribute_option:
+  short_uppercase_label: Opções
+  flash:
+    create:
+      success: Opção de atributo criada com sucesso
+    update:
+      fail: Não é possível gravar opção de atributo
+    delete:
+      fail: Erro na eliminação da opção de atributo
+  module:
+    edit:
+      cancel_title: Cancelar a modificação
+pim_enrich.entity.association_type:
+  label: tipo de associação
+  flash:
+    create:
+      success: Tipo de associação criado com sucesso
+    delete:
+      success: Tipo de associação removido com sucesso
+      fail: Não é possível eliminar este tipo de associação
+  module:
+    delete:
+      confirm: Tem certeza que deseja eliminar este tipo de associação?
+pim_enrich.entity.group_type:
+  label: tipo de grupo
+  flash:
+    create:
+      success: Tipo de grupo criado com sucesso
+    delete:
+      success: Tipo de grupo removido com sucesso
+      fail: Não é possível eliminar este tipo de grupo
+  module:
+    create:
+      button: Faça um tipo de grupo
+    delete:
+      confirm: Tem certeza que deseja eliminar este tipo de grupo?
+pim_enrich.entity.attribute:
+  label: atributo
+  plural_label: Atributos
+  flash:
+    delete:
+      success: Atributo removido com sucesso
+      fail: Não é possível eliminar este atributo
+  property:
+    allowed_extensions: Extensões permitidas
+    auto_option_sorting: Classifique as opções automaticamente por alfabeto
+    available_locales: Linguagens disponíveis
+    date_max: Data máxima
+    date_min: Data mínima
+    default_metric_unit:
+      choose: Escolha uma unidade
+    group:
+      label: Grupo de atributos
+      choose: Escolha o grupo de atributos
+    is_locale_specific: Específicas de uma linguagem
+    max_characters: Máximo de carateres
+    max_file_size: Tamanho máximo do ficheiro (MB)
+    metric_family:
+      choose: Escolha uma família
+    name: Nome
+    number_max: Número máximo
+    number_min: Número mínimo
+    reference_data_name:
+      label: Tipo de dados de referência
+      choose: Escolha o tipo de dados de referência
+    type:
+      choose: Escolha o tipo de atributo
+      pim_catalog_identifier: Identificador
+      pim_catalog_text: Texto
+      pim_catalog_textarea: Área de Texto
+      pim_catalog_number: Número
+      pim_catalog_price_collection: Preço
+      pim_catalog_multiselect: Seleção múltipla
+      pim_catalog_simpleselect: Seleção simples
+      pim_catalog_file: Ficheiro
+      pim_catalog_image: Imagem
+      pim_catalog_boolean: "Sim/Não"
+      pim_catalog_date: Data
+      pim_reference_data_simpleselect: Selecione os dados de referência simples
+      pim_reference_data_multiselect: Referência de dados multi selecionáveis
+    unique: Valor único
+    useable_as_grid_filter: Utilizável em grelha
+    validation_regexp: Expressões regulares
+    validation_rule:
+      label: Regra de validação
+      email: E-mail
+      regexp: Expressões regulares
+      url: URL
+  module:
+    add_attribute:
+      no_available_attributes: Não há mais atributos para adicionar
+    edit:
+      common: Parâmetros gerais
+      type_specific: Insira parâmetros específicos
+      validation: Parâmetros de validação
+    delete:
+      confirm: Tem certeza que deseja eliminar este atributo?
+      confirm_from_group: Tem certeza de que deseja excluir o atributo {{ attribute }} desse grupo de atributos?
+      confirm_from_product: Tem certeza que deseja eliminar este atributo do produto?
+pim_enrich.entity.attribute_group:
+  label: grupo de atributos
+  uppercase_label: Grupo de atributos
+  plural_label: Grupos de atributos
+  flash:
+    update:
+      success: Grupo de atributos atualizado com sucesso
+    delete:
+      success: Grupo de atributos removido com sucesso
+  module:
+    delete:
+      confirm: Tem certeza de que deseja excluir esse grupo de atributos?
+pim_enrich.mass_edit.family:
+  step:
+    select:
+      label: Escolher famílias
+    configure:
+      label: Configurar
+    confirm:
+      label: Confirmar

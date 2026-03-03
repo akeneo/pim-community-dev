@@ -8,7 +8,6 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 define([
-  'underscore',
   'oro/translator',
   'pim/controller/front',
   'pim/form-builder',
@@ -16,7 +15,8 @@ define([
   'pim/user-context',
   'pim/dialog',
   'pim/page-title',
-], function (_, __, BaseController, FormBuilder, FetcherRegistry, UserContext, Dialog, PageTitle) {
+  'pim/i18n',
+], function (__, BaseController, FormBuilder, FetcherRegistry, UserContext, Dialog, PageTitle, i18n) {
   return BaseController.extend({
     /**
      * {@inheritdoc}
@@ -30,7 +30,7 @@ define([
           }
 
           PageTitle.set({
-            'group.label': _.escape(attributeGroup.labels[UserContext.get('catalogLocale')]),
+            'group.label': i18n.getLabel(attributeGroup.labels, UserContext.get('catalogLocale'), attributeGroup.code),
           });
 
           return FormBuilder.build('pim-attribute-group-edit-form').then(form => {

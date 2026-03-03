@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Sorter\TextArea;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
 /**
@@ -27,39 +28,19 @@ class TextAreaSorterIntegration extends AbstractProductQueryBuilderTestCase
         parent::setUp();
 
         $this->createProduct('cat', [
-            'values' => [
-                'a_text_area' => [['data' => 'cat', 'locale' => null, 'scope' => null]],
-            ],
+            new SetTextareaValue('a_text_area' ,null, null,'cat'),
         ]);
 
         $this->createProduct('best_cat', [
-            'values' => [
-                'a_text_area' => [
-                    [
-                        'data'   => 'my <bold>cat</bold> is the most <i>beautiful</i><br/>',
-                        'locale' => null,
-                        'scope'  => null,
-                    ],
-                ],
-            ],
+            new SetTextareaValue('a_text_area' ,null, null,'my <bold>cat</bold> is the most <i>beautiful</i><br/>'),
         ]);
 
         $this->createProduct('super_dog', [
-            'values' => [
-                'a_text_area' => [
-                    [
-                        'data'   => $this->superDog,
-                        'locale' => null,
-                        'scope'  => null,
-                    ],
-                ],
-            ],
+            new SetTextareaValue('a_text_area' ,null, null, $this->superDog),
         ]);
 
         $this->createProduct('best_dog', [
-            'values' => [
-                'a_text_area' => [['data' => 'my dog is the most beautiful', 'locale' => null, 'scope' => null]],
-            ],
+            new SetTextareaValue('a_text_area' ,null, null, 'my dog is the most beautiful'),
         ]);
 
         $this->createProduct('empty_product', []);

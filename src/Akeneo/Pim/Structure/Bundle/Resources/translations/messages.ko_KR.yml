@@ -1,0 +1,63 @@
+pim_enrich:
+  #Attribute
+  attribute:
+    tab:
+      parameter.title: 매개변수
+      value.title: 값
+      history.title: 기록
+  #Family
+  family:
+    info:
+      cant_remove_attribute_used_as_axis: 패밀리 변형에서 변형 축으로 사용되는 이 특성을 제거할 수 없음
+  attribute_group:
+    remove:
+      attribute_group_with_attribute_cannot_be_removed: 특성이 포함된 특성 그룹은 제거할 수 없습니다. 삭제하기 전에 해당 특성을 제거하십시오.
+      attribute_group_other_cannot_be_removed: 특성 그룹 "other"를 제거할 수 없습니다.
+  #Group type
+  group_type:
+    tab:
+      property.title: 속성
+  #Mass edit operations
+  mass_edit_action:
+    family:
+      page_title: 패밀리
+      page_subtitle: 대량 편집(1 패밀리)|대량 편집(%count% 패밀리)
+      title: 작업 선택
+      subtitle: 선택한 패밀리에서 수행할 작업 선택|선택한 %count%개 패밀리에서 수행할 작업 선택
+      confirm: 다음 정보로 1개 패밀리를 업데이트하려고 합니다. 확인해주십시오.|다음 정보로 %count%개 패밀리를 업데이트하려고 합니다. 확인해주십시오.
+      steps:
+        first: 패밀리 선택
+        second: 작업 선택
+        third: 구성
+        fourth: 확인
+  entity:
+    association_type:
+      property:
+        is_two_way: 양방향 연결
+        is_quantified: 수량 연결
+pim_enrich_attribute_form:
+  code: 코드
+  type: 특성 유형
+  reference_data_name: 참조 데이터 이름
+  scopable: 채널별 값
+  localizable: 로케일별 값
+  unique: 고유한 값
+  availableLocales: 사용 가능한 로케일
+  locale_specific: 로케일 관련
+  group: 특성 그룹
+  useableAsGridFilter: 그리드에서 사용 가능
+job_execution.summary:
+  deleted_attribute_groups: 삭제된 특성 그룹
+  skipped_attribute_groups: 건너뛴 특성 그룹
+  moved_attributes: 이동된 특성
+  deleted_attributes: 삭제된 특성
+pim_import_export:
+  notification:
+    attribute_group_mass_delete:
+      error: 특성 그룹의 일괄 삭제가 실패했습니다.
+      warning: 특성 그룹의 일괄 삭제가 완료되었으며 경고가 있습니다.
+      success: 특성 그룹의 일괄 삭제가 완료되었습니다.
+    attribute_mass_delete:
+      error: 특성의 일괄 삭제가 실패했습니다.
+      warning: 특성의 일괄 삭제가 완료되었으며 경고가 있습니다.
+      success: 특성의 일괄 삭제가 완료되었습니다.

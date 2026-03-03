@@ -28,11 +28,6 @@ pim_user_reset_send_email:
     defaults: { _controller: pim_user.controller.reset:sendEmail }
     methods: [POST]
 
-pim_user_reset_check_email:
-    path: /user/check-email
-    defaults: { _controller: pim_user.controller.reset:checkEmail }
-    methods: [GET]
-
 pim_user_reset_reset:
     path: /user/reset/{token}
     defaults: { _controller: pim_user.controller.reset:reset }

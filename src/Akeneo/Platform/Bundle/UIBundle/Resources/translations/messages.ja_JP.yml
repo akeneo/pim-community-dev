@@ -48,28 +48,36 @@ pim_ui.system_config:
     loading_message.title: メッセージを読み込み中...
 other_actions: その他の操作
 pim_common:
+  association_types: 関連タイプ
   cancel: キャンセル
-  save: 保存
-  delete: 削除
-  update: 更新
-  view: ビュー
-  edit: 編集
-  created: '作成:'
-  updated: '更新:'
-  create: 作成
-  permissions: 許可
-  properties: プロパティ
-  name: 名前
-  remove: 削除
-  code: コード
-  products: 商品
-  product_models: 商品モデル
   categories: カテゴリ
+  code: コード
+  create: 作成
+  created: '作成:'
+  delete: 削除
+  edit: 編集
   enabled: 有効
+  family_variant: ファミリーバリエーション
   family: ファミリー
   groups: グループ
-  yes: "はい"
+  label: ラベル
+  name: 名前
   no: "いいえ"
+  parent: 親
+  permissions: 許可
+  product_models: 商品モデル
+  products: 商品
+  properties: プロパティ
+  quality_score: 品質スコア
+  quantity: 数量
+  remove: 削除
+  save: 保存
+  unit: ユニット
+  update: 更新
+  updated: '更新:'
+  view: ビュー
+  yes: "はい"
+  uuid: UUID
 pim_enrich:
   #ACLs
   acl:
@@ -95,21 +103,13 @@ pim_enrich:
       comment: 商品へコメント
       download: 商品情報をPDFでダウンロード
       history: 商品の履歴を表示
+      convert_variant_to_simple: バリエーション商品をシンプル商品に変換
     product_model:
       create: 商品モデルを作成
       edit_attributes: 商品モデルの属性を編集
       categories_view: 商品モデルのカテゴリを相談
       history: 商品モデルの履歴を表示
-      remove: 商品モデルを削除
-    category:
-      list: カテゴリを一覧表示
-      create: カテゴリを作成
-      edit: カテゴリを編集
-      remove: カテゴリーを削除
-      move: カテゴリを移動
-      children: 下位カテゴリを見る
-      products: カテゴリの商品を見る
-      history: カテゴリの履歴を表示
+      remove: 商品モデルを削除 (下位を含む)
     channel:
       index: チャンネルを一覧表示
       create: チャンネルを作成
@@ -131,6 +131,7 @@ pim_enrich:
       create: 属性グループを作成
       edit: 属性グループを編集
       remove: 属性グループを削除
+      mass_delete: 属性グループを一括削除
       sort: 属性グループをソート
       add_attribute: 属性をグループに追加
       remove_attribute: グループから属性を削除
@@ -140,6 +141,7 @@ pim_enrich:
       create: 属性を作成
       edit: 属性を編集
       remove: 属性を削除
+      mass_delete: 属性を一括削除する
       sort: 属性グループ内で属性をソート
       history: 属性の履歴を表示
     group:
@@ -163,6 +165,8 @@ pim_enrich:
       remove: 商品の関連性を削除
     job_tracker:
       index: プロセストラッカーを表示
+      view_all_jobs: プロセストラッカーにすべてのジョブを表示
+      stop_job: 実行中のジョブを停止
   acl_group:
     association_type: 関連タイプ
     attribute: 属性
@@ -210,6 +214,8 @@ flash:
   attribute:
     identifier_not_removable: 識別子の属性は削除できません
     used_as_conversion_unit: この属性はチャンネル%channelCodes%の変換ユニットで使用中のため削除できません
+    cant_remove_attributes_used_as_label: ファミリーでラベルとして使用されている属性は削除できません。
+    cant_remove_attribute_used_as_axis: ファミリーバリエーションでバリエーション軸として使用中のこの属性を削除できません
   category:
     removed: カテゴリを正常に削除しました
   tree:
@@ -354,6 +360,8 @@ Decimals allowed: 小数点以下の桁数を許可
 Negative allowed: 負の値を許可
 Date min: 最短日時
 Date max: 最長日時
+Metric family: 測定ファミリー
+Default metric unit: 既定の測定ユニット
 Max file size: 最大ファイルサイズ (MB)
 Allowed extensions: 利用できる拡張子
 None: なし
@@ -378,6 +386,7 @@ pim_catalog_file: ファイル
 pim_catalog_image: 画像
 pim_catalog_boolean: "Yes/No"
 pim_catalog_date: 日付
+pim_catalog_metric: 測定
 pim_reference_data_simpleselect: 単一選択データの参照
 pim_reference_data_multiselect: 複数選択データの参照
 #Locales
@@ -426,6 +435,8 @@ Disabled: 無効
 Status: ステータス
 pim_datagrid:
   filters:
+    product_typology:
+      label: 商品タイプ
     entity_type:
       label: バリエーション
     family:
@@ -434,10 +445,23 @@ pim_datagrid:
       label: グループ
     enabled:
       label: ステータス
+    scope:
+      label: チャンネル
     completeness:
       label: 完了
+    created:
+      label: '作成:'
+    updated:
+      label: '更新:'
+    label_or_identifier:
+      label: ラベルもしくは識別子
+      label_with_uuid: ラベル、識別子、UUID
+    parent:
+      label: 親
     identifier:
       label: 識別子
+    uuid:
+      label: Uuid
 #Versioning / history
 Change History: 変更履歴
 Data Audit: データ監査
@@ -502,7 +526,6 @@ pim_mass_edit:
       success: 一括削除 <strong>%label%</strong> が終了しました
 job_execution.summary:
   mass_edited: 一括編集
-  skip: スキップ済
   skipped_products: スキップされた商品
   skipped_attributes: スキップされた属性
   skipped_families: スキップされたファミリー
@@ -523,3 +546,9 @@ job_tracker:
     title: プロセストラッカー
   filter:
     started_at: 開始日時
+pim_login:
+  logo_title: Akeneo PIM
+  footer:
+    powered: '提供:'
+    powered_image_title: ロゴ Akeneo
+pim_system.acl_group.connect: 接続

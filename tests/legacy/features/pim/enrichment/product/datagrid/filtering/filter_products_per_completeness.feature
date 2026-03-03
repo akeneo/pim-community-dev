@@ -8,7 +8,7 @@ Feature: Filter products
     Given the "footwear" catalog configuration
     And the following family:
       | code   | attributes             | requirements-tablet |
-      | family | color,description,name | color,name          |
+      | family | sku,color,description,name | color,name          |
     And the following family variants:
       | code           | family | variant-axes_1 | variant-attributes_1 |
       | family_variant | family | color          | description          |

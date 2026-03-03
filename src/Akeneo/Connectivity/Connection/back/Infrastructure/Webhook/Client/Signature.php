@@ -12,6 +12,6 @@ class Signature
     {
         $data = (string)$timestamp . '.' . $body;
 
-        return hash_hmac('sha256', $data, $secret);
+        return \hash_hmac('sha256', $data, $secret);
     }
 }

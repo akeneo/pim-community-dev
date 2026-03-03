@@ -1,6 +1,4 @@
 pim_user:
-    email:
-        name:    '%mailer_from_name%'
     privileges:
         action:
             label: rights.action

@@ -1,19 +1,12 @@
+#Entities
 Job: Posao
 Connector: Priključak
 pim_import_export:
   job: Posao
   connector: Priključak
+  ## Job status
   status:
     0: Spreman
-  batch_status:
-    1: Completed
-    2: Starting
-    3: Started
-    4: Stopping
-    5: Stopped
-    6: Failed
-    7: Abandoned
-    8: Unknown
   download_archive:
     archive: preuzimanje generirane arhive|preuzimanje generiranih arhiva
     output: preuzimanje generirane datoteke|preuzimanje generiranih datoteka
@@ -35,18 +28,21 @@ pim_import_export:
       property.title: Opća svojstva
       history.title: Povijest
       job_content.title: Sadržaj
+#Page titles:
 pim_title.export_profile.index: Upravljanje profilima izvoza
 pim_title.export_execution.index: Povijest izvođenja izvoza
 pim_title.export_execution.show: Izvoz izvođenja | Detalji
 pim_title.import_profile.index: Upravljanje profilima uvoza
 pim_title.import_execution.index: Povijest izvođenja uvoza
 pim_title.import_execution.show: Uvoz izvođenja | Detalji
+#Entity and page header titles
 export profile:
   title: izvoz profila
   edit: uredi profil izvoza
 import profile:
   title: uvoz profila
   edit: uredi profil uvoza
+#ACLs
 pim_importexport:
   acl:
     export_profile:
@@ -82,6 +78,7 @@ pim_importexport:
   acl_group:
     export: Izvoz profila
     import: Uvoz profila
+#Buttons
 btn:
   create:
     export profile: kreiraj profil izvoza
@@ -89,10 +86,12 @@ btn:
 Upload and import now: Prebaci i uvezi odmah
 import now: Uvezi odmah
 export now: Izvezi odmah
+#Confirmation messages
 confirmation:
   remove:
     export profile: Da li ste sigurni da želite izbrisati izvozni profil %name%?
     import profile: Da li ste sigurni da želite izbrisati uvozni profil %name%?
+#Flash messages
 flash:
   export:
     created: Izvoz je uspješno kreiran
@@ -104,15 +103,18 @@ flash:
     removed: Uvoz je uklonjen
     updated: Uvoz je uspješno ažuriran
     running: Uvoz se izvodi
+#Tabs
 General properties: Opća svojstva
 History: Povijest
 pane.accordion:
   properties: Svojstva
   global_settings: Globalne postavke
   filters: Filteri
+#Popin titles
 popin.create:
   export_profile.title: Kreiraj novi profil izvoza
   import_profile.title: Kreiraj novi profil uvoza
+#Job execution
 'Display item': Prikaži stavku
 'Hide item': Sakrij stavku
 'Collecting data about job execution...': Prikupljanje podataka o izvršenju posla...
@@ -127,7 +129,7 @@ job_execution.summary:
   create: kreirano
   update: ažurirano
   update_products: ažurirani proizvodi
-  skip_products: preskočeni proizvodi
+  skip_products: preskočeni proizvodi9
   displayed: prikazana prva upozorenja
   charset_validator:
     title: 'Kod datoteke:'

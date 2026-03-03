@@ -11,7 +11,7 @@ export default interface View extends Backbone.View<any> {
   getParent: () => View | null;
   configure: () => JQueryPromise<any>;
   shutdown: () => void;
-  triggerExtensions: () => void;
+  triggerExtensions: (eventName: string, ...args: any[]) => void;
   getFormData: () => any;
   getExtension: (code: string) => View | undefined;
 }

@@ -1,4 +1,4 @@
-import React, {cloneElement, ComponentProps, ReactElement, ReactNode} from 'react';
+import React, {cloneElement, ComponentProps, FC, ReactElement, ReactNode} from 'react';
 import styled from 'styled-components';
 import {FormInput} from './FormInput';
 import {FormLabel} from './FormLabel';
@@ -11,8 +11,8 @@ interface Props {
     helpers?: ReactNode[];
 }
 
-export const FormGroup = ({children: control, controlId, label, helpers, required = false}: Props) => (
-    <div className='AknFieldContainer'>
+export const FormGroup: FC<Props> = ({children: control, controlId, label, helpers, required = false}: Props) => (
+    <div className='AknFieldContainer' style={{zIndex: 'auto'}}>
         {label && (
             <div className='AknFieldContainer-header'>
                 <FormLabel id={controlId} label={label} required={required || control.props.required} />

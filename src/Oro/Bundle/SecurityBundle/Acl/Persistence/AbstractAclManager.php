@@ -23,7 +23,7 @@ class AbstractAclManager
         if (is_string($identity)) {
             return new RoleSecurityIdentity($identity);
         } elseif ($identity instanceof RoleInterface) {
-            return new RoleSecurityIdentity($identity->getRole());
+            return new RoleSecurityIdentity($identity->getRole() ?? '');
         } elseif ($identity instanceof UserInterface) {
             return UserSecurityIdentity::fromAccount($identity);
         } elseif ($identity instanceof TokenInterface) {

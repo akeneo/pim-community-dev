@@ -4,7 +4,7 @@ namespace Context\Page\Export;
 
 use Context\Page\Base\Form;
 use Pim\Behat\Decorator\Export\Structure\AttributesDecorator;
-use Pim\Behat\Decorator\Tree\JsTreeDecorator;
+use Pim\Behat\Decorator\Tree\TreeDecorator;
 
 /**
  * Export edit page
@@ -30,8 +30,8 @@ class Edit extends Form
         $this->elements = array_merge(
             [
                 'Category tree' => [
-                    'css'        => '.jstree',
-                    'decorators' => [JsTreeDecorator::class]
+                    'css'        => '[role="tree"]',
+                    'decorators' => [TreeDecorator::class]
                 ],
                 'Attribute selector' => [
                     'css'        => '.AknFieldContainer.attributes',

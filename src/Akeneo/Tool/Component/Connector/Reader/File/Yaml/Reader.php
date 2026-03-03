@@ -3,13 +3,17 @@
 namespace Akeneo\Tool\Component\Connector\Reader\File\Yaml;
 
 use Akeneo\Tool\Component\Batch\Item\FileInvalidItem;
+use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
+use Akeneo\Tool\Component\Batch\Item\StatefulInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\Exception\DataArrayConversionException;
 use Akeneo\Tool\Component\Connector\Exception\InvalidItemFromViolationsException;
+use Akeneo\Tool\Component\Connector\Exception\InvalidYamlFileException;
 use Akeneo\Tool\Component\Connector\Reader\File\FileReaderInterface;
+use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -19,36 +23,24 @@ use Symfony\Component\Yaml\Yaml;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Reader implements FileReaderInterface, TrackableItemReaderInterface
+class Reader implements FileReaderInterface, TrackableItemReaderInterface, InitializableInterface, StatefulInterface
 {
-    /** @var ArrayConverterInterface */
-    protected $converter;
-
-    /** @var bool */
-    protected $multiple = false;
-
-    /** @var string */
-    protected $codeField = 'code';
-
-    /** @var bool */
-    protected $uploadAllowed = false;
-
-    /** @var StepExecution */
-    protected $stepExecution;
-
-    /** @var \ArrayIterator */
-    protected $yaml;
+    protected bool $uploadAllowed = false;
+    protected ?StepExecution $stepExecution = null;
+    protected ?\ArrayIterator $yaml = null;
+    protected array $state = [];
 
     /**
      * @param ArrayConverterInterface $converter
      * @param bool                    $multiple
      * @param string                  $codeField
      */
-    public function __construct(ArrayConverterInterface $converter, $multiple = false, $codeField = 'code')
-    {
-        $this->converter = $converter;
-        $this->codeField = $codeField;
-        $this->multiple = $multiple;
+    public function __construct(
+        private ArrayConverterInterface $converter,
+        private string $rootLevel,
+        private bool $multiple = false,
+        private string $codeField = 'code'
+    ) {
     }
 
     /**
@@ -93,12 +85,8 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface
      */
     public function read()
     {
-        if (null === $this->yaml) {
-            $fileData = $this->getFileData();
-            if (null === $fileData) {
-                return null;
-            }
-            $this->yaml = new \ArrayIterator($fileData);
+        if (!$this->initYaml()) {
+            return null;
         }
 
         if ($data = $this->yaml->current()) {
@@ -122,27 +110,56 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface
         return null;
     }
 
+    private function initYaml(): bool
+    {
+        if (null === $this->yaml) {
+            $fileData = $this->getFileData();
+            if (null === $fileData) {
+                return false;
+            }
+            $this->yaml = new \ArrayIterator($fileData);
+        }
+
+        return true;
+    }
+
     /**
      * Returns the file data
      *
      * @return array
+     * @throws InvalidYamlFileException
      */
     protected function getFileData()
     {
         $jobParameters = $this->stepExecution->getJobParameters();
-        $filePath = $jobParameters->get('filePath');
-        $fileContent = file_get_contents($filePath);
-        if (false !== $fileContent) {
-            if (null !== $this->stepExecution) {
-                $this->stepExecution->setSummary(['item_position' => 0]);
-            }
+        $filePath = $jobParameters->get('storage')['file_path'];
+
+        if (!file_exists($filePath)) {
+            throw new FileNotFoundException(sprintf('File "%s" could not be found', $filePath));
         }
-        $fileData = current(Yaml::parse($fileContent));
+
+        $fileContent = file_get_contents($filePath);
+        if (false === $fileContent) {
+            return null;
+        }
+
+        $this->stepExecution?->setSummary(['item_position' => 0]);
+
+        $yamlContent = Yaml::parse($fileContent);
+        if (!array_key_exists($this->rootLevel, $yamlContent)) {
+            throw InvalidYamlFileException::doesNotContainRootLevel($this->rootLevel);
+        }
+
+        $fileData = $yamlContent[$this->rootLevel];
         if (null === $fileData) {
             return null;
         }
 
         foreach ($fileData as $key => $row) {
+            if (!is_array($row)) {
+                throw InvalidYamlFileException::rowShouldBeAnArray($key, $row);
+            }
+
             if ($this->codeField && !isset($row[$this->codeField])) {
                 $fileData[$key][$this->codeField] = $key;
             }
@@ -154,10 +171,20 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface
     /**
      * {@inheritdoc}
      */
-    public function initialize()
+    public function initialize(): void
     {
-        if (null !== $this->yaml) {
-            $this->yaml->rewind();
+        if (!$this->initYaml()) {
+            return;
+        }
+
+        $this->yaml->rewind();
+
+        if (!array_key_exists('position', $this->state)) {
+            return;
+        }
+
+        while ($this->yaml->key() < $this->state['position']) {
+            $this->yaml->next();
         }
     }
 
@@ -199,5 +226,15 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface
             0,
             $exception
         );
+    }
+
+    public function getState(): array
+    {
+        return null !== $this->yaml ? ['position' => $this->yaml->key()] : [];
+    }
+
+    public function setState(array $state): void
+    {
+        $this->state = $state;
     }
 }

@@ -3,7 +3,7 @@
 namespace Akeneo\Tool\Component\Batch\Event;
 
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Event triggered during stepExecution execution
@@ -17,12 +17,17 @@ class StepExecutionEvent extends Event implements EventInterface
     /** @var StepExecution */
     protected $stepExecution;
 
-    /**
-     * @param StepExecution $stepExecution
-     */
-    public function __construct(StepExecution $stepExecution)
+    protected ?\Exception  $exception;
+
+    public function getException(): ?\Exception
+    {
+        return $this->exception;
+    }
+
+    public function __construct(StepExecution $stepExecution, \Exception $exception=null)
     {
         $this->stepExecution = $stepExecution;
+        $this->exception = $exception;
     }
 
     /**

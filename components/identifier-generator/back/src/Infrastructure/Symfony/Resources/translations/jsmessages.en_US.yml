@@ -1,0 +1,146 @@
+pim_title:
+    akeneo_identifier_generator_index: "Identifier generator"
+    akeneo_identifier_generator_edit: "Edit Identifier generator"
+pim_error:
+    unauthorized_list_attributes: "You cannot list attributes. Please contact your administrator to change your rights."
+    unauthorized_list_properties: "You don’t have permission to list this property. Please contact your administrator."
+    unauthorized_list_families: "You cannot list families. Please contact your administrator to change your rights."
+    general: "An error occurred during the display of this page. Please contact your administrator."
+    unexpected: "Unexpected error occurred. Please contact system administrator."
+    404: 'A 404 error occurred...'
+    identifier_generator_not_found: 'Identifier generator not found'
+    selection_attribute_not_found: 'An attribute from your product selection has been deleted from your catalog. Please delete this property from your product selection.'
+pim_identifier_generator:
+    create:
+        form:
+            title: "Create a new Identifier Generator"
+            select_identifier_attribute: "Select your identifier attribute"
+    tabs:
+        general: "General"
+        product_selection: "Product Selection"
+        identifier_structure: "Identifier Structure"
+    general:
+        title: "General properties"
+        label_translations_in_ui_locale: "Label translations in UI locale"
+        text_transformation:
+            label: 'Text transformation'
+            no: 'No text transformation'
+            lowercase: 'Lowercase'
+            uppercase: 'Uppercase'
+    flash:
+        create:
+            success: 'The identifier generator "{{ code }}" was successfully created'
+            error: 'The identifier generator could not be created'
+        update:
+            success: 'The identifier generator "{{ code }}" was successfully updated'
+            error: 'The identifier generator could not be updated'
+        delete:
+            success: 'The identifier generator "{{ code }}" was successfully deleted'
+            error: 'The identifier generator could not be deleted'
+    list:
+        identifier: 'Identifier'
+        first_generator: 'Create your first identifier generator!'
+        read_only_list: 'Please contact your administrator to have access to this feature.'
+        helper:
+            title: 'Automate the generation of identifiers.'
+            info: 'Once an identifier generator is created, an identifier will be assigned automatically to every new product you create.'
+        check_help_center: 'Check out our help center for more information.'
+        max_generator:
+            title: 'You have reached the limit of {{ count }} identifier generators.'
+        confirmation: 'Are you sure you want to delete this property?'
+    operators:
+        'NOT IN CHILDREN': 'Not in children'
+        'IN CHILDREN': 'In children'
+        UNCLASSIFIED: 'Unclassified'
+        CLASSIFIED: 'Classified'
+    selection:
+        limit_reached: 'You have reached the limit of {{ count }} conditions'
+        helper:
+            title: 'Add conditions to your product selection, if you want to:'
+            automate: 'automate the creation of identifiers for a targeted selection of products'
+            multiple: 'have multiple structures of identifiers for different selection of products'
+        empty:
+            title: 'Create your product selection'
+            text: 'All your products with an empty identifier will be impacted.'
+            info: 'If you want to target specific products, add new conditions.'
+        settings:
+            enabled:
+                disabled: 'Disabled'
+                placeholder: 'Choose a status'
+            family:
+                placeholder: 'Please select at least one family'
+            select_option:
+                placeholder: 'Please select at least one option'
+            categories:
+                tree: Tree
+    structure:
+        helper: 'Define the structure of the product identifiers you want to generate. If you need any help setting up the property settings, {{link}}.'
+        helper_link: 'check our help center for more information'
+        title: 'Identifier Structure'
+        add_element: 'Add new property'
+        limit_reached: 'You have reached the limit of {{ count }} properties'
+        property_type:
+            sections:
+                system: 'System'
+            free_text: 'Free text'
+            auto_number: 'Auto Number'
+            family: 'Family'
+        settings:
+            free_text:
+                title: 'Free text settings'
+                string_label: 'Define your text'
+            auto_number:
+                title: 'Auto number'
+                digitsMin_label: 'Min digits'
+                numberMin_label: 'Min number'
+            family:
+                title: 'Family'
+            code_format:
+                type:
+                    truncate: 'Use first characters'
+                    code: 'Use the entire code'
+                    nomenclature: 'Use your own nomenclature'
+            operator:
+                title: 'Operator'
+                placeholder: 'Select the operator'
+            simple_select:
+                title: 'Attribute'
+            abbrev_type: 'Define the format of this property'
+            abbrev_type_empty_label: 'Select the format'
+            chars_number: 'Number of characters'
+        empty:
+            title: 'Create your identifier structure'
+            text: 'Click on "Add new property" on the top right'
+            link_text: 'Check out our Help center for more information.'
+        delimiters:
+            title: 'Delimiters'
+            helper: 'Learn more about how to add default or custom delimiters in {{link}}.'
+            helper_link: 'our help center'
+            checkbox_label: 'Use delimiters between each property'
+            input_label: 'Define your delimiters'
+    deletion:
+        operations: 'Operations'
+        confirmation: 'Are you sure you want to delete this identifier generator?'
+        type: 'Please type "{{ code }}"'
+    nomenclature:
+        edit: 'Edit nomenclature'
+        section_title: 'Generating my identifiers for {{ property }}'
+        title: 'Manage nomenclature'
+        helper: 'Please note that your nomenclatures are shared by all your identifier generators.'
+        characters_number: 'Number of characters'
+        operator_placeholder: 'Choose your operator'
+        value_placeholder: 'Choose your characters'
+        nomenclature: 'Nomenclature'
+        generate_if_empty: 'Generate nomenclature automatically'
+        display: 'Display'
+        filters:
+            all: 'All'
+            error: 'Error'
+            empty: 'Empty'
+            filled: 'Filled'
+        empty:
+            title: 'No nomenclatures found'
+        flash:
+            success: 'Your nomenclature was successfully saved'
+            error: 'Your nomenclature cannot be saved'
+            warning: 'Your nomenclature was successfully saved, but some values will not be generated. Edit your nomenclature to modify the values in error.'

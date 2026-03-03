@@ -88,6 +88,40 @@ JSON;
         $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
     }
 
+    public function testEmptyAttributeOptionLabelsAreFiltered(): void
+    {
+        // INSERT a null option translation
+        $this->get('database_connection')->executeStatement(<<<SQL
+            REPLACE INTO pim_catalog_attribute_option_value(option_id, locale_code, value)
+                SELECT opt.id, 'fr_FR', NULL FROM pim_catalog_attribute_option opt
+                INNER JOIN pim_catalog_attribute attr ON opt.attribute_id = attr.id
+                WHERE attr.code = :attrCode and opt.code = :optCode
+            SQL,
+            [
+                'attrCode' => 'a_multi_select',
+                'optCode' => 'optionA',
+            ]
+        );
+
+        $client = $this->createAuthenticatedClient();
+        $client->request('GET', 'api/rest/v1/attributes/a_multi_select/options/optionA');
+
+        $expectedContent = <<<JSON
+            {
+                "code" : "optionA",
+                "sort_order" : 10,
+                "attribute" : "a_multi_select",
+                "labels" : {
+                  "en_US" : "Option A"
+                }
+            }
+        JSON;
+
+        $response = $client->getResponse();
+        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+    }
+
     /**
      * {@inheritdoc}
      */

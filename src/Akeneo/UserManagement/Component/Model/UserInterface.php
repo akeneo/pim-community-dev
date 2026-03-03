@@ -2,15 +2,16 @@
 
 namespace Akeneo\UserManagement\Component\Model;
 
-use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Channel\Component\Model\LocaleInterface;
-use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\UserManagement\Component\EntityUploadedImageInterface;
 use Doctrine\Common\Collections\Collection;
 use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\Security\Core\User\AdvancedUserInterface;
+use Symfony\Component\Security\Core\User\LegacyPasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface as BaseUserInterface;
 
 /**
  * Interface UserInterface
@@ -19,7 +20,7 @@ use Symfony\Component\Security\Core\User\AdvancedUserInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUploadedImageInterface
+interface UserInterface extends LegacyPasswordAuthenticatedUserInterface, BaseUserInterface, \Serializable, EntityUploadedImageInterface
 {
     public const SYSTEM_USER_NAME = 'system';
 
@@ -551,9 +552,37 @@ interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUplo
      */
     public function getProperty(string $propertyName);
 
+    public function isUiUser(): bool;
+
+    public function defineAsUiUser(): void;
+
     public function isApiUser(): bool;
 
     public function defineAsApiUser(): void;
 
+    public function isJobUser(): bool;
+
+    public function defineAsJobUser(): void;
+
+    public function getType(): string;
+
     public function duplicate(): UserInterface;
+
+    public function getConsecutiveAuthenticationFailureCounter(): int;
+
+    public function setConsecutiveAuthenticationFailureCounter(int $consecutiveAuthenticationFailureCounter);
+
+    public function getAuthenticationFailureResetDate(): ?\DateTime;
+
+    public function setAuthenticationFailureResetDate(?\DateTime $authenticationFailureResetDate);
+
+    public function getProfile(): ?string;
+
+    public function setProfile(?string $profile): void;
+
+    public function isEnabled(): bool;
+
+    public function isAccountNonExpired(): bool;
+
+    public function isAccountNonLocked(): bool;
 }

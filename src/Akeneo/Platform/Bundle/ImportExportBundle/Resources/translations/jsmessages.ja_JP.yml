@@ -14,6 +14,8 @@ pim_connector:
       validation:
         not_blank: ロケールは 1 つ選択する必要があります。エクスポートするロケールを選択してください。
 pim_import_export:
+  validation:
+    max_length_reached: 値が長すぎます。{{ limit }}以下の文字数で設定してください。
   entity:
     job_instance:
       label: ジョブプロファイル
@@ -23,6 +25,10 @@ pim_import_export:
           fail: ジョブプロファイルを更新できませんでした。
         delete:
           success: ジョブインスタンスを削除しました
+      duplicate:
+        title: '{{ job_code }}プロファイルを複製'
+        success: ジョブプロファイルが正常に複製されました。
+        fail: ジョブプロファイルを複製できませんでした。
     import_profile:
       uppercase_label: プロファイルをインポート
       flash:
@@ -48,11 +54,13 @@ pim_import_export:
   form:
     job_execution:
       title.details: 実行の詳細
+      refreshing: 実行の詳細を更新中
       refreshBtn.title: 更新
       button:
         show_profile.title: プロファイルを表示
         download_log.title: ログをダウンロード
         download_file.title: 生成されたファイルをダウンロード
+        download_archive.title: 生成されたアーカイブをダウンロード
       summary:
         fetching: ジョブ実行データを収集中...
         warning: 警告
@@ -99,8 +107,8 @@ pim_import_export:
             title: ヘッダーあり
             help: 列名を出力するかどうか
           with_media:
-            title: ファイルと画像をエクスポート
-            help: 商品ファイルと画像をエクスポートするかどうか
+            title: メディアをエクスポート
+            help: メディアをエクスポートするかどうか
           lines_per_file:
             title: ファイルごとの行数
             help: 1ファイルあたりの行数を定義
@@ -128,35 +136,126 @@ pim_import_export:
           real_time_versioning:
             title: リアルタイムの更新履歴
             help: 商品履歴が自動的にアップデートされます。自動アップデートをオフにするとパフォーマンスが向上します。
+          convert_variant_to_simple:
+            title: バリエーション商品をシンプル商品に変換
+            help: '「上位」列が空である場合、バリエーション商品をシンプル商品に変換しようとします。「いいえ」に設定すると、空の「上位」列は無視されます。'
           family_variant_column:
             title: ファミリーバリエーションの列
+          with_label:
+            title: ラベル付き
+            help: エクスポートファイルに値のコードの代わりに値のラベルを表示するかどうかを定義します
+          header_with_label:
+            title: ラベル付きのヘッダ
+            help: エクスポートファイルにヘッダのコードの代わりにヘッダのラベルを表示するかどうかを定義します
+          file_locale:
+            title: ファイルのロケール
+            help: ラベル表示のロケールを定義します
+          with_uuid:
+            title: 商品UUIDあり
+            help: 商品と関連商品のUUIDをエクスポート
+          with_uuid_for_models:
+            title: 商品UUIDあり
+            help: 識別子の代わりに関連商品UUIDをエクスポート
       file_path: ファイルのパス
-  widget:
-    last_operations:
-      empty: 操作が見つかりません
-      date: 日付
-      profile_name: プロファイル名
-      details: 詳細
-      warning_count: 警告
-      job_type:
-        import: インポート
-        export: エクスポート
-        mass_edit: 一括編集
-        mass_edit_rule: ルールの設定
-        quick_export: クイックエクスポート
-        compute_family_variant_structure_changes: ファミリーバリエーションの変更を計算
-        compute_completeness_of_products_family: 商品ファミリーの完全性を検算
-        mass_delete: 商品を一括削除
-      header.view_all: 全て表示
+      storage_form:
+        title: ストレージ
+        connection:
+          label: タイプ
+          local: ローカル
+          sftp: SFTP
+          amazon_s3: Amazon S3
+          microsoft_azure: Microsoft Azure
+          google_cloud_storage: Google Cloud Storage
+          none: ストレージが構成されていません
+        file_path:
+          label: ファイルパス
+          placeholder: myfile.{{ file_extension }}
+        host:
+          label: ホスト
+          placeholder: example.com
+        fingerprint:
+          label: ホストの指紋 (オプション)
+          placeholder: "c1:91:5e:42:55:5c:74:65:b6:12:32:7e:1f:6d:80:3e"
+          helper: ホストの指紋にはコロン形式表記のSHA-512またはMD5ハッシュ化チェックサムが必要です。
+        port:
+          label: ポート
+          placeholder: 22
+        username:
+          label: ログイン
+          placeholder: ログイン名を入力
+        password:
+          label: パスワード
+          placeholder: パスワードを入力
+        public_key:
+          label: 公開キー
+          button_title: クリップボードにコピー
+          copy_notification_success: 公開キーがクリップボードにコピーされました
+        login_type:
+          label: 認証方法
+          password: ログインとパスワード
+          private_key: 秘密キー
+        region:
+          label: リージョン
+          placeholder: リージョンを入力してください
+        bucket:
+          label: バケット名
+          placeholder: リージョン名を入力してください
+        key:
+          label: キー
+          placeholder: キーを入力してください
+        secret:
+          label: シークレット
+          placeholder: シークレットを入力してください
+        connection_string:
+          label: 接続文字列
+          placeholder: 接続文字列を入力してください
+        container_name:
+          label: コンテナ名
+          placeholder: コンテナ名を入力してください
+        project_id:
+          label: プロジェクト ID
+          placeholder: プロジェクト ID を入力してください
+        service_account:
+          label: サービスアカウント
+          placeholder: サービスアカウントを入力してください
+      validation:
+        storage:
+          unavailable_type: このストレージは使用できません。{{ available_types }}のみを使用できます。
+        file_path:
+          unsupported_extension: サポートされていないファイル拡張子
+        fingerprint:
+          invalid_encoding: ホストの指紋は、コロン形式表記の有効なSHA-512またはMD5チェックサムハッシュである必要があります。
+      connection_checker:
+        label: テスト接続の設定
+        exception: 接続を確立できません。設定を確認してください。
   batch_status:
     1: 完了
     2: 開始中...
-    3: 開始
+    3: 処理中
     4: 停止中
     5: 停止
     6: 失敗
     7: 破棄済
     8: 不明
+    9: 一時停止中
+    10: 一時停止
+  job_status:
+    COMPLETED: 完了
+    STARTING: 開始中...
+    STARTED: 処理中
+    STOPPING: 停止中
+    STOPPED: 停止
+    FAILED: 失敗
+    ABANDONED: 破棄済
+    UNKNOWN: 不明
+    PAUSING: 一時停止中
+    PAUSED: 一時停止
+  tracking:
+    completed: "経過時間: {{ duration }}"
+    in_progress: "推定残り時間: {{ duration }}"
+    not_started: "保留中"
+    untrackable: 追跡不可能なステップ
+    estimating: "残り時間を推定中…"
 confirmation:
   remove:
     import_profile: このインポートプロファイルを削除してもよろしいですか。
@@ -189,3 +288,4 @@ pim_title:
   pim_importexport_import_profile_show: インポートプロファイル{{ job.label }} |表示
   pim_importexport_import_execution_index: インポート実行履歴
   pim_importexport_import_execution_show: インポートの実行 |詳細
+

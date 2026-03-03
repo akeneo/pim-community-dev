@@ -78,7 +78,8 @@ class SelectedAttributesConfigurator implements ConfiguratorInterface
         $attributesUsedAsFilter = array_keys($filterValues);
 
         $userColumns = $configuration->offsetGetByPath(
-            sprintf(self::SOURCE_PATH, self::DISPLAYED_COLUMNS_KEY), []
+            sprintf(self::SOURCE_PATH, self::DISPLAYED_COLUMNS_KEY),
+            []
         );
         $baseColumns = array_keys($configuration->offsetGet('columns'));
         $attributesUsedAsColumn = array_diff($userColumns, $baseColumns);

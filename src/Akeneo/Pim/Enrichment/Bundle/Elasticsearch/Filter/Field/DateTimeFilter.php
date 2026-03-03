@@ -248,8 +248,8 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
 
                 break;
             case Operators::SINCE_LAST_N_DAYS:
-                if (!is_numeric($value)) {
-                    throw InvalidPropertyTypeException::numericExpected($field, static::class, $value);
+                if (!is_int($value)) {
+                    throw InvalidPropertyTypeException::integerExpected($field, static::class, $value);
                 }
 
                 break;

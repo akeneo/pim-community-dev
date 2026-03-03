@@ -4,10 +4,16 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\IntegrationTestsBundle\Loader;
 
+use Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysCommand;
+use Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysHandler;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductModelIndexerInterface;
-use Akeneo\Platform\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader;
+use Akeneo\Platform\Installer\Infrastructure\Event\InstallerEvent;
+use Akeneo\Platform\Installer\Infrastructure\Event\InstallerEvents;
+use Akeneo\Platform\Installer\Infrastructure\FixtureLoader\FixtureJobLoader;
 use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\IntegrationTestsBundle\Helper\ExperimentalTransactionHelper;
+use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator;
 use Akeneo\Tool\Bundle\BatchBundle\Job\DoctrineJobRepository;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
@@ -15,13 +21,18 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\ClientRegistry;
 use Akeneo\Tool\Bundle\MeasureBundle\Installer\MeasurementInstaller;
 use Doctrine\DBAL\Connection;
 use Elasticsearch\ClientBuilder;
-use League\Flysystem\Filesystem;
-use League\Flysystem\Plugin\ListPaths;
+use League\Flysystem\DirectoryAttributes;
+use League\Flysystem\FilesystemOperator;
+use League\Flysystem\StorageAttributes;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
+use Psr\EventDispatcher\EventDispatcherInterface;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Messenger\Transport\TransportInterface;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
@@ -32,92 +43,57 @@ use Symfony\Component\Process\Process;
  */
 class FixturesLoader implements FixturesLoaderInterface
 {
-    /** @var KernelInterface */
-    private $kernel;
-
-    /** @var DatabaseSchemaHandler */
-    private $databaseSchemaHandler;
-
-    /** @var SystemUserAuthenticator */
-    private $systemUserAuthenticator;
-
-    /** @var Application */
-    private $cli;
-
-    /** @var ReferenceDataLoader */
-    private $referenceDataLoader;
-
-    /** @var Filesystem */
-    private $archivistFilesystem;
-
-    /** @var DoctrineJobRepository */
-    private $doctrineJobRepository;
-
-    /** @var FixtureJobLoader */
-    private $fixtureJobLoader;
-
-    /** @var AclManager */
-    private $aclManager;
-
-    /** @var ProductIndexerInterface */
-    private $productIndexer;
-
-    /** @var ProductModelIndexerInterface */
-    private $productModelIndexer;
-
-    /** @var ClientRegistry */
-    private $clientRegistry;
-
-    /** @var Client */
-    private $esClient;
-
-    /** @var Connection */
-    private $dbConnection;
-
-    /** @var string */
-    private $databaseHost;
-
-    /** @var string */
-    private $databaseName;
-
-    /** @var string */
-    private $databaseUser;
-
-    /** @var string */
-    private $databasePassword;
-
-    /** @var string */
-    private $sqlDumpDirectory;
-
-    /** @var \Elasticsearch\Client */
-    private $nativeElasticsearchClient;
-
-    /** @var MeasurementInstaller */
-    private $measurementInstaller;
+    private DatabaseSchemaHandler $databaseSchemaHandler;
+    private SystemUserAuthenticator $systemUserAuthenticator;
+    private Application $cli;
+    private ReferenceDataLoader $referenceDataLoader;
+    private FilesystemOperator $archivistFilesystem;
+    private DoctrineJobRepository $doctrineJobRepository;
+    private FixtureJobLoader $fixtureJobLoader;
+    private AclManager $aclManager;
+    private ProductIndexerInterface $productIndexer;
+    private ProductModelIndexerInterface $productModelIndexer;
+    private ClientRegistry $clientRegistry;
+    private Connection $dbConnection;
+    private string $databaseHost;
+    private string $databaseName;
+    private string $databaseUser;
+    private string $databasePassword;
+    private string $sqlDumpDirectory;
+    private \Elasticsearch\Client $nativeElasticsearchClient;
+    private MeasurementInstaller $measurementInstaller;
+    private TransportInterface $transport;
+    private EventDispatcherInterface $eventDispatcher;
+    private JobLauncher $jobLauncher;
+    private GenerateAsymmetricKeysHandler $generateAsymmetricKeysHandler;
+    private ExperimentalTransactionHelper $experimentalTransactionHelper;
 
     public function __construct(
         KernelInterface $kernel,
         DatabaseSchemaHandler $databaseSchemaHandler,
         SystemUserAuthenticator $systemUserAuthenticator,
         ReferenceDataLoader $referenceDataLoader,
-        Filesystem $archivistFilesystem,
+        FilesystemOperator $archivistFilesystem,
         DoctrineJobRepository $doctrineJobRepository,
         FixtureJobLoader $fixtureJobLoader,
         AclManager $aclManager,
         ProductIndexerInterface $productIndexer,
         ProductModelIndexerInterface $productModelIndexer,
         ClientRegistry $clientRegistry,
-        Client $esClient,
         Connection $dbConnection,
         MeasurementInstaller $measurementInstaller,
+        TransportInterface $transport,
+        EventDispatcherInterface $eventDispatcher,
+        JobLauncher $jobLauncher,
         string $databaseHost,
         string $databaseName,
         string $databaseUser,
         string $databasePassword,
         string $sqlDumpDirectory,
-        string $elasticsearchHost
+        string $elasticsearchHost,
+        GenerateAsymmetricKeysHandler $generateAsymmetricKeysHandler,
+        ExperimentalTransactionHelper $experimentalTransactionHelper,
     ) {
-        $this->kernel = $kernel;
         $this->databaseSchemaHandler = $databaseSchemaHandler;
         $this->systemUserAuthenticator = $systemUserAuthenticator;
         $this->referenceDataLoader = $referenceDataLoader;
@@ -132,7 +108,6 @@ class FixturesLoader implements FixturesLoaderInterface
         $this->productIndexer = $productIndexer;
         $this->productModelIndexer = $productModelIndexer;
         $this->clientRegistry = $clientRegistry;
-        $this->esClient = $esClient;
         $this->dbConnection = $dbConnection;
         $this->databaseHost = $databaseHost;
         $this->databaseName = $databaseName;
@@ -143,6 +118,11 @@ class FixturesLoader implements FixturesLoaderInterface
         $clientBuilder->setHosts([$elasticsearchHost]);
         $this->nativeElasticsearchClient = $clientBuilder->build();
         $this->measurementInstaller = $measurementInstaller;
+        $this->transport = $transport;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->jobLauncher = $jobLauncher;
+        $this->generateAsymmetricKeysHandler = $generateAsymmetricKeysHandler;
+        $this->experimentalTransactionHelper = $experimentalTransactionHelper;
     }
 
     public function __destruct()
@@ -152,10 +132,9 @@ class FixturesLoader implements FixturesLoaderInterface
         $this->doctrineJobRepository->getJobManager()->getConnection()->close();
     }
 
-    public function load(Configuration $configuration): void
+    public function load(Configuration $configuration, ?string $directory = 'src/Akeneo/Platform/Installer/back/src/Infrastructure/Symfony/Resources/fixtures/minimal'): void
     {
         $this->deleteAllDocumentsInElasticsearch();
-        $this->databaseSchemaHandler->reset();
 
         $this->resetFilesystem();
 
@@ -163,29 +142,56 @@ class FixturesLoader implements FixturesLoaderInterface
         $fixturesHash = $this->getHashForFiles($files);
         $dumpFile = $this->sqlDumpDirectory . $fixturesHash . '.sql';
         if (file_exists($dumpFile)) {
+            if (!$this->experimentalTransactionHelper->isEnabled()) {
+                $this->databaseSchemaHandler->reset();
+            }
             $this->restoreDatabase($dumpFile);
             $this->indexProductModels();
             $this->indexProducts();
         } else {
-            $this->loadData($configuration);
+            $this->experimentalTransactionHelper->abortTransactions();
+            $this->databaseSchemaHandler->reset();
+            $this->loadData($configuration, $directory);
             $this->dumpDatabase($dumpFile);
+            $this->purgeMessengerEvents();
         }
 
         $this->nativeElasticsearchClient->indices()->refresh(['index' => $this->getIndexNames()]);
         $this->clearAclCache();
+        $this->jobLauncher->flushJobQueue();
 
         $this->systemUserAuthenticator->createSystemUser();
-
     }
 
-    protected function loadData(Configuration $configuration): void
+    public function purge(): void
+    {
+        $this->deleteAllDocumentsInElasticsearch();
+        if (!$this->experimentalTransactionHelper->isEnabled()) {
+            $this->databaseSchemaHandler->reset();
+        }
+        $this->resetFilesystem();
+        $this->clearAclCache();
+        $this->jobLauncher->flushJobQueue();
+    }
+
+    protected function purgeMessengerEvents()
+    {
+        while (!empty($envelopes = $this->transport->get())) {
+            foreach ($envelopes as $envelope) {
+                $this->transport->ack($envelope);
+            }
+        }
+    }
+
+    protected function loadData(Configuration $configuration, string $directory): void
     {
         $files = $this->getFilesToLoad($configuration->getCatalogDirectories());
         $filesByType = $this->getFilesToLoadByType($files);
 
+        $this->generateAsymmetricKeysHandler->handle(new GenerateAsymmetricKeysCommand());
         $this->measurementInstaller->createMeasurementTableAndStandardMeasurementFamilies();
         $this->loadSqlFiles($filesByType['sql']);
-        $this->loadImportFiles($filesByType['import']);
+        $this->loadImportFiles($filesByType['import'], $directory);
         $this->loadReferenceData();
     }
 
@@ -223,7 +229,7 @@ class FixturesLoader implements FixturesLoaderInterface
      *
      * @throws \RuntimeException
      */
-    protected function loadImportFiles(array $files): void
+    protected function loadImportFiles(array $files, string $directory): void
     {
         // prepare replace paths to use catalog paths and not the minimal fixtures path, please note that we can
         // have several files per job in case of Enterprise Catalog, for instance,
@@ -243,7 +249,7 @@ class FixturesLoader implements FixturesLoaderInterface
         }
 
         // configure and load job instances in database
-        $this->fixtureJobLoader->loadJobInstances('src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal', $replacePaths);
+        $this->fixtureJobLoader->loadJobInstances($directory, $replacePaths);
 
         // install the catalog via the job instances
         $jobInstances = $this->fixtureJobLoader->getLoadedJobInstances();
@@ -260,6 +266,14 @@ class FixturesLoader implements FixturesLoaderInterface
             if (0 !== $exitCode) {
                 throw new \RuntimeException(sprintf('Catalog not installable! "%s"', $output->fetch()));
             }
+
+            $this->eventDispatcher->dispatch(
+                new InstallerEvent(null, $jobInstance->getCode(), [
+                    'job_name' => $jobInstance->getJobName(),
+                    'catalog' => 'minimal',
+                ]),
+                InstallerEvents::POST_LOAD_FIXTURE
+            );
         }
 
         $this->fixtureJobLoader->deleteJobInstances();
@@ -362,18 +376,21 @@ class FixturesLoader implements FixturesLoaderInterface
             mkdir($dir, 0755, true);
         }
 
-        $this->execCommand([
-            'mysqldump',
-            '-h '.$this->databaseHost,
-            '-u '.$this->databaseUser,
-            '-p'.$this->databasePassword,
-            '--no-create-info',
-            '--quick',
-            '--skip-add-locks',
-            '--skip-disable-keys',
-            $this->databaseName,
-            '> '.$filepath,
-        ]);
+        $this->execCommand(
+            [
+                'mysqldump',
+                '-h' . $this->databaseHost,
+                '-u' . $this->databaseUser,
+                '-p' . $this->databasePassword,
+                '--no-create-info',
+                '--quick',
+                '--skip-add-locks',
+                '--skip-disable-keys',
+                '--complete-insert',
+                $this->databaseName,
+                '--result-file=' . $filepath,
+            ]
+        );
     }
 
     /**
@@ -381,7 +398,24 @@ class FixturesLoader implements FixturesLoaderInterface
      */
     protected function restoreDatabase($filepath): void
     {
-        $this->dbConnection->exec(file_get_contents($filepath));
+        try {
+            $this->dbConnection->exec(file_get_contents($filepath));
+        } catch (\Doctrine\DBAL\Exception $e) {
+            // There can be previous data left in database due to the execution of the previous test.
+            //   - When the previous test autocommit its transaction
+            //   - When the previous test do not use a transaction
+            //   - When the previous test inserted data in another subprocess (like a job).
+            // In that case, an integrity constraint violation is thrown on an unique key.
+            // The solution is to delete all data in the database and retry.
+            if ('23000' === $e->getPrevious()?->getCode()) {
+                $this->experimentalTransactionHelper->abortTransactions();
+                $this->databaseSchemaHandler->reset();
+                $this->experimentalTransactionHelper->beginTransactions();
+                $this->dbConnection->exec(file_get_contents($filepath));
+            } else {
+                throw $e;
+            }
+        }
     }
 
     /**
@@ -392,7 +426,7 @@ class FixturesLoader implements FixturesLoaderInterface
      */
     protected function execCommand(array $arguments, $timeout = 120): string
     {
-        $process = new Process(implode(' ', $arguments));
+        $process = new Process($arguments);
         $process->setTimeout($timeout);
         $process->run();
 
@@ -418,9 +452,12 @@ class FixturesLoader implements FixturesLoaderInterface
      */
     protected function indexProducts(): void
     {
-        $query = 'SELECT identifier FROM pim_catalog_product';
-        $productIdentifiers = $this->dbConnection->executeQuery($query)->fetchAll(\PDO::FETCH_COLUMN, 0);
-        $this->productIndexer->indexFromProductIdentifiers($productIdentifiers);
+        $query = 'SELECT BIN_TO_UUID(uuid) AS uuid FROM pim_catalog_product';
+        $productUuids = array_map(
+            fn (string $uuid): UuidInterface => Uuid::fromString($uuid),
+            $this->dbConnection->executeQuery($query)->fetchAll(\PDO::FETCH_COLUMN, 0)
+        );
+        $this->productIndexer->indexFromProductUuids($productUuids);
     }
 
     /**
@@ -435,11 +472,14 @@ class FixturesLoader implements FixturesLoaderInterface
 
     private function resetFilesystem(): void
     {
-        $this->archivistFilesystem->addPlugin(new ListPaths());
-        $paths = $this->archivistFilesystem->listPaths();
+        $paths = $this->archivistFilesystem->listContents('/')->filter(
+            fn (StorageAttributes $attributes): bool => $attributes instanceof DirectoryAttributes
+        )->map(
+            fn (DirectoryAttributes $attributes): string => $attributes->path()
+        );
 
         foreach ($paths as $path) {
-            $this->archivistFilesystem->deleteDir($path);
+            $this->archivistFilesystem->deleteDirectory($path);
         }
     }
 

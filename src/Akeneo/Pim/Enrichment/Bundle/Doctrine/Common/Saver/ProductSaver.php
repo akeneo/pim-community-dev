@@ -2,12 +2,14 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\API\Query\UpdateIdentifierPrefixesQuery;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\UpdateIdentifierValuesQuery;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -20,29 +22,19 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class ProductSaver implements SaverInterface, BulkSaverInterface
 {
-    /** @var ObjectManager */
-    protected $objectManager;
-
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
-
-    /** @var ProductUniqueDataSynchronizer */
-    protected $uniqueDataSynchronizer;
-
     public function __construct(
-        ObjectManager $objectManager,
-        EventDispatcherInterface $eventDispatcher,
-        ProductUniqueDataSynchronizer $uniqueDataSynchronizer
+        private readonly EntityManagerInterface $objectManager,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly ProductUniqueDataSynchronizer $uniqueDataSynchronizer,
+        private readonly UpdateIdentifierPrefixesQuery $updateIdentifierPrefixesQuery,
+        private readonly UpdateIdentifierValuesQuery $updateIdentifierValues,
     ) {
-        $this->objectManager = $objectManager;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->uniqueDataSynchronizer = $uniqueDataSynchronizer;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function save($product, array $options = [])
+    public function save($product, array $options = []): void
     {
         $this->validateProduct($product);
         if (!$product->isDirty() && true !== ($options['force_save'] ?? false)) {
@@ -50,14 +42,20 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
         }
 
         $options['unitary'] = true;
-        $options['is_new'] = null === $product->getId();
+        $options['is_new'] = null === $product->getCreated();
 
         $this->eventDispatcher->dispatch(new GenericEvent($product, $options), StorageEvents::PRE_SAVE);
+
+        $this->objectManager->getConnection()->beginTransaction();
 
         $this->uniqueDataSynchronizer->synchronize($product);
 
         $this->objectManager->persist($product);
         $this->objectManager->flush();
+
+        $this->updateIdentifierPrefixesQuery->updateFromProducts([$product]);
+
+        $this->objectManager->getConnection()->commit();
 
         $product->cleanup();
 
@@ -67,7 +65,7 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
     /**
      * {@inheritdoc}
      */
-    public function saveAll(array $products, array $options = [])
+    public function saveAll(array $products, array $options = []): void
     {
         $products = array_unique($products, SORT_REGULAR);
         foreach ($products as $product) {
@@ -94,8 +92,10 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
         $this->eventDispatcher->dispatch(new GenericEvent($products, $options), StorageEvents::PRE_SAVE_ALL);
 
         $areProductsNew = array_map(function ($product) {
-            return null === $product->getId();
+            return null === $product->getCreated();
         }, $products);
+
+        $this->objectManager->getConnection()->beginTransaction();
 
         foreach ($products as $i => $product) {
             $this->eventDispatcher->dispatch(
@@ -116,6 +116,10 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
             );
         }
 
+        $this->updateIdentifierPrefixesQuery->updateFromProducts($products);
+
+        $this->objectManager->getConnection()->commit();
+
         $this->eventDispatcher->dispatch(
             new GenericEvent($products, $options),
             StorageEvents::POST_SAVE_ALL
@@ -126,7 +130,7 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
         }
     }
 
-    protected function validateProduct($product)
+    protected function validateProduct($product): void
     {
         if (!$product instanceof ProductInterface) {
             throw new \InvalidArgumentException(

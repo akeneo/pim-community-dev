@@ -15,7 +15,7 @@ class CheckHeadersRequestSubscriberIntegration extends ApiTestCase
         $client->request('GET', 'api/rest/v1/categories/master', [], [], ['HTTP_ACCEPT' => 'application/xml']);
 
         $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_NOT_ACCEPTABLE, $response->getStatusCode(), 'Header is not acceptable');
+        $this->assertResponseStatusCodeSame(Response::HTTP_NOT_ACCEPTABLE);
         $content = json_decode($response->getContent(), true);
         $this->assertCount(2, $content, 'Error response contains 2 items');
         $this->assertSame(Response::HTTP_NOT_ACCEPTABLE, $content['code']);
@@ -51,7 +51,7 @@ class CheckHeadersRequestSubscriberIntegration extends ApiTestCase
         ], '{"code": "my_category"}');
 
         $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_UNSUPPORTED_MEDIA_TYPE, $response->getStatusCode(), 'Header is not acceptable');
+        $this->assertResponseStatusCodeSame(Response::HTTP_UNSUPPORTED_MEDIA_TYPE);
         $content = json_decode($response->getContent(), true);
         $this->assertCount(2, $content, 'Error response contains 2 items');
         $this->assertSame(Response::HTTP_UNSUPPORTED_MEDIA_TYPE, $content['code']);
@@ -67,7 +67,7 @@ class CheckHeadersRequestSubscriberIntegration extends ApiTestCase
         ], '{"code": "my_category"}');
 
         $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode(), 'Header is acceptable');
+        $this->assertResponseStatusCodeSame(Response::HTTP_CREATED);
     }
 
     public function testErrorIfContentTypeHeaderIsJsonOnListPatch()
@@ -79,7 +79,7 @@ class CheckHeadersRequestSubscriberIntegration extends ApiTestCase
         ], '{"code": "my_category"}');
 
         $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_UNSUPPORTED_MEDIA_TYPE, $response->getStatusCode(), 'Header is not acceptable');
+        $this->assertResponseStatusCodeSame(Response::HTTP_UNSUPPORTED_MEDIA_TYPE);
         $expected = <<<JSON
 {
     "code": 415,
@@ -111,7 +111,7 @@ JSON;
         ], '{"code": "master"}');
 
         $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode(), 'Header is acceptable');
+        $this->assertResponseStatusCodeSame(Response::HTTP_NO_CONTENT);
     }
 
     /**

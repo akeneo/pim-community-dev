@@ -7,7 +7,11 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\ParameterType;
 use Doctrine\ORM\EntityRepository;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Product repository
@@ -21,19 +25,52 @@ class ProductRepository extends EntityRepository implements
     IdentifiableObjectRepositoryInterface,
     CursorableRepositoryInterface
 {
+    private ?int $mainIdentifierId = null;
+
     /**
      * {@inheritdoc}
      */
     public function getItemsFromIdentifiers(array $identifiers)
     {
-        $qb = $this->createQueryBuilder('p')
-            ->where('p.identifier IN (:identifiers)')
-            ->setParameter('identifiers', $identifiers);
+        $uuidsAsBytes = $this->getEntityManager()->getConnection()->fetchFirstColumn(
+            <<<SQL
+            SELECT product_uuid
+            FROM pim_catalog_product_unique_data
+            WHERE attribute_id = :attributeId
+            AND raw_data IN (:identifiers)
+            SQL,
+            [
+                'identifiers' => $identifiers,
+                'attributeId' => $this->getMainIdentifierId(),
+            ],
+            [
+                'identifiers' => Connection::PARAM_STR_ARRAY,
+                'attributeId' => ParameterType::INTEGER,
+            ]
+        );
 
-        $query = $qb->getQuery();
-        $query->useQueryCache(false);
+        return $this->findBy(['uuid' => $uuidsAsBytes]);
+    }
 
-        return $query->execute();
+    /**
+     * {@inheritdoc}
+     */
+    public function getItemsFromUuids(array $uuids): array
+    {
+        if ([] === $uuids) {
+            return [];
+        }
+
+        $uuidsAsBytes = [];
+        foreach ($uuids as $uuid) {
+            if (Uuid::isValid($uuid)) {
+                $uuidsAsBytes[] = Uuid::fromString($uuid)->getBytes();
+            } else {
+                $uuidsAsBytes[] = $uuid;
+            }
+        }
+
+        return $this->findBy(['uuid' => $uuidsAsBytes]);
     }
 
     /**
@@ -49,7 +86,16 @@ class ProductRepository extends EntityRepository implements
      */
     public function findOneByIdentifier($identifier)
     {
-        return $this->findOneBy(['identifier' => $identifier]);
+        if (null === $identifier) {
+            return null;
+        }
+
+        return $this->getItemsFromIdentifiers([$identifier])[0] ?? null;
+    }
+
+    public function findOneByUuid(UuidInterface $uuid): ?ProductInterface
+    {
+        return $this->find($uuid);
     }
 
     /**
@@ -121,15 +167,15 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function hasAttributeInFamily($productId, $attributeCode)
+    public function hasAttributeInFamily($productUuid, $attributeCode)
     {
         $queryBuilder = $this->createQueryBuilder('p')
             ->leftJoin('p.family', 'f')
             ->leftJoin('f.attributes', 'a')
-            ->where('p.id = :id')
+            ->where('p.uuid = :uuid')
             ->andWhere('a.code = :code')
             ->setParameters([
-                'id'   => $productId,
+                'uuid' => $productUuid->getBytes(),
                 'code' => $attributeCode,
             ])
             ->setMaxResults(1);
@@ -143,15 +189,26 @@ class ProductRepository extends EntityRepository implements
     public function searchAfter(?ProductInterface $product, int $limit): array
     {
         $qb = $this->createQueryBuilder('p')
-            ->orderBy('p.id', 'ASC')
+            ->orderBy('p.uuid', 'ASC')
             ->setMaxResults($limit);
         ;
 
         if (null !== $product) {
-            $qb->where('p.id > :productId')
-                ->setParameter(':productId', $product->getId());
+            $qb->where('p.uuid > :productUuid')
+                ->setParameter(':productUuid', $product->getUuid());
         }
 
         return $qb->getQuery()->execute();
+    }
+
+    private function getMainIdentifierId(): int
+    {
+        if (null === $this->mainIdentifierId) {
+            $this->mainIdentifierId = (int) $this->getEntityManager()->getConnection()->fetchOne(
+                'SELECT id FROM pim_catalog_attribute WHERE main_identifier IS TRUE;'
+            );
+        }
+
+        return $this->mainIdentifierId;
     }
 }

@@ -7,10 +7,15 @@ services:
         class: AkeneoTest\Pim\Enrichment\Acceptance\Context\QuantifiedAssociationsContext
         arguments:
             - '@pim_catalog.validator.product'
-            - '@pim_catalog.updater.product'
             - '@pim_catalog.updater.product_model'
             - '@pim_catalog.normalizer.standard.product'
             - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.product_model'
             - '@pim_catalog.repository.association_type'
+            - '@pim_user.repository.user'
+            - '@pim_enrich.product.message_bus'
+            - '@pim_enrich.product.query_message_bus'
+            - '@pim_catalog.repository.attribute'
+            - '@test.attribute.builder'
+            - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetAttributeTypes'
         public: true

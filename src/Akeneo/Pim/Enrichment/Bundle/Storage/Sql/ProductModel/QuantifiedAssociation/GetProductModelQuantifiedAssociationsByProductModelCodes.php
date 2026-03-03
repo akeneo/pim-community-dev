@@ -70,7 +70,7 @@ SQL;
             $query,
             ['productModelCodes' => $productModelCodes],
             ['productModelCodes' => Connection::PARAM_STR_ARRAY]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         return $rows;
     }
@@ -144,7 +144,8 @@ SQL;
         );
     }
 
-    private function fetchIdMapping(array $allQuantifiedAssociationsWithProductModelIds
+    private function fetchIdMapping(
+        array $allQuantifiedAssociationsWithProductModelIds
     ): IdMapping {
         $productModelIds = [];
         foreach ($allQuantifiedAssociationsWithProductModelIds as $quantifiedAssociationWithId) {

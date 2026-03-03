@@ -24,14 +24,14 @@ class InvalidItemException extends \Exception
      * @param InvalidItemInterface $item
      * @param array                $messageParameters
      * @param int                  $code
-     * @param \Exception           $previous
+     * @param \Throwable           $previous
      */
     public function __construct(
         $message,
         InvalidItemInterface $item,
         array $messageParameters = [],
         $code = 0,
-        \Exception $previous = null
+        \Throwable $previous = null
     ) {
         parent::__construct($message, $code, $previous);
 

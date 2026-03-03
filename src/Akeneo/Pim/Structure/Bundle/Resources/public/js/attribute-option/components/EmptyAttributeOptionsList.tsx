@@ -1,5 +1,5 @@
 import React from 'react';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 
 type EmptyAttributeOptionsListProps = {
   showNewOptionForm: (isDisplayed: boolean) => void;
@@ -17,7 +17,7 @@ const EmptyAttributeOptionsList = ({showNewOptionForm}: EmptyAttributeOptionsLis
       <div
         className="AknAttributeOption-emptyList-addLink"
         onClick={() => showNewOptionForm(true)}
-        role="add-new-attribute-option-button"
+        data-testid="add-new-attribute-option-button"
       >
         {translate('pim_enrich.entity.attribute_option.module.edit.add_option')}
       </div>

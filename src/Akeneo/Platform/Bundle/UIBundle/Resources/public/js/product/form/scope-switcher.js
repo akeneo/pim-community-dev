@@ -52,6 +52,10 @@ define([
         }.bind(this)
       );
 
+      this.listenTo(this.getRoot(), 'pim_enrich:form:channel_switcher:change', () => {
+        this.render();
+      });
+
       return BaseForm.prototype.configure.apply(this, arguments);
     },
 

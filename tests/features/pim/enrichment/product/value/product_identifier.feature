@@ -5,7 +5,7 @@ Feature: Validate identifier attribute of a product
   I need to be able to see validation errors for identifier attribute
 
   Background:
-    Given an authentified user
+    Given an authenticated user
     And a catalog with the attribute "sku" as product identifier
     And the following locales "en_US"
     And the following "ecommerce" channel with locales "en_US"
@@ -13,7 +13,7 @@ Feature: Validate identifier attribute of a product
   Scenario: Validate the unique constraint of identifier attribute
     Given a product with an identifier "foo"
     When another product is created with identifier "foo"
-    Then the error "The same identifier is already set on another product" is raised
+    Then the error "The foo identifier is already used for another product." is raised
 
   Scenario: Fail to create a product with an identifier that contains a comma
     When a product is created with identifier "foo,bar"

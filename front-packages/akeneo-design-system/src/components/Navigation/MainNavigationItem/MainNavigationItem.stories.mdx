@@ -1,0 +1,168 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
+import {MainNavigationItem} from './MainNavigationItem.tsx';
+import * as Icons from '../../../icons';
+import {CardIcon, AkeneoIcon} from '../../../icons';
+import {Tag} from '../../Tags/Tags';
+
+<Meta
+  title="Components/Navigation/MainNavigationItem"
+  component={MainNavigationItem}
+  argTypes={{
+    icon: {
+      control: {type: 'select'}, options: Object.keys(Icons),
+      table: {type: {summary: 'ReactElement<IconProps>'}},
+    },
+    disabled: {control: {type: 'boolean'}},
+    active: {control: {type: 'boolean'}},
+    href: {control: {type: 'text'}},
+    children: {control: {type: 'text'}},
+  }}
+  args={{
+    icon: 'CardIcon',
+    href: '#',
+    children: 'Default',
+  }}
+/>
+
+# MainNavigationItem
+
+## Usage
+
+The Main Navigation Item is used by the Navigation pattern. This components helps the users in their daily usage as an
+easy way to discover and navigate the interface. Also, it's a companion for them to understand where they are in their
+journey.
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return <MainNavigationItem {...args} icon={React.createElement(Icons[args.icon])} />;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Label
+
+<Canvas>
+  <Story name="Label">
+    {args => {
+      return (
+        <>
+          <MainNavigationItem {...args} icon={<CardIcon />}>
+            Default
+          </MainNavigationItem>
+          <MainNavigationItem {...args} icon={<CardIcon />}>
+            Lengthy label that take way too much space
+          </MainNavigationItem>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on active
+
+<Canvas>
+  <Story name="Active">
+    {args => {
+      return (
+        <>
+          <MainNavigationItem {...args} icon={<CardIcon />} active={false}>
+            Default
+          </MainNavigationItem>
+          <MainNavigationItem {...args} icon={<CardIcon />} active={true}>
+            Active
+          </MainNavigationItem>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on disabled
+
+<Canvas>
+  <Story name="Disabled">
+    {args => {
+      return (
+        <>
+          <MainNavigationItem {...args} icon={<CardIcon />} disabled={false}>
+            Default
+          </MainNavigationItem>
+          <MainNavigationItem {...args} icon={<CardIcon />} disabled={true}>
+            Disabled
+          </MainNavigationItem>
+          <MainNavigationItem {...args} icon={<CardIcon />} disabled={true} active={true}>
+            Disabled and Active
+          </MainNavigationItem>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on icon
+
+<Canvas>
+  <Story name="Icon">
+    {args => {
+      return (
+        <>
+          <MainNavigationItem {...args} icon={<CardIcon />}>
+            CardIcon
+          </MainNavigationItem>
+          <MainNavigationItem {...args} icon={<AkeneoIcon />}>
+            AkeneoIcon
+          </MainNavigationItem>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## With tag
+
+<Canvas>
+  <Story name="Tag">
+    {args => {
+      return (
+        <>
+          <MainNavigationItem {...args} icon={<CardIcon />}>
+            Blue <Tag tint="blue">Tag</Tag>
+          </MainNavigationItem>
+          <MainNavigationItem {...args} icon={<CardIcon />}>
+            Purple <Tag tint="purple">Lengthy tag that take way too much space</Tag>
+          </MainNavigationItem>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on onClick
+
+<Canvas>
+  <Story name="Link">
+    {args => {
+      return (
+        <>
+          <MainNavigationItem {...args} icon={<CardIcon />} href={undefined} onClick={() => alert('Clicked!')}>
+            Click handler
+          </MainNavigationItem>
+          <MainNavigationItem
+            {...args}
+            icon={<CardIcon />}
+            href={undefined}
+            onClick={() => alert('Clicked!')}
+            disabled={true}
+          >
+            Click handler disabled
+          </MainNavigationItem>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>

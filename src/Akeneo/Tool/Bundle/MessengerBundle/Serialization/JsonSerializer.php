@@ -2,12 +2,14 @@
 
 namespace Akeneo\Tool\Bundle\MessengerBundle\Serialization;
 
+use Akeneo\Tool\Bundle\MessengerBundle\Stamp\CorrelationIdStamp;
+use Akeneo\Tool\Bundle\MessengerBundle\Stamp\TenantIdStamp;
+use Akeneo\Tool\Component\Messenger\Stamp\CustomHeaderStamp;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Exception\MessageDecodingFailedException;
+use Symfony\Component\Messenger\Stamp\RedeliveryStamp;
 use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Serializer;
 use UnexpectedValueException;
 
@@ -19,7 +21,7 @@ use UnexpectedValueException;
  */
 class JsonSerializer implements SerializerInterface
 {
-    private $serializer;
+    private Serializer $serializer;
 
     /**
      * @param (NormalizerInterface|DenormalizerInterface)[] $normalizers
@@ -27,9 +29,11 @@ class JsonSerializer implements SerializerInterface
     public function __construct(iterable $normalizers)
     {
         $this->serializer = new Serializer(
-            iterator_to_array((function () use ($normalizers) {
-                yield from $normalizers;
-            })()),
+            iterator_to_array(
+                (function () use ($normalizers) {
+                    yield from $normalizers;
+                })()
+            ),
             [new JsonEncoder()]
         );
     }
@@ -66,16 +70,75 @@ class JsonSerializer implements SerializerInterface
             );
         }
 
-        return new Envelope($message);
+        $tenantId = $encodedEnvelope['headers']['tenant_id'] ?? null;
+        $correlationId = $encodedEnvelope['headers']['correlation_id'] ?? null;
+        $retryCount = $encodedEnvelope['headers']['retry_count'] ?? null;
+
+        $stamps = [];
+        if (null !== $tenantId) {
+            $stamps[] = new TenantIdStamp($tenantId);
+        }
+        if (null !== $correlationId) {
+            $stamps[] = new CorrelationIdStamp($correlationId);
+        }
+        if (null !== $retryCount) {
+            $stamps[] = new RedeliveryStamp((int) $retryCount);
+        }
+
+        return new Envelope($message, $stamps);
     }
 
     public function encode(Envelope $envelope): array
     {
+        $body = $this->serializer->serialize($envelope->getMessage(), 'json');
+
+        $headers = [];
+
+        foreach ($envelope->all() as $stamps) {
+            $stamp = end($stamps);
+
+            if ($stamp instanceof CustomHeaderStamp) {
+                $this->ensureStampIsUsedOnlyOnce($stamps);
+                $headers[$stamp->header()] = $stamp->value();
+            }
+        }
+
+        $headers['class'] = $envelope->getMessage()::class;
+
+        /** @var TenantIdStamp|null $tenantIdStamp */
+        $tenantIdStamp = $envelope->last(TenantIdStamp::class);
+
+        if (null !== $tenantId = $tenantIdStamp?->pimTenantId()) {
+            $headers['tenant_id'] = $tenantId;
+        }
+
+        /** @var CorrelationIdStamp|null $correlationIdStamp */
+        $correlationIdStamp = $envelope->last(CorrelationIdStamp::class);
+        if (null !== $correlationIdStamp) {
+            $headers['correlation_id'] = $correlationIdStamp->correlationId();
+        }
+
+        /** @var RedeliveryStamp|null $redeliveryStamp */
+        $redeliveryStamp = $envelope->last(RedeliveryStamp::class);
+        if (null !== $redeliveryStamp) {
+            $headers['retry_count'] = (string) $redeliveryStamp->getRetryCount();
+        }
+
         return [
-            'body' => $this->serializer->serialize($envelope->getMessage(), 'json'),
-            'headers' => [
-                'class' => \get_class($envelope->getMessage())
-            ],
+            'body' => $body,
+            'headers' => $headers,
         ];
+    }
+
+    private function ensureStampIsUsedOnlyOnce(array $stamps): void
+    {
+        if (count($stamps) > 1) {
+            throw new \LogicException(
+                sprintf(
+                    'Custom header stamp %s should have only one instance in the message.',
+                    get_class(end($stamps))
+                )
+            );
+        }
     }
 }

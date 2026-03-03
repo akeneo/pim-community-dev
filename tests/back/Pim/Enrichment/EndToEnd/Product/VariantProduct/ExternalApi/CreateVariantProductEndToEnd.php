@@ -4,12 +4,19 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\VariantProduct\ExternalApi;
 
+use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\AbstractProductTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateVariantProductEndToEnd extends AbstractProductTestCase
 {
+    use AssertEventCountTrait;
+
     /**
      * {@inheritdoc}
      */
@@ -45,12 +52,8 @@ class CreateVariantProductEndToEnd extends AbstractProductTestCase
         );
 
         $this->createVariantProduct('simple', [
-            'parent' => 'amor',
-            'values'  => [
-                'a_yes_no' => [
-                    ['locale' => null, 'scope' => null, 'data' => false],
-                ],
-            ],
+            new ChangeParent('amor'),
+            new SetBooleanValue('a_yes_no', null, null, false)
         ]);
     }
 
@@ -137,6 +140,8 @@ JSON;
         $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
         $this->assertSameProducts($expectedProduct, 'product_variant_creation_family');
+
+        $this->assertEventCount(1, ProductCreated::class);
     }
 
     public function testProductVariantCreationWithFamilyNotSpecifiedInSentData()
@@ -253,7 +258,7 @@ JSON;
             'errors'  => [
                 [
                     'property' => 'family',
-                    'message'  => 'The family can\'t be "null" because your product with the identifier "product_variant_creation_family" is a variant product.',
+                    'message'  => 'The family cannot be "null" because your product with the product_variant_creation_family identifier is a variant product.',
                 ],
             ],
         ];
@@ -616,8 +621,8 @@ JSON;
 
         $expectedProduct = [
             'identifier'    => 'product_variant_creation_associations',
-            'family'        => "familyA",
-            'parent'        => "amor",
+            'family'        => 'familyA',
+            'parent'        => 'amor',
             'groups'        => [],
             'categories'    => [],
             'enabled'       => true,
@@ -628,62 +633,62 @@ JSON;
                 'a_simple_select' => [
                     ['locale' => null, 'scope' => null, 'data' => 'optionB'],
                 ],
-                "a_price" => [
+                'a_price' => [
                     [
-                        "locale" => null,
-                        "scope"  => null,
-                        "data"   => [
+                        'locale' => null,
+                        'scope'  => null,
+                        'data'   => [
                             [
-                                "amount"   => "50.00",
-                                "currency" => "EUR",
+                                'amount'   => '50.00',
+                                'currency' => 'EUR',
                             ],
                         ],
                     ],
                 ],
-                "a_localized_and_scopable_text_area" => [
+                'a_localized_and_scopable_text_area' => [
                     [
-                        "locale" => "en_US",
-                        "scope"  => "ecommerce",
-                        "data"   => "my pink tshirt",
+                        'locale' => 'en_US',
+                        'scope'  => 'ecommerce',
+                        'data'   => 'my pink tshirt',
                     ],
                 ],
-                "a_number_float" => [
+                'a_number_float' => [
                     [
-                        "locale" => null,
-                        "scope"  => null,
-                        "data"   => "12.5000",
+                        'locale' => null,
+                        'scope'  => null,
+                        'data'   => '12.5000',
                     ],
                 ],
-                "a_yes_no" => [
+                'a_yes_no' => [
                     [
-                        "locale" => null,
-                        "scope"  => null,
-                        "data"   => true,
+                        'locale' => null,
+                        'scope'  => null,
+                        'data'   => true,
                     ],
                 ],
             ],
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [
-                "PACK"         => [
-                    "groups"   => [],
-                    "products" => [],
-                    "product_models" => [],
+                'PACK'         => [
+                    'groups'   => [],
+                    'product_uuids' => [],
+                    'product_models' => [],
                 ],
-                "SUBSTITUTION" => [
-                    "groups"   => [],
-                    "products" => [],
-                    "product_models" => [],
+                'SUBSTITUTION' => [
+                    'groups'   => [],
+                    'product_uuids' => [],
+                    'product_models' => [],
                 ],
-                "UPSELL"       => [
-                    "groups"   => [],
-                    "products" => [],
-                    "product_models" => ["amor"],
+                'UPSELL'       => [
+                    'groups'   => [],
+                    'product_uuids' => [],
+                    'product_models' => ['amor'],
                 ],
-                "X_SELL"       => [
-                    "groups"   => ["groupA"],
-                    "products" => ["simple"],
-                    "product_models" => [],
+                'X_SELL'       => [
+                    'groups'   => ['groupA'],
+                    'product_uuids' => [$this->getProductUuid('simple')->toString()],
+                    'product_models' => [],
                 ],
             ],
             'quantified_associations' => [],
@@ -839,7 +844,7 @@ JSON;
             "a_yes_no": [{
                 "locale": null,
                 "scope": null,
-                "data": false
+                "data": true
             }],
             "a_localizable_scopable_image": [{
                 "locale": "en_US",
@@ -917,7 +922,7 @@ JSON;
                     ['locale' => null, 'scope' => null, 'data' => 'optionB'],
                 ],
                 'a_yes_no'                           => [
-                    ['locale' => null, 'scope' => null, 'data' => false],
+                    ['locale' => null, 'scope' => null, 'data' => true],
                 ],
                 'a_text_area'                           => [
                     ['locale' => null, 'scope' => null, 'data' => 'this is a very very very very very long  text'],
@@ -1045,17 +1050,9 @@ JSON;
     public function testProductVariantCreationWithSameIdentifier()
     {
         $this->createVariantProduct('apollon_option_b_true', [
-            'categories' => ['master'],
-            'parent' => 'amor',
-            'values' => [
-                'a_yes_no' => [
-                    [
-                        'locale' => null,
-                        'scope' => null,
-                        'data' => false,
-                    ],
-                ],
-            ],
+            new SetCategories(['master']),
+            new ChangeParent('amor'),
+            new SetBooleanValue('a_yes_no', null, null, true)
         ]);
 
         $client = $this->createAuthenticatedClient();
@@ -1071,7 +1068,7 @@ JSON;
               {
                 "locale": null,
                 "scope": null,
-                "data": false
+                "data": true
               }
             ]
         }
@@ -1086,7 +1083,7 @@ JSON;
             'errors'  => [
                 [
                     'property' => 'identifier',
-                    'message'  => 'The same identifier is already set on another product',
+                    'message'  => 'The apollon_option_b_true identifier is already used for another product.',
                 ],
             ],
         ];
@@ -1133,7 +1130,7 @@ JSON;
             'errors'  => [
                 [
                     'property' => 'parent',
-                    'message'  => 'The variant product "new_product_variant" cannot have product model "test" as parent, (this product model can only have other product models as children)',
+                    'message'  => 'The variant product cannot have product model "test" as parent, (this product model can only have other product models as children)',
                 ],
                 [
                     'property' => 'attribute',

@@ -24,6 +24,7 @@ class JobContext extends PimContext
      */
     public function theFollowingJobConfiguration($code, TableNode $table)
     {
+        $this->getService('feature_flags')->enable('import_export_local_storage');
         $jobInstance   = $this->getFixturesContext()->getJobInstance($code);
         $configuration = $jobInstance->getRawParameters();
 
@@ -33,7 +34,7 @@ class JobContext extends PimContext
                 $value = 'yes' === $value;
             }
 
-            if ('filters' === $property) {
+            if (in_array($property, ['filters', 'storage'])) {
                 $value = json_decode($value, true);
             }
 
@@ -93,7 +94,7 @@ class JobContext extends PimContext
     {
         $page = $this->getCurrentPage();
         $field = $this->spin(function () use ($page) {
-            return $page->find('css', '[data-test-id="job-status"]');
+            return $page->find('css', '[data-testid="job-status"]');
         }, 'Job execution badge was not found.');
 
         Assert::assertEquals($jobStatus, $field->getText());
@@ -250,10 +251,7 @@ class JobContext extends PimContext
      */
     public function getJobInstanceFilenames(string $code): array
     {
-        $archives = $this->getJobInstanceArchives($code);
-        $filenames = array_keys($archives);
-
-        return $filenames;
+        return \array_keys($this->getJobInstanceArchives($code));
     }
 
     /**
@@ -293,7 +291,7 @@ class JobContext extends PimContext
         $archiver = $this->getMainContext()->getContainer()->get('pim_connector.archiver.file_writer_archiver');
         $archives = $archiver->getArchives($jobExecution);
 
-        return $archives;
+        return \is_array($archives) ? $archives : \iterator_to_array($archives);
     }
 
     /**

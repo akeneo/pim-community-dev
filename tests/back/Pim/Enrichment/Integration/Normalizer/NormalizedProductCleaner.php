@@ -57,7 +57,12 @@ class NormalizedProductCleaner
         foreach ($associations as &$association) {
             ksort($association);
             sort($association['groups']);
-            sort($association['products']);
+            if (isset($association['products'])) {
+                sort($association['products']);
+            }
+            if (isset($association['product_uuids'])) {
+                sort($association['product_uuids']);
+            }
             sort($association['product_models']);
         }
     }

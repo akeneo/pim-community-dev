@@ -24,10 +24,9 @@ node_modules: yarn.lock
 javascript-extensions:
 	$(YARN_RUN) run update-extensions
 
-.PHONY: dsm
-dsm:
-	PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 $(YARN_RUN) --cwd=vendor/akeneo/pim-community-dev/akeneo-design-system install --frozen-lockfile
-	$(YARN_RUN) --cwd=vendor/akeneo/pim-community-dev/akeneo-design-system run lib:build
+.PHONY: front-packages
+front-packages:
+	PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 $(YARN_RUN) packages:build
 
 .PHONY: assets
 assets:
@@ -50,10 +49,12 @@ javascript-dev:
 	$(YARN_RUN) run webpack-dev
 
 .PHONY: front
-front: assets css dsm javascript-dev
+front: assets css front-packages javascript-dev
 
 .PHONY: database
 database:
+	$(PHP_RUN) bin/console doctrine:database:drop --force --if-exists
+	$(PHP_RUN) bin/console doctrine:database:create --if-not-exists
 	$(PHP_RUN) bin/console pim:installer:db ${O}
 
 .PHONY: cache
@@ -87,11 +88,11 @@ ifndef NO_DOCKER
 endif
 	$(MAKE) cache
 	$(MAKE) assets
-	$(MAKE) dsm
+	$(MAKE) front-packages
 	$(MAKE) javascript-prod
 	$(MAKE) css
 	$(MAKE) javascript-extensions
-	APP_ENV=prod $(MAKE) database O="--catalog vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal"
+	APP_ENV=prod $(MAKE) database O="--catalog vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Installer/back/src/Infrastructure/Symfony/Resources/fixtures/minimal"
 
 .PHONY: pim-dev
 pim-dev:
@@ -101,16 +102,26 @@ ifndef NO_DOCKER
 endif
 	$(MAKE) cache
 	$(MAKE) assets
-	$(MAKE) dsm
+	$(MAKE) front-packages
 	$(MAKE) javascript-dev
 	$(MAKE) css
 	$(MAKE) javascript-extensions
-	APP_ENV=dev $(MAKE) database O="--catalog vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev"
+	APP_ENV=dev $(MAKE) database O="--catalog vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Installer/back/src/Infrastructure/Symfony/Resources/fixtures/icecat_demo_dev"
 
 .PHONY: up
 up:
-	docker-compose up -d --remove-orphan
+	docker-compose up -d --remove-orphans
 
 .PHONY: down
 down:
 	docker-compose down -v
+
+.PHONY: upgrade-front
+upgrade-front:
+	$(MAKE) node_modules
+	$(MAKE) cache
+	$(MAKE) assets
+	$(MAKE) front-packages
+	$(MAKE) javascript-prod
+	$(MAKE) css
+	$(MAKE) javascript-extensions

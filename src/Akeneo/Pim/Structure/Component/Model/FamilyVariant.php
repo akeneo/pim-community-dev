@@ -6,6 +6,7 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Webmozart\Assert\Assert;
 
 /**
  * A variant in a family defines the structure for the products with variants:
@@ -34,6 +35,9 @@ class FamilyVariant implements FamilyVariantInterface
 
     /** @var Collection */
     private $translations;
+
+    /** @var string[] */
+    private array $events = [];
 
     public function __construct()
     {
@@ -150,6 +154,66 @@ class FamilyVariant implements FamilyVariantInterface
     /**
      * {@inheritdoc}
      */
+    public function updateAxesForLevel(int $level, array $axes): void
+    {
+        Assert::allIsInstanceOf($axes, AttributeInterface::class);
+        if (null === $attributeSet = $this->getVariantAttributeSet($level)) {
+            $attributeSet = new VariantAttributeSet();
+            $attributeSet->setLevel($level);
+            $this->addVariantAttributeSet($attributeSet);
+            $formerAxeIds = [];
+        } else {
+            $formerAxeIds = $attributeSet->getAxes()->map(
+                static fn (AttributeInterface $attribute): int => $attribute->getId() ?? 0
+            )->toArray();
+        }
+
+        $newAxeIds = \array_map(
+            static fn (AttributeInterface $attribute): int => $attribute->getId() ?? 0,
+            $axes
+        );
+        sort($formerAxeIds);
+        sort($newAxeIds);
+
+        if ($formerAxeIds !== $newAxeIds) {
+            $this->events[] = FamilyVariantInterface::AXES_WERE_UPDATED_ON_LEVEL;
+            $attributeSet->setAxes($axes);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function updateAttributesForLevel(int $level, array $attributes): void
+    {
+        Assert::allIsInstanceOf($attributes, AttributeInterface::class);
+        if (null === $attributeSet = $this->getVariantAttributeSet($level)) {
+            $attributeSet = new VariantAttributeSet();
+            $attributeSet->setLevel($level);
+            $this->addVariantAttributeSet($attributeSet);
+            $formerAttributeIds = [];
+        } else {
+            $formerAttributeIds = $attributeSet->getAttributes()->map(
+                static fn (AttributeInterface $attribute): int => $attribute->getId() ?? 0
+            )->toArray();
+        }
+
+        $newAttributeIds = \array_map(
+            static fn (AttributeInterface $attribute): int => $attribute->getId() ?? 0,
+            $attributes
+        );
+        sort($formerAttributeIds);
+        sort($newAttributeIds);
+
+        if ($formerAttributeIds !== $newAttributeIds) {
+            $this->events[] = FamilyVariantInterface::ATTRIBUTES_WERE_UPDATED_ON_LEVEL;
+            $attributeSet->setAttributes($attributes);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getFamily(): ?FamilyInterface
     {
         return $this->family;
@@ -186,14 +250,12 @@ class FamilyVariant implements FamilyVariantInterface
      */
     public function getTranslation(?string $locale = null)
     {
-        $locale = ($locale) ? $locale : $this->locale;
-
+        $locale = $locale ?: $this->locale;
         if (null === $locale) {
             return null;
         }
-
         foreach ($this->getTranslations() as $translation) {
-            if ($translation->getLocale() === $locale) {
+            if (\strtolower($translation->getLocale()) === \strtolower($locale)) {
                 return $translation;
             }
         }
@@ -291,5 +353,21 @@ class FamilyVariant implements FamilyVariantInterface
             AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT,
             AttributeTypes::REFERENCE_ENTITY_SIMPLE_SELECT,
         ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function releaseEvents(): array
+    {
+        $events = $this->events;
+        $this->events = [];
+
+        return $events;
+    }
+
+    public function addEvent(string $eventName): void
+    {
+        $this->events[] = $eventName;
     }
 }

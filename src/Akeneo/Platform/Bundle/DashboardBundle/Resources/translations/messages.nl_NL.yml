@@ -6,5 +6,3 @@ pim_dashboard:
       title: Volledigheid over kanalen en lokalisaties
     last_operations:
       title: Laatste bewerkingen
-      status: Status
-      type: Soort

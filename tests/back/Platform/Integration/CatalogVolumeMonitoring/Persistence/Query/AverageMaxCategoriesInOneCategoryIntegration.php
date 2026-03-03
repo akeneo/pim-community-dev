@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Platform\Integration\CatalogVolumeMonitoring\Persistence\Query;
 
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use PHPUnit\Framework\Assert;
 use AkeneoTest\Platform\Integration\CatalogVolumeMonitoring\Persistence\QueryTestCase;
 
@@ -22,7 +22,6 @@ class AverageMaxCategoriesInOneCategoryIntegration extends QueryTestCase
         Assert::assertEquals(6, $volume->getMaxVolume());
         Assert::assertEquals(5, $volume->getAverageVolume());
         Assert::assertEquals('average_max_categories_in_one_category', $volume->getVolumeName());
-        Assert::assertEquals(false, $volume->hasWarning());
     }
 
     /**

@@ -1,0 +1,8 @@
+akeneo_communication_channel:
+  link:
+    title: Avisos
+  panel:
+    title: Announcements
+    list:
+      empty: Não há nenhuma notícia no momento. Fique ligado!
+      error: Não foi possível recuperar as notícias. Tente novamente mais tarde.

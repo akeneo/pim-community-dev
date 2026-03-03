@@ -1,5 +1,5 @@
 <% hidden = !icon && !iconClassName && !label %>
-<<%- tagName %> href="<%= link %>" class="<%- className %><% if (hidden) { %> AknIconButton--hide<% } %><% if (!enabled) { %> disabled<% } %>"
+<<%- tagName %> <% if (!noHref) { %>href="<%= link %>"<% } %> class="<%- className %><% if (hidden) { %> AknIconButton--hide<% } %><% if (!enabled) { %> disabled<% } %>"
     <% _.each(attributes, function(attribute, name) { %>
         <%- name %>="<%- attribute %>"
     <% }) %>

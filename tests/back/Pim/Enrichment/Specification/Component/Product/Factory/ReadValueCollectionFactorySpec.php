@@ -12,11 +12,13 @@ use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\TextAreaValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\TextValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ReadValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Value\IdentifierValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
 
 class ReadValueCollectionFactorySpec extends ObjectBehavior
@@ -34,6 +36,7 @@ class ReadValueCollectionFactorySpec extends ObjectBehavior
                 new IdentifierValueFactory(),
                 new TextAreaValueFactory(),
                 new TextValueFactory(),
+                new IdentifierValueFactory(),
             ]
         );
 
@@ -77,14 +80,14 @@ class ReadValueCollectionFactorySpec extends ObjectBehavior
 
         $getAttributeByCodes->forCodes(['sku', 'description'])->willReturn(['sku' => $sku, 'description' => $description]);
 
-        $chainedObsoleteValueFilter->filterAll(['not_used_identifier' => $rawValues])->willReturn(['not_used_identifier' => $rawValues]);
+        $chainedObsoleteValueFilter->filterAll(Argument::any())->will(fn ($arg) => $arg[0]);
 
         $actualValues = $this->createFromStorageFormat($rawValues);
 
         $actualValues->shouldReturnAnInstanceOf(ReadValueCollection::class);
         $actualValues->shouldBeLike(new ReadValueCollection(
             [
-                ScalarValue::value('sku', 'foo'),
+                IdentifierValue::value('sku', false, 'foo'),
                 ScalarValue::scopableLocalizableValue('description', 'a text area for ecommerce in English', 'ecommerce', 'en_US'),
                 ScalarValue::scopableLocalizableValue('description', 'a text area for tablets in English', 'tablet', 'en_US'),
                 ScalarValue::scopableLocalizableValue('description', 'une zone de texte pour les tablettes en français', 'tablet', 'fr_FR'),

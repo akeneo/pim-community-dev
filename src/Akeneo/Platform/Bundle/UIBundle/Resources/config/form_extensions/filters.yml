@@ -15,6 +15,13 @@ extensions:
                 - IN AT LEAST ONE LOCALE
                 - IN ALL LOCALES
 
+    akeneo-product-model-quality-score-filter:
+        module: pim/filter/product/quality-score
+        config:
+            operators:
+                - IN AT LEAST ONE LOCALE
+                - IN ALL LOCALES
+
     akeneo-product-completeness-filter:
         module: pim/filter/product/completeness
         config:

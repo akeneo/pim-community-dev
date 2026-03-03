@@ -26,7 +26,7 @@ class PurgeProgressBarAdvancerSubscriber implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [PurgeVersionEvents::PRE_ADVISEMENT  => 'advanceProgressbar'];
     }

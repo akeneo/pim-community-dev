@@ -2,6 +2,7 @@
 
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\ProductModel\ExternalApi;
 
+use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Response;
 
 class ListOffsetProductModelEndToEnd extends AbstractProductModelTestCase
@@ -25,11 +26,11 @@ class ListOffsetProductModelEndToEnd extends AbstractProductModelTestCase
     "current_page" : 1,
     "items_count"  : 6,
     "_embedded"    : {
-		"items": [
-            {$standardizedProducts['sweat']},
-            {$standardizedProducts['shoes']},
-            {$standardizedProducts['tshirt']}
-		]
+        "items": [
+            {$standardizedProducts['handbag']},
+            {$standardizedProducts['hat']},
+            {$standardizedProducts['shoes']}
+        ]
     }
 }
 JSON;
@@ -57,11 +58,11 @@ JSON;
     "current_page" : 2,
     "items_count"  : 6,
     "_embedded"    : {
-		"items": [
+        "items": [
+            {$standardizedProducts['sweat']},
             {$standardizedProducts['trousers']},
-            {$standardizedProducts['hat']},
-            {$standardizedProducts['handbag']}
-		]
+            {$standardizedProducts['tshirt']}
+        ]
     }
 }
 JSON;
@@ -84,7 +85,7 @@ JSON;
     "current_page" : 2,
     "items_count"  : 6,
     "_embedded"    : {
-		"items": []
+        "items": []
     }
 }
 JSON;
@@ -120,7 +121,7 @@ JSON;
     "message":"${message}",
     "_links":{
         "documentation":{
-            "href": "http:\/\/api.akeneo.com\/documentation\/pagination.html#search-after-type"
+            "href": "http:\/\/api.akeneo.com\/documentation\/pagination.html#the-search-after-method"
         }
     }
 }
@@ -128,5 +129,74 @@ JSON;
 
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $client->getResponse()->getStatusCode());
         $this->assertJsonStringEqualsJsonString($expected, $client->getResponse()->getContent());
+    }
+
+    public function testListSubProductModels()
+    {
+        $client = $this->createAuthenticatedClient();
+        $search = '{"parent":[{"operator":"NOT EMPTY","value":null}]}';
+        $client->request('GET', 'api/rest/v1/product-models?page=1&with_count=true&limit=10&search=' . $search);
+        $encodedSearch = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($search);
+        $expected = <<<JSON
+{
+    "_links": {
+        "self" : {"href" : "http://localhost/api/rest/v1/product-models?page=1&with_count=true&pagination_type=page&limit=10&search=${encodedSearch}"},
+        "first" : {"href" : "http://localhost/api/rest/v1/product-models?page=1&with_count=true&pagination_type=page&limit=10&search=${encodedSearch}"}
+    },
+    "current_page" : 1,
+    "items_count"  : 0,
+    "_embedded"    : {
+        "items": []
+    }
+}
+JSON;
+
+        $this->assertListResponse($client->getResponse(), $expected);
+    }
+
+    /**
+     * @group ce
+     */
+    public function testListRootProductModels()
+    {
+        $standardizedProductModels = $this->getStandardizedProductModels();
+
+        $client = $this->createAuthenticatedClient();
+        $search = '{"parent":[{"operator":"EMPTY","value":null}]}';
+        $client->request('GET', 'api/rest/v1/product-models?page=1&with_count=true&limit=10&search=' . $search);
+        $encodedSearch = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($search);
+        $expected = <<<JSON
+{
+    "_links": {
+        "self" : {"href" : "http://localhost/api/rest/v1/product-models?page=1&with_count=true&pagination_type=page&limit=10&search=${encodedSearch}"},
+        "first" : {"href" : "http://localhost/api/rest/v1/product-models?page=1&with_count=true&pagination_type=page&limit=10&search=${encodedSearch}"}
+    },
+    "current_page" : 1,
+    "items_count"  : 6,
+    "_embedded"    : {
+        "items": [
+            {$standardizedProductModels['handbag']},
+            {$standardizedProductModels['hat']},
+            {$standardizedProductModels['shoes']},
+            {$standardizedProductModels['sweat']},
+            {$standardizedProductModels['trousers']},
+            {$standardizedProductModels['tshirt']}
+        ]
+    }
+}
+JSON;
+
+        $this->assertListResponse($client->getResponse(), $expected);
+    }
+
+    public function testAccessDeniedWhenRetrievingProductModelsWithoutTheAcl()
+    {
+        $client = $this->createAuthenticatedClient();
+        $this->removeAclFromRole('action:pim_api_product_list');
+
+        $client->request('GET', 'api/rest/v1/product-models');
+        $response = $client->getResponse();
+
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }
 }

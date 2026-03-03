@@ -1,25 +1,72 @@
 No products to remove: Não há produtos para remover
 "dot (.)": ponto (.)
 "comma (,)": vírgula (,)
-pim_catalog:
-  constraint:
-    product_identifier: Estes identificadores "%s" não existem.
-    0: Ocorreu um erro inesperado.
-    100: Non-expected value
-    101: This field expects a boolean value.
-    102: This field expects a float value.
-    103: This field expects an integer value.
-    104: This field expects a numeric value.
-    105: This field expects a string value.
-    106: This field expects an array value.
-    107: This field expects an array of arrays as value.
-    200: Ocorreu um erro interno
-    201: An internal error occurred
-    202: This field expects a numeric value.
-    203: This field expects a string value.
-    204: This field expects a string value.
-    205: Ocorreu um erro interno
-    300: This field expects a valid entity code.
-    301: This field expects a valid scope and locale.
-    302: This field expects a valid scope.
-    303: This field expects a valid association format.
+pim_enrich:
+  #Category
+  category:
+    tab:
+      property.title: Propriedades
+      history.title: Histórico
+    suggest_selection: Por favor, selecione uma categoria à esquerda
+    or: ou
+    create_new: Cria uma nova categoria
+  #Mass edit operations
+  mass_edit_action:
+    limit_exceeded: Por favor, escolha menos de %limit% itens para editar
+    product:
+      page_title: Produtos
+      page_subtitle: Editar em Massa (1 produto) | Editar em Massa (%count% produtos)
+      title: Escolha a operação
+      subtitle: Escolha a operação que deseja executar no produto selecionado | Escolha a operação que deseja executar nos %count% produtos selecionados
+      confirm: Está prestes a atualizar um produto com a seguinte informação, por favor confirme. | Está prestes a atualizar %count% produtos com a seguinte informação, por favor confirme.
+      steps:
+        first: Escolher produtos
+        second: Escolha a operação
+        third: Configurar
+        fourth: Confirmar
+    change-status:
+      label: Alterar estado
+      description: Os produtos selecionados serão ativados ou desativados.
+      success_flash: Estado do(s) produto(s) foi alterado
+      launched_flash: A ação em massa "mudar estado" foi despoletada. Irá receber notificação quando estiver concluída.
+    edit-common-attributes:
+      label: Editar atributos
+      description: Os atributos do produto selecionado serão editados com os seguintes dados para a linguagem escolhida.
+      empty: Por favor, selecione o(s) atributo(s) que deseja editar
+      success_flash: A tarefa de atualização de estado de produto(s) está em execução
+      message:
+        warning: Não há nenhum atributo em comum nos produtos selecionados. Por favor, altere a sua seleção.
+        invalid_attribute: O atributo com código "attribute_code" não é comum para os produtos que foram selecionados, atributo ignorado.
+        no_valid_attribute: Nenhum dos atributos selecionados pode ser aplicado a este produto.
+    classify-add:
+      description: Os produtos serão posicionados nas categorias seguintes, o posicionamento existente será mantido também.
+      success_flash: Os produto(s) foram classificados nas categorias selecionadas
+      launched_flash: A ação em massa "adicionar a categorias" foi despoletada. Irá receber notificação quando estiver concluída.
+    classify-move:
+      description: Os produtos serão colocados nas categorias seguintes, a sua localização atual será perdida.
+      success_flash: O(s) produto(s) foram movidos para as categorias selecionadas
+      launched_flash: A ação em massa "mover para categorias" foi despoletada. Irá receber notificação quando estiver concluída.
+    classify-remove:
+      label: Remover das categorias
+      description: Os produtos serão retirados das seguintes categorias.
+      success_flash: O(s) produto(s) foram retirados das categorias selecionadas
+      launched_flash: A ação em massa "retirar das categorias" foi despoletada. Irá receber notificação quando estiver concluída.
+    change-family:
+      description: A família dos produtos seleccionados será alterada para a família escolhida
+      success_flash: A família do produtos selecionados foi alterada com êxito
+      launched_flash: A ação em massa "alterar família" foi despoletada. Irá receber notificação quando estiver concluída.
+    add-to-groups:
+      label: Adicionar a grupos
+      description: Selecione os grupos aos quais pretende adicionar os produtos selecionados
+      success_flash: Os produtos foram adicionados com êxito aos grupos selecionados
+      launched_flash: A ação em massa "adicionar a grupos" foi despoletada. Irá receber notificação quando estiver concluída.
+      no_group: Não existem grupos por enquanto. Por favor, comece criando um grupo.
+    set-attribute-requirements:
+      description: Os seguintes requisitos de atributo serão aplicados às famílias selecionadas
+      success_flash: Os requisitos dos atributos foram aplicados às famílias selecionadas
+      launched_flash: A ação em massa "definir requisitos de atributo" foi despoletada. Irá receber notificação quando estiver concluída.
+    mass_action:
+      quick_export:
+        launched_flash: A tarefa de exportação de produtos está em execução
+category:
+  overview: Categorias

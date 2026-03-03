@@ -13,10 +13,10 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPrice;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\GetConnectorProductModels;
+use Akeneo\Pim\Enrichment\Component\Product\Value\NumberValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\PriceCollectionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
-use Akeneo\Pim\Structure\Component\Model\AssociationType;
 use Akeneo\Test\Integration\TestCase;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\EntityWithQuantifiedAssociations\QuantifiedAssociationsTestCaseTrait;
 use PHPUnit\Framework\Assert;
@@ -36,7 +36,7 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                     ->create(['limit' => 10]);
         $actualProductModelList = $this->getQuery()->fromProductQueryBuilder(
             $pqb,
-            $this->getUserIdFromUsername('admin'),
+            $this->getUserId('admin'),
             null,
             null,
             null
@@ -46,12 +46,12 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
         $dataRootPm = $this->getIdAndDatesFromProductModelCode('root_pm');
         $dataSubPm = $this->getIdAndDatesFromProductModelCode('sub_pm_A');
 
-        $expectedProductModelList = new ConnectorProductModelList(3, [
+        $expectedProductModelList = new ConnectorProductModelList(3, $this->sortByProductModelCode([
             new ConnectorProductModel(
                 (int)$dataSimplePm['id'],
                 'simple_pm',
-                new \DateTimeImmutable($dataSimplePm['created']),
-                new \DateTimeImmutable($dataSimplePm['updated']),
+                new \DateTimeImmutable($dataSimplePm['created'], new \DateTimeZone('UTC')),
+                new \DateTimeImmutable($dataSimplePm['updated'], new \DateTimeZone('UTC')),
                 null,
                 'familyA',
                 'familyVariantA2',
@@ -80,13 +80,14 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                 ],
                 [],
                 [],
-                new ReadValueCollection([])
+                new ReadValueCollection([]),
+                null
             ),
             new ConnectorProductModel(
                 (int)$dataRootPm['id'],
                 'root_pm',
-                new \DateTimeImmutable($dataRootPm['created']),
-                new \DateTimeImmutable($dataRootPm['updated']),
+                new \DateTimeImmutable($dataRootPm['created'], new \DateTimeZone('UTC')),
+                new \DateTimeImmutable($dataRootPm['updated'], new \DateTimeZone('UTC')),
                 null,
                 'familyA',
                 'familyVariantA1',
@@ -127,7 +128,7 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                 new ReadValueCollection(
                     [
                         PriceCollectionValue::value('a_price', new PriceCollection([new ProductPrice(number_format(50.00, 2), 'EUR')])),
-                        ScalarValue::value('a_number_float', '12.5000'),
+                        NumberValue::value('a_number_float', '12.5000'),
                         ScalarValue::scopableLocalizableValue(
                             'a_localized_and_scopable_text_area',
                             'mon tshirt rose',
@@ -141,13 +142,14 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                             'en_US'
                         ),
                     ]
-                )
+                ),
+                null
             ),
             new ConnectorProductModel(
                 (int)$dataSubPm['id'],
                 'sub_pm_A',
-                new \DateTimeImmutable($dataSubPm['created']),
-                new \DateTimeImmutable($dataSubPm['updated']),
+                new \DateTimeImmutable($dataSubPm['created'], new \DateTimeZone('UTC')),
+                new \DateTimeImmutable($dataSubPm['updated'], new \DateTimeZone('UTC')),
                 'root_pm',
                 'familyA',
                 'familyVariantA1',
@@ -189,7 +191,7 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                     [
                         OptionValue::value('a_simple_select', 'optionA'),
                         PriceCollectionValue::value('a_price', new PriceCollection([new ProductPrice(number_format(50.00, 2), 'EUR')])),
-                        ScalarValue::value('a_number_float', '12.5000'),
+                        NumberValue::value('a_number_float', '12.5000'),
                         ScalarValue::scopableLocalizableValue(
                             'a_localized_and_scopable_text_area',
                             'mon tshirt rose',
@@ -204,9 +206,10 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                         ),
                         ScalarValue::value('a_text', 'Lorem ipsum dolor sit amet'),
                     ]
-                )
+                ),
+                null
             ),
-        ]);
+        ]));
 
         Assert::assertEquals($expectedProductModelList, $actualProductModelList);
     }
@@ -222,7 +225,7 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                     ->create(['limit' => 10]);
         $actualProductModelList = $this->getQuery()->fromProductQueryBuilder(
             $pqb,
-            $this->getUserIdFromUsername('admin'),
+            $this->getUserId('admin'),
             ['a_localized_and_scopable_text_area', 'a_number_float', 'a_simple_select'],
             'ecommerce',
             ['en_US']
@@ -232,12 +235,12 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
         $dataRootPm = $this->getIdAndDatesFromProductModelCode('root_pm');
         $dataSubPm = $this->getIdAndDatesFromProductModelCode('sub_pm_A');
 
-        $expectedProductModelList = new ConnectorProductModelList(3, [
+        $expectedProductModelList = new ConnectorProductModelList(3, $this->sortByProductModelCode([
             new ConnectorProductModel(
                 (int)$dataSimplePm['id'],
                 'simple_pm',
-                new \DateTimeImmutable($dataSimplePm['created']),
-                new \DateTimeImmutable($dataSimplePm['updated']),
+                new \DateTimeImmutable($dataSimplePm['created'], new \DateTimeZone('UTC')),
+                new \DateTimeImmutable($dataSimplePm['updated'], new \DateTimeZone('UTC')),
                 null,
                 'familyA',
                 'familyVariantA2',
@@ -266,13 +269,14 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                 ],
                 [],
                 [],
-                new ReadValueCollection([])
+                new ReadValueCollection([]),
+                null
             ),
             new ConnectorProductModel(
                 (int)$dataRootPm['id'],
                 'root_pm',
-                new \DateTimeImmutable($dataRootPm['created']),
-                new \DateTimeImmutable($dataRootPm['updated']),
+                new \DateTimeImmutable($dataRootPm['created'], new \DateTimeZone('UTC')),
+                new \DateTimeImmutable($dataRootPm['updated'], new \DateTimeZone('UTC')),
                 null,
                 'familyA',
                 'familyVariantA1',
@@ -312,7 +316,7 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                 ['categoryA2'],
                 new ReadValueCollection(
                     [
-                        ScalarValue::value('a_number_float', '12.5000'),
+                        NumberValue::value('a_number_float', '12.5000'),
                         ScalarValue::scopableLocalizableValue(
                             'a_localized_and_scopable_text_area',
                             'my pink tshirt',
@@ -320,13 +324,14 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                             'en_US'
                         ),
                     ]
-                )
+                ),
+                null
             ),
             new ConnectorProductModel(
                 (int)$dataSubPm['id'],
                 'sub_pm_A',
-                new \DateTimeImmutable($dataSubPm['created']),
-                new \DateTimeImmutable($dataSubPm['updated']),
+                new \DateTimeImmutable($dataSubPm['created'], new \DateTimeZone('UTC')),
+                new \DateTimeImmutable($dataSubPm['updated'], new \DateTimeZone('UTC')),
                 'root_pm',
                 'familyA',
                 'familyVariantA1',
@@ -367,7 +372,7 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                 new ReadValueCollection(
                     [
                         OptionValue::value('a_simple_select', 'optionA'),
-                        ScalarValue::value('a_number_float', '12.5000'),
+                        NumberValue::value('a_number_float', '12.5000'),
                         ScalarValue::scopableLocalizableValue(
                             'a_localized_and_scopable_text_area',
                             'my pink tshirt',
@@ -375,9 +380,10 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                             'en_US'
                         ),
                     ]
-                )
+                ),
+                null
             ),
-        ]);
+        ]));
 
         Assert::assertEquals($expectedProductModelList, $actualProductModelList);
     }
@@ -394,8 +400,8 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
         $expectedProductModel = new ConnectorProductModel(
             (int)$data['id'],
             'sub_pm_A',
-            new \DateTimeImmutable($data['created']),
-            new \DateTimeImmutable($data['updated']),
+            new \DateTimeImmutable($data['created'], new \DateTimeZone('UTC')),
+            new \DateTimeImmutable($data['updated'], new \DateTimeZone('UTC')),
             'root_pm',
             'familyA',
             'familyVariantA1',
@@ -438,7 +444,7 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                     OptionValue::value('a_simple_select', 'optionA'),
                     PriceCollectionValue::value('a_price', new PriceCollection([new ProductPrice(50, 'EUR')])),
                     ScalarValue::value('a_text', 'Lorem ipsum dolor sit amet'),
-                    ScalarValue::value('a_number_float', '12.5000'),
+                    NumberValue::value('a_number_float', '12.5000'),
                     ScalarValue::scopableLocalizableValue(
                         'a_localized_and_scopable_text_area',
                         'mon tshirt rose',
@@ -452,12 +458,200 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                         'en_US'
                     ),
                 ]
-            )
+            ),
+            null
         );
 
-        $actualProductModel = $this->getQuery()->fromProductModelCode('sub_pm_A', $this->getUserIdFromUsername('admin'));
+        $actualProductModel = $this->getQuery()->fromProductModelCode('sub_pm_A', $this->getUserId('admin'));
 
         Assert::assertEquals($expectedProductModel, $actualProductModel);
+    }
+
+    /**
+     * @test
+     *
+     * @group ce
+     */
+    public function it_gets_several_connector_product_models_from_codes(): void
+    {
+        $actualProductModelList = $this->getQuery()->fromProductModelCodes(
+            ['simple_pm', 'root_pm', 'sub_pm_A'],
+            $this->getUserId('admin'),
+            null,
+            null,
+            null
+        );
+
+        $dataSimplePm = $this->getIdAndDatesFromProductModelCode('simple_pm');
+        $dataRootPm = $this->getIdAndDatesFromProductModelCode('root_pm');
+        $dataSubPm = $this->getIdAndDatesFromProductModelCode('sub_pm_A');
+
+        $expectedProductModelList = new ConnectorProductModelList(3, [
+            new ConnectorProductModel(
+                (int)$dataSimplePm['id'],
+                'simple_pm',
+                new \DateTimeImmutable($dataSimplePm['created'], new \DateTimeZone('UTC')),
+                new \DateTimeImmutable($dataSimplePm['updated'], new \DateTimeZone('UTC')),
+                null,
+                'familyA',
+                'familyVariantA2',
+                [],
+                [
+                    'PACK' => [
+                        'products' => [],
+                        'product_models' => [],
+                        'groups' => [],
+                    ],
+                    'SUBSTITUTION' => [
+                        'products' => [],
+                        'product_models' => [],
+                        'groups' => [],
+                    ],
+                    'UPSELL' => [
+                        'products' => [],
+                        'product_models' => [],
+                        'groups' => [],
+                    ],
+                    'X_SELL' => [
+                        'products' => [],
+                        'product_models' => [],
+                        'groups' => [],
+                    ],
+                ],
+                [],
+                [],
+                new ReadValueCollection([]),
+                null
+            ),
+            new ConnectorProductModel(
+                (int)$dataRootPm['id'],
+                'root_pm',
+                new \DateTimeImmutable($dataRootPm['created'], new \DateTimeZone('UTC')),
+                new \DateTimeImmutable($dataRootPm['updated'], new \DateTimeZone('UTC')),
+                null,
+                'familyA',
+                'familyVariantA1',
+                [],
+                [
+                    'PACK' => [
+                        'products' => [],
+                        'product_models' => [],
+                        'groups' => [],
+                    ],
+                    'SUBSTITUTION' => [
+                        'products' => [],
+                        'product_models' => [],
+                        'groups' => [],
+                    ],
+                    'UPSELL' => [
+                        'products' => [],
+                        'product_models' => [],
+                        'groups' => [],
+                    ],
+                    'X_SELL' => [
+                        'products' => ['another_product'],
+                        'product_models' => ['simple_pm'],
+                        'groups' => ['groupB'],
+                    ],
+                ],
+                [
+                    'PRODUCT_SET' => [
+                        'products' => [],
+                        'product_models' => [['identifier' => 'simple_pm', 'quantity' => 2]],
+                    ],
+                    'ANOTHER_PRODUCT_SET' => [
+                        'products' => [['identifier' => 'a_simple_product', 'quantity' => 4]],
+                        'product_models' => [],
+                    ],
+                ],
+                ['categoryA2'],
+                new ReadValueCollection(
+                    [
+                        PriceCollectionValue::value('a_price', new PriceCollection([new ProductPrice(number_format(50.00, 2), 'EUR')])),
+                        NumberValue::value('a_number_float', '12.5000'),
+                        ScalarValue::scopableLocalizableValue(
+                            'a_localized_and_scopable_text_area',
+                            'mon tshirt rose',
+                            'tablet',
+                            'fr_FR'
+                        ),
+                        ScalarValue::scopableLocalizableValue(
+                            'a_localized_and_scopable_text_area',
+                            'my pink tshirt',
+                            'ecommerce',
+                            'en_US'
+                        ),
+                    ]
+                ),
+                null
+            ),
+            new ConnectorProductModel(
+                (int)$dataSubPm['id'],
+                'sub_pm_A',
+                new \DateTimeImmutable($dataSubPm['created'], new \DateTimeZone('UTC')),
+                new \DateTimeImmutable($dataSubPm['updated'], new \DateTimeZone('UTC')),
+                'root_pm',
+                'familyA',
+                'familyVariantA1',
+                [],
+                [
+                    'PACK' => [
+                        'products' => [],
+                        'product_models' => [],
+                        'groups' => [],
+                    ],
+                    'SUBSTITUTION' => [
+                        'products' => [],
+                        'product_models' => [],
+                        'groups' => [],
+                    ],
+                    'UPSELL' => [
+                        'products' => [],
+                        'product_models' => [],
+                        'groups' => [],
+                    ],
+                    'X_SELL' => [
+                        'products' => ['a_simple_product', 'another_product'],
+                        'product_models' => ['simple_pm'],
+                        'groups' => ['groupA', 'groupB'],
+                    ],
+                ],
+                [
+                    'PRODUCT_SET' => [
+                        'products' => [['identifier' => 'a_simple_product', 'quantity' => 1]],
+                        'product_models' => [['identifier' => 'simple_pm', 'quantity' => 9]],
+                    ],
+                    'ANOTHER_PRODUCT_SET' => [
+                        'products' => [['identifier' => 'a_simple_product', 'quantity' => 4]],
+                        'product_models' => [],
+                    ],
+                ],
+                ['categoryA1', 'categoryA2'],
+                new ReadValueCollection(
+                    [
+                        OptionValue::value('a_simple_select', 'optionA'),
+                        PriceCollectionValue::value('a_price', new PriceCollection([new ProductPrice(number_format(50.00, 2), 'EUR')])),
+                        NumberValue::value('a_number_float', '12.5000'),
+                        ScalarValue::scopableLocalizableValue(
+                            'a_localized_and_scopable_text_area',
+                            'mon tshirt rose',
+                            'tablet',
+                            'fr_FR'
+                        ),
+                        ScalarValue::scopableLocalizableValue(
+                            'a_localized_and_scopable_text_area',
+                            'my pink tshirt',
+                            'ecommerce',
+                            'en_US'
+                        ),
+                        ScalarValue::value('a_text', 'Lorem ipsum dolor sit amet'),
+                    ]
+                ),
+                null
+            ),
+        ]);
+
+        Assert::assertEquals($expectedProductModelList, $actualProductModelList);
     }
 
     /**
@@ -468,7 +662,7 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
         $this->get('database_connection')->executeQuery('DELETE FROM pim_catalog_association_type_translation');
         $this->get('database_connection')->executeQuery('DELETE FROM pim_catalog_association_type');
 
-        $subProductModel = $this->getQuery()->fromProductModelCode('sub_pm_A', $this->getUserIdFromUsername('admin'));
+        $subProductModel = $this->getQuery()->fromProductModelCode('sub_pm_A', $this->getUserId('admin'));
 
         Assert::assertSame([], $subProductModel->associations());
     }
@@ -480,7 +674,7 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
     {
         $this->expectException(ObjectNotFoundException::class);
         $this->expectExceptionMessage('Product model "unknown_product_model" was not found');
-        $this->getQuery()->fromProductModelCode('unknown_product_model', $this->getUserIdFromUsername('admin'));
+        $this->getQuery()->fromProductModelCode('unknown_product_model', $this->getUserId('admin'));
     }
 
     protected function setUp(): void
@@ -592,16 +786,6 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
         return $this->get('akeneo.pim.enrichment.product.connector.get_product_models_from_codes');
     }
 
-    private function getUserIdFromUsername(string $username): int
-    {
-        return (int)$this->get('database_connection')->fetchColumn(
-            'SELECT id from oro_user WHERE username = :username',
-            [
-                'username' => $username,
-            ]
-        );
-    }
-
     private function getIdAndDatesFromProductModelCode(string $productModelCode): array
     {
         return $this->get('database_connection')->fetchAssoc(
@@ -651,5 +835,15 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
         $this->get('pim_catalog.saver.product')->save($product);
 
         return $product;
+    }
+
+    private function sortByProductModelCode(array $connectorProductModels): array
+    {
+        \usort(
+            $connectorProductModels,
+            static fn (ConnectorProductModel $a, ConnectorProductModel $b) => \strcmp($a->code(), $b->code())
+        );
+
+        return $connectorProductModels;
     }
 }

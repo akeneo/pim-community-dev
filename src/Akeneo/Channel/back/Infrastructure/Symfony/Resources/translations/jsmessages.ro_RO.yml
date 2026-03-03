@@ -1,0 +1,60 @@
+batch_jobs:
+  csv_currency_export:
+    label: Export valută în CSV
+    export.label: Export valută
+  csv_currency_import:
+    label: Import valută în CSV
+    import.label: Import valută
+  xlsx_currency_export:
+    label: Export valută în XLSX
+    export.label: Export valută
+  xlsx_currency_import:
+    label: Import valută în XLSX
+    import.label: Import valută
+  csv_locale_export:
+    label: Export local în CSV
+    export.label: Export local
+  csv_locale_import:
+    label: Import local în CSV
+    import.label: Import local
+  xlsx_locale_export:
+    export.label: Export local
+  xlsx_locale_import:
+    label: Import local în XLSX
+    import.label: Import local
+  csv_channel_export:
+    label: Export canal în CSV
+    export.label: Export canal
+  csv_channel_import:
+    label: Import canal în CSV
+    import.label: Import canal
+  xlsx_channel_export:
+    export.label: Export canal
+  xlsx_channel_import:
+    import.label: Import canal
+pim_enrich.entity.channel:
+  label: canal
+  uppercase_label: Canal
+  flash:
+    update:
+      success: Canalul a fost actualizat.
+      fail: Canalul nu a putut fi actualizat.
+    create:
+      success: Canalul a fost crea.
+      fail: Canalul nu a putut fi creat.
+    delete:
+      success: Canalul a fost șters cu succes
+      fail: Nu puteți şterge acest canal
+  property:
+    category_tree: Mulțimea de categorii
+    do_not_convert: Nu converti
+    label_conversion_units: Alege o unitate de conversie pentru fiecare atribut de măsurare care va fi folosit în timpul exportării produsului
+  module:
+    delete:
+      confirm: Sunteți sigur că vreți să ștergeți acest canal?
+pim_enrich.entity.locale:
+  label: local
+  uppercase_label: Local
+  plural_label: Locale
+pim_enrich.entity.currency:
+  plural_label: Valute

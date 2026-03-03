@@ -25,6 +25,7 @@ use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class LightEntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
@@ -96,7 +97,7 @@ class LightEntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
         ProductInterface $variantProduct,
         FileInfoInterface $fileInfo
     ) {
-        $variantProduct->getId()->willReturn(42);
+        $variantProduct->getUuid()->willReturn(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'));
         $variantProduct->getIdentifier()->willReturn('tshirt_green');
         $variantProduct->getLabel('en_US', 'ecommerce')->willReturn('Green t-shirt');
 
@@ -110,11 +111,11 @@ class LightEntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
         $variantProduct->getImage()->willReturn($imageValue);
         $variantProduct->getValue('color')->willReturn(OptionValue::value('color', 'green'));
 
-        $getCompletenessRatio->forChannelCodeAndLocaleCode(42, 'ecommerce', 'en_US')->willReturn(44);
+        $getCompletenessRatio->forChannelCodeAndLocaleCode(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'), 'ecommerce', 'en_US')->willReturn(44);
 
         $this->normalize($variantProduct, 'internal_api', ['channel' => 'ecommerce', 'locale' => 'en_US'])->shouldReturn(
              [
-                 'id' => 42,
+                 'uuid' => '54162e35-ff81-48f1-96d5-5febd3f00fd5',
                  'identifier' => 'tshirt_green',
                  'labels' => ['en_US' => 'Green t-shirt'],
                  'axes_values_labels' => ['en_US' => 'Green'],
@@ -162,19 +163,19 @@ class LightEntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
         $variantProductRatioQuery->findComplete($productModel)->willReturn(new CompleteVariantProducts(
             [
                 [
-                    'product_identifier' => 'tshirt_green_s',
+                    'product_uuid' => 'fef4e0bd-63e1-4eba-b89a-8298ab895d78',
                     'channel_code' => 'ecommerce',
                     'locale_code' => 'en_US',
                     'complete' => 0,
                 ],
                 [
-                    'product_identifier' => 'tshirt_green_m',
+                    'product_uuid' => '0285ef68-6d73-4591-bc29-510985834e87',
                     'channel_code' => 'ecommerce',
                     'locale_code' => 'en_US',
                     'complete' => 1,
                 ],
                 [
-                    'product_identifier' => 'tshirt_green_l',
+                    'product_uuid' => '4bda4603-dc11-4754-9934-1105079e5aa6',
                     'channel_code' => 'ecommerce',
                     'locale_code' => 'en_US',
                     'complete' => 1,

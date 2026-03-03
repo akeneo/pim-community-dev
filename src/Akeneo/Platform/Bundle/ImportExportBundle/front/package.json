@@ -1,0 +1,36 @@
+{
+    "name": "@akeneo-pim-community/import-export",
+    "version": "0.1.0",
+    "private": true,
+    "main": "lib/index.js",
+    "scripts": {
+        "test:unit:run": "jest --config jest.config.json --coverage --coverageDirectory=coverage --maxWorkers=3",
+        "test:unit:watch": "jest --config jest.config.json --watch",
+        "lib:build": "tsc -p ./tsconfig.build.json",
+        "lint:fix": "prettier --config .prettierrc.json --parser typescript --write \"./src/**/*.{ts,tsx}\"",
+        "lint:check": "prettier --config .prettierrc.json --parser typescript --check \"./src/**/*.{ts,tsx}\" && yarn eslint --max-warnings 0 --ext .tsx,.ts ./src"
+    },
+    "dependencies": {
+        "@akeneo-pim-community/shared": "link:../../../../../../front-packages/shared",
+        "akeneo-design-system": "link:../../../../../../front-packages/akeneo-design-system",
+        "typescript": "^4.0.3"
+    },
+    "peerDependencies": {
+        "eslint": "^7.11.0",
+        "react": "^17.0.2",
+        "react-dom": "^17.0.2",
+        "styled-components": "^5.1.1"
+    },
+    "devDependencies": {
+        "@testing-library/jest-dom": "^5.11.4",
+        "@testing-library/react": "^11.1.0",
+        "@testing-library/user-event": "^12.1.10",
+        "@types/jest": "^26.0.15",
+        "@types/node": "^12.0.0",
+        "@types/react": "^17.0.2",
+        "@types/react-dom": "^17.0.2",
+        "@types/styled-components": "^5.1.1",
+        "eslint-config-react-app": "^6.0.0",
+        "prettier": "^2.1.1"
+    }
+}

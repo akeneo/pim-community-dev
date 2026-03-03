@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Acceptance\Currency;
 
-use Akeneo\Channel\Component\Model\Currency;
-use Akeneo\Channel\Component\Model\CurrencyInterface;
-use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\Currency;
+use Akeneo\Channel\Infrastructure\Component\Model\CurrencyInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\CurrencyRepositoryInterface;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 
 final class InMemoryCurrencyRepository implements
     SaverInterface,
@@ -88,7 +88,7 @@ final class InMemoryCurrencyRepository implements
      */
     public function findAll()
     {
-        throw new NotImplementedException(__METHOD__);
+        return array_values($this->currencies->toArray());
     }
 
     /**

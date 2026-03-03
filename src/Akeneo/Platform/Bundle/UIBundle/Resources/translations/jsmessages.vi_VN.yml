@@ -1,0 +1,223 @@
+#ORO messages
+"Yes, I Agree": "Vâng, tôi đồng ý"
+"Yes, do it": "Đồng ý, hãy thực hiện"
+"Ok, got it.": "Được rồi, được rồi."
+"Edit": "Chỉnh sửa"
+Prev: Trước
+Today: Hôm nay
+Wk: Tuần
+AM: AM
+A: A
+PM: PM
+P: P
+"Choose Time": "Chọn thời gian"
+Time: Thời gian
+Hour: Giờ
+Minute: Phút
+Second: Giây
+Millisecond: Mili giây
+Microsecond: Micro giây
+"Time Zone": "Múi giờ"
+#PIM messages
+Localized value: Giá trị chuyển đổi
+Columns: Cột
+Datagrid Configuration: Cấu hình DataGrid
+#Filters
+Action: Hành động
+Unit: Đơn vị
+Currency: Tiền tệ
+jstree:
+  all: Tất cả sản phẩm
+  unclassified: Các sản phẩm chưa phân loại
+  product:
+    all: Tất cả sản phẩm
+    unclassified: Các sản phẩm chưa phân loại
+  no_tree: Không có dữ liệu
+  include_sub: Bao gồm phân loại con
+#Datetimepicker
+datetimepicker:
+  days:
+    Monday: Thứ hai
+    Tuesday: Thứ Ba
+    Thursday: Thứ năm
+    Friday: Thứ Sáu
+    Saturday: Thứ Bảy
+  daysShort:
+    Sun: CN
+    Mon: T. 2
+    Tue: T. 3
+    Wed: T.4
+    Thu: T.5
+    Fri: Thứ 6
+    Sat: Thứ 7
+  daysMin:
+    Su: CN
+    Mo: T2
+    Tu: T3
+    We: T4
+    Th: T5
+    Fr: T6
+    Sa: T7
+  months:
+    January: Tháng một
+    February: Tháng 2
+    March: Tháng 3
+    April: Tháng 4
+    May: Tháng 5
+    June: Tháng 6
+    July: Tháng 7
+    August: Tháng 8
+    September: Tháng 9
+    October: Tháng 10
+    November: Tháng 11
+    December: Tháng 12
+  monthsShort:
+    Jan: Th.1
+    Feb: Th.2
+    Mar: Th.3
+#ORO
+oro_config:
+  form:
+    config:
+      tab:
+        system:
+          title: Hệ thống
+      group:
+        localization:
+          title: Bản địa hoá
+          system_locale: Ngôn ngữ
+        notification:
+          title: Thông báo
+          system_notification: Thông báo phiên bản mới
+"Sorry, page was not loaded correctly": "Xin lỗi, Trang này không được tải một cách chính xác"
+"Your local changes will be lost. Are you sure you want to refresh the page?": "Những thay đổi của bạn sẽ bị mất. Bạn có chắc chắn muốn tải lại trang này không?"
+"navigation.message.content.outdated": "Nội dung của trang {{ title }} đã lỗi thời, vui lòng <a href='#' data-action='page-refresh'>tải lại trang</a>"
+"Content of pinned page is outdated": "Nội dung của trang đã ghim là lỗi thời"
+#Global structure of translation files
+#pim_bundle_name:
+#entity:
+#entity_name:
+#label: entity
+#uppercase_label: Entity
+#plural_label: Entities
+#flash:
+#update:
+#fail: Update failed
+#success: Entity Successfully updated
+#delete:
+#fail: Cannot delete this entity
+#success: Entity successfully removed
+#create:
+#fail: Can not create this entity
+#success: Entity successfully created
+#page_title:
+#index: "]-Inf, 1]1 entity|]1, Inf[{{ count }} entities"
+#property:
+#field_name: Field name
+#complex_field:
+#label: Field name
+#choose: Choose a field name
+#module:
+#module_name:
+#key: message
+pim_common:
+  actions: Hành động
+  add: Thêm
+  add_attributes: Thêm thuộc tính
+  after: Sau
+  all: Tất cả
+  and: và
+  apply: Áp dụng
+  before: Trước
+  cancel: Hủy bỏ
+  code: Mã
+  confirm: Xác nhận
+  confirm_deletion: Xác nhận xóa
+  create: Tạo
+  created: Đã tạo
+  delete: Xóa
+  done: Xong
+  edit: Chỉnh sửa
+  entity_updated: Có một số thay đổi chưa được lưu.
+  export: Xuất khẩu
+  from: Từ
+  general_properties: Thuộc tính tổng quan
+  history: Lịch sử
+  label: Nhãn
+  less_than: Ít hơn
+  loading: Đang tải...
+  more_than: Nhiều hơn
+  next: Tiếp theo
+  "no": "Không"
+  none: Không có
+  not_available: N/A
+  now: Bây giờ
+  previous: Trước
+  properties: Thuộc tính
+  remove: Gỡ bỏ
+  save: Lưu
+  search: Tìm kiếm
+  select2:
+    no_match: Không tìm thấy
+  status: Trạng thái
+  to: đến
+  type: Kiểu
+  update: Cập Nhật
+  "yes": "Đồng ý"
+pim_enrich.entity.fallback:
+  flash:
+    delete:
+      fail: Không thể xoá đối tượng này
+      success: Đối tượng đã được gỡ bỏ thành công
+  module:
+    delete:
+      item: Bạn có chắc chắn muốn xóa đối tượng này?
+    edit:
+      leave: Bạn có chắc chắn muốn rời khỏi trang này không?
+pim_title:
+  oro_default: Bảng điều khiển
+  pim_enrich_attributegroup_create: Nhóm thuộc tính | Tạo mới
+  pim_enrich_categorytree_create: Cây danh mục | Tạo mới
+  pim_enrich_categorytree_create_tree: Cây danh mục | Tạo mới
+  pim_enrich_attribute_index: Thuộc tính
+  pim_enrich_attribute_create: Thuộc tính | Tạo mới
+  pim_enrich_product_index: Sản phẩm
+  pim_enrich_family_index: Các chủng loại
+  pim_enrich_channel_index: Kênh
+  pim_enrich_channel_create: Kênh | Tạo kênh
+  pim_enrich_currency_index: Tiền tệ
+  pim_enrich_locale_index: Locale
+  pim_enrich_group_index: Nhóm
+  pim_enrich_associationtype_index: Các kiểu kết hợp
+  pim_enrich_grouptype_index: Các kiểu nhóm
+  pim_enrich_mass_edit_action_choose: Chỉnh sửa hàng loạt | Chọn
+  pim_enrich_mass_edit_action_configure: Chỉnh sửa hàng loạt | Đặt cấu hình
+  pim_enrich_mass_edit_action: Chỉnh sửa hàng loạt
+pim_menu:
+  tab:
+    settings: Cài đặt
+    system: Hệ thống
+  item:
+    association_type: Các kiểu kết hợp
+    channel: Kênh
+    currency: Tiền tệ
+    dashboard: Bảng điều khiển
+    family: Các chủng loại
+    group: Nhóm
+    group_type: Các kiểu nhóm
+    export_history: Lịch sử xuất dữ liệu
+    export_profile: Hồ sơ xuất dữ liệu
+    import_history: Lịch sử nhập dữ liệu
+    import_profile: Hồ sơ nhập dữ liệu
+    configuration: Cấu hình
+    user_management: Quản lý người dùng
+    user: Người dùng
+    user_role: Vai trò
+  user:
+    logout: Đăng xuất
+    user_account: Tài khoản của tôi
+pim_notification:
+  types:
+    import: Nhập khẩu
+    export: Xuất khẩu
+    mass_edit: Chỉnh sửa hàng loạt

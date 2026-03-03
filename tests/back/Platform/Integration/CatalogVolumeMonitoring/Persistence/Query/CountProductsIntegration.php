@@ -18,7 +18,6 @@ class CountProductsIntegration extends QueryTestCase
 
         Assert::assertEquals(8, $volume->getVolume());
         Assert::assertEquals('count_products', $volume->getVolumeName());
-        Assert::assertEquals(false, $volume->hasWarning());
     }
 
     /**

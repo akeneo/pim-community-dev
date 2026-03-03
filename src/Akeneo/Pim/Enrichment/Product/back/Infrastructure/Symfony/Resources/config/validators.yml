@@ -1,0 +1,65 @@
+services:
+    Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleAndChannelShouldBeConsistentValidator:
+        arguments:
+            - '@akeneo.pim.structure.query.get_attributes'
+            - '@pim_channel.query.cache.channel_exists_with_locale'
+        tags:
+            - { name: validator.constraint_validator }
+
+    Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\IsUserOwnerOfTheProductValidator:
+        arguments:
+            - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes'
+            - '@Akeneo\Pim\Enrichment\Category\API\Query\GetOwnedCategories'
+            - '@Akeneo\Pim\Enrichment\Product\API\Query\GetProductUuids'
+        tags:
+            - { name: validator.constraint_validator }
+
+    Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\ShouldStayOwnerOfTheProductValidator:
+        arguments:
+            - '@Akeneo\Pim\Enrichment\Category\API\Query\GetOwnedCategories'
+            - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetNonViewableCategoryCodes'
+            - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes'
+            - '@Akeneo\Pim\Enrichment\Product\API\Query\GetProductUuids'
+        tags:
+            - { name: validator.constraint_validator }
+
+    Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\UserShouldExistValidator:
+        arguments:
+            - '@pim_user.repository.user'
+        tags:
+            - { name: validator.constraint_validator }
+
+    Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleShouldBeEditableByUserValidator:
+        arguments:
+            - '@Akeneo\Channel\API\Query\IsLocaleEditable'
+        tags:
+            - { name: validator.constraint_validator }
+
+    Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\AttributeGroupShouldBeEditableValidator:
+        arguments:
+            - '@Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\IsAttributeEditable'
+        tags:
+            - { name: validator.constraint_validator }
+
+    Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\UserIntentsShouldBeUnique:
+        tags:
+            - { name: validator.constraint_validator }
+
+    Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\CategoriesShouldBeViewableValidator:
+        arguments:
+            - '@Akeneo\Pim\Enrichment\Category\API\Query\GetViewableCategories'
+        tags:
+            - { name: validator.constraint_validator }
+
+    Akeneo\Pim\Enrichment\Product\Domain\StandardFormat\Validator\QuantifiedAssociationsStructureValidator: ~
+
+    # PQB
+    Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\PQB\SearchFiltersValidator:
+        arguments:
+            - '@akeneo.pim.enrichment.use_cases.validator.criterion'
+            - '@akeneo.pim.enrichment.use_cases.validator.categories'
+            - '@akeneo.pim.enrichment.use_cases.validator.properties'
+            - '@akeneo.pim.enrichment.use_cases.validator.validate_granted_categories'
+            - '@akeneo.pim.enrichment.use_cases.validator.validate_granted_properties'
+        tags:
+            - { name: validator.constraint_validator }

@@ -16,6 +16,8 @@ pim_import_export:
     6: Niepowodzenie
     7: Opuszczone
     8: Nieznany
+    9: Wstrzymywanie
+    10: Wstrzymano
   download_archive:
     archive: pobierz utworzone archiwum|pobierz utworzone archiwa
     output: pobierz utworzony plik|pobierz utworzone pliki
@@ -27,10 +29,15 @@ pim_import_export:
       error: Eksport <strong>%label%</strong> nie powiódł się
       warning: Eksport <strong>%label%</strong> zakończony z ostrzeżeniami
       success: Eksport <strong>%label%</strong> zakończony
+      warnings:
+        xlsx_cell_conversion_error: Wyjątek podczas konwersji kolumny "{0}" na docelowy typ atrybutu produktu PIM (sprawdź format komórki Excela)
+        xlsx_cell_date_to_text_conversion_error: Komórki {0} o formacie daty nie można skonwertować na atrybut typu tekstowego
     import:
       error: Import <strong>%label%</strong> nie powiódł się
       warning: Import <strong>%label%</strong> zakończony z ostrzeżeniami
       success: Import <strong>%label%</strong> zakończony
+      warnings:
+        xlsx_cell_date_conversion_error: Komórki „{cellName}” o formacie daty nie można skonwertować na atrybut typu {attributeType}.
   list: Wybierz zadanie
   job_profile:
     tab:

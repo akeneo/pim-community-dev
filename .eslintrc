@@ -43,7 +43,8 @@
     ],
     "quotes": [
       2,
-      "single"
+        "single",
+        { "avoidEscape": true }
     ],
     "no-undef": 2,
     "no-unused-vars": 2,

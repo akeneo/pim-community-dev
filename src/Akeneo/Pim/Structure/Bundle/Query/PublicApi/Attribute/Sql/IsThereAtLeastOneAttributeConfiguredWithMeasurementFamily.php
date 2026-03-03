@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Sql;
 
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -31,8 +31,6 @@ WHERE metric_family = :metric_family
 AND attribute_type = 'pim_catalog_metric';
 SQL;
         $stmt = $this->connection->executeQuery($query, ['metric_family' => $metricFamilyCode]);
-        $result = $this->connection->convertToPHPValue($stmt->fetch(\PDO::FETCH_COLUMN), Type::BOOLEAN);
-
-        return $result;
+        return $this->connection->convertToPHPValue($stmt->fetch(\PDO::FETCH_COLUMN), Types::BOOLEAN);
     }
 }

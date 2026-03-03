@@ -1,0 +1,33 @@
+pim_enrich:
+  #Attribute
+  attribute:
+    tab:
+      parameter.title: Parâmetros
+      value.title: Valores
+      history.title: Histórico
+  #Group type
+  group_type:
+    tab:
+      property.title: Propriedades
+  #Mass edit operations
+  mass_edit_action:
+    family:
+      page_title: Famílias
+      page_subtitle: Editar em Massa (1 família) | Editar em Massa (%count% famílias)
+      title: Escolha a operação
+      subtitle: Escolha a operação que deseja executar na familia selecionada| Escolha a operação que deseja executar nas %count% famílias selecionadas
+      confirm: Está prestes a atualizar um produto com a seguinte informação, por favor confirme. | Está prestes a atualizar %count% produtos com a seguinte informação, por favor confirme.
+      steps:
+        first: Escolher famílias
+        second: Escolha a operação
+        third: Configurar
+        fourth: Confirmar
+pim_enrich_attribute_form:
+  code: Código
+  type: Tipo de atributo
+  reference_data_name: Nome de referência de dados
+  unique: Valor único
+  availableLocales: Linguagens disponíveis
+  locale_specific: Específicas de uma linguagem
+  group: Grupo de atributos
+  useableAsGridFilter: Utilizável em grelha

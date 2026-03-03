@@ -30,7 +30,7 @@ class EmailDomains implements EmailDomainsQuery
                 ORDER by email_domain
 SQL;
 
-        $domains = $this->connection->executeQuery($query)->fetchAll(\PDO::FETCH_COLUMN, 0);
+        $domains = $this->connection->executeQuery($query)->fetchFirstColumn();
 
         return implode(',', $domains);
     }

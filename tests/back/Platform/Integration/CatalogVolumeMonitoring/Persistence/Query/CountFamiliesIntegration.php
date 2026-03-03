@@ -18,7 +18,6 @@ class CountFamiliesIntegration extends QueryTestCase
 
         Assert::assertEquals(4, $volume->getVolume());
         Assert::assertEquals('count_families', $volume->getVolumeName());
-        Assert::assertEquals(false, $volume->hasWarning());
     }
 
     /**

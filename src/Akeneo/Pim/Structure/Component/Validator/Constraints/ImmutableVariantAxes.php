@@ -23,7 +23,7 @@ class ImmutableVariantAxes extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'pim_immutable_variant_axes_validator';
     }
@@ -31,7 +31,7 @@ class ImmutableVariantAxes extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return Constraint::CLASS_CONSTRAINT;
     }

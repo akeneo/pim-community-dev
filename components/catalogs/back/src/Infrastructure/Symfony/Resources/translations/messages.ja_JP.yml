@@ -1,0 +1,6 @@
+pim_api.acl_group.catalog: カタログ
+akeneo_catalogs:
+  acl:
+    catalog_list: カタログ一覧
+    catalog_edit: カテゴリを作成して更新
+    catalog_remove: カタログを削除

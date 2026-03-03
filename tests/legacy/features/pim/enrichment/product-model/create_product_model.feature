@@ -9,7 +9,7 @@ Feature: Create a product model
     And I am logged in as "Julia"
     And I am on the products grid
 
-  @critical
+  @critical @purge-messenger
   Scenario: Create a product model with a single level variant
     When I create a product model
     And I should see the Code, Family and Variant fields
@@ -21,6 +21,7 @@ Feature: Create a product model
     And I press the "Save" button
     And I should be on the product model "shoes_variant" edit page
     And I should see the text "shoes_variant"
+    And 1 event of type "product_model.created" should have been raised
 
   @critical
   Scenario: Create a product model with multiple level variant
@@ -42,7 +43,7 @@ Feature: Create a product model
       | display_diagonal | pim_catalog_metric | other | Length        | CENTIMETER          | 0                | 0                |
     And the following families:
       | code     | attributes             | label-en_US |
-      | led_tvs  | name,display_diagonal  | LED TVs     |
+      | led_tvs  | sku,name,display_diagonal  | LED TVs     |
     And the following family variants:
       | code  | family  | variant-axes_1    | variant-attributes_1 | label-en_US |
       | tv    | led_tvs | display_diagonal  | name                 | LED TV      |
@@ -72,8 +73,8 @@ Feature: Create a product model
   Scenario: Display only families with variants
     When I create a product model
     And the following families:
-      | code |
-      | hats |
+      | code | attributes |
+      | hats | sku        |
     And I should see the Code, Family and Variant fields
     And the field Variant (required) should be disabled
     When I press the "Choose a family" button
@@ -131,7 +132,7 @@ Feature: Create a product model
     And I press the "Create product and product models" button
     Then I should see the SKU and Family fields
 
-  @jira https://akeneo.atlassian.net/browse/PIM-7299
+  # @jira https://akeneo.atlassian.net/browse/PIM-7299
   Scenario: Search family variants in the product model create form
     Given the following family:
       | code                      | label-en_US   | attributes      |

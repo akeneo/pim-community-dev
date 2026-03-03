@@ -129,4 +129,3 @@ class ListChildrenCategoriesWithCountIncludingSubCategoriesIntegration extends T
         return $this->catalog->useMinimalCatalog();
     }
 }
-

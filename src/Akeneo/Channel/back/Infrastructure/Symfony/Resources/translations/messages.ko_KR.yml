@@ -1,0 +1,10 @@
+pim_enrich:
+  #Locale
+  locale:
+    tab:
+      property.title: 속성
+  channel:
+    flash:
+      delete:
+        error: 해당 PIM에 하나 이상의 채널이 포함되어야 하기 때문에 '%channelCode%' 채널을 제거할 수 없습니다.
+        linked_to_export_profile: 내보내기 프로필에 연결된 채널은 삭제할 수 없습니다.

@@ -2,9 +2,13 @@
 
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\ProductModel\ExternalApi;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use PHPUnit\Framework\Assert;
+use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Response;
 
 class PartialUpdateListProductModelEndToEnd extends AbstractProductModelTestCase
@@ -34,17 +38,9 @@ class PartialUpdateListProductModelEndToEnd extends AbstractProductModelTestCase
         );
 
         $this->createVariantProduct('apollon_optiona_true', [
-            'categories' => ['master'],
-            'parent' => 'sub_sweat_option_a',
-            'values' => [
-                'a_yes_no' => [
-                    [
-                        'locale' => null,
-                        'scope' => null,
-                        'data' => true,
-                    ],
-                ],
-            ],
+            new SetCategories(['master']),
+            new ChangeParent('sub_sweat_option_a'),
+            new SetBooleanValue('a_yes_no', null, null, true)
         ]);
     }
 
@@ -54,7 +50,7 @@ class PartialUpdateListProductModelEndToEnd extends AbstractProductModelTestCase
     public function testCreateAndUpdateAListOfProductModels()
     {
         // We remove all completenesses in order to check that completeness is recomputed.
-        $this->get('database_connection')->exec('TRUNCATE pim_catalog_completeness;');
+        $this->get('database_connection')->exec('TRUNCATE pim_catalog_product_completeness;');
 
         $data =
             <<<JSON
@@ -299,7 +295,7 @@ JSON;
         $this->assertSame($expectedContent, $response['content']);
     }
 
-    public function testErrorWhenCodeIsMissing()
+    public function testErrorWhenCodeIsMissingOrInvalid()
     {
         $data =
             <<<JSON
@@ -308,6 +304,7 @@ JSON;
     {"code": ""}
     {"code": " "}
     {}
+    {"code":123456}
 JSON;
 
         $expectedContent =
@@ -317,6 +314,7 @@ JSON;
 {"line":3,"status_code":422,"message":"Code is missing."}
 {"line":4,"status_code":422,"message":"Code is missing."}
 {"line":5,"status_code":422,"message":"Code is missing."}
+{"line":6,"status_code":422,"message":"code must be of type string."}
 JSON;
 
         $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/product-models', [], [], [], $data);
@@ -324,6 +322,21 @@ JSON;
 
         $this->assertSame(Response::HTTP_OK, $httpResponse->getStatusCode());
         $this->assertSame($expectedContent, $response['content']);
+    }
+
+    public function testAccessDeniedWhenPartialUpdateOnProductModelsWithoutTheAcl()
+    {
+        $this->removeAclFromRole('action:pim_api_product_edit');
+
+        $data =
+            <<<JSON
+{"identifier": "foo"}
+JSON;
+
+        $result = $this->executeStreamRequest('PATCH', 'api/rest/v1/product-models', [], [], [], $data);
+        $response = $result['http_response'];
+
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }
 
     /**
@@ -369,7 +382,7 @@ JSON;
 
             $completenesses = $this
                 ->get('akeneo.pim.enrichment.product.query.get_product_completenesses')
-                ->fromProductId($product->getId());
+                ->fromProductUuid($product->getUuid());
             Assert::assertCount(6, $completenesses); // 3 channels * 2 locales
         }
     }

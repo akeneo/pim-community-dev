@@ -34,6 +34,7 @@ define([
 
       return $.ajax({
         url: Routing.generate('pim_enrich_sequential_edit_rest_get_ids'),
+        method: 'POST',
         data: params,
       })
         .then(response => {
@@ -53,7 +54,11 @@ define([
           }
 
           const entity = _.first(response.entities);
-          router.redirectToRoute('pim_enrich_' + entity.type + '_edit', {id: entity.id});
+          if (entity.type === 'product') {
+            router.redirectToRoute('pim_enrich_product_edit', {uuid: entity.id});
+          } else {
+            router.redirectToRoute('pim_enrich_' + entity.type + '_edit', {id: entity.id});
+          }
         })
         .always(() => {
           loadingMask.hide().$el.remove();

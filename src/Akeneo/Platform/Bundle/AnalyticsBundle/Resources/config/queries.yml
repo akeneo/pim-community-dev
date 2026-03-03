@@ -24,3 +24,8 @@ services:
         class: Akeneo\Platform\Bundle\AnalyticsBundle\Query\Sql\IsDemoCatalog
         arguments:
             - '@database_connection'
+
+    pim_analytics.query.get_connected_apps_identifiers:
+        class: Akeneo\Platform\Bundle\AnalyticsBundle\Query\Sql\GetConnectedAppsIdentifiersQuery
+        arguments:
+            - '@database_connection'

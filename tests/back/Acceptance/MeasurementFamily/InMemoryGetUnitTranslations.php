@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Acceptance\MeasurementFamily;
 
-use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\GetUnitTranslations;
+use Akeneo\Tool\Bundle\MeasureBundle\ServiceApi\GetUnitTranslations;
 use Webmozart\Assert\Assert;
 
 /**

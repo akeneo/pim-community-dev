@@ -1,20 +1,20 @@
 import React, {Component} from 'react';
 import {PageContent, PageHeader, RuntimeError} from '../../common/components';
-import {PimView} from '../../infrastructure/pim-view/PimView';
-import {useRoute} from '../../shared/router';
 import {Translate} from '../../shared/translate';
 import {Breadcrumb} from 'akeneo-design-system';
+import {UserButtons} from '../../shared/user';
+import {useRouter} from '../../shared/router/use-router';
 
 const SettingsBreadcrumb = () => {
-    const systemHref = `#${useRoute('oro_config_configuration_system')}`;
+    const generateUrl = useRouter();
 
     return (
         <Breadcrumb>
-            <Breadcrumb.Step href={systemHref}>
-                <Translate id='pim_menu.tab.system' />
+            <Breadcrumb.Step href={`#${generateUrl('akeneo_connectivity_connection_audit_index')}`}>
+                <Translate id='pim_menu.tab.connect' />
             </Breadcrumb.Step>
             <Breadcrumb.Step>
-                <Translate id='pim_menu.item.connection_settings' />
+                <Translate id='pim_menu.item.connect_connection_settings' />
             </Breadcrumb.Step>
         </Breadcrumb>
     );
@@ -34,15 +34,7 @@ export class SettingsErrorBoundary extends Component<unknown, {hasError: boolean
         if (this.state.hasError) {
             return (
                 <>
-                    <PageHeader
-                        breadcrumb={<SettingsBreadcrumb />}
-                        userButtons={
-                            <PimView
-                                className='AknTitleContainer-userMenuContainer AknTitleContainer-userMenu'
-                                viewName='pim-connectivity-connection-user-navigation'
-                            />
-                        }
-                    />
+                    <PageHeader breadcrumb={<SettingsBreadcrumb />} userButtons={<UserButtons />} />
 
                     <PageContent>
                         <RuntimeError />

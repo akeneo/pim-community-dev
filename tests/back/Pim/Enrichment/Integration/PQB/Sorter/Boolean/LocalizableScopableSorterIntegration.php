@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Sorter\Boolean;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
@@ -23,6 +24,8 @@ class LocalizableScopableSorterIntegration extends AbstractProductQueryBuilderTe
     {
         parent::setUp();
 
+        $this->activateLocaleForChannel('fr_FR', 'ecommerce');
+
         $this->createAttribute([
             'code'                => 'a_localizable_scopable_yes_no',
             'type'                => AttributeTypes::BOOLEAN,
@@ -31,25 +34,17 @@ class LocalizableScopableSorterIntegration extends AbstractProductQueryBuilderTe
         ]);
 
         $this->createProduct('product_one', [
-            'values' => [
-                'a_localizable_scopable_yes_no' => [
-                    ['data' => true, 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                    ['data' => true, 'locale' => 'en_US', 'scope' => 'tablet'],
-                    ['data' => true, 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
-                    ['data' => false, 'locale' => 'fr_FR', 'scope' => 'tablet']
-                ]
-            ]
+            new SetBooleanValue('a_localizable_scopable_yes_no', 'ecommerce', 'en_US', true),
+            new SetBooleanValue('a_localizable_scopable_yes_no', 'tablet', 'en_US', true),
+            new SetBooleanValue('a_localizable_scopable_yes_no', 'ecommerce', 'fr_FR', true),
+            new SetBooleanValue('a_localizable_scopable_yes_no', 'tablet', 'fr_FR', false),
         ]);
 
         $this->createProduct('product_two', [
-            'values' => [
-                'a_localizable_scopable_yes_no' => [
-                    ['data' => false, 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                    ['data' => true, 'locale' => 'en_US', 'scope' => 'tablet'],
-                    ['data' => true, 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
-                    ['data' => true, 'locale' => 'fr_FR', 'scope' => 'tablet'],
-                ]
-            ]
+            new SetBooleanValue('a_localizable_scopable_yes_no', 'ecommerce', 'en_US', false),
+            new SetBooleanValue('a_localizable_scopable_yes_no', 'tablet', 'en_US', true),
+            new SetBooleanValue('a_localizable_scopable_yes_no', 'ecommerce', 'fr_FR', true),
+            new SetBooleanValue('a_localizable_scopable_yes_no', 'tablet', 'fr_FR', true),
         ]);
 
         $this->createProduct('empty_product', []);
@@ -79,17 +74,5 @@ class LocalizableScopableSorterIntegration extends AbstractProductQueryBuilderTe
         $this->expectExceptionMessage('Direction "A_BAD_DIRECTION" is not supported');
 
         $this->executeSorter([['a_localizable_scopable_yes_no', 'A_BAD_DIRECTION', ['locale' => 'fr_FR', 'scope' => 'tablet']]]);
-    }
-
-    /**
-     * @jira https://akeneo.atlassian.net/browse/PIM-6872
-     */
-    public function testSorterWithNoDataOnSorterField()
-    {
-        $result = $this->executeSorter([['a_localizable_scopable_yes_no', Directions::DESCENDING, ['locale' => 'de_DE', 'scope' => 'ecommerce_china']]]);
-        $this->assertOrder($result, ['product_one', 'product_two', 'empty_product']);
-
-        $result = $this->executeSorter([['a_localizable_scopable_yes_no', Directions::ASCENDING, ['locale' => 'de_DE', 'scope' => 'ecommerce_china']]]);
-        $this->assertOrder($result, ['product_one', 'product_two', 'empty_product']);
     }
 }

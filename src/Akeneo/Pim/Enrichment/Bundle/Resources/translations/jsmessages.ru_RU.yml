@@ -6,13 +6,10 @@ flash:
   comment:
     create:
       success: Ваш комментарий был успешно создан.
-      error: Произошла ошибка во время создания вашего комментария.
     delete:
       success: Ваш комментарий был успешно удален.
-      error: Произошла ошибка во время удаления вашего комментария.
     reply:
       success: Ваш ответ был успешно создан.
-      error: Произошла ошибка во время создания вашего ответа.
 pim_enrich.entity.product:
   label: продукт
   uppercase_label: Продукт
@@ -21,33 +18,44 @@ pim_enrich.entity.product:
     update:
       success: Продукт успешно обновлен.
       fail: Не удалось обновить продукт.
-      already_in_upload: Файл уже находится в загрузке для этого атрибута на «{{ locale }}» языке и в канале «{{ scope }}»
-      file_upload: Произошла ошибка при загрузке файла
+      fields_not_ready: "Товар не может быть сохранен в данный момент. Следующие обязательные поля не заполнены: {{ fields }}"
+      already_in_upload: Файл уже находится в загрузке для этого атрибута на «{{ locale }}» в видимости «{{ scope }}»
     delete:
       success: Продукт успешно удален.
       fail: Не удалось удалить продукт.
     create:
       success: Продукт успешно создан
       fail: У продукта не указан атрибут в качестве идентификатора или у вас нет прав для его изменения.
+  page_title:
+    product: "]-Inf, 1]{{ count }} товар|]1, Inf[{{ count }} товаров"
+    product_model: "]-Inf, 1]{{ count }} модель продукта|]1, Inf[{{ count }} модели продуктов"
+    product_and_product_model: "{{ productCount }}, {{ productModelCount }}"
   module:
     create:
       subtitle: Создать продукт
       title: Выберите действие
       choose_family: Выберите семейство
+      choose_family_variant: Выберите разновидность семейства
+    variant_navigation:
+      common: Общие
     status:
-      enabled: Включено
-      disabled: Отключено
+      enabled: Активирован
+      disabled: Дезактивирован
     download_pdf:
       label: PDF
     copy:
       label: Сравнить / Перевести
-      select: Выбрать
+      select: Выберите
       all_visible: Все видимые
-      copy: Копия
+      copy: Копировать
+    convert_variant_to_simple:
+      label: Преобразовать в простой товар
+      dialog:
+        title: Подтвердите преобразование
+        content: "Вы уверены, что хотите конвертировать продукт в простой тип? Все предыдущие значения, категории и ассоциации будут сохранены."
     history:
       version: Версия
       author: Автор
-      logged_at: Дата входа
       from: С
       modified: Изменен
       old_value: Старое значение
@@ -63,32 +71,49 @@ pim_enrich.entity.product:
       remove_optional: Удалить этот атрибут
       locale_specific_unavailable: Это локализуемое поле не доступно для этого языка
       locale_unavailable: Это локализуемое поле не доступно для языка «{{ locale }}» и канала «{{ channel }}»
-      add_attribute_option: Добавить элемента списка для атрибута
-      add_option: Добавить новый элемента списка
+      add_attribute_option: Добавить опцию атрибута
+      add_option: Добавить параметр
     completeness:
       title: Завершенность
-      complete: Завершено
-      no_family: Семейство не определено. Пожалуйста определите семейство для вычисления завершенности этого продукта.
-      no_completeness: Вы только что изменили семейство продукта. Пожалуйста, сохраните его первым, чтобы вычислить завершенность для нового семейства.
+      complete: Завершенность
+      no_family: Семейство не определено. Пожалуйста определите семейство для вычисления степени заполненности этого продукта.
+      no_completeness: Вы только что изменили семейство продукта. Пожалуйста, сохраните его первым, чтобы вычислить степень заполненности для нового семейства.
     sequential_edit:
+      item_limit: Только первая 1000 элементов из {{ count }} выбранных показывается при последовательном редактировании
+      empty: Ничего не найдено, пожалуйста, измените условия поиска
       save_and_next: Сохранить и далее
       save_and_finish: Сохранить и завершить
     associations:
-      title: Ассоциации
-      none_exist: Титпы ассоциаций отсутствуют.
+      title: Связи ({{ count }})
+      none_exist: Типы ассоциаций отсутствуют.
+      show_products: Показать продукты
       show_groups: Отображать группы
       number_of_associations: "{{ productCount }} продукт(ы), {{ productModelCount }} модель(и) продукта(ов) и {{ groupCount }} группа(ы)"
+      number_of_quantified_associations: "{{ productCount }} продукт(ов) и {{ productModelCount }} модели продукта(ов)"
+      association_type_selector: Тип связи
       target: Цель
       manage: Добавить {{ associationType }} связи
-      manage_description: Выберите продукты, которые вы хотите связать с текущим продуктом
+      manage_description: Выберите товары, которые вы хотите связать с товаром "{{ productLabel }}"
+      mass_edit_description: Выберите товары, которые вы хотите связать с {{ productCount }} выбранными товарами
       add_associations: Добавить связи
+      variant_products: Разновидность продуктов
+      quantified:
+        quantity: Кол-во
+      search:
+        placeholder: Поиск по названию или идентификатору
+      no_data: Нет связанных продуктов.
+      remove: Удалить связь
+      edit: Редактировать товар
+      limit_reached: Вы не можете добавить более {{ maxLimit }} связей к этому товару.
+      variant_updated: Вы обновили количество вариантов продукта.
     attribute_filter:
+      display: Показать
       all: Все атрибуты
       missing_required: Все недостающие обязательные атрибуты
       at_this_level: Все специфические атрибуты уровня
     change_family:
       title: Изменить семейство продуктов
-      merge_attributes: Текущие атрибуты будут объединены с существующими, в новом семействе.
+      merge_attributes: Текущие атрибуты будут объединены с существующими в новом семействе.
       keep_attributes: Атрибуты не будут удалены.
       change_family_to: Изменить семейство на
       empty_selection: Выберите семейство
@@ -103,17 +128,40 @@ pim_enrich.entity.product:
       title: Комментарии
       empty: Комментариев не найдено
       header_comment: 'Комментарий пользователя {{ user }} к продукту'
+      header_reply: 'Ответ пользователя {{ user }} на комvентарий'
       delete_confirm: Вы уверены, что хотите удалить комментарий?
+      removed_author: Удаленный пользователь
 pim_enrich.entity.product_model:
+  uppercase_label: Модель продукта
+  plural_label: Модели продукта
+  flash:
+    create:
+      success: Модель продукта успешно создана
+      product_model_added: Модель продукта успешно добавлена к модели продукта
+      variant_product_added: Разновидность продукта успешно добавлена к модели продукта
+    update:
+      success: Модель продукта успешно обновлена. Коэффициент заполненности этой разновидности продуктов будет пересчитан.
+      fail: Не удалось обновить модель продукта.
+      fields_not_ready: "Товар не может быть сохранен в данный момент. Следующие обязательные поля не заполнены: {{ fields }}"
+    delete:
+      success: Модель продукта успешно удалена.
+  choose: Выбрать модель продукта
   property:
     family_variant: Вариант
   module:
+    create:
+      title: Создать модель продукта
+      content: Модель продукта объединяет в себе разновидности продуктов и облегчает заполнение их общих свойств.
     attribute:
       read_only_parent_attribute_from_common: Данный атрибут может быть обновлен в общих атрибутах.
       read_only_parent_attribute_from_model: "Этот атрибут может быть обновлен в атрибутах {{ axes }}"
     variant_axis:
       create: Добавить новый
+      required_label: '(вариант конфигурационного атрибута)'
+    completeness:
+      label: Вариант
     delete:
+      confirm: Вы уверены, что вы хотите удалить эту модель продукта? Все дочерние модели и разновидности продуктов будут также удалены.
       confirm_for_products_and_product_models: Вы уверены, что хотите удалить выбранные продукты и модели продуктов? Все дочерние модели продуктов будут также удалены.
 pim_enrich.entity.group:
   label: Группа
@@ -121,6 +169,7 @@ pim_enrich.entity.group:
     update:
       success: Группа успешно обновлена.
       fail: Не удалось обновить группу.
+      fields_not_ready: "Группа не может быть сохранена в данный момент. Следующие обязательные поля не заполнены: {{ fields }}"
     create:
       success: Группа успешно создана
     delete:
@@ -142,27 +191,31 @@ pim_enrich.export.product:
     title: Фильтровать данные
   filter:
     channel:
-      help: Канал определяет область для значений продуктов, локали, используемые для выбора данных, и классификацию, используемую для выбора продуктов.
+      help: Канал определяет область видимости продуктов, локали, используемые для выбранных данных, и дерево категорий для выбранных продуктов.
     locales:
       help: "Локали определяют значения локализованных данных для экспорта. На пример, только информация по продукции на французском языке."
     attributes:
+      label: "{0}все атрибуты|{1}один атрибут выбран|] 1, Inf [{{ count }} атрибутов выбрано"
       help: "Выберите сведения о продукте для экспорта. На пример, только технические атрибуты."
       empty: Все атрибуты будут экспортированы
       modal:
         title: Выбор атрибутов
     attributes_selector:
+      attributes: "Искать в {{ itemsCount }} атрибутах"
       selected: "Выбранные атрибуты"
       clear: Очистить
       all_group: Все группы
       empty_selection: Все атрибуты будут экспортированы
+      description: Выберите сведения о продукте для экспорта
     family:
       title: Семейство
-      help: "Выберите продукты для экспорта по семейству. На пример, экспорт только обувей и платьев."
+      help: "Выберите продукты для экспорта по семейству. Например, экспорт только обуви и платьев."
       operators:
         IN: В списке
         "NOT IN": Нет в списке
         EMPTY: Продукты, которые не имеют семейства
         "NOT EMPTY": Продукты, которые имеют семейство
+      empty_selection: Нет условия по семействам
     updated:
       title: Условие времени
       operators:
@@ -172,13 +225,13 @@ pim_enrich.export.product:
         "SINCE LAST JOB": Обновленные продукты с момента последнего экспорта
     enabled:
       title: Статус
-      help: "Выберите продукты, для экспорта по их статусу. На пример, экспорт товаров независимо от их статуса."
+      help: "Выберите продукты для экспорта по их статусу. Например, экспорт товаров независимо от их статуса."
       value:
-        enabled: Включено
-        disabled: Отключено
+        enabled: Активирован
+        disabled: Дезактивирован
     completeness:
       title: Завершенность
-      help: Выберите продукты для экспорта по законченности.
+      help: Выберите продукты для экспорта по степени заполненности.
       operators:
         ALL: Нет условия
         ">=": Закончен по хотя бы одной локали
@@ -193,6 +246,7 @@ pim_enrich.export.product:
       help: Используйте категории из дерева (определенного в канале выбранном выше) для выбора продуктов для экспорта
     identifier:
       title: Идентификатор
+      help: Используйте идентификаторы продуктов, которые вы хотите экспортировать, разделенные запятыми, пробелами или разрывами строк
     string:
       operators:
         ALL: Все
@@ -210,40 +264,55 @@ pim_enrich.mass_edit.product:
     select:
       label: Выберите продукты
     configure:
-      label: Настройка
+      label: Настроить
     confirm:
       label: Подтверждение
+    launched:
+      label: Началось массовое действие "{{ operation }}". Вы будете уведомлены по завершении.
   operation:
     common:
       select_attributes: Выберите атрибуты
     change_status:
       label: Изменить статус
-      description: Выбранные продукты будут активированы или деактивированы.
+      label_count: "{0}изменил статус нескольких <span class=\"AknFullPage-title--highlight\">продуктов</span>|{1}Изменить статус <span class=\"AknFullPage-title--highlight\">1 продукта</span>|]1, Inf[Изменить статус <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} продуктов</span>"
+      description: Выбранные продукты будут активированы или дезактивированы.
       field: Включить
-    edit_common:
-      label: Изменить значения атрибутов
-    add_attribute_value:
-      label: Добавьте значения атрибутов
-      description: Только атрибуты, имеющие несколько значений, будут редактироваться для {{ locale }} и {{ scope }}. Новые значения атрибутов добавляются, предыдущие значения сохраняются.
     change_family:
       label: Изменить семейство
+      label_count: "{0}изменил семейство нескольких <span class=\"AknFullPage-title--highlight\">продуктов</span>|{1}Изменить семейство <span class=\"AknFullPage-title--highlight\">1 продукта</span>|]1, Inf[Изменить семейство <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} продуктов</span>"
       description: Семейство для выбранных продуктов будет изменено на выбранное семейство
     add_to_group:
       label: Добавить в группы
+      label_count: "{0}Добавить несколько <span class=\"AknFullPage-title--highlight\">продуктов</span> в группы|{1}Добавить <span class=\"AknFullPage-title--highlight\">1 продукт</span> в группы|]1, Inf[Добавить <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} продукты</span> в группы"
       description: Выберите группы, в которые нужно добавить выбранные продукты
       field: Группы
     add_to_category:
+      label: Добавить в категории
+      label_count: "{0}Добавить несколько <span class=\"AknFullPage-title--highlight\">продуктов</span> в категории|{1}Добавить <span class=\"AknFullPage-title--highlight\">1 продукт</span> в категории|]1, Inf[Добавить <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} продукты</span> в категории"
       description: Продукты будут классифицированы в следующие категории, исходная классификация сохранена.
     move_to_category:
+      label: Переместить между категориями
+      label_count: "{0}Переместить несколько <span class=\"AknFullPage-title--highlight\">продуктов</span> между категориями |{1}Переместить <span class=\"AknFullPage-title--highlight\">1 продукт</span> между категориями|]1, Inf[Переместить <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} продукты</span> между категориями"
       description: Продукты будут классифицированы в следующие категории, исходная классификация не сохранена.
     remove_from_category:
+      label: Удалить из категорий
+      label_count: "{0}Удалить несколько <span class=\"AknFullPage-title--highlight\">продуктов</span> из категорий|{1}Удалить <span class=\"AknFullPage-title--highlight\">1 продукт</span> из категорий|]1, Inf[Удалить <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} продукты</span> из категорий"
       description: Продукты будут удалены из следующих категорий.
+    add_to_existing_product_model:
+      label: Добавить к существующей модели продукта
+      label_count: "{0}Добавить несколько <span class=\"AknFullPage-title--highlight\">продуктов</span> в существующую модель продукта |{1}Добавить <span class=\"AknFullPage-title--highlight\">1 продукт</span> в существующую модель продукта|]1, Inf[Добавить <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} продукты</span> в существующую модель продукта"
+      description: Выбранная модель продукта объединит продукты и позволит пополнить их общие свойства.
+    convert_to_simple_products:
+      label: Преобразовать в простой товар
+      label_count: "{0}Конвертировать несколько продуктов <span class=\"AknFullPage-title--highlight\"></span> в простые продукты |{1}Конвертировать <span class=\"AknFullPage-title--highlight\">1 продукт</span> в простой продукт|]1, Inf[Конвертировать <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} продукты</span> в простые продукты"
+      description: Все предыдущие значения, категории и ассоциации будут сохранены.
     associate_to_product_and_product_model:
-      label: Связать
+      label_count: "{0}Связать несколько <span class=\"AknFullPage-title--highlight\">продуктов</span> с продуктами или моделями продукта|{1}Связать <span class=\"AknFullPage-title--highlight\">1 продукт</span> с продуктами или моделями продукта|]1, Inf[Связать <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} продукты</span> с продуктами или моделями продуктов"
       description: Продукты, выбранные в таблице, будут связаны с выбранными продуктами и моделями продуктов для выбранного типа связи
       validate: Пожалуйста, добавьте связь до перехода к следующему шагу
     change_parent_product_model:
       label: Изменить родительскую модель продукта
+      label_count: "{0}Изменить родительскую модель продукта <span class=\"AknFullPage-title--highlight\">у нескольких продуктов</span>|{1}Изменить родительскую модель <span class=\"AknFullPage-title--highlight\">1 продукта</span>|]1, Inf[Изменить родительскую модель <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} продуктов</span>"
       description: Родительская модель продукта или варианта продукта, выделенная в представлении, будет изменена на выбранную модель продукта.
 pim_datagrid:
   mass_action_group:
@@ -255,16 +324,30 @@ pim_datagrid:
     delete:
       confirm_content: Вы действительно хотите удалить выбранные продукты?
       success: Выбранные продукты успешно удалены.
-      error: Oшибка при попытке удаления выбранных продуктов, пожалуйста, попробуйте снова.
     quick_export:
       csv_all: CSV (Все атрибуты)
       csv_grid_context: CSV (видимые столбцы)
       xlsx_all: Excel (все атрибуты)
       xlsx_grid_context: Excel (видимые столбцы)
+      configurator:
+        subtitle: Быстрый экспорт
+        title: Выберите действие
+        csv: CSV
+        xlsx: XLSX
+        grid_context: Контекст сетки
+        all_attributes: Все атрибуты
+        with_codes: С кодами
+        with_labels: С метками
+        without_media: Без медиа
+        with_media: С медиа
+      flash:
+        message: "Вы можете следить за процессом экспорта здесь."
+    mass_edit: Массовые действия
+    sequential_edit: Последовательное редактирование
     mass_delete: Массовое удаление
     selected:
-      family: выбранные семейства
-      product: выбранные результаты
+      family: "]-Inf, 1]{{ count }} семейство выбрано|]1, Inf[{{ count }} семейств выбрано"
+      product: "]-Inf, 1]{{ count }} результат выбран|]1, Inf[{{ count }} результатов выбрано"
   view_selector:
     view: Представления
   actions:
@@ -281,7 +364,34 @@ pim_datagrid:
   filters:
     label: Фильтры
     system: Система
-  search: Поиск по {{ label }}
+    product_typology:
+      label: 'Типология товара'
+      simple: 'Простая'
+      variant: 'Вариант'
+    entity_type:
+      label: 'Вариант'
+      grouped: 'Группированные'
+      ungrouped: 'Без группировки'
+    family:
+      label: Семейство
+    groups:
+      label: Группы
+    enabled:
+      label: Статус
+    scope:
+      label: Область
+    completeness:
+      label: Завершено
+    created:
+      label: Дата создания
+    updated:
+      label: Дата обновления
+    label_or_identifier:
+      label: Метка или идентификатор
+    parent:
+      label: Родительский
+    identifier:
+      label: Идентификатор
 batch_jobs:
   add_association:
     label: Связать
@@ -295,11 +405,19 @@ batch_jobs:
   add_to_category:
     label: Добавить в категорию
     perform.label: Добавить в категорию
+  add_to_existing_product_model:
+    label: Добавить к существующей модели продукта
+    perform.label: Добавить к существующей модели продукта
+  convert_to_simple_products:
+    label: Преобразовать в простой товар
+    perform.label: Преобразовать в простой товар
   csv_product_grid_context_quick_export:
     quick_export.label: Быстрый экспорт контекста сетки в CSV
+    quick_export_product_model.label: Быстрый экспорт в CSV моделей продуктов в виде представления данных в таблице
     perform.label: Быстрый экспорт контекста сетки в CSV
   csv_product_quick_export:
     quick_export.label: Быстрый экспорт в CSV
+    quick_export_product_model.label: Быстрый экспорт модели продукта в CSV
     perform.label: Быстрый экспорт в CSV
   delete_products_and_product_models:
     label: Массовое удаление продуктов
@@ -308,8 +426,13 @@ batch_jobs:
     label: Изменение родительской модели продукта
     perform.label: Изменение родительской модели продукта
   edit_common_attributes:
-    label: Редактировать атрибуты
-    perform.label: Редактировать атрибуты
+    label: Изменить атрибуты
+    perform.label: Изменить атрибуты
+    clean.label: Очистка файлов для атрибутов
+    cleaner.label: Очистка файлов для атрибутов
+  compute_completeness_of_products_family:
+    label: Подсчет полноты данных
+    perform.label: Подсчет полноты данных
   move_to_category:
     label: Перенести в категорию
     perform.label: Перенести в категорию
@@ -324,3 +447,8 @@ batch_jobs:
     perform.label: Установить обязательность/ необязательность атрибутов
   default_steps:
     delete_products_and_product_models: Удалить продукты и модели продуктов
+    remove_completeness_for_channel_and_locale: Удалить завершенность для канала и локали
+error:
+  removing:
+    group: Невозможно удалить группу
+    association type: Невозможно удалить тип связи

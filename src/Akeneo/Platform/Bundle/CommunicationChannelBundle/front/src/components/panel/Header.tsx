@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import {AkeneoThemedProps, useTheme, CloseIcon, MegaphoneIcon} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 
 const Container = styled.div`
   margin-right: 30px;

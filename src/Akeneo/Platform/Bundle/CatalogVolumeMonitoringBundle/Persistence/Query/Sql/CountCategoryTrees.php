@@ -20,16 +20,12 @@ class CountCategoryTrees implements CountQuery
     /** @var Connection */
     private $connection;
 
-    /** @var int */
-    private $limit;
-
     /**
      * @param Connection $connection
      */
-    public function __construct(Connection $connection, int $limit)
+    public function __construct(Connection $connection)
     {
         $this->connection = $connection;
-        $this->limit = $limit;
     }
 
     /**
@@ -42,8 +38,8 @@ class CountCategoryTrees implements CountQuery
             FROM pim_catalog_category
             WHERE lvl = 0;
 SQL;
-        $result = $this->connection->query($sql)->fetch();
-        $volume = new CountVolume((int) $result['count'], $this->limit, self::VOLUME_NAME);
+        $result = $this->connection->executeQuery($sql)->fetchAssociative();
+        $volume = new CountVolume((int) $result['count'], self::VOLUME_NAME);
 
         return $volume;
     }

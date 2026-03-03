@@ -2,6 +2,11 @@ extensions:
     pim-product-model-edit-form:
         module: pim/form/common/edit-form
 
+    pim-product-model-edit-form-sandbox-helper:
+        module: pim/sandbox-helper
+        parent: pim-product-model-edit-form
+        targetZone: helper
+
     pim-product-model-edit-form-breadcrumbs:
         module: pim/common/breadcrumbs
         parent: pim-product-model-edit-form
@@ -41,7 +46,7 @@ extensions:
         position: 100
 
     pim-product-model-edit-form-left-column:
-        module: pim/form/common/column
+        module: pim/product-edit-form/sub-navigation
         parent: pim-product-model-edit-form
         position: 5
         targetZone: column
@@ -90,6 +95,14 @@ extensions:
         aclResourceId: pim_enrich_product_model_edit_attributes
         position: 80
 
+    pim-free-trial-pim-product-model-edit-form-start-copy:
+        module: pim/product-edit-form/free-trial-start-copy
+        parent: pim-product-model-edit-form
+        targetZone: buttons
+        aclResourceId: pim_enrich_product_model_edit_attributes
+        position: 60
+        feature: free_trial
+
     pim-product-model-edit-form-delete:
         module: pim/product-model-edit-form/delete
         parent: pim-product-model-edit-form-secondary-actions
@@ -103,6 +116,7 @@ extensions:
                 content: pim_common.confirm_deletion
                 success: pim_enrich.entity.product_model.flash.delete.success
                 fail: pim_enrich.entity.product_model.flash.delete.fail
+                buttonText: pim_common.delete
             redirect: pim_enrich_product_index
 
     pim-product-model-edit-form-save-buttons:
@@ -314,3 +328,9 @@ extensions:
         parent: pim-product-model-edit-form-attribute-filter
         targetZone: self
         position: 120
+
+    pim-product-model-edit-form-completeness-follow-missing-attribute:
+        module: pim/product-model-edit-form/completeness-follow-missing-attribute
+        parent: pim-product-model-edit-form
+        position: 10
+        targetZone: content

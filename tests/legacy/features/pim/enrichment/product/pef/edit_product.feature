@@ -27,7 +27,7 @@ Feature: Edit a product
       | sandal  | name        | My sandals name                      |        |           |
       | sandal  | length      | 29 CENTIMETER                        |        |           |
 
-  @critical @validate-migration
+  @critical @validate-migration @purge-messenger
   Scenario: Successfully create, edit and save a product
     Given I am logged in as "Mary"
     And I am on the "sandal" product page
@@ -37,6 +37,7 @@ Feature: Edit a product
     When I press the "Save" button
     Then I should not see the text "There are unsaved changes."
     And the product Name should be "My Sandal"
+    And 1 event of type "product.updated" should have been raised
 
   @critical
   Scenario: Successfully updates the updated date of the product
@@ -64,9 +65,11 @@ Feature: Edit a product
   Scenario: Successfully add a metric attribute to a product
     Given I am logged in as "Julia"
     And I am on the "sandal" product page
+    Then the product Shoes size should be "29 Centimeter"
     When I change the "Shoes size" to "29 Dekameter"
     And I save the product
-    Then the product Shoes size should be "29 Dekameter"
+    Then I should not see the text "There are unsaved changes."
+    And the product Shoes size should be "29 Dekameter"
 
   @critical
   Scenario: Successfully switch the product scope
@@ -85,7 +88,7 @@ Feature: Edit a product
     Then I switch the scope to "channel_code"
     And I should see the text "The channel label"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-6258
+  # @jira https://akeneo.atlassian.net/browse/PIM-6258
   Scenario: Successfully view a product even if permissions on locales channels and families are revoked
     Given I am logged in as "Peter"
     When I am on the "Catalog manager" role page

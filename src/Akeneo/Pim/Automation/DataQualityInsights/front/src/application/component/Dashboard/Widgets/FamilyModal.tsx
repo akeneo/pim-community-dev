@@ -11,6 +11,7 @@ interface FamilyModalProps {
   isVisible: boolean;
   canAddMoreFamilies: boolean;
   errorMessage: string;
+  catalogLocale: string;
 }
 
 const FamilyModal = ({
@@ -20,6 +21,7 @@ const FamilyModal = ({
   isVisible,
   canAddMoreFamilies,
   errorMessage,
+  catalogLocale,
 }: FamilyModalProps) => {
   if (!isVisible) {
     return <></>;
@@ -31,7 +33,7 @@ const FamilyModal = ({
         <div className="AknMessageBox AknMessageBox--error AknMessageBox--withIcon">{errorMessage}</div>
       )}
       <div>{__('pim_enrich.entity.family.plural_label')} :</div>
-      <FamiliesSelect2 onChange={onSelectFamily} />
+      <FamiliesSelect2 onChange={onSelectFamily} catalogLocale={catalogLocale} />
     </div>
   );
 

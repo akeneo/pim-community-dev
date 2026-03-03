@@ -29,6 +29,8 @@ class JobInstanceNormalizer implements NormalizerInterface, CacheableSupportsMet
             'connector'     => $object->getConnector(),
             'type'          => $object->getType(),
             'configuration' => $this->normalizeConfiguration($object),
+            'automation'    => $object->getAutomation(),
+            'scheduled'     => $object->isScheduled(),
         ];
 
         return $results;
@@ -37,7 +39,7 @@ class JobInstanceNormalizer implements NormalizerInterface, CacheableSupportsMet
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof JobInstance && 'standard' === $format;
     }

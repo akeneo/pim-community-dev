@@ -20,6 +20,8 @@ mappings:
             type: 'date'
         updated:
             type: 'date'
+        entity_updated:
+            type: 'date'
         identifier:
             type: 'keyword'
             normalizer: 'identifier_normalizer'
@@ -240,6 +242,7 @@ mappings:
                 path_match: 'values.*-media.*.original_filename'
                 mapping:
                     type: 'keyword'
+                    normalizer: 'text_normalizer'
         -
             media_size:
                 path_match: 'values.*-media.*.size'
@@ -286,5 +289,10 @@ mappings:
         -
             data_quality_insights_scores:
                 path_match: 'data_quality_insights.scores.*'
+                mapping:
+                    type: 'short'
+        -
+            data_quality_insights_scores_partial_criteria:
+                path_match: 'data_quality_insights.scores_partial_criteria.*'
                 mapping:
                     type: 'short'

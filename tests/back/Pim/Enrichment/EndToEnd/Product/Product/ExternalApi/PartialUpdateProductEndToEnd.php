@@ -4,11 +4,25 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi;
 
+use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateGroups;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProducts;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\SetGroups;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetImageValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
+use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
 class PartialUpdateProductEndToEnd extends AbstractProductTestCase
 {
+    use AssertEventCountTrait;
+
     /**
      * {@inheritdoc}
      */
@@ -17,56 +31,36 @@ class PartialUpdateProductEndToEnd extends AbstractProductTestCase
         parent::setUp();
 
         $this->createProduct('product_family', [
-            'family' => 'familyA2',
+            new SetFamily('familyA2')
         ]);
 
         $this->createProduct('product_groups', [
-            'groups' => ['groupA'],
+            new SetGroups(['groupA'])
         ]);
 
         $this->createProduct('product_categories', [
-            'categories' => ['master'],
+            new SetCategories(['master'])
         ]);
 
         $this->createProduct('product_associations', [
-            'associations'  => [
-                'PACK'         => ['groups'   => [], 'products' => [], 'product_models' => []],
-                'SUBSTITUTION' => ['groups'   => [], 'products' => [], 'product_models' => []],
-                'UPSELL'       => ['groups'   => [], 'products' => [], 'product_models' => []],
-                'X_SELL'       => ['groups'   => ['groupA'], 'products' => ['product_categories'], 'product_models' => []],
-            ],
+            new AssociateProducts('X_SELL', ['product_categories']),
+            new AssociateGroups('X_SELL', ['groupA'])
         ]);
 
         $this->createProduct('localizable', [
-            'values'     => [
-                'a_localizable_image' => [
-                    ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')), 'locale' => 'en_US', 'scope' => null],
-                    ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')), 'locale' => 'fr_FR', 'scope' => null],
-                ]
-            ]
+            new SetImageValue('a_localizable_image', null, 'en_US', $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))),
+            new SetImageValue('a_localizable_image', null, 'fr_FR', $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))),
         ]);
 
         $this->createProduct('complete', [
-            'family'        => 'familyA2',
-            'groups'        => ['groupA'],
-            'categories'    => ['master'],
-            'values'        => [
-                'a_metric' => [
-                    ['data' => ['amount' => '10.0000', 'unit' => 'KILOWATT'], 'locale' => null, 'scope' => null],
-                ],
-                'a_date'   => [
-                    ['data' => '2016-06-13T00:00:00+02:00', 'locale' => null, 'scope' => null],
-                ],
-                'a_simple_select' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'optionB'],
-                ],
-            ],
-            'associations'  => [
-                'PACK'         => ['groups'   => [], 'products' => [], 'product_models' => []],
-                'SUBSTITUTION' => ['groups'   => [], 'products' => [], 'product_models' => []],
-                'UPSELL'       => ['groups'   => [], 'products' => [], 'product_models' => []],
-                'X_SELL'       => ['groups'   => ['groupA'], 'products' => ['product_categories'], 'product_models' => []],
-            ],
+            new SetFamily('familyA2'),
+            new SetGroups(['groupA']),
+            new SetCategories(['master']),
+            new SetMeasurementValue('a_metric', null, null, '10.0000', 'KILOWATT'),
+            new SetDateValue('a_date', null, null, new \DateTime('2016-06-13T00:00:00+02:00')),
+            new SetSimpleSelectValue('a_simple_select', null, null, 'optionB'),
+            new AssociateProducts('X_SELL', ['product_categories']),
+            new AssociateGroups('X_SELL', ['groupA'])
         ]);
     }
 
@@ -413,13 +407,12 @@ JSON;
 
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Validation failed.',
-            'errors'  => [
-                [
-                    'property' => 'identifier',
-                    'message'  => 'The identifier attribute cannot be empty.',
-                ],
-            ],
+            'message' => 'Validation failed. The identifier field is required for this endpoint. If you want to manipulate products without identifiers, please use products-uuid endpoints.',
+            '_links'  => [
+                'documentation' => [
+                    'href' => 'http://api.akeneo.com/api-reference.html#patch_products_uuid__uuid_'
+                ]
+            ]
         ];
 
         $response = $client->getResponse();
@@ -465,6 +458,7 @@ JSON;
         $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         $this->assertSameProducts($expectedProduct, 'product_family');
+        $this->assertEventCount(1, ProductUpdated::class);
     }
 
     public function testProductPartialUpdateWithTheFamilyDeleted()
@@ -543,6 +537,7 @@ JSON;
         $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         $this->assertSameProducts($expectedProduct, 'product_groups');
+        $this->assertEventCount(1, ProductUpdated::class);
     }
 
     public function testProductPartialUpdateWithTheGroupsDeleted()
@@ -583,6 +578,7 @@ JSON;
         $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         $this->assertSameProducts($expectedProduct, 'product_groups');
+        $this->assertEventCount(1, ProductUpdated::class);
     }
 
     public function testProductPartialUpdateWithTheCategoriesUpdated()
@@ -623,6 +619,7 @@ JSON;
         $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         $this->assertSameProducts($expectedProduct, 'product_categories');
+        $this->assertEventCount(1, ProductUpdated::class);
     }
 
     public function testProductPartialUpdateWithTheCategoriesDeleted()
@@ -663,6 +660,7 @@ JSON;
         $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         $this->assertSameProducts($expectedProduct, 'product_categories');
+        $this->assertEventCount(1, ProductUpdated::class);
     }
 
     /**
@@ -713,22 +711,25 @@ JSON;
             'associations' => [
                 'PACK' => [
                     'groups' => ['groupA'],
-                    'products' => ['product_family', 'product_categories'],
+                    'product_uuids' => [
+                        $this->getProductUuid('product_family')->toString(),
+                        $this->getProductUuid('product_categories')->toString()
+                    ],
                     'product_models' => [],
                 ],
                 'SUBSTITUTION' => [
                     'groups' => [],
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => ['a_product_model']
                 ],
                 'UPSELL' => [
                     'groups' => [],
-                    'products' => [],
+                    'product_uuids' => [],
                     'product_models' => [],
                 ],
                 'X_SELL' => [
                     'groups' => ['groupA'],
-                    'products' => ['product_categories'],
+                    'product_uuids' => [$this->getProductUuid('product_categories')->toString()],
                     'product_models' => [],
                 ],
             ],
@@ -740,6 +741,9 @@ JSON;
         $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         $this->assertSameProducts($expectedProduct, 'product_associations');
+
+        $this->assertEventCount(1, ProductUpdated::class);
+
     }
 
     public function testProductPartialUpdateWithTheAssociationsDeletedOnGroups()
@@ -776,10 +780,10 @@ JSON;
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [
-                'PACK'         => ['groups'   => [], 'products' => [], 'product_models' => []],
-                'SUBSTITUTION' => ['groups'   => [], 'products' => [], 'product_models' => []],
-                'UPSELL'       => ['groups'   => [], 'products' => [], 'product_models' => []],
-                'X_SELL'       => ['groups'   => [], 'products' => ['product_categories'], 'product_models' => []],
+                'PACK'         => ['groups'   => [], 'product_uuids' => [], 'product_models' => []],
+                'SUBSTITUTION' => ['groups'   => [], 'product_uuids' => [], 'product_models' => []],
+                'UPSELL'       => ['groups'   => [], 'product_uuids' => [], 'product_models' => []],
+                'X_SELL'       => ['groups'   => [], 'product_uuids' => [$this->getProductUuid('product_categories')->toString()], 'product_models' => []],
             ],
             'quantified_associations' => [],
         ];
@@ -830,10 +834,10 @@ JSON;
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [
-                'PACK'         => ['groups'   => [], 'products' => [], 'product_models' => []],
-                'SUBSTITUTION' => ['groups'   => [], 'products' => [], 'product_models' => []],
-                'UPSELL'       => ['groups'   => [], 'products' => [], 'product_models' => []],
-                'X_SELL'       => ['groups'   => [], 'products' => [], 'product_models' => []],
+                'PACK'         => ['groups'   => [], 'product_uuids' => [], 'product_models' => []],
+                'SUBSTITUTION' => ['groups'   => [], 'product_uuids' => [], 'product_models' => []],
+                'UPSELL'       => ['groups'   => [], 'product_uuids' => [], 'product_models' => []],
+                'X_SELL'       => ['groups'   => [], 'product_uuids' => [], 'product_models' => []],
             ],
             'quantified_associations' => [],
         ];
@@ -843,6 +847,7 @@ JSON;
         $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         $this->assertSameProducts($expectedProduct, 'product_associations');
+        $this->assertEventCount(1, ProductUpdated::class);
     }
 
     public function testProductPartialUpdateWithProductDisable()
@@ -883,6 +888,7 @@ JSON;
         $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         $this->assertSameProducts($expectedProduct, 'product_categories');
+        $this->assertEventCount(1, ProductUpdated::class);
     }
 
     public function testProductPartialUpdateWhenProductValueAddedOnAttribute()
@@ -936,6 +942,7 @@ JSON;
         $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         $this->assertSameProducts($expectedProduct, 'localizable');
+        $this->assertEventCount(1, ProductUpdated::class);
     }
 
     public function testProductPartialUpdateWhenProductValueUpdatedOnAttribute()
@@ -1205,10 +1212,10 @@ JSON;
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [
-                'PACK'         => ['groups'   => [], 'products' => [], 'product_models' => []],
-                'SUBSTITUTION' => ['groups'   => [], 'products' => [], 'product_models' => []],
-                'UPSELL'       => ['groups'   => [], 'products' => [], 'product_models' => []],
-                'X_SELL'       => ['groups'   => ['groupA'], 'products' => ['product_categories'], 'product_models' => []],
+                'PACK'         => ['groups'   => [], 'product_uuids' => [], 'product_models' => []],
+                'SUBSTITUTION' => ['groups'   => [], 'product_uuids' => [], 'product_models' => []],
+                'UPSELL'       => ['groups'   => [], 'product_uuids' => [], 'product_models' => []],
+                'X_SELL'       => ['groups'   => ['groupA'], 'product_uuids' => [$this->getProductUuid('product_categories')->toString()], 'product_models' => []],
             ],
             'quantified_associations' => [],
         ];
@@ -1348,7 +1355,7 @@ JSON;
             'errors'  => [
                 [
                     'property' => 'identifier',
-                    'message'  => 'The same identifier is already set on another product',
+                    'message'  => 'The product_family identifier is already used for another product.',
                 ],
             ],
         ];
@@ -1583,6 +1590,83 @@ JSON;
 
         $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+    }
+
+    public function testAccessDeniedWhenPartialUpdateOnProductWithoutTheAcl()
+    {
+        $client = $this->createAuthenticatedClient();
+        $this->removeAclFromRole('action:pim_api_product_edit');
+
+        $data =
+            <<<JSON
+{"identifier": "foo"}
+JSON;
+
+        $client->request('PATCH', 'api/rest/v1/products/foo', [], [], [], $data);
+        $response = $client->getResponse();
+
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+    }
+
+    public function testUpdateIdentifierValues(): void
+    {
+        $this->createIdentifierAttribute('id_2');
+        $client = $this->createAuthenticatedClient();
+        $data = <<<JSON
+        {
+            "identifier": "product_family_updated",
+            "values": {
+                "id_2": [{"scope":  null, "locale":  null, "data":  "my_second_identifier"}]
+            }
+        }
+        JSON;
+
+        $client->request('PATCH', 'api/rest/v1/products/product_family', [], [], [], $data);
+
+        $expectedProduct = [
+            'identifier'    => 'product_family_updated',
+            'family'        => 'familyA2',
+            'parent'        => null,
+            'groups'        => [],
+            'categories'    => [],
+            'enabled'       => true,
+            'values'        => [
+                'sku' => [
+                    ['locale' => null, 'scope' => null, 'data' => 'product_family_updated'],
+                ],
+                'id_2' => [
+                    ['locale' => null, 'scope' => null, 'data' => 'my_second_identifier'],
+                ],
+            ],
+            'created'       => '2016-06-14T13:12:50+02:00',
+            'updated'       => '2016-06-14T13:12:50+02:00',
+            'associations'  => [],
+            'quantified_associations' => [],
+        ];
+
+        $response = $client->getResponse();
+
+        $this->assertSame('', $response->getContent());
+        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+        $this->assertSameProducts($expectedProduct, 'product_family_updated');
+        $this->assertEventCount(1, ProductUpdated::class);
+    }
+
+    private function createIdentifierAttribute(string $code): void
+    {
+        $attribute = $this->get('pim_catalog.factory.attribute')->createAttribute('pim_catalog_identifier');
+        $data = [
+            'code' => $code,
+            'scopable' => false,
+            'localizable' => false,
+            'group' => 'other',
+            'unique' => true,
+            'useable_as_grid_filter' => true,
+        ];
+        $this->get('pim_catalog.updater.attribute')->update($attribute, $data);
+        $violations = $this->get('validator')->validate($attribute);
+        Assert::assertCount(0, $violations, (string)$violations);
+        $this->get('pim_catalog.saver.attribute')->save($attribute);
     }
 
     /**

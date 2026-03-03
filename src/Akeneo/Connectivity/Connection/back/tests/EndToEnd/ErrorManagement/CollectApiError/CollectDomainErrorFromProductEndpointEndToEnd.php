@@ -7,10 +7,11 @@ namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\Connection;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\ProductLoader;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Structure\FamilyLoader;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
-use Elasticsearch\Client;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -22,14 +23,9 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class CollectDomainErrorFromProductEndpointEndToEnd extends ApiTestCase
 {
-    /** @var FamilyLoader */
-    private $familyLoader;
-
-    /** @var ProductLoader */
-    private $productLoader;
-
-    /** @var Client */
-    private $elasticsearch;
+    private ?FamilyLoader $familyLoader;
+    private ?ProductLoader $productLoader;
+    private ?Client $elasticsearch;
 
     protected function setUp(): void
     {
@@ -37,7 +33,6 @@ class CollectDomainErrorFromProductEndpointEndToEnd extends ApiTestCase
 
         $this->familyLoader = $this->get('akeneo_connectivity.connection.fixtures.structure.family');
         $this->productLoader = $this->get('akeneo_connectivity.connection.fixtures.enrichment.product');
-
         $this->elasticsearch = $this->get('akeneo_connectivity.client.connection_error');
     }
 
@@ -64,7 +59,7 @@ class CollectDomainErrorFromProductEndpointEndToEnd extends ApiTestCase
             $connection->password()
         );
 
-        $content = json_encode([
+        $content = \json_encode([
             'identifier' => 'high-top_sneakers',
             'family' => 'shoes',
             'values' => [
@@ -85,6 +80,7 @@ class CollectDomainErrorFromProductEndpointEndToEnd extends ApiTestCase
         $result = $this->elasticsearch->search([]);
 
         Assert::assertCount(1, $result['hits']['hits']);
+        Assert::assertNotEmpty($result['hits']['hits'][0]['_source']['id']);
     }
 
     /**
@@ -93,7 +89,9 @@ class CollectDomainErrorFromProductEndpointEndToEnd extends ApiTestCase
     public function test_it_collects_a_domain_error_from_the_partial_update_endpoint(): void
     {
         $this->familyLoader->create(['code' => 'shoes', 'attributes' => ['sku']]);
-        $this->productLoader->create('high-top_sneakers', ['family' => 'shoes']);
+        $this->productLoader->create('high-top_sneakers', [
+            new SetFamily('shoes'),
+        ]);
 
         $connection = $this->createConnection('erp', 'ERP', FlowType::DATA_SOURCE, true);
 
@@ -106,7 +104,7 @@ class CollectDomainErrorFromProductEndpointEndToEnd extends ApiTestCase
             $connection->password()
         );
 
-        $content = json_encode([
+        $content = \json_encode([
             'identifier' => 'high-top_sneakers',
             'family' => 'shoes',
             'values' => [
@@ -127,6 +125,7 @@ class CollectDomainErrorFromProductEndpointEndToEnd extends ApiTestCase
         $result = $this->elasticsearch->search([]);
 
         Assert::assertCount(1, $result['hits']['hits']);
+        Assert::assertNotEmpty($result['hits']['hits'][0]['_source']['id']);
     }
 
     /**
@@ -135,7 +134,9 @@ class CollectDomainErrorFromProductEndpointEndToEnd extends ApiTestCase
     public function test_it_collects_a_domain_error_from_the_partial_update_list_endpoint(): void
     {
         $this->familyLoader->create(['code' => 'shoes', 'attributes' => ['sku']]);
-        $this->productLoader->create('high-top_sneakers', ['family' => 'shoes']);
+        $this->productLoader->create('high-top_sneakers', [
+            new SetFamily('shoes'),
+        ]);
 
         $connection = $this->createConnection('erp', 'ERP', FlowType::DATA_SOURCE, true);
 
@@ -148,7 +149,7 @@ class CollectDomainErrorFromProductEndpointEndToEnd extends ApiTestCase
             $connection->password()
         );
 
-        $content = json_encode([
+        $content = \json_encode([
             'identifier' => 'high-top_sneakers',
             'values' => [
                 'name' => [
@@ -162,7 +163,7 @@ class CollectDomainErrorFromProductEndpointEndToEnd extends ApiTestCase
         ]);
 
         $streamedContent = '';
-        ob_start(function ($buffer) use (&$streamedContent) {
+        \ob_start(function ($buffer) use (&$streamedContent): string {
             $streamedContent .= $buffer;
             return '';
         });
@@ -174,7 +175,7 @@ class CollectDomainErrorFromProductEndpointEndToEnd extends ApiTestCase
             ['HTTP_content_type' => StreamResourceResponse::CONTENT_TYPE],
             $content
         );
-        ob_end_flush();
+        \ob_end_flush();
 
         Assert::assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
@@ -182,5 +183,6 @@ class CollectDomainErrorFromProductEndpointEndToEnd extends ApiTestCase
         $result = $this->elasticsearch->search([]);
 
         Assert::assertCount(1, $result['hits']['hits']);
+        Assert::assertNotEmpty($result['hits']['hits'][0]['_source']['id']);
     }
 }

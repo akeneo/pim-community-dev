@@ -34,7 +34,7 @@ class CsvEncoder implements EncoderInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsEncoding($format)
+    public function supportsEncoding(string $format): bool
     {
         return self::FORMAT === $format;
     }
@@ -42,7 +42,7 @@ class CsvEncoder implements EncoderInterface
     /**
      * {@inheritdoc}
      */
-    public function encode($data, $format, array $context = [])
+    public function encode(mixed $data, string $format, array $context = []): string
     {
         if (!is_array($data)) {
             throw new \InvalidArgumentException(

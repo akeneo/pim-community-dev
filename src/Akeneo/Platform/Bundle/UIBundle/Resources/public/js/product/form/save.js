@@ -17,10 +17,13 @@ define([
   'pim/field-manager',
   'pim/i18n',
   'pim/user-context',
-], function ($, _, __, BaseSave, messenger, ProductSaver, FieldManager, i18n, UserContext) {
+  'pim/analytics',
+], function ($, _, __, BaseSave, messenger, ProductSaver, FieldManager, i18n, UserContext, analytics) {
   return BaseSave.extend({
     updateSuccessMessage: __('pim_enrich.entity.product.flash.update.success'),
     updateFailureMessage: __('pim_enrich.entity.product.flash.update.fail'),
+    updateIdentifierWarningMessage: __('pim_enrich.entity.product.flash.update.identifier_warning'),
+    sessionExpiredMessage: __('pim_enrich.entity.product.flash.update.fail_session_expired'),
 
     configure: function () {
       this.listenTo(this.getRoot(), 'pim_enrich:form:change-family:after', this.save);
@@ -34,7 +37,7 @@ define([
      */
     save: function (options) {
       var product = $.extend(true, {}, this.getFormData());
-      var productId = product.meta.id;
+      var productUuid = product.meta.id;
 
       delete product.meta;
 
@@ -58,10 +61,21 @@ define([
       this.showLoadingMask();
       this.getRoot().trigger('pim_enrich:form:entity:pre_save');
 
-      return ProductSaver.save(productId, product)
+      analytics.appcuesTrack('product:form:saved', {
+        name: product.identifier,
+      });
+
+      return ProductSaver.save(productUuid, product)
         .fail(this.fail.bind(this))
         .then(
           function (data) {
+            if (data.meta?.identifier_generator_warnings) {
+              const normalizedWarnings = data.meta.identifier_generator_warnings.map(warning => {
+                return warning.path ? `${warning.path}: ${warning.message} ` : warning.message;
+              });
+
+              messenger.notify('warning', this.updateIdentifierWarningMessage, normalizedWarnings);
+            }
             this.postSave();
 
             this.setData(data, options);

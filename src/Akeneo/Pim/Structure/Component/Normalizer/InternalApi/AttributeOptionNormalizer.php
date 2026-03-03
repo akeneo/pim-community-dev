@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Structure\Component\Normalizer\InternalApi;
 
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Tool\Component\Normalizer\GetNormalizer;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
@@ -62,7 +62,7 @@ class AttributeOptionNormalizer implements NormalizerInterface, NormalizerAwareI
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof AttributeOptionInterface && in_array($format, $this->supportedFormat);
     }

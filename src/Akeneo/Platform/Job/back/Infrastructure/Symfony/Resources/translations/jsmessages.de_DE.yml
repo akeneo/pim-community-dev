@@ -1,0 +1,79 @@
+pim_title:
+  akeneo_job_process_tracker_index: Prozess-Tracker
+  akeneo_job_process_tracker_details: Prozess-Tracker | Job anzeigen
+akeneo_job:
+  job_status:
+    COMPLETED: Vollständig
+    STARTED: In Bearbeitung
+    STARTING: Gestartet
+    STOPPING: Beende...
+    STOPPED: Beendet
+    FAILED: Fehlgeschlagen
+    ABANDONED: Abgebrochen
+    UNKNOWN: Unbekannt
+    IN_PROGRESS: In Bearbeitung
+    PAUSING: Pausieren
+    PAUSED: Pausiert
+akeneo_job_process_tracker:
+  tooltip:
+    paused: Diese Aufgabe wurde wegen interner Wartung pausiert. Sie wird automatisch fortgesetzt, sobald sie erledigt ist.
+  last_operations:
+    title: Letzte Operationen
+    view_all: Alle anzeigen
+    details: Details
+    no_result: Momentan ist keine Operation vorhanden.
+  last_executions:
+    title: Zuletzt ausgeführt
+  job_execution_list:
+    search_placeholder: Nach Job-Namen suchen
+    table:
+      headers:
+        job_name: Job Name
+        type: Typ
+        started_at: Gestartet am
+        username: Benutzername
+        progress: Fortschritt
+        status: Status
+        warning_count: Warnungen
+  type_filter:
+    label: Typ
+    all: Alle
+    quick_export: Schnellexport
+    import: Import
+    export: Export
+    mass_edit: Massenbearbeitung
+    mass_delete: Massenlöschung von Produkten
+    compute_family_variant_structure_changes: Änderungen in der Struktur von Varianten der Produktfamilie berechnen
+    compute_completeness_of_products_family: Vollständigkeit der Produktfamilie berechnen
+    clean_removed_attribute_job: Entfernte Attributwerte werden bereinigt
+    execute_rules: Regeln anwenden
+  user_filter:
+    label: Benutzer
+    all: Alle
+    search: Suche
+  status_filter:
+    label: Status
+    all: Alle
+    abandoned: Abgebrochen
+    completed: Vollständig
+    failed: Fehlgeschlagen
+    starting: Wird gestartet...
+    stopped: Beendet
+    stopping: Beende...
+    unknown: Unbekannt
+    in_progress: In Bearbeitung
+    pausing: Pausieren
+    paused: Pausiert
+  automation_filter:
+    all: Alle
+    yes: Yes
+    no: No
+    label: Automatisierung
+  max_page_without_filter_helper:
+    - Um Ihnen die relevantesten Ergebnisse zu zeigen, verfeinern Sie bitte Ihre Suche.
+  tracking:
+    completed: "Benötigte Zeit: {{ duration }}"
+    in_progress: "Geschätzte Zeit für den aktuellen Schritt: {{ duration }}"
+    not_started: Ausstehend
+    untrackable: Unverfolgbarer Schritt
+    estimating: Geschätzte Restzeit…

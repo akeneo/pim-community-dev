@@ -17,7 +17,7 @@ class UniqueVariantAxis extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'pim_unique_variant_axes_validator';
     }
@@ -25,7 +25,7 @@ class UniqueVariantAxis extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return Constraint::CLASS_CONSTRAINT;
     }

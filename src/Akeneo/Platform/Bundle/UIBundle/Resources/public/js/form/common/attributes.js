@@ -264,6 +264,8 @@ define([
      * @return {Promise}
      */
     createAttributeField: function (object, attributeCode, values) {
+      const root = this.getRoot();
+
       return FieldManager.getField(attributeCode)
         .then(function (field) {
           return $.when(
@@ -283,8 +285,10 @@ define([
               scope: scope.code,
               scopeLabel: i18n.getLabel(scope.labels, locale, scope.code),
               uiLocale: UserContext.get('catalogLocale'),
+              guidelinesLocale: UserContext.get('uiLocale'),
               optional: isOptional,
               removable: SecurityContext.isGranted(this.config.removeAttributeACL),
+              root: root,
             });
 
             field.setValues(values);
@@ -445,10 +449,15 @@ define([
       var needRendering = false;
       if (event.scope) {
         this.setScope(event.scope, {silent: true});
+        this.getRoot().trigger('pim_enrich:form:channel_switcher:change');
         needRendering = true;
       }
       if (event.locale) {
         this.setLocale(event.locale, {silent: true});
+        this.getRoot().trigger('pim_enrich:form:locale_switcher:change', {
+          localeCode: event.locale,
+          context: 'base_product',
+        });
         needRendering = true;
       }
 

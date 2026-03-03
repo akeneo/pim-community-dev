@@ -46,7 +46,6 @@ pim_import_export:
         show_profile.title: Visa profil
         download_log.title: Ladda ner logg
         download_file.title: Ladda ner genererad fil
-        download_archive.title: Ladda ner genererat arkiv
       summary:
         fetching: Samlar in data om jobbkörning...
         warning: Varning
@@ -91,9 +90,6 @@ pim_import_export:
           with_header:
             title: Med rubrik
             help: Om du vill skriva ut kolumnnamnet eller inte
-          with_media:
-            title: Exportera filer och bilder
-            help: Hurvida produktfiler och bilder ska exporteras
           lines_per_file:
             title: Antalet rader per fil
             help: Begränsar antalet rader per fil
@@ -114,7 +110,7 @@ pim_import_export:
             help: Namnet på gruppkolumnen
           enabled:
             title: Aktivera produkten
-            help: Om den importerade produkten ska vara aktiv
+            help: Om den importerade produkten ska vara aktiv eller inte
           enabled_comparison:
             title: Jämför värden
             help: Aktivera jämförelsen mellan ursprungliga och importerade värden. Kan påskynda import om importerade värden är mycket liknande ursprungliga värden
@@ -134,6 +130,8 @@ pim_import_export:
         export: Export
         mass_edit: Massredigera
         quick_export: Snabbexport
+        compute_family_variant_structure_changes: Beräkna variantfamiljers strukturförändringar
+        compute_completeness_of_products_family: Beräkna fullständighet av produktfamilj
       header.view_all: Visa alla
   batch_status:
     1: Slutförd
@@ -144,6 +142,15 @@ pim_import_export:
     6: Misslyckad
     7: Övergiven
     8: Okänt
+  job_status:
+    COMPLETED: Slutförd
+    STARTING: Startar
+    STARTED: Startad
+    STOPPING: Stoppar
+    STOPPED: Stoppad
+    FAILED: Misslyckad
+    ABANDONED: Övergiven
+    UNKNOWN: Okänt
 confirmation:
   remove:
     import_profile: Är du säker på att du vill ta bort denna importprofil?
@@ -155,10 +162,16 @@ pim_enrich:
       module:
         delete:
           confirm: Är du säker på att du vill ta bort denna importprofil?
+      flash:
+        delete:
+          success: Importprofilen har tagits bort
     export_profile:
       module:
         delete:
           confirm: Är du säker på att du vill ta bort denna exportprofil?
+      flash:
+        delete:
+          success: Exportprofilen har tagits bort
 pim_title:
   pim_importexport_export_profile_index: Hantera exportprofiler
   pim_importexport_export_execution_index: Exporthistorik

@@ -4,11 +4,11 @@ namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithQuantifiedAssoc
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithQuantifiedAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\FindQuantifiedAssociationTypeCodesInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\QuantifiedAssociation\GetIdMappingFromProductIdsQueryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\QuantifiedAssociation\GetIdMappingFromProductModelIdsQueryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\QuantifiedAssociation\GetUuidMappingQueryInterface;
 use Doctrine\Common\EventSubscriber;
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 
 /**
  * Load quantified associations into a QuantifiedAssociation Value Object.
@@ -20,23 +20,11 @@ use Doctrine\ORM\Events;
  */
 final class LoadEntitySubscriber implements EventSubscriber
 {
-    /** @var GetIdMappingFromProductIdsQueryInterface */
-    private $getIdMappingFromProductIds;
-
-    /** @var GetIdMappingFromProductModelIdsQueryInterface */
-    private $getIdMappingFromProductModelIds;
-
-    /** @var FindQuantifiedAssociationTypeCodesInterface */
-    private $findQuantifiedAssociationTypeCodes;
-
     public function __construct(
-        GetIdMappingFromProductIdsQueryInterface $getIdMappingFromProductIds,
-        GetIdMappingFromProductModelIdsQueryInterface $getIdMappingFromProductModelIds,
-        FindQuantifiedAssociationTypeCodesInterface $findQuantifiedAssociationTypeCodes
+        private GetUuidMappingQueryInterface $getUuidMappingQuery,
+        private GetIdMappingFromProductModelIdsQueryInterface $getIdMappingFromProductModelIds,
+        private FindQuantifiedAssociationTypeCodesInterface $findQuantifiedAssociationTypeCodes
     ) {
-        $this->getIdMappingFromProductIds = $getIdMappingFromProductIds;
-        $this->getIdMappingFromProductModelIds = $getIdMappingFromProductModelIds;
-        $this->findQuantifiedAssociationTypeCodes = $findQuantifiedAssociationTypeCodes;
     }
 
     /**
@@ -54,8 +42,6 @@ final class LoadEntitySubscriber implements EventSubscriber
      *
      * For products, we also add the identifier as a regular value
      * so that it can be used in the product edit form transparently.
-     *
-     * @param LifecycleEventArgs $event
      */
     public function postLoad(LifecycleEventArgs $event)
     {
@@ -65,9 +51,10 @@ final class LoadEntitySubscriber implements EventSubscriber
         }
 
         $productIds = $entity->getQuantifiedAssociationsProductIds();
+        $productUuids = $entity->getQuantifiedAssociationsProductUuids();
         $productModelIds = $entity->getQuantifiedAssociationsProductModelIds();
 
-        $mappedProductIds = $this->getIdMappingFromProductIds->execute($productIds);
+        $mappedProductIds = $this->getUuidMappingQuery->fromProductIds($productIds, $productUuids);
         $mappedProductModelIds = $this->getIdMappingFromProductModelIds->execute($productModelIds);
         $quantifiedAssociationTypeCodes = $this->findQuantifiedAssociationTypeCodes->execute();
 

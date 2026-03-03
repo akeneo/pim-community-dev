@@ -1,5 +1,0 @@
-services:
-    akeneo_connectivity.connection.persistence.repository.connection:
-        class: 'Akeneo\Connectivity\Connection\Infrastructure\Persistence\InMemory\Repository\InMemoryConnectionRepository'
-
-    Akeneo\Connectivity\Connection\Infrastructure\Persistence\InMemory\Repository\InMemoryUserPermissionsRepository: ~

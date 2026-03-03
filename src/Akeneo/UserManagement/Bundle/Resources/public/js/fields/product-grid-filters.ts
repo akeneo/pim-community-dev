@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import * as i18n from 'pimui/js/i18n';
 import * as _ from 'underscore';
-import NormalizedAttribute from 'pim/model/attribute';
+import {Attribute} from '@akeneo-pim-community/structure';
 import NormalizedAttributeGroup from 'pim/model/attribute-group';
 
 const __ = require('oro/translator');
@@ -48,14 +48,13 @@ class ProductGridFilters extends BaseMultiSelectAsync {
     return parent;
   }
 
-  protected convertBackendItem(item: NormalizedAttribute): Object {
+  protected convertBackendItem(item: Attribute): Object {
+    const locale = UserContext.get('system' === item.group ? 'uiLocale' : 'catalogLocale');
     return {
       id: item.code,
-      text: i18n.getLabel(item.labels, UserContext.get('catalogLocale'), item.code),
+      text: i18n.getLabel(item.labels, locale, item.code),
       group: {
-        text: item.group
-          ? i18n.getLabel(this.attributeGroups[item.group].labels, UserContext.get('catalogLocale'), item.group)
-          : '',
+        text: item.group ? i18n.getLabel(this.attributeGroups[item.group].labels, locale, item.group) : '',
       },
     };
   }
@@ -69,17 +68,15 @@ class ProductGridFilters extends BaseMultiSelectAsync {
     if (values.length > 0) {
       $.ajax({
         url: this.choiceUrl,
-        data: {identifiers: strValues},
+        data: {identifiers: strValues, options: {limit: 100}},
         type: this.choiceVerb,
       }).then(response => {
-        let selecteds: NormalizedAttribute[] = <NormalizedAttribute[]>Object.values(response).filter(
-          (item: NormalizedAttribute) => {
-            return values.indexOf(item.code) > -1;
-          }
-        );
+        let selecteds: Attribute[] = <Attribute[]>Object.values(response).filter((item: Attribute) => {
+          return values.indexOf(item.code) > -1;
+        });
 
         callback(
-          selecteds.map((selected: NormalizedAttribute) => {
+          selecteds.map((selected: Attribute) => {
             return this.convertBackendItem(selected);
           })
         );
@@ -94,7 +91,7 @@ class ProductGridFilters extends BaseMultiSelectAsync {
    */
   private static getSystemAttributeGroup(): NormalizedAttributeGroup {
     const result: NormalizedAttributeGroup = {labels: {}};
-    result['labels'][UserContext.get('catalogLocale')] = __('pim_datagrid.filters.system');
+    result['labels'][UserContext.get('uiLocale')] = __('pim_datagrid.filters.system');
 
     return result;
   }

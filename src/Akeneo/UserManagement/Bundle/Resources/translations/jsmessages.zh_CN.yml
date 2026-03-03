@@ -10,7 +10,6 @@ pim_title:
   pim_user_security_login: 登录
   pim_user_reset_reset: 密码重置
   pim_user_reset_request: 忘记密码
-  pim_user_reset_check_email: 密码重置 | 检查电子邮件
   pim_user_group_create: '分组 | 创建'
   pim_user_group_update: '分组 {{ group }} | 编辑'
 confirmation:
@@ -27,6 +26,20 @@ pim_enrich:
       module:
         delete:
           confirm: 确定要删除此用户吗？
+pim_user.profile:
+  caption: 首先，请告诉我们您的主要使命是什么，以便我们帮助您专注于最相关的内容。
+  why_is_it_needed: 为什么我们需要此信息？
+  save_button: 保存并访问 App Store
+  selector:
+    placeholder: 选择一个选项
+    not_found: 未找到结果
+  product_manager: 我管理产品目录。
+  redactor: 我丰富产品数据。
+  pim_integrator: 我将 Akeneo PIM 整合到我们的 IT 生态系统中。
+  pim_administrator: 我管理 Akeneo PIM。
+  asset_manager: 我管理 PIM 中的资产。
+  translator: 我翻译产品、资产和/或参考实体数据。
+  third_party_developer: 我开发与 Akeneo PIM 相关的解决方案。
 pim_user_management:
   entity:
     user:
@@ -42,6 +55,7 @@ pim_user_management:
         index: "] -Inf, 1] {{ count }} 个用户|] 1, Inf [{{ count }} 个用户"
       properties:
         username: 用户名
+        profile: 您的主要任务是什么？
         name_prefix: 名称前缀
         first_name: 名
         middle_name: 中间名
@@ -68,6 +82,8 @@ pim_user_management:
         default_published_product_grid_view: 默认的已发布产品网格视图 #EE Only
         proposals_to_review_notification: 有新的提案待审查时 #EE Only
         proposals_state_notifications: 当提案被接受或拒绝时 #EE Only
+        not_fully_supported_locale: '所选的 UI 区域 [{{ code }}] 当前不受完全支持。可能因为文本翻译缺失或不完整。请帮助改善区域覆盖面：'
+        link_to_crowdin_label: 参与建设 Crowdin。
       meta:
         created: 已创建
         updated: 已更新
@@ -98,3 +114,13 @@ pim_user_management:
       module:
         create:
           button: 创建组
+  form:
+    error:
+      required: 此字段是必填字段。
+      should_not_contain_space: 用户名不应包含空白字符。
+      too_short_value: "此值太短。其应有  {{ count }} 个或更多字符。"
+    duplication:
+      title: '复制“{{ username }}”用户'
+      notification:
+        success: 已成功复制用户
+        failure: 复制用户失败

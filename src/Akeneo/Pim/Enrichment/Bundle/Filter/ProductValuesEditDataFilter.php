@@ -2,10 +2,10 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Filter;
 
-use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Channel\Component\Model\LocaleInterface;
-use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 
@@ -139,7 +139,7 @@ class ProductValuesEditDataFilter implements CollectionFilterInterface
                 return false;
             }
 
-            if ($attribute->isLocaleSpecific() && !in_array($value['locale'], $attribute->getLocaleSpecificCodes())) {
+            if ($attribute->isLocaleSpecific() && !in_array($value['locale'], $attribute->getAvailableLocaleCodes())) {
                 return false;
             }
         }

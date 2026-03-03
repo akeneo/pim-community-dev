@@ -1,0 +1,14 @@
+pim_enrich:
+  acl:
+    category:
+      list: Llistar categories
+      create: Crear una categoria
+      edit: Editar una categoria
+      remove: Eliminar una categoria
+      move: Moure categoria
+      children: Veure subcategories
+      products: Veure productes de la categoria
+      history: Veure l'històric de la categoria
+      template: Gestiona la plantilla de categoria
+      edit_attributes: Edita els atributs de la categoria
+      order_trees: Ordena/reordena categories

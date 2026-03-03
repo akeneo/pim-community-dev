@@ -2,7 +2,9 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Updater\Setter;
 
+use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Updater\TwoWayAssociationUpdater;
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidAssociationProductIdentifierException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Group;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
@@ -12,11 +14,15 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociation;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\GroupRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AssociationFieldAdder;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\AssociationFieldSetter;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\FieldSetterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\SetterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\TwoWayAssociationUpdaterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Value\IdentifierValue;
 use Akeneo\Pim\Structure\Component\Model\AssociationType;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface;
@@ -26,17 +32,24 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 
 class AssociationFieldSetterSpec extends ObjectBehavior
 {
     function let(
-        IdentifiableObjectRepositoryInterface $productRepository,
-        IdentifiableObjectRepositoryInterface $productModelRepository,
-        IdentifiableObjectRepositoryInterface $groupRepository,
+        ProductRepositoryInterface $productRepository,
+        ProductModelRepositoryInterface $productModelRepository,
+        GroupRepositoryInterface $groupRepository,
         MissingAssociationAdder $missingAssociationAdder,
         TwoWayAssociationUpdaterInterface $twoWayAssociationUpdater,
-        AssociationTypeRepositoryInterface $associationTypeRepository
+        AssociationTypeRepositoryInterface $associationTypeRepository,
+        AssociationTypeInterface $xsell,
     ) {
+        $xsell->getCode()->willReturn('xsell');
+        $xsell->isQuantified()->willReturn(false);
+        $xsell->isTwoWay()->willReturn(false);
+        $associationTypeRepository->findOneByIdentifier('xsell')->willReturn($xsell);
+
         $this->beConstructedWith(
             $productRepository,
             $productModelRepository,
@@ -135,26 +148,21 @@ class AssociationFieldSetterSpec extends ObjectBehavior
     }
 
     function it_sets_association_field(
-        $productRepository,
-        $productModelRepository,
-        $groupRepository,
-        $missingAssociationAdder,
-        $associationTypeRepository,
+        ProductRepositoryInterface $productRepository,
+        IdentifiableObjectRepositoryInterface $productModelRepository,
+        IdentifiableObjectRepositoryInterface $groupRepository,
+        MissingAssociationAdder $missingAssociationAdder,
         ProductInterface $product,
         AssociationInterface $xsellAssociation,
-        AssociationTypeInterface $xsellAssociationType
+        AssociationTypeInterface $xsell
     ) {
-        $xsellAssociationType->getCode()->willReturn('xsell');
-        $xsellAssociationType->isTwoWay()->willReturn(false);
-        $xsellAssociationType->isQuantified()->willReturn(false);
-        $xsellAssociation->getAssociationType()->willReturn($xsellAssociationType);
-        $associationTypeRepository->findOneByIdentifier('xsell')->willReturn($xsellAssociationType);
+        $xsellAssociation->getAssociationType()->willReturn($xsell);
 
         $product->getAssociations()->willReturn(new ArrayCollection([$xsellAssociation->getWrappedObject()]));
 
-        $assocProductOne = (new Product())->setIdentifier('assocProductOne');
-        $assocProductTwo = (new Product())->setIdentifier('assocProductTwo');
-        $assocProductThree = (new Product())->setIdentifier('assocProductThree');
+        $assocProductOne = (new Product())->addValue(IdentifierValue::value('sku', true, 'assocProductOne'));
+        $assocProductTwo = (new Product())->addValue(IdentifierValue::value('sku', true, 'assocProductTwo'));
+        $assocProductThree = (new Product())->addValue(IdentifierValue::value('sku', true, 'assocProductThree'));
         $assocProductModelOne = new ProductModel();
         $assocProductModelOne->setCode('assocProductModelOne');
         $assocProductModelTwo = new ProductModel();
@@ -212,12 +220,54 @@ class AssociationFieldSetterSpec extends ObjectBehavior
         );
     }
 
+    function it_sets_association_field_with_uuids(
+        ProductRepositoryInterface $productRepository,
+        MissingAssociationAdder $missingAssociationAdder,
+        AssociationTypeRepositoryInterface $associationTypeRepository,
+        ProductInterface $product,
+        AssociationInterface $xsellAssociation,
+        AssociationTypeInterface $xsell
+    ) {
+        $xsellAssociation->getAssociationType()->willReturn($xsell);
+        $associationTypeRepository->findOneByIdentifier('xsell')->willReturn($xsell);
+
+        $product->getAssociations()->willReturn(new ArrayCollection([$xsellAssociation->getWrappedObject()]));
+
+        $assocProductOne = (new Product())->addValue(IdentifierValue::value('sku', true, 'assocProductOne'));
+        $assocProductTwo = (new Product())->addValue(IdentifierValue::value('sku', true, 'assocProductTwo'));
+        $assocProductThree = (new Product())->addValue(IdentifierValue::value('sku', true, 'assocProductThree'));
+
+        $productRepository->find($assocProductOne->getUuid()->toString())->willReturn($assocProductOne);
+        $productRepository->find($assocProductTwo->getUuid()->toString())->willReturn($assocProductTwo);
+        $productRepository->find($assocProductThree->getUuid()->toString())->willReturn($assocProductThree);
+
+        $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
+        $product->getAssociatedProducts('xsell')->willReturn(
+            new ArrayCollection([$assocProductOne, $assocProductThree])
+        );
+
+        $product->removeAssociatedProduct($assocProductThree, 'xsell')->shouldBeCalled();
+        $product->addAssociatedProduct($assocProductTwo, 'xsell')->shouldBeCalled();
+        $product->removeAssociatedProduct($assocProductOne, 'xsell')->shouldNotBeCalled();
+        $product->addAssociatedProduct($assocProductOne, 'xsell')->shouldNotBeCalled();
+
+        $this->setFieldData(
+            $product,
+            'associations',
+            [
+                'xsell' => [
+                    'product_uuids' => [$assocProductOne->getUuid()->toString(), $assocProductTwo->getUuid()->toString()],
+                ],
+            ]
+        );
+    }
+
     function it_creates_inversed_association_on_product(
-        $productRepository,
-        $productModelRepository,
-        $associationTypeRepository,
-        $missingAssociationAdder,
-        $twoWayAssociationUpdater
+        ProductRepositoryInterface $productRepository,
+        ProductModelRepositoryInterface $productModelRepository,
+        AssociationTypeRepositoryInterface $associationTypeRepository,
+        MissingAssociationAdder $missingAssociationAdder,
+        TwoWayAssociationUpdater $twoWayAssociationUpdater
     ) {
         $compatibilityAssociationType = new AssociationType();
         $compatibilityAssociationType->setIsTwoWay(true);
@@ -230,7 +280,7 @@ class AssociationFieldSetterSpec extends ObjectBehavior
         $product = new Product();
         $product->addAssociation($compatibilityAssociation);
 
-        $productAssociated = (new Product())->setIdentifier('productAssociated');
+        $productAssociated = (new Product())->addValue(IdentifierValue::value('sku', true, 'productAssociated'));
 
         $productModelAssociated = new ProductModel();
         $productModelAssociated->setCode('productModelAssociated');
@@ -259,17 +309,17 @@ class AssociationFieldSetterSpec extends ObjectBehavior
     }
 
     function it_removes_inversed_association_on_product(
-        $productRepository,
-        $productModelRepository,
-        $associationTypeRepository,
-        $twoWayAssociationUpdater
+        ProductRepositoryInterface $productRepository,
+        ProductModelRepositoryInterface $productModelRepository,
+        AssociationTypeRepositoryInterface $associationTypeRepository,
+        TwoWayAssociationUpdater $twoWayAssociationUpdater
     ) {
         $compatibilityAssociationType = new AssociationType();
         $compatibilityAssociationType->setIsTwoWay(true);
         $compatibilityAssociationType->setCode('COMPATIBILITY');
         $associationTypeRepository->findOneByIdentifier('COMPATIBILITY')->willReturn($compatibilityAssociationType);
 
-        $productAssociated = (new Product())->setIdentifier('productAssociated');
+        $productAssociated = (new Product())->addValue(IdentifierValue::value('sku', true, 'productAssociated'));
 
         $productModelAssociated = new ProductModel();
         $productModelAssociated->setCode('productModelAssociated');
@@ -305,18 +355,18 @@ class AssociationFieldSetterSpec extends ObjectBehavior
     }
 
     function it_creates_and_removes_inversed_association_on_product_model(
-        $productRepository,
-        $productModelRepository,
-        $associationTypeRepository,
-        $missingAssociationAdder,
-        $twoWayAssociationUpdater
+        ProductRepositoryInterface $productRepository,
+        ProductModelRepositoryInterface $productModelRepository,
+        AssociationTypeRepositoryInterface $associationTypeRepository,
+        MissingAssociationAdder $missingAssociationAdder,
+        TwoWayAssociationUpdater $twoWayAssociationUpdater
     ) {
         $compatibilityAssociationType = new AssociationType();
         $compatibilityAssociationType->setIsTwoWay(true);
         $compatibilityAssociationType->setCode('COMPATIBILITY');
         $associationTypeRepository->findOneByIdentifier('COMPATIBILITY')->willReturn($compatibilityAssociationType);
 
-        $productAssociated = (new Product())->setIdentifier('productAssociated');
+        $productAssociated = (new Product())->addValue(IdentifierValue::value('sku', true, 'productAssociated'));
 
         $productModelAssociated = new ProductModel();
         $productModelAssociated->setCode('productModelAssociated');
@@ -377,17 +427,11 @@ class AssociationFieldSetterSpec extends ObjectBehavior
         );
     }
 
-    function it_fails_if_one_of_the_associated_product_does_not_exist(
+    function it_fails_if_one_of_the_associated_products_does_not_exist(
         MissingAssociationAdder $missingAssociationAdder,
         IdentifiableObjectRepositoryInterface $productRepository,
-        AssociationTypeRepositoryInterface $associationTypeRepository,
         ProductInterface $product,
-        AssociationTypeInterface $associationType
     ) {
-        $associationType->getCode()->willReturn('xsell');
-        $associationType->isTwoWay()->willReturn(false);
-        $associationType->isQuantified()->willReturn(false);
-        $associationTypeRepository->findOneByIdentifier('xsell')->willReturn($associationType);
         $productRepository->findOneByIdentifier('not existing product')->willReturn(null);
 
         $product->getAssociatedProducts('xsell')->willReturn(new ArrayCollection());
@@ -396,15 +440,7 @@ class AssociationFieldSetterSpec extends ObjectBehavior
 
         $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
 
-        $this->shouldThrow(
-            InvalidPropertyException::validEntityCodeExpected(
-                'associations',
-                'product identifier',
-                'The product does not exist',
-                AssociationFieldSetter::class,
-                'not existing product'
-            )
-        )->during(
+        $this->shouldThrow(InvalidAssociationProductIdentifierException::class)->during(
             'setFieldData',
             [
                 $product,
@@ -417,14 +453,8 @@ class AssociationFieldSetterSpec extends ObjectBehavior
     function it_fails_if_one_of_the_associated_product_models_does_not_exist(
         MissingAssociationAdder $missingAssociationAdder,
         IdentifiableObjectRepositoryInterface $productModelRepository,
-        AssociationTypeRepositoryInterface $associationTypeRepository,
         ProductModelInterface $productModel,
-        AssociationTypeInterface $associationType
     ) {
-        $associationType->getCode()->willReturn('xsell');
-        $associationType->isTwoWay()->willReturn(false);
-        $associationType->isQuantified()->willReturn(false);
-        $associationTypeRepository->findOneByIdentifier('xsell')->willReturn($associationType);
         $productModelRepository->findOneByIdentifier('not existing product model')->willReturn(null);
 
         $productModel->getAssociatedProducts('xsell')->willReturn(new ArrayCollection());
@@ -447,6 +477,89 @@ class AssociationFieldSetterSpec extends ObjectBehavior
                 $productModel,
                 'associations',
                 ['xsell' => ['product_models' => ['not existing product model']]],
+            ]
+        );
+    }
+
+    function it_fails_if_one_of_the_associated_product_uuids_does_not_exist(
+        MissingAssociationAdder $missingAssociationAdder,
+        ProductRepositoryInterface $productRepository,
+        ProductInterface $product,
+    ) {
+        $notExistingUuid = Uuid::uuid4();
+        $productRepository->find($notExistingUuid->toString())->willReturn(null);
+
+        $product->getAssociatedProducts('xsell')->willReturn(new ArrayCollection());
+
+        $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
+
+        $this->shouldThrow(
+            InvalidPropertyException::validEntityCodeExpected(
+                'associations',
+                'product uuid',
+                'The product does not exist',
+                AssociationFieldSetter::class,
+                $notExistingUuid->toString()
+            )
+        )->during(
+            'setFieldData',
+            [
+                $product,
+                'associations',
+                ['xsell' => ['product_uuids' => [$notExistingUuid->toString()]]],
+            ]
+        );
+    }
+
+    function it_fails_if_one_of_the_associated_product_uuids_is_not_valid(ProductInterface $product)
+    {
+        $product->getAssociatedProducts('xsell')->willReturn(new ArrayCollection());
+
+        $this->shouldThrow(
+            InvalidPropertyTypeException::validArrayStructureExpected(
+                'associations',
+                'association format is not valid for the association type "xsell", "product_uuids" expects an array of valid uuids.',
+                AssociationFieldSetter::class,
+                ['xsell' => ['product_uuids' => ['not existing product']]]
+            )
+        )->during(
+            'setFieldData',
+            [
+                $product,
+                'associations',
+                ['xsell' => ['product_uuids' => ['not existing product']]],
+            ]
+        );
+    }
+
+    function it_fails_when_associating_products_by_identifier_and_uuid()
+    {
+        $uuid = Uuid::uuid4();
+
+        $product = new Product();
+        $this->shouldThrow(
+            InvalidPropertyTypeException::validArrayStructureExpected(
+                'associations',
+                'association format is not valid for the association type "xsell", only one of "products" or "product_uuids" is expected',
+                AssociationFieldSetter::class,
+                [
+                    'xsell' => [
+                        'product_uuids' => [$uuid->toString()],
+                        'products' => ['a_sku'],
+                    ]
+                ],
+            )
+        )->during(
+            'setFieldData',
+            [
+                $product,
+                'associations',
+                [
+                    'xsell' => [
+                        'product_uuids' => [$uuid->toString()],
+                        'products' => ['a_sku'],
+                    ]
+                ],
             ]
         );
     }

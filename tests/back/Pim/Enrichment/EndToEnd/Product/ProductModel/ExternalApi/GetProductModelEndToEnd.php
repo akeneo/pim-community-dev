@@ -7,6 +7,7 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 use PHPUnit\Framework\Assert;
+use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Response;
 
 class GetProductModelEndToEnd extends ApiTestCase
@@ -97,6 +98,17 @@ class GetProductModelEndToEnd extends ApiTestCase
 
         $response = $client->getResponse();
         Assert::assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
+    }
+
+    public function testAccessDeniedWhenRetrievingProductModelWithoutTheAcl()
+    {
+        $client = $this->createAuthenticatedClient();
+        $this->removeAclFromRole('action:pim_api_product_list');
+
+        $client->request('GET', 'api/rest/v1/product-models/model-biker-jacket-leather');
+        $response = $client->getResponse();
+
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }
 
     protected function addAssociationsToProductModel($productModelCode)

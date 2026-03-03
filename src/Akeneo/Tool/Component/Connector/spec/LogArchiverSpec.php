@@ -5,14 +5,13 @@ namespace spec\Akeneo\Tool\Component\Connector;
 use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
-use Akeneo\Tool\Component\Connector\LogKey;
-use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemWriter;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class LogArchiverSpec extends ObjectBehavior
 {
-    function let(Filesystem $filesystem)
+    function let(FilesystemWriter $filesystem)
     {
         $this->beConstructedWith($filesystem);
     }

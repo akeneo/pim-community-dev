@@ -53,7 +53,7 @@ class ChildCategory
         }
 
         if ($category->selectedAsFilter()) {
-            $state .= ' toselect jstree-checked';
+            $state .= ' toselect';
         }
 
         return $state;

@@ -1,0 +1,5 @@
+akeneo_connectivity.connection:
+  edit_connection:
+    credentials:
+      wrong_credentials_combinations:
+        single: Primijetili smo da koristiš {{ wrong_username }} korisničko ime za ovo spajanje (zadnje korišteno {{ date }}  u {{ time }}. Preporučujemo da koristite {{ good_username }} korisničko ime.

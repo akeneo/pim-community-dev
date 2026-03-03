@@ -37,6 +37,7 @@ class ConstraintViolationNormalizer implements NormalizerInterface, CacheableSup
                 'message' => $message,
                 'propertyPath' => $path,
                 'invalidValue' => $violation->getInvalidValue(),
+                'plural' => $violation->getPlural(),
             ];
         }
 
@@ -57,7 +58,7 @@ class ConstraintViolationNormalizer implements NormalizerInterface, CacheableSup
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof ConstraintViolation && in_array($format, $this->supportedFormats);
     }

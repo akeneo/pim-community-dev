@@ -1,5 +1,5 @@
 import {useCallback} from 'react';
-import {useRouter} from '@akeneo-pim-community/legacy-bridge';
+import {useRouter} from '@akeneo-pim-community/shared';
 import {AttributeGroup} from '../../models';
 
 const useRedirectToAttributeGroup = () => {

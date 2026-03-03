@@ -17,14 +17,13 @@ class AverageMaxVolumesNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_average_and_max_volumes()
     {
-        $volumes = new AverageMaxVolumes(10, 6, 14, 'volume_name');
+        $volumes = new AverageMaxVolumes(10, 6, 'volume_name');
         $this->normalize($volumes)->shouldReturn([
             'volume_name' => [
                 'value' => [
                     'average' => 6,
                     'max' => 10,
                 ],
-                'has_warning' => false,
                 'type' => 'average_max'
             ]
         ]);

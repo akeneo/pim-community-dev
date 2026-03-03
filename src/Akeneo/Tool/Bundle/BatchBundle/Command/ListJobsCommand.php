@@ -5,6 +5,7 @@ namespace Akeneo\Tool\Bundle\BatchBundle\Command;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\HelperInterface;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -56,7 +57,7 @@ class ListJobsCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $criteria = [];
         $type = $input->getOption('type');
@@ -67,13 +68,15 @@ class ListJobsCommand extends Command
             ->findBy($criteria, ['type' => 'asc', 'code' => 'asc']);
         $table = $this->buildTable($jobs, $output);
         $table->render($output);
+
+        return Command::SUCCESS;
     }
 
     /**
      * @param array           $jobs
      * @param OutputInterface $output
      *
-     * @return \Symfony\Component\Console\Helper\HelperInterface
+     * @return HelperInterface
      */
     protected function buildTable(array $jobs, OutputInterface $output)
     {

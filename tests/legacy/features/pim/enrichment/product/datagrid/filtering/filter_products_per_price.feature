@@ -18,7 +18,7 @@ Feature: Filter products per price
 
     And the following family:
       | code       | attributes |
-      | family_foo | price_is_empty,price_is_not_empty,price_is_superior,price_is_inferior,price_is_superior_or_equals,price_is_inferior_or_equals |
+      | family_foo | sku,price_is_empty,price_is_not_empty,price_is_superior,price_is_inferior,price_is_superior_or_equals,price_is_inferior_or_equals |
     And the following products:
       | sku                             | family     | price_is_empty | price_is_not_empty | price_is_superior | price_is_inferior | price_is_superior_or_equals | price_is_inferior_or_equals |
       | ok_with_all_filters             | family_foo |                |        23.5 EUR    |    24.5 EUR       |      25.5 EUR     |          25.5 EUR           |              26.5 EUR       |

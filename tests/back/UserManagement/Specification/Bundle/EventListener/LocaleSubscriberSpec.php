@@ -2,13 +2,15 @@
 
 namespace Specification\Akeneo\UserManagement\Bundle\EventListener;
 
-use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Statement;
+use Doctrine\DBAL\Result;
 use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Bundle\SecurityBundle\Security\FirewallConfig;
+use Symfony\Bundle\SecurityBundle\Security\FirewallMap;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,10 +21,16 @@ use Symfony\Contracts\Translation\LocaleAwareInterface;
 
 class LocaleSubscriberSpec extends ObjectBehavior
 {
-    function let(RequestStack $requestStack, LocaleAwareInterface $localeAware, EntityManager $em)
-    {
-        $this->beConstructedWith($requestStack, $localeAware, $em);
-        $this->beConstructedWith($requestStack, $localeAware, $em);
+    function let(
+        RequestStack $requestStack,
+        LocaleAwareInterface $localeAware,
+        EntityManager $em,
+        FirewallMap $firewall
+    ) {
+        $firewallConfig = new FirewallConfig('foo', 'foo', null, true, false);
+        $firewall->getFirewallConfig(Argument::any())->willReturn($firewallConfig);
+
+        $this->beConstructedWith($requestStack, $localeAware, $em, $firewall);
     }
 
     function it_implements_an_event_listener_interface()
@@ -36,6 +44,7 @@ class LocaleSubscriberSpec extends ObjectBehavior
         SessionInterface $session
     ) {
         $event->getRequest()->willReturn($request);
+        $request->hasSession()->willReturn(true);
         $request->getSession()->willReturn($session);
         $session->get('_locale')->willReturn('fr_FR');
         $request->setLocale('fr_FR')->shouldBeCalled();
@@ -49,16 +58,17 @@ class LocaleSubscriberSpec extends ObjectBehavior
         Request $request,
         SessionInterface $session,
         Connection $connection,
-        Statement $statement
+        Result $result
     ) {
         $event->getRequest()->willReturn($request);
+        $request->hasSession()->willReturn(true);
         $request->getSession()->willReturn($session);
         $session->get('_locale')->willReturn(null);
 
         $em->getConnection()->willReturn($connection);
-        $connection->executeQuery('SELECT value FROM oro_config_value WHERE name = "language" AND section = "pim_ui" LIMIT 1')->willReturn($statement);
+        $connection->executeQuery('SELECT value FROM oro_config_value WHERE name = "language" AND section = "pim_ui" LIMIT 1')->willReturn($result);
 
-        $statement->fetchColumn(Argument::any())->willReturn(false);
+        $result->fetchOne()->willReturn(false);
 
         $request->setLocale()->shouldNotBeCalled();
 
@@ -71,16 +81,17 @@ class LocaleSubscriberSpec extends ObjectBehavior
         Request $request,
         SessionInterface $session,
         Connection $connection,
-        Statement $statement
+        Result $result
     ) {
         $event->getRequest()->willReturn($request);
+        $request->hasSession()->willReturn(true);
         $request->getSession()->willReturn($session);
         $session->get('_locale')->willReturn(null);
 
         $em->getConnection()->willReturn($connection);
-        $connection->executeQuery('SELECT value FROM oro_config_value WHERE name = "language" AND section = "pim_ui" LIMIT 1')->willReturn($statement);
+        $connection->executeQuery('SELECT value FROM oro_config_value WHERE name = "language" AND section = "pim_ui" LIMIT 1')->willReturn($result);
 
-        $statement->fetchColumn(Argument::any())->willReturn('fr_FR');
+        $result->fetchOne()->willReturn('fr_FR');
 
         $request->setLocale('fr_FR')->shouldBeCalled();
 
@@ -99,7 +110,8 @@ class LocaleSubscriberSpec extends ObjectBehavior
         $event->getSubject()->willReturn($user);
         $event->getArgument('current_user')->willReturn($user);
 
-        $requestStack->getMasterRequest()->willReturn($request);
+        $requestStack->getMainRequest()->willReturn($request);
+        $request->hasSession()->willReturn(true);
         $request->getSession()->willReturn($session);
 
         $user->getUiLocale()->willReturn($locale);
@@ -121,5 +133,19 @@ class LocaleSubscriberSpec extends ObjectBehavior
         $localeAware->setLocale('fr_FR')->shouldNotBeCalled();
 
         $this->onPostUpdate($event);
+    }
+    
+    function it_sets_locale_to_en_us_on_kernel_request_when_the_firewall_name_is_oauth_token(
+        RequestEvent $event,
+        Request $request,
+        FirewallMap $firewall,
+    ) {
+        $event->getRequest()->willReturn($request);
+        $firewallConfig = new FirewallConfig('oauth_token', 'foo', null, true, false);
+        $firewall->getFirewallConfig(Argument::any())->willReturn($firewallConfig);
+
+        $request->setLocale('en_US')->shouldBeCalled();
+
+        $this->onKernelRequest($event);
     }
 }

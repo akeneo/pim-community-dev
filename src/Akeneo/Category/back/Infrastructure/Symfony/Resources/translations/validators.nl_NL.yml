@@ -1,0 +1,24 @@
+akeneo.category:
+  validation:
+    upsert:
+      category_code:
+        wrong_format: Categoriecode mag alleen letters, cijfers en liggende streepjes bevatten.
+        line_feed: Categoriecode mag geen tekens voor nieuwe regel bevatten
+      duplicated_value_user_intents: De waarde voor attribuut {{ attributeCode }} wordt meerdere keren bijgewerkt
+      value_user_intents_on_deactivated_template: Er is geen geactiveerde template gekoppeld aan de categorie attributen die u wilt bewerken
+      value:
+        text_too_long: De waarde mag niet langer zijn dan {{ limit }} tekens
+        textarea_too_long: De waarde mag niet langer zijn dan {{ limit }} tekens
+        richtext_too_long: De waarde mag niet langer zijn dan {{ limit }} tekens
+    template:
+      code:
+        not_blank: Deze waarde mag niet leeg zijn.
+        unique: 'Sjablooncode: {{ templateCode }} bestaat al.'
+        wrong_format: Dit veld mag alleen letters, cijfers en een laag streepje bevatten.
+    attribute:
+      limit:
+        title: U kunt niet meer dan 50 attributen toevoegen.
+        message: Voor categoriesjablonen geldt een beperking van 50 attributen per sjabloon.
+      code:
+        wrong_format: De attribuutcode mag alleen kleine letters, cijfers en liggende streepjes bevatten.
+        unique_in_the_template: De attribuutcode {{ attributeCode }} moet uniek zijn in het sjabloon

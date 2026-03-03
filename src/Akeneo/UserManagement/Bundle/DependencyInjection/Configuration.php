@@ -11,11 +11,11 @@ class Configuration implements ConfigurationInterface
     /**
      * {@inheritDoc}
      */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
-        $builder = new TreeBuilder();
+        $builder = new TreeBuilder('pim_user');
         $builder
-            ->root('pim_user')
+            ->getRootNode()
             ->children()
                 ->arrayNode('reset')
                     ->addDefaultsIfNotSet()

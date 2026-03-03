@@ -2,28 +2,20 @@
 
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\Media;
 
-use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
-use League\Flysystem\FilesystemInterface;
+use Akeneo\Pim\Enrichment\Component\FileStorage;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Akeneo\Tool\Component\Api\Repository\ApiResourceRepositoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ExternalApi\ProductRepositoryInterface;
-use Akeneo\Pim\Enrichment\Component\FileStorage;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
+use League\Flysystem\FilesystemOperator;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateProductMediaFileEndToEnd extends ApiTestCase
 {
-    /** @var array */
-    private $files = [];
-
-    /** @var ApiResourceRepositoryInterface */
-    private $fileRepository;
-
-    /** @var ProductRepositoryInterface */
-    private $productRepository;
-
-    /*** @var FilesystemInterface */
-    private $fileSystem;
+    private array $files = [];
+    private ApiResourceRepositoryInterface $fileRepository;
+    private FilesystemOperator $fileSystem;
 
     /**
      * @group critical
@@ -57,7 +49,7 @@ class CreateProductMediaFileEndToEnd extends ApiTestCase
         $this->assertSame('catalogStorage', $fileInfo->getStorage());
 
         // check if product value has been created
-        $product = $this->get('pim_api.repository.product')->findOneByIdentifier('foo');
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('foo');
         $this->assertCount(2, $product->getValues());
         $this->assertSame('foo', $product->getIdentifier());
 
@@ -94,7 +86,7 @@ class CreateProductMediaFileEndToEnd extends ApiTestCase
     "errors": [
         {
             "property": "values",
-            "message": "The file extension is not allowed (allowed extensions: jpg, gif, png).",
+            "message": "The txt file extension is not allowed for the an_image attribute. Allowed extensions are jpg, gif, png.",
             "attribute": "an_image",
             "locale": null,
             "scope": null
@@ -293,7 +285,7 @@ JSON;
      */
     protected function doesFileExist($pathFile)
     {
-        return $this->fileSystem->has($pathFile);
+        return $this->fileSystem->fileExists($pathFile);
     }
 
     /**
@@ -303,7 +295,7 @@ JSON;
      */
     protected function unlinkFile($pathFile)
     {
-        if ($this->fileSystem->has($pathFile)) {
+        if ($this->fileSystem->fileExists($pathFile)) {
             $this->fileSystem->delete($pathFile);
         }
     }
@@ -316,10 +308,17 @@ JSON;
         parent::setUp();
 
         $this->fileRepository = $this->get('pim_api.repository.media_file');
-        $this->productRepository = $this->get('pim_api.repository.product');
 
-        $product = $this->get('pim_catalog.builder.product')->createProduct('foo');
-        $this->get('pim_catalog.saver.product')->save($product);
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
+        $command = UpsertProductCommand::createFromCollection(
+            userId: $this->getUserId('admin'),
+            productIdentifier: 'foo',
+            userIntents: []
+        );
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
+
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('foo');
+
         $this->get('akeneo_storage_utils.doctrine.object_detacher')->detach($product);
 
         $this->files['image'] = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'akeneo.jpg';
@@ -328,8 +327,8 @@ JSON;
         $this->files['file'] = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'akeneo.txt';
         copy($this->getFixturePath('akeneo.txt'), $this->files['file']);
 
-        $mountManager = $this->get('oneup_flysystem.mount_manager');
-        $this->fileSystem = $mountManager->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS);
+        $this->fileSystem = $this->get('akeneo_file_storage.file_storage.filesystem_provider')
+                                 ->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS);
     }
 
     /**

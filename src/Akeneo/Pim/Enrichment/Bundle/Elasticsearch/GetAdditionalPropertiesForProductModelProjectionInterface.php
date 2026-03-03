@@ -14,6 +14,7 @@ interface GetAdditionalPropertiesForProductModelProjectionInterface
      * Returns an associative array of additional properties for the indexation of several product models.
      *
      * @param string[] $productModelCodes
+     * @param array<string, mixed> $context
      *
      * @return array
      *      [
@@ -21,5 +22,5 @@ interface GetAdditionalPropertiesForProductModelProjectionInterface
      *          'product_model_code_2' => ['key_1_to_index' => 'value_3_to_index']
      *      ]
      */
-    public function fromProductModelCodes(array $productModelCodes): array;
+    public function fromProductModelCodes(array $productModelCodes, array $context = []): array;
 }

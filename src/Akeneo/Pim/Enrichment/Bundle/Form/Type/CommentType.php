@@ -82,7 +82,7 @@ class CommentType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'pim_comment_comment';
     }

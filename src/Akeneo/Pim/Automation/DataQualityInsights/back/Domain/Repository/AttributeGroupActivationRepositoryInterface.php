@@ -16,4 +16,6 @@ interface AttributeGroupActivationRepositoryInterface
     public function save(AttributeGroupActivation $attributeGroupActivation): void;
 
     public function remove(AttributeGroupCode $attributeGroupCode): void;
+
+    public function getForAttributeGroupCode(AttributeGroupCode $attributeGroupCode): ?AttributeGroupActivation;
 }

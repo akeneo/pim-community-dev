@@ -1,0 +1,39 @@
+name: Deploy
+on:
+  push:
+    branches:
+      - master
+jobs:
+  master:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the current branch
+        uses: actions/checkout@v2
+
+      - name: Install node 14 for the rest of the workflow
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+
+      - name: Install peer dependencies
+        # TODO RAC-594 Do not used fixed peer dependencies
+        run: yarn add --dev react@^16.14.0 react-dom@^16.9.12 styled-components@^5.1.1
+
+      - name: Install node modules
+        run: yarn install
+
+      - name: Build storybook
+        run: yarn run storybook:build
+
+      - name: Add cleanup staging script
+        run: |
+          mkdir -p ./storybook-static/.github/workflows && \
+          cp ./.github/workflows/cleanup-staging.js ./storybook-static/.github/workflows/cleanup-staging.js
+
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./storybook-static
+          keep_files: true
+          exclude_assets: ''

@@ -6,14 +6,13 @@ use Akeneo\Platform\Bundle\NotificationBundle\Entity\Notification;
 use Doctrine\Common\Util\ClassUtils;
 use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
-use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class SecurityContext extends PimContext
 {
-    /** @var Client */
-    protected $client;
+    protected KernelBrowser $client;
 
     /**
      * @When /^I make a direct authenticated DELETE call on the "([^"]*)" user group$/
@@ -82,9 +81,9 @@ class SecurityContext extends PimContext
 
         $comments = $this
             ->getService('pim_comment.repository.comment')
-            ->getComments(
+            ->getCommentsByUuid(
                 ClassUtils::getClass($product),
-                $product->getId()
+                $product->getUuid()
             );
 
         $lastComment = end($comments);
@@ -131,7 +130,7 @@ class SecurityContext extends PimContext
 
         $this->doCall('GET', $url, [
             'inset' => 1,
-            'values' => $product->getId()
+            'values' => $product->getUuid()->toString()
         ]);
     }
 
@@ -447,7 +446,7 @@ class SecurityContext extends PimContext
         $url = $this
             ->getService('router')
             ->generate($routeName, [
-                'id' => $product->getId(),
+                'uuid' => $product->getUuid()->toString(),
             ]);
 
         $this->doCall('POST', $url, [], [
@@ -470,7 +469,7 @@ class SecurityContext extends PimContext
         $url = $this
             ->getService('router')
             ->generate($routeName, [
-                'id' => $product->getId(),
+                'uuid' => $product->getUuid()->toString(),
             ]);
 
         $this->doCall('DELETE', $url);
@@ -494,7 +493,7 @@ class SecurityContext extends PimContext
         $url = $this
             ->getService('router')
             ->generate($routeName, [
-                'id' => $product->getId(),
+                'uuid' => $product->getUuid()->toString(),
                 'attributeId' => $attribute->getId(),
             ]);
 
@@ -936,7 +935,7 @@ class SecurityContext extends PimContext
     {
         // http://symfony.com/doc/current/testing/http_authentication.html
 
-        $client = new Client($this->getKernel());
+        $client = new KernelBrowser($this->getKernel());
         $client->disableReboot();
         $client->followRedirects();
         $this->client = $client;
@@ -947,7 +946,7 @@ class SecurityContext extends PimContext
             ->getService('pim_user.repository.user')
             ->findOneBy(['username' => $username]);
 
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $token = new UsernamePasswordToken($user, 'main', $user->getRoles());
         $session->set('_security_main', serialize($token));
         $session->save();
 

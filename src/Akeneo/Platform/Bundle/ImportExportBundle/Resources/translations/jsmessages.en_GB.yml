@@ -14,6 +14,8 @@ pim_connector:
       validation:
         not_blank: One locale must be selected, please choose a locale to export.
 pim_import_export:
+  validation:
+    max_length_reached: This value is too long. It should contain {{ limit }} characters or less.
   entity:
     job_instance:
       label: job profile
@@ -23,6 +25,10 @@ pim_import_export:
           fail: The job profile could not be updated.
         delete:
           success: Job instance successfully removed
+      duplicate:
+        title: Duplicate profile {{ job_code }}
+        success: The profile has been successfully duplicated.
+        fail: The profile could not be duplicated.
     import_profile:
       uppercase_label: Import profile
       flash:
@@ -99,13 +105,13 @@ pim_import_export:
             help: One character used to set the field enclosure
           with_header:
             title: With header
-            help: Whether or not to print the column name
+            help: Defines if the first row of the file contains the column labels
           with_media:
             title: Export media
             help: Whether or not to export media
           lines_per_file:
-            title: Number of lines per file
-            help: Define the limit number of lines per file
+            title: Number of rows per file
+            help: Define the limit number of rows per file
           upload_allowed:
             title: Allow file upload
             help: Whether or not to allow uploading the file directly
@@ -145,38 +151,24 @@ pim_import_export:
             title: File locale
             help: Define the locale in which labels are displayed.
       file_path: File path
-  widget:
-    last_operations:
-      empty: No operations found
-      date: Date
-      profile_name: Profile name
-      details: Details
-      warning_count: Warnings
-      username: Username
-      job_type:
-        import: Import
-        export: Export
-        mass_edit: Mass edit
-        mass_edit_rule: Rules Settings
-        quick_export: Quick export
-        compute_family_variant_structure_changes: Compute family variant structure changes
-        compute_completeness_of_products_family: Compute completeness of products family
-        mass_delete: Mass delete products
-        clean_removed_attribute_job: Cleaning removed attribute values
-      header.view_all: View all
+      storage_form:
+        file_path:
+          label: File path
   batch_status:
     1: Completed
     2: Starting
-    3: Started
+    3: In progress
     4: Stopping
     5: Stopped
     6: Failed
     7: Abandoned
     8: Unknown
+    9: Pausing
+    10: Paused
   job_status:
     COMPLETED: Completed
     STARTING: Starting
-    STARTED: Started
+    STARTED: In progress
     STOPPING: Stopping
     STOPPED: Stopped
     FAILED: Failed
@@ -220,3 +212,4 @@ pim_title:
   pim_importexport_import_profile_show: Import profile {{ job.label }} | Show
   pim_importexport_import_execution_index: Import executions history
   pim_importexport_import_execution_show: Import executions | Details
+

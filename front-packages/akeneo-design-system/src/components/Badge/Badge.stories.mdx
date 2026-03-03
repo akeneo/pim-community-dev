@@ -1,0 +1,65 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
+import {Badge} from './Badge.tsx';
+
+<Meta
+  title="Components/Badge"
+  component={Badge}
+  argTypes={{
+    level: {control: {type: 'select'}, options: ['primary', 'secondary', 'tertiary', 'danger']},
+  }}
+  args={{level: 'primary', children: 'Badge text'}}
+/>
+
+# Badge
+
+## Usage
+
+Badges are used for items that must be: tagged, categorized, organized by keywords or to highlight information.
+
+### Completeness indicators
+
+The completeness badge highlights the completeness information for the user. The colors indicate the progression of completeness. *i.e.: green means 100% complete*.
+
+### Status indicators
+
+The status badge highlights the state of an item. *i.e.: enabled or disabled*.
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return <Badge {...args} />;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on level
+
+<Canvas>
+  <Story name="Level">
+    {args => {
+      return (
+        <>
+          <Badge {...args} level="primary">
+            Primary
+          </Badge>
+          <Badge {...args} level="secondary">
+            Secondary
+          </Badge>
+          <Badge {...args} level="tertiary">
+            Tertiary
+          </Badge>
+          <Badge {...args} level="warning">
+            Warning
+          </Badge>
+          <Badge {...args} level="danger">
+            Danger
+          </Badge>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>

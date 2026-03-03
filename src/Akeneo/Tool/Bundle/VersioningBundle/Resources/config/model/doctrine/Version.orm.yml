@@ -20,6 +20,11 @@ Akeneo\Tool\Component\Versioning\Model\Version:
                 - resource_name
                 - resource_id
                 - version
+        resource_name_resource_uuid_version_idx:
+            columns:
+                - resource_name
+                - resource_uuid
+                - version
     fields:
         id:
             type: integer
@@ -35,6 +40,12 @@ Akeneo\Tool\Component\Versioning\Model\Version:
             type: string
             column: resource_id
             length: 24
+            nullable: true
+        # @TODO CPM-578: Add constraint to check resourceId or resourceUuid is not null
+        resourceUuid:
+            type: uuid_binary
+            column: resource_uuid
+            nullable: true
         snapshot:
             type: array
             nullable: true

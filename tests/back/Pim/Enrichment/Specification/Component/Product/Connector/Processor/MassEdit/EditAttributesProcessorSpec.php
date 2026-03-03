@@ -78,7 +78,6 @@ class EditAttributesProcessorSpec extends ObjectBehavior
 
         $violations = new ConstraintViolationList([]);
         $productValidator->validate($product)->willReturn($violations);
-        $product->getId()->willReturn(10);
 
         $attributeRepository->findOneByIdentifier('number')->willReturn($attribute);
         $checkAttributeEditable->isEditable($product, $attribute)->willReturn(true);
@@ -129,7 +128,6 @@ class EditAttributesProcessorSpec extends ObjectBehavior
 
         $violations = new ConstraintViolationList([]);
         $productValidator->validate($product)->willReturn($violations);
-        $product->getId()->willReturn(10);
 
         $attributeRepository->findOneByIdentifier('number')->willReturn($attribute);
         $checkAttributeEditable->isEditable($product, $attribute)->willReturn(true);
@@ -175,8 +173,6 @@ class EditAttributesProcessorSpec extends ObjectBehavior
         $violation = new ConstraintViolation('error2', 'spec', [], '', '', $product);
         $violations = new ConstraintViolationList([$violation, $violation]);
         $productValidator->validate($product)->willReturn($violations);
-
-        $product->getId()->willReturn(10);
 
         $attributeRepository->findOneByIdentifier('categories')->willReturn($attribute);
         $checkAttributeEditable->isEditable($product, $attribute)->willReturn(true);

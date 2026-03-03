@@ -4,7 +4,9 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Repository;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Doctrine\Persistence\ObjectRepository;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Product repository interface
@@ -32,6 +34,13 @@ interface ProductRepositoryInterface extends ObjectRepository
     public function findOneByIdentifier($identifier);
 
     /**
+     * @param string[] $uuids
+     *
+     * @return ProductInterface[]
+     */
+    public function getItemsFromUuids(array $uuids): array;
+
+    /**
      * @param GroupInterface $group
      * @param int            $maxResults
      *
@@ -56,12 +65,12 @@ interface ProductRepositoryInterface extends ObjectRepository
     /**
      * Checks if the family has the specified attribute
      *
-     * @param mixed  $productId
+     * @param int|UuidInterface  $productUuidOrId
      * @param string $attributeCode
      *
      * @return bool
      */
-    public function hasAttributeInFamily($productId, $attributeCode);
+    public function hasAttributeInFamily($productUuidOrId, $attributeCode);
 
     /**
      * Get products after the one provided. Mainly used to iterate through

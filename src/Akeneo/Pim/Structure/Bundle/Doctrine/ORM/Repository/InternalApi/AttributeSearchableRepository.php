@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Oro\Bundle\FilterBundle\Form\Type\Filter\TextFilterType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -16,20 +19,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class AttributeSearchableRepository implements SearchableRepositoryInterface
 {
-    /** @var EntityManagerInterface */
-    protected $entityManager;
-
-    /** @var string */
-    protected $entityName;
-
-    /**
-     * @param EntityManagerInterface $entityManager
-     * @param string                 $entityName
-     */
-    public function __construct(EntityManagerInterface $entityManager, $entityName)
-    {
-        $this->entityManager = $entityManager;
-        $this->entityName = $entityName;
+    public function __construct(
+        protected EntityManagerInterface $entityManager,
+        protected string $entityName,
+    ) {
     }
 
     /**
@@ -41,51 +34,18 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
     {
         $qb = $this->findBySearchQb($search, $options);
 
+        $qb->orderBy('ag.sortOrder, a.sortOrder');
+        $qb->groupBy('a.id');
+
         return $qb->getQuery()->getResult();
     }
 
     /**
-     * @param array $options
-     *
      * @return array
      */
     protected function resolveOptions(array $options)
     {
-        $resolver = new OptionsResolver();
-        $resolver->setDefaults(
-            [
-                'identifiers'            => [],
-                'excluded_identifiers'   => [],
-                'limit'                  => null,
-                'page'                   => null,
-                'locale'                 => null,
-                'user_groups_ids'        => null,
-                'types'                  => null,
-                'attribute_groups'       => [],
-                'rights'                 => true,
-                'localizable'            => null,
-                'scopable'               => null,
-                'is_locale_specific'     => null,
-                'useable_as_grid_filter' => null,
-                'families'               => null,
-            ]
-        );
-        $resolver->setAllowedTypes('identifiers', 'array');
-        $resolver->setAllowedTypes('excluded_identifiers', 'array');
-        $resolver->setAllowedTypes('limit', ['int', 'string', 'null']);
-        $resolver->setAllowedTypes('page', ['int', 'string', 'null']);
-        $resolver->setAllowedTypes('locale', ['string', 'null']);
-        $resolver->setAllowedTypes('user_groups_ids', ['array', 'null']);
-        $resolver->setAllowedTypes('types', ['array', 'null']);
-        $resolver->setAllowedTypes('attribute_groups', ['array']);
-        $resolver->setAllowedTypes('rights', ['bool']);
-        $resolver->setAllowedTypes('localizable', ['bool', 'null']);
-        $resolver->setAllowedTypes('scopable', ['bool', 'null']);
-        $resolver->setAllowedTypes('is_locale_specific', ['bool', 'null']);
-        $resolver->setAllowedTypes('useable_as_grid_filter', ['bool', 'null']);
-        $resolver->setAllowedTypes('families', ['array', 'null']);
-
-        $options = $resolver->resolve($options);
+        $options = $this->getResolver()->resolve($options);
 
         if (null !== $options['page']) {
             $options['page'] = (int) $options['page'];
@@ -98,6 +58,51 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
         }
 
         return $options;
+    }
+
+    protected function getResolver(): OptionsResolver
+    {
+        $resolver = new OptionsResolver();
+        $resolver->setDefaults(
+            [
+                'attribute_groups'       => [],
+                'code'                   => null,
+                'excluded_identifiers'   => [],
+                'families'               => null,
+                'identifiers'            => [],
+                'is_locale_specific'     => null,
+                'limit'                  => null,
+                'locale'                 => null,
+                'localizable'            => null,
+                'page'                   => null,
+                'quality'                => null,
+                'rights'                 => true,
+                'scopable'               => null,
+                'smart'                  => null,
+                'types'                  => null,
+                'useable_as_grid_filter' => null,
+                'user_groups_ids'        => null,
+            ]
+        );
+        $resolver->setAllowedTypes('attribute_groups', ['array']);
+        $resolver->setAllowedTypes('code', ['array', 'null']);
+        $resolver->setAllowedTypes('excluded_identifiers', 'array');
+        $resolver->setAllowedTypes('families', ['array', 'null']);
+        $resolver->setAllowedTypes('identifiers', 'array');
+        $resolver->setAllowedTypes('is_locale_specific', ['bool', 'null']);
+        $resolver->setAllowedTypes('limit', ['int', 'string', 'null']);
+        $resolver->setAllowedTypes('locale', ['string', 'null']);
+        $resolver->setAllowedTypes('localizable', ['bool', 'null']);
+        $resolver->setAllowedTypes('page', ['int', 'string', 'null']);
+        $resolver->setAllowedTypes('quality', ['string', 'null']);
+        $resolver->setAllowedTypes('rights', ['bool']);
+        $resolver->setAllowedTypes('scopable', ['bool', 'null']);
+        $resolver->setAllowedTypes('smart', ['bool', 'null']);
+        $resolver->setAllowedTypes('types', ['array', 'null']);
+        $resolver->setAllowedTypes('useable_as_grid_filter', ['bool', 'null']);
+        $resolver->setAllowedTypes('user_groups_ids', ['array', 'null']);
+
+        return $resolver;
     }
 
     /**
@@ -164,6 +169,33 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
             $qb->setParameter('useable_as_grid_filter', $options['useable_as_grid_filter']);
         }
 
+        if (null !== $options['code']) {
+            switch ($options['code']['type']) {
+                case TextFilterType::TYPE_CONTAINS:
+                    $qb->andWhere('a.code LIKE :code');
+                    $qb->setParameter('code', '%'.$options['code']['value'].'%');
+                    break;
+                case TextFilterType::TYPE_NOT_CONTAINS:
+                    $qb->andWhere('a.code NOT LIKE :code');
+                    $qb->setParameter('code', '%'.$options['code']['value'].'%');
+                    break;
+                case TextFilterType::TYPE_EQUAL:
+                    $qb->andWhere('a.code = :code');
+                    $qb->setParameter('code', $options['code']['value']);
+                    break;
+                case TextFilterType::TYPE_STARTS_WITH:
+                    $qb->andWhere('a.code LIKE :code');
+                    $qb->setParameter('code', $options['code']['value'].'%');
+                    break;
+                case TextFilterType::TYPE_EMPTY:
+                    $qb->andWhere('a.code = :code');
+                    $qb->setParameter('code', null);
+                    break;
+                default:
+                    throw new \Exception('unknown text filter type given, for code filter');
+            }
+        }
+
         if (null !== $options['types']) {
             $qb->andWhere('a.type in (:types)');
             $qb->setParameter('types', $options['types']);
@@ -181,10 +213,13 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
             $qb->setParameter('groups', $options['attribute_groups']);
         }
 
-        $qb->orderBy('ag.sortOrder, a.sortOrder');
-
-        $qb->groupBy('a.id');
-
         return $qb;
+    }
+
+    public function count(?string $search, array $options): int
+    {
+        $qb = $this->findBySearchQb($search, $options);
+
+        return (int) $qb->select('COUNT(DISTINCT a.id)')->getQuery()->getSingleScalarResult();
     }
 }

@@ -12,9 +12,10 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationResultStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
@@ -31,7 +32,7 @@ final class CriterionEvaluationCollectionSpec extends ObjectBehavior
     {
         $completenessEvaluation = new Read\CriterionEvaluation(
             new CriterionCode('completeness_of_required_attributes'),
-            new ProductId(42),
+            ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed')),
             new \DateTimeImmutable(),
             CriterionEvaluationStatus::pending(),
             null
@@ -39,7 +40,7 @@ final class CriterionEvaluationCollectionSpec extends ObjectBehavior
 
         $spellingEvaluation = new Read\CriterionEvaluation(
             new CriterionCode('consistency_textarea_uppercase_words'),
-            new ProductId(42),
+            ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed')),
             new \DateTimeImmutable(),
             CriterionEvaluationStatus::pending(),
             null
@@ -56,7 +57,7 @@ final class CriterionEvaluationCollectionSpec extends ObjectBehavior
     {
         $completenessEvaluation = new Read\CriterionEvaluation(
             new CriterionCode('completeness_of_required_attributes'),
-            new ProductId(42),
+            ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed')),
             new \DateTimeImmutable(),
             CriterionEvaluationStatus::pending(),
             null
@@ -64,7 +65,7 @@ final class CriterionEvaluationCollectionSpec extends ObjectBehavior
 
         $spellingEvaluation = new Read\CriterionEvaluation(
             new CriterionCode('consistency_textarea_uppercase_words'),
-            new ProductId(42),
+            ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed')),
             new \DateTimeImmutable(),
             CriterionEvaluationStatus::pending(),
             null
@@ -89,7 +90,7 @@ final class CriterionEvaluationCollectionSpec extends ObjectBehavior
 
         $completenessEvaluation = new Read\CriterionEvaluation(
             new CriterionCode('completeness_of_required_attributes'),
-            new ProductId(42),
+            ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed')),
             new \DateTimeImmutable(),
             CriterionEvaluationStatus::pending(),
             $completenessResult
@@ -97,7 +98,7 @@ final class CriterionEvaluationCollectionSpec extends ObjectBehavior
 
         $spellingEvaluation = new Read\CriterionEvaluation(
             new CriterionCode('consistency_textarea_uppercase_words'),
-            new ProductId(42),
+            ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed')),
             new \DateTimeImmutable(),
             CriterionEvaluationStatus::pending(),
             null

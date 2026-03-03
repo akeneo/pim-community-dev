@@ -8,15 +8,12 @@ define(['underscore', 'oro/translator', 'oro/datagrid/navigate-action', 'pim/rou
 ) {
   return NavigateAction.extend({
     tabRedirects: {},
+    links: {},
 
     /**
      * {@inheritdoc}
      */
     initialize() {
-      if (null !== this.tabRedirects) {
-        this.useDirectLauncherLink = false;
-      }
-
       return NavigateAction.prototype.initialize.apply(this, arguments);
     },
 
@@ -26,6 +23,18 @@ define(['underscore', 'oro/translator', 'oro/datagrid/navigate-action', 'pim/rou
     getLink() {
       const productType = this.model.get('document_type');
       const id = this.model.get('technical_id');
+
+      if (typeof this.links[productType] !== 'undefined') {
+        if ((id + '').match(/^\d+$/)) {
+          return Router.generate(this.links[productType], {id});
+        } else {
+          return Router.generate(this.links[productType], {uuid: id});
+        }
+      }
+
+      if (productType === 'product') {
+        return Router.generate('pim_enrich_product_edit', {uuid: id});
+      }
 
       return Router.generate('pim_enrich_' + productType + '_edit', {id});
     },

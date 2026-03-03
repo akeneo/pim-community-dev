@@ -6,9 +6,10 @@ namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 
 /**
  * Common logic shared by all our product and product model cursors.
@@ -19,25 +20,18 @@ use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
  */
 abstract class AbstractCursor implements CursorInterface
 {
-    /** @var Client */
-    protected $esClient;
-
-    /** @var CursorableRepositoryInterface */
-    protected $productRepository;
-
-    /** @var CursorableRepositoryInterface */
-    protected $productModelRepository;
-
-    /** @var array */
-    protected $items;
-
-    /** @var int */
-    protected $count;
+    protected Client $esClient;
+    protected ProductRepositoryInterface $productRepository;
+    protected ProductModelRepositoryInterface $productModelRepository;
+    protected array $esQuery;
+    protected ?array $items = null;
+    protected ?int $count = null;
+    protected int $position = 0;
 
     /**
      * {@inheritdoc}
      */
-    public function current()
+    public function current(): mixed
     {
         if (null === $this->items) {
             $this->rewind();
@@ -49,19 +43,19 @@ abstract class AbstractCursor implements CursorInterface
     /**
      * {@inheritdoc}
      */
-    public function key()
+    public function key(): mixed
     {
         if (null === $this->items) {
             $this->rewind();
         }
 
-        return key($this->items);
+        return key($this->items) + $this->position;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function valid()
+    public function valid(): bool
     {
         if (null === $this->items) {
             $this->rewind();
@@ -73,10 +67,13 @@ abstract class AbstractCursor implements CursorInterface
     /**
      * {@inheritdoc}
      */
-    public function count()
+    public function count(): int
     {
-        if (null === $this->items) {
-            $this->rewind();
+        if (null === $this->count) {
+            $esQuery = \array_replace($this->esQuery, ['track_total_hits' => true]);
+
+            $response = $this->esClient->search($esQuery);
+            $this->count = $response['hits']['total']['value'];
         }
 
         return $this->count;
@@ -91,13 +88,17 @@ abstract class AbstractCursor implements CursorInterface
      */
     protected function getNextItems(array $esQuery): array
     {
-        $identifierResults = $this->getNextIdentifiers($esQuery);
+        return $this->getNextItemsFromIdentifiers($this->getNextIdentifiers($esQuery));
+    }
+
+    protected function getNextItemsFromIdentifiers(IdentifierResults $identifierResults): array
+    {
         if ($identifierResults->isEmpty()) {
             return [];
         }
 
-        $hydratedProducts = $this->productRepository->getItemsFromIdentifiers(
-            $identifierResults->getProductIdentifiers()
+        $hydratedProducts = $this->productRepository->getItemsFromUuids(
+            $identifierResults->getProductUuids()
         );
         $hydratedProductModels = $this->productModelRepository->getItemsFromIdentifiers(
             $identifierResults->getProductModelIdentifiers()
@@ -109,7 +110,7 @@ abstract class AbstractCursor implements CursorInterface
         foreach ($identifierResults->all() as $identifierResult) {
             foreach ($hydratedItems as $hydratedItem) {
                 if ($hydratedItem instanceof ProductInterface &&
-                    $identifierResult->isProductIdentifierEquals($hydratedItem->getIdentifier())
+                    $identifierResult->getId() === \sprintf('product_%s', $hydratedItem->getUuid()->toString())
                 ) {
                     $orderedItems[] = $hydratedItem;
                     break;

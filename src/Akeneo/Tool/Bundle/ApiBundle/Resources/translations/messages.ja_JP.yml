@@ -23,6 +23,10 @@ pim_api:
       edit: チャンネルを作成して更新
       list: チャンネルを一覧表示
     locale.list: ロケールを一覧表示
+    product:
+      edit: 商品を作成して更新
+      list: 商品をリスト
+      remove: 商品を削除
     currency.list: 通貨を一覧表示
     association_type:
       edit: 関連タイプを作成して更新
@@ -37,6 +41,7 @@ pim_api:
     family_variant: ファミリーバリエーション
     channel: チャンネル
     locale: ロケール
+    product: 商品
     currency: 通貨
     association_type: 関連タイプ
 pim_user:

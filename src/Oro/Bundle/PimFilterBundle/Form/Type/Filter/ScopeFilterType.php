@@ -32,7 +32,7 @@ class ScopeFilterType extends ChoiceFilterType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return self::NAME;
     }
@@ -40,7 +40,7 @@ class ScopeFilterType extends ChoiceFilterType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): ?string
     {
         return ChoiceFilterType::class;
     }

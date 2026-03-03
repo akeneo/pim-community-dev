@@ -8,7 +8,7 @@ Feature: Export association types
   Scenario: Successfully export association types
     Given a "footwear" catalog configuration
     And the following job "csv_footwear_association_type_export" configuration:
-      | filePath | %tmp%/association_type_export/association_type_export.csv |
+      | storage | {"type": "local", "file_path": "%tmp%/association_type_export/association_type_export.csv"} |
     And I am logged in as "Julia"
     And I am on the "csv_footwear_association_type_export" export job page
     When I launch the export job

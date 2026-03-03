@@ -3,29 +3,25 @@
 namespace Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 
 /**
- * Repository for attribute entity
+ * Repository for attribute entity.
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeRepository extends EntityRepository implements
-    IdentifiableObjectRepositoryInterface,
-    AttributeRepositoryInterface
+class AttributeRepository extends EntityRepository implements IdentifiableObjectRepositoryInterface, AttributeRepositoryInterface
 {
-    /** @var string $identifierCode */
-    protected $identifierCode;
+    protected ?string $identifierCode = null;
 
     /**
      * {@inheritdoc}
@@ -37,16 +33,13 @@ class AttributeRepository extends EntityRepository implements
             ->innerJoin('a.group', 'g')
             ->where('g.code != :default_code')
             ->orderBy('a.code')
-            ->setParameter(':default_code', AttributeGroup::DEFAULT_GROUP_CODE);
+            ->setParameter(':default_code', AttributeGroupInterface::DEFAULT_CODE);
 
         return $qb->getQuery()->getResult();
     }
 
     /**
-     * Find attributes with related attribute groups QB
-     *
-     * @param array $attributeIds
-     * @param array $criterias
+     * Find attributes with related attribute groups QB.
      *
      * @return QueryBuilder
      */
@@ -104,7 +97,7 @@ class AttributeRepository extends EntityRepository implements
             ->andWhere('a.type IN (:file_type, :image_type)')
             ->setParameters(
                 [
-                    ':file_type'  => AttributeTypes::FILE,
+                    ':file_type' => AttributeTypes::FILE,
                     ':image_type' => AttributeTypes::IMAGE,
                 ]
             )
@@ -228,14 +221,14 @@ class AttributeRepository extends EntityRepository implements
             ->from($this->_entityName, 'att', 'att.id');
 
         if (is_array($codes) && !empty($codes)) {
-            $qb->andWhere("att.code IN (:codes)");
+            $qb->andWhere('att.code IN (:codes)');
             $qb->setParameter('codes', $codes);
         } elseif (is_array($codes)) {
             return [];
         }
 
         if (is_array($groupIds) && !empty($groupIds)) {
-            $qb->andWhere("att.group IN (:groupIds)");
+            $qb->andWhere('att.group IN (:groupIds)');
             $qb->setParameter('groupIds', $groupIds);
         } elseif (is_array($groupIds)) {
             return [];
@@ -250,27 +243,37 @@ class AttributeRepository extends EntityRepository implements
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function getIdentifier()
+    public function getIdentifier(): AttributeInterface
     {
-        return $this->findOneBy(['type' => AttributeTypes::IDENTIFIER]);
+        return $this->getMainIdentifier();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getIdentifierCode()
+    public function getMainIdentifier(): AttributeInterface
+    {
+        return $this->findOneBy(['type' => AttributeTypes::IDENTIFIER, 'mainIdentifier' => true]) ??
+            throw new \RuntimeException('The PIM has no identifier attribute');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIdentifierCode(): string
+    {
+        return $this->getMainIdentifierCode();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMainIdentifierCode(): string
     {
         if (null === $this->identifierCode) {
-            $code = $this->createQueryBuilder('a')
-                ->select('a.code')
-                ->andWhere('a.type = :type')
-                ->setParameter('type', AttributeTypes::IDENTIFIER)
-                ->setMaxResults(1)
-                ->getQuery()->getSingleResult(Query::HYDRATE_SINGLE_SCALAR);
-
-            $this->identifierCode = $code;
+            $this->identifierCode = $this->getIdentifier()->getCode();
         }
 
         return $this->identifierCode;
@@ -336,6 +339,25 @@ class AttributeRepository extends EntityRepository implements
         }
 
         return array_map('current', $qb->getQuery()->getScalarResult());
+    }
+
+    public function getAttributesByGroups(array $groupCodes, int $limit, ?string $searchAfter): array
+    {
+        $qb = $this->createQueryBuilder('a');
+
+        $qb
+            ->join('a.group', 'g')
+            ->setMaxResults($limit)
+            ->where('g.code IN (:groupsCode)')
+            ->setParameter(':groupsCode', $groupCodes)
+            ->orderBy('a.code');
+
+        if ($searchAfter) {
+            $qb->andWhere('a.code > :searchAfter')
+                ->setParameter(':searchAfter', $searchAfter);
+        }
+
+        return $qb->getQuery()->getResult();
     }
 
     /**

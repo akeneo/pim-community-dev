@@ -1,0 +1,21 @@
+pim_enrich.product:
+    validation:
+        upsert:
+            unknown_user: 'The "{{ user_id }}" user does not exist'
+            category_no_access_to_products: You don't have access to products in any tree, please contact your administrator
+            should_keep_one_owned_category: You should at least keep your product in one category on which you have an own permission
+            locale_no_access_to_products: You don't have access to product data in any activated locale, please contact your administrator
+            attribute_group_no_access_to_attributes: You don't have access to the {{ attributeCode }} attribute of this product. Please contact your administrator.
+            product_identifier_empty: The product identifier requires a non empty string
+            duplicated_user_intents: The value for attribute {{ attributeCode }} is being updated multiple times
+            family_code_empty: The family code requires a non empty string
+            category_does_not_exist: '{1}The "{{ categoryCodes }}" category does not exist|]1, Inf[ The "{{ categoryCodes }}" categories do not exist'
+            set_value:
+                no_channel_code_provided_for_scopable_attribute: 'The {{ attributeCode }} attribute requires a channel'
+                channel_code_provided_for_non_scopable_attribute: 'The {{ attributeCode }} attribute does not require a channel, "{{ channelCode }}" was detected'
+                no_locale_code_provided_for_localizable_attribute: 'The {{ attributeCode }} attribute requires a locale'
+                locale_code_provided_for_non_localizable_attribute: 'The {{ attributeCode }} attribute does not require a locale, "{{ localeCode }}" was detected'
+                invalid_locale_code_for_locale_specific_attribute: 'The {{ attributeCode }} requires one of the following locales: {{ availableLocales }}; "{{ localeCode }}" was detected'
+                channel_does_not_exist: 'The {{ channelCode }} channel does not exist'
+                locale_is_not_active: 'The {{ localeCode }} locale does not exist or is not active'
+                locale_not_activated_for_channel: 'The {{ localeCode }} locale is not activated for the {{ channelCode }} channel'

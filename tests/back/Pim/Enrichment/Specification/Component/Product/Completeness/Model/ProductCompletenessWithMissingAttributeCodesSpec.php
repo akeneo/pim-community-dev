@@ -62,4 +62,15 @@ class ProductCompletenessWithMissingAttributeCodesSpec extends ObjectBehavior
         $this->beConstructedWith('ecommerce', 'fr_FR', 3, ['name']);
         $this->ratio()->shouldReturn(66);
     }
+
+    public function it_returns_the_count_of_missing_attributes()
+    {
+        $this->beConstructedWith(
+            'ecommerce',
+            'fr_FR',
+            30,
+            ['name', 'brand', 'description', 'picture']
+        );
+        $this->missingAttributesCount()->shouldReturn(4);
+    }
 }

@@ -1,0 +1,16 @@
+services:
+  Akeneo\Pim\Structure\Family\ServiceAPI\Query\FindFamilyCodes:
+    class: Akeneo\Pim\Structure\Family\Infrastructure\Query\Sql\SqlFindFamilyCodes
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Pim\Structure\Family\ServiceAPI\Query\CountFamilyCodes:
+    class: Akeneo\Pim\Structure\Family\Infrastructure\Query\Sql\SqlCountFamilyCodes
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Pim\Structure\Family\ServiceAPI\Query\FindFamiliesWithLabels:
+    class: Akeneo\Pim\Structure\Family\Infrastructure\Query\Sql\SqlFindFamiliesWithLabels
+    arguments:
+      - '@database_connection'
+      - '@Akeneo\Pim\Structure\Family\ServiceAPI\Query\FindFamilyCodes'

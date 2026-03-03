@@ -3,7 +3,7 @@
 namespace spec\Oro\Bundle\PimDataGridBundle\Datasource;
 
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\DataGridBundle\Datagrid\Datagrid;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use PhpSpec\ObjectBehavior;
@@ -16,6 +16,7 @@ use Oro\Bundle\PimDataGridBundle\Extension\Pager\PagerExtension;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductDatasourceSpec extends ObjectBehavior
@@ -51,6 +52,7 @@ class ProductDatasourceSpec extends ObjectBehavior
         ProductInterface $product1,
         CursorInterface $productCursor
     ) {
+        $product1->getUuid()->willReturn(Uuid::uuid4());
         $config = [
             'displayed_attribute_ids' => [1, 2],
             'attributes_configuration' => [
@@ -66,6 +68,11 @@ class ProductDatasourceSpec extends ObjectBehavior
                     'id' => 3,
                     'code' => 'attribute_3'
                 ],
+                'sku' => [
+                    'id' => 4,
+                    'code' => 'sku',
+                    'mainIdentifier' => true,
+                ]
             ],
             'locale_code' => 'fr_FR',
             'scope_code' => 'ecommerce',
@@ -114,8 +121,9 @@ class ProductDatasourceSpec extends ObjectBehavior
             'document_type'    => null,
         ]);
 
+        // CPM-1082: mainIdentifier attribute should be kept for display purposes in the grid
         $subscriber
-            ->configure(FilterEntityWithValuesSubscriberConfiguration::filterEntityValues(['attribute_1', 'attribute_2']))
+            ->configure(FilterEntityWithValuesSubscriberConfiguration::filterEntityValues(['attribute_1', 'attribute_2', 'sku']))
             ->shouldBeCalled();
 
         $results = $this->getResults();

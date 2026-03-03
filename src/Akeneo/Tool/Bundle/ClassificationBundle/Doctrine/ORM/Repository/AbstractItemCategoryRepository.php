@@ -2,10 +2,12 @@
 
 namespace Akeneo\Tool\Bundle\ClassificationBundle\Doctrine\ORM\Repository;
 
-use Akeneo\Tool\Component\Classification\Repository\CategoryFilterableRepositoryInterface;
-use Akeneo\Tool\Component\Classification\Repository\ItemCategoryRepositoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryFilterableRepositoryInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\Repository\ItemCategoryRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * Item category repository
@@ -18,17 +20,10 @@ abstract class AbstractItemCategoryRepository implements
     ItemCategoryRepositoryInterface,
     CategoryFilterableRepositoryInterface
 {
-    /** @var string */
-    protected $entityName;
+    protected string $entityName;
+    protected EntityManager $em;
 
-    /** @var EntityManager */
-    protected $em;
-
-    /**
-     * @param EntityManager $em
-     * @param string        $entityName
-     */
-    public function __construct(EntityManager $em, $entityName)
+    public function __construct(EntityManager $em, string $entityName)
     {
         $this->em = $em;
         $this->entityName = $entityName;
@@ -54,9 +49,8 @@ abstract class AbstractItemCategoryRepository implements
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->bindValue('itemId', $item->getId());
 
-        $stmt->execute();
         $categories = [];
-        foreach ($stmt->fetchAll() as $categoryId) {
+        foreach ($stmt->executeQuery()->fetchAllAssociative() as $categoryId) {
             $categories[] = $this->em->getRepository($config['categoryClass'])->find($categoryId['id']);
         }
 
@@ -66,7 +60,7 @@ abstract class AbstractItemCategoryRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getItemCountByTree($item)
+    public function getItemCountByTree($item): array
     {
         $config = $this->getMappingConfig($item);
 
@@ -83,11 +77,15 @@ abstract class AbstractItemCategoryRepository implements
             $config['relation']
         );
 
-        $stmt = $this->em->getConnection()->prepare($sql);
-        $stmt->bindValue('itemId', $item->getId());
+        if ($item instanceof ProductInterface && get_class($item) !== 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface') {
+            $id = $item->getUuid()->getBytes();
+        } else {
+            $id = $item->getId();
+        }
 
-        $stmt->execute();
-        $items = $stmt->fetchAll();
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->bindValue('itemId', $id);
+        $items = $stmt->executeQuery()->fetchAllAssociative();
 
         return $this->buildItemCountByTree($items, $config['categoryClass']);
     }
@@ -128,7 +126,7 @@ abstract class AbstractItemCategoryRepository implements
      */
     public function applyFilterByCategoryIds($qb, array $categoryIds, $include = true)
     {
-        $rootAlias = $qb->getRootAlias();
+        $rootAlias = $qb->getRootAliases()[0];
         $filterCatIds = uniqid('filterCatIds');
 
         if ($include) {
@@ -174,13 +172,8 @@ abstract class AbstractItemCategoryRepository implements
 
     /**
      * Build array of item with item count by category and category entity
-     *
-     * @param array  $itemCounts
-     * @param string $categoryClass
-     *
-     * @return array
      */
-    protected function buildItemCountByTree(array $itemCounts, $categoryClass)
+    protected function buildItemCountByTree(array $itemCounts, string $categoryClass): array
     {
         $trees = [];
         foreach ($itemCounts as $itemCount) {
@@ -195,12 +188,8 @@ abstract class AbstractItemCategoryRepository implements
 
     /**
      * Get mapping information to build SQL query
-     *
-     * @param $item
-     *
-     * @return array
      */
-    protected function getMappingConfig($item)
+    protected function getMappingConfig(object $item): array
     {
         $itemMetadata = $this->em->getClassMetadata(ClassUtils::getClass($item));
 
@@ -218,10 +207,10 @@ abstract class AbstractItemCategoryRepository implements
     /**
      * @param mixed $qb
      */
-    protected function joinQueryBuilderOnCategories($qb)
+    protected function joinQueryBuilderOnCategories(QueryBuilder $qb)
     {
         $joins = $qb->getDqlPart('join');
-        $rootAlias = $qb->getRootAlias();
+        $rootAlias = $qb->getRootAliases()[0];
 
         // Ensure that we did not joined it already
         if (isset($joins[$rootAlias])) {
@@ -232,6 +221,6 @@ abstract class AbstractItemCategoryRepository implements
             }
         }
 
-        $qb->leftJoin($qb->getRootAlias().'.categories', CategoryFilterableRepositoryInterface::JOIN_ALIAS);
+        $qb->leftJoin($qb->getRootAliases()[0].'.categories', CategoryFilterableRepositoryInterface::JOIN_ALIAS);
     }
 }

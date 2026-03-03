@@ -43,6 +43,7 @@ class RegisterFlatToStandardConverterPass implements CompilerPassInterface
 
         $registry = $container->getDefinition(static::CONVERTER_REGISTRY);
         $converters = $container->findTaggedServiceIds(static::CONVERTER_TAG);
+        $services = [];
 
         foreach ($converters as $serviceId => $tags) {
             foreach ($tags as $tag) {

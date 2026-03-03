@@ -26,7 +26,7 @@ pim_user_management:
         last_name: Фамилия
         name_suffix: Суффикс имени
         avatar: Аватар
-        email: Email
+        email: Эл. почта
         catalog_locale: Локаль каталога
         catalog_scope: Область видимости каталога
         default_tree: Дерево каталога по умолчанию
@@ -39,19 +39,19 @@ pim_user_management:
         ui_locale: Локаль пользовательского интерфейса
         timezone: Часовой пояс
         default_product_grid_view: Представление сетки продуктов по умолчанию
-        default_published_product_grid_view: Представление сетки публикованных товаров по умолчанию
-        proposals_to_review_notification: При появлении нового предложения для рассмотра
-        proposals_state_notifications: При принятии или отклонении предложения
+        default_published_product_grid_view: Представление данных опубликованных товаров в таблице по умолчанию #EE Only
+        proposals_to_review_notification: При появлении нового предложения для рассмотрения #EE Only
+        proposals_state_notifications: При принятии или отклонении предложения #EE Only
       module:
         create:
           button: Создать пользователя
         delete:
           confirm: Вы действительно хотите удалить этого пользователя?
         update:
-          additional: Дополнительно
+          additional: Дополнительные
           password: Пароль
           interfaces: Интерфейсы
-          notifications: Уведомления
+          notifications: Уведомления #TODO EE Only
     role:
       plural_label: Роли
       module:

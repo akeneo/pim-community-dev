@@ -9,10 +9,9 @@ namespace Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ConnectionImage
+class ConnectionImage implements \Stringable
 {
-    /** @var string */
-    private $filePath;
+    private string $filePath;
 
     public function __construct(string $filePath)
     {

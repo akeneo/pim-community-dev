@@ -8,7 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 
 /**
  * @author    Damien Carcel (damien.carcel@akeneo.com)
@@ -72,6 +72,8 @@ interface ProductModelRepositoryInterface extends
      */
     public function findChildrenProducts(ProductModelInterface $productModel): array;
 
+    public function findFirstCreatedVariantProductModel(ProductModelInterface $productModel): ?ProductModelInterface;
+
     /**
      * Get root products models after the one provided. Mainly used to iterate
      * through a large collecion.
@@ -99,7 +101,12 @@ interface ProductModelRepositoryInterface extends
      *
      * @return array
      */
-    public function findProductModelsForFamilyVariant(FamilyVariantInterface $familyVariant, ?string $search = null): array;
+    public function findProductModelsForFamilyVariant(
+        FamilyVariantInterface $familyVariant,
+        ?string $search = null,
+        int $limit = 20,
+        int $page = 1
+    ): array;
 
     /**
      * @param FamilyVariantInterface $familyVariant

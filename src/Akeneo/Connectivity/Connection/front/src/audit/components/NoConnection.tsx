@@ -38,7 +38,7 @@ export const NoConnection = ({small, flowType = 'default'}: Props) => {
                 >
                     <Translate id='akeneo_connectivity.connection.dashboard.no_connection.message_with_permission.message' />
                     &nbsp;
-                    <Typography.Link onClick={() => redirect('/connections')}>
+                    <Typography.Link onClick={() => redirect('/connect/connection-settings')}>
                         <Translate id='akeneo_connectivity.connection.dashboard.no_connection.message_with_permission.link' />
                     </Typography.Link>
                 </SecurityGuard>

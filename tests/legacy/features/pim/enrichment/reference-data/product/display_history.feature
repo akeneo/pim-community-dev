@@ -10,8 +10,8 @@ Feature: Display the product history
     And I am on the products grid
     And I create a product
     And I fill in the following information in the popin:
-      | SKU    | heels |
       | Family | Heels |
+      | SKU    | heels |
     And I press the "Save" button in the popin
     And I wait to be on the "heels" product page
 
@@ -24,7 +24,7 @@ Feature: Display the product history
       | version | property   | value  | date |
       | 2       | Heel color | ua-red | now  |
     When I visit the "Attributes" column tab
-    And I change the "Heel color" to "Green"
+    And I change the "Heel color" to "Green (HTML/CSS Color)"
     And I save the product
     And I visit the "History" column tab
     Then I should see history:

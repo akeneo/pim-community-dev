@@ -1,0 +1,180 @@
+akeneo_catalogs:
+  common:
+    select:
+      open: Otwórz
+      remove: Usuń
+      no_matches: Nie znaleziono dopasowań
+  catalog_list:
+    catalogs_name: Nazwa katalogu
+    status: Status
+    enabled: włączone
+    disabled: wyłączone
+    empty: Nie ma katalogu
+    more_information: Więcej informacji znajdziesz w naszej pomocy.
+  catalog_edit:
+    tabs:
+      settings: Ustawienia katalogu
+      product_selection: Wybór produktów
+      more: Więcej
+      product_value_filters: Filtruj wartości
+      product_mapping: Mapowanie
+  catalog_status_widget:
+    fields:
+      enable_catalog: Włącz katalog
+    helper: Domyślnie nowe katalogi są wyłączone. Włącz katalog, aby umożliwić aplikacji pozyskiwanie danych produktu.
+    inputs:
+      yes: Yes
+      no: No
+  product_value_filters:
+    action:
+      open: Otwórz
+      remove: Usuń
+    filters:
+      channel:
+        label: Kanał
+        no_matches: Nie znaleziono dopasowań
+        placeholder: Wybierz kanał
+      locale:
+        label: Wersja językowa
+        no_matches: Nie znaleziono dopasowań
+        placeholder: Wybierz wersję językową
+      currency:
+        label: Waluta
+        no_matches: Nie znaleziono dopasowań
+        placeholder: Wybierz walutę
+  product_selection:
+    empty: Dodaj kryteria wyboru, aby utworzyć wybór produktów
+    count:
+      products: '{0} Brak produktów|one: {{ count }} produkt|few: {{ count }} produkty|many: {{ count }} produktów|other: {{ count }} produktu'
+      error: Nie można obliczyć liczby produktów.
+    more_information: Więcej informacji znajdziesz w naszej pomocy.
+    add_criteria:
+      label: dodaj kryteria wyboru
+      search: Kryterium wyszukiwania
+      no_results: nie znaleziono dopasowań
+      section_system: system
+      section_attributes: atrybuty
+    action:
+      open: Otwórz
+      remove: Usuń
+    locale:
+      label: Wersja językowa
+      empty: Nie znaleziono wersji językowej
+    channel:
+      label: Kanał
+      empty: Nie znaleziono kanału
+    criteria:
+      unknown: Ten atrybut został usunięty.
+      max_reached: Osiągnięto limit kryteriów wyboru ({{ maxCount }}).
+      status:
+        label: Status
+        enabled: Włączony
+        disabled: Wyłączony
+      family:
+        label: Rodzina
+        no_matches: Nie znaleziono dopasowań
+        placeholder: Wybierz rodzinę
+      completeness:
+        label: Kompletność
+      attribute_option:
+        no_matches: Nie znaleziono dopasowań
+        placeholder: Wybierz opcję
+      category:
+        label: Kategoria
+        remove: Usuń kategorię
+        category_tree: Drzewo kategorii
+      measurement:
+        search: Jednostka
+        no_results: Nie znaleziono dopasowań
+      boolean:
+        yes: Yes
+        no: No
+    operators:
+      "STARTS WITH": zaczyna się od
+      "ENDS WITH": kończy się na
+      "CONTAINS": zawiera
+      "DOES NOT CONTAIN": nie zawiera
+      "EMPTY": jest pusty
+      "NOT EMPTY": nie jest pusty
+      "IN": w
+      "NOT IN": nie w
+      "IN CHILDREN": w elementach podrzędnych
+      "NOT IN CHILDREN": nie w elementach podrzędnych
+      "UNCLASSIFIED": jest niesklasyfikowany
+      "IN OR UNCLASSIFIED": jest niesklasyfikowany lub w
+      "BETWEEN": pomiędzy
+      "NOT BETWEEN": nie pomiędzy
+      "=": jest równe
+      "!=": nie równa się
+      ">": większy niż
+      ">=": równy lub mniejszy niż
+      "<": mniej niż
+      "<=": równy lub mniejszy niż
+  product_mapping:
+    target:
+      title: Lista celów
+      filter:
+        label: Filtr
+        option:
+          all: Wszystkie
+      table:
+        target: Cel katalogu
+        source: Źródło PIM
+        placeholder: Zdefiniuj źródło treści
+      placeholder:
+        illustration_title: Brak dostępnych celów katalogu
+    source:
+      title: Wybierz źródło
+      parameters:
+        placeholder: Wybierz atrybut
+        title: Parametry źródła
+        channel:
+          placeholder: Wybierz kanał
+        locale:
+          placeholder: Wybierz wersję językową
+        label_locale:
+          label: Tłumaczenie wartości
+          placeholder: Wybierz tłumaczenie
+          helper: Wybierz język, w którym należy wysłać wartość.
+        currency:
+          label: Waluta
+          placeholder: Wybierz walutę
+          helper: Wybierz walutę, w której należy wysłać wartość.
+        default_value:
+          label: Wartość domyślna przy braku zadanej
+          placeholder: Zdefiniuj wartość domyślną
+        no_parameters_message: Brak parametrów dla tego źródła.
+        unit:
+          label: Jednostka
+          placeholder: Wybierz jednostkę
+          helper: Wybierz jednostkę, w której należy wysłać wartość.
+      select_source:
+        label: Źródło PIM
+        search: Kryterium wyszukiwania
+        no_results: Nie znaleziono dopasowań
+        section_system: System
+        section_attributes: Atrybuty
+      placeholder:
+        title: Wybierz źródło
+        illustration_title: Kliknij cel w prawym panelu, aby skonfigurować mapowanie katalogu.
+        subtitle: Wtedy będziesz mieć możliwość dopasowania atrybutu PIM do wybranego celu.
+        link: Więcej informacji znajdziesz w naszej pomocy.
+      uuid_placeholder:
+        illustration_title: UUID to techniczny identyfikator produktu.
+        subtitle: Wszystkie aplikacje muszą wymagać go jako celu. Nie musisz nic konfigurować w odniesieniu do tego celu, ponieważ automatycznie mapujemy go za pomocą identyfikatora UUID produktu Akeneo.
+        link: Więcej informacji o identyfikatorze UUID.
+      requirements:
+        title: Wymagania aplikacji
+        help: Pomoc
+        constraints:
+          minLength: '{0,1} Ten celu musi składać się z co najmniej {{ value }} znaku.|[2,Inf[ Ten cel musi składać się z co najmniej {{ value }} znaków.'
+          maxLength: '{0,1} Ten cel nie może zawierać więcej niż {{ value }} znaku.|[2,Inf[ Ten cel nie może zawierać więcej niż {{ value }} znaków.'
+          pattern: '[0,Inf[ Pattern: Ten cel musi być zgodny z następującym wyrażeniem regularnym: „{{ value }}”.'
+          minimum: '[0,Inf[ Ten cel musi być większy lub równy {{ value }}.'
+          maximum: '[0,Inf[ Ten cel musi być równy {{ value }} lub większy.'
+          enum: '[0,Inf[ Enum: Ten cel akceptuje tylko następujące wartości: {{ value }}.'
+      system_attributes:
+        categories:
+          label: Kategorie
+        family:
+          label: Rodzina

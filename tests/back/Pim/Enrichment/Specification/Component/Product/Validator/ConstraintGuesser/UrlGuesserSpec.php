@@ -4,6 +4,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Validator\Constr
 
 use Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser\UrlGuesser;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesserInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Url;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
@@ -43,12 +44,14 @@ class UrlGuesserSpec extends ObjectBehavior
     function it_guesses_url($text)
     {
         $text->getValidationRule()->willReturn('url');
+        $text->getCode()->willReturn('attribute_url_code');
         $constraints = $this->guessConstraints($text);
 
         $constraints->shouldHaveCount(1);
 
         $firstConstraint = $constraints[0];
-        $firstConstraint->shouldBeAnInstanceOf('Symfony\Component\Validator\Constraints\Url');
+        $firstConstraint->shouldBeAnInstanceOf(Url::class);
+        $firstConstraint->attributeCode->shouldBe('attribute_url_code');
     }
 
     function it_does_not_guess_url($text)

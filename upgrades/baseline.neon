@@ -1,0 +1,156 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_6_0_20210211141311_add_attribute_guidelines.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_6_0_20210331105730_remove_datagrid_view_unique_label_constraint.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_6_0_20210415130338_mark_job_execution_as_failed_when_interrupted.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_6_0_20210505180000_add_updated_to_category.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_6_0_20210510102539_fix_micro_operations.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_6_0_20210531152335_dqi_launch_recompute_products_scores.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_6_0_20210715082931_add_product_web_api_acl.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_6_0_20210727080505_add_client_id_and_user_id.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_6_0_20210817135301_add_role_type_column.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_6_0_20210818084017_add_marketplace_public_app_id.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_6_0_20210819080024_add_warning_count_in_step_execution.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_6_0_20210901133833_create_connection_app_table.php
+
+		-
+			message: "#^Left side of && is always true\\.$#"
+			count: 1
+			path: schema/Version_6_0_20210908142400_add_product_web_api_acl.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_6_0_20210917103700_add_user_group_default_permissions.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_6_0_20211209000000_add_akeneo_connectivity_user_consent_table.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_6_0_20220103100000_add_test_app_table.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_6_0_20220518134914_set_not_null_fields_for_job_and_step_execution_tables.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_6_0_20220524122443_oro_user_field_consecutive_authentication_failure_counter_is_not_nullable.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_7_0_20220330095652_ensure_locale_codes_for_labels_in_channels_have_correct_case.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_7_0_20220404075823_add_uuid_columns.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_7_0_20220415090329_add_uuid_column_for_comment.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_7_0_20220425160000_ensure_locale_codes_for_labels_in_families_have_correct_case.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_7_0_20220429132029_remove_temporary_indexes_from_uuid_migration.php
+
+		-
+			message: "#^Offset 7 on array\\{0\\: 'id'\\|'original_product_id'\\|'owner_id'\\|'product_id'\\|'resource_id', 1\\: 'original_product…'\\|'owner_uuid'\\|'product_uuid'\\|'resource_uuid'\\|'uuid', 6\\: 'IDX_3A3A49D45C977207'\\|'IDX_3FF3ED195C977207'\\|'IDX_512179C15C977207'\\|'IDX_6F63A25F5C977207'\\|'IDX_7AC0C83A5C977207'\\|'IDX_CC27100147D93336'\\|'IDX_E0768BA35C977207'\\|'product_uuid'\\|'UNIQ…'\\|null, 2\\: array\\{0\\: 'association_id'\\|'locale_id'\\|'product_uuid'\\|'project_id'\\|'uuid', 1\\?\\: 'category_id'\\|'channel_id'\\|'criterion_code'\\|'evaluated_at'\\|'group_id'\\|'product_uuid', 2\\?\\: 'product_uuid', 3\\?\\: 'attribute_group_id'\\}\\|null, 3\\: 'attr_grp…'\\|'FK_3A3A49D45C977207'\\|'FK_3FF3ED195C977207'\\|'FK_512179C15C977207'\\|'FK_6F63A25F5C977207'\\|'FK_7AC0C83A5C977207'\\|'FK_CC27100147D93336'\\|'FK_dqi_product_uuid…'\\|'FK_dqi_product_uuid…'\\|'FK_E0768BA35C977207'\\|'FK_E3566E6987DBB431'\\|'product_selection…'\\|null, 4\\: array\\{\\}\\|array\\{channel_locale_product_unique_idx\\: array\\{'channel_id', 'locale_id', 'product_uuid'\\}\\}\\|array\\{owner_uuid_association_type_id_idx\\: array\\{'owner_uuid', 'association_type_id'\\}\\}\\|array\\{UNIQ_E3566E6987DBB431\\: array\\{'original_product…'\\}\\}\\|array\\{unique_author_product_idx\\: array\\{'product_uuid', 'author'\\}\\}, 5\\: array\\{\\}\\|array\\{IDX_512179C15C977207\\: array\\{'product_uuid'\\}\\}\\|array\\{IDX_6F63A25F5C977207\\: array\\{'product_uuid'\\}\\}\\|array\\{IDX_7AC0C83A5C977207\\: array\\{'product_uuid'\\}\\}\\|array\\{IDX_E0768BA35C977207\\: array\\{'product_uuid'\\}\\}\\|array\\{resource_name_resource_uuid_idx\\: array\\{'resource_name', 'resource_uuid'\\}\\}\\|array\\{resource_name_resource_uuid_version_idx\\: array\\{'resource_name', 'resource_uuid', 'version'\\}\\}, 7\\: array\\{\\}\\|array\\{migrate_to_uuid_temporary_index\\: array\\{0\\: 'product_uuid'\\|'resource_name', 1\\?\\: 'resource_uuid', 2\\?\\: 'resource_id'\\}\\}\\} on left side of \\?\\? always exists and is not nullable\\.$#"
+			count: 1
+			path: schema/Version_7_0_20220429132029_remove_temporary_indexes_from_uuid_migration.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_7_0_20220505000000_add_catalog_table.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_7_0_20220616074214_add_product_selection_criteria_field_to_catalogs.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_7_0_20220803111111_add_created_and_updated_date_to_connected_app_table.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_7_0_20220808143128_add_value_collection_to_category.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between null and array\\<string, mixed\\>\\|false will always evaluate to false\\.$#"
+			count: 1
+			path: schema/Version_7_0_20220818093018_fix_volume_flow_conversion.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_7_0_20220818143128_remove_zdd_setidentifiernullable_from_pim_one_time_task_table.php
+
+		-
+			message: "#^Migration must be covered by an integration test$#"
+			count: 1
+			path: schema/Version_7_0_20220823094700_add_scheduled_jobs.php

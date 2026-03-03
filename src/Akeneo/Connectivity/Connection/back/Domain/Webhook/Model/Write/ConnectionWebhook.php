@@ -12,19 +12,14 @@ use Akeneo\Connectivity\Connection\Domain\ValueObject\Url;
  */
 class ConnectionWebhook
 {
-    /** @var string */
-    private $code;
+    private ?Url $url = null;
 
-    /** @var bool */
-    private $enabled;
-
-    /** @var ?Url */
-    private $url;
-
-    public function __construct(string $code, bool $enabled, ?string $url = null)
-    {
-        $this->code = $code;
-        $this->enabled = $enabled;
+    public function __construct(
+        private string $code,
+        private bool $enabled,
+        ?string $url = null,
+        private bool $isUsingUuid = false,
+    ) {
         $this->url = $url ? new Url($url) : null;
     }
 
@@ -41,5 +36,10 @@ class ConnectionWebhook
     public function url(): ?Url
     {
         return $this->url;
+    }
+
+    public function isUsingUuid(): bool
+    {
+        return $this->isUsingUuid;
     }
 }

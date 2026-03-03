@@ -293,6 +293,12 @@
     width: 100%;
     padding-right: 2px;
 
+    > div:first-of-type {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
     input[type="checkbox"] {
       margin-top: -4px;
       margin-right: 10px;
@@ -300,6 +306,10 @@
 
     .group-label {
       font-style: italic;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      min-width: 65px;
     }
   }
 }

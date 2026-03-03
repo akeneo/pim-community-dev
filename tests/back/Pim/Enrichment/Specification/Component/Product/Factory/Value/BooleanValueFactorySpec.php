@@ -87,7 +87,7 @@ final class BooleanValueFactorySpec extends ObjectBehavior
             $this->getAttribute(true, true),
             'ecommerce',
             'fr_FR',
-            new \stdClass()
+            1
         ]);
     }
 

@@ -15,60 +15,75 @@ final class AttributeCodeBlacklister
         $this->connection = $connection;
     }
 
-    public function blacklist(string $attributeCode): void
+    public function blacklist(array $attributeCodes): void
     {
+        if (empty($attributeCodes)) {
+            return;
+        }
+
+        $placeholder = [];
+        $params = [];
+        foreach ($attributeCodes as $key => $attributeCode) {
+            $placeholder[] = '(:attribute_code_' . $key . ')';
+            $params['attribute_code_' . $key] = $attributeCode;
+        }
+
+        $placeholder = implode(',', $placeholder);
+
         $blacklistAttributeCodeSql = <<<SQL
 INSERT INTO `pim_catalog_attribute_blacklist` (`attribute_code`)
-VALUES
-    (:attribute_code);
+VALUES $placeholder;
 SQL;
 
-        $this->connection->executeUpdate(
+        $this->connection->executeStatement(
             $blacklistAttributeCodeSql,
-            [
-                'attribute_code' => $attributeCode
-            ],
-            [
-                'attribute_code' => \PDO::PARAM_STR,
-            ]
+            $params
         );
     }
 
-    public function registerJob(string $attributeCode, int $jobExecutionId): void
+    public function registerJob(array $attributeCodes, int $jobExecutionId): void
     {
+        if (empty($attributeCodes)) {
+            return;
+        }
+
         $registerJobSql = <<<SQL
 UPDATE `pim_catalog_attribute_blacklist`
 SET `cleanup_job_execution_id` = :job_execution_id
-WHERE `attribute_code` = :attribute_code;
+WHERE `attribute_code` IN (:attribute_codes);
 SQL;
 
-        $this->connection->executeUpdate(
+        $this->connection->executeStatement(
             $registerJobSql,
             [
-                'attribute_code' => $attributeCode,
+                'attribute_codes' => $attributeCodes,
                 'job_execution_id' => $jobExecutionId
             ],
             [
-                'attribute_code' => \PDO::PARAM_STR,
+                'attribute_codes' => Connection::PARAM_STR_ARRAY,
                 'job_execution_id' => \PDO::PARAM_INT
             ]
         );
     }
 
-    public function removeFromBlacklist(string $attributeCode): void
+    public function removeFromBlacklist(array $attributeCodes): void
     {
+        if (empty($attributeCodes)) {
+            return;
+        }
+
         $whiteListSql = <<<SQL
 DELETE FROM `pim_catalog_attribute_blacklist`
-WHERE `attribute_code` = :attribute_code;
+WHERE `attribute_code` IN (:attribute_codes);
 SQL;
 
-        $this->connection->executeUpdate(
+        $this->connection->executeStatement(
             $whiteListSql,
             [
-                'attribute_code' => $attributeCode,
+                'attribute_codes' => $attributeCodes,
             ],
             [
-                'attribute_code' => \PDO::PARAM_STR,
+                'attribute_codes' => Connection::PARAM_STR_ARRAY,
             ]
         );
     }

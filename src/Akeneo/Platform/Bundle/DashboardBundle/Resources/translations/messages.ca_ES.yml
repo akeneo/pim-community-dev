@@ -6,5 +6,3 @@ pim_dashboard:
       title: Integritat per canals i locales
     last_operations:
       title: Últimes operacions
-      status: Estat
-      type: Tipus

@@ -240,7 +240,7 @@ JSON;
 <<<JSON
     {
         "attribute":"a_multi_select",
-        "sort_order":"100"
+        "sort_order":100
     }
 JSON;
 
@@ -426,7 +426,7 @@ JSON;
     	"message": "Validation failed.",
     	"errors": [{
     		"property": "code",
-    		"message": "This value is already used."
+    		"message": "This property cannot be changed."
     	},{
     		"property": "attribute",
     		"message": "This property cannot be changed."

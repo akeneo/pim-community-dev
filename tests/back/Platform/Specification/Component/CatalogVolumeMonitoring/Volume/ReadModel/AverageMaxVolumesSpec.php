@@ -11,7 +11,7 @@ class AverageMaxVolumesSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith(10, 6, 8, 'volume_name');
+        $this->beConstructedWith(10, 6, 'volume_name');
     }
 
     function it_is_initializable()
@@ -32,17 +32,5 @@ class AverageMaxVolumesSpec extends ObjectBehavior
     function it_has_volume_name()
     {
         $this->getVolumeName()->shouldReturn('volume_name');
-    }
-
-    function it_has_warning()
-    {
-        $this->hasWarning()->shouldReturn(true);
-    }
-
-    function it_does_not_have_warning_if_the_limit_is_lower_than_zero()
-    {
-        $this->beConstructedWith(10, 6, -1, 'volume_name');
-
-        $this->hasWarning()->shouldReturn(false);
     }
 }

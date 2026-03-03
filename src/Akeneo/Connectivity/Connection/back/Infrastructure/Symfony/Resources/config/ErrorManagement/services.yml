@@ -1,0 +1,12 @@
+services:
+    Akeneo\Connectivity\Connection\Application\ErrorManagement\Service\CollectApiError:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\ConnectionContext'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\Persistence\ElasticsearchBusinessErrorRepository'
+            - '@Akeneo\Connectivity\Connection\Application\ErrorManagement\Command\UpdateConnectionErrorCountHandler'
+            - '@akeneo_connectivity.connection.exception_serializer'
+
+    akeneo_connectivity.connection.exception_serializer:
+        class: FOS\RestBundle\Serializer\SymfonySerializerAdapter
+        arguments:
+            - '@pim_domain_error_serializer'

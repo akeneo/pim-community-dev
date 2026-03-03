@@ -2,12 +2,21 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization;
 
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization\GetNormalizedProductQualityScores;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization\ProductProcessor;
-use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithQualityScoresInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingValuesInterface;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\ExecutionContext;
+use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
@@ -15,14 +24,7 @@ use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Channel\Component\Model\LocaleInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
-use Akeneo\Tool\Component\Connector\Processor\BulkMediaFetcher;
-use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductProcessorSpec extends ObjectBehavior
@@ -31,18 +33,18 @@ class ProductProcessorSpec extends ObjectBehavior
         NormalizerInterface $normalizer,
         ChannelRepositoryInterface $channelRepository,
         AttributeRepositoryInterface $attributeRepository,
-        BulkMediaFetcher $mediaFetcher,
-        StepExecution $stepExecution,
         FillMissingValuesInterface $fillMissingProductModelValues,
-        GetProductsWithQualityScoresInterface $getProductsWithQualityScores
+        GetAttributes $getAttributes,
+        GetNormalizedProductQualityScores $getNormalizedProductQualityScores,
+        StepExecution $stepExecution
     ) {
         $this->beConstructedWith(
             $normalizer,
             $channelRepository,
             $attributeRepository,
-            $mediaFetcher,
             $fillMissingProductModelValues,
-            $getProductsWithQualityScores
+            $getAttributes,
+            $getNormalizedProductQualityScores,
         );
 
         $this->setStepExecution($stepExecution);
@@ -57,32 +59,36 @@ class ProductProcessorSpec extends ObjectBehavior
 
     function it_is_an_item_processor()
     {
-        $this->shouldImplement('\Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface');
+        $this->shouldImplement(ItemProcessorInterface::class);
     }
 
     function it_processes_product_without_media(
-        $normalizer,
-        $channelRepository,
-        $stepExecution,
-        $mediaFetcher,
-        $attributeRepository,
+        NormalizerInterface $normalizer,
+        ChannelRepositoryInterface $channelRepository,
+        AttributeRepositoryInterface $attributeRepository,
+        GetAttributes $getAttributes,
+        StepExecution $stepExecution,
         ChannelInterface $channel,
         LocaleInterface $locale,
         ProductInterface $product,
-        JobParameters $jobParameters,
-        AttributeInterface $attribute
+        JobParameters $jobParameters
     ) {
         $attributeRepository->findMediaAttributeCodes()->willReturn(['picture']);
-        $attributeRepository->findOneByIdentifier(Argument::any())->willReturn($attribute);
-        $attribute->isLocaleSpecific()->willReturn(false);
+        $getAttributes->forCode('picture')->willReturn($this->createAttribute('picture'));
+        $getAttributes->forCode('size')->willReturn($this->createAttribute('size'));
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('filePath')->willReturn('/my/path/product.csv');
+        $jobParameters->has('storage')->willReturn(true);
+        $jobParameters->get('storage')->willReturn([
+            'type' => 'local',
+            'file_path' => '/my/path/product.csv',
+        ]);
         $jobParameters->get('filters')->willReturn(
             [
                 'structure' => ['scope' => 'mobile', 'locales' => ['en_US', 'fr_FR']]
             ]
         );
+        $jobParameters->has('with_uuid')->willReturn(false);
         $jobParameters->has('with_media')->willReturn(true);
         $jobParameters->get('with_media')->willReturn(false);
 
@@ -91,7 +97,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $channel->getCode()->willReturn('foobar');
         $channel->getLocaleCodes()->willReturn(['en_US', 'de_DE']);
 
-        $normalizer->normalize($product, 'standard')
+        $normalizer->normalize($product, 'standard', ['with_association_uuids' => false])
             ->willReturn([
                 'enabled'    => true,
                 'categories' => ['cat1', 'cat2'],
@@ -113,9 +119,6 @@ class ProductProcessorSpec extends ObjectBehavior
                 ]
             ]);
 
-        $mediaFetcher->fetchAll(Argument::cetera())->shouldNotBeCalled();
-        $mediaFetcher->getErrors()->shouldNotBeCalled();
-
         $this->process($product)->shouldReturn([
             'enabled'    => true,
             'categories' => ['cat1', 'cat2'],
@@ -131,11 +134,12 @@ class ProductProcessorSpec extends ObjectBehavior
         ]);
     }
 
-    function it_processes_a_product_with_several_media(
-        $normalizer,
-        $channelRepository,
-        $stepExecution,
-        $mediaFetcher,
+    function it_processes_a_product_with_media(
+        NormalizerInterface $normalizer,
+        ChannelRepositoryInterface $channelRepository,
+        AttributeRepositoryInterface $attributeRepository,
+        GetAttributes $getAttributes,
+        StepExecution $stepExecution,
         ChannelInterface $channel,
         LocaleInterface $locale,
         ProductInterface $product,
@@ -144,15 +148,17 @@ class ProductProcessorSpec extends ObjectBehavior
         JobInstance $jobInstance,
         WriteValueCollection $valuesCollection,
         ExecutionContext $executionContext,
-        AttributeRepositoryInterface $attributeRepository,
         AttributeInterface $attribute
     ) {
-
-        $attributeRepository->findOneByIdentifier(Argument::any())->willReturn($attribute);
-        $attribute->isLocaleSpecific()->willReturn(false);
+        $getAttributes->forCode('picture')->willReturn($this->createAttribute('picture'));
+        $getAttributes->forCode('pdf_description')->willReturn($this->createAttribute('pdf_description'));
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('filePath')->willReturn('/my/path/product.csv');
+        $jobParameters->has('storage')->willReturn(true);
+        $jobParameters->get('storage')->willReturn([
+            'type' => 'local',
+            'file_path' => '/my/path/product.csv',
+        ]);
         $jobParameters->get('filters')->willReturn(
             [
                 'structure' => ['scope' => 'mobile', 'locales' => ['en_US', 'fr_FR']]
@@ -160,6 +166,8 @@ class ProductProcessorSpec extends ObjectBehavior
         );
         $jobParameters->has('with_media')->willReturn(true);
         $jobParameters->get('with_media')->willReturn(true);
+        $jobParameters->has('with_uuid')->willReturn(true);
+        $jobParameters->get('with_uuid')->willReturn(true);
 
         $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
         $channel->getLocales()->willReturn(new ArrayCollection([$locale]));
@@ -192,108 +200,31 @@ class ProductProcessorSpec extends ObjectBehavior
             ]
         ];
 
-        $normalizer->normalize($product, 'standard')->willReturn($productStandard);
-
-        $mediaFetcher->fetchAll($valuesCollection, '/working/directory/', 'AKIS_XS')->shouldBeCalled();
-        $mediaFetcher->getErrors()->willReturn([]);
-
-        $this->process($product)->shouldReturn($productStandard);
-    }
-
-    function it_throws_an_exception_if_media_of_product_is_not_found(
-        $normalizer,
-        $channelRepository,
-        $stepExecution,
-        $mediaFetcher,
-        ChannelInterface $channel,
-        LocaleInterface $locale,
-        ProductInterface $product,
-        JobParameters $jobParameters,
-        JobExecution $jobExecution,
-        JobInstance $jobInstance,
-        WriteValueCollection $valuesCollection,
-        ExecutionContext $executionContext,
-        AttributeRepositoryInterface $attributeRepository,
-        AttributeInterface $attribute
-    ) {
-
-        $attributeRepository->findOneByIdentifier(Argument::any())->willReturn($attribute);
-        $attribute->isLocaleSpecific()->willReturn(false);
-
-        $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('filePath')->willReturn('/my/path/product.csv');
-        $jobParameters->get('filters')->willReturn(
-            [
-                'structure' => ['scope' => 'mobile', 'locales' => ['en_US', 'fr_FR']]
-            ]
-        );
-        $jobParameters->has('with_media')->willReturn(true);
-        $jobParameters->get('with_media')->willReturn(true);
-
-        $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
-        $channel->getLocales()->willReturn(new ArrayCollection([$locale]));
-        $channel->getCode()->willReturn('foobar');
-        $channel->getLocaleCodes()->willReturn(['en_US', 'de_DE']);
-
-        $product->getIdentifier()->willReturn('AKIS_XS');
-        $product->getValues()->willReturn($valuesCollection);
-
-        $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $jobExecution->getJobInstance()->willReturn($jobInstance);
-        $jobExecution->getId()->willReturn(100);
-        $jobInstance->getCode()->willReturn('csv_product_export');
-
-        $jobExecution->getExecutionContext()->willReturn($executionContext);
-        $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->willReturn('/working/directory/');
-
-        $productStandard = [
-            'values' => [
-                'pdf_description' => [[
-                    'locale' => 'en_US',
-                    'scope'  => null,
-                    'data'   => ['filePath' => 'path/not_found.jpg']
-                ]]
-            ]
-        ];
-
-        $normalizer->normalize($product, 'standard')->willReturn($productStandard);
-
-        $mediaFetcher->fetchAll($valuesCollection, '/working/directory/', 'AKIS_XS')->shouldBeCalled();
-        $mediaFetcher->getErrors()->willReturn(
-            [
-                [
-                    'message' => 'The media has not been found or is not currently available',
-                    'media'   => ['filePath' => 'path/not_found.jpg']
-                ]
-            ]
-        );
-
-        $stepExecution->addWarning(
-            'The media has not been found or is not currently available',
-            [],
-            new DataInvalidItem(['filePath' => 'path/not_found.jpg'])
-        )->shouldBeCalled();
+        $normalizer->normalize($product, 'standard', ['with_association_uuids' => true])->willReturn($productStandard);
 
         $this->process($product)->shouldReturn($productStandard);
     }
 
     public function it_processes_product_with_filter_on_quality_score(
-        $normalizer,
-        $channelRepository,
-        $stepExecution,
-        $mediaFetcher,
-        $attributeRepository,
-        $getProductsWithQualityScores,
+        NormalizerInterface $normalizer,
+        ChannelRepositoryInterface $channelRepository,
+        AttributeRepositoryInterface $attributeRepository,
+        GetAttributes $getAttributes,
+        GetNormalizedProductQualityScores $getNormalizedProductQualityScores,
+        StepExecution $stepExecution,
         ChannelInterface $channel,
         LocaleInterface $locale,
         ProductInterface $product,
         JobParameters $jobParameters,
         AttributeInterface $attribute
     ) {
-        $product->getIdentifier()->willReturn('a_product');
+        $uuid = Uuid::uuid4();
+        $product->getUuid()->willReturn($uuid);
+
+        $getAttributes->forCode('picture')->willReturn($this->createAttribute('picture'));
+        $getAttributes->forCode('size')->willReturn($this->createAttribute('size'));
+
         $attributeRepository->findMediaAttributeCodes()->willReturn(['picture']);
-        $attributeRepository->findOneByIdentifier(Argument::any())->willReturn($attribute);
-        $attribute->isLocaleSpecific()->willReturn(false);
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filePath')->willReturn('/my/path/product.csv');
@@ -305,13 +236,15 @@ class ProductProcessorSpec extends ObjectBehavior
         );
         $jobParameters->has('with_media')->willReturn(true);
         $jobParameters->get('with_media')->willReturn(false);
+        $jobParameters->has('with_uuid')->willReturn(true);
+        $jobParameters->get('with_uuid')->willReturn(false);
 
         $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
         $channel->getLocales()->willReturn(new ArrayCollection([$locale]));
         $channel->getCode()->willReturn('foobar');
         $channel->getLocaleCodes()->willReturn(['en_US', 'de_DE']);
 
-        $normalizer->normalize($product, 'standard')->willReturn([
+        $normalizer->normalize($product, 'standard', ['with_association_uuids' => false])->willReturn([
             'enabled'    => true,
             'categories' => ['cat1', 'cat2'],
             'values' => [
@@ -331,9 +264,6 @@ class ProductProcessorSpec extends ObjectBehavior
                 ]
             ]
         ]);
-
-        $mediaFetcher->fetchAll(Argument::cetera())->shouldNotBeCalled();
-        $mediaFetcher->getErrors()->shouldNotBeCalled();
 
         $normalizedProductWithQualityScores = [
             'enabled'    => true,
@@ -355,9 +285,24 @@ class ProductProcessorSpec extends ObjectBehavior
             ]
         ];
 
-        $getProductsWithQualityScores->fromNormalizedProduct('a_product', Argument::any(), 'mobile', ['en_US', 'fr_FR'])
-            ->willReturn($normalizedProductWithQualityScores);
+        $getNormalizedProductQualityScores->__invoke($uuid,'mobile', ['en_US', 'fr_FR'])
+            ->willReturn($normalizedProductWithQualityScores['quality_scores']);
 
         $this->process($product)->shouldBeLike($normalizedProductWithQualityScores);
+    }
+
+    private function createAttribute(string $code): Attribute {
+        return new Attribute(
+            $code,
+            AttributeTypes::NUMBER,
+            [],
+            true,
+            true,
+            null,
+            null,
+            true,
+            'decimal',
+            []
+        );
     }
 }

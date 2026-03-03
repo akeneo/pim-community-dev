@@ -20,9 +20,8 @@ Feature flags are defined by a _key_, representing the feature, and a _service_ 
 
 akeneo_feature_flag:
     feature_flags:
-        - { feature: 'myCoolFeature', service: '@service_that_defines_if_myCoolFeature_feature_is_enabled' }
-        - { feature: 'foo', service: '@service_that_defines_if_foo_feature_is_enabled' }
-        - ...
+        foo: 'service_that_defines_if_foo_feature_is_enabled'
+        bar: 'service_that_defines_if_bar_feature_is_enabled'
 ```
 
 The most important here is to decouple the decision point (the place where I need to know if a feature is enabled) from the decision logic (how do I know if this feature is enabled). 
@@ -34,8 +33,8 @@ namespace Akeneo\Platform\Bundle\FeatureFlagBundle;
 
 interface FeatureFlag
 {
-    public function isEnabled(): bool
-}    
+    public function isEnabled(?string $feature = null): bool
+}
 ```
 
 ### Examples
@@ -66,12 +65,12 @@ class EnvVarFeatureFlag implements FeatureFlag
         $this->isEnabled = $isEnabled;
     }
 
-    public function isEnabled(): bool
+    public function isEnabled(?string $feature = null): bool
     {
         return $this->isEnabled;
     }
 }
-``` 
+```
 
 Another example. Imagine now you want to allow Akeneo people working at Nantes to access a beta `foo` feature. All you have to do is declare in your code a service that implements `Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag`.
 
@@ -81,7 +80,7 @@ services:
         class: 'Akeneo\My\Own\Namespace\FooFeatureFlag'
         arguments:
             - '@request_stack'
-``` 
+```
 
 ```php
 namespace Akeneo\My\Own\Namespace;
@@ -97,10 +96,10 @@ class FooFeatureFlag implements FeatureFlag
     {
         $this->requestStack = $requestStack;
     }
-    
-    public function isEnabled(): bool
+
+    public function isEnabled(?string $feature = null): bool
     {
-        return $this->requestStack->getCurrentRequest()->getClientIp() === $this->$akeneoIpAddress; 
+        return $this->requestStack->getCurrentRequest()->getClientIp() === $this->$akeneoIpAddress;
     }
 }
 ```
@@ -185,7 +184,19 @@ config:
         akeneo_connectivity_connection_settings_index:
           module: pim/controller/connectivity/connection/settings
           feature: myCoolFeature
-``` 
+```
+
+You can easily show or hide a part of HTML code in a Twig template
+
+```html
+{# ... #}
+
+{% if feature_is_enabled('myCoolFeature') %}
+    <div>Show my cool feature</div>
+{% endif %}
+
+{# ... #}
+```
 
 ### Short living feature flags
 

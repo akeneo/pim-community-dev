@@ -52,5 +52,5 @@ Feature: Apply a add to products to existing product model
     When I confirm mass edit
     And I wait for the "add_to_existing_product_model" job to finish
     Then I should see the text "COMPLETED"
-    And I should see the text "Processed 1"
+    And I should see the text "Updated 1"
     And the parent of the product "1111111171" should be "model-braided-hat"

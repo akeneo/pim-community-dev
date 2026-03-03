@@ -8,7 +8,7 @@ Feature: Execute a job
     Given the "footwear" catalog configuration
     And the following family:
       | code      | attributes                         |
-      | new_heels | sole_fabric,lace_fabric,heel_color |
+      | new_heels | sku,sole_fabric,lace_fabric,heel_color |
     And I am logged in as "Julia"
 
   @critical
@@ -22,7 +22,7 @@ Feature: Execute a job
       SKU-004;new_heels;Black;Neoprene;Spandex;Spandex
       """
     And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish

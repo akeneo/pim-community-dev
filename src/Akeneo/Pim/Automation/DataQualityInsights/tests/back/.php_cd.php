@@ -13,22 +13,23 @@ $builder = new RuleBuilder();
 $rules = [
     $builder->only(
         [
-            //Needed to access to the criteria codes. To remove after refactoring
-            'Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation',
-
             //External dependencies
             'Ramsey\Uuid\Uuid',
             'Akeneo\Pim\Structure\Component\AttributeTypes',
+            'Symfony\Contracts\EventDispatcher\Event',
+            'Webmozart\Assert\Assert',
         ]
     )->in('Akeneo\Pim\Automation\DataQualityInsights\Domain'),
 
     $builder->only(
         [
             'Akeneo\Pim\Automation\DataQualityInsights\Domain',
+            'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
 
             //External dependencies
             'Psr\Log\LoggerInterface',
             'Symfony\Component\EventDispatcher\EventDispatcherInterface',
+            'Symfony\Component\Messenger\MessageBusInterface',
             'Webmozart\Assert\Assert',
         ]
     )->in('Akeneo\Pim\Automation\DataQualityInsights\Application'),
@@ -39,38 +40,30 @@ $rules = [
             'Akeneo\Pim\Automation\DataQualityInsights\Application',
 
             //Akeneo external bounded contexts :
+            'Akeneo\Pim\Enrichment\Product\API\Event',
+            'Akeneo\Pim\Enrichment\Component\Product\Event',
 
             //Enrichment computing
             'Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator',
 
-            //Consistency computing
-            'Akeneo\Pim\Structure\Component\AttributeTypes',
-
             //Bundle installation
-            'Akeneo\Platform\Bundle\InstallerBundle\Event',
+            'Akeneo\Platform\Installer\Infrastructure\Event',
             'Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository',
-            'Akeneo\Tool\Bundle\BatchQueueBundle\Launcher\QueueJobLauncher',
-            'Akeneo\Tool\Component\Console\CommandLauncher',
-            'Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface',
-            'Akeneo\UserManagement\Bundle\Security\SystemUserToken',
             'Akeneo\UserManagement\Component\Model\UserInterface',
 
             //Subscribers for product updates
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface',
-            'Akeneo\Pim\Enrichment\Component\Product\Query\DescendantProductModelIdsQueryInterface',
             'Akeneo\Tool\Component\StorageUtils\StorageEvents',
             'Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface',
-            'Akeneo\Tool\Bundle\BatchQueueBundle\Queue\JobExecutionMessageRepository',
             'Akeneo\Tool\Component\Batch\Model\JobInstance',
             'Akeneo\Tool\Component\Batch\Job\JobInterface',
 
-            //Subscribers for attribute updates
-            'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
-            'Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface',
-
             //Subscribers for attribute group updates
             'Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface',
+
+            // Attribute events
+            'Akeneo\Pim\Structure\Component\Model\Attribute',
 
             //Connector / (Tasklets, job parameters)
             'Akeneo\Tool\Component\Batch\Job\JobInterface',
@@ -89,6 +82,7 @@ $rules = [
             //Datagrid filters, columns, sorting and ES indexation needs
             'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\AbstractFieldFilter',
             'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetAdditionalPropertiesForProductProjectionInterface',
+            'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetAdditionalPropertiesForProductModelProjectionInterface',
             'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Sorter\Field\BaseFieldSorte',
             'Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException',
             'Akeneo\Pim\Enrichment\Component\Product\Grid\Query\AddAdditionalProductProperties',
@@ -102,10 +96,6 @@ $rules = [
             'Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration',
             'Oro\Bundle\DataGridBundle\Event\BuildBefore',
             'Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface',
-            'Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration',
-            'Oro\Bundle\DataGridBundle\Datagrid\RequestParameters',
-            'Oro\Bundle\DataGridBundle\Extension\AbstractExtension',
-            'Oro\Bundle\DataGridBundle\Extension\Sorter\Configuration',
             'Oro\Bundle\PimDataGridBundle\Extension\Sorter\SorterInterface',
             'Oro\Bundle\FilterBundle\Grid\Extension\Configuration',
             'Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface',
@@ -119,44 +109,45 @@ $rules = [
             //Necessary for the particular command EvaluatePendingCriteriaCommand
             'Akeneo\Tool\Bundle\BatchQueueBundle\Manager\JobExecutionManager',
             'Akeneo\Tool\Component\Batch',
-            'Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage',
             'Doctrine\ORM\EntityManager',
             'Symfony\Component\Process',
 
             //Necessary for the Dashboard
-            'Akeneo\Tool\Component\Classification\Model\CategoryInterface',
-            'Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface',
+            'Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface',
+            'Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface',
+
+            // Necessary for the particular AddProductModelScoreProperty
+            'Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row',
 
             //Security
             'Oro\Bundle\SecurityBundle\SecurityFacade',
 
             //External dependencies
             'Doctrine\DBAL',
-            'Doctrine\Common\Persistence\ObjectRepository',
-            'Doctrine\ORM\Query\Expr',
-            'League\Flysystem\MountManager',
+            'Doctrine\Persistence\ObjectRepository',
             'Psr\Log\LoggerInterface',
             'Symfony\Component\Config\FileLocator',
             'Symfony\Component\Console',
             'Symfony\Component\DependencyInjection',
             'Symfony\Component\EventDispatcher',
-            'Symfony\Component\Filesystem',
-            'Symfony\Component\Finder',
             'Symfony\Component\HttpFoundation',
             'Symfony\Component\HttpKernel',
             'Symfony\Component\Security',
+            'Symfony\Component\Serializer\Normalizer\NormalizerInterface',
+            'Symfony\Component\Serializer\Normalizer\DenormalizerInterface',
+            'Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface',
             'Symfony\Component\Validator\Constraints',
-            'Symfony\Contracts\EventDispatcher',
             'Symfony\Component\Form\FormFactoryInterface',
-            'GuzzleHttp\ClientInterface',
-            'GuzzleHttp\Exception',
-            'Mekras\Speller',
-            'League\Flysystem',
+            'Symfony\Component\Messenger\MessageBusInterface',
             'Webmozart\Assert\Assert',
+            'Ramsey\Uuid\Uuid',
+            'Ramsey\Uuid\UuidInterface',
 
             // Common Dependencies
             'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
             'Akeneo\Tool\Component\StorageUtils\Cache\LRUCache',
+            'Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface',
+            'Akeneo\Channel\Infrastructure\Component\Query\PublicApi',
         ]
     )->in('Akeneo\Pim\Automation\DataQualityInsights\Infrastructure'),
 ];

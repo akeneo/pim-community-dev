@@ -2,8 +2,8 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase;
 
-use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
+use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -102,6 +102,46 @@ class ApplyProductSearchQueryParametersToPQBSpec extends ObjectBehavior
             'updated',
             Operators::LOWER_THAN,
             Argument::type(\DateTime::class),
+            ['locale' => 'en_US', 'scope' => 'ecommerce']
+        )->shouldBeCalled();
+
+        $this->apply($pqb, $search, null, 'en_US', 'ecommerce');
+    }
+
+    function it_adds_search_filter_for_not_between_filter(ProductQueryBuilderInterface $pqb)
+    {
+        $search = [
+            'created' => [
+                [
+                    'operator' => Operators::NOT_BETWEEN,
+                    'value' => ['2019-01-28 12:12:12', '2019-02-28 13:13:13'],
+                ],
+            ],
+            'updated' => [
+                [
+                    'operator' => Operators::NOT_BETWEEN,
+                    'value' => ['2019-01-28 12:12:12', '2019-02-28 13:13:13'],
+                ],
+            ],
+        ];
+
+        $pqb->addFilter(
+            'created',
+            Operators::NOT_BETWEEN,
+            [
+                \DateTime::createFromFormat('Y-m-d H:i:s', '2019-01-28 12:12:12'),
+                \DateTime::createFromFormat('Y-m-d H:i:s', '2019-02-28 13:13:13'),
+            ],
+            ['locale' => 'en_US', 'scope' => 'ecommerce']
+        )->shouldBeCalled();
+
+        $pqb->addFilter(
+            'updated',
+            Operators::NOT_BETWEEN,
+            [
+                \DateTime::createFromFormat('Y-m-d H:i:s', '2019-01-28 12:12:12'),
+                \DateTime::createFromFormat('Y-m-d H:i:s', '2019-02-28 13:13:13'),
+            ],
             ['locale' => 'en_US', 'scope' => 'ecommerce']
         )->shouldBeCalled();
 

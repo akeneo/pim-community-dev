@@ -1,10 +1,8 @@
 Akeneo\Pim\Structure\Component\Model\Attribute:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
-        - Akeneo\Pim\Structure\Component\Validator\Constraints\SingleIdentifierAttribute:
-            payload:
-                standardPropertyName: type
         - Akeneo\Pim\Structure\Component\Validator\Constraints\IsReferenceDataConfigured: ~
+        - Akeneo\Pim\Structure\Component\Validator\Constraints\IdentifierAttributeCreationLimit: ~
         - Akeneo\Pim\Structure\Component\Validator\Constraints\IsIdentifierUsableAsGridFilter: ~
         - Akeneo\Tool\Component\StorageUtils\Validator\Constraints\Immutable:
             properties:
@@ -86,6 +84,7 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
             properties:
                 - auto_option_sorting
                 - default_value
+        - Akeneo\Pim\Structure\Component\Validator\Constraints\IsVariantAxisWithoutAvailableLocales: ~
     properties:
         type:
             - Type: string
@@ -100,7 +99,7 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
             - Length:
                 max: 255
             - Regex:
-                pattern: /^(?!(id|iD|Id|ID|associationTypes|categories|categoryId|completeness|enabled|(?i)\bfamily\b|groups|associations|products|scope|treeId|values|category|parent|label|(.)*_(products|groups)|entity_type|attributes)$)/
+                pattern: /^(?!(id|associationTypes|categories|categoryId|completeness|enabled|(?i)\bfamily\b|groups|associations|products|scope|treeId|values|category|parent|label|(.)*_(products|groups)|entity_type|attributes|uuid|identifier)$)/i
                 message: This code is not available
             - Regex:
                 pattern: /^[^\n]+$/D
@@ -281,7 +280,7 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                     - pim_reference_data_multiselect
                     - pim_reference_data_simpleselect
         dateMin:
-            - DateTime: ~
+            - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Date: ~
             - IsNull:
                 groups:
                     - pim_catalog_identifier
@@ -298,7 +297,7 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                     - pim_reference_data_multiselect
                     - pim_reference_data_simpleselect
         dateMax:
-            - DateTime: ~
+            - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Date: ~
             - IsNull:
                 groups:
                     - pim_catalog_identifier
@@ -453,9 +452,19 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                 exactMessage: This attribute cannot have available locales.
                 groups:
                     - pim_catalog_identifier
+        guidelines:
+            - Type: array
+            - All:
+                - Type: string
+                - Length:
+                      max: 500
     getters:
         group:
             - Valid: ~
+        guidelinesLocaleCodes:
+            - All:
+                - Akeneo\Channel\Infrastructure\Component\Validator\Constraint\Locale:
+                    propertyPath: guidelines
 
 Akeneo\Pim\Structure\Component\Model\AttributeTranslation:
     properties:
@@ -465,7 +474,7 @@ Akeneo\Pim\Structure\Component\Model\AttributeTranslation:
                 payload:
                     standardPropertyName: labels
         locale:
-            - Akeneo\Channel\Component\Validator\Constraint\Locale:
+            - Akeneo\Channel\Infrastructure\Component\Validator\Constraint\Locale:
                 payload:
                     standardPropertyName: labels
 

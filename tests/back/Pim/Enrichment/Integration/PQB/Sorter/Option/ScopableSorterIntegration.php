@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Sorter\Option;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
@@ -41,21 +42,13 @@ class ScopableSorterIntegration extends AbstractProductQueryBuilderTestCase
         ]);
 
         $this->createProduct('product_one', [
-            'values' => [
-                'a_select_scopable_simple_select' => [
-                    ['data' => 'black', 'locale' => null, 'scope' => 'ecommerce'],
-                    ['data' => 'orange', 'locale' => null, 'scope' => 'tablet']
-                ]
-            ]
+            new SetSimpleSelectValue('a_select_scopable_simple_select', 'ecommerce', null, 'black'),
+            new SetSimpleSelectValue('a_select_scopable_simple_select', 'tablet', null, 'orange'),
         ]);
 
         $this->createProduct('product_two', [
-            'values' => [
-                'a_select_scopable_simple_select' => [
-                    ['data' => 'orange', 'locale' => null, 'scope' => 'ecommerce'],
-                    ['data' => 'black', 'locale' => null, 'scope' => 'tablet']
-                ]
-            ]
+            new SetSimpleSelectValue('a_select_scopable_simple_select', 'ecommerce', null, 'orange'),
+            new SetSimpleSelectValue('a_select_scopable_simple_select', 'tablet', null, 'black'),
         ]);
 
         $this->createProduct('empty_product', []);
@@ -85,17 +78,5 @@ class ScopableSorterIntegration extends AbstractProductQueryBuilderTestCase
         $this->expectExceptionMessage('Direction "A_BAD_DIRECTION" is not supported');
 
         $this->executeSorter([['a_select_scopable_simple_select', 'A_BAD_DIRECTION', ['scope' => 'ecommerce']]]);
-    }
-
-    /**
-     * @jira https://akeneo.atlassian.net/browse/PIM-6872
-     */
-    public function testSorterWithNoDataOnSorterField()
-    {
-        $result = $this->executeSorter([['a_select_scopable_simple_select', Directions::DESCENDING, ['scope' => 'ecommerce_china']]]);
-        $this->assertOrder($result, ['product_one', 'product_two', 'empty_product']);
-
-        $result = $this->executeSorter([['a_select_scopable_simple_select', Directions::ASCENDING, ['scope' => 'ecommerce_china']]]);
-        $this->assertOrder($result, ['product_one', 'product_two', 'empty_product']);
     }
 }

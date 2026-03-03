@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Webhook\Validation;
 
-use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository;
+use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -16,12 +16,8 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class ConnectionMustExistValidator extends ConstraintValidator
 {
-    /** @var ConnectionRepository */
-    private $repository;
-
-    public function __construct(ConnectionRepository $repository)
+    public function __construct(private ConnectionRepositoryInterface $repository)
     {
-        $this->repository = $repository;
     }
 
     public function validate($value, Constraint $constraint): void
@@ -30,7 +26,8 @@ class ConnectionMustExistValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, ConnectionMustExist::class);
         }
 
-        if (null === $this->repository->findOneByCode($value)) {
+        $connection = $this->repository->findOneByCode($value);
+        if (null === $connection) {
             $this->context->buildViolation($constraint->message)->addViolation();
         }
     }

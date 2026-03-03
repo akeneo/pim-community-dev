@@ -10,7 +10,6 @@ pim_title:
   pim_user_security_login: Login
   pim_user_reset_reset: Nulstil adgangskode
   pim_user_reset_request: Glemt adgangskode
-  pim_user_reset_check_email: Nulstil adgangskode | Tjek email
   pim_user_group_create: 'Grupper | Opret'
   pim_user_group_update: 'Gruppe {{ group }} | Ret'
 confirmation:

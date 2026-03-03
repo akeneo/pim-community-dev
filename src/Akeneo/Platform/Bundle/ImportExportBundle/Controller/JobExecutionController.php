@@ -4,11 +4,11 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Controller;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Event\JobExecutionEvents;
 use Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi\JobExecutionRepository;
-use Akeneo\Tool\Bundle\ConnectorBundle\EventListener\JobExecutionArchivist;
+use Akeneo\Tool\Bundle\ConnectorBundle\EventListener\StepExecutionArchivist;
 use Akeneo\Tool\Component\Connector\LogKey;
 use Akeneo\Tool\Component\FileStorage\StreamedFileResponse;
-use League\Flysystem\FileNotFoundException;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemReader;
+use League\Flysystem\UnableToReadFile;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
- * Job execution controller
+ * Job execution controller.
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -25,29 +25,16 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class JobExecutionController
 {
-    /** @var JobExecutionArchivist */
-    protected $archivist;
+    protected EventDispatcherInterface $eventDispatcher;
+    protected StepExecutionArchivist $archivist;
+    protected JobExecutionRepository $jobExecutionRepo;
+    private FilesystemReader $logFileSystem;
 
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
-
-    /** @var JobExecutionRepository */
-    protected $jobExecutionRepo;
-
-    /** @var FilesystemInterface */
-    private $logFileSystem;
-
-    /**
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param JobExecutionArchivist    $archivist
-     * @param JobExecutionRepository   $jobExecutionRepo
-     * @param FilesystemInterface      $logFileSystem
-     */
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
-        JobExecutionArchivist $archivist,
+        StepExecutionArchivist $archivist,
         JobExecutionRepository $jobExecutionRepo,
-        FilesystemInterface $logFileSystem
+        FilesystemReader $logFileSystem
     ) {
         $this->eventDispatcher = $eventDispatcher;
         $this->archivist = $archivist;
@@ -56,12 +43,13 @@ class JobExecutionController
     }
 
     /**
-     * Download the log file of the job execution
+     * Download the log file of the job execution.
      *
      * @param int $id
      *
      * @return Response
-     * @throws FileNotFoundException
+     *
+     * @throws UnableToReadFile
      */
     public function downloadLogFileAction($id)
     {
@@ -71,7 +59,7 @@ class JobExecutionController
             throw new NotFoundHttpException('Akeneo\Tool\Component\Batch\Model\JobExecution entity not found');
         }
 
-        $this->eventDispatcher->dispatch(JobExecutionEvents::PRE_DOWNLOAD_LOG, new GenericEvent($jobExecution));
+        $this->eventDispatcher->dispatch(new GenericEvent($jobExecution), JobExecutionEvents::PRE_DOWNLOAD_LOG);
 
         $logFileContent = $this->logFileSystem->read(new LogKey($jobExecution));
 
@@ -86,7 +74,7 @@ class JobExecutionController
     }
 
     /**
-     * Download an archived file
+     * Download an archived file.
      *
      * @param int    $id
      * @param string $archiver
@@ -102,7 +90,7 @@ class JobExecutionController
             throw new NotFoundHttpException('Akeneo\Tool\Component\Batch\Model\JobExecution entity not found');
         }
 
-        $this->eventDispatcher->dispatch(JobExecutionEvents::PRE_DOWNLOAD_FILES, new GenericEvent($jobExecution));
+        $this->eventDispatcher->dispatch(new GenericEvent($jobExecution), JobExecutionEvents::PRE_DOWNLOAD_FILES);
 
         $stream = $this->archivist->getArchive($jobExecution, $archiver, $key);
 

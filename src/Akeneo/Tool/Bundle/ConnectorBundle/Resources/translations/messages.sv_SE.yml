@@ -3,7 +3,7 @@ pim_connector:
     file_reader:
       invalid_item_columns_count: 'Förväntade %totalColumnsCount% kolumner, faktiskt antal %itemColumnsCount% i %filePath%:%lineno%'
 job_execution.summary:
-  read: läst
+  read: läs
   write: skrivet
   skip: hoppades över
   create: skapades

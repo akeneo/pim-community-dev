@@ -31,7 +31,7 @@ SQL;
             $query,
             ['product_model_codes' => $productModelCodes],
             ['product_model_codes' => Connection::PARAM_STR_ARRAY]
-        )->fetchAll(\PDO::FETCH_COLUMN);
+        )->fetchFirstColumn();
 
         $nonExistingProductModelCodes = array_values(array_diff($productModelCodes, $results));
 

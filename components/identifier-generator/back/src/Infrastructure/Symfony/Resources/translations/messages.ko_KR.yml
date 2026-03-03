@@ -1,0 +1,20 @@
+pim_catalog_identifier_generator:
+  acl:
+    view: '식별자 생성기 보기'
+    manage: '식별자 생성기 관리'
+  acl_group:
+    identifier_generator: '식별자 생성기'
+  condition:
+    fields:
+      family: 패밀리
+      enabled: 상태
+      categories: 카테고리
+    field_groups:
+      system: 시스템
+  structure:
+    fields:
+      free_text: 자유 텍스트
+      auto_number: 자동 번호
+      family: 패밀리
+    field_groups:
+      system: 시스템

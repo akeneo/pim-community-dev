@@ -1,0 +1,6 @@
+services:
+  Akeneo\Category\Application\Filter\CategoryEditAclFilter:
+    arguments:
+      - '@oro_security.security_facade'
+
+  Akeneo\Category\Application\Filter\CategoryEditUserIntentFilter: ~

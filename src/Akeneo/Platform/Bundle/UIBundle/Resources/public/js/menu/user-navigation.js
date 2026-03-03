@@ -20,7 +20,19 @@ define([
   'akeneo/communication-channel',
   'pim/media-url-generator',
   'pim/template/menu/user-navigation',
-], function (_, __, BaseForm, router, UserContext, Notifications, CommunicationChannel, MediaUrlGenerator, template) {
+  'pim/feature-flags',
+], function (
+  _,
+  __,
+  BaseForm,
+  router,
+  UserContext,
+  Notifications,
+  CommunicationChannel,
+  MediaUrlGenerator,
+  template,
+  FeatureFlags
+) {
   return BaseForm.extend({
     className: 'AknTitleContainer-userMenu',
     template: _.template(template),
@@ -49,6 +61,8 @@ define([
           avatar: this.getAvatar(),
           logoutLabel: __(this.config.logout),
           userAccountLabel: __(this.config.userAccount),
+          freeTrialEnabled: FeatureFlags.isEnabled('free_trial'),
+          segmentIntegrationEnabled: FeatureFlags.isEnabled('segment_integration'),
         })
       );
 
@@ -61,8 +75,10 @@ define([
       notificationView.setElement(this.$('.notification')).render();
       notificationView.refresh();
 
-      const communicationChannelView = new CommunicationChannel();
-      communicationChannelView.setElement(this.$('.communication-channel')).render();
+      if (FeatureFlags.isEnabled('communication_channel')) {
+        const communicationChannelView = new CommunicationChannel();
+        communicationChannelView.setElement(this.$('.communication-channel')).render();
+      }
 
       this.delegateEvents();
 

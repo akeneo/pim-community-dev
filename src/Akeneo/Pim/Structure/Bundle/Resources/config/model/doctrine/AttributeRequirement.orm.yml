@@ -33,7 +33,7 @@ Akeneo\Pim\Structure\Component\Model\AttributeRequirement:
                     onDelete: CASCADE
                     nullable: false
         channel:
-            targetEntity: Akeneo\Channel\Component\Model\ChannelInterface
+            targetEntity: Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface
             joinColumns:
                 channel_id:
                     referencedColumnName: id

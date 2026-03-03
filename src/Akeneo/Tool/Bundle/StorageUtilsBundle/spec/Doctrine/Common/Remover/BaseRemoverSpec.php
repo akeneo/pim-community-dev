@@ -4,14 +4,16 @@ namespace spec\Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\Common\Remover;
 
 use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class BaseRemoverSpec extends ObjectBehavior
 {
     function let(ObjectManager $objectManager, EventDispatcherInterface $eventDispatcher)
     {
+        $eventDispatcher->dispatch(Argument::any(), Argument::type('string'))->willReturn(Argument::type('object'));
         $this->beConstructedWith(
             $objectManager,
             $eventDispatcher,

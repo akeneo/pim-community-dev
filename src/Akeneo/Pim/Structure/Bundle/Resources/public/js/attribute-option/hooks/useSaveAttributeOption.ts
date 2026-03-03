@@ -1,5 +1,5 @@
 import {AttributeOption} from '../model';
-import {useRouter} from '@akeneo-pim-community/legacy-bridge';
+import {useRouter} from '@akeneo-pim-community/shared';
 import {useAttributeContext} from '../contexts';
 
 const useSaveAttributeOption = () => {
@@ -7,6 +7,8 @@ const useSaveAttributeOption = () => {
   const attribute = useAttributeContext();
 
   return async (attributeOption: AttributeOption) => {
+    const body = {...attributeOption};
+    delete body.toImprove;
     const response = await fetch(
       router.generate('pim_enrich_attributeoption_update', {
         attributeId: attribute.attributeId,
@@ -18,7 +20,7 @@ const useSaveAttributeOption = () => {
           ['Content-type', 'application/json'],
           ['X-Requested-With', 'XMLHttpRequest'],
         ],
-        body: JSON.stringify(attributeOption),
+        body: JSON.stringify(body),
       }
     );
     switch (response.status) {

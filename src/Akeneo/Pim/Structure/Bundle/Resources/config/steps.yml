@@ -9,7 +9,7 @@ services:
             - '@pim_connector.reader.file.csv_attribute'
             - '@pim_connector.processor.denormalization.attribute'
             - '@pim_connector.writer.database.attribute'
-            - 100
+            - 1 # DO NOT CHANGE : required for creation validation limit
             - '@akeneo_batch.job.job_stopper'
 
     pim_connector.step.csv_attribute.export:
@@ -33,7 +33,7 @@ services:
             - '@pim_connector.reader.file.xlsx_attribute'
             - '@pim_connector.processor.denormalization.attribute'
             - '@pim_connector.writer.database.attribute'
-            - 100
+            - 1 # DO NOT CHANGE : required for creation validation limit
             - '@akeneo_batch.job.job_stopper'
 
     pim_connector.step.xlsx_attribute.export:
@@ -424,3 +424,60 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pim_connector.tasklet.mass_edit_family.compute_completeness_of_family_products'
+
+    pim_connector.step.mass_edit_family.index_family_products_and_product_models:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'index_family_products_and_product_models'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.tasklet.mass_edit_family.index_family_products_and_product_models'
+
+    Akeneo\Pim\Structure\Bundle\Infrastructure\Job\AttributeGroup\DeleteAttributeGroupsTasklet:
+        arguments:
+            - '@pim_catalog.repository.attribute_group'
+            - '@pim_catalog.remover.attribute_group'
+            - '@pim_connector.doctrine.cache_clearer'
+            - '@akeneo_batch.job_repository'
+            - '@akeneo_batch.job.job_stopper'
+            - 100
+
+    Akeneo\Pim\Structure\Bundle\Infrastructure\Job\AttributeGroup\MoveChildAttributesTasklet:
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.updater.attribute'
+            - '@pim_catalog.saver.attribute'
+            - '@pim_connector.doctrine.cache_clearer'
+            - '@akeneo_batch.job_repository'
+            - '@akeneo_batch.job.job_stopper'
+            - 1000
+
+    pim_connector.step.delete_attribute_groups:
+        class: 'Akeneo\Tool\Component\Connector\Step\TaskletStep'
+        arguments:
+            - 'delete_attribute_groups'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@Akeneo\Pim\Structure\Bundle\Infrastructure\Job\AttributeGroup\DeleteAttributeGroupsTasklet'
+
+    Akeneo\Pim\Structure\Component\Attribute\Job\DeleteAttributesTasklet:
+        arguments:
+            - '@pim_enrich.repository.attribute.search'
+            - '@pim_catalog.remover.attribute'
+            - '@translator'
+
+    pim_connector.step.delete_attributes:
+        class: 'Akeneo\Tool\Component\Connector\Step\TaskletStep'
+        arguments:
+            - 'delete_attributes'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@Akeneo\Pim\Structure\Component\Attribute\Job\DeleteAttributesTasklet'
+
+    pim_connector.step.move_child_attributes:
+        class: 'Akeneo\Tool\Component\Connector\Step\TaskletStep'
+        arguments:
+            - 'move_child_attributes'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@Akeneo\Pim\Structure\Bundle\Infrastructure\Job\AttributeGroup\MoveChildAttributesTasklet'

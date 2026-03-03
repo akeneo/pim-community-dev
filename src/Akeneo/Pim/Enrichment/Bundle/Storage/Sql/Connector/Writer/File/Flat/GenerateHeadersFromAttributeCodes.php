@@ -33,10 +33,6 @@ final class GenerateHeadersFromAttributeCodes implements GenerateFlatHeadersFrom
         string $channelCode,
         array $localeCodes
     ): array {
-        $activatedCurrencyCodes = $this->connection->executeQuery(
-            "SELECT code FROM pim_catalog_currency WHERE is_activated = 1"
-        )->fetchAll(\PDO::FETCH_COLUMN, 0);
-
         $channelCurrencyCodesSql = <<<SQL
             SELECT currency.code
             FROM pim_catalog_channel channel
@@ -47,7 +43,7 @@ SQL;
         $channelCurrencyCodes = $this->connection->executeQuery(
             $channelCurrencyCodesSql,
             ['channelCode' => $channelCode]
-        )->fetchAll(\PDO::FETCH_COLUMN, 0);
+        )->fetchFirstColumn();
 
         $attributesDataSql = <<<SQL
             WITH attribute_specific_to_locales as (
@@ -72,7 +68,7 @@ SQL;
             $attributesDataSql,
             ['attributeCodes' => $attributeCodes],
             ['attributeCodes' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
-        )->fetchAll();
+        )->fetchAllAssociative();
 
         $headers = [];
         foreach ($attributesData as $attributeData) {
@@ -84,7 +80,6 @@ SQL;
                 ("1" === $attributeData["is_localizable"]),
                 $localeCodes,
                 $channelCurrencyCodes,
-                $activatedCurrencyCodes,
                 null !== $attributeData['specific_to_locales'] ? json_decode($attributeData['specific_to_locales'], true) : []
             );
         }

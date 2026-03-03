@@ -1,0 +1,15 @@
+extensions:
+  pim-menu-activity-process-tracker:
+    module: pim/menu/item
+    parent: pim-menu-activity-navigation-block
+    aclResourceId: pim_enrich_job_tracker_index
+    position: 120
+    config:
+      title: pim_menu.item.job_tracker
+      to: akeneo_job_process_tracker_index
+
+  pim-process-tracker-user-navigation:
+    module: pim/menu/user-navigation
+    config:
+      userAccount: pim_menu.user.user_account
+      logout: pim_menu.user.logout

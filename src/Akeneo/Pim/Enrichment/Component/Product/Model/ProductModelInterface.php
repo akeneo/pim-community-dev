@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Model;
 
-use Akeneo\Tool\Component\Classification\CategoryAwareInterface;
+use Akeneo\Category\Infrastructure\Component\Classification\CategoryAwareInterface;
 use Akeneo\Tool\Component\StorageUtils\Model\StateUpdatedAware;
 use Akeneo\Tool\Component\Versioning\Model\TimestampableInterface;
 use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;
@@ -127,7 +127,7 @@ interface ProductModelInterface extends
      *
      * @return string
      */
-    public function getLabel(?string $localeCode, ?string $scopeCode): string;
+    public function getLabel(?string $localeCode = null, ?string $scopeCode = null): string;
 
     /**
      * Get product model image
@@ -135,4 +135,9 @@ interface ProductModelInterface extends
      * @return ValueInterface|null
      */
     public function getImage(): ?ValueInterface;
+
+    /**
+     * Return the categories for the current level
+     */
+    public function getCategoriesForCurrentLevel(): Collection;
 }

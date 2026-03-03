@@ -34,7 +34,7 @@ services:
             - '@validator'
             - '@akeneo_batch.job.job_parameters_validator'
             - '@akeneo_batch.job_parameters_factory'
-            - '@akeneo_batch_queue.launcher.queue_job_launcher'
+            - '@pim_connector.launcher.authenticated_job_launcher'
             - '@security.token_storage'
             - '@router'
             - '@pim_enrich.provider.form.chained'
@@ -45,6 +45,7 @@ services:
             - '@pim_catalog.filter.chained'
             - '@oneup_flysystem.jobs_storage_filesystem'
             - '@oro_security.security_facade'
+            - '@Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Security\CredentialsEncrypterRegistry'
 
     pim_enrich.controller.rest.job_execution:
         public: true
@@ -55,7 +56,10 @@ services:
             - '@akeneo_batch_queue.manager.job_execution_manager'
             - '@pim_enrich.repository.job_execution'
             - '@pim_internal_api_serializer'
-            -
+            - '@oro_security.security_facade'
+            - '@oneup_flysystem.archivist_filesystem'
+            - {'import': 'pim_importexport_import_execution_show', 'export': 'pim_importexport_export_execution_show'}
+
     pim_enrich.controller.job_tracker:
         public: true
         class: 'Akeneo\Platform\Bundle\ImportExportBundle\Controller\Ui\JobTrackerController'
@@ -68,3 +72,11 @@ services:
             - '@akeneo_batch.query.update_job_execution_status'
             - '@akeneo_batch.job.job_registry'
             - '@logger'
+            - '@oneup_flysystem.archivist_filesystem'
+
+    pim_import_export.controller.category_trees:
+        public: true
+        class: Akeneo\Platform\Bundle\ImportExportBundle\Controller\Ui\CategoryTreeController
+        arguments:
+            - '@akeneo.enrichment.public_api.find_granted_category_trees'
+            - '@akeneo.enrichment.public_api.get_category_children_codes_per_tree'

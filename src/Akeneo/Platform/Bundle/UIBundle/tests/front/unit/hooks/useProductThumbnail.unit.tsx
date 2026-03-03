@@ -1,4 +1,4 @@
-import {renderHookWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
+import {renderHookWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {useProductThumbnail} from '../../../../Resources/public/js/product/form/quantified-associations/hooks/useProductThumbnail';
 import {ProductType} from '../../../../Resources/public/js/product/form/quantified-associations/models';
 

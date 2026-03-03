@@ -12,18 +12,18 @@ class CompleteVariantProductsSpec extends ObjectBehavior
     {
         $this->beConstructedWith(
             [
-                ['channel_code' => 'ecommerce', 'locale_code' => 'en_US',  'complete' => 0, 'product_identifier' => 'biker-jacket-polyester-xxs'],
-                ['channel_code' => 'ecommerce', 'locale_code' => 'fr_FR', 'complete' => 1, 'product_identifier' => 'biker-jacket-polyester-xxs'],
-                ['channel_code' => 'print', 'locale_code' => 'en_US', 'complete' => 1, 'product_identifier' => 'biker-jacket-polyester-xxs'],
-                ['channel_code' => 'print', 'locale_code' => 'fr_FR', 'complete' => 1, 'product_identifier' => 'biker-jacket-polyester-xxs'],
-                ['channel_code' => 'mobile', 'locale_code' => 'en_US', 'complete' => 0, 'product_identifier' => 'biker-jacket-polyester-xxs'],
-                ['channel_code' => 'mobile', 'locale_code' => 'fr_FR', 'complete' => 1, 'product_identifier' => 'biker-jacket-polyester-xxs'],
-                ['channel_code' => 'ecommerce', 'locale_code' => 'en_US', 'complete' => 1, 'product_identifier' => 'biker-jacket-polyester-m'],
-                ['channel_code' => 'ecommerce', 'locale_code' => 'fr_FR', 'complete' => 1, 'product_identifier' => 'biker-jacket-polyester-m'],
-                ['channel_code' => 'print', 'locale_code' => 'en_US', 'complete' => 0, 'product_identifier' => 'biker-jacket-polyester-m'],
-                ['channel_code' => 'print', 'locale_code' => 'fr_FR', 'complete' => 0, 'product_identifier' => 'biker-jacket-polyester-m'],
-                ['channel_code' => 'mobile', 'locale_code' => 'en_US', 'complete' => 1, 'product_identifier' => 'biker-jacket-polyester-m'],
-                ['channel_code' => 'mobile', 'locale_code' => 'fr_FR', 'complete' => 1, 'biker-jacket-polyester-m'],
+                ['channel_code' => 'ecommerce', 'locale_code' => 'en_US',  'complete' => 0, 'product_uuid' => 'ace0d2a2-588c-4aa9-aa7d-9a2b05ce3c45'],
+                ['channel_code' => 'ecommerce', 'locale_code' => 'fr_FR', 'complete' => 1, 'product_uuid' => 'ace0d2a2-588c-4aa9-aa7d-9a2b05ce3c45'],
+                ['channel_code' => 'print', 'locale_code' => 'en_US', 'complete' => 1, 'product_uuid' => 'ace0d2a2-588c-4aa9-aa7d-9a2b05ce3c45'],
+                ['channel_code' => 'print', 'locale_code' => 'fr_FR', 'complete' => 1, 'product_uuid' => 'ace0d2a2-588c-4aa9-aa7d-9a2b05ce3c45'],
+                ['channel_code' => 'mobile', 'locale_code' => 'en_US', 'complete' => 0, 'product_uuid' => 'ace0d2a2-588c-4aa9-aa7d-9a2b05ce3c45'],
+                ['channel_code' => 'mobile', 'locale_code' => 'fr_FR', 'complete' => 1, 'product_uuid' => 'ace0d2a2-588c-4aa9-aa7d-9a2b05ce3c45'],
+                ['channel_code' => 'ecommerce', 'locale_code' => 'en_US', 'complete' => 1, 'product_uuid' => 'e5d46e64-e50e-4c8d-92c2-f12e2cbf92c9'],
+                ['channel_code' => 'ecommerce', 'locale_code' => 'fr_FR', 'complete' => 1, 'product_uuid' => 'e5d46e64-e50e-4c8d-92c2-f12e2cbf92c9'],
+                ['channel_code' => 'print', 'locale_code' => 'en_US', 'complete' => 0, 'product_uuid' => 'e5d46e64-e50e-4c8d-92c2-f12e2cbf92c9'],
+                ['channel_code' => 'print', 'locale_code' => 'fr_FR', 'complete' => 0, 'product_uuid' => 'e5d46e64-e50e-4c8d-92c2-f12e2cbf92c9'],
+                ['channel_code' => 'mobile', 'locale_code' => 'en_US', 'complete' => 1, 'product_uuid' => 'e5d46e64-e50e-4c8d-92c2-f12e2cbf92c9'],
+                ['channel_code' => 'mobile', 'locale_code' => 'fr_FR', 'complete' => 1, 'product_uuid' => 'e5d46e64-e50e-4c8d-92c2-f12e2cbf92c9'],
             ]
         );
     }

@@ -19,8 +19,8 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Model;
  */
 class WriteValueCollection implements \Countable, \IteratorAggregate
 {
-    /** @var ValueInterface[] */
-    private $values;
+    /** @var array<string, ValueInterface> */
+    private array $values;
 
     /** @var string[] */
     private $attributeCodes;
@@ -222,7 +222,7 @@ class WriteValueCollection implements \Countable, \IteratorAggregate
     /**
      * {@inheritDoc}
      */
-    public function count()
+    public function count(): int
     {
         return count($this->values);
     }
@@ -261,7 +261,7 @@ class WriteValueCollection implements \Countable, \IteratorAggregate
     /**
      * {@inheritDoc}
      */
-    public function getIterator()
+    public function getIterator(): \Traversable
     {
         return new \ArrayIterator($this->values);
     }

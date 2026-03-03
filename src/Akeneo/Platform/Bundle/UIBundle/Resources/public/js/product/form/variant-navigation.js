@@ -25,6 +25,7 @@ define([
   'pim/template/product/form/variant-navigation/product-item',
   'pim/template/product/form/variant-navigation/product-model-item',
   'pim/template/product/form/variant-navigation/add-child-button',
+  'pim/analytics',
 ], function (
   $,
   _,
@@ -42,7 +43,8 @@ define([
   template,
   templateProduct,
   templateProductModel,
-  templateAddChild
+  templateAddChild,
+  analytics
 ) {
   return BaseForm.extend({
     template: _.template(template),
@@ -119,6 +121,9 @@ define([
         const options = {
           dropdownCssClass: 'variant-navigation',
           closeOnSelect: false,
+          id: function (e) {
+            return e.uuid || e.id;
+          },
 
           /**
            * Format result (product or product model variations) method of select2.
@@ -283,6 +288,19 @@ define([
 
       return formModal.saveProductModelChild(route).done(entity => {
         this.redirectToEntity(entity.meta);
+
+        if (entity.meta?.identifier_generator_warnings) {
+          const normalizedWarnings = entity.meta.identifier_generator_warnings.map(warning => {
+            return warning.path ? `${warning.path}: ${warning.message} ` : warning.message;
+          });
+
+          messenger.notify(
+            'warning',
+            __('pim_enrich.entity.product.flash.update.identifier_warning'),
+            normalizedWarnings
+          );
+        }
+
         messenger.notify('success', message);
       });
     },
@@ -439,7 +457,11 @@ define([
         return;
       }
 
-      const params = {id: entity.id};
+      analytics.appcuesTrack('product-model:form:variant-selected', {
+        identifier: entity.identifier,
+      });
+
+      const params = 'product_model' === entity.model_type ? {id: entity.id} : {uuid: entity.uuid || entity.id};
       const route = 'product_model' === entity.model_type ? 'pim_enrich_product_model_edit' : 'pim_enrich_product_edit';
       this.getRoot().trigger('pim:product:variant-navigation:navigate-to-level:before', entity);
       router.redirectToRoute(route, params);

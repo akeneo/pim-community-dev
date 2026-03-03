@@ -1,0 +1,62 @@
+akeneo_catalogs:
+  validation:
+    max_number_of_catalogs_per_user_message: Podeu crear fins a 15 catàlegs
+    product_selection:
+      criteria:
+        channel:
+          not_empty: 'Aquest canal ha d''estar buit.'
+          empty: 'Aquest canal no ha d''estar buit.'
+          unknown: 'Aquest canal s''ha desactivat. Comproveu la configuració del vostre canal o elimineu aquest criteri.'
+        locale:
+          not_empty: 'Aquesta configuració regional ha d''estar buida.'
+          empty: 'Aquesta configuració regional no ha d''estar buida.'
+          unknown: 'Aquesta configuració regional no existeix.'
+          disabled: 'Aquesta configuració regional està desactivada per a aquest canal. Comproveu la configuració del vostre canal o elimineu aquest criteri.'
+        value:
+          not_empty: 'Aquest valor ha d''estar buit.'
+          empty: 'Aquest valor no ha d''estar buit.'
+        family:
+          unknown: 'Almenys una família seleccionada no existeix.'
+        completeness:
+          value: 'El valor d''exhaustivitat ha d''estar entre 0 i 100 per cent.'
+        attribute_option:
+          unknown: 'Almenys una opció seleccionada no existeix.'
+        category:
+          value: 'Les categories següents ja no existeixen: {{ codes }}. Si us plau, elimineu-los del valor del criteri.'
+        date:
+          between_is_empty: 'Aquests valors no han d''estar buits.'
+        measurement:
+          unit:
+            not_exist: 'La unitat del camp "{{ field }}" no existeix.'
+            not_empty: 'La unitat no ha d''estar buida.'
+    product_value_filters:
+      channel:
+        unknown: 'El canal "{{ channel_name }}" s''ha desactivat. Comprova la configuració del teu canal o elimina aquest filtre.'
+      currencies:
+        unknown: 'La moneda "{{ currency_name }}" s''ha desactivat. Comproveu la configuració de les vostres monedes o elimineu aquest filtre.'
+      locale:
+        unknown: 'La configuració regional "{{ locale_name }}" s''ha desactivat. Comproveu la vostra configuració regional o elimineu aquest filtre.'
+    product_mapping:
+      schema:
+        missing_targets: 'El mapatge és incomplet, falten els objectius següents: {{ targets }}.'
+        additional_targets: "El mapatge és incorrecte, els objectius següents no existeixen: {{ targets }}."
+        incorrect_type: 'El tipus d''origen seleccionat no compleix els requisits: s''esperava {{ expected_type }}.'
+      source:
+        invalid: 'Aquest atribut s''ha suprimit.'
+        unknown: 'Valor font desconegut'
+        channel:
+          not_empty: 'Aquest canal ha d''estar buit.'
+          empty: 'Aquest canal no ha d''estar buit.'
+          unknown: 'Aquest canal s''ha suprimit. Comproveu la configuració del vostre canal o actualitzeu aquest valor.'
+        locale:
+          not_empty: 'Aquesta configuració regional ha d''estar buida.'
+          empty: 'Aquesta configuració regional no ha d''estar buida.'
+          unknown: 'Aquesta configuració regional està desactivada o ja no existeix. Si us plau, comproveu els vostres canals i la configuració regional.'
+          disabled: 'Aquesta configuració regional està desactivada. Si us plau, comproveu els vostres canals i la configuració regional o actualitzeu aquest valor.'
+        required: 'La font és necessària.'
+        currency:
+          disabled: 'Aquesta moneda no està activada. Comproveu els vostres canals i la configuració de la moneda o actualitzeu aquest valor.'
+        measurement:
+          unit:
+            not_exist: 'La unitat del camp "{{ field }}" no existeix.'
+            not_empty: 'La unitat no ha d''estar buida.'

@@ -1,6 +1,6 @@
-import React, {ChangeEvent, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 import {AttributeOption, Locale} from '../model';
 import {EditingOptionContextProvider, useLocalesContext} from '../contexts';
 import AttributeOptionForm from './AttributeOptionForm';
@@ -19,21 +19,31 @@ const Edit = ({option, saveAttributeOption}: EditProps) => {
     setUpdatedOption(option);
   }, [option]);
 
-  const onUpdateOptionLabel = (event: ChangeEvent<HTMLInputElement>, localeCode: string) => {
-    event.persist();
-    let updatedOption: AttributeOption = {...option};
-    updatedOption.optionValues[localeCode].value = event.target.value;
-    setUpdatedOption(updatedOption);
-  };
+  const onUpdateOptionLabel = useCallback(
+    (newLabel: string, localeCode: string) => {
+      setUpdatedOption(updatedOption => {
+        const newOption: AttributeOption = {
+          ...updatedOption,
+        };
+        newOption.optionValues[localeCode].value = newLabel;
 
-  const onSubmit = (event: any) => {
-    event.preventDefault();
-    saveAttributeOption(updatedOption);
-  };
+        return newOption;
+      });
+    },
+    [setUpdatedOption]
+  );
+
+  const onSubmit = useCallback(
+    (event: any) => {
+      event.preventDefault();
+      saveAttributeOption(updatedOption);
+    },
+    [saveAttributeOption, updatedOption]
+  );
 
   return (
     <EditingOptionContextProvider option={option}>
-      <form className="AknSubsection AknAttributeOption-edit" onSubmit={(event: any) => onSubmit(event)}>
+      <form className="AknSubsection AknAttributeOption-edit" onSubmit={onSubmit}>
         <div className="AknSubsection-title AknSubsection-title--glued tabsection-title">
           <span>{translate('pim_enrich.entity.attribute_option.module.edit.options_labels')}</span>
         </div>

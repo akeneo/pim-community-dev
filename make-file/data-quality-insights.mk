@@ -59,6 +59,7 @@
 .PHONY: data-quality-insights-coupling-back
 data-quality-insights-coupling-back:
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Pim/Automation/DataQualityInsights/tests/back/.php_cd.php src/Akeneo/Pim/Automation/DataQualityInsights
+	$(PHP_RUN) vendor/bin/php-coupling-detector list-unused-requirements --config-file=src/Akeneo/Pim/Automation/DataQualityInsights/tests/back/.php_cd.php src/Akeneo/Pim/Automation/DataQualityInsights
 
 .PHONY: data-quality-insights-phpstan
 data-quality-insights-phpstan: var/cache/dev
@@ -79,6 +80,14 @@ data-quality-insights-cs-fix:
 .PHONY: data-quality-insights-integration-back
 data-quality-insights-integration-back:
 	APP_ENV=test $(PHP_RUN) vendor/bin/phpunit --testsuite=Data_Quality_Insights --testdox $(O)
+
+.PHONY: data-quality-insights-lint-front
+data-quality-insights-lint-front:
+	$(YARN_RUN) prettier --parser typescript --check "./src/Akeneo/Pim/Automation/DataQualityInsights/front/**/*.{js,ts,tsx}"
+
+.PHONY: data-quality-insights-lint-front-fix
+data-quality-insights-lint-front-fix:
+	$(YARN_RUN) prettier --parser typescript --write "./src/Akeneo/Pim/Automation/DataQualityInsights/front/**/*.{js,ts,tsx}"
 
 .PHONY: data-quality-insights-unit-front
 data-quality-insights-unit-front:

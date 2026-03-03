@@ -22,7 +22,7 @@ Feature: Sort products per date field
       | Mug        |                  |
     And I am logged in as "Mary"
 
-  Scenario: Successfully sort products by updated at
+  Scenario: Successfully sort products by updated
     Given I am on the products grid
     And the grid should contain 7 elements
-    And I should be able to sort the rows by Updated at
+    And I should be able to sort the rows by Updated

@@ -1,8 +1,8 @@
 twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
-    exception_controller: FOS\RestBundle\Controller\ExceptionController::showAction
-    form_theme: ['PimUIBundle:Form:pim-fields.html.twig']
+    exception_controller: null
+    form_theme: ['@PimUI/Form/pim-fields.html.twig']
     globals:
         ws:
             port:        '%websocket_port%'

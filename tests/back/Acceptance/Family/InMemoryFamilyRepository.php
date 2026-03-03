@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Acceptance\Family;
 
-use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;

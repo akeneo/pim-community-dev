@@ -1,0 +1,81 @@
+pim_title:
+  akeneo_job_process_tracker_index: Tracker di processo
+  akeneo_job_process_tracker_details: Tracker di processo | Mostra job
+akeneo_job:
+  job_status:
+    COMPLETED: Completato
+    STARTED: In corso
+    STARTING: In avvio
+    STOPPING: In fase di interruzione
+    STOPPED: Interrotto
+    FAILED: Non riuscito
+    ABANDONED: Abbandonato
+    UNKNOWN: Sconosciuto
+    IN_PROGRESS: In corso
+    PAUSING: Sospensione in corso
+    PAUSED: In pausa
+akeneo_job_process_tracker:
+  tooltip:
+    paused: Questa operazione è stata messa in pausa a causa della manutenzione interna sulla tua istanza. Al termine verrà ripresa automaticamente.
+  last_operations:
+    title: Ultime operazioni
+    view_all: Mostra tutti
+    details: Dettagli
+    no_result: Al momento non ci sono operazioni da visualizzare.
+  last_executions:
+    title: Ultime esecuzioni
+  job_execution_list:
+    search_placeholder: Cerca per nome del job
+    table:
+      headers:
+        job_name: Nome job
+        type: Tipo
+        started_at: Iniziato alle
+        username: Nome utente
+        progress: Avanzamento
+        status: Stato
+        warning_count: Avvisi
+  type_filter:
+    label: Tipo
+    all: Tutto
+    quick_export: Esportazione rapida
+    import: Importa
+    export: Esporta
+    mass_edit: Modifica di massa
+    mass_delete: Eliminazione di massa prodotti
+    attribute_mass_delete: Elimina attributi in blocco
+    compute_family_variant_structure_changes: Calcola le modifiche della struttura della famiglia variante
+    compute_completeness_of_products_family: Calcola la completezza della famiglia di prodotti
+    clean_removed_attribute_job: Pulizia valori attributo rimossi
+    execute_rules: Esegui le regole
+    scheduled_job: Job pianificato
+  user_filter:
+    label: Utente
+    all: Tutto
+    search: Cerca
+  status_filter:
+    label: Stato
+    all: Tutto
+    abandoned: Abbandonato
+    completed: Completato
+    failed: Non riuscito
+    starting: In avvio
+    stopped: Interrotto
+    stopping: In fase di interruzione
+    unknown: Sconosciuto
+    in_progress: In corso
+    pausing: Sospensione in corso
+    paused: In pausa
+  automation_filter:
+    all: Tutto
+    yes: Yes
+    no: No
+    label: Automazione
+  max_page_without_filter_helper:
+    - Per consentirci di mostrarti i risultati più rilevanti, perfeziona la tua ricerca.
+  tracking:
+    completed: "Tempo speso: {{ duration }}"
+    in_progress: "Tempo rimanente stimato per il passo corrente: {{ duration }}"
+    not_started: In attesa
+    untrackable: Passo non tracciabile
+    estimating: Stima del tempo rimanente...

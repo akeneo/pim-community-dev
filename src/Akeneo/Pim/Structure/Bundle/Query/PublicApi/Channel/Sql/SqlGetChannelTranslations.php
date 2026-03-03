@@ -26,7 +26,7 @@ JOIN pim_catalog_channel_translation ct ON c.id = ct.foreign_key
 WHERE ct.locale = :locale;
 SQL;
 
-        $rows = $this->connection->executeQuery($sql, ['locale' => $locale])->fetchAll();
+        $rows = $this->connection->executeQuery($sql, ['locale' => $locale])->fetchAllAssociative();
 
         $channelTranslations = [];
         foreach ($rows as $row) {

@@ -18,6 +18,12 @@ define(['pim/form/common/edit-form'], function (BaseEditForm) {
       return BaseEditForm.prototype.configure.apply(this, arguments);
     },
 
+    render: function () {
+      this.$el.addClass('attribute');
+
+      return BaseEditForm.prototype.render.apply(this, arguments);
+    },
+
     /**
      * Sets the attribute code for dynamic tree building purpose at configuration time.
      *
@@ -43,6 +49,19 @@ define(['pim/form/common/edit-form'], function (BaseEditForm) {
      */
     getType: function () {
       return this.type;
+    },
+
+    setLabels: function (labels) {
+      this.labels = labels;
+    },
+    setLocalizable: function (localizable) {
+      this.localizable = localizable === 'true';
+    },
+    setScopable: function (scopable) {
+      this.scopable = scopable === 'true';
+    },
+    setUnique: function (unique) {
+      this.unique = unique === 'true';
     },
   });
 });

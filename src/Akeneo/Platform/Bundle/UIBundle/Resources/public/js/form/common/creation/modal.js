@@ -119,10 +119,14 @@ define([
           routerParams = {id: entity.meta.id};
         }
 
-        messenger.notify('success', __(this.config.successMessage));
+        this.postSuccess(entity);
 
         router.redirectToRoute(this.config.editRoute, routerParams);
       });
+    },
+
+    postSuccess() {
+      messenger.notify('success', __(this.config.successMessage));
     },
 
     /**

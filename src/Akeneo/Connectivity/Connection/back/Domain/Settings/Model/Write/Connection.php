@@ -8,6 +8,7 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ClientId;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionCode;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionImage;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionLabel;
+use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\UserId;
 
@@ -18,26 +19,19 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\UserId;
  */
 class Connection
 {
-    /** @var ConnectionCode */
-    private $code;
+    private ConnectionCode $code;
 
-    /** @var ConnectionLabel */
-    private $label;
+    private ConnectionLabel $label;
 
-    /** @var FlowType */
-    private $flowType;
+    private FlowType $flowType;
 
-    /** @var ClientId */
-    private $clientId;
+    private ClientId $clientId;
 
-    /** @var UserId */
-    private $userId;
+    private UserId $userId;
 
-    /** @var ConnectionImage|null */
-    private $image;
+    private ?ConnectionImage $image;
 
-    /** @var bool */
-    private $auditable;
+    private ConnectionType $type;
 
     public function __construct(
         string $code,
@@ -46,7 +40,8 @@ class Connection
         int $clientId,
         int $userId,
         ?string $image = null,
-        bool $auditable = false
+        private bool $auditable = false,
+        ?string $type = null
     ) {
         $this->code = new ConnectionCode($code);
         $this->label = new ConnectionLabel($label);
@@ -54,7 +49,7 @@ class Connection
         $this->clientId = new ClientId($clientId);
         $this->userId = new UserId($userId);
         $this->image = null !== $image ? new ConnectionImage($image) : null;
-        $this->auditable = $auditable;
+        $this->type = new ConnectionType($type);
     }
 
     public function code(): ConnectionCode
@@ -90,6 +85,11 @@ class Connection
     public function auditable(): bool
     {
         return $this->auditable;
+    }
+
+    public function type(): ConnectionType
+    {
+        return $this->type;
     }
 
     public function setLabel(ConnectionLabel $label): void

@@ -57,6 +57,15 @@ define([
      * @param {Array} collection
      */
     moveFilter: function (collection) {
+      // Fix the issue that it display the filter on each switch from published and products
+      // @see PIM-10218
+      // @todo Handle the scope as the locale/category filters modules
+      const $previousScopeFilter = $('[data-drop-zone="column-context-switcher"] [data-type="product_scope"]');
+
+      if ($previousScopeFilter.length > 0) {
+        $previousScopeFilter.detach();
+      }
+
       this.$el.prependTo($('[data-drop-zone="column-context-switcher"]'));
 
       let $grid = $('#grid-' + collection.inputName);
@@ -123,20 +132,6 @@ define([
 
     /**
      * @inheritDoc
-     */
-    _onValueUpdated: function (newValue) {
-      if ('' === newValue.value) {
-        return;
-      }
-
-      UserContext.set('catalogScope', newValue.value);
-      this.catalogScope = newValue.value;
-
-      return SelectFilter.prototype._onValueUpdated.apply(this, arguments);
-    },
-
-    /**
-     * @inheritDoc
      *
      * Override to save the scope into the product grid state.
      *
@@ -146,6 +141,9 @@ define([
     _onSelectChange: function (event) {
       const value = $(event.target).closest('.AknDropdown-menuLink').attr('data-value');
       this.highlightScope(value);
+
+      UserContext.set('catalogScope', value);
+      this.catalogScope = value;
 
       SelectFilter.prototype._onSelectChange.apply(this, arguments);
 

@@ -2,10 +2,10 @@
 
 namespace spec\Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\ORM;
 
-use Doctrine\Common\Persistence\Mapping\Driver\MappingDriver;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Doctrine\Persistence\Mapping\Driver\MappingDriver;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 

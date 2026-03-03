@@ -8,6 +8,7 @@ Feature: Remove a product model
     Given a "catalog_modeling" catalog configuration
     And I am logged in as "Julia"
 
+  @purge-messenger
   Scenario: Successfully delete a product model from the edit form
     Given I am on the "amor" product model page
     And  I press the secondary action "Delete"
@@ -15,3 +16,5 @@ Feature: Remove a product model
     When I confirm the removal
     Then I should not see product 1111111111
     And  I should not see product 1111111112
+    And 1 event of type "product_model.removed" should have been raised
+    And 0 event of type "product.removed" should have been raised

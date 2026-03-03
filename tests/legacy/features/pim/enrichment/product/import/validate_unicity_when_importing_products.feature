@@ -22,7 +22,7 @@ Feature: Validate values for unique attributes when importing products
       SKU-002;2014-01-01
       """
     And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
@@ -37,7 +37,7 @@ Feature: Validate values for unique attributes when importing products
       SKU-002;123
       """
     And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
@@ -52,14 +52,14 @@ Feature: Validate values for unique attributes when importing products
       SKU-002;foo
       """
     And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
     Then I should see the text "The text attribute can not have the same value more than once. The foo value is already set on another product."
     And there should be 1 product
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3309
+  # @jira https://akeneo.atlassian.net/browse/PIM-3309
   Scenario: Import a file with same value in unique attribute and with existing product with this value
     Given the following products:
       | sku         | test_unique_attribute |
@@ -74,7 +74,7 @@ Feature: Validate values for unique attributes when importing products
       AKNTS_BPXXL;1200000011a
       """
     And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
@@ -100,7 +100,7 @@ Feature: Validate values for unique attributes when importing products
       | sku      |
       | 17727158 |
     And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
+      | storage | {"type": "local", "file_path": "%file to import%"} |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish

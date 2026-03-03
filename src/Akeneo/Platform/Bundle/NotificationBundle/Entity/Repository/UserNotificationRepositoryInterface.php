@@ -2,7 +2,7 @@
 
 namespace Akeneo\Platform\Bundle\NotificationBundle\Entity\Repository;
 
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**

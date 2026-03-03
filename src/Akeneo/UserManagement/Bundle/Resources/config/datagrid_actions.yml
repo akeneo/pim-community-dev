@@ -1,0 +1,7 @@
+services:
+    pim_user.extension.action.type.duplicate_user:
+        public: true
+        class: Akeneo\UserManagement\Bundle\Datagrid\Action\DuplicateUserAction
+        shared: false
+        tags:
+            - { name: oro_datagrid.extension.action.type, type: duplicate-user }

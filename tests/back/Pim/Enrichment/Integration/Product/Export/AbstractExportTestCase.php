@@ -2,17 +2,20 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Product\Export;
 
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
 use Akeneo\Pim\Structure\Component\Model\AssociationType;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
+use Ramsey\Uuid\Uuid;
 
 abstract class AbstractExportTestCase extends TestCase
 {
@@ -46,41 +49,37 @@ abstract class AbstractExportTestCase extends TestCase
     }
 
     /**
-     * @param string $identifier
-     * @param array  $data
-     *
-     * @return ProductInterface
+     * @param UserIntent[] $userIntents
      */
-    protected function createProduct(string $identifier, array $data = []) : ProductInterface
+    protected function createProduct(string $identifier, array $userIntents = []) : ProductInterface
     {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
-        $this->get('pim_catalog.updater.product')->update($product, $data);
-        $constraintList = $this->get('pim_catalog.validator.product')->validate($product);
-        $this->assertEquals(0, $constraintList->count());
-        $this->get('pim_catalog.saver.product')->save($product);
-
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
+        $command = UpsertProductCommand::createFromCollection(
+            userId: $this->getUserId('admin'),
+            productIdentifier: $identifier,
+            userIntents: $userIntents
+        );
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
-        return $product;
+        return $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
     }
 
     /**
-     * @param string $identifier
-     * @param array  $data
-     *
-     * @return ProductInterface
+     * @param UserIntent[] $userIntents
      */
-    protected function createVariantProduct(string $identifier, array $data = []) : ProductInterface
+    protected function createProductWithUuid(string $uuid, array $userIntents = []): ProductInterface
     {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
-        $this->get('pim_catalog.updater.product')->update($product, $data);
-        $constraintList = $this->get('pim_catalog.validator.product')->validate($product);
-        $this->assertEquals(0, $constraintList->count());
-        $this->get('pim_catalog.saver.product')->save($product);
-
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
+        $command = UpsertProductCommand::createWithUuid(
+            userId: $this->getUserId('admin'),
+            productUuid: ProductUuid::fromUuid(Uuid::fromString($uuid)),
+            userIntents: $userIntents
+        );
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
-        return $product;
+        return $this->get('pim_catalog.repository.product')->find($uuid);
     }
 
     /**
@@ -184,6 +183,7 @@ abstract class AbstractExportTestCase extends TestCase
     protected function createFamily(array $data = []) : FamilyInterface
     {
         $family = $this->get('pim_catalog.factory.family')->create();
+        $data['attributes'] = \array_unique(\array_merge(['sku'], $data['attributes']));
         $this->get('pim_catalog.updater.family')->update($family, $data);
         $constraintList = $this->get('validator')->validate($family);
         $this->assertEquals(0, $constraintList->count());

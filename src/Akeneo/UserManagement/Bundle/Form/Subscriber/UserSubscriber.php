@@ -38,7 +38,7 @@ class UserSubscriber implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             FormEvents::PRE_SET_DATA => 'preSetData',
@@ -85,7 +85,7 @@ class UserSubscriber implements EventSubscriberInterface
     /**
      * Returns true if passed user is currently authenticated
      *
-     * @param  \Akeneo\UserManagement\Component\Model\UserInterface $user
+     * @param UserInterface $user
      *
      * @return bool
      */

@@ -1,0 +1,8 @@
+services:
+    Akeneo\Connectivity\Connection\Application\ErrorManagement\Query\GetConnectionBusinessErrorsHandler:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\Persistence\ElasticsearchSelectLastConnectionBusinessErrorsQuery'
+
+    Akeneo\Connectivity\Connection\Application\ErrorManagement\Command\UpdateConnectionErrorCountHandler:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\Persistence\DbalErrorCountRepository'
