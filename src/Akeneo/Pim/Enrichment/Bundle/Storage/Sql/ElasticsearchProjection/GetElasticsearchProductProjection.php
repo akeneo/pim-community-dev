@@ -139,7 +139,7 @@ WITH
             JSON_ARRAY(sub_product_model.id, root_product_model.id) AS ancestor_ids,
             JSON_ARRAY(sub_product_model.code, root_product_model.code) AS ancestor_codes,
             product.created AS created_date,
-            GREATEST(product.updated, COALESCE(sub_product_model.updated, 0), COALESCE(root_product_model.updated, 0)) AS updated_date,
+            GREATEST(product.updated, COALESCE(sub_product_model.updated, product.updated), COALESCE(root_product_model.updated, product.updated)) AS updated_date,
             product.updated AS entity_updated_date,
             COALESCE(JSON_KEYS(product.raw_values), JSON_OBJECT()) AS attribute_codes_in_product_raw_values,
             JSON_MERGE_PATCH(

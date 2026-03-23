@@ -98,7 +98,7 @@ WITH
             product_model.code,
             product_model.created,
             root_product_model.code AS parent_code,
-            GREATEST(product_model.updated, COALESCE(root_product_model.updated, 0)) as updated,
+            GREATEST(product_model.updated, COALESCE(root_product_model.updated, product_model.updated)) as updated,
             product_model.updated as entity_updated,
             JSON_MERGE_PATCH(COALESCE(root_product_model.raw_values, '{}'), COALESCE(product_model.raw_values, '{}')) AS raw_values,
             family.code AS family_code,
