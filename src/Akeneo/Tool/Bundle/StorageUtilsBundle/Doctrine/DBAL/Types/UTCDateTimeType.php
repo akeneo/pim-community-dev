@@ -45,14 +45,14 @@ class UTCDateTimeType extends DateTimeType
             $platform->getDateTimeFormatString(),
             $value,
             (self::$utc) ? self::$utc : (self::$utc = new \DateTimeZone('UTC'))
-        );
-
-        $serverTimezone = date_default_timezone_get();
-        $val->setTimezone(new \DateTimeZone($serverTimezone));
+        ) ?: \DateTime::createFromFormat('Y-m-d H:i:s.u', $value, (self::$utc) ? self::$utc : (self::$utc = new \DateTimeZone('UTC')));
 
         if (!$val) {
             throw ConversionException::conversionFailed($value, $this->getName());
         }
+
+        $serverTimezone = date_default_timezone_get();
+        $val->setTimezone(new \DateTimeZone($serverTimezone));
 
         $errors = $val->getLastErrors();
 

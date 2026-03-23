@@ -37,7 +37,7 @@ class UTCDateTimeImmutableType extends DateTimeImmutableType
             $platform->getDateTimeFormatString(),
             $value,
             self::getUtc()
-        );
+        ) ?: \DateTimeImmutable::createFromFormat('Y-m-d H:i:s.u', $value, self::getUtc());
 
         if (!$converted) {
             throw ConversionException::conversionFailedFormat(
