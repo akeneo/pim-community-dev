@@ -203,6 +203,9 @@
     },
     "minimum-stability": "stable",
     "config": {
+        "audit": {
+            "block-insecure": false
+        },
         "sort-packages": true,
         "allow-plugins": {
             "symfony/flex": true,
