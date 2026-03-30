@@ -34,7 +34,7 @@ docker build --target dev -t akeneo/pim-php-dev:master .
 To upgrade Akeneo PIM to a newer version, please follow:
 https://docs.akeneo.com/master/migrate_pim/index.html
 
-Note: To upgrade from 7.x.y to the new versioning schema (yyyy.inc, like 2026.3), make you are applied all the existing 7.0 branch migrations.
+Note: To upgrade from 7.x.y to the new versioning schema (vyyyy.inc, like v2026.3), make you are applied all the existing 7.0 branch migrations.
 
 ## Testing instructions
 
@@ -43,7 +43,7 @@ https://github.com/akeneo/pim-community-dev/blob/master/internal_doc/tests/runni
 
 ## Versioning Policy: CalVer (Rolling)
 
-This project uses Calendar Versioning (YYYY.Minor).
+This project uses Calendar Versioning (vYYYY.Minor).
 
 Important: We do not follow Semantic Versioning (SemVer).
 We do not guarantee backwards compatibility between any two versions. Breaking changes may be introduced in any release (e.g., from v2026.1 to v2026.2).
