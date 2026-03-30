@@ -46,12 +46,12 @@ https://github.com/akeneo/pim-community-dev/blob/master/internal_doc/tests/runni
 This project uses Calendar Versioning (YYYY.Minor).
 
 Important: We do not follow Semantic Versioning (SemVer).
-We do not guarantee backwards compatibility between any two versions. Breaking changes may be introduced in any release (e.g., from 2026.1 to 2026.2).
+We do not guarantee backwards compatibility between any two versions. Breaking changes may be introduced in any release (e.g., from v2026.1 to v2026.2).
 
 Recommendation: To avoid unexpected breakages, lock your dependency to a specific version in composer.json:
 ```JSON
 
 "require": {
-    "akeneo/pim-community-dev": "2026.3"
+    "akeneo/pim-community-dev": "v2026.3"
 }
 ```
