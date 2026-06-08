@@ -379,6 +379,33 @@ class SearchJobExecutionTest extends IntegrationTestCase
         $this->assertEquals(1, $this->query->count($query));
     }
 
+    /**
+     * @test
+     */
+    public function itReturnsAJobExecutionRowWithAParsedStartedAtDate(): void
+    {
+        $jobInstanceId = $this->fixturesJobHelper->createJobInstance([
+            'code' => 'a_datetime_test_job',
+            'job_name' => 'a_datetime_test_job',
+            'label' => 'A datetime test job',
+            'type' => 'import',
+        ]);
+
+        $this->fixturesJobHelper->createJobExecution([
+            'job_instance_id' => $jobInstanceId,
+            'start_time' => '2020-01-01 12:00:00',
+            'status' => Status::COMPLETED,
+            'is_stoppable' => false,
+        ]);
+
+        $query = new SearchJobExecutionQuery();
+        $results = $this->query->search($query);
+
+        $this->assertCount(1, $results);
+        $this->assertInstanceOf(JobExecutionRow::class, $results[0]);
+        $this->assertNotNull($results[0]->normalize()['started_at']);
+    }
+
     private function loadFixtures()
     {
         $aProductImportJobInstanceId = $this->fixturesJobHelper->createJobInstance([
