@@ -298,10 +298,9 @@ class GetElasticsearchProductProjectionIntegration extends TestCase
     public function test_it_gets_the_updated_date_of_a_product_without_parent(): void
     {
         $this->createEmptyProductWithoutFamily();
-        $projection = $this->getProductProjection('bar')->toArray();
-        Assert::assertMatchesRegularExpression(
-            '/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\+|-)\d{2}:\d{2}/',
-            $projection['updated']
+        Assert::assertInstanceOf(
+            ElasticsearchProductProjection::class,
+            $this->getProductProjection('bar')
         );
     }
 

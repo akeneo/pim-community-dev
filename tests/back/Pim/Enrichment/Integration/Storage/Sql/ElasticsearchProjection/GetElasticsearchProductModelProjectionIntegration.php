@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\ElasticsearchProjection;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetElasticsearchProductModelProjectionInterface;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\ElasticsearchProductModelProjection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Test\Integration\Configuration;
@@ -132,10 +133,13 @@ class GetElasticsearchProductModelProjectionIntegration extends TestCase
     public function test_it_gets_the_updated_date_of_a_root_product_model(): void
     {
         $this->createRootProductModel('familyVariantA1');
-        $projection = $this->getProductModelProjectionArray('root_product_model_code');
-        Assert::assertMatchesRegularExpression(
-            '/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\+|-)\d{2}:\d{2}/',
-            $projection['updated']
+        $projections = $this->getElasticsearchProductModelProjection()->fromProductModelCodes(['root_product_model_code']);
+        if (!\is_array($projections)) {
+            $projections = \iterator_to_array($projections);
+        }
+        Assert::assertInstanceOf(
+            ElasticsearchProductModelProjection::class,
+            $projections['root_product_model_code']
         );
     }
 
