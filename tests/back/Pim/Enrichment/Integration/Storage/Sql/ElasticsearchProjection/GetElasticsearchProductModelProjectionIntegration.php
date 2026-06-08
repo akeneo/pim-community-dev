@@ -129,17 +129,7 @@ class GetElasticsearchProductModelProjectionIntegration extends TestCase
         $this->checkProductModelProjectionFormat('root_product_model_code', $expected);
     }
 
-    /**
-     * When a product model has no parent, the ES projection SQL uses
-     * GREATEST(product_model.updated, COALESCE(root_product_model.updated, 0)).
-     * The root_product_model column comes from a LEFT JOIN on parent_id which is NULL for a root model,
-     * so COALESCE receives a typed nullable DATETIME column — not a literal NULL. On MySQL 8.4 this causes
-     * GREATEST to return DATETIME(6) format (e.g. '2024-01-01 12:00:00.000000'). Without MySQL84Platform,
-     * UTCDateTimeImmutableType would call createFromFormat('Y-m-d H:i:s', ...) which returns false for values
-     * with trailing microseconds, throwing a ConversionException.
-     * Passes on MySQL 8.0 and fails on MySQL 8.4 without MySQL84Platform.
-     */
-    public function test_it_can_parse_updated_date_of_a_root_product_model_on_mysql_84(): void
+    public function test_it_gets_the_updated_date_of_a_root_product_model(): void
     {
         $this->createRootProductModel('familyVariantA1');
         $projection = $this->getProductModelProjectionArray('root_product_model_code');
