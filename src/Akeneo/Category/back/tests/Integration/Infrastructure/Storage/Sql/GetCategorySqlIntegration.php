@@ -144,6 +144,52 @@ class GetCategorySqlIntegration extends CategoryTestCase
         $this->assertSame($hatsCategory->getLabels()->getTranslations(), []);
     }
 
+    /**
+     * MySQL 8.4 changed GREATEST(DATETIME, INT) to return DATETIME(6) instead of DOUBLE.
+     * Category::fromDatabase() uses createFromFormat('Y-m-d H:i:s', ...) which cannot parse
+     * a value like '2024-01-01 12:00:00.000000' — it returns false, causing a TypeError.
+     *
+     * This test skips on MySQL 8.0 (GREATEST returns a DOUBLE numeric string) and fails on
+     * MySQL 8.4 before Category::fromDatabase() is fixed to handle the DATETIME(6) format.
+     */
+    public function testCategoryFromDatabaseCanHandleDatetime6FormatFromMysql84(): void
+    {
+        // GREATEST(DATETIME_col, COALESCE(nullable_DATETIME_col, 0)) with the second column NULL:
+        // - MySQL 8.0: promotes to DOUBLE (returns a large numeric string)
+        // - MySQL 8.4: promotes to DATETIME(6) (returns e.g. '2024-01-01 12:00:00.000000')
+        // A literal COALESCE(NULL, 0) does NOT trigger this — it must be a typed DATETIME column.
+        $row = $this->get('database_connection')->executeQuery(
+            <<<SQL
+            SELECT
+                c.id,
+                c.code,
+                c.parent_id,
+                c.root AS root_id,
+                c.lft,
+                c.rgt,
+                c.lvl,
+                GREATEST(c.updated, COALESCE(p.updated, 0)) AS updated,
+                NULL AS translations,
+                NULL AS value_collection,
+                NULL AS template_uuid
+            FROM pim_catalog_category c
+            LEFT JOIN pim_catalog_category p ON p.id = -1
+            WHERE c.code = :code
+            SQL,
+            ['code' => (string) $this->category->getCode()]
+        )->fetchAssociative();
+
+        $this->assertIsArray($row);
+
+        // On MySQL 8.0 $updatedValue is e.g. '2024-01-01 12:00:00' (no microseconds) — passes.
+        // On MySQL 8.4 $updatedValue is e.g. '2024-01-01 12:00:00.000000' — fails.
+        // Category::fromDatabase() calls createFromFormat('Y-m-d H:i:s', ...) which returns false
+        // for strings with trailing microseconds, producing a TypeError.
+        $category = Category::fromDatabase($row);
+
+        $this->assertInstanceOf(\DateTimeImmutable::class, $category->getUpdated());
+    }
+
     private function getLastCategoryId(): int
     {
         return (int) $this->get('database_connection')->fetchOne('SELECT MAX(id) FROM pim_catalog_category');
