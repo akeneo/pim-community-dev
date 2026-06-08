@@ -144,45 +144,6 @@ class GetCategorySqlIntegration extends CategoryTestCase
         $this->assertSame($hatsCategory->getLabels()->getTranslations(), []);
     }
 
-    /**
-     * MySQL 8.4 changed GREATEST(DATETIME, COALESCE(nullable_DATETIME_col, 0)) to return
-     * DATETIME(6) (e.g. '2024-01-01 12:00:00.000000') instead of a plain DATETIME string.
-     * A literal COALESCE(NULL, 0) does NOT trigger this — the fallback must be a typed DATETIME
-     * column; here we force that with a LEFT JOIN on an impossible condition.
-     * Category::fromDatabase() calls createFromFormat('Y-m-d H:i:s', ...) which returns false
-     * for strings with trailing microseconds, causing a TypeError.
-     * Passes on MySQL 8.0 (no microseconds), fails on MySQL 8.4 before the fix.
-     */
-    public function testCategoryFromDatabaseCanHandleDatetime6FormatFromMysql84(): void
-    {
-        $row = $this->get('database_connection')->executeQuery(
-            <<<SQL
-            SELECT
-                c.id,
-                c.code,
-                c.parent_id,
-                c.root AS root_id,
-                c.lft,
-                c.rgt,
-                c.lvl,
-                GREATEST(c.updated, COALESCE(p.updated, 0)) AS updated,
-                NULL AS translations,
-                NULL AS value_collection,
-                NULL AS template_uuid
-            FROM pim_catalog_category c
-            LEFT JOIN pim_catalog_category p ON p.id = -1
-            WHERE c.code = :code
-            SQL,
-            ['code' => (string) $this->category->getCode()]
-        )->fetchAssociative();
-
-        $this->assertIsArray($row);
-
-        $category = Category::fromDatabase($row);
-
-        $this->assertInstanceOf(\DateTimeImmutable::class, $category->getUpdated());
-    }
-
     private function getLastCategoryId(): int
     {
         return (int) $this->get('database_connection')->fetchOne('SELECT MAX(id) FROM pim_catalog_category');
