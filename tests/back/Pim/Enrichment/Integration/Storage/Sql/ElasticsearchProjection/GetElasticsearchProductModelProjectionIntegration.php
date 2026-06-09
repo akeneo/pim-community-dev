@@ -133,13 +133,14 @@ class GetElasticsearchProductModelProjectionIntegration extends TestCase
     public function test_it_gets_the_updated_date_of_a_root_product_model(): void
     {
         $this->createRootProductModel('familyVariantA1');
-        $projections = $this->getElasticsearchProductModelProjection()->fromProductModelCodes(['root_product_model_code']);
-        if (!\is_array($projections)) {
-            $projections = \iterator_to_array($projections);
-        }
-        Assert::assertInstanceOf(
-            ElasticsearchProductModelProjection::class,
-            $projections['root_product_model_code']
+
+        $this->getConnection()->executeQuery(
+            "UPDATE pim_catalog_product_model SET updated = '2021-01-02 11:50:00' WHERE code = 'root_product_model_code'"
+        );
+
+        Assert::assertSame(
+            '2021-01-02T12:50:00+01:00',
+            $this->getProductModelProjectionArray('root_product_model_code')['updated']
         );
     }
 
