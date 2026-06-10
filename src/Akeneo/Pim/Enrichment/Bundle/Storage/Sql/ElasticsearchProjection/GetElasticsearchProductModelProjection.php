@@ -88,6 +88,11 @@ class GetElasticsearchProductModelProjection implements GetElasticsearchProductM
         }
     }
 
+    /**
+     * The COALESCE fallback uses product_model.updated instead of 0 so that GREATEST() always compares two DATETIME
+     * columns. Using an integer fallback (0) causes MySQL 8.4 to promote the result type to DATETIME(6), which
+     * breaks date parsing in Doctrine.
+     */
     private function getValuesAndPropertiesFromProductModelCodes(array $productModelCodes): array
     {
         $query = <<<SQL
@@ -98,7 +103,7 @@ WITH
             product_model.code,
             product_model.created,
             root_product_model.code AS parent_code,
-            GREATEST(product_model.updated, COALESCE(root_product_model.updated, 0)) as updated,
+            GREATEST(product_model.updated, COALESCE(root_product_model.updated, product_model.updated)) as updated,
             product_model.updated as entity_updated,
             JSON_MERGE_PATCH(COALESCE(root_product_model.raw_values, '{}'), COALESCE(product_model.raw_values, '{}')) AS raw_values,
             family.code AS family_code,

@@ -295,6 +295,19 @@ class GetElasticsearchProductProjectionIntegration extends TestCase
         $this->assertProductIndexingFormat('bar', $expected);
     }
 
+    public function test_it_gets_the_updated_date_of_a_product_without_parent(): void
+    {
+        $this->createEmptyProductWithoutFamily();
+
+        $this->getConnection()->executeQuery(
+            "UPDATE pim_catalog_product SET updated = '2021-01-02 11:50:00' WHERE identifier = 'bar'"
+        );
+
+        $projection = $this->getProductProjection('bar');
+
+        Assert::assertSame('2021-01-02T12:50:00+01:00', $projection->toArray()['updated']);
+    }
+
     public function test_it_gets_own_level_attributes_of_non_variant_product_in_a_family()
     {
         $this->createProductWithFamily();

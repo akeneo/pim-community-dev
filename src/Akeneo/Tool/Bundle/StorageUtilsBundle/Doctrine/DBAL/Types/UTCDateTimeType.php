@@ -42,17 +42,17 @@ class UTCDateTimeType extends DateTimeType
         }
 
         $val = \DateTime::createFromFormat(
-            $platform->getDateTimeFormatString(),
+            $platform->getDateTimeFormatString($value),
             $value,
             (self::$utc) ? self::$utc : (self::$utc = new \DateTimeZone('UTC'))
         );
 
-        $serverTimezone = date_default_timezone_get();
-        $val->setTimezone(new \DateTimeZone($serverTimezone));
-
         if (!$val) {
             throw ConversionException::conversionFailed($value, $this->getName());
         }
+
+        $serverTimezone = date_default_timezone_get();
+        $val->setTimezone(new \DateTimeZone($serverTimezone));
 
         $errors = $val->getLastErrors();
 

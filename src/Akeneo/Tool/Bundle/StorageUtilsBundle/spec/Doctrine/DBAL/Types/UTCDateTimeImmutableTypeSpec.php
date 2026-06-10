@@ -48,7 +48,7 @@ class UTCDateTimeImmutableTypeSpec extends ObjectBehavior
     public function it_converts_a_utc_date_string_to_a_timezoned_immutable_date_time(AbstractPlatform $platform): void
     {
         $value = '2021-01-01 00:00:00';
-        $platform->getDateTimeFormatString()
+        $platform->getDateTimeFormatString($value)
             ->willReturn('Y-m-d H:i:s');
 
         $expected = \DateTimeImmutable::createFromFormat(\DateTimeInterface::ATOM, '2020-12-31T16:00:00-08:00');
@@ -57,11 +57,22 @@ class UTCDateTimeImmutableTypeSpec extends ObjectBehavior
             ->shouldBeLike($expected);
     }
 
+    public function it_converts_a_utc_date_string_with_microseconds_to_a_timezoned_immutable_date_time(AbstractPlatform $platform): void
+    {
+        $value = '2026-06-02 15:52:16.000000';
+        $platform->getDateTimeFormatString($value)
+            ->willReturn('Y-m-d H:i:s.u');
+
+        $expected = \DateTimeImmutable::createFromFormat(\DateTimeInterface::ATOM, '2026-06-02T07:52:16-08:00');
+
+        $this->convertToPHPValue($value, $platform)
+            ->shouldBeLike($expected);
+    }
+
     public function it_throws_if_the_date_string_format_is_invalid(AbstractPlatform $platform): void
     {
         $value = 'not_a_valid_date_format';
-        $platform->getDateTimeFormatString()
-            ->willReturn('Y-m-d H:i:s');
+        $platform->getDateTimeFormatString($value)->willReturn('Y-m-d H:i:s');
 
         $this->shouldThrow(ConversionException::class)
             ->during('convertToPHPValue', [$value, $platform]);

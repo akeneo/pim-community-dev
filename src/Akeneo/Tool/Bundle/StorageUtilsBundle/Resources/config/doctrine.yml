@@ -7,6 +7,10 @@ parameters:
     akeneo_storage_utils.event_subscriber.configure_orm_mappings.class:     Akeneo\Tool\Bundle\StorageUtilsBundle\EventSubscriber\ConfigureMappingsSubscriber
 
 services:
+    akeneo_storage_utils.doctrine.dbal.platform.mysql84:
+        class: Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\DBAL\Platform\MySQL84Platform
+        public: true
+
     akeneo_storage_utils.event_subscriber.resolve_target_repository:
         class: '%akeneo_storage_utils.event_subscriber.resolve_target_repository.class%'
         public: false
