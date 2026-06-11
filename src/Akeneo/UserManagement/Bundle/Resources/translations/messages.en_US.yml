@@ -64,6 +64,7 @@ pim_user:
             business_unit.title:         Business Units
             email_synchronization.title: Email synchronization settings
         removed_user: Removed user
+        system_user: System
         login:
             username_or_email: Username or Email
             remember_me: Remember me on this computer
