@@ -15,7 +15,8 @@ doctrine:
                         charset: utf8mb4
                         collate: utf8mb4_unicode_ci
                         row_format: DYNAMIC
-                server_version: '8.0'
+                server_version: '8.4'
+                platform_service: 'akeneo_storage_utils.doctrine.dbal.platform.mysql84'
                 mapping_types:
                     json: string
                 options:

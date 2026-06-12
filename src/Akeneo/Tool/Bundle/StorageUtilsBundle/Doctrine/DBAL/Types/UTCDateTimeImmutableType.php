@@ -33,18 +33,12 @@ class UTCDateTimeImmutableType extends DateTimeImmutableType
             return $value;
         }
 
-        $converted = \DateTimeImmutable::createFromFormat(
-            $platform->getDateTimeFormatString(),
-            $value,
-            self::getUtc()
-        );
+        $format = $platform->getDateTimeFormatString($value);
+
+        $converted = \DateTimeImmutable::createFromFormat($format, $value, self::getUtc());
 
         if (!$converted) {
-            throw ConversionException::conversionFailedFormat(
-                $value,
-                $this->getName(),
-                $platform->getDateTimeFormatString()
-            );
+            throw ConversionException::conversionFailedFormat($value, $this->getName(), $format);
         }
 
         $converted = $converted->setTimezone(self::getDefaultTimeZone());
