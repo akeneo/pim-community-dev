@@ -53,6 +53,7 @@ services:
         class: '%pim_versioning.event_subscriber.timestampable.class%'
         arguments:
             - '@doctrine.orm.default_entity_manager'
+            - '%pim_catalog.entity.product.class%'
         tags:
             - { name: doctrine.event_subscriber }
 
