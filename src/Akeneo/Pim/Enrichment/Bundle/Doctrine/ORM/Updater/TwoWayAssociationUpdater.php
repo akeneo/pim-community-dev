@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Updater;
 
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
+use Akeneo\Pim\Enrichment\Component\Product\Association\TwoWayAssociationsIndexationQueue;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\TwoWayAssociationWithTheSameProductException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -16,13 +17,16 @@ class TwoWayAssociationUpdater implements TwoWayAssociationUpdaterInterface
 {
     private ManagerRegistry $registry;
     private MissingAssociationAdder $missingAssociationAdder;
+    private TwoWayAssociationsIndexationQueue $indexationQueue;
 
     public function __construct(
         ManagerRegistry $registry,
-        MissingAssociationAdder $missingAssociationAdder
+        MissingAssociationAdder $missingAssociationAdder,
+        TwoWayAssociationsIndexationQueue $indexationQueue
     ) {
         $this->registry = $registry;
         $this->missingAssociationAdder = $missingAssociationAdder;
+        $this->indexationQueue = $indexationQueue;
     }
 
     /**
@@ -102,6 +106,12 @@ class TwoWayAssociationUpdater implements TwoWayAssociationUpdaterInterface
 
         $em = $this->registry->getManager();
         $em->persist($associatedEntity);
+
+        if ($associatedEntity instanceof ProductInterface) {
+            $this->indexationQueue->queueProduct($associatedEntity);
+        } elseif ($associatedEntity instanceof ProductModelInterface) {
+            $this->indexationQueue->queueProductModel($associatedEntity);
+        }
     }
 
     private function hasSameProductUuid(ProductInterface $product1, ProductInterface $product2): bool
