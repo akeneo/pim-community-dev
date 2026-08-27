@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace AkeneoTest\UserManagement\Integration\Bundle;
 
 use Akeneo\Test\Integration\Configuration;
-use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
 final class CreateGroupPageIntegration extends ControllerIntegrationTestCase
@@ -17,6 +16,7 @@ final class CreateGroupPageIntegration extends ControllerIntegrationTestCase
         $response = $this->callRoute('pim_user_group_create');
 
         $this->assertStatusCode($response, Response::HTTP_OK);
+        $this->assertStringContainsString('href="#/user/group/"', $response->getContent());
     }
 
     protected function getConfiguration(): Configuration
