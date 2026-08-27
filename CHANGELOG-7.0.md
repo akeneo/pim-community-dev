@@ -1,5 +1,9 @@
 # 7.0.x
 
+## Bug fixes
+
+- #20332: Fix potential type error when fetching the structure version last update row returns null
+
 # 7.0.84 (2025-12-31)
 
 ## Bug fixes

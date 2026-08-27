@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\StructureVersion\Provider;
 
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Statement;
+use Doctrine\DBAL\Result;
 use Doctrine\Persistence\ManagerRegistry;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -18,7 +18,7 @@ class StructureVersionSpec extends ObjectBehavior
         $this->beConstructedWith($registry);
     }
 
-    function it_returns_zero_when_there_is_no_version_history_record(Connection $connection, Statement $statement)
+    function it_returns_zero_when_there_is_no_version_history_record(Connection $connection, Result $statement)
     {
         $connection->executeQuery(Argument::cetera())->willReturn($statement);
         $statement->fetchAssociative()->willReturn(false);
@@ -26,9 +26,17 @@ class StructureVersionSpec extends ObjectBehavior
         $this->getStructureVersion()->shouldReturn(0);
     }
 
+    function it_returns_zero_when_fetch_associative_returns_null(Connection $connection, Result $statement)
+    {
+        $connection->executeQuery(Argument::cetera())->willReturn($statement);
+        $statement->fetchAssociative()->willReturn(null);
+
+        $this->getStructureVersion()->shouldReturn(0);
+    }
+
     function it_returns_the_timestamp_of_the_last_update_when_a_version_history_record_exists(
         Connection $connection,
-        Statement $statement
+        Result $statement
     ) {
         $connection->executeQuery(Argument::cetera())->willReturn($statement);
         $statement->fetchAssociative()->willReturn(['last_update' => '2021-01-01 00:00:00']);

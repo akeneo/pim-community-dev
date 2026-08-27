@@ -44,7 +44,7 @@ SQL;
         );
 
         $row = $stmt->fetchAssociative();
-        $loggedAt = false !== $row ? $row['last_update'] : null;
+        $loggedAt = \is_array($row) ? ($row['last_update'] ?? null) : null;
 
         if (null === $loggedAt) {
             return 0;
