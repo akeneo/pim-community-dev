@@ -2,7 +2,6 @@
 
 namespace Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Tool\Component\Versioning\Model\TimestampableInterface;
 use Akeneo\Tool\Component\Versioning\Model\Version;
 use Doctrine\Common\EventSubscriber;
@@ -21,12 +20,13 @@ class TimestampableSubscriber implements EventSubscriber
     /** @var EntityManagerInterface */
     protected $em;
 
-    /**
-     * @param EntityManagerInterface $em
-     */
-    public function __construct(EntityManagerInterface $em)
+    /** @var string */
+    protected $productClass;
+
+    public function __construct(EntityManagerInterface $em, string $productClass)
     {
         $this->em = $em;
+        $this->productClass = $productClass;
     }
 
     /**
@@ -60,7 +60,7 @@ class TimestampableSubscriber implements EventSubscriber
 
         $related = $this->em->find(
             $version->getResourceName(),
-            $version->getResourceName() === Product::class ? $version->getResourceUuid() : $version->getResourceId()
+            is_a($version->getResourceName(), $this->productClass, true) ? $version->getResourceUuid() : $version->getResourceId()
         );
 
         if (null === $related) {
