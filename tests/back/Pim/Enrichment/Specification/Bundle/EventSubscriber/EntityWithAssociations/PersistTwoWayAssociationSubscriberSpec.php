@@ -57,8 +57,8 @@ class PersistTwoWayAssociationSubscriberSpec extends ObjectBehavior
         $this->beConstructedWith($registry, $productIndexer, $productModelIndexer, $indexationQueue);
 
         $updater = new TwoWayAssociationUpdater(
-            $registry->reveal(),
-            $missingAssociationAdder->reveal(),
+            $registry->getWrappedObject(),
+            $missingAssociationAdder->getWrappedObject(),
             $indexationQueue
         );
 
