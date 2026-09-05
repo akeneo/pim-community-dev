@@ -135,4 +135,23 @@ class UniqueAxesCombinationSetSpec extends ObjectBehavior
             ->shouldThrow($exception)
             ->during('addCombination', [$invalidVariantProduct, '[A_color]']);
     }
+
+    function it_adds_a_combination_for_a_variant_product_without_an_identifier()
+    {
+        $familyVariant = new FamilyVariant();
+        $familyVariant->setCode('family_variant');
+
+        $productModel = new ProductModel();
+        $productModel->setCode('root_product_model');
+        $productModel->setFamilyVariant($familyVariant);
+
+        // A variant product saved without an SKU has a null identifier. It must not
+        // raise a TypeError on \mb_strtolower() so the "identifier is required"
+        // validation can run instead of a 500 error (issue #20486).
+        $variantProductWithoutIdentifier = new Product();
+        $variantProductWithoutIdentifier->setFamilyVariant($familyVariant);
+        $variantProductWithoutIdentifier->setParent($productModel);
+
+        $this->addCombination($variantProductWithoutIdentifier, '[a_color]');
+    }
 }
