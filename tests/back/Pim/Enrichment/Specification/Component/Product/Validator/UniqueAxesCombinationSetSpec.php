@@ -13,6 +13,10 @@ use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 
 class UniqueAxesCombinationSetSpec extends ObjectBehavior
 {
+    private const FAMILY_VARIANT_CODE = 'family_variant';
+    private const ROOT_PRODUCT_MODEL_CODE = 'root_product_model';
+    private const AXIS_VALUE_COMBINATION = '[a_color]';
+
     function it_is_initializable()
     {
         $this->shouldHaveType(UniqueAxesCombinationSet::class);
@@ -134,5 +138,21 @@ class UniqueAxesCombinationSetSpec extends ObjectBehavior
         $this
             ->shouldThrow($exception)
             ->during('addCombination', [$invalidVariantProduct, '[A_color]']);
+    }
+
+    function it_does_not_fail_for_a_variant_product_without_an_identifier()
+    {
+        $familyVariant = new FamilyVariant();
+        $familyVariant->setCode(self::FAMILY_VARIANT_CODE);
+
+        $productModel = new ProductModel();
+        $productModel->setCode(self::ROOT_PRODUCT_MODEL_CODE);
+        $productModel->setFamilyVariant($familyVariant);
+
+        $variantProductWithoutIdentifier = new Product();
+        $variantProductWithoutIdentifier->setFamilyVariant($familyVariant);
+        $variantProductWithoutIdentifier->setParent($productModel);
+
+        $this->addCombination($variantProductWithoutIdentifier, self::AXIS_VALUE_COMBINATION);
     }
 }
