@@ -49,13 +49,19 @@ class UniqueAxesCombinationSet
      */
     public function addCombination(EntityWithFamilyVariantInterface $entity, string $axisValueCombination): void
     {
+        $identifier = $entity->getIdentifier();
+        if (null === $identifier) {
+            return;
+        }
+
+        $loweredIdentifier = \mb_strtolower($identifier);
         $familyVariantCode = $entity->getFamilyVariant()->getCode();
         $parentCode = $entity->getParent()->getCode();
         $loweredAxisValueCombination = \mb_strtolower($axisValueCombination);
 
         if (isset($this->uniqueAxesCombination[$familyVariantCode][$parentCode][$loweredAxisValueCombination])) {
             $cachedIdentifier = $this->uniqueAxesCombination[$familyVariantCode][$parentCode][$loweredAxisValueCombination];
-            if ($cachedIdentifier !== \mb_strtolower($entity->getIdentifier())) {
+            if ($cachedIdentifier !== $loweredIdentifier) {
                 if ($entity instanceof ProductInterface) {
                     throw new AlreadyExistingAxisValueCombinationException(
                         $cachedIdentifier,
@@ -87,7 +93,7 @@ class UniqueAxesCombinationSet
         }
 
         if (!isset($this->uniqueAxesCombination[$familyVariantCode][$parentCode][$loweredAxisValueCombination])) {
-            $this->uniqueAxesCombination[$familyVariantCode][$parentCode][$loweredAxisValueCombination] = \mb_strtolower($entity->getIdentifier());
+            $this->uniqueAxesCombination[$familyVariantCode][$parentCode][$loweredAxisValueCombination] = $loweredIdentifier;
         }
     }
 }
