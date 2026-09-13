@@ -11,6 +11,7 @@ use Doctrine\ORM\UnitOfWork as ORMUnitOfWork;
 use Doctrine\ORM\UnitOfWork;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Component\Versioning\Model\TimestampableInterface;
+use Ramsey\Uuid\Uuid;
 
 class TimestampableSubscriberSpec extends ObjectBehavior
 {
@@ -121,15 +122,17 @@ class TimestampableSubscriberSpec extends ObjectBehavior
         $em->getClassMetadata(FakeProductForSpec::class)->willReturn($metadata);
         $metadata->getReflectionClass()->willReturn(new \ReflectionClass(TimestampableInterface::class));
 
+        $uuid = Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5');
+
         $version->getResourceId()->shouldNotBeCalled();
-        $version->getResourceUuid()->willReturn('some-uuid');
+        $version->getResourceUuid()->willReturn($uuid);
         $version->getResourceName()->willReturn(FakeProductForSpec::class);
         $version->getLoggedAt()->willReturn('foobar');
 
         $args->getObject()->willReturn($version);
 
         $em->getUnitOfWork()->willReturn($uow);
-        $em->find(FakeProductForSpec::class, 'some-uuid')->willReturn($object);
+        $em->find(FakeProductForSpec::class, $uuid)->willReturn($object);
 
         $uow->computeChangeSet($metadata, $object)->shouldBeCalled();
 
@@ -149,15 +152,17 @@ class TimestampableSubscriberSpec extends ObjectBehavior
         $em->getClassMetadata(FakeOverriddenProductForSpec::class)->willReturn($metadata);
         $metadata->getReflectionClass()->willReturn(new \ReflectionClass(TimestampableInterface::class));
 
+        $uuid = Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5');
+
         $version->getResourceId()->shouldNotBeCalled();
-        $version->getResourceUuid()->willReturn('some-uuid');
+        $version->getResourceUuid()->willReturn($uuid);
         $version->getResourceName()->willReturn(FakeOverriddenProductForSpec::class);
         $version->getLoggedAt()->willReturn('foobar');
 
         $args->getObject()->willReturn($version);
 
         $em->getUnitOfWork()->willReturn($uow);
-        $em->find(FakeOverriddenProductForSpec::class, 'some-uuid')->willReturn($object);
+        $em->find(FakeOverriddenProductForSpec::class, $uuid)->willReturn($object);
 
         $uow->computeChangeSet($metadata, $object)->shouldBeCalled();
 
