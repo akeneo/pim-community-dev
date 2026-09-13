@@ -54,7 +54,7 @@ class FeatureFlagDatagridFilterListenerTest extends TestCase
                 '385' => ['label' => 'Numeric attribute'],
             ],
             FilterConfiguration::FILTERS_KEY => ['columns' => []],
-            SorterConfiguration::SORTERS_PATH => [
+            'sorters' => [
                 'columns' => [
                     '385' => ['data_name' => '385'],
                 ],
