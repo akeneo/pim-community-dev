@@ -12,6 +12,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterfac
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\TwoWayAssociationUpdaterInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
@@ -182,6 +183,38 @@ class TwoWayAssociationUpdaterSpec extends ObjectBehavior
         $indexationQueue->queueProduct($associatedProduct)->shouldBeCalled();
 
         $this->removeInversedAssociation($owner, 'xsell', $associatedProduct);
+    }
+
+    public function it_removes_a_product_model_from_the_inversed_association_of_a_product_model(
+        $entityManager,
+        $indexationQueue,
+        ProductModelInterface $associatedProductModel
+    ): void {
+        $owner = new Product();
+
+        $associatedProductModel->removeAssociatedProduct($owner, 'xsell')->shouldBeCalled();
+        $entityManager->persist($associatedProductModel)->shouldBeCalled();
+        $indexationQueue->queueProductModel($associatedProductModel)->shouldBeCalled();
+        $indexationQueue->queueProduct(Argument::cetera())->shouldNotBeCalled();
+
+        $this->removeInversedAssociation($owner, 'xsell', $associatedProductModel);
+    }
+
+    public function it_only_reindexes_product_or_product_model_reciprocals(
+        $entityManager,
+        $indexationQueue,
+        EntityWithAssociationsInterface $associatedEntity
+    ): void {
+        $owner = new Product();
+
+        $associatedEntity->removeAssociatedProduct($owner, 'xsell')->shouldBeCalled();
+        $entityManager->persist($associatedEntity)->shouldBeCalled();
+        $indexationQueue->queueProduct(Argument::cetera())->shouldNotBeCalled();
+        $indexationQueue->queueProductModel(Argument::cetera())->shouldNotBeCalled();
+
+        $this
+            ->shouldThrow('\LogicException')
+            ->during('removeInversedAssociation', [$owner, 'xsell', $associatedEntity]);
     }
 
     public function it_removes_only_product_or_product_model(

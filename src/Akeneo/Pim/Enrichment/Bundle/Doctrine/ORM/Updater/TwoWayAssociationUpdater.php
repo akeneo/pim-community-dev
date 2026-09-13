@@ -111,6 +111,15 @@ class TwoWayAssociationUpdater implements TwoWayAssociationUpdaterInterface
             $this->indexationQueue->queueProduct($associatedEntity);
         } elseif ($associatedEntity instanceof ProductModelInterface) {
             $this->indexationQueue->queueProductModel($associatedEntity);
+        } else {
+            throw new \LogicException(
+                sprintf(
+                    'Inversed associations are only for the classes "%s" and "%s". "%s" given.',
+                    ProductInterface::class,
+                    ProductModelInterface::class,
+                    get_class($associatedEntity)
+                )
+            );
         }
     }
 
