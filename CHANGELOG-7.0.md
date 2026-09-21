@@ -4,6 +4,8 @@
 
 - #20332: Fix potential type error when fetching the structure version last update row returns null
 
+# 7.0.85 (2026-06-17)
+
 # 7.0.84 (2025-12-31)
 
 ## Bug fixes
