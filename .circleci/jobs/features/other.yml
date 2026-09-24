@@ -319,7 +319,7 @@ jobs:
             - run:
                   name: Start containers
                   command: |
-                      APP_ENV=test C='mysql elasticsearch pubsub-emulator' make up
+                      APP_ENV=test C='mysql elasticsearch object-storage pubsub-emulator' make up
                       docker/wait_docker_up.sh
             - run:
                   name: Execute specifications

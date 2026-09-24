@@ -103,6 +103,22 @@ services:
     networks:
       - 'pim'
 
+  # Only the vendored akeneo/pim-onboarder still needs an S3 endpoint; the PIM's own
+  # test storage is local. minio/minio was deleted from Docker Hub, hence quay.io.
+  object-storage:
+    image: 'quay.io/minio/minio:RELEASE.2025-09-07T16-13-09Z'
+    entrypoint: >
+      /bin/sh -c "mkdir -p /data/onboarder
+      && minio server --console-address :9091 /data"
+    environment:
+      MINIO_ROOT_USER: 'AKENEO_OBJECT_STORAGE_ACCESS_KEY'
+      MINIO_ROOT_PASSWORD: 'AKENEO_OBJECT_STORAGE_SECRET_KEY'
+    ports:
+      - '${DOCKER_PORT_OBJECT_STORAGE:-9090}:9000'
+      - '${DOCKER_PORT_OBJECT_STORAGE_CONSOLE:-9091}:9091'
+    networks:
+      - 'pim'
+
   blackfire:
     image: 'blackfire/blackfire:2'
     environment:
