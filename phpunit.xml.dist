@@ -77,6 +77,10 @@
             <file>src/Oro/Bundle/SecurityBundle/Tests/Unit/Acl/Dbal/MutableAclProviderTest.php</file>
         </testsuite>
 
+        <testsuite name="OroDataGridBundle">
+            <file>src/Oro/Bundle/DataGridBundle/Tests/Unit/EventListener/FeatureFlagDatagridFilterListenerTest.php</file>
+        </testsuite>
+
         <testsuite name="Enrichment_Product">
             <directory suffix="Integration.php">src/Akeneo/Pim/Enrichment/Product/back/Test/Integration</directory>
         </testsuite>
