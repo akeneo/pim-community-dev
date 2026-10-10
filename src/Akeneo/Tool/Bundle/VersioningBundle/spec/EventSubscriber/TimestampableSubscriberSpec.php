@@ -11,12 +11,13 @@ use Doctrine\ORM\UnitOfWork as ORMUnitOfWork;
 use Doctrine\ORM\UnitOfWork;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Component\Versioning\Model\TimestampableInterface;
+use Ramsey\Uuid\Uuid;
 
 class TimestampableSubscriberSpec extends ObjectBehavior
 {
     function let(EntityManagerInterface $em)
     {
-        $this->beConstructedWith($em);
+        $this->beConstructedWith($em, FakeProductForSpec::class);
     }
 
     function it_is_a_doctrine_event_listener()
@@ -109,6 +110,66 @@ class TimestampableSubscriberSpec extends ObjectBehavior
 
         $this->prePersist($args);
     }
+
+    function it_uses_the_resource_uuid_when_the_resource_is_the_configured_product_class(
+        $em,
+        LifecycleEventArgs $args,
+        ORMUnitOfWork $uow,
+        Version $version,
+        TimestampableInterface $object,
+        ORMClassMetadata $metadata
+    ) {
+        $em->getClassMetadata(FakeProductForSpec::class)->willReturn($metadata);
+        $metadata->getReflectionClass()->willReturn(new \ReflectionClass(TimestampableInterface::class));
+
+        $uuid = Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5');
+
+        $version->getResourceId()->shouldNotBeCalled();
+        $version->getResourceUuid()->willReturn($uuid);
+        $version->getResourceName()->willReturn(FakeProductForSpec::class);
+        $version->getLoggedAt()->willReturn('foobar');
+
+        $args->getObject()->willReturn($version);
+
+        $em->getUnitOfWork()->willReturn($uow);
+        $em->find(FakeProductForSpec::class, $uuid)->willReturn($object);
+
+        $uow->computeChangeSet($metadata, $object)->shouldBeCalled();
+
+        $object->setUpdated('foobar')->shouldBeCalled();
+
+        $this->prePersist($args);
+    }
+
+    function it_uses_the_resource_uuid_when_the_resource_is_an_overridden_product_class(
+        $em,
+        LifecycleEventArgs $args,
+        ORMUnitOfWork $uow,
+        Version $version,
+        TimestampableInterface $object,
+        ORMClassMetadata $metadata
+    ) {
+        $em->getClassMetadata(FakeOverriddenProductForSpec::class)->willReturn($metadata);
+        $metadata->getReflectionClass()->willReturn(new \ReflectionClass(TimestampableInterface::class));
+
+        $uuid = Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5');
+
+        $version->getResourceId()->shouldNotBeCalled();
+        $version->getResourceUuid()->willReturn($uuid);
+        $version->getResourceName()->willReturn(FakeOverriddenProductForSpec::class);
+        $version->getLoggedAt()->willReturn('foobar');
+
+        $args->getObject()->willReturn($version);
+
+        $em->getUnitOfWork()->willReturn($uow);
+        $em->find(FakeOverriddenProductForSpec::class, $uuid)->willReturn($object);
+
+        $uow->computeChangeSet($metadata, $object)->shouldBeCalled();
+
+        $object->setUpdated('foobar')->shouldBeCalled();
+
+        $this->prePersist($args);
+    }
 }
 
 interface NonTimestampableInterface
@@ -117,4 +178,12 @@ interface NonTimestampableInterface
      * @param \DateTime $updated
      */
     public function setUpdated(\DateTime $updated);
+}
+
+class FakeProductForSpec
+{
+}
+
+class FakeOverriddenProductForSpec extends FakeProductForSpec
+{
 }
