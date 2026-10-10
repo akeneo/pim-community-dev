@@ -18,7 +18,13 @@
     }
     %}
 {% else %}
-    {% set breadcrumbs = title %}
+    {% set breadcrumbs = {
+        'entity':      form.vars.value,
+        'indexPath':   '#%s'|format(path('pim_user_group_index')),
+        'indexLabel': 'Groups'|trans,
+        'entityTitle': title
+    }
+    %}
 {% endif %}
 
 {% block navButtons %}
