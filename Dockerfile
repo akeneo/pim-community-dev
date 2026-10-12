@@ -11,6 +11,7 @@ ENV PHP_CONF_DATE_TIMEZONE=UTC \
 RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/apt.conf.d/01-no-recommended && \
     echo 'path-exclude=/usr/share/man/*' > /etc/dpkg/dpkg.cfg.d/path_exclusions && \
     echo 'path-exclude=/usr/share/doc/*' >> /etc/dpkg/dpkg.cfg.d/path_exclusions && \
+    sed -i 's#deb.debian.org/debian-security#archive.debian.org/debian-security#' /etc/apt/sources.list && \
     apt-get update && \
     apt-get --yes install apt-transport-https ca-certificates curl wget &&\
     wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg &&\
