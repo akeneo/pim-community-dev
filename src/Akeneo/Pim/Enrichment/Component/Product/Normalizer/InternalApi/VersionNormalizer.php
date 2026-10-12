@@ -108,7 +108,11 @@ class VersionNormalizer implements NormalizerInterface, CacheableSupportsMethodI
             $user = $this->userManager->findUserByUsername($author);
 
             if (null === $user) {
-                $userName = sprintf('%s - %s', $author, $this->translator->trans('pim_user.user.removed_user'));
+                if ($author === UserInterface::SYSTEM_USER_NAME) {
+                    $userName = $this->translator->trans('pim_user.user.system_user');
+                } else {
+                    $userName = sprintf('%s - %s', $author, $this->translator->trans('pim_user.user.removed_user'));
+                }
             } else {
                 Assert::isInstanceOf($user, UserInterface::class);
                 $userName = sprintf('%s %s', $user->getFirstName(), $user->getLastName());

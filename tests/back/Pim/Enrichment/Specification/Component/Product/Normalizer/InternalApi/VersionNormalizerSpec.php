@@ -171,4 +171,45 @@ class VersionNormalizerSpec extends ObjectBehavior
             'pending'     => false
         ]);
     }
+
+    function it_normalize_versions_with_system_user(
+        $userManager,
+        $translator,
+        $datetimePresenter,
+        $userContext,
+        LocaleAwareInterface $localeAware,
+        Version $version
+    ) {
+        $versionTime = new \DateTime();
+
+        $version->getId()->willReturn(12);
+        $version->getResourceId()->willReturn(112);
+        $version->getSnapshot()->willReturn('a nice snapshot');
+        $version->getChangeset()->willReturn(['text' => 'the changeset']);
+        $version->getContext()->willReturn(['locale' => 'en_US', 'channel' => 'mobile']);
+        $version->getVersion()->willReturn(12);
+        $version->getLoggedAt()->willReturn($versionTime);
+        $localeAware->getLocale()->willReturn('en_US');
+        $datetimePresenter->present($versionTime, Argument::any())->willReturn('01/01/1985 09:41 AM');
+        $version->isPending()->willReturn(false);
+
+        $version->getAuthor()->willReturn('system');
+        $userManager->findUserByUsername('system')->willReturn(null);
+
+        $translator->trans('pim_user.user.system_user')->willReturn('System');
+
+        $userContext->getUserTimezone()->willThrow(\RuntimeException::class);
+
+        $this->normalize($version, 'internal_api')->shouldReturn([
+            'id'          => 12,
+            'author'      => 'System',
+            'resource_id' => '112',
+            'snapshot'    => 'a nice snapshot',
+            'changeset'   => ['text' => 'the changeset'],
+            'context'     => ['locale' => 'en_US', 'channel' => 'mobile'],
+            'version'     => 12,
+            'logged_at'   => '01/01/1985 09:41 AM',
+            'pending'     => false
+        ]);
+    }
 }

@@ -1,7 +1,6 @@
 {% extends "@PimNotification/Email/notification.txt.twig" %}
 
 {% block emailMessage %}
-    Dear {{ email }},
     {% if jobExecution.status.unsuccessful %}
         Akeneo completed your "{{ jobExecution.jobInstance.label }}" job with errors.
     {% else %}
