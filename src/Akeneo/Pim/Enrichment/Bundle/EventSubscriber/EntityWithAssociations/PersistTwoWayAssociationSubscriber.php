@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithAssociations;
 
+use Akeneo\Pim\Enrichment\Component\Product\Association\TwoWayAssociationsIndexationQueue;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface;
@@ -15,13 +16,11 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 final class PersistTwoWayAssociationSubscriber implements EventSubscriberInterface
 {
-    private array $productUuidsToIndex = [];
-    private array $productModelCodesToIndex = [];
-
     public function __construct(
         private ManagerRegistry $registry,
         private ProductIndexerInterface $productIndexer,
-        private ProductModelIndexerInterface $productModelIndexer
+        private ProductModelIndexerInterface $productModelIndexer,
+        private TwoWayAssociationsIndexationQueue $indexationQueue
     ) {
     }
 
@@ -58,22 +57,19 @@ final class PersistTwoWayAssociationSubscriber implements EventSubscriberInterfa
 
             foreach ($association->getProducts() as $product) {
                 $em->persist($product);
-                $this->productUuidsToIndex[] = $product->getUuid();
+                $this->indexationQueue->queueProduct($product);
             }
 
             foreach ($association->getProductModels() as $productModel) {
                 $em->persist($productModel);
-                $this->productModelCodesToIndex[] = $productModel->getCode();
+                $this->indexationQueue->queueProductModel($productModel);
             }
         }
     }
 
     public function indexAssociatedEntities()
     {
-        $this->productIndexer->indexFromProductUuids($this->productUuidsToIndex);
-        $this->productModelIndexer->indexFromProductModelCodes($this->productModelCodesToIndex);
-
-        $this->productUuidsToIndex = [];
-        $this->productModelCodesToIndex = [];
+        $this->productIndexer->indexFromProductUuids($this->indexationQueue->flushProductUuids());
+        $this->productModelIndexer->indexFromProductModelCodes($this->indexationQueue->flushProductModelCodes());
     }
 }
