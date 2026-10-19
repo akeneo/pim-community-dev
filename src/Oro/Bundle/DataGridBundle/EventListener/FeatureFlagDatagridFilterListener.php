@@ -63,8 +63,7 @@ class FeatureFlagDatagridFilterListener
             return true;
         });
 
-        $datagridConfiguration->offsetUnset(FormatterConfiguration::COLUMNS_KEY);
-        $datagridConfiguration->offsetAddToArray(FormatterConfiguration::COLUMNS_KEY, $defaultColumns);
+        $datagridConfiguration->offsetSet(FormatterConfiguration::COLUMNS_KEY, $defaultColumns);
     }
 
     private function featureFlagOnSorter(DatagridConfiguration $datagridConfiguration)
