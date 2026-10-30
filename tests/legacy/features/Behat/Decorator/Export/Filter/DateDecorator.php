@@ -20,8 +20,12 @@ class DateDecorator extends ElementDecorator
     public function filter($operator, $value)
     {
         if (null !== $operator && '' !== $operator) {
+            $operatorField = $this->spin(function () {
+                return $this->find('css', '.operator.select2-container');
+            }, 'Cannot find the operator field of the date filter.');
+
             $operatorField = $this->decorate(
-                $this->find('css', '.operator.select2-container'),
+                $operatorField,
                 [Select2Decorator::class]
             );
             $operatorField->setValue($operator);
