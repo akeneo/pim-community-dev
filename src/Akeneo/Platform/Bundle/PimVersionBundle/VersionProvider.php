@@ -50,14 +50,6 @@ class VersionProvider implements VersionProviderInterface
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isSaaSVersion(): bool
-    {
-        return $this->getPimVersion()->isSaas();
-    }
-
     private function getPimVersion(): PimVersion
     {
         foreach ($this->versions as $version) {

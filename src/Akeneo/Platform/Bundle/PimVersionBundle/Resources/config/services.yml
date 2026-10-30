@@ -11,23 +11,3 @@ services:
         public: true
         tags:
             - 'pim_version'
-
-    Akeneo\Platform\Bundle\PimVersionBundle\Version\GrowthVersion:
-        public: true
-        tags:
-            - 'pim_version'
-
-    Akeneo\Platform\Bundle\PimVersionBundle\Version\SerenityVersion:
-        public: true
-        tags:
-            - 'pim_version'
-
-    Akeneo\Platform\Bundle\PimVersionBundle\Version\FreeTrialVersion:
-        public: true
-        tags:
-            - 'pim_version'
-
-    Akeneo\Platform\Bundle\PimVersionBundle\Version\FlexibilityVersion:
-        public: true
-        tags:
-            - 'pim_version'

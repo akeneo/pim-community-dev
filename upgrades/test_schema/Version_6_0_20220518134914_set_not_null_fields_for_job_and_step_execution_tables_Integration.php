@@ -13,34 +13,8 @@ class Version_6_0_20220518134914_set_not_null_fields_for_job_and_step_execution_
 
     private const MIGRATION_LABEL = '_6_0_20220518134914_set_not_null_fields_for_job_and_step_execution_tables';
 
-    public function test_does_nothing_when_launched_in_sass_version(): void
+    public function test_it_update_column(): void
     {
-        if (!$this->isSassVersion()) {
-            $this->markTestSkipped('As version provider cannot be mocked, this test can only be launched on sass version');
-        }
-
-        $this->resetTables();
-
-        $this->assertTrue($this->columnIsNullable('akeneo_batch_job_execution', 'step_count'));
-        $this->assertTrue($this->columnIsNullable('akeneo_batch_job_execution', 'is_stoppable'));
-        $this->assertTrue($this->columnIsNullable('akeneo_batch_job_execution', 'is_visible'));
-        $this->assertTrue($this->columnIsNullable('akeneo_batch_step_execution', 'is_trackable'));
-
-        $this->insertJobExecutionWithNullValues();
-        $this->reExecuteMigration(self::MIGRATION_LABEL);
-
-        $this->assertTrue($this->columnIsNullable('akeneo_batch_job_execution', 'step_count'));
-        $this->assertTrue($this->columnIsNullable('akeneo_batch_job_execution', 'is_stoppable'));
-        $this->assertTrue($this->columnIsNullable('akeneo_batch_job_execution', 'is_visible'));
-        $this->assertTrue($this->columnIsNullable('akeneo_batch_step_execution', 'is_trackable'));
-    }
-
-    public function test_it_update_column_when_launched_in_non_sass_version(): void
-    {
-        if ($this->isSassVersion()) {
-            $this->markTestSkipped('As version provider cannot be mocked, this test can only be launched on non sass version');
-        }
-
         $this->resetTables();
 
         $this->assertTrue($this->columnIsNullable('akeneo_batch_job_execution', 'step_count'));
@@ -59,10 +33,6 @@ class Version_6_0_20220518134914_set_not_null_fields_for_job_and_step_execution_
 
     public function test_migration_is_idempotent(): void
     {
-        if ($this->isSassVersion()) {
-            $this->markTestSkipped('As version provider cannot be mocked, this test can only be launched on non sass version');
-        }
-
         $this->resetTables();
 
         $this->assertTrue($this->columnIsNullable('akeneo_batch_job_execution', 'step_count'));
@@ -78,13 +48,6 @@ class Version_6_0_20220518134914_set_not_null_fields_for_job_and_step_execution_
         $this->assertFalse($this->columnIsNullable('akeneo_batch_job_execution', 'is_stoppable'));
         $this->assertFalse($this->columnIsNullable('akeneo_batch_job_execution', 'is_visible'));
         $this->assertFalse($this->columnIsNullable('akeneo_batch_step_execution', 'is_trackable'));
-    }
-
-    private function isSassVersion(): bool
-    {
-        $versionProvider = static::getContainer()->get('pim_catalog.version_provider');
-
-        return $versionProvider->isSaaSVersion();
     }
 
     private function getConnection(): Connection

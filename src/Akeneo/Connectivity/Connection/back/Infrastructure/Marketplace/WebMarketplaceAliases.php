@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Marketplace;
 
 use Akeneo\Connectivity\Connection\Application\Marketplace\WebMarketplaceAliasesInterface;
-use Akeneo\Platform\Bundle\PimVersionBundle\Version\PimVersion;
 use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
 
 /**
@@ -16,24 +15,17 @@ class WebMarketplaceAliases implements WebMarketplaceAliasesInterface
 {
     public function __construct(
         private VersionProviderInterface $versionProvider,
-        private PimVersion $growthVersion,
     ) {
     }
 
     public function getUtmCampaign(): ?string
     {
-        return match ($this->versionProvider->getEdition()) {
-            $this->growthVersion->editionName() => 'connect_ge',
-            default => null,
-        };
+        return null;
     }
 
     public function getEdition(): string
     {
-        return match ($this->versionProvider->getEdition()) {
-            $this->growthVersion->editionName() => 'growth-edition',
-            default => 'community-edition',
-        };
+        return 'community-edition';
     }
 
     public function getVersion(): ?string

@@ -21,4 +21,3 @@ services:
         public: true
         arguments:
             - '@pim_catalog.version_provider'
-            - '@Akeneo\Platform\Bundle\PimVersionBundle\Version\GrowthVersion'

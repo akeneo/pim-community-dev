@@ -26,12 +26,6 @@ services:
         public: false
         class: 'Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Registry'
 
-    akeneo.feature_flag.service.only_serenity_feature:
-        class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\OnlySerenityFeatureFlag
-        arguments:
-            - '%env(string:PIM_EDITION)%'
-        public: true
-
     akeneo.feature_flag.service.only_saas_feature:
         class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\OnlySaasFeatureFlag
         arguments:

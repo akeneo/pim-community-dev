@@ -6,7 +6,6 @@ namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Marketplace;
 
 use Akeneo\Connectivity\Connection\Application\Marketplace\WebMarketplaceAliasesInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceAliases;
-use Akeneo\Platform\Bundle\PimVersionBundle\Version\GrowthVersion;
 use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
 use PhpSpec\ObjectBehavior;
 
@@ -19,7 +18,7 @@ class WebMarketplaceAliasesSpec extends ObjectBehavior
     public function let(
         VersionProviderInterface $versionProvider
     ) {
-        $this->beConstructedWith($versionProvider, new GrowthVersion());
+        $this->beConstructedWith($versionProvider);
     }
 
     public function it_is_initializable(): void
@@ -28,43 +27,13 @@ class WebMarketplaceAliasesSpec extends ObjectBehavior
         $this->shouldImplement(WebMarketplaceAliasesInterface::class);
     }
 
-    public function it_returns_the_utm_campaign_when_ge(
-        VersionProviderInterface $versionProvider
-    ) {
-        $versionProvider->getEdition()->willReturn('Growth Edition');
-
-        $this->getUtmCampaign()->shouldReturn('connect_ge');
-    }
-
-    public function it_returns_null_as_utm_campaign_when_unknown_edition(
-        VersionProviderInterface $versionProvider
-    ) {
-        $versionProvider->getEdition()->willReturn('Foo');
-
+    public function it_returns_no_utm_campaign(): void
+    {
         $this->getUtmCampaign()->shouldReturn(null);
     }
 
-    public function it_returns_the_edition_when_ge(
-        VersionProviderInterface $versionProvider
-    ) {
-        $versionProvider->getEdition()->willReturn('Growth Edition');
-
-        $this->getEdition()->shouldReturn('growth-edition');
-    }
-
-    public function it_returns_the_edition_when_ce(
-        VersionProviderInterface $versionProvider
-    ) {
-        $versionProvider->getEdition()->willReturn('CE');
-
-        $this->getEdition()->shouldReturn('community-edition');
-    }
-
-    public function it_returns_the_ce_edition_by_default_when_unknown_edition(
-        VersionProviderInterface $versionProvider
-    ) {
-        $versionProvider->getEdition()->willReturn('Foo');
-
+    public function it_returns_the_community_edition(): void
+    {
         $this->getEdition()->shouldReturn('community-edition');
     }
 
