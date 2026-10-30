@@ -9,7 +9,7 @@ use Akeneo\Connectivity\Connection\Domain\Marketplace\MarketplaceUrlGeneratorInt
 
 final class MarketplaceUrlGenerator implements MarketplaceUrlGeneratorInterface
 {
-    private const START_QUERY = '/?';
+    private const SEARCH_PATH = '/search?';
 
     private string $envUrl;
     private string $marketplaceUrl;
@@ -32,6 +32,7 @@ final class MarketplaceUrlGenerator implements MarketplaceUrlGeneratorInterface
     {
         $profile = $this->getUserProfileQuery->execute($username);
         $queryToBuild = [
+            'props' => ['akeneo_editions' => 'community-edition'],
             'utm_medium' => 'pim',
             'utm_content' => 'marketplace_button',
             'utm_source' => $this->envUrl,
@@ -42,6 +43,6 @@ final class MarketplaceUrlGenerator implements MarketplaceUrlGeneratorInterface
 
         $query = \http_build_query($queryToBuild);
 
-        return $this->marketplaceUrl . self::START_QUERY . $query;
+        return $this->marketplaceUrl . self::SEARCH_PATH . $query;
     }
 }

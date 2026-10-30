@@ -35,10 +35,28 @@ class MarketplaceUrlGeneratorSpec extends ObjectBehavior
         $this
             ->generateUrl('willy')
             ->shouldReturn(
-                'https://marketplace.akeneo.test/?' .
+                'https://marketplace.akeneo.test/search?' .
+                'props%5Bakeneo_editions%5D=community-edition&' .
                 'utm_medium=pim&' .
                 'utm_content=marketplace_button&' .
                 'utm_source=http%3A%2F%2Fmy-akeneo.test'
+            );
+    }
+
+    public function it_generates_an_url_with_the_user_profile(
+        GetUserProfileQueryInterface $getUserProfileQuery
+    ): void {
+        $getUserProfileQuery->execute('willy')->willReturn('manager');
+
+        $this
+            ->generateUrl('willy')
+            ->shouldReturn(
+                'https://marketplace.akeneo.test/search?' .
+                'props%5Bakeneo_editions%5D=community-edition&' .
+                'utm_medium=pim&' .
+                'utm_content=marketplace_button&' .
+                'utm_source=http%3A%2F%2Fmy-akeneo.test&' .
+                'utm_term=manager'
             );
     }
 
