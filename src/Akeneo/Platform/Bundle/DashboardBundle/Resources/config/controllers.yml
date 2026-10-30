@@ -13,5 +13,4 @@ services:
         public: true
         arguments:
             - '@pim_catalog.version_provider'
-            - '@oro_config.global'
             - '%pim_analytics_update_server_url%'
