@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Updater;
 
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
-use Akeneo\Pim\Enrichment\Component\Product\Association\TwoWayAssociationsIndexationQueue;
+use Akeneo\Pim\Enrichment\Component\Product\Association\TwoWayAssociationsIndexingQueue;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\TwoWayAssociationWithTheSameProductException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -17,16 +17,16 @@ class TwoWayAssociationUpdater implements TwoWayAssociationUpdaterInterface
 {
     private ManagerRegistry $registry;
     private MissingAssociationAdder $missingAssociationAdder;
-    private TwoWayAssociationsIndexationQueue $indexationQueue;
+    private TwoWayAssociationsIndexingQueue $indexingQueue;
 
     public function __construct(
         ManagerRegistry $registry,
         MissingAssociationAdder $missingAssociationAdder,
-        TwoWayAssociationsIndexationQueue $indexationQueue
+        TwoWayAssociationsIndexingQueue $indexingQueue
     ) {
         $this->registry = $registry;
         $this->missingAssociationAdder = $missingAssociationAdder;
-        $this->indexationQueue = $indexationQueue;
+        $this->indexingQueue = $indexingQueue;
     }
 
     /**
@@ -108,9 +108,9 @@ class TwoWayAssociationUpdater implements TwoWayAssociationUpdaterInterface
         $em->persist($associatedEntity);
 
         if ($associatedEntity instanceof ProductInterface) {
-            $this->indexationQueue->queueProduct($associatedEntity);
+            $this->indexingQueue->queueProduct($associatedEntity);
         } elseif ($associatedEntity instanceof ProductModelInterface) {
-            $this->indexationQueue->queueProductModel($associatedEntity);
+            $this->indexingQueue->queueProductModel($associatedEntity);
         } else {
             throw new \LogicException(
                 sprintf(

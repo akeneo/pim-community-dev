@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Association;
 
-use Akeneo\Pim\Enrichment\Component\Product\Association\TwoWayAssociationsIndexationQueue;
+use Akeneo\Pim\Enrichment\Component\Product\Association\TwoWayAssociationsIndexingQueue;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use PhpSpec\ObjectBehavior;
 use Ramsey\Uuid\Uuid;
 
-class TwoWayAssociationsIndexationQueueSpec extends ObjectBehavior
+class TwoWayAssociationsIndexingQueueSpec extends ObjectBehavior
 {
-    public function it_is_a_two_way_associations_indexation_queue(): void
+    public function it_is_a_two_way_associations_indexing_queue(): void
     {
-        $this->shouldHaveType(TwoWayAssociationsIndexationQueue::class);
+        $this->shouldHaveType(TwoWayAssociationsIndexingQueue::class);
     }
 
     public function it_queues_and_flushes_product_uuids(ProductInterface $product1, ProductInterface $product2): void

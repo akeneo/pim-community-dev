@@ -6,7 +6,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Updater;
 
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Updater\TwoWayAssociationUpdater;
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
-use Akeneo\Pim\Enrichment\Component\Product\Association\TwoWayAssociationsIndexationQueue;
+use Akeneo\Pim\Enrichment\Component\Product\Association\TwoWayAssociationsIndexingQueue;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\TwoWayAssociationWithTheSameProductException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
@@ -27,11 +27,11 @@ class TwoWayAssociationUpdaterSpec extends ObjectBehavior
         MissingAssociationAdder $missingAssociationAdder,
         ManagerRegistry $registry,
         EntityManager $entityManager,
-        TwoWayAssociationsIndexationQueue $indexationQueue
+        TwoWayAssociationsIndexingQueue $indexingQueue
     ) {
         $registry->getManager()->willReturn($entityManager);
 
-        $this->beConstructedWith($registry, $missingAssociationAdder, $indexationQueue);
+        $this->beConstructedWith($registry, $missingAssociationAdder, $indexingQueue);
     }
 
     public function it_is_a_two_way_association_updater(): void
@@ -127,14 +127,14 @@ class TwoWayAssociationUpdaterSpec extends ObjectBehavior
 
     public function it_removes_the_product_from_the_inversed_association(
         $entityManager,
-        $indexationQueue,
+        $indexingQueue,
         ProductInterface $associatedProduct
     ): void {
         $owner = new Product();
 
         $associatedProduct->removeAssociatedProduct($owner, 'xsell')->shouldBeCalled();
         $entityManager->persist($associatedProduct)->shouldBeCalled();
-        $indexationQueue->queueProduct($associatedProduct)->shouldBeCalled();
+        $indexingQueue->queueProduct($associatedProduct)->shouldBeCalled();
 
         $this->removeInversedAssociation($owner, 'xsell', $associatedProduct);
     }
@@ -142,7 +142,7 @@ class TwoWayAssociationUpdaterSpec extends ObjectBehavior
     public function it_removes_a_product(
         $missingAssociationAdder,
         $entityManager,
-        $indexationQueue,
+        $indexingQueue,
         ProductInterface $associatedProduct
     ): void {
         $owner = new Product();
@@ -150,21 +150,21 @@ class TwoWayAssociationUpdaterSpec extends ObjectBehavior
         $associatedProduct->hasAssociationForTypeCode('xsell')->willReturn(true);
         $associatedProduct->removeAssociatedProduct($owner, 'xsell')->shouldBeCalled();
         $entityManager->persist($associatedProduct)->shouldBeCalled();
-        $indexationQueue->queueProduct($associatedProduct)->shouldBeCalled();
+        $indexingQueue->queueProduct($associatedProduct)->shouldBeCalled();
 
         $this->removeInversedAssociation($owner, 'xsell', $associatedProduct);
     }
 
     public function it_removes_the_product_model_from_the_inversed_association(
         $entityManager,
-        $indexationQueue,
+        $indexingQueue,
         ProductInterface $associatedProduct
     ): void {
         $owner = new ProductModel();
 
         $associatedProduct->removeAssociatedProductModel($owner, 'xsell')->shouldBeCalled();
         $entityManager->persist($associatedProduct)->shouldBeCalled();
-        $indexationQueue->queueProduct($associatedProduct)->shouldBeCalled();
+        $indexingQueue->queueProduct($associatedProduct)->shouldBeCalled();
 
         $this->removeInversedAssociation($owner, 'xsell', $associatedProduct);
     }
@@ -172,7 +172,7 @@ class TwoWayAssociationUpdaterSpec extends ObjectBehavior
     public function it_removes_a_product_model(
         $missingAssociationAdder,
         $entityManager,
-        $indexationQueue,
+        $indexingQueue,
         ProductInterface $associatedProduct
     ): void {
         $owner = new ProductModel();
@@ -180,37 +180,37 @@ class TwoWayAssociationUpdaterSpec extends ObjectBehavior
         $associatedProduct->hasAssociationForTypeCode('xsell')->willReturn(true);
         $associatedProduct->removeAssociatedProductModel($owner, 'xsell')->shouldBeCalled();
         $entityManager->persist($associatedProduct)->shouldBeCalled();
-        $indexationQueue->queueProduct($associatedProduct)->shouldBeCalled();
+        $indexingQueue->queueProduct($associatedProduct)->shouldBeCalled();
 
         $this->removeInversedAssociation($owner, 'xsell', $associatedProduct);
     }
 
     public function it_removes_a_product_model_from_the_inversed_association_of_a_product_model(
         $entityManager,
-        $indexationQueue,
+        $indexingQueue,
         ProductModelInterface $associatedProductModel
     ): void {
         $owner = new Product();
 
         $associatedProductModel->removeAssociatedProduct($owner, 'xsell')->shouldBeCalled();
         $entityManager->persist($associatedProductModel)->shouldBeCalled();
-        $indexationQueue->queueProductModel($associatedProductModel)->shouldBeCalled();
-        $indexationQueue->queueProduct(Argument::cetera())->shouldNotBeCalled();
+        $indexingQueue->queueProductModel($associatedProductModel)->shouldBeCalled();
+        $indexingQueue->queueProduct(Argument::cetera())->shouldNotBeCalled();
 
         $this->removeInversedAssociation($owner, 'xsell', $associatedProductModel);
     }
 
     public function it_only_reindexes_product_or_product_model_reciprocals(
         $entityManager,
-        $indexationQueue,
+        $indexingQueue,
         EntityWithAssociationsInterface $associatedEntity
     ): void {
         $owner = new Product();
 
         $associatedEntity->removeAssociatedProduct($owner, 'xsell')->shouldBeCalled();
         $entityManager->persist($associatedEntity)->shouldBeCalled();
-        $indexationQueue->queueProduct(Argument::cetera())->shouldNotBeCalled();
-        $indexationQueue->queueProductModel(Argument::cetera())->shouldNotBeCalled();
+        $indexingQueue->queueProduct(Argument::cetera())->shouldNotBeCalled();
+        $indexingQueue->queueProductModel(Argument::cetera())->shouldNotBeCalled();
 
         $this
             ->shouldThrow('\LogicException')
@@ -220,7 +220,7 @@ class TwoWayAssociationUpdaterSpec extends ObjectBehavior
     public function it_removes_only_product_or_product_model(
         $missingAssociationAdder,
         $entityManager,
-        $indexationQueue,
+        $indexingQueue,
         ProductInterface $associatedProduct,
         EntityWithAssociationsInterface $owner
     ): void {
@@ -228,8 +228,8 @@ class TwoWayAssociationUpdaterSpec extends ObjectBehavior
         $associatedProduct->removeAssociatedProduct(Argument::cetera())->shouldNotBeCalled();
         $associatedProduct->removeAssociatedProductModel(Argument::cetera())->shouldNotBeCalled();
         $entityManager->persist($associatedProduct)->shouldNotBeCalled();
-        $indexationQueue->queueProduct(Argument::cetera())->shouldNotBeCalled();
-        $indexationQueue->queueProductModel(Argument::cetera())->shouldNotBeCalled();
+        $indexingQueue->queueProduct(Argument::cetera())->shouldNotBeCalled();
+        $indexingQueue->queueProductModel(Argument::cetera())->shouldNotBeCalled();
 
         $this
             ->shouldThrow('\LogicException')

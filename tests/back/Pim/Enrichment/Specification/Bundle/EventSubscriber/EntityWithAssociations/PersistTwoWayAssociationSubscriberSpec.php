@@ -6,7 +6,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithA
 
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Updater\TwoWayAssociationUpdater;
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
-use Akeneo\Pim\Enrichment\Component\Product\Association\TwoWayAssociationsIndexationQueue;
+use Akeneo\Pim\Enrichment\Component\Product\Association\TwoWayAssociationsIndexingQueue;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductModelIndexerInterface;
@@ -22,9 +22,9 @@ class PersistTwoWayAssociationSubscriberSpec extends ObjectBehavior
         ManagerRegistry $registry,
         ProductIndexerInterface $productIndexer,
         ProductModelIndexerInterface $productModelIndexer,
-        TwoWayAssociationsIndexationQueue $indexationQueue
+        TwoWayAssociationsIndexingQueue $indexingQueue
     ) {
-        $this->beConstructedWith($registry, $productIndexer, $productModelIndexer, $indexationQueue);
+        $this->beConstructedWith($registry, $productIndexer, $productModelIndexer, $indexingQueue);
     }
 
     public function it_is_an_event_subscriber(): void
@@ -53,13 +53,13 @@ class PersistTwoWayAssociationSubscriberSpec extends ObjectBehavior
     ): void {
         $registry->getManager()->willReturn($entityManager);
 
-        $indexationQueue = new TwoWayAssociationsIndexationQueue();
-        $this->beConstructedWith($registry, $productIndexer, $productModelIndexer, $indexationQueue);
+        $indexingQueue = new TwoWayAssociationsIndexingQueue();
+        $this->beConstructedWith($registry, $productIndexer, $productModelIndexer, $indexingQueue);
 
         $updater = new TwoWayAssociationUpdater(
             $registry->getWrappedObject(),
             $missingAssociationAdder->getWrappedObject(),
-            $indexationQueue
+            $indexingQueue
         );
 
         $owner = new Product();

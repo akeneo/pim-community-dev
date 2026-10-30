@@ -16,12 +16,12 @@ use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
 
 /**
- * Associations aren't part of the Elasticsearch documents, so the reindexation of the reciprocal
+ * Associations aren't part of the Elasticsearch documents, so the reindexing of the reciprocal
  * entity is made observable by deleting its document before saving the owner: the owner is the
  * only entity explicitly saved, so the document can only come back if the two-way association
- * update queued the reciprocal for indexation.
+ * update queued the reciprocal for indexing.
  */
-class TwoWayAssociationIndexationIntegration extends TestCase
+class TwoWayAssociationIndexingIntegration extends TestCase
 {
     /**
      * @test

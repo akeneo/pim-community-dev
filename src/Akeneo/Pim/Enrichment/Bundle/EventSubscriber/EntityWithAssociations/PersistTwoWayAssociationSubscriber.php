@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithAssociations;
 
-use Akeneo\Pim\Enrichment\Component\Product\Association\TwoWayAssociationsIndexationQueue;
+use Akeneo\Pim\Enrichment\Component\Product\Association\TwoWayAssociationsIndexingQueue;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface;
@@ -20,7 +20,7 @@ final class PersistTwoWayAssociationSubscriber implements EventSubscriberInterfa
         private ManagerRegistry $registry,
         private ProductIndexerInterface $productIndexer,
         private ProductModelIndexerInterface $productModelIndexer,
-        private TwoWayAssociationsIndexationQueue $indexationQueue
+        private TwoWayAssociationsIndexingQueue $indexingQueue
     ) {
     }
 
@@ -57,19 +57,19 @@ final class PersistTwoWayAssociationSubscriber implements EventSubscriberInterfa
 
             foreach ($association->getProducts() as $product) {
                 $em->persist($product);
-                $this->indexationQueue->queueProduct($product);
+                $this->indexingQueue->queueProduct($product);
             }
 
             foreach ($association->getProductModels() as $productModel) {
                 $em->persist($productModel);
-                $this->indexationQueue->queueProductModel($productModel);
+                $this->indexingQueue->queueProductModel($productModel);
             }
         }
     }
 
     public function indexAssociatedEntities()
     {
-        $this->productIndexer->indexFromProductUuids($this->indexationQueue->flushProductUuids());
-        $this->productModelIndexer->indexFromProductModelCodes($this->indexationQueue->flushProductModelCodes());
+        $this->productIndexer->indexFromProductUuids($this->indexingQueue->flushProductUuids());
+        $this->productModelIndexer->indexFromProductModelCodes($this->indexingQueue->flushProductModelCodes());
     }
 }
