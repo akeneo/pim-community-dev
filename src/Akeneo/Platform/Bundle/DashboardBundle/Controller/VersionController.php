@@ -45,7 +45,7 @@ class VersionController
             '%s/%s-%s.json',
             rtrim($this->analyticsUri, '/'),
             $this->versionProvider->getEdition(),
-            $this->versionProvider->getMinorVersion()
+            $this->versionProvider->getVersion()
         );
     }
 

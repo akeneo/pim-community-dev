@@ -23,7 +23,7 @@ class CacheBusterVersionStrategy implements VersionStrategyInterface
      */
     public function getVersion($path)
     {
-        return $this->versionProvider->getPatch();
+        return $this->versionProvider->getVersion();
     }
 
     /**

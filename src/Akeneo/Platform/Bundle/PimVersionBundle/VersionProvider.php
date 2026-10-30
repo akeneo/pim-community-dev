@@ -40,41 +40,6 @@ class VersionProvider implements VersionProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getPatch(): string
-    {
-        if (!$this->isSaaSVersion()) {
-            $matches = [];
-            $isMatching = preg_match('/^(?P<patch>\d+\.\d+\.\d+)/', $this->getVersion(), $matches);
-
-            if (!$isMatching) {
-                return $this->getVersion();
-            }
-
-            return $matches['patch'];
-        }
-
-        return $this->getVersion();
-    }
-
-    public function getMinorVersion(): string
-    {
-        if (!$this->isSaaSVersion()) {
-            $matches = [];
-            $isMatching = preg_match('/^(?P<minor>\d+\.\d+)\.\d+/', $this->getVersion(), $matches);
-
-            if (!$isMatching) {
-                return $this->getVersion();
-            }
-
-            return $matches['minor'];
-        }
-
-        return $this->getVersion();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getFullVersion(): string
     {
         return sprintf(

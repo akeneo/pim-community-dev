@@ -58,7 +58,7 @@ class VersionDataCollector implements DataCollectorInterface
     {
         return [
             'pim_edition'      => $this->versionProvider->getEdition(),
-            'pim_version'      => $this->versionProvider->getPatch(),
+            'pim_version'      => $this->versionProvider->getVersion(),
             'pim_environment'  => $this->environment,
             'pim_install_time' => $this->installStatusManager->getPimInstallDateTime()->format(\DateTime::ISO8601),
             'server_version'   => $this->getServerVersion(),

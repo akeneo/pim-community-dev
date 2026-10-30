@@ -27,10 +27,6 @@ interface VersionProviderInterface
 
     public function getVersion(): string;
 
-    public function getPatch(): string;
-
-    public function getMinorVersion(): string;
-
     public function getFullVersion(): string;
 
     public function isSaaSVersion(): bool;

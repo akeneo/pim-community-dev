@@ -44,26 +44,6 @@ class VersionProviderIntegration extends KernelTestCase
         Assert::assertSame('12.42.20-BETA2', $versionProvider->getVersion());
     }
 
-    public function test_it_provides_ce_patch()
-    {
-        $versionProvider = new VersionProvider(
-            [new TestCommunityVersion(), new TestSerenityVersion()],
-            'community_edition_instance',
-            __DIR__
-        );
-        Assert::assertSame('12.42.20', $versionProvider->getPatch());
-    }
-
-    public function test_it_provides_ce_minor_version()
-    {
-        $versionProvider = new VersionProvider(
-            [new TestCommunityVersion(), new TestSerenityVersion()],
-            'community_edition_instance',
-            __DIR__
-        );
-        Assert::assertSame('12.42', $versionProvider->getMinorVersion());
-    }
-
     public function test_it_provides_full_ce_version()
     {
         $versionProvider = new VersionProvider(
@@ -92,26 +72,6 @@ class VersionProviderIntegration extends KernelTestCase
             __DIR__
         );
         Assert::assertSame('Serenity', $versionProvider->getEdition());
-    }
-
-    public function test_it_provides_saas_patch()
-    {
-        $versionProvider = new VersionProvider(
-            [new TestCommunityVersion(), new TestSerenityVersion()],
-            'serenity_instance',
-            __DIR__
-        );
-        Assert::assertSame('12.42.20-BETA2', $versionProvider->getPatch());
-    }
-
-    public function test_it_provides_saas_minor_version()
-    {
-        $versionProvider = new VersionProvider(
-            [new TestCommunityVersion(), new TestSerenityVersion()],
-            'serenity_instance',
-            __DIR__
-        );
-        Assert::assertSame('12.42.20-BETA2', $versionProvider->getMinorVersion());
     }
 
     public function test_it_provides_full_saas_version()

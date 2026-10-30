@@ -36,7 +36,7 @@ class VersionDataCollectorSpec extends ObjectBehavior
         Request $request,
         ServerBag $serverBag
     ) {
-        $versionProvider->getPatch()->willReturn('1.4.0');
+        $versionProvider->getVersion()->willReturn('1.4.0');
         $versionProvider->getEdition()->willReturn('CE');
         $requestStack->getCurrentRequest()->willReturn($request);
         $installStatusManager->getPimInstallDateTime()->willReturn(new \DateTime('2015-09-16T10:10:32+02:00'));
@@ -60,7 +60,7 @@ class VersionDataCollectorSpec extends ObjectBehavior
         $installStatusManager,
         ServerBag $serverBag
     ) {
-        $versionProvider->getPatch()->willReturn('1.4.0');
+        $versionProvider->getVersion()->willReturn('1.4.0');
         $versionProvider->getEdition()->willReturn('CE');
         $requestStack->getCurrentRequest()->willReturn(null);
         $installStatusManager->getPimInstallDateTime()->willReturn(new \DateTime('2015-09-16T10:10:32+02:00'));

@@ -27,7 +27,6 @@ final class VersionControllerSpec extends ObjectBehavior
         $versionProvider->getFullVersion()->willReturn('Serenity 20210315010101 Daisy');
         $versionProvider->getVersion()->willReturn('20210315010101');
         $versionProvider->getEdition()->willReturn('Serenity');
-        $versionProvider->getMinorVersion()->willReturn('20210315010101');
         $configManager->get('pim_analytics.version_update')->willReturn(true);
 
         $response = $this->__invoke();
@@ -47,7 +46,6 @@ final class VersionControllerSpec extends ObjectBehavior
         $versionProvider->getFullVersion()->willReturn('GE 20210315010101 Daisy');
         $versionProvider->getVersion()->willReturn('20210315010101');
         $versionProvider->getEdition()->willReturn('GE');
-        $versionProvider->getMinorVersion()->willReturn('20210315010101');
         $configManager->get('pim_analytics.version_update')->willReturn(true);
 
         $response = $this->__invoke();
@@ -67,7 +65,6 @@ final class VersionControllerSpec extends ObjectBehavior
         $versionProvider->getFullVersion()->willReturn('CE 6.0.1 Daisy');
         $versionProvider->getVersion()->willReturn('6.0.1');
         $versionProvider->getEdition()->willReturn('CE');
-        $versionProvider->getMinorVersion()->willReturn('6.0');
         $configManager->get('pim_analytics.version_update')->willReturn(true);
 
         $response = $this->__invoke();
@@ -76,7 +73,7 @@ final class VersionControllerSpec extends ObjectBehavior
             [
                 'version' => 'CE 6.0.1 Daisy',
                 'is_last_patch_displayed' => true,
-                'analytics_url' => 'https://update.akeneo.com/CE-6.0.json',
+                'analytics_url' => 'https://update.akeneo.com/CE-6.0.1.json',
                 'is_analytics_wanted' => true
             ]
         ));
@@ -87,7 +84,6 @@ final class VersionControllerSpec extends ObjectBehavior
         $versionProvider->getFullVersion()->willReturn('CE 6.0.1 Daisy');
         $versionProvider->getVersion()->willReturn('6.0.1');
         $versionProvider->getEdition()->willReturn('CE');
-        $versionProvider->getMinorVersion()->willReturn('6.0');
         $configManager->get('pim_analytics.version_update')->willReturn(false);
 
         $response = $this->__invoke();
@@ -96,7 +92,7 @@ final class VersionControllerSpec extends ObjectBehavior
             [
                 'version' => 'CE 6.0.1 Daisy',
                 'is_last_patch_displayed' => false,
-                'analytics_url' => 'https://update.akeneo.com/CE-6.0.json',
+                'analytics_url' => 'https://update.akeneo.com/CE-6.0.1.json',
                 'is_analytics_wanted' => true
             ]
         ));
@@ -107,7 +103,6 @@ final class VersionControllerSpec extends ObjectBehavior
         $versionProvider->getFullVersion()->willReturn('CE master Daisy');
         $versionProvider->getVersion()->willReturn('master');
         $versionProvider->getEdition()->willReturn('CE');
-        $versionProvider->getMinorVersion()->willReturn('master');
         $configManager->get('pim_analytics.version_update')->willReturn(true);
 
         $response = $this->__invoke();
