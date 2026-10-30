@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Updater;
 
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
+use Akeneo\Pim\Enrichment\Component\Product\Association\TwoWayAssociationsIndexingQueue;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\TwoWayAssociationWithTheSameProductException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -16,13 +17,16 @@ class TwoWayAssociationUpdater implements TwoWayAssociationUpdaterInterface
 {
     private ManagerRegistry $registry;
     private MissingAssociationAdder $missingAssociationAdder;
+    private TwoWayAssociationsIndexingQueue $indexingQueue;
 
     public function __construct(
         ManagerRegistry $registry,
-        MissingAssociationAdder $missingAssociationAdder
+        MissingAssociationAdder $missingAssociationAdder,
+        TwoWayAssociationsIndexingQueue $indexingQueue
     ) {
         $this->registry = $registry;
         $this->missingAssociationAdder = $missingAssociationAdder;
+        $this->indexingQueue = $indexingQueue;
     }
 
     /**
@@ -102,6 +106,21 @@ class TwoWayAssociationUpdater implements TwoWayAssociationUpdaterInterface
 
         $em = $this->registry->getManager();
         $em->persist($associatedEntity);
+
+        if ($associatedEntity instanceof ProductInterface) {
+            $this->indexingQueue->queueProduct($associatedEntity);
+        } elseif ($associatedEntity instanceof ProductModelInterface) {
+            $this->indexingQueue->queueProductModel($associatedEntity);
+        } else {
+            throw new \LogicException(
+                sprintf(
+                    'Inversed associations are only for the classes "%s" and "%s". "%s" given.',
+                    ProductInterface::class,
+                    ProductModelInterface::class,
+                    get_class($associatedEntity)
+                )
+            );
+        }
     }
 
     private function hasSameProductUuid(ProductInterface $product1, ProductInterface $product2): bool
