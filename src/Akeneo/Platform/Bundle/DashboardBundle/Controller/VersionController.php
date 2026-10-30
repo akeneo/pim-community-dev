@@ -8,6 +8,13 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class VersionController
 {
+    /**
+     * Version used in the tracker URL, as the update server only serves "<edition>-7.0.json" so far.
+     * The real version is still sent to the tracker in the collected data.
+     * Remove it once a version-free "<edition>.json" file exists on the update server, so releases need no new file.
+     */
+    private const TRACKER_VERSION = '7.0';
+
     private VersionProviderInterface $versionProvider;
 
     private string $analyticsUri;
@@ -37,7 +44,7 @@ class VersionController
             '%s/%s-%s.json',
             rtrim($this->analyticsUri, '/'),
             $this->versionProvider->getEdition(),
-            $this->versionProvider->getVersion()
+            self::TRACKER_VERSION
         );
     }
 }

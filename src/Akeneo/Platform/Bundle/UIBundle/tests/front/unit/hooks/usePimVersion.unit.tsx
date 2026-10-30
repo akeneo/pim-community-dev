@@ -21,7 +21,7 @@ const mockFetch = (isAnalyticsWanted: boolean) =>
       return {
         json: async () => ({
           version: 'CE 2026.5 Sahara Hare',
-          analytics_url: 'https://updates.akeneo.com/CE-2026.5.json',
+          analytics_url: 'https://updates.akeneo.com/CE-7.0.json',
           is_analytics_wanted: isAnalyticsWanted,
         }),
       };
@@ -50,9 +50,7 @@ test('it sends the collected data to the tracker from the browser and returns th
 
   await waitFor(() => expect(sessionStorage.getItem('analytics-called')).toBe('1'));
 
-  expect(global.fetch).toHaveBeenCalledWith(
-    'https://updates.akeneo.com/CE-2026.5.json?pim_edition=CE&pim_version=2026.5'
-  );
+  expect(global.fetch).toHaveBeenCalledWith('https://updates.akeneo.com/CE-7.0.json?pim_edition=CE&pim_version=2026.5');
   expect(result.current).toEqual({version: 'CE 2026.5 Sahara Hare'});
 });
 

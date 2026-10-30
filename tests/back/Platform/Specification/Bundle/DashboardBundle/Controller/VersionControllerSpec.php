@@ -32,7 +32,7 @@ final class VersionControllerSpec extends ObjectBehavior
         $response->getContent()->shouldReturn(json_encode(
             [
                 'version' => 'CE 2026.5 Sahara Hare',
-                'analytics_url' => 'https://update.akeneo.com/CE-2026.5.json',
+                'analytics_url' => 'https://update.akeneo.com/CE-7.0.json',
                 'is_analytics_wanted' => true
             ]
         ));
@@ -49,7 +49,7 @@ final class VersionControllerSpec extends ObjectBehavior
         $response->getContent()->shouldReturn(json_encode(
             [
                 'version' => 'CE master Sahara Hare',
-                'analytics_url' => 'https://update.akeneo.com/CE-master.json',
+                'analytics_url' => 'https://update.akeneo.com/CE-7.0.json',
                 'is_analytics_wanted' => false
             ]
         ));
