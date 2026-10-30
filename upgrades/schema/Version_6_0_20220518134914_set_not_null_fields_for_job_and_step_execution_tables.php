@@ -4,29 +4,13 @@ declare(strict_types=1);
 
 namespace Pim\Upgrade\Schema;
 
-use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 
-final class Version_6_0_20220518134914_set_not_null_fields_for_job_and_step_execution_tables extends AbstractMigration implements ContainerAwareInterface
+final class Version_6_0_20220518134914_set_not_null_fields_for_job_and_step_execution_tables extends AbstractMigration
 {
-    private ?ContainerInterface $container;
-
-    public function setContainer(ContainerInterface $container = null): void
-    {
-        $this->container = $container;
-    }
-
     public function up(Schema $schema): void
     {
-        if ($this->isSassVersion()) {
-            $this->write('This migration is only for non Sass version');
-
-            return;
-        }
-
         if ($this->isMigrationDone()) {
             $this->write('Migration already done');
 
@@ -47,14 +31,6 @@ final class Version_6_0_20220518134914_set_not_null_fields_for_job_and_step_exec
     public function down(Schema $schema): void
     {
         $this->throwIrreversibleMigrationException();
-    }
-
-    private function isSassVersion(): bool
-    {
-        /** @var VersionProviderInterface $versionProvider */
-        $versionProvider = $this->container->get('pim_catalog.version_provider');
-
-        return $versionProvider->isSaaSVersion();
     }
 
     private function isMigrationDone()

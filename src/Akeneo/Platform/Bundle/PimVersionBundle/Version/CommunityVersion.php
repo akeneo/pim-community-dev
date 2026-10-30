@@ -30,11 +30,6 @@ final class CommunityVersion implements PimVersion
         return self::EDITION_NAME;
     }
 
-    public function isSaas(): bool
-    {
-        return false;
-    }
-
     public function isEditionCode(string $editionCode): bool
     {
         return $editionCode === self::EDITION_CODE;

@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'pim/data-collector'], function ($, _, DataCollector) {
+define(['jquery', 'pim/data-collector'], function ($, DataCollector) {
   'use strict';
 
   return {
@@ -15,9 +15,8 @@ define(['jquery', 'underscore', 'pim/data-collector'], function ($, _, DataColle
         return deferred.promise();
       } else {
         return DataCollector.collect('pim_analytics_data_collect').then(function (collectedData) {
-          var version = collectedData.pim_version;
-          var minorVersion = _.first(version.match(/^\d+.\d+/g));
-          var page = collectedData.pim_edition + '-' + minorVersion + '.json';
+          var trackerVersion = '7.0';
+          var page = collectedData.pim_edition + '-' + trackerVersion + '.json';
           var lastPatchUrl = updateServerUrl + '/' + page;
 
           return $.ajax({

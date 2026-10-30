@@ -6,12 +6,11 @@ import {useTranslate} from '@akeneo-pim-community/shared';
 
 const PimVersion = () => {
   const translate = useTranslate();
-  const pimVersion: {version: string; lastPatch: string} = usePimVersion();
+  const pimVersion: {version: string} = usePimVersion();
 
   return (
     <Container>
       {translate('pim_dashboard.version')}: {pimVersion.version}
-      {pimVersion.lastPatch && ` | ${translate('pim_analytics.new_patch_available')}: ${pimVersion.lastPatch}`}
     </Container>
   );
 };

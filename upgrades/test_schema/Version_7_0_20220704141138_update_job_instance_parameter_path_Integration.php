@@ -3,8 +3,6 @@
 namespace Pim\Upgrade\Schema\Tests;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\LocalStorage;
-use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\NoneStorage;
-use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
@@ -19,14 +17,12 @@ final class Version_7_0_20220704141138_update_job_instance_parameter_path_Integr
 
     private Connection $connection;
     private JobInstanceRepository $jobInstanceRepository;
-    private VersionProviderInterface $versionProvider;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->connection = $this->get('database_connection');
         $this->jobInstanceRepository = $this->get('akeneo_batch.job.job_instance_repository');
-        $this->versionProvider = $this->get('pim_catalog.version_provider');
     }
 
     public function test_it_changes_storage_path_for_import_job_instance(): void
@@ -178,7 +174,7 @@ SQL;
 
         $expectedStorage = [
             'file_path' => $storageFilePath,
-            'type' => $this->isSaaSVersion() ? NoneStorage::TYPE : LocalStorage::TYPE
+            'type' => LocalStorage::TYPE
         ];
 
         return $rawParameters['storage'] == $expectedStorage;
@@ -193,10 +189,5 @@ SQL;
         $rawParameters = $jobInstance->getRawParameters();
 
         return isset($rawParameters['filePath']);
-    }
-
-    private function isSaaSVersion(): bool
-    {
-        return $this->versionProvider->isSaaSVersion();
     }
 }

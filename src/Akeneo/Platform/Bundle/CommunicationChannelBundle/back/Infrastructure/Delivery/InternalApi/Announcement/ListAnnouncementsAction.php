@@ -44,7 +44,7 @@ class ListAnnouncementsAction
 
         $query = new ListAnnouncementsQuery(
             $this->versionProvider->getEdition(),
-            $this->versionProvider->getMinorVersion(),
+            $this->versionProvider->getVersion(),
             $this->userContext->getUiLocaleCode(),
             $user->getId(),
             $request->query->get('search_after')

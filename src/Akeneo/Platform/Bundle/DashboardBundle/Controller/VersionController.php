@@ -4,26 +4,26 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Bundle\DashboardBundle\Controller;
 
 use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
-use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class VersionController
 {
-    private const GENERAL_AVAILABILITY_TAG_PATTERN = '~^\d\.\d\.\d~';
+    /**
+     * Version used in the tracker URL, as the update server only serves "<edition>-7.0.json" so far.
+     * The real version is still sent to the tracker in the collected data.
+     * Remove it once a version-free "<edition>.json" file exists on the update server, so releases need no new file.
+     */
+    private const TRACKER_VERSION = '7.0';
 
     private VersionProviderInterface $versionProvider;
-
-    private ConfigManager $configManager;
 
     private string $analyticsUri;
 
     public function __construct(
         VersionProviderInterface $versionProvider,
-        ConfigManager $configManager,
         string $analyticsUri
     ) {
         $this->versionProvider = $versionProvider;
-        $this->configManager = $configManager;
         $this->analyticsUri = $analyticsUri;
     }
 
@@ -31,7 +31,6 @@ class VersionController
     {
         $dashboardData = [
             'version' => $this->versionProvider->getFullVersion(),
-            'is_last_patch_displayed' => $this->isLastPatchDisplayed(),
             'analytics_url' => $this->getAnalyticsUrl(),
             'is_analytics_wanted' => ($this->versionProvider->getVersion() !== 'master')
         ];
@@ -45,13 +44,7 @@ class VersionController
             '%s/%s-%s.json',
             rtrim($this->analyticsUri, '/'),
             $this->versionProvider->getEdition(),
-            $this->versionProvider->getMinorVersion()
+            self::TRACKER_VERSION
         );
-    }
-
-    private function isLastPatchDisplayed(): bool
-    {
-        return boolval($this->configManager->get('pim_analytics.version_update')) &&
-            1 === preg_match(self::GENERAL_AVAILABILITY_TAG_PATTERN, $this->versionProvider->getVersion());
     }
 }
