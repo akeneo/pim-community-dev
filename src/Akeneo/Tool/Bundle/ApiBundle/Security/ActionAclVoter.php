@@ -77,7 +77,7 @@ class ActionAclVoter extends Voter implements VoterInterface
     /**
      * {@inheritdoc}
      */
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token, ?\Symfony\Component\Security\Core\Authorization\Voter\Vote $vote = null)
     {
         $oid = new ObjectIdentity(static::OID_IDENTIFIER, $attribute);
 

@@ -126,7 +126,7 @@ class ListChildrenCategoriesWithCountIncludingSubCategories implements Query\Lis
         int $parentCategoryId,
         string $translationLocaleCode
     ): array {
-        $this->connection->exec('SET SESSION group_concat_max_len = 1000000');
+        $this->connection->executeStatement('SET SESSION group_concat_max_len = 1000000');
 
         $sql = <<<SQL
             SELECT 

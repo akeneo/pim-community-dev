@@ -181,21 +181,21 @@ UPDATE pim_catalog_family
 SET updated= :datetime
 WHERE code = :code
 SQL;
-        $connection->executeUpdate(
+        $connection->executeStatement(
             $query,
             [
                 'code' => 'clothing',
                 'datetime' => '2018-01-01 16:27:00',
             ]
         );
-        $connection->executeUpdate(
+        $connection->executeStatement(
             $query,
             [
                 'code' => 'accessories',
                 'datetime' => '2019-05-15 16:27:00',
             ]
         );
-        $connection->executeUpdate(
+        $connection->executeStatement(
             $query,
             [
                 'code' => 'other',

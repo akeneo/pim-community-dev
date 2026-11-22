@@ -81,7 +81,7 @@ INSERT INTO akeneo_connectivity_connected_app(id, name, logo, author, partner, c
 VALUES (:id, :name, :logo, :author, :partner, :categories, :certified, :connection_code, :scopes, :user_group_name)
 SQL;
 
-        return $this->dbalConnection->executeUpdate(
+        return $this->dbalConnection->executeStatement(
             $query,
             [
                 'id' => $id,

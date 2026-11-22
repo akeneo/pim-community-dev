@@ -27,7 +27,7 @@ use Symfony\Component\Security\Core\Security;
 class DispatchProductModelRemovedEventSubscriberSpec extends ObjectBehavior
 {
     function let(
-        Security $security,
+        \Symfony\Bundle\SecurityBundle\Security $security,
         MessageBusInterface $messageBus
     ) {
         $this->beConstructedWith($security, $messageBus, 10, new NullLogger(), new NullLogger());

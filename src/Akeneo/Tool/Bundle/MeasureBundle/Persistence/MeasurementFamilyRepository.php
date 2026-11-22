@@ -69,7 +69,7 @@ class MeasurementFamilyRepository implements MeasurementFamilyRepositoryInterfac
 SQL;
         $normalizedMeasurementFamily = $measurementFamily->normalize();
 
-        $affectedRows = $this->sqlConnection->executeUpdate(
+        $affectedRows = $this->sqlConnection->executeStatement(
             $updateSql,
             [
                 'code' => $normalizedMeasurementFamily['code'],
@@ -119,7 +119,7 @@ SQL;
     WHERE code = :code
 SQL;
 
-        $affectedRows = $this->sqlConnection->executeUpdate(
+        $affectedRows = $this->sqlConnection->executeStatement(
             $sql,
             [
                 'code' => $measurementFamilyCode->normalize(),
@@ -188,7 +188,7 @@ SQL;
     /**
      * @return array
      *
-     * @throws DBALException
+     * @throws \Doctrine\DBAL\Exception
      */
     private function loadMeasurementFamiliesIndexByCodes(): array
     {

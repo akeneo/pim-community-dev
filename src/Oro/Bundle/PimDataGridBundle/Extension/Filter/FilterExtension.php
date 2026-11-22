@@ -94,7 +94,7 @@ class FilterExtension extends AbstractExtension
                     $form->submit($value);
                 }
 
-                if ($form->isValid()) {
+                if ($form->isSubmitted() && $form->isValid()) {
                     $filter->apply($datasourceAdapter, $form->getData());
                 }
             }
@@ -122,7 +122,7 @@ class FilterExtension extends AbstractExtension
                     $form->submit($value);
                 }
 
-                if ($form->isValid()) {
+                if ($form->isSubmitted() && $form->isValid()) {
                     $filtersState[$filter->getName()] = $value;
                 }
             }

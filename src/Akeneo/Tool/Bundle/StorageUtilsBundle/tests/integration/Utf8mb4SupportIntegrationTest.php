@@ -50,7 +50,7 @@ class Utf8mb4SupportIntegrationTest extends TestCase
         );
         $myTestTableSql = reset($myTestTableSql);
 
-        $this->connection->exec($myTestTableSql);
+        $this->connection->executeStatement($myTestTableSql);
 
         $insertCount = $this->connection->insert(
             self::TEST_TABLE_NAME,

@@ -54,7 +54,7 @@ class DBALPurger implements PurgerInterface
         }
 
         // this query can fail without triggering any error, if a table does not exist
-        $this->connection->exec($sql);
-        $this->connection->exec('SET FOREIGN_KEY_CHECKS = 1');
+        $this->connection->executeStatement($sql);
+        $this->connection->executeStatement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }

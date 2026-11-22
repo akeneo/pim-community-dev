@@ -34,7 +34,7 @@ class WebhookLoader
         WHERE code = :code
         SQL;
 
-        return $this->dbalConnection->executeUpdate(
+        return $this->dbalConnection->executeStatement(
             $query,
             [
                 'url' => $url,

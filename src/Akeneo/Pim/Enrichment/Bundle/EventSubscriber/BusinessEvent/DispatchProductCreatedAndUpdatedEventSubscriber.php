@@ -22,7 +22,7 @@ use Symfony\Component\Security\Core\Security;
  */
 final class DispatchProductCreatedAndUpdatedEventSubscriber implements DispatchBufferedPimEventSubscriberInterface
 {
-    private Security $security;
+    private \Symfony\Bundle\SecurityBundle\Security $security;
     private MessageBusInterface $messageBus;
     private int $maxBulkSize;
     private LoggerInterface $logger;
@@ -32,7 +32,7 @@ final class DispatchProductCreatedAndUpdatedEventSubscriber implements DispatchB
     private array $events = [];
 
     public function __construct(
-        Security $security,
+        \Symfony\Bundle\SecurityBundle\Security $security,
         MessageBusInterface $messageBus,
         int $maxBulkSize,
         LoggerInterface $logger,

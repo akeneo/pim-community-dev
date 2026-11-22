@@ -81,7 +81,7 @@ class FormLoginAuthenticator extends AbstractLoginFormAuthenticator
     {
         return ($this->options['post_only'] ? $request->isMethod('POST') : true)
             && $this->httpUtils->checkRequestPath($request, $this->options['check_path'])
-            && ($this->options['form_only'] ? 'form' === $request->getContentType() : true);
+            && ($this->options['form_only'] ? 'form' === $request->getContentTypeFormat() : true);
     }
 
     public function authenticate(Request $request): Passport
@@ -156,11 +156,11 @@ class FormLoginAuthenticator extends AbstractLoginFormAuthenticator
 
         $credentials['username'] = trim($credentials['username']);
 
-        if (\strlen($credentials['username']) > Security::MAX_USERNAME_LENGTH) {
+        if (\strlen($credentials['username']) > \Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge::MAX_USERNAME_LENGTH) {
             throw new BadCredentialsException('Invalid username.');
         }
 
-        $request->getSession()->set(Security::LAST_USERNAME, $credentials['username']);
+        $request->getSession()->set(\Symfony\Component\Security\Http\SecurityRequestAttributes::LAST_USERNAME, $credentials['username']);
 
         return $credentials;
     }

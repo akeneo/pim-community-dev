@@ -1,5 +1,4 @@
 security:
-    enable_authenticator_manager: true
     providers:
         chain_provider:
             chain:
@@ -11,7 +10,7 @@ security:
 
     password_hashers:
         Akeneo\UserManagement\Component\Model\User: sha512
-        Symfony\Component\Security\Core\User\User: plaintext
+        Symfony\Component\Security\Core\User\InMemoryUser: plaintext
 
     firewalls:
         dev:

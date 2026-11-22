@@ -22,7 +22,7 @@ use Symfony\Component\Security\Core\Security;
 class GetJobUserAction
 {
     public function __construct(
-        private Security $security,
+        private \Symfony\Bundle\SecurityBundle\Security $security,
         private SecurityFacade $securityFacade,
         private SearchJobUserHandler $searchJobUserHandler,
     ) {

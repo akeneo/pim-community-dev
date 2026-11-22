@@ -27,7 +27,7 @@ class DbalPurgeAuditProductQuery implements PurgeAuditProductQueryInterface
 DELETE FROM akeneo_connectivity_connection_audit_product
 WHERE event_datetime < :before
 SQL;
-        return $this->connection->executeUpdate(
+        return $this->connection->executeStatement(
             $deleteQuery,
             ['before' => $before],
             ['before' => Types::DATETIME_IMMUTABLE]

@@ -149,7 +149,7 @@ JSON;
     {
         /** @var Connection $connection */
         $connection = $this->get('database_connection');
-        $affected = $connection->exec('UPDATE pim_catalog_attribute SET updated="2019-05-15 16:27:00" WHERE code="a_file"');
+        $affected = $connection->executeStatement('UPDATE pim_catalog_attribute SET updated="2019-05-15 16:27:00" WHERE code="a_file"');
         $this->assertEquals(1, $affected, 'There is more result as expected during test setup, the test will not work.');
 
         $client = $this->createAuthenticatedClient();

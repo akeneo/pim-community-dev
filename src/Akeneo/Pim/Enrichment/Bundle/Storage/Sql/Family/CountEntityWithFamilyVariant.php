@@ -36,7 +36,7 @@ final class CountEntityWithFamilyVariant implements CountEntityWithFamilyVariant
      * @param FamilyVariantInterface $familyVariant
      *
      * @return int
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Exception
      */
     private function countProductModels(FamilyVariantInterface $familyVariant): int
     {
@@ -50,7 +50,7 @@ final class CountEntityWithFamilyVariant implements CountEntityWithFamilyVariant
      * @param FamilyVariantInterface $familyVariant
      *
      * @return int
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Exception
      */
     private function countVariantProducts(FamilyVariantInterface $familyVariant): int
     {

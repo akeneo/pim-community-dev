@@ -16,7 +16,7 @@ class ReferenceDataLoader
     /**
      * Load data fixtures with the passed EntityManager
      *
-     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @param \Doctrine\Persistence\ObjectManager $manager
      */
     public function load(ObjectManager $manager)
     {

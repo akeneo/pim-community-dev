@@ -171,7 +171,7 @@ final class ProductCriterionEvaluationRepositoryIntegration extends DataQualityI
 
     private function findAllProductEvaluations(): array
     {
-        $stmt = $this->db->query('SELECT * FROM pim_data_quality_insights_product_criteria_evaluation');
+        $stmt = $this->db->executeQuery('SELECT * FROM pim_data_quality_insights_product_criteria_evaluation');
 
         return $stmt->fetchAllAssociative();
     }

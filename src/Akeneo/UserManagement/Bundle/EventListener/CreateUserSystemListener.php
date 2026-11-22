@@ -75,7 +75,7 @@ class CreateUserSystemListener
 
             $token = new SystemUserToken($user);
             $this->tokenStorage->setToken($token);
-        } catch (DBALException $e) {
+        } catch (\Doctrine\DBAL\Exception $e) {
             // do nothing.
             // An exception can happen if db does not exist yet for instance
         }

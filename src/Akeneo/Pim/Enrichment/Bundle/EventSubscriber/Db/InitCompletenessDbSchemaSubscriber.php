@@ -53,6 +53,6 @@ CREATE TABLE IF NOT EXISTS `pim_catalog_completeness` (
     CONSTRAINT `FK_113BA854E559DFD1` FOREIGN KEY (`locale_id`) REFERENCES `pim_catalog_locale` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
 SQL;
-        $this->connection->exec($completenessTableSql);
+        $this->connection->executeStatement($completenessTableSql);
     }
 }

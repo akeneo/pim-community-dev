@@ -93,7 +93,7 @@ class ActiveEventSubscriptionCountIntegration extends TestCase
     }
 
     /**
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Exception
      */
     private function createConnectionWithWebhookData(
         string $code,

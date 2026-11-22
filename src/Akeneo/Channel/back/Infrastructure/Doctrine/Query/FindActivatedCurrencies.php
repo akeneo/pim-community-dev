@@ -31,7 +31,7 @@ class FindActivatedCurrencies implements FindActivatedCurrenciesInterface, Cache
      *
      * @return array
      *
-     * @throws DBALException
+     * @throws \Doctrine\DBAL\Exception
      */
     public function forChannel(string $channelCode): array
     {
@@ -45,7 +45,7 @@ class FindActivatedCurrencies implements FindActivatedCurrenciesInterface, Cache
     /**
      * {@inheritdoc}
      *
-     * @throws DBALException
+     * @throws \Doctrine\DBAL\Exception
      */
     public function forAllChannels(): array
     {
@@ -73,7 +73,7 @@ class FindActivatedCurrencies implements FindActivatedCurrenciesInterface, Cache
     /**
      * @return array
      *
-     * @throws DBALException
+     * @throws \Doctrine\DBAL\Exception
      */
     private function fetchActivatedCurrenciesForAllChannels(): array
     {

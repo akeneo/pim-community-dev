@@ -66,7 +66,7 @@ class ContentTypeNegotiatorPass implements CompilerPassInterface
         $id = 'pim_api.content_type_negotiator.request_matcher.'.md5($serialized).sha1($serialized);
 
         if (!$container->hasDefinition($id)) {
-            $container->setDefinition($id, new Definition(RequestMatcher::class, $arguments));
+            $container->setDefinition($id, new Definition(\Symfony\Component\HttpFoundation\ChainRequestMatcher::class, $arguments));
         }
 
         return new Reference($id);

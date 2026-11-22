@@ -77,7 +77,7 @@ class OrmFilterExtension extends AbstractExtension
                     $form->submit($value);
                 }
 
-                if ($form->isValid()) {
+                if ($form->isSubmitted() && $form->isValid()) {
                     $filter->apply($datasourceAdapter, $form->getData());
                 }
             }
@@ -104,7 +104,7 @@ class OrmFilterExtension extends AbstractExtension
                     $form->submit($value);
                 }
 
-                if ($form->isValid()) {
+                if ($form->isSubmitted() && $form->isValid()) {
                     $filtersState[$filter->getName()] = $value;
                 }
             }
