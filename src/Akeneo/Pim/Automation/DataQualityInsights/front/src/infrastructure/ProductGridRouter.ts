@@ -2,7 +2,7 @@ import {ProductType} from '../domain/Product.interface';
 
 const Router = require('pim/router');
 const DatagridState = require('pim/datagrid/state');
-const userContext = require('pim/user-context');
+import {userContext} from '@akeneo-pim-community/shared';
 
 const PRODUCT_GRID_QUALITY_SCORE_COLUMN = 'data_quality_insights_score';
 

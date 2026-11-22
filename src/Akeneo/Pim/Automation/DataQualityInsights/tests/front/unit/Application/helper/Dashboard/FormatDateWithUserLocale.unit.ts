@@ -4,11 +4,13 @@ import {
   weeklyCallback,
 } from '@akeneo-pim-community/data-quality-insights/src/application/helper/Dashboard/FormatDateWithUserLocale';
 
-const UserContext = require('pim/user-context');
-UserContext.get.mockImplementation(() => 'en_US');
+jest.mock('@akeneo-pim-community/shared', () => ({
+  ...jest.requireActual('@akeneo-pim-community/shared'),
+  translate: jest.fn(() => 'day'),
+}));
 
-const __ = require('oro/translator');
-__.mockImplementation(() => 'day');
+const {userContext} = jest.requireActual('@akeneo-pim-community/shared');
+jest.spyOn(userContext, 'get').mockImplementation(() => 'en_US');
 
 beforeEach(() => {
   jest.resetModules();

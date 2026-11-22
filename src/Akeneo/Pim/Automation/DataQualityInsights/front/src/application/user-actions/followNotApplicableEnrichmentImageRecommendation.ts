@@ -3,7 +3,7 @@ import {Product} from '../../domain';
 import {isProductModel} from '../helper';
 
 const router = require('pim/router');
-const translate = require('oro/translator');
+import {translate} from '@akeneo-pim-community/shared';
 
 const followNotApplicableEnrichmentImageRecommendation = (product: Product) => {
   const family: string | null = product.family;

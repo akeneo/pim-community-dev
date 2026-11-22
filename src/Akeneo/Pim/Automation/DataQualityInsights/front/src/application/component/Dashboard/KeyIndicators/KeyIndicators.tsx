@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import styled from 'styled-components';
 
-import {useTranslate} from '@akeneo-pim-community/shared';
+import {useFeatureFlags, useTranslate} from '@akeneo-pim-community/shared';
 import {Helper, LockIcon, useTheme} from 'akeneo-design-system';
 
 import {useFetchKeyIndicators} from '../../../../infrastructure/hooks';
@@ -17,8 +17,6 @@ import {EmptyKeyIndicators} from './EmptyKeyIndicators';
 import {AttributesKeyIndicatorLinkCallback, ProductsKeyIndicatorLinkCallback} from '../../../user-actions';
 import {KeyIndicatorAboutProducts} from './KeyIndicatorAboutProducts';
 import {KeyIndicatorAboutAttributes} from './KeyIndicatorAboutAttributes';
-
-const featureFlags = require('pim/feature-flags');
 
 interface KeyIndicatorAboutProductsDescriptor {
   titleI18nKey: string;
@@ -50,6 +48,7 @@ const KeyIndicators: FC<Props> = ({channel, locale, family, category, keyIndicat
   const countsMap: KeyIndicatorMap | null = useFetchKeyIndicators(channel, locale, family, category);
   const theme = useTheme();
   const translate = useTranslate();
+  const featureFlags = useFeatureFlags();
 
   let keyIndicatorContents: React.ReactNode = (function () {
     if (countsMap === null) {

@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import styled from 'styled-components';
 
-const translate = require('oro/translator');
+import {translate} from '@akeneo-pim-community/shared';
 
 const Helper = styled.div`
   margin-top: -20px;

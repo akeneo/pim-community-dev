@@ -574,6 +574,7 @@ config:
     # Fetcher
     pim/fetcher-registry:        pimui/js/fetcher/fetcher-registry
     pim/base-fetcher:            pimui/js/fetcher/base-fetcher
+    pim/class-extend:            pimui/js/class-extend
     pim/attribute-fetcher:       pimui/js/fetcher/attribute-fetcher
     pim/attribute-group-fetcher: pimui/js/fetcher/attribute-group-fetcher
     pim/locale-fetcher:          pimui/js/fetcher/locale-fetcher

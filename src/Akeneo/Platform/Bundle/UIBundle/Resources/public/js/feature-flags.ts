@@ -1,25 +1,13 @@
 import jQuery from 'jquery';
+import {featureFlags} from '@akeneo-pim-community/shared';
 
-const routing = require('routing');
-
-class FeatureFlags {
-  static features: {[feature: string]: boolean};
-
-  static async initialize(): Promise<void> {
-    if (undefined !== FeatureFlags.features) {
-      throw new Error('FeatureFlags is already initialized.');
-    }
-
-    FeatureFlags.features = await jQuery.getJSON(routing.generate('feature_flag'));
-  }
-
-  static isEnabled(feature: string): boolean {
-    if (undefined === FeatureFlags.features) {
-      throw new Error('FeatureFlags is not initialized.');
-    }
-
-    return Boolean(FeatureFlags.features[feature]);
-  }
-}
+/**
+ * @deprecated Legacy module ID kept for backward compatibility.
+ * The implementation lives in @akeneo-pim-community/shared; this shim only adapts promises for legacy callers.
+ */
+const FeatureFlags = {
+  initialize: (): JQueryPromise<void> => jQuery.when(featureFlags.initialize()),
+  isEnabled: (feature: string): boolean => featureFlags.isEnabled(feature),
+};
 
 export = FeatureFlags;

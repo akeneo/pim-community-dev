@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 
-const translate = require('oro/translator');
+import {translate} from '@akeneo-pim-community/shared';
 
 type Props = {
   criterion?: string;

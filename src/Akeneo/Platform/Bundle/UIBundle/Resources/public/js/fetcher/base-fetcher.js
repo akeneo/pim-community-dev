@@ -1,8 +1,14 @@
 /* global console */
 'use strict';
 
-define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone, Routing) {
-  return Backbone.Model.extend({
+define(['jquery', 'underscore', 'routing', 'pim/class-extend'], function ($, _, Routing, classExtend) {
+  function BaseFetcher() {
+    this.initialize.apply(this, arguments);
+  }
+
+  BaseFetcher.extend = classExtend;
+
+  Object.assign(BaseFetcher.prototype, {
     entityListPromise: null,
     entityPromises: {},
 
@@ -181,4 +187,6 @@ define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone
       });
     },
   });
+
+  return BaseFetcher;
 });

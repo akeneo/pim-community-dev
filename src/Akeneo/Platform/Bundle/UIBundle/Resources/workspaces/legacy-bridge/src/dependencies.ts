@@ -1,28 +1,46 @@
-import {DependenciesContextProps} from '@akeneo-pim-community/shared';
+import {
+  Analytics,
+  DependenciesContextProps,
+  featureFlags,
+  mediator,
+  securityContext,
+  Router,
+  translate,
+  userContext,
+  ViewBuilder,
+} from '@akeneo-pim-community/shared';
 
 /* eslint-disable @typescript-eslint/no-var-requires */
-const router = require('pim/router');
-const translate = require('oro/translator');
-const viewBuilder = require('pim/form-builder');
-const messenger = require('oro/messenger');
-const userContext = require('pim/user-context');
-const securityContext = require('pim/security-context');
-const mediator = require('oro/mediator');
-const featureFlags = require('pim/feature-flags');
-const analytics = require('pim/analytics');
+
+/**
+ * The remaining legacy services are resolved when they are used, not when this module is loaded: some of them
+ * (oro/messenger for instance) import the legacy bridge themselves, and an eager require would capture their
+ * unfinished exports depending on the module loading order.
+ */
+const lazyLegacyModule = <T extends object>(load: () => any): T =>
+  new Proxy({} as T, {
+    get: (_target, property) => {
+      const legacyModule = load();
+      const value = legacyModule[property];
+
+      return 'function' === typeof value ? value.bind(legacyModule) : value;
+    },
+  });
+
+const messenger = lazyLegacyModule<{notify: DependenciesContextProps['notify']}>(() => require('oro/messenger'));
 
 const dependencies: DependenciesContextProps = {
-  router,
+  router: lazyLegacyModule<Router>(() => require('pim/router')),
   translate,
-  viewBuilder,
-  notify: messenger.notify,
+  viewBuilder: lazyLegacyModule<ViewBuilder>(() => require('pim/form-builder')),
+  notify: (...args: any[]) => (messenger.notify as any)(...args),
   user: userContext,
   security: {
-    isGranted: securityContext.isGranted.bind(securityContext),
+    isGranted: securityContext.isGranted,
   },
   mediator,
   featureFlags,
-  analytics,
+  analytics: lazyLegacyModule<Analytics>(() => require('pim/analytics')),
 };
 
 export {dependencies};
