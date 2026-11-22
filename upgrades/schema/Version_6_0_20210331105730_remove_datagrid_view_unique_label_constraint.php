@@ -7,7 +7,7 @@ namespace Pim\Upgrade\Schema;
 use Doctrine\DBAL\Connection as DbalConnection;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Akeneo\Platform\Bundle\InstallerBundle\Migration\ContainerAwareMigrationInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -16,11 +16,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 final class Version_6_0_20210331105730_remove_datagrid_view_unique_label_constraint
     extends AbstractMigration
-    implements ContainerAwareInterface
+    implements ContainerAwareMigrationInterface
 {
     private ContainerInterface $container;
 
-    public function setContainer(ContainerInterface $container = null)
+    public function setContainer(?ContainerInterface $container = null): void
     {
         $this->container = $container;
     }

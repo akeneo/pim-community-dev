@@ -4,7 +4,6 @@ namespace Akeneo\Category\Infrastructure\Component\Normalizer\ExternalApi;
 
 use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
 use Akeneo\Category\Infrastructure\Component\Manager\PositionResolverInterface;
-use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -12,7 +11,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CategoryNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
+class CategoryNormalizer implements NormalizerInterface
 {
     protected NormalizerInterface $stdNormalizer;
     protected PositionResolverInterface $positionResolver;
@@ -23,7 +22,7 @@ class CategoryNormalizer implements NormalizerInterface, CacheableSupportsMethod
         $this->positionResolver = $positionResolver;
     }
 
-    public function normalize($category, $format = null, array $context = [])
+    public function normalize($category, $format = null, array $context = []): \ArrayObject|array|string|int|float|bool|null
     {
         $normalizedCategory = $this->stdNormalizer->normalize($category, 'standard', $context);
 
@@ -38,13 +37,13 @@ class CategoryNormalizer implements NormalizerInterface, CacheableSupportsMethod
         return $normalizedCategory;
     }
 
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return $data instanceof CategoryInterface && 'external_api' === $format;
     }
 
-    public function hasCacheableSupportsMethod(): bool
+    public function getSupportedTypes(?string $format): array
     {
-        return true;
+        return ['*' => true];
     }
 }

@@ -11,7 +11,6 @@ use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Inflector\Inflector;
 use Doctrine\Inflector\NoopWordInflector;
-use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -23,7 +22,7 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  */
-class ViolationNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
+class ViolationNormalizer implements NormalizerInterface
 {
     /** @var AttributeRepository */
     protected $attributeRepository;
@@ -52,14 +51,14 @@ class ViolationNormalizer implements NormalizerInterface, CacheableSupportsMetho
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($exception, $format = null): bool
+    public function supportsNormalization($exception, $format = null, array $context = []): bool
     {
         return $exception instanceof ViolationHttpException;
     }
 
-    public function hasCacheableSupportsMethod(): bool
+    public function getSupportedTypes(?string $format): array
     {
-        return true;
+        return ['*' => true];
     }
 
     /**

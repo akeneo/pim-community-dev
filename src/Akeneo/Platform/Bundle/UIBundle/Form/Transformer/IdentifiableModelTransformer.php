@@ -39,7 +39,7 @@ class IdentifiableModelTransformer implements DataTransformerInterface
     /**
      * {@inheritdoc}
      */
-    public function reverseTransform($identifier)
+    public function reverseTransform($identifier): mixed
     {
         if (null === $identifier) {
             return null;
@@ -63,7 +63,7 @@ class IdentifiableModelTransformer implements DataTransformerInterface
     /**
      * {@inheritdoc}
      */
-    public function transform($model)
+    public function transform($model): mixed
     {
         if (null === $model) {
             return null;

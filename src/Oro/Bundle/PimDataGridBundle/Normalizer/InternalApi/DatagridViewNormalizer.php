@@ -3,7 +3,6 @@
 namespace Oro\Bundle\PimDataGridBundle\Normalizer\InternalApi;
 
 use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
-use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -13,7 +12,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class DatagridViewNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
+class DatagridViewNormalizer implements NormalizerInterface
 {
     /** @var array */
     protected $supportedFormat = ['internal_api'];
@@ -21,7 +20,7 @@ class DatagridViewNormalizer implements NormalizerInterface, CacheableSupportsMe
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = []): \ArrayObject|array|string|int|float|bool|null
     {
         return [
             'id'             => (int) $object->getId(),
@@ -37,13 +36,13 @@ class DatagridViewNormalizer implements NormalizerInterface, CacheableSupportsMe
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return $data instanceof DatagridView && in_array($format, $this->supportedFormat);
     }
 
-    public function hasCacheableSupportsMethod(): bool
+    public function getSupportedTypes(?string $format): array
     {
-        return true;
+        return ['*' => true];
     }
 }

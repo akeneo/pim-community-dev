@@ -28,10 +28,10 @@ class DefaultViewDataTransformer implements DataTransformerInterface
     /**
      * {@inheritdoc}
      */
-    public function transform($value)
+    public function transform($value): mixed
     {
         if (null === $value) {
-            return;
+            return null;
         }
 
         $aliases = $this->datagridViewRepo->getDatagridViewAliasesByUser($value);
@@ -46,7 +46,7 @@ class DefaultViewDataTransformer implements DataTransformerInterface
     /**
      * {@inheritdoc}
      */
-    public function reverseTransform($value)
+    public function reverseTransform($value): mixed
     {
         if (null === $value) {
             return null;

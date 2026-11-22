@@ -25,7 +25,7 @@ class ActionMetadataCacheWarmer implements CacheWarmerInterface
     /**
      * {inheritdoc}
      */
-    public function warmUp($cacheDir): array
+    public function warmUp(string $cacheDir, ?string $buildDir = null): array
     {
         $this->provider->warmUpCache();
 

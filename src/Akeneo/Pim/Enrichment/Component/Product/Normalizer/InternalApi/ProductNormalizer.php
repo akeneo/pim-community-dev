@@ -19,7 +19,6 @@ use Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface;
 use Akeneo\Platform\Bundle\UIBundle\Provider\StructureVersion\StructureVersionProviderInterface;
 use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
-use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -29,7 +28,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
+class ProductNormalizer implements NormalizerInterface
 {
     /** @var string[] */
     protected array $supportedFormat = ['internal_api'];
@@ -106,7 +105,7 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
      *
      * @param ProductInterface $product
      */
-    public function normalize($product, $format = null, array $context = [])
+    public function normalize($product, $format = null, array $context = []): \ArrayObject|array|string|int|float|bool|null
     {
         $this->missingAssociationAdder->addMissingAssociations($product);
         $normalizedProduct = $this->normalizer->normalize($product, 'standard', $context);
@@ -169,14 +168,14 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return $data instanceof ProductInterface && in_array($format, $this->supportedFormat);
     }
 
-    public function hasCacheableSupportsMethod(): bool
+    public function getSupportedTypes(?string $format): array
     {
-        return true;
+        return ['*' => true];
     }
 
     /**

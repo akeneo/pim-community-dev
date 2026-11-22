@@ -8,7 +8,6 @@ use Akeneo\UserManagement\Component\Model\UserInterface;
 use Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepositoryInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -19,7 +18,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class UserNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
+class UserNormalizer implements NormalizerInterface
 {
     private DateTimeNormalizer $dateTimeNormalizer;
     private NormalizerInterface $fileNormalizer;
@@ -55,7 +54,7 @@ class UserNormalizer implements NormalizerInterface, CacheableSupportsMethodInte
      *
      * @var UserInterface $user
      */
-    public function normalize($user, $format = null, array $context = [])
+    public function normalize($user, $format = null, array $context = []): \ArrayObject|array|string|int|float|bool|null
     {
         $result = [
             'code'                      => $user->getUserIdentifier(), # Every Form Extension requires 'code' field.
@@ -123,14 +122,14 @@ class UserNormalizer implements NormalizerInterface, CacheableSupportsMethodInte
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return $data instanceof UserInterface && in_array($format, $this->supportedFormats);
     }
 
-    public function hasCacheableSupportsMethod(): bool
+    public function getSupportedTypes(?string $format): array
     {
-        return true;
+        return ['*' => true];
     }
 
     /**

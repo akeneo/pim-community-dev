@@ -12,7 +12,7 @@ abstract class AbstractTypeTestCase extends FormIntegrationTestCase
     /**
      * @var FormFactory
      */
-    protected $factory;
+    protected \Symfony\Component\Form\FormFactoryInterface $factory;
 
     /**
      * @var string

@@ -33,7 +33,7 @@ class RestoreAdminRolePermissionsCommand extends Command
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         /** @var QuestionHelper $helper **/
         $helper = $this->getHelper('question');

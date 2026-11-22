@@ -29,5 +29,5 @@ class File extends BaseFile
     public string $attributeCode = '';
 
     /** @var string  */
-    public $maxSizeMessage = 'The file %file_name% is too large (%file_size% %suffix%). The %attribute% attribute can not exceed %max_file_size% %suffix%.';
+    public string $maxSizeMessage = 'The file %file_name% is too large (%file_size% %suffix%). The %attribute% attribute can not exceed %max_file_size% %suffix%.';
 }

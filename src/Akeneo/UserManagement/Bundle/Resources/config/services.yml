@@ -28,7 +28,11 @@ services:
         arguments:
             - '%kernel.project_dir%/src'
         tags:
-            - { name: doctrine.event_subscriber }
+            - { name: doctrine.event_listener, event: preUpdate }
+            - { name: doctrine.event_listener, event: prePersist }
+            - { name: doctrine.event_listener, event: postPersist }
+            - { name: doctrine.event_listener, event: postUpdate }
+            - { name: doctrine.event_listener, event: postRemove }
 
     Akeneo\UserManagement\Bundle\Notification\MailResetNotifier:
         arguments:

@@ -38,7 +38,7 @@ class NumberLocalizerTransformer implements DataTransformerInterface
      *
      * @return string
      */
-    public function transform($number)
+    public function transform($number): mixed
     {
         return $this->localizer->localize($number, $this->options);
     }
@@ -54,7 +54,7 @@ class NumberLocalizerTransformer implements DataTransformerInterface
      *
      * @return string
      */
-    public function reverseTransform($number)
+    public function reverseTransform($number): mixed
     {
         $violations = $this->localizer->validate($number, 'code', $this->options);
 

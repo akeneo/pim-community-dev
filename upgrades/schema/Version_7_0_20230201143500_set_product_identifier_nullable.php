@@ -7,10 +7,10 @@ namespace Pim\Upgrade\Schema;
 use Akeneo\Pim\Enrichment\Bundle\Command\ZddMigrations\V20220516171405SetProductIdentifierNullableZddMigration;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Akeneo\Platform\Bundle\InstallerBundle\Migration\ContainerAwareMigrationInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-final class Version_7_0_20230201143500_set_product_identifier_nullable extends AbstractMigration implements ContainerAwareInterface
+final class Version_7_0_20230201143500_set_product_identifier_nullable extends AbstractMigration implements ContainerAwareMigrationInterface
 {
     private ?ContainerInterface $container = null;
 
@@ -24,7 +24,7 @@ final class Version_7_0_20230201143500_set_product_identifier_nullable extends A
         $this->throwIrreversibleMigrationException();
     }
 
-    public function setContainer(ContainerInterface $container = null)
+    public function setContainer(?ContainerInterface $container = null): void
     {
         $this->container = $container;
     }

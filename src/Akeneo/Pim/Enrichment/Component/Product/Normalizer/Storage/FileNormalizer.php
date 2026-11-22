@@ -3,7 +3,6 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage;
 
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
-use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -11,7 +10,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FileNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
+class FileNormalizer implements NormalizerInterface
 {
     /** @var NormalizerInterface */
     protected $stdNormalizer;
@@ -27,7 +26,7 @@ class FileNormalizer implements NormalizerInterface, CacheableSupportsMethodInte
     /**
      * {@inheritdoc}
      */
-    public function normalize($file, $format = null, array $context = [])
+    public function normalize($file, $format = null, array $context = []): \ArrayObject|array|string|int|float|bool|null
     {
         return $this->stdNormalizer->normalize($file, $format, $context);
     }
@@ -35,13 +34,13 @@ class FileNormalizer implements NormalizerInterface, CacheableSupportsMethodInte
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return $data instanceof FileInfoInterface && 'storage' === $format;
     }
 
-    public function hasCacheableSupportsMethod(): bool
+    public function getSupportedTypes(?string $format): array
     {
-        return true;
+        return ['*' => true];
     }
 }

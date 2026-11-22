@@ -15,7 +15,7 @@ services:
         class: '%akeneo_storage_utils.event_subscriber.resolve_target_repository.class%'
         public: false
         tags:
-            - { name: doctrine.event_subscriber }
+            - { name: doctrine.event_listener, event: loadClassMetadata }
 
     akeneo_storage_utils.doctrine.object_detacher:
         class: '%akeneo_storage_utils.doctrine.object_detacher.class%'
@@ -31,4 +31,4 @@ services:
             - '@akeneo_storage_utils.doctrine.orm_mappings_override_configurator'
             - '%akeneo_storage_utils.mapping_overrides%'
         tags:
-            - { name: doctrine.event_subscriber, priority: 100 }
+            - { name: doctrine.event_listener, event: loadClassMetadata, priority: 100 }

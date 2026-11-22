@@ -10,4 +10,5 @@ services:
             - '@logger'
             - '@Akeneo\Platform\Component\EventQueue\BulkEventNormalizer'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\ProcessFactoryInterface'
-        tags: [messenger.message_handler]
+        tags:
+            - { name: messenger.message_handler, handles: Akeneo\Platform\Component\EventQueue\BulkEventInterface, from_transport: webhook }

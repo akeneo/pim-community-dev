@@ -55,7 +55,7 @@ services:
             - '@doctrine.orm.default_entity_manager'
             - '%pim_catalog.entity.product.class%'
         tags:
-            - { name: doctrine.event_subscriber }
+            - { name: doctrine.event_listener, event: prePersist }
 
     Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber\RefreshVersioningSubscriber:
         arguments:

@@ -44,7 +44,7 @@ class OwnConstraintNormalizer implements NormalizerInterface
         return $constraint->getMessage();
     }
 
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null, array $context = [])
     {
         return true;
     }

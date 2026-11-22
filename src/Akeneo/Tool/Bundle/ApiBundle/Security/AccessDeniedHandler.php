@@ -25,7 +25,7 @@ class AccessDeniedHandler implements AccessDeniedHandlerInterface
     /**
      * {@inheritdoc}
      */
-    public function handle(Request $request, AccessDeniedException $exception)
+    public function handle(Request $request, AccessDeniedException $exception): ?\Symfony\Component\HttpFoundation\Response
     {
         return new JsonResponse(
             [

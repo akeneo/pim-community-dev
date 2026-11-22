@@ -20,7 +20,7 @@ class NumberNormalizer extends AbstractProductValueNormalizer implements Normali
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         if (! $data instanceof ValueInterface) {
             return false;
@@ -45,5 +45,10 @@ class NumberNormalizer extends AbstractProductValueNormalizer implements Normali
         }
 
         return null;
+    }
+
+    public function getSupportedTypes(?string $format): array
+    {
+        return ['*' => false];
     }
 }

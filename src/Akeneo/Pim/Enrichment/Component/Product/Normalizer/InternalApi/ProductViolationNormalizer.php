@@ -4,7 +4,6 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\UniqueValue;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 
@@ -16,7 +15,7 @@ use Symfony\Component\Validator\ConstraintViolationInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductViolationNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
+class ProductViolationNormalizer implements NormalizerInterface
 {
     /** @var string[] */
     protected $supportedFormats = ['internal_api'];
@@ -35,7 +34,7 @@ class ProductViolationNormalizer implements NormalizerInterface, CacheableSuppor
     /**
      * {@inheritdoc}
      */
-    public function normalize($violation, $format = null, array $context = [])
+    public function normalize($violation, $format = null, array $context = []): \ArrayObject|array|string|int|float|bool|null
     {
         $propertyPath = $violation->getPropertyPath();
 
@@ -103,13 +102,13 @@ class ProductViolationNormalizer implements NormalizerInterface, CacheableSuppor
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return in_array($format, $this->supportedFormats) && $data instanceof ConstraintViolationInterface;
     }
 
-    public function hasCacheableSupportsMethod(): bool
+    public function getSupportedTypes(?string $format): array
     {
-        return true;
+        return ['*' => true];
     }
 }

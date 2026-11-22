@@ -5,7 +5,6 @@ namespace Oro\Bundle\PimDataGridBundle\Normalizer\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValueInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -13,7 +12,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class OptionNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
+class OptionNormalizer implements NormalizerInterface
 {
     /** @var IdentifiableObjectRepositoryInterface */
     protected $attributeOptionRepository;
@@ -26,7 +25,7 @@ class OptionNormalizer implements NormalizerInterface, CacheableSupportsMethodIn
     /**
      * {@inheritdoc}
      */
-    public function normalize($optionValue, $format = null, array $context = [])
+    public function normalize($optionValue, $format = null, array $context = []): \ArrayObject|array|string|int|float|bool|null
     {
         $optionCode = $optionValue->getData();
         $attributeCode = $optionValue->getAttributeCode();
@@ -56,13 +55,13 @@ class OptionNormalizer implements NormalizerInterface, CacheableSupportsMethodIn
      *
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return 'datagrid' === $format && $data instanceof OptionValueInterface;
     }
 
-    public function hasCacheableSupportsMethod(): bool
+    public function getSupportedTypes(?string $format): array
     {
-        return true;
+        return ['*' => true];
     }
 }

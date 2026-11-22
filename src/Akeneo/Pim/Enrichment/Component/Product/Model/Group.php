@@ -186,7 +186,7 @@ class Group implements GroupInterface
       *
       * @return string[]
       */
-    public function getGroupSequence()
+    public function getGroupSequence(): \Symfony\Component\Validator\Constraints\GroupSequence|array
     {
         return ['Group', strtolower($this->getType()->getCode())];
     }

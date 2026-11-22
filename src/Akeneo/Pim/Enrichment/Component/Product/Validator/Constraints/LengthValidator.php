@@ -11,19 +11,25 @@ class LengthValidator extends BaseLengthValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof Length) {
             throw new UnexpectedTypeException($constraint, Length::class);
         }
         if (!is_scalar($value) && !(\is_object($value) && method_exists($value, '__toString'))) {
-            return parent::validate($value, $constraint);
+            parent::validate($value, $constraint);
+
+            return;
         }
         if (null === $value || ('' === $value && ($constraint->allowEmptyString ?? true))) {
-            return parent::validate($value, $constraint);
+            parent::validate($value, $constraint);
+
+            return;
         }
         if (null !== $constraint->normalizer) {
-            return parent::validate($value, $constraint);
+            parent::validate($value, $constraint);
+
+            return;
         }
 
         $stringValue = (string) $value;
@@ -45,6 +51,10 @@ class LengthValidator extends BaseLengthValidator
             return;
         }
 
-        return parent::validate($value, $constraint);
+        parent::validate($value, $constraint);
+
+        
+
+        return;
     }
 }

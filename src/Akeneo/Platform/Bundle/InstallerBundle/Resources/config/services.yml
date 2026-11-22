@@ -20,3 +20,10 @@ services:
     Akeneo\Platform\Bundle\InstallerBundle\Persistence\Sql\InstallData:
         arguments:
             - '@database_connection'
+
+    akeneo.installer.migration.container_aware_migration_factory:
+        class: Akeneo\Platform\Bundle\InstallerBundle\Migration\ContainerAwareMigrationFactory
+        decorates: doctrine.migrations.migrations_factory
+        arguments:
+            - '@.inner'
+            - '@service_container'

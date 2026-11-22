@@ -25,7 +25,7 @@ class AttributeOptionValueCollectionNormalizer implements NormalizerInterface, N
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = []): \ArrayObject|array|string|int|float|bool|null
     {
         $normalizedItems = [];
 
@@ -39,10 +39,15 @@ class AttributeOptionValueCollectionNormalizer implements NormalizerInterface, N
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return $data instanceof Collection &&
             $data->first() instanceof AttributeOptionValueInterface &&
             $format === 'array';
+    }
+
+    public function getSupportedTypes(?string $format): array
+    {
+        return ['*' => false];
     }
 }

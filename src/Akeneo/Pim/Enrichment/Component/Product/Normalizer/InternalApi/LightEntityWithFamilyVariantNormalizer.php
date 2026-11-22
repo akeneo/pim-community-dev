@@ -105,7 +105,7 @@ final class LightEntityWithFamilyVariantNormalizer implements NormalizerInterfac
         ]);
     }
 
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return 'internal_api' === $format && $data instanceof EntityWithFamilyVariantInterface;
     }
@@ -223,5 +223,10 @@ final class LightEntityWithFamilyVariantNormalizer implements NormalizerInterfac
                 ],
             ],
         ];
+    }
+
+    public function getSupportedTypes(?string $format): array
+    {
+        return ['*' => false];
     }
 }

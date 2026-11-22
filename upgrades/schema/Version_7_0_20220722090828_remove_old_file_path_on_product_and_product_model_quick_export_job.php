@@ -6,14 +6,14 @@ namespace Pim\Upgrade\Schema;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Akeneo\Platform\Bundle\InstallerBundle\Migration\ContainerAwareMigrationInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-final class Version_7_0_20220722090828_remove_old_file_path_on_product_and_product_model_quick_export_job extends AbstractMigration implements ContainerAwareInterface
+final class Version_7_0_20220722090828_remove_old_file_path_on_product_and_product_model_quick_export_job extends AbstractMigration implements ContainerAwareMigrationInterface
 {
     private ?ContainerInterface $container;
 
-    public function setContainer(ContainerInterface $container = null): void
+    public function setContainer(?ContainerInterface $container = null): void
     {
         $this->container = $container;
     }

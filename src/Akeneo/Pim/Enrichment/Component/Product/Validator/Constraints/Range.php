@@ -20,16 +20,16 @@ class Range extends BaseRange
     public $maxDateMessage = 'The {{ attribute_code }} attribute requires a date that should be {{ limit }} or before.';
 
     /** @var string */
-    public $invalidMessage = 'The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.';
+    public string $invalidMessage = 'The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.';
 
     /** @var string */
     public $attributeCode = '';
 
     /** @var string */
-    public $minMessage = 'The %attribute% attribute requires an equal or greater than %min_value% value.';
+    public string $minMessage = 'The %attribute% attribute requires an equal or greater than %min_value% value.';
 
     /** @var string */
-    public $maxMessage = 'The %attribute% attribute requires an equal or lesser than %max_value% value.';
+    public string $maxMessage = 'The %attribute% attribute requires an equal or lesser than %max_value% value.';
 
     /**
      * {@inheritdoc}

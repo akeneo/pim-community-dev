@@ -9,12 +9,13 @@ services:
         arguments:
             - '@pim_catalog.context.catalog'
         tags:
-            - { name: doctrine.event_subscriber }
+            - { name: doctrine.event_listener, event: postLoad }
 
     pim_catalog.event_subscriber.timestampable:
         class: '%pim_catalog.event_subscriber.timestampable.class%'
         tags:
-            - { name: doctrine.event_subscriber }
+            - { name: doctrine.event_listener, event: prePersist }
+            - { name: doctrine.event_listener, event: preUpdate }
 
     pim_catalog.event_subscriber.category.check_channels:
         class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category\OnDelete\CheckChannelsOnDeletionSubscriber'
@@ -52,7 +53,7 @@ services:
         arguments:
             - '@akeneo.pim.enrichment.factory.write_value_collection'
         tags:
-            - { name: doctrine.event_subscriber, priority: 50 }
+            - { name: doctrine.event_listener, event: postLoad, priority: 50 }
 
     pim_catalog.event_subscriber.load_product_quantified_associations:
         class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithQuantifiedAssociations\LoadEntitySubscriber'
@@ -61,7 +62,7 @@ services:
             - '@akeneo.pim.enrichment.product.query.quantified_association.get_id_mapping_from_product_model_ids_query'
             - '@akeneo.pim.enrichment.product.query.find_quantified_association_codes'
         tags:
-            - { name: doctrine.event_subscriber, priority: 55 }
+            - { name: doctrine.event_listener, event: postLoad, priority: 55 }
 
     pim_catalog.event_subscriber.product.delete.compute_products_and_ancestors:
         class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\OnDelete\ComputeProductsAndAncestorsSubscriber'
@@ -119,7 +120,7 @@ services:
     pim_catalog.event_subscriber.category.save.set_updated_property_on_translation_update_subscriber:
         class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category\OnSave\SetUpdatedPropertyOnTranslationUpdateSubscriber
         tags:
-            - { name: doctrine.event_subscriber }
+            - { name: doctrine.event_listener, event: preUpdate }
 
     pim_catalog.event_subscriber.init_completeness_db_schema:
         class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Db\InitCompletenessDbSchemaSubscriber'

@@ -39,7 +39,7 @@ class ConstraintViolationNormalizerSpec extends ObjectBehavior
 
     public function it_is_cacheable(): void
     {
-        $this->hasCacheableSupportsMethod()->shouldReturn(true);
+        $this->getSupportedTypes(null)->shouldReturn(['*' => true]);
     }
 
     public function it_supports_constraint_violation(ConstraintViolationInterface $constraintViolation): void

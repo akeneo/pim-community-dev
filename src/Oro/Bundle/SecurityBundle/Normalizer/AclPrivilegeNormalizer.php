@@ -5,7 +5,6 @@ namespace Oro\Bundle\SecurityBundle\Normalizer;
 
 use Oro\Bundle\SecurityBundle\Model\AclPermission;
 use Oro\Bundle\SecurityBundle\Model\AclPrivilege;
-use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Webmozart\Assert\Assert;
 
@@ -14,14 +13,14 @@ use Webmozart\Assert\Assert;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-final class AclPrivilegeNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
+final class AclPrivilegeNormalizer implements NormalizerInterface
 {
     private array $supportedFormats = ['array', 'standard'];
 
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return $data instanceof AclPrivilege && in_array($format, $this->supportedFormats);
     }
@@ -29,7 +28,7 @@ final class AclPrivilegeNormalizer implements NormalizerInterface, CacheableSupp
     /**
      * {@inheritdoc}
      */
-    public function normalize($privilege, $format = null, array $context = [])
+    public function normalize($privilege, $format = null, array $context = []): \ArrayObject|array|string|int|float|bool|null
     {
         Assert::isInstanceOf($privilege, AclPrivilege::class);
 
@@ -50,11 +49,8 @@ final class AclPrivilegeNormalizer implements NormalizerInterface, CacheableSupp
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function hasCacheableSupportsMethod(): bool
+    public function getSupportedTypes(?string $format): array
     {
-        return true;
+        return ['*' => true];
     }
 }

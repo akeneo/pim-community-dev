@@ -37,7 +37,7 @@ final class FlattenExceptionNormalizer implements NormalizerInterface
         $this->normalizer = $normalizer;
     }
 
-    public function normalize($exception, $format = null, array $context = [])
+    public function normalize($exception, $format = null, array $context = []): \ArrayObject|array|string|int|float|bool|null
     {
         $contextException = $context['exception'] ?? null;
         if ($this->normalizer->supportsNormalization($contextException, $format)) {
@@ -47,8 +47,13 @@ final class FlattenExceptionNormalizer implements NormalizerInterface
         return $this->fosRestNormalizer->normalize($exception, $format, $context);
     }
 
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return $data instanceof FlattenException;
+    }
+
+    public function getSupportedTypes(?string $format): array
+    {
+        return ['*' => false];
     }
 }

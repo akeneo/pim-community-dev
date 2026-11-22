@@ -29,7 +29,7 @@ class GroupViolationNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($violations, $format = null, array $context = [])
+    public function normalize($violations, $format = null, array $context = []): \ArrayObject|array|string|int|float|bool|null
     {
         $normalizedViolations = [];
         $accessor = PropertyAccess::createPropertyAccessor();
@@ -56,8 +56,13 @@ class GroupViolationNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return false;
+    }
+
+    public function getSupportedTypes(?string $format): array
+    {
+        return ['*' => false];
     }
 }

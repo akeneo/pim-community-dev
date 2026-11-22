@@ -13,7 +13,6 @@ use Akeneo\UserManagement\Component\Normalizer\Standard\UserNormalizer;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
 use PhpSpec\ObjectBehavior;
-use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class UserNormalizerSpec extends ObjectBehavior
@@ -30,8 +29,7 @@ class UserNormalizerSpec extends ObjectBehavior
 
     function it_has_a_cacheable_supports_method()
     {
-        $this->shouldImplement(CacheableSupportsMethodInterface::class);
-        $this->hasCacheableSupportsMethod()->shouldBe(true);
+        $this->getSupportedTypes(null)->shouldReturn(['*' => true]);
     }
 
     function it_is_a_standard_user_normalizer(UserInterface $user)

@@ -48,7 +48,7 @@ class ProductValueMetadataFactory implements MetadataFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getMetadataFor($value)
+    public function getMetadataFor($value): \Symfony\Component\Validator\Mapping\MetadataInterface
     {
         if (!$value instanceof ValueInterface) {
             throw new NoSuchMetadataException();
@@ -62,7 +62,7 @@ class ProductValueMetadataFactory implements MetadataFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function hasMetadataFor($value)
+    public function hasMetadataFor($value): bool
     {
         if ($value instanceof ValueInterface) {
             return true;

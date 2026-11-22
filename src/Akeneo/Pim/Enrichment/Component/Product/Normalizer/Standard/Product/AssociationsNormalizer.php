@@ -9,7 +9,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterfa
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Webmozart\Assert\Assert;
 
@@ -20,7 +19,7 @@ use Webmozart\Assert\Assert;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AssociationsNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
+class AssociationsNormalizer implements NormalizerInterface
 {
     public function __construct(
         private GetAssociatedProductUuidsByProduct $getAssociatedProductUuidsByProduct
@@ -32,7 +31,7 @@ class AssociationsNormalizer implements NormalizerInterface, CacheableSupportsMe
      *
      * @param EntityWithAssociationsInterface $associationAwareEntity
      */
-    public function normalize($associationAwareEntity, $format = null, array $context = [])
+    public function normalize($associationAwareEntity, $format = null, array $context = []): \ArrayObject|array|string|int|float|bool|null
     {
         $ancestorProducts = $this->getAncestorProducts($associationAwareEntity);
         $withUuid = $context['with_association_uuids'] ?? true;
@@ -44,15 +43,15 @@ class AssociationsNormalizer implements NormalizerInterface, CacheableSupportsMe
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return $data instanceof EntityWithAssociationsInterface && 'standard' === $format
             && get_class($data) !== 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct';
     }
 
-    public function hasCacheableSupportsMethod(): bool
+    public function getSupportedTypes(?string $format): array
     {
-        return true;
+        return ['*' => true];
     }
 
     /**

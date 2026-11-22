@@ -8,14 +8,14 @@ use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Akeneo\Platform\Bundle\InstallerBundle\Migration\ContainerAwareMigrationInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-final class Version_7_0_20221114112755_clean_family_codes_from_export_job_filters extends AbstractMigration implements ContainerAwareInterface
+final class Version_7_0_20221114112755_clean_family_codes_from_export_job_filters extends AbstractMigration implements ContainerAwareMigrationInterface
 {
     private ?ContainerInterface $container;
 
-    public function setContainer(ContainerInterface $container = null): void
+    public function setContainer(?ContainerInterface $container = null): void
     {
         $this->container = $container;
     }

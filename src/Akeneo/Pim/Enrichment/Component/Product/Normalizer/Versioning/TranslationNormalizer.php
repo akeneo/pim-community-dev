@@ -25,7 +25,7 @@ class TranslationNormalizer implements NormalizerInterface
      *
      * @return array
      */
-    public function normalize($translatable, $format = null, array $context = [])
+    public function normalize($translatable, $format = null, array $context = []): \ArrayObject|array|string|int|float|bool|null
     {
         $context = array_merge(
             [
@@ -56,8 +56,13 @@ class TranslationNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return is_array($data) && in_array($format, $this->supportedFormats) && isset($data['labels']);
+    }
+
+    public function getSupportedTypes(?string $format): array
+    {
+        return ['*' => false];
     }
 }

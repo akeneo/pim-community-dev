@@ -2,7 +2,6 @@
 
 namespace Akeneo\Platform\Bundle\UIBundle\Normalizer;
 
-use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
@@ -11,7 +10,7 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class ConstraintViolationListNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
+class ConstraintViolationListNormalizer implements NormalizerInterface
 {
     /** @var NormalizerInterface */
     private $normalizer;
@@ -21,7 +20,7 @@ class ConstraintViolationListNormalizer implements NormalizerInterface, Cacheabl
         $this->normalizer = $normalizer;
     }
 
-    public function normalize($constraintList, $format = null, array $context = [])
+    public function normalize($constraintList, $format = null, array $context = []): \ArrayObject|array|string|int|float|bool|null
     {
         $result = [];
 
@@ -35,13 +34,13 @@ class ConstraintViolationListNormalizer implements NormalizerInterface, Cacheabl
     /**
      * @inheritDoc
      */
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return $data instanceof ConstraintViolationListInterface;
     }
 
-    public function hasCacheableSupportsMethod(): bool
+    public function getSupportedTypes(?string $format): array
     {
-        return true;
+        return ['*' => true];
     }
 }

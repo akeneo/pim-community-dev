@@ -39,7 +39,7 @@ class AjaxEntityTransformer implements DataTransformerInterface
     /**
      * {@inheritdoc}
      */
-    public function reverseTransform($value)
+    public function reverseTransform($value): mixed
     {
         if ($this->options['multiple']) {
             if (!$value) {
@@ -60,7 +60,7 @@ class AjaxEntityTransformer implements DataTransformerInterface
     /**
      * {@inheritdoc}
      */
-    public function transform($value)
+    public function transform($value): mixed
     {
         if ($this->options['multiple']) {
             $values = [];

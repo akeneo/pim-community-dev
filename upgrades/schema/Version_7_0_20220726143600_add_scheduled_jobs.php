@@ -7,14 +7,14 @@ namespace Pim\Upgrade\Schema;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Akeneo\Platform\Bundle\InstallerBundle\Migration\ContainerAwareMigrationInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-final class Version_7_0_20220726143600_add_scheduled_jobs extends AbstractMigration implements ContainerAwareInterface
+final class Version_7_0_20220726143600_add_scheduled_jobs extends AbstractMigration implements ContainerAwareMigrationInterface
 {
     private ContainerInterface $container;
 
-    public function setContainer(ContainerInterface $container = null)
+    public function setContainer(?ContainerInterface $container = null): void
     {
         $this->container = $container;
     }

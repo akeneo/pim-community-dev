@@ -3,7 +3,6 @@
 namespace Akeneo\Pim\Structure\Component\Normalizer\Versioning;
 
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
-use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -13,7 +12,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AssociationTypeNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
+class AssociationTypeNormalizer implements NormalizerInterface
 {
     /** @var string[] */
     protected $supportedFormats = ['flat'];
@@ -43,7 +42,7 @@ class AssociationTypeNormalizer implements NormalizerInterface, CacheableSupport
      *
      * @return array
      */
-    public function normalize($associationType, $format = null, array $context = [])
+    public function normalize($associationType, $format = null, array $context = []): \ArrayObject|array|string|int|float|bool|null
     {
         $standardAssociationType = $this->standardNormalizer->normalize($associationType, 'standard', $context);
         $flatAssociationType = $standardAssociationType;
@@ -61,13 +60,13 @@ class AssociationTypeNormalizer implements NormalizerInterface, CacheableSupport
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return $data instanceof AssociationTypeInterface && in_array($format, $this->supportedFormats);
     }
 
-    public function hasCacheableSupportsMethod(): bool
+    public function getSupportedTypes(?string $format): array
     {
-        return true;
+        return ['*' => true];
     }
 }

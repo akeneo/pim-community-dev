@@ -5,17 +5,16 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\EntityWithQuantifiedAssociations;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithQuantifiedAssociationsInterface;
-use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class QuantifiedAssociationsNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
+class QuantifiedAssociationsNormalizer implements NormalizerInterface
 {
     /**
      * {@inheritdoc}
      *
      * @param EntityWithQuantifiedAssociationsInterface $entityWithQuantifiedAssociations
      */
-    public function normalize($entityWithQuantifiedAssociations, $format = null, array $context = [])
+    public function normalize($entityWithQuantifiedAssociations, $format = null, array $context = []): \ArrayObject|array|string|int|float|bool|null
     {
         $quantifiedAssociationsNormalized = $entityWithQuantifiedAssociations->normalizeQuantifiedAssociations();
 
@@ -58,13 +57,13 @@ class QuantifiedAssociationsNormalizer implements NormalizerInterface, Cacheable
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return $data instanceof EntityWithQuantifiedAssociationsInterface && $format === 'flat';
     }
 
-    public function hasCacheableSupportsMethod(): bool
+    public function getSupportedTypes(?string $format): array
     {
-        return true;
+        return ['*' => true];
     }
 }

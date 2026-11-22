@@ -5,7 +5,7 @@ namespace Pim\Upgrade\Schema;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 use Elasticsearch\ClientBuilder;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Akeneo\Platform\Bundle\InstallerBundle\Migration\ContainerAwareMigrationInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Webmozart\Assert\Assert;
 
@@ -14,7 +14,7 @@ use Webmozart\Assert\Assert;
  * We can't change the mapping for an existing field without reindexing all, but we can add a nonexistent field.
  * See https://www.elastic.co/guide/en/elasticsearch/reference/7.x/indices-put-mapping.html#indices-put-mapping
  */
-final class Version_6_0_20210615084255_add_entity_updated_in_product_mapping extends AbstractMigration implements ContainerAwareInterface
+final class Version_6_0_20210615084255_add_entity_updated_in_product_mapping extends AbstractMigration implements ContainerAwareMigrationInterface
 {
     private ContainerInterface $container;
 
@@ -49,7 +49,7 @@ final class Version_6_0_20210615084255_add_entity_updated_in_product_mapping ext
         $this->throwIrreversibleMigrationException();
     }
 
-    public function setContainer(ContainerInterface $container = null)
+    public function setContainer(?ContainerInterface $container = null): void
     {
         Assert::notNull($container);
         $this->container = $container;

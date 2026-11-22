@@ -12,6 +12,6 @@ use Symfony\Component\Validator\Constraints\Url as BaseUrl;
  */
 class Url extends BaseUrl
 {
-    public $message = 'The %attribute% attribute requires a url link.';
+    public string $message = 'The %attribute% attribute requires a url link.';
     public $attributeCode = '';
 }

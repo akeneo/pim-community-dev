@@ -53,7 +53,7 @@ class ActionAclVoter extends Voter implements VoterInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($attribute, $subject)
+    public function supports($attribute, $subject): bool
     {
         return $this->oidType === $attribute;
     }
@@ -77,7 +77,7 @@ class ActionAclVoter extends Voter implements VoterInterface
     /**
      * {@inheritdoc}
      */
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token, ?\Symfony\Component\Security\Core\Authorization\Voter\Vote $vote = null)
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token, ?\Symfony\Component\Security\Core\Authorization\Voter\Vote $vote = null): bool
     {
         $oid = new ObjectIdentity(static::OID_IDENTIFIER, $attribute);
 

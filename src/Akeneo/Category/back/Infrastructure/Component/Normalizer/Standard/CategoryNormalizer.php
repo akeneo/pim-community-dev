@@ -5,7 +5,6 @@ namespace Akeneo\Category\Infrastructure\Component\Normalizer\Standard;
 use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\DateTimeNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\TranslationNormalizer;
-use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -13,7 +12,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CategoryNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
+class CategoryNormalizer implements NormalizerInterface
 {
     /** @var TranslationNormalizer */
     protected $translationNormalizer;
@@ -26,7 +25,7 @@ class CategoryNormalizer implements NormalizerInterface, CacheableSupportsMethod
         $this->dateTimeNormalizer = $dateTimeNormalizer;
     }
 
-    public function normalize($category, $format = null, array $context = [])
+    public function normalize($category, $format = null, array $context = []): \ArrayObject|array|string|int|float|bool|null
     {
         return [
             'code' => $category->getCode(),
@@ -36,13 +35,13 @@ class CategoryNormalizer implements NormalizerInterface, CacheableSupportsMethod
         ];
     }
 
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return $data instanceof CategoryInterface && 'standard' === $format;
     }
 
-    public function hasCacheableSupportsMethod(): bool
+    public function getSupportedTypes(?string $format): array
     {
-        return true;
+        return ['*' => true];
     }
 }

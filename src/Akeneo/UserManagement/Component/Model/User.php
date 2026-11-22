@@ -207,7 +207,7 @@ class User implements UserInterface, EquatableInterface
     /**
      * {@inheritdoc}
      */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
         $this->plainPassword = null;
     }
@@ -239,7 +239,7 @@ class User implements UserInterface, EquatableInterface
     /**
      * {@inheritDoc}
      */
-    public function getUserIdentifier()
+    public function getUserIdentifier(): string
     {
         return $this->username;
     }
