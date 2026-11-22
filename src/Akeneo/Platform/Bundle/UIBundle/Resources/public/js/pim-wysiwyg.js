@@ -7,7 +7,7 @@
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(['jquery', 'underscore', 'backbone', 'summernote'], function ($, _, Backbone) {
+define(['jquery', 'underscore', 'pim/router', 'summernote'], function ($, _, router) {
   /**
    * Wysiwyg editor default configuration
    */
@@ -24,7 +24,7 @@ define(['jquery', 'underscore', 'backbone', 'summernote'], function ($, _, Backb
     prettifyHtml: false,
   };
 
-  Backbone.Router.prototype.on('route', function () {
+  router.on('route', function () {
     $('textarea.wysiwyg').each(function () {
       $(this).destroy();
     });

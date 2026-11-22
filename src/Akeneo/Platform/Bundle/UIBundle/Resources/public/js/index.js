@@ -1,6 +1,4 @@
-define(['jquery', 'pim/form-builder'], function ($, formBuilder) {
-  formBuilder.build('pim-app').then(function (form) {
-    form.setElement($('.app'));
-    form.render();
-  });
-});
+/**
+ * Entry point of the PIM frontend: boots the application and renders the React application shell.
+ */
+require('pim/app').mountApplication('.app');

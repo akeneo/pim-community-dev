@@ -1,5 +1,5 @@
 /* global console */
-define(['jquery', 'backbone', 'pim/dialog', 'pim/router'], function ($, Backbone, Dialog, router) {
+define(['jquery', 'pim/dialog', 'pim/router'], function ($, Dialog, router) {
   'use strict';
 
   return function ($form) {
@@ -65,7 +65,7 @@ define(['jquery', 'backbone', 'pim/dialog', 'pim/router'], function ($, Backbone
     $('a[href^="/"]:not(".no-hash")').off('click').on('click', linkClicked);
     $form.on('click', 'a[href^="/"]:not(".no-hash")', linkClicked);
 
-    Backbone.Router.prototype.on('route', function () {
+    router.on('route', function () {
       $('a[href^="/"]:not(".no-hash")').off('click', linkClicked);
       $(window).off('beforeunload');
     });

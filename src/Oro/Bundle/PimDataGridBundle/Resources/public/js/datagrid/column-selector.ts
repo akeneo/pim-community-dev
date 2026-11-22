@@ -5,6 +5,7 @@ import * as Backbone from 'backbone';
 const mediator = require('oro/mediator');
 const __ = require('oro/translator');
 const Routing = require('routing');
+const router = require('pim/router');
 const DatagridState = require('pim/datagrid/state');
 const buttonTemplate = require('pim/template/datagrid/column-selector/button');
 const columnsTemplate = require('pim/template/datagrid/column-selector/columns');
@@ -487,8 +488,7 @@ class ColumnSelector extends BaseView {
     this.modal.close();
 
     var url = window.location.hash;
-    (<any>Backbone.history).fragment = new Date().getTime();
-    Backbone.history.navigate(url, true);
+    router.navigate(url, {trigger: true, force: true});
   }
 }
 

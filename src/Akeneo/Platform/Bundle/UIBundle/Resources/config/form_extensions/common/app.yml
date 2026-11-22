@@ -1,3 +1,5 @@
 extensions:
+    # Application shell. It is rendered by React (see pim/app), this entry is only the parent of the legacy
+    # extensions rendered in the shell zones ("menu", "communication-channel-panel").
     pim-app:
         module: pim/app

@@ -6,3 +6,5 @@ export * from './mediator';
 export * from './security-context';
 export * from './translate';
 export * from './user-context';
+export * from './hash-history';
+export * from './route-matcher';
