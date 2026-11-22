@@ -162,7 +162,7 @@ class FlatFileIterator implements FileIteratorInterface
     }
 
     /**
-     * The libmagic bundled with PHP 8.6 (5.48) reports some zip archives written with streaming data descriptors
+     * Recent libmagic versions (e.g. 5.48, bundled with PHP 8.6) report some zip archives written with streaming data descriptors
      * as "application/octet-stream", so we also check the zip local file header signature.
      */
     private function isZipArchive(): bool

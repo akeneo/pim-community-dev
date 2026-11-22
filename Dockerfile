@@ -19,34 +19,34 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
     apt-get --yes install imagemagick \
         libmagickcore-7.q16-10-extra \
         ghostscript \
-        php8.6-fpm \
-        php8.6-cli \
-        php8.6-intl \
-        php8.6-mysql \
-        php8.6-zip \
-        php8.6-xml \
-        php8.6-gd \
-        php8.6-grpc \
-        php8.6-curl \
-        php8.6-mbstring \
-        php8.6-bcmath \
-        php8.6-imagick \
-        php8.6-apcu \
-        php8.6-exif \
-        php8.6-memcached \
+        php8.5-fpm \
+        php8.5-cli \
+        php8.5-intl \
+        php8.5-mysql \
+        php8.5-zip \
+        php8.5-xml \
+        php8.5-gd \
+        php8.5-grpc \
+        php8.5-curl \
+        php8.5-mbstring \
+        php8.5-bcmath \
+        php8.5-imagick \
+        php8.5-apcu \
+        php8.5-exif \
+        php8.5-memcached \
         openssh-client \
         aspell \
         aspell-en aspell-es aspell-de aspell-fr && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
-    ln -s /usr/sbin/php-fpm8.6 /usr/local/sbin/php-fpm && \
+    ln -s /usr/sbin/php-fpm8.5 /usr/local/sbin/php-fpm && \
     usermod --uid 1000 www-data && groupmod --gid 1000 www-data && \
     mkdir /srv/pim && \
-    sed -i "s#listen = /run/php/php8.6-fpm.sock#listen = 9000#g" /etc/php/8.6/fpm/pool.d/www.conf && \
+    sed -i "s#listen = /run/php/php8.5-fpm.sock#listen = 9000#g" /etc/php/8.5/fpm/pool.d/www.conf && \
     mkdir -p /run/php
 
-COPY docker/build/akeneo.ini /etc/php/8.6/cli/conf.d/99-akeneo.ini
-COPY docker/build/akeneo.ini /etc/php/8.6/fpm/conf.d/99-akeneo.ini
+COPY docker/build/akeneo.ini /etc/php/8.5/cli/conf.d/99-akeneo.ini
+COPY docker/build/akeneo.ini /etc/php/8.5/fpm/conf.d/99-akeneo.ini
 
 FROM base AS dev
 
@@ -65,16 +65,16 @@ RUN apt-get update && \
         default-mysql-client \
         git \
         perceptualdiff \
-        php8.6-xdebug \
+        php8.5-xdebug \
         procps \
         unzip &&\
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-COPY docker/build/xdebug.ini /etc/php/8.6/cli/conf.d/99-akeneo-xdebug.ini
-COPY docker/build/xdebug.ini /etc/php/8.6/fpm/conf.d/99-akeneo-xdebug.ini
-COPY docker/build/blackfire.ini /etc/php/8.6/cli/conf.d/99-akeneo-blackfire.ini
-COPY docker/build/blackfire.ini /etc/php/8.6/fpm/conf.d/99-akeneo-blackfire.ini
+COPY docker/build/xdebug.ini /etc/php/8.5/cli/conf.d/99-akeneo-xdebug.ini
+COPY docker/build/xdebug.ini /etc/php/8.5/fpm/conf.d/99-akeneo-xdebug.ini
+COPY docker/build/blackfire.ini /etc/php/8.5/cli/conf.d/99-akeneo-blackfire.ini
+COPY docker/build/blackfire.ini /etc/php/8.5/fpm/conf.d/99-akeneo-blackfire.ini
 
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 RUN chmod +x /usr/local/bin/composer
