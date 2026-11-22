@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Doctrine\DBAL\Connection;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
@@ -21,11 +22,11 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+#[AsCommand(name: 'pim:product:clean-removed-products')]
 class CleanRemovedProductsCommand extends Command
 {
     private const DEFAULT_BATCH_SIZE = 1000;
 
-    protected static $defaultName = 'pim:product:clean-removed-products';
     protected static $description = 'Erase documents present in Elasticsearch but missing in MySQL';
 
     public function __construct(

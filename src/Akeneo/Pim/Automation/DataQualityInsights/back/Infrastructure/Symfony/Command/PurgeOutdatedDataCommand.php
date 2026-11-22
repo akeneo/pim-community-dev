@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\PurgeOutdatedData;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
@@ -16,10 +17,9 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
  * Command to launch manually a purge of the outdated data persisted for Data-Quality-Insights
  * It aims to be used as a replacement of the purge job. So the option date should be the date the job should have run.
  */
+#[AsCommand(name: 'pim:data-quality-insights:purge-outdated-data', description: 'Purge the outdated data persisted for Data-Quality-Insights.')]
 final class PurgeOutdatedDataCommand extends Command
 {
-    protected static $defaultName = 'pim:data-quality-insights:purge-outdated-data';
-    protected static $defaultDescription = 'Purge the outdated data persisted for Data-Quality-Insights.';
 
     private PurgeOutdatedData $purgeOutdatedData;
 

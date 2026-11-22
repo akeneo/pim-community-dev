@@ -4,6 +4,7 @@ namespace Akeneo\Platform\Bundle\AnalyticsBundle\Command;
 
 use Akeneo\Platform\Bundle\AnalyticsBundle\Command\Style\SystemInfoStyle;
 use Akeneo\Tool\Component\Analytics\ChainedDataCollector;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\TableSeparator;
 use Symfony\Component\Console\Input\InputInterface;
@@ -17,9 +18,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+#[AsCommand(name: 'pim:system:information')]
 class SystemInfoCommand extends Command
 {
-    protected static $defaultName = 'pim:system:information';
 
     private TranslatorInterface $translator;
     private ChainedDataCollector $chainedDataCollector;

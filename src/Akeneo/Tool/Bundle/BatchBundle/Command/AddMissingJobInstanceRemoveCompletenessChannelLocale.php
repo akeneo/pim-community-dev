@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Bundle\BatchBundle\Command;
 
 use Doctrine\DBAL\Connection;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -13,9 +14,9 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+#[AsCommand(name: 'akeneo:batch:add-missing-job-instance-remove-completeness-for-channel-and-locale')]
 class AddMissingJobInstanceRemoveCompletenessChannelLocale extends Command
 {
-    protected static $defaultName = 'akeneo:batch:add-missing-job-instance-remove-completeness-for-channel-and-locale';
 
     const EXIT_SUCCESS_CODE = 0;
     const EXIT_ERROR_CODE = 1;

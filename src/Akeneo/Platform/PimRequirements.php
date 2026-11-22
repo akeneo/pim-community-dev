@@ -177,7 +177,7 @@ class PimRequirements
             sprintf("SELECT @@GLOBAL.%s", $variableName)
         );
 
-        $variableValue = $stmt->fetchColumn();
+        $variableValue = $stmt->fetchOne();
 
         if (false === $variableValue) {
             $variableValue = null;

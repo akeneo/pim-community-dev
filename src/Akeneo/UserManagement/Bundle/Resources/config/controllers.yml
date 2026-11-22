@@ -18,7 +18,7 @@ services:
             - '@pim_user.factory.user'
             - '@security.password_hasher'
             - '@event_dispatcher'
-            - '@session'
+            - '@request_stack'
             - '@doctrine.orm.entity_manager'
             - '@pim_user.remover.user'
             - '@pim_catalog.localization.factory.number'
@@ -64,7 +64,7 @@ services:
         class: 'Akeneo\UserManagement\Bundle\Controller\ResetController'
         arguments:
             - '@pim_user.manager'
-            - '@session'
+            - '@request_stack'
             - '@pim_user.form.handler.reset'
             - '@security.token_storage'
             - '@pim_user.form.reset'

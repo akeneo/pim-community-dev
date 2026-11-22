@@ -11,6 +11,7 @@ use Akeneo\Tool\Component\Console\CommandExecutor;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception\ConnectionException;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -29,10 +30,9 @@ use Symfony\Component\Process\Process;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+#[AsCommand(name: 'pim:installer:db', description: 'Prepare database and load fixtures')]
 class DatabaseCommand extends Command
 {
-    protected static $defaultName = 'pim:installer:db';
-    protected static $defaultDescription = 'Prepare database and load fixtures';
 
     const LOAD_ALL = 'all';
     const LOAD_BASE = 'base';
@@ -242,7 +242,6 @@ class DatabaseCommand extends Command
             );
         }
         $output->writeln('');
-
 
         $output->writeln('<info>Delete jobs for fixtures.</info>');
         $this->fixtureJobLoader->deleteJobInstances();

@@ -3,6 +3,7 @@
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Command;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Purge\PurgeJobExecution;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
@@ -17,11 +18,10 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+#[AsCommand(name: 'akeneo:batch:purge-job-execution')]
 class PurgeJobExecutionCommand extends Command
 {
     public const JOB_CODE = 'job_executions_purge';
-
-    protected static $defaultName = 'akeneo:batch:purge-job-execution';
 
     private const DEFAULT_NUMBER_OF_DAYS = 90;
 

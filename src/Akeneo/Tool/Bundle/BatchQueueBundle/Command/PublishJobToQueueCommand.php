@@ -11,6 +11,7 @@ use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\BatchQueue\Queue\PublishJobToQueue;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -24,9 +25,9 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+#[AsCommand(name: 'akeneo:batch:publish-job-to-queue')]
 class PublishJobToQueueCommand extends Command
 {
-    protected static $defaultName = 'akeneo:batch:publish-job-to-queue';
 
     public const EXIT_SUCCESS_CODE = 0;
 

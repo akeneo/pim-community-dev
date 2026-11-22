@@ -6,7 +6,7 @@ namespace Akeneo\Channel\Infrastructure\Doctrine\Query;
 
 use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\FindActivatedCurrenciesInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\CachedQueryInterface;
-use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**

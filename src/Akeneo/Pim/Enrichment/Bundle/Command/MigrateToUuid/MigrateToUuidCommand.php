@@ -6,6 +6,7 @@ use Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\Utils\LogContext;
 use Akeneo\Platform\Job\Domain\Model\Status;
 use Doctrine\DBAL\Connection;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -15,11 +16,10 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+#[AsCommand(name: 'pim:product:migrate-to-uuid')]
 class MigrateToUuidCommand extends Command
 {
     use MigrateToUuidTrait;
-
-    protected static $defaultName = 'pim:product:migrate-to-uuid';
 
     private const DQI_JOB_NAME = 'data_quality_insights_evaluations';
     private const WAIT_TIME_IN_SECONDS = 30;
@@ -160,7 +160,7 @@ class MigrateToUuidCommand extends Command
             VALUES (:code, :status, NOW(), :values)
             ON DUPLICATE KEY UPDATE status='started', start_time=NOW();
         SQL, [
-            'code' => self::$defaultName,
+            'code' => $this->getName(),
             'status' => 'started',
             'values' => \json_encode((object) []),
         ]);
@@ -173,7 +173,7 @@ class MigrateToUuidCommand extends Command
             SET status=:status, end_time=NOW()
             WHERE code=:code
         SQL, [
-            'code' => self::$defaultName,
+            'code' => $this->getName(),
             'status' => 'finished',
         ]);
     }
@@ -183,7 +183,7 @@ class MigrateToUuidCommand extends Command
         $this->connection->executeQuery(<<<SQL
             DELETE FROM `pim_one_time_task` WHERE code=:code
         SQL, [
-            'code' => self::$defaultName
+            'code' => $this->getName()
         ]);
     }
 
@@ -227,7 +227,7 @@ class MigrateToUuidCommand extends Command
         SQL;
 
         return (bool) $this->connection->fetchOne($sql, [
-            'code' => self::$defaultName,
+            'code' => $this->getName(),
             'status' => 'finished',
         ]);
     }

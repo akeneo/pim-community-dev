@@ -105,7 +105,7 @@ class Version_6_0_20211124154203_add_is_visible_in_job_execution_Integration ext
         return (int) $this->connection->executeQuery(
             'SELECT id FROM akeneo_batch_job_instance WHERE code = :code',
             ['code' => $code],
-        )->fetchColumn();
+        )->fetchOne();
     }
 
     private function selectJobExecutions(): array

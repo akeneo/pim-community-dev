@@ -789,7 +789,7 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
 
     private function getUserIdFromUsername(string $username): int
     {
-        return (int)$this->get('database_connection')->fetchColumn(
+        return (int)$this->get('database_connection')->fetchOne(
             'SELECT id from oro_user WHERE username = :username',
             [
                 'username' => $username,

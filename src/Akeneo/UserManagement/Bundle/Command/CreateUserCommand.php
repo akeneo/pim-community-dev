@@ -12,6 +12,7 @@ use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\UserManagement\Component\Repository\GroupRepositoryInterface;
 use Akeneo\UserManagement\Component\Repository\RoleRepositoryInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -26,9 +27,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
+#[AsCommand(name: 'pim:user:create')]
 class CreateUserCommand extends Command
 {
-    protected static $defaultName = 'pim:user:create';
 
     /** @var string */
     private $password;

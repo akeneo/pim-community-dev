@@ -7,6 +7,7 @@ namespace Akeneo\Tool\Bundle\BatchQueueBundle\Command;
 use Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandlerInterface;
 use Akeneo\Tool\Bundle\BatchQueueBundle\Manager\JobExecutionManager;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -25,10 +26,9 @@ use Symfony\Component\Process\Process;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
+#[AsCommand(name: 'akeneo:batch:watchdog', description: '[Internal] Launched by the job queue consumer')]
 final class JobExecutionWatchdogCommand extends Command
 {
-    protected static $defaultName = 'akeneo:batch:watchdog';
-    protected static $defaultDescription = '[Internal] Launched by the job queue consumer';
 
     /** Interval in seconds before updating health check if job is still running. */
     public const HEALTH_CHECK_INTERVAL = 5;

@@ -81,8 +81,8 @@ SQL;
                 );
             }
             $stmt->bindValue('instance_code', $jobInstanceCode);
-            $stmt->execute();
-            $result = $stmt->fetch();
+            $stmtResult = $stmt->executeQuery();
+            $result = $stmtResult->fetch();
 
             $isCompleted = isset($result['status']) && BatchStatus::COMPLETED === (int) $result['status'];
 

@@ -11,13 +11,14 @@ use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\Lock\Exception\LockConflictedException;
 use Symfony\Component\Lock\LockFactory;
 use Symfony\Component\Lock\LockInterface;
 
 class CategorySaver implements SaverInterface, BulkSaverInterface
 {
     private const LOCK_TTL_IN_SECONDS = 10;
+    private const LOCK_MAX_ATTEMPTS = 150;
+    private const LOCK_RETRY_DELAY_IN_MICROSECONDS = 100_000;
 
     private ObjectManager $objectManager;
     private EventDispatcherInterface $eventDispatcher;
@@ -130,15 +131,16 @@ class CategorySaver implements SaverInterface, BulkSaverInterface
         $lockIdentifier = sprintf('create_category_in_root_%d', $object->getRoot());
         $lock = $this->lockFactory->createLock($lockIdentifier, self::LOCK_TTL_IN_SECONDS);
 
-        $errors = 0;
+        // Symfony 6 removed RetryTillSaveStore (50 tries every 100 ms, retried 3 times here) and a blocking
+        // acquire() would now wait forever on a non-blocking store, so the same bounded wait is done here.
+        $attempts = 0;
         $acquired = false;
 
-        while (!$acquired && $errors < 3) {
-            try {
-                $acquired = $lock->acquire(true);
-            } catch (LockConflictedException $ex) {
-                $errors++;
-                continue;
+        while (!$acquired && $attempts < self::LOCK_MAX_ATTEMPTS) {
+            $acquired = $lock->acquire();
+            if (!$acquired) {
+                $attempts++;
+                usleep(self::LOCK_RETRY_DELAY_IN_MICROSECONDS);
             }
         }
 

@@ -5,6 +5,7 @@ namespace Akeneo\Platform\Bundle\FrameworkBundle\Command;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\ClientRegistry;
 use Elasticsearch\Client;
 use Elasticsearch\ClientBuilder;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
@@ -12,9 +13,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Requirements\Requirement;
 use Symfony\Requirements\RequirementCollection;
 
+#[AsCommand(name: 'pim:update:check-requirements')]
 class CheckUpdateRequirementsCommand extends Command
 {
-    protected static $defaultName = 'pim:update:check-requirements';
     private Client $client;
 
     public function __construct(

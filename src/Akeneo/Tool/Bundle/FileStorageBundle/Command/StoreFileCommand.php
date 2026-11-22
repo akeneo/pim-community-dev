@@ -4,6 +4,7 @@ namespace Akeneo\Tool\Bundle\FileStorageBundle\Command;
 
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -16,9 +17,9 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+#[AsCommand(name: 'akeneo:file-storage:store')]
 class StoreFileCommand extends Command
 {
-    protected static $defaultName = 'akeneo:file-storage:store';
 
     private FileStorerInterface $fileStorer;
     private FilesystemProvider $filesystemProvider;

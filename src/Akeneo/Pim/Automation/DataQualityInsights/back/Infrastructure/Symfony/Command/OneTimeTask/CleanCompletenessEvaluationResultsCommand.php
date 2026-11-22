@@ -9,6 +9,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enri
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\TransformCriterionEvaluationResultCodes;
 use Doctrine\DBAL\Connection;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -19,12 +20,10 @@ use Webmozart\Assert\Assert;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+#[AsCommand(name: 'pim:data-quality-insights:clean-completeness-evaluation-results', description: 'Clean the results of the products completeness criteria to replace the list of attributes codes by their number.')]
 final class CleanCompletenessEvaluationResultsCommand extends Command
 {
     use OneTimeTaskCommandTrait;
-
-    protected static $defaultName = 'pim:data-quality-insights:clean-completeness-evaluation-results';
-    protected static $defaultDescription = 'Clean the results of the products completeness criteria to replace the list of attributes codes by their number.';
 
     private int $bulkSize = 200;
 
@@ -46,25 +45,25 @@ final class CleanCompletenessEvaluationResultsCommand extends Command
             Assert::greaterThan($this->bulkSize, 0, 'Bulk size must be greater than zero.');
         }
 
-        if (!$this->taskCanBeStarted(self::$defaultName)) {
+        if (!$this->taskCanBeStarted($this->getName())) {
             $output->writeln('This task has already been performed or is in progress.', OutputInterface::VERBOSITY_VERBOSE);
             return Command::SUCCESS;
         }
 
         $output->writeln('Start cleaning...');
-        $this->startTask(self::$defaultName);
+        $this->startTask($this->getName());
 
         try {
             $this->cleanEvaluationResultsForProducts();
             $this->cleanEvaluationResultsForProductModels();
         } catch (\Throwable $exception) {
-            $this->deleteTask(self::$defaultName);
+            $this->deleteTask($this->getName());
             throw $exception;
         }
 
         $output->writeln('Cleaning done.');
 
-        $this->finishTask(self::$defaultName);
+        $this->finishTask($this->getName());
 
         return Command::SUCCESS;
     }

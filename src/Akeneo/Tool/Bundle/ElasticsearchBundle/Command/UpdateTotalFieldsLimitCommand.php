@@ -9,13 +9,14 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\ClientRegistry;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\GetTotalFieldsLimit;
 use Elasticsearch\ClientBuilder;
 use Elasticsearch\Namespaces\IndicesNamespace;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(name: 'akeneo:elasticsearch:update-total-fields-limit')]
 class UpdateTotalFieldsLimitCommand extends Command
 {
-    protected static $defaultName = 'akeneo:elasticsearch:update-total-fields-limit';
 
     private ClientRegistry $esClientsRegistry;
 

@@ -4,6 +4,7 @@ namespace Akeneo\UserManagement\Infrastructure\Cli;
 
 use Akeneo\UserManagement\Application\Exception\UnknownUserRole;
 use Akeneo\UserManagement\Application\RestoreAdminRolePermissions;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
@@ -11,9 +12,9 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
+#[AsCommand(name: 'pim:user:restore-admin-permissions')]
 class RestoreAdminRolePermissionsCommand extends Command
 {
-    protected static $defaultName = 'pim:user:restore-admin-permissions';
 
     public function __construct(private RestoreAdminRolePermissions $restoreAdminRolePermissions)
     {

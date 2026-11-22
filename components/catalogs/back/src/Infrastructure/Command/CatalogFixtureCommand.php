@@ -14,6 +14,7 @@ use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -22,10 +23,9 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+#[AsCommand(name: 'akeneo:catalogs:fixtures', description: 'Do not run this command in production env. Installs fixtures for dev only.')]
 class CatalogFixtureCommand extends Command
 {
-    protected static $defaultName = 'akeneo:catalogs:fixtures';
-    protected static $defaultDescription = 'Do not run this command in production env. Installs fixtures for dev only.';
 
     public function __construct(
         private ConnectedAppFactory $connectedAppFactory,
