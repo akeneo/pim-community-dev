@@ -11,9 +11,8 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\Lock\Exception\LockConflictedException;
 use Symfony\Component\Lock\LockFactory;
-use Symfony\Component\Lock\LockInterface;
+use Symfony\Component\Lock\SharedLockInterface;
 
 class CategorySaverSpec extends ObjectBehavior
 {
@@ -22,7 +21,7 @@ class CategorySaverSpec extends ObjectBehavior
         EventDispatcherInterface $eventDispatcher,
         LockFactory $lockFactory
     ): void {
-        $this->beConstructedWith($objectManager, $eventDispatcher, $lockFactory);
+        $this->beConstructedWith($objectManager, $eventDispatcher, $lockFactory, 0);
     }
 
     public function it_is_a_saver(): void
@@ -34,7 +33,7 @@ class CategorySaverSpec extends ObjectBehavior
         ObjectManager $objectManager,
         EventDispatcherInterface $eventDispatcher,
         LockFactory $lockFactory,
-        LockInterface $lock,
+        SharedLockInterface $lock,
         CategoryInterface $category
     ): void {
         $category->getId()->willReturn(null);
@@ -44,7 +43,7 @@ class CategorySaverSpec extends ObjectBehavior
             ->createLock('create_category_in_root_1', 10)
             ->willReturn($lock);
 
-        $lock->acquire(true)->willReturn(true);
+        $lock->acquire()->willReturn(true);
 
         $eventDispatcher->dispatch(
             Argument::that(
@@ -76,7 +75,7 @@ class CategorySaverSpec extends ObjectBehavior
 
     public function it_throws_if_the_lock_cannot_be_acquired(
         LockFactory $lockFactory,
-        LockInterface $lock,
+        SharedLockInterface $lock,
         CategoryInterface $category
     ) {
         $category->getId()->willReturn(null);
@@ -86,7 +85,7 @@ class CategorySaverSpec extends ObjectBehavior
             ->createLock('create_category_in_root_1', 10)
             ->willReturn($lock);
 
-        $lock->acquire(true)->willThrow(LockConflictedException::class);
+        $lock->acquire()->willReturn(false);
 
         $this->shouldThrow(\ErrorException::class)
             ->during('save', [$category]);

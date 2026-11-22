@@ -28,7 +28,7 @@ class RegisterAttributeTypePassSpec extends ObjectBehavior
         $container->findTaggedServiceIds(RegisterAttributeTypePass::ATTRIBUTE_TYPE_TAG)
             ->willReturn(['attTypeId' => [['alias' => 'my_type']]]);
 
-        $registryDefinition->addMethodCall('register', Argument::any())->shouldBeCalled();
+        $registryDefinition->addMethodCall('register', Argument::any())->willReturn($registryDefinition)->shouldBeCalled();
 
         $this->process($container);
     }

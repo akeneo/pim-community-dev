@@ -8,7 +8,6 @@ use Akeneo\UserManagement\Component\Model\UserInterface;
 use Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepositoryInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -20,7 +19,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class UserNormalizer implements NormalizerInterface
 {
-    private DateTimeNormalizer $dateTimeNormalizer;
+    private NormalizerInterface $dateTimeNormalizer;
     private NormalizerInterface $fileNormalizer;
     private SecurityFacade $securityFacade;
     private TokenStorageInterface $tokenStorage;
@@ -32,7 +31,7 @@ class UserNormalizer implements NormalizerInterface
     private array $userNormalizers;
 
     public function __construct(
-        DateTimeNormalizer $dateTimeNormalizer,
+        NormalizerInterface $dateTimeNormalizer,
         NormalizerInterface $fileNormalizer,
         SecurityFacade $securityFacade,
         TokenStorageInterface $tokenStorage,

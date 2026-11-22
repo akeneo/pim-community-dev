@@ -72,7 +72,7 @@ class RegisterSerializerPassSpec extends ObjectBehavior
             ;
 
             return $result;
-        }))->shouldBeCalled();
+        }))->willReturn($definition)->shouldBeCalled();
 
         $this->process($container);
     }
@@ -109,7 +109,7 @@ class RegisterSerializerPassSpec extends ObjectBehavior
             ;
 
             return $result;
-        }))->shouldBeCalled();
+        }))->willReturn($definition)->shouldBeCalled();
 
         $this->process($container);
     }

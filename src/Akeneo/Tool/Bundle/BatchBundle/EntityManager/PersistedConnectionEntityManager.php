@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\BatchBundle\EntityManager;
 
+use Doctrine\DBAL\Exception\ConnectionLost;
 use Doctrine\ORM\Decorator\EntityManagerDecorator;
 
 /**
@@ -40,12 +41,16 @@ class PersistedConnectionEntityManager extends EntityManagerDecorator
 
     /**
      * Ping the Server, if the connection is closed, it re-opens it automatically.
+     *
+     * DBAL 3 removed Connection::ping(): a dummy query is run instead, as recommended by DBAL.
      */
     private function checkConnection(): void
     {
         $connection = $this->wrapped->getConnection();
 
-        if (false === $connection->ping()) {
+        try {
+            $connection->executeQuery($connection->getDatabasePlatform()->getDummySelectSQL());
+        } catch (ConnectionLost) {
             $connection->close();
             $connection->connect();
         }

@@ -27,7 +27,8 @@ class CategorySaver implements SaverInterface, BulkSaverInterface
     public function __construct(
         ObjectManager $objectManager,
         EventDispatcherInterface $eventDispatcher,
-        LockFactory $lockFactory
+        LockFactory $lockFactory,
+        private readonly int $lockRetryDelayInMicroseconds = self::LOCK_RETRY_DELAY_IN_MICROSECONDS,
     ) {
         $this->objectManager = $objectManager;
         $this->eventDispatcher = $eventDispatcher;
@@ -140,7 +141,7 @@ class CategorySaver implements SaverInterface, BulkSaverInterface
             $acquired = $lock->acquire();
             if (!$acquired) {
                 $attempts++;
-                usleep(self::LOCK_RETRY_DELAY_IN_MICROSECONDS);
+                usleep($this->lockRetryDelayInMicroseconds);
             }
         }
 

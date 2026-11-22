@@ -29,7 +29,7 @@ class RegisterAttributeConstraintGuessersPassSpec extends ObjectBehavior
         $container->findTaggedServiceIds(RegisterAttributeConstraintGuessersPass::SERVICE_TAG)
             ->shouldNotBeCalled();
 
-        $service->addMethodCall('addConstraintGuesser', Argument::type('array'))
+        $service->addMethodCall('addConstraintGuesser', Argument::type('array'))->willReturn($service)
             ->shouldNotBeCalled();
 
         $this->process($container)
@@ -40,7 +40,7 @@ class RegisterAttributeConstraintGuessersPassSpec extends ObjectBehavior
         ContainerBuilder $container,
         Definition $service
     ) {
-        $service->addMethodCall('addConstraintGuesser', Argument::type('array'))
+        $service->addMethodCall('addConstraintGuesser', Argument::type('array'))->willReturn($service)
             ->shouldBeCalledTimes(3);
 
         $container->hasDefinition(RegisterAttributeConstraintGuessersPass::SERVICE_CHAINED)

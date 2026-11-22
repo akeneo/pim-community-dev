@@ -241,7 +241,8 @@ class User implements UserInterface, EquatableInterface
      */
     public function getUserIdentifier(): string
     {
-        return $this->username;
+        // Symfony 6+ requires a string, a user that is not saved yet may have no username
+        return (string) $this->username;
     }
 
     /**

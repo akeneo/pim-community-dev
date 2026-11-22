@@ -39,13 +39,18 @@ class ConstraintViolationListNormalizerSpec extends ObjectBehavior
 
 class OwnConstraintNormalizer implements NormalizerInterface
 {
-    public function normalize($constraint, $format = null, array $context = [])
+    public function normalize($constraint, $format = null, array $context = []): \ArrayObject|array|string|int|float|bool|null
     {
         return $constraint->getMessage();
     }
 
-    public function supportsNormalization($data, $format = null, array $context = [])
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return true;
+    }
+
+    public function getSupportedTypes(?string $format): array
+    {
+        return ['*' => false];
     }
 }

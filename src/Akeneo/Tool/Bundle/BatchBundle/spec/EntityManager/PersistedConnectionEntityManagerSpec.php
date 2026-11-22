@@ -3,6 +3,8 @@
 namespace spec\Akeneo\Tool\Bundle\BatchBundle\EntityManager;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception\ConnectionLost;
+use Doctrine\DBAL\Platforms\MySQL80Platform;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpSpec\ObjectBehavior;
 
@@ -15,7 +17,8 @@ class PersistedConnectionEntityManagerSpec extends ObjectBehavior
 
     function it_refreshes_connection_when_getting_connection($entityManager, Connection $connection) {
         $entityManager->getConnection()->willReturn($connection);
-        $connection->ping()->willReturn(false);
+        $connection->getDatabasePlatform()->willReturn(new MySQL80Platform());
+        $connection->executeQuery('SELECT 1')->willThrow(ConnectionLost::class);
         $connection->close()->shouldBeCalled();
         $connection->connect()->shouldBeCalled();
 
@@ -24,7 +27,8 @@ class PersistedConnectionEntityManagerSpec extends ObjectBehavior
 
     function it_refreshes_connection_when_flushing_data($entityManager, Connection $connection) {
         $entityManager->getConnection()->willReturn($connection);
-        $connection->ping()->willReturn(false);
+        $connection->getDatabasePlatform()->willReturn(new MySQL80Platform());
+        $connection->executeQuery('SELECT 1')->willThrow(ConnectionLost::class);
         $connection->close()->shouldBeCalled();
         $connection->connect()->shouldBeCalled();
         $entityManager->flush(null)->shouldBeCalled();

@@ -31,7 +31,7 @@ class DatagridViewTypeSpec extends ObjectBehavior
     {
         $builder->add('label', TextType::class, ['required' => true])->willReturn($builder);
         $builder->add('order', HiddenType::class)->willReturn($builder);
-        $builder->add('filters', HiddenType::class)->shouldBeCalled();
+        $builder->add('filters', HiddenType::class)->willReturn($builder)->shouldBeCalled();
 
         $this->buildForm($builder, []);
     }
@@ -43,6 +43,6 @@ class DatagridViewTypeSpec extends ObjectBehavior
             [
                 'data_class' => DatagridView::class,
             ]
-        )->shouldHaveBeenCalled();
+        )->willReturn($resolver)->shouldHaveBeenCalled();
     }
 }
