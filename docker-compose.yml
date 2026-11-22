@@ -1,9 +1,12 @@
 services:
   php:
-    image: 'akeneo/pim-php-dev:8.3'
+    image: 'akeneo/pim-php-dev:8.6'
     environment:
       APP_ENV: '${APP_ENV:-prod}'
       COMPOSER_HOME: '/var/www/.composer'
+      # Some dev dependencies (phpspec, prophecy, psalm...) do not declare PHP 8.6 support yet.
+      # Remove once they do.
+      COMPOSER_IGNORE_PLATFORM_REQ: 'php+'
       PHP_IDE_CONFIG: 'serverName=pim-docker-cli'
       XDEBUG_MODE: '${XDEBUG_MODE:-off}'
       XDEBUG_CONFIG: 'client_host=172.17.0.1'
@@ -21,7 +24,7 @@ services:
       - 'pim'
 
   fpm:
-    image: 'akeneo/pim-php-dev:8.3'
+    image: 'akeneo/pim-php-dev:8.6'
     environment:
       APP_ENV: '${APP_ENV:-prod}'
       BEHAT_TMPDIR: '/srv/pim/var/cache/tmp'

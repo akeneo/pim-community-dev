@@ -49,8 +49,7 @@ class FlatFileIterator implements FileIteratorInterface
             throw new FileNotFoundException(sprintf('File "%s" could not be found', $this->filePath));
         }
 
-        $mimeType = finfo_file(finfo_open(FILEINFO_MIME_TYPE), $this->filePath);
-        if ('application/zip' === $mimeType && SpoutReaderFactory::XLSX !== $this->fileInfo->getExtension()) {
+        if (SpoutReaderFactory::XLSX !== $this->fileInfo->getExtension() && $this->isZipArchive()) {
             $this->extractZipArchive();
         }
 
@@ -160,6 +159,19 @@ class FlatFileIterator implements FileIteratorInterface
     public function getHeaders()
     {
         return $this->headers;
+    }
+
+    /**
+     * The libmagic bundled with PHP 8.6 (5.48) reports some zip archives written with streaming data descriptors
+     * as "application/octet-stream", so we also check the zip local file header signature.
+     */
+    private function isZipArchive(): bool
+    {
+        if ('application/zip' === finfo_file(finfo_open(FILEINFO_MIME_TYPE), $this->filePath)) {
+            return true;
+        }
+
+        return "PK\x03\x04" === file_get_contents($this->filePath, false, null, 0, 4);
     }
 
     /**

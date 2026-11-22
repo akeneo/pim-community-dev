@@ -103,6 +103,21 @@ class CreateConnectedAppWithAuthorizationHandler
 
     private function generateRandomCode(int $maxLength = 30, string $prefix = ''): string
     {
-        return \substr(\sprintf('%s%s', $prefix, \base_convert(\bin2hex(\random_bytes(16)), 16, 36)), 0, $maxLength);
+        return \substr(\sprintf('%s%s', $prefix, self::randomBase36(25)), 0, $maxLength);
+    }
+
+    /**
+     * base_convert() works on floats for large numbers: on a 256 or 128-bit input it silently loses
+     * most of the entropy (and PHP 8.6 raises a notice), so we draw each base36 character directly.
+     */
+    private static function randomBase36(int $length): string
+    {
+        $alphabet = '0123456789abcdefghijklmnopqrstuvwxyz';
+        $result = '';
+        for ($i = 0; $i < $length; $i++) {
+            $result .= $alphabet[\random_int(0, 35)];
+        }
+
+        return $result;
     }
 }

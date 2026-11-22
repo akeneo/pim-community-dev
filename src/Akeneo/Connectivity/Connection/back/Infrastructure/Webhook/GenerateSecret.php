@@ -14,8 +14,21 @@ class GenerateSecret implements GenerateSecretInterface
 {
     public function generate(): string
     {
-        $bytes = \random_bytes(32);
+        return self::randomBase36(50);
+    }
 
-        return \base_convert(\bin2hex($bytes), 16, 36);
+    /**
+     * base_convert() works on floats for large numbers: on a 256 or 128-bit input it silently loses
+     * most of the entropy (and PHP 8.6 raises a notice), so we draw each base36 character directly.
+     */
+    private static function randomBase36(int $length): string
+    {
+        $alphabet = '0123456789abcdefghijklmnopqrstuvwxyz';
+        $result = '';
+        for ($i = 0; $i < $length; $i++) {
+            $result .= $alphabet[\random_int(0, 35)];
+        }
+
+        return $result;
     }
 }
