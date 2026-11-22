@@ -57,7 +57,7 @@
         }
     },
     "require": {
-        "php": "8.3.*",
+        "php": "8.5.*",
         "ext-apcu": "*",
         "ext-bcmath": "*",
         "ext-curl": ">=7.0",
@@ -88,7 +88,7 @@
         "doctrine/migrations": "^3.1.4",
         "doctrine/orm": "2.20.0",
         "doctrine/persistence": "^2.2.3",
-        "dompdf/dompdf": "^2.0.3",
+        "dompdf/dompdf": "^3.1",
         "elasticsearch/elasticsearch": "7.11.0",
         "friendsofsymfony/jsrouting-bundle": "3.2.1",
         "friendsofsymfony/rest-bundle": "^3.4.0",
@@ -178,7 +178,7 @@
         "squizlabs/php_codesniffer": "3.*",
         "symfony/debug-bundle": "^5.4.0",
         "symfony/web-profiler-bundle": "^5.4.0",
-        "vimeo/psalm": "^5.1.0"
+        "psalm/phar": "^7.16"
     },
     "conflict": {
         "symfony/symfony": "*"

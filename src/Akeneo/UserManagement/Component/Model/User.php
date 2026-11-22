@@ -165,7 +165,7 @@ class User implements UserInterface, EquatableInterface
 
     public function __construct()
     {
-        $this->salt = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
+        $this->salt = self::randomBase36(31);
         $this->roles = new ArrayCollection();
         $this->groups = new ArrayCollection();
         $this->defaultGridViews = new ArrayCollection();
@@ -863,7 +863,7 @@ class User implements UserInterface, EquatableInterface
      */
     public function generateToken()
     {
-        return base_convert(bin2hex(hash('sha256', uniqid(mt_rand(), true), true)), 16, 36);
+        return self::randomBase36(50);
     }
 
     /**
@@ -1277,5 +1277,20 @@ class User implements UserInterface, EquatableInterface
         }
 
         return true;
+    }
+
+    /**
+     * base_convert() works on floats for large numbers: on a 256 or 128-bit input it silently loses
+     * most of the entropy (and PHP 8.6 raises a notice), so we draw each base36 character directly.
+     */
+    private static function randomBase36(int $length): string
+    {
+        $alphabet = '0123456789abcdefghijklmnopqrstuvwxyz';
+        $result = '';
+        for ($i = 0; $i < $length; $i++) {
+            $result .= $alphabet[\random_int(0, 35)];
+        }
+
+        return $result;
     }
 }

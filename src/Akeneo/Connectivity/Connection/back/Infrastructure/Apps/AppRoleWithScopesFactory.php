@@ -73,6 +73,21 @@ final class AppRoleWithScopesFactory implements AppRoleWithScopesFactoryInterfac
 
     private function createRandomRoleCode(): string
     {
-        return \base_convert(\bin2hex(\random_bytes(16)), 16, 36);
+        return self::randomBase36(25);
+    }
+
+    /**
+     * base_convert() works on floats for large numbers: on a 256 or 128-bit input it silently loses
+     * most of the entropy (and PHP 8.6 raises a notice), so we draw each base36 character directly.
+     */
+    private static function randomBase36(int $length): string
+    {
+        $alphabet = '0123456789abcdefghijklmnopqrstuvwxyz';
+        $result = '';
+        for ($i = 0; $i < $length; $i++) {
+            $result .= $alphabet[\random_int(0, 35)];
+        }
+
+        return $result;
     }
 }
