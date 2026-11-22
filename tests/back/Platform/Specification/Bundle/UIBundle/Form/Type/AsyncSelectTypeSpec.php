@@ -50,7 +50,7 @@ class AsyncSelectTypeSpec extends ObjectBehavior
 
         $transformerFactory->create($repository, ['multiple' => false])->willReturn($transformer);
 
-        $builder->addViewTransformer($transformer, true)->shouldBeCalled();
+        $builder->addViewTransformer($transformer, true)->willReturn($builder)->shouldBeCalled();
 
         $this->buildForm($builder, $options);
     }
@@ -85,7 +85,7 @@ class AsyncSelectTypeSpec extends ObjectBehavior
         $resolver->setAllowedTypes('multiple', ['bool'])->willReturn($resolver);
         $resolver->setAllowedTypes('min-input-length', ['int'])->willReturn($resolver);
 
-        $resolver->setRequired(['route', 'repository'])->shouldBeCalled();
+        $resolver->setRequired(['route', 'repository'])->willReturn($resolver)->shouldBeCalled();
 
         $this->configureOptions($resolver);
     }

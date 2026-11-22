@@ -21,7 +21,7 @@ class ExceptionListener extends BaseExceptionListener
     /**
      * Handles security related exceptions.
      */
-    public function onKernelException(ExceptionEvent $event)
+    public function onKernelException(ExceptionEvent $event): void
     {
         $exception = $event->getThrowable();
         $request = $event->getRequest();
@@ -41,7 +41,7 @@ class ExceptionListener extends BaseExceptionListener
     /**
      * {@inheritdoc}
      */
-    protected function setTargetPath(Request $request)
+    protected function setTargetPath(Request $request): void
     {
         if ($request->isXmlHttpRequest()) {
             return;

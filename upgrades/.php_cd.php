@@ -20,9 +20,8 @@ $rules = [
             'Elasticsearch\Client',
             'Akeneo\Tool\Bundle\ElasticsearchBundle\Client',
             // Required for accessing DBAL & ES services:
-            'Symfony\Component\DependencyInjection\ContainerAwareInterface',
+            'Akeneo\Platform\Bundle\InstallerBundle\Migration\ContainerAwareMigrationInterface',
             'Symfony\Component\DependencyInjection\ContainerInterface',
-            'Symfony\Component\DependencyInjection\ContainerAwareTrait',
             // ZDD migrations
             'Akeneo\Pim\Enrichment\Bundle\Command\ZddMigrations\V20220516171405SetProductIdentifierNullableZddMigration',
             'Akeneo\Pim\Enrichment\Bundle\Command\ZddMigrations\V20220729171405DropProductIdColumnsAndCleanVersioningResourceUuidColumns',

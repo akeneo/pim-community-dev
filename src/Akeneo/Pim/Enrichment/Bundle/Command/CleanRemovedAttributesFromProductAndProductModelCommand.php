@@ -18,6 +18,7 @@ use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Oro\Bundle\PimDataGridBundle\Normalizer\IdEncoder;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
@@ -37,9 +38,9 @@ use Symfony\Component\Security\Core\User\User;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+#[AsCommand(name: 'pim:product:clean-removed-attributes')]
 class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
 {
-    protected static $defaultName = 'pim:product:clean-removed-attributes';
     private const JOB_NAME = 'clean_removed_attribute_job';
     private const JOB_TRACKER_ROUTE = 'akeneo_job_process_tracker_details';
 

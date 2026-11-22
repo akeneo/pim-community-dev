@@ -4,6 +4,7 @@ namespace Oro\Bundle\SecurityBundle;
 
 use Oro\Bundle\SecurityBundle\DependencyInjection\Compiler\AclAnnotationProviderPass;
 use Oro\Bundle\SecurityBundle\DependencyInjection\Compiler\AclConfigurationPass;
+use Oro\Bundle\SecurityBundle\DependencyInjection\Compiler\LazyAclSchemaListenerPass;
 use Oro\Bundle\SecurityBundle\DependencyInjection\Compiler\ServiceLinkPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -20,5 +21,6 @@ class OroSecurityBundle extends Bundle
         $container->addCompilerPass(new AclConfigurationPass());
         $container->addCompilerPass(new AclAnnotationProviderPass());
         $container->addCompilerPass(new ServiceLinkPass());
+        $container->addCompilerPass(new LazyAclSchemaListenerPass());
     }
 }

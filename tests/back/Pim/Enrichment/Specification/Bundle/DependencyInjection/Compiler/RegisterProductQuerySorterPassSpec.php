@@ -28,7 +28,7 @@ class RegisterProductQuerySorterPassSpec extends ObjectBehavior
         $container->findTaggedServiceIds(RegisterProductQuerySorterPass::QUERY_SORTER_TAG)
             ->willReturn(['sorterId' => [['priority' => '22']]]);
 
-        $registryDefinition->addMethodCall('register', Argument::any())->shouldBeCalled();
+        $registryDefinition->addMethodCall('register', Argument::any())->willReturn($registryDefinition)->shouldBeCalled();
 
         $this->process($container);
     }

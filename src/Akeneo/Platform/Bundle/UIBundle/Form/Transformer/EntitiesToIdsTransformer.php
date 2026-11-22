@@ -14,7 +14,7 @@ class EntitiesToIdsTransformer extends EntityToIdTransformer
     /**
      * {@inheritdoc}
      */
-    public function transform($value)
+    public function transform($value): mixed
     {
         if (null === $value || [] === $value) {
             return [];
@@ -36,7 +36,7 @@ class EntitiesToIdsTransformer extends EntityToIdTransformer
     /**
      * {@inheritdoc}
      */
-    public function reverseTransform($value)
+    public function reverseTransform($value): mixed
     {
         if (!is_array($value) && !$value instanceof \Traversable) {
             throw new UnexpectedTypeException($value, 'array');

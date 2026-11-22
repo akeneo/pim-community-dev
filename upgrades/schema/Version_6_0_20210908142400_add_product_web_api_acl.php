@@ -7,14 +7,14 @@ namespace Pim\Upgrade\Schema;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Akeneo\Platform\Bundle\InstallerBundle\Migration\ContainerAwareMigrationInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class Version_6_0_20210908142400_add_product_web_api_acl extends AbstractMigration implements ContainerAwareInterface
+final class Version_6_0_20210908142400_add_product_web_api_acl extends AbstractMigration implements ContainerAwareMigrationInterface
 {
     private const ACLS = [
         'pim_api_product_list' => true,
@@ -300,7 +300,7 @@ SQL
     /**
      * {@inheritdoc}
      */
-    public function setContainer(ContainerInterface $container = null): void
+    public function setContainer(?ContainerInterface $container = null): void
     {
         $this->container = $container;
     }

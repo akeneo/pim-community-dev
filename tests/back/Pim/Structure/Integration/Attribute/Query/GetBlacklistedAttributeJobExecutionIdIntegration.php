@@ -50,7 +50,7 @@ final class GetBlacklistedAttributeJobExecutionIdIntegration extends TestCase
 INSERT INTO `akeneo_batch_job_execution` (job_instance_id, pid, user, status, start_time, end_time, create_time, updated_time, health_check_time, exit_code, exit_description, failure_exceptions, log_file, raw_parameters)
 VALUES (:job_instance_id, null, 'admin', 2, null, null, '2020-10-16 09:38:16', null, null, 'UNKNOWN', '', 'a:0:{}', null, '{}');
 SQL;
-        $this->sqlConnection->executeUpdate($insertJobExecution, ['job_instance_id' => $jobInstanceId]);
+        $this->sqlConnection->executeStatement($insertJobExecution, ['job_instance_id' => $jobInstanceId]);
 
         return (int) $this->sqlConnection->lastInsertId();
     }

@@ -11,18 +11,18 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
 use phpseclib3\Crypt\RSA;
 use phpseclib3\File\X509;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Akeneo\Platform\Bundle\InstallerBundle\Migration\ContainerAwareMigrationInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Version_6_0_20211214000000_add_openid_keys_into_pim_configuration extends AbstractMigration implements ContainerAwareInterface
+class Version_6_0_20211214000000_add_openid_keys_into_pim_configuration extends AbstractMigration implements ContainerAwareMigrationInterface
 {
     private ContainerInterface $container;
 
-    public function setContainer(ContainerInterface $container = null)
+    public function setContainer(?ContainerInterface $container = null): void
     {
         $this->container = $container;
     }

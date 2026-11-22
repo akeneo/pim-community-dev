@@ -152,14 +152,14 @@ UPDATE pim_catalog_attribute_group
 SET updated= '2018-01-01 16:27:00'
 WHERE code = 'marketing'
 SQL;
-        $connection->executeUpdate($query2018);
+        $connection->executeStatement($query2018);
 
         $query2019 = <<<SQL
 UPDATE pim_catalog_attribute_group
 SET updated= '2019-01-01 16:27:00'
 WHERE code = 'other'
 SQL;
-        $connection->executeUpdate($query2019);
+        $connection->executeStatement($query2019);
 
     }
 

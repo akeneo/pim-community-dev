@@ -7,7 +7,10 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\HttpFoundation\RequestMatcher;
+use Symfony\Component\HttpFoundation\ChainRequestMatcher;
+use Symfony\Component\HttpFoundation\RequestMatcher\HostRequestMatcher;
+use Symfony\Component\HttpFoundation\RequestMatcher\MethodRequestMatcher;
+use Symfony\Component\HttpFoundation\RequestMatcher\PathRequestMatcher;
 
 /**
  * Compiler pass to add rules to the content type negotiator.
@@ -66,7 +69,19 @@ class ContentTypeNegotiatorPass implements CompilerPassInterface
         $id = 'pim_api.content_type_negotiator.request_matcher.'.md5($serialized).sha1($serialized);
 
         if (!$container->hasDefinition($id)) {
-            $container->setDefinition($id, new Definition(RequestMatcher::class, $arguments));
+            // Symfony 7 removed RequestMatcher: a null constraint used to match anything, so only the
+            // constraints that are set become matchers.
+            $matchers = [];
+            if (null !== $path) {
+                $matchers[] = new Definition(PathRequestMatcher::class, [$path]);
+            }
+            if (null !== $host) {
+                $matchers[] = new Definition(HostRequestMatcher::class, [$host]);
+            }
+            if (!empty($methods)) {
+                $matchers[] = new Definition(MethodRequestMatcher::class, [$methods]);
+            }
+            $container->setDefinition($id, new Definition(ChainRequestMatcher::class, [$matchers]));
         }
 
         return new Reference($id);

@@ -7,6 +7,7 @@ use Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses;
 use Doctrine\DBAL\Connection;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Command\LockableTrait;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -21,13 +22,12 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+#[AsCommand(name: 'pim:completeness:calculate')]
 class CalculateCompletenessCommand extends Command
 {
     use LockableTrait;
 
     private const DEFAULT_BATCH_SIZE = 1000;
-
-    protected static $defaultName = 'pim:completeness:calculate';
 
     public function __construct(
         private readonly ProductAndAncestorsIndexer $productAndAncestorsIndexer,
@@ -60,7 +60,7 @@ class CalculateCompletenessCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (!$this->lock()) {
-            $output->writeln(sprintf('The command "%s" is still running in another process.', self::$defaultName));
+            $output->writeln(sprintf('The command "%s" is still running in another process.', $this->getName()));
 
             return 0;
         }

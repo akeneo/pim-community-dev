@@ -3,7 +3,6 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface;
-use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -13,7 +12,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class PriceNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
+class PriceNormalizer implements NormalizerInterface
 {
     /** @var NormalizerInterface */
     protected $stdNormalizer;
@@ -29,7 +28,7 @@ class PriceNormalizer implements NormalizerInterface, CacheableSupportsMethodInt
     /**
      * {@inheritdoc}
      */
-    public function normalize($price, $format = null, array $context = [])
+    public function normalize($price, $format = null, array $context = []): \ArrayObject|array|string|int|float|bool|null
     {
         return $this->stdNormalizer->normalize($price, $format, $context);
     }
@@ -37,13 +36,13 @@ class PriceNormalizer implements NormalizerInterface, CacheableSupportsMethodInt
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return $data instanceof ProductPriceInterface && 'storage' === $format;
     }
 
-    public function hasCacheableSupportsMethod(): bool
+    public function getSupportedTypes(?string $format): array
     {
-        return true;
+        return ['*' => true];
     }
 }

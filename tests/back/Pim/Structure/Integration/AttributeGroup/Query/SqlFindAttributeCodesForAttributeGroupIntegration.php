@@ -62,9 +62,9 @@ VALUES
 	(656, 29, 7, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 'PieceDetachee', 'Pim\\Component\\Catalog\\Model\\Product', 'pim_catalog_boolean', 'boolean', 'a:0:{}', '2018-09-21 07:23:25', '2018-09-26 12:57:53');
 SQL;
 
-        $res = $this->connection->executeUpdate($insertAttributeGroup, ['attribute_group_code' => $attributeCode]);
+        $res = $this->connection->executeStatement($insertAttributeGroup, ['attribute_group_code' => $attributeCode]);
         self::assertEquals(1, $res, 'Attribute group has not been inserted in DB correctly');
-        $res = $this->connection->executeUpdate($insertAttributesForGroup);
+        $res = $this->connection->executeStatement($insertAttributesForGroup);
         self::assertEquals(8, $res, 'Attributes have not been inserted in DB correctly');
     }
 

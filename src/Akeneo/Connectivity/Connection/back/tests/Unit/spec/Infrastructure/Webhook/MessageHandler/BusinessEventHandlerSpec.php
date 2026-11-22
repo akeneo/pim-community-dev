@@ -7,12 +7,10 @@ namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Webhook\MessageHand
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\MessageHandler\BusinessEventHandler;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\ProcessFactoryInterface;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
-use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 use Akeneo\Platform\Component\EventQueue\BulkEventNormalizer;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
 use Symfony\Component\Process\Process;
 
 /**
@@ -38,13 +36,6 @@ class BusinessEventHandlerSpec extends ObjectBehavior
     public function it_is_initializable(): void
     {
         $this->shouldHaveType(BusinessEventHandler::class);
-        $this->shouldImplement(MessageSubscriberInterface::class);
-    }
-
-    public function it_handles_a_bulk_event_message(): void
-    {
-        $this->getHandledMessages()
-            ->shouldYield(new \ArrayIterator([BulkEventInterface::class => ['from_transport' => 'webhook']]));
     }
 
     public function it_debugs_the_launched_command(

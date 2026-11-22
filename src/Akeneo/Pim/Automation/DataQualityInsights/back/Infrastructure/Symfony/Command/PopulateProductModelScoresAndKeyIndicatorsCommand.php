@@ -11,6 +11,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enri
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -19,10 +20,10 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+#[AsCommand(name: 'pim:data-quality-insights:populate-product-models-scores-and-ki')]
 class PopulateProductModelScoresAndKeyIndicatorsCommand extends Command
 {
     private const BULK_SIZE = 1000;
-    protected static $defaultName = 'pim:data-quality-insights:populate-product-models-scores-and-ki';
 
     public function __construct(
         private Connection $dbConnection,
@@ -85,7 +86,7 @@ INSERT IGNORE INTO pim_one_time_task (code, status, start_time) VALUES
 (:code, 'started', NOW());
 SQL;
 
-        $this->dbConnection->executeQuery($query, ['code' => self::$defaultName]);
+        $this->dbConnection->executeQuery($query, ['code' => $this->getName()]);
     }
 
     /**
@@ -99,7 +100,7 @@ SET status = 'done', end_time = NOW()
 WHERE code = :code;
 SQL;
 
-        $this->dbConnection->executeQuery($query, ['code' => self::$defaultName]);
+        $this->dbConnection->executeQuery($query, ['code' => $this->getName()]);
     }
 
     private function deleteTask(): void
@@ -109,7 +110,7 @@ DELETE
 FROM pim_one_time_task 
 WHERE code = :code;
 SQL;
-        $this->dbConnection->executeQuery($query, ['code' => self::$defaultName]);
+        $this->dbConnection->executeQuery($query, ['code' => $this->getName()]);
     }
 
     private function commandCanBeStarted(): bool
@@ -118,7 +119,7 @@ SQL;
 SELECT 1 FROM pim_one_time_task WHERE code = :code
 SQL;
 
-        return !(bool) $this->dbConnection->executeQuery($query, ['code' => self::$defaultName])->fetchOne();
+        return !(bool) $this->dbConnection->executeQuery($query, ['code' => $this->getName()])->fetchOne();
     }
 
     /**

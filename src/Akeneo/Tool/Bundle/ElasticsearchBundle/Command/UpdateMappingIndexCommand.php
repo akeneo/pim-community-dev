@@ -8,6 +8,7 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\ClientRegistry;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration\UpdateIndexMapping;
 use Elasticsearch\ClientBuilder;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -23,9 +24,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+#[AsCommand(name: 'akeneo:elasticsearch:update-mapping')]
 class UpdateMappingIndexCommand extends Command
 {
-    protected static $defaultName = 'akeneo:elasticsearch:update-mapping';
 
     /** @var ClientRegistry */
     private $esClientsRegistry;
@@ -37,7 +38,7 @@ class UpdateMappingIndexCommand extends Command
     {
         $this->esClientsRegistry = $clientRegistry;
         $this->hosts = is_string($hosts) ? [$hosts] : $hosts;
-        parent::__construct(self::$defaultName);
+        parent::__construct();
     }
 
     public function configure()
@@ -105,7 +106,6 @@ TXT;
             'name' => $client->getIndexName()
         ];
     }
-
 
     private function esClients(array $indexNames = []): array
     {

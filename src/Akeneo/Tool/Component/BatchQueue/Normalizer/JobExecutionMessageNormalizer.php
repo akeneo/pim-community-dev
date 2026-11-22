@@ -21,7 +21,7 @@ final class JobExecutionMessageNormalizer implements NormalizerInterface, Denorm
     {
     }
 
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return $data instanceof JobExecutionMessageInterface;
     }
@@ -44,7 +44,7 @@ final class JobExecutionMessageNormalizer implements NormalizerInterface, Denorm
         ];
     }
 
-    public function supportsDenormalization($data, $type, $format = null): bool
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
         return is_subclass_of($type, JobExecutionMessageInterface::class);
     }
@@ -59,5 +59,10 @@ final class JobExecutionMessageNormalizer implements NormalizerInterface, Denorm
         array $context = []
     ): JobExecutionMessageInterface {
         return $this->jobExecutionMessageFactory->buildFromNormalized($data, $jobMessageClass);
+    }
+
+    public function getSupportedTypes(?string $format): array
+    {
+        return ['*' => false];
     }
 }

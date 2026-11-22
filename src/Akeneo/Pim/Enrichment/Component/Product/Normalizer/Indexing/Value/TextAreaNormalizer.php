@@ -18,7 +18,7 @@ class TextAreaNormalizer extends AbstractProductValueNormalizer implements Norma
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         if (! $data instanceof ValueInterface) {
             return false;
@@ -49,5 +49,10 @@ class TextAreaNormalizer extends AbstractProductValueNormalizer implements Norma
     {
         $content = str_replace(["\r", "\n"], "", $content);
         return html_entity_decode($content);
+    }
+
+    public function getSupportedTypes(?string $format): array
+    {
+        return ['*' => false];
     }
 }

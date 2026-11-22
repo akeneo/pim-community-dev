@@ -9,7 +9,6 @@ use Akeneo\Tool\Component\Versioning\Model\Version;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Contracts\Translation\LocaleAwareInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -22,7 +21,7 @@ use Webmozart\Assert\Assert;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class VersionNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
+class VersionNormalizer implements NormalizerInterface
 {
     protected UserManager $userManager;
     protected TranslatorInterface $translator;
@@ -60,7 +59,7 @@ class VersionNormalizer implements NormalizerInterface, CacheableSupportsMethodI
     /**
      * {@inheritdoc}
      */
-    public function normalize($version, $format = null, array $context = [])
+    public function normalize($version, $format = null, array $context = []): \ArrayObject|array|string|int|float|bool|null
     {
         $context = array_merge($context, ['locale' => $this->localeAware->getLocale()]);
 
@@ -87,14 +86,14 @@ class VersionNormalizer implements NormalizerInterface, CacheableSupportsMethodI
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return $data instanceof Version && in_array($format, $this->supportedFormats);
     }
 
-    public function hasCacheableSupportsMethod(): bool
+    public function getSupportedTypes(?string $format): array
     {
-        return true;
+        return ['*' => true];
     }
 
     /**

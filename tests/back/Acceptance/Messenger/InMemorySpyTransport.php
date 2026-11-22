@@ -10,7 +10,7 @@ use Symfony\Component\Messenger\Transport\InMemoryTransport;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-final class InMemorySpyTransport extends InMemoryTransport
+final class InMemorySpyTransport extends \Symfony\Component\Messenger\Transport\InMemory\InMemoryTransport
 {
     public const GET_EVENT = 'get_event';
     public const ACK_EVENT = 'ack_event';

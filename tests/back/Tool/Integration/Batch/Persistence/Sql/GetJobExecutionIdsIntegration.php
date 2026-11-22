@@ -28,7 +28,7 @@ class GetJobExecutionIdsIntegration extends TestCase {
         /** @var GetJobExecutionIds $getJobExecutionIds */
         $getJobExecutionIds = $this->get(GetJobExecutionIds::class);
         $result = $getJobExecutionIds->olderThanDays(5);
-        $ids = $result->fetchAll(FetchMode::COLUMN);
+        $ids = $result->fetchAllAssociative(FetchMode::COLUMN);
         $expectedIds = [1, 2];
         $this->assertEquals($expectedIds, $ids);
     }
@@ -40,7 +40,7 @@ class GetJobExecutionIdsIntegration extends TestCase {
         /** @var GetJobExecutionIds $getJobExecutionIds */
         $getJobExecutionIds = $this->get(GetJobExecutionIds::class);
         $result = $getJobExecutionIds->all();
-        $ids = $result->fetchAll(FetchMode::COLUMN);
+        $ids = $result->fetchAllAssociative(FetchMode::COLUMN);
         $expectedIds = [1, 2, 3];
         $this->assertEquals($expectedIds, $ids);
     }

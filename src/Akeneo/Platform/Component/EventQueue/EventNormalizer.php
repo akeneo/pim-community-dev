@@ -15,12 +15,12 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class EventNormalizer implements NormalizerInterface, DenormalizerInterface
 {
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return $data instanceof Event;
     }
 
-    public function supportsDenormalization($data, $type, $format = null): bool
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
         return is_subclass_of($type, Event::class);
     }
@@ -67,5 +67,10 @@ class EventNormalizer implements NormalizerInterface, DenormalizerInterface
             $data['timestamp'],
             $data['uuid']
         );
+    }
+
+    public function getSupportedTypes(?string $format): array
+    {
+        return ['*' => false];
     }
 }

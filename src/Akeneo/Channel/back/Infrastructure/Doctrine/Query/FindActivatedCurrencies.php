@@ -6,7 +6,7 @@ namespace Akeneo\Channel\Infrastructure\Doctrine\Query;
 
 use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\FindActivatedCurrenciesInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\CachedQueryInterface;
-use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
@@ -31,7 +31,7 @@ class FindActivatedCurrencies implements FindActivatedCurrenciesInterface, Cache
      *
      * @return array
      *
-     * @throws DBALException
+     * @throws \Doctrine\DBAL\Exception
      */
     public function forChannel(string $channelCode): array
     {
@@ -45,7 +45,7 @@ class FindActivatedCurrencies implements FindActivatedCurrenciesInterface, Cache
     /**
      * {@inheritdoc}
      *
-     * @throws DBALException
+     * @throws \Doctrine\DBAL\Exception
      */
     public function forAllChannels(): array
     {
@@ -73,7 +73,7 @@ class FindActivatedCurrencies implements FindActivatedCurrenciesInterface, Cache
     /**
      * @return array
      *
-     * @throws DBALException
+     * @throws \Doctrine\DBAL\Exception
      */
     private function fetchActivatedCurrenciesForAllChannels(): array
     {

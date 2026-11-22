@@ -71,7 +71,7 @@ class RemoveNonExistingProductValuesSubscriberSpec extends ObjectBehavior
         $event = new GenericEvent($attributeOption);
 
         $user = new User();
-        $token = new UsernamePasswordToken($user, 'password', 'providerKey');
+        $token = new UsernamePasswordToken($user, 'main', []);
         $tokenStorage->getToken()->willReturn($token);
         $jobInstance = new JobInstance();
         $jobInstanceRepository->findOneByIdentifier('job_name')->willReturn($jobInstance);

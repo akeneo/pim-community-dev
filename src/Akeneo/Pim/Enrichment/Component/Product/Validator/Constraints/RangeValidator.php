@@ -22,7 +22,7 @@ class RangeValidator extends BaseRangeValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof Range) {
             throw new UnexpectedTypeException($constraint, Range::class);

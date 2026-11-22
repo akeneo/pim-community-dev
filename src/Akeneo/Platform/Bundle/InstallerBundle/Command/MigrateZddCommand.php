@@ -6,6 +6,7 @@ namespace Akeneo\Platform\Bundle\InstallerBundle\Command;
 
 use Doctrine\DBAL\Connection;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -15,9 +16,9 @@ use Webmozart\Assert\Assert;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
+#[AsCommand(name: 'pim:zdd-migration:migrate')]
 final class MigrateZddCommand extends Command
 {
-    protected static $defaultName = 'pim:zdd-migration:migrate';
 
     /** @var ZddMigration[] */
     private array $zddMigrations;
@@ -47,14 +48,14 @@ final class MigrateZddCommand extends Command
     {
         if (!$this->tableExists('pim_one_time_task')) {
             $this->logger->warning(
-                sprintf('%s - skip - Table pim_one_time_task does not exist', self::$defaultName),
+                sprintf('%s - skip - Table pim_one_time_task does not exist', $this->getName()),
                 ['action' => 'skip']
             );
 
             return Command::SUCCESS;
         }
 
-        $this->logger->notice(sprintf('%s - start_command', self::$defaultName), [
+        $this->logger->notice(sprintf('%s - start_command', $this->getName()), [
             'action' => 'start_command'
         ]);
 
@@ -64,7 +65,7 @@ final class MigrateZddCommand extends Command
             if (!$this->isMigrated($zddMigration)) {
                 try {
                     $this->logger->notice(
-                        sprintf('%s - start_migration - %s', self::$defaultName, $zddMigration->getName()),
+                        sprintf('%s - start_migration - %s', $this->getName(), $zddMigration->getName()),
                         [
                             'action' => 'start_migration',
                             'migration_name' => $zddMigration->getName(),
@@ -74,7 +75,7 @@ final class MigrateZddCommand extends Command
                     $zddMigration->migrate();
                     $duration = time() - $startMigrationTime;
                     $this->logger->notice(
-                        sprintf('%s - end_migration - %s in %ss', self::$defaultName, $zddMigration->getName(), $duration),
+                        sprintf('%s - end_migration - %s in %ss', $this->getName(), $zddMigration->getName(), $duration),
                         [
                             'action' => 'end_migration',
                             'migration_name' => $zddMigration->getName(),
@@ -85,7 +86,7 @@ final class MigrateZddCommand extends Command
                     $migrationCount++;
                 } catch (\Throwable $e) {
                     $this->logger->error(
-                        sprintf('%s - errored_migration - %s', self::$defaultName, $zddMigration->getName()),
+                        sprintf('%s - errored_migration - %s', $this->getName(), $zddMigration->getName()),
                         [
                             'action' => 'errored_migration',
                             'migration_name' => $zddMigration->getName(),
@@ -100,7 +101,7 @@ final class MigrateZddCommand extends Command
             }
         }
 
-        $this->logger->notice(sprintf('%s - end_command - %d migration(s) done', self::$defaultName, $migrationCount), [
+        $this->logger->notice(sprintf('%s - end_command - %d migration(s) done', $this->getName(), $migrationCount), [
             'action' => 'end_command',
             'migrations_done' => $migrationCount,
         ]);

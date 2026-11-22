@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class DateValidator extends BaseDateValidator
 {
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof Date) {
             throw new UnexpectedTypeException($constraint, Date::class);

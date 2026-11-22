@@ -25,7 +25,7 @@ class DeleteUniqueValueInDatabaseIntegration extends TestCase
 
         $isValueExistingInUniqueTable = $this
             ->get('database_connection')
-            ->fetchColumn('SELECT EXISTS(SELECT * FROM pim_catalog_product_unique_data WHERE attribute_id = :attribute_id)', [
+            ->fetchOne('SELECT EXISTS(SELECT * FROM pim_catalog_product_unique_data WHERE attribute_id = :attribute_id)', [
                 'attribute_id' => $attributeId
             ], 0);
 
@@ -35,7 +35,7 @@ class DeleteUniqueValueInDatabaseIntegration extends TestCase
 
         $isValueExistingInUniqueTable = $this
             ->get('database_connection')
-            ->fetchColumn('SELECT EXISTS(SELECT * FROM pim_catalog_product_unique_data where attribute_id = :attribute_id)', [
+            ->fetchOne('SELECT EXISTS(SELECT * FROM pim_catalog_product_unique_data where attribute_id = :attribute_id)', [
                 'attribute_id' => $attributeId
             ], 0);
 

@@ -15,6 +15,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Monolog\Handler\ConsoleHandler;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -31,10 +32,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2013 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/MIT MIT
  */
+#[AsCommand(name: 'akeneo:batch:job', description: '[Internal] Please use "akeneo:batch:publish-job-to-queue" to launch a registered job instance')]
 class BatchCommand extends Command
 {
-    protected static $defaultName = 'akeneo:batch:job';
-    protected static $defaultDescription = '[Internal] Please use "akeneo:batch:publish-job-to-queue" to launch a registered job instance';
 
     const EXIT_SUCCESS_CODE = 0;
     const EXIT_ERROR_CODE = 1;

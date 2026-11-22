@@ -28,7 +28,7 @@ class TranslatorDecorator implements TranslatorInterface, LocaleAwareInterface, 
     /**
      * {@inheritdoc}
      */
-    public function trans(?string $id, array $parameters = [], string $domain = null, string $locale = null)
+    public function trans(?string $id, array $parameters = [], string $domain = null, string $locale = null): string
     {
         return $this->symfonyTranslator->trans($id, $parameters, $domain, $locale);
     }
@@ -61,7 +61,7 @@ class TranslatorDecorator implements TranslatorInterface, LocaleAwareInterface, 
     /**
      * {@inheritdoc}
      */
-    public function getLocale()
+    public function getLocale(): string
     {
         Assert::implementsInterface($this->symfonyTranslator, LocaleAwareInterface::class);
 
@@ -87,10 +87,17 @@ class TranslatorDecorator implements TranslatorInterface, LocaleAwareInterface, 
     /**
      * {@inheritdoc}
      */
-    public function getCatalogue($locale = null)
+    public function getCatalogue($locale = null): \Symfony\Component\Translation\MessageCatalogueInterface
     {
         Assert::implementsInterface($this->symfonyTranslator, TranslatorBagInterface::class);
 
         return $this->symfonyTranslator->getCatalogue($locale);
+    }
+
+    public function getCatalogues(): array
+    {
+        Assert::implementsInterface($this->symfonyTranslator, TranslatorBagInterface::class);
+
+        return $this->symfonyTranslator->getCatalogues();
     }
 }

@@ -8,6 +8,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Crit
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Doctrine\DBAL\Connection;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
@@ -18,10 +19,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+#[AsCommand(name: 'pim:data-quality-insights:initialize-products-evaluations', description: 'Initialize the evaluations of all the products and product models.')]
 final class InitializeProductsEvaluationsCommand extends Command
 {
-    protected static $defaultName = 'pim:data-quality-insights:initialize-products-evaluations';
-    protected static $defaultDescription = 'Initialize the evaluations of all the products and product models.';
 
     private const BATCH_SIZE = 100;
 

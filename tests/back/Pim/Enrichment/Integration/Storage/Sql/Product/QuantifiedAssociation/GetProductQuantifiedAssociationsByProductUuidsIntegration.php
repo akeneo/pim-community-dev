@@ -378,7 +378,7 @@ class GetProductQuantifiedAssociationsByProductUuidsIntegration extends Abstract
         WHERE code = 'root_product_model'
 SQL;
 
-        $connection->executeUpdate($query);
+        $connection->executeStatement($query);
 
         $uuidVariantProduct1 = $this->getProductUuid('variant_product_1');
         $actual = $this->getQuery()->fromProductUuids([$uuidVariantProduct1]);

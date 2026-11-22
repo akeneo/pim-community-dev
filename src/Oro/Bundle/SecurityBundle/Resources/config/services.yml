@@ -171,9 +171,15 @@ services:
         arguments:
             - '%kernel.bundles%'
             - ["Controller"]
-            - '@annotation_reader'
+            - '@oro_security.acl.annotation_reader'
         tags:
             - { name: oro_security.acl.config_loader }
+
+    # Symfony 7 no longer provides the "annotation_reader" service: the @Acl and @AclAncestor
+    # docblock annotations are read with a dedicated doctrine/annotations reader.
+    oro_security.acl.annotation_reader:
+        public: false
+        class: Doctrine\Common\Annotations\AnnotationReader
 
     oro_security.acl.yaml_config_loader:
         public: false

@@ -10,14 +10,14 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Comma
 
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobLauncher\SchedulePeriodicTasks;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(name: 'pim:data-quality-insights:schedule-periodic-tasks', description: 'Schedule the periodic tasks of Data-Quality-Insights.')]
 final class SchedulePeriodicTasksCommand extends Command
 {
-    protected static $defaultName = 'pim:data-quality-insights:schedule-periodic-tasks';
-    protected static $defaultDescription = 'Schedule the periodic tasks of Data-Quality-Insights.';
 
     private SchedulePeriodicTasks $schedulePeriodicTasks;
     private FeatureFlag $featureFlag;

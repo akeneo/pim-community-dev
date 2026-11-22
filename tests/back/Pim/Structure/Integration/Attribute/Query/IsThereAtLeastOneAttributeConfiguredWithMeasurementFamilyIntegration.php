@@ -59,7 +59,7 @@ VALUES
 SQL;
         /** @var Connection $connection */
         $connection = $this->get('database_connection');
-        $connection->executeUpdate($insertAttributeGroup);
-        $connection->executeUpdate($insertMetricAttribute, ['measurementFamily' => $measurementFamily]);
+        $connection->executeStatement($insertAttributeGroup);
+        $connection->executeStatement($insertMetricAttribute, ['measurementFamily' => $measurementFamily]);
     }
 }

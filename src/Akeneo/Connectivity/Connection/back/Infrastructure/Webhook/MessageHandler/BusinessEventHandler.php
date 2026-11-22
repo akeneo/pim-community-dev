@@ -9,10 +9,9 @@ use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\ProcessFactory
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 use Akeneo\Platform\Component\EventQueue\BulkEventNormalizer;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
 use Symfony\Component\Process\Process;
 
-class BusinessEventHandler implements MessageSubscriberInterface
+class BusinessEventHandler
 {
     public function __construct(
         private string $projectDir,
@@ -20,13 +19,6 @@ class BusinessEventHandler implements MessageSubscriberInterface
         private BulkEventNormalizer $normalizer,
         private ProcessFactoryInterface $processFactory
     ) {
-    }
-
-    public static function getHandledMessages(): iterable
-    {
-        yield BulkEventInterface::class => [
-            'from_transport' => 'webhook',
-        ];
     }
 
     public function __invoke(BulkEventInterface $event): void

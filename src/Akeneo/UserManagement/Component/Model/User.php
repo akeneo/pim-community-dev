@@ -207,7 +207,7 @@ class User implements UserInterface, EquatableInterface
     /**
      * {@inheritdoc}
      */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
         $this->plainPassword = null;
     }
@@ -239,9 +239,10 @@ class User implements UserInterface, EquatableInterface
     /**
      * {@inheritDoc}
      */
-    public function getUserIdentifier()
+    public function getUserIdentifier(): string
     {
-        return $this->username;
+        // Symfony 6+ requires a string, a user that is not saved yet may have no username
+        return (string) $this->username;
     }
 
     /**

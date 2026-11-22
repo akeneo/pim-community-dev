@@ -352,7 +352,7 @@ UPDATE pim_catalog_attribute_group
 SET updated = '2018-01-01 12:00:00'
 WHERE code IN ('attributeGroupB', 'other')
 SQL;
-        $connection->executeUpdate($query);
+        $connection->executeStatement($query);
     }
 
     /**

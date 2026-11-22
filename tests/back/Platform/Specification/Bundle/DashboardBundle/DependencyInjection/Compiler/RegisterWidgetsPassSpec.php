@@ -33,7 +33,7 @@ class RegisterWidgetsPassSpec extends ObjectBehavior
                 'pim_dashboard.widget.foo' === $params[0]->__toString() &&
                 10 === $params[1]
             ;
-        }))->shouldBeCalled();
+        }))->willReturn($definition)->shouldBeCalled();
 
         $definition->addMethodCall('add', Argument::that(function ($params) {
             $result =
@@ -43,7 +43,7 @@ class RegisterWidgetsPassSpec extends ObjectBehavior
             ;
 
             return $result;
-        }))->shouldBeCalled();
+        }))->willReturn($definition)->shouldBeCalled();
 
         $this->process($container);
     }

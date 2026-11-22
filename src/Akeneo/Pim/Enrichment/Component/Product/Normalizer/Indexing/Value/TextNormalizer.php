@@ -18,7 +18,7 @@ class TextNormalizer extends AbstractProductValueNormalizer implements Normalize
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         if (! $data instanceof ValueInterface) {
             return false;
@@ -37,5 +37,10 @@ class TextNormalizer extends AbstractProductValueNormalizer implements Normalize
     protected function getNormalizedData(ValueInterface $value)
     {
         return $value->getData();
+    }
+
+    public function getSupportedTypes(?string $format): array
+    {
+        return ['*' => false];
     }
 }

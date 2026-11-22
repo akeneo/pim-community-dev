@@ -102,7 +102,7 @@ JSON;
     {
         /** @var Connection $connection */
         $connection = $this->get('database_connection');
-        $affected = $connection->exec('UPDATE pim_catalog_family SET updated="2019-05-15 16:27:00" WHERE code IN ("familyA","familyA1")');
+        $affected = $connection->executeStatement('UPDATE pim_catalog_family SET updated="2019-05-15 16:27:00" WHERE code IN ("familyA","familyA1")');
         $this->assertEquals(2, $affected, 'There is more result as expected during test setup, the test will not work.');
 
         $client = $this->createAuthenticatedClient();
@@ -143,7 +143,7 @@ JSON;
     {
         /** @var Connection $connection */
         $connection = $this->get('database_connection');
-        $affected = $connection->exec('UPDATE pim_catalog_family SET updated="2019-05-15 16:27:00" WHERE code IN ("familyA")');
+        $affected = $connection->executeStatement('UPDATE pim_catalog_family SET updated="2019-05-15 16:27:00" WHERE code IN ("familyA")');
         $this->assertEquals(1, $affected, 'There is more result as expected during test setup, the test will not work.');
 
         $client = $this->createAuthenticatedClient();

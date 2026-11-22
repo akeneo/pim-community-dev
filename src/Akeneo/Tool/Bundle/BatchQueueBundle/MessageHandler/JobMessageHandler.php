@@ -7,7 +7,6 @@ namespace Akeneo\Tool\Bundle\BatchQueueBundle\MessageHandler;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessageInterface;
 use Akeneo\Tool\Component\BatchQueue\Queue\ScheduledJobMessageInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
 use Symfony\Component\Process\Process;
 
 /**
@@ -16,23 +15,12 @@ use Symfony\Component\Process\Process;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-final class JobMessageHandler implements MessageSubscriberInterface
+final class JobMessageHandler
 {
     public function __construct(
         private LoggerInterface $logger,
         private string $projectDir
     ) {
-    }
-
-    public static function getHandledMessages(): iterable
-    {
-        yield JobExecutionMessageInterface::class => [
-            'method' => 'handleJobExecution',
-        ];
-
-        yield ScheduledJobMessageInterface::class => [
-            'method' => 'handleScheduledJob',
-        ];
     }
 
     public function handleJobExecution(JobExecutionMessageInterface $jobExecutionMessage)

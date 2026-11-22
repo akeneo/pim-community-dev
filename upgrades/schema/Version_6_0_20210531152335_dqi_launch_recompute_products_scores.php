@@ -5,12 +5,17 @@ namespace Pim\Upgrade\Schema;
 use Akeneo\Tool\Component\Batch\Job;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Akeneo\Platform\Bundle\InstallerBundle\Migration\ContainerAwareMigrationInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
-final class Version_6_0_20210531152335_dqi_launch_recompute_products_scores extends AbstractMigration implements ContainerAwareInterface
+final class Version_6_0_20210531152335_dqi_launch_recompute_products_scores extends AbstractMigration implements ContainerAwareMigrationInterface
 {
-    use ContainerAwareTrait;
+    private ?ContainerInterface $container = null;
+
+    public function setContainer(?ContainerInterface $container = null): void
+    {
+        $this->container = $container;
+    }
 
     public function up(Schema $schema) : void
     {

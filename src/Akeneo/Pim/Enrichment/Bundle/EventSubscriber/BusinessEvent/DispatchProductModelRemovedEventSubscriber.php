@@ -21,7 +21,7 @@ use Symfony\Component\Security\Core\Security;
  */
 final class DispatchProductModelRemovedEventSubscriber implements DispatchBufferedPimEventSubscriberInterface
 {
-    private Security $security;
+    private \Symfony\Bundle\SecurityBundle\Security $security;
     private MessageBusInterface $messageBus;
     private int $maxBulkSize;
     private LoggerInterface $logger;
@@ -31,7 +31,7 @@ final class DispatchProductModelRemovedEventSubscriber implements DispatchBuffer
     private array $events = [];
 
     public function __construct(
-        Security $security,
+        \Symfony\Bundle\SecurityBundle\Security $security,
         MessageBusInterface $messageBus,
         int $maxBulkSize,
         LoggerInterface $logger,

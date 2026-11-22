@@ -4,6 +4,7 @@ namespace Akeneo\Platform\Bundle\InstallerBundle\Command;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Doctrine\DBAL\Connection;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
@@ -15,10 +16,9 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+#[AsCommand(name: 'pim:installer:check-attributes', description: 'Check attributes to find any custom ones that would be incompatible with Saas')]
 class CheckAttributesCompatibilityWithSaasCommand extends Command
 {
-    protected static $defaultName = 'pim:installer:check-attributes';
-    protected static $defaultDescription = 'Check attributes to find any custom ones that would be incompatible with Saas';
 
     public function __construct(
         private Connection $connection

@@ -38,7 +38,7 @@ class RegisterDataCollectorPassSpec extends ObjectBehavior
             ]
         );
 
-        $registryDef->addMethodCall(Argument::any(), Argument::any())->shouldBeCalled();
+        $registryDef->addMethodCall(Argument::any(), Argument::any())->willReturn($registryDef)->shouldBeCalled();
 
         $this->process($container);
     }

@@ -9,6 +9,7 @@ use Akeneo\Pim\Structure\Bundle\ReferenceData\RequirementChecker\ReferenceDataNa
 use Akeneo\Pim\Structure\Component\Model\ReferenceDataConfigurationInterface;
 use Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -20,9 +21,9 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+#[AsCommand(name: 'pim:reference-data:check')]
 class CheckRequirementsCommand extends Command
 {
-    protected static $defaultName = 'pim:reference-data:check';
 
     /** @var ConfigurationRegistryInterface */
     private $configurationRegistry;

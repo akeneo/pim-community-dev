@@ -12,6 +12,7 @@ use Akeneo\UserManagement\Component\Repository\RoleRepositoryInterface;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\BrowserKit\Cookie;
+use Symfony\Component\HttpFoundation\Session\SessionFactoryInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -29,7 +30,8 @@ final class AuthenticatorHelper
     private GroupRepositoryInterface $groupRepository;
     private RoleRepositoryInterface $roleRepository;
     private TokenStorageInterface $tokenStorage;
-    private SessionInterface $session;
+    private SessionFactoryInterface $sessionFactory;
+    private ?SessionInterface $session = null;
 
     public function __construct(
         UserRepositoryInterface $userRepository,
@@ -38,7 +40,7 @@ final class AuthenticatorHelper
         GroupRepositoryInterface $groupRepository,
         RoleRepositoryInterface $roleRepository,
         TokenStorageInterface $tokenStorage,
-        SessionInterface $session
+        SessionFactoryInterface $sessionFactory
     ) {
         $this->userRepository = $userRepository;
         $this->userFactory = $userFactory;
@@ -46,7 +48,7 @@ final class AuthenticatorHelper
         $this->groupRepository = $groupRepository;
         $this->roleRepository = $roleRepository;
         $this->tokenStorage = $tokenStorage;
-        $this->session = $session;
+        $this->sessionFactory = $sessionFactory;
     }
 
     public function logIn(string $username, ?KernelBrowser $client = null): void
@@ -59,6 +61,8 @@ final class AuthenticatorHelper
         $token = new UsernamePasswordToken($user, 'main', $user->getRoles());
         $this->tokenStorage->setToken($token);
 
+        // Symfony 6+ no longer provides a "session" service: the test session is created once and reused
+        $this->session ??= $this->sessionFactory->createSession();
         $this->session->set('_security_main', serialize($token));
         $this->session->save();
 

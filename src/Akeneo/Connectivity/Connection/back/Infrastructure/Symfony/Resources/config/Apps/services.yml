@@ -24,7 +24,7 @@ services:
     # OTHERS
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession:
         arguments:
-            - '@session'
+            - '@request_stack'
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\AppRoleWithScopesFactory:
         arguments:

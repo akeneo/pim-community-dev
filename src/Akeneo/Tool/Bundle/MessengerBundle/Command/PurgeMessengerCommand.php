@@ -4,7 +4,8 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Bundle\MessengerBundle\Command;
 
 use Akeneo\Tool\Bundle\MessengerBundle\Query\PurgeDoctrineQueueQuery;
-use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception as DBALException;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -16,10 +17,9 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+#[AsCommand(name: 'akeneo:messenger:doctrine:purge-messages', description: 'Purges the messenger SQL table in terms of the given retention time (default is 7200 seconds)')]
 class PurgeMessengerCommand extends Command
 {
-    protected static $defaultName = 'akeneo:messenger:doctrine:purge-messages';
-    protected static $defaultDescription = 'Purges the messenger SQL table in terms of the given retention time (default is 7200 seconds)';
 
     public function __construct(private PurgeDoctrineQueueQuery $purgeDoctrineQueue)
     {

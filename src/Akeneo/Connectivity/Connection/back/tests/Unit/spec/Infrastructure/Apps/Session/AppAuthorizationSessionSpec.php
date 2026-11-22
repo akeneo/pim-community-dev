@@ -7,13 +7,15 @@ namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Apps\Session;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppAuthorization;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession;
 use PhpSpec\ObjectBehavior;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class AppAuthorizationSessionSpec extends ObjectBehavior
 {
-    public function let(SessionInterface $session): void
+    public function let(RequestStack $requestStack, SessionInterface $session): void
     {
-        $this->beConstructedWith($session);
+        $requestStack->getSession()->willReturn($session);
+        $this->beConstructedWith($requestStack);
     }
 
     public function it_is_an_app_authorization_session(): void

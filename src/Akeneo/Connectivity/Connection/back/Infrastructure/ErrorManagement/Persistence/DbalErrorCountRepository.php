@@ -30,7 +30,7 @@ VALUES(:connection_code, :error_datetime, :error_count, :error_type)
 ON DUPLICATE KEY UPDATE error_count = error_count + :error_count
 SQL;
 
-        $this->dbalConnection->executeUpdate(
+        $this->dbalConnection->executeStatement(
             $upsertQuery,
             [
                 'connection_code' => (string) $hourlyErrorCount->connectionCode(),

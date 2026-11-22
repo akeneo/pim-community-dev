@@ -8,7 +8,6 @@ use Akeneo\UserManagement\Component\Model\RoleInterface;
 use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\UserManagement\Component\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Webmozart\Assert\Assert;
 
@@ -16,7 +15,7 @@ use Webmozart\Assert\Assert;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class UserNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
+class UserNormalizer implements NormalizerInterface
 {
     public function __construct(private readonly DateTimeNormalizer $dateTimeNormalizer)
     {
@@ -68,13 +67,13 @@ class UserNormalizer implements NormalizerInterface, CacheableSupportsMethodInte
         ];
     }
 
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return $data instanceof UserInterface && \in_array($format, ['standard', 'array']);
     }
 
-    public function hasCacheableSupportsMethod(): bool
+    public function getSupportedTypes(?string $format): array
     {
-        return true;
+        return ['*' => true];
     }
 }

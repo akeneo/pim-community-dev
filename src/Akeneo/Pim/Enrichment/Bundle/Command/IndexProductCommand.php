@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductMo
 use Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\GetExistingProductUuids;
 use Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\GetProductUuidsNotSynchronisedBetweenEsAndMysql;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
@@ -23,13 +24,12 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+#[AsCommand(name: 'pim:product:index')]
 class IndexProductCommand extends Command
 {
     private const DEFAULT_BATCH_SIZE = 1000;
 
     private const ERROR_CODE_USAGE = 1;
-
-    protected static $defaultName = 'pim:product:index';
 
     public function __construct(
         private readonly ProductAndAncestorsIndexer $productAndAncestorsIndexer,

@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints\Choice;
  */
 class Channel extends Choice
 {
-    public $message = 'The channel you selected does not exist.';
+    public string $message = 'The channel you selected does not exist.';
 
     /**
      * {@inheritdoc}

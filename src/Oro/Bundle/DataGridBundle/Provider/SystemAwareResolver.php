@@ -2,10 +2,9 @@
 
 namespace Oro\Bundle\DataGridBundle\Provider;
 
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class SystemAwareResolver implements ContainerAwareInterface
+class SystemAwareResolver
 {
     const PARAMETER_REGEX = '#%([\w\._]+)%#';
     const STATIC_METHOD_REGEX = '#%([\w\._]+)%::([\w\._]+)#';

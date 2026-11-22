@@ -26,7 +26,7 @@ class IndexMigrationRepository implements IndexMigrationRepositoryInterface
             ON DUPLICATE KEY UPDATE `values`= :values;
         SQL;
 
-        $this->connection->executeUpdate(
+        $this->connection->executeStatement(
             $sql,
             [
                 'index_alias' => $indexMigration->getIndexAlias(),

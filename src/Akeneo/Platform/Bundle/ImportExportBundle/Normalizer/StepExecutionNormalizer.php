@@ -5,7 +5,6 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Normalizer;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use Doctrine\Common\Collections\Collection;
-use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -16,7 +15,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class StepExecutionNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
+class StepExecutionNormalizer implements NormalizerInterface
 {
     protected TranslatorInterface $translator;
     protected PresenterInterface $presenter;
@@ -29,7 +28,7 @@ class StepExecutionNormalizer implements NormalizerInterface, CacheableSupportsM
         $this->presenter = $presenter;
     }
 
-    public function normalize($stepExecution, $format = null, array $context = [])
+    public function normalize($stepExecution, $format = null, array $context = []): \ArrayObject|array|string|int|float|bool|null
     {
         $normalizedWarnings = $this->normalizeWarnings($stepExecution->getWarnings(), $context);
 
@@ -55,14 +54,14 @@ class StepExecutionNormalizer implements NormalizerInterface, CacheableSupportsM
         ];
     }
 
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return $data instanceof StepExecution;
     }
 
-    public function hasCacheableSupportsMethod(): bool
+    public function getSupportedTypes(?string $format): array
     {
-        return true;
+        return ['*' => true];
     }
 
     /**

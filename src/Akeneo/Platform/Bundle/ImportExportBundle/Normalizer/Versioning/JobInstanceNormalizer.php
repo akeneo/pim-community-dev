@@ -4,7 +4,6 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Normalizer\Versioning;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Security\CredentialsEncrypterRegistry;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
-use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -14,7 +13,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class JobInstanceNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
+class JobInstanceNormalizer implements NormalizerInterface
 {
     /** @var string[] */
     protected array $supportedFormats = ['flat'];
@@ -29,7 +28,7 @@ class JobInstanceNormalizer implements NormalizerInterface, CacheableSupportsMet
      *
      * @return array
      */
-    public function normalize($jobInstance, $format = null, array $context = [])
+    public function normalize($jobInstance, $format = null, array $context = []): \ArrayObject|array|string|int|float|bool|null
     {
         $parameters = $jobInstance->getRawParameters();
         if (isset($parameters['storage'])) {
@@ -46,13 +45,13 @@ class JobInstanceNormalizer implements NormalizerInterface, CacheableSupportsMet
         ];
     }
 
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return $data instanceof JobInstance && in_array($format, $this->supportedFormats);
     }
 
-    public function hasCacheableSupportsMethod(): bool
+    public function getSupportedTypes(?string $format): array
     {
-        return true;
+        return ['*' => true];
     }
 }

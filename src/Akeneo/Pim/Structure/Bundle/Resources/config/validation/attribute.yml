@@ -94,7 +94,7 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
         code:
             - Type: string
             - NotBlank: ~
-            - Akeneo\Pim\Structure\Component\Validator\Constraints\BlacklistedAttributeCode: {}
+            - Akeneo\Pim\Structure\Component\Validator\Constraints\BlacklistedAttributeCode: ~
             - Regex:
                 pattern: /^[a-zA-Z0-9_]+$/
                 message: Attribute code may contain only letters, numbers and underscore
@@ -182,7 +182,7 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                     - pim_reference_data_simpleselect
         maxCharacters:
             - Type: numeric
-            - Akeneo\Pim\Structure\Component\Validator\Constraints\NotDecimal: {}
+            - Akeneo\Pim\Structure\Component\Validator\Constraints\NotDecimal: ~
             - GreaterThanOrEqual:
                 value: 0
                 groups:
@@ -214,7 +214,7 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
         sortOrder:
             - NotNull: ~
             - Type: numeric
-            - Akeneo\Pim\Structure\Component\Validator\Constraints\NotDecimal: {}
+            - Akeneo\Pim\Structure\Component\Validator\Constraints\NotDecimal: ~
             - GreaterThanOrEqual:
                 value: 0
         required:

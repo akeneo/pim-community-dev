@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -56,7 +56,7 @@ class UserController
     protected SimpleFactoryInterface $factory;
     protected UserPasswordHasherInterface $encoder;
     private EventDispatcherInterface $eventDispatcher;
-    private Session $session;
+    private RequestStack $requestStack;
     private ObjectManager $objectManager;
     private NumberFactory $numberFactory;
     private RemoverInterface $remover;
@@ -74,7 +74,7 @@ class UserController
         SimpleFactoryInterface $factory,
         UserPasswordHasherInterface $encoder,
         EventDispatcherInterface $eventDispatcher,
-        Session $session,
+        RequestStack $requestStack,
         ObjectManager $objectManager,
         RemoverInterface $remover,
         NumberFactory $numberFactory,
@@ -91,7 +91,7 @@ class UserController
         $this->factory = $factory;
         $this->encoder = $encoder;
         $this->eventDispatcher = $eventDispatcher;
-        $this->session = $session;
+        $this->requestStack = $requestStack;
         $this->objectManager = $objectManager;
         $this->remover = $remover;
         $this->numberFactory = $numberFactory;
@@ -209,7 +209,7 @@ class UserController
             UserEvent::POST_UPDATE
         );
 
-        $this->session->remove('dataLocale');
+        $this->requestStack->getSession()->remove('dataLocale');
 
         return $user;
     }

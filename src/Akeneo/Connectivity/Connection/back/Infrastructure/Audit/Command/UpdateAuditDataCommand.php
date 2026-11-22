@@ -8,6 +8,7 @@ use Akeneo\Connectivity\Connection\Infrastructure\Audit\UpdateAuditData;
 use Doctrine\DBAL\Exception\ConnectionException;
 use Doctrine\DBAL\Exception\TableNotFoundException;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -17,12 +18,11 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
+#[AsCommand(name: 'akeneo:connectivity-audit:update-data')]
 class UpdateAuditDataCommand extends Command
 {
     private const MYSQL_IS_UNAVAILABLE_ERROR_CODE = 2002;
     private const TABLE_NOT_FOUND_ERROR_CODE = 42;
-
-    protected static $defaultName = 'akeneo:connectivity-audit:update-data';
 
     public function __construct(
         private UpdateAuditData $updateAuditData,

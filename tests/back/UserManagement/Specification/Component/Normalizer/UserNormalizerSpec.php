@@ -14,13 +14,12 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class UserNormalizerSpec extends ObjectBehavior
 {
     function let(
-        DateTimeNormalizer $dateTimeNormalizer,
+        NormalizerInterface $dateTimeNormalizer,
         NormalizerInterface $fileNormalizer,
         SecurityFacade $securityFacade,
         TokenStorageInterface $tokenStorage,

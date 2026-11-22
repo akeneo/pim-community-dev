@@ -314,7 +314,7 @@ services:
             - '@pim_user.repository.group'
             - '@pim_user.repository.role'
             - '@security.token_storage'
-            - '@session'
+            - '@session.factory'
 
     akeneo_integration_tests.helper.web_client:
         class: 'Akeneo\Test\IntegrationTestsBundle\Helper\WebClientHelper'

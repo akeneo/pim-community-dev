@@ -4,7 +4,6 @@ namespace Akeneo\Pim\Structure\Component\Normalizer\Standard;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -12,7 +11,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeGroupNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
+class AttributeGroupNormalizer implements NormalizerInterface
 {
     /** @var NormalizerInterface */
     protected $translationNormalizer;
@@ -35,7 +34,7 @@ class AttributeGroupNormalizer implements NormalizerInterface, CacheableSupports
     /**
      * {@inheritdoc}
      */
-    public function normalize($attributeGroup, $format = null, array $context = [])
+    public function normalize($attributeGroup, $format = null, array $context = []): \ArrayObject|array|string|int|float|bool|null
     {
         return [
             'code'       => $attributeGroup->getCode(),
@@ -48,13 +47,13 @@ class AttributeGroupNormalizer implements NormalizerInterface, CacheableSupports
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return $data instanceof AttributeGroupInterface && 'standard' === $format;
     }
 
-    public function hasCacheableSupportsMethod(): bool
+    public function getSupportedTypes(?string $format): array
     {
-        return true;
+        return ['*' => true];
     }
 }

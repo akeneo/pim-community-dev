@@ -39,6 +39,6 @@ CREATE TABLE IF NOT EXISTS lock_keys (
     key_expiration INTEGER UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 SQL;
-        $this->connection->exec($sql);
+        $this->connection->executeStatement($sql);
     }
 }

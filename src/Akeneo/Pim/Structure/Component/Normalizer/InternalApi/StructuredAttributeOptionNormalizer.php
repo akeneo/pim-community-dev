@@ -38,7 +38,7 @@ class StructuredAttributeOptionNormalizer extends AttributeOptionNormalizer
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = []): \ArrayObject|array|string|int|float|bool|null
     {
         $optionsValues = $context['onlyActivatedLocales'] ?
             $this->ensureEmptyOptionValues($object->getOptionValues()) :

@@ -42,7 +42,7 @@ INSERT INTO `akeneo_batch_job_execution` (`job_instance_id`, `pid`, `user`, `sta
 VALUES
 	(:job_instance_id, 86472, 'admin', 1, '2020-10-13 13:05:49', '2020-10-13 13:06:10', '2020-10-13 13:05:45', '2020-10-13 13:06:09', '2020-10-13 13:06:09', 'COMPLETED', '', 'a:0:{}', '/srv/pim/var/logs/batch/19/batch_b2b74e2d3bc04a1918954dae504009718a46a874.log', '{}');
 SQL;
-        $this->sqlConnection->executeUpdate($insertJobExecution, ['job_instance_id' => $JobInstanceId]);
+        $this->sqlConnection->executeStatement($insertJobExecution, ['job_instance_id' => $JobInstanceId]);
         $jobExecutionId = (int)$this->sqlConnection->lastInsertId();
 
         $insertStepExecutions = <<<SQL
@@ -53,7 +53,7 @@ VALUES
 	(:job_execution_id, 'import_associations', 1, 0, 0, 0, '2020-10-13 13:06:09', '2020-10-13 13:06:10', 'COMPLETED', '', 0, 'a:0:{}', 'a:0:{}', 'a:0:{}', '{"processedItems": 0, "totalItems": 0}')
 ;
 SQL;
-        $this->sqlConnection->executeUpdate($insertStepExecutions, ['job_execution_id' => $jobExecutionId]);
+        $this->sqlConnection->executeStatement($insertStepExecutions, ['job_execution_id' => $jobExecutionId]);
 
         $this->archivistFilesystem->write("import/csv_product_import/$jobExecutionId/log/batch_b2b74e2d3bc04a1918954dae504009718a46a874.log", 'content');
 

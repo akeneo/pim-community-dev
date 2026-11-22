@@ -5,7 +5,6 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Normalizer;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\Batch\Job\StoppableJobInterface;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
-use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -18,7 +17,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class JobExecutionNormalizer implements NormalizerInterface, NormalizerAwareInterface, CacheableSupportsMethodInterface
+class JobExecutionNormalizer implements NormalizerInterface, NormalizerAwareInterface
 {
     use NormalizerAwareTrait;
 
@@ -36,7 +35,7 @@ class JobExecutionNormalizer implements NormalizerInterface, NormalizerAwareInte
         $this->jobRegistry = $jobRegistry;
     }
 
-    public function normalize($jobExecution, $format = null, array $context = [])
+    public function normalize($jobExecution, $format = null, array $context = []): \ArrayObject|array|string|int|float|bool|null
     {
         $jobInstance = $jobExecution->getJobInstance();
         $job = $this->jobRegistry->get($jobInstance->getJobName());
@@ -81,13 +80,13 @@ class JobExecutionNormalizer implements NormalizerInterface, NormalizerAwareInte
         return $result;
     }
 
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return $data instanceof JobExecution;
     }
 
-    public function hasCacheableSupportsMethod(): bool
+    public function getSupportedTypes(?string $format): array
     {
-        return true;
+        return ['*' => true];
     }
 }

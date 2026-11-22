@@ -21,12 +21,12 @@ class BulkEventNormalizer implements NormalizerInterface, DenormalizerInterface
         $this->eventNormalizer = $eventNormalizer;
     }
 
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return $data instanceof BulkEvent;
     }
 
-    public function supportsDenormalization($data, $type, $format = null): bool
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
         return $type === BulkEvent::class;
     }
@@ -60,5 +60,10 @@ class BulkEventNormalizer implements NormalizerInterface, DenormalizerInterface
         }, $data);
 
         return new BulkEvent($events);
+    }
+
+    public function getSupportedTypes(?string $format): array
+    {
+        return ['*' => false];
     }
 }

@@ -3,7 +3,6 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface;
-use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -13,7 +12,7 @@ use Webmozart\Assert\Assert;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MetricNormalizer extends AbstractValueDataNormalizer implements CacheableSupportsMethodInterface
+class MetricNormalizer extends AbstractValueDataNormalizer
 {
     const LABEL_SEPARATOR = '-';
     const MULTIPLE_FIELDS_FORMAT = 'multiple_fields';
@@ -26,14 +25,14 @@ class MetricNormalizer extends AbstractValueDataNormalizer implements CacheableS
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return $data instanceof MetricInterface && in_array($format, $this->supportedFormats);
     }
 
-    public function hasCacheableSupportsMethod(): bool
+    public function getSupportedTypes(?string $format): array
     {
-        return true;
+        return ['*' => true];
     }
 
     /**
@@ -41,7 +40,7 @@ class MetricNormalizer extends AbstractValueDataNormalizer implements CacheableS
      *
      * @param MetricInterface $object
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = []): \ArrayObject|array|string|int|float|bool|null
     {
         $context = $this->resolveContext($context);
         $decimalsAllowed = !array_key_exists('decimals_allowed', $context) || true === $context['decimals_allowed'];

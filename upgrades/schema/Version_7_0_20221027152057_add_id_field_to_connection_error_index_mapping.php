@@ -7,7 +7,7 @@ namespace Pim\Upgrade\Schema;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 use Elasticsearch\ClientBuilder;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Akeneo\Platform\Bundle\InstallerBundle\Migration\ContainerAwareMigrationInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Yaml\Yaml;
 use Webmozart\Assert\Assert;
@@ -15,7 +15,7 @@ use Webmozart\Assert\Assert;
 /**
  * This migration adds a mapped field (id) to connection_error index mapping
  */
-final class Version_7_0_20221027152057_add_id_field_to_connection_error_index_mapping extends AbstractMigration implements ContainerAwareInterface
+final class Version_7_0_20221027152057_add_id_field_to_connection_error_index_mapping extends AbstractMigration implements ContainerAwareMigrationInterface
 {
     private ContainerInterface $container;
 
@@ -127,7 +127,7 @@ final class Version_7_0_20221027152057_add_id_field_to_connection_error_index_ma
         $this->throwIrreversibleMigrationException();
     }
 
-    public function setContainer(ContainerInterface $container = null)
+    public function setContainer(?ContainerInterface $container = null): void
     {
         Assert::notNull($container);
         $this->container = $container;

@@ -6,6 +6,7 @@ namespace Akeneo\Platform\Bundle\InstallerBundle\Command;
 
 use Akeneo\Platform\Bundle\InstallerBundle\InstallStatusManager\InstallStatusManager;
 use Akeneo\Tool\Component\Console\CommandExecutor;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -18,10 +19,9 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+#[AsCommand(name: 'pim:install', description: 'Akeneo PIM Application Installer.')]
 class InstallCommand extends Command
 {
-    protected static $defaultName = 'pim:install';
-    protected static $defaultDescription = 'Akeneo PIM Application Installer.';
 
     private CommandExecutor $commandExecutor;
 

@@ -32,6 +32,6 @@ class InstallerSubscriber implements EventSubscriberInterface
 
     public function createCommunicationChannelTable(): void
     {
-        $this->dbalConnection->exec(CreateViewedAnnouncementsTableQuery::QUERY);
+        $this->dbalConnection->executeStatement(CreateViewedAnnouncementsTableQuery::QUERY);
     }
 }

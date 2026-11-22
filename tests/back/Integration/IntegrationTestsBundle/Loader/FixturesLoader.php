@@ -219,7 +219,7 @@ class FixturesLoader implements FixturesLoaderInterface
     protected function loadSqlFiles(array $files): void
     {
         foreach ($files as $file) {
-            $this->dbConnection->exec(file_get_contents($file));
+            $this->dbConnection->executeStatement(file_get_contents($file));
         }
     }
 
@@ -400,7 +400,7 @@ class FixturesLoader implements FixturesLoaderInterface
     protected function restoreDatabase($filepath): void
     {
         try {
-            $this->dbConnection->exec(file_get_contents($filepath));
+            $this->dbConnection->executeStatement(file_get_contents($filepath));
         } catch (\Doctrine\DBAL\Exception $e) {
             // There can be previous data left in database due to the execution of the previous test.
             //   - When the previous test autocommit its transaction
@@ -412,7 +412,7 @@ class FixturesLoader implements FixturesLoaderInterface
                 $this->experimentalTransactionHelper->abortTransactions();
                 $this->databaseSchemaHandler->reset();
                 $this->experimentalTransactionHelper->beginTransactions();
-                $this->dbConnection->exec(file_get_contents($filepath));
+                $this->dbConnection->executeStatement(file_get_contents($filepath));
             } else {
                 throw $e;
             }
@@ -456,7 +456,7 @@ class FixturesLoader implements FixturesLoaderInterface
         $query = 'SELECT BIN_TO_UUID(uuid) AS uuid FROM pim_catalog_product';
         $productUuids = array_map(
             fn (string $uuid): UuidInterface => Uuid::fromString($uuid),
-            $this->dbConnection->executeQuery($query)->fetchAll(\PDO::FETCH_COLUMN, 0)
+            $this->dbConnection->executeQuery($query)->fetchFirstColumn()
         );
         $this->productIndexer->indexFromProductUuids($productUuids);
     }
@@ -467,7 +467,7 @@ class FixturesLoader implements FixturesLoaderInterface
     protected function indexProductModels(): void
     {
         $query = 'SELECT code FROM pim_catalog_product_model';
-        $productModelCodes = $this->dbConnection->executeQuery($query)->fetchAll(\PDO::FETCH_COLUMN, 0);
+        $productModelCodes = $this->dbConnection->executeQuery($query)->fetchFirstColumn();
         $this->productModelIndexer->indexFromProductModelCodes($productModelCodes);
     }
 

@@ -8,6 +8,7 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration\UpdateIndexMappingWithoutDowntime;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,12 +20,12 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  * @copyright 2024 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+#[AsCommand(name: 'akeneo:pim:zero-downtime-recreate-product-and-product-model-index', description: self::DESCRIPTION)]
 final class ZeroDowntimeRecreateProductAndProductModelIndexCommand extends Command
 {
     private const DEFAULT_BATCH_SIZE = 1000;
 
-    protected static $defaultName = 'akeneo:pim:zero-downtime-recreate-product-and-product-model-index';
-    protected static $defaultDescription = <<<EOL
+    private const DESCRIPTION = <<<EOL
         Zero-downtime reindexing of product and product models. 
         
         Reindex all documents in the product and product model index using Elasticsearch's Reindex API.
@@ -37,7 +38,7 @@ final class ZeroDowntimeRecreateProductAndProductModelIndexCommand extends Comma
         private readonly UpdateIndexMappingWithoutDowntime $updateIndexMappingWithoutDowntime,
         private readonly LoggerInterface $logger,
     ) {
-        parent::__construct(self::$defaultName);
+        parent::__construct();
     }
 
     protected function configure()
@@ -51,7 +52,6 @@ final class ZeroDowntimeRecreateProductAndProductModelIndexCommand extends Comma
                 self::DEFAULT_BATCH_SIZE
             );
     }
-
 
     public function execute(InputInterface $input, OutputInterface $output): int
     {

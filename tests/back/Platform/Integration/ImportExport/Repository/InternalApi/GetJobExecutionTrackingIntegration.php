@@ -99,7 +99,7 @@ class GetJobExecutionTrackingIntegration extends TestCase
 INSERT INTO `akeneo_batch_job_execution` (job_instance_id, pid, user, status, start_time, end_time, create_time, updated_time, health_check_time, exit_code, exit_description, failure_exceptions, log_file, raw_parameters)
 VALUES (:job_instance_id, null, 'admin', 2, null, null, '2020-10-16 09:38:16', null, null, 'UNKNOWN', '', 'a:0:{}', null, '{}');
 SQL;
-        $this->sqlConnection->executeUpdate($insertJobExecution, ['job_instance_id' => $JobInstanceId]);
+        $this->sqlConnection->executeStatement($insertJobExecution, ['job_instance_id' => $JobInstanceId]);
 
         return (int)$this->sqlConnection->lastInsertId();
     }
@@ -114,7 +114,7 @@ INSERT INTO `akeneo_batch_job_execution` (`job_instance_id`, `pid`, `user`, `sta
 VALUES
 	(:job_instance_id, 86472, 'admin', 1, '2020-10-13 13:05:49', '2020-10-13 13:06:10', '2020-10-13 13:05:45', '2020-10-13 13:06:09', '2020-10-13 13:06:09', 'COMPLETED', '', 'a:0:{}', '', '{}');
 SQL;
-        $this->sqlConnection->executeUpdate($insertJobExecution, ['job_instance_id' => $JobInstanceId]);
+        $this->sqlConnection->executeStatement($insertJobExecution, ['job_instance_id' => $JobInstanceId]);
         $jobExecutionId = (int)$this->sqlConnection->lastInsertId();
 
         $insertStepExecutions = <<<SQL
@@ -125,7 +125,7 @@ VALUES
 	(:job_execution_id, 'import_associations', 1, 0, 0, 0, '2020-10-13 13:06:09', '2020-10-13 13:06:10', 'COMPLETED', '', 0, 'a:0:{}', 'a:0:{}', 'a:0:{}', '{"processedItems": 0, "totalItems": 0}')
 ;
 SQL;
-        $this->sqlConnection->executeUpdate($insertStepExecutions, ['job_execution_id' => $jobExecutionId]);
+        $this->sqlConnection->executeStatement($insertStepExecutions, ['job_execution_id' => $jobExecutionId]);
 
         return $jobExecutionId;
     }
@@ -140,7 +140,7 @@ INSERT INTO `akeneo_batch_job_execution` (`job_instance_id`, `pid`, `user`, `sta
 VALUES
 	(:job_instance_id, 86472, 'admin', 3, '2020-10-13 13:05:49', '2020-10-13 13:05:49', '2020-10-13 13:05:45', '2020-10-13 13:05:48', '2020-10-13 13:05:48', 'STARTED', '', 'a:0:{}', '', '{}');
 SQL;
-        $this->sqlConnection->executeUpdate($insertJobExecution, ['job_instance_id' => $JobInstanceId]);
+        $this->sqlConnection->executeStatement($insertJobExecution, ['job_instance_id' => $JobInstanceId]);
         $jobExecutionId = (int)$this->sqlConnection->lastInsertId();
 
         $insertStepExecutions = <<<SQL
@@ -150,7 +150,7 @@ VALUES
 	(:job_execution_id, 'import', 3, 0, 0, 0, '2020-10-13 13:05:55', null, 'STARTED', '', 0, 'a:0:{}', 'a:0:{}', 'a:3:{s:13:\"item_position\";i:38;s:23:\"product_skipped_no_diff\";i:37;s:4:\"skip\";i:1;}', '{"processedItems": 10, "totalItems": 100}')
 	;
 SQL;
-        $this->sqlConnection->executeUpdate($insertStepExecutions, ['job_execution_id' => $jobExecutionId]);
+        $this->sqlConnection->executeStatement($insertStepExecutions, ['job_execution_id' => $jobExecutionId]);
         $stepExecutionId = $this->sqlConnection->lastInsertId();
 
         $insertWarnings = <<<SQL
@@ -159,7 +159,7 @@ VALUES
 	(:step_execution_id, 'Property \"variation_image\" expects a valid pathname as data, \"/var/folders/jm/d58y_3x52v9dz79knt487byh0000gp/T/akeneo_batch_5f85a62d0a7c5//files/Tshirt-unique-size-blue/variation_image/unique-size.jpg\" given.', 'a:0:{}', 'a:7:{s:10:\"categories\";a:1:{i:0;s:7:\"tshirts\";}s:7:\"enabled\";b:1;s:6:\"family\";s:8:\"clothing\";s:6:\"parent\";s:24:\"model-tshirt-unique-size\";s:6:\"groups\";a:0:{}s:6:\"values\";a:6:{s:3:\"sku\";a:1:{i:0;a:3:{s:6:\"locale\";N;s:5:\"scope\";N;s:4:\"data\";s:23:\"Tshirt-unique-size-blue\";}}s:5:\"color\";a:1:{i:0;a:3:{s:6:\"locale\";N;s:5:\"scope\";N;s:4:\"data\";s:4:\"blue\";}}s:11:\"composition\";a:1:{i:0;a:3:{s:6:\"locale\";N;s:5:\"scope\";N;s:4:\"data\";N;}}s:3:\"ean\";a:1:{i:0;a:3:{s:6:\"locale\";N;s:5:\"scope\";N;s:4:\"data\";s:13:\"1234567890350\";}}s:15:\"variation_image\";a:1:{i:0;a:3:{s:6:\"locale\";N;s:5:\"scope\";N;s:4:\"data\";s:138:\"/var/folders/jm/d58y_3x52v9dz79knt487byh0000gp/T/akeneo_batch_5f85a62d0a7c5//files/Tshirt-unique-size-blue/variation_image/unique-size.jpg\";}}s:14:\"variation_name\";a:3:{i:0;a:3:{s:6:\"locale\";s:5:\"de_DE\";s:5:\"scope\";N;s:4:\"data\";N;}i:1;a:3:{s:6:\"locale\";s:5:\"en_US\";s:5:\"scope\";N;s:4:\"data\";s:24:\"T-shirt unique size blue\";}i:2;a:3:{s:6:\"locale\";s:5:\"fr_FR\";s:5:\"scope\";N;s:4:\"data\";N;}}}s:10:\"identifier\";s:23:\"Tshirt-unique-size-blue\";}')
 	;
 SQL;
-        $this->sqlConnection->executeUpdate($insertWarnings, ['step_execution_id' => $stepExecutionId]);
+        $this->sqlConnection->executeStatement($insertWarnings, ['step_execution_id' => $stepExecutionId]);
 
         return $jobExecutionId;
     }
@@ -174,7 +174,7 @@ INSERT INTO akeneo_batch_job_execution (job_instance_id, pid, user, status, star
 VALUES (:job_instance_id, 55, 'admin', 6, '2020-10-16 09:50:28', '2020-10-16 09:50:29', '2020-10-16 09:50:26', '2020-10-16 09:50:28', '2020-10-16 09:50:28', 'FAILED', 'une backtrace', 'a:0:{}', '/srv/pim/var/logs/batch/26/batch_753d665999a008628d64a94e0ae83a52cc8f7d87.log', '{}');
 SQL;
 
-        $this->sqlConnection->executeUpdate($insertJobExecution, ['job_instance_id' => $JobInstanceId]);
+        $this->sqlConnection->executeStatement($insertJobExecution, ['job_instance_id' => $JobInstanceId]);
         $jobExecutionId = (int)$this->sqlConnection->lastInsertId();
 
         $insertStepExecutions = <<<SQL
@@ -184,7 +184,7 @@ VALUES
     (:job_execution_id, 'import', 6, 0, 0, 0, '2020-10-16 09:50:28', '2020-10-16 09:50:42', 'FAILED', 'une backtrace', 0, 'a:1:{s:5:"error";s:12:"an backtrace";}', 'a:0:{}', 'a:1:{s:13:"item_position";i:1;}', '{"totalItems": 100, "processedItems": 10}');
 SQL;
 
-        $this->sqlConnection->executeUpdate($insertStepExecutions, ['job_execution_id' => $jobExecutionId]);
+        $this->sqlConnection->executeStatement($insertStepExecutions, ['job_execution_id' => $jobExecutionId]);
 
         return $jobExecutionId;
     }
@@ -193,7 +193,7 @@ SQL;
     {
         $this->clock->setDateTime(new \DateTime('2020-10-13 13:06:02', new \DateTimeZone('UTC')));
 
-        $this->sqlConnection->executeUpdate("INSERT INTO akeneo_batch_job_instance(code, label, job_name, status, connector, raw_parameters, type) VALUES ('my_custom_job_deleted', 'My custom job deleted', 'my_custom_job_deleted', 0, 'My connector', 'a:0:{}', 'export');");
+        $this->sqlConnection->executeStatement("INSERT INTO akeneo_batch_job_instance(code, label, job_name, status, connector, raw_parameters, type) VALUES ('my_custom_job_deleted', 'My custom job deleted', 'my_custom_job_deleted', 0, 'My connector', 'a:0:{}', 'export');");
         $jobInstanceId = (int)$this->sqlConnection->lastInsertId();
 
         $insertJobExecution = <<<SQL
@@ -201,7 +201,7 @@ INSERT INTO akeneo_batch_job_execution (job_instance_id, pid, user, status, star
 VALUES (:job_instance_id, 55, 'admin', 1, '2020-10-16 09:50:28', '2020-10-16 09:50:42', '2020-10-16 09:50:26', '2020-10-16 09:50:42', '2020-10-16 09:50:42', 'COMPLETED', '', 'a:0:{}', '/srv/pim/var/logs/batch/26/batch_753d665999a008628d64a94e0ae83a52cc8f7d87.log', '{}');
 SQL;
 
-        $this->sqlConnection->executeUpdate($insertJobExecution, ['job_instance_id' => $jobInstanceId]);
+        $this->sqlConnection->executeStatement($insertJobExecution, ['job_instance_id' => $jobInstanceId]);
         $jobExecutionId = (int)$this->sqlConnection->lastInsertId();
 
         $insertStepExecutions = <<<SQL
@@ -211,7 +211,7 @@ VALUES
     (:job_execution_id, 'second_step', 1, 0, 0, 0, '2020-10-16 09:50:33', '2020-10-16 09:50:42', 'COMPLETED', '', 0, 'a:0:{}', 'a:0:{}', 'a:1:{s:13:"item_position";i:1;}', '{"totalItems": 100, "processedItems": 10}');
 SQL;
 
-        $this->sqlConnection->executeUpdate($insertStepExecutions, ['job_execution_id' => $jobExecutionId]);
+        $this->sqlConnection->executeStatement($insertStepExecutions, ['job_execution_id' => $jobExecutionId]);
 
         return $jobExecutionId;
     }

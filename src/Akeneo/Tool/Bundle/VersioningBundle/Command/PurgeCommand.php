@@ -7,6 +7,7 @@ use Akeneo\Tool\Bundle\BatchBundle\JobExecution\ExecuteJobExecutionHandlerInterf
 use InvalidArgumentException;
 use Monolog\Handler\StreamHandler;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -22,10 +23,9 @@ use Symfony\Component\Console\Question\Question;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+#[AsCommand(name: 'pim:versioning:purge', description: 'Purge versions of entities, except first and last versions.')]
 class PurgeCommand extends Command
 {
-    protected static $defaultName = 'pim:versioning:purge';
-    protected static $defaultDescription = 'Purge versions of entities, except first and last versions.';
 
     private const JOB_CODE = 'versioning_purge';
 

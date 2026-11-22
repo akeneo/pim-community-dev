@@ -9,7 +9,6 @@ use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
-use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -19,7 +18,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FamilyNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
+class FamilyNormalizer implements NormalizerInterface
 {
     /** @var array */
     protected $supportedFormats = ['internal_api'];
@@ -75,7 +74,7 @@ class FamilyNormalizer implements NormalizerInterface, CacheableSupportsMethodIn
     /**
      * {@inheritdoc}
      */
-    public function normalize($family, $format = null, array $context = array())
+    public function normalize($family, $format = null, array $context = array()): \ArrayObject|array|string|int|float|bool|null
     {
         $fullAttributes = array_key_exists('full_attributes', $context)
             && true === $context['full_attributes'];
@@ -123,15 +122,15 @@ class FamilyNormalizer implements NormalizerInterface, CacheableSupportsMethodIn
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($family, $format = null): bool
+    public function supportsNormalization($family, $format = null, array $context = []): bool
     {
         return $family instanceof FamilyInterface &&
             in_array($format, $this->supportedFormats);
     }
 
-    public function hasCacheableSupportsMethod(): bool
+    public function getSupportedTypes(?string $format): array
     {
-        return true;
+        return ['*' => true];
     }
 
     /**

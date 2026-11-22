@@ -4,7 +4,6 @@ namespace Akeneo\Pim\Structure\Component\Normalizer\Versioning;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Query\InternalApi\GetAttributeOptionCodes;
-use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -14,7 +13,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
+class AttributeNormalizer implements NormalizerInterface
 {
     const ITEM_SEPARATOR = ',';
     const LOCALIZABLE_PATTERN = '{locale}:{value}';
@@ -43,7 +42,7 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
     /**
      * {@inheritdoc}
      */
-    public function normalize($attribute, $format = null, array $context = [])
+    public function normalize($attribute, $format = null, array $context = []): \ArrayObject|array|string|int|float|bool|null
     {
         $standardAttribute = $this->standardNormalizer->normalize($attribute, 'standard', $context);
 
@@ -73,14 +72,14 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return $data instanceof AttributeInterface && in_array($format, $this->supportedFormats);
     }
 
-    public function hasCacheableSupportsMethod(): bool
+    public function getSupportedTypes(?string $format): array
     {
-        return true;
+        return ['*' => true];
     }
 
     protected function normalizeOptions(AttributeInterface $attribute): ?string

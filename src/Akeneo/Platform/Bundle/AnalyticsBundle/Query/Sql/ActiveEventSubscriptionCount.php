@@ -29,6 +29,6 @@ FROM akeneo_connectivity_connection
 WHERE webhook_enabled=1
 SQL;
 
-        return (int)$this->connection->query($query)->fetchOne();
+        return (int)$this->connection->executeQuery($query)->fetchOne();
     }
 }

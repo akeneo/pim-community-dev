@@ -4,7 +4,6 @@ namespace Akeneo\Pim\Structure\Component\Normalizer\InternalApi;
 
 use Akeneo\Pim\Structure\Component\Model\GroupTypeInterface;
 use Akeneo\Platform\Bundle\UIBundle\Provider\StructureVersion\StructureVersionProviderInterface;
-use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -14,7 +13,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GroupTypeNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
+class GroupTypeNormalizer implements NormalizerInterface
 {
     /** @var array */
     protected $supportedFormats = ['internal_api'];
@@ -40,7 +39,7 @@ class GroupTypeNormalizer implements NormalizerInterface, CacheableSupportsMetho
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = []): \ArrayObject|array|string|int|float|bool|null
     {
         $result = $this->normalizer->normalize($object, 'standard', $context);
 
@@ -56,13 +55,13 @@ class GroupTypeNormalizer implements NormalizerInterface, CacheableSupportsMetho
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return $data instanceof GroupTypeInterface && in_array($format, $this->supportedFormats);
     }
 
-    public function hasCacheableSupportsMethod(): bool
+    public function getSupportedTypes(?string $format): array
     {
-        return true;
+        return ['*' => true];
     }
 }

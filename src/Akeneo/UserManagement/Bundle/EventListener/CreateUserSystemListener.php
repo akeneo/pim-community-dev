@@ -5,7 +5,7 @@ namespace Akeneo\UserManagement\Bundle\EventListener;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\UserManagement\Bundle\Security\SystemUserToken;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\Persistence\ObjectRepository;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -75,7 +75,7 @@ class CreateUserSystemListener
 
             $token = new SystemUserToken($user);
             $this->tokenStorage->setToken($token);
-        } catch (DBALException $e) {
+        } catch (\Doctrine\DBAL\Exception $e) {
             // do nothing.
             // An exception can happen if db does not exist yet for instance
         }

@@ -4,7 +4,6 @@ namespace Oro\Bundle\PimDataGridBundle\Normalizer;
 
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer;
-use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -20,7 +19,7 @@ use Webmozart\Assert\Assert;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductAndProductModelRowNormalizer implements NormalizerInterface, NormalizerAwareInterface, CacheableSupportsMethodInterface
+class ProductAndProductModelRowNormalizer implements NormalizerInterface, NormalizerAwareInterface
 {
     use NormalizerAwareTrait;
 
@@ -38,7 +37,7 @@ class ProductAndProductModelRowNormalizer implements NormalizerInterface, Normal
     /**
      * {@inheritdoc}
      */
-    public function normalize($row, $format = null, array $context = [])
+    public function normalize($row, $format = null, array $context = []): \ArrayObject|array|string|int|float|bool|null
     {
         Assert::isInstanceOf($this->normalizer, NormalizerInterface::class);
         Assert::isInstanceOf($row, Row::class);
@@ -72,13 +71,13 @@ class ProductAndProductModelRowNormalizer implements NormalizerInterface, Normal
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return $data instanceof Row && 'datagrid' === $format;
     }
 
-    public function hasCacheableSupportsMethod(): bool
+    public function getSupportedTypes(?string $format): array
     {
-        return true;
+        return ['*' => true];
     }
 }

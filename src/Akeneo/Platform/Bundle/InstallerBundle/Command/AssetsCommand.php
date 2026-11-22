@@ -4,6 +4,7 @@ namespace Akeneo\Platform\Bundle\InstallerBundle\Command;
 
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Akeneo\Tool\Component\Console\CommandExecutor;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -19,9 +20,9 @@ use Symfony\Component\Filesystem\Filesystem;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+#[AsCommand(name: 'pim:installer:assets')]
 class AssetsCommand extends Command
 {
-    protected static $defaultName = 'pim:installer:assets';
 
     /** @var CommandExecutor */
     protected $commandExecutor;

@@ -7,10 +7,10 @@ namespace Pim\Upgrade\Schema;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 use Elasticsearch\Client;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Akeneo\Platform\Bundle\InstallerBundle\Migration\ContainerAwareMigrationInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-final class Version_7_0_20220920000000_deduplicate_elasticsearch_indices extends AbstractMigration implements ContainerAwareInterface
+final class Version_7_0_20220920000000_deduplicate_elasticsearch_indices extends AbstractMigration implements ContainerAwareMigrationInterface
 {
     private ?ContainerInterface $container;
     private ?Client $client;
@@ -49,7 +49,7 @@ final class Version_7_0_20220920000000_deduplicate_elasticsearch_indices extends
         }
     }
 
-    public function setContainer(ContainerInterface $container = null): void
+    public function setContainer(?ContainerInterface $container = null): void
     {
         $this->container = $container;
     }

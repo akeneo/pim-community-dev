@@ -7,7 +7,6 @@ framework:
     form: true
     csrf_protection: true
     validation:
-        enable_annotations: true
         enabled: true
     default_locale: '%env(APP_DEFAULT_LOCALE)%'
     session:

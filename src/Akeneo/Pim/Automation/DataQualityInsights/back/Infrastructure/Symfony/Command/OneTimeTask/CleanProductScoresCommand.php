@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\OneTimeTask;
 
 use Doctrine\DBAL\Connection;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -15,12 +16,10 @@ use Webmozart\Assert\Assert;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+#[AsCommand(name: 'pim:data-quality-insights:clean-product-scores', description: 'Clean product scores in order to have one score per product id.')]
 final class CleanProductScoresCommand extends Command
 {
     use OneTimeTaskCommandTrait;
-
-    protected static $defaultName = 'pim:data-quality-insights:clean-product-scores';
-    protected static $defaultDescription = 'Clean product scores in order to have one score per product id.';
 
     private int $bulkSize = 1000;
 
@@ -42,26 +41,26 @@ final class CleanProductScoresCommand extends Command
             Assert::greaterThan($this->bulkSize, 0, 'Bulk size must be greater than zero.');
         }
 
-        if (!$this->taskCanBeStarted(self::$defaultName)) {
+        if (!$this->taskCanBeStarted($this->getName())) {
             $output->writeln('This task has already been performed or is in progress.', OutputInterface::VERBOSITY_VERBOSE);
             return Command::SUCCESS;
         }
 
         $output->writeln('Start cleaning...');
-        $this->startTask(self::$defaultName);
+        $this->startTask($this->getName());
 
         while ($productScoresToClean = $this->getNextProductUuidAsBytesScoresToClean()) {
             try {
                 $this->cleanProductScores($productScoresToClean);
             } catch (\Throwable $exception) {
-                $this->deleteTask(self::$defaultName);
+                $this->deleteTask($this->getName());
                 throw $exception;
             }
         }
 
         $output->writeln('Cleaning done.');
 
-        $this->finishTask(self::$defaultName);
+        $this->finishTask($this->getName());
 
         return Command::SUCCESS;
     }

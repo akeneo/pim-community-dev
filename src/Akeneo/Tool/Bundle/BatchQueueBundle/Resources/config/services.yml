@@ -103,7 +103,8 @@ services:
             - '@logger'
             - '%kernel.project_dir%'
         tags:
-            - { name: messenger.message_handler }
+            - { name: messenger.message_handler, handles: Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessageInterface, method: handleJobExecution }
+            - { name: messenger.message_handler, handles: Akeneo\Tool\Component\BatchQueue\Queue\ScheduledJobMessageInterface, method: handleScheduledJob }
             - { name: monolog.logger, channel: job_queue }
 
     akeneo_batch_queue.ordering_key.resolver.job_message:

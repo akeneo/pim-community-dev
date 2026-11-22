@@ -2,7 +2,6 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard;
 
-use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -15,12 +14,12 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class DateTimeNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
+class DateTimeNormalizer implements NormalizerInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function normalize($date, $format = null, array $context = [])
+    public function normalize($date, $format = null, array $context = []): \ArrayObject|array|string|int|float|bool|null
     {
         if (null !== $date && $date instanceof \DateTimeInterface) {
             return $date->format('c');
@@ -32,13 +31,13 @@ class DateTimeNormalizer implements NormalizerInterface, CacheableSupportsMethod
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return $data instanceof \DateTime && 'standard' === $format;
     }
 
-    public function hasCacheableSupportsMethod(): bool
+    public function getSupportedTypes(?string $format): array
     {
-        return true;
+        return ['*' => true];
     }
 }

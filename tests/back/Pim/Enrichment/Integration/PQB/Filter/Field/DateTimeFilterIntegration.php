@@ -230,7 +230,7 @@ SQL;
                 'updated_date' => $updatedDate,
             ],
             [
-                'updated_date' => Type::DATETIME
+                'updated_date' => \Doctrine\DBAL\Types\Types::DATETIME_MUTABLE
             ]);
 
         $uuid = $this->getProductUuid($identifier);

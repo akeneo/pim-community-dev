@@ -5,21 +5,20 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Infrastructure\Normalizer\Internal;
 
 use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
-use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CatalogNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
+class CatalogNormalizer implements NormalizerInterface
 {
-    public function hasCacheableSupportsMethod(): bool
+    public function getSupportedTypes(?string $format): array
     {
-        return true;
+        return ['*' => true];
     }
 
-    public function supportsNormalization(mixed $data, ?string $format = null): bool
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
         return $data instanceof Catalog && 'internal' === $format;
     }

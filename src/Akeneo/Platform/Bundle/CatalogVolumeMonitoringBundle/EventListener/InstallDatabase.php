@@ -49,6 +49,6 @@ CREATE TABLE IF NOT EXISTS pim_aggregated_volume (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB
 SQL;
 
-        $this->connection->exec($sql);
+        $this->connection->executeStatement($sql);
     }
 }

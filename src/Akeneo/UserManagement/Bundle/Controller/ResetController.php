@@ -9,14 +9,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class ResetController extends AbstractController
 {
     public function __construct(
         private readonly UserManager $userManager,
-        private readonly SessionInterface $session,
+        private readonly RequestStack $requestStack,
         private readonly ResetHandler $resetHandler,
         private readonly TokenStorageInterface $tokenStorage,
         private readonly FormInterface $form,
@@ -88,7 +88,7 @@ class ResetController extends AbstractController
             $this->addFlash('success', 'Your password has been successfully reset. You may login now.');
 
             // force user logout
-            $this->session->invalidate();
+            $this->requestStack->getSession()->invalidate();
             $this->tokenStorage->setToken(null);
 
             return $this->redirectToRoute('pim_user_security_login');

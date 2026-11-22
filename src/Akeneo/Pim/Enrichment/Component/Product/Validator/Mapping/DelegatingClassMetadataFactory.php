@@ -30,7 +30,7 @@ class DelegatingClassMetadataFactory implements MetadataFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getMetadataFor($value)
+    public function getMetadataFor($value): \Symfony\Component\Validator\Mapping\MetadataInterface
     {
         foreach ($this->factories as $factory) {
             if ($factory->hasMetadataFor($value)) {
@@ -44,7 +44,7 @@ class DelegatingClassMetadataFactory implements MetadataFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function hasMetadataFor($value)
+    public function hasMetadataFor($value): bool
     {
         foreach ($this->factories as $factory) {
             if ($factory->hasMetadataFor($value)) {

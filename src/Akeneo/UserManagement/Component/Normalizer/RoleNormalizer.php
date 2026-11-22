@@ -6,7 +6,6 @@ namespace Akeneo\UserManagement\Component\Normalizer;
 use Akeneo\UserManagement\Component\Model\RoleInterface;
 use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
-use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Webmozart\Assert\Assert;
 
@@ -15,7 +14,7 @@ use Webmozart\Assert\Assert;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-final class RoleNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
+final class RoleNormalizer implements NormalizerInterface
 {
     private const ACL_EXTENSION_KEY = 'action';
 
@@ -34,7 +33,7 @@ final class RoleNormalizer implements NormalizerInterface, CacheableSupportsMeth
     /**
      * {@inheritdoc}
      */
-    public function normalize($role, $format = null, array $context = [])
+    public function normalize($role, $format = null, array $context = []): \ArrayObject|array|string|int|float|bool|null
     {
         Assert::isInstanceOf($role, RoleInterface::class);
 
@@ -70,17 +69,14 @@ final class RoleNormalizer implements NormalizerInterface, CacheableSupportsMeth
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return $data instanceof RoleInterface && in_array($format, $this->supportedFormats);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function hasCacheableSupportsMethod(): bool
+    public function getSupportedTypes(?string $format): array
     {
-        return true;
+        return ['*' => true];
     }
 
     private function getIndexedAclIds(): array

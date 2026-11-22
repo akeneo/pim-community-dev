@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints\Email as BaseEmail;
  */
 class Email extends BaseEmail
 {
-    public $message = 'The %attribute% attribute requires an e-mail address.';
+    public string $message = 'The %attribute% attribute requires an e-mail address.';
 
     public $attributeCode = '';
 }

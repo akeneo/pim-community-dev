@@ -63,7 +63,7 @@ services:
         arguments:
             - '@pim_catalog.factory.attribute_requirement'
         tags:
-            - { name: doctrine.event_subscriber }
+            - { name: doctrine.event_listener, event: prePersist }
 
     Akeneo\Pim\Structure\Bundle\EventSubscriber\ApiAggregatorForAttributePostSaveEventSubscriber:
         arguments:

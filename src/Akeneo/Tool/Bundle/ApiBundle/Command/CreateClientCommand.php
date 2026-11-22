@@ -4,6 +4,7 @@ namespace Akeneo\Tool\Bundle\ApiBundle\Command;
 
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use OAuth2\OAuth2;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,9 +20,9 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
+#[AsCommand(name: 'pim:oauth-server:create-client')]
 class CreateClientCommand extends Command
 {
-    protected static $defaultName = 'pim:oauth-server:create-client';
 
     /** @var ClientManagerInterface */
     private $clientManager;

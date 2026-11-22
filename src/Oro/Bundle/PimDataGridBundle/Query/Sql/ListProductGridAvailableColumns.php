@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Oro\Bundle\PimDataGridBundle\Query\Sql;
 
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception as DBALException;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration;
 use Oro\Bundle\DataGridBundle\Provider\ConfigurationProviderInterface;
 use Oro\Bundle\PimDataGridBundle\Query\ListProductGridAvailableColumns as ListProductGridAvailableColumnsQuery;
@@ -114,7 +114,7 @@ class ListProductGridAvailableColumns implements ListProductGridAvailableColumns
      *
      * @return array
      *
-     * @throws DBALException
+     * @throws \Doctrine\DBAL\Exception
      */
     private function fetchAttributesAsColumn(string $locale, int $limit, int $offset, string $groupCode, string $searchOnLabel): array
     {

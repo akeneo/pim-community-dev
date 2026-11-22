@@ -2,6 +2,7 @@
 
 namespace Akeneo\Platform\Bundle\InstallerBundle\Command;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -13,9 +14,9 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+#[AsCommand(name: 'pim:installer:dump-require-paths')]
 class DumpRequirePathsCommand extends Command
 {
-    protected static $defaultName = 'pim:installer:dump-require-paths';
 
     const MAIN_CONFIG_FILE_NAME = 'js/require-paths.js';
 

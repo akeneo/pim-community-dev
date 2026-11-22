@@ -5,6 +5,7 @@ namespace Akeneo\Tool\Bundle\BatchBundle\Command;
 use Akeneo\Platform\Job\ServiceApi\JobInstance\CreateJobInstance\CreateJobInstanceCommand as CreateJobInstanceCqrsCommand;
 use Akeneo\Platform\Job\ServiceApi\JobInstance\CreateJobInstance\CreateJobInstanceHandlerInterface;
 use Akeneo\Tool\Component\Batch\Exception\InvalidJobException;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -18,9 +19,9 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+#[AsCommand(name: 'akeneo:batch:create-job')]
 class CreateJobInstanceCommand extends Command
 {
-    protected static $defaultName = 'akeneo:batch:create-job';
 
     const EXIT_SUCCESS_CODE = 0;
     const EXIT_ERROR_CODE = 1;

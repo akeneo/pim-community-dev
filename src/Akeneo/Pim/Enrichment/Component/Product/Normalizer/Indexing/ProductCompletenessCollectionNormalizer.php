@@ -4,7 +4,6 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing;
 
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer;
-use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -14,14 +13,14 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductCompletenessCollectionNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
+class ProductCompletenessCollectionNormalizer implements NormalizerInterface
 {
     /**
      * {@inheritdoc}
      *
      * @param ProductCompletenessCollection $completenesses
      */
-    public function normalize($completenesses, $format = null, array $context = [])
+    public function normalize($completenesses, $format = null, array $context = []): \ArrayObject|array|string|int|float|bool|null
     {
         $data = [];
 
@@ -37,7 +36,7 @@ class ProductCompletenessCollectionNormalizer implements NormalizerInterface, Ca
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return
             in_array($format, [
@@ -46,8 +45,8 @@ class ProductCompletenessCollectionNormalizer implements NormalizerInterface, Ca
             $data instanceof ProductCompletenessCollection;
     }
 
-    public function hasCacheableSupportsMethod(): bool
+    public function getSupportedTypes(?string $format): array
     {
-        return true;
+        return ['*' => true];
     }
 }

@@ -28,7 +28,7 @@ SET webhook_secret = :secret
 WHERE code = :code
 SQL;
 
-        return (bool) $this->dbalConnection->executeUpdate(
+        return (bool) $this->dbalConnection->executeStatement(
             $query,
             [
                 'code' => $code,

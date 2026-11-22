@@ -8,14 +8,13 @@ use Akeneo\Pim\Enrichment\Component\Error\DocumentationBuilderRegistry;
 use Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Error\TemplatedErrorMessage\TemplatedErrorMessageInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductDomainErrorNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
+class ProductDomainErrorNormalizer implements NormalizerInterface
 {
     /** @var DocumentationBuilderRegistry */
     private $documentationBuilderRegistry;
@@ -65,13 +64,13 @@ class ProductDomainErrorNormalizer implements NormalizerInterface, CacheableSupp
         return $data;
     }
 
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return $data instanceof DomainErrorInterface;
     }
 
-    public function hasCacheableSupportsMethod(): bool
+    public function getSupportedTypes(?string $format): array
     {
-        return true;
+        return ['*' => true];
     }
 }

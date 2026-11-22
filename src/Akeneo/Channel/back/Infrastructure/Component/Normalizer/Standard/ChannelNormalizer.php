@@ -3,7 +3,6 @@
 namespace Akeneo\Channel\Infrastructure\Component\Normalizer\Standard;
 
 use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
-use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -11,7 +10,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ChannelNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
+class ChannelNormalizer implements NormalizerInterface
 {
     /** @var NormalizerInterface */
     protected $translationNormalizer;
@@ -27,7 +26,7 @@ class ChannelNormalizer implements NormalizerInterface, CacheableSupportsMethodI
     /**
      * {@inheritdoc}
      */
-    public function normalize($channel, $format = null, array $context = [])
+    public function normalize($channel, $format = null, array $context = []): \ArrayObject|array|string|int|float|bool|null
     {
         return [
             'code'             => $channel->getCode(),
@@ -42,14 +41,14 @@ class ChannelNormalizer implements NormalizerInterface, CacheableSupportsMethodI
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return $data instanceof ChannelInterface && 'standard' === $format;
     }
 
-    public function hasCacheableSupportsMethod(): bool
+    public function getSupportedTypes(?string $format): array
     {
-        return true;
+        return ['*' => true];
     }
 
     /**

@@ -9,7 +9,6 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -21,7 +20,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ValueNormalizer implements NormalizerInterface, NormalizerAwareInterface, CacheableSupportsMethodInterface
+class ValueNormalizer implements NormalizerInterface, NormalizerAwareInterface
 {
     use NormalizerAwareTrait;
 
@@ -50,7 +49,7 @@ class ValueNormalizer implements NormalizerInterface, NormalizerAwareInterface, 
     /**
      * {@inheritdoc}
      */
-    public function normalize($entity, $format = null, array $context = [])
+    public function normalize($entity, $format = null, array $context = []): \ArrayObject|array|string|int|float|bool|null
     {
         $data = $entity->getData();
         $fieldName = $this->getFieldName($entity);
@@ -119,14 +118,14 @@ class ValueNormalizer implements NormalizerInterface, NormalizerAwareInterface, 
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return $data instanceof ValueInterface && in_array($format, $this->supportedFormats);
     }
 
-    public function hasCacheableSupportsMethod(): bool
+    public function getSupportedTypes(?string $format): array
     {
-        return true;
+        return ['*' => true];
     }
 
     /**

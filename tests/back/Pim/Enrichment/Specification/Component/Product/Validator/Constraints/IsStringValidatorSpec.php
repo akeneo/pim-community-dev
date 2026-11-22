@@ -61,7 +61,7 @@ class IsStringValidatorSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn($violation);
         $violation->setCode(IsString::IS_STRING)->shouldBeCalled()->willReturn($violation);
-        $violation->addViolation()->willReturn($violation);
+        $violation->addViolation();
 
         $this->validate(666, $stringConstraint);
     }
@@ -98,7 +98,7 @@ class IsStringValidatorSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn($violation);
         $violation->setCode(IsString::IS_STRING)->shouldBeCalled()->willReturn($violation);
-        $violation->addViolation()->willReturn($violation);
+        $violation->addViolation();
 
         $this->validate($value, $stringConstraint);
     }

@@ -29,7 +29,7 @@ class IsDemoCatalog implements IsDemoCatalogQuery
     {
         $query = "SELECT DISTINCT true FROM oro_user WHERE email IN('Julia@example.com', 'Peter@example.com', 'Sandra@example.com')";
 
-        $isDemo = $this->connection->executeQuery($query)->fetch(\PDO::FETCH_COLUMN, 0);
+        $isDemo = $this->connection->executeQuery($query)->fetchOne();
 
         return $isDemo === '1';
     }
