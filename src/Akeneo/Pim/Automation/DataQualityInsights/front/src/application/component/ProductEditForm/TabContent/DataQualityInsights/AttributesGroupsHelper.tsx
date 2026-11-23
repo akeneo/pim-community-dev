@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import {AttributeGroup, AttributeGroupCollection} from '@akeneo-pim-community/settings-ui/src/models';
 
-const translate = require('oro/translator');
+import {translate} from '@akeneo-pim-community/shared';
 
 const Helper = styled.div`
   margin: 5px 0 10px 0;

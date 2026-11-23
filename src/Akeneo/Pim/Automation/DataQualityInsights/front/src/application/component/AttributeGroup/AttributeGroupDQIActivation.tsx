@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 import styled from 'styled-components';
 import {HelperMessage} from './HelperMessage';
 import {ToggleActivation} from './ToggleActivation';
-const translate = require('oro/translator');
+import {translate} from '@akeneo-pim-community/shared';
 
 type Props = {
   groupCode: string;

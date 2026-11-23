@@ -10,7 +10,7 @@
 define([
   'underscore',
   'oro/translator',
-  'backbone',
+  'pim/router',
   'pim/template/common/default-template',
   'pim/form',
   'oro/mediator',
@@ -23,7 +23,7 @@ define([
 ], function (
   _,
   __,
-  Backbone,
+  router,
   template,
   BaseForm,
   mediator,
@@ -54,7 +54,7 @@ define([
      */
     configure: function () {
       mediator.clear('pim_enrich:form');
-      Backbone.Router.prototype.once('route', this.unbindEvents);
+      router.once('route', this.unbindEvents);
 
       if (_.has(__moduleConfig, 'forwarded-events')) {
         this.forwardMediatorEvents(__moduleConfig['forwarded-events']);

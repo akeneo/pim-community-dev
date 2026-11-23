@@ -2,7 +2,6 @@
 
 define([
   'jquery',
-  'backbone',
   'underscore',
   'pim/router',
   'oro/translator',
@@ -13,7 +12,7 @@ define([
   'oro/messenger',
   'bootstrap',
   'jquery-setup',
-], function ($, Backbone, _, router, __, app, mediator, layout, Dialog, messenger) {
+], function ($, _, router, __, app, mediator, layout, Dialog, messenger) {
   /* ============================================================
    * from layout.js
    * ============================================================ */
@@ -125,7 +124,7 @@ define([
             messenger.enqueueMessage('success', el.data('success-message'), {hashNavEnabled: true});
             if (el.data('redirect')) {
               $.isActive(true);
-              Backbone.history.navigate('#' + el.data('redirect'));
+              router.navigate('#' + el.data('redirect'));
             } else {
               router.hideLoadingMask();
             }

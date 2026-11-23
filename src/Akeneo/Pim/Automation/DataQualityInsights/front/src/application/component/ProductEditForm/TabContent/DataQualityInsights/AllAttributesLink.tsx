@@ -4,7 +4,7 @@ import {
   DATA_QUALITY_INSIGHTS_FILTER_ALL_IMPROVABLE_ATTRIBUTES,
 } from '../../../../listener';
 
-const __ = require('oro/translator');
+import {translate as __} from '@akeneo-pim-community/shared';
 
 interface AllAttributesLinkProps {
   axis: string;

@@ -1,5 +1,5 @@
-const UserContext = require('pim/user-context');
-const __ = require('oro/translator');
+import {userContext as UserContext} from '@akeneo-pim-community/shared';
+import {translate as __} from '@akeneo-pim-community/shared';
 
 export const weeklyCallback = (lastDayOfWeek: string) => {
   const uiLocale = UserContext.get('uiLocale');

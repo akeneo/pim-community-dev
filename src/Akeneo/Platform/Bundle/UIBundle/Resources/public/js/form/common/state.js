@@ -11,11 +11,11 @@ define([
   'jquery',
   'underscore',
   'oro/translator',
-  'backbone',
+  'pim/router',
   'pim/dialog',
   'pim/form',
   'pim/template/form/state',
-], function ($, _, __, Backbone, Dialog, BaseForm, template) {
+], function ($, _, __, router, Dialog, BaseForm, template) {
   return BaseForm.extend({
     className: 'updated-status',
     template: _.template(template),
@@ -54,7 +54,7 @@ define([
       this.listenTo(this.getRoot(), 'pim_enrich:form:can-leave', this.linkClicked);
       $(window).on('beforeunload', this.beforeUnload.bind(this));
 
-      Backbone.Router.prototype.on('route', this.unbindEvents);
+      router.on('route', this.unbindEvents);
 
       return BaseForm.prototype.configure.apply(this, arguments);
     },

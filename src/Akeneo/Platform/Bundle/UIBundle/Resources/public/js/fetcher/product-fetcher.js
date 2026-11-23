@@ -1,14 +1,13 @@
 'use strict';
 
-define([
-  'jquery',
-  'underscore',
-  'backbone',
-  'pim/base-fetcher',
-  'routing',
-  'oro/mediator',
-  'pim/cache-invalidator',
-], function ($, _, Backbone, BaseFetcher, Routing, mediator, CacheInvalidator) {
+define(['jquery', 'underscore', 'pim/base-fetcher', 'routing', 'oro/mediator', 'pim/cache-invalidator'], function (
+  $,
+  _,
+  BaseFetcher,
+  Routing,
+  mediator,
+  CacheInvalidator
+) {
   return BaseFetcher.extend({
     /**
      * Fetch a product or a product_model based on its id or uuid

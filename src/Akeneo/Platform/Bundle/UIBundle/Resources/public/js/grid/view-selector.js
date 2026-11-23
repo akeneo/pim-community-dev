@@ -14,7 +14,7 @@ define([
   'jquery',
   'underscore',
   'oro/translator',
-  'backbone',
+  'pim/router',
   'pim/form',
   'pim/template/grid/view-selector',
   'pim/initselect2',
@@ -27,7 +27,7 @@ define([
   $,
   _,
   __,
-  Backbone,
+  router,
   BaseForm,
   template,
   initSelect2,
@@ -82,7 +82,7 @@ define([
       this.listenTo(this.getRoot(), 'grid:view-selector:close-selector', this.closeSelect2.bind(this));
       this.listenTo(this.getRoot(), 'grid:product-grid:state_changed', this.onGridStateChange.bind(this));
 
-      Backbone.Router.prototype.on('route', this.unbindEvents.bind(this));
+      router.on('route', this.unbindEvents.bind(this));
 
       return FetcherRegistry.getFetcher('datagrid-view')
         .defaultColumns(this.gridAlias)
@@ -521,8 +521,7 @@ define([
      */
     reloadPage: function () {
       var url = window.location.hash;
-      Backbone.history.fragment = new Date().getTime();
-      Backbone.history.navigate(url, true);
+      router.navigate(url, {trigger: true, force: true});
     },
 
     getResultsPerPage: function () {

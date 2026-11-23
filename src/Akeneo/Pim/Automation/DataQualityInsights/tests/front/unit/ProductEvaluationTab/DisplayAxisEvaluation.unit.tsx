@@ -7,9 +7,7 @@ import {
 } from '@akeneo-pim-community/data-quality-insights/src/application/listener';
 import {renderConsistencyEvaluation, renderEnrichmentEvaluation} from '../../utils/render';
 
-const UserContext = require('pim/user-context');
-
-jest.mock('pim/user-context');
+import {userContext} from '@akeneo-pim-community/shared';
 
 window.dispatchEvent = jest.fn();
 
@@ -17,7 +15,7 @@ beforeEach(() => {
   jest.resetModules();
 });
 
-UserContext.get.mockReturnValue('en_US');
+jest.spyOn(userContext, 'get').mockReturnValue('en_US');
 
 describe('Product evaluation tab', () => {
   test('Consistency axis with ongoing criterion evaluation, 2 criteria with recommendations, 1 perfect criterion and 1 not applicable criterion', async () => {

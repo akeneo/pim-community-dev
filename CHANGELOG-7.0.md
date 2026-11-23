@@ -4,6 +4,11 @@
 
 - #20332: Fix potential type error when fetching the structure version last update row returns null
 
+## Improvements
+
+- Frontend: the core services (event bus, user context, security context, feature flags, translator, route matching, hash navigation) now live in `@akeneo-pim-community/shared` without Backbone, jQuery or underscore. The legacy module IDs (`oro/mediator`, `pim/user-context`, `pim/security-context`, `pim/feature-flags`, `oro/translator`, `pim/route-matcher`) are kept as thin shims.
+- Frontend: the application shell is rendered by React and `pim/router` no longer extends `Backbone.Router`. `pim/base-fetcher` no longer extends `Backbone.Model`.
+
 # 7.0.85 (2026-06-17)
 
 # 7.0.84 (2025-12-31)

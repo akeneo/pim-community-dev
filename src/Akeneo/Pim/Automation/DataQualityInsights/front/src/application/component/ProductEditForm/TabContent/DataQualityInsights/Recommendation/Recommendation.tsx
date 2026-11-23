@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import {Link} from 'akeneo-design-system';
 
-const translate = require('oro/translator');
+import {translate} from '@akeneo-pim-community/shared';
 
 type RecommendationType = 'error' | 'success' | 'in_progress' | 'not_applicable' | 'to_improve';
 

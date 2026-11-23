@@ -1,7 +1,7 @@
 import React from 'react';
 
-const __ = require('oro/translator');
-const FeatureFlags = require('pim/feature-flags');
+// Rendered outside of any DependenciesProvider (see the dashboard section view), hooks can't be used here
+import {featureFlags as FeatureFlags, translate as __} from '@akeneo-pim-community/shared';
 
 const DashboardHelper = React.memo(() => {
   let helper = <></>;

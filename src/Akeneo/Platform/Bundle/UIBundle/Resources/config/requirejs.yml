@@ -493,7 +493,7 @@ config:
 
     # Navigation
     jquery.form:         pimui/lib/jquery-form/jquery.form
-    pim/app:             pimui/js/pim-app.ts
+    pim/app:             pimui/js/app/index.tsx
     pim/router:          pimui/js/router
     pim/route-matcher:   pimui/js/route-matcher
     pim/page-title:      pimui/js/page-title
@@ -574,6 +574,7 @@ config:
     # Fetcher
     pim/fetcher-registry:        pimui/js/fetcher/fetcher-registry
     pim/base-fetcher:            pimui/js/fetcher/base-fetcher
+    pim/class-extend:            pimui/js/class-extend
     pim/attribute-fetcher:       pimui/js/fetcher/attribute-fetcher
     pim/attribute-group-fetcher: pimui/js/fetcher/attribute-group-fetcher
     pim/locale-fetcher:          pimui/js/fetcher/locale-fetcher
@@ -1187,7 +1188,6 @@ config:
     pim/template/menu/navigation-block:                  pimui/templates/menu/navigation-block.html
     pim/template/menu/logo:                              pimui/templates/menu/logo.html
 
-    pim/template/app:                                    pimui/templates/app.html
 
     pim/template/group/tab/properties/general:           pimui/templates/group/tab/properties/general.html
     pim/template/group/meta/product-count:               pimui/templates/group/meta/product-count.html

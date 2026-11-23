@@ -3,8 +3,8 @@ import useFetchCategoryTrees from '../../../../infrastructure/hooks/Dashboard/us
 import CategoryTreeNode from './CategoryTreeNode';
 import Modal from '../../Modal';
 
-const __ = require('oro/translator');
-const UserContext = require('pim/user-context');
+import {translate as __} from '@akeneo-pim-community/shared';
+import {userContext as UserContext} from '@akeneo-pim-community/shared';
 
 interface CategoryModalProps {
   onSelectCategory: (categoryCode: string, categoryLabel: string, categoryId: string, rootCategoryId: string) => void;
