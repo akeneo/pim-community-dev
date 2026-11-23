@@ -9,7 +9,6 @@ const pageTitle = require('pim/page-title');
 const initLegacyPageBehaviors = require('pim/init');
 const initLayout = require('oro/init-layout');
 const initSignin = require('pimuser/js/init-signin');
-const installBackboneHistoryCompat = require('pim/legacy/backbone-history-compat');
 
 /**
  * Code of the form extension whose children are rendered in the application shell zones (menu, side panels...).
@@ -60,7 +59,6 @@ const bootstrapApplication = async (): Promise<ApplicationZones> => {
   // Loads the form extensions configuration, the ACLs and the feature flags
   await toPromise(FormRegistry.getFormMeta(APPLICATION_EXTENSION));
 
-  installBackboneHistoryCompat();
   initLayout();
   initSignin();
 

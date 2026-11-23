@@ -1,5 +1,6 @@
 import React, {useLayoutEffect, useRef} from 'react';
 import {LegacyView} from './bootstrap';
+import {runIsolated} from './runIsolated';
 
 type LegacyZoneProps = {
   code: string;
@@ -17,7 +18,8 @@ const LegacyZone = React.memo(({code, views}: LegacyZoneProps) => {
     const zone = zoneRef.current as HTMLDivElement;
     views.forEach(view => {
       zone.appendChild(view.el);
-      view.render();
+      // A failing extension must neither unmount the application nor prevent the next ones from rendering
+      runIsolated(() => view.render());
     });
 
     return () => views.forEach(view => view.remove());

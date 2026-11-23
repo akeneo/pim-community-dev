@@ -9,14 +9,6 @@
 - Frontend: the core services (event bus, user context, security context, feature flags, translator, route matching, hash navigation) now live in `@akeneo-pim-community/shared` without Backbone, jQuery or underscore. The legacy module IDs (`oro/mediator`, `pim/user-context`, `pim/security-context`, `pim/feature-flags`, `oro/translator`, `pim/route-matcher`) are kept as thin shims.
 - Frontend: the application shell is rendered by React and `pim/router` no longer extends `Backbone.Router`. `pim/base-fetcher` no longer extends `Backbone.Model`.
 
-## BC Breaks
-
-- Frontend: `pim/app` now exports `mountApplication()` instead of the Backbone `PimApp` view, and the `pim/template/app` template has been removed. Extensions declared with `parent: pim-app` are still rendered in their `targetZone` ("menu", "communication-channel-panel").
-- Frontend: `pim/router` is a plain object (same public API: `generate`, `redirect`, `redirectToRoute`, `reloadPage`, `showLoadingMask`, `hideLoadingMask`, events). It adds `start()`, `navigate(fragment, {trigger, replace, force})`, `getFragment()` and `forgetFragment()`, and triggers a `route` event each time it handles a URL. Use `router.on('route', ...)` instead of `Backbone.Router.prototype.on('route', ...)` and `router.navigate()` instead of `Backbone.history.navigate()`; both legacy forms are still forwarded by `pim/legacy/backbone-history-compat` but are deprecated.
-- Frontend: `ReactController` (legacy bridge) no longer extends `pim/controller/base` (Backbone.View). It keeps `el`, `$el`, `options`, `initialize()`, `renderRoute()`, `canLeave()`, `remove()` and the event methods, but not the other Backbone.View methods (`this.$()`, `events` hash, `setElement()`...).
-- Frontend: `pim/base-fetcher` subclasses can no longer rely on `Backbone.Model` methods (`get`, `set`, `on`...); `BaseFetcher.extend()` is still available.
-- Frontend: `FeatureFlags.initialize()` no longer throws when called twice, it returns the same request.
-
 # 7.0.85 (2026-06-17)
 
 # 7.0.84 (2025-12-31)

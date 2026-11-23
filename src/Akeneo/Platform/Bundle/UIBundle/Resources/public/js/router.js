@@ -294,4 +294,11 @@ const router = withEvents({
   },
 });
 
+// Callers take methods off the router (`const {redirect} = router`): every method stays bound to it
+Object.keys(router).forEach(key => {
+  if ('function' === typeof router[key]) {
+    router[key] = router[key].bind(router);
+  }
+});
+
 module.exports = router;

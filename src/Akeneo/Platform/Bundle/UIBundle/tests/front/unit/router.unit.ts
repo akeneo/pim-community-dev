@@ -148,6 +148,21 @@ test('it removes the previous controller and reloads the current page', () => {
   expect(FakeController.instances[FakeController.instances.length - 1]).not.toBe(previous);
 });
 
+test('its methods can be called detached from the router', () => {
+  const {redirect, redirectToRoute, generate, reloadPage} = router;
+
+  redirect('/configuration/locale/', {trigger: true});
+  expect(window.location.hash).toBe('#/configuration/locale/');
+
+  redirectToRoute('pim_enrich_product_index', {}, {trigger: true});
+  expect(window.location.hash).toBe('#/enrich/product/');
+  const previous = FakeController.instances[FakeController.instances.length - 1];
+
+  reloadPage();
+  expect(FakeController.instances[FakeController.instances.length - 1]).not.toBe(previous);
+  expect(generate('pim_dashboard_index')).toBe('/dashboard');
+});
+
 test('it completes the route synchronously for controllers returning resolved jQuery promises', () => {
   const listener = jest.fn();
   mediator.on('route_complete', listener);

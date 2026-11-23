@@ -143,7 +143,7 @@ class WebUser extends PimContext
         foreach ($pages->getHash() as $data) {
             $url = $this->getSession()->evaluateScript(sprintf('return Routing.generate("%s");', $data['page']));
             $this->getMainContext()->executeScript(
-                sprintf("Backbone.history.navigate('#%s');", $url)
+                sprintf("window.location.hash = '#%s';", $url)
             );
             $this->wait();
 

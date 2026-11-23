@@ -5,6 +5,7 @@ import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {ApplicationZones} from './bootstrap';
 import {LegacyZone} from './LegacyZone';
 import {Overlay} from './Overlay';
+import {runIsolated} from './runIsolated';
 
 type PimApplicationProps = {
   zones: ApplicationZones;
@@ -22,8 +23,9 @@ const PageContainer = React.memo(() => <div id="container" className="AknDefault
  */
 const PimApplication = ({zones, onReady}: PimApplicationProps) => {
   useEffect(() => {
-    // Effects of the children (rendering of the shell zones) run before this one
-    onReady();
+    // Effects of the children (rendering of the shell zones) run before this one. A page failing to render (the first
+    // route is rendered synchronously) must not unmount the application.
+    runIsolated(onReady);
   }, []);
 
   return (

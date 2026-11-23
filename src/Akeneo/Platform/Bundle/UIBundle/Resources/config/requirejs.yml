@@ -494,7 +494,6 @@ config:
     # Navigation
     jquery.form:         pimui/lib/jquery-form/jquery.form
     pim/app:             pimui/js/app/index.tsx
-    pim/legacy/backbone-history-compat: pimui/js/legacy/backbone-history-compat
     pim/router:          pimui/js/router
     pim/route-matcher:   pimui/js/route-matcher
     pim/page-title:      pimui/js/page-title
